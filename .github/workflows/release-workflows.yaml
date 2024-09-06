@@ -56,16 +56,23 @@ jobs:
             echo "# Changelog" > CHANGELOG.md
             echo "CHANGELOG.md created as it did not exist." >> CHANGELOG.md
           fi
-        # This step ensures that a CHANGELOG.md exists or creates one if missing.
 
-      # Step 9: Extract repository description
+      # Step 9: Ensure tests directory exists
+      - name: Check for tests directory
+        run: |
+          if [ ! -d tests ]; then
+            mkdir tests
+            echo "tests directory created as it did not exist."
+          fi
+
+      # Step 10: Extract repository description
       - name: Extract repository description
         id: repo-description
         run: |
           description=$(jq -r '.description' <(curl -s https://api.github.com/repos/${{ github.repository }}))
           echo "REPO_DESCRIPTION=$description" >> $GITHUB_ENV
 
-      # Step 10: Run Changelog CI
+      # Step 11: Run Changelog CI
       - name: Run Changelog CI
         if: github.ref == 'refs/heads/master'
         uses: saadmk11/changelog-ci@v1.1.2
@@ -73,49 +80,49 @@ jobs:
           release_version: ${{ steps.version.outputs.version }}
           config_file: changelog-ci-config.json
 
-      # Step 11: Output the version
+      # Step 12: Output the version
       - name: Use the version
         run: |
           echo ${{ steps.version.outputs.version }}
 
-      # Step 12: Copy the package files into the package
+      # Step 13: Copy the package files into the package
       - name: Copy the package files
         run: |
           mkdir -p package/larpingapp
           cp -r README.md CHANGELOG.md LICENSE.md psalm.xml package.json package-lock.json openapi.json composer.json composer.lock appinfo css img js lib node_modules src templates vendor package/larpingapp/
 
-      # Step 13: Create the ZIP archive
+      # Step 14: Create the ZIP archive
       - name: Create ZIP
         run: |
           cd package && zip -r ../larpingapp.zip larpingapp
 
-      # Step 14: Create the TAR.GZ archive
+      # Step 15: Create the TAR.GZ archive
       - name: Create Tarball
         run: |
           cd package && tar -czf ../larpingapp.tar.gz larpingapp    
 
-      # Step 15: Clean up package directory and add dev files
+      # Step 16: Clean up package directory and add dev files
       - name: Clean up and add dev files
         run: |
           cd package && rm -rf vendor js node_modules 
           cd ../ && cp -r docs tests .babelrc package/larpingapp/     
 
-      # Step 16: Create the source code ZIP archive
+      # Step 17: Create the source code ZIP archive
       - name: Create Source Code ZIP
         run: |
           cd package && zip -r ../sourcecode.zip larpingapp
 
-      # Step 17: Create the source code TAR.GZ archive
+      # Step 18: Create the source code TAR.GZ archive
       - name: Create Source Code Tarball
         run: |
           cd package && tar -czf ../sourcecode.tar.gz larpingapp    
                 
-      # Step 18: Clean up package directory
+      # Step 19: Clean up package directory
       - name: Clean up package directory
         run: |
           rm -rf package
 
-      # Step 19: Upload Release
+      # Step 20: Upload Release
       - name: Upload Release
         uses: ncipollo/release-action@v1.12.0
         with:
