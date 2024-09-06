@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-  workflow_dispatch: 
 
 jobs:
   release-management:
@@ -154,7 +153,7 @@ jobs:
         id: attach_to_release
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: nexcloud-release.tar.gz
+          file: nextcloud-release.tar.gz  # Corrected spelling
           asset_name: ${{ env.APP_NAME }}-${{ env.APP_VERSION }}.tar.gz
           tag: ${{ github.ref }}
           overwrite: true
