@@ -5,26 +5,35 @@ on:
     branches:
       - master
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (leave empty to use info.xml version)'
+        required: false
+        default: ''
 
 jobs:
   release-management:
     runs-on: ubuntu-latest
     steps:
     
-      - name: Set app env
-        run: |
-          # Split and keep last
-          echo "APP_NAME=${GITHUB_REPOSITORY##*/}" >> $GITHUB_ENV
-          echo "APP_VERSION=${GITHUB_REF##*/}" >> $GITHUB_ENV
-
-      # Step 1: Checkout the code
       - name: Checkout Code
         uses: actions/checkout@v3
         with:
           ref: ${{ github.head_ref }}   # Checkout the correct branch name
           fetch-depth: 0                # Fetch the whole repo history
 
-      # Step 2: Prepare the signing certificate and key
+      - name: Get version from info.xml
+        id: get_version
+        run: |
+          VERSION=$(grep -oP '(?<=<version>)[^<]+' appinfo/info.xml)
+          echo "APP_VERSION=$VERSION" >> $GITHUB_ENV
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Set app env
+        run: |
+          echo "APP_NAME=${GITHUB_REPOSITORY##*/}" >> $GITHUB_ENV
+
+      # Step 1: Prepare the signing certificate and key
       - name: Prepare Signing Certificate and Key
         run: |
           echo "${{ secrets.NEXTCLOUD_SIGNING_CERT }}" > signing-cert.crt
@@ -140,14 +149,10 @@ jobs:
       - name: Upload Release
         uses: ncipollo/release-action@v1.12.0
         with:
-          artifacts: |
-            LICENSE.md
-            nexcloud-release.tar.gz
-            nexcloud-release.signature
-            opencatalogi-build.zip
-            opencatalogi-build.tar.gz
-          token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ steps.version.outputs.version }}
+          tag: v${{ steps.get_version.outputs.version }}
+          name: Release ${{ steps.get_version.outputs.version }}
+          draft: false
+          prerelease: false
 
       - name: Attach tarball to github release
         uses: svenstaro/upload-release-action@04733e069f2d7f7f0b4aebc4fbdbce8613b03ccd # v2
@@ -156,7 +161,7 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: nextcloud-release.tar.gz  # Corrected spelling
           asset_name: ${{ env.APP_NAME }}-${{ env.APP_VERSION }}.tar.gz
-          tag: ${{ github.ref }}
+          tag: v${{ steps.get_version.outputs.version }}
           overwrite: true
 
       - name: Upload app to Nextcloud appstore
@@ -166,4 +171,13 @@ jobs:
           appstore_token: ${{ secrets.NEXTCLOUD_APPSTORE_TOKEN }}
           download_url: ${{ steps.attach_to_release.outputs.browser_download_url }}
           app_private_key: ${{ secrets.NEXTCLOUD_SIGNING_KEY }}
+          nightly: false
+
+      - name: Verify version and contents
+        run: |
+          echo "App version: ${{ env.APP_VERSION }}"
+          echo "Tarball contents:"
+          tar -tvf nextcloud-release.tar.gz
+          echo "info.xml contents:"
+          tar -xOf nextcloud-release.tar.gz ${{ env.APP_NAME }}/appinfo/info.xml
 
