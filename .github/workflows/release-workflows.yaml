@@ -89,34 +89,34 @@ jobs:
       # Step 9: Output the version
       - name: Copy the packadge files into the packadge
         run: |
-          mkdir -p package/opencatalogi
-          cp -r README.md CHANGELOG.md LICENSE.md psalm.xml package.json package-lock.json openapi.json composer.json composer.lock appinfo css img js lib node_modules src templates vendor package/opencatalogi/
+          mkdir -p package/larpingapp
+          cp -r README.md CHANGELOG.md LICENSE.md psalm.xml package.json package-lock.json openapi.json composer.json composer.lock appinfo css img js lib node_modules src templates vendor package/larpingapp/
       
-      # Step 12: Create the ZIP archive with code in opencatalogi directory
+      # Step 12: Create the ZIP archive with code in larpingapp directory
       - name: Create ZIP
         run: |
-          cd package && zip -r ../opencatalogi.zip opencatalogi
+          cd package && zip -r ../larpingapp.zip larpingapp
 
-      # Step 13: Create the TAR.GZ archive with code in opencatalogi directory
+      # Step 13: Create the TAR.GZ archive with code in larpingapp directory
       - name: Create Tarball
         run: |
-          cd package && tar -czf ../opencatalogi.tar.gz opencatalogi    
+          cd package && tar -czf ../larpingapp.tar.gz larpingapp    
 
       # Step 14: Remove the package directory after creating archives and before freezing the code in an realease
       - name: Clean up package directory and add dev files
         run: |
           cd package && rm -rf vendor js node_modules 
-          cd ../ && cp -r docs tests .babelrc package/opencatalogi/     
+          cd ../ && cp -r docs tests .babelrc package/larpingapp/     
 
-      # Step 12: Create the ZIP archive with code in opencatalogi directory
+      # Step 12: Create the ZIP archive with code in larpingapp directory
       - name: Create ZIP
         run: |
-          cd package && zip -r ../sourcecode.zip opencatalogi
+          cd package && zip -r ../sourcecode.zip larpingapp
 
-      # Step 13: Create the TAR.GZ archive with code in opencatalogi directory
+      # Step 13: Create the TAR.GZ archive with code in larpingapp directory
       - name: Create Tarball
         run: |
-          cd package && tar -czf ../sourcecode.tar.gz opencatalogi    
+          cd package && tar -czf ../sourcecode.tar.gz larpingapp    
                 
       # Step 14: Remove the package directory after creating archives and before freezing the code in an realease
       - name: Clean up package directory
@@ -127,11 +127,11 @@ jobs:
       - name: Upload Release
         uses: ncipollo/release-action@v1.12.0
         with:
-          # bodyFile: 'opencatalogi/changelog.md'
+          # bodyFile: 'larpingapp/changelog.md'
           artifacts: |
             LICENSE.md
-            opencatalogi.zip
-            opencatalogi.tar.gz
+            larpingapp.zip
+            larpingapp.tar.gz
             sourcecode.zip
             sourcecode.tar.gz
           token: ${{ secrets.GITHUB_TOKEN }}
