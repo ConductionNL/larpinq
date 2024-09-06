@@ -16,8 +16,6 @@ jobs:
         with:
           ref: ${{ github.head_ref }}   # Checkout the correct branch name
           fetch-depth: 0                # Fetch the whole repo history
-        # Documentation: https://github.com/actions/checkout
-        # Explanation: This step checks out the source code from the GitHub repository, ensuring that the workflow has access to the latest version of the code.
 
       # Step 2: Install PHP extensions
       - name: Set up PHP and install extensions
@@ -25,109 +23,102 @@ jobs:
         with:
           php-version: '8.2'
           extensions: zip, gd
-        # Documentation: https://github.com/shivammathur/setup-php
-        # Explanation: This step sets up PHP 7.4 and installs the required extensions (`zip` and `gd`) that are necessary for your Composer dependencies.
 
       # Step 3: Install Node.js dependencies using npm
       - name: Install npm dependencies
         uses: actions/setup-node@v3
         with:
-          node-version: '18.x' # Specify Node.js version
-        # Documentation: https://github.com/actions/setup-node
-        # Explanation: This step sets up a Node.js environment and installs the project's dependencies listed in the `package.json` file using npm.
+          node-version: '18.x'
 
-      # Step 3: Build the node_modules
+      # Step 4: Build the node_modules
       - run: npm install
-        # Documentation: https://docs.npmjs.com/cli/v7/commands/npm-install
-        # Explanation: This step runs `npm install` to install the Node.js dependencies required for the project.
 
-      # Step 3: Webpack the whole thing
+      # Step 5: Webpack the whole thing
       - run: npm run build
 
-      # Step 4: Install PHP dependencies using Composer
+      # Step 6: Install PHP dependencies using Composer
       - name: Install Composer dependencies
         run: composer install --no-progress --no-interaction --prefer-dist --ignore-platform-req=ext-zip --ignore-platform-req=ext-gd
         env:
           COMPOSER_ROOT_VERSION: 2.7.7
-        # Documentation: https://getcomposer.org/doc/03-cli.md#install
-        # Explanation: This step runs `composer install` to install the PHP dependencies required for the project. It also ignores platform requirements for `ext-zip` and `ext-gd` to avoid issues if extensions are not detected correctly in the environment.
 
-      # Step 5: Generate Git version information
+      # Step 7: Generate Git version information
       - name: Git Version
         id: version
         uses: codacy/git-version@2.7.1
         with:
           release-branch: main
-        # Documentation: https://github.com/marketplace/actions/git-version
-        # Explanation: This step calculates the version of the software based on the Git tags and branch information, storing the result in the `version` output.
 
-      # Step 6: Extract repository description
+      # Step 8: Ensure CHANGELOG.md exists
+      - name: Check for CHANGELOG.md
+        run: |
+          if [ ! -f CHANGELOG.md ]; then
+            echo "# Changelog" > CHANGELOG.md
+            echo "CHANGELOG.md created as it did not exist." >> CHANGELOG.md
+          fi
+        # This step ensures that a CHANGELOG.md exists or creates one if missing.
+
+      # Step 9: Extract repository description
       - name: Extract repository description
         id: repo-description
         run: |
           description=$(jq -r '.description' <(curl -s https://api.github.com/repos/${{ github.repository }}))
           echo "REPO_DESCRIPTION=$description" >> $GITHUB_ENV
-        # Documentation: https://docs.github.com/en/rest/reference/repos#get-a-repository
-        # Explanation: This step retrieves the description of the GitHub repository using the GitHub API and stores it in the environment variables.
 
-      # Step 7: Run Changelog CI
+      # Step 10: Run Changelog CI
       - name: Run Changelog CI
         if: github.ref == 'refs/heads/master'
         uses: saadmk11/changelog-ci@v1.1.2
         with:
           release_version: ${{ steps.version.outputs.version }}
           config_file: changelog-ci-config.json
-        # Documentation: https://github.com/saadmk11/changelog-ci
-        # Explanation: This step generates a changelog for the current release using the Changelog CI tool.
 
-      # Step 8: Output the version
+      # Step 11: Output the version
       - name: Use the version
         run: |
           echo ${{ steps.version.outputs.version }}
-        # Explanation: This step outputs the calculated version number to the console for reference.
 
-      # Step 9: Output the version
-      - name: Copy the packadge files into the packadge
+      # Step 12: Copy the package files into the package
+      - name: Copy the package files
         run: |
           mkdir -p package/larpingapp
           cp -r README.md CHANGELOG.md LICENSE.md psalm.xml package.json package-lock.json openapi.json composer.json composer.lock appinfo css img js lib node_modules src templates vendor package/larpingapp/
-      
-      # Step 12: Create the ZIP archive with code in larpingapp directory
+
+      # Step 13: Create the ZIP archive
       - name: Create ZIP
         run: |
           cd package && zip -r ../larpingapp.zip larpingapp
 
-      # Step 13: Create the TAR.GZ archive with code in larpingapp directory
+      # Step 14: Create the TAR.GZ archive
       - name: Create Tarball
         run: |
           cd package && tar -czf ../larpingapp.tar.gz larpingapp    
 
-      # Step 14: Remove the package directory after creating archives and before freezing the code in an realease
-      - name: Clean up package directory and add dev files
+      # Step 15: Clean up package directory and add dev files
+      - name: Clean up and add dev files
         run: |
           cd package && rm -rf vendor js node_modules 
           cd ../ && cp -r docs tests .babelrc package/larpingapp/     
 
-      # Step 12: Create the ZIP archive with code in larpingapp directory
-      - name: Create ZIP
+      # Step 16: Create the source code ZIP archive
+      - name: Create Source Code ZIP
         run: |
           cd package && zip -r ../sourcecode.zip larpingapp
 
-      # Step 13: Create the TAR.GZ archive with code in larpingapp directory
-      - name: Create Tarball
+      # Step 17: Create the source code TAR.GZ archive
+      - name: Create Source Code Tarball
         run: |
           cd package && tar -czf ../sourcecode.tar.gz larpingapp    
                 
-      # Step 14: Remove the package directory after creating archives and before freezing the code in an realease
+      # Step 18: Clean up package directory
       - name: Clean up package directory
         run: |
-          rm -rf package      
+          rm -rf package
 
-        # Step 10: Create a new release on GitHub
+      # Step 19: Upload Release
       - name: Upload Release
         uses: ncipollo/release-action@v1.12.0
         with:
-          # bodyFile: 'larpingapp/changelog.md'
           artifacts: |
             LICENSE.md
             larpingapp.zip
@@ -136,5 +127,3 @@ jobs:
             sourcecode.tar.gz
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ steps.version.outputs.version }}
-        # Documentation: https://github.com/ncipollo/release-action
-        # Explanation: This step creates a new release on GitHub, uploading the generated release files, and tagging the release with the calculated version.
