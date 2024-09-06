@@ -41,7 +41,7 @@ Create a [feature request](https://github.com/OpenCatalogi/.github/issues/new/ch
     </dependencies>
     <navigations>
         <navigation>
-            <id>LarpingApp</id>
+            <id>larpingapp</id>
             <name>Larping</name>
             <route>larpingapp.dashboard.page</route>
             <icon>app.svg</icon>
