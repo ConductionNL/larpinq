@@ -1,15 +1,21 @@
 name: Release Workflow
 
-on: 
-  push: 
+on:
+  push:
     branches:
-      - main
-  workflow_dispatch:
+      - master
 
 jobs:
   release-management:
     runs-on: ubuntu-latest
     steps:
+    
+      - name: Set app env
+        run: |
+          # Split and keep last
+          echo "APP_NAME=${GITHUB_REPOSITORY##*/}" >> $GITHUB_ENV
+          echo "APP_VERSION=${GITHUB_REF##*/}" >> $GITHUB_ENV
+
       # Step 1: Checkout the code
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -17,62 +23,100 @@ jobs:
           ref: ${{ github.head_ref }}   # Checkout the correct branch name
           fetch-depth: 0                # Fetch the whole repo history
 
-      # Step 2: Install PHP extensions
+      # Step 2: Prepare the signing certificate and key
+      - name: Prepare Signing Certificate and Key
+        run: |
+          echo "${{ secrets.NEXTCLOUD_SIGNING_CERT }}" > signing-cert.crt
+          echo "${{ secrets.NEXTCLOUD_SIGNING_KEY }}" > signing-key.key
+
+      # Step 3: Install Node.js dependencies using npm
+      - name: Install npm dependencies
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x' # Specify Node.js version
+
+      # Step 4: Install PHP extensions
       - name: Set up PHP and install extensions
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
           extensions: zip, gd
 
-      # Step 3: Install Node.js dependencies using npm
-      - name: Install npm dependencies
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18.x'
+      # Step 5: Build the node dependencies
+      - run: npm ci
 
-      # Step 4: Build the node_modules
-      - run: npm install
-
-      # Step 5: Webpack the whole thing
+      # Step 6: Build the node dependencies
       - run: npm run build
 
-      # Step 6: Install PHP dependencies using Composer
-      - name: Install Composer dependencies
-        run: composer install --no-progress --no-interaction --prefer-dist --ignore-platform-req=ext-zip --ignore-platform-req=ext-gd
-        env:
-          COMPOSER_ROOT_VERSION: 2.7.7
+      # Step 7: Build composer dependencies
+      - run: composer i --no-dev
 
-      # Step 7: Generate Git version information
+      # Step 8: Copy the files into the package directory
+      - name: Copy the package files into the package
+        run: |
+          mkdir -p package/${{ github.event.repository.name }}
+          rsync -av --progress \
+            --exclude='package' \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='.vscode' \
+            --exclude='docker' \
+            --exclude='docs' \
+            --exclude='node_modules' \
+            --exclude='src' \
+            --exclude='test' \
+            --exclude='package-lock.json' \
+            --exclude='composer.lock' \
+            --exclude='composer-setup.php' \
+            --exclude='.phpunit.result.cache' \
+            --exclude='phpmd.xml' \
+            --exclude='signing-key.key' \
+            --exclude='package.json' \
+            --exclude='composer.json' \
+            --exclude='coverage.txt' \
+            --exclude='signing-cert.crt' \
+            --exclude='docker-compose.yml' \
+            --exclude='webpack.config.js' \
+            --exclude='.prettierrc' \
+            --exclude='psalm.xml' \
+            --exclude='phpunit.xml' \
+            --exclude='tsconfig.json' \
+            --exclude='changelog-ci-config.json' \
+            --exclude='jest.config.js' \
+            --exclude='.gitattributes' \
+            --exclude='.php-cs-fixer.dist.php' \
+            --exclude='.gitignore' \
+            --exclude='.eslintrc.js' \
+            --exclude='stylelint.config.js' \
+            --exclude='.babelrc' \
+            --exclude='.nvmrc' \
+            ./ package/${{ github.event.repository.name }}/
+
+      # Step 9: Create the TAR.GZ archive
+      - name: Create Tarball
+        run: |
+          cd package && tar -czf ../nextcloud-release.tar.gz ${{ github.event.repository.name }}
+
+      # Step 10: Sign the TAR.GZ file with OpenSSL
+      - name: Sign the TAR.GZ file with OpenSSL
+        run: |
+          openssl dgst -sha512 -sign signing-key.key nexcloud-release.tar.gz | openssl base64 -out nexcloud-release.signature
+
+      # Step 11: Generate Git version information
       - name: Git Version
         id: version
         uses: codacy/git-version@2.7.1
         with:
           release-branch: main
 
-      # Step 8: Ensure CHANGELOG.md exists
-      - name: Check for CHANGELOG.md
-        run: |
-          if [ ! -f CHANGELOG.md ]; then
-            echo "# Changelog" > CHANGELOG.md
-            echo "CHANGELOG.md created as it did not exist." >> CHANGELOG.md
-          fi
-
-      # Step 9: Ensure tests directory exists
-      - name: Check for tests directory
-        run: |
-          if [ ! -d tests ]; then
-            mkdir tests
-            echo "tests directory created as it did not exist."
-          fi
-
-      # Step 10: Extract repository description
+      # Step 12: Extract repository description
       - name: Extract repository description
         id: repo-description
         run: |
           description=$(jq -r '.description' <(curl -s https://api.github.com/repos/${{ github.repository }}))
           echo "REPO_DESCRIPTION=$description" >> $GITHUB_ENV
 
-      # Step 11: Run Changelog CI
+      # Step 13: Run Changelog CI
       - name: Run Changelog CI
         if: github.ref == 'refs/heads/master'
         uses: saadmk11/changelog-ci@v1.1.2
@@ -80,57 +124,45 @@ jobs:
           release_version: ${{ steps.version.outputs.version }}
           config_file: changelog-ci-config.json
 
-      # Step 12: Output the version
+      # Step 14: Output the version
       - name: Use the version
         run: |
           echo ${{ steps.version.outputs.version }}
 
-      # Step 13: Copy the package files into the package
-      - name: Copy the package files
+      # Step 15: Copy the package files into the package (this step seems redundant, consider removing)
+      - name: Copy the package files into the package
         run: |
-          mkdir -p package/larpingapp
-          cp -r README.md CHANGELOG.md LICENSE.md psalm.xml package.json package-lock.json openapi.json composer.json composer.lock appinfo css img js lib node_modules src templates vendor package/larpingapp/
+          mkdir -p package/${{ github.event.repository.name }}
+          rsync -av --progress --exclude='package' --exclude='.git' ./ package/${{ github.event.repository.name }}/
 
-      # Step 14: Create the ZIP archive
-      - name: Create ZIP
-        run: |
-          cd package && zip -r ../larpingapp.zip larpingapp
-
-      # Step 15: Create the TAR.GZ archive
-      - name: Create Tarball
-        run: |
-          cd package && tar -czf ../larpingapp.tar.gz larpingapp    
-
-      # Step 16: Clean up package directory and add dev files
-      - name: Clean up and add dev files
-        run: |
-          cd package && rm -rf vendor js node_modules 
-          cd ../ && cp -r docs tests .babelrc package/larpingapp/     
-
-      # Step 17: Create the source code ZIP archive
-      - name: Create Source Code ZIP
-        run: |
-          cd package && zip -r ../sourcecode.zip larpingapp
-
-      # Step 18: Create the source code TAR.GZ archive
-      - name: Create Source Code Tarball
-        run: |
-          cd package && tar -czf ../sourcecode.tar.gz larpingapp    
-                
-      # Step 19: Clean up package directory
-      - name: Clean up package directory
-        run: |
-          rm -rf package
-
-      # Step 20: Upload Release
+      # Step 18: Create a new release on GitHub
       - name: Upload Release
         uses: ncipollo/release-action@v1.12.0
         with:
           artifacts: |
             LICENSE.md
-            larpingapp.zip
-            larpingapp.tar.gz
-            sourcecode.zip
-            sourcecode.tar.gz
+            nexcloud-release.tar.gz
+            nexcloud-release.signature
+            opencatalogi-build.zip
+            opencatalogi-build.tar.gz
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ steps.version.outputs.version }}
+
+      - name: Attach tarball to github release
+        uses: svenstaro/upload-release-action@04733e069f2d7f7f0b4aebc4fbdbce8613b03ccd # v2
+        id: attach_to_release
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: nexcloud-release.tar.gz
+          asset_name: ${{ env.APP_NAME }}-${{ env.APP_VERSION }}.tar.gz
+          tag: ${{ github.ref }}
+          overwrite: true
+
+      - name: Upload app to Nextcloud appstore
+        uses: nextcloud-releases/nextcloud-appstore-push-action@a011fe619bcf6e77ddebc96f9908e1af4071b9c1 # v1
+        with:
+          app_name: ${{ env.APP_NAME }}
+          appstore_token: ${{ secrets.NEXTCLOUD_APPSTORE_TOKEN }}
+          download_url: ${{ steps.attach_to_release.outputs.browser_download_url }}
+          app_private_key: ${{ secrets.NEXTCLOUD_SIGNING_KEY }}
+
