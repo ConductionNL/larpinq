@@ -1,18 +1,19 @@
 <?xml version="1.0"?>
 <info xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	  xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
-	<id>larpingapp</id>
-	<name>Larping</name>
-	<summary>Manage your live roleplaying setting</summary>
-	<description><![CDATA[📰 A managment tool for larp organisation
+          xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
+        <id>larpingapp</id>
+        <name>Larping</name>
+        <summary>Manage your live roleplaying setting</summary>
+        <summary lang="en">Manage your live roleplaying setting</summary>
+        <description><![CDATA[📰 A management tool for larp organisation
 
 Larping provides a tool to manage your setting
 
-- 📲 Create skill, items, conditions 
-- 🔄 Manage charaters
-- 🆓 Automaticly calculate abilitues and XP
-- mnaga backgrounds, aprove charecters
-- Handle event subscribtion an expiercene score
+- 📲 Create skills, items, conditions
+- 🔄 Manage characters
+- 🆓 Automatically calculate abilities and XP
+- Manage backgrounds, approve characters
+- Handle event subscription and experience score
 
 
 Requirements can be found [here](https://conduction.gitbook.io/opencatalogi-nextcloud/installatie)
@@ -21,31 +22,30 @@ Create a [bug report](https://github.com/OpenCatalogi/.github/issues/new/choose)
 Create a [feature request](https://github.com/OpenCatalogi/.github/issues/new/choose)
 
     ]]></description>
-	<version>0.1.1</version>
-	<licence>agpl</licence>
-	<author mail="info@conduction.nl" homepage="https://www.conduction.nl/">Conduction</author>
-	<namespace>LarpingApp</namespace>
-	<category>organisation</category>
+        <version>0.1.1</version>
+        <license>agpl</license>
+        <author mail="info@conduction.nl" homepage="https://www.conduction.nl/">Conduction</author>
+        <namespace>LarpingApp</namespace>
+        <category>tools</category>
     <website>https://github.com/ConductionNL/LarpingNextApp</website>
-	<bugs>https://github.com/ConductionNL/LarpingNextApp/issues</bugs>
-    <repository type="git">https://github.com/ConductionNL/LarpingNextApp.git</repository>    
-   	<dependencies>
+        <bugs>https://github.com/ConductionNL/LarpingNextApp/issues</bugs>
+    <repository type="git">https://github.com/ConductionNL/LarpingNextApp.git</repository>
+        <dependencies>
         <php min-version="8.0" min-int-size="64"/>
         <database min-version="10">pgsql</database>
         <database>sqlite</database>
         <database min-version="8.0">mysql</database>
-		
-        <owncloud max-version="0" min-version="0"/>
-		<nextcloud min-version="28" max-version="30"/>
-	</dependencies>
 
-	<navigations>
-		<navigation>
-			<id>LarpingApp</id>
-			<name>Larping</name>
-			<route>larpingapp.dashboard.page</route>
-			<icon>app.svg</icon>
-		</navigation>
-	</navigations>
+        <nextcloud min-version="28" max-version="30"/>
+        </dependencies>
+
+        <navigations>
+                <navigation>
+                        <id>LarpingApp</id>
+                        <name>Larping</name>
+                        <route>larpingapp.dashboard.page</route>
+                        <icon>app.svg</icon>
+                </navigation>
+        </navigations>
 
 </info>
