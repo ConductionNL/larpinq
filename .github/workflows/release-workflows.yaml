@@ -3,7 +3,7 @@ name: Release Workflow
 on:
   push:
     branches:
-      - master
+      - main
   workflow_dispatch:
     inputs:
       version:
@@ -22,16 +22,26 @@ jobs:
           ref: ${{ github.head_ref }}   # Checkout the correct branch name
           fetch-depth: 0                # Fetch the whole repo history
 
-      - name: Get version from info.xml
-        id: get_version
+      - name: Get current version and increment
+        id: version
         run: |
-          VERSION=$(grep -oP '(?<=<version>)[^<]+' appinfo/info.xml)
-          echo "APP_VERSION=$VERSION" >> $GITHUB_ENV
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          current_version=$(grep -oP '(?<=<version>)[^<]+' appinfo/info.xml)
+          IFS='.' read -ra version_parts <<< "$current_version"
+          ((version_parts[2]++))
+          new_version="${version_parts[0]}.${version_parts[1]}.${version_parts[2]}"
+          echo "NEW_VERSION=$new_version" >> $GITHUB_ENV
+          echo "new_version=$new_version" >> $GITHUB_OUTPUT
 
-      - name: Set app env
+      - name: Update version in info.xml
         run: |
-          echo "APP_NAME=${GITHUB_REPOSITORY##*/}" >> $GITHUB_ENV
+          sed -i "s|<version>.*</version>|<version>${{ env.NEW_VERSION }}</version>|" appinfo/info.xml
+
+      - name: Commit version update
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit -am "Bump version to ${{ env.NEW_VERSION }}"
+          git push
 
       # Step 1: Prepare the signing certificate and key
       - name: Prepare Signing Certificate and Key
@@ -149,8 +159,8 @@ jobs:
       - name: Upload Release
         uses: ncipollo/release-action@v1.12.0
         with:
-          tag: v${{ steps.get_version.outputs.version }}
-          name: Release ${{ steps.get_version.outputs.version }}
+          tag: v${{ env.NEW_VERSION }}
+          name: Release ${{ env.NEW_VERSION }}
           draft: false
           prerelease: false
 
@@ -160,8 +170,8 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: nextcloud-release.tar.gz  # Corrected spelling
-          asset_name: ${{ env.APP_NAME }}-${{ env.APP_VERSION }}.tar.gz
-          tag: v${{ steps.get_version.outputs.version }}
+          asset_name: ${{ env.APP_NAME }}-${{ env.NEW_VERSION }}.tar.gz
+          tag: v${{ env.NEW_VERSION }}
           overwrite: true
 
       - name: Upload app to Nextcloud appstore
