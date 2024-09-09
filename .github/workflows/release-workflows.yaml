@@ -1,6 +1,10 @@
 name: Release Workflow
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch: 
 
 jobs:
   release-management:
@@ -48,10 +52,10 @@ jobs:
       # Step 7: Build composer dependencies
       - run: composer i --no-dev
 
-      # Step 8: Copy the files into the package directory, excluding .git and package itself
+      # Step 8: Copy the files into the package directory
       - name: Copy the package files into the package
         run: |
-          mkdir -p package/larpingapp
+          mkdir -p package/${{ github.event.repository.name }}
           rsync -av --progress \
             --exclude='package' \
             --exclude='.git' \
@@ -87,12 +91,12 @@ jobs:
             --exclude='stylelint.config.js' \
             --exclude='.babelrc' \
             --exclude='.nvmrc' \
-            ./ package/larpingapp/
+            ./ package/${{ github.event.repository.name }}/
 
-      # Step 9: Create the TAR.GZ archive with code in larpingapp directory
+      # Step 9: Create the TAR.GZ archive
       - name: Create Tarball
         run: |
-          cd package && tar -czf ../nexcloud-release.tar.gz larpingapp    
+          cd package && tar -czf ../nextcloud-release.tar.gz ${{ github.event.repository.name }}
 
       # Step 10: Sign the TAR.GZ file with OpenSSL
       - name: Sign the TAR.GZ file with OpenSSL
@@ -126,11 +130,11 @@ jobs:
         run: |
           echo ${{ steps.version.outputs.version }}
 
-      # Step 15: Copy the files into the package directory, excluding .git and package itself
+      # Step 15: Copy the package files into the package (this step seems redundant, consider removing)
       - name: Copy the package files into the package
         run: |
-          mkdir -p package/larpingapp
-          rsync -av --progress --exclude='package' --exclude='.git' ./ package/larpingapp/
+          mkdir -p package/${{ github.event.repository.name }}
+          rsync -av --progress --exclude='package' --exclude='.git' ./ package/${{ github.event.repository.name }}/
 
       # Step 18: Create a new release on GitHub
       - name: Upload Release
@@ -140,8 +144,8 @@ jobs:
             LICENSE.md
             nexcloud-release.tar.gz
             nexcloud-release.signature
-            larpingapp-build.zip
-            larpingapp-build.tar.gz
+            opencatalogi-build.zip
+            opencatalogi-build.tar.gz
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ steps.version.outputs.version }}
 
@@ -162,5 +166,4 @@ jobs:
           appstore_token: ${{ secrets.NEXTCLOUD_APPSTORE_TOKEN }}
           download_url: ${{ steps.attach_to_release.outputs.browser_download_url }}
           app_private_key: ${{ secrets.NEXTCLOUD_SIGNING_KEY }}
-      
 
