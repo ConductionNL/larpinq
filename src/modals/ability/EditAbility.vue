@@ -145,7 +145,7 @@ export default {
 			effectStore.refreshEffectList()
 				.then(() => {
 					const activeEffects = abilityStore.abilityItem.id
-						? effectStore.skillList.filter((effect) => {
+						? effectStore.effectList.filter((effect) => {
 							return abilityStore.abilityItem.effects
 								.map(String)
 								.includes(effect.id.toString())

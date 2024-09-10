@@ -153,7 +153,7 @@ export default {
 			effectStore.refreshEffectList()
 				.then(() => {
 					const activeEffects = eventStore.eventItem.id
-						? effectStore.skillList.filter((effect) => {
+						? effectStore.effectList.filter((effect) => {
 							return eventStore.eventItem.effects
 								.map(String)
 								.includes(effect.id.toString())
