@@ -24,7 +24,7 @@ Create a [feature request](https://github.com/OpenCatalogi/.github/issues/new/ch
     <licence>agpl</licence>
     <author mail="info@conduction.nl" homepage="https://www.conduction.nl/">Conduction</author>
 	<namespace>LarpingApp</namespace>
-	<category>organisation</category>
+	<category>organization</category>
     <website>https://github.com/ConductionNL/LarpingNextApp</website>
     <bugs>https://github.com/ConductionNL/LarpingNextApp/issues</bugs>
     <repository type="git">https://github.com/ConductionNL/LarpingNextApp.git</repository>
