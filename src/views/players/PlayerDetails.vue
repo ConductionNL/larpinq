@@ -1,5 +1,5 @@
 <script setup>
-import { playerStore, navigationStore } from '../../store/store.js'
+import { playerStore, characterStore, skillStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -18,16 +18,90 @@ import { playerStore, navigationStore } from '../../store/store.js'
 				</div>
 			</div>
 		</div>
+		<div class="tabContainer">
+			<BTabs content-class="mt-3" justified>
+				<BTab title="Characters" active>
+					<div v-if="filterCharacters.length > 0 && !charactersLoading">
+						<NcListItem v-for="(character, i) in filterCharacters"
+							:key="character.id + i"
+							:name="character.name"
+							:bold="false"
+							:force-display-actions="true">
+							<template #icon>
+								<MagicStaff disable-menu
+									:size="44" />
+							</template>
+							<template #subname>
+								{{ character.description }}
+							</template>
+						</NcListItem>
+					</div>
+					<div v-if="filterCharacters.length === 0">
+						Geen characters gevonden
+					</div>
+				</BTab>
+				<BTab title="Events">
+					<div v-if="playerStore.playerItem?.events?.length > 0">
+						<NcListItem v-for="(event) in playerStore.playerItem?.events"
+							:key="event.id"
+							:name="event.name"
+							:bold="false"
+							:force-display-actions="true">
+							<template #icon>
+								<MagicStaff disable-menu
+									:size="44" />
+							</template>
+							<template #subname>
+								{{ event.description }}
+							</template>
+						</NcListItem>
+					</div>
+					<div v-if="!playerStore.playerItem?.events?.length">
+						Geen events gevonden
+					</div>
+				</BTab>
+			</BTabs>
+		</div>
 	</div>
 </template>
 
 <script>
-import { NcLoadingIcon } from '@nextcloud/vue'
+import {
+	NcListItem,
+} from '@nextcloud/vue'
+import { BTabs, BTab } from 'bootstrap-vue'
 
 export default {
 	name: 'PlayerDetails',
 	components: {
-		NcLoadingIcon,
+		NcListItem,
+		BTabs,
+		BTab,
+	},
+	data() {
+		return {
+			characters: [],
+			charactersLoading: false,
+		}
+	},
+	computed: {
+		filterCharacters() {
+			return characterStore.characterList.filter((character) => {
+				return character.OCName === playerStore.playerItem.name
+			})
+		},
+	},
+	mounted() {
+		this.fetchCharacters()
+	},
+	methods: {
+		fetchCharacters() {
+			this.charactersLoading = true
+			characterStore.refreshCharacterList()
+				.then(() => {
+					this.charactersLoading = false
+				})
+		},
 	},
 }
 </script>
