@@ -109,6 +109,7 @@ export default {
 			success: false,
 			loading: false,
 			error: false,
+			hasUpdated: false,
 		}
 	},
 	updated() {
