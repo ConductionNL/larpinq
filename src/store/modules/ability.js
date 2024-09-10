@@ -59,7 +59,7 @@ export const useAbilityStore = defineStore(
 					})
 			},
 
-			saveAbility() {
+			saveAbility(abilityItem) {
 				if (!this.abilityItem) {
 					throw new Error('No ability item to save')
 				}
@@ -72,14 +72,22 @@ export const useAbilityStore = defineStore(
 					: `/index.php/apps/larpingapp/api/abilities/${this.abilityItem.id}`
 				const method = isNewAbility ? 'POST' : 'PUT'
 
+				const abilityToSave = { ...abilityItem }
+				Object.keys(abilityToSave).forEach(key => {
+					if (abilityToSave[key] === '' || (Array.isArray(abilityToSave[key]) && abilityToSave[key].length === 0)) {
+						delete abilityToSave[key]
+					}
+				})
+
 				return fetch(
 					endpoint,
 					{
-						method: method,
+						method,
 						headers: {
 							'Content-Type': 'application/json',
 						},
-						body: JSON.stringify(this.abilityItem),
+						body: JSON.stringify(abilityToSave),
+
 					},
 				)
 					.then((response) => response.json())
