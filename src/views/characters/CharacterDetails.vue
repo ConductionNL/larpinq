@@ -1,5 +1,5 @@
 <script setup>
-	import { characterStore, navigationStore } from '../../store/store.js'
+import { characterStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -92,7 +92,7 @@
 <script>
 // Components
 import { BTabs, BTab } from 'bootstrap-vue'
-import { NcLoadingIcon, NcActions, NcActionButton } from '@nextcloud/vue'
+import { NcActions, NcActionButton } from '@nextcloud/vue'
 
 // Icons
 import DotsHorizontal from 'vue-material-design-icons/DotsHorizontal.vue'
@@ -101,14 +101,12 @@ import AccountPlus from 'vue-material-design-icons/AccountPlus.vue'
 import CalendarPlus from 'vue-material-design-icons/CalendarPlus.vue'
 import MessagePlus from 'vue-material-design-icons/MessagePlus.vue'
 import FileDocumentPlusOutline from 'vue-material-design-icons/FileDocumentPlusOutline.vue'
-import VectorPolylineEdit from 'vue-material-design-icons/VectorPolylineEdit.vue' 
-import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue' 
+import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
 
 export default {
 	name: 'CharacterDetails',
 	components: {
 		// Components
-		NcLoadingIcon,
 		NcActions,
 		NcActionButton,
 		BTabs,
@@ -119,7 +117,6 @@ export default {
 		AccountPlus,
 		CalendarPlus,
 		FileDocumentPlusOutline,
-		VectorPolylineEdit,
 		TrashCanOutline,
 
 	},

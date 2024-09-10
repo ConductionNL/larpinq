@@ -3,18 +3,10 @@ import { effectStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
-	<NcDialog v-if="navigationStore.modal === 'editEffect'"
+	<NcDialog v-if="navigationStore.modal === 'addEffect'"
 		name="Effect"
 		size="normal"
 		:can-close="false">
-		<div>{{ effectStore.effectItem }}</div>
-		<NcButton
-			@click="test">
-			<template #icon>
-				<Cancel :size="20" />
-			</template>
-			test
-		</NcButton>
 		<NcNoteCard v-if="success" type="success">
 			<p>Effect succesvol aangepast</p>
 		</NcNoteCard>
@@ -26,25 +18,25 @@ import { effectStore, navigationStore } from '../../store/store.js'
 			<NcTextField :disabled="loading"
 				label="Name *"
 				required
-				:value.sync="effectStore.effectItem.name" />
+				:value.sync="effect.name" />
 			<NcTextArea :disabled="loading"
 				label="Description"
 				type="textarea"
-				:value.sync="effectStore.effectItem.description" />
+				:value.sync="effect.description" />
 			<NcTextField :disabled="loading"
 				label="Stat ID"
-				:value.sync="effectStore.effectItem.statId" />
+				:value.sync="effect.statId" />
 			<NcTextField :disabled="loading"
 				label="Modifier"
 				type="number"
-				:value.sync="effectStore.effectItem.modifier" />
+				:value.sync="effect.modifier" />
 			<NcSelect
 				v-bind="modificationOptions"
-				v-model="effectStore.effectItem.modification"
+				v-model="effect.modification"
 				:disabled="loading" />
 			<NcSelect
 				v-bind="cumulativeOptions"
-				v-model="effectStore.effectItem.cumulative"
+				v-model="effect.cumulative"
 				:disabled="loading" />
 		</div>
 
@@ -86,7 +78,7 @@ import Plus from 'vue-material-design-icons/Plus.vue'
 import Help from 'vue-material-design-icons/Help.vue'
 
 export default {
-	name: 'EditEffect',
+	name: 'AddEffect',
 	components: {
 		NcDialog,
 		NcTextField,
@@ -115,15 +107,19 @@ export default {
 				multiple: false,
 				options: [{ id: 'cumulative', label: 'Cumulative' }, { id: 'non-cumulative', label: 'Non-cumulative' }],
 			},
-
+			effect: {
+				name: '',
+				description: '',
+				statId: '',
+				modifier: '',
+				modification: { id: 'positive', label: 'Positive' },
+				cumulative: { id: 'cumulative', label: 'Cumulative' },
+				 },
 		}
 	},
 	methods: {
-		test() {
-			// eslint-disable-next-line no-console
-			console.log(effectStore.effectItem)
-		},
 		async editEffect() {
+			effectStore.setEffectItem(this.effect)
 			this.loading = true
 			try {
 				await effectStore.saveEffect()
