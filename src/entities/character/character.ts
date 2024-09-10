@@ -5,7 +5,7 @@ export class Character implements TCharacter {
 
 	public id: string
 	public name: string
-	public OCName: string
+	public ocName: string
 	public description: string
 	public background: string
 	public itemsAndMoney: string
@@ -27,7 +27,7 @@ export class Character implements TCharacter {
 	constructor(character: TCharacter) {
 		this.id = character.id || ''
 		this.name = character.name || ''
-		this.OCName = character.OCName || ''
+		this.ocName = character.ocName || ''
 		this.description = character.description || ''
 		this.background = character.background || ''
 		this.itemsAndMoney = character.itemsAndMoney || ''
@@ -51,7 +51,7 @@ export class Character implements TCharacter {
 	private hydrate(data: TCharacter) {
 		this.id = data?.id?.toString() || ''
 		this.name = data?.name || ''
-		this.OCName = data?.OCName || ''
+		this.ocName = data?.ocName || ''
 		this.description = data?.description || ''
 		this.background = data?.background || ''
 		this.itemsAndMoney = data?.itemsAndMoney || ''

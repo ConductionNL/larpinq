@@ -23,7 +23,7 @@ import { characterStore, navigationStore, skillStore } from '../../store/store.j
 			<NcTextField :disabled="loading"
 				label="OC Name *"
 				required
-				:value.sync="characterItem.OCName" />
+				:value.sync="characterItem.ocName" />
 			<NcTextArea :disabled="loading"
 				label="Description"
 				:value.sync="characterItem.description" />
@@ -101,7 +101,7 @@ export default {
 		return {
 			characterItem: {
 				name: '',
-				OCName: '',
+				ocName: '',
 				description: '',
 			},
 			skills: {},
@@ -134,7 +134,7 @@ export default {
 			this.hasUpdated = false
 			this.characterItem = {
 				name: '',
-				OCName: '',
+				ocName: '',
 				description: '',
 			}
 		},

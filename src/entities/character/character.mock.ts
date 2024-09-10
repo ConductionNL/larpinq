@@ -5,7 +5,7 @@ export const mockCharacterData = (): TCharacter[] => [
 	{
 		id: "5137a1e5-b54d-43ad-abd1-4b5bff5fcd3f",
 		name: "Evil Kenevil",
-		OCName: "John Doe",
+		ocName: "John Doe",
 		description: "A daredevil stuntman known for his death-defying motorcycle jumps.",
 		background: "Evil Kenevil grew up in a circus family, developing a passion for thrills and danger from a young age.",
 		itemsAndMoney: "Customized motorcycle, leather jumpsuit, helmet, 50 gold pieces",
@@ -27,7 +27,7 @@ export const mockCharacterData = (): TCharacter[] => [
 	{
 		id: "4c3edd34-a90d-4d2a-8894-adb5836ecde8",
 		name: "Jack the Dipper",
-		OCName: "Jane Smith",
+		ocName: "Jane Smith",
 		description: "A skilled pickpocket with a heart of gold, known for his quick hands and quicker wit.",
 		background: "Orphaned at a young age, Jack learned to survive on the streets by mastering the art of theft.",
 		itemsAndMoney: "Set of lockpicks, dark cloak, 30 silver pieces",
@@ -49,7 +49,7 @@ export const mockCharacterData = (): TCharacter[] => [
 	{
 		id: "15551d6f-44e3-43f3-a9d2-59e583c91eb0",
 		name: "Piet Piraat",
-		OCName: "Peter Johnson",
+		ocName: "Peter Johnson",
 		description: "A jovial pirate captain with a penchant for singing sea shanties and hunting for buried treasure.",
 		background: "Piet was born on a ship and has spent his entire life at sea, working his way up from cabin boy to captain.",
 		itemsAndMoney: "Cutlass, spyglass, treasure map, 100 gold pieces",
@@ -71,7 +71,7 @@ export const mockCharacterData = (): TCharacter[] => [
 	{
 		id: "0a3a0ffb-dc03-4aae-b207-0ed1502e60da",
 		name: "Sonja de rovers dochter",
-		OCName: "Sophie Anderson",
+		ocName: "Sophie Anderson",
 		description: "A fierce warrior woman, raised by bandits but with a strong sense of justice.",
 		background: "Sonja was kidnapped as a child and raised by a band of robbers, but always felt drawn to heroic deeds.",
 		itemsAndMoney: "Longbow, short sword, leather armor, 75 silver pieces",

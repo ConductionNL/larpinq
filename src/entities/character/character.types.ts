@@ -1,7 +1,7 @@
 export type TCharacter = {
     id?: string
     name: string
-    OCName: string
+    ocName: string
     description?: string
     background?: string
     itemsAndMoney?: string

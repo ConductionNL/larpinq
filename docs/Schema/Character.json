@@ -11,7 +11,7 @@
       "example":"Jack Doe",
       "description":"The chosen name for this character"
     },
-    "OCName": {
+    "ocName": {
       "type":"string",
       "example":"Jack Doe",
       "description":"The name of the player playing this character"
@@ -128,6 +128,6 @@
   },
   "required":[
     "name",
-    "OCName"
+    "ocName"
   ]
 }
