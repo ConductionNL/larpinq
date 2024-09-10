@@ -1,5 +1,5 @@
 <script setup>
-	import { effectStore, navigationStore } from '../../store/store.js'
+import { effectStore } from '../../store/store.js'
 </script>
 
 <template>

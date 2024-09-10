@@ -8,6 +8,7 @@
 		<EditCondition />
 		<DeleteCondition />
 		<EditEffect />
+		<AddEffect />
 		<DeleteEffect />
 		<EditEvent />
 		<DeleteEvent />
@@ -34,6 +35,7 @@ import DeleteCharacter from './character/DeleteCharacter.vue'
 import EditCondition from './condition/EditCondition.vue'
 import DeleteCondition from './condition/DeleteCondition.vue'
 import EditEffect from './effect/EditEffect.vue'
+import AddEffect from './effect/AddEffect.vue'
 import DeleteEffect from './effect/DeleteEffect.vue'
 import EditEvent from './event/EditEvent.vue'
 import DeleteEvent from './event/DeleteEvent.vue'
@@ -60,6 +62,7 @@ export default {
 		EditCondition,
 		DeleteCondition,
 		EditEffect,
+		AddEffect,
 		DeleteEffect,
 		EditEvent,
 		DeleteEvent,
