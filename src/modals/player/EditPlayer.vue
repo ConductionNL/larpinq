@@ -3,9 +3,12 @@ import { playerStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
-	<NcModal v-if="navigationStore.modal === 'editPlayer'" ref="modalRef" @close="navigationStore.setModal(false)">
+	<NcModal
+		v-if="navigationStore.modal === 'editPlayer'"
+		ref="modalRef"
+		@close="closeModal">
 		<div class="modalContent">
-			<h2>Speler {{ playerStore.playerItem.id ? 'Aanpassen' : 'Aanmaken' }}</h2>
+			<h2>Speler {{ player.id ? "Aanpassen" : "Aanmaken" }}</h2>
 			<NcNoteCard v-if="succes" type="success">
 				<p>Speler succesvol toegevoegd</p>
 			</NcNoteCard>
@@ -15,12 +18,15 @@ import { playerStore, navigationStore } from '../../store/store.js'
 
 			<form v-if="!succes" @submit.prevent="handleSubmit">
 				<div class="form-group">
-					<label for="name">Name:</label>
-					<input v-model="playerStore.playerItem.name" id="name" required>
-				</div>
-				<div class="form-group">
-					<label for="description">Description:</label>
-					<textarea v-model="playerStore.playerItem.description" id="description"></textarea>
+					<NcTextField
+						id="name"
+						label="Name"
+						:value.sync="player.name"
+						required />
+					<NcTextArea
+						id="description"
+						label="Description"
+						:value.sync="player.description" />
 				</div>
 			</form>
 
@@ -45,7 +51,6 @@ import {
 	NcModal,
 	NcTextField,
 	NcTextArea,
-	NcSelect,
 	NcLoadingIcon,
 	NcNoteCard,
 } from '@nextcloud/vue'
@@ -58,7 +63,6 @@ export default {
 		NcTextField,
 		NcTextArea,
 		NcButton,
-		NcSelect,
 		NcLoadingIcon,
 		NcNoteCard,
 		// Icons
@@ -66,31 +70,53 @@ export default {
 	},
 	data() {
 		return {
+			player: {
+				name: '',
+				description: '',
+			},
 			succes: false,
 			loading: false,
 			error: false,
+			hasUpdated: false,
+		}
+	},
+	updated() {
+		if (playerStore.playerItem.id && navigationStore.modal === 'editPlayer' && !this.hasUpdated) {
+			this.player = {
+				...playerStore.playerItem,
+				name: playerStore.playerItem.name || '',
+				description: playerStore.playerItem.description || '',
+			}
+			this.hasUpdated = true
 		}
 	},
 	methods: {
+		closeModal() {
+			navigationStore.setModal(false)
+			this.succes = false
+			this.loading = false
+			this.error = false
+			this.hasUpdated = false
+			this.player = {
+				name: '',
+				description: '',
+			}
+		},
 		async editPlayer() {
 			this.loading = true
 			try {
-				await playerStore.savePlayer()
+				await playerStore.savePlayer(this.player)
 				// Close modal or show success message
 				this.succes = true
 				this.loading = false
-				setTimeout(() => {
-					this.succes = false
-					this.loading = false
-					this.error = false
-					navigationStore.setModal(false)
-				}, 2000)
+
+				setTimeout(this.closeModal, 2000)
 			} catch (error) {
 				this.loading = false
 				this.succes = false
 				this.error = error.message || 'An error occurred while saving the character'
 			}
-		}
+		},
 	},
 }
 </script>

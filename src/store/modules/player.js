@@ -71,27 +71,27 @@ export const usePlayerStore = defineStore(
 					})
 			},
 			// Create or update a player
-			savePlayer() {
-				if (!this.playerItem) {
+			savePlayer(playerItem) {
+				if (!playerItem) {
 					throw new Error('No player to save')
 				}
 
 				console.log('Saving player...')
 
-				const isNewPlayer = !this.playerItem.id
+				const isNewPlayer = !playerItem.id
 				const endpoint = isNewPlayer
 					? '/index.php/apps/larpingapp/api/players'
-					: `/index.php/apps/larpingapp/api/players/${this.playerItem.id}`
+					: `/index.php/apps/larpingapp/api/players/${playerItem.id}`
 				const method = isNewPlayer ? 'POST' : 'PUT'
 
 				return fetch(
 					endpoint,
 					{
-						method: method,
+						method,
 						headers: {
 							'Content-Type': 'application/json',
 						},
-						body: JSON.stringify(this.playerItem),
+						body: JSON.stringify(playerItem),
 					},
 				)
 					.then((response) => response.json())
