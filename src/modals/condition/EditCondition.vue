@@ -3,9 +3,9 @@ import { conditionStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
-	<NcModal v-if="navigationStore.modal === 'editCondition'" ref="modalRef" @close="navigationStore.setModal(false)">
+	<NcModal v-if="navigationStore.modal === 'editCondition'" ref="modalRef" @close="closeModal">
 		<div class="modalContent">
-			<h2>Conditie {{ conditionStore.conditionItem.id ? 'Aanpassen' : 'Aanmaken' }}</h2>
+			<h2>Conditie {{ conditionItem.id ? 'Aanpassen' : 'Aanmaken' }}</h2>
 			<NcNoteCard v-if="succes" type="success">
 				<p>Taak succesvol toegevoegd</p>
 			</NcNoteCard>
@@ -15,12 +15,15 @@ import { conditionStore, navigationStore } from '../../store/store.js'
 
 			<form v-if="!succes" @submit.prevent="handleSubmit">
 				<div class="form-group">
-					<label for="name">Name:</label>
-					<input v-model="conditionStore.conditionItem.name" id="name" required>
-				</div>
-				<div class="form-group">
-					<label for="description">Description:</label>
-					<textarea v-model="conditionStore.conditionItem.description" id="description"></textarea>
+					<NcTextField
+						id="name"
+						label="Name"
+						:value.sync="conditionItem.name"
+						required />
+					<NcTextArea
+						id="description"
+						label="Description"
+						:value.sync="conditionItem.description" />
 				</div>
 			</form>
 
@@ -45,20 +48,18 @@ import {
 	NcModal,
 	NcTextField,
 	NcTextArea,
-	NcSelect,
 	NcLoadingIcon,
 	NcNoteCard,
 } from '@nextcloud/vue'
 import ContentSaveOutline from 'vue-material-design-icons/ContentSaveOutline.vue'
 
 export default {
-	name: 'AditCondition',
+	name: 'EditCondition',
 	components: {
 		NcModal,
 		NcTextField,
 		NcTextArea,
 		NcButton,
-		NcSelect,
 		NcLoadingIcon,
 		NcNoteCard,
 		// Icons
@@ -66,31 +67,52 @@ export default {
 	},
 	data() {
 		return {
+			conditionItem: {
+				name: '',
+				description: '',
+			},
 			succes: false,
 			loading: false,
 			error: false,
+			hasUpdated: false,
+		}
+	},
+	updated() {
+		if (conditionStore.conditionItem.id && navigationStore.modal === 'editCondition' && !this.hasUpdated) {
+			this.conditionItem = {
+				...conditionStore.conditionItem,
+				name: conditionStore.conditionItem.name || '',
+				description: conditionStore.conditionItem.description || '',
+			}
+			this.hasUpdated = true
 		}
 	},
 	methods: {
+		closeModal() {
+			navigationStore.setModal(false)
+			this.succes = false
+			this.loading = false
+			this.error = false
+			this.hasUpdated = false
+			this.conditionItem = {
+				name: '',
+				description: '',
+			}
+		},
 		async editCondition() {
 			this.loading = true
 			try {
-				await conditionStore.saveCondition()
+				await conditionStore.saveCondition(this.conditionItem)
 				// Close modal or show success message
 				this.succes = true
 				this.loading = false
-				setTimeout(() => {
-					this.succes = false
-					this.loading = false
-					this.error = false
-					navigationStore.setModal(false)
-				}, 2000)
+				setTimeout(this.closeModal, 2000)
 			} catch (error) {
 				this.loading = false
 				this.succes = false
 				this.error = error.message || 'An error occurred while saving the character'
 			}
-		}
+		},
 	},
 }
 </script>
