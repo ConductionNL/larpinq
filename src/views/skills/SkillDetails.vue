@@ -1,5 +1,5 @@
 <script setup>
-	import { skillStore, navigationStore } from '../../store/store.js'
+import { characterStore, skillStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -18,16 +18,92 @@
 				</div>
 			</div>
 		</div>
+		<div class="tabContainer">
+			<BTabs content-class="mt-3" justified>
+				<BTab title="Effects" active>
+					<div v-if="skillStore.skillItem?.effects.length > 0">
+						<NcListItem v-for="(effect, i) in skillStore.skillItem?.effects"
+							:key="effect + i"
+							:name="effect"
+							:bold="false"
+							:force-display-actions="true">
+							<template #icon>
+								<MagicStaff disable-menu
+									:size="44" />
+							</template>
+						</NcListItem>
+					</div>
+					<div v-if="skillStore.skillItem?.effects.length === 0">
+						Geen effects gevonden
+					</div>
+				</BTab>
+				<BTab title="Characters">
+					<div v-if="filterCharacters.length > 0 && !charactersLoading">
+						<NcListItem v-for="(character, i) in filterCharacters"
+							:key="character.id + i"
+							:name="character.name"
+							:bold="false"
+							:force-display-actions="true">
+							<template #icon>
+								<BriefcaseAccountOutline disable-menu
+									:size="44" />
+							</template>
+							<template #subname>
+								{{ character.description }}
+							</template>
+						</NcListItem>
+					</div>
+					<div v-if="filterCharacters.length === 0">
+						Geen characters gevonden
+					</div>
+				</BTab>
+			</BTabs>
+		</div>
 	</div>
 </template>
 
 <script>
-import { NcLoadingIcon } from '@nextcloud/vue'
+import {
+	NcListItem,
+} from '@nextcloud/vue'
+import { BTabs, BTab } from 'bootstrap-vue'
+
+// icons
+import MagicStaff from 'vue-material-design-icons/MagicStaff.vue'
+import BriefcaseAccountOutline from 'vue-material-design-icons/BriefcaseAccountOutline.vue'
 
 export default {
 	name: 'SkillDetails',
 	components: {
-		NcLoadingIcon,
+		NcListItem,
+		BTabs,
+		BTab,
+	},
+	data() {
+		return {
+			characters: [],
+			charactersLoading: false,
+		}
+	},
+	computed: {
+		filterCharacters() {
+			return characterStore.characterList.filter((character) => {
+				return character.skills.map(String).includes(skillStore.skillItem.id)
+			})
+		},
+	},
+	mounted() {
+		this.fetchCharacters()
+	},
+	methods: {
+		fetchCharacters() {
+			this.charactersLoading = true
+
+			characterStore.refreshCharacterList()
+				.then(() => {
+					this.charactersLoading = false
+				})
+		},
 	},
 }
 </script>
@@ -61,4 +137,38 @@ h4 {
   gap: 25px;
 }
 
+.tabContainer>* ul>li {
+  display: flex;
+  flex: 1;
+}
+
+.tabContainer>* ul>li:hover {
+  background-color: var(--color-background-hover);
+}
+
+.tabContainer>* ul>li>a {
+  flex: 1;
+  text-align: center;
+}
+
+.tabContainer>* ul>li>.active {
+  background: transparent !important;
+  color: var(--color-main-text) !important;
+  border-bottom: var(--default-grid-baseline) solid var(--color-primary-element) !important;
+}
+
+.tabContainer>* ul {
+  display: flex;
+  margin: 10px 8px 0 8px;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.tabPanel {
+  padding: 20px 10px;
+  min-height: 100%;
+  max-height: 100%;
+  height: 100%;
+  overflow: auto;
+}
 </style>
