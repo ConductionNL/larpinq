@@ -1,5 +1,5 @@
 <script setup>
-	import { itemStore, navigationStore } from '../../store/store.js'
+import { effectStore, itemStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -15,7 +15,7 @@
 				<div class="detailGrid">
 					<div>
 						<b>Berichttekst:</b>
-						<p>{{ itemStore.itemItem.name }}</p>
+						<p>{{ itemStore.itemItem.description }}</p>
 					</div>
 					<div>
 						<b>Inhoud:</b>
@@ -24,28 +24,93 @@
 				</div>
 			</div>
 		</div>
+		<div class="tabContainer">
+			<BTabs content-class="mt-3" justified>
+				<BTab title="Effecten" active>
+					<div v-if="filterEffects?.length > 0 && !effectsLoading">
+						<NcListItem v-for="(effect, i) in filterEffects"
+							:key="effect.id + i"
+							:name="effect.name"
+							:bold="false"
+							:force-display-actions="true">
+							<template #icon>
+								<MagicStaff disable-menu
+									:size="44" />
+							</template>
+							<template #subname>
+								{{ effect.description }}
+							</template>
+						</NcListItem>
+					</div>
+					<div v-if="!filterEffects?.length">
+						Geen effecten gevonden
+					</div>
+				</BTab>
+				<BTab title="Karakters">
+					<div v-if="itemStore.itemItem?.characters?.length > 0">
+						<NcListItem v-for="(character) in itemStore.itemItem?.characters"
+							:key="character.id"
+							:name="character.name"
+							:bold="false"
+							:force-display-actions="true">
+							<template #icon>
+								<BriefcaseAccountOutline disable-menu
+									:size="44" />
+							</template>
+							<template #subname>
+								{{ character.description }}
+							</template>
+						</NcListItem>
+					</div>
+					<div v-if="!itemStore.itemItem?.characters?.length">
+						Geen karakters gevonden
+					</div>
+				</BTab>
+			</BTabs>
+		</div>
 	</div>
 </template>
 
 <script>
-// Components
-import { NcActions, NcActionButton } from '@nextcloud/vue'
+import {
+	NcListItem,
+} from '@nextcloud/vue'
+import { BTabs, BTab } from 'bootstrap-vue'
 
-// Icons
-import DotsHorizontal from 'vue-material-design-icons/DotsHorizontal.vue'
-import Pencil from 'vue-material-design-icons/Pencil.vue'
-import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
+import MagicStaff from 'vue-material-design-icons/MagicStaff.vue'
+import BriefcaseAccountOutline from 'vue-material-design-icons/BriefcaseAccountOutline.vue'
 
 export default {
 	name: 'ItemDetails',
 	components: {
-		// Components
-		NcActions,
-		NcActionButton,
-		// Icons
-		Pencil,
-		DotsHorizontal,
-		TrashCanOutline,
+		NcListItem,
+		BTabs,
+		BTab,
+	},
+	data() {
+		return {
+			effects: [],
+			effectsLoading: false,
+		}
+	},
+	computed: {
+		filterEffects() {
+			return effectStore.effectList.filter((effect) => {
+				return itemStore.itemItem?.effects.map(String).includes(effect.id.toString())
+			})
+		},
+	},
+	mounted() {
+		this.fetchEffects()
+	},
+	methods: {
+		fetchEffects() {
+			this.effectsLoading = true
+			effectStore.refreshEffectList()
+				.then(() => {
+					this.effectsLoading = false
+				})
+		},
 	},
 }
 </script>
