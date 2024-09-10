@@ -5,14 +5,17 @@ export const mockPlayerData = (): TPlayer[] => [
 	{
 		id: '1',
 		name: 'Decat',
+		description: 'fdsfsdf',
 	},
 	{
 		id: '2',
 		name: 'Woo',
+		description: 'hfgujhrtjdfadzf',
 	},
 	{
 		id: '3',
 		name: 'Foo',
+		description: 'jhgrtsfdfujgrujgd',
 	},
 ]
 
