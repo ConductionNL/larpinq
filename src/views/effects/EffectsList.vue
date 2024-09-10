@@ -1,5 +1,5 @@
 <script setup>
-	import { effectStore, navigationStore, searchStore } from '../../store/store.js'
+import { effectStore, searchStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -22,7 +22,7 @@
 						</template>
 						Ververs
 					</NcActionButton>
-					<NcActionButton @click="effectStore.setEffectItem([]); navigationStore.setModal('editEffect')">
+					<NcActionButton @click="effectStore.setEffectItem([]); navigationStore.setModal('addEffect')">
 						<template #icon>
 							<Plus :size="20" />
 						</template>
@@ -50,20 +50,20 @@
 					<template #actions>
 						<NcActionButton @click="effectStore.setEffectItem(effect); navigationStore.setModal('editEffect')">
 							<template #icon>
-								<Plus/>
+								<Pencil />
 							</template>
 							Bewerken
 						</NcActionButton>
 						<NcActionButton @click="effectStore.setEffectItem(effect), navigationStore.setDialog('deleteEffect')">
 							<template #icon>
-								<TrashCanOutline/>
+								<TrashCanOutline />
 							</template>
 							Verwijderen
 						</NcActionButton>
 					</template>
 				</NcListItem>
 			</div>
-		</ul> 
+		</ul>
 
 		<NcLoadingIcon v-if="!effectStore.effectList"
 			class="loadingIcon"

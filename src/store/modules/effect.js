@@ -13,7 +13,7 @@ export const useEffectStore = defineStore(
 			setEffectItem(effectItem) {
 				this.effectItem = effectItem && new Effect(effectItem)
 				console.log('Active effect item set to ' + effectItem)
-				},
+			},
 			// Set the list of effects
 			setEffectList(effectList) {
 				this.effectList = effectList.map(
@@ -86,11 +86,15 @@ export const useEffectStore = defineStore(
 				return fetch(
 					endpoint,
 					{
-						method: method,
+						method,
 						headers: {
 							'Content-Type': 'application/json',
 						},
-						body: JSON.stringify(this.effectItem),
+						body: JSON.stringify({
+							...this.effectItem,
+							modification: this.effectItem.modification.id,
+							cumulative: this.effectItem.cumulative.id,
+						}),
 					},
 				)
 					.then((response) => response.json())
