@@ -1,5 +1,5 @@
 <script setup>
-	import { eventStore, navigationStore, searchStore } from '../../store/store.js'
+import { eventStore, navigationStore, searchStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -50,13 +50,13 @@
 					<template #actions>
 						<NcActionButton @click="eventStore.setEventItem(event); navigationStore.setModal('editEvent')">
 							<template #icon>
-								<Plus/>
+								<Pencil />
 							</template>
 							Bewerken
 						</NcActionButton>
 						<NcActionButton @click="eventStore.setEventItem(event), navigationStore.setDialog('deleteEvent')">
 							<template #icon>
-								<TrashCanOutline/>
+								<TrashCanOutline />
 							</template>
 							Verwijderen
 						</NcActionButton>
@@ -72,7 +72,7 @@
 			name="Taken aan het laden" />
 
 		<div v-if="eventStore.eventList.length === 0">
-		Er zijn nog geen evenementen gedefinieerd.
+			Er zijn nog geen evenementen gedefinieerd.
 		</div>
 	</NcAppContentList>
 </template>

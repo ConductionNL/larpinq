@@ -70,7 +70,7 @@ export const useEventStore = defineStore(
 					})
 			},
 			// Create or update an event
-			saveEvent() {
+			saveEvent(eventItem) {
 				if (!this.eventItem) {
 					throw new Error('No event item to save')
 				}
@@ -83,14 +83,21 @@ export const useEventStore = defineStore(
 					: `/index.php/apps/larpingapp/api/events/${this.eventItem.id}`
 				const method = isNewEvent ? 'POST' : 'PUT'
 
+				const eventToSeave = { ...eventItem }
+				Object.keys(eventToSeave).forEach(key => {
+					if (eventToSeave[key] === '' || (Array.isArray(eventToSeave[key]) && eventToSeave[key].length === 0)) {
+						delete eventToSeave[key]
+					}
+				})
+
 				return fetch(
 					endpoint,
 					{
-						method: method,
+						method,
 						headers: {
 							'Content-Type': 'application/json',
 						},
-						body: JSON.stringify(this.eventItem),
+						body: JSON.stringify(eventToSeave),
 					},
 				)
 					.then((response) => response.json())

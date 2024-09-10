@@ -63,7 +63,7 @@ import { abilityStore, navigationStore, effectStore } from '../../store/store.js
 
 <script>
 import {
-	NcButton, NcDialog, NcTextField, NcTextArea, NcCheckboxRadioSwitch, NcLoadingIcon, NcNoteCard, NcSelect,
+	NcButton, NcDialog, NcTextField, NcTextArea, NcLoadingIcon, NcNoteCard, NcSelect,
 } from '@nextcloud/vue'
 import ContentSaveOutline from 'vue-material-design-icons/ContentSaveOutline.vue'
 import Cancel from 'vue-material-design-icons/Cancel.vue'
@@ -77,7 +77,6 @@ export default {
 		NcTextField,
 		NcTextArea,
 		NcButton,
-		NcCheckboxRadioSwitch,
 		NcLoadingIcon,
 		NcNoteCard,
 		ContentSaveOutline,
@@ -100,9 +99,6 @@ export default {
 				base: '',
 			},
 		}
-	},
-	mounted() {
-		effectStore.refreshEffectList()
 	},
 	updated() {
 		if (navigationStore.modal === 'editAbility' && !this.hasUpdated) {
