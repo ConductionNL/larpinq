@@ -13,7 +13,7 @@ export const useSkillStore = defineStore(
 			setSkillItem(skillItem) {
 				this.skillItem = skillItem && new Skill(skillItem)
 				console.log('Active skill item set to ' + skillItem)
-				},
+			},
 			// Set the list of skills
 			setSkillList(skillList) {
 				this.skillList = skillList.map(
@@ -86,7 +86,7 @@ export const useSkillStore = defineStore(
 				return fetch(
 					endpoint,
 					{
-						method: method,
+						method,
 						headers: {
 							'Content-Type': 'application/json',
 						},
