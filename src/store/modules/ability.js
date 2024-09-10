@@ -60,16 +60,16 @@ export const useAbilityStore = defineStore(
 			},
 
 			saveAbility(abilityItem) {
-				if (!this.abilityItem) {
+				if (!abilityItem) {
 					throw new Error('No ability item to save')
 				}
 
 				console.log('Saving ability...')
 
-				const isNewAbility = !this.abilityItem.id
+				const isNewAbility = !abilityItem.id
 				const endpoint = isNewAbility
 					? '/index.php/apps/larpingapp/api/abilities'
-					: `/index.php/apps/larpingapp/api/abilities/${this.abilityItem.id}`
+					: `/index.php/apps/larpingapp/api/abilities/${abilityItem.id}`
 				const method = isNewAbility ? 'POST' : 'PUT'
 
 				const abilityToSave = { ...abilityItem }

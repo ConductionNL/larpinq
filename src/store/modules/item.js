@@ -71,16 +71,16 @@ export const useItemStore = defineStore(
 			},
 			// Create or update an item
 			saveItem(itemItem) {
-				if (!this.itemItem) {
+				if (!itemItem) {
 					throw new Error('No item to save')
 				}
 
 				console.log('Saving item...')
 
-				const isNewItem = !this.itemItem.id
+				const isNewItem = !itemItem.id
 				const endpoint = isNewItem
 					? '/index.php/apps/larpingapp/api/items'
-					: `/index.php/apps/larpingapp/api/items/${this.itemItem.id}`
+					: `/index.php/apps/larpingapp/api/items/${itemItem.id}`
 				const method = isNewItem ? 'POST' : 'PUT'
 
 				const itemToSave = { ...itemItem }

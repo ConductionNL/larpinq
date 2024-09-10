@@ -71,16 +71,16 @@ export const useEventStore = defineStore(
 			},
 			// Create or update an event
 			saveEvent(eventItem) {
-				if (!this.eventItem) {
+				if (!eventItem) {
 					throw new Error('No event item to save')
 				}
 
 				console.log('Saving event...')
 
-				const isNewEvent = !this.eventItem.id
+				const isNewEvent = !eventItem.id
 				const endpoint = isNewEvent
 					? '/index.php/apps/larpingapp/api/events'
-					: `/index.php/apps/larpingapp/api/events/${this.eventItem.id}`
+					: `/index.php/apps/larpingapp/api/events/${eventItem.id}`
 				const method = isNewEvent ? 'POST' : 'PUT'
 
 				const eventToSeave = { ...eventItem }
