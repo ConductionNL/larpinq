@@ -16,7 +16,7 @@
 					<BriefcaseAccountOutline />
 				</template>
 				<template #action>
-					<NcButton type="primary" @click="navigationStore.setModal('addCharacter')">
+					<NcButton type="primary" @click="characterStore.setCharacterItem([]); navigationStore.setModal('editCharacter')">
 						Karakter aanmaken
 					</NcButton>
 				</template>

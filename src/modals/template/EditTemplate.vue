@@ -1,140 +1,100 @@
 <script setup>
-import { templateStor0e, navigationStore } from '../../store/store.js'
+import { templateStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
-	<NcModal v-if="navigationStore.modal === 'editTaak'" ref="modalRef" @close="navigationStore.setModal(false)">
-		<div class="modalContent">
-			<h2>Taak aanpassen</h2>
-			<NcNoteCard v-if="succes" type="success">
-				<p>Bijlage succesvol toegevoegd</p>
-			</NcNoteCard>
-			<NcNoteCard v-if="error" type="error">
-				<p>{{ error }}</p>
-			</NcNoteCard>
+    <NcDialog v-if="navigationStore.modal === 'editTemplate'"
+        name="Sjabloon"
+        size="normal"
+        :can-close="false">
 
-			<div v-if="!succes" class="form-group">
-				<NcTextField
-					:disabled="loading"
-					:value.sync="store.taakItem.title"
-					label="Titel"
-					maxlength="255" />
+        <NcNoteCard v-if="success" type="success">
+            <p>Sjabloon succesvol aangepast</p>
+        </NcNoteCard>
+        <NcNoteCard v-if="error" type="error">
+            <p>{{ error }}</p>
+        </NcNoteCard>
 
-				<NcTextField
-					:disabled="loading"
-					:value.sync="store.taakItem.type"
-					label="Type"
-					maxlength="255" />
+        <div v-if="!success" class="formContainer">
+            <NcTextField :disabled="loading"
+                label="Name *"
+                required
+                :value.sync="templateStore.templateItem.name" />
+            <NcTextArea :disabled="loading"
+                label="Description"
+                type="textarea"
+                :value.sync="templateStore.templateItem.description" />
+            <NcTextArea :disabled="loading"
+                label="Template"
+                type="textarea"
+                :value.sync="templateStore.templateItem.template" />
+        </div>
 
-				<NcSelect
-					v-bind="statusOptions"
-					v-model="store.taakItem.status"
-					:disabled="loading"
-					input-label="Status"
-					required />
-
-				<NcTextField
-					:disabled="loading"
-					:value.sync="store.taakItem.onderwerp"
-					label="Onderwerp"
-					maxlength="255" />
-
-				<NcTextArea
-					:disabled="loading"
-					:value.sync="store.taakItem.toelichting"
-					label="Toelichting" />
-			</div>
-
-			<NcButton
-				v-if="!succes"
-				:disabled="loading"
-				type="primary"
-				@click="editTaak()">
-				<template #icon>
-					<NcLoadingIcon v-if="loading" :size="20" />
-					<ContentSaveOutline v-if="!loading" :size="20" />
-				</template>
-				Opslaan
-			</NcButton>
-		</div>
-	</NcModal>
+        <template #actions>
+            <NcButton @click="navigationStore.setModal(false)">
+                <template #icon><Cancel :size="20" /></template>
+                {{ success ? 'Sluiten' : 'Annuleer' }}
+            </NcButton>
+            <NcButton @click="openLink('https://conduction.gitbook.io/opencatalogi-nextcloud/gebruikers/publicaties', '_blank')">
+                <template #icon><Help :size="20" /></template>
+                Help
+            </NcButton>
+            <NcButton v-if="!success" :disabled="loading" type="primary" @click="editTemplate()">
+                <template #icon>
+                    <NcLoadingIcon v-if="loading" :size="20" />
+                    <ContentSaveOutline v-if="!loading && templateStore.templateItem.id" :size="20" />
+                    <Plus v-if="!loading && !templateStore.templateItem.id" :size="20" />
+                </template>
+                {{ templateStore.templateItem.id ? 'Opslaan' : 'Aanmaken' }}
+            </NcButton>
+        </template>
+    </NcDialog>
 </template>
 
 <script>
 import {
-	NcButton,
-	NcModal,
-	NcTextField,
-	NcTextArea,
-	NcSelect,
-	NcLoadingIcon,
+    NcButton, NcDialog, NcTextField, NcTextArea, NcLoadingIcon, NcNoteCard
 } from '@nextcloud/vue'
 import ContentSaveOutline from 'vue-material-design-icons/ContentSaveOutline.vue'
+import Cancel from 'vue-material-design-icons/Cancel.vue'
+import Plus from 'vue-material-design-icons/Plus.vue'
+import Help from 'vue-material-design-icons/Help.vue'
 
 export default {
-	name: 'EditTaak',
-	components: {
-		NcModal,
-		NcTextField,
-		NcTextArea,
-		NcButton,
-		NcSelect,
-		NcLoadingIcon,
-		// Icons
-		ContentSaveOutline,
-	},
-	data() {
-		return {
-			succes: false,
-			loading: false,
-			error: false,
-		}
-	},
-	updated() {
-		if (store.modal === 'editTaak' && this.hasUpdated) {
-			if (this.taak === store.taakItem) return
-			this.hasUpdated = false
-		}
-		if (store.modal === 'editTaak' && !this.hasUpdated) {
-			this.taak = store.taakItem
-			this.fetchZaken()
-			this.setStatusOptions()
-			this.hasUpdated = true
-		}
-	},
-	methods: {
-		editTaak() {
-			this.loading = true
-			fetch(
-				`/index.php/apps/zaakafhandelapp/api/taken/${store.taakItem.id}`,
-				{
-					method: 'PUT',
-					headers: {
-						'Content-Type': 'application/json',
-					},
-					body: JSON.stringify(store.taakItem),
-				},
-			)
-				.then((response) => {
-					this.succes = true
+    name: 'EditTemplate',
+    components: {
+        NcDialog, NcTextField, NcTextArea, NcButton, NcLoadingIcon, NcNoteCard,
+        ContentSaveOutline, Cancel, Plus, Help,
+    },
+    data() {
+        return {
+            success: false,
+            loading: false,
+            error: false,
+        }
+    },
+    methods: {
+        async editTemplate() {
+            this.loading = true
+            try {
+                await templateStore.saveTemplate()
+                this.success = true
+                this.loading = false
+                setTimeout(() => {
+                    this.success = false
 					this.loading = false
-					store.getTakenList()
-					response.json().then((data) => {
-						store.setTaakItem(data)
-					})
-					// Get the modal to self close
-					const self = this
-					setTimeout(function() {
-						self.succes = false
-						navigationStore.setModal(false)
-					}, 2000)
-				})
-				.catch((err) => {
-					this.loading = false
-					this.error = err
-					console.error(err)
-				})
-		},
-	},
+					this.error = false
+                    navigationStore.setModal(false)
+                }, 2000)
+            } catch (error) {
+                this.loading = false
+                this.success = false
+                this.error = error.message || 'An error occurred while saving the template'
+            }
+        },
+        openLink(url, target) {
+            window.open(url, target)
+        }
+    },
 }
 </script>

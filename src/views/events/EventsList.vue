@@ -1,5 +1,5 @@
 <script setup>
-	import { eventStore, navigationStore, searchStore } from '../../store/store.js'
+import { eventStore, navigationStore, searchStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -16,24 +16,24 @@
 					<Magnify :size="20" />
 				</NcTextField>
 				<NcActions>
-					<NcActionButton @click="store.getTakenList()">
+					<NcActionButton @click="eventStore.refreshEventList()">
 						<template #icon>
 							<Refresh :size="20" />
 						</template>
 						Ververs
 					</NcActionButton>
-					<NcActionButton @click="store.setModal('addTaak')">
+					<NcActionButton @click="eventStore.setEventItem([]); navigationStore.setModal('editEvent')">
 						<template #icon>
 							<Plus :size="20" />
 						</template>
-						Taak toevoegen
+						Event toevoegen
 					</NcActionButton>
 				</NcActions>
 			</div>
 			<div v-if="eventStore.eventList && eventStore.eventList.length > 0">
 				<NcListItem v-for="(event, i) in eventStore.eventList"
 					:key="`${event}${i}`"
-					:name="event?.title"
+					:name="event?.name"
 					:force-display-actions="true"
 					:active="eventStore.eventItem?.id === event?.id"
 					:details="'1h'"
@@ -45,18 +45,18 @@
 							:size="44" />
 					</template>
 					<template #subname>
-						{{ event?.summery }}
+						{{ event?.description }}
 					</template>
 					<template #actions>
-						<NcActionButton @click="eventStore.setEventItem(event); navigationStore.setModal('editTaak')">
+						<NcActionButton @click="eventStore.setEventItem(event); navigationStore.setModal('editEvent')">
 							<template #icon>
-								<Pencil :size="20" />
+								<Pencil />
 							</template>
 							Bewerken
 						</NcActionButton>
-						<NcActionButton @click="eventStore.setEventItem(event); navigationStore.setDialog('deleteTaak')">
+						<NcActionButton @click="eventStore.setEventItem(event), navigationStore.setDialog('deleteEvent')">
 							<template #icon>
-								<TrashCanOutline :size="20" />
+								<TrashCanOutline />
 							</template>
 							Verwijderen
 						</NcActionButton>
@@ -65,11 +65,15 @@
 			</div>
 		</ul>
 
-		<NcLoadingIcon v-if="!eventStore.eventList  || eventStore.eventList.length === 0"
+		<NcLoadingIcon v-if="!eventStore.eventList"
 			class="loadingIcon"
 			:size="64"
 			appearance="dark"
 			name="Taken aan het laden" />
+
+		<div v-if="eventStore.eventList.length === 0">
+			Er zijn nog geen evenementen gedefinieerd.
+		</div>
 	</NcAppContentList>
 </template>
 <script>
@@ -97,23 +101,12 @@ export default {
 		// Icons
 		CalendarMonthOutline,
 		Magnify,
+		Plus,
 		Pencil,
 		TrashCanOutline,
 	},
-	data() {
-		return {
-			search: '',
-			loading: true,
-			takenList: [],
-		}
-	},
 	mounted() {
 		eventStore.refreshEventList()
-	},
-	methods: {
-		clearText() {
-			this.search = ''
-		},
 	},
 }
 </script>
@@ -133,11 +126,11 @@ export default {
     margin-block-end: 6px;
 }
 
-.selectedZaakIcon>svg {
+.selectedIcon>svg {
     fill: white;
 }
 
 .loadingIcon {
-    margin-block-start: var(--zaa-margin-20);
+    margin-block-start: var(--OC-margin-20);
 }
 </style>

@@ -1,80 +1,108 @@
 <script setup>
-	import { playerStore, navigationStore } from '../../store/store.js'
+import { playerStore, characterStore } from '../../store/store.js'
 </script>
 
 <template>
 	<div class="detailContainer">
-		<div v-if="!loading" id="app-content">
+		<div id="app-content">
 			<!-- app-content-wrapper is optional, only use if app-content-list  -->
 			<div>
 				<h1 class="h1">
-					{{ zaak.name }}
+					{{ playerStore.playerItem.name }}
 				</h1>
 				<div class="grid">
 					<div class="gridContent">
 						<h4>Sammenvatting:</h4>
-						<span>{{ zaak.summary }}</span>
+						<span>{{ playerStore.playerItem.summary }}</span>
 					</div>
 				</div>
 			</div>
 		</div>
-		<NcLoadingIcon v-if="loading"
-			:size="100"
-			appearance="dark"
-			name="Zaak details aan het laden" />
+		<div class="tabContainer">
+			<BTabs content-class="mt-3" justified>
+				<BTab title="Characters" active>
+					<div v-if="filterCharacters.length > 0 && !charactersLoading">
+						<NcListItem v-for="(character, i) in filterCharacters"
+							:key="character.id + i"
+							:name="character.name"
+							:bold="false"
+							:force-display-actions="true">
+							<template #icon>
+								<BriefcaseAccountOutline disable-menu
+									:size="44" />
+							</template>
+							<template #subname>
+								{{ character.description }}
+							</template>
+						</NcListItem>
+					</div>
+					<div v-if="filterCharacters.length === 0">
+						Geen characters gevonden
+					</div>
+				</BTab>
+				<BTab title="Events">
+					<div v-if="playerStore.playerItem?.events?.length > 0">
+						<NcListItem v-for="(event) in playerStore.playerItem?.events"
+							:key="event.id"
+							:name="event.name"
+							:bold="false"
+							:force-display-actions="true">
+							<template #icon>
+								<CalendarMonthOutline disable-menu
+									:size="44" />
+							</template>
+							<template #subname>
+								{{ event.description }}
+							</template>
+						</NcListItem>
+					</div>
+					<div v-if="!playerStore.playerItem?.events?.length">
+						Geen events gevonden
+					</div>
+				</BTab>
+			</BTabs>
+		</div>
 	</div>
 </template>
 
 <script>
-import { NcLoadingIcon } from '@nextcloud/vue'
+import {
+	NcListItem,
+} from '@nextcloud/vue'
+import { BTabs, BTab } from 'bootstrap-vue'
+
+import BriefcaseAccountOutline from 'vue-material-design-icons/BriefcaseAccountOutline.vue'
+import CalendarMonthOutline from 'vue-material-design-icons/CalendarMonthOutline.vue'
 
 export default {
 	name: 'PlayerDetails',
 	components: {
-		NcLoadingIcon,
-	},
-	props: {
-		besluitId: {
-			type: String,
-			required: true,
-		},
+		NcListItem,
+		BTabs,
+		BTab,
 	},
 	data() {
 		return {
-			zaak: [],
-			loading: false,
+			characters: [],
+			charactersLoading: false,
 		}
 	},
-	watch: {
-		besluitId: {
-			handler(besluitId) {
-				this.fetchData(besluitId)
-			},
-			deep: true,
+	computed: {
+		filterCharacters() {
+			return characterStore.characterList.filter((character) => {
+				return character.ocName === playerStore.playerItem.name
+			})
 		},
 	},
-	// First time the is no emit so lets grap it directly
 	mounted() {
-		this.fetchData(store.besluitItem)
+		this.fetchCharacters()
 	},
 	methods: {
-		fetchData(besluitId) {
-			this.loading = true
-			fetch(
-				'/index.php/apps/zaakafhandelapp/api/zaken/' + besluitId,
-				{
-					method: 'GET',
-				},
-			)
-				.then((response) => {
-					response.json().then((data) => {
-						this.zaak = data
-					})
-					this.loading = false
-				})
-				.catch((err) => {
-					console.error(err)
-					this.loading = false
+		fetchCharacters() {
+			this.charactersLoading = true
+			characterStore.refreshCharacterList()
+				.then(() => {
+					this.charactersLoading = false
 				})
 		},
 	},

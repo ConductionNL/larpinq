@@ -16,7 +16,7 @@
 					<ShieldSwordOutline />
 				</template>
 				<template #action>
-					<NcButton type="primary" @click="navigationStore.setModal('addAbility')">
+					<NcButton type="primary" @click="abilityStore.setAbilityItem([]), navigationStore.setModal('editAbility')">
 						Vaardigheid aanmaken
 					</NcButton>
 				</template>

@@ -1,8 +1,8 @@
 <?php
 
-namespace OCA\OpenCatalogi\Db;
+namespace OCA\LarpingApp\Db;
 
-use OCA\OpenCatalogi\Db\Item;
+use OCA\LarpingApp\Db\Item;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\QBMapper;
 use OCP\DB\QueryBuilder\IQueryBuilder;
@@ -12,15 +12,15 @@ class ItemMapper extends QBMapper
 {
 	public function __construct(IDBConnection $db)
 	{
-		parent::__construct($db, 'larping_items');
+		parent::__construct($db, 'larpingapp_items');
 	}
 
-	public function find(int $id): Catalog
+	public function find(int $id): Item
 	{
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->select('*')
-			->from('larping_items')
+			->from('larpingapp_items')
 			->where(
 				$qb->expr()->eq('id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
 			);
@@ -33,7 +33,7 @@ class ItemMapper extends QBMapper
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->select('*')
-			->from('larping_items')
+			->from('larpingapp_items')
 			->setMaxResults($limit)
 			->setFirstResult($offset);
 
@@ -57,18 +57,18 @@ class ItemMapper extends QBMapper
 		return $this->findEntities(query: $qb);
 	}
 
-	public function createFromArray(array $object): Catalog
+	public function createFromArray(array $object): Item
 	{
-		$catalog = new Item();
-		$catalog->hydrate(object: $object);
-		return $this->insert(entity: $catalog);
+		$item = new Item();
+		$item->hydrate(object: $object);
+		return $this->insert(entity: $item);
 	}
 
-	public function updateFromArray(int $id, array $object): Catalog
+	public function updateFromArray(int $id, array $object): Item
 	{
-		$catalog = $this->find($id);
-		$catalog->hydrate($object);
+		$item = $this->find($id);
+		$item->hydrate($object);
 
-		return $this->update($catalog);
+		return $this->update($item);
 	}
 }

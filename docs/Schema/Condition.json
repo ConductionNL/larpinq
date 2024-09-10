@@ -1,0 +1,57 @@
+{
+  "$id": "https://larping.nl/condition.schema.json",
+  "$schema": "https://docs.commongateway.nl/schemas/Entity.schema.json",
+  "version": "0.3",
+  "title":"Condition",
+  "type":"object",
+  "description":"Conditions can be either positive or negative effects that target a character. They are generaly consequences of characters actions and choices during gameplay and part of play. Conditions differ from abilities in that they are bought \"bought\" by a character trough skill points.\n\nConditions may contain pre configured effects (handy for character calculations) but are not required to. Some ingame effects are simply not automatable, in that case use the effect text property",
+  "properties":{
+    "id":{
+      "type":"string",
+      "format":"uuid",
+      "example":"56cf6db0-7c37-41a5-968b-d322c3f0da28",
+      "description":"The unique identiefier of this condition",
+      "readOnly":true
+    },
+    "name":{
+      "type":"string",
+      "example":"Vamperic demener",
+      "description":"The unique name of the condition"
+    },
+    "description":{
+      "type":"string",
+      "example":"You crave the blood of other humanoid beings and feel powerfull when drinking it",
+      "description":"A setting apropriate flavor text for the condition"
+    },
+    "effect":{
+      "type":"string",
+      "example":"Charater may drink the blood of other humanoid beings, dealing 1 HP damage per 10 seconds a drinking. Character gains 1 Spiritual Mana per damage dealth.  Character sustains 1 HP damage comulative for each 24 hours in wich charater has not used this ablillity. Eg 1 HP for on day one, 2 hp on day 3 ",
+      "description":"The game description of what this condition does, visable to characters effected by the condition and game masters"
+    },
+    "effects":{
+      "type":"array",
+      "description":"The automated effects coused by this condition",
+      "items":{
+        "type":"object",
+        "$ref": "https://larping.nl/effect.schema.json"
+      }
+    },
+    "unique":{
+      "type":"boolean",
+      "default": false,
+      "description":"Whether this condition can apply to only ONE player"
+    },
+    "characters":{
+      "type":"array",
+      "description":"The characters effected by this condition",
+      "items":{
+        "type":"object",
+        "$ref": "https://larping.nl/character.schema.json"
+      },
+      "readOnly":true
+    }
+  },
+  "required":[
+    "name"
+  ]
+}

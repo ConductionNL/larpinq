@@ -1,0 +1,147 @@
+{
+  "$id": "https://larping.nl/story.schema.json",
+  "$schema": "https://docs.commongateway.nl/schemas/Entity.schema.json",
+  "version": "0.2",
+  "title":"Story",
+  "type":"object",
+  "description":"Stories reprecent the events story arc. Stories might represent complete a story arc consisting of sub stories or simple encounters",
+  "nameProperties": ["name"],
+  "properties":{
+    "id":{
+      "type":"string",
+      "format":"uuid",
+      "example":"56cf6db0-7c37-41a5-968b-d322c3f0da28",
+      "description":"The unique identifier of a story",
+      "readOnly":true
+    },
+    "name":{
+      "type":"string",
+      "description":"The unique name of this story",
+      "maxLength":255
+    },
+    "description":{
+      "type":"string",
+      "description":"A description short description for game masters and extra's about the story",
+      "maxLength":2555
+    },
+    "plot":{
+      "type":"string",
+      "description":"The actual content of the story"
+    },
+    "event":{
+      "type":"string",
+      "format":"uuid"
+    },
+    "type":{
+      "type":"string",
+      "example":"combat",
+      "enum":[
+        "combat",
+        "role playing"
+      ],
+      "description":"The type of experience that this story offers. "
+    },
+    "parent":{
+      "type":"string",
+      "description":"The parent of this story",
+      "format":"uri-reference",
+      "example":"/stories/56cf6db0-7c37-41a5-968b-d322c3f0da28"
+    },
+    "gameMasters":{
+      "type":"array",
+      "description":"The game masters responsible for this story",
+      "items":{
+        "type":"string",
+        "example":"/users/56cf6db0-7c37-41a5-968b-d322c3f0da28",
+        "format":"uri-reference"
+      }
+    },
+    "audience":{
+      "type":"array",
+      "description":"The characters that this story tries to cater to",
+      "items":{
+        "type":"string",
+        "example":"/characters/56cf6db0-7c37-41a5-968b-d322c3f0da28",
+        "format":"uri-reference"
+      }
+    },
+    "dependsOn":{
+      "type":"string",
+      "description":"Any other story that should have bean completed in order to run this story. Normaly used to link encounters into a logic chain to make sure that al information reached the charachter",
+      "format":"uri-reference",
+      "example":"/stories/56cf6db0-7c37-41a5-968b-d322c3f0da28"
+    },
+    "participatingCharacters":{
+      "type":"array",
+      "description":"The characters actualy participating in this story. e.g. whent allong on the encounter.",
+      "items":{
+        "type":"string",
+        "example":"/characters/56cf6db0-7c37-41a5-968b-d322c3f0da28",
+        "format":"uri-reference"
+      }
+    },
+    "items":{
+      "type":"array",
+      "description":"Items that might be earned by characters during this story",
+      "items":{
+        "type":"string",
+        "example":"/items/56cf6db0-7c37-41a5-968b-d322c3f0da28",
+        "format":"uri-reference"
+      }
+    },
+    "conditions":{
+      "type":"array",
+      "description":"Conditions that might be obtained by characters druing this story",
+      "items":{
+        "type":"string",
+        "format":"uri-reference",
+        "example":"/conditions/56cf6db0-7c37-41a5-968b-d322c3f0da28"
+      }
+    },
+    "startDate":{
+      "type":"string",
+      "format":"date-time",
+      "description":"The moment that this stroy should stat"
+    },
+    "endData":{
+      "type":"string",
+      "format":"date-time",
+      "description":"The moment that this story should end"
+    },
+    "location":{
+      "type":"string",
+      "description":"The place within the location that is used for the story",
+      "example":"Field 3"
+    },
+    "extras":{
+      "type":"array",
+      "description":"The extra's that are asigned to this story",
+      "items":{
+        "type":"string",
+        "format":"uri-reference",
+        "example":"/users/56cf6db0-7c37-41a5-968b-d322c3f0da28"
+      }
+    },
+    "minimumExtras":{
+      "type":"integer",
+      "default":1,
+      "example":5,
+      "description":"the amount of extras that is required at minimum to run this story"
+    },
+    "optimalExtras":{
+      "type":"integer",
+      "default":1,
+      "example":10,
+      "description":"The amount of extra's that the game master would like to have for this story"
+    },
+    "critical":{
+      "type":"boolean",
+      "default":false,
+      "description":"Wheter or not this story is critial to the even propogation. In other words if it can be canceled or shuffeld around"
+    }
+  },
+  "required":[
+    "setting",
+    "type"
+  ]
+}

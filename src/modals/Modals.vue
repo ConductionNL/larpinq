@@ -1,62 +1,83 @@
 <template>
 	<!-- Placeholder -->
 	<div>
-		<AddAbility />
 		<EditAbility />
-		<AddCharacter />
+		<DeleteAbility />
 		<EditCharacter />
-		<AddCondition />
+		<DeleteCharacter />
 		<EditCondition />
-		<AddEvent />
+		<DeleteCondition />
+		<EditEffect />
+		<AddEffect />
+		<DeleteEffect />
 		<EditEvent />
-		<AddItem />
+		<DeleteEvent />
 		<EditItem />
-		<AddPlayer />
+		<DeleteItem />
 		<EditPlayer />
-		<AddSkill />
+		<DeletePlayer />
 		<EditSkill />
-		<AddTemplate />
+		<DeleteSkill />
 		<EditTemplate />
+		<DeleteTemplate />
+		<AddSkillToCharacter />
+		<AddItemToCharacter />
+		<AddConditionToCharacter />
+		<AddEventToCharacter />
 	</div>
 </template>
 
 <script>
-import AddAbility from './ability/AddAbility.vue'
 import EditAbility from './ability/EditAbility.vue'
-import AddCharacter from './character/AddCharacter.vue'
+import DeleteAbility from './ability/DeleteAbility.vue'
 import EditCharacter from './character/EditCharacter.vue'
-import AddCondition from './condition/AddCondition.vue'
+import DeleteCharacter from './character/DeleteCharacter.vue'
 import EditCondition from './condition/EditCondition.vue'
-import AddEvent from './event/AddEvent.vue'
+import DeleteCondition from './condition/DeleteCondition.vue'
+import EditEffect from './effect/EditEffect.vue'
+import AddEffect from './effect/AddEffect.vue'
+import DeleteEffect from './effect/DeleteEffect.vue'
 import EditEvent from './event/EditEvent.vue'
-import AddItem from './item/AddItem.vue'
+import DeleteEvent from './event/DeleteEvent.vue'
 import EditItem from './item/EditItem.vue'
-import AddPlayer from './player/AddPlayer.vue'
+import DeleteItem from './item/DeleteItem.vue'
 import EditPlayer from './player/EditPlayer.vue'
-import AddSkill from './skill/AddSkill.vue'
+import DeletePlayer from './player/DeletePlayer.vue'
 import EditSkill from './skill/EditSkill.vue'
-import AddTemplate from './template/AddTemplate.vue'
+import DeleteSkill from './skill/DeleteSkill.vue'
 import EditTemplate from './template/EditTemplate.vue'
+import DeleteTemplate from './template/DeleteTemplate.vue'
+import AddSkillToCharacter from './character/AddSkillToCharacter.vue'
+import AddItemToCharacter from './character/AddItemToCharacter.vue'
+import AddConditionToCharacter from './character/AddConditionToCharacter.vue'
+import AddEventToCharacter from './character/AddEventToCharacter.vue'
 
 export default {
 	name: 'Modals',
 	components: {
-		AddAbility,
 		EditAbility,
-		AddCharacter,
+		DeleteAbility,
 		EditCharacter,
-		AddCondition,
+		DeleteCharacter,
 		EditCondition,
-		AddEvent,
+		DeleteCondition,
+		EditEffect,
+		AddEffect,
+		DeleteEffect,
 		EditEvent,
-		AddItem,
+		DeleteEvent,
 		EditItem,
-		AddPlayer,
-		AddSkill,
-		EditSkill,
+		DeleteItem,
 		EditPlayer,
-		AddTemplate,
+		DeletePlayer,
+		EditSkill,
+		DeleteSkill,
 		EditTemplate,
+		DeleteTemplate,
+		AddSkillToCharacter,
+		AddItemToCharacter,
+		AddConditionToCharacter,
+		AddEventToCharacter,
 	},
 }
 </script>

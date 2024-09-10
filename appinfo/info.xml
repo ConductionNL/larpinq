@@ -23,12 +23,8 @@ Create a [feature request](https://github.com/OpenCatalogi/.github/issues/new/ch
     <version>0.1.4</version>
     <licence>agpl</licence>
     <author mail="info@conduction.nl" homepage="https://www.conduction.nl/">Conduction</author>
-    <documentation>
-        <user>https://conduction.gitbook.io/opencatalogi-nextcloud/</user>
-        <admin>https://conduction.gitbook.io/opencatalogi-nextcloud/</admin>
-        <developer>https://conduction.gitbook.io/opencatalogi-nextcloud/</developer>
-    </documentation>
-    <category>tools</category>
+	<namespace>LarpingApp</namespace>
+	<category>organisation</category>
     <website>https://github.com/ConductionNL/LarpingNextApp</website>
     <bugs>https://github.com/ConductionNL/LarpingNextApp/issues</bugs>
     <repository type="git">https://github.com/ConductionNL/LarpingNextApp.git</repository>

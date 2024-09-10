@@ -1,0 +1,83 @@
+{
+  "$id": "https://larping.nl/skill.schema.json",
+  "$schema": "https://docs.commongateway.nl/schemas/Entity.schema.json",
+  "version": "0.3",
+  "title":"Skill",
+  "type":"object",
+  "description":"Skills represent actions a character can learn and perform, like healing. This differs them from conditions that are normally obtained through play. Traditionally skills provide positive effect and enable the character to do stuff he or she otherwise couldn’t (like casting spells). Skills normally also come with an cost (in terms of experience points).",
+  "nameProperties": ["name"],
+  "properties":{
+    "id":{
+      "type":"string",
+      "format":"uuid",
+      "description":"The unique identifier for this skill",
+      "example":"56cf6db0-7c37-41a5-968b-d322c3f0da28",
+      "readOnly":true
+    },
+    "name":{
+      "type":"string",
+      "description":"The name of this skill",
+      "maxLength":255,
+      "example":"Healing LvL 1"
+    },
+    "description":{
+      "type":"string",
+      "maxLength":2555,
+      "description":"The description of this skill. Should not contain the technical effect of the skill but rather a more setting like description.\n",
+      "example":"Healers are what keeps the party going, when some one goes done a healer make sure the get back up again.  "
+    },
+    "effect":{
+      "type":"string",
+      "description":"The technical description of what the skill does, you can stuff al your rule book stuff right here.",
+      "example":"Character has access to level 1 healing spells"
+    },
+    "effects":{
+      "type":"array",
+      "description":"A list of effects that apply to a character that take this skill",
+      "items":{
+        "type": "object",
+        "$ref": "https://larping.nl/effect.schema.json"
+      }
+    },
+    "requiredSkills":{
+      "type":"array",
+      "description":"Any required skills that a character should have before it can take this skill",
+      "items": {
+        "type": "object",
+        "$ref": "https://larping.nl/skill.schema.json"
+      }
+    },
+    "requiredStats":{
+      "type":"array",
+      "description":"Any required stats that a character should have before it can take this skill",
+      "items": {
+        "type": "object",
+        "$ref": "https://larping.nl/stat.schema.json"
+      }
+    },
+    "requiredConditions":{
+      "type":"array",
+      "description":"Any required conditions that a character should have before it can take this skill",
+      "items": {
+        "type": "object",
+        "$ref": "https://larping.nl/condition.schema.json"
+      }
+    },
+    "requiredEffects":{
+      "type":"array",
+      "description":"Any required effects that a character should have before it can take this skill",
+      "items": {
+        "type": "object",
+        "$ref": "https://larping.nl/effect.schema.json"
+      }
+    },
+    "requiredScore":{
+      "type":"integer",
+      "example":15,
+      "description":"Only applies when the requirement object is one ore more abillitties. Indicates the minimum score a character should have before this skill can be selected."
+    }
+  },
+  "required":[
+    "name"
+  ]
+}

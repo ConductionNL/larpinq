@@ -1,8 +1,8 @@
 <?php
 
-namespace OCA\OpenCatalogi\Db;
+namespace OCA\LarpingApp\Db;
 
-use OCA\OpenCatalogi\Db\Effect;
+use OCA\LarpingApp\Db\Effect;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\QBMapper;
 use OCP\DB\QueryBuilder\IQueryBuilder;
@@ -12,15 +12,15 @@ class EffectMapper extends QBMapper
 {
 	public function __construct(IDBConnection $db)
 	{
-		parent::__construct($db, 'larping_effects');
+		parent::__construct($db, 'larpingapp_effects');
 	}
 
-	public function find(int $id): Catalog
+	public function find(int $id): Effect
 	{
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->select('*')
-			->from('larping_effects')
+			->from('larpingapp_effects')
 			->where(
 				$qb->expr()->eq('id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
 			);
@@ -33,7 +33,7 @@ class EffectMapper extends QBMapper
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->select('*')
-			->from('larping_effects')
+			->from('larpingapp_effects')
 			->setMaxResults($limit)
 			->setFirstResult($offset);
 
@@ -57,18 +57,18 @@ class EffectMapper extends QBMapper
 		return $this->findEntities(query: $qb);
 	}
 
-	public function createFromArray(array $object): Catalog
+	public function createFromArray(array $object): Effect
 	{
-		$catalog = new Effect();
-		$catalog->hydrate(object: $object);
-		return $this->insert(entity: $catalog);
+		$effect = new Effect();
+		$effect->hydrate(object: $object);
+		return $this->insert(entity: $effect);
 	}
 
-	public function updateFromArray(int $id, array $object): Catalog
+	public function updateFromArray(int $id, array $object): Effect
 	{
-		$catalog = $this->find($id);
-		$catalog->hydrate($object);
+		$effect = $this->find($id);
+		$effect->hydrate($object);
 
-		return $this->update($catalog);
+		return $this->update($effect);
 	}
 }

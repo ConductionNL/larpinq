@@ -1,0 +1,53 @@
+{
+  "$id": "https://larping.nl/effect.schema.json",
+  "$schema": "https://docs.commongateway.nl/schemas/Entity.schema.json",
+  "version": "0.3",
+  "type":"object",
+  "title":"Effect",
+  "description":"A calculated effect to an ability e.g increase of experience point or availible mana to a character. This could be from an Item, Skill, Event or Condition.\n\nKeep in mind that not all effects need to be game related, some might simply be of an administrative nature. For example skills are normally bought and will have a negative effect on characters experience points",
+  "nameProperties": ["name"],
+  "properties":{
+    "id":{
+      "type":"string",
+      "format":"uuid",
+      "example":"56cf6db0-7c37-41a5-968b-d322c3f0da28",
+      "description":"The unique identiefier of the effect",
+      "readOnly":true
+    },
+    "name":{
+      "type":"string",
+      "example":"+ 5 Healing Mana",
+      "description":"The unique name of the effect"
+    },
+    "description":{
+      "type":"string",
+      "example":"The character has aditional healing mana",
+      "description":"An rule technicalo description of what the effect does. Visable to characters effected by the condition and game masters. "
+    },
+    "stat":{
+      "type":"object",
+      "description":"The stat affected by the effect",
+      "$ref": "https://larping.nl/stat.schema.json"
+    },
+    "modifier":{
+      "type":"integer",
+      "description":"The modification that is made to the abbillity",
+      "example":5
+    },
+    "modification":{
+      "type":"string",
+      "enum": ["positive","negative"],
+      "default":"positive",
+      "description":"Whether the modification is a positive one, normaly speaking this should be true. But it might be negative for sertain conditions e.g "
+    },
+    "cumulative":{
+      "type":"string",
+      "enum": ["cumulative","non-cumulative"],
+      "default":"non-cumulative",
+      "description":"Determines if a character can take this effect more then once"
+    }
+  },
+  "required":[
+    "name"
+  ]
+}

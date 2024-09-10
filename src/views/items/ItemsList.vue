@@ -1,5 +1,5 @@
 <script setup>
-	import { itemStore, navigationStore, searchStore } from '../../store/store.js'
+import { itemStore, navigationStore, searchStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -16,45 +16,45 @@
 					<Magnify :size="20" />
 				</NcTextField>
 				<NcActions>
-					<NcActionButton @click="store.getBerichtenList()">
+					<NcActionButton @click="itemStore.refreshItemList()">
 						<template #icon>
 							<Refresh :size="20" />
 						</template>
 						Ververs
 					</NcActionButton>
-					<NcActionButton @click="store.setModal('addBericht')">
+					<NcActionButton @click="itemStore.setItemItem([]); navigationStore.setModal('editItem')">
 						<template #icon>
 							<Plus :size="20" />
 						</template>
-						Bericht toevoegen
+						Item toevoegen
 					</NcActionButton>
 				</NcActions>
 			</div>
 			<div v-if="itemStore.itemList && itemStore.itemList.length > 0">
 				<NcListItem v-for="(item, i) in itemStore.itemList"
 					:key="`${item}${i}`"
-					:name="item?.summery"
+					:name="item?.name"
 					:active="itemStore.itemItem?.id === item?.id"
 					:details="'1h'"
 					:counter-number="44"
 					:force-display-actions="true"
 					@click="itemStore.setItemItem(item)">
 					<template #icon>
-						<ChatOutline :class="itemStore.itemItem?.id === item?.id && 'selectedZaakIcon'"
+						<Sword :class="itemStore.itemItem?.id === item?.id && 'selectedItemIcon'"
 							disable-menu
 							:size="44" />
 					</template>
 					<template #subname>
-						{{ bericht?.berichttekst }}
+						{{ item?.description }}
 					</template>
 					<template #actions>
-						<NcActionButton @click="itemStore.setItemItem(bericht); navigationStore.setModal('editBericht')">
+						<NcActionButton @click="itemStore.setItemItem(item); navigationStore.setModal('editItem')">
 							<template #icon>
 								<Pencil :size="20" />
 							</template>
 							Bewerken
 						</NcActionButton>
-						<NcActionButton @click="itemStore.setItemItem(bericht); navigationStore.setDialog('deleteBericht')">
+						<NcActionButton @click="itemStore.setItemItem(item); navigationStore.setDialog('deleteBericht')">
 							<template #icon>
 								<TrashCanOutline :size="20" />
 							</template>
@@ -65,11 +65,15 @@
 			</div>
 		</ul>
 
-		<NcLoadingIcon v-if="!itemStore.itemList  || itemStore.itemList.length === 0"
+		<NcLoadingIcon v-if="!itemStore.itemList"
 			class="loadingIcon"
 			:size="64"
 			appearance="dark"
 			name="berichten aan het laden" />
+
+		<div v-if="itemStore.itemList.length === 0">
+			Er zijn nog geen voorwerpen gedefinieerd.
+		</div>
 	</NcAppContentList>
 </template>
 <script>
@@ -78,7 +82,7 @@ import { NcListItem, NcActions, NcActionButton, NcAppContentList, NcTextField, N
 
 // Icons
 import Magnify from 'vue-material-design-icons/Magnify.vue'
-import ChatOutline from 'vue-material-design-icons/ChatOutline.vue'
+import Sword from 'vue-material-design-icons/Sword.vue'
 import Refresh from 'vue-material-design-icons/Refresh.vue'
 import Plus from 'vue-material-design-icons/Plus.vue'
 import Pencil from 'vue-material-design-icons/Pencil.vue'
@@ -86,7 +90,7 @@ import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
 
 export default {
 	name: 'ItemsList',
-	components: {		
+	components: {
 		// Components
 		NcListItem,
 		NcActions,
@@ -98,29 +102,16 @@ export default {
 		Magnify,
 		Refresh,
 		Plus,
-		ChatOutline,
+		Sword,
 		Pencil,
 		TrashCanOutline,
-	},
-	data() {
-		return {
-			search: '',
-			loading: true,
-			berichtenList: [],
-		}
 	},
 	mounted() {
 		itemStore.refreshItemList()
 	},
-	methods: {
-		clearText() {
-			this.search = ''
-		},
-	},
 }
 </script>
 <style>
-
 .listHeader {
     position: sticky;
     top: 0;
@@ -135,11 +126,11 @@ export default {
     margin-block-end: 6px;
 }
 
-.selectedZaakIcon>svg {
+.selectedIcon>svg {
     fill: white;
 }
 
 .loadingIcon {
-    margin-block-start: var(--zaa-margin-20);
+    margin-block-start: var(--OC-margin-20);
 }
 </style>

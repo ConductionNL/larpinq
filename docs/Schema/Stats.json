@@ -1,0 +1,37 @@
+{
+  "$id": "https://larping.nl/stat.schema.json",
+  "$schema": "https://docs.commongateway.nl/schemas/Entity.schema.json",
+  "version": "0.4",
+  "title":"Stat",
+  "type":"object",
+  "description":"Stats represent numeric values on which a characters scores, this can be D20 like values such as DEX or CHA but may also be any other aspect of a character that must be calculated based on condition and skills.\n\nCommon examples of these include XP and mana. Keep in mind that if you want to have different types of mana you should create an ability per type (e.g. healing, spiritual, elemental). You can also use abilities to keep track of things like money, material components and bullets. Basically anything that you would like to calculate on a charather level is an ability. ",
+  "nameProperties": ["name"],
+  "properties":{
+    "id":{
+      "type":"string",
+      "format":"uuid",
+      "example":"56cf6db0-7c37-41a5-968b-d322c3f0da28",
+      "description":"The unique identifier of this ability",
+      "readOnly":true
+    },
+    "name":{
+      "type":"string",
+      "example":"Experience points",
+      "description":"The unique name of an Ability"
+    },
+    "description":{
+      "type":"string",
+      "example":"An experience point is a unit of measurement used in some tabletop role-playing games and role-playing video games to quantify a player character's life experience and progression through the game. Experience points are generally awarded for the completion of missions, overcoming obstacles and opponents, and for successful role-playing.",
+      "description":"A short description for players and game masters what this ability does within the setting"
+    },
+    "base":{
+      "type":"integer",
+      "description":"The starting point of this ability for all characters",
+      "default":0,
+      "example":15
+    }
+  },
+  "required":[
+    "name"
+  ]
+}

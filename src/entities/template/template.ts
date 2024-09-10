@@ -2,32 +2,32 @@ import { SafeParseReturnType, z } from 'zod'
 import { TTemplate } from './template.types'
 
 export class Template implements TTemplate {
-
 	public id: string
 	public name: string
+	public description: string
+	public template: string
 
-	constructor(data: TTemplate) {
-		this.hydrate(data)
+	constructor(template: TTemplate) {
+		this.id = template.id || ''
+		this.name = template.name || ''
+		this.description = template.description || ''
+		this.template = template.template || ''
 	}
 
-	/* istanbul ignore next */ // Jest does not recognize the code coverage of these 2 methods
+	/* istanbul ignore next */
 	private hydrate(data: TTemplate) {
 		this.id = data?.id?.toString() || ''
 		this.name = data?.name || ''
+		this.description = data?.description || ''
+		this.template = data?.template || ''
 	}
 
 	/* istanbul ignore next */
 	public validate(): SafeParseReturnType<TTemplate, unknown> {
-		// https://conduction.stoplight.io/docs/open-catalogi/hpksgr0u1cwj8-theme
 		const schema = z.object({
 			name: z.string().min(1),
 		})
 
-		const result = schema.safeParse({
-			...this,
-		})
-
-		return result
+		return schema.safeParse({ ...this })
 	}
-
 }

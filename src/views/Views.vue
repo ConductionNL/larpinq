@@ -16,6 +16,7 @@
 			<SkillsIndex v-if="navigationStore.selected === 'skills'" />
 			<EffectsIndex v-if="navigationStore.selected === 'effects'" />
 			<TemplatesIndex v-if="navigationStore.selected === 'templates'" />
+			<ConditionsIndex v-if="navigationStore.selected === 'conditions'" />
 		</template>
 	</NcAppContent>
 </template>
@@ -32,7 +33,7 @@ import AbilitiesIndex from './abilities/AbilitiesIndex.vue'
 import SkillsIndex from './skills/SkillsIndex.vue'
 import EffectsIndex from './effects/EffectsIndex.vue'
 import TemplatesIndex from './templates/TemplatesIndex.vue'
-
+import ConditionsIndex from './conditions/ConditionsIndex.vue'
 export default {
 	name: 'Views',
 	components: {
@@ -46,6 +47,7 @@ export default {
 		SkillsIndex,
 		EffectsIndex,
 		TemplatesIndex,
+		ConditionsIndex,
 	},
 }
 </script>

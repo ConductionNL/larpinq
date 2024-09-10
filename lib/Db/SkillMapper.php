@@ -1,8 +1,8 @@
 <?php
 
-namespace OCA\OpenCatalogi\Db;
+namespace OCA\LarpingApp\Db;
 
-use OCA\OpenCatalogi\Db\Skill;
+use OCA\LarpingApp\Db\Skill;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\QBMapper;
 use OCP\DB\QueryBuilder\IQueryBuilder;
@@ -12,15 +12,15 @@ class SkillMapper extends QBMapper
 {
 	public function __construct(IDBConnection $db)
 	{
-		parent::__construct($db, 'larping_skills');
+		parent::__construct($db, 'larpingapp_skills');
 	}
 
-	public function find(int $id): Catalog
+	public function find(int $id): Skill
 	{
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->select('*')
-			->from('larping_skills')
+			->from('larpingapp_skills')
 			->where(
 				$qb->expr()->eq('id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
 			);
@@ -33,7 +33,7 @@ class SkillMapper extends QBMapper
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->select('*')
-			->from('larping_skills')
+			->from('larpingapp_skills')
 			->setMaxResults($limit)
 			->setFirstResult($offset);
 
@@ -57,18 +57,18 @@ class SkillMapper extends QBMapper
 		return $this->findEntities(query: $qb);
 	}
 
-	public function createFromArray(array $object): Catalog
+	public function createFromArray(array $object): Skill
 	{
-		$catalog = new Skill();
-		$catalog->hydrate(object: $object);
-		return $this->insert(entity: $catalog);
+		$skill = new Skill();
+		$skill->hydrate(object: $object);
+		return $this->insert(entity: $skill);
 	}
 
-	public function updateFromArray(int $id, array $object): Catalog
+	public function updateFromArray(int $id, array $object): Skill
 	{
-		$catalog = $this->find($id);
-		$catalog->hydrate($object);
+		$skill = $this->find($id);
+		$skill->hydrate($object);
 
-		return $this->update($catalog);
+		return $this->update($skill);
 	}
 }

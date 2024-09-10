@@ -1,6 +1,6 @@
 <?php
 
-namespace OCA\OpenCatalogi\Db;
+namespace OCA\LarpingApp\Db;
 
 use DateTime;
 use JsonSerializable;
@@ -9,7 +9,7 @@ use OCP\AppFramework\Db\Entity;
 class Ability extends Entity implements JsonSerializable
 {
 
-	protected ?string $title 	    = null;
+	protected ?string $name 	    = null;
 	protected ?string $summary      = null;
 	protected ?string $description  = null;
 	protected ?string $image        = null;
@@ -20,7 +20,7 @@ class Ability extends Entity implements JsonSerializable
 	protected ?array   $metadata    = null;
 
 	public function __construct() {
-		$this->addType(fieldName: 'title', type: 'string');
+		$this->addType(fieldName: 'name', type: 'string');
 		$this->addType(fieldName: 'summary', type: 'string');
 		$this->addType(fieldName: 'description', type: 'string');
 		$this->addType(fieldName: 'image', type: 'string');
@@ -42,12 +42,6 @@ class Ability extends Entity implements JsonSerializable
 
 	public function hydrate(array $object): self
 	{
-
-
-		if(isset($object['metadata']) === false) {
-			$object['metadata'] = [];
-		}
-
 		$jsonFields = $this->getJsonFields();
 
 		foreach($object as $key => $value) {
@@ -60,7 +54,7 @@ class Ability extends Entity implements JsonSerializable
 			try {
 				$this->$method($value);
 			} catch (\Exception $exception) {
-//				var_dump("Error writing $key");
+//				("Error writing $key");
 			}
 		}
 
@@ -71,7 +65,7 @@ class Ability extends Entity implements JsonSerializable
 	{
 		$array = [
 			'id' => $this->id,
-			'title' => $this->title,
+			'name' => $this->name,
 			'summary' => $this->summary,
 			'description' => $this->description,
 			'image' => $this->image,

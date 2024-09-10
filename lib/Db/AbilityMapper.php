@@ -1,8 +1,8 @@
 <?php
 
-namespace OCA\OpenCatalogi\Db;
+namespace OCA\LarpingApp\Db;
 
-use OCA\OpenCatalogi\Db\Ability;
+use OCA\LarpingApp\Db\Ability;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\QBMapper;
 use OCP\DB\QueryBuilder\IQueryBuilder;
@@ -12,15 +12,15 @@ class AbilityMapper extends QBMapper
 {
 	public function __construct(IDBConnection $db)
 	{
-		parent::__construct($db, 'larping_abilities');
+		parent::__construct($db, 'larpingapp_abilities');
 	}
 
-	public function find(int $id): Catalog
+	public function find(int $id): Ability
 	{
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->select('*')
-			->from('larping_abilities')
+			->from('larpingapp_abilities')
 			->where(
 				$qb->expr()->eq('id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
 			);
@@ -33,7 +33,7 @@ class AbilityMapper extends QBMapper
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->select('*')
-			->from('larping_abilities')
+			->from('larpingapp_abilities')
 			->setMaxResults($limit)
 			->setFirstResult($offset);
 
@@ -57,18 +57,18 @@ class AbilityMapper extends QBMapper
 		return $this->findEntities(query: $qb);
 	}
 
-	public function createFromArray(array $object): Catalog
+	public function createFromArray(array $object): Ability
 	{
-		$catalog = new Ability();
-		$catalog->hydrate(object: $object);
-		return $this->insert(entity: $catalog);
+		$ability = new Ability();
+		$ability->hydrate(object: $object);
+		return $this->insert(entity: $ability);
 	}
 
-	public function updateFromArray(int $id, array $object): Catalog
+	public function updateFromArray(int $id, array $object): Ability
 	{
-		$catalog = $this->find($id);
-		$catalog->hydrate($object);
+		$ability = $this->find($id);
+		$ability->hydrate($object);
 
-		return $this->update($catalog);
+		return $this->update($ability);
 	}
 }

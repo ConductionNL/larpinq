@@ -9,7 +9,8 @@ return [
 		'items' => ['url' => 'api/items'],
 		'players' => ['url' => 'api/players'],
 		'skills' => ['url' => 'api/skills'],
-		'templates' => ['url' => 'api/templates'],
+		'templates' => ['url' => 'api/templates'], 
+		'conditions' => ['url' => 'api/conditions'], 
 	],
 	'routes' => [
 		// Page routes

@@ -1,8 +1,8 @@
 <?php
 
-namespace OCA\OpenCatalogi\Db;
+namespace OCA\LarpingApp\Db;
 
-use OCA\OpenCatalogi\Db\Event;
+use OCA\LarpingApp\Db\Event;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\QBMapper;
 use OCP\DB\QueryBuilder\IQueryBuilder;
@@ -12,15 +12,15 @@ class EventMapper extends QBMapper
 {
 	public function __construct(IDBConnection $db)
 	{
-		parent::__construct($db, 'larping_events');
+		parent::__construct($db, 'larpingapp_events');
 	}
 
-	public function find(int $id): Catalog
+	public function find(int $id): Event
 	{
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->select('*')
-			->from('larping_events')
+			->from('larpingapp_events')
 			->where(
 				$qb->expr()->eq('id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
 			);
@@ -33,7 +33,7 @@ class EventMapper extends QBMapper
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->select('*')
-			->from('larping_events')
+			->from('larpingapp_events')
 			->setMaxResults($limit)
 			->setFirstResult($offset);
 
@@ -57,18 +57,18 @@ class EventMapper extends QBMapper
 		return $this->findEntities(query: $qb);
 	}
 
-	public function createFromArray(array $object): Catalog
+	public function createFromArray(array $object): Event
 	{
-		$catalog = new Event();
-		$catalog->hydrate(object: $object);
-		return $this->insert(entity: $catalog);
+		$event = new Event();
+		$event->hydrate(object: $object);
+		return $this->insert(entity: $event);
 	}
 
-	public function updateFromArray(int $id, array $object): Catalog
+	public function updateFromArray(int $id, array $object): Event
 	{
-		$catalog = $this->find($id);
-		$catalog->hydrate($object);
+		$event = $this->find($id);
+		$event->hydrate($object);
 
-		return $this->update($catalog);
+		return $this->update($event);
 	}
 }

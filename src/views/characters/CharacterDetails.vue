@@ -1,10 +1,10 @@
 <script setup>
-	import { characterStore, navigationStore } from '../../store/store.js'
+import { characterStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
 	<div class="detailContainer">
-		<div v-if="characterStore.characterItem" id="app-content">
+		<div id="app-content">
 			<!-- app-content-wrapper is optional, only use if app-content-list  -->
 			<div>
 				<div class="head">
@@ -15,39 +15,45 @@
 						<template #icon>
 							<DotsHorizontal :size="20" />
 						</template>
-						<NcActionButton @click="navigationStore.setModal('editZaak')">
+						<NcActionButton @click="navigationStore.setModal('editCharacter')">
 							<template #icon>
 								<Pencil :size="20" />
 							</template>
 							Bewerken
 						</NcActionButton>
-						<NcActionButton @click="navigationStore.setModal('addDocument')">
+						<NcActionButton @click="navigationStore.setModal('addSkillToCharacter')">
 							<template #icon>
 								<FileDocumentPlusOutline :size="20" />
 							</template>
 							Vaardigheid toevoegen
 						</NcActionButton>
-						<NcActionButton @click="navigationStore.setModal('addRoll')">
+						<NcActionButton @click="navigationStore.setModal('addItemToCharacter')">
 							<template #icon>
 								<AccountPlus :size="20" />
 							</template>
 							Item toevoegen
 						</NcActionButton>
-						<NcActionButton @click="navigationStore.setModal('addTaak')">
+						<NcActionButton @click="navigationStore.setModal('addConditionToCharacter')">
 							<template #icon>
 								<CalendarPlus :size="20" />
 							</template>
 							Conditie toevoegen
 						</NcActionButton>
-						<NcActionButton @click="navigationStore.setModal('addBericht')">
+						<NcActionButton @click="navigationStore.setModal('addEventToCharacter')">
+							<template #icon>
+								<CalendarPlus :size="20" />
+							</template>
+							Event toevoegen
+						</NcActionButton>
+						<NcActionButton @click="navigationStore.setModal('downloadPdfFromCharacter')">
 							<template #icon>
 								<MessagePlus :size="20" />
 							</template>
 							Als pdf downloaden
 						</NcActionButton>
-						<NcActionButton @click="navigationStore.setModal('editZaak')">
+						<NcActionButton @click="navigationStore.setDialog('deleteCharacter')">
 							<template #icon>
-								<Pencil :size="20" />
+								<TrashCanOutline :size="20" />
 							</template>
 							Verwijderen
 						</NcActionButton>
@@ -86,7 +92,7 @@
 <script>
 // Components
 import { BTabs, BTab } from 'bootstrap-vue'
-import { NcLoadingIcon, NcActions, NcActionButton } from '@nextcloud/vue'
+import { NcActions, NcActionButton } from '@nextcloud/vue'
 
 // Icons
 import DotsHorizontal from 'vue-material-design-icons/DotsHorizontal.vue'
@@ -95,13 +101,12 @@ import AccountPlus from 'vue-material-design-icons/AccountPlus.vue'
 import CalendarPlus from 'vue-material-design-icons/CalendarPlus.vue'
 import MessagePlus from 'vue-material-design-icons/MessagePlus.vue'
 import FileDocumentPlusOutline from 'vue-material-design-icons/FileDocumentPlusOutline.vue'
-import VectorPolylineEdit from 'vue-material-design-icons/VectorPolylineEdit.vue'
+import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
 
 export default {
 	name: 'CharacterDetails',
 	components: {
 		// Components
-		NcLoadingIcon,
 		NcActions,
 		NcActionButton,
 		BTabs,
@@ -112,7 +117,7 @@ export default {
 		AccountPlus,
 		CalendarPlus,
 		FileDocumentPlusOutline,
-		VectorPolylineEdit,
+		TrashCanOutline,
 
 	},
 }

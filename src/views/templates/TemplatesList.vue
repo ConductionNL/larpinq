@@ -16,41 +16,47 @@
 					<Magnify :size="20" />
 				</NcTextField>
 				<NcActions>
-					<NcActionButton @click="fetchData">
+					<NcActionButton @click="templateStore.refreshTemplateList()">
 						<template #icon>
 							<Refresh :size="20" />
 						</template>
 						Ververs
 					</NcActionButton>
-					<NcActionButton @click="store.setModal('addRoll')">
+					<NcActionButton @click="templateStore.setTemplateItem([]); navigationStore.setModal('editTemplate')">
 						<template #icon>
 							<Plus :size="20" />
 						</template>
-						Rol toevoegen
+						Template toevoegen
 					</NcActionButton>
 				</NcActions>
 			</div>
 			<div v-if="templateStore.templateList && templateStore.templateList.length > 0">
-				<NcListItem v-for="(rollen, i) in store.templateList.results"
-					:key="`${rollen}${i}`"
-					:name="rollen?.name"
-					:active="store.rolId === rollen?.id"
+				<NcListItem v-for="(template, i) in templateStore.templateList"
+					:key="`${template}${i}`"
+					:name="template?.name"
+					:active="templateStore.templateItem?.id === template?.id"
 					:details="'1h'"
 					:counter-number="44"
-					@click="templateStore.setTemplateItem(rollen)">
+					@click="templateStore.setTemplateItem(template)">
 					<template #icon>
-						<ChatOutline :class="store.rolId === rollen.id && 'selectedZaakIcon'"
+						<ChatOutline :class="templateStore.templateItem?.id  === template.id && 'selected'"
 							disable-menu
 							:size="44" />
 					</template>
 					<template #subname>
-						{{ rollen?.summary }}
+						{{ template?.description }}
 					</template>
-					<template #actions>
-						<NcActionButton @click="editRol(rol)">
+					<template #actions>						
+						<NcActionButton @click="templateStore.setTemplateItem(template); navigationStore.setModal('editTemplate')">
+							<template #icon>
+								<Plus/>
+							</template>
 							Bewerken
 						</NcActionButton>
-						<NcActionButton>
+						<NcActionButton @click="templateStore.setTemplateItem(template), navigationStore.setDialog('deleteTemplate')">
+							<template #icon>
+								<TrashCanOutline/>
+							</template>
 							Verwijderen
 						</NcActionButton>
 					</template>
@@ -58,11 +64,15 @@
 			</div>
 		</ul>
 
-		<NcLoadingIcon v-if="!templateStore.templateList  || templateStore.templateList.length === 0"
+		<NcLoadingIcon v-if="!templateStore.templateList"
 			class="loadingIcon"
 			:size="64"
 			appearance="dark"
 			name="Rollen aan het laden" />
+
+		<div v-if="templateStore.templateList.length === 0">
+			Er zijn nog geen sjablonen gedefinieerd.
+		</div>
 	</NcAppContentList>
 </template>
 <script>
@@ -72,6 +82,10 @@ import { NcListItem, NcActions, NcActionButton, NcAppContentList, NcTextField, N
 // Icons
 import Magnify from 'vue-material-design-icons/Magnify.vue'
 import ChatOutline from 'vue-material-design-icons/ChatOutline.vue'
+import Plus from 'vue-material-design-icons/Plus.vue'
+import Pencil from 'vue-material-design-icons/Pencil.vue'
+import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
+import Refresh from 'vue-material-design-icons/Refresh.vue'
 
 export default {
 	name: 'TemplatesList',
@@ -86,6 +100,10 @@ export default {
 		// Icons
 		ChatOutline,
 		Magnify,
+		Plus,
+		Pencil,
+		TrashCanOutline,
+		Refresh,
 	},
 	data() {
 		return {
@@ -98,29 +116,6 @@ export default {
 		templateStore.refreshTemplateList()
 	},
 	methods: {
-		editRol(rol) {
-			templateStore.setTemplateItem(template)
-			navigationStore.setModal('editRol')
-		},
-		fetchData(newPage) {
-			this.loading = true
-			fetch(
-				'/index.php/apps/zaakafhandelapp/api/rollen',
-				{
-					method: 'GET',
-				},
-			)
-				.then((response) => {
-					response.json().then((data) => {
-						this.rollenList = data
-					})
-					this.loading = false
-				})
-				.catch((err) => {
-					console.error(err)
-					this.loading = false
-				})
-		},
 		clearText() {
 			this.search = ''
 		},
@@ -142,7 +137,7 @@ export default {
     margin-block-end: 6px;
 }
 
-.selectedZaakIcon>svg {
+.selected>svg {
     fill: white;
 }
 

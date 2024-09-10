@@ -1,0 +1,30 @@
+{
+  "$id": "https://larping.nl/template.schema.json",
+  "$schema": "https://docs.commongateway.nl/schemas/Entity.schema.json",
+  "version": "0.2",
+  "title": "Template",
+  "type": "object",
+  "nameProperties": ["name"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "example": "56cf6db0-7c37-41a5-968b-d322c3f0da28",
+      "readOnly": true
+    },
+    "name": {
+      "type": "string",
+      "example": "Storybook"
+    },
+    "description": {
+      "type": "string",
+      "example": "This events storybook"
+    },
+    "template": {
+      "type": "string"
+    }
+  },
+  "required":[
+    "name"
+  ]
+}

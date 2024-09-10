@@ -1,8 +1,8 @@
 <?php
 
-namespace OCA\OpenCatalogi\Db;
+namespace OCA\LarpingApp\Db;
 
-use OCA\OpenCatalogi\Db\Setting;
+use OCA\LarpingApp\Db\Setting;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\QBMapper;
 use OCP\DB\QueryBuilder\IQueryBuilder;
@@ -12,15 +12,15 @@ class SettingMapper extends QBMapper
 {
 	public function __construct(IDBConnection $db)
 	{
-		parent::__construct($db, 'larping_settings');
+		parent::__construct($db, 'larpingapp_settings');
 	}
 
-	public function find(int $id): Catalog
+	public function find(int $id): Setting
 	{
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->select('*')
-			->from('larping_settings')
+			->from('larpingapp_settings')
 			->where(
 				$qb->expr()->eq('id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
 			);
@@ -33,7 +33,7 @@ class SettingMapper extends QBMapper
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->select('*')
-			->from('larping_settings')
+			->from('larpingapp_settings')
 			->setMaxResults($limit)
 			->setFirstResult($offset);
 
@@ -57,18 +57,18 @@ class SettingMapper extends QBMapper
 		return $this->findEntities(query: $qb);
 	}
 
-	public function createFromArray(array $object): Catalog
+	public function createFromArray(array $object): Setting
 	{
-		$catalog = new Setting();
-		$catalog->hydrate(object: $object);
-		return $this->insert(entity: $catalog);
+		$setting = new Setting();
+		$setting->hydrate(object: $object);
+		return $this->insert(entity: $setting);
 	}
 
-	public function updateFromArray(int $id, array $object): Catalog
+	public function updateFromArray(int $id, array $object): Setting
 	{
-		$catalog = $this->find($id);
-		$catalog->hydrate($object);
+		$setting = $this->find($id);
+		$setting->hydrate($object);
 
-		return $this->update($catalog);
+		return $this->update($setting);
 	}
 }

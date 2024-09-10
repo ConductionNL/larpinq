@@ -1,5 +1,5 @@
 <script setup>
-	import { abilityStore, navigationStore, searchStore } from '../../store/store.js'
+import { abilityStore, navigationStore, searchStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -16,41 +16,47 @@
 					<Magnify :size="20" />
 				</NcTextField>
 				<NcActions>
-					<NcActionButton @click="fetchData">
+					<NcActionButton @click="abilityStore.refreshAbilityList()">
 						<template #icon>
 							<Refresh :size="20" />
 						</template>
 						Ververs
 					</NcActionButton>
-					<NcActionButton @click="store.setModal('addRoll')">
+					<NcActionButton @click="abilityStore.setAbilityItem([]), navigationStore.setModal('editAbility')">
 						<template #icon>
 							<Plus :size="20" />
 						</template>
-						Rol toevoegen
+						Vaardigheid toevoegen
 					</NcActionButton>
 				</NcActions>
 			</div>
-			<div v-if="abilityStore.abilityList  && abilityStore.abilityList.length === 0">
+			<div v-if="abilityStore.abilityList && abilityStore.abilityList.length > 0">
 				<NcListItem v-for="(ability, i) in abilityStore.abilityList"
 					:key="`${ability}${i}`"
 					:name="ability?.name"
 					:active="abilityStore.abilityItem.id === ability?.id"
 					:details="'1h'"
 					:counter-number="44"
-					@click="abilityStore.setAbilityItem(rollen)">
+					@click="abilityStore.setAbilityItem(ability)">
 					<template #icon>
-						<ChatOutline :class="store.rolId === rollen.id && 'selectedZaakIcon'"
+						<ShieldSwordOutline :class="abilityStore.abilityItem?.id === ability.id && 'selected'"
 							disable-menu
 							:size="44" />
 					</template>
 					<template #subname>
-						{{ rollen?.summary }}
+						{{ ability?.description }}
 					</template>
 					<template #actions>
-						<NcActionButton @click="editRol(rol)">
+						<NcActionButton @click="abilityStore.setAbilityItem(ability), navigationStore.setModal('editAbility')">
+							<template #icon>
+								<Plus />
+							</template>
 							Bewerken
 						</NcActionButton>
-						<NcActionButton>
+						<NcActionButton @click="abilityStore.setAbilityItem(ability), navigationStore.setDialog('deleteAbility')">
+							<template #icon>
+								<TrashCanOutline />
+							</template>
 							Verwijderen
 						</NcActionButton>
 					</template>
@@ -58,11 +64,15 @@
 			</div>
 		</ul>
 
-		<NcLoadingIcon v-if="!abilityStore.abilityList  || abilityStore.abilityList.length === 0"
+		<NcLoadingIcon v-if="!abilityStore.abilityList"
 			class="loadingIcon"
 			:size="64"
 			appearance="dark"
-			name="Rollen aan het laden" />
+			name="Vaardigheden aan het laden" />
+
+		<div v-if="abilityStore.abilityList.length === 0">
+			Er zijn nog geen vaardigheden gedefinieerd.
+		</div>
 	</NcAppContentList>
 </template>
 <script>
@@ -71,7 +81,11 @@ import { NcListItem, NcActions, NcActionButton, NcAppContentList, NcTextField, N
 
 // Icons
 import Magnify from 'vue-material-design-icons/Magnify.vue'
-import ChatOutline from 'vue-material-design-icons/ChatOutline.vue'
+import ShieldSwordOutline from 'vue-material-design-icons/ShieldSwordOutline.vue'
+import Plus from 'vue-material-design-icons/Plus.vue'
+import Pencil from 'vue-material-design-icons/Pencil.vue'
+import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
+import Refresh from 'vue-material-design-icons/Refresh.vue'
 
 export default {
 	name: 'AbilitiesList',
@@ -84,49 +98,19 @@ export default {
 		NcTextField,
 		NcLoadingIcon,
 		// Icons
-		ChatOutline,
+		ShieldSwordOutline,
 		Magnify,
-	},
-	data() {
-		return {
-			search: '',
-			loading: true,
-			rollenList: [],
-		}
+		Plus,
+		Pencil,
+		TrashCanOutline,
+		Refresh,
 	},
 	mounted() {
 		abilityStore.refreshAbilityList()
 	},
-	methods: {
-		editRol(rol) {
-			abilityStore.setAbilityStoreItem(ab)
-			navigationStore.setModal('editRol')
-		},
-		fetchData(newPage) {
-			this.loading = true
-			fetch(
-				'/index.php/apps/zaakafhandelapp/api/rollen',
-				{
-					method: 'GET',
-				},
-			)
-				.then((response) => {
-					response.json().then((data) => {
-						this.rollenList = data
-					})
-					this.loading = false
-				})
-				.catch((err) => {
-					console.error(err)
-					this.loading = false
-				})
-		},
-		clearText() {
-			this.search = ''
-		},
-	},
 }
 </script>
+
 <style>
 .listHeader {
     position: sticky;
@@ -142,11 +126,11 @@ export default {
     margin-block-end: 6px;
 }
 
-.selectedZaakIcon>svg {
+.selectedIcon>svg {
     fill: white;
 }
 
 .loadingIcon {
-    margin-block-start: var(--zaa-margin-20);
+    margin-block-start: var(--OC-margin-20);
 }
 </style>

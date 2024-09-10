@@ -4,24 +4,20 @@
 
 <template>
 	<div class="detailContainer">
-		<div v-if="!loading" id="app-content">
+		<div id="app-content">
 			<!-- app-content-wrapper is optional, only use if app-content-list  -->
 			<div>
 				<h1 class="h1">
-					{{ rol.name }}
+					{{ templateStore.templateItem.name }}
 				</h1>
 				<div class="grid">
 					<div class="gridContent">
 						<h4>Sammenvatting:</h4>
-						<span>{{ rol.summary }}</span>
+						<span>{{ templateStore.templateItem.name }}</span>
 					</div>
 				</div>
 			</div>
 		</div>
-		<NcLoadingIcon v-if="loading"
-			:size="100"
-			appearance="dark"
-			name="Rol details aan het laden" />
 	</div>
 </template>
 
@@ -32,47 +28,6 @@ export default {
 	name: 'TemplateDetails',
 	components: {
 		NcLoadingIcon,
-	},
-	props: {
-		rolId: {
-			type: String,
-			required: true,
-		},
-	},
-	data() {
-		return {
-			rol: [],
-			loading: false,
-		}
-	},
-	watch: {
-		rolId: {
-			handler(rolId) {
-				this.fetchData(rolId)
-			},
-			deep: true,
-		},
-	},
-	methods: {
-		fetchData(rolId) {
-			this.loading = true
-			fetch(
-				'/index.php/apps/zaakafhandelapp/api/rollen/' + rolId,
-				{
-					method: 'GET',
-				},
-			)
-				.then((response) => {
-					response.json().then((data) => {
-						this.rol = data
-					})
-					this.loading = false
-				})
-				.catch((err) => {
-					console.error(err)
-					this.loading = false
-				})
-		},
 	},
 }
 </script>

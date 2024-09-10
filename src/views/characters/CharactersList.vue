@@ -16,13 +16,13 @@
 					<Magnify :size="20" />
 				</NcTextField>
 				<NcActions>
-					<NcActionButton @click="fetchData()">
+					<NcActionButton @click="characterStore.refreshCharacterList()">
 						<template #icon>
 							<Refresh :size="20" />
 						</template>
 						Ververs
 					</NcActionButton>
-					<NcActionButton @click="navigationStore.setModal('addCharacter')">
+					<NcActionButton @click="characterStore.setCharacterItem([]); navigationStore.setModal('editCharacter')">
 						<template #icon>
 							<Plus :size="20" />
 						</template>
@@ -30,6 +30,7 @@
 					</NcActionButton>
 				</NcActions>
 			</div>
+
 			<div v-if="characterStore.characterList && characterStore.characterList.length > 0">
 				<NcListItem v-for="(character, i) in characterStore.characterList"
 					:key="`${character}${i}`"
@@ -50,13 +51,13 @@
 					<template #actions>
 						<NcActionButton @click="characterStore.setCharacterItem(character); navigationStore.setModal('editCharacter')">
 							<template #icon>
-								<Pencil :size="20" />
+								<Pencil />
 							</template>
 							Bewerken
 						</NcActionButton>
 						<NcActionButton @click="characterStore.setCharacterItem(character); navigationStore.setDialog('deleteCharacter')">
 							<template #icon>
-								<TrashCanOutline :size="20" />
+								<TrashCanOutline />
 							</template>
 							Verwijderen
 						</NcActionButton>
@@ -65,11 +66,15 @@
 			</div>
 		</ul>
 
-		<NcLoadingIcon v-if="!characterStore.characterList  || characterStore.characterList.length === 0"
+		<NcLoadingIcon v-if="!characterStore.characterList"
 			class="loadingIcon"
 			:size="64"
 			appearance="dark"
 			name="Zaken aan het laden" />
+
+		<div v-if="characterStore.characterList.length === 0">
+			Er zijn nog geen karakters gedefinieerd.
+		</div>
 	</NcAppContentList>
 </template>
 <script>
@@ -83,6 +88,7 @@ import Refresh from 'vue-material-design-icons/Refresh.vue'
 import Plus from 'vue-material-design-icons/Plus.vue'
 import Pencil from 'vue-material-design-icons/Pencil.vue'
 import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
+
 export default {
 	name: 'CharactersList',
 	components: {
@@ -106,7 +112,15 @@ export default {
 	},
 }
 </script>
+
 <style>
+.listHeader {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: var(--color-main-background);
+    border-bottom: 1px solid var(--color-border);
+}
 
 .searchField {
     padding-inline-start: 65px;
@@ -114,11 +128,11 @@ export default {
     margin-block-end: 6px;
 }
 
-.selectedZaakIcon>svg {
+.selectedIcon>svg {
     fill: white;
 }
 
 .loadingIcon {
-    margin-block-start: var(--zaa-margin-20);
+    margin-block-start: var(--OC-margin-20);
 }
 </style>

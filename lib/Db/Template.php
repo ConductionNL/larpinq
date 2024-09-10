@@ -1,6 +1,6 @@
 <?php
 
-namespace OCA\OpenCatalogi\Db;
+namespace OCA\LarpingApp\Db;
 
 use DateTime;
 use JsonSerializable;
@@ -8,27 +8,14 @@ use OCP\AppFramework\Db\Entity;
 
 class Template extends Entity implements JsonSerializable
 {
-
-	protected ?string $title 	    = null;
-	protected ?string $summary      = null;
-	protected ?string $description  = null;
-	protected ?string $image        = null;
-	protected ?string $search	    = null;
-
-	protected bool    $listed       = false;
-	protected ?string $organisation = null;
-	protected ?array   $metadata    = null;
+	protected ?string $name = null;
+	protected ?string $description = null;
+	protected ?string $template = null;
 
 	public function __construct() {
-		$this->addType(fieldName: 'title', type: 'string');
-		$this->addType(fieldName: 'summary', type: 'string');
-		$this->addType(fieldName: 'description', type: 'string');
-		$this->addType(fieldName: 'image', type: 'string');
-		$this->addType(fieldName: 'search', type: 'string');
-		$this->addType(fieldName: 'listed', type: 'boolean');
-		$this->addType(fieldName: 'organisation', type: 'string');
-		$this->addType(fieldName: 'metadata', type: 'json');
-
+		$this->addType('name', 'string');
+		$this->addType('description', 'string');
+		$this->addType('template', 'string');
 	}
 
 	public function getJsonFields(): array
@@ -42,12 +29,6 @@ class Template extends Entity implements JsonSerializable
 
 	public function hydrate(array $object): self
 	{
-
-
-		if(isset($object['metadata']) === false) {
-			$object['metadata'] = [];
-		}
-
 		$jsonFields = $this->getJsonFields();
 
 		foreach($object as $key => $value) {
@@ -60,7 +41,7 @@ class Template extends Entity implements JsonSerializable
 			try {
 				$this->$method($value);
 			} catch (\Exception $exception) {
-//				var_dump("Error writing $key");
+//				("Error writing $key");
 			}
 		}
 
@@ -69,27 +50,11 @@ class Template extends Entity implements JsonSerializable
 
 	public function jsonSerialize(): array
 	{
-		$array = [
+		return [
 			'id' => $this->id,
-			'title' => $this->title,
-			'summary' => $this->summary,
+			'name' => $this->name,
 			'description' => $this->description,
-			'image' => $this->image,
-			'search' => $this->search,
-			'listed' => $this->listed,
-			'metadata' => $this->metadata,
-			'organisation'=> $this->organisation,
-
+			'template' => $this->template,
 		];
-
-		$jsonFields = $this->getJsonFields();
-
-		foreach ($array as $key => $value) {
-			if (in_array($key, $jsonFields) === true && $value === null) {
-				$array[$key] = [];
-			}
-		}
-
-		return $array;
 	}
 }

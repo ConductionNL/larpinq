@@ -5,29 +5,37 @@ export class Condition implements TCondition {
 
 	public id: string
 	public name: string
+	public description: string
+	public effect: string
+	public effects: string[]
+	public unique: boolean
 
-	constructor(data: TCondition) {
-		this.hydrate(data)
+	constructor(condition: TCondition) {
+		this.id = condition.id || ''
+		this.name = condition.name || ''
+		this.description = condition.description || ''
+		this.effect = condition.effect || ''
+		this.effects = condition.effects || []
+		this.unique = condition.unique || false
 	}
 
-	/* istanbul ignore next */ // Jest does not recognize the code coverage of these 2 methods
+	/* istanbul ignore next */
 	private hydrate(data: TCondition) {
 		this.id = data?.id?.toString() || ''
 		this.name = data?.name || ''
+		this.description = data?.description || ''
+		this.effect = data?.effect || ''
+		this.effects = data?.effects || []
+		this.unique = data?.unique || false
 	}
 
 	/* istanbul ignore next */
 	public validate(): SafeParseReturnType<TCondition, unknown> {
-		// https://conduction.stoplight.io/docs/open-catalogi/hpksgr0u1cwj8-theme
 		const schema = z.object({
 			name: z.string().min(1),
 		})
 
-		const result = schema.safeParse({
-			...this,
-		})
-
-		return result
+		return schema.safeParse({ ...this })
 	}
 
 }

@@ -1,0 +1,133 @@
+{
+  "$id": "https://larping.nl/character.schema.json",
+  "$schema": "https://docs.commongateway.nl/schemas/Entity.schema.json",
+  "version": "0.9",
+  "title":"Character",
+  "type":"object",
+  "description":" A player or non player character within an setting. Non Player characters are defined by not being attached to a user",
+  "properties":{
+    "name": {
+      "type":"string",
+      "example":"Jack Doe",
+      "description":"The chosen name for this character"
+    },
+    "ocName": {
+      "type":"string",
+      "example":"Jack Doe",
+      "description":"The name of the player playing this character"
+    },
+    "description": {
+      "type":"string",
+      "format":"text",
+      "example":"A proper sea faring pirate",
+      "description":"A public description of this character visible for al users with access to the character. DO NOT USE FOR PRIVET BACKGROUNDS",
+      "maxLength":2555
+    },
+    "background": {
+      "type":"string",
+      "format":"text",
+      "maxLength":2555,
+      "description":"The background of a character, usually this should only be available to players and game masters",
+      "example":"Jack isn’t much of a sea faring pirate, sea fearing would be more appropriate. Ever since getting the black mark jack has gone out of its way not to leave shore.  "
+    },
+    "itemsAndMoney": {
+      "type":"string",
+      "format":"text",
+      "maxLength":2555,
+      "description":"A note containing info about items, money etc."
+    },
+    "notice":{
+      "type":"string",
+      "format":"text",
+      "maxLength":2555,
+      "description":"Anything out of the ordinary that the system noticed automatically",
+      "example":" ",
+      "readOnly": true
+    },
+    "faith":{
+      "type":"string",
+      "format":"text",
+      "maxLength":2555,
+      "description":"The faith of a character",
+      "example":"Godless"
+    },
+    "slNotesPublic":{
+      "type":"string",
+      "format":"text",
+      "maxLength":2555,
+      "description":"SL notes that are visible to players",
+      "example":" "
+    },
+    "slNotesPrivate":{
+      "type":"string",
+      "format":"text",
+      "maxLength":2555,
+      "description":"SL notes that are NOT-visible to players",
+      "example":" "
+    },
+    "card":{
+      "type":"string",
+      "format":"text",
+      "maxLength":5000,
+      "description":"The character card as a nice markdown table",
+      "example":""
+    },
+    "stats":{
+      "type":"array",
+      "description":"The stats of this character",
+      "readOnly": true
+    },
+    "gold":{
+      "type":"integer",
+      "description":"The amount of gold peaces that this character has"
+    },
+    "silver":{
+      "type":"integer",
+      "description":"The amount of silver peaces that this character has"
+    },
+    "copper":{
+      "type":"integer",
+      "description":"The amount of copper peaces that this character has"
+    },
+    "events":{
+      "type":"array",
+      "description":"All the events that this characters has subscribed to\n",
+      "items":{
+        "type":"object",
+        "$ref": "https://larping.nl/event.schema.json"
+      }
+    },
+    "skills":{
+      "type":"array",
+      "description":"All the skills that this characters posses\n",
+      "items":{
+        "type":"object",
+        "$ref": "https://larping.nl/skill.schema.json"
+      }
+    },
+    "conditions":{
+      "type":"array",
+      "description":"All the conditions that apply to this character",
+      "items":{
+        "type":"object",
+        "$ref": "https://larping.nl/condition.schema.json"
+      }
+    },
+    "type":{
+      "type":"string",
+      "default":"player",
+      "enum": ["player","npc","other"],
+      "description":"Whether this character is a player character, setting this to false wil turn the character to a non player character (NPC)"
+    },
+    "approved":{
+      "type":"string",
+      "default":"player",
+      "enum": ["no","approved"],
+      "description":"Whether this character is a approved by a game master,setting this to approved wil make the character playable on events"
+    }
+  },
+  "required":[
+    "name",
+    "ocName"
+  ]
+}

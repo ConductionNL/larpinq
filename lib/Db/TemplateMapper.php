@@ -1,8 +1,8 @@
 <?php
 
-namespace OCA\OpenCatalogi\Db;
+namespace OCA\LarpingApp\Db;
 
-use OCA\OpenCatalogi\Db\Template;
+use OCA\LarpingApp\Db\Template;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\QBMapper;
 use OCP\DB\QueryBuilder\IQueryBuilder;
@@ -12,15 +12,15 @@ class TemplateMapper extends QBMapper
 {
 	public function __construct(IDBConnection $db)
 	{
-		parent::__construct($db, 'larping_templates');
+		parent::__construct($db, 'larpingapp_templates');
 	}
 
-	public function find(int $id): Catalog
+	public function find(int $id): Template
 	{
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->select('*')
-			->from('larping_templates')
+			->from('larpingapp_templates')
 			->where(
 				$qb->expr()->eq('id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
 			);
@@ -33,7 +33,7 @@ class TemplateMapper extends QBMapper
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->select('*')
-			->from('larping_templates')
+			->from('larpingapp_templates')
 			->setMaxResults($limit)
 			->setFirstResult($offset);
 
@@ -57,21 +57,21 @@ class TemplateMapper extends QBMapper
 		return $this->findEntities(query: $qb);
 	}
 
-	public function createFromArray(array $object): Catalog
+	public function createFromArray(array $object): Template
 	{
-		$catalog = new Template();
-		$catalog->hydrate(object: $object);
+		$template = new Template();
+		$template->hydrate(object: $object);
 
 //		var_dump($catalog->getTitle());
 
-		return $this->insert(entity: $catalog);
+		return $this->insert(entity: $template);
 	}
 
-	public function updateFromArray(int $id, array $object): Catalog
+	public function updateFromArray(int $id, array $object): Template
 	{
-		$catalog = $this->find($id);
-		$catalog->hydrate($object);
+		$template = $this->find($id);
+		$template->hydrate($object);
 
-		return $this->update($catalog);
+		return $this->update($template);
 	}
 }

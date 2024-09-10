@@ -1,4 +1,6 @@
 export type TAbility = {
-    id: string
-	name: string
+    id?: string
+    name: string
+    description?: string
+    base?: number
 }

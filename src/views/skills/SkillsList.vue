@@ -16,56 +16,63 @@
 					<Magnify :size="20" />
 				</NcTextField>
 				<NcActions>
-					<NcActionButton @click="fetchData">
+					<NcActionButton @click="skillStore.refreshSkillList()">
 						<template #icon>
 							<Refresh :size="20" />
 						</template>
 						Ververs
 					</NcActionButton>
-					<NcActionButton @click="store.setModal('addDocument')">
+					<NcActionButton @click="skillStore.setSkillItem([]); navigationStore.setModal('editSkill')">
 						<template #icon>
 							<Plus :size="20" />
 						</template>
-						Bericht toevoegen
+						Vaardigheid toevoegen
 					</NcActionButton>
 				</NcActions>
 			</div>
 			<div v-if="skillStore.skillList && skillStore.skillList.length > 0">
-				<NcListItem v-for="(zaken, i) in store.skillsList.results"
-					:key="`${zaken}${i}`"
-					:name="zaken?.name"
-					:active="store.zakenItem === zaken?.id"
+				<NcListItem v-for="(skill, i) in skillStore.skillList"
+					:key="`${skill}${i}`"
+					:name="skill?.name"
+					:active="skillStore.skillItem === skill?.id"
 					:details="'1h'"
 					:counter-number="44"
-					@click="store.setMetadataItem(zaken.id)">
+					@click="skillStore.setSkillItem(skill)">
 					<template #icon>
-						<BriefcaseAccountOutline :class="store.zakenItem === zaken.id && 'selectedZaakIcon'"
+						<SwordCross :class="skillStore.skillItem === skill.id && 'selectedSkillIcon'"
 							disable-menu
 							:size="44" />
 					</template>
 					<template #subname>
-						{{ zaken?.summary }}
+						{{ skill?.description }}
 					</template>
 					<template #actions>
-						<NcActionButton>
-							Button one
+						<NcActionButton @click="skillStore.setSkillItem(skill); navigationStore.setModal('editSkill')">
+							<template #icon>
+								<Plus/>
+							</template>
+							Bewerken
 						</NcActionButton>
-						<NcActionButton>
-							Button two
-						</NcActionButton>
-						<NcActionButton>
-							Button three
+						<NcActionButton @click="skillStore.setSkillItem(skill), navigationStore.setDialog('deleteSkill')">
+							<template #icon>
+								<TrashCanOutline/>
+							</template>
+							Verwijderen
 						</NcActionButton>
 					</template>
 				</NcListItem>
 			</div>
 		</ul>
 
-		<NcLoadingIcon v-if="!skillStore.skillList  || skillStore.skillList.length === 0"
+		<NcLoadingIcon v-if="!skillStore.skillList"
 			class="loadingIcon"
 			:size="64"
 			appearance="dark"
 			name="Zaken aan het laden" />
+
+		<div v-if="skillStore.skillList.length === 0">
+			Er zijn nog geen vaardigheden gedefinieerd.
+		</div>
 	</NcAppContentList>
 </template>
 <script>
@@ -74,7 +81,11 @@ import { NcListItem, NcActions, NcActionButton, NcAppContentList, NcTextField, N
 
 // Icons
 import Magnify from 'vue-material-design-icons/Magnify.vue'
-import BriefcaseAccountOutline from 'vue-material-design-icons/BriefcaseAccountOutline.vue'
+import SwordCross from 'vue-material-design-icons/SwordCross.vue'
+import Plus from 'vue-material-design-icons/Plus.vue'
+import Pencil from 'vue-material-design-icons/Pencil.vue'
+import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
+import Refresh from 'vue-material-design-icons/Refresh.vue'
 
 export default {
 	name: 'SkillsList',
@@ -87,42 +98,15 @@ export default {
 		NcTextField,
 		NcLoadingIcon,
 		// Icons
-		BriefcaseAccountOutline,
+		SwordCross,
 		Magnify,
-	},
-	data() {
-		return {
-			search: '',
-			loading: true,
-			zakenList: [],
-		}
+		Plus,
+		Pencil,
+		TrashCanOutline,
+		Refresh,
 	},
 	mounted() {
 		skillStore.refreshSkillList()
-	},
-	methods: {
-		fetchData(newPage) {
-			this.loading = true
-			fetch(
-				'/index.php/apps/zaakafhandelapp/api/zaken',
-				{
-					method: 'GET',
-				},
-			)
-				.then((response) => {
-					response.json().then((data) => {
-						this.zakenList = data
-					})
-					this.loading = false
-				})
-				.catch((err) => {
-					console.error(err)
-					this.loading = false
-				})
-		},
-		clearText() {
-			this.search = ''
-		},
 	},
 }
 </script>

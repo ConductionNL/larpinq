@@ -16,7 +16,7 @@
 					<CalendarMonthOutline />
 				</template>
 				<template #action>
-					<NcButton type="primary" @click="navigationStore.setModal('addEvents')">
+					<NcButton type="primary" @click="eventStore.setEventItem([]); navigationStore.setModal('editEvent')">
 						Event toevoegen
 					</NcButton>
 				</template>

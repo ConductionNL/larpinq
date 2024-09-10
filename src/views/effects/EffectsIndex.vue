@@ -1,5 +1,5 @@
 <script setup>
-	import { effectStore, navigationStore } from '../../store/store.js'
+import { effectStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -16,7 +16,7 @@
 					<MagicStaff />
 				</template>
 				<template #action>
-					<NcButton type="primary" @click="navigationStore.setModal('addEffect')">
+					<NcButton type="primary" @click="effectStore.setEffectItem([]); navigationStore.setModal('addEffect')">
 						Effect toevoegen
 					</NcButton>
 				</template>

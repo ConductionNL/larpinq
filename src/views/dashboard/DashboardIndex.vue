@@ -4,7 +4,7 @@
 			Dashboard
 		</h2>
 
-		Welkom!
+		Welkom! tadaa
 	</NcAppContent>
 </template>
 

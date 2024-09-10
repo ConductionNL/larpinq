@@ -16,7 +16,7 @@
 					<Sword />
 				</template>
 				<template #action>
-					<NcButton type="primary" @click="navigationStore.setModal('addItem')">
+					<NcButton type="primary" @click="itemStore.setItemItem([]); navigationStore.setModal('editItem')">
 						Item aanmaken
 					</NcButton>
 				</template>

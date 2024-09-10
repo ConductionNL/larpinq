@@ -1,8 +1,8 @@
 <?php
 
-namespace OCA\OpenCatalogi\Db;
+namespace OCA\LarpingApp\Db;
 
-use OCA\OpenCatalogi\Db\Character;
+use OCA\LarpingApp\Db\Condition;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\QBMapper;
 use OCP\DB\QueryBuilder\IQueryBuilder;
@@ -12,15 +12,15 @@ class CharacterMapper extends QBMapper
 {
 	public function __construct(IDBConnection $db)
 	{
-		parent::__construct($db, 'larping_characters');
+		parent::__construct($db, 'larpingapp_conditions');
 	}
 
-	public function find(int $id): Catalog
+	public function find(int $id): Condition
 	{
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->select('*')
-			->from('larping_characters')
+			->from('larpingapp_conditions')
 			->where(
 				$qb->expr()->eq('id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
 			);
@@ -33,7 +33,7 @@ class CharacterMapper extends QBMapper
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->select('*')
-			->from('larping_characters')
+			->from('larpingapp_conditions')
 			->setMaxResults($limit)
 			->setFirstResult($offset);
 
@@ -57,18 +57,18 @@ class CharacterMapper extends QBMapper
 		return $this->findEntities(query: $qb);
 	}
 
-	public function createFromArray(array $object): Catalog
+	public function createFromArray(array $object): Condition
 	{
-		$catalog = new Character();
-		$catalog->hydrate(object: $object);
-		return $this->insert(entity: $catalog);
+		$condition = new Condition();
+		$condition->hydrate(object: $object);
+		return $this->insert(entity: $condition);
 	}
 
-	public function updateFromArray(int $id, array $object): Catalog
+	public function updateFromArray(int $id, array $object): Condition
 	{
-		$catalog = $this->find($id);
-		$catalog->hydrate($object);
+		$condition = $this->find($id);
+		$condition->hydrate($object);
 
-		return $this->update($catalog);
+		return $this->update($condition);
 	}
 }

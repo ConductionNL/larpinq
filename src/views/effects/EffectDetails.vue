@@ -1,15 +1,15 @@
 <script setup>
-	import { effectStore, navigationStore } from '../../store/store.js'
+import { effectStore } from '../../store/store.js'
 </script>
 
 <template>
 	<div class="detailContainer">
-		<div v-if="store.klantItem" id="app-content">
+		<div id="app-content">
 			<!-- app-content-wrapper is optional, only use if app-content-list  -->
 			<div>
 				<div class="head">
 					<h1 class="h1">
-						{{ store.klantItem.voornaam }} {{ store.klantItem.voorvoegsel }} {{ store.klantItem.achternaam }}
+						{{ effectStore.effectItem.name }}
 					</h1>
 
 					<NcActions :primary="true" menu-name="Acties">
@@ -48,61 +48,12 @@
 						</NcActionButton>
 					</NcActions>
 				</div>
-				<span> {{ store.klantItem.subject }} </span>
+				<span> {{ effectStore.effectItem.summery }} </span>
 
 				<div class="detailGrid">
 					<div class="gridContent gridFullWidth">
 						<b>Klantnummer:</b>
-						<p>{{ store.klantItem.klantnummer }}</p>
-					</div>
-
-					<div class="gridContent">
-						<b>Telefoonnummer:</b>
-						<p>{{ store.klantItem.telefoonnummer }}</p>
-					</div>
-					<div class="gridContent">
-						<b>Email adres:</b>
-						<p>{{ store.klantItem.emailadres }}</p>
-					</div>
-					<div class="gridContent">
-						<b>Adres:</b>
-						<p>{{ store.klantItem.adres }}</p>
-					</div>
-					<div class="gridContent">
-						<b>Functie:</b>
-						<p>{{ store.klantItem.functie }}</p>
-					</div>
-					<div class="gridContent">
-						<b>Bedrijfsnaam:</b>
-						<p>{{ store.klantItem.bedrijfsnaam }}</p>
-					</div>
-					<div class="gridContent">
-						<b>Website url:</b>
-						<p>{{ store.klantItem.websiteUrl }}</p>
-					</div>
-					<div class="gridContent">
-						<b>url:</b>
-						<p>{{ store.klantItem.url }}</p>
-					</div>
-					<div class="gridContent">
-						<b>Bron organisatie:</b>
-						<p>{{ store.klantItem.bronorganisatie }}</p>
-					</div>
-					<div class="gridContent">
-						<b>Aanmaakkanaal:</b>
-						<p>{{ store.klantItem.aanmaakkanaal }}</p>
-					</div>
-					<div class="gridContent">
-						<b>Geverifieerd:</b>
-						<p>{{ store.klantItem.geverifieerd }}</p>
-					</div>
-					<div class="gridContent">
-						<b>Subject Identificatie:</b>
-						<p>{{ store.klantItem.subjectIdentificatie }}</p>
-					</div>
-					<div class="gridContent">
-						<b>Subject Type:</b>
-						<p>{{ store.klantItem.subjectType }}</p>
+						<p>{{ effectStore.effectItem.summery }}</p>
 					</div>
 				</div>
 				<div class="tabContainer">

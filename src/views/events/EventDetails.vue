@@ -9,7 +9,7 @@
 			<div>
 				<div class="head">
 					<h1 class="h1">
-						{{ store.taakItem.title }}
+						{{ eventStore.eventItem.name }}
 					</h1>
 					<NcActions :primary="true" menu-name="Acties">
 						<template #icon>
@@ -32,7 +32,7 @@
 				<div class="grid">
 					<div class="gridContent">
 						<b>Sammenvatting:</b>
-						<span>{{ store.taakItem.onderwerp }}</span>
+						<span>{{ eventStore.eventItem.summery }}</span>
 					</div>
 				</div>
 			</div>

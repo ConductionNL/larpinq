@@ -16,7 +16,7 @@
 					<SwordCross />
 				</template>
 				<template #action>
-					<NcButton type="primary" @click="navigationStore.setModal('addSkill')">
+					<NcButton type="primary" @click="skillStore.setSkillItem([]); navigationStore.setModal('editSkill')">
 						Skill toevoegen
 					</NcButton>
 				</template>

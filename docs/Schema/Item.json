@@ -1,0 +1,62 @@
+{
+  "$id": "https://larping.nl/item.schema.json",
+  "$schema": "https://docs.commongateway.nl/schemas/Entity.schema.json",
+  "version": "0.3",
+  "title":"Item",
+  "type":"object",
+  "description":"Items represent objects that characters own and that can have an effect on them, generally speaking items should only be used to keep track of magic and otherwise special items. They represent a bureaucratic burden to your gamemasters so try not to blindly create them.\n\nItems should not be used to keep track of components that you would like to calculate (e.g. money or material components like wood and steel) use abilities for those instead.",
+  "nameProperties": ["name"],
+  "properties":{
+    "id":{
+      "type":"string",
+      "format":"uuid",
+      "example":"56cf6db0-7c37-41a5-968b-d322c3f0da28",
+      "readOnly":true
+    },
+    "name":{
+      "type":"string",
+      "description":"The name of the item",
+      "example":"Hand of Vecna",
+      "minLength":15,
+      "maxLength":255
+    },
+    "description":{
+      "type":"string",
+      "example":"The Hand of Vecna is a powerful artifact in many campaign settings for the Dungeons & Dragons fantasy role-playing game. Originating in the World of Greyhawk campaign setting, the Hand appears as a severed left human hand, blackened and charred, with long, claw-like fingernails.",
+      "maxLength":2555,
+      "minLength":15,
+      "description":"The description of this item, keep in mind that the description is visable to the character that has the item. \n\nGeneraly descriptions should contain some story like pointers to what the item does"
+    },
+    "effect":{
+      "type":"string",
+      "description":"A textual description of the effect that this item has on owner, keep in mind that this text is not visable to the character.\n\nIt SHOULD contain enough information for Game Masters to understand what the item does. Even if it is created by a differend Game Master.",
+      "maxLength":2555,
+      "minLength":15,
+      "example":"The new bearer of the Eye or Hand (or both) will gain access to powerful spell-like abilities, but the items will slowly corrupt them, turning them evil over time"
+    },
+    "effects":{
+      "type":"array",
+      "description":"A list of (predefined) effect",
+      "items":{
+        "type":"object",
+        "$ref": "https://larping.nl/effect.schema.json"
+      }
+    },
+    "unique":{
+      "type":"boolean",
+      "description":"Wheter or not this item is unique, this should be true for items of wish there is only (e.g. Hand of Vecna or other artifacts). But you are free to maintain non-unique items (e.g. Generic Magic Sword).",
+      "default":true
+    },
+    "characters":{
+      "type":"array",
+      "description":"The character or characters holding this item, in the case this item is unique this can be only one character",
+      "items":{
+        "type":"object",
+        "$ref": "https://larping.nl/character.schema.json"
+      }
+    }
+  },
+  "required":[
+    "name"
+  ]
+}

@@ -1,5 +1,5 @@
 <script setup>
-	import { playerStore, navigationStore } from '../../store/store.js'
+import { playerStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -16,7 +16,7 @@
 					<AccountGroupOutline />
 				</template>
 				<template #action>
-					<NcButton type="primary" @click="navigationStore.setModal('addPlayer')">
+					<NcButton type="primary" @click="playerStore.setPlayerItem([]); navigationStore.setModal('editPlayer')">
 						Speler aanmaken
 					</NcButton>
 				</template>

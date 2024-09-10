@@ -1,0 +1,55 @@
+{
+  "$id": "https://larping.nl/event.schema.json",
+  "$schema": "https://docs.commongateway.nl/schemas/Entity.schema.json",
+  "version": "0.4",
+  "title":"Event",
+  "type":"object",
+  "description":"An event or special that is part of a setting. This can be either a full blown week long event or just a Tuesday afternoon gathering. Events are the place where players come together to have adventures.",
+  "nameProperties": ["name"],
+  "properties":{
+    "id":{
+      "type":"string",
+      "format":"uuid",
+      "example":"56cf6db0-7c37-41a5-968b-d322c3f0da28",
+      "readOnly":true
+    },
+    "name":{
+      "type":"string"
+    },
+    "description":{
+      "type":"string"
+    },
+    "players":{
+      "type":"array",
+      "description":"Players participating in this event.",
+      "items": {
+        "type":"string",
+        "format":"uuid"
+      }
+    },
+    "effects":{
+      "type":"array",
+      "description":"Any effects that must be applied to partaking players after the event is finished. Commonly used for updating characters but can be used for anything.",
+      "items":{
+        "type":"string",
+        "format":"uuid"
+      }
+    },
+    "startDate":{
+      "type":"string",
+      "format":"date-time",
+      "description":"The moment this event starts"
+    },
+    "endDate":{
+      "type":"string",
+      "format":"date-time",
+      "description":"The moment this event ends"
+    },
+    "location":{
+      "type":"string"
+    }
+  },
+  "required":[
+    "name"
+  ]
+}
