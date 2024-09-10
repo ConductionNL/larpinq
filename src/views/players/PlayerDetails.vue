@@ -1,5 +1,5 @@
 <script setup>
-import { playerStore, characterStore, skillStore } from '../../store/store.js'
+import { playerStore, characterStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -28,7 +28,7 @@ import { playerStore, characterStore, skillStore } from '../../store/store.js'
 							:bold="false"
 							:force-display-actions="true">
 							<template #icon>
-								<MagicStaff disable-menu
+								<BriefcaseAccountOutline disable-menu
 									:size="44" />
 							</template>
 							<template #subname>
@@ -48,7 +48,7 @@ import { playerStore, characterStore, skillStore } from '../../store/store.js'
 							:bold="false"
 							:force-display-actions="true">
 							<template #icon>
-								<MagicStaff disable-menu
+								<CalendarMonthOutline disable-menu
 									:size="44" />
 							</template>
 							<template #subname>
@@ -70,6 +70,9 @@ import {
 	NcListItem,
 } from '@nextcloud/vue'
 import { BTabs, BTab } from 'bootstrap-vue'
+
+import BriefcaseAccountOutline from 'vue-material-design-icons/BriefcaseAccountOutline.vue'
+import CalendarMonthOutline from 'vue-material-design-icons/CalendarMonthOutline.vue'
 
 export default {
 	name: 'PlayerDetails',
