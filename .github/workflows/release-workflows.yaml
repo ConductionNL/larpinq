@@ -3,28 +3,50 @@ name: Release Workflow
 on:
   push:
     branches:
-      - master
-  workflow_dispatch: 
+      - main
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (leave empty to use info.xml version)'
+        required: false
+        default: ''
 
 jobs:
   release-management:
     runs-on: ubuntu-latest
     steps:
     
-      - name: Set app env
-        run: |
-          # Split and keep last
-          echo "APP_NAME=${GITHUB_REPOSITORY##*/}" >> $GITHUB_ENV
-          echo "APP_VERSION=${GITHUB_REF##*/}" >> $GITHUB_ENV
-
-      # Step 1: Checkout the code
       - name: Checkout Code
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.head_ref }}   # Checkout the correct branch name
-          fetch-depth: 0                # Fetch the whole repo history
+          fetch-depth: 0
 
-      # Step 2: Prepare the signing certificate and key
+      - name: Set app env
+        run: |
+          echo "APP_NAME=${GITHUB_REPOSITORY##*/}" >> $GITHUB_ENV
+
+      - name: Get current version and increment
+        id: increment_version
+        run: |
+          current_version=$(grep -oP '(?<=<version>)[^<]+' appinfo/info.xml)
+          IFS='.' read -ra version_parts <<< "$current_version"
+          ((version_parts[2]++))
+          new_version="${version_parts[0]}.${version_parts[1]}.${version_parts[2]}"
+          echo "NEW_VERSION=$new_version" >> $GITHUB_ENV
+          echo "new_version=$new_version" >> $GITHUB_OUTPUT
+
+      - name: Update version in info.xml
+        run: |
+          sed -i "s|<version>.*</version>|<version>${{ env.NEW_VERSION }}</version>|" appinfo/info.xml
+
+      - name: Commit version update
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit -am "Bump version to ${{ env.NEW_VERSION }}"
+          git push
+
+      # Step 1: Prepare the signing certificate and key
       - name: Prepare Signing Certificate and Key
         run: |
           echo "${{ secrets.NEXTCLOUD_SIGNING_CERT }}" > signing-cert.crt
@@ -101,7 +123,7 @@ jobs:
       # Step 10: Sign the TAR.GZ file with OpenSSL
       - name: Sign the TAR.GZ file with OpenSSL
         run: |
-          openssl dgst -sha512 -sign signing-key.key nexcloud-release.tar.gz | openssl base64 -out nexcloud-release.signature
+          openssl dgst -sha512 -sign signing-key.key nextcloud-release.tar.gz | openssl base64 -out nextcloud-release.signature
 
       # Step 11: Generate Git version information
       - name: Git Version
@@ -119,10 +141,10 @@ jobs:
 
       # Step 13: Run Changelog CI
       - name: Run Changelog CI
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/main'
         uses: saadmk11/changelog-ci@v1.1.2
         with:
-          release_version: ${{ steps.version.outputs.version }}
+          release_version: ${{ env.NEW_VERSION }}
           config_file: changelog-ci-config.json
 
       # Step 14: Output the version
@@ -140,23 +162,19 @@ jobs:
       - name: Upload Release
         uses: ncipollo/release-action@v1.12.0
         with:
-          artifacts: |
-            LICENSE.md
-            nexcloud-release.tar.gz
-            nexcloud-release.signature
-            opencatalogi-build.zip
-            opencatalogi-build.tar.gz
-          token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ steps.version.outputs.version }}
+          tag: v${{ env.NEW_VERSION }}
+          name: Release ${{ env.NEW_VERSION }}
+          draft: false
+          prerelease: false
 
       - name: Attach tarball to github release
         uses: svenstaro/upload-release-action@04733e069f2d7f7f0b4aebc4fbdbce8613b03ccd # v2
         id: attach_to_release
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: nexcloud-release.tar.gz
-          asset_name: ${{ env.APP_NAME }}-${{ env.APP_VERSION }}.tar.gz
-          tag: ${{ github.ref }}
+          file: nextcloud-release.tar.gz  # Corrected spelling
+          asset_name: ${{ env.APP_NAME }}-${{ env.NEW_VERSION }}.tar.gz
+          tag: v${{ env.NEW_VERSION }}
           overwrite: true
 
       - name: Upload app to Nextcloud appstore
@@ -164,6 +182,14 @@ jobs:
         with:
           app_name: ${{ env.APP_NAME }}
           appstore_token: ${{ secrets.NEXTCLOUD_APPSTORE_TOKEN }}
-          download_url: ${{ steps.attach_to_release.outputs.browser_download_url }}
+          download_url: https://github.com/${{ github.repository }}/releases/download/v${{ env.NEW_VERSION }}/${{ env.APP_NAME }}-${{ env.NEW_VERSION }}.tar.gz
           app_private_key: ${{ secrets.NEXTCLOUD_SIGNING_KEY }}
+          nightly: false
 
+      - name: Verify version and contents
+        run: |
+          echo "App version: ${{ env.NEW_VERSION }}"
+          echo "Tarball contents:"
+          tar -tvf nextcloud-release.tar.gz
+          echo "info.xml contents:"
+          tar -xOf nextcloud-release.tar.gz ${{ env.APP_NAME }}/appinfo/info.xml
