@@ -70,27 +70,27 @@ export const useConditionStore = defineStore(
 					})
 			},
 			// Create or update a condition
-			saveCondition() {
-				if (!this.conditionItem) {
+			saveCondition(conditionItem) {
+				if (!conditionItem) {
 					throw new Error('No condition item to save')
 				}
 
 				console.log('Saving condition...')
 
-				const isNewCondition = !this.conditionItem.id
+				const isNewCondition = !conditionItem.id
 				const endpoint = isNewCondition
 					? '/index.php/apps/larpingapp/api/conditions'
-					: `/index.php/apps/larpingapp/api/conditions/${this.conditionItem.id}`
+					: `/index.php/apps/larpingapp/api/conditions/${conditionItem.id}`
 				const method = isNewCondition ? 'POST' : 'PUT'
 
 				return fetch(
 					endpoint,
 					{
-						method: method,
+						method,
 						headers: {
 							'Content-Type': 'application/json',
 						},
-						body: JSON.stringify(this.conditionItem),
+						body: JSON.stringify(conditionItem),
 					},
 				)
 					.then((response) => response.json())

@@ -2,6 +2,7 @@ import { SafeParseReturnType, z } from 'zod'
 import { TCondition } from './condition.types'
 
 export class Condition implements TCondition {
+
 	public id: string
 	public name: string
 	public description: string
@@ -36,4 +37,5 @@ export class Condition implements TCondition {
 
 		return schema.safeParse({ ...this })
 	}
+
 }
