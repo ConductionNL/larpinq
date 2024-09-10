@@ -30,7 +30,7 @@ import { abilityStore, navigationStore, searchStore } from '../../store/store.js
 					</NcActionButton>
 				</NcActions>
 			</div>
-			<div v-if="abilityStore.abilityList  && abilityStore.abilityList.length > 0">
+			<div v-if="abilityStore.abilityList && abilityStore.abilityList.length > 0">
 				<NcListItem v-for="(ability, i) in abilityStore.abilityList"
 					:key="`${ability}${i}`"
 					:name="ability?.name"
@@ -49,13 +49,13 @@ import { abilityStore, navigationStore, searchStore } from '../../store/store.js
 					<template #actions>
 						<NcActionButton @click="abilityStore.setAbilityItem(ability), navigationStore.setModal('editAbility')">
 							<template #icon>
-								<Plus/>
+								<Plus />
 							</template>
 							Bewerken
 						</NcActionButton>
 						<NcActionButton @click="abilityStore.setAbilityItem(ability), navigationStore.setDialog('deleteAbility')">
 							<template #icon>
-								<TrashCanOutline/>
+								<TrashCanOutline />
 							</template>
 							Verwijderen
 						</NcActionButton>

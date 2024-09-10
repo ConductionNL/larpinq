@@ -1,5 +1,5 @@
 <script setup>
-	import { itemStore, navigationStore, searchStore } from '../../store/store.js'
+import { itemStore, navigationStore, searchStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -90,7 +90,7 @@ import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
 
 export default {
 	name: 'ItemsList',
-	components: {		
+	components: {
 		// Components
 		NcListItem,
 		NcActions,
