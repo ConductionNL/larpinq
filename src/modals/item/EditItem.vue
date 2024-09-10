@@ -14,11 +14,6 @@ import { itemStore, effectStore, navigationStore } from '../../store/store.js'
 			<p>{{ error }}</p>
 		</NcNoteCard>
 
-		<NcButton
-			@click="test">
-			test
-		</NcButton>
-
 		<div v-if="!success" class="formContainer">
 			<NcTextField :disabled="loading"
 				label="Name *"
@@ -136,9 +131,6 @@ export default {
 		}
 	},
 	methods: {
-		test() {
-			console.log(this.effects)
-		},
 		async editItem() {
 			this.loading = true
 			try {
