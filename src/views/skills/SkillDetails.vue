@@ -45,7 +45,7 @@ import { characterStore, skillStore } from '../../store/store.js'
 							:bold="false"
 							:force-display-actions="true">
 							<template #icon>
-								<MagicStaff disable-menu
+								<BriefcaseAccountOutline disable-menu
 									:size="44" />
 							</template>
 							<template #subname>
@@ -70,6 +70,7 @@ import { BTabs, BTab } from 'bootstrap-vue'
 
 // icons
 import MagicStaff from 'vue-material-design-icons/MagicStaff.vue'
+import BriefcaseAccountOutline from 'vue-material-design-icons/BriefcaseAccountOutline.vue'
 
 export default {
 	name: 'SkillDetails',
