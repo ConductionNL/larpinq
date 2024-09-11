@@ -125,15 +125,6 @@ export default {
 	},
 	updated() {
 		if (navigationStore.modal === 'addEffect' && !this.hasUpdated) {
-			if (effectStore.effectItem.id) {
-				this.effectItem = {
-					...effectStore.effectItem,
-					name: effectStore.effectItem.name || '',
-					description: effectStore.effectItem.description || '',
-					statId: effectStore.effectItem.statId || '',
-					modifier: effectStore.effectItem.modifier || '',
-				}
-			}
 			this.fetchAbilities()
 			this.hasUpdated = true
 		}
