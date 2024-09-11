@@ -20,10 +20,10 @@ export class Skill implements TSkill {
 		this.description = skill.description || ''
 		this.effect = skill.effect || ''
 		this.effects = skill.effects || []
-		this.requiredSkills = skill.requiredSkills || []
-		this.requiredStats = skill.requiredStats || []
-		this.requiredConditions = skill.requiredConditions || []
-		this.requiredEffects = skill.requiredEffects || []
+		this.requiredSkills = skill.requiredSkills || null // TODO: THIS IS A HOTFIX - change the default back to [] once fixed
+		this.requiredStats = skill.requiredStats || null // TODO: THIS IS A HOTFIX - change the default back to [] once fixed
+		this.requiredConditions = skill.requiredConditions || null // TODO: THIS IS A HOTFIX - change the default back to [] once fixed
+		this.requiredEffects = skill.requiredEffects || null // TODO: THIS IS A HOTFIX - change the default back to [] once fixed
 		this.requiredScore = skill.requiredScore || 0
 	}
 
