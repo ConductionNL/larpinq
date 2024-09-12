@@ -86,7 +86,7 @@ export const useTemplateStore = defineStore(
 				return fetch(
 					endpoint,
 					{
-						method: method,
+						method,
 						headers: {
 							'Content-Type': 'application/json',
 						},

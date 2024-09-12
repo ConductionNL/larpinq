@@ -50,7 +50,7 @@ import { playerStore, navigationStore, searchStore } from '../../store/store.js'
 					<template #actions>
 						<NcActionButton @click="playerStore.setPlayerItem(player); navigationStore.setModal('editPlayer')">
 							<template #icon>
-								<Plus />
+								<Pencil />
 							</template>
 							Bewerken
 						</NcActionButton>

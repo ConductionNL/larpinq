@@ -2,6 +2,7 @@ import { SafeParseReturnType, z } from 'zod'
 import { TEffect } from './effect.types'
 
 export class Effect implements TEffect {
+
 	public id: string
 	public name: string
 	public description: string
@@ -39,4 +40,5 @@ export class Effect implements TEffect {
 
 		return schema.safeParse({ ...this })
 	}
+
 }

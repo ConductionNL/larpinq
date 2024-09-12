@@ -74,6 +74,7 @@ export const useCharacterStore = defineStore(
 				})
 					.then((response) => {
 						this.refreshCharacterList()
+						this.setCharacterItem(null)
 					})
 					.catch((err) => {
 						console.error('Error deleting character:', err)
@@ -94,14 +95,6 @@ export const useCharacterStore = defineStore(
 					: `/index.php/apps/larpingapp/api/characters/${characterItem.id}`
 				const method = isNewCharacter ? 'POST' : 'PUT'
 
-				// Create a copy of the character item and remove empty properties
-				const characterToSave = { ...characterItem }
-				Object.keys(characterToSave).forEach(key => {
-					if (characterToSave[key] === '' || (Array.isArray(characterToSave[key]) && characterToSave[key].length === 0)) {
-						delete characterToSave[key]
-					}
-				})
-
 				return fetch(
 					endpoint,
 					{
@@ -109,7 +102,7 @@ export const useCharacterStore = defineStore(
 						headers: {
 							'Content-Type': 'application/json',
 						},
-						body: JSON.stringify(characterToSave),
+						body: JSON.stringify(characterItem),
 					},
 				)
 					.then((response) => response.json())

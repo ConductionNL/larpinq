@@ -2,6 +2,7 @@ import { SafeParseReturnType, z } from 'zod'
 import { TItem } from './item.types'
 
 export class Item implements TItem {
+
 	public id: string
 	public name: string
 	public description: string
@@ -36,4 +37,5 @@ export class Item implements TItem {
 
 		return schema.safeParse({ ...this })
 	}
+
 }

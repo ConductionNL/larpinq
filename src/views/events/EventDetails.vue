@@ -1,5 +1,5 @@
 <script setup>
-	import { eventStore, navigationStore } from '../../store/store.js'
+import { eventStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>

@@ -1,5 +1,5 @@
 <script setup>
-	import { characterStore, navigationStore } from '../../store/store.js'
+import { characterStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -16,7 +16,7 @@
 					<BriefcaseAccountOutline />
 				</template>
 				<template #action>
-					<NcButton type="primary" @click="characterStore.setCharacterItem([]); navigationStore.setModal('editCharacter')">
+					<NcButton type="primary" @click="characterStore.setCharacterItem(null); navigationStore.setModal('editCharacter')">
 						Karakter aanmaken
 					</NcButton>
 				</template>

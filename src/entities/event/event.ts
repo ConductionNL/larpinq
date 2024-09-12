@@ -2,6 +2,7 @@ import { SafeParseReturnType, z } from 'zod'
 import { TEvent } from './event.types'
 
 export class Event implements TEvent {
+
 	public id: string
 	public name: string
 	public description: string
@@ -42,4 +43,5 @@ export class Event implements TEvent {
 
 		return schema.safeParse({ ...this })
 	}
+
 }
