@@ -112,7 +112,7 @@ export default {
 				.then(() => {
 					// Get all the items NOT on the character
 					const availableItems = itemStore.itemList.filter((item) => {
-						return characterStore.characterItem.items
+						return (characterStore.characterItem?.items || [])
 							.map(String)
 							.includes(item.id.toString()) !== true
 					})

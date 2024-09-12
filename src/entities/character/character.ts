@@ -20,6 +20,7 @@ export class Character implements TCharacter {
 	public copper: number
 	public events: string[]
 	public skills: string[]
+	public items?: string[]
 	public conditions: string[]
 	public type: 'player' | 'npc' | 'other'
 	public approved: 'no' | 'approved'
@@ -47,6 +48,7 @@ export class Character implements TCharacter {
 		this.copper = data?.copper || 0
 		this.events = data?.events || []
 		this.skills = data?.skills || []
+		this.items = data?.items || []
 		this.conditions = data?.conditions || []
 		this.type = data?.type || 'player'
 		this.approved = data?.approved || 'no'
