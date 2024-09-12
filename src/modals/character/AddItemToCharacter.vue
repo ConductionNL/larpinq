@@ -21,7 +21,7 @@ import { characterStore, itemStore, navigationStore } from '../../store/store.js
 				v-model="items.value"
 				input-label="Items *"
 				:loading="itemsLoading"
-				:disabled="loading"
+				:disabled="itemsLoading || loading"
 				required />
 		</div>
 
