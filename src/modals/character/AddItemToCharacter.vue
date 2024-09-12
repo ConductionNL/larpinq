@@ -110,10 +110,17 @@ export default {
 
 			itemStore.refreshItemList()
 				.then(() => {
+					// Get all the items NOT on the character
+					const availableItems = itemStore.itemList.filter((item) => {
+						return characterStore.characterItem.items
+							.map(String)
+							.includes(item.id.toString()) !== true
+					})
+
 					this.items = {
 						multiple: true,
 						closeOnSelect: false,
-						options: itemStore.itemList.map((item) => ({
+						options: availableItems.map((item) => ({
 							id: item.id,
 							label: item.name,
 						})),
@@ -125,11 +132,20 @@ export default {
 		async addItemToCharacter() {
 			this.loading = true
 			try {
-				if (!characterStore.characterItem.items) {
-					characterStore.characterItem.items = []
+				const characterItemClone = { ...characterStore.characterItem }
+
+				if (!characterItemClone.items) {
+					characterItemClone.items = []
 				}
-				characterStore.characterItem.items.push(this.selectedItem)
-				await characterStore.saveCharacter()
+
+				for (const selectedItem of this.items.value) {
+					characterItemClone.items.push(selectedItem.id)
+				}
+
+				await characterStore.saveCharacter({
+					...characterItemClone,
+				})
+
 				this.success = true
 				this.loading = false
 				this.error = false
