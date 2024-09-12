@@ -112,6 +112,9 @@ export default {
 			hasUpdated: false,
 		}
 	},
+	mounted() {
+		this.fetchSkills()
+	},
 	updated() {
 		if (navigationStore.modal === 'editCharacter' && !this.hasUpdated) {
 			if (characterStore.characterItem?.id) {
@@ -143,6 +146,7 @@ export default {
 
 			skillStore.refreshSkillList()
 				.then(() => {
+					// full skills which are in the skills list on the character
 					const activatedSkills = characterStore.characterItem?.id // if modal is an edit modal
 						? skillStore.skillList.filter((skill) => { // filter through the list of skills
 							return characterStore.characterItem.skills
@@ -151,20 +155,26 @@ export default {
 						})
 						: null
 
-					this.skills = {
+					// full skills mapped to be in the structure of select options
+					const mappedActivatedSkills = activatedSkills?.length > 0
+						? activatedSkills.map((skill) => ({
+							id: skill.id,
+							label: skill.name,
+						}))
+						: null
+
+					// skills select options
+					const skillsOptions = {
 						multiple: true,
 						closeOnSelect: false,
 						options: skillStore.skillList.map((skill) => ({
 							id: skill.id,
 							label: skill.name,
 						})),
-						value: activatedSkills
-							? activatedSkills.map((skill) => ({
-								id: skill.id,
-							    label: skill.name,
-							}))
-							: null,
+						value: mappedActivatedSkills,
 					}
+
+					this.skills = skillsOptions
 
 					this.skillsLoading = false
 				})
