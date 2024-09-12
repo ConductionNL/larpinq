@@ -23,10 +23,10 @@ class Skill extends Entity implements JsonSerializable
 		$this->addType('description', 'string');
 		$this->addType('effect', 'string');
 		$this->addType('effects', 'json');
-		$this->addType('requiredSkills', 'array');
-		$this->addType('requiredStats', 'array');
-		$this->addType('requiredConditions', 'array');
-		$this->addType('requiredEffects', 'array');
+		$this->addType('requiredSkills', 'json');
+		$this->addType('requiredStats', 'json');
+		$this->addType('requiredConditions', 'json');
+		$this->addType('requiredEffects', 'json');
 		$this->addType('requiredScore', 'integer');
 	}
 
