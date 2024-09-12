@@ -22,16 +22,16 @@ import { eventStore, effectStore, navigationStore } from '../../store/store.js'
 			<NcTextArea :disabled="loading"
 				label="Description"
 				:value.sync="eventItem.description" />
-			<NcDateTimePicker :disabled="loading"
+			<NcDateTimePicker v-model="eventItem.startDate"
+				:disabled="loading"
 				label="Start Date"
 				type="datetime"
-				confirm
-				:v-model="eventItem.startDate" />
-			<NcDateTimePicker :disabled="loading"
+				confirm />
+			<NcDateTimePicker v-model="eventItem.endDate"
+				:disabled="loading"
 				label="End Date"
 				type="datetime"
-				confirm
-				:v-model="eventItem.endDate" />
+				confirm />
 			<NcTextField :disabled="loading"
 				label="Location"
 				:value.sync="eventItem.location" />
