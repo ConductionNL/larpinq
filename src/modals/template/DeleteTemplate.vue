@@ -7,7 +7,6 @@ import { templateStore, navigationStore } from '../../store/store.js'
 		name="Sjabloon verwijderen"
 		size="normal"
 		:can-close="false">
-
 		<p v-if="!success">
 			Wil je <b>{{ templateStore.templateItem.name }}</b> definitief verwijderen? Deze actie kan niet ongedaan worden gemaakt.
 		</p>
@@ -40,7 +39,6 @@ import { templateStore, navigationStore } from '../../store/store.js'
 			</NcButton>
 		</template>
 	</NcDialog>
-	
 </template>
 
 <script>
@@ -54,8 +52,8 @@ import {
 	NcNoteCard,
 } from '@nextcloud/vue'
 
-import Cancel from 'vue-material-design-icons/Cancel.vue' 
-import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue' 
+import Cancel from 'vue-material-design-icons/Cancel.vue'
+import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
 
 export default {
 	name: 'DeleteTemplate',
@@ -96,7 +94,7 @@ export default {
 				this.success = false
 				this.error = error.message || 'Er is een fout opgetreden bij het verwijderen van het sjabloon'
 			}
-		}
+		},
 	},
 }
 </script>
