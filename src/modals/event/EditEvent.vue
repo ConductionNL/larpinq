@@ -19,19 +19,27 @@ import { eventStore, effectStore, navigationStore } from '../../store/store.js'
 				label="Name *"
 				required
 				:value.sync="eventItem.name" />
+			<div class="eventDateContainer">
+				<div class="eventDateDate">
+					<span>Start Date</span>
+					<NcDateTimePicker v-model="eventItem.startDate"
+						:disabled="loading"
+						label="Start Date"
+						type="datetime"
+						confirm />
+				</div>
+				<div class="eventDateDate">
+					<span>End Date</span>
+					<NcDateTimePicker v-model="eventItem.endDate"
+						:disabled="loading"
+						label="End Date"
+						type="datetime"
+						confirm />
+				</div>
+			</div>
 			<NcTextArea :disabled="loading"
 				label="Description"
 				:value.sync="eventItem.description" />
-			<NcDateTimePicker v-model="eventItem.startDate"
-				:disabled="loading"
-				label="Start Date"
-				type="datetime"
-				confirm />
-			<NcDateTimePicker v-model="eventItem.endDate"
-				:disabled="loading"
-				label="End Date"
-				type="datetime"
-				confirm />
 			<NcTextField :disabled="loading"
 				label="Location"
 				:value.sync="eventItem.location" />
@@ -202,3 +210,14 @@ export default {
 	},
 }
 </script>
+<style>
+.eventDateContainer {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+.eventDateDate {
+	display: flex;
+	flex-direction: column;
+}
+</style>
