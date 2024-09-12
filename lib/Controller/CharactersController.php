@@ -6,6 +6,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use OCA\LarpingApp\Service\ObjectService;
 use OCA\LarpingApp\Service\SearchService;
+use OCA\LarpingApp\Service\CharacterService;
 use OCA\LarpingApp\Db\Character;
 use OCA\LarpingApp\Db\CharacterMapper;
 use OCP\AppFramework\Controller;
