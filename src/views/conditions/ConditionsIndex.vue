@@ -1,5 +1,5 @@
 <script setup>
-	import { conditionStore, navigationStore } from '../../store/store.js'
+import { conditionStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -16,7 +16,7 @@
 					<EmoticonSickOutline />
 				</template>
 				<template #action>
-					<NcButton type="primary" @click="conditionStore.setConditionItem([]); navigationStore.setModal('editCondition')">
+					<NcButton type="primary" @click="conditionStore.setConditionItem(null); navigationStore.setModal('editCondition')">
 						Conditie aanmaken
 					</NcButton>
 				</template>

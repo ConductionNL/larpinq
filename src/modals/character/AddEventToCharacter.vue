@@ -111,11 +111,13 @@ export default {
 			eventStore.refreshEventList()
 				.then(() => {
 					// Get all the items NOT on the character
-					const availableEvents = eventStore.eventList.filter((item) => {
-						return characterStore.characterItem.events
-							.map(String)
-							.includes(item.id.toString()) !== true
-					})
+					const availableEvents = characterStore.characterItem?.id
+						? eventStore.eventList.filter((item) => {
+							return characterStore.characterItem.events
+								.map(String)
+								.includes(item.id.toString()) !== true
+						})
+						: []
 
 					this.events = {
 						multiple: true,
