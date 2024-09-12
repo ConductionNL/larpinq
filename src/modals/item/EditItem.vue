@@ -27,7 +27,7 @@ import { itemStore, effectStore, navigationStore } from '../../store/store.js'
 				v-model="effects.value"
 				input-label="Effects"
 				:loading="effectsLoading"
-				:disabled="loading" />
+				:disabled="effectsLoading || loading" />
 			<NcCheckboxRadioSwitch :disabled="loading"
 				label="Unique"
 				type="switch"
@@ -58,10 +58,10 @@ import { itemStore, effectStore, navigationStore } from '../../store/store.js'
 				@click="editItem()">
 				<template #icon>
 					<NcLoadingIcon v-if="loading" :size="20" />
-					<ContentSaveOutline v-if="!loading && itemStore.itemItem.id" :size="20" />
-					<Plus v-if="!loading && !itemStore.itemItem.id" :size="20" />
+					<ContentSaveOutline v-if="!loading && itemStore.itemItem?.id" :size="20" />
+					<Plus v-if="!loading && !itemStore.itemItem?.id" :size="20" />
 				</template>
-				{{ itemStore.itemItem.id ? 'Opslaan' : 'Aanmaken' }}
+				{{ itemStore.itemItem?.id ? 'Opslaan' : 'Aanmaken' }}
 			</NcButton>
 		</template>
 	</NcDialog>
@@ -116,10 +116,12 @@ export default {
 			hasUpdated: false,
 		}
 	},
-
+	mounted() {
+		this.fetchEffects()
+	},
 	updated() {
 		if (navigationStore.modal === 'editItem' && !this.hasUpdated) {
-			if (itemStore.itemItem.id) {
+			if (itemStore.itemItem?.id) {
 				this.itemItem = {
 					...itemStore.itemItem,
 					name: itemStore.itemItem.name || '',
@@ -149,11 +151,11 @@ export default {
 
 			effectStore.refreshEffectList()
 				.then(() => {
-					const activeEffects = itemStore.itemItem.id
+					const activeEffects = itemStore.itemItem?.id
 						? effectStore.effectList.filter((effect) => {
 							return itemStore.itemItem.effects
 								.map(String)
-								.includes(effect.id)
+								.includes(effect.id.toString())
 						})
 						: null
 

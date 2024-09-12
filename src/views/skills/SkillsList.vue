@@ -37,6 +37,7 @@
 					:active="skillStore.skillItem === skill?.id"
 					:details="'1h'"
 					:counter-number="44"
+					:force-display-actions="true"
 					@click="skillStore.setSkillItem(skill)">
 					<template #icon>
 						<SwordCross :class="skillStore.skillItem === skill.id && 'selectedSkillIcon'"

@@ -1,5 +1,5 @@
 <script setup>
-	import { itemStore, navigationStore } from '../../store/store.js'
+import { itemStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -16,7 +16,7 @@
 					<Sword />
 				</template>
 				<template #action>
-					<NcButton type="primary" @click="itemStore.setItemItem([]); navigationStore.setModal('editItem')">
+					<NcButton type="primary" @click="itemStore.setItemItem(null); navigationStore.setModal('editItem')">
 						Item aanmaken
 					</NcButton>
 				</template>
