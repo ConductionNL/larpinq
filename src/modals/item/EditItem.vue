@@ -38,7 +38,7 @@ import { itemStore, effectStore, navigationStore } from '../../store/store.js'
 
 		<template #actions>
 			<NcButton
-				@click="navigationStore.setModal(false)">
+				@click="closeModal">
 				<template #icon>
 					<Cancel :size="20" />
 				</template>
@@ -113,6 +113,7 @@ export default {
 				description: '',
 				unique: '',
 			},
+			hasUpdated: false,
 		}
 	},
 
@@ -131,26 +132,16 @@ export default {
 		}
 	},
 	methods: {
-		async editItem() {
-			this.loading = true
-			try {
-				await itemStore.saveItem({
-					...this.itemItem,
-					effects: this.effects.value.map((effect) => effect.id),
-				})
-				this.success = true
-				this.loading = false
-				this.error = false
-				setTimeout(() => {
-					this.success = false
-					this.loading = false
-					this.error = false
-					navigationStore.setModal(false)
-				}, 2000)
-			} catch (error) {
-				this.loading = false
-				this.success = false
-				this.error = error.message || 'An error occurred while saving the item'
+		closeModal() {
+			navigationStore.setModal(false)
+			this.success = false
+			this.loading = false
+			this.error = false
+			this.hasUpdated = false
+			this.itemItem = {
+				name: '',
+				description: '',
+				unique: '',
 			}
 		},
 		fetchEffects() {
@@ -183,6 +174,23 @@ export default {
 
 					this.effectsLoading = false
 				})
+		},
+		async editItem() {
+			this.loading = true
+			try {
+				await itemStore.saveItem({
+					...this.itemItem,
+					effects: this.effects.value.map((effect) => effect.id),
+				})
+				this.success = true
+				this.loading = false
+				this.error = false
+				setTimeout(this.closeModal, 2000)
+			} catch (error) {
+				this.loading = false
+				this.success = false
+				this.error = error.message || 'An error occurred while saving the item'
+			}
 		},
 		openLink(url, target) {
 			window.open(url, target)
