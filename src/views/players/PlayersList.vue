@@ -37,6 +37,7 @@
 					:active="playerStore.playerItem?.id === player?.id"
 					:details="'1h'"
 					:counter-number="44"
+					:force-display-actions="true"
 					@click="playerStore.setPlayerItem(player)">
 					<template #icon>
 						<BriefcaseAccountOutline :class="playerStore.playerItem?.id === player.id && 'selectedZaakIcon'"
