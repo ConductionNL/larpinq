@@ -50,7 +50,7 @@ import { skillStore, navigationStore, searchStore } from '../../store/store.js'
 					<template #actions>
 						<NcActionButton @click="skillStore.setSkillItem(skill); navigationStore.setModal('editSkill')">
 							<template #icon>
-								<Plus />
+								<Pencil />
 							</template>
 							Bewerken
 						</NcActionButton>
@@ -84,6 +84,7 @@ import { NcListItem, NcActions, NcActionButton, NcAppContentList, NcTextField, N
 import Magnify from 'vue-material-design-icons/Magnify.vue'
 import SwordCross from 'vue-material-design-icons/SwordCross.vue'
 import Plus from 'vue-material-design-icons/Plus.vue'
+import Pencil from 'vue-material-design-icons/Pencil.vue'
 import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
 import Refresh from 'vue-material-design-icons/Refresh.vue'
 
