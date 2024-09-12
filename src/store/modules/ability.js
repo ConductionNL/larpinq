@@ -21,22 +21,17 @@ export const useAbilityStore = defineStore(
 			},
 			/* istanbul ignore next */ // ignore this for Jest until moved into a service
 			async refreshAbilityList(search = null) {
-				// @todo this might belong in a service?
 				let endpoint = '/index.php/apps/larpingapp/api/abilities'
 				if (search !== null && search !== '') {
 					endpoint = endpoint + '?_search=' + search
 				}
-				return fetch(endpoint, {
-					method: 'GET',
-				})
-					.then((response) => {
-						response.json().then((data) => {
-							this.setAbilityList(data.results)
-						})
-					})
-					.catch((err) => {
-						console.error(err)
-					})
+				try {
+					const response = await fetch(endpoint, { method: 'GET' })
+					const data = await response.json()
+					this.setAbilityList(data.results)
+				} catch (err) {
+					console.error(err)
+				}
 			},
 			deleteAbility() {
 				if (!this.abilityItem || !this.abilityItem.id) {
