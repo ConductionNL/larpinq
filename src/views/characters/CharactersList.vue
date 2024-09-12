@@ -1,5 +1,5 @@
 <script setup>
-	import { characterStore, navigationStore, searchStore } from '../../store/store.js'
+import { characterStore, navigationStore, searchStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -22,7 +22,7 @@
 						</template>
 						Ververs
 					</NcActionButton>
-					<NcActionButton @click="characterStore.setCharacterItem([]); navigationStore.setModal('editCharacter')">
+					<NcActionButton @click="characterStore.setCharacterItem(null); navigationStore.setModal('editCharacter')">
 						<template #icon>
 							<Plus :size="20" />
 						</template>

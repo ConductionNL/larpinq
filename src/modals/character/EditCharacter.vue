@@ -36,7 +36,7 @@ import { characterStore, navigationStore, skillStore } from '../../store/store.j
 
 		<template #actions>
 			<NcButton
-				@click="navigationStore.setModal(false)">
+				@click="closeModal">
 				<template #icon>
 					<Cancel :size="20" />
 				</template>
@@ -114,7 +114,7 @@ export default {
 	},
 	updated() {
 		if (navigationStore.modal === 'editCharacter' && !this.hasUpdated) {
-			if (characterStore.characterItem.id) {
+			if (characterStore.characterItem?.id) {
 				this.characterItem = {
 					...characterStore.characterItem,
 					name: characterStore.characterItem.name || '',
@@ -143,7 +143,7 @@ export default {
 
 			skillStore.refreshSkillList()
 				.then(() => {
-					const activatedSkills = characterStore.characterItem.id // if modal is an edit modal
+					const activatedSkills = characterStore.characterItem?.id // if modal is an edit modal
 						? skillStore.skillList.filter((skill) => { // filter through the list of skills
 							return characterStore.characterItem.skills
 								.map(String) // ensure all the skill id's in the character are a string (this does not change the resulting data type)
@@ -180,7 +180,10 @@ export default {
 				this.success = true
 				this.loading = false
 				this.error = false
-				setTimeout(this.closeModal, 2000)
+				setTimeout(() => {
+					this.closeModal()
+					navigationStore.setSelected('characters')
+				}, 2000)
 			} catch (error) {
 				this.loading = false
 				this.success = false

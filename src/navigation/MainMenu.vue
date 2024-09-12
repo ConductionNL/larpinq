@@ -1,11 +1,11 @@
 <script setup>
-import { navigationStore } from '../store/store.js'
+import { navigationStore, characterStore } from '../store/store.js'
 </script>
 
 <template>
 	<NcAppNavigation>
 		<NcAppNavigationList>
-			<NcAppNavigationNew text="Karakter toevoegen" @click="navigationStore.setModal('addCharacter')">
+			<NcAppNavigationNew text="Karakter toevoegen" @click="characterStore.setCharacterItem(null); navigationStore.setModal('editCharacter')">
 				<template #icon>
 					<Plus :size="20" />
 				</template>
