@@ -37,7 +37,7 @@ import { characterStore, navigationStore, searchStore } from '../../store/store.
 					:name="character?.name"
 					:force-display-actions="true"
 					:active="characterStore.characterItem?.id === character?.id"
-					:details="'Aproved'"
+					:details="characterStore.characterItem.approved ? 'Approved': 'Not approved'"
 					:counter-number="44"
 					@click="characterStore.setCharacterItem(character)">
 					<template #icon>
@@ -70,7 +70,7 @@ import { characterStore, navigationStore, searchStore } from '../../store/store.
 			class="loadingIcon"
 			:size="64"
 			appearance="dark"
-			name="Zaken aan het laden" />
+			name="Karakters aan het laden" />
 
 		<div v-if="characterStore.characterList.length === 0">
 			Er zijn nog geen karakters gedefinieerd.
