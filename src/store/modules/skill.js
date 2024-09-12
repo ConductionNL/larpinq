@@ -70,17 +70,17 @@ export const useSkillStore = defineStore(
 					})
 			},
 			// Create or update a skill
-			saveSkill() {
-				if (!this.skillItem) {
+			saveSkill(skillItem) {
+				if (!skillItem) {
 					throw new Error('No skill to save')
 				}
 
 				console.log('Saving skill...')
 
-				const isNewSkill = !this.skillItem.id
+				const isNewSkill = !skillItem.id
 				const endpoint = isNewSkill
 					? '/index.php/apps/larpingapp/api/skills'
-					: `/index.php/apps/larpingapp/api/skills/${this.skillItem.id}`
+					: `/index.php/apps/larpingapp/api/skills/${skillItem.id}`
 				const method = isNewSkill ? 'POST' : 'PUT'
 
 				return fetch(
@@ -90,7 +90,7 @@ export const useSkillStore = defineStore(
 						headers: {
 							'Content-Type': 'application/json',
 						},
-						body: JSON.stringify(this.skillItem),
+						body: JSON.stringify(skillItem),
 					},
 				)
 					.then((response) => response.json())
