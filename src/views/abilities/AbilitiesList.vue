@@ -37,6 +37,7 @@ import { abilityStore, navigationStore, searchStore } from '../../store/store.js
 					:active="abilityStore.abilityItem.id === ability?.id"
 					:details="'1h'"
 					:counter-number="44"
+					:force-display-actions="true"
 					@click="abilityStore.setAbilityItem(ability)">
 					<template #icon>
 						<ShieldSwordOutline :class="abilityStore.abilityItem?.id === ability.id && 'selected'"

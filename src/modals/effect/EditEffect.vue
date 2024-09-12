@@ -1,5 +1,5 @@
 <script setup>
-import { effectStore, navigationStore } from '../../store/store.js'
+import { abilityStore, effectStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -7,14 +7,6 @@ import { effectStore, navigationStore } from '../../store/store.js'
 		name="Effect"
 		size="normal"
 		:can-close="false">
-		<div>{{ effectStore.effectItem }}</div>
-		<NcButton
-			@click="test">
-			<template #icon>
-				<Cancel :size="20" />
-			</template>
-			test
-		</NcButton>
 		<NcNoteCard v-if="success" type="success">
 			<p>Effect succesvol aangepast</p>
 		</NcNoteCard>
@@ -26,30 +18,36 @@ import { effectStore, navigationStore } from '../../store/store.js'
 			<NcTextField :disabled="loading"
 				label="Name *"
 				required
-				:value.sync="effectStore.effectItem.name" />
+				:value.sync="effectItem.name" />
 			<NcTextArea :disabled="loading"
 				label="Description"
 				type="textarea"
-				:value.sync="effectStore.effectItem.description" />
+				:value.sync="effectItem.description" />
 			<NcTextField :disabled="loading"
 				label="Stat ID"
-				:value.sync="effectStore.effectItem.statId" />
+				:value.sync="effectItem.statId" />
 			<NcTextField :disabled="loading"
 				label="Modifier"
 				type="number"
-				:value.sync="effectStore.effectItem.modifier" />
+				:value.sync="effectItem.modifier" />
 			<NcSelect
 				v-bind="modificationOptions"
-				v-model="effectStore.effectItem.modification"
+				v-model="modificationOptions.value"
 				:disabled="loading" />
 			<NcSelect
 				v-bind="cumulativeOptions"
-				v-model="effectStore.effectItem.cumulative"
+				v-model="cumulativeOptions.value"
+				:disabled="loading" />
+			<NcSelect
+				v-bind="abilities"
+				v-model="abilities.value"
+				input-label="Effects"
+				:loading="abilitiesLoading"
 				:disabled="loading" />
 		</div>
 
 		<template #actions>
-			<NcButton @click="navigationStore.setModal(false)">
+			<NcButton @click="closeModal">
 				<template #icon>
 					<Cancel :size="20" />
 				</template>
@@ -67,10 +65,9 @@ import { effectStore, navigationStore } from '../../store/store.js'
 				@click="editEffect()">
 				<template #icon>
 					<NcLoadingIcon v-if="loading" :size="20" />
-					<ContentSaveOutline v-if="!loading && effectStore.effectItem.id" :size="20" />
-					<Plus v-if="!loading && !effectStore.effectItem.id" :size="20" />
+					<ContentSaveOutline v-if="!loading" :size="20" />
 				</template>
-				{{ effectStore.effectItem.id ? 'Opslaan' : 'Aanmaken' }}
+				Opslaan
 			</NcButton>
 		</template>
 	</NcDialog>
@@ -82,7 +79,6 @@ import {
 } from '@nextcloud/vue'
 import ContentSaveOutline from 'vue-material-design-icons/ContentSaveOutline.vue'
 import Cancel from 'vue-material-design-icons/Cancel.vue'
-import Plus from 'vue-material-design-icons/Plus.vue'
 import Help from 'vue-material-design-icons/Help.vue'
 
 export default {
@@ -97,11 +93,16 @@ export default {
 		NcNoteCard,
 		ContentSaveOutline,
 		Cancel,
-		Plus,
 		Help,
 	},
 	data() {
 		return {
+			effectItem: {
+				name: '',
+				description: '',
+				statId: '',
+				modifier: '',
+			},
 			success: false,
 			loading: false,
 			error: false,
@@ -109,32 +110,91 @@ export default {
 				inputLabel: 'Modification',
 				multiple: false,
 				options: [{ id: 'positive', label: 'Positive' }, { id: 'negative', label: 'Negative' }],
+				value: [{ id: 'positive', label: 'Positive' }],
 			},
 			cumulativeOptions: {
 				inputLabel: 'Cumulative',
 				multiple: false,
 				options: [{ id: 'cumulative', label: 'Cumulative' }, { id: 'non-cumulative', label: 'Non-cumulative' }],
+				value: [{ id: 'cumulative', label: 'Cumulative' }],
 			},
-
+			abilities: {},
+			abilitiesLoading: false,
+			hasUpdated: false,
+		}
+	},
+	updated() {
+		if (navigationStore.modal === 'editEffect' && !this.hasUpdated) {
+			if (effectStore.effectItem.id) {
+				this.effectItem = {
+					...effectStore.effectItem,
+					name: effectStore.effectItem.name || '',
+					description: effectStore.effectItem.description || '',
+					statId: effectStore.effectItem.statId || '',
+					modifier: effectStore.effectItem.modifier || '',
+				}
+			}
+			this.fetchAbilities()
+			this.hasUpdated = true
 		}
 	},
 	methods: {
-		test() {
-			// eslint-disable-next-line no-console
-			console.log(effectStore.effectItem)
+		closeModal() {
+			navigationStore.setModal(false)
+			this.success = false
+			this.loading = false
+			this.error = false
+			this.hasUpdated = false
+			this.effectItem = {
+				name: '',
+				description: '',
+				statId: '',
+				modifier: '',
+			}
+		},
+		fetchAbilities() {
+			this.abilitiesLoading = true
+
+			abilityStore.refreshAbilityList()
+				.then(() => {
+					const selectedAbilities = effectStore.effectItem.id // if modal is an edit modal
+						? abilityStore.abilityList.filter((ability) => { // filter through the list of abilities
+							return (effectStore.effectItem.abilities || []) // ensure abilities exists or default to empty array
+								.map(String) // ensure all the ability id's in the effect are a string (this does not change the resulting data type)
+								.includes(ability.id.toString()) // check if the current ability in the filter exists on the effects's abilities
+						})
+						: null
+
+					this.abilities = {
+						multiple: true,
+						closeOnSelect: false,
+						options: abilityStore.abilityList.map((ability) => ({
+							id: ability.id,
+							label: ability.name,
+						})),
+						value: selectedAbilities
+							? selectedAbilities.map((ability) => ({
+								id: ability.id,
+							    label: ability.name,
+							}))
+							: null,
+					}
+
+					this.abilitiesLoading = false
+				})
 		},
 		async editEffect() {
 			this.loading = true
 			try {
-				await effectStore.saveEffect()
+				await effectStore.saveEffect({
+					...this.effectItem,
+					modification: this.modificationOptions.value.id,
+					cumulative: this.cumulativeOptions.value.id,
+					abilities: this.abilities.value.map((ability) => ability.id),
+				})
 				this.success = true
 				this.loading = false
-				setTimeout(() => {
-					this.success = false
-					this.loading = false
-					this.error = false
-					navigationStore.setModal(false)
-				}, 2000)
+				setTimeout(this.closeModal, 2000)
 			} catch (error) {
 				this.loading = false
 				this.success = false
