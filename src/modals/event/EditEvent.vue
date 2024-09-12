@@ -22,12 +22,16 @@ import { eventStore, effectStore, navigationStore } from '../../store/store.js'
 			<NcTextArea :disabled="loading"
 				label="Description"
 				:value.sync="eventItem.description" />
-			<NcTextField :disabled="loading"
+			<NcDateTimePicker :disabled="loading"
 				label="Start Date"
-				:value.sync="eventItem.startDate" />
-			<NcTextField :disabled="loading"
+				type="date"
+				confirm
+				:v-model="eventItem.startDate" />
+			<NcDateTimePicker :disabled="loading"
 				label="End Date"
-				:value.sync="eventItem.endDate" />
+				type="date"
+				confirm
+				:v-model="eventItem.endDate" />
 			<NcTextField :disabled="loading"
 				label="Location"
 				:value.sync="eventItem.location" />
@@ -68,7 +72,7 @@ import { eventStore, effectStore, navigationStore } from '../../store/store.js'
 
 <script>
 import {
-	NcButton, NcDialog, NcTextField, NcTextArea, NcLoadingIcon, NcNoteCard, NcSelect,
+	NcButton, NcDialog, NcTextField, NcTextArea, NcLoadingIcon, NcNoteCard, NcSelect, NcDateTimePicker,
 } from '@nextcloud/vue'
 import ContentSaveOutline from 'vue-material-design-icons/ContentSaveOutline.vue'
 import Cancel from 'vue-material-design-icons/Cancel.vue'
@@ -81,6 +85,7 @@ export default {
 		NcDialog,
 		NcTextField,
 		NcTextArea,
+		NcDateTimePicker,
 		NcButton,
 		NcLoadingIcon,
 		NcNoteCard,
@@ -100,8 +105,8 @@ export default {
 			eventItem: {
 				name: '',
 				description: '',
-				startDate: '',
-				endDate: '',
+				startDate: new Date(),
+				endDate: new Date(),
 				location: '',
 			},
 		}
@@ -116,8 +121,8 @@ export default {
 					...eventStore.eventItem,
 					name: eventStore.eventItem.name || '',
 					description: eventStore.eventItem.description || '',
-					startDate: eventStore.eventItem.startDate || '',
-					endDate: eventStore.eventItem.endDate || '',
+					startDate: eventStore.eventItem.startDate || new Date(),
+					endDate: eventStore.eventItem.endDate || new Date(),
 					location: eventStore.eventItem.location || '',
 				}
 			}
@@ -135,8 +140,8 @@ export default {
 			this.eventItem = {
 				name: '',
 				description: '',
-				startDate: '',
-				endDate: '',
+				startDate: new Date(),
+				endDate: new Date(),
 				location: '',
 			}
 		},
@@ -176,7 +181,9 @@ export default {
 			try {
 				await eventStore.saveEvent({
 					...this.eventItem,
-					effects: this.effects.value.map((effect) => effect.id),
+					effects: this.effects?.value?.map((effect) => effect.id),
+					startDate: this.eventItem.startDate.toISOString(),
+					endDate: this.eventItem.endDate.toISOString(),
 				})
 				this.success = true
 				this.loading = false
