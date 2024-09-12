@@ -47,10 +47,10 @@ import { abilityStore, navigationStore } from '../../store/store.js'
 				@click="editAbility()">
 				<template #icon>
 					<NcLoadingIcon v-if="loading" :size="20" />
-					<ContentSaveOutline v-if="!loading && abilityStore.abilityItem.id" :size="20" />
-					<Plus v-if="!loading && !abilityStore.abilityItem.id" :size="20" />
+					<ContentSaveOutline v-if="!loading && abilityStore.abilityItem?.id" :size="20" />
+					<Plus v-if="!loading && !abilityStore.abilityItem?.id" :size="20" />
 				</template>
-				{{ abilityStore.abilityItem.id ? 'Opslaan' : 'Aanmaken' }}
+				{{ abilityStore.abilityItem?.id ? 'Opslaan' : 'Aanmaken' }}
 			</NcButton>
 		</template>
 	</NcDialog>
@@ -99,7 +99,7 @@ export default {
 	},
 	updated() {
 		if (navigationStore.modal === 'editAbility' && !this.hasUpdated) {
-			if (abilityStore.abilityItem.id) {
+			if (abilityStore.abilityItem?.id) {
 				this.abilityItem = {
 					...abilityStore.abilityItem,
 					name: abilityStore.abilityItem.name || '',

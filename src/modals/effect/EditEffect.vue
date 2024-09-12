@@ -41,7 +41,7 @@ import { abilityStore, effectStore, navigationStore } from '../../store/store.js
 			<NcSelect
 				v-bind="abilities"
 				v-model="abilities.value"
-				input-label="Effects"
+				input-label="Abilities"
 				:loading="abilitiesLoading"
 				:disabled="loading" />
 		</div>
