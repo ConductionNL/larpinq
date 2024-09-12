@@ -24,12 +24,12 @@ import { eventStore, effectStore, navigationStore } from '../../store/store.js'
 				:value.sync="eventItem.description" />
 			<NcDateTimePicker :disabled="loading"
 				label="Start Date"
-				type="date"
+				type="datetime"
 				confirm
 				:v-model="eventItem.startDate" />
 			<NcDateTimePicker :disabled="loading"
 				label="End Date"
-				type="date"
+				type="datetime"
 				confirm
 				:v-model="eventItem.endDate" />
 			<NcTextField :disabled="loading"
