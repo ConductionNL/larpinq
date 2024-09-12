@@ -1,5 +1,5 @@
 <script setup>
-	import { skillStore, navigationStore } from '../../store/store.js'
+import { skillStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -16,7 +16,7 @@
 					<SwordCross />
 				</template>
 				<template #action>
-					<NcButton type="primary" @click="skillStore.setSkillItem([]); navigationStore.setModal('editSkill')">
+					<NcButton type="primary" @click="skillStore.setSkillItem(null); navigationStore.setModal('editSkill')">
 						Skill toevoegen
 					</NcButton>
 				</template>

@@ -5,7 +5,7 @@ import { conditionStore, navigationStore } from '../../store/store.js'
 <template>
 	<NcModal v-if="navigationStore.modal === 'editCondition'" ref="modalRef" @close="closeModal">
 		<div class="modalContent">
-			<h2>Conditie {{ conditionItem.id ? 'Aanpassen' : 'Aanmaken' }}</h2>
+			<h2>Conditie {{ conditionItem?.id ? 'Aanpassen' : 'Aanmaken' }}</h2>
 			<NcNoteCard v-if="succes" type="success">
 				<p>Taak succesvol toegevoegd</p>
 			</NcNoteCard>
@@ -78,7 +78,7 @@ export default {
 		}
 	},
 	updated() {
-		if (conditionStore.conditionItem.id && navigationStore.modal === 'editCondition' && !this.hasUpdated) {
+		if (conditionStore.conditionItem?.id && navigationStore.modal === 'editCondition' && !this.hasUpdated) {
 			this.conditionItem = {
 				...conditionStore.conditionItem,
 				name: conditionStore.conditionItem.name || '',

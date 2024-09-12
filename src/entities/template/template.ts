@@ -2,6 +2,7 @@ import { SafeParseReturnType, z } from 'zod'
 import { TTemplate } from './template.types'
 
 export class Template implements TTemplate {
+
 	public id: string
 	public name: string
 	public description: string
@@ -30,4 +31,5 @@ export class Template implements TTemplate {
 
 		return schema.safeParse({ ...this })
 	}
+
 }

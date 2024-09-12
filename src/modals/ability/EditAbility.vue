@@ -29,7 +29,7 @@ import { abilityStore, navigationStore } from '../../store/store.js'
 		</div>
 
 		<template #actions>
-			<NcButton @click="navigationStore.setModal(false)">
+			<NcButton @click="closeModal">
 				<template #icon>
 					<Cancel :size="20" />
 				</template>

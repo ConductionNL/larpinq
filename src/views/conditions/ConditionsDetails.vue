@@ -1,5 +1,5 @@
 <script setup>
-	import { conditionStore, navigationStore } from '../../store/store.js'
+import { conditionStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -75,7 +75,7 @@ import { NcLoadingIcon, NcActions, NcActionButton } from '@nextcloud/vue'
 import DotsHorizontal from 'vue-material-design-icons/DotsHorizontal.vue'
 import Pencil from 'vue-material-design-icons/Pencil.vue'
 import FileDocumentPlusOutline from 'vue-material-design-icons/FileDocumentPlusOutline.vue'
-import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue' 
+import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
 
 export default {
 	name: 'ConditionDetails',
