@@ -1,5 +1,5 @@
 <script setup>
-import { effectStore } from '../../store/store.js'
+import { effectStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -16,31 +16,31 @@ import { effectStore } from '../../store/store.js'
 						<template #icon>
 							<DotsHorizontal :size="20" />
 						</template>
-						<NcActionButton @click="store.setModal('editKlant')">
+						<NcActionButton @click="navigationStore.setModal('editEffect')">
 							<template #icon>
 								<Pencil :size="20" />
 							</template>
 							Bewerken
 						</NcActionButton>
-						<NcActionButton @click="store.setModal('addTaak')">
+						<NcActionButton @click="navigationStore.setModal('addTaak')">
 							<template #icon>
 								<CalendarMonthOutline :size="20" />
 							</template>
 							Taak geven
 						</NcActionButton>
-						<NcActionButton @click="store.setModal('addBericht')">
+						<NcActionButton @click="navigationStore.setModal('addBericht')">
 							<template #icon>
 								<ChatOutline :size="20" />
 							</template>
 							Bericht versturen
 						</NcActionButton>
-						<NcActionButton @click="store.setModal('addZaak')">
+						<NcActionButton @click="navigationStore.setModal('addZaak')">
 							<template #icon>
 								<BriefcaseAccountOutline :size="20" />
 							</template>
 							Zaak starten
 						</NcActionButton>
-						<NcActionButton @click="store.setDialog('deleteKlant')">
+						<NcActionButton @click="navigationStore.setDialog('deleteKlant')">
 							<template #icon>
 								<TrashCanOutline :size="20" />
 							</template>

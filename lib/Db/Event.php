@@ -20,7 +20,7 @@ class Event extends Entity implements JsonSerializable
 		$this->addType('name', 'string');
 		$this->addType('description', 'string');
 		$this->addType('players', 'array');
-		$this->addType('effects', 'array');
+		$this->addType('effects', 'json');
 		$this->addType('startDate', 'string');
 		$this->addType('endDate', 'string');
 		$this->addType('location', 'string');

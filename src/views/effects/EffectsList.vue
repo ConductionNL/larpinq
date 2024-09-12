@@ -16,13 +16,13 @@ import { effectStore, searchStore, navigationStore } from '../../store/store.js'
 					<Magnify :size="20" />
 				</NcTextField>
 				<NcActions>
-					<NcActionButton @click="store.getKlantenList()">
+					<NcActionButton @click="effectStore.refreshEffectList()">
 						<template #icon>
 							<Refresh :size="20" />
 						</template>
 						Ververs
 					</NcActionButton>
-					<NcActionButton @click="effectStore.setEffectItem([]); navigationStore.setModal('addEffect')">
+					<NcActionButton @click="effectStore.setEffectItem(null); navigationStore.setModal('addEffect')">
 						<template #icon>
 							<Plus :size="20" />
 						</template>
@@ -34,7 +34,7 @@ import { effectStore, searchStore, navigationStore } from '../../store/store.js'
 				<NcListItem v-for="(effect, i) in effectStore.effectList"
 					:key="`${effect}${i}`"
 					:name="effect.name"
-					:active="effectStore.effectItem === effect?.id"
+					:active="effectStore.effectItem?.id === effect?.id"
 					:force-display-actions="true"
 					:details="'1h'"
 					:counter-number="44"
