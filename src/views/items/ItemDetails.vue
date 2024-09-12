@@ -1,5 +1,5 @@
 <script setup>
-import { effectStore, itemStore } from '../../store/store.js'
+import { characterStore, effectStore, itemStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -47,8 +47,8 @@ import { effectStore, itemStore } from '../../store/store.js'
 					</div>
 				</BTab>
 				<BTab title="Karakters">
-					<div v-if="itemStore.itemItem?.characters?.length > 0">
-						<NcListItem v-for="(character) in itemStore.itemItem?.characters"
+					<div v-if="filterCharacters?.length > 0">
+						<NcListItem v-for="(character) in filterCharacters"
 							:key="character.id"
 							:name="character.name"
 							:bold="false"
@@ -62,7 +62,7 @@ import { effectStore, itemStore } from '../../store/store.js'
 							</template>
 						</NcListItem>
 					</div>
-					<div v-if="!itemStore.itemItem?.characters?.length">
+					<div v-if="!filterCharacters?.length">
 						Geen karakters gevonden
 					</div>
 				</BTab>
@@ -91,6 +91,8 @@ export default {
 		return {
 			effects: [],
 			effectsLoading: false,
+			characters: [],
+			charactersLoading: false,
 		}
 	},
 	computed: {
@@ -99,9 +101,15 @@ export default {
 				return itemStore.itemItem?.effects.map(String).includes(effect.id.toString())
 			})
 		},
+		filterCharacters() {
+			return characterStore.characterList.filter((character) => {
+				return character.items.map(String).includes(itemStore.itemItem.id.toString())
+			})
+		},
 	},
 	mounted() {
 		this.fetchEffects()
+		this.fetchCharacters()
 	},
 	methods: {
 		fetchEffects() {
@@ -109,6 +117,13 @@ export default {
 			effectStore.refreshEffectList()
 				.then(() => {
 					this.effectsLoading = false
+				})
+		},
+		fetchCharacters() {
+			this.charactersLoading = true
+			characterStore.refreshCharacterList()
+				.then(() => {
+					this.charactersLoading = false
 				})
 		},
 	},
