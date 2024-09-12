@@ -1,5 +1,5 @@
 <script setup>
-	import { templateStore, navigationStore, searchStore } from '../../store/store.js'
+import { templateStore, navigationStore, searchStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -37,25 +37,26 @@
 					:active="templateStore.templateItem?.id === template?.id"
 					:details="'1h'"
 					:counter-number="44"
+					:force-display-actions="true"
 					@click="templateStore.setTemplateItem(template)">
 					<template #icon>
-						<ChatOutline :class="templateStore.templateItem?.id  === template.id && 'selected'"
+						<ChatOutline :class="templateStore.templateItem?.id === template.id && 'selected'"
 							disable-menu
 							:size="44" />
 					</template>
 					<template #subname>
 						{{ template?.description }}
 					</template>
-					<template #actions>						
+					<template #actions>
 						<NcActionButton @click="templateStore.setTemplateItem(template); navigationStore.setModal('editTemplate')">
 							<template #icon>
-								<Plus/>
+								<Plus />
 							</template>
 							Bewerken
 						</NcActionButton>
 						<NcActionButton @click="templateStore.setTemplateItem(template), navigationStore.setDialog('deleteTemplate')">
 							<template #icon>
-								<TrashCanOutline/>
+								<TrashCanOutline />
 							</template>
 							Verwijderen
 						</NcActionButton>
