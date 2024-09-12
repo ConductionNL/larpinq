@@ -16,7 +16,7 @@ import { effectStore, navigationStore } from '../../store/store.js'
 					<MagicStaff />
 				</template>
 				<template #action>
-					<NcButton type="primary" @click="effectStore.setEffectItem([]); navigationStore.setModal('addEffect')">
+					<NcButton type="primary" @click="effectStore.setEffectItem(null); navigationStore.setModal('addEffect')">
 						Effect toevoegen
 					</NcButton>
 				</template>
