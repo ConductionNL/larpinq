@@ -4,11 +4,11 @@ import { abilityStore, navigationStore } from '../../store/store.js'
 
 <template>
 	<NcDialog v-if="navigationStore.modal === 'editAbility'"
-		name="Vaardigheid"
+		name="Ability"
 		size="normal"
 		:can-close="false">
 		<NcNoteCard v-if="success" type="success">
-			<p>Vaardigheid succesvol aangepast</p>
+			<p>Ability succesvol aangepast</p>
 		</NcNoteCard>
 		<NcNoteCard v-if="error" type="error">
 			<p>{{ error }}</p>
