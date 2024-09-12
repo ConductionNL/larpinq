@@ -8,7 +8,7 @@ use OCP\AppFramework\Db\QBMapper;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
 
-class CharacterMapper extends QBMapper
+class ConditionMapper extends QBMapper
 {
 	public function __construct(IDBConnection $db)
 	{
