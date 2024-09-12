@@ -21,15 +21,12 @@ import { eventStore, effectStore, navigationStore } from '../../store/store.js'
 				:value.sync="eventItem.name" />
 			<NcTextArea :disabled="loading"
 				label="Description"
-				type="textarea"
 				:value.sync="eventItem.description" />
 			<NcTextField :disabled="loading"
 				label="Start Date"
-				type="date"
 				:value.sync="eventItem.startDate" />
 			<NcTextField :disabled="loading"
 				label="End Date"
-				type="date"
 				:value.sync="eventItem.endDate" />
 			<NcTextField :disabled="loading"
 				label="Location"
@@ -42,7 +39,7 @@ import { eventStore, effectStore, navigationStore } from '../../store/store.js'
 		</div>
 
 		<template #actions>
-			<NcButton @click="navigationStore.setModal(false)">
+			<NcButton @click="closeModal">
 				<template #icon>
 					<Cancel :size="20" />
 				</template>
@@ -60,10 +57,10 @@ import { eventStore, effectStore, navigationStore } from '../../store/store.js'
 				@click="editEvent()">
 				<template #icon>
 					<NcLoadingIcon v-if="loading" :size="20" />
-					<ContentSaveOutline v-if="!loading && eventStore.eventItem.id" :size="20" />
-					<Plus v-if="!loading && !eventStore.eventItem.id" :size="20" />
+					<ContentSaveOutline v-if="!loading && eventStore.eventItem?.id" :size="20" />
+					<Plus v-if="!loading && !eventStore.eventItem?.id" :size="20" />
 				</template>
-				{{ eventStore.eventItem.id ? 'Opslaan' : 'Aanmaken' }}
+				{{ eventStore.eventItem?.id ? 'Opslaan' : 'Aanmaken' }}
 			</NcButton>
 		</template>
 	</NcDialog>
@@ -109,9 +106,12 @@ export default {
 			},
 		}
 	},
+	mounted() {
+		this.fetchEffects()
+	},
 	updated() {
 		if (navigationStore.modal === 'editEvent' && !this.hasUpdated) {
-			if (eventStore.eventItem.id) {
+			if (eventStore.eventItem?.id) {
 				this.eventItem = {
 					...eventStore.eventItem,
 					name: eventStore.eventItem.name || '',
@@ -126,25 +126,18 @@ export default {
 		}
 	},
 	methods: {
-		async editEvent() {
-			this.loading = true
-			try {
-				await eventStore.saveEvent({
-					...this.eventItem,
-					effects: this.effects.value.map((effect) => effect.id),
-				})
-				this.success = true
-				this.loading = false
-				setTimeout(() => {
-					this.success = false
-					this.loading = false
-					this.error = false
-					navigationStore.setModal(false)
-				}, 2000)
-			} catch (error) {
-				this.loading = false
-				this.success = false
-				this.error = error.message || 'An error occurred while saving the event'
+		closeModal() {
+			navigationStore.setModal(false)
+			this.success = false
+			this.loading = false
+			this.error = false
+			this.hasUpdated = false
+			this.eventItem = {
+				name: '',
+				description: '',
+				startDate: '',
+				endDate: '',
+				location: '',
 			}
 		},
 		fetchEffects() {
@@ -152,7 +145,7 @@ export default {
 
 			effectStore.refreshEffectList()
 				.then(() => {
-					const activeEffects = eventStore.eventItem.id
+					const activeEffects = eventStore.eventItem?.id
 						? effectStore.effectList.filter((effect) => {
 							return eventStore.eventItem.effects
 								.map(String)
@@ -177,6 +170,24 @@ export default {
 
 					this.effectsLoading = false
 				})
+		},
+		async editEvent() {
+			this.loading = true
+			try {
+				await eventStore.saveEvent({
+					...this.eventItem,
+					effects: this.effects.value.map((effect) => effect.id),
+				})
+				this.success = true
+				this.loading = false
+				setTimeout(() => {
+					this.closeModal()
+				}, 2000)
+			} catch (error) {
+				this.loading = false
+				this.success = false
+				this.error = error.message || 'An error occurred while saving the event'
+			}
 		},
 		openLink(url, target) {
 			window.open(url, target)
