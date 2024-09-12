@@ -102,6 +102,7 @@ class Character extends Entity implements JsonSerializable
 			'copper' => $this->copper,
 			'events' => $this->events,
 			'skills' => $this->skills,
+			'items' => $this->items,
 			'conditions' => $this->conditions,
 			'type' => $this->type,
 			'approved' => $this->approved,
