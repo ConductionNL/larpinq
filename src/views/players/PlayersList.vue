@@ -1,5 +1,5 @@
 <script setup>
-	import { playerStore, navigationStore, searchStore } from '../../store/store.js'
+import { playerStore, navigationStore, searchStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -22,7 +22,7 @@
 						</template>
 						Ververs
 					</NcActionButton>
-					<NcActionButton @click="playerStore.setPlayerItem([]); navigationStore.setModal('editPlayer')">
+					<NcActionButton @click="playerStore.setPlayerItem(null); navigationStore.setModal('editPlayer')">
 						<template #icon>
 							<Plus :size="20" />
 						</template>
@@ -49,13 +49,13 @@
 					<template #actions>
 						<NcActionButton @click="playerStore.setPlayerItem(player); navigationStore.setModal('editPlayer')">
 							<template #icon>
-								<Plus/>
+								<Plus />
 							</template>
 							Bewerken
 						</NcActionButton>
 						<NcActionButton @click="playerStore.setPlayerItem(player), navigationStore.setDialog('deletePlayer')">
 							<template #icon>
-								<TrashCanOutline/>
+								<TrashCanOutline />
 							</template>
 							Verwijderen
 						</NcActionButton>
