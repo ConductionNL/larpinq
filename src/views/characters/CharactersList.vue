@@ -37,7 +37,7 @@ import { characterStore, navigationStore, searchStore } from '../../store/store.
 					:name="character?.name"
 					:force-display-actions="true"
 					:active="characterStore.characterItem?.id === character?.id"
-					:details="characterStore.characterItem.approved ? 'Approved': 'Not approved'"
+					:details="characterStore.characterItem.approved === 'approved' ? 'Approved': 'Not approved'"
 					:counter-number="44"
 					@click="characterStore.setCharacterItem(character)">
 					<template #icon>
