@@ -1,5 +1,5 @@
 <script setup>
-	import { characterStore, navigationStore, searchStore } from '../../store/store.js'
+import { characterStore, navigationStore, searchStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -22,7 +22,7 @@
 						</template>
 						Ververs
 					</NcActionButton>
-					<NcActionButton @click="characterStore.setCharacterItem([]); navigationStore.setModal('editCharacter')">
+					<NcActionButton @click="characterStore.setCharacterItem(null); navigationStore.setModal('editCharacter')">
 						<template #icon>
 							<Plus :size="20" />
 						</template>
@@ -37,7 +37,7 @@
 					:name="character?.name"
 					:force-display-actions="true"
 					:active="characterStore.characterItem?.id === character?.id"
-					:details="'Aproved'"
+					:details="characterStore.characterItem.approved ? 'Approved': 'Not approved'"
 					:counter-number="44"
 					@click="characterStore.setCharacterItem(character)">
 					<template #icon>
@@ -70,7 +70,7 @@
 			class="loadingIcon"
 			:size="64"
 			appearance="dark"
-			name="Zaken aan het laden" />
+			name="Karakters aan het laden" />
 
 		<div v-if="characterStore.characterList.length === 0">
 			Er zijn nog geen karakters gedefinieerd.

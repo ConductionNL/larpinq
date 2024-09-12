@@ -36,7 +36,7 @@ import { characterStore, navigationStore, skillStore } from '../../store/store.j
 
 		<template #actions>
 			<NcButton
-				@click="navigationStore.setModal(false)">
+				@click="closeModal">
 				<template #icon>
 					<Cancel :size="20" />
 				</template>
@@ -112,9 +112,12 @@ export default {
 			hasUpdated: false,
 		}
 	},
+	mounted() {
+		this.fetchSkills()
+	},
 	updated() {
 		if (navigationStore.modal === 'editCharacter' && !this.hasUpdated) {
-			if (characterStore.characterItem.id) {
+			if (characterStore.characterItem?.id) {
 				this.characterItem = {
 					...characterStore.characterItem,
 					name: characterStore.characterItem.name || '',
@@ -143,7 +146,8 @@ export default {
 
 			skillStore.refreshSkillList()
 				.then(() => {
-					const activatedSkills = characterStore.characterItem.id // if modal is an edit modal
+					// full skills which are in the skills list on the character
+					const activatedSkills = characterStore.characterItem?.id // if modal is an edit modal
 						? skillStore.skillList.filter((skill) => { // filter through the list of skills
 							return characterStore.characterItem.skills
 								.map(String) // ensure all the skill id's in the character are a string (this does not change the resulting data type)
@@ -151,20 +155,26 @@ export default {
 						})
 						: null
 
-					this.skills = {
+					// full skills mapped to be in the structure of select options
+					const mappedActivatedSkills = activatedSkills?.length > 0
+						? activatedSkills.map((skill) => ({
+							id: skill.id,
+							label: skill.name,
+						}))
+						: null
+
+					// skills select options
+					const skillsOptions = {
 						multiple: true,
 						closeOnSelect: false,
 						options: skillStore.skillList.map((skill) => ({
 							id: skill.id,
 							label: skill.name,
 						})),
-						value: activatedSkills
-							? activatedSkills.map((skill) => ({
-								id: skill.id,
-							    label: skill.name,
-							}))
-							: null,
+						value: mappedActivatedSkills,
 					}
+
+					this.skills = skillsOptions
 
 					this.skillsLoading = false
 				})
@@ -180,7 +190,10 @@ export default {
 				this.success = true
 				this.loading = false
 				this.error = false
-				setTimeout(this.closeModal, 2000)
+				setTimeout(() => {
+					this.closeModal()
+					navigationStore.setSelected('characters')
+				}, 2000)
 			} catch (error) {
 				this.loading = false
 				this.success = false
