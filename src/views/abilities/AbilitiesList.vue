@@ -22,7 +22,7 @@ import { abilityStore, navigationStore, searchStore } from '../../store/store.js
 						</template>
 						Ververs
 					</NcActionButton>
-					<NcActionButton @click="abilityStore.setAbilityItem([]), navigationStore.setModal('editAbility')">
+					<NcActionButton @click="abilityStore.setAbilityItem(null), navigationStore.setModal('editAbility')">
 						<template #icon>
 							<Plus :size="20" />
 						</template>
@@ -50,7 +50,7 @@ import { abilityStore, navigationStore, searchStore } from '../../store/store.js
 					<template #actions>
 						<NcActionButton @click="abilityStore.setAbilityItem(ability), navigationStore.setModal('editAbility')">
 							<template #icon>
-								<Plus />
+								<Pencil />
 							</template>
 							Bewerken
 						</NcActionButton>
