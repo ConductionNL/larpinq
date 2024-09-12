@@ -34,7 +34,7 @@ import { abilityStore, navigationStore, searchStore } from '../../store/store.js
 				<NcListItem v-for="(ability, i) in abilityStore.abilityList"
 					:key="`${ability}${i}`"
 					:name="ability?.name"
-					:active="abilityStore.abilityItem.id === ability?.id"
+					:active="abilityStore.abilityItem?.id === ability?.id"
 					:details="'1h'"
 					:counter-number="44"
 					:force-display-actions="true"
