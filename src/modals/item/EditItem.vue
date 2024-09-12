@@ -27,7 +27,7 @@ import { itemStore, effectStore, navigationStore } from '../../store/store.js'
 				v-model="effects.value"
 				input-label="Effects"
 				:loading="effectsLoading"
-				:disabled="loading" />
+				:disabled="effectsLoading || loading" />
 			<NcCheckboxRadioSwitch :disabled="loading"
 				label="Unique"
 				type="switch"
