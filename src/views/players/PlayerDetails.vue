@@ -90,7 +90,7 @@ export default {
 	computed: {
 		filterCharacters() {
 			return characterStore.characterList.filter((character) => {
-				return character.ocName === playerStore.playerItem.name
+				return character.ocName.toString() === playerStore.playerItem.id.toString()
 			})
 		},
 	},

@@ -74,6 +74,7 @@ export const useCharacterStore = defineStore(
 				})
 					.then((response) => {
 						this.refreshCharacterList()
+						this.setCharacterItem(null)
 					})
 					.catch((err) => {
 						console.error('Error deleting character:', err)
