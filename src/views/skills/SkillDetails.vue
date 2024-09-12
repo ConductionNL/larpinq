@@ -93,7 +93,7 @@ export default {
 	computed: {
 		filterCharacters() {
 			return characterStore.characterList.filter((character) => {
-				return character.skills.map(String).includes(skillStore.skillItem.id)
+				return character.skills.map(String).includes(skillStore.skillItem.id.toString())
 			})
 		},
 		filterEffects() {
