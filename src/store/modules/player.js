@@ -64,6 +64,7 @@ export const usePlayerStore = defineStore(
 				})
 					.then((response) => {
 						this.refreshPlayerList()
+						this.setPlayerItem(null)
 					})
 					.catch((err) => {
 						console.error('Error deleting player:', err)

@@ -16,7 +16,7 @@ import { playerStore, navigationStore } from '../../store/store.js'
 					<AccountGroupOutline />
 				</template>
 				<template #action>
-					<NcButton type="primary" @click="playerStore.setPlayerItem([]); navigationStore.setModal('editPlayer')">
+					<NcButton type="primary" @click="playerStore.setPlayerItem(null); navigationStore.setModal('editPlayer')">
 						Speler aanmaken
 					</NcButton>
 				</template>
