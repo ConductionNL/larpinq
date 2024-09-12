@@ -1,5 +1,5 @@
 <script setup>
-import { characterStore, navigationStore, skillStore } from '../../store/store.js'
+import { characterStore, navigationStore, playerStore, skillStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -20,18 +20,19 @@ import { characterStore, navigationStore, skillStore } from '../../store/store.j
 				label="Name *"
 				required
 				:value.sync="characterItem.name" />
-			<NcTextField :disabled="loading"
-				label="OC Name *"
-				required
-				:value.sync="characterItem.ocName" />
 			<NcTextArea :disabled="loading"
 				label="Description"
 				:value.sync="characterItem.description" />
+			<NcSelect v-bind="players"
+				v-model="players.value"
+				input-label="OC Name *"
+				:loading="playersLoading"
+				:disabled="playersLoading || loading" />
 			<NcSelect v-bind="skills"
 				v-model="skills.value"
 				input-label="Skills"
 				:loading="skillsLoading"
-				:disabled="loading" />
+				:disabled="skillsLoading || loading" />
 		</div>
 
 		<template #actions>
@@ -106,6 +107,8 @@ export default {
 			},
 			skills: {},
 			skillsLoading: false,
+			players: {},
+			playersLoading: false,
 			success: false,
 			loading: false,
 			error: false,
@@ -114,6 +117,7 @@ export default {
 	},
 	mounted() {
 		this.fetchSkills()
+		this.fetchPlayers()
 	},
 	updated() {
 		if (navigationStore.modal === 'editCharacter' && !this.hasUpdated) {
@@ -125,6 +129,7 @@ export default {
 				}
 			}
 			this.fetchSkills()
+			this.fetchPlayers()
 			this.hasUpdated = true
 		}
 	},
@@ -179,12 +184,48 @@ export default {
 					this.skillsLoading = false
 				})
 		},
+		fetchPlayers() {
+			this.playersLoading = true
+
+			playerStore.refreshPlayerList()
+				.then(() => {
+					// full players which are in the players list on the character
+					const activatedPlayers = characterStore.characterItem?.id // if modal is an edit modal
+						? playerStore.playerList.find((player) => { // filter through the list of players
+							// check if the current player in the player lest is selected on the character
+							return characterStore.characterItem.ocName.toString() === player.id.toString()
+						})
+						: null
+
+					// full players mapped to be in the structure of select options
+					const mappedActivatedPlayer = activatedPlayers
+						? {
+							id: activatedPlayers.id.toString(),
+							label: activatedPlayers.name,
+						}
+						: null
+
+					// players select options
+					const playersOptions = {
+						options: playerStore.playerList.map((item) => ({
+							id: item.id.toString(),
+							label: item.name,
+						})),
+						value: mappedActivatedPlayer,
+					}
+
+					this.players = playersOptions
+
+					this.playersLoading = false
+				})
+		},
 		async editCharacter() {
 			this.loading = true
 			try {
 				await characterStore.saveCharacter({
 					...this.characterItem,
 					skills: this.skills.value.map((skill) => skill.id),
+					ocName: this.players.value?.id || null,
 				})
 				// Close modal or show success message
 				this.success = true
