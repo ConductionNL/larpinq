@@ -1,5 +1,5 @@
 <script setup>
-	import { skillStore, navigationStore, searchStore } from '../../store/store.js'
+import { skillStore, navigationStore, searchStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -22,7 +22,7 @@
 						</template>
 						Ververs
 					</NcActionButton>
-					<NcActionButton @click="skillStore.setSkillItem([]); navigationStore.setModal('editSkill')">
+					<NcActionButton @click="skillStore.setSkillItem(null); navigationStore.setModal('editSkill')">
 						<template #icon>
 							<Plus :size="20" />
 						</template>
@@ -50,13 +50,13 @@
 					<template #actions>
 						<NcActionButton @click="skillStore.setSkillItem(skill); navigationStore.setModal('editSkill')">
 							<template #icon>
-								<Plus/>
+								<Pencil />
 							</template>
 							Bewerken
 						</NcActionButton>
 						<NcActionButton @click="skillStore.setSkillItem(skill), navigationStore.setDialog('deleteSkill')">
 							<template #icon>
-								<TrashCanOutline/>
+								<TrashCanOutline />
 							</template>
 							Verwijderen
 						</NcActionButton>
@@ -102,7 +102,6 @@ export default {
 		SwordCross,
 		Magnify,
 		Plus,
-		Pencil,
 		TrashCanOutline,
 		Refresh,
 	},

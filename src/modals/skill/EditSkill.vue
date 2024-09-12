@@ -109,7 +109,7 @@ export default {
 	},
 	updated() {
 		if (navigationStore.modal === 'editSkill' && !this.hasUpdated) {
-			if (skillStore.skillItem.id) {
+			if (skillStore.skillItem?.id) {
 				this.skillItem = {
 					...skillStore.skillItem,
 					name: skillStore.skillItem.name || '',
@@ -139,7 +139,7 @@ export default {
 
 			effectStore.refreshEffectList()
 				.then(() => {
-					const activatedEffects = skillStore.skillItem.id // if modal is an edit modal
+					const activatedEffects = skillStore.skillItem?.id // if modal is an edit modal
 						? effectStore.effectList.filter((effect) => { // filter through the list of effects
 							return (skillStore.skillItem.effects || [])
 								.map(String) // ensure all the effect id's in the skill are a string (this does not change the resulting data type)
