@@ -100,6 +100,13 @@ import { characterStore, conditionStore, eventStore, itemStore, navigationStore,
 											</template>
 											Bewerken
 										</NcActionButton>
+										<NcActionButton aria-label="Remove skill from character"
+											@click="skillStore.setSkillItem(skill); navigationStore.setDialog('deleteSkillFromCharacter')">
+											<template #icon>
+												<TrashCanOutline :size="20" />
+											</template>
+											Verwijder van Character
+										</NcActionButton>
 									</template>
 								</NcListItem>
 							</div>
@@ -137,6 +144,13 @@ import { characterStore, conditionStore, eventStore, itemStore, navigationStore,
 											</template>
 											Bewerken
 										</NcActionButton>
+										<NcActionButton aria-label="Remove item from character"
+											@click="itemStore.setItemItem(item); navigationStore.setDialog('deleteItemFromCharacter')">
+											<template #icon>
+												<TrashCanOutline :size="20" />
+											</template>
+											Verwijder van Character
+										</NcActionButton>
 									</template>
 								</NcListItem>
 							</div>
@@ -153,7 +167,7 @@ import { characterStore, conditionStore, eventStore, itemStore, navigationStore,
 									:bold="false"
 									:force-display-actions="true">
 									<template #icon>
-										<Sword disable-menu
+										<EmoticonSickOutline disable-menu
 											:size="44" />
 									</template>
 									<template #subname>
@@ -174,6 +188,13 @@ import { characterStore, conditionStore, eventStore, itemStore, navigationStore,
 											</template>
 											Bewerken
 										</NcActionButton>
+										<NcActionButton aria-label="Remove condition from character"
+											@click="conditionStore.setConditionItem(condition); navigationStore.setDialog('deleteConditionFromCharacter')">
+											<template #icon>
+												<TrashCanOutline :size="20" />
+											</template>
+											Verwijder van Character
+										</NcActionButton>
 									</template>
 								</NcListItem>
 							</div>
@@ -190,7 +211,7 @@ import { characterStore, conditionStore, eventStore, itemStore, navigationStore,
 									:bold="false"
 									:force-display-actions="true">
 									<template #icon>
-										<Sword disable-menu
+										<CalendarMonthOutline disable-menu
 											:size="44" />
 									</template>
 									<template #subname>
@@ -210,6 +231,13 @@ import { characterStore, conditionStore, eventStore, itemStore, navigationStore,
 												<Pencil :size="20" />
 											</template>
 											Bewerken
+										</NcActionButton>
+										<NcActionButton aria-label="Remove event from character"
+											@click="eventStore.setEventItem(event); navigationStore.setDialog('deleteEventFromCharacter')">
+											<template #icon>
+												<TrashCanOutline :size="20" />
+											</template>
+											Verwijder van Character
 										</NcActionButton>
 									</template>
 								</NcListItem>
@@ -241,6 +269,8 @@ import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
 import EyeArrowRight from 'vue-material-design-icons/EyeArrowRight.vue'
 import SwordCross from 'vue-material-design-icons/SwordCross.vue'
 import Sword from 'vue-material-design-icons/Sword.vue'
+import EmoticonSickOutline from 'vue-material-design-icons/EmoticonSickOutline.vue'
+import CalendarMonthOutline from 'vue-material-design-icons/CalendarMonthOutline.vue'
 
 export default {
 	name: 'CharacterDetails',
