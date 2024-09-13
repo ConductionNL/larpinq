@@ -89,9 +89,7 @@ export default {
 	},
 	data() {
 		return {
-			effects: [],
 			effectsLoading: false,
-			characters: [],
 			charactersLoading: false,
 		}
 	},
