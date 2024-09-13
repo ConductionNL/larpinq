@@ -25,7 +25,7 @@ import { characterStore, navigationStore } from '../../store/store.js'
 							<template #icon>
 								<FileDocumentPlusOutline :size="20" />
 							</template>
-							Vaardigheid toevoegen
+							Skill toevoegen
 						</NcActionButton>
 						<NcActionButton @click="navigationStore.setModal('addItemToCharacter')">
 							<template #icon>
@@ -70,7 +70,7 @@ import { characterStore, navigationStore } from '../../store/store.js'
 						<BTab title="Eigenschappen" active>
 							Eigenschappen
 						</BTab>
-						<BTab title="Vaardigheden">
+						<BTab title="Skills">
 							Vaardigheden
 						</BTab>
 						<BTab title="Items">

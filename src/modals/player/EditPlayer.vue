@@ -81,7 +81,7 @@ export default {
 		}
 	},
 	updated() {
-		if (playerStore.playerItem.id && navigationStore.modal === 'editPlayer' && !this.hasUpdated) {
+		if (playerStore.playerItem?.id && navigationStore.modal === 'editPlayer' && !this.hasUpdated) {
 			this.player = {
 				...playerStore.playerItem,
 				name: playerStore.playerItem.name || '',

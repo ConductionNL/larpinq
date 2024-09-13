@@ -224,8 +224,8 @@ export default {
 			try {
 				await characterStore.saveCharacter({
 					...this.characterItem,
-					skills: this.skills.value.map((skill) => skill.id),
-					ocName: this.players.value?.id || null,
+					skills: (this.skills?.value || []).map((skill) => skill.id),
+					ocName: this.players?.value?.id || null,
 				})
 				// Close modal or show success message
 				this.success = true

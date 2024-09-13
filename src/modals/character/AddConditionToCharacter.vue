@@ -1,7 +1,5 @@
 <script setup>
 import { characterStore, conditionStore, navigationStore } from '../../store/store.js'
-import { onMounted } from 'vue'
-
 </script>
 
 <template>
