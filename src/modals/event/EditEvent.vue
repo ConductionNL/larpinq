@@ -129,8 +129,12 @@ export default {
 					...eventStore.eventItem,
 					name: eventStore.eventItem.name || '',
 					description: eventStore.eventItem.description || '',
-					startDate: eventStore.eventItem.startDate || new Date(),
-					endDate: eventStore.eventItem.endDate || new Date(),
+					startDate: !isNaN(new Date(eventStore.eventItem.startDate))
+						? new Date(eventStore.eventItem.startDate)
+						: new Date(),
+					endDate: !isNaN(new Date(eventStore.eventItem.endDate))
+						? new Date(eventStore.eventItem.endDate)
+						: new Date(),
 					location: eventStore.eventItem.location || '',
 				}
 			}
