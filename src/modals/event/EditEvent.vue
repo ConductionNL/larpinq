@@ -189,7 +189,7 @@ export default {
 			try {
 				await eventStore.saveEvent({
 					...this.eventItem,
-					effects: this.effects?.value?.map((effect) => effect.id),
+					effects: (this.effects?.value || []).map((effect) => effect.id),
 					startDate: this.eventItem.startDate.toISOString(),
 					endDate: this.eventItem.endDate.toISOString(),
 				})

@@ -39,7 +39,7 @@ import { characterStore, eventStore, navigationStore } from '../../store/store.j
 				Help
 			</NcButton>
 			<NcButton v-if="!success"
-				:disabled="loading"
+				:disabled="loading || !events.value.length"
 				type="primary"
 				@click="addEventToCharacter()">
 				<template #icon>

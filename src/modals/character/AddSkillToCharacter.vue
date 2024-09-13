@@ -39,7 +39,7 @@ import { characterStore, skillStore, navigationStore } from '../../store/store.j
 				Help
 			</NcButton>
 			<NcButton v-if="!success"
-				:disabled="loading"
+				:disabled="loading || !skills.value?.length"
 				type="primary"
 				@click="addSkillToCharacter()">
 				<template #icon>
