@@ -21,7 +21,7 @@ import { characterStore, skillStore, navigationStore } from '../../store/store.j
 				v-model="skills.value"
 				input-label="Skill *"
 				:loading="skillsLoading"
-				:disabled="loading"
+				:disabled="skillsLoading"
 				required />
 		</div>
 
@@ -39,7 +39,7 @@ import { characterStore, skillStore, navigationStore } from '../../store/store.j
 				Help
 			</NcButton>
 			<NcButton v-if="!success"
-				:disabled="loading || !skills.value?.length"
+				:disabled="loading || skillsLoading || !skills.value?.length"
 				type="primary"
 				@click="addSkillToCharacter()">
 				<template #icon>

@@ -24,6 +24,10 @@
 		<AddItemToCharacter />
 		<AddConditionToCharacter />
 		<AddEventToCharacter />
+		<DeleteSkillFromCharacter />
+		<DeleteItemFromCharacter />
+		<DeleteConditionFromCharacter />
+		<DeleteEventFromCharacter />
 	</div>
 </template>
 
@@ -51,6 +55,10 @@ import AddSkillToCharacter from './character/AddSkillToCharacter.vue'
 import AddItemToCharacter from './character/AddItemToCharacter.vue'
 import AddConditionToCharacter from './character/AddConditionToCharacter.vue'
 import AddEventToCharacter from './character/AddEventToCharacter.vue'
+import DeleteSkillFromCharacter from './character/DeleteSkillFromCharacter.vue'
+import DeleteItemFromCharacter from './character/DeleteItemFromCharacter.vue'
+import DeleteConditionFromCharacter from './character/DeleteConditionFromCharacter.vue'
+import DeleteEventFromCharacter from './character/DeleteEventFromCharacter.vue'
 
 export default {
 	name: 'Modals',
@@ -78,6 +86,10 @@ export default {
 		AddItemToCharacter,
 		AddConditionToCharacter,
 		AddEventToCharacter,
+		DeleteSkillFromCharacter,
+		DeleteItemFromCharacter,
+		DeleteConditionFromCharacter,
+		DeleteEventFromCharacter,
 	},
 }
 </script>
