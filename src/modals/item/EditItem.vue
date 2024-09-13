@@ -182,7 +182,7 @@ export default {
 			try {
 				await itemStore.saveItem({
 					...this.itemItem,
-					effects: this.effects.value.map((effect) => effect.id),
+					effects: (this.effects?.value || []).map((effect) => effect.id),
 				})
 				this.success = true
 				this.loading = false

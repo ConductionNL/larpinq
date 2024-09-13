@@ -39,7 +39,7 @@ import { characterStore, itemStore, navigationStore } from '../../store/store.js
 				Help
 			</NcButton>
 			<NcButton v-if="!success"
-				:disabled="loading"
+				:disabled="loading || !items.value?.length"
 				type="primary"
 				@click="addItemToCharacter()">
 				<template #icon>
