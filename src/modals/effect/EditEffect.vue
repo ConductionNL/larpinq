@@ -41,7 +41,7 @@ import { abilityStore, effectStore, navigationStore } from '../../store/store.js
 			<NcSelect
 				v-bind="abilities"
 				v-model="abilities.value"
-				input-label="Effects"
+				input-label="Abilities"
 				:loading="abilitiesLoading"
 				:disabled="loading" />
 		</div>
@@ -190,7 +190,7 @@ export default {
 					...this.effectItem,
 					modification: this.modificationOptions.value.id,
 					cumulative: this.cumulativeOptions.value.id,
-					abilities: this.abilities.value.map((ability) => ability.id),
+					abilities: (this.abilities?.value || []).map((ability) => ability.id),
 				})
 				this.success = true
 				this.loading = false

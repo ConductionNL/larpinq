@@ -4,24 +4,24 @@ import { characterStore, skillStore, navigationStore } from '../../store/store.j
 
 <template>
 	<NcDialog v-if="navigationStore.modal === 'addSkillToCharacter'"
-		name="Vaardigheid toevoegen aan karakter"
+		name="Skill toevoegen aan karakter"
 		size="normal"
 		:can-close="false">
 		<NcNoteCard v-if="success" type="success">
-			<p>Vaardigheid succesvol toegevoegd aan karakter</p>
+			<p>Skill succesvol toegevoegd aan karakter</p>
 		</NcNoteCard>
 		<NcNoteCard v-if="error" type="error">
 			<p>{{ error }}</p>
 		</NcNoteCard>
 
 		<div v-if="!success" class="formContainer">
-			<p>Let op: Het toevoegen van een vaardigheid aan een karakter zal leiden tot een herberekening van de statistieken van het karakter. Dit is een asynchroon proces, dus het kan even duren voordat de wijzigingen zichtbaar worden.</p>
+			<p>Let op: Het toevoegen van een skill aan een karakter zal leiden tot een herberekening van de statistieken van het karakter. Dit is een asynchroon proces, dus het kan even duren voordat de wijzigingen zichtbaar worden.</p>
 
 			<NcSelect v-bind="skills"
 				v-model="skills.value"
 				input-label="Skill *"
 				:loading="skillsLoading"
-				:disabled="loading"
+				:disabled="skillsLoading"
 				required />
 		</div>
 
@@ -39,7 +39,7 @@ import { characterStore, skillStore, navigationStore } from '../../store/store.j
 				Help
 			</NcButton>
 			<NcButton v-if="!success"
-				:disabled="loading"
+				:disabled="loading || skillsLoading || !skills.value?.length"
 				type="primary"
 				@click="addSkillToCharacter()">
 				<template #icon>
@@ -152,7 +152,7 @@ export default {
 			} catch (error) {
 				this.loading = false
 				this.success = false
-				this.error = error.message || 'Er is een fout opgetreden bij het toevoegen van de vaardigheid aan het karakter'
+				this.error = error.message || 'Er is een fout opgetreden bij het toevoegen van de skill aan het karakter'
 			}
 		},
 	},

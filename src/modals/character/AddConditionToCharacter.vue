@@ -1,7 +1,5 @@
 <script setup>
 import { characterStore, conditionStore, navigationStore } from '../../store/store.js'
-import { onMounted } from 'vue'
-
 </script>
 
 <template>
@@ -19,19 +17,16 @@ import { onMounted } from 'vue'
 		<div v-if="!success" class="formContainer">
 			<p>Let op: Het toevoegen van een conditie aan een karakter kan invloed hebben op de eigenschappen en vaardigheden van het karakter. Dit is een asynchroon proces, dus het kan even duren voordat de wijzigingen zichtbaar worden.</p>
 
-			<NcSelect
-				:disabled="loading"
-				label="Conditie *"
-				input-label="Conditie *"
-				:options="conditionStore.conditions"
-				:value.sync="selectedCondition"
-				option-label="name"
-				option-value="id"
+			<NcSelect v-bind="conditions"
+				v-model="conditions.value"
+				input-label="Conditions *"
+				:loading="conditionsLoading"
+				:disabled="conditionsLoading"
 				required />
 		</div>
 
 		<template #actions>
-			<NcButton @click="navigationStore.setModal(false)">
+			<NcButton @click="closeModal">
 				<template #icon>
 					<Cancel :size="20" />
 				</template>
@@ -44,7 +39,7 @@ import { onMounted } from 'vue'
 				Help
 			</NcButton>
 			<NcButton v-if="!success"
-				:disabled="loading"
+				:disabled="loading || conditionsLoading || !conditions.value?.length"
 				type="primary"
 				@click="addConditionToCharacter()">
 				<template #icon>
@@ -85,31 +80,79 @@ export default {
 	},
 	data() {
 		return {
-			success: false,
+			conditions: {},
+			conditionsLoading: false,
 			loading: false,
+			success: false,
 			error: false,
-			selectedCondition: null,
+			hasUpdated: false,
 		}
 	},
 	mounted() {
-		conditionStore.refreshConditionList()
+		this.fetchConditions()
+	},
+	updated() {
+		if (navigationStore.modal === 'addConditionToCharacter' && !this.hasUpdated) {
+			this.fetchConditions()
+			this.hasUpdated = true
+		}
 	},
 	methods: {
+		closeModal() {
+			navigationStore.setModal(false)
+			this.success = false
+			this.loading = false
+			this.conditionsLoading = false
+			this.error = false
+			this.hasUpdated = false
+		},
+		fetchConditions() {
+			this.conditionsLoading = true
+
+			conditionStore.refreshConditionList()
+				.then(() => {
+					// Get all the items NOT on the character
+					const availableConditions = conditionStore.conditionList.filter((item) => {
+						return (characterStore.characterItem?.conditions || [])
+							.map(String)
+							.includes(item.id.toString()) !== true
+					})
+
+					this.conditions = {
+						multiple: true,
+						closeOnSelect: false,
+						options: availableConditions.map((item) => ({
+							id: item.id,
+							label: item.name,
+						})),
+					}
+
+					this.conditionsLoading = false
+				})
+		},
 		async addConditionToCharacter() {
 			this.loading = true
 			try {
+				const characterItemClone = { ...characterStore.characterItem }
+
 				if (!characterStore.characterItem.conditions) {
 					characterStore.characterItem.conditions = []
 				}
-				characterStore.characterItem.conditions.push(this.selectedCondition)
-				await characterStore.saveCharacter()
+
+				for (const selectedItem of this.conditions.value) {
+					if (!characterItemClone.conditions.includes(selectedItem.id)) {
+						characterItemClone.conditions.push(selectedItem.id)
+					}
+				}
+
+				await characterStore.saveCharacter({
+					...characterItemClone,
+				})
+
 				this.success = true
 				this.loading = false
 				this.error = false
-				setTimeout(() => {
-					this.success = false
-					navigationStore.setModal(false)
-				}, 2000)
+				setTimeout(this.closeModal, 2000)
 			} catch (error) {
 				this.loading = false
 				this.success = false

@@ -167,7 +167,7 @@ export default {
 					...this.effectItem,
 					modification: this.modificationOptions.value.id,
 					cumulative: this.cumulativeOptions.value.id,
-					abilities: this.abilities.value.map((ability) => ability.id),
+					abilities: (this.abilities?.value || []).map((ability) => ability.id),
 				})
 				this.success = true
 				this.loading = false

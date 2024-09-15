@@ -15,13 +15,13 @@ import { eventStore, navigationStore } from '../../store/store.js'
 						<template #icon>
 							<DotsHorizontal :size="20" />
 						</template>
-						<NcActionButton @click="store.setModal('editEvent')">
+						<NcActionButton @click="navigationStore.setModal('editEvent')">
 							<template #icon>
 								<Pencil :size="20" />
 							</template>
 							Bewerken
 						</NcActionButton>
-						<NcActionButton @click="store.setDialog('deleteEvent')">
+						<NcActionButton @click="navigationStore.setDialog('deleteEvent')">
 							<template #icon>
 								<TrashCanOutline :size="20" />
 							</template>

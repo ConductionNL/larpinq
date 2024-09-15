@@ -170,7 +170,7 @@ export default {
 			try {
 				await skillStore.saveSkill({
 					...this.skillItem,
-					effects: this.effects.value.map((effect) => effect.id),
+					effects: (this.effects?.value || []).map((effect) => effect.id),
 				})
 				this.success = true
 				this.loading = false
