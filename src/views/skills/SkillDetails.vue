@@ -7,16 +7,38 @@ import { characterStore, effectStore, skillStore } from '../../store/store.js'
 		<div id="app-content">
 			<!-- app-content-wrapper is optional, only use if app-content-list  -->
 			<div>
-				<h1 class="h1">
-					{{ skillStore.skillItem.name }}
-				</h1>
-				<div class="grid">
-					<div class="gridContent">
-						<h4>Sammenvatting:</h4>
-						<span>{{ skillStore.skillItem.summary }}</span>
+				<div class="head">
+					<h1 class="h1">
+						{{ skillStore.skillItem.name }}
+					</h1>
+
+					<NcActions :primary="true" menu-name="Acties">
+						<template #icon>
+							<DotsHorizontal :size="20" />
+						</template>
+						<NcActionButton @click="navigationStore.setModal('editSkill')">
+							<template #icon>
+								<Pencil :size="20" />
+							</template>
+							Bewerken
+						</NcActionButton>
+						<NcActionButton @click="navigationStore.setDialog('deleteSkill')">
+							<template #icon>
+								<TrashCanOutline :size="20" />
+							</template>
+							Verwijderen
+						</NcActionButton>
+					</NcActions>
+				</div>
+				<div class="detailGrid">
+					<div>
+						<b>Sammenvatting:</b>
+						<span>{{ skillStore.skillItem.summary  }}</span>
 					</div>
 				</div>
+				<span>{{ skillStore.skillItem.description }}</span>
 			</div>
+
 		</div>
 		<div class="tabContainer">
 			<BTabs content-class="mt-3" justified>

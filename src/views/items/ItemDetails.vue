@@ -11,17 +11,32 @@ import { effectStore, itemStore } from '../../store/store.js'
 					<h1 class="h1">
 						{{ itemStore.itemItem.name }}
 					</h1>
+
+					<NcActions :primary="true" menu-name="Acties">
+						<template #icon>
+							<DotsHorizontal :size="20" />
+						</template>
+						<NcActionButton @click="navigationStore.setModal('editItem')">
+							<template #icon>
+								<Pencil :size="20" />
+							</template>
+							Bewerken
+						</NcActionButton>
+						<NcActionButton @click="navigationStore.setDialog('deleteItem')">
+							<template #icon>
+								<TrashCanOutline :size="20" />
+							</template>
+							Verwijderen
+						</NcActionButton>
+					</NcActions>
 				</div>
 				<div class="detailGrid">
 					<div>
-						<b>Berichttekst:</b>
-						<p>{{ itemStore.itemItem.description }}</p>
-					</div>
-					<div>
-						<b>Inhoud:</b>
-						<p>{{ itemStore.itemItem.name }}</p>
+						<b>Sammenvatting:</b>
+						<span>{{ itemStore.itemItem.summary  }}</span>
 					</div>
 				</div>
+				<span>{{ itemStore.itemItem.description }}</span>
 			</div>
 		</div>
 		<div class="tabContainer">

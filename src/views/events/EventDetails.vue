@@ -15,13 +15,13 @@ import { eventStore, navigationStore } from '../../store/store.js'
 						<template #icon>
 							<DotsHorizontal :size="20" />
 						</template>
-						<NcActionButton @click="store.setModal('editTaak')">
+						<NcActionButton @click="store.setModal('editEvent')">
 							<template #icon>
 								<Pencil :size="20" />
 							</template>
 							Bewerken
 						</NcActionButton>
-						<NcActionButton @click="store.setDialog('deleteTaak')">
+						<NcActionButton @click="store.setDialog('deleteEvent')">
 							<template #icon>
 								<TrashCanOutline :size="20" />
 							</template>
@@ -29,12 +29,13 @@ import { eventStore, navigationStore } from '../../store/store.js'
 						</NcActionButton>
 					</NcActions>
 				</div>
-				<div class="grid">
-					<div class="gridContent">
+				<div class="detailGrid">
+					<div>
 						<b>Sammenvatting:</b>
-						<span>{{ eventStore.eventItem.summery }}</span>
+						<span>{{ eventStore.eventItem.summary  }}</span>
 					</div>
 				</div>
+				<span>{{ eventStore.eventItem.description }}</span>
 			</div>
 		</div>
 	</div>

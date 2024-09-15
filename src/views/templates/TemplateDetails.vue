@@ -5,17 +5,38 @@ import { templateStore, navigationStore } from '../../store/store.js'
 <template>
 	<div class="detailContainer">
 		<div id="app-content">
-			<!-- app-content-wrapper is optional, only use if app-content-list  -->
+			<!-- app-content-wrapper is optional, only use if app-content-list  -->			
 			<div>
-				<h1 class="h1">
-					{{ templateStore.templateItem.name }}
-				</h1>
-				<div class="grid">
-					<div class="gridContent">
-						<h4>Sammenvatting:</h4>
-						<span>{{ templateStore.templateItem.name }}</span>
+				<div class="head">
+					<h1 class="h1">
+						{{ templateStore.templateItem.name }}
+					</h1>
+
+					<NcActions :primary="true" menu-name="Acties">
+						<template #icon>
+							<DotsHorizontal :size="20" />
+						</template>
+						<NcActionButton @click="navigationStore.setModal('editTemplate')">
+							<template #icon>
+								<Pencil :size="20" />
+							</template>
+							Bewerken
+						</NcActionButton>
+						<NcActionButton @click="navigationStore.setDialog('deleteTemplate')">
+							<template #icon>
+								<TrashCanOutline :size="20" />
+							</template>
+							Verwijderen
+						</NcActionButton>
+					</NcActions>
+				</div>
+				<div class="detailGrid">
+					<div>
+						<b>Sammenvatting:</b>
+						<span>{{ templateStore.templateItem.summary  }}</span>
 					</div>
 				</div>
+				<span>{{ templateStore.templateItem.description }}</span>
 			</div>
 		</div>
 	</div>

@@ -22,25 +22,7 @@ import { effectStore, navigationStore } from '../../store/store.js'
 							</template>
 							Bewerken
 						</NcActionButton>
-						<NcActionButton @click="navigationStore.setModal('addTaak')">
-							<template #icon>
-								<CalendarMonthOutline :size="20" />
-							</template>
-							Taak geven
-						</NcActionButton>
-						<NcActionButton @click="navigationStore.setModal('addBericht')">
-							<template #icon>
-								<ChatOutline :size="20" />
-							</template>
-							Bericht versturen
-						</NcActionButton>
-						<NcActionButton @click="navigationStore.setModal('addZaak')">
-							<template #icon>
-								<BriefcaseAccountOutline :size="20" />
-							</template>
-							Zaak starten
-						</NcActionButton>
-						<NcActionButton @click="navigationStore.setDialog('deleteKlant')">
+						<NcActionButton @click="navigationStore.setDialog('eleteEffect')">
 							<template #icon>
 								<TrashCanOutline :size="20" />
 							</template>
@@ -48,14 +30,14 @@ import { effectStore, navigationStore } from '../../store/store.js'
 						</NcActionButton>
 					</NcActions>
 				</div>
-				<span> {{ effectStore.effectItem.summery }} </span>
-
 				<div class="detailGrid">
-					<div class="gridContent gridFullWidth">
-						<b>Klantnummer:</b>
-						<p>{{ effectStore.effectItem.summery }}</p>
+					<div>
+						<b>Sammenvatting:</b>
+						<span>{{ effectStore.effectItem.summary  }}</span>
 					</div>
 				</div>
+				<span>{{ effectStore.effectItem.description }}</span>
+
 				<div class="tabContainer">
 					<BTabs content-class="mt-3" justified>
 						<BTab title="Zaken">

@@ -21,12 +21,6 @@ import { conditionStore, navigationStore } from '../../store/store.js'
 							</template>
 							Bewerken
 						</NcActionButton>
-						<NcActionButton @click="navigationStore.setModal('addEffectToCondition')">
-							<template #icon>
-								<FileDocumentPlusOutline :size="20" />
-							</template>
-							Effect toevoegen
-						</NcActionButton>
 						<NcActionButton @click="navigationStore.setDialog('deleteCondition')">
 							<template #icon>
 								<TrashCanOutline :size="20" />
@@ -37,10 +31,11 @@ import { conditionStore, navigationStore } from '../../store/store.js'
 				</div>
 				<div class="detailGrid">
 					<div>
-						<b>Omschrijving:</b>
-						<span>{{ conditionStore.conditionItem.description }}</span>
+						<b>Sammenvatting:</b>
+						<span>{{ conditionStore.conditionItem.summary  }}</span>
 					</div>
 				</div>
+				<span>{{ conditionStore.conditionItem.description }}</span>
 				<div class="tabContainer">
 					<BTabs content-class="mt-3" justified>
 						<BTab title="Details" active>
