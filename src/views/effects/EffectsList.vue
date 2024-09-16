@@ -45,7 +45,7 @@ import { effectStore, searchStore, navigationStore } from '../../store/store.js'
 							:size="44" />
 					</template>
 					<template #subname>
-						{{ effect?.description }}
+						{{ effect?.name }}
 					</template>
 					<template #actions>
 						<NcActionButton @click="effectStore.setEffectItem(effect); navigationStore.setModal('editEffect')">
