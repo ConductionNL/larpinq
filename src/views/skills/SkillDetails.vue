@@ -26,13 +26,15 @@ import { characterStore, effectStore, skillStore } from '../../store/store.js'
 							:key="effect.id"
 							:name="effect.name"
 							:bold="false"
-							:force-display-actions="true">
+							:force-display-actions="true"
+                            :details="effect?.modification || ''"
+							:counter-number="effect?.modifier">
 							<template #icon>
 								<MagicStaff disable-menu
 									:size="44" />
 							</template>
 							<template #subname>
-								{{ effect.description }}
+								{{ effect.name }}
 							</template>
 						</NcListItem>
 					</div>
