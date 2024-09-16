@@ -1,5 +1,6 @@
 <script setup>
 import { templateStore, navigationStore } from '../../store/store.js'
+import DOMPurify from 'dompurify'
 </script>
 
 <template>
@@ -13,8 +14,17 @@ import { templateStore, navigationStore } from '../../store/store.js'
 				<div class="grid">
 					<div class="gridContent">
 						<h4>Sammenvatting:</h4>
-						<span>{{ templateStore.templateItem.name }}</span>
+						<span>{{ templateStore.templateItem.description }}</span>
 					</div>
+				</div>
+				<div>
+                    <h3>Content:</h3>
+					<NcGuestContent>
+						<NcRichText
+							:text="DOMPurify.sanitize(templateStore.templateItem.template)"
+							:autolink="true"
+							:use-markdown="true" />
+					</NcGuestContent>
 				</div>
 			</div>
 		</div>
@@ -22,12 +32,18 @@ import { templateStore, navigationStore } from '../../store/store.js'
 </template>
 
 <script>
-import { NcLoadingIcon } from '@nextcloud/vue'
+import {
+	NcLoadingIcon,
+	NcRichText,
+	NcGuestContent,
+} from '@nextcloud/vue'
 
 export default {
 	name: 'TemplateDetails',
 	components: {
 		NcLoadingIcon,
+		NcRichText,
+		NcGuestContent,
 	},
 }
 </script>
@@ -59,6 +75,10 @@ h4 {
 .gridContent {
   display: flex;
   gap: 25px;
+}
+
+#guest-content-vue {
+    margin: 20px 5px !important;
 }
 
 </style>
