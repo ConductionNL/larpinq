@@ -36,8 +36,8 @@ import { effectStore, searchStore, navigationStore } from '../../store/store.js'
 					:name="effect.name"
 					:active="effectStore.effectItem?.id === effect?.id"
 					:force-display-actions="true"
-					:details="'1h'"
-					:counter-number="44"
+					:details="effect?.modification || ''"
+					:counter-number="effect?.modifier"
 					@click="effectStore.setEffectItem(effect)">
 					<template #icon>
 						<MagicStaff :class="effectStore.effectItem === effect.id && 'selectedZaakIcon'"
