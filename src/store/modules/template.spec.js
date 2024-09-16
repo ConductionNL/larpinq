@@ -1,11 +1,11 @@
 /* eslint-disable no-console */
 import { setActivePinia, createPinia } from 'pinia'
 
-import { useThemeStore } from './theme.js'
-import { mockTheme, Theme } from '../../entities/index.js'
+import { useTemplateStore } from './template.js'
+import { mockTemplate, Template } from '../../entities/index.js'
 
 describe(
-	'Theme Store', () => {
+	'Template Store', () => {
 		beforeEach(
 			() => {
 				setActivePinia(createPinia())
@@ -13,48 +13,48 @@ describe(
 		)
 
 		it(
-			'sets theme item correctly', () => {
-				const store = useThemeStore()
+			'sets template item correctly', () => {
+				const store = useTemplateStore()
 
-				store.setThemeItem(mockTheme()[0])
+				store.setTemplateItem(mockTemplate()[0])
 
-				expect(store.themeItem).toBeInstanceOf(Theme)
-				expect(store.themeItem).toEqual(mockTheme()[0])
-				expect(store.themeItem.validate().success).toBe(true)
+				expect(store.templateItem).toBeInstanceOf(Template)
+				expect(store.templateItem).toEqual(mockTemplate()[0])
+				expect(store.templateItem.validate().success).toBe(true)
 
-				store.setThemeItem(mockTheme()[1])
+				store.setTemplateItem(mockTemplate()[1])
 
-				expect(store.themeItem).toBeInstanceOf(Theme)
-				expect(store.themeItem).toEqual(mockTheme()[1])
-				expect(store.themeItem.validate().success).toBe(true)
+				expect(store.templateItem).toBeInstanceOf(Template)
+				expect(store.templateItem).toEqual(mockTemplate()[1])
+				expect(store.templateItem.validate().success).toBe(true)
 
-				store.setThemeItem(mockTheme()[2])
+				store.setTemplateItem(mockTemplate()[2])
 
-				expect(store.themeItem).toBeInstanceOf(Theme)
-				expect(store.themeItem).toEqual(mockTheme()[2])
-				expect(store.themeItem.validate().success).toBe(false)
+				expect(store.templateItem).toBeInstanceOf(Template)
+				expect(store.templateItem).toEqual(mockTemplate()[2])
+				expect(store.templateItem.validate().success).toBe(false)
 			},
 		)
 
 		it(
-			'sets theme list correctly', () => {
-				const store = useThemeStore()
+			'sets template list correctly', () => {
+				const store = useTemplateStore()
 
-				store.setThemeList(mockTheme())
+				store.setTemplateList(mockTemplate())
 
-				expect(store.themeList).toHaveLength(mockTheme().length)
+				expect(store.templateList).toHaveLength(mockTemplate().length)
 
-				expect(store.themeList[0]).toBeInstanceOf(Theme)
-				expect(store.themeList[0]).toEqual(mockTheme()[0])
-				expect(store.themeList[0].validate().success).toBe(true)
+				expect(store.templateList[0]).toBeInstanceOf(Template)
+				expect(store.templateList[0]).toEqual(mockTemplate()[0])
+				expect(store.templateList[0].validate().success).toBe(true)
 
-				expect(store.themeList[1]).toBeInstanceOf(Theme)
-				expect(store.themeList[1]).toEqual(mockTheme()[1])
-				expect(store.themeList[1].validate().success).toBe(true)
+				expect(store.templateList[1]).toBeInstanceOf(Template)
+				expect(store.templateList[1]).toEqual(mockTemplate()[1])
+				expect(store.templateList[1].validate().success).toBe(true)
 
-				expect(store.themeList[2]).toBeInstanceOf(Theme)
-				expect(store.themeList[2]).toEqual(mockTheme()[2])
-				expect(store.themeList[2].validate().success).toBe(false)
+				expect(store.templateList[2]).toBeInstanceOf(Template)
+				expect(store.templateList[2]).toEqual(mockTemplate()[2])
+				expect(store.templateList[2].validate().success).toBe(false)
 			},
 		)
 	},

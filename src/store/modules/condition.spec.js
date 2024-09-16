@@ -1,11 +1,11 @@
 /* eslint-disable no-console */
 import { setActivePinia, createPinia } from 'pinia'
 
-import { useDirectoryStore } from './directory.js'
-import { Listing, mockListings } from '../../entities/index.js'
+import { useConditionStore } from './condition.js'
+import { Condition, mockConditions } from '../../entities/index.js'
 
 describe(
-	'Directory Store', () => {
+	'Condition Store', () => {
 		beforeEach(
 			() => {
 				setActivePinia(createPinia())
@@ -13,41 +13,41 @@ describe(
 		)
 
 		it(
-			'sets listing item correctly', () => {
-				const store = useDirectoryStore()
+			'sets condition item correctly', () => {
+				const store = useConditionStore()
 
-				store.setListingItem(mockListings()[0])
+				store.setConditionItem(mockConditions()[0])
 
-				expect(store.listingItem).toBeInstanceOf(Listing)
-				expect(store.listingItem).toEqual(mockListings()[0])
+				expect(store.conditionItem).toBeInstanceOf(Condition)
+				expect(store.conditionItem).toEqual(mockConditions()[0])
 
-				expect(store.listingItem.validate().success).toBe(true)
+				expect(store.conditionItem.validate().success).toBe(true)
 			})
 
 		it(
-			'sets listings list correctly', () => {
-				const store = useDirectoryStore()
+			'sets conditions list correctly', () => {
+				const store = useConditionStore()
 
-				store.setListingList(mockListings())
+				store.setConditionList(mockConditions())
 
-				expect(store.listingList).toHaveLength(mockListings().length)
+				expect(store.conditionList).toHaveLength(mockConditions().length)
 
 				// list item 1
-				expect(store.listingList[0]).toBeInstanceOf(Listing)
-				expect(store.listingList[0]).toEqual(mockListings()[0])
+				expect(store.conditionList[0]).toBeInstanceOf(Condition)
+				expect(store.conditionList[0]).toEqual(mockConditions()[0])
 
-				expect(store.listingList[0].validate().success).toBe(true)
+				expect(store.conditionList[0].validate().success).toBe(true)
 
 				// list item 2
-				expect(store.listingList[1]).toBeInstanceOf(Listing)
-				expect(store.listingList[1]).toEqual(mockListings()[1])
+				expect(store.conditionList[1]).toBeInstanceOf(Condition)
+				expect(store.conditionList[1]).toEqual(mockConditions()[1])
 
-				expect(store.listingList[1].validate().success).toBe(true)
+				expect(store.conditionList[1].validate().success).toBe(true)
 
 				// list item 3
-				expect(store.listingList[2]).toBeInstanceOf(Listing)
-				expect(store.listingList[2]).toEqual(mockListings()[2])
+				expect(store.conditionList[2]).toBeInstanceOf(Condition)
+				expect(store.conditionList[2]).toEqual(mockConditions()[2])
 
-				expect(store.listingList[2].validate().success).toBe(false)
+				expect(store.conditionList[2].validate().success).toBe(false)
 			})
 	})

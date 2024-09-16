@@ -1,11 +1,11 @@
 /* eslint-disable no-console */
 import { setActivePinia, createPinia } from 'pinia'
 
-import { useMetadataStore } from './metadata.js'
-import { Metadata, mockMetadata } from '../../entities/index.js'
+import { useEffectStore } from './effect.js'
+import { Effect, mockEffect } from '../../entities/index.js'
 
 describe(
-	'Metadata Store', () => {
+	'Effect Store', () => {
 		beforeEach(
 			() => {
 				setActivePinia(createPinia())
@@ -13,57 +13,57 @@ describe(
 		)
 
 		it(
-			'sets metadata item correctly', () => {
-				const store = useMetadataStore()
+			'sets effect item correctly', () => {
+				const store = useEffectStore()
 
-				store.setMetaDataItem(mockMetadata()[0])
+				store.setEffectItem(mockEffect()[0])
 
-				expect(store.metaDataItem).toBeInstanceOf(Metadata)
-				expect(store.metaDataItem).toEqual(mockMetadata()[0])
+				expect(store.effectItem).toBeInstanceOf(Effect)
+				expect(store.effectItem).toEqual(mockEffect()[0])
 
-				expect(store.metaDataItem.validate().success).toBe(true)
+				expect(store.effectItem.validate().success).toBe(true)
 			},
 		)
 
 		it(
-			'sets metadata item with string "properties" property', () => {
-				const store = useMetadataStore()
+			'sets effect item with string "properties" property', () => {
+				const store = useEffectStore()
 
 				// stringify json data
-				const mockData = mockMetadata()[0]
+				const mockData = mockEffect()[0]
 				mockData.properties = JSON.stringify(mockData.properties)
 
-				store.setMetaDataItem(mockData)
+				store.setEffectItem(mockData)
 
-				expect(store.metaDataItem).toBeInstanceOf(Metadata)
-				expect(store.metaDataItem).toEqual(mockData)
+				expect(store.effectItem).toBeInstanceOf(Effect)
+				expect(store.effectItem).toEqual(mockData)
 
-				expect(store.metaDataItem.validate().success).toBe(true)
+				expect(store.effectItem.validate().success).toBe(true)
 			},
 		)
 
 		it(
-			'sets metadata list correctly', () => {
-				const store = useMetadataStore()
+			'sets effect list correctly', () => {
+				const store = useEffectStore()
 
-				store.setMetaDataList(mockMetadata())
+				store.setEffectList(mockEffect())
 
-				expect(store.metaDataList[0]).toBeInstanceOf(Metadata)
-				expect(store.metaDataList[0]).toEqual(mockMetadata()[0])
+				expect(store.effectList[0]).toBeInstanceOf(Effect)
+				expect(store.effectList[0]).toEqual(mockEffect()[0])
 
-				expect(store.metaDataList[0].validate().success).toBe(true)
+				expect(store.effectList[0].validate().success).toBe(true)
 			},
 		)
 
 		it(
-			'get metadata property from key', () => {
-				const store = useMetadataStore()
+			'get effect property from key', () => {
+				const store = useEffectStore()
 
-				store.setMetaDataItem(mockMetadata()[0])
-				store.setMetadataDataKey('test')
+				store.setEffectItem(mockEffect()[0])
+				store.setEffectDataKey('test')
 
-				expect(store.metaDataItem).toEqual(mockMetadata()[0])
-				expect(store.metadataDataKey).toBe('test')
+				expect(store.effectItem).toEqual(mockEffect()[0])
+				expect(store.effectDataKey).toBe('test')
 			},
 		)
 	},

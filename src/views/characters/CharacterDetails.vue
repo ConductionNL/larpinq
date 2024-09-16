@@ -62,7 +62,7 @@ import { characterStore, conditionStore, eventStore, itemStore, navigationStore,
 				<div class="detailGrid">
 					<div>
 						<b>Sammenvatting:</b>
-						<span>{{ characterStore.characterItem.summary  }}</span>
+						<span>{{ characterStore.characterItem.summary }}</span>
 					</div>
 				</div>
 				<span>{{ characterStore.characterItem.description }}</span>

@@ -45,9 +45,6 @@ import { skillStore, navigationStore } from '../../store/store.js'
 import {
 	NcButton,
 	NcDialog,
-	NcTextField,
-	NcTextArea,
-	NcSelect,
 	NcLoadingIcon,
 	NcNoteCard,
 } from '@nextcloud/vue'
@@ -59,10 +56,7 @@ export default {
 	name: 'DeleteSkill',
 	components: {
 		NcDialog,
-		NcTextField,
-		NcTextArea,
 		NcButton,
-		NcSelect,
 		NcLoadingIcon,
 		NcNoteCard,
 		// Icons

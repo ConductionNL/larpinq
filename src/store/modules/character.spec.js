@@ -1,10 +1,10 @@
 /* eslint-disable no-console */
 import { createPinia, setActivePinia } from 'pinia'
-import { Configuration, mockConfiguration } from '../../entities/index.js'
-import { useConfigurationStore } from './configuration.js'
+import { Character, mockCharacter } from '../../entities/index.js'
+import { useCharacterStore } from './character.js'
 
 describe(
-	'Configuration Store', () => {
+	'Character Store', () => {
 		beforeEach(
 			() => {
 				setActivePinia(createPinia())
@@ -12,26 +12,26 @@ describe(
 		)
 
 		it(
-			'sets configuration item correctly', () => {
-				const store = useConfigurationStore()
+			'sets character item correctly', () => {
+				const store = useCharacterStore()
 
-				store.setConfigurationItem(mockConfiguration()[0])
+				store.setCharacterItem(mockCharacter()[0])
 
-				expect(store.configurationItem).toBeInstanceOf(Configuration)
-				expect(store.configurationItem).toEqual(mockConfiguration()[0])
-				expect(store.configurationItem.validate().success).toBe(true)
+				expect(store.characterItem).toBeInstanceOf(Character)
+				expect(store.characterItem).toEqual(mockCharacter()[0])
+				expect(store.characterItem.validate().success).toBe(true)
 
-				store.setConfigurationItem(mockConfiguration()[1])
+				store.setCharacterItem(mockCharacter()[1])
 
-				expect(store.configurationItem).toBeInstanceOf(Configuration)
-				expect(store.configurationItem).toEqual(mockConfiguration()[1])
-				expect(store.configurationItem.validate().success).toBe(true)
+				expect(store.characterItem).toBeInstanceOf(Character)
+				expect(store.characterItem).toEqual(mockCharacter()[1])
+				expect(store.characterItem.validate().success).toBe(true)
 
-				store.setConfigurationItem(mockConfiguration()[2])
+				store.setCharacterItem(mockCharacter()[2])
 
-				expect(store.configurationItem).toBeInstanceOf(Configuration)
-				expect(store.configurationItem).toEqual(mockConfiguration()[2])
-				expect(store.configurationItem.validate().success).toBe(false)
+				expect(store.characterItem).toBeInstanceOf(Character)
+				expect(store.characterItem).toEqual(mockCharacter()[2])
+				expect(store.characterItem.validate().success).toBe(false)
 			},
 		)
 	},

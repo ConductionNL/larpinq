@@ -5,7 +5,7 @@ import { templateStore, navigationStore } from '../../store/store.js'
 <template>
 	<div class="detailContainer">
 		<div id="app-content">
-			<!-- app-content-wrapper is optional, only use if app-content-list  -->			
+			<!-- app-content-wrapper is optional, only use if app-content-list  -->
 			<div>
 				<div class="head">
 					<h1 class="h1">
@@ -33,7 +33,7 @@ import { templateStore, navigationStore } from '../../store/store.js'
 				<div class="detailGrid">
 					<div>
 						<b>Sammenvatting:</b>
-						<span>{{ templateStore.templateItem.summary  }}</span>
+						<span>{{ templateStore.templateItem.summary }}</span>
 					</div>
 				</div>
 				<span>{{ templateStore.templateItem.description }}</span>
@@ -43,12 +43,23 @@ import { templateStore, navigationStore } from '../../store/store.js'
 </template>
 
 <script>
-import { NcLoadingIcon } from '@nextcloud/vue'
+import { BTabs, BTab } from 'bootstrap-vue'
+import { NcLoadingIcon, NcActions, NcActionButton } from '@nextcloud/vue'
+
+import Pencil from 'vue-material-design-icons/Pencil.vue'
+import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
 
 export default {
 	name: 'TemplateDetails',
 	components: {
+		NcActions,
+		NcActionButton,
 		NcLoadingIcon,
+		BTabs,
+		BTab,
+		// Icons
+		Pencil,
+		TrashCanOutline,
 	},
 }
 </script>

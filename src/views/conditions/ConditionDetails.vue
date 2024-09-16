@@ -1,5 +1,5 @@
 <script setup>
-import { conditionStore, navigationStore } from '../../store/store.js'
+import { conditionStore, navigationStore, effectStore, characterStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -32,26 +32,50 @@ import { conditionStore, navigationStore } from '../../store/store.js'
 				<div class="detailGrid">
 					<div>
 						<b>Sammenvatting:</b>
-						<span>{{ conditionStore.conditionItem.summary  }}</span>
+						<span>{{ conditionStore.conditionItem.summary }}</span>
 					</div>
 				</div>
 				<span>{{ conditionStore.conditionItem.description }}</span>
 				<div class="tabContainer">
 					<BTabs content-class="mt-3" justified>
-						<BTab title="Details" active>
-							<div>
-								<b>Uniek:</b>
-								<span>{{ conditionStore.conditionItem.unique ? 'Ja' : 'Nee' }}</span>
+						<BTab title="Effects" active>
+							<div v-if="filterEffects.length > 0">
+								<NcListItem v-for="(effect) in filterEffects"
+									:key="effect.id"
+									:name="effect.name"
+									:bold="false"
+									:force-display-actions="true">
+									<template #icon>
+										<MagicStaff disable-menu
+											:size="44" />
+									</template>
+									<template #subname>
+										{{ effect.description }}
+									</template>
+								</NcListItem>
+							</div>
+							<div v-if="filterEffects.length === 0">
+								Geen effects gevonden
 							</div>
 						</BTab>
-						<BTab title="Effecten">
-							<div v-if="conditionStore.conditionItem.effects && conditionStore.conditionItem.effects.length > 0">
-								<div v-for="effect in conditionStore.conditionItem.effects" :key="effect.id">
-									{{ effect.name }}: {{ effect.description }}
-								</div>
+						<BTab title="Characters">
+							<div v-if="filterCharacters.length > 0 && !charactersLoading">
+								<NcListItem v-for="(character, i) in filterCharacters"
+									:key="character.id + i"
+									:name="character.name"
+									:bold="false"
+									:force-display-actions="true">
+									<template #icon>
+										<BriefcaseAccountOutline disable-menu
+											:size="44" />
+									</template>
+									<template #subname>
+										{{ character.description }}
+									</template>
+								</NcListItem>
 							</div>
-							<div v-else>
-								Geen effecten toegevoegd
+							<div v-if="filterCharacters.length === 0">
+								Geen characters gevonden
 							</div>
 						</BTab>
 					</BTabs>
@@ -75,10 +99,9 @@ import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
 export default {
 	name: 'ConditionDetails',
 	components: {
-		// Components
-		NcLoadingIcon,
 		NcActions,
 		NcActionButton,
+		NcLoadingIcon,
 		BTabs,
 		BTab,
 		// Icons
@@ -86,6 +109,47 @@ export default {
 		Pencil,
 		FileDocumentPlusOutline,
 		TrashCanOutline,
+	},
+	data() {
+		return {
+			effectsLoading: false,
+			charactersLoading: false,
+		}
+
+	},
+	computed: {
+		filterEffects() {
+			return effectStore.effectList.filter((effect) => {
+				return conditionStore.conditionItem?.effects.map(String).includes(effect.id.toString())
+			})
+		},
+		filterCharacters() {
+			return characterStore.characterList.filter((character) => {
+				return character.items.map(String).includes(itemStore.itemItem.id.toString())
+			})
+		},
+	},
+	mounted() {
+		this.fetchCharacters()
+		this.fetchEffects()
+	},
+	methods: {
+		fetchCharacters() {
+			this.charactersLoading = true
+
+			characterStore.refreshCharacterList()
+				.then(() => {
+					this.charactersLoading = false
+				})
+		},
+		fetchEffects() {
+			this.effectsLoading = true
+
+			effectStore.refreshEffectList()
+				.then(() => {
+					this.effectsLoading = false
+				})
+		},
 	},
 }
 </script>

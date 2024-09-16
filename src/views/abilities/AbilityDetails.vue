@@ -1,5 +1,5 @@
 <script setup>
-import { abilityStore, navigationStore } from '../../store/store.js'
+import { abilityStore, navigationStore, effectStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -33,22 +33,86 @@ import { abilityStore, navigationStore } from '../../store/store.js'
 				<div class="detailGrid">
 					<div>
 						<b>Sammenvatting:</b>
-						<span>{{ abilityStore.abilityItem.summary  }}</span>
+						<span>{{ abilityStore.abilityItem.summary }}</span>
 					</div>
 				</div>
-				<span>{{ abilityStore.abilityItem.description }}</span>				
+				<span>{{ abilityStore.abilityItem.description }}</span>
+
+				<div class="tabContainer">
+					<BTabs content-class="mt-3" justified>
+						<BTab title="Effects">
+							<div v-if="filterEffects.length > 0">
+								<NcListItem v-for="(effect) in filterEffects"
+									:key="effect.id"
+									:name="effect.name"
+									:bold="false"
+									:force-display-actions="true">
+									<template #icon>
+										<MagicStaff disable-menu
+											:size="44" />
+									</template>
+									<template #subname>
+										{{ effect.description }}
+									</template>
+								</NcListItem>
+							</div>
+							<div v-if="filterEffects.length === 0">
+								Geen effects gevonden
+							</div>
+						</BTab>
+					</BTabs>
+				</div>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
-import { NcLoadingIcon } from '@nextcloud/vue'
+import { BTabs, BTab } from 'bootstrap-vue'
+import { NcLoadingIcon, NcActions, NcActionButton } from '@nextcloud/vue'
 
+// Icons
+import DotsHorizontal from 'vue-material-design-icons/DotsHorizontal.vue'
+import Pencil from 'vue-material-design-icons/Pencil.vue'
+import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
 export default {
-	name: 'RolDetails',
+	name: 'AbilityDetails',
 	components: {
+		NcActions,
+		NcActionButton,
 		NcLoadingIcon,
+		BTabs,
+		BTab,
+		// Icons
+		DotsHorizontal,
+		Pencil,
+		TrashCanOutline,
+	},
+	data() {
+		return {
+			effectsLoading: false,
+		}
+		
+	},
+	computed: {
+		filterEffects() {
+			return effectStore.effectList.filter((effect) => {
+				return effect.stat === abilityStore.abilityItem.id.toString();
+			});
+		},
+	},
+	mounted() {
+		this.fetchEffects()
+	},
+	methods: {
+		fetchEffects() {
+			this.effectsLoading = true
+
+			effectStore.refreshEffectList()
+				.then(() => {
+					this.effectsLoading = false
+				})
+		},
 	},
 }
 </script>

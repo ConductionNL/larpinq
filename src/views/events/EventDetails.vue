@@ -32,7 +32,7 @@ import { eventStore, navigationStore } from '../../store/store.js'
 				<div class="detailGrid">
 					<div>
 						<b>Sammenvatting:</b>
-						<span>{{ eventStore.eventItem.summary  }}</span>
+						<span>{{ eventStore.eventItem.summary }}</span>
 					</div>
 				</div>
 				<span>{{ eventStore.eventItem.description }}</span>
@@ -43,7 +43,8 @@ import { eventStore, navigationStore } from '../../store/store.js'
 
 <script>
 // Components
-import { NcActions, NcActionButton } from '@nextcloud/vue'
+import { BTabs, BTab } from 'bootstrap-vue'
+import { NcLoadingIcon, NcActions, NcActionButton } from '@nextcloud/vue'
 
 // Icons
 import DotsHorizontal from 'vue-material-design-icons/DotsHorizontal.vue'
@@ -53,6 +54,11 @@ import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
 export default {
 	name: 'EventDetails',
 	components: {
+		NcActions,
+		NcActionButton,
+		NcLoadingIcon,
+		BTabs,
+		BTab,
 		// Icons
 		Pencil,
 		DotsHorizontal,

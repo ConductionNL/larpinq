@@ -33,20 +33,23 @@ import { effectStore, navigationStore } from '../../store/store.js'
 				<div class="detailGrid">
 					<div>
 						<b>Sammenvatting:</b>
-						<span>{{ effectStore.effectItem.summary  }}</span>
+						<span>{{ effectStore.effectItem.summary }}</span>
 					</div>
 				</div>
 				<span>{{ effectStore.effectItem.description }}</span>
 
 				<div class="tabContainer">
 					<BTabs content-class="mt-3" justified>
-						<BTab title="Zaken">
+						<BTab title="Skills">
 							asdads
 						</BTab>
-						<BTab title="Taken">
+						<BTab title="Conditions">
 							asda
 						</BTab>
-						<BTab title="Berichten">
+						<BTab title="Items">
+							asdsa
+						</BTab>
+						<BTab title="Events">
 							asdsa
 						</BTab>
 					</BTabs>
@@ -59,7 +62,7 @@ import { effectStore, navigationStore } from '../../store/store.js'
 <script>
 // Components
 import { BTabs, BTab } from 'bootstrap-vue'
-import { NcActions, NcActionButton } from '@nextcloud/vue'
+import { NcLoadingIcon, NcActions, NcActionButton } from '@nextcloud/vue'
 
 // Icons
 import DotsHorizontal from 'vue-material-design-icons/DotsHorizontal.vue'
@@ -74,6 +77,7 @@ export default {
 	components: {
 		NcActions,
 		NcActionButton,
+		NcLoadingIcon,
 		BTabs,
 		BTab,
 		// Icons

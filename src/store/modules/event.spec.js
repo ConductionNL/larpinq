@@ -1,10 +1,11 @@
 /* eslint-disable no-console */
 import { setActivePinia, createPinia } from 'pinia'
 
-import { useNavigationStore } from './navigation.js'
+import { useEventStore } from './event.js'
+import { Event, mockEvent } from '../../entities/index.js'
 
 describe(
-	'Navigation Store', () => {
+	'Event Store', () => {
 		beforeEach(
 			() => {
 				setActivePinia(createPinia())
@@ -12,62 +13,43 @@ describe(
 		)
 
 		it(
-			'set current selected view correctly', () => {
-				const store = useNavigationStore()
+			'sets event item correctly', () => {
+				const store = useEventStore()
 
-				store.setSelected('publication')
-				expect(store.selected).toBe('publication')
+				store.setEventItem(mockEvent()[0])
 
-				store.setSelected('catalogi')
-				expect(store.selected).toBe('catalogi')
+				expect(store.eventItem).toBeInstanceOf(Event)
+				expect(store.eventItem).toEqual(mockEvent()[0])
 
-				store.setSelected('metadata')
-				expect(store.selected).toBe('metadata')
+				expect(store.eventItem.validate().success).toBe(true)
 			},
 		)
 
 		it(
-			'set current selected publication catalogi correctly', () => {
-				const store = useNavigationStore()
+			'sets event list correctly', () => {
+				const store = useEventStore()
 
-				store.setSelectedCatalogus('7a048bfd-210f-4e93-a1e8-5aa9261740b7')
-				expect(store.selectedCatalogus).toBe('7a048bfd-210f-4e93-a1e8-5aa9261740b7')
+				store.setEventList(mockEvent())
 
-				store.setSelectedCatalogus('dd133c51-89bc-4b06-bdbb-41f4dc07c4f1')
-				expect(store.selectedCatalogus).toBe('dd133c51-89bc-4b06-bdbb-41f4dc07c4f1')
+				expect(store.eventList).toHaveLength(mockEvent().length)
 
-				store.setSelectedCatalogus('3b1cbee2-756e-4904-a157-29fb0cbe01d3')
-				expect(store.selectedCatalogus).toBe('3b1cbee2-756e-4904-a157-29fb0cbe01d3')
-			},
-		)
+				// list item 1
+				expect(store.eventList[0]).toBeInstanceOf(Event)
+				expect(store.eventList[0]).toEqual(mockEvent()[0])
 
-		it(
-			'set modal correctly', () => {
-				const store = useNavigationStore()
+				expect(store.eventList[0].validate().success).toBe(true)
 
-				store.setModal('editPublication')
-				expect(store.modal).toBe('editPublication')
+				// list item 2
+				expect(store.eventList[1]).toBeInstanceOf(Event)
+				expect(store.eventList[1]).toEqual(mockEvent()[1])
 
-				store.setModal('editCatalogi')
-				expect(store.modal).toBe('editCatalogi')
+				expect(store.eventList[1].validate().success).toBe(true)
 
-				store.setModal('editMetadata')
-				expect(store.modal).toBe('editMetadata')
-			},
-		)
+				// list item 3
+				expect(store.eventList[2]).toBeInstanceOf(Event)
+				expect(store.eventList[2]).toEqual(mockEvent()[2])
 
-		it(
-			'set modal correctly', () => {
-				const store = useNavigationStore()
-
-				store.setDialog('deletePublication')
-				expect(store.dialog).toBe('deletePublication')
-
-				store.setDialog('deleteCatalogi')
-				expect(store.dialog).toBe('deleteCatalogi')
-
-				store.setDialog('deleteMetadata')
-				expect(store.dialog).toBe('deleteMetadata')
+				expect(store.eventList[2].validate().success).toBe(false)
 			},
 		)
 	},
