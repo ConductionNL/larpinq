@@ -27,7 +27,7 @@ import { characterStore, effectStore, skillStore } from '../../store/store.js'
 							:name="effect.name"
 							:bold="false"
 							:force-display-actions="true"
-                            :details="effect?.modification || ''"
+							:details="effect?.modification || ''"
 							:counter-number="effect?.modifier">
 							<template #icon>
 								<MagicStaff disable-menu
