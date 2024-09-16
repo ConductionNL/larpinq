@@ -11,14 +11,9 @@ import DOMPurify from 'dompurify'
 				<h1 class="h1">
 					{{ templateStore.templateItem.name }}
 				</h1>
-				<div class="grid">
-					<div class="gridContent">
-						<h4>Sammenvatting:</h4>
-						<span>{{ templateStore.templateItem.description }}</span>
-					</div>
-				</div>
+				<span>{{ templateStore.templateItem.description }}</span>
 				<div>
-                    <h3>Content:</h3>
+					<h3>Content:</h3>
 					<NcGuestContent>
 						<NcRichText
 							:text="DOMPurify.sanitize(templateStore.templateItem.template)"
