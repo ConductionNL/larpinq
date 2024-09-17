@@ -8,7 +8,7 @@ import DOMPurify from 'dompurify'
 		<div id="app-content">
 			<!-- app-content-wrapper is optional, only use if app-content-list  -->
 			<div>
-				<div class="head"></div>
+				<div class="head">
 					<h1 class="h1">
 						{{ templateStore.templateItem.name }}
 					</h1>
@@ -40,7 +40,6 @@ import DOMPurify from 'dompurify'
 							:use-markdown="true" />
 					</NcGuestContent>
 				</div>
-				<span>{{ templateStore.templateItem.description }}</span>
 			</div>
 		</div>
 	</div>
