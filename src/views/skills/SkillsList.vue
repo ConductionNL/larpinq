@@ -1,5 +1,5 @@
 <script setup>
-import { skillStore, navigationStore, searchStore } from '../../store/store.js'
+import { skillStore, navigationStore, searchStore, characterStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -35,8 +35,8 @@ import { skillStore, navigationStore, searchStore } from '../../store/store.js'
 					:key="`${skill}${i}`"
 					:name="skill?.name"
 					:active="skillStore.skillItem?.id === skill?.id"
-					:details="'1h'"
-					:counter-number="44"
+					:details="(skill?.effects?.length || '0') + ' effect(s)'"
+					:counter-number="filterCharacters(skill.id).length || 0"
 					:force-display-actions="true"
 					@click="skillStore.setSkillItem(skill)">
 					<template #icon>
@@ -105,8 +105,31 @@ export default {
 		TrashCanOutline,
 		Refresh,
 	},
+	data() {
+		return {
+			charactersLoading: false,
+		}
+	},
 	mounted() {
 		skillStore.refreshSkillList()
+		this.fetchCharacters()
+	},
+	methods: {
+		filterCharacters(id) {
+			console.log(characterStore.characterList.filter((character) => {
+				return character.skills.map(String).includes(id.toString())
+			}).length)
+			return characterStore.characterList.filter((character) => {
+				return character.skills.map(String).includes(id.toString())
+			})
+		},
+		fetchCharacters() {
+			this.charactersLoading = true
+			characterStore.refreshCharacterList()
+				.then(() => {
+					this.charactersLoading = false
+				})
+		},
 	},
 }
 </script>
