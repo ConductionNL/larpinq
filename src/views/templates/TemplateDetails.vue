@@ -8,10 +8,10 @@ import DOMPurify from 'dompurify'
 		<div id="app-content">
 			<!-- app-content-wrapper is optional, only use if app-content-list  -->
 			<div>
-				<h1 class="h1">
-					{{ templateStore.templateItem.name }}
-				</h1>
-				<span>{{ templateStore.templateItem.description }}</span>
+				<div class="head"></div>
+					<h1 class="h1">
+						{{ templateStore.templateItem.name }}
+					</h1>
 					<NcActions :primary="true" menu-name="Acties">
 						<template #icon>
 							<DotsHorizontal :size="20" />
@@ -29,6 +29,8 @@ import DOMPurify from 'dompurify'
 							Verwijderen
 						</NcActionButton>
 					</NcActions>
+				</div>
+				<span>{{ templateStore.templateItem.description }}</span>
 				<div>
 					<h3>Content:</h3>
 					<NcGuestContent>
@@ -45,10 +47,11 @@ import DOMPurify from 'dompurify'
 </template>
 
 <script>
-import { NcLoadingIcon } from '@nextcloud/vue'
+import { NcLoadingIcon, NcActions, NcActionButton, NcGuestContent, NcRichText } from '@nextcloud/vue'
 
 import Pencil from 'vue-material-design-icons/Pencil.vue'
 import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
+import DotsHorizontal from 'vue-material-design-icons/DotsHorizontal.vue'
 
 export default {
 	name: 'TemplateDetails',
@@ -56,6 +59,11 @@ export default {
 		NcActions,
 		NcActionButton,
 		NcLoadingIcon,
+		Pencil,
+		TrashCanOutline,
+		DotsHorizontal,
+		NcGuestContent,
+		NcRichText,
 	},
 }
 </script>
