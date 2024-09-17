@@ -1,5 +1,5 @@
 <script setup>
-	import { playerStore, navigationStore, searchStore } from '../../store/store.js'
+import { playerStore, navigationStore, searchStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -22,7 +22,7 @@
 						</template>
 						Ververs
 					</NcActionButton>
-					<NcActionButton @click="playerStore.setPlayerItem([]); navigationStore.setModal('editPlayer')">
+					<NcActionButton @click="playerStore.setPlayerItem(null); navigationStore.setModal('editPlayer')">
 						<template #icon>
 							<Plus :size="20" />
 						</template>
@@ -37,6 +37,7 @@
 					:active="playerStore.playerItem?.id === player?.id"
 					:details="'1h'"
 					:counter-number="44"
+					:force-display-actions="true"
 					@click="playerStore.setPlayerItem(player)">
 					<template #icon>
 						<BriefcaseAccountOutline :class="playerStore.playerItem?.id === player.id && 'selectedZaakIcon'"
@@ -49,13 +50,13 @@
 					<template #actions>
 						<NcActionButton @click="playerStore.setPlayerItem(player); navigationStore.setModal('editPlayer')">
 							<template #icon>
-								<Plus/>
+								<Pencil />
 							</template>
 							Bewerken
 						</NcActionButton>
 						<NcActionButton @click="playerStore.setPlayerItem(player), navigationStore.setDialog('deletePlayer')">
 							<template #icon>
-								<TrashCanOutline/>
+								<TrashCanOutline />
 							</template>
 							Verwijderen
 						</NcActionButton>

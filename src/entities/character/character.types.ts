@@ -16,6 +16,7 @@ export type TCharacter = {
     copper?: number
     events?: string[] // Array of Event UUIDs
     skills?: string[] // Array of Skill UUIDs
+    items?: string[] // Array of item UUIDs
     conditions?: string[] // Array of Condition UUIDs
     type: 'player' | 'npc' | 'other'
     approved: 'no' | 'approved'

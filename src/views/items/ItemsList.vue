@@ -22,7 +22,7 @@ import { itemStore, navigationStore, searchStore } from '../../store/store.js'
 						</template>
 						Ververs
 					</NcActionButton>
-					<NcActionButton @click="itemStore.setItemItem([]); navigationStore.setModal('editItem')">
+					<NcActionButton @click="itemStore.setItemItem(null); navigationStore.setModal('editItem')">
 						<template #icon>
 							<Plus :size="20" />
 						</template>
@@ -54,7 +54,7 @@ import { itemStore, navigationStore, searchStore } from '../../store/store.js'
 							</template>
 							Bewerken
 						</NcActionButton>
-						<NcActionButton @click="itemStore.setItemItem(item); navigationStore.setDialog('deleteBericht')">
+						<NcActionButton @click="itemStore.setItemItem(item); navigationStore.setDialog('deleteItem')">
 							<template #icon>
 								<TrashCanOutline :size="20" />
 							</template>

@@ -2,6 +2,7 @@ import { SafeParseReturnType, z } from 'zod'
 import { TSkill } from './skill.types'
 
 export class Skill implements TSkill {
+
 	public id: string
 	public name: string
 	public description: string
@@ -48,4 +49,5 @@ export class Skill implements TSkill {
 
 		return schema.safeParse({ ...this })
 	}
+
 }

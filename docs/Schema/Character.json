@@ -105,6 +105,14 @@
         "$ref": "https://larping.nl/skill.schema.json"
       }
     },
+    "items":{
+      "type":"array",
+      "description":"All the items that this characters posses\n",
+      "items":{
+        "type":"object",
+        "$ref": "https://larping.nl/item.schema.json"
+      }
+    },
     "conditions":{
       "type":"array",
       "description":"All the conditions that apply to this character",

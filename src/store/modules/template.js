@@ -70,27 +70,27 @@ export const useTemplateStore = defineStore(
 					})
 			},
 			// Create or update a template
-			saveTemplate() {
-				if (!this.templateItem) {
+			saveTemplate(templateItem) {
+				if (!templateItem) {
 					throw new Error('No template to save')
 				}
 
 				console.log('Saving template...')
 
-				const isNewTemplate = !this.templateItem.id
+				const isNewTemplate = !templateItem?.id
 				const endpoint = isNewTemplate
 					? '/index.php/apps/larpingapp/api/templates'
-					: `/index.php/apps/larpingapp/api/templates/${this.templateItem.id}`
+					: `/index.php/apps/larpingapp/api/templates/${templateItem.id}`
 				const method = isNewTemplate ? 'POST' : 'PUT'
 
 				return fetch(
 					endpoint,
 					{
-						method: method,
+						method,
 						headers: {
 							'Content-Type': 'application/json',
 						},
-						body: JSON.stringify(this.templateItem),
+						body: JSON.stringify(templateItem),
 					},
 				)
 					.then((response) => response.json())

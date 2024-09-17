@@ -20,31 +20,13 @@ export class Character implements TCharacter {
 	public copper: number
 	public events: string[]
 	public skills: string[]
+	public items?: string[]
 	public conditions: string[]
 	public type: 'player' | 'npc' | 'other'
 	public approved: 'no' | 'approved'
 
 	constructor(character: TCharacter) {
-		this.id = character.id || ''
-		this.name = character.name || ''
-		this.ocName = character.ocName || ''
-		this.description = character.description || ''
-		this.background = character.background || ''
-		this.itemsAndMoney = character.itemsAndMoney || ''
-		this.notice = character.notice || ''
-		this.faith = character.faith || ''
-		this.slNotesPublic = character.slNotesPublic || ''
-		this.slNotesPrivate = character.slNotesPrivate || ''
-		this.card = character.card || ''
-		this.stats = character.stats || []
-		this.gold = character.gold || 0
-		this.silver = character.silver || 0
-		this.copper = character.copper || 0
-		this.events = character.events || []
-		this.skills = character.skills || []
-		this.conditions = character.conditions || []
-		this.type = character.type || 'player'
-		this.approved = character.approved || 'no'
+		this.hydrate(character)
 	}
 
 	/* istanbul ignore next */ // Jest does not recognize the code coverage of these 2 methods
@@ -66,6 +48,7 @@ export class Character implements TCharacter {
 		this.copper = data?.copper || 0
 		this.events = data?.events || []
 		this.skills = data?.skills || []
+		this.items = data?.items || []
 		this.conditions = data?.conditions || []
 		this.type = data?.type || 'player'
 		this.approved = data?.approved || 'no'

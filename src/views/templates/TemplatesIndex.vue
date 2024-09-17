@@ -1,5 +1,5 @@
 <script setup>
-	import { templateStore, navigationStore } from '../../store/store.js'
+import { templateStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -16,7 +16,7 @@
 					<FileDocumentOutline />
 				</template>
 				<template #action>
-					<NcButton type="primary" @click="templateStore.setTemplateItem([]); navigationStore.setModal('editTemplate')">
+					<NcButton type="primary" @click="templateStore.setTemplateItem(null); navigationStore.setModal('editTemplate')">
 						Template aanmaken
 					</NcButton>
 				</template>

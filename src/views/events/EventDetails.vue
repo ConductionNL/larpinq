@@ -1,5 +1,5 @@
 <script setup>
-	import { eventStore, navigationStore } from '../../store/store.js'
+import { eventStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -15,13 +15,13 @@
 						<template #icon>
 							<DotsHorizontal :size="20" />
 						</template>
-						<NcActionButton @click="store.setModal('editTaak')">
+						<NcActionButton @click="navigationStore.setModal('editEvent')">
 							<template #icon>
 								<Pencil :size="20" />
 							</template>
 							Bewerken
 						</NcActionButton>
-						<NcActionButton @click="store.setDialog('deleteTaak')">
+						<NcActionButton @click="navigationStore.setDialog('deleteEvent')">
 							<template #icon>
 								<TrashCanOutline :size="20" />
 							</template>
@@ -29,12 +29,13 @@
 						</NcActionButton>
 					</NcActions>
 				</div>
-				<div class="grid">
-					<div class="gridContent">
+				<div class="detailGrid">
+					<div>
 						<b>Sammenvatting:</b>
-						<span>{{ eventStore.eventItem.summery }}</span>
+						<span>{{ eventStore.eventItem.summary }}</span>
 					</div>
 				</div>
+				<span>{{ eventStore.eventItem.description }}</span>
 			</div>
 		</div>
 	</div>
@@ -42,7 +43,8 @@
 
 <script>
 // Components
-import { NcActions, NcActionButton } from '@nextcloud/vue'
+import { BTabs, BTab } from 'bootstrap-vue'
+import { NcLoadingIcon, NcActions, NcActionButton } from '@nextcloud/vue'
 
 // Icons
 import DotsHorizontal from 'vue-material-design-icons/DotsHorizontal.vue'
@@ -52,6 +54,11 @@ import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
 export default {
 	name: 'EventDetails',
 	components: {
+		NcActions,
+		NcActionButton,
+		NcLoadingIcon,
+		BTabs,
+		BTab,
 		// Icons
 		Pencil,
 		DotsHorizontal,

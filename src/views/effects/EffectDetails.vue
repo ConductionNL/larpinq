@@ -1,5 +1,5 @@
 <script setup>
-import { effectStore } from '../../store/store.js'
+import { effectStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -16,31 +16,13 @@ import { effectStore } from '../../store/store.js'
 						<template #icon>
 							<DotsHorizontal :size="20" />
 						</template>
-						<NcActionButton @click="store.setModal('editKlant')">
+						<NcActionButton @click="navigationStore.setModal('editEffect')">
 							<template #icon>
 								<Pencil :size="20" />
 							</template>
 							Bewerken
 						</NcActionButton>
-						<NcActionButton @click="store.setModal('addTaak')">
-							<template #icon>
-								<CalendarMonthOutline :size="20" />
-							</template>
-							Taak geven
-						</NcActionButton>
-						<NcActionButton @click="store.setModal('addBericht')">
-							<template #icon>
-								<ChatOutline :size="20" />
-							</template>
-							Bericht versturen
-						</NcActionButton>
-						<NcActionButton @click="store.setModal('addZaak')">
-							<template #icon>
-								<BriefcaseAccountOutline :size="20" />
-							</template>
-							Zaak starten
-						</NcActionButton>
-						<NcActionButton @click="store.setDialog('deleteKlant')">
+						<NcActionButton @click="navigationStore.setDialog('eleteEffect')">
 							<template #icon>
 								<TrashCanOutline :size="20" />
 							</template>
@@ -48,23 +30,26 @@ import { effectStore } from '../../store/store.js'
 						</NcActionButton>
 					</NcActions>
 				</div>
-				<span> {{ effectStore.effectItem.summery }} </span>
-
 				<div class="detailGrid">
-					<div class="gridContent gridFullWidth">
-						<b>Klantnummer:</b>
-						<p>{{ effectStore.effectItem.summery }}</p>
+					<div>
+						<b>Sammenvatting:</b>
+						<span>{{ effectStore.effectItem.summary }}</span>
 					</div>
 				</div>
+				<span>{{ effectStore.effectItem.description }}</span>
+
 				<div class="tabContainer">
 					<BTabs content-class="mt-3" justified>
-						<BTab title="Zaken">
+						<BTab title="Skills">
 							asdads
 						</BTab>
-						<BTab title="Taken">
+						<BTab title="Conditions">
 							asda
 						</BTab>
-						<BTab title="Berichten">
+						<BTab title="Items">
+							asdsa
+						</BTab>
+						<BTab title="Events">
 							asdsa
 						</BTab>
 					</BTabs>
@@ -77,7 +62,7 @@ import { effectStore } from '../../store/store.js'
 <script>
 // Components
 import { BTabs, BTab } from 'bootstrap-vue'
-import { NcActions, NcActionButton } from '@nextcloud/vue'
+import { NcLoadingIcon, NcActions, NcActionButton } from '@nextcloud/vue'
 
 // Icons
 import DotsHorizontal from 'vue-material-design-icons/DotsHorizontal.vue'
@@ -92,6 +77,7 @@ export default {
 	components: {
 		NcActions,
 		NcActionButton,
+		NcLoadingIcon,
 		BTabs,
 		BTab,
 		// Icons

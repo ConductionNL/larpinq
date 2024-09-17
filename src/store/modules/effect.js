@@ -70,17 +70,17 @@ export const useEffectStore = defineStore(
 					})
 			},
 			// Create or update an effect
-			saveEffect() {
-				if (!this.effectItem) {
+			saveEffect(effectItem) {
+				if (!effectItem) {
 					throw new Error('No effect item to save')
 				}
 
 				console.log('Saving effect...')
 
-				const isNewEffect = !this.effectItem.id
+				const isNewEffect = !effectItem.id
 				const endpoint = isNewEffect
 					? '/index.php/apps/larpingapp/api/effects'
-					: `/index.php/apps/larpingapp/api/effects/${this.effectItem.id}`
+					: `/index.php/apps/larpingapp/api/effects/${effectItem.id}`
 				const method = isNewEffect ? 'POST' : 'PUT'
 
 				return fetch(
@@ -90,11 +90,7 @@ export const useEffectStore = defineStore(
 						headers: {
 							'Content-Type': 'application/json',
 						},
-						body: JSON.stringify({
-							...this.effectItem,
-							modification: this.effectItem.modification.id,
-							cumulative: this.effectItem.cumulative.id,
-						}),
+						body: JSON.stringify(effectItem),
 					},
 				)
 					.then((response) => response.json())

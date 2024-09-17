@@ -22,7 +22,7 @@ import { abilityStore, navigationStore, searchStore } from '../../store/store.js
 						</template>
 						Ververs
 					</NcActionButton>
-					<NcActionButton @click="abilityStore.setAbilityItem([]), navigationStore.setModal('editAbility')">
+					<NcActionButton @click="abilityStore.setAbilityItem(null), navigationStore.setModal('editAbility')">
 						<template #icon>
 							<Plus :size="20" />
 						</template>
@@ -34,9 +34,10 @@ import { abilityStore, navigationStore, searchStore } from '../../store/store.js
 				<NcListItem v-for="(ability, i) in abilityStore.abilityList"
 					:key="`${ability}${i}`"
 					:name="ability?.name"
-					:active="abilityStore.abilityItem.id === ability?.id"
+					:active="abilityStore.abilityItem?.id === ability?.id"
 					:details="'1h'"
 					:counter-number="44"
+					:force-display-actions="true"
 					@click="abilityStore.setAbilityItem(ability)">
 					<template #icon>
 						<ShieldSwordOutline :class="abilityStore.abilityItem?.id === ability.id && 'selected'"
@@ -49,7 +50,7 @@ import { abilityStore, navigationStore, searchStore } from '../../store/store.js
 					<template #actions>
 						<NcActionButton @click="abilityStore.setAbilityItem(ability), navigationStore.setModal('editAbility')">
 							<template #icon>
-								<Plus />
+								<Pencil />
 							</template>
 							Bewerken
 						</NcActionButton>

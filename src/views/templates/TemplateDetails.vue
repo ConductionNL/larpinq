@@ -1,5 +1,6 @@
 <script setup>
-	import { templateStore, navigationStore } from '../../store/store.js'
+import { templateStore, navigationStore } from '../../store/store.js'
+import DOMPurify from 'dompurify'
 </script>
 
 <template>
@@ -7,27 +8,62 @@
 		<div id="app-content">
 			<!-- app-content-wrapper is optional, only use if app-content-list  -->
 			<div>
-				<h1 class="h1">
-					{{ templateStore.templateItem.name }}
-				</h1>
-				<div class="grid">
-					<div class="gridContent">
-						<h4>Sammenvatting:</h4>
-						<span>{{ templateStore.templateItem.name }}</span>
-					</div>
+				<div class="head"></div>
+					<h1 class="h1">
+						{{ templateStore.templateItem.name }}
+					</h1>
+					<NcActions :primary="true" menu-name="Acties">
+						<template #icon>
+							<DotsHorizontal :size="20" />
+						</template>
+						<NcActionButton @click="navigationStore.setModal('editTemplate')">
+							<template #icon>
+								<Pencil :size="20" />
+							</template>
+							Bewerken
+						</NcActionButton>
+						<NcActionButton @click="navigationStore.setDialog('deleteTemplate')">
+							<template #icon>
+								<TrashCanOutline :size="20" />
+							</template>
+							Verwijderen
+						</NcActionButton>
+					</NcActions>
 				</div>
+				<span>{{ templateStore.templateItem.description }}</span>
+				<div>
+					<h3>Content:</h3>
+					<NcGuestContent>
+						<NcRichText
+							:text="DOMPurify.sanitize(templateStore.templateItem.template)"
+							:autolink="true"
+							:use-markdown="true" />
+					</NcGuestContent>
+				</div>
+				<span>{{ templateStore.templateItem.description }}</span>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
-import { NcLoadingIcon } from '@nextcloud/vue'
+import { NcLoadingIcon, NcActions, NcActionButton, NcGuestContent, NcRichText } from '@nextcloud/vue'
+
+import Pencil from 'vue-material-design-icons/Pencil.vue'
+import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
+import DotsHorizontal from 'vue-material-design-icons/DotsHorizontal.vue'
 
 export default {
 	name: 'TemplateDetails',
 	components: {
+		NcActions,
+		NcActionButton,
 		NcLoadingIcon,
+		Pencil,
+		TrashCanOutline,
+		DotsHorizontal,
+		NcGuestContent,
+		NcRichText,
 	},
 }
 </script>
@@ -59,6 +95,10 @@ h4 {
 .gridContent {
   display: flex;
   gap: 25px;
+}
+
+#guest-content-vue {
+    margin: 20px 5px !important;
 }
 
 </style>

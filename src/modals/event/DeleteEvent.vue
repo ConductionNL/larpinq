@@ -7,7 +7,6 @@ import { eventStore, navigationStore } from '../../store/store.js'
 		name="Gebeurtenis verwijderen"
 		size="normal"
 		:can-close="false">
-
 		<p v-if="!success">
 			Wil je <b>{{ eventStore.eventItem.name }}</b> definitief verwijderen? Deze actie kan niet ongedaan worden gemaakt.
 		</p>
@@ -40,31 +39,24 @@ import { eventStore, navigationStore } from '../../store/store.js'
 			</NcButton>
 		</template>
 	</NcDialog>
-	
 </template>
 
 <script>
 import {
 	NcButton,
 	NcDialog,
-	NcTextField,
-	NcTextArea,
-	NcSelect,
 	NcLoadingIcon,
 	NcNoteCard,
 } from '@nextcloud/vue'
 
-import Cancel from 'vue-material-design-icons/Cancel.vue' 
-import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue' 
+import Cancel from 'vue-material-design-icons/Cancel.vue'
+import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
 
 export default {
 	name: 'DeleteEvent',
 	components: {
 		NcDialog,
-		NcTextField,
-		NcTextArea,
 		NcButton,
-		NcSelect,
 		NcLoadingIcon,
 		NcNoteCard,
 		// Icons
@@ -96,7 +88,7 @@ export default {
 				this.success = false
 				this.error = error.message || 'Er is een fout opgetreden bij het verwijderen van de gebeurtenis'
 			}
-		}
+		},
 	},
 }
 </script>

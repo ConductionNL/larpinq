@@ -1,14 +1,14 @@
 <script setup>
-import { abilityStore, navigationStore, effectStore } from '../../store/store.js'
+import { abilityStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
 	<NcDialog v-if="navigationStore.modal === 'editAbility'"
-		name="Vaardigheid"
+		name="Ability"
 		size="normal"
 		:can-close="false">
 		<NcNoteCard v-if="success" type="success">
-			<p>Vaardigheid succesvol aangepast</p>
+			<p>Ability succesvol aangepast</p>
 		</NcNoteCard>
 		<NcNoteCard v-if="error" type="error">
 			<p>{{ error }}</p>
@@ -26,15 +26,10 @@ import { abilityStore, navigationStore, effectStore } from '../../store/store.js
 			<NcTextField :disabled="loading"
 				label="Base"
 				:value.sync="abilityItem.base" />
-			<NcSelect v-bind="effects"
-				v-model="effects.value"
-				input-label="Effects"
-				:loading="effectsLoading"
-				:disabled="loading" />
 		</div>
 
 		<template #actions>
-			<NcButton @click="navigationStore.setModal(false)">
+			<NcButton @click="closeModal">
 				<template #icon>
 					<Cancel :size="20" />
 				</template>
@@ -52,10 +47,10 @@ import { abilityStore, navigationStore, effectStore } from '../../store/store.js
 				@click="editAbility()">
 				<template #icon>
 					<NcLoadingIcon v-if="loading" :size="20" />
-					<ContentSaveOutline v-if="!loading && abilityStore.abilityItem.id" :size="20" />
-					<Plus v-if="!loading && !abilityStore.abilityItem.id" :size="20" />
+					<ContentSaveOutline v-if="!loading && abilityStore.abilityItem?.id" :size="20" />
+					<Plus v-if="!loading && !abilityStore.abilityItem?.id" :size="20" />
 				</template>
-				{{ abilityStore.abilityItem.id ? 'Opslaan' : 'Aanmaken' }}
+				{{ abilityStore.abilityItem?.id ? 'Opslaan' : 'Aanmaken' }}
 			</NcButton>
 		</template>
 	</NcDialog>
@@ -63,7 +58,12 @@ import { abilityStore, navigationStore, effectStore } from '../../store/store.js
 
 <script>
 import {
-	NcButton, NcDialog, NcTextField, NcTextArea, NcLoadingIcon, NcNoteCard, NcSelect,
+	NcButton,
+	NcDialog,
+	NcTextField,
+	NcTextArea,
+	NcLoadingIcon,
+	NcNoteCard,
 } from '@nextcloud/vue'
 import ContentSaveOutline from 'vue-material-design-icons/ContentSaveOutline.vue'
 import Cancel from 'vue-material-design-icons/Cancel.vue'
@@ -83,7 +83,6 @@ export default {
 		Cancel,
 		Plus,
 		Help,
-		NcSelect,
 	},
 	data() {
 		return {
@@ -91,8 +90,6 @@ export default {
 			loading: false,
 			error: false,
 			hasUpdated: false,
-			effects: {},
-			effectsLoading: false,
 			abilityItem: {
 				name: '',
 				description: '',
@@ -102,7 +99,7 @@ export default {
 	},
 	updated() {
 		if (navigationStore.modal === 'editAbility' && !this.hasUpdated) {
-			if (abilityStore.abilityItem.id) {
+			if (abilityStore.abilityItem?.id) {
 				this.abilityItem = {
 					...abilityStore.abilityItem,
 					name: abilityStore.abilityItem.name || '',
@@ -110,65 +107,37 @@ export default {
 					base: abilityStore.abilityItem.base || '',
 				}
 			}
-			this.fetchEffects()
 			this.hasUpdated = true
 		}
 	},
 
 	methods: {
+		closeModal() {
+			navigationStore.setModal(false)
+			this.success = false
+			this.loading = false
+			this.error = false
+			this.hasUpdated = false
+			this.abilityItem = {
+				name: '',
+				description: '',
+				base: '',
+			}
+		},
 		async editAbility() {
 			this.loading = true
 			try {
 				await abilityStore.saveAbility({
 					...this.abilityItem,
-					effects: this.effects.value.map((effect) => effect.id),
-				},
-				)
+				})
 				this.success = true
 				this.loading = false
-				setTimeout(() => {
-					this.success = false
-					this.loading = false
-					this.error = false
-					navigationStore.setModal(false)
-				}, 2000)
+				setTimeout(this.closeModal, 2000)
 			} catch (error) {
 				this.loading = false
 				this.success = false
 				this.error = error.message || 'An error occurred while saving the ability'
 			}
-		},
-
-		fetchEffects() {
-			this.effectsLoading = true
-
-			effectStore.refreshEffectList()
-				.then(() => {
-					const activeEffects = abilityStore.abilityItem.id
-						? effectStore.effectList.filter((effect) => {
-							return abilityStore.abilityItem.effects
-								.map(String)
-								.includes(effect.id.toString())
-						})
-						: null
-
-					this.effects = {
-						multiple: true,
-						closeOnSelect: false,
-						options: effectStore.effectList.map((effect) => ({
-							id: effect.id,
-							label: effect.name,
-						})),
-						value: activeEffects
-							? activeEffects.map((effect) => ({
-								id: effect.id,
-							    label: effect.name,
-							}))
-							: null,
-					}
-
-					this.effectsLoading = false
-				})
 		},
 		openLink(url, target) {
 			window.open(url, target)

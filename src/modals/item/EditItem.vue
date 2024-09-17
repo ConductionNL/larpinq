@@ -27,7 +27,7 @@ import { itemStore, effectStore, navigationStore } from '../../store/store.js'
 				v-model="effects.value"
 				input-label="Effects"
 				:loading="effectsLoading"
-				:disabled="loading" />
+				:disabled="effectsLoading || loading" />
 			<NcCheckboxRadioSwitch :disabled="loading"
 				label="Unique"
 				type="switch"
@@ -38,7 +38,7 @@ import { itemStore, effectStore, navigationStore } from '../../store/store.js'
 
 		<template #actions>
 			<NcButton
-				@click="navigationStore.setModal(false)">
+				@click="closeModal">
 				<template #icon>
 					<Cancel :size="20" />
 				</template>
@@ -58,10 +58,10 @@ import { itemStore, effectStore, navigationStore } from '../../store/store.js'
 				@click="editItem()">
 				<template #icon>
 					<NcLoadingIcon v-if="loading" :size="20" />
-					<ContentSaveOutline v-if="!loading && itemStore.itemItem.id" :size="20" />
-					<Plus v-if="!loading && !itemStore.itemItem.id" :size="20" />
+					<ContentSaveOutline v-if="!loading && itemStore.itemItem?.id" :size="20" />
+					<Plus v-if="!loading && !itemStore.itemItem?.id" :size="20" />
 				</template>
-				{{ itemStore.itemItem.id ? 'Opslaan' : 'Aanmaken' }}
+				{{ itemStore.itemItem?.id ? 'Opslaan' : 'Aanmaken' }}
 			</NcButton>
 		</template>
 	</NcDialog>
@@ -113,12 +113,15 @@ export default {
 				description: '',
 				unique: '',
 			},
+			hasUpdated: false,
 		}
 	},
-
+	mounted() {
+		this.fetchEffects()
+	},
 	updated() {
 		if (navigationStore.modal === 'editItem' && !this.hasUpdated) {
-			if (itemStore.itemItem.id) {
+			if (itemStore.itemItem?.id) {
 				this.itemItem = {
 					...itemStore.itemItem,
 					name: itemStore.itemItem.name || '',
@@ -131,26 +134,16 @@ export default {
 		}
 	},
 	methods: {
-		async editItem() {
-			this.loading = true
-			try {
-				await itemStore.saveItem({
-					...this.itemItem,
-					effects: this.effects.value.map((effect) => effect.id),
-				})
-				this.success = true
-				this.loading = false
-				this.error = false
-				setTimeout(() => {
-					this.success = false
-					this.loading = false
-					this.error = false
-					navigationStore.setModal(false)
-				}, 2000)
-			} catch (error) {
-				this.loading = false
-				this.success = false
-				this.error = error.message || 'An error occurred while saving the item'
+		closeModal() {
+			navigationStore.setModal(false)
+			this.success = false
+			this.loading = false
+			this.error = false
+			this.hasUpdated = false
+			this.itemItem = {
+				name: '',
+				description: '',
+				unique: '',
 			}
 		},
 		fetchEffects() {
@@ -158,11 +151,11 @@ export default {
 
 			effectStore.refreshEffectList()
 				.then(() => {
-					const activeEffects = itemStore.itemItem.id
+					const activeEffects = itemStore.itemItem?.id
 						? effectStore.effectList.filter((effect) => {
 							return itemStore.itemItem.effects
 								.map(String)
-								.includes(effect.id)
+								.includes(effect.id.toString())
 						})
 						: null
 
@@ -183,6 +176,23 @@ export default {
 
 					this.effectsLoading = false
 				})
+		},
+		async editItem() {
+			this.loading = true
+			try {
+				await itemStore.saveItem({
+					...this.itemItem,
+					effects: (this.effects?.value || []).map((effect) => effect.id),
+				})
+				this.success = true
+				this.loading = false
+				this.error = false
+				setTimeout(this.closeModal, 2000)
+			} catch (error) {
+				this.loading = false
+				this.success = false
+				this.error = error.message || 'An error occurred while saving the item'
+			}
 		},
 		openLink(url, target) {
 			window.open(url, target)

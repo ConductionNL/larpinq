@@ -2,6 +2,7 @@ import { SafeParseReturnType, z } from 'zod'
 import { TAbility } from './ability.types'
 
 export class Ability implements TAbility {
+
 	public id: string
 	public name: string
 	public description: string
@@ -30,4 +31,5 @@ export class Ability implements TAbility {
 
 		return schema.safeParse({ ...this })
 	}
+
 }

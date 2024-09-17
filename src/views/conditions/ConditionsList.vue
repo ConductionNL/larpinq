@@ -1,5 +1,5 @@
 <script setup>
-	import { conditionStore, navigationStore, searchStore } from '../../store/store.js'
+import { conditionStore, navigationStore, searchStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -22,7 +22,7 @@
 						</template>
 						Ververs
 					</NcActionButton>
-					<NcActionButton @click="conditionStore.setConditionItem([]); navigationStore.setModal('editCondition')">
+					<NcActionButton @click="conditionStore.setConditionItem(null); navigationStore.setModal('editCondition')">
 						<template #icon>
 							<Plus :size="20" />
 						</template>

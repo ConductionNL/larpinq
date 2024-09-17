@@ -1,5 +1,5 @@
 <script setup>
-	import { eventStore, navigationStore } from '../../store/store.js'
+import { eventStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -16,7 +16,7 @@
 					<CalendarMonthOutline />
 				</template>
 				<template #action>
-					<NcButton type="primary" @click="eventStore.setEventItem([]); navigationStore.setModal('editEvent')">
+					<NcButton type="primary" @click="eventStore.setEventItem(null); navigationStore.setModal('editEvent')">
 						Event toevoegen
 					</NcButton>
 				</template>

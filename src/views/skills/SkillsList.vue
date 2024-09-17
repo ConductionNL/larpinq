@@ -1,5 +1,5 @@
 <script setup>
-	import { skillStore, navigationStore, searchStore } from '../../store/store.js'
+import { skillStore, navigationStore, searchStore, characterStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -22,7 +22,7 @@
 						</template>
 						Ververs
 					</NcActionButton>
-					<NcActionButton @click="skillStore.setSkillItem([]); navigationStore.setModal('editSkill')">
+					<NcActionButton @click="skillStore.setSkillItem(null); navigationStore.setModal('editSkill')">
 						<template #icon>
 							<Plus :size="20" />
 						</template>
@@ -34,9 +34,10 @@
 				<NcListItem v-for="(skill, i) in skillStore.skillList"
 					:key="`${skill}${i}`"
 					:name="skill?.name"
-					:active="skillStore.skillItem === skill?.id"
-					:details="'1h'"
-					:counter-number="44"
+					:active="skillStore.skillItem?.id === skill?.id"
+					:details="(skill?.effects?.length || '0') + ' effect(s)'"
+					:counter-number="filterCharacters(skill.id).length || 0"
+					:force-display-actions="true"
 					@click="skillStore.setSkillItem(skill)">
 					<template #icon>
 						<SwordCross :class="skillStore.skillItem === skill.id && 'selectedSkillIcon'"
@@ -49,13 +50,13 @@
 					<template #actions>
 						<NcActionButton @click="skillStore.setSkillItem(skill); navigationStore.setModal('editSkill')">
 							<template #icon>
-								<Plus/>
+								<Pencil />
 							</template>
 							Bewerken
 						</NcActionButton>
 						<NcActionButton @click="skillStore.setSkillItem(skill), navigationStore.setDialog('deleteSkill')">
 							<template #icon>
-								<TrashCanOutline/>
+								<TrashCanOutline />
 							</template>
 							Verwijderen
 						</NcActionButton>
@@ -101,12 +102,34 @@ export default {
 		SwordCross,
 		Magnify,
 		Plus,
-		Pencil,
 		TrashCanOutline,
 		Refresh,
 	},
+	data() {
+		return {
+			charactersLoading: false,
+		}
+	},
 	mounted() {
 		skillStore.refreshSkillList()
+		this.fetchCharacters()
+	},
+	methods: {
+		filterCharacters(id) {
+			console.log(characterStore.characterList.filter((character) => {
+				return character.skills.map(String).includes(id.toString())
+			}).length)
+			return characterStore.characterList.filter((character) => {
+				return character.skills.map(String).includes(id.toString())
+			})
+		},
+		fetchCharacters() {
+			this.charactersLoading = true
+			characterStore.refreshCharacterList()
+				.then(() => {
+					this.charactersLoading = false
+				})
+		},
 	},
 }
 </script>

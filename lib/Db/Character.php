@@ -44,10 +44,10 @@ class Character extends Entity implements JsonSerializable
 		$this->addType('gold', 'integer');
 		$this->addType('silver', 'integer');
 		$this->addType('copper', 'integer');
-		$this->addType('events', 'array');
-		$this->addType('skills', 'array');
-		$this->addType('items', 'array');
-		$this->addType('conditions', 'array');
+		$this->addType('events', 'json');
+		$this->addType('skills', 'json');
+		$this->addType('items', 'json');
+		$this->addType('conditions', 'json');
 		$this->addType('type', 'string');
 		$this->addType('approved', 'string');
 	}
@@ -102,6 +102,7 @@ class Character extends Entity implements JsonSerializable
 			'copper' => $this->copper,
 			'events' => $this->events,
 			'skills' => $this->skills,
+			'items' => $this->items,
 			'conditions' => $this->conditions,
 			'type' => $this->type,
 			'approved' => $this->approved,

@@ -1,5 +1,5 @@
 <script setup>
-import { characterStore, skillStore } from '../../store/store.js'
+import { characterStore, effectStore, skillStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -7,33 +7,59 @@ import { characterStore, skillStore } from '../../store/store.js'
 		<div id="app-content">
 			<!-- app-content-wrapper is optional, only use if app-content-list  -->
 			<div>
-				<h1 class="h1">
-					{{ skillStore.skillItem.name }}
-				</h1>
-				<div class="grid">
-					<div class="gridContent">
-						<h4>Sammenvatting:</h4>
+				<div class="head">
+					<h1 class="h1">
+						{{ skillStore.skillItem.name }}
+					</h1>
+
+					<NcActions :primary="true" menu-name="Acties">
+						<template #icon>
+							<DotsHorizontal :size="20" />
+						</template>
+						<NcActionButton @click="navigationStore.setModal('editSkill')">
+							<template #icon>
+								<Pencil :size="20" />
+							</template>
+							Bewerken
+						</NcActionButton>
+						<NcActionButton @click="navigationStore.setDialog('deleteSkill')">
+							<template #icon>
+								<TrashCanOutline :size="20" />
+							</template>
+							Verwijderen
+						</NcActionButton>
+					</NcActions>
+				</div>
+				<div class="detailGrid">
+					<div>
+						<b>Sammenvatting:</b>
 						<span>{{ skillStore.skillItem.summary }}</span>
 					</div>
 				</div>
+				<span>{{ skillStore.skillItem.description }}</span>
 			</div>
 		</div>
 		<div class="tabContainer">
 			<BTabs content-class="mt-3" justified>
 				<BTab title="Effects" active>
-					<div v-if="skillStore.skillItem?.effects.length > 0">
-						<NcListItem v-for="(effect, i) in skillStore.skillItem?.effects"
-							:key="effect + i"
-							:name="effect"
+					<div v-if="filterEffects.length > 0">
+						<NcListItem v-for="(effect) in filterEffects"
+							:key="effect.id"
+							:name="effect.name"
 							:bold="false"
-							:force-display-actions="true">
+							:force-display-actions="true"
+							:details="effect?.modification || ''"
+							:counter-number="effect?.modifier">
 							<template #icon>
 								<MagicStaff disable-menu
 									:size="44" />
 							</template>
+							<template #subname>
+								{{ effect.name }}
+							</template>
 						</NcListItem>
 					</div>
-					<div v-if="skillStore.skillItem?.effects.length === 0">
+					<div v-if="filterEffects.length === 0">
 						Geen effects gevonden
 					</div>
 				</BTab>
@@ -71,6 +97,8 @@ import { BTabs, BTab } from 'bootstrap-vue'
 // icons
 import MagicStaff from 'vue-material-design-icons/MagicStaff.vue'
 import BriefcaseAccountOutline from 'vue-material-design-icons/BriefcaseAccountOutline.vue'
+import Pencil from 'vue-material-design-icons/Pencil.vue'
+import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
 
 export default {
 	name: 'SkillDetails',
@@ -78,22 +106,35 @@ export default {
 		NcListItem,
 		BTabs,
 		BTab,
+		// Icons
+		MagicStaff,
+		BriefcaseAccountOutline,
+		Pencil,
+		TrashCanOutline,
 	},
 	data() {
 		return {
 			characters: [],
 			charactersLoading: false,
+			effects: [],
+			effectsLoading: false,
 		}
 	},
 	computed: {
 		filterCharacters() {
 			return characterStore.characterList.filter((character) => {
-				return character.skills.map(String).includes(skillStore.skillItem.id)
+				return character.skills.map(String).includes(skillStore.skillItem.id.toString())
+			})
+		},
+		filterEffects() {
+			return effectStore.effectList.filter((effect) => {
+				return skillStore.skillItem.effects.map(String).includes(effect.id.toString())
 			})
 		},
 	},
 	mounted() {
 		this.fetchCharacters()
+		this.fetchEffects()
 	},
 	methods: {
 		fetchCharacters() {
@@ -102,6 +143,14 @@ export default {
 			characterStore.refreshCharacterList()
 				.then(() => {
 					this.charactersLoading = false
+				})
+		},
+		fetchEffects() {
+			this.effectsLoading = true
+
+			effectStore.refreshEffectList()
+				.then(() => {
+					this.effectsLoading = false
 				})
 		},
 	},

@@ -1,22 +1,27 @@
 <script setup>
-import { characterStore, navigationStore } from '../../store/store.js'
+import { characterStore, itemStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
-	<NcDialog v-if="navigationStore.dialog === 'deleteCharacter'"
-		name="Karakter verwijderen"
+	<NcDialog v-if="navigationStore.dialog === 'deleteItemFromCharacter'"
+		name="Item van karakter verwijderen"
 		size="normal"
 		:can-close="false">
-		<p v-if="!success">
-			Wil je <b>{{ characterStore.characterItem.name }}</b> definitief verwijderen? Deze actie kan niet ongedaan worden gemaakt.
-		</p>
-
 		<NcNoteCard v-if="success" type="success">
-			<p>Karakter succesvol verwijderd</p>
+			<p>Item succesvol verwijderd van karakter</p>
 		</NcNoteCard>
 		<NcNoteCard v-if="error" type="error">
 			<p>{{ error }}</p>
 		</NcNoteCard>
+
+		<div v-if="!success" class="formContainer">
+			<p>
+				Wil je <b>{{ itemStore.itemItem?.name }}</b> verwijderen van <b>{{ characterStore.characterItem?.name }}</b>?
+			</p>
+			<NcNoteCard type="info" heading="Let op">
+				Het verwijderen van een item op een karakter zal leiden tot een herberekening van de statistieken van het karakter. Dit is een asynchroon proces, dus het kan even duren voordat de wijzigingen zichtbaar worden.
+			</NcNoteCard>
+		</div>
 
 		<template #actions>
 			<NcButton
@@ -30,7 +35,7 @@ import { characterStore, navigationStore } from '../../store/store.js'
 				v-if="!success"
 				:disabled="loading"
 				type="error"
-				@click="deleteCharacter()">
+				@click="deleteItemFromCharacter()">
 				<template #icon>
 					<NcLoadingIcon v-if="loading" :size="20" />
 					<TrashCanOutline v-if="!loading" :size="20" />
@@ -53,7 +58,7 @@ import Cancel from 'vue-material-design-icons/Cancel.vue'
 import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
 
 export default {
-	name: 'DeleteCharacter',
+	name: 'DeleteItemFromCharacter',
 	components: {
 		NcDialog,
 		NcButton,
@@ -71,10 +76,29 @@ export default {
 		}
 	},
 	methods: {
-		async deleteCharacter() {
+		async deleteItemFromCharacter() {
 			this.loading = true
 			try {
-				await characterStore.deleteCharacter()
+				const characterItemClone = { ...characterStore.characterItem }
+
+				// Find the index of the item to delete
+				const index = characterItemClone.items.findIndex(item => item === itemStore.itemItem.id)
+
+				// Remove the item if it exists
+				if (index !== -1) {
+					characterItemClone.items.splice(index, 1)
+				} else {
+					throw Error('Item could not be found on character, this may be because it is already deleted.')
+				}
+
+				if (!characterItemClone.id) {
+					throw Error('Error: character ID was not found')
+				}
+
+				await characterStore.saveCharacter({
+					...characterItemClone,
+				})
+
 				// Close modal or show success message
 				this.success = true
 				this.loading = false
@@ -92,3 +116,9 @@ export default {
 	},
 }
 </script>
+
+<style lang="css">
+.notecard h2 {
+    margin: 0;
+}
+</style>

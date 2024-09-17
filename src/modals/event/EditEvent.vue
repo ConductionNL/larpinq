@@ -19,18 +19,27 @@ import { eventStore, effectStore, navigationStore } from '../../store/store.js'
 				label="Name *"
 				required
 				:value.sync="eventItem.name" />
+			<div class="eventDateContainer">
+				<div class="eventDateDate">
+					<span>Start Date</span>
+					<NcDateTimePicker v-model="eventItem.startDate"
+						:disabled="loading"
+						label="Start Date"
+						type="datetime"
+						confirm />
+				</div>
+				<div class="eventDateDate">
+					<span>End Date</span>
+					<NcDateTimePicker v-model="eventItem.endDate"
+						:disabled="loading"
+						label="End Date"
+						type="datetime"
+						confirm />
+				</div>
+			</div>
 			<NcTextArea :disabled="loading"
 				label="Description"
-				type="textarea"
 				:value.sync="eventItem.description" />
-			<NcTextField :disabled="loading"
-				label="Start Date"
-				type="date"
-				:value.sync="eventItem.startDate" />
-			<NcTextField :disabled="loading"
-				label="End Date"
-				type="date"
-				:value.sync="eventItem.endDate" />
 			<NcTextField :disabled="loading"
 				label="Location"
 				:value.sync="eventItem.location" />
@@ -42,7 +51,7 @@ import { eventStore, effectStore, navigationStore } from '../../store/store.js'
 		</div>
 
 		<template #actions>
-			<NcButton @click="navigationStore.setModal(false)">
+			<NcButton @click="closeModal">
 				<template #icon>
 					<Cancel :size="20" />
 				</template>
@@ -60,10 +69,10 @@ import { eventStore, effectStore, navigationStore } from '../../store/store.js'
 				@click="editEvent()">
 				<template #icon>
 					<NcLoadingIcon v-if="loading" :size="20" />
-					<ContentSaveOutline v-if="!loading && eventStore.eventItem.id" :size="20" />
-					<Plus v-if="!loading && !eventStore.eventItem.id" :size="20" />
+					<ContentSaveOutline v-if="!loading && eventStore.eventItem?.id" :size="20" />
+					<Plus v-if="!loading && !eventStore.eventItem?.id" :size="20" />
 				</template>
-				{{ eventStore.eventItem.id ? 'Opslaan' : 'Aanmaken' }}
+				{{ eventStore.eventItem?.id ? 'Opslaan' : 'Aanmaken' }}
 			</NcButton>
 		</template>
 	</NcDialog>
@@ -71,7 +80,7 @@ import { eventStore, effectStore, navigationStore } from '../../store/store.js'
 
 <script>
 import {
-	NcButton, NcDialog, NcTextField, NcTextArea, NcLoadingIcon, NcNoteCard, NcSelect,
+	NcButton, NcDialog, NcTextField, NcTextArea, NcLoadingIcon, NcNoteCard, NcSelect, NcDateTimePicker,
 } from '@nextcloud/vue'
 import ContentSaveOutline from 'vue-material-design-icons/ContentSaveOutline.vue'
 import Cancel from 'vue-material-design-icons/Cancel.vue'
@@ -84,6 +93,7 @@ export default {
 		NcDialog,
 		NcTextField,
 		NcTextArea,
+		NcDateTimePicker,
 		NcButton,
 		NcLoadingIcon,
 		NcNoteCard,
@@ -103,21 +113,28 @@ export default {
 			eventItem: {
 				name: '',
 				description: '',
-				startDate: '',
-				endDate: '',
+				startDate: new Date(),
+				endDate: new Date(),
 				location: '',
 			},
 		}
 	},
+	mounted() {
+		this.fetchEffects()
+	},
 	updated() {
 		if (navigationStore.modal === 'editEvent' && !this.hasUpdated) {
-			if (eventStore.eventItem.id) {
+			if (eventStore.eventItem?.id) {
 				this.eventItem = {
 					...eventStore.eventItem,
 					name: eventStore.eventItem.name || '',
 					description: eventStore.eventItem.description || '',
-					startDate: eventStore.eventItem.startDate || '',
-					endDate: eventStore.eventItem.endDate || '',
+					startDate: !isNaN(new Date(eventStore.eventItem.startDate))
+						? new Date(eventStore.eventItem.startDate)
+						: new Date(),
+					endDate: !isNaN(new Date(eventStore.eventItem.endDate))
+						? new Date(eventStore.eventItem.endDate)
+						: new Date(),
 					location: eventStore.eventItem.location || '',
 				}
 			}
@@ -126,25 +143,18 @@ export default {
 		}
 	},
 	methods: {
-		async editEvent() {
-			this.loading = true
-			try {
-				await eventStore.saveEvent({
-					...this.eventItem,
-					effects: this.effects.value.map((effect) => effect.id),
-				})
-				this.success = true
-				this.loading = false
-				setTimeout(() => {
-					this.success = false
-					this.loading = false
-					this.error = false
-					navigationStore.setModal(false)
-				}, 2000)
-			} catch (error) {
-				this.loading = false
-				this.success = false
-				this.error = error.message || 'An error occurred while saving the event'
+		closeModal() {
+			navigationStore.setModal(false)
+			this.success = false
+			this.loading = false
+			this.error = false
+			this.hasUpdated = false
+			this.eventItem = {
+				name: '',
+				description: '',
+				startDate: new Date(),
+				endDate: new Date(),
+				location: '',
 			}
 		},
 		fetchEffects() {
@@ -152,7 +162,7 @@ export default {
 
 			effectStore.refreshEffectList()
 				.then(() => {
-					const activeEffects = eventStore.eventItem.id
+					const activeEffects = eventStore.eventItem?.id
 						? effectStore.effectList.filter((effect) => {
 							return eventStore.eventItem.effects
 								.map(String)
@@ -178,9 +188,40 @@ export default {
 					this.effectsLoading = false
 				})
 		},
+		async editEvent() {
+			this.loading = true
+			try {
+				await eventStore.saveEvent({
+					...this.eventItem,
+					effects: (this.effects?.value || []).map((effect) => effect.id),
+					startDate: this.eventItem.startDate.toISOString(),
+					endDate: this.eventItem.endDate.toISOString(),
+				})
+				this.success = true
+				this.loading = false
+				setTimeout(() => {
+					this.closeModal()
+				}, 2000)
+			} catch (error) {
+				this.loading = false
+				this.success = false
+				this.error = error.message || 'An error occurred while saving the event'
+			}
+		},
 		openLink(url, target) {
 			window.open(url, target)
 		},
 	},
 }
 </script>
+<style>
+.eventDateContainer {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+.eventDateDate {
+	display: flex;
+	flex-direction: column;
+}
+</style>
