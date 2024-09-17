@@ -12,6 +12,23 @@ import DOMPurify from 'dompurify'
 					{{ templateStore.templateItem.name }}
 				</h1>
 				<span>{{ templateStore.templateItem.description }}</span>
+					<NcActions :primary="true" menu-name="Acties">
+						<template #icon>
+							<DotsHorizontal :size="20" />
+						</template>
+						<NcActionButton @click="navigationStore.setModal('editTemplate')">
+							<template #icon>
+								<Pencil :size="20" />
+							</template>
+							Bewerken
+						</NcActionButton>
+						<NcActionButton @click="navigationStore.setDialog('deleteTemplate')">
+							<template #icon>
+								<TrashCanOutline :size="20" />
+							</template>
+							Verwijderen
+						</NcActionButton>
+					</NcActions>
 				<div>
 					<h3>Content:</h3>
 					<NcGuestContent>
@@ -21,24 +38,24 @@ import DOMPurify from 'dompurify'
 							:use-markdown="true" />
 					</NcGuestContent>
 				</div>
+				<span>{{ templateStore.templateItem.description }}</span>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
-import {
-	NcLoadingIcon,
-	NcRichText,
-	NcGuestContent,
-} from '@nextcloud/vue'
+import { NcLoadingIcon } from '@nextcloud/vue'
+
+import Pencil from 'vue-material-design-icons/Pencil.vue'
+import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
 
 export default {
 	name: 'TemplateDetails',
 	components: {
+		NcActions,
+		NcActionButton,
 		NcLoadingIcon,
-		NcRichText,
-		NcGuestContent,
 	},
 }
 </script>

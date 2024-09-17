@@ -1,11 +1,11 @@
 /* eslint-disable no-console */
 import { setActivePinia, createPinia } from 'pinia'
 
-import { useCatalogiStore } from './catalogi.js'
-import { Catalogi, mockCatalogi } from '../../entities/index.js'
+import { useAbilityStore } from './ability.js'
+import { Ability, mockAbility } from '../../entities/index.js'
 
 describe(
-	'Catalogi Store', () => {
+	'Ability Store', () => {
 		beforeEach(
 			() => {
 				setActivePinia(createPinia())
@@ -13,41 +13,41 @@ describe(
 		)
 
 		it(
-			'sets catalogi item correctly', () => {
-				const store = useCatalogiStore()
+			'sets ability item correctly', () => {
+				const store = useAbilityStore()
 
-				store.setCatalogiItem(mockCatalogi()[0])
+				store.setAbilityItem(mockAbility()[0])
 
-				expect(store.catalogiItem).toBeInstanceOf(Catalogi)
-				expect(store.catalogiItem).toEqual(mockCatalogi()[0])
+				expect(store.abilityItem).toBeInstanceOf(Ability)
+				expect(store.abilityItem).toEqual(mockAbility()[0])
 
-				expect(store.catalogiItem.validate().success).toBe(true)
+				expect(store.abilityItem.validate().success).toBe(true)
 			})
 
 		it(
-			'sets catalogi list correctly', () => {
-				const store = useCatalogiStore()
+			'sets ability list correctly', () => {
+				const store = useAbilityStore()
 
-				store.setCatalogiList(mockCatalogi())
+				store.setAbilityList(mockAbility())
 
-				expect(store.catalogiList).toHaveLength(mockCatalogi().length)
+				expect(store.abilityList).toHaveLength(mockAbility().length)
 
 				// list item 1
-				expect(store.catalogiList[0]).toBeInstanceOf(Catalogi)
-				expect(store.catalogiList[0]).toEqual(mockCatalogi()[0])
+				expect(store.abilityList[0]).toBeInstanceOf(Ability)
+				expect(store.abilityList[0]).toEqual(mockAbility()[0])
 
-				expect(store.catalogiList[0].validate().success).toBe(true)
+				expect(store.abilityList[0].validate().success).toBe(true)
 
 				// list item 2
-				expect(store.catalogiList[1]).toBeInstanceOf(Catalogi)
-				expect(store.catalogiList[1]).toEqual(mockCatalogi()[1])
+				expect(store.abilityList[1]).toBeInstanceOf(Ability)
+				expect(store.abilityList[1]).toEqual(mockAbility()[1])
 
-				expect(store.catalogiList[1].validate().success).toBe(true)
+				expect(store.abilityList[1].validate().success).toBe(true)
 
 				// list item 3
-				expect(store.catalogiList[2]).toBeInstanceOf(Catalogi)
-				expect(store.catalogiList[2]).toEqual(mockCatalogi()[2])
+				expect(store.abilityList[2]).toBeInstanceOf(Ability)
+				expect(store.abilityList[2]).toEqual(mockAbility()[2])
 
-				expect(store.catalogiList[2].validate().success).toBe(false)
+				expect(store.abilityList[2].validate().success).toBe(false)
 			})
 	})

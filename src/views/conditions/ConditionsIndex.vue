@@ -29,7 +29,7 @@ import { conditionStore, navigationStore } from '../../store/store.js'
 <script>
 import { NcAppContent, NcEmptyContent, NcButton } from '@nextcloud/vue'
 import ConditionsList from './ConditionsList.vue'
-import ConditionDetails from './ConditionsDetails.vue'
+import ConditionDetails from './ConditionDetails.vue'
 import EmoticonSickOutline from 'vue-material-design-icons/EmoticonSickOutline.vue'
 
 export default {

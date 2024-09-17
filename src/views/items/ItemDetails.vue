@@ -11,25 +11,40 @@ import { characterStore, effectStore, itemStore } from '../../store/store.js'
 					<h1 class="h1">
 						{{ itemStore.itemItem.name }}
 					</h1>
+
+					<NcActions :primary="true" menu-name="Acties">
+						<template #icon>
+							<DotsHorizontal :size="20" />
+						</template>
+						<NcActionButton @click="navigationStore.setModal('editItem')">
+							<template #icon>
+								<Pencil :size="20" />
+							</template>
+							Bewerken
+						</NcActionButton>
+						<NcActionButton @click="navigationStore.setDialog('deleteItem')">
+							<template #icon>
+								<TrashCanOutline :size="20" />
+							</template>
+							Verwijderen
+						</NcActionButton>
+					</NcActions>
 				</div>
 				<div class="detailGrid">
 					<div>
-						<b>Berichttekst:</b>
-						<p>{{ itemStore.itemItem.description }}</p>
-					</div>
-					<div>
-						<b>Inhoud:</b>
-						<p>{{ itemStore.itemItem.name }}</p>
+						<b>Sammenvatting:</b>
+						<span>{{ itemStore.itemItem.summary }}</span>
 					</div>
 				</div>
+				<span>{{ itemStore.itemItem.description }}</span>
 			</div>
 		</div>
 		<div class="tabContainer">
 			<BTabs content-class="mt-3" justified>
-				<BTab title="Effecten" active>
-					<div v-if="filterEffects?.length > 0 && !effectsLoading">
-						<NcListItem v-for="(effect, i) in filterEffects"
-							:key="effect.id + i"
+				<BTab title="Effects" active>
+					<div v-if="filterEffects.length > 0">
+						<NcListItem v-for="(effect) in filterEffects"
+							:key="effect.id"
 							:name="effect.name"
 							:bold="false"
 							:force-display-actions="true"
@@ -44,14 +59,14 @@ import { characterStore, effectStore, itemStore } from '../../store/store.js'
 							</template>
 						</NcListItem>
 					</div>
-					<div v-if="!filterEffects?.length">
-						Geen effecten gevonden
+					<div v-if="filterEffects.length === 0">
+						Geen effects gevonden
 					</div>
 				</BTab>
-				<BTab title="Karakters">
-					<div v-if="filterCharacters?.length > 0">
-						<NcListItem v-for="(character) in filterCharacters"
-							:key="character.id"
+				<BTab title="Characters">
+					<div v-if="filterCharacters.length > 0 && !charactersLoading">
+						<NcListItem v-for="(character, i) in filterCharacters"
+							:key="character.id + i"
 							:name="character.name"
 							:bold="false"
 							:force-display-actions="true">
@@ -64,8 +79,8 @@ import { characterStore, effectStore, itemStore } from '../../store/store.js'
 							</template>
 						</NcListItem>
 					</div>
-					<div v-if="!filterCharacters?.length">
-						Geen karakters gevonden
+					<div v-if="filterCharacters.length === 0">
+						Geen characters gevonden
 					</div>
 				</BTab>
 			</BTabs>
@@ -74,20 +89,27 @@ import { characterStore, effectStore, itemStore } from '../../store/store.js'
 </template>
 
 <script>
-import {
-	NcListItem,
-} from '@nextcloud/vue'
 import { BTabs, BTab } from 'bootstrap-vue'
+import { NcLoadingIcon, NcList, NcActions, NcActionButton } from '@nextcloud/vue'
 
 import MagicStaff from 'vue-material-design-icons/MagicStaff.vue'
 import BriefcaseAccountOutline from 'vue-material-design-icons/BriefcaseAccountOutline.vue'
+import Pencil from 'vue-material-design-icons/Pencil.vue'
+import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
 
 export default {
 	name: 'ItemDetails',
 	components: {
-		NcListItem,
+		NcActions,
+		NcActionButton,
+		NcLoadingIcon,
 		BTabs,
 		BTab,
+		// Icons
+		MagicStaff,
+		BriefcaseAccountOutline,
+		Pencil,
+		TrashCanOutline,
 	},
 	data() {
 		return {

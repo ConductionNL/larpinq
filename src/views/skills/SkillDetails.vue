@@ -7,15 +7,36 @@ import { characterStore, effectStore, skillStore } from '../../store/store.js'
 		<div id="app-content">
 			<!-- app-content-wrapper is optional, only use if app-content-list  -->
 			<div>
-				<h1 class="h1">
-					{{ skillStore.skillItem.name }}
-				</h1>
-				<div class="grid">
-					<div class="gridContent">
-						<h4>Sammenvatting:</h4>
+				<div class="head">
+					<h1 class="h1">
+						{{ skillStore.skillItem.name }}
+					</h1>
+
+					<NcActions :primary="true" menu-name="Acties">
+						<template #icon>
+							<DotsHorizontal :size="20" />
+						</template>
+						<NcActionButton @click="navigationStore.setModal('editSkill')">
+							<template #icon>
+								<Pencil :size="20" />
+							</template>
+							Bewerken
+						</NcActionButton>
+						<NcActionButton @click="navigationStore.setDialog('deleteSkill')">
+							<template #icon>
+								<TrashCanOutline :size="20" />
+							</template>
+							Verwijderen
+						</NcActionButton>
+					</NcActions>
+				</div>
+				<div class="detailGrid">
+					<div>
+						<b>Sammenvatting:</b>
 						<span>{{ skillStore.skillItem.summary }}</span>
 					</div>
 				</div>
+				<span>{{ skillStore.skillItem.description }}</span>
 			</div>
 		</div>
 		<div class="tabContainer">
@@ -76,6 +97,8 @@ import { BTabs, BTab } from 'bootstrap-vue'
 // icons
 import MagicStaff from 'vue-material-design-icons/MagicStaff.vue'
 import BriefcaseAccountOutline from 'vue-material-design-icons/BriefcaseAccountOutline.vue'
+import Pencil from 'vue-material-design-icons/Pencil.vue'
+import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
 
 export default {
 	name: 'SkillDetails',
@@ -83,6 +106,11 @@ export default {
 		NcListItem,
 		BTabs,
 		BTab,
+		// Icons
+		MagicStaff,
+		BriefcaseAccountOutline,
+		Pencil,
+		TrashCanOutline,
 	},
 	data() {
 		return {

@@ -61,10 +61,11 @@ import { characterStore, conditionStore, eventStore, itemStore, navigationStore,
 				</div>
 				<div class="detailGrid">
 					<div>
-						<b>Omschrijving:</b>
-						<span>{{ characterStore.characterItem.description }}</span>
+						<b>Sammenvatting:</b>
+						<span>{{ characterStore.characterItem.summary }}</span>
 					</div>
 				</div>
+				<span>{{ characterStore.characterItem.description }}</span>
 				<div class="tabContainer">
 					<BTabs content-class="mt-3" justified>
 						<BTab title="Eigenschappen" active>
