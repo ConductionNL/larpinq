@@ -1,5 +1,6 @@
 <script setup>
 import { templateStore, navigationStore } from '../../store/store.js'
+import DOMPurify from 'dompurify'
 </script>
 
 <template>
@@ -7,11 +8,10 @@ import { templateStore, navigationStore } from '../../store/store.js'
 		<div id="app-content">
 			<!-- app-content-wrapper is optional, only use if app-content-list  -->
 			<div>
-				<div class="head">
-					<h1 class="h1">
-						{{ templateStore.templateItem.name }}
-					</h1>
-
+				<h1 class="h1">
+					{{ templateStore.templateItem.name }}
+				</h1>
+				<span>{{ templateStore.templateItem.description }}</span>
 					<NcActions :primary="true" menu-name="Acties">
 						<template #icon>
 							<DotsHorizontal :size="20" />
@@ -29,12 +29,14 @@ import { templateStore, navigationStore } from '../../store/store.js'
 							Verwijderen
 						</NcActionButton>
 					</NcActions>
-				</div>
-				<div class="detailGrid">
-					<div>
-						<b>Sammenvatting:</b>
-						<span>{{ templateStore.templateItem.summary }}</span>
-					</div>
+				<div>
+					<h3>Content:</h3>
+					<NcGuestContent>
+						<NcRichText
+							:text="DOMPurify.sanitize(templateStore.templateItem.template)"
+							:autolink="true"
+							:use-markdown="true" />
+					</NcGuestContent>
 				</div>
 				<span>{{ templateStore.templateItem.description }}</span>
 			</div>
@@ -43,8 +45,7 @@ import { templateStore, navigationStore } from '../../store/store.js'
 </template>
 
 <script>
-import { BTabs, BTab } from 'bootstrap-vue'
-import { NcLoadingIcon, NcActions, NcActionButton } from '@nextcloud/vue'
+import { NcLoadingIcon } from '@nextcloud/vue'
 
 import Pencil from 'vue-material-design-icons/Pencil.vue'
 import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
@@ -55,11 +56,6 @@ export default {
 		NcActions,
 		NcActionButton,
 		NcLoadingIcon,
-		BTabs,
-		BTab,
-		// Icons
-		Pencil,
-		TrashCanOutline,
 	},
 }
 </script>
@@ -91,6 +87,10 @@ h4 {
 .gridContent {
   display: flex;
   gap: 25px;
+}
+
+#guest-content-vue {
+    margin: 20px 5px !important;
 }
 
 </style>

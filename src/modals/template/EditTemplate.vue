@@ -18,19 +18,21 @@ import { templateStore, navigationStore } from '../../store/store.js'
 			<NcTextField :disabled="loading"
 				label="Name *"
 				required
-				:value.sync="templateStore.templateItem.name" />
+				:value.sync="templateItem.name" />
 			<NcTextArea :disabled="loading"
 				label="Description"
 				type="textarea"
-				:value.sync="templateStore.templateItem.description" />
+                resize="vertical"
+				:value.sync="templateItem.description" />
 			<NcTextArea :disabled="loading"
-				label="Template"
+				label="Content"
 				type="textarea"
-				:value.sync="templateStore.templateItem.template" />
+				resize="vertical"
+				:value.sync="templateItem.template" />
 		</div>
 
 		<template #actions>
-			<NcButton @click="navigationStore.setModal(false)">
+			<NcButton @click="closeModal">
 				<template #icon>
 					<Cancel :size="20" />
 				</template>
@@ -48,10 +50,10 @@ import { templateStore, navigationStore } from '../../store/store.js'
 				@click="editTemplate()">
 				<template #icon>
 					<NcLoadingIcon v-if="loading" :size="20" />
-					<ContentSaveOutline v-if="!loading && templateStore.templateItem.id" :size="20" />
-					<Plus v-if="!loading && !templateStore.templateItem.id" :size="20" />
+					<ContentSaveOutline v-if="!loading && templateItem?.id" :size="20" />
+					<Plus v-if="!loading && !templateItem?.id" :size="20" />
 				</template>
-				{{ templateStore.templateItem.id ? 'Opslaan' : 'Aanmaken' }}
+				{{ templateItem?.id ? 'Opslaan' : 'Aanmaken' }}
 			</NcButton>
 		</template>
 	</NcDialog>
@@ -82,24 +84,51 @@ export default {
 	},
 	data() {
 		return {
+			templateItem: {
+				name: '',
+				description: '',
+				template: '',
+			},
 			success: false,
 			loading: false,
 			error: false,
 		}
 	},
+	updated() {
+		if (navigationStore.modal === 'editTemplate' && templateStore.templateItem?.id && !this.hasUpdated) {
+			this.templateItem = {
+				...templateStore.templateItem,
+				name: templateStore.templateItem.name || '',
+				description: templateStore.templateItem.description || '',
+				template: templateStore.templateItem.template || '',
+			}
+
+			this.hasUpdated = true
+		}
+	},
 	methods: {
+		closeModal() {
+			navigationStore.setModal(false)
+			this.success = false
+			this.loading = false
+			this.error = false
+			this.hasUpdated = false
+			this.templateItem = {
+				name: '',
+				description: '',
+				template: '',
+			}
+		},
 		async editTemplate() {
 			this.loading = true
 			try {
-				await templateStore.saveTemplate()
+				await templateStore.saveTemplate({
+					...this.templateItem,
+				})
+
 				this.success = true
 				this.loading = false
-				setTimeout(() => {
-					this.success = false
-					this.loading = false
-					this.error = false
-					navigationStore.setModal(false)
-				}, 2000)
+				setTimeout(this.closeModal, 2000)
 			} catch (error) {
 				this.loading = false
 				this.success = false

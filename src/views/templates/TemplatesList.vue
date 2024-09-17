@@ -22,7 +22,7 @@ import { templateStore, navigationStore, searchStore } from '../../store/store.j
 						</template>
 						Ververs
 					</NcActionButton>
-					<NcActionButton @click="templateStore.setTemplateItem([]); navigationStore.setModal('editTemplate')">
+					<NcActionButton @click="templateStore.setTemplateItem(null); navigationStore.setModal('editTemplate')">
 						<template #icon>
 							<Plus :size="20" />
 						</template>
