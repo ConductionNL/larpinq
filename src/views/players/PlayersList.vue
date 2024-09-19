@@ -1,5 +1,5 @@
 <script setup>
-import { playerStore, navigationStore, searchStore } from '../../store/store.js'
+import { playerStore, navigationStore, searchStore, characterStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -35,8 +35,7 @@ import { playerStore, navigationStore, searchStore } from '../../store/store.js'
 					:key="`${player}${i}`"
 					:name="player?.name"
 					:active="playerStore.playerItem?.id === player?.id"
-					:details="'1h'"
-					:counter-number="44"
+					:counter-number="filterCharacters(player.id).length"
 					:force-display-actions="true"
 					@click="playerStore.setPlayerItem(player)">
 					<template #icon>
@@ -106,8 +105,28 @@ export default {
 		TrashCanOutline,
 		Refresh,
 	},
+	data() {
+		return {
+			charactersLoading: false,
+		}
+	},
 	mounted() {
 		playerStore.refreshPlayerList()
+		this.fetchCharacters()
+	},
+	methods: {
+		filterCharacters(id) {
+			return characterStore.characterList.filter((character) => {
+				return character.ocName.toString() === id.toString()
+			})
+		},
+		fetchCharacters() {
+			this.charactersLoading = true
+			characterStore.refreshCharacterList()
+				.then(() => {
+					this.charactersLoading = false
+				})
+		},
 	},
 }
 </script>
