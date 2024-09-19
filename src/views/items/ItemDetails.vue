@@ -90,12 +90,13 @@ import { characterStore, effectStore, itemStore } from '../../store/store.js'
 
 <script>
 import { BTabs, BTab } from 'bootstrap-vue'
-import { NcLoadingIcon, NcList, NcActions, NcActionButton } from '@nextcloud/vue'
+import { NcLoadingIcon, NcListItem, NcActions, NcActionButton } from '@nextcloud/vue'
 
 import MagicStaff from 'vue-material-design-icons/MagicStaff.vue'
 import BriefcaseAccountOutline from 'vue-material-design-icons/BriefcaseAccountOutline.vue'
 import Pencil from 'vue-material-design-icons/Pencil.vue'
 import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
+import DotsHorizontal from 'vue-material-design-icons/DotsHorizontal.vue'
 
 export default {
 	name: 'ItemDetails',
