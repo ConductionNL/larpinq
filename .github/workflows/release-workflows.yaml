@@ -3,6 +3,7 @@ name: Release Workflow
 on:
   push:
     branches:
+      - master
       - main
   workflow_dispatch:
     inputs:
@@ -86,7 +87,7 @@ jobs:
             --exclude='docker' \
             --exclude='docs' \
             --exclude='node_modules' \
-            --exclude='src' \
+            --exclude='/src' \
             --exclude='test' \
             --exclude='package-lock.json' \
             --exclude='composer.lock' \
