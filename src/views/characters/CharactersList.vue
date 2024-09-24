@@ -1,5 +1,5 @@
 <script setup>
-import { characterStore, navigationStore, searchStore } from '../../store/store.js'
+import { characterStore, navigationStore, playerStore, searchStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -38,7 +38,7 @@ import { characterStore, navigationStore, searchStore } from '../../store/store.
 					:force-display-actions="true"
 					:active="characterStore.characterItem?.id === character?.id"
 					:details="character.approved === 'approved' ? 'Approved': 'Not approved'"
-					:counter-number="44"
+					:counter-number="character?.skills?.length || 0"
 					@click="characterStore.setCharacterItem(character)">
 					<template #icon>
 						<BriefcaseAccountOutline :class="characterStore.characterItem?.id === character?.id && 'selectedZaakIcon'"
@@ -46,7 +46,7 @@ import { characterStore, navigationStore, searchStore } from '../../store/store.
 							:size="44" />
 					</template>
 					<template #subname>
-						{{ character?.description }}
+						{{ findPlayer(character?.ocName).name }}
 					</template>
 					<template #actions>
 						<NcActionButton @click="characterStore.setCharacterItem(character); navigationStore.setModal('editCharacter')">
@@ -107,8 +107,28 @@ export default {
 		Pencil,
 		TrashCanOutline,
 	},
+	data() {
+		return {
+			playersLoading: false,
+		}
+	},
 	mounted() {
 		characterStore.refreshCharacterList()
+		this.fetchPlayers()
+	},
+	methods: {
+		findPlayer(characterPlayerId) {
+			return playerStore.playerList.find((player) => {
+				return player.id.toString() === characterPlayerId.toString()
+			})
+		},
+		fetchPlayers() {
+			this.playersLoading = true
+			playerStore.refreshPlayerList()
+				.then(() => {
+					this.playersLoading = false
+				})
+		},
 	},
 }
 </script>
