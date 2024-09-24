@@ -116,9 +116,6 @@ export default {
 	},
 	methods: {
 		filterCharacters(id) {
-			console.log(characterStore.characterList.filter((character) => {
-				return character.skills.map(String).includes(id.toString())
-			}).length)
 			return characterStore.characterList.filter((character) => {
 				return character.skills.map(String).includes(id.toString())
 			})

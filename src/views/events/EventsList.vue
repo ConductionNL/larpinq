@@ -1,5 +1,5 @@
 <script setup>
-import { eventStore, navigationStore, searchStore } from '../../store/store.js'
+import { characterStore, eventStore, navigationStore, searchStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -36,8 +36,8 @@ import { eventStore, navigationStore, searchStore } from '../../store/store.js'
 					:name="event?.name"
 					:force-display-actions="true"
 					:active="eventStore.eventItem?.id === event?.id"
-					:details="'1h'"
-					:counter-number="44"
+					:details="getDateString(event.startDate, event.endDate)"
+					:counter-number="getPlayerList(event.id).length"
 					@click="eventStore.setEventItem(event)">
 					<template #icon>
 						<CalendarMonthOutline :class="eventStore.eventItem?.id === event.id && 'selectedZaakIcon'"
@@ -105,8 +105,44 @@ export default {
 		Pencil,
 		TrashCanOutline,
 	},
+	data() {
+		return {
+			charactersLoading: false,
+		}
+	},
 	mounted() {
 		eventStore.refreshEventList()
+		this.fetchCharacters()
+	},
+	methods: {
+		fetchCharacters() {
+			this.charactersLoading = true
+			characterStore.refreshCharacterList()
+				.then(() => {
+					this.charactersLoading = false
+				})
+		},
+		getPlayerList(id) {
+			// get characters related to this event
+			const filteredCharacterList = characterStore.characterList.filter((character) => {
+				return character.events.map(String).includes(id.toString())
+			})
+
+			return [...new Set(filteredCharacterList.map(obj => obj.ocName))]
+		},
+		getDateString(startDate, endDate) {
+			const dates = [startDate, endDate].map((date) => {
+				const dateObj = new Date(startDate)
+
+				// Extract the month and day
+				const month = String(dateObj.getUTCMonth() + 1).padStart(2, '0') // Months are zero-based
+				const day = String(dateObj.getUTCDate()).padStart(2, '0')
+
+				return `${day}/${month}`
+			})
+
+			return `${dates[0]} - ${dates[1]}`
+		},
 	},
 }
 </script>
