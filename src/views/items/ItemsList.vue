@@ -1,5 +1,5 @@
 <script setup>
-import { itemStore, navigationStore, searchStore } from '../../store/store.js'
+import { characterStore, itemStore, navigationStore, searchStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -35,8 +35,8 @@ import { itemStore, navigationStore, searchStore } from '../../store/store.js'
 					:key="`${item}${i}`"
 					:name="item?.name"
 					:active="itemStore.itemItem?.id === item?.id"
-					:details="'1h'"
-					:counter-number="44"
+					:details="item.unique ? 'unique' : 'non-unique'"
+					:counter-number="filterCharacters(item.id)?.length || 0"
 					:force-display-actions="true"
 					@click="itemStore.setItemItem(item)">
 					<template #icon>
@@ -106,8 +106,28 @@ export default {
 		Pencil,
 		TrashCanOutline,
 	},
+	data() {
+		return {
+			charactersLoading: false,
+		}
+	},
 	mounted() {
 		itemStore.refreshItemList()
+		this.fetchCharacters()
+	},
+	methods: {
+		filterCharacters(id) {
+			return characterStore.characterList.filter((character) => {
+				return character.items.map(String).includes(id.toString())
+			})
+		},
+		fetchCharacters() {
+			this.charactersLoading = true
+			characterStore.refreshCharacterList()
+				.then(() => {
+					this.charactersLoading = false
+				})
+		},
 	},
 }
 </script>
