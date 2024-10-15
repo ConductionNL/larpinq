@@ -6,6 +6,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use OCA\LarpingApp\Service\ObjectService;
 use OCA\LarpingApp\Service\SearchService;
+use OCA\LarpingApp\Service\CharacterService;
 use OCA\LarpingApp\Db\Character;
 use OCA\LarpingApp\Db\CharacterMapper;
 use OCP\AppFramework\Controller;
@@ -113,12 +114,15 @@ class CharactersController extends Controller
      * @param string $appName The name of the app
      * @param IRequest $request The request object
      * @param IAppConfig $config The app configuration object
+     * @param CharacterMapper $characterMapper The character mapper object
+     * @param CharacterService $characterService The character service object
      */
     public function __construct(
         $appName,
         IRequest $request,
         private readonly IAppConfig $config,
-		private readonly CharacterMapper $characterMapper
+        private readonly CharacterMapper $characterMapper,
+        private readonly CharacterService $characterService
     )
     {
         parent::__construct($appName, $request);
@@ -191,55 +195,60 @@ class CharactersController extends Controller
     /**
      * Creates a new character
      * 
-     * This method is intended to create a new character based on POST data.
-     * Currently, it returns an empty JSON response as a placeholder.
+     * This method creates a new character based on POST data and calculates its attributes using the CharacterService.
      *
      * @NoAdminRequired
      * @NoCSRFRequired
      *
-     * @return JSONResponse An empty JSON response (placeholder)
+     * @return JSONResponse A JSON response containing the newly created character
      */
     public function create(): JSONResponse
     {
         $data = $this->request->getParams();
 
-		foreach ($data as $key => $value) {
-			if (str_starts_with($key, '_')) {
-				unset($data[$key]);
-			}
-		}
+        foreach ($data as $key => $value) {
+            if (str_starts_with($key, '_')) {
+                unset($data[$key]);
+            }
+        }
         
-		if (isset($data['id'])) {
-			unset($data['id']);
-		}
+        if (isset($data['id'])) {
+            unset($data['id']);
+        }
         
-        return new JSONResponse($this->characterMapper->createFromArray(object: $data));
+        $character = $this->characterMapper->createFromArray(object: $data);
+        $calculatedCharacter = $this->characterService->calculateCharacter($character);
+        
+        return new JSONResponse($calculatedCharacter);
     }
 
     /**
      * Updates an existing character
      * 
-     * This method is intended to update an existing character based on its ID.
-     * Currently, it returns the character from the test array without actually updating it.
+     * This method updates an existing character based on its ID and recalculates its attributes using the CharacterService.
      *
      * @NoAdminRequired
      * @NoCSRFRequired
      *
-     * @param string $id The ID of the character to update
-     * @return JSONResponse A JSON response containing the (unchanged) character details
+     * @param int $id The ID of the character to update
+     * @return JSONResponse A JSON response containing the updated character details
      */
     public function update(int $id): JSONResponse
-    {$data = $this->request->getParams();
+    {
+        $data = $this->request->getParams();
 
-		foreach ($data as $key => $value) {
-			if (str_starts_with($key, '_')) {
-				unset($data[$key]);
-			}
-		}
-		if (isset($data['id'])) {
-			unset($data['id']);
-		}
-        return new JSONResponse($this->characterMapper->updateFromArray(id: (int) $id, object: $data));
+        foreach ($data as $key => $value) {
+            if (str_starts_with($key, '_')) {
+                unset($data[$key]);
+            }
+        }
+        if (isset($data['id'])) {
+            unset($data['id']);
+        }
+        $updatedCharacter = $this->characterMapper->updateFromArray(id: (int) $id, object: $data);
+        $calculatedCharacter = $this->characterService->calculateCharacter($updatedCharacter);
+        
+        return new JSONResponse($calculatedCharacter);
     }
 
     /**
