@@ -10,24 +10,14 @@ class Ability extends Entity implements JsonSerializable
 {
 
 	protected ?string $name 	    = null;
-	protected ?string $summary      = null;
 	protected ?string $description  = null;
-	protected ?string $image        = null;
-	protected ?string $search	    = null;
-
-	protected bool    $listed       = false;
-	protected ?string $organisation = null;
-	protected ?array   $metadata    = null;
-
+	protected ?int $base = 0;
+	protected ?bool $allowedNegative = false;
 	public function __construct() {
 		$this->addType(fieldName: 'name', type: 'string');
-		$this->addType(fieldName: 'summary', type: 'string');
 		$this->addType(fieldName: 'description', type: 'string');
-		$this->addType(fieldName: 'image', type: 'string');
-		$this->addType(fieldName: 'search', type: 'string');
-		$this->addType(fieldName: 'listed', type: 'boolean');
-		$this->addType(fieldName: 'organisation', type: 'string');
-		$this->addType(fieldName: 'metadata', type: 'json');
+		$this->addType(fieldName: 'base', type: 'string');
+		$this->addType(fieldName: 'allowedNegative', type: 'boolean');
 
 	}
 
@@ -66,14 +56,9 @@ class Ability extends Entity implements JsonSerializable
 		$array = [
 			'id' => $this->id,
 			'name' => $this->name,
-			'summary' => $this->summary,
 			'description' => $this->description,
-			'image' => $this->image,
-			'search' => $this->search,
-			'listed' => $this->listed,
-			'metadata' => $this->metadata,
-			'organisation'=> $this->organisation,
-
+			'base' => $this->base,
+			'allowedNegative' => $this->allowedNegative,
 		];
 
 		$jsonFields = $this->getJsonFields();
