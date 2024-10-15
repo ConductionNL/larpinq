@@ -12,11 +12,12 @@ class Ability extends Entity implements JsonSerializable
 	protected ?string $name 	    = null;
 	protected ?string $description  = null;
 	protected ?int $base = 0;
-
+	protected ?bool $allowedNegative = false;
 	public function __construct() {
 		$this->addType(fieldName: 'name', type: 'string');
 		$this->addType(fieldName: 'description', type: 'string');
 		$this->addType(fieldName: 'base', type: 'string');
+		$this->addType(fieldName: 'allowedNegative', type: 'boolean');
 
 	}
 
@@ -57,6 +58,7 @@ class Ability extends Entity implements JsonSerializable
 			'name' => $this->name,
 			'description' => $this->description,
 			'base' => $this->base,
+			'allowedNegative' => $this->allowedNegative,
 		];
 
 		$jsonFields = $this->getJsonFields();

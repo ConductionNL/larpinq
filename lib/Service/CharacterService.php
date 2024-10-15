@@ -100,6 +100,7 @@ class CharacterService
     {
         // Create an array of abilities with their base scores
         $abilityScores = [];
+
         foreach ($this->allAbilities as $ability) {
             $abilityScores[$ability->getId()] = [
                 'name' => $ability->getName(),
@@ -172,28 +173,17 @@ class CharacterService
         $statId = $effect->getStatId();
         $modifier = $effect->getModifier();
         $modification = $effect->getModification();
-        $cumulative = $effect->getCumulative();
 
-        if (!isset($abilities[$statId])) {
-            // If the ability doesn't exist, create it with a base value of 0
-            $abilities[$statId] = [
-                'name' => $statId,
-                'value' => 0
-            ];
+        if (!isset($abilities[$statId]['value'])) {
+            $abilities[$statId]['value'] = 0;
         }
 
+        $currentValue = $abilities[$statId]['value'];
+
         if ($modification === 'positive') {
-            if ($cumulative === 'cumulative') {
-                $abilities[$statId]['value'] += $modifier;
-            } else {
-                $abilities[$statId]['value'] = max($abilities[$statId]['value'], $modifier);
-            }
+            $abilities[$statId]['value'] = $currentValue + $modifier;
         } elseif ($modification === 'negative') {
-            if ($cumulative === 'cumulative') {
-                $abilities[$statId]['value'] -= $modifier;
-            } else {
-                $abilities[$statId]['value'] = min($abilities[$statId]['value'], -$modifier);
-            }
+            $abilities[$statId]['value'] = $currentValue - $modifier;
         }
     }
 }
