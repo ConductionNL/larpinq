@@ -45,9 +45,9 @@ import { characterStore, conditionStore, eventStore, itemStore, navigationStore,
 							</template>
 							Event toevoegen
 						</NcActionButton>
-						<NcActionButton @click="navigationStore.setModal('downloadPdfFromCharacter')">
+						<NcActionButton @click="downloadCharacterPdf()">
 							<template #icon>
-								<MessagePlus :size="20" />
+								<Download :size="20" />
 							</template>
 							Als pdf downloaden
 						</NcActionButton>
@@ -288,6 +288,7 @@ import Sword from 'vue-material-design-icons/Sword.vue'
 import EmoticonSickOutline from 'vue-material-design-icons/EmoticonSickOutline.vue'
 import CalendarMonthOutline from 'vue-material-design-icons/CalendarMonthOutline.vue'
 import ShieldSwordOutline from 'vue-material-design-icons/ShieldSwordOutline.vue'
+import Download from 'vue-material-design-icons/Download.vue'
 
 export default {
 	name: 'CharacterDetails',
@@ -311,6 +312,7 @@ export default {
 		EmoticonSickOutline,
 		CalendarMonthOutline,
 		ShieldSwordOutline,
+		Download,
 	},
 	data() {
 		return {
@@ -375,6 +377,27 @@ export default {
 			eventStore.refreshEventList()
 				.then(() => {
 					this.eventsLoading = false
+				})
+		},
+		downloadCharacterPdf() {
+			const characterId = characterStore.characterItem.id
+			fetch(`characters/${characterId}/download`)
+				.then(response => {
+					if (!response.ok) {
+						throw new Error('Network response was not ok')
+					}
+					return response.blob()
+				})
+				.then(blob => {
+					const link = document.createElement('a')
+					link.href = window.URL.createObjectURL(blob)
+					link.download = `${characterStore.characterItem.name}_character_sheet.pdf`
+					link.click()
+					window.URL.revokeObjectURL(link.href)
+				})
+				.catch(error => {
+					console.error('Error downloading PDF:', error)
+					// Handle error (e.g., show error message to user)
 				})
 		},
 	},

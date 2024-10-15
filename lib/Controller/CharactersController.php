@@ -12,6 +12,7 @@ use OCA\LarpingApp\Db\CharacterMapper;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Http\JSONResponse;
+use OCP\AppFramework\Http\DataDownloadResponse;
 use OCP\IAppConfig;
 use OCP\IRequest;
 
@@ -268,5 +269,34 @@ class CharactersController extends Controller
         $this->characterMapper->delete($this->characterMapper->find((int) $id));
 
         return new JSONResponse([]);
+    }
+
+    /**
+     * Downloads a character PDF
+     * 
+     * This method generates and downloads a PDF for a specific character.
+     *
+     * @NoAdminRequired
+     * @NoCSRFRequired
+     *
+     * @param int $id The ID of the character to download as PDF
+     * @return DataDownloadResponse|JSONResponse A response containing the PDF file for download or an error response
+     */
+    public function downloadPdf(int $id): DataDownloadResponse|JSONResponse
+    {
+        try {
+            $character = $this->characterMapper->find((int) $id);
+            $pdfContent = $this->characterService->createCharacterPdf($character);
+            
+            return new DataDownloadResponse(
+                $pdfContent,
+                $character->getName() . '_character_sheet.pdf',
+                'application/pdf'
+            );
+        } catch (DoesNotExistException $exception) {
+            return new JSONResponse(data: ['error' => 'Character Not Found'], statusCode: 404);
+        } catch (\Exception $exception) {
+            return new JSONResponse(data: ['error' => 'PDF Generation Failed'], statusCode: 500);
+        }
     }
 }

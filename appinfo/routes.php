@@ -15,5 +15,6 @@ return [
 	'routes' => [
 		// Page routes
 		['name' => 'dashboard#page', 'url' => '/', 'verb' => 'GET'],
+		['name' => 'characters#downloadPdf', 'url' => '/characters/{id}/download', 'verb' => 'GET'],
 	]
 ];

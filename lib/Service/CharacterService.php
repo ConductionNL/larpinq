@@ -21,6 +21,9 @@ use OCA\LarpingApp\Db\ConditionMapper;
 use OCA\LarpingApp\Db\EventMapper;
 use OCA\LarpingApp\Db\EffectMapper;
 
+// Include the main TCPDF library (search for installation path).
+require_once('/var/www/html/apps-extra/larpingapp//vendor/tecnickcom/tcpdf/tcpdf.php');	
+
 class CharacterService
 {
     private array $allSkills = [];
@@ -184,6 +187,75 @@ class CharacterService
             $abilities[$statId]['value'] = $currentValue + $modifier;
         } elseif ($modification === 'negative') {
             $abilities[$statId]['value'] = $currentValue - $modifier;
+        }
+    }
+
+    /**
+     * Create a PDF from a character
+     *
+     * @param Character $character Character object
+     * @return string PDF content
+     * @throws \Exception If PDF generation fails
+     */
+    public function createCharacterPdf(Character $character): string
+    {
+        try {
+            $pdf = new \TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+            // Set document information
+            $pdf->SetCreator(PDF_CREATOR);
+            $pdf->SetAuthor('LarpingApp');
+            $pdf->SetTitle('Character Sheet: ' . $character->getName());
+            $pdf->SetSubject('Character Sheet');
+
+            // Add a page
+            $pdf->AddPage();
+
+            // Set font
+            $pdf->SetFont('helvetica', '', 12);
+
+            // Add content
+            $pdf->Cell(0, 10, 'Character Sheet: ' . $character->getName(), 0, 1, 'C');
+            $pdf->Ln(10);
+
+
+            // Add stats
+            $pdf->SetFont('', 'B', 14);
+            $pdf->Cell(0, 10, 'Stats', 0, 1);
+            $pdf->SetFont('', '', 12);
+            foreach ($character->getStats() as $statId => $stat) {
+                $pdf->Cell(0, 10, $stat['name'] . ': ' . $stat['value'], 0, 1);
+            }
+            $pdf->Ln(10);
+
+            // Add skills, items, conditions, and events
+            $sections = [
+                'Skills' => $character->getSkills(),
+                'Items' => $character->getItems(),
+                'Conditions' => $character->getConditions(),
+                'Events' => $character->getEvents()
+            ];
+
+            foreach ($sections as $title => $ids) {
+                $pdf->SetFont('', 'B', 14);
+                $pdf->Cell(0, 10, $title, 0, 1);
+                $pdf->SetFont('', '', 12);
+                foreach ($ids as $id) {
+                    $entity = $this->{'all' . $title}[$id] ?? null;
+                    if ($entity) {
+                        $pdf->Cell(0, 10, $entity->getName(), 0, 1);
+                    }
+                }
+                $pdf->Ln(10);
+            }
+
+            return $pdf->Output('character_sheet.pdf', 'S');
+        } catch (\Exception $e) {
+            // Log the error for debugging
+            error_log('PDF Generation Failed: ' . $e->getMessage());
+            
+            // Throw a new exception with a generic error message
+            throw new \Exception('PDF Generation Failed', 0, $e);
         }
     }
 }
