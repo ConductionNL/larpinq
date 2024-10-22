@@ -6,7 +6,7 @@ use OCP\IConfig;
 use OCP\IL10N;
 use OCP\Settings\ISettings;
 
-class OpenCatalogiAdmin implements ISettings {
+class LarpingAppAdmin implements ISettings {
     private IL10N $l;
     private IConfig $config;
 
