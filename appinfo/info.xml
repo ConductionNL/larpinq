@@ -43,4 +43,9 @@ Create a [feature request](https://github.com/OpenCatalogi/.github/issues/new/ch
             <icon>app.svg</icon>
         </navigation>
     </navigations>
+
+	<settings>
+		<admin>OCA\LarpingApp\Settings\LarpingAppAdmin</admin>
+		<admin-section>OCA\LarpingApp\Sections\LarpingAppAdmin</admin-section>
+	</settings>
 </info>
