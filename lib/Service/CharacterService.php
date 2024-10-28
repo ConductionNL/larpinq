@@ -214,8 +214,10 @@ class CharacterService
 
             // Get current value and modifiers
             $currentValue = $abilities[$abilityId]['value'];
-            $modifier = $effect['modifier'];
-            $modification = $effect['modification'];
+            // Get modifier value from effect, defaulting to 0 if not set
+            $modifier = $effect['modifier'] ?? 0;
+            // Get modification type, defaulting to 'positive' if not set
+            $modification = $effect['modification'] ?? 'positive'; 
 
             // Apply modification based on type
             if ($modification === 'positive') {
