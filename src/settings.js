@@ -7,4 +7,4 @@ new Vue(
 	{
 		render: h => h(AdminSettings),
 	},
-).$mount('#admin-settings')
+).$mount('#settings')

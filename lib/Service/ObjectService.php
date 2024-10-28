@@ -8,7 +8,6 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
 use InvalidArgumentException;
-use OCA\OpenCatalogi\Db\Publication;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
@@ -17,17 +16,17 @@ use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\Uid\Uuid;
 use Psr\Container\ContainerInterface;
 use OCP\IAppConfig;
-// Import mappers
-use OCA\OpenCatalogi\Db\AbilityMapper;
-use OCA\OpenCatalogi\Db\CharacterMapper;
-use OCA\OpenCatalogi\Db\ConditionMapper;
-use OCA\OpenCatalogi\Db\EffectMapper;
-use OCA\OpenCatalogi\Db\EventMapper;
-use OCA\OpenCatalogi\Db\ItemMapper;
-use OCA\OpenCatalogi\Db\PlayerMapper;
-use OCA\OpenCatalogi\Db\SettingMapper;
-use OCA\OpenCatalogi\Db\SkillMapper;
-use OCA\OpenCatalogi\Db\TemplateMapper;
+// Import mappers 
+use OCA\LarpingApp\Db\AbilityMapper;
+use OCA\LarpingApp\Db\CharacterMapper;
+use OCA\LarpingApp\Db\ConditionMapper;
+use OCA\LarpingApp\Db\EffectMapper;
+use OCA\LarpingApp\Db\EventMapper;
+use OCA\LarpingApp\Db\ItemMapper;
+use OCA\LarpingApp\Db\PlayerMapper;
+use OCA\LarpingApp\Db\SettingMapper;
+use OCA\LarpingApp\Db\SkillMapper;
+use OCA\LarpingApp\Db\TemplateMapper;
 
 /**
  * Service class for handling object-related operations
@@ -55,7 +54,7 @@ class ObjectService
 		private readonly IAppManager $appManager,
 		private readonly IAppConfig $config,
 	) {
-		$this->appName = 'opencatalogi';
+		$this->appName = 'larpingapp';
 	}
 
 	/**

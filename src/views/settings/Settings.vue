@@ -1,11 +1,11 @@
 <template>
 	<div>
-		<NcSettingsSection :name="'Open Catalogi'" description="Eén centrale plek voor hergebruik van informatietechnologie binnen de overheid" doc-url="https://conduction.gitbook.io/opencatalogi-nextcloud/gebruikers" />
-		<NcSettingsSection :name="'Data storage'" description="Korte uitleg over dat je kan opslaan in de nextcloud database of open registers en via open registers ook in externe opslag zo al mongo db">
+		<NcSettingsSection :name="'Larping App'" description="A central place for managing your LARP characters and game elements" doc-url="https://conduction.gitbook.io/larpingapp-nextcloud/users" />
+		<NcSettingsSection :name="'Data storage'" description="Configure where to store your LARP data - either in Nextcloud's database or in external Open Registers">
 			<div v-if="!loading">
 				<div v-if="!openRegisterInstalled">
 					<NcNoteCard type="info">
-						Je hebt nog geen Open Registers geïnstalleerd, we raden je aan om dat wel te doen.
+						You haven't installed Open Registers yet. We recommend installing it for additional storage options.
 					</NcNoteCard>
 
 					<NcButton
@@ -15,13 +15,13 @@
 							<NcLoadingIcon v-if="loading || saving" :size="20" />
 							<Restart v-if="!loading && !saving" :size="20" />
 						</template>
-						Installeer Open Registers
+						Install Open Registers
 					</NcButton>
 				</div>
 
-				<div v-if="!openRegisterInstalled && (settingsData.publication_source === 'openregister' || settingsData.publicationtype_source === 'openregister' || settingsData.catalog_source === 'openregister' || settingsData.listing_source === 'openregister' || settingsData.attachment_source === 'openregister' || settingsData.organization_source === 'openregister' || settingsData.theme_source === 'openregister')">
+				<div v-if="!openRegisterInstalled && (settingsData.ability_source === 'openregister' || settingsData.character_source === 'openregister' || settingsData.condition_source === 'openregister' || settingsData.effect_source === 'openregister' || settingsData.event_source === 'openregister' || settingsData.item_source === 'openregister' || settingsData.player_source === 'openregister' || settingsData.setting_source === 'openregister' || settingsData.skill_source === 'openregister' || settingsData.template_source === 'openregister')">
 					<NcNoteCard type="warning">
-						Het lijkt erop dat je een open register hebt geselecteerd maar dat deze nog niet geïnstalleerd is. Dit kan problemen geven. Wil je de instelling resetten?
+						It appears you've selected Open Register as a storage option but haven't installed it yet. This may cause issues. Would you like to reset the settings?
 					</NcNoteCard>
 					<NcButton
 						type="primary"
@@ -34,256 +34,62 @@
 					</NcButton>
 				</div>
 
-				<h3>Publicatie</h3>
-				<div class="selectionContainer">
-					<NcSelect v-bind="labelOptions"
-						v-model="publication.selectedSource"
-						required
-						input-label="Source"
-						:loading="publication.loading"
-						:disabled="loading || publication.loading" />
-
-					<NcSelect v-if="publication.selectedSource?.value === 'openregister' "
-						v-bind="availableRegisters"
-						v-model="publication.selectedRegister"
-						input-label="Register"
-						:loading="publication.loading"
-						:disabled="loading || publication.loading" />
-
-					<NcSelect v-if="publication.selectedSource?.value === 'openregister' && publication.selectedRegister?.value"
-						v-bind="publication.availableSchemas"
-						v-model="publication.selectedSchema"
-						input-label="Schema"
-						:loading="publication.loading"
-						:disabled="loading || publication.loading" />
-
-					<NcButton
-						type="primary"
-						:disabled="loading || saving || publication.loading || !publication.selectedSource?.value || publication.selectedSource?.value === 'openregister' && (!publication.selectedRegister?.value || !publication.selectedSchema?.value)"
-						@click="saveConfig('publication')">
-						<template #icon>
-							<NcLoadingIcon v-if="loading || publication.loading" :size="20" />
-							<Plus v-if="!loading && !publication.loading" :size="20" />
-						</template>
-						Opslaan
+				<div v-for="objectType in objectTypesList" :key="objectType.id">
+					<h3>{{ objectType.title }}</h3>
+					<p>{{ objectType.description }}</p>
+					<NcButton v-if="objectType.helpLink" @click="openLink(objectType.helpLink, '_blank')">
+						More information
 					</NcButton>
+					<div class="selectionContainer">
+						<NcSelect v-bind="labelOptions"
+							v-model="getDataProperty(objectType.id).selectedSource"
+							required
+							input-label="Source"
+							:loading="getDataProperty(objectType.id).loading"
+							:disabled="loading || getDataProperty(objectType.id).loading" />
+
+						<NcSelect v-if="getDataProperty(objectType.id).selectedSource?.value === 'openregister'"
+							v-bind="availableRegistersOptions"
+							v-model="getDataProperty(objectType.id).selectedRegister"
+							input-label="Register"
+							:loading="getDataProperty(objectType.id).loading"
+							:disabled="loading || getDataProperty(objectType.id).loading" />
+
+						<NcSelect v-if="getDataProperty(objectType.id).selectedSource?.value === 'openregister' && getDataProperty(objectType.id).selectedRegister?.value"
+							v-bind="getDataProperty(objectType.id).availableSchemas"
+							v-model="getDataProperty(objectType.id).selectedSchema"
+							input-label="Schema"
+							:loading="getDataProperty(objectType.id).loading"
+							:disabled="loading || getDataProperty(objectType.id).loading" />
+
+						<NcButton
+							type="primary"
+							:disabled="loading || saving || getDataProperty(objectType.id).loading || !getDataProperty(objectType.id).selectedSource?.value || getDataProperty(objectType.id).selectedSource?.value === 'openregister' && (!getDataProperty(objectType.id).selectedRegister?.value || !getDataProperty(objectType.id).selectedSchema?.value)"
+							@click="saveConfig(objectType.id)">
+							<template #icon>
+								<NcLoadingIcon v-if="loading || getDataProperty(objectType.id).loading" :size="20" />
+								<Plus v-if="!loading && !getDataProperty(objectType.id).loading" :size="20" />
+							</template>
+							Save
+						</NcButton>
+					</div>
 				</div>
-
-				<h3>Organisatie</h3>
-				<div class="selectionContainer">
-					<NcSelect v-bind="labelOptions"
-						v-model="organization.selectedSource"
-						required
-						input-label="Source"
-						:loading="organization.loading"
-						:disabled="loading || organization.loading" />
-
-					<NcSelect v-if="organization.selectedSource?.value === 'openregister' "
-						v-bind="availableRegisters"
-						v-model="organization.selectedRegister"
-						input-label="Register"
-						:loading="organization.loading"
-						:disabled="loading || organization.loading" />
-
-					<NcSelect v-if="organization.selectedSource?.value === 'openregister' && organization.selectedRegister?.value"
-						v-bind="organization.availableSchemas"
-						v-model="organization.selectedSchema"
-						input-label="Schema"
-						:loading="organization.loading"
-						:disabled="loading || organization.loading" />
-
-					<NcButton
-						type="primary"
-						:disabled="loading || saving || organization.loading || !organization.selectedSource?.value || organization.selectedSource?.value === 'openregister' && (!organization.selectedRegister?.value || !organization.selectedSchema?.value)"
-						@click="saveConfig('organization')">
-						<template #icon>
-							<NcLoadingIcon v-if="loading || organization.loading" :size="20" />
-							<Plus v-if="!loading && !organization.loading" :size="20" />
-						</template>
-						Opslaan
-					</NcButton>
-				</div>
-
-				<h3>Bijlagen</h3>
-				<div class="selectionContainer">
-					<NcSelect v-bind="labelOptions"
-						v-model="attachment.selectedSource"
-						required
-						input-label="Source"
-						:loading="attachment.loading"
-						:disabled="loading || attachment.loading" />
-
-					<NcSelect v-if="attachment.selectedSource?.value === 'openregister' "
-						v-bind="availableRegisters"
-						v-model="attachment.selectedRegister"
-						input-label="Register"
-						:loading="attachment.loading"
-						:disabled="loading || attachment.loading" />
-
-					<NcSelect v-if="attachment.selectedSource?.value === 'openregister' && attachment.selectedRegister?.value"
-						v-bind="attachment.availableSchemas"
-						v-model="attachment.selectedSchema"
-						input-label="Schema"
-						:loading="attachment.loading"
-						:disabled="loading || attachment.loading" />
-
-					<NcButton
-						type="primary"
-						:disabled="loading || saving || attachment.loading || !attachment.selectedSource?.value || attachment.selectedSource?.value === 'openregister' && (!attachment.selectedRegister?.value || !attachment.selectedSchema?.value)"
-						@click="saveConfig('attachment')">
-						<template #icon>
-							<NcLoadingIcon v-if="loading || attachment.loading" :size="20" />
-							<Plus v-if="!loading && !attachment.loading" :size="20" />
-						</template>
-						Opslaan
-					</NcButton>
-				</div>
-
-				<h3>Catalogus</h3>
-				<div class="selectionContainer">
-					<NcSelect v-bind="labelOptions"
-						v-model="catalog.selectedSource"
-						required
-						input-label="Source"
-						:loading="catalog.loading"
-						:disabled="loading || catalog.loading" />
-
-					<NcSelect v-if="catalog.selectedSource?.value === 'openregister' "
-						v-bind="availableRegisters"
-						v-model="catalog.selectedRegister"
-						input-label="Register"
-						:loading="catalog.loading"
-						:disabled="loading || catalog.loading" />
-
-					<NcSelect v-if="catalog.selectedSource?.value === 'openregister' && catalog.selectedRegister?.value"
-						v-bind="catalog.availableSchemas"
-						v-model="catalog.selectedSchema"
-						input-label="Schema"
-						:loading="catalog.loading"
-						:disabled="loading || catalog.loading" />
-
-					<NcButton
-						type="primary"
-						:disabled="loading || saving || catalog.loading || !catalog.selectedSource?.value || catalog.selectedSource?.value === 'openregister' && (!catalog.selectedRegister?.value || !catalog.selectedSchema?.value)"
-						@click="saveConfig('catalog')">
-						<template #icon>
-							<NcLoadingIcon v-if="loading || catalog.loading" :size="20" />
-							<Plus v-if="!loading && !catalog.loading" :size="20" />
-						</template>
-						Opslaan
-					</NcButton>
-				</div>
-
-				<h3>Directory</h3>
-				<div class="selectionContainer">
-					<NcSelect v-bind="labelOptions"
-						v-model="listing.selectedSource"
-						required
-						input-label="Source"
-						:loading="listing.loading"
-						:disabled="loading || listing.loading" />
-
-					<NcSelect v-if="listing.selectedSource?.value === 'openregister' "
-						v-bind="availableRegisters"
-						v-model="listing.selectedRegister"
-						input-label="Register"
-						:loading="listing.loading"
-						:disabled="loading || listing.loading" />
-
-					<NcSelect v-if="listing.selectedSource?.value === 'openregister' && listing.selectedRegister?.value"
-						v-bind="listing.availableSchemas"
-						v-model="listing.selectedSchema"
-						input-label="Schema"
-						:loading="listing.loading"
-						:disabled="loading || listing.loading" />
-
-					<NcButton
-						type="primary"
-						:disabled="loading || saving || listing.loading || !listing.selectedSource?.value || listing.selectedSource?.value === 'openregister' && (!listing.selectedRegister?.value || !listing.selectedSchema?.value)"
-						@click="saveConfig('listing')">
-						<template #icon>
-							<NcLoadingIcon v-if="loading || listing.loading" :size="20" />
-							<Plus v-if="!loading && !listing.loading" :size="20" />
-						</template>
-						Opslaan
-					</NcButton>
-				</div>
-
-				<h3>Thema</h3>
-				<div class="selectionContainer">
-					<NcSelect v-bind="labelOptions"
-						v-model="theme.selectedSource"
-						required
-						input-label="Source"
-						:loading="theme.loading"
-						:disabled="loading || theme.loading" />
-
-					<NcSelect v-if="theme.selectedSource?.value === 'openregister' "
-						v-bind="availableRegisters"
-						v-model="theme.selectedRegister"
-						input-label="Register"
-						:loading="theme.loading"
-						:disabled="loading || theme.loading" />
-
-					<NcSelect v-if="theme.selectedSource?.value === 'openregister' && theme.selectedRegister?.value"
-						v-bind="theme.availableSchemas"
-						v-model="theme.selectedSchema"
-						input-label="Schema"
-						:loading="theme.loading"
-						:disabled="loading || theme.loading" />
-
-					<NcButton
-						type="primary"
-						:disabled="loading || saving || theme.loading || !theme.selectedSource?.value || theme.selectedSource?.value === 'openregister' && (!theme.selectedRegister?.value || !theme.selectedSchema?.value)"
-						@click="saveConfig('theme')">
-						<template #icon>
-							<NcLoadingIcon v-if="loading || theme.loading" :size="20" />
-							<Plus v-if="!loading && !theme.loading" :size="20" />
-						</template>
-						Opslaan
-					</NcButton>
-				</div>
-
-				<h3>Publicatie Type</h3>
-				<div class="selectionContainer">
-					<NcSelect v-bind="labelOptions"
-						v-model="publicationtype.selectedSource"
-						required
-						input-label="Source"
-						:loading="publicationtype.loading"
-						:disabled="loading || publicationtype.loading" />
-
-					<NcSelect v-if="publicationtype.selectedSource?.value === 'openregister' "
-						v-bind="availableRegisters"
-						v-model="publicationtype.selectedRegister"
-						input-label="Register"
-						:loading="publicationtype.loading"
-						:disabled="loading || publicationtype.loading" />
-
-					<NcSelect v-if="publicationtype.selectedSource?.value === 'openregister' && publicationtype.selectedRegister?.value"
-						v-bind="publicationtype.availableSchemas"
-						v-model="publicationtype.selectedSchema"
-						input-label="Schema"
-						:loading="publicationtype.loading"
-						:disabled="loading || publicationtype.loading" />
-
-					<NcButton
-						type="primary"
-						:disabled="loading || saving || publicationtype.loading || !publicationtype.selectedSource?.value || publicationtype.selectedSource?.value === 'openregister' && (!publicationtype.selectedRegister?.value || !publicationtype.selectedSchema?.value)"
-						@click="saveConfig('publicationtype')">
-						<template #icon>
-							<NcLoadingIcon v-if="loading || publicationtype.loading" :size="20" />
-							<Plus v-if="!loading && !publicationtype.loading" :size="20" />
-						</template>
-						Opslaan
-					</NcButton>
-				</div>
+				<NcButton
+					type="primary"
+					:disabled="saving"
+					@click="saveAll()">
+					<template #icon>
+						<NcLoadingIcon v-if="saving" :size="20" />
+						<Plus v-if="!saving" :size="20" />
+					</template>
+					Save All
+				</NcButton>
 			</div>
 			<NcLoadingIcon v-if="loading"
 				class="loadingIcon"
 				:size="64"
 				appearance="dark"
-				name="Settings aan het laden" />
+				name="Loading settings" />
 		</NcSettingsSection>
 	</div>
 </template>
@@ -313,49 +119,72 @@ export default {
 			saving: false,
 			settingsData: {},
 			availableRegisters: [],
-			publication: {
+			availableRegistersOptions: [],
+			objectTypes: [],
+			ability: {
 				selectedSource: '',
 				selectedRegister: '',
 				selectedSchema: '',
 				availableSchemas: [],
 				loading: false,
 			},
-			publicationtype: {
+			character: {
 				selectedSource: '',
 				selectedRegister: '',
 				selectedSchema: '',
 				availableSchemas: [],
 				loading: false,
 			},
-			organization: {
+			condition: {
 				selectedSource: '',
 				selectedRegister: '',
 				selectedSchema: '',
 				availableSchemas: [],
 				loading: false,
 			},
-			catalog: {
+			effect: {
 				selectedSource: '',
 				selectedRegister: '',
 				selectedSchema: '',
 				availableSchemas: [],
 				loading: false,
 			},
-			listing: {
+			event: {
 				selectedSource: '',
 				selectedRegister: '',
 				selectedSchema: '',
 				availableSchemas: [],
 				loading: false,
 			},
-			attachment: {
+			item: {
 				selectedSource: '',
 				selectedRegister: '',
 				selectedSchema: '',
 				availableSchemas: [],
 				loading: false,
 			},
-			theme: {
+			player: {
+				selectedSource: '',
+				selectedRegister: '',
+				selectedSchema: '',
+				availableSchemas: [],
+				loading: false,
+			},
+			setting: {
+				selectedSource: '',
+				selectedRegister: '',
+				selectedSchema: '',
+				availableSchemas: [],
+				loading: false,
+			},
+			skill: {
+				selectedSource: '',
+				selectedRegister: '',
+				selectedSchema: '',
+				availableSchemas: [],
+				loading: false,
+			},
+			template: {
 				selectedSource: '',
 				selectedRegister: '',
 				selectedSchema: '',
@@ -368,153 +197,208 @@ export default {
 					{ label: 'OpenRegister', value: 'openregister' },
 				],
 			},
+			objectTypesList: [
+				{ id: 'ability', title: 'Abilities', description: 'Configure storage for character abilities', helpLink: 'https://example.com/help/abilities' },
+				{ id: 'character', title: 'Characters', description: 'Configure storage for character data', helpLink: 'https://example.com/help/characters' },
+				{ id: 'condition', title: 'Conditions', description: 'Configure storage for character conditions', helpLink: 'https://example.com/help/conditions' },
+				{ id: 'effect', title: 'Effects', description: 'Configure storage for game effects', helpLink: 'https://example.com/help/effects' },
+				{ id: 'event', title: 'Events', description: 'Configure storage for game events', helpLink: 'https://example.com/help/events' },
+				{ id: 'item', title: 'Items', description: 'Configure storage for game items', helpLink: 'https://example.com/help/items' },
+				{ id: 'player', title: 'Players', description: 'Configure storage for player data', helpLink: 'https://example.com/help/players' },
+				{ id: 'setting', title: 'Settings', description: 'Configure storage for game settings', helpLink: 'https://example.com/help/settings' },
+				{ id: 'skill', title: 'Skills', description: 'Configure storage for character skills', helpLink: 'https://example.com/help/skills' },
+				{ id: 'template', title: 'Templates', description: 'Configure storage for character templates', helpLink: 'https://example.com/help/templates' },
+			],
 		}
 	},
 
 	watch: {
-		'publication.selectedSource': {
+		'ability.selectedSource': {
 			handler(newValue) {
 				if (newValue?.value === 'internal') {
-
-					this.publication.selectedRegister = ''
-					this.publication.selectedSchema = ''
+					this.ability.selectedRegister = ''
+					this.ability.selectedSchema = ''
 				}
 			},
 			deep: true,
 		},
-		'publication.selectedRegister': {
+		'ability.selectedRegister': {
 			handler(newValue, oldValue) {
-
 				if (this.initialization === true && oldValue === '') return
 				if (newValue) {
-					this.setRegisterSchemaOptions(newValue?.value, 'publication')
-					oldValue !== '' && newValue?.value !== oldValue.value && (this.publication.selectedSchema = '')
+					this.setRegisterSchemaOptions(newValue?.value, 'ability')
+					oldValue !== '' && newValue?.value !== oldValue.value && (this.ability.selectedSchema = '')
 				}
 			},
 			deep: true,
 		},
-		'organization.selectedSource': {
+		'character.selectedSource': {
 			handler(newValue) {
 				if (newValue?.value === 'internal') {
-
-					this.organization.selectedRegister = ''
-					this.organization.selectedSchema = ''
+					this.character.selectedRegister = ''
+					this.character.selectedSchema = ''
 				}
 			},
 			deep: true,
 		},
-		'organization.selectedRegister': {
+		'character.selectedRegister': {
 			handler(newValue, oldValue) {
-
 				if (this.initialization === true && oldValue === '') return
 				if (newValue) {
-					this.setRegisterSchemaOptions(newValue?.value, 'organization')
-					oldValue !== '' && newValue?.value !== oldValue.value && (this.organization.selectedSchema = '')
+					this.setRegisterSchemaOptions(newValue?.value, 'character')
+					oldValue !== '' && newValue?.value !== oldValue.value && (this.character.selectedSchema = '')
 				}
 			},
 			deep: true,
 		},
-		'listing.selectedSource': {
+		'condition.selectedSource': {
 			handler(newValue) {
 				if (newValue?.value === 'internal') {
-
-					this.listing.selectedRegister = ''
-					this.listing.selectedSchema = ''
+					this.condition.selectedRegister = ''
+					this.condition.selectedSchema = ''
 				}
 			},
 			deep: true,
 		},
-		'listing.selectedRegister': {
+		'condition.selectedRegister': {
 			handler(newValue, oldValue) {
-
 				if (this.initialization === true && oldValue === '') return
 				if (newValue) {
-					this.setRegisterSchemaOptions(newValue?.value, 'listing')
-					oldValue !== '' && newValue?.value !== oldValue.value && (this.listing.selectedSchema = '')
+					this.setRegisterSchemaOptions(newValue?.value, 'condition')
+					oldValue !== '' && newValue?.value !== oldValue.value && (this.condition.selectedSchema = '')
 				}
 			},
 			deep: true,
 		},
-		'attachment.selectedSource': {
+		'effect.selectedSource': {
 			handler(newValue) {
 				if (newValue?.value === 'internal') {
-
-					this.attachment.selectedRegister = ''
-					this.attachment.selectedSchema = ''
+					this.effect.selectedRegister = ''
+					this.effect.selectedSchema = ''
 				}
 			},
 			deep: true,
 		},
-		'attachment.selectedRegister': {
+		'effect.selectedRegister': {
 			handler(newValue, oldValue) {
-
 				if (this.initialization === true && oldValue === '') return
 				if (newValue) {
-					this.setRegisterSchemaOptions(newValue?.value, 'attachment')
-					oldValue !== '' && newValue?.value !== oldValue.value && (this.attachment.selectedSchema = '')
+					this.setRegisterSchemaOptions(newValue?.value, 'effect')
+					oldValue !== '' && newValue?.value !== oldValue.value && (this.effect.selectedSchema = '')
 				}
 			},
 			deep: true,
 		},
-		'theme.selectedSource': {
+		'event.selectedSource': {
 			handler(newValue) {
 				if (newValue?.value === 'internal') {
-
-					this.theme.selectedRegister = ''
-					this.theme.selectedSchema = ''
+					this.event.selectedRegister = ''
+					this.event.selectedSchema = ''
 				}
 			},
 			deep: true,
 		},
-		'theme.selectedRegister': {
+		'event.selectedRegister': {
 			handler(newValue, oldValue) {
-
 				if (this.initialization === true && oldValue === '') return
 				if (newValue) {
-					this.setRegisterSchemaOptions(newValue?.value, 'theme')
-					oldValue !== '' && newValue?.value !== oldValue.value && (this.theme.selectedSchema = '')
+					this.setRegisterSchemaOptions(newValue?.value, 'event')
+					oldValue !== '' && newValue?.value !== oldValue.value && (this.event.selectedSchema = '')
 				}
 			},
 			deep: true,
 		},
-		'publicationtype.selectedSource': {
+		'item.selectedSource': {
 			handler(newValue) {
 				if (newValue?.value === 'internal') {
-
-					this.publicationtype.selectedRegister = ''
-					this.publicationtype.selectedSchema = ''
+					this.item.selectedRegister = ''
+					this.item.selectedSchema = ''
 				}
 			},
 			deep: true,
 		},
-		'publicationtype.selectedRegister': {
+		'item.selectedRegister': {
 			handler(newValue, oldValue) {
-
 				if (this.initialization === true && oldValue === '') return
 				if (newValue) {
-					this.setRegisterSchemaOptions(newValue?.value, 'publicationtype')
-					oldValue !== '' && newValue?.value !== oldValue.value && (this.publicationtype.selectedSchema = '')
+					this.setRegisterSchemaOptions(newValue?.value, 'item')
+					oldValue !== '' && newValue?.value !== oldValue.value && (this.item.selectedSchema = '')
 				}
 			},
 			deep: true,
 		},
-		'catalog.selectedSource': {
+		'player.selectedSource': {
 			handler(newValue) {
 				if (newValue?.value === 'internal') {
-
-					this.catalog.selectedRegister = ''
-					this.catalog.selectedSchema = ''
+					this.player.selectedRegister = ''
+					this.player.selectedSchema = ''
 				}
 			},
 			deep: true,
 		},
-		'catalog.selectedRegister': {
+		'player.selectedRegister': {
 			handler(newValue, oldValue) {
-
 				if (this.initialization === true && oldValue === '') return
 				if (newValue) {
-					this.setRegisterSchemaOptions(newValue?.value, 'catalog')
-					oldValue !== '' && newValue?.value !== oldValue.value && (this.catalog.selectedSchema = '')
+					this.setRegisterSchemaOptions(newValue?.value, 'player')
+					oldValue !== '' && newValue?.value !== oldValue.value && (this.player.selectedSchema = '')
+				}
+			},
+			deep: true,
+		},
+		'setting.selectedSource': {
+			handler(newValue) {
+				if (newValue?.value === 'internal') {
+					this.setting.selectedRegister = ''
+					this.setting.selectedSchema = ''
+				}
+			},
+			deep: true,
+		},
+		'setting.selectedRegister': {
+			handler(newValue, oldValue) {
+				if (this.initialization === true && oldValue === '') return
+				if (newValue) {
+					this.setRegisterSchemaOptions(newValue?.value, 'setting')
+					oldValue !== '' && newValue?.value !== oldValue.value && (this.setting.selectedSchema = '')
+				}
+			},
+			deep: true,
+		},
+		'skill.selectedSource': {
+			handler(newValue) {
+				if (newValue?.value === 'internal') {
+					this.skill.selectedRegister = ''
+					this.skill.selectedSchema = ''
+				}
+			},
+			deep: true,
+		},
+		'skill.selectedRegister': {
+			handler(newValue, oldValue) {
+				if (this.initialization === true && oldValue === '') return
+				if (newValue) {
+					this.setRegisterSchemaOptions(newValue?.value, 'skill')
+					oldValue !== '' && newValue?.value !== oldValue.value && (this.skill.selectedSchema = '')
+				}
+			},
+			deep: true,
+		},
+		'template.selectedSource': {
+			handler(newValue) {
+				if (newValue?.value === 'internal') {
+					this.template.selectedRegister = ''
+					this.template.selectedSchema = ''
+				}
+			},
+			deep: true,
+		},
+		'template.selectedRegister': {
+			handler(newValue, oldValue) {
+				if (this.initialization === true && oldValue === '') return
+				if (newValue) {
+					this.setRegisterSchemaOptions(newValue?.value, 'template')
+					oldValue !== '' && newValue?.value !== oldValue.value && (this.template.selectedSchema = '')
 				}
 			},
 			deep: true,
@@ -524,8 +408,11 @@ export default {
 		this.fetchAll()
 	},
 	methods: {
+		getDataProperty(name) {
+			return this[name]
+		},
 		setRegisterSchemaOptions(registerId, property) {
-			const selectedRegister = this.settingsData.availableRegisters.find((register) => register.id.toString() === registerId)
+			const selectedRegister = this.availableRegisters.find((register) => register.id.toString() === registerId)
 
 			this[property].availableSchemas = {
 				options: selectedRegister?.schemas?.map((schema) => ({
@@ -533,12 +420,11 @@ export default {
 					label: schema.title,
 				})),
 			}
-
 		},
 		fetchAll() {
 			this.loading = true
 
-			fetch('/index.php/apps/opencatalogi/settings',
+			fetch('/index.php/apps/larpingapp/settings',
 				{
 					method: 'GET',
 				},
@@ -549,8 +435,9 @@ export default {
 						this.openRegisterInstalled = data.openRegisters
 						this.settingsData = data
 						this.availableRegisters = data.availableRegisters
+						this.objectTypes = data.objectTypes
 
-						this.availableRegisters = {
+						this.availableRegistersOptions = {
 							options: data.availableRegisters.map((register) => ({
 								value: register.id.toString(),
 								label: register.title,
@@ -558,20 +445,19 @@ export default {
 						}
 
 						data.objectTypes.forEach((objectType) => {
-
 							if (data[objectType + '_register']) {
 								this.setRegisterSchemaOptions(data[objectType + '_register'], objectType)
 							}
+
 							this[objectType] = {
 								selectedSource: this.labelOptions.options.find((option) => option.value === data[objectType + '_source'] ?? data[objectType + '_source']),
-								selectedRegister: this.availableRegisters.options.find((option) => option.value === data[objectType + '_register']),
-								selectedSchema: this[objectType].availableSchemas?.options?.find((option) => option.value === data[objectType + '_schema']),
+								selectedRegister: this.availableRegistersOptions.options.find((option) => option.value === data[objectType + '_register']),
+								selectedSchema: this[objectType]?.availableSchemas?.options?.find((option) => option.value === data[objectType + '_schema']),
 							}
 						})
 
 						this.initialization = false
 						this.loading = false
-
 					})
 				})
 				.catch((err) => {
@@ -584,8 +470,7 @@ export default {
 		saveConfig(configId) {
 			this[configId].loading = true
 			this.saving = true
-			// eslint-disable-next-line no-console
-			console.log(`Saving ${configId} config`)
+			console.info(`Saving ${configId} config`)
 
 			const settingsDataCopy = this.settingsData
 
@@ -593,7 +478,7 @@ export default {
 			delete settingsDataCopy.openRegisters
 			delete settingsDataCopy.availableRegisters
 
-			fetch('/index.php/apps/opencatalogi/settings',
+			fetch('/index.php/apps/larpingapp/settings',
 				{
 					method: 'POST',
 					body: JSON.stringify({
@@ -618,13 +503,117 @@ export default {
 							[configId + '_schema']: data[configId + '_schema'],
 							[configId + '_source']: data[configId + '_source'],
 						}
-
 					})
 				})
 				.catch((err) => {
 					console.error(err)
 					this[configId].loading = false
 					this.saving = false
+					return err
+				})
+		},
+		saveAll() {
+			this.saving = true
+			this.objectTypes.forEach((objectType) => {
+				this[objectType].loading = true
+			})
+
+			console.info('Saving all config')
+
+			const settingsDataCopy = this.settingsData
+
+			delete settingsDataCopy.objectTypes
+			delete settingsDataCopy.openRegisters
+			delete settingsDataCopy.availableRegisters
+
+			fetch('/index.php/apps/larpingapp/settings',
+				{
+					method: 'POST',
+					body: JSON.stringify({
+						...settingsDataCopy,
+						ability_register: this.ability.selectedRegister?.value ?? '',
+						ability_schema: this.ability.selectedSchema?.value ?? '',
+						ability_source: this.ability.selectedSource?.value ?? 'internal',
+						character_register: this.character.selectedRegister?.value ?? '',
+						character_schema: this.character.selectedSchema?.value ?? '',
+						character_source: this.character.selectedSource?.value ?? 'internal',
+						condition_register: this.condition.selectedRegister?.value ?? '',
+						condition_schema: this.condition.selectedSchema?.value ?? '',
+						condition_source: this.condition.selectedSource?.value ?? 'internal',
+						effect_register: this.effect.selectedRegister?.value ?? '',
+						effect_schema: this.effect.selectedSchema?.value ?? '',
+						effect_source: this.effect.selectedSource?.value ?? 'internal',
+						event_register: this.event.selectedRegister?.value ?? '',
+						event_schema: this.event.selectedSchema?.value ?? '',
+						event_source: this.event.selectedSource?.value ?? 'internal',
+						item_register: this.item.selectedRegister?.value ?? '',
+						item_schema: this.item.selectedSchema?.value ?? '',
+						item_source: this.item.selectedSource?.value ?? 'internal',
+						player_register: this.player.selectedRegister?.value ?? '',
+						player_schema: this.player.selectedSchema?.value ?? '',
+						player_source: this.player.selectedSource?.value ?? 'internal',
+						setting_register: this.setting.selectedRegister?.value ?? '',
+						setting_schema: this.setting.selectedSchema?.value ?? '',
+						setting_source: this.setting.selectedSource?.value ?? 'internal',
+						skill_register: this.skill.selectedRegister?.value ?? '',
+						skill_schema: this.skill.selectedSchema?.value ?? '',
+						skill_source: this.skill.selectedSource?.value ?? 'internal',
+						template_register: this.template.selectedRegister?.value ?? '',
+						template_schema: this.template.selectedSchema?.value ?? '',
+						template_source: this.template.selectedSource?.value ?? 'internal',
+					}),
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				},
+			)
+				.then((response) => {
+					response.json().then((data) => {
+						this.saving = false
+						this.objectTypes.forEach((objectType) => {
+							this[objectType].loading = false
+						})
+						this.settingsData = {
+							...this.settingsData,
+							ability_register: data.ability_register,
+							ability_schema: data.ability_schema,
+							ability_source: data.ability_source,
+							character_register: data.character_register,
+							character_schema: data.character_schema,
+							character_source: data.character_source,
+							condition_register: data.condition_register,
+							condition_schema: data.condition_schema,
+							condition_source: data.condition_source,
+							effect_register: data.effect_register,
+							effect_schema: data.effect_schema,
+							effect_source: data.effect_source,
+							event_register: data.event_register,
+							event_schema: data.event_schema,
+							event_source: data.event_source,
+							item_register: data.item_register,
+							item_schema: data.item_schema,
+							item_source: data.item_source,
+							player_register: data.player_register,
+							player_schema: data.player_schema,
+							player_source: data.player_source,
+							setting_register: data.setting_register,
+							setting_schema: data.setting_schema,
+							setting_source: data.setting_source,
+							skill_register: data.skill_register,
+							skill_schema: data.skill_schema,
+							skill_source: data.skill_source,
+							template_register: data.template_register,
+							template_schema: data.template_schema,
+							template_source: data.template_source,
+						}
+					})
+				})
+				.catch((err) => {
+					console.error(err)
+					this.saving = false
+					this.objectTypes.forEach((objectType) => {
+						this[objectType].loading = false
+					})
 					return err
 				})
 		},
@@ -637,32 +626,41 @@ export default {
 			delete settingsDataCopy.openRegisters
 			delete settingsDataCopy.availableRegisters
 
-			fetch('/index.php/apps/opencatalogi/settings',
+			fetch('/index.php/apps/larpingapp/settings',
 				{
 					method: 'POST',
 					body: JSON.stringify({
 						...settingsDataCopy,
-						attachment_source: 'internal',
-						attachment_schema: '',
-						attachment_register: '',
-						catalog_source: 'internal',
-						catalog_schema: '',
-						catalog_register: '',
-						listing_source: 'internal',
-						listing_schema: '',
-						listing_register: '',
-						publicationtype_source: 'internal',
-						publicationtype_schema: '',
-						publicationtype_register: '',
-						organization_source: 'internal',
-						organization_schema: '',
-						organization_register: '',
-						publication_source: 'internal',
-						publication_schema: '',
-						publication_register: '',
-						theme_source: 'internal',
-						theme_schema: '',
-						theme_register: '',
+						ability_register: '',
+						ability_schema: '',
+						ability_source: 'internal',
+						character_register: '',
+						character_schema: '',
+						character_source: 'internal',
+						condition_register: '',
+						condition_schema: '',
+						condition_source: 'internal',
+						effect_register: '',
+						effect_schema: '',
+						effect_source: 'internal',
+						event_register: '',
+						event_schema: '',
+						event_source: 'internal',
+						item_register: '',
+						item_schema: '',
+						item_source: 'internal',
+						player_register: '',
+						player_schema: '',
+						player_source: 'internal',
+						setting_register: '',
+						setting_schema: '',
+						setting_source: 'internal',
+						skill_register: '',
+						skill_schema: '',
+						skill_source: 'internal',
+						template_register: '',
+						template_schema: '',
+						template_source: 'internal',
 					}),
 					headers: {
 						'Content-Type': 'application/json',
@@ -672,9 +670,7 @@ export default {
 				.then((response) => {
 					response.json().then((data) => {
 						this.saving = false
-
 						this.fetchAll()
-
 					})
 				})
 				.catch((err) => {
@@ -687,7 +683,6 @@ export default {
 			window.open(url, type)
 		},
 	},
-
 }
 </script>
 <style>
