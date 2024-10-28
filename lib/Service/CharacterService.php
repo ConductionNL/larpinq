@@ -20,9 +20,7 @@ use OCA\LarpingApp\Db\ItemMapper;
 use OCA\LarpingApp\Db\ConditionMapper;
 use OCA\LarpingApp\Db\EventMapper;
 use OCA\LarpingApp\Db\EffectMapper;
-
-// Include the main TCPDF library (search for installation path).
-require_once('/var/www/html/apps-extra/larpingapp//vendor/tecnickcom/tcpdf/tcpdf.php');	
+use TCPDF;
 
 class CharacterService
 {
