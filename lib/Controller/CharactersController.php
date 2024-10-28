@@ -21,166 +21,138 @@ use OCP\IRequest;
  */
 class CharactersController extends Controller
 {
+    const objectType = 'character';
+
     /**
      * Constructor for the CharactersController
      *
      * @param string $appName The name of the app
      * @param IRequest $request The request object
-     * @param IAppConfig $config The app configuration object
-     * @param CharacterMapper $characterMapper The character mapper object
+     * @param ObjectService $objectService The object service object
      * @param CharacterService $characterService The character service object
      */
     public function __construct(
         $appName,
         IRequest $request,
-        private readonly IAppConfig $config,
-        private readonly CharacterMapper $characterMapper,
+		private readonly ObjectService $objectService,
         private readonly CharacterService $characterService
     )
     {
         parent::__construct($appName, $request);
     }
+    
+   	/**
+	 * Return (and search) all objects
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 *
+	 * @return JSONResponse
+	 */
+	public function index(): JSONResponse
+	{
+		 // Retrieve all request parameters
+		 $requestParams = $this->request->getParams();
 
-    /**
-     * Returns the template of the main app's page
-     * 
-     * This method renders the main page of the application, adding any necessary data to the template.
-     *
-     * @NoAdminRequired
-     * @NoCSRFRequired
-     *
-     * @return TemplateResponse The rendered template response
-     */
-    public function page(): TemplateResponse
-    {           
-        return new TemplateResponse(
-            'larpingapp',
-            'index',
-            []
-        );
-    }
+		 // Fetch catalog objects based on filters and order
+		 $data = $this->objectService->getResultArrayForRequest(self::objectType, $requestParams);
+ 
+		 // Return JSON response
+		 return new JSONResponse($data);
+	}
+
+	/**
+	 * Read a single object
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 *
+	 * @return JSONResponse
+	 */
+	public function show(string $id): JSONResponse
+	{
+        // Fetch the catalog object by its ID
+        $object = $this->objectService->getObject(self::objectType, $id);
+
+        // Return the catalog as a JSON response
+        return new JSONResponse($object);
+	}
+    // 
     
     /**
-     * Retrieves a list of all characters
-     * 
-     * This method returns a JSON response containing an array of all characters in the system.
-     * Currently, it uses a test array instead of fetching from a database.
-     *
-     * @NoAdminRequired
-     * @NoCSRFRequired
-     *
-     * @return JSONResponse A JSON response containing the list of characters
-     */
-    public function index(ObjectService $objectService, SearchService $searchService): JSONResponse
-    {
-        $filters = $this->request->getParams();
-        $fieldsToSearch = ['name', 'description'];
-
-        $searchParams = $searchService->createMySQLSearchParams(filters: $filters);
-        $searchConditions = $searchService->createMySQLSearchConditions(filters: $filters, fieldsToSearch:  $fieldsToSearch);
-        $filters = $searchService->unsetSpecialQueryParams(filters: $filters);
-
-        return new JSONResponse(['results' => $this->characterMapper->findAll(limit: null, offset: null, filters: $filters, searchConditions: $searchConditions, searchParams: $searchParams)]);
-
-    }
-
-    /**
-     * Retrieves a single character by its ID
-     * 
-     * This method returns a JSON response containing the details of a specific character.
-     * Currently, it fetches the character from a test array instead of a database.
-     *
-     * @NoAdminRequired
-     * @NoCSRFRequired
-     *
-     * @param string $id The ID of the character to retrieve
-     * @return JSONResponse A JSON response containing the character details
-     */
-    public function show(string $id): JSONResponse
-    {
-        try {
-            return new JSONResponse($this->characterMapper->find(id: (int) $id));
-        } catch (DoesNotExistException $exception) {
-            return new JSONResponse(data: ['error' => 'Not Found'], statusCode: 404);
-        }
-    }
-
-    /**
-     * Creates a new character
-     * 
-     * This method creates a new character based on POST data and calculates its attributes using the CharacterService.
-     *
-     * @NoAdminRequired
-     * @NoCSRFRequired
-     *
-     * @return JSONResponse A JSON response containing the newly created character
-     */
-    public function create(): JSONResponse
-    {
+	 * Create an object
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 *
+	 * @return JSONResponse
+	 */
+	public function create(): JSONResponse
+	{
+        // Get all parameters from the request
         $data = $this->request->getParams();
 
-        foreach ($data as $key => $value) {
-            if (str_starts_with($key, '_')) {
-                unset($data[$key]);
-            }
-        }
-        
-        if (isset($data['id'])) {
-            unset($data['id']);
-        }
-        
-        $character = $this->characterMapper->createFromArray(object: $data);
-        $calculatedCharacter = $this->characterService->calculateCharacter($character);
-        
-        return new JSONResponse($calculatedCharacter);
-    }
+        // Remove the 'id' field if it exists, as we're creating a new object
+        unset($data['id']);
 
-    /**
-     * Updates an existing character
-     * 
-     * This method updates an existing character based on its ID and recalculates its attributes using the CharacterService.
-     *
-     * @NoAdminRequired
-     * @NoCSRFRequired
-     *
-     * @param int $id The ID of the character to update
-     * @return JSONResponse A JSON response containing the updated character details
-     */
-    public function update(int $id): JSONResponse
-    {
+        // Save the new catalog object
+        $data = $this->characterService->calculateCharacter($data);
+        $object = $this->objectService->saveObject(self::objectType, $data);
+        
+        // Return the created object as a JSON response
+        return new JSONResponse($calculatedCharacter);
+	}
+
+	/**
+	 * Update an object
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 *
+	 * @return JSONResponse
+	 */
+	public function update(string $id): JSONResponse
+	{
+        // Get all parameters from the request
         $data = $this->request->getParams();
 
-        foreach ($data as $key => $value) {
-            if (str_starts_with($key, '_')) {
-                unset($data[$key]);
-            }
-        }
-        if (isset($data['id'])) {
-            unset($data['id']);
-        }
-        $updatedCharacter = $this->characterMapper->updateFromArray(id: (int) $id, object: $data);
-        $calculatedCharacter = $this->characterService->calculateCharacter($updatedCharacter);
+        // Save the new catalog object
+        $data = $this->characterService->calculateCharacter($data);
+        $object = $this->objectService->saveObject(self::objectType, $data);
         
-        return new JSONResponse($calculatedCharacter);
-    }
+        // Return the created object as a JSON response
+        return new JSONResponse($object);
+	}
 
-    /**
-     * Deletes a character
-     * 
-     * This method is intended to delete a character based on its ID.
-     * Currently, it returns an empty JSON response as a placeholder.
+	/**
+	 * Delete an object
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 *
+	 * @return JSONResponse
+	 */
+	public function destroy(string $id): JSONResponse
+	{
+        // Delete the catalog object
+        $result = $this->objectService->deleteObject(self::objectType, $id);
+
+        // Return the result as a JSON response
+		return new JSONResponse(['success' => $result], $result === true ? '200' : '404');
+	}
+
+	/**
+     * Get audit trail for a specific object
      *
      * @NoAdminRequired
      * @NoCSRFRequired
-     *
-     * @param string $id The ID of the character to delete
-     * @return JSONResponse An empty JSON response (placeholder)
+	 *
+	 * @return JSONResponse
      */
-    public function destroy(int $id): JSONResponse
+    public function getAuditTrail(string $id): JSONResponse
     {
-        $this->characterMapper->delete($this->characterMapper->find((int) $id));
-
-        return new JSONResponse([]);
+        $auditTrail = $this->objectService->getAuditTrail(self::objectType, $id);
+        return new JSONResponse($auditTrail);
     }
 
     /**
@@ -197,7 +169,8 @@ class CharactersController extends Controller
     public function downloadPdf(int $id): DataDownloadResponse|JSONResponse
     {
         try {
-            $character = $this->characterMapper->find((int) $id);
+            // Fetch the catalog object by its ID
+            $character = $this->objectService->getObject(self::objectType, $id);
             $pdfContent = $this->characterService->createCharacterPdf($character);
             
             return new DataDownloadResponse(

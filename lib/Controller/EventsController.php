@@ -16,176 +16,127 @@ use OCP\IRequest;
 
 class EventsController extends Controller
 {
-    const TEST_ARRAY = [
-        [
-            "id" => "5137a1e5-b54d-43ad-abd1-4b5bff5fcd3f",
-            "name" => "Summer Solstice Celebration",
-            "description" => "A magical gathering to honor the longest day of the year",
-            "characters" => [],
-            "effects" => [],
-            "startDate" => "2023-06-21T18:00:00Z",
-            "endDate" => "2023-06-22T06:00:00Z",
-            "location" => "Enchanted Forest Clearing"
-        ],
-        [
-            "id" => "4c3edd34-a90d-4d2a-8894-adb5836ecde8",
-            "name" => "Dragon's Lair Expedition",
-            "description" => "A perilous journey to retrieve a legendary artifact",
-            "characters" => [],
-            "effects" => [],
-            "startDate" => "2023-07-15T09:00:00Z",
-            "endDate" => "2023-07-16T17:00:00Z",
-            "location" => "Misty Mountains"
-        ],
-        [
-            "id" => "15551d6f-44e3-43f3-a9d2-59e583c91eb0",
-            "name" => "Royal Masquerade Ball",
-            "description" => "An elegant evening of mystery and intrigue at the royal palace",
-            "characters" => [],
-            "effects" => [],
-            "startDate" => "2023-08-01T20:00:00Z",
-            "endDate" => "2023-08-02T02:00:00Z",
-            "location" => "Royal Palace Grand Ballroom"
-        ]
-    ];
+   
+    const objectType = 'event';
 
     public function __construct(
 		$appName,
 		IRequest $request,
-		private readonly IAppConfig $config,
-		private readonly EventMapper $eventMapper
+		private readonly ObjectService $objectService
 	)
     {
         parent::__construct($appName, $request);
     }
-
+	
 	/**
-	 * This returns the template of the main app's page
-	 * It adds some data to the template (app version)
+	 * Return (and search) all objects
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 *
-	 * @return TemplateResponse
+	 * @return JSONResponse
 	 */
-	public function page(): TemplateResponse
-	{			
-        return new TemplateResponse(
-            //Application::APP_ID,
-            'larpingapp',
-            'index',
-            []
-        );
+	public function index(): JSONResponse
+	{
+		 // Retrieve all request parameters
+		 $requestParams = $this->request->getParams();
+
+		 // Fetch catalog objects based on filters and order
+		 $data = $this->objectService->getResultArrayForRequest(self::objectType, $requestParams);
+ 
+		 // Return JSON response
+		 return new JSONResponse($data);
 	}
-	
 
-    /**
-     * Retrieves a list of all events
-     * 
-     * This method returns a JSON response containing an array of all events in the system.
-     * It uses filters and search parameters to refine the results.
-     *
-     * @NoAdminRequired
-     * @NoCSRFRequired
-     *
-     * @return JSONResponse A JSON response containing the list of events
-     */
-    public function index(ObjectService $objectService, SearchService $searchService): JSONResponse
-    {
-        $filters = $this->request->getParams();
-        $fieldsToSearch = ['name', 'description'];
+	/**
+	 * Read a single object
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 *
+	 * @return JSONResponse
+	 */
+	public function show(string $id): JSONResponse
+	{
+        // Fetch the catalog object by its ID
+        $object = $this->objectService->getObject(self::objectType, $id);
 
-        $searchParams = $searchService->createMySQLSearchParams(filters: $filters);
-        $searchConditions = $searchService->createMySQLSearchConditions(filters: $filters, fieldsToSearch: $fieldsToSearch);
-        $filters = $searchService->unsetSpecialQueryParams(filters: $filters);
+        // Return the catalog as a JSON response
+        return new JSONResponse($object);
+	}
 
-        return new JSONResponse(['results' => $this->eventMapper->findAll(limit: null, offset: null, filters: $filters, searchConditions: $searchConditions, searchParams: $searchParams)]);
-    }
 
-    /**
-     * Retrieves a single event by its ID
-     * 
-     * This method returns a JSON response containing the details of a specific event.
-     *
-     * @NoAdminRequired
-     * @NoCSRFRequired
-     *
-     * @param string $id The ID of the event to retrieve
-     * @return JSONResponse A JSON response containing the event details
-     */
-    public function show(string $id): JSONResponse
-    {
-        try {
-            return new JSONResponse($this->eventMapper->find(id: (int) $id));
-        } catch (DoesNotExistException $exception) {
-            return new JSONResponse(data: ['error' => 'Not Found'], statusCode: 404);
-        }
-    }
-
-    /**
-     * Creates a new event
-     * 
-     * This method creates a new event based on POST data.
-     *
-     * @NoAdminRequired
-     * @NoCSRFRequired
-     *
-     * @return JSONResponse A JSON response containing the created event
-     */
-    public function create(): JSONResponse
-    {
+	/**
+	 * Create an object
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 *
+	 * @return JSONResponse
+	 */
+	public function create(): JSONResponse
+	{
+        // Get all parameters from the request
         $data = $this->request->getParams();
 
-        foreach ($data as $key => $value) {
-            if (str_starts_with($key, '_')) {
-                unset($data[$key]);
-            }
-        }
+        // Remove the 'id' field if it exists, as we're creating a new object
+        unset($data['id']);
+
+        // Save the new catalog object
+        $object = $this->objectService->saveObject(self::objectType, $data);
         
-        return new JSONResponse($this->eventMapper->createFromArray(object: $data));
-    }
+        // Return the created object as a JSON response
+        return new JSONResponse($object);
+	}
 
-    /**
-     * Updates an existing event
-     * 
-     * This method updates an existing event based on its ID and the provided data.
-     *
-     * @NoAdminRequired
-     * @NoCSRFRequired
-     *
-     * @param int $id The ID of the event to update
-     * @return JSONResponse A JSON response containing the updated event details
-     */
-    public function update(int $id): JSONResponse
-    {
+	/**
+	 * Update an object
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 *
+	 * @return JSONResponse
+	 */
+	public function update(string $id): JSONResponse
+	{
+        // Get all parameters from the request
         $data = $this->request->getParams();
 
-        foreach ($data as $key => $value) {
-            if (str_starts_with($key, '_')) {
-                unset($data[$key]);
-            }
-        }
-        if (isset($data['id'])) {
-            unset($data['id']);
-        }
-        return new JSONResponse($this->eventMapper->updateFromArray(id: (int) $id, object: $data));
-    }
+        // Save the new catalog object
+        $object = $this->objectService->saveObject(self::objectType, $data);
+        
+        // Return the created object as a JSON response
+        return new JSONResponse($object);
+	}
 
-    /**
-     * Deletes an event
-     * 
-     * This method deletes an event based on its ID.
+	/**
+	 * Delete an object
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 *
+	 * @return JSONResponse
+	 */
+	public function destroy(string $id): JSONResponse
+	{
+        // Delete the catalog object
+        $result = $this->objectService->deleteObject(self::objectType, $id);
+
+        // Return the result as a JSON response
+		return new JSONResponse(['success' => $result], $result === true ? '200' : '404');
+	}
+
+	/**
+     * Get audit trail for a specific object
      *
      * @NoAdminRequired
      * @NoCSRFRequired
-     *
-     * @param int $id The ID of the event to delete
-     * @return JSONResponse An empty JSON response
+	 *
+	 * @return JSONResponse
      */
-    public function destroy(int $id): JSONResponse
+    public function getAuditTrail(string $id): JSONResponse
     {
-        $this->eventMapper->delete($this->eventMapper->find((int) $id));
-
-        return new JSONResponse([]);
+        $auditTrail = $this->objectService->getAuditTrail(self::objectType, $id);
+        return new JSONResponse($auditTrail);
     }
 }

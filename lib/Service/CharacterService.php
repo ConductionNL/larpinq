@@ -20,7 +20,11 @@ use OCA\LarpingApp\Db\ItemMapper;
 use OCA\LarpingApp\Db\ConditionMapper;
 use OCA\LarpingApp\Db\EventMapper;
 use OCA\LarpingApp\Db\EffectMapper;
+use OCA\LarpingApp\Service\ObjectService;
+
 use TCPDF;
+// And in case of open registers
+use OCA\OpenRegister\Db\ObjectEntity;
 
 class CharacterService
 {
@@ -39,6 +43,7 @@ class CharacterService
         private readonly ConditionMapper $conditionMapper,
         private readonly EventMapper $eventMapper,
         private readonly EffectMapper $effectMapper,
+        private readonly ObjectService $objectService
     ) {
         $this->loadAllEntities();
     }
@@ -92,16 +97,17 @@ class CharacterService
     }
 
     /**
-     * Calculate stats for a single character
+     * Calculate stats for a single character array
      *
-     * @param Character $character Character object
-     * @return Character Updated Character object
+     * @param array $character Character data array
+     * @return array Updated character data array with calculated stats
      */
-    public function calculateCharacter(Character $character): Character
+    public function calculateCharacter(array $character): array 
     {
         // Create an array of abilities with their base scores
         $abilityScores = [];
 
+        // Initialize ability scores from base values
         foreach ($this->allAbilities as $ability) {
             $abilityScores[$ability->getId()] = [
                 'name' => $ability->getName(),
@@ -109,40 +115,48 @@ class CharacterService
             ];
         }
 
-        // Apply effects from skills
-        foreach ($character->getSkills() as $skillId) {
-            $skill = $this->allSkills[$skillId] ?? null;
-            if ($skill) {
-                $this->applyEffects($abilityScores, $skill->getEffects());
+        // Apply effects from skills if character has any
+        if (isset($character['skills']) && is_array($character['skills'])) {
+            foreach ($character['skills'] as $skillId) {
+                $skill = $this->allSkills[$skillId] ?? null;
+                if ($skill) {
+                    $this->applyEffects($abilityScores, $skill->getEffects());
+                }
             }
         }
 
-        // Apply effects from items
-        foreach ($character->getItems() as $itemId) {
-            $item = $this->allItems[$itemId] ?? null;
-            if ($item) {
-                $this->applyEffects($abilityScores, $item->getEffects());
+        // Apply effects from items if character has any
+        if (isset($character['items']) && is_array($character['items'])) {
+            foreach ($character['items'] as $itemId) {
+                $item = $this->allItems[$itemId] ?? null;
+                if ($item) {
+                    $this->applyEffects($abilityScores, $item->getEffects());
+                }
             }
         }
 
-        // Apply effects from conditions
-        foreach ($character->getConditions() as $conditionId) {
-            $condition = $this->allConditions[$conditionId] ?? null;
-            if ($condition) {
-                $this->applyEffects($abilityScores, $condition->getEffects());
+        // Apply effects from conditions if character has any
+        if (isset($character['conditions']) && is_array($character['conditions'])) {
+            foreach ($character['conditions'] as $conditionId) {
+                $condition = $this->allConditions[$conditionId] ?? null;
+                if ($condition) {
+                    $this->applyEffects($abilityScores, $condition->getEffects());
+                }
             }
         }
 
-        // Apply effects from events
-        foreach ($character->getEvents() as $eventId) {
-            $event = $this->allEvents[$eventId] ?? null;
-            if ($event) {
-                $this->applyEffects($abilityScores, $event->getEffects());
+        // Apply effects from events if character has any
+        if (isset($character['events']) && is_array($character['events'])) {
+            foreach ($character['events'] as $eventId) {
+                $event = $this->allEvents[$eventId] ?? null;
+                if ($event) {
+                    $this->applyEffects($abilityScores, $event->getEffects());
+                }
             }
         }
 
-        // Update character's abilities
-        $character->setStats($abilityScores);
+        // Update character array with calculated stats
+        $character['stats'] = $abilityScores;
 
         return $character;
     }
