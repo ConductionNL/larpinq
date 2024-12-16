@@ -24,9 +24,6 @@ import { abilityStore, effectStore, navigationStore } from '../../store/store.js
 				type="textarea"
 				:value.sync="effectItem.description" />
 			<NcTextField :disabled="loading"
-				label="Stat ID"
-				:value.sync="effectItem.statId" />
-			<NcTextField :disabled="loading"
 				label="Modifier"
 				type="number"
 				:value.sync="effectItem.modifier" />
@@ -100,7 +97,6 @@ export default {
 			effectItem: {
 				name: '',
 				description: '',
-				statId: '',
 				modifier: '',
 			},
 			success: false,
@@ -130,7 +126,6 @@ export default {
 					...effectStore.effectItem,
 					name: effectStore.effectItem.name || '',
 					description: effectStore.effectItem.description || '',
-					statId: effectStore.effectItem.statId || '',
 					modifier: effectStore.effectItem.modifier || '',
 				}
 			}
@@ -148,7 +143,6 @@ export default {
 			this.effectItem = {
 				name: '',
 				description: '',
-				statId: '',
 				modifier: '',
 			}
 		},

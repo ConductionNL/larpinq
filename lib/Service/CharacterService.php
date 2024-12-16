@@ -20,7 +20,11 @@ use OCA\LarpingApp\Db\ItemMapper;
 use OCA\LarpingApp\Db\ConditionMapper;
 use OCA\LarpingApp\Db\EventMapper;
 use OCA\LarpingApp\Db\EffectMapper;
+use OCA\LarpingApp\Service\ObjectService;
+
 use TCPDF;
+// And in case of open registers
+use OCA\OpenRegister\Db\ObjectEntity;
 
 class CharacterService
 {
@@ -39,39 +43,52 @@ class CharacterService
         private readonly ConditionMapper $conditionMapper,
         private readonly EventMapper $eventMapper,
         private readonly EffectMapper $effectMapper,
+        private readonly ObjectService $objectService
     ) {
         $this->loadAllEntities();
     }
 
     private function loadAllEntities(): void
     {
-        $this->allSkills = array_reduce($this->skillMapper->findAll(), function($carry, $skill) {
-            $carry[$skill->getId()] = $skill;
+        // Get all skills and index them by ID
+        $skills = $this->objectService->getObjects('skill');
+        $this->allSkills = array_reduce($skills, function($carry, $skill) {
+            $carry[$skill['id']] = $skill;
             return $carry;
         }, []);
 
-        $this->allItems = array_reduce($this->itemMapper->findAll(), function($carry, $item) {
-            $carry[$item->getId()] = $item;
+        // Get all items and index them by ID
+        $items = $this->objectService->getObjects('item');
+        $this->allItems = array_reduce($items, function($carry, $item) {
+            $carry[$item['id']] = $item;
             return $carry;
         }, []);
 
-        $this->allConditions = array_reduce($this->conditionMapper->findAll(), function($carry, $condition) {
-            $carry[$condition->getId()] = $condition;
+        // Get all conditions and index them by ID
+        $conditions = $this->objectService->getObjects('condition');
+        $this->allConditions = array_reduce($conditions, function($carry, $condition) {
+            $carry[$condition['id']] = $condition;
             return $carry;
         }, []);
 
-        $this->allEvents = array_reduce($this->eventMapper->findAll(), function($carry, $event) {
-            $carry[$event->getId()] = $event;
+        // Get all events and index them by ID
+        $events = $this->objectService->getObjects('event');
+        $this->allEvents = array_reduce($events, function($carry, $event) {
+            $carry[$event['id']] = $event;
             return $carry;
         }, []);
 
-        $this->allEffects = array_reduce($this->effectMapper->findAll(), function($carry, $effect) {
-            $carry[$effect->getId()] = $effect;
+        // Get all effects and index them by ID
+        $effects = $this->objectService->getObjects('effect');
+        $this->allEffects = array_reduce($effects, function($carry, $effect) {
+            $carry[$effect['id']] = $effect;
             return $carry;
         }, []);
 
-        $this->allAbilities = array_reduce($this->abilityMapper->findAll(), function($carry, $ability) {
-            $carry[$ability->getId()] = $ability;
+        // Get all abilities and index them by ID
+        $abilities = $this->objectService->getObjects('ability');
+        $this->allAbilities = array_reduce($abilities, function($carry, $ability) {
+            $carry[$ability['id']] = $ability;
             return $carry;
         }, []);
     }
@@ -92,57 +109,67 @@ class CharacterService
     }
 
     /**
-     * Calculate stats for a single character
+     * Calculate stats for a single character array
      *
-     * @param Character $character Character object
-     * @return Character Updated Character object
+     * @param array $character Character data array
+     * @return array Updated character data array with calculated stats
      */
-    public function calculateCharacter(Character $character): Character
+    public function calculateCharacter(array $character): array 
     {
         // Create an array of abilities with their base scores
         $abilityScores = [];
 
+
+        // Initialize ability scores from base values
         foreach ($this->allAbilities as $ability) {
-            $abilityScores[$ability->getId()] = [
-                'name' => $ability->getName(),
-                'value' => $ability->getBase() ?? 0
+            $abilityScores[$ability['id']] = [
+                'name' => $ability['name'],
+                'value' => $ability['base'] ?? 0
             ];
         }
 
-        // Apply effects from skills
-        foreach ($character->getSkills() as $skillId) {
-            $skill = $this->allSkills[$skillId] ?? null;
-            if ($skill) {
-                $this->applyEffects($abilityScores, $skill->getEffects());
+        // Apply effects from skills if character has any
+        if (isset($character['skills']) && is_array($character['skills'])) {
+            foreach ($character['skills'] as $skillId) {
+                $skill = $this->allSkills[$skillId] ?? null;
+                if ($skill) {
+                    $this->applyEffects($abilityScores, $skill['effects']);
+                }
             }
         }
 
-        // Apply effects from items
-        foreach ($character->getItems() as $itemId) {
-            $item = $this->allItems[$itemId] ?? null;
-            if ($item) {
-                $this->applyEffects($abilityScores, $item->getEffects());
+        // Apply effects from items if character has any
+        if (isset($character['items']) && is_array($character['items'])) {
+            foreach ($character['items'] as $itemId) {
+                $item = $this->allItems[$itemId] ?? null;
+                if ($item) {
+                    $this->applyEffects($abilityScores, $item['effects']);
+                }
             }
         }
 
-        // Apply effects from conditions
-        foreach ($character->getConditions() as $conditionId) {
-            $condition = $this->allConditions[$conditionId] ?? null;
-            if ($condition) {
-                $this->applyEffects($abilityScores, $condition->getEffects());
+        // Apply effects from conditions if character has any
+        if (isset($character['conditions']) && is_array($character['conditions'])) {
+            foreach ($character['conditions'] as $conditionId) {
+                $condition = $this->allConditions[$conditionId] ?? null;
+                if ($condition) {
+                    $this->applyEffects($abilityScores, $condition['effects']);
+                }
             }
         }
 
-        // Apply effects from events
-        foreach ($character->getEvents() as $eventId) {
-            $event = $this->allEvents[$eventId] ?? null;
-            if ($event) {
-                $this->applyEffects($abilityScores, $event->getEffects());
+        // Apply effects from events if character has any
+        if (isset($character['events']) && is_array($character['events'])) {
+            foreach ($character['events'] as $eventId) {
+                $event = $this->allEvents[$eventId] ?? null;
+                if ($event) {
+                    $this->applyEffects($abilityScores, $event['effects']);
+                }
             }
         }
 
-        // Update character's abilities
-        $character->setStats($abilityScores);
+        // Update character array with calculated stats
+        $character['stats'] = $abilityScores;
 
         return $character;
     }
@@ -167,24 +194,37 @@ class CharacterService
      * Calculate and apply a single effect
      *
      * @param array $abilities Reference to the abilities array
-     * @param Effect $effect Effect object
+     * @param array $effect Effect array containing stat_id, modifier and modification
      */
-    private function calculateEffect(array &$abilities, Effect $effect): void
+    private function calculateEffect(array &$abilities, array $effect): void
     {
-        $statId = $effect->getStatId();
-        $modifier = $effect->getModifier();
-        $modification = $effect->getModification();
+        // Initialize array to track affected abilities
+        $effectAbilities = isset($effect['abilities']) && is_array($effect['abilities']) ? $effect['abilities'] : [];
 
-        if (!isset($abilities[$statId]['value'])) {
-            $abilities[$statId]['value'] = 0;
+        // Add stat_id to affected abilities if present
+        if (isset($effect['stat_id'])) {
+            $effectAbilities[] = $effect['stat_id'];
         }
 
-        $currentValue = $abilities[$statId]['value'];
+        // Ensure each affected ability exists in abilities array
+        foreach ($effectAbilities as $abilityId) {
+            if (!isset($abilities[$abilityId]['value'])) {
+                $abilities[$abilityId]['value'] = 0;
+            }
 
-        if ($modification === 'positive') {
-            $abilities[$statId]['value'] = $currentValue + $modifier;
-        } elseif ($modification === 'negative') {
-            $abilities[$statId]['value'] = $currentValue - $modifier;
+            // Get current value and modifiers
+            $currentValue = $abilities[$abilityId]['value'];
+            // Get modifier value from effect, defaulting to 0 if not set
+            $modifier = $effect['modifier'] ?? 0;
+            // Get modification type, defaulting to 'positive' if not set
+            $modification = $effect['modification'] ?? 'positive'; 
+
+            // Apply modification based on type
+            if ($modification === 'positive') {
+                $abilities[$abilityId]['value'] = $currentValue + $modifier;
+            } elseif ($modification === 'negative') {
+                $abilities[$abilityId]['value'] = $currentValue - $modifier;
+            }
         }
     }
 

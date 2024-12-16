@@ -15,172 +15,127 @@ use OCP\IAppConfig;
 use OCP\IRequest;
 
 class AbilitiesController extends Controller
-{
-    const TEST_ARRAY = [
-        [
-            "id" => "56cf6db0-7c37-41a5-968b-d322c3f0da28",
-            "name" => "Experience points",
-            "description" => "An experience point is a unit of measurement used in some tabletop role-playing games and role-playing video games to quantify a player character's life experience and progression through the game. Experience points are generally awarded for the completion of missions, overcoming obstacles and opponents, and for successful role-playing.",
-            "base" => 0
-        ],
-        [
-            "id" => "4c3edd34-a90d-4d2a-8894-adb5836ecde8",
-            "name" => "Strength",
-            "description" => "Represents the physical power and muscle of a character. It affects melee attack rolls, damage rolls for melee weapons, and various strength-based skill checks.",
-            "base" => 10
-        ],
-        [
-            "id" => "15551d6f-44e3-43f3-a9d2-59e583c91eb0",
-            "name" => "Mana",
-            "description" => "Represents the magical energy or power that a character can use to cast spells or perform magical abilities. It is often depleted when using magic and regenerates over time or through rest.",
-            "base" => 20
-        ],
-        [
-            "id" => "0a3a0ffb-dc03-4aae-b207-0ed1502e60da",
-            "name" => "Hit Points",
-            "description" => "Represents the amount of damage a character can sustain before falling unconscious or dying. It's often calculated based on other stats like Constitution.",
-            "base" => 15
-        ]
-    ];
+{    
+    const objectType = 'ability';
 
     public function __construct(
 		$appName,
 		IRequest $request,
-		private readonly IAppConfig $config,
-		private readonly AbilityMapper $abilityMapper
+		private readonly ObjectService $objectService
 	)
     {
         parent::__construct($appName, $request);
     }
-
+	
 	/**
-	 * Returns the template of the main app's page
-	 * 
-	 * This method renders the main page of the application, adding any necessary data to the template.
+	 * Return (and search) all objects
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 *
-	 * @return TemplateResponse The rendered template response
+	 * @return JSONResponse
 	 */
-	public function page(): TemplateResponse
-	{			
-        return new TemplateResponse(
-            //Application::APP_ID,
-            'larpingapp',
-            'index',
-            []
-        );
+	public function index(): JSONResponse
+	{
+		 // Retrieve all request parameters
+		 $requestParams = $this->request->getParams();
+
+		 // Fetch catalog objects based on filters and order
+		 $data = $this->objectService->getResultArrayForRequest(self::objectType, $requestParams);
+ 
+		 // Return JSON response
+		 return new JSONResponse($data);
 	}
-	
 
-    /**
-     * Retrieves a list of all abilities
-     * 
-     * This method returns a JSON response containing an array of all abilities in the system.
-     * It uses filters and search parameters to refine the results.
-     *
-     * @NoAdminRequired
-     * @NoCSRFRequired
-     *
-     * @return JSONResponse A JSON response containing the list of abilities
-     */
-    public function index(ObjectService $objectService, SearchService $searchService): JSONResponse
-    {
-        $filters = $this->request->getParams();
-        $fieldsToSearch = ['name', 'description'];
+	/**
+	 * Read a single object
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 *
+	 * @return JSONResponse
+	 */
+	public function show(string $id): JSONResponse
+	{
+        // Fetch the catalog object by its ID
+        $object = $this->objectService->getObject(self::objectType, $id);
 
-        $searchParams = $searchService->createMySQLSearchParams(filters: $filters);
-        $searchConditions = $searchService->createMySQLSearchConditions(filters: $filters, fieldsToSearch: $fieldsToSearch);
-        $filters = $searchService->unsetSpecialQueryParams(filters: $filters);
+        // Return the catalog as a JSON response
+        return new JSONResponse($object);
+	}
 
-        return new JSONResponse(['results' => $this->abilityMapper->findAll(limit: null, offset: null, filters: $filters, searchConditions: $searchConditions, searchParams: $searchParams)]);
-    }
 
-    /**
-     * Retrieves a single ability by its ID
-     * 
-     * This method returns a JSON response containing the details of a specific ability.
-     *
-     * @NoAdminRequired
-     * @NoCSRFRequired
-     *
-     * @param string $id The ID of the ability to retrieve
-     * @return JSONResponse A JSON response containing the ability details
-     */
-    public function show(string $id): JSONResponse
-    {
-        try {
-            return new JSONResponse($this->abilityMapper->find(id: (int) $id));
-        } catch (DoesNotExistException $exception) {
-            return new JSONResponse(data: ['error' => 'Not Found'], statusCode: 404);
-        }
-    }
-
-    /**
-     * Creates a new ability
-     * 
-     * This method creates a new ability based on POST data.
-     *
-     * @NoAdminRequired
-     * @NoCSRFRequired
-     *
-     * @return JSONResponse A JSON response containing the created ability
-     */
-    public function create(): JSONResponse
-    {
+	/**
+	 * Create an object
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 *
+	 * @return JSONResponse
+	 */
+	public function create(): JSONResponse
+	{
+        // Get all parameters from the request
         $data = $this->request->getParams();
 
-        foreach ($data as $key => $value) {
-            if (str_starts_with($key, '_')) {
-                unset($data[$key]);
-            }
-        }
+        // Remove the 'id' field if it exists, as we're creating a new object
+        unset($data['id']);
+
+        // Save the new catalog object
+        $object = $this->objectService->saveObject(self::objectType, $data);
         
-        return new JSONResponse($this->abilityMapper->createFromArray(object: $data));
-    }
+        // Return the created object as a JSON response
+        return new JSONResponse($object);
+	}
 
-    /**
-     * Updates an existing ability
-     * 
-     * This method updates an existing ability based on its ID and the provided data.
-     *
-     * @NoAdminRequired
-     * @NoCSRFRequired
-     *
-     * @param int $id The ID of the ability to update
-     * @return JSONResponse A JSON response containing the updated ability details
-     */
-    public function update(int $id): JSONResponse
-    {
+	/**
+	 * Update an object
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 *
+	 * @return JSONResponse
+	 */
+	public function update(string $id): JSONResponse
+	{
+        // Get all parameters from the request
         $data = $this->request->getParams();
 
-        foreach ($data as $key => $value) {
-            if (str_starts_with($key, '_')) {
-                unset($data[$key]);
-            }
-        }
-        if (isset($data['id'])) {
-            unset($data['id']);
-        }
-        return new JSONResponse($this->abilityMapper->updateFromArray(id: (int) $id, object: $data));
-    }
+        // Save the new catalog object
+        $object = $this->objectService->saveObject(self::objectType, $data);
+        
+        // Return the created object as a JSON response
+        return new JSONResponse($object);
+	}
 
-    /**
-     * Deletes an ability
-     * 
-     * This method deletes an ability based on its ID.
+	/**
+	 * Delete an object
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 *
+	 * @return JSONResponse
+	 */
+	public function destroy(string $id): JSONResponse
+	{
+        // Delete the catalog object
+        $result = $this->objectService->deleteObject(self::objectType, $id);
+
+        // Return the result as a JSON response
+		return new JSONResponse(['success' => $result], $result === true ? '200' : '404');
+	}
+
+	/**
+     * Get audit trail for a specific object
      *
      * @NoAdminRequired
      * @NoCSRFRequired
-     *
-     * @param int $id The ID of the ability to delete
-     * @return JSONResponse An empty JSON response
+	 *
+	 * @return JSONResponse
      */
-    public function destroy(int $id): JSONResponse
+    public function getAuditTrail(string $id): JSONResponse
     {
-        $this->abilityMapper->delete($this->abilityMapper->find((int) $id));
-
-        return new JSONResponse([]);
+        $auditTrail = $this->objectService->getAuditTrail(self::objectType, $id);
+        return new JSONResponse($auditTrail);
     }
 }

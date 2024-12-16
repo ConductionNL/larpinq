@@ -10,6 +10,15 @@ use OCP\IDBConnection;
 
 class AbilityMapper extends QBMapper
 {
+	/**
+	 * The name of the database table for abilities
+	 * 
+	 * @var string
+	 * @psalm-var string
+	 * @phpstan-var string
+	 */
+	private const TABLE_NAME = 'larpingapp_abilities';
+	
 	public function __construct(IDBConnection $db)
 	{
 		parent::__construct($db, 'larpingapp_abilities');

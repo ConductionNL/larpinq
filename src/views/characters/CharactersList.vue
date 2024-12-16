@@ -46,7 +46,7 @@ import { characterStore, navigationStore, playerStore, searchStore } from '../..
 							:size="44" />
 					</template>
 					<template #subname>
-						{{ findPlayer(character?.ocName).name }}
+						{{ findPlayer(character?.ocName)?.name || 'No player selected' }}
 					</template>
 					<template #actions>
 						<NcActionButton @click="characterStore.setCharacterItem(character); navigationStore.setModal('editCharacter')">
@@ -117,8 +117,14 @@ export default {
 		this.fetchPlayers()
 	},
 	methods: {
+		/**
+		 * Find a player by their ID
+		 * @param {string|number} characterPlayerId - The ID of the player to find
+		 * @returns {object|string} The found player object or "No player selected" if not found
+		 */
 		findPlayer(characterPlayerId) {
-			return playerStore.playerList.find((player) => {
+			// Search for player with matching ID in player list
+			const foundPlayer = playerStore.playerList.find((player) => {
 				return player.id.toString() === characterPlayerId.toString()
 			})
 		},
