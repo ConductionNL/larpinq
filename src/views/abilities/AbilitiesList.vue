@@ -35,8 +35,7 @@ import { abilityStore, navigationStore, searchStore } from '../../store/store.js
 					:key="`${ability}${i}`"
 					:name="ability?.name"
 					:active="abilityStore.abilityItem?.id === ability?.id"
-					:details="'1h'"
-					:counter-number="44"
+					:counter-number="ability?.base || 0"
 					:force-display-actions="true"
 					@click="abilityStore.setAbilityItem(ability)">
 					<template #icon>
