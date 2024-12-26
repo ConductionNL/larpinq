@@ -24,7 +24,7 @@ export const usePlayerStore = defineStore(
 			/* istanbul ignore next */ // ignore this for Jest until moved into a service
 			async refreshPlayerList(search = null) {
 				// @todo this might belong in a service?
-				let endpoint = '/index.php/apps/larpingapp/api/players'
+				let endpoint = '/index.php/apps/larpingapp/api/objects/player'
 				if (search !== null && search !== '') {
 					endpoint = endpoint + '?_search=' + search
 				}
@@ -38,7 +38,7 @@ export const usePlayerStore = defineStore(
 			},
 			// Fetch a single player by ID
 			async getPlayer(id) {
-				const endpoint = `/index.php/apps/larpingapp/api/players/${id}`
+				const endpoint = `/index.php/apps/larpingapp/api/objects/player/${id}`
 				try {
 					const response = await fetch(endpoint, { method: 'GET' })
 					const data = await response.json()
@@ -57,7 +57,7 @@ export const usePlayerStore = defineStore(
 
 				console.log('Deleting player...')
 
-				const endpoint = `/index.php/apps/larpingapp/api/players/${this.playerItem.id}`
+				const endpoint = `/index.php/apps/larpingapp/api/objects/player/${this.playerItem.id}`
 
 				return fetch(endpoint, {
 					method: 'DELETE',
@@ -81,8 +81,8 @@ export const usePlayerStore = defineStore(
 
 				const isNewPlayer = !playerItem.id
 				const endpoint = isNewPlayer
-					? '/index.php/apps/larpingapp/api/players'
-					: `/index.php/apps/larpingapp/api/players/${playerItem.id}`
+					? '/index.php/apps/larpingapp/api/objects/player'
+					: `/index.php/apps/larpingapp/api/objects/player/${playerItem.id}`
 				const method = isNewPlayer ? 'POST' : 'PUT'
 
 				return fetch(

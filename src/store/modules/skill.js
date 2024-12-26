@@ -23,7 +23,7 @@ export const useSkillStore = defineStore(
 			},
 			// Fetch and refresh the list of skills
 			async refreshSkillList(search = null) {
-				let endpoint = '/index.php/apps/larpingapp/api/skills'
+				let endpoint = '/index.php/apps/larpingapp/api/objects/skill'
 				if (search !== null && search !== '') {
 					endpoint = endpoint + '?_search=' + search
 				}
@@ -37,7 +37,7 @@ export const useSkillStore = defineStore(
 			},
 			// Fetch a single skill by ID
 			async getSkill(id) {
-				const endpoint = `/index.php/apps/larpingapp/api/skills/${id}`
+				const endpoint = `/index.php/apps/larpingapp/api/objects/skill/${id}`
 				try {
 					const response = await fetch(endpoint, { method: 'GET' })
 					const data = await response.json()
@@ -56,7 +56,7 @@ export const useSkillStore = defineStore(
 
 				console.log('Deleting skill...')
 
-				const endpoint = `/index.php/apps/larpingapp/api/skills/${this.skillItem.id}`
+				const endpoint = `/index.php/apps/larpingapp/api/objects/skill/${this.skillItem.id}`
 
 				return fetch(endpoint, {
 					method: 'DELETE',
@@ -79,8 +79,8 @@ export const useSkillStore = defineStore(
 
 				const isNewSkill = !skillItem.id
 				const endpoint = isNewSkill
-					? '/index.php/apps/larpingapp/api/skills'
-					: `/index.php/apps/larpingapp/api/skills/${skillItem.id}`
+					? '/index.php/apps/larpingapp/api/objects/skill'
+					: `/index.php/apps/larpingapp/api/objects/skill/${skillItem.id}`
 				const method = isNewSkill ? 'POST' : 'PUT'
 
 				return fetch(

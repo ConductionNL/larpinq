@@ -389,7 +389,7 @@ class ObjectService
 
 		// Remove unnecessary parameters from filters
 		$filters = $requestParams;
-		unset($filters['_route']); // TODO: Investigate why this is here and if it's needed
+		unset($filters['_route']); // Nextcloud automatically adds this
 		unset($filters['_extend'], $filters['_limit'], $filters['_offset'], $filters['_order'], $filters['_page']);
 		unset($filters['extend'], $filters['limit'], $filters['offset'], $filters['order'], $filters['page']);
 
@@ -402,6 +402,7 @@ class ObjectService
 			sort: $order,
 			extend: $extend
 		);
+
 		$facets  = $this->getFacets($objectType, $filters);
 
 		// Prepare response data
@@ -480,5 +481,40 @@ class ObjectService
 
 		// Return the extended entity as an array
 		return $result;
+	}
+
+	/**
+	 * Get all relations for a specific object
+	 *
+	 * @param string $objectType The type of object to get relations for
+	 * @param string $id The id of the object to get relations for
+	 * 
+	 * @return array The relations for the object
+	 * @throws Exception If OpenRegister service is not available
+	 */
+	public function getRelations(string $objectType, string $id): array
+	{
+		// Get the object first
+		$object = $this->getObject($objectType, $id);		
+		
+		// Try to get OpenRegister service
+		$openRegister = $this->getOpenRegisters();
+		if ($openRegister === null || $openRegister === false) {
+			throw new Exception('OpenRegister service is not available', 500);
+		}
+
+		try {
+			// Get relations from OpenRegister
+			$relations = $openRegister->findByRelationUri($object->getUri());
+		} catch (Exception $e) {
+			throw new Exception('Error accessing OpenRegister service: ' . $e->getMessage(), 500);
+		}
+
+		// Convert relation entities to object arrays
+		foreach ($relations as $key => $relation) {
+			$relations[$key] = $relation->getObjectArray();
+		}
+
+		return $relations;
 	}
 }

@@ -14,7 +14,7 @@ export const useItemStore = defineStore(
 				this.itemItem = itemItem && new Item(itemItem)
 				console.log('Active item set to ' + itemItem)
 			},
-			// Set the list of items
+			// Set the list of items		
 			setItemList(itemList) {
 				this.itemList = itemList.map(
 					(itemItem) => new Item(itemItem),
@@ -23,7 +23,7 @@ export const useItemStore = defineStore(
 			},
 			// Fetch and refresh the list of items
 			async refreshItemList(search = null) {
-				let endpoint = '/index.php/apps/larpingapp/api/items'
+				let endpoint = '/index.php/apps/larpingapp/api/objects/item'
 				if (search !== null && search !== '') {
 					endpoint = endpoint + '?_search=' + search
 				}
@@ -37,7 +37,7 @@ export const useItemStore = defineStore(
 			},
 			// Fetch a single item by ID
 			async getItem(id) {
-				const endpoint = `/index.php/apps/larpingapp/api/items/${id}`
+				const endpoint = `/index.php/apps/larpingapp/api/objects/item/${id}`
 				try {
 					const response = await fetch(endpoint, { method: 'GET' })
 					const data = await response.json()
@@ -56,7 +56,7 @@ export const useItemStore = defineStore(
 
 				console.log('Deleting item...')
 
-				const endpoint = `/index.php/apps/larpingapp/api/items/${this.itemItem.id}`
+				const endpoint = `/index.php/apps/larpingapp/api/objects/item/${this.itemItem.id}`
 
 				return fetch(endpoint, {
 					method: 'DELETE',
@@ -79,8 +79,8 @@ export const useItemStore = defineStore(
 
 				const isNewItem = !itemItem.id
 				const endpoint = isNewItem
-					? '/index.php/apps/larpingapp/api/items'
-					: `/index.php/apps/larpingapp/api/items/${itemItem.id}`
+					? '/index.php/apps/larpingapp/api/objects/item'
+					: `/index.php/apps/larpingapp/api/objects/item/${itemItem.id}`
 				const method = isNewItem ? 'POST' : 'PUT'
 
 				const itemToSave = { ...itemItem }

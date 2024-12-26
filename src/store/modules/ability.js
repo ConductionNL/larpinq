@@ -21,7 +21,7 @@ export const useAbilityStore = defineStore(
 			},
 			/* istanbul ignore next */ // ignore this for Jest until moved into a service
 			async refreshAbilityList(search = null) {
-				let endpoint = '/index.php/apps/larpingapp/api/abilities'
+				let endpoint = '/index.php/apps/larpingapp/api/objects/ability'
 				if (search !== null && search !== '') {
 					endpoint = endpoint + '?_search=' + search
 				}
@@ -40,7 +40,7 @@ export const useAbilityStore = defineStore(
 
 				console.log('Deleting ability...')
 
-				const endpoint = `/index.php/apps/larpingapp/api/abilities/${this.abilityItem.id}`
+				const endpoint = `/index.php/apps/larpingapp/api/objects/ability/${this.abilityItem.id}`
 
 				return fetch(endpoint, {
 					method: 'DELETE',
@@ -63,8 +63,8 @@ export const useAbilityStore = defineStore(
 
 				const isNewAbility = !abilityItem.id
 				const endpoint = isNewAbility
-					? '/index.php/apps/larpingapp/api/abilities'
-					: `/index.php/apps/larpingapp/api/abilities/${abilityItem.id}`
+					? '/index.php/apps/larpingapp/api/objects/ability'
+					: `/index.php/apps/larpingapp/api/objects/ability/${abilityItem.id}`
 				const method = isNewAbility ? 'POST' : 'PUT'
 
 				const abilityToSave = { ...abilityItem }

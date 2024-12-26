@@ -22,7 +22,8 @@ export const useCharacterStore = defineStore(
 			/* istanbul ignore next */ // ignore this for Jest until moved into a service
 			async refreshCharacterList(search = null) {
 				// @todo this might belong in a service?
-				let endpoint = '/index.php/apps/larpingapp/api/characters'
+				let endpoint = '/index.php/apps/larpingapp/api/objects/character'
+				//let endpoint = '/index.php/apps/larpingapp/api/characters?_extend=ocName,skills,items,conditions'
 				if (search !== null && search !== '') {
 					endpoint = endpoint + '?_search=' + search
 				}
@@ -46,7 +47,7 @@ export const useCharacterStore = defineStore(
 			},
 			// New function to get a single character
 			async getCharacter(id) {
-				const endpoint = `/index.php/apps/larpingapp/api/characters/${id}`
+				const endpoint = `/index.php/apps/larpingapp/api/objects/character/${id}`
 				try {
 					const response = await fetch(endpoint, {
 						method: 'GET',
@@ -67,7 +68,7 @@ export const useCharacterStore = defineStore(
 
 				console.log('Deleting character...')
 
-				const endpoint = `/index.php/apps/larpingapp/api/characters/${this.characterItem.id}`
+				const endpoint = `/index.php/apps/larpingapp/api/objects/character/${this.characterItem.id}`
 
 				return fetch(endpoint, {
 					method: 'DELETE',
@@ -91,8 +92,8 @@ export const useCharacterStore = defineStore(
 
 				const isNewCharacter = !characterItem.id
 				const endpoint = isNewCharacter
-					? '/index.php/apps/larpingapp/api/characters'
-					: `/index.php/apps/larpingapp/api/characters/${characterItem.id}`
+					? '/index.php/apps/larpingapp/api/objects/character'
+					: `/index.php/apps/larpingapp/api/objects/character/${characterItem.id}`
 				const method = isNewCharacter ? 'POST' : 'PUT'
 
 				return fetch(

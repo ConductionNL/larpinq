@@ -23,7 +23,7 @@ export const useConditionStore = defineStore(
 			},
 			// Fetch and refresh the list of conditions
 			async refreshConditionList(search = null) {
-				let endpoint = '/index.php/apps/larpingapp/api/conditions'
+				let endpoint = '/index.php/apps/larpingapp/api/objects/condition'
 				if (search !== null && search !== '') {
 					endpoint = endpoint + '?_search=' + search
 				}
@@ -37,7 +37,7 @@ export const useConditionStore = defineStore(
 			},
 			// Fetch a single condition by ID
 			async getCondition(id) {
-				const endpoint = `/index.php/apps/larpingapp/api/conditions/${id}`
+				const endpoint = `/index.php/apps/larpingapp/api/objects/condition/${id}`
 				try {
 					const response = await fetch(endpoint, { method: 'GET' })
 					const data = await response.json()
@@ -56,7 +56,7 @@ export const useConditionStore = defineStore(
 
 				console.log('Deleting condition...')
 
-				const endpoint = `/index.php/apps/larpingapp/api/conditions/${this.conditionItem.id}`
+				const endpoint = `/index.php/apps/larpingapp/api/objects/condition/${this.conditionItem.id}`
 
 				return fetch(endpoint, {
 					method: 'DELETE',
@@ -79,8 +79,8 @@ export const useConditionStore = defineStore(
 
 				const isNewCondition = !conditionItem.id
 				const endpoint = isNewCondition
-					? '/index.php/apps/larpingapp/api/conditions'
-					: `/index.php/apps/larpingapp/api/conditions/${conditionItem.id}`
+					? '/index.php/apps/larpingapp/api/objects/condition'
+					: `/index.php/apps/larpingapp/api/objects/condition/${conditionItem.id}`
 				const method = isNewCondition ? 'POST' : 'PUT'
 
 				return fetch(

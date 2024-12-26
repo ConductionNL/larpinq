@@ -23,7 +23,7 @@ export const useEventStore = defineStore(
 			},
 			// Fetch and refresh the list of events
 			async refreshEventList(search = null) {
-				let endpoint = '/index.php/apps/larpingapp/api/events'
+				let endpoint = '/index.php/apps/larpingapp/api/objects/event'
 				if (search !== null && search !== '') {
 					endpoint = endpoint + '?_search=' + search
 				}
@@ -37,7 +37,7 @@ export const useEventStore = defineStore(
 			},
 			// Fetch a single event by ID
 			async getEvent(id) {
-				const endpoint = `/index.php/apps/larpingapp/api/events/${id}`
+				const endpoint = `/index.php/apps/larpingapp/api/objects/event/${id}`
 				try {
 					const response = await fetch(endpoint, { method: 'GET' })
 					const data = await response.json()
@@ -56,7 +56,7 @@ export const useEventStore = defineStore(
 
 				console.log('Deleting event...')
 
-				const endpoint = `/index.php/apps/larpingapp/api/events/${this.eventItem.id}`
+				const endpoint = `/index.php/apps/larpingapp/api/objects/event/${this.eventItem.id}`
 
 				return fetch(endpoint, {
 					method: 'DELETE',
@@ -79,8 +79,8 @@ export const useEventStore = defineStore(
 
 				const isNewEvent = !eventItem.id
 				const endpoint = isNewEvent
-					? '/index.php/apps/larpingapp/api/events'
-					: `/index.php/apps/larpingapp/api/events/${eventItem.id}`
+					? '/index.php/apps/larpingapp/api/objects/event'
+					: `/index.php/apps/larpingapp/api/objects/event/${eventItem.id}`
 				const method = isNewEvent ? 'POST' : 'PUT'
 
 				const eventToSeave = { ...eventItem }

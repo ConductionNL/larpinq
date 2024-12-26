@@ -23,7 +23,7 @@ export const useEffectStore = defineStore(
 			},
 			// Fetch and refresh the list of effects
 			async refreshEffectList(search = null) {
-				let endpoint = '/index.php/apps/larpingapp/api/effects'
+				let endpoint = '/index.php/apps/larpingapp/api/objects/effect'
 				if (search !== null && search !== '') {
 					endpoint = endpoint + '?_search=' + search
 				}
@@ -37,7 +37,7 @@ export const useEffectStore = defineStore(
 			},
 			// Fetch a single effect by ID
 			async getEffect(id) {
-				const endpoint = `/index.php/apps/larpingapp/api/effects/${id}`
+				const endpoint = `/index.php/apps/larpingapp/api/objects/effect/${id}`
 				try {
 					const response = await fetch(endpoint, { method: 'GET' })
 					const data = await response.json()
@@ -56,7 +56,7 @@ export const useEffectStore = defineStore(
 
 				console.log('Deleting effect...')
 
-				const endpoint = `/index.php/apps/larpingapp/api/effects/${this.effectItem.id}`
+				const endpoint = `/index.php/apps/larpingapp/api/objects/effect/${this.effectItem.id}`
 
 				return fetch(endpoint, {
 					method: 'DELETE',
@@ -79,8 +79,8 @@ export const useEffectStore = defineStore(
 
 				const isNewEffect = !effectItem.id
 				const endpoint = isNewEffect
-					? '/index.php/apps/larpingapp/api/effects'
-					: `/index.php/apps/larpingapp/api/effects/${effectItem.id}`
+					? '/index.php/apps/larpingapp/api/objects/effect'
+					: `/index.php/apps/larpingapp/api/objects/effect/${effectItem.id}`
 				const method = isNewEffect ? 'POST' : 'PUT'
 
 				return fetch(
