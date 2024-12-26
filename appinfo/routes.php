@@ -16,7 +16,7 @@ return [
 		['name' => 'objects#show', 'url' => 'api/objects/{objectType}/{id}', 'verb' => 'GET'],
 		['name' => 'objects#update', 'url' => 'api/objects/{objectType}/{id}', 'verb' => 'PUT'],
 		['name' => 'objects#delete', 'url' => 'api/objects/{objectType}/{id}', 'verb' => 'DELETE'],
-		['name' => 'objects#getAuditTrail', 'url' => 'api/objects/{objectType}/{id}/audit-trail', 'verb' => 'GET'],
+		['name' => 'objects#getAuditTrail', 'url' => 'api/objects/{objectType}/{id}/audit', 'verb' => 'GET'],
 		['name' => 'objects#getRelations', 'url' => 'api/objects/{objectType}/{id}/relations', 'verb' => 'GET'],
 	],
 ];

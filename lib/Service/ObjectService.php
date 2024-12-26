@@ -494,27 +494,32 @@ class ObjectService
 	 */
 	public function getRelations(string $objectType, string $id): array
 	{
-		// Get the object first
-		$object = $this->getObject($objectType, $id);		
-		
-		// Try to get OpenRegister service
-		$openRegister = $this->getOpenRegisters();
-		if ($openRegister === null || $openRegister === false) {
-			throw new Exception('OpenRegister service is not available', 500);
-		}
+		// Get the mapper first
+		$mapper = $this->getMapper($objectType);
 
-		try {
-			// Get relations from OpenRegister
-			$relations = $openRegister->findByRelationUri($object->getUri());
-		} catch (Exception $e) {
-			throw new Exception('Error accessing OpenRegister service: ' . $e->getMessage(), 500);
-		}
+		// Get audit trails from OpenRegister
+		$auditTrails = $mapper->getRelations($id);
 
-		// Convert relation entities to object arrays
-		foreach ($relations as $key => $relation) {
-			$relations[$key] = $relation->getObjectArray();
-		}
+		return $auditTrails;
+	}
 
-		return $relations;
+
+	/**
+	 * Get all audit trails for a specific object
+	 *
+	 * @param string $objectType The type of object to get audit trails for
+	 * @param string $id The id of the object to get audit trails for
+	 * 
+	 * @return array The audit trails for the object
+	 */
+	public function getAuditTrail(string $objectType, string $id): array
+	{
+		// Get the mapper first
+		$mapper = $this->getMapper($objectType);
+
+		// Get audit trails from OpenRegister
+		$auditTrails = $mapper->getAuditTrail($id);
+
+		return $auditTrails;
 	}
 }

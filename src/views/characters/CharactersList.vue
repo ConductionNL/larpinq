@@ -39,7 +39,7 @@ import { characterStore, navigationStore, playerStore, searchStore } from '../..
 					:active="characterStore.characterItem?.id === character?.id"
 					:details="character.approved === 'approved' ? 'Approved': 'Not approved'"
 					:counter-number="character?.skills?.length || 0"
-					@click="characterStore.setCharacterItem(character)">
+					@click="handleCharacterSelect(character)">
 					<template #icon>
 						<BriefcaseAccountOutline :class="characterStore.characterItem?.id === character?.id && 'selectedZaakIcon'"
 							disable-menu
@@ -127,6 +127,24 @@ export default {
 			const foundPlayer = playerStore.playerList.find((player) => {
 				return player.id.toString() === characterPlayerId.toString()
 			})
+		},
+		/**
+		 * Handle character selection
+		 * @param {object} character - The selected character object
+		 */
+		async handleCharacterSelect(character) {
+			// Set the selected character in the store
+			characterStore.setCharacterItem(character)
+
+			try {
+				// Fetch audit trails and relations for the selected character
+				await Promise.all([
+					characterStore.getAuditTrails(character.id),
+					characterStore.getRelations(character.id)
+				])
+			} catch (error) {
+				console.error('Error fetching character data:', error)
+			}
 		},
 		fetchPlayers() {
 			this.playersLoading = true
