@@ -42,8 +42,8 @@ import { characterStore, effectStore, itemStore } from '../../store/store.js'
 		<div class="tabContainer">
 			<BTabs content-class="mt-3" justified>
 				<BTab title="Effects" active>
-					<div v-if="filterEffects.length > 0">
-						<NcListItem v-for="(effect) in filterEffects"
+					<div v-if="itemStore.itemItem?.effects?.length > 0">
+						<NcListItem v-for="(effect) in itemStore.itemItem.effects"
 							:key="effect.id"
 							:name="effect.name"
 							:bold="false"
@@ -59,13 +59,13 @@ import { characterStore, effectStore, itemStore } from '../../store/store.js'
 							</template>
 						</NcListItem>
 					</div>
-					<div v-if="filterEffects.length === 0">
+					<div v-else>
 						Geen effects gevonden
 					</div>
 				</BTab>
 				<BTab title="Characters">
-					<div v-if="filterCharacters.length > 0 && !charactersLoading">
-						<NcListItem v-for="(character, i) in filterCharacters"
+					<div v-if="itemStore.relations?.characters?.length > 0">
+						<NcListItem v-for="(character, i) in itemStore.relations.characters"
 							:key="character.id + i"
 							:name="character.name"
 							:bold="false"
@@ -79,7 +79,7 @@ import { characterStore, effectStore, itemStore } from '../../store/store.js'
 							</template>
 						</NcListItem>
 					</div>
-					<div v-if="filterCharacters.length === 0">
+					<div v-else>
 						Geen characters gevonden
 					</div>
 				</BTab>
@@ -111,44 +111,6 @@ export default {
 		BriefcaseAccountOutline,
 		Pencil,
 		TrashCanOutline,
-	},
-	data() {
-		return {
-			effectsLoading: false,
-			charactersLoading: false,
-		}
-	},
-	computed: {
-		filterEffects() {
-			return effectStore.effectList.filter((effect) => {
-				return itemStore.itemItem?.effects.map(String).includes(effect.id.toString())
-			})
-		},
-		filterCharacters() {
-			return characterStore.characterList.filter((character) => {
-				return character.items.map(String).includes(itemStore.itemItem.id.toString())
-			})
-		},
-	},
-	mounted() {
-		this.fetchEffects()
-		this.fetchCharacters()
-	},
-	methods: {
-		fetchEffects() {
-			this.effectsLoading = true
-			effectStore.refreshEffectList()
-				.then(() => {
-					this.effectsLoading = false
-				})
-		},
-		fetchCharacters() {
-			this.charactersLoading = true
-			characterStore.refreshCharacterList()
-				.then(() => {
-					this.charactersLoading = false
-				})
-		},
 	},
 }
 </script>

@@ -26,7 +26,7 @@ export const useEventStore = defineStore(
 			},
 			// Fetch and refresh the list of events
 			async refreshEventList(search = null) {
-				let endpoint = '/index.php/apps/larpingapp/api/objects/event'
+				let endpoint = '/index.php/apps/larpingapp/api/objects/event?_extend=effects'
 				if (search !== null && search !== '') {
 					endpoint = endpoint + '?_search=' + search
 				}
@@ -40,7 +40,7 @@ export const useEventStore = defineStore(
 			},
 			// Fetch a single event by ID
 			async getEvent(id) {
-				const endpoint = `/index.php/apps/larpingapp/api/objects/event/${id}`
+				const endpoint = `/index.php/apps/larpingapp/api/objects/event/${id}?_extend=effects`
 				try {
 					const response = await fetch(endpoint, { method: 'GET' })
 					const data = await response.json()

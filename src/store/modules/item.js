@@ -26,7 +26,7 @@ export const useItemStore = defineStore(
 			},
 			// Fetch and refresh the list of items
 			async refreshItemList(search = null) {
-				let endpoint = '/index.php/apps/larpingapp/api/objects/item'
+				let endpoint = '/index.php/apps/larpingapp/api/objects/item?_extend=effects'
 				if (search !== null && search !== '') {
 					endpoint = endpoint + '?_search=' + search
 				}
@@ -40,7 +40,7 @@ export const useItemStore = defineStore(
 			},
 			// Fetch a single item by ID
 			async getItem(id) {
-				const endpoint = `/index.php/apps/larpingapp/api/objects/item/${id}`
+				const endpoint = `/index.php/apps/larpingapp/api/objects/item/${id}?_extend=effects`
 				try {
 					const response = await fetch(endpoint, { method: 'GET' })
 					const data = await response.json()
