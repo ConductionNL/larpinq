@@ -57,7 +57,7 @@ export const useCharacterStore = defineStore(
 			},
 			// New function to get a single character
 			async getCharacter(id) {
-				const endpoint = `/index.php/apps/larpingapp/api/objects/character/${id}`
+				const endpoint = `/index.php/apps/larpingapp/api/objects/character/${id}?_extend=ocName,skills,items,conditions`
 				try {
 					const response = await fetch(endpoint, {
 						method: 'GET',
