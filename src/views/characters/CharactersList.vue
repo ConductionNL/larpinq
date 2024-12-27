@@ -140,7 +140,8 @@ export default {
 				// Fetch audit trails and relations for the selected character
 				await Promise.all([
 					characterStore.getAuditTrails(character.id),
-					characterStore.getRelations(character.id)
+					characterStore.getRelations(character.id),
+					characterStore.getUses(character.id)
 				])
 			} catch (error) {
 				console.error('Error fetching character data:', error)

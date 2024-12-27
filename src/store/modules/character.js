@@ -8,7 +8,8 @@ export const useCharacterStore = defineStore(
 			characterItem: false,
 			characterList: [],
 			auditTrails: [],
-			relations: []
+			relations: [],
+			uses: [] // Added uses array to state
 		}),
 		actions: {
 			setCharacterItem(characterItem) {
@@ -28,6 +29,10 @@ export const useCharacterStore = defineStore(
 			setRelations(relations) {
 				this.relations = relations
 				console.log('Relations set with ' + relations.length + ' items')
+			},
+			setUses(uses) { // Added setter for uses
+				this.uses = uses
+				console.log('Uses set with ' + uses.length + ' items')
 			},
 			/* istanbul ignore next */ // ignore this for Jest until moved into a service
 			async refreshCharacterList(search = null) {
@@ -109,6 +114,27 @@ export const useCharacterStore = defineStore(
 					return data
 				} catch (err) {
 					console.error('Error fetching relations:', err)
+					throw err
+				}
+			},
+			// Get uses for a character
+			async getUses(id) {
+				if (!id) {
+					throw new Error('Character ID required to fetch uses')
+				}
+
+				console.log('Fetching character uses...')
+				const endpoint = `/index.php/apps/larpingapp/api/objects/character/${id}/uses`
+
+				try {
+					const response = await fetch(endpoint, {
+						method: 'GET'
+					})
+					const data = await response.json()
+					this.setUses(data)
+					return data
+				} catch (err) {
+					console.error('Error fetching uses:', err)
 					throw err
 				}
 			},
