@@ -218,4 +218,18 @@ class ObjectsController extends Controller
             );
         } 
     }
+
+    /**
+     * Get all uses for a specific object
+     *
+     * @NoAdminRequired
+     * @NoCSRFRequired
+     *
+     * @return JSONResponse
+     */
+    public function getUses(string $objectType, string $id): JSONResponse
+    {
+        $uses = $this->objectService->getUses($objectType, $id);
+        return new JSONResponse($uses);
+    }
 }

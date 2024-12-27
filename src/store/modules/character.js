@@ -32,8 +32,8 @@ export const useCharacterStore = defineStore(
 			/* istanbul ignore next */ // ignore this for Jest until moved into a service
 			async refreshCharacterList(search = null) {
 				// @todo this might belong in a service?
-				let endpoint = '/index.php/apps/larpingapp/api/objects/character'
-				//let endpoint = '/index.php/apps/larpingapp/api/characters?_extend=ocName,skills,items,conditions'
+				//let endpoint = '/index.php/apps/larpingapp/api/objects/character'
+				let endpoint = '/index.php/apps/larpingapp/api/objects/character?_extend=ocName,skills,items,conditions'
 				if (search !== null && search !== '') {
 					endpoint = endpoint + '?_search=' + search
 				}

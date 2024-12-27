@@ -1,9 +1,6 @@
 <?php
 
 return [
-	'resources' => [
-		'characters' => ['url' => 'api/characters'], 
-	],
 	'routes' => [
 		// Page routes
 		['name' => 'dashboard#page', 'url' => '/', 'verb' => 'GET'],
@@ -18,5 +15,6 @@ return [
 		['name' => 'objects#delete', 'url' => 'api/objects/{objectType}/{id}', 'verb' => 'DELETE'],
 		['name' => 'objects#getAuditTrail', 'url' => 'api/objects/{objectType}/{id}/audit', 'verb' => 'GET'],
 		['name' => 'objects#getRelations', 'url' => 'api/objects/{objectType}/{id}/relations', 'verb' => 'GET'],
+		['name' => 'objects#getUses', 'url' => 'api/objects/{objectType}/{id}/uses', 'verb' => 'GET']
 	],
 ];
