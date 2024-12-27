@@ -161,17 +161,38 @@ export const useCharacterStore = defineStore(
 					})
 			},
 			// Create or save a character from store
-			saveCharacter(characterItem) {
+			async saveCharacter(characterItem) {
 				if (!characterItem) {
 					throw new Error('No character item to save')
 				}
 
 				console.log('Saving character...')
 
-				const isNewCharacter = !characterItem.id
+				// Create a copy of the character item to avoid modifying the original
+				const characterToSave = { ...characterItem }
+
+				// Transform arrays of objects to arrays of UUIDs if needed
+				if (characterToSave.skills) {
+					characterToSave.skills = characterToSave.skills.map(skill => typeof skill === 'object' ? skill.id : skill)
+				}
+				if (characterToSave.items) {
+					characterToSave.items = characterToSave.items.map(item => typeof item === 'object' ? item.id : item)
+				}
+				if (characterToSave.conditions) {
+					characterToSave.conditions = characterToSave.conditions.map(condition => typeof condition === 'object' ? condition.id : condition)
+				}
+				if (characterToSave.effects) {
+					characterToSave.effects = characterToSave.effects.map(effect => typeof effect === 'object' ? effect.id : effect)
+				}
+				// Transform ocName object to UUID if needed
+				if (characterToSave.ocName && typeof characterToSave.ocName === 'object') {
+					characterToSave.ocName = characterToSave.ocName.id
+				}
+
+				const isNewCharacter = !characterToSave.id
 				const endpoint = isNewCharacter
 					? '/index.php/apps/larpingapp/api/objects/character'
-					: `/index.php/apps/larpingapp/api/objects/character/${characterItem.id}`
+					: `/index.php/apps/larpingapp/api/objects/character/${characterToSave.id}`
 				const method = isNewCharacter ? 'POST' : 'PUT'
 
 				return fetch(
@@ -181,14 +202,13 @@ export const useCharacterStore = defineStore(
 						headers: {
 							'Content-Type': 'application/json',
 						},
-						body: JSON.stringify(characterItem),
+						body: JSON.stringify(characterToSave),
 					},
 				)
 					.then((response) => response.json())
 					.then((data) => {
 						this.setCharacterItem(data)
 						console.log('Character saved')
-						// Refresh the character list
 						return this.refreshCharacterList()
 					})
 					.catch((err) => {
