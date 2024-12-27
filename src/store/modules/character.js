@@ -38,7 +38,7 @@ export const useCharacterStore = defineStore(
 			async refreshCharacterList(search = null) {
 				// @todo this might belong in a service?
 				//let endpoint = '/index.php/apps/larpingapp/api/objects/character'
-				let endpoint = '/index.php/apps/larpingapp/api/objects/character?_extend=ocName,skills,items,conditions'
+				let endpoint = '/index.php/apps/larpingapp/api/objects/character?_extend=ocName,skills,items,conditions,events'
 				if (search !== null && search !== '') {
 					endpoint = endpoint + '?_search=' + search
 				}
@@ -62,7 +62,7 @@ export const useCharacterStore = defineStore(
 			},
 			// New function to get a single character
 			async getCharacter(id) {
-				const endpoint = `/index.php/apps/larpingapp/api/objects/character/${id}?_extend=ocName,skills,items,conditions`
+				const endpoint = `/index.php/apps/larpingapp/api/objects/character/${id}?_extend=ocName,skills,items,conditions,events`
 				try {
 					const response = await fetch(endpoint, {
 						method: 'GET',

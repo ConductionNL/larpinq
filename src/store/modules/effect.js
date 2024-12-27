@@ -7,6 +7,9 @@ export const useEffectStore = defineStore(
 		state: () => ({
 			effectItem: false,
 			effectList: [],
+			auditTrails: [],
+			relations: [],
+			uses: []
 		}),
 		actions: {
 			// Set the active effect item
@@ -104,6 +107,78 @@ export const useEffectStore = defineStore(
 						throw err
 					})
 			},
+			setAuditTrails(auditTrails) {
+				this.auditTrails = auditTrails
+				console.log('Audit trails set with ' + auditTrails.length + ' items')
+			},
+			setRelations(relations) {
+				this.relations = relations
+				console.log('Relations set with ' + relations.length + ' items')
+			},
+			setUses(uses) {
+				this.uses = uses
+				console.log('Uses set with ' + uses.length + ' items')
+			},
+			async getAuditTrails(id) {
+				if (!id) {
+					throw new Error('ID required to fetch audit trails')
+				}
+
+				console.log('Fetching audit trails...')
+				const endpoint = `/index.php/apps/larpingapp/api/objects/effect/${id}/audit`
+
+				try {
+					const response = await fetch(endpoint, {
+						method: 'GET'
+					})
+					const data = await response.json()
+					this.setAuditTrails(data)
+					return data
+				} catch (err) {
+					console.error('Error fetching audit trails:', err)
+					throw err
+				}
+			},
+			async getRelations(id) {
+				if (!id) {
+					throw new Error('ID required to fetch relations')
+				}
+
+				console.log('Fetching relations...')
+				const endpoint = `/index.php/apps/larpingapp/api/objects/effect/${id}/relations`
+
+				try {
+					const response = await fetch(endpoint, {
+						method: 'GET'
+					})
+					const data = await response.json()
+					this.setRelations(data)
+					return data
+				} catch (err) {
+					console.error('Error fetching relations:', err)
+					throw err
+				}
+			},
+			async getUses(id) {
+				if (!id) {
+					throw new Error('ID required to fetch uses')
+				}
+
+				console.log('Fetching uses...')
+				const endpoint = `/index.php/apps/larpingapp/api/objects/effect/${id}/uses`
+
+				try {
+					const response = await fetch(endpoint, {
+						method: 'GET'
+					})
+					const data = await response.json()
+					this.setUses(data)
+					return data
+				} catch (err) {
+					console.error('Error fetching uses:', err)
+					throw err
+				}
+			}
 		},
 	},
 )

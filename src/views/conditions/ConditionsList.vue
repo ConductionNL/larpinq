@@ -38,7 +38,7 @@ import { conditionStore, navigationStore, searchStore } from '../../store/store.
 					:force-display-actions="true"
 					:active="conditionStore.conditionItem?.id === condition?.id"
 					:details="condition?.unique ? 'Uniek' : 'Niet uniek'"
-					@click="conditionStore.setConditionItem(condition)">
+					@click="handleConditionSelect(condition)">
 					<template #icon>
 						<EmoticonSickOutline :class="conditionStore.conditionItem?.id === condition?.id && 'selectedConditionIcon'"
 							disable-menu
@@ -109,6 +109,26 @@ export default {
 	mounted() {
 		conditionStore.refreshConditionList()
 	},
+	methods: {
+		/**
+		 * Handle condition selection and fetch related data
+		 * @param {Object} condition - The selected condition object
+		 */
+		async handleConditionSelect(condition) {
+			// Set the selected condition in the store
+			conditionStore.setConditionItem(condition)
+
+			try {
+				// Fetch characters that have this condition
+				await Promise.all([
+					conditionStore.getRelations(condition.id),
+					conditionStore.getAuditTrails(condition.id),
+				])
+			} catch (error) {
+				console.error('Error fetching condition data:', error)
+			}
+		},
+	}
 }
 </script>
 

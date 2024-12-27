@@ -36,9 +36,8 @@ import { characterStore, eventStore, navigationStore, searchStore } from '../../
 					:name="event?.name"
 					:force-display-actions="true"
 					:active="eventStore.eventItem?.id === event?.id"
-					:details="getDateString(event.startDate, event.endDate)"
-					:counter-number="getPlayerList(event.id).length"
-					@click="eventStore.setEventItem(event)">
+					:details="event.startDate"
+					@click="handleEventSelect(event)">
 					<template #icon>
 						<CalendarMonthOutline :class="eventStore.eventItem?.id === event.id && 'selectedZaakIcon'"
 							disable-menu
@@ -105,43 +104,27 @@ export default {
 		Pencil,
 		TrashCanOutline,
 	},
-	data() {
-		return {
-			charactersLoading: false,
-		}
-	},
 	mounted() {
 		eventStore.refreshEventList()
-		this.fetchCharacters()
 	},
 	methods: {
-		fetchCharacters() {
-			this.charactersLoading = true
-			characterStore.refreshCharacterList()
-				.then(() => {
-					this.charactersLoading = false
-				})
-		},
-		getPlayerList(id) {
-			// get characters related to this event
-			const filteredCharacterList = characterStore.characterList.filter((character) => {
-				return character.events.map(String).includes(id.toString())
-			})
+		/**
+		 * Handle event selection and fetch related data
+		 * @param {Object} event - The selected event object
+		 */
+		async handleEventSelect(event) {
+			// Set the selected event in the store
+			eventStore.setEventItem(event)
 
-			return [...new Set(filteredCharacterList.map(obj => obj.ocName))]
-		},
-		getDateString(startDate, endDate) {
-			const dates = [startDate, endDate].map((date) => {
-				const dateObj = new Date(startDate)
-
-				// Extract the month and day
-				const month = String(dateObj.getUTCMonth() + 1).padStart(2, '0') // Months are zero-based
-				const day = String(dateObj.getUTCDate()).padStart(2, '0')
-
-				return `${day}/${month}`
-			})
-
-			return `${dates[0]} - ${dates[1]}`
+			try {
+				// Fetch characters participating in this event
+				await Promise.all([
+					eventStore.getRelations(event.id),
+					eventStore.getAuditTrails(event.id),
+				])
+			} catch (error) {
+				console.error('Error fetching event data:', error)
+			}
 		},
 	},
 }
