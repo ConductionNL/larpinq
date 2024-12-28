@@ -26,7 +26,7 @@ export const useSkillStore = defineStore(
 			},
 			// Fetch and refresh the list of skills
 			async refreshSkillList(search = null) {
-				let endpoint = '/index.php/apps/larpingapp/api/objects/skill'
+				let endpoint = '/index.php/apps/larpingapp/api/objects/skill?_extend=effects'
 				if (search !== null && search !== '') {
 					endpoint = endpoint + '?_search=' + search
 				}
@@ -40,7 +40,7 @@ export const useSkillStore = defineStore(
 			},
 			// Fetch a single skill by ID
 			async getSkill(id) {
-				const endpoint = `/index.php/apps/larpingapp/api/objects/skill/${id}`
+				const endpoint = `/index.php/apps/larpingapp/api/objects/skill/${id}?_extend=effects`
 				try {
 					const response = await fetch(endpoint, { method: 'GET' })
 					const data = await response.json()
@@ -82,9 +82,19 @@ export const useSkillStore = defineStore(
 
 				const isNewSkill = !skillItem.id
 				const endpoint = isNewSkill
-					? '/index.php/apps/larpingapp/api/objects/skill'
-					: `/index.php/apps/larpingapp/api/objects/skill/${skillItem.id}`
+					? '/index.php/apps/larpingapp/api/objects/skill?_extend=effects'
+					: `/index.php/apps/larpingapp/api/objects/skill/${skillItem.id}?_extend=effects`
 				const method = isNewSkill ? 'POST' : 'PUT'
+
+				// Create a copy of the skill to avoid modifying the original
+				const skillToSave = { ...skillItem }
+
+				// Transform effects array to array of UUIDs if needed
+				if (skillToSave.effects) {
+					skillToSave.effects = skillToSave.effects.map(effect => 
+						typeof effect === 'object' ? effect.id : effect
+					)
+				}
 
 				return fetch(
 					endpoint,
@@ -93,7 +103,7 @@ export const useSkillStore = defineStore(
 						headers: {
 							'Content-Type': 'application/json',
 						},
-						body: JSON.stringify(skillItem),
+						body: JSON.stringify(skillToSave),
 					},
 				)
 					.then((response) => response.json())

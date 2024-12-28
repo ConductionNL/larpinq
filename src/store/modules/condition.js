@@ -26,7 +26,7 @@ export const useConditionStore = defineStore(
 			},
 			// Fetch and refresh the list of conditions
 			async refreshConditionList(search = null) {
-				let endpoint = '/index.php/apps/larpingapp/api/objects/condition'
+				let endpoint = '/index.php/apps/larpingapp/api/objects/condition?_extend=effects'
 				if (search !== null && search !== '') {
 					endpoint = endpoint + '?_search=' + search
 				}
@@ -40,7 +40,7 @@ export const useConditionStore = defineStore(
 			},
 			// Fetch a single condition by ID
 			async getCondition(id) {
-				const endpoint = `/index.php/apps/larpingapp/api/objects/condition/${id}`
+				const endpoint = `/index.php/apps/larpingapp/api/objects/condition/${id}?_extend=effects`
 				try {
 					const response = await fetch(endpoint, { method: 'GET' })
 					const data = await response.json()
@@ -80,10 +80,20 @@ export const useConditionStore = defineStore(
 
 				console.log('Saving condition...')
 
-				const isNewCondition = !conditionItem.id
+				// Create a copy of the condition item to avoid modifying the original
+				const conditionToSave = { ...conditionItem }
+
+				// Transform effects array to array of UUIDs if needed
+				if (conditionToSave.effects) {
+					conditionToSave.effects = conditionToSave.effects.map(effect => 
+						typeof effect === 'object' ? effect.id : effect
+					)
+				}
+
+				const isNewCondition = !conditionToSave.id
 				const endpoint = isNewCondition
-					? '/index.php/apps/larpingapp/api/objects/condition'
-					: `/index.php/apps/larpingapp/api/objects/condition/${conditionItem.id}`
+					? '/index.php/apps/larpingapp/api/objects/condition?_extend=effects'
+					: `/index.php/apps/larpingapp/api/objects/condition/${conditionToSave.id}?_extend=effects`
 				const method = isNewCondition ? 'POST' : 'PUT'
 
 				return fetch(
@@ -93,7 +103,7 @@ export const useConditionStore = defineStore(
 						headers: {
 							'Content-Type': 'application/json',
 						},
-						body: JSON.stringify(conditionItem),
+						body: JSON.stringify(conditionToSave),
 					},
 				)
 					.then((response) => response.json())
