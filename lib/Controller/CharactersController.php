@@ -42,22 +42,26 @@ class CharactersController extends Controller
     }
     
     /**
-     * Downloads a character PDF
+     * Downloads a character PDF using a specific template
      * 
-     * This method generates and downloads a PDF for a specific character.
+     * This method generates and downloads a PDF for a specific character using the provided template.
      *
      * @NoAdminRequired
      * @NoCSRFRequired
      *
-     * @param int $id The ID of the character to download as PDF
+     * @param string $id The ID of the character to download as PDF
+     * @param string $template The ID of the template to use for PDF generation
      * @return DataDownloadResponse|JSONResponse A response containing the PDF file for download or an error response
      */
-    public function downloadPdf(int $id): DataDownloadResponse|JSONResponse
+    public function downloadPdf(string $id, string $template): DataDownloadResponse|JSONResponse
     {
         try {
-            // Fetch the catalog object by its ID
-            $character = $this->objectService->getObject(self::objectType, $id);
-            $pdfContent = $this->characterService->createCharacterPdf($character);
+            // Fetch the character object by its ID
+            $character = $this->objectService->getObject('character', $id);
+            $template  = $this->objectService->getObject('template', $template);
+            
+            // Generate PDF using the specified template
+            $pdfContent = $this->characterService->createCharacterPdf($character, $template);
             
             return new DataDownloadResponse(
                 $pdfContent,

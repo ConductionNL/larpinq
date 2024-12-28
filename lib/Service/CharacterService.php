@@ -22,7 +22,9 @@ use OCA\LarpingApp\Db\EventMapper;
 use OCA\LarpingApp\Db\EffectMapper;
 use OCA\LarpingApp\Service\ObjectService;
 
+// @todo: cant get this to work
 use TCPDF;
+
 // And in case of open registers
 use OCA\OpenRegister\Db\ObjectEntity;
 
@@ -229,65 +231,75 @@ class CharacterService
     }
 
     /**
-     * Create a PDF from a character
+     * Create a PDF from a character using a specified template
      *
-     * @param Character $character Character object
-     * @return string PDF content
+     * @param array $character Character data array containing character information
+     * @param array $template Template data array containing PDF layout configuration
+     * @return string Generated PDF content as string
      * @throws \Exception If PDF generation fails
+     * @psalm-param array{name: string, stats: array<string, array{name: string, value: int}>, skills?: array, items?: array, conditions?: array, events?: array} $character
+     * @psalm-param array{name: string, orientation?: string, format?: string, sections?: array} $template
      */
-    public function createCharacterPdf(Character $character): string
+    public function createCharacterPdf(array $character, array $template): string
     {
         try {
-            $pdf = new \TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+            $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
             // Set document information
             $pdf->SetCreator(PDF_CREATOR);
             $pdf->SetAuthor('LarpingApp');
-            $pdf->SetTitle('Character Sheet: ' . $character->getName());
+            $pdf->SetTitle('Character Sheet: ' . $character['name']);
             $pdf->SetSubject('Character Sheet');
 
             // Add a page
             $pdf->AddPage();
 
-            // Set font
+            // Set default font
             $pdf->SetFont('helvetica', '', 12);
 
-            // Add content
-            $pdf->Cell(0, 10, 'Character Sheet: ' . $character->getName(), 0, 1, 'C');
+            // Add character name header
+            $pdf->Cell(0, 10, 'Character Sheet: ' . $character['name'], 0, 1, 'C');
             $pdf->Ln(10);
 
-
-            // Add stats
-            $pdf->SetFont('', 'B', 14);
-            $pdf->Cell(0, 10, 'Stats', 0, 1);
-            $pdf->SetFont('', '', 12);
-            foreach ($character->getStats() as $statId => $stat) {
-                $pdf->Cell(0, 10, $stat['name'] . ': ' . $stat['value'], 0, 1);
-            }
-            $pdf->Ln(10);
-
-            // Add skills, items, conditions, and events
-            $sections = [
-                'Skills' => $character->getSkills(),
-                'Items' => $character->getItems(),
-                'Conditions' => $character->getConditions(),
-                'Events' => $character->getEvents()
-            ];
-
-            foreach ($sections as $title => $ids) {
+            // Add stats section if character has stats
+            if (!empty($character['stats'])) {
                 $pdf->SetFont('', 'B', 14);
-                $pdf->Cell(0, 10, $title, 0, 1);
+                $pdf->Cell(0, 10, 'Stats', 0, 1);
                 $pdf->SetFont('', '', 12);
-                foreach ($ids as $id) {
-                    $entity = $this->{'all' . $title}[$id] ?? null;
-                    if ($entity) {
-                        $pdf->Cell(0, 10, $entity->getName(), 0, 1);
-                    }
+                
+                foreach ($character['stats'] as $stat) {
+                    $pdf->Cell(0, 10, $stat['name'] . ': ' . $stat['value'], 0, 1);
                 }
                 $pdf->Ln(10);
             }
 
+            // Define sections to process
+            $sections = [
+                'Skills' => $character['skills'] ?? [],
+                'Items' => $character['items'] ?? [],
+                'Conditions' => $character['conditions'] ?? [],
+                'Events' => $character['events'] ?? []
+            ];
+
+            // Add each section if it contains data
+            foreach ($sections as $title => $items) {
+                if (!empty($items)) {
+                    $pdf->SetFont('', 'B', 14);
+                    $pdf->Cell(0, 10, $title, 0, 1);
+                    $pdf->SetFont('', '', 12);
+                    
+                    foreach ($items as $item) {
+                        if (isset($item['name'])) {
+                            $pdf->Cell(0, 10, $item['name'], 0, 1);
+                        }
+                    }
+                    $pdf->Ln(10);
+                }
+            }
+
+            // Generate and return PDF content as string
             return $pdf->Output('character_sheet.pdf', 'S');
+
         } catch (\Exception $e) {
             // Log the error for debugging
             error_log('PDF Generation Failed: ' . $e->getMessage());

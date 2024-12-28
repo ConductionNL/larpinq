@@ -4,7 +4,7 @@ return [
 	'routes' => [
 		// Page routes
 		['name' => 'dashboard#page', 'url' => '/', 'verb' => 'GET'],
-		['name' => 'characters#downloadPdf', 'url' => '/characters/{id}/download', 'verb' => 'GET'],
+		['name' => 'characters#downloadPdf', 'url' => '/characters/{id}/download/{template}', 'verb' => 'GET'],
 		['name' => 'settings#index', 'url' => '/settings', 'verb' => 'GET'],
 		['name' => 'settings#create', 'url' => '/settings', 'verb' => 'POST'],
 		// Object API routes	
