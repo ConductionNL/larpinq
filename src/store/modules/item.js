@@ -7,6 +7,9 @@ export const useItemStore = defineStore(
 		state: () => ({
 			  itemItem: false,
 			  itemList: [],
+			  auditTrails: [],
+			  relations: [],
+			  uses: []
 		}),
 		actions: {
 		// Set the active item
@@ -14,7 +17,7 @@ export const useItemStore = defineStore(
 				this.itemItem = itemItem && new Item(itemItem)
 				console.log('Active item set to ' + itemItem)
 			},
-			// Set the list of items
+			// Set the list of items		
 			setItemList(itemList) {
 				this.itemList = itemList.map(
 					(itemItem) => new Item(itemItem),
@@ -23,7 +26,7 @@ export const useItemStore = defineStore(
 			},
 			// Fetch and refresh the list of items
 			async refreshItemList(search = null) {
-				let endpoint = '/index.php/apps/larpingapp/api/items'
+				let endpoint = '/index.php/apps/larpingapp/api/objects/item?_extend=effects'
 				if (search !== null && search !== '') {
 					endpoint = endpoint + '?_search=' + search
 				}
@@ -37,7 +40,7 @@ export const useItemStore = defineStore(
 			},
 			// Fetch a single item by ID
 			async getItem(id) {
-				const endpoint = `/index.php/apps/larpingapp/api/items/${id}`
+				const endpoint = `/index.php/apps/larpingapp/api/objects/item/${id}?_extend=effects`
 				try {
 					const response = await fetch(endpoint, { method: 'GET' })
 					const data = await response.json()
@@ -56,7 +59,7 @@ export const useItemStore = defineStore(
 
 				console.log('Deleting item...')
 
-				const endpoint = `/index.php/apps/larpingapp/api/items/${this.itemItem.id}`
+				const endpoint = `/index.php/apps/larpingapp/api/objects/item/${this.itemItem.id}`
 
 				return fetch(endpoint, {
 					method: 'DELETE',
@@ -79,11 +82,21 @@ export const useItemStore = defineStore(
 
 				const isNewItem = !itemItem.id
 				const endpoint = isNewItem
-					? '/index.php/apps/larpingapp/api/items'
-					: `/index.php/apps/larpingapp/api/items/${itemItem.id}`
+					? '/index.php/apps/larpingapp/api/objects/item?_extend=effects'
+					: `/index.php/apps/larpingapp/api/objects/item/${itemItem.id}?_extend=effects`
 				const method = isNewItem ? 'POST' : 'PUT'
 
+				// Create a copy of the item to avoid modifying the original
 				const itemToSave = { ...itemItem }
+
+				// Transform effects array to array of UUIDs if needed
+				if (itemToSave.effects) {
+					itemToSave.effects = itemToSave.effects.map(effect => 
+						typeof effect === 'object' ? effect.id : effect
+					)
+				}
+
+				// Remove empty properties
 				Object.keys(itemToSave).forEach(key => {
 					if (itemToSave[key] === '' || (Array.isArray(itemToSave[key]) && itemToSave[key].length === 0)) {
 						delete itemToSave[key]
@@ -111,5 +124,77 @@ export const useItemStore = defineStore(
 						throw err
 					})
 			},
+			setAuditTrails(auditTrails) {
+				this.auditTrails = auditTrails
+				console.log('Audit trails set with ' + auditTrails.length + ' items')
+			},
+			setRelations(relations) {
+				this.relations = relations
+				console.log('Relations set with ' + relations.length + ' items')
+			},
+			setUses(uses) {
+				this.uses = uses
+				console.log('Uses set with ' + uses.length + ' items')
+			},
+			async getAuditTrails(id) {
+				if (!id) {
+					throw new Error('ID required to fetch audit trails')
+				}
+
+				console.log('Fetching audit trails...')
+				const endpoint = `/index.php/apps/larpingapp/api/objects/item/${id}/audit`
+
+				try {
+					const response = await fetch(endpoint, {
+						method: 'GET'
+					})
+					const data = await response.json()
+					this.setAuditTrails(data)
+					return data
+				} catch (err) {
+					console.error('Error fetching audit trails:', err)
+					throw err
+				}
+			},
+			async getRelations(id) {
+				if (!id) {
+					throw new Error('ID required to fetch relations')
+				}
+
+				console.log('Fetching relations...')
+				const endpoint = `/index.php/apps/larpingapp/api/objects/item/${id}/relations`
+
+				try {
+					const response = await fetch(endpoint, {
+						method: 'GET'
+					})
+					const data = await response.json()
+					this.setRelations(data)
+					return data
+				} catch (err) {
+					console.error('Error fetching relations:', err)
+					throw err
+				}
+			},
+			async getUses(id) {
+				if (!id) {
+					throw new Error('ID required to fetch uses')
+				}
+
+				console.log('Fetching uses...')
+				const endpoint = `/index.php/apps/larpingapp/api/objects/item/${id}/uses`
+
+				try {
+					const response = await fetch(endpoint, {
+						method: 'GET'
+					})
+					const data = await response.json()
+					this.setUses(data)
+					return data
+				} catch (err) {
+					console.error('Error fetching uses:', err)
+					throw err
+				}
+			}
 		},
 	})

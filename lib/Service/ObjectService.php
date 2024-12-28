@@ -115,6 +115,7 @@ class ObjectService
 	 *
 	 * @return mixed The retrieved object.
 	 * @throws ContainerExceptionInterface|DoesNotExistException|MultipleObjectsReturnedException|NotFoundExceptionInterface
+	 * @throws InvalidArgumentException If extend is requested for non-OpenRegister objects
 	 */
 	public function getObject(string $objectType, string $id, array $extend = []): mixed
 	{
@@ -126,66 +127,74 @@ class ObjectService
 
 		// Get the appropriate mapper for the object type
 		$mapper = $this->getMapper($objectType);
+
+		// Check if extend is requested for non-OpenRegister objects
+		if (!empty($extend) && !($mapper instanceof \OCA\OpenRegister\Service\ObjectService)) {
+			throw new InvalidArgumentException('Extend functionality is only available for OpenRegister objects');
+		}
+
 		// Use the mapper to find and return the object
 		$object = $mapper->find($id);
 
 		// Convert the object to an array if it is not already an array
 		if (is_object($object) && method_exists($object, 'jsonSerialize')) {
-			$object = $object->jsonSerialize();
-		} elseif (is_array($object) === false) {
-			$object = (array)$object;
+			return $object->jsonSerialize();
 		}
-
-		$object = $this->extendEntity(entity: $object, extend: $extend);
-
-		return $object;
+		
+		return is_array($object) ? $object : (array)$object;
 	}
 
 	/**
-	 * Gets objects based on the object type, filters, search conditions, and other parameters.
+	 * Gets objects based on the object type and various parameters.
 	 *
 	 * @param string $objectType The type of objects to retrieve.
 	 * @param int|null $limit The maximum number of objects to retrieve.
 	 * @param int|null $offset The offset from which to start retrieving objects.
 	 * @param array|null $filters Filters to apply to the query.
-	 * @param array|null $searchConditions Search conditions to apply to the query.
-	 * @param array|null $searchParams Search parameters for the query.
 	 * @param array|null $sort Sorting parameters for the query.
 	 * @param array|null $extend Additional parameters for extending the query.
 	 *
 	 * @return array The retrieved objects as arrays.
 	 * @throws ContainerExceptionInterface|DoesNotExistException|MultipleObjectsReturnedException|NotFoundExceptionInterface
+	 * @throws InvalidArgumentException If extend is requested for non-OpenRegister objects
 	 */
 	public function getObjects(
 		string $objectType,
 		?int $limit = null,
 		?int $offset = null,
 		?array $filters = [],
-		?array $searchConditions = [],
-		?array $searchParams = [],
 		?array $sort = [],
+		?string $search = null,
 		?array $extend = []
 	): array
 	{
-
 		// Get the appropriate mapper for the object type
 		$mapper = $this->getMapper($objectType);
-		// Use the mapper to find and return the objects based on the provided parameters
-		$objects = $mapper->findAll($limit, $offset, $filters, sort: $sort);
 
-		// Convert entity objects to arrays using jsonSerialize
-		$objects = array_map(function($object) {
-			return $object->jsonSerialize();
-		}, $objects);
-
-		// Extend the objects if the extend array is not empty
-		if (empty($extend) === false) {
-			$objects = array_map(function($object) use ($extend) {
-				return $this->extendEntity($object, $extend);
-			}, $objects);
+		// Check if extend is requested for non-OpenRegister objects
+		if (!empty($extend) && !($mapper instanceof \OCA\OpenRegister\Service\ObjectService)) {
+			throw new InvalidArgumentException('Extend functionality is only available for OpenRegister objects');
 		}
 
-		return $objects;
+		// Use the mapper to find and return the objects based on the provided parameters
+		$objects = $mapper->findAll(
+			limit: $limit, 
+			offset: $offset, 
+			filters: $filters, 
+			sort: $sort,
+			search: $search,
+			extend: $extend
+		);
+
+		// Convert entity objects to arrays using jsonSerialize
+		return array_map(function($object) {
+			// If object is already an array, return it directly
+			if (is_array($object)) {
+				return $object;
+			}
+			// Otherwise serialize the object
+			return $object->jsonSerialize();
+		}, $objects);
 	}
 
 	/**
@@ -364,6 +373,7 @@ class ObjectService
 	 *
 	 * @return array The result array containing objects and total count
 	 * @throws ContainerExceptionInterface|DoesNotExistException|MultipleObjectsReturnedException|NotFoundExceptionInterface
+	 * @throws InvalidArgumentException If extend is requested for non-OpenRegister objects
 	 */
 	public function getResultArrayForRequest(string $objectType, array $requestParams): array
 	{
@@ -373,11 +383,11 @@ class ObjectService
 		$order = $requestParams['order'] ?? $requestParams['_order'] ?? [];
 		$extend = $requestParams['extend'] ?? $requestParams['_extend'] ?? null;
 		$page = $requestParams['page'] ?? $requestParams['_page'] ?? null;
-
+		$search = $requestParams['search'] ?? $requestParams['_search'] ?? null;
+		// If page is set, calculate the offset
 		if ($page !== null && isset($limit)) {
 			$offset = $limit * ($page - 1);
 		}
-
 
 		// Ensure order and extend are arrays
 		if (is_string($order)) {
@@ -389,22 +399,23 @@ class ObjectService
 
 		// Remove unnecessary parameters from filters
 		$filters = $requestParams;
-		unset($filters['_route']); // TODO: Investigate why this is here and if it's needed
+		unset($filters['_route']); // Nextcloud automatically adds this
 		unset($filters['_extend'], $filters['_limit'], $filters['_offset'], $filters['_order'], $filters['_page']);
 		unset($filters['extend'], $filters['limit'], $filters['offset'], $filters['order'], $filters['page']);
-
 		// Fetch objects based on filters and order
+			
 		$objects = $this->getObjects(
 			objectType: $objectType,
 			limit: $limit,
 			offset: $offset,
 			filters: $filters,
 			sort: $order,
-			extend: $extend
+			extend: $extend,
+			search: $search
 		);
-		$facets  = $this->getFacets($objectType, $filters);
 
-		// Prepare response data
+		$facets = $this->getFacets($objectType, $filters);
+
 		return [
 			'results' => $objects,
 			'facets' => $facets,
@@ -413,72 +424,56 @@ class ObjectService
 	}
 
 	/**
-	 * Extends an entity with related objects based on the extend array.
+	 * Get all relations for a specific object
 	 *
-	 * @param mixed $entity The entity to extend
-	 * @param array $extend An array of properties to extend
-	 *
-	 * @return array The extended entity as an array
-	 * @throws ContainerExceptionInterface|DoesNotExistException|MultipleObjectsReturnedException|NotFoundExceptionInterface If a property is not present on the entity
+	 * @param string $objectType The type of object to get relations for
+	 * @param string $id The id of the object to get relations for
+	 * 
+	 * @return array The relations for the object
+	 * @throws Exception If OpenRegister service is not available
 	 */
-	public function extendEntity(mixed $entity, array $extend): array
+	public function getRelations(string $objectType, string $id): array
 	{
-		$surpressMapperError = false;
-		// Convert the entity to an array if it's not already one
-		$result = is_array($entity) ? $entity : $entity->jsonSerialize();
+		// Get the mapper first
+		$mapper = $this->getMapper($objectType);
 
-		if (in_array(needle: 'all', haystack: $extend) === true) {
-			$extend = array_keys($entity);
-			$surpressMapperError = true;
-		}
+		// Get audit trails from OpenRegister
+		$auditTrails = $mapper->getRelations($id);
 
-		// Iterate through each property to be extended
-		foreach ($extend as $property) {
-			// Create a singular property name
-			$singularProperty = rtrim($property, 's');
+		return $auditTrails;
+	}
 
-			// Check if property or singular property are keys in the array
-			if (array_key_exists($property, $result)) {
-				$value = $result[$property];
-				if (empty($value)) {
-					continue;
-				}
-			} elseif (array_key_exists($singularProperty, $result)) {
-				$value = $result[$singularProperty];
-			} else {
-				throw new Exception("Property '$property' or '$singularProperty' is not present in the entity.");
-			}
+	/**
+	 * Get all the useses that an specific object has
+	 *
+	 * @param string $objectType The type of object to get uses for
+	 * @param string $id The id of the object to get uses for
+	 * 
+	 * @return array The uses for the object
+	 */
+	public function getUses(string $objectType, string $id): array
+	{
+		$mapper = $this->getMapper($objectType);
+		$uses = $mapper->getUses($id);
+		return $uses;
+	}
 
-			// Get a mapper for the property
-			$propertyObject = $property;
-			try {
-				$mapper = $this->getMapper($property);
-				$propertyObject = $singularProperty;
-			} catch (Exception $e) {
-				try {
-					$mapper = $this->getMapper($singularProperty);
-					$propertyObject = $singularProperty;
-				} catch (Exception $e) {
-					// If still no mapper, throw a no mapper available error
-					if ($surpressMapperError === true) {
-						continue;
-					}
-					throw new Exception("No mapper available for property '$property'.");
-				}
-			}
+	/**
+	 * Get all audit trails for a specific object
+	 *
+	 * @param string $objectType The type of object to get audit trails for
+	 * @param string $id The id of the object to get audit trails for
+	 * 
+	 * @return array The audit trails for the object
+	 */
+	public function getAuditTrail(string $objectType, string $id): array
+	{
+		// Get the mapper first
+		$mapper = $this->getMapper($objectType);
 
-			// Update the values
-			if (is_array($value)) {
-				// If the value is an array, get multiple related objects
-				$result[$property] = $this->getMultipleObjects($propertyObject, $value);
-			} else {
-				// If the value is not an array, get a single related object
-				$objectId = is_object($value) ? $value->getId() : $value;
-				$result[$property] = $this->getObject($propertyObject, $objectId);
-			}
-		}
+		// Get audit trails from OpenRegister
+		$auditTrails = $mapper->getAuditTrail($id);
 
-		// Return the extended entity as an array
-		return $result;
+		return $auditTrails;
 	}
 }

@@ -36,9 +36,8 @@ import { skillStore, navigationStore, searchStore, characterStore } from '../../
 					:name="skill?.name"
 					:active="skillStore.skillItem?.id === skill?.id"
 					:details="(skill?.effects?.length || '0') + ' effect(s)'"
-					:counter-number="filterCharacters(skill.id).length || 0"
 					:force-display-actions="true"
-					@click="skillStore.setSkillItem(skill)">
+					@click="handleSkillSelect(skill)">
 					<template #icon>
 						<SwordCross :class="skillStore.skillItem === skill.id && 'selectedSkillIcon'"
 							disable-menu
@@ -48,13 +47,13 @@ import { skillStore, navigationStore, searchStore, characterStore } from '../../
 						{{ skill?.description }}
 					</template>
 					<template #actions>
-						<NcActionButton @click="skillStore.setSkillItem(skill); navigationStore.setModal('editSkill')">
+						<NcActionButton @click="handleSkillSelect(skill); navigationStore.setModal('editSkill')">
 							<template #icon>
 								<Pencil />
 							</template>
 							Bewerken
 						</NcActionButton>
-						<NcActionButton @click="skillStore.setSkillItem(skill), navigationStore.setDialog('deleteSkill')">
+						<NcActionButton @click="handleSkillSelect(skill), navigationStore.setDialog('deleteSkill')">
 							<template #icon>
 								<TrashCanOutline />
 							</template>
@@ -105,27 +104,28 @@ export default {
 		TrashCanOutline,
 		Refresh,
 	},
-	data() {
-		return {
-			charactersLoading: false,
-		}
-	},
 	mounted() {
 		skillStore.refreshSkillList()
-		this.fetchCharacters()
 	},
 	methods: {
-		filterCharacters(id) {
-			return characterStore.characterList.filter((character) => {
-				return character.skills.map(String).includes(id.toString())
-			})
-		},
-		fetchCharacters() {
-			this.charactersLoading = true
-			characterStore.refreshCharacterList()
-				.then(() => {
-					this.charactersLoading = false
-				})
+		/**
+		 * Handle skill selection
+		 * @param {object} skill - The selected skill object
+		 * @returns {Promise<void>}
+		 */
+		async handleSkillSelect(skill) {
+			// Set the selected skill in the store
+			skillStore.setSkillItem(skill)
+
+			try {
+				// Fetch audit trails and relations for the selected skill
+				await Promise.all([
+					skillStore.getRelations(skill.id),
+					skillStore.getAuditTrails(skill.id),
+				])
+			} catch (error) {
+				console.error('Error fetching skill data:', error)
+			}
 		},
 	},
 }

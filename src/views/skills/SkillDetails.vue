@@ -42,8 +42,8 @@ import { characterStore, effectStore, skillStore } from '../../store/store.js'
 		<div class="tabContainer">
 			<BTabs content-class="mt-3" justified>
 				<BTab title="Effects" active>
-					<div v-if="filterEffects.length > 0">
-						<NcListItem v-for="(effect) in filterEffects"
+					<div v-if="skillStore.skillItem?.effects?.length > 0">
+						<NcListItem v-for="(effect) in skillStore.skillItem?.effects"
 							:key="effect.id"
 							:name="effect.name"
 							:bold="false"
@@ -59,13 +59,13 @@ import { characterStore, effectStore, skillStore } from '../../store/store.js'
 							</template>
 						</NcListItem>
 					</div>
-					<div v-if="filterEffects.length === 0">
+					<div v-else>
 						Geen effects gevonden
 					</div>
 				</BTab>
 				<BTab title="Characters">
-					<div v-if="filterCharacters.length > 0 && !charactersLoading">
-						<NcListItem v-for="(character, i) in filterCharacters"
+					<div v-if="skillStore.relations?.characters?.length > 0">
+						<NcListItem v-for="(character, i) in skillStore.relations.characters"
 							:key="character.id + i"
 							:name="character.name"
 							:bold="false"
@@ -79,7 +79,7 @@ import { characterStore, effectStore, skillStore } from '../../store/store.js'
 							</template>
 						</NcListItem>
 					</div>
-					<div v-if="filterCharacters.length === 0">
+					<div v-else>
 						Geen characters gevonden
 					</div>
 				</BTab>
@@ -111,48 +111,6 @@ export default {
 		BriefcaseAccountOutline,
 		Pencil,
 		TrashCanOutline,
-	},
-	data() {
-		return {
-			characters: [],
-			charactersLoading: false,
-			effects: [],
-			effectsLoading: false,
-		}
-	},
-	computed: {
-		filterCharacters() {
-			return characterStore.characterList.filter((character) => {
-				return character.skills.map(String).includes(skillStore.skillItem.id.toString())
-			})
-		},
-		filterEffects() {
-			return effectStore.effectList.filter((effect) => {
-				return skillStore.skillItem.effects.map(String).includes(effect.id.toString())
-			})
-		},
-	},
-	mounted() {
-		this.fetchCharacters()
-		this.fetchEffects()
-	},
-	methods: {
-		fetchCharacters() {
-			this.charactersLoading = true
-
-			characterStore.refreshCharacterList()
-				.then(() => {
-					this.charactersLoading = false
-				})
-		},
-		fetchEffects() {
-			this.effectsLoading = true
-
-			effectStore.refreshEffectList()
-				.then(() => {
-					this.effectsLoading = false
-				})
-		},
 	},
 }
 </script>

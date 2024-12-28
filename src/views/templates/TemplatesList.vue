@@ -38,7 +38,7 @@ import { templateStore, navigationStore, searchStore } from '../../store/store.j
 					:details="'1h'"
 					:counter-number="44"
 					:force-display-actions="true"
-					@click="templateStore.setTemplateItem(template)">
+					@click="handleTemplateSelect(template)">
 					<template #icon>
 						<ChatOutline :class="templateStore.templateItem?.id === template.id && 'selected'"
 							disable-menu
@@ -48,13 +48,13 @@ import { templateStore, navigationStore, searchStore } from '../../store/store.j
 						{{ template?.description }}
 					</template>
 					<template #actions>
-						<NcActionButton @click="templateStore.setTemplateItem(template); navigationStore.setModal('editTemplate')">
+						<NcActionButton @click="handleTemplateSelect(template); navigationStore.setModal('editTemplate')">
 							<template #icon>
 								<Plus />
 							</template>
 							Bewerken
 						</NcActionButton>
-						<NcActionButton @click="templateStore.setTemplateItem(template), navigationStore.setDialog('deleteTemplate')">
+						<NcActionButton @click="handleTemplateSelect(template); navigationStore.setDialog('deleteTemplate')">
 							<template #icon>
 								<TrashCanOutline />
 							</template>
@@ -106,19 +106,28 @@ export default {
 		TrashCanOutline,
 		Refresh,
 	},
-	data() {
-		return {
-			search: '',
-			loading: true,
-			rollenList: [],
-		}
-	},
 	mounted() {
 		templateStore.refreshTemplateList()
 	},
 	methods: {
-		clearText() {
-			this.search = ''
+		/**
+		 * Handle template selection
+		 * @param {object} template - The selected template object
+		 * @returns {Promise<void>}
+		 */
+		async handleTemplateSelect(template) {
+			// Set the selected template in the store
+			templateStore.setTemplateItem(template)
+
+			try {
+				// Fetch audit trails and relations for the selected template
+				await Promise.all([
+					templateStore.getRelations(template.id),
+					templateStore.getAuditTrails(template.id),
+				])
+			} catch (error) {
+				console.error('Error fetching template data:', error)
+			}
 		},
 	},
 }

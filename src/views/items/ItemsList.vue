@@ -36,9 +36,8 @@ import { characterStore, itemStore, navigationStore, searchStore } from '../../s
 					:name="item?.name"
 					:active="itemStore.itemItem?.id === item?.id"
 					:details="item.unique ? 'unique' : 'non-unique'"
-					:counter-number="filterCharacters(item.id)?.length || 0"
 					:force-display-actions="true"
-					@click="itemStore.setItemItem(item)">
+					@click="handleItemSelect(item)">
 					<template #icon>
 						<Sword :class="itemStore.itemItem?.id === item?.id && 'selectedItemIcon'"
 							disable-menu
@@ -106,27 +105,27 @@ export default {
 		Pencil,
 		TrashCanOutline,
 	},
-	data() {
-		return {
-			charactersLoading: false,
-		}
-	},
 	mounted() {
 		itemStore.refreshItemList()
-		this.fetchCharacters()
 	},
 	methods: {
-		filterCharacters(id) {
-			return characterStore.characterList.filter((character) => {
-				return character.items.map(String).includes(id.toString())
-			})
-		},
-		fetchCharacters() {
-			this.charactersLoading = true
-			characterStore.refreshCharacterList()
-				.then(() => {
-					this.charactersLoading = false
-				})
+		/**
+		 * Handle item selection and fetch related data
+		 * @param {Object} item - The selected item object
+		 */
+		async handleItemSelect(item) {
+			// Set the selected item in the store
+			itemStore.setItemItem(item)
+
+			try {
+				// Fetch characters that have this item
+				await Promise.all([
+					characterStore.getRelations(item.id),
+					characterStore.getAuditTrails(item.id),
+				])
+			} catch (error) {
+				console.error('Error fetching item data:', error)
+			}
 		},
 	},
 }

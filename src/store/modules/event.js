@@ -7,6 +7,9 @@ export const useEventStore = defineStore(
 		state: () => ({
 			eventItem: false,
 			eventList: [],
+			auditTrails: [],
+			relations: [],
+			uses: []
 		}),
 		actions: {
 			// Set the active event item
@@ -23,7 +26,7 @@ export const useEventStore = defineStore(
 			},
 			// Fetch and refresh the list of events
 			async refreshEventList(search = null) {
-				let endpoint = '/index.php/apps/larpingapp/api/events'
+				let endpoint = '/index.php/apps/larpingapp/api/objects/event?_extend=effects'
 				if (search !== null && search !== '') {
 					endpoint = endpoint + '?_search=' + search
 				}
@@ -37,7 +40,7 @@ export const useEventStore = defineStore(
 			},
 			// Fetch a single event by ID
 			async getEvent(id) {
-				const endpoint = `/index.php/apps/larpingapp/api/events/${id}`
+				const endpoint = `/index.php/apps/larpingapp/api/objects/event/${id}?_extend=effects`
 				try {
 					const response = await fetch(endpoint, { method: 'GET' })
 					const data = await response.json()
@@ -56,7 +59,7 @@ export const useEventStore = defineStore(
 
 				console.log('Deleting event...')
 
-				const endpoint = `/index.php/apps/larpingapp/api/events/${this.eventItem.id}`
+				const endpoint = `/index.php/apps/larpingapp/api/objects/event/${this.eventItem.id}`
 
 				return fetch(endpoint, {
 					method: 'DELETE',
@@ -79,14 +82,24 @@ export const useEventStore = defineStore(
 
 				const isNewEvent = !eventItem.id
 				const endpoint = isNewEvent
-					? '/index.php/apps/larpingapp/api/events'
-					: `/index.php/apps/larpingapp/api/events/${eventItem.id}`
+					? '/index.php/apps/larpingapp/api/objects/event?_extend=effects'
+					: `/index.php/apps/larpingapp/api/objects/event/${eventItem.id}?_extend=effects`
 				const method = isNewEvent ? 'POST' : 'PUT'
 
-				const eventToSeave = { ...eventItem }
-				Object.keys(eventToSeave).forEach(key => {
-					if (eventToSeave[key] === '' || (Array.isArray(eventToSeave[key]) && eventToSeave[key].length === 0)) {
-						delete eventToSeave[key]
+				// Create a copy of the event to avoid modifying the original
+				const eventToSave = { ...eventItem }
+
+				// Transform effects array to array of UUIDs if needed
+				if (eventToSave.effects) {
+					eventToSave.effects = eventToSave.effects.map(effect => 
+						typeof effect === 'object' ? effect.id : effect
+					)
+				}
+
+				// Remove empty properties
+				Object.keys(eventToSave).forEach(key => {
+					if (eventToSave[key] === '' || (Array.isArray(eventToSave[key]) && eventToSave[key].length === 0)) {
+						delete eventToSave[key]
 					}
 				})
 
@@ -97,7 +110,7 @@ export const useEventStore = defineStore(
 						headers: {
 							'Content-Type': 'application/json',
 						},
-						body: JSON.stringify(eventToSeave),
+						body: JSON.stringify(eventToSave),
 					},
 				)
 					.then((response) => response.json())
@@ -111,6 +124,78 @@ export const useEventStore = defineStore(
 						throw err
 					})
 			},
+			setAuditTrails(auditTrails) {
+				this.auditTrails = auditTrails
+				console.log('Audit trails set with ' + auditTrails.length + ' items')
+			},
+			setRelations(relations) {
+				this.relations = relations
+				console.log('Relations set with ' + relations.length + ' items')
+			},
+			setUses(uses) {
+				this.uses = uses
+				console.log('Uses set with ' + uses.length + ' items')
+			},
+			async getAuditTrails(id) {
+				if (!id) {
+					throw new Error('ID required to fetch audit trails')
+				}
+
+				console.log('Fetching audit trails...')
+				const endpoint = `/index.php/apps/larpingapp/api/objects/event/${id}/audit`
+
+				try {
+					const response = await fetch(endpoint, {
+						method: 'GET'
+					})
+					const data = await response.json()
+					this.setAuditTrails(data)
+					return data
+				} catch (err) {
+					console.error('Error fetching audit trails:', err)
+					throw err
+				}
+			},
+			async getRelations(id) {
+				if (!id) {
+					throw new Error('ID required to fetch relations')
+				}
+
+				console.log('Fetching relations...')
+				const endpoint = `/index.php/apps/larpingapp/api/objects/event/${id}/relations`
+
+				try {
+					const response = await fetch(endpoint, {
+						method: 'GET'
+					})
+					const data = await response.json()
+					this.setRelations(data)
+					return data
+				} catch (err) {
+					console.error('Error fetching relations:', err)
+					throw err
+				}
+			},
+			async getUses(id) {
+				if (!id) {
+					throw new Error('ID required to fetch uses')
+				}
+
+				console.log('Fetching uses...')
+				const endpoint = `/index.php/apps/larpingapp/api/objects/event/${id}/uses`
+
+				try {
+					const response = await fetch(endpoint, {
+						method: 'GET'
+					})
+					const data = await response.json()
+					this.setUses(data)
+					return data
+				} catch (err) {
+					console.error('Error fetching uses:', err)
+					throw err
+				}
+			}
 		},
 	},
 )
