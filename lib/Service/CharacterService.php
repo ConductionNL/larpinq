@@ -22,7 +22,9 @@ use OCA\LarpingApp\Db\EventMapper;
 use OCA\LarpingApp\Db\EffectMapper;
 use OCA\LarpingApp\Service\ObjectService;
 
+// @todo: cant get this to work
 use TCPDF;
+
 // And in case of open registers
 use OCA\OpenRegister\Db\ObjectEntity;
 
