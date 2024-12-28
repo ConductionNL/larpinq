@@ -89,12 +89,13 @@ export const useEventStore = defineStore(
 				// Create a copy of the event to avoid modifying the original
 				const eventToSave = { ...eventItem }
 
-				// Transform effects array to array of UUIDs if needed
-				if (eventToSave.effects) {
-					eventToSave.effects = eventToSave.effects.map(effect => 
-						typeof effect === 'object' ? effect.id : effect
-					)
-				}
+				// Initialize effects array if not set
+				eventToSave.effects = eventToSave.effects || []
+
+				// Transform effects array to array of UUIDs
+				eventToSave.effects = eventToSave.effects.map(effect => 
+					typeof effect === 'object' ? effect.id : effect
+				)
 
 				// Remove empty properties
 				Object.keys(eventToSave).forEach(key => {
