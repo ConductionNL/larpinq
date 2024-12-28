@@ -45,7 +45,7 @@ import { characterStore, navigationStore } from '../../store/store.js'
 							</template>
 							Event toevoegen
 						</NcActionButton>
-						<NcActionButton @click="downloadCharacterPdf()">
+						<NcActionButton @click="navigationStore.setModal('renderPdfFromCharacter')">
 							<template #icon>
 								<Download :size="20" />
 							</template>
