@@ -7,6 +7,9 @@ export const useConditionStore = defineStore(
 		state: () => ({
 			conditionItem: false,
 			conditionList: [],
+			auditTrails: [],
+			relations: [],
+			uses: []
 		}),
 		actions: {
 			// Set the active condition item
@@ -23,7 +26,7 @@ export const useConditionStore = defineStore(
 			},
 			// Fetch and refresh the list of conditions
 			async refreshConditionList(search = null) {
-				let endpoint = '/index.php/apps/larpingapp/api/conditions'
+				let endpoint = '/index.php/apps/larpingapp/api/objects/condition?_extend=effects'
 				if (search !== null && search !== '') {
 					endpoint = endpoint + '?_search=' + search
 				}
@@ -37,7 +40,7 @@ export const useConditionStore = defineStore(
 			},
 			// Fetch a single condition by ID
 			async getCondition(id) {
-				const endpoint = `/index.php/apps/larpingapp/api/conditions/${id}`
+				const endpoint = `/index.php/apps/larpingapp/api/objects/condition/${id}?_extend=effects`
 				try {
 					const response = await fetch(endpoint, { method: 'GET' })
 					const data = await response.json()
@@ -56,7 +59,7 @@ export const useConditionStore = defineStore(
 
 				console.log('Deleting condition...')
 
-				const endpoint = `/index.php/apps/larpingapp/api/conditions/${this.conditionItem.id}`
+				const endpoint = `/index.php/apps/larpingapp/api/objects/condition/${this.conditionItem.id}`
 
 				return fetch(endpoint, {
 					method: 'DELETE',
@@ -77,10 +80,20 @@ export const useConditionStore = defineStore(
 
 				console.log('Saving condition...')
 
-				const isNewCondition = !conditionItem.id
+				// Create a copy of the condition item to avoid modifying the original
+				const conditionToSave = { ...conditionItem }
+
+				// Transform effects array to array of UUIDs if needed
+				if (conditionToSave.effects) {
+					conditionToSave.effects = conditionToSave.effects.map(effect => 
+						typeof effect === 'object' ? effect.id : effect
+					)
+				}
+
+				const isNewCondition = !conditionToSave.id
 				const endpoint = isNewCondition
-					? '/index.php/apps/larpingapp/api/conditions'
-					: `/index.php/apps/larpingapp/api/conditions/${conditionItem.id}`
+					? '/index.php/apps/larpingapp/api/objects/condition?_extend=effects'
+					: `/index.php/apps/larpingapp/api/objects/condition/${conditionToSave.id}?_extend=effects`
 				const method = isNewCondition ? 'POST' : 'PUT'
 
 				return fetch(
@@ -90,7 +103,7 @@ export const useConditionStore = defineStore(
 						headers: {
 							'Content-Type': 'application/json',
 						},
-						body: JSON.stringify(conditionItem),
+						body: JSON.stringify(conditionToSave),
 					},
 				)
 					.then((response) => response.json())
@@ -104,6 +117,78 @@ export const useConditionStore = defineStore(
 						throw err
 					})
 			},
+			setAuditTrails(auditTrails) {
+				this.auditTrails = auditTrails
+				console.log('Audit trails set with ' + auditTrails.length + ' items')
+			},
+			setRelations(relations) {
+				this.relations = relations
+				console.log('Relations set with ' + relations.length + ' items')
+			},
+			setUses(uses) {
+				this.uses = uses
+				console.log('Uses set with ' + uses.length + ' items')
+			},
+			async getAuditTrails(id) {
+				if (!id) {
+					throw new Error('ID required to fetch audit trails')
+				}
+
+				console.log('Fetching audit trails...')
+				const endpoint = `/index.php/apps/larpingapp/api/objects/condition/${id}/audit`
+
+				try {
+					const response = await fetch(endpoint, {
+						method: 'GET'
+					})
+					const data = await response.json()
+					this.setAuditTrails(data)
+					return data
+				} catch (err) {
+					console.error('Error fetching audit trails:', err)
+					throw err
+				}
+			},
+			async getRelations(id) {
+				if (!id) {
+					throw new Error('ID required to fetch relations')
+				}
+
+				console.log('Fetching relations...')
+				const endpoint = `/index.php/apps/larpingapp/api/objects/condition/${id}/relations`
+
+				try {
+					const response = await fetch(endpoint, {
+						method: 'GET'
+					})
+					const data = await response.json()
+					this.setRelations(data)
+					return data
+				} catch (err) {
+					console.error('Error fetching relations:', err)
+					throw err
+				}
+			},
+			async getUses(id) {
+				if (!id) {
+					throw new Error('ID required to fetch uses')
+				}
+
+				console.log('Fetching uses...')
+				const endpoint = `/index.php/apps/larpingapp/api/objects/condition/${id}/uses`
+
+				try {
+					const response = await fetch(endpoint, {
+						method: 'GET'
+					})
+					const data = await response.json()
+					this.setUses(data)
+					return data
+				} catch (err) {
+					console.error('Error fetching uses:', err)
+					throw err
+				}
+			}
 		},
 	},
 )

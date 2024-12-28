@@ -38,7 +38,7 @@ import { effectStore, searchStore, navigationStore } from '../../store/store.js'
 					:force-display-actions="true"
 					:details="effect?.modification || ''"
 					:counter-number="effect?.modifier"
-					@click="effectStore.setEffectItem(effect)">
+					@click="handleEffectSelect(effect)">
 					<template #icon>
 						<MagicStaff :class="effectStore.effectItem === effect.id && 'selectedZaakIcon'"
 							disable-menu
@@ -48,13 +48,13 @@ import { effectStore, searchStore, navigationStore } from '../../store/store.js'
 						{{ effect?.name }}
 					</template>
 					<template #actions>
-						<NcActionButton @click="effectStore.setEffectItem(effect); navigationStore.setModal('editEffect')">
+						<NcActionButton @click="handleEffectSelect(effect); navigationStore.setModal('editEffect')">
 							<template #icon>
 								<Pencil />
 							</template>
 							Bewerken
 						</NcActionButton>
-						<NcActionButton @click="effectStore.setEffectItem(effect), navigationStore.setDialog('deleteEffect')">
+						<NcActionButton @click="handleEffectSelect(effect); navigationStore.setDialog('deleteEffect')">
 							<template #icon>
 								<TrashCanOutline />
 							</template>
@@ -105,6 +105,27 @@ export default {
 	},
 	mounted() {
 		effectStore.refreshEffectList()
+	},
+	methods: {
+		/**
+		 * Handle effect selection
+		 * @param {object} effect - The selected effect object
+		 * @returns {Promise<void>}
+		 */
+		async handleEffectSelect(effect) {
+			// Set the selected effect in the store
+			effectStore.setEffectItem(effect)
+
+			try {
+				// Fetch audit trails and relations for the selected effect
+				await Promise.all([
+					effectStore.getRelations(effect.id),
+					effectStore.getAuditTrails(effect.id),
+				])
+			} catch (error) {
+				console.error('Error fetching effect data:', error)
+			}
+		},
 	},
 }
 </script>

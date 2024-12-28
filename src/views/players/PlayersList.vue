@@ -35,9 +35,8 @@ import { playerStore, navigationStore, searchStore, characterStore } from '../..
 					:key="`${player}${i}`"
 					:name="player?.name"
 					:active="playerStore.playerItem?.id === player?.id"
-					:counter-number="filterCharacters(player.id).length"
 					:force-display-actions="true"
-					@click="playerStore.setPlayerItem(player)">
+					@click="handlePlayerSelect(player)">
 					<template #icon>
 						<BriefcaseAccountOutline :class="playerStore.playerItem?.id === player.id && 'selectedZaakIcon'"
 							disable-menu
@@ -105,27 +104,27 @@ export default {
 		TrashCanOutline,
 		Refresh,
 	},
-	data() {
-		return {
-			charactersLoading: false,
-		}
-	},
 	mounted() {
 		playerStore.refreshPlayerList()
-		this.fetchCharacters()
 	},
 	methods: {
-		filterCharacters(id) {
-			return characterStore.characterList.filter((character) => {
-				return character.ocName.toString() === id.toString()
-			})
-		},
-		fetchCharacters() {
-			this.charactersLoading = true
-			characterStore.refreshCharacterList()
-				.then(() => {
-					this.charactersLoading = false
-				})
+		/**
+		 * Handle player selection and fetch related data
+		 * @param {Object} player - The selected player object
+		 */
+		async handlePlayerSelect(player) {
+			// Set the selected player in the store
+			playerStore.setPlayerItem(player)
+
+			try {
+				// Fetch characters for this player
+				await Promise.all([
+					characterStore.getRelations(player.id),
+					characterStore.getAuditTrails(player.id),
+				])
+			} catch (error) {
+				console.error('Error fetching player data:', error)
+			}
 		},
 	},
 }

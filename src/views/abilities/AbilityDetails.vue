@@ -1,5 +1,5 @@
 <script setup>
-import { abilityStore, navigationStore, effectStore } from '../../store/store.js'
+import { abilityStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -16,13 +16,13 @@ import { abilityStore, navigationStore, effectStore } from '../../store/store.js
 						<template #icon>
 							<DotsHorizontal :size="20" />
 						</template>
-						<NcActionButton @click="navigationStore.setModal('editAbility')">
+						<NcActionButton @click="handleAbilitySelect(abilityStore.abilityItem); navigationStore.setModal('editAbility')">
 							<template #icon>
 								<Pencil :size="20" />
 							</template>
 							Bewerken
 						</NcActionButton>
-						<NcActionButton @click="navigationStore.setDialog('deleteAbility')">
+						<NcActionButton @click="handleAbilitySelect(abilityStore.abilityItem); navigationStore.setDialog('deleteAbility')">
 							<template #icon>
 								<TrashCanOutline :size="20" />
 							</template>
@@ -41,8 +41,8 @@ import { abilityStore, navigationStore, effectStore } from '../../store/store.js
 				<div class="tabContainer">
 					<BTabs content-class="mt-3" justified>
 						<BTab title="Effects">
-							<div v-if="filterEffects.length > 0">
-								<NcListItem v-for="(effect) in filterEffects"
+							<div v-if="abilityStore.relations?.effects?.length > 0">
+								<NcListItem v-for="(effect) in abilityStore.relations.effectsx"
 									:key="effect.id"
 									:name="effect.name"
 									:bold="false"
@@ -56,7 +56,7 @@ import { abilityStore, navigationStore, effectStore } from '../../store/store.js
 									</template>
 								</NcListItem>
 							</div>
-							<div v-if="filterEffects.length === 0">
+							<div v-else>
 								Geen effects gevonden
 							</div>
 						</BTab>
@@ -75,6 +75,7 @@ import { NcLoadingIcon, NcActions, NcActionButton } from '@nextcloud/vue'
 import DotsHorizontal from 'vue-material-design-icons/DotsHorizontal.vue'
 import Pencil from 'vue-material-design-icons/Pencil.vue'
 import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
+import { storeToRefs } from 'pinia'
 export default {
 	name: 'AbilityDetails',
 	components: {
@@ -87,32 +88,6 @@ export default {
 		DotsHorizontal,
 		Pencil,
 		TrashCanOutline,
-	},
-	data() {
-		return {
-			effectsLoading: false,
-		}
-		
-	},
-	computed: {
-		filterEffects() {
-			return effectStore.effectList.filter((effect) => {
-				return effect.stat === abilityStore.abilityItem.id.toString();
-			});
-		},
-	},
-	mounted() {
-		this.fetchEffects()
-	},
-	methods: {
-		fetchEffects() {
-			this.effectsLoading = true
-
-			effectStore.refreshEffectList()
-				.then(() => {
-					this.effectsLoading = false
-				})
-		},
 	},
 }
 </script>

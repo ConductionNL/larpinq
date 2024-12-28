@@ -1,5 +1,5 @@
 <script setup>
-import { characterStore, navigationStore, playerStore, searchStore } from '../../store/store.js'
+import { characterStore, navigationStore, searchStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -39,14 +39,14 @@ import { characterStore, navigationStore, playerStore, searchStore } from '../..
 					:active="characterStore.characterItem?.id === character?.id"
 					:details="character.approved === 'approved' ? 'Approved': 'Not approved'"
 					:counter-number="character?.skills?.length || 0"
-					@click="characterStore.setCharacterItem(character)">
+					@click="handleCharacterSelect(character)">
 					<template #icon>
 						<BriefcaseAccountOutline :class="characterStore.characterItem?.id === character?.id && 'selectedZaakIcon'"
 							disable-menu
 							:size="44" />
 					</template>
 					<template #subname>
-						{{ findPlayer(character?.ocName)?.name || 'No player selected' }}
+						{{ character?.ocName?.name || 'No player selected' }}
 					</template>
 					<template #actions>
 						<NcActionButton @click="characterStore.setCharacterItem(character); navigationStore.setModal('editCharacter')">
@@ -77,6 +77,7 @@ import { characterStore, navigationStore, playerStore, searchStore } from '../..
 		</div>
 	</NcAppContentList>
 </template>
+
 <script>
 // Components
 import { NcListItem, NcActions, NcActionButton, NcAppContentList, NcTextField, NcLoadingIcon } from '@nextcloud/vue'
@@ -107,33 +108,27 @@ export default {
 		Pencil,
 		TrashCanOutline,
 	},
-	data() {
-		return {
-			playersLoading: false,
-		}
-	},
 	mounted() {
 		characterStore.refreshCharacterList()
-		this.fetchPlayers()
 	},
 	methods: {
 		/**
-		 * Find a player by their ID
-		 * @param {string|number} characterPlayerId - The ID of the player to find
-		 * @returns {object|string} The found player object or "No player selected" if not found
+		 * Handle character selection
+		 * @param {object} character - The selected character object
 		 */
-		findPlayer(characterPlayerId) {
-			// Search for player with matching ID in player list
-			const foundPlayer = playerStore.playerList.find((player) => {
-				return player.id.toString() === characterPlayerId.toString()
-			})
-		},
-		fetchPlayers() {
-			this.playersLoading = true
-			playerStore.refreshPlayerList()
-				.then(() => {
-					this.playersLoading = false
-				})
+		async handleCharacterSelect(character) {
+			// Set the selected character in the store
+			characterStore.setCharacterItem(character)
+
+			try {
+				// Fetch audit trails and relations for the selected character
+				await Promise.all([
+					characterStore.getRelations(character.id),
+					characterStore.getAuditTrails(character.id),
+				])
+			} catch (error) {
+				console.error('Error fetching character data:', error)
+			}
 		},
 	},
 }

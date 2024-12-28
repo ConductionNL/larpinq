@@ -1,5 +1,5 @@
 <script setup>
-import { characterStore, conditionStore, eventStore, itemStore, navigationStore, skillStore } from '../../store/store.js'
+import { characterStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -88,8 +88,8 @@ import { characterStore, conditionStore, eventStore, itemStore, navigationStore,
 						</BTab>
 
 						<BTab title="Skills">
-							<div v-if="filterSkills?.length > 0 && !skillsLoading">
-								<NcListItem v-for="(skill, i) in filterSkills"
+							<div v-if="characterStore.characterItem.skills?.length > 0">
+								<NcListItem v-for="(skill, i) in characterStore.characterItem.skills"
 									:key="skill.id + i"
 									:name="skill.name"
 									:bold="false"
@@ -126,14 +126,14 @@ import { characterStore, conditionStore, eventStore, itemStore, navigationStore,
 									</template>
 								</NcListItem>
 							</div>
-							<div v-if="!filterSkills?.length">
+							<div v-else>
 								Geen skills gevonden
 							</div>
 						</BTab>
 
 						<BTab title="Items">
-							<div v-if="filterItems?.length > 0 && !itemsLoading">
-								<NcListItem v-for="(item, i) in filterItems"
+							<div v-if="characterStore.characterItem.items?.length > 0">
+								<NcListItem v-for="(item, i) in characterStore.characterItem.items"
 									:key="item.id + i"
 									:name="item.name"
 									:bold="false"
@@ -170,14 +170,14 @@ import { characterStore, conditionStore, eventStore, itemStore, navigationStore,
 									</template>
 								</NcListItem>
 							</div>
-							<div v-if="!filterItems?.length">
+							<div v-else>
 								Geen items gevonden
 							</div>
 						</BTab>
 
 						<BTab title="Conditions">
-							<div v-if="filterConditions?.length > 0 && !conditionsLoading">
-								<NcListItem v-for="(condition, i) in filterConditions"
+							<div v-if="characterStore.characterItem.conditions?.length > 0">
+								<NcListItem v-for="(condition, i) in characterStore.characterItem.conditions"
 									:key="condition.id + i"
 									:name="condition.name"
 									:bold="false"
@@ -214,14 +214,14 @@ import { characterStore, conditionStore, eventStore, itemStore, navigationStore,
 									</template>
 								</NcListItem>
 							</div>
-							<div v-if="!filterConditions?.length">
+							<div v-else>
 								Geen conditions gevonden
 							</div>
 						</BTab>
 
 						<BTab title="Events">
-							<div v-if="filterEvents?.length > 0 && !eventsLoading">
-								<NcListItem v-for="(event, i) in filterEvents"
+							<div v-if="characterStore.characterItem.events?.length > 0">
+								<NcListItem v-for="(event, i) in characterStore.characterItem.events"
 									:key="event.id + i"
 									:name="event.name"
 									:bold="false"
@@ -258,7 +258,7 @@ import { characterStore, conditionStore, eventStore, itemStore, navigationStore,
 									</template>
 								</NcListItem>
 							</div>
-							<div v-if="!filterEvents?.length">
+							<div v-else>
 								Geen events gevonden
 							</div>
 						</BTab>
@@ -314,71 +314,7 @@ export default {
 		ShieldSwordOutline,
 		Download,
 	},
-	data() {
-		return {
-			skillsLoading: false,
-			itemsLoading: false,
-			conditionsLoading: false,
-			eventsLoading: false,
-		}
-	},
-	computed: {
-		filterSkills() {
-			return skillStore.skillList.filter((skill) => {
-				return characterStore.characterItem?.skills.map(String).includes(skill.id.toString())
-			})
-		},
-		filterItems() {
-			return itemStore.itemList.filter((item) => {
-				return characterStore.characterItem?.items.map(String).includes(item.id.toString())
-			})
-		},
-		filterConditions() {
-			return conditionStore.conditionList.filter((item) => {
-				return characterStore.characterItem?.conditions.map(String).includes(item.id.toString())
-			})
-		},
-		filterEvents() {
-			return eventStore.eventList.filter((item) => {
-				return characterStore.characterItem?.events.map(String).includes(item.id.toString())
-			})
-		},
-	},
-	mounted() {
-		this.fetchSkills()
-		this.fetchItems()
-		this.fetchConditions()
-		this.fetchEvents()
-	},
 	methods: {
-		fetchSkills() {
-			this.skillsLoading = true
-			skillStore.refreshSkillList()
-				.then(() => {
-					this.skillsLoading = false
-				})
-		},
-		fetchItems() {
-			this.itemsLoading = true
-			itemStore.refreshItemList()
-				.then(() => {
-					this.itemsLoading = false
-				})
-		},
-		fetchConditions() {
-			this.conditionsLoading = true
-			conditionStore.refreshConditionList()
-				.then(() => {
-					this.conditionsLoading = false
-				})
-		},
-		fetchEvents() {
-			this.eventsLoading = true
-			eventStore.refreshEventList()
-				.then(() => {
-					this.eventsLoading = false
-				})
-		},
 		downloadCharacterPdf() {
 			const characterId = characterStore.characterItem.id
 			fetch(`characters/${characterId}/download`)

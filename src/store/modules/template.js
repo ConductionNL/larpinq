@@ -23,7 +23,7 @@ export const useTemplateStore = defineStore(
 			},
 			// Fetch and refresh the list of templates
 			async refreshTemplateList(search = null) {
-				let endpoint = '/index.php/apps/larpingapp/api/templates'
+				let endpoint = '/index.php/apps/larpingapp/api/objects/template'
 				if (search !== null && search !== '') {
 					endpoint = endpoint + '?_search=' + search
 				}
@@ -37,7 +37,7 @@ export const useTemplateStore = defineStore(
 			},
 			// Fetch a single template by ID
 			async getTemplate(id) {
-				const endpoint = `/index.php/apps/larpingapp/api/templates/${id}`
+				const endpoint = `/index.php/apps/larpingapp/api/objects/template/${id}`
 				try {
 					const response = await fetch(endpoint, { method: 'GET' })
 					const data = await response.json()
@@ -56,7 +56,7 @@ export const useTemplateStore = defineStore(
 
 				console.log('Deleting template...')
 
-				const endpoint = `/index.php/apps/larpingapp/api/templates/${this.templateItem.id}`
+				const endpoint = `/index.php/apps/larpingapp/api/objects/template/${this.templateItem.id}`
 
 				return fetch(endpoint, {
 					method: 'DELETE',
@@ -79,8 +79,8 @@ export const useTemplateStore = defineStore(
 
 				const isNewTemplate = !templateItem?.id
 				const endpoint = isNewTemplate
-					? '/index.php/apps/larpingapp/api/templates'
-					: `/index.php/apps/larpingapp/api/templates/${templateItem.id}`
+					? '/index.php/apps/larpingapp/api/objects/template'
+					: `/index.php/apps/larpingapp/api/objects/template/${templateItem.id}`
 				const method = isNewTemplate ? 'POST' : 'PUT'
 
 				return fetch(

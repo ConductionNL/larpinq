@@ -1,5 +1,5 @@
 <script setup>
-import { conditionStore, navigationStore } from '../../store/store.js'
+import { conditionStore, navigationStore, effectStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -24,6 +24,11 @@ import { conditionStore, navigationStore } from '../../store/store.js'
 						id="description"
 						label="Description"
 						:value.sync="conditionItem.description" />
+					<NcSelect v-bind="effects"
+						v-model="effects.value"
+						input-label="Effects"
+						:loading="effectsLoading"
+						:disabled="effectsLoading || loading" />
 				</div>
 			</form>
 
@@ -50,6 +55,7 @@ import {
 	NcTextArea,
 	NcLoadingIcon,
 	NcNoteCard,
+	NcSelect,
 } from '@nextcloud/vue'
 import ContentSaveOutline from 'vue-material-design-icons/ContentSaveOutline.vue'
 
@@ -62,6 +68,7 @@ export default {
 		NcButton,
 		NcLoadingIcon,
 		NcNoteCard,
+		NcSelect,
 		// Icons
 		ContentSaveOutline,
 	},
@@ -71,11 +78,16 @@ export default {
 				name: '',
 				description: '',
 			},
+			effects: {},
+			effectsLoading: false,
 			succes: false,
 			loading: false,
 			error: false,
 			hasUpdated: false,
 		}
+	},
+	mounted() {
+		this.fetchEffects()
 	},
 	updated() {
 		if (conditionStore.conditionItem?.id && navigationStore.modal === 'editCondition' && !this.hasUpdated) {
@@ -84,6 +96,7 @@ export default {
 				name: conditionStore.conditionItem.name || '',
 				description: conditionStore.conditionItem.description || '',
 			}
+			this.fetchEffects()
 			this.hasUpdated = true
 		}
 	},
@@ -99,10 +112,44 @@ export default {
 				description: '',
 			}
 		},
+		fetchEffects() {
+			this.effectsLoading = true
+
+			effectStore.refreshEffectList()
+				.then(() => {
+					const activeEffects = conditionStore.conditionItem?.id
+						? effectStore.effectList.filter((effect) => {
+							return conditionStore.conditionItem.effects
+								?.map(String)
+								.includes(effect.id.toString())
+						})
+						: null
+
+					this.effects = {
+						multiple: true,
+						closeOnSelect: false,
+						options: effectStore.effectList.map((effect) => ({
+							id: effect.id,
+							label: effect.name,
+						})),
+						value: activeEffects
+							? activeEffects.map((effect) => ({
+								id: effect.id,
+								label: effect.name,
+							}))
+							: null,
+					}
+
+					this.effectsLoading = false
+				})
+		},
 		async editCondition() {
 			this.loading = true
 			try {
-				await conditionStore.saveCondition(this.conditionItem)
+				await conditionStore.saveCondition({
+					...this.conditionItem,
+					effects: (this.effects?.value || []).map((effect) => effect.id),
+				})
 				// Close modal or show success message
 				this.succes = true
 				this.loading = false

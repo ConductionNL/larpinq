@@ -35,10 +35,9 @@ import { abilityStore, navigationStore, searchStore } from '../../store/store.js
 					:key="`${ability}${i}`"
 					:name="ability?.name"
 					:active="abilityStore.abilityItem?.id === ability?.id"
-					:details="'1h'"
-					:counter-number="44"
+					:counter-number="ability?.base || 0"
 					:force-display-actions="true"
-					@click="abilityStore.setAbilityItem(ability)">
+					@click="handleAbilitySelect(ability)">
 					<template #icon>
 						<ShieldSwordOutline :class="abilityStore.abilityItem?.id === ability.id && 'selected'"
 							disable-menu
@@ -48,13 +47,13 @@ import { abilityStore, navigationStore, searchStore } from '../../store/store.js
 						{{ ability?.description }}
 					</template>
 					<template #actions>
-						<NcActionButton @click="abilityStore.setAbilityItem(ability), navigationStore.setModal('editAbility')">
+						<NcActionButton @click="handleAbilitySelect(ability), navigationStore.setModal('editAbility')">
 							<template #icon>
 								<Pencil />
 							</template>
 							Bewerken
 						</NcActionButton>
-						<NcActionButton @click="abilityStore.setAbilityItem(ability), navigationStore.setDialog('deleteAbility')">
+						<NcActionButton @click="handleAbilitySelect(ability), navigationStore.setDialog('deleteAbility')">
 							<template #icon>
 								<TrashCanOutline />
 							</template>
@@ -108,6 +107,27 @@ export default {
 	},
 	mounted() {
 		abilityStore.refreshAbilityList()
+	},
+	methods: {
+		/**
+		 * Handle ability selection
+		 * @param {object} ability - The selected ability object
+		 * @returns {Promise<void>}
+		 */
+		async handleAbilitySelect(ability) {
+			// Set the selected ability in the store
+			abilityStore.setAbilityItem(ability)
+
+			try {
+				// Fetch audit trails and relations for the selected ability
+				await Promise.all([
+					abilityStore.getRelations(ability.id),
+					abilityStore.getAuditTrails(ability.id),
+				])
+			} catch (error) {
+				console.error('Error fetching ability data:', error)
+			}
+		},
 	},
 }
 </script>
