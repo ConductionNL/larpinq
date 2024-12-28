@@ -82,8 +82,8 @@ export const useSkillStore = defineStore(
 
 				const isNewSkill = !skillItem.id
 				const endpoint = isNewSkill
-					? '/index.php/apps/larpingapp/api/objects/skill?_extend=effects'
-					: `/index.php/apps/larpingapp/api/objects/skill/${skillItem.id}?_extend=effects`
+					? '/index.php/apps/larpingapp/api/objects/skill?_extend[]=effects'
+					: `/index.php/apps/larpingapp/api/objects/skill/${skillItem.id}?_extend[]=effects`
 				const method = isNewSkill ? 'POST' : 'PUT'
 
 				// Create a copy of the skill to avoid modifying the original

@@ -171,23 +171,34 @@ export const useCharacterStore = defineStore(
 				// Create a copy of the character item to avoid modifying the original
 				const characterToSave = { ...characterItem }
 
-				// Transform arrays of objects to arrays of UUIDs if needed
-				if (characterToSave.skills) {
-					characterToSave.skills = characterToSave.skills.map(skill => typeof skill === 'object' ? skill.id : skill)
-				}
-				if (characterToSave.items) {
-					characterToSave.items = characterToSave.items.map(item => typeof item === 'object' ? item.id : item)
-				}
-				if (characterToSave.conditions) {
-					characterToSave.conditions = characterToSave.conditions.map(condition => typeof condition === 'object' ? condition.id : condition)
-				}
-				if (characterToSave.effects) {
-					characterToSave.effects = characterToSave.effects.map(effect => typeof effect === 'object' ? effect.id : effect)
-				}
+				// Ensure all array properties are initialized with empty arrays if not set
+				characterToSave.skills = characterToSave.skills || []
+				characterToSave.items = characterToSave.items || []
+				characterToSave.conditions = characterToSave.conditions || []
+				characterToSave.effects = characterToSave.effects || []
+				characterToSave.events = characterToSave.events || []
+
+				// Transform arrays of objects to arrays of UUIDs
+				characterToSave.skills = characterToSave.skills.map(skill => 
+					typeof skill === 'object' ? skill.id : skill
+				)
+				characterToSave.items = characterToSave.items.map(item =>
+					typeof item === 'object' ? item.id : item
+				)
+				characterToSave.conditions = characterToSave.conditions.map(condition =>
+					typeof condition === 'object' ? condition.id : condition
+				)
+				characterToSave.effects = characterToSave.effects.map(effect =>
+					typeof effect === 'object' ? effect.id : effect
+				)
+				characterToSave.events = characterToSave.events.map(event =>
+					typeof event === 'object' ? event.id : event
+				)
+
 				// Transform ocName object to UUID if needed
-				if (characterToSave.ocName && typeof characterToSave.ocName === 'object') {
-					characterToSave.ocName = characterToSave.ocName.id
-				}
+				characterToSave.ocName = characterToSave.ocName && typeof characterToSave.ocName === 'object' 
+					? characterToSave.ocName.id 
+					: characterToSave.ocName || null
 
 				const isNewCharacter = !characterToSave.id
 				const endpoint = isNewCharacter

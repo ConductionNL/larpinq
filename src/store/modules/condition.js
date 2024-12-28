@@ -83,12 +83,13 @@ export const useConditionStore = defineStore(
 				// Create a copy of the condition item to avoid modifying the original
 				const conditionToSave = { ...conditionItem }
 
-				// Transform effects array to array of UUIDs if needed
-				if (conditionToSave.effects) {
-					conditionToSave.effects = conditionToSave.effects.map(effect => 
-						typeof effect === 'object' ? effect.id : effect
-					)
-				}
+				// Initialize effects array if not set
+				conditionToSave.effects = conditionToSave.effects || []
+
+				// Transform effects array to array of UUIDs
+				conditionToSave.effects = conditionToSave.effects.map(effect => 
+					typeof effect === 'object' ? effect.id : effect
+				)
 
 				const isNewCondition = !conditionToSave.id
 				const endpoint = isNewCondition

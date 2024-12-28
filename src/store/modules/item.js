@@ -89,12 +89,13 @@ export const useItemStore = defineStore(
 				// Create a copy of the item to avoid modifying the original
 				const itemToSave = { ...itemItem }
 
-				// Transform effects array to array of UUIDs if needed
-				if (itemToSave.effects) {
-					itemToSave.effects = itemToSave.effects.map(effect => 
-						typeof effect === 'object' ? effect.id : effect
-					)
-				}
+				// Initialize effects array if not set
+				itemToSave.effects = itemToSave.effects || []
+
+				// Transform effects array to array of UUIDs
+				itemToSave.effects = itemToSave.effects.map(effect => 
+					typeof effect === 'object' ? effect.id : effect
+				)
 
 				// Remove empty properties
 				Object.keys(itemToSave).forEach(key => {
