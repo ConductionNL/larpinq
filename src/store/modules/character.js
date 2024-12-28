@@ -177,6 +177,7 @@ export const useCharacterStore = defineStore(
 				characterToSave.conditions = characterToSave.conditions || []
 				characterToSave.effects = characterToSave.effects || []
 				characterToSave.events = characterToSave.events || []
+				characterToSave.ocName = characterToSave.ocName || ''
 
 				// Transform arrays of objects to arrays of UUIDs
 				characterToSave.skills = characterToSave.skills.map(skill => 
