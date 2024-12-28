@@ -82,11 +82,21 @@ export const useItemStore = defineStore(
 
 				const isNewItem = !itemItem.id
 				const endpoint = isNewItem
-					? '/index.php/apps/larpingapp/api/objects/item'
-					: `/index.php/apps/larpingapp/api/objects/item/${itemItem.id}`
+					? '/index.php/apps/larpingapp/api/objects/item?_extend=effects'
+					: `/index.php/apps/larpingapp/api/objects/item/${itemItem.id}?_extend=effects`
 				const method = isNewItem ? 'POST' : 'PUT'
 
+				// Create a copy of the item to avoid modifying the original
 				const itemToSave = { ...itemItem }
+
+				// Transform effects array to array of UUIDs if needed
+				if (itemToSave.effects) {
+					itemToSave.effects = itemToSave.effects.map(effect => 
+						typeof effect === 'object' ? effect.id : effect
+					)
+				}
+
+				// Remove empty properties
 				Object.keys(itemToSave).forEach(key => {
 					if (itemToSave[key] === '' || (Array.isArray(itemToSave[key]) && itemToSave[key].length === 0)) {
 						delete itemToSave[key]

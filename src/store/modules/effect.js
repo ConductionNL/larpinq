@@ -82,8 +82,8 @@ export const useEffectStore = defineStore(
 
 				const isNewEffect = !effectItem.id
 				const endpoint = isNewEffect
-					? '/index.php/apps/larpingapp/api/objects/effect'
-					: `/index.php/apps/larpingapp/api/objects/effect/${effectItem.id}`
+					? '/index.php/apps/larpingapp/api/objects/effect?_extend=effects'
+					: `/index.php/apps/larpingapp/api/objects/effect/${effectItem.id}?_extend=effects`
 				const method = isNewEffect ? 'POST' : 'PUT'
 
 				return fetch(

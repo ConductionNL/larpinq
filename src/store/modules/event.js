@@ -82,14 +82,24 @@ export const useEventStore = defineStore(
 
 				const isNewEvent = !eventItem.id
 				const endpoint = isNewEvent
-					? '/index.php/apps/larpingapp/api/objects/event'
-					: `/index.php/apps/larpingapp/api/objects/event/${eventItem.id}`
+					? '/index.php/apps/larpingapp/api/objects/event?_extend=effects'
+					: `/index.php/apps/larpingapp/api/objects/event/${eventItem.id}?_extend=effects`
 				const method = isNewEvent ? 'POST' : 'PUT'
 
-				const eventToSeave = { ...eventItem }
-				Object.keys(eventToSeave).forEach(key => {
-					if (eventToSeave[key] === '' || (Array.isArray(eventToSeave[key]) && eventToSeave[key].length === 0)) {
-						delete eventToSeave[key]
+				// Create a copy of the event to avoid modifying the original
+				const eventToSave = { ...eventItem }
+
+				// Transform effects array to array of UUIDs if needed
+				if (eventToSave.effects) {
+					eventToSave.effects = eventToSave.effects.map(effect => 
+						typeof effect === 'object' ? effect.id : effect
+					)
+				}
+
+				// Remove empty properties
+				Object.keys(eventToSave).forEach(key => {
+					if (eventToSave[key] === '' || (Array.isArray(eventToSave[key]) && eventToSave[key].length === 0)) {
+						delete eventToSave[key]
 					}
 				})
 
@@ -100,7 +110,7 @@ export const useEventStore = defineStore(
 						headers: {
 							'Content-Type': 'application/json',
 						},
-						body: JSON.stringify(eventToSeave),
+						body: JSON.stringify(eventToSave),
 					},
 				)
 					.then((response) => response.json())
