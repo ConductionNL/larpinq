@@ -97,13 +97,6 @@ export const useItemStore = defineStore(
 					typeof effect === 'object' ? effect.id : effect
 				)
 
-				// Remove empty properties
-				Object.keys(itemToSave).forEach(key => {
-					if (itemToSave[key] === '' || (Array.isArray(itemToSave[key]) && itemToSave[key].length === 0)) {
-						delete itemToSave[key]
-					}
-				})
-
 				return fetch(
 					endpoint,
 					{

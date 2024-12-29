@@ -41,23 +41,43 @@ import { abilityStore, navigationStore } from '../../store/store.js'
 				<div class="tabContainer">
 					<BTabs content-class="mt-3" justified>
 						<BTab title="Effects">
-							<div v-if="abilityStore.relations?.effects?.length > 0">
-								<NcListItem v-for="(effect) in abilityStore.relations.effectsx"
-									:key="effect.id"
-									:name="effect.name"
+							<div v-if="abilityStore.relations?.length > 0">
+								<NcListItem v-for="relation in abilityStore.relations"
+									:key="relation.id"
+									:name="relation.name || 'No name available'"
 									:bold="false"
 									:force-display-actions="true">
 									<template #icon>
-										<MagicStaff disable-menu
+										<BriefcaseAccountOutline disable-menu
 											:size="44" />
 									</template>
 									<template #subname>
-										{{ effect.description }}
+										{{ relation.description || 'No description available' }}
 									</template>
 								</NcListItem>
 							</div>
 							<div v-else>
-								Geen effects gevonden
+								Geen characters gevonden
+							</div>
+						</BTab>
+						<BTab title="Logging">
+							<div v-if="abilityStore.auditTrails?.length > 0">
+								<NcListItem v-for="log in abilityStore.auditTrails"
+									:key="log.id"
+									:name="log.name || 'No name available'"
+									:bold="false"
+									:force-display-actions="true">
+									<template #icon>
+										<BriefcaseAccountOutline disable-menu
+											:size="44" />
+									</template>
+									<template #subname>
+										{{ log.description || 'No description available' }}
+									</template>
+								</NcListItem>
+							</div>
+							<div v-else>
+								Geen logging gevonden
 							</div>
 						</BTab>
 					</BTabs>
@@ -69,12 +89,13 @@ import { abilityStore, navigationStore } from '../../store/store.js'
 
 <script>
 import { BTabs, BTab } from 'bootstrap-vue'
-import { NcLoadingIcon, NcActions, NcActionButton } from '@nextcloud/vue'
+import { NcLoadingIcon, NcActions, NcActionButton, NcListItem } from '@nextcloud/vue'
 
 // Icons
 import DotsHorizontal from 'vue-material-design-icons/DotsHorizontal.vue'
 import Pencil from 'vue-material-design-icons/Pencil.vue'
 import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
+import BriefcaseAccountOutline from 'vue-material-design-icons/BriefcaseAccountOutline.vue'
 import { storeToRefs } from 'pinia'
 export default {
 	name: 'AbilityDetails',
@@ -82,12 +103,14 @@ export default {
 		NcActions,
 		NcActionButton,
 		NcLoadingIcon,
+		NcListItem,
 		BTabs,
 		BTab,
 		// Icons
 		DotsHorizontal,
 		Pencil,
 		TrashCanOutline,
+		BriefcaseAccountOutline,
 	},
 }
 </script>

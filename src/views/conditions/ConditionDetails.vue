@@ -1,5 +1,5 @@
 <script setup>
-import { conditionStore, navigationStore, effectStore, characterStore } from '../../store/store.js'
+import { conditionStore, navigationStore,  } from '../../store/store.js'
 </script>
 
 <template>
@@ -39,18 +39,20 @@ import { conditionStore, navigationStore, effectStore, characterStore } from '..
 				<div class="tabContainer">
 					<BTabs content-class="mt-3" justified>
 						<BTab title="Effects" active>
-							<div v-if="conditionStore.relations?.effects?.length > 0">
-								<NcListItem v-for="(effect) in conditionStore.relations.effects"
+							<div v-if="conditionStore.condtionItem?.effects?.length > 0">
+								<NcListItem v-for="(effect) in conditionStore.conditionItem.effects"
 									:key="effect.id"
 									:name="effect.name"
 									:bold="false"
-									:force-display-actions="true">
+									:force-display-actions="true"
+									:details="effect?.modification || ''"
+									:counter-number="effect?.modifier">
 									<template #icon>
 										<MagicStaff disable-menu
 											:size="44" />
 									</template>
 									<template #subname>
-										{{ effect.description }}
+										{{ effect.name }}
 									</template>
 								</NcListItem>
 							</div>
@@ -59,10 +61,10 @@ import { conditionStore, navigationStore, effectStore, characterStore } from '..
 							</div>
 						</BTab>
 						<BTab title="Characters">
-							<div v-if="conditionStore.relations?.characters?.length > 0">
-								<NcListItem v-for="(character, i) in conditionStore.relations.characters"
-									:key="character.id + i"
-									:name="character.name"
+							<div v-if="conditionStore.relations?.length > 0">
+								<NcListItem v-for="relation in conditionStore.relations"
+									:key="relation.id"
+									:name="relation.name || 'No name available'"
 									:bold="false"
 									:force-display-actions="true">
 									<template #icon>
@@ -70,12 +72,32 @@ import { conditionStore, navigationStore, effectStore, characterStore } from '..
 											:size="44" />
 									</template>
 									<template #subname>
-										{{ character.description }}
+										{{ relation.description || 'No description available' }}
 									</template>
 								</NcListItem>
 							</div>
 							<div v-else>
 								Geen characters gevonden
+							</div>
+						</BTab>
+						<BTab title="Logging">
+							<div v-if="conditionStore.auditTrails?.length > 0">
+								<NcListItem v-for="log in conditionStore.auditTrails"
+									:key="log.id"
+							:name="log.name || 'No name available'"
+									:bold="false"
+									:force-display-actions="true">
+									<template #icon>
+										<BriefcaseAccountOutline disable-menu
+											:size="44" />
+									</template>
+									<template #subname>
+										{{ log.description || 'No description available' }}
+									</template>
+								</NcListItem>
+							</div>
+							<div v-else>
+								Geen logging gevonden
 							</div>
 						</BTab>
 					</BTabs>
@@ -88,20 +110,21 @@ import { conditionStore, navigationStore, effectStore, characterStore } from '..
 <script>
 // Components
 import { BTabs, BTab } from 'bootstrap-vue'
-import { NcLoadingIcon, NcActions, NcActionButton } from '@nextcloud/vue'
+import { NcLoadingIcon, NcActions, NcActionButton, NcListItem } from '@nextcloud/vue'
 
 // Icons
 import DotsHorizontal from 'vue-material-design-icons/DotsHorizontal.vue'
 import Pencil from 'vue-material-design-icons/Pencil.vue'
 import FileDocumentPlusOutline from 'vue-material-design-icons/FileDocumentPlusOutline.vue'
 import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
-
+import BriefcaseAccountOutline from 'vue-material-design-icons/BriefcaseAccountOutline.vue'
 export default {
 	name: 'ConditionDetails',
 	components: {
 		NcActions,
 		NcActionButton,
 		NcLoadingIcon,
+		NcListItem,
 		BTabs,
 		BTab,
 		// Icons
@@ -109,6 +132,7 @@ export default {
 		Pencil,
 		FileDocumentPlusOutline,
 		TrashCanOutline,
+		BriefcaseAccountOutline
 	},
 }
 </script>

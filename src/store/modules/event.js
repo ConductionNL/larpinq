@@ -97,13 +97,6 @@ export const useEventStore = defineStore(
 					typeof effect === 'object' ? effect.id : effect
 				)
 
-				// Remove empty properties
-				Object.keys(eventToSave).forEach(key => {
-					if (eventToSave[key] === '' || (Array.isArray(eventToSave[key]) && eventToSave[key].length === 0)) {
-						delete eventToSave[key]
-					}
-				})
-
 				return fetch(
 					endpoint,
 					{

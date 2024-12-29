@@ -5,8 +5,8 @@ return [
 		// Page routes
 		['name' => 'dashboard#page', 'url' => '/', 'verb' => 'GET'],
 		['name' => 'characters#downloadPdf', 'url' => '/characters/{id}/download/{template}', 'verb' => 'GET'],
-		['name' => 'settings#index', 'url' => '/settings', 'verb' => 'GET'],
-		['name' => 'settings#create', 'url' => '/settings', 'verb' => 'POST'],
+		['name' => 'settings#index', 'url' => 'api/settings', 'verb' => 'GET'],
+		['name' => 'settings#create', 'url' => 'api/settings', 'verb' => 'POST'],
 		// Object API routes	
 		['name' => 'objects#index', 'url' => 'api/objects/{objectType}', 'verb' => 'GET'],
 		['name' => 'objects#create', 'url' => 'api/objects/{objectType}', 'verb' => 'POST'],

@@ -37,6 +37,50 @@ import { eventStore, navigationStore } from '../../store/store.js'
 				</div>
 				<span>{{ eventStore.eventItem.description }}</span>
 			</div>
+		<div class="tabContainer">
+			<BTabs content-class="mt-3" justified>
+				<BTab title="Characters">
+					<div v-if="eventStore.relations?.length > 0">
+						<NcListItem v-for="relation in eventStore.relations"
+							:key="relation.id"
+							:name="relation.name || 'No name available'"
+							:bold="false"
+							:force-display-actions="true">
+							<template #icon>
+								<BriefcaseAccountOutline disable-menu
+									:size="44" />
+							</template>
+							<template #subname>
+								{{ relation.description || 'No description available' }}
+							</template>
+						</NcListItem>
+					</div>
+					<div v-else>
+						Geen characters gevonden
+					</div>
+				</BTab>
+				<BTab title="Logging">
+					<div v-if="eventStore.auditTrails?.length > 0">
+						<NcListItem v-for="log in eventStore.auditTrails"
+							:key="log.id"
+							:name="log.name || 'No name available'"
+							:bold="false"
+							:force-display-actions="true">
+							<template #icon>
+								<BriefcaseAccountOutline disable-menu
+									:size="44" />
+							</template>
+							<template #subname>
+								{{ log.description || 'No description available' }}
+							</template>
+						</NcListItem>
+					</div>
+					<div v-else>
+						Geen logging gevonden
+					</div>
+				</BTab>
+			</BTabs>
+		</div>
 		</div>
 	</div>
 </template>
@@ -44,12 +88,13 @@ import { eventStore, navigationStore } from '../../store/store.js'
 <script>
 // Components
 import { BTabs, BTab } from 'bootstrap-vue'
-import { NcLoadingIcon, NcActions, NcActionButton } from '@nextcloud/vue'
+import { NcLoadingIcon, NcActions, NcActionButton, NcListItem } from '@nextcloud/vue'
 
 // Icons
 import DotsHorizontal from 'vue-material-design-icons/DotsHorizontal.vue'
 import Pencil from 'vue-material-design-icons/Pencil.vue'
 import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
+import BriefcaseAccountOutline from 'vue-material-design-icons/BriefcaseAccountOutline.vue'
 
 export default {
 	name: 'EventDetails',
@@ -57,12 +102,14 @@ export default {
 		NcActions,
 		NcActionButton,
 		NcLoadingIcon,
+		NcListItem,
 		BTabs,
 		BTab,
 		// Icons
 		Pencil,
 		DotsHorizontal,
 		TrashCanOutline,
+		BriefcaseAccountOutline,
 	},
 }
 </script>

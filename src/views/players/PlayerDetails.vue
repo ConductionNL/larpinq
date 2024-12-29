@@ -1,5 +1,5 @@
 <script setup>
-import { playerStore, characterStore } from '../../store/store.js'
+import { playerStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -20,11 +20,11 @@ import { playerStore, characterStore } from '../../store/store.js'
 		</div>
 		<div class="tabContainer">
 			<BTabs content-class="mt-3" justified>
-				<BTab title="Characters" active>
-					<div v-if="filterCharacters.length > 0 && !charactersLoading">
-						<NcListItem v-for="(character, i) in filterCharacters"
-							:key="character.id + i"
-							:name="character.name"
+				<BTab title="Characters">
+					<div v-if="playerStore.relations?.length > 0">
+						<NcListItem v-for="relation in playerStore.relations"
+							:key="relation.id"
+							:name="relation.name || 'No name available'"
 							:bold="false"
 							:force-display-actions="true">
 							<template #icon>
@@ -32,32 +32,32 @@ import { playerStore, characterStore } from '../../store/store.js'
 									:size="44" />
 							</template>
 							<template #subname>
-								{{ character.description }}
+								{{ relation.description || 'No description available' }}
 							</template>
 						</NcListItem>
 					</div>
-					<div v-if="filterCharacters.length === 0">
+					<div v-else>
 						Geen characters gevonden
 					</div>
 				</BTab>
-				<BTab title="Events">
-					<div v-if="playerStore.playerItem?.events?.length > 0">
-						<NcListItem v-for="(event) in playerStore.playerItem?.events"
-							:key="event.id"
-							:name="event.name"
+				<BTab title="Logging">
+					<div v-if="playerStore.auditTrails?.length > 0">
+						<NcListItem v-for="log in playerStore.auditTrails"
+							:key="log.id"
+							:name="log.name || 'No name available'"
 							:bold="false"
 							:force-display-actions="true">
 							<template #icon>
-								<CalendarMonthOutline disable-menu
+								<BriefcaseAccountOutline disable-menu
 									:size="44" />
 							</template>
 							<template #subname>
-								{{ event.description }}
+								{{ log.description || 'No description available' }}
 							</template>
 						</NcListItem>
 					</div>
-					<div v-if="!playerStore.playerItem?.events?.length">
-						Geen events gevonden
+					<div v-else>
+						Geen logging gevonden
 					</div>
 				</BTab>
 			</BTabs>
@@ -80,31 +80,6 @@ export default {
 		NcListItem,
 		BTabs,
 		BTab,
-	},
-	data() {
-		return {
-			characters: [],
-			charactersLoading: false,
-		}
-	},
-	computed: {
-		filterCharacters() {
-			return characterStore.characterList.filter((character) => {
-				return character.ocName.toString() === playerStore.playerItem.id.toString()
-			})
-		},
-	},
-	mounted() {
-		this.fetchCharacters()
-	},
-	methods: {
-		fetchCharacters() {
-			this.charactersLoading = true
-			characterStore.refreshCharacterList()
-				.then(() => {
-					this.charactersLoading = false
-				})
-		},
 	},
 }
 </script>

@@ -262,6 +262,27 @@ import { characterStore, navigationStore } from '../../store/store.js'
 								Geen events gevonden
 							</div>
 						</BTab>
+						
+						<BTab title="Logging">
+							<div v-if="characterStore.auditTrails?.length > 0">
+								<NcListItem v-for="log in characterStore.auditTrails"
+									:key="log.id"
+									:name="log.name || 'No name available'"
+									:bold="false"
+									:force-display-actions="true">
+									<template #icon>
+										<BriefcaseAccountOutline disable-menu
+											:size="44" />
+									</template>
+									<template #subname>
+										{{ log.description || 'No description available' }}
+									</template>
+								</NcListItem>
+							</div>
+							<div v-else>
+								Geen logging gevonden
+							</div>
+						</BTab>
 					</BTabs>
 				</div>
 			</div>
@@ -289,7 +310,7 @@ import EmoticonSickOutline from 'vue-material-design-icons/EmoticonSickOutline.v
 import CalendarMonthOutline from 'vue-material-design-icons/CalendarMonthOutline.vue'
 import ShieldSwordOutline from 'vue-material-design-icons/ShieldSwordOutline.vue'
 import Download from 'vue-material-design-icons/Download.vue'
-
+import BriefcaseAccountOutline from 'vue-material-design-icons/BriefcaseAccountOutline.vue'
 export default {
 	name: 'CharacterDetails',
 	components: {
@@ -313,6 +334,7 @@ export default {
 		CalendarMonthOutline,
 		ShieldSwordOutline,
 		Download,
+		BriefcaseAccountOutline
 	},
 	methods: {
 		downloadCharacterPdf() {

@@ -1,5 +1,6 @@
 <script setup>
-import { characterStore, effectStore, skillStore } from '../../store/store.js'
+import { skillStore } from '../../store/store.js'
+
 </script>
 
 <template>
@@ -43,7 +44,7 @@ import { characterStore, effectStore, skillStore } from '../../store/store.js'
 			<BTabs content-class="mt-3" justified>
 				<BTab title="Effects" active>
 					<div v-if="skillStore.skillItem?.effects?.length > 0">
-						<NcListItem v-for="(effect) in skillStore.skillItem?.effects"
+						<NcListItem v-for="effect in skillStore.skillItem?.effects"
 							:key="effect.id"
 							:name="effect.name"
 							:bold="false"
@@ -64,10 +65,10 @@ import { characterStore, effectStore, skillStore } from '../../store/store.js'
 					</div>
 				</BTab>
 				<BTab title="Characters">
-					<div v-if="skillStore.relations?.characters?.length > 0">
-						<NcListItem v-for="(character, i) in skillStore.relations.characters"
-							:key="character.id + i"
-							:name="character.name"
+					<div v-if="skillStore.relations?.length > 0">
+						<NcListItem v-for="relation in skillStore.relations"
+							:key="relation.id"
+							:name="relation.name || 'No name available'"
 							:bold="false"
 							:force-display-actions="true">
 							<template #icon>
@@ -75,12 +76,32 @@ import { characterStore, effectStore, skillStore } from '../../store/store.js'
 									:size="44" />
 							</template>
 							<template #subname>
-								{{ character.description }}
+								{{ relation.description || 'No description available' }}
 							</template>
 						</NcListItem>
 					</div>
 					<div v-else>
 						Geen characters gevonden
+					</div>
+				</BTab>
+				<BTab title="Logging">
+					<div v-if="skillStore.auditTrails?.length > 0">
+						<NcListItem v-for="log in skillStore.auditTrails"
+							:key="log.id"
+							:name="log.name || 'No name available'"
+							:bold="false"
+							:force-display-actions="true">
+							<template #icon>
+								<BriefcaseAccountOutline disable-menu
+									:size="44" />
+							</template>
+							<template #subname>
+								{{ log.description || 'No description available' }}
+							</template>
+						</NcListItem>
+					</div>
+					<div v-else>
+						Geen logging gevonden
 					</div>
 				</BTab>
 			</BTabs>
@@ -90,7 +111,7 @@ import { characterStore, effectStore, skillStore } from '../../store/store.js'
 
 <script>
 import {
-	NcListItem,
+	NcListItem,NcActionButton,NcActions
 } from '@nextcloud/vue'
 import { BTabs, BTab } from 'bootstrap-vue'
 
@@ -99,11 +120,14 @@ import MagicStaff from 'vue-material-design-icons/MagicStaff.vue'
 import BriefcaseAccountOutline from 'vue-material-design-icons/BriefcaseAccountOutline.vue'
 import Pencil from 'vue-material-design-icons/Pencil.vue'
 import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
+import DotsHorizontal from 'vue-material-design-icons/DotsHorizontal.vue'
 
 export default {
 	name: 'SkillDetails',
 	components: {
 		NcListItem,
+		NcActionButton,
+		NcActions,
 		BTabs,
 		BTab,
 		// Icons
@@ -111,6 +135,7 @@ export default {
 		BriefcaseAccountOutline,
 		Pencil,
 		TrashCanOutline,
+		DotsHorizontal
 	},
 }
 </script>
