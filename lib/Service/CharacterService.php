@@ -212,12 +212,14 @@ class CharacterService
         foreach ($effectAbilities as $abilityId) {
             if (!isset($abilities[$abilityId]['value'])) {
                 $abilities[$abilityId]['value'] = 0;
+            } elseif (!is_int($abilities[$abilityId]['value'])) {
+                $abilities[$abilityId]['value'] = (int) $abilities[$abilityId]['value'];
             }
 
             // Get current value and modifiers
             $currentValue = $abilities[$abilityId]['value'];
             // Get modifier value from effect, defaulting to 0 if not set
-            $modifier = $effect['modifier'] ?? 0;
+            $modifier = (int) ($effect['modifier'] ?? 0);
             // Get modification type, defaulting to 'positive' if not set
             $modification = $effect['modification'] ?? 'positive'; 
 

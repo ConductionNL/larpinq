@@ -56,44 +56,18 @@ class SettingsController extends Controller
 			$data['availableRegisters'] = $openRegisters->getRegisters();
 		}
 
-		// Define the default values for the object types
-		$defaults = [
-			'ability_source' => 'internal',
-			'ability_schema' => '',
-			'ability_register' => '',
-			'character_source' => 'internal',
-			'character_schema' => '',
-			'character_register' => '',
-			'condition_source' => 'internal',
-			'condition_schema' => '',
-			'condition_register' => '',
-			'effect_source' => 'internal',
-			'effect_schema' => '',
-			'effect_register' => '',
-			'event_source' => 'internal',
-			'event_schema' => '',
-			'event_register' => '',
-			'item_source' => 'internal',
-			'item_schema' => '',
-			'item_register' => '',
-			'player_source' => 'internal',
-			'player_schema' => '',
-			'player_register' => '',
-			'setting_source' => 'internal',
-			'setting_schema' => '',
-			'setting_register' => '',	
-			'skill_source' => 'internal',
-			'skill_schema' => '',
-			'skill_register' => '',
-			'template_source' => 'internal',
-			'template_schema' => '',
-			'template_register' => '',
-		];
+		// Build defaults array dynamically based on object types
+		$defaults = [];
+		foreach ($data['objectTypes'] as $type) {
+			$defaults["{$type}_source"] = 'internal';
+			$defaults["{$type}_schema"] = '';
+			$defaults["{$type}_register"] = '';
+		}
 
 		// Get the current values for the object types from the configuration
 		try {
-			foreach ($defaults as $key => $value) {
-				$data[$key] = $this->config->getValueString($this->appName, $key, $value);
+			foreach ($defaults as $key => $defaultValue) {
+				$data['configuration'][$key] = $this->config->getValueString($this->appName, $key, $defaultValue);
 			}
 			return new JSONResponse($data);
 		} catch (\Exception $e) {
