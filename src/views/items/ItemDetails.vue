@@ -1,5 +1,5 @@
 <script setup>
-import { characterStore, effectStore, itemStore } from '../../store/store.js'
+import { itemStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -64,10 +64,10 @@ import { characterStore, effectStore, itemStore } from '../../store/store.js'
 					</div>
 				</BTab>
 				<BTab title="Characters">
-					<div v-if="itemStore.relations?.characters?.length > 0">
-						<NcListItem v-for="(character, i) in itemStore.relations.characters"
-							:key="character.id + i"
-							:name="character.name"
+					<div v-if="itemStore.relations?.length > 0">
+						<NcListItem v-for="relation in itemStore.relations"
+							:key="relation.id"
+							:name="relation.name || 'No name available'"
 							:bold="false"
 							:force-display-actions="true">
 							<template #icon>
@@ -75,12 +75,32 @@ import { characterStore, effectStore, itemStore } from '../../store/store.js'
 									:size="44" />
 							</template>
 							<template #subname>
-								{{ character.description }}
+								{{ relation.description || 'No description available' }}
 							</template>
 						</NcListItem>
 					</div>
 					<div v-else>
 						Geen characters gevonden
+					</div>
+				</BTab>
+				<BTab title="Logging">
+					<div v-if="itemStore.auditTrails?.length > 0">
+						<NcListItem v-for="log in itemStore.auditTrails"
+							:key="log.id"
+							:name="log.name || 'No name available'"
+							:bold="false"
+							:force-display-actions="true">
+							<template #icon>
+								<BriefcaseAccountOutline disable-menu
+									:size="44" />
+							</template>
+							<template #subname>
+								{{ log.description || 'No description available' }}
+							</template>
+						</NcListItem>
+					</div>
+					<div v-else>
+						Geen logging gevonden
 					</div>
 				</BTab>
 			</BTabs>
