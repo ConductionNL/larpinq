@@ -1,5 +1,5 @@
 <script setup>
-import { effectStore, abilityStore } from '../../store/store.js'
+import { effectStore, abilityStore, skillStore, itemStore, eventStore, conditionStore, characterStore, playerStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -10,7 +10,8 @@ import { effectStore, abilityStore } from '../../store/store.js'
 				:name="object.name"
 				:bold="false"
 				:details="object.objectType"
-				:force-display-actions="true">
+				:force-display-actions="true"
+				@click="handleObjectClick(object)">
 				<template #icon>
 					<ShieldSwordOutline v-if="object.objectType === 'ability'" :size="44" />
 					<BriefcaseAccountOutline v-else-if="object.objectType === 'character'" :size="44" />
@@ -104,6 +105,49 @@ export default {
 
 			if (!effectStrings.length) return 'No calculated effects'
 			return effectStrings.join(', ')
+		},
+		/**
+		 * Handles click on an object list item
+		 * @param {Object} object - The clicked object
+		 */
+		handleObjectClick(object) {
+			// Set the object in the appropriate store
+			switch (object.objectType) {
+				case 'ability':
+					abilityStore.abilityItem = object
+					navigationStore.setSelected('abilities')
+					break
+				case 'skill':
+					skillStore.skillItem = object
+					navigationStore.setSelected('skills')
+					break
+				case 'item':
+					itemStore.itemItem = object
+					navigationStore.setSelected('items')
+					break
+				case 'event':
+					eventStore.eventItem = object
+					navigationStore.setSelected('events')
+					break
+				case 'condition':
+					conditionStore.conditionItem = object
+					navigationStore.setSelected('conditions')
+					break
+				case 'effect':
+					effectStore.effectItem = object
+					navigationStore.setSelected('effects')
+					break
+				case 'character':
+					characterStore.characterItem = object
+					navigationStore.setSelected('characters')
+					break
+				case 'player':
+					playerStore.playerItem = object
+					navigationStore.setSelected('players')
+					break
+				default:
+					console.warn('Unknown object type:', object.objectType)
+			}
 		},
 	},
 }
