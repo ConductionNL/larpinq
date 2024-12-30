@@ -11,7 +11,8 @@ import { navigationStore, objectStore } from '../../store/store.js'
 				:bold="false"
 				:details="auditTrail.action"
 				:counter-number="Object.keys(auditTrail.changed).length"
-				:force-display-actions="true">
+				:force-display-actions="true"
+				@click="objectStore.setAuditTrailItem(auditTrail); navigationStore.setModal('viewAuditTrail')">
 				<template #icon>
 					<TimelineQuestionOutline disable-menu
 						:size="44" />
@@ -20,7 +21,7 @@ import { navigationStore, objectStore } from '../../store/store.js'
 					{{ auditTrail.userName }}
 				</template>
 				<template #actions>
-					<NcActionButton @click="objectStore.setAuditTrailItem(auditTrail); navigationStore.setModal('viewObjectAuditTrail')">
+					<NcActionButton >
 						<template #icon>
 							<Eye :size="20" />
 						</template>

@@ -1,5 +1,5 @@
 <script setup>
-import { navigationStore, objectStore } from '../../store/store.js'
+import { effectStore, abilityStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -12,19 +12,21 @@ import { navigationStore, objectStore } from '../../store/store.js'
 				:details="object.objectType"
 				:force-display-actions="true">
 				<template #icon>
-					<Sword v-if="object.objectType === 'ability'" :size="44" />
+					<ShieldSwordOutline v-if="object.objectType === 'ability'" :size="44" />
 					<BriefcaseAccountOutline v-else-if="object.objectType === 'character'" :size="44" />
-					<AlertDecagram v-else-if="object.objectType === 'condition'" :size="44" />
+					<EmoticonSickOutline v-else-if="object.objectType === 'condition'" :size="44" />
 					<MagicStaff v-else-if="object.objectType === 'effect'" :size="44" />
-					<CalendarClock v-else-if="object.objectType === 'event'" :size="44" />
-					<BagPersonal v-else-if="object.objectType === 'item'" :size="44" />
+					<CalendarMonthOutline v-else-if="object.objectType === 'event'" :size="44" />
+					<Sword v-else-if="object.objectType === 'item'" :size="44" />
 					<Account v-else-if="object.objectType === 'player'" :size="44" />
-					<SchoolOutline v-else-if="object.objectType === 'skill'" :size="44" />
-					<FileDocumentMultiple v-else-if="object.objectType === 'template'" :size="44" />
+					<SwordCross v-else-if="object.objectType === 'skill'" :size="44" />
+					<ChatOutline v-else-if="object.objectType === 'template'" :size="44" />
 					<TimelineQuestionOutline v-else :size="44" />
 				</template>
 				<template #subname>
-					{{ new Date(object.created).toLocaleString() }}
+					<div class="object-info">
+						<div>{{ renderEffects(object) }}</div>
+					</div>
 				</template>
 				<template #actions>
 					<NcActionButton>
@@ -45,15 +47,15 @@ import { navigationStore, objectStore } from '../../store/store.js'
 import { NcListItem, NcActionButton, NcLoadingIcon } from '@nextcloud/vue'
 import TimelineQuestionOutline from 'vue-material-design-icons/TimelineQuestionOutline.vue'
 import Eye from 'vue-material-design-icons/Eye.vue'
-import Sword from 'vue-material-design-icons/Sword.vue'
-import BriefcaseAccountOutline from 'vue-material-design-icons/AccountGroup.vue'
-import AlertDecagram from 'vue-material-design-icons/AlertDecagram.vue'
+import ShieldSwordOutline from 'vue-material-design-icons/ShieldSwordOutline.vue'
+import BriefcaseAccountOutline from 'vue-material-design-icons/BriefcaseAccountOutline.vue'
+import EmoticonSickOutline from 'vue-material-design-icons/EmoticonSickOutline.vue'
 import MagicStaff from 'vue-material-design-icons/MagicStaff.vue'
-import CalendarClock from 'vue-material-design-icons/CalendarClock.vue'
-import BagPersonal from 'vue-material-design-icons/BagPersonal.vue'
+import CalendarMonthOutline from 'vue-material-design-icons/CalendarMonthOutline.vue'
+import Sword from 'vue-material-design-icons/Sword.vue'
+import SwordCross from 'vue-material-design-icons/SwordCross.vue'
 import Account from 'vue-material-design-icons/Account.vue'
-import SchoolOutline from 'vue-material-design-icons/SchoolOutline.vue'
-import FileDocumentMultiple from 'vue-material-design-icons/FileDocumentMultiple.vue'
+import ChatOutline from 'vue-material-design-icons/ChatOutline.vue'
 
 export default {
 	name: 'ObjectList',
@@ -64,15 +66,15 @@ export default {
 		// Icons
 		TimelineQuestionOutline,
 		Eye,
-		Sword,
+		ShieldSwordOutline,
 		BriefcaseAccountOutline,
-		AlertDecagram,
+		EmoticonSickOutline,
 		MagicStaff,
-		CalendarClock,
-		BagPersonal,
+		CalendarMonthOutline,
+		Sword,
+		SwordCross,
 		Account,
-		SchoolOutline,
-		FileDocumentMultiple
+		ChatOutline
 	},
 	props: {
 		objects: {
@@ -80,6 +82,37 @@ export default {
 			required: true,
 			default: () => [],
 		},
-	}
+	},
+	methods: {
+		/**
+		 * Renders effects and effect property for an object
+		 * @param {Object} object - The object containing effects and effect property
+		 * @returns {string} Formatted string of effects
+		 */
+		renderEffects(object) {
+			if (!object?.effects?.length) return 'No calculated effects'
+
+			const effectStrings = object.effects.map(effectId => {
+				const effect = effectStore.effectList.find(e => e.id === effectId)
+				if (!effect?.abilities?.length) return null
+
+				return effect.abilities.map(ability => {
+					const sign = effect.modification === 'negative' ? '-' : '+'
+					return `${ability.name} (${sign}${effect.name.replace(/[^0-9]/g, '')})`
+				}).join(', ')
+			}).filter(Boolean)
+
+			if (!effectStrings.length) return 'No calculated effects'
+			return effectStrings.join(', ')
+		},
+	},
 }
 </script>
+
+<style scoped>
+.object-info {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+</style>
