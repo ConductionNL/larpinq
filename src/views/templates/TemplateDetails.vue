@@ -48,6 +48,10 @@ import DOMPurify from 'dompurify'
 <script>
 import { NcLoadingIcon, NcActions, NcActionButton, NcGuestContent, NcRichText } from '@nextcloud/vue'
 
+// Custom components
+import AuditList from '../auditTrail/AuditList.vue'
+import ObjectList from '../objects/ObjectList.vue'
+
 import Pencil from 'vue-material-design-icons/Pencil.vue'
 import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
 import DotsHorizontal from 'vue-material-design-icons/DotsHorizontal.vue'
@@ -57,6 +61,10 @@ export default {
 	components: {
 		NcActions,
 		NcActionButton,
+		// Custom components
+		AuditList,
+		ObjectList,
+		// Icons
 		NcLoadingIcon,
 		Pencil,
 		TrashCanOutline,

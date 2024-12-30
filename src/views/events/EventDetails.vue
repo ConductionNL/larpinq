@@ -40,44 +40,10 @@ import { eventStore, navigationStore } from '../../store/store.js'
 		<div class="tabContainer">
 			<BTabs content-class="mt-3" justified>
 				<BTab title="Characters">
-					<div v-if="eventStore.relations?.length > 0">
-						<NcListItem v-for="relation in eventStore.relations"
-							:key="relation.id"
-							:name="relation.name || 'No name available'"
-							:bold="false"
-							:force-display-actions="true">
-							<template #icon>
-								<BriefcaseAccountOutline disable-menu
-									:size="44" />
-							</template>
-							<template #subname>
-								{{ relation.description || 'No description available' }}
-							</template>
-						</NcListItem>
-					</div>
-					<div v-else>
-						Geen characters gevonden
-					</div>
+					<ObjectList :objects="eventStore.relations" />							
 				</BTab>
 				<BTab title="Logging">
-					<div v-if="eventStore.auditTrails?.length > 0">
-						<NcListItem v-for="log in eventStore.auditTrails"
-							:key="log.id"
-							:name="log.name || 'No name available'"
-							:bold="false"
-							:force-display-actions="true">
-							<template #icon>
-								<BriefcaseAccountOutline disable-menu
-									:size="44" />
-							</template>
-							<template #subname>
-								{{ log.description || 'No description available' }}
-							</template>
-						</NcListItem>
-					</div>
-					<div v-else>
-						Geen logging gevonden
-					</div>
+					<AuditList :logs="eventStore.auditTrails" />
 				</BTab>
 			</BTabs>
 		</div>
@@ -89,6 +55,10 @@ import { eventStore, navigationStore } from '../../store/store.js'
 // Components
 import { BTabs, BTab } from 'bootstrap-vue'
 import { NcLoadingIcon, NcActions, NcActionButton, NcListItem } from '@nextcloud/vue'
+
+// Custom components
+import AuditList from '../auditTrail/AuditList.vue'
+import ObjectList from '../objects/ObjectList.vue'
 
 // Icons
 import DotsHorizontal from 'vue-material-design-icons/DotsHorizontal.vue'
@@ -105,6 +75,9 @@ export default {
 		NcListItem,
 		BTabs,
 		BTab,
+		// Custom components
+		AuditList,
+		ObjectList,
 		// Icons
 		Pencil,
 		DotsHorizontal,

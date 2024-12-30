@@ -21,44 +21,10 @@ import { playerStore } from '../../store/store.js'
 		<div class="tabContainer">
 			<BTabs content-class="mt-3" justified>
 				<BTab title="Characters">
-					<div v-if="playerStore.relations?.length > 0">
-						<NcListItem v-for="relation in playerStore.relations"
-							:key="relation.id"
-							:name="relation.name || 'No name available'"
-							:bold="false"
-							:force-display-actions="true">
-							<template #icon>
-								<BriefcaseAccountOutline disable-menu
-									:size="44" />
-							</template>
-							<template #subname>
-								{{ relation.description || 'No description available' }}
-							</template>
-						</NcListItem>
-					</div>
-					<div v-else>
-						Geen characters gevonden
-					</div>
+					<ObjectList :objects="playerStore.relations" />							
 				</BTab>
 				<BTab title="Logging">
-					<div v-if="playerStore.auditTrails?.length > 0">
-						<NcListItem v-for="log in playerStore.auditTrails"
-							:key="log.id"
-							:name="log.name || 'No name available'"
-							:bold="false"
-							:force-display-actions="true">
-							<template #icon>
-								<BriefcaseAccountOutline disable-menu
-									:size="44" />
-							</template>
-							<template #subname>
-								{{ log.description || 'No description available' }}
-							</template>
-						</NcListItem>
-					</div>
-					<div v-else>
-						Geen logging gevonden
-					</div>
+					<AuditList :logs="playerStore.auditTrails" />
 				</BTab>
 			</BTabs>
 		</div>
@@ -71,8 +37,9 @@ import {
 } from '@nextcloud/vue'
 import { BTabs, BTab } from 'bootstrap-vue'
 
-import BriefcaseAccountOutline from 'vue-material-design-icons/BriefcaseAccountOutline.vue'
-import CalendarMonthOutline from 'vue-material-design-icons/CalendarMonthOutline.vue'
+// Custom components
+import AuditList from '../auditTrail/AuditList.vue'
+import ObjectList from '../objects/ObjectList.vue'
 
 export default {
 	name: 'PlayerDetails',
@@ -80,6 +47,9 @@ export default {
 		NcListItem,
 		BTabs,
 		BTab,
+		// Custom components
+		AuditList,
+		ObjectList,
 	},
 }
 </script>

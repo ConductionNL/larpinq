@@ -40,45 +40,11 @@ import { abilityStore, navigationStore } from '../../store/store.js'
 
 				<div class="tabContainer">
 					<BTabs content-class="mt-3" justified>
-						<BTab title="Effects">
-							<div v-if="abilityStore.relations?.length > 0">
-								<NcListItem v-for="relation in abilityStore.relations"
-									:key="relation.id"
-									:name="relation.name || 'No name available'"
-									:bold="false"
-									:force-display-actions="true">
-									<template #icon>
-										<BriefcaseAccountOutline disable-menu
-											:size="44" />
-									</template>
-									<template #subname>
-										{{ relation.description || 'No description available' }}
-									</template>
-								</NcListItem>
-							</div>
-							<div v-else>
-								Geen characters gevonden
-							</div>
+						<BTab title="effects">
+							<ObjectList :objects="abilityStore.relations" />							
 						</BTab>
 						<BTab title="Logging">
-							<div v-if="abilityStore.auditTrails?.length > 0">
-								<NcListItem v-for="log in abilityStore.auditTrails"
-									:key="log.id"
-									:name="log.name || 'No name available'"
-									:bold="false"
-									:force-display-actions="true">
-									<template #icon>
-										<BriefcaseAccountOutline disable-menu
-											:size="44" />
-									</template>
-									<template #subname>
-										{{ log.description || 'No description available' }}
-									</template>
-								</NcListItem>
-							</div>
-							<div v-else>
-								Geen logging gevonden
-							</div>
+							<AuditList :logs="abilityStore.auditTrails" />
 						</BTab>
 					</BTabs>
 				</div>
@@ -90,6 +56,10 @@ import { abilityStore, navigationStore } from '../../store/store.js'
 <script>
 import { BTabs, BTab } from 'bootstrap-vue'
 import { NcLoadingIcon, NcActions, NcActionButton, NcListItem } from '@nextcloud/vue'
+
+// Custom components
+import AuditList from '../auditTrail/AuditList.vue'
+import ObjectList from '../objects/ObjectList.vue'
 
 // Icons
 import DotsHorizontal from 'vue-material-design-icons/DotsHorizontal.vue'
@@ -106,6 +76,9 @@ export default {
 		NcListItem,
 		BTabs,
 		BTab,
+		// Custom components
+		AuditList,
+		ObjectList,
 		// Icons
 		DotsHorizontal,
 		Pencil,
