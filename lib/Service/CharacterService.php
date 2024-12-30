@@ -22,8 +22,9 @@ use OCA\LarpingApp\Db\EventMapper;
 use OCA\LarpingApp\Db\EffectMapper;
 use OCA\LarpingApp\Service\ObjectService;
 
-// @todo: cant get this to work
-use TCPDF;
+use Mpdf\Mpdf;
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
 
 // And in case of open registers
 use OCA\OpenRegister\Db\ObjectEntity;
@@ -242,72 +243,28 @@ class CharacterService
      * @psalm-param array{name: string, stats: array<string, array{name: string, value: int}>, skills?: array, items?: array, conditions?: array, events?: array} $character
      * @psalm-param array{name: string, orientation?: string, format?: string, sections?: array} $template
      */
-    public function createCharacterPdf(array $character, array $template): string
+    public function createCharacterPdf(array $character, array $template): Mpdf
     {
-        try {
-            $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+        // Getting al the twig stuff going
+        $loader = new FilesystemLoader(__DIR__ . '/../../templates');
+        $twig = new Environment($loader);
+        $template = $twig->createTemplate($template['template']);
+        $html = $template->render(['character' => $character, 'template' => $template]);
+        
+        // Check if the directory exists, if not, create it
+		if (file_exists(filename: '/tmp/mpdf') === false) {
+			mkdir(directory: '/tmp/mpdf', recursive: true);
+		}
 
-            // Set document information
-            $pdf->SetCreator(PDF_CREATOR);
-            $pdf->SetAuthor('LarpingApp');
-            $pdf->SetTitle('Character Sheet: ' . $character['name']);
-            $pdf->SetSubject('Character Sheet');
+		// Set permissions for the directory (ensure it's writable)
+		chmod(filename: '/tmp/mpdf', permissions: 0777);
 
-            // Add a page
-            $pdf->AddPage();
+		// Initialize mPDF
+		$mpdf = new Mpdf(config: ['tempDir' => '/tmp/mpdf']);
 
-            // Set default font
-            $pdf->SetFont('helvetica', '', 12);
+		// Write HTML to PDF
+		$mpdf->WriteHTML(html: $html);
 
-            // Add character name header
-            $pdf->Cell(0, 10, 'Character Sheet: ' . $character['name'], 0, 1, 'C');
-            $pdf->Ln(10);
-
-            // Add stats section if character has stats
-            if (!empty($character['stats'])) {
-                $pdf->SetFont('', 'B', 14);
-                $pdf->Cell(0, 10, 'Stats', 0, 1);
-                $pdf->SetFont('', '', 12);
-                
-                foreach ($character['stats'] as $stat) {
-                    $pdf->Cell(0, 10, $stat['name'] . ': ' . $stat['value'], 0, 1);
-                }
-                $pdf->Ln(10);
-            }
-
-            // Define sections to process
-            $sections = [
-                'Skills' => $character['skills'] ?? [],
-                'Items' => $character['items'] ?? [],
-                'Conditions' => $character['conditions'] ?? [],
-                'Events' => $character['events'] ?? []
-            ];
-
-            // Add each section if it contains data
-            foreach ($sections as $title => $items) {
-                if (!empty($items)) {
-                    $pdf->SetFont('', 'B', 14);
-                    $pdf->Cell(0, 10, $title, 0, 1);
-                    $pdf->SetFont('', '', 12);
-                    
-                    foreach ($items as $item) {
-                        if (isset($item['name'])) {
-                            $pdf->Cell(0, 10, $item['name'], 0, 1);
-                        }
-                    }
-                    $pdf->Ln(10);
-                }
-            }
-
-            // Generate and return PDF content as string
-            return $pdf->Output('character_sheet.pdf', 'S');
-
-        } catch (\Exception $e) {
-            // Log the error for debugging
-            error_log('PDF Generation Failed: ' . $e->getMessage());
-            
-            // Throw a new exception with a generic error message
-            throw new \Exception('PDF Generation Failed', 0, $e);
-        }
+        return $mpdf;
     }
 }

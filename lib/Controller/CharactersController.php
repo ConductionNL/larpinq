@@ -59,19 +59,20 @@ class CharactersController extends Controller
             // Fetch the character object by its ID
             $character = $this->objectService->getObject('character', $id);
             $template  = $this->objectService->getObject('template', $template);
-            
-            // Generate PDF using the specified template
-            $pdfContent = $this->characterService->createCharacterPdf($character, $template);
-            
-            return new DataDownloadResponse(
-                $pdfContent,
-                $character->getName() . '_character_sheet.pdf',
-                'application/pdf'
-            );
         } catch (DoesNotExistException $exception) {
             return new JSONResponse(data: ['error' => 'Character Not Found'], statusCode: 404);
-        } catch (\Exception $exception) {
-            return new JSONResponse(data: ['error' => 'PDF Generation Failed'], statusCode: 500);
-        }
+        } 
+            
+        // Generate PDF using the specified template
+        $pdfContent = $this->characterService->createCharacterPdf($character, $template);
+        
+        // Other code
+        $pdfContent->Output();
+        
+        //return new DataDownloadResponse(
+        //    $pdfContent,
+        //    $character->getName() . '_character_sheet.pdf',
+        //    'application/pdf'
+        //);
     }
 }

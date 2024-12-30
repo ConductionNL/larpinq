@@ -64,44 +64,10 @@ import { itemStore } from '../../store/store.js'
 					</div>
 				</BTab>
 				<BTab title="Characters">
-					<div v-if="itemStore.relations?.length > 0">
-						<NcListItem v-for="relation in itemStore.relations"
-							:key="relation.id"
-							:name="relation.name || 'No name available'"
-							:bold="false"
-							:force-display-actions="true">
-							<template #icon>
-								<BriefcaseAccountOutline disable-menu
-									:size="44" />
-							</template>
-							<template #subname>
-								{{ relation.description || 'No description available' }}
-							</template>
-						</NcListItem>
-					</div>
-					<div v-else>
-						Geen characters gevonden
-					</div>
+					<ObjectList :objects="itemStore.relations" />							
 				</BTab>
 				<BTab title="Logging">
-					<div v-if="itemStore.auditTrails?.length > 0">
-						<NcListItem v-for="log in itemStore.auditTrails"
-							:key="log.id"
-							:name="log.name || 'No name available'"
-							:bold="false"
-							:force-display-actions="true">
-							<template #icon>
-								<BriefcaseAccountOutline disable-menu
-									:size="44" />
-							</template>
-							<template #subname>
-								{{ log.description || 'No description available' }}
-							</template>
-						</NcListItem>
-					</div>
-					<div v-else>
-						Geen logging gevonden
-					</div>
+					<AuditList :logs="itemStore.auditTrails" />
 				</BTab>
 			</BTabs>
 		</div>
@@ -111,6 +77,10 @@ import { itemStore } from '../../store/store.js'
 <script>
 import { BTabs, BTab } from 'bootstrap-vue'
 import { NcLoadingIcon, NcListItem, NcActions, NcActionButton } from '@nextcloud/vue'
+
+// Custom components
+import AuditList from '../auditTrail/AuditList.vue'
+import ObjectList from '../objects/ObjectList.vue'
 
 import MagicStaff from 'vue-material-design-icons/MagicStaff.vue'
 import BriefcaseAccountOutline from 'vue-material-design-icons/BriefcaseAccountOutline.vue'
@@ -126,6 +96,9 @@ export default {
 		NcLoadingIcon,
 		BTabs,
 		BTab,
+		// Custom components
+		AuditList,
+		ObjectList,
 		// Icons
 		MagicStaff,
 		BriefcaseAccountOutline,

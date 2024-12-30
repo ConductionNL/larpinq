@@ -4,24 +4,24 @@ import { characterStore, itemStore, navigationStore } from '../../store/store.js
 
 <template>
 	<NcDialog v-if="navigationStore.modal === 'addItemToCharacter'"
-		name="Item toevoegen aan karakter"
+		name="Voorwerpen bewerken"
 		size="normal"
 		:can-close="false">
 		<NcNoteCard v-if="success" type="success">
-			<p>Item succesvol toegevoegd aan karakter</p>
+			<p>Voorwerpen succesvol bijgewerkt</p>
 		</NcNoteCard>
 		<NcNoteCard v-if="error" type="error">
 			<p>{{ error }}</p>
 		</NcNoteCard>
 
 		<div v-if="!success" class="formContainer">
-			<p>Let op: Het toevoegen van een item aan een karakter kan invloed hebben op de eigenschappen van het karakter. Dit is een asynchroon proces, dus het kan even duren voordat de wijzigingen zichtbaar worden.</p>
+			<p>Let op: Het bewerken van voorwerpen kan invloed hebben op de eigenschappen van het karakter. Dit is een asynchroon proces, dus het kan even duren voordat de wijzigingen zichtbaar worden.</p>
 
 			<NcSelect v-bind="items"
-				v-model="items.value"
-				input-label="Items *"
+				v-model="selectedItems"
+				input-label="Voorwerpen *"
 				:loading="itemsLoading"
-				:disabled="itemsLoading || loading"
+				:disabled="itemsLoading"
 				required />
 		</div>
 
@@ -39,14 +39,14 @@ import { characterStore, itemStore, navigationStore } from '../../store/store.js
 				Help
 			</NcButton>
 			<NcButton v-if="!success"
-				:disabled="loading || itemsLoading || !items.value?.length"
+				:disabled="loading || itemsLoading"
 				type="primary"
-				@click="addItemToCharacter()">
+				@click="saveItems()">
 				<template #icon>
 					<NcLoadingIcon v-if="loading" :size="20" />
-					<Plus v-if="!loading" :size="20" />
+					<Save v-if="!loading" :size="20" />
 				</template>
-				Toevoegen
+				Opslaan
 			</NcButton>
 		</template>
 	</NcDialog>
@@ -62,7 +62,7 @@ import {
 } from '@nextcloud/vue'
 
 import Cancel from 'vue-material-design-icons/Cancel.vue'
-import Plus from 'vue-material-design-icons/Plus.vue'
+import Save from 'vue-material-design-icons/ContentSave.vue'
 import Help from 'vue-material-design-icons/Help.vue'
 
 export default {
@@ -75,12 +75,13 @@ export default {
 		NcNoteCard,
 		// Icons
 		Cancel,
-		Plus,
+		Save,
 		Help,
 	},
 	data() {
 		return {
 			items: {},
+			selectedItems: [],
 			itemsLoading: false,
 			success: false,
 			loading: false,
@@ -104,47 +105,53 @@ export default {
 			this.loading = false
 			this.error = false
 			this.hasUpdated = false
+			this.selectedItems = []
 		},
 		fetchItems() {
 			this.itemsLoading = true
 
 			itemStore.refreshItemList()
 				.then(() => {
-					// Get all the items NOT on the character
-					const availableItems = itemStore.itemList.filter((item) => {
-						return (characterStore.characterItem?.items || [])
-							.map(String)
-							.includes(item.id.toString()) !== true
-					})
-
+					// Create options from all available items
 					this.items = {
 						multiple: true,
 						closeOnSelect: false,
-						options: availableItems.map((item) => ({
+						options: itemStore.itemList.map((item) => ({
 							id: item.id,
 							label: item.name,
 						})),
 					}
 
+					// Pre-select existing items
+					if (characterStore.characterItem?.items?.length) {
+						this.selectedItems = characterStore.characterItem.items.map(item => ({
+							id: item.id || item,
+							label: itemStore.itemList.find(i => i.id === (item.id || item))?.name || '',
+						}))
+					}
+
 					this.itemsLoading = false
 				})
 		},
-		async addItemToCharacter() {
+		async saveItems() {
 			this.loading = true
 			try {
 				const characterItemClone = { ...characterStore.characterItem }
-
-				if (!characterItemClone.items) {
-					characterItemClone.items = []
-				}
-
-				for (const selectedItem of this.items.value) {
-					characterItemClone.items.push(selectedItem.id)
-				}
-
-				await characterStore.saveCharacter({
-					...characterItemClone,
+				
+				// Replace items array with selected items, ensuring uniqueness
+				const uniqueItems = [...new Map(this.selectedItems.map(item => [item.id, item])).values()]
+				characterItemClone.items = uniqueItems.map(selected => {
+					const itemData = itemStore.itemList.find(i => i.id === selected.id)
+					return {
+						objectType: 'item',
+						id: itemData.id,
+						name: itemData.name,
+						description: itemData.description || '',
+						effects: itemData.effects || [],
+					}
 				})
+
+				await characterStore.saveCharacter(characterItemClone)
 
 				this.success = true
 				this.loading = false
@@ -155,7 +162,7 @@ export default {
 			} catch (error) {
 				this.loading = false
 				this.success = false
-				this.error = error.message || 'Er is een fout opgetreden bij het toevoegen van het item aan het karakter'
+				this.error = error.message || 'Er is een fout opgetreden bij het bewerken van de voorwerpen'
 			}
 		},
 	},

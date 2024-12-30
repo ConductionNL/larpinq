@@ -38,7 +38,7 @@ import { templateStore, navigationStore, searchStore } from '../../store/store.j
 					:details="'1h'"
 					:counter-number="44"
 					:force-display-actions="true"
-					@click="handleTemplateSelect(template)">
+					@click="templateStore.setTemplateItem(template)">
 					<template #icon>
 						<ChatOutline :class="templateStore.templateItem?.id === template.id && 'selected'"
 							disable-menu
@@ -48,13 +48,13 @@ import { templateStore, navigationStore, searchStore } from '../../store/store.j
 						{{ template?.description }}
 					</template>
 					<template #actions>
-						<NcActionButton @click="handleTemplateSelect(template); navigationStore.setModal('editTemplate')">
+						<NcActionButton @click="templateStore.setTemplateItem(template); navigationStore.setModal('editTemplate')">
 							<template #icon>
 								<Plus />
 							</template>
 							Bewerken
 						</NcActionButton>
-						<NcActionButton @click="handleTemplateSelect(template); navigationStore.setDialog('deleteTemplate')">
+						<NcActionButton @click="templateStore.setTemplateItem(template), navigationStore.setDialog('deleteTemplate')">
 							<template #icon>
 								<TrashCanOutline />
 							</template>

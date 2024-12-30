@@ -19,37 +19,43 @@ import { characterStore, navigationStore } from '../../store/store.js'
 							<template #icon>
 								<Pencil :size="20" />
 							</template>
-							Bewerken
+							Character Bewerken
 						</NcActionButton>
 						<NcActionButton @click="navigationStore.setModal('addSkillToCharacter')">
 							<template #icon>
 								<FileDocumentPlusOutline :size="20" />
 							</template>
-							Skill toevoegen
+							Skills bewerken
 						</NcActionButton>
 						<NcActionButton @click="navigationStore.setModal('addItemToCharacter')">
 							<template #icon>
 								<AccountPlus :size="20" />
 							</template>
-							Item toevoegen
+							Items bewerken
 						</NcActionButton>
 						<NcActionButton @click="navigationStore.setModal('addConditionToCharacter')">
 							<template #icon>
 								<CalendarPlus :size="20" />
 							</template>
-							Conditie toevoegen
+							Condities bewerken
 						</NcActionButton>
 						<NcActionButton @click="navigationStore.setModal('addEventToCharacter')">
 							<template #icon>
 								<CalendarPlus :size="20" />
 							</template>
-							Event toevoegen
+							Events bewerken
 						</NcActionButton>
 						<NcActionButton @click="navigationStore.setModal('renderPdfFromCharacter')">
 							<template #icon>
 								<Download :size="20" />
 							</template>
 							Als pdf downloaden
+						</NcActionButton>
+						<NcActionButton >
+							<template #icon>
+								<Download :size="20" />
+							</template>
+							Accoderen
 						</NcActionButton>
 						<NcActionButton @click="navigationStore.setDialog('deleteCharacter')">
 							<template #icon>
@@ -87,201 +93,24 @@ import { characterStore, navigationStore } from '../../store/store.js'
 							</div>
 						</BTab>
 
-						<BTab title="Skills">
-							<div v-if="characterStore.characterItem.skills?.length > 0">
-								<NcListItem v-for="(skill, i) in characterStore.characterItem.skills"
-									:key="skill.id + i"
-									:name="skill.name"
-									:bold="false"
-									:force-display-actions="true">
-									<template #icon>
-										<SwordCross disable-menu
-											:size="44" />
-									</template>
-									<template #subname>
-										{{ skill.description }}
-									</template>
-									<template #actions>
-										<NcActionButton :aria-label="`Go to skill '${skill.name}'`"
-											@click="skillStore.setSkillItem(skill); navigationStore.setSelected('skills')">
-											<template #icon>
-												<EyeArrowRight :size="20" />
-											</template>
-											Bekijken
-										</NcActionButton>
-										<NcActionButton :aria-label="`Edit '${skill.name}'`"
-											@click="skillStore.setSkillItem(skill); navigationStore.setModal('editSkill')">
-											<template #icon>
-												<Pencil :size="20" />
-											</template>
-											Bewerken
-										</NcActionButton>
-										<NcActionButton aria-label="Remove skill from character"
-											@click="skillStore.setSkillItem(skill); navigationStore.setDialog('deleteSkillFromCharacter')">
-											<template #icon>
-												<TrashCanOutline :size="20" />
-											</template>
-											Verwijder van Character
-										</NcActionButton>
-									</template>
-								</NcListItem>
-							</div>
-							<div v-else>
-								Geen skills gevonden
-							</div>
+						<BTab title="Skills">							
+							<ObjectList :objects="characterStore.characterItem.skills" />
 						</BTab>
 
 						<BTab title="Items">
-							<div v-if="characterStore.characterItem.items?.length > 0">
-								<NcListItem v-for="(item, i) in characterStore.characterItem.items"
-									:key="item.id + i"
-									:name="item.name"
-									:bold="false"
-									:force-display-actions="true">
-									<template #icon>
-										<Sword disable-menu
-											:size="44" />
-									</template>
-									<template #subname>
-										{{ item.description }}
-									</template>
-									<template #actions>
-										<NcActionButton :aria-label="`Go to item '${item.name}'`"
-											@click="itemStore.setItemItem(item); navigationStore.setSelected('items')">
-											<template #icon>
-												<EyeArrowRight :size="20" />
-											</template>
-											Bekijken
-										</NcActionButton>
-										<NcActionButton :aria-label="`Edit '${item.name}'`"
-											@click="itemStore.setItemItem(item); navigationStore.setModal('editItem')">
-											<template #icon>
-												<Pencil :size="20" />
-											</template>
-											Bewerken
-										</NcActionButton>
-										<NcActionButton aria-label="Remove item from character"
-											@click="itemStore.setItemItem(item); navigationStore.setDialog('deleteItemFromCharacter')">
-											<template #icon>
-												<TrashCanOutline :size="20" />
-											</template>
-											Verwijder van Character
-										</NcActionButton>
-									</template>
-								</NcListItem>
-							</div>
-							<div v-else>
-								Geen items gevonden
-							</div>
+							<ObjectList :objects="characterStore.characterItem.items" />
 						</BTab>
 
-						<BTab title="Conditions">
-							<div v-if="characterStore.characterItem.conditions?.length > 0">
-								<NcListItem v-for="(condition, i) in characterStore.characterItem.conditions"
-									:key="condition.id + i"
-									:name="condition.name"
-									:bold="false"
-									:force-display-actions="true">
-									<template #icon>
-										<EmoticonSickOutline disable-menu
-											:size="44" />
-									</template>
-									<template #subname>
-										{{ condition.description }}
-									</template>
-									<template #actions>
-										<NcActionButton :aria-label="`Go to condition '${condition.name}'`"
-											@click="conditionStore.setConditionItem(condition); navigationStore.setSelected('conditions')">
-											<template #icon>
-												<EyeArrowRight :size="20" />
-											</template>
-											Bekijken
-										</NcActionButton>
-										<NcActionButton :aria-label="`Edit '${condition.name}'`"
-											@click="conditionStore.setConditionItem(condition); navigationStore.setModal('editCondition')">
-											<template #icon>
-												<Pencil :size="20" />
-											</template>
-											Bewerken
-										</NcActionButton>
-										<NcActionButton aria-label="Remove condition from character"
-											@click="conditionStore.setConditionItem(condition); navigationStore.setDialog('deleteConditionFromCharacter')">
-											<template #icon>
-												<TrashCanOutline :size="20" />
-											</template>
-											Verwijder van Character
-										</NcActionButton>
-									</template>
-								</NcListItem>
-							</div>
-							<div v-else>
-								Geen conditions gevonden
-							</div>
+						<BTab title="Conditions">							
+							<ObjectList :objects="characterStore.characterItem.conditions" />
 						</BTab>
 
 						<BTab title="Events">
-							<div v-if="characterStore.characterItem.events?.length > 0">
-								<NcListItem v-for="(event, i) in characterStore.characterItem.events"
-									:key="event.id + i"
-									:name="event.name"
-									:bold="false"
-									:force-display-actions="true">
-									<template #icon>
-										<CalendarMonthOutline disable-menu
-											:size="44" />
-									</template>
-									<template #subname>
-										{{ event.description }}
-									</template>
-									<template #actions>
-										<NcActionButton :aria-label="`Go to event '${event.name}'`"
-											@click="eventStore.setEventItem(event); navigationStore.setSelected('events')">
-											<template #icon>
-												<EyeArrowRight :size="20" />
-											</template>
-											Bekijken
-										</NcActionButton>
-										<NcActionButton :aria-label="`Edit '${event.name}'`"
-											@click="eventStore.setEventItem(event); navigationStore.setModal('editEvent')">
-											<template #icon>
-												<Pencil :size="20" />
-											</template>
-											Bewerken
-										</NcActionButton>
-										<NcActionButton aria-label="Remove event from character"
-											@click="eventStore.setEventItem(event); navigationStore.setDialog('deleteEventFromCharacter')">
-											<template #icon>
-												<TrashCanOutline :size="20" />
-											</template>
-											Verwijder van Character
-										</NcActionButton>
-									</template>
-								</NcListItem>
-							</div>
-							<div v-else>
-								Geen events gevonden
-							</div>
+							<ObjectList :objects="characterStore.characterItem.events" />
 						</BTab>
 						
 						<BTab title="Logging">
-							<div v-if="characterStore.auditTrails?.length > 0">
-								<NcListItem v-for="log in characterStore.auditTrails"
-									:key="log.id"
-									:name="log.name || 'No name available'"
-									:bold="false"
-									:force-display-actions="true">
-									<template #icon>
-										<BriefcaseAccountOutline disable-menu
-											:size="44" />
-									</template>
-									<template #subname>
-										{{ log.description || 'No description available' }}
-									</template>
-								</NcListItem>
-							</div>
-							<div v-else>
-								Geen logging gevonden
-							</div>
+							<AuditList :logs="characterStore.auditTrails" />
 						</BTab>
 					</BTabs>
 				</div>
@@ -294,6 +123,10 @@ import { characterStore, navigationStore } from '../../store/store.js'
 // Components
 import { BTabs, BTab } from 'bootstrap-vue'
 import { NcActions, NcActionButton, NcListItem } from '@nextcloud/vue'
+
+// Custom components
+import AuditList from '../auditTrail/AuditList.vue'
+import ObjectList from '../objects/ObjectList.vue'
 
 // Icons
 import DotsHorizontal from 'vue-material-design-icons/DotsHorizontal.vue'
@@ -320,6 +153,9 @@ export default {
 		NcListItem,
 		BTabs,
 		BTab,
+		// Custom components
+		AuditList,
+		ObjectList,
 		// Icons
 		DotsHorizontal,
 		Pencil,

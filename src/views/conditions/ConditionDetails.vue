@@ -61,44 +61,10 @@ import { conditionStore, navigationStore,  } from '../../store/store.js'
 							</div>
 						</BTab>
 						<BTab title="Characters">
-							<div v-if="conditionStore.relations?.length > 0">
-								<NcListItem v-for="relation in conditionStore.relations"
-									:key="relation.id"
-									:name="relation.name || 'No name available'"
-									:bold="false"
-									:force-display-actions="true">
-									<template #icon>
-										<BriefcaseAccountOutline disable-menu
-											:size="44" />
-									</template>
-									<template #subname>
-										{{ relation.description || 'No description available' }}
-									</template>
-								</NcListItem>
-							</div>
-							<div v-else>
-								Geen characters gevonden
-							</div>
+							<ObjectList :objects="conditionStore.relations" />							
 						</BTab>
 						<BTab title="Logging">
-							<div v-if="conditionStore.auditTrails?.length > 0">
-								<NcListItem v-for="log in conditionStore.auditTrails"
-									:key="log.id"
-							:name="log.name || 'No name available'"
-									:bold="false"
-									:force-display-actions="true">
-									<template #icon>
-										<BriefcaseAccountOutline disable-menu
-											:size="44" />
-									</template>
-									<template #subname>
-										{{ log.description || 'No description available' }}
-									</template>
-								</NcListItem>
-							</div>
-							<div v-else>
-								Geen logging gevonden
-							</div>
+							<AuditList :logs="conditionStore.auditTrails" />
 						</BTab>
 					</BTabs>
 				</div>
@@ -112,15 +78,22 @@ import { conditionStore, navigationStore,  } from '../../store/store.js'
 import { BTabs, BTab } from 'bootstrap-vue'
 import { NcLoadingIcon, NcActions, NcActionButton, NcListItem } from '@nextcloud/vue'
 
+// Custom components
+import AuditList from '../auditTrail/AuditList.vue'
+import ObjectList from '../objects/ObjectList.vue'
+
 // Icons
 import DotsHorizontal from 'vue-material-design-icons/DotsHorizontal.vue'
 import Pencil from 'vue-material-design-icons/Pencil.vue'
 import FileDocumentPlusOutline from 'vue-material-design-icons/FileDocumentPlusOutline.vue'
 import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
 import BriefcaseAccountOutline from 'vue-material-design-icons/BriefcaseAccountOutline.vue'
+
 export default {
 	name: 'ConditionDetails',
 	components: {
+		AuditList,
+		ObjectList,
 		NcActions,
 		NcActionButton,
 		NcLoadingIcon,

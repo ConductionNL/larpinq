@@ -61,6 +61,7 @@ import DeleteItemFromCharacter from './character/DeleteItemFromCharacter.vue'
 import DeleteConditionFromCharacter from './character/DeleteConditionFromCharacter.vue'
 import DeleteEventFromCharacter from './character/DeleteEventFromCharacter.vue'
 import RenderPdfFromCharacter from './character/RenderPdfFromCharacter.vue'
+import ViewAuditTrail from './audittrail/ViewAuditTrail.vue'
 
 export default {
 	name: 'Modals',
@@ -93,6 +94,8 @@ export default {
 		DeleteConditionFromCharacter,
 		DeleteEventFromCharacter,
 		RenderPdfFromCharacter,
+		ViewAuditTrail,
 	},
 }
 </script>
+

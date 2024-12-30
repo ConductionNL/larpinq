@@ -65,44 +65,10 @@ import { skillStore } from '../../store/store.js'
 					</div>
 				</BTab>
 				<BTab title="Characters">
-					<div v-if="skillStore.relations?.length > 0">
-						<NcListItem v-for="relation in skillStore.relations"
-							:key="relation.id"
-							:name="relation.name || 'No name available'"
-							:bold="false"
-							:force-display-actions="true">
-							<template #icon>
-								<BriefcaseAccountOutline disable-menu
-									:size="44" />
-							</template>
-							<template #subname>
-								{{ relation.description || 'No description available' }}
-							</template>
-						</NcListItem>
-					</div>
-					<div v-else>
-						Geen characters gevonden
-					</div>
+					<ObjectList :objects="skillStore.relations" />							
 				</BTab>
 				<BTab title="Logging">
-					<div v-if="skillStore.auditTrails?.length > 0">
-						<NcListItem v-for="log in skillStore.auditTrails"
-							:key="log.id"
-							:name="log.name || 'No name available'"
-							:bold="false"
-							:force-display-actions="true">
-							<template #icon>
-								<BriefcaseAccountOutline disable-menu
-									:size="44" />
-							</template>
-							<template #subname>
-								{{ log.description || 'No description available' }}
-							</template>
-						</NcListItem>
-					</div>
-					<div v-else>
-						Geen logging gevonden
-					</div>
+					<AuditList :logs="skillStore.auditTrails" />
 				</BTab>
 			</BTabs>
 		</div>
@@ -114,6 +80,10 @@ import {
 	NcListItem,NcActionButton,NcActions
 } from '@nextcloud/vue'
 import { BTabs, BTab } from 'bootstrap-vue'
+
+// Custom components
+import AuditList from '../auditTrail/AuditList.vue'
+import ObjectList from '../objects/ObjectList.vue'
 
 // icons
 import MagicStaff from 'vue-material-design-icons/MagicStaff.vue'
@@ -130,6 +100,9 @@ export default {
 		NcActions,
 		BTabs,
 		BTab,
+		// Custom components
+		AuditList,
+		ObjectList,
 		// Icons
 		MagicStaff,
 		BriefcaseAccountOutline,

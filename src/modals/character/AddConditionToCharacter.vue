@@ -4,22 +4,22 @@ import { characterStore, conditionStore, navigationStore } from '../../store/sto
 
 <template>
 	<NcDialog v-if="navigationStore.modal === 'addConditionToCharacter'"
-		name="Conditie toevoegen aan karakter"
+		name="Condities bewerken"
 		size="normal"
 		:can-close="false">
 		<NcNoteCard v-if="success" type="success">
-			<p>Conditie succesvol toegevoegd aan karakter</p>
+			<p>Condities succesvol bijgewerkt</p>
 		</NcNoteCard>
 		<NcNoteCard v-if="error" type="error">
 			<p>{{ error }}</p>
 		</NcNoteCard>
 
 		<div v-if="!success" class="formContainer">
-			<p>Let op: Het toevoegen van een conditie aan een karakter kan invloed hebben op de eigenschappen en vaardigheden van het karakter. Dit is een asynchroon proces, dus het kan even duren voordat de wijzigingen zichtbaar worden.</p>
+			<p>Let op: Het bewerken van condities kan invloed hebben op de eigenschappen van het karakter. Dit is een asynchroon proces, dus het kan even duren voordat de wijzigingen zichtbaar worden.</p>
 
 			<NcSelect v-bind="conditions"
-				v-model="conditions.value"
-				input-label="Conditions *"
+				v-model="selectedConditions"
+				input-label="Condities *"
 				:loading="conditionsLoading"
 				:disabled="conditionsLoading"
 				required />
@@ -39,14 +39,14 @@ import { characterStore, conditionStore, navigationStore } from '../../store/sto
 				Help
 			</NcButton>
 			<NcButton v-if="!success"
-				:disabled="loading || conditionsLoading || !conditions.value?.length"
+				:disabled="loading || conditionsLoading"
 				type="primary"
-				@click="addConditionToCharacter()">
+				@click="saveConditions()">
 				<template #icon>
 					<NcLoadingIcon v-if="loading" :size="20" />
-					<Plus v-if="!loading" :size="20" />
+					<Save v-if="!loading" :size="20" />
 				</template>
-				Toevoegen
+				Opslaan
 			</NcButton>
 		</template>
 	</NcDialog>
@@ -62,7 +62,7 @@ import {
 } from '@nextcloud/vue'
 
 import Cancel from 'vue-material-design-icons/Cancel.vue'
-import Plus from 'vue-material-design-icons/Plus.vue'
+import Save from 'vue-material-design-icons/ContentSave.vue'
 import Help from 'vue-material-design-icons/Help.vue'
 
 export default {
@@ -75,15 +75,16 @@ export default {
 		NcNoteCard,
 		// Icons
 		Cancel,
-		Plus,
+		Save,
 		Help,
 	},
 	data() {
 		return {
 			conditions: {},
+			selectedConditions: [],
 			conditionsLoading: false,
-			loading: false,
 			success: false,
+			loading: false,
 			error: false,
 			hasUpdated: false,
 		}
@@ -102,61 +103,66 @@ export default {
 			navigationStore.setModal(false)
 			this.success = false
 			this.loading = false
-			this.conditionsLoading = false
 			this.error = false
 			this.hasUpdated = false
+			this.selectedConditions = []
 		},
 		fetchConditions() {
 			this.conditionsLoading = true
 
 			conditionStore.refreshConditionList()
 				.then(() => {
-					// Get all the items NOT on the character
-					const availableConditions = conditionStore.conditionList.filter((item) => {
-						return (characterStore.characterItem?.conditions || [])
-							.map(String)
-							.includes(item.id.toString()) !== true
-					})
-
+					// Create options from all available conditions
 					this.conditions = {
 						multiple: true,
 						closeOnSelect: false,
-						options: availableConditions.map((item) => ({
-							id: item.id,
-							label: item.name,
+						options: conditionStore.conditionList.map((condition) => ({
+							id: condition.id,
+							label: condition.name,
 						})),
+					}
+
+					// Pre-select existing conditions
+					if (characterStore.characterItem?.conditions?.length) {
+						this.selectedConditions = characterStore.characterItem.conditions.map(condition => ({
+							id: condition.id || condition,
+							label: conditionStore.conditionList.find(c => c.id === (condition.id || condition))?.name || '',
+						}))
 					}
 
 					this.conditionsLoading = false
 				})
 		},
-		async addConditionToCharacter() {
+		async saveConditions() {
 			this.loading = true
 			try {
 				const characterItemClone = { ...characterStore.characterItem }
-
-				if (!characterStore.characterItem.conditions) {
-					characterStore.characterItem.conditions = []
-				}
-
-				for (const selectedItem of this.conditions.value) {
-					if (!characterItemClone.conditions.includes(selectedItem.id)) {
-						characterItemClone.conditions.push(selectedItem.id)
+				
+				// Replace conditions array with selected conditions, ensuring uniqueness
+				const uniqueConditions = [...new Map(this.selectedConditions.map(condition => [condition.id, condition])).values()]
+				characterItemClone.conditions = uniqueConditions.map(selected => {
+					const conditionData = conditionStore.conditionList.find(c => c.id === selected.id)
+					return {
+						objectType: 'condition',
+						id: conditionData.id,
+						name: conditionData.name,
+						description: conditionData.description || '',
+						effects: conditionData.effects || [],
 					}
-				}
-
-				await characterStore.saveCharacter({
-					...characterItemClone,
 				})
+
+				await characterStore.saveCharacter(characterItemClone)
 
 				this.success = true
 				this.loading = false
 				this.error = false
-				setTimeout(this.closeModal, 2000)
+				setTimeout(() => {
+					this.closeModal()
+				}, 2000)
 			} catch (error) {
 				this.loading = false
 				this.success = false
-				this.error = error.message || 'Er is een fout opgetreden bij het toevoegen van de conditie aan het karakter'
+				this.error = error.message || 'Er is een fout opgetreden bij het bewerken van de condities'
 			}
 		},
 	},

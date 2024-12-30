@@ -26,7 +26,7 @@ export const useEffectStore = defineStore(
 			},
 			// Fetch and refresh the list of effects
 			async refreshEffectList(search = null) {
-				let endpoint = '/index.php/apps/larpingapp/api/objects/effect'
+				let endpoint = '/index.php/apps/larpingapp/api/objects/effect?_extend=abilities'
 				if (search !== null && search !== '') {
 					endpoint = endpoint + '?_search=' + search
 				}
@@ -40,7 +40,7 @@ export const useEffectStore = defineStore(
 			},
 			// Fetch a single effect by ID
 			async getEffect(id) {
-				const endpoint = `/index.php/apps/larpingapp/api/objects/effect/${id}`
+				const endpoint = `/index.php/apps/larpingapp/api/objects/effect/${id}?_extend=abilities`
 				try {
 					const response = await fetch(endpoint, { method: 'GET' })
 					const data = await response.json()
@@ -82,8 +82,8 @@ export const useEffectStore = defineStore(
 
 				const isNewEffect = !effectItem.id
 				const endpoint = isNewEffect
-					? '/index.php/apps/larpingapp/api/objects/effect?_extend=effects'
-					: `/index.php/apps/larpingapp/api/objects/effect/${effectItem.id}?_extend=effects`
+					? '/index.php/apps/larpingapp/api/objects/effect?_extend=abilities'
+					: `/index.php/apps/larpingapp/api/objects/effect/${effectItem.id}?_extend=abilities`
 				const method = isNewEffect ? 'POST' : 'PUT'
 
 				return fetch(

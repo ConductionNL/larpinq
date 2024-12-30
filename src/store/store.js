@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 // The store script handles app wide variables (or state), for the use of these variables and there governing concepts read the design.md
 import pinia from '../pinia.js'
+import { useObjectStore } from './modules/object.js'
 import { useNavigationStore } from './modules/navigation.js'
 import { useSearchStore } from './modules/search.js'
 import { useAbilityStore } from './modules/ability.js'
@@ -13,6 +14,7 @@ import { usePlayerStore } from './modules/player.js'
 import { useSkillStore } from './modules/skill.js'
 import { useTemplateStore } from './modules/template.js'
 
+const objectStore = useObjectStore(pinia)
 const navigationStore = useNavigationStore(pinia)
 const searchStore = useSearchStore(pinia)
 const abilityStore = useAbilityStore(pinia)
@@ -29,6 +31,7 @@ export {
 	// generic
 	navigationStore,
 	searchStore,
+	objectStore,
 	// feature-specific
 	abilityStore,
 	characterStore,
