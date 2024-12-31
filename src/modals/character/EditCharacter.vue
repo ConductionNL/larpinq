@@ -109,7 +109,6 @@ export default {
 		}
 	},
 	mounted() {
-		this.fetchSkills()
 		this.fetchPlayers()
 	},
 	updated() {

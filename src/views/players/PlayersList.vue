@@ -1,5 +1,5 @@
 <script setup>
-import { playerStore, navigationStore, searchStore, characterStore } from '../../store/store.js'
+import { playerStore, navigationStore, searchStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -119,8 +119,8 @@ export default {
 			try {
 				// Fetch characters for this player
 				await Promise.all([
-					characterStore.getRelations(player.id),
-					characterStore.getAuditTrails(player.id),
+					playerStore.getRelations(player.id),
+					playerStore.getAuditTrails(player.id),
 				])
 			} catch (error) {
 				console.error('Error fetching player data:', error)
