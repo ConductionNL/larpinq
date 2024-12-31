@@ -92,6 +92,13 @@ class ObjectsController extends Controller
         try {
             // Get all parameters from the request
             $data = $this->request->getParams();
+            
+            // Get extend parameter if present
+            $extend = $data['extend'] ?? $data['_extend'] ?? [];
+            if (is_string($extend)) {
+                $extend = array_map('trim', explode(',', $extend));
+            }
+
 
             // Remove the 'id' field if it exists, as we're creating a new object
             unset($data['id']);
@@ -102,7 +109,7 @@ class ObjectsController extends Controller
             }
 
             // Save the new object
-            $object = $this->objectService->saveObject($objectType, $data);
+            $object = $this->objectService->saveObject(objectType: $objectType, object: $data, extend: $extend);
             
             // Return the created object as a JSON response
             return new JSONResponse($object);
@@ -127,6 +134,12 @@ class ObjectsController extends Controller
         try {
             // Get all parameters from the request
             $data = $this->request->getParams();
+            
+            // Get extend parameter if present
+            $extend = $data['extend'] ?? $data['_extend'] ?? [];
+            if (is_string($extend)) {
+                $extend = array_map('trim', explode(',', $extend));
+            }
 
             // Ensure ID in data matches URL parameter
             $data['id'] = $id;
@@ -134,10 +147,10 @@ class ObjectsController extends Controller
             // Small bit of custom logic for characters
             if ($objectType === 'character') {
                 $data = $this->characterService->calculateCharacter($data);
-            }
+            }    
 
             // Save the updated object
-            $object = $this->objectService->saveObject($objectType, $data);
+            $object = $this->objectService->saveObject(objectType: $objectType, object: $data, extend: $extend);
             
             // Return the updated object as a JSON response
             return new JSONResponse($object);

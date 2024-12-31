@@ -296,16 +296,16 @@ class ObjectService
 	 * @return mixed The created or updated object.
 	 * @throws ContainerExceptionInterface|DoesNotExistException|MultipleObjectsReturnedException|NotFoundExceptionInterface
 	 */
-	public function saveObject(string $objectType, array $object, bool $updateVersion = true): mixed
+	public function saveObject(string $objectType, array $object, array $extend = [], bool $updateVersion = true): mixed
 	{
 		// Get the appropriate mapper for the object type
 		$mapper = $this->getMapper($objectType);
 		// If the object has an id, update it; otherwise, create a new object
 		if (isset($object['id']) === true) {
-			return $mapper->updateFromArray($object['id'], $object, $updateVersion);
+			return $mapper->updateFromArray(id: $object['id'], object: $object, updateVersion: $updateVersion, extend: $extend);
 		}
 		else {
-			return $mapper->createFromArray($object);
+			return $mapper->createFromArray(object: $object, extend: $extend);
 		}
 	}
 

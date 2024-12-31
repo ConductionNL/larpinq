@@ -204,7 +204,7 @@ export const useCharacterStore = defineStore(
 				const isNewCharacter = !characterToSave.id
 				const endpoint = isNewCharacter
 					? '/index.php/apps/larpingapp/api/objects/character?_extend=effects'
-					: `/index.php/apps/larpingapp/api/objects/character/${characterToSave.id}?_extend=effects`
+					: `/index.php/apps/larpingapp/api/objects/character/${characterToSave.id}?_extend=ocName,skills,items,conditions,events`
 				const method = isNewCharacter ? 'POST' : 'PUT'
 
 				return fetch(
