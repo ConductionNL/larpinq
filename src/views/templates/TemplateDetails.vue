@@ -39,7 +39,10 @@ import DOMPurify from 'dompurify'
 		</div>
 		<div class="tabContainer">
 			<BTabs content-class="mt-3" justified>
-				<BTab title="Content" active>
+				<BTab>
+					<template #title>
+						Content <NcCounterBubble>{{ templateStore.templateItem.template ? 1 : 0 }}</NcCounterBubble>
+					</template>
 					<NcGuestContent>
 						<NcRichText
 							:text="DOMPurify.sanitize(templateStore.templateItem.template)"
@@ -47,10 +50,16 @@ import DOMPurify from 'dompurify'
 							:use-markdown="true" />
 					</NcGuestContent>
 				</BTab>
-				<BTab title="Relations">
+				<BTab>
+					<template #title>
+						Relations <NcCounterBubble>{{ templateStore.relations ? templateStore.relations.length : 0 }}</NcCounterBubble>
+					</template>
 					<ObjectList :objects="templateStore.relations" />
 				</BTab>
-				<BTab title="Logging">
+				<BTab>
+					<template #title>
+						Logging <NcCounterBubble>{{ templateStore.auditTrails ? templateStore.auditTrails.length : 0 }}</NcCounterBubble>
+					</template>
 					<AuditList :logs="templateStore.auditTrails" />
 				</BTab>
 			</BTabs>
@@ -60,7 +69,7 @@ import DOMPurify from 'dompurify'
 
 <script>
 import { BTabs, BTab } from 'bootstrap-vue'
-import { NcLoadingIcon, NcActions, NcActionButton, NcGuestContent, NcRichText } from '@nextcloud/vue'
+import { NcLoadingIcon, NcActions, NcActionButton, NcGuestContent, NcRichText, NcCounterBubble } from '@nextcloud/vue'
 
 // Custom components
 import AuditList from '../auditTrail/AuditList.vue'
@@ -76,6 +85,7 @@ export default {
 		NcActions,
 		NcActionButton,
 		NcLoadingIcon,
+		NcCounterBubble,
 		BTabs,
 		BTab,
 		// Custom components
@@ -131,5 +141,22 @@ h4 {
 
 .tab-content {
 	padding: 20px 0;
+}
+
+.tab-title {
+    display: flex;
+    align-items: center;
+}
+
+/* Fix for Bootstrap Vue tabs alignment */
+.nav-tabs .nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Add margin to counter bubble only when inside nav-item */
+.nav-item .counter-bubble__counter {
+    margin-left: 10px;
 }
 </style>

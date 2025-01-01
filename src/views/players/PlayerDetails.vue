@@ -20,10 +20,16 @@ import { playerStore } from '../../store/store.js'
 		</div>
 		<div class="tabContainer">
 			<BTabs content-class="mt-3" justified>
-				<BTab title="Characters">
+				<BTab>
+					<template #title>
+						Characters <NcCounterBubble>{{ playerStore.relations ? playerStore.relations.length : 0 }}</NcCounterBubble>
+					</template>
 					<ObjectList :objects="playerStore.relations" />							
 				</BTab>
-				<BTab title="Logging">
+				<BTab>
+					<template #title>
+						Logging <NcCounterBubble>{{ playerStore.auditTrails ? playerStore.auditTrails.length : 0 }}</NcCounterBubble>
+					</template>
 					<AuditList :logs="playerStore.auditTrails" />
 				</BTab>
 			</BTabs>
@@ -34,6 +40,7 @@ import { playerStore } from '../../store/store.js'
 <script>
 import {
 	NcListItem,
+	NcCounterBubble,
 } from '@nextcloud/vue'
 import { BTabs, BTab } from 'bootstrap-vue'
 
@@ -45,6 +52,7 @@ export default {
 	name: 'PlayerDetails',
 	components: {
 		NcListItem,
+		NcCounterBubble,
 		BTabs,
 		BTab,
 		// Custom components
@@ -89,5 +97,10 @@ h4 {
   max-height: 100%;
   height: 100%;
   overflow: auto;
+}
+
+/* Add margin to counter bubble only when inside nav-item */
+.nav-item .counter-bubble__counter {
+    margin-left: 10px;
 }
 </style>

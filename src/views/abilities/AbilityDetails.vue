@@ -16,13 +16,13 @@ import { abilityStore, navigationStore } from '../../store/store.js'
 						<template #icon>
 							<DotsHorizontal :size="20" />
 						</template>
-						<NcActionButton @click="handleAbilitySelect(abilityStore.abilityItem); navigationStore.setModal('editAbility')">
+						<NcActionButton @click="navigationStore.setModal('editAbility')">
 							<template #icon>
 								<Pencil :size="20" />
 							</template>
 							Bewerken
 						</NcActionButton>
-						<NcActionButton @click="handleAbilitySelect(abilityStore.abilityItem); navigationStore.setDialog('deleteAbility')">
+						<NcActionButton @click="navigationStore.setDialog('deleteAbility')">
 							<template #icon>
 								<TrashCanOutline :size="20" />
 							</template>
@@ -40,10 +40,16 @@ import { abilityStore, navigationStore } from '../../store/store.js'
 
 				<div class="tabContainer">
 					<BTabs content-class="mt-3" justified>
-						<BTab title="effects">
+						<BTab>
+							<template #title>
+								Effects <NcCounterBubble>{{ abilityStore.relations ? abilityStore.relations.length : 0 }}</NcCounterBubble>
+							</template>
 							<ObjectList :objects="abilityStore.relations" />							
 						</BTab>
-						<BTab title="Logging">
+						<BTab>
+							<template #title>
+								Logging <NcCounterBubble>{{ abilityStore.auditTrails ? abilityStore.auditTrails.length : 0 }}</NcCounterBubble>
+							</template>
 							<AuditList :logs="abilityStore.auditTrails" />
 						</BTab>
 					</BTabs>
@@ -55,7 +61,7 @@ import { abilityStore, navigationStore } from '../../store/store.js'
 
 <script>
 import { BTabs, BTab } from 'bootstrap-vue'
-import { NcLoadingIcon, NcActions, NcActionButton, NcListItem } from '@nextcloud/vue'
+import { NcLoadingIcon, NcActions, NcActionButton, NcListItem, NcCounterBubble } from '@nextcloud/vue'
 
 // Custom components
 import AuditList from '../auditTrail/AuditList.vue'
@@ -74,6 +80,7 @@ export default {
 		NcActionButton,
 		NcLoadingIcon,
 		NcListItem,
+		NcCounterBubble,
 		BTabs,
 		BTab,
 		// Custom components
@@ -115,6 +122,11 @@ h4 {
 .gridContent {
   display: flex;
   gap: 25px;
+}
+
+/* Add margin to counter bubble only when inside nav-item */
+.nav-item .counter-bubble__counter {
+    margin-left: 10px;
 }
 
 </style>

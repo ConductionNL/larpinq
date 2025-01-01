@@ -1,5 +1,5 @@
 <script setup>
-import { itemStore } from '../../store/store.js'
+import { itemStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -41,7 +41,10 @@ import { itemStore } from '../../store/store.js'
 		</div>
 		<div class="tabContainer">
 			<BTabs content-class="mt-3" justified>
-				<BTab title="Effects" active>
+				<BTab>
+					<template #title>
+						Effects <NcCounterBubble>{{ itemStore.itemItem?.effects?.length || 0 }}</NcCounterBubble>
+					</template>
 					<div v-if="itemStore.itemItem?.effects?.length > 0">
 						<NcListItem v-for="(effect) in itemStore.itemItem.effects"
 							:key="effect.id"
@@ -63,10 +66,16 @@ import { itemStore } from '../../store/store.js'
 						Geen effects gevonden
 					</div>
 				</BTab>
-				<BTab title="Characters">
+				<BTab>
+					<template #title>
+						Characters <NcCounterBubble>{{ itemStore.relations ? itemStore.relations.length : 0 }}</NcCounterBubble>
+					</template>
 					<ObjectList :objects="itemStore.relations" />							
 				</BTab>
-				<BTab title="Logging">
+				<BTab>
+					<template #title>
+						Logging <NcCounterBubble>{{ itemStore.auditTrails ? itemStore.auditTrails.length : 0 }}</NcCounterBubble>
+					</template>
 					<AuditList :logs="itemStore.auditTrails" />
 				</BTab>
 			</BTabs>
@@ -76,7 +85,7 @@ import { itemStore } from '../../store/store.js'
 
 <script>
 import { BTabs, BTab } from 'bootstrap-vue'
-import { NcLoadingIcon, NcListItem, NcActions, NcActionButton } from '@nextcloud/vue'
+import { NcLoadingIcon, NcListItem, NcActions, NcActionButton, NcCounterBubble } from '@nextcloud/vue'
 
 // Custom components
 import AuditList from '../auditTrail/AuditList.vue'
@@ -94,6 +103,7 @@ export default {
 		NcActions,
 		NcActionButton,
 		NcLoadingIcon,
+		NcCounterBubble,
 		BTabs,
 		BTab,
 		// Custom components
@@ -143,5 +153,10 @@ h4 {
   max-height: 100%;
   height: 100%;
   overflow: auto;
+}
+
+/* Add margin to counter bubble only when inside nav-item */
+.nav-item .counter-bubble__counter {
+    margin-left: 10px;
 }
 </style>

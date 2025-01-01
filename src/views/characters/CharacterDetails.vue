@@ -77,7 +77,10 @@ import { characterStore, navigationStore } from '../../store/store.js'
 				<span>{{ characterStore.characterItem.description }}</span>
 				<div class="tabContainer">
 					<BTabs content-class="mt-3" justified>
-						<BTab title="Eigenschappen" active>
+						<BTab active>
+							<template #title>
+								Eigenschappen <NcCounterBubble>{{ characterStore.characterItem.stats ? Object.keys(characterStore.characterItem.stats).length : 0 }}</NcCounterBubble>
+							</template>
 							<div v-if="characterStore.characterItem.stats">
 								<NcListItem v-for="(stat, id) in characterStore.characterItem.stats"
 									:key="id"
@@ -96,23 +99,38 @@ import { characterStore, navigationStore } from '../../store/store.js'
 							</div>
 						</BTab>
 
-						<BTab title="Skills">							
+						<BTab>
+							<template #title>
+								Skills <NcCounterBubble>{{ characterStore.characterItem.skills ? characterStore.characterItem.skills.length : 0 }}</NcCounterBubble>
+							</template>							
 							<ObjectList :objects="characterStore.characterItem.skills" />
 						</BTab>
 
-						<BTab title="Items">
+						<BTab>
+							<template #title>
+								Items <NcCounterBubble>{{ characterStore.characterItem.items ? characterStore.characterItem.items.length : 0 }}</NcCounterBubble>
+							</template>
 							<ObjectList :objects="characterStore.characterItem.items" />
 						</BTab>
 
-						<BTab title="Conditions">							
+						<BTab>
+							<template #title>
+								Conditions <NcCounterBubble>{{ characterStore.characterItem.conditions ? characterStore.characterItem.conditions.length : 0 }}</NcCounterBubble>
+							</template>							
 							<ObjectList :objects="characterStore.characterItem.conditions" />
 						</BTab>
 
-						<BTab title="Events">
+						<BTab>
+							<template #title>
+								Events <NcCounterBubble>{{ characterStore.characterItem.events ? characterStore.characterItem.events.length : 0 }}</NcCounterBubble>
+							</template>
 							<ObjectList :objects="characterStore.characterItem.events" />
 						</BTab>
 
-						<BTab title="Background">
+						<BTab>
+							<template #title>
+								Background <NcCounterBubble>{{ characterStore.characterItem.background ? 1 : 0 }}</NcCounterBubble>
+							</template>
 							<div v-if="characterStore.characterItem.background">
 								{{ characterStore.characterItem.background }}
 							</div>
@@ -121,7 +139,10 @@ import { characterStore, navigationStore } from '../../store/store.js'
 							</div>
 						</BTab>
 						
-						<BTab title="Logging">
+						<BTab>
+							<template #title>
+								Logging <NcCounterBubble>{{ characterStore.auditTrails ? characterStore.auditTrails.length : 0 }}</NcCounterBubble>
+							</template>
 							<AuditList :logs="characterStore.auditTrails" />
 						</BTab>
 					</BTabs>
@@ -134,7 +155,7 @@ import { characterStore, navigationStore } from '../../store/store.js'
 <script>
 // Components
 import { BTabs, BTab } from 'bootstrap-vue'
-import { NcActions, NcActionButton, NcListItem, NcNoteCard } from '@nextcloud/vue'
+import { NcActions, NcActionButton, NcListItem, NcNoteCard, NcCounterBubble } from '@nextcloud/vue'
 
 // Custom components
 import AuditList from '../auditTrail/AuditList.vue'
@@ -164,6 +185,7 @@ export default {
 		NcActionButton,
 		NcListItem,
 		NcNoteCard,
+		NcCounterBubble,
 		BTabs,
 		BTab,
 		// Custom components
@@ -240,6 +262,11 @@ h4 {
 .dataContent {
   display: flex;
   flex-direction: column;
+}
+
+/* Add margin to counter bubble only when inside nav-item */
+.nav-item .counter-bubble__counter {
+    margin-left: 10px;
 }
 
 </style>
