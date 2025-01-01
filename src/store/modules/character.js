@@ -2,42 +2,110 @@
 import { defineStore } from 'pinia'
 import { Character } from '../../entities/index.js'
 
+/**
+ * Store for managing character data
+ * @phpstan-type CharacterData {id: string, name: string, skills: Array<string>, items: Array<string>, conditions: Array<string>, events: Array<string>, ...}
+ */
 export const useCharacterStore = defineStore(
 	'character', {
 		state: () => ({
+			/** @var {Character|false} Current active character */
 			characterItem: false,
+			/** @var {Array<Character>} List of all characters */
 			characterList: [],
+			/** @var {Array<Object>} Audit trail entries for current character */
 			auditTrails: [],
+			/** @var {Array<Object>} Relations for current character */
 			relations: [],
-			uses: [] // Added uses array to state
+			/** @var {Array<Object>} Uses of current character */
+			uses: [],
+			// Loading states
+			/** @var {boolean} Whether character is being loaded */
+			isLoadingCharacter: false,
+			/** @var {boolean} Whether character list is being loaded */
+			isLoadingCharacterList: false,
+			/** @var {boolean} Whether audit trails are being loaded */
+			isLoadingAuditTrails: false,
+			/** @var {boolean} Whether relations are being loaded */
+			isLoadingRelations: false,
+			/** @var {boolean} Whether uses are being loaded */
+			isLoadingUses: false,
+			/** @var {string} The current search term */
+			searchTerm: '',
+			/** @var {NodeJS.Timeout} The debounce timer for search */
+			searchDebounceTimer: null,
 		}),
 		actions: {
-			setCharacterItem(characterItem) {
+			/**
+			 * Sets the active character item and loads its audit trails and relations
+			 * @param {CharacterData|null} characterItem - The character item to set, or null to clear
+			 * @throws {Error} When loading character data fails
+			 * @returns {Promise<void>}
+			 */
+			async setCharacterItem(characterItem) {
+				// Set the character item first
 				this.characterItem = characterItem && new Character(characterItem)
 				console.log('Active character item set to ' + characterItem)
+
+				// If we have a character item, load its audit trails and relations
+				if (this.characterItem && this.characterItem.id) {
+					try {
+						// Load audit trails and relations in parallel
+						await Promise.all([
+							this.getAuditTrails(this.characterItem.id),
+							this.getRelations(this.characterItem.id)
+						])
+					} catch (err) {
+						console.error('Error loading character data:', err)
+					}
+				}
 			},
+			/**
+			 * Sets the list of characters
+			 * @param {Array<CharacterData>} characterList - Array of character data
+			 * @returns {void}
+			 */
 			setCharacterList(characterList) {
 				this.characterList = characterList.map(
 					(characterItem) => new Character(characterItem),
 				)
 				console.log('Character list set to ' + characterList.length + ' items')
 			},
+			/**
+			 * Sets the audit trails for the current character
+			 * @param {Array<Object>} auditTrails - The audit trails to set
+			 * @returns {void}
+			 */
 			setAuditTrails(auditTrails) {
 				this.auditTrails = auditTrails
 				console.log('Audit trails set with ' + auditTrails.length + ' items')
 			},
+			/**
+			 * Sets the relations for the current character
+			 * @param {Array<Object>} relations - The relations to set
+			 * @returns {void}
+			 */
 			setRelations(relations) {
 				this.relations = relations
 				console.log('Relations set with ' + relations.length + ' items')
 			},
-			setUses(uses) { // Added setter for uses
+			/**
+			 * Sets the uses for the current character
+			 * @param {Array<Object>} uses - The uses to set
+			 * @returns {void}
+			 */
+			setUses(uses) {
 				this.uses = uses
 				console.log('Uses set with ' + uses.length + ' items')
 			},
-			/* istanbul ignore next */ // ignore this for Jest until moved into a service
+			/**
+			 * Fetches and refreshes the list of characters
+			 * @param {string|null} search - Optional search term
+			 * @throws {Error} When fetching characters fails
+			 * @returns {Promise<void>}
+			 */
 			async refreshCharacterList(search = null) {
-				// @todo this might belong in a service?
-				//let endpoint = '/index.php/apps/larpingapp/api/objects/character'
+				this.isLoadingCharacterList = true
 				let endpoint = '/index.php/apps/larpingapp/api/objects/character?_extend=ocName,skills,items,conditions,events'
 				if (search !== null && search !== '') {
 					endpoint = endpoint + '?_search=' + search
@@ -57,11 +125,21 @@ export const useCharacterStore = defineStore(
 					.catch(
 						(err) => {
 							console.error(err)
+							throw err
 						},
 					)
+					.finally(() => {
+						this.isLoadingCharacterList = false
+					})
 			},
-			// New function to get a single character
+			/**
+			 * Fetches a single character by ID
+			 * @param {string} id - The character ID to fetch
+			 * @throws {Error} When fetching character fails
+			 * @returns {Promise<CharacterData>}
+			 */
 			async getCharacter(id) {
+				this.isLoadingCharacter = true
 				const endpoint = `/index.php/apps/larpingapp/api/objects/character/${id}?_extend=ocName,skills,items,conditions,events`
 				try {
 					const response = await fetch(endpoint, {
@@ -73,10 +151,18 @@ export const useCharacterStore = defineStore(
 				} catch (err) {
 					console.error(err)
 					throw err
+				} finally {
+					this.isLoadingCharacter = false
 				}
 			},
-			// Get audit trails for a character
+			/**
+			 * Fetches audit trails for a character
+			 * @param {string} id - The character ID
+			 * @throws {Error} When ID is missing or fetch fails
+			 * @returns {Promise<Array<Object>>}
+			 */
 			async getAuditTrails(id) {
+				this.isLoadingAuditTrails = true
 				if (!id) {
 					throw new Error('Character ID required to fetch audit trails')
 				}
@@ -94,10 +180,18 @@ export const useCharacterStore = defineStore(
 				} catch (err) {
 					console.error('Error fetching audit trails:', err)
 					throw err
+				} finally {
+					this.isLoadingAuditTrails = false
 				}
 			},
-			// Get relations for a character
+			/**
+			 * Fetches relations for a character
+			 * @param {string} id - The character ID
+			 * @throws {Error} When ID is missing or fetch fails
+			 * @returns {Promise<Array<Object>>}
+			 */
 			async getRelations(id) {
+				this.isLoadingRelations = true
 				if (!id) {
 					throw new Error('Character ID required to fetch relations')
 				}
@@ -115,10 +209,18 @@ export const useCharacterStore = defineStore(
 				} catch (err) {
 					console.error('Error fetching relations:', err)
 					throw err
+				} finally {
+					this.isLoadingRelations = false
 				}
 			},
-			// Get uses for a character
+			/**
+			 * Fetches uses for a character
+			 * @param {string} id - The character ID
+			 * @throws {Error} When ID is missing or fetch fails
+			 * @returns {Promise<Array<Object>>}
+			 */
 			async getUses(id) {
+				this.isLoadingUses = true
 				if (!id) {
 					throw new Error('Character ID required to fetch uses')
 				}
@@ -136,10 +238,16 @@ export const useCharacterStore = defineStore(
 				} catch (err) {
 					console.error('Error fetching uses:', err)
 					throw err
+				} finally {
+					this.isLoadingUses = false
 				}
 			},
-			// Delete a character
-			deleteCharacter() {
+			/**
+			 * Deletes the current character
+			 * @throws {Error} When no character is set or deletion fails
+			 * @returns {Promise<void>}
+			 */
+			async deleteCharacter() {
 				if (!this.characterItem || !this.characterItem.id) {
 					throw new Error('No character item to delete')
 				}
@@ -160,7 +268,12 @@ export const useCharacterStore = defineStore(
 						throw err
 					})
 			},
-			// Create or save a character from store
+			/**
+			 * Creates or updates a character
+			 * @param {CharacterData} characterItem - The character data to save
+			 * @throws {Error} When saving character fails
+			 * @returns {Promise<void>}
+			 */
 			async saveCharacter(characterItem) {
 				if (!characterItem) {
 					throw new Error('No character item to save')
@@ -204,7 +317,7 @@ export const useCharacterStore = defineStore(
 				const isNewCharacter = !characterToSave.id
 				const endpoint = isNewCharacter
 					? '/index.php/apps/larpingapp/api/objects/character?_extend=effects'
-					: `/index.php/apps/larpingapp/api/objects/character/${characterToSave.id}?_extend=ocName,skills,items,conditions,events`
+					: `/index.php/apps/larpingapp/api/objects/character/${characterToSave.id}?_extend=effects`
 				const method = isNewCharacter ? 'POST' : 'PUT'
 
 				return fetch(
@@ -227,6 +340,24 @@ export const useCharacterStore = defineStore(
 						console.error('Error saving character:', err)
 						throw err
 					})
+			},
+			/**
+			 * Sets the search term and triggers a debounced search
+			 * @param {string} term - The search term to set
+			 * @returns {void}
+			 */
+			setSearchTerm(term) {
+				this.searchTerm = term
+
+				// Clear any existing timer
+				if (this.searchDebounceTimer) {
+					clearTimeout(this.searchDebounceTimer)
+				}
+
+				// Set a new timer
+				this.searchDebounceTimer = setTimeout(() => {
+					this.refreshCharacterList()
+				}, 500) // 500ms delay (half a second)
 			},
 		},
 	},

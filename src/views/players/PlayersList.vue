@@ -6,13 +6,14 @@ import { playerStore, navigationStore, searchStore } from '../../store/store.js'
 	<NcAppContentList>
 		<ul>
 			<div class="listHeader">
-				<NcTextField class="searchField"
-					disabled
-					:value.sync="searchStore.search"
+				<NcTextField
+					:value="playerStore.searchTerm"
+					:show-trailing-button="playerStore.searchTerm !== ''"
 					label="Search"
+					class="searchField"
 					trailing-button-icon="close"
-					:show-trailing-button="searchStore.search !== ''"
-					@trailing-button-click="searchStore.setSearch('')">
+					@input="playerStore.setSearchTerm($event.target.value)"
+					@trailing-button-click="playerStore.clearSearch()">
 					<Magnify :size="20" />
 				</NcTextField>
 				<NcActions>
@@ -30,7 +31,8 @@ import { playerStore, navigationStore, searchStore } from '../../store/store.js'
 					</NcActionButton>
 				</NcActions>
 			</div>
-			<div v-if="playerStore.playerList && playerStore.playerList.length > 0">
+
+			<div v-if="playerStore.playerList && playerStore.playerList.length > 0 && !playerStore.isLoadingPlayerList">
 				<NcListItem v-for="(player, i) in playerStore.playerList"
 					:key="`${player}${i}`"
 					:name="player?.name"
@@ -63,13 +65,13 @@ import { playerStore, navigationStore, searchStore } from '../../store/store.js'
 			</div>
 		</ul>
 
-		<NcLoadingIcon v-if="!playerStore.playerList "
+		<NcLoadingIcon v-if="playerStore.isLoadingPlayerList"
 			class="loadingIcon"
 			:size="64"
 			appearance="dark"
-			name="Besluiten aan het laden" />
+			name="Spelers aan het laden" />
 
-		<div v-if="playerStore.playerList.length === 0">
+		<div v-if="playerStore.playerList.length === 0 && !playerStore.isLoadingPlayerList">
 			Er zijn nog geen spelers gedefinieerd.
 		</div>
 	</NcAppContentList>
@@ -115,16 +117,6 @@ export default {
 		async handlePlayerSelect(player) {
 			// Set the selected player in the store
 			playerStore.setPlayerItem(player)
-
-			try {
-				// Fetch characters for this player
-				await Promise.all([
-					playerStore.getRelations(player.id),
-					playerStore.getAuditTrails(player.id),
-				])
-			} catch (error) {
-				console.error('Error fetching player data:', error)
-			}
 		},
 	},
 }
@@ -149,6 +141,6 @@ export default {
 }
 
 .loadingIcon {
-    margin-block-start: var(--zaa-margin-20);
+    margin-block-start: var(--OC-margin-20);
 }
 </style>

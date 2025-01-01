@@ -7,12 +7,13 @@ import { conditionStore, navigationStore, searchStore } from '../../store/store.
 		<ul>
 			<div class="listHeader">
 				<NcTextField
-					:value.sync="searchStore.search"
-					:show-trailing-button="searchStore.search !== ''"
+					:value="conditionStore.searchTerm"
+					:show-trailing-button="conditionStore.searchTerm !== ''"
 					label="Search"
 					class="searchField"
 					trailing-button-icon="close"
-					@trailing-button-click="searchStore.setSearch('')">
+					@input="conditionStore.setSearchTerm($event.target.value)"
+					@trailing-button-click="conditionStore.clearSearch()">
 					<Magnify :size="20" />
 				</NcTextField>
 				<NcActions>
@@ -31,7 +32,7 @@ import { conditionStore, navigationStore, searchStore } from '../../store/store.
 				</NcActions>
 			</div>
 
-			<div v-if="conditionStore.conditionList && conditionStore.conditionList.length > 0">
+			<div v-if="conditionStore.conditionList && conditionStore.conditionList.length > 0 && !conditionStore.isLoadingConditionList">
 				<NcListItem v-for="(condition, i) in conditionStore.conditionList"
 					:key="`${condition}${i}`"
 					:name="condition?.name"
@@ -65,13 +66,13 @@ import { conditionStore, navigationStore, searchStore } from '../../store/store.
 			</div>
 		</ul>
 
-		<NcLoadingIcon v-if="!conditionStore.conditionList"
+		<NcLoadingIcon v-if="conditionStore.isLoadingConditionList"
 			class="loadingIcon"
 			:size="64"
 			appearance="dark"
 			name="Condities aan het laden" />
 
-		<div v-if="conditionStore.conditionList.length === 0">
+		<div v-if="conditionStore.conditionList.length === 0 && !conditionStore.isLoadingConditionList">
 			Er zijn nog geen condities gedefinieerd.
 		</div>
 	</NcAppContentList>
@@ -117,16 +118,6 @@ export default {
 		async handleConditionSelect(condition) {
 			// Set the selected condition in the store
 			conditionStore.setConditionItem(condition)
-
-			try {
-				// Fetch characters that have this condition
-				await Promise.all([
-					conditionStore.getRelations(condition.id),
-					conditionStore.getAuditTrails(condition.id),
-				])
-			} catch (error) {
-				console.error('Error fetching condition data:', error)
-			}
 		},
 	}
 }

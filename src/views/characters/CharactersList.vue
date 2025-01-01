@@ -7,12 +7,13 @@ import { characterStore, navigationStore, searchStore } from '../../store/store.
 		<ul>
 			<div class="listHeader">
 				<NcTextField
-					:value.sync="searchStore.search"
-					:show-trailing-button="searchStore.search !== ''"
+					:value="characterStore.searchTerm"
+					:show-trailing-button="characterStore.searchTerm !== ''"
 					label="Search"
 					class="searchField"
 					trailing-button-icon="close"
-					@trailing-button-click="searchStore.setSearch('')">
+					@input="characterStore.setSearchTerm($event.target.value)"
+					@trailing-button-click="characterStore.clearSearch()">
 					<Magnify :size="20" />
 				</NcTextField>
 				<NcActions>
@@ -31,7 +32,7 @@ import { characterStore, navigationStore, searchStore } from '../../store/store.
 				</NcActions>
 			</div>
 
-			<div v-if="characterStore.characterList && characterStore.characterList.length > 0">
+			<div v-if="characterStore.characterList && characterStore.characterList.length > 0 && !characterStore.isLoadingCharacterList">
 				<NcListItem v-for="(character, i) in characterStore.characterList"
 					:key="`${character}${i}`"
 					:name="character?.name"
@@ -66,13 +67,13 @@ import { characterStore, navigationStore, searchStore } from '../../store/store.
 			</div>
 		</ul>
 
-		<NcLoadingIcon v-if="!characterStore.characterList"
+		<NcLoadingIcon v-if="characterStore.isLoadingCharacterList"
 			class="loadingIcon"
 			:size="64"
 			appearance="dark"
 			name="Karakters aan het laden" />
 
-		<div v-if="characterStore.characterList.length === 0">
+		<div v-if="characterStore.characterList.length === 0 && !characterStore.isLoadingCharacterList">
 			Er zijn nog geen karakters gedefinieerd.
 		</div>
 	</NcAppContentList>
@@ -119,16 +120,6 @@ export default {
 		async handleCharacterSelect(character) {
 			// Set the selected character in the store
 			characterStore.setCharacterItem(character)
-
-			try {
-				// Fetch audit trails and relations for the selected character
-				await Promise.all([
-					characterStore.getRelations(character.id),
-					characterStore.getAuditTrails(character.id),
-				])
-			} catch (error) {
-				console.error('Error fetching character data:', error)
-			}
 		},
 	},
 }

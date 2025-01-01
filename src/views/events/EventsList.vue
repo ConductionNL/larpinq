@@ -7,12 +7,13 @@ import { characterStore, eventStore, navigationStore, searchStore } from '../../
 		<ul>
 			<div class="listHeader">
 				<NcTextField
-					:value.sync="searchStore.search"
-					:show-trailing-button="searchStore.search !== ''"
+					:value="eventStore.searchTerm"
+					:show-trailing-button="eventStore.searchTerm !== ''"
 					label="Search"
 					class="searchField"
 					trailing-button-icon="close"
-					@trailing-button-click="searchStore.setSearch('')">
+					@input="eventStore.setSearchTerm($event.target.value)"
+					@trailing-button-click="eventStore.clearSearch()">
 					<Magnify :size="20" />
 				</NcTextField>
 				<NcActions>
@@ -26,11 +27,11 @@ import { characterStore, eventStore, navigationStore, searchStore } from '../../
 						<template #icon>
 							<Plus :size="20" />
 						</template>
-						Event toevoegen
+						Evenement toevoegen
 					</NcActionButton>
 				</NcActions>
 			</div>
-			<div v-if="eventStore.eventList && eventStore.eventList.length > 0">
+			<div v-if="eventStore.eventList && eventStore.eventList.length > 0 && !eventStore.isLoadingEventList">
 				<NcListItem v-for="(event, i) in eventStore.eventList"
 					:key="`${event}${i}`"
 					:name="event?.name"
@@ -64,13 +65,13 @@ import { characterStore, eventStore, navigationStore, searchStore } from '../../
 			</div>
 		</ul>
 
-		<NcLoadingIcon v-if="!eventStore.eventList"
+		<NcLoadingIcon v-if="eventStore.isLoadingEventList"
 			class="loadingIcon"
 			:size="64"
 			appearance="dark"
-			name="Taken aan het laden" />
+			name="Evenementen aan het laden" />
 
-		<div v-if="eventStore.eventList.length === 0">
+		<div v-if="eventStore.eventList.length === 0 && !eventStore.isLoadingEventList">
 			Er zijn nog geen evenementen gedefinieerd.
 		</div>
 	</NcAppContentList>
@@ -115,16 +116,6 @@ export default {
 		async handleEventSelect(event) {
 			// Set the selected event in the store
 			eventStore.setEventItem(event)
-
-			try {
-				// Fetch characters participating in this event
-				await Promise.all([
-					eventStore.getRelations(event.id),
-					eventStore.getAuditTrails(event.id),
-				])
-			} catch (error) {
-				console.error('Error fetching event data:', error)
-			}
 		},
 	},
 }

@@ -6,13 +6,14 @@ import { itemStore, navigationStore, searchStore } from '../../store/store.js'
 	<NcAppContentList>
 		<ul>
 			<div class="listHeader">
-				<NcTextField class="searchField"
-					disabled
-					:value.sync="searchStore.search"
+				<NcTextField
+					:value="itemStore.searchTerm"
+					:show-trailing-button="itemStore.searchTerm !== ''"
 					label="Search"
+					class="searchField"
 					trailing-button-icon="close"
-					:show-trailing-button="searchStore.search !== ''"
-					@trailing-button-click="searchStore.setSearch('')">
+					@input="itemStore.setSearchTerm($event.target.value)"
+					@trailing-button-click="itemStore.clearSearch()">
 					<Magnify :size="20" />
 				</NcTextField>
 				<NcActions>
@@ -30,7 +31,8 @@ import { itemStore, navigationStore, searchStore } from '../../store/store.js'
 					</NcActionButton>
 				</NcActions>
 			</div>
-			<div v-if="itemStore.itemList && itemStore.itemList.length > 0">
+
+			<div v-if="itemStore.itemList && itemStore.itemList.length > 0 && !itemStore.isLoadingItemList">
 				<NcListItem v-for="(item, i) in itemStore.itemList"
 					:key="`${item}${i}`"
 					:name="item?.name"
@@ -64,14 +66,14 @@ import { itemStore, navigationStore, searchStore } from '../../store/store.js'
 			</div>
 		</ul>
 
-		<NcLoadingIcon v-if="!itemStore.itemList"
+		<NcLoadingIcon v-if="itemStore.isLoadingItemList"
 			class="loadingIcon"
 			:size="64"
 			appearance="dark"
-			name="berichten aan het laden" />
+			name="Items aan het laden" />
 
-		<div v-if="itemStore.itemList.length === 0">
-			Er zijn nog geen voorwerpen gedefinieerd.
+		<div v-if="itemStore.itemList.length === 0 && !itemStore.isLoadingItemList">
+			Er zijn nog geen items gedefinieerd.
 		</div>
 	</NcAppContentList>
 </template>
@@ -116,16 +118,6 @@ export default {
 		async handleItemSelect(item) {
 			// Set the selected item in the store
 			itemStore.setItemItem(item)
-
-			try {
-				// Fetch characters that have this item
-				await Promise.all([
-					itemStore.getRelations(item.id),
-					itemStore.getAuditTrails(item.id),
-				])
-			} catch (error) {
-				console.error('Error fetching item data:', error)
-			}
 		},
 	},
 }
