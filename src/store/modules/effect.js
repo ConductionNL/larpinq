@@ -2,40 +2,125 @@
 import { defineStore } from 'pinia'
 import { Effect } from '../../entities/index.js'
 
+/**
+ * Store for managing effect data
+ * @phpstan-type EffectData {id: string, name: string, description: string, type: string, value: number, duration: number, ...}
+ */
 export const useEffectStore = defineStore(
 	'effect', {
 		state: () => ({
+			/** @var {Effect|false} Current active effect */
 			effectItem: false,
+			/** @var {Array<Effect>} List of all effects */
 			effectList: [],
+			/** @var {Array<Object>} Audit trail entries for current effect */
 			auditTrails: [],
+			/** @var {Array<Object>} Relations for current effect */
 			relations: [],
-			uses: []
+			/** @var {Array<Object>} Uses of current effect */
+			uses: [],
+			// Loading states
+			/** @var {boolean} Whether effect is being loaded */
+			isLoadingEffect: false,
+			/** @var {boolean} Whether effect list is being loaded */
+			isLoadingEffectList: false,
+			/** @var {boolean} Whether audit trails are being loaded */
+			isLoadingAuditTrails: false,
+			/** @var {boolean} Whether relations are being loaded */
+			isLoadingRelations: false,
+			/** @var {boolean} Whether uses are being loaded */
+			isLoadingUses: false,
+			/** @var {string} Current search term for effects */
+			searchTerm: '',
+			/** @var {number|null} Debounce timer for search */
+			searchDebounceTimer: null,
 		}),
 		actions: {
-			// Set the active effect item
-			setEffectItem(effectItem) {
-				this.effectItem = effectItem && new Effect(effectItem)
-				console.log('Active effect item set to ' + effectItem)
+			/**
+			 * Sets the active effect item and loads its audit trails and relations
+			 * @param {EffectData|null} effectItem - The effect item to set, or null to clear
+			 * @throws {Error} When loading effect data fails
+			 * @returns {Promise<void>}
+			 */
+			async setEffectItem(effectItem) {
+				this.isLoadingEffect = true
+				try {
+					// Set the effect item first
+					this.effectItem = effectItem && new Effect(effectItem)
+					console.log('Active effect item set to ' + effectItem)
+
+					// If we have an effect item, load its audit trails and relations
+					if (this.effectItem && this.effectItem.id) {
+						// Load audit trails and relations in parallel
+						await Promise.all([
+							this.getAuditTrails(this.effectItem.id),
+							this.getRelations(this.effectItem.id)
+						])
+					}
+				} catch (err) {
+					console.error('Error loading effect data:', err)
+				} finally {
+					this.isLoadingEffect = false
+				}
 			},
-			// Set the list of effects
+			/**
+			 * Sets the list of effects
+			 * @param {Array<EffectData>} effectList - Array of effect data
+			 * @returns {void}
+			 */
 			setEffectList(effectList) {
 				this.effectList = effectList.map(
 					(effectItem) => new Effect(effectItem),
 				)
 				console.log('Effect list set to ' + effectList.length + ' items')
 			},
-			// Fetch and refresh the list of effects
-			async refreshEffectList(search = null) {
-				let endpoint = '/index.php/apps/larpingapp/api/objects/effect?_extend=abilities'
-				if (search !== null && search !== '') {
-					endpoint = endpoint + '?_search=' + search
+			/**
+			 * Sets the search term and triggers a debounced search
+			 * @param {string} term - The search term to set
+			 * @returns {void}
+			 */
+			setSearchTerm(term) {
+				this.searchTerm = term
+
+				if (this.searchDebounceTimer) {
+					clearTimeout(this.searchDebounceTimer)
 				}
+
+				this.searchDebounceTimer = setTimeout(() => {
+					this.refreshEffectList()
+				}, 500)
+			},
+			/**
+			 * Clears the search term and refreshes the list
+			 * @returns {Promise<void>}
+			 */
+			async clearSearch() {
+				this.searchTerm = ''
+				await this.refreshEffectList()
+			},
+			/**
+			 * Fetches and refreshes the list of effects
+			 * @param {string|null} search - Optional search term
+			 * @throws {Error} When fetching effects fails
+			 * @returns {Promise<void>}
+			 */
+			async refreshEffectList(search = null) {
+				this.isLoadingEffectList = true
+				let endpoint = '/index.php/apps/larpingapp/api/objects/effect'
+				
+				if (this.searchTerm) {
+					endpoint += `${endpoint.includes('?') ? '&' : '?'}_search=${encodeURIComponent(this.searchTerm)}`
+				}
+
 				try {
 					const response = await fetch(endpoint, { method: 'GET' })
 					const data = await response.json()
 					this.setEffectList(data.results)
 				} catch (err) {
-					console.error(err)
+					console.error('Error fetching effect list:', err)
+					throw err
+				} finally {
+					this.isLoadingEffectList = false
 				}
 			},
 			// Fetch a single effect by ID
@@ -119,7 +204,14 @@ export const useEffectStore = defineStore(
 				this.uses = uses
 				console.log('Uses set with ' + uses.length + ' items')
 			},
+			/**
+			 * Fetches audit trails for an effect
+			 * @param {string} id - The effect ID
+			 * @throws {Error} When ID is missing or fetch fails
+			 * @returns {Promise<Array<Object>>}
+			 */
 			async getAuditTrails(id) {
+				this.isLoadingAuditTrails = true
 				if (!id) {
 					throw new Error('ID required to fetch audit trails')
 				}
@@ -137,9 +229,18 @@ export const useEffectStore = defineStore(
 				} catch (err) {
 					console.error('Error fetching audit trails:', err)
 					throw err
+				} finally {
+					this.isLoadingAuditTrails = false
 				}
 			},
+			/**
+			 * Fetches relations for an effect
+			 * @param {string} id - The effect ID
+			 * @throws {Error} When ID is missing or fetch fails
+			 * @returns {Promise<Array<Object>>}
+			 */
 			async getRelations(id) {
+				this.isLoadingRelations = true
 				if (!id) {
 					throw new Error('ID required to fetch relations')
 				}
@@ -157,9 +258,18 @@ export const useEffectStore = defineStore(
 				} catch (err) {
 					console.error('Error fetching relations:', err)
 					throw err
+				} finally {
+					this.isLoadingRelations = false
 				}
 			},
+			/**
+			 * Fetches uses for an effect
+			 * @param {string} id - The effect ID
+			 * @throws {Error} When ID is missing or fetch fails
+			 * @returns {Promise<Array<Object>>}
+			 */
 			async getUses(id) {
+				this.isLoadingUses = true
 				if (!id) {
 					throw new Error('ID required to fetch uses')
 				}
@@ -177,6 +287,8 @@ export const useEffectStore = defineStore(
 				} catch (err) {
 					console.error('Error fetching uses:', err)
 					throw err
+				} finally {
+					this.isLoadingUses = false
 				}
 			}
 		},

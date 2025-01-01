@@ -2,30 +2,83 @@
 import { defineStore } from 'pinia'
 import { Condition } from '../../entities/index.js'
 
+/**
+ * Store for managing condition data
+ * @phpstan-type ConditionData {id: string, name: string, effects: Array<string>, ...}
+ */
 export const useConditionStore = defineStore(
 	'condition', {
 		state: () => ({
+			/** @var {Condition|false} Current active condition */
 			conditionItem: false,
+			/** @var {Array<Condition>} List of all conditions */
 			conditionList: [],
+			/** @var {Array<Object>} Audit trail entries for current condition */
 			auditTrails: [],
+			/** @var {Array<Object>} Relations for current condition */
 			relations: [],
-			uses: []
+			/** @var {Array<Object>} Uses of current condition */
+			uses: [],
+			// Loading states
+			/** @var {boolean} Whether condition is being loaded */
+			isLoadingCondition: false,
+			/** @var {boolean} Whether condition list is being loaded */
+			isLoadingConditionList: false,
+			/** @var {boolean} Whether audit trails are being loaded */
+			isLoadingAuditTrails: false,
+			/** @var {boolean} Whether relations are being loaded */
+			isLoadingRelations: false,
+			/** @var {boolean} Whether uses are being loaded */
+			isLoadingUses: false,
+			/** @var {string} Current search term for conditions */
+			searchTerm: '',
+			/** @var {number|null} Debounce timer for search */
+			searchDebounceTimer: null,
 		}),
 		actions: {
-			// Set the active condition item
-			setConditionItem(conditionItem) {
-				this.conditionItem = conditionItem && new Condition(conditionItem)
-				console.log('Active condition item set to ' + conditionItem)
+			/**
+			 * Sets the active condition item and loads its audit trails and relations
+			 * @param {ConditionData|null} conditionItem - The condition item to set, or null to clear
+			 * @throws {Error} When loading condition data fails
+			 * @returns {Promise<void>}
+			 */
+			async setConditionItem(conditionItem) {
+				this.isLoadingCondition = true
+				try {
+					this.conditionItem = conditionItem && new Condition(conditionItem)
+					console.log('Active condition item set to ' + conditionItem)
+
+					if (this.conditionItem && this.conditionItem.id) {
+						await Promise.all([
+							this.getAuditTrails(this.conditionItem.id),
+							this.getRelations(this.conditionItem.id)
+							])
+					}
+				} catch (err) {
+					console.error('Error loading condition data:', err)
+				} finally {
+					this.isLoadingCondition = false
+				}
 			},
-			// Set the list of conditions
+			/**
+			 * Sets the list of conditions
+			 * @param {Array<ConditionData>} conditionList - Array of condition data
+			 * @returns {void}
+			 */
 			setConditionList(conditionList) {
 				this.conditionList = conditionList.map(
 					(conditionItem) => new Condition(conditionItem),
 				)
 				console.log('Condition list set to ' + conditionList.length + ' items')
 			},
-			// Fetch and refresh the list of conditions
+			/**
+			 * Fetches and refreshes the list of conditions
+			 * @param {string|null} search - Optional search term
+			 * @throws {Error} When fetching conditions fails
+			 * @returns {Promise<void>}
+			 */
 			async refreshConditionList(search = null) {
+				this.isLoadingConditionList = true
 				let endpoint = '/index.php/apps/larpingapp/api/objects/condition?_extend=effects'
 				if (search !== null && search !== '') {
 					endpoint = endpoint + '?_search=' + search
@@ -36,9 +89,16 @@ export const useConditionStore = defineStore(
 					this.setConditionList(data.results)
 				} catch (err) {
 					console.error(err)
+				} finally {
+					this.isLoadingConditionList = false
 				}
 			},
-			// Fetch a single condition by ID
+			/**
+			 * Fetches a single condition by ID
+			 * @param {string} id - The condition ID to fetch
+			 * @throws {Error} When fetching condition fails
+			 * @returns {Promise<ConditionData>}
+			 */
 			async getCondition(id) {
 				const endpoint = `/index.php/apps/larpingapp/api/objects/condition/${id}?_extend=effects`
 				try {
@@ -51,8 +111,12 @@ export const useConditionStore = defineStore(
 					throw err
 				}
 			},
-			// Delete a condition by ID
-			deleteCondition() {
+			/**
+			 * Deletes the current condition
+			 * @throws {Error} When no condition is set or deletion fails
+			 * @returns {Promise<void>}
+			 */
+			async deleteCondition() {
 				if (!this.conditionItem || !this.conditionItem.id) {
 					throw new Error('No condition item to delete')
 				}
@@ -72,8 +136,13 @@ export const useConditionStore = defineStore(
 						throw err
 					})
 			},
-			// Create or update a condition
-			saveCondition(conditionItem) {
+			/**
+			 * Creates or updates a condition
+			 * @param {ConditionData} conditionItem - The condition data to save
+			 * @throws {Error} When saving condition fails
+			 * @returns {Promise<void>}
+			 */
+			async saveCondition(conditionItem) {
 				if (!conditionItem) {
 					throw new Error('No condition item to save')
 				}
@@ -118,28 +187,41 @@ export const useConditionStore = defineStore(
 						throw err
 					})
 			},
+			/**
+			 * Sets the audit trails for the current condition
+			 * @param {Array<Object>} auditTrails - The audit trails to set
+			 * @returns {void}
+			 */
 			setAuditTrails(auditTrails) {
 				this.auditTrails = auditTrails
 				console.log('Audit trails set with ' + auditTrails.length + ' items')
 			},
+			/**
+			 * Sets the relations for the current condition
+			 * @param {Array<Object>} relations - The relations to set
+			 * @returns {void}
+			 */
 			setRelations(relations) {
 				this.relations = relations
 				console.log('Relations set with ' + relations.length + ' items')
 			},
+			/**
+			 * Sets the uses for the current condition
+			 * @param {Array<Object>} uses - The uses to set
+			 * @returns {void}
+			 */
 			setUses(uses) {
 				this.uses = uses
 				console.log('Uses set with ' + uses.length + ' items')
 			},
 			async getAuditTrails(id) {
+				this.isLoadingAuditTrails = true
 				if (!id) {
-					throw new Error('ID required to fetch audit trails')
+					throw new Error('Condition ID required to fetch audit trails')
 				}
 
-				console.log('Fetching audit trails...')
-				const endpoint = `/index.php/apps/larpingapp/api/objects/condition/${id}/audit`
-
 				try {
-					const response = await fetch(endpoint, {
+					const response = await fetch(`/index.php/apps/larpingapp/api/objects/condition/${id}/audit`, {
 						method: 'GET'
 					})
 					const data = await response.json()
@@ -148,18 +230,18 @@ export const useConditionStore = defineStore(
 				} catch (err) {
 					console.error('Error fetching audit trails:', err)
 					throw err
+				} finally {
+					this.isLoadingAuditTrails = false
 				}
 			},
 			async getRelations(id) {
+				this.isLoadingRelations = true
 				if (!id) {
-					throw new Error('ID required to fetch relations')
+					throw new Error('Condition ID required to fetch relations')
 				}
 
-				console.log('Fetching relations...')
-				const endpoint = `/index.php/apps/larpingapp/api/objects/condition/${id}/relations`
-
 				try {
-					const response = await fetch(endpoint, {
+					const response = await fetch(`/index.php/apps/larpingapp/api/objects/condition/${id}/relations`, {
 						method: 'GET'
 					})
 					const data = await response.json()
@@ -168,18 +250,18 @@ export const useConditionStore = defineStore(
 				} catch (err) {
 					console.error('Error fetching relations:', err)
 					throw err
+				} finally {
+					this.isLoadingRelations = false
 				}
 			},
 			async getUses(id) {
+				this.isLoadingUses = true
 				if (!id) {
-					throw new Error('ID required to fetch uses')
+					throw new Error('Condition ID required to fetch uses')
 				}
 
-				console.log('Fetching uses...')
-				const endpoint = `/index.php/apps/larpingapp/api/objects/condition/${id}/uses`
-
 				try {
-					const response = await fetch(endpoint, {
+					const response = await fetch(`/index.php/apps/larpingapp/api/objects/condition/${id}/uses`, {
 						method: 'GET'
 					})
 					const data = await response.json()
@@ -188,8 +270,53 @@ export const useConditionStore = defineStore(
 				} catch (err) {
 					console.error('Error fetching uses:', err)
 					throw err
+				} finally {
+					this.isLoadingUses = false
 				}
-			}
+			},
+			/**
+			 * Sets the search term and triggers a debounced search
+			 * @param {string} term - The search term to set
+			 * @returns {void}
+			 */
+			setSearchTerm(term) {
+				this.searchTerm = term
+
+				if (this.searchDebounceTimer) {
+					clearTimeout(this.searchDebounceTimer)
+				}
+
+				this.searchDebounceTimer = setTimeout(() => {
+					this.refreshConditionList()
+				}, 500)
+			},
+			/**
+			 * Clears the search term and refreshes the list
+			 * @returns {Promise<void>}
+			 */
+			async clearSearch() {
+				this.searchTerm = ''
+				await this.refreshConditionList()
+			},
+			async refreshConditionList() {
+				this.isLoadingConditionList = true
+				let endpoint = '/index.php/apps/larpingapp/api/objects/condition?_extend=effects'
+				
+				if (this.searchTerm) {
+					endpoint += `&_search=${encodeURIComponent(this.searchTerm)}`
+				}
+
+				try {
+					const response = await fetch(endpoint, { method: 'GET' })
+					const data = await response.json()
+					this.setConditionList(data.results)
+				} catch (err) {
+					console.error('Error fetching condition list:', err)
+					throw err
+				} finally {
+					this.isLoadingConditionList = false
+				}
+			},
 		},
 	},
 )

@@ -7,12 +7,13 @@ import { effectStore, searchStore, navigationStore } from '../../store/store.js'
 		<ul>
 			<div class="listHeader">
 				<NcTextField
-					:value.sync="searchStore.search"
-					:show-trailing-button="searchStore.search !== ''"
+					:value="effectStore.searchTerm"
+					:show-trailing-button="effectStore.searchTerm !== ''"
 					label="Search"
 					class="searchField"
 					trailing-button-icon="close"
-					@trailing-button-click="effectStore.refreshEffectList()">
+					@input="effectStore.setSearchTerm($event.target.value)"
+					@trailing-button-click="effectStore.clearSearch()">
 					<Magnify :size="20" />
 				</NcTextField>
 				<NcActions>
@@ -22,7 +23,7 @@ import { effectStore, searchStore, navigationStore } from '../../store/store.js'
 						</template>
 						Ververs
 					</NcActionButton>
-					<NcActionButton @click="effectStore.setEffectItem(null); navigationStore.setModal('addEffect')">
+					<NcActionButton @click="effectStore.setEffectItem(null); navigationStore.setModal('editEffect')">
 						<template #icon>
 							<Plus :size="20" />
 						</template>
@@ -30,7 +31,7 @@ import { effectStore, searchStore, navigationStore } from '../../store/store.js'
 					</NcActionButton>
 				</NcActions>
 			</div>
-			<div v-if="effectStore.effectList && effectStore.effectList.length > 0">
+			<div v-if="effectStore.effectList && effectStore.effectList.length > 0 && !effectStore.isLoadingEffectList">
 				<NcListItem v-for="(effect, i) in effectStore.effectList"
 					:key="`${effect}${i}`"
 					:name="effect.name"
@@ -65,14 +66,14 @@ import { effectStore, searchStore, navigationStore } from '../../store/store.js'
 			</div>
 		</ul>
 
-		<NcLoadingIcon v-if="!effectStore.effectList"
+		<NcLoadingIcon v-if="effectStore.isLoadingEffectList"
 			class="loadingIcon"
 			:size="64"
 			appearance="dark"
-			name="Klanten aan het laden" />
+			name="Effecten aan het laden" />
 
-		<div v-if="effectStore.effectList.length === 0">
-			Er zijn nog geen vaardigheden gedefinieerd.
+		<div v-if="effectStore.effectList.length === 0 && !effectStore.isLoadingEffectList">
+			Er zijn nog geen effecten gedefinieerd.
 		</div>
 	</NcAppContentList>
 </template>
@@ -115,16 +116,6 @@ export default {
 		async handleEffectSelect(effect) {
 			// Set the selected effect in the store
 			effectStore.setEffectItem(effect)
-
-			try {
-				// Fetch audit trails and relations for the selected effect
-				await Promise.all([
-					effectStore.getRelations(effect.id),
-					effectStore.getAuditTrails(effect.id),
-				])
-			} catch (error) {
-				console.error('Error fetching effect data:', error)
-			}
 		},
 	},
 }

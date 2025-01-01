@@ -2,40 +2,122 @@
 import { defineStore } from 'pinia'
 import { Event } from '../../entities/index.js'
 
+/**
+ * Store for managing event data
+ * @phpstan-type EventData {id: string, name: string, description: string, date: string, location: string, characters: Array<string>, ...}
+ */
 export const useEventStore = defineStore(
 	'event', {
 		state: () => ({
+			/** @var {Event|false} Current active event */
 			eventItem: false,
+			/** @var {Array<Event>} List of all events */
 			eventList: [],
+			/** @var {Array<Object>} Audit trail entries for current event */
 			auditTrails: [],
+			/** @var {Array<Object>} Relations for current event */
 			relations: [],
-			uses: []
+			/** @var {Array<Object>} Uses of current event */
+			uses: [],
+			// Loading states
+			/** @var {boolean} Whether event is being loaded */
+			isLoadingEvent: false,
+			/** @var {boolean} Whether event list is being loaded */
+			isLoadingEventList: false,
+			/** @var {boolean} Whether audit trails are being loaded */
+			isLoadingAuditTrails: false,
+			/** @var {boolean} Whether relations are being loaded */
+			isLoadingRelations: false,
+			/** @var {boolean} Whether uses are being loaded */
+			isLoadingUses: false,
+			/** @var {string} Current search term for events */
+			searchTerm: '',
+			/** @var {number|null} Debounce timer for search */
+			searchDebounceTimer: null,
 		}),
 		actions: {
-			// Set the active event item
-			setEventItem(eventItem) {
+			/**
+			 * Sets the active event item and loads its audit trails and relations
+			 * @param {EventData|null} eventItem - The event item to set, or null to clear
+			 * @throws {Error} When loading event data fails
+			 * @returns {Promise<void>}
+			 */
+			async setEventItem(eventItem) {
+				// Set the event item first
 				this.eventItem = eventItem && new Event(eventItem)
 				console.log('Active event item set to ' + eventItem)
+
+				// If we have an event item, load its audit trails and relations
+				if (this.eventItem && this.eventItem.id) {
+					try {
+						// Load audit trails and relations in parallel
+						await Promise.all([
+							this.getAuditTrails(this.eventItem.id),
+							this.getRelations(this.eventItem.id)
+						])
+					} catch (err) {
+						console.error('Error loading event data:', err)
+					}
+				}
 			},
-			// Set the list of events
+			/**
+			 * Sets the list of events
+			 * @param {Array<EventData>} eventList - Array of event data
+			 * @returns {void}
+			 */
 			setEventList(eventList) {
 				this.eventList = eventList.map(
 					(eventItem) => new Event(eventItem),
 				)
 				console.log('Event list set to ' + eventList.length + ' items')
 			},
-			// Fetch and refresh the list of events
-			async refreshEventList(search = null) {
-				let endpoint = '/index.php/apps/larpingapp/api/objects/event?_extend=effects'
-				if (search !== null && search !== '') {
-					endpoint = endpoint + '?_search=' + search
+			/**
+			 * Sets the search term and triggers a debounced search
+			 * @param {string} term - The search term to set
+			 * @returns {void}
+			 */
+			setSearchTerm(term) {
+				this.searchTerm = term
+
+				if (this.searchDebounceTimer) {
+					clearTimeout(this.searchDebounceTimer)
 				}
+
+				this.searchDebounceTimer = setTimeout(() => {
+					this.refreshEventList()
+				}, 500)
+			},
+			/**
+			 * Clears the search term and refreshes the list
+			 * @returns {Promise<void>}
+			 */
+			async clearSearch() {
+				this.searchTerm = ''
+				await this.refreshEventList()
+			},
+			/**
+			 * Fetches and refreshes the list of events
+			 * @param {string|null} search - Optional search term
+			 * @throws {Error} When fetching events fails
+			 * @returns {Promise<void>}
+			 */
+			async refreshEventList(search = null) {
+				this.isLoadingEventList = true
+				let endpoint = '/index.php/apps/larpingapp/api/objects/event'
+				
+				if (this.searchTerm) {
+					endpoint += `${endpoint.includes('?') ? '&' : '?'}_search=${encodeURIComponent(this.searchTerm)}`
+				}
+
 				try {
 					const response = await fetch(endpoint, { method: 'GET' })
 					const data = await response.json()
 					this.setEventList(data.results)
 				} catch (err) {
-					console.error(err)
+					console.error('Error fetching event list:', err)
+					throw err
+				} finally {
+					this.isLoadingEventList = false
 				}
 			},
 			// Fetch a single event by ID

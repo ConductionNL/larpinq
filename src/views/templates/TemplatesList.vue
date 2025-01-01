@@ -7,12 +7,13 @@ import { templateStore, navigationStore, searchStore } from '../../store/store.j
 		<ul>
 			<div class="listHeader">
 				<NcTextField
-					:value.sync="searchStore.search"
-					:show-trailing-button="searchStore.search !== ''"
+					:value="templateStore.searchTerm"
+					:show-trailing-button="templateStore.searchTerm !== ''"
 					label="Search"
 					class="searchField"
 					trailing-button-icon="close"
-					@trailing-button-click="searchStore.setSearch('')">
+					@input="templateStore.setSearchTerm($event.target.value)"
+					@trailing-button-click="templateStore.clearSearch()">
 					<Magnify :size="20" />
 				</NcTextField>
 				<NcActions>
@@ -30,7 +31,7 @@ import { templateStore, navigationStore, searchStore } from '../../store/store.j
 					</NcActionButton>
 				</NcActions>
 			</div>
-			<div v-if="templateStore.templateList && templateStore.templateList.length > 0">
+			<div v-if="templateStore.templateList && templateStore.templateList.length > 0 && !templateStore.isLoadingTemplateList">
 				<NcListItem v-for="(template, i) in templateStore.templateList"
 					:key="`${template}${i}`"
 					:name="template?.name"
@@ -65,14 +66,14 @@ import { templateStore, navigationStore, searchStore } from '../../store/store.j
 			</div>
 		</ul>
 
-		<NcLoadingIcon v-if="!templateStore.templateList"
+		<NcLoadingIcon v-if="templateStore.isLoadingTemplateList"
 			class="loadingIcon"
 			:size="64"
 			appearance="dark"
-			name="Rollen aan het laden" />
+			name="Templates aan het laden" />
 
-		<div v-if="templateStore.templateList.length === 0">
-			Er zijn nog geen sjablonen gedefinieerd.
+		<div v-if="templateStore.templateList.length === 0 && !templateStore.isLoadingTemplateList">
+			Er zijn nog geen templates gedefinieerd.
 		</div>
 	</NcAppContentList>
 </template>
@@ -118,16 +119,6 @@ export default {
 		async handleTemplateSelect(template) {
 			// Set the selected template in the store
 			templateStore.setTemplateItem(template)
-
-			try {
-				// Fetch audit trails and relations for the selected template
-				await Promise.all([
-					templateStore.getRelations(template.id),
-					templateStore.getAuditTrails(template.id),
-				])
-			} catch (error) {
-				console.error('Error fetching template data:', error)
-			}
 		},
 	},
 }
@@ -152,6 +143,6 @@ export default {
 }
 
 .loadingIcon {
-    margin-block-start: var(--zaa-margin-20);
+    margin-block-start: var(--OC-margin-20);
 }
 </style>

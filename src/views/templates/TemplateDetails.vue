@@ -6,7 +6,6 @@ import DOMPurify from 'dompurify'
 <template>
 	<div class="detailContainer">
 		<div id="app-content">
-			<!-- app-content-wrapper is optional, only use if app-content-list  -->
 			<div>
 				<div class="head">
 					<h1 class="h1">
@@ -30,22 +29,37 @@ import DOMPurify from 'dompurify'
 						</NcActionButton>
 					</NcActions>
 				</div>
-				<span>{{ templateStore.templateItem.description }}</span>
-				<div>
-					<h3>Content:</h3>
+				<div class="detailGrid">
+					<div>
+						<b>Beschrijving:</b>
+						<span>{{ templateStore.templateItem.description }}</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="tabContainer">
+			<BTabs content-class="mt-3" justified>
+				<BTab title="Content" active>
 					<NcGuestContent>
 						<NcRichText
 							:text="DOMPurify.sanitize(templateStore.templateItem.template)"
 							:autolink="true"
 							:use-markdown="true" />
 					</NcGuestContent>
-				</div>
-			</div>
+				</BTab>
+				<BTab title="Relations">
+					<ObjectList :objects="templateStore.relations" />
+				</BTab>
+				<BTab title="Logging">
+					<AuditList :logs="templateStore.auditTrails" />
+				</BTab>
+			</BTabs>
 		</div>
 	</div>
 </template>
 
 <script>
+import { BTabs, BTab } from 'bootstrap-vue'
 import { NcLoadingIcon, NcActions, NcActionButton, NcGuestContent, NcRichText } from '@nextcloud/vue'
 
 // Custom components
@@ -61,11 +75,13 @@ export default {
 	components: {
 		NcActions,
 		NcActionButton,
+		NcLoadingIcon,
+		BTabs,
+		BTab,
 		// Custom components
 		AuditList,
 		ObjectList,
 		// Icons
-		NcLoadingIcon,
 		Pencil,
 		TrashCanOutline,
 		DotsHorizontal,
@@ -77,35 +93,43 @@ export default {
 
 <style>
 h4 {
-  font-weight: bold
+	font-weight: bold
 }
 
 .h1 {
-  display: block !important;
-  font-size: 2em !important;
-  margin-block-start: 0.67em !important;
-  margin-block-end: 0.67em !important;
-  margin-inline-start: 0px !important;
-  margin-inline-end: 0px !important;
-  font-weight: bold !important;
-  unicode-bidi: isolate !important;
+	display: block !important;
+	font-size: 2em !important;
+	margin-block-start: 0.67em !important;
+	margin-block-end: 0.67em !important;
+	margin-inline-start: 0px !important;
+	margin-inline-end: 0px !important;
+	font-weight: bold !important;
+	unicode-bidi: isolate !important;
 }
 
-.grid {
-  display: grid;
-  grid-gap: 24px;
-  grid-template-columns: 1fr 1fr;
-  margin-block-start: var(--zaa-margin-50);
-  margin-block-end: var(--zaa-margin-50);
+.detailGrid {
+	display: grid;
+	grid-gap: 24px;
+	grid-template-columns: 1fr;
+	margin-block-start: var(--zaa-margin-50);
+	margin-block-end: var(--zaa-margin-50);
 }
 
 .gridContent {
-  display: flex;
-  gap: 25px;
+	display: flex;
+	gap: 25px;
+}
+
+.tabContainer {
+	margin-top: 20px;
+	padding: 0 20px;
 }
 
 #guest-content-vue {
-    margin: 20px 5px !important;
+	margin: 20px 5px !important;
 }
 
+.tab-content {
+	padding: 20px 0;
+}
 </style>

@@ -127,7 +127,9 @@ class CharacterService
         foreach ($this->allAbilities as $ability) {
             $abilityScores[$ability['id']] = [
                 'name' => $ability['name'],
-                'value' => $ability['base'] ?? 0
+                'base' => $ability['base'] ?? 0,
+                'value' => $ability['base'] ?? 0,
+                'audit' => []
             ];
         }
 
@@ -230,6 +232,14 @@ class CharacterService
             } elseif ($modification === 'negative') {
                 $abilities[$abilityId]['value'] = $currentValue - $modifier;
             }
+
+            // Add audit trail
+            $abilities[$abilityId]['audit'][] = [
+                'type' => 'effect',
+                'effect' => $effect,
+                'old' => $currentValue,
+                'new' => $abilities[$abilityId]['value']
+            ];
         }
     }
 

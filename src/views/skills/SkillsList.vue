@@ -7,12 +7,13 @@ import { skillStore, navigationStore, searchStore, characterStore } from '../../
 		<ul>
 			<div class="listHeader">
 				<NcTextField
-					:value.sync="searchStore.search"
-					:show-trailing-button="searchStore.search !== ''"
+					:value="skillStore.searchTerm"
+					:show-trailing-button="skillStore.searchTerm !== ''"
 					label="Search"
 					class="searchField"
 					trailing-button-icon="close"
-					@trailing-button-click="searchStore.setSearch('')">
+					@input="skillStore.setSearchTerm($event.target.value)"
+					@trailing-button-click="skillStore.clearSearch()">
 					<Magnify :size="20" />
 				</NcTextField>
 				<NcActions>
@@ -30,7 +31,7 @@ import { skillStore, navigationStore, searchStore, characterStore } from '../../
 					</NcActionButton>
 				</NcActions>
 			</div>
-			<div v-if="skillStore.skillList && skillStore.skillList.length > 0">
+			<div v-if="skillStore.skillList && skillStore.skillList.length > 0 && !skillStore.isLoadingSkillList">
 				<NcListItem v-for="(skill, i) in skillStore.skillList"
 					:key="`${skill}${i}`"
 					:name="skill?.name"
@@ -64,13 +65,13 @@ import { skillStore, navigationStore, searchStore, characterStore } from '../../
 			</div>
 		</ul>
 
-		<NcLoadingIcon v-if="!skillStore.skillList"
+		<NcLoadingIcon v-if="skillStore.isLoadingSkillList"
 			class="loadingIcon"
 			:size="64"
 			appearance="dark"
-			name="Zaken aan het laden" />
+			name="Vaardigheden aan het laden" />
 
-		<div v-if="skillStore.skillList.length === 0">
+		<div v-if="skillStore.skillList.length === 0 && !skillStore.isLoadingSkillList">
 			Er zijn nog geen vaardigheden gedefinieerd.
 		</div>
 	</NcAppContentList>
@@ -116,16 +117,6 @@ export default {
 		async handleSkillSelect(skill) {
 			// Set the selected skill in the store
 			skillStore.setSkillItem(skill)
-
-			try {
-				// Fetch audit trails and relations for the selected skill
-				await Promise.all([
-					skillStore.getRelations(skill.id),
-					skillStore.getAuditTrails(skill.id),
-				])
-			} catch (error) {
-				console.error('Error fetching skill data:', error)
-			}
 		},
 	},
 }
@@ -150,6 +141,6 @@ export default {
 }
 
 .loadingIcon {
-    margin-block-start: var(--zaa-margin-20);
+    margin-block-start: var(--OC-margin-20);
 }
 </style>

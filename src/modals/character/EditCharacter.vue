@@ -23,6 +23,12 @@ import { characterStore, navigationStore, playerStore } from '../../store/store.
 			<NcTextArea :disabled="loading"
 				label="Description"
 				:value.sync="characterItem.description" />
+			<NcTextArea :disabled="loading"
+				label="Background"
+				:value.sync="characterItem.background" />
+			<NcTextArea :disabled="loading"
+				label="Notice"
+				:value.sync="characterItem.notice" />
 			<NcSelect v-bind="players"
 				v-model="players.value"
 				input-label="OC Name *"
@@ -99,6 +105,8 @@ export default {
 				name: '',
 				ocName: '',
 				description: '',
+				background: '',
+				notice: '',
 			},
 			players: {},
 			playersLoading: false,
@@ -109,7 +117,6 @@ export default {
 		}
 	},
 	mounted() {
-		this.fetchSkills()
 		this.fetchPlayers()
 	},
 	updated() {
@@ -119,6 +126,8 @@ export default {
 					...characterStore.characterItem,
 					name: characterStore.characterItem.name || '',
 					description: characterStore.characterItem.description || '',
+					background: characterStore.characterItem.background || '',
+					notice: characterStore.characterItem.notice || '',
 				}
 			}
 			this.fetchPlayers()
@@ -136,6 +145,8 @@ export default {
 				name: '',
 				ocName: '',
 				description: '',
+				background: '',
+				notice: '',
 			}
 		},
 		fetchPlayers() {
