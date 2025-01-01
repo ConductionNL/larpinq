@@ -65,6 +65,9 @@ import { characterStore, navigationStore } from '../../store/store.js'
 						</NcActionButton>
 					</NcActions>
 				</div>
+				<NcNoteCard v-if="characterStore.characterItem.notice" type="info">
+					{{ characterStore.characterItem.notice }}
+				</NcNoteCard>
 				<div class="detailGrid">
 					<div>
 						<b>Sammenvatting:</b>
@@ -108,6 +111,15 @@ import { characterStore, navigationStore } from '../../store/store.js'
 						<BTab title="Events">
 							<ObjectList :objects="characterStore.characterItem.events" />
 						</BTab>
+
+						<BTab title="Background">
+							<div v-if="characterStore.characterItem.background">
+								{{ characterStore.characterItem.background }}
+							</div>
+							<div v-else>
+								Geen achtergrond gevonden
+							</div>
+						</BTab>
 						
 						<BTab title="Logging">
 							<AuditList :logs="characterStore.auditTrails" />
@@ -122,7 +134,7 @@ import { characterStore, navigationStore } from '../../store/store.js'
 <script>
 // Components
 import { BTabs, BTab } from 'bootstrap-vue'
-import { NcActions, NcActionButton, NcListItem } from '@nextcloud/vue'
+import { NcActions, NcActionButton, NcListItem, NcNoteCard } from '@nextcloud/vue'
 
 // Custom components
 import AuditList from '../auditTrail/AuditList.vue'
@@ -151,6 +163,7 @@ export default {
 		NcActions,
 		NcActionButton,
 		NcListItem,
+		NcNoteCard,
 		BTabs,
 		BTab,
 		// Custom components

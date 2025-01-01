@@ -29,6 +29,7 @@
 		<DeleteConditionFromCharacter />
 		<DeleteEventFromCharacter />
 		<RenderPdfFromCharacter />
+		<ViewAuditTrail />
 	</div>
 </template>
 
