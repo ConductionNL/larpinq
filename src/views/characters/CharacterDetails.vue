@@ -35,7 +35,7 @@ import { characterStore, navigationStore } from '../../store/store.js'
 						</NcActionButton>
 						<NcActionButton @click="navigationStore.setModal('addConditionToCharacter')">
 							<template #icon>
-								<CalendarPlus :size="20" />
+								<EmoticonSickOutline :size="20" />
 							</template>
 							Condities bewerken
 						</NcActionButton>
@@ -53,7 +53,7 @@ import { characterStore, navigationStore } from '../../store/store.js'
 						</NcActionButton>
 						<NcActionButton >
 							<template #icon>
-								<Download :size="20" />
+								<AccountCheck :size="20" />
 							</template>
 							Accoderen
 						</NcActionButton>
@@ -177,6 +177,8 @@ import CalendarMonthOutline from 'vue-material-design-icons/CalendarMonthOutline
 import ShieldSwordOutline from 'vue-material-design-icons/ShieldSwordOutline.vue'
 import Download from 'vue-material-design-icons/Download.vue'
 import BriefcaseAccountOutline from 'vue-material-design-icons/BriefcaseAccountOutline.vue'
+import AccountCheck from 'vue-material-design-icons/AccountCheck.vue'
+
 export default {
 	name: 'CharacterDetails',
 	components: {
@@ -205,7 +207,9 @@ export default {
 		CalendarMonthOutline,
 		ShieldSwordOutline,
 		Download,
-		BriefcaseAccountOutline
+		BriefcaseAccountOutline,
+		AccountCheck,
+
 	},
 	methods: {
 		downloadCharacterPdf() {
