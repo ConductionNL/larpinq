@@ -38,8 +38,11 @@ import { conditionStore, navigationStore,  } from '../../store/store.js'
 				<span>{{ conditionStore.conditionItem.description }}</span>
 				<div class="tabContainer">
 					<BTabs content-class="mt-3" justified>
-						<BTab title="Effects" active>
-							<div v-if="conditionStore.condtionItem?.effects?.length > 0">
+						<BTab>
+							<template #title>
+								Effects <NcCounterBubble>{{ conditionStore.conditionItem?.effects?.length || 0 }}</NcCounterBubble>
+							</template>
+							<div v-if="conditionStore.conditionItem?.effects?.length > 0">
 								<NcListItem v-for="(effect) in conditionStore.conditionItem.effects"
 									:key="effect.id"
 									:name="effect.name"
@@ -60,10 +63,16 @@ import { conditionStore, navigationStore,  } from '../../store/store.js'
 								Geen effects gevonden
 							</div>
 						</BTab>
-						<BTab title="Characters">
+						<BTab>
+							<template #title>
+								Characters <NcCounterBubble>{{ conditionStore.relations ? conditionStore.relations.length : 0 }}</NcCounterBubble>
+							</template>
 							<ObjectList :objects="conditionStore.relations" />							
 						</BTab>
-						<BTab title="Logging">
+						<BTab>
+							<template #title>
+								Logging <NcCounterBubble>{{ conditionStore.auditTrails ? conditionStore.auditTrails.length : 0 }}</NcCounterBubble>
+							</template>
 							<AuditList :logs="conditionStore.auditTrails" />
 						</BTab>
 					</BTabs>
@@ -76,7 +85,7 @@ import { conditionStore, navigationStore,  } from '../../store/store.js'
 <script>
 // Components
 import { BTabs, BTab } from 'bootstrap-vue'
-import { NcLoadingIcon, NcActions, NcActionButton, NcListItem } from '@nextcloud/vue'
+import { NcLoadingIcon, NcActions, NcActionButton, NcListItem, NcCounterBubble } from '@nextcloud/vue'
 
 // Custom components
 import AuditList from '../auditTrail/AuditList.vue'
@@ -98,6 +107,7 @@ export default {
 		NcActionButton,
 		NcLoadingIcon,
 		NcListItem,
+		NcCounterBubble,
 		BTabs,
 		BTab,
 		// Icons
@@ -105,7 +115,7 @@ export default {
 		Pencil,
 		FileDocumentPlusOutline,
 		TrashCanOutline,
-		BriefcaseAccountOutline
+		BriefcaseAccountOutline,
 	},
 }
 </script>
@@ -139,6 +149,11 @@ h4 {
 .dataContent {
   display: flex;
   flex-direction: column;
+}
+
+/* Add margin to counter bubble only when inside nav-item */
+.nav-item .counter-bubble__counter {
+    margin-left: 10px;
 }
 
 </style>

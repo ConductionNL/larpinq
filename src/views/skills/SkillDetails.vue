@@ -1,5 +1,5 @@
 <script setup>
-import { skillStore } from '../../store/store.js'
+import { skillStore, navigationStore } from '../../store/store.js'
 
 </script>
 
@@ -19,13 +19,13 @@ import { skillStore } from '../../store/store.js'
 						</template>
 						<NcActionButton @click="navigationStore.setModal('editSkill')">
 							<template #icon>
-								<Pencil :size="20" />
+								<Pencil />
 							</template>
 							Bewerken
 						</NcActionButton>
 						<NcActionButton @click="navigationStore.setDialog('deleteSkill')">
 							<template #icon>
-								<TrashCanOutline :size="20" />
+								<TrashCanOutline />
 							</template>
 							Verwijderen
 						</NcActionButton>
@@ -42,7 +42,10 @@ import { skillStore } from '../../store/store.js'
 		</div>
 		<div class="tabContainer">
 			<BTabs content-class="mt-3" justified>
-				<BTab title="Effects" active>
+				<BTab>
+					<template #title>
+						Effects <NcCounterBubble>{{ skillStore.skillItem?.effects?.length || 0 }}</NcCounterBubble>
+					</template>
 					<div v-if="skillStore.skillItem?.effects?.length > 0">
 						<NcListItem v-for="effect in skillStore.skillItem?.effects"
 							:key="effect.id"
@@ -64,10 +67,16 @@ import { skillStore } from '../../store/store.js'
 						Geen effects gevonden
 					</div>
 				</BTab>
-				<BTab title="Characters">
+				<BTab>
+					<template #title>
+						Characters <NcCounterBubble>{{ skillStore.relations ? skillStore.relations.length : 0 }}</NcCounterBubble>
+					</template>
 					<ObjectList :objects="skillStore.relations" />							
 				</BTab>
-				<BTab title="Logging">
+				<BTab>
+					<template #title>
+						Logging <NcCounterBubble>{{ skillStore.auditTrails ? skillStore.auditTrails.length : 0 }}</NcCounterBubble>
+					</template>
 					<AuditList :logs="skillStore.auditTrails" />
 				</BTab>
 			</BTabs>
@@ -76,9 +85,7 @@ import { skillStore } from '../../store/store.js'
 </template>
 
 <script>
-import {
-	NcListItem,NcActionButton,NcActions
-} from '@nextcloud/vue'
+import { NcListItem,NcActionButton,NcActions, NcCounterBubble } from '@nextcloud/vue'
 import { BTabs, BTab } from 'bootstrap-vue'
 
 // Custom components
@@ -98,6 +105,7 @@ export default {
 		NcListItem,
 		NcActionButton,
 		NcActions,
+		NcCounterBubble,
 		BTabs,
 		BTab,
 		// Custom components
@@ -108,7 +116,7 @@ export default {
 		BriefcaseAccountOutline,
 		Pencil,
 		TrashCanOutline,
-		DotsHorizontal
+		DotsHorizontal,
 	},
 }
 </script>
@@ -175,5 +183,10 @@ h4 {
   max-height: 100%;
   height: 100%;
   overflow: auto;
+}
+
+/* Add margin to counter bubble only when inside nav-item */
+.nav-item .counter-bubble__counter {
+    margin-left: 10px;
 }
 </style>

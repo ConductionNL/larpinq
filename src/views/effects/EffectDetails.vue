@@ -40,10 +40,16 @@ import { effectStore, navigationStore } from '../../store/store.js'
 
 				<div class="tabContainer">
 					<BTabs content-class="mt-3" justified>		
-						<BTab title="Used by">
+						<BTab>
+							<template #title>
+								Used by <NcCounterBubble>{{ effectStore.relations ? effectStore.relations.length : 0 }}</NcCounterBubble>
+							</template>
 							<ObjectList :objects="effectStore.relations" />							
 						</BTab>
-						<BTab title="Logging">
+						<BTab>
+							<template #title>
+								Logging <NcCounterBubble>{{ effectStore.auditTrails ? effectStore.auditTrails.length : 0 }}</NcCounterBubble>
+							</template>
 							<AuditList :logs="effectStore.auditTrails" />
 						</BTab>
 					</BTabs>
@@ -56,7 +62,7 @@ import { effectStore, navigationStore } from '../../store/store.js'
 <script>
 // Components
 import { BTabs, BTab } from 'bootstrap-vue'
-import { NcLoadingIcon, NcActions, NcActionButton, NcListItem } from '@nextcloud/vue'
+import { NcLoadingIcon, NcActions, NcActionButton, NcListItem, NcCounterBubble } from '@nextcloud/vue'
 
 // Custom components
 import AuditList from '../auditTrail/AuditList.vue'
@@ -77,6 +83,7 @@ export default {
 		NcActionButton,
 		NcLoadingIcon,
 		NcListItem,
+		NcCounterBubble,
 		BTabs,
 		BTab,
 		// Custom components
@@ -128,6 +135,11 @@ export default {
 
 .gridFullWidth {
     grid-column: 1 / -1;
+}
+
+/* Add margin to counter bubble only when inside nav-item */
+.nav-item .counter-bubble__counter {
+    margin-left: 10px;
 }
 
 </style>

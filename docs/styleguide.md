@@ -4,6 +4,9 @@ The style guide provides a general overview on styling decisions made during the
 ## Making migrations
 sudo -u www-data php occ migrations:generate larpingapp 0
 
+## Visual components
+We use [Nextcloud Vue](https://nextcloud-vue-components.netlify.app/) components in line with: [Nextcloud Vue Styleguide](https://docs.nextcloud.com/server/27/developer_manual/design/index.html).
+
 ## Icon Usage
 We use [material design icons](https://pictogrammers.com/library/mdi/) in line with:
 

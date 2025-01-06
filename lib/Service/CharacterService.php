@@ -122,7 +122,6 @@ class CharacterService
         // Create an array of abilities with their base scores
         $abilityScores = [];
 
-
         // Initialize ability scores from base values
         foreach ($this->allAbilities as $ability) {
             $abilityScores[$ability['id']] = [
@@ -134,40 +133,40 @@ class CharacterService
         }
 
         // Apply effects from skills if character has any
-        if (isset($character['skills']) && is_array($character['skills'])) {
+        if (isset($character['skills']) && is_array($character['skills']) && !empty($character['skills'])) {
             foreach ($character['skills'] as $skillId) {
                 $skill = $this->allSkills[$skillId] ?? null;
-                if ($skill) {
+                if ($skill && isset($skill['effects']) && !empty($skill['effects'])) {
                     $this->applyEffects($abilityScores, $skill['effects']);
                 }
             }
         }
 
         // Apply effects from items if character has any
-        if (isset($character['items']) && is_array($character['items'])) {
+        if (isset($character['items']) && is_array($character['items']) && !empty($character['items'])) {
             foreach ($character['items'] as $itemId) {
                 $item = $this->allItems[$itemId] ?? null;
-                if ($item) {
+                if ($item && isset($item['effects']) && !empty($item['effects'])) {
                     $this->applyEffects($abilityScores, $item['effects']);
                 }
             }
         }
 
         // Apply effects from conditions if character has any
-        if (isset($character['conditions']) && is_array($character['conditions'])) {
+        if (isset($character['conditions']) && is_array($character['conditions']) && !empty($character['conditions'])) {
             foreach ($character['conditions'] as $conditionId) {
                 $condition = $this->allConditions[$conditionId] ?? null;
-                if ($condition) {
+                if ($condition && isset($condition['effects']) && !empty($condition['effects'])) {
                     $this->applyEffects($abilityScores, $condition['effects']);
                 }
             }
         }
 
         // Apply effects from events if character has any
-        if (isset($character['events']) && is_array($character['events'])) {
+        if (isset($character['events']) && is_array($character['events']) && !empty($character['events'])) {
             foreach ($character['events'] as $eventId) {
                 $event = $this->allEvents[$eventId] ?? null;
-                if ($event) {
+                if ($event && isset($event['effects']) && !empty($event['effects'])) {
                     $this->applyEffects($abilityScores, $event['effects']);
                 }
             }
@@ -183,11 +182,21 @@ class CharacterService
      * Apply effects to abilities
      *
      * @param array $abilities Reference to the abilities array
-     * @param array $effects Array of effect IDs
+     * @param array|null $effects Array of effect IDs
      */
-    private function applyEffects(array &$abilities, array $effects): void
+    private function applyEffects(array &$abilities, ?array $effects): void
     {
+        // Return early if effects is null or empty
+        if (empty($effects)) {
+            return;
+        }
+
         foreach ($effects as $effectId) {
+            // Skip if effectId is null
+            if ($effectId === null) {
+                continue;
+            }
+            
             $effect = $this->allEffects[$effectId] ?? null;
             if ($effect) {
                 $this->calculateEffect($abilities, $effect);
@@ -206,13 +215,23 @@ class CharacterService
         // Initialize array to track affected abilities
         $effectAbilities = isset($effect['abilities']) && is_array($effect['abilities']) ? $effect['abilities'] : [];
 
-        // Add stat_id to affected abilities if present
-        if (isset($effect['stat_id'])) {
+        // Add stat_id to affected abilities if present and not null
+        if (isset($effect['stat_id']) && $effect['stat_id'] !== null) {
             $effectAbilities[] = $effect['stat_id'];
+        }
+
+        // Skip if no abilities are affected
+        if (empty($effectAbilities)) {
+            return;
         }
 
         // Ensure each affected ability exists in abilities array
         foreach ($effectAbilities as $abilityId) {
+            // Skip if abilityId is null
+            if ($abilityId === null) {
+                continue;
+            }
+
             if (!isset($abilities[$abilityId]['value'])) {
                 $abilities[$abilityId]['value'] = 0;
             } elseif (!is_int($abilities[$abilityId]['value'])) {
