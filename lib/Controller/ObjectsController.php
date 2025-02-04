@@ -8,6 +8,7 @@ use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\IRequest;
 use Exception;
+use DateTime;
 
 /**
  * Controller class for handling object-related operations
@@ -244,5 +245,128 @@ class ObjectsController extends Controller
     {
         $uses = $this->objectService->getUses($objectType, $id);
         return new JSONResponse($uses);
+    }
+
+    /**
+     * Lock an object to prevent concurrent modifications
+     *
+     * @NoAdminRequired
+     * @NoCSRFRequired
+     * 
+     * @param string $objectType The type of object to lock
+     * @param string $id The ID of the object to lock
+     * @return JSONResponse
+     */
+    public function lock(string $objectType, string $id): JSONResponse 
+    {
+        try {
+            // Get request parameters
+            $params = $this->request->getParams();
+            
+            // Extract optional parameters
+            $process = $params['process'] ?? null;
+            $duration = isset($params['duration']) ? (int)$params['duration'] : null;
+
+            // Attempt to lock the object
+            $lockedObject = $this->objectService->lockObject($objectType, $id, $process, $duration);
+            
+            return new JSONResponse($lockedObject);
+        } catch (Exception $e) {
+            return new JSONResponse(
+                ['error' => $e->getMessage()],
+                400
+            );
+        }
+    }
+
+    /**
+     * Unlock a previously locked object
+     *
+     * @NoAdminRequired
+     * @NoCSRFRequired
+     * 
+     * @param string $objectType The type of object to unlock
+     * @param string $id The ID of the object to unlock
+     * @return JSONResponse
+     */
+    public function unlock(string $objectType, string $id): JSONResponse 
+    {
+        try {
+            $unlockedObject = $this->objectService->unlockObject($objectType, $id);
+            return new JSONResponse($unlockedObject);
+        } catch (Exception $e) {
+            return new JSONResponse(
+                ['error' => $e->getMessage()],
+                400
+            );
+        }
+    }
+
+    /**
+     * Check if an object is currently locked
+     *
+     * @NoAdminRequired
+     * @NoCSRFRequired
+     * 
+     * @param string $objectType The type of object to check
+     * @param string $id The ID of the object to check
+     * @return JSONResponse
+     */
+    public function isLocked(string $objectType, string $id): JSONResponse 
+    {
+        try {
+            $isLocked = $this->objectService->isLocked($objectType, $id);
+            return new JSONResponse(['locked' => $isLocked]);
+        } catch (Exception $e) {
+            return new JSONResponse(
+                ['error' => $e->getMessage()],
+                400
+            );
+        }
+    }
+
+    /**
+     * Revert an object to a previous state
+     *
+     * @NoAdminRequired
+     * @NoCSRFRequired
+     * 
+     * @param string $objectType The type of object to revert
+     * @param string $id The ID of the object to revert
+     * @return JSONResponse
+     */
+    public function revert(string $objectType, string $id): JSONResponse 
+    {
+        try {
+            // Get request parameters
+            $params = $this->request->getParams();
+            
+            // Extract revert parameters
+            $until = null;
+            if (isset($params['until'])) {
+                // Handle both DateTime and audit trail ID cases
+                $until = $params['until'];
+                if (strtotime($until) !== false) {
+                    $until = new DateTime($until);
+                }
+            }
+            
+            $overwriteVersion = $params['overwriteVersion'] ?? false;
+
+            // Attempt to revert the object
+            $revertedObject = $this->objectService->revertObject(
+                $objectType, 
+                $id, 
+                $until, 
+                $overwriteVersion
+            );
+            
+            return new JSONResponse($revertedObject);
+        } catch (Exception $e) {
+            return new JSONResponse(
+                ['error' => $e->getMessage()],
+                400
+            );
+        }
     }
 }
