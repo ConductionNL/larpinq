@@ -3,6 +3,7 @@
 namespace OCA\LarpingApp\Service;
 
 use Adbar\Dot;
+use DateTime;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
@@ -27,6 +28,9 @@ use OCA\LarpingApp\Db\PlayerMapper;
 use OCA\LarpingApp\Db\SettingMapper;
 use OCA\LarpingApp\Db\SkillMapper;
 use OCA\LarpingApp\Db\TemplateMapper;
+use OCA\OpenRegister\Service\Exceptions\LockedException;
+use OCA\OpenRegister\Service\Exceptions\NotAuthorizedException;
+use OCA\OpenRegister\Service\Exceptions\NotFoundException;
 
 /**
  * Service class for handling object-related operations
@@ -424,6 +428,76 @@ class ObjectService
 	}
 
 	/**
+	 * Extends an entity with related objects based on the extend array.
+	 *
+	 * @param mixed $entity The entity to extend
+	 * @param array $extend An array of properties to extend
+	 *
+	 * @return array The extended entity as an array
+	 * @throws ContainerExceptionInterface|DoesNotExistException|MultipleObjectsReturnedException|NotFoundExceptionInterface If a property is not present on the entity
+	 */
+	public function extendEntity(mixed $entity, array $extend): array
+	{
+		$surpressMapperError = false;
+		// Convert the entity to an array if it's not already one
+		$result = is_array($entity) ? $entity : $entity->jsonSerialize();
+
+		if (in_array(needle: 'all', haystack: $extend) === true) {
+			$extend = array_keys($entity);
+			$surpressMapperError = true;
+		}
+
+		// Iterate through each property to be extended
+		foreach ($extend as $property) {
+			// Create a singular property name
+			$singularProperty = rtrim($property, 's');
+
+			// Check if property or singular property are keys in the array
+			if (array_key_exists($property, $result)) {
+				$value = $result[$property];
+				if (empty($value)) {
+					continue;
+				}
+			} elseif (array_key_exists($singularProperty, $result)) {
+				$value = $result[$singularProperty];
+			} else {
+				throw new Exception("Property '$property' or '$singularProperty' is not present in the entity.");
+			}
+
+			// Get a mapper for the property
+			$propertyObject = $property;
+			try {
+				$mapper = $this->getMapper($property);
+				$propertyObject = $singularProperty;
+			} catch (Exception $e) {
+				try {
+					$mapper = $this->getMapper($singularProperty);
+					$propertyObject = $singularProperty;
+				} catch (Exception $e) {
+					// If still no mapper, throw a no mapper available error
+					if ($surpressMapperError === true) {
+						continue;
+					}
+					throw new Exception("No mapper available for property '$property'.");
+				}
+			}
+
+			// Update the values
+			if (is_array($value)) {
+				// If the value is an array, get multiple related objects
+				$result[$property] = $this->getMultipleObjects($propertyObject, $value);
+			} else {
+				// If the value is not an array, get a single related object
+				$objectId = is_object($value) ? $value->getId() : $value;
+				$result[$property] = $this->getObject($propertyObject, $objectId);
+			}
+		}
+
+		// Return the extended entity as an array
+		return $result;
+	}
+
+	/**
 	 * Get all relations for a specific object
 	 *
 	 * @param string $objectType The type of object to get relations for
@@ -458,6 +532,22 @@ class ObjectService
 		return $uses;
 	}
 
+    /**
+     * Get all files associated with a specific object
+     *
+     * @NoAdminRequired
+     * @NoCSRFRequired
+     *
+     * @return JSONResponse
+     */
+    public function getFiles(string $objectType, string $id): array
+    {
+		// Get the mapper first
+		$mapper = $this->getMapper($objectType);
+
+        return $mapper->formatFiles($mapper->getFiles($id));
+    }
+
 	/**
 	 * Get all audit trails for a specific object
 	 *
@@ -475,5 +565,55 @@ class ObjectService
 		$auditTrails = $mapper->getAuditTrail($id);
 
 		return $auditTrails;
+	}
+
+	/**
+	 * Lock an object
+	 *
+	 * @param string $objectType The type of object to lock
+	 * @param string|int $id The id of the object to lock
+	 * @param string|null $process Optional process identifier
+	 * @param int|null $duration Lock duration in seconds (default: 1 hour)
+	 * @return mixed The locked object
+	 */
+	public function lockObject(string $objectType, string|int $id, ?string $process = null, ?int $duration = 3600): mixed
+	{
+		$mapper = $this->getMapper($objectType);
+		return $mapper->lockObject($id, $process, $duration);
+	}
+
+	/**
+	 * Unlock an object
+	 *
+	 * @param string $objectType The type of object to unlock
+	 * @param string|int $id The id of the object to unlock
+	 * @return mixed The unlocked object
+	 */
+	public function unlockObject(string $objectType, string|int $id): mixed {
+		return $this->getMapper($objectType)->unlockObject($id);
+	}
+
+	/**
+	 * Check if an object is locked
+	 *
+	 * @param string $objectType The type of object to check
+	 * @param string|int $id The id of the object to check
+	 * @return bool True if object is locked, false otherwise
+	 */
+	public function isLocked(string $objectType, string|int $id): bool {
+		return $this->getMapper($objectType)->isLocked($id);
+	}
+
+	/**
+	 * Revert an object to a previous state
+	 *
+	 * @param string $objectType The type of object to revert
+	 * @param string|int $id The id of the object to revert
+	 * @param DateTime|string|null $until DateTime or AuditTrail ID to revert to
+	 * @param bool $overwriteVersion Whether to overwrite the version or increment it
+	 * @return mixed The reverted object
+	 */
+	public function revertObject(string $objectType, string|int $id, $until = null, bool $overwriteVersion = false): mixed {
+		return $this->getMapper($objectType)->revertObject($id, $until, $overwriteVersion);
 	}
 }
