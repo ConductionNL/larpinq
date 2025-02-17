@@ -4,17 +4,55 @@
  * work well for content-first websites.
  */
 
-/* You can override the default Infima variables here. */
+/* Global CSS configuration for Conduction theme
+ * Using Conduction brand colors and typography */
+
+/* Import Aldrich and Noto Sans fonts from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Aldrich&family=Noto+Sans:wght@300;400;500;600;700&display=swap');
+
+/* Base theme variables */
 :root {
-  --ifm-color-primary: #2e8555;
-  --ifm-color-primary-dark: #29784c;
-  --ifm-color-primary-darker: #277148;
-  --ifm-color-primary-darkest: #205d3b;
-  --ifm-color-primary-light: #33925d;
-  --ifm-color-primary-lighter: #359962;
-  --ifm-color-primary-lightest: #3cad6e;
+  /* Primary color palette based on Conduction blue (#4376FC) */
+  --ifm-color-primary: #4376FC;
+  --ifm-color-primary-dark: #2861fc;
+  --ifm-color-primary-darker: #1754fc;
+  --ifm-color-primary-darkest: #0441e7;
+  --ifm-color-primary-light: #5e8bfc;
+  --ifm-color-primary-lighter: #6f98fc;
+  --ifm-color-primary-lightest: #9cbcfd;
+  
+  /* Typography settings */
+  --ifm-font-family-base: 'Noto Sans', sans-serif;
+  --ifm-heading-font-family: 'Aldrich', sans-serif;
   --ifm-code-font-size: 95%;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  --ifm-heading-font-weight: 400; /* Aldrich only comes in regular weight */
+  
+  /* Code highlighting */
+  --docusaurus-highlighted-code-line-bg: rgba(67, 118, 252, 0.1);
+}
+
+/* Dark mode adjustments */
+[data-theme='dark'] {
+  /* Lighter shades for dark mode for better contrast */
+  --ifm-color-primary: #6f98fc;
+  --ifm-color-primary-dark: #4376FC;
+  --ifm-color-primary-darker: #2861fc;
+  --ifm-color-primary-darkest: #1754fc;
+  --ifm-color-primary-light: #9cbcfd;
+  --ifm-color-primary-lighter: #b9d0fd;
+  --ifm-color-primary-lightest: #d6e3fe;
+  --docusaurus-highlighted-code-line-bg: rgba(67, 118, 252, 0.3);
+}
+
+/* Additional typography adjustments */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Aldrich', sans-serif;
+  letter-spacing: 0; /* Aldrich has its own distinct spacing */
+}
+
+/* Ensure body text uses Noto Sans */
+body {
+  font-family: 'Noto Sans', sans-serif;
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
