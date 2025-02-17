@@ -3,9 +3,17 @@
 declare(strict_types=1);
 
 /**
- * @copyright Copyright (c) 2024 Ruben Linde <ruben@larpingapp.com>
+ * LarpingApp admin section implementation
+ *
+ * @category  Settings
+ * @package   OCA\LarpingApp\Settings
  * @author    Ruben Linde <ruben@larpingapp.com>
- * @license   AGPL-3.0-or-later
+ * @copyright 2024 Ruben Linde
+ * @license   https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
+ * @version   GIT: <git_id>
+ * @link      https://larpingapp.com
+ *
+ * @phpversion 8.2
  */
 
 namespace OCA\LarpingApp\Settings;
@@ -17,30 +25,35 @@ use OCP\Settings\IIconSection;
 /**
  * Admin section for LarpingApp settings
  *
+ * Provides the admin section configuration for the LarpingApp
+ *
  * @category Settings
  * @package  OCA\LarpingApp\Settings
  * @author   Ruben Linde <ruben@larpingapp.com>
- * @license  AGPL-3.0-or-later
+ * @license  https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
  * @link     https://larpingapp.com
  */
 class LarpingAppAdmin implements IIconSection
 {
     /**
+     * Localization service instance
+     *
      * @var IL10N
      */
     private $_l;
 
     /**
+     * URL generator service instance
+     *
      * @var IURLGenerator
      */
     private $_urlGenerator;
 
     /**
-     * Constructor
+     * Constructor for the admin section
      *
-     * @param  IL10N         $l            Localization service
-     * @param  IURLGenerator $urlGenerator URL generator service
-     * @return void
+     * @param IL10N         $l            Localization service
+     * @param IURLGenerator $urlGenerator URL generator service
      */
     public function __construct(IL10N $l, IURLGenerator $urlGenerator)
     {
@@ -49,9 +62,11 @@ class LarpingAppAdmin implements IIconSection
     }
 
     /**
-     * Get the section icon
+     * Get the section icon path
      *
-     * @return string
+     * Returns the path to the section icon
+     *
+     * @return string Icon path
      */
     public function getIcon(): string
     {
@@ -59,9 +74,11 @@ class LarpingAppAdmin implements IIconSection
     }
 
     /**
-     * Get the section ID
+     * Get the section identifier
      *
-     * @return string
+     * Returns the unique identifier for this section
+     *
+     * @return string Section ID
      */
     public function getID(): string
     {
@@ -71,7 +88,9 @@ class LarpingAppAdmin implements IIconSection
     /**
      * Get the translated section name
      *
-     * @return string
+     * Returns the localized name of this section
+     *
+     * @return string Translated section name
      */
     public function getName(): string
     {
@@ -81,7 +100,9 @@ class LarpingAppAdmin implements IIconSection
     /**
      * Get the section priority
      *
-     * @return int
+     * Returns the priority value that determines section ordering
+     *
+     * @return int Priority value (0-100)
      */
     public function getPriority(): int
     {

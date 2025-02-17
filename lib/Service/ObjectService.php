@@ -1,5 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
+/**
+ * Object service implementation
+ *
+ * @category  Service
+ * @package   OCA\LarpingApp\Service
+ * @author    Ruben Linde <ruben@larpingapp.com>
+ * @copyright 2024 Ruben Linde
+ * @license   https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
+ * @link      https://larpingapp.com
+ *
+ * @phpversion 8.2
+ */
+
 namespace OCA\LarpingApp\Service;
 
 use Adbar\Dot;
@@ -33,17 +48,37 @@ use OCA\OpenRegister\Service\Exceptions\NotAuthorizedException;
 use OCA\OpenRegister\Service\Exceptions\NotFoundException;
 
 /**
- * Service class for handling object-related operations
+ * Service class for generic object operations
+ *
+ * @category  Service
+ * @package   OCA\LarpingApp\Service
+ * @author    Ruben Linde <ruben@larpingapp.com>
+ * @license   https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
+ * @link      https://larpingapp.com
  */
 class ObjectService
 {
     /**
-     * @var string $appName The name of the app 
+     * @var string
      */
-    private string $appName;
+    private $_appName;
 
     /**
-     * Constructor for ObjectService.
+     * Constructor for ObjectService
+     *
+     * @param AbilityMapper    $abilityMapper    Ability mapper
+     * @param CharacterMapper  $characterMapper  Character mapper
+     * @param ConditionMapper  $conditionMapper  Condition mapper
+     * @param EffectMapper     $effectMapper     Effect mapper
+     * @param EventMapper      $eventMapper      Event mapper
+     * @param ItemMapper       $itemMapper       Item mapper
+     * @param PlayerMapper     $playerMapper     Player mapper
+     * @param SettingMapper    $settingMapper    Setting mapper
+     * @param SkillMapper      $skillMapper      Skill mapper
+     * @param TemplateMapper   $templateMapper   Template mapper
+     * @param IContainer       $container        DI container
+     * @param IAppManager      $appManager       App manager
+     * @param IConfig          $config           Config service
      */
     public function __construct(
         private AbilityMapper $abilityMapper,
@@ -56,11 +91,11 @@ class ObjectService
         private SettingMapper $settingMapper,
         private SkillMapper $skillMapper,
         private TemplateMapper $templateMapper,
-        private ContainerInterface $container,
-        private readonly IAppManager $appManager,
-        private readonly IAppConfig $config,
+        private IContainer $container,
+        private IAppManager $appManager,
+        private IConfig $config
     ) {
-        $this->appName = 'larpingapp';
+        $this->_appName = 'larpingapp';
     }
 
     /**
@@ -78,7 +113,7 @@ class ObjectService
         $objectTypeLower = strtolower($objectType);
 
         // Get the source for the object type from the configuration
-        $source = $this->config->getValueString($this->appName, $objectTypeLower . '_source', 'internal');
+        $source = $this->config->getValueString($this->_appName, $objectTypeLower . '_source', 'internal');
 
         // If the source is 'open_registers', use the OpenRegister service
         if ($source === 'openregister') {
@@ -86,11 +121,11 @@ class ObjectService
             if ($openRegister === null) {
                 throw new Exception("OpenRegister service not available");
             }
-            $register = $this->config->getValueString($this->appName, $objectTypeLower . '_register', '');
+            $register = $this->config->getValueString($this->_appName, $objectTypeLower . '_register', '');
             if (empty($register)) {
                 throw new Exception("Register not configured for $objectType");
             }
-            $schema = $this->config->getValueString($this->appName, $objectTypeLower . '_schema', '');
+            $schema = $this->config->getValueString($this->_appName, $objectTypeLower . '_schema', '');
             if (empty($schema)) {
                 throw new Exception("Schema not configured for $objectType");
             }

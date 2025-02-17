@@ -1,5 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
+/**
+ * Character service implementation
+ *
+ * @category  Service
+ * @package   OCA\LarpingApp\Service
+ * @author    Ruben Linde <ruben@larpingapp.com>
+ * @copyright 2024 Ruben Linde
+ * @license   https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
+ * @link      https://larpingapp.com
+ *
+ * @phpversion 8.2
+ */
+
 namespace OCA\LarpingApp\Service;
 
 use GuzzleHttp\Client;
@@ -30,33 +45,73 @@ use Twig\Loader\FilesystemLoader;
 // And in case of open registers
 use OCA\OpenRegister\Db\ObjectEntity;
 
+/**
+ * Service class for character-related operations
+ *
+ * @category  Service
+ * @package   OCA\LarpingApp\Service
+ * @author    Ruben Linde <ruben@larpingapp.com>
+ * @license   https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
+ * @link      https://larpingapp.com
+ */
 class CharacterService
 {
-    private array $allSkills = [];
-    private array $allItems = [];
-    private array $allConditions = [];
-    private array $allEvents = [];
-    private array $allEffects = [];
-    private array $allAbilities = [];
+    /**
+     * @var array<Ability>
+     */
+    private $_allSkills = [];
+    
+    /**
+     * @var array<Item>
+     */
+    private $_allItems = [];
+    
+    /**
+     * @var array<Condition>
+     */
+    private $_allConditions = [];
+    
+    /**
+     * @var array<Event>
+     */
+    private $_allEvents = [];
+    
+    /**
+     * @var array<Effect>
+     */
+    private $_allEffects = [];
+    
+    /**
+     * @var array<Ability>
+     */
+    private $_allAbilities = [];
 
+    /**
+     * Constructor for CharacterService
+     *
+     * @param AbilityMapper    $abilityMapper    Ability mapper
+     * @param CharacterMapper  $characterMapper  Character mapper
+     * @param ConditionMapper  $conditionMapper  Condition mapper
+     * @param EffectMapper     $effectMapper     Effect mapper
+     * @param EventMapper      $eventMapper      Event mapper
+     * @param ItemMapper       $itemMapper       Item mapper
+     */
     public function __construct(
-    private readonly CharacterMapper $characterMapper,
-    private readonly AbilityMapper $abilityMapper,        
-    private readonly SkillMapper $skillMapper,
-    private readonly ItemMapper $itemMapper,
-    private readonly ConditionMapper $conditionMapper,
-    private readonly EventMapper $eventMapper,
-    private readonly EffectMapper $effectMapper,
-    private readonly ObjectService $objectService
+        private AbilityMapper $abilityMapper,
+        private CharacterMapper $characterMapper,
+        private ConditionMapper $conditionMapper,
+        private EffectMapper $effectMapper,
+        private EventMapper $eventMapper,
+        private ItemMapper $itemMapper
     ) {
-        $this->loadAllEntities();
+        $this->_loadAllEntities();
     }
 
-    private function loadAllEntities(): void
+    private function _loadAllEntities(): void
     {
         // Get all skills and index them by ID
         $skills = $this->objectService->getObjects('skill');
-        $this->allSkills = array_reduce(
+        $this->_allSkills = array_reduce(
             $skills, function ($carry, $skill) {
                 $carry[$skill['id']] = $skill;
                 return $carry;
@@ -65,7 +120,7 @@ class CharacterService
 
         // Get all items and index them by ID
         $items = $this->objectService->getObjects('item');
-        $this->allItems = array_reduce(
+        $this->_allItems = array_reduce(
             $items, function ($carry, $item) {
                 $carry[$item['id']] = $item;
                 return $carry;
@@ -74,7 +129,7 @@ class CharacterService
 
         // Get all conditions and index them by ID
         $conditions = $this->objectService->getObjects('condition');
-        $this->allConditions = array_reduce(
+        $this->_allConditions = array_reduce(
             $conditions, function ($carry, $condition) {
                 $carry[$condition['id']] = $condition;
                 return $carry;
@@ -83,7 +138,7 @@ class CharacterService
 
         // Get all events and index them by ID
         $events = $this->objectService->getObjects('event');
-        $this->allEvents = array_reduce(
+        $this->_allEvents = array_reduce(
             $events, function ($carry, $event) {
                 $carry[$event['id']] = $event;
                 return $carry;
@@ -92,7 +147,7 @@ class CharacterService
 
         // Get all effects and index them by ID
         $effects = $this->objectService->getObjects('effect');
-        $this->allEffects = array_reduce(
+        $this->_allEffects = array_reduce(
             $effects, function ($carry, $effect) {
                 $carry[$effect['id']] = $effect;
                 return $carry;
@@ -101,7 +156,7 @@ class CharacterService
 
         // Get all abilities and index them by ID
         $abilities = $this->objectService->getObjects('ability');
-        $this->allAbilities = array_reduce(
+        $this->_allAbilities = array_reduce(
             $abilities, function ($carry, $ability) {
                 $carry[$ability['id']] = $ability;
                 return $carry;
@@ -136,7 +191,7 @@ class CharacterService
         $abilityScores = [];
 
         // Initialize ability scores from base values
-        foreach ($this->allAbilities as $ability) {
+        foreach ($this->_allAbilities as $ability) {
             $abilityScores[$ability['id']] = [
                 'name' => $ability['name'],
                 'base' => $ability['base'] ?? 0,
@@ -148,7 +203,7 @@ class CharacterService
         // Apply effects from skills if character has any
         if (isset($character['skills']) && is_array($character['skills']) && !empty($character['skills'])) {
             foreach ($character['skills'] as $skillId) {
-                $skill = $this->allSkills[$skillId] ?? null;
+                $skill = $this->_allSkills[$skillId] ?? null;
                 if ($skill && isset($skill['effects']) && !empty($skill['effects'])) {
                     $this->applyEffects($abilityScores, $skill['effects']);
                 }
@@ -158,7 +213,7 @@ class CharacterService
         // Apply effects from items if character has any
         if (isset($character['items']) && is_array($character['items']) && !empty($character['items'])) {
             foreach ($character['items'] as $itemId) {
-                $item = $this->allItems[$itemId] ?? null;
+                $item = $this->_allItems[$itemId] ?? null;
                 if ($item && isset($item['effects']) && !empty($item['effects'])) {
                     $this->applyEffects($abilityScores, $item['effects']);
                 }
@@ -168,7 +223,7 @@ class CharacterService
         // Apply effects from conditions if character has any
         if (isset($character['conditions']) && is_array($character['conditions']) && !empty($character['conditions'])) {
             foreach ($character['conditions'] as $conditionId) {
-                $condition = $this->allConditions[$conditionId] ?? null;
+                $condition = $this->_allConditions[$conditionId] ?? null;
                 if ($condition && isset($condition['effects']) && !empty($condition['effects'])) {
                     $this->applyEffects($abilityScores, $condition['effects']);
                 }
@@ -178,7 +233,7 @@ class CharacterService
         // Apply effects from events if character has any
         if (isset($character['events']) && is_array($character['events']) && !empty($character['events'])) {
             foreach ($character['events'] as $eventId) {
-                $event = $this->allEvents[$eventId] ?? null;
+                $event = $this->_allEvents[$eventId] ?? null;
                 if ($event && isset($event['effects']) && !empty($event['effects'])) {
                     $this->applyEffects($abilityScores, $event['effects']);
                 }
@@ -210,7 +265,7 @@ class CharacterService
                 continue;
             }
             
-            $effect = $this->allEffects[$effectId] ?? null;
+            $effect = $this->_allEffects[$effectId] ?? null;
             if ($effect) {
                 $this->calculateEffect($abilities, $effect);
             }

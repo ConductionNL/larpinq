@@ -1,5 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
+/**
+ * Skill mapper implementation
+ *
+ * @category  Database
+ * @package   OCA\LarpingApp\Db
+ * @author    Ruben Linde <ruben@larpingapp.com>
+ * @copyright 2024 Ruben Linde
+ * @license   https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
+ * @link      https://larpingapp.com
+ *
+ * @phpversion 8.2
+ */
+
 namespace OCA\LarpingApp\Db;
 
 use OCA\LarpingApp\Db\Skill;
@@ -8,11 +23,25 @@ use OCP\AppFramework\Db\QBMapper;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
 
+/**
+ * Mapper class for Skill entities
+ *
+ * @category  Database
+ * @package   OCA\LarpingApp\Db
+ * @author    Ruben Linde <ruben@larpingapp.com>
+ * @license   https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
+ * @link      https://larpingapp.com
+ */
 class SkillMapper extends QBMapper
 {
+    /**
+     * Constructor for SkillMapper
+     *
+     * @param IDBConnection $db Database connection
+     */
     public function __construct(IDBConnection $db)
     {
-        parent::__construct($db, 'larpingapp_skills');
+        parent::__construct($db, 'larpingapp_skills', Skill::class);
     }
 
     public function find(int $id): Skill
