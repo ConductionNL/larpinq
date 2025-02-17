@@ -3,9 +3,15 @@
 declare(strict_types=1);
 
 /**
- * @copyright Copyright (c) 2024 Ruben Linde <ruben@larpingapp.com>
- * @author    Ruben Linde <ruben@larpingapp.com>
- * @license   AGPL-3.0-or-later
+ * Data mapper for Item entities
+ *
+ * @category  Apps
+ * @package   LarpingApp
+ * @author    Ruben Linde <ruben@nextcloud.com>
+ * @copyright 2024 Ruben Linde
+ * @license   AGPL-3.0-or-later https://www.gnu.org/licenses/agpl-3.0.en.html
+ *
+ * @php-version 8.2
  */
 
 namespace OCA\LarpingApp\Db;
@@ -17,12 +23,20 @@ use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
 
 /**
- * @template-extends QBMapper<Item>
- * @package          OCA\LarpingApp\Db
+ * Data mapper for Item entities
+ *
+ * @category  Apps
+ * @package   LarpingApp
+ * @author    Ruben Linde <ruben@nextcloud.com>
+ * @copyright 2024 Ruben Linde
+ * @license   AGPL-3.0-or-later https://www.gnu.org/licenses/agpl-3.0.en.html
+ * @link      https://larpingapp.com
  */
 class ItemMapper extends QBMapper
 {
     /**
+     * Constructor
+     *
      * @param IDBConnection $db Database connection
      */
     public function __construct(IDBConnection $db)
@@ -33,10 +47,12 @@ class ItemMapper extends QBMapper
     /**
      * Find an item by ID
      *
-     * @param  int $id The item ID
-     * @return Item
+     * @param int $id The item ID
+     * 
      * @throws \OCP\AppFramework\Db\DoesNotExistException
      * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+     * 
+     * @return Item The found item
      */
     public function find(int $id): Item
     {
@@ -48,17 +64,15 @@ class ItemMapper extends QBMapper
     }
 
     /**
-     * Find all items for a user
-     *
-     * @param  string $userId The user ID
-     * @return Item[]
+     * Find all items
+     * 
+     * @return Item[] Array of items
      */
-    public function findAll(string $userId): array
+    public function findAll(): array
     {
         $qb = $this->db->getQueryBuilder();
         $qb->select('*')
-            ->from($this->getTableName())
-            ->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userId)));
+            ->from($this->getTableName());
         
         return $this->findEntities($qb);
     }

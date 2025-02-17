@@ -25,11 +25,11 @@ use OCP\AppFramework\Bootstrap\IBootContext;
 /**
  * Main application class for LarpingApp
  *
- * @category  Application
- * @package   OCA\LarpingApp\AppInfo
- * @author    Ruben Linde <ruben@larpingapp.com>
- * @license   https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
- * @link      https://larpingapp.com
+ * @category Application
+ * @package  OCA\LarpingApp\AppInfo
+ * @author   Ruben Linde <ruben@larpingapp.com>
+ * @license  https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
+ * @link     https://larpingapp.com
  */
 class Application extends App implements IBootstrap
 {

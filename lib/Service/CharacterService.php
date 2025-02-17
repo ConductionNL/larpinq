@@ -48,11 +48,11 @@ use OCA\OpenRegister\Db\ObjectEntity;
 /**
  * Service class for character-related operations
  *
- * @category  Service
- * @package   OCA\LarpingApp\Service
- * @author    Ruben Linde <ruben@larpingapp.com>
- * @license   https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
- * @link      https://larpingapp.com
+ * @category Service
+ * @package  OCA\LarpingApp\Service
+ * @author   Ruben Linde <ruben@larpingapp.com>
+ * @license  https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
+ * @link     https://larpingapp.com
  */
 class CharacterService
 {
@@ -89,12 +89,12 @@ class CharacterService
     /**
      * Constructor for CharacterService
      *
-     * @param AbilityMapper    $abilityMapper    Ability mapper
-     * @param CharacterMapper  $characterMapper  Character mapper
-     * @param ConditionMapper  $conditionMapper  Condition mapper
-     * @param EffectMapper     $effectMapper     Effect mapper
-     * @param EventMapper      $eventMapper      Event mapper
-     * @param ItemMapper       $itemMapper       Item mapper
+     * @param AbilityMapper   $abilityMapper   Ability mapper
+     * @param CharacterMapper $characterMapper Character mapper
+     * @param ConditionMapper $conditionMapper Condition mapper
+     * @param EffectMapper    $effectMapper    Effect mapper
+     * @param EventMapper     $eventMapper     Event mapper
+     * @param ItemMapper      $itemMapper      Item mapper
      */
     public function __construct(
         private AbilityMapper $abilityMapper,

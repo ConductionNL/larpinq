@@ -50,11 +50,11 @@ use OCA\OpenRegister\Service\Exceptions\NotFoundException;
 /**
  * Service class for generic object operations
  *
- * @category  Service
- * @package   OCA\LarpingApp\Service
- * @author    Ruben Linde <ruben@larpingapp.com>
- * @license   https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
- * @link      https://larpingapp.com
+ * @category Service
+ * @package  OCA\LarpingApp\Service
+ * @author   Ruben Linde <ruben@larpingapp.com>
+ * @license  https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
+ * @link     https://larpingapp.com
  */
 class ObjectService
 {
@@ -66,19 +66,19 @@ class ObjectService
     /**
      * Constructor for ObjectService
      *
-     * @param AbilityMapper    $abilityMapper    Ability mapper
-     * @param CharacterMapper  $characterMapper  Character mapper
-     * @param ConditionMapper  $conditionMapper  Condition mapper
-     * @param EffectMapper     $effectMapper     Effect mapper
-     * @param EventMapper      $eventMapper      Event mapper
-     * @param ItemMapper       $itemMapper       Item mapper
-     * @param PlayerMapper     $playerMapper     Player mapper
-     * @param SettingMapper    $settingMapper    Setting mapper
-     * @param SkillMapper      $skillMapper      Skill mapper
-     * @param TemplateMapper   $templateMapper   Template mapper
-     * @param IContainer       $container        DI container
-     * @param IAppManager      $appManager       App manager
-     * @param IConfig          $config           Config service
+     * @param AbilityMapper   $abilityMapper   Ability mapper
+     * @param CharacterMapper $characterMapper Character mapper
+     * @param ConditionMapper $conditionMapper Condition mapper
+     * @param EffectMapper    $effectMapper    Effect mapper
+     * @param EventMapper     $eventMapper     Event mapper
+     * @param ItemMapper      $itemMapper      Item mapper
+     * @param PlayerMapper    $playerMapper    Player mapper
+     * @param SettingMapper   $settingMapper   Setting mapper
+     * @param SkillMapper     $skillMapper     Skill mapper
+     * @param TemplateMapper  $templateMapper  Template mapper
+     * @param IContainer      $container       DI container
+     * @param IAppManager     $appManager      App manager
+     * @param IConfig         $config          Config service
      */
     public function __construct(
         private AbilityMapper $abilityMapper,

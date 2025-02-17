@@ -3,9 +3,15 @@
 declare(strict_types=1);
 
 /**
- * @copyright Copyright (c) 2024 Ruben Linde <ruben@larpingapp.com>
- * @author    Ruben Linde <ruben@larpingapp.com>
- * @license   AGPL-3.0-or-later
+ * Event entity for LarpingApp
+ *
+ * @category  Apps
+ * @package   LarpingApp
+ * @author    Ruben Linde <ruben@nextcloud.com>
+ * @copyright 2024 Ruben Linde
+ * @license   AGPL-3.0-or-later https://www.gnu.org/licenses/agpl-3.0.en.html
+ *
+ * @php-version 8.2
  */
 
 namespace OCA\LarpingApp\Db;
@@ -15,30 +21,36 @@ use JsonSerializable;
 use OCP\AppFramework\Db\Entity;
 
 /**
- * @method string getName()
- * @method void setName(string $name)
- * @method string getDescription()
- * @method void setDescription(string $description)
+ * Event entity class
+ *
+ * @category  Apps
+ * @package   LarpingApp
+ * @author    Ruben Linde <ruben@nextcloud.com>
+ * @copyright 2024 Ruben Linde
+ * @license   AGPL-3.0-or-later https://www.gnu.org/licenses/agpl-3.0.en.html
+ * @link      https://larpingapp.com
  */
 class Event extends Entity implements JsonSerializable
 {
     /**
-     * @var string 
+     * Event properties
      */
-    protected $name;
-    
-    /**
-     * @var string 
-     */
+    protected $title;
     protected $description;
+    protected $startDate;
+    protected $endDate;
+    protected $userId;
 
     /**
      * Constructor to set the defaults
      */
     public function __construct()
     {
-        $this->addType('name', 'string');
+        $this->addType('title', 'string');
         $this->addType('description', 'string');
+        $this->addType('startDate', 'datetime');
+        $this->addType('endDate', 'datetime');
+        $this->addType('userId', 'string');
     }
 
     /**
@@ -50,8 +62,11 @@ class Event extends Entity implements JsonSerializable
     {
         return [
             'id',
-            'name',
-            'description'
+            'title',
+            'description',
+            'startDate',
+            'endDate',
+            'userId'
         ];
     }
 
@@ -80,5 +95,17 @@ class Event extends Entity implements JsonSerializable
             $data[$field] = $this->$field;
         }
         return $data;
+    }
+
+    /**
+     * Convert to array
+     *
+     * @param array $params Optional parameters to include
+     * 
+     * @return array The event data as array
+     */
+    public function toArray(array $params = []): array
+    {
+        // ... existing code ...
     }
 }

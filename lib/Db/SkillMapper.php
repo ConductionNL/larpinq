@@ -26,11 +26,11 @@ use OCP\IDBConnection;
 /**
  * Mapper class for Skill entities
  *
- * @category  Database
- * @package   OCA\LarpingApp\Db
- * @author    Ruben Linde <ruben@larpingapp.com>
- * @license   https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
- * @link      https://larpingapp.com
+ * @category Database
+ * @package  OCA\LarpingApp\Db
+ * @author   Ruben Linde <ruben@larpingapp.com>
+ * @license  https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
+ * @link     https://larpingapp.com
  */
 class SkillMapper extends QBMapper
 {

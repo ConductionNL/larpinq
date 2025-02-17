@@ -21,13 +21,17 @@ use OCP\IURLGenerator;
 use OCP\Settings\IIconSection;
 
 /**
- * Admin section for LarpingApp settings
+ * Admin Section for LarpingApp
  *
- * @category Settings
- * @package  OCA\LarpingApp\Sections
- * @author   Ruben Linde <ruben@larpingapp.com>
- * @license  AGPL-3.0-or-later
- * @link     https://larpingapp.com
+ * @category  Apps
+ * @package   LarpingApp
+ * @author    Ruben Linde <ruben@nextcloud.com>
+ * @copyright 2024 Ruben Linde
+ * @license   AGPL-3.0-or-later https://www.gnu.org/licenses/agpl-3.0.en.html
+ *
+ * @psalm-api
+ * @phpstan-api
+ * @php-version 8.2
  */
 class LarpingAppAdmin implements IIconSection
 {
@@ -67,7 +71,7 @@ class LarpingAppAdmin implements IIconSection
     /**
      * Get the section ID
      *
-     * @return string
+     * @return string The section ID
      */
     public function getID(): string
     {
@@ -75,9 +79,9 @@ class LarpingAppAdmin implements IIconSection
     }
 
     /**
-     * Get the translated section name
+     * Get the section name
      *
-     * @return string
+     * @return string The section name
      */
     public function getName(): string
     {
@@ -87,7 +91,7 @@ class LarpingAppAdmin implements IIconSection
     /**
      * Get the section priority
      *
-     * @return int
+     * @return int The section priority
      */
     public function getPriority(): int
     {

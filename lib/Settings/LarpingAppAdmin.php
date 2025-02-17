@@ -30,8 +30,12 @@ use OCP\Settings\IIconSection;
  * @category Settings
  * @package  OCA\LarpingApp\Settings
  * @author   Ruben Linde <ruben@larpingapp.com>
- * @license  https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
- * @link     https://larpingapp.com
+ * @copyright 2024 Ruben Linde
+ * @license   https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
+ * @version   GIT: <git_id>
+ * @link      https://larpingapp.com
+ * 
+ * @phpversion 8.2
  */
 class LarpingAppAdmin implements IIconSection
 {
