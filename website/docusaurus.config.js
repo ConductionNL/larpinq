@@ -5,8 +5,8 @@
 const config = {
   title: 'LarpingApp',
   tagline: 'Manage your LARP events and characters with ease',
-  url: 'https://conductionnl.github.io',
-  baseUrl: '/larpingapp/',
+  url: 'https://larping.online',
+  baseUrl: '/',
   
   // GitHub pages deployment config
   organizationName: 'conductionnl', 
