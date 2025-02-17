@@ -6,11 +6,13 @@ use OCP\IConfig;
 use OCP\IL10N;
 use OCP\Settings\ISettings;
 
-class LarpingAppAdmin implements ISettings {
+class LarpingAppAdmin implements ISettings
+{
     private IL10N $l;
     private IConfig $config;
 
-    public function __construct(IConfig $config, IL10N $l) {
+    public function __construct(IConfig $config, IL10N $l)
+    {
         $this->config = $config;
         $this->l = $l;
     }
@@ -18,7 +20,8 @@ class LarpingAppAdmin implements ISettings {
     /**
      * @return TemplateResponse
      */
-    public function getForm() {
+    public function getForm()
+    {
         $parameters = [
             'mySetting' => $this->config->getSystemValue('larpingapp_setting', true),
         ];
@@ -26,7 +29,8 @@ class LarpingAppAdmin implements ISettings {
         return new TemplateResponse('larpingapp', 'settings/admin', $parameters, 'admin');
     }
 
-    public function getSection() {
+    public function getSection()
+    {
         return 'larpingapp'; 
     }
 
@@ -37,7 +41,8 @@ class LarpingAppAdmin implements ISettings {
      *
      * E.g.: 70
      */
-    public function getPriority() {
+    public function getPriority()
+    {
         return 10;
     }
 }

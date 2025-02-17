@@ -19,41 +19,45 @@ use OCP\Migration\SimpleMigrationStep;
 /**
  * Migration step for creating the larpingapp_abilities table
  */
-class Version0Date20241015141612 extends SimpleMigrationStep {
+class Version0Date20241015141612 extends SimpleMigrationStep
+{
 
-	/**
-	 * @param IOutput $output
-	 * @param Closure(): ISchemaWrapper $schemaClosure
-	 * @param array $options
-	 */
-	public function preSchemaChange(IOutput $output, Closure $schemaClosure, array $options): void {
-	}
+    /**
+     * @param IOutput                   $output
+     * @param Closure(): ISchemaWrapper $schemaClosure
+     * @param array                     $options
+     */
+    public function preSchemaChange(IOutput $output, Closure $schemaClosure, array $options): void
+    {
+    }
 
-	/**
-	 * @param IOutput $output
-	 * @param Closure(): ISchemaWrapper $schemaClosure
-	 * @param array $options
-	 * @return null|ISchemaWrapper
-	 */
-	public function changeSchema(IOutput $output, Closure $schemaClosure, array $options): ?ISchemaWrapper {
-		/**
-		 * @var ISchemaWrapper $schema
-		 */
-		$schema = $schemaClosure();
+    /**
+     * @param  IOutput                   $output
+     * @param  Closure(): ISchemaWrapper $schemaClosure
+     * @param  array                     $options
+     * @return null|ISchemaWrapper
+     */
+    public function changeSchema(IOutput $output, Closure $schemaClosure, array $options): ?ISchemaWrapper
+    {
+        /**
+         * @var ISchemaWrapper $schema
+         */
+        $schema = $schemaClosure();
 
-		// Update the abilities table to add the base column
-		$table = $schema->getTable('larpingapp_abilities');
-		$table->addColumn('base', Types::INTEGER, ['notnull' => true, 'default' => 0]);	
-		$table->addColumn('allowed_negative', Types::BOOLEAN, ['notnull' => true, 'default' => false]);
+        // Update the abilities table to add the base column
+        $table = $schema->getTable('larpingapp_abilities');
+        $table->addColumn('base', Types::INTEGER, ['notnull' => true, 'default' => 0]);    
+        $table->addColumn('allowed_negative', Types::BOOLEAN, ['notnull' => true, 'default' => false]);
 
-		return $schema;
-	}
+        return $schema;
+    }
 
-	/**
-	 * @param IOutput $output
-	 * @param Closure(): ISchemaWrapper $schemaClosure
-	 * @param array $options
-	 */
-	public function postSchemaChange(IOutput $output, Closure $schemaClosure, array $options): void {
-	}
+    /**
+     * @param IOutput                   $output
+     * @param Closure(): ISchemaWrapper $schemaClosure
+     * @param array                     $options
+     */
+    public function postSchemaChange(IOutput $output, Closure $schemaClosure, array $options): void
+    {
+    }
 }

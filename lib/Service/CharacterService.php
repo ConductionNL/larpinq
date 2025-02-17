@@ -23,6 +23,7 @@ use OCA\LarpingApp\Db\EffectMapper;
 use OCA\LarpingApp\Service\ObjectService;
 
 use Mpdf\Mpdf;
+use Mpdf\MpdfException;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
@@ -39,14 +40,14 @@ class CharacterService
     private array $allAbilities = [];
 
     public function __construct(
-        private readonly CharacterMapper $characterMapper,
-        private readonly AbilityMapper $abilityMapper,		
-        private readonly SkillMapper $skillMapper,
-        private readonly ItemMapper $itemMapper,
-        private readonly ConditionMapper $conditionMapper,
-        private readonly EventMapper $eventMapper,
-        private readonly EffectMapper $effectMapper,
-        private readonly ObjectService $objectService
+    private readonly CharacterMapper $characterMapper,
+    private readonly AbilityMapper $abilityMapper,        
+    private readonly SkillMapper $skillMapper,
+    private readonly ItemMapper $itemMapper,
+    private readonly ConditionMapper $conditionMapper,
+    private readonly EventMapper $eventMapper,
+    private readonly EffectMapper $effectMapper,
+    private readonly ObjectService $objectService
     ) {
         $this->loadAllEntities();
     }
@@ -55,45 +56,57 @@ class CharacterService
     {
         // Get all skills and index them by ID
         $skills = $this->objectService->getObjects('skill');
-        $this->allSkills = array_reduce($skills, function($carry, $skill) {
-            $carry[$skill['id']] = $skill;
-            return $carry;
-        }, []);
+        $this->allSkills = array_reduce(
+            $skills, function ($carry, $skill) {
+                $carry[$skill['id']] = $skill;
+                return $carry;
+            }, []
+        );
 
         // Get all items and index them by ID
         $items = $this->objectService->getObjects('item');
-        $this->allItems = array_reduce($items, function($carry, $item) {
-            $carry[$item['id']] = $item;
-            return $carry;
-        }, []);
+        $this->allItems = array_reduce(
+            $items, function ($carry, $item) {
+                $carry[$item['id']] = $item;
+                return $carry;
+            }, []
+        );
 
         // Get all conditions and index them by ID
         $conditions = $this->objectService->getObjects('condition');
-        $this->allConditions = array_reduce($conditions, function($carry, $condition) {
-            $carry[$condition['id']] = $condition;
-            return $carry;
-        }, []);
+        $this->allConditions = array_reduce(
+            $conditions, function ($carry, $condition) {
+                $carry[$condition['id']] = $condition;
+                return $carry;
+            }, []
+        );
 
         // Get all events and index them by ID
         $events = $this->objectService->getObjects('event');
-        $this->allEvents = array_reduce($events, function($carry, $event) {
-            $carry[$event['id']] = $event;
-            return $carry;
-        }, []);
+        $this->allEvents = array_reduce(
+            $events, function ($carry, $event) {
+                $carry[$event['id']] = $event;
+                return $carry;
+            }, []
+        );
 
         // Get all effects and index them by ID
         $effects = $this->objectService->getObjects('effect');
-        $this->allEffects = array_reduce($effects, function($carry, $effect) {
-            $carry[$effect['id']] = $effect;
-            return $carry;
-        }, []);
+        $this->allEffects = array_reduce(
+            $effects, function ($carry, $effect) {
+                $carry[$effect['id']] = $effect;
+                return $carry;
+            }, []
+        );
 
         // Get all abilities and index them by ID
         $abilities = $this->objectService->getObjects('ability');
-        $this->allAbilities = array_reduce($abilities, function($carry, $ability) {
-            $carry[$ability['id']] = $ability;
-            return $carry;
-        }, []);
+        $this->allAbilities = array_reduce(
+            $abilities, function ($carry, $ability) {
+                $carry[$ability['id']] = $ability;
+                return $carry;
+            }, []
+        );
     }
 
     /**
@@ -114,7 +127,7 @@ class CharacterService
     /**
      * Calculate stats for a single character array
      *
-     * @param array $character Character data array
+     * @param  array $character Character data array
      * @return array Updated character data array with calculated stats
      */
     public function calculateCharacter(array $character): array 
@@ -181,8 +194,8 @@ class CharacterService
     /**
      * Apply effects to abilities
      *
-     * @param array $abilities Reference to the abilities array
-     * @param array|null $effects Array of effect IDs
+     * @param array      $abilities Reference to the abilities array
+     * @param array|null $effects   Array of effect IDs
      */
     private function applyEffects(array &$abilities, ?array $effects): void
     {
@@ -208,7 +221,7 @@ class CharacterService
      * Calculate and apply a single effect
      *
      * @param array $abilities Reference to the abilities array
-     * @param array $effect Effect array containing stat_id, modifier and modification
+     * @param array $effect    Effect array containing stat_id, modifier and modification
      */
     private function calculateEffect(array &$abilities, array $effect): void
     {
@@ -265,10 +278,10 @@ class CharacterService
     /**
      * Create a PDF from a character using a specified template
      *
-     * @param array $character Character data array containing character information
-     * @param array $template Template data array containing PDF layout configuration
-     * @return string Generated PDF content as string
-     * @throws \Exception If PDF generation fails
+     * @param       array $character Character data array containing character information
+     * @param       array $template  Template data array containing PDF layout configuration
+     * @return      string Generated PDF content as string
+     * @throws      \Exception If PDF generation fails
      * @psalm-param array{name: string, stats: array<string, array{name: string, value: int}>, skills?: array, items?: array, conditions?: array, events?: array} $character
      * @psalm-param array{name: string, orientation?: string, format?: string, sections?: array} $template
      */
@@ -281,18 +294,18 @@ class CharacterService
         $html = $template->render(['character' => $character, 'template' => $template]);
         
         // Check if the directory exists, if not, create it
-		if (file_exists(filename: '/tmp/mpdf') === false) {
-			mkdir(directory: '/tmp/mpdf', recursive: true);
-		}
+        if (file_exists(filename: '/tmp/mpdf') === false) {
+            mkdir(directory: '/tmp/mpdf', recursive: true);
+        }
 
-		// Set permissions for the directory (ensure it's writable)
-		chmod(filename: '/tmp/mpdf', permissions: 0777);
+        // Set permissions for the directory (ensure it's writable)
+        chmod(filename: '/tmp/mpdf', permissions: 0777);
 
-		// Initialize mPDF
-		$mpdf = new Mpdf(config: ['tempDir' => '/tmp/mpdf']);
+        // Initialize mPDF
+        $mpdf = new Mpdf(config: ['tempDir' => '/tmp/mpdf']);
 
-		// Write HTML to PDF
-		$mpdf->WriteHTML(html: $html);
+        // Write HTML to PDF
+        $mpdf->WriteHTML(html: $html);
 
         return $mpdf;
     }

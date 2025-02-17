@@ -16,27 +16,26 @@ use DateTime;
 class ObjectsController extends Controller
 {
     public function __construct(
-		$appName,
-		IRequest $request,
-        private readonly ObjectService $objectService,
-        private readonly CharacterService $characterService
-	)
-    {
+        $appName,
+        IRequest $request,
+    private readonly ObjectService $objectService,
+    private readonly CharacterService $characterService
+    ) {
         parent::__construct($appName, $request);
     }
 
-	/**
-	 * Return (and search) all objects
-	 *
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
+    /**
+     * Return (and search) all objects
+     *
+     * @NoAdminRequired
+     * @NoCSRFRequired
      * 
      * @param string $objectType The type of object to return
-	 *
-	 * @return JSONResponse
-	 */
-	public function index(string $objectType): JSONResponse
-	{
+     *
+     * @return JSONResponse
+     */
+    public function index(string $objectType): JSONResponse
+    {
         // Retrieve all request parameters
         $requestParams = $this->request->getParams();
 
@@ -48,18 +47,18 @@ class ObjectsController extends Controller
 
         // Return JSON response
         return new JSONResponse($data);
-	}
+    }
 
-	/**
-	 * Read a single object
-	 *
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 *
-	 * @return JSONResponse
-	 */
-	public function show(string $objectType, string $id): JSONResponse
-	{
+    /**
+     * Read a single object
+     *
+     * @NoAdminRequired
+     * @NoCSRFRequired
+     *
+     * @return JSONResponse
+     */
+    public function show(string $objectType, string $id): JSONResponse
+    {
         try {
             // Get extend parameter if present
             $extend = $requestParams['extend'] ?? $requestParams['_extend'] ?? [];
@@ -78,18 +77,18 @@ class ObjectsController extends Controller
                 400
             );
         }
-	}
+    }
 
-	/**
-	 * Create an object
-	 *
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 *
-	 * @return JSONResponse
-	 */
-	public function create(string $objectType): JSONResponse
-	{
+    /**
+     * Create an object
+     *
+     * @NoAdminRequired
+     * @NoCSRFRequired
+     *
+     * @return JSONResponse
+     */
+    public function create(string $objectType): JSONResponse
+    {
         try {
             // Get all parameters from the request
             $data = $this->request->getParams();
@@ -120,18 +119,18 @@ class ObjectsController extends Controller
                 400
             );
         }
-	}
+    }
 
-	/**
-	 * Update an object
-	 *
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 *
-	 * @return JSONResponse
-	 */
-	public function update(string $objectType, string $id): JSONResponse
-	{
+    /**
+     * Update an object
+     *
+     * @NoAdminRequired
+     * @NoCSRFRequired
+     *
+     * @return JSONResponse
+     */
+    public function update(string $objectType, string $id): JSONResponse
+    {
         try {
             // Get all parameters from the request
             $data = $this->request->getParams();
@@ -161,18 +160,18 @@ class ObjectsController extends Controller
                 400
             );
         }
-	}
+    }
 
-	/**
-	 * Delete an object
-	 *
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 *
-	 * @return JSONResponse
-	 */
-	public function destroy(string $objectType, string $id): JSONResponse
-	{
+    /**
+     * Delete an object
+     *
+     * @NoAdminRequired
+     * @NoCSRFRequired
+     *
+     * @return JSONResponse
+     */
+    public function destroy(string $objectType, string $id): JSONResponse
+    {
         try {
             // Delete the object
             $result = $this->objectService->deleteObject($objectType, $id);
@@ -185,15 +184,15 @@ class ObjectsController extends Controller
                 400
             );
         }
-	}
+    }
 
-	/**
+    /**
      * Get audit trail for a specific object
      *
      * @NoAdminRequired
      * @NoCSRFRequired
-	 *
-	 * @return JSONResponse
+     *
+     * @return JSONResponse
      */
     public function getAuditTrail(string $objectType, string $id): JSONResponse
     {
@@ -253,8 +252,8 @@ class ObjectsController extends Controller
      * @NoAdminRequired
      * @NoCSRFRequired
      * 
-     * @param string $objectType The type of object to lock
-     * @param string $id The ID of the object to lock
+     * @param  string $objectType The type of object to lock
+     * @param  string $id         The ID of the object to lock
      * @return JSONResponse
      */
     public function lock(string $objectType, string $id): JSONResponse 
@@ -285,8 +284,8 @@ class ObjectsController extends Controller
      * @NoAdminRequired
      * @NoCSRFRequired
      * 
-     * @param string $objectType The type of object to unlock
-     * @param string $id The ID of the object to unlock
+     * @param  string $objectType The type of object to unlock
+     * @param  string $id         The ID of the object to unlock
      * @return JSONResponse
      */
     public function unlock(string $objectType, string $id): JSONResponse 
@@ -308,8 +307,8 @@ class ObjectsController extends Controller
      * @NoAdminRequired
      * @NoCSRFRequired
      * 
-     * @param string $objectType The type of object to check
-     * @param string $id The ID of the object to check
+     * @param  string $objectType The type of object to check
+     * @param  string $id         The ID of the object to check
      * @return JSONResponse
      */
     public function isLocked(string $objectType, string $id): JSONResponse 
@@ -331,8 +330,8 @@ class ObjectsController extends Controller
      * @NoAdminRequired
      * @NoCSRFRequired
      * 
-     * @param string $objectType The type of object to revert
-     * @param string $id The ID of the object to revert
+     * @param  string $objectType The type of object to revert
+     * @param  string $id         The ID of the object to revert
      * @return JSONResponse
      */
     public function revert(string $objectType, string $id): JSONResponse 

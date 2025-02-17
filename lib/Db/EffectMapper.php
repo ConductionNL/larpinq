@@ -10,41 +10,41 @@ use OCP\IDBConnection;
 
 class EffectMapper extends QBMapper
 {
-	public function __construct(IDBConnection $db)
-	{
-		parent::__construct($db, 'larpingapp_effects');
-	}
+    public function __construct(IDBConnection $db)
+    {
+        parent::__construct($db, 'larpingapp_effects');
+    }
 
-	public function find(int $id): Effect
-	{
-		$qb = $this->db->getQueryBuilder();
+    public function find(int $id): Effect
+    {
+        $qb = $this->db->getQueryBuilder();
 
-		$qb->select('*')
-			->from('larpingapp_effects')
-			->where(
-				$qb->expr()->eq('id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
-			);
+        $qb->select('*')
+            ->from('larpingapp_effects')
+            ->where(
+                $qb->expr()->eq('id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
+            );
 
-		return $this->findEntity(query: $qb);
-	}
+        return $this->findEntity(query: $qb);
+    }
 
-	public function findAll(?int $limit = null, ?int $offset = null, ?array $filters = [], ?array $searchConditions = [], ?array $searchParams = []): array
-	{
-		$qb = $this->db->getQueryBuilder();
+    public function findAll(?int $limit = null, ?int $offset = null, ?array $filters = [], ?array $searchConditions = [], ?array $searchParams = []): array
+    {
+        $qb = $this->db->getQueryBuilder();
 
-		$qb->select('*')
-			->from('larpingapp_effects')
-			->setMaxResults($limit)
-			->setFirstResult($offset);
+        $qb->select('*')
+            ->from('larpingapp_effects')
+            ->setMaxResults($limit)
+            ->setFirstResult($offset);
 
         foreach($filters as $filter => $value) {
-			if ($value === 'IS NOT NULL') {
-				$qb->andWhere($qb->expr()->isNotNull($filter));
-			} elseif ($value === 'IS NULL') {
-				$qb->andWhere($qb->expr()->isNull($filter));
-			} else {
-				$qb->andWhere($qb->expr()->eq($filter, $qb->createNamedParameter($value)));
-			}
+            if ($value === 'IS NOT NULL') {
+                $qb->andWhere($qb->expr()->isNotNull($filter));
+            } elseif ($value === 'IS NULL') {
+                $qb->andWhere($qb->expr()->isNull($filter));
+            } else {
+                $qb->andWhere($qb->expr()->eq($filter, $qb->createNamedParameter($value)));
+            }
         }
 
         if (!empty($searchConditions)) {
@@ -54,21 +54,21 @@ class EffectMapper extends QBMapper
             }
         }
 
-		return $this->findEntities(query: $qb);
-	}
+        return $this->findEntities(query: $qb);
+    }
 
-	public function createFromArray(array $object): Effect
-	{
-		$effect = new Effect();
-		$effect->hydrate(object: $object);
-		return $this->insert(entity: $effect);
-	}
+    public function createFromArray(array $object): Effect
+    {
+        $effect = new Effect();
+        $effect->hydrate(object: $object);
+        return $this->insert(entity: $effect);
+    }
 
-	public function updateFromArray(int $id, array $object): Effect
-	{
-		$effect = $this->find($id);
-		$effect->hydrate($object);
+    public function updateFromArray(int $id, array $object): Effect
+    {
+        $effect = $this->find($id);
+        $effect->hydrate($object);
 
-		return $this->update($effect);
-	}
+        return $this->update($effect);
+    }
 }
