@@ -4,30 +4,30 @@ import styles from './styles.module.css';
 
 /**
  * List of features displayed on the homepage
- * Each feature has a title and description
+ * Each feature has a title and description about the LarpingApp
  */
 const FeatureList = [
   {
-    title: '100% Local Processing',
+    title: 'Easy Event Management',
     description: (
       <>
-        All document processing happens within your Nextcloud instance, ensuring your sensitive data never leaves your secure environment while maintaining full functionality.
+        Create and manage your LARP events with ease. Handle registrations, character sheets, and event schedules all in one place.
       </>
     ),
   },
   {
-    title: 'Comprehensive Document Services',
+    title: 'Character Development',
     description: (
       <>
-        From document generation and signing to GDPR anonymization and WCAG compliance, DocuDesk provides all the tools you need for modern document management.
+        Build rich character backgrounds, track skills and abilities, and manage character progression throughout your LARP campaign.
       </>
     ),
   },
   {
-    title: 'Seamless Integration',
+    title: 'Community Features',
     description: (
       <>
-        Connect with SharePoint, Office 365, or case management systems while maintaining complete control over your document processing and storage.
+        Connect with other LARPers, join groups, and coordinate with your fellow players. Share stories and experiences within the LARP community.
       </>
     ),
   },
