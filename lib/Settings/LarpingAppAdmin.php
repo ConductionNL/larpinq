@@ -1,48 +1,90 @@
 <?php
+
+declare(strict_types=1);
+
+/**
+ * @copyright Copyright (c) 2024 Ruben Linde <ruben@larpingapp.com>
+ * @author    Ruben Linde <ruben@larpingapp.com>
+ * @license   AGPL-3.0-or-later
+ */
+
 namespace OCA\LarpingApp\Settings;
 
-use OCP\AppFramework\Http\TemplateResponse;
-use OCP\IConfig;
 use OCP\IL10N;
-use OCP\Settings\ISettings;
+use OCP\IURLGenerator;
+use OCP\Settings\IIconSection;
 
-class LarpingAppAdmin implements ISettings
+/**
+ * Admin section for LarpingApp settings
+ *
+ * @category Settings
+ * @package  OCA\LarpingApp\Settings
+ * @author   Ruben Linde <ruben@larpingapp.com>
+ * @license  AGPL-3.0-or-later
+ * @link     https://larpingapp.com
+ */
+class LarpingAppAdmin implements IIconSection
 {
-    private IL10N $l;
-    private IConfig $config;
-
-    public function __construct(IConfig $config, IL10N $l)
-    {
-        $this->config = $config;
-        $this->l = $l;
-    }
-
     /**
-     * @return TemplateResponse
+     * @var IL10N
      */
-    public function getForm()
-    {
-        $parameters = [
-            'mySetting' => $this->config->getSystemValue('larpingapp_setting', true),
-        ];
-
-        return new TemplateResponse('larpingapp', 'settings/admin', $parameters, 'admin');
-    }
-
-    public function getSection()
-    {
-        return 'larpingapp'; 
-    }
+    private $_l;
 
     /**
-     * @return int whether the form should be rather on the top or bottom of
-     * the admin section. The forms are arranged in ascending order of the
-     * priority values. It is required to return a value between 0 and 100.
+     * @var IURLGenerator
+     */
+    private $_urlGenerator;
+
+    /**
+     * Constructor
      *
-     * E.g.: 70
+     * @param  IL10N         $l            Localization service
+     * @param  IURLGenerator $urlGenerator URL generator service
+     * @return void
      */
-    public function getPriority()
+    public function __construct(IL10N $l, IURLGenerator $urlGenerator)
     {
-        return 10;
+        $this->_l = $l;
+        $this->_urlGenerator = $urlGenerator;
+    }
+
+    /**
+     * Get the section icon
+     *
+     * @return string
+     */
+    public function getIcon(): string
+    {
+        return $this->_urlGenerator->imagePath('larpingapp', 'app-dark.svg');
+    }
+
+    /**
+     * Get the section ID
+     *
+     * @return string
+     */
+    public function getID(): string
+    {
+        return 'larpingapp';
+    }
+
+    /**
+     * Get the translated section name
+     *
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->_l->t('LarpingApp');
+    }
+
+    /**
+     * Get the section priority
+     *
+     * @return int
+     */
+    public function getPriority(): int
+    {
+        return 55;
     }
 }

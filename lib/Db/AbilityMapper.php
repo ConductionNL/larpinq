@@ -1,83 +1,94 @@
 <?php
 
+declare(strict_types=1);
+
+/**
+ * @copyright Copyright (c) 2024 Ruben Linde <ruben@larpingapp.com>
+ * @author    Ruben Linde <ruben@larpingapp.com>
+ * @license   AGPL-3.0-or-later
+ */
+
 namespace OCA\LarpingApp\Db;
 
-use OCA\LarpingApp\Db\Ability;
-use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\QBMapper;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
 
+/**
+ * @template-extends QBMapper<Ability>
+ * @package          OCA\LarpingApp\Db
+ */
 class AbilityMapper extends QBMapper
 {
     /**
-     * The name of the database table for abilities
-     * 
-     * @var         string
-     * @psalm-var   string
-     * @phpstan-var string
+     * @param IDBConnection $db Database connection
      */
-    private const TABLE_NAME = 'larpingapp_abilities';
-    
     public function __construct(IDBConnection $db)
     {
-        parent::__construct($db, 'larpingapp_abilities');
+        parent::__construct($db, 'larpingapp_abilities', Ability::class);
     }
 
+    /**
+     * Find an ability by ID
+     *
+     * @param  int $id The ability ID
+     * @return Ability
+     * @throws \OCP\AppFramework\Db\DoesNotExistException
+     * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+     */
     public function find(int $id): Ability
     {
         $qb = $this->db->getQueryBuilder();
-
         $qb->select('*')
-            ->from('larpingapp_abilities')
-            ->where(
-                $qb->expr()->eq('id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
-            );
-
-        return $this->findEntity(query: $qb);
+            ->from($this->getTableName())
+            ->where($qb->expr()->eq('id', $qb->createNamedParameter($id)));
+        return $this->findEntity($qb);
     }
 
-    public function findAll(?int $limit = null, ?int $offset = null, ?array $filters = [], ?array $searchConditions = [], ?array $searchParams = []): array
+    /**
+     * Find all abilities for a user
+     *
+     * @param  string $userId The user ID
+     * @return Ability[]
+     */
+    public function findAll(string $userId): array
     {
         $qb = $this->db->getQueryBuilder();
-
         $qb->select('*')
-            ->from('larpingapp_abilities')
-            ->setMaxResults($limit)
-            ->setFirstResult($offset);
-
-        foreach($filters as $filter => $value) {
-            if ($value === 'IS NOT NULL') {
-                $qb->andWhere($qb->expr()->isNotNull($filter));
-            } elseif ($value === 'IS NULL') {
-                $qb->andWhere($qb->expr()->isNull($filter));
-            } else {
-                $qb->andWhere($qb->expr()->eq($filter, $qb->createNamedParameter($value)));
-            }
-        }
-
-        if (!empty($searchConditions)) {
-            $qb->andWhere('(' . implode(' OR ', $searchConditions) . ')');
-            foreach ($searchParams as $param => $value) {
-                $qb->setParameter($param, $value);
-            }
-        }
-
-        return $this->findEntities(query: $qb);
+            ->from($this->getTableName())
+            ->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userId)));
+        
+        return $this->findEntities($qb);
     }
 
-    public function createFromArray(array $object): Ability
+    /**
+     * Create a new ability from array data
+     *
+     * @param  array<string,mixed> $data The ability data
+     * @return Ability
+     */
+    public function createFromArray(array $data): Ability
     {
         $ability = new Ability();
-        $ability->hydrate(object: $object);
-        return $this->insert(entity: $ability);
+        foreach ($data as $key => $value) {
+            $ability->$key = $value;
+        }
+        return $this->insert($ability);
     }
 
-    public function updateFromArray(int $id, array $object): Ability
+    /**
+     * Update an ability from array data
+     *
+     * @param  int                 $id   The ability ID
+     * @param  array<string,mixed> $data The updated ability data
+     * @return Ability
+     */
+    public function updateFromArray(int $id, array $data): Ability
     {
         $ability = $this->find($id);
-        $ability->hydrate($object);
-
+        foreach ($data as $key => $value) {
+            $ability->$key = $value;
+        }
         return $this->update($ability);
     }
 }

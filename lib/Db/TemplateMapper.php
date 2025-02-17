@@ -1,5 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
+/**
+ * @copyright Copyright (c) 2024 Ruben Linde <ruben@larpingapp.com>
+ * @author    Ruben Linde <ruben@larpingapp.com>
+ * @license   AGPL-3.0-or-later
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ */
+
 namespace OCA\LarpingApp\Db;
 
 use OCA\LarpingApp\Db\Template;
@@ -8,19 +21,34 @@ use OCP\AppFramework\Db\QBMapper;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
 
+/**
+ * @template-extends QBMapper<Template>
+ * @package          OCA\LarpingApp\Db
+ */
 class TemplateMapper extends QBMapper
 {
+    /**
+     * @param IDBConnection $db Database connection
+     */
     public function __construct(IDBConnection $db)
     {
-        parent::__construct($db, 'larpingapp_templates');
+        parent::__construct($db, 'larpingapp_templates', Template::class);
     }
 
+    /**
+     * Find a template by ID
+     *
+     * @param  int $id The template ID
+     * @return Template
+     * @throws \OCP\AppFramework\Db\DoesNotExistException
+     * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+     */
     public function find(int $id): Template
     {
         $qb = $this->db->getQueryBuilder();
 
         $qb->select('*')
-            ->from('larpingapp_templates')
+            ->from($this->getTableName())
             ->where(
                 $qb->expr()->eq('id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
             );
@@ -33,7 +61,7 @@ class TemplateMapper extends QBMapper
         $qb = $this->db->getQueryBuilder();
 
         $qb->select('*')
-            ->from('larpingapp_templates')
+            ->from($this->getTableName())
             ->setMaxResults($limit)
             ->setFirstResult($offset);
 
@@ -57,20 +85,37 @@ class TemplateMapper extends QBMapper
         return $this->findEntities(query: $qb);
     }
 
-    public function createFromArray(array $object): Template
+    /**
+     * Create a new template from array data
+     *
+     * @param  array<string,mixed> $data The template data
+     * @return Template
+     */
+    public function createFromArray(array $data): Template
     {
         $template = new Template();
-        $template->hydrate(object: $object);
+        foreach ($data as $key => $value) {
+            $template->$key = $value;
+        }
 
         //        var_dump($catalog->getTitle());
 
-        return $this->insert(entity: $template);
+        return $this->insert($template);
     }
 
-    public function updateFromArray(int $id, array $object): Template
+    /**
+     * Update a template from array data
+     *
+     * @param  int                 $id   The template ID
+     * @param  array<string,mixed> $data The updated template data
+     * @return Template
+     */
+    public function updateFromArray(int $id, array $data): Template
     {
         $template = $this->find($id);
-        $template->hydrate($object);
+        foreach ($data as $key => $value) {
+            $template->$key = $value;
+        }
 
         return $this->update($template);
     }

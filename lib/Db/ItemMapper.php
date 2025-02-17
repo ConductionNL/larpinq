@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/**
+ * @copyright Copyright (c) 2024 Ruben Linde <ruben@larpingapp.com>
+ * @author    Ruben Linde <ruben@larpingapp.com>
+ * @license   AGPL-3.0-or-later
+ */
+
 namespace OCA\LarpingApp\Db;
 
 use OCA\LarpingApp\Db\Item;
@@ -8,67 +16,81 @@ use OCP\AppFramework\Db\QBMapper;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
 
+/**
+ * @template-extends QBMapper<Item>
+ * @package          OCA\LarpingApp\Db
+ */
 class ItemMapper extends QBMapper
 {
+    /**
+     * @param IDBConnection $db Database connection
+     */
     public function __construct(IDBConnection $db)
     {
-        parent::__construct($db, 'larpingapp_items');
+        parent::__construct($db, 'larpingapp_items', Item::class);
     }
 
+    /**
+     * Find an item by ID
+     *
+     * @param  int $id The item ID
+     * @return Item
+     * @throws \OCP\AppFramework\Db\DoesNotExistException
+     * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+     */
     public function find(int $id): Item
     {
         $qb = $this->db->getQueryBuilder();
-
         $qb->select('*')
-            ->from('larpingapp_items')
-            ->where(
-                $qb->expr()->eq('id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
-            );
-
-        return $this->findEntity(query: $qb);
+            ->from($this->getTableName())
+            ->where($qb->expr()->eq('id', $qb->createNamedParameter($id)));
+        return $this->findEntity($qb);
     }
 
-    public function findAll(?int $limit = null, ?int $offset = null, ?array $filters = [], ?array $searchConditions = [], ?array $searchParams = []): array
+    /**
+     * Find all items for a user
+     *
+     * @param  string $userId The user ID
+     * @return Item[]
+     */
+    public function findAll(string $userId): array
     {
         $qb = $this->db->getQueryBuilder();
-
         $qb->select('*')
-            ->from('larpingapp_items')
-            ->setMaxResults($limit)
-            ->setFirstResult($offset);
-
-        foreach($filters as $filter => $value) {
-            if ($value === 'IS NOT NULL') {
-                $qb->andWhere($qb->expr()->isNotNull($filter));
-            } elseif ($value === 'IS NULL') {
-                $qb->andWhere($qb->expr()->isNull($filter));
-            } else {
-                $qb->andWhere($qb->expr()->eq($filter, $qb->createNamedParameter($value)));
-            }
-        }
-
-        if (!empty($searchConditions)) {
-            $qb->andWhere('(' . implode(' OR ', $searchConditions) . ')');
-            foreach ($searchParams as $param => $value) {
-                $qb->setParameter($param, $value);
-            }
-        }
-
-        return $this->findEntities(query: $qb);
+            ->from($this->getTableName())
+            ->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userId)));
+        
+        return $this->findEntities($qb);
     }
 
-    public function createFromArray(array $object): Item
+    /**
+     * Create a new item from array data
+     *
+     * @param  array<string,mixed> $data The item data
+     * @return Item
+     */
+    public function createFromArray(array $data): Item
     {
         $item = new Item();
-        $item->hydrate(object: $object);
-        return $this->insert(entity: $item);
+        foreach ($data as $key => $value) {
+            $item->$key = $value;
+        }
+        return $this->insert($item);
     }
 
-    public function updateFromArray(int $id, array $object): Item
+    /**
+     * Update an item from array data
+     *
+     * @param  int                 $id   The item ID
+     * @param  array<string,mixed> $data The updated item data
+     * @return Item
+     */
+    public function updateFromArray(int $id, array $data): Item
     {
         $item = $this->find($id);
-        $item->hydrate($object);
-
+        foreach ($data as $key => $value) {
+            $item->$key = $value;
+        }
         return $this->update($item);
     }
 }

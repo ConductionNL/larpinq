@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/**
+ * @copyright Copyright (c) 2024 Ruben Linde <ruben@larpingapp.com>
+ * @author    Ruben Linde <ruben@larpingapp.com>
+ * @license   AGPL-3.0-or-later
+ */
+
 namespace OCA\LarpingApp\Db;
 
 use OCA\LarpingApp\Db\Player;
@@ -8,67 +16,81 @@ use OCP\AppFramework\Db\QBMapper;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
 
+/**
+ * @template-extends QBMapper<Player>
+ * @package          OCA\LarpingApp\Db
+ */
 class PlayerMapper extends QBMapper
 {
+    /**
+     * @param IDBConnection $db Database connection
+     */
     public function __construct(IDBConnection $db)
     {
-        parent::__construct($db, 'larpingapp_players');
+        parent::__construct($db, 'larpingapp_players', Player::class);
     }
 
+    /**
+     * Find a player by ID
+     *
+     * @param  int $id The player ID
+     * @return Player
+     * @throws \OCP\AppFramework\Db\DoesNotExistException
+     * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+     */
     public function find(int $id): Player
     {
         $qb = $this->db->getQueryBuilder();
-
         $qb->select('*')
-            ->from('larpingapp_players')
-            ->where(
-                $qb->expr()->eq('id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
-            );
-
-        return $this->findEntity(query: $qb);
+            ->from($this->getTableName())
+            ->where($qb->expr()->eq('id', $qb->createNamedParameter($id)));
+        return $this->findEntity($qb);
     }
 
-    public function findAll(?int $limit = null, ?int $offset = null, ?array $filters = [], ?array $searchConditions = [], ?array $searchParams = []): array
+    /**
+     * Find all players for a user
+     *
+     * @param  string $userId The user ID
+     * @return Player[]
+     */
+    public function findAll(string $userId): array
     {
         $qb = $this->db->getQueryBuilder();
-
         $qb->select('*')
-            ->from('larpingapp_players')
-            ->setMaxResults($limit)
-            ->setFirstResult($offset);
-
-        foreach($filters as $filter => $value) {
-            if ($value === 'IS NOT NULL') {
-                $qb->andWhere($qb->expr()->isNotNull($filter));
-            } elseif ($value === 'IS NULL') {
-                $qb->andWhere($qb->expr()->isNull($filter));
-            } else {
-                $qb->andWhere($qb->expr()->eq($filter, $qb->createNamedParameter($value)));
-            }
-        }
-
-        if (!empty($searchConditions)) {
-            $qb->andWhere('(' . implode(' OR ', $searchConditions) . ')');
-            foreach ($searchParams as $param => $value) {
-                $qb->setParameter($param, $value);
-            }
-        }
-
-        return $this->findEntities(query: $qb);
+            ->from($this->getTableName())
+            ->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userId)));
+        
+        return $this->findEntities($qb);
     }
 
-    public function createFromArray(array $object): Player
+    /**
+     * Create a new player from array data
+     *
+     * @param  array<string,mixed> $data The player data
+     * @return Player
+     */
+    public function createFromArray(array $data): Player
     {
         $player = new Player();
-        $player->hydrate(object: $object);
-        return $this->insert(entity: $player);
+        foreach ($data as $key => $value) {
+            $player->$key = $value;
+        }
+        return $this->insert($player);
     }
 
-    public function updateFromArray(int $id, array $object): Player
+    /**
+     * Update a player from array data
+     *
+     * @param  int                 $id   The player ID
+     * @param  array<string,mixed> $data The updated player data
+     * @return Player
+     */
+    public function updateFromArray(int $id, array $data): Player
     {
         $player = $this->find($id);
-        $player->hydrate($object);
-
+        foreach ($data as $key => $value) {
+            $player->$key = $value;
+        }
         return $this->update($player);
     }
 }

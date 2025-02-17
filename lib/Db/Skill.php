@@ -1,81 +1,84 @@
 <?php
 
+declare(strict_types=1);
+
+/**
+ * @copyright Copyright (c) 2024 Ruben Linde <ruben@larpingapp.com>
+ * @author    Ruben Linde <ruben@larpingapp.com>
+ * @license   AGPL-3.0-or-later
+ */
+
 namespace OCA\LarpingApp\Db;
 
 use DateTime;
 use JsonSerializable;
 use OCP\AppFramework\Db\Entity;
 
+/**
+ * @method string getName()
+ * @method void setName(string $name)
+ * @method string getDescription()
+ * @method void setDescription(string $description)
+ */
 class Skill extends Entity implements JsonSerializable
 {
-    protected ?string $name = null;
-    protected ?string $description = null;
-    protected ?string $effect = null;
-    protected ?array $effects = null;
-    protected ?array $requiredSkills = [];
-    protected ?array $requiredStats = [];
-    protected ?array $requiredConditions = [];
-    protected ?array $requiredEffects = [];
-    protected ?int $requiredScore = null;
+    /**
+     * @var string 
+     */
+    protected $name;
+    
+    /**
+     * @var string 
+     */
+    protected $description;
 
+    /**
+     * Constructor to set the defaults
+     */
     public function __construct()
     {
         $this->addType('name', 'string');
         $this->addType('description', 'string');
-        $this->addType('effect', 'string');
-        $this->addType('effects', 'json');
-        $this->addType('requiredSkills', 'json');
-        $this->addType('requiredStats', 'json');
-        $this->addType('requiredConditions', 'json');
-        $this->addType('requiredEffects', 'json');
-        $this->addType('requiredScore', 'integer');
     }
 
+    /**
+     * Get the fields that should be serialized to JSON
+     *
+     * @return array<string>
+     */
     public function getJsonFields(): array
     {
-        return array_keys(
-            array_filter(
-                $this->getFieldTypes(), function ($field) {
-                    return $field === 'json';
-                }
-            )
-        );
+        return [
+            'id',
+            'name',
+            'description'
+        ];
     }
 
-    public function hydrate(array $object): self
+    /**
+     * Hydrate the entity from an array of data
+     *
+     * @param  array<string,mixed> $data
+     * @return void
+     */
+    public function hydrate(array $data): void
     {
-        $jsonFields = $this->getJsonFields();
-
-        foreach($object as $key => $value) {
-            if (in_array($key, $jsonFields) === true && $value === []) {
-                $value = [];
-            }
-
-            $method = 'set'.ucfirst($key);
-
-            try {
-                $this->$method($value);
-            } catch (\Exception $exception) {
-                //                ("Error writing $key");
-            }
+        foreach ($data as $key => $value) {
+            $this->$key = $value;
         }
-
-        return $this;
     }
 
+    /**
+     * Serialize the entity to JSON
+     *
+     * @return array<string,mixed>
+     */
     public function jsonSerialize(): array
     {
-        return [
-        'id' => $this->id,
-        'name' => $this->name,
-        'description' => $this->description,
-        'effect' => $this->effect,
-        'effects' => $this->effects,
-        'requiredSkills' => $this->requiredSkills,
-        'requiredStats' => $this->requiredStats,
-        'requiredConditions' => $this->requiredConditions,
-        'requiredEffects' => $this->requiredEffects,
-        'requiredScore' => $this->requiredScore,
-        ];
+        $data = [];
+        foreach ($this->getJsonFields() as $field) {
+            $data[$field] = $this->$field;
+        }
+        return $data;
     }
 }

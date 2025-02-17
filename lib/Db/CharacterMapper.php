@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/**
+ * @copyright Copyright (c) 2024 Ruben Linde <ruben@larpingapp.com>
+ * @author    Ruben Linde <ruben@larpingapp.com>
+ * @license   AGPL-3.0-or-later
+ */
+
 namespace OCA\LarpingApp\Db;
 
 use OCA\LarpingApp\Db\Character;
@@ -8,67 +16,81 @@ use OCP\AppFramework\Db\QBMapper;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
 
+/**
+ * @template-extends QBMapper<Character>
+ * @package          OCA\LarpingApp\Db
+ */
 class CharacterMapper extends QBMapper
 {
+    /**
+     * @param IDBConnection $db Database connection
+     */
     public function __construct(IDBConnection $db)
     {
-        parent::__construct($db, 'larpingapp_characters');
+        parent::__construct($db, 'larpingapp_characters', Character::class);
     }
 
+    /**
+     * Find a character by ID
+     *
+     * @param  int $id The character ID
+     * @return Character
+     * @throws \OCP\AppFramework\Db\DoesNotExistException
+     * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+     */
     public function find(int $id): Character
     {
         $qb = $this->db->getQueryBuilder();
-
         $qb->select('*')
-            ->from('larpingapp_characters')
-            ->where(
-                $qb->expr()->eq('id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
-            );
-
-        return $this->findEntity(query: $qb);
+            ->from($this->getTableName())
+            ->where($qb->expr()->eq('id', $qb->createNamedParameter($id)));
+        return $this->findEntity($qb);
     }
 
-    public function findAll(?int $limit = null, ?int $offset = null, ?array $filters = [], ?array $searchConditions = [], ?array $searchParams = []): array
+    /**
+     * Find all characters for a user
+     *
+     * @param  string $userId The user ID
+     * @return Character[]
+     */
+    public function findAll(string $userId): array
     {
         $qb = $this->db->getQueryBuilder();
-
         $qb->select('*')
-            ->from('larpingapp_characters')
-            ->setMaxResults($limit)
-            ->setFirstResult($offset);
-
-        foreach($filters as $filter => $value) {
-            if ($value === 'IS NOT NULL') {
-                $qb->andWhere($qb->expr()->isNotNull($filter));
-            } elseif ($value === 'IS NULL') {
-                $qb->andWhere($qb->expr()->isNull($filter));
-            } else {
-                $qb->andWhere($qb->expr()->eq($filter, $qb->createNamedParameter($value)));
-            }
-        }
-
-        if (!empty($searchConditions)) {
-            $qb->andWhere('(' . implode(' OR ', $searchConditions) . ')');
-            foreach ($searchParams as $param => $value) {
-                $qb->setParameter($param, $value);
-            }
-        }
-
-        return $this->findEntities(query: $qb);
+            ->from($this->getTableName())
+            ->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userId)));
+        
+        return $this->findEntities($qb);
     }
 
-    public function createFromArray(array $object): Character
+    /**
+     * Create a new character from array data
+     *
+     * @param  array<string,mixed> $data The character data
+     * @return Character
+     */
+    public function createFromArray(array $data): Character
     {
         $character = new Character();
-        $character->hydrate(object: $object);
-        return $this->insert(entity: $character);
+        foreach ($data as $key => $value) {
+            $character->$key = $value;
+        }
+        return $this->insert($character);
     }
 
-    public function updateFromArray(int $id, array $object): Character
+    /**
+     * Update a character from array data
+     *
+     * @param  int                 $id   The character ID
+     * @param  array<string,mixed> $data The updated character data
+     * @return Character
+     */
+    public function updateFromArray(int $id, array $data): Character
     {
         $character = $this->find($id);
-        $character->hydrate($object);
-
+        foreach ($data as $key => $value) {
+            $character->$key = $value;
+        }
         return $this->update($character);
     }
 }

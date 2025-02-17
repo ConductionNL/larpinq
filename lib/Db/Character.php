@@ -1,114 +1,84 @@
 <?php
 
+declare(strict_types=1);
+
+/**
+ * @copyright Copyright (c) 2024 Ruben Linde <ruben@larpingapp.com>
+ * @author    Ruben Linde <ruben@larpingapp.com>
+ * @license   AGPL-3.0-or-later
+ */
+
 namespace OCA\LarpingApp\Db;
 
 use DateTime;
 use JsonSerializable;
 use OCP\AppFramework\Db\Entity;
 
+/**
+ * @method string getName()
+ * @method void setName(string $name)
+ * @method string getDescription()
+ * @method void setDescription(string $description)
+ */
 class Character extends Entity implements JsonSerializable
 {
-    protected ?string $name = null;
-    protected ?string $ocName = null;
-    protected ?string $description = null;
-    protected ?string $background = null;
-    protected ?string $itemsAndMoney = null;
-    protected ?string $notice = null;
-    protected ?string $faith = null;
-    protected ?string $slNotesPublic = null;
-    protected ?string $slNotesPrivate = null;
-    protected ?string $card = null;
-    protected ?array $stats = [];
-    protected ?int $gold = null;
-    protected ?int $silver = null;
-    protected ?int $copper = null;
-    protected ?array $events = [];
-    protected ?array $skills = [];
-    protected ?array $items = [];
-    protected ?array $conditions = null;
-    protected ?string $type = 'player';
-    protected ?string $approved = 'no';
+    /**
+     * @var string 
+     */
+    protected $name;
+    
+    /**
+     * @var string 
+     */
+    protected $description;
 
+    /**
+     * Constructor to set the defaults
+     */
     public function __construct()
     {
         $this->addType('name', 'string');
-        $this->addType('ocName', 'string');
         $this->addType('description', 'string');
-        $this->addType('background', 'string');
-        $this->addType('itemsAndMoney', 'string');
-        $this->addType('notice', 'string');
-        $this->addType('faith', 'string');
-        $this->addType('slNotesPublic', 'string');
-        $this->addType('slNotesPrivate', 'string');
-        $this->addType('card', 'string');
-        $this->addType('stats', 'json');
-        $this->addType('gold', 'integer');
-        $this->addType('silver', 'integer');
-        $this->addType('copper', 'integer');
-        $this->addType('events', 'json');
-        $this->addType('skills', 'json');
-        $this->addType('items', 'json');
-        $this->addType('conditions', 'json');
-        $this->addType('type', 'string');
-        $this->addType('approved', 'string');
     }
 
+    /**
+     * Get the fields that should be serialized to JSON
+     *
+     * @return array<string>
+     */
     public function getJsonFields(): array
     {
-        return array_keys(
-            array_filter(
-                $this->getFieldTypes(), function ($field) {
-                    return $field === 'json';
-                }
-            )
-        );
+        return [
+            'id',
+            'name',
+            'description'
+        ];
     }
 
-    public function hydrate(array $object): self
+    /**
+     * Hydrate the entity from an array of data
+     *
+     * @param  array<string,mixed> $data
+     * @return void
+     */
+    public function hydrate(array $data): void
     {
-        $jsonFields = $this->getJsonFields();
-
-        foreach($object as $key => $value) {
-            if (in_array($key, $jsonFields) === true && $value === []) {
-                $value = [];
-            }
-
-            $method = 'set'.ucfirst($key);
-
-            try {
-                $this->$method($value);
-            } catch (\Exception $exception) {
-                //                ("Error writing $key");
-            }
+        foreach ($data as $key => $value) {
+            $this->$key = $value;
         }
-
-        return $this;
     }
 
+    /**
+     * Serialize the entity to JSON
+     *
+     * @return array<string,mixed>
+     */
     public function jsonSerialize(): array
     {
-        return [
-        'id' => $this->id,
-        'name' => $this->name,
-        'ocName' => $this->ocName,
-        'description' => $this->description,
-        'background' => $this->background,
-        'itemsAndMoney' => $this->itemsAndMoney,
-        'notice' => $this->notice,
-        'faith' => $this->faith,
-        'slNotesPublic' => $this->slNotesPublic,
-        'slNotesPrivate' => $this->slNotesPrivate,
-        'card' => $this->card,
-        'stats' => $this->stats,
-        'gold' => $this->gold,
-        'silver' => $this->silver,
-        'copper' => $this->copper,
-        'events' => $this->events,
-        'skills' => $this->skills,
-        'items' => $this->items,
-        'conditions' => $this->conditions,
-        'type' => $this->type,
-        'approved' => $this->approved,
-        ];
+        $data = [];
+        foreach ($this->getJsonFields() as $field) {
+            $data[$field] = $this->$field;
+        }
+        return $data;
     }
 }

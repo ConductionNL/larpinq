@@ -1,5 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+/**
+ * @copyright Copyright (c) 2024 Ruben Linde <ruben@larpingapp.com>
+ * @author    Ruben Linde <ruben@larpingapp.com>
+ * @license   AGPL-3.0-or-later
+ */
+
 namespace OCA\LarpingApp\Db;
 
 use OCA\LarpingApp\Db\Effect;
@@ -8,67 +16,81 @@ use OCP\AppFramework\Db\QBMapper;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
 
+/**
+ * @template-extends QBMapper<Effect>
+ * @package          OCA\LarpingApp\Db
+ */
 class EffectMapper extends QBMapper
 {
+    /**
+     * @param IDBConnection $db Database connection
+     */
     public function __construct(IDBConnection $db)
     {
-        parent::__construct($db, 'larpingapp_effects');
+        parent::__construct($db, 'larpingapp_effects', Effect::class);
     }
 
+    /**
+     * Find an effect by ID
+     *
+     * @param  int $id The effect ID
+     * @return Effect
+     * @throws \OCP\AppFramework\Db\DoesNotExistException
+     * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+     */
     public function find(int $id): Effect
     {
         $qb = $this->db->getQueryBuilder();
-
         $qb->select('*')
-            ->from('larpingapp_effects')
-            ->where(
-                $qb->expr()->eq('id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
-            );
-
-        return $this->findEntity(query: $qb);
+            ->from($this->getTableName())
+            ->where($qb->expr()->eq('id', $qb->createNamedParameter($id)));
+        return $this->findEntity($qb);
     }
 
-    public function findAll(?int $limit = null, ?int $offset = null, ?array $filters = [], ?array $searchConditions = [], ?array $searchParams = []): array
+    /**
+     * Find all effects for a user
+     *
+     * @param  string $userId The user ID
+     * @return Effect[]
+     */
+    public function findAll(string $userId): array
     {
         $qb = $this->db->getQueryBuilder();
-
         $qb->select('*')
-            ->from('larpingapp_effects')
-            ->setMaxResults($limit)
-            ->setFirstResult($offset);
-
-        foreach($filters as $filter => $value) {
-            if ($value === 'IS NOT NULL') {
-                $qb->andWhere($qb->expr()->isNotNull($filter));
-            } elseif ($value === 'IS NULL') {
-                $qb->andWhere($qb->expr()->isNull($filter));
-            } else {
-                $qb->andWhere($qb->expr()->eq($filter, $qb->createNamedParameter($value)));
-            }
-        }
-
-        if (!empty($searchConditions)) {
-            $qb->andWhere('(' . implode(' OR ', $searchConditions) . ')');
-            foreach ($searchParams as $param => $value) {
-                $qb->setParameter($param, $value);
-            }
-        }
-
-        return $this->findEntities(query: $qb);
+            ->from($this->getTableName())
+            ->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userId)));
+        
+        return $this->findEntities($qb);
     }
 
-    public function createFromArray(array $object): Effect
+    /**
+     * Create a new effect from array data
+     *
+     * @param  array<string,mixed> $data The effect data
+     * @return Effect
+     */
+    public function createFromArray(array $data): Effect
     {
         $effect = new Effect();
-        $effect->hydrate(object: $object);
-        return $this->insert(entity: $effect);
+        foreach ($data as $key => $value) {
+            $effect->$key = $value;
+        }
+        return $this->insert($effect);
     }
 
-    public function updateFromArray(int $id, array $object): Effect
+    /**
+     * Update an effect from array data
+     *
+     * @param  int                 $id   The effect ID
+     * @param  array<string,mixed> $data The updated effect data
+     * @return Effect
+     */
+    public function updateFromArray(int $id, array $data): Effect
     {
         $effect = $this->find($id);
-        $effect->hydrate($object);
-
+        foreach ($data as $key => $value) {
+            $effect->$key = $value;
+        }
         return $this->update($effect);
     }
 }
