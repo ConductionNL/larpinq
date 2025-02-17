@@ -1,63 +1,63 @@
-# DocuDesk Documentation
+# LarpingApp Documentation
 
-DocuDesk provides services for generating and anonymizing PDF, Word, HTML or Excel documents in a GDPR and WCAG compliant manner, all while keeping your data secure within your local Nextcloud instance.
+LarpingApp is your comprehensive solution for managing LARP (Live Action Role-Playing) events, character development, and community engagement, all while keeping your gaming experience organized and immersive.
 
-## The Power of Local Processing
+## The Power of Connected LARPing
 
-Imagine a world where your sensitive documents never have to leave your premises, yet you still have all the power of modern cloud collaboration. That's DocuDesk. Running on your local Nextcloud instance, it's like having a secure document fortress with a sophisticated diplomatic corps.
+Imagine a world where managing your LARP events, characters, and community is seamlessly integrated into one platform. That's LarpingApp. Whether you're an event organizer, a player, or a game master, our platform provides the tools you need to enhance your LARP experience.
 
-When your organization needs to process sensitive documents - whether it's generating contracts, anonymizing personal data, or ensuring accessibility - everything happens within your walls. Your data stays your data. Yet through Nextcloud's powerful integration capabilities, you maintain seamless connections with your SharePoint, Office 365, or case management systems.
+From character sheet management to event scheduling, from prop tracking to rule systems, everything is accessible through our intuitive interface. Connect with other players, coordinate events, and maintain your campaign's continuity all in one place.
 
 ## Key Features
 
-- 📄 Generate documents in multiple formats (PDF, Word, HTML, Excel)
-- ✍️ Digital document signing and verification
-- 🔒 GDPR-compliant document anonymization
-- ♿ WCAG accessibility standards compliance
-- 🔄 Batch document processing
-- 📱 Responsive document viewing
-- 🏰 100% Local document processing
-- 🤝 Seamless external system integration
-- 📋 Complete audit trail
-- ⚡ High performance local operations
-- 🔍 Document comparison and version tracking
-- 🏷️ AI-powered document classification
+- 📅 Comprehensive event management and scheduling
+- 👤 Detailed character creation and progression
+- 🎭 Role-playing resources and guides
+- 🗺️ Campaign and storyline tracking
+- 🤝 Community networking and group formation
+- 📱 Mobile-friendly interface
+- 📝 Character sheet templates and customization
+- ⚔️ Combat and skill system integration
+- 📊 Experience and achievement tracking
+- 🎪 Event registration and attendance management
+- 🏰 Location and venue management
+- 🎨 Costume and prop cataloging
 - 🌐 Multi-language support
-- ✅ Document validation & quality control
-- ⚡ Workflow automation & process management
-- 📊 Comprehensive reporting & analytics
+- 📸 Photo galleries and memory sharing
+- ⚡ Quest and mission management
+- 📈 Player statistics and progression tracking
 
-## Why Nextcloud?
+## Why Choose LarpingApp?
 
-We chose Nextcloud as our platform for several compelling reasons:
+We've designed LarpingApp with the LARP community in mind, focusing on several key aspects:
 
-### Seamless Integration with Enterprise Systems
-Nextcloud provides robust integration capabilities with Microsoft Office 365 and SharePoint, allowing organizations to maintain their existing workflows while adding powerful document processing capabilities. Users can seamlessly access and process documents across platforms without disrupting their established processes.
+### Seamless Event Management
+Organize your LARP events with ease. From small gatherings to large-scale campaigns, our platform helps you manage registrations, schedules, character assignments, and more. Keep your players informed and engaged throughout the entire event lifecycle.
 
-### Enterprise-Grade Security
-By leveraging Nextcloud's secure infrastructure, DocuDesk ensures all document processing happens within your controlled environment. This means sensitive data never leaves your premises while still enabling collaborative features and integrations with external systems.
+### Character Development
+Create rich, detailed character backgrounds and track their progression through various campaigns. Our system supports multiple rule sets and allows for custom skill trees, making it adaptable to any LARP setting or style.
 
-### Easy Installation and Updates
-DocuDesk is available directly through the Nextcloud App Store, making installation as simple as a few clicks:
+### Community Building
+Connect with fellow LARPers, form groups, and coordinate with your gaming circle. Share stories, photos, and experiences while building a vibrant community around your favorite LARP activities.
 
-1. Log in to your Nextcloud instance as an administrator
-2. Navigate to the Apps section
-3. Find DocuDesk in the Office & Text category
-4. Click "Install"
+### Easy to Get Started
+Getting started with LarpingApp is simple:
 
-Note: For anonymization functionality, you'll need to provide your own LLM (Language Learning Model) tool. We recommend using Presidio, an open-source solution. You can find detailed installation instructions for Presidio at https://github.com/MWest2020/presidio-nl/tree/main/docs. However, you're free to use other anonymization tools that suit your needs.
-
-The app will automatically stay up-to-date with your Nextcloud instance, ensuring you always have the latest features and security updates.
+1. Create your account at larping.online
+2. Set up your profile and character
+3. Join or create a LARP group
+4. Start participating in events
 
 ### Scalability and Performance
-Nextcloud's architecture allows DocuDesk to handle everything from individual document processing to large-scale batch operations, all while maintaining optimal performance within your local environment.
+Whether you're managing a small group or organizing large-scale events, LarpingApp scales to meet your needs while maintaining smooth performance and reliability.
 
 ## Contributing
 
-We welcome contributions to improve the documentation! If you'd like to contribute, please visit our [GitHub repository](https://github.com/conductionnl/docudesk). There you can:
+We welcome contributions from the LARP community! If you'd like to help improve LarpingApp, please visit our [GitHub repository](https://github.com/conductionnl/larpingapp). You can:
 
-- Report issues or suggest improvements by opening an issue
-- Submit pull requests with documentation changes
-- Engage with the community in discussions
+- Report bugs or suggest features by opening an issue
+- Submit pull requests with improvements
+- Join our community discussions
+- Share your LARP experiences and feedback
 
 For detailed contribution guidelines, please refer to the CONTRIBUTING.md file in our repository.
