@@ -3,14 +3,14 @@
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'DocuDesk.app',
-  tagline: 'Flexible document management for your organization',
+  title: 'LarpingApp',
+  tagline: 'Manage your LARP events and characters with ease',
   url: 'https://conductionnl.github.io',
-  baseUrl: '/docudesk/',
+  baseUrl: '/larpingapp/',
   
   // GitHub pages deployment config
-  organizationName: 'conductionnl',
-  projectName: 'docudesk',
+  organizationName: 'conductionnl', 
+  projectName: 'larpingapp',
   trailingSlash: false,
 
   onBrokenLinks: 'throw',
@@ -31,7 +31,7 @@ const config = {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           editUrl:
-            'https://github.com/conductionnl/docudesk/tree/main/website/',
+            'https://github.com/conductionnl/larpingapp/tree/main/website/',
         },
         blog: false,
         theme: {
@@ -45,9 +45,9 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
-        title: 'DocuDesk.app',
+        title: 'LarpingApp',
         logo: {
-          alt: 'DocuDesk Logo',
+          alt: 'LarpingApp Logo',
           src: 'img/logo.svg',
         },
         items: [
@@ -58,7 +58,7 @@ const config = {
             label: 'Documentation',
           },
           {
-            href: 'https://github.com/conductionnl/docudesk',
+            href: 'https://github.com/conductionnl/larpingapp',
             label: 'GitHub',
             position: 'right',
           },
@@ -81,7 +81,7 @@ const config = {
             items: [
               {
                 label: 'GitHub',
-                href: 'https://github.com/conductionnl/docudesk',
+                href: 'https://github.com/conductionnl/larpingapp',
               },
             ],
           },
