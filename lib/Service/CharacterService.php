@@ -288,7 +288,6 @@ class CharacterService
 
             // Add audit trail with source information
             $abilities[$abilityId]['audit'][] = [
-                'type' => 'effect',
                 'effect' => $effect,
                 'type' => $sourceType,
                 'name' => $sourceName,
