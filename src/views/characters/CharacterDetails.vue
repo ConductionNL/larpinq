@@ -84,13 +84,13 @@ import { characterStore, navigationStore } from '../../store/store.js'
 							<div v-if="characterStore.characterItem.stats">
 								<NcListItem v-for="(stat, id) in characterStore.characterItem.stats"
 									:key="id"
-									:name="stat.name"
+									:name="stat.value + ' ' + stat.name"
 									:bold="false">
 									<template #icon>
 										<ShieldSwordOutline :size="44" />
 									</template>
 									<template #subname>
-										Score: {{ stat.value }}
+										Base: {{ stat.base }}{{ stat.audit ? ', Effects: ' + stat.audit.map(a => `(${a.type.charAt(0).toUpperCase() + a.type.slice(1)}:${a.name} ${a.effect.modification > 0 ? '+' : '-'}${a.effect.modifier})`).join(', ') : '' }}
 									</template>
 								</NcListItem>
 							</div>
@@ -145,6 +145,13 @@ import { characterStore, navigationStore } from '../../store/store.js'
 							</template>
 							<AuditList :logs="characterStore.auditTrails" />
 						</BTab>
+						
+						<!-- <BTab>
+							<template #title>
+								Audit 
+							</template>
+							<AuditTable :audit-data="characterStore.characterItem.stats" />
+						</BTab> -->
 					</BTabs>
 				</div>
 			</div>
@@ -159,6 +166,7 @@ import { NcActions, NcActionButton, NcListItem, NcNoteCard, NcCounterBubble } fr
 
 // Custom components
 import AuditList from '../auditTrail/AuditList.vue'
+import AuditTable from '../auditTrail/AuditTable.vue'
 import ObjectList from '../objects/ObjectList.vue'
 
 // Icons
@@ -192,6 +200,7 @@ export default {
 		BTab,
 		// Custom components
 		AuditList,
+		AuditTable,
 		ObjectList,
 		// Icons
 		DotsHorizontal,
@@ -209,9 +218,13 @@ export default {
 		Download,
 		BriefcaseAccountOutline,
 		AccountCheck,
-
 	},
 	methods: {
+		/**
+		 * Download character as PDF
+		 * 
+		 * @return {void}
+		 */
 		downloadCharacterPdf() {
 			const characterId = characterStore.characterItem.id
 			fetch(`characters/${characterId}/download`)
@@ -232,7 +245,7 @@ export default {
 					console.error('Error downloading PDF:', error)
 					// Handle error (e.g., show error message to user)
 				})
-		},
+		},		
 	},
 }
 </script>

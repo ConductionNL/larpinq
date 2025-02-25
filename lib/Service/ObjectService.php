@@ -33,7 +33,16 @@ use OCA\OpenRegister\Service\Exceptions\NotAuthorizedException;
 use OCA\OpenRegister\Service\Exceptions\NotFoundException;
 
 /**
- * Service class for handling object-related operations
+ * @class ObjectService
+ * @category Service
+ * @package LarpingApp
+ * @author Conduction Team
+ * @copyright 2023 Conduction
+ * @license EUPL-1.2
+ * @version 1.0.0
+ * @link https://github.com/OpenCatalogi/larping-app
+ * 
+ * Service class for handling object-related operations through Open Registers
  */
 class ObjectService
 {
@@ -42,18 +51,12 @@ class ObjectService
 
 	/**
 	 * Constructor for ObjectService.
+	 * 
+	 * @param ContainerInterface $container The container interface
+	 * @param IAppManager $appManager The app manager
+	 * @param IAppConfig $config The app configuration
 	 */
 	public function __construct(
-		private AbilityMapper $abilityMapper,
-		private CharacterMapper $characterMapper,
-		private ConditionMapper $conditionMapper,
-		private EffectMapper $effectMapper,
-		private EventMapper $eventMapper,
-		private ItemMapper $itemMapper,
-		private PlayerMapper $playerMapper,
-		private SettingMapper $settingMapper,
-		private SkillMapper $skillMapper,
-		private TemplateMapper $templateMapper,
 		private ContainerInterface $container,
 		private readonly IAppManager $appManager,
 		private readonly IAppConfig $config,
@@ -75,40 +78,24 @@ class ObjectService
 	{
 		$objectTypeLower = strtolower($objectType);
 
-		// Get the source for the object type from the configuration
-		$source = $this->config->getValueString($this->appName, $objectTypeLower . '_source', 'internal');
-
-		// If the source is 'open_registers', use the OpenRegister service
-		if ($source === 'openregister') {
-			$openRegister = $this->getOpenRegisters();
-			if ($openRegister === null) {
-				throw new Exception("OpenRegister service not available");
-			}
-			$register = $this->config->getValueString($this->appName, $objectTypeLower . '_register', '');
-			if (empty($register)) {
-				throw new Exception("Register not configured for $objectType");
-			}
-			$schema = $this->config->getValueString($this->appName, $objectTypeLower . '_schema', '');
-			if (empty($schema)) {
-				throw new Exception("Schema not configured for $objectType");
-			}
-			return $openRegister->getMapper(register: $register, schema: $schema);
+		// Get the register and schema for the object type from the configuration
+		$register = $this->config->getValueString($this->appName, $objectTypeLower . '_register', '');
+		if (empty($register)) {
+			throw new Exception("Register not configured for $objectType");
+		}
+		$schema = $this->config->getValueString($this->appName, $objectTypeLower . '_schema', '');
+		if (empty($schema)) {
+			throw new Exception("Schema not configured for $objectType");
 		}
 
-		// If the source is internal, return the appropriate mapper based on the object type
-		return match ($objectType) {
-			'ability' => $this->abilityMapper,
-			'character' => $this->characterMapper,
-			'condition' => $this->conditionMapper,
-			'effect' => $this->effectMapper,
-			'event' => $this->eventMapper,
-			'item' => $this->itemMapper,
-			'player' => $this->playerMapper,
-			'setting' => $this->settingMapper,
-			'skill' => $this->skillMapper,
-			'template' => $this->templateMapper,
-			default => throw new InvalidArgumentException("Unknown object type: $objectType"),
-		};
+		// Get the OpenRegister service
+		$openRegister = $this->getOpenRegisters();
+		if ($openRegister === null) {
+			throw new Exception("OpenRegister service not available");
+		}
+
+		// Return the mapper for the specified register and schema
+		return $openRegister->getMapper(register: $register, schema: $schema);
 	}
 
 	/**
@@ -116,10 +103,10 @@ class ObjectService
 	 *
 	 * @param string $objectType The type of object to retrieve.
 	 * @param string $id The id of the object to retrieve.
+	 * @param array $extend Additional properties to extend in the response.
 	 *
 	 * @return mixed The retrieved object.
 	 * @throws ContainerExceptionInterface|DoesNotExistException|MultipleObjectsReturnedException|NotFoundExceptionInterface
-	 * @throws InvalidArgumentException If extend is requested for non-OpenRegister objects
 	 */
 	public function getObject(string $objectType, string $id, array $extend = []): mixed
 	{
@@ -131,11 +118,6 @@ class ObjectService
 
 		// Get the appropriate mapper for the object type
 		$mapper = $this->getMapper($objectType);
-
-		// Check if extend is requested for non-OpenRegister objects
-		if (!empty($extend) && !($mapper instanceof \OCA\OpenRegister\Service\ObjectService)) {
-			throw new InvalidArgumentException('Extend functionality is only available for OpenRegister objects');
-		}
 
 		// Use the mapper to find and return the object
 		$object = $mapper->find($id);
@@ -168,9 +150,9 @@ class ObjectService
 		?int $limit = null,
 		?int $offset = null,
 		array $filters = [],
-		array $sort = [],
+		?array $sort = [],
 		?string $search = null,
-		array $extend = []
+		?array $extend = []
 	): array
 	{
 		// Get the appropriate mapper for the object type
