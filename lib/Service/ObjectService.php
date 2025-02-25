@@ -150,9 +150,9 @@ class ObjectService
 		?int $limit = null,
 		?int $offset = null,
 		array $filters = [],
-		array $sort = [],
+		?array $sort = [],
 		?string $search = null,
-		array $extend = []
+		?array $extend = []
 	): array
 	{
 		// Get the appropriate mapper for the object type
