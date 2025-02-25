@@ -1,7 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
+/**
+ * Settings controller implementation
+ *
+ * @category  Controller
+ * @package   OCA\LarpingApp\Controller
+ * @author    Ruben Linde <ruben@larpingapp.com>
+ * @copyright 2024 Ruben Linde
+ * @license   https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
+ * @version   Release: 0.1.0
+ * @link      https://larpingapp.com
+ *
+ * @phpversion 8.2
+ */
+
 namespace OCA\LarpingApp\Controller;
 
+use Exception;
 use OCP\IAppConfig;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\TemplateResponse;
@@ -10,20 +27,28 @@ use OCP\IRequest;
 use OCA\LarpingApp\Service\ObjectService;
 
 /**
- * Class SettingsController
+ * Controller for handling settings-related operations
  *
- * Controller for handling settings-related operations in the OpenCatalogi app.
+ * This controller provides endpoints for managing application settings,
+ * particularly related to object types and OpenRegister configuration.
+ *
+ * @category Controller
+ * @package  OCA\LarpingApp\Controller
+ * @author   Ruben Linde <ruben@larpingapp.com>
+ * @license  https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
+ * @link     https://larpingapp.com
  */
 class SettingsController extends Controller
 {
-
 	/**
-	 * SettingsController constructor.
+	 * SettingsController constructor
 	 *
-	 * @param string $appName The name of the app
-	 * @param IAppConfig $config The app configuration
-	 * @param IRequest $request The request object
+	 * @param string        $appName       The name of the app
+	 * @param IRequest      $request       The request object
+	 * @param IAppConfig    $config        The app configuration service
 	 * @param ObjectService $objectService The object service
+	 * 
+	 * @return void
 	 */
 	public function __construct(
 		$appName,
@@ -35,11 +60,17 @@ class SettingsController extends Controller
 	}
 
 	/**
-	 * Retrieve the current settings.
+	 * Retrieve the current settings
 	 *
-	 * @return JSONResponse JSON response containing the current settings
+	 * Gets all application settings including object types, OpenRegister availability,
+	 * and current configuration values.
 	 *
 	 * @NoCSRFRequired
+	 *
+	 * @return JSONResponse JSON response containing the current settings
+	 * 
+	 * @psalm-return JSONResponse
+	 * @phpstan-return JSONResponse
 	 */
 	public function index(): JSONResponse
 	{
@@ -70,17 +101,22 @@ class SettingsController extends Controller
 				$data['configuration'][$key] = $this->config->getValueString($this->appName, $key, $defaultValue);
 			}
 			return new JSONResponse($data);
-		} catch (\Exception $e) {
+		} catch (Exception $e) {
 			return new JSONResponse(['error' => $e->getMessage()], 500);
 		}
 	}
 
 	/**
-	 * Handle the post request to update settings.
+	 * Update application settings
 	 *
-	 * @return JSONResponse JSON response containing the updated settings
+	 * Handles the post request to update multiple settings at once.
 	 *
 	 * @NoCSRFRequired
+	 *
+	 * @return JSONResponse JSON response containing the updated settings
+	 * 
+	 * @psalm-return JSONResponse
+	 * @phpstan-return JSONResponse
 	 */
 	public function create(): JSONResponse
 	{
@@ -95,7 +131,7 @@ class SettingsController extends Controller
 				$data[$key] = $this->config->getValueString($this->appName, $key);
 			}
 			return new JSONResponse($data);
-		} catch (\Exception $e) {
+		} catch (Exception $e) {
 			return new JSONResponse(['error' => $e->getMessage()], 500);
 		}
 	}

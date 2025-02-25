@@ -10,6 +10,7 @@ declare(strict_types=1);
  * @author    Ruben Linde <ruben@larpingapp.com>
  * @copyright 2024 Ruben Linde
  * @license   https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
+ * @version   0.1.0
  * @link      https://larpingapp.com
  *
  * @phpversion 8.2
@@ -21,32 +22,17 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Promise\Utils;
 use OCP\IURLGenerator;
 use Symfony\Component\Uid\Uuid;
-use OCA\LarpingApp\Db\Character;
-use OCA\LarpingApp\Db\Ability;
-use OCA\LarpingApp\Db\Skill;
-use OCA\LarpingApp\Db\Item;
-use OCA\LarpingApp\Db\Condition;
-use OCA\LarpingApp\Db\Event;
-use OCA\LarpingApp\Db\Effect;
-use OCA\LarpingApp\Db\CharacterMapper;
-use OCA\LarpingApp\Db\AbilityMapper;
-use OCA\LarpingApp\Db\SkillMapper;
-use OCA\LarpingApp\Db\ItemMapper;
-use OCA\LarpingApp\Db\ConditionMapper;
-use OCA\LarpingApp\Db\EventMapper;
-use OCA\LarpingApp\Db\EffectMapper;
-use OCA\LarpingApp\Service\ObjectService;
-
 use Mpdf\Mpdf;
 use Mpdf\MpdfException;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
-
-// And in case of open registers
-use OCA\OpenRegister\Db\ObjectEntity;
+use Exception;
 
 /**
  * Service class for character-related operations
+ *
+ * Provides functionality for character calculations, PDF generation,
+ * and other character-specific operations.
  *
  * @category Service
  * @package  OCA\LarpingApp\Service
@@ -57,137 +43,148 @@ use OCA\OpenRegister\Db\ObjectEntity;
 class CharacterService
 {
     /**
-     * @var array<Ability>
+     * Collection of all skills
+     * 
+     * @var array<string, array>
      */
     private $_allSkills = [];
     
     /**
-     * @var array<Item>
+     * Collection of all items
+     * 
+     * @var array<string, array>
      */
     private $_allItems = [];
     
     /**
-     * @var array<Condition>
+     * Collection of all conditions
+     * 
+     * @var array<string, array>
      */
     private $_allConditions = [];
     
     /**
-     * @var array<Event>
+     * Collection of all events
+     * 
+     * @var array<string, array>
      */
     private $_allEvents = [];
     
     /**
-     * @var array<Effect>
+     * Collection of all effects
+     * 
+     * @var array<string, array>
      */
     private $_allEffects = [];
     
     /**
-     * @var array<Ability>
+     * Collection of all abilities
+     * 
+     * @var array<string, array>
      */
     private $_allAbilities = [];
 
     /**
      * Constructor for CharacterService
      *
-     * @param AbilityMapper   $abilityMapper   Ability mapper
-     * @param CharacterMapper $characterMapper Character mapper
-     * @param ConditionMapper $conditionMapper Condition mapper
-     * @param EffectMapper    $effectMapper    Effect mapper
-     * @param EventMapper     $eventMapper     Event mapper
-     * @param ItemMapper      $itemMapper      Item mapper
+     * @param ObjectService $objectService Object service for retrieving entities
      */
     public function __construct(
-        private AbilityMapper $abilityMapper,
-        private CharacterMapper $characterMapper,
-        private ConditionMapper $conditionMapper,
-        private EffectMapper $effectMapper,
-        private EventMapper $eventMapper,
-        private ItemMapper $itemMapper
+        private readonly ObjectService $objectService
     ) {
         $this->_loadAllEntities();
     }
 
+    /**
+     * Load all entities needed for character calculations
+     * 
+     * Loads skills, items, conditions, events, effects, and abilities from the object service
+     * and indexes them by ID for quick access during character calculations.
+     * 
+     * @return void
+     */
     private function _loadAllEntities(): void
     {
         // Get all skills and index them by ID
         $skills = $this->objectService->getObjects('skill');
         $this->_allSkills = array_reduce(
-            $skills, function ($carry, $skill) {
+            $skills,
+            function ($carry, $skill) {
                 $carry[$skill['id']] = $skill;
                 return $carry;
-            }, []
+            },
+            []
         );
 
         // Get all items and index them by ID
         $items = $this->objectService->getObjects('item');
         $this->_allItems = array_reduce(
-            $items, function ($carry, $item) {
+            $items,
+            function ($carry, $item) {
                 $carry[$item['id']] = $item;
                 return $carry;
-            }, []
+            },
+            []
         );
 
         // Get all conditions and index them by ID
         $conditions = $this->objectService->getObjects('condition');
         $this->_allConditions = array_reduce(
-            $conditions, function ($carry, $condition) {
+            $conditions,
+            function ($carry, $condition) {
                 $carry[$condition['id']] = $condition;
                 return $carry;
-            }, []
+            },
+            []
         );
 
         // Get all events and index them by ID
         $events = $this->objectService->getObjects('event');
         $this->_allEvents = array_reduce(
-            $events, function ($carry, $event) {
+            $events,
+            function ($carry, $event) {
                 $carry[$event['id']] = $event;
                 return $carry;
-            }, []
+            },
+            []
         );
 
         // Get all effects and index them by ID
         $effects = $this->objectService->getObjects('effect');
         $this->_allEffects = array_reduce(
-            $effects, function ($carry, $effect) {
+            $effects,
+            function ($carry, $effect) {
                 $carry[$effect['id']] = $effect;
                 return $carry;
-            }, []
+            },
+            []
         );
 
         // Get all abilities and index them by ID
         $abilities = $this->objectService->getObjects('ability');
         $this->_allAbilities = array_reduce(
-            $abilities, function ($carry, $ability) {
+            $abilities,
+            function ($carry, $ability) {
                 $carry[$ability['id']] = $ability;
                 return $carry;
-            }, []
+            },
+            []
         );
     }
 
     /**
-     * Calculate stats for all characters
+     * Calculate stats for a character
+     * 
+     * Processes a character's skills, items, conditions, and events to calculate
+     * their final ability scores based on all applicable effects.
      *
-     * @return array Updated array of Character objects
-     */
-    public function calculateAllCharacters(): array
-    {
-        $characters = $this->characterMapper->findAll();
-        $updatedCharacters = [];
-        foreach ($characters as $character) {
-            $updatedCharacters[] = $this->calculateCharacter($character);
-        }
-        return $updatedCharacters;
-    }
-
-    /**
-     * Calculate stats for a single character array
-     *
-     * @param  array $character Character data array
-     * @return array Updated character data array with calculated stats
+     * @param array $character Character data to calculate stats for
+     * 
+     * @return array Updated character data with calculated stats
      */
     public function calculateCharacter(array $character): array 
     {
-        // Create an array of abilities with their base scores
+        // Initialize ability scores with base values from character (abilites are calculated and not retrieved from the database)
         $abilityScores = [];
 
         // Initialize ability scores from base values
@@ -205,7 +202,7 @@ class CharacterService
             foreach ($character['skills'] as $skillId) {
                 $skill = $this->_allSkills[$skillId] ?? null;
                 if ($skill && isset($skill['effects']) && !empty($skill['effects'])) {
-                    $this->applyEffects($abilityScores, $skill['effects']);
+                    $this->_applyEffects($abilityScores, $skill['effects']);
                 }
             }
         }
@@ -215,7 +212,7 @@ class CharacterService
             foreach ($character['items'] as $itemId) {
                 $item = $this->_allItems[$itemId] ?? null;
                 if ($item && isset($item['effects']) && !empty($item['effects'])) {
-                    $this->applyEffects($abilityScores, $item['effects']);
+                    $this->_applyEffects($abilityScores, $item['effects']);
                 }
             }
         }
@@ -225,7 +222,7 @@ class CharacterService
             foreach ($character['conditions'] as $conditionId) {
                 $condition = $this->_allConditions[$conditionId] ?? null;
                 if ($condition && isset($condition['effects']) && !empty($condition['effects'])) {
-                    $this->applyEffects($abilityScores, $condition['effects']);
+                    $this->_applyEffects($abilityScores, $condition['effects']);
                 }
             }
         }
@@ -235,7 +232,7 @@ class CharacterService
             foreach ($character['events'] as $eventId) {
                 $event = $this->_allEvents[$eventId] ?? null;
                 if ($event && isset($event['effects']) && !empty($event['effects'])) {
-                    $this->applyEffects($abilityScores, $event['effects']);
+                    $this->_applyEffects($abilityScores, $event['effects']);
                 }
             }
         }
@@ -249,10 +246,14 @@ class CharacterService
     /**
      * Apply effects to abilities
      *
+     * Processes a list of effect IDs and applies them to the abilities array.
+     *
      * @param array      $abilities Reference to the abilities array
      * @param array|null $effects   Array of effect IDs
+     * 
+     * @return void
      */
-    private function applyEffects(array &$abilities, ?array $effects): void
+    private function _applyEffects(array &$abilities, ?array $effects): void
     {
         // Return early if effects is null or empty
         if (empty($effects)) {
@@ -267,7 +268,7 @@ class CharacterService
             
             $effect = $this->_allEffects[$effectId] ?? null;
             if ($effect) {
-                $this->calculateEffect($abilities, $effect);
+                $this->_calculateEffect($abilities, $effect);
             }
         }
     }
@@ -275,13 +276,18 @@ class CharacterService
     /**
      * Calculate and apply a single effect
      *
+     * Applies a specific effect to one or more abilities based on the effect configuration.
+     *
      * @param array $abilities Reference to the abilities array
      * @param array $effect    Effect array containing stat_id, modifier and modification
+     * 
+     * @return void
      */
-    private function calculateEffect(array &$abilities, array $effect): void
+    private function _calculateEffect(array &$abilities, array $effect): void
     {
         // Initialize array to track affected abilities
-        $effectAbilities = isset($effect['abilities']) && is_array($effect['abilities']) ? $effect['abilities'] : [];
+        $effectAbilities = isset($effect['abilities']) && is_array($effect['abilities']) 
+            ? $effect['abilities'] : [];
 
         // Add stat_id to affected abilities if present and not null
         if (isset($effect['stat_id']) && $effect['stat_id'] !== null) {
@@ -333,12 +339,17 @@ class CharacterService
     /**
      * Create a PDF from a character using a specified template
      *
-     * @param       array $character Character data array containing character information
-     * @param       array $template  Template data array containing PDF layout configuration
-     * @return      string Generated PDF content as string
-     * @throws      \Exception If PDF generation fails
+     * Generates a PDF document for a character sheet based on the provided template.
+     *
+     * @param array $character Character data array containing character information
+     * @param array $template  Template data array containing PDF layout configuration
+     * 
      * @psalm-param array{name: string, stats: array<string, array{name: string, value: int}>, skills?: array, items?: array, conditions?: array, events?: array} $character
-     * @psalm-param array{name: string, orientation?: string, format?: string, sections?: array} $template
+     * @psalm-param array{name: string, orientation?: string, format?: string, sections?: array, template: string} $template
+     * 
+     * @return Mpdf Generated PDF object
+     * 
+     * @throws Exception If PDF generation fails
      */
     public function createCharacterPdf(array $character, array $template): Mpdf
     {

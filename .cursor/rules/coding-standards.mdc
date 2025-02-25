@@ -1,0 +1,20 @@
+---
+description: This rule describes how cursor should code on this project
+globs: 
+---
+
+# Your rule content
+
+- add docblocks to all methods, classes, and properties
+- add return types to all methods
+- add type hints to all methods
+- add default values to all methods
+- add phpstan and psalm annotations to all methods
+- add phpunit tests to all methods
+- add inline comments to all logic explaining the steps being taken
+- use readonly properties where appropriate
+- all php code should pass phpsc and phpstan 
+- php classes should begin with a docblock containing the class name, category, package, author, copyright, license, version, and link to the application
+- We use docusaurus for the documentation, the files are in the website folder. Technical and user documentation are in the website/docs folder.
+- Alle changes to the code should also be documented in the documentation
+

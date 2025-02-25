@@ -10,7 +10,7 @@ declare(strict_types=1);
  * @author    Ruben Linde <ruben@larpingapp.com>
  * @copyright 2024 Ruben Linde
  * @license   https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
- * @version   GIT: <git_id>
+ * @version   Release: 0.1.0
  * @link      https://larpingapp.com
  *
  * @phpversion 8.2
@@ -27,9 +27,9 @@ use OCP\Settings\IIconSection;
  *
  * Provides the admin section configuration for the LarpingApp
  *
- * @category Settings
- * @package  OCA\LarpingApp\Settings
- * @author   Ruben Linde <ruben@larpingapp.com>
+ * @category  Settings
+ * @package   OCA\LarpingApp\Settings
+ * @author    Ruben Linde <ruben@larpingapp.com>
  * @copyright 2024 Ruben Linde
  * @license   https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
  * @version   GIT: <git_id>
