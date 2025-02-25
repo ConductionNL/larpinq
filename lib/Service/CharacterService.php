@@ -6,29 +6,22 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Promise\Utils;
 use OCP\IURLGenerator;
 use Symfony\Component\Uid\Uuid;
-use OCA\LarpingApp\Db\Character;
-use OCA\LarpingApp\Db\Ability;
-use OCA\LarpingApp\Db\Skill;
-use OCA\LarpingApp\Db\Item;
-use OCA\LarpingApp\Db\Condition;
-use OCA\LarpingApp\Db\Event;
-use OCA\LarpingApp\Db\Effect;
-use OCA\LarpingApp\Db\CharacterMapper;
-use OCA\LarpingApp\Db\AbilityMapper;
-use OCA\LarpingApp\Db\SkillMapper;
-use OCA\LarpingApp\Db\ItemMapper;
-use OCA\LarpingApp\Db\ConditionMapper;
-use OCA\LarpingApp\Db\EventMapper;
-use OCA\LarpingApp\Db\EffectMapper;
-use OCA\LarpingApp\Service\ObjectService;
-
 use Mpdf\Mpdf;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
-// And in case of open registers
-use OCA\OpenRegister\Db\ObjectEntity;
-
+/**
+ * @class CharacterService
+ * @category Service
+ * @package LarpingApp
+ * @author Conduction Team
+ * @copyright 2023 Conduction
+ * @license EUPL-1.2
+ * @version 1.0.0
+ * @link https://github.com/OpenCatalogi/larping-app
+ * 
+ * Service for handling character-related operations
+ */
 class CharacterService
 {
     private array $allSkills = [];
@@ -38,19 +31,22 @@ class CharacterService
     private array $allEffects = [];
     private array $allAbilities = [];
 
+    /**
+     * Constructor for CharacterService
+     * 
+     * @param ObjectService $objectService The object service for interacting with objects
+     */
     public function __construct(
-        private readonly CharacterMapper $characterMapper,
-        private readonly AbilityMapper $abilityMapper,		
-        private readonly SkillMapper $skillMapper,
-        private readonly ItemMapper $itemMapper,
-        private readonly ConditionMapper $conditionMapper,
-        private readonly EventMapper $eventMapper,
-        private readonly EffectMapper $effectMapper,
         private readonly ObjectService $objectService
     ) {
         $this->loadAllEntities();
     }
 
+    /**
+     * Loads all entities needed for character calculations
+     * 
+     * @return void
+     */
     private function loadAllEntities(): void
     {
         // Get all skills and index them by ID
@@ -103,7 +99,7 @@ class CharacterService
      */
     public function calculateAllCharacters(): array
     {
-        $characters = $this->characterMapper->findAll();
+        $characters = $this->objectService->getObjects('character');
         $updatedCharacters = [];
         foreach ($characters as $character) {
             $updatedCharacters[] = $this->calculateCharacter($character);

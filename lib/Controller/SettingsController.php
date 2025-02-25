@@ -10,13 +10,19 @@ use OCP\IRequest;
 use OCA\LarpingApp\Service\ObjectService;
 
 /**
- * Class SettingsController
- *
- * Controller for handling settings-related operations in the OpenCatalogi app.
+ * @class SettingsController
+ * @category Controller
+ * @package LarpingApp
+ * @author Conduction Team
+ * @copyright 2023 Conduction
+ * @license EUPL-1.2
+ * @version 1.0.0
+ * @link https://github.com/OpenCatalogi/larping-app
+ * 
+ * Controller for handling settings-related operations in the LarpingApp.
  */
 class SettingsController extends Controller
 {
-
 	/**
 	 * SettingsController constructor.
 	 *
@@ -59,7 +65,8 @@ class SettingsController extends Controller
 		// Build defaults array dynamically based on object types
 		$defaults = [];
 		foreach ($data['objectTypes'] as $type) {
-			$defaults["{$type}_source"] = 'internal';
+			// Always use openregister as source
+			$defaults["{$type}_source"] = 'openregister';
 			$defaults["{$type}_schema"] = '';
 			$defaults["{$type}_register"] = '';
 		}
