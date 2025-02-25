@@ -154,9 +154,10 @@ class ObjectService
 	 * @param string $objectType The type of objects to retrieve.
 	 * @param int|null $limit The maximum number of objects to retrieve.
 	 * @param int|null $offset The offset from which to start retrieving objects.
-	 * @param array|null $filters Filters to apply to the query.
-	 * @param array|null $sort Sorting parameters for the query.
-	 * @param array|null $extend Additional parameters for extending the query.
+	 * @param array $filters Filters to apply to the query.
+	 * @param array $sort Sorting parameters for the query.
+	 * @param string|null $search Search string to filter results.
+	 * @param array $extend Additional parameters for extending the query.
 	 *
 	 * @return array The retrieved objects as arrays.
 	 * @throws ContainerExceptionInterface|DoesNotExistException|MultipleObjectsReturnedException|NotFoundExceptionInterface
@@ -166,10 +167,10 @@ class ObjectService
 		string $objectType,
 		?int $limit = null,
 		?int $offset = null,
-		?array $filters = [],
-		?array $sort = [],
+		array $filters = [],
+		array $sort = [],
 		?string $search = null,
-		?array $extend = []
+		array $extend = []
 	): array
 	{
 		// Get the appropriate mapper for the object type

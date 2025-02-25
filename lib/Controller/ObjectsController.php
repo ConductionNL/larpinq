@@ -56,11 +56,16 @@ class ObjectsController extends Controller
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 *
+	 * @param string $objectType The type of object to retrieve
+	 * @param string $id The ID of the object to retrieve
 	 * @return JSONResponse
 	 */
 	public function show(string $objectType, string $id): JSONResponse
 	{
         try {
+            // Get all parameters from the request
+            $requestParams = $this->request->getParams();
+            
             // Get extend parameter if present
             $extend = $requestParams['extend'] ?? $requestParams['_extend'] ?? [];
             if (is_string($extend)) {
