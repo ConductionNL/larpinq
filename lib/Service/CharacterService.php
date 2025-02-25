@@ -93,17 +93,29 @@ class CharacterService
     }
 
     /**
-     * Calculate stats for all characters
+     * Calculate stats for all characters and save the updated characters
      *
      * @return array Updated array of Character objects
+     * @throws \Exception If saving characters fails
      */
     public function calculateAllCharacters(): array
     {
+        // Get all characters
         $characters = $this->objectService->getObjects('character');
         $updatedCharacters = [];
+        
+        // Calculate stats for each character and save the updated character
         foreach ($characters as $character) {
-            $updatedCharacters[] = $this->calculateCharacter($character);
+            // Calculate the character stats
+            $updatedCharacter = $this->calculateCharacter($character);
+            
+            // Save the updated character to the database
+            $this->objectService->saveObject('character', $updatedCharacter);
+            
+            // Add to the array of updated characters
+            $updatedCharacters[] = $updatedCharacter;
         }
+        
         return $updatedCharacters;
     }
 
@@ -133,7 +145,12 @@ class CharacterService
             foreach ($character['skills'] as $skillId) {
                 $skill = $this->allSkills[$skillId] ?? null;
                 if ($skill && isset($skill['effects']) && !empty($skill['effects'])) {
-                    $this->applyEffects($abilityScores, $skill['effects']);
+                    $this->applyEffects(
+                        $abilityScores, 
+                        $skill['effects'], 
+                        'skill', 
+                        $skill['name'] ?? 'Unknown Skill'
+                    );
                 }
             }
         }
@@ -143,7 +160,12 @@ class CharacterService
             foreach ($character['items'] as $itemId) {
                 $item = $this->allItems[$itemId] ?? null;
                 if ($item && isset($item['effects']) && !empty($item['effects'])) {
-                    $this->applyEffects($abilityScores, $item['effects']);
+                    $this->applyEffects(
+                        $abilityScores, 
+                        $item['effects'], 
+                        'item', 
+                        $item['name'] ?? 'Unknown Item'
+                    );
                 }
             }
         }
@@ -153,7 +175,12 @@ class CharacterService
             foreach ($character['conditions'] as $conditionId) {
                 $condition = $this->allConditions[$conditionId] ?? null;
                 if ($condition && isset($condition['effects']) && !empty($condition['effects'])) {
-                    $this->applyEffects($abilityScores, $condition['effects']);
+                    $this->applyEffects(
+                        $abilityScores, 
+                        $condition['effects'], 
+                        'condition', 
+                        $condition['name'] ?? 'Unknown Condition'
+                    );
                 }
             }
         }
@@ -163,7 +190,12 @@ class CharacterService
             foreach ($character['events'] as $eventId) {
                 $event = $this->allEvents[$eventId] ?? null;
                 if ($event && isset($event['effects']) && !empty($event['effects'])) {
-                    $this->applyEffects($abilityScores, $event['effects']);
+                    $this->applyEffects(
+                        $abilityScores, 
+                        $event['effects'], 
+                        'event', 
+                        $event['name'] ?? 'Unknown Event'
+                    );
                 }
             }
         }
@@ -179,8 +211,11 @@ class CharacterService
      *
      * @param array $abilities Reference to the abilities array
      * @param array|null $effects Array of effect IDs
+     * @param string $sourceType The type of the source (skill, item, condition, event)
+     * @param string $sourceName The name of the source
+     * @return void
      */
-    private function applyEffects(array &$abilities, ?array $effects): void
+    private function applyEffects(array &$abilities, ?array $effects, string $sourceType = '', string $sourceName = ''): void
     {
         // Return early if effects is null or empty
         if (empty($effects)) {
@@ -195,7 +230,7 @@ class CharacterService
             
             $effect = $this->allEffects[$effectId] ?? null;
             if ($effect) {
-                $this->calculateEffect($abilities, $effect);
+                $this->calculateEffect($abilities, $effect, $sourceType, $sourceName);
             }
         }
     }
@@ -205,8 +240,11 @@ class CharacterService
      *
      * @param array $abilities Reference to the abilities array
      * @param array $effect Effect array containing stat_id, modifier and modification
+     * @param string $sourceType The type of the source (skill, item, condition, event)
+     * @param string $sourceName The name of the source
+     * @return void
      */
-    private function calculateEffect(array &$abilities, array $effect): void
+    private function calculateEffect(array &$abilities, array $effect, string $sourceType = '', string $sourceName = ''): void
     {
         // Initialize array to track affected abilities
         $effectAbilities = isset($effect['abilities']) && is_array($effect['abilities']) ? $effect['abilities'] : [];
@@ -248,10 +286,12 @@ class CharacterService
                 $abilities[$abilityId]['value'] = $currentValue - $modifier;
             }
 
-            // Add audit trail
+            // Add audit trail with source information
             $abilities[$abilityId]['audit'][] = [
                 'type' => 'effect',
                 'effect' => $effect,
+                'type' => $sourceType,
+                'name' => $sourceName,
                 'old' => $currentValue,
                 'new' => $abilities[$abilityId]['value']
             ];

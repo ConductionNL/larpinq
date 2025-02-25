@@ -117,6 +117,13 @@ class ObjectsController extends Controller
             // Save the new object
             $object = $this->objectService->saveObject(objectType: $objectType, object: $data, extend: $extend);
             
+            // Check if we need to recalculate characters based on the object type
+            $objectTypesThatAffectCharacters = ['ability'];
+            if (in_array($objectType, $objectTypesThatAffectCharacters)) {
+                // Recalculate all characters when a relevant object is updated
+                $this->characterService->calculateAllCharacters();
+            }
+            
             // Return the created object as a JSON response
             return new JSONResponse($object);
         } catch (Exception $e) {
@@ -133,7 +140,10 @@ class ObjectsController extends Controller
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 *
-	 * @return JSONResponse
+	 * @param string $objectType The type of object to update
+	 * @param string $id The ID of the object to update
+	 * @return JSONResponse The updated object as a JSON response
+	 * @throws Exception If the update fails
 	 */
 	public function update(string $objectType, string $id): JSONResponse
 	{
@@ -157,6 +167,13 @@ class ObjectsController extends Controller
 
             // Save the updated object
             $object = $this->objectService->saveObject(objectType: $objectType, object: $data, extend: $extend);
+            
+            // Check if we need to recalculate characters based on the object type
+            $objectTypesThatAffectCharacters = ['item', 'event', 'condition', 'effect', 'skill', 'ability'];
+            if (in_array($objectType, $objectTypesThatAffectCharacters)) {
+                // Recalculate all characters when a relevant object is updated
+                $this->characterService->calculateAllCharacters();
+            }
             
             // Return the updated object as a JSON response
             return new JSONResponse($object);
