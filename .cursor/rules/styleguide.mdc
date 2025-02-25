@@ -1,0 +1,7 @@
+---
+description: This rule describes how cursor should code on this project
+globs: 
+---
+
+# ## Visual components
+We use [Nextcloud Vue](mdc:https:/nextcloud-vue-components.netlify.app) components in line with: [Nextcloud Vue Styleguide](mdc:https:/docs.nextcloud.com/server/27/developer_manual/design/index.html).
