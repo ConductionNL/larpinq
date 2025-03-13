@@ -45,7 +45,7 @@ class ObjectsController extends Controller
 
         // Fetch catalog objects based on filters and order
         $data = $this->objectService->getResultArrayForRequest($objectType, $requestParams);
-
+        
         // Return JSON response
         return new JSONResponse($data);
 	}

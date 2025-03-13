@@ -124,10 +124,21 @@ export default {
 
 					// Pre-select existing skills
 					if (characterStore.characterItem?.skills?.length) {
-						this.selectedSkills = characterStore.characterItem.skills.map(skill => ({
-							id: skill.id,
-							label: skill.name,
-						}))
+						this.selectedSkills = characterStore.characterItem.skills.map(skill => {
+							// Handle case where skill is just a UUID string
+							if (typeof skill === 'string') {
+								const skillData = skillStore.skillList.find(s => s.id === skill)
+								return {
+									id: skillData.id,
+									label: skillData.name
+								}
+							}
+							// Handle case where skill is an object
+							return {
+								id: skill.id,
+								label: skill.name,
+							}
+						})
 					}
 
 					this.skillsLoading = false

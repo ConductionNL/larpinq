@@ -371,6 +371,7 @@ class ObjectService
 		$extend = $requestParams['extend'] ?? $requestParams['_extend'] ?? null;
 		$page = $requestParams['page'] ?? $requestParams['_page'] ?? null;
 		$search = $requestParams['search'] ?? $requestParams['_search'] ?? null;
+
 		// If page is set, calculate the offset
 		if ($page !== null && isset($limit)) {
 			$offset = $limit * ($page - 1);
@@ -400,6 +401,7 @@ class ObjectService
 			extend: $extend,
 			search: $search
 		);
+
 
 		$facets = $this->getFacets($objectType, $filters);
 

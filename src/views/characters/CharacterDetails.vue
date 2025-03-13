@@ -90,7 +90,9 @@ import { characterStore, navigationStore } from '../../store/store.js'
 										<ShieldSwordOutline :size="44" />
 									</template>
 									<template #subname>
-										Base: {{ stat.base }}{{ stat.audit ? ', Effects: ' + stat.audit.map(a => `(${a.type.charAt(0).toUpperCase() + a.type.slice(1)}:${a.name} ${a.effect.modification > 0 ? '+' : '-'}${a.effect.modifier})`).join(', ') : '' }}
+										<div class="stat-effects">
+											Base: {{ stat.base }}{{ stat.audit ? ', Effects: ' + stat.audit.map(a => `(${a.type.charAt(0).toUpperCase() + a.type.slice(1)}:${a.name} ${a.effect.modification > 0 ? '+' : '-'}${a.effect.modifier})`).join(', ') : '' }}
+										</div>
 									</template>
 								</NcListItem>
 							</div>
@@ -286,4 +288,37 @@ h4 {
     margin-left: 10px;
 }
 
+/* Style for stat effects to prevent truncation */
+.stat-effects {
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
+  line-height: 1.4;
+  padding: 4px 0;
+}
+
+/* Ensure list items expand properly with multi-line content */
+:deep(.app-content-list-item) {
+  height: auto !important;
+  min-height: 44px;
+}
+
+:deep(.app-content-list-item-line-one),
+:deep(.app-content-list-item-line-two) {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+}
+
+/* Alternative solution with horizontal scrollbar */
+/* Uncomment this and comment out the above .stat-effects if you prefer scrolling
+.stat-effects {
+  white-space: nowrap;
+  overflow-x: auto;
+  max-width: 100%;
+  display: block;
+  padding-bottom: 5px;
+}
+*/
 </style>

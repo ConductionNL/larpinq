@@ -13,8 +13,7 @@
         </tr>
       </thead>
       <tbody>
-        <template v-for="(stat, statId) in auditData" :key="statId">
-          <tr v-if="stat.audit" v-for="(audit, index) in stat.audit" :key="`${statId}-${index}`">
+        <tr v-for="(stat, statId) in auditData" :key="statId" v-if="stat.audit">>
             <td>{{ stat.name }}</td>
             <td>{{ audit.type }}</td>
             <td>{{ audit.name }}</td>
@@ -24,8 +23,7 @@
             </td>
             <td>{{ audit.old }}</td>
             <td>{{ audit.new }}</td>
-          </tr>
-        </template>
+        </tr>
       </tbody>
     </table>
     <div v-else class="empty-state">
