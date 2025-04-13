@@ -1,5 +1,5 @@
 <script setup>
-import { conditionStore, navigationStore } from '../../store/store.js'
+import { objectStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -8,7 +8,7 @@ import { conditionStore, navigationStore } from '../../store/store.js'
 			<ConditionsList />
 		</template>
 		<template #default>
-			<NcEmptyContent v-if="!conditionStore.conditionItem || navigationStore.selected != 'conditions' "
+			<NcEmptyContent v-if="!objectStore.getActiveObject('condition') || navigationStore.selected != 'conditions'"
 				class="detailContainer"
 				name="Geen Conditie"
 				description="Nog geen conditie geselecteerd">
@@ -16,12 +16,15 @@ import { conditionStore, navigationStore } from '../../store/store.js'
 					<EmoticonSickOutline />
 				</template>
 				<template #action>
-					<NcButton type="primary" @click="conditionStore.setConditionItem(null); navigationStore.setModal('editCondition')">
-						Conditie aanmaken
+					<NcButton type="primary" @click="objectStore.clearActiveObject('condition'); navigationStore.setModal('editCondition')">
+						<template #icon>
+							<Plus :size="20" />
+						</template>
+						Nieuwe conditie
 					</NcButton>
 				</template>
 			</NcEmptyContent>
-			<ConditionDetails v-if="conditionStore.conditionItem && navigationStore.selected === 'conditions'" />
+			<ConditionDetails v-if="objectStore.getActiveObject('condition') && navigationStore.selected === 'conditions'" />
 		</template>
 	</NcAppContent>
 </template>
@@ -31,6 +34,7 @@ import { NcAppContent, NcEmptyContent, NcButton } from '@nextcloud/vue'
 import ConditionsList from './ConditionsList.vue'
 import ConditionDetails from './ConditionDetails.vue'
 import EmoticonSickOutline from 'vue-material-design-icons/EmoticonSickOutline.vue'
+import Plus from 'vue-material-design-icons/Plus.vue'
 
 export default {
 	name: 'ConditionsIndex',
@@ -41,6 +45,7 @@ export default {
 		ConditionsList,
 		ConditionDetails,
 		EmoticonSickOutline,
+		Plus,
 	},
 }
 </script>

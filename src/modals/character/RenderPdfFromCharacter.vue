@@ -1,19 +1,20 @@
 <script setup>
-import { characterStore, navigationStore, templateStore } from '../../store/store.js'
+import { objectStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
 	<NcDialog v-if="navigationStore.modal === 'renderPdfFromCharacter'"
-		name="PDF downloaden"
+		name="PDF genereren"
 		size="normal"
 		:can-close="false">
+		<NcNoteCard v-if="success" type="success">
+			<p>PDF succesvol gegenereerd</p>
+		</NcNoteCard>
 		<NcNoteCard v-if="error" type="error">
 			<p>{{ error }}</p>
 		</NcNoteCard>
 
-		<div class="formContainer">
-			<p>Selecteer een template om een PDF te genereren van dit karakter.</p>
-
+		<div v-if="!success" class="formContainer">
 			<NcSelect v-bind="templates"
 				v-model="templates.value"
 				input-label="Template *"
@@ -27,7 +28,7 @@ import { characterStore, navigationStore, templateStore } from '../../store/stor
 				<template #icon>
 					<Cancel :size="20" />
 				</template>
-				Annuleer
+				{{ success ? 'Sluiten' : 'Annuleer' }}
 			</NcButton>
 			<NcButton @click="openLink('https://conduction.gitbook.io/opencatalogi-nextcloud/gebruikers/publicaties', '_blank')">
 				<template #icon>
@@ -35,15 +36,15 @@ import { characterStore, navigationStore, templateStore } from '../../store/stor
 				</template>
 				Help
 			</NcButton>
-			<NcButton
-				:disabled="loading || templatesLoading || !templates.value"
+			<NcButton v-if="!success"
+				:disabled="loading || templatesLoading"
 				type="primary"
-				@click="downloadPdf()">
+				@click="renderPdf()">
 				<template #icon>
 					<NcLoadingIcon v-if="loading" :size="20" />
-					<Download v-if="!loading" :size="20" />
+					<Save v-if="!loading" :size="20" />
 				</template>
-				Download PDF
+				Genereren
 			</NcButton>
 		</template>
 	</NcDialog>
@@ -59,7 +60,7 @@ import {
 } from '@nextcloud/vue'
 
 import Cancel from 'vue-material-design-icons/Cancel.vue'
-import Download from 'vue-material-design-icons/Download.vue'
+import Save from 'vue-material-design-icons/ContentSave.vue'
 import Help from 'vue-material-design-icons/Help.vue'
 
 /**
@@ -76,24 +77,27 @@ export default {
 		NcNoteCard,
 		// Icons
 		Cancel,
-		Download,
+		Save,
 		Help,
 	},
 	data() {
 		return {
-			templates: {},
-			templatesLoading: false,
+			templates: {
+				options: [],
+				value: null,
+			},
+			success: false,
 			loading: false,
 			error: false,
 			hasUpdated: false,
 		}
 	},
-	mounted() {
-		this.fetchTemplates()
-	},
 	updated() {
 		if (navigationStore.modal === 'renderPdfFromCharacter' && !this.hasUpdated) {
-			this.fetchTemplates()
+			this.templates.options = objectStore.getCollection('template').results.map((template) => ({
+				id: template.id,
+				label: template.name,
+			}))
 			this.hasUpdated = true
 		}
 	},
@@ -103,32 +107,37 @@ export default {
 		 */
 		closeModal() {
 			navigationStore.setModal(false)
+			this.success = false
 			this.loading = false
-			this.templatesLoading = false
 			this.error = false
 			this.hasUpdated = false
+			this.templates.value = null
+			this.templates.options = []
 		},
 
 		/**
 		 * Downloads the PDF for the current character using the selected template
 		 */
-		async downloadPdf() {
-			if (!characterStore.characterItem?.id || !this.templates.value?.id) {
-				this.error = 'Selecteer eerst een template'
-				return
-			}
-
+		async renderPdf() {
 			this.loading = true
 			try {
-				// Generate PDF download URL using the correct format
-				const pdfUrl = `/index.php/apps/larpingapp/characters/${characterStore.characterItem.id}/download/${this.templates.value.id}`
-				
-				// Open PDF in new tab
+				const character = objectStore.getActiveObject('character')
+				if (!character?.id || !this.templates.value?.id) {
+					throw new Error('Character or template not selected')
+				}
+
+				const pdfUrl = `/index.php/apps/larpingapp/characters/${character.id}/download/${this.templates.value.id}`
 				window.open(pdfUrl, '_blank')
-				
-				this.closeModal()
+
+				this.success = true
+				this.loading = false
+				this.error = false
+				setTimeout(() => {
+					this.closeModal()
+				}, 2000)
 			} catch (error) {
 				this.loading = false
+				this.success = false
 				this.error = error.message || 'Er is een fout opgetreden bij het genereren van de PDF'
 			}
 		},
@@ -140,24 +149,6 @@ export default {
 		 */
 		openLink(url, target) {
 			window.open(url, target)
-		},
-
-		/**
-		 * Fetches the templates from the template store
-		 */
-		fetchTemplates() {
-			this.templatesLoading = true
-
-			templateStore.refreshTemplateList()
-				.then(() => {
-					this.templates = {
-						options: templateStore.templateList.map((template) => ({
-							id: template.id,
-							label: template.name,
-						})),
-					}
-					this.templatesLoading = false
-				})
 		},
 	},
 }

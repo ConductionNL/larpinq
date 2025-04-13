@@ -1,5 +1,5 @@
 <script setup>
-import { characterStore, navigationStore } from '../../store/store.js'
+import { navigationStore, objectStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -9,7 +9,7 @@ import { characterStore, navigationStore } from '../../store/store.js'
 			<div>
 				<div class="head">
 					<h1 class="h1">
-						{{ characterStore.characterItem.name }}
+						{{ objectStore.getActiveObject('character').name }}
 					</h1>
 					<NcActions :primary="true" menu-name="Acties">
 						<template #icon>
@@ -51,7 +51,7 @@ import { characterStore, navigationStore } from '../../store/store.js'
 							</template>
 							Als pdf downloaden
 						</NcActionButton>
-						<NcActionButton >
+						<NcActionButton>
 							<template #icon>
 								<AccountCheck :size="20" />
 							</template>
@@ -65,24 +65,24 @@ import { characterStore, navigationStore } from '../../store/store.js'
 						</NcActionButton>
 					</NcActions>
 				</div>
-				<NcNoteCard v-if="characterStore.characterItem.notice" type="info">
-					{{ characterStore.characterItem.notice }}
+				<NcNoteCard v-if="objectStore.getActiveObject('character').notice" type="info">
+					{{ objectStore.getActiveObject('character').notice }}
 				</NcNoteCard>
 				<div class="detailGrid">
 					<div>
 						<b>Sammenvatting:</b>
-						<span>{{ characterStore.characterItem.summary }}</span>
+						<span>{{ objectStore.getActiveObject('character').summary }}</span>
 					</div>
 				</div>
-				<span>{{ characterStore.characterItem.description }}</span>
+				<span>{{ objectStore.getActiveObject('character').description }}</span>
 				<div class="tabContainer">
 					<BTabs content-class="mt-3" justified>
 						<BTab active>
 							<template #title>
-								Eigenschappen <NcCounterBubble>{{ characterStore.characterItem.stats ? Object.keys(characterStore.characterItem.stats).length : 0 }}</NcCounterBubble>
+								Eigenschappen <NcCounterBubble>{{ objectStore.getActiveObject('character').stats ? Object.keys(objectStore.getActiveObject('character').stats).length : 0 }}</NcCounterBubble>
 							</template>
-							<div v-if="characterStore.characterItem.stats">
-								<NcListItem v-for="(stat, id) in characterStore.characterItem.stats"
+							<div v-if="objectStore.getActiveObject('character').stats">
+								<NcListItem v-for="(stat, id) in objectStore.getActiveObject('character').stats"
 									:key="id"
 									:name="stat.value + ' ' + stat.name"
 									:bold="false">
@@ -103,56 +103,56 @@ import { characterStore, navigationStore } from '../../store/store.js'
 
 						<BTab>
 							<template #title>
-								Skills <NcCounterBubble>{{ characterStore.characterItem.skills ? characterStore.characterItem.skills.length : 0 }}</NcCounterBubble>
-							</template>							
-							<ObjectList :objects="characterStore.characterItem.skills" />
-						</BTab>
-
-						<BTab>
-							<template #title>
-								Items <NcCounterBubble>{{ characterStore.characterItem.items ? characterStore.characterItem.items.length : 0 }}</NcCounterBubble>
+								Skills <NcCounterBubble>{{ objectStore.getActiveObject('character').skills ? objectStore.getActiveObject('character').skills.length : 0 }}</NcCounterBubble>
 							</template>
-							<ObjectList :objects="characterStore.characterItem.items" />
+							<ObjectList :objects="objectStore.getActiveObject('character').skills" />
 						</BTab>
 
 						<BTab>
 							<template #title>
-								Conditions <NcCounterBubble>{{ characterStore.characterItem.conditions ? characterStore.characterItem.conditions.length : 0 }}</NcCounterBubble>
-							</template>							
-							<ObjectList :objects="characterStore.characterItem.conditions" />
-						</BTab>
-
-						<BTab>
-							<template #title>
-								Events <NcCounterBubble>{{ characterStore.characterItem.events ? characterStore.characterItem.events.length : 0 }}</NcCounterBubble>
+								Items <NcCounterBubble>{{ objectStore.getActiveObject('character').items ? objectStore.getActiveObject('character').items.length : 0 }}</NcCounterBubble>
 							</template>
-							<ObjectList :objects="characterStore.characterItem.events" />
+							<ObjectList :objects="objectStore.getActiveObject('character').items" />
 						</BTab>
 
 						<BTab>
 							<template #title>
-								Background <NcCounterBubble>{{ characterStore.characterItem.background ? 1 : 0 }}</NcCounterBubble>
+								Conditions <NcCounterBubble>{{ objectStore.getActiveObject('character').conditions ? objectStore.getActiveObject('character').conditions.length : 0 }}</NcCounterBubble>
 							</template>
-							<div v-if="characterStore.characterItem.background">
-								{{ characterStore.characterItem.background }}
+							<ObjectList :objects="objectStore.getActiveObject('character').conditions" />
+						</BTab>
+
+						<BTab>
+							<template #title>
+								Events <NcCounterBubble>{{ objectStore.getActiveObject('character').events ? objectStore.getActiveObject('character').events.length : 0 }}</NcCounterBubble>
+							</template>
+							<ObjectList :objects="objectStore.getActiveObject('character').events" />
+						</BTab>
+
+						<BTab>
+							<template #title>
+								Background <NcCounterBubble>{{ objectStore.getActiveObject('character').background ? 1 : 0 }}</NcCounterBubble>
+							</template>
+							<div v-if="objectStore.getActiveObject('character').background">
+								{{ objectStore.getActiveObject('character').background }}
 							</div>
 							<div v-else>
 								Geen achtergrond gevonden
 							</div>
 						</BTab>
-						
+
 						<BTab>
 							<template #title>
-								Logging <NcCounterBubble>{{ characterStore.auditTrails ? characterStore.auditTrails.length : 0 }}</NcCounterBubble>
+								Logging <NcCounterBubble>{{ objectStore.getAuditTrails('character')?.length || 0 }}</NcCounterBubble>
 							</template>
-							<AuditList :logs="characterStore.auditTrails" />
+							<AuditTable :logs="objectStore.getAuditTrails('character')" />
 						</BTab>
-						
+
 						<!-- <BTab>
 							<template #title>
-								Audit 
+								Audit
 							</template>
-							<AuditTable :audit-data="characterStore.characterItem.stats" />
+							<AuditTable :audit-data="objectStore.getActiveObject('character').stats" />
 						</BTab> -->
 					</BTabs>
 				</div>
@@ -167,26 +167,19 @@ import { BTabs, BTab } from 'bootstrap-vue'
 import { NcActions, NcActionButton, NcListItem, NcNoteCard, NcCounterBubble } from '@nextcloud/vue'
 
 // Custom components
-import AuditList from '../auditTrail/AuditList.vue'
+import ObjectList from '../../components/ObjectList.vue'
 import AuditTable from '../auditTrail/AuditTable.vue'
-import ObjectList from '../objects/ObjectList.vue'
 
 // Icons
 import DotsHorizontal from 'vue-material-design-icons/DotsHorizontal.vue'
 import Pencil from 'vue-material-design-icons/Pencil.vue'
 import AccountPlus from 'vue-material-design-icons/AccountPlus.vue'
 import CalendarPlus from 'vue-material-design-icons/CalendarPlus.vue'
-import MessagePlus from 'vue-material-design-icons/MessagePlus.vue'
 import FileDocumentPlusOutline from 'vue-material-design-icons/FileDocumentPlusOutline.vue'
 import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
-import EyeArrowRight from 'vue-material-design-icons/EyeArrowRight.vue'
-import SwordCross from 'vue-material-design-icons/SwordCross.vue'
-import Sword from 'vue-material-design-icons/Sword.vue'
 import EmoticonSickOutline from 'vue-material-design-icons/EmoticonSickOutline.vue'
-import CalendarMonthOutline from 'vue-material-design-icons/CalendarMonthOutline.vue'
 import ShieldSwordOutline from 'vue-material-design-icons/ShieldSwordOutline.vue'
 import Download from 'vue-material-design-icons/Download.vue'
-import BriefcaseAccountOutline from 'vue-material-design-icons/BriefcaseAccountOutline.vue'
 import AccountCheck from 'vue-material-design-icons/AccountCheck.vue'
 
 export default {
@@ -201,9 +194,8 @@ export default {
 		BTabs,
 		BTab,
 		// Custom components
-		AuditList,
-		AuditTable,
 		ObjectList,
+		AuditTable,
 		// Icons
 		DotsHorizontal,
 		Pencil,
@@ -211,24 +203,19 @@ export default {
 		CalendarPlus,
 		FileDocumentPlusOutline,
 		TrashCanOutline,
-		EyeArrowRight,
-		SwordCross,
-		Sword,
 		EmoticonSickOutline,
-		CalendarMonthOutline,
 		ShieldSwordOutline,
 		Download,
-		BriefcaseAccountOutline,
 		AccountCheck,
 	},
 	methods: {
 		/**
 		 * Download character as PDF
-		 * 
+		 *
 		 * @return {void}
 		 */
 		downloadCharacterPdf() {
-			const characterId = characterStore.characterItem.id
+			const characterId = objectStore.getActiveObject('character').id
 			fetch(`characters/${characterId}/download`)
 				.then(response => {
 					if (!response.ok) {
@@ -239,7 +226,7 @@ export default {
 				.then(blob => {
 					const link = document.createElement('a')
 					link.href = window.URL.createObjectURL(blob)
-					link.download = `${characterStore.characterItem.name}_character_sheet.pdf`
+					link.download = `${objectStore.getActiveObject('character').name}_character_sheet.pdf`
 					link.click()
 					window.URL.revokeObjectURL(link.href)
 				})
@@ -247,7 +234,7 @@ export default {
 					console.error('Error downloading PDF:', error)
 					// Handle error (e.g., show error message to user)
 				})
-		},		
+		},
 	},
 }
 </script>

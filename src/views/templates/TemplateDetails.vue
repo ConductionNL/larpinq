@@ -1,66 +1,58 @@
 <script setup>
-import { templateStore, navigationStore } from '../../store/store.js'
+import { objectStore, navigationStore } from '../../store/store.js'
 import DOMPurify from 'dompurify'
 </script>
 
 <template>
-	<div class="detailContainer">
-		<div id="app-content">
-			<div>
-				<div class="head">
-					<h1 class="h1">
-						{{ templateStore.templateItem.name }}
-					</h1>
-					<NcActions :primary="true" menu-name="Acties">
+	<div class="template-details">
+		<div class="template-header">
+			<h2>
+				{{ objectStore.getActiveObject('template').name }}
+				<NcActions>
+					<NcActionButton @click="objectStore.setActiveObject('template', null); navigationStore.setModal('editTemplate')">
 						<template #icon>
-							<DotsHorizontal :size="20" />
+							<Pencil :size="20" />
 						</template>
-						<NcActionButton @click="navigationStore.setModal('editTemplate')">
-							<template #icon>
-								<Pencil :size="20" />
-							</template>
-							Bewerken
-						</NcActionButton>
-						<NcActionButton @click="navigationStore.setDialog('deleteTemplate')">
-							<template #icon>
-								<TrashCanOutline :size="20" />
-							</template>
-							Verwijderen
-						</NcActionButton>
-					</NcActions>
-				</div>
-				<div class="detailGrid">
-					<div>
-						<b>Beschrijving:</b>
-						<span>{{ templateStore.templateItem.description }}</span>
-					</div>
-				</div>
-			</div>
+						Edit
+					</NcActionButton>
+					<NcActionButton @click="objectStore.setActiveObject('template', null); navigationStore.setDialog('deleteTemplate')">
+						<template #icon>
+							<TrashCanOutline :size="20" />
+						</template>
+						Delete
+					</NcActionButton>
+				</NcActions>
+			</h2>
 		</div>
-		<div class="tabContainer">
-			<BTabs content-class="mt-3" justified>
+
+		<div class="template-content">
+			<div class="template-description">
+				<h3>Description</h3>
+				<span>{{ objectStore.getActiveObject('template').description }}</span>
+			</div>
+
+			<BTabs>
 				<BTab>
 					<template #title>
-						Content <NcCounterBubble>{{ templateStore.templateItem.template ? 1 : 0 }}</NcCounterBubble>
+						Content <NcCounterBubble>{{ objectStore.getActiveObject('template').template ? 1 : 0 }}</NcCounterBubble>
 					</template>
-					<NcGuestContent>
-						<NcRichText
-							:text="DOMPurify.sanitize(templateStore.templateItem.template)"
-							:autolink="true"
-							:use-markdown="true" />
-					</NcGuestContent>
+					<div class="template-preview">
+						<div v-html="DOMPurify.sanitize(objectStore.getActiveObject('template').template)" />
+					</div>
 				</BTab>
+
 				<BTab>
 					<template #title>
-						Relations <NcCounterBubble>{{ templateStore.relations ? templateStore.relations.length : 0 }}</NcCounterBubble>
+						Relations <NcCounterBubble>{{ objectStore.getRelatedObjects('template').length }}</NcCounterBubble>
 					</template>
-					<ObjectList :objects="templateStore.relations" />
+					<ObjectList :objects="objectStore.getRelatedObjects('template')" />
 				</BTab>
+
 				<BTab>
 					<template #title>
-						Logging <NcCounterBubble>{{ templateStore.auditTrails ? templateStore.auditTrails.length : 0 }}</NcCounterBubble>
+						Logging <NcCounterBubble>{{ objectStore.getAuditTrails('template')?.length || 0 }}</NcCounterBubble>
 					</template>
-					<AuditList :logs="templateStore.auditTrails" />
+					<AuditTable :logs="objectStore.getAuditTrails('template')" />
 				</BTab>
 			</BTabs>
 		</div>
@@ -72,8 +64,8 @@ import { BTabs, BTab } from 'bootstrap-vue'
 import { NcLoadingIcon, NcActions, NcActionButton, NcGuestContent, NcRichText, NcCounterBubble } from '@nextcloud/vue'
 
 // Custom components
-import AuditList from '../auditTrail/AuditList.vue'
-import ObjectList from '../objects/ObjectList.vue'
+import AuditTable from '../auditTrail/AuditTable.vue'
+import ObjectList from '../../components/ObjectList.vue'
 
 import Pencil from 'vue-material-design-icons/Pencil.vue'
 import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
@@ -89,7 +81,7 @@ export default {
 		BTabs,
 		BTab,
 		// Custom components
-		AuditList,
+		AuditTable,
 		ObjectList,
 		// Icons
 		Pencil,

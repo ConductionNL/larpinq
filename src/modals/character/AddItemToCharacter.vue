@@ -1,25 +1,23 @@
 <script setup>
-import { characterStore, itemStore, navigationStore } from '../../store/store.js'
+import { objectStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
 	<NcDialog v-if="navigationStore.modal === 'addItemToCharacter'"
-		name="Voorwerpen bewerken"
+		name="Items bewerken"
 		size="normal"
 		:can-close="false">
 		<NcNoteCard v-if="success" type="success">
-			<p>Voorwerpen succesvol bijgewerkt</p>
+			<p>Items succesvol bijgewerkt</p>
 		</NcNoteCard>
 		<NcNoteCard v-if="error" type="error">
 			<p>{{ error }}</p>
 		</NcNoteCard>
 
 		<div v-if="!success" class="formContainer">
-			<p>Let op: Het bewerken van voorwerpen kan invloed hebben op de eigenschappen van het karakter. Dit is een asynchroon proces, dus het kan even duren voordat de wijzigingen zichtbaar worden.</p>
-
 			<NcSelect v-bind="items"
 				v-model="selectedItems"
-				input-label="Voorwerpen *"
+				input-label="Items *"
 				:loading="itemsLoading"
 				:disabled="itemsLoading"
 				required />
@@ -80,68 +78,74 @@ export default {
 	},
 	data() {
 		return {
-			items: {},
+			items: {
+				multiple: true,
+				closeOnSelect: false,
+				options: [],
+				value: null,
+			},
 			selectedItems: [],
-			itemsLoading: false,
 			success: false,
 			loading: false,
 			error: false,
 			hasUpdated: false,
 		}
 	},
-	mounted() {
-		this.fetchItems()
-	},
 	updated() {
 		if (navigationStore.modal === 'addItemToCharacter' && !this.hasUpdated) {
-			this.fetchItems()
+			// Create options from all available items
+			this.items.options = objectStore.getObjectList('item').map((item) => ({
+				id: item.id,
+				label: item.name,
+			}))
+
+			// Pre-select existing items
+			const character = objectStore.getActiveObject('character')
+			if (character?.items?.length) {
+				this.selectedItems = character.items.map(item => {
+					// Handle case where item is just a UUID string
+					if (typeof item === 'string') {
+						const itemData = objectStore.getObjectList('item').find(s => s.id === item)
+						return {
+							id: itemData.id,
+							label: itemData.name
+						}
+					}
+					// Handle case where item is an object
+					return {
+						id: item.id,
+						label: item.name,
+					}
+				})
+			}
+
 			this.hasUpdated = true
 		}
 	},
 	methods: {
 		closeModal() {
-			navigationStore.setModal(false)
+			navigationStore.closeModal()
 			this.success = false
 			this.loading = false
 			this.error = false
 			this.hasUpdated = false
 			this.selectedItems = []
-		},
-		fetchItems() {
-			this.itemsLoading = true
-
-			itemStore.refreshItemList()
-				.then(() => {
-					// Create options from all available items
-					this.items = {
-						multiple: true,
-						closeOnSelect: false,
-						options: itemStore.itemList.map((item) => ({
-							id: item.id,
-							label: item.name,
-						})),
-					}
-
-					// Pre-select existing items
-					if (characterStore.characterItem?.items?.length) {
-						this.selectedItems = characterStore.characterItem.items.map(item => ({
-							id: item.id || item,
-							label: itemStore.itemList.find(i => i.id === (item.id || item))?.name || '',
-						}))
-					}
-
-					this.itemsLoading = false
-				})
+			this.items.options = []
 		},
 		async saveItems() {
 			this.loading = true
 			try {
-				const characterItemClone = { ...characterStore.characterItem }
+				const character = objectStore.getActiveObject('character')
+				if (!character?.id) {
+					throw new Error('No character selected')
+				}
+
+				// Create updated character data
+				const characterData = { ...character }
 				
-				// Replace items array with selected items, ensuring uniqueness
-				const uniqueItems = [...new Map(this.selectedItems.map(item => [item.id, item])).values()]
-				characterItemClone.items = uniqueItems.map(selected => {
-					const itemData = itemStore.itemList.find(i => i.id === selected.id)
+				// Replace items array with selected items
+				characterData.items = this.selectedItems.map(selected => {
+					const itemData = objectStore.getObjectList('item').find(s => s.id === selected.id)
 					return {
 						objectType: 'item',
 						id: itemData.id,
@@ -151,7 +155,7 @@ export default {
 					}
 				})
 
-				await characterStore.saveCharacter(characterItemClone)
+				await objectStore.updateObject('character', character.id, characterData)
 
 				this.success = true
 				this.loading = false
@@ -162,7 +166,7 @@ export default {
 			} catch (error) {
 				this.loading = false
 				this.success = false
-				this.error = error.message || 'Er is een fout opgetreden bij het bewerken van de voorwerpen'
+				this.error = error.message || 'Er is een fout opgetreden bij het bewerken van de items'
 			}
 		},
 	},

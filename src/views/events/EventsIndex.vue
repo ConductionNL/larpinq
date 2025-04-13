@@ -1,47 +1,48 @@
 <script setup>
-import { eventStore, navigationStore } from '../../store/store.js'
+import { objectStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
-	<NcAppContent>
-		<template #list>
-			<EventsList />
-		</template>
-		<template #default>
-			<NcEmptyContent v-if="!eventStore.eventItem || navigationStore.selected != 'events' "
-				class="detailContainer"
-				name="Geen event"
-				description="Nog geen event geselecteerd">
-				<template #icon>
-					<CalendarMonthOutline />
-				</template>
-				<template #action>
-					<NcButton type="primary" @click="eventStore.setEventItem(null); navigationStore.setModal('editEvent')">
-						Event toevoegen
-					</NcButton>
-				</template>
-			</NcEmptyContent>
-			<EventDetails v-if="eventStore.eventItem && navigationStore.selected === 'events'" />
-		</template>
-	</NcAppContent>
+	<div class="eventsIndex">
+		<NcEmptyContent v-if="!objectStore.getActiveObject('event') || navigationStore.selected != 'events'"
+			icon="icon-calendar-dark"
+			title="Gebeurtenissen">
+			<template #action>
+				<NcButton type="primary" @click="objectStore.clearActiveObject('event'); navigationStore.setModal('editEvent')">
+					<template #icon>
+						<Plus :size="20" />
+					</template>
+					Nieuwe gebeurtenis
+				</NcButton>
+			</template>
+		</NcEmptyContent>
+
+		<EventDetails v-if="objectStore.getActiveObject('event') && navigationStore.selected === 'events'" />
+	</div>
 </template>
 
 <script>
-import { NcAppContent, NcEmptyContent, NcButton } from '@nextcloud/vue'
-import EventsList from './EventsList.vue'
+import {
+	NcButton,
+	NcEmptyContent,
+} from '@nextcloud/vue'
+
+import Plus from 'vue-material-design-icons/Plus.vue'
 import EventDetails from './EventDetails.vue'
-// eslint-disable-next-line n/no-missing-import
-import CalendarMonthOutline from 'vue-material-design-icons/CalendarMonthOutline'
 
 export default {
 	name: 'EventsIndex',
 	components: {
-		NcAppContent,
-		NcEmptyContent,
 		NcButton,
-		EventsList,
+		NcEmptyContent,
+		Plus,
 		EventDetails,
-		CalendarMonthOutline,
 	},
 }
 </script>
+
+<style scoped>
+.eventsIndex {
+	height: 100%;
+}
+</style>

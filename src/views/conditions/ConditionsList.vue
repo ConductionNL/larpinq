@@ -1,85 +1,94 @@
 <script setup>
-import { conditionStore, navigationStore, searchStore } from '../../store/store.js'
+import { objectStore, navigationStore, searchStore } from '../../store/store.js'
 </script>
 
 <template>
 	<NcAppContentList>
-		<ul>
-			<div class="listHeader">
+		<div class="conditionsList">
+			<div class="conditionsHeader">
 				<NcTextField
-					:value="conditionStore.searchTerm"
-					:show-trailing-button="conditionStore.searchTerm !== ''"
-					label="Search"
-					class="searchField"
-					trailing-button-icon="close"
-					@input="conditionStore.setSearchTerm($event.target.value)"
-					@trailing-button-click="conditionStore.clearSearch()">
-					<Magnify :size="20" />
+					:value="searchStore.getSearchTerm('condition')"
+					:show-trailing-button="searchStore.getSearchTerm('condition') !== ''"
+					type="search"
+					label="Zoeken"
+					@input="searchStore.setSearchTerm('condition', $event.target.value)"
+					@trailing-button-click="searchStore.clearSearchTerm('condition')">
+					<template #trailing-button-icon>
+						<Close :size="20" />
+					</template>
 				</NcTextField>
-				<NcActions>
-					<NcActionButton @click="conditionStore.refreshConditionList()">
-						<template #icon>
-							<Refresh :size="20" />
-						</template>
-						Ververs
-					</NcActionButton>
-					<NcActionButton @click="conditionStore.setConditionItem(null); navigationStore.setModal('editCondition')">
-						<template #icon>
-							<Plus :size="20" />
-						</template>
-						Conditie toevoegen
-					</NcActionButton>
-				</NcActions>
+
+				<div class="conditionsActions">
+					<NcActions>
+						<NcActionButton @click="objectStore.refreshObjectList('condition')">
+							<template #icon>
+								<Refresh :size="20" />
+							</template>
+							Vernieuwen
+						</NcActionButton>
+						<NcActionButton @click="objectStore.clearActiveObject('condition'); navigationStore.setModal('editCondition')">
+							<template #icon>
+								<Plus :size="20" />
+							</template>
+							Nieuwe conditie
+						</NcActionButton>
+					</NcActions>
+				</div>
 			</div>
 
-			<div v-if="conditionStore.conditionList && conditionStore.conditionList.length > 0 && !conditionStore.isLoadingConditionList">
-				<NcListItem v-for="(condition, i) in conditionStore.conditionList"
-					:key="`${condition}${i}`"
-					:name="condition?.name"
-					:force-display-actions="true"
-					:active="conditionStore.conditionItem?.id === condition?.id"
-					:details="condition?.unique ? 'Uniek' : 'Niet uniek'"
-					@click="handleConditionSelect(condition)">
+			<div v-if="objectStore.getObjectList('condition')?.length > 0 && !objectStore.isLoading('condition')" class="conditionItems">
+				<NcListItem v-for="condition in objectStore.getObjectList('condition')"
+					:key="condition.id"
+					:title="condition.name"
+					:active="objectStore.getActiveObject('condition')?.id === condition.id"
+					@click="selectCondition(condition)">
 					<template #icon>
-						<EmoticonSickOutline :class="conditionStore.conditionItem?.id === condition?.id && 'selectedConditionIcon'"
-							disable-menu
-							:size="44" />
-					</template>
-					<template #subname>
-						{{ condition?.description }}
+						<EmoticonSickOutline :class="objectStore.getActiveObject('condition')?.id === condition.id && 'selectedConditionIcon'" :size="20" />
 					</template>
 					<template #actions>
-						<NcActionButton @click="conditionStore.setConditionItem(condition); navigationStore.setModal('editCondition')">
-							<template #icon>
-								<Pencil />
-							</template>
-							Bewerken
-						</NcActionButton>
-						<NcActionButton @click="conditionStore.setConditionItem(condition); navigationStore.setDialog('deleteCondition')">
-							<template #icon>
-								<TrashCanOutline />
-							</template>
-							Verwijderen
-						</NcActionButton>
+						<NcActions>
+							<NcActionButton @click.stop="objectStore.setActiveObject('condition', condition); navigationStore.setModal('editCondition')">
+								<template #icon>
+									<Pencil :size="20" />
+								</template>
+								Bewerken
+							</NcActionButton>
+							<NcActionButton @click.stop="objectStore.setActiveObject('condition', condition); navigationStore.setDialog('deleteCondition')">
+								<template #icon>
+									<TrashCanOutline :size="20" />
+								</template>
+								Verwijderen
+							</NcActionButton>
+						</NcActions>
 					</template>
 				</NcListItem>
 			</div>
-		</ul>
 
-		<NcLoadingIcon v-if="conditionStore.isLoadingConditionList"
-			class="loadingIcon"
-			:size="64"
-			appearance="dark"
-			name="Condities aan het laden" />
+			<div v-if="objectStore.isLoading('condition')" class="conditionsLoading">
+				<NcLoadingIcon :size="50" />
+			</div>
 
-		<div v-if="conditionStore.conditionList.length === 0 && !conditionStore.isLoadingConditionList">
-			Er zijn nog geen condities gedefinieerd.
+			<div v-if="objectStore.getObjectList('condition')?.length === 0 && !objectStore.isLoading('condition')" class="conditionsEmpty">
+				<NcEmptyContent
+					icon="icon-category-monitoring"
+					title="Geen condities gevonden">
+					<template #action>
+						<NcButton type="primary" @click="objectStore.clearActiveObject('condition'); navigationStore.setModal('editCondition')">
+							<template #icon>
+								<Plus :size="20" />
+							</template>
+							Nieuwe conditie
+						</NcButton>
+					</template>
+				</NcEmptyContent>
+			</div>
 		</div>
 	</NcAppContentList>
 </template>
+
 <script>
 // Components
-import { NcListItem, NcActions, NcActionButton, NcAppContentList, NcTextField, NcLoadingIcon } from '@nextcloud/vue'
+import { NcListItem, NcActions, NcActionButton, NcAppContentList, NcTextField, NcLoadingIcon, NcEmptyContent, NcButton } from '@nextcloud/vue'
 
 // Icons
 import Magnify from 'vue-material-design-icons/Magnify.vue'
@@ -88,6 +97,7 @@ import Refresh from 'vue-material-design-icons/Refresh.vue'
 import Plus from 'vue-material-design-icons/Plus.vue'
 import Pencil from 'vue-material-design-icons/Pencil.vue'
 import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
+import Close from 'vue-material-design-icons/Close.vue'
 
 export default {
 	name: 'ConditionsList',
@@ -99,6 +109,8 @@ export default {
 		NcAppContentList,
 		NcTextField,
 		NcLoadingIcon,
+		NcEmptyContent,
+		NcButton,
 		// Icons
 		EmoticonSickOutline,
 		Magnify,
@@ -106,20 +118,14 @@ export default {
 		Plus,
 		Pencil,
 		TrashCanOutline,
-	},
-	mounted() {
-		conditionStore.refreshConditionList()
+		Close,
 	},
 	methods: {
-		/**
-		 * Handle condition selection and fetch related data
-		 * @param {Object} condition - The selected condition object
-		 */
-		async handleConditionSelect(condition) {
-			// Set the selected condition in the store
-			conditionStore.setConditionItem(condition)
+		selectCondition(condition) {
+			objectStore.setActiveObject('condition', condition)
+			navigationStore.setSelected('conditions')
 		},
-	}
+	},
 }
 </script>
 

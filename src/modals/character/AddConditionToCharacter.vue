@@ -1,14 +1,14 @@
 <script setup>
-import { characterStore, conditionStore, navigationStore } from '../../store/store.js'
+import { objectStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
 	<NcDialog v-if="navigationStore.modal === 'addConditionToCharacter'"
-		name="Condities bewerken"
+		name="Conditions bewerken"
 		size="normal"
 		:can-close="false">
 		<NcNoteCard v-if="success" type="success">
-			<p>Condities succesvol bijgewerkt</p>
+			<p>Conditions succesvol bijgewerkt</p>
 		</NcNoteCard>
 		<NcNoteCard v-if="error" type="error">
 			<p>{{ error }}</p>
@@ -19,7 +19,7 @@ import { characterStore, conditionStore, navigationStore } from '../../store/sto
 
 			<NcSelect v-bind="conditions"
 				v-model="selectedConditions"
-				input-label="Condities *"
+				input-label="Conditions *"
 				:loading="conditionsLoading"
 				:disabled="conditionsLoading"
 				required />
@@ -80,21 +80,47 @@ export default {
 	},
 	data() {
 		return {
-			conditions: {},
+			conditions: {
+				multiple: true,
+				closeOnSelect: false,
+				options: [],
+				value: null,
+			},
 			selectedConditions: [],
-			conditionsLoading: false,
 			success: false,
 			loading: false,
 			error: false,
 			hasUpdated: false,
 		}
 	},
-	mounted() {
-		this.fetchConditions()
-	},
 	updated() {
 		if (navigationStore.modal === 'addConditionToCharacter' && !this.hasUpdated) {
-			this.fetchConditions()
+			// Create options from all available conditions
+			this.conditions.options = objectStore.getObjectList('condition').map((condition) => ({
+				id: condition.id,
+				label: condition.name,
+			}))
+
+			// Pre-select existing conditions
+			const character = objectStore.getActiveObject('character')
+			if (character?.conditions?.length) {
+				this.selectedConditions = character.conditions.map(condition => {
+					// Handle case where condition is just a UUID string
+					if (typeof condition === 'string') {
+						const conditionData = objectStore.getObjectList('condition').find(s => s.id === condition)
+						return {
+							id: conditionData.id,
+							label: conditionData.name
+						}
+					}
+					// Handle case where condition is an object
+					return {
+						id: condition.id,
+						label: condition.name,
+					}
+				})
+			}
+
 			this.hasUpdated = true
 		}
 	},
@@ -106,42 +132,22 @@ export default {
 			this.error = false
 			this.hasUpdated = false
 			this.selectedConditions = []
-		},
-		fetchConditions() {
-			this.conditionsLoading = true
-
-			conditionStore.refreshConditionList()
-				.then(() => {
-					// Create options from all available conditions
-					this.conditions = {
-						multiple: true,
-						closeOnSelect: false,
-						options: conditionStore.conditionList.map((condition) => ({
-							id: condition.id,
-							label: condition.name,
-						})),
-					}
-
-					// Pre-select existing conditions
-					if (characterStore.characterItem?.conditions?.length) {
-						this.selectedConditions = characterStore.characterItem.conditions.map(condition => ({
-							id: condition.id || condition,
-							label: conditionStore.conditionList.find(c => c.id === (condition.id || condition))?.name || '',
-						}))
-					}
-
-					this.conditionsLoading = false
-				})
+			this.conditions.options = []
 		},
 		async saveConditions() {
 			this.loading = true
 			try {
-				const characterItemClone = { ...characterStore.characterItem }
+				const character = objectStore.getActiveObject('character')
+				if (!character?.id) {
+					throw new Error('No character selected')
+				}
+
+				// Create updated character data
+				const characterData = { ...character }
 				
-				// Replace conditions array with selected conditions, ensuring uniqueness
-				const uniqueConditions = [...new Map(this.selectedConditions.map(condition => [condition.id, condition])).values()]
-				characterItemClone.conditions = uniqueConditions.map(selected => {
-					const conditionData = conditionStore.conditionList.find(c => c.id === selected.id)
+				// Replace conditions array with selected conditions
+				characterData.conditions = this.selectedConditions.map(selected => {
+					const conditionData = objectStore.getObjectList('condition').find(s => s.id === selected.id)
 					return {
 						objectType: 'condition',
 						id: conditionData.id,
@@ -151,7 +157,7 @@ export default {
 					}
 				})
 
-				await characterStore.saveCharacter(characterItemClone)
+				await objectStore.updateObject('character', character.id, characterData)
 
 				this.success = true
 				this.loading = false
@@ -162,7 +168,7 @@ export default {
 			} catch (error) {
 				this.loading = false
 				this.success = false
-				this.error = error.message || 'Er is een fout opgetreden bij het bewerken van de condities'
+				this.error = error.message || 'Er is een fout opgetreden bij het bewerken van de conditions'
 			}
 		},
 	},

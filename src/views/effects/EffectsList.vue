@@ -1,5 +1,5 @@
 <script setup>
-import { effectStore, searchStore, navigationStore } from '../../store/store.js'
+import { objectStore, searchStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -7,23 +7,23 @@ import { effectStore, searchStore, navigationStore } from '../../store/store.js'
 		<ul>
 			<div class="listHeader">
 				<NcTextField
-					:value="effectStore.searchTerm"
-					:show-trailing-button="effectStore.searchTerm !== ''"
+					:value="objectStore.getSearchTerm('effect')"
+					:show-trailing-button="objectStore.getSearchTerm('effect') !== ''"
 					label="Search"
 					class="searchField"
 					trailing-button-icon="close"
-					@input="effectStore.setSearchTerm($event.target.value)"
-					@trailing-button-click="effectStore.clearSearch()">
+					@input="objectStore.setSearchTerm('effect', $event.target.value)"
+					@trailing-button-click="objectStore.clearSearch('effect')">
 					<Magnify :size="20" />
 				</NcTextField>
 				<NcActions>
-					<NcActionButton @click="effectStore.refreshEffectList()">
+					<NcActionButton @click="objectStore.fetchCollection('effect')">
 						<template #icon>
 							<Refresh :size="20" />
 						</template>
 						Ververs
 					</NcActionButton>
-					<NcActionButton @click="effectStore.setEffectItem(null); navigationStore.setModal('editEffect')">
+					<NcActionButton @click="objectStore.clearActiveObject('effect'); navigationStore.setModal('editEffect')">
 						<template #icon>
 							<Plus :size="20" />
 						</template>
@@ -31,17 +31,17 @@ import { effectStore, searchStore, navigationStore } from '../../store/store.js'
 					</NcActionButton>
 				</NcActions>
 			</div>
-			<div v-if="effectStore.effectList && effectStore.effectList.length > 0 && !effectStore.isLoadingEffectList">
-				<NcListItem v-for="(effect, i) in effectStore.effectList"
+			<div v-if="objectStore.getCollection('effect').results?.length > 0 && !objectStore.isLoading('effect')">
+				<NcListItem v-for="(effect, i) in objectStore.getCollection('effect').results"
 					:key="`${effect}${i}`"
 					:name="effect.name"
-					:active="effectStore.effectItem?.id === effect?.id"
+					:active="objectStore.getActiveObject('effect')?.id === effect?.id"
 					:force-display-actions="true"
 					:details="effect?.modification || ''"
 					:counter-number="effect?.modifier"
 					@click="handleEffectSelect(effect)">
 					<template #icon>
-						<MagicStaff :class="effectStore.effectItem === effect.id && 'selectedZaakIcon'"
+						<MagicStaff :class="objectStore.getActiveObject('effect')?.id === effect.id && 'selectedZaakIcon'"
 							disable-menu
 							:size="44" />
 					</template>
@@ -66,13 +66,13 @@ import { effectStore, searchStore, navigationStore } from '../../store/store.js'
 			</div>
 		</ul>
 
-		<NcLoadingIcon v-if="effectStore.isLoadingEffectList"
+		<NcLoadingIcon v-if="objectStore.isLoading('effect')"
 			class="loadingIcon"
 			:size="64"
 			appearance="dark"
 			name="Effecten aan het laden" />
 
-		<div v-if="effectStore.effectList.length === 0 && !effectStore.isLoadingEffectList">
+		<div v-if="objectStore.getCollection('effect').results?.length === 0 && !objectStore.isLoading('effect')">
 			Er zijn nog geen effecten gedefinieerd.
 		</div>
 	</NcAppContentList>
@@ -104,18 +104,15 @@ export default {
 		Pencil,
 		TrashCanOutline,
 	},
-	mounted() {
-		effectStore.refreshEffectList()
-	},
 	methods: {
 		/**
 		 * Handle effect selection
 		 * @param {object} effect - The selected effect object
-		 * @returns {Promise<void>}
+		 * @return {Promise<void>}
 		 */
 		async handleEffectSelect(effect) {
 			// Set the selected effect in the store
-			effectStore.setEffectItem(effect)
+			objectStore.setActiveObject('effect', effect)
 		},
 	},
 }

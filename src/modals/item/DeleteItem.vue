@@ -1,36 +1,26 @@
 <script setup>
-import { itemStore, navigationStore } from '../../store/store.js'
+import { objectStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
-	<NcDialog v-if="navigationStore.dialog === 'deleteItem'"
+	<NcDialog v-if="navigationStore.modal === 'deleteItem'"
 		name="Item verwijderen"
 		size="normal"
 		:can-close="false">
-		<p v-if="!success">
-			Wil je <b>{{ itemStore.itemItem.name }}</b> definitief verwijderen? Deze actie kan niet ongedaan worden gemaakt.
+		<p>
+			Wil je <b>{{ objectStore.getActiveObject('item').name }}</b> definitief verwijderen? Deze actie kan niet ongedaan worden gemaakt.
 		</p>
 
-		<NcNoteCard v-if="success" type="success">
-			<p>Item succesvol verwijderd</p>
-		</NcNoteCard>
-		<NcNoteCard v-if="error" type="error">
-			<p>{{ error }}</p>
-		</NcNoteCard>
-
 		<template #actions>
-			<NcButton
-				@click="navigationStore.setDialog(false)">
+			<NcButton @click="closeModal">
 				<template #icon>
 					<Cancel :size="20" />
 				</template>
-				{{ success ? 'Sluiten' : 'Annuleer' }}
+				Annuleren
 			</NcButton>
-			<NcButton
-				v-if="!success"
+			<NcButton type="error"
 				:disabled="loading"
-				type="error"
-				@click="deleteItem()">
+				@click="deleteItem">
 				<template #icon>
 					<NcLoadingIcon v-if="loading" :size="20" />
 					<TrashCanOutline v-if="!loading" :size="20" />
@@ -46,9 +36,7 @@ import {
 	NcButton,
 	NcDialog,
 	NcLoadingIcon,
-	NcNoteCard,
 } from '@nextcloud/vue'
-
 import Cancel from 'vue-material-design-icons/Cancel.vue'
 import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
 
@@ -58,35 +46,28 @@ export default {
 		NcDialog,
 		NcButton,
 		NcLoadingIcon,
-		NcNoteCard,
-		// Icons
-		TrashCanOutline,
 		Cancel,
+		TrashCanOutline,
 	},
 	data() {
 		return {
-			success: false,
 			loading: false,
-			error: false,
 		}
 	},
 	methods: {
+		closeModal() {
+			objectStore.clearActiveObject('item')
+			navigationStore.closeModal()
+		},
 		async deleteItem() {
 			this.loading = true
 			try {
-				await itemStore.deleteItem()
-				// Close modal or show success message
-				this.success = true
-				this.loading = false
-				this.error = false
-				setTimeout(() => {
-					this.success = false
-					navigationStore.setDialog(false)
-				}, 2000)
+				await objectStore.deleteObject('item', objectStore.getActiveObject('item').id)
+				this.closeModal()
 			} catch (error) {
+				console.error('Error deleting item:', error)
+			} finally {
 				this.loading = false
-				this.success = false
-				this.error = error.message || 'Er is een fout opgetreden bij het verwijderen van het item'
 			}
 		},
 	},

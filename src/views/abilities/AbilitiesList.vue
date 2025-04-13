@@ -1,91 +1,102 @@
 <script setup>
-import { abilityStore, navigationStore, searchStore } from '../../store/store.js'
+import { objectStore, navigationStore, searchStore } from '../../store/store.js'
 </script>
 
 <template>
-    <NcAppContentList>
-        <ul>
-            <div class="listHeader">
-                <NcTextField
-                    :value="abilityStore.searchTerm"
-                    :show-trailing-button="abilityStore.searchTerm !== ''"
-                    label="Search"
-                    class="searchField"
-                    trailing-button-icon="close"
-                    @input="abilityStore.setSearchTerm($event.target.value)"
-                    @trailing-button-click="abilityStore.clearSearch()">
-                    <Magnify :size="20" />
-                </NcTextField>
+    <div class="abilitiesList">
+        <div class="abilitiesHeader">
+            <NcTextField
+                :value="searchStore.getSearchTerm('ability')"
+                :show-trailing-button="searchStore.getSearchTerm('ability') !== ''"
+                type="search"
+                label="Zoeken"
+                @input="searchStore.setSearchTerm('ability', $event.target.value)"
+                @trailing-button-click="searchStore.clearSearchTerm('ability')">
+                <template #trailing-button-icon>
+                    <Close :size="20" />
+                </template>
+            </NcTextField>
+
+            <div class="abilitiesActions">
                 <NcActions>
-                    <NcActionButton @click="abilityStore.refreshAbilityList()">
+                    <NcActionButton @click="objectStore.refreshObjectList('ability')">
                         <template #icon>
                             <Refresh :size="20" />
                         </template>
-                        Ververs
+                        Vernieuwen
                     </NcActionButton>
-                    <NcActionButton @click="abilityStore.setAbilityItem(null); navigationStore.setModal('editAbility')">
+                    <NcActionButton @click="objectStore.clearActiveObject('ability'); navigationStore.setModal('editAbility')">
                         <template #icon>
                             <Plus :size="20" />
                         </template>
-                        Vaardigheid toevoegen
+                        Nieuwe vaardigheid
                     </NcActionButton>
                 </NcActions>
             </div>
+        </div>
 
-            <div v-if="abilityStore.abilityList && abilityStore.abilityList.length > 0 && !abilityStore.isLoadingAbilityList">
-                <NcListItem v-for="(ability, i) in abilityStore.abilityList"
-                    :key="`${ability}${i}`"
-                    :name="ability?.name"
-                    :force-display-actions="true"
-                    :active="abilityStore.abilityItem?.id === ability?.id"
-                    @click="abilityStore.setAbilityItem(ability)">
-                    <template #icon>
-                        <AccountGroup :class="abilityStore.abilityItem?.id === ability?.id && 'selectedIcon'"
-                            disable-menu
-                            :size="44" />
-                    </template>
-                    <template #subname>
-                        {{ ability?.description || 'Geen beschrijving' }}
-                    </template>
-                    <template #actions>
-                        <NcActionButton @click="abilityStore.setAbilityItem(ability); navigationStore.setModal('editAbility')">
+        <div v-if="objectStore.getObjectList('ability')?.length > 0 && !objectStore.isLoading('ability')" class="abilityItems">
+            <NcListItem v-for="ability in objectStore.getObjectList('ability')"
+                :key="ability.id"
+                :title="ability.name"
+                :active="objectStore.getActiveObject('ability')?.id === ability.id"
+                @click="selectAbility(ability)">
+                <template #icon>
+                    <MagicStaff :class="objectStore.getActiveObject('ability')?.id === ability.id && 'selectedAbilityIcon'" :size="20" />
+                </template>
+                <template #actions>
+                    <NcActions>
+                        <NcActionButton @click.stop="objectStore.setActiveObject('ability', ability); navigationStore.setModal('editAbility')">
                             <template #icon>
-                                <Pencil />
+                                <Pencil :size="20" />
                             </template>
                             Bewerken
                         </NcActionButton>
-                        <NcActionButton @click="abilityStore.setAbilityItem(ability); navigationStore.setDialog('deleteAbility')">
+                        <NcActionButton @click.stop="objectStore.setActiveObject('ability', ability); navigationStore.setDialog('deleteAbility')">
                             <template #icon>
-                                <TrashCanOutline />
+                                <TrashCanOutline :size="20" />
                             </template>
                             Verwijderen
                         </NcActionButton>
-                    </template>
-                </NcListItem>
-            </div>
-        </ul>
-
-        <NcLoadingIcon v-if="abilityStore.isLoadingAbilityList"
-            class="loadingIcon"
-            :size="64"
-            appearance="dark"
-            name="Vaardigheden aan het laden" />
-
-        <div v-if="abilityStore.abilityList.length === 0 && !abilityStore.isLoadingAbilityList">
-            Er zijn nog geen vaardigheden gedefinieerd.
+                    </NcActions>
+                </template>
+            </NcListItem>
         </div>
-    </NcAppContentList>
+
+        <div v-if="objectStore.isLoading('ability')" class="abilitiesLoading">
+            <NcLoadingIcon :size="50" />
+        </div>
+
+        <div v-if="objectStore.getObjectList('ability')?.length === 0 && !objectStore.isLoading('ability')" class="abilitiesEmpty">
+            <NcEmptyContent
+                icon="icon-category-customization"
+                title="Geen vaardigheden gevonden">
+                <template #action>
+                    <NcButton type="primary" @click="objectStore.clearActiveObject('ability'); navigationStore.setModal('editAbility')">
+                        <template #icon>
+                            <Plus :size="20" />
+                        </template>
+                        Nieuwe vaardigheid
+                    </NcButton>
+                </template>
+            </NcEmptyContent>
+        </div>
+    </div>
 </template>
 
 <script>
 import { NcListItem, NcActions, NcActionButton, NcAppContentList, NcTextField, NcLoadingIcon } from '@nextcloud/vue'
-import { abilityStore, navigationStore } from '../../store/store.js'
+import { navigationStore } from '../../store/store.js'
 import Magnify from 'vue-material-design-icons/Magnify.vue'
 import Refresh from 'vue-material-design-icons/Refresh.vue'
 import Plus from 'vue-material-design-icons/Plus.vue'
 import Pencil from 'vue-material-design-icons/Pencil.vue'
 import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
 import AccountGroup from 'vue-material-design-icons/AccountGroup.vue'
+import Close from 'vue-material-design-icons/Close.vue'
+import MagicStaff from 'vue-material-design-icons/MagicStaff.vue'
+import NcEmptyContent from '@nextcloud/vue/dist/Components/NcEmptyContent.js'
+import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
 
 export default {
     name: 'AbilitiesList',
@@ -102,9 +113,19 @@ export default {
         Pencil,
         TrashCanOutline,
         AccountGroup,
+        Close,
+        MagicStaff,
+        NcEmptyContent,
+        NcButton,
     },
     mounted() {
-        abilityStore.refreshAbilityList()
+        objectStore.refreshObjectList('ability')
+    },
+    methods: {
+        selectAbility(ability) {
+            objectStore.setActiveObject('ability', ability)
+            navigationStore.setSelected('abilities')
+        },
     },
 }
 </script>

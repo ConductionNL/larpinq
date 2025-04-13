@@ -1,41 +1,29 @@
 <script setup>
-import { characterStore, conditionStore, navigationStore } from '../../store/store.js'
+import { objectStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
-	<NcDialog v-if="navigationStore.dialog === 'deleteConditionFromCharacter'"
-		name="Condition van karakter verwijderen"
+	<NcDialog v-if="navigationStore.modal === 'deleteConditionFromCharacter'"
+		name="Conditie van karakter verwijderen"
 		size="normal"
 		:can-close="false">
-		<NcNoteCard v-if="success" type="success">
-			<p>Condition succesvol verwijderd van karakter</p>
+		<p>
+			Wil je <b>{{ objectStore.getActiveObject('condition').name }}</b> verwijderen van <b>{{ objectStore.getActiveObject('character').name }}</b>?
+		</p>
+		<NcNoteCard type="info" heading="Let op">
+			Het verwijderen van een conditie op een karakter zal leiden tot een herberekening van de statistieken van het karakter. Dit is een asynchroon proces, dus het kan even duren voordat de wijzigingen zichtbaar worden.
 		</NcNoteCard>
-		<NcNoteCard v-if="error" type="error">
-			<p>{{ error }}</p>
-		</NcNoteCard>
-
-		<div v-if="!success" class="formContainer">
-			<p>
-				Wil je <b>{{ conditionStore.conditionItem?.name }}</b> verwijderen van <b>{{ characterStore.characterItem?.name }}</b>?
-			</p>
-			<NcNoteCard type="info" heading="Let op">
-				Het verwijderen van een condition op een karakter zal leiden tot een herberekening van de statistieken van het karakter. Dit is een asynchroon proces, dus het kan even duren voordat de wijzigingen zichtbaar worden.
-			</NcNoteCard>
-		</div>
 
 		<template #actions>
-			<NcButton
-				@click="navigationStore.setDialog(false)">
+			<NcButton @click="closeModal">
 				<template #icon>
 					<Cancel :size="20" />
 				</template>
-				{{ success ? 'Sluiten' : 'Annuleer' }}
+				Annuleren
 			</NcButton>
-			<NcButton
-				v-if="!success"
+			<NcButton type="error"
 				:disabled="loading"
-				type="error"
-				@click="deleteConditionFromCharacter()">
+				@click="deleteConditionFromCharacter">
 				<template #icon>
 					<NcLoadingIcon v-if="loading" :size="20" />
 					<TrashCanOutline v-if="!loading" :size="20" />
@@ -53,7 +41,6 @@ import {
 	NcLoadingIcon,
 	NcNoteCard,
 } from '@nextcloud/vue'
-
 import Cancel from 'vue-material-design-icons/Cancel.vue'
 import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
 
@@ -64,53 +51,50 @@ export default {
 		NcButton,
 		NcLoadingIcon,
 		NcNoteCard,
-		// Icons
-		TrashCanOutline,
 		Cancel,
+		TrashCanOutline,
 	},
 	data() {
 		return {
-			success: false,
 			loading: false,
-			error: false,
 		}
 	},
 	methods: {
+		closeModal() {
+			objectStore.clearActiveObject('condition')
+			objectStore.clearActiveObject('character')
+			navigationStore.closeModal()
+		},
 		async deleteConditionFromCharacter() {
 			this.loading = true
 			try {
-				const characterItemClone = { ...characterStore.characterItem }
+				const characterClone = { ...objectStore.getActiveObject('character') }
+				const conditionId = objectStore.getActiveObject('condition').id
 
-				// Find the index of the item to delete
-				const index = characterItemClone.conditions.findIndex(item => item === conditionStore.conditionItem.id)
+				if (!characterClone.id) {
+					throw new Error('Geen karakter geselecteerd')
+				}
 
-				// Remove the item if it exists
+				if (!conditionId) {
+					throw new Error('Geen conditie geselecteerd')
+				}
+
+				// Find the index of the condition to delete
+				const index = characterClone.conditions.findIndex(item => item === conditionId)
+
+				// Remove the condition if it exists
 				if (index !== -1) {
-					characterItemClone.conditions.splice(index, 1)
+					characterClone.conditions.splice(index, 1)
 				} else {
-					throw Error('Condition could not be found on character, this may be because it is already deleted.')
+					throw new Error('Conditie kon niet worden gevonden op het karakter, mogelijk is deze al verwijderd.')
 				}
 
-				if (!characterItemClone.id) {
-					throw Error('Error: character ID was not found')
-				}
-
-				await characterStore.saveCharacter({
-					...characterItemClone,
-				})
-
-				// Close modal or show success message
-				this.success = true
-				this.loading = false
-				this.error = false
-				setTimeout(() => {
-					this.success = false
-					navigationStore.setDialog(false)
-				}, 2000)
+				await objectStore.saveObject('character', characterClone)
+				this.closeModal()
 			} catch (error) {
+				console.error('Error removing condition from character:', error)
+			} finally {
 				this.loading = false
-				this.success = false
-				this.error = error.message || 'An error occurred while saving the character'
 			}
 		},
 	},
@@ -119,6 +103,6 @@ export default {
 
 <style lang="css">
 .notecard h2 {
-    margin: 0;
+	margin: 0;
 }
 </style>

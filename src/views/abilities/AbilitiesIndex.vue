@@ -1,5 +1,5 @@
 <script setup>
-import { abilityStore, navigationStore } from '../../store/store.js'
+import { objectStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -8,7 +8,7 @@ import { abilityStore, navigationStore } from '../../store/store.js'
 			<AbilitiesList />
 		</template>
 		<template #default>
-			<NcEmptyContent v-if="!abilityStore.abilityItem || navigationStore.selected != 'abilities' "
+			<NcEmptyContent v-if="!objectStore.getActiveObject('ability') || navigationStore.selected != 'abilities' "
 				class="detailContainer"
 				name="Geen vaardigheid"
 				description="Nog geen vaardigheid geselecteerd">
@@ -16,12 +16,12 @@ import { abilityStore, navigationStore } from '../../store/store.js'
 					<ShieldSwordOutline />
 				</template>
 				<template #action>
-					<NcButton type="primary" @click="abilityStore.setAbilityItem([]), navigationStore.setModal('editAbility')">
+					<NcButton type="primary" @click="objectStore.clearActiveObject('ability'), navigationStore.setModal('editAbility')">
 						Vaardigheid aanmaken
 					</NcButton>
 				</template>
 			</NcEmptyContent>
-			<AbilityDetails v-if="abilityStore.abilityItem && navigationStore.selected === 'abilities'" />
+			<AbilityDetails v-if="objectStore.getActiveObject('ability') && navigationStore.selected === 'abilities'" />
 		</template>
 	</NcAppContent>
 </template>

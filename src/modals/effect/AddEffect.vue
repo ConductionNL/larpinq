@@ -1,5 +1,5 @@
 <script setup>
-import { abilityStore, effectStore, navigationStore } from '../../store/store.js'
+import { objectStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -114,14 +114,23 @@ export default {
 				options: [{ id: 'cumulative', label: 'Cumulative' }, { id: 'non-cumulative', label: 'Non-cumulative' }],
 				value: [{ id: 'cumulative', label: 'Cumulative' }],
 			},
-			abilities: {},
-			abilitiesLoading: false,
+			abilities: {
+				multiple: true,
+				closeOnSelect: false,
+				options: [],
+				value: null,
+			},
 			hasUpdated: false,
 		}
 	},
 	updated() {
 		if (navigationStore.modal === 'addEffect' && !this.hasUpdated) {
-			this.fetchAbilities()
+			// Set ability options from preloaded abilities
+			this.abilities.options = objectStore.getObjectList('ability').map((ability) => ({
+				id: ability.id,
+				label: ability.name,
+			}))
+
 			this.hasUpdated = true
 		}
 	},
@@ -137,28 +146,13 @@ export default {
 				description: '',
 				modifier: '',
 			}
-		},
-		fetchAbilities() {
-			this.abilitiesLoading = true
-
-			abilityStore.refreshAbilityList()
-				.then(() => {
-					this.abilities = {
-						multiple: true,
-						closeOnSelect: false,
-						options: abilityStore.abilityList.map((ability) => ({
-							id: ability.id,
-							label: ability.name,
-						})),
-					}
-
-					this.abilitiesLoading = false
-				})
+			this.abilities.value = null
+			this.abilities.options = []
 		},
 		async editEffect() {
 			this.loading = true
 			try {
-				await effectStore.saveEffect({
+				await objectStore.saveObject('effect', {
 					...this.effectItem,
 					modification: this.modificationOptions.value.id,
 					cumulative: this.cumulativeOptions.value.id,

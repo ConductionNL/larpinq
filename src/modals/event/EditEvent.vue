@@ -1,53 +1,47 @@
 <script setup>
-import { eventStore, effectStore, navigationStore } from '../../store/store.js'
+import { objectStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
 	<NcDialog v-if="navigationStore.modal === 'editEvent'"
-		name="Event"
+		:name="`${objectStore.getActiveObject('event')?.id ? 'Bewerk' : 'Nieuwe'} gebeurtenis`"
 		size="normal"
 		:can-close="false">
-		<NcNoteCard v-if="success" type="success">
-			<p>Event succesvol aangepast</p>
-		</NcNoteCard>
-		<NcNoteCard v-if="error" type="error">
-			<p>{{ error }}</p>
-		</NcNoteCard>
+		<div class="content">
+			<NcTextField
+				:value="event.name"
+				label="Naam"
+				@update:value="event.name = $event" />
 
-		<div v-if="!success" class="formContainer">
-			<NcTextField :disabled="loading"
-				label="Name *"
-				required
-				:value.sync="eventItem.name" />
-			<div class="eventDateContainer">
-				<div class="eventDateDate">
-					<span>Start Date</span>
-					<NcDateTimePicker v-model="eventItem.startDate"
-						:disabled="loading"
-						label="Start Date"
-						type="datetime"
-						confirm />
-				</div>
-				<div class="eventDateDate">
-					<span>End Date</span>
-					<NcDateTimePicker v-model="eventItem.endDate"
-						:disabled="loading"
-						label="End Date"
-						type="datetime"
-						confirm />
-				</div>
+			<NcTextField
+				:value="event.description"
+				label="Beschrijving"
+				type="textarea"
+				@update:value="event.description = $event" />
+
+			<NcTextField
+				:value="event.location"
+				label="Locatie"
+				@update:value="event.location = $event" />
+
+			<div class="dates">
+				<NcDateTimePicker
+					:value="event.startDate"
+					label="Start datum"
+					type="datetime"
+					@update:value="event.startDate = $event" />
+
+				<NcDateTimePicker
+					:value="event.endDate"
+					label="Eind datum"
+					type="datetime"
+					@update:value="event.endDate = $event" />
 			</div>
-			<NcTextArea :disabled="loading"
-				label="Description"
-				:value.sync="eventItem.description" />
-			<NcTextField :disabled="loading"
-				label="Location"
-				:value.sync="eventItem.location" />
-			<NcSelect v-bind="effects"
-				v-model="effects.value"
-				input-label="Effects"
-				:loading="effectsLoading"
-				:disabled="loading" />
+
+			<div class="effects">
+				<h3>Effecten</h3>
+				<ObjectList :objects="objectStore.getCollection('effect').results" />
+			</div>
 		</div>
 
 		<template #actions>
@@ -55,24 +49,17 @@ import { eventStore, effectStore, navigationStore } from '../../store/store.js'
 				<template #icon>
 					<Cancel :size="20" />
 				</template>
-				{{ success ? 'Sluiten' : 'Annuleer' }}
+				Annuleren
 			</NcButton>
-			<NcButton @click="openLink('https://conduction.gitbook.io/opencatalogi-nextcloud/gebruikers/publicaties', '_blank')">
-				<template #icon>
-					<Help :size="20" />
-				</template>
-				Help
-			</NcButton>
-			<NcButton v-if="!success"
+			<NcButton type="primary"
 				:disabled="loading"
-				type="primary"
-				@click="editEvent()">
+				@click="saveEvent">
 				<template #icon>
 					<NcLoadingIcon v-if="loading" :size="20" />
-					<ContentSaveOutline v-if="!loading && eventStore.eventItem?.id" :size="20" />
-					<Plus v-if="!loading && !eventStore.eventItem?.id" :size="20" />
+					<ContentSaveOutline v-if="!loading && objectStore.getActiveObject('event')?.id" :size="20" />
+					<Plus v-if="!loading && !objectStore.getActiveObject('event')?.id" :size="20" />
 				</template>
-				{{ eventStore.eventItem?.id ? 'Opslaan' : 'Aanmaken' }}
+				{{ objectStore.getActiveObject('event')?.id ? 'Opslaan' : 'Aanmaken' }}
 			</NcButton>
 		</template>
 	</NcDialog>
@@ -80,148 +67,120 @@ import { eventStore, effectStore, navigationStore } from '../../store/store.js'
 
 <script>
 import {
-	NcButton, NcDialog, NcTextField, NcTextArea, NcLoadingIcon, NcNoteCard, NcSelect, NcDateTimePicker,
+	NcButton,
+	NcDialog,
+	NcTextField,
+	NcLoadingIcon,
+	NcDateTimePicker,
 } from '@nextcloud/vue'
+
 import ContentSaveOutline from 'vue-material-design-icons/ContentSaveOutline.vue'
-import Cancel from 'vue-material-design-icons/Cancel.vue'
 import Plus from 'vue-material-design-icons/Plus.vue'
-import Help from 'vue-material-design-icons/Help.vue'
+import Cancel from 'vue-material-design-icons/Cancel.vue'
+
+import ObjectList from '../../components/ObjectList.vue'
 
 export default {
 	name: 'EditEvent',
 	components: {
 		NcDialog,
-		NcTextField,
-		NcTextArea,
-		NcDateTimePicker,
 		NcButton,
+		NcTextField,
 		NcLoadingIcon,
-		NcNoteCard,
-		NcSelect,
+		NcDateTimePicker,
 		ContentSaveOutline,
-		Cancel,
 		Plus,
-		Help,
+		ObjectList,
+		Cancel,
 	},
 	data() {
 		return {
-			success: false,
 			loading: false,
-			error: false,
-			effects: {},
-			effectsLoading: false,
-			eventItem: {
+			hasUpdated: false,
+			event: {
 				name: '',
 				description: '',
+				location: '',
 				startDate: new Date(),
 				endDate: new Date(),
-				location: '',
 			},
+			effects: [],
 		}
 	},
-	mounted() {
-		this.fetchEffects()
-	},
-	updated() {
-		if (navigationStore.modal === 'editEvent' && !this.hasUpdated) {
-			if (eventStore.eventItem?.id) {
-				this.eventItem = {
-					...eventStore.eventItem,
-					name: eventStore.eventItem.name || '',
-					description: eventStore.eventItem.description || '',
-					startDate: !isNaN(new Date(eventStore.eventItem.startDate))
-						? new Date(eventStore.eventItem.startDate)
-						: new Date(),
-					endDate: !isNaN(new Date(eventStore.eventItem.endDate))
-						? new Date(eventStore.eventItem.endDate)
-						: new Date(),
-					location: eventStore.eventItem.location || '',
-				}
+	watch: {
+		'navigationStore.modal'(newVal) {
+			if (newVal === 'editEvent' && !this.hasUpdated) {
+				this.updateForm()
 			}
-			this.fetchEffects()
-			this.hasUpdated = true
-		}
+		},
 	},
 	methods: {
+		updateForm() {
+			if (objectStore.getActiveObject('event')?.id && navigationStore.modal === 'editEvent' && !this.hasUpdated) {
+				const event = objectStore.getActiveObject('event')
+				this.event = {
+					...event,
+					name: event.name || '',
+					description: event.description || '',
+					location: event.location || '',
+					startDate: !isNaN(new Date(event.startDate))
+						? new Date(event.startDate)
+						: new Date(),
+					endDate: !isNaN(new Date(event.endDate))
+						? new Date(event.endDate)
+						: new Date(),
+				}
+				this.effects = event.effects || []
+				this.hasUpdated = true
+			}
+		},
 		closeModal() {
-			navigationStore.setModal(false)
-			this.success = false
-			this.loading = false
-			this.error = false
-			this.hasUpdated = false
-			this.eventItem = {
+			this.event = {
 				name: '',
 				description: '',
+				location: '',
 				startDate: new Date(),
 				endDate: new Date(),
-				location: '',
 			}
+			this.effects = []
+			this.hasUpdated = false
+			objectStore.clearActiveObject('event')
+			navigationStore.closeModal()
 		},
-		fetchEffects() {
-			this.effectsLoading = true
-
-			effectStore.refreshEffectList()
-				.then(() => {
-					const activeEffects = eventStore.eventItem?.id
-						? effectStore.effectList.filter((effect) => {
-							return eventStore.eventItem.effects
-								.map(String)
-								.includes(effect.id.toString())
-						})
-						: null
-
-					this.effects = {
-						multiple: true,
-						closeOnSelect: false,
-						options: effectStore.effectList.map((effect) => ({
-							id: effect.id,
-							label: effect.name,
-						})),
-						value: activeEffects
-							? activeEffects.map((effect) => ({
-								id: effect.id,
-							    label: effect.name,
-							}))
-							: null,
-					}
-
-					this.effectsLoading = false
-				})
-		},
-		async editEvent() {
+		async saveEvent() {
 			this.loading = true
 			try {
-				await eventStore.saveEvent({
-					...this.eventItem,
-					effects: (this.effects?.value || []).map((effect) => effect.id),
-					startDate: this.eventItem.startDate.toISOString(),
-					endDate: this.eventItem.endDate.toISOString(),
+				await objectStore.saveObject('event', {
+					...this.event,
+					effects: this.effects,
 				})
-				this.success = true
-				this.loading = false
-				setTimeout(() => {
-					this.closeModal()
-				}, 2000)
+				this.closeModal()
 			} catch (error) {
+				console.error('Error saving event:', error)
+			} finally {
 				this.loading = false
-				this.success = false
-				this.error = error.message || 'An error occurred while saving the event'
 			}
-		},
-		openLink(url, target) {
-			window.open(url, target)
 		},
 	},
 }
 </script>
-<style>
-.eventDateContainer {
+
+<style scoped>
+.content {
 	display: flex;
 	flex-direction: column;
-	gap: 10px;
+	gap: 1rem;
 }
-.eventDateDate {
+
+.dates {
+	display: flex;
+	gap: 1rem;
+}
+
+.effects {
 	display: flex;
 	flex-direction: column;
+	gap: 0.5rem;
 }
 </style>
+

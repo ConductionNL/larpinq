@@ -1,5 +1,5 @@
 <script setup>
-import { characterStore, navigationStore } from '../../store/store.js'
+import { navigationStore, objectStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -8,7 +8,7 @@ import { characterStore, navigationStore } from '../../store/store.js'
 			<CharactersList />
 		</template>
 		<template #default>
-			<NcEmptyContent v-if="!characterStore.characterItem || navigationStore.selected != 'characters' "
+			<NcEmptyContent v-if="!objectStore.getActiveObject('character') || navigationStore.selected != 'characters'"
 				class="detailContainer"
 				name="Geen Karakter"
 				description="Nog geen karakter geselecteerd">
@@ -16,12 +16,12 @@ import { characterStore, navigationStore } from '../../store/store.js'
 					<BriefcaseAccountOutline />
 				</template>
 				<template #action>
-					<NcButton type="primary" @click="characterStore.setCharacterItem(null); navigationStore.setModal('editCharacter')">
+					<NcButton type="primary" @click="objectStore.clearActiveObject('character'); navigationStore.setModal('editCharacter')">
 						Karakter aanmaken
 					</NcButton>
 				</template>
 			</NcEmptyContent>
-			<CharacterDetails v-if="characterStore.characterItem && navigationStore.selected === 'characters'" />
+			<CharacterDetails v-if="objectStore.getActiveObject('character') && navigationStore.selected === 'characters'" />
 		</template>
 	</NcAppContent>
 </template>

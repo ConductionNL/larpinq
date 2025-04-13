@@ -1,5 +1,5 @@
 <script setup>
-import { playerStore, navigationStore, searchStore } from '../../store/store.js'
+import { objectStore, navigationStore, searchStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -7,23 +7,23 @@ import { playerStore, navigationStore, searchStore } from '../../store/store.js'
 		<ul>
 			<div class="listHeader">
 				<NcTextField
-					:value="playerStore.searchTerm"
-					:show-trailing-button="playerStore.searchTerm !== ''"
+					:value="objectStore.getSearchTerm('player')"
+					:show-trailing-button="objectStore.getSearchTerm('player') !== ''"
 					label="Search"
 					class="searchField"
 					trailing-button-icon="close"
-					@input="playerStore.setSearchTerm($event.target.value)"
-					@trailing-button-click="playerStore.clearSearch()">
+					@input="objectStore.setSearchTerm('player', $event.target.value)"
+					@trailing-button-click="objectStore.clearSearch('player')">
 					<Magnify :size="20" />
 				</NcTextField>
 				<NcActions>
-					<NcActionButton @click="playerStore.refreshPlayerList()">
+					<NcActionButton @click="objectStore.fetchCollection('player')">
 						<template #icon>
 							<Refresh :size="20" />
 						</template>
 						Ververs
 					</NcActionButton>
-					<NcActionButton @click="playerStore.setPlayerItem(null); navigationStore.setModal('editPlayer')">
+					<NcActionButton @click="objectStore.clearActiveObject('player'); navigationStore.setModal('editPlayer')">
 						<template #icon>
 							<Plus :size="20" />
 						</template>
@@ -32,15 +32,15 @@ import { playerStore, navigationStore, searchStore } from '../../store/store.js'
 				</NcActions>
 			</div>
 
-			<div v-if="playerStore.playerList && playerStore.playerList.length > 0 && !playerStore.isLoadingPlayerList">
-				<NcListItem v-for="(player, i) in playerStore.playerList"
+			<div v-if="objectStore.getCollection('player').results?.length > 0 && !objectStore.isLoading('player')">
+				<NcListItem v-for="(player, i) in objectStore.getCollection('player').results"
 					:key="`${player}${i}`"
 					:name="player?.name"
-					:active="playerStore.playerItem?.id === player?.id"
+					:active="objectStore.getActiveObject('player')?.id === player?.id"
 					:force-display-actions="true"
 					@click="handlePlayerSelect(player)">
 					<template #icon>
-						<BriefcaseAccountOutline :class="playerStore.playerItem?.id === player.id && 'selectedZaakIcon'"
+						<BriefcaseAccountOutline :class="objectStore.getActiveObject('player')?.id === player.id && 'selectedZaakIcon'"
 							disable-menu
 							:size="44" />
 					</template>
@@ -48,13 +48,13 @@ import { playerStore, navigationStore, searchStore } from '../../store/store.js'
 						{{ player?.description }}
 					</template>
 					<template #actions>
-						<NcActionButton @click="playerStore.setPlayerItem(player); navigationStore.setModal('editPlayer')">
+						<NcActionButton @click="objectStore.setActiveObject('player', player); navigationStore.setModal('editPlayer')">
 							<template #icon>
 								<Pencil />
 							</template>
 							Bewerken
 						</NcActionButton>
-						<NcActionButton @click="playerStore.setPlayerItem(player), navigationStore.setDialog('deletePlayer')">
+						<NcActionButton @click="objectStore.setActiveObject('player', player); navigationStore.setDialog('deletePlayer')">
 							<template #icon>
 								<TrashCanOutline />
 							</template>
@@ -65,13 +65,13 @@ import { playerStore, navigationStore, searchStore } from '../../store/store.js'
 			</div>
 		</ul>
 
-		<NcLoadingIcon v-if="playerStore.isLoadingPlayerList"
+		<NcLoadingIcon v-if="objectStore.isLoading('player')"
 			class="loadingIcon"
 			:size="64"
 			appearance="dark"
 			name="Spelers aan het laden" />
 
-		<div v-if="playerStore.playerList.length === 0 && !playerStore.isLoadingPlayerList">
+		<div v-if="objectStore.getCollection('player').results?.length === 0 && !objectStore.isLoading('player')">
 			Er zijn nog geen spelers gedefinieerd.
 		</div>
 	</NcAppContentList>
@@ -106,17 +106,14 @@ export default {
 		TrashCanOutline,
 		Refresh,
 	},
-	mounted() {
-		playerStore.refreshPlayerList()
-	},
 	methods: {
 		/**
 		 * Handle player selection and fetch related data
-		 * @param {Object} player - The selected player object
+		 * @param {object} player - The selected player object
 		 */
 		async handlePlayerSelect(player) {
 			// Set the selected player in the store
-			playerStore.setPlayerItem(player)
+			objectStore.setActiveObject('player', player)
 		},
 	},
 }

@@ -1,5 +1,5 @@
 <script setup>
-import { characterStore, navigationStore, playerStore } from '../../store/store.js'
+import { navigationStore, objectStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -17,21 +17,21 @@ import { characterStore, navigationStore, playerStore } from '../../store/store.
 
 		<div v-if="!success" class="formContainer">
 			<NcTextField :disabled="loading"
-				label="Name *"
+				label="Naam *"
 				required
 				:value.sync="characterItem.name" />
 			<NcTextArea :disabled="loading"
-				label="Description"
+				label="Beschrijving"
 				:value.sync="characterItem.description" />
 			<NcTextArea :disabled="loading"
-				label="Background"
+				label="Achtergrond"
 				:value.sync="characterItem.background" />
 			<NcTextArea :disabled="loading"
-				label="Notice"
+				label="Opmerking"
 				:value.sync="characterItem.notice" />
 			<NcSelect v-bind="players"
 				v-model="players.value"
-				input-label="OC Name *"
+				input-label="OC Naam *"
 				:loading="playersLoading"
 				:disabled="playersLoading || loading" />
 		</div>
@@ -108,7 +108,10 @@ export default {
 				background: '',
 				notice: '',
 			},
-			players: {},
+			players: {
+				options: [],
+				value: null,
+			},
 			playersLoading: false,
 			success: false,
 			loading: false,
@@ -116,21 +119,48 @@ export default {
 			hasUpdated: false,
 		}
 	},
-	mounted() {
-		this.fetchPlayers()
-	},
 	updated() {
 		if (navigationStore.modal === 'editCharacter' && !this.hasUpdated) {
-			if (characterStore.characterItem?.id) {
+			const activeCharacter = objectStore.getActiveObject('character')
+			if (activeCharacter?.id) {
 				this.characterItem = {
-					...characterStore.characterItem,
-					name: characterStore.characterItem.name || '',
-					description: characterStore.characterItem.description || '',
-					background: characterStore.characterItem.background || '',
-					notice: characterStore.characterItem.notice || '',
+					...activeCharacter,
+					name: activeCharacter.name || '',
+					description: activeCharacter.description || '',
+					background: activeCharacter.background || '',
+					notice: activeCharacter.notice || '',
+				}
+
+				// Set player selection if character has one
+				const activatedPlayer = activeCharacter.ocName?.id
+					? objectStore.getCollection('player').results.find(player =>
+						activeCharacter.ocName.id === player.id
+						|| activeCharacter.ocName.toString() === player.id.toString(),
+					)
+					: null
+
+				this.players = {
+					options: objectStore.getCollection('player').results.map(player => ({
+						id: player.id.toString(),
+						label: player.name,
+					})),
+					value: activatedPlayer
+						? {
+							id: activatedPlayer.id.toString(),
+							label: activatedPlayer.name,
+						}
+						: null,
+				}
+			} else {
+				// For new character, just set player options
+				this.players = {
+					options: objectStore.getCollection('player').results.map(player => ({
+						id: player.id.toString(),
+						label: player.name,
+					})),
+					value: null,
 				}
 			}
-			this.fetchPlayers()
 			this.hasUpdated = true
 		}
 	},
@@ -148,48 +178,25 @@ export default {
 				background: '',
 				notice: '',
 			}
-		},
-		fetchPlayers() {
-			this.playersLoading = true
-
-			playerStore.refreshPlayerList()
-				.then(() => {
-					const activatedPlayer = characterStore.characterItem?.id 
-						? playerStore.playerList.find((player) => 
-							characterStore.characterItem.ocName?.id === player.id ||
-							characterStore.characterItem.ocName?.toString() === player.id.toString()
-						)
-						: null
-
-					const mappedActivatedPlayer = activatedPlayer
-						? {
-							id: activatedPlayer.id.toString(),
-							label: activatedPlayer.name,
-						}
-						: null
-
-					this.players = {
-						options: playerStore.playerList.map((player) => ({
-							id: player.id.toString(),
-							label: player.name,
-						})),
-						value: mappedActivatedPlayer,
-					}
-
-					this.playersLoading = false
-				})
-				.catch((error) => {
-					console.error('Error fetching players:', error)
-					this.playersLoading = false
-				})
+			this.players = {
+				options: [],
+				value: null,
+			}
 		},
 		async editCharacter() {
 			this.loading = true
 			try {
-				await characterStore.saveCharacter({
+				const characterData = {
 					...this.characterItem,
 					ocName: this.players?.value?.id || null,
-				})
+				}
+
+				if (characterData.id) {
+					await objectStore.updateObject('character', characterData.id, characterData)
+				} else {
+					await objectStore.createObject('character', characterData)
+				}
+
 				// Close modal or show success message
 				this.success = true
 				this.loading = false
@@ -201,7 +208,7 @@ export default {
 			} catch (error) {
 				this.loading = false
 				this.success = false
-				this.error = error.message || 'An error occurred while saving the character'
+				this.error = error.message || 'Er is een fout opgetreden bij het opslaan van het karakter'
 			}
 		},
 	},

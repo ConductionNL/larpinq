@@ -1,5 +1,5 @@
 <script setup>
-import { characterStore, skillStore, navigationStore } from '../../store/store.js'
+import { objectStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -20,8 +20,6 @@ import { characterStore, skillStore, navigationStore } from '../../store/store.j
 			<NcSelect v-bind="skills"
 				v-model="selectedSkills"
 				input-label="Vaardigheden *"
-				:loading="skillsLoading"
-				:disabled="skillsLoading"
 				required />
 		</div>
 
@@ -39,7 +37,7 @@ import { characterStore, skillStore, navigationStore } from '../../store/store.j
 				Help
 			</NcButton>
 			<NcButton v-if="!success"
-				:disabled="loading || skillsLoading"
+				:disabled="loading"
 				type="primary"
 				@click="saveSkills()">
 				<template #icon>
@@ -80,7 +78,11 @@ export default {
 	},
 	data() {
 		return {
-			skills: {},
+			skills: {
+				multiple: true,
+				closeOnSelect: false,
+				options: [],
+			},
 			selectedSkills: [],
 			skillsLoading: false,
 			success: false,
@@ -89,12 +91,12 @@ export default {
 			hasUpdated: false,
 		}
 	},
-	mounted() {
-		this.fetchSkills()
-	},
 	updated() {
 		if (navigationStore.modal === 'addSkillToCharacter' && !this.hasUpdated) {
-			this.fetchSkills()
+			const activeSkill = objectStore.getActiveObject('skill')
+			if (activeSkill?.id) {
+				this.skillItem = activeSkill
+			}
 			this.hasUpdated = true
 		}
 	},
@@ -105,53 +107,23 @@ export default {
 			this.loading = false
 			this.error = false
 			this.hasUpdated = false
-			this.selectedSkills = []
-		},
-		fetchSkills() {
-			this.skillsLoading = true
-
-			skillStore.refreshSkillList()
-				.then(() => {
-					// Create options from all available skills
-					this.skills = {
-						multiple: true,
-						closeOnSelect: false,
-						options: skillStore.skillList.map((skill) => ({
-							id: skill.id,
-							label: skill.name,
-						})),
-					}
-
-					// Pre-select existing skills
-					if (characterStore.characterItem?.skills?.length) {
-						this.selectedSkills = characterStore.characterItem.skills.map(skill => {
-							// Handle case where skill is just a UUID string
-							if (typeof skill === 'string') {
-								const skillData = skillStore.skillList.find(s => s.id === skill)
-								return {
-									id: skillData.id,
-									label: skillData.name
-								}
-							}
-							// Handle case where skill is an object
-							return {
-								id: skill.id,
-								label: skill.name,
-							}
-						})
-					}
-
-					this.skillsLoading = false
-				})
+			this.skillItem = null
+			objectStore.setActiveObject('skill', null)
 		},
 		async saveSkills() {
 			this.loading = true
 			try {
-				const characterItemClone = { ...characterStore.characterItem }
-				
+				const character = objectStore.getActiveObject('character')
+				if (!character?.id) {
+					throw new Error('No character selected')
+				}
+
+				// Create updated character data
+				const characterData = { ...character }
+
 				// Replace skills array with selected skills
-				characterItemClone.skills = this.selectedSkills.map(selected => {
-					const skillData = skillStore.skillList.find(s => s.id === selected.id)
+				characterData.skills = this.selectedSkills.map(selected => {
+					const skillData = objectStore.skillList.find(s => s.id === selected.id)
 					return {
 						objectType: 'skill',
 						id: skillData.id,
@@ -162,7 +134,7 @@ export default {
 					}
 				})
 
-				await characterStore.saveCharacter(characterItemClone)
+				await objectStore.updateObject('character', character.id, characterData)
 
 				this.success = true
 				this.loading = false

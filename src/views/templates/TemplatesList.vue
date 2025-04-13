@@ -1,5 +1,5 @@
 <script setup>
-import { templateStore, navigationStore, searchStore } from '../../store/store.js'
+import { objectStore, navigationStore, searchStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -7,82 +7,92 @@ import { templateStore, navigationStore, searchStore } from '../../store/store.j
 		<ul>
 			<div class="listHeader">
 				<NcTextField
-					:value="templateStore.searchTerm"
-					:show-trailing-button="templateStore.searchTerm !== ''"
-					label="Search"
+					type="search"
+					:value="searchStore.getSearchTerm('template')"
+					:show-trailing-button="searchStore.getSearchTerm('template') !== ''"
+					label="Search templates"
 					class="searchField"
-					trailing-button-icon="close"
-					@input="templateStore.setSearchTerm($event.target.value)"
-					@trailing-button-click="templateStore.clearSearch()">
-					<Magnify :size="20" />
+					@input="searchStore.setSearchTerm('template', $event.target.value)"
+					@trailing-button-click="searchStore.clearSearchTerm('template')">
+					<template #trailing-button-icon>
+						<Close :size="20" />
+					</template>
 				</NcTextField>
 				<NcActions>
-					<NcActionButton @click="templateStore.refreshTemplateList()">
+					<NcActionButton @click="objectStore.refreshObjectList('template')">
 						<template #icon>
 							<Refresh :size="20" />
 						</template>
-						Ververs
+						Refresh
 					</NcActionButton>
-					<NcActionButton @click="templateStore.setTemplateItem(null); navigationStore.setModal('editTemplate')">
+					<NcActionButton @click="objectStore.setActiveObject('template', null); navigationStore.setModal('editTemplate')">
 						<template #icon>
 							<Plus :size="20" />
 						</template>
-						Template toevoegen
+						Add template
 					</NcActionButton>
 				</NcActions>
 			</div>
-			<div v-if="templateStore.templateList && templateStore.templateList.length > 0 && !templateStore.isLoadingTemplateList">
-				<NcListItem v-for="(template, i) in templateStore.templateList"
-					:key="`${template}${i}`"
-					:name="template?.name"
-					:active="templateStore.templateItem?.id === template?.id"
-					:details="'1h'"
-					:counter-number="44"
+			<div v-if="objectStore.getCollection('template').results.length > 0 && !objectStore.getCollection('template').loading">
+				<NcListItem v-for="template in objectStore.getCollection('template').results"
+					:key="template.id"
+					:name="template.name"
+					:active="objectStore.getActiveObject('template')?.id === template?.id"
+					:details="template.description"
 					:force-display-actions="true"
-					@click="templateStore.setTemplateItem(template)">
+					@click="objectStore.setActiveObject('template', template)">
 					<template #icon>
-						<ChatOutline :class="templateStore.templateItem?.id === template.id && 'selected'"
-							disable-menu
+						<ChatOutline :class="objectStore.getActiveObject('template')?.id === template.id && 'selected'"
 							:size="44" />
 					</template>
-					<template #subname>
-						{{ template?.description }}
-					</template>
 					<template #actions>
-						<NcActionButton @click="templateStore.setTemplateItem(template); navigationStore.setModal('editTemplate')">
+						<NcActionButton @click="objectStore.setActiveObject('template', template); navigationStore.setModal('editTemplate')">
 							<template #icon>
-								<Plus />
+								<Pencil :size="20" />
 							</template>
-							Bewerken
+							Edit
 						</NcActionButton>
-						<NcActionButton @click="templateStore.setTemplateItem(template), navigationStore.setDialog('deleteTemplate')">
+						<NcActionButton @click="objectStore.setActiveObject('template', template); navigationStore.setDialog('deleteTemplate')">
 							<template #icon>
-								<TrashCanOutline />
+								<TrashCanOutline :size="20" />
 							</template>
-							Verwijderen
+							Delete
 						</NcActionButton>
 					</template>
 				</NcListItem>
 			</div>
 		</ul>
 
-		<NcLoadingIcon v-if="templateStore.isLoadingTemplateList"
+		<NcLoadingIcon v-if="objectStore.getCollection('template').loading"
 			class="loadingIcon"
 			:size="64"
 			appearance="dark"
 			name="Templates aan het laden" />
 
-		<div v-if="templateStore.templateList.length === 0 && !templateStore.isLoadingTemplateList">
-			Er zijn nog geen templates gedefinieerd.
+		<div v-if="objectStore.getCollection('template').results.length === 0 && !objectStore.getCollection('template').loading">
+			<NcEmptyContent
+				icon="icon-template"
+				title="No templates found">
+				<template #action>
+					<div class="buttons">
+						<NcButton type="primary" @click="objectStore.setActiveObject('template', null); navigationStore.setModal('editTemplate')">
+							<template #icon>
+								<Plus :size="20" />
+							</template>
+							Add template
+						</NcButton>
+					</div>
+				</template>
+			</NcEmptyContent>
 		</div>
 	</NcAppContentList>
 </template>
 <script>
 // Components
-import { NcListItem, NcActions, NcActionButton, NcAppContentList, NcTextField, NcLoadingIcon } from '@nextcloud/vue'
+import { NcListItem, NcActions, NcActionButton, NcAppContentList, NcTextField, NcLoadingIcon, NcEmptyContent, NcButton } from '@nextcloud/vue'
 
 // Icons
-import Magnify from 'vue-material-design-icons/Magnify.vue'
+import Close from 'vue-material-design-icons/Close.vue'
 import ChatOutline from 'vue-material-design-icons/ChatOutline.vue'
 import Plus from 'vue-material-design-icons/Plus.vue'
 import Pencil from 'vue-material-design-icons/Pencil.vue'
@@ -99,16 +109,18 @@ export default {
 		NcAppContentList,
 		NcTextField,
 		NcLoadingIcon,
+		NcEmptyContent,
+		NcButton,
 		// Icons
+		Close,
 		ChatOutline,
-		Magnify,
 		Plus,
 		Pencil,
 		TrashCanOutline,
 		Refresh,
 	},
 	mounted() {
-		templateStore.refreshTemplateList()
+		objectStore.refreshObjectList('template')
 	},
 	methods: {
 		/**
@@ -118,7 +130,7 @@ export default {
 		 */
 		async handleTemplateSelect(template) {
 			// Set the selected template in the store
-			templateStore.setTemplateItem(template)
+			objectStore.setActiveObject('template', template)
 		},
 	},
 }

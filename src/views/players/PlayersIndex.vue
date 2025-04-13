@@ -1,5 +1,5 @@
 <script setup>
-import { playerStore, navigationStore } from '../../store/store.js'
+import { objectStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -8,7 +8,7 @@ import { playerStore, navigationStore } from '../../store/store.js'
 			<PlayersList />
 		</template>
 		<template #default>
-			<NcEmptyContent v-if="!playerStore.playerItem || navigationStore.selected != 'players' "
+			<NcEmptyContent v-if="!objectStore.getActiveObject('player') || navigationStore.selected != 'players'"
 				class="detailContainer"
 				name="Geen speler"
 				description="Nog geen speler geselecteerd">
@@ -16,12 +16,12 @@ import { playerStore, navigationStore } from '../../store/store.js'
 					<AccountGroupOutline />
 				</template>
 				<template #action>
-					<NcButton type="primary" @click="playerStore.setPlayerItem(null); navigationStore.setModal('editPlayer')">
+					<NcButton type="primary" @click="objectStore.clearActiveObject('player'); navigationStore.setModal('editPlayer')">
 						Speler aanmaken
 					</NcButton>
 				</template>
 			</NcEmptyContent>
-			<PlayerDetails v-if="playerStore.playerItem && navigationStore.selected === 'players'" />
+			<PlayerDetails v-if="objectStore.getActiveObject('player') && navigationStore.selected === 'players'" />
 		</template>
 	</NcAppContent>
 </template>

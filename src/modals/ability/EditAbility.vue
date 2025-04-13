@@ -1,31 +1,34 @@
 <script setup>
-import { abilityStore, navigationStore } from '../../store/store.js'
+import { objectStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
 	<NcDialog v-if="navigationStore.modal === 'editAbility'"
-		name="Ability"
+		:name="`${objectStore.getActiveObject('ability')?.id ? 'Bewerk' : 'Nieuwe'} vaardigheid`"
 		size="normal"
 		:can-close="false">
-		<NcNoteCard v-if="success" type="success">
-			<p>Ability succesvol aangepast</p>
-		</NcNoteCard>
-		<NcNoteCard v-if="error" type="error">
-			<p>{{ error }}</p>
-		</NcNoteCard>
+		<div class="content">
+			<NcTextField
+				:value="ability.name"
+				label="Naam"
+				@update:value="ability.name = $event" />
 
-		<div v-if="!success" class="formContainer">
-			<NcTextField :disabled="loading"
-				label="Name *"
-				required
-				:value.sync="abilityItem.name" />
-			<NcTextArea :disabled="loading"
-				label="Description"
+			<NcTextField
+				:value="ability.description"
+				label="Beschrijving"
 				type="textarea"
-				:value.sync="abilityItem.description" />
-			<NcTextField :disabled="loading"
-				label="Base"
-				:value.sync="abilityItem.base" />
+				@update:value="ability.description = $event" />
+
+			<NcTextField
+				:value="ability.base"
+				label="Basis"
+				type="number"
+				@update:value="ability.base = $event" />
+
+			<div class="effects">
+				<h3>Effecten</h3>
+				<ObjectList :objects="objectStore.getCollection('effect').results" />
+			</div>
 		</div>
 
 		<template #actions>
@@ -33,24 +36,17 @@ import { abilityStore, navigationStore } from '../../store/store.js'
 				<template #icon>
 					<Cancel :size="20" />
 				</template>
-				{{ success ? 'Sluiten' : 'Annuleer' }}
+				Annuleren
 			</NcButton>
-			<NcButton @click="openLink('https://conduction.gitbook.io/opencatalogi-nextcloud/gebruikers/publicaties', '_blank')">
-				<template #icon>
-					<Help :size="20" />
-				</template>
-				Help
-			</NcButton>
-			<NcButton v-if="!success"
+			<NcButton type="primary"
 				:disabled="loading"
-				type="primary"
-				@click="editAbility()">
+				@click="saveAbility">
 				<template #icon>
 					<NcLoadingIcon v-if="loading" :size="20" />
-					<ContentSaveOutline v-if="!loading && abilityStore.abilityItem?.id" :size="20" />
-					<Plus v-if="!loading && !abilityStore.abilityItem?.id" :size="20" />
+					<ContentSaveOutline v-if="!loading && objectStore.getActiveObject('ability')?.id" :size="20" />
+					<Plus v-if="!loading && !objectStore.getActiveObject('ability')?.id" :size="20" />
 				</template>
-				{{ abilityStore.abilityItem?.id ? 'Opslaan' : 'Aanmaken' }}
+				{{ objectStore.getActiveObject('ability')?.id ? 'Opslaan' : 'Aanmaken' }}
 			</NcButton>
 		</template>
 	</NcDialog>
@@ -61,87 +57,99 @@ import {
 	NcButton,
 	NcDialog,
 	NcTextField,
-	NcTextArea,
 	NcLoadingIcon,
-	NcNoteCard,
 } from '@nextcloud/vue'
+
 import ContentSaveOutline from 'vue-material-design-icons/ContentSaveOutline.vue'
-import Cancel from 'vue-material-design-icons/Cancel.vue'
 import Plus from 'vue-material-design-icons/Plus.vue'
-import Help from 'vue-material-design-icons/Help.vue'
+import Cancel from 'vue-material-design-icons/Cancel.vue'
+
+import ObjectList from '../../components/ObjectList.vue'
 
 export default {
 	name: 'EditAbility',
 	components: {
 		NcDialog,
-		NcTextField,
-		NcTextArea,
 		NcButton,
+		NcTextField,
 		NcLoadingIcon,
-		NcNoteCard,
 		ContentSaveOutline,
-		Cancel,
 		Plus,
-		Help,
+		Cancel,
+		ObjectList,
 	},
 	data() {
 		return {
-			success: false,
 			loading: false,
-			error: false,
 			hasUpdated: false,
-			abilityItem: {
+			ability: {
 				name: '',
 				description: '',
-				base: '',
+				base: 0,
 			},
+			effects: [],
 		}
 	},
-	updated() {
-		if (navigationStore.modal === 'editAbility' && !this.hasUpdated) {
-			if (abilityStore.abilityItem?.id) {
-				this.abilityItem = {
-					...abilityStore.abilityItem,
-					name: abilityStore.abilityItem.name || '',
-					description: abilityStore.abilityItem.description || '',
-					base: abilityStore.abilityItem.base || '',
-				}
-			}
-			this.hasUpdated = true
-		}
-	},
-
-	methods: {
-		closeModal() {
-			navigationStore.setModal(false)
-			this.success = false
-			this.loading = false
-			this.error = false
-			this.hasUpdated = false
-			this.abilityItem = {
-				name: '',
-				description: '',
-				base: '',
+	watch: {
+		'navigationStore.modal'(newVal) {
+			if (newVal === 'editAbility' && !this.hasUpdated) {
+				this.updateForm()
 			}
 		},
-		async editAbility() {
+	},
+	methods: {
+		updateForm() {
+			if (objectStore.getActiveObject('ability')?.id && navigationStore.modal === 'editAbility' && !this.hasUpdated) {
+				const ability = objectStore.getActiveObject('ability')
+				this.ability = {
+					...ability,
+					name: ability.name || '',
+					description: ability.description || '',
+					base: ability.base || 0,
+				}
+				this.effects = ability.effects || []
+				this.hasUpdated = true
+			}
+		},
+		closeModal() {
+			this.ability = {
+				name: '',
+				description: '',
+				base: 0,
+			}
+			this.effects = []
+			this.hasUpdated = false
+			objectStore.clearActiveObject('ability')
+			navigationStore.closeModal()
+		},
+		async saveAbility() {
 			this.loading = true
 			try {
-				await abilityStore.saveAbility({
-					...this.abilityItem,
+				await objectStore.saveObject('ability', {
+					...this.ability,
+					effects: this.effects,
 				})
-				this.success = true
-				this.loading = false
-				setTimeout(this.closeModal, 2000)
+				this.closeModal()
 			} catch (error) {
+				console.error('Error saving ability:', error)
+			} finally {
 				this.loading = false
-				this.success = false
-				this.error = error.message || 'An error occurred while saving the ability'
 			}
-		},
-		openLink(url, target) {
-			window.open(url, target)
 		},
 	},
 }
 </script>
+
+<style scoped>
+.content {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.effects {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+</style>

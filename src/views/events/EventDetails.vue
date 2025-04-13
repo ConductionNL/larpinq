@@ -1,131 +1,142 @@
 <script setup>
-import { eventStore, navigationStore } from '../../store/store.js'
+import { objectStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
-	<div class="detailContainer">
-		<div id="app-content">
-			<!-- app-content-wrapper is optional, only use if app-content-list  -->
-			<div>
-				<div class="head">
-					<h1 class="h1">
-						{{ eventStore.eventItem.name }}
-					</h1>
-					<NcActions :primary="true" menu-name="Acties">
-						<template #icon>
-							<DotsHorizontal :size="20" />
-						</template>
-						<NcActionButton @click="navigationStore.setModal('editEvent')">
-							<template #icon>
-								<Pencil :size="20" />
-							</template>
-							Bewerken
-						</NcActionButton>
-						<NcActionButton @click="navigationStore.setDialog('deleteEvent')">
-							<template #icon>
-								<TrashCanOutline :size="20" />
-							</template>
-							Verwijderen
-						</NcActionButton>
-					</NcActions>
-				</div>
-				<div class="detailGrid">
-					<div>
-						<b>Sammenvatting:</b>
-						<span>{{ eventStore.eventItem.summary }}</span>
+	<div class="eventDetails">
+		<div class="eventHeader">
+			<h2>{{ objectStore.getActiveObject('event')?.name }}</h2>
+			<div class="eventActions">
+				<NcButton @click="objectStore.setActiveObject('event', objectStore.getActiveObject('event')); navigationStore.setModal('editEvent')">
+					<template #icon>
+						<Pencil :size="20" />
+					</template>
+					Bewerken
+				</NcButton>
+				<NcButton type="error" @click="objectStore.setActiveObject('event', objectStore.getActiveObject('event')); navigationStore.setDialog('deleteEvent')">
+					<template #icon>
+						<TrashCanOutline :size="20" />
+					</template>
+					Verwijderen
+				</NcButton>
+			</div>
+		</div>
+
+		<div class="eventContent">
+			<div class="eventInfo">
+				<div class="eventDates">
+					<div class="eventDate">
+						<h3>Start datum</h3>
+						<span>{{ new Date(objectStore.getActiveObject('event')?.startDate).toLocaleString() }}</span>
+					</div>
+					<div class="eventDate">
+						<h3>Eind datum</h3>
+						<span>{{ new Date(objectStore.getActiveObject('event')?.endDate).toLocaleString() }}</span>
 					</div>
 				</div>
-				<span>{{ eventStore.eventItem.description }}</span>
+
+				<div class="eventDescription">
+					<h3>Beschrijving</h3>
+					<span>{{ objectStore.getActiveObject('event')?.description }}</span>
+				</div>
+
+				<div class="eventLocation">
+					<h3>Locatie</h3>
+					<span>{{ objectStore.getActiveObject('event')?.location }}</span>
+				</div>
 			</div>
-		<div class="tabContainer">
-			<BTabs content-class="mt-3" justified>
-				<BTab>
-					<template #title>
-						Characters <NcCounterBubble>{{ eventStore.relations ? eventStore.relations.length : 0 }}</NcCounterBubble>
-					</template>
-					<ObjectList :objects="eventStore.relations" />							
-				</BTab>
-				<BTab>
-					<template #title>
-						Logging <NcCounterBubble>{{ eventStore.auditTrails ? eventStore.auditTrails.length : 0 }}</NcCounterBubble>
-					</template>
-					<AuditList :logs="eventStore.auditTrails" />
-				</BTab>
-			</BTabs>
-		</div>
+
+			<div class="eventRelations">
+				<h3>Karakters <NcCounterBubble>{{ objectStore.getRelations('event')?.length || 0 }}</NcCounterBubble></h3>
+				<ObjectList :objects="objectStore.getRelations('event')" />
+			</div>
+
+			<div class="eventAudit">
+				<h3>Logging <NcCounterBubble>{{ objectStore.getAuditTrails('event')?.length || 0 }}</NcCounterBubble></h3>
+				<AuditTable :logs="objectStore.getAuditTrails('event')" />
+			</div>
 		</div>
 	</div>
 </template>
 
 <script>
-// Components
-import { BTabs, BTab } from 'bootstrap-vue'
-import { NcLoadingIcon, NcActions, NcActionButton, NcListItem, NcCounterBubble } from '@nextcloud/vue'
+import {
+	NcButton,
+	NcCounterBubble,
+} from '@nextcloud/vue'
 
-// Custom components
-import AuditList from '../auditTrail/AuditList.vue'
-import ObjectList from '../objects/ObjectList.vue'
-
-// Icons
-import DotsHorizontal from 'vue-material-design-icons/DotsHorizontal.vue'
 import Pencil from 'vue-material-design-icons/Pencil.vue'
 import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
-import BriefcaseAccountOutline from 'vue-material-design-icons/BriefcaseAccountOutline.vue'
+
+import ObjectList from '../../components/ObjectList.vue'
+import AuditTable from '../auditTrail/AuditTable.vue'
 
 export default {
 	name: 'EventDetails',
 	components: {
-		NcActions,
-		NcActionButton,
-		NcLoadingIcon,
-		NcListItem,
+		NcButton,
 		NcCounterBubble,
-		BTabs,
-		BTab,
-		// Custom components
-		AuditList,
-		ObjectList,
-		// Icons
 		Pencil,
-		DotsHorizontal,
 		TrashCanOutline,
-		BriefcaseAccountOutline,
+		ObjectList,
+		AuditTable,
 	},
 }
 </script>
 
-<style>
-h4 {
-  font-weight: bold
+<style scoped>
+.eventDetails {
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
+	padding: 2rem;
 }
 
-.h1 {
-  display: block !important;
-  font-size: 2em !important;
-  margin-block-start: 0.67em !important;
-  margin-block-end: 0.67em !important;
-  margin-inline-start: 0px !important;
-  margin-inline-end: 0px !important;
-  font-weight: bold !important;
-  unicode-bidi: isolate !important;
+.eventHeader {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }
 
-.grid {
-  display: grid;
-  grid-gap: 24px;
-  grid-template-columns: 1fr 1fr;
-  margin-block-start: var(--zaa-margin-50);
-  margin-block-end: var(--zaa-margin-50);
+.eventActions {
+	display: flex;
+	gap: 1rem;
 }
 
-.gridContent {
-  display: flex;
-  gap: 25px;
+.eventContent {
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
 }
 
-/* Add margin to counter bubble only when inside nav-item */
-.nav-item .counter-bubble__counter {
-    margin-left: 10px;
+.eventInfo {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
 }
 
+.eventDates {
+	display: flex;
+	gap: 2rem;
+}
+
+.eventDate {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.eventDescription,
+.eventLocation {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.eventRelations,
+.eventAudit {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
 </style>

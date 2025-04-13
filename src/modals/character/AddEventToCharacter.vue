@@ -1,25 +1,23 @@
 <script setup>
-import { characterStore, eventStore, navigationStore } from '../../store/store.js'
+import { objectStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
 	<NcDialog v-if="navigationStore.modal === 'addEventToCharacter'"
-		name="Evenementen bewerken"
+		name="Events bewerken"
 		size="normal"
 		:can-close="false">
 		<NcNoteCard v-if="success" type="success">
-			<p>Evenementen succesvol bijgewerkt</p>
+			<p>Events succesvol bijgewerkt</p>
 		</NcNoteCard>
 		<NcNoteCard v-if="error" type="error">
 			<p>{{ error }}</p>
 		</NcNoteCard>
 
 		<div v-if="!success" class="formContainer">
-			<p>Let op: Het bewerken van evenementen kan invloed hebben op de eigenschappen en geschiedenis van het karakter. Dit is een asynchroon proces, dus het kan even duren voordat de wijzigingen zichtbaar worden.</p>
-
 			<NcSelect v-bind="events"
 				v-model="selectedEvents"
-				input-label="Evenementen *"
+				input-label="Events *"
 				:loading="eventsLoading"
 				:disabled="eventsLoading"
 				required />
@@ -80,21 +78,47 @@ export default {
 	},
 	data() {
 		return {
-			events: {},
+			events: {
+				multiple: true,
+				closeOnSelect: false,
+				options: [],
+				value: null,
+			},
 			selectedEvents: [],
-			eventsLoading: false,
 			success: false,
 			loading: false,
 			error: false,
 			hasUpdated: false,
 		}
 	},
-	mounted() {
-		this.fetchEvents()
-	},
 	updated() {
 		if (navigationStore.modal === 'addEventToCharacter' && !this.hasUpdated) {
-			this.fetchEvents()
+			// Create options from all available events
+			this.events.options = objectStore.getObjectList('event').map((event) => ({
+				id: event.id,
+				label: event.name,
+			}))
+
+			// Pre-select existing events
+			const character = objectStore.getActiveObject('character')
+			if (character?.events?.length) {
+				this.selectedEvents = character.events.map(event => {
+					// Handle case where event is just a UUID string
+					if (typeof event === 'string') {
+						const eventData = objectStore.getObjectList('event').find(s => s.id === event)
+						return {
+							id: eventData.id,
+							label: eventData.name,
+						}
+					}
+					// Handle case where event is an object
+					return {
+						id: event.id,
+						label: event.name,
+					}
+				})
+			}
+
 			this.hasUpdated = true
 		}
 	},
@@ -106,52 +130,35 @@ export default {
 			this.error = false
 			this.hasUpdated = false
 			this.selectedEvents = []
-		},
-		fetchEvents() {
-			this.eventsLoading = true
-
-			eventStore.refreshEventList()
-				.then(() => {
-					// Create options from all available events
-					this.events = {
-						multiple: true,
-						closeOnSelect: false,
-						options: eventStore.eventList.map((event) => ({
-							id: event.id,
-							label: event.name,
-						})),
-					}
-
-					// Pre-select existing events
-					if (characterStore.characterItem?.events?.length) {
-						this.selectedEvents = characterStore.characterItem.events.map(event => ({
-							id: event.id || event,
-							label: eventStore.eventList.find(e => e.id === (event.id || event))?.name || '',
-						}))
-					}
-
-					this.eventsLoading = false
-				})
+			this.events.options = []
 		},
 		async saveEvents() {
 			this.loading = true
 			try {
-				const characterItemClone = { ...characterStore.characterItem }
-				
-				// Replace events array with selected events, ensuring uniqueness
-				const uniqueEvents = [...new Map(this.selectedEvents.map(event => [event.id, event])).values()]
-				characterItemClone.events = uniqueEvents.map(selected => {
-					const eventData = eventStore.eventList.find(e => e.id === selected.id)
+				const character = objectStore.getActiveObject('character')
+				if (!character?.id) {
+					throw new Error('No character selected')
+				}
+
+				// Create updated character data
+				const characterData = { ...character }
+
+				// Replace events array with selected events
+				characterData.events = this.selectedEvents.map(selected => {
+					const eventData = objectStore.getObjectList('event').find(s => s.id === selected.id)
 					return {
 						objectType: 'event',
 						id: eventData.id,
 						name: eventData.name,
 						description: eventData.description || '',
+						startDate: eventData.startDate || '',
+						endDate: eventData.endDate || '',
+						location: eventData.location || '',
 						effects: eventData.effects || [],
 					}
 				})
 
-				await characterStore.saveCharacter(characterItemClone)
+				await objectStore.updateObject('character', character.id, characterData)
 
 				this.success = true
 				this.loading = false
@@ -162,7 +169,7 @@ export default {
 			} catch (error) {
 				this.loading = false
 				this.success = false
-				this.error = error.message || 'Er is een fout opgetreden bij het bewerken van de evenementen'
+				this.error = error.message || 'Er is een fout opgetreden bij het bewerken van de events'
 			}
 		},
 	},

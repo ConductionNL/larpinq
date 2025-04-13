@@ -1,67 +1,52 @@
 <script setup>
-import { itemStore, effectStore, navigationStore } from '../../store/store.js'
+import { objectStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
 	<NcDialog v-if="navigationStore.modal === 'editItem'"
-		name="Voorwerp"
+		:name="`${objectStore.getActiveObject('item')?.id ? 'Bewerk' : 'Nieuw'} item`"
 		size="normal"
 		:can-close="false">
-		<NcNoteCard v-if="success" type="success">
-			<p>Voorwerp succesvol aangepast</p>
-		</NcNoteCard>
-		<NcNoteCard v-if="error" type="error">
-			<p>{{ error }}</p>
-		</NcNoteCard>
+		<div class="content">
+			<NcTextField
+				:value="item.name"
+				label="Naam"
+				@update:value="item.name = $event" />
 
-		<div v-if="!success" class="formContainer">
-			<NcTextField :disabled="loading"
-				label="Name *"
-				required
-				:value.sync="itemItem.name" />
-			<NcTextArea :disabled="loading"
-				label="Description"
+			<NcTextField
+				:value="item.description"
+				label="Beschrijving"
 				type="textarea"
-				:value.sync="itemItem.description" />
-			<NcSelect v-bind="effects"
-				v-model="effects.value"
-				input-label="Effects"
-				:loading="effectsLoading"
-				:disabled="effectsLoading || loading" />
-			<NcCheckboxRadioSwitch :disabled="loading"
-				label="Unique"
-				type="switch"
-				:checked.sync="itemItem.unique">
-				Unique
-			</NcCheckboxRadioSwitch>
+				@update:value="item.description = $event" />
+
+			<NcTextField
+				:value="item.unique"
+				label="Uniek"
+				type="number"
+				@update:value="item.unique = $event" />
+
+			<div class="effects">
+				<h3>Effecten</h3>
+				<ObjectList :objects="objectStore.getCollection('effect').results" />
+			</div>
 		</div>
 
 		<template #actions>
-			<NcButton
-				@click="closeModal">
+			<NcButton @click="closeModal">
 				<template #icon>
 					<Cancel :size="20" />
 				</template>
-				{{ success ? 'Sluiten' : 'Annuleer' }}
+				Annuleren
 			</NcButton>
-			<NcButton
-				@click="openLink('https://conduction.gitbook.io/opencatalogi-nextcloud/gebruikers/publicaties', '_blank')">
-				<template #icon>
-					<Help :size="20" />
-				</template>
-				Help
-			</NcButton>
-			<NcButton
-				v-if="!success"
+			<NcButton type="primary"
 				:disabled="loading"
-				type="primary"
-				@click="editItem()">
+				@click="saveItem">
 				<template #icon>
 					<NcLoadingIcon v-if="loading" :size="20" />
-					<ContentSaveOutline v-if="!loading && itemStore.itemItem?.id" :size="20" />
-					<Plus v-if="!loading && !itemStore.itemItem?.id" :size="20" />
+					<ContentSaveOutline v-if="!loading && objectStore.getActiveObject('item')?.id" :size="20" />
+					<Plus v-if="!loading && !objectStore.getActiveObject('item')?.id" :size="20" />
 				</template>
-				{{ itemStore.itemItem?.id ? 'Opslaan' : 'Aanmaken' }}
+				{{ objectStore.getActiveObject('item')?.id ? 'Opslaan' : 'Aanmaken' }}
 			</NcButton>
 		</template>
 	</NcDialog>
@@ -72,131 +57,97 @@ import {
 	NcButton,
 	NcDialog,
 	NcTextField,
-	NcTextArea,
-	NcCheckboxRadioSwitch,
 	NcLoadingIcon,
-	NcNoteCard,
-	NcSelect,
 } from '@nextcloud/vue'
-
 import ContentSaveOutline from 'vue-material-design-icons/ContentSaveOutline.vue'
-import Cancel from 'vue-material-design-icons/Cancel.vue'
 import Plus from 'vue-material-design-icons/Plus.vue'
-import Help from 'vue-material-design-icons/Help.vue'
+import Cancel from 'vue-material-design-icons/Cancel.vue'
+import ObjectList from '../../components/ObjectList.vue'
 
 export default {
 	name: 'EditItem',
 	components: {
 		NcDialog,
-		NcTextField,
-		NcTextArea,
 		NcButton,
-		NcCheckboxRadioSwitch,
+		NcTextField,
 		NcLoadingIcon,
-		NcNoteCard,
-		NcSelect,
-		// Icons
 		ContentSaveOutline,
-		Cancel,
 		Plus,
-		Help,
+		Cancel,
+		ObjectList,
 	},
 	data() {
 		return {
-			success: false,
 			loading: false,
-			error: false,
-			effects: {},
-			effectsLoading: false,
-			itemItem: {
+			hasUpdated: false,
+			item: {
 				name: '',
 				description: '',
-				unique: '',
+				unique: 0,
 			},
-			hasUpdated: false,
+			effects: [],
 		}
 	},
-	mounted() {
-		this.fetchEffects()
-	},
-	updated() {
-		if (navigationStore.modal === 'editItem' && !this.hasUpdated) {
-			if (itemStore.itemItem?.id) {
-				this.itemItem = {
-					...itemStore.itemItem,
-					name: itemStore.itemItem.name || '',
-					description: itemStore.itemItem.description || '',
-					unique: itemStore.itemItem.unique || '',
-				}
+	watch: {
+		'navigationStore.modal'(newVal) {
+			if (newVal === 'editItem' && !this.hasUpdated) {
+				this.updateForm()
 			}
-			this.fetchEffects()
-			this.hasUpdated = true
-		}
+		},
 	},
 	methods: {
+		updateForm() {
+			if (objectStore.getActiveObject('item')?.id && navigationStore.modal === 'editItem' && !this.hasUpdated) {
+				const item = objectStore.getActiveObject('item')
+				this.item = {
+					...item,
+					name: item.name || '',
+					description: item.description || '',
+					unique: item.unique || 0,
+				}
+				this.effects = item.effects || []
+				this.hasUpdated = true
+			}
+		},
 		closeModal() {
-			navigationStore.setModal(false)
-			this.success = false
-			this.loading = false
-			this.error = false
-			this.hasUpdated = false
-			this.itemItem = {
+			this.item = {
 				name: '',
 				description: '',
-				unique: '',
+				unique: 0,
 			}
+			this.effects = []
+			this.hasUpdated = false
+			objectStore.clearActiveObject('item')
+			navigationStore.closeModal()
 		},
-		fetchEffects() {
-			this.effectsLoading = true
-
-			effectStore.refreshEffectList()
-				.then(() => {
-					const activeEffects = itemStore.itemItem?.id
-						? effectStore.effectList.filter((effect) => {
-							return itemStore.itemItem.effects
-								.map(String)
-								.includes(effect.id.toString())
-						})
-						: null
-
-					this.effects = {
-						multiple: true,
-						closeOnSelect: false,
-						options: effectStore.effectList.map((effect) => ({
-							id: effect.id,
-							label: effect.name,
-						})),
-						value: activeEffects
-							? activeEffects.map((effect) => ({
-								id: effect.id,
-							    label: effect.name,
-							}))
-							: null,
-					}
-
-					this.effectsLoading = false
-				})
-		},
-		async editItem() {
+		async saveItem() {
 			this.loading = true
 			try {
-				await itemStore.saveItem({
-					...this.itemItem,
-					effects: (this.effects?.value || []).map((effect) => effect.id),
+				await objectStore.saveObject('item', {
+					...this.item,
+					effects: this.effects,
 				})
-				this.success = true
-				this.loading = false
-				this.error = false
-				setTimeout(this.closeModal, 2000)
+				this.closeModal()
 			} catch (error) {
+				console.error('Error saving item:', error)
+			} finally {
 				this.loading = false
-				this.success = false
-				this.error = error.message || 'An error occurred while saving the item'
 			}
-		},
-		openLink(url, target) {
-			window.open(url, target)
 		},
 	},
 }
 </script>
+
+<style scoped>
+.content {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.effects {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+</style>

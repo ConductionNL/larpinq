@@ -1,82 +1,48 @@
 <script setup>
-import { conditionStore, navigationStore,  } from '../../store/store.js'
+import { objectStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
-	<div class="detailContainer">
-		<div id="app-content">
-			<!-- app-content-wrapper is optional, only use if app-content-list  -->
-			<div>
-				<div class="head">
-					<h1 class="h1">
-						{{ conditionStore.conditionItem.name }}
-					</h1>
-					<NcActions :primary="true" menu-name="Acties">
-						<template #icon>
-							<DotsHorizontal :size="20" />
-						</template>
-						<NcActionButton @click="navigationStore.setModal('editCondition')">
-							<template #icon>
-								<Pencil :size="20" />
-							</template>
-							Bewerken
-						</NcActionButton>
-						<NcActionButton @click="navigationStore.setDialog('deleteCondition')">
-							<template #icon>
-								<TrashCanOutline :size="20" />
-							</template>
-							Verwijderen
-						</NcActionButton>
-					</NcActions>
+	<div class="conditionDetails">
+		<div class="conditionHeader">
+			<h2>{{ objectStore.getActiveObject('condition')?.name }}</h2>
+			<div class="conditionActions">
+				<NcButton @click="objectStore.setActiveObject('condition', objectStore.getActiveObject('condition')); navigationStore.setModal('editCondition')">
+					<template #icon>
+						<Pencil :size="20" />
+					</template>
+					Bewerken
+				</NcButton>
+				<NcButton type="error" @click="objectStore.setActiveObject('condition', objectStore.getActiveObject('condition')); navigationStore.setDialog('deleteCondition')">
+					<template #icon>
+						<TrashCanOutline :size="20" />
+					</template>
+					Verwijderen
+				</NcButton>
+			</div>
+		</div>
+
+		<div class="conditionContent">
+			<div class="conditionInfo">
+				<div class="conditionDescription">
+					<h3>Beschrijving</h3>
+					<span>{{ objectStore.getActiveObject('condition')?.description }}</span>
 				</div>
-				<div class="detailGrid">
-					<div>
-						<b>Sammenvatting:</b>
-						<span>{{ conditionStore.conditionItem.summary }}</span>
-					</div>
-				</div>
-				<span>{{ conditionStore.conditionItem.description }}</span>
-				<div class="tabContainer">
-					<BTabs content-class="mt-3" justified>
-						<BTab>
-							<template #title>
-								Effects <NcCounterBubble>{{ conditionStore.conditionItem?.effects?.length || 0 }}</NcCounterBubble>
-							</template>
-							<div v-if="conditionStore.conditionItem?.effects?.length > 0">
-								<NcListItem v-for="(effect) in conditionStore.conditionItem.effects"
-									:key="effect.id"
-									:name="effect.name"
-									:bold="false"
-									:force-display-actions="true"
-									:details="effect?.modification || ''"
-									:counter-number="effect?.modifier">
-									<template #icon>
-										<MagicStaff disable-menu
-											:size="44" />
-									</template>
-									<template #subname>
-										{{ effect.name }}
-									</template>
-								</NcListItem>
-							</div>
-							<div v-else>
-								Geen effects gevonden
-							</div>
-						</BTab>
-						<BTab>
-							<template #title>
-								Characters <NcCounterBubble>{{ conditionStore.relations ? conditionStore.relations.length : 0 }}</NcCounterBubble>
-							</template>
-							<ObjectList :objects="conditionStore.relations" />							
-						</BTab>
-						<BTab>
-							<template #title>
-								Logging <NcCounterBubble>{{ conditionStore.auditTrails ? conditionStore.auditTrails.length : 0 }}</NcCounterBubble>
-							</template>
-							<AuditList :logs="conditionStore.auditTrails" />
-						</BTab>
-					</BTabs>
-				</div>
+			</div>
+
+			<div class="conditionEffects">
+				<h3>Effecten <NcCounterBubble>{{ objectStore.getActiveObject('condition')?.effects?.length || 0 }}</NcCounterBubble></h3>
+				<EffectList :effects="objectStore.getActiveObject('condition')?.effects" />
+			</div>
+
+			<div class="conditionRelations">
+				<h3>Karakters <NcCounterBubble>{{ objectStore.getRelations('condition')?.length || 0 }}</NcCounterBubble></h3>
+				<ObjectList :objects="objectStore.getRelations('condition')" />
+			</div>
+
+			<div class="conditionAudit">
+				<h3>Logging <NcCounterBubble>{{ objectStore.getAuditTrails('condition')?.length || 0 }}</NcCounterBubble></h3>
+				<AuditTable :logs="objectStore.getAuditTrails('condition')" />
 			</div>
 		</div>
 	</div>
@@ -88,8 +54,8 @@ import { BTabs, BTab } from 'bootstrap-vue'
 import { NcLoadingIcon, NcActions, NcActionButton, NcListItem, NcCounterBubble } from '@nextcloud/vue'
 
 // Custom components
-import AuditList from '../auditTrail/AuditList.vue'
-import ObjectList from '../objects/ObjectList.vue'
+import AuditTable from '../auditTrail/AuditTable.vue'
+import ObjectList from '../../components/ObjectList.vue'
 
 // Icons
 import DotsHorizontal from 'vue-material-design-icons/DotsHorizontal.vue'
@@ -101,7 +67,7 @@ import BriefcaseAccountOutline from 'vue-material-design-icons/BriefcaseAccountO
 export default {
 	name: 'ConditionDetails',
 	components: {
-		AuditList,
+		AuditTable,
 		ObjectList,
 		NcActions,
 		NcActionButton,

@@ -1,165 +1,144 @@
 <script setup>
-import { conditionStore, navigationStore, effectStore } from '../../store/store.js'
+import { objectStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
-	<NcModal v-if="navigationStore.modal === 'editCondition'" ref="modalRef" @close="closeModal">
-		<div class="modalContent">
-			<h2>Conditie {{ conditionItem?.id ? 'Aanpassen' : 'Aanmaken' }}</h2>
-			<NcNoteCard v-if="succes" type="success">
-				<p>Taak succesvol toegevoegd</p>
-			</NcNoteCard>
-			<NcNoteCard v-if="error" type="error">
-				<p>{{ error }}</p>
-			</NcNoteCard>
+	<NcDialog v-if="navigationStore.modal === 'editCondition'"
+		:name="`${objectStore.getActiveObject('condition')?.id ? 'Bewerk' : 'Nieuwe'} conditie`"
+		size="normal"
+		:can-close="false">
+		<div class="content">
+			<NcTextField
+				:value="condition.name"
+				label="Naam"
+				@update:value="condition.name = $event" />
 
-			<form v-if="!succes" @submit.prevent="handleSubmit">
-				<div class="form-group">
-					<NcTextField
-						id="name"
-						label="Name"
-						:value.sync="conditionItem.name"
-						required />
-					<NcTextArea
-						id="description"
-						label="Description"
-						:value.sync="conditionItem.description" />
-					<NcSelect v-bind="effects"
-						v-model="effects.value"
-						input-label="Effects"
-						:loading="effectsLoading"
-						:disabled="effectsLoading || loading" />
-				</div>
-			</form>
+			<NcTextField
+				:value="condition.description"
+				label="Beschrijving"
+				type="textarea"
+				@update:value="condition.description = $event" />
 
-			<NcButton
-				v-if="!succes"
+			<div class="effects">
+				<h3>Effecten</h3>
+				<ObjectList :objects="objectStore.getCollection('effect').results" />
+			</div>
+		</div>
+
+		<template #actions>
+			<NcButton @click="closeModal">
+				<template #icon>
+					<Cancel :size="20" />
+				</template>
+				Annuleren
+			</NcButton>
+			<NcButton type="primary"
 				:disabled="loading"
-				type="primary"
-				@click="editCondition()">
+				@click="saveCondition">
 				<template #icon>
 					<NcLoadingIcon v-if="loading" :size="20" />
-					<ContentSaveOutline v-if="!loading" :size="20" />
+					<ContentSaveOutline v-if="!loading && objectStore.getActiveObject('condition')?.id" :size="20" />
+					<Plus v-if="!loading && !objectStore.getActiveObject('condition')?.id" :size="20" />
 				</template>
-				Opslaan
+				{{ objectStore.getActiveObject('condition')?.id ? 'Opslaan' : 'Aanmaken' }}
 			</NcButton>
-		</div>
-	</NcModal>
+		</template>
+	</NcDialog>
 </template>
 
 <script>
 import {
 	NcButton,
-	NcModal,
+	NcDialog,
 	NcTextField,
-	NcTextArea,
 	NcLoadingIcon,
-	NcNoteCard,
-	NcSelect,
 } from '@nextcloud/vue'
 import ContentSaveOutline from 'vue-material-design-icons/ContentSaveOutline.vue'
+import Plus from 'vue-material-design-icons/Plus.vue'
+import Cancel from 'vue-material-design-icons/Cancel.vue'
+import ObjectList from '../../components/ObjectList.vue'
 
 export default {
 	name: 'EditCondition',
 	components: {
-		NcModal,
-		NcTextField,
-		NcTextArea,
+		NcDialog,
 		NcButton,
+		NcTextField,
 		NcLoadingIcon,
-		NcNoteCard,
-		NcSelect,
-		// Icons
 		ContentSaveOutline,
+		Plus,
+		Cancel,
+		ObjectList,
 	},
 	data() {
 		return {
-			conditionItem: {
+			loading: false,
+			hasUpdated: false,
+			condition: {
 				name: '',
 				description: '',
 			},
-			effects: {},
-			effectsLoading: false,
-			succes: false,
-			loading: false,
-			error: false,
-			hasUpdated: false,
+			effects: [],
 		}
 	},
-	mounted() {
-		this.fetchEffects()
-	},
-	updated() {
-		if (conditionStore.conditionItem?.id && navigationStore.modal === 'editCondition' && !this.hasUpdated) {
-			this.conditionItem = {
-				...conditionStore.conditionItem,
-				name: conditionStore.conditionItem.name || '',
-				description: conditionStore.conditionItem.description || '',
+	watch: {
+		'navigationStore.modal'(newVal) {
+			if (newVal === 'editCondition' && !this.hasUpdated) {
+				this.updateForm()
 			}
-			this.fetchEffects()
-			this.hasUpdated = true
-		}
+		},
 	},
 	methods: {
+		updateForm() {
+			if (objectStore.getActiveObject('condition')?.id && navigationStore.modal === 'editCondition' && !this.hasUpdated) {
+				const condition = objectStore.getActiveObject('condition')
+				this.condition = {
+					...condition,
+					name: condition.name || '',
+					description: condition.description || '',
+				}
+				this.effects = condition.effects || []
+				this.hasUpdated = true
+			}
+		},
 		closeModal() {
-			navigationStore.setModal(false)
-			this.succes = false
-			this.loading = false
-			this.error = false
-			this.hasUpdated = false
-			this.conditionItem = {
+			this.condition = {
 				name: '',
 				description: '',
 			}
+			this.effects = []
+			this.hasUpdated = false
+			objectStore.clearActiveObject('condition')
+			navigationStore.closeModal()
 		},
-		fetchEffects() {
-			this.effectsLoading = true
-
-			effectStore.refreshEffectList()
-				.then(() => {
-					const activeEffects = conditionStore.conditionItem?.id
-						? effectStore.effectList.filter((effect) => {
-							return conditionStore.conditionItem.effects
-								?.map(String)
-								.includes(effect.id.toString())
-						})
-						: null
-
-					this.effects = {
-						multiple: true,
-						closeOnSelect: false,
-						options: effectStore.effectList.map((effect) => ({
-							id: effect.id,
-							label: effect.name,
-						})),
-						value: activeEffects
-							? activeEffects.map((effect) => ({
-								id: effect.id,
-								label: effect.name,
-							}))
-							: null,
-					}
-
-					this.effectsLoading = false
-				})
-		},
-		async editCondition() {
+		async saveCondition() {
 			this.loading = true
 			try {
-				await conditionStore.saveCondition({
-					...this.conditionItem,
-					effects: (this.effects?.value || []).map((effect) => effect.id),
+				await objectStore.saveObject('condition', {
+					...this.condition,
+					effects: this.effects,
 				})
-				// Close modal or show success message
-				this.succes = true
-				this.loading = false
-				setTimeout(this.closeModal, 2000)
+				this.closeModal()
 			} catch (error) {
+				console.error('Error saving condition:', error)
+			} finally {
 				this.loading = false
-				this.succes = false
-				this.error = error.message || 'An error occurred while saving the character'
 			}
 		},
 	},
 }
 </script>
+
+<style scoped>
+.content {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.effects {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+</style>

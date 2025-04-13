@@ -1,132 +1,130 @@
 <script setup>
-import { abilityStore, navigationStore } from '../../store/store.js'
+import { objectStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
-	<div class="detailContainer">
-		<div id="app-content">
-			<!-- app-content-wrapper is optional, only use if app-content-list  -->
-			<div>
-				<div class="head">
-					<h1 class="h1">
-						{{ abilityStore.abilityItem.name }}
-					</h1>
-
-					<NcActions :primary="true" menu-name="Acties">
+	<div class="abilityDetails">
+		<div class="abilityHeader">
+			<h2>{{ objectStore.getActiveObject('ability')?.name }}</h2>
+			<div class="abilityActions">
+				<NcActions>
+					<NcActionButton @click="objectStore.setActiveObject('ability', objectStore.getActiveObject('ability')); navigationStore.setModal('editAbility')">
 						<template #icon>
-							<DotsHorizontal :size="20" />
+							<Pencil :size="20" />
 						</template>
-						<NcActionButton @click="navigationStore.setModal('editAbility')">
-							<template #icon>
-								<Pencil :size="20" />
-							</template>
-							Bewerken
-						</NcActionButton>
-						<NcActionButton @click="navigationStore.setDialog('deleteAbility')">
-							<template #icon>
-								<TrashCanOutline :size="20" />
-							</template>
-							Verwijderen
-						</NcActionButton>
-					</NcActions>
-				</div>
-				<div class="detailGrid">
-					<div>
-						<b>Sammenvatting:</b>
-						<span>{{ abilityStore.abilityItem.summary }}</span>
-					</div>
-				</div>
-				<span>{{ abilityStore.abilityItem.description }}</span>
+						Bewerken
+					</NcActionButton>
+					<NcActionButton @click="objectStore.setActiveObject('ability', objectStore.getActiveObject('ability')); navigationStore.setDialog('deleteAbility')">
+						<template #icon>
+							<TrashCanOutline :size="20" />
+						</template>
+						Verwijderen
+					</NcActionButton>
+				</NcActions>
+			</div>
+		</div>
 
-				<div class="tabContainer">
-					<BTabs content-class="mt-3" justified>
-						<BTab>
-							<template #title>
-								Effects <NcCounterBubble>{{ abilityStore.relations ? abilityStore.relations.length : 0 }}</NcCounterBubble>
-							</template>
-							<ObjectList :objects="abilityStore.relations" />							
-						</BTab>
-						<BTab>
-							<template #title>
-								Logging <NcCounterBubble>{{ abilityStore.auditTrails ? abilityStore.auditTrails.length : 0 }}</NcCounterBubble>
-							</template>
-							<AuditList :logs="abilityStore.auditTrails" />
-						</BTab>
-					</BTabs>
+		<div class="abilityContent">
+			<div class="abilityDescription">
+				<h3>Beschrijving</h3>
+				<p>{{ objectStore.getActiveObject('ability')?.description }}</p>
+			</div>
+
+			<div class="abilityEffects">
+				<h3>Effecten</h3>
+				<ObjectList :objects="objectStore.getActiveObject('ability')?.effects || []" />
+			</div>
+
+			<div class="abilityCharacters">
+				<h3>Karakters met deze vaardigheid</h3>
+				<div v-if="objectStore.getRelatedObjects('ability', 'character')?.length > 0" class="characterList">
+					<NcListItem v-for="character in objectStore.getRelatedObjects('ability', 'character')"
+						:key="character.id"
+						:title="character.name"
+						@click="objectStore.setActiveObject('character', character); navigationStore.setSelected('characters')">
+						<template #icon>
+							<Account :size="20" />
+						</template>
+					</NcListItem>
 				</div>
+				<div v-else class="noCharacters">
+					<p>Geen karakters gevonden met deze vaardigheid.</p>
+				</div>
+			</div>
+
+			<div class="abilityAuditLog">
+				<h3>Audit log</h3>
+				<AuditTable :audit-log="objectStore.getAuditLog('ability')" />
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
-import { BTabs, BTab } from 'bootstrap-vue'
-import { NcLoadingIcon, NcActions, NcActionButton, NcListItem, NcCounterBubble } from '@nextcloud/vue'
+import {
+	NcActions,
+	NcActionButton,
+	NcListItem,
+} from '@nextcloud/vue'
 
-// Custom components
-import AuditList from '../auditTrail/AuditList.vue'
-import ObjectList from '../objects/ObjectList.vue'
-
-// Icons
-import DotsHorizontal from 'vue-material-design-icons/DotsHorizontal.vue'
+import Account from 'vue-material-design-icons/Account.vue'
 import Pencil from 'vue-material-design-icons/Pencil.vue'
 import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
-import BriefcaseAccountOutline from 'vue-material-design-icons/BriefcaseAccountOutline.vue'
-import { storeToRefs } from 'pinia'
+
+import ObjectList from '../../components/ObjectList.vue'
+import AuditTable from '../auditTrail/AuditTable.vue'
+
 export default {
 	name: 'AbilityDetails',
 	components: {
 		NcActions,
 		NcActionButton,
-		NcLoadingIcon,
 		NcListItem,
-		NcCounterBubble,
-		BTabs,
-		BTab,
-		// Custom components
-		AuditList,
-		ObjectList,
-		// Icons
-		DotsHorizontal,
+		Account,
 		Pencil,
 		TrashCanOutline,
-		BriefcaseAccountOutline,
+		ObjectList,
+		AuditTable,
 	},
 }
 </script>
 
-<style>
-h4 {
-  font-weight: bold
+<style scoped>
+.abilityDetails {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	padding: 1rem;
 }
 
-.h1 {
-  display: block !important;
-  font-size: 2em !important;
-  margin-block-start: 0.67em !important;
-  margin-block-end: 0.67em !important;
-  margin-inline-start: 0px !important;
-  margin-inline-end: 0px !important;
-  font-weight: bold !important;
-  unicode-bidi: isolate !important;
+.abilityHeader {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }
 
-.grid {
-  display: grid;
-  grid-gap: 24px;
-  grid-template-columns: 1fr 1fr;
-  margin-block-start: var(--zaa-margin-50);
-  margin-block-end: var(--zaa-margin-50);
+.abilityContent {
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
 }
 
-.gridContent {
-  display: flex;
-  gap: 25px;
+.abilityDescription,
+.abilityEffects,
+.abilityCharacters,
+.abilityAuditLog {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
 }
 
-/* Add margin to counter bubble only when inside nav-item */
-.nav-item .counter-bubble__counter {
-    margin-left: 10px;
+.characterList {
+	display: flex;
+	flex-direction: column;
 }
 
+.noCharacters {
+	color: var(--color-text-maxcontrast);
+	font-style: italic;
+}
 </style>

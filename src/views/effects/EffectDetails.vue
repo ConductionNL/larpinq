@@ -1,5 +1,5 @@
 <script setup>
-import { effectStore, navigationStore } from '../../store/store.js'
+import { objectStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -9,7 +9,7 @@ import { effectStore, navigationStore } from '../../store/store.js'
 			<div>
 				<div class="head">
 					<h1 class="h1">
-						{{ effectStore.effectItem.name }}
+						{{ objectStore.getActiveObject('effect').name }}
 					</h1>
 
 					<NcActions :primary="true" menu-name="Acties">
@@ -33,24 +33,24 @@ import { effectStore, navigationStore } from '../../store/store.js'
 				<div class="detailGrid">
 					<div>
 						<b>Sammenvatting:</b>
-						<span>{{ effectStore.effectItem.summary }}</span>
+						<span>{{ objectStore.getActiveObject('effect').summary }}</span>
 					</div>
 				</div>
-				<span>{{ effectStore.effectItem.description }}</span>
+				<span>{{ objectStore.getActiveObject('effect').description }}</span>
 
 				<div class="tabContainer">
 					<BTabs content-class="mt-3" justified>		
 						<BTab>
 							<template #title>
-								Used by <NcCounterBubble>{{ effectStore.relations ? effectStore.relations.length : 0 }}</NcCounterBubble>
+								Used by <NcCounterBubble>{{ objectStore.getRelations('effect') ? objectStore.getRelations('effect').length : 0 }}</NcCounterBubble>
 							</template>
-							<ObjectList :objects="effectStore.relations" />							
+							<ObjectList :objects="objectStore.getRelations('effect')" />							
 						</BTab>
 						<BTab>
 							<template #title>
-								Logging <NcCounterBubble>{{ effectStore.auditTrails ? effectStore.auditTrails.length : 0 }}</NcCounterBubble>
+								Logging <NcCounterBubble>{{ objectStore.getAuditTrails('effect') ? objectStore.getAuditTrails('effect').length : 0 }}</NcCounterBubble>
 							</template>
-							<AuditList :logs="effectStore.auditTrails" />
+							<AuditTable :logs="objectStore.getAuditTrails('effect')" />
 						</BTab>
 					</BTabs>
 				</div>
@@ -65,8 +65,8 @@ import { BTabs, BTab } from 'bootstrap-vue'
 import { NcLoadingIcon, NcActions, NcActionButton, NcListItem, NcCounterBubble } from '@nextcloud/vue'
 
 // Custom components
-import AuditList from '../auditTrail/AuditList.vue'
-import ObjectList from '../objects/ObjectList.vue'
+import AuditTable from '../auditTrail/AuditTable.vue'
+import ObjectList from '../../components/ObjectList.vue'
 
 // Icons
 import DotsHorizontal from 'vue-material-design-icons/DotsHorizontal.vue'
@@ -87,7 +87,7 @@ export default {
 		BTabs,
 		BTab,
 		// Custom components
-		AuditList,
+		AuditTable,
 		ObjectList,
 		// Icons
 		DotsHorizontal,

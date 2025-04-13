@@ -1,5 +1,5 @@
 <script setup>
-import { skillStore, navigationStore, searchStore, characterStore } from '../../store/store.js'
+import { objectStore, navigationStore, searchStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -7,23 +7,23 @@ import { skillStore, navigationStore, searchStore, characterStore } from '../../
 		<ul>
 			<div class="listHeader">
 				<NcTextField
-					:value="skillStore.searchTerm"
-					:show-trailing-button="skillStore.searchTerm !== ''"
+					:value="searchStore.getSearchTerm('skill')"
+					:show-trailing-button="searchStore.getSearchTerm('skill') !== ''"
 					label="Search"
 					class="searchField"
 					trailing-button-icon="close"
-					@input="skillStore.setSearchTerm($event.target.value)"
-					@trailing-button-click="skillStore.clearSearch()">
+					@input="searchStore.setSearchTerm('skill', $event.target.value)"
+					@trailing-button-click="searchStore.clearSearchTerm('skill')">
 					<Magnify :size="20" />
 				</NcTextField>
 				<NcActions>
-					<NcActionButton @click="skillStore.refreshSkillList()">
+					<NcActionButton @click="objectStore.refreshObjectList('skill')">
 						<template #icon>
 							<Refresh :size="20" />
 						</template>
 						Ververs
 					</NcActionButton>
-					<NcActionButton @click="skillStore.setSkillItem(null); navigationStore.setModal('editSkill')">
+					<NcActionButton @click="objectStore.clearActiveObject('skill'); navigationStore.setModal('editSkill')">
 						<template #icon>
 							<Plus :size="20" />
 						</template>
@@ -31,16 +31,16 @@ import { skillStore, navigationStore, searchStore, characterStore } from '../../
 					</NcActionButton>
 				</NcActions>
 			</div>
-			<div v-if="skillStore.skillList && skillStore.skillList.length > 0 && !skillStore.isLoadingSkillList">
-				<NcListItem v-for="(skill, i) in skillStore.skillList"
-					:key="`${skill}${i}`"
-					:name="skill?.name"
-					:active="skillStore.skillItem?.id === skill?.id"
+			<div v-if="objectStore.getObjectList('skill')?.length > 0 && !objectStore.isLoading('skill')">
+				<NcListItem v-for="skill in objectStore.getObjectList('skill')"
+					:key="skill.id"
+					:name="skill.name"
+					:active="objectStore.getActiveObject('skill')?.id === skill.id"
 					:details="(skill?.effects?.length || '0') + ' effect(s)'"
 					:force-display-actions="true"
-					@click="handleSkillSelect(skill)">
+					@click="selectSkill(skill)">
 					<template #icon>
-						<SwordCross :class="skillStore.skillItem === skill.id && 'selectedSkillIcon'"
+						<SwordCross :class="objectStore.getActiveObject('skill')?.id === skill.id && 'selectedSkillIcon'"
 							disable-menu
 							:size="44" />
 					</template>
@@ -48,13 +48,13 @@ import { skillStore, navigationStore, searchStore, characterStore } from '../../
 						{{ skill?.description }}
 					</template>
 					<template #actions>
-						<NcActionButton @click="handleSkillSelect(skill); navigationStore.setModal('editSkill')">
+						<NcActionButton @click="selectSkill(skill); navigationStore.setModal('editSkill')">
 							<template #icon>
 								<Pencil />
 							</template>
 							Bewerken
 						</NcActionButton>
-						<NcActionButton @click="handleSkillSelect(skill), navigationStore.setDialog('deleteSkill')">
+						<NcActionButton @click="selectSkill(skill), navigationStore.setDialog('deleteSkill')">
 							<template #icon>
 								<TrashCanOutline />
 							</template>
@@ -65,13 +65,13 @@ import { skillStore, navigationStore, searchStore, characterStore } from '../../
 			</div>
 		</ul>
 
-		<NcLoadingIcon v-if="skillStore.isLoadingSkillList"
+		<NcLoadingIcon v-if="objectStore.isLoading('skill')"
 			class="loadingIcon"
 			:size="64"
 			appearance="dark"
 			name="Vaardigheden aan het laden" />
 
-		<div v-if="skillStore.skillList.length === 0 && !skillStore.isLoadingSkillList">
+		<div v-if="objectStore.getObjectList('skill')?.length === 0 && !objectStore.isLoading('skill')">
 			Er zijn nog geen vaardigheden gedefinieerd.
 		</div>
 	</NcAppContentList>
@@ -105,18 +105,15 @@ export default {
 		TrashCanOutline,
 		Refresh,
 	},
-	mounted() {
-		skillStore.refreshSkillList()
-	},
 	methods: {
 		/**
 		 * Handle skill selection
 		 * @param {object} skill - The selected skill object
-		 * @returns {Promise<void>}
+		 * @return {Promise<void>}
 		 */
-		async handleSkillSelect(skill) {
-			// Set the selected skill in the store
-			skillStore.setSkillItem(skill)
+		selectSkill(skill) {
+			objectStore.setActiveObject('skill', skill)
+			navigationStore.setSelected('skills')
 		},
 	},
 }

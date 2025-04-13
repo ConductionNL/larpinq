@@ -1,5 +1,5 @@
 <script setup>
-import { abilityStore, effectStore, navigationStore } from '../../store/store.js'
+import { objectStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -16,15 +16,15 @@ import { abilityStore, effectStore, navigationStore } from '../../store/store.js
 
 		<div v-if="!success" class="formContainer">
 			<NcTextField :disabled="loading"
-				label="Name *"
+				label="Naam *"
 				required
 				:value.sync="effectItem.name" />
 			<NcTextArea :disabled="loading"
-				label="Description"
+				label="Beschrijving"
 				type="textarea"
 				:value.sync="effectItem.description" />
 			<NcTextField :disabled="loading"
-				label="Modifier"
+				label="Aanpassing"
 				type="number"
 				:value.sync="effectItem.modifier" />
 			<NcSelect
@@ -38,7 +38,7 @@ import { abilityStore, effectStore, navigationStore } from '../../store/store.js
 			<NcSelect
 				v-bind="abilities"
 				v-model="abilities.value"
-				input-label="Abilities"
+				input-label="Vaardigheden"
 				:loading="abilitiesLoading"
 				:disabled="loading" />
 		</div>
@@ -114,22 +114,34 @@ export default {
 				options: [{ id: 'cumulative', label: 'Cumulative' }, { id: 'non-cumulative', label: 'Non-cumulative' }],
 				value: [{ id: 'cumulative', label: 'Cumulative' }],
 			},
-			abilities: {},
-			abilitiesLoading: false,
+			abilities: {
+				multiple: true,
+				closeOnSelect: false,
+				options: [],
+				value: null,
+			},
 			hasUpdated: false,
 		}
 	},
-	updated() {
+	mounted() {
 		if (navigationStore.modal === 'editEffect' && !this.hasUpdated) {
-			if (effectStore.effectItem.id) {
-				this.effectItem = {
-					...effectStore.effectItem,
-					name: effectStore.effectItem.name || '',
-					description: effectStore.effectItem.description || '',
-					modifier: effectStore.effectItem.modifier || '',
-				}
-			}
-			this.fetchAbilities()
+			// Get selected abilities
+			const selectedAbilities = objectStore.getObjectList('ability').filter((ability) => {
+				return this.effect.abilities.includes(ability.id)
+			})
+
+			// Set selected abilities
+			this.abilities.value = selectedAbilities.map(ability => ({
+				id: ability.id,
+				label: ability.name,
+			}))
+
+			// Set ability options from preloaded abilities
+			this.abilities.options = objectStore.getObjectList('ability').map((ability) => ({
+				id: ability.id,
+				label: ability.name,
+			}))
+
 			this.hasUpdated = true
 		}
 	},
@@ -145,45 +157,16 @@ export default {
 				description: '',
 				modifier: '',
 			}
-		},
-		fetchAbilities() {
-			this.abilitiesLoading = true
-
-			abilityStore.refreshAbilityList()
-				.then(() => {
-					const selectedAbilities = effectStore.effectItem.id // if modal is an edit modal
-						? abilityStore.abilityList.filter((ability) => { // filter through the list of abilities
-							return (effectStore.effectItem.abilities || []) // ensure abilities exists or default to empty array
-								.map(String) // ensure all the ability id's in the effect are a string (this does not change the resulting data type)
-								.includes(ability.id.toString()) // check if the current ability in the filter exists on the effects's abilities
-						})
-						: null
-
-					this.abilities = {
-						multiple: true,
-						closeOnSelect: false,
-						options: abilityStore.abilityList.map((ability) => ({
-							id: ability.id,
-							label: ability.name,
-						})),
-						value: selectedAbilities
-							? selectedAbilities.map((ability) => ({
-								id: ability.id,
-							    label: ability.name,
-							}))
-							: null,
-					}
-
-					this.abilitiesLoading = false
-				})
+			this.abilities.value = null
+			this.abilities.options = []
 		},
 		async editEffect() {
 			this.loading = true
 			try {
-				await effectStore.saveEffect({
+				await objectStore.saveObject('effect', {
 					...this.effectItem,
 					modification: this.modificationOptions.value.id,
-					cumulative: this.cumulativeOptions.value.id,
+					cumulative: this.cumulativeOptions.value.value.id,
 					abilities: (this.abilities?.value || []).map((ability) => ability.id),
 				})
 				this.success = true
@@ -192,7 +175,7 @@ export default {
 			} catch (error) {
 				this.loading = false
 				this.success = false
-				this.error = error.message || 'An error occurred while saving the effect'
+				this.error = error.message || 'Er is een fout opgetreden bij het opslaan van het effect'
 			}
 		},
 		openLink(url, target) {

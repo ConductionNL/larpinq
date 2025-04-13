@@ -1,5 +1,5 @@
 <script setup>
-import { skillStore, navigationStore } from '../../store/store.js'
+import { objectStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -8,20 +8,20 @@ import { skillStore, navigationStore } from '../../store/store.js'
 			<SkillsList />
 		</template>
 		<template #default>
-			<NcEmptyContent v-if="!skillStore.skillItem || navigationStore.selected != 'skills' "
-				class="detailContainer"
-				name="Geen skil"
-				description="Nog geen skill geselecteerd">
-				<template #icon>
-					<SwordCross />
-				</template>
+			<NcEmptyContent v-if="!objectStore.getActiveObject('skill') || navigationStore.selected != 'skills'"
+				icon="icon-category-customization"
+				title="Vaardigheden"
+				description="Nog geen vaardigheid geselecteerd">
 				<template #action>
-					<NcButton type="primary" @click="skillStore.setSkillItem(null); navigationStore.setModal('editSkill')">
-						Skill toevoegen
+					<NcButton type="primary" @click="objectStore.clearActiveObject('skill'); navigationStore.setModal('editSkill')">
+						<template #icon>
+							<Plus :size="20" />
+						</template>
+						Nieuwe vaardigheid
 					</NcButton>
 				</template>
 			</NcEmptyContent>
-			<SkillDetails v-if="skillStore.skillItem && navigationStore.selected === 'skills'" />
+			<SkillDetails v-if="objectStore.getActiveObject('skill') && navigationStore.selected === 'skills'" />
 		</template>
 	</NcAppContent>
 </template>
@@ -30,7 +30,7 @@ import { skillStore, navigationStore } from '../../store/store.js'
 import { NcAppContent, NcEmptyContent, NcButton } from '@nextcloud/vue'
 import SkillsList from './SkillsList.vue'
 import SkillDetails from './SkillDetails.vue'
-import SwordCross from 'vue-material-design-icons/SwordCross.vue'
+import Plus from 'vue-material-design-icons/Plus.vue'
 
 export default {
 	name: 'SkillsIndex',
@@ -40,7 +40,7 @@ export default {
 		NcButton,
 		SkillsList,
 		SkillDetails,
-		SwordCross,
+		Plus,
 	},
 }
 </script>
