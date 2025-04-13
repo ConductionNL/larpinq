@@ -246,27 +246,47 @@ export const useObjectStore = defineStore('object', {
 		 * @return {Promise<void>}
 		 */
 		async setActiveObject(type, object) {
-			this.activeObjects[type] = object
+			console.log('setActiveObject called with:', { type, object })
+			// Log the current state before update
+			console.log('Current activeObjects state:', { ...this.activeObjects })
+			// Update using reactive assignment
+			this.activeObjects = {
+				...this.activeObjects,
+				[type]: object,
+			}
+			// Log the state after update
+			console.log('Updated activeObjects state:', { ...this.activeObjects })
 
 			// Initialize related data structure if not exists
 			if (!this.relatedData[type]) {
-				this.relatedData[type] = {
-					logs: null,
-					uses: null,
-					used: null,
-					files: null,
+				console.log('Initializing relatedData for type:', type)
+				this.relatedData = {
+					...this.relatedData,
+					[type]: {
+						logs: null,
+						uses: null,
+						used: null,
+						files: null,
+					},
 				}
 			}
 
 			// Fetch related data in parallel
 			if (object?.id) {
-				await Promise.all([
-					this.fetchRelatedData(type, object.id, 'logs'),
-					this.fetchRelatedData(type, object.id, 'uses'),
-					this.fetchRelatedData(type, object.id, 'used'),
-					this.fetchRelatedData(type, object.id, 'files'),
-				])
+				console.log('Fetching related data for:', { type, objectId: object.id })
+				const fetchPromises = []
+				const dataTypes = ['logs', 'uses', 'used', 'files']
+				for (const dataType of dataTypes) {
+					if (!this.relatedData[type][dataType]) {
+						fetchPromises.push(this.fetchRelatedData(type, object.id, dataType))
+					}
+				}
+				await Promise.all(fetchPromises)
+				console.log('Finished fetching related data')
+			} else {
+				console.log('No object ID provided, skipping related data fetch')
 			}
+			console.log('setActiveObject completed')
 		},
 
 		/**

@@ -1,5 +1,7 @@
 <script setup>
 import { navigationStore, objectStore } from '../../store/store.js'
+import { computed } from 'vue'
+import { storeToRefs } from 'pinia'
 </script>
 
 <template>
@@ -8,7 +10,7 @@ import { navigationStore, objectStore } from '../../store/store.js'
 			<CharactersList />
 		</template>
 		<template #default>
-			<NcEmptyContent v-if="!objectStore.getActiveObject('character') || navigationStore.selected != 'characters'"
+			<NcEmptyContent v-if="showEmptyContent"
 				class="detailContainer"
 				name="Geen Karakter"
 				description="Nog geen karakter geselecteerd">
@@ -21,7 +23,7 @@ import { navigationStore, objectStore } from '../../store/store.js'
 					</NcButton>
 				</template>
 			</NcEmptyContent>
-			<CharacterDetails v-if="objectStore.getActiveObject('character') && navigationStore.selected === 'characters'" />
+			<CharacterDetails v-if="!showEmptyContent" />
 		</template>
 	</NcAppContent>
 </template>
@@ -31,6 +33,22 @@ import { NcAppContent, NcEmptyContent, NcButton } from '@nextcloud/vue'
 import CharactersList from './CharactersList.vue'
 import CharacterDetails from './CharacterDetails.vue'
 import BriefcaseAccountOutline from 'vue-material-design-icons/BriefcaseAccountOutline.vue'
+
+// Make the stores reactive
+const { selected } = storeToRefs(navigationStore)
+const activeCharacter = computed(() => objectStore.getActiveObject('character'))
+
+const showEmptyContent = computed(() => {
+	const hasActiveCharacter = activeCharacter.value
+	const isCharactersSelected = selected.value === 'characters'
+	console.log('Debug visibility:', {
+		hasActiveCharacter,
+		isCharactersSelected,
+		activeCharacter: activeCharacter.value,
+		selectedNav: selected.value,
+	})
+	return !hasActiveCharacter || !isCharactersSelected
+})
 
 export default {
 	name: 'CharactersIndex',
