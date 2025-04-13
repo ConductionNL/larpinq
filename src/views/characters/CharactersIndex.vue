@@ -41,12 +41,6 @@ const activeCharacter = computed(() => objectStore.getActiveObject('character'))
 const showEmptyContent = computed(() => {
 	const hasActiveCharacter = activeCharacter.value
 	const isCharactersSelected = selected.value === 'characters'
-	console.log('Debug visibility:', {
-		hasActiveCharacter,
-		isCharactersSelected,
-		activeCharacter: activeCharacter.value,
-		selectedNav: selected.value,
-	})
 	return !hasActiveCharacter || !isCharactersSelected
 })
 

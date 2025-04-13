@@ -354,6 +354,7 @@ export const useObjectStore = defineStore('object', {
 			const queryParams = new URLSearchParams({
 				_limit: params._limit || 20,
 				_page: params._page || 1,
+				extend: params.extend || '@self.schema',
 				...params,
 			})
 
@@ -383,7 +384,13 @@ export const useObjectStore = defineStore('object', {
 					await this.fetchSettings()
 				}
 
-				const response = await fetch(this._constructApiUrl(type, null, null, params))
+				// Add extend parameter if not explicitly set
+				const queryParams = {
+					...params,
+					extend: params.extend || '@self.schema',
+				}
+
+				const response = await fetch(this._constructApiUrl(type, null, null, queryParams))
 				if (!response.ok) throw new Error(`Failed to fetch ${type} collection`)
 
 				const data = await response.json()
@@ -404,7 +411,7 @@ export const useObjectStore = defineStore('object', {
 				// Set the collection using the new method
 				this.setCollection(type, data.results, append)
 
-				// Update objects cache
+				// Update objects cache with extended data
 				if (!this.objects[type]) {
 					this.objects[type] = {}
 				}
@@ -437,7 +444,13 @@ export const useObjectStore = defineStore('object', {
 					await this.fetchSettings()
 				}
 
-				const response = await fetch(this._constructApiUrl(type, id, null, params))
+				// Add extend parameter if not explicitly set
+				const queryParams = {
+					...params,
+					extend: params.extend || '@self.schema',
+				}
+
+				const response = await fetch(this._constructApiUrl(type, id, null, queryParams))
 				if (!response.ok) throw new Error(`Failed to fetch ${type} object`)
 
 				const data = await response.json()
@@ -475,7 +488,13 @@ export const useObjectStore = defineStore('object', {
 					await this.fetchSettings()
 				}
 
-				const response = await fetch(this._constructApiUrl(type, id, dataType, params))
+				// Add extend parameter for 'uses' and 'used' data types
+				const queryParams = {
+					...params,
+					...(dataType === 'uses' || dataType === 'used' ? { extend: params.extend || '@self.schema' } : {}),
+				}
+
+				const response = await fetch(this._constructApiUrl(type, id, dataType, queryParams))
 				if (!response.ok) throw new Error(`Failed to fetch ${dataType} for ${type}`)
 
 				const data = await response.json()

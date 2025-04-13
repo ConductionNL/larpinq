@@ -3,21 +3,21 @@
 		<div v-if="objects.length > 0">
 			<NcListItem v-for="object in objects"
 				:key="object.id"
-				:name="object.name"
+				:name="getObjectName(object)"
 				:bold="false"
 				:details="getObjectDetails(object)"
 				:force-display-actions="true"
 				@click="handleObjectClick(object)">
 				<template #icon>
-					<ShieldSwordOutline v-if="object.objectType === 'ability'" :size="44" />
-					<BriefcaseAccountOutline v-else-if="object.objectType === 'character'" :size="44" />
-					<EmoticonSickOutline v-else-if="object.objectType === 'condition'" :size="44" />
-					<MagicStaff v-else-if="object.objectType === 'effect'" :size="44" />
-					<CalendarMonthOutline v-else-if="object.objectType === 'event'" :size="44" />
-					<Sword v-else-if="object.objectType === 'item'" :size="44" />
-					<Account v-else-if="object.objectType === 'player'" :size="44" />
-					<SwordCross v-else-if="object.objectType === 'skill'" :size="44" />
-					<ChatOutline v-else-if="object.objectType === 'template'" :size="44" />
+					<ShieldSwordOutline v-if="getObjectType(object) === 'ability'" :size="44" />
+					<BriefcaseAccountOutline v-else-if="getObjectType(object) === 'character'" :size="44" />
+					<EmoticonSickOutline v-else-if="getObjectType(object) === 'condition'" :size="44" />
+					<MagicStaff v-else-if="getObjectType(object) === 'effect'" :size="44" />
+					<CalendarMonthOutline v-else-if="getObjectType(object) === 'event'" :size="44" />
+					<Sword v-else-if="getObjectType(object) === 'item'" :size="44" />
+					<Account v-else-if="getObjectType(object) === 'player'" :size="44" />
+					<SwordCross v-else-if="getObjectType(object) === 'skill'" :size="44" />
+					<ChatOutline v-else-if="getObjectType(object) === 'template'" :size="44" />
 					<TimelineQuestionOutline v-else :size="44" />
 				</template>
 				<template #subname>
@@ -66,13 +66,13 @@ import ChatOutline from 'vue-material-design-icons/ChatOutline.vue'
 /**
  * @component ObjectList
  * @category Components
- * @package LarpingApp
+ * @package
  * @author Ruben Linde
  * @copyright 2024 Ruben Linde
  * @license AGPL-3.0
  * @version 1.0.0
  * @link https://github.com/MetaProvide/larpingapp
- * 
+ *
  * A generic list component that dynamically renders objects based on their schema.
  * Supports various object types including abilities, characters, conditions, effects,
  * events, items, players, skills, and templates.
@@ -98,7 +98,7 @@ export default {
 	props: {
 		/**
 		 * Array of objects to display in the list
-		 * @type {Array<Object>}
+		 * @type {Array<object>}
 		 */
 		objects: {
 			type: Array,
@@ -109,8 +109,8 @@ export default {
 	methods: {
 		/**
 		 * Get formatted details for an object based on its schema
-		 * @param {Object} object - The object to get details for
-		 * @returns {string} Formatted details string
+		 * @param {object} object - The object to get details for
+		 * @return {string} Formatted details string
 		 */
 		getObjectDetails(object) {
 			if (!object['@self.schema']) {
@@ -128,8 +128,8 @@ export default {
 
 		/**
 		 * Get displayable fields from an object's schema
-		 * @param {Object} object - The object to get fields from
-		 * @returns {Array} Array of displayable fields with their keys
+		 * @param {object} object - The object to get fields from
+		 * @return {Array} Array of displayable fields with their keys
 		 */
 		getDisplayableFields(object) {
 			if (!object['@self.schema']) {
@@ -144,8 +144,8 @@ export default {
 		/**
 		 * Determine if a field should be displayed in the list view
 		 * @param {string} key - The field key
-		 * @param {Object} field - The field schema
-		 * @returns {boolean} Whether the field should be displayed
+		 * @param {object} field - The field schema
+		 * @return {boolean} Whether the field should be displayed
 		 */
 		shouldDisplayField(key, field) {
 			// Skip internal fields and complex objects
@@ -159,8 +159,8 @@ export default {
 		/**
 		 * Format a field value based on its schema type
 		 * @param {any} value - The field value
-		 * @param {Object} field - The field schema
-		 * @returns {string} Formatted value
+		 * @param {object} field - The field schema
+		 * @return {string} Formatted value
 		 */
 		formatFieldValue(value, field) {
 			if (value === null || value === undefined) {
@@ -181,32 +181,68 @@ export default {
 
 		/**
 		 * Renders effects and effect property for an object
-		 * @param {Object} object - The object containing effects and effect property
-		 * @returns {string} Formatted string of effects
+		 * @param {object} object - The object containing effects and effect property
+		 * @return {string} Formatted string of effects or object description
 		 */
 		renderEffects(object) {
-			if (!object?.effects?.length) {
-				return 'No calculated effects'
+			// If the object has a description, show that
+			if (object.description) {
+				return object.description
 			}
 
-			const effectStrings = object.effects.map(effectId => {
-				const effect = objectStore.getCollection('effect').results.find(e => e.id === effectId)
-				if (!effect?.abilities?.length) {
-					return null
-				}
+			// If the object has effects, show them
+			if (object?.effects?.length) {
+				const effectStrings = object.effects.map(effectId => {
+					const effect = objectStore.getCollection('effect').results.find(e => e.id === effectId)
+					if (!effect?.abilities?.length) {
+						return null
+					}
 
-				return effect.abilities.map(ability => {
-					const sign = effect.modification === 'negative' ? '-' : '+'
-					return `${ability.name} (${sign}${effect.name.replace(/[^0-9]/g, '')})`
-				}).join(', ')
-			}).filter(Boolean)
+					return effect.abilities.map(ability => {
+						const sign = effect.modification === 'negative' ? '-' : '+'
+						return `${ability.name} (${sign}${effect.name.replace(/[^0-9]/g, '')})`
+					}).join(', ')
+				}).filter(Boolean)
 
-			return effectStrings.length ? effectStrings.join(', ') : 'No calculated effects'
+				return effectStrings.length ? effectStrings.join(', ') : object.name || 'No description'
+			}
+
+			// If no effects or description, show the name or a default message
+			return object.name || 'No description'
+		},
+
+		/**
+		 * Determines the object type for icon display
+		 * @param {object} object - The object to determine type for
+		 * @return {string} The object type
+		 */
+		getObjectType(object) {
+			// If objectType is already set, use it
+			if (object.objectType) {
+				return object.objectType
+			}
+
+			// Try to determine type from schema
+			if (object['@self.schema']?.title) {
+				const schemaTitle = object['@self.schema'].title.toLowerCase()
+				if (schemaTitle.includes('skill')) return 'skill'
+				if (schemaTitle.includes('condition')) return 'condition'
+				if (schemaTitle.includes('event')) return 'event'
+				if (schemaTitle.includes('item')) return 'item'
+				if (schemaTitle.includes('effect')) return 'effect'
+				if (schemaTitle.includes('ability')) return 'ability'
+				if (schemaTitle.includes('player')) return 'player'
+				if (schemaTitle.includes('character')) return 'character'
+				if (schemaTitle.includes('template')) return 'template'
+			}
+
+			// Default to unknown type
+			return 'unknown'
 		},
 
 		/**
 		 * Handles click on an object list item
-		 * @param {Object} object - The clicked object
+		 * @param {object} object - The clicked object
 		 */
 		handleObjectClick(object) {
 			// Set the object in the appropriate store
@@ -247,6 +283,42 @@ export default {
 				console.warn('Unknown object type:', object.objectType)
 			}
 		},
+
+		/**
+		 * Gets the display name for an object, checking various possible name properties
+		 * @param {object} object - The object to get the name from
+		 * @return {string} The display name
+		 */
+		getObjectName(object) {
+			// Debug log
+			console.log('Object in getObjectName:', {
+				object,
+				hasName: 'name' in object,
+				hasTitle: 'title' in object,
+				name: object.name,
+				title: object.title,
+				id: object.id,
+				objectType: object.objectType,
+				schema: object['@self.schema'],
+			})
+
+			// Check for name or title in the object itself
+			if (object.name) return object.name
+			if (object.title) return object.title
+
+			// If we have an ID and object type, use that
+			if (object.id && object.objectType) {
+				return `${object.objectType.charAt(0).toUpperCase() + object.objectType.slice(1)} ${object.id}`
+			}
+
+			// Check schema title if available
+			if (object['@self.schema']?.title) {
+				return `${object['@self.schema'].title} ${object.id || ''}`
+			}
+
+			// Fallback to ID or Unknown
+			return object.id ? `Object ${object.id}` : 'Unknown Object'
+		},
 	},
 }
 </script>
@@ -257,4 +329,4 @@ export default {
 	flex-direction: column;
 	gap: 4px;
 }
-</style> 
+</style>
