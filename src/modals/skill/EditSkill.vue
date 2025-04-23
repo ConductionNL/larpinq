@@ -1,5 +1,5 @@
 <script setup>
-import { navigationStore, objectStore } from '../../store/store.js'
+import { skillStore, navigationStore, effectStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -53,10 +53,10 @@ import { navigationStore, objectStore } from '../../store/store.js'
 				@click="editSkill()">
 				<template #icon>
 					<NcLoadingIcon v-if="loading" :size="20" />
-					<ContentSaveOutline v-if="!loading && objectStore.getActiveObject('skill')?.id" :size="20" />
-					<Plus v-if="!loading && !objectStore.getActiveObject('skill')?.id" :size="20" />
+					<ContentSaveOutline v-if="!loading && skillStore.skillItem?.id" :size="20" />
+					<Plus v-if="!loading && !skillStore.skillItem?.id" :size="20" />
 				</template>
-				{{ objectStore.getActiveObject('skill')?.id ? 'Opslaan' : 'Aanmaken' }}
+				{{ skillStore.skillItem?.id ? 'Opslaan' : 'Aanmaken' }}
 			</NcButton>
 		</template>
 	</NcDialog>
@@ -99,12 +99,7 @@ export default {
 				description: '',
 				requiredScore: '',
 			},
-			effects: {
-				multiple: true,
-				closeOnSelect: false,
-				options: [],
-				value: null,
-			},
+			effects: {},
 			effectsLoading: false,
 			success: false,
 			loading: false,
@@ -114,32 +109,15 @@ export default {
 	},
 	updated() {
 		if (navigationStore.modal === 'editSkill' && !this.hasUpdated) {
-			const activeSkill = objectStore.getActiveObject('skill')
-			if (activeSkill?.id) {
+			if (skillStore.skillItem?.id) {
 				this.skillItem = {
-					...activeSkill,
-					name: activeSkill.name || '',
-					description: activeSkill.description || '',
-					requiredScore: activeSkill.requiredScore || '',
+					...skillStore.skillItem,
+					name: skillStore.skillItem.name || '',
+					description: skillStore.skillItem.description || '',
+					requiredScore: skillStore.skillItem.requiredScore || '',
 				}
-
-				const activeEffects = objectStore.getCollection('effect').results.filter((effect) => {
-					return (activeSkill.effects || [])
-						.map(String)
-						.includes(effect.id.toString())
-				})
-
-				this.effects.value = activeEffects.map((effect) => ({
-					id: effect.id,
-					label: effect.name,
-				}))
 			}
-
-			this.effects.options = objectStore.getCollection('effect').results.map((effect) => ({
-				id: effect.id,
-				label: effect.name,
-			}))
-
+			this.fetchEffects()
 			this.hasUpdated = true
 		}
 	},
@@ -155,14 +133,42 @@ export default {
 				description: '',
 				requiredScore: '',
 			}
-			this.effects.value = null
-			this.effects.options = []
-			objectStore.setActiveObject('skill', null)
+		},
+		fetchEffects() {
+			this.effectsLoading = true
+
+			effectStore.refreshEffectList()
+				.then(() => {
+					const activatedEffects = skillStore.skillItem?.id // if modal is an edit modal
+						? effectStore.effectList.filter((effect) => { // filter through the list of effects
+							return (skillStore.skillItem.effects || [])
+								.map(String) // ensure all the effect id's in the skill are a string (this does not change the resulting data type)
+								.includes(effect.id.toString()) // check if the current effect in the filter exists on the skill's effects
+						})
+						: null
+
+					this.effects = {
+						multiple: true,
+						closeOnSelect: false,
+						options: effectStore.effectList.map((effect) => ({
+							id: effect.id,
+							label: effect.name,
+						})),
+						value: activatedEffects
+							? activatedEffects.map((effect) => ({
+								id: effect.id,
+							    label: effect.name,
+							}))
+							: null,
+					}
+
+					this.effectsLoading = false
+				})
 		},
 		async editSkill() {
 			this.loading = true
 			try {
-				await objectStore.saveObject('skill', {
+				await skillStore.saveSkill({
 					...this.skillItem,
 					effects: (this.effects?.value || []).map((effect) => effect.id),
 				})
@@ -172,6 +178,7 @@ export default {
 			} catch (error) {
 				this.loading = false
 				this.success = false
+
 				this.error = error.message || 'An error occurred while saving the skill'
 			}
 		},

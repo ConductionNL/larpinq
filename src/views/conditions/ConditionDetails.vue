@@ -1,103 +1,71 @@
 <script setup>
 import { objectStore, navigationStore } from '../../store/store.js'
+import { NcActions, NcActionButton, NcNoteCard } from '@nextcloud/vue'
+import ObjectTabs from '../../components/ObjectTabs.vue'
+
+// Icons
+import DotsHorizontal from 'vue-material-design-icons/DotsHorizontal.vue'
+import Pencil from 'vue-material-design-icons/Pencil.vue'
+import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
 </script>
 
 <template>
-	<div class="conditionDetails">
-		<div class="conditionHeader">
-			<h2>{{ objectStore.getActiveObject('condition')?.name }}</h2>
-			<div class="conditionActions">
-				<NcButton @click="objectStore.setActiveObject('condition', objectStore.getActiveObject('condition')); navigationStore.setModal('editCondition')">
-					<template #icon>
-						<Pencil :size="20" />
-					</template>
-					Bewerken
-				</NcButton>
-				<NcButton type="error" @click="objectStore.setActiveObject('condition', objectStore.getActiveObject('condition')); navigationStore.setDialog('deleteCondition')">
-					<template #icon>
-						<TrashCanOutline :size="20" />
-					</template>
-					Verwijderen
-				</NcButton>
-			</div>
-		</div>
-
-		<div class="conditionContent">
-			<div class="conditionInfo">
-				<div class="conditionDescription">
-					<h3>Beschrijving</h3>
-					<span>{{ objectStore.getActiveObject('condition')?.description }}</span>
+	<div class="detailContainer">
+		<div id="app-content">
+			<div>
+				<div class="head">
+					<h1 class="h1">
+						{{ objectStore.getActiveObject('condition').name }}
+					</h1>
+					<NcActions :primary="true" menu-name="Acties">
+						<template #icon>
+							<DotsHorizontal :size="20" />
+						</template>
+						<NcActionButton @click="navigationStore.setModal('editCondition')">
+							<template #icon>
+								<Pencil :size="20" />
+							</template>
+							Conditie Bewerken
+						</NcActionButton>
+						<NcActionButton @click="navigationStore.setDialog('deleteCondition')">
+							<template #icon>
+								<TrashCanOutline :size="20" />
+							</template>
+							Verwijderen
+						</NcActionButton>
+					</NcActions>
 				</div>
-			</div>
-
-			<div class="conditionEffects">
-				<h3>Effecten <NcCounterBubble>{{ objectStore.getActiveObject('condition')?.effects?.length || 0 }}</NcCounterBubble></h3>
-				<EffectList :effects="objectStore.getActiveObject('condition')?.effects" />
-			</div>
-
-			<div class="conditionRelations">
-				<h3>Karakters <NcCounterBubble>{{ objectStore.getRelations('condition')?.length || 0 }}</NcCounterBubble></h3>
-				<ObjectList :objects="objectStore.getRelations('condition')" />
-			</div>
-
-			<div class="conditionAudit">
-				<h3>Logging <NcCounterBubble>{{ objectStore.getAuditTrails('condition')?.length || 0 }}</NcCounterBubble></h3>
-				<AuditTable :logs="objectStore.getAuditTrails('condition')" />
+				<NcNoteCard v-if="objectStore.getActiveObject('condition').notice" type="info">
+					{{ objectStore.getActiveObject('condition').notice }}
+				</NcNoteCard>
+				<div class="detailGrid">
+					<div>
+						<b>Type:</b>
+						<span>{{ objectStore.getActiveObject('condition').type }}</span>
+					</div>
+				</div>
+				<span>{{ objectStore.getActiveObject('condition').description }}</span>
+				<div class="tabContainer">
+					<ObjectTabs
+						type="condition"
+						:object="objectStore.getActiveObject('condition')" />
+				</div>
 			</div>
 		</div>
 	</div>
 </template>
 
-<script>
-// Components
-import { BTabs, BTab } from 'bootstrap-vue'
-import { NcLoadingIcon, NcActions, NcActionButton, NcListItem, NcCounterBubble } from '@nextcloud/vue'
-
-// Custom components
-import AuditTable from '../auditTrail/AuditTable.vue'
-import ObjectList from '../../components/ObjectList.vue'
-
-// Icons
-import DotsHorizontal from 'vue-material-design-icons/DotsHorizontal.vue'
-import Pencil from 'vue-material-design-icons/Pencil.vue'
-import FileDocumentPlusOutline from 'vue-material-design-icons/FileDocumentPlusOutline.vue'
-import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
-import BriefcaseAccountOutline from 'vue-material-design-icons/BriefcaseAccountOutline.vue'
-
-export default {
-	name: 'ConditionDetails',
-	components: {
-		AuditTable,
-		ObjectList,
-		NcActions,
-		NcActionButton,
-		NcLoadingIcon,
-		NcListItem,
-		NcCounterBubble,
-		BTabs,
-		BTab,
-		// Icons
-		DotsHorizontal,
-		Pencil,
-		FileDocumentPlusOutline,
-		TrashCanOutline,
-		BriefcaseAccountOutline,
-	},
-}
-</script>
-
 <style>
-
 h4 {
   font-weight: bold;
 }
 
-.head{
+.head {
 	display: flex;
 	justify-content: space-between;
 }
 
-.button{
+.button {
 	max-height: 10px;
 }
 
@@ -122,4 +90,26 @@ h4 {
     margin-left: 10px;
 }
 
+/* Style for stat effects to prevent truncation */
+.stat-effects {
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
+  line-height: 1.4;
+  padding: 4px 0;
+}
+
+/* Ensure list items expand properly with multi-line content */
+:deep(.app-content-list-item) {
+  height: auto !important;
+  min-height: 44px;
+}
+
+:deep(.app-content-list-item-line-one),
+:deep(.app-content-list-item-line-two) {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+}
 </style>

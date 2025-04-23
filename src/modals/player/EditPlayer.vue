@@ -1,72 +1,72 @@
 <script setup>
-import { objectStore, navigationStore } from '../../store/store.js'
+import { playerStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
-	<NcDialog v-if="navigationStore.modal === 'editPlayer'"
-		:name="`${objectStore.getActiveObject('player')?.id ? 'Bewerk' : 'Nieuwe'} speler`"
-		size="normal"
-		:can-close="false">
-		<div class="content">
-			<NcTextField
-				:value="player.name"
-				label="Naam"
-				@update:value="player.name = $event" />
+	<NcModal
+		v-if="navigationStore.modal === 'editPlayer'"
+		ref="modalRef"
+		@close="closeModal">
+		<div class="modalContent">
+			<h2>Speler {{ player.id ? "Aanpassen" : "Aanmaken" }}</h2>
+			<NcNoteCard v-if="succes" type="success">
+				<p>Speler succesvol toegevoegd</p>
+			</NcNoteCard>
+			<NcNoteCard v-if="error" type="error">
+				<p>{{ error }}</p>
+			</NcNoteCard>
 
-			<NcTextField
-				:value="player.email"
-				label="Email"
-				@update:value="player.email = $event" />
+			<form v-if="!succes" @submit.prevent="handleSubmit">
+				<div class="form-group">
+					<NcTextField
+						id="name"
+						label="Name"
+						:value.sync="player.name"
+						required />
+					<NcTextArea
+						id="description"
+						label="Description"
+						:value.sync="player.description" />
+				</div>
+			</form>
 
-			<NcTextField
-				:value="player.description"
-				label="Beschrijving"
-				type="textarea"
-				@update:value="player.description = $event" />
-		</div>
-
-		<template #actions>
-			<NcButton @click="closeModal">
-				<template #icon>
-					<Cancel :size="20" />
-				</template>
-				Annuleren
-			</NcButton>
-			<NcButton type="primary"
+			<NcButton
+				v-if="!succes"
 				:disabled="loading"
-				@click="savePlayer">
+				type="primary"
+				@click="editPlayer()">
 				<template #icon>
 					<NcLoadingIcon v-if="loading" :size="20" />
-					<ContentSaveOutline v-if="!loading && objectStore.getActiveObject('player')?.id" :size="20" />
-					<Plus v-if="!loading && !objectStore.getActiveObject('player')?.id" :size="20" />
+					<ContentSaveOutline v-if="!loading" :size="20" />
 				</template>
-				{{ objectStore.getActiveObject('player')?.id ? 'Opslaan' : 'Aanmaken' }}
+				Opslaan
 			</NcButton>
-		</template>
-	</NcDialog>
+		</div>
+	</NcModal>
 </template>
 
 <script>
 import {
 	NcButton,
-	NcDialog,
+	NcModal,
 	NcTextField,
+	NcTextArea,
 	NcLoadingIcon,
+	NcNoteCard,
 } from '@nextcloud/vue'
 import ContentSaveOutline from 'vue-material-design-icons/ContentSaveOutline.vue'
-import Cancel from 'vue-material-design-icons/Cancel.vue'
-import Plus from 'vue-material-design-icons/Plus.vue'
 
 export default {
 	name: 'EditPlayer',
 	components: {
-		NcDialog,
+		NcModal,
 		NcTextField,
+		NcTextArea,
+		NcButton,
 		NcLoadingIcon,
+		NcNoteCard,
 		// Icons
 		ContentSaveOutline,
-		Cancel,
-		Plus,
 	},
 	data() {
 		return {
@@ -74,18 +74,18 @@ export default {
 				name: '',
 				description: '',
 			},
-			success: false,
+			succes: false,
 			loading: false,
 			error: false,
 			hasUpdated: false,
 		}
 	},
 	updated() {
-		if (objectStore.getActiveObject('player')?.id && navigationStore.modal === 'editPlayer' && !this.hasUpdated) {
+		if (playerStore.playerItem?.id && navigationStore.modal === 'editPlayer' && !this.hasUpdated) {
 			this.player = {
-				...objectStore.getActiveObject('player'),
-				name: objectStore.getActiveObject('player').name || '',
-				description: objectStore.getActiveObject('player').description || '',
+				...playerStore.playerItem,
+				name: playerStore.playerItem.name || '',
+				description: playerStore.playerItem.description || '',
 			}
 			this.hasUpdated = true
 		}
@@ -93,7 +93,7 @@ export default {
 	methods: {
 		closeModal() {
 			navigationStore.setModal(false)
-			this.success = false
+			this.succes = false
 			this.loading = false
 			this.error = false
 			this.hasUpdated = false
@@ -105,16 +105,16 @@ export default {
 		async editPlayer() {
 			this.loading = true
 			try {
-				await objectStore.saveObject('player', this.player)
+				await playerStore.savePlayer(this.player)
 				// Close modal or show success message
-				this.success = true
+				this.succes = true
 				this.loading = false
 
 				setTimeout(this.closeModal, 2000)
 			} catch (error) {
 				this.loading = false
-				this.success = false
-				this.error = error.message || 'Er is een fout opgetreden bij het opslaan van de speler'
+				this.succes = false
+				this.error = error.message || 'An error occurred while saving the character'
 			}
 		},
 	},

@@ -1,132 +1,119 @@
 <script setup>
 import { objectStore, navigationStore } from '../../store/store.js'
+import { NcActions, NcActionButton, NcNoteCard } from '@nextcloud/vue'
+import ObjectTabs from '../../components/ObjectTabs.vue'
+
+// Icons
+import DotsHorizontal from 'vue-material-design-icons/DotsHorizontal.vue'
+import Pencil from 'vue-material-design-icons/Pencil.vue'
+import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
 </script>
 
 <template>
-	<div class="abilityDetails">
-		<div class="abilityHeader">
-			<h2>{{ objectStore.getActiveObject('ability')?.name }}</h2>
-			<div class="abilityActions">
-				<NcActions>
-					<NcActionButton @click="objectStore.setActiveObject('ability', objectStore.getActiveObject('ability')); navigationStore.setModal('editAbility')">
+	<div class="detailContainer">
+		<div id="app-content">
+			<div>
+				<div class="head">
+					<h1 class="h1">
+						{{ objectStore.getActiveObject('ability').name }}
+					</h1>
+					<NcActions :primary="true" menu-name="Acties">
 						<template #icon>
-							<Pencil :size="20" />
+							<DotsHorizontal :size="20" />
 						</template>
-						Bewerken
-					</NcActionButton>
-					<NcActionButton @click="objectStore.setActiveObject('ability', objectStore.getActiveObject('ability')); navigationStore.setDialog('deleteAbility')">
-						<template #icon>
-							<TrashCanOutline :size="20" />
-						</template>
-						Verwijderen
-					</NcActionButton>
-				</NcActions>
-			</div>
-		</div>
-
-		<div class="abilityContent">
-			<div class="abilityDescription">
-				<h3>Beschrijving</h3>
-				<p>{{ objectStore.getActiveObject('ability')?.description }}</p>
-			</div>
-
-			<div class="abilityEffects">
-				<h3>Effecten</h3>
-				<ObjectList :objects="objectStore.getActiveObject('ability')?.effects || []" />
-			</div>
-
-			<div class="abilityCharacters">
-				<h3>Karakters met deze vaardigheid</h3>
-				<div v-if="objectStore.getRelatedObjects('ability', 'character')?.length > 0" class="characterList">
-					<NcListItem v-for="character in objectStore.getRelatedObjects('ability', 'character')"
-						:key="character.id"
-						:title="character.name"
-						@click="objectStore.setActiveObject('character', character); navigationStore.setSelected('characters')">
-						<template #icon>
-							<Account :size="20" />
-						</template>
-					</NcListItem>
+						<NcActionButton @click="navigationStore.setModal('editAbility')">
+							<template #icon>
+								<Pencil :size="20" />
+							</template>
+							Vaardigheid Bewerken
+						</NcActionButton>
+						<NcActionButton @click="navigationStore.setDialog('deleteAbility')">
+							<template #icon>
+								<TrashCanOutline :size="20" />
+							</template>
+							Verwijderen
+						</NcActionButton>
+					</NcActions>
 				</div>
-				<div v-else class="noCharacters">
-					<p>Geen karakters gevonden met deze vaardigheid.</p>
+				<NcNoteCard v-if="objectStore.getActiveObject('ability').notice" type="info">
+					{{ objectStore.getActiveObject('ability').notice }}
+				</NcNoteCard>
+				<div class="detailGrid">
+					<div>
+						<b>Type:</b>
+						<span>{{ objectStore.getActiveObject('ability').type }}</span>
+					</div>
+					<div>
+						<b>Kosten:</b>
+						<span>{{ objectStore.getActiveObject('ability').cost }}</span>
+					</div>
 				</div>
-			</div>
-
-			<div class="abilityAuditLog">
-				<h3>Audit log</h3>
-				<AuditTable :audit-log="objectStore.getAuditLog('ability')" />
+				<span>{{ objectStore.getActiveObject('ability').description }}</span>
+				<div class="tabContainer">
+					<ObjectTabs
+						type="ability"
+						:object="objectStore.getActiveObject('ability')" />
+				</div>
 			</div>
 		</div>
 	</div>
 </template>
 
-<script>
-import {
-	NcActions,
-	NcActionButton,
-	NcListItem,
-} from '@nextcloud/vue'
-
-import Account from 'vue-material-design-icons/Account.vue'
-import Pencil from 'vue-material-design-icons/Pencil.vue'
-import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
-import ShieldSwordOutline from 'vue-material-design-icons/ShieldSwordOutline.vue'
-
-import ObjectList from '../../components/ObjectList.vue'
-import AuditTable from '../auditTrail/AuditTable.vue'
-
-export default {
-	name: 'AbilityDetails',
-	components: {
-		NcActions,
-		NcActionButton,
-		NcListItem,
-		Account,
-		Pencil,
-		TrashCanOutline,
-		ShieldSwordOutline,
-		ObjectList,
-		AuditTable,
-	},
-}
-</script>
-
-<style scoped>
-.abilityDetails {
-	display: flex;
-	flex-direction: column;
-	gap: 1rem;
-	padding: 1rem;
+<style>
+h4 {
+  font-weight: bold;
 }
 
-.abilityHeader {
+.head {
 	display: flex;
 	justify-content: space-between;
-	align-items: center;
 }
 
-.abilityContent {
-	display: flex;
-	flex-direction: column;
-	gap: 2rem;
+.button {
+	max-height: 10px;
 }
 
-.abilityDescription,
-.abilityEffects,
-.abilityCharacters,
-.abilityAuditLog {
-	display: flex;
-	flex-direction: column;
-	gap: 1rem;
+.h1 {
+  display: block !important;
+  font-size: 2em !important;
+  margin-block-start: 0.67em !important;
+  margin-block-end: 0.67em !important;
+  margin-inline-start: 0px !important;
+  margin-inline-end: 0px !important;
+  font-weight: bold !important;
+  unicode-bidi: isolate !important;
 }
 
-.characterList {
-	display: flex;
-	flex-direction: column;
+.dataContent {
+  display: flex;
+  flex-direction: column;
 }
 
-.noCharacters {
-	color: var(--color-text-maxcontrast);
-	font-style: italic;
+/* Add margin to counter bubble only when inside nav-item */
+.nav-item .counter-bubble__counter {
+    margin-left: 10px;
+}
+
+/* Style for stat effects to prevent truncation */
+.stat-effects {
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
+  line-height: 1.4;
+  padding: 4px 0;
+}
+
+/* Ensure list items expand properly with multi-line content */
+:deep(.app-content-list-item) {
+  height: auto !important;
+  min-height: 44px;
+}
+
+:deep(.app-content-list-item-line-one),
+:deep(.app-content-list-item-line-two) {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
 }
 </style>

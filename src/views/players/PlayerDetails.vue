@@ -1,11 +1,17 @@
 <script setup>
 import { objectStore, navigationStore } from '../../store/store.js'
+import { NcActions, NcActionButton, NcNoteCard } from '@nextcloud/vue'
+import ObjectTabs from '../../components/ObjectTabs.vue'
+
+// Icons
+import DotsHorizontal from 'vue-material-design-icons/DotsHorizontal.vue'
+import Pencil from 'vue-material-design-icons/Pencil.vue'
+import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
 </script>
 
 <template>
 	<div class="detailContainer">
 		<div id="app-content">
-			<!-- app-content-wrapper is optional, only use if app-content-list  -->
 			<div>
 				<div class="head">
 					<h1 class="h1">
@@ -19,7 +25,7 @@ import { objectStore, navigationStore } from '../../store/store.js'
 							<template #icon>
 								<Pencil :size="20" />
 							</template>
-							Bewerken
+							Speler Bewerken
 						</NcActionButton>
 						<NcActionButton @click="navigationStore.setDialog('deletePlayer')">
 							<template #icon>
@@ -29,74 +35,38 @@ import { objectStore, navigationStore } from '../../store/store.js'
 						</NcActionButton>
 					</NcActions>
 				</div>
-				<div class="grid">
-					<div class="gridContent">
-						<h4>Sammenvatting:</h4>
+				<NcNoteCard v-if="objectStore.getActiveObject('player').notice" type="info">
+					{{ objectStore.getActiveObject('player').notice }}
+				</NcNoteCard>
+				<div class="detailGrid">
+					<div>
+						<b>Sammenvatting:</b>
 						<span>{{ objectStore.getActiveObject('player').summary }}</span>
 					</div>
 				</div>
+				<span>{{ objectStore.getActiveObject('player').description }}</span>
+				<div class="tabContainer">
+					<ObjectTabs
+						type="player"
+						:object="objectStore.getActiveObject('player')" />
+				</div>
 			</div>
-		</div>
-		<div class="tabContainer">
-			<BTabs content-class="mt-3" justified>
-				<BTab>
-					<template #title>
-						Characters <NcCounterBubble>{{ objectStore.getRelations('player') ? objectStore.getRelations('player').length : 0 }}</NcCounterBubble>
-					</template>
-					<ObjectList :objects="objectStore.getRelations('player')" />							
-				</BTab>
-				<BTab>
-					<template #title>
-						Logging <NcCounterBubble>{{ objectStore.getAuditTrails('player') ? objectStore.getAuditTrails('player').length : 0 }}</NcCounterBubble>
-					</template>
-					<AuditTable :logs="objectStore.getAuditTrails('player')" />
-				</BTab>
-			</BTabs>
 		</div>
 	</div>
 </template>
 
-<script>
-import {
-	NcListItem,
-	NcCounterBubble,
-	NcActions,
-	NcActionButton,
-} from '@nextcloud/vue'
-import { BTabs, BTab } from 'bootstrap-vue'
-
-// Custom components
-import AuditTable from '../auditTrail/AuditTable.vue'
-import ObjectList from '../../components/ObjectList.vue'
-
-// Icons
-import DotsHorizontal from 'vue-material-design-icons/DotsHorizontal.vue'
-import Pencil from 'vue-material-design-icons/Pencil.vue'
-import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
-
-export default {
-	name: 'PlayerDetails',
-	components: {
-		NcListItem,
-		NcCounterBubble,
-		NcActions,
-		NcActionButton,
-		BTabs,
-		BTab,
-		// Custom components
-		AuditTable,
-		ObjectList,
-		// Icons
-		DotsHorizontal,
-		Pencil,
-		TrashCanOutline,
-	},
-}
-</script>
-
 <style>
 h4 {
-  font-weight: bold
+  font-weight: bold;
+}
+
+.head {
+	display: flex;
+	justify-content: space-between;
+}
+
+.button {
+	max-height: 10px;
 }
 
 .h1 {
@@ -110,25 +80,9 @@ h4 {
   unicode-bidi: isolate !important;
 }
 
-.grid {
-  display: grid;
-  grid-gap: 24px;
-  grid-template-columns: 1fr 1fr;
-  margin-block-start: var(--zaa-margin-50);
-  margin-block-end: var(--zaa-margin-50);
-}
-
-.gridContent {
+.dataContent {
   display: flex;
-  gap: 25px;
-}
-
-.tabPanel {
-  padding: 20px 10px;
-  min-height: 100%;
-  max-height: 100%;
-  height: 100%;
-  overflow: auto;
+  flex-direction: column;
 }
 
 /* Add margin to counter bubble only when inside nav-item */
@@ -136,8 +90,26 @@ h4 {
     margin-left: 10px;
 }
 
-.head {
-    display: flex;
-    justify-content: space-between;
+/* Style for stat effects to prevent truncation */
+.stat-effects {
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
+  line-height: 1.4;
+  padding: 4px 0;
+}
+
+/* Ensure list items expand properly with multi-line content */
+:deep(.app-content-list-item) {
+  height: auto !important;
+  min-height: 44px;
+}
+
+:deep(.app-content-list-item-line-one),
+:deep(.app-content-list-item-line-two) {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
 }
 </style>

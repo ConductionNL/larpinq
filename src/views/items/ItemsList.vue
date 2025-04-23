@@ -57,7 +57,7 @@ import { objectStore, navigationStore } from '../../store/store.js'
 						:force-display-actions="true"
 						@click="toggleActive(item)">
 						<template #icon>
-							<Sword 
+							<Sword
 								:class="objectStore.getActiveObject('item')?.id === item.id && 'selectedItemIcon'"
 								:size="44" />
 						</template>
@@ -127,7 +127,7 @@ import ContentCopy from 'vue-material-design-icons/ContentCopy.vue'
 /**
  * ItemsList Component
  * @module Views
- * @package LarpingApp
+ * @package
  * @author Ruben Linde
  * @copyright 2024
  * @license AGPL-3.0-or-later
@@ -156,8 +156,8 @@ export default {
 	},
 	methods: {
 		toggleActive(item) {
-			objectStore.getActiveObject('item')?.id === item?.id 
-				? objectStore.clearActiveObject('item') 
+			objectStore.getActiveObject('item')?.id === item?.id
+				? objectStore.clearActiveObject('item')
 				: objectStore.setActiveObject('item', item)
 		},
 		openAddItemModal() {

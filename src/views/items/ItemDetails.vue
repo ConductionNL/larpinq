@@ -1,101 +1,115 @@
 <script setup>
 import { objectStore, navigationStore } from '../../store/store.js'
-import { NcButton, NcCounterBubble } from '@nextcloud/vue'
-import ObjectList from '../../components/ObjectList.vue'
+import { NcActions, NcActionButton, NcNoteCard } from '@nextcloud/vue'
+import ObjectTabs from '../../components/ObjectTabs.vue'
 
 // Icons
+import DotsHorizontal from 'vue-material-design-icons/DotsHorizontal.vue'
 import Pencil from 'vue-material-design-icons/Pencil.vue'
 import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
 </script>
 
 <template>
-	<div class="itemDetails">
-		<div class="itemHeader">
-			<h2>{{ objectStore.getActiveObject('item')?.name }}</h2>
-			<div class="itemActions">
-				<NcButton @click="objectStore.setActiveObject('item', objectStore.getActiveObject('item')); navigationStore.setModal('editItem')">
-					<template #icon>
-						<Pencil :size="20" />
-					</template>
-					Bewerken
-				</NcButton>
-				<NcButton type="error" @click="objectStore.setActiveObject('item', objectStore.getActiveObject('item')); navigationStore.setDialog('deleteItem')">
-					<template #icon>
-						<TrashCanOutline :size="20" />
-					</template>
-					Verwijderen
-				</NcButton>
-			</div>
-		</div>
-
-		<div class="itemContent">
-			<div class="itemInfo">
-				<div class="itemDescription">
-					<h3>Beschrijving</h3>
-					<span>{{ objectStore.getActiveObject('item')?.description }}</span>
+	<div class="detailContainer">
+		<div id="app-content">
+			<div>
+				<div class="head">
+					<h1 class="h1">
+						{{ objectStore.getActiveObject('item').name }}
+					</h1>
+					<NcActions :primary="true" menu-name="Acties">
+						<template #icon>
+							<DotsHorizontal :size="20" />
+						</template>
+						<NcActionButton @click="navigationStore.setModal('editItem')">
+							<template #icon>
+								<Pencil :size="20" />
+							</template>
+							Voorwerp Bewerken
+						</NcActionButton>
+						<NcActionButton @click="navigationStore.setDialog('deleteItem')">
+							<template #icon>
+								<TrashCanOutline :size="20" />
+							</template>
+							Verwijderen
+						</NcActionButton>
+					</NcActions>
 				</div>
-
-				<div class="itemUnique">
-					<h3>Uniek</h3>
-					<span>{{ objectStore.getActiveObject('item')?.unique }}</span>
+				<NcNoteCard v-if="objectStore.getActiveObject('item').notice" type="info">
+					{{ objectStore.getActiveObject('item').notice }}
+				</NcNoteCard>
+				<div class="detailGrid">
+					<div>
+						<b>Sammenvatting:</b>
+						<span>{{ objectStore.getActiveObject('item').summary }}</span>
+					</div>
 				</div>
-			</div>
-
-			<div class="itemRelations">
-				<h3>Karakters <NcCounterBubble>{{ objectStore.getRelations('item')?.length || 0 }}</NcCounterBubble></h3>
-				<ObjectList :objects="objectStore.getRelations('item')" />
-			</div>
-
-			<div class="itemAudit">
-				<h3>Logging <NcCounterBubble>{{ objectStore.getAuditTrails('item')?.length || 0 }}</NcCounterBubble></h3>
-				<ObjectList :objects="objectStore.getAuditTrails('item')" />
+				<span>{{ objectStore.getActiveObject('item').description }}</span>
+				<div class="tabContainer">
+					<ObjectTabs
+						type="item"
+						:object="objectStore.getActiveObject('item')" />
+				</div>
 			</div>
 		</div>
 	</div>
 </template>
 
-<style scoped>
-.itemDetails {
-	display: flex;
-	flex-direction: column;
-	gap: 2rem;
-	padding: 2rem;
+<style>
+h4 {
+  font-weight: bold;
 }
 
-.itemHeader {
+.head {
 	display: flex;
 	justify-content: space-between;
-	align-items: center;
 }
 
-.itemActions {
-	display: flex;
-	gap: 1rem;
+.button {
+	max-height: 10px;
 }
 
-.itemContent {
-	display: flex;
-	flex-direction: column;
-	gap: 2rem;
+.h1 {
+  display: block !important;
+  font-size: 2em !important;
+  margin-block-start: 0.67em !important;
+  margin-block-end: 0.67em !important;
+  margin-inline-start: 0px !important;
+  margin-inline-end: 0px !important;
+  font-weight: bold !important;
+  unicode-bidi: isolate !important;
 }
 
-.itemInfo {
-	display: flex;
-	flex-direction: column;
-	gap: 1rem;
+.dataContent {
+  display: flex;
+  flex-direction: column;
 }
 
-.itemDescription,
-.itemUnique {
-	display: flex;
-	flex-direction: column;
-	gap: 0.5rem;
+/* Add margin to counter bubble only when inside nav-item */
+.nav-item .counter-bubble__counter {
+    margin-left: 10px;
 }
 
-.itemRelations,
-.itemAudit {
-	display: flex;
-	flex-direction: column;
-	gap: 1rem;
+/* Style for stat effects to prevent truncation */
+.stat-effects {
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
+  line-height: 1.4;
+  padding: 4px 0;
+}
+
+/* Ensure list items expand properly with multi-line content */
+:deep(.app-content-list-item) {
+  height: auto !important;
+  min-height: 44px;
+}
+
+:deep(.app-content-list-item-line-one),
+:deep(.app-content-list-item-line-two) {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
 }
 </style>

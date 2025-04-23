@@ -1,5 +1,5 @@
 <script setup>
-import { objectStore, navigationStore } from '../../store/store.js'
+import { templateStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
@@ -16,16 +16,16 @@ import { objectStore, navigationStore } from '../../store/store.js'
 
 		<div v-if="!success" class="formContainer">
 			<NcTextField :disabled="loading"
-				label="Naam *"
+				label="Name *"
 				required
 				:value.sync="templateItem.name" />
 			<NcTextArea :disabled="loading"
-				label="Beschrijving"
+				label="Description"
 				type="textarea"
                 resize="vertical"
 				:value.sync="templateItem.description" />
 			<NcTextArea :disabled="loading"
-				label="Inhoud"
+				label="Content"
 				type="textarea"
 				resize="vertical"
 				:value.sync="templateItem.template" />
@@ -92,18 +92,17 @@ export default {
 			success: false,
 			loading: false,
 			error: false,
-			hasUpdated: false,
 		}
 	},
 	updated() {
-		if (navigationStore.modal === 'editTemplate' && objectStore.getActiveObject('template')?.id && !this.hasUpdated) {
-			const activeTemplate = objectStore.getActiveObject('template')
+		if (navigationStore.modal === 'editTemplate' && templateStore.templateItem?.id && !this.hasUpdated) {
 			this.templateItem = {
-				...activeTemplate,
-				name: activeTemplate.name || '',
-				description: activeTemplate.description || '',
-				template: activeTemplate.template || '',
+				...templateStore.templateItem,
+				name: templateStore.templateItem.name || '',
+				description: templateStore.templateItem.description || '',
+				template: templateStore.templateItem.template || '',
 			}
+
 			this.hasUpdated = true
 		}
 	},
@@ -119,19 +118,21 @@ export default {
 				description: '',
 				template: '',
 			}
-			objectStore.setActiveObject('template', null)
 		},
 		async editTemplate() {
 			this.loading = true
 			try {
-				await objectStore.saveObject('template', this.templateItem)
+				await templateStore.saveTemplate({
+					...this.templateItem,
+				})
+
 				this.success = true
 				this.loading = false
 				setTimeout(this.closeModal, 2000)
 			} catch (error) {
 				this.loading = false
 				this.success = false
-				this.error = error.message || 'Er is een fout opgetreden bij het opslaan van het sjabloon'
+				this.error = error.message || 'An error occurred while saving the template'
 			}
 		},
 		openLink(url, target) {
