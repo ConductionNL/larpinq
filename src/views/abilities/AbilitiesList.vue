@@ -1,155 +1,236 @@
 <script setup>
-import { objectStore, navigationStore, searchStore } from '../../store/store.js'
+import { objectStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
-    <div class="abilitiesList">
-        <div class="abilitiesHeader">
-            <NcTextField
-                :value="searchStore.getSearchTerm('ability')"
-                :show-trailing-button="searchStore.getSearchTerm('ability') !== ''"
-                type="search"
-                label="Zoeken"
-                @input="searchStore.setSearchTerm('ability', $event.target.value)"
-                @trailing-button-click="searchStore.clearSearchTerm('ability')">
-                <template #trailing-button-icon>
-                    <Close :size="20" />
-                </template>
-            </NcTextField>
+	<NcAppContentList>
+		<ul>
+			<div class="listHeader">
+				<NcTextField class="searchField"
+					:value="objectStore.getSearchTerm('ability')"
+					label="Zoeken"
+					trailing-button-icon="close"
+					:show-trailing-button="objectStore.getSearchTerm('ability') !== ''"
+					@update:value="(value) => objectStore.setSearchTerm('ability', value)"
+					@trailing-button-click="objectStore.clearSearchTerm('ability')">
+					<Magnify :size="20" />
+				</NcTextField>
+				<NcActions>
+					<NcActionButton :disabled="objectStore.isLoading('ability')"
+						@click="objectStore.fetchCollection('ability')">
+						<template #icon>
+							<Refresh :size="20" />
+						</template>
+						Ververs
+					</NcActionButton>
+					<NcActionButton @click="openAddAbilityModal">
+						<template #icon>
+							<Plus :size="20" />
+						</template>
+						Vaardigheid toevoegen
+					</NcActionButton>
+				</NcActions>
+			</div>
 
-            <div class="abilitiesActions">
-                <NcActions>
-                    <NcActionButton @click="objectStore.refreshObjectList('ability')">
-                        <template #icon>
-                            <Refresh :size="20" />
-                        </template>
-                        Vernieuwen
-                    </NcActionButton>
-                    <NcActionButton @click="objectStore.clearActiveObject('ability'); navigationStore.setModal('editAbility')">
-                        <template #icon>
-                            <Plus :size="20" />
-                        </template>
-                        Nieuwe vaardigheid
-                    </NcActionButton>
-                </NcActions>
-            </div>
-        </div>
+			<div v-if="!objectStore.isLoading('ability')">
+				<div v-if="objectStore.hasPreviousPages('ability')" class="pagination-info">
+					<NcButton
+						:disabled="objectStore.isLoading('ability')"
+						type="secondary"
+						@click="objectStore.loadPrevious('ability')">
+						Vorige pagina
+					</NcButton>
+				</div>
 
-        <div v-if="objectStore.getObjectList('ability')?.length > 0 && !objectStore.isLoading('ability')" class="abilityItems">
-            <NcListItem v-for="ability in objectStore.getObjectList('ability')"
-                :key="ability.id"
-                :title="ability.name"
-                :active="objectStore.getActiveObject('ability')?.id === ability.id"
-                @click="selectAbility(ability)">
-                <template #icon>
-                    <MagicStaff :class="objectStore.getActiveObject('ability')?.id === ability.id && 'selectedAbilityIcon'" :size="20" />
-                </template>
-                <template #actions>
-                    <NcActions>
-                        <NcActionButton @click.stop="objectStore.setActiveObject('ability', ability); navigationStore.setModal('editAbility')">
-                            <template #icon>
-                                <Pencil :size="20" />
-                            </template>
-                            Bewerken
-                        </NcActionButton>
-                        <NcActionButton @click.stop="objectStore.setActiveObject('ability', ability); navigationStore.setDialog('deleteAbility')">
-                            <template #icon>
-                                <TrashCanOutline :size="20" />
-                            </template>
-                            Verwijderen
-                        </NcActionButton>
-                    </NcActions>
-                </template>
-            </NcListItem>
-        </div>
+				<RecycleScroller
+					v-if="objectStore.getCollection('ability').results?.length"
+					v-slot="{ item: ability }"
+					class="scroller"
+					:items="objectStore.getCollection('ability').results"
+					:item-size="60"
+					key-field="id">
+					<NcListItem
+						:key="ability.id"
+						:name="ability.name"
+						:details="ability.description || ''"
+						:active="objectStore.getActiveObject('ability')?.id === ability.id"
+						:force-display-actions="true"
+						@click="toggleActive(ability)">
+						<template #icon>
+							<ShieldSwordOutline
+								:class="objectStore.getActiveObject('ability')?.id === ability.id && 'selectedAbilityIcon'"
+								:size="44" />
+						</template>
+						<template #subname>
+							{{ ability.type || 'Geen type' }}
+						</template>
+						<template #actions>
+							<NcActionButton @click="onActionButtonClick(ability, 'edit')">
+								<template #icon>
+									<Pencil :size="20" />
+								</template>
+								Bewerken
+							</NcActionButton>
+							<NcActionButton @click="onActionButtonClick(ability, 'copyObject')">
+								<template #icon>
+									<ContentCopy :size="20" />
+								</template>
+								Kopiëren
+							</NcActionButton>
+							<NcActionButton @click="onActionButtonClick(ability, 'deleteObject')">
+								<template #icon>
+									<Delete :size="20" />
+								</template>
+								Verwijderen
+							</NcActionButton>
+						</template>
+					</NcListItem>
+				</RecycleScroller>
 
-        <div v-if="objectStore.isLoading('ability')" class="abilitiesLoading">
-            <NcLoadingIcon :size="50" />
-        </div>
+				<div v-if="objectStore.hasMorePages('ability')" class="pagination-info">
+					<p>{{ objectStore.getCollection('ability').results?.length }} van {{ objectStore.getPagination('ability').total }} vaardigheden</p>
+					<div class="pagination-buttons">
+						<NcButton
+							:disabled="objectStore.isLoading('ability')"
+							type="secondary"
+							@click="objectStore.loadMore('ability')">
+							Meer laden
+						</NcButton>
+					</div>
+				</div>
+			</div>
 
-        <div v-if="objectStore.getObjectList('ability')?.length === 0 && !objectStore.isLoading('ability')" class="abilitiesEmpty">
-            <NcEmptyContent
-                icon="icon-category-customization"
-                title="Geen vaardigheden gevonden">
-                <template #action>
-                    <NcButton type="primary" @click="objectStore.clearActiveObject('ability'); navigationStore.setModal('editAbility')">
-                        <template #icon>
-                            <Plus :size="20" />
-                        </template>
-                        Nieuwe vaardigheid
-                    </NcButton>
-                </template>
-            </NcEmptyContent>
-        </div>
-    </div>
+			<NcLoadingIcon v-if="objectStore.isLoading('ability')"
+				:size="64"
+				class="loadingIcon"
+				appearance="dark"
+				name="Vaardigheden aan het laden" />
+
+			<div v-if="!objectStore.getCollection('ability').results?.length && !objectStore.isLoading('ability')" class="emptyListHeader">
+				Er zijn nog geen vaardigheden gemaakt.
+			</div>
+		</ul>
+	</NcAppContentList>
 </template>
 
 <script>
-import { NcListItem, NcActions, NcActionButton, NcAppContentList, NcTextField, NcLoadingIcon } from '@nextcloud/vue'
-import { navigationStore } from '../../store/store.js'
+import { NcListItem, NcActionButton, NcAppContentList, NcTextField, NcLoadingIcon, NcActions, NcButton } from '@nextcloud/vue'
+import { RecycleScroller } from 'vue-virtual-scroller'
+import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
+
+// Icons
 import Magnify from 'vue-material-design-icons/Magnify.vue'
-import Refresh from 'vue-material-design-icons/Refresh.vue'
+import ShieldSwordOutline from 'vue-material-design-icons/ShieldSwordOutline.vue'
 import Plus from 'vue-material-design-icons/Plus.vue'
 import Pencil from 'vue-material-design-icons/Pencil.vue'
-import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
-import AccountGroup from 'vue-material-design-icons/AccountGroup.vue'
-import Close from 'vue-material-design-icons/Close.vue'
-import MagicStaff from 'vue-material-design-icons/MagicStaff.vue'
-import NcEmptyContent from '@nextcloud/vue/dist/Components/NcEmptyContent.js'
-import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
+import Delete from 'vue-material-design-icons/Delete.vue'
+import Refresh from 'vue-material-design-icons/Refresh.vue'
+import ContentCopy from 'vue-material-design-icons/ContentCopy.vue'
 
+/**
+ * AbilitiesList Component
+ * @module Views
+ * @package LarpingApp
+ * @author Ruben Linde
+ * @copyright 2024
+ * @license AGPL-3.0-or-later
+ * @version 1.0.0
+ * @link https://github.com/MetaProvide/larpingapp
+ */
 export default {
-    name: 'AbilitiesList',
-    components: {
-        NcListItem,
-        NcActions,
-        NcActionButton,
-        NcAppContentList,
-        NcTextField,
-        NcLoadingIcon,
-        Magnify,
-        Refresh,
-        Plus,
-        Pencil,
-        TrashCanOutline,
-        AccountGroup,
-        Close,
-        MagicStaff,
-        NcEmptyContent,
-        NcButton,
-    },
-    mounted() {
-        objectStore.refreshObjectList('ability')
-    },
-    methods: {
-        selectAbility(ability) {
-            objectStore.setActiveObject('ability', ability)
-            navigationStore.setSelected('abilities')
-        },
-    },
+	name: 'AbilitiesList',
+	components: {
+		NcListItem,
+		NcActionButton,
+		NcAppContentList,
+		NcTextField,
+		NcLoadingIcon,
+		NcActions,
+		NcButton,
+		RecycleScroller,
+		// Icons
+		Magnify,
+		ShieldSwordOutline,
+		Plus,
+		Pencil,
+		Delete,
+		Refresh,
+		ContentCopy,
+	},
+	methods: {
+		toggleActive(ability) {
+			objectStore.getActiveObject('ability')?.id === ability?.id 
+				? objectStore.clearActiveObject('ability') 
+				: objectStore.setActiveObject('ability', ability)
+		},
+		openAddAbilityModal() {
+			navigationStore.setModal('editAbility')
+			objectStore.clearActiveObject('ability')
+		},
+		onActionButtonClick(ability, action) {
+			objectStore.setActiveObject('ability', ability)
+			switch (action) {
+			case 'edit':
+				navigationStore.setModal('editAbility')
+				break
+			case 'copyObject':
+			case 'deleteObject':
+				navigationStore.setDialog(action, { objectType: 'ability', dialogTitle: 'Vaardigheid' })
+				break
+			}
+		},
+	},
 }
 </script>
 
 <style>
 .listHeader {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    background-color: var(--color-main-background);
-    border-bottom: 1px solid var(--color-border);
+	position: sticky;
+	top: 0;
+	z-index: 1000;
+	background-color: var(--color-main-background);
+	border-bottom: 1px solid var(--color-border);
 }
 
 .searchField {
-    padding-inline-start: 65px;
-    padding-inline-end: 20px;
-    margin-block-end: 6px;
+	padding-inline-start: 65px;
+	padding-inline-end: 20px;
+	margin-block-end: 6px;
 }
 
-.selectedIcon>svg {
-    fill: var(--color-primary);
+.selectedAbilityIcon>svg {
+	fill: white;
 }
 
 .loadingIcon {
-    margin-block-start: var(--OC-margin-20);
+	margin-block-start: var(--OC-margin-20);
+}
+
+.pagination-info {
+	text-align: center;
+	padding: 20px;
+	border-top: 1px solid var(--color-border);
+}
+
+.pagination-info p {
+	margin-bottom: 10px;
+	color: var(--color-text-maxcontrast);
+}
+
+.pagination-buttons {
+	display: flex;
+	gap: 10px;
+	justify-content: center;
+}
+
+.scroller {
+	height: calc(100vh - 200px);
+	overflow-y: auto;
+}
+
+.emptyListHeader {
+	text-align: center;
+	padding: 20px;
+	color: var(--color-text-maxcontrast);
 }
 </style>

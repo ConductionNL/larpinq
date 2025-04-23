@@ -40,7 +40,7 @@ use OCA\OpenRegister\Service\Exceptions\NotFoundException;
  * @copyright 2023 Conduction
  * @license EUPL-1.2
  * @version 1.0.0
- * @link https://github.com/OpenCatalogi/larping-app
+ * @link https://www.Larping.app
  * 
  * Service class for handling object-related operations through Open Registers
  */

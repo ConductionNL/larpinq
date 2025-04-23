@@ -1,129 +1,183 @@
 <script setup>
-import { objectStore, navigationStore, searchStore } from '../../store/store.js'
+import { objectStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
 	<NcAppContentList>
-		<div class="conditionsList">
-			<div class="conditionsHeader">
-				<NcTextField
-					:value="searchStore.getSearchTerm('condition')"
-					:show-trailing-button="searchStore.getSearchTerm('condition') !== ''"
-					type="search"
+		<ul>
+			<div class="listHeader">
+				<NcTextField class="searchField"
+					:value="objectStore.getSearchTerm('condition')"
 					label="Zoeken"
-					@input="searchStore.setSearchTerm('condition', $event.target.value)"
-					@trailing-button-click="searchStore.clearSearchTerm('condition')">
-					<template #trailing-button-icon>
-						<Close :size="20" />
-					</template>
+					trailing-button-icon="close"
+					:show-trailing-button="objectStore.getSearchTerm('condition') !== ''"
+					@update:value="(value) => objectStore.setSearchTerm('condition', value)"
+					@trailing-button-click="objectStore.clearSearchTerm('condition')">
+					<Magnify :size="20" />
 				</NcTextField>
-
-				<div class="conditionsActions">
-					<NcActions>
-						<NcActionButton @click="objectStore.refreshObjectList('condition')">
-							<template #icon>
-								<Refresh :size="20" />
-							</template>
-							Vernieuwen
-						</NcActionButton>
-						<NcActionButton @click="objectStore.clearActiveObject('condition'); navigationStore.setModal('editCondition')">
-							<template #icon>
-								<Plus :size="20" />
-							</template>
-							Nieuwe conditie
-						</NcActionButton>
-					</NcActions>
-				</div>
+				<NcActions>
+					<NcActionButton :disabled="objectStore.isLoading('condition')"
+						@click="objectStore.fetchCollection('condition')">
+						<template #icon>
+							<Refresh :size="20" />
+						</template>
+						Ververs
+					</NcActionButton>
+					<NcActionButton @click="openAddConditionModal">
+						<template #icon>
+							<Plus :size="20" />
+						</template>
+						Conditie toevoegen
+					</NcActionButton>
+				</NcActions>
 			</div>
 
-			<div v-if="objectStore.getObjectList('condition')?.length > 0 && !objectStore.isLoading('condition')" class="conditionItems">
-				<NcListItem v-for="condition in objectStore.getObjectList('condition')"
-					:key="condition.id"
-					:title="condition.name"
-					:active="objectStore.getActiveObject('condition')?.id === condition.id"
-					@click="selectCondition(condition)">
-					<template #icon>
-						<EmoticonSickOutline :class="objectStore.getActiveObject('condition')?.id === condition.id && 'selectedConditionIcon'" :size="20" />
-					</template>
-					<template #actions>
-						<NcActions>
-							<NcActionButton @click.stop="objectStore.setActiveObject('condition', condition); navigationStore.setModal('editCondition')">
+			<div v-if="!objectStore.isLoading('condition')">
+				<div v-if="objectStore.hasPreviousPages('condition')" class="pagination-info">
+					<NcButton
+						:disabled="objectStore.isLoading('condition')"
+						type="secondary"
+						@click="objectStore.loadPrevious('condition')">
+						Vorige pagina
+					</NcButton>
+				</div>
+
+				<RecycleScroller
+					v-if="objectStore.getCollection('condition').results?.length"
+					v-slot="{ item: condition }"
+					class="scroller"
+					:items="objectStore.getCollection('condition').results"
+					:item-size="60"
+					key-field="id">
+					<NcListItem
+						:key="condition.id"
+						:name="condition.name"
+						:details="condition.description || ''"
+						:active="objectStore.getActiveObject('condition')?.id === condition.id"
+						:force-display-actions="true"
+						@click="toggleActive(condition)">
+						<template #icon>
+							<EmoticonSickOutline
+								:class="objectStore.getActiveObject('condition')?.id === condition.id && 'selectedConditionIcon'"
+								:size="44" />
+						</template>
+						<template #subname>
+							{{ condition.type || 'Geen type' }}
+						</template>
+						<template #actions>
+							<NcActionButton @click="onActionButtonClick(condition, 'edit')">
 								<template #icon>
 									<Pencil :size="20" />
 								</template>
 								Bewerken
 							</NcActionButton>
-							<NcActionButton @click.stop="objectStore.setActiveObject('condition', condition); navigationStore.setDialog('deleteCondition')">
+							<NcActionButton @click="onActionButtonClick(condition, 'copyObject')">
 								<template #icon>
-									<TrashCanOutline :size="20" />
+									<ContentCopy :size="20" />
+								</template>
+								Kopiëren
+							</NcActionButton>
+							<NcActionButton @click="onActionButtonClick(condition, 'deleteObject')">
+								<template #icon>
+									<Delete :size="20" />
 								</template>
 								Verwijderen
 							</NcActionButton>
-						</NcActions>
-					</template>
-				</NcListItem>
-			</div>
+						</template>
+					</NcListItem>
+				</RecycleScroller>
 
-			<div v-if="objectStore.isLoading('condition')" class="conditionsLoading">
-				<NcLoadingIcon :size="50" />
-			</div>
-
-			<div v-if="objectStore.getObjectList('condition')?.length === 0 && !objectStore.isLoading('condition')" class="conditionsEmpty">
-				<NcEmptyContent
-					icon="icon-category-monitoring"
-					title="Geen condities gevonden">
-					<template #action>
-						<NcButton type="primary" @click="objectStore.clearActiveObject('condition'); navigationStore.setModal('editCondition')">
-							<template #icon>
-								<Plus :size="20" />
-							</template>
-							Nieuwe conditie
+				<div v-if="objectStore.hasMorePages('condition')" class="pagination-info">
+					<p>{{ objectStore.getCollection('condition').results?.length }} van {{ objectStore.getPagination('condition').total }} condities</p>
+					<div class="pagination-buttons">
+						<NcButton
+							:disabled="objectStore.isLoading('condition')"
+							type="secondary"
+							@click="objectStore.loadMore('condition')">
+							Meer laden
 						</NcButton>
-					</template>
-				</NcEmptyContent>
+					</div>
+				</div>
 			</div>
-		</div>
+
+			<NcLoadingIcon v-if="objectStore.isLoading('condition')"
+				:size="64"
+				class="loadingIcon"
+				appearance="dark"
+				name="Condities aan het laden" />
+
+			<div v-if="!objectStore.getCollection('condition').results?.length && !objectStore.isLoading('condition')" class="emptyListHeader">
+				Er zijn nog geen condities gemaakt.
+			</div>
+		</ul>
 	</NcAppContentList>
 </template>
 
 <script>
-// Components
-import { NcListItem, NcActions, NcActionButton, NcAppContentList, NcTextField, NcLoadingIcon, NcEmptyContent, NcButton } from '@nextcloud/vue'
+import { NcListItem, NcActionButton, NcAppContentList, NcTextField, NcLoadingIcon, NcActions, NcButton } from '@nextcloud/vue'
+import { RecycleScroller } from 'vue-virtual-scroller'
+import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 
 // Icons
 import Magnify from 'vue-material-design-icons/Magnify.vue'
 import EmoticonSickOutline from 'vue-material-design-icons/EmoticonSickOutline.vue'
-import Refresh from 'vue-material-design-icons/Refresh.vue'
 import Plus from 'vue-material-design-icons/Plus.vue'
 import Pencil from 'vue-material-design-icons/Pencil.vue'
-import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
-import Close from 'vue-material-design-icons/Close.vue'
+import Delete from 'vue-material-design-icons/Delete.vue'
+import Refresh from 'vue-material-design-icons/Refresh.vue'
+import ContentCopy from 'vue-material-design-icons/ContentCopy.vue'
 
+/**
+ * ConditionsList Component
+ * @module Views
+ * @package LarpingApp
+ * @author Ruben Linde
+ * @copyright 2024
+ * @license AGPL-3.0-or-later
+ * @version 1.0.0
+ * @link https://github.com/MetaProvide/larpingapp
+ */
 export default {
 	name: 'ConditionsList',
 	components: {
-		// Components
 		NcListItem,
-		NcActions,
 		NcActionButton,
 		NcAppContentList,
 		NcTextField,
 		NcLoadingIcon,
-		NcEmptyContent,
+		NcActions,
 		NcButton,
+		RecycleScroller,
 		// Icons
-		EmoticonSickOutline,
 		Magnify,
-		Refresh,
+		EmoticonSickOutline,
 		Plus,
 		Pencil,
-		TrashCanOutline,
-		Close,
+		Delete,
+		Refresh,
+		ContentCopy,
 	},
 	methods: {
-		selectCondition(condition) {
+		toggleActive(condition) {
+			objectStore.getActiveObject('condition')?.id === condition?.id 
+				? objectStore.clearActiveObject('condition') 
+				: objectStore.setActiveObject('condition', condition)
+		},
+		openAddConditionModal() {
+			navigationStore.setModal('editCondition')
+			objectStore.clearActiveObject('condition')
+		},
+		onActionButtonClick(condition, action) {
 			objectStore.setActiveObject('condition', condition)
-			navigationStore.setSelected('conditions')
+			switch (action) {
+			case 'edit':
+				navigationStore.setModal('editCondition')
+				break
+			case 'copyObject':
+			case 'deleteObject':
+				navigationStore.setDialog(action, { objectType: 'condition', dialogTitle: 'Conditie' })
+				break
+			}
 		},
 	},
 }
@@ -131,24 +185,52 @@ export default {
 
 <style>
 .listHeader {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    background-color: var(--color-main-background);
-    border-bottom: 1px solid var(--color-border);
+	position: sticky;
+	top: 0;
+	z-index: 1000;
+	background-color: var(--color-main-background);
+	border-bottom: 1px solid var(--color-border);
 }
 
 .searchField {
-    padding-inline-start: 65px;
-    padding-inline-end: 20px;
-    margin-block-end: 6px;
+	padding-inline-start: 65px;
+	padding-inline-end: 20px;
+	margin-block-end: 6px;
 }
 
-.selectedIcon>svg {
-    fill: white;
+.selectedConditionIcon>svg {
+	fill: white;
 }
 
 .loadingIcon {
-    margin-block-start: var(--OC-margin-20);
+	margin-block-start: var(--OC-margin-20);
+}
+
+.pagination-info {
+	text-align: center;
+	padding: 20px;
+	border-top: 1px solid var(--color-border);
+}
+
+.pagination-info p {
+	margin-bottom: 10px;
+	color: var(--color-text-maxcontrast);
+}
+
+.pagination-buttons {
+	display: flex;
+	gap: 10px;
+	justify-content: center;
+}
+
+.scroller {
+	height: calc(100vh - 200px);
+	overflow-y: auto;
+}
+
+.emptyListHeader {
+	text-align: center;
+	padding: 20px;
+	color: var(--color-text-maxcontrast);
 }
 </style>

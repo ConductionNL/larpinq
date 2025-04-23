@@ -1,172 +1,236 @@
 <script setup>
-import { objectStore, navigationStore, searchStore } from '../../store/store.js'
+import { objectStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
-	<div class="eventsList">
-		<div class="eventsHeader">
-			<NcTextField
-				:value="searchStore.getSearchTerm('event')"
-				:show-trailing-button="searchStore.getSearchTerm('event') !== ''"
-				type="search"
-				label="Zoeken"
-				@input="searchStore.setSearchTerm('event', $event.target.value)"
-				@trailing-button-click="searchStore.clearSearchTerm('event')">
-				<template #trailing-button-icon>
-					<Close :size="20" />
-				</template>
-			</NcTextField>
-
-			<div class="eventsActions">
+	<NcAppContentList>
+		<ul>
+			<div class="listHeader">
+				<NcTextField class="searchField"
+					:value="objectStore.getSearchTerm('event')"
+					label="Zoeken"
+					trailing-button-icon="close"
+					:show-trailing-button="objectStore.getSearchTerm('event') !== ''"
+					@update:value="(value) => objectStore.setSearchTerm('event', value)"
+					@trailing-button-click="objectStore.clearSearchTerm('event')">
+					<Magnify :size="20" />
+				</NcTextField>
 				<NcActions>
-					<NcActionButton @click="objectStore.refreshObjectList('event')">
+					<NcActionButton :disabled="objectStore.isLoading('event')"
+						@click="objectStore.fetchCollection('event')">
 						<template #icon>
 							<Refresh :size="20" />
 						</template>
-						Vernieuwen
+						Ververs
 					</NcActionButton>
-					<NcActionButton @click="objectStore.clearActiveObject('event'); navigationStore.setModal('editEvent')">
+					<NcActionButton @click="openAddEventModal">
 						<template #icon>
 							<Plus :size="20" />
 						</template>
-						Nieuwe gebeurtenis
+						Gebeurtenis toevoegen
 					</NcActionButton>
 				</NcActions>
 			</div>
-		</div>
 
-		<div v-if="objectStore.getObjectList('event')?.length > 0 && !objectStore.isLoading('event')" class="eventItems">
-			<NcListItem v-for="event in objectStore.getObjectList('event')"
-				:key="event.id"
-				:title="event.name"
-				:active="objectStore.getActiveObject('event')?.id === event.id"
-				@click="selectEvent(event)">
-				<template #icon>
-					<CalendarMonthOutline :class="objectStore.getActiveObject('event')?.id === event.id && 'selectedEventIcon'" :size="20" />
-				</template>
-				<template #actions>
-					<NcActions>
-						<NcActionButton @click.stop="objectStore.setActiveObject('event', event); navigationStore.setModal('editEvent')">
-							<template #icon>
-								<Pencil :size="20" />
-							</template>
-							Bewerken
-						</NcActionButton>
-						<NcActionButton @click.stop="objectStore.setActiveObject('event', event); navigationStore.setDialog('deleteEvent')">
-							<template #icon>
-								<TrashCanOutline :size="20" />
-							</template>
-							Verwijderen
-						</NcActionButton>
-					</NcActions>
-				</template>
-			</NcListItem>
-		</div>
-
-		<div v-if="objectStore.isLoading('event')" class="eventsLoading">
-			<NcLoadingIcon :size="50" />
-		</div>
-
-		<div v-if="objectStore.getObjectList('event')?.length === 0 && !objectStore.isLoading('event')" class="eventsEmpty">
-			<NcEmptyContent
-				icon="icon-calendar-dark"
-				title="Geen gebeurtenissen gevonden">
-				<template #action>
-					<NcButton type="primary" @click="objectStore.clearActiveObject('event'); navigationStore.setModal('editEvent')">
-						<template #icon>
-							<Plus :size="20" />
-						</template>
-						Nieuwe gebeurtenis
+			<div v-if="!objectStore.isLoading('event')">
+				<div v-if="objectStore.hasPreviousPages('event')" class="pagination-info">
+					<NcButton
+						:disabled="objectStore.isLoading('event')"
+						type="secondary"
+						@click="objectStore.loadPrevious('event')">
+						Vorige pagina
 					</NcButton>
-				</template>
-			</NcEmptyContent>
-		</div>
-	</div>
+				</div>
+
+				<RecycleScroller
+					v-if="objectStore.getCollection('event').results?.length"
+					v-slot="{ item: event }"
+					class="scroller"
+					:items="objectStore.getCollection('event').results"
+					:item-size="60"
+					key-field="id">
+					<NcListItem
+						:key="event.id"
+						:name="event.name"
+						:details="event.description || ''"
+						:active="objectStore.getActiveObject('event')?.id === event.id"
+						:force-display-actions="true"
+						@click="toggleActive(event)">
+						<template #icon>
+							<CalendarMonthOutline
+								:class="objectStore.getActiveObject('event')?.id === event.id && 'selectedEventIcon'"
+								:size="44" />
+						</template>
+						<template #subname>
+							{{ new Date(event.startDate).toLocaleDateString() }} - {{ new Date(event.endDate).toLocaleDateString() }}
+						</template>
+						<template #actions>
+							<NcActionButton @click="onActionButtonClick(event, 'edit')">
+								<template #icon>
+									<Pencil :size="20" />
+								</template>
+								Bewerken
+							</NcActionButton>
+							<NcActionButton @click="onActionButtonClick(event, 'copyObject')">
+								<template #icon>
+									<ContentCopy :size="20" />
+								</template>
+								Kopiëren
+							</NcActionButton>
+							<NcActionButton @click="onActionButtonClick(event, 'deleteObject')">
+								<template #icon>
+									<Delete :size="20" />
+								</template>
+								Verwijderen
+							</NcActionButton>
+						</template>
+					</NcListItem>
+				</RecycleScroller>
+
+				<div v-if="objectStore.hasMorePages('event')" class="pagination-info">
+					<p>{{ objectStore.getCollection('event').results?.length }} van {{ objectStore.getPagination('event').total }} gebeurtenissen</p>
+					<div class="pagination-buttons">
+						<NcButton
+							:disabled="objectStore.isLoading('event')"
+							type="secondary"
+							@click="objectStore.loadMore('event')">
+							Meer laden
+						</NcButton>
+					</div>
+				</div>
+			</div>
+
+			<NcLoadingIcon v-if="objectStore.isLoading('event')"
+				:size="64"
+				class="loadingIcon"
+				appearance="dark"
+				name="Gebeurtenissen aan het laden" />
+
+			<div v-if="!objectStore.getCollection('event').results?.length && !objectStore.isLoading('event')" class="emptyListHeader">
+				Er zijn nog geen gebeurtenissen gemaakt.
+			</div>
+		</ul>
+	</NcAppContentList>
 </template>
 
 <script>
-import {
-	NcTextField,
-	NcActions,
-	NcActionButton,
-	NcListItem,
-	NcLoadingIcon,
-	NcEmptyContent,
-	NcButton,
-} from '@nextcloud/vue'
+import { NcListItem, NcActionButton, NcAppContentList, NcTextField, NcLoadingIcon, NcActions, NcButton } from '@nextcloud/vue'
+import { RecycleScroller } from 'vue-virtual-scroller'
+import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 
+// Icons
+import Magnify from 'vue-material-design-icons/Magnify.vue'
 import CalendarMonthOutline from 'vue-material-design-icons/CalendarMonthOutline.vue'
-import Close from 'vue-material-design-icons/Close.vue'
-import Pencil from 'vue-material-design-icons/Pencil.vue'
 import Plus from 'vue-material-design-icons/Plus.vue'
+import Pencil from 'vue-material-design-icons/Pencil.vue'
+import Delete from 'vue-material-design-icons/Delete.vue'
 import Refresh from 'vue-material-design-icons/Refresh.vue'
-import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
+import ContentCopy from 'vue-material-design-icons/ContentCopy.vue'
 
+/**
+ * EventsList Component
+ * @module Views
+ * @package
+ * @author Ruben Linde
+ * @copyright 2024
+ * @license AGPL-3.0-or-later
+ * @version 1.0.0
+ * @link https://github.com/MetaProvide/larpingapp
+ */
 export default {
 	name: 'EventsList',
 	components: {
-		NcTextField,
-		NcActions,
-		NcActionButton,
 		NcListItem,
+		NcActionButton,
+		NcAppContentList,
+		NcTextField,
 		NcLoadingIcon,
-		NcEmptyContent,
+		NcActions,
 		NcButton,
+		RecycleScroller,
+		// Icons
+		Magnify,
 		CalendarMonthOutline,
-		Close,
-		Pencil,
 		Plus,
+		Pencil,
+		Delete,
 		Refresh,
-		TrashCanOutline,
+		ContentCopy,
 	},
 	methods: {
-		selectEvent(event) {
+		toggleActive(event) {
+			objectStore.getActiveObject('event')?.id === event?.id
+				? objectStore.clearActiveObject('event')
+				: objectStore.setActiveObject('event', event)
+		},
+		openAddEventModal() {
+			navigationStore.setModal('editEvent')
+			objectStore.clearActiveObject('event')
+		},
+		onActionButtonClick(event, action) {
 			objectStore.setActiveObject('event', event)
-			navigationStore.setSelected('events')
+			switch (action) {
+			case 'edit':
+				navigationStore.setModal('editEvent')
+				break
+			case 'copyObject':
+			case 'deleteObject':
+				navigationStore.setDialog(action, { objectType: 'event', dialogTitle: 'Gebeurtenis' })
+				break
+			}
 		},
 	},
 }
 </script>
 
-<style scoped>
-.eventsList {
-	display: flex;
-	flex-direction: column;
-	gap: 1rem;
-	padding: 1rem;
+<style>
+.listHeader {
+	position: sticky;
+	top: 0;
+	z-index: 1000;
+	background-color: var(--color-main-background);
+	border-bottom: 1px solid var(--color-border);
 }
 
-.eventsHeader {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
+.searchField {
+	padding-inline-start: 65px;
+	padding-inline-end: 20px;
+	margin-block-end: 6px;
 }
 
-.eventsActions {
-	display: flex;
-	gap: 1rem;
+.selectedEventIcon>svg {
+	fill: white;
 }
 
-.eventItems {
-	display: flex;
-	flex-direction: column;
+.loadingIcon {
+	margin-block-start: var(--OC-margin-20);
 }
 
-.eventsLoading {
+.pagination-info {
+	text-align: center;
+	padding: 20px;
+	border-top: 1px solid var(--color-border);
+}
+
+.pagination-info p {
+	margin-bottom: 10px;
+	color: var(--color-text-maxcontrast);
+}
+
+.pagination-buttons {
 	display: flex;
+	gap: 10px;
 	justify-content: center;
-	align-items: center;
-	padding: 2rem;
 }
 
-.eventsEmpty {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	padding: 2rem;
+.scroller {
+	height: calc(100vh - 200px);
+	overflow-y: auto;
 }
 
-.selectedEventIcon {
-	color: var(--color-primary);
+.emptyListHeader {
+	text-align: center;
+	padding: 20px;
+	color: var(--color-text-maxcontrast);
 }
 </style>

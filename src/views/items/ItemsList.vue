@@ -1,172 +1,233 @@
 <script setup>
-import { objectStore, navigationStore, searchStore } from '../../store/store.js'
+import { objectStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
-	<div class="itemsList">
-		<div class="itemsHeader">
-			<NcTextField
-				:value="searchStore.getSearchTerm('item')"
-				:show-trailing-button="searchStore.getSearchTerm('item') !== ''"
-				type="search"
-				label="Zoeken"
-				@input="searchStore.setSearchTerm('item', $event.target.value)"
-				@trailing-button-click="searchStore.clearSearchTerm('item')">
-				<template #trailing-button-icon>
-					<Close :size="20" />
-				</template>
-			</NcTextField>
-
-			<div class="itemsActions">
+	<NcAppContentList>
+		<ul>
+			<div class="listHeader">
+				<NcTextField class="searchField"
+					:value="objectStore.getSearchTerm('item')"
+					label="Zoeken"
+					trailing-button-icon="close"
+					:show-trailing-button="objectStore.getSearchTerm('item') !== ''"
+					@update:value="(value) => objectStore.setSearchTerm('item', value)"
+					@trailing-button-click="objectStore.clearSearchTerm('item')">
+					<Magnify :size="20" />
+				</NcTextField>
 				<NcActions>
-					<NcActionButton @click="objectStore.refreshObjectList('item')">
+					<NcActionButton :disabled="objectStore.isLoading('item')"
+						@click="objectStore.fetchCollection('item')">
 						<template #icon>
 							<Refresh :size="20" />
 						</template>
-						Vernieuwen
+						Ververs
 					</NcActionButton>
-					<NcActionButton @click="objectStore.clearActiveObject('item'); navigationStore.setModal('editItem')">
+					<NcActionButton @click="openAddItemModal">
 						<template #icon>
 							<Plus :size="20" />
 						</template>
-						Nieuw item
+						Item toevoegen
 					</NcActionButton>
 				</NcActions>
 			</div>
-		</div>
 
-		<div v-if="objectStore.getObjectList('item')?.length > 0 && !objectStore.isLoading('item')" class="itemItems">
-			<NcListItem v-for="item in objectStore.getObjectList('item')"
-				:key="item.id"
-				:title="item.name"
-				:active="objectStore.getActiveObject('item')?.id === item.id"
-				@click="selectItem(item)">
-				<template #icon>
-					<Sword :class="objectStore.getActiveObject('item')?.id === item.id && 'selectedItemIcon'" :size="20" />
-				</template>
-				<template #actions>
-					<NcActions>
-						<NcActionButton @click.stop="objectStore.setActiveObject('item', item); navigationStore.setModal('editItem')">
-							<template #icon>
-								<Pencil :size="20" />
-							</template>
-							Bewerken
-						</NcActionButton>
-						<NcActionButton @click.stop="objectStore.setActiveObject('item', item); navigationStore.setDialog('deleteItem')">
-							<template #icon>
-								<TrashCanOutline :size="20" />
-							</template>
-							Verwijderen
-						</NcActionButton>
-					</NcActions>
-				</template>
-			</NcListItem>
-		</div>
-
-		<div v-if="objectStore.isLoading('item')" class="itemsLoading">
-			<NcLoadingIcon :size="50" />
-		</div>
-
-		<div v-if="objectStore.getObjectList('item')?.length === 0 && !objectStore.isLoading('item')" class="itemsEmpty">
-			<NcEmptyContent
-				icon="icon-category-customization"
-				title="Geen items gevonden">
-				<template #action>
-					<NcButton type="primary" @click="objectStore.clearActiveObject('item'); navigationStore.setModal('editItem')">
-						<template #icon>
-							<Plus :size="20" />
-						</template>
-						Nieuw item
+			<div v-if="!objectStore.isLoading('item')">
+				<div v-if="objectStore.hasPreviousPages('item')" class="pagination-info">
+					<NcButton
+						:disabled="objectStore.isLoading('item')"
+						type="secondary"
+						@click="objectStore.loadPrevious('item')">
+						Vorige pagina
 					</NcButton>
-				</template>
-			</NcEmptyContent>
-		</div>
-	</div>
+				</div>
+
+				<RecycleScroller
+					v-if="objectStore.getCollection('item').results?.length"
+					v-slot="{ item }"
+					class="scroller"
+					:items="objectStore.getCollection('item').results"
+					:item-size="60"
+					key-field="id">
+					<NcListItem
+						:key="item.id"
+						:name="item.name"
+						:details="item.description || ''"
+						:active="objectStore.getActiveObject('item')?.id === item.id"
+						:force-display-actions="true"
+						@click="toggleActive(item)">
+						<template #icon>
+							<Sword 
+								:class="objectStore.getActiveObject('item')?.id === item.id && 'selectedItemIcon'"
+								:size="44" />
+						</template>
+						<template #actions>
+							<NcActionButton @click="onActionButtonClick(item, 'edit')">
+								<template #icon>
+									<Pencil :size="20" />
+								</template>
+								Bewerken
+							</NcActionButton>
+							<NcActionButton @click="onActionButtonClick(item, 'copyObject')">
+								<template #icon>
+									<ContentCopy :size="20" />
+								</template>
+								Kopiëren
+							</NcActionButton>
+							<NcActionButton @click="onActionButtonClick(item, 'deleteObject')">
+								<template #icon>
+									<Delete :size="20" />
+								</template>
+								Verwijderen
+							</NcActionButton>
+						</template>
+					</NcListItem>
+				</RecycleScroller>
+
+				<div v-if="objectStore.hasMorePages('item')" class="pagination-info">
+					<p>{{ objectStore.getCollection('item').results?.length }} van {{ objectStore.getPagination('item').total }} items</p>
+					<div class="pagination-buttons">
+						<NcButton
+							:disabled="objectStore.isLoading('item')"
+							type="secondary"
+							@click="objectStore.loadMore('item')">
+							Meer laden
+						</NcButton>
+					</div>
+				</div>
+			</div>
+
+			<NcLoadingIcon v-if="objectStore.isLoading('item')"
+				:size="64"
+				class="loadingIcon"
+				appearance="dark"
+				name="Items aan het laden" />
+
+			<div v-if="!objectStore.getCollection('item').results?.length && !objectStore.isLoading('item')" class="emptyListHeader">
+				Er zijn nog geen items gemaakt.
+			</div>
+		</ul>
+	</NcAppContentList>
 </template>
 
 <script>
-import {
-	NcTextField,
-	NcActions,
-	NcActionButton,
-	NcListItem,
-	NcLoadingIcon,
-	NcEmptyContent,
-	NcButton,
-} from '@nextcloud/vue'
+import { NcListItem, NcActionButton, NcAppContentList, NcTextField, NcLoadingIcon, NcActions, NcButton } from '@nextcloud/vue'
+import { RecycleScroller } from 'vue-virtual-scroller'
+import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 
-import Close from 'vue-material-design-icons/Close.vue'
-import Pencil from 'vue-material-design-icons/Pencil.vue'
-import Plus from 'vue-material-design-icons/Plus.vue'
-import Refresh from 'vue-material-design-icons/Refresh.vue'
+// Icons
+import Magnify from 'vue-material-design-icons/Magnify.vue'
 import Sword from 'vue-material-design-icons/Sword.vue'
-import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
+import Plus from 'vue-material-design-icons/Plus.vue'
+import Pencil from 'vue-material-design-icons/Pencil.vue'
+import Delete from 'vue-material-design-icons/Delete.vue'
+import Refresh from 'vue-material-design-icons/Refresh.vue'
+import ContentCopy from 'vue-material-design-icons/ContentCopy.vue'
 
+/**
+ * ItemsList Component
+ * @module Views
+ * @package LarpingApp
+ * @author Ruben Linde
+ * @copyright 2024
+ * @license AGPL-3.0-or-later
+ * @version 1.0.0
+ * @link https://github.com/MetaProvide/larpingapp
+ */
 export default {
 	name: 'ItemsList',
 	components: {
-		NcTextField,
-		NcActions,
-		NcActionButton,
 		NcListItem,
+		NcActionButton,
+		NcAppContentList,
+		NcTextField,
 		NcLoadingIcon,
-		NcEmptyContent,
+		NcActions,
 		NcButton,
-		Close,
-		Pencil,
-		Plus,
-		Refresh,
+		RecycleScroller,
+		// Icons
+		Magnify,
 		Sword,
-		TrashCanOutline,
+		Plus,
+		Pencil,
+		Delete,
+		Refresh,
+		ContentCopy,
 	},
 	methods: {
-		selectItem(item) {
+		toggleActive(item) {
+			objectStore.getActiveObject('item')?.id === item?.id 
+				? objectStore.clearActiveObject('item') 
+				: objectStore.setActiveObject('item', item)
+		},
+		openAddItemModal() {
+			navigationStore.setModal('editItem')
+			objectStore.clearActiveObject('item')
+		},
+		onActionButtonClick(item, action) {
 			objectStore.setActiveObject('item', item)
-			navigationStore.setSelected('items')
+			switch (action) {
+			case 'edit':
+				navigationStore.setModal('editItem')
+				break
+			case 'copyObject':
+			case 'deleteObject':
+				navigationStore.setDialog(action, { objectType: 'item', dialogTitle: 'Item' })
+				break
+			}
 		},
 	},
 }
 </script>
 
-<style scoped>
-.itemsList {
-	display: flex;
-	flex-direction: column;
-	gap: 1rem;
-	padding: 1rem;
+<style>
+.listHeader {
+	position: sticky;
+	top: 0;
+	z-index: 1000;
+	background-color: var(--color-main-background);
+	border-bottom: 1px solid var(--color-border);
 }
 
-.itemsHeader {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
+.searchField {
+	padding-inline-start: 65px;
+	padding-inline-end: 20px;
+	margin-block-end: 6px;
 }
 
-.itemsActions {
-	display: flex;
-	gap: 1rem;
+.selectedItemIcon>svg {
+	fill: white;
 }
 
-.itemItems {
-	display: flex;
-	flex-direction: column;
+.loadingIcon {
+	margin-block-start: var(--OC-margin-20);
 }
 
-.itemsLoading {
+.pagination-info {
+	text-align: center;
+	padding: 20px;
+	border-top: 1px solid var(--color-border);
+}
+
+.pagination-info p {
+	margin-bottom: 10px;
+	color: var(--color-text-maxcontrast);
+}
+
+.pagination-buttons {
 	display: flex;
+	gap: 10px;
 	justify-content: center;
-	align-items: center;
-	padding: 2rem;
 }
 
-.itemsEmpty {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	padding: 2rem;
+.scroller {
+	height: calc(100vh - 200px);
+	overflow-y: auto;
 }
 
-.selectedItemIcon {
-	color: var(--color-primary);
+.emptyListHeader {
+	text-align: center;
+	padding: 20px;
+	color: var(--color-text-maxcontrast);
 }
 </style>

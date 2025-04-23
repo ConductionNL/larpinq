@@ -1,29 +1,29 @@
 <template>
 	<div>
-		<NcSettingsSection 
-			name="Larping App" 
-			description="A central place for managing your LARP characters and game elements" 
-			doc-url="https://conduction.gitbook.io/larpingapp-nextcloud/users" />
-		
-		<NcSettingsSection 
-			name="Data storage" 
-			description="Configure where to store your LARP data">
+		<NcSettingsSection
+			name="Larping App"
+			description="A central place for managing your LARP events and characters"
+			doc-url="https://docs.larpingapp.com" />
+
+		<NcSettingsSection
+			name="Data storage"
+			description="Configure where to store your publication data">
 			<div v-if="!loading">
 				<!-- Warning if OpenRegister is not installed -->
 				<NcNoteCard v-if="!settings.openRegisters" type="warning">
-					Open Register is not installed. Please install it to use the Larping App with full functionality.
+					Open Register is not installed. Please install it to use the Open Catalogi app with full functionality.
 				</NcNoteCard>
 
 				<!-- Register Selection -->
 				<div class="register-selection">
 					<h3>Register</h3>
 					<p>Select the register to store all your LARP data</p>
-					
+
 					<NcSelect
 						v-model="selectedRegister"
 						:options="registerOptions"
 						input-label="Register"
-						:disabled="loading || !settings.openRegisters"
+						:disabled="loading || !settings.larpRegisters"
 						@change="handleRegisterChange" />
 				</div>
 
@@ -36,12 +36,12 @@
 				<div v-if="selectedRegister && hasSchemas" class="schema-configuration">
 					<h3>Schema Configuration</h3>
 					<p>Select which schema to use for each object type</p>
-					
+
 					<div v-for="objectType in settings.objectTypes" :key="objectType" class="object-type-section">
 						<div class="object-type-header">
 							<h4>{{ formatTitle(objectType) }}</h4>
 						</div>
-						
+
 						<NcSelect
 							v-model="configuration[objectType].schema"
 							:options="schemaOptions"
@@ -76,27 +76,30 @@
 
 <script>
 import { defineComponent } from 'vue'
-import { 
-	NcSettingsSection, 
-	NcNoteCard, 
-	NcSelect, 
-	NcButton, 
-	NcLoadingIcon 
+import {
+	NcSettingsSection,
+	NcNoteCard,
+	NcSelect,
+	NcButton,
+	NcLoadingIcon,
 } from '@nextcloud/vue'
 import Save from 'vue-material-design-icons/ContentSave.vue'
+import Download from 'vue-material-design-icons/Download.vue'
 
 /**
  * @class Settings
- * @category Components
+ * @module Components
+ * @package
+ * @category LarpingApp
  * @package LarpingApp
+ * @version 1.0.0
+ * @license EUPL-1.2
  * @author Claude AI
  * @copyright 2023 Conduction
- * @license EUPL-1.2
- * @version 1.0.0
- * @link https://github.com/OpenCatalogi/larping-app
- * 
- * Settings component for the LarpingApp that allows users to configure
- * data storage options for different object types using Open Registers.
+ * @link https://github.com/LarpingApp/larpingapp
+ *
+ * Settings component for the Larping App that allows users to configure
+ * data storage options for different object types using Larp Registers.
  */
 export default defineComponent({
 	name: 'Settings',
@@ -107,20 +110,23 @@ export default defineComponent({
 		NcButton,
 		NcLoadingIcon,
 		Save,
+		Download,
 	},
 
 	/**
 	 * Component data
-	 * 
-	 * @returns {Object} Component data
+	 *
+	 * @return {object} Component data
 	 */
 	data() {
 		return {
 			loading: true,
 			saving: false,
+			loadingConfiguration: false,
+			configurationResults: null,
 			settings: {
 				objectTypes: [],
-				openRegisters: false,
+				larpRegisters: false,
 				availableRegisters: [],
 				configuration: {},
 			},
@@ -133,8 +139,8 @@ export default defineComponent({
 	computed: {
 		/**
 		 * Generates options for register selection dropdown
-		 * 
-		 * @returns {Array<Object>} Array of register options with label and value
+		 *
+		 * @return {Array<object>} Array of register options with label and value
 		 */
 		registerOptions() {
 			return this.settings.availableRegisters.map(register => ({
@@ -145,16 +151,16 @@ export default defineComponent({
 
 		/**
 		 * Determines if the selected register has schemas
-		 * 
-		 * @returns {boolean} True if the selected register has schemas, false otherwise
+		 *
+		 * @return {boolean} True if the selected register has schemas, false otherwise
 		 */
 		hasSchemas() {
 			if (!this.selectedRegister) return false
-			
+
 			const register = this.settings.availableRegisters.find(
-				r => r.id.toString() === this.selectedRegister.value
+				r => r.id.toString() === this.selectedRegister.value,
 			)
-			
+
 			return register && Array.isArray(register.schemas) && register.schemas.length > 0
 		},
 	},
@@ -169,9 +175,9 @@ export default defineComponent({
 	methods: {
 		/**
 		 * Loads settings from the backend API and initializes the configuration
-		 * 
+		 *
 		 * @async
-		 * @returns {Promise<void>}
+		 * @return {Promise<void>}
 		 */
 		async loadSettings() {
 			try {
@@ -182,8 +188,8 @@ export default defineComponent({
 				// Initialize configuration object
 				this.initializeConfiguration()
 
-				// Find and select the Larping register if it exists
-				this.autoSelectLarpingRegister()
+				// Find and select the LARP register if it exists
+				this.autoSelectLarpingAppRegister()
 
 				this.loading = false
 			} catch (error) {
@@ -201,7 +207,7 @@ export default defineComponent({
 				const schemaId = this.settings.configuration[`${type}_schema`] || ''
 
 				this.configuration[type] = {
-					schema: null
+					schema: null,
 				}
 
 				// If we have existing configuration, use it to set the selected register
@@ -210,7 +216,7 @@ export default defineComponent({
 					if (register) {
 						this.selectedRegister = {
 							label: register.title,
-							value: register.id.toString()
+							value: register.id.toString(),
 						}
 						this.updateSchemaOptions(register.id.toString())
 					}
@@ -219,14 +225,14 @@ export default defineComponent({
 				// If we have a schema configured, set it
 				if (schemaId && this.selectedRegister) {
 					const register = this.settings.availableRegisters.find(
-						r => r.id.toString() === this.selectedRegister.value
+						r => r.id.toString() === this.selectedRegister.value,
 					)
 					if (register && Array.isArray(register.schemas)) {
 						const schema = register.schemas.find(s => s.id.toString() === schemaId)
 						if (schema) {
 							this.configuration[type].schema = {
 								label: schema.title,
-								value: schema.id.toString()
+								value: schema.id.toString(),
 							}
 						}
 					}
@@ -235,34 +241,34 @@ export default defineComponent({
 		},
 
 		/**
-		 * Automatically selects the Larping register if it exists
+		 * Automatically selects the larpingapp register if it exists
 		 */
-		autoSelectLarpingRegister() {
-			// Look for a register with "Larping" in the name
-			const larpingRegister = this.settings.availableRegisters.find(
-				register => register.title.toLowerCase().includes('larping')
+		autoSelectLarpingAppRegister() {
+			// Look for a register with "larpingapp" in the name
+			const larpingAppRegister = this.settings.availableRegisters.find(
+				register => register.title.toLowerCase().includes('larp'),
 			)
 
-			if (larpingRegister) {
+			if (larpingAppRegister) {
 				this.selectedRegister = {
-					label: larpingRegister.title,
-					value: larpingRegister.id.toString()
+					label: larpingAppRegister.title,
+					value: larpingAppRegister.id.toString(),
 				}
-				this.updateSchemaOptions(larpingRegister.id.toString())
-				
+				this.updateSchemaOptions(larpingAppRegister.id.toString())
+
 				// Only try to auto-select schemas if the register has schemas
-				if (Array.isArray(larpingRegister.schemas)) {
-					this.autoSelectMatchingSchemas(larpingRegister)
+				if (Array.isArray(larpingAppRegister.schemas)) {
+					this.autoSelectMatchingSchemas(larpingAppRegister)
 				}
 			} else if (this.settings.availableRegisters.length > 0 && !this.selectedRegister) {
-				// If no Larping register but we have registers, select the first one
+				// If no Larping App register but we have registers, select the first one
 				const firstRegister = this.settings.availableRegisters[0]
 				this.selectedRegister = {
 					label: firstRegister.title,
-					value: firstRegister.id.toString()
+					value: firstRegister.id.toString(),
 				}
 				this.updateSchemaOptions(firstRegister.id.toString())
-				
+
 				// Only try to auto-select schemas if the register has schemas
 				if (Array.isArray(firstRegister.schemas)) {
 					this.autoSelectMatchingSchemas(firstRegister)
@@ -272,25 +278,25 @@ export default defineComponent({
 
 		/**
 		 * Auto-selects schemas that match object type names
-		 * 
-		 * @param {Object} register - The selected register object
+		 *
+		 * @param {object} register - The selected register object
 		 */
 		autoSelectMatchingSchemas(register) {
 			// Only proceed if register has schemas array
 			if (!register || !Array.isArray(register.schemas)) {
 				return
 			}
-			
+
 			this.settings.objectTypes.forEach(type => {
 				// Look for a schema with the same name as the object type
 				const matchingSchema = register.schemas.find(
-					schema => schema.title.toLowerCase() === type.toLowerCase()
+					schema => schema.title.toLowerCase() === type.toLowerCase(),
 				)
 
 				if (matchingSchema) {
 					this.configuration[type].schema = {
 						label: matchingSchema.title,
-						value: matchingSchema.id.toString()
+						value: matchingSchema.id.toString(),
 					}
 				}
 			})
@@ -298,7 +304,7 @@ export default defineComponent({
 
 		/**
 		 * Updates schema options based on the selected register
-		 * 
+		 *
 		 * @param {string} registerId - The ID of the selected register
 		 */
 		updateSchemaOptions(registerId) {
@@ -306,7 +312,7 @@ export default defineComponent({
 			if (register && Array.isArray(register.schemas)) {
 				this.schemaOptions = register.schemas.map(schema => ({
 					label: schema.title,
-					value: schema.id.toString()
+					value: schema.id.toString(),
 				}))
 			} else {
 				this.schemaOptions = []
@@ -315,9 +321,9 @@ export default defineComponent({
 
 		/**
 		 * Formats an object type string to title case
-		 * 
+		 *
 		 * @param {string} objectType - The object type to format
-		 * @returns {string} The formatted title
+		 * @return {string} The formatted title
 		 */
 		formatTitle(objectType) {
 			return objectType.charAt(0).toUpperCase() + objectType.slice(1)
@@ -330,15 +336,15 @@ export default defineComponent({
 			if (this.selectedRegister) {
 				// Update schema options for the new register
 				this.updateSchemaOptions(this.selectedRegister.value)
-				
+
 				// Reset all schema selections
 				this.settings.objectTypes.forEach(type => {
 					this.configuration[type].schema = null
 				})
-				
+
 				// Auto-select matching schemas
 				const register = this.settings.availableRegisters.find(
-					r => r.id.toString() === this.selectedRegister.value
+					r => r.id.toString() === this.selectedRegister.value,
 				)
 				if (register && Array.isArray(register.schemas)) {
 					this.autoSelectMatchingSchemas(register)
@@ -348,9 +354,9 @@ export default defineComponent({
 
 		/**
 		 * Saves all configuration settings to the backend
-		 * 
+		 *
 		 * @async
-		 * @returns {Promise<void>}
+		 * @return {Promise<void>}
 		 */
 		async saveAll() {
 			if (!this.selectedRegister || !this.hasSchemas) {
@@ -360,15 +366,15 @@ export default defineComponent({
 			this.saving = true
 			try {
 				const configToSave = {}
-				
-				// Set all object types to use openregister as source
+
+				// Set all object types to use larpregister as source
 				Object.entries(this.configuration).forEach(([type, config]) => {
 					// Always use openregister as source
 					configToSave[`${type}_source`] = 'openregister'
-					
+
 					// Set the register ID for all object types
 					configToSave[`${type}_register`] = this.selectedRegister.value
-					
+
 					// Set the schema ID if selected
 					configToSave[`${type}_schema`] = config.schema ? config.schema.value : ''
 				})
@@ -387,11 +393,47 @@ export default defineComponent({
 				this.saving = false
 			}
 		},
+
+		/**
+		 * Loads configuration from the backend API
+		 *
+		 * @async
+		 * @return {Promise<void>}
+		 */
+		async loadConfiguration() {
+			this.loadingConfiguration = true
+			this.configurationResults = null
+
+			try {
+				const response = await fetch('/index.php/apps/larpingapp/api/settings/load')
+				const data = await response.json()
+
+				if (data.error) {
+					this.configurationResults = { error: data.error }
+				} else {
+					this.configurationResults = { success: true }
+					// Reload settings to reflect any changes
+					await this.loadSettings()
+				}
+			} catch (error) {
+				this.configurationResults = { error: 'Failed to load configuration: ' + error.message }
+			} finally {
+				this.loadingConfiguration = false
+			}
+		},
 	},
 })
 </script>
 
 <style scoped>
+.load-configuration {
+	margin-bottom: 2rem;
+}
+
+.configuration-results {
+	margin-top: 1rem;
+}
+
 .register-selection {
 	margin-bottom: 2rem;
 	max-width: 400px;

@@ -1,4 +1,20 @@
 <?php
+/**
+ * LarpingApp Character Service
+ *
+ * This file contains the service class for handling character-related operations in the LarpingApp application.
+ *
+ * @category Service
+ * @package  OCA\LarpingApp\Service
+ *
+ * @author    Conduction Development Team <info@conduction.nl>
+ * @copyright 2024 Conduction B.V.
+ * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ *
+ * @version GIT: <git_id>
+ *
+ * @link https://www.Larping.app
+ */
 
 namespace OCA\LarpingApp\Service;
 
@@ -11,14 +27,6 @@ use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
 /**
- * @class CharacterService
- * @category Service
- * @package LarpingApp
- * @author Conduction Team
- * @copyright 2023 Conduction
- * @license EUPL-1.2
- * @version 1.0.0
- * @link https://github.com/OpenCatalogi/larping-app
  * 
  * Service for handling character-related operations
  */

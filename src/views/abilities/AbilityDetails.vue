@@ -70,6 +70,7 @@ import {
 import Account from 'vue-material-design-icons/Account.vue'
 import Pencil from 'vue-material-design-icons/Pencil.vue'
 import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
+import ShieldSwordOutline from 'vue-material-design-icons/ShieldSwordOutline.vue'
 
 import ObjectList from '../../components/ObjectList.vue'
 import AuditTable from '../auditTrail/AuditTable.vue'
@@ -83,6 +84,7 @@ export default {
 		Account,
 		Pencil,
 		TrashCanOutline,
+		ShieldSwordOutline,
 		ObjectList,
 		AuditTable,
 	},

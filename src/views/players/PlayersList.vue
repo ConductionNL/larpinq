@@ -1,29 +1,29 @@
 <script setup>
-import { objectStore, navigationStore, searchStore } from '../../store/store.js'
+import { objectStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
 	<NcAppContentList>
 		<ul>
 			<div class="listHeader">
-				<NcTextField
+				<NcTextField class="searchField"
 					:value="objectStore.getSearchTerm('player')"
-					:show-trailing-button="objectStore.getSearchTerm('player') !== ''"
-					label="Search"
-					class="searchField"
+					label="Zoeken"
 					trailing-button-icon="close"
-					@input="objectStore.setSearchTerm('player', $event.target.value)"
-					@trailing-button-click="objectStore.clearSearch('player')">
+					:show-trailing-button="objectStore.getSearchTerm('player') !== ''"
+					@update:value="(value) => objectStore.setSearchTerm('player', value)"
+					@trailing-button-click="objectStore.clearSearchTerm('player')">
 					<Magnify :size="20" />
 				</NcTextField>
 				<NcActions>
-					<NcActionButton @click="objectStore.fetchCollection('player')">
+					<NcActionButton :disabled="objectStore.isLoading('player')"
+						@click="objectStore.fetchCollection('player')">
 						<template #icon>
 							<Refresh :size="20" />
 						</template>
 						Ververs
 					</NcActionButton>
-					<NcActionButton @click="objectStore.clearActiveObject('player'); navigationStore.setModal('editPlayer')">
+					<NcActionButton @click="openAddPlayerModal">
 						<template #icon>
 							<Plus :size="20" />
 						</template>
@@ -32,112 +32,202 @@ import { objectStore, navigationStore, searchStore } from '../../store/store.js'
 				</NcActions>
 			</div>
 
-			<div v-if="objectStore.getCollection('player').results?.length > 0 && !objectStore.isLoading('player')">
-				<NcListItem v-for="(player, i) in objectStore.getCollection('player').results"
-					:key="`${player}${i}`"
-					:name="player?.name"
-					:active="objectStore.getActiveObject('player')?.id === player?.id"
-					:force-display-actions="true"
-					@click="handlePlayerSelect(player)">
-					<template #icon>
-						<BriefcaseAccountOutline :class="objectStore.getActiveObject('player')?.id === player.id && 'selectedZaakIcon'"
-							disable-menu
-							:size="44" />
-					</template>
-					<template #subname>
-						{{ player?.description }}
-					</template>
-					<template #actions>
-						<NcActionButton @click="objectStore.setActiveObject('player', player); navigationStore.setModal('editPlayer')">
-							<template #icon>
-								<Pencil />
-							</template>
-							Bewerken
-						</NcActionButton>
-						<NcActionButton @click="objectStore.setActiveObject('player', player); navigationStore.setDialog('deletePlayer')">
-							<template #icon>
-								<TrashCanOutline />
-							</template>
-							Verwijderen
-						</NcActionButton>
-					</template>
-				</NcListItem>
+			<div v-if="!objectStore.isLoading('player')">
+				<div v-if="objectStore.hasPreviousPages('player')" class="pagination-info">
+					<NcButton
+						:disabled="objectStore.isLoading('player')"
+						type="secondary"
+						@click="objectStore.loadPrevious('player')">
+						Vorige pagina
+					</NcButton>
+				</div>
+
+				<RecycleScroller
+					v-if="objectStore.getCollection('player').results?.length"
+					v-slot="{ item: player }"
+					class="scroller"
+					:items="objectStore.getCollection('player').results"
+					:item-size="60"
+					key-field="id">
+					<NcListItem
+						:key="player.id"
+						:name="player.name"
+						:details="player.description || ''"
+						:active="objectStore.getActiveObject('player')?.id === player.id"
+						:force-display-actions="true"
+						@click="toggleActive(player)">
+						<template #icon>
+							<AccountOutline 
+								:class="objectStore.getActiveObject('player')?.id === player.id && 'selectedPlayerIcon'"
+								:size="44" />
+						</template>
+						<template #actions>
+							<NcActionButton @click="onActionButtonClick(player, 'edit')">
+								<template #icon>
+									<Pencil :size="20" />
+								</template>
+								Bewerken
+							</NcActionButton>
+							<NcActionButton @click="onActionButtonClick(player, 'copyObject')">
+								<template #icon>
+									<ContentCopy :size="20" />
+								</template>
+								Kopiëren
+							</NcActionButton>
+							<NcActionButton @click="onActionButtonClick(player, 'deleteObject')">
+								<template #icon>
+									<Delete :size="20" />
+								</template>
+								Verwijderen
+							</NcActionButton>
+						</template>
+					</NcListItem>
+				</RecycleScroller>
+
+				<div v-if="objectStore.hasMorePages('player')" class="pagination-info">
+					<p>{{ objectStore.getCollection('player').results?.length }} van {{ objectStore.getPagination('player').total }} spelers</p>
+					<div class="pagination-buttons">
+						<NcButton
+							:disabled="objectStore.isLoading('player')"
+							type="secondary"
+							@click="objectStore.loadMore('player')">
+							Meer laden
+						</NcButton>
+					</div>
+				</div>
+			</div>
+
+			<NcLoadingIcon v-if="objectStore.isLoading('player')"
+				:size="64"
+				class="loadingIcon"
+				appearance="dark"
+				name="Spelers aan het laden" />
+
+			<div v-if="!objectStore.getCollection('player').results?.length && !objectStore.isLoading('player')" class="emptyListHeader">
+				Er zijn nog geen spelers gemaakt.
 			</div>
 		</ul>
-
-		<NcLoadingIcon v-if="objectStore.isLoading('player')"
-			class="loadingIcon"
-			:size="64"
-			appearance="dark"
-			name="Spelers aan het laden" />
-
-		<div v-if="objectStore.getCollection('player').results?.length === 0 && !objectStore.isLoading('player')">
-			Er zijn nog geen spelers gedefinieerd.
-		</div>
 	</NcAppContentList>
 </template>
+
 <script>
-// Components
-import { NcListItem, NcActions, NcActionButton, NcAppContentList, NcTextField, NcLoadingIcon } from '@nextcloud/vue'
+import { NcListItem, NcActionButton, NcAppContentList, NcTextField, NcLoadingIcon, NcActions, NcButton } from '@nextcloud/vue'
+import { RecycleScroller } from 'vue-virtual-scroller'
+import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 
 // Icons
 import Magnify from 'vue-material-design-icons/Magnify.vue'
-import BriefcaseAccountOutline from 'vue-material-design-icons/BriefcaseAccountOutline.vue'
+import AccountOutline from 'vue-material-design-icons/AccountOutline.vue'
 import Plus from 'vue-material-design-icons/Plus.vue'
 import Pencil from 'vue-material-design-icons/Pencil.vue'
-import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
+import Delete from 'vue-material-design-icons/Delete.vue'
 import Refresh from 'vue-material-design-icons/Refresh.vue'
+import ContentCopy from 'vue-material-design-icons/ContentCopy.vue'
 
+/**
+ * PlayersList Component
+ * @module Views
+ * @package LarpingApp
+ * @author Ruben Linde
+ * @copyright 2024
+ * @license AGPL-3.0-or-later
+ * @version 1.0.0
+ * @link https://github.com/MetaProvide/larpingapp
+ */
 export default {
 	name: 'PlayersList',
 	components: {
-		// Components
 		NcListItem,
-		NcActions,
 		NcActionButton,
 		NcAppContentList,
 		NcTextField,
 		NcLoadingIcon,
+		NcActions,
+		NcButton,
+		RecycleScroller,
 		// Icons
-		BriefcaseAccountOutline,
 		Magnify,
+		AccountOutline,
 		Plus,
 		Pencil,
-		TrashCanOutline,
+		Delete,
 		Refresh,
+		ContentCopy,
 	},
 	methods: {
-		/**
-		 * Handle player selection and fetch related data
-		 * @param {object} player - The selected player object
-		 */
-		async handlePlayerSelect(player) {
-			// Set the selected player in the store
+		toggleActive(player) {
+			objectStore.getActiveObject('player')?.id === player?.id 
+				? objectStore.clearActiveObject('player') 
+				: objectStore.setActiveObject('player', player)
+		},
+		openAddPlayerModal() {
+			navigationStore.setModal('editPlayer')
+			objectStore.clearActiveObject('player')
+		},
+		onActionButtonClick(player, action) {
 			objectStore.setActiveObject('player', player)
+			switch (action) {
+			case 'edit':
+				navigationStore.setModal('editPlayer')
+				break
+			case 'copyObject':
+			case 'deleteObject':
+				navigationStore.setDialog(action, { objectType: 'player', dialogTitle: 'Speler' })
+				break
+			}
 		},
 	},
 }
 </script>
+
 <style>
 .listHeader {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    background-color: var(--color-main-background);
-    border-bottom: 1px solid var(--color-border);
+	position: sticky;
+	top: 0;
+	z-index: 1000;
+	background-color: var(--color-main-background);
+	border-bottom: 1px solid var(--color-border);
 }
 
 .searchField {
-    padding-inline-start: 65px;
-    padding-inline-end: 20px;
-    margin-block-end: 6px;
+	padding-inline-start: 65px;
+	padding-inline-end: 20px;
+	margin-block-end: 6px;
 }
 
-.selectedZaakIcon>svg {
-    fill: white;
+.selectedPlayerIcon>svg {
+	fill: white;
 }
 
 .loadingIcon {
-    margin-block-start: var(--OC-margin-20);
+	margin-block-start: var(--OC-margin-20);
+}
+
+.pagination-info {
+	text-align: center;
+	padding: 20px;
+	border-top: 1px solid var(--color-border);
+}
+
+.pagination-info p {
+	margin-bottom: 10px;
+	color: var(--color-text-maxcontrast);
+}
+
+.pagination-buttons {
+	display: flex;
+	gap: 10px;
+	justify-content: center;
+}
+
+.scroller {
+	height: calc(100vh - 200px);
+	overflow-y: auto;
+}
+
+.emptyListHeader {
+	text-align: center;
+	padding: 20px;
+	color: var(--color-text-maxcontrast);
 }
 </style>

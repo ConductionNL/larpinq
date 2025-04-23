@@ -23,7 +23,7 @@ use Exception;
  * @copyright 2023 Conduction
  * @license EUPL-1.2
  * @version 1.0.0
- * @link https://github.com/OpenCatalogi/larping-app
+ * @link https://larping.app
  * 
  * Controller for handling characters related operations
  */

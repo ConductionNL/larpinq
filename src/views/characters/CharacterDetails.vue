@@ -15,22 +15,6 @@ import EmoticonSickOutline from 'vue-material-design-icons/EmoticonSickOutline.v
 import Download from 'vue-material-design-icons/Download.vue'
 import AccountCheck from 'vue-material-design-icons/AccountCheck.vue'
 
-// Load all necessary collections when component mounts
-onMounted(async () => {
-	try {
-		// Load all collections that might be needed for character details
-		await Promise.all([
-			objectStore.fetchCollection('skill'),
-			objectStore.fetchCollection('item'),
-			objectStore.fetchCollection('condition'),
-			objectStore.fetchCollection('event'),
-			objectStore.fetchCollection('effect'),
-		])
-	} catch (error) {
-		console.error('Error loading collections:', error)
-	}
-})
-
 const downloadCharacterPdf = () => {
 	const characterId = objectStore.getActiveObject('character').id
 	fetch(`characters/${characterId}/download`)

@@ -3,143 +3,135 @@ import { objectStore, navigationStore } from '../../store/store.js'
 </script>
 
 <template>
-	<div class="detailContainer">
-		<div id="app-content">
-			<!-- app-content-wrapper is optional, only use if app-content-list  -->
-			<div>
-				<div class="head">
-					<h1 class="h1">
-						{{ objectStore.getActiveObject('effect').name }}
-					</h1>
+	<div class="effectDetails">
+		<div class="effectHeader">
+			<h2>{{ objectStore.getActiveObject('effect')?.name }}</h2>
+			<div class="effectActions">
+				<NcButton @click="objectStore.setActiveObject('effect', objectStore.getActiveObject('effect')); navigationStore.setModal('editEffect')">
+					<template #icon>
+						<Pencil :size="20" />
+					</template>
+					Bewerken
+				</NcButton>
+				<NcButton type="error" @click="objectStore.setActiveObject('effect', objectStore.getActiveObject('effect')); navigationStore.setDialog('deleteObject', { objectType: 'effect', dialogTitle: 'Effect' })">
+					<template #icon>
+						<TrashCanOutline :size="20" />
+					</template>
+					Verwijderen
+				</NcButton>
+			</div>
+		</div>
 
-					<NcActions :primary="true" menu-name="Acties">
-						<template #icon>
-							<DotsHorizontal :size="20" />
-						</template>
-						<NcActionButton @click="navigationStore.setModal('editEffect')">
-							<template #icon>
-								<Pencil :size="20" />
-							</template>
-							Bewerken
-						</NcActionButton>
-						<NcActionButton @click="navigationStore.setDialog('eleteEffect')">
-							<template #icon>
-								<TrashCanOutline :size="20" />
-							</template>
-							Verwijderen
-						</NcActionButton>
-					</NcActions>
+		<div class="effectContent">
+			<div class="effectInfo">
+				<div class="effectType">
+					<h3>Type</h3>
+					<span>{{ objectStore.getActiveObject('effect')?.type || 'Geen type' }}</span>
 				</div>
-				<div class="detailGrid">
-					<div>
-						<b>Sammenvatting:</b>
-						<span>{{ objectStore.getActiveObject('effect').summary }}</span>
-					</div>
-				</div>
-				<span>{{ objectStore.getActiveObject('effect').description }}</span>
 
-				<div class="tabContainer">
-					<BTabs content-class="mt-3" justified>		
-						<BTab>
-							<template #title>
-								Used by <NcCounterBubble>{{ objectStore.getRelations('effect') ? objectStore.getRelations('effect').length : 0 }}</NcCounterBubble>
-							</template>
-							<ObjectList :objects="objectStore.getRelations('effect')" />							
-						</BTab>
-						<BTab>
-							<template #title>
-								Logging <NcCounterBubble>{{ objectStore.getAuditTrails('effect') ? objectStore.getAuditTrails('effect').length : 0 }}</NcCounterBubble>
-							</template>
-							<AuditTable :logs="objectStore.getAuditTrails('effect')" />
-						</BTab>
-					</BTabs>
+				<div class="effectDescription">
+					<h3>Beschrijving</h3>
+					<span>{{ objectStore.getActiveObject('effect')?.description || 'Geen beschrijving' }}</span>
 				</div>
+
+				<div class="effectDuration">
+					<h3>Duur</h3>
+					<span>{{ objectStore.getActiveObject('effect')?.duration || 'Geen duur' }}</span>
+				</div>
+
+				<div class="effectPower">
+					<h3>Kracht</h3>
+					<span>{{ objectStore.getActiveObject('effect')?.power || 'Geen kracht' }}</span>
+				</div>
+			</div>
+
+			<div class="effectRelations">
+				<h3>Karakters <NcCounterBubble>{{ objectStore.getRelatedData('effect', 'uses')?.length || 0 }}</NcCounterBubble></h3>
+				<ObjectList :objects="objectStore.getRelatedData('effect', 'uses')" />
+			</div>
+
+			<div class="effectAudit">
+				<h3>Logging <NcCounterBubble>{{ objectStore.getAuditTrails('effect')?.length || 0 }}</NcCounterBubble></h3>
+				<AuditTable :logs="objectStore.getAuditTrails('effect')" />
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
-// Components
-import { BTabs, BTab } from 'bootstrap-vue'
-import { NcLoadingIcon, NcActions, NcActionButton, NcListItem, NcCounterBubble } from '@nextcloud/vue'
-
-// Custom components
-import AuditTable from '../auditTrail/AuditTable.vue'
-import ObjectList from '../../components/ObjectList.vue'
-
-// Icons
-import DotsHorizontal from 'vue-material-design-icons/DotsHorizontal.vue'
+import { NcButton, NcCounterBubble } from '@nextcloud/vue'
 import Pencil from 'vue-material-design-icons/Pencil.vue'
-import ChatOutline from 'vue-material-design-icons/ChatOutline.vue'
-import CalendarMonthOutline from 'vue-material-design-icons/CalendarMonthOutline.vue'
-import BriefcaseAccountOutline from 'vue-material-design-icons/BriefcaseAccountOutline.vue'
 import TrashCanOutline from 'vue-material-design-icons/TrashCanOutline.vue'
+import ObjectList from '../../components/ObjectList.vue'
+import AuditTable from '../auditTrail/AuditTable.vue'
 
+/**
+ * EffectDetails Component
+ * @module Views
+ * @package LarpingApp
+ * @author Ruben Linde
+ * @copyright 2024
+ * @license AGPL-3.0-or-later
+ * @version 1.0.0
+ * @link https://github.com/MetaProvide/larpingapp
+ */
 export default {
 	name: 'EffectDetails',
 	components: {
-		NcActions,
-		NcActionButton,
-		NcLoadingIcon,
-		NcListItem,
+		NcButton,
 		NcCounterBubble,
-		BTabs,
-		BTab,
-		// Custom components
-		AuditTable,
-		ObjectList,
-		// Icons
-		DotsHorizontal,
 		Pencil,
-		ChatOutline,
-		CalendarMonthOutline,
-		BriefcaseAccountOutline,
 		TrashCanOutline,
+		ObjectList,
+		AuditTable,
 	},
 }
 </script>
 
-<style>
-.detailContainer {
-    padding: 0.5rem;
+<style scoped>
+.effectDetails {
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
+	padding: 2rem;
 }
 
-.h1 {
-  display: block !important;
-  font-size: 2em !important;
-  margin-block-start: 0.67em !important;
-  margin-block-end: 0.67em !important;
-  margin-inline-start: 0px !important;
-  margin-inline-end: 0px !important;
-  font-weight: bold !important;
-  unicode-bidi: isolate !important;
+.effectHeader {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }
 
-.grid {
-  display: grid;
-  grid-gap: 1rem 24px !important;
-  grid-template-columns: repeat( auto-fit, minmax(300px, 1fr) ) !important;
-  margin-block-start: var(--zaa-margin-50);
-  margin-block-end: var(--zaa-margin-50);
+.effectActions {
+	display: flex;
+	gap: 1rem;
 }
 
-.gridContent {
-  display: flex;
-  flex-direction: column;
-  gap: 2px !important;
-}
-.gridContent > h5 {
-    margin-top: 12px !important;
+.effectContent {
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
 }
 
-.gridFullWidth {
-    grid-column: 1 / -1;
+.effectInfo {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
 }
 
-/* Add margin to counter bubble only when inside nav-item */
-.nav-item .counter-bubble__counter {
-    margin-left: 10px;
+.effectType,
+.effectDescription,
+.effectDuration,
+.effectPower {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
 }
 
+.effectRelations,
+.effectAudit {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
 </style>

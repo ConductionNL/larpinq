@@ -14,10 +14,10 @@ Larping provides a tool to manage your setting
 - Manage backgrounds, approve characters
 - Handle event subscription and experience score
 
-Requirements can be found [here](https://conduction.gitbook.io/opencatalogi-nextcloud/installatie)
-The Roadmap is available [here](https://github.com/orgs/OpenCatalogi/projects/1/views/2)
-Create a [bug report](https://github.com/OpenCatalogi/.github/issues/new/choose)
-Create a [feature request](https://github.com/OpenCatalogi/.github/issues/new/choose)
+Requirements can be found [here](https://larping.app/installatie)
+The Roadmap is available [here](https://github.com/orgs/LarpingApp/projects/1/views/2)
+Create a [bug report](https://github.com/LarpingApp/.github/issues/new/choose)
+Create a [feature request](https://github.com/LarpingApp/.github/issues/new/choose)
 
     ]]></description>
     <version>0.1.24</version>

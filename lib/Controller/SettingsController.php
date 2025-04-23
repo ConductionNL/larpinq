@@ -1,4 +1,20 @@
 <?php
+/**
+ * LarpingApp Settings Controller
+ *
+ * This file contains the controller class for handling settings in the LarpingApp application.
+ *
+ * @category Controller
+ * @package  OCA\LarpingApp\Controller
+ *
+ * @author    Conduction Development Team <info@conduction.nl>
+ * @copyright 2024 Conduction B.V.
+ * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ *
+ * @version GIT: <git_id>
+ *
+ * @link https://www.Larping.app
+ */
 
 namespace OCA\LarpingApp\Controller;
 
@@ -7,103 +23,142 @@ use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\IRequest;
-use OCA\LarpingApp\Service\ObjectService;
+use Psr\Container\ContainerInterface;
+use OCP\App\IAppManager;
+use OCA\LarpingApp\Service\SettingsService;
 
 /**
- * @class SettingsController
- * @category Controller
- * @package LarpingApp
- * @author Conduction Team
- * @copyright 2023 Conduction
- * @license EUPL-1.2
- * @version 1.0.0
- * @link https://github.com/OpenCatalogi/larping-app
- * 
- * Controller for handling settings-related operations in the LarpingApp.
+ * Controller for handling settings-related operations in the larping.
  */
 class SettingsController extends Controller
 {
-	/**
-	 * SettingsController constructor.
-	 *
-	 * @param string $appName The name of the app
-	 * @param IAppConfig $config The app configuration
-	 * @param IRequest $request The request object
-	 * @param ObjectService $objectService The object service
-	 */
-	public function __construct(
-		$appName,
-		IRequest $request,
-		private readonly IAppConfig $config,
-		private readonly ObjectService $objectService
-	) {
-		parent::__construct($appName, $request);
-	}
 
-	/**
-	 * Retrieve the current settings.
-	 *
-	 * @return JSONResponse JSON response containing the current settings
-	 *
-	 * @NoCSRFRequired
-	 */
-	public function index(): JSONResponse
-	{
-		// Initialize the data array
-		$data = [];
-		$data['objectTypes'] = ['ability', 'character', 'condition', 'effect', 'event', 'item', 'player', 'setting', 'skill', 'template'];
-		$data['openRegisters'] = false;
-		$data['availableRegisters'] = [];
+    /**
+     * The OpenRegister object service.
+     *
+     * @var \OCA\OpenRegister\Service\ObjectService|null The OpenRegister object service.
+     */
+    private $objectService;
 
-		// Check if the OpenRegister service is available
-		$openRegisters = $this->objectService->getOpenRegisters();
-		if ($openRegisters !== null) {
-			$data['openRegisters'] = true;
-			$data['availableRegisters'] = $openRegisters->getRegisters();
-		}
 
-		// Build defaults array dynamically based on object types
-		$defaults = [];
-		foreach ($data['objectTypes'] as $type) {
-			// Always use openregister as source
-			$defaults["{$type}_source"] = 'openregister';
-			$defaults["{$type}_schema"] = '';
-			$defaults["{$type}_register"] = '';
-		}
+    /**
+     * SettingsController constructor.
+     *
+     * @param string             $appName         The name of the app
+     * @param IRequest           $request         The request object
+     * @param IAppConfig         $config          The app configuration
+     * @param ContainerInterface $container       The container
+     * @param IAppManager        $appManager      The app manager
+     * @param SettingsService    $settingsService The settings service
+     */
+    public function __construct(
+        $appName,
+        IRequest $request,
+        private readonly IAppConfig $config,
+        private readonly ContainerInterface $container,
+        private readonly IAppManager $appManager,
+        private readonly SettingsService $settingsService,
+    ) {
+        parent::__construct($appName, $request);
 
-		// Get the current values for the object types from the configuration
-		try {
-			foreach ($defaults as $key => $defaultValue) {
-				$data['configuration'][$key] = $this->config->getValueString($this->appName, $key, $defaultValue);
-			}
-			return new JSONResponse($data);
-		} catch (\Exception $e) {
-			return new JSONResponse(['error' => $e->getMessage()], 500);
-		}
-	}
+    }//end __construct()
 
-	/**
-	 * Handle the post request to update settings.
-	 *
-	 * @return JSONResponse JSON response containing the updated settings
-	 *
-	 * @NoCSRFRequired
-	 */
-	public function create(): JSONResponse
-	{
-		// Get all parameters from the request
-		$data = $this->request->getParams();
 
-		try {
-			// Update each setting in the configuration
-			foreach ($data as $key => $value) {
-				$this->config->setValueString($this->appName, $key, $value);
-				// Retrieve the updated value to confirm the change
-				$data[$key] = $this->config->getValueString($this->appName, $key);
-			}
-			return new JSONResponse($data);
-		} catch (\Exception $e) {
-			return new JSONResponse(['error' => $e->getMessage()], 500);
-		}
-	}
-}
+    /**
+     * Attempts to retrieve the OpenRegister service from the container.
+     *
+     * @return \OCA\OpenRegister\Service\ObjectService|null The OpenRegister service if available, null otherwise.
+     * @throws \RuntimeException If the service is not available.
+     */
+    public function getObjectService(): ?\OCA\OpenRegister\Service\ObjectService
+    {
+        if (in_array(needle: 'openregister', haystack: $this->appManager->getInstalledApps()) === true) {
+            $this->objectService = $this->container->get('OCA\OpenRegister\Service\ObjectService');
+            return $this->objectService;
+        }
+
+        throw new \RuntimeException('OpenRegister service is not available.');
+
+    }//end getObjectService()
+
+
+    /**
+     * Attempts to retrieve the Configuration service from the container.
+     *
+     * @return \OCA\OpenRegister\Service\ConfigurationService|null The Configuration service if available, null otherwise.
+     * @throws \RuntimeException If the service is not available.
+     */
+    public function getConfigurationService(): ?\OCA\OpenRegister\Service\ConfigurationService
+    {
+        // Check if the 'openregister' app is installed.
+        if (in_array(needle: 'openregister', haystack: $this->appManager->getInstalledApps()) === true) {
+            // Retrieve the ConfigurationService from the container.
+            $configurationService = $this->container->get('OCA\OpenRegister\Service\ConfigurationService');
+            return $configurationService;
+        }
+
+        // Throw an exception if the service is not available.
+        throw new \RuntimeException('Configuration service is not available.');
+
+    }//end getConfigurationService()
+
+
+    /**
+     * Retrieve the current settings.
+     *
+     * @return JSONResponse JSON response containing the current settings.
+     *
+     * @NoCSRFRequired
+     */
+    public function index(): JSONResponse
+    {
+        try {
+            $data = $this->settingsService->getSettings();
+            return new JSONResponse($data);
+        } catch (\Exception $e) {
+            return new JSONResponse(['error' => $e->getMessage()], 500);
+        }
+
+    }//end index()
+
+
+    /**
+     * Handle the post request to update settings.
+     *
+     * @return JSONResponse JSON response containing the updated settings.
+     *
+     * @NoCSRFRequired
+     */
+    public function create(): JSONResponse
+    {
+        try {
+            $data   = $this->request->getParams();
+            $result = $this->settingsService->updateSettings($data);
+            return new JSONResponse($result);
+        } catch (\Exception $e) {
+            return new JSONResponse(['error' => $e->getMessage()], 500);
+        }
+
+    }//end create()
+
+
+    /**
+     * Load the settings from the publication_register.json file.
+     *
+     * @return JSONResponse JSON response containing the settings.
+     *
+     * @NoCSRFRequired
+     */
+    public function load(): JSONResponse
+    {
+        try {
+            $result = $this->settingsService->loadSettings();
+            return new JSONResponse($result);
+        } catch (\Exception $e) {
+            return new JSONResponse(['error' => $e->getMessage()], 500);
+        }
+
+    }//end load()
+
+
+}//end class

@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { defineStore } from 'pinia'
 
 /**
@@ -16,19 +15,8 @@ import { defineStore } from 'pinia'
  * @property {object} configuration - Configuration settings
  */
 
-/**
- * @typedef {object} ObjectState
- * @property {object} settings - Application settings
- * @property {object} objects - Objects by type and ID
- * @property {object} collections - Collections by type
- * @property {object} loading - Loading states
- * @property {object} errors - Error states
- * @property {object} activeObjects - Currently active objects by type
- * @property {object} relatedData - Related data for active objects
- * @property {string} searchTerm - Current search term
- * @property {NodeJS.Timeout|null} searchDebounceTimer - Search debounce timer
- * @property {Object.<string, {total: number, page: number, pages: number, limit: number, next: string|null, prev: string|null}>} pagination - Pagination state by type
- */
+/** @typedef {{[key: string]: any}} ObjectState */
+/** @typedef {ReturnType<typeof setTimeout>} Timer */
 
 /**
  * @typedef {object} RelatedDataTypes
@@ -39,69 +27,93 @@ import { defineStore } from 'pinia'
  */
 
 /**
- * Store for managing all object types
+ * Store for managing objects .
+ * @module Store
  * @package
- * @author Ruben Linde <ruben@larpingapp.nl>
- * @copyright 2024 LarpingApp
- * @license AGPL-3.0
+ * @author Ruben van derLinde
+ * @copyright 2024
+ * @license AGPL-3.0-or-later
  * @version 1.0.0
+ * @see {@link https://larping.app}
  */
 export const useObjectStore = defineStore('object', {
 	state: () => ({
-		/** @type {Settings|null} Application settings */
+		/** @type {{objectTypes: Array<string>, configuration: {[key: string]: any}}|null} */
 		settings: null,
-		/** @type {Object.<string, Object.<string, any>>} Objects by type and ID */
+		/** @type {{[key: string]: {[key: string]: any}}} */
 		objects: {},
-		/** @type {Object.<string, Array>} Collections by type */
+		/** @type {{[key: string]: {results: Array<any>}}} */
 		collections: {},
-		/** @type {Object.<string, boolean>} Loading states */
+		/** @type {{[key: string]: boolean}} */
 		loading: {},
-		/** @type {Object.<string, string|null>} Error states */
+		/** @type {{[key: string]: string|null}} */
 		errors: {},
-		/** @type {Object.<string, any>} Currently active objects by type */
+		/** @type {{[key: string]: any}} */
 		activeObjects: {},
-		/** @type {Object.<string, RelatedDataTypes>} Related data for active objects */
+		/** @type {{[key: string]: {logs: Array<any>, uses: any, used: any, files: any}}} */
 		relatedData: {},
-		/** @type {string} Current search term */
-		searchTerm: '',
-		/** @type {NodeJS.Timeout|null} Search debounce timer */
-		searchDebounceTimer: null,
-		/** @type {Object.<string, {total: number, page: number, pages: number, limit: number, next: string|null, prev: string|null}>} Pagination state by type */
+		/** @type {{[key: string]: string}} */
+		searchTerms: {},
+		/** @type {{[key: string]: ReturnType<typeof setTimeout>|null}} */
+		searchDebounceTimers: {},
+		/** @type {{[key: string]: {total: number, page: number, pages: number, limit: number, next: string|null, prev: string|null}}} */
 		pagination: {},
+		/** @type {{[key: string]: boolean|null}} */
+		success: {},
 	}),
 
 	getters: {
 		/**
 		 * Get object types from settings
-		 * @param state
+		 * @param {ObjectState} state - Store state
 		 * @return {Array<string>}
 		 */
 		objectTypes: (state) => state.settings?.objectTypes || [],
 
 		/**
+		 * Get available registers from settings
+		 * @param {ObjectState} state - Store state
+		 * @return {Array<{id: string, title: string, schemas: Array<{id: string, title: string}>}>}
+		 */
+		availableRegisters: (state) => state.settings?.availableRegisters || [],
+
+		/**
+		 * Get available schemas from settings
+		 * @param {ObjectState} state - Store state
+		 * @return {Array<{id: string, title: string, registerId: string, registerTitle: string}>}
+		 */
+		availableSchemas: (state) => {
+			if (!state.settings?.availableRegisters) return []
+			return state.settings.availableRegisters.flatMap(register =>
+				register.schemas.map(schema => ({
+					...schema,
+					registerId: register.id,
+					registerTitle: register.title,
+				})),
+			)
+		},
+
+		/**
 		 * Get loading state for specific type
-		 * @param {string} type - Object type
-		 * @param state
-		 * @return {boolean}
+		 * @param {ObjectState} state - Store state
+		 * @return {(type: string) => boolean}
 		 */
 		isLoading: (state) => (type) => state.loading[type] || false,
 
 		/**
 		 * Get error for specific type
-		 * @param {string} type - Object type
-		 * @param state
-		 * @return {string|null}
+		 * @param {ObjectState} state - Store state
+		 * @return {(type: string) => string|null}
 		 */
 		getError: (state) => (type) => state.errors[type] || null,
 
 		/**
 		 * Get collection for specific type
-		 * @param {string} type - Object type
-		 * @param state
-		 * @return {{results: Array}}
+		 * @param {ObjectState} state - Store state
+		 * @return {(type: string) => {results: Array<any>}}
 		 */
 		getCollection: (state) => (type) => {
-			console.log('getCollection called for type:', type, {
+			console.info('getCollection called for type:', type, {
 				collection: state.collections[type],
 				collectionType: typeof state.collections[type],
 				hasResults: state.collections[type]?.results?.length > 0,
@@ -110,44 +122,44 @@ export const useObjectStore = defineStore('object', {
 		},
 
 		/**
+		 * Get search term for specific type
+		 * @param {ObjectState} state - Store state
+		 * @return {(type: string) => string}
+		 */
+		getSearchTerm: (state) => (type) => state.searchTerms[type] || '',
+
+		/**
 		 * Get single object
-		 * @param {string} type - Object type
-		 * @param {string} id - Object ID
-		 * @param state
-		 * @return {object | null}
+		 * @param {ObjectState} state - Store state
+		 * @return {(type: string, id: string) => object | null}
 		 */
 		getObject: (state) => (type, id) => state.objects[type]?.[id] || null,
 
 		/**
 		 * Get active object for type
-		 * @param {string} type - Object type
-		 * @param state
-		 * @return {object | null}
+		 * @param {ObjectState} state - Store state
+		 * @return {(type: string) => object | null}
 		 */
 		getActiveObject: (state) => (type) => state.activeObjects[type] || null,
 
 		/**
 		 * Get related data for active object
-		 * @param {string} type - Object type
-		 * @param {string} dataType - Type of related data (logs, uses, used, files)
-		 * @param state
-		 * @return {object | null}
+		 * @param {ObjectState} state - Store state
+		 * @return {(type: string, dataType: string) => object | null}
 		 */
 		getRelatedData: (state) => (type, dataType) => state.relatedData[type]?.[dataType] || null,
 
 		/**
 		 * Get pagination info for type
-		 * @param {string} type - Object type
-		 * @param state
-		 * @return {{total: number, page: number, pages: number, limit: number}}
+		 * @param {ObjectState} state - Store state
+		 * @return {(type: string) => {total: number, page: number, pages: number, limit: number}}
 		 */
 		getPagination: (state) => (type) => state.pagination[type] || { total: 0, page: 1, pages: 1, limit: 20 },
 
 		/**
 		 * Check if there are more pages to load for type
-		 * @param {string} type - Object type
-		 * @param state
-		 * @return {boolean}
+		 * @param {ObjectState} state - Store state
+		 * @return {(type: string) => boolean}
 		 */
 		hasMorePages: (state) => (type) => {
 			const pagination = state.pagination[type]
@@ -156,9 +168,8 @@ export const useObjectStore = defineStore('object', {
 
 		/**
 		 * Check if there are previous pages available
-		 * @param {string} type - Object type
-		 * @param state
-		 * @return {boolean}
+		 * @param {ObjectState} state - Store state
+		 * @return {(type: string) => boolean}
 		 */
 		hasPreviousPages: (state) => (type) => {
 			const pagination = state.pagination[type]
@@ -167,11 +178,20 @@ export const useObjectStore = defineStore('object', {
 
 		/**
 		 * Get audit trails for type
-		 * @param {string} type - Object type
-		 * @param state
-		 * @return {Array}
+		 * @param {ObjectState} state - Store state
+		 * @return {(type: string) => Array<any>}
 		 */
 		getAuditTrails: (state) => (type) => state.relatedData[type]?.logs || [],
+
+		/**
+		 * Get state for specific type
+		 * @param {ObjectState} state - Store state
+		 * @return {(type: string) => {success: boolean|null, error: string|null}}
+		 */
+		getState: (state) => (type) => ({
+			success: state.success[type] || null,
+			error: state.errors[type] || null,
+		}),
 	},
 
 	actions: {
@@ -182,7 +202,7 @@ export const useObjectStore = defineStore('object', {
 		 * @param {boolean} append - Whether to append results to existing collection
 		 */
 		setCollection(type, results, append = false) {
-			console.log('setCollection called with:', {
+			console.info('setCollection called with:', {
 				type,
 				resultsLength: results?.length,
 				append,
@@ -192,25 +212,29 @@ export const useObjectStore = defineStore('object', {
 
 			// Initialize if needed
 			if (!this.collections[type] || !append) {
-				console.log('Initializing collection for type:', type)
+				console.info('Initializing collection for type:', type)
 				this.collections[type] = { results: [] }
 			}
 
-			// Update the collection
+			// Update the collection using reactive assignment
 			const newResults = append
 				? [...(this.collections[type].results || []), ...results]
 				: results
 
-			console.log('Setting new results:', {
+			console.info('Setting new results:', {
 				newResultsLength: newResults?.length,
 				firstItem: newResults?.[0],
 			})
 
-			this.collections[type] = {
-				results: newResults,
+			// Use reactive assignment for collections
+			this.collections = {
+				...this.collections,
+				[type]: {
+					results: newResults,
+				},
 			}
 
-			console.log('Collection after update:', {
+			console.info('Collection after update:', {
 				type,
 				collection: this.collections[type],
 				length: this.collections[type]?.results?.length,
@@ -223,8 +247,11 @@ export const useObjectStore = defineStore('object', {
 		 * @param {boolean} isLoading - Loading state
 		 */
 		setLoading(type, isLoading) {
-			this.loading[type] = isLoading
-			console.log('Loading state set:', { type, isLoading })
+			this.loading = {
+				...this.loading,
+				[type]: isLoading,
+			}
+			console.info('Loading state set:', { type, isLoading })
 		},
 
 		/**
@@ -233,7 +260,10 @@ export const useObjectStore = defineStore('object', {
 		 * @param {string|null} error - Error message
 		 */
 		setError(type, error) {
-			this.errors[type] = error
+			this.errors = {
+				...this.errors,
+				[type]: error,
+			}
 			if (error) {
 				console.error('Error set for type:', type, error)
 			}
@@ -246,47 +276,46 @@ export const useObjectStore = defineStore('object', {
 		 * @return {Promise<void>}
 		 */
 		async setActiveObject(type, object) {
-			console.log('setActiveObject called with:', { type, object })
+			console.info('setActiveObject called with:', { type, object })
 			// Log the current state before update
-			console.log('Current activeObjects state:', { ...this.activeObjects })
+			console.info('Current activeObjects state:', { ...this.activeObjects })
 			// Update using reactive assignment
 			this.activeObjects = {
 				...this.activeObjects,
 				[type]: object,
 			}
 			// Log the state after update
-			console.log('Updated activeObjects state:', { ...this.activeObjects })
+			console.info('Updated activeObjects state:', { ...this.activeObjects })
 
 			// Initialize related data structure if not exists
-			if (!this.relatedData[type]) {
-				console.log('Initializing relatedData for type:', type)
-				this.relatedData = {
-					...this.relatedData,
-					[type]: {
-						logs: null,
-						uses: null,
-						used: null,
-						files: null,
-					},
-				}
+			console.info('Initializing relatedData for type:', type)
+			this.relatedData = {
+				...this.relatedData,
+				[type]: {
+					logs: null,
+					uses: null,
+					used: null,
+					files: null,
+				},
 			}
 
 			// Fetch related data in parallel
 			if (object?.id) {
-				console.log('Fetching related data for:', { type, objectId: object.id })
+				console.info('Fetching related data for:', { type, objectId: object.id })
 				const fetchPromises = []
 				const dataTypes = ['logs', 'uses', 'used', 'files']
+				// const dataTypes = ['logs', 'uses']
 				for (const dataType of dataTypes) {
 					if (!this.relatedData[type][dataType]) {
 						fetchPromises.push(this.fetchRelatedData(type, object.id, dataType))
 					}
 				}
 				await Promise.all(fetchPromises)
-				console.log('Finished fetching related data')
+				console.info('Finished fetching related data')
 			} else {
-				console.log('No object ID provided, skipping related data fetch')
+				console.info('No object ID provided, skipping related data fetch')
 			}
-			console.log('setActiveObject completed')
+			console.info('setActiveObject completed')
 		},
 
 		/**
@@ -294,8 +323,19 @@ export const useObjectStore = defineStore('object', {
 		 * @param {string} type - Object type
 		 */
 		clearActiveObject(type) {
-			delete this.activeObjects[type]
-			delete this.relatedData[type]
+			this.activeObjects = {
+				...this.activeObjects,
+				[type]: null,
+			}
+			this.relatedData = {
+				...this.relatedData,
+				[type]: {
+					logs: null,
+					uses: null,
+					used: null,
+					files: null,
+				},
+			}
 		},
 
 		/**
@@ -374,9 +414,9 @@ export const useObjectStore = defineStore('object', {
 		 * @return {Promise<void>}
 		 */
 		async fetchCollection(type, params = {}, append = false) {
-			console.log('fetchCollection started:', { type, params, append })
+			console.info('fetchCollection started:', { type, params, append })
 			this.setLoading(type, true)
-			this.setError(type, null)
+			this.setState(type, { success: null, error: null })
 
 			try {
 				// Ensure settings are loaded first
@@ -394,7 +434,7 @@ export const useObjectStore = defineStore('object', {
 				if (!response.ok) throw new Error(`Failed to fetch ${type} collection`)
 
 				const data = await response.json()
-				console.log('API Response:', data)
+				console.info('API Response:', data)
 
 				// Update pagination info - handle both pagination formats
 				const paginationInfo = {
@@ -420,7 +460,7 @@ export const useObjectStore = defineStore('object', {
 				})
 			} catch (error) {
 				console.error(`Error fetching ${type} collection:`, error)
-				this.setError(type, error.message)
+				this.setState(type, { success: false, error: error.message })
 				throw error
 			} finally {
 				this.setLoading(type, false)
@@ -436,7 +476,7 @@ export const useObjectStore = defineStore('object', {
 		 */
 		async fetchObject(type, id, params = {}) {
 			this.setLoading(`${type}_${id}`, true)
-			this.setError(`${type}_${id}`, null)
+			this.setState(type, { success: null, error: null })
 
 			try {
 				// Ensure settings are loaded first
@@ -463,7 +503,7 @@ export const useObjectStore = defineStore('object', {
 				}
 			} catch (error) {
 				console.error(`Error fetching ${type} object:`, error)
-				this.setError(`${type}_${id}`, error.message)
+				this.setState(type, { success: false, error: error.message })
 				throw error
 			} finally {
 				this.setLoading(`${type}_${id}`, false)
@@ -480,7 +520,7 @@ export const useObjectStore = defineStore('object', {
 		 */
 		async fetchRelatedData(type, id, dataType, params = {}) {
 			this.setLoading(`${type}_${id}_${dataType}`, true)
-			this.setError(`${type}_${id}_${dataType}`, null)
+			this.setState(type, { success: null, error: null })
 
 			try {
 				// Ensure settings are loaded first
@@ -510,7 +550,7 @@ export const useObjectStore = defineStore('object', {
 				}
 			} catch (error) {
 				console.error(`Error fetching ${dataType} for ${type}:`, error)
-				this.setError(`${type}_${id}_${dataType}`, error.message)
+				this.setState(type, { success: false, error: error.message })
 				throw error
 			} finally {
 				this.setLoading(`${type}_${id}_${dataType}`, false)
@@ -541,6 +581,7 @@ export const useObjectStore = defineStore('object', {
 		async createObject(type, data) {
 			this.setLoading(`${type}_create`, true)
 			this.setError(`${type}_create`, null)
+			this.setState(type, { success: null, error: null })
 
 			try {
 				// Ensure settings are loaded first
@@ -565,10 +606,17 @@ export const useObjectStore = defineStore('object', {
 				// Refresh the collection to ensure it's up to date
 				await this.fetchCollection(type)
 
+				// Set the active object
+				this.setActiveObject(type, newObject)
+
+				// Set success state
+				this.setState(type, { success: true, error: null })
+
 				return newObject
 			} catch (error) {
 				console.error(`Error creating ${type} object:`, error)
 				this.setError(`${type}_create`, error.message)
+				this.setState(type, { success: false, error: error.message })
 				throw error
 			} finally {
 				this.setLoading(`${type}_create`, false)
@@ -585,6 +633,7 @@ export const useObjectStore = defineStore('object', {
 		async updateObject(type, id, data) {
 			this.setLoading(`${type}_${id}`, true)
 			this.setError(`${type}_${id}`, null)
+			this.setState(type, { success: null, error: null })
 
 			try {
 				// Ensure settings are loaded first
@@ -614,10 +663,14 @@ export const useObjectStore = defineStore('object', {
 					this.activeObjects[type] = updatedObject
 				}
 
+				// Set success state
+				this.setState(type, { success: true, error: null })
+
 				return updatedObject
 			} catch (error) {
 				console.error(`Error updating ${type} object:`, error)
 				this.setError(`${type}_${id}`, error.message)
+				this.setState(type, { success: false, error: error.message })
 				throw error
 			} finally {
 				this.setLoading(`${type}_${id}`, false)
@@ -633,6 +686,7 @@ export const useObjectStore = defineStore('object', {
 		async deleteObject(type, id) {
 			this.setLoading(`${type}_${id}`, true)
 			this.setError(`${type}_${id}`, null)
+			this.setState(type, { success: null, error: null })
 
 			try {
 				// Ensure settings are loaded first
@@ -658,9 +712,13 @@ export const useObjectStore = defineStore('object', {
 
 				// Refresh the collection to ensure it's up to date
 				await this.fetchCollection(type)
+
+				// Set success state
+				this.setState(type, { success: true, error: null })
 			} catch (error) {
 				console.error(`Error deleting ${type} object:`, error)
 				this.setError(`${type}_${id}`, error.message)
+				this.setState(type, { success: false, error: error.message })
 				throw error
 			} finally {
 				this.setLoading(`${type}_${id}`, false)
@@ -668,29 +726,61 @@ export const useObjectStore = defineStore('object', {
 		},
 
 		/**
-		 * Sets the search term and triggers a debounced search
-		 * @param {string} term - The search term to set
-		 * @return {void}
+		 * Set search term for type
+		 * @param {string} type - Object type
+		 * @param {string} term - Search term
 		 */
-		setSearchTerm(term) {
-			this.searchTerm = term
-
-			if (this.searchDebounceTimer) {
-				clearTimeout(this.searchDebounceTimer)
+		setSearchTerm(type, term) {
+			// Initialize search term if it doesn't exist
+			if (!this.searchTerms[type]) {
+				this.searchTerms = {
+					...this.searchTerms,
+					[type]: '',
+				}
 			}
 
-			this.searchDebounceTimer = setTimeout(() => {
-				this.fetchCollection('character', { _search: term })
-			}, 500)
+			// Update search term with reactive assignment
+			this.searchTerms = {
+				...this.searchTerms,
+				[type]: term,
+			}
+
+			// Clear existing debounce timer
+			if (this.searchDebounceTimers[type]) {
+				clearTimeout(this.searchDebounceTimers[type])
+			}
+
+			// Set new debounce timer
+			this.searchDebounceTimers = {
+				...this.searchDebounceTimers,
+				[type]: setTimeout(() => {
+					this.fetchCollection(type, term ? { _search: term } : {})
+				}, 500),
+			}
 		},
 
 		/**
-		 * Clears the search term and refreshes the list
-		 * @return {Promise<void>}
+		 * Clear search term for type
+		 * @param {string} type - Object type
 		 */
-		async clearSearch() {
-			this.searchTerm = ''
-			await this.fetchCollection('character')
+		clearSearchTerm(type) {
+			// Clear the search term
+			this.searchTerms = {
+				...this.searchTerms,
+				[type]: '',
+			}
+
+			// Clear any existing debounce timer
+			if (this.searchDebounceTimers[type]) {
+				clearTimeout(this.searchDebounceTimers[type])
+				this.searchDebounceTimers = {
+					...this.searchDebounceTimers,
+					[type]: null,
+				}
+			}
+
+			// Fetch collection without search term
+			this.fetchCollection(type)
 		},
 
 		/**
@@ -699,7 +789,10 @@ export const useObjectStore = defineStore('object', {
 		 * @param {{total: number, page: number, pages: number, limit: number}} pagination - Pagination info
 		 */
 		setPagination(type, pagination) {
-			this.pagination[type] = pagination
+			this.pagination = {
+				...this.pagination,
+				[type]: pagination,
+			}
 		},
 
 		/**
@@ -759,7 +852,7 @@ export const useObjectStore = defineStore('object', {
 				// Get all available object types from settings
 				const objectTypes = this.objectTypes
 
-				console.log('Preloading collections for object types:', objectTypes)
+				console.info('Preloading collections for object types:', objectTypes)
 
 				// Load collections for all object types in parallel
 				await Promise.allSettled(
@@ -773,10 +866,80 @@ export const useObjectStore = defineStore('object', {
 					}),
 				)
 
-				console.log('Finished preloading collections')
+				console.info('Finished preloading collections')
 			} catch (error) {
 				console.error('Error during preload:', error)
 				// Don't throw here to allow the application to continue
+			}
+		},
+
+		/**
+		 * Set state for specific type
+		 * @param {string} type - Object type
+		 * @param {{success: boolean|null, error: string|null}} state - State to set
+		 */
+		setState(type, { success, error }) {
+			if (success !== undefined) {
+				this.success = {
+					...this.success,
+					[type]: success,
+				}
+			}
+			if (error !== undefined) {
+				this.errors = {
+					...this.errors,
+					[type]: error,
+				}
+			}
+		},
+
+		/**
+		 * Copy an existing object
+		 * @param {string} type - Object type
+		 * @param {string} id - Object ID to copy
+		 * @return {Promise<object>} The newly created copy
+		 */
+		async copyObject(type, id) {
+			this.setLoading(`${type}_${id}_copy`, true)
+			this.setError(`${type}_${id}_copy`, null)
+			this.setState(type, { success: null, error: null })
+
+			try {
+				// Ensure settings are loaded first
+				if (!this.settings) {
+					await this.fetchSettings()
+				}
+
+				// Get the original object
+				const originalObject = this.objects[type]?.[id]
+				if (!originalObject) {
+					throw new Error(`Object ${id} of type ${type} not found`)
+				}
+
+				// Create a copy of the object without the id
+				const { id: _, ...objectData } = originalObject
+
+				// Add "Copy of" to the title or name
+				if (objectData.title) {
+					objectData.title = `Kopie van ${objectData.title}`
+				} else if (objectData.name) {
+					objectData.name = `Kopie van ${objectData.name}`
+				}
+
+				// Create the new object
+				const newObject = await this.createObject(type, objectData)
+
+				// Set success state
+				this.setState(type, { success: true, error: null })
+
+				return newObject
+			} catch (error) {
+				console.error(`Error copying ${type} object:`, error)
+				this.setError(`${type}_${id}_copy`, error.message)
+				this.setState(type, { success: false, error: error.message })
+				throw error
+			} finally {
+				this.setLoading(`${type}_${id}_copy`, false)
 			}
 		},
 	},

@@ -8,16 +8,19 @@ import { objectStore, navigationStore } from '../../store/store.js'
 			<AbilitiesList />
 		</template>
 		<template #default>
-			<NcEmptyContent v-if="!objectStore.getActiveObject('ability') || navigationStore.selected != 'abilities' "
+			<NcEmptyContent
+				v-if="!objectStore.getActiveObject('ability') || navigationStore.selected !== 'abilities'"
 				class="detailContainer"
-				name="Geen vaardigheid"
-				description="Nog geen vaardigheid geselecteerd">
+				name="Geen Vaardigheid">
 				<template #icon>
-					<ShieldSwordOutline />
+					<ShieldSwordOutline :size="20" />
 				</template>
 				<template #action>
-					<NcButton type="primary" @click="objectStore.clearActiveObject('ability'), navigationStore.setModal('editAbility')">
-						Vaardigheid aanmaken
+					<NcButton @click="openModal">
+						<template #icon>
+							<Plus :size="20" />
+						</template>
+						Vaardigheid toevoegen
 					</NcButton>
 				</template>
 			</NcEmptyContent>
@@ -32,6 +35,7 @@ import AbilitiesList from './AbilitiesList.vue'
 import AbilityDetails from './AbilityDetails.vue'
 // eslint-disable-next-line n/no-missing-import
 import ShieldSwordOutline from 'vue-material-design-icons/ShieldSwordOutline'
+import Plus from 'vue-material-design-icons/Plus.vue'
 
 export default {
 	name: 'AbilitiesIndex',
@@ -42,11 +46,18 @@ export default {
 		AbilitiesList,
 		AbilityDetails,
 		ShieldSwordOutline,
+		Plus,
 	},
 	data() {
 		return {
 			RolId: undefined,
 		}
+	},
+	methods: {
+		openModal() {
+			navigationStore.setModal('editAbility')
+			objectStore.clearActiveObject('ability')
+		},
 	},
 }
 </script>
