@@ -1,0 +1,64 @@
+# Multi-repository setup for Nextcloud apps-extra
+# This gitignore excludes non-Conduction apps while allowing Conduction apps as submodules
+
+# Non-Conduction apps (ignore completely)
+circles/
+files_pdfviewer/
+hmr_enabler/
+profiler/
+recommendations/
+viewer/
+
+# Temporary and build files
+node_modules/
+vendor/
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Nextcloud specific
+data/
+config/config.php
+
+# Development files
+*.dev
+*.local
+*.test
+
+# Certificate files
+*.csr
+*.pem
+*.key
+*.crt
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# Conduction apps are managed as separate repositories
+# These should be added as git submodules:
+# - docudesk/
+# - larpingapp/ 
+# - opencatalogi/
+# - openconnector/
+# - openregister/
+# - softwarecatalog/
+# - zaakafhandelapp/
