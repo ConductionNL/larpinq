@@ -1,0 +1,21 @@
+[submodule "openconnector"]
+	path = openconnector
+	url = https://github.com/ConductionNL/OpenConnector
+[submodule "opencatalogi"]
+	path = opencatalogi
+	url = https://github.com/ConductionNL/opencatalogi
+[submodule "docudesk"]
+	path = docudesk
+	url = https://github.com/ConductionNL/DocuDesk
+[submodule "zaakafhandelapp"]
+	path = zaakafhandelapp
+	url = https://github.com/ConductionNL/ZaakAfhandelApp
+[submodule "softwarecatalog"]
+	path = softwarecatalog
+	url = https://github.com/ConductionNL/softwarecatalog
+[submodule "larpingapp"]
+	path = larpingapp
+	url = https://github.com/ConductionNL/LarpingNextApp
+[submodule "openregister"]
+	path = openregister
+	url = https://github.com/ConductionNL/openregister
