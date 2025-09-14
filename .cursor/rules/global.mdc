@@ -83,7 +83,8 @@ For easy insruction locking we write LLM instructions in JSON
   "workflow": {
     "planning": [
       "Always create a detailed plan before writing code",
-      "Consider architecture, stability, and performance"
+      "Consider architecture, stability, and performance",
+      "if it is unclear from the instruction if the user requeres a feature or hotfix ask the user"
     ],
     "documentation": [
       "Document design decisions in Docusaurus (/website/docs)",
@@ -141,11 +142,53 @@ For easy insruction locking we write LLM instructions in JSON
       ]
     },
     "commits": [
+      "When starting a new feuture or hotfix start a new branche from development and work on that branche. make sure to never work on development,main or master directly",
+      "Don't commit code without asking, but do as the user if the code should be commited after the work is done",
       "Write meaningful commit messages",
       "Reference issue numbers",
       "Update docs in same commit as code changes",
       "Commit only after linting/tests/docs are done"
-    ]
+    ],
+    "commitMessageFormat": {
+      "standard": "Conventional Commits for semantic versioning and changelog generation",
+      "format": "<type>[optional scope]: <description>",
+      "types": {
+        "feat": "New feature (triggers MINOR version bump)",
+        "fix": "Bug fix (triggers PATCH version bump)", 
+        "hotfix": "Critical production fix (triggers PATCH version bump)",
+        "docs": "Documentation only changes",
+        "style": "Code style changes (formatting, missing semi colons, etc)",
+        "refactor": "Code refactoring without changing functionality",
+        "perf": "Performance improvements",
+        "test": "Adding or updating tests",
+        "chore": "Maintenance tasks, dependency updates, build changes",
+        "ci": "CI/CD pipeline changes",
+        "revert": "Reverting previous commits"
+      },
+      "examples": [
+        "feat: add SOLR configuration dashboard",
+        "fix: resolve infinite loading in SOLR dashboard", 
+        "hotfix: fix critical authentication bypass",
+        "docs: update API documentation for new endpoints",
+        "refactor: modularize settings components with Pinia store",
+        "perf: optimize database queries for large datasets",
+        "test: add unit tests for SOLR connection service",
+        "chore: update dependencies to latest versions"
+      ],
+      "breakingChanges": {
+        "format": "Add 'BREAKING CHANGE:' in commit body for MAJOR version bumps",
+        "example": "feat: redesign user authentication\\n\\nBREAKING CHANGE: removes support for legacy auth tokens"
+      },
+      "scopes": [
+        "Optional scope in parentheses: feat(auth): add OAuth2 support",
+        "Common scopes: api, ui, auth, db, config, solr, cache, docs"
+      ],
+      "changelog": {
+        "automation": "Commits are automatically grouped in changelog by type",
+        "labels": "GitHub PR labels should match commit types for proper grouping",
+        "config": "Each app should have changelog-ci-config.json for customization"
+      }
+    }
   },
   "standards": {
     "security": ["Follow best practices", "Keep dependencies up to date"],

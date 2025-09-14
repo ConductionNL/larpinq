@@ -50,6 +50,20 @@ The following applications are managed as separate git repositories and included
 - **softwarecatalog** - Software catalog management
 - **zaakafhandelapp** - Case handling application
 
+### Current Submodule Status
+
+| Submodule | Origin Repository | Current Branch | Latest Commit |
+|-----------|------------------|----------------|---------------|
+| **docudesk** | https://github.com/ConductionNL/DocuDesk | `main` | v0.0.31 |
+| **larpingapp** | https://github.com/ConductionNL/LarpingNextApp | `main` | v0.1.26 |
+| **opencatalogi** | https://github.com/ConductionNL/opencatalogi | `development` | v0.7.2-197-g578de2b7 |
+| **openconnector** | https://github.com/ConductionNL/openconnector | `hotfix/cronerror` | v0.2.2-179-g2057c0c |
+| **openregister** | https://github.com/ConductionNL/openregister | `feature/solr` | 7979aa28 |
+| **softwarecatalog** | https://github.com/ConductionNL/softwarecatalog | `hotfix/activating-organisations` | v0.1.57-34-g1ced890 |
+| **zaakafhandelapp** | https://github.com/ConductionNL/ZaakAfhandelApp | `main` | v0.1.25 |
+
+*Last updated: September 14, 2025*
+
 ## Repository Structure
 
 ```
