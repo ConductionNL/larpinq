@@ -1,6 +1,22 @@
-# Nextcloud Apps-Extra Multi-Repository
+# Rapid Application Development - Nextcloud Apps Environment
 
-This repository manages multiple Nextcloud applications developed by Conduction as a multi-repository project structure using git submodules.
+**A personal project by Ruben van der Linde**
+
+This repository is part of the "Rapid Application Development" initiative - a personal project run in spare time to create an optimal Cursor AI development environment for quickly building Nextcloud applications using AI assistance.
+
+The repository manages multiple Nextcloud applications developed by Conduction as a multi-repository project structure using git submodules, specifically optimized for AI-assisted development workflows. It also e
+
+## Project Vision
+
+The Rapid Application Development project aims to:
+
+- **AI-First Development**: Leverage Cursor AI capabilities for rapid Nextcloud app creation
+- **Streamlined Workflow**: Minimize setup friction and maximize development velocity  
+- **Best Practices**: Maintain code quality while accelerating development cycles
+- **Multi-Repository Management**: Coordinate multiple related applications efficiently
+- **Documentation-Driven**: Generate comprehensive docs alongside code using AI
+
+This environment is designed to enable building production-ready Nextcloud applications with AI assistance in record time, while maintaining professional development standards.
 
 ## Conduction Applications
 
@@ -99,3 +115,17 @@ This multi-repository setup is designed for:
 - Use single quotes (') instead of backticks (`) in documentation due to Docusaurus limitations
 - All apps should use openregister for data storage
 - Follow the coding standards defined in `.cursor/rules/`
+
+## About This Project
+
+**Rapid Application Development** is a personal initiative by Ruben van der Linde, developed during spare time to explore the intersection of AI-assisted development and rapid application prototyping. 
+
+The project serves as both a practical development environment and an experiment in maximizing development velocity through AI collaboration, specifically focused on the Nextcloud ecosystem.
+
+### Contact & Contributions
+
+This is a personal learning project. While the code is open for reference, please note this represents individual experimentation with AI-assisted development workflows.
+
+**Author**: Ruben van der Linde  
+**Focus**: AI-assisted Nextcloud application development  
+**Status**: Personal project / Experimental
