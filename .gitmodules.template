@@ -1,0 +1,8 @@
+# Git submodules configuration for Conduction apps
+# This file will be automatically populated when running setup-submodules.sh
+
+# Example format:
+# [submodule "appname"]
+#     path = appname
+#     url = https://github.com/ConductionNL/AppName
+#     branch = main

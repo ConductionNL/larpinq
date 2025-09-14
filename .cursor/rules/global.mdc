@@ -1,0 +1,158 @@
+---
+description: Generic Instructions that should be followed for all projects
+globs:
+alwaysApply: true
+---
+
+For easy insruction locking we write LLM instructions in JSON
+
+```json
+{
+  "company": {
+    "name": "Conduction",
+    "type": "Nextcloud app development company",
+    "environment": {
+      "development": "We work in WSL and make calls to Docker containers",
+      "appsFolder": "apps-extra",
+      "connections": {
+        "api": {
+          "default": {
+            "host": "master-nextcloud-1",
+            "user": "admin",
+            "password": "admin",
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "restrictions": [
+              "Do not call http://localhost",
+              "Do not call http://nextcloud.local"
+            ]
+          },
+          "notes": [
+            "API requests are executed from inside the Nextcloud container",
+            "Default: docker exec -u 33 <nextcloud-container> curl -s -u 'admin:admin' ...",
+            "If default auth fails, check Nextcloud config.php or container env vars"
+          ]
+        },
+        "database": {
+          "default": {
+            "host": "master-database-mysql-1",
+            "name": "nextcloud",
+            "user": "nextcloud",
+            "password": "nextcloud",
+            "prefix": "oc_"
+          },
+          "checkConfig": [
+            "docker exec -u 33 <nextcloud-container> php -r \"print_r(include '/var/www/html/config/config.php');\"",
+            "Look for dbhost, dbname, dbuser, dbpassword, dbtableprefix"
+          ],
+          "access": [
+            "no auth requered on development",
+            "docker exec -it <database-container> mysql -u nextcloud -pnextcloud nextcloud -e <query>"
+          ]
+        }
+      },
+      "usage": [
+        "API calls must target running containers",
+        "Find container names with: docker ps",
+        "Run API calls against containers using: docker exec -it <container> curl ...",
+        "Always include basic auth and required headers",
+        "Create and use Newman tests once curl tests succeed"
+      ],
+      "search": {
+        "engine": "Solr container",
+        "purpose": "Used for all searching functionality"
+      }
+    },
+    "apps": {
+      "docudesk": "Document services (anonymisation, metadata enhancement)",
+      "larpingapp": "Custom app",
+      "opencatalogi": "Cataloguing app",
+      "openconnector": "API endpoint creator",
+      "openregister": "Object-oriented datastore (all apps should use this for storage)"
+    }
+  },
+  "developerProfile": {
+    "role": "Senior developer",
+    "mindset": [
+      "Create stable, maintainable solutions",
+      "Always think in long-term architecture",
+      "Suggest alternatives if better approaches exist"
+    ]
+  },
+  "workflow": {
+    "planning": [
+      "Always create a detailed plan before writing code",
+      "Consider architecture, stability, and performance"
+    ],
+    "documentation": [
+      "Document design decisions in Docusaurus (/website/docs)",
+      "Use Mermaid diagrams for flows",
+      "Use mdi icons and Nextcloud layout/components",
+      "Use Nextcloud Vue components where possible"
+    ],
+    "coding": [
+      "Backend business logic always accessible via API",
+      "Frontend in Nextcloud Vue, consume backend APIs",
+      "Use OpenRegister for persistence",
+      "Our apps should be compatible with nextcloud 31"
+    ],
+    "debugging": {
+      "commandline": [
+        "In cursor we regulary lose connection with the commandline (tool), when a command doenst show output assume that the commandline tool has lost connection. Dont make an assumption about the code"
+      ],
+      "api": [
+        "Verify app is enabled: php occ app:list | grep <app>",
+        "Enable app if missing: php occ app:enable <app>",
+        "Check routes in appinfo/routes.php",
+        "Verify controller annotations (@NoAdminRequired, @NoCSRFRequired)",
+        "Use curl or Newman tests against container API"
+      ],
+      "logs": [
+        "Logs are in container stdout, not in /var/www/html/data/nextcloud.log",
+        "we should log using psr logger instead or error_log",
+        "docker logs -f <nextcloud-container>",
+        "docker logs <nextcloud-container> | grep '[SaveObject]'",
+        "We often have trouble reading the logs, if so encounterd use var_dump and die to trace your progress"
+      ],
+      "database": [
+        "Query object counts: SELECT COUNT(*) FROM oc_[tablename];",
+        "Check recently created objects with ORDER BY created DESC LIMIT 10",
+        "Test DB connection via PHP PDO inside container"
+      ]
+    },
+    "frontend": [
+      "we use vue2",
+      "Icons should be part of https://pictogrammers.com/library/mdi/",
+      "Layout should follow https://docs.nextcloud.com/server/latest/developer_manual/design/layoutcomponents.html",
+      "Components can be used from https://nextcloud-vue-components.netlify.app/"
+    ],
+    "quality": {
+      "linting": "Run code linters before committing",
+      "tests": [
+        "Unit tests required",
+        "Test APIs against running Docker containers",
+        "After curl testing, create Newman tests"
+      ],
+      "forbidden": [
+        "No API calls from host machine to localhost/nextcloud.local",
+        "No standalone PHP server for API testing",
+        "No error_log usage (use PSR logger instead)"
+      ]
+    },
+    "commits": [
+      "Write meaningful commit messages",
+      "Reference issue numbers",
+      "Update docs in same commit as code changes",
+      "Commit only after linting/tests/docs are done"
+    ]
+  },
+  "standards": {
+    "security": ["Follow best practices", "Keep dependencies up to date"],
+    "performance": ["Consider implications", "Implement caching if needed"],
+    "accessibility": ["Follow accessibility guidelines"],
+    "internationalization": ["Use translation files", "Support multiple languages"]
+  }
+}
+
+```
