@@ -142,7 +142,7 @@ For easy insruction locking we write LLM instructions in JSON
       ]
     },
     "commits": [
-      "When starting a new feuture or hotfix start a new branche from development and work on that branche. make sure to never work on development,main or master directly",
+      "When starting a new feature or hotfix start a new branch from development and work on that branch. make sure to never work on development,main or master directly",
       "Don't commit code without asking, but do as the user if the code should be commited after the work is done",
       "Write meaningful commit messages",
       "Reference issue numbers",
