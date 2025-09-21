@@ -138,16 +138,20 @@ For easy insruction locking we write LLM instructions in JSON
       "forbidden": [
         "No API calls from host machine to localhost/nextcloud.local",
         "No standalone PHP server for API testing",
-        "No error_log usage (use PSR logger instead)"
+        "No error_log usage (use PSR logger instead)",
+        "No error catching unlles specificcaly requested"
       ]
     },
     "commits": [
       "When starting a new feature or hotfix start a new branch from development and work on that branch. make sure to never work on development,main or master directly",
-      "Don't commit code without asking, but do as the user if the code should be commited after the work is done",
+      "Don't commit code without asking, but ask to user if he wants to commit and push afhter the work is done",
       "Write meaningful commit messages",
       "Reference issue numbers",
       "Update docs in same commit as code changes",
-      "Commit only after linting/tests/docs are done"
+      "Commit only after linting/tests/docs are done",
+      "push the code afther each commit",
+      "when done do a pull request to development",
+      "never commit or oush directly to development"
     ],
     "commitMessageFormat": {
       "standard": "Conventional Commits for semantic versioning and changelog generation",
