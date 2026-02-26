@@ -1,7 +1,7 @@
 {
 	"name": "conductionnl/larpingapp",
 	"description": "Manage your live roleplaying setting",
-	"license": "AGPL-3.0-or-later",
+	"license": "EUPL-1.2",
 	"authors": [
 		{
 			"name": "Conduction b.v.",

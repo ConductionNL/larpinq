@@ -21,7 +21,7 @@ Create a [feature request](https://github.com/OpenCatalogi/.github/issues/new/ch
 
     ]]></description>
     <version>0.1.20</version>
-    <licence>agpl</licence>
+    <licence>EUPL-1.2</licence>
     <author mail="info@conduction.nl" homepage="https://www.conduction.nl/">Conduction</author>
 	<namespace>LarpingApp</namespace>
 	<category>organization</category>
