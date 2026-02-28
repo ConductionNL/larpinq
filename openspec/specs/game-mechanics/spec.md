@@ -1,3 +1,7 @@
+---
+status: reviewed
+---
+
 # Game Mechanics Specification
 
 ## Purpose
@@ -301,11 +305,11 @@ All game mechanic entities MUST support audit trail viewing when backed by OpenR
 
 ### Navigation Placement
 
-- **Abilities**: Settings area at bottom of sidebar (ShieldSword icon)
+- **Abilities**: Settings area at bottom of sidebar (ShieldSwordOutline icon)
 - **Skills**: Settings area at bottom of sidebar (SwordCross icon)
 - **Effects**: Settings area at bottom of sidebar (MagicStaff icon)
 - **Items**: Main navigation area (Sword icon)
-- **Conditions**: Main navigation area (EmoticonSick icon)
+- **Conditions**: Main navigation area (EmoticonSickOutline icon)
 
 ### Per-Entity Views
 

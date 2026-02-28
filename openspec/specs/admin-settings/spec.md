@@ -1,3 +1,7 @@
+---
+status: reviewed
+---
+
 # Admin Settings
 
 ## Purpose
@@ -12,7 +16,7 @@ Provides per-object-type data source configuration for LarpingApp, allowing admi
 |----|------------|----------|--------|
 | SET-001 | LarpingApp has a dedicated admin section in the Nextcloud admin settings panel | MUST | Implemented |
 | SET-002 | The admin section uses the LarpingApp icon (`app-dark.svg`) | MUST | Implemented |
-| SET-003 | The admin section is registered via `LarpingAppAdmin` ISettings (in `lib/Settings/`) and `LarpingAppAdmin` IIconSection (in `lib/Sections/`) | MUST | Implemented |
+| SET-003 | The admin section is registered via `LarpingAppAdmin` in `lib/Settings/` (registered as `<admin>` in info.xml, but the class implements `IIconSection` instead of `ISettings`) and `LarpingAppAdmin` IIconSection in `lib/Sections/` (registered as `<admin-section>` in info.xml). Note: `lib/Settings/LarpingAppAdmin.php` implements `IIconSection` rather than `ISettings`; it should implement `ISettings` to properly render the admin panel content. | MUST | Bug |
 | SET-004 | Settings are rendered using a Vue component (`Settings.vue`) via the `settings` entry point | MUST | Implemented |
 | SET-005 | The admin section has priority 55 in the settings panel ordering | MUST | Implemented |
 
@@ -62,9 +66,9 @@ Provides per-object-type data source configuration for LarpingApp, allowing admi
 | SET-050 | `SettingsController.index()` (GET) requires CSRF but NOT admin rights -- uses `@NoCSRFRequired` only, no `@NoAdminRequired` annotation | MUST | Implemented |
 | SET-051 | `SettingsController.create()` (POST) requires CSRF but NOT admin rights -- uses `@NoCSRFRequired` only, no `@NoAdminRequired` annotation | MUST | Implemented |
 | SET-052 | Because neither endpoint has `@NoAdminRequired`, both settings endpoints are admin-only by default (Nextcloud requires admin for routes without `@NoAdminRequired`) | MUST | Implemented |
-| SET-053 | `SettingsController.create()` accepts ALL request parameters without validation or whitelisting -- any key-value pair sent in the POST body is stored in IAppConfig for the app | MUST | Bug |
-| SET-054 | There is no validation that the keys being set are valid configuration keys (e.g., `{type}_source`, `{type}_register`, `{type}_schema`). An admin could inject arbitrary app config values | SHOULD | Bug |
-| SET-055 | There is no validation that `_source` values are limited to "internal" or "openregister" | SHOULD | Bug |
+| SET-053 | `SettingsController.create()` validates request parameters against an allowlist of valid keys (`{type}_source`, `{type}_register`, `{type}_schema` for each of the 10 object types). Keys starting with `_` are skipped. Invalid keys are silently ignored. | MUST | Implemented |
+| SET-054 | Only keys matching `{allowedType}_{allowedSuffix}` patterns are accepted; arbitrary config injection is prevented by the allowlist loop | SHOULD | Implemented |
+| SET-055 | There is no validation that `_source` values are limited to "internal" or "openregister" -- any string value is accepted for `_source` keys | SHOULD | Bug |
 
 ### ObjectService Data Source Dispatch
 
@@ -76,13 +80,13 @@ Provides per-object-type data source configuration for LarpingApp, allowing admi
 | SET-063 | An exception is thrown if OpenRegister source is configured but the service is unavailable | MUST | Implemented |
 | SET-064 | An exception is thrown if register or schema is not configured when using OpenRegister source | MUST | Implemented |
 
-### ObjectService Constructor Bugs
+### ObjectService Constructor
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
-| SET-070 | The ObjectService constructor type-hints `IContainer` for the `$container` parameter, but `IContainer` is a deprecated Nextcloud interface -- the correct type is `Psr\Container\ContainerInterface` | MUST | Bug |
-| SET-071 | The ObjectService constructor type-hints `IConfig` for the `$config` parameter, but the code calls `getValueString()` which is an `IAppConfig` method, not `IConfig`. The import statement says `use OCP\IAppConfig;` but the constructor signature says `private IConfig $config` | MUST | Bug |
-| SET-072 | Despite these type-hint bugs, Nextcloud's DI auto-wiring may inject the correct implementations at runtime, so the bugs may not cause immediate runtime failures | SHOULD | Bug |
+| SET-070 | The ObjectService constructor type-hints `ContainerInterface` (from `Psr\Container\ContainerInterface`) for the `$container` parameter | MUST | Implemented |
+| SET-071 | The ObjectService constructor type-hints `IAppConfig` for the `$config` parameter, and uses `getValueString()` which is the correct method on `IAppConfig` | MUST | Implemented |
+| SET-072 | The ObjectService constructor also injects all 10 entity mappers (AbilityMapper through TemplateMapper) as typed constructor parameters | MUST | Implemented |
 
 ### Mapper findAll() Signature Inconsistencies
 
@@ -94,6 +98,10 @@ Provides per-object-type data source configuration for LarpingApp, allowing admi
 | SET-083 | `EventMapper.findAll(?int $limit, ?int $offset, ?array $filters, ?array $searchConditions, ?array $searchParams)` -- supports limit/offset/filters but different param names than what ObjectService passes | MUST | Bug |
 | SET-084 | `SkillMapper.findAll(?int $limit, ?int $offset, ?array $filters, ?array $searchConditions, ?array $searchParams)` -- same as EventMapper | MUST | Bug |
 | SET-085 | `ItemMapper.findAll()` -- takes NO parameters at all, returns all items | MUST | Bug |
+| SET-085b | `PlayerMapper.findAll()` -- takes NO parameters at all, returns all players | MUST | Bug |
+| SET-085c | `ConditionMapper.findAll(string $userId)` -- requires a userId parameter, same as AbilityMapper | MUST | Bug |
+| SET-085d | `TemplateMapper.findAll(?int $limit, ?int $offset, ?array $filters, ?array $searchConditions, ?array $searchParams)` -- same as EventMapper/SkillMapper | MUST | Bug |
+| SET-085e | `SettingMapper.findAll(string $userId)` -- requires a userId parameter, same as AbilityMapper | MUST | Bug |
 | SET-086 | `ObjectService.getObjects()` calls `findAll()` with named parameters `limit`, `offset`, `filters`, `sort`, `search`, `extend` -- this signature is incompatible with ALL internal mappers. None accept `sort`, `search`, or `extend` parameters; some require `userId` which ObjectService does not pass | MUST | Bug |
 
 ### Application Class
@@ -281,13 +289,14 @@ AND obtains a mapper from OpenRegister using the configured register and schema
 AND returns the OpenRegister mapper for character operations
 ```
 
-### Arbitrary Parameter Injection (Bug Scenario)
+### Arbitrary Parameter Injection (Fixed)
 
 ```
 GIVEN an admin user has access to the settings API
 WHEN they POST to /api/settings with {"malicious_key": "malicious_value", "ability_source": "internal"}
-THEN BOTH keys are stored in IAppConfig because create() iterates all params without filtering
-AND "malicious_key" is stored as an app config value for larpingapp
+THEN only "ability_source" is stored in IAppConfig because create() validates keys against an allowlist
+AND "malicious_key" is silently ignored (it does not match any {type}_{suffix} pattern)
+AND keys starting with "_" (like Nextcloud framework params "_route") are also skipped
 ```
 
 ## Dependencies

@@ -1,3 +1,7 @@
+---
+status: reviewed
+---
+
 # Character Management
 
 ## Purpose
@@ -64,7 +68,7 @@ Provides full CRUD lifecycle management for LARP characters, including player ch
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
-| CHAR-070 | `CharacterService.calculateAllCharacters()` MUST retrieve all characters via `characterMapper.findAll()` and recalculate stats for each | MUST | Implemented |
+| CHAR-070 | `CharacterService.calculateAllCharacters()` calls `$this->characterMapper->findAll()` with no arguments, but `CharacterMapper.findAll(string $userId)` requires a `$userId` parameter -- this will throw a TypeError at runtime | MUST | Bug |
 | CHAR-071 | `calculateAllCharacters()` MUST return an array of updated character arrays with recalculated stats | MUST | Implemented |
 | CHAR-072 | `calculateAllCharacters()` is not exposed via any API route or controller -- it can only be called programmatically | SHOULD | Implemented |
 

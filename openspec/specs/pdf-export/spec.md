@@ -1,3 +1,7 @@
+---
+status: reviewed
+---
+
 # PDF Character Sheet Export
 
 ## Purpose
@@ -14,9 +18,9 @@ Enables game masters and players to export character data as downloadable PDF fi
 | PDF-002 | PDF generation uses mPDF library (v8.2+) | MUST | Implemented |
 | PDF-003 | HTML is rendered via Twig templating engine (v3.18+) | MUST | Implemented |
 | PDF-004 | Character data (including computed stats) is passed to the Twig template as `character` variable | MUST | Implemented |
-| PDF-005 | Template data is passed to the Twig template as `template` variable | MUST | Implemented |
+| PDF-005 | Template data is intended to be passed to the Twig template as `template` variable, but due to variable reassignment in `createCharacterPdf()`, the `$template` variable is overwritten from the data array to the Twig Template object before `render()` is called. The `template` variable in the Twig context will be the Twig Template object, not the original data array. | MUST | Bug |
 | PDF-006 | mPDF temp directory is created at `/tmp/mpdf` with 0777 permissions if it does not exist | MUST | Implemented |
-| PDF-007 | PDF is output directly to the browser via `Mpdf::Output()` | MUST | Implemented |
+| PDF-007 | PDF content is returned as a `DataDownloadResponse` via Nextcloud's response framework (uses `Mpdf::Output()` with `STRING_RETURN` destination) | MUST | Implemented |
 | PDF-008 | The download URL format is `/characters/{characterId}/download/{templateId}` | MUST | Implemented |
 
 ### Template Management
@@ -40,16 +44,15 @@ Enables game masters and players to export character data as downloadable PDF fi
 | PDF-013 | Clicking "Download PDF" opens the PDF URL in a new browser tab | MUST | Implemented |
 | PDF-014 | The modal validates that a template is selected before enabling the download button | MUST | Implemented |
 
-### PDF Download Bugs
+### PDF Download Implementation
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
-| PDF-020 | `CharactersController.downloadPdf()` catches `DoesNotExistException` but does NOT import the class -- `use OCP\AppFramework\Db\DoesNotExistException;` is missing from the controller's imports | MUST | Bug |
-| PDF-021 | Because `DoesNotExistException` is not imported, if a character or template is not found, PHP will throw a `Class 'OCA\LarpingApp\Controller\DoesNotExistException' not found` fatal error instead of the intended 404 JSONResponse | MUST | Bug |
-| PDF-022 | `downloadPdf()` calls `$pdfContent->Output()` (mPDF native output) which sends the PDF directly to the browser, bypassing Nextcloud's response framework entirely | MUST | Implemented |
-| PDF-023 | `downloadPdf()` has no `return` statement on the success path -- after `$pdfContent->Output()`, the method falls through without returning a Response object. The commented-out `DataDownloadResponse` code suggests this was intended but never completed | MUST | Bug |
-| PDF-024 | The method signature declares return type `DataDownloadResponse|JSONResponse` but the success path returns nothing (void), which violates the declared return type | MUST | Bug |
-| PDF-025 | `mPDF::Output()` called without parameters defaults to inline display (`Destination::INLINE`), which sends HTTP headers and the PDF body directly, making it incompatible with Nextcloud's response pipeline | SHOULD | Implemented |
+| PDF-020 | `CharactersController.downloadPdf()` catches `\Exception` (fully qualified) for error handling when fetching character or template -- this correctly handles any exception type without needing specific imports | MUST | Implemented |
+| PDF-021 | When a character or template is not found, a 404 JSONResponse is returned with `{'error': 'Character or template not found'}` | MUST | Implemented |
+| PDF-022 | `downloadPdf()` calls `$pdfContent->Output('', Destination::STRING_RETURN)` to get the PDF as a string, then wraps it in a `DataDownloadResponse` -- this properly integrates with Nextcloud's response framework | MUST | Implemented |
+| PDF-023 | `downloadPdf()` returns a `DataDownloadResponse` on the success path with the PDF content, filename (`{characterName}_character_sheet.pdf`), and `application/pdf` MIME type | MUST | Implemented |
+| PDF-024 | The method signature correctly declares return type `DataDownloadResponse|JSONResponse` and both paths return the appropriate type | MUST | Implemented |
 
 ## Data Model
 
@@ -145,8 +148,8 @@ THEN a new browser tab opens with URL /characters/{id}/download/{templateId}
 AND CharactersController.downloadPdf() fetches the character and template
 AND CharacterService.createCharacterPdf() renders the Twig template with character data
 AND mPDF converts the HTML to a PDF document
-AND the PDF is streamed to the browser via mPDF's native Output() method
-NOTE: The response bypasses Nextcloud's response framework and the method has no return statement
+AND the PDF content is returned via Nextcloud's DataDownloadResponse framework
+AND the filename is "{characterName}_character_sheet.pdf"
 ```
 
 ### Create a Custom Template
@@ -178,15 +181,14 @@ AND opens the "Content" tab
 THEN the raw HTML is displayed via NcRichText with DOMPurify sanitization
 ```
 
-### Character or Template Not Found (Bug Scenario)
+### Character or Template Not Found
 
 ```
 GIVEN the user navigates to /characters/{id}/download/{templateId}
 AND either the character or template ID does not exist
 WHEN CharactersController.downloadPdf() attempts to fetch the objects
-THEN it catches DoesNotExistException -- BUT this class is not imported
-AND PHP throws a fatal error: "Class 'OCA\LarpingApp\Controller\DoesNotExistException' not found"
-AND the user sees a 500 error instead of the intended 404 JSON response
+THEN it catches \Exception (fully qualified)
+AND returns a 404 JSONResponse with {"error": "Character or template not found"}
 ```
 
 ## Dependencies

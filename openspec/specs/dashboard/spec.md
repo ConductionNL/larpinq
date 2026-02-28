@@ -1,3 +1,7 @@
+---
+status: reviewed
+---
+
 # Dashboard Specification
 
 ## Purpose
@@ -85,17 +89,21 @@ The dashboard MUST have CSS infrastructure in place for future analytics widgets
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
 | DASH-030 | Dashboard MUST define `.dashboard-content` CSS class with centered layout (max-width 1000px) | MUST | Implemented |
-| DASH-031 | Dashboard MUST define `.most-searched-terms` grid layout for KPI cards (responsive: 1-3 columns) | MUST | Implemented |
-| DASH-032 | Dashboard MUST define `.graphs` grid layout for chart containers (responsive: 1-2 columns) | MUST | Implemented |
+| DASH-031 | Dashboard MUST define `.most-searched-terms` grid layout for KPI cards (responsive: 1col default, 2col at 880px, 1col at 1024px, 2col at 1220px, 3col at 1590px) | MUST | Implemented |
+| DASH-032 | Dashboard MUST define `.graphs` grid layout for chart containers (2 columns above 1800px, 1 column below 1800px) | MUST | Implemented |
 | DASH-033 | Dashboard MUST support both light and dark theme for card backgrounds | MUST | Implemented |
-| DASH-034 | Dashboard MUST support Nextcloud's `data-theme-light` and `data-theme-dark` body attributes | MUST | Implemented |
+| DASH-034 | Dashboard MUST support both `prefers-color-scheme` media queries (as default) AND Nextcloud's `body[data-theme-light]` / `body[data-theme-dark]` attribute selectors (as overrides) | MUST | Implemented |
 
 #### Scenario: Dashboard layout adapts to viewport
 
 - GIVEN the dashboard page is loaded
 - WHEN the viewport is wider than 1590px
 - THEN the KPI card grid MUST display 3 columns
-- WHEN the viewport is between 880px and 1590px
+- WHEN the viewport is between 1220px and 1590px
+- THEN the KPI card grid MUST display 2 columns
+- WHEN the viewport is between 1024px and 1220px
+- THEN the KPI card grid MUST display 1 column (collapses back from 2)
+- WHEN the viewport is between 880px and 1024px
 - THEN the KPI card grid MUST display 2 columns
 - WHEN the viewport is narrower than 880px
 - THEN the KPI card grid MUST display 1 column

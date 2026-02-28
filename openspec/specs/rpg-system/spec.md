@@ -1,3 +1,7 @@
+---
+status: reviewed
+---
+
 # RPG System
 
 ## Purpose
@@ -100,7 +104,7 @@ Defines the core RPG mechanics of LarpingApp: Skills, Items, Conditions, Effects
 | RPG-011 | The full data model for each entity type (effects arrays, prerequisites, unique flags, base values, etc.) only exists when using **OpenRegister storage mode** with rich schemas | MUST | Implemented |
 | RPG-012 | Internal entity PHP classes (`lib/Db/*.php`) do NOT define fields like `effects`, `requiredSkills`, `requiredStats`, `modifier`, `modification`, `cumulative`, `abilities`, `unique`, `characters` -- these are OpenRegister schema fields | MUST | Implemented |
 | RPG-013 | The Ability entity has `base` and `allowed_negative` columns added via migration `Version0Date20241015141612`, but these are NOT represented as properties in the `Ability` PHP entity class (`lib/Db/Ability.php` only has `name` and `description`) | MUST | Bug |
-| RPG-014 | Mapper `findAll()` signatures are inconsistent across entity types: `AbilityMapper.findAll(string $userId)` vs `SkillMapper.findAll(?int $limit, ?int $offset, ?array $filters, ?array $searchConditions, ?array $searchParams)` vs `ItemMapper.findAll()` (no params). This causes `ObjectService.getObjects()` to fail when calling internal mappers with standardized parameters | MUST | Bug |
+| RPG-014 | Mapper `findAll()` signatures are inconsistent across entity types: `AbilityMapper.findAll(string $userId)`, `EffectMapper.findAll(string $userId)`, `ConditionMapper.findAll(string $userId)` require a userId; `SkillMapper.findAll(?int $limit, ?int $offset, ?array $filters, ?array $searchConditions, ?array $searchParams)` takes search params; `ItemMapper.findAll()` takes no params. This causes `ObjectService.getObjects()` to fail when calling internal mappers with standardized parameters | MUST | Bug |
 
 ## Data Model
 
@@ -174,7 +178,7 @@ Note: The database table `larpingapp_abilities` has `base` (INTEGER, default 0) 
 | description | string | No | "" | Effect description |
 | modifier | number | No | 0 | Integer modifier value (magnitude of the effect) |
 | modification | enum | Yes | "positive" | Modification type: `positive` or `negative` |
-| cumulative | enum | No | "cumulative" | Whether effect stacks: `cumulative` or `non-cumulative` |
+| cumulative | enum | No | "non-cumulative" | Whether effect stacks: `cumulative` or `non-cumulative` |
 | abilities | string[] (UUIDs) | Yes | [] | Target ability IDs this effect modifies |
 
 ### Effect Chain Diagram

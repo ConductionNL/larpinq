@@ -1,3 +1,7 @@
+---
+status: reviewed
+---
+
 # Object Service
 
 ## Purpose
@@ -52,7 +56,7 @@ The `ObjectService` (`lib/Service/ObjectService.php`) is the central data access
 | OBJ-040 | `getResultArrayForRequest()` MUST parse request parameters supporting both prefixed and unprefixed aliases: `limit`/`_limit`, `offset`/`_offset`, `order`/`_order`, `extend`/`_extend`, `page`/`_page`, `search`/`_search` | MUST | Implemented |
 | OBJ-041 | When `page` is set and `limit` is present, `getResultArrayForRequest()` MUST calculate offset as `limit * (page - 1)` | MUST | Implemented |
 | OBJ-042 | `getResultArrayForRequest()` MUST convert string order/extend values to arrays by splitting on commas | MUST | Implemented |
-| OBJ-043 | `getResultArrayForRequest()` MUST strip internal parameters (`_route`, `_extend`, `_limit`, `_offset`, `_order`, `_page`, and their unprefixed equivalents) from filters before querying | MUST | Implemented |
+| OBJ-043 | `getResultArrayForRequest()` MUST strip internal parameters (`_route`, `_extend`, `_limit`, `_offset`, `_order`, `_page`, and their unprefixed equivalents `extend`, `limit`, `offset`, `order`, `page`) from filters before querying. Note: `search`/`_search` is NOT stripped from filters, meaning it may be passed through as both a `$search` parameter AND a filter key | MUST | Implemented |
 | OBJ-044 | `getResultArrayForRequest()` MUST return a response envelope with `results`, `facets`, and `total` keys | MUST | Implemented |
 | OBJ-045 | `getResultArrayForRequest()` MUST call `getCount()` for the total, which delegates to the mapper's `count()` for OpenRegister or returns 0 for internal mappers | MUST | Implemented |
 
@@ -97,8 +101,8 @@ The `ObjectService` (`lib/Service/ObjectService.php`) is the central data access
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
 | OBJ-090 | `getFiles()` MUST delegate to the mapper's `getFiles()` and `formatFiles()` methods | MUST | Implemented |
-| OBJ-091 | `getFiles()` has incorrect annotations (`@NoAdminRequired`, `@NoCSRFRequired`, `@return JSONResponse`) that belong on a controller, not a service method | SHOULD | Bug |
-| OBJ-092 | A route exists for `getFiles` (`api/objects/{objectType}/{id}/files`) but the ObjectsController does NOT have a `getFiles()` method -- the route maps to the service directly which is incorrect | MUST | Bug |
+| OBJ-091 | `getFiles()` service method has correct annotations (no controller-specific annotations) | MUST | Implemented |
+| OBJ-092 | A route exists for `getFiles` (`api/objects/{objectType}/{id}/files`) mapped to `objects#getFiles`, but the ObjectsController does NOT have a `getFiles()` method -- the route will fail with a method not found error | MUST | Bug |
 
 ### Lock/Unlock/IsLocked
 
@@ -107,7 +111,7 @@ The `ObjectService` (`lib/Service/ObjectService.php`) is the central data access
 | OBJ-100 | `lockObject()` MUST delegate to mapper's `lockObject()` with id, optional process, and duration (default 3600s) | MUST | Implemented |
 | OBJ-101 | `unlockObject()` MUST delegate to mapper's `unlockObject()` | MUST | Implemented |
 | OBJ-102 | `isLocked()` MUST delegate to mapper's `isLocked()` and return a boolean | MUST | Implemented |
-| OBJ-103 | `isLocked()` exists on both ObjectService and ObjectsController but there is NO route defined for it in `appinfo/routes.php` | MUST | Dead Code |
+| OBJ-103 | `isLocked()` exists on ObjectService but there is NO route defined for it in `appinfo/routes.php` and ObjectsController does NOT have an `isLocked()` method | MUST | Dead Code |
 
 ### Revert
 
@@ -133,14 +137,13 @@ The `ObjectService` (`lib/Service/ObjectService.php`) is the central data access
 
 ## Constructor and Dependency Injection
 
-### Constructor Type-Hint Bugs
+### Constructor Type-Hints
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
-| OBJ-140 | Constructor type-hints `IContainer` for the `$container` parameter, but the actual Nextcloud DI container implements `Psr\Container\ContainerInterface` -- `IContainer` is the deprecated Nextcloud interface | MUST | Bug |
-| OBJ-141 | Constructor type-hints `IConfig` for the `$config` parameter, but the code calls `getValueString()` which is an `IAppConfig` method, not `IConfig` | MUST | Bug |
-| OBJ-142 | The PHPDoc says `@param IContainer $container` and `@param IConfig $config` but the actual type-hints in the constructor signature reference non-imported or deprecated classes | MUST | Bug |
-| OBJ-143 | Despite the incorrect type-hints, DI auto-wiring may still inject the correct implementations at runtime, so this bug may not cause runtime failures in all environments | SHOULD | Bug |
+| OBJ-140 | Constructor type-hints `ContainerInterface` (from `Psr\Container\ContainerInterface`) for the `$container` parameter | MUST | Implemented |
+| OBJ-141 | Constructor type-hints `IAppConfig` for the `$config` parameter, and calls `getValueString()` which is the correct method | MUST | Implemented |
+| OBJ-142 | Constructor injects all 10 entity mappers (AbilityMapper through TemplateMapper) as typed constructor parameters, plus `ContainerInterface`, `IAppManager`, and `IAppConfig` | MUST | Implemented |
 
 ## Method Signatures
 
@@ -200,11 +203,11 @@ Checks for OpenRegister availability and returns its service.
 
 ## Known Issues
 
-1. **Constructor type-hint bugs (Gap 23)**: The constructor declares `private IContainer $container` and `private IConfig $config`, but `IContainer` is deprecated and `IConfig` does not have the `getValueString()` method used in `getMapper()`. The correct types should be `ContainerInterface` (from PSR-11) and `IAppConfig`. The code still works at runtime due to Nextcloud's DI auto-wiring, but it is technically incorrect and could break in future Nextcloud versions.
+1. **Constructor type-hints (Fixed)**: The constructor now correctly uses `ContainerInterface` (from PSR-11) and `IAppConfig` for the `$container` and `$config` parameters respectively. All 10 entity mappers are also injected.
 
-2. **`getFiles()` misplaced annotations (Gap 8)**: The `getFiles()` method has `@NoAdminRequired`, `@NoCSRFRequired`, and `@return JSONResponse` annotations which are controller annotations, not service annotations. The route `api/objects/{objectType}/{id}/files` exists in `routes.php` but the `ObjectsController` does NOT implement a `getFiles()` method. The route name `objects#getFiles` would map to `ObjectsController::getFiles()` which does not exist, meaning this route currently results in a method not found error. The actual implementation is only on `ObjectService`.
+2. **`getFiles()` missing controller method**: The `getFiles()` service method no longer has misplaced controller annotations. However, the route `api/objects/{objectType}/{id}/files` exists in `routes.php` mapped to `objects#getFiles`, but the `ObjectsController` does NOT implement a `getFiles()` method. The route would result in a method not found error. The actual implementation is only on `ObjectService`.
 
-3. **`isLocked()` dead code (Gaps 9-10)**: Both `ObjectService::isLocked()` and `ObjectsController::isLocked()` exist as methods, but there is no route defined in `appinfo/routes.php` for the `isLocked` action. The method can never be reached via HTTP. Lock and unlock have routes, but checking lock status does not.
+3. **`isLocked()` dead code**: `ObjectService::isLocked()` exists as a method, but there is no route defined in `appinfo/routes.php` for the `isLocked` action and `ObjectsController` does not have an `isLocked()` method. The service method can never be reached via HTTP. Lock and unlock have routes, but checking lock status does not.
 
 4. **Internal mapper `findAll()` signature mismatch**: `ObjectService.getObjects()` calls `findAll()` with named parameters `limit`, `offset`, `filters`, `sort`, `search`, `extend`. However, internal mappers have inconsistent signatures: `AbilityMapper.findAll(string $userId)`, `CharacterMapper.findAll(string $userId)`, `EffectMapper.findAll(string $userId)` take only a userId; `EventMapper.findAll(?int $limit, ?int $offset, ?array $filters, ?array $searchConditions, ?array $searchParams)` and `SkillMapper.findAll(...)` take search-related params but not `sort`, `search`, or `extend`; `ItemMapper.findAll()` takes no parameters. This means calling `getObjects()` in internal mode would fail for most entity types.
 

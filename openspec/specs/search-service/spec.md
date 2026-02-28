@@ -1,3 +1,7 @@
+---
+status: reviewed
+---
+
 # Search Service
 
 ## Purpose

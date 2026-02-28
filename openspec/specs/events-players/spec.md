@@ -1,3 +1,7 @@
+---
+status: reviewed
+---
+
 # Events and Players
 
 ## Purpose
