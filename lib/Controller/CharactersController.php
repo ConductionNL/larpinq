@@ -2,18 +2,11 @@
 
 namespace OCA\LarpingApp\Controller;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
 use OCA\LarpingApp\Service\ObjectService;
-use OCA\LarpingApp\Service\SearchService;
 use OCA\LarpingApp\Service\CharacterService;
-use OCA\LarpingApp\Db\Character;
-use OCA\LarpingApp\Db\CharacterMapper;
 use OCP\AppFramework\Controller;
-use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http\DataDownloadResponse;
-use OCP\IAppConfig;
 use OCP\IRequest;
 
 /**
@@ -59,20 +52,21 @@ class CharactersController extends Controller
             // Fetch the character object by its ID
             $character = $this->objectService->getObject('character', $id);
             $template  = $this->objectService->getObject('template', $template);
-        } catch (DoesNotExistException $exception) {
-            return new JSONResponse(data: ['error' => 'Character Not Found'], statusCode: 404);
-        } 
-            
+        } catch (\Exception $exception) {
+            return new JSONResponse(data: ['error' => 'Character or template not found'], statusCode: 404);
+        }
+
         // Generate PDF using the specified template
         $pdfContent = $this->characterService->createCharacterPdf($character, $template);
-        
-        // Other code
-        $pdfContent->Output();
-        
-        //return new DataDownloadResponse(
-        //    $pdfContent,
-        //    $character->getName() . '_character_sheet.pdf',
-        //    'application/pdf'
-        //);
+
+        // Get PDF as string and return via Nextcloud response framework
+        $pdfString = $pdfContent->Output('', \Mpdf\Output\Destination::STRING_RETURN);
+        $fileName = ($character['name'] ?? 'character') . '_character_sheet.pdf';
+
+        return new DataDownloadResponse(
+            $pdfString,
+            $fileName,
+            'application/pdf'
+        );
     }
 }

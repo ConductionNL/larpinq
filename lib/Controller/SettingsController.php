@@ -87,14 +87,39 @@ class SettingsController extends Controller
 		// Get all parameters from the request
 		$data = $this->request->getParams();
 
+		// Define allowed setting keys to prevent arbitrary config writes
+		$allowedTypes = ['ability', 'character', 'condition', 'effect', 'event', 'item', 'player', 'setting', 'skill', 'template'];
+		$allowedSuffixes = ['_source', '_schema', '_register'];
+
 		try {
-			// Update each setting in the configuration
+			$result = [];
+			// Update each setting in the configuration (only allowed keys)
 			foreach ($data as $key => $value) {
+				// Skip Nextcloud framework params
+				if (str_starts_with($key, '_') === true) {
+					continue;
+				}
+
+				// Validate key is an allowed setting
+				$isAllowed = false;
+				foreach ($allowedTypes as $type) {
+					foreach ($allowedSuffixes as $suffix) {
+						if ($key === $type.$suffix) {
+							$isAllowed = true;
+							break 2;
+						}
+					}
+				}
+
+				if ($isAllowed === false) {
+					continue;
+				}
+
 				$this->config->setValueString($this->appName, $key, $value);
 				// Retrieve the updated value to confirm the change
-				$data[$key] = $this->config->getValueString($this->appName, $key);
+				$result[$key] = $this->config->getValueString($this->appName, $key);
 			}
-			return new JSONResponse($data);
+			return new JSONResponse($result);
 		} catch (\Exception $e) {
 			return new JSONResponse(['error' => $e->getMessage()], 500);
 		}

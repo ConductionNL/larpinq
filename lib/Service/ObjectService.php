@@ -76,9 +76,9 @@ class ObjectService
      * @param SettingMapper   $settingMapper   Setting mapper
      * @param SkillMapper     $skillMapper     Skill mapper
      * @param TemplateMapper  $templateMapper  Template mapper
-     * @param IContainer      $container       DI container
-     * @param IAppManager     $appManager      App manager
-     * @param IConfig         $config          Config service
+     * @param ContainerInterface $container   DI container
+     * @param IAppManager        $appManager  App manager
+     * @param IAppConfig         $config      Config service
      */
     public function __construct(
         private AbilityMapper $abilityMapper,
@@ -91,9 +91,9 @@ class ObjectService
         private SettingMapper $settingMapper,
         private SkillMapper $skillMapper,
         private TemplateMapper $templateMapper,
-        private IContainer $container,
+        private ContainerInterface $container,
         private IAppManager $appManager,
-        private IConfig $config
+        private IAppConfig $config
     ) {
         $this->_appName = 'larpingapp';
     }
@@ -576,10 +576,10 @@ class ObjectService
     /**
      * Get all files associated with a specific object
      *
-     * @NoAdminRequired
-     * @NoCSRFRequired
+     * @param string $objectType The type of object
+     * @param string $id         The id of the object
      *
-     * @return JSONResponse
+     * @return array The files associated with the object
      */
     public function getFiles(string $objectType, string $id): array
     {

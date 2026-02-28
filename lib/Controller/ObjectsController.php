@@ -61,6 +61,7 @@ class ObjectsController extends Controller
     {
         try {
             // Get extend parameter if present
+            $requestParams = $this->request->getParams();
             $extend = $requestParams['extend'] ?? $requestParams['_extend'] ?? [];
             if (is_string($extend)) {
                 $extend = array_map('trim', explode(',', $extend));
@@ -293,29 +294,6 @@ class ObjectsController extends Controller
         try {
             $unlockedObject = $this->objectService->unlockObject($objectType, $id);
             return new JSONResponse($unlockedObject);
-        } catch (Exception $e) {
-            return new JSONResponse(
-                ['error' => $e->getMessage()],
-                400
-            );
-        }
-    }
-
-    /**
-     * Check if an object is currently locked
-     *
-     * @NoAdminRequired
-     * @NoCSRFRequired
-     * 
-     * @param  string $objectType The type of object to check
-     * @param  string $id         The ID of the object to check
-     * @return JSONResponse
-     */
-    public function isLocked(string $objectType, string $id): JSONResponse 
-    {
-        try {
-            $isLocked = $this->objectService->isLocked($objectType, $id);
-            return new JSONResponse(['locked' => $isLocked]);
         } catch (Exception $e) {
             return new JSONResponse(
                 ['error' => $e->getMessage()],
