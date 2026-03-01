@@ -21,7 +21,7 @@ Create a [feature request](https://github.com/OpenCatalogi/.github/issues/new/ch
 
     ]]></description>
     <version>0.1.20</version>
-    <licence>EUPL-1.2</licence>
+    <licence>agpl</licence>
     <author mail="info@conduction.nl" homepage="https://www.conduction.nl/">Conduction</author>
 	<namespace>LarpingApp</namespace>
 	<category>organization</category>
@@ -29,7 +29,7 @@ Create a [feature request](https://github.com/OpenCatalogi/.github/issues/new/ch
     <bugs>https://github.com/ConductionNL/LarpingNextApp/issues</bugs>
     <repository type="git">https://github.com/ConductionNL/LarpingNextApp.git</repository>
     <dependencies>
-        <nextcloud min-version="28" max-version="30"/>
+        <nextcloud min-version="28" max-version="32"/>
         <php min-version="8.0" min-int-size="64"/>
         <database min-version="10">pgsql</database>
         <database>sqlite</database>
