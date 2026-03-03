@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * Event mapper implementation
  *
@@ -11,9 +9,9 @@ declare(strict_types=1);
  * @copyright 2024 Ruben Linde
  * @license   https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
  * @link      https://larpingapp.com
- *
- * @phpversion 8.2
  */
+
+declare(strict_types=1);
 
 namespace OCA\LarpingApp\Db;
 
@@ -42,13 +40,15 @@ class EventMapper extends QBMapper
     public function __construct(IDBConnection $db)
     {
         parent::__construct($db, 'larpingapp_events', Event::class);
-    }
+    }//end __construct()
 
     /**
      * Find an event by ID
      *
-     * @param  int $id The event ID
+     * @param int $id The event ID
+     *
      * @return Event
+     *
      * @throws \OCP\AppFramework\Db\DoesNotExistException
      * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
      */
@@ -58,26 +58,27 @@ class EventMapper extends QBMapper
         $qb->select('*')
             ->from($this->getTableName())
             ->where($qb->expr()->eq('id', $qb->createNamedParameter($id)));
-        
+
         return $this->findEntity($qb);
-    }
+    }//end find()
 
     /**
      * Find all events matching the given criteria
      *
-     * @param  int|null   $limit            Maximum number of results
-     * @param  int|null   $offset           Result offset
-     * @param  array|null $filters          Additional filters
-     * @param  array|null $searchConditions Search conditions
-     * @param  array|null $searchParams     Search parameters
+     * @param int|null   $limit            Maximum number of results
+     * @param int|null   $offset           Result offset
+     * @param array|null $filters          Additional filters
+     * @param array|null $searchConditions Search conditions
+     * @param array|null $searchParams     Search parameters
+     *
      * @return Event[]
      */
     public function findAll(
-        ?int $limit = null,
-        ?int $offset = null,
-        ?array $filters = [],
-        ?array $searchConditions = [],
-        ?array $searchParams = []
+        ?int $limit=null,
+        ?int $offset=null,
+        ?array $filters=[],
+        ?array $searchConditions=[],
+        ?array $searchParams=[]
     ): array {
         $qb = $this->db->getQueryBuilder();
         $qb->select('*')
@@ -86,6 +87,7 @@ class EventMapper extends QBMapper
         if ($limit !== null) {
             $qb->setMaxResults($limit);
         }
+
         if ($offset !== null) {
             $qb->setFirstResult($offset);
         }
@@ -93,27 +95,28 @@ class EventMapper extends QBMapper
         foreach ($filters as $filter => $value) {
             if ($value === 'IS NOT NULL') {
                 $qb->andWhere($qb->expr()->isNotNull($filter));
-            } elseif ($value === 'IS NULL') {
+            } else if ($value === 'IS NULL') {
                 $qb->andWhere($qb->expr()->isNull($filter));
             } else {
                 $qb->andWhere($qb->expr()->eq($filter, $qb->createNamedParameter($value)));
             }
         }
 
-        if (!empty($searchConditions)) {
-            $qb->andWhere('(' . implode(' OR ', $searchConditions) . ')');
+        if (empty($searchConditions) === false) {
+            $qb->andWhere('('.implode(' OR ', $searchConditions).')');
             foreach ($searchParams as $param => $value) {
                 $qb->setParameter($param, $value);
             }
         }
 
         return $this->findEntities($qb);
-    }
+    }//end findAll()
 
     /**
      * Create a new event from array data
      *
-     * @param  array<string,mixed> $data The event data
+     * @param array<string,mixed> $data The event data
+     *
      * @return Event
      */
     public function createFromArray(array $data): Event
@@ -122,14 +125,16 @@ class EventMapper extends QBMapper
         foreach ($data as $key => $value) {
             $event->$key = $value;
         }
+
         return $this->insert($event);
-    }
+    }//end createFromArray()
 
     /**
      * Update an event from array data
      *
-     * @param  int                 $id   The event ID
-     * @param  array<string,mixed> $data The updated event data
+     * @param int                 $id   The event ID
+     * @param array<string,mixed> $data The updated event data
+     *
      * @return Event
      */
     public function updateFromArray(int $id, array $data): Event
@@ -138,6 +143,7 @@ class EventMapper extends QBMapper
         foreach ($data as $key => $value) {
             $event->$key = $value;
         }
+
         return $this->update($event);
-    }
-}
+    }//end updateFromArray()
+}//end class

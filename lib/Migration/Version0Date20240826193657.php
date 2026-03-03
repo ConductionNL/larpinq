@@ -1,18 +1,16 @@
 <?php
-
-declare(strict_types=1);
-
 /**
  * LarpingApp database migration
  *
- * @copyright Copyright (c) 2024 Ruben Linde <ruben@larpingapp.com>
+ * @category  Database
+ * @package   OCA\LarpingApp\Migration
  * @author    Ruben Linde <ruben@larpingapp.com>
- * @license   AGPL-3.0-or-later
- *
- * @category Database
- * @package  OCA\LarpingApp\Migration
- * @link     https://larpingapp.com
+ * @copyright 2024 Ruben Linde
+ * @license   https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
+ * @link      https://larpingapp.com
  */
+
+declare(strict_types=1);
 
 namespace OCA\LarpingApp\Migration;
 
@@ -36,31 +34,31 @@ class Version0Date20240826193657 extends SimpleMigrationStep
     /**
      * Pre-schema change operations
      *
-     * @param  IOutput                   $output        Migration output
-     * @param  Closure(): ISchemaWrapper $schemaClosure Schema closure
-     * @param  array                     $options       Migration options
+     * @param IOutput                   $output        Migration output
+     * @param Closure(): ISchemaWrapper $schemaClosure Schema closure
+     * @param array                     $options       Migration options
+     *
      * @return void
      */
     public function preSchemaChange(IOutput $output, Closure $schemaClosure, array $options): void
     {
-    }
+    }//end preSchemaChange()
 
     /**
      * Schema change operations
      *
-     * @param  IOutput                   $output        Migration output
-     * @param  Closure(): ISchemaWrapper $schemaClosure Schema closure
-     * @param  array                     $options       Migration options
+     * @param IOutput                   $output        Migration output
+     * @param Closure(): ISchemaWrapper $schemaClosure Schema closure
+     * @param array                     $options       Migration options
+     *
      * @return ISchemaWrapper|null
      */
     public function changeSchema(IOutput $output, Closure $schemaClosure, array $options): ?ISchemaWrapper
     {
-        /**
- * @var ISchemaWrapper $schema 
-*/
+        // @var ISchemaWrapper $schema.
         $schema = $schemaClosure();
 
-        // Create tables
+        // Create tables.
         $this->createAbilitiesTable($schema);
         $this->createConditionsTable($schema);
         $this->createEffectsTable($schema);
@@ -72,19 +70,20 @@ class Version0Date20240826193657 extends SimpleMigrationStep
         $this->createTemplatesTable($schema);
 
         return $schema;
-    }
+    }//end changeSchema()
 
     /**
      * Post-schema change operations
      *
-     * @param  IOutput                   $output        Migration output
-     * @param  Closure(): ISchemaWrapper $schemaClosure Schema closure
-     * @param  array                     $options       Migration options
+     * @param IOutput                   $output        Migration output
+     * @param Closure(): ISchemaWrapper $schemaClosure Schema closure
+     * @param array                     $options       Migration options
+     *
      * @return void
      */
     public function postSchemaChange(IOutput $output, Closure $schemaClosure, array $options): void
     {
-    }
+    }//end postSchemaChange()
 
-    // ... rest of the file with table creation methods
-}
+    // ... rest of the file with table creation methods.
+}//end class

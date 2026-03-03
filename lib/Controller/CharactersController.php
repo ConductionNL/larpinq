@@ -1,72 +1,113 @@
 <?php
+/**
+ * Characters controller for LarpingApp
+ *
+ * @category  Controller
+ * @package   OCA\LarpingApp\Controller
+ * @author    Ruben Linde <ruben@larpingapp.com>
+ * @copyright 2024 Ruben Linde
+ * @license   https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
+ * @link      https://larpingapp.com
+ */
+
+declare(strict_types=1);
 
 namespace OCA\LarpingApp\Controller;
 
 use OCA\LarpingApp\Service\ObjectService;
 use OCA\LarpingApp\Service\CharacterService;
+use OCP\App\IAppManager;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http\DataDownloadResponse;
 use OCP\IRequest;
+use Psr\Container\ContainerInterface;
 
 /**
  * Controller for handling characters related operations
  */
 class CharactersController extends Controller
 {
-    const objectType = 'character';
+    const OBJECTTYPE = 'character';
 
     /**
      * Constructor for the CharactersController
      *
-     * @param string $appName The name of the app
-     * @param IRequest $request The request object
-     * @param ObjectService $objectService The object service object
-     * @param CharacterService $characterService The character service object
+     * @param string             $appName          The name of the app
+     * @param IRequest           $request          The request object
+     * @param ObjectService      $objectService    The object service object
+     * @param CharacterService   $characterService The character service object
+     * @param IAppManager        $appManager       The app manager for checking installed apps
+     * @param ContainerInterface $container        The DI container for resolving cross-app services
      */
     public function __construct(
         $appName,
         IRequest $request,
-		private readonly ObjectService $objectService,
-        private readonly CharacterService $characterService
-    )
-    {
+        private readonly ObjectService $objectService,
+        private readonly CharacterService $characterService,
+        private readonly IAppManager $appManager,
+        private readonly ContainerInterface $container
+    ) {
         parent::__construct($appName, $request);
-    }
-    
+    }//end __construct()
+
     /**
      * Downloads a character PDF using a specific template
-     * 
-     * This method generates and downloads a PDF for a specific character using the provided template.
+     *
+     * Delegates PDF generation to DocuDesk's PdfService and template
+     * lookup to DocuDesk's TemplateService. Returns 424 if DocuDesk
+     * is not installed.
+     *
+     * @param string $id       The ID of the character to download as PDF
+     * @param string $template The ID of the template to use for PDF generation
+     *
+     * @return DataDownloadResponse|JSONResponse A response containing the PDF file for download or an error response
      *
      * @NoAdminRequired
      * @NoCSRFRequired
-     *
-     * @param string $id The ID of the character to download as PDF
-     * @param string $template The ID of the template to use for PDF generation
-     * @return DataDownloadResponse|JSONResponse A response containing the PDF file for download or an error response
      */
     public function downloadPdf(string $id, string $template): DataDownloadResponse|JSONResponse
     {
-        try {
-            // Fetch the character object by its ID
-            $character = $this->objectService->getObject('character', $id);
-            $template  = $this->objectService->getObject('template', $template);
-        } catch (\Exception $exception) {
-            return new JSONResponse(data: ['error' => 'Character or template not found'], statusCode: 404);
+        if ($this->appManager->isEnabledForUser(appId: 'docudesk') === false) {
+            return new JSONResponse(
+                data: ['error' => 'PDF generation requires the DocuDesk app to be installed and enabled'],
+                statusCode: 424
+            );
         }
 
-        // Generate PDF using the specified template
-        $pdfContent = $this->characterService->createCharacterPdf($character, $template);
+        try {
+            $character = $this->objectService->getObject(objectType: 'character', id: $id);
+        } catch (\Exception $exception) {
+            return new JSONResponse(data: ['error' => 'Character not found'], statusCode: 404);
+        }
 
-        // Get PDF as string and return via Nextcloud response framework
-        $pdfString = $pdfContent->Output('', \Mpdf\Output\Destination::STRING_RETURN);
-        $fileName = ($character['name'] ?? 'character') . '_character_sheet.pdf';
+        try {
+            $templateService = $this->container->get('OCA\DocuDesk\Service\TemplateService');
+            $templateData    = $templateService->getTemplate(id: $template);
+        } catch (\Exception $exception) {
+            return new JSONResponse(data: ['error' => 'Template not found'], statusCode: 404);
+        }
+
+        try {
+            $pdfService = $this->container->get('OCA\DocuDesk\Service\PdfService');
+            $pdfString  = $pdfService->renderPdf(
+                templateContent: $templateData['content'] ?? '',
+                data: ['character' => $character, 'template' => $templateData],
+                options: [
+                    'format'      => $templateData['format'] ?? 'A4',
+                    'orientation' => $templateData['orientation'] ?? 'P',
+                ]
+            );
+        } catch (\Exception $exception) {
+            return new JSONResponse(data: ['error' => 'PDF generation failed: '.$exception->getMessage()], statusCode: 500);
+        }
+
+        $fileName = ($character['name'] ?? 'character').'_character_sheet.pdf';
 
         return new DataDownloadResponse(
             $pdfString,
             $fileName,
             'application/pdf'
         );
-    }
-}
+    }//end downloadPdf()
+}//end class

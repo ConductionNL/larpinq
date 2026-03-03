@@ -1,12 +1,17 @@
 <?php
 
-declare(strict_types=1);
-
 /**
- * @copyright Copyright (c) 2024 Ruben Linde <ruben@larpingapp.com>
+ * Condition mapper for LarpingApp
+ *
+ * @category  Database
+ * @package   OCA\LarpingApp\Db
  * @author    Ruben Linde <ruben@larpingapp.com>
- * @license   AGPL-3.0-or-later
+ * @copyright 2024 Ruben Linde
+ * @license   AGPL-3.0-or-later https://www.gnu.org/licenses/agpl-3.0.en.html
+ * @link      https://larpingapp.com
  */
+
+declare(strict_types=1);
 
 namespace OCA\LarpingApp\Db;
 
@@ -17,24 +22,30 @@ use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
 
 /**
+ * Data mapper for Condition entities.
+ *
  * @template-extends QBMapper<Condition>
  * @package          OCA\LarpingApp\Db
  */
 class ConditionMapper extends QBMapper
 {
     /**
+     * Constructor for ConditionMapper.
+     *
      * @param IDBConnection $db Database connection
      */
     public function __construct(IDBConnection $db)
     {
         parent::__construct($db, 'larpingapp_conditions', Condition::class);
-    }
+    }//end __construct()
 
     /**
      * Find a condition by ID
      *
-     * @param  int $id The condition ID
+     * @param int $id The condition ID
+     *
      * @return Condition
+     *
      * @throws \OCP\AppFramework\Db\DoesNotExistException
      * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
      */
@@ -45,12 +56,13 @@ class ConditionMapper extends QBMapper
             ->from($this->getTableName())
             ->where($qb->expr()->eq('id', $qb->createNamedParameter($id)));
         return $this->findEntity($qb);
-    }
+    }//end find()
 
     /**
      * Find all conditions for a user
      *
-     * @param  string $userId The user ID
+     * @param string $userId The user ID
+     *
      * @return Condition[]
      */
     public function findAll(string $userId): array
@@ -59,14 +71,15 @@ class ConditionMapper extends QBMapper
         $qb->select('*')
             ->from($this->getTableName())
             ->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userId)));
-        
+
         return $this->findEntities($qb);
-    }
+    }//end findAll()
 
     /**
      * Create a new condition from array data
      *
-     * @param  array<string,mixed> $data The condition data
+     * @param array<string,mixed> $data The condition data
+     *
      * @return Condition
      */
     public function createFromArray(array $data): Condition
@@ -75,14 +88,16 @@ class ConditionMapper extends QBMapper
         foreach ($data as $key => $value) {
             $condition->$key = $value;
         }
+
         return $this->insert($condition);
-    }
+    }//end createFromArray()
 
     /**
      * Update a condition from array data
      *
-     * @param  int                 $id   The condition ID
-     * @param  array<string,mixed> $data The updated condition data
+     * @param int                 $id   The condition ID
+     * @param array<string,mixed> $data The updated condition data
+     *
      * @return Condition
      */
     public function updateFromArray(int $id, array $data): Condition
@@ -91,6 +106,7 @@ class ConditionMapper extends QBMapper
         foreach ($data as $key => $value) {
             $condition->$key = $value;
         }
+
         return $this->update($condition);
-    }
-}
+    }//end updateFromArray()
+}//end class

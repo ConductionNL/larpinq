@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * Data mapper for Player entities
  *
@@ -10,9 +8,10 @@ declare(strict_types=1);
  * @author    Ruben Linde <ruben@nextcloud.com>
  * @copyright 2024 Ruben Linde
  * @license   AGPL-3.0-or-later https://www.gnu.org/licenses/agpl-3.0.en.html
- *
- * @php-version 8.2
+ * @link      https://larpingapp.com
  */
+
+declare(strict_types=1);
 
 namespace OCA\LarpingApp\Db;
 
@@ -42,16 +41,16 @@ class PlayerMapper extends QBMapper
     public function __construct(IDBConnection $db)
     {
         parent::__construct($db, 'larpingapp_players', Player::class);
-    }
+    }//end __construct()
 
     /**
      * Find a player by ID
      *
      * @param int $id The player ID
-     * 
+     *
      * @throws \OCP\AppFramework\Db\DoesNotExistException
      * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
-     * 
+     *
      * @return Player The found player
      */
     public function find(int $id): Player
@@ -61,11 +60,11 @@ class PlayerMapper extends QBMapper
             ->from($this->getTableName())
             ->where($qb->expr()->eq('id', $qb->createNamedParameter($id)));
         return $this->findEntity($qb);
-    }
+    }//end find()
 
     /**
      * Find all players
-     * 
+     *
      * @return Player[] Array of players
      */
     public function findAll(): array
@@ -73,14 +72,15 @@ class PlayerMapper extends QBMapper
         $qb = $this->db->getQueryBuilder();
         $qb->select('*')
             ->from($this->getTableName());
-        
+
         return $this->findEntities($qb);
-    }
+    }//end findAll()
 
     /**
      * Create a new player from array data
      *
-     * @param  array<string,mixed> $data The player data
+     * @param array<string,mixed> $data The player data
+     *
      * @return Player
      */
     public function createFromArray(array $data): Player
@@ -89,14 +89,16 @@ class PlayerMapper extends QBMapper
         foreach ($data as $key => $value) {
             $player->$key = $value;
         }
+
         return $this->insert($player);
-    }
+    }//end createFromArray()
 
     /**
      * Update a player from array data
      *
-     * @param  int                 $id   The player ID
-     * @param  array<string,mixed> $data The updated player data
+     * @param int                 $id   The player ID
+     * @param array<string,mixed> $data The updated player data
+     *
      * @return Player
      */
     public function updateFromArray(int $id, array $data): Player
@@ -105,6 +107,7 @@ class PlayerMapper extends QBMapper
         foreach ($data as $key => $value) {
             $player->$key = $value;
         }
+
         return $this->update($player);
-    }
-}
+    }//end updateFromArray()
+}//end class
