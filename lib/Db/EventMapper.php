@@ -39,7 +39,7 @@ class EventMapper extends QBMapper
      */
     public function __construct(IDBConnection $db)
     {
-        parent::__construct($db, 'larpingapp_events', Event::class);
+        parent::__construct(db: $db, tableName: 'larpingapp_events', entityClass: Event::class);
     }//end __construct()
 
     /**
@@ -59,7 +59,7 @@ class EventMapper extends QBMapper
             ->from($this->getTableName())
             ->where($qb->expr()->eq('id', $qb->createNamedParameter($id)));
 
-        return $this->findEntity($qb);
+        return $this->findEntity(query: $qb);
     }//end find()
 
     /**
@@ -109,7 +109,7 @@ class EventMapper extends QBMapper
             }
         }
 
-        return $this->findEntities($qb);
+        return $this->findEntities(query: $qb);
     }//end findAll()
 
     /**
@@ -126,7 +126,7 @@ class EventMapper extends QBMapper
             $event->$key = $value;
         }
 
-        return $this->insert($event);
+        return $this->insert(entity: $event);
     }//end createFromArray()
 
     /**
@@ -139,11 +139,11 @@ class EventMapper extends QBMapper
      */
     public function updateFromArray(int $id, array $data): Event
     {
-        $event = $this->find($id);
+        $event = $this->find(id: $id);
         foreach ($data as $key => $value) {
             $event->$key = $value;
         }
 
-        return $this->update($event);
+        return $this->update(entity: $event);
     }//end updateFromArray()
 }//end class

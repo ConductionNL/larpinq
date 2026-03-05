@@ -1,22 +1,15 @@
 <template>
-	<NcAppContent>
+	<div class="dashboard">
 		<h2 class="pageHeader">
-			Dashboard
+			{{ t('larpingapp', 'Dashboard') }}
 		</h2>
-
-		Welkom! tadaa
-	</NcAppContent>
+		<p>{{ t('larpingapp', 'LarpingApp') }}</p>
+	</div>
 </template>
 
 <script>
-
-import { NcAppContent } from '@nextcloud/vue'
-
 export default {
 	name: 'DashboardIndex',
-	components: {
-		NcAppContent,
-	},
 }
 </script>
 

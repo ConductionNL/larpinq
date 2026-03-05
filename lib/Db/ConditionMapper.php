@@ -36,7 +36,7 @@ class ConditionMapper extends QBMapper
      */
     public function __construct(IDBConnection $db)
     {
-        parent::__construct($db, 'larpingapp_conditions', Condition::class);
+        parent::__construct(db: $db, tableName: 'larpingapp_conditions', entityClass: Condition::class);
     }//end __construct()
 
     /**
@@ -55,7 +55,7 @@ class ConditionMapper extends QBMapper
         $qb->select('*')
             ->from($this->getTableName())
             ->where($qb->expr()->eq('id', $qb->createNamedParameter($id)));
-        return $this->findEntity($qb);
+        return $this->findEntity(query: $qb);
     }//end find()
 
     /**
@@ -72,7 +72,7 @@ class ConditionMapper extends QBMapper
             ->from($this->getTableName())
             ->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userId)));
 
-        return $this->findEntities($qb);
+        return $this->findEntities(query: $qb);
     }//end findAll()
 
     /**
@@ -89,7 +89,7 @@ class ConditionMapper extends QBMapper
             $condition->$key = $value;
         }
 
-        return $this->insert($condition);
+        return $this->insert(entity: $condition);
     }//end createFromArray()
 
     /**
@@ -102,11 +102,11 @@ class ConditionMapper extends QBMapper
      */
     public function updateFromArray(int $id, array $data): Condition
     {
-        $condition = $this->find($id);
+        $condition = $this->find(id: $id);
         foreach ($data as $key => $value) {
             $condition->$key = $value;
         }
 
-        return $this->update($condition);
+        return $this->update(entity: $condition);
     }//end updateFromArray()
 }//end class

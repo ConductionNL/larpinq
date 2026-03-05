@@ -40,7 +40,7 @@ class ItemMapper extends QBMapper
      */
     public function __construct(IDBConnection $db)
     {
-        parent::__construct($db, 'larpingapp_items', Item::class);
+        parent::__construct(db: $db, tableName: 'larpingapp_items', entityClass: Item::class);
     }//end __construct()
 
     /**
@@ -59,7 +59,7 @@ class ItemMapper extends QBMapper
         $qb->select('*')
             ->from($this->getTableName())
             ->where($qb->expr()->eq('id', $qb->createNamedParameter($id)));
-        return $this->findEntity($qb);
+        return $this->findEntity(query: $qb);
     }//end find()
 
     /**
@@ -73,7 +73,7 @@ class ItemMapper extends QBMapper
         $qb->select('*')
             ->from($this->getTableName());
 
-        return $this->findEntities($qb);
+        return $this->findEntities(query: $qb);
     }//end findAll()
 
     /**
@@ -90,7 +90,7 @@ class ItemMapper extends QBMapper
             $item->$key = $value;
         }
 
-        return $this->insert($item);
+        return $this->insert(entity: $item);
     }//end createFromArray()
 
     /**
@@ -103,11 +103,11 @@ class ItemMapper extends QBMapper
      */
     public function updateFromArray(int $id, array $data): Item
     {
-        $item = $this->find($id);
+        $item = $this->find(id: $id);
         foreach ($data as $key => $value) {
             $item->$key = $value;
         }
 
-        return $this->update($item);
+        return $this->update(entity: $item);
     }//end updateFromArray()
 }//end class

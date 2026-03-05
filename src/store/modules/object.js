@@ -1,19 +1,18 @@
-/* eslint-disable no-console */
-import { defineStore } from 'pinia'
-import { AuditTrail } from '../../entities/index.js'
+/**
+ * Object store for LarpingApp — powered by @conduction/nextcloud-vue.
+ *
+ * Uses createObjectStore('object') to maintain the same Pinia store ID.
+ * The full implementation (CRUD, pagination, caching, resolveReferences)
+ * lives in the shared library.
+ *
+ * Plugins add sub-resource support for files, audit trails, and relations.
+ */
+import { createObjectStore, filesPlugin, auditTrailsPlugin, relationsPlugin } from '@conduction/nextcloud-vue'
 
-export const useObjectStore = defineStore('object', {
-	state: () => ({
-		auditTrailItem: false,
-	}),
-	actions: {
-		setAuditTrailItem(auditTrailItem) {
-			this.auditTrailItem = auditTrailItem && new AuditTrail(auditTrailItem)
-		},
-		setAuditTrails(auditTrails) {
-			this.auditTrails = auditTrails.map(
-				(auditTrail) => new AuditTrail(auditTrail),
-			)
-		},
-	}
+export const useObjectStore = createObjectStore('object', {
+	plugins: [
+		filesPlugin(),
+		auditTrailsPlugin(),
+		relationsPlugin(),
+	],
 })

@@ -48,8 +48,8 @@ class Item extends Entity implements JsonSerializable
      */
     public function __construct()
     {
-        $this->addType('name', 'string');
-        $this->addType('description', 'string');
+        $this->addType(fieldName: 'name', type: 'string');
+        $this->addType(fieldName: 'description', type: 'string');
     }//end __construct()
 
     /**

@@ -36,7 +36,7 @@ class CharacterMapper extends QBMapper
      */
     public function __construct(IDBConnection $db)
     {
-        parent::__construct($db, 'larpingapp_characters', Character::class);
+        parent::__construct(db: $db, tableName: 'larpingapp_characters', entityClass: Character::class);
     }//end __construct()
 
     /**
@@ -55,7 +55,7 @@ class CharacterMapper extends QBMapper
         $qb->select('*')
             ->from($this->getTableName())
             ->where($qb->expr()->eq('id', $qb->createNamedParameter($id)));
-        return $this->findEntity($qb);
+        return $this->findEntity(query: $qb);
     }//end find()
 
     /**
@@ -72,7 +72,7 @@ class CharacterMapper extends QBMapper
             ->from($this->getTableName())
             ->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userId)));
 
-        return $this->findEntities($qb);
+        return $this->findEntities(query: $qb);
     }//end findAll()
 
     /**
@@ -89,7 +89,7 @@ class CharacterMapper extends QBMapper
             $character->$key = $value;
         }
 
-        return $this->insert($character);
+        return $this->insert(entity: $character);
     }//end createFromArray()
 
     /**
@@ -102,11 +102,11 @@ class CharacterMapper extends QBMapper
      */
     public function updateFromArray(int $id, array $data): Character
     {
-        $character = $this->find($id);
+        $character = $this->find(id: $id);
         foreach ($data as $key => $value) {
             $character->$key = $value;
         }
 
-        return $this->update($character);
+        return $this->update(entity: $character);
     }//end updateFromArray()
 }//end class

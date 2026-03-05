@@ -42,7 +42,7 @@ class ObjectsController extends Controller
         private readonly ObjectService $objectService,
         private readonly CharacterService $characterService
     ) {
-        parent::__construct($appName, $request);
+        parent::__construct(appName: $appName, request: $request);
     }//end __construct()
 
     /**

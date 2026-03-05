@@ -36,7 +36,7 @@ class SettingMapper extends QBMapper
      */
     public function __construct(IDBConnection $db)
     {
-        parent::__construct($db, 'larpingapp_settings', Setting::class);
+        parent::__construct(db: $db, tableName: 'larpingapp_settings', entityClass: Setting::class);
     }//end __construct()
 
     /**
@@ -55,7 +55,7 @@ class SettingMapper extends QBMapper
         $qb->select('*')
             ->from($this->getTableName())
             ->where($qb->expr()->eq('id', $qb->createNamedParameter($id)));
-        return $this->findEntity($qb);
+        return $this->findEntity(query: $qb);
     }//end find()
 
     /**
@@ -72,7 +72,7 @@ class SettingMapper extends QBMapper
             ->from($this->getTableName())
             ->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userId)));
 
-        return $this->findEntities($qb);
+        return $this->findEntities(query: $qb);
     }//end findAll()
 
     /**
@@ -89,7 +89,7 @@ class SettingMapper extends QBMapper
             $setting->$key = $value;
         }
 
-        return $this->insert($setting);
+        return $this->insert(entity: $setting);
     }//end createFromArray()
 
     /**
@@ -102,11 +102,11 @@ class SettingMapper extends QBMapper
      */
     public function updateFromArray(int $id, array $data): Setting
     {
-        $setting = $this->find($id);
+        $setting = $this->find(id: $id);
         foreach ($data as $key => $value) {
             $setting->$key = $value;
         }
 
-        return $this->update($setting);
+        return $this->update(entity: $setting);
     }//end updateFromArray()
 }//end class

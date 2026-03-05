@@ -48,8 +48,8 @@ class Setting extends Entity implements JsonSerializable
      */
     public function __construct()
     {
-        $this->addType('name', 'string');
-        $this->addType('value', 'string');
+        $this->addType(fieldName: 'name', type: 'string');
+        $this->addType(fieldName: 'value', type: 'string');
     }//end __construct()
 
     /**

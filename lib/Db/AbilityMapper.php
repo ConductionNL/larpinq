@@ -34,7 +34,7 @@ class AbilityMapper extends QBMapper
      */
     public function __construct(IDBConnection $db)
     {
-        parent::__construct($db, 'larpingapp_abilities', Ability::class);
+        parent::__construct(db: $db, tableName: 'larpingapp_abilities', entityClass: Ability::class);
     }//end __construct()
 
     /**
@@ -53,7 +53,7 @@ class AbilityMapper extends QBMapper
         $qb->select('*')
             ->from($this->getTableName())
             ->where($qb->expr()->eq('id', $qb->createNamedParameter($id)));
-        return $this->findEntity($qb);
+        return $this->findEntity(query: $qb);
     }//end find()
 
     /**
@@ -70,7 +70,7 @@ class AbilityMapper extends QBMapper
             ->from($this->getTableName())
             ->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userId)));
 
-        return $this->findEntities($qb);
+        return $this->findEntities(query: $qb);
     }//end findAll()
 
     /**
@@ -87,7 +87,7 @@ class AbilityMapper extends QBMapper
             $ability->$key = $value;
         }
 
-        return $this->insert($ability);
+        return $this->insert(entity: $ability);
     }//end createFromArray()
 
     /**
@@ -100,11 +100,11 @@ class AbilityMapper extends QBMapper
      */
     public function updateFromArray(int $id, array $data): Ability
     {
-        $ability = $this->find($id);
+        $ability = $this->find(id: $id);
         foreach ($data as $key => $value) {
             $ability->$key = $value;
         }
 
-        return $this->update($ability);
+        return $this->update(entity: $ability);
     }//end updateFromArray()
 }//end class

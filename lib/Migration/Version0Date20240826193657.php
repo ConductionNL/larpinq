@@ -59,15 +59,15 @@ class Version0Date20240826193657 extends SimpleMigrationStep
         $schema = $schemaClosure();
 
         // Create tables.
-        $this->createAbilitiesTable($schema);
-        $this->createConditionsTable($schema);
-        $this->createEffectsTable($schema);
-        $this->createEventsTable($schema);
-        $this->createItemsTable($schema);
-        $this->createPlayersTable($schema);
-        $this->createSettingsTable($schema);
-        $this->createSkillsTable($schema);
-        $this->createTemplatesTable($schema);
+        $this->createAbilitiesTable(schema: $schema);
+        $this->createConditionsTable(schema: $schema);
+        $this->createEffectsTable(schema: $schema);
+        $this->createEventsTable(schema: $schema);
+        $this->createItemsTable(schema: $schema);
+        $this->createPlayersTable(schema: $schema);
+        $this->createSettingsTable(schema: $schema);
+        $this->createSkillsTable(schema: $schema);
+        $this->createTemplatesTable(schema: $schema);
 
         return $schema;
     }//end changeSchema()

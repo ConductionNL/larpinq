@@ -197,7 +197,7 @@ class CharacterService
         $characters        = $this->characterMapper->findAll();
         $updatedCharacters = [];
         foreach ($characters as $character) {
-            $updatedCharacters[] = $this->calculateCharacter($character);
+            $updatedCharacters[] = $this->calculateCharacter(character: $character);
         }
 
         return $updatedCharacters;
@@ -226,7 +226,10 @@ class CharacterService
         }
 
         // Apply effects from skills if character has any.
-        if (isset($character['skills']) === true && is_array($character['skills']) === true && empty($character['skills']) === false) {
+        if (isset($character['skills']) === true
+            && is_array($character['skills']) === true
+            && empty($character['skills']) === false
+        ) {
             foreach ($character['skills'] as $skillId) {
                 $skill = $this->allSkills[$skillId] ?? null;
                 if ($skill !== null && isset($skill['effects']) === true && empty($skill['effects']) === false) {
@@ -236,7 +239,10 @@ class CharacterService
         }
 
         // Apply effects from items if character has any.
-        if (isset($character['items']) === true && is_array($character['items']) === true && empty($character['items']) === false) {
+        if (isset($character['items']) === true
+            && is_array($character['items']) === true
+            && empty($character['items']) === false
+        ) {
             foreach ($character['items'] as $itemId) {
                 $item = $this->allItems[$itemId] ?? null;
                 if ($item !== null && isset($item['effects']) === true && empty($item['effects']) === false) {
@@ -246,7 +252,10 @@ class CharacterService
         }
 
         // Apply effects from conditions if character has any.
-        if (isset($character['conditions']) === true && is_array($character['conditions']) === true && empty($character['conditions']) === false) {
+        if (isset($character['conditions']) === true
+            && is_array($character['conditions']) === true
+            && empty($character['conditions']) === false
+        ) {
             foreach ($character['conditions'] as $conditionId) {
                 $condition = $this->allConditions[$conditionId] ?? null;
                 if ($condition !== null && isset($condition['effects']) === true && empty($condition['effects']) === false) {
@@ -256,7 +265,10 @@ class CharacterService
         }
 
         // Apply effects from events if character has any.
-        if (isset($character['events']) === true && is_array($character['events']) === true && empty($character['events']) === false) {
+        if (isset($character['events']) === true
+            && is_array($character['events']) === true
+            && empty($character['events']) === false
+        ) {
             foreach ($character['events'] as $eventId) {
                 $event = $this->allEvents[$eventId] ?? null;
                 if ($event !== null && isset($event['effects']) === true && empty($event['effects']) === false) {

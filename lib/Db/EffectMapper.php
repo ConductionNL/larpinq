@@ -36,7 +36,7 @@ class EffectMapper extends QBMapper
      */
     public function __construct(IDBConnection $db)
     {
-        parent::__construct($db, 'larpingapp_effects', Effect::class);
+        parent::__construct(db: $db, tableName: 'larpingapp_effects', entityClass: Effect::class);
     }//end __construct()
 
     /**
@@ -55,7 +55,7 @@ class EffectMapper extends QBMapper
         $qb->select('*')
             ->from($this->getTableName())
             ->where($qb->expr()->eq('id', $qb->createNamedParameter($id)));
-        return $this->findEntity($qb);
+        return $this->findEntity(query: $qb);
     }//end find()
 
     /**
@@ -72,7 +72,7 @@ class EffectMapper extends QBMapper
             ->from($this->getTableName())
             ->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userId)));
 
-        return $this->findEntities($qb);
+        return $this->findEntities(query: $qb);
     }//end findAll()
 
     /**
@@ -89,7 +89,7 @@ class EffectMapper extends QBMapper
             $effect->$key = $value;
         }
 
-        return $this->insert($effect);
+        return $this->insert(entity: $effect);
     }//end createFromArray()
 
     /**
@@ -102,11 +102,11 @@ class EffectMapper extends QBMapper
      */
     public function updateFromArray(int $id, array $data): Effect
     {
-        $effect = $this->find($id);
+        $effect = $this->find(id: $id);
         foreach ($data as $key => $value) {
             $effect->$key = $value;
         }
 
-        return $this->update($effect);
+        return $this->update(entity: $effect);
     }//end updateFromArray()
 }//end class

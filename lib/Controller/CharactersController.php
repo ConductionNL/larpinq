@@ -48,7 +48,7 @@ class CharactersController extends Controller
         private readonly IAppManager $appManager,
         private readonly ContainerInterface $container
     ) {
-        parent::__construct($appName, $request);
+        parent::__construct(appName: $appName, request: $request);
     }//end __construct()
 
     /**

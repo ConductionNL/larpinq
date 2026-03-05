@@ -39,7 +39,7 @@ class SkillMapper extends QBMapper
      */
     public function __construct(IDBConnection $db)
     {
-        parent::__construct($db, 'larpingapp_skills', Skill::class);
+        parent::__construct(db: $db, tableName: 'larpingapp_skills', entityClass: Skill::class);
     }//end __construct()
 
     /**
@@ -134,9 +134,9 @@ class SkillMapper extends QBMapper
      */
     public function updateFromArray(int $id, array $object): Skill
     {
-        $skill = $this->find($id);
+        $skill = $this->find(id: $id);
         $skill->hydrate($object);
 
-        return $this->update($skill);
+        return $this->update(entity: $skill);
     }//end updateFromArray()
 }//end class

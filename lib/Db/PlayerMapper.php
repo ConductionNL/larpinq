@@ -40,7 +40,7 @@ class PlayerMapper extends QBMapper
      */
     public function __construct(IDBConnection $db)
     {
-        parent::__construct($db, 'larpingapp_players', Player::class);
+        parent::__construct(db: $db, tableName: 'larpingapp_players', entityClass: Player::class);
     }//end __construct()
 
     /**
@@ -59,7 +59,7 @@ class PlayerMapper extends QBMapper
         $qb->select('*')
             ->from($this->getTableName())
             ->where($qb->expr()->eq('id', $qb->createNamedParameter($id)));
-        return $this->findEntity($qb);
+        return $this->findEntity(query: $qb);
     }//end find()
 
     /**
@@ -73,7 +73,7 @@ class PlayerMapper extends QBMapper
         $qb->select('*')
             ->from($this->getTableName());
 
-        return $this->findEntities($qb);
+        return $this->findEntities(query: $qb);
     }//end findAll()
 
     /**
@@ -90,7 +90,7 @@ class PlayerMapper extends QBMapper
             $player->$key = $value;
         }
 
-        return $this->insert($player);
+        return $this->insert(entity: $player);
     }//end createFromArray()
 
     /**
@@ -103,11 +103,11 @@ class PlayerMapper extends QBMapper
      */
     public function updateFromArray(int $id, array $data): Player
     {
-        $player = $this->find($id);
+        $player = $this->find(id: $id);
         foreach ($data as $key => $value) {
             $player->$key = $value;
         }
 
-        return $this->update($player);
+        return $this->update(entity: $player);
     }//end updateFromArray()
 }//end class

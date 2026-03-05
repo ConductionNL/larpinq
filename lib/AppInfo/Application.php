@@ -1,9 +1,7 @@
 <?php
 
-declare(strict_types=1);
-
 /**
- * LarpingApp application class
+ * LarpingApp application class.
  *
  * @category  Application
  * @package   OCA\LarpingApp\AppInfo
@@ -15,12 +13,15 @@ declare(strict_types=1);
  * @phpversion 8.2
  */
 
+declare(strict_types=1);
+
 namespace OCA\LarpingApp\AppInfo;
 
+use OCA\LarpingApp\Service\SettingsService;
 use OCP\AppFramework\App;
+use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
 use OCP\AppFramework\Bootstrap\IRegistrationContext;
-use OCP\AppFramework\Bootstrap\IBootContext;
 
 /**
  * Main application class for LarpingApp
@@ -43,32 +44,40 @@ class Application extends App implements IBootstrap
      *
      * @param array<string,mixed> $urlParams URL parameters
      */
-    public function __construct(array $urlParams = [])
+    public function __construct(array $urlParams=[])
     {
-        parent::__construct(self::APP_ID, $urlParams);
-    }
+        parent::__construct(appName: self::APP_ID, urlParams: $urlParams);
+    }//end __construct()
 
     /**
      * Register application services
      *
-     * @param IRegistrationContext $context Registration context
-     * 
+     * @param IRegistrationContext $context Registration context.
+     *
      * @return void
      */
     public function register(IRegistrationContext $context): void
     {
-        // Register services here
-    }
+        // Register services here.
+    }//end register()
 
     /**
-     * Boot the application
+     * Boot the application and import register configuration
      *
      * @param IBootContext $context Boot context
-     * 
+     *
      * @return void
      */
     public function boot(IBootContext $context): void
     {
-        // Boot services here
-    }
-}
+        $server = $context->getServerContainer();
+
+        try {
+            $settingsService = $server->get(SettingsService::class);
+            $settingsService->loadSettings();
+        } catch (\Exception $e) {
+            // OpenRegister not available or import failed — skip silently.
+        }//end try
+
+    }//end boot()
+}//end class

@@ -175,7 +175,7 @@ class ObjectService
         }
 
         // Get the appropriate mapper for the object type.
-        $mapper = $this->getMapper($objectType);
+        $mapper = $this->getMapper(objectType: $objectType);
 
         // Check if extend is requested for non-OpenRegister objects.
         if (empty($extend) === false && ($mapper instanceof \OCA\OpenRegister\Service\ObjectService) === false) {
@@ -224,7 +224,7 @@ class ObjectService
         ?array $extend=[]
     ): array {
         // Get the appropriate mapper for the object type.
-        $mapper = $this->getMapper($objectType);
+        $mapper = $this->getMapper(objectType: $objectType);
 
         // Check if extend is requested for non-OpenRegister objects.
         if (empty($extend) === false && ($mapper instanceof \OCA\OpenRegister\Service\ObjectService) === false) {
@@ -271,7 +271,7 @@ class ObjectService
         array $filters=[],
     ): array {
         // Get the appropriate mapper for the object type.
-        $mapper = $this->getMapper($objectType);
+        $mapper = $this->getMapper(objectType: $objectType);
 
         // Use the mapper to find and return the objects based on the provided parameters.
         if (($mapper instanceof \OCA\OpenRegister\Service\ObjectService) === true) {
@@ -322,7 +322,7 @@ class ObjectService
         );
 
         // Get the appropriate mapper for the object type.
-        $mapper = $this->getMapper($objectType);
+        $mapper = $this->getMapper(objectType: $objectType);
 
         // Use the mapper to find and return multiple objects based on the provided cleaned ids.
         return $mapper->findMultiple($cleanedIds);
@@ -342,7 +342,7 @@ class ObjectService
     public function getAllObjects(string $objectType, ?int $limit=null, ?int $offset=null): array
     {
         // Get the appropriate mapper for the object type.
-        $mapper = $this->getMapper($objectType);
+        $mapper = $this->getMapper(objectType: $objectType);
 
         // Use the mapper to find and return all objects of the specified type.
         return $mapper->findAll(limit: $limit, offset: $offset);
@@ -363,7 +363,7 @@ class ObjectService
     public function saveObject(string $objectType, array $object, array $extend=[], bool $updateVersion=true): mixed
     {
         // Get the appropriate mapper for the object type.
-        $mapper = $this->getMapper($objectType);
+        $mapper = $this->getMapper(objectType: $objectType);
         // If the object has an id, update it; otherwise, create a new object.
         if (isset($object['id']) === true) {
             return $mapper->updateFromArray(
@@ -385,12 +385,12 @@ class ObjectService
      *
      * @return bool True if the object was successfully deleted, false otherwise.
      *
-     * @throws ContainerExceptionInterface|NotFoundExceptionInterface|\OCP\DB\Exception If an unknown object type is provided.
+     * @throws ContainerExceptionInterface|NotFoundExceptionInterface|\OCP\DB\Exception If unknown type.
      */
     public function deleteObject(string $objectType, string|int $id): bool
     {
         // Get the appropriate mapper for the object type.
-        $mapper = $this->getMapper($objectType);
+        $mapper = $this->getMapper(objectType: $objectType);
 
         // Use the mapper to get and delete the object.
         try {
@@ -435,7 +435,7 @@ class ObjectService
      */
     private function getCount(string $objectType, array $filters=[]): int
     {
-        $mapper = $this->getMapper($objectType);
+        $mapper = $this->getMapper(objectType: $objectType);
         if (($mapper instanceof \OCA\OpenRegister\Service\ObjectService) === true) {
             return $mapper->count(filters: $filters);
         }
@@ -548,11 +548,11 @@ class ObjectService
             // Get a mapper for the property.
             $propertyObject = $property;
             try {
-                $mapper         = $this->getMapper($property);
+                $mapper         = $this->getMapper(objectType: $property);
                 $propertyObject = $singularProperty;
             } catch (Exception $e) {
                 try {
-                    $mapper         = $this->getMapper($singularProperty);
+                    $mapper         = $this->getMapper(objectType: $singularProperty);
                     $propertyObject = $singularProperty;
                 } catch (Exception $e) {
                     // If still no mapper, throw a no mapper available error.
@@ -602,7 +602,7 @@ class ObjectService
     public function getRelations(string $objectType, string $id): array
     {
         // Get the mapper first.
-        $mapper = $this->getMapper($objectType);
+        $mapper = $this->getMapper(objectType: $objectType);
 
         // Get audit trails from OpenRegister.
         $auditTrails = $mapper->getRelations($id);
@@ -620,7 +620,7 @@ class ObjectService
      */
     public function getUses(string $objectType, string $id): array
     {
-        $mapper = $this->getMapper($objectType);
+        $mapper = $this->getMapper(objectType: $objectType);
         $uses   = $mapper->getUses($id);
         return $uses;
     }//end getUses()
@@ -636,7 +636,7 @@ class ObjectService
     public function getFiles(string $objectType, string $id): array
     {
         // Get the mapper first.
-        $mapper = $this->getMapper($objectType);
+        $mapper = $this->getMapper(objectType: $objectType);
 
         return $mapper->formatFiles($mapper->getFiles($id));
     }//end getFiles()
@@ -652,7 +652,7 @@ class ObjectService
     public function getAuditTrail(string $objectType, string $id): array
     {
         // Get the mapper first.
-        $mapper = $this->getMapper($objectType);
+        $mapper = $this->getMapper(objectType: $objectType);
 
         // Get audit trails from OpenRegister.
         $auditTrails = $mapper->getAuditTrail($id);
@@ -672,7 +672,7 @@ class ObjectService
      */
     public function lockObject(string $objectType, string|int $id, ?string $process=null, ?int $duration=3600): mixed
     {
-        $mapper = $this->getMapper($objectType);
+        $mapper = $this->getMapper(objectType: $objectType);
         return $mapper->lockObject($id, $process, $duration);
     }//end lockObject()
 
@@ -686,7 +686,7 @@ class ObjectService
      */
     public function unlockObject(string $objectType, string|int $id): mixed
     {
-        return $this->getMapper($objectType)->unlockObject($id);
+        return $this->getMapper(objectType: $objectType)->unlockObject($id);
     }//end unlockObject()
 
     /**
@@ -699,7 +699,7 @@ class ObjectService
      */
     public function isLocked(string $objectType, string|int $id): bool
     {
-        return $this->getMapper($objectType)->isLocked($id);
+        return $this->getMapper(objectType: $objectType)->isLocked($id);
     }//end isLocked()
 
     /**
@@ -714,7 +714,7 @@ class ObjectService
      */
     public function revertObject(string $objectType, string|int $id, $until=null, bool $overwriteVersion=false): mixed
     {
-        return $this->getMapper($objectType)->revertObject(
+        return $this->getMapper(objectType: $objectType)->revertObject(
             id: $id,
             until: $until,
             overwriteVersion: $overwriteVersion

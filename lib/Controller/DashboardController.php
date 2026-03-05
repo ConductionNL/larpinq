@@ -44,7 +44,7 @@ class DashboardController extends Controller
         IRequest $request,
         private readonly IAppConfig $config
     ) {
-        parent::__construct($appName, $request);
+        parent::__construct(appName: $appName, request: $request);
     }//end __construct()
 
     /**

@@ -6,6 +6,8 @@
     <summary>Manage your live roleplaying setting</summary>
     <description><![CDATA[📰 A management tool for larp organisation
 
+**Requires:** [OpenRegister](https://apps.nextcloud.com/apps/openregister) (install from the [Nextcloud App Store](https://apps.nextcloud.com/apps/openregister)).
+
 Larping provides a tool to manage your setting
 
 - 📲 Create skills, items, conditions

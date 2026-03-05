@@ -183,7 +183,8 @@ All other fields (ocName, background, skills, items, conditions, events, stats, 
 
 ### Character Details (`CharacterDetails.vue`)
 
-- Header with character name and "Acties" dropdown menu containing: Edit, Skills bewerken, Items bewerken, Condities bewerken, Events bewerken, Als pdf downloaden, Accoderen, Verwijderen
+- Header with character name and "Acties" dropdown menu containing: Edit, Skills bewerken, Items bewerken, Condities bewerken, Events bewerken, Als pdf downloaden (visible only when DocuDesk is installed), Accoderen, Verwijderen
+- DocuDesk availability check on mount: probes DocuDesk template API, hides PDF download action if unavailable
 - Notice card displayed when character has a `notice` value
 - Summary and description text
 - Tabbed interface (Bootstrap Vue `BTabs`) with seven tabs: Eigenschappen, Skills, Items, Conditions, Events, Background, Logging
