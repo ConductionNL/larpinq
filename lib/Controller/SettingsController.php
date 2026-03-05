@@ -1,131 +1,89 @@
 <?php
+
 /**
- * LarpingApp Settings Controller
+ * LarpingApp SettingsController.
  *
- * This file contains the controller class for handling settings in the LarpingApp application.
+ * Controller for managing LarpingApp application settings.
  *
- * @category Controller
- * @package  OCA\LarpingApp\Controller
- *
- * @author    Conduction Development Team <info@conduction.nl>
- * @copyright 2024 Conduction B.V.
+ * @category  Controller
+ * @package   OCA\LarpingApp\Controller
+ * @author    Ruben Linde <ruben@larpingapp.com>
+ * @copyright 2024 Ruben Linde
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
- *
- * @version GIT: <git_id>
- *
- * @link https://www.Larping.app
+ * @version   GIT: <git_id>
+ * @link      https://larpingapp.com
  */
+
+declare(strict_types=1);
 
 namespace OCA\LarpingApp\Controller;
 
-use OCP\IAppConfig;
+use OCA\LarpingApp\AppInfo\Application;
+use OCA\LarpingApp\Service\SettingsService;
 use OCP\AppFramework\Controller;
-use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\IRequest;
-use Psr\Container\ContainerInterface;
-use OCP\App\IAppManager;
-use OCA\LarpingApp\Service\SettingsService;
 
 /**
- * Controller for handling settings-related operations in the larping.
+ * Controller for LarpingApp settings.
+ *
+ * @category Controller
+ * @package  OCA\LarpingApp\Controller
+ * @author   Ruben Linde <ruben@larpingapp.com>
+ * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ * @link     https://larpingapp.com
  */
 class SettingsController extends Controller
 {
-
     /**
-     * The OpenRegister object service.
+     * Constructor.
      *
-     * @var \OCA\OpenRegister\Service\ObjectService|null The OpenRegister object service.
-     */
-    private $objectService;
-
-
-    /**
-     * SettingsController constructor.
+     * @param IRequest        $request         The request.
+     * @param SettingsService $settingsService The settings service.
      *
-     * @param string             $appName         The name of the app
-     * @param IRequest           $request         The request object
-     * @param IAppConfig         $config          The app configuration
-     * @param ContainerInterface $container       The container
-     * @param IAppManager        $appManager      The app manager
-     * @param SettingsService    $settingsService The settings service
+     * @return void
      */
     public function __construct(
-        $appName,
         IRequest $request,
-        private readonly IAppConfig $config,
-        private readonly ContainerInterface $container,
-        private readonly IAppManager $appManager,
         private readonly SettingsService $settingsService,
     ) {
-        parent::__construct($appName, $request);
+        parent::__construct(appName: Application::APP_ID, request: $request);
 
     }//end __construct()
 
-
     /**
-     * Attempts to retrieve the OpenRegister service from the container.
+     * Get current LarpingApp settings.
      *
-     * @return \OCA\OpenRegister\Service\ObjectService|null The OpenRegister service if available, null otherwise.
-     * @throws \RuntimeException If the service is not available.
-     */
-    public function getObjectService(): ?\OCA\OpenRegister\Service\ObjectService
-    {
-        if (in_array(needle: 'openregister', haystack: $this->appManager->getInstalledApps()) === true) {
-            $this->objectService = $this->container->get('OCA\OpenRegister\Service\ObjectService');
-            return $this->objectService;
-        }
-
-        throw new \RuntimeException('OpenRegister service is not available.');
-
-    }//end getObjectService()
-
-
-    /**
-     * Attempts to retrieve the Configuration service from the container.
+     * @return JSONResponse The settings response.
      *
-     * @return \OCA\OpenRegister\Service\ConfigurationService|null The Configuration service if available, null otherwise.
-     * @throws \RuntimeException If the service is not available.
-     */
-    public function getConfigurationService(): ?\OCA\OpenRegister\Service\ConfigurationService
-    {
-        // Check if the 'openregister' app is installed.
-        if (in_array(needle: 'openregister', haystack: $this->appManager->getInstalledApps()) === true) {
-            // Retrieve the ConfigurationService from the container.
-            $configurationService = $this->container->get('OCA\OpenRegister\Service\ConfigurationService');
-            return $configurationService;
-        }
-
-        // Throw an exception if the service is not available.
-        throw new \RuntimeException('Configuration service is not available.');
-
-    }//end getConfigurationService()
-
-
-    /**
-     * Retrieve the current settings.
-     *
-     * @return JSONResponse JSON response containing the current settings.
-     *
+     * @NoAdminRequired
      * @NoCSRFRequired
      */
     public function index(): JSONResponse
     {
-        try {
-            $data = $this->settingsService->getSettings();
-            return new JSONResponse($data);
-        } catch (\Exception $e) {
-            return new JSONResponse(['error' => $e->getMessage()], 500);
-        }
+        $data = [
+            'objectTypes'   => [
+                'ability',
+                'character',
+                'condition',
+                'effect',
+                'event',
+                'item',
+                'player',
+                'setting',
+                'skill',
+            ],
+            'configuration' => $this->settingsService->getSettings(),
+        ];
+
+        return new JSONResponse($data);
 
     }//end index()
 
-
     /**
-     * Handle the post request to update settings.
+     * Update LarpingApp settings.
      *
-     * @return JSONResponse JSON response containing the updated settings.
+     * @return JSONResponse The updated settings response.
      *
      * @NoCSRFRequired
      */
@@ -133,32 +91,52 @@ class SettingsController extends Controller
     {
         try {
             $data   = $this->request->getParams();
-            $result = $this->settingsService->updateSettings($data);
-            return new JSONResponse($result);
+            $config = $this->settingsService->updateSettings(data: $data);
+
+            return new JSONResponse(
+                [
+                    'success' => true,
+                    'config'  => $config,
+                ]
+            );
         } catch (\Exception $e) {
             return new JSONResponse(['error' => $e->getMessage()], 500);
-        }
+        }//end try
 
     }//end create()
 
-
     /**
-     * Load the settings from the publication_register.json file.
+     * Re-import the LarpingApp configuration from the JSON file.
      *
-     * @return JSONResponse JSON response containing the settings.
+     * @return JSONResponse The re-import result.
      *
      * @NoCSRFRequired
      */
-    public function load(): JSONResponse
+    public function reimport(): JSONResponse
     {
         try {
-            $result = $this->settingsService->loadSettings();
-            return new JSONResponse($result);
+            $result = $this->settingsService->loadSettings(force: true);
+
+            return new JSONResponse(
+                [
+                    'success' => true,
+                    'message' => 'Configuration re-imported successfully',
+                    'config'  => $this->settingsService->getSettings(),
+                    'result'  => [
+                        'registers' => count($result['registers'] ?? []),
+                        'schemas'   => count($result['schemas'] ?? []),
+                    ],
+                ]
+            );
         } catch (\Exception $e) {
-            return new JSONResponse(['error' => $e->getMessage()], 500);
-        }
+            return new JSONResponse(
+                [
+                    'success' => false,
+                    'message' => $e->getMessage(),
+                ],
+                500
+            );
+        }//end try
 
-    }//end load()
-
-
+    }//end reimport()
 }//end class

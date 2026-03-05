@@ -1,43 +1,115 @@
 <?php
+/**
+ * LarpingApp admin section implementation
+ *
+ * @category  Settings
+ * @package   OCA\LarpingApp\Settings
+ * @author    Ruben Linde <ruben@larpingapp.com>
+ * @copyright 2024 Ruben Linde
+ * @license   https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
+ * @version   GIT: <git_id>
+ * @link      https://larpingapp.com
+ *
+ * @phpversion 8.2
+ */
+
+declare(strict_types=1);
+
 namespace OCA\LarpingApp\Settings;
 
-use OCP\AppFramework\Http\TemplateResponse;
-use OCP\IConfig;
 use OCP\IL10N;
-use OCP\Settings\ISettings;
+use OCP\IURLGenerator;
+use OCP\Settings\IIconSection;
 
-class LarpingAppAdmin implements ISettings {
-    private IL10N $l;
-    private IConfig $config;
-
-    public function __construct(IConfig $config, IL10N $l) {
-        $this->config = $config;
-        $this->l = $l;
-    }
-
-    /**
-     * @return TemplateResponse
-     */
-    public function getForm() {
-        $parameters = [
-            'mySetting' => $this->config->getSystemValue('larpingapp_setting', true),
-        ];
-
-        return new TemplateResponse('larpingapp', 'settings/admin', $parameters, 'admin');
-    }
-
-    public function getSection() {
-        return 'larpingapp'; 
-    }
+/**
+ * Admin section for LarpingApp settings
+ *
+ * Provides the admin section configuration for the LarpingApp
+ *
+ * @category  Settings
+ * @package   OCA\LarpingApp\Settings
+ * @author    Ruben Linde <ruben@larpingapp.com>
+ * @copyright 2024 Ruben Linde
+ * @license   https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
+ * @version   GIT: <git_id>
+ * @link      https://larpingapp.com
+ *
+ * @phpversion 8.2
+ */
+class LarpingAppAdmin implements IIconSection
+{
 
     /**
-     * @return int whether the form should be rather on the top or bottom of
-     * the admin section. The forms are arranged in ascending order of the
-     * priority values. It is required to return a value between 0 and 100.
+     * Localization service instance
      *
-     * E.g.: 70
+     * @var IL10N
      */
-    public function getPriority() {
-        return 10;
-    }
-}
+    private $l;
+
+    /**
+     * URL generator service instance
+     *
+     * @var IURLGenerator
+     */
+    private $urlGenerator;
+
+    /**
+     * Constructor for the admin section
+     *
+     * @param IL10N         $l            Localization service
+     * @param IURLGenerator $urlGenerator URL generator service
+     */
+    public function __construct(IL10N $l, IURLGenerator $urlGenerator)
+    {
+        $this->l            = $l;
+        $this->urlGenerator = $urlGenerator;
+    }//end __construct()
+
+    /**
+     * Get the section icon path
+     *
+     * Returns the path to the section icon
+     *
+     * @return string Icon path
+     */
+    public function getIcon(): string
+    {
+        return $this->urlGenerator->imagePath(appName: 'larpingapp', file: 'app-dark.svg');
+    }//end getIcon()
+
+    /**
+     * Get the section identifier
+     *
+     * Returns the unique identifier for this section
+     *
+     * @return string Section ID
+     */
+    public function getID(): string
+    {
+        return 'larpingapp';
+    }//end getID()
+
+    /**
+     * Get the translated section name
+     *
+     * Returns the localized name of this section
+     *
+     * @return string Translated section name
+     */
+    public function getName(): string
+    {
+        return $this->l->t('LarpingApp');
+    }//end getName()
+
+    /**
+     * Get the section priority
+     *
+     * Returns the priority value that determines section ordering
+     *
+     * @return int Priority value (0-100)
+     */
+    public function getPriority(): int
+    {
+        return 55;
+    }//end getPriority()
+}//end class

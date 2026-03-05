@@ -1,90 +1,113 @@
 <?php
+/**
+ * Characters controller for LarpingApp
+ *
+ * @category  Controller
+ * @package   OCA\LarpingApp\Controller
+ * @author    Ruben Linde <ruben@larpingapp.com>
+ * @copyright 2024 Ruben Linde
+ * @license   https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
+ * @link      https://larpingapp.com
+ */
+
+declare(strict_types=1);
 
 namespace OCA\LarpingApp\Controller;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
 use OCA\LarpingApp\Service\ObjectService;
-use OCA\LarpingApp\Service\SearchService;
 use OCA\LarpingApp\Service\CharacterService;
+use OCP\App\IAppManager;
 use OCP\AppFramework\Controller;
-use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http\DataDownloadResponse;
-use OCP\IAppConfig;
 use OCP\IRequest;
-use Exception;
+use Psr\Container\ContainerInterface;
 
 /**
- * @class CharactersController
- * @category Controller
- * @package LarpingApp
- * @author Conduction Team
- * @copyright 2023 Conduction
- * @license EUPL-1.2
- * @version 1.0.0
- * @link https://larping.app
- * 
  * Controller for handling characters related operations
  */
 class CharactersController extends Controller
 {
-    const objectType = 'character';
+    const OBJECTTYPE = 'character';
 
     /**
      * Constructor for the CharactersController
      *
-     * @param string $appName The name of the app
-     * @param IRequest $request The request object
-     * @param ObjectService $objectService The object service object
-     * @param CharacterService $characterService The character service object
+     * @param string             $appName          The name of the app
+     * @param IRequest           $request          The request object
+     * @param ObjectService      $objectService    The object service object
+     * @param CharacterService   $characterService The character service object
+     * @param IAppManager        $appManager       The app manager for checking installed apps
+     * @param ContainerInterface $container        The DI container for resolving cross-app services
      */
     public function __construct(
         $appName,
         IRequest $request,
         private readonly ObjectService $objectService,
-        private readonly CharacterService $characterService
-    )
-    {
-        parent::__construct($appName, $request);
-    }
-    
+        private readonly CharacterService $characterService,
+        private readonly IAppManager $appManager,
+        private readonly ContainerInterface $container
+    ) {
+        parent::__construct(appName: $appName, request: $request);
+    }//end __construct()
+
     /**
      * Downloads a character PDF using a specific template
-     * 
-     * This method generates and downloads a PDF for a specific character using the provided template.
+     *
+     * Delegates PDF generation to DocuDesk's PdfService and template
+     * lookup to DocuDesk's TemplateService. Returns 424 if DocuDesk
+     * is not installed.
+     *
+     * @param string $id       The ID of the character to download as PDF
+     * @param string $template The ID of the template to use for PDF generation
+     *
+     * @return DataDownloadResponse|JSONResponse A response containing the PDF file for download or an error response
      *
      * @NoAdminRequired
      * @NoCSRFRequired
-     *
-     * @param string $id The ID of the character to download as PDF
-     * @param string $template The ID of the template to use for PDF generation
-     * @return DataDownloadResponse|JSONResponse A response containing the PDF file for download or an error response
      */
     public function downloadPdf(string $id, string $template): DataDownloadResponse|JSONResponse
     {
+        if ($this->appManager->isEnabledForUser(appId: 'docudesk') === false) {
+            return new JSONResponse(
+                data: ['error' => 'PDF generation requires the DocuDesk app to be installed and enabled'],
+                statusCode: 424
+            );
+        }
+
         try {
-            // Fetch the character object by its ID
-            $character = $this->objectService->getObject('character', $id);
-            $template  = $this->objectService->getObject('template', $template);
-        } catch (Exception $exception) {
-            return new JSONResponse(data: ['error' => 'Character or Template Not Found: ' . $exception->getMessage()], statusCode: 404);
-        } 
-            
-        // Generate PDF using the specified template
-        $pdfContent = $this->characterService->createCharacterPdf($character, $template);
-        
-        // Output the PDF
-        $pdfContent->Output();
-        
-        // Note: The above line will output the PDF directly, so the following return statement won't be reached
-        // If you want to return a download response instead, comment out the Output() call and uncomment the following:
-        /*
+            $character = $this->objectService->getObject(objectType: 'character', id: $id);
+        } catch (\Exception $exception) {
+            return new JSONResponse(data: ['error' => 'Character not found'], statusCode: 404);
+        }
+
+        try {
+            $templateService = $this->container->get('OCA\DocuDesk\Service\TemplateService');
+            $templateData    = $templateService->getTemplate(id: $template);
+        } catch (\Exception $exception) {
+            return new JSONResponse(data: ['error' => 'Template not found'], statusCode: 404);
+        }
+
+        try {
+            $pdfService = $this->container->get('OCA\DocuDesk\Service\PdfService');
+            $pdfString  = $pdfService->renderPdf(
+                templateContent: $templateData['content'] ?? '',
+                data: ['character' => $character, 'template' => $templateData],
+                options: [
+                    'format'      => $templateData['format'] ?? 'A4',
+                    'orientation' => $templateData['orientation'] ?? 'P',
+                ]
+            );
+        } catch (\Exception $exception) {
+            return new JSONResponse(data: ['error' => 'PDF generation failed: '.$exception->getMessage()], statusCode: 500);
+        }
+
+        $fileName = ($character['name'] ?? 'character').'_character_sheet.pdf';
+
         return new DataDownloadResponse(
-            $pdfContent->Output('', 'S'),
-            $character['name'] . '_character_sheet.pdf',
+            $pdfString,
+            $fileName,
             'application/pdf'
         );
-        */
-    }
-}
+    }//end downloadPdf()
+}//end class

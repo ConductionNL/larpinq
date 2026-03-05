@@ -1,32 +1,104 @@
 <?php
+/**
+ * LarpingApp admin section implementation
+ *
+ * @category  Settings
+ * @package   OCA\LarpingApp\Sections
+ * @author    Ruben Linde <ruben@larpingapp.com>
+ * @copyright 2024 Ruben Linde
+ * @license   https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
+ * @link      https://larpingapp.com
+ */
+
+declare(strict_types=1);
+
 namespace OCA\LarpingApp\Sections;
 
 use OCP\IL10N;
 use OCP\IURLGenerator;
 use OCP\Settings\IIconSection;
 
-class LarpingAppAdmin implements IIconSection {
-    private IL10N $l;
-    private IURLGenerator $urlGenerator;
+/**
+ * Admin Section for LarpingApp
+ *
+ * @category  Apps
+ * @package   LarpingApp
+ * @author    Ruben Linde <ruben@nextcloud.com>
+ * @copyright 2024 Ruben Linde
+ * @license   AGPL-3.0-or-later https://www.gnu.org/licenses/agpl-3.0.en.html
+ *
+ * @psalm-api
+ * @phpstan-api
+ * @php-version 8.2
+ */
+class LarpingAppAdmin implements IIconSection
+{
 
-    public function __construct(IL10N $l, IURLGenerator $urlGenerator) {
-        $this->l = $l;
+    /**
+     * Localization service instance
+     *
+     * @var IL10N
+     */
+    private $l;
+
+    /**
+     * URL generator service instance
+     *
+     * @var IURLGenerator
+     */
+    private $urlGenerator;
+
+    /**
+     * Constructor
+     *
+     * @param IL10N         $l            Localization service
+     * @param IURLGenerator $urlGenerator URL generator service
+     *
+     * @return void
+     */
+    public function __construct(IL10N $l, IURLGenerator $urlGenerator)
+    {
+        $this->l            = $l;
         $this->urlGenerator = $urlGenerator;
-    }
+    }//end __construct()
 
-    public function getIcon(): string {
-        return $this->urlGenerator->imagePath('core', 'actions/settings-dark.svg');
-    }
+    /**
+     * Get the section icon
+     *
+     * @return string
+     */
+    public function getIcon(): string
+    {
+        return $this->urlGenerator->imagePath(appName: 'larpingapp', file: 'app-dark.svg');
+    }//end getIcon()
 
-    public function getID(): string {
+    /**
+     * Get the section ID
+     *
+     * @return string The section ID
+     */
+    public function getID(): string
+    {
         return 'larpingapp';
-    }
+    }//end getID()
 
-    public function getName(): string {
-        return $this->l->t('Larping App');
-    }
+    /**
+     * Get the section name
+     *
+     * @return string The section name
+     */
+    public function getName(): string
+    {
+        return $this->l->t('LarpingApp');
+    }//end getName()
 
-    public function getPriority(): int {
-        return 97;
-    }
-}
+    /**
+     * Get the section priority
+     *
+     * @return int The section priority
+     */
+    public function getPriority(): int
+    {
+        return 55;
+    }//end getPriority()
+}//end class

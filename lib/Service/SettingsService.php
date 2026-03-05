@@ -1,420 +1,150 @@
 <?php
+
 /**
- * LarpingApp Settings Service
+ * LarpingApp SettingsService.
  *
- * This file contains the service class for handling settings in the LarpingApp application.
+ * Service for managing LarpingApp application settings and configuration.
  *
- * @category Service
- * @package  OCA\LarpingApp\Service
- *
- * @author    Conduction Development Team <info@conduction.nl>
- * @copyright 2024 Conduction B.V.
+ * @category  Service
+ * @package   OCA\LarpingApp\Service
+ * @author    Ruben Linde <ruben@larpingapp.com>
+ * @copyright 2024 Ruben Linde
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
- *
- * @version GIT: <git_id>
- *
- * @link https://www.Larping.app
+ * @version   GIT: <git_id>
+ * @link      https://larpingapp.com
  */
+
+declare(strict_types=1);
 
 namespace OCA\LarpingApp\Service;
 
+use OCA\LarpingApp\AppInfo\Application;
 use OCP\IAppConfig;
-use OCP\IRequest;
-use OCP\App\IAppManager;
-use Psr\Container\ContainerInterface;
-use OCP\AppFramework\Http\JSONResponse;
-use OC_App;
+use Psr\Log\LoggerInterface;
 
 /**
- * Service for handling settings-related operations.
+ * Service for managing LarpingApp settings.
  *
- * Provides functionality for retrieving, saving, and loading settings,
- * as well as managing configuration for different object types.
+ * @category Service
+ * @package  OCA\LarpingApp\Service
+ * @author   Ruben Linde <ruben@larpingapp.com>
+ * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ * @link     https://larpingapp.com
  */
 class SettingsService
 {
 
     /**
-     * This property holds the name of the application, which is used for identification and configuration purposes.
+     * Configuration keys to expose.
      *
-     * @var string $appName The name of the app.
+     * @var string[]
      */
-    private string $appName;
+    private const CONFIG_KEYS = [
+        'register',
+        'character_schema',
+        'player_schema',
+        'ability_schema',
+        'skill_schema',
+        'item_schema',
+        'condition_schema',
+        'effect_schema',
+        'event_schema',
+        'setting_schema',
+    ];
 
     /**
-     * This constant represents the unique identifier for the OpenRegister application, used to check its installation and status.
+     * Constructor.
      *
-     * @var string $openRegisterAppId The ID of the OpenRegister app.
-     */
-    private const OPENREGISTER_APP_ID = 'openregister';
-
-    /**
-     * This constant defines the minimum version of the OpenRegister application that is required for compatibility and functionality.
+     * @param IAppConfig          $appConfig           The app config.
+     * @param SettingsLoadService $settingsLoadService The settings load service.
+     * @param LoggerInterface     $logger              The logger.
      *
-     * @var string $minOpenRegisterVersion The minimum required version of OpenRegister.
+     * @return void
      */
-    private const MIN_OPENREGISTER_VERSION = '0.1.7';
-
-
-    /**
-     * SettingsService constructor.
-     *
-     * @param IAppConfig         $config     App configuration interface.
-     * @param IRequest           $request    Request interface.
-     * @param ContainerInterface $container  Container for dependency injection.
-     * @param IAppManager        $appManager App manager interface.
-     */
-    public function __construct(private readonly IAppConfig $config, private readonly IRequest $request, private readonly ContainerInterface $container, private readonly IAppManager $appManager)
-    {
-        // Indulge in setting the application name for identification and configuration purposes.
-        $this->appName = 'larpingapp';
+    public function __construct(
+        private readonly IAppConfig $appConfig,
+        private readonly SettingsLoadService $settingsLoadService,
+        private readonly LoggerInterface $logger,
+    ) {
 
     }//end __construct()
 
-
     /**
-     * Checks if OpenRegister is installed and meets version requirements.
+     * Get all LarpingApp settings.
      *
-     * @param string|null $minVersion Minimum required version (e.g. '1.0.0').
-     *
-     * @return bool True if OpenRegister is installed and meets version requirements.
-     */
-    public function isOpenRegisterInstalled(?string $minVersion=self::MIN_OPENREGISTER_VERSION): bool
-    {
-        if ($this->appManager->isInstalled(self::OPENREGISTER_APP_ID) === false) {
-            return false;
-        }
-
-        if ($minVersion === null) {
-            return true;
-        }
-
-        $currentVersion = $this->appManager->getAppVersion(self::OPENREGISTER_APP_ID);
-        return version_compare($currentVersion, $minVersion, '>=');
-
-    }//end isOpenRegisterInstalled()
-
-
-    /**
-     * Checks if OpenRegister is enabled.
-     *
-     * @return bool True if OpenRegister is enabled.
-     */
-    public function isOpenRegisterEnabled(): bool
-    {
-        return $this->appManager->isEnabled(self::OPENREGISTER_APP_ID) === true;
-
-    }//end isOpenRegisterEnabled()
-
-
-    /**
-     * Attempts to install or update OpenRegister.
-     *
-     * @param string|null $minVersion Minimum required version.
-     *
-     * @return bool True if installation/update was successful.
-     * @throws \RuntimeException If installation/update fails.
-     */
-    public function installOrUpdateOpenRegister(?string $minVersion=self::MIN_OPENREGISTER_VERSION): bool
-    {
-        try {
-            if ($this->isOpenRegisterInstalled($minVersion) === false) {
-                // First try to download the app from the app store.
-                if (OC_App::downloadApp(self::OPENREGISTER_APP_ID) === false) {
-                    throw new \RuntimeException('Failed to download OpenRegister from the app store');
-                }
-
-                // Then install the downloaded app.
-                if (OC_App::installApp(self::OPENREGISTER_APP_ID) === false) {
-                    throw new \RuntimeException('Failed to install OpenRegister');
-                }
-
-                // Enable the app after installation.
-                if (OC_App::enable(self::OPENREGISTER_APP_ID) === false) {
-                    throw new \RuntimeException('Failed to enable OpenRegister');
-                }
-            } else if ($minVersion !== null) {
-                // Check if update is needed.
-                $currentVersion = $this->appManager->getAppVersion(self::OPENREGISTER_APP_ID);
-                if (version_compare($currentVersion, $minVersion, '<') === true) {
-                    // First try to download the update from the app store.
-                    if (OC_App::downloadApp(self::OPENREGISTER_APP_ID) === false) {
-                        throw new \RuntimeException('Failed to download OpenRegister update from the app store');
-                    }
-
-                    // Then update the app.
-                    if (OC_App::updateApp(self::OPENREGISTER_APP_ID) === false) {
-                        throw new \RuntimeException('Failed to update OpenRegister');
-                    }
-                }
-
-                // Ensure the app is enabled after update.
-                if ($this->isOpenRegisterEnabled() === false) {
-                    if (OC_App::enable(self::OPENREGISTER_APP_ID) === false) {
-                        throw new \RuntimeException('Failed to enable OpenRegister after update');
-                    }
-                }
-            }//end if
-
-            return true;
-        } catch (\Exception $e) {
-            throw new \RuntimeException('Failed to install/update OpenRegister: '.$e->getMessage());
-        }//end try
-
-    }//end installOrUpdateOpenRegister()
-
-
-    /**
-     * Attempts to auto-configure registers and schemas.
-     *
-     * @return array The updated configuration.
-     * @throws \RuntimeException If auto-configuration fails.
-     */
-    public function autoConfigure(): array
-    {
-        try {
-            $objectService = $this->getObjectService();
-            $registers     = $objectService->getRegisters();
-
-            if (empty($registers) === true) {
-                return [];
-            }
-
-            $configuration = [];
-            foreach ($this->getSettings()['objectTypes'] as $type) {
-                // Try to find a register with a matching name.
-                $matchingRegister = null;
-                foreach ($registers as $register) {
-                    if (stripos($register['title'], $type) !== false) {
-                        $matchingRegister = $register;
-                        break;
-                    }
-                }
-
-                if ($matchingRegister !== null) {
-                    $configuration["{$type}_register"] = $matchingRegister['id'];
-
-                    // Try to find a matching schema.
-                    if (empty($matchingRegister['schemas']) === false) {
-                        foreach ($matchingRegister['schemas'] as $schema) {
-                            if (stripos($schema['title'], $type) !== false) {
-                                $configuration["{$type}_schema"] = $schema['id'];
-                                break;
-                            }
-                        }
-                    }
-                }
-            }//end foreach
-
-            return $configuration;
-        } catch (\Exception $e) {
-            throw new \RuntimeException('Failed to auto-configure: '.$e->getMessage());
-        }//end try
-
-    }//end autoConfigure()
-
-
-    /**
-     * Initializes the app with all required components.
-     *
-     * @param string|null $minOpenRegisterVersion Minimum required OpenRegister version.
-     *
-     * @return array The initialization results.
-     */
-    public function initialize(?string $minOpenRegisterVersion=self::MIN_OPENREGISTER_VERSION): array
-    {
-        $results = [
-            'openRegister'   => false,
-            'autoConfigured' => false,
-            'settingsLoaded' => false,
-            'errors'         => [],
-        ];
-
-        try {
-            // Check and install/update OpenRegister.
-            if ($this->isOpenRegisterInstalled($minOpenRegisterVersion) === false) {
-                $this->installOrUpdateOpenRegister($minOpenRegisterVersion);
-            }
-
-            $results['openRegister'] = true;
-
-            // Auto-configure registers and schemas.
-            $configuration = $this->autoConfigure();
-            if (empty($configuration) === false) {
-                $this->updateSettings($configuration);
-                $results['autoConfigured'] = true;
-            }
-
-            // Load settings from file.
-            $this->loadSettings();
-            $results['settingsLoaded'] = true;
-        } catch (\Exception $e) {
-            $results['errors'][] = $e->getMessage();
-        }//end try
-
-        return $results;
-
-    }//end initialize()
-
-
-    /**
-     * Attempts to retrieve the OpenRegister service from the container.
-     *
-     * @return \OCA\OpenRegister\Service\ObjectService|null The OpenRegister service if available, null otherwise.
-     * @throws \RuntimeException If the service is not available.
-     */
-    public function getObjectService(): ?\OCA\OpenRegister\Service\ObjectService
-    {
-        if (in_array(needle: 'openregister', haystack: $this->appManager->getInstalledApps()) === true) {
-            return $this->container->get('OCA\OpenRegister\Service\ObjectService');
-        }
-
-        throw new \RuntimeException('OpenRegister service is not available.');
-
-    }//end getObjectService()
-
-
-    /**
-     * Attempts to retrieve the Configuration service from the container.
-     *
-     * @return \OCA\OpenRegister\Service\ConfigurationService|null The Configuration service if available, null otherwise.
-     * @throws \RuntimeException If the service is not available.
-     */
-    public function getConfigurationService(): ?\OCA\OpenRegister\Service\ConfigurationService
-    {
-        if (in_array(needle: 'openregister', haystack: $this->appManager->getInstalledApps()) === true) {
-            return $this->container->get('OCA\OpenRegister\Service\ConfigurationService');
-        }
-
-        throw new \RuntimeException('Configuration service is not available.');
-
-    }//end getConfigurationService()
-
-
-    /**
-     * Retrieve the current settings.
-     *
-     * @return array The current settings configuration.
-     * @throws \RuntimeException If settings retrieval fails.
+     * @return array The settings as key-value pairs.
      */
     public function getSettings(): array
     {
-        // Initialize the data array.
-        $data                       = [];
-        $data['objectTypes']        = [
-            'ability', 
-            'character', 
-            'condition', 
-            'effect', 
-            'event', 
-            'item', 
-            'player', 
-            'setting', 
-            'skill', 
-            'template',
-        ];
-        $data['openRegisters']      = false;
-        $data['availableRegisters'] = [];
-
-        // Check if the OpenRegister service is available.
-        try {
-            $openRegisters = $this->getObjectService();
-            if ($openRegisters !== null) {
-                $data['openRegisters']      = true;
-                $data['availableRegisters'] = $openRegisters->getRegisters();
-            }
-        } catch (\RuntimeException $e) {
-            // Service not available, continue with default values.
+        $config = [];
+        foreach (self::CONFIG_KEYS as $key) {
+            $config[$key] = $this->appConfig->getValueString(Application::APP_ID, $key, '');
         }
 
-        // Build defaults array dynamically based on object types.
-        $defaults = [];
-        foreach ($data['objectTypes'] as $type) {
-            // Always use openregister as source.
-            $defaults["{$type}_source"]   = 'openregister';
-            $defaults["{$type}_schema"]   = '';
-            $defaults["{$type}_register"] = '';
-        }
-
-        // Get the current values for the object types from the configuration.
-        try {
-            foreach ($defaults as $key => $defaultValue) {
-                $data['configuration'][$key] = $this->config->getValueString($this->appName, $key, $defaultValue);
-            }
-
-            return $data;
-        } catch (\Exception $e) {
-            throw new \RuntimeException('Failed to retrieve settings: '.$e->getMessage());
-        }
+        return $config;
 
     }//end getSettings()
 
-
     /**
-     * Update the settings configuration.
+     * Update LarpingApp settings with the given data.
      *
      * @param array $data The settings data to update.
      *
-     * @return array The updated settings configuration.
-     * @throws \RuntimeException If settings update fails.
+     * @return array The updated settings.
      */
     public function updateSettings(array $data): array
     {
-        try {
-            // Update each setting in the configuration.
-            foreach ($data as $key => $value) {
-                $this->config->setValueString($this->appName, $key, $value);
-                // Retrieve the updated value to confirm the change.
-                $data[$key] = $this->config->getValueString($this->appName, $key);
+        foreach (self::CONFIG_KEYS as $key) {
+            if (isset($data[$key]) === true) {
+                $this->appConfig->setValueString(Application::APP_ID, $key, (string) $data[$key]);
             }
+        }
 
-            return $data;
-        } catch (\Exception $e) {
-            throw new \RuntimeException('Failed to update settings: '.$e->getMessage());
-        }//end try
+        $this->logger->info('LarpingApp settings updated', ['keys' => array_keys($data)]);
+
+        return $this->getSettings();
 
     }//end updateSettings()
 
-
     /**
-     * Load settings from the publication_register.json file.
+     * Load settings by importing the register JSON via ConfigurationService.
+     * Delegates to SettingsLoadService.
      *
-     * @return array The loaded settings configuration.
-     * @throws \RuntimeException If settings loading fails.
+     * @param bool $force Whether to force re-import.
+     *
+     * @return array The import result.
      */
-    public function loadSettings(): array
+    public function loadSettings(bool $force=false): array
     {
-        // Read the settings from the publication_register.json file.
-        $settingsFilePath = __DIR__.'/../Settings/publication_register.json';
-        $settings         = [];
-
-        try {
-            // Check if the file exists.
-            if (file_exists($settingsFilePath) === false) {
-                throw new \Exception('Settings file not found.');
-            }
-
-            // Get the contents of the file.
-            $jsonContent = file_get_contents($settingsFilePath);
-
-            // Decode the JSON content into an associative array.
-            $settings = json_decode($jsonContent, true);
-
-            // Check for JSON decoding errors.
-            if (json_last_error() !== JSON_ERROR_NONE) {
-                throw new \Exception('Error decoding JSON: '.json_last_error_msg());
-            }
-
-            $includeObjects = false;
-
-            // Get the configuration service and import the settings.
-            $configurationService = $this->getConfigurationService();
-            return $configurationService->importFromJson($settings, $includeObjects);
-        } catch (\Exception $e) {
-            throw new \RuntimeException('Failed to load settings: '.$e->getMessage());
-        }//end try
+        return $this->settingsLoadService->loadSettings(force: $force);
 
     }//end loadSettings()
 
+    /**
+     * Get a config value by key.
+     *
+     * @param string $key     The config key.
+     * @param string $default The default value.
+     *
+     * @return string The config value.
+     */
+    public function getConfigValue(string $key, string $default=''): string
+    {
+        return $this->appConfig->getValueString(Application::APP_ID, $key, $default);
 
+    }//end getConfigValue()
+
+    /**
+     * Set a config value by key.
+     *
+     * @param string $key   The config key.
+     * @param string $value The config value.
+     *
+     * @return void
+     */
+    public function setConfigValue(string $key, string $value): void
+    {
+        $this->appConfig->setValueString(Application::APP_ID, $key, $value);
+
+    }//end setConfigValue()
 }//end class

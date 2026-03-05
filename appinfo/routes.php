@@ -7,6 +7,7 @@ return [
 		['name' => 'characters#downloadPdf', 'url' => '/characters/{id}/download/{template}', 'verb' => 'GET'],
 		['name' => 'settings#index', 'url' => 'api/settings', 'verb' => 'GET'],
 		['name' => 'settings#create', 'url' => 'api/settings', 'verb' => 'POST'],
+		['name' => 'settings#reimport', 'url' => 'api/settings/reimport', 'verb' => 'POST'],
 		// Object API routes	
 		['name' => 'objects#index', 'url' => 'api/objects/{objectType}', 'verb' => 'GET'],
 		['name' => 'objects#create', 'url' => 'api/objects/{objectType}', 'verb' => 'POST'],

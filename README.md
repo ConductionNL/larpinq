@@ -1,53 +1,215 @@
-# Larping: A Comprehensive Management Tool for LARP Organizations
+<p align="center">
+  <img src="img/app-store.svg" alt="Larping logo" width="80" height="80">
+</p>
 
-Welcome to **Larping**, your all-in-one solution for managing your live-action role-playing (LARP) events and characters. With Larping, you can streamline your event organization, character creation, and gameplay mechanics, all in one powerful tool. Perfect for LARP organizers, game masters, and players alike, Larping offers a flexible and intuitive platform to handle everything from character skills to in-game items and event subscriptions.
+<h1 align="center">Larping</h1>
 
-## 🎮 Key Features
+<p align="center">
+  <strong>LARP character and event management for Nextcloud — skills, items, conditions, and dynamic stat calculation</strong>
+</p>
 
-### 1. **Character Management**
-- **Create and Customize Characters**: Design unique characters with custom attributes, such as hit points, armor points, experience points (XP), mana, or any other ability you can imagine.
-- **Dynamic Abilities Setup**: Define your own abilities and attributes for characters. Easily set up new abilities or modify existing ones to fit the needs of your specific LARP setting.
-- **Automatic Calculations**: Larping handles all the heavy lifting by automatically calculating character statistics based on defined abilities, skills, items, and conditions. Say goodbye to manual math – the system ensures real-time updates for character stats, ensuring accurate gameplay.
+<p align="center">
+  <a href="https://github.com/ConductionNL/larpingapp/releases"><img src="https://img.shields.io/github/v/release/ConductionNL/larpingapp" alt="Latest release"></a>
+  <a href="https://github.com/ConductionNL/larpingapp/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-AGPL--3.0-blue" alt="License"></a>
+  <a href="https://github.com/ConductionNL/larpingapp/actions"><img src="https://img.shields.io/github/actions/workflow/status/ConductionNL/larpingapp/code-quality.yml?label=quality" alt="Code quality"></a>
+  <a href="https://larpingapp.app"><img src="https://img.shields.io/badge/docs-larpingapp.app-green" alt="Documentation"></a>
+</p>
 
-### 2. **Skills, Items, and Conditions Management**
-- **Skill Creation**: Develop a vast array of skills with unique effects, costs, and prerequisites. Assign skills to characters and see their effects immediately reflected in their stats.
-- **Item Integration**: Manage an extensive inventory of items, from weapons and armor to potions and magical artifacts. Each item can have its own unique effects, such as "+2 to Strength" or "-1 to Speed." 
-- **Condition Handling**: Define and manage various conditions (like "Poisoned," "Enraged," or "Blessed") that can dynamically affect character abilities and stats. Apply these conditions directly to characters and let Larping automatically recalculate their abilities.
+---
 
-### 3. **Interactive Effects System**
-- **Linked Effects**: Create complex game mechanics with effects tied to items, skills, or conditions. For example, an enchanted sword might grant a +2 bonus to attack rolls, while a "Cursed" condition might reduce a character's armor points by 1.
-- **Real-Time Updates**: As characters acquire new items, learn skills, or experience in-game conditions, Larping will automatically adjust their stats and abilities, keeping your game balanced and flowing smoothly.
+Larping brings live-action role-playing management natively into Nextcloud. Game masters define abilities, skills, items, conditions, and effects; the app automatically computes each character's stats and keeps them synchronized as game state changes. Players register for events, track XP, and print their character sheet — all without leaving Nextcloud.
 
-### 4. **Event and Background Management**
-- **Background Approval Workflow**: Manage character backstories and ensure they align with your LARP's lore and rules. Review and approve character backgrounds before the game begins.
-- **Event Subscription**: Handle event registrations, including waiting lists, and manage player participation. Larping makes it easy to track who’s attending which event and to assign XP or rewards based on participation.
+> **Optional:** [OpenRegister](https://github.com/ConductionNL/openregister) — enables advanced features like audit trails, object locking, cross-object relations, and JSON-based data storage.
 
-### 5. **Experience and Leveling System**
-- **Experience Tracking**: Automatically track XP earned through events, quests, or character achievements. Easily assign XP and let the system handle leveling up and ability enhancements.
-- **Flexible Scoring System**: Customize experience gains, thresholds for leveling, and rewards to fit your game mechanics. Keep players engaged with a transparent and fair leveling system.
+## Screenshots
 
-## 📊 Get Started with Larping
+<table>
+  <tr>
+    <td><img src="img/screenshot-dashboard.png" alt="Dashboard with game overview and quick navigation" width="320"></td>
+    <td><img src="img/screenshot-characters.png" alt="Character list with stats and equipment" width="320"></td>
+    <td><img src="img/screenshot-events.png" alt="Event management with participant tracking" width="320"></td>
+  </tr>
+  <tr>
+    <td align="center"><em>Dashboard</em></td>
+    <td align="center"><em>Characters</em></td>
+    <td align="center"><em>Events</em></td>
+  </tr>
+</table>
 
-- **Requirements and Installation**: Larping is build on [Nextcloud](https://nextcloud.com/) to install Larping simply login to your nextcloud installation naviagate to the app page and install the app (you cann find it in the organisation catagory).
+## Features
 
-If you want to checkout larping but don't have a nextcloud instance you can spin up a local environment by
-- Installings WDSL on your windows machine
-- Install Docker Desktop
-- Copy paste the docker-compose.yml file from the larping repository to somwhere on your machine
-- Run the following command trough your command line anywhere on your machines
+### Character Management
+- **Full Character CRUD** — Create player characters and NPCs with name, description, background, faith, and currency (gold, silver, copper)
+- **Background Approval** — Game master approval workflow for character backgrounds before gameplay begins
+- **Dynamic Stat Calculation** — Abilities are automatically computed from the combined effects of all equipped skills, items, conditions, and active events
+- **Stat Audit Trail** — See exactly which skills, items, and conditions contribute to each ability score
+
+### Skills & Effects
+- **Skills** — Create skills with effects, experience costs, and prerequisites (required stats, other skills, conditions, or effect values)
+- **Items** — Manage unique and non-unique items, each with their own effects; track which characters own each item
+- **Conditions** — Define positive and negative conditions (e.g., Poisoned, Blessed) that dynamically affect character abilities
+- **Effects System** — Numeric modifiers (cumulative or non-cumulative) that link to one or more abilities; the foundation of all game mechanics
+
+### Events & Players
+- **Events** — Create LARP events with date range, location, and participant tracking
+- **Event Subscriptions** — Handle registrations and waiting lists; track player participation
+- **Post-Event Effects** — Apply effects to characters as a result of event participation
+- **Player Profiles** — Manage player accounts linked to their characters with XP tracking
+
+### PDF Generation
+- **PDF Export** — Generate printer-ready character sheets from customizable Twig-based HTML templates via mPDF
+- **Template Management** — Create and manage multiple sheet templates for different character types or LARP settings
+- **On-Demand Generation** — Export any character's sheet at any time with current computed stats
+
+## Architecture
+
+```mermaid
+graph TD
+    A[Vue 2 Frontend] -->|REST API| B[ObjectsController]
+    B --> C[ObjectService]
+    C --> D{Data source}
+    D -->|internal| E[Nextcloud DB via Mappers]
+    D -->|openregister| F[OpenRegister API]
+    B --> G[CharacterService]
+    G --> H[Stat calculation engine]
+    G --> I[mPDF + Twig templates]
+    E --> J[(PostgreSQL / MySQL / SQLite)]
 ```
-docker-compose up 
+
+### Data Model
+
+| Entity | Key Properties |
+|--------|----------------|
+| Character | name, type (player/npc), background, approved, skills[], items[], conditions[], events[], abilities (computed), gold/silver/copper |
+| Ability | name, description, base value |
+| Skill | name, effects[], requiredSkills[], requiredStats[], requiredConditions[], xpCost |
+| Item | name, effects[], unique, characters[] |
+| Condition | name, effects[], unique, characters[] |
+| Effect | name, modifier (int), cumulative, abilities[] |
+| Event | name, startDate, endDate, location, players[], effects[] |
+| Player | name, description |
+| Template | name, template (HTML/Twig string) |
+
+### Directory Structure
+
+```
+larpingapp/
+├── appinfo/           # Nextcloud app manifest, routes, navigation
+├── lib/               # PHP backend — controllers, services, DB mappers
+│   ├── Controller/    # Objects, Characters, Settings, Dashboard
+│   ├── Db/            # 10 Entity + Mapper classes
+│   ├── Service/       # CharacterService (stat calc + PDF), ObjectService, SearchService
+│   └── Migration/     # Database migrations
+├── src/               # Vue 2 frontend — components, Pinia stores, views
+│   ├── views/         # Dashboard, characters, skills, items, conditions, events, search
+│   ├── modals/        # CRUD modals per entity type
+│   ├── store/         # Pinia stores per entity
+│   └── entities/      # Zod-validated entity classes
+├── img/               # App icons and screenshots
+├── templates/         # PHP page templates + Twig PDF templates
+├── l10n/              # Translations (en, nl)
+└── docusaurus/        # Product documentation site (larpingapp.app)
 ```
 
-- **Roadmap and Future Features**: Stay updated with the latest developments and planned features on our [Roadmap](https://github.com/orgs/OpenCatalogi/projects/1/views/2).
+## Requirements
 
-## 🐞 Contribute and Provide Feedback
-We value your feedback to make Larping even better:
-- [Report a bug](https://github.com/OpenCatalogi/.github/issues/new/choose)
-- [Request a new feature](https://github.com/OpenCatalogi/.github/issues/new/choose)
+| Dependency | Version |
+|-----------|---------|
+| Nextcloud | 28 – 33 |
+| PHP | 8.1+ |
+| Database | PostgreSQL 10+, MySQL 8.0+, SQLite |
+| [OpenRegister](https://github.com/ConductionNL/openregister) | optional |
 
-## 🚀 Join the Larping Community
+## Installation
 
-Whether you are a seasoned game master or new to organizing LARP events, Larping provides all the tools you need to create memorable adventures. Jump in today and see how Larping can enhance your next game!
+### From the Nextcloud App Store
 
-Happy LARPing!
+1. Go to **Apps** in your Nextcloud instance
+2. Search for **Larping**
+3. Click **Download and enable**
+
+### From Source
+
+```bash
+cd /var/www/html/custom_apps
+git clone https://github.com/ConductionNL/larpingapp.git
+cd larpingapp
+npm install
+npm run build
+composer install
+php occ app:enable larpingapp
+```
+
+## Development
+
+### Start the environment
+
+```bash
+docker compose -f openregister/docker-compose.yml up -d
+```
+
+### Frontend development
+
+```bash
+cd larpingapp
+npm install
+npm run dev        # Watch mode
+npm run build      # Production build
+```
+
+### Code quality
+
+```bash
+# PHP
+composer phpcs          # Check coding standards
+composer cs:fix         # Auto-fix issues
+composer phpmd          # Mess detection
+composer phpmetrics     # HTML metrics report
+
+# Frontend
+npm run lint            # ESLint
+npm run stylelint       # CSS linting
+```
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Frontend | Vue 2.7, Pinia, @nextcloud/vue, @conduction/nextcloud-vue |
+| Validation | Zod (runtime schema validation for entities) |
+| Build | Webpack 5, @nextcloud/webpack-vue-config |
+| Backend | PHP 8.1+, Nextcloud App Framework |
+| Data | Nextcloud DB (internal) or OpenRegister (optional) |
+| PDF | mPDF 8 + Twig 3 |
+| Quality | PHPCS, PHPMD, phpmetrics, Psalm, ESLint, Stylelint |
+
+## Documentation
+
+Full documentation is available at **[larpingapp.app](https://larpingapp.app)**
+
+| Page | Description |
+|------|-------------|
+| [Features](docs/FEATURES.md) | Complete feature specification |
+| [Directories](docs/directories.md) | Project directory structure reference |
+| [Style Guide](docs/styleguide.md) | Frontend coding conventions |
+
+## Standards & Compliance
+
+- **Accessibility:** WCAG AA
+- **Authorization:** RBAC via OpenRegister (when enabled)
+- **Audit trail:** Full change history on all objects (via OpenRegister)
+- **Localization:** English and Dutch
+
+## Related Apps
+
+- **[OpenRegister](https://github.com/ConductionNL/openregister)** — Object storage layer (optional dependency for advanced features)
+- **[OpenCatalogi](https://github.com/ConductionNL/opencatalogi)** — Publication and catalogue management
+- **[NL Design](https://github.com/ConductionNL/nldesign)** — Design token theming for Nextcloud
+
+## License
+
+AGPL-3.0-or-later
+
+## Authors
+
+Built by [Conduction](https://conduction.nl) — open-source software for Dutch government and public sector organizations.
