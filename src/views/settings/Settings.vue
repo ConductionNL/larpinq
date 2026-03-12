@@ -1,12 +1,12 @@
 <template>
 	<div>
-		<NcSettingsSection 
-			name="Larping App" 
-			description="A central place for managing your LARP characters and game elements" 
+		<NcSettingsSection
+			name="Larping App"
+			description="A central place for managing your LARP characters and game elements"
 			doc-url="https://conduction.gitbook.io/larpingapp-nextcloud/users" />
-		
-		<NcSettingsSection 
-			name="Data storage" 
+
+		<NcSettingsSection
+			name="Data storage"
 			description="Configure where to store your LARP data">
 			<div v-if="!loading">
 				<!-- Warning if OpenRegister is not installed but selected -->
@@ -17,7 +17,7 @@
 				<!-- Object Type Configuration -->
 				<div v-for="objectType in settings.objectTypes" :key="objectType" class="object-type-section">
 					<h3>{{ formatTitle(objectType) }}</h3>
-					
+
 					<div class="selection-container">
 						<!-- Source Selection -->
 						<NcSelect
@@ -72,12 +72,12 @@
 
 <script>
 import { defineComponent } from 'vue'
-import { 
-	NcSettingsSection, 
-	NcNoteCard, 
-	NcSelect, 
-	NcButton, 
-	NcLoadingIcon 
+import {
+	NcSettingsSection,
+	NcNoteCard,
+	NcSelect,
+	NcButton,
+	NcLoadingIcon,
 } from '@nextcloud/vue'
 import Save from 'vue-material-design-icons/ContentSave.vue'
 
@@ -138,14 +138,18 @@ export default defineComponent({
 
 					this.configuration[type] = {
 						source: this.sourceOptions.find(option => option.value === source),
-						register: registerId ? {
-							label: this.getRegisterLabel(registerId),
-							value: registerId
-						} : null,
-						schema: schemaId ? {
-							label: this.getSchemaLabel(registerId, schemaId),
-							value: schemaId
-						} : null,
+						register: registerId
+							? {
+								label: this.getRegisterLabel(registerId),
+								value: registerId,
+							}
+							: null,
+						schema: schemaId
+							? {
+								label: this.getSchemaLabel(registerId, schemaId),
+								value: schemaId,
+							}
+							: null,
 					}
 				})
 
@@ -195,7 +199,7 @@ export default defineComponent({
 			this.saving = true
 			try {
 				const configToSave = {}
-				
+
 				// Convert configuration to flat structure
 				Object.entries(this.configuration).forEach(([type, config]) => {
 					configToSave[`${type}_source`] = config.source.value
