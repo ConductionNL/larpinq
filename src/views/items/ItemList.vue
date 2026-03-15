@@ -2,22 +2,21 @@
 	<div>
 		<CnIndexPage
 			:title="t('larpingapp', 'Items')"
-			:schema="schema"
+			:schema="itemSchema"
 			:objects="objects"
 			:pagination="pagination"
 			:loading="loading"
 			:sort-key="sortKey"
 			:sort-order="sortOrder"
-			:include-columns="visibleColumns"
 			@add="showCreateDialog = true"
-			@refresh="refresh"
+			@refresh="fetchCollection"
 			@sort="onSort"
 			@row-click="openItem"
 			@page-changed="onPageChange" />
 
 		<CnAdvancedFormDialog
 			v-if="showCreateDialog"
-			:schema="schema"
+			:schema="itemSchema"
 			:cancel-label="t('larpingapp', 'Annuleren')"
 			:confirm-label="t('larpingapp', 'Aanmaken')"
 			@confirm="onCreateConfirm"
@@ -26,8 +25,7 @@
 </template>
 
 <script>
-import { inject } from 'vue'
-import { CnIndexPage, CnAdvancedFormDialog, useListView } from '@conduction/nextcloud-vue'
+import { CnIndexPage, CnAdvancedFormDialog } from '@conduction/nextcloud-vue'
 import { useObjectStore } from '../../store/modules/object.js'
 
 export default {
@@ -37,14 +35,12 @@ export default {
 		CnAdvancedFormDialog,
 	},
 
-	setup() {
-		const sidebarState = inject('sidebarState', null)
-		return useListView('item', { sidebarState })
-	},
-
 	data() {
 		return {
 			showCreateDialog: false,
+			sortKey: null,
+			sortOrder: 'asc',
+			itemSchema: null,
 		}
 	},
 
@@ -52,17 +48,46 @@ export default {
 		objectStore() {
 			return useObjectStore()
 		},
+		objects() {
+			return this.objectStore.collections?.item || []
+		},
+		loading() {
+			return this.objectStore.loading?.item || false
+		},
+		pagination() {
+			return this.objectStore.pagination?.item || { total: 0, page: 1, pages: 1, limit: 20 }
+		},
+	},
+
+	async mounted() {
+		this.itemSchema = await this.objectStore.fetchSchema('item')
+		await this.fetchCollection()
 	},
 
 	methods: {
 		openItem(row) {
 			this.$router.push({ name: 'ItemDetail', params: { id: row.id } })
 		},
+		async fetchCollection(page = 1) {
+			await this.objectStore.fetchCollection('item', {
+				_page: page,
+				_limit: 20,
+				_order: this.sortKey ? { [this.sortKey]: this.sortOrder } : undefined,
+			})
+		},
+		onSort({ key, order }) {
+			this.sortKey = key
+			this.sortOrder = order
+			this.fetchCollection()
+		},
+		onPageChange(page) {
+			this.fetchCollection(page)
+		},
 		async onCreateConfirm(formData) {
 			const result = await this.objectStore.saveObject('item', formData)
 			if (result) {
 				this.showCreateDialog = false
-				this.refresh()
+				this.fetchCollection()
 				this.$router.push({ name: 'ItemDetail', params: { id: result.id } })
 			}
 		},

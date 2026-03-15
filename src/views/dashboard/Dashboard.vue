@@ -9,6 +9,24 @@
 			@layout-change="onLayoutChange">
 			<!-- Header actions -->
 			<template #header-actions>
+				<NcButton type="primary" @click="showCharacterDialog = true">
+					<template #icon>
+						<Plus :size="20" />
+					</template>
+					{{ t('larpingapp', 'New Character') }}
+				</NcButton>
+				<NcButton @click="showItemDialog = true">
+					<template #icon>
+						<Plus :size="20" />
+					</template>
+					{{ t('larpingapp', 'New Item') }}
+				</NcButton>
+				<NcButton @click="showConditionDialog = true">
+					<template #icon>
+						<Plus :size="20" />
+					</template>
+					{{ t('larpingapp', 'New Condition') }}
+				</NcButton>
 				<NcButton
 					:disabled="loading"
 					:aria-label="t('larpingapp', 'Refresh dashboard')"
@@ -126,12 +144,38 @@
 				</div>
 			</template>
 		</CnDashboardPage>
+
+		<CnAdvancedFormDialog
+			v-if="showCharacterDialog"
+			:schema="objectStore.getSchema('character')"
+			:cancel-label="t('larpingapp', 'Annuleren')"
+			:confirm-label="t('larpingapp', 'Aanmaken')"
+			@confirm="onCreateCharacter"
+			@close="showCharacterDialog = false" />
+
+		<CnAdvancedFormDialog
+			v-if="showItemDialog"
+			:schema="objectStore.getSchema('item')"
+			:cancel-label="t('larpingapp', 'Annuleren')"
+			:confirm-label="t('larpingapp', 'Aanmaken')"
+			@confirm="onCreateItem"
+			@close="showItemDialog = false" />
+
+		<CnAdvancedFormDialog
+			v-if="showConditionDialog"
+			:schema="objectStore.getSchema('condition')"
+			:cancel-label="t('larpingapp', 'Annuleren')"
+			:confirm-label="t('larpingapp', 'Aanmaken')"
+			@confirm="onCreateCondition"
+			@close="showConditionDialog = false" />
 	</div>
 </template>
 
 <script>
 import { NcButton, NcLoadingIcon } from '@nextcloud/vue'
+import { CnAdvancedFormDialog } from '@conduction/nextcloud-vue'
 import CnDashboardPage from '../../components/CnDashboardPage.vue'
+import Plus from 'vue-material-design-icons/Plus.vue'
 import Refresh from 'vue-material-design-icons/Refresh.vue'
 import AccountGroup from 'vue-material-design-icons/AccountGroup.vue'
 import AccountMultiple from 'vue-material-design-icons/AccountMultiple.vue'
@@ -155,6 +199,8 @@ export default {
 		NcButton,
 		NcLoadingIcon,
 		CnDashboardPage,
+		CnAdvancedFormDialog,
+		Plus,
 		Refresh,
 		AccountGroup,
 		AccountMultiple,
@@ -164,6 +210,9 @@ export default {
 	data() {
 		return {
 			loading: false,
+			showCharacterDialog: false,
+			showItemDialog: false,
+			showConditionDialog: false,
 			dashboardLayout: [...DEFAULT_LAYOUT],
 		}
 	},
@@ -208,6 +257,27 @@ export default {
 				console.error('Failed to load dashboard data:', error)
 			} finally {
 				this.loading = false
+			}
+		},
+		async onCreateCharacter(formData) {
+			const result = await this.objectStore.saveObject('character', formData)
+			if (result) {
+				this.showCharacterDialog = false
+				this.$router.push({ name: 'CharacterDetail', params: { id: result.id } })
+			}
+		},
+		async onCreateItem(formData) {
+			const result = await this.objectStore.saveObject('item', formData)
+			if (result) {
+				this.showItemDialog = false
+				this.$router.push({ name: 'ItemDetail', params: { id: result.id } })
+			}
+		},
+		async onCreateCondition(formData) {
+			const result = await this.objectStore.saveObject('condition', formData)
+			if (result) {
+				this.showConditionDialog = false
+				this.$router.push({ name: 'ConditionDetail', params: { id: result.id } })
 			}
 		},
 		onLayoutChange(newLayout) {
