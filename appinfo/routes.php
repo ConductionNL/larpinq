@@ -2,12 +2,12 @@
 
 return [
 	'routes' => [
-		// Page routes
+		// Page route — serves the SPA for the root URL
 		['name' => 'dashboard#page', 'url' => '/', 'verb' => 'GET'],
 		['name' => 'characters#downloadPdf', 'url' => '/characters/{id}/download/{template}', 'verb' => 'GET'],
 		['name' => 'settings#index', 'url' => 'api/settings', 'verb' => 'GET'],
 		['name' => 'settings#create', 'url' => 'api/settings', 'verb' => 'POST'],
-		// Object API routes	
+		// Object API routes
 		['name' => 'objects#index', 'url' => 'api/objects/{objectType}', 'verb' => 'GET'],
 		['name' => 'objects#create', 'url' => 'api/objects/{objectType}', 'verb' => 'POST'],
 		['name' => 'objects#show', 'url' => 'api/objects/{objectType}/{id}', 'verb' => 'GET'],
