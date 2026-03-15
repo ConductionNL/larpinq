@@ -82,7 +82,7 @@ export default {
 
 <style scoped>
 .cn-dashboard-page {
-	padding: 16px;
+	padding: 0;
 }
 
 .cn-dashboard-loading {
