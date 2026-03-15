@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import { generateUrl } from '@nextcloud/router'
 import Dashboard from '../views/dashboard/Dashboard.vue'
 import CharacterList from '../views/characters/CharacterList.vue'
 import CharacterDetail from '../views/characters/CharacterDetail.vue'
@@ -24,7 +25,8 @@ import Search from '../views/search/Search.vue'
 Vue.use(Router)
 
 export default new Router({
-	mode: 'hash',
+	mode: 'history',
+	base: generateUrl('/apps/larpingapp'),
 	routes: [
 		{ path: '/', name: 'Dashboard', component: Dashboard },
 		{ path: '/characters', name: 'Characters', component: CharacterList },
