@@ -55,29 +55,8 @@ class Version0Date20241015141612 extends SimpleMigrationStep
      */
     public function changeSchema(IOutput $output, Closure $schemaClosure, array $options): ?ISchemaWrapper
     {
-        // @var ISchemaWrapper $schema.
-        $schema = $schemaClosure();
-
-        // Update the abilities table to add the base column.
-        $table = $schema->getTable('larpingapp_abilities');
-        $table->addColumn(
-            'base',
-                Types::INTEGER,
-                [
-                    'notnull' => true,
-                    'default' => 0,
-                ]
-        );
-        $table->addColumn(
-            'allowed_negative',
-                Types::BOOLEAN,
-                [
-                    'notnull' => true,
-                    'default' => false,
-                ]
-        );
-
-        return $schema;
+        // No-op: LarpingApp now uses OpenRegister for all data storage.
+        return null;
     }//end changeSchema()
 
     /**

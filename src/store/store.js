@@ -1,45 +1,55 @@
-/* eslint-disable no-console */
-// The store script handles app wide variables (or state), for the use of these variables and there governing concepts read the design.md
-import pinia from '../pinia.js'
 import { useObjectStore } from './modules/object.js'
-import { useNavigationStore } from './modules/navigation.js'
-import { useSearchStore } from './modules/search.js'
-import { useAbilityStore } from './modules/ability.js'
-import { useCharacterStore } from './modules/character.js'
-import { useConditionStore } from './modules/condition.js'
-import { useEffectStore } from './modules/effect.js'
-import { useEventStore } from './modules/event.js'
-import { useItemStore } from './modules/item.js'
-import { usePlayerStore } from './modules/player.js'
-import { useSkillStore } from './modules/skill.js'
-import { useTemplateStore } from './modules/template.js'
+import { useSettingsStore } from './modules/settings.js'
 
-const objectStore = useObjectStore(pinia)
-const navigationStore = useNavigationStore(pinia)
-const searchStore = useSearchStore(pinia)
-const abilityStore = useAbilityStore(pinia)
-const characterStore = useCharacterStore(pinia)
-const conditionStore = useConditionStore(pinia)
-const effectStore = useEffectStore(pinia)
-const eventStore = useEventStore(pinia)
-const itemStore = useItemStore(pinia)
-const playerStore = usePlayerStore(pinia)
-const skillStore = useSkillStore(pinia)
-const templateStore = useTemplateStore(pinia)
+import pinia from '../pinia.js'
 
-export {
-	// generic
-	navigationStore,
-	searchStore,
-	objectStore,
-	// feature-specific
-	abilityStore,
-	characterStore,
-	conditionStore,
-	effectStore,
-	eventStore,
-	itemStore,
-	playerStore,
-	skillStore,
-	templateStore,
+/**
+ * Initialize stores and register object types from settings.
+ *
+ * Fetches settings from the backend to get register/schema IDs,
+ * then registers each object type with the generic object store.
+ *
+ * @return {Promise<{ settingsStore, objectStore }>}
+ */
+export async function initializeStores() {
+	const settingsStore = useSettingsStore(pinia)
+	const objectStore = useObjectStore(pinia)
+
+	const config = await settingsStore.fetchSettings()
+
+	if (config) {
+		if (config.register && config.character_schema) {
+			objectStore.registerObjectType('character', config.character_schema, config.register)
+		}
+		if (config.register && config.player_schema) {
+			objectStore.registerObjectType('player', config.player_schema, config.register)
+		}
+		if (config.register && config.ability_schema) {
+			objectStore.registerObjectType('ability', config.ability_schema, config.register)
+		}
+		if (config.register && config.skill_schema) {
+			objectStore.registerObjectType('skill', config.skill_schema, config.register)
+		}
+		if (config.register && config.item_schema) {
+			objectStore.registerObjectType('item', config.item_schema, config.register)
+		}
+		if (config.register && config.condition_schema) {
+			objectStore.registerObjectType('condition', config.condition_schema, config.register)
+		}
+		if (config.register && config.effect_schema) {
+			objectStore.registerObjectType('effect', config.effect_schema, config.register)
+		}
+		if (config.register && config.event_schema) {
+			objectStore.registerObjectType('event', config.event_schema, config.register)
+		}
+		if (config.register && config.setting_schema) {
+			objectStore.registerObjectType('setting', config.setting_schema, config.register)
+		}
+	}
+
+	return { settingsStore, objectStore }
 }
+
+// Re-export store constructors for direct use in components
+export { useObjectStore } from './modules/object.js'
+export { useSettingsStore } from './modules/settings.js'

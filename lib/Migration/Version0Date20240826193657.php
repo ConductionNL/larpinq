@@ -55,21 +55,9 @@ class Version0Date20240826193657 extends SimpleMigrationStep
      */
     public function changeSchema(IOutput $output, Closure $schemaClosure, array $options): ?ISchemaWrapper
     {
-        // @var ISchemaWrapper $schema.
-        $schema = $schemaClosure();
-
-        // Create tables.
-        $this->createAbilitiesTable($schema);
-        $this->createConditionsTable($schema);
-        $this->createEffectsTable($schema);
-        $this->createEventsTable($schema);
-        $this->createItemsTable($schema);
-        $this->createPlayersTable($schema);
-        $this->createSettingsTable($schema);
-        $this->createSkillsTable($schema);
-        $this->createTemplatesTable($schema);
-
-        return $schema;
+        // No-op: LarpingApp now uses OpenRegister for all data storage.
+        // Legacy tables are no longer created.
+        return null;
     }//end changeSchema()
 
     /**
@@ -85,5 +73,4 @@ class Version0Date20240826193657 extends SimpleMigrationStep
     {
     }//end postSchemaChange()
 
-    // ... rest of the file with table creation methods.
 }//end class

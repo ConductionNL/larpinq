@@ -1,10 +1,6 @@
-<script setup>
-import { effectStore, abilityStore, skillStore, itemStore, eventStore, conditionStore, characterStore, playerStore, navigationStore } from '../../store/store.js'
-</script>
-
 <template>
 	<div>
-		<div v-if="objects.length > 0">
+		<div v-if="objects && objects.length > 0">
 			<NcListItem v-for="object in objects"
 				:key="object.id"
 				:name="object.name"
@@ -30,22 +26,25 @@ import { effectStore, abilityStore, skillStore, itemStore, eventStore, condition
 					</div>
 				</template>
 				<template #actions>
-					<NcActionButton>
+					<NcActionButton @click="handleObjectClick(object)">
 						<template #icon>
 							<Eye :size="20" />
 						</template>
-						View details
+						{{ t('larpingapp', 'Bekijken') }}
 					</NcActionButton>
 				</template>
 			</NcListItem>
 		</div>
 		<div v-else>
-			Geen relaties gevonden
-		</div>		
+			{{ t('larpingapp', 'Geen relaties gevonden') }}
+		</div>
 	</div>
 </template>
+
 <script>
-import { NcListItem, NcActionButton, NcLoadingIcon } from '@nextcloud/vue'
+import { useObjectStore } from '../../store/modules/object.js'
+import pinia from '../../pinia.js'
+import { NcListItem, NcActionButton } from '@nextcloud/vue'
 import TimelineQuestionOutline from 'vue-material-design-icons/TimelineQuestionOutline.vue'
 import Eye from 'vue-material-design-icons/Eye.vue'
 import ShieldSwordOutline from 'vue-material-design-icons/ShieldSwordOutline.vue'
@@ -63,7 +62,6 @@ export default {
 	components: {
 		NcListItem,
 		NcActionButton,
-		NcLoadingIcon,
 		// Icons
 		TimelineQuestionOutline,
 		Eye,
@@ -75,13 +73,18 @@ export default {
 		Sword,
 		SwordCross,
 		Account,
-		ChatOutline
+		ChatOutline,
 	},
 	props: {
 		objects: {
 			type: Array,
 			required: true,
 			default: () => [],
+		},
+	},
+	computed: {
+		objectStore() {
+			return useObjectStore(pinia)
 		},
 	},
 	methods: {
@@ -91,10 +94,11 @@ export default {
 		 * @returns {string} Formatted string of effects
 		 */
 		renderEffects(object) {
-			if (!object?.effects?.length) return 'No calculated effects'
+			if (!object?.effects?.length) return t('larpingapp', 'Geen berekende effecten')
 
 			const effectStrings = object.effects.map(effectId => {
-				const effect = effectStore.effectList.find(e => e.id === effectId)
+				const effectList = this.objectStore.getCollection('effect').results || []
+				const effect = effectList.find(e => e.id === effectId)
 				if (!effect?.abilities?.length) return null
 
 				return effect.abilities.map(ability => {
@@ -103,50 +107,31 @@ export default {
 				}).join(', ')
 			}).filter(Boolean)
 
-			if (!effectStrings.length) return 'No calculated effects'
+			if (!effectStrings.length) return t('larpingapp', 'Geen berekende effecten')
 			return effectStrings.join(', ')
 		},
 		/**
-		 * Handles click on an object list item
+		 * Handles click on an object list item, navigating via router
 		 * @param {Object} object - The clicked object
 		 */
 		handleObjectClick(object) {
-			// Set the object in the appropriate store
-			switch (object.objectType) {
-				case 'ability':
-					abilityStore.abilityItem = object
-					navigationStore.setSelected('abilities')
-					break
-				case 'skill':
-					skillStore.skillItem = object
-					navigationStore.setSelected('skills')
-					break
-				case 'item':
-					itemStore.itemItem = object
-					navigationStore.setSelected('items')
-					break
-				case 'event':
-					eventStore.eventItem = object
-					navigationStore.setSelected('events')
-					break
-				case 'condition':
-					conditionStore.conditionItem = object
-					navigationStore.setSelected('conditions')
-					break
-				case 'effect':
-					effectStore.effectItem = object
-					navigationStore.setSelected('effects')
-					break
-				case 'character':
-					characterStore.characterItem = object
-					navigationStore.setSelected('characters')
-					break
-				case 'player':
-					playerStore.playerItem = object
-					navigationStore.setSelected('players')
-					break
-				default:
-					console.warn('Unknown object type:', object.objectType)
+			const routeMap = {
+				ability: 'AbilityDetail',
+				skill: 'SkillDetail',
+				item: 'ItemDetail',
+				event: 'EventDetail',
+				condition: 'ConditionDetail',
+				effect: 'EffectDetail',
+				character: 'CharacterDetail',
+				player: 'PlayerDetail',
+				template: 'TemplateDetail',
+			}
+
+			const routeName = routeMap[object.objectType]
+			if (routeName) {
+				this.$router.push({ name: routeName, params: { id: object.id } })
+			} else {
+				console.warn('Unknown object type:', object.objectType)
 			}
 		},
 	},

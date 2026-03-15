@@ -1,121 +1,93 @@
-<script setup>
-import { navigationStore, characterStore } from '../store/store.js'
-</script>
-
 <template>
 	<NcAppNavigation>
-		<NcAppNavigationList>
-			<NcAppNavigationNew text="Karakter toevoegen" @click="characterStore.setCharacterItem(null); navigationStore.setModal('editCharacter')">
-				<template #icon>
-					<Plus :size="20" />
-				</template>
-			</NcAppNavigationNew>
+		<template #list>
 			<NcAppNavigationItem
-				:active="navigationStore.selected === 'dashboard'"
-				name="Dashboard"
-				@click="navigationStore.setSelected('dashboard')">
+				:name="t('larpingapp', 'Dashboard')"
+				:to="{ name: 'Dashboard' }">
 				<template #icon>
 					<Finance :size="20" />
 				</template>
 			</NcAppNavigationItem>
 			<NcAppNavigationItem
-				:active="navigationStore.selected === 'characters'"
-				name="Karakters"
-				@click="navigationStore.setSelected('characters')">
+				:name="t('larpingapp', 'Karakters')"
+				:to="{ name: 'Characters' }">
 				<template #icon>
 					<BriefcaseAccountOutline :size="20" />
 				</template>
 			</NcAppNavigationItem>
 			<NcAppNavigationItem
-				:active="navigationStore.selected === 'players'"
-				name="Spelers"
-				@click="navigationStore.setSelected('players')">
+				:name="t('larpingapp', 'Spelers')"
+				:to="{ name: 'Players' }">
 				<template #icon>
 					<AccountGroupOutline :size="20" />
 				</template>
 			</NcAppNavigationItem>
 			<NcAppNavigationItem
-				:active="navigationStore.selected === 'items'"
-				name="Items"
-				@click="navigationStore.setSelected('items')">
+				:name="t('larpingapp', 'Items')"
+				:to="{ name: 'Items' }">
 				<template #icon>
 					<Sword :size="20" />
 				</template>
 			</NcAppNavigationItem>
 			<NcAppNavigationItem
-				:active="navigationStore.selected === 'events'"
-				name="Events"
-				@click="navigationStore.setSelected('events')">
+				:name="t('larpingapp', 'Events')"
+				:to="{ name: 'Events' }">
 				<template #icon>
 					<CalendarMonthOutline :size="20" />
 				</template>
 			</NcAppNavigationItem>
 			<NcAppNavigationItem
-				:active="navigationStore.selected === 'conditions'"
-				name="Conditions"
-				@click="navigationStore.setSelected('conditions')">
+				:name="t('larpingapp', 'Conditions')"
+				:to="{ name: 'Conditions' }">
 				<template #icon>
 					<EmoticonSickOutline :size="20" />
 				</template>
 			</NcAppNavigationItem>
 			<NcAppNavigationItem
-				:active="navigationStore.selected === 'search'"
-				name="Zoeken"
-				@click="navigationStore.setSelected('search')">
+				:name="t('larpingapp', 'Zoeken')"
+				:to="{ name: 'Search' }">
 				<template #icon>
 					<Magnify :size="20" />
 				</template>
 			</NcAppNavigationItem>
-		</NcAppNavigationList>
-
-		<NcAppNavigationSettings>
-			<NcAppNavigationItem
-				:active="navigationStore.selected === 'abilities'"
-				name="Abilities"
-				@click="navigationStore.setSelected('abilities')">
-				<template #icon>
-					<ShieldSwordOutline :size="20" />
-				</template>
-			</NcAppNavigationItem>
-			<NcAppNavigationItem
-				:active="navigationStore.selected === 'skills'"
-				name="Skills"
-				@click="navigationStore.setSelected('skills')">
-				<template #icon>
-					<SwordCross :size="20" />
-				</template>
-			</NcAppNavigationItem>
-			<NcAppNavigationItem
-				:active="navigationStore.selected === 'effects'"
-				name="Effects"
-				@click="navigationStore.setSelected('effects')">
-				<template #icon>
-					<MagicStaff :size="20" />
-				</template>
-			</NcAppNavigationItem>
-			<NcAppNavigationItem
-				:active="navigationStore.selected === 'templates'"
-				name="Templates"
-				@click="navigationStore.setSelected('templates')">
-				<template #icon>
-					<FileDocumentOutline :size="20" />
-				</template>
-			</NcAppNavigationItem>
-		</NcAppNavigationSettings>
+		</template>
+		<template #footer>
+			<NcAppNavigationSettings>
+				<NcAppNavigationItem
+					:name="t('larpingapp', 'Abilities')"
+					:to="{ name: 'Abilities' }">
+					<template #icon>
+						<ShieldSwordOutline :size="20" />
+					</template>
+				</NcAppNavigationItem>
+				<NcAppNavigationItem
+					:name="t('larpingapp', 'Skills')"
+					:to="{ name: 'Skills' }">
+					<template #icon>
+						<SwordCross :size="20" />
+					</template>
+				</NcAppNavigationItem>
+				<NcAppNavigationItem
+					:name="t('larpingapp', 'Effects')"
+					:to="{ name: 'Effects' }">
+					<template #icon>
+						<MagicStaff :size="20" />
+					</template>
+				</NcAppNavigationItem>
+				<NcAppNavigationItem
+					:name="t('larpingapp', 'Templates')"
+					:to="{ name: 'Templates' }">
+					<template #icon>
+						<FileDocumentOutline :size="20" />
+					</template>
+				</NcAppNavigationItem>
+			</NcAppNavigationSettings>
+		</template>
 	</NcAppNavigation>
 </template>
+
 <script>
-
-import {
-	NcAppNavigation,
-	NcAppNavigationList,
-	NcAppNavigationItem,
-	NcAppNavigationNew,
-	NcAppNavigationSettings,
-} from '@nextcloud/vue'
-
-// Configuration
-import Configuration from './Configuration.vue'
+import { NcAppNavigation, NcAppNavigationItem, NcAppNavigationSettings } from '@nextcloud/vue'
 
 // Icons
 import Finance from 'vue-material-design-icons/Finance.vue'
@@ -123,7 +95,6 @@ import Sword from 'vue-material-design-icons/Sword.vue'
 import AccountGroupOutline from 'vue-material-design-icons/AccountGroupOutline.vue'
 import CalendarMonthOutline from 'vue-material-design-icons/CalendarMonthOutline.vue'
 import BriefcaseAccountOutline from 'vue-material-design-icons/BriefcaseAccountOutline.vue'
-import Plus from 'vue-material-design-icons/Plus.vue'
 import ShieldSwordOutline from 'vue-material-design-icons/ShieldSwordOutline.vue'
 import SwordCross from 'vue-material-design-icons/SwordCross.vue'
 import MagicStaff from 'vue-material-design-icons/MagicStaff.vue'
@@ -135,21 +106,17 @@ export default {
 	name: 'MainMenu',
 	components: {
 		NcAppNavigation,
-		NcAppNavigationList,
 		NcAppNavigationItem,
-		NcAppNavigationNew,
 		NcAppNavigationSettings,
 		// Icons
-		ShieldSwordOutline,
-		SwordCross,
-		MagicStaff,
 		Finance,
 		Sword,
 		AccountGroupOutline,
 		CalendarMonthOutline,
 		BriefcaseAccountOutline,
-		Plus,
-		Configuration,
+		ShieldSwordOutline,
+		SwordCross,
+		MagicStaff,
 		Magnify,
 		FileDocumentOutline,
 		EmoticonSickOutline,
