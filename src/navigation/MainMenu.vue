@@ -3,7 +3,8 @@
 		<template #list>
 			<NcAppNavigationItem
 				:name="t('larpingapp', 'Dashboard')"
-				:to="{ name: 'Dashboard' }">
+				:to="{ name: 'Dashboard' }"
+				:exact="true">
 				<template #icon>
 					<Finance :size="20" />
 				</template>
