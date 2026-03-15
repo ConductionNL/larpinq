@@ -147,7 +147,7 @@
 
 		<CnAdvancedFormDialog
 			v-if="showCharacterDialog"
-			:schema="objectStore.getSchema('character')"
+			:schema="characterSchema"
 			:cancel-label="t('larpingapp', 'Annuleren')"
 			:confirm-label="t('larpingapp', 'Aanmaken')"
 			@confirm="onCreateCharacter"
@@ -155,7 +155,7 @@
 
 		<CnAdvancedFormDialog
 			v-if="showItemDialog"
-			:schema="objectStore.getSchema('item')"
+			:schema="itemSchema"
 			:cancel-label="t('larpingapp', 'Annuleren')"
 			:confirm-label="t('larpingapp', 'Aanmaken')"
 			@confirm="onCreateItem"
@@ -163,7 +163,7 @@
 
 		<CnAdvancedFormDialog
 			v-if="showConditionDialog"
-			:schema="objectStore.getSchema('condition')"
+			:schema="conditionSchema"
 			:cancel-label="t('larpingapp', 'Annuleren')"
 			:confirm-label="t('larpingapp', 'Aanmaken')"
 			@confirm="onCreateCondition"
@@ -182,7 +182,6 @@ import AccountMultiple from 'vue-material-design-icons/AccountMultiple.vue'
 import CalendarStar from 'vue-material-design-icons/CalendarStar.vue'
 import Sword from 'vue-material-design-icons/Sword.vue'
 import { useObjectStore } from '../../store/modules/object.js'
-import pinia from '../../pinia.js'
 
 const DEFAULT_LAYOUT = [
 	{ id: 1, widgetId: 'count-characters', gridX: 0, gridY: 0, gridWidth: 3, gridHeight: 2, showTitle: false },
@@ -214,11 +213,14 @@ export default {
 			showItemDialog: false,
 			showConditionDialog: false,
 			dashboardLayout: [...DEFAULT_LAYOUT],
+			characterSchema: null,
+			itemSchema: null,
+			conditionSchema: null,
 		}
 	},
 	computed: {
 		objectStore() {
-			return useObjectStore(pinia)
+			return useObjectStore()
 		},
 		widgetDefs() {
 			return [
@@ -244,9 +246,27 @@ export default {
 		getPagination(type) {
 			return this.objectStore.getPagination(type) || {}
 		},
+		async loadSchema(type) {
+			const config = this.objectStore.objectTypeRegistry?.[type]
+			if (!config) return null
+			try {
+				const resp = await fetch(`/index.php/apps/openregister/api/schemas/${config.schema}`, {
+					headers: { 'Content-Type': 'application/json', 'OCS-APIREQUEST': 'true', requesttoken: OC.requestToken },
+				})
+				return resp.ok ? await resp.json() : null
+			} catch { return null }
+		},
 		async refreshData() {
 			this.loading = true
 			try {
+				const [charSchema, itemSchema, condSchema] = await Promise.all([
+					this.loadSchema('character'),
+					this.loadSchema('item'),
+					this.loadSchema('condition'),
+				])
+				this.characterSchema = charSchema
+				this.itemSchema = itemSchema
+				this.conditionSchema = condSchema
 				await Promise.allSettled([
 					this.objectStore.fetchCollection('character', { _limit: 5 }),
 					this.objectStore.fetchCollection('event', { _limit: 5 }),
