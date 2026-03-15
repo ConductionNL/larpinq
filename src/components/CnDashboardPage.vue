@@ -124,7 +124,7 @@ export default {
 	background: var(--color-main-background);
 	border: 1px solid var(--color-border);
 	border-radius: var(--border-radius-large);
-	padding: 0;
+	padding: 16px;
 }
 
 .cn-dashboard-widget-title {
