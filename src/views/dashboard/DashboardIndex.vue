@@ -321,6 +321,9 @@ export default {
 	display: flex;
 	align-items: center;
 	gap: 12px;
+	padding: 16px;
+	height: 100%;
+	box-sizing: border-box;
 }
 
 .kpi-icon {
@@ -414,4 +417,5 @@ export default {
 	color: var(--color-text-maxcontrast);
 	font-size: 14px;
 }
+
 </style>
