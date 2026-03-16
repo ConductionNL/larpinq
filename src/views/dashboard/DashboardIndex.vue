@@ -238,7 +238,7 @@ export default {
 				{ id: 'count-players', title: t('larpingapp', 'Players') },
 				{ id: 'recent-characters', title: t('larpingapp', 'Recent Characters') },
 				{ id: 'recent-events', title: t('larpingapp', 'Recent Events') },
-				{ id: 'skill-usage', title: t('larpingapp', 'Skill Usage') },
+				{ id: 'skill-usage', title: t('larpingapp', 'Skill Usage by Characters') },
 			]
 		},
 		characters() {

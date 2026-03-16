@@ -1,7 +1,5 @@
 <template>
 	<div class="skill-usage-chart">
-		<h3>Skill Usage by Characters</h3>
-
 		<div v-if="loading" class="chart-loading">
 			<NcLoadingIcon :size="44" />
 			<span>Loading skill data...</span>
@@ -21,7 +19,7 @@
 		<VueApexCharts
 			v-else
 			type="donut"
-			height="350"
+			height="280"
 			:options="chartOptions"
 			:series="chartSeries" />
 	</div>
@@ -153,29 +151,8 @@ export default {
 
 <style scoped>
 .skill-usage-chart {
-	padding: 1rem;
-	border-radius: 8px;
-	min-height: 200px;
-}
-
-@media (prefers-color-scheme: light) {
-	.skill-usage-chart {
-		background-color: rgba(0, 0, 0, 0.07);
-	}
-}
-
-@media (prefers-color-scheme: dark) {
-	.skill-usage-chart {
-		background-color: rgba(255, 255, 255, 0.1);
-	}
-}
-
-body[data-theme-light] .skill-usage-chart {
-	background-color: rgba(0, 0, 0, 0.07);
-}
-
-body[data-theme-dark] .skill-usage-chart {
-	background-color: rgba(255, 255, 255, 0.1);
+	height: 100%;
+	box-sizing: border-box;
 }
 
 .skill-usage-chart h3 {
