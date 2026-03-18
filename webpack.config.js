@@ -50,4 +50,8 @@ webpackConfig.plugins = [
 	new webpack.DefinePlugin({ appVersion: JSON.stringify(process.env.npm_package_version) }),
 ]
 
+// Force @nextcloud/dialogs to resolve from this app's node_modules,
+// preventing the nextcloud-vue submodule's nested deps (Vue 3) from leaking in.
+webpackConfig.resolve.alias['@nextcloud/dialogs'] = path.resolve(__dirname, 'node_modules/@nextcloud/dialogs')
+
 module.exports = webpackConfig
