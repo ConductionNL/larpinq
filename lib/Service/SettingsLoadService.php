@@ -90,7 +90,6 @@ class SettingsLoadService
         $data = $this->fileLoader->loadConfigurationFile();
         $data = $this->fileLoader->ensureSourceType(data: $data);
 
-        /** @var object $configurationService */
         $configurationService = $this->getConfigurationService();
         $currentAppVersion    = $this->appManager->getAppVersion(Application::APP_ID);
 

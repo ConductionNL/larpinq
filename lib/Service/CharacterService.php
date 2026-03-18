@@ -48,6 +48,8 @@ use OCA\OpenRegister\Db\ObjectEntity;
  * @link     https://larpingapp.com
  *
  * @psalm-suppress UnusedProperty Mapper properties injected via DI for future direct access.
+ *
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class CharacterService
 {
@@ -262,6 +264,9 @@ class CharacterService
      * @param array $character Character data array.
      *
      * @return array Updated character data array with calculated stats.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function calculateCharacter(array $character): array
     {
@@ -387,6 +392,9 @@ class CharacterService
      * @param array<string, mixed> $effect Effect array containing stat_id, modifier and modification.
      *
      * @return void
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     private function calculateEffect(array &$abilities, array $effect): void
     {

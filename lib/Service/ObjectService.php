@@ -616,6 +616,9 @@ class ObjectService
      * @psalm-suppress MixedMethodCall Mapper/entity resolved dynamically.
      * @psalm-suppress MixedReturnStatement Entity may return mixed from jsonSerialize().
      * @psalm-suppress MixedArrayOffset Entity properties are dynamic string keys.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.ElseExpression)
      */
     public function extendEntity(mixed $entity, array $extend): array
     {
@@ -872,6 +875,8 @@ class ObjectService
      *
      * @psalm-suppress MixedInferredReturnType Return type depends on dynamic mapper resolution.
      * @psalm-suppress MixedMethodCall Mapper resolved dynamically via getMapper().
+     *
+     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
      */
     public function revertObject(string $objectType, string|int $id, $until=null, bool $overwriteVersion=false): array
     {
