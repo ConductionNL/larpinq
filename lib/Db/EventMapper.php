@@ -83,6 +83,7 @@ class EventMapper extends QBMapper
      * @psalm-suppress PossiblyUnusedMethod Called dynamically via ObjectService::getMapper().
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function findAll(
         ?int $limit=null,
@@ -110,7 +111,9 @@ class EventMapper extends QBMapper
                     $queryBuilder->andWhere($queryBuilder->expr()->isNotNull((string) $filter));
                 } elseif ($value === 'IS NULL') {
                     $queryBuilder->andWhere($queryBuilder->expr()->isNull((string) $filter));
-                } else {
+                }
+
+                if ($value !== 'IS NOT NULL' && $value !== 'IS NULL') {
                     $queryBuilder->andWhere($queryBuilder->expr()->eq((string) $filter, $queryBuilder->createNamedParameter($value)));
                 }
             }

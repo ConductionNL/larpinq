@@ -88,6 +88,8 @@ class SkillMapper extends QBMapper
      * @psalm-suppress PossiblyNullArgument Offset null is handled by the query builder.
      * @psalm-suppress PossiblyNullIterator Filters/searchParams default to empty arrays.
      * @psalm-suppress RiskyTruthyFalsyComparison Search conditions checked for empty.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function findAll(
         ?int $limit=null,
@@ -110,7 +112,9 @@ class SkillMapper extends QBMapper
                     $queryBuilder->andWhere($queryBuilder->expr()->isNotNull((string) $filter));
                 } elseif ($value === 'IS NULL') {
                     $queryBuilder->andWhere($queryBuilder->expr()->isNull((string) $filter));
-                } else {
+                }
+
+                if ($value !== 'IS NOT NULL' && $value !== 'IS NULL') {
                     $queryBuilder->andWhere($queryBuilder->expr()->eq((string) $filter, $queryBuilder->createNamedParameter($value)));
                 }
             }

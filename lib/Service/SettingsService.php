@@ -115,6 +115,8 @@ class SettingsService
      * @param bool $force Whether to force re-import.
      *
      * @return array The import result.
+     *
+     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
      */
     public function loadSettings(bool $force=false): array
     {
