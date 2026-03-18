@@ -206,6 +206,12 @@ Full documentation is available at **[larpingapp.app](https://larpingapp.app)**
 - **[OpenCatalogi](https://github.com/ConductionNL/opencatalogi)** — Publication and catalogue management
 - **[NL Design](https://github.com/ConductionNL/nldesign)** — Design token theming for Nextcloud
 
+## Support
+
+For support, contact us at [support@conduction.nl](mailto:support@conduction.nl).
+
+For a Service Level Agreement (SLA), contact [sales@conduction.nl](mailto:sales@conduction.nl).
+
 ## License
 
 This project is licensed under the [EUPL-1.2](LICENSE).
