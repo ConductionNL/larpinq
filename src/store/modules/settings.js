@@ -6,12 +6,16 @@ export const useSettingsStore = defineStore('settings', {
 		loading: false,
 		error: null,
 		initialized: false,
+		openRegisters: false,
+		isAdmin: false,
 	}),
 	getters: {
 		isLoading: (state) => state.loading,
 		getError: (state) => state.error,
 		isInitialized: (state) => state.initialized,
 		getConfig: (state) => state.config,
+		hasOpenRegisters: (state) => state.openRegisters,
+		getIsAdmin: (state) => state.isAdmin,
 	},
 	actions: {
 		async fetchSettings() {
@@ -33,6 +37,8 @@ export const useSettingsStore = defineStore('settings', {
 				}
 
 				const data = await response.json()
+				this.openRegisters = data.openRegisters ?? false
+				this.isAdmin = data.isAdmin ?? false
 				this.config = data.configuration || data.config || data
 				this.initialized = true
 
