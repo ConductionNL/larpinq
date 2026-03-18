@@ -47,6 +47,8 @@ class ConfigFileLoaderService
      * @param IAppManager $appManager The app manager.
      *
      * @return void
+     *
+     * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
      */
     public function __construct(
         private readonly IAppManager $appManager,
@@ -57,7 +59,7 @@ class ConfigFileLoaderService
     /**
      * Load and parse the configuration JSON file.
      *
-     * @return array The parsed configuration data.
+     * @return array<string, mixed> The parsed configuration data.
      *
      * @throws RuntimeException If the file cannot be read or parsed.
      */
@@ -75,8 +77,9 @@ class ConfigFileLoaderService
             throw new RuntimeException("Failed to read configuration file: {$absoluteFilePath}");
         }
 
+        /** @var array<string, mixed>|null $data */
         $data = json_decode($jsonContent, true);
-        if (json_last_error() !== JSON_ERROR_NONE) {
+        if (json_last_error() !== JSON_ERROR_NONE || is_array($data) === false) {
             throw new RuntimeException('Invalid JSON in configuration file: '.json_last_error_msg());
         }
 
@@ -87,18 +90,21 @@ class ConfigFileLoaderService
     /**
      * Ensure the x-openregister sourceType is set on configuration data.
      *
-     * @param array $data The configuration data.
+     * @param array<string, mixed> $data The configuration data.
      *
-     * @return array The data with sourceType ensured.
+     * @return array<string, mixed> The data with sourceType ensured.
      */
     public function ensureSourceType(array $data): array
     {
-        if (isset($data['x-openregister']) === false) {
+        if (isset($data['x-openregister']) === false || is_array($data['x-openregister']) === false) {
             $data['x-openregister'] = [];
         }
 
-        if (isset($data['x-openregister']['sourceType']) === false) {
-            $data['x-openregister']['sourceType'] = 'local';
+        /** @var array<string, mixed> $openRegister */
+        $openRegister = $data['x-openregister'];
+        if (isset($openRegister['sourceType']) === false) {
+            $openRegister['sourceType'] = 'local';
+            $data['x-openregister']     = $openRegister;
         }
 
         return $data;

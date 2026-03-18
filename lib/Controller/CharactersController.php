@@ -25,6 +25,8 @@ use Psr\Container\ContainerInterface;
 
 /**
  * Controller for handling characters related operations
+ *
+ * @psalm-suppress UnusedClass Instantiated by Nextcloud routing (appinfo/routes.php).
  */
 class CharactersController extends Controller
 {
@@ -82,27 +84,31 @@ class CharactersController extends Controller
         }
 
         try {
+            /** @var object $templateService */
             $templateService = $this->container->get('OCA\DocuDesk\Service\TemplateService');
+            /** @var array<string,mixed> $templateData */
             $templateData    = $templateService->getTemplate(id: $template);
         } catch (\Exception $exception) {
             return new JSONResponse(data: ['error' => 'Template not found'], statusCode: 404);
         }
 
         try {
+            /** @var object $pdfService */
             $pdfService = $this->container->get('OCA\DocuDesk\Service\PdfService');
+            /** @var string $pdfString */
             $pdfString  = $pdfService->renderPdf(
-                templateContent: $templateData['content'] ?? '',
+                templateContent: (string) ($templateData['content'] ?? ''),
                 data: ['character' => $character, 'template' => $templateData],
                 options: [
-                    'format'      => $templateData['format'] ?? 'A4',
-                    'orientation' => $templateData['orientation'] ?? 'P',
+                    'format'      => (string) ($templateData['format'] ?? 'A4'),
+                    'orientation' => (string) ($templateData['orientation'] ?? 'P'),
                 ]
             );
         } catch (\Exception $exception) {
             return new JSONResponse(data: ['error' => 'PDF generation failed: '.$exception->getMessage()], statusCode: 500);
         }
 
-        $fileName = ($character['name'] ?? 'character').'_character_sheet.pdf';
+        $fileName = ((string) ($character['name'] ?? 'character')).'_character_sheet.pdf';
 
         return new DataDownloadResponse(
             $pdfString,

@@ -30,6 +30,10 @@ use OCP\IDBConnection;
  * @copyright 2024 Ruben Linde
  * @license   AGPL-3.0-or-later https://www.gnu.org/licenses/agpl-3.0.en.html
  * @link      https://larpingapp.com
+ *
+ * @template-extends QBMapper<Item>
+ *
+ * @psalm-suppress MoreSpecificReturnType, LessSpecificReturnStatement QBMapper returns Entity but we know the concrete type.
  */
 class ItemMapper extends QBMapper
 {
@@ -37,6 +41,8 @@ class ItemMapper extends QBMapper
      * Constructor
      *
      * @param IDBConnection $db Database connection
+     *
+     * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
      */
     public function __construct(IDBConnection $db)
     {
@@ -66,6 +72,8 @@ class ItemMapper extends QBMapper
      * Find all items
      *
      * @return Item[] Array of items
+     *
+     * @psalm-suppress PossiblyUnusedMethod Called dynamically via ObjectService::getMapper().
      */
     public function findAll(): array
     {
@@ -82,11 +90,14 @@ class ItemMapper extends QBMapper
      * @param array<string,mixed> $data The item data
      *
      * @return Item
+     *
+     * @psalm-suppress PossiblyUnusedMethod Called dynamically via ObjectService::saveObject().
      */
     public function createFromArray(array $data): Item
     {
         $item = new Item();
         foreach ($data as $key => $value) {
+            /** @psalm-suppress MixedAssignment Dynamic entity property */
             $item->$key = $value;
         }
 
@@ -100,11 +111,14 @@ class ItemMapper extends QBMapper
      * @param array<string,mixed> $data The updated item data
      *
      * @return Item
+     *
+     * @psalm-suppress PossiblyUnusedMethod Called dynamically via ObjectService::saveObject().
      */
     public function updateFromArray(int $id, array $data): Item
     {
         $item = $this->find(id: $id);
         foreach ($data as $key => $value) {
+            /** @psalm-suppress MixedAssignment Dynamic entity property */
             $item->$key = $value;
         }
 

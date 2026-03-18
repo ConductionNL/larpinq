@@ -33,6 +33,8 @@ class CharacterMapper extends QBMapper
      * Constructor for CharacterMapper.
      *
      * @param IDBConnection $db Database connection
+     *
+     * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
      */
     public function __construct(IDBConnection $db)
     {
@@ -64,6 +66,8 @@ class CharacterMapper extends QBMapper
      * @param string $userId The user ID
      *
      * @return Character[]
+     *
+     * @psalm-suppress PossiblyUnusedMethod Called dynamically via ObjectService::getMapper().
      */
     public function findAll(string $userId): array
     {
@@ -81,10 +85,13 @@ class CharacterMapper extends QBMapper
      * @param array<string,mixed> $data The character data
      *
      * @return Character
+     *
+     * @psalm-suppress PossiblyUnusedMethod Called dynamically via ObjectService::saveObject().
      */
     public function createFromArray(array $data): Character
     {
         $character = new Character();
+        /** @psalm-suppress MixedAssignment Dynamic entity property */
         foreach ($data as $key => $value) {
             $character->$key = $value;
         }
@@ -99,10 +106,13 @@ class CharacterMapper extends QBMapper
      * @param array<string,mixed> $data The updated character data
      *
      * @return Character
+     *
+     * @psalm-suppress PossiblyUnusedMethod Called dynamically via ObjectService::saveObject().
      */
     public function updateFromArray(int $id, array $data): Character
     {
         $character = $this->find(id: $id);
+        /** @psalm-suppress MixedAssignment Dynamic entity property */
         foreach ($data as $key => $value) {
             $character->$key = $value;
         }

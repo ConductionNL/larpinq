@@ -36,6 +36,8 @@ use Psr\Container\ContainerInterface;
  * @author   Ruben Linde <ruben@larpingapp.com>
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
+ *
+ * @psalm-suppress UnusedClass Instantiated by Nextcloud routing (appinfo/routes.php).
  */
 class SettingsController extends Controller
 {
@@ -43,9 +45,11 @@ class SettingsController extends Controller
     /**
      * The OpenRegister object service.
      *
-     * @var \OCA\OpenRegister\Service\ObjectService|null The OpenRegister object service.
+     * @var object|null The OpenRegister object service.
+     *
+     * @psalm-suppress PropertyNotSetInConstructor Set lazily via getObjectService().
      */
-    private ?\OCA\OpenRegister\Service\ObjectService $objectService = null;
+    private ?object $objectService = null;
 
     /**
      * Constructor.
@@ -75,13 +79,15 @@ class SettingsController extends Controller
     /**
      * Attempts to retrieve the OpenRegister service from the container.
      *
-     * @return \OCA\OpenRegister\Service\ObjectService|null The OpenRegister service if available, null otherwise.
+     * @return object|null The OpenRegister service if available, null otherwise.
      * @throws \RuntimeException If the service is not available.
      */
-    public function getObjectService(): ?\OCA\OpenRegister\Service\ObjectService
+    public function getObjectService(): ?object
     {
         if (in_array(needle: 'openregister', haystack: $this->appManager->getInstalledApps()) === true) {
-            $this->objectService = $this->container->get('OCA\OpenRegister\Service\ObjectService');
+            /** @var object $service */
+            $service = $this->container->get('OCA\OpenRegister\Service\ObjectService');
+            $this->objectService = $service;
             return $this->objectService;
         }
 
@@ -93,12 +99,13 @@ class SettingsController extends Controller
     /**
      * Attempts to retrieve the Configuration service from the container.
      *
-     * @return \OCA\OpenRegister\Service\ConfigurationService|null The Configuration service if available, null otherwise.
+     * @return object|null The Configuration service if available, null otherwise.
      * @throws \RuntimeException If the service is not available.
      */
-    public function getConfigurationService(): ?\OCA\OpenRegister\Service\ConfigurationService
+    public function getConfigurationService(): ?object
     {
         if (in_array(needle: 'openregister', haystack: $this->appManager->getInstalledApps()) === true) {
+            /** @var object $configurationService */
             $configurationService = $this->container->get('OCA\OpenRegister\Service\ConfigurationService');
             return $configurationService;
         }
@@ -184,8 +191,8 @@ class SettingsController extends Controller
                     'message' => 'Configuration re-imported successfully',
                     'config'  => $this->settingsService->getSettings(),
                     'result'  => [
-                        'registers' => count($result['registers'] ?? []),
-                        'schemas'   => count($result['schemas'] ?? []),
+                        'registers' => count((array) ($result['registers'] ?? [])),
+                        'schemas'   => count((array) ($result['schemas'] ?? [])),
                     ],
                 ]
             );

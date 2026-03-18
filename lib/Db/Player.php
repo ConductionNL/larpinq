@@ -26,6 +26,8 @@ use OCP\AppFramework\Db\Entity;
  * @method void setName(string $name)
  * @method string getDescription()
  * @method void setDescription(string $description)
+ *
+ * @psalm-suppress PropertyNotSetInConstructor $id is set by the parent Entity class.
  */
 class Player extends Entity implements JsonSerializable
 {
@@ -34,15 +36,19 @@ class Player extends Entity implements JsonSerializable
      * The name of the player.
      *
      * @var string
+     *
+     * @psalm-suppress PossiblyUnusedProperty Accessed via Entity __call magic (getName/setName).
      */
-    protected $name;
+    protected $name = null;
 
     /**
      * The description of the player.
      *
      * @var string
+     *
+     * @psalm-suppress PossiblyUnusedProperty Accessed via Entity __call magic (getDescription/setDescription).
      */
-    protected $description;
+    protected $description = null;
 
     /**
      * Constructor to set the defaults
@@ -73,10 +79,13 @@ class Player extends Entity implements JsonSerializable
      * @param array<string,mixed> $data The data to hydrate from.
      *
      * @return void
+     *
+     * @psalm-suppress PossiblyUnusedMethod Called from PlayerMapper::createFromArray and updateFromArray.
      */
     public function hydrate(array $data): void
     {
         foreach ($data as $key => $value) {
+            /** @psalm-suppress MixedAssignment Dynamic entity property */
             $this->$key = $value;
         }
     }//end hydrate()
@@ -90,6 +99,7 @@ class Player extends Entity implements JsonSerializable
     {
         $data = [];
         foreach ($this->getJsonFields() as $field) {
+            /** @psalm-suppress MixedAssignment Dynamic entity property */
             $data[$field] = $this->$field;
         }
 

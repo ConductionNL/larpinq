@@ -14,8 +14,6 @@ declare(strict_types=1);
 
 namespace OCA\LarpingApp\Service;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\Promise\Utils;
 use OCP\IURLGenerator;
 use Symfony\Component\Uid\Uuid;
 
@@ -28,6 +26,9 @@ use Symfony\Component\Uid\Uuid;
  * @copyright 2024 Ruben Linde
  * @license   https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
  * @link      https://larpingapp.com
+ *
+ * @psalm-suppress UnusedClass Injected via Nextcloud DI container.
+ * @psalm-suppress UndefinedClass GuzzleHttp is an optional dependency.
  */
 class SearchService
 {
@@ -35,9 +36,9 @@ class SearchService
     /**
      * HTTP client for making async requests
      *
-     * @var Client
+     * @var \GuzzleHttp\Client
      */
-    public $client;
+    public \GuzzleHttp\Client $client;
 
     public const BASE_OBJECT = [
         'database'   => 'objects',
@@ -52,32 +53,34 @@ class SearchService
     public function __construct(
         private readonly IURLGenerator $urlGenerator,
     ) {
-        $this->client = new Client();
+        $this->client = new \GuzzleHttp\Client();
     }//end __construct()
 
     /**
      * Merges two facet aggregation arrays into one combined array
      *
-     * @param array $existingAggregation The existing aggregation data
-     * @param array $newAggregation      The new aggregation data to merge
+     * @param array<int, array{_id: string, count: int}> $existingAggregation The existing aggregation data
+     * @param array<int, array{_id: string, count: int}> $newAggregation      The new aggregation data to merge
      *
-     * @return array The merged aggregation array
+     * @return array<int, array{_id: string|int, count: int}> The merged aggregation array
      */
     public function mergeFacets(array $existingAggregation, array $newAggregation): array
     {
         $results = [];
+        /** @var array<string, int> $existingAggregationMapped */
         $existingAggregationMapped = [];
+        /** @var array<string, int> $newAggregationMapped */
         $newAggregationMapped      = [];
 
         foreach ($existingAggregation as $value) {
-            $existingAggregationMapped[$value['_id']] = $value['count'];
+            $existingAggregationMapped[(string) $value['_id']] = (int) $value['count'];
         }
 
         foreach ($newAggregation as $value) {
-            if (isset($existingAggregationMapped[$value['_id']]) === true) {
-                $newAggregationMapped[$value['_id']] = $existingAggregationMapped[$value['_id']] + $value['count'];
+            if (isset($existingAggregationMapped[(string) $value['_id']]) === true) {
+                $newAggregationMapped[(string) $value['_id']] = $existingAggregationMapped[(string) $value['_id']] + (int) $value['count'];
             } else {
-                $newAggregationMapped[$value['_id']] = $value['count'];
+                $newAggregationMapped[(string) $value['_id']] = (int) $value['count'];
             }
         }
 
@@ -106,18 +109,20 @@ class SearchService
             return [];
         }
 
+        $result = $existingAggregations ?? [];
+
         foreach ($newAggregations as $key => $aggregation) {
-            if (isset($existingAggregations[$key]) === false) {
-                $existingAggregations[$key] = $aggregation;
+            if (isset($result[$key]) === false) {
+                $result[$key] = $aggregation;
             } else {
-                $existingAggregations[$key] = $this->mergeFacets(
-                    existingAggregation: $existingAggregations[$key],
+                $result[$key] = $this->mergeFacets(
+                    existingAggregation: $result[$key],
                     newAggregation: $aggregation
                 );
             }
         }
 
-        return $existingAggregations;
+        return $result;
     }//end mergeAggregations()
 
     /**
@@ -142,27 +147,38 @@ class SearchService
      * @param array $catalogi      Optional list of catalogue IDs to filter on
      *
      * @return array Search results including results, facets, pagination metadata
+     *
+     * @psalm-suppress PossiblyUnusedParam $dbConfig and $catalogi reserved for future distributed search.
+     * @psalm-suppress UnusedVariable $promises accumulated in loop then settled.
+     * @psalm-suppress MixedInferredReturnType, UndefinedThisPropertyFetch Dynamic services injected at runtime.
      */
     public function search(array $parameters, array $elasticConfig, array $dbConfig, array $catalogi=[]): array
     {
-
-        $localResults['results'] = [];
-        $localResults['facets']  = [];
+        /** @var array{results: array, facets: array} $localResults */
+        $localResults = [
+            'results' => [],
+            'facets'  => [],
+        ];
 
         $totalResults = 0;
         if (isset($parameters['.limit']) === true) {
-            $limit = $parameters['.limit'];
+            $limit = (int) $parameters['.limit'];
         } else {
             $limit = 30;
         }
 
         if (isset($parameters['.page']) === true) {
-            $page = $parameters['.page'];
+            $page = (int) $parameters['.page'];
         } else {
             $page = 1;
         }
 
-        if ($elasticConfig['location'] !== '') {
+        /**
+         * @psalm-suppress UndefinedThisPropertyFetch
+         * @psalm-suppress MixedMethodCall Dynamically injected service.
+         */
+        if ($elasticConfig['location'] !== '' && isset($this->elasticService) === true) {
+            /** @var array{results: array, facets: array} $localResults */
             $localResults = $this->elasticService->searchObject(
                 filters: $parameters,
                 config: $elasticConfig,
@@ -170,7 +186,13 @@ class SearchService
             );
         }
 
-        $directory = $this->directoryService->listDirectory(limit: 1000);
+        /**
+         * @psalm-suppress UndefinedThisPropertyFetch
+         * @psalm-suppress MixedMethodCall Dynamically injected service.
+         *
+         * @var array<int, array<string, mixed>> $directory
+         */
+        $directory = isset($this->directoryService) === true ? $this->directoryService->listDirectory(limit: 1000) : [];
 
         // $directory = $this->objectService->findObjects(filters: ['_schema' => 'directory'], config: $dbConfig).
         if (count($directory) === 0) {
@@ -195,20 +217,22 @@ class SearchService
 
         $searchEndpoints = [];
 
+        /** @psalm-suppress UnusedVariable $promises is accumulated in the loop and settled below. */
         $promises = [];
         foreach ($directory as $instance) {
+            /** @var array{search?: string, default?: bool, catalogId?: string} $instance */
             $instance['search'] = $this->urlGenerator->getAbsoluteURL(
                 $this->urlGenerator->linkToRoute(routeName: "opencatalogi.directory.index")
             );
 
-            if ($instance['default'] === false
+            if (($instance['default'] ?? false) === false
                 || (isset($parameters['.catalogi']) === true
-                && in_array($instance['catalogId'], $parameters['.catalogi']) === false)
+                && in_array($instance['catalogId'] ?? '', $parameters['.catalogi']) === false)
             ) {
                 continue;
             }
 
-            $searchEndpoints[$instance['search']][] = $instance['catalogId'];
+            $searchEndpoints[(string) $instance['search']][] = $instance['catalogId'] ?? '';
         }
 
         unset($parameters['.catalogi']);
@@ -222,7 +246,7 @@ class SearchService
             );
         }
 
-        $responses = Utils::settle($promises)->wait();
+        $responses = \GuzzleHttp\Promise\Utils::settle($promises)->wait();
 
         foreach ($responses as $response) {
             if ($response['state'] === 'fulfilled') {
@@ -284,14 +308,23 @@ class SearchService
             $name = str_replace(search: $key,  replace:'', subject: $name);
             $key  = trim(string: $key, characters: '[]');
             if (empty($key) === false) {
-                $vars[$nameKey] = ($vars[$nameKey] ?? []);
+                if (isset($vars[$nameKey]) === false || is_array($vars[$nameKey]) === false) {
+                    $vars[$nameKey] = [];
+                }
+
+                /** @var array $subVars */
+                $subVars = &$vars[$nameKey];
                 $this->recursiveRequestQueryKey(
-                    vars: $vars[$nameKey],
+                    vars: $subVars,
                     name: $name,
                     nameKey: $key,
                     value: $value
                 );
             } else {
+                if (isset($vars[$nameKey]) === false || is_array($vars[$nameKey]) === false) {
+                    $vars[$nameKey] = [];
+                }
+
                 $vars[$nameKey][] = $value;
             }
         } else {
@@ -305,15 +338,15 @@ class SearchService
      *
      * Also unsets _search in filters !
      *
-     * @param array $filters        Query parameters from request.
-     * @param array $fieldsToSearch Database field names to filter/search on.
+     * @param array<string,mixed> $filters        Query parameters from request.
+     * @param array<int,string>   $fieldsToSearch Database field names to filter/search on.
      *
-     * @return array $filters
+     * @return array<string,mixed> $filters
      */
     public function createMongoDBSearchFilter(array $filters, array $fieldsToSearch): array
     {
         if (isset($filters['_search']) === true) {
-            $searchRegex    = ['$regex' => $filters['_search'], '$options' => 'i'];
+            $searchRegex    = ['$regex' => (string) $filters['_search'], '$options' => 'i'];
             $filters['$or'] = [];
 
             foreach ($fieldsToSearch as $field) {
@@ -361,14 +394,14 @@ class SearchService
     /**
      * This function unsets all keys starting with _ from filters.
      *
-     * @param array $filters Query parameters from request.
+     * @param array<string,mixed> $filters Query parameters from request.
      *
-     * @return array $filters
+     * @return array<string,mixed> $filters
      */
     public function unsetSpecialQueryParams(array $filters): array
     {
-        foreach ($filters as $key => $value) {
-            if (str_starts_with($key, '_') === true) {
+        foreach ($filters as $key => $_value) {
+            if (str_starts_with((string) $key, '_') === true) {
                 unset($filters[$key]);
             }
         }
@@ -388,7 +421,7 @@ class SearchService
     {
         $searchParams = [];
         if (isset($filters['_search']) === true) {
-            $searchParams['search'] = '%'.strtolower($filters['_search']).'%';
+            $searchParams['search'] = '%'.strtolower((string) $filters['_search']).'%';
         }
 
         return $searchParams;
@@ -407,6 +440,7 @@ class SearchService
         $sort = [];
         if (isset($filters['_order']) === true && is_array($filters['_order']) === true) {
             foreach ($filters['_order'] as $field => $direction) {
+                /** @var string $direction */
                 if (strtoupper($direction) === 'DESC') {
                     $direction = 'DESC';
                 } else {
@@ -435,6 +469,7 @@ class SearchService
         $sort = [];
         if (isset($filters['_order']) === true && is_array($filters['_order']) === true) {
             foreach ($filters['_order'] as $field => $direction) {
+                /** @var string $direction */
                 if (strtoupper($direction) === 'DESC') {
                     $sort[$field] = -1;
                 } else {
@@ -468,17 +503,12 @@ class SearchService
                 $value = urldecode(string: $kvpair[1]);
             }
 
+            $bracketPos = strpos($key, '[');
+            $nameKey    = ($bracketPos !== false) ? substr($key, 0, $bracketPos) : $key;
             $this->recursiveRequestQueryKey(
                 vars: $vars,
                 name: $key,
-                nameKey: substr(
-                    string: $key,
-                    offset: 0,
-                    length: strpos(
-                        haystack: $key,
-                        needle: '['
-                    )
-                ),
+                nameKey: $nameKey,
                 value: $value
             );
         }//end foreach

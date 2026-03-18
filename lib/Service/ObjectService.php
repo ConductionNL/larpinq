@@ -52,6 +52,9 @@ use OCA\OpenRegister\Service\Exceptions\NotFoundException;
  * @author   Ruben Linde <ruben@larpingapp.com>
  * @license  https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
  * @link     https://larpingapp.com
+ *
+ * @psalm-suppress UndefinedClass, UndefinedDocblockClass OpenRegister is an optional dependency.
+ * @psalm-suppress UnusedProperty Container and appManager used in getOpenRegisters().
  */
 class ObjectService
 {
@@ -78,6 +81,8 @@ class ObjectService
      * @param ContainerInterface $container       DI container.
      * @param IAppManager        $appManager      App manager.
      * @param IAppConfig         $config          Config service.
+     *
+     * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
      */
     public function __construct(
         private AbilityMapper $abilityMapper,
@@ -89,7 +94,9 @@ class ObjectService
         private PlayerMapper $playerMapper,
         private SettingMapper $settingMapper,
         private SkillMapper $skillMapper,
+        /** @psalm-suppress UnusedProperty Used in getOpenRegisters(). */
         private ContainerInterface $container,
+        /** @psalm-suppress UnusedProperty Used in getOpenRegisters(). */
         private IAppManager $appManager,
         private IAppConfig $config
     ) {
@@ -101,14 +108,16 @@ class ObjectService
      *
      * @param string $objectType The type of object to retrieve the mapper for.
      *
-     * @return mixed The appropriate mapper.
+     * @return AbilityMapper|CharacterMapper|ConditionMapper|EffectMapper|EventMapper|ItemMapper|PlayerMapper|SettingMapper|SkillMapper|object The appropriate mapper.
      *
      * @throws InvalidArgumentException If an unknown object type is provided.
      * @throws NotFoundExceptionInterface|ContainerExceptionInterface If OpenRegister service is not available
      *                                                                or if register/schema is not configured.
      * @throws Exception
+     *
+     * @psalm-suppress UndefinedDocblockClass OpenRegister classes may not be installed.
      */
-    private function getMapper(string $objectType): mixed
+    private function getMapper(string $objectType): object
     {
         $objectTypeLower = strtolower($objectType);
 
@@ -121,6 +130,7 @@ class ObjectService
 
         // If the source is 'open_registers', use the OpenRegister service.
         if ($source === 'openregister') {
+            /** @var object|null $openRegister */
             $openRegister = $this->getOpenRegisters();
             if ($openRegister === null) {
                 throw new Exception("OpenRegister service not available");
@@ -136,7 +146,12 @@ class ObjectService
                 throw new Exception("Schema not configured for $objectType");
             }
 
-            return $openRegister->getMapper(register: $register, schema: $schema);
+            /**
+             * @psalm-suppress MixedMethodCall OpenRegister is an optional cross-app dependency.
+             * @var object $orMapper
+             */
+            $orMapper = $openRegister->getMapper(register: $register, schema: $schema);
+            return $orMapper;
         }
 
         // If the source is internal, return the appropriate mapper based on the object type.
@@ -161,12 +176,16 @@ class ObjectService
      * @param string $id         The id of the object to retrieve.
      * @param array  $extend     Optional array of properties to extend.
      *
-     * @return mixed The retrieved object.
+     * @return array<string,mixed> The retrieved object.
      *
      * @throws ContainerExceptionInterface|DoesNotExistException|MultipleObjectsReturnedException|NotFoundExceptionInterface
      * @throws InvalidArgumentException If extend is requested for non-OpenRegister objects.
+     *
+     * @psalm-suppress MixedInferredReturnType Return type depends on dynamic mapper resolution.
+     * @psalm-suppress MixedMethodCall Mapper resolved dynamically via getMapper().
+     * @psalm-suppress MixedReturnStatement Mapper resolved dynamically via getMapper().
      */
-    public function getObject(string $objectType, string $id, array $extend=[]): mixed
+    public function getObject(string $objectType, string $id, array $extend=[]): array
     {
         // Clean up the id if it's a URI by getting only the last path part.
         if (filter_var($id, FILTER_VALIDATE_URL) !== false) {
@@ -175,6 +194,7 @@ class ObjectService
         }
 
         // Get the appropriate mapper for the object type.
+        /** @var object $mapper */
         $mapper = $this->getMapper(objectType: $objectType);
 
         // Check if extend is requested for non-OpenRegister objects.
@@ -213,6 +233,11 @@ class ObjectService
      *
      * @throws ContainerExceptionInterface|DoesNotExistException|MultipleObjectsReturnedException|NotFoundExceptionInterface
      * @throws InvalidArgumentException If extend is requested for non-OpenRegister objects.
+     *
+     * @psalm-suppress PossiblyUnusedParam Params forwarded to dynamic mapper findAll() via named args.
+     * @psalm-suppress MixedInferredReturnType Return type depends on dynamic mapper resolution.
+     * @psalm-suppress MixedMethodCall Mapper resolved dynamically via getMapper().
+     * @psalm-suppress MixedReturnStatement Mapper resolved dynamically via getMapper().
      */
     public function getObjects(
         string $objectType,
@@ -224,10 +249,11 @@ class ObjectService
         ?array $extend=[]
     ): array {
         // Get the appropriate mapper for the object type.
+        /** @var object $mapper */
         $mapper = $this->getMapper(objectType: $objectType);
 
         // Check if extend is requested for non-OpenRegister objects.
-        if (empty($extend) === false && ($mapper instanceof \OCA\OpenRegister\Service\ObjectService) === false) {
+        if ($extend !== null && count($extend) > 0 && ($mapper instanceof \OCA\OpenRegister\Service\ObjectService) === false) {
             throw new InvalidArgumentException('Extend functionality is only available for OpenRegister objects');
         }
 
@@ -243,13 +269,18 @@ class ObjectService
 
         // Convert entity objects to arrays using jsonSerialize.
         return array_map(
-            function ($object) {
+            /**
+             * @param mixed $object The object to convert.
+             * @return array<string, mixed>
+             */
+            function (mixed $object): array {
                 // If object is already an array, return it directly.
                 if (is_array($object) === true) {
                     return $object;
                 }
 
                 // Otherwise serialize the object.
+                /** @var \JsonSerializable $object */
                 return $object->jsonSerialize();
             },
                 $objects
@@ -265,12 +296,18 @@ class ObjectService
      * @return array The retrieved facets as arrays.
      *
      * @throws ContainerExceptionInterface|DoesNotExistException|MultipleObjectsReturnedException|NotFoundExceptionInterface
+     *
+     * @psalm-suppress PossiblyUnusedParam $filters passed to dynamic mapper getAggregations().
+     * @psalm-suppress MixedInferredReturnType Return type depends on dynamic mapper resolution.
+     * @psalm-suppress MixedMethodCall Mapper resolved dynamically via getMapper().
+     * @psalm-suppress MixedReturnStatement Mapper resolved dynamically via getMapper().
      */
     public function getFacets(
         string $objectType,
         array $filters=[],
     ): array {
         // Get the appropriate mapper for the object type.
+        /** @var object $mapper */
         $mapper = $this->getMapper(objectType: $objectType);
 
         // Use the mapper to find and return the objects based on the provided parameters.
@@ -290,12 +327,18 @@ class ObjectService
      * @return array The retrieved objects.
      *
      * @throws ContainerExceptionInterface|NotFoundExceptionInterface If an unknown object type is provided.
+     *
+     * @psalm-suppress MixedInferredReturnType Return type depends on dynamic mapper resolution.
      */
     public function getMultipleObjects(string $objectType, array $ids): array
     {
         // Process the ids.
         $processedIds = array_map(
-            function ($id) {
+            /**
+             * @param mixed $id The ID to process.
+             * @return mixed The processed ID.
+             */
+            function (mixed $id): mixed {
                 if (is_object($id) === true && method_exists($id, 'getId') === true) {
                     return $id->getId();
                 } else if (is_array($id) === true && isset($id['id']) === true) {
@@ -322,10 +365,13 @@ class ObjectService
         );
 
         // Get the appropriate mapper for the object type.
+        /** @var object $mapper */
         $mapper = $this->getMapper(objectType: $objectType);
 
         // Use the mapper to find and return multiple objects based on the provided cleaned ids.
-        return $mapper->findMultiple($cleanedIds);
+        /** @var array $multipleResults */
+        $multipleResults = $mapper->findMultiple($cleanedIds);
+        return $multipleResults;
     }//end getMultipleObjects()
 
     /**
@@ -338,14 +384,20 @@ class ObjectService
      * @return array The retrieved objects.
      *
      * @throws ContainerExceptionInterface|NotFoundExceptionInterface If an unknown object type is provided.
+     *
+     * @psalm-suppress PossiblyUnusedMethod Public API method for batch object retrieval.
+     * @psalm-suppress MixedInferredReturnType Return type depends on dynamic mapper resolution.
      */
     public function getAllObjects(string $objectType, ?int $limit=null, ?int $offset=null): array
     {
         // Get the appropriate mapper for the object type.
+        /** @var object $mapper */
         $mapper = $this->getMapper(objectType: $objectType);
 
         // Use the mapper to find and return all objects of the specified type.
-        return $mapper->findAll(limit: $limit, offset: $offset);
+        /** @var array $allResults */
+        $allResults = $mapper->findAll(limit: $limit, offset: $offset);
+        return $allResults;
     }//end getAllObjects()
 
     /**
@@ -363,17 +415,22 @@ class ObjectService
     public function saveObject(string $objectType, array $object, array $extend=[], bool $updateVersion=true): mixed
     {
         // Get the appropriate mapper for the object type.
+        /** @var object $mapper */
         $mapper = $this->getMapper(objectType: $objectType);
         // If the object has an id, update it; otherwise, create a new object.
         if (isset($object['id']) === true) {
-            return $mapper->updateFromArray(
+            /** @var array<string,mixed>|\OCP\AppFramework\Db\Entity $saveResult */
+            $saveResult = $mapper->updateFromArray(
                 id: $object['id'],
                 object: $object,
                 updateVersion: $updateVersion,
                 extend: $extend
             );
+            return $saveResult;
         } else {
-            return $mapper->createFromArray(object: $object, extend: $extend);
+            /** @var array<string,mixed>|\OCP\AppFramework\Db\Entity $saveResult */
+            $saveResult = $mapper->createFromArray(object: $object, extend: $extend);
+            return $saveResult;
         }
     }//end saveObject()
 
@@ -390,10 +447,12 @@ class ObjectService
     public function deleteObject(string $objectType, string|int $id): bool
     {
         // Get the appropriate mapper for the object type.
+        /** @var object $mapper */
         $mapper = $this->getMapper(objectType: $objectType);
 
         // Use the mapper to get and delete the object.
         try {
+            /** @var \OCP\AppFramework\Db\Entity $object */
             $object = $mapper->find($id);
             $mapper->delete($object);
         } catch (Exception $e) {
@@ -406,15 +465,16 @@ class ObjectService
     /**
      * Attempts to retrieve the OpenRegister service from the container.
      *
-     * @return mixed|null The OpenRegister service if available, null otherwise.
+     * @return object|null The OpenRegister service if available, null otherwise.
      *
      * @throws ContainerExceptionInterface|NotFoundExceptionInterface
      */
-    public function getOpenRegisters(): ?\OCA\OpenRegister\Service\ObjectService
+    public function getOpenRegisters(): ?object
     {
         if (in_array(needle: 'openregister', haystack: $this->appManager->getInstalledApps()) === true) {
             try {
                 // Attempt to get the OpenRegister service from the container.
+                /** @var object */
                 return $this->container->get('OCA\OpenRegister\Service\ObjectService');
             } catch (Exception $e) {
                 // If the service is not available, return null.
@@ -432,6 +492,9 @@ class ObjectService
      * @param array  $filters    Filters to apply to the count query.
      *
      * @return int The number of objects matching the filters.
+     *
+     * @psalm-suppress UnusedParam $filters used conditionally when mapper is OpenRegister.
+     * @psalm-suppress MixedInferredReturnType Return type depends on dynamic mapper resolution.
      */
     private function getCount(string $objectType, array $filters=[]): int
     {
@@ -457,15 +520,21 @@ class ObjectService
     public function getResultArrayForRequest(string $objectType, array $requestParams): array
     {
         // Extract specific parameters.
+        /** @var int|null $limit */
         $limit  = $requestParams['limit'] ?? $requestParams['_limit'] ?? null;
+        /** @var int|null $offset */
         $offset = $requestParams['offset'] ?? $requestParams['_offset'] ?? null;
+        /** @var array|string $order */
         $order  = $requestParams['order'] ?? $requestParams['_order'] ?? [];
+        /** @var array|string|null $extend */
         $extend = $requestParams['extend'] ?? $requestParams['_extend'] ?? null;
+        /** @var int|null $page */
         $page   = $requestParams['page'] ?? $requestParams['_page'] ?? null;
+        /** @var string|null $search */
         $search = $requestParams['search'] ?? $requestParams['_search'] ?? null;
         // If page is set, calculate the offset.
         if ($page !== null && isset($limit) === true) {
-            $offset = $limit * ($page - 1);
+            $offset = (int) $limit * ((int) $page - 1);
         }
 
         // Ensure order and extend are arrays.
@@ -486,12 +555,12 @@ class ObjectService
         // Fetch objects based on filters and order.
         $objects = $this->getObjects(
             objectType: $objectType,
-            limit: $limit,
-            offset: $offset,
+            limit: $limit !== null ? (int) $limit : null,
+            offset: $offset !== null ? (int) $offset : null,
             filters: $filters,
-            sort: $order,
-            extend: $extend,
-            search: $search
+            sort: is_array($order) ? $order : [],
+            extend: is_array($extend) ? $extend : null,
+            search: $search !== null ? (string) $search : null
         );
 
         $facets = $this->getFacets(objectType: $objectType, filters: $filters);
@@ -513,46 +582,57 @@ class ObjectService
      *
      * @throws ContainerExceptionInterface|DoesNotExistException|MultipleObjectsReturnedException|NotFoundExceptionInterface
      *         If a property is not present on the entity.
+     *
+     * @psalm-suppress PossiblyUnusedMethod Public API for extending entities with related objects.
      */
     public function extendEntity(mixed $entity, array $extend): array
     {
         $surpressMapperError = false;
         // Convert the entity to an array if it's not already one.
-        $result = $entity->jsonSerialize();
         if (is_array($entity) === true) {
             $result = $entity;
+        } else {
+            /** @var \JsonSerializable $entityObject */
+            $entityObject = $entity;
+            /** @var array<string,mixed> $result */
+            $result = $entityObject->jsonSerialize();
         }
 
         if (in_array(needle: 'all', haystack: $extend) === true) {
-            $extend = array_keys($entity);
+            /** @var array<string,mixed> $entityArray */
+            $entityArray = $entity;
+            $extend = array_keys($entityArray);
             $surpressMapperError = true;
         }
 
         // Iterate through each property to be extended.
         foreach ($extend as $property) {
             // Create a singular property name.
+            /** @var string $property */
             $singularProperty = rtrim($property, 's');
 
             // Check if property or singular property are keys in the array.
             if (array_key_exists($property, $result) === true) {
+                /** @var mixed $value */
                 $value = $result[$property];
                 if (empty($value) === true) {
                     continue;
                 }
             } else if (array_key_exists($singularProperty, $result) === true) {
+                /** @var mixed $value */
                 $value = $result[$singularProperty];
             } else {
                 throw new Exception("Property '$property' or '$singularProperty' is not present in the entity.");
             }
 
-            // Get a mapper for the property.
+            // Get a mapper for the property (validates the type exists).
             $propertyObject = $property;
             try {
-                $mapper         = $this->getMapper(objectType: $property);
+                $this->getMapper(objectType: $property);
                 $propertyObject = $singularProperty;
             } catch (Exception $e) {
                 try {
-                    $mapper         = $this->getMapper(objectType: $singularProperty);
+                    $this->getMapper(objectType: $singularProperty);
                     $propertyObject = $singularProperty;
                 } catch (Exception $e) {
                     // If still no mapper, throw a no mapper available error.
@@ -575,7 +655,8 @@ class ObjectService
                 // If the value is not an array, get a single related object.
                 $objectId = $value;
                 if (is_object($value) === true) {
-                    $objectId = $value->getId();
+                    /** @var \OCP\AppFramework\Db\Entity $value */
+                    $objectId = (string) $value->getId();
                 }
 
                 $result[$property] = $this->getObject(
@@ -602,9 +683,11 @@ class ObjectService
     public function getRelations(string $objectType, string $id): array
     {
         // Get the mapper first.
+        /** @var object $mapper */
         $mapper = $this->getMapper(objectType: $objectType);
 
         // Get audit trails from OpenRegister.
+        /** @var array $auditTrails */
         $auditTrails = $mapper->getRelations($id);
 
         return $auditTrails;
@@ -620,7 +703,9 @@ class ObjectService
      */
     public function getUses(string $objectType, string $id): array
     {
+        /** @var object $mapper */
         $mapper = $this->getMapper(objectType: $objectType);
+        /** @var array $uses */
         $uses   = $mapper->getUses($id);
         return $uses;
     }//end getUses()
@@ -632,13 +717,19 @@ class ObjectService
      * @param string $id         The id of the object.
      *
      * @return array The files associated with the object.
+     *
+     * @psalm-suppress PossiblyUnusedMethod Called from ObjectsController::getFiles route handler.
+     * @psalm-suppress MixedInferredReturnType Return type depends on dynamic mapper resolution.
      */
     public function getFiles(string $objectType, string $id): array
     {
         // Get the mapper first.
+        /** @var object $mapper */
         $mapper = $this->getMapper(objectType: $objectType);
 
-        return $mapper->formatFiles($mapper->getFiles($id));
+        /** @var array $files */
+        $files = $mapper->formatFiles($mapper->getFiles($id));
+        return $files;
     }//end getFiles()
 
     /**
@@ -652,9 +743,11 @@ class ObjectService
     public function getAuditTrail(string $objectType, string $id): array
     {
         // Get the mapper first.
+        /** @var object $mapper */
         $mapper = $this->getMapper(objectType: $objectType);
 
         // Get audit trails from OpenRegister.
+        /** @var array $auditTrails */
         $auditTrails = $mapper->getAuditTrail($id);
 
         return $auditTrails;
@@ -668,12 +761,17 @@ class ObjectService
      * @param string|null $process    Optional process identifier.
      * @param int|null    $duration   Lock duration in seconds (default: 1 hour).
      *
-     * @return mixed The locked object.
+     * @return array<string,mixed> The locked object.
+     *
+     * @psalm-suppress MixedInferredReturnType Return type depends on dynamic mapper resolution.
      */
-    public function lockObject(string $objectType, string|int $id, ?string $process=null, ?int $duration=3600): mixed
+    public function lockObject(string $objectType, string|int $id, ?string $process=null, ?int $duration=3600): array
     {
+        /** @var object $mapper */
         $mapper = $this->getMapper(objectType: $objectType);
-        return $mapper->lockObject($id, $process, $duration);
+        /** @var array<string,mixed> $result */
+        $result = $mapper->lockObject($id, $process, $duration);
+        return $result;
     }//end lockObject()
 
     /**
@@ -682,11 +780,17 @@ class ObjectService
      * @param string     $objectType The type of object to unlock.
      * @param string|int $id         The id of the object to unlock.
      *
-     * @return mixed The unlocked object.
+     * @return array<string,mixed> The unlocked object.
+     *
+     * @psalm-suppress MixedInferredReturnType Return type depends on dynamic mapper resolution.
      */
-    public function unlockObject(string $objectType, string|int $id): mixed
+    public function unlockObject(string $objectType, string|int $id): array
     {
-        return $this->getMapper(objectType: $objectType)->unlockObject($id);
+        /** @var object $mapper */
+        $mapper = $this->getMapper(objectType: $objectType);
+        /** @var array<string,mixed> $result */
+        $result = $mapper->unlockObject($id);
+        return $result;
     }//end unlockObject()
 
     /**
@@ -696,10 +800,17 @@ class ObjectService
      * @param string|int $id         The id of the object to check.
      *
      * @return bool True if object is locked, false otherwise.
+     *
+     * @psalm-suppress PossiblyUnusedMethod Public API for checking object lock state.
+     * @psalm-suppress MixedInferredReturnType Return type depends on dynamic mapper resolution.
      */
     public function isLocked(string $objectType, string|int $id): bool
     {
-        return $this->getMapper(objectType: $objectType)->isLocked($id);
+        /** @var \OCA\OpenRegister\Service\ObjectService $mapper */
+        $mapper = $this->getMapper(objectType: $objectType);
+        /** @var bool $locked */
+        $locked = $mapper->isLocked($id);
+        return $locked;
     }//end isLocked()
 
     /**
@@ -710,14 +821,20 @@ class ObjectService
      * @param DateTime|string|null $until            DateTime or AuditTrail ID to revert to.
      * @param bool                 $overwriteVersion Whether to overwrite the version or increment it.
      *
-     * @return mixed The reverted object.
+     * @return array<string,mixed> The reverted object.
+     *
+     * @psalm-suppress MixedInferredReturnType Return type depends on dynamic mapper resolution.
      */
-    public function revertObject(string $objectType, string|int $id, $until=null, bool $overwriteVersion=false): mixed
+    public function revertObject(string $objectType, string|int $id, $until=null, bool $overwriteVersion=false): array
     {
-        return $this->getMapper(objectType: $objectType)->revertObject(
+        /** @var object $mapper */
+        $mapper = $this->getMapper(objectType: $objectType);
+        /** @var array<string,mixed> $result */
+        $result = $mapper->revertObject(
             id: $id,
             until: $until,
             overwriteVersion: $overwriteVersion
         );
+        return $result;
     }//end revertObject()
 }//end class

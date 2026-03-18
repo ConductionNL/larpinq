@@ -33,6 +33,8 @@ class ConditionMapper extends QBMapper
      * Constructor for ConditionMapper.
      *
      * @param IDBConnection $db Database connection
+     *
+     * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
      */
     public function __construct(IDBConnection $db)
     {
@@ -64,6 +66,8 @@ class ConditionMapper extends QBMapper
      * @param string $userId The user ID
      *
      * @return Condition[]
+     *
+     * @psalm-suppress PossiblyUnusedMethod Called dynamically via ObjectService::getMapper().
      */
     public function findAll(string $userId): array
     {
@@ -81,10 +85,13 @@ class ConditionMapper extends QBMapper
      * @param array<string,mixed> $data The condition data
      *
      * @return Condition
+     *
+     * @psalm-suppress PossiblyUnusedMethod Called dynamically via ObjectService::saveObject().
      */
     public function createFromArray(array $data): Condition
     {
         $condition = new Condition();
+        /** @psalm-suppress MixedAssignment Dynamic entity property */
         foreach ($data as $key => $value) {
             $condition->$key = $value;
         }
@@ -99,10 +106,13 @@ class ConditionMapper extends QBMapper
      * @param array<string,mixed> $data The updated condition data
      *
      * @return Condition
+     *
+     * @psalm-suppress PossiblyUnusedMethod Called dynamically via ObjectService::saveObject().
      */
     public function updateFromArray(int $id, array $data): Condition
     {
         $condition = $this->find(id: $id);
+        /** @psalm-suppress MixedAssignment Dynamic entity property */
         foreach ($data as $key => $value) {
             $condition->$key = $value;
         }

@@ -46,6 +46,8 @@ use OCA\OpenRegister\Db\ObjectEntity;
  * @author   Ruben Linde <ruben@larpingapp.com>
  * @license  https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
  * @link     https://larpingapp.com
+ *
+ * @psalm-suppress UnusedProperty Mapper properties injected via DI for future direct access.
  */
 class CharacterService
 {
@@ -53,44 +55,51 @@ class CharacterService
     /**
      * All skills indexed by ID.
      *
-     * @var array<Ability>
+     * @var array<string, array<string, mixed>>
      */
-    private $allSkills = [];
+    private array $allSkills = [];
 
     /**
      * All items indexed by ID.
      *
-     * @var array<Item>
+     * @var array<string, array<string, mixed>>
      */
-    private $allItems = [];
+    private array $allItems = [];
 
     /**
      * All conditions indexed by ID.
      *
-     * @var array<Condition>
+     * @var array<string, array<string, mixed>>
      */
-    private $allConditions = [];
+    private array $allConditions = [];
 
     /**
      * All events indexed by ID.
      *
-     * @var array<Event>
+     * @var array<string, array<string, mixed>>
      */
-    private $allEvents = [];
+    private array $allEvents = [];
 
     /**
      * All effects indexed by ID.
      *
-     * @var array<Effect>
+     * @var array<string, array<string, mixed>>
      */
-    private $allEffects = [];
+    private array $allEffects = [];
 
     /**
      * All abilities indexed by ID.
      *
-     * @var array<Ability>
+     * @var array<string, array<string, mixed>>
      */
-    private $allAbilities = [];
+    private array $allAbilities = [];
+
+    /**
+     * The object service for fetching entities.
+     *
+     * @var ObjectService
+     */
+    private ObjectService $objectService;
 
     /**
      * Constructor for CharacterService.
@@ -101,15 +110,26 @@ class CharacterService
      * @param EffectMapper    $effectMapper    Effect mapper.
      * @param EventMapper     $eventMapper     Event mapper.
      * @param ItemMapper      $itemMapper      Item mapper.
+     * @param ObjectService   $objectService   Object service.
+     *
+     * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
      */
     public function __construct(
+        /** @psalm-suppress UnusedProperty Reserved for future direct mapper access. */
         private AbilityMapper $abilityMapper,
+        /** @psalm-suppress UnusedProperty Reserved for future direct mapper access. */
         private CharacterMapper $characterMapper,
+        /** @psalm-suppress UnusedProperty Reserved for future direct mapper access. */
         private ConditionMapper $conditionMapper,
+        /** @psalm-suppress UnusedProperty Reserved for future direct mapper access. */
         private EffectMapper $effectMapper,
+        /** @psalm-suppress UnusedProperty Reserved for future direct mapper access. */
         private EventMapper $eventMapper,
-        private ItemMapper $itemMapper
+        /** @psalm-suppress UnusedProperty Reserved for future direct mapper access. */
+        private ItemMapper $itemMapper,
+        ObjectService $objectService
     ) {
+        $this->objectService = $objectService;
         $this->loadAllEntities();
     }//end __construct()
 
@@ -124,8 +144,13 @@ class CharacterService
         $skills          = $this->objectService->getObjects('skill');
         $this->allSkills = array_reduce(
             $skills,
-                function ($carry, $skill) {
-                    $carry[$skill['id']] = $skill;
+                /**
+                 * @param array<string, array<string, mixed>> $carry
+                 * @param array<string, mixed>                $skill
+                 * @return array<string, array<string, mixed>>
+                 */
+                function (array $carry, array $skill): array {
+                    $carry[(string) $skill['id']] = $skill;
                     return $carry;
                 },
                 []
@@ -135,8 +160,13 @@ class CharacterService
         $items          = $this->objectService->getObjects('item');
         $this->allItems = array_reduce(
             $items,
-                function ($carry, $item) {
-                    $carry[$item['id']] = $item;
+                /**
+                 * @param array<string, array<string, mixed>> $carry
+                 * @param array<string, mixed>                $item
+                 * @return array<string, array<string, mixed>>
+                 */
+                function (array $carry, array $item): array {
+                    $carry[(string) $item['id']] = $item;
                     return $carry;
                 },
                 []
@@ -146,8 +176,13 @@ class CharacterService
         $conditions          = $this->objectService->getObjects('condition');
         $this->allConditions = array_reduce(
             $conditions,
-                function ($carry, $condition) {
-                    $carry[$condition['id']] = $condition;
+                /**
+                 * @param array<string, array<string, mixed>> $carry
+                 * @param array<string, mixed>                $condition
+                 * @return array<string, array<string, mixed>>
+                 */
+                function (array $carry, array $condition): array {
+                    $carry[(string) $condition['id']] = $condition;
                     return $carry;
                 },
                 []
@@ -157,8 +192,13 @@ class CharacterService
         $events          = $this->objectService->getObjects('event');
         $this->allEvents = array_reduce(
             $events,
-                function ($carry, $event) {
-                    $carry[$event['id']] = $event;
+                /**
+                 * @param array<string, array<string, mixed>> $carry
+                 * @param array<string, mixed>                $event
+                 * @return array<string, array<string, mixed>>
+                 */
+                function (array $carry, array $event): array {
+                    $carry[(string) $event['id']] = $event;
                     return $carry;
                 },
                 []
@@ -168,8 +208,13 @@ class CharacterService
         $effects          = $this->objectService->getObjects('effect');
         $this->allEffects = array_reduce(
             $effects,
-                function ($carry, $effect) {
-                    $carry[$effect['id']] = $effect;
+                /**
+                 * @param array<string, array<string, mixed>> $carry
+                 * @param array<string, mixed>                $effect
+                 * @return array<string, array<string, mixed>>
+                 */
+                function (array $carry, array $effect): array {
+                    $carry[(string) $effect['id']] = $effect;
                     return $carry;
                 },
                 []
@@ -179,8 +224,13 @@ class CharacterService
         $abilities          = $this->objectService->getObjects('ability');
         $this->allAbilities = array_reduce(
             $abilities,
-                function ($carry, $ability) {
-                    $carry[$ability['id']] = $ability;
+                /**
+                 * @param array<string, array<string, mixed>> $carry
+                 * @param array<string, mixed>                $ability
+                 * @return array<string, array<string, mixed>>
+                 */
+                function (array $carry, array $ability): array {
+                    $carry[(string) $ability['id']] = $ability;
                     return $carry;
                 },
                 []
@@ -191,10 +241,13 @@ class CharacterService
      * Calculate stats for all characters.
      *
      * @return array Updated array of Character objects.
+     *
+     * @psalm-suppress PossiblyUnusedMethod Public API for batch character stat calculation.
      */
     public function calculateAllCharacters(): array
     {
-        $characters        = $this->characterMapper->findAll();
+        /** @var array<int, array<string, mixed>> $characters */
+        $characters        = $this->objectService->getObjects('character');
         $updatedCharacters = [];
         foreach ($characters as $character) {
             $updatedCharacters[] = $this->calculateCharacter(character: $character);
@@ -217,7 +270,7 @@ class CharacterService
 
         // Initialize ability scores from base values.
         foreach ($this->allAbilities as $ability) {
-            $abilityScores[$ability['id']] = [
+            $abilityScores[(string) $ability['id']] = [
                 'name'  => $ability['name'],
                 'base'  => $ability['base'] ?? 0,
                 'value' => $ability['base'] ?? 0,
@@ -231,7 +284,8 @@ class CharacterService
             && empty($character['skills']) === false
         ) {
             foreach ($character['skills'] as $skillId) {
-                $skill = $this->allSkills[$skillId] ?? null;
+                /** @var array<string,mixed>|null $skill */
+                $skill = $this->allSkills[(string) $skillId] ?? null;
                 if ($skill !== null && isset($skill['effects']) === true && empty($skill['effects']) === false) {
                     $this->applyEffects(abilities: $abilityScores, effects: $skill['effects']);
                 }
@@ -244,7 +298,8 @@ class CharacterService
             && empty($character['items']) === false
         ) {
             foreach ($character['items'] as $itemId) {
-                $item = $this->allItems[$itemId] ?? null;
+                /** @var array<string,mixed>|null $item */
+                $item = $this->allItems[(string) $itemId] ?? null;
                 if ($item !== null && isset($item['effects']) === true && empty($item['effects']) === false) {
                     $this->applyEffects(abilities: $abilityScores, effects: $item['effects']);
                 }
@@ -257,7 +312,8 @@ class CharacterService
             && empty($character['conditions']) === false
         ) {
             foreach ($character['conditions'] as $conditionId) {
-                $condition = $this->allConditions[$conditionId] ?? null;
+                /** @var array<string,mixed>|null $condition */
+                $condition = $this->allConditions[(string) $conditionId] ?? null;
                 if ($condition !== null && isset($condition['effects']) === true && empty($condition['effects']) === false) {
                     $this->applyEffects(abilities: $abilityScores, effects: $condition['effects']);
                 }
@@ -270,7 +326,8 @@ class CharacterService
             && empty($character['events']) === false
         ) {
             foreach ($character['events'] as $eventId) {
-                $event = $this->allEvents[$eventId] ?? null;
+                /** @var array<string,mixed>|null $event */
+                $event = $this->allEvents[(string) $eventId] ?? null;
                 if ($event !== null && isset($event['effects']) === true && empty($event['effects']) === false) {
                     $this->applyEffects(abilities: $abilityScores, effects: $event['effects']);
                 }
@@ -294,7 +351,7 @@ class CharacterService
     private function applyEffects(array &$abilities, ?array $effects): void
     {
         // Return early if effects is null or empty.
-        if (empty($effects) === true) {
+        if ($effects === null || count($effects) === 0) {
             return;
         }
 
@@ -304,7 +361,8 @@ class CharacterService
                 continue;
             }
 
-            $effect = $this->allEffects[$effectId] ?? null;
+            /** @var array<string,mixed>|null $effect */
+            $effect = $this->allEffects[(string) $effectId] ?? null;
             if ($effect !== null) {
                 $this->calculateEffect(abilities: $abilities, effect: $effect);
             }
@@ -314,8 +372,8 @@ class CharacterService
     /**
      * Calculate and apply a single effect.
      *
-     * @param array $abilities Reference to the abilities array.
-     * @param array $effect    Effect array containing stat_id, modifier and modification.
+     * @param array<string, array{name?: string, base?: int, value: int, audit: array}> $abilities Reference to the abilities array.
+     * @param array<string, mixed> $effect Effect array containing stat_id, modifier and modification.
      *
      * @return void
      */
@@ -338,11 +396,13 @@ class CharacterService
         }
 
         // Ensure each affected ability exists in abilities array.
-        foreach ($effectAbilities as $abilityId) {
+        foreach ($effectAbilities as $rawAbilityId) {
             // Skip if abilityId is null.
-            if ($abilityId === null) {
+            if ($rawAbilityId === null) {
                 continue;
             }
+
+            $abilityId = (string) $rawAbilityId;
 
             if (isset($abilities[$abilityId]['value']) === false) {
                 $abilities[$abilityId]['value'] = 0;
@@ -351,10 +411,11 @@ class CharacterService
             }
 
             // Get current value and modifiers.
-            $currentValue = $abilities[$abilityId]['value'];
+            $currentValue = (int) $abilities[$abilityId]['value'];
             // Get modifier value from effect, defaulting to 0 if not set.
             $modifier = (int) ($effect['modifier'] ?? 0);
             // Get modification type, defaulting to 'positive' if not set.
+            /** @var string $modification */
             $modification = $effect['modification'] ?? 'positive';
 
             // Apply modification based on type.

@@ -29,6 +29,8 @@ use OCP\IRequest;
  * @copyright 2024 Ruben Linde
  * @license   AGPL-3.0-or-later
  * @link      https://larpingapp.com
+ *
+ * @psalm-suppress UnusedClass Instantiated by Nextcloud routing (appinfo/routes.php).
  */
 class DashboardController extends Controller
 {

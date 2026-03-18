@@ -33,6 +33,8 @@ class SettingMapper extends QBMapper
      * Constructor for SettingMapper.
      *
      * @param IDBConnection $db Database connection
+     *
+     * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
      */
     public function __construct(IDBConnection $db)
     {
@@ -64,6 +66,8 @@ class SettingMapper extends QBMapper
      * @param string $userId The user ID
      *
      * @return Setting[]
+     *
+     * @psalm-suppress PossiblyUnusedMethod Called dynamically via ObjectService::getMapper().
      */
     public function findAll(string $userId): array
     {
@@ -81,11 +85,14 @@ class SettingMapper extends QBMapper
      * @param array<string,mixed> $data The setting data
      *
      * @return Setting
+     *
+     * @psalm-suppress PossiblyUnusedMethod Called dynamically via ObjectService::saveObject().
      */
     public function createFromArray(array $data): Setting
     {
         $setting = new Setting();
         foreach ($data as $key => $value) {
+            /** @psalm-suppress MixedAssignment Dynamic entity property */
             $setting->$key = $value;
         }
 
@@ -99,11 +106,14 @@ class SettingMapper extends QBMapper
      * @param array<string,mixed> $data The updated setting data
      *
      * @return Setting
+     *
+     * @psalm-suppress PossiblyUnusedMethod Called dynamically via ObjectService::saveObject().
      */
     public function updateFromArray(int $id, array $data): Setting
     {
         $setting = $this->find(id: $id);
         foreach ($data as $key => $value) {
+            /** @psalm-suppress MixedAssignment Dynamic entity property */
             $setting->$key = $value;
         }
 

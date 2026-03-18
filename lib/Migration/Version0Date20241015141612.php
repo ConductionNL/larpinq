@@ -27,6 +27,8 @@ use OCP\Migration\SimpleMigrationStep;
  * Legacy migration step — no-op.
  *
  * All data is now stored in OpenRegister. Local tables are no longer altered.
+ *
+ * @psalm-suppress UnusedClass Loaded by the Nextcloud migration framework.
  */
 class Version0Date20241015141612 extends SimpleMigrationStep
 {

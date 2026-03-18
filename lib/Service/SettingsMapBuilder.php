@@ -48,6 +48,7 @@ class SettingsMapBuilder
     {
         $schemaMap = [];
         foreach ($schemas as $schema) {
+            /** @var mixed $schema */
             $this->addSchemaToMap(
                 schema: $schema,
                 schemaMap: $schemaMap
@@ -68,6 +69,7 @@ class SettingsMapBuilder
     public function findRegisterIdBySlug(array $registers): mixed
     {
         foreach ($registers as $register) {
+            /** @var mixed $register */
             $registerId = $this->extractRegisterIdIfMatch(register: $register);
             if ($registerId !== null) {
                 return $registerId;
@@ -97,7 +99,9 @@ class SettingsMapBuilder
             return;
         }
 
-        $schemaMap[$schemaArray['slug']] = $schemaArray['id'] ?? $schemaArray['uuid'] ?? null;
+        /** @var string|int|null $schemaId */
+        $schemaId = $schemaArray['id'] ?? $schemaArray['uuid'] ?? null;
+        $schemaMap[(string) $schemaArray['slug']] = $schemaId;
 
     }//end addSchemaToMap()
 
@@ -132,12 +136,15 @@ class SettingsMapBuilder
      *
      * @param mixed $value The value to normalize.
      *
-     * @return ?array The array or null if not normalizable.
+     * @return array<array-key, mixed>|null The array or null if not normalizable.
      */
     private function normalizeToArray(mixed $value): ?array
     {
         if (is_object($value) === true && method_exists($value, 'jsonSerialize') === true) {
-            return $value->jsonSerialize();
+            /** @var \JsonSerializable $value */
+            /** @var array<array-key, mixed> $result */
+            $result = $value->jsonSerialize();
+            return $result;
         }
 
         if (is_array($value) === true) {

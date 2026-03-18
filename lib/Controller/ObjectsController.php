@@ -25,6 +25,8 @@ use DateTime;
 
 /**
  * Controller class for handling object-related operations.
+ *
+ * @psalm-suppress UnusedClass Instantiated by Nextcloud routing (appinfo/routes.php).
  */
 class ObjectsController extends Controller
 {
@@ -86,13 +88,14 @@ class ObjectsController extends Controller
         try {
             // Get extend parameter if present.
             $requestParams = $this->request->getParams();
+            /** @var array<string>|string $extend */
             $extend        = $requestParams['extend'] ?? $requestParams['_extend'] ?? [];
             if (is_string($extend) === true) {
                 $extend = array_map('trim', explode(',', $extend));
             }
 
             // Fetch the object by its ID.
-            $object = $this->objectService->getObject(objectType: $objectType, id: $id, extend: $extend);
+            $object = $this->objectService->getObject(objectType: $objectType, id: $id, extend: (array) $extend);
 
             // Return the object as a JSON response.
             return new JSONResponse($object);
@@ -121,6 +124,7 @@ class ObjectsController extends Controller
             $data = $this->request->getParams();
 
             // Get extend parameter if present.
+            /** @var array<string>|string $extend */
             $extend = $data['extend'] ?? $data['_extend'] ?? [];
             if (is_string($extend) === true) {
                 $extend = array_map('trim', explode(',', $extend));
@@ -135,7 +139,8 @@ class ObjectsController extends Controller
             }
 
             // Save the new object.
-            $object = $this->objectService->saveObject(objectType: $objectType, object: $data, extend: $extend);
+            /** @var array<string,mixed> $object */
+            $object = $this->objectService->saveObject(objectType: $objectType, object: $data, extend: (array) $extend);
 
             // Return the created object as a JSON response.
             return new JSONResponse($object);
@@ -165,6 +170,7 @@ class ObjectsController extends Controller
             $data = $this->request->getParams();
 
             // Get extend parameter if present.
+            /** @var array<string>|string $extend */
             $extend = $data['extend'] ?? $data['_extend'] ?? [];
             if (is_string($extend) === true) {
                 $extend = array_map('trim', explode(',', $extend));
@@ -179,7 +185,8 @@ class ObjectsController extends Controller
             }
 
             // Save the updated object.
-            $object = $this->objectService->saveObject(objectType: $objectType, object: $data, extend: $extend);
+            /** @var array<string,mixed> $object */
+            $object = $this->objectService->saveObject(objectType: $objectType, object: $data, extend: (array) $extend);
 
             // Return the updated object as a JSON response.
             return new JSONResponse($object);
@@ -309,6 +316,7 @@ class ObjectsController extends Controller
             $params = $this->request->getParams();
 
             // Extract optional parameters.
+            /** @var string|null $process */
             $process  = $params['process'] ?? null;
             $duration = null;
             if (isset($params['duration']) === true) {
@@ -369,16 +377,20 @@ class ObjectsController extends Controller
             $params = $this->request->getParams();
 
             // Extract revert parameters.
+            /** @var DateTime|string|null $until */
             $until = null;
             if (isset($params['until']) === true) {
                 // Handle both DateTime and audit trail ID cases.
-                $until = $params['until'];
-                if (strtotime($until) !== false) {
-                    $until = new DateTime($until);
+                /** @var string $untilParam */
+                $untilParam = $params['until'];
+                if (strtotime($untilParam) !== false) {
+                    $until = new DateTime($untilParam);
+                } else {
+                    $until = $untilParam;
                 }
             }
 
-            $overwriteVersion = $params['overwriteVersion'] ?? false;
+            $overwriteVersion = (bool) ($params['overwriteVersion'] ?? false);
 
             // Attempt to revert the object.
             $revertedObject = $this->objectService->revertObject(

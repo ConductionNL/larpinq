@@ -22,6 +22,8 @@ use OCP\Settings\ISettings;
 
 /**
  * Admin settings form for the LarpingApp application.
+ *
+ * @psalm-suppress UnusedClass Registered in appinfo/info.xml as admin settings.
  */
 class LarpingAppAdmin implements ISettings
 {

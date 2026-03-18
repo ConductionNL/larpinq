@@ -31,6 +31,8 @@ use Psr\Container\ContainerInterface;
  * @author   Ruben Linde <ruben@larpingapp.com>
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
+ *
+ * @psalm-suppress UnusedProperty Container used in getConfigurationService().
  */
 class SettingsLoadService
 {
@@ -62,10 +64,13 @@ class SettingsLoadService
      * @param ConfigFileLoaderService $fileLoader The file loader.
      *
      * @return void
+     *
+     * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
      */
     public function __construct(
         private readonly IAppConfig $appConfig,
         private readonly IAppManager $appManager,
+        /** @psalm-suppress UnusedProperty Used in getConfigurationService(). */
         private readonly ContainerInterface $container,
         private readonly SettingsMapBuilder $mapBuilder,
         private readonly ConfigFileLoaderService $fileLoader,
@@ -85,9 +90,11 @@ class SettingsLoadService
         $data = $this->fileLoader->loadConfigurationFile();
         $data = $this->fileLoader->ensureSourceType(data: $data);
 
+        /** @var object $configurationService */
         $configurationService = $this->getConfigurationService();
         $currentAppVersion    = $this->appManager->getAppVersion(Application::APP_ID);
 
+        /** @var array $result */
         $result = $configurationService->importFromApp(
             appId: Application::APP_ID,
             data: $data,
@@ -110,12 +117,16 @@ class SettingsLoadService
      */
     private function updateObjectTypeConfiguration(array $importResult): void
     {
+        /** @var array $schemas */
+        $schemas = $importResult['schemas'] ?? [];
         $schemaMap = $this->mapBuilder->buildSchemaSlugMap(
-            schemas: ($importResult['schemas'] ?? [])
+            schemas: $schemas
         );
 
+        /** @var array $registers */
+        $registers = $importResult['registers'] ?? [];
         $registerId = $this->mapBuilder->findRegisterIdBySlug(
-            registers: ($importResult['registers'] ?? [])
+            registers: $registers
         );
 
         if ($registerId !== null) {
@@ -139,7 +150,9 @@ class SettingsLoadService
      */
     private function getConfigurationService(): object
     {
-        return $this->container->get('OCA\OpenRegister\Service\ConfigurationService');
+        /** @var object $service */
+        $service = $this->container->get('OCA\OpenRegister\Service\ConfigurationService');
+        return $service;
 
     }//end getConfigurationService()
 }//end class

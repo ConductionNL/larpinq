@@ -29,6 +29,10 @@ use OCP\IDBConnection;
  * @author   Ruben Linde <ruben@larpingapp.com>
  * @license  https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
  * @link     https://larpingapp.com
+ *
+ * @template-extends QBMapper<Skill>
+ *
+ * @psalm-suppress MoreSpecificReturnType, LessSpecificReturnStatement QBMapper returns Entity but we know the concrete type.
  */
 class SkillMapper extends QBMapper
 {
@@ -36,6 +40,8 @@ class SkillMapper extends QBMapper
      * Constructor for SkillMapper
      *
      * @param IDBConnection $db Database connection
+     *
+     * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
      */
     public function __construct(IDBConnection $db)
     {
@@ -68,13 +74,18 @@ class SkillMapper extends QBMapper
     /**
      * Find all skills matching the given criteria
      *
-     * @param int|null   $limit            Maximum number of results
-     * @param int|null   $offset           Result offset
-     * @param array|null $filters          Additional filters
-     * @param array|null $searchConditions Search conditions
-     * @param array|null $searchParams     Search parameters
+     * @param int|null                   $limit            Maximum number of results
+     * @param int|null                   $offset           Result offset
+     * @param array|null                 $filters          Additional filters
+     * @param array<int,string>|null     $searchConditions Search conditions
+     * @param array<string,string>|null  $searchParams     Search parameters
      *
      * @return array
+     *
+     * @psalm-suppress PossiblyUnusedMethod Called dynamically via ObjectService::getMapper().
+     * @psalm-suppress PossiblyNullArgument Offset null is handled by the query builder.
+     * @psalm-suppress PossiblyNullIterator Filters/searchParams default to empty arrays.
+     * @psalm-suppress RiskyTruthyFalsyComparison Search conditions checked for empty.
      */
     public function findAll(
         ?int $limit=null,
@@ -88,22 +99,30 @@ class SkillMapper extends QBMapper
         $qb->select('*')
             ->from('larpingapp_skills')
             ->setMaxResults($limit)
-            ->setFirstResult($offset);
+            ->setFirstResult($offset ?? 0);
 
-        foreach ($filters as $filter => $value) {
-            if ($value === 'IS NOT NULL') {
-                $qb->andWhere($qb->expr()->isNotNull($filter));
-            } else if ($value === 'IS NULL') {
-                $qb->andWhere($qb->expr()->isNull($filter));
-            } else {
-                $qb->andWhere($qb->expr()->eq($filter, $qb->createNamedParameter($value)));
+        if ($filters !== null) {
+            foreach ($filters as $filter => $value) {
+                /** @var string $filter */
+                /** @var mixed $value */
+                if ($value === 'IS NOT NULL') {
+                    $qb->andWhere($qb->expr()->isNotNull($filter));
+                } else if ($value === 'IS NULL') {
+                    $qb->andWhere($qb->expr()->isNull($filter));
+                } else {
+                    $qb->andWhere($qb->expr()->eq($filter, $qb->createNamedParameter($value)));
+                }
             }
         }
 
-        if (empty($searchConditions) === false) {
+        if ($searchConditions !== null && count($searchConditions) > 0) {
             $qb->andWhere('('.implode(' OR ', $searchConditions).')');
-            foreach ($searchParams as $param => $value) {
-                $qb->setParameter($param, $value);
+            if ($searchParams !== null) {
+                foreach ($searchParams as $param => $value) {
+                    /** @var string $param */
+                    /** @var mixed $value */
+                    $qb->setParameter($param, $value);
+                }
             }
         }
 
@@ -113,24 +132,28 @@ class SkillMapper extends QBMapper
     /**
      * Create a new skill from array data
      *
-     * @param array $object The skill data
+     * @param array<string,mixed> $object The skill data
      *
      * @return Skill
+     *
+     * @psalm-suppress PossiblyUnusedMethod Called dynamically via ObjectService::saveObject().
      */
     public function createFromArray(array $object): Skill
     {
         $skill = new Skill();
-        $skill->hydrate(object: $object);
+        $skill->hydrate($object);
         return $this->insert(entity: $skill);
     }//end createFromArray()
 
     /**
      * Update a skill from array data
      *
-     * @param int   $id     The skill ID
-     * @param array $object The updated skill data
+     * @param int                 $id     The skill ID
+     * @param array<string,mixed> $object The updated skill data
      *
      * @return Skill
+     *
+     * @psalm-suppress PossiblyUnusedMethod Called dynamically via ObjectService::saveObject().
      */
     public function updateFromArray(int $id, array $object): Skill
     {

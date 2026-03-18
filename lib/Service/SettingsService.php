@@ -60,6 +60,8 @@ class SettingsService
      * @param LoggerInterface     $logger              The logger.
      *
      * @return void
+     *
+     * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
      */
     public function __construct(
         private readonly IAppConfig $appConfig,
@@ -127,6 +129,8 @@ class SettingsService
      * @param string $default The default value.
      *
      * @return string The config value.
+     *
+     * @psalm-suppress PossiblyUnusedMethod Public API for reading individual config values.
      */
     public function getConfigValue(string $key, string $default=''): string
     {
@@ -141,6 +145,8 @@ class SettingsService
      * @param string $value The config value.
      *
      * @return void
+     *
+     * @psalm-suppress PossiblyUnusedMethod Public API for writing individual config values.
      */
     public function setConfigValue(string $key, string $value): void
     {

@@ -31,6 +31,8 @@ class AbilityMapper extends QBMapper
      * Constructor for AbilityMapper.
      *
      * @param IDBConnection $db Database connection
+     *
+     * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
      */
     public function __construct(IDBConnection $db)
     {
@@ -62,6 +64,8 @@ class AbilityMapper extends QBMapper
      * @param string $userId The user ID
      *
      * @return Ability[]
+     *
+     * @psalm-suppress PossiblyUnusedMethod Called dynamically via ObjectService::getMapper().
      */
     public function findAll(string $userId): array
     {
@@ -79,11 +83,14 @@ class AbilityMapper extends QBMapper
      * @param array<string,mixed> $data The ability data
      *
      * @return Ability
+     *
+     * @psalm-suppress PossiblyUnusedMethod Called dynamically via ObjectService::saveObject().
      */
     public function createFromArray(array $data): Ability
     {
         $ability = new Ability();
         foreach ($data as $key => $value) {
+            /** @psalm-suppress MixedAssignment Dynamic entity property */
             $ability->$key = $value;
         }
 
@@ -97,11 +104,14 @@ class AbilityMapper extends QBMapper
      * @param array<string,mixed> $data The updated ability data
      *
      * @return Ability
+     *
+     * @psalm-suppress PossiblyUnusedMethod Called dynamically via ObjectService::saveObject().
      */
     public function updateFromArray(int $id, array $data): Ability
     {
         $ability = $this->find(id: $id);
         foreach ($data as $key => $value) {
+            /** @psalm-suppress MixedAssignment Dynamic entity property */
             $ability->$key = $value;
         }
 
