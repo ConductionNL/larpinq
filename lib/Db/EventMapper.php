@@ -37,34 +37,36 @@ class EventMapper extends QBMapper
     /**
      * Constructor for EventMapper
      *
-     * @param IDBConnection $db Database connection
+     * @param IDBConnection $dbConn Database connection
      *
      * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
      */
-    public function __construct(IDBConnection $db)
+    public function __construct(IDBConnection $dbConn)
     {
-        parent::__construct(db: $db, tableName: 'larpingapp_events', entityClass: Event::class);
+        parent::__construct(db: $dbConn, tableName: 'larpingapp_events', entityClass: Event::class);
     }//end __construct()
 
     /**
      * Find an event by ID
      *
-     * @param int $id The event ID
+     * @param int $eventId The event ID
      *
      * @return Event
      *
      * @throws \OCP\AppFramework\Db\DoesNotExistException
      * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+     *
+     * @SuppressWarnings(PHPMD.ShortVariable)
      */
-    public function find(int $id): Event
+    public function find(int $eventId): Event
     {
-        $qb = $this->db->getQueryBuilder();
-        $qb->select('*')
+        $queryBuilder = $this->db->getQueryBuilder();
+        $queryBuilder->select('*')
             ->from($this->getTableName())
-            ->where($qb->expr()->eq('id', $qb->createNamedParameter($id)));
+            ->where($queryBuilder->expr()->eq('id', $queryBuilder->createNamedParameter($eventId)));
 
         /** @var Event */
-        return $this->findEntity(query: $qb);
+        return $this->findEntity(query: $queryBuilder);
     }//end find()
 
     /**
@@ -79,6 +81,8 @@ class EventMapper extends QBMapper
      * @return Event[]
      *
      * @psalm-suppress PossiblyUnusedMethod Called dynamically via ObjectService::getMapper().
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function findAll(
         ?int $limit=null,
@@ -87,45 +91,43 @@ class EventMapper extends QBMapper
         ?array $searchConditions=[],
         ?array $searchParams=[]
     ): array {
-        $qb = $this->db->getQueryBuilder();
-        $qb->select('*')
+        $queryBuilder = $this->db->getQueryBuilder();
+        $queryBuilder->select('*')
             ->from($this->getTableName());
 
         if ($limit !== null) {
-            $qb->setMaxResults($limit);
+            $queryBuilder->setMaxResults($limit);
         }
 
         if ($offset !== null) {
-            $qb->setFirstResult($offset);
+            $queryBuilder->setFirstResult($offset);
         }
 
         if ($filters !== null) {
+            /** @psalm-suppress MixedAssignment Filter values from request params */
             foreach ($filters as $filter => $value) {
-                /** @var string $filter */
-                /** @var mixed $value */
                 if ($value === 'IS NOT NULL') {
-                    $qb->andWhere($qb->expr()->isNotNull($filter));
-                } else if ($value === 'IS NULL') {
-                    $qb->andWhere($qb->expr()->isNull($filter));
+                    $queryBuilder->andWhere($queryBuilder->expr()->isNotNull((string) $filter));
+                } elseif ($value === 'IS NULL') {
+                    $queryBuilder->andWhere($queryBuilder->expr()->isNull((string) $filter));
                 } else {
-                    $qb->andWhere($qb->expr()->eq($filter, $qb->createNamedParameter($value)));
+                    $queryBuilder->andWhere($queryBuilder->expr()->eq((string) $filter, $queryBuilder->createNamedParameter($value)));
                 }
             }
         }
 
         if ($searchConditions !== null && empty($searchConditions) === false) {
-            $qb->andWhere('('.implode(' OR ', $searchConditions).')');
+            $queryBuilder->andWhere('('.implode(' OR ', $searchConditions).')');
             if ($searchParams !== null) {
+                /** @psalm-suppress MixedAssignment Search params from request */
                 foreach ($searchParams as $param => $value) {
-                    /** @var string $param */
-                    /** @var mixed $value */
-                    $qb->setParameter($param, $value);
+                    $queryBuilder->setParameter((string) $param, $value);
                 }
             }
         }
 
         /** @var Event[] */
-        return $this->findEntities(query: $qb);
+        return $this->findEntities(query: $queryBuilder);
     }//end findAll()
 
     /**
@@ -152,16 +154,16 @@ class EventMapper extends QBMapper
     /**
      * Update an event from array data
      *
-     * @param int                 $id   The event ID
-     * @param array<string,mixed> $data The updated event data
+     * @param int                 $eventId The event ID
+     * @param array<string,mixed> $data    The updated event data
      *
      * @return Event
      *
      * @psalm-suppress PossiblyUnusedMethod Called dynamically via ObjectService::saveObject().
      */
-    public function updateFromArray(int $id, array $data): Event
+    public function updateFromArray(int $eventId, array $data): Event
     {
-        $event = $this->find(id: $id);
+        $event = $this->find($eventId);
         /** @psalm-suppress MixedAssignment Dynamic entity property */
         foreach ($data as $key => $value) {
             $event->$key = $value;

@@ -47,8 +47,8 @@ class SettingsMapBuilder
     public function buildSchemaSlugMap(array $schemas): array
     {
         $schemaMap = [];
+        /** @psalm-suppress MixedAssignment Schema entries from import result */
         foreach ($schemas as $schema) {
-            /** @var mixed $schema */
             $this->addSchemaToMap(
                 schema: $schema,
                 schemaMap: $schemaMap
@@ -68,8 +68,8 @@ class SettingsMapBuilder
      */
     public function findRegisterIdBySlug(array $registers): mixed
     {
+        /** @psalm-suppress MixedAssignment Register entries from import result */
         foreach ($registers as $register) {
-            /** @var mixed $register */
             $registerId = $this->extractRegisterIdIfMatch(register: $register);
             if ($registerId !== null) {
                 return $registerId;

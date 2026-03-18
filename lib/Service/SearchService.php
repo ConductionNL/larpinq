@@ -111,6 +111,7 @@ class SearchService
 
         $result = $existingAggregations ?? [];
 
+        /** @psalm-suppress MixedAssignment,MixedArgument Aggregation values are dynamic arrays */
         foreach ($newAggregations as $key => $aggregation) {
             if (isset($result[$key]) === false) {
                 $result[$key] = $aggregation;
@@ -149,6 +150,7 @@ class SearchService
      * @return array Search results including results, facets, pagination metadata
      *
      * @psalm-suppress PossiblyUnusedParam $dbConfig and $catalogi reserved for future distributed search.
+     * @psalm-suppress MixedArgumentTypeCoercion Response data from external HTTP APIs contains mixed types.
      * @psalm-suppress UnusedVariable $promises accumulated in loop then settled.
      * @psalm-suppress MixedInferredReturnType, UndefinedThisPropertyFetch Dynamic services injected at runtime.
      */
@@ -227,7 +229,7 @@ class SearchService
 
             if (($instance['default'] ?? false) === false
                 || (isset($parameters['.catalogi']) === true
-                && in_array($instance['catalogId'] ?? '', $parameters['.catalogi']) === false)
+                && in_array($instance['catalogId'] ?? '', (array) $parameters['.catalogi']) === false)
             ) {
                 continue;
             }
@@ -237,34 +239,43 @@ class SearchService
 
         unset($parameters['.catalogi']);
 
+        /** @psalm-suppress MixedAssignment Search endpoints from directory */
         foreach ($searchEndpoints as $searchEndpoint => $catalogi) {
             $parameters['_catalogi'] = $catalogi;
 
             $promises[] = $this->client->getAsync(
-                uri: $searchEndpoint,
+                uri: (string) $searchEndpoint,
                 options: ['query' => $parameters]
             );
         }
 
+        /** @psalm-suppress MixedAssignment GuzzleHttp promise results */
         $responses = \GuzzleHttp\Promise\Utils::settle($promises)->wait();
 
+        /** @psalm-suppress MixedAssignment GuzzleHttp response entries */
         foreach ($responses as $response) {
-            if ($response['state'] === 'fulfilled') {
+            /** @var array{state: string, value?: \Psr\Http\Message\ResponseInterface} $response */
+            if ($response['state'] === 'fulfilled' && isset($response['value'])) {
+                /** @var array<string, mixed> $responseData */
                 $responseData = json_decode(
                     json: $response['value']->getBody()->getContents(),
                     associative: true
                 );
 
+                /** @var array $remoteResults */
+                $remoteResults = $responseData['results'] ?? [];
                 $results = array_merge(
                     $results,
-                    $responseData['results']
+                    $remoteResults
                 );
 
                 usort($results, [$this, 'sortResultArray']);
 
+                /** @var array|null $remoteFacets */
+                $remoteFacets = $responseData['facets'] ?? null;
                 $aggregations = $this->mergeAggregations(
                     existingAggregations: $aggregations,
-                    newAggregations: $responseData['facets']
+                    newAggregations: $remoteFacets
                 );
             }
         }
@@ -356,6 +367,7 @@ class SearchService
             unset($filters['_search']);
         }
 
+        /** @psalm-suppress MixedAssignment Filter values from request */
         foreach ($filters as $field => $value) {
             if ($value === 'IS NOT NULL') {
                 $filters[$field] = ['$ne' => null];
@@ -382,6 +394,7 @@ class SearchService
     {
         $searchConditions = [];
         if (isset($filters['_search']) === true) {
+            /** @psalm-suppress MixedAssignment Field names from array */
             foreach ($fieldsToSearch as $field) {
                 $searchConditions[] = "LOWER($field) LIKE :search";
             }
@@ -439,9 +452,9 @@ class SearchService
     {
         $sort = [];
         if (isset($filters['_order']) === true && is_array($filters['_order']) === true) {
+            /** @psalm-suppress MixedAssignment Order values from request */
             foreach ($filters['_order'] as $field => $direction) {
-                /** @var string $direction */
-                if (strtoupper($direction) === 'DESC') {
+                if (strtoupper((string) $direction) === 'DESC') {
                     $direction = 'DESC';
                 } else {
                     $direction = 'ASC';
@@ -468,9 +481,9 @@ class SearchService
     {
         $sort = [];
         if (isset($filters['_order']) === true && is_array($filters['_order']) === true) {
+            /** @psalm-suppress MixedAssignment Order values from request */
             foreach ($filters['_order'] as $field => $direction) {
-                /** @var string $direction */
-                if (strtoupper($direction) === 'DESC') {
+                if (strtoupper((string) $direction) === 'DESC') {
                     $sort[$field] = -1;
                 } else {
                     $sort[$field] = 1;

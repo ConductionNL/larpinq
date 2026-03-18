@@ -94,7 +94,10 @@ class SettingsLoadService
         $configurationService = $this->getConfigurationService();
         $currentAppVersion    = $this->appManager->getAppVersion(Application::APP_ID);
 
-        /** @var array $result */
+        /**
+         * @psalm-suppress MixedMethodCall ConfigurationService is from OpenRegister (optional cross-app dependency).
+         * @var array $result
+         */
         $result = $configurationService->importFromApp(
             appId: Application::APP_ID,
             data: $data,
@@ -125,6 +128,7 @@ class SettingsLoadService
 
         /** @var array $registers */
         $registers = $importResult['registers'] ?? [];
+        /** @var string|int|null $registerId */
         $registerId = $this->mapBuilder->findRegisterIdBySlug(
             registers: $registers
         );

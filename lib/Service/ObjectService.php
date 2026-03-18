@@ -203,6 +203,7 @@ class ObjectService
         }
 
         // Use the mapper to find and return the object.
+        /** @psalm-suppress MixedAssignment Mapper resolved dynamically */
         $object = $mapper->find($id);
 
         // Convert the object to an array if it is not already an array.
@@ -210,6 +211,7 @@ class ObjectService
             return $object->jsonSerialize();
         }
 
+        /** @psalm-suppress MixedAssignment Mapper resolved dynamically */
         $result = $object;
         if (is_array($object) === false) {
             $result = (array) $object;
@@ -258,6 +260,7 @@ class ObjectService
         }
 
         // Use the mapper to find and return the objects based on the provided parameters.
+        /** @psalm-suppress MixedAssignment Mapper resolved dynamically */
         $objects = $mapper->findAll(
             limit: $limit,
             offset: $offset,
@@ -268,6 +271,7 @@ class ObjectService
         );
 
         // Convert entity objects to arrays using jsonSerialize.
+        /** @psalm-suppress MixedArgument Mapper resolved dynamically */
         return array_map(
             /**
              * @param mixed $object The object to convert.
@@ -283,6 +287,7 @@ class ObjectService
                 /** @var \JsonSerializable $object */
                 return $object->jsonSerialize();
             },
+                /** @psalm-suppress MixedArgument Mapper resolved dynamically */
                 $objects
         );
     }//end getObjects()
@@ -329,6 +334,8 @@ class ObjectService
      * @throws ContainerExceptionInterface|NotFoundExceptionInterface If an unknown object type is provided.
      *
      * @psalm-suppress MixedInferredReturnType Return type depends on dynamic mapper resolution.
+     * @psalm-suppress MixedMethodCall Mapper resolved dynamically via getMapper().
+     * @psalm-suppress MixedReturnStatement Mapper resolved dynamically via getMapper().
      */
     public function getMultipleObjects(string $objectType, array $ids): array
     {
@@ -387,6 +394,8 @@ class ObjectService
      *
      * @psalm-suppress PossiblyUnusedMethod Public API method for batch object retrieval.
      * @psalm-suppress MixedInferredReturnType Return type depends on dynamic mapper resolution.
+     * @psalm-suppress MixedMethodCall Mapper resolved dynamically via getMapper().
+     * @psalm-suppress MixedReturnStatement Mapper resolved dynamically via getMapper().
      */
     public function getAllObjects(string $objectType, ?int $limit=null, ?int $offset=null): array
     {
@@ -411,6 +420,8 @@ class ObjectService
      * @return mixed The created or updated object.
      *
      * @throws ContainerExceptionInterface|DoesNotExistException|MultipleObjectsReturnedException|NotFoundExceptionInterface
+     *
+     * @psalm-suppress MixedMethodCall Mapper resolved dynamically via getMapper().
      */
     public function saveObject(string $objectType, array $object, array $extend=[], bool $updateVersion=true): mixed
     {
@@ -443,6 +454,8 @@ class ObjectService
      * @return bool True if the object was successfully deleted, false otherwise.
      *
      * @throws ContainerExceptionInterface|NotFoundExceptionInterface|\OCP\DB\Exception If unknown type.
+     *
+     * @psalm-suppress MixedMethodCall Mapper resolved dynamically via getMapper().
      */
     public function deleteObject(string $objectType, string|int $id): bool
     {
@@ -495,6 +508,8 @@ class ObjectService
      *
      * @psalm-suppress UnusedParam $filters used conditionally when mapper is OpenRegister.
      * @psalm-suppress MixedInferredReturnType Return type depends on dynamic mapper resolution.
+     * @psalm-suppress MixedMethodCall Mapper resolved dynamically via getMapper().
+     * @psalm-suppress MixedReturnStatement Mapper resolved dynamically via getMapper().
      */
     private function getCount(string $objectType, array $filters=[]): int
     {
@@ -584,6 +599,9 @@ class ObjectService
      *         If a property is not present on the entity.
      *
      * @psalm-suppress PossiblyUnusedMethod Public API for extending entities with related objects.
+     * @psalm-suppress MixedMethodCall Mapper/entity resolved dynamically.
+     * @psalm-suppress MixedReturnStatement Entity may return mixed from jsonSerialize().
+     * @psalm-suppress MixedArrayOffset Entity properties are dynamic string keys.
      */
     public function extendEntity(mixed $entity, array $extend): array
     {
@@ -606,12 +624,13 @@ class ObjectService
         }
 
         // Iterate through each property to be extended.
+        /** @psalm-suppress MixedAssignment Extend array values are strings */
         foreach ($extend as $property) {
             // Create a singular property name.
-            /** @var string $property */
-            $singularProperty = rtrim($property, 's');
+            $singularProperty = rtrim((string) $property, 's');
 
             // Check if property or singular property are keys in the array.
+            /** @var string $property */
             if (array_key_exists($property, $result) === true) {
                 /** @var mixed $value */
                 $value = $result[$property];
@@ -626,9 +645,11 @@ class ObjectService
             }
 
             // Get a mapper for the property (validates the type exists).
-            $propertyObject = $property;
+            /** @var string $propertyStr */
+            $propertyStr = $property;
+            $propertyObject = $propertyStr;
             try {
-                $this->getMapper(objectType: $property);
+                $this->getMapper(objectType: $propertyStr);
                 $propertyObject = $singularProperty;
             } catch (Exception $e) {
                 try {
@@ -647,21 +668,22 @@ class ObjectService
             // Update the values.
             if (is_array($value) === true) {
                 // If the value is an array, get multiple related objects.
-                $result[$property] = $this->getMultipleObjects(
-                    objectType: $propertyObject,
+                $result[(string) $property] = $this->getMultipleObjects(
+                    objectType: (string) $propertyObject,
                     ids: $value
                 );
             } else {
                 // If the value is not an array, get a single related object.
+                /** @psalm-suppress MixedAssignment Value from entity array */
                 $objectId = $value;
                 if (is_object($value) === true) {
                     /** @var \OCP\AppFramework\Db\Entity $value */
                     $objectId = (string) $value->getId();
                 }
 
-                $result[$property] = $this->getObject(
-                    objectType: $propertyObject,
-                    id: $objectId
+                $result[(string) $property] = $this->getObject(
+                    objectType: (string) $propertyObject,
+                    id: (string) $objectId
                 );
             }
         }//end foreach
@@ -679,6 +701,8 @@ class ObjectService
      * @return array The relations for the object.
      *
      * @throws Exception If OpenRegister service is not available.
+     *
+     * @psalm-suppress MixedMethodCall Mapper resolved dynamically via getMapper().
      */
     public function getRelations(string $objectType, string $id): array
     {
@@ -700,6 +724,8 @@ class ObjectService
      * @param string $id         The id of the object to get uses for.
      *
      * @return array The uses for the object.
+     *
+     * @psalm-suppress MixedMethodCall Mapper resolved dynamically via getMapper().
      */
     public function getUses(string $objectType, string $id): array
     {
@@ -720,6 +746,7 @@ class ObjectService
      *
      * @psalm-suppress PossiblyUnusedMethod Called from ObjectsController::getFiles route handler.
      * @psalm-suppress MixedInferredReturnType Return type depends on dynamic mapper resolution.
+     * @psalm-suppress MixedMethodCall Mapper resolved dynamically via getMapper().
      */
     public function getFiles(string $objectType, string $id): array
     {
@@ -739,6 +766,8 @@ class ObjectService
      * @param string $id         The id of the object to get audit trails for.
      *
      * @return array The audit trails for the object.
+     *
+     * @psalm-suppress MixedMethodCall Mapper resolved dynamically via getMapper().
      */
     public function getAuditTrail(string $objectType, string $id): array
     {
@@ -764,6 +793,7 @@ class ObjectService
      * @return array<string,mixed> The locked object.
      *
      * @psalm-suppress MixedInferredReturnType Return type depends on dynamic mapper resolution.
+     * @psalm-suppress MixedMethodCall Mapper resolved dynamically via getMapper().
      */
     public function lockObject(string $objectType, string|int $id, ?string $process=null, ?int $duration=3600): array
     {
@@ -783,6 +813,7 @@ class ObjectService
      * @return array<string,mixed> The unlocked object.
      *
      * @psalm-suppress MixedInferredReturnType Return type depends on dynamic mapper resolution.
+     * @psalm-suppress MixedMethodCall Mapper resolved dynamically via getMapper().
      */
     public function unlockObject(string $objectType, string|int $id): array
     {
@@ -803,6 +834,8 @@ class ObjectService
      *
      * @psalm-suppress PossiblyUnusedMethod Public API for checking object lock state.
      * @psalm-suppress MixedInferredReturnType Return type depends on dynamic mapper resolution.
+     * @psalm-suppress MixedMethodCall Mapper resolved dynamically via getMapper().
+     * @psalm-suppress MixedReturnStatement Mapper resolved dynamically via getMapper().
      */
     public function isLocked(string $objectType, string|int $id): bool
     {
@@ -824,6 +857,7 @@ class ObjectService
      * @return array<string,mixed> The reverted object.
      *
      * @psalm-suppress MixedInferredReturnType Return type depends on dynamic mapper resolution.
+     * @psalm-suppress MixedMethodCall Mapper resolved dynamically via getMapper().
      */
     public function revertObject(string $objectType, string|int $id, $until=null, bool $overwriteVersion=false): array
     {

@@ -32,32 +32,34 @@ class SettingMapper extends QBMapper
     /**
      * Constructor for SettingMapper.
      *
-     * @param IDBConnection $db Database connection
+     * @param IDBConnection $dbConn Database connection
      *
      * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
      */
-    public function __construct(IDBConnection $db)
+    public function __construct(IDBConnection $dbConn)
     {
-        parent::__construct(db: $db, tableName: 'larpingapp_settings', entityClass: Setting::class);
+        parent::__construct(db: $dbConn, tableName: 'larpingapp_settings', entityClass: Setting::class);
     }//end __construct()
 
     /**
      * Find a setting by ID
      *
-     * @param int $id The setting ID
+     * @param int $settingId The setting ID
      *
      * @return Setting
      *
      * @throws \OCP\AppFramework\Db\DoesNotExistException
      * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+     *
+     * @SuppressWarnings(PHPMD.ShortVariable)
      */
-    public function find(int $id): Setting
+    public function find(int $settingId): Setting
     {
-        $qb = $this->db->getQueryBuilder();
-        $qb->select('*')
+        $queryBuilder = $this->db->getQueryBuilder();
+        $queryBuilder->select('*')
             ->from($this->getTableName())
-            ->where($qb->expr()->eq('id', $qb->createNamedParameter($id)));
-        return $this->findEntity(query: $qb);
+            ->where($queryBuilder->expr()->eq('id', $queryBuilder->createNamedParameter($settingId)));
+        return $this->findEntity(query: $queryBuilder);
     }//end find()
 
     /**
@@ -71,12 +73,12 @@ class SettingMapper extends QBMapper
      */
     public function findAll(string $userId): array
     {
-        $qb = $this->db->getQueryBuilder();
-        $qb->select('*')
+        $queryBuilder = $this->db->getQueryBuilder();
+        $queryBuilder->select('*')
             ->from($this->getTableName())
-            ->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userId)));
+            ->where($queryBuilder->expr()->eq('user_id', $queryBuilder->createNamedParameter($userId)));
 
-        return $this->findEntities(query: $qb);
+        return $this->findEntities(query: $queryBuilder);
     }//end findAll()
 
     /**
@@ -91,8 +93,8 @@ class SettingMapper extends QBMapper
     public function createFromArray(array $data): Setting
     {
         $setting = new Setting();
+        /** @psalm-suppress MixedAssignment Dynamic entity property */
         foreach ($data as $key => $value) {
-            /** @psalm-suppress MixedAssignment Dynamic entity property */
             $setting->$key = $value;
         }
 
@@ -102,18 +104,18 @@ class SettingMapper extends QBMapper
     /**
      * Update a setting from array data
      *
-     * @param int                 $id   The setting ID
-     * @param array<string,mixed> $data The updated setting data
+     * @param int                 $settingId The setting ID
+     * @param array<string,mixed> $data      The updated setting data
      *
      * @return Setting
      *
      * @psalm-suppress PossiblyUnusedMethod Called dynamically via ObjectService::saveObject().
      */
-    public function updateFromArray(int $id, array $data): Setting
+    public function updateFromArray(int $settingId, array $data): Setting
     {
-        $setting = $this->find(id: $id);
+        $setting = $this->find($settingId);
+        /** @psalm-suppress MixedAssignment Dynamic entity property */
         foreach ($data as $key => $value) {
-            /** @psalm-suppress MixedAssignment Dynamic entity property */
             $setting->$key = $value;
         }
 

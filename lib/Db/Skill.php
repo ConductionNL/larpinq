@@ -84,8 +84,8 @@ class Skill extends Entity implements JsonSerializable
      */
     public function hydrate(array $data): void
     {
+        /** @psalm-suppress MixedAssignment Dynamic entity property */
         foreach ($data as $key => $value) {
-            /** @psalm-suppress MixedAssignment Dynamic entity property */
             $this->$key = $value;
         }
     }//end hydrate()

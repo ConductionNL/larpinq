@@ -266,6 +266,7 @@ class CharacterService
     public function calculateCharacter(array $character): array
     {
         // Create an array of abilities with their base scores.
+        /** @var array<string, array{name?: string, base?: int, value: int, audit: array}> $abilityScores */
         $abilityScores = [];
 
         // Initialize ability scores from base values.
@@ -283,11 +284,13 @@ class CharacterService
             && is_array($character['skills']) === true
             && empty($character['skills']) === false
         ) {
+            /** @psalm-suppress MixedAssignment Character array values are mixed */
             foreach ($character['skills'] as $skillId) {
-                /** @var array<string,mixed>|null $skill */
                 $skill = $this->allSkills[(string) $skillId] ?? null;
                 if ($skill !== null && isset($skill['effects']) === true && empty($skill['effects']) === false) {
-                    $this->applyEffects(abilities: $abilityScores, effects: $skill['effects']);
+                    /** @var array|null $skillEffects */
+                    $skillEffects = $skill['effects'];
+                    $this->applyEffects(abilities: $abilityScores, effects: $skillEffects);
                 }
             }
         }
@@ -297,11 +300,13 @@ class CharacterService
             && is_array($character['items']) === true
             && empty($character['items']) === false
         ) {
+            /** @psalm-suppress MixedAssignment Character array values are mixed */
             foreach ($character['items'] as $itemId) {
-                /** @var array<string,mixed>|null $item */
                 $item = $this->allItems[(string) $itemId] ?? null;
                 if ($item !== null && isset($item['effects']) === true && empty($item['effects']) === false) {
-                    $this->applyEffects(abilities: $abilityScores, effects: $item['effects']);
+                    /** @var array|null $itemEffects */
+                    $itemEffects = $item['effects'];
+                    $this->applyEffects(abilities: $abilityScores, effects: $itemEffects);
                 }
             }
         }
@@ -311,11 +316,13 @@ class CharacterService
             && is_array($character['conditions']) === true
             && empty($character['conditions']) === false
         ) {
+            /** @psalm-suppress MixedAssignment Character array values are mixed */
             foreach ($character['conditions'] as $conditionId) {
-                /** @var array<string,mixed>|null $condition */
                 $condition = $this->allConditions[(string) $conditionId] ?? null;
                 if ($condition !== null && isset($condition['effects']) === true && empty($condition['effects']) === false) {
-                    $this->applyEffects(abilities: $abilityScores, effects: $condition['effects']);
+                    /** @var array|null $conditionEffects */
+                    $conditionEffects = $condition['effects'];
+                    $this->applyEffects(abilities: $abilityScores, effects: $conditionEffects);
                 }
             }
         }
@@ -325,11 +332,13 @@ class CharacterService
             && is_array($character['events']) === true
             && empty($character['events']) === false
         ) {
+            /** @psalm-suppress MixedAssignment Character array values are mixed */
             foreach ($character['events'] as $eventId) {
-                /** @var array<string,mixed>|null $event */
                 $event = $this->allEvents[(string) $eventId] ?? null;
                 if ($event !== null && isset($event['effects']) === true && empty($event['effects']) === false) {
-                    $this->applyEffects(abilities: $abilityScores, effects: $event['effects']);
+                    /** @var array|null $eventEffects */
+                    $eventEffects = $event['effects'];
+                    $this->applyEffects(abilities: $abilityScores, effects: $eventEffects);
                 }
             }
         }
@@ -343,10 +352,12 @@ class CharacterService
     /**
      * Apply effects to abilities.
      *
-     * @param array      $abilities Reference to the abilities array.
-     * @param array|null $effects   Array of effect IDs.
+     * @param array<string, array{name?: string, base?: int, value: int, audit: array}> $abilities Reference to the abilities array.
+     * @param array|null $effects Array of effect IDs.
      *
      * @return void
+     *
+     * @psalm-suppress MixedArgumentTypeCoercion Abilities array keys may widen during mutation.
      */
     private function applyEffects(array &$abilities, ?array $effects): void
     {
@@ -355,13 +366,13 @@ class CharacterService
             return;
         }
 
+        /** @psalm-suppress MixedAssignment Effect IDs from entity arrays */
         foreach ($effects as $effectId) {
             // Skip if effectId is null.
             if ($effectId === null) {
                 continue;
             }
 
-            /** @var array<string,mixed>|null $effect */
             $effect = $this->allEffects[(string) $effectId] ?? null;
             if ($effect !== null) {
                 $this->calculateEffect(abilities: $abilities, effect: $effect);
@@ -387,6 +398,7 @@ class CharacterService
 
         // Add stat_id to affected abilities if present and not null.
         if (isset($effect['stat_id']) === true && $effect['stat_id'] !== null) {
+            /** @psalm-suppress MixedAssignment Effect array values are mixed */
             $effectAbilities[] = $effect['stat_id'];
         }
 
@@ -396,6 +408,7 @@ class CharacterService
         }
 
         // Ensure each affected ability exists in abilities array.
+        /** @psalm-suppress MixedAssignment Ability IDs from effect arrays */
         foreach ($effectAbilities as $rawAbilityId) {
             // Skip if abilityId is null.
             if ($rawAbilityId === null) {

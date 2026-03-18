@@ -32,13 +32,13 @@ class CharacterMapper extends QBMapper
     /**
      * Constructor for CharacterMapper.
      *
-     * @param IDBConnection $db Database connection
+     * @param IDBConnection $dbConn Database connection
      *
      * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
      */
-    public function __construct(IDBConnection $db)
+    public function __construct(IDBConnection $dbConn)
     {
-        parent::__construct(db: $db, tableName: 'larpingapp_characters', entityClass: Character::class);
+        parent::__construct(db: $dbConn, tableName: 'larpingapp_characters', entityClass: Character::class);
     }//end __construct()
 
     /**
@@ -53,11 +53,11 @@ class CharacterMapper extends QBMapper
      */
     public function find(int $id): Character
     {
-        $qb = $this->db->getQueryBuilder();
-        $qb->select('*')
+        $queryBuilder = $this->db->getQueryBuilder();
+        $queryBuilder->select('*')
             ->from($this->getTableName())
-            ->where($qb->expr()->eq('id', $qb->createNamedParameter($id)));
-        return $this->findEntity(query: $qb);
+            ->where($queryBuilder->expr()->eq('id', $queryBuilder->createNamedParameter($id)));
+        return $this->findEntity(query: $queryBuilder);
     }//end find()
 
     /**
@@ -71,12 +71,12 @@ class CharacterMapper extends QBMapper
      */
     public function findAll(string $userId): array
     {
-        $qb = $this->db->getQueryBuilder();
-        $qb->select('*')
+        $queryBuilder = $this->db->getQueryBuilder();
+        $queryBuilder->select('*')
             ->from($this->getTableName())
-            ->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userId)));
+            ->where($queryBuilder->expr()->eq('user_id', $queryBuilder->createNamedParameter($userId)));
 
-        return $this->findEntities(query: $qb);
+        return $this->findEntities(query: $queryBuilder);
     }//end findAll()
 
     /**
@@ -111,7 +111,7 @@ class CharacterMapper extends QBMapper
      */
     public function updateFromArray(int $id, array $data): Character
     {
-        $character = $this->find(id: $id);
+        $character = $this->find($id);
         /** @psalm-suppress MixedAssignment Dynamic entity property */
         foreach ($data as $key => $value) {
             $character->$key = $value;

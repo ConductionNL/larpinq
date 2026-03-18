@@ -32,32 +32,32 @@ class ConditionMapper extends QBMapper
     /**
      * Constructor for ConditionMapper.
      *
-     * @param IDBConnection $db Database connection
+     * @param IDBConnection $dbConn Database connection
      *
      * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
      */
-    public function __construct(IDBConnection $db)
+    public function __construct(IDBConnection $dbConn)
     {
-        parent::__construct(db: $db, tableName: 'larpingapp_conditions', entityClass: Condition::class);
+        parent::__construct(db: $dbConn, tableName: 'larpingapp_conditions', entityClass: Condition::class);
     }//end __construct()
 
     /**
      * Find a condition by ID
      *
-     * @param int $id The condition ID
+     * @param int $conditionId The condition ID
      *
      * @return Condition
      *
      * @throws \OCP\AppFramework\Db\DoesNotExistException
      * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
      */
-    public function find(int $id): Condition
+    public function find(int $conditionId): Condition
     {
-        $qb = $this->db->getQueryBuilder();
-        $qb->select('*')
+        $queryBuilder = $this->db->getQueryBuilder();
+        $queryBuilder->select('*')
             ->from($this->getTableName())
-            ->where($qb->expr()->eq('id', $qb->createNamedParameter($id)));
-        return $this->findEntity(query: $qb);
+            ->where($queryBuilder->expr()->eq('id', $queryBuilder->createNamedParameter($conditionId)));
+        return $this->findEntity(query: $queryBuilder);
     }//end find()
 
     /**
@@ -71,12 +71,12 @@ class ConditionMapper extends QBMapper
      */
     public function findAll(string $userId): array
     {
-        $qb = $this->db->getQueryBuilder();
-        $qb->select('*')
+        $queryBuilder = $this->db->getQueryBuilder();
+        $queryBuilder->select('*')
             ->from($this->getTableName())
-            ->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userId)));
+            ->where($queryBuilder->expr()->eq('user_id', $queryBuilder->createNamedParameter($userId)));
 
-        return $this->findEntities(query: $qb);
+        return $this->findEntities(query: $queryBuilder);
     }//end findAll()
 
     /**
@@ -102,16 +102,16 @@ class ConditionMapper extends QBMapper
     /**
      * Update a condition from array data
      *
-     * @param int                 $id   The condition ID
-     * @param array<string,mixed> $data The updated condition data
+     * @param int                 $conditionId The condition ID
+     * @param array<string,mixed> $data        The updated condition data
      *
      * @return Condition
      *
      * @psalm-suppress PossiblyUnusedMethod Called dynamically via ObjectService::saveObject().
      */
-    public function updateFromArray(int $id, array $data): Condition
+    public function updateFromArray(int $conditionId, array $data): Condition
     {
-        $condition = $this->find(id: $id);
+        $condition = $this->find(conditionId: $conditionId);
         /** @psalm-suppress MixedAssignment Dynamic entity property */
         foreach ($data as $key => $value) {
             $condition->$key = $value;

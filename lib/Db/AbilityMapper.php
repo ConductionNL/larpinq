@@ -30,32 +30,34 @@ class AbilityMapper extends QBMapper
     /**
      * Constructor for AbilityMapper.
      *
-     * @param IDBConnection $db Database connection
+     * @param IDBConnection $dbConn Database connection
      *
      * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
      */
-    public function __construct(IDBConnection $db)
+    public function __construct(IDBConnection $dbConn)
     {
-        parent::__construct(db: $db, tableName: 'larpingapp_abilities', entityClass: Ability::class);
+        parent::__construct(db: $dbConn, tableName: 'larpingapp_abilities', entityClass: Ability::class);
     }//end __construct()
 
     /**
      * Find an ability by ID
      *
-     * @param int $id The ability ID
+     * @param int $abilityId The ability ID
      *
      * @return Ability
      *
      * @throws \OCP\AppFramework\Db\DoesNotExistException
      * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+     *
+     * @SuppressWarnings(PHPMD.ShortVariable)
      */
-    public function find(int $id): Ability
+    public function find(int $abilityId): Ability
     {
-        $qb = $this->db->getQueryBuilder();
-        $qb->select('*')
+        $queryBuilder = $this->db->getQueryBuilder();
+        $queryBuilder->select('*')
             ->from($this->getTableName())
-            ->where($qb->expr()->eq('id', $qb->createNamedParameter($id)));
-        return $this->findEntity(query: $qb);
+            ->where($queryBuilder->expr()->eq('id', $queryBuilder->createNamedParameter($abilityId)));
+        return $this->findEntity(query: $queryBuilder);
     }//end find()
 
     /**
@@ -69,12 +71,12 @@ class AbilityMapper extends QBMapper
      */
     public function findAll(string $userId): array
     {
-        $qb = $this->db->getQueryBuilder();
-        $qb->select('*')
+        $queryBuilder = $this->db->getQueryBuilder();
+        $queryBuilder->select('*')
             ->from($this->getTableName())
-            ->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userId)));
+            ->where($queryBuilder->expr()->eq('user_id', $queryBuilder->createNamedParameter($userId)));
 
-        return $this->findEntities(query: $qb);
+        return $this->findEntities(query: $queryBuilder);
     }//end findAll()
 
     /**
@@ -89,8 +91,8 @@ class AbilityMapper extends QBMapper
     public function createFromArray(array $data): Ability
     {
         $ability = new Ability();
+        /** @psalm-suppress MixedAssignment Dynamic entity property */
         foreach ($data as $key => $value) {
-            /** @psalm-suppress MixedAssignment Dynamic entity property */
             $ability->$key = $value;
         }
 
@@ -100,18 +102,18 @@ class AbilityMapper extends QBMapper
     /**
      * Update an ability from array data
      *
-     * @param int                 $id   The ability ID
-     * @param array<string,mixed> $data The updated ability data
+     * @param int                 $abilityId The ability ID
+     * @param array<string,mixed> $data      The updated ability data
      *
      * @return Ability
      *
      * @psalm-suppress PossiblyUnusedMethod Called dynamically via ObjectService::saveObject().
      */
-    public function updateFromArray(int $id, array $data): Ability
+    public function updateFromArray(int $abilityId, array $data): Ability
     {
-        $ability = $this->find(id: $id);
+        $ability = $this->find($abilityId);
+        /** @psalm-suppress MixedAssignment Dynamic entity property */
         foreach ($data as $key => $value) {
-            /** @psalm-suppress MixedAssignment Dynamic entity property */
             $ability->$key = $value;
         }
 

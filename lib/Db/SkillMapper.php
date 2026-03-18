@@ -39,36 +39,38 @@ class SkillMapper extends QBMapper
     /**
      * Constructor for SkillMapper
      *
-     * @param IDBConnection $db Database connection
+     * @param IDBConnection $dbConn Database connection
      *
      * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
      */
-    public function __construct(IDBConnection $db)
+    public function __construct(IDBConnection $dbConn)
     {
-        parent::__construct(db: $db, tableName: 'larpingapp_skills', entityClass: Skill::class);
+        parent::__construct(db: $dbConn, tableName: 'larpingapp_skills', entityClass: Skill::class);
     }//end __construct()
 
     /**
      * Find a skill by ID
      *
-     * @param int $id The skill ID
+     * @param int $skillId The skill ID
      *
      * @return Skill
      *
      * @throws \OCP\AppFramework\Db\DoesNotExistException
      * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+     *
+     * @SuppressWarnings(PHPMD.ShortVariable)
      */
-    public function find(int $id): Skill
+    public function find(int $skillId): Skill
     {
-        $qb = $this->db->getQueryBuilder();
+        $queryBuilder = $this->db->getQueryBuilder();
 
-        $qb->select('*')
+        $queryBuilder->select('*')
             ->from('larpingapp_skills')
             ->where(
-                $qb->expr()->eq('id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT))
+                $queryBuilder->expr()->eq('id', $queryBuilder->createNamedParameter($skillId, IQueryBuilder::PARAM_INT))
             );
 
-        return $this->findEntity(query: $qb);
+        return $this->findEntity(query: $queryBuilder);
     }//end find()
 
     /**
@@ -76,7 +78,7 @@ class SkillMapper extends QBMapper
      *
      * @param int|null                   $limit            Maximum number of results
      * @param int|null                   $offset           Result offset
-     * @param array|null                 $filters          Additional filters
+     * @param array<string,mixed>|null   $filters          Additional filters
      * @param array<int,string>|null     $searchConditions Search conditions
      * @param array<string,string>|null  $searchParams     Search parameters
      *
@@ -94,39 +96,37 @@ class SkillMapper extends QBMapper
         ?array $searchConditions=[],
         ?array $searchParams=[]
     ): array {
-        $qb = $this->db->getQueryBuilder();
+        $queryBuilder = $this->db->getQueryBuilder();
 
-        $qb->select('*')
+        $queryBuilder->select('*')
             ->from('larpingapp_skills')
             ->setMaxResults($limit)
             ->setFirstResult($offset ?? 0);
 
         if ($filters !== null) {
+            /** @psalm-suppress MixedAssignment Filter values from request params */
             foreach ($filters as $filter => $value) {
-                /** @var string $filter */
-                /** @var mixed $value */
                 if ($value === 'IS NOT NULL') {
-                    $qb->andWhere($qb->expr()->isNotNull($filter));
-                } else if ($value === 'IS NULL') {
-                    $qb->andWhere($qb->expr()->isNull($filter));
+                    $queryBuilder->andWhere($queryBuilder->expr()->isNotNull((string) $filter));
+                } elseif ($value === 'IS NULL') {
+                    $queryBuilder->andWhere($queryBuilder->expr()->isNull((string) $filter));
                 } else {
-                    $qb->andWhere($qb->expr()->eq($filter, $qb->createNamedParameter($value)));
+                    $queryBuilder->andWhere($queryBuilder->expr()->eq((string) $filter, $queryBuilder->createNamedParameter($value)));
                 }
             }
         }
 
         if ($searchConditions !== null && count($searchConditions) > 0) {
-            $qb->andWhere('('.implode(' OR ', $searchConditions).')');
+            $queryBuilder->andWhere('('.implode(' OR ', $searchConditions).')');
             if ($searchParams !== null) {
+                /** @psalm-suppress MixedAssignment Search params from request */
                 foreach ($searchParams as $param => $value) {
-                    /** @var string $param */
-                    /** @var mixed $value */
-                    $qb->setParameter($param, $value);
+                    $queryBuilder->setParameter($param, $value);
                 }
             }
         }
 
-        return $this->findEntities(query: $qb);
+        return $this->findEntities(query: $queryBuilder);
     }//end findAll()
 
     /**
@@ -148,16 +148,16 @@ class SkillMapper extends QBMapper
     /**
      * Update a skill from array data
      *
-     * @param int                 $id     The skill ID
-     * @param array<string,mixed> $object The updated skill data
+     * @param int                 $skillId The skill ID
+     * @param array<string,mixed> $object  The updated skill data
      *
      * @return Skill
      *
      * @psalm-suppress PossiblyUnusedMethod Called dynamically via ObjectService::saveObject().
      */
-    public function updateFromArray(int $id, array $object): Skill
+    public function updateFromArray(int $skillId, array $object): Skill
     {
-        $skill = $this->find(id: $id);
+        $skill = $this->find($skillId);
         $skill->hydrate($object);
 
         return $this->update(entity: $skill);
