@@ -67,6 +67,8 @@ class CharactersController extends Controller
      *
      * @NoAdminRequired
      * @NoCSRFRequired
+     *
+     * @SuppressWarnings(PHPMD.ShortVariable)
      */
     public function downloadPdf(string $id, string $template): DataDownloadResponse|JSONResponse
     {

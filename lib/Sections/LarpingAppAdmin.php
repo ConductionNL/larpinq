@@ -39,7 +39,7 @@ class LarpingAppAdmin implements IIconSection
      *
      * @var IL10N
      */
-    private $l;
+    private $l10n;
 
     /**
      * URL generator service instance
@@ -51,14 +51,14 @@ class LarpingAppAdmin implements IIconSection
     /**
      * Constructor
      *
-     * @param IL10N         $l            Localization service
+     * @param IL10N         $l10n         Localization service
      * @param IURLGenerator $urlGenerator URL generator service
      *
      * @return void
      */
-    public function __construct(IL10N $l, IURLGenerator $urlGenerator)
+    public function __construct(IL10N $l10n, IURLGenerator $urlGenerator)
     {
-        $this->l            = $l;
+        $this->l10n         = $l10n;
         $this->urlGenerator = $urlGenerator;
     }//end __construct()
 
@@ -89,7 +89,7 @@ class LarpingAppAdmin implements IIconSection
      */
     public function getName(): string
     {
-        return $this->l->t('LarpingApp');
+        return $this->l10n->t('LarpingApp');
     }//end getName()
 
     /**

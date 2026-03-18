@@ -57,6 +57,8 @@ class Application extends App implements IBootstrap
      * @param IRegistrationContext $context Registration context.
      *
      * @return void
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function register(IRegistrationContext $context): void
     {

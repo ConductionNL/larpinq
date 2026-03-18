@@ -150,6 +150,8 @@ class Event extends Entity implements JsonSerializable
      *
      * @psalm-suppress PossiblyUnusedMethod Part of the entity API for array conversion.
      * @psalm-suppress PossiblyUnusedParam Reserved for future use to filter output fields.
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function toArray(array $params=[]): array
     {

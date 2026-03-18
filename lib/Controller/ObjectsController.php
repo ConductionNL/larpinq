@@ -27,6 +27,8 @@ use DateTime;
  * Controller class for handling object-related operations.
  *
  * @psalm-suppress UnusedClass Instantiated by Nextcloud routing (appinfo/routes.php).
+ *
+ * @SuppressWarnings(PHPMD.ShortVariable)
  */
 class ObjectsController extends Controller
 {
@@ -369,6 +371,8 @@ class ObjectsController extends Controller
      * @NoCSRFRequired
      *
      * @return JSONResponse
+     *
+     * @SuppressWarnings(PHPMD.ElseExpression)
      */
     public function revert(string $objectType, string $id): JSONResponse
     {

@@ -249,10 +249,19 @@ class SearchService
             );
         }
 
-        /** @psalm-suppress MixedAssignment GuzzleHttp promise results */
+        /**
+         * @psalm-suppress MixedAssignment GuzzleHttp promise results.
+         * @psalm-suppress MixedMethodCall GuzzleHttp returns mixed from settle().
+         */
         $responses = \GuzzleHttp\Promise\Utils::settle($promises)->wait();
 
-        /** @psalm-suppress MixedAssignment GuzzleHttp response entries */
+        /**
+         * @psalm-suppress MixedAssignment GuzzleHttp response entries.
+         * @psalm-suppress MixedArrayAccess GuzzleHttp response structure is dynamic.
+         * @psalm-suppress MixedMethodCall GuzzleHttp response methods are dynamic.
+         * @psalm-suppress MixedArgument GuzzleHttp response values are dynamic.
+         * @psalm-suppress MixedArgumentTypeCoercion GuzzleHttp response values are dynamic.
+         */
         foreach ($responses as $response) {
             /** @var array{state: string, value?: \Psr\Http\Message\ResponseInterface} $response */
             if ($response['state'] === 'fulfilled' && isset($response['value'])) {
@@ -414,7 +423,7 @@ class SearchService
     public function unsetSpecialQueryParams(array $filters): array
     {
         foreach ($filters as $key => $_value) {
-            if (str_starts_with((string) $key, '_') === true) {
+            if (str_starts_with($key, '_') === true) {
                 unset($filters[$key]);
             }
         }

@@ -272,9 +272,9 @@ class CharacterService
         // Initialize ability scores from base values.
         foreach ($this->allAbilities as $ability) {
             $abilityScores[(string) $ability['id']] = [
-                'name'  => $ability['name'],
-                'base'  => $ability['base'] ?? 0,
-                'value' => $ability['base'] ?? 0,
+                'name'  => (string) ($ability['name'] ?? ''),
+                'base'  => (int) ($ability['base'] ?? 0),
+                'value' => (int) ($ability['base'] ?? 0),
                 'audit' => [],
             ];
         }

@@ -27,6 +27,7 @@ use OCP\IGroupManager;
 use OCP\IRequest;
 use OCP\IUserSession;
 use Psr\Container\ContainerInterface;
+use RuntimeException;
 
 /**
  * Controller for LarpingApp settings.
@@ -80,7 +81,7 @@ class SettingsController extends Controller
      * Attempts to retrieve the OpenRegister service from the container.
      *
      * @return object|null The OpenRegister service if available, null otherwise.
-     * @throws \RuntimeException If the service is not available.
+     * @throws RuntimeException If the service is not available.
      */
     public function getObjectService(): ?object
     {
@@ -91,7 +92,7 @@ class SettingsController extends Controller
             return $this->objectService;
         }
 
-        throw new \RuntimeException('OpenRegister service is not available.');
+        throw new RuntimeException('OpenRegister service is not available.');
 
     }//end getObjectService()
 
@@ -100,7 +101,7 @@ class SettingsController extends Controller
      * Attempts to retrieve the Configuration service from the container.
      *
      * @return object|null The Configuration service if available, null otherwise.
-     * @throws \RuntimeException If the service is not available.
+     * @throws RuntimeException If the service is not available.
      */
     public function getConfigurationService(): ?object
     {
@@ -110,7 +111,7 @@ class SettingsController extends Controller
             return $configurationService;
         }
 
-        throw new \RuntimeException('Configuration service is not available.');
+        throw new RuntimeException('Configuration service is not available.');
 
     }//end getConfigurationService()
 

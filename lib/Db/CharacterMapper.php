@@ -44,19 +44,21 @@ class CharacterMapper extends QBMapper
     /**
      * Find a character by ID
      *
-     * @param int $id The character ID
+     * @param int $characterId The character ID
      *
      * @return Character
      *
      * @throws \OCP\AppFramework\Db\DoesNotExistException
      * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+     *
+     * @SuppressWarnings(PHPMD.ShortVariable)
      */
-    public function find(int $id): Character
+    public function find(int $characterId): Character
     {
         $queryBuilder = $this->db->getQueryBuilder();
         $queryBuilder->select('*')
             ->from($this->getTableName())
-            ->where($queryBuilder->expr()->eq('id', $queryBuilder->createNamedParameter($id)));
+            ->where($queryBuilder->expr()->eq('id', $queryBuilder->createNamedParameter($characterId)));
         return $this->findEntity(query: $queryBuilder);
     }//end find()
 
@@ -102,16 +104,16 @@ class CharacterMapper extends QBMapper
     /**
      * Update a character from array data
      *
-     * @param int                 $id   The character ID
-     * @param array<string,mixed> $data The updated character data
+     * @param int                 $characterId The character ID
+     * @param array<string,mixed> $data        The updated character data
      *
      * @return Character
      *
      * @psalm-suppress PossiblyUnusedMethod Called dynamically via ObjectService::saveObject().
      */
-    public function updateFromArray(int $id, array $data): Character
+    public function updateFromArray(int $characterId, array $data): Character
     {
-        $character = $this->find($id);
+        $character = $this->find($characterId);
         /** @psalm-suppress MixedAssignment Dynamic entity property */
         foreach ($data as $key => $value) {
             $character->$key = $value;

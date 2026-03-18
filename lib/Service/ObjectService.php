@@ -55,6 +55,10 @@ use OCA\OpenRegister\Service\Exceptions\NotFoundException;
  *
  * @psalm-suppress UndefinedClass, UndefinedDocblockClass OpenRegister is an optional dependency.
  * @psalm-suppress UnusedProperty Container and appManager used in getOpenRegisters().
+ *
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ * @SuppressWarnings(PHPMD.ShortVariable)
  */
 class ObjectService
 {
@@ -83,6 +87,8 @@ class ObjectService
      * @param IAppConfig         $config          Config service.
      *
      * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
+     *
+     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
         private AbilityMapper $abilityMapper,
@@ -336,6 +342,8 @@ class ObjectService
      * @psalm-suppress MixedInferredReturnType Return type depends on dynamic mapper resolution.
      * @psalm-suppress MixedMethodCall Mapper resolved dynamically via getMapper().
      * @psalm-suppress MixedReturnStatement Mapper resolved dynamically via getMapper().
+     *
+     * @SuppressWarnings(PHPMD.ElseExpression)
      */
     public function getMultipleObjects(string $objectType, array $ids): array
     {
@@ -362,7 +370,7 @@ class ObjectService
             function ($id) {
                 // If the id is a URI, get only the last part of the path.
                 if (filter_var($id, FILTER_VALIDATE_URL) !== false) {
-                    $parts = explode('/', rtrim($id, '/'));
+                    $parts = explode('/', rtrim((string) $id, '/'));
                     return end($parts);
                 }
 
@@ -422,6 +430,9 @@ class ObjectService
      * @throws ContainerExceptionInterface|DoesNotExistException|MultipleObjectsReturnedException|NotFoundExceptionInterface
      *
      * @psalm-suppress MixedMethodCall Mapper resolved dynamically via getMapper().
+     *
+     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+     * @SuppressWarnings(PHPMD.ElseExpression)
      */
     public function saveObject(string $objectType, array $object, array $extend=[], bool $updateVersion=true): mixed
     {
@@ -531,6 +542,9 @@ class ObjectService
      *
      * @throws ContainerExceptionInterface|DoesNotExistException|MultipleObjectsReturnedException|NotFoundExceptionInterface
      * @throws InvalidArgumentException If extend is requested for non-OpenRegister objects.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function getResultArrayForRequest(string $objectType, array $requestParams): array
     {

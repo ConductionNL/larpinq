@@ -50,6 +50,8 @@ class ConditionMapper extends QBMapper
      *
      * @throws \OCP\AppFramework\Db\DoesNotExistException
      * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+     *
+     * @SuppressWarnings(PHPMD.ShortVariable)
      */
     public function find(int $conditionId): Condition
     {
@@ -111,7 +113,7 @@ class ConditionMapper extends QBMapper
      */
     public function updateFromArray(int $conditionId, array $data): Condition
     {
-        $condition = $this->find(conditionId: $conditionId);
+        $condition = $this->find($conditionId);
         /** @psalm-suppress MixedAssignment Dynamic entity property */
         foreach ($data as $key => $value) {
             $condition->$key = $value;
