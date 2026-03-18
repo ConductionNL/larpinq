@@ -108,13 +108,13 @@ class EventMapper extends QBMapper
             /** @psalm-suppress MixedAssignment Filter values from request params */
             foreach ($filters as $filter => $value) {
                 if ($value === 'IS NOT NULL') {
-                    $queryBuilder->andWhere($queryBuilder->expr()->isNotNull((string) $filter));
+                    $queryBuilder->andWhere($queryBuilder->expr()->isNotNull($filter));
                 } elseif ($value === 'IS NULL') {
-                    $queryBuilder->andWhere($queryBuilder->expr()->isNull((string) $filter));
+                    $queryBuilder->andWhere($queryBuilder->expr()->isNull($filter));
                 }
 
                 if ($value !== 'IS NOT NULL' && $value !== 'IS NULL') {
-                    $queryBuilder->andWhere($queryBuilder->expr()->eq((string) $filter, $queryBuilder->createNamedParameter($value)));
+                    $queryBuilder->andWhere($queryBuilder->expr()->eq($filter, $queryBuilder->createNamedParameter($value)));
                 }
             }
         }
@@ -124,7 +124,7 @@ class EventMapper extends QBMapper
             if ($searchParams !== null) {
                 /** @psalm-suppress MixedAssignment Search params from request */
                 foreach ($searchParams as $param => $value) {
-                    $queryBuilder->setParameter((string) $param, $value);
+                    $queryBuilder->setParameter($param, $value);
                 }
             }
         }

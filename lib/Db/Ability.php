@@ -35,7 +35,7 @@ class Ability extends Entity implements JsonSerializable
     /**
      * The name of the ability.
      *
-     * @var string
+     * @var string|null
      *
      * @psalm-suppress PossiblyUnusedProperty Accessed via Entity __call magic (getName/setName).
      */
@@ -44,7 +44,7 @@ class Ability extends Entity implements JsonSerializable
     /**
      * The description of the ability.
      *
-     * @var string
+     * @var string|null
      *
      * @psalm-suppress PossiblyUnusedProperty Accessed via Entity __call magic (getDescription/setDescription).
      */

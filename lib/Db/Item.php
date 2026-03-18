@@ -34,7 +34,7 @@ class Item extends Entity implements JsonSerializable
     /**
      * The name of the item.
      *
-     * @var string
+     * @var string|null
      *
      * @psalm-suppress PossiblyUnusedProperty Accessed via Entity __call magic (getName/setName).
      */
@@ -43,7 +43,7 @@ class Item extends Entity implements JsonSerializable
     /**
      * The description of the item.
      *
-     * @var string
+     * @var string|null
      *
      * @psalm-suppress PossiblyUnusedProperty Accessed via Entity __call magic (getDescription/setDescription).
      */

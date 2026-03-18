@@ -34,7 +34,7 @@ class Setting extends Entity implements JsonSerializable
     /**
      * The name of the setting.
      *
-     * @var string
+     * @var string|null
      *
      * @psalm-suppress PossiblyUnusedProperty Accessed via Entity __call magic (getName/setName).
      */
@@ -43,7 +43,7 @@ class Setting extends Entity implements JsonSerializable
     /**
      * The value of the setting.
      *
-     * @var string
+     * @var string|null
      *
      * @psalm-suppress PossiblyUnusedProperty Accessed via Entity __call magic (getValue/setValue).
      */

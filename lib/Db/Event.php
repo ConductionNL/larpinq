@@ -37,7 +37,7 @@ class Event extends Entity implements JsonSerializable
     /**
      * The title of the event.
      *
-     * @var string
+     * @var string|null
      *
      * @psalm-suppress PossiblyUnusedProperty Accessed via Entity __call magic (getTitle/setTitle).
      */
@@ -46,7 +46,7 @@ class Event extends Entity implements JsonSerializable
     /**
      * The description of the event.
      *
-     * @var string
+     * @var string|null
      *
      * @psalm-suppress PossiblyUnusedProperty Accessed via Entity __call magic (getDescription/setDescription).
      */
@@ -55,7 +55,7 @@ class Event extends Entity implements JsonSerializable
     /**
      * The start date of the event.
      *
-     * @var DateTime
+     * @var DateTime|null
      *
      * @psalm-suppress PossiblyUnusedProperty Accessed via Entity __call magic (getStartDate/setStartDate).
      */
@@ -64,7 +64,7 @@ class Event extends Entity implements JsonSerializable
     /**
      * The end date of the event.
      *
-     * @var DateTime
+     * @var DateTime|null
      *
      * @psalm-suppress PossiblyUnusedProperty Accessed via Entity __call magic (getEndDate/setEndDate).
      */
@@ -73,7 +73,7 @@ class Event extends Entity implements JsonSerializable
     /**
      * The user ID who owns the event.
      *
-     * @var string
+     * @var string|null
      *
      * @psalm-suppress PossiblyUnusedProperty Accessed via Entity __call magic (getUserId/setUserId).
      */

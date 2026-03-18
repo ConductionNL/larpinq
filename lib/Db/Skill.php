@@ -35,7 +35,7 @@ class Skill extends Entity implements JsonSerializable
     /**
      * The name of the skill.
      *
-     * @var string
+     * @var string|null
      *
      * @psalm-suppress PossiblyUnusedProperty Accessed via Entity __call magic (getName/setName).
      */
@@ -44,7 +44,7 @@ class Skill extends Entity implements JsonSerializable
     /**
      * The description of the skill.
      *
-     * @var string
+     * @var string|null
      *
      * @psalm-suppress PossiblyUnusedProperty Accessed via Entity __call magic (getDescription/setDescription).
      */

@@ -97,7 +97,7 @@ class ObjectsController extends Controller
             }
 
             // Fetch the object by its ID.
-            $object = $this->objectService->getObject(objectType: $objectType, id: $id, extend: (array) $extend);
+            $object = $this->objectService->getObject(objectType: $objectType, id: $id, extend: $extend);
 
             // Return the object as a JSON response.
             return new JSONResponse($object);
@@ -142,7 +142,7 @@ class ObjectsController extends Controller
 
             // Save the new object.
             /** @var array<string,mixed> $object */
-            $object = $this->objectService->saveObject(objectType: $objectType, object: $data, extend: (array) $extend);
+            $object = $this->objectService->saveObject(objectType: $objectType, object: $data, extend: $extend);
 
             // Return the created object as a JSON response.
             return new JSONResponse($object);
@@ -188,7 +188,7 @@ class ObjectsController extends Controller
 
             // Save the updated object.
             /** @var array<string,mixed> $object */
-            $object = $this->objectService->saveObject(objectType: $objectType, object: $data, extend: (array) $extend);
+            $object = $this->objectService->saveObject(objectType: $objectType, object: $data, extend: $extend);
 
             // Return the updated object as a JSON response.
             return new JSONResponse($object);

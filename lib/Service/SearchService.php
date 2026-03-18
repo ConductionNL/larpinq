@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace OCA\LarpingApp\Service;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\Promise\Utils;
 use OCP\IURLGenerator;
 use Symfony\Component\Uid\Uuid;
 
@@ -29,6 +31,9 @@ use Symfony\Component\Uid\Uuid;
  *
  * @psalm-suppress UnusedClass Injected via Nextcloud DI container.
  * @psalm-suppress UndefinedClass GuzzleHttp is an optional dependency.
+ *
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class SearchService
 {
@@ -36,9 +41,9 @@ class SearchService
     /**
      * HTTP client for making async requests
      *
-     * @var \GuzzleHttp\Client
+     * @var Client
      */
-    public \GuzzleHttp\Client $client;
+    public Client $client;
 
     public const BASE_OBJECT = [
         'database'   => 'objects',
@@ -53,7 +58,7 @@ class SearchService
     public function __construct(
         private readonly IURLGenerator $urlGenerator,
     ) {
-        $this->client = new \GuzzleHttp\Client();
+        $this->client = new Client();
     }//end __construct()
 
     /**
@@ -63,30 +68,32 @@ class SearchService
      * @param array<int, array{_id: string, count: int}> $newAggregation      The new aggregation data to merge
      *
      * @return array<int, array{_id: string|int, count: int}> The merged aggregation array
+     *
+     * @SuppressWarnings(PHPMD.ElseExpression)
      */
     public function mergeFacets(array $existingAggregation, array $newAggregation): array
     {
         $results = [];
-        /** @var array<string, int> $existingAggregationMapped */
-        $existingAggregationMapped = [];
-        /** @var array<string, int> $newAggregationMapped */
-        $newAggregationMapped      = [];
+        /** @var array<string, int> $existingMap */
+        $existingMap = [];
+        /** @var array<string, int> $newMap */
+        $newMap      = [];
 
         foreach ($existingAggregation as $value) {
-            $existingAggregationMapped[(string) $value['_id']] = (int) $value['count'];
+            $existingMap[$value['_id']] = $value['count'];
         }
 
         foreach ($newAggregation as $value) {
-            if (isset($existingAggregationMapped[(string) $value['_id']]) === true) {
-                $newAggregationMapped[(string) $value['_id']] = $existingAggregationMapped[(string) $value['_id']] + (int) $value['count'];
+            if (isset($existingMap[$value['_id']]) === true) {
+                $newMap[$value['_id']] = $existingMap[$value['_id']] + $value['count'];
             } else {
-                $newAggregationMapped[(string) $value['_id']] = (int) $value['count'];
+                $newMap[$value['_id']] = $value['count'];
             }
         }
 
         $mergedDiff = array_merge(
-            array_diff($existingAggregationMapped, $newAggregationMapped),
-            array_diff($newAggregationMapped, $existingAggregationMapped)
+            array_diff($existingMap, $newMap),
+            array_diff($newMap, $existingMap)
         );
         foreach ($mergedDiff as $key => $value) {
             $results[] = ['_id' => $key, 'count' => $value];
@@ -102,6 +109,8 @@ class SearchService
      * @param array|null $newAggregations      The new aggregations to merge
      *
      * @return array The merged aggregations
+     *
+     * @SuppressWarnings(PHPMD.ElseExpression)
      */
     private function mergeAggregations(?array $existingAggregations, ?array $newAggregations): array
     {
@@ -129,14 +138,14 @@ class SearchService
     /**
      * Sorts result array by score for usort comparison
      *
-     * @param array $a First result element
-     * @param array $b Second result element
+     * @param array $first  First result element
+     * @param array $second Second result element
      *
      * @return int Comparison result
      */
-    public function sortResultArray(array $a, array $b): int
+    public function sortResultArray(array $first, array $second): int
     {
-        return $a['_score'] <=> $b['_score'];
+        return $first['_score'] <=> $second['_score'];
     }//end sortResultArray()
 
     /**
@@ -153,6 +162,12 @@ class SearchService
      * @psalm-suppress MixedArgumentTypeCoercion Response data from external HTTP APIs contains mixed types.
      * @psalm-suppress UnusedVariable $promises accumulated in loop then settled.
      * @psalm-suppress MixedInferredReturnType, UndefinedThisPropertyFetch Dynamic services injected at runtime.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @SuppressWarnings(PHPMD.ElseExpression)
      */
     public function search(array $parameters, array $elasticConfig, array $dbConfig, array $catalogi=[]): array
     {
@@ -163,17 +178,8 @@ class SearchService
         ];
 
         $totalResults = 0;
-        if (isset($parameters['.limit']) === true) {
-            $limit = (int) $parameters['.limit'];
-        } else {
-            $limit = 30;
-        }
-
-        if (isset($parameters['.page']) === true) {
-            $page = (int) $parameters['.page'];
-        } else {
-            $page = 1;
-        }
+        $limit = isset($parameters['.limit']) === true ? (int) $parameters['.limit'] : 30;
+        $page  = isset($parameters['.page']) === true ? (int) $parameters['.page'] : 1;
 
         /**
          * @psalm-suppress UndefinedThisPropertyFetch
@@ -234,7 +240,7 @@ class SearchService
                 continue;
             }
 
-            $searchEndpoints[(string) $instance['search']][] = $instance['catalogId'] ?? '';
+            $searchEndpoints[$instance['search']][] = $instance['catalogId'] ?? '';
         }
 
         unset($parameters['.catalogi']);
@@ -244,7 +250,7 @@ class SearchService
             $parameters['_catalogi'] = $catalogi;
 
             $promises[] = $this->client->getAsync(
-                uri: (string) $searchEndpoint,
+                uri: $searchEndpoint,
                 options: ['query' => $parameters]
             );
         }
@@ -253,7 +259,7 @@ class SearchService
          * @psalm-suppress MixedAssignment GuzzleHttp promise results.
          * @psalm-suppress MixedMethodCall GuzzleHttp returns mixed from settle().
          */
-        $responses = \GuzzleHttp\Promise\Utils::settle($promises)->wait();
+        $responses = Utils::settle($promises)->wait();
 
         /**
          * @psalm-suppress MixedAssignment GuzzleHttp response entries.
@@ -319,13 +325,16 @@ class SearchService
      * @param string $value   The full $value of the query param, like this: ?$name=$value
      *
      * @return void
+     *
+     * @SuppressWarnings(PHPMD.ElseExpression)
      */
     private function recursiveRequestQueryKey(array &$vars, string $name, string $nameKey, string $value): void
     {
-        $matchesCount = preg_match(pattern: '/(\[[^[\]]*])/', subject: $name, matches:$matches);
+        $matches = [];
+        $matchesCount = preg_match(pattern: '/(\[[^[\]]*])/', subject: $name, matches: $matches);
         if ($matchesCount > 0) {
             $key  = $matches[0];
-            $name = str_replace(search: $key,  replace:'', subject: $name);
+            $name = str_replace(search: $key, replace: '', subject: $name);
             $key  = trim(string: $key, characters: '[]');
             if (empty($key) === false) {
                 if (isset($vars[$nameKey]) === false || is_array($vars[$nameKey]) === false) {
@@ -422,7 +431,7 @@ class SearchService
      */
     public function unsetSpecialQueryParams(array $filters): array
     {
-        foreach ($filters as $key => $_value) {
+        foreach (array_keys($filters) as $key) {
             if (str_starts_with($key, '_') === true) {
                 unset($filters[$key]);
             }
@@ -456,6 +465,8 @@ class SearchService
      * @param array $filters Query parameters from request.
      *
      * @return array $sort
+     *
+     * @SuppressWarnings(PHPMD.ElseExpression)
      */
     public function createSortForMySQL(array $filters): array
     {
@@ -485,6 +496,8 @@ class SearchService
      * @return array $sort
      *
      * @todo Not functional yet. Needs to be fixed (see PublicationsController->index).
+     *
+     * @SuppressWarnings(PHPMD.ElseExpression)
      */
     public function createSortForMongoDB(array $filters): array
     {
