@@ -1,6 +1,10 @@
 <template>
 	<div class="skill-usage-chart">
-		<div v-if="loading" class="chart-loading">
+		<div v-if="!openRegisterConfigured" class="chart-empty">
+			<p>Configure OpenRegister data source to enable this widget</p>
+		</div>
+
+		<div v-else-if="loading" class="chart-loading">
 			<NcLoadingIcon :size="44" />
 			<span>Loading skill data...</span>
 		</div>
@@ -29,6 +33,7 @@
 import VueApexCharts from 'vue-apexcharts'
 import { NcButton, NcLoadingIcon } from '@nextcloud/vue'
 import { queryGraphQL } from '../../services/graphql.js'
+import { useSettingsStore } from '../../store/modules/settings.js'
 
 export default {
 	name: 'SkillUsageChart',
@@ -43,6 +48,7 @@ export default {
 			error: null,
 			skillLabels: [],
 			skillCounts: [],
+			openRegisterConfigured: true,
 		}
 	},
 	computed: {
@@ -103,6 +109,19 @@ export default {
 			this.error = null
 
 			try {
+				// Check if character source is configured for OpenRegister
+				const settingsStore = useSettingsStore()
+				if (!settingsStore.isInitialized) {
+					await settingsStore.fetchSettings()
+				}
+				const config = settingsStore.getConfig
+				const characterSource = config?.character_source
+				if (characterSource && characterSource !== 'openregister') {
+					this.openRegisterConfigured = false
+					return
+				}
+				this.openRegisterConfigured = true
+
 				const result = await queryGraphQL(`{
 					character(first: 1, facets: ["skills"]) {
 						totalCount
