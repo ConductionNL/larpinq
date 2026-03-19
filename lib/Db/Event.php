@@ -28,6 +28,8 @@ use OCP\AppFramework\Db\Entity;
  * @copyright 2024 Ruben Linde
  * @license   AGPL-3.0-or-later https://www.gnu.org/licenses/agpl-3.0.en.html
  * @link      https://larpingapp.com
+ *
+ * @psalm-suppress PropertyNotSetInConstructor $id is set by the parent Entity class.
  */
 class Event extends Entity implements JsonSerializable
 {
@@ -35,37 +37,37 @@ class Event extends Entity implements JsonSerializable
     /**
      * The title of the event.
      *
-     * @var string
+     * @var string|null
      */
-    protected $title;
+    protected $title = null;
 
     /**
      * The description of the event.
      *
-     * @var string
+     * @var string|null
      */
-    protected $description;
+    protected $description = null;
 
     /**
      * The start date of the event.
      *
-     * @var DateTime
+     * @var DateTime|null
      */
-    protected $startDate;
+    protected $startDate = null;
 
     /**
      * The end date of the event.
      *
-     * @var DateTime
+     * @var DateTime|null
      */
-    protected $endDate;
+    protected $endDate = null;
 
     /**
      * The user ID who owns the event.
      *
-     * @var string
+     * @var string|null
      */
-    protected $userId;
+    protected $userId = null;
 
     /**
      * Constructor to set the defaults
@@ -102,9 +104,12 @@ class Event extends Entity implements JsonSerializable
      * @param array<string,mixed> $data The data to hydrate from.
      *
      * @return void
+     *
+     * @psalm-suppress PossiblyUnusedMethod Called from EventMapper::createFromArray and updateFromArray.
      */
     public function hydrate(array $data): void
     {
+        // @psalm-suppress MixedAssignment Dynamic entity property
         foreach ($data as $key => $value) {
             $this->$key = $value;
         }
@@ -119,6 +124,7 @@ class Event extends Entity implements JsonSerializable
     {
         $data = [];
         foreach ($this->getJsonFields() as $field) {
+            // @psalm-suppress MixedAssignment Dynamic entity property
             $data[$field] = $this->$field;
         }
 
@@ -131,9 +137,14 @@ class Event extends Entity implements JsonSerializable
      * @param array $params Optional parameters to include
      *
      * @return array The event data as array
+     *
+     * @psalm-suppress PossiblyUnusedMethod Part of the entity API for array conversion.
+     * @psalm-suppress PossiblyUnusedParam Reserved for future use to filter output fields.
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function toArray(array $params=[]): array
     {
-        // ... existing code ...
+        return $this->jsonSerialize();
     }//end toArray()
 }//end class

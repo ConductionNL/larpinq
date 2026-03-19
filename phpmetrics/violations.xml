@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pmd version="@package_version@" timestamp="2026-03-19T09:59:14+00:00">
+  <file name="OCA\LarpingApp\Service\CharacterService">
+    <violation beginline="1" rule="Probably bugged" ruleset="Probably bugged" externalInfoUrl="http://www.phpmetrics.org/documentation/index.html" priority="3">            This component contains in theory 0.6 bugs.
+
+            * Calculation is based on number of operators, operands, cyclomatic complexity
+            * See more details at https://en.wikipedia.org/wiki/Halstead_complexity_measures
+            *  testsuites has dependency to this class.
+
+            Maybe you should check your unit tests for this class.</violation>
+  </file>
+  <file name="OCA\LarpingApp\Db\">
+    <violation beginline="1" rule="Stable Abstractions Principle" ruleset="Stable Abstractions Principle" externalInfoUrl="http://www.phpmetrics.org/documentation/index.html" priority="3">            Packages should be either abstract and stable or concrete and instable.
+
+            This package is instable and abstract.</violation>
+  </file>
+</pmd>

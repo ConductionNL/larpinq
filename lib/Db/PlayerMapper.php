@@ -30,50 +30,60 @@ use OCP\IDBConnection;
  * @copyright 2024 Ruben Linde
  * @license   AGPL-3.0-or-later https://www.gnu.org/licenses/agpl-3.0.en.html
  * @link      https://larpingapp.com
+ *
+ * @template-extends QBMapper<Player>
+ *
+ * @psalm-suppress MoreSpecificReturnType, LessSpecificReturnStatement QBMapper returns Entity but we know the concrete type.
  */
 class PlayerMapper extends QBMapper
 {
     /**
      * Constructor
      *
-     * @param IDBConnection $db Database connection
+     * @param IDBConnection $dbConn Database connection
+     *
+     * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
      */
-    public function __construct(IDBConnection $db)
+    public function __construct(IDBConnection $dbConn)
     {
-        parent::__construct(db: $db, tableName: 'larpingapp_players', entityClass: Player::class);
+        parent::__construct(db: $dbConn, tableName: 'larpingapp_players', entityClass: Player::class);
     }//end __construct()
 
     /**
      * Find a player by ID
      *
-     * @param int $id The player ID
+     * @param int $playerId The player ID
      *
      * @throws \OCP\AppFramework\Db\DoesNotExistException
      * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
      *
      * @return Player The found player
+     *
+     * @SuppressWarnings(PHPMD.ShortVariable)
      */
-    public function find(int $id): Player
+    public function find(int $playerId): Player
     {
-        $qb = $this->db->getQueryBuilder();
-        $qb->select('*')
+        $queryBuilder = $this->db->getQueryBuilder();
+        $queryBuilder->select('*')
             ->from($this->getTableName())
-            ->where($qb->expr()->eq('id', $qb->createNamedParameter($id)));
-        return $this->findEntity(query: $qb);
+            ->where($queryBuilder->expr()->eq('id', $queryBuilder->createNamedParameter($playerId)));
+        return $this->findEntity(query: $queryBuilder);
     }//end find()
 
     /**
      * Find all players
      *
      * @return Player[] Array of players
+     *
+     * @psalm-suppress PossiblyUnusedMethod Called dynamically via ObjectService::getMapper().
      */
     public function findAll(): array
     {
-        $qb = $this->db->getQueryBuilder();
-        $qb->select('*')
+        $queryBuilder = $this->db->getQueryBuilder();
+        $queryBuilder->select('*')
             ->from($this->getTableName());
 
-        return $this->findEntities(query: $qb);
+        return $this->findEntities(query: $queryBuilder);
     }//end findAll()
 
     /**
@@ -82,10 +92,13 @@ class PlayerMapper extends QBMapper
      * @param array<string,mixed> $data The player data
      *
      * @return Player
+     *
+     * @psalm-suppress PossiblyUnusedMethod Called dynamically via ObjectService::saveObject().
      */
     public function createFromArray(array $data): Player
     {
         $player = new Player();
+        // @psalm-suppress MixedAssignment Dynamic entity property
         foreach ($data as $key => $value) {
             $player->$key = $value;
         }
@@ -96,14 +109,17 @@ class PlayerMapper extends QBMapper
     /**
      * Update a player from array data
      *
-     * @param int                 $id   The player ID
-     * @param array<string,mixed> $data The updated player data
+     * @param int                 $playerId The player ID
+     * @param array<string,mixed> $data     The updated player data
      *
      * @return Player
+     *
+     * @psalm-suppress PossiblyUnusedMethod Called dynamically via ObjectService::saveObject().
      */
-    public function updateFromArray(int $id, array $data): Player
+    public function updateFromArray(int $playerId, array $data): Player
     {
-        $player = $this->find(id: $id);
+        $player = $this->find(playerId: $playerId);
+        // @psalm-suppress MixedAssignment Dynamic entity property
         foreach ($data as $key => $value) {
             $player->$key = $value;
         }

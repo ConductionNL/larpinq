@@ -43,6 +43,8 @@ class Application extends App implements IBootstrap
      * Constructor for the application
      *
      * @param array<string,mixed> $urlParams URL parameters
+     *
+     * @psalm-suppress PossiblyUnusedMethod Instantiated by the Nextcloud framework.
      */
     public function __construct(array $urlParams=[])
     {
@@ -55,6 +57,8 @@ class Application extends App implements IBootstrap
      * @param IRegistrationContext $context Registration context.
      *
      * @return void
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function register(IRegistrationContext $context): void
     {
@@ -70,9 +74,11 @@ class Application extends App implements IBootstrap
      */
     public function boot(IBootContext $context): void
     {
+        // @psalm-suppress DeprecatedInterface IServerContainer is deprecated but still used in boot().
         $server = $context->getServerContainer();
 
         try {
+            // @var SettingsService $settingsService
             $settingsService = $server->get(SettingsService::class);
             $settingsService->loadSettings();
         } catch (\Exception $e) {

@@ -13,3 +13,4 @@
 src/data/TempAuthKey.js
 
 *.Identifier
+.claude/worktrees/

@@ -30,50 +30,60 @@ use OCP\IDBConnection;
  * @copyright 2024 Ruben Linde
  * @license   AGPL-3.0-or-later https://www.gnu.org/licenses/agpl-3.0.en.html
  * @link      https://larpingapp.com
+ *
+ * @template-extends QBMapper<Item>
+ *
+ * @psalm-suppress MoreSpecificReturnType, LessSpecificReturnStatement QBMapper returns Entity but we know the concrete type.
  */
 class ItemMapper extends QBMapper
 {
     /**
      * Constructor
      *
-     * @param IDBConnection $db Database connection
+     * @param IDBConnection $dbConn Database connection
+     *
+     * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
      */
-    public function __construct(IDBConnection $db)
+    public function __construct(IDBConnection $dbConn)
     {
-        parent::__construct(db: $db, tableName: 'larpingapp_items', entityClass: Item::class);
+        parent::__construct(db: $dbConn, tableName: 'larpingapp_items', entityClass: Item::class);
     }//end __construct()
 
     /**
      * Find an item by ID
      *
-     * @param int $id The item ID
+     * @param int $itemId The item ID
      *
      * @throws \OCP\AppFramework\Db\DoesNotExistException
      * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
      *
      * @return Item The found item
+     *
+     * @SuppressWarnings(PHPMD.ShortVariable)
      */
-    public function find(int $id): Item
+    public function find(int $itemId): Item
     {
-        $qb = $this->db->getQueryBuilder();
-        $qb->select('*')
+        $queryBuilder = $this->db->getQueryBuilder();
+        $queryBuilder->select('*')
             ->from($this->getTableName())
-            ->where($qb->expr()->eq('id', $qb->createNamedParameter($id)));
-        return $this->findEntity(query: $qb);
+            ->where($queryBuilder->expr()->eq('id', $queryBuilder->createNamedParameter($itemId)));
+        return $this->findEntity(query: $queryBuilder);
     }//end find()
 
     /**
      * Find all items
      *
      * @return Item[] Array of items
+     *
+     * @psalm-suppress PossiblyUnusedMethod Called dynamically via ObjectService::getMapper().
      */
     public function findAll(): array
     {
-        $qb = $this->db->getQueryBuilder();
-        $qb->select('*')
+        $queryBuilder = $this->db->getQueryBuilder();
+        $queryBuilder->select('*')
             ->from($this->getTableName());
 
-        return $this->findEntities(query: $qb);
+        return $this->findEntities(query: $queryBuilder);
     }//end findAll()
 
     /**
@@ -82,10 +92,13 @@ class ItemMapper extends QBMapper
      * @param array<string,mixed> $data The item data
      *
      * @return Item
+     *
+     * @psalm-suppress PossiblyUnusedMethod Called dynamically via ObjectService::saveObject().
      */
     public function createFromArray(array $data): Item
     {
         $item = new Item();
+        // @psalm-suppress MixedAssignment Dynamic entity property
         foreach ($data as $key => $value) {
             $item->$key = $value;
         }
@@ -96,14 +109,17 @@ class ItemMapper extends QBMapper
     /**
      * Update an item from array data
      *
-     * @param int                 $id   The item ID
-     * @param array<string,mixed> $data The updated item data
+     * @param int                 $itemId The item ID
+     * @param array<string,mixed> $data   The updated item data
      *
      * @return Item
+     *
+     * @psalm-suppress PossiblyUnusedMethod Called dynamically via ObjectService::saveObject().
      */
-    public function updateFromArray(int $id, array $data): Item
+    public function updateFromArray(int $itemId, array $data): Item
     {
-        $item = $this->find(id: $id);
+        $item = $this->find(itemId: $itemId);
+        // @psalm-suppress MixedAssignment Dynamic entity property
         foreach ($data as $key => $value) {
             $item->$key = $value;
         }

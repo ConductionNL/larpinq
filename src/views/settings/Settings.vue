@@ -1,9 +1,51 @@
 <template>
 	<div>
+		<!-- Page Title -->
 		<NcSettingsSection
-			name="Larping App"
-			description="A central place for managing your LARP characters and game elements"
+			:name="t('larpingapp', 'LarpingApp Settings')"
+			:description="t('larpingapp', 'Configure your LarpingApp installation')"
 			doc-url="https://conduction.gitbook.io/larpingapp-nextcloud/users" />
+
+		<!-- Version Information -->
+		<CnVersionInfoCard
+			:app-name="'LarpingApp'"
+			:app-version="appVersion"
+			:is-up-to-date="true"
+			:show-update-button="true"
+			:title="t('larpingapp', 'Version Information')"
+			:description="t('larpingapp', 'Information about the current LarpingApp installation')">
+			<template #actions>
+				<NcButton type="primary"
+					:disabled="reimporting"
+					@click="reimport">
+					<template #icon>
+						<NcLoadingIcon v-if="reimporting" :size="20" />
+						<Refresh v-else :size="20" />
+					</template>
+					{{ reimporting ? t('larpingapp', 'Importing...') : t('larpingapp', 'Re-import configuration') }}
+				</NcButton>
+			</template>
+			<template #footer>
+				<div class="cn-support-info">
+					<h4>{{ t('larpingapp', 'Support') }}</h4>
+					<p>
+						{{ t('larpingapp', 'For support, contact us at') }}
+						<a href="mailto:support@conduction.nl">support@conduction.nl</a>
+					</p>
+					<p>
+						{{ t('larpingapp', 'For a Service Level Agreement (SLA), contact') }}
+						<a href="mailto:sales@conduction.nl">sales@conduction.nl</a>
+					</p>
+				</div>
+			</template>
+		</CnVersionInfoCard>
+
+		<!-- Re-import Status -->
+		<div v-if="message" class="actions-section">
+			<NcNoteCard :type="messageType">
+				{{ message }}
+			</NcNoteCard>
+		</div>
 
 		<NcSettingsSection
 			name="Data storage"
@@ -72,6 +114,7 @@
 
 <script>
 import { defineComponent } from 'vue'
+import { CnVersionInfoCard } from '@conduction/nextcloud-vue'
 import {
 	NcSettingsSection,
 	NcNoteCard,
@@ -79,21 +122,28 @@ import {
 	NcButton,
 	NcLoadingIcon,
 } from '@nextcloud/vue'
+import Refresh from 'vue-material-design-icons/Refresh.vue'
 import Save from 'vue-material-design-icons/ContentSave.vue'
 
 export default defineComponent({
 	name: 'Settings',
 	components: {
+		CnVersionInfoCard,
 		NcSettingsSection,
 		NcNoteCard,
 		NcSelect,
 		NcButton,
 		NcLoadingIcon,
+		Refresh,
 		Save,
 	},
 
 	data() {
 		return {
+			appVersion: document.getElementById('settings')?.dataset?.version || 'Unknown',
+			reimporting: false,
+			message: '',
+			messageType: 'success',
 			loading: true,
 			saving: false,
 			settings: {
@@ -124,6 +174,38 @@ export default defineComponent({
 	},
 
 	methods: {
+		async reimport() {
+			this.reimporting = true
+			this.message = ''
+
+			try {
+				const response = await fetch('/index.php/apps/larpingapp/api/settings/reimport', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						requesttoken: OC.requestToken,
+						'OCS-APIREQUEST': 'true',
+					},
+				})
+
+				const data = await response.json()
+
+				if (data.success) {
+					this.message = t('larpingapp', 'Configuration re-imported successfully')
+					this.messageType = 'success'
+					await this.loadSettings()
+				} else {
+					this.message = data.message || t('larpingapp', 'Re-import failed')
+					this.messageType = 'error'
+				}
+			} catch (error) {
+				this.message = error.message || t('larpingapp', 'Re-import failed')
+				this.messageType = 'error'
+			} finally {
+				this.reimporting = false
+			}
+		},
+
 		async loadSettings() {
 			try {
 				const response = await fetch('/index.php/apps/larpingapp/api/settings')

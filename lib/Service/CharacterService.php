@@ -15,29 +15,6 @@ declare(strict_types=1);
 
 namespace OCA\LarpingApp\Service;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\Promise\Utils;
-use OCP\IURLGenerator;
-use Symfony\Component\Uid\Uuid;
-use OCA\LarpingApp\Db\Character;
-use OCA\LarpingApp\Db\Ability;
-use OCA\LarpingApp\Db\Skill;
-use OCA\LarpingApp\Db\Item;
-use OCA\LarpingApp\Db\Condition;
-use OCA\LarpingApp\Db\Event;
-use OCA\LarpingApp\Db\Effect;
-use OCA\LarpingApp\Db\CharacterMapper;
-use OCA\LarpingApp\Db\AbilityMapper;
-use OCA\LarpingApp\Db\SkillMapper;
-use OCA\LarpingApp\Db\ItemMapper;
-use OCA\LarpingApp\Db\ConditionMapper;
-use OCA\LarpingApp\Db\EventMapper;
-use OCA\LarpingApp\Db\EffectMapper;
-use OCA\LarpingApp\Service\ObjectService;
-
-// And in case of open registers.
-use OCA\OpenRegister\Db\ObjectEntity;
-
 /**
  * Service class for character-related operations.
  *
@@ -53,65 +30,76 @@ class CharacterService
     /**
      * All skills indexed by ID.
      *
-     * @var array<Ability>
+     * @var array<string, array<string, mixed>>
      */
-    private $allSkills = [];
+    private array $allSkills = [];
 
     /**
      * All items indexed by ID.
      *
-     * @var array<Item>
+     * @var array<string, array<string, mixed>>
      */
-    private $allItems = [];
+    private array $allItems = [];
 
     /**
      * All conditions indexed by ID.
      *
-     * @var array<Condition>
+     * @var array<string, array<string, mixed>>
      */
-    private $allConditions = [];
+    private array $allConditions = [];
 
     /**
      * All events indexed by ID.
      *
-     * @var array<Event>
+     * @var array<string, array<string, mixed>>
      */
-    private $allEvents = [];
+    private array $allEvents = [];
 
     /**
      * All effects indexed by ID.
      *
-     * @var array<Effect>
+     * @var array<string, array<string, mixed>>
      */
-    private $allEffects = [];
+    private array $allEffects = [];
 
     /**
      * All abilities indexed by ID.
      *
-     * @var array<Ability>
+     * @var array<string, array<string, mixed>>
      */
-    private $allAbilities = [];
+    private array $allAbilities = [];
 
     /**
      * Constructor for CharacterService.
      *
-     * @param AbilityMapper   $abilityMapper   Ability mapper.
-     * @param CharacterMapper $characterMapper Character mapper.
-     * @param ConditionMapper $conditionMapper Condition mapper.
-     * @param EffectMapper    $effectMapper    Effect mapper.
-     * @param EventMapper     $eventMapper     Event mapper.
-     * @param ItemMapper      $itemMapper      Item mapper.
+     * @param RegisterObjectFetcher $objectFetcher The register object fetcher.
+     *
+     * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
      */
     public function __construct(
-        private AbilityMapper $abilityMapper,
-        private CharacterMapper $characterMapper,
-        private ConditionMapper $conditionMapper,
-        private EffectMapper $effectMapper,
-        private EventMapper $eventMapper,
-        private ItemMapper $itemMapper
+        private readonly RegisterObjectFetcher $objectFetcher
     ) {
         $this->loadAllEntities();
     }//end __construct()
+
+    /**
+     * Index an array of entities by their ID field.
+     *
+     * @param array $entities The entities to index.
+     *
+     * @return array<string, array<string, mixed>> Entities indexed by ID.
+     */
+    private function indexById(array $entities): array
+    {
+        // @var array<string, array<string, mixed>> $indexed
+        $indexed = [];
+        // @psalm-suppress MixedAssignment Entity entries from object fetcher
+        foreach ($entities as $entity) {
+            $indexed[(string) $entity['id']] = $entity;
+        }
+
+        return $indexed;
+    }//end indexById()
 
     /**
      * Load all entities into memory and index them by ID.
@@ -120,81 +108,25 @@ class CharacterService
      */
     private function loadAllEntities(): void
     {
-        // Get all skills and index them by ID.
-        $skills          = $this->objectService->getObjects('skill');
-        $this->allSkills = array_reduce(
-            $skills,
-                function ($carry, $skill) {
-                    $carry[$skill['id']] = $skill;
-                    return $carry;
-                },
-                []
-        );
-
-        // Get all items and index them by ID.
-        $items          = $this->objectService->getObjects('item');
-        $this->allItems = array_reduce(
-            $items,
-                function ($carry, $item) {
-                    $carry[$item['id']] = $item;
-                    return $carry;
-                },
-                []
-        );
-
-        // Get all conditions and index them by ID.
-        $conditions          = $this->objectService->getObjects('condition');
-        $this->allConditions = array_reduce(
-            $conditions,
-                function ($carry, $condition) {
-                    $carry[$condition['id']] = $condition;
-                    return $carry;
-                },
-                []
-        );
-
-        // Get all events and index them by ID.
-        $events          = $this->objectService->getObjects('event');
-        $this->allEvents = array_reduce(
-            $events,
-                function ($carry, $event) {
-                    $carry[$event['id']] = $event;
-                    return $carry;
-                },
-                []
-        );
-
-        // Get all effects and index them by ID.
-        $effects          = $this->objectService->getObjects('effect');
-        $this->allEffects = array_reduce(
-            $effects,
-                function ($carry, $effect) {
-                    $carry[$effect['id']] = $effect;
-                    return $carry;
-                },
-                []
-        );
-
-        // Get all abilities and index them by ID.
-        $abilities          = $this->objectService->getObjects('ability');
-        $this->allAbilities = array_reduce(
-            $abilities,
-                function ($carry, $ability) {
-                    $carry[$ability['id']] = $ability;
-                    return $carry;
-                },
-                []
-        );
+        $this->allSkills     = $this->indexById(entities: $this->objectFetcher->getObjects('skill'));
+        $this->allItems      = $this->indexById(entities: $this->objectFetcher->getObjects('item'));
+        $this->allConditions = $this->indexById(entities: $this->objectFetcher->getObjects('condition'));
+        $this->allEvents     = $this->indexById(entities: $this->objectFetcher->getObjects('event'));
+        $this->allEffects    = $this->indexById(entities: $this->objectFetcher->getObjects('effect'));
+        $this->allAbilities  = $this->indexById(entities: $this->objectFetcher->getObjects('ability'));
     }//end loadAllEntities()
 
     /**
      * Calculate stats for all characters.
      *
      * @return array Updated array of Character objects.
+     *
+     * @psalm-suppress PossiblyUnusedMethod Public API for batch character stat calculation.
      */
     public function calculateAllCharacters(): array
     {
-        $characters        = $this->characterMapper->findAll();
+        // @var array<int, array<string, mixed>> $characters
+        $characters        = $this->objectFetcher->getObjects('character');
         $updatedCharacters = [];
         foreach ($characters as $character) {
             $updatedCharacters[] = $this->calculateCharacter(character: $character);
@@ -202,6 +134,68 @@ class CharacterService
 
         return $updatedCharacters;
     }//end calculateAllCharacters()
+
+    /**
+     * Initialize ability scores from base ability values.
+     *
+     * @return array<string, array{name: string, base: int, value: int, audit: array}> Ability scores.
+     */
+    private function initializeAbilityScores(): array
+    {
+        // @var array<string, array{name: string, base: int, value: int, audit: array}> $abilityScores
+        $abilityScores = [];
+        foreach ($this->allAbilities as $ability) {
+            $abilityScores[(string) $ability['id']] = [
+                'name'  => (string) ($ability['name'] ?? ''),
+                'base'  => (int) ($ability['base'] ?? 0),
+                'value' => (int) ($ability['base'] ?? 0),
+                'audit' => [],
+            ];
+        }
+
+        return $abilityScores;
+    }//end initializeAbilityScores()
+
+    /**
+     * Apply effects from a character's linked entities of a given type.
+     *
+     * Looks up each entity ID in the provided lookup table,
+     * then applies any effects found on those entities.
+     *
+     * @param array<string, array<string, mixed>> $abilityScores Reference to ability scores.
+     * @param array                               $character     Character data array.
+     * @param string                              $property      Character property name (e.g. 'skills').
+     * @param array<string, array<string, mixed>> $lookup        Entity lookup table indexed by ID.
+     *
+     * @return void
+     */
+    private function applyEntityEffects(
+        array &$abilityScores,
+        array $character,
+        string $property,
+        array $lookup
+    ): void {
+        if (isset($character[$property]) === false
+            || is_array($character[$property]) === false
+            || empty($character[$property]) === true
+        ) {
+            return;
+        }
+
+        // @psalm-suppress MixedAssignment Character array values are mixed
+        foreach ($character[$property] as $entityId) {
+            $entity = $lookup[(string) $entityId] ?? null;
+            if ($entity === null) {
+                continue;
+            }
+
+            if (isset($entity['effects']) === true && empty($entity['effects']) === false) {
+                // @var array|null $entityEffects
+                $entityEffects = $entity['effects'];
+                $this->applyEffects(abilities: $abilityScores, effects: $entityEffects);
+            }
+        }
+    }//end applyEntityEffects()
 
     /**
      * Calculate stats for a single character array.
@@ -212,70 +206,33 @@ class CharacterService
      */
     public function calculateCharacter(array $character): array
     {
-        // Create an array of abilities with their base scores.
-        $abilityScores = [];
+        $abilityScores = $this->initializeAbilityScores();
 
-        // Initialize ability scores from base values.
-        foreach ($this->allAbilities as $ability) {
-            $abilityScores[$ability['id']] = [
-                'name'  => $ability['name'],
-                'base'  => $ability['base'] ?? 0,
-                'value' => $ability['base'] ?? 0,
-                'audit' => [],
-            ];
-        }
-
-        // Apply effects from skills if character has any.
-        if (isset($character['skills']) === true
-            && is_array($character['skills']) === true
-            && empty($character['skills']) === false
-        ) {
-            foreach ($character['skills'] as $skillId) {
-                $skill = $this->allSkills[$skillId] ?? null;
-                if ($skill !== null && isset($skill['effects']) === true && empty($skill['effects']) === false) {
-                    $this->applyEffects(abilities: $abilityScores, effects: $skill['effects']);
-                }
-            }
-        }
-
-        // Apply effects from items if character has any.
-        if (isset($character['items']) === true
-            && is_array($character['items']) === true
-            && empty($character['items']) === false
-        ) {
-            foreach ($character['items'] as $itemId) {
-                $item = $this->allItems[$itemId] ?? null;
-                if ($item !== null && isset($item['effects']) === true && empty($item['effects']) === false) {
-                    $this->applyEffects(abilities: $abilityScores, effects: $item['effects']);
-                }
-            }
-        }
-
-        // Apply effects from conditions if character has any.
-        if (isset($character['conditions']) === true
-            && is_array($character['conditions']) === true
-            && empty($character['conditions']) === false
-        ) {
-            foreach ($character['conditions'] as $conditionId) {
-                $condition = $this->allConditions[$conditionId] ?? null;
-                if ($condition !== null && isset($condition['effects']) === true && empty($condition['effects']) === false) {
-                    $this->applyEffects(abilities: $abilityScores, effects: $condition['effects']);
-                }
-            }
-        }
-
-        // Apply effects from events if character has any.
-        if (isset($character['events']) === true
-            && is_array($character['events']) === true
-            && empty($character['events']) === false
-        ) {
-            foreach ($character['events'] as $eventId) {
-                $event = $this->allEvents[$eventId] ?? null;
-                if ($event !== null && isset($event['effects']) === true && empty($event['effects']) === false) {
-                    $this->applyEffects(abilities: $abilityScores, effects: $event['effects']);
-                }
-            }
-        }
+        // Apply effects from each entity type the character has.
+        $this->applyEntityEffects(
+            abilityScores: $abilityScores,
+            character: $character,
+            property: 'skills',
+            lookup: $this->allSkills
+        );
+        $this->applyEntityEffects(
+            abilityScores: $abilityScores,
+            character: $character,
+            property: 'items',
+            lookup: $this->allItems
+        );
+        $this->applyEntityEffects(
+            abilityScores: $abilityScores,
+            character: $character,
+            property: 'conditions',
+            lookup: $this->allConditions
+        );
+        $this->applyEntityEffects(
+            abilityScores: $abilityScores,
+            character: $character,
+            property: 'events',
+            lookup: $this->allEvents
+        );
 
         // Update character array with calculated stats.
         $character['stats'] = $abilityScores;
@@ -286,25 +243,28 @@ class CharacterService
     /**
      * Apply effects to abilities.
      *
-     * @param array      $abilities Reference to the abilities array.
-     * @param array|null $effects   Array of effect IDs.
+     * @param array<string, array{name?: string, base?: int, value: int, audit: array}> $abilities Reference to abilities.
+     * @param array|null                                                                $effects   Array of effect IDs.
      *
      * @return void
+     *
+     * @psalm-suppress MixedArgumentTypeCoercion Abilities array keys may widen during mutation.
      */
     private function applyEffects(array &$abilities, ?array $effects): void
     {
         // Return early if effects is null or empty.
-        if (empty($effects) === true) {
+        if ($effects === null || count($effects) === 0) {
             return;
         }
 
+        // @psalm-suppress MixedAssignment Effect IDs from entity arrays
         foreach ($effects as $effectId) {
             // Skip if effectId is null.
             if ($effectId === null) {
                 continue;
             }
 
-            $effect = $this->allEffects[$effectId] ?? null;
+            $effect = $this->allEffects[(string) $effectId] ?? null;
             if ($effect !== null) {
                 $this->calculateEffect(abilities: $abilities, effect: $effect);
             }
@@ -312,16 +272,14 @@ class CharacterService
     }//end applyEffects()
 
     /**
-     * Calculate and apply a single effect.
+     * Collect all ability IDs affected by a given effect.
      *
-     * @param array $abilities Reference to the abilities array.
-     * @param array $effect    Effect array containing stat_id, modifier and modification.
+     * @param array<string, mixed> $effect Effect data.
      *
-     * @return void
+     * @return array List of ability IDs.
      */
-    private function calculateEffect(array &$abilities, array $effect): void
+    private function collectEffectAbilities(array $effect): array
     {
-        // Initialize array to track affected abilities.
         $effectAbilities = [];
         if (isset($effect['abilities']) === true && is_array($effect['abilities']) === true) {
             $effectAbilities = $effect['abilities'];
@@ -329,48 +287,80 @@ class CharacterService
 
         // Add stat_id to affected abilities if present and not null.
         if (isset($effect['stat_id']) === true && $effect['stat_id'] !== null) {
+            // @psalm-suppress MixedAssignment Effect array values are mixed
             $effectAbilities[] = $effect['stat_id'];
         }
+
+        return $effectAbilities;
+    }//end collectEffectAbilities()
+
+    /**
+     * Apply a modifier to a single ability based on an effect.
+     *
+     * @param array<string, array<string, mixed>> $abilities Reference to abilities.
+     * @param string                              $abilityId The ability ID.
+     * @param array<string, mixed>                $effect    Effect data.
+     *
+     * @return void
+     */
+    private function applyModifierToAbility(array &$abilities, string $abilityId, array $effect): void
+    {
+        if (isset($abilities[$abilityId]['value']) === false) {
+            $abilities[$abilityId]['value'] = 0;
+        }
+
+        // Get current value and modifiers.
+        $currentValue = (int) $abilities[$abilityId]['value'];
+        $modifier     = (int) ($effect['modifier'] ?? 0);
+        // @var string $modification.
+        $modification = $effect['modification'] ?? 'positive';
+
+        // Apply modification based on type.
+        if ($modification === 'positive') {
+            $abilities[$abilityId]['value'] = $currentValue + $modifier;
+        } else if ($modification === 'negative') {
+            $abilities[$abilityId]['value'] = $currentValue - $modifier;
+        }
+
+        // Add audit trail.
+        $abilities[$abilityId]['audit'][] = [
+            'type'   => 'effect',
+            'effect' => $effect,
+            'old'    => $currentValue,
+            'new'    => $abilities[$abilityId]['value'],
+        ];
+    }//end applyModifierToAbility()
+
+    /**
+     * Calculate and apply a single effect.
+     *
+     * @param array<string, array{name?: string, base?: int, value: int, audit: array}> $abilities Reference to abilities.
+     * @param array<string, mixed>                                                      $effect    Effect data.
+     *
+     * @return void
+     */
+    private function calculateEffect(array &$abilities, array $effect): void
+    {
+        $effectAbilities = $this->collectEffectAbilities(effect: $effect);
 
         // Skip if no abilities are affected.
         if (empty($effectAbilities) === true) {
             return;
         }
 
-        // Ensure each affected ability exists in abilities array.
-        foreach ($effectAbilities as $abilityId) {
+        // Apply the effect to each affected ability.
+        // @psalm-suppress MixedAssignment Ability IDs from effect arrays.
+        foreach ($effectAbilities as $rawAbilityId) {
             // Skip if abilityId is null.
-            if ($abilityId === null) {
+            if ($rawAbilityId === null) {
                 continue;
             }
 
-            if (isset($abilities[$abilityId]['value']) === false) {
-                $abilities[$abilityId]['value'] = 0;
-            } else if (is_int($abilities[$abilityId]['value']) === false) {
-                $abilities[$abilityId]['value'] = (int) $abilities[$abilityId]['value'];
-            }
-
-            // Get current value and modifiers.
-            $currentValue = $abilities[$abilityId]['value'];
-            // Get modifier value from effect, defaulting to 0 if not set.
-            $modifier = (int) ($effect['modifier'] ?? 0);
-            // Get modification type, defaulting to 'positive' if not set.
-            $modification = $effect['modification'] ?? 'positive';
-
-            // Apply modification based on type.
-            if ($modification === 'positive') {
-                $abilities[$abilityId]['value'] = $currentValue + $modifier;
-            } else if ($modification === 'negative') {
-                $abilities[$abilityId]['value'] = $currentValue - $modifier;
-            }
-
-            // Add audit trail.
-            $abilities[$abilityId]['audit'][] = [
-                'type'   => 'effect',
-                'effect' => $effect,
-                'old'    => $currentValue,
-                'new'    => $abilities[$abilityId]['value'],
-            ];
-        }//end foreach
+            $this->applyModifierToAbility(
+                abilities: $abilities,
+                abilityId: (string) $rawAbilityId,
+                effect: $effect
+            );
+        }
     }//end calculateEffect()
 }//end class

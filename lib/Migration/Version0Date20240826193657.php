@@ -1,12 +1,16 @@
 <?php
 /**
- * LarpingApp database migration
+ * LarpingApp database migration (legacy — no-op).
+ *
+ * LarpingApp is a thin-client app that stores all data in OpenRegister.
+ * This migration previously created local database tables that are no
+ * longer needed. It is kept as a no-op to avoid migration version conflicts.
  *
  * @category  Database
  * @package   OCA\LarpingApp\Migration
  * @author    Ruben Linde <ruben@larpingapp.com>
  * @copyright 2024 Ruben Linde
- * @license   https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
+ * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link      https://larpingapp.com
  */
 
@@ -16,74 +20,31 @@ namespace OCA\LarpingApp\Migration;
 
 use Closure;
 use OCP\DB\ISchemaWrapper;
-use OCP\DB\Types;
 use OCP\Migration\IOutput;
 use OCP\Migration\SimpleMigrationStep;
 
 /**
- * Database migration for LarpingApp initial tables
+ * Legacy migration step — no-op.
  *
- * @category Database
- * @package  OCA\LarpingApp\Migration
- * @author   Ruben Linde <ruben@larpingapp.com>
- * @license  AGPL-3.0-or-later
- * @link     https://larpingapp.com
+ * All data is now stored in OpenRegister. Local tables are no longer created.
+ *
+ * @psalm-suppress UnusedClass Loaded by the Nextcloud migration framework.
  */
 class Version0Date20240826193657 extends SimpleMigrationStep
 {
     /**
-     * Pre-schema change operations
-     *
-     * @param IOutput                   $output        Migration output
-     * @param Closure(): ISchemaWrapper $schemaClosure Schema closure
-     * @param array                     $options       Migration options
-     *
-     * @return void
-     */
-    public function preSchemaChange(IOutput $output, Closure $schemaClosure, array $options): void
-    {
-    }//end preSchemaChange()
-
-    /**
-     * Schema change operations
+     * No schema changes needed.
      *
      * @param IOutput                   $output        Migration output
      * @param Closure(): ISchemaWrapper $schemaClosure Schema closure
      * @param array                     $options       Migration options
      *
      * @return ISchemaWrapper|null
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function changeSchema(IOutput $output, Closure $schemaClosure, array $options): ?ISchemaWrapper
     {
-        // @var ISchemaWrapper $schema.
-        $schema = $schemaClosure();
-
-        // Create tables.
-        $this->createAbilitiesTable(schema: $schema);
-        $this->createConditionsTable(schema: $schema);
-        $this->createEffectsTable(schema: $schema);
-        $this->createEventsTable(schema: $schema);
-        $this->createItemsTable(schema: $schema);
-        $this->createPlayersTable(schema: $schema);
-        $this->createSettingsTable(schema: $schema);
-        $this->createSkillsTable(schema: $schema);
-        $this->createTemplatesTable(schema: $schema);
-
-        return $schema;
+        return null;
     }//end changeSchema()
-
-    /**
-     * Post-schema change operations
-     *
-     * @param IOutput                   $output        Migration output
-     * @param Closure(): ISchemaWrapper $schemaClosure Schema closure
-     * @param array                     $options       Migration options
-     *
-     * @return void
-     */
-    public function postSchemaChange(IOutput $output, Closure $schemaClosure, array $options): void
-    {
-    }//end postSchemaChange()
-
-    // ... rest of the file with table creation methods.
 }//end class

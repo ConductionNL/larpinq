@@ -1,0 +1,18 @@
+/**
+ * Global (unscoped) styles for LarpingApp.
+ */
+
+/* Fix KPI card centering inside CnDashboardPage widget wrappers.
+   Must be global to override library scoped styles. */
+.cn-widget-wrapper__content {
+	display: flex !important;
+	align-items: center !important;
+	padding: 16px !important;
+}
+
+.open-register-missing {
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	min-height: 100% !important;
+}

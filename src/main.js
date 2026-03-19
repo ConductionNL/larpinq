@@ -6,6 +6,9 @@ import pinia from './pinia.js'
 import router from './router/index.js'
 import App from './App.vue'
 
+// Global (unscoped) styles
+import './assets/app.css'
+
 // Library CSS — must be explicit import (webpack tree-shakes side-effect imports from aliased packages)
 import '@conduction/nextcloud-vue/css/index.css'
 

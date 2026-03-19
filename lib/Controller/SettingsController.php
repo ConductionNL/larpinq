@@ -20,9 +20,14 @@ namespace OCA\LarpingApp\Controller;
 
 use OCA\LarpingApp\AppInfo\Application;
 use OCA\LarpingApp\Service\SettingsService;
+use OCP\App\IAppManager;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\JSONResponse;
+use OCP\IGroupManager;
 use OCP\IRequest;
+use OCP\IUserSession;
+use Psr\Container\ContainerInterface;
+use RuntimeException;
 
 /**
  * Controller for LarpingApp settings.
@@ -32,24 +37,79 @@ use OCP\IRequest;
  * @author   Ruben Linde <ruben@larpingapp.com>
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
+ *
+ * @psalm-suppress UnusedClass Instantiated by Nextcloud routing (appinfo/routes.php).
  */
 class SettingsController extends Controller
 {
+
+    /**
+     * The OpenRegister object service.
+     *
+     * @var object|null The OpenRegister object service.
+     */
+    private ?object $objectService = null;
+
     /**
      * Constructor.
      *
-     * @param IRequest        $request         The request.
-     * @param SettingsService $settingsService The settings service.
+     * @param IRequest           $request         The request.
+     * @param ContainerInterface $container       The container.
+     * @param IAppManager        $appManager      The app manager.
+     * @param SettingsService    $settingsService The settings service.
+     * @param IGroupManager      $groupManager    The group manager.
+     * @param IUserSession       $userSession     The user session.
      *
      * @return void
      */
     public function __construct(
         IRequest $request,
+        private readonly ContainerInterface $container,
+        private readonly IAppManager $appManager,
         private readonly SettingsService $settingsService,
+        private readonly IGroupManager $groupManager,
+        private readonly IUserSession $userSession,
     ) {
         parent::__construct(appName: Application::APP_ID, request: $request);
 
     }//end __construct()
+
+    /**
+     * Attempts to retrieve the OpenRegister service from the container.
+     *
+     * @return object|null The OpenRegister service if available, null otherwise.
+     * @throws RuntimeException If the service is not available.
+     */
+    public function getObjectService(): ?object
+    {
+        if (in_array(needle: 'openregister', haystack: $this->appManager->getInstalledApps()) === true) {
+            // @var object $service
+            $service = $this->container->get('OCA\OpenRegister\Service\ObjectService');
+            $this->objectService = $service;
+            return $this->objectService;
+        }
+
+        throw new RuntimeException('OpenRegister service is not available.');
+
+    }//end getObjectService()
+
+    /**
+     * Attempts to retrieve the Configuration service from the container.
+     *
+     * @return object|null The Configuration service if available, null otherwise.
+     * @throws RuntimeException If the service is not available.
+     */
+    public function getConfigurationService(): ?object
+    {
+        if (in_array(needle: 'openregister', haystack: $this->appManager->getInstalledApps()) === true) {
+            // @var object $configurationService
+            $configurationService = $this->container->get('OCA\OpenRegister\Service\ConfigurationService');
+            return $configurationService;
+        }
+
+        throw new RuntimeException('Configuration service is not available.');
+
+    }//end getConfigurationService()
 
     /**
      * Get current LarpingApp settings.
@@ -61,7 +121,12 @@ class SettingsController extends Controller
      */
     public function index(): JSONResponse
     {
+        $user    = $this->userSession->getUser();
+        $isAdmin = $user !== null && $this->groupManager->isAdmin($user->getUID());
+
         $data = [
+            'openRegisters' => in_array(needle: 'openregister', haystack: $this->appManager->getInstalledApps()),
+            'isAdmin'       => $isAdmin,
             'objectTypes'   => [
                 'ability',
                 'character',
@@ -123,8 +188,8 @@ class SettingsController extends Controller
                     'message' => 'Configuration re-imported successfully',
                     'config'  => $this->settingsService->getSettings(),
                     'result'  => [
-                        'registers' => count($result['registers'] ?? []),
-                        'schemas'   => count($result['schemas'] ?? []),
+                        'registers' => count((array) ($result['registers'] ?? [])),
+                        'schemas'   => count((array) ($result['schemas'] ?? [])),
                     ],
                 ]
             );

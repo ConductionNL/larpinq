@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace OCA\LarpingApp\Controller;
 
-use OCA\LarpingApp\Service\ObjectService;
+use OCA\LarpingApp\Service\RegisterObjectFetcher;
 use OCA\LarpingApp\Service\CharacterService;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Controller;
@@ -25,25 +25,25 @@ use Psr\Container\ContainerInterface;
 
 /**
  * Controller for handling characters related operations
+ *
+ * @psalm-suppress UnusedClass Instantiated by Nextcloud routing (appinfo/routes.php).
  */
 class CharactersController extends Controller
 {
-    const OBJECTTYPE = 'character';
-
     /**
      * Constructor for the CharactersController
      *
-     * @param string             $appName          The name of the app
-     * @param IRequest           $request          The request object
-     * @param ObjectService      $objectService    The object service object
-     * @param CharacterService   $characterService The character service object
-     * @param IAppManager        $appManager       The app manager for checking installed apps
-     * @param ContainerInterface $container        The DI container for resolving cross-app services
+     * @param string                $appName          The name of the app
+     * @param IRequest              $request          The request object
+     * @param RegisterObjectFetcher $objectFetcher    The register object fetcher
+     * @param CharacterService      $characterService The character service object
+     * @param IAppManager           $appManager       The app manager for checking installed apps
+     * @param ContainerInterface    $container        The DI container for resolving cross-app services
      */
     public function __construct(
         $appName,
         IRequest $request,
-        private readonly ObjectService $objectService,
+        private readonly RegisterObjectFetcher $objectFetcher,
         private readonly CharacterService $characterService,
         private readonly IAppManager $appManager,
         private readonly ContainerInterface $container
@@ -65,6 +65,8 @@ class CharactersController extends Controller
      *
      * @NoAdminRequired
      * @NoCSRFRequired
+     *
+     * @SuppressWarnings(PHPMD.ShortVariable)
      */
     public function downloadPdf(string $id, string $template): DataDownloadResponse|JSONResponse
     {
@@ -76,33 +78,41 @@ class CharactersController extends Controller
         }
 
         try {
-            $character = $this->objectService->getObject(objectType: 'character', id: $id);
+            $character = $this->objectFetcher->getObject(objectType: 'character', id: $id);
         } catch (\Exception $exception) {
             return new JSONResponse(data: ['error' => 'Character not found'], statusCode: 404);
         }
 
         try {
+            // @var object $templateService
             $templateService = $this->container->get('OCA\DocuDesk\Service\TemplateService');
-            $templateData    = $templateService->getTemplate(id: $template);
+
+            // @psalm-suppress MixedMethodCall DocuDesk is an optional cross-app dependency.
+            // @var array<string,mixed> $templateData
+            $templateData = $templateService->getTemplate(id: $template);
         } catch (\Exception $exception) {
             return new JSONResponse(data: ['error' => 'Template not found'], statusCode: 404);
         }
 
         try {
+            // @var object $pdfService
             $pdfService = $this->container->get('OCA\DocuDesk\Service\PdfService');
-            $pdfString  = $pdfService->renderPdf(
-                templateContent: $templateData['content'] ?? '',
+
+            // @psalm-suppress MixedMethodCall DocuDesk is an optional cross-app dependency.
+            // @var string $pdfString
+            $pdfString = $pdfService->renderPdf(
+                templateContent: (string) ($templateData['content'] ?? ''),
                 data: ['character' => $character, 'template' => $templateData],
                 options: [
-                    'format'      => $templateData['format'] ?? 'A4',
-                    'orientation' => $templateData['orientation'] ?? 'P',
+                    'format'      => (string) ($templateData['format'] ?? 'A4'),
+                    'orientation' => (string) ($templateData['orientation'] ?? 'P'),
                 ]
             );
         } catch (\Exception $exception) {
             return new JSONResponse(data: ['error' => 'PDF generation failed: '.$exception->getMessage()], statusCode: 500);
         }
 
-        $fileName = ($character['name'] ?? 'character').'_character_sheet.pdf';
+        $fileName = ((string) ($character['name'] ?? 'character')).'_character_sheet.pdf';
 
         return new DataDownloadResponse(
             $pdfString,

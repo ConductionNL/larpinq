@@ -1,115 +1,75 @@
 <?php
 /**
- * LarpingApp admin section implementation
+ * LarpingApp admin settings implementation.
  *
  * @category  Settings
  * @package   OCA\LarpingApp\Settings
  * @author    Ruben Linde <ruben@larpingapp.com>
  * @copyright 2024 Ruben Linde
- * @license   https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
+ * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @version   GIT: <git_id>
  * @link      https://larpingapp.com
- *
- * @phpversion 8.2
  */
 
 declare(strict_types=1);
 
 namespace OCA\LarpingApp\Settings;
 
-use OCP\IL10N;
-use OCP\IURLGenerator;
-use OCP\Settings\IIconSection;
+use OCA\LarpingApp\AppInfo\Application;
+use OCP\App\IAppManager;
+use OCP\AppFramework\Http\TemplateResponse;
+use OCP\Settings\ISettings;
 
 /**
- * Admin section for LarpingApp settings
+ * Admin settings form for the LarpingApp application.
  *
- * Provides the admin section configuration for the LarpingApp
- *
- * @category  Settings
- * @package   OCA\LarpingApp\Settings
- * @author    Ruben Linde <ruben@larpingapp.com>
- * @copyright 2024 Ruben Linde
- * @license   https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
- * @version   GIT: <git_id>
- * @link      https://larpingapp.com
- *
- * @phpversion 8.2
+ * @psalm-suppress UnusedClass Registered in appinfo/info.xml as admin settings.
  */
-class LarpingAppAdmin implements IIconSection
+class LarpingAppAdmin implements ISettings
 {
-
     /**
-     * Localization service instance
+     * Constructor.
      *
-     * @var IL10N
+     * @param IAppManager $appManager The app manager.
      */
-    private $l;
-
-    /**
-     * URL generator service instance
-     *
-     * @var IURLGenerator
-     */
-    private $urlGenerator;
-
-    /**
-     * Constructor for the admin section
-     *
-     * @param IL10N         $l            Localization service
-     * @param IURLGenerator $urlGenerator URL generator service
-     */
-    public function __construct(IL10N $l, IURLGenerator $urlGenerator)
-    {
-        $this->l            = $l;
-        $this->urlGenerator = $urlGenerator;
+    public function __construct(
+        private IAppManager $appManager,
+    ) {
     }//end __construct()
 
     /**
-     * Get the section icon path
+     * Get the admin settings form.
      *
-     * Returns the path to the section icon
-     *
-     * @return string Icon path
+     * @return TemplateResponse The settings form template.
      */
-    public function getIcon(): string
+    public function getForm(): TemplateResponse
     {
-        return $this->urlGenerator->imagePath(appName: 'larpingapp', file: 'app-dark.svg');
-    }//end getIcon()
+        $version = $this->appManager->getAppVersion(appId: Application::APP_ID);
+
+        return new TemplateResponse(
+            Application::APP_ID,
+            'settings/admin',
+            ['version' => $version]
+        );
+    }//end getForm()
 
     /**
-     * Get the section identifier
+     * Get the settings section ID.
      *
-     * Returns the unique identifier for this section
-     *
-     * @return string Section ID
+     * @return string The section ID.
      */
-    public function getID(): string
+    public function getSection(): string
     {
         return 'larpingapp';
-    }//end getID()
+    }//end getSection()
 
     /**
-     * Get the translated section name
+     * Get the settings priority.
      *
-     * Returns the localized name of this section
-     *
-     * @return string Translated section name
-     */
-    public function getName(): string
-    {
-        return $this->l->t('LarpingApp');
-    }//end getName()
-
-    /**
-     * Get the section priority
-     *
-     * Returns the priority value that determines section ordering
-     *
-     * @return int Priority value (0-100)
+     * @return int The priority.
      */
     public function getPriority(): int
     {
-        return 55;
+        return 10;
     }//end getPriority()
 }//end class

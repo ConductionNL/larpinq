@@ -26,6 +26,8 @@ use OCP\AppFramework\Db\Entity;
  * @method void setName(string $name)
  * @method string getDescription()
  * @method void setDescription(string $description)
+ *
+ * @psalm-suppress PropertyNotSetInConstructor $id is set by the parent Entity class.
  */
 class Condition extends Entity implements JsonSerializable
 {
@@ -33,16 +35,16 @@ class Condition extends Entity implements JsonSerializable
     /**
      * The name of the condition.
      *
-     * @var string
+     * @var string|null
      */
-    protected $name;
+    protected $name = null;
 
     /**
      * The description of the condition.
      *
-     * @var string
+     * @var string|null
      */
-    protected $description;
+    protected $description = null;
 
     /**
      * Constructor to set the defaults
@@ -73,9 +75,12 @@ class Condition extends Entity implements JsonSerializable
      * @param array<string,mixed> $data The data to hydrate from.
      *
      * @return void
+     *
+     * @psalm-suppress PossiblyUnusedMethod Called from ConditionMapper::createFromArray and updateFromArray.
      */
     public function hydrate(array $data): void
     {
+        // @psalm-suppress MixedAssignment Dynamic entity property
         foreach ($data as $key => $value) {
             $this->$key = $value;
         }
@@ -90,6 +95,7 @@ class Condition extends Entity implements JsonSerializable
     {
         $data = [];
         foreach ($this->getJsonFields() as $field) {
+            // @psalm-suppress MixedAssignment Dynamic entity property
             $data[$field] = $this->$field;
         }
 

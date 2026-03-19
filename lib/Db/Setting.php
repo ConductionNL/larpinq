@@ -25,6 +25,8 @@ use OCP\AppFramework\Db\Entity;
  * @method void setName(string $name)
  * @method string getValue()
  * @method void setValue(string $value)
+ *
+ * @psalm-suppress PropertyNotSetInConstructor $id is set by the parent Entity class.
  */
 class Setting extends Entity implements JsonSerializable
 {
@@ -32,16 +34,16 @@ class Setting extends Entity implements JsonSerializable
     /**
      * The name of the setting.
      *
-     * @var string
+     * @var string|null
      */
-    protected $name;
+    protected $name = null;
 
     /**
      * The value of the setting.
      *
-     * @var string
+     * @var string|null
      */
-    protected $value;
+    protected $value = null;
 
     /**
      * Constructor to set the defaults
@@ -72,9 +74,12 @@ class Setting extends Entity implements JsonSerializable
      * @param array<string,mixed> $data The data to hydrate from.
      *
      * @return void
+     *
+     * @psalm-suppress PossiblyUnusedMethod Called from SettingMapper::createFromArray and updateFromArray.
      */
     public function hydrate(array $data): void
     {
+        // @psalm-suppress MixedAssignment Dynamic entity property
         foreach ($data as $key => $value) {
             $this->$key = $value;
         }
@@ -89,6 +94,7 @@ class Setting extends Entity implements JsonSerializable
     {
         $data = [];
         foreach ($this->getJsonFields() as $field) {
+            // @psalm-suppress MixedAssignment Dynamic entity property
             $data[$field] = $this->$field;
         }
 
