@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace OCA\LarpingApp\Controller;
 
-use OCA\LarpingApp\Service\ObjectService;
+use OCA\LarpingApp\Service\RegisterObjectFetcher;
 use OCA\LarpingApp\Service\CharacterService;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Controller;
@@ -30,22 +30,20 @@ use Psr\Container\ContainerInterface;
  */
 class CharactersController extends Controller
 {
-    const OBJECTTYPE = 'character';
-
     /**
      * Constructor for the CharactersController
      *
-     * @param string             $appName          The name of the app
-     * @param IRequest           $request          The request object
-     * @param ObjectService      $objectService    The object service object
-     * @param CharacterService   $characterService The character service object
-     * @param IAppManager        $appManager       The app manager for checking installed apps
-     * @param ContainerInterface $container        The DI container for resolving cross-app services
+     * @param string                $appName          The name of the app
+     * @param IRequest              $request          The request object
+     * @param RegisterObjectFetcher $objectFetcher    The register object fetcher
+     * @param CharacterService      $characterService The character service object
+     * @param IAppManager           $appManager       The app manager for checking installed apps
+     * @param ContainerInterface    $container        The DI container for resolving cross-app services
      */
     public function __construct(
         $appName,
         IRequest $request,
-        private readonly ObjectService $objectService,
+        private readonly RegisterObjectFetcher $objectFetcher,
         private readonly CharacterService $characterService,
         private readonly IAppManager $appManager,
         private readonly ContainerInterface $container
@@ -80,7 +78,7 @@ class CharactersController extends Controller
         }
 
         try {
-            $character = $this->objectService->getObject(objectType: 'character', id: $id);
+            $character = $this->objectFetcher->getObject(objectType: 'character', id: $id);
         } catch (\Exception $exception) {
             return new JSONResponse(data: ['error' => 'Character not found'], statusCode: 404);
         }

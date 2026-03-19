@@ -15,15 +15,6 @@ declare(strict_types=1);
 
 namespace OCA\LarpingApp\Service;
 
-use OCA\LarpingApp\Db\CharacterMapper;
-use OCA\LarpingApp\Db\AbilityMapper;
-use OCA\LarpingApp\Db\SkillMapper;
-use OCA\LarpingApp\Db\ItemMapper;
-use OCA\LarpingApp\Db\ConditionMapper;
-use OCA\LarpingApp\Db\EventMapper;
-use OCA\LarpingApp\Db\EffectMapper;
-use OCA\LarpingApp\Service\ObjectService;
-
 /**
  * Service class for character-related operations.
  *
@@ -32,8 +23,6 @@ use OCA\LarpingApp\Service\ObjectService;
  * @author   Ruben Linde <ruben@larpingapp.com>
  * @license  https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
  * @link     https://larpingapp.com
- *
- * @psalm-suppress UnusedProperty Mapper properties injected via DI for future direct access.
  */
 class CharacterService
 {
@@ -81,65 +70,15 @@ class CharacterService
     private array $allAbilities = [];
 
     /**
-     * The object service for fetching entities.
-     *
-     * @var ObjectService
-     */
-    private ObjectService $objectService;
-
-    /**
      * Constructor for CharacterService.
      *
-     * @param AbilityMapper   $abilityMapper   Ability mapper.
-     * @param CharacterMapper $characterMapper Character mapper.
-     * @param ConditionMapper $conditionMapper Condition mapper.
-     * @param EffectMapper    $effectMapper    Effect mapper.
-     * @param EventMapper     $eventMapper     Event mapper.
-     * @param ItemMapper      $itemMapper      Item mapper.
-     * @param ObjectService   $objectService   Object service.
+     * @param RegisterObjectFetcher $objectFetcher The register object fetcher.
      *
      * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
      */
     public function __construct(
-        /**
-         * Ability mapper reserved for future use.
-         *
-         * @psalm-suppress UnusedProperty Reserved for future direct mapper access.
-         */
-        private AbilityMapper $abilityMapper,
-        /**
-         * Character mapper reserved for future use.
-         *
-         * @psalm-suppress UnusedProperty Reserved for future direct mapper access.
-         */
-        private CharacterMapper $characterMapper,
-        /**
-         * Condition mapper reserved for future use.
-         *
-         * @psalm-suppress UnusedProperty Reserved for future direct mapper access.
-         */
-        private ConditionMapper $conditionMapper,
-        /**
-         * Effect mapper reserved for future use.
-         *
-         * @psalm-suppress UnusedProperty Reserved for future direct mapper access.
-         */
-        private EffectMapper $effectMapper,
-        /**
-         * Event mapper reserved for future use.
-         *
-         * @psalm-suppress UnusedProperty Reserved for future direct mapper access.
-         */
-        private EventMapper $eventMapper,
-        /**
-         * Item mapper reserved for future use.
-         *
-         * @psalm-suppress UnusedProperty Reserved for future direct mapper access.
-         */
-        private ItemMapper $itemMapper,
-        ObjectService $objectService
+        private readonly RegisterObjectFetcher $objectFetcher
     ) {
-        $this->objectService = $objectService;
         $this->loadAllEntities();
     }//end __construct()
 
@@ -154,7 +93,7 @@ class CharacterService
     {
         // @var array<string, array<string, mixed>> $indexed
         $indexed = [];
-        // @psalm-suppress MixedAssignment Entity entries from object service
+        // @psalm-suppress MixedAssignment Entity entries from object fetcher
         foreach ($entities as $entity) {
             $indexed[(string) $entity['id']] = $entity;
         }
@@ -169,12 +108,12 @@ class CharacterService
      */
     private function loadAllEntities(): void
     {
-        $this->allSkills     = $this->indexById(entities: $this->objectService->getObjects('skill'));
-        $this->allItems      = $this->indexById(entities: $this->objectService->getObjects('item'));
-        $this->allConditions = $this->indexById(entities: $this->objectService->getObjects('condition'));
-        $this->allEvents     = $this->indexById(entities: $this->objectService->getObjects('event'));
-        $this->allEffects    = $this->indexById(entities: $this->objectService->getObjects('effect'));
-        $this->allAbilities  = $this->indexById(entities: $this->objectService->getObjects('ability'));
+        $this->allSkills     = $this->indexById(entities: $this->objectFetcher->getObjects('skill'));
+        $this->allItems      = $this->indexById(entities: $this->objectFetcher->getObjects('item'));
+        $this->allConditions = $this->indexById(entities: $this->objectFetcher->getObjects('condition'));
+        $this->allEvents     = $this->indexById(entities: $this->objectFetcher->getObjects('event'));
+        $this->allEffects    = $this->indexById(entities: $this->objectFetcher->getObjects('effect'));
+        $this->allAbilities  = $this->indexById(entities: $this->objectFetcher->getObjects('ability'));
     }//end loadAllEntities()
 
     /**
@@ -187,7 +126,7 @@ class CharacterService
     public function calculateAllCharacters(): array
     {
         // @var array<int, array<string, mixed>> $characters
-        $characters        = $this->objectService->getObjects('character');
+        $characters        = $this->objectFetcher->getObjects('character');
         $updatedCharacters = [];
         foreach ($characters as $character) {
             $updatedCharacters[] = $this->calculateCharacter(character: $character);
