@@ -7,7 +7,11 @@
 				:name="t('larpingapp', 'OpenRegister is required')"
 				:description="t('larpingapp', 'LarpingApp needs the OpenRegister app to store and manage data. Please install OpenRegister from the app store to get started.')">
 				<template #icon>
-					<img :src="appIcon" alt="" width="64" height="64">
+					<img
+						:src="appIcon"
+						alt=""
+						width="64"
+						height="64">
 				</template>
 				<template #action>
 					<NcButton
