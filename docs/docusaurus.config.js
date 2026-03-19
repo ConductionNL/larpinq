@@ -98,7 +98,6 @@ const config = {
     }),
   markdown: {
     mermaid: true,
-    onBrokenMarkdownImages: 'warn',
   },
   themes: ['@docusaurus/theme-mermaid'],
 };
