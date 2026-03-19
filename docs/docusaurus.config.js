@@ -13,6 +13,8 @@ const config = {
 
   onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
+  onBrokenAnchors: 'warn',
+
 
   i18n: {
     defaultLocale: 'en',
@@ -96,6 +98,7 @@ const config = {
     }),
   markdown: {
     mermaid: true,
+    onBrokenMarkdownImages: 'warn',
   },
   themes: ['@docusaurus/theme-mermaid'],
 };
