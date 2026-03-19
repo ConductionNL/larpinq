@@ -178,8 +178,7 @@
 
 <script>
 import { NcButton, NcLoadingIcon } from '@nextcloud/vue'
-import { CnAdvancedFormDialog } from '@conduction/nextcloud-vue'
-import { CnDashboardPage } from '@conduction/nextcloud-vue'
+import { CnAdvancedFormDialog, CnDashboardPage } from '@conduction/nextcloud-vue'
 import Plus from 'vue-material-design-icons/Plus.vue'
 import Refresh from 'vue-material-design-icons/Refresh.vue'
 import AccountGroup from 'vue-material-design-icons/AccountGroup.vue'
