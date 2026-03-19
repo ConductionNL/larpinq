@@ -1,9 +1,9 @@
 <?php
 
 /**
- * ObjectExtensionService for LarpingApp
+ * ObjectQueryService for LarpingApp
  *
- * Handles entity extension and request result building,
+ * Handles request parameter parsing, entity extension and result building,
  * extracted from ObjectService to reduce class complexity.
  *
  * @category  Service
@@ -19,6 +19,11 @@ declare(strict_types=1);
 namespace OCA\LarpingApp\Service;
 
 use Exception;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use OCP\AppFramework\Db\DoesNotExistException;
+use OCP\AppFramework\Db\MultipleObjectsReturnedException;
+use InvalidArgumentException;
 
 /**
  * Service for extending entities and building result arrays.
@@ -29,15 +34,14 @@ use Exception;
  * @license  https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
  * @link     https://larpingapp.com
  *
- * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
+ * @psalm-suppress UnusedClass Injected via Nextcloud DI container.
  *
  * @SuppressWarnings(PHPMD.ShortVariable)
  */
-class ObjectExtensionService
+class ObjectQueryService
 {
-
     /**
-     * Constructor for ObjectExtensionService.
+     * Constructor for ObjectQueryService.
      *
      * @param ObjectService $objectService The object service.
      *
@@ -49,6 +53,42 @@ class ObjectExtensionService
     }//end __construct()
 
     /**
+     * Get a parameter value from request params, checking both prefixed and unprefixed keys.
+     *
+     * @param array  $params  The request parameters.
+     * @param string $key     The parameter key.
+     * @param mixed  $default Default value if not found.
+     *
+     * @return mixed The parameter value.
+     */
+    private function getParam(array $params, string $key, mixed $default=null): mixed
+    {
+        // @var mixed $result
+        $result = $params[$key] ?? $params['_'.$key] ?? $default;
+        return $result;
+    }//end getParam()
+
+    /**
+     * Ensure a value is an array by splitting comma-separated strings.
+     *
+     * @param mixed $value The value to normalize.
+     *
+     * @return array|null The normalized array or null.
+     */
+    private function toArrayParam(mixed $value): ?array
+    {
+        if (is_string($value) === true) {
+            return array_map('trim', explode(',', $value));
+        }
+
+        if (is_array($value) === true) {
+            return $value;
+        }
+
+        return null;
+    }//end toArrayParam()
+
+    /**
      * Parse pagination and sorting parameters from request params.
      *
      * @param array $requestParams The request parameters.
@@ -58,47 +98,25 @@ class ObjectExtensionService
     private function parseRequestParams(array $requestParams): array
     {
         // @var int|null $limit.
-        $limit = $requestParams['limit'] ?? $requestParams['_limit'] ?? null;
+        $limit = $this->getParam(params: $requestParams, key: 'limit');
+        // @var int|null $offset.
+        $offset = $this->getParam(params: $requestParams, key: 'offset');
+        $order  = $this->toArrayParam(value: $this->getParam(params: $requestParams, key: 'order', default: [])) ?? [];
+        $extend = $this->toArrayParam(value: $this->getParam(params: $requestParams, key: 'extend'));
+        // @var int|null $page.
+        $page = $this->getParam(params: $requestParams, key: 'page');
+        // @var string|null $search.
+        $search = $this->getParam(params: $requestParams, key: 'search');
 
-        // @var int|null $offset
-        $offset = $requestParams['offset'] ?? $requestParams['_offset'] ?? null;
-
-        // @var array|string $order
-        $order = $requestParams['order'] ?? $requestParams['_order'] ?? [];
-
-        // @var array|string|null $extend
-        $extend = $requestParams['extend'] ?? $requestParams['_extend'] ?? null;
-
-        // @var int|null $page
-        $page = $requestParams['page'] ?? $requestParams['_page'] ?? null;
-
-        // @var string|null $search
-        $search = $requestParams['search'] ?? $requestParams['_search'] ?? null;
-
-        // If page is set, calculate the offset.
         if ($page !== null && isset($limit) === true) {
             $offset = $limit * ($page - 1);
-        }
-
-        // Ensure order and extend are arrays.
-        if (is_string($order) === true) {
-            $order = array_map('trim', explode(',', $order));
-        }
-
-        if (is_string($extend) === true) {
-            $extend = array_map('trim', explode(',', $extend));
-        }
-
-        $extendArray = null;
-        if (is_array($extend) === true) {
-            $extendArray = $extend;
         }
 
         return [
             'limit'  => $limit,
             'offset' => $offset,
             'order'  => $order,
-            'extend' => $extendArray,
+            'extend' => $extend,
             'search' => $search,
         ];
     }//end parseRequestParams()
@@ -136,7 +154,8 @@ class ObjectExtensionService
      *
      * @return array The result array containing objects and total count.
      *
-     * @psalm-suppress PossiblyUnusedMethod Public API method called from ObjectsController.
+     * @throws ContainerExceptionInterface|DoesNotExistException|MultipleObjectsReturnedException|NotFoundExceptionInterface
+     * @throws InvalidArgumentException If extend is requested for non-OpenRegister objects.
      */
     public function getResultArrayForRequest(string $objectType, array $requestParams): array
     {
@@ -161,6 +180,97 @@ class ObjectExtensionService
             'total'   => $this->objectService->getCount(objectType: $objectType, filters: $filters),
         ];
     }//end getResultArrayForRequest()
+
+    /**
+     * Extends an entity with related objects based on the extend array.
+     *
+     * @param mixed $entity The entity to extend.
+     * @param array $extend An array of properties to extend.
+     *
+     * @return array The extended entity as an array.
+     *
+     * @throws Exception If a property is not present on the entity.
+     *
+     * @psalm-suppress PossiblyUnusedMethod Public API for extending entities with related objects.
+     * @psalm-suppress MixedMethodCall Mapper/entity resolved dynamically.
+     * @psalm-suppress MixedReturnStatement Entity may return mixed from jsonSerialize().
+     * @psalm-suppress MixedArrayOffset Entity properties are dynamic string keys.
+     */
+    public function extendEntity(mixed $entity, array $extend): array
+    {
+        $suppressErrors = false;
+        if (is_array($entity) === true) {
+            $result = $entity;
+        } else {
+            // @var \JsonSerializable $entityObject.
+            $entityObject = $entity;
+            // @var array<string,mixed> $result.
+            $result = $entityObject->jsonSerialize();
+        }
+
+        if (in_array(needle: 'all', haystack: $extend) === true) {
+            // @var array<string,mixed> $entityArray
+            $entityArray    = $entity;
+            $extend         = array_keys($entityArray);
+            $suppressErrors = true;
+        }
+
+        // @psalm-suppress MixedAssignment Extend array values are strings.
+        foreach ($extend as $property) {
+            $singularProperty = rtrim((string) $property, 's');
+            // @var string $property.
+            $value = $this->getPropertyValue(result: $result, property: $property, singular: $singularProperty);
+            if ($value === null) {
+                continue;
+            }
+
+            $propertyObject = $this->resolveMapperType(
+                property: $property,
+                singularProperty: $singularProperty,
+                suppressErrors: $suppressErrors
+            );
+            if ($propertyObject === null) {
+                continue;
+            }
+
+            $result[$property] = $this->resolveExtendedValue(
+                propertyObject: $propertyObject,
+                value: $value
+            );
+        }//end foreach
+
+        return $result;
+    }//end extendEntity()
+
+    /**
+     * Get the value of a property from the result array.
+     *
+     * @param array  $result   The entity result array.
+     * @param string $property The property name.
+     * @param string $singular The singular form of the property name.
+     *
+     * @return mixed|null The property value, or null if empty.
+     *
+     * @throws Exception If the property is not found.
+     */
+    private function getPropertyValue(array $result, string $property, string $singular): mixed
+    {
+        if (array_key_exists($property, $result) === true) {
+            // @var mixed $value
+            $value = $result[$property];
+            if (empty($value) === true) {
+                return null;
+            }
+
+            return $value;
+        }
+
+        if (array_key_exists($singular, $result) === true) {
+            return $result[$singular];
+        }
+
+        throw new Exception("Property '$property' or '$singular' is not present in the entity.");
+    }//end getPropertyValue()
 
     /**
      * Resolve which property name and mapper type to use for extending.
@@ -195,24 +305,19 @@ class ObjectExtensionService
     }//end resolveMapperType()
 
     /**
-     * Extend a single property value with related objects.
+     * Resolve the extended value for a property.
      *
-     * @param array  $result         The entity array being extended.
-     * @param string $property       The property name.
-     * @param string $propertyObject The resolved object type.
+     * @param string $propertyObject The object type to use.
      * @param mixed  $value          The property value (ID or array of IDs).
      *
-     * @return mixed The extended value.
+     * @return mixed The resolved extended value.
      *
      * @psalm-suppress MixedAssignment Value from entity array.
      */
-    private function extendPropertyValue(array $result, string $property, string $propertyObject, mixed $value): mixed
+    private function resolveExtendedValue(string $propertyObject, mixed $value): mixed
     {
         if (is_array($value) === true) {
-            return $this->objectService->getMultipleObjects(
-                objectType: $propertyObject,
-                ids: $value
-            );
+            return $this->objectService->getMultipleObjects(objectType: $propertyObject, ids: $value);
         }
 
         // @var mixed $objectId
@@ -222,105 +327,6 @@ class ObjectExtensionService
             $objectId = (string) $value->getId();
         }
 
-        return $this->objectService->getObject(
-            objectType: $propertyObject,
-            id: (string) $objectId
-        );
-    }//end extendPropertyValue()
-
-    /**
-     * Extends an entity with related objects based on the extend array.
-     *
-     * @param mixed $entity The entity to extend.
-     * @param array $extend An array of properties to extend.
-     *
-     * @return array The extended entity as an array.
-     *
-     * @throws Exception If a property is not present on the entity.
-     *
-     * @psalm-suppress PossiblyUnusedMethod Public API for extending entities with related objects.
-     * @psalm-suppress MixedMethodCall Mapper/entity resolved dynamically.
-     * @psalm-suppress MixedReturnStatement Entity may return mixed from jsonSerialize().
-     * @psalm-suppress MixedArrayOffset Entity properties are dynamic string keys.
-     */
-    public function extendEntity(mixed $entity, array $extend): array
-    {
-        $suppressErrors = false;
-        // Convert the entity to an array if it's not already one.
-        if (is_array($entity) === true) {
-            $result = $entity;
-        } else {
-            // @var \JsonSerializable $entityObject.
-            $entityObject = $entity;
-            // @var array<string,mixed> $result.
-            $result = $entityObject->jsonSerialize();
-        }
-
-        if (in_array(needle: 'all', haystack: $extend) === true) {
-            // @var array<string,mixed> $entityArray
-            $entityArray    = $entity;
-            $extend         = array_keys($entityArray);
-            $suppressErrors = true;
-        }
-
-        // Iterate through each property to be extended.
-        // @psalm-suppress MixedAssignment Extend array values are strings.
-        foreach ($extend as $property) {
-            $singularProperty = rtrim((string) $property, 's');
-
-            // @var string $property.
-            $value = $this->getPropertyValue(result: $result, property: $property, singular: $singularProperty);
-            if ($value === null) {
-                continue;
-            }
-
-            $propertyObject = $this->resolveMapperType(
-                property: $property,
-                singularProperty: $singularProperty,
-                suppressErrors: $suppressErrors
-            );
-            if ($propertyObject === null) {
-                continue;
-            }
-
-            $result[$property] = $this->extendPropertyValue(
-                result: $result,
-                property: $property,
-                propertyObject: $propertyObject,
-                value: $value
-            );
-        }
-
-        return $result;
-    }//end extendEntity()
-
-    /**
-     * Get the value of a property from the result array.
-     *
-     * @param array  $result   The entity result array.
-     * @param string $property The property name.
-     * @param string $singular The singular form of the property name.
-     *
-     * @return mixed|null The property value, or null if empty.
-     *
-     * @throws Exception If the property is not found.
-     */
-    private function getPropertyValue(array $result, string $property, string $singular): mixed
-    {
-        if (array_key_exists($property, $result) === true) {
-            // @var mixed $value
-            $value = $result[$property];
-            if (empty($value) === true) {
-                return null;
-            }
-
-            return $value;
-        }
-
-        if (array_key_exists($singular, $result) === true) {
-            return $result[$singular];
-        }
-
-        throw new Exception("Property '$property' or '$singular' is not present in the entity.");
-    }//end getPropertyValue()
+        return $this->objectService->getObject(objectType: $propertyObject, id: (string) $objectId);
+    }//end resolveExtendedValue()
 }//end class

@@ -17,7 +17,6 @@ namespace OCA\LarpingApp\Service;
 use GuzzleHttp\Client;
 use GuzzleHttp\Promise\Utils;
 use OCP\IURLGenerator;
-use Symfony\Component\Uid\Uuid;
 
 /**
  * Service for performing distributed search across catalogues
@@ -31,9 +30,6 @@ use Symfony\Component\Uid\Uuid;
  *
  * @psalm-suppress UnusedClass Injected via Nextcloud DI container.
  * @psalm-suppress UndefinedClass GuzzleHttp is an optional dependency.
- *
- * @SuppressWarnings(PHPMD.TooManyPublicMethods)
- * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class SearchService
 {
@@ -151,36 +147,15 @@ class SearchService
     }//end sortResultArray()
 
     /**
-     * Performs a distributed search across local and remote catalogues
+     * Extract pagination parameters from search parameters.
      *
-     * @param array $parameters    Search parameters from the request
-     * @param array $elasticConfig Elasticsearch configuration settings
-     * @param array $dbConfig      Database configuration settings
-     * @param array $catalogi      Optional list of catalogue IDs to filter on
+     * @param array $parameters The search parameters.
      *
-     * @return array Search results including results, facets, pagination metadata
-     *
-     * @psalm-suppress PossiblyUnusedParam $dbConfig and $catalogi reserved for future distributed search.
-     * @psalm-suppress MixedArgumentTypeCoercion Response data from external HTTP APIs contains mixed types.
-     * @psalm-suppress UnusedVariable $promises accumulated in loop then settled.
-     * @psalm-suppress MixedInferredReturnType, UndefinedThisPropertyFetch Dynamic services injected at runtime.
-     *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
-     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     * @SuppressWarnings(PHPMD.ElseExpression)
+     * @return array{limit: int, page: int} The extracted pagination values.
      */
-    public function search(array $parameters, array $elasticConfig, array $dbConfig, array $catalogi=[]): array
+    private function extractPaginationParams(array $parameters): array
     {
-        // @var array{results: array, facets: array} $localResults
-        $localResults = [
-            'results' => [],
-            'facets'  => [],
-        ];
-
-        $totalResults = 0;
-        $limit        = 30;
+        $limit = 30;
         if (isset($parameters['.limit']) === true) {
             $limit = (int) $parameters['.limit'];
         }
@@ -190,8 +165,28 @@ class SearchService
             $page = (int) $parameters['.page'];
         }
 
-        // @psalm-suppress UndefinedThisPropertyFetch
-        // @psalm-suppress MixedMethodCall Dynamically injected service.
+        return ['limit' => $limit, 'page' => $page];
+    }//end extractPaginationParams()
+
+    /**
+     * Perform a local search using Elasticsearch if configured.
+     *
+     * @param array $parameters    Search parameters.
+     * @param array $elasticConfig Elasticsearch configuration.
+     * @param int   $totalResults  Reference to total results count.
+     *
+     * @return array{results: array, facets: array} Local search results.
+     *
+     * @psalm-suppress UndefinedThisPropertyFetch
+     * @psalm-suppress MixedMethodCall Dynamically injected service.
+     */
+    private function performLocalSearch(array $parameters, array $elasticConfig, int &$totalResults): array
+    {
+        $localResults = [
+            'results' => [],
+            'facets'  => [],
+        ];
+
         if ($elasticConfig['location'] !== '' && isset($this->elasticService) === true) {
             // @var array{results: array, facets: array} $localResults
             $localResults = $this->elasticService->searchObject(
@@ -201,39 +196,21 @@ class SearchService
             );
         }
 
-        // @psalm-suppress UndefinedThisPropertyFetch
-        // @psalm-suppress MixedMethodCall Dynamically injected service.
-        // @var array<int, array<string, mixed>> $directory
-        $directory = [];
-        if (isset($this->directoryService) === true) {
-            $directory = $this->directoryService->listDirectory(limit: 1000);
-        }
+        return $localResults;
+    }//end performLocalSearch()
 
-        // $directory = $this->objectService->findObjects(filters: ['_schema' => 'directory'], config: $dbConfig).
-        if (count($directory) === 0) {
-            $pages = (int) ceil($totalResults / $limit);
-            if ($pages === 0) {
-                $pages = 1;
-            }
-
-            return [
-                'results' => $localResults['results'],
-                'facets'  => $localResults['facets'],
-                'count'   => count($localResults['results']),
-                'limit'   => $limit,
-                'page'    => $page,
-                'pages'   => $pages,
-                'total'   => $totalResults,
-            ];
-        }
-
-        $results      = $localResults['results'];
-        $aggregations = $localResults['facets'];
-
+    /**
+     * Build search endpoint map from directory entries.
+     *
+     * @param array $directory  Directory entries.
+     * @param array $parameters Search parameters including .catalogi filter.
+     *
+     * @return array<string, array<string>> Map of endpoint URLs to catalogue IDs.
+     */
+    private function buildSearchEndpoints(array $directory, array $parameters): array
+    {
         $searchEndpoints = [];
 
-        // @psalm-suppress UnusedVariable $promises is accumulated in the loop and settled below.
-        $promises = [];
         foreach ($directory as $instance) {
             // @var array{search?: string, default?: bool, catalogId?: string} $instance
             $instance['search'] = $this->urlGenerator->getAbsoluteURL(
@@ -250,8 +227,25 @@ class SearchService
             $searchEndpoints[$instance['search']][] = $instance['catalogId'] ?? '';
         }
 
+        return $searchEndpoints;
+    }//end buildSearchEndpoints()
+
+    /**
+     * Send async search requests to remote endpoints and collect responses.
+     *
+     * @param array<string, array<string>> $searchEndpoints Map of endpoint URLs to catalogue IDs.
+     * @param array                        $parameters      Search parameters.
+     *
+     * @return array The settled promise responses.
+     *
+     * @psalm-suppress MixedAssignment Search endpoints from directory.
+     * @psalm-suppress MixedMethodCall GuzzleHttp returns mixed from settle().
+     */
+    private function fetchRemoteResults(array $searchEndpoints, array $parameters): array
+    {
         unset($parameters['.catalogi']);
 
+        $promises = [];
         // @psalm-suppress MixedAssignment Search endpoints from directory
         foreach ($searchEndpoints as $searchEndpoint => $catalogi) {
             $parameters['_catalogi'] = $catalogi;
@@ -266,38 +260,76 @@ class SearchService
         // @psalm-suppress MixedMethodCall GuzzleHttp returns mixed from settle().
         $responses = Utils::settle($promises)->wait();
 
-        // @psalm-suppress MixedAssignment GuzzleHttp response entries.
-        // @psalm-suppress MixedArrayAccess GuzzleHttp response structure is dynamic.
-        // @psalm-suppress MixedMethodCall GuzzleHttp response methods are dynamic.
-        // @psalm-suppress MixedArgument GuzzleHttp response values are dynamic.
-        // @psalm-suppress MixedArgumentTypeCoercion GuzzleHttp response values are dynamic.
+        return $responses;
+    }//end fetchRemoteResults()
+
+    /**
+     * Process remote search responses and merge into results.
+     *
+     * @param array $responses    The settled promise responses.
+     * @param array $results      Existing results to merge into.
+     * @param array $aggregations Existing aggregations to merge into.
+     *
+     * @return array{results: array, aggregations: array} Merged results and aggregations.
+     *
+     * @psalm-suppress MixedAssignment GuzzleHttp response entries.
+     * @psalm-suppress MixedArrayAccess GuzzleHttp response structure is dynamic.
+     * @psalm-suppress MixedMethodCall GuzzleHttp response methods are dynamic.
+     * @psalm-suppress MixedArgument GuzzleHttp response values are dynamic.
+     * @psalm-suppress MixedArgumentTypeCoercion GuzzleHttp response values are dynamic.
+     */
+    private function processRemoteResponses(array $responses, array $results, array $aggregations): array
+    {
         foreach ($responses as $response) {
             // @var array{state: string, value?: \Psr\Http\Message\ResponseInterface} $response
-            if ($response['state'] === 'fulfilled' && isset($response['value']) === true) {
-                // @var array<string, mixed> $responseData
-                $responseData = json_decode(
-                    json: $response['value']->getBody()->getContents(),
-                    associative: true
-                );
+            if ($response['state'] !== 'fulfilled' || isset($response['value']) === false) {
+                continue;
+            }
 
-                // @var array $remoteResults
-                $remoteResults = $responseData['results'] ?? [];
-                $results       = array_merge(
-                    $results,
-                    $remoteResults
-                );
+            // @var array<string, mixed> $responseData
+            $responseData = json_decode(
+                json: $response['value']->getBody()->getContents(),
+                associative: true
+            );
 
-                usort($results, [$this, 'sortResultArray']);
+            // @var array $remoteResults
+            $remoteResults = $responseData['results'] ?? [];
+            $results       = array_merge($results, $remoteResults);
 
-                // @var array|null $remoteFacets
-                $remoteFacets = $responseData['facets'] ?? null;
-                $aggregations = $this->mergeAggregations(
-                    existingAggregations: $aggregations,
-                    newAggregations: $remoteFacets
-                );
-            }//end if
+            usort($results, [$this, 'sortResultArray']);
+
+            // @var array|null $remoteFacets
+            $remoteFacets = $responseData['facets'] ?? null;
+            $aggregations = $this->mergeAggregations(
+                existingAggregations: $aggregations,
+                newAggregations: $remoteFacets
+            );
         }//end foreach
 
+        return [
+            'results'      => $results,
+            'aggregations' => $aggregations,
+        ];
+    }//end processRemoteResponses()
+
+    /**
+     * Build the final paginated response array.
+     *
+     * @param array $results      The search results.
+     * @param array $aggregations The facet aggregations.
+     * @param int   $totalResults Total result count.
+     * @param int   $limit        Results per page.
+     * @param int   $page         Current page number.
+     *
+     * @return array The formatted response.
+     */
+    private function buildPaginatedResponse(
+        array $results,
+        array $aggregations,
+        int $totalResults,
+        int $limit,
+        int $page
+    ): array {
         $pages = (int) ceil($totalResults / $limit);
         if ($pages === 0) {
             $pages = 1;
@@ -312,249 +344,69 @@ class SearchService
             'pages'   => $pages,
             'total'   => $totalResults,
         ];
-    }//end search()
+    }//end buildPaginatedResponse()
 
     /**
-     * This function adds a single query param to the given $vars array. ?$name=$value
-     * Will check if request query $name has [...] inside the parameter, like this: ?queryParam[$nameKey]=$value.
-     * Works recursive, so in case we have ?queryParam[$nameKey][$anotherNameKey][etc][etc]=$value.
-     * Also checks for queryParams ending on [] like: ?queryParam[$nameKey][] (or just ?queryParam[]), if this is the case
-     * this function will add given value to an array of [queryParam][$nameKey][] = $value or [queryParam][] = $value.
-     * If none of the above this function will just add [queryParam] = $value to $vars.
+     * Performs a distributed search across local and remote catalogues
      *
-     * @param array  $vars    The vars array we are going to store the query parameter in
-     * @param string $name    The full $name of the query param, like this: ?$name=$value
-     * @param string $nameKey The full $name of the query param, unless it contains []
-     * @param string $value   The full $value of the query param, like this: ?$name=$value
+     * @param array $parameters    Search parameters from the request
+     * @param array $elasticConfig Elasticsearch configuration settings
+     * @param array $dbConfig      Database configuration settings
+     * @param array $catalogi      Optional list of catalogue IDs to filter on
      *
-     * @return void
+     * @return array Search results including results, facets, pagination metadata
      *
-     * @SuppressWarnings(PHPMD.ElseExpression)
+     * @psalm-suppress PossiblyUnusedParam $dbConfig and $catalogi reserved for future distributed search.
+     * @psalm-suppress MixedArgumentTypeCoercion Response data from external HTTP APIs contains mixed types.
+     * @psalm-suppress MixedInferredReturnType, UndefinedThisPropertyFetch Dynamic services injected at runtime.
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    private function recursiveRequestQueryKey(array &$vars, string $name, string $nameKey, string $value): void
+    public function search(array $parameters, array $elasticConfig, array $dbConfig, array $catalogi=[]): array
     {
-        $matches      = [];
-        $matchesCount = preg_match(pattern: '/(\[[^[\]]*])/', subject: $name, matches: $matches);
-        if ($matchesCount > 0) {
-            $key  = $matches[0];
-            $name = str_replace(search: $key, replace: '', subject: $name);
-            $key  = trim(string: $key, characters: '[]');
-            if (empty($key) === false) {
-                if (isset($vars[$nameKey]) === false || is_array($vars[$nameKey]) === false) {
-                    $vars[$nameKey] = [];
-                }
+        $pagination   = $this->extractPaginationParams(parameters: $parameters);
+        $totalResults = 0;
+        $localResults = $this->performLocalSearch(
+            parameters: $parameters,
+            elasticConfig: $elasticConfig,
+            totalResults: $totalResults
+        );
 
-                // @var array $subVars
-                $subVars = &$vars[$nameKey];
-                $this->recursiveRequestQueryKey(
-                    vars: $subVars,
-                    name: $name,
-                    nameKey: $key,
-                    value: $value
-                );
-            } else {
-                if (isset($vars[$nameKey]) === false || is_array($vars[$nameKey]) === false) {
-                    $vars[$nameKey] = [];
-                }
-
-                $vars[$nameKey][] = $value;
-            }//end if
-        } else {
-            $vars[$nameKey] = $value;
-        }//end if
-
-    }//end recursiveRequestQueryKey()
-
-    /**
-     * This function creates a mongodb filter array.
-     *
-     * Also unsets _search in filters !
-     *
-     * @param array<string,mixed> $filters        Query parameters from request.
-     * @param array<int,string>   $fieldsToSearch Database field names to filter/search on.
-     *
-     * @return array<string,mixed> $filters
-     */
-    public function createMongoDBSearchFilter(array $filters, array $fieldsToSearch): array
-    {
-        if (isset($filters['_search']) === true) {
-            $searchRegex    = ['$regex' => (string) $filters['_search'], '$options' => 'i'];
-            $filters['$or'] = [];
-
-            foreach ($fieldsToSearch as $field) {
-                $filters['$or'][] = [$field => $searchRegex];
-            }
-
-            unset($filters['_search']);
+        // @psalm-suppress UndefinedThisPropertyFetch
+        // @psalm-suppress MixedMethodCall Dynamically injected service.
+        // @var array<int, array<string, mixed>> $directory
+        $directory = [];
+        if (isset($this->directoryService) === true) {
+            $directory = $this->directoryService->listDirectory(limit: 1000);
         }
 
-        // @psalm-suppress MixedAssignment Filter values from request
-        foreach ($filters as $field => $value) {
-            if ($value === 'IS NOT NULL') {
-                $filters[$field] = ['$ne' => null];
-            }
-
-            if ($value === 'IS NULL') {
-                $filters[$field] = ['$eq' => null];
-            }
-        }
-
-        return $filters;
-
-    }//end createMongoDBSearchFilter()
-
-    /**
-     * This function creates mysql search conditions based on given filters from request.
-     *
-     * @param array $filters        Query parameters from request.
-     * @param array $fieldsToSearch Fields to search on in sql.
-     *
-     * @return array $searchConditions
-     */
-    public function createMySQLSearchConditions(array $filters, array $fieldsToSearch): array
-    {
-        $searchConditions = [];
-        if (isset($filters['_search']) === true) {
-            // @psalm-suppress MixedAssignment Field names from array
-            foreach ($fieldsToSearch as $field) {
-                $searchConditions[] = "LOWER($field) LIKE :search";
-            }
-        }
-
-        return $searchConditions;
-
-    }//end createMySQLSearchConditions()
-
-    /**
-     * This function unsets all keys starting with _ from filters.
-     *
-     * @param array<string,mixed> $filters Query parameters from request.
-     *
-     * @return array<string,mixed> $filters
-     */
-    public function unsetSpecialQueryParams(array $filters): array
-    {
-        foreach (array_keys($filters) as $key) {
-            if (str_starts_with($key, '_') === true) {
-                unset($filters[$key]);
-            }
-        }
-
-        return $filters;
-
-    }//end unsetSpecialQueryParams()
-
-    /**
-     * This function creates mysql search parameters based on given filters from request.
-     *
-     * @param array $filters Query parameters from request.
-     *
-     * @return array $searchParams
-     */
-    public function createMySQLSearchParams(array $filters): array
-    {
-        $searchParams = [];
-        if (isset($filters['_search']) === true) {
-            $searchParams['search'] = '%'.strtolower((string) $filters['_search']).'%';
-        }
-
-        return $searchParams;
-
-    }//end createMySQLSearchParams()
-
-    /**
-     * This function creates an sort array based on given order param from request.
-     *
-     * @param array $filters Query parameters from request.
-     *
-     * @return array $sort
-     *
-     * @SuppressWarnings(PHPMD.ElseExpression)
-     */
-    public function createSortForMySQL(array $filters): array
-    {
-        $sort = [];
-        if (isset($filters['_order']) === true && is_array($filters['_order']) === true) {
-            // @psalm-suppress MixedAssignment Order values from request
-            foreach ($filters['_order'] as $field => $direction) {
-                if (strtoupper((string) $direction) === 'DESC') {
-                    $direction = 'DESC';
-                } else {
-                    $direction = 'ASC';
-                }
-
-                $sort[$field] = $direction;
-            }
-        }
-
-        return $sort;
-
-    }//end createSortForMySQL()
-
-    /**
-     * This function creates an sort array based on given order param from request.
-     *
-     * @param array $filters Query parameters from request.
-     *
-     * @return array $sort
-     *
-     * @todo Not functional yet. Needs to be fixed (see PublicationsController->index).
-     *
-     * @SuppressWarnings(PHPMD.ElseExpression)
-     */
-    public function createSortForMongoDB(array $filters): array
-    {
-        $sort = [];
-        if (isset($filters['_order']) === true && is_array($filters['_order']) === true) {
-            // @psalm-suppress MixedAssignment Order values from request
-            foreach ($filters['_order'] as $field => $direction) {
-                if (strtoupper((string) $direction) === 'DESC') {
-                    $sort[$field] = -1;
-                } else {
-                    $sort[$field] = 1;
-                }
-            }
-        }
-
-        return $sort;
-
-    }//end createSortForMongoDB()
-
-    /**
-     * Parses the request query string and returns it as an array of queries.
-     *
-     * @param string $queryString The input query string from the request.
-     *
-     * @return array The resulting array of query parameters.
-     */
-    public function parseQueryString(string $queryString=''): array
-    {
-        $pairs = explode(separator: '&', string: $queryString);
-        $vars  = [];
-
-        foreach ($pairs as $pair) {
-            $kvpair = explode(separator: '=', string: $pair);
-
-            $key   = urldecode(string: $kvpair[0]);
-            $value = '';
-            if (count(value: $kvpair) === 2) {
-                $value = urldecode(string: $kvpair[1]);
-            }
-
-            $bracketPos = strpos($key, '[');
-            $nameKey    = $key;
-            if ($bracketPos !== false) {
-                $nameKey = substr($key, 0, $bracketPos);
-            }
-
-            $this->recursiveRequestQueryKey(
-                vars: $vars,
-                name: $key,
-                nameKey: $nameKey,
-                value: $value
+        if (count($directory) === 0) {
+            return $this->buildPaginatedResponse(
+                results: $localResults['results'],
+                aggregations: $localResults['facets'],
+                totalResults: $totalResults,
+                limit: $pagination['limit'],
+                page: $pagination['page']
             );
-        }//end foreach
+        }
 
-        return $vars;
-    }//end parseQueryString()
+        $searchEndpoints = $this->buildSearchEndpoints(directory: $directory, parameters: $parameters);
+        $responses       = $this->fetchRemoteResults(
+            searchEndpoints: $searchEndpoints,
+            parameters: $parameters
+        );
+        $merged          = $this->processRemoteResponses(
+            responses: $responses,
+            results: $localResults['results'],
+            aggregations: $localResults['facets']
+        );
+
+        return $this->buildPaginatedResponse(
+            results: $merged['results'],
+            aggregations: $merged['aggregations'],
+            totalResults: $totalResults,
+            limit: $pagination['limit'],
+            page: $pagination['page']
+        );
+    }//end search()
 }//end class

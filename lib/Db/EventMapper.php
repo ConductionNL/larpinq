@@ -70,6 +70,61 @@ class EventMapper extends QBMapper
     }//end find()
 
     /**
+     * Apply filter conditions to a query builder.
+     *
+     * @param IQueryBuilder            $queryBuilder The query builder.
+     * @param array<string,mixed>|null $filters      The filters to apply.
+     *
+     * @return void
+     */
+    private function applyFilters(IQueryBuilder $queryBuilder, ?array $filters): void
+    {
+        if ($filters === null) {
+            return;
+        }
+
+        // @psalm-suppress MixedAssignment Filter values from request params
+        foreach ($filters as $filter => $value) {
+            if ($value === 'IS NOT NULL') {
+                $queryBuilder->andWhere($queryBuilder->expr()->isNotNull($filter));
+            } else if ($value === 'IS NULL') {
+                $queryBuilder->andWhere($queryBuilder->expr()->isNull($filter));
+            } else {
+                $queryBuilder->andWhere(
+                    $queryBuilder->expr()->eq($filter, $queryBuilder->createNamedParameter($value))
+                );
+            }
+        }
+    }//end applyFilters()
+
+    /**
+     * Apply search conditions to a query builder.
+     *
+     * @param IQueryBuilder             $queryBuilder     The query builder.
+     * @param array<int,string>|null    $searchConditions Search conditions.
+     * @param array<string,string>|null $searchParams     Search parameters.
+     *
+     * @return void
+     */
+    private function applySearchConditions(
+        IQueryBuilder $queryBuilder,
+        ?array $searchConditions,
+        ?array $searchParams
+    ): void {
+        if ($searchConditions === null || empty($searchConditions) === true) {
+            return;
+        }
+
+        $queryBuilder->andWhere('('.implode(' OR ', $searchConditions).')');
+        if ($searchParams !== null) {
+            // @psalm-suppress MixedAssignment Search params from request
+            foreach ($searchParams as $param => $value) {
+                $queryBuilder->setParameter($param, $value);
+            }
+        }
+    }//end applySearchConditions()
+
+    /**
      * Find all events matching the given criteria
      *
      * @param int|null                  $limit            Maximum number of results
@@ -81,9 +136,6 @@ class EventMapper extends QBMapper
      * @return Event[]
      *
      * @psalm-suppress PossiblyUnusedMethod Called dynamically via ObjectService::getMapper().
-     *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function findAll(
         ?int $limit=null,
@@ -104,30 +156,12 @@ class EventMapper extends QBMapper
             $queryBuilder->setFirstResult($offset);
         }
 
-        if ($filters !== null) {
-            // @psalm-suppress MixedAssignment Filter values from request params
-            foreach ($filters as $filter => $value) {
-                if ($value === 'IS NOT NULL') {
-                    $queryBuilder->andWhere($queryBuilder->expr()->isNotNull($filter));
-                } else if ($value === 'IS NULL') {
-                    $queryBuilder->andWhere($queryBuilder->expr()->isNull($filter));
-                }
-
-                if ($value !== 'IS NOT NULL' && $value !== 'IS NULL') {
-                    $queryBuilder->andWhere($queryBuilder->expr()->eq($filter, $queryBuilder->createNamedParameter($value)));
-                }
-            }
-        }
-
-        if ($searchConditions !== null && empty($searchConditions) === false) {
-            $queryBuilder->andWhere('('.implode(' OR ', $searchConditions).')');
-            if ($searchParams !== null) {
-                // @psalm-suppress MixedAssignment Search params from request
-                foreach ($searchParams as $param => $value) {
-                    $queryBuilder->setParameter($param, $value);
-                }
-            }
-        }
+        $this->applyFilters(queryBuilder: $queryBuilder, filters: $filters);
+        $this->applySearchConditions(
+            queryBuilder: $queryBuilder,
+            searchConditions: $searchConditions,
+            searchParams: $searchParams
+        );
 
         // @var Event[]
         return $this->findEntities(query: $queryBuilder);

@@ -16,6 +16,8 @@ declare(strict_types=1);
 namespace OCA\LarpingApp\Controller;
 
 use OCA\LarpingApp\Service\ObjectService;
+use OCA\LarpingApp\Service\ObjectQueryService;
+use OCA\LarpingApp\Service\ObjectLifecycleService;
 use OCA\LarpingApp\Service\CharacterService;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\JSONResponse;
@@ -35,15 +37,21 @@ class ObjectsController extends Controller
     /**
      * Constructor for ObjectsController.
      *
-     * @param string           $appName          The app name.
-     * @param IRequest         $request          The request object.
-     * @param ObjectService    $objectService    The object service.
-     * @param CharacterService $characterService The character service.
+     * @param string                 $appName                The app name.
+     * @param IRequest               $request                The request object.
+     * @param ObjectService          $objectService          The object service.
+     * @param ObjectQueryService     $objectQueryService     The object query service.
+     * @param ObjectLifecycleService $objectLifecycleService The object lifecycle service.
+     * @param CharacterService       $characterService       The character service.
+     *
+     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
         $appName,
         IRequest $request,
         private readonly ObjectService $objectService,
+        private readonly ObjectQueryService $objectQueryService,
+        private readonly ObjectLifecycleService $objectLifecycleService,
         private readonly CharacterService $characterService
     ) {
         parent::__construct(appName: $appName, request: $request);
@@ -68,7 +76,7 @@ class ObjectsController extends Controller
         unset($requestParams['objectType']);
         // Nextcloud automatically adds this from the route so we need to remove it.
         // Fetch catalog objects based on filters and order.
-        $data = $this->objectService->getResultArrayForRequest(objectType: $objectType, requestParams: $requestParams);
+        $data = $this->objectQueryService->getResultArrayForRequest(objectType: $objectType, requestParams: $requestParams);
 
         // Return JSON response.
         return new JSONResponse($data);
@@ -246,7 +254,7 @@ class ObjectsController extends Controller
     public function getAuditTrail(string $objectType, string $id): JSONResponse
     {
         try {
-            $auditTrail = $this->objectService->getAuditTrail(objectType: $objectType, id: $id);
+            $auditTrail = $this->objectLifecycleService->getAuditTrail(objectType: $objectType, id: $id);
             return new JSONResponse($auditTrail);
         } catch (Exception $e) {
             return new JSONResponse(
@@ -271,7 +279,7 @@ class ObjectsController extends Controller
     {
         try {
             // Fetch the object by its ID.
-            $relations = $this->objectService->getRelations(objectType: $objectType, id: $id);
+            $relations = $this->objectLifecycleService->getRelations(objectType: $objectType, id: $id);
 
             // Return the object as a JSON response.
             return new JSONResponse($relations);
@@ -296,7 +304,7 @@ class ObjectsController extends Controller
      */
     public function getUses(string $objectType, string $id): JSONResponse
     {
-        $uses = $this->objectService->getUses(objectType: $objectType, id: $id);
+        $uses = $this->objectLifecycleService->getUses(objectType: $objectType, id: $id);
         return new JSONResponse($uses);
     }//end getUses()
 
@@ -326,7 +334,7 @@ class ObjectsController extends Controller
             }
 
             // Attempt to lock the object.
-            $lockedObject = $this->objectService->lockObject($objectType, $id, $process, $duration);
+            $lockedObject = $this->objectLifecycleService->lockObject($objectType, $id, $process, $duration);
 
             return new JSONResponse($lockedObject);
         } catch (Exception $e) {
@@ -351,7 +359,7 @@ class ObjectsController extends Controller
     public function unlock(string $objectType, string $id): JSONResponse
     {
         try {
-            $unlockedObject = $this->objectService->unlockObject(objectType: $objectType, id: $id);
+            $unlockedObject = $this->objectLifecycleService->unlockObject(objectType: $objectType, id: $id);
             return new JSONResponse($unlockedObject);
         } catch (Exception $e) {
             return new JSONResponse(
@@ -397,7 +405,7 @@ class ObjectsController extends Controller
             $overwriteVersion = (bool) ($params['overwriteVersion'] ?? false);
 
             // Attempt to revert the object.
-            $revertedObject = $this->objectService->revertObject(
+            $revertedObject = $this->objectLifecycleService->revertObject(
                 objectType: $objectType,
                 id: $id,
                 until: $until,

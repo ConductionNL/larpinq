@@ -169,12 +169,12 @@ class CharacterService
      */
     private function loadAllEntities(): void
     {
-        $this->allSkills     = $this->indexById($this->objectService->getObjects('skill'));
-        $this->allItems      = $this->indexById($this->objectService->getObjects('item'));
-        $this->allConditions = $this->indexById($this->objectService->getObjects('condition'));
-        $this->allEvents     = $this->indexById($this->objectService->getObjects('event'));
-        $this->allEffects    = $this->indexById($this->objectService->getObjects('effect'));
-        $this->allAbilities  = $this->indexById($this->objectService->getObjects('ability'));
+        $this->allSkills     = $this->indexById(entities: $this->objectService->getObjects('skill'));
+        $this->allItems      = $this->indexById(entities: $this->objectService->getObjects('item'));
+        $this->allConditions = $this->indexById(entities: $this->objectService->getObjects('condition'));
+        $this->allEvents     = $this->indexById(entities: $this->objectService->getObjects('event'));
+        $this->allEffects    = $this->indexById(entities: $this->objectService->getObjects('effect'));
+        $this->allAbilities  = $this->indexById(entities: $this->objectService->getObjects('ability'));
     }//end loadAllEntities()
 
     /**
@@ -270,10 +270,30 @@ class CharacterService
         $abilityScores = $this->initializeAbilityScores();
 
         // Apply effects from each entity type the character has.
-        $this->applyEntityEffects($abilityScores, $character, 'skills', $this->allSkills);
-        $this->applyEntityEffects($abilityScores, $character, 'items', $this->allItems);
-        $this->applyEntityEffects($abilityScores, $character, 'conditions', $this->allConditions);
-        $this->applyEntityEffects($abilityScores, $character, 'events', $this->allEvents);
+        $this->applyEntityEffects(
+            abilityScores: $abilityScores,
+            character: $character,
+            property: 'skills',
+            lookup: $this->allSkills
+        );
+        $this->applyEntityEffects(
+            abilityScores: $abilityScores,
+            character: $character,
+            property: 'items',
+            lookup: $this->allItems
+        );
+        $this->applyEntityEffects(
+            abilityScores: $abilityScores,
+            character: $character,
+            property: 'conditions',
+            lookup: $this->allConditions
+        );
+        $this->applyEntityEffects(
+            abilityScores: $abilityScores,
+            character: $character,
+            property: 'events',
+            lookup: $this->allEvents
+        );
 
         // Update character array with calculated stats.
         $character['stats'] = $abilityScores;
