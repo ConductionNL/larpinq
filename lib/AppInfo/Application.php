@@ -74,11 +74,11 @@ class Application extends App implements IBootstrap
      */
     public function boot(IBootContext $context): void
     {
-        /** @psalm-suppress DeprecatedInterface IServerContainer is deprecated but still used in boot(). */
+        // @psalm-suppress DeprecatedInterface IServerContainer is deprecated but still used in boot().
         $server = $context->getServerContainer();
 
         try {
-            /** @var SettingsService $settingsService */
+            // @var SettingsService $settingsService
             $settingsService = $server->get(SettingsService::class);
             $settingsService->loadSettings();
         } catch (\Exception $e) {

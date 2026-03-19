@@ -70,7 +70,7 @@ class SettingsLoadService
     public function __construct(
         private readonly IAppConfig $appConfig,
         private readonly IAppManager $appManager,
-        /** @psalm-suppress UnusedProperty Used in getConfigurationService(). */
+        // @psalm-suppress UnusedProperty Used in getConfigurationService().
         private readonly ContainerInterface $container,
         private readonly SettingsMapBuilder $mapBuilder,
         private readonly ConfigFileLoaderService $fileLoader,
@@ -95,10 +95,8 @@ class SettingsLoadService
         $configurationService = $this->getConfigurationService();
         $currentAppVersion    = $this->appManager->getAppVersion(Application::APP_ID);
 
-        /**
-         * @psalm-suppress MixedMethodCall ConfigurationService is from OpenRegister (optional cross-app dependency).
-         * @var array $result
-         */
+        // @psalm-suppress MixedMethodCall ConfigurationService is from OpenRegister.
+        // @var array $result
         $result = $configurationService->importFromApp(
             appId: Application::APP_ID,
             data: $data,
@@ -121,15 +119,16 @@ class SettingsLoadService
      */
     private function updateObjectTypeConfiguration(array $importResult): void
     {
-        /** @var array $schemas */
-        $schemas = $importResult['schemas'] ?? [];
+        // @var array $schemas
+        $schemas   = $importResult['schemas'] ?? [];
         $schemaMap = $this->mapBuilder->buildSchemaSlugMap(
             schemas: $schemas
         );
 
-        /** @var array $registers */
+        // @var array $registers
         $registers = $importResult['registers'] ?? [];
-        /** @var string|int|null $registerId */
+
+        // @var string|int|null $registerId
         $registerId = $this->mapBuilder->findRegisterIdBySlug(
             registers: $registers
         );
@@ -155,7 +154,7 @@ class SettingsLoadService
      */
     private function getConfigurationService(): object
     {
-        /** @var object $service */
+        // @var object $service
         $service = $this->container->get('OCA\OpenRegister\Service\ConfigurationService');
         return $service;
 

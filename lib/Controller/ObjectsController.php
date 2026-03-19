@@ -90,8 +90,8 @@ class ObjectsController extends Controller
         try {
             // Get extend parameter if present.
             $requestParams = $this->request->getParams();
-            /** @var array<string>|string $extend */
-            $extend        = $requestParams['extend'] ?? $requestParams['_extend'] ?? [];
+            // @var array<string>|string $extend
+            $extend = $requestParams['extend'] ?? $requestParams['_extend'] ?? [];
             if (is_string($extend) === true) {
                 $extend = array_map('trim', explode(',', $extend));
             }
@@ -106,7 +106,7 @@ class ObjectsController extends Controller
                 ['error' => $e->getMessage()],
                 400
             );
-        }
+        }//end try
     }//end show()
 
     /**
@@ -126,7 +126,7 @@ class ObjectsController extends Controller
             $data = $this->request->getParams();
 
             // Get extend parameter if present.
-            /** @var array<string>|string $extend */
+            // @var array<string>|string $extend.
             $extend = $data['extend'] ?? $data['_extend'] ?? [];
             if (is_string($extend) === true) {
                 $extend = array_map('trim', explode(',', $extend));
@@ -141,7 +141,7 @@ class ObjectsController extends Controller
             }
 
             // Save the new object.
-            /** @var array<string,mixed> $object */
+            // @var array<string,mixed> $object.
             $object = $this->objectService->saveObject(objectType: $objectType, object: $data, extend: $extend);
 
             // Return the created object as a JSON response.
@@ -172,7 +172,7 @@ class ObjectsController extends Controller
             $data = $this->request->getParams();
 
             // Get extend parameter if present.
-            /** @var array<string>|string $extend */
+            // @var array<string>|string $extend.
             $extend = $data['extend'] ?? $data['_extend'] ?? [];
             if (is_string($extend) === true) {
                 $extend = array_map('trim', explode(',', $extend));
@@ -187,7 +187,7 @@ class ObjectsController extends Controller
             }
 
             // Save the updated object.
-            /** @var array<string,mixed> $object */
+            // @var array<string,mixed> $object.
             $object = $this->objectService->saveObject(objectType: $objectType, object: $data, extend: $extend);
 
             // Return the updated object as a JSON response.
@@ -318,7 +318,7 @@ class ObjectsController extends Controller
             $params = $this->request->getParams();
 
             // Extract optional parameters.
-            /** @var string|null $process */
+            // @var string|null $process.
             $process  = $params['process'] ?? null;
             $duration = null;
             if (isset($params['duration']) === true) {
@@ -381,11 +381,11 @@ class ObjectsController extends Controller
             $params = $this->request->getParams();
 
             // Extract revert parameters.
-            /** @var DateTime|string|null $until */
+            // @var DateTime|string|null $until.
             $until = null;
             if (isset($params['until']) === true) {
                 // Handle both DateTime and audit trail ID cases.
-                /** @var string $untilParam */
+                // @var string $untilParam.
                 $untilParam = $params['until'];
                 if (strtotime($untilParam) !== false) {
                     $until = new DateTime($untilParam);

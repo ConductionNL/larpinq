@@ -100,9 +100,9 @@ class ObjectService
         private PlayerMapper $playerMapper,
         private SettingMapper $settingMapper,
         private SkillMapper $skillMapper,
-        /** @psalm-suppress UnusedProperty Used in getOpenRegisters(). */
+        // @psalm-suppress UnusedProperty Used in getOpenRegisters().
         private ContainerInterface $container,
-        /** @psalm-suppress UnusedProperty Used in getOpenRegisters(). */
+        // @psalm-suppress UnusedProperty Used in getOpenRegisters().
         private IAppManager $appManager,
         private IAppConfig $config
     ) {
@@ -114,7 +114,8 @@ class ObjectService
      *
      * @param string $objectType The type of object to retrieve the mapper for.
      *
-     * @return AbilityMapper|CharacterMapper|ConditionMapper|EffectMapper|EventMapper|ItemMapper|PlayerMapper|SettingMapper|SkillMapper|object The appropriate mapper.
+     * @return AbilityMapper|CharacterMapper|ConditionMapper|EffectMapper|EventMapper
+     *         |ItemMapper|PlayerMapper|SettingMapper|SkillMapper|object The mapper.
      *
      * @throws InvalidArgumentException If an unknown object type is provided.
      * @throws NotFoundExceptionInterface|ContainerExceptionInterface If OpenRegister service is not available
@@ -151,13 +152,11 @@ class ObjectService
                 throw new Exception("Schema not configured for $objectType");
             }
 
-            /**
-             * @psalm-suppress MixedMethodCall OpenRegister is an optional cross-app dependency.
-             * @var object $orMapper
-             */
+            // @psalm-suppress MixedMethodCall OpenRegister is an optional cross-app dependency.
+            // @var object $orMapper
             $orMapper = $openRegister->getMapper(register: $register, schema: $schema);
             return $orMapper;
-        }
+        }//end if
 
         // If the source is internal, return the appropriate mapper based on the object type.
         return match ($objectType) {
@@ -207,7 +206,7 @@ class ObjectService
         }
 
         // Use the mapper to find and return the object.
-        /** @psalm-suppress MixedAssignment Mapper resolved dynamically */
+        // @psalm-suppress MixedAssignment Mapper resolved dynamically.
         $object = $mapper->find($id);
 
         // Convert the object to an array if it is not already an array.
@@ -215,7 +214,7 @@ class ObjectService
             return $object->jsonSerialize();
         }
 
-        /** @psalm-suppress MixedAssignment Mapper resolved dynamically */
+        // @psalm-suppress MixedAssignment Mapper resolved dynamically.
         $result = $object;
         if (is_array($object) === false) {
             $result = (array) $object;
@@ -258,12 +257,14 @@ class ObjectService
         $mapper = $this->getMapper(objectType: $objectType);
 
         // Check if extend is requested for non-OpenRegister objects.
-        if ($extend !== null && count($extend) > 0 && ($mapper instanceof \OCA\OpenRegister\Service\ObjectService) === false) {
+        if ($extend !== null && count($extend) > 0
+            && ($mapper instanceof \OCA\OpenRegister\Service\ObjectService) === false
+        ) {
             throw new InvalidArgumentException('Extend functionality is only available for OpenRegister objects');
         }
 
         // Use the mapper to find and return the objects based on the provided parameters.
-        /** @psalm-suppress MixedAssignment Mapper resolved dynamically */
+        // @psalm-suppress MixedAssignment Mapper resolved dynamically.
         $objects = $mapper->findAll(
             limit: $limit,
             offset: $offset,
@@ -274,25 +275,20 @@ class ObjectService
         );
 
         // Convert entity objects to arrays using jsonSerialize.
-        /** @psalm-suppress MixedArgument Mapper resolved dynamically */
+        // @psalm-suppress MixedArgument Mapper resolved dynamically.
         return array_map(
-            /**
-             * @param mixed $object The object to convert.
-             * @return array<string, mixed>
-             */
             function (mixed $object): array {
                 // If object is already an array, return it directly.
                 if (is_array($object) === true) {
-                    /** @var array<string, mixed> $object */
+                    // @var array<string, mixed> $object
                     return $object;
                 }
 
                 // Otherwise serialize the object.
-                /** @var \JsonSerializable $object */
+                // @var \JsonSerializable $object.
                 return $object->jsonSerialize();
             },
-                /** @psalm-suppress MixedArgument Mapper resolved dynamically */
-                $objects
+            $objects
         );
     }//end getObjects()
 
@@ -346,10 +342,6 @@ class ObjectService
     {
         // Process the ids.
         $processedIds = array_map(
-            /**
-             * @param mixed $id The ID to process.
-             * @return mixed The processed ID.
-             */
             function (mixed $id): mixed {
                 if (is_object($id) === true && method_exists($id, 'getId') === true) {
                     return $id->getId();
@@ -359,7 +351,7 @@ class ObjectService
                     return $id;
                 }
             },
-                $ids
+            $ids
         );
 
         // Clean up the ids if they are URIs.
@@ -373,14 +365,14 @@ class ObjectService
 
                 return $id;
             },
-                $processedIds
+            $processedIds
         );
 
         // Get the appropriate mapper for the object type.
         $mapper = $this->getMapper(objectType: $objectType);
 
         // Use the mapper to find and return multiple objects based on the provided cleaned ids.
-        /** @var array $multipleResults */
+        // @var array $multipleResults.
         $multipleResults = $mapper->findMultiple($cleanedIds);
         return $multipleResults;
     }//end getMultipleObjects()
@@ -407,7 +399,7 @@ class ObjectService
         $mapper = $this->getMapper(objectType: $objectType);
 
         // Use the mapper to find and return all objects of the specified type.
-        /** @var array $allResults */
+        // @var array $allResults.
         $allResults = $mapper->findAll(limit: $limit, offset: $offset);
         return $allResults;
     }//end getAllObjects()
@@ -435,7 +427,7 @@ class ObjectService
         $mapper = $this->getMapper(objectType: $objectType);
         // If the object has an id, update it; otherwise, create a new object.
         if (isset($object['id']) === true) {
-            /** @var array<string,mixed>|\OCP\AppFramework\Db\Entity $saveResult */
+            // @var array<string,mixed>|\OCP\AppFramework\Db\Entity $saveResult
             $saveResult = $mapper->updateFromArray(
                 id: $object['id'],
                 object: $object,
@@ -444,7 +436,7 @@ class ObjectService
             );
             return $saveResult;
         } else {
-            /** @var array<string,mixed>|\OCP\AppFramework\Db\Entity $saveResult */
+            // @var array<string,mixed>|\OCP\AppFramework\Db\Entity $saveResult
             $saveResult = $mapper->createFromArray(object: $object, extend: $extend);
             return $saveResult;
         }
@@ -469,7 +461,7 @@ class ObjectService
 
         // Use the mapper to get and delete the object.
         try {
-            /** @var \OCP\AppFramework\Db\Entity $object */
+            // @var \OCP\AppFramework\Db\Entity $object.
             $object = $mapper->find($id);
             $mapper->delete($object);
         } catch (Exception $e) {
@@ -491,7 +483,7 @@ class ObjectService
         if (in_array(needle: 'openregister', haystack: $this->appManager->getInstalledApps()) === true) {
             try {
                 // Attempt to get the OpenRegister service from the container.
-                /** @var object */
+                // @var object.
                 return $this->container->get('OCA\OpenRegister\Service\ObjectService');
             } catch (Exception $e) {
                 // If the service is not available, return null.
@@ -542,18 +534,24 @@ class ObjectService
     public function getResultArrayForRequest(string $objectType, array $requestParams): array
     {
         // Extract specific parameters.
-        /** @var int|null $limit */
-        $limit  = $requestParams['limit'] ?? $requestParams['_limit'] ?? null;
-        /** @var int|null $offset */
+        // @var int|null $limit.
+        $limit = $requestParams['limit'] ?? $requestParams['_limit'] ?? null;
+
+        // @var int|null $offset
         $offset = $requestParams['offset'] ?? $requestParams['_offset'] ?? null;
-        /** @var array|string $order */
-        $order  = $requestParams['order'] ?? $requestParams['_order'] ?? [];
-        /** @var array|string|null $extend */
+
+        // @var array|string $order
+        $order = $requestParams['order'] ?? $requestParams['_order'] ?? [];
+
+        // @var array|string|null $extend
         $extend = $requestParams['extend'] ?? $requestParams['_extend'] ?? null;
-        /** @var int|null $page */
-        $page   = $requestParams['page'] ?? $requestParams['_page'] ?? null;
-        /** @var string|null $search */
+
+        // @var int|null $page
+        $page = $requestParams['page'] ?? $requestParams['_page'] ?? null;
+
+        // @var string|null $search
         $search = $requestParams['search'] ?? $requestParams['_search'] ?? null;
+
         // If page is set, calculate the offset.
         if ($page !== null && isset($limit) === true) {
             $offset = $limit * ($page - 1);
@@ -574,14 +572,20 @@ class ObjectService
         // Nextcloud automatically adds this.
         unset($filters['_extend'], $filters['_limit'], $filters['_offset'], $filters['_order'], $filters['_page']);
         unset($filters['extend'], $filters['limit'], $filters['offset'], $filters['order'], $filters['page']);
+
         // Fetch objects based on filters and order.
+        $extendArray = null;
+        if (is_array($extend) === true) {
+            $extendArray = $extend;
+        }
+
         $objects = $this->getObjects(
             objectType: $objectType,
             limit: $limit,
             offset: $offset,
             filters: $filters,
             sort: $order,
-            extend: is_array($extend) ? $extend : null,
+            extend: $extendArray,
             search: $search
         );
 
@@ -620,42 +624,43 @@ class ObjectService
         if (is_array($entity) === true) {
             $result = $entity;
         } else {
-            /** @var \JsonSerializable $entityObject */
+            // @var \JsonSerializable $entityObject.
             $entityObject = $entity;
-            /** @var array<string,mixed> $result */
+
+            // @var array<string,mixed> $result.
             $result = $entityObject->jsonSerialize();
         }
 
         if (in_array(needle: 'all', haystack: $extend) === true) {
-            /** @var array<string,mixed> $entityArray */
+            // @var array<string,mixed> $entityArray
             $entityArray = $entity;
-            $extend = array_keys($entityArray);
+            $extend      = array_keys($entityArray);
             $surpressMapperError = true;
         }
 
         // Iterate through each property to be extended.
-        /** @psalm-suppress MixedAssignment Extend array values are strings */
+        // @psalm-suppress MixedAssignment Extend array values are strings.
         foreach ($extend as $property) {
             // Create a singular property name.
             $singularProperty = rtrim((string) $property, 's');
 
             // Check if property or singular property are keys in the array.
-            /** @var string $property */
+            // @var string $property.
             if (array_key_exists($property, $result) === true) {
-                /** @var mixed $value */
+                // @var mixed $value
                 $value = $result[$property];
                 if (empty($value) === true) {
                     continue;
                 }
             } else if (array_key_exists($singularProperty, $result) === true) {
-                /** @var mixed $value */
+                // @var mixed $value
                 $value = $result[$singularProperty];
             } else {
                 throw new Exception("Property '$property' or '$singularProperty' is not present in the entity.");
             }
 
             // Get a mapper for the property (validates the type exists).
-            $propertyStr = $property;
+            $propertyStr    = $property;
             $propertyObject = $propertyStr;
             try {
                 $this->getMapper(objectType: $propertyStr);
@@ -683,10 +688,10 @@ class ObjectService
                 );
             } else {
                 // If the value is not an array, get a single related object.
-                /** @psalm-suppress MixedAssignment Value from entity array */
+                // @psalm-suppress MixedAssignment Value from entity array.
                 $objectId = $value;
                 if (is_object($value) === true) {
-                    /** @var \OCP\AppFramework\Db\Entity $value */
+                    // @var \OCP\AppFramework\Db\Entity $value.
                     $objectId = (string) $value->getId();
                 }
 
@@ -694,7 +699,7 @@ class ObjectService
                     objectType: $propertyObject,
                     id: (string) $objectId
                 );
-            }
+            }//end if
         }//end foreach
 
         // Return the extended entity as an array.
@@ -719,7 +724,7 @@ class ObjectService
         $mapper = $this->getMapper(objectType: $objectType);
 
         // Get audit trails from OpenRegister.
-        /** @var array $auditTrails */
+        // @var array $auditTrails.
         $auditTrails = $mapper->getRelations($id);
 
         return $auditTrails;
@@ -738,8 +743,9 @@ class ObjectService
     public function getUses(string $objectType, string $id): array
     {
         $mapper = $this->getMapper(objectType: $objectType);
-        /** @var array $uses */
-        $uses   = $mapper->getUses($id);
+
+        // @var array $uses
+        $uses = $mapper->getUses($id);
         return $uses;
     }//end getUses()
 
@@ -760,7 +766,7 @@ class ObjectService
         // Get the mapper first.
         $mapper = $this->getMapper(objectType: $objectType);
 
-        /** @var array $files */
+        // @var array $files
         $files = $mapper->formatFiles($mapper->getFiles($id));
         return $files;
     }//end getFiles()
@@ -781,7 +787,7 @@ class ObjectService
         $mapper = $this->getMapper(objectType: $objectType);
 
         // Get audit trails from OpenRegister.
-        /** @var array $auditTrails */
+        // @var array $auditTrails.
         $auditTrails = $mapper->getAuditTrail($id);
 
         return $auditTrails;
@@ -803,7 +809,8 @@ class ObjectService
     public function lockObject(string $objectType, string|int $id, ?string $process=null, ?int $duration=3600): array
     {
         $mapper = $this->getMapper(objectType: $objectType);
-        /** @var array<string,mixed> $result */
+
+        // @var array<string,mixed> $result
         $result = $mapper->lockObject($id, $process, $duration);
         return $result;
     }//end lockObject()
@@ -822,7 +829,8 @@ class ObjectService
     public function unlockObject(string $objectType, string|int $id): array
     {
         $mapper = $this->getMapper(objectType: $objectType);
-        /** @var array<string,mixed> $result */
+
+        // @var array<string,mixed> $result
         $result = $mapper->unlockObject($id);
         return $result;
     }//end unlockObject()
@@ -842,9 +850,10 @@ class ObjectService
      */
     public function isLocked(string $objectType, string|int $id): bool
     {
-        /** @var \OCA\OpenRegister\Service\ObjectService $mapper */
+        // @var \OCA\OpenRegister\Service\ObjectService $mapper
         $mapper = $this->getMapper(objectType: $objectType);
-        /** @var bool $locked */
+
+        // @var bool $locked
         $locked = $mapper->isLocked($id);
         return $locked;
     }//end isLocked()
@@ -867,7 +876,8 @@ class ObjectService
     public function revertObject(string $objectType, string|int $id, $until=null, bool $overwriteVersion=false): array
     {
         $mapper = $this->getMapper(objectType: $objectType);
-        /** @var array<string,mixed> $result */
+
+        // @var array<string,mixed> $result
         $result = $mapper->revertObject(
             id: $id,
             until: $until,

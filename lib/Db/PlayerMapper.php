@@ -98,7 +98,7 @@ class PlayerMapper extends QBMapper
     public function createFromArray(array $data): Player
     {
         $player = new Player();
-        /** @psalm-suppress MixedAssignment Dynamic entity property */
+        // @psalm-suppress MixedAssignment Dynamic entity property
         foreach ($data as $key => $value) {
             $player->$key = $value;
         }
@@ -118,8 +118,8 @@ class PlayerMapper extends QBMapper
      */
     public function updateFromArray(int $playerId, array $data): Player
     {
-        $player = $this->find($playerId);
-        /** @psalm-suppress MixedAssignment Dynamic entity property */
+        $player = $this->find(playerId: $playerId);
+        // @psalm-suppress MixedAssignment Dynamic entity property
         foreach ($data as $key => $value) {
             $player->$key = $value;
         }

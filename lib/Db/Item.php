@@ -35,8 +35,6 @@ class Item extends Entity implements JsonSerializable
      * The name of the item.
      *
      * @var string|null
-     *
-     * @psalm-suppress PossiblyUnusedProperty Accessed via Entity __call magic (getName/setName).
      */
     protected $name = null;
 
@@ -44,8 +42,6 @@ class Item extends Entity implements JsonSerializable
      * The description of the item.
      *
      * @var string|null
-     *
-     * @psalm-suppress PossiblyUnusedProperty Accessed via Entity __call magic (getDescription/setDescription).
      */
     protected $description = null;
 
@@ -83,7 +79,7 @@ class Item extends Entity implements JsonSerializable
      */
     public function hydrate(array $data): void
     {
-        /** @psalm-suppress MixedAssignment Dynamic entity property */
+        // @psalm-suppress MixedAssignment Dynamic entity property
         foreach ($data as $key => $value) {
             $this->$key = $value;
         }
@@ -98,7 +94,7 @@ class Item extends Entity implements JsonSerializable
     {
         $data = [];
         foreach ($this->getJsonFields() as $field) {
-            /** @psalm-suppress MixedAssignment Dynamic entity property */
+            // @psalm-suppress MixedAssignment Dynamic entity property
             $data[$field] = $this->$field;
         }
 

@@ -38,8 +38,6 @@ class Event extends Entity implements JsonSerializable
      * The title of the event.
      *
      * @var string|null
-     *
-     * @psalm-suppress PossiblyUnusedProperty Accessed via Entity __call magic (getTitle/setTitle).
      */
     protected $title = null;
 
@@ -47,8 +45,6 @@ class Event extends Entity implements JsonSerializable
      * The description of the event.
      *
      * @var string|null
-     *
-     * @psalm-suppress PossiblyUnusedProperty Accessed via Entity __call magic (getDescription/setDescription).
      */
     protected $description = null;
 
@@ -56,8 +52,6 @@ class Event extends Entity implements JsonSerializable
      * The start date of the event.
      *
      * @var DateTime|null
-     *
-     * @psalm-suppress PossiblyUnusedProperty Accessed via Entity __call magic (getStartDate/setStartDate).
      */
     protected $startDate = null;
 
@@ -65,8 +59,6 @@ class Event extends Entity implements JsonSerializable
      * The end date of the event.
      *
      * @var DateTime|null
-     *
-     * @psalm-suppress PossiblyUnusedProperty Accessed via Entity __call magic (getEndDate/setEndDate).
      */
     protected $endDate = null;
 
@@ -74,8 +66,6 @@ class Event extends Entity implements JsonSerializable
      * The user ID who owns the event.
      *
      * @var string|null
-     *
-     * @psalm-suppress PossiblyUnusedProperty Accessed via Entity __call magic (getUserId/setUserId).
      */
     protected $userId = null;
 
@@ -119,7 +109,7 @@ class Event extends Entity implements JsonSerializable
      */
     public function hydrate(array $data): void
     {
-        /** @psalm-suppress MixedAssignment Dynamic entity property */
+        // @psalm-suppress MixedAssignment Dynamic entity property
         foreach ($data as $key => $value) {
             $this->$key = $value;
         }
@@ -134,7 +124,7 @@ class Event extends Entity implements JsonSerializable
     {
         $data = [];
         foreach ($this->getJsonFields() as $field) {
-            /** @psalm-suppress MixedAssignment Dynamic entity property */
+            // @psalm-suppress MixedAssignment Dynamic entity property
             $data[$field] = $this->$field;
         }
 

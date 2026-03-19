@@ -93,7 +93,7 @@ class SettingMapper extends QBMapper
     public function createFromArray(array $data): Setting
     {
         $setting = new Setting();
-        /** @psalm-suppress MixedAssignment Dynamic entity property */
+        // @psalm-suppress MixedAssignment Dynamic entity property
         foreach ($data as $key => $value) {
             $setting->$key = $value;
         }
@@ -113,8 +113,8 @@ class SettingMapper extends QBMapper
      */
     public function updateFromArray(int $settingId, array $data): Setting
     {
-        $setting = $this->find($settingId);
-        /** @psalm-suppress MixedAssignment Dynamic entity property */
+        $setting = $this->find(settingId: $settingId);
+        // @psalm-suppress MixedAssignment Dynamic entity property
         foreach ($data as $key => $value) {
             $setting->$key = $value;
         }

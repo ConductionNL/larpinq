@@ -76,11 +76,11 @@ class SkillMapper extends QBMapper
     /**
      * Find all skills matching the given criteria
      *
-     * @param int|null                   $limit            Maximum number of results
-     * @param int|null                   $offset           Result offset
-     * @param array<string,mixed>|null   $filters          Additional filters
-     * @param array<int,string>|null     $searchConditions Search conditions
-     * @param array<string,string>|null  $searchParams     Search parameters
+     * @param int|null                  $limit            Maximum number of results
+     * @param int|null                  $offset           Result offset
+     * @param array<string,mixed>|null  $filters          Additional filters
+     * @param array<int,string>|null    $searchConditions Search conditions
+     * @param array<string,string>|null $searchParams     Search parameters
      *
      * @return array
      *
@@ -106,11 +106,11 @@ class SkillMapper extends QBMapper
             ->setFirstResult($offset ?? 0);
 
         if ($filters !== null) {
-            /** @psalm-suppress MixedAssignment Filter values from request params */
+            // @psalm-suppress MixedAssignment Filter values from request params
             foreach ($filters as $filter => $value) {
                 if ($value === 'IS NOT NULL') {
                     $queryBuilder->andWhere($queryBuilder->expr()->isNotNull($filter));
-                } elseif ($value === 'IS NULL') {
+                } else if ($value === 'IS NULL') {
                     $queryBuilder->andWhere($queryBuilder->expr()->isNull($filter));
                 }
 
@@ -123,7 +123,7 @@ class SkillMapper extends QBMapper
         if ($searchConditions !== null && count($searchConditions) > 0) {
             $queryBuilder->andWhere('('.implode(' OR ', $searchConditions).')');
             if ($searchParams !== null) {
-                /** @psalm-suppress MixedAssignment Search params from request */
+                // @psalm-suppress MixedAssignment Search params from request
                 foreach ($searchParams as $param => $value) {
                     $queryBuilder->setParameter($param, $value);
                 }
@@ -161,7 +161,7 @@ class SkillMapper extends QBMapper
      */
     public function updateFromArray(int $skillId, array $object): Skill
     {
-        $skill = $this->find($skillId);
+        $skill = $this->find(skillId: $skillId);
         $skill->hydrate($object);
 
         return $this->update(entity: $skill);

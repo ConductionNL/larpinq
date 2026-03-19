@@ -93,7 +93,7 @@ class ConditionMapper extends QBMapper
     public function createFromArray(array $data): Condition
     {
         $condition = new Condition();
-        /** @psalm-suppress MixedAssignment Dynamic entity property */
+        // @psalm-suppress MixedAssignment Dynamic entity property
         foreach ($data as $key => $value) {
             $condition->$key = $value;
         }
@@ -113,8 +113,8 @@ class ConditionMapper extends QBMapper
      */
     public function updateFromArray(int $conditionId, array $data): Condition
     {
-        $condition = $this->find($conditionId);
-        /** @psalm-suppress MixedAssignment Dynamic entity property */
+        $condition = $this->find(conditionId: $conditionId);
+        // @psalm-suppress MixedAssignment Dynamic entity property
         foreach ($data as $key => $value) {
             $condition->$key = $value;
         }

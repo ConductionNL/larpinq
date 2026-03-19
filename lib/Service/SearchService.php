@@ -74,10 +74,12 @@ class SearchService
     public function mergeFacets(array $existingAggregation, array $newAggregation): array
     {
         $results = [];
-        /** @var array<string, int> $existingMap */
+
+        // @var array<string, int> $existingMap
         $existingMap = [];
-        /** @var array<string, int> $newMap */
-        $newMap      = [];
+
+        // @var array<string, int> $newMap
+        $newMap = [];
 
         foreach ($existingAggregation as $value) {
             $existingMap[$value['_id']] = $value['count'];
@@ -120,7 +122,7 @@ class SearchService
 
         $result = $existingAggregations ?? [];
 
-        /** @psalm-suppress MixedAssignment,MixedArgument Aggregation values are dynamic arrays */
+        // @psalm-suppress MixedAssignment,MixedArgument Aggregation values are dynamic arrays
         foreach ($newAggregations as $key => $aggregation) {
             if (isset($result[$key]) === false) {
                 $result[$key] = $aggregation;
@@ -171,22 +173,27 @@ class SearchService
      */
     public function search(array $parameters, array $elasticConfig, array $dbConfig, array $catalogi=[]): array
     {
-        /** @var array{results: array, facets: array} $localResults */
+        // @var array{results: array, facets: array} $localResults
         $localResults = [
             'results' => [],
             'facets'  => [],
         ];
 
         $totalResults = 0;
-        $limit = isset($parameters['.limit']) === true ? (int) $parameters['.limit'] : 30;
-        $page  = isset($parameters['.page']) === true ? (int) $parameters['.page'] : 1;
+        $limit        = 30;
+        if (isset($parameters['.limit']) === true) {
+            $limit = (int) $parameters['.limit'];
+        }
 
-        /**
-         * @psalm-suppress UndefinedThisPropertyFetch
-         * @psalm-suppress MixedMethodCall Dynamically injected service.
-         */
+        $page = 1;
+        if (isset($parameters['.page']) === true) {
+            $page = (int) $parameters['.page'];
+        }
+
+        // @psalm-suppress UndefinedThisPropertyFetch
+        // @psalm-suppress MixedMethodCall Dynamically injected service.
         if ($elasticConfig['location'] !== '' && isset($this->elasticService) === true) {
-            /** @var array{results: array, facets: array} $localResults */
+            // @var array{results: array, facets: array} $localResults
             $localResults = $this->elasticService->searchObject(
                 filters: $parameters,
                 config: $elasticConfig,
@@ -194,13 +201,13 @@ class SearchService
             );
         }
 
-        /**
-         * @psalm-suppress UndefinedThisPropertyFetch
-         * @psalm-suppress MixedMethodCall Dynamically injected service.
-         *
-         * @var array<int, array<string, mixed>> $directory
-         */
-        $directory = isset($this->directoryService) === true ? $this->directoryService->listDirectory(limit: 1000) : [];
+        // @psalm-suppress UndefinedThisPropertyFetch
+        // @psalm-suppress MixedMethodCall Dynamically injected service.
+        // @var array<int, array<string, mixed>> $directory
+        $directory = [];
+        if (isset($this->directoryService) === true) {
+            $directory = $this->directoryService->listDirectory(limit: 1000);
+        }
 
         // $directory = $this->objectService->findObjects(filters: ['_schema' => 'directory'], config: $dbConfig).
         if (count($directory) === 0) {
@@ -225,10 +232,10 @@ class SearchService
 
         $searchEndpoints = [];
 
-        /** @psalm-suppress UnusedVariable $promises is accumulated in the loop and settled below. */
+        // @psalm-suppress UnusedVariable $promises is accumulated in the loop and settled below.
         $promises = [];
         foreach ($directory as $instance) {
-            /** @var array{search?: string, default?: bool, catalogId?: string} $instance */
+            // @var array{search?: string, default?: bool, catalogId?: string} $instance
             $instance['search'] = $this->urlGenerator->getAbsoluteURL(
                 $this->urlGenerator->linkToRoute(routeName: "opencatalogi.directory.index")
             );
@@ -245,7 +252,7 @@ class SearchService
 
         unset($parameters['.catalogi']);
 
-        /** @psalm-suppress MixedAssignment Search endpoints from directory */
+        // @psalm-suppress MixedAssignment Search endpoints from directory
         foreach ($searchEndpoints as $searchEndpoint => $catalogi) {
             $parameters['_catalogi'] = $catalogi;
 
@@ -255,45 +262,41 @@ class SearchService
             );
         }
 
-        /**
-         * @psalm-suppress MixedAssignment GuzzleHttp promise results.
-         * @psalm-suppress MixedMethodCall GuzzleHttp returns mixed from settle().
-         */
+        // @psalm-suppress MixedAssignment GuzzleHttp promise results.
+        // @psalm-suppress MixedMethodCall GuzzleHttp returns mixed from settle().
         $responses = Utils::settle($promises)->wait();
 
-        /**
-         * @psalm-suppress MixedAssignment GuzzleHttp response entries.
-         * @psalm-suppress MixedArrayAccess GuzzleHttp response structure is dynamic.
-         * @psalm-suppress MixedMethodCall GuzzleHttp response methods are dynamic.
-         * @psalm-suppress MixedArgument GuzzleHttp response values are dynamic.
-         * @psalm-suppress MixedArgumentTypeCoercion GuzzleHttp response values are dynamic.
-         */
+        // @psalm-suppress MixedAssignment GuzzleHttp response entries.
+        // @psalm-suppress MixedArrayAccess GuzzleHttp response structure is dynamic.
+        // @psalm-suppress MixedMethodCall GuzzleHttp response methods are dynamic.
+        // @psalm-suppress MixedArgument GuzzleHttp response values are dynamic.
+        // @psalm-suppress MixedArgumentTypeCoercion GuzzleHttp response values are dynamic.
         foreach ($responses as $response) {
-            /** @var array{state: string, value?: \Psr\Http\Message\ResponseInterface} $response */
-            if ($response['state'] === 'fulfilled' && isset($response['value'])) {
-                /** @var array<string, mixed> $responseData */
+            // @var array{state: string, value?: \Psr\Http\Message\ResponseInterface} $response
+            if ($response['state'] === 'fulfilled' && isset($response['value']) === true) {
+                // @var array<string, mixed> $responseData
                 $responseData = json_decode(
                     json: $response['value']->getBody()->getContents(),
                     associative: true
                 );
 
-                /** @var array $remoteResults */
+                // @var array $remoteResults
                 $remoteResults = $responseData['results'] ?? [];
-                $results = array_merge(
+                $results       = array_merge(
                     $results,
                     $remoteResults
                 );
 
                 usort($results, [$this, 'sortResultArray']);
 
-                /** @var array|null $remoteFacets */
+                // @var array|null $remoteFacets
                 $remoteFacets = $responseData['facets'] ?? null;
                 $aggregations = $this->mergeAggregations(
                     existingAggregations: $aggregations,
                     newAggregations: $remoteFacets
                 );
-            }
-        }
+            }//end if
+        }//end foreach
 
         $pages = (int) ceil($totalResults / $limit);
         if ($pages === 0) {
@@ -321,7 +324,7 @@ class SearchService
      *
      * @param array  $vars    The vars array we are going to store the query parameter in
      * @param string $name    The full $name of the query param, like this: ?$name=$value
-     * @param string $nameKey The full $name of the query param, unless it contains [] like: ?queryParam[$nameKey]=$value
+     * @param string $nameKey The full $name of the query param, unless it contains []
      * @param string $value   The full $value of the query param, like this: ?$name=$value
      *
      * @return void
@@ -330,7 +333,7 @@ class SearchService
      */
     private function recursiveRequestQueryKey(array &$vars, string $name, string $nameKey, string $value): void
     {
-        $matches = [];
+        $matches      = [];
         $matchesCount = preg_match(pattern: '/(\[[^[\]]*])/', subject: $name, matches: $matches);
         if ($matchesCount > 0) {
             $key  = $matches[0];
@@ -341,7 +344,7 @@ class SearchService
                     $vars[$nameKey] = [];
                 }
 
-                /** @var array $subVars */
+                // @var array $subVars
                 $subVars = &$vars[$nameKey];
                 $this->recursiveRequestQueryKey(
                     vars: $subVars,
@@ -355,10 +358,10 @@ class SearchService
                 }
 
                 $vars[$nameKey][] = $value;
-            }
+            }//end if
         } else {
             $vars[$nameKey] = $value;
-        }
+        }//end if
 
     }//end recursiveRequestQueryKey()
 
@@ -385,7 +388,7 @@ class SearchService
             unset($filters['_search']);
         }
 
-        /** @psalm-suppress MixedAssignment Filter values from request */
+        // @psalm-suppress MixedAssignment Filter values from request
         foreach ($filters as $field => $value) {
             if ($value === 'IS NOT NULL') {
                 $filters[$field] = ['$ne' => null];
@@ -412,7 +415,7 @@ class SearchService
     {
         $searchConditions = [];
         if (isset($filters['_search']) === true) {
-            /** @psalm-suppress MixedAssignment Field names from array */
+            // @psalm-suppress MixedAssignment Field names from array
             foreach ($fieldsToSearch as $field) {
                 $searchConditions[] = "LOWER($field) LIKE :search";
             }
@@ -472,7 +475,7 @@ class SearchService
     {
         $sort = [];
         if (isset($filters['_order']) === true && is_array($filters['_order']) === true) {
-            /** @psalm-suppress MixedAssignment Order values from request */
+            // @psalm-suppress MixedAssignment Order values from request
             foreach ($filters['_order'] as $field => $direction) {
                 if (strtoupper((string) $direction) === 'DESC') {
                     $direction = 'DESC';
@@ -503,7 +506,7 @@ class SearchService
     {
         $sort = [];
         if (isset($filters['_order']) === true && is_array($filters['_order']) === true) {
-            /** @psalm-suppress MixedAssignment Order values from request */
+            // @psalm-suppress MixedAssignment Order values from request
             foreach ($filters['_order'] as $field => $direction) {
                 if (strtoupper((string) $direction) === 'DESC') {
                     $sort[$field] = -1;
@@ -539,7 +542,11 @@ class SearchService
             }
 
             $bracketPos = strpos($key, '[');
-            $nameKey    = ($bracketPos !== false) ? substr($key, 0, $bracketPos) : $key;
+            $nameKey    = $key;
+            if ($bracketPos !== false) {
+                $nameKey = substr($key, 0, $bracketPos);
+            }
+
             $this->recursiveRequestQueryKey(
                 vars: $vars,
                 name: $key,

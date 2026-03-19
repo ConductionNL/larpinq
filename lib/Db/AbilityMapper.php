@@ -91,7 +91,7 @@ class AbilityMapper extends QBMapper
     public function createFromArray(array $data): Ability
     {
         $ability = new Ability();
-        /** @psalm-suppress MixedAssignment Dynamic entity property */
+        // @psalm-suppress MixedAssignment Dynamic entity property
         foreach ($data as $key => $value) {
             $ability->$key = $value;
         }
@@ -111,8 +111,8 @@ class AbilityMapper extends QBMapper
      */
     public function updateFromArray(int $abilityId, array $data): Ability
     {
-        $ability = $this->find($abilityId);
-        /** @psalm-suppress MixedAssignment Dynamic entity property */
+        $ability = $this->find(abilityId: $abilityId);
+        // @psalm-suppress MixedAssignment Dynamic entity property
         foreach ($data as $key => $value) {
             $ability->$key = $value;
         }

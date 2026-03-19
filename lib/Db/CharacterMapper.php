@@ -93,7 +93,7 @@ class CharacterMapper extends QBMapper
     public function createFromArray(array $data): Character
     {
         $character = new Character();
-        /** @psalm-suppress MixedAssignment Dynamic entity property */
+        // @psalm-suppress MixedAssignment Dynamic entity property
         foreach ($data as $key => $value) {
             $character->$key = $value;
         }
@@ -113,8 +113,8 @@ class CharacterMapper extends QBMapper
      */
     public function updateFromArray(int $characterId, array $data): Character
     {
-        $character = $this->find($characterId);
-        /** @psalm-suppress MixedAssignment Dynamic entity property */
+        $character = $this->find(characterId: $characterId);
+        // @psalm-suppress MixedAssignment Dynamic entity property
         foreach ($data as $key => $value) {
             $character->$key = $value;
         }

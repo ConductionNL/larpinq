@@ -77,7 +77,7 @@ class ConfigFileLoaderService
             throw new RuntimeException("Failed to read configuration file: {$absoluteFilePath}");
         }
 
-        /** @var array<string, mixed>|null $data */
+        // @var array<string, mixed>|null $data
         $data = json_decode($jsonContent, true);
         if (json_last_error() !== JSON_ERROR_NONE || is_array($data) === false) {
             throw new RuntimeException('Invalid JSON in configuration file: '.json_last_error_msg());
@@ -100,7 +100,7 @@ class ConfigFileLoaderService
             $data['x-openregister'] = [];
         }
 
-        /** @var array<string, mixed> $openRegister */
+        // @var array<string, mixed> $openRegister
         $openRegister = $data['x-openregister'];
         if (isset($openRegister['sourceType']) === false) {
             $openRegister['sourceType'] = 'local';

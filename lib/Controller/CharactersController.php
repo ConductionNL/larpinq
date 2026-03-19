@@ -86,25 +86,23 @@ class CharactersController extends Controller
         }
 
         try {
-            /** @var object $templateService */
+            // @var object $templateService
             $templateService = $this->container->get('OCA\DocuDesk\Service\TemplateService');
-            /**
-             * @psalm-suppress MixedMethodCall DocuDesk is an optional cross-app dependency.
-             * @var array<string,mixed> $templateData
-             */
-            $templateData    = $templateService->getTemplate(id: $template);
+
+            // @psalm-suppress MixedMethodCall DocuDesk is an optional cross-app dependency.
+            // @var array<string,mixed> $templateData
+            $templateData = $templateService->getTemplate(id: $template);
         } catch (\Exception $exception) {
             return new JSONResponse(data: ['error' => 'Template not found'], statusCode: 404);
         }
 
         try {
-            /** @var object $pdfService */
+            // @var object $pdfService
             $pdfService = $this->container->get('OCA\DocuDesk\Service\PdfService');
-            /**
-             * @psalm-suppress MixedMethodCall DocuDesk is an optional cross-app dependency.
-             * @var string $pdfString
-             */
-            $pdfString  = $pdfService->renderPdf(
+
+            // @psalm-suppress MixedMethodCall DocuDesk is an optional cross-app dependency.
+            // @var string $pdfString
+            $pdfString = $pdfService->renderPdf(
                 templateContent: (string) ($templateData['content'] ?? ''),
                 data: ['character' => $character, 'template' => $templateData],
                 options: [

@@ -47,8 +47,6 @@ class SettingsController extends Controller
      * The OpenRegister object service.
      *
      * @var object|null The OpenRegister object service.
-     *
-     * @psalm-suppress PropertyNotSetInConstructor Set lazily via getObjectService().
      */
     private ?object $objectService = null;
 
@@ -76,7 +74,6 @@ class SettingsController extends Controller
 
     }//end __construct()
 
-
     /**
      * Attempts to retrieve the OpenRegister service from the container.
      *
@@ -86,7 +83,7 @@ class SettingsController extends Controller
     public function getObjectService(): ?object
     {
         if (in_array(needle: 'openregister', haystack: $this->appManager->getInstalledApps()) === true) {
-            /** @var object $service */
+            // @var object $service
             $service = $this->container->get('OCA\OpenRegister\Service\ObjectService');
             $this->objectService = $service;
             return $this->objectService;
@@ -95,7 +92,6 @@ class SettingsController extends Controller
         throw new RuntimeException('OpenRegister service is not available.');
 
     }//end getObjectService()
-
 
     /**
      * Attempts to retrieve the Configuration service from the container.
@@ -106,7 +102,7 @@ class SettingsController extends Controller
     public function getConfigurationService(): ?object
     {
         if (in_array(needle: 'openregister', haystack: $this->appManager->getInstalledApps()) === true) {
-            /** @var object $configurationService */
+            // @var object $configurationService
             $configurationService = $this->container->get('OCA\OpenRegister\Service\ConfigurationService');
             return $configurationService;
         }

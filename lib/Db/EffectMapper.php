@@ -93,7 +93,7 @@ class EffectMapper extends QBMapper
     public function createFromArray(array $data): Effect
     {
         $effect = new Effect();
-        /** @psalm-suppress MixedAssignment Dynamic entity property */
+        // @psalm-suppress MixedAssignment Dynamic entity property
         foreach ($data as $key => $value) {
             $effect->$key = $value;
         }
@@ -113,8 +113,8 @@ class EffectMapper extends QBMapper
      */
     public function updateFromArray(int $effectId, array $data): Effect
     {
-        $effect = $this->find($effectId);
-        /** @psalm-suppress MixedAssignment Dynamic entity property */
+        $effect = $this->find(effectId: $effectId);
+        // @psalm-suppress MixedAssignment Dynamic entity property
         foreach ($data as $key => $value) {
             $effect->$key = $value;
         }

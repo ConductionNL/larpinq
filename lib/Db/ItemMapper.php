@@ -98,7 +98,7 @@ class ItemMapper extends QBMapper
     public function createFromArray(array $data): Item
     {
         $item = new Item();
-        /** @psalm-suppress MixedAssignment Dynamic entity property */
+        // @psalm-suppress MixedAssignment Dynamic entity property
         foreach ($data as $key => $value) {
             $item->$key = $value;
         }
@@ -118,8 +118,8 @@ class ItemMapper extends QBMapper
      */
     public function updateFromArray(int $itemId, array $data): Item
     {
-        $item = $this->find($itemId);
-        /** @psalm-suppress MixedAssignment Dynamic entity property */
+        $item = $this->find(itemId: $itemId);
+        // @psalm-suppress MixedAssignment Dynamic entity property
         foreach ($data as $key => $value) {
             $item->$key = $value;
         }

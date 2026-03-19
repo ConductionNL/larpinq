@@ -47,7 +47,7 @@ class SettingsMapBuilder
     public function buildSchemaSlugMap(array $schemas): array
     {
         $schemaMap = [];
-        /** @psalm-suppress MixedAssignment Schema entries from import result */
+        // @psalm-suppress MixedAssignment Schema entries from import result
         foreach ($schemas as $schema) {
             $this->addSchemaToMap(
                 schema: $schema,
@@ -68,7 +68,7 @@ class SettingsMapBuilder
      */
     public function findRegisterIdBySlug(array $registers): mixed
     {
-        /** @psalm-suppress MixedAssignment Register entries from import result */
+        // @psalm-suppress MixedAssignment Register entries from import result
         foreach ($registers as $register) {
             $registerId = $this->extractRegisterIdIfMatch(register: $register);
             if ($registerId !== null) {
@@ -99,7 +99,7 @@ class SettingsMapBuilder
             return;
         }
 
-        /** @var string|int|null $schemaId */
+        // @var string|int|null $schemaId
         $schemaId = $schemaArray['id'] ?? $schemaArray['uuid'] ?? null;
         $schemaMap[(string) $schemaArray['slug']] = $schemaId;
 
@@ -141,8 +141,8 @@ class SettingsMapBuilder
     private function normalizeToArray(mixed $value): ?array
     {
         if (is_object($value) === true && method_exists($value, 'jsonSerialize') === true) {
-            /** @var \JsonSerializable $value */
-            /** @var array<array-key, mixed> $result */
+            // @var \JsonSerializable $value
+            // @var array<array-key, mixed> $result
             $result = $value->jsonSerialize();
             return $result;
         }
