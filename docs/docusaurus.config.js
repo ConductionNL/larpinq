@@ -28,7 +28,7 @@ const config = {
           path: './',
           sidebarPath: require.resolve('./sidebars.js'),
           editUrl:
-            'https://github.com/ConductionNL/larpingapp/tree/main/docusaurus/',
+            'https://github.com/ConductionNL/larpingapp/tree/main/docs/',
         },
         blog: false,
         theme: {
