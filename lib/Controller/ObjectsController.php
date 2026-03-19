@@ -380,7 +380,6 @@ class ObjectsController extends Controller
      *
      * @return JSONResponse
      *
-     * @SuppressWarnings(PHPMD.ElseExpression)
      */
     public function revert(string $objectType, string $id): JSONResponse
     {
@@ -395,10 +394,9 @@ class ObjectsController extends Controller
                 // Handle both DateTime and audit trail ID cases.
                 // @var string $untilParam.
                 $untilParam = $params['until'];
+                $until      = $untilParam;
                 if (strtotime($untilParam) !== false) {
                     $until = new DateTime($untilParam);
-                } else {
-                    $until = $untilParam;
                 }
             }
 

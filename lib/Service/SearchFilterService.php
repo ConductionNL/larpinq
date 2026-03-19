@@ -144,7 +144,6 @@ class SearchFilterService
      *
      * @return array $sort
      *
-     * @SuppressWarnings(PHPMD.ElseExpression)
      */
     public function createSortForMySQL(array $filters): array
     {
@@ -152,10 +151,9 @@ class SearchFilterService
         if (isset($filters['_order']) === true && is_array($filters['_order']) === true) {
             // @psalm-suppress MixedAssignment Order values from request
             foreach ($filters['_order'] as $field => $direction) {
+                $direction = 'ASC';
                 if (strtoupper((string) $direction) === 'DESC') {
                     $direction = 'DESC';
-                } else {
-                    $direction = 'ASC';
                 }
 
                 $sort[$field] = $direction;
@@ -175,7 +173,6 @@ class SearchFilterService
      *
      * @todo Not functional yet. Needs to be fixed (see PublicationsController->index).
      *
-     * @SuppressWarnings(PHPMD.ElseExpression)
      */
     public function createSortForMongoDB(array $filters): array
     {
@@ -183,10 +180,9 @@ class SearchFilterService
         if (isset($filters['_order']) === true && is_array($filters['_order']) === true) {
             // @psalm-suppress MixedAssignment Order values from request
             foreach ($filters['_order'] as $field => $direction) {
+                $sort[$field] = 1;
                 if (strtoupper((string) $direction) === 'DESC') {
                     $sort[$field] = -1;
-                } else {
-                    $sort[$field] = 1;
                 }
             }
         }
@@ -243,39 +239,37 @@ class SearchFilterService
      *
      * @return void
      *
-     * @SuppressWarnings(PHPMD.ElseExpression)
      */
     private function recursiveRequestQueryKey(array &$vars, string $name, string $nameKey, string $value): void
     {
         $matches      = [];
         $matchesCount = preg_match(pattern: '/(\[[^[\]]*])/', subject: $name, matches: $matches);
-        if ($matchesCount > 0) {
-            $key  = $matches[0];
-            $name = str_replace(search: $key, replace: '', subject: $name);
-            $key  = trim(string: $key, characters: '[]');
-            if (empty($key) === false) {
-                if (isset($vars[$nameKey]) === false || is_array($vars[$nameKey]) === false) {
-                    $vars[$nameKey] = [];
-                }
-
-                // @var array $subVars
-                $subVars = &$vars[$nameKey];
-                $this->recursiveRequestQueryKey(
-                    vars: $subVars,
-                    name: $name,
-                    nameKey: $key,
-                    value: $value
-                );
-            } else {
-                if (isset($vars[$nameKey]) === false || is_array($vars[$nameKey]) === false) {
-                    $vars[$nameKey] = [];
-                }
-
-                $vars[$nameKey][] = $value;
-            }//end if
-        } else {
+        if ($matchesCount <= 0) {
             $vars[$nameKey] = $value;
-        }//end if
+            return;
+        }
+
+        $key  = $matches[0];
+        $name = str_replace(search: $key, replace: '', subject: $name);
+        $key  = trim(string: $key, characters: '[]');
+
+        if (isset($vars[$nameKey]) === false || is_array($vars[$nameKey]) === false) {
+            $vars[$nameKey] = [];
+        }
+
+        if (empty($key) === false) {
+            // @var array $subVars
+            $subVars = &$vars[$nameKey];
+            $this->recursiveRequestQueryKey(
+                vars: $subVars,
+                name: $name,
+                nameKey: $key,
+                value: $value
+            );
+            return;
+        }
+
+        $vars[$nameKey][] = $value;
 
     }//end recursiveRequestQueryKey()
 }//end class

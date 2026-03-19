@@ -347,7 +347,6 @@ class ObjectService
      *
      * @return array The cleaned IDs.
      *
-     * @SuppressWarnings(PHPMD.ElseExpression)
      */
     private function processAndCleanIds(array $ids): array
     {
@@ -355,11 +354,13 @@ class ObjectService
             function (mixed $id): mixed {
                 if (is_object($id) === true && method_exists($id, 'getId') === true) {
                     return $id->getId();
-                } else if (is_array($id) === true && isset($id['id']) === true) {
-                    return $id['id'];
-                } else {
-                    return $id;
                 }
+
+                if (is_array($id) === true && isset($id['id']) === true) {
+                    return $id['id'];
+                }
+
+                return $id;
             },
             $ids
         );
@@ -435,7 +436,6 @@ class ObjectService
      * @psalm-suppress MixedMethodCall Mapper resolved dynamically via getMapper().
      *
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
-     * @SuppressWarnings(PHPMD.ElseExpression)
      */
     public function saveObject(string $objectType, array $object, array $extend=[], bool $updateVersion=true): mixed
     {
@@ -444,11 +444,11 @@ class ObjectService
             // @var array<string,mixed>|\OCP\AppFramework\Db\Entity $saveResult
             $saveResult = $mapper->updateFromArray($object['id'], $object, $updateVersion, $extend);
             return $saveResult;
-        } else {
-            // @var array<string,mixed>|\OCP\AppFramework\Db\Entity $saveResult
-            $saveResult = $mapper->createFromArray($object, $extend);
-            return $saveResult;
         }
+
+        // @var array<string,mixed>|\OCP\AppFramework\Db\Entity $saveResult
+        $saveResult = $mapper->createFromArray($object, $extend);
+        return $saveResult;
     }//end saveObject()
 
     /**

@@ -65,7 +65,6 @@ class SearchService
      *
      * @return array<int, array{_id: string|int, count: int}> The merged aggregation array
      *
-     * @SuppressWarnings(PHPMD.ElseExpression)
      */
     public function mergeFacets(array $existingAggregation, array $newAggregation): array
     {
@@ -82,10 +81,9 @@ class SearchService
         }
 
         foreach ($newAggregation as $value) {
+            $newMap[$value['_id']] = $value['count'];
             if (isset($existingMap[$value['_id']]) === true) {
                 $newMap[$value['_id']] = $existingMap[$value['_id']] + $value['count'];
-            } else {
-                $newMap[$value['_id']] = $value['count'];
             }
         }
 
@@ -108,7 +106,6 @@ class SearchService
      *
      * @return array The merged aggregations
      *
-     * @SuppressWarnings(PHPMD.ElseExpression)
      */
     private function mergeAggregations(?array $existingAggregations, ?array $newAggregations): array
     {
@@ -122,12 +119,13 @@ class SearchService
         foreach ($newAggregations as $key => $aggregation) {
             if (isset($result[$key]) === false) {
                 $result[$key] = $aggregation;
-            } else {
-                $result[$key] = $this->mergeFacets(
-                    existingAggregation: $result[$key],
-                    newAggregation: $aggregation
-                );
+                continue;
             }
+
+            $result[$key] = $this->mergeFacets(
+                existingAggregation: $result[$key],
+                newAggregation: $aggregation
+            );
         }
 
         return $result;
