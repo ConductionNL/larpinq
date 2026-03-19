@@ -124,7 +124,7 @@ class ObjectService
      *
      * @psalm-suppress UndefinedDocblockClass OpenRegister classes may not be installed.
      */
-    private function getMapper(string $objectType): object
+    public function getMapper(string $objectType): object
     {
         $objectTypeLower = strtolower($objectType);
 
@@ -154,7 +154,7 @@ class ObjectService
 
             // @psalm-suppress MixedMethodCall OpenRegister is an optional cross-app dependency.
             // @var object $orMapper
-            $orMapper = $openRegister->getMapper(register: $register, schema: $schema);
+            $orMapper = $openRegister->getMapper($register, $schema);
             return $orMapper;
         }//end if
 
@@ -265,14 +265,7 @@ class ObjectService
 
         // Use the mapper to find and return the objects based on the provided parameters.
         // @psalm-suppress MixedAssignment Mapper resolved dynamically.
-        $objects = $mapper->findAll(
-            limit: $limit,
-            offset: $offset,
-            filters: $filters,
-            sort: $sort,
-            search: $search,
-            extend: $extend
-        );
+        $objects = $mapper->findAll($limit, $offset, $filters, $sort, $search, $extend);
 
         // Convert entity objects to arrays using jsonSerialize.
         // @psalm-suppress MixedArgument Mapper resolved dynamically.
@@ -400,7 +393,7 @@ class ObjectService
 
         // Use the mapper to find and return all objects of the specified type.
         // @var array $allResults.
-        $allResults = $mapper->findAll(limit: $limit, offset: $offset);
+        $allResults = $mapper->findAll($limit, $offset);
         return $allResults;
     }//end getAllObjects()
 
@@ -428,16 +421,11 @@ class ObjectService
         // If the object has an id, update it; otherwise, create a new object.
         if (isset($object['id']) === true) {
             // @var array<string,mixed>|\OCP\AppFramework\Db\Entity $saveResult
-            $saveResult = $mapper->updateFromArray(
-                id: $object['id'],
-                object: $object,
-                updateVersion: $updateVersion,
-                extend: $extend
-            );
+            $saveResult = $mapper->updateFromArray($object['id'], $object, $updateVersion, $extend);
             return $saveResult;
         } else {
             // @var array<string,mixed>|\OCP\AppFramework\Db\Entity $saveResult
-            $saveResult = $mapper->createFromArray(object: $object, extend: $extend);
+            $saveResult = $mapper->createFromArray($object, $extend);
             return $saveResult;
         }
     }//end saveObject()
@@ -507,11 +495,11 @@ class ObjectService
      * @psalm-suppress MixedMethodCall Mapper resolved dynamically via getMapper().
      * @psalm-suppress MixedReturnStatement Mapper resolved dynamically via getMapper().
      */
-    private function getCount(string $objectType, array $filters=[]): int
+    public function getCount(string $objectType, array $filters=[]): int
     {
         $mapper = $this->getMapper(objectType: $objectType);
         if (($mapper instanceof \OCA\OpenRegister\Service\ObjectService) === true) {
-            return $mapper->count(filters: $filters);
+            return $mapper->count($filters);
         }
 
         return 0;
@@ -878,11 +866,7 @@ class ObjectService
         $mapper = $this->getMapper(objectType: $objectType);
 
         // @var array<string,mixed> $result
-        $result = $mapper->revertObject(
-            id: $id,
-            until: $until,
-            overwriteVersion: $overwriteVersion
-        );
+        $result = $mapper->revertObject($id, $until, $overwriteVersion);
         return $result;
     }//end revertObject()
 }//end class

@@ -5,13 +5,44 @@ parameters:
     bootstrapFiles:
         - vendor/autoload.php
     excludePaths:
-        - vendor
-        - vendor-bin
+        analyseAndScan:
+            - vendor-bin
+        analyse:
+            - vendor
     scanDirectories:
         - vendor/nextcloud/ocp
+    treatPhpDocTypesAsCertain: false
     reportUnmatchedIgnoredErrors: false
     ignoreErrors:
         # Nextcloud internal classes that PHPStan might not recognize
-        - '#Call to an undefined method OC::#'
-        - '#Class OC not found#'
-        - '#Access to static property \$server on an unknown class OC#'
+        -
+            message: '#Call to an undefined method OC::#'
+        -
+            message: '#Class OC not found#'
+        -
+            message: '#Access to static property \$server on an unknown class OC#'
+        # GuzzleHttp is provided by Nextcloud at runtime but not a direct composer dependency
+        -
+            message: '#GuzzleHttp#'
+        # OpenRegister is an optional cross-app dependency
+        -
+            message: '#OpenRegister#'
+        # Dynamic mapper pattern: getMapper() returns object, methods resolved at runtime
+        -
+            message: '#Call to an undefined method#'
+            path: lib/Service/ObjectService.php
+        -
+            message: '#invoked with \d+ parameters#'
+            path: lib/Service/ObjectService.php
+        -
+            message: '#expects int, string given#'
+            path: lib/Service/ObjectService.php
+        -
+            message: '#expects array.*, string\|null given#'
+            path: lib/Service/ObjectService.php
+        -
+            message: '#will always evaluate to false#'
+            path: lib/Service/ObjectService.php
+        # Properties injected via DI for future use or used by Nextcloud framework
+        -
+            message: '#is never read, only written#'

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pmd version="@package_version@" timestamp="2026-03-19T08:32:46+00:00">
+  <file name="OCA\LarpingApp\Controller\ObjectsController">
+    <violation beginline="1" rule="Probably bugged" ruleset="Probably bugged" externalInfoUrl="http://www.phpmetrics.org/documentation/index.html" priority="3">            This component contains in theory 0.56 bugs.
+
+            * Calculation is based on number of operators, operands, cyclomatic complexity
+            * See more details at https://en.wikipedia.org/wiki/Halstead_complexity_measures
+            *  testsuites has dependency to this class.
+
+            Maybe you should check your unit tests for this class.</violation>
+  </file>
+  <file name="OCA\LarpingApp\Service\CharacterService">
+    <violation beginline="1" rule="Too complex class code" ruleset="Too complex class code" externalInfoUrl="http://www.phpmetrics.org/documentation/index.html" priority="2">            This class looks really complex.
+
+            * Algorithms are complex (Total cyclomatic complexity of class is 57)
+            * Component uses 144 operators
+
+            Maybe you should delegate some code to other objects.</violation>
+    <violation beginline="1" rule="Too complex method code" ruleset="Too complex method code" externalInfoUrl="http://www.phpmetrics.org/documentation/index.html" priority="2">            This class looks really complex.
+
+            * Algorithms are complex (Max cyclomatic complexity of class methods is 37)
+
+            Maybe you should delegate some code to other objects or split complex method.</violation>
+    <violation beginline="1" rule="Probably bugged" ruleset="Probably bugged" externalInfoUrl="http://www.phpmetrics.org/documentation/index.html" priority="3">            This component contains in theory 0.93 bugs.
+
+            * Calculation is based on number of operators, operands, cyclomatic complexity
+            * See more details at https://en.wikipedia.org/wiki/Halstead_complexity_measures
+            *  testsuites has dependency to this class.
+
+            Maybe you should check your unit tests for this class.</violation>
+  </file>
+  <file name="OCA\LarpingApp\Service\ObjectService">
+    <violation beginline="1" rule="Too complex class code" ruleset="Too complex class code" externalInfoUrl="http://www.phpmetrics.org/documentation/index.html" priority="2">            This class looks really complex.
+
+            * Algorithms are complex (Total cyclomatic complexity of class is 54)
+            * Component uses 205 operators
+
+            Maybe you should delegate some code to other objects.</violation>
+    <violation beginline="1" rule="Too complex method code" ruleset="Too complex method code" externalInfoUrl="http://www.phpmetrics.org/documentation/index.html" priority="2">            This class looks really complex.
+
+            * Algorithms are complex (Max cyclomatic complexity of class methods is 18)
+
+            Maybe you should delegate some code to other objects or split complex method.</violation>
+    <violation beginline="1" rule="Probably bugged" ruleset="Probably bugged" externalInfoUrl="http://www.phpmetrics.org/documentation/index.html" priority="3">            This component contains in theory 1.61 bugs.
+
+            * Calculation is based on number of operators, operands, cyclomatic complexity
+            * See more details at https://en.wikipedia.org/wiki/Halstead_complexity_measures
+            *  testsuites has dependency to this class.
+
+            Maybe you should check your unit tests for this class.</violation>
+    <violation beginline="1" rule="Too long" ruleset="Too long" externalInfoUrl="http://www.phpmetrics.org/documentation/index.html" priority="4">            This class looks really long.
+
+            * Class has 301 logical lines of code
+            * Class has 733 lines of code
+
+            Maybe your class should not exceed 200 lines of logical code</violation>
+  </file>
+  <file name="OCA\LarpingApp\Service\SearchService">
+    <violation beginline="1" rule="Too complex class code" ruleset="Too complex class code" externalInfoUrl="http://www.phpmetrics.org/documentation/index.html" priority="2">            This class looks really complex.
+
+            * Algorithms are complex (Total cyclomatic complexity of class is 59)
+            * Component uses 170 operators
+
+            Maybe you should delegate some code to other objects.</violation>
+    <violation beginline="1" rule="Too complex method code" ruleset="Too complex method code" externalInfoUrl="http://www.phpmetrics.org/documentation/index.html" priority="2">            This class looks really complex.
+
+            * Algorithms are complex (Max cyclomatic complexity of class methods is 22)
+
+            Maybe you should delegate some code to other objects or split complex method.</violation>
+    <violation beginline="1" rule="Probably bugged" ruleset="Probably bugged" externalInfoUrl="http://www.phpmetrics.org/documentation/index.html" priority="3">            This component contains in theory 1.38 bugs.
+
+            * Calculation is based on number of operators, operands, cyclomatic complexity
+            * See more details at https://en.wikipedia.org/wiki/Halstead_complexity_measures
+            *  testsuites has dependency to this class.
+
+            Maybe you should check your unit tests for this class.</violation>
+    <violation beginline="1" rule="Too long" ruleset="Too long" externalInfoUrl="http://www.phpmetrics.org/documentation/index.html" priority="4">            This class looks really long.
+
+            * Class has 229 logical lines of code
+            * Class has 428 lines of code
+
+            Maybe your class should not exceed 200 lines of logical code</violation>
+  </file>
+  <file name="OCA\LarpingApp\Db\">
+    <violation beginline="1" rule="Stable Abstractions Principle" ruleset="Stable Abstractions Principle" externalInfoUrl="http://www.phpmetrics.org/documentation/index.html" priority="3">            Packages should be either abstract and stable or concrete and instable.
+
+            This package is instable and abstract.</violation>
+  </file>
+  <file name="OCA\LarpingApp\Db\SkillMapper">
+    <violation beginline="1" rule="Too complex method code" ruleset="Too complex method code" externalInfoUrl="http://www.phpmetrics.org/documentation/index.html" priority="2">            This class looks really complex.
+
+            * Algorithms are complex (Max cyclomatic complexity of class methods is 12)
+
+            Maybe you should delegate some code to other objects or split complex method.</violation>
+  </file>
+  <file name=" OCA\LarpingApp\Db\">
+    <violation beginline="1" rule="Stable Dependencies Principle" ruleset="Stable Dependencies Principle" externalInfoUrl="http://www.phpmetrics.org/documentation/index.html" priority="3">            Packages should depend in the direction of stability.
+
+            This package is more stable (0.667) than 1 package(s) that it depends on.
+            The packages that are more stable are
+
+            *   LarpingApp (0.75)</violation>
+  </file>
+  <file name="OCA\LarpingApp\Db\EventMapper">
+    <violation beginline="1" rule="Too complex method code" ruleset="Too complex method code" externalInfoUrl="http://www.phpmetrics.org/documentation/index.html" priority="2">            This class looks really complex.
+
+            * Algorithms are complex (Max cyclomatic complexity of class methods is 13)
+
+            Maybe you should delegate some code to other objects or split complex method.</violation>
+  </file>
+</pmd>

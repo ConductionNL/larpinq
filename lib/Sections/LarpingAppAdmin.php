@@ -28,7 +28,6 @@ use OCP\Settings\IIconSection;
  * @license   AGPL-3.0-or-later https://www.gnu.org/licenses/agpl-3.0.en.html
  *
  * @psalm-api
- * @phpstan-api
  * @php-version 8.2
  */
 class LarpingAppAdmin implements IIconSection
