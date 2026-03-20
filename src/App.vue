@@ -1,32 +1,15 @@
 <template>
 	<NcContent app-name="larpingapp">
-		<!-- Empty state: OpenRegister not installed -->
-		<NcAppContent v-if="storesReady && !hasOpenRegisters">
-			<NcEmptyContent
-				class="open-register-missing"
-				:name="t('larpingapp', 'OpenRegister is required')"
-				:description="t('larpingapp', 'LarpingApp needs the OpenRegister app to store and manage data. Please install OpenRegister from the app store to get started.')">
-				<template #icon>
-					<img
-						:src="appIcon"
-						alt=""
-						width="64"
-						height="64">
-				</template>
-				<template #action>
-					<NcButton
-						v-if="isAdmin"
-						type="primary"
-						:href="appStoreUrl">
-						{{ t('larpingapp', 'Install OpenRegister') }}
-					</NcButton>
-				</template>
-			</NcEmptyContent>
-		</NcAppContent>
-		<!-- Normal state: app fully loaded -->
-		<template v-else-if="storesReady">
+		<!-- Normal state: app loaded -->
+		<template v-if="storesReady">
 			<MainMenu @open-settings="showSettingsDialog = true" />
 			<NcAppContent>
+				<NcNoteCard v-if="!hasOpenRegisters" type="warning" class="open-register-warning">
+					{{ t('larpingapp', 'OpenRegister is not configured. Some features may be limited.') }}
+					<NcButton v-if="isAdmin" type="tertiary" :href="appStoreUrl" size="small">
+						{{ t('larpingapp', 'Configure') }}
+					</NcButton>
+				</NcNoteCard>
 				<router-view />
 			</NcAppContent>
 			<CnIndexSidebar
@@ -54,7 +37,7 @@
 
 <script>
 import Vue from 'vue'
-import { NcContent, NcAppContent, NcLoadingIcon, NcButton, NcEmptyContent } from '@nextcloud/vue'
+import { NcContent, NcAppContent, NcLoadingIcon, NcButton, NcNoteCard } from '@nextcloud/vue'
 import { generateUrl, imagePath } from '@nextcloud/router'
 import { CnIndexSidebar } from '@conduction/nextcloud-vue'
 import MainMenu from './navigation/MainMenu.vue'
@@ -69,7 +52,7 @@ export default {
 		NcAppContent,
 		NcLoadingIcon,
 		NcButton,
-		NcEmptyContent,
+		NcNoteCard,
 		CnIndexSidebar,
 		MainMenu,
 		UserSettings,
