@@ -13,10 +13,8 @@ declare(strict_types=1);
 
 namespace OCA\LarpingApp\Controller;
 
-use GuzzleHttp\Client;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\TemplateResponse;
-use OCP\AppFramework\Http\JSONResponse;
 use OCP\IAppConfig;
 use OCP\IRequest;
 
