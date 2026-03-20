@@ -1,117 +1,26 @@
 ---
-status: reviewed
+status: enriched
 ---
 
 # Game Mechanics Specification
 
 ## Purpose
 
-Game mechanics covers the interconnected system of Skills, Items, Conditions, Effects, and Abilities (stats) that form the LARP rule engine. Effects are the fundamental building blocks -- they modify ability scores. Skills, items, conditions, and events each contain arrays of effects that are applied to characters. Abilities define the numeric stats that effects target. This specification documents the CRUD operations, data models, and interactions between these entity types.
+Game mechanics covers the interconnected system of Skills, Items, Conditions, Effects, and Abilities (stats) that form the LARP rule engine. Effects are the fundamental building blocks -- they modify ability scores via positive or negative modifiers. Skills, items, conditions, and events each contain arrays of effect references that are applied to characters during stat calculation by `CharacterService.calculateCharacter()`. Abilities define the numeric stats that effects target. Skills additionally support a prerequisite system. This specification documents the CRUD operations, data models, effect chain integrity, and interactions between these entity types.
 
 **Key source files:**
 - `lib/Db/Skill.php`, `lib/Db/Item.php`, `lib/Db/Condition.php`, `lib/Db/Effect.php`, `lib/Db/Ability.php` -- Entity classes
-- `lib/Service/CharacterService.php` -- Effect application logic
-- `src/entities/skill/`, `src/entities/item/`, `src/entities/condition/`, `src/entities/effect/`, `src/entities/ability/` -- TypeScript entities
-- `docs/Schema/Skill.json`, `docs/Schema/Item.json`, `docs/Schema/Condition.json`, `docs/Schema/Effect.json`, `docs/Schema/Stats.json` -- JSON schemas
-
-## Data Models
-
-### Ability (Stat)
-
-Abilities represent numeric values on which characters are scored. Common examples include XP, mana (healing, spiritual, elemental), HP, DEX, CHA, or any trackable numeric value like money or material components.
-
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| id | string (UUID) | Auto | Unique identifier |
-| name | string | YES | The name of this ability (e.g., "Experience Points", "Healing Mana") |
-| description | string | No | Description of what this ability represents in the setting |
-| base | integer (default 0) | No | Starting value for all characters |
-| allowed_negative | boolean (default false) | No | Whether this ability value can go below zero during stat calculation. Added in migration `Version0Date20241015141612`. **Note:** This field exists in the database but is NOT defined as a property on the PHP entity class (`lib/Db/Ability.php` only has `name` and `description`), and is NOT currently used by the stat calculation engine. |
-
-### Effect
-
-Effects are numeric modifiers to one or more abilities. They are the atomic unit of the game mechanics system -- skills, items, conditions, and events all contain arrays of effect references.
-
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| id | string (UUID) | Auto | Unique identifier |
-| name | string | YES | Descriptive name (e.g., "+ 5 Healing Mana") |
-| description | string | No | Rule-technical description of what the effect does |
-| modifier | integer | No | The numeric modifier value (e.g., 5) |
-| modification | enum: positive, negative (default: positive) | No | Whether the modifier adds or subtracts |
-| cumulative | enum: cumulative, non-cumulative (default: non-cumulative) | No | Whether a character can take this effect more than once |
-| abilities | array of Ability UUIDs | No | The abilities targeted by this effect |
-| stat_id (legacy) | string (UUID) | No | Legacy single-ability targeting field |
-
-### Skill
-
-Skills represent learnable actions characters can perform (e.g., healing, spellcasting). They typically provide positive effects and cost experience points. Skills can have prerequisites.
-
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| id | string (UUID) | Auto | Unique identifier |
-| name | string | YES | Name of the skill (e.g., "Healing LvL 1") |
-| description | string (max 2555) | No | Setting-appropriate flavor text (visible to players) |
-| effect | string | No | Technical/rule description of what the skill does |
-| effects | array of Effect UUIDs | No | Automated effects applied to characters with this skill |
-| requiredSkills | array of Skill UUIDs | No | Prerequisite skills needed before taking this skill |
-| requiredStats | array of Stat UUIDs | No | Prerequisite stat levels needed |
-| requiredConditions | array of Condition UUIDs | No | Prerequisite conditions needed |
-| requiredEffects | array of Effect UUIDs | No | Prerequisite effects needed |
-| requiredScore | integer | No | Minimum ability score required (when prerequisites are abilities) |
-
-### Item
-
-Items represent objects characters own that can have effects. Items are intended for magic/special items, not mundane tracking. Items can be unique (one-of-a-kind artifacts) or non-unique (generic magic swords).
-
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| id | string (UUID) | Auto | Unique identifier |
-| name | string | YES | Name of the item (e.g., "Hand of Vecna") |
-| description | string (max 2555) | No | Flavor text visible to the character holding the item |
-| effect | string (max 2555) | No | Technical description for game masters (not visible to characters) |
-| effects | array of Effect UUIDs | No | Automated effects applied to the character holding this item |
-| unique | boolean (default: true) | No | Whether only one instance of this item can exist |
-| characters | array of Character UUIDs | No | Characters currently holding this item |
-
-### Condition
-
-Conditions are positive or negative effects that target characters, typically as consequences of gameplay actions. Unlike skills, conditions are not "bought" with skill points -- they are applied during play.
-
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| id | string (UUID) | Auto | Unique identifier |
-| name | string | YES | Name of the condition (e.g., "Vampiric Demeanor") |
-| description | string | No | Setting-appropriate flavor text |
-| effect | string | No | Game description of what the condition does |
-| effects | array of Effect UUIDs | No | Automated effects caused by this condition |
-| unique | boolean (default: false) | No | Whether this condition can apply to only one character |
-| characters | array of Character UUIDs (readOnly) | No | Characters affected by this condition |
-
-### Internal vs OpenRegister Storage
-
-All game mechanics entities have a **dual data model**:
-
-1. **Internal storage (PHP entities)**: Each entity class in `lib/Db/` is skeletal, with only `id`, `name`, and `description` fields. The PHP entities do NOT define fields like `effects`, `requiredSkills`, `modifier`, `modification`, `cumulative`, `abilities`, `unique`, `characters`, `base`, or `allowed_negative` as class properties. The database tables created by migrations similarly have minimal columns.
-
-2. **OpenRegister storage**: The full data model (with all the rich fields documented above) only exists when using OpenRegister schemas. In OpenRegister mode, objects are stored as JSON documents with full field support.
-
-This means that **internal storage mode is functionally incomplete** -- entities stored internally will only have basic name/description fields and cannot participate in the full game mechanics system (effects, prerequisites, etc.). The app is designed to be used with OpenRegister for production use.
-
-**Specific inconsistencies:**
-- `Ability.php` entity: only `name`, `description` properties, but DB table has `base` and `allowed_negative` columns (not exposed via `getJsonFields()`)
-- `Effect.php` entity: only `name`, `description` -- no `modifier`, `modification`, `cumulative`, `abilities`, `stat_id`
-- `Skill.php` entity: only `name`, `description` -- no `effect`, `effects`, `requiredSkills`, etc.
-- `Item.php` entity: only `name`, `description` -- no `effects`, `unique`, `characters`
-- `Condition.php` entity: only `name`, `description` -- no `effects`, `unique`, `characters`
+- `lib/Service/CharacterService.php` -- Effect application logic (`applyEntityEffects()`, `applyEffects()`, `calculateEffect()`, `applyModifierToAbility()`)
+- `src/store/modules/object.js` -- Generic object store
+- `docs/Schema/Skill.json`, `docs/Schema/Item.json`, etc. -- JSON schemas
 
 ## Requirements
 
 ---
 
-### Requirement: Ability CRUD
+### Requirement: Ability (Stat) CRUD
 
-The system MUST support creating, reading, updating, and deleting abilities (stats) via the generic objects API.
+The system MUST support creating, reading, updating, and deleting abilities. Abilities represent the numeric stats that characters are scored on and that effects target.
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
@@ -119,145 +28,243 @@ The system MUST support creating, reading, updating, and deleting abilities (sta
 | MECH-002 | Ability MUST require a `name` field | MUST | Implemented |
 | MECH-003 | Ability `base` MUST default to 0 if not specified | MUST | Implemented |
 | MECH-004 | Abilities MUST be listable with search, pagination, and facets | MUST | Implemented |
-| MECH-005 | Ability `allowed_negative` MUST default to false if not specified (from migration `Version0Date20241015141612`) | MUST | Implemented |
+| MECH-005 | Ability `allowed_negative` MUST default to false if not specified | MUST | Implemented |
+| MECH-006 | Abilities MUST be accessible from the Settings navigation area with ShieldSwordOutline icon | MUST | Implemented |
+| MECH-007 | Ability base value MUST be used by `CharacterService.initializeAbilityScores()` to set starting values for all characters | MUST | Implemented |
+| MECH-008 | Deleting an ability MUST NOT crash the stat engine (orphaned ability references are skipped) | MUST | Implemented |
+| MECH-009 | The `allowed_negative` field exists in the database (migration `Version0Date20241015141612`) but is NOT used by the stat calculation engine | SHOULD | Bug |
+| MECH-010 | The `Ability.php` entity class only has `name` and `description` properties -- `base` and `allowed_negative` are NOT exposed via `getJsonFields()` in internal mode | MUST | Bug |
 
 #### Scenario: Create an ability
 
-- GIVEN a game master configuring the setting
+- GIVEN a game master is configuring the LARP setting
 - WHEN they POST to `/api/objects/ability` with name "Healing Mana" and base 5
 - THEN the system MUST create the ability object
 - AND all new characters MUST use base value 5 for "Healing Mana" in stat calculations
 
 #### Scenario: Update an ability base value
 
-- GIVEN an ability "XP" with base 0
+- GIVEN an ability "XP" with base 0 exists
 - WHEN the game master updates base to 15 (all characters start with 15 XP)
-- THEN the system MUST save the updated ability
-- AND future stat calculations for all characters MUST use the new base value 15
+- THEN future stat calculations for all characters MUST use the new base value 15
+- AND existing character stats MUST reflect the new base on recalculation
+
+#### Scenario: Delete an ability referenced by effects
+
+- GIVEN ability "Mana" is targeted by 3 effects
+- AND those effects are assigned to skills on characters
+- WHEN "Mana" is deleted
+- THEN the stat engine MUST skip the missing ability during calculation
+- AND no errors MUST be thrown
+- AND the effects MUST still exist but target a non-existent ability
+
+#### Scenario: List abilities with search
+
+- GIVEN abilities "Strength", "Dexterity", "Mana", and "HP" exist
+- WHEN the user searches for "mana"
+- THEN only "Mana" MUST appear in the results
+
+#### Scenario: Ability initialization in stat engine
+
+- GIVEN abilities "Strength" (base 10), "Dexterity" (base 8), "Mana" (base 0) exist
+- WHEN `CharacterService.initializeAbilityScores()` is called
+- THEN the result MUST contain entries for all 3 abilities
+- AND each MUST have `value` equal to its `base`
+- AND each MUST have an empty `audit` array
 
 ---
 
-### Requirement: Effect CRUD
+### Requirement: Effect CRUD and Mechanics
 
-The system MUST support creating, reading, updating, and deleting effects. Effects define the numeric modifications applied to abilities.
+The system MUST support creating, reading, updating, and deleting effects. Effects are the atomic modifiers that change ability scores.
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
-| MECH-010 | System MUST support CRUD for effects via `/api/objects/effect` | MUST | Implemented |
-| MECH-011 | Effect MUST require a `name` field | MUST | Implemented |
-| MECH-012 | Effect `modification` MUST default to `positive` if not specified | MUST | Implemented |
-| MECH-013 | Effect `cumulative` MUST default to `non-cumulative` if not specified | MUST | Implemented |
-| MECH-014 | Effect MUST support targeting multiple abilities via the `abilities` array | MUST | Implemented |
-| MECH-015 | Effect MUST support legacy `stat_id` field for single-ability targeting | MUST | Implemented |
+| MECH-020 | System MUST support CRUD for effects via `/api/objects/effect` | MUST | Implemented |
+| MECH-021 | Effect MUST require a `name` field | MUST | Implemented |
+| MECH-022 | Effect `modification` MUST default to `positive` if not specified | MUST | Implemented |
+| MECH-023 | Effect `cumulative` MUST default to `non-cumulative` if not specified | MUST | Implemented |
+| MECH-024 | Effect MUST support targeting multiple abilities via the `abilities[]` array | MUST | Implemented |
+| MECH-025 | Effect MUST support legacy `stat_id` field for single-ability targeting | MUST | Implemented |
+| MECH-026 | `calculateEffect()` MUST call `collectEffectAbilities()` to gather all targeted abilities from both `abilities[]` and `stat_id` | MUST | Implemented |
+| MECH-027 | `applyModifierToAbility()` MUST add modifier for "positive" and subtract for "negative" modification | MUST | Implemented |
+| MECH-028 | `applyModifierToAbility()` MUST append an audit entry with `{type, effect, old, new}` for each modification | MUST | Implemented |
+| MECH-029 | Effects MUST be accessible from the Settings navigation area with MagicStaff icon | MUST | Implemented |
 
-#### Scenario: Create a positive effect
+#### Scenario: Create a positive effect targeting one ability
 
-- GIVEN an ability "Healing Mana" exists
-- WHEN a game master creates an effect with name "+5 Healing Mana", modifier 5, modification "positive", and abilities ["healing-mana-uuid"]
+- GIVEN ability "Healing Mana" exists
+- WHEN a game master creates effect "+5 Healing Mana" with modifier 5, modification "positive", abilities ["healing-mana-uuid"]
 - THEN the effect MUST be created
 - AND when assigned to a skill/item/condition on a character, it MUST add 5 to Healing Mana
 
 #### Scenario: Create a negative effect
 
-- GIVEN an ability "HP" exists
-- WHEN a game master creates an effect with name "-2 HP (Curse)", modifier 2, modification "negative", and abilities ["hp-uuid"]
+- GIVEN ability "HP" exists
+- WHEN a game master creates effect "-2 HP (Curse)" with modifier 2, modification "negative", abilities ["hp-uuid"]
 - THEN the effect MUST be created
-- AND when applied via a condition, it MUST subtract 2 from the character's HP
+- AND when applied via a condition, it MUST subtract 2 from HP
 
 #### Scenario: Create an effect targeting multiple abilities
 
 - GIVEN abilities "Arcane Mana" and "Spiritual Mana" exist
-- WHEN a game master creates an effect with name "Universal Mana +3", modifier 3, modification "positive", abilities ["arcane-uuid", "spiritual-uuid"]
+- WHEN a game master creates effect "Universal Mana +3" with modifier 3, abilities ["arcane-uuid", "spiritual-uuid"]
 - THEN the effect MUST be created
 - AND when applied, it MUST add 3 to BOTH abilities
+- AND both abilities MUST have audit entries
+
+#### Scenario: Effect with legacy stat_id
+
+- GIVEN ability "Dexterity" exists
+- AND an effect has stat_id pointing to Dexterity but no abilities[] array
+- WHEN `collectEffectAbilities()` processes this effect
+- THEN Dexterity MUST be included in the affected abilities list
+
+#### Scenario: Effect with both abilities[] and stat_id
+
+- GIVEN an effect has abilities=["strength-uuid"] and stat_id="dexterity-uuid"
+- WHEN `collectEffectAbilities()` processes this effect
+- THEN both Strength and Dexterity MUST be in the affected list
 
 ---
 
-### Requirement: Skill CRUD
+### Requirement: Skill CRUD and Prerequisites
 
-The system MUST support creating, reading, updating, and deleting skills. Skills MUST support effect assignments and prerequisite definitions.
+The system MUST support creating, reading, updating, and deleting skills. Skills represent learnable abilities and can have prerequisite requirements.
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
-| MECH-020 | System MUST support CRUD for skills via `/api/objects/skill` | MUST | Implemented |
-| MECH-021 | Skill MUST require a `name` field | MUST | Implemented |
-| MECH-022 | Skill MUST support assigning multiple effects | MUST | Implemented |
-| MECH-023 | Skill MUST support prerequisite definitions (requiredSkills, requiredStats, requiredConditions, requiredEffects, requiredScore) | MUST | Implemented |
-| MECH-024 | Skills MUST be accessible from the navigation sidebar under "Skills" in the settings area | MUST | Implemented |
-| MECH-025 | Skills list MUST support text search with debounce | MUST | Implemented |
+| MECH-030 | System MUST support CRUD for skills via `/api/objects/skill` | MUST | Implemented |
+| MECH-031 | Skill MUST require a `name` field | MUST | Implemented |
+| MECH-032 | Skill MUST support assigning multiple effects via `effects[]` UUID array | MUST | Implemented |
+| MECH-033 | Skill MUST support prerequisite skills via `requiredSkills[]` UUID array | MUST | Implemented |
+| MECH-034 | Skill MUST support prerequisite stat levels via `requiredStats[]` | MUST | Implemented |
+| MECH-035 | Skill MUST support prerequisite conditions via `requiredConditions[]` | MUST | Implemented |
+| MECH-036 | Skill MUST support prerequisite effects via `requiredEffects[]` | MUST | Implemented |
+| MECH-037 | Skill MUST support minimum score threshold via `requiredScore` | MUST | Implemented |
+| MECH-038 | Skills MUST be accessible from the Settings navigation area with SwordCross icon | MUST | Implemented |
+| MECH-039 | Skill detail view MUST show Effects, Characters (relations), and Logging tabs | MUST | Implemented |
 
 #### Scenario: Create a skill with effects and prerequisites
 
 - GIVEN effects "Healing LvL 1 Mana +5" and "XP Cost -10" exist
 - AND skill "Basic Healing" exists
-- WHEN a game master creates skill "Advanced Healing" with effects ["mana-effect-uuid", "xp-cost-uuid"], requiredSkills ["basic-healing-uuid"], requiredScore 15
+- WHEN a game master creates skill "Advanced Healing" with effects ["mana-effect", "xp-cost"], requiredSkills ["basic-healing"], requiredScore 15
 - THEN the skill MUST be created with all relationships
 - AND when assigned to a character, both effects MUST be applied during stat calculation
 
-#### Scenario: List all skills
+#### Scenario: View skill effects in detail
 
-- GIVEN 10 skills exist in the system
-- WHEN the user navigates to the Skills view
-- THEN all 10 skills MUST be listed
-- AND each skill MUST show its name and description
+- GIVEN skill "Sword Mastery" has effects "Attack +3" and "Defense +1"
+- WHEN the user views the skill detail and opens the Effects tab
+- THEN both effects MUST be listed with name, modification type, and modifier value
+
+#### Scenario: View characters using a skill
+
+- GIVEN skill "Healing" is assigned to characters "Merlin" and "Gandalf"
+- WHEN the user views the skill detail and opens the Characters tab
+- THEN both characters MUST be listed via the relations endpoint
+
+#### Scenario: List skills with search
+
+- GIVEN 50 skills exist in the system
+- WHEN the user navigates to the Skills view and searches "heal"
+- THEN only skills containing "heal" in their name or description MUST appear
+
+#### Scenario: Prerequisite chain display
+
+- GIVEN skill "Advanced Swordplay" requires "Basic Swordplay" and minimum score 5 on "Combat"
+- WHEN viewing the skill details
+- THEN requiredSkills MUST contain "Basic Swordplay" UUID
+- AND requiredScore MUST be 5
 
 ---
 
 ### Requirement: Item CRUD
 
-The system MUST support creating, reading, updating, and deleting items. Items MUST support effect assignments and uniqueness tracking.
+The system MUST support creating, reading, updating, and deleting items. Items represent magical or special objects that characters can hold.
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
-| MECH-030 | System MUST support CRUD for items via `/api/objects/item` | MUST | Implemented |
-| MECH-031 | Item MUST require a `name` field | MUST | Implemented |
-| MECH-032 | Item MUST support assigning multiple effects | MUST | Implemented |
-| MECH-033 | Item MUST support `unique` flag to indicate one-of-a-kind artifacts | MUST | Implemented |
-| MECH-034 | Item MUST track which characters hold it via the `characters` array | MUST | Implemented |
-| MECH-035 | Items MUST be accessible from the main navigation sidebar | MUST | Implemented |
+| MECH-040 | System MUST support CRUD for items via `/api/objects/item` | MUST | Implemented |
+| MECH-041 | Item MUST require a `name` field | MUST | Implemented |
+| MECH-042 | Item MUST support assigning multiple effects via `effects[]` UUID array | MUST | Implemented |
+| MECH-043 | Item MUST support `unique` flag to indicate one-of-a-kind artifacts | MUST | Implemented |
+| MECH-044 | Item MUST track which characters hold it via the `characters[]` array | MUST | Implemented |
+| MECH-045 | Items MUST be accessible from the main navigation sidebar with Sword icon | MUST | Implemented |
+| MECH-046 | Item detail view MUST show relations and audit trail tabs | MUST | Implemented |
 
 #### Scenario: Create a unique item
 
 - GIVEN an effect "Arcane Power +10" exists
-- WHEN a game master creates item "Hand of Vecna" with unique true, effects ["arcane-effect-uuid"]
+- WHEN a game master creates item "Hand of Vecna" with unique=true, effects=["arcane-effect"]
 - THEN the item MUST be created as a unique artifact
 - AND only one character SHOULD hold it at a time
 
 #### Scenario: Create a non-unique item
 
 - GIVEN an effect "Attack +1" exists
-- WHEN a game master creates item "Generic Magic Sword" with unique false, effects ["attack-effect-uuid"]
+- WHEN a game master creates item "Generic Magic Sword" with unique=false, effects=["attack-effect"]
 - THEN the item MUST be created as non-unique
 - AND multiple characters MAY hold instances of it
+
+#### Scenario: Item effects applied to character
+
+- GIVEN item "Ring of Protection" has effect "+3 Defense"
+- AND character "Frodo" has this item assigned
+- WHEN stats are calculated
+- THEN Defense MUST increase by 3
+- AND the audit trail MUST show the item's effect
+
+#### Scenario: Track item holders
+
+- GIVEN item "Excalibur" is assigned to character "Arthur"
+- WHEN viewing the item details
+- THEN the characters[] array MUST include Arthur's UUID
 
 ---
 
 ### Requirement: Condition CRUD
 
-The system MUST support creating, reading, updating, and deleting conditions. Conditions MUST support effect assignments.
+The system MUST support creating, reading, updating, and deleting conditions. Conditions represent positive or negative states applied to characters during gameplay.
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
-| MECH-040 | System MUST support CRUD for conditions via `/api/objects/condition` | MUST | Implemented |
-| MECH-041 | Condition MUST require a `name` field | MUST | Implemented |
-| MECH-042 | Condition MUST support assigning multiple effects | MUST | Implemented |
-| MECH-043 | Condition MUST support `unique` flag to indicate single-character applicability | MUST | Implemented |
-| MECH-044 | Condition MUST track affected characters (readOnly) | MUST | Implemented |
-| MECH-045 | Conditions MUST be accessible from the main navigation sidebar | MUST | Implemented |
+| MECH-050 | System MUST support CRUD for conditions via `/api/objects/condition` | MUST | Implemented |
+| MECH-051 | Condition MUST require a `name` field | MUST | Implemented |
+| MECH-052 | Condition MUST support assigning multiple effects via `effects[]` UUID array | MUST | Implemented |
+| MECH-053 | Condition MUST support `unique` flag to indicate single-character applicability | MUST | Implemented |
+| MECH-054 | Condition MUST track affected characters via `characters[]` (readOnly) | MUST | Implemented |
+| MECH-055 | Conditions MUST be accessible from the main navigation sidebar with EmoticonSickOutline icon | MUST | Implemented |
+| MECH-056 | Condition detail view MUST show relations and audit trail tabs | MUST | Implemented |
 
 #### Scenario: Create a condition with negative effects
 
 - GIVEN an effect "-2 HP per day (Curse)" exists
-- WHEN a game master creates condition "Vampiric Demeanor" with effects ["curse-effect-uuid"], unique false
+- WHEN a game master creates condition "Vampiric Demeanor" with effects=["curse-effect"], unique=false
 - THEN the condition MUST be created
-- AND when assigned to a character, the effect MUST subtract from the character's HP during stat calculation
+- AND when assigned to a character, HP MUST decrease by 2 during stat calculation
 
 #### Scenario: Create a unique condition
 
 - GIVEN an effect "Chosen One +100 XP" exists
-- WHEN a game master creates condition "The Chosen" with unique true, effects ["chosen-effect-uuid"]
+- WHEN a game master creates condition "The Chosen" with unique=true
 - THEN the condition MUST be flagged as unique
 - AND only one character SHOULD be affected by it
+
+#### Scenario: Condition removal restores stats
+
+- GIVEN character "Warrior" has condition "Poisoned" with effect "-5 HP"
+- AND HP is currently base(20) - 5 = 15
+- WHEN "Poisoned" is removed from the character
+- AND stats are recalculated
+- THEN HP MUST return to base(20) (or base + other modifiers)
+
+#### Scenario: Multiple conditions stacking
+
+- GIVEN character "Paladin" has conditions "Blessed" (+3 HP) and "Cursed" (-2 HP)
+- WHEN stats are calculated
+- THEN HP MUST be base + 3 - 2 = base + 1
 
 ---
 
@@ -267,12 +274,14 @@ The effect system MUST maintain integrity across the chain: Ability <- Effect <-
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
-| MECH-050 | Modifying an effect's modifier MUST change the calculation result for all characters that have skills/items/conditions containing that effect | MUST | Implemented |
-| MECH-051 | Removing an effect from a skill MUST remove that effect's contribution from character stat calculations | MUST | Implemented |
-| MECH-052 | Deleting an ability MUST NOT crash the stat engine (null ability IDs are gracefully skipped) | MUST | Implemented |
-| MECH-053 | The stat engine MUST handle null or missing effect IDs without throwing errors | MUST | Implemented |
+| MECH-060 | Modifying an effect's modifier MUST change the calculation result for all characters that have skills/items/conditions containing that effect | MUST | Implemented |
+| MECH-061 | Removing an effect from a skill MUST remove that effect's contribution from character stat calculations | MUST | Implemented |
+| MECH-062 | Deleting an ability MUST NOT crash the stat engine -- null ability IDs are gracefully skipped by `applyModifierToAbility()` | MUST | Implemented |
+| MECH-063 | The stat engine MUST handle null or missing effect IDs without throwing errors -- `applyEffects()` skips null effectIds | MUST | Implemented |
+| MECH-064 | The effect application order MUST be: skills effects, then items effects, then conditions effects, then events effects | MUST | Implemented |
+| MECH-065 | Each effect application MUST record an audit entry with old value, new value, and effect data | MUST | Implemented |
 
-#### Scenario: Effect chain recalculation
+#### Scenario: Effect chain recalculation after modifier change
 
 - GIVEN ability "Mana" (base 0), effect "Mana +5" (modifier 5, positive, targets Mana)
 - AND skill "Basic Magic" contains effect "Mana +5"
@@ -283,6 +292,38 @@ The effect system MUST maintain integrity across the chain: Ability <- Effect <-
 - AND the character is recalculated
 - THEN Mana MUST equal 10 (base 0 + 10)
 
+#### Scenario: Removing effect from skill
+
+- GIVEN skill "Healing" has effects ["heal-effect-1", "heal-effect-2"]
+- AND character "Cleric" has skill "Healing"
+- WHEN "heal-effect-2" is removed from the skill
+- AND Cleric's stats are recalculated
+- THEN only "heal-effect-1" MUST apply
+- AND the ability modified by "heal-effect-2" MUST revert to its value without that effect
+
+#### Scenario: Multiple effect sources targeting same ability
+
+- GIVEN ability "HP" (base 20)
+- AND skill effect "+5 HP", item effect "+3 HP", condition effect "-2 HP", event effect "+1 HP"
+- AND character "Tank" has all four entity types
+- WHEN stats are calculated
+- THEN HP MUST equal 27 (20 + 5 + 3 - 2 + 1)
+- AND the HP audit trail MUST contain 4 entries in order: skill, item, condition, event
+
+#### Scenario: Null effect reference handling
+
+- GIVEN a skill has effects=["valid-uuid", null, "another-valid-uuid"]
+- WHEN `applyEffects()` processes this array
+- THEN the null entry MUST be skipped
+- AND the two valid effects MUST be applied normally
+
+#### Scenario: Missing ability reference handling
+
+- GIVEN an effect targets ability "deleted-ability-uuid" which no longer exists
+- WHEN `applyModifierToAbility()` is called
+- THEN the ability entry MUST be created with value 0 if not present
+- AND the modifier MUST be applied (creating a new entry in the stats)
+
 ---
 
 ### Requirement: Audit Trail for All Mechanic Entities
@@ -291,41 +332,186 @@ All game mechanic entities MUST support audit trail viewing when backed by OpenR
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
-| MECH-060 | Each entity type (skill, item, condition, effect, ability) MUST support audit trail retrieval via `/api/objects/{type}/{id}/audit` | MUST | Implemented |
-| MECH-061 | Each entity type MUST support relations retrieval via `/api/objects/{type}/{id}/relations` | MUST | Implemented |
-| MECH-062 | Each entity type MUST support uses retrieval via `/api/objects/{type}/{id}/uses` | MUST | Implemented |
+| MECH-070 | Each entity type (skill, item, condition, effect, ability) MUST support audit trail retrieval | MUST | Implemented |
+| MECH-071 | Each entity type MUST support relations retrieval | MUST | Implemented |
+| MECH-072 | Each entity type MUST support uses retrieval | MUST | Implemented |
+| MECH-073 | Each entity type MUST support lock/unlock for concurrent editing protection | MUST | Implemented |
+| MECH-074 | Each entity type MUST support revert to previous state | MUST | Implemented |
 
 #### Scenario: View skill audit trail
 
-- GIVEN a skill "Healing LvL 1" that has been edited 3 times
+- GIVEN skill "Healing LvL 1" has been edited 3 times
 - WHEN the user views the audit trail for this skill
-- THEN the system MUST display all 3 change records with timestamps and changed values
+- THEN 3 change records MUST be displayed with timestamps and changed values
+
+#### Scenario: View effect relations (used by)
+
+- GIVEN effect "Strength +5" is used by skills "Warrior Training" and "Barbarian Rage"
+- WHEN the user views the effect detail and opens "Used by" tab
+- THEN both skills MUST be listed as relations
+
+#### Scenario: Lock an item for editing
+
+- GIVEN item "Excalibur" is being edited
+- WHEN the game master locks it
+- THEN other users MUST be prevented from editing simultaneously
+
+---
+
+### Requirement: Internal vs OpenRegister Storage
+
+All game mechanics entities have a dual data model with significant differences between internal and OpenRegister storage.
+
+| ID | Requirement | Priority | Status |
+|----|------------|----------|--------|
+| MECH-080 | In **internal storage mode**, all entity types have skeletal PHP entities with only `id`, `name`, and `description` fields | MUST | Implemented |
+| MECH-081 | The full data model (effects arrays, prerequisites, unique flags, base values, etc.) MUST only exist in **OpenRegister storage mode** | MUST | Implemented |
+| MECH-082 | Internal entity PHP classes do NOT define fields like `effects`, `requiredSkills`, `modifier`, `modification`, `cumulative`, `abilities`, `unique`, `characters` | MUST | Implemented |
+| MECH-083 | The Ability entity has `base` and `allowed_negative` database columns but NOT as PHP entity properties | MUST | Bug |
+| MECH-084 | Internal storage mode is functionally incomplete -- entities cannot participate in the full game mechanics system | MUST | Implemented |
+
+#### Scenario: Skill in internal mode lacks effects
+
+- GIVEN skill type is configured for internal storage
+- WHEN a skill is created with name "Healing" and effects ["effect-uuid"]
+- THEN only name and description MUST be stored (internal entity has no `effects` property)
+- AND the effects association MUST be lost
+
+#### Scenario: Effect in internal mode lacks modifier
+
+- GIVEN effect type is configured for internal storage
+- WHEN an effect is created with name "+5 Mana", modifier 5, modification "positive"
+- THEN only name and description MUST be stored
+- AND modifier and modification MUST be lost
+- AND the effect MUST NOT function during stat calculation
+
+#### Scenario: OpenRegister mode provides full functionality
+
+- GIVEN all entity types are configured for OpenRegister storage
+- WHEN skills, items, conditions, effects, and abilities are created with full field data
+- THEN all fields MUST be stored as JSON documents
+- AND the stat calculation engine MUST have access to all association and modifier data
+
+---
+
+## Data Model
+
+### Ability Entity
+
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| id | string (UUID) | Auto | Generated | Unique identifier |
+| name | string | Yes | "" | Ability name (e.g., "Strength", "Dexterity", "Mana") |
+| description | string | No | "" | Description of the ability |
+| base | number | No | 0 | Base starting value for all characters |
+| allowed_negative | boolean | No | false | Whether value can go below zero (DB column exists, not used by stat engine) |
+
+### Effect Entity
+
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| id | string (UUID) | Auto | Generated | Unique identifier |
+| name | string | Yes | "" | Effect name |
+| description | string | No | "" | Effect description |
+| modifier | number | No | 0 | Integer modifier value |
+| modification | enum | Yes | "positive" | `positive` or `negative` |
+| cumulative | enum | No | "non-cumulative" | `cumulative` or `non-cumulative` |
+| abilities | string[] (UUIDs) | Yes | [] | Target ability IDs |
+| stat_id | string (UUID) | No | null | Legacy single-ability target |
+
+### Skill Entity
+
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| id | string (UUID) | Auto | Generated | Unique identifier |
+| name | string | Yes | "" | Skill name |
+| description | string | No | "" | Skill description |
+| effect | string | No | "" | Free-text effect description |
+| effects | string[] (UUIDs) | No | [] | Effect IDs that this skill grants |
+| requiredSkills | string[] (UUIDs) | No | [] | Prerequisite Skill IDs |
+| requiredStats | string[] (UUIDs) | No | [] | Prerequisite Ability IDs |
+| requiredConditions | string[] (UUIDs) | No | [] | Prerequisite Condition IDs |
+| requiredEffects | string[] (UUIDs) | No | [] | Prerequisite Effect IDs |
+| requiredScore | number | No | null | Minimum score threshold |
+
+### Item Entity
+
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| id | string (UUID) | Auto | Generated | Unique identifier |
+| name | string | Yes | "" | Item name |
+| description | string | No | "" | Item description |
+| effect | string | No | "" | Free-text effect description |
+| effects | string[] (UUIDs) | No | [] | Effect IDs |
+| unique | boolean | No | false | One-of-a-kind flag |
+| characters | string[] (UUIDs) | No | [] | Holding characters |
+
+### Condition Entity
+
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| id | string (UUID) | Auto | Generated | Unique identifier |
+| name | string | Yes | "" | Condition name |
+| description | string | No | "" | Condition description |
+| effect | string | No | "" | Free-text effect description |
+| effects | string[] (UUIDs) | No | [] | Effect IDs |
+| unique | boolean | No | false | Single-character flag |
+| characters | string[] (UUIDs) | No | [] | Affected characters |
+
+### Effect Chain Diagram
+
+```
+Skill/Item/Condition/Event
+    +-- effects[] (UUID references)
+            +-- Effect
+                |-- modifier: 5
+                |-- modification: "positive"
+                +-- abilities[] (UUID references)
+                        +-- Ability
+                            |-- base: 10
+                            +-- computed value: 15 (base + modifier)
+```
 
 ## User Interface
 
 ### Navigation Placement
 
-- **Abilities**: Settings area at bottom of sidebar (ShieldSwordOutline icon)
-- **Skills**: Settings area at bottom of sidebar (SwordCross icon)
-- **Effects**: Settings area at bottom of sidebar (MagicStaff icon)
-- **Items**: Main navigation area (Sword icon)
-- **Conditions**: Main navigation area (EmoticonSickOutline icon)
+- **Abilities**: Settings area (ShieldSwordOutline icon)
+- **Skills**: Settings area (SwordCross icon)
+- **Effects**: Settings area (MagicStaff icon)
+- **Items**: Main navigation (Sword icon)
+- **Conditions**: Main navigation (EmoticonSickOutline icon)
 
 ### Per-Entity Views
 
-Each entity type has a consistent set of views:
-- **List view** (`{type}s/` directory): Shows all entities with search
-- **Detail view**: Shows entity properties, audit trails, relations
-- **Modal** (`modals/{type}/` directory): Create/edit form
+Each entity type has: List view with search, Detail view with tabs (effects/relations/logging), Edit/Delete modals.
 
 ### Stores
 
-Each entity has a dedicated Pinia store (`store/modules/{type}.js`) following the same pattern:
-- `{type}Item` -- currently selected entity
-- `{type}List` -- all entities of this type
-- `auditTrails`, `relations`, `uses` -- per-entity metadata
-- `refresh{Type}List()` -- fetch all entities
-- `get{Type}(id)` -- fetch single entity
-- `save{Type}(item)` -- create or update
-- `delete{Type}()` -- delete currently selected entity
-- `setSearchTerm(term)` -- debounced search
+Each entity has a dedicated section in the Pinia object store following the pattern: item selection, list management, audit trails, relations, uses, CRUD operations, and debounced search.
+
+## API Endpoints
+
+All entity types use the generic `/api/objects/{objectType}` pattern with CRUD + OpenRegister extensions:
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET/POST | `/api/objects/ability` | List/Create abilities |
+| GET/PUT/DELETE | `/api/objects/ability/{id}` | Get/Update/Delete ability |
+| GET/POST | `/api/objects/skill` | List/Create skills |
+| GET/PUT/DELETE | `/api/objects/skill/{id}` | Get/Update/Delete skill |
+| GET/POST | `/api/objects/item` | List/Create items |
+| GET/PUT/DELETE | `/api/objects/item/{id}` | Get/Update/Delete item |
+| GET/POST | `/api/objects/condition` | List/Create conditions |
+| GET/PUT/DELETE | `/api/objects/condition/{id}` | Get/Update/Delete condition |
+| GET/POST | `/api/objects/effect` | List/Create effects |
+| GET/PUT/DELETE | `/api/objects/effect/{id}` | Get/Update/Delete effect |
+
+All types additionally support: `{id}/lock`, `{id}/unlock`, `{id}/revert`, `{id}/audit`, `{id}/relations`, `{id}/uses`, `{id}/files`.
+
+## Dependencies
+
+- **RegisterObjectFetcher**: Data retrieval for all entity types via OpenRegister
+- **CharacterService**: Consumes effects from skills/items/conditions/events during stat calculation
+- **Pinia object store**: Frontend state management for all entity types
+- **OpenRegister** (optional): Schema validation, audit trails, relations, locking

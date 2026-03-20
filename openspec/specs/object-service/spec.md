@@ -1,253 +1,360 @@
 ---
-status: reviewed
+status: enriched
 ---
 
 # Object Service
 
 ## Purpose
 
-The `ObjectService` (`lib/Service/ObjectService.php`) is the central data access layer for LarpingApp. It provides a generic CRUD interface for all 10 entity types (ability, character, condition, effect, event, item, player, setting, skill, template) by dispatching operations to the appropriate mapper -- either an internal Nextcloud QBMapper or an OpenRegister mapper, based on per-type configuration stored in IAppConfig. It also provides entity extension (resolving UUID references to full objects), request parameter parsing, faceted search result envelopes, audit trail retrieval, locking, unlocking, reverting, and file access.
+The data access layer for LarpingApp has been refactored from a single monolithic `ObjectService` to a thin, focused `RegisterObjectFetcher` (`lib/Service/RegisterObjectFetcher.php`). This service provides object retrieval from OpenRegister by resolving register and schema IDs from IAppConfig per object type. It replaces the previous generic CRUD dispatch pattern (internal mappers vs OpenRegister) with direct cross-app calls to OpenRegister's ObjectService. The `CharacterService` uses `RegisterObjectFetcher` to load entities for stat calculation, and the `CharactersController` uses it to fetch character data for PDF export.
 
-**Key source file:** `lib/Service/ObjectService.php`
+**Key source files:**
+- `lib/Service/RegisterObjectFetcher.php` -- Main data access service
+- `lib/Service/CharacterService.php` -- Consumes RegisterObjectFetcher for entity preloading
+- `lib/Controller/CharactersController.php` -- Uses RegisterObjectFetcher for character retrieval
+- `src/store/modules/object.js` -- Frontend generic object store
 
 ## Requirements
 
-### Mapper Dispatch
+---
+
+### Requirement: RegisterObjectFetcher Mapper Resolution
+
+The `RegisterObjectFetcher` MUST resolve OpenRegister mappers for each object type by reading register and schema IDs from IAppConfig.
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
-| OBJ-001 | `getMapper()` MUST read `{objectType}_source` from IAppConfig to determine data source ("internal" or "openregister") | MUST | Implemented |
-| OBJ-002 | When source is "openregister", `getMapper()` MUST obtain a mapper from OpenRegister service using configured register and schema | MUST | Implemented |
-| OBJ-003 | When source is "internal", `getMapper()` MUST return the appropriate QBMapper via a `match` statement covering all 10 types | MUST | Implemented |
-| OBJ-004 | `getMapper()` MUST throw an Exception if OpenRegister source is configured but the service is unavailable | MUST | Implemented |
-| OBJ-005 | `getMapper()` MUST throw an Exception if register or schema is not configured when using OpenRegister source | MUST | Implemented |
-| OBJ-006 | `getMapper()` MUST throw an InvalidArgumentException for unknown object types | MUST | Implemented |
+| OBJ-001 | `getMapper()` MUST read `{objectType}_register` from IAppConfig using `getValueString()` | MUST | Implemented |
+| OBJ-002 | `getMapper()` MUST read `{objectType}_schema` from IAppConfig using `getValueString()` | MUST | Implemented |
+| OBJ-003 | `getMapper()` MUST convert the objectType to lowercase before config key lookup | MUST | Implemented |
+| OBJ-004 | `getMapper()` MUST obtain the mapper from OpenRegister's ObjectService via `$openRegister->getMapper($register, $schema)` | MUST | Implemented |
+| OBJ-005 | `getMapper()` MUST throw an Exception if register is not configured (empty string) | MUST | Implemented |
+| OBJ-006 | `getMapper()` MUST throw an Exception if schema is not configured (empty string) | MUST | Implemented |
+| OBJ-007 | The appName MUST be hardcoded to 'larpingapp' for IAppConfig lookups | MUST | Implemented |
 
-### Object Retrieval -- `getObjects()`
+#### Scenario: Resolve mapper for configured type
 
-| ID | Requirement | Priority | Status |
-|----|------------|----------|--------|
-| OBJ-010 | `getObjects()` MUST accept parameters: objectType (string), limit (?int), offset (?int), filters (?array), sort (?array), search (?string), extend (?array) | MUST | Implemented |
-| OBJ-011 | `getObjects()` MUST pass all parameters through to the mapper's `findAll()` method using named arguments | MUST | Implemented |
-| OBJ-012 | `getObjects()` MUST convert entity objects to arrays using `jsonSerialize()` | MUST | Implemented |
-| OBJ-013 | `getObjects()` MUST pass through arrays unchanged (when mapper already returns arrays, as OpenRegister does) | MUST | Implemented |
-| OBJ-014 | `getObjects()` MUST throw InvalidArgumentException if extend is requested for non-OpenRegister mappers | MUST | Implemented |
+- GIVEN `character_register` is "reg-123" and `character_schema` is "sch-456" in IAppConfig
+- WHEN `getMapper('character')` is called
+- THEN it MUST call `$openRegister->getMapper('reg-123', 'sch-456')`
+- AND return the resulting mapper object
 
-### Single Object Retrieval -- `getObject()`
+#### Scenario: Resolve mapper with case-insensitive type
 
-| ID | Requirement | Priority | Status |
-|----|------------|----------|--------|
-| OBJ-020 | `getObject()` MUST accept objectType, id, and optional extend array | MUST | Implemented |
-| OBJ-021 | `getObject()` MUST clean up URI-format IDs by extracting the last path segment | MUST | Implemented |
-| OBJ-022 | `getObject()` MUST convert objects with `jsonSerialize()` to arrays before returning | MUST | Implemented |
-| OBJ-023 | `getObject()` MUST throw InvalidArgumentException if extend is requested for non-OpenRegister objects | MUST | Implemented |
+- GIVEN `skill_register` and `skill_schema` are configured
+- WHEN `getMapper('Skill')` is called (uppercase first letter)
+- THEN it MUST convert to lowercase 'skill' before config lookup
+- AND MUST successfully resolve the mapper
 
-### Faceted Results -- `getFacets()`
+#### Scenario: Mapper resolution fails for unconfigured register
 
-| ID | Requirement | Priority | Status |
-|----|------------|----------|--------|
-| OBJ-030 | `getFacets()` MUST return aggregations from OpenRegister mapper via `getAggregations()` | MUST | Implemented |
-| OBJ-031 | `getFacets()` MUST return an empty array for internal (non-OpenRegister) mappers | MUST | Implemented |
+- GIVEN `ability_register` is empty in IAppConfig
+- WHEN `getMapper('ability')` is called
+- THEN it MUST throw an Exception with message "Register not configured for ability"
 
-### Result Array Envelope -- `getResultArrayForRequest()`
+#### Scenario: Mapper resolution fails for unconfigured schema
 
-| ID | Requirement | Priority | Status |
-|----|------------|----------|--------|
-| OBJ-040 | `getResultArrayForRequest()` MUST parse request parameters supporting both prefixed and unprefixed aliases: `limit`/`_limit`, `offset`/`_offset`, `order`/`_order`, `extend`/`_extend`, `page`/`_page`, `search`/`_search` | MUST | Implemented |
-| OBJ-041 | When `page` is set and `limit` is present, `getResultArrayForRequest()` MUST calculate offset as `limit * (page - 1)` | MUST | Implemented |
-| OBJ-042 | `getResultArrayForRequest()` MUST convert string order/extend values to arrays by splitting on commas | MUST | Implemented |
-| OBJ-043 | `getResultArrayForRequest()` MUST strip internal parameters (`_route`, `_extend`, `_limit`, `_offset`, `_order`, `_page`, and their unprefixed equivalents `extend`, `limit`, `offset`, `order`, `page`) from filters before querying. Note: `search`/`_search` is NOT stripped from filters, meaning it may be passed through as both a `$search` parameter AND a filter key | MUST | Implemented |
-| OBJ-044 | `getResultArrayForRequest()` MUST return a response envelope with `results`, `facets`, and `total` keys | MUST | Implemented |
-| OBJ-045 | `getResultArrayForRequest()` MUST call `getCount()` for the total, which delegates to the mapper's `count()` for OpenRegister or returns 0 for internal mappers | MUST | Implemented |
+- GIVEN `ability_register` is "reg-123" but `ability_schema` is empty
+- WHEN `getMapper('ability')` is called
+- THEN it MUST throw an Exception with message "Schema not configured for ability"
 
-### Bulk Retrieval -- `getMultipleObjects()`
+---
+
+### Requirement: OpenRegister Service Resolution
+
+The `RegisterObjectFetcher` MUST resolve and cache the OpenRegister ObjectService from the DI container.
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
-| OBJ-050 | `getMultipleObjects()` MUST accept an array of IDs in multiple formats: raw IDs, objects with `getId()`, or arrays with `id` key | MUST | Implemented |
-| OBJ-051 | `getMultipleObjects()` MUST clean URI-format IDs by extracting the last path segment | MUST | Implemented |
-| OBJ-052 | `getMultipleObjects()` MUST delegate to the mapper's `findMultiple()` method with cleaned IDs | MUST | Implemented |
+| OBJ-010 | `getOpenRegisterService()` MUST check if OpenRegister app is installed via `IAppManager::getInstalledApps()` | MUST | Implemented |
+| OBJ-011 | `getOpenRegisterService()` MUST resolve `OCA\OpenRegister\Service\ObjectService` from the DI container | MUST | Implemented |
+| OBJ-012 | `getOpenRegisterService()` MUST cache the resolved service in `$openRegisterService` private property | MUST | Implemented |
+| OBJ-013 | `getOpenRegisterService()` MUST return cached instance on subsequent calls | MUST | Implemented |
+| OBJ-014 | `getOpenRegisterService()` MUST throw an Exception if OpenRegister is not installed | MUST | Implemented |
 
-### Simple Retrieval -- `getAllObjects()`
+#### Scenario: First-time service resolution
 
-| ID | Requirement | Priority | Status |
-|----|------------|----------|--------|
-| OBJ-060 | `getAllObjects()` MUST accept objectType, optional limit, and optional offset | MUST | Implemented |
-| OBJ-061 | `getAllObjects()` MUST call the mapper's `findAll()` with only limit and offset (no filters, sort, search, or extend) | MUST | Implemented |
+- GIVEN OpenRegister is installed
+- AND the DI container can resolve `OCA\OpenRegister\Service\ObjectService`
+- WHEN `getOpenRegisterService()` is called for the first time
+- THEN it MUST resolve the service from the container
+- AND cache it in `$openRegisterService`
+- AND return the service instance
 
-### Entity Extension -- `extendEntity()`
+#### Scenario: Cached service returned on second call
 
-| ID | Requirement | Priority | Status |
-|----|------------|----------|--------|
-| OBJ-070 | `extendEntity()` MUST resolve UUID references in entity properties to full objects | MUST | Implemented |
-| OBJ-071 | When extend contains `'all'`, `extendEntity()` MUST attempt to extend all keys of the entity, suppressing mapper errors for keys without corresponding object types | MUST | Implemented |
-| OBJ-072 | `extendEntity()` MUST resolve mappers using both plural and singular property names (e.g., try `skills` then `skill`) | MUST | Implemented |
-| OBJ-073 | For array values, `extendEntity()` MUST call `getMultipleObjects()` for bulk resolution | MUST | Implemented |
-| OBJ-074 | For scalar values, `extendEntity()` MUST call `getObject()` for single resolution | MUST | Implemented |
-| OBJ-075 | `extendEntity()` MUST throw Exception if property is not found in entity and suppress mode is not active | MUST | Implemented |
+- GIVEN `getOpenRegisterService()` was already called successfully
+- WHEN it is called again
+- THEN the cached instance MUST be returned immediately
+- AND the DI container MUST NOT be queried again
 
-### Object Persistence -- `saveObject()` and `deleteObject()`
+#### Scenario: OpenRegister not installed
 
-| ID | Requirement | Priority | Status |
-|----|------------|----------|--------|
-| OBJ-080 | `saveObject()` MUST create a new object (via `createFromArray`) when no `id` is present in the data | MUST | Implemented |
-| OBJ-081 | `saveObject()` MUST update an existing object (via `updateFromArray`) when `id` is present | MUST | Implemented |
-| OBJ-082 | `saveObject()` MUST pass extend array and updateVersion flag through to mapper methods | MUST | Implemented |
-| OBJ-083 | `deleteObject()` MUST find the object by ID, then delete it via the mapper | MUST | Implemented |
-| OBJ-084 | `deleteObject()` MUST return false (not throw) if the object cannot be found or deleted | MUST | Implemented |
+- GIVEN OpenRegister is not in the installed apps list
+- WHEN `getOpenRegisterService()` is called
+- THEN it MUST throw an Exception with message "OpenRegister app is not installed"
 
-### File Access -- `getFiles()`
+---
 
-| ID | Requirement | Priority | Status |
-|----|------------|----------|--------|
-| OBJ-090 | `getFiles()` MUST delegate to the mapper's `getFiles()` and `formatFiles()` methods | MUST | Implemented |
-| OBJ-091 | `getFiles()` service method has correct annotations (no controller-specific annotations) | MUST | Implemented |
-| OBJ-092 | A route exists for `getFiles` (`api/objects/{objectType}/{id}/files`) mapped to `objects#getFiles`, but the ObjectsController does NOT have a `getFiles()` method -- the route will fail with a method not found error | MUST | Bug |
+### Requirement: Multiple Object Retrieval -- `getObjects()`
 
-### Lock/Unlock/IsLocked
+The `RegisterObjectFetcher` MUST support retrieving multiple objects with pagination, filtering, sorting, and search.
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
-| OBJ-100 | `lockObject()` MUST delegate to mapper's `lockObject()` with id, optional process, and duration (default 3600s) | MUST | Implemented |
-| OBJ-101 | `unlockObject()` MUST delegate to mapper's `unlockObject()` | MUST | Implemented |
-| OBJ-102 | `isLocked()` MUST delegate to mapper's `isLocked()` and return a boolean | MUST | Implemented |
-| OBJ-103 | `isLocked()` exists on ObjectService but there is NO route defined for it in `appinfo/routes.php` and ObjectsController does NOT have an `isLocked()` method | MUST | Dead Code |
+| OBJ-020 | `getObjects()` MUST accept: objectType (string), limit (?int), offset (?int), filters (?array), sort (?array), search (?string) | MUST | Implemented |
+| OBJ-021 | `getObjects()` MUST pass parameters through to the mapper's `findAll()` method | MUST | Implemented |
+| OBJ-022 | `getObjects()` MUST convert all returned objects to arrays via `toArray()` | MUST | Implemented |
+| OBJ-023 | `toArray()` MUST handle objects with `jsonSerialize()`, plain arrays, and other types | MUST | Implemented |
+| OBJ-024 | Default parameter values MUST be: limit=null, offset=null, filters=[], sort=[], search=null | MUST | Implemented |
 
-### Revert
+#### Scenario: Retrieve all objects of a type
+
+- GIVEN 10 skills exist in OpenRegister
+- WHEN `getObjects('skill')` is called with no parameters
+- THEN all 10 skills MUST be returned as arrays
+- AND each array MUST contain the skill's full data
+
+#### Scenario: Retrieve objects with pagination
+
+- GIVEN 50 characters exist
+- WHEN `getObjects('character', limit: 10, offset: 20)` is called
+- THEN the mapper's `findAll(10, 20, [], [], null)` MUST be called
+- AND up to 10 objects starting from offset 20 MUST be returned
+
+#### Scenario: Retrieve objects with search
+
+- GIVEN abilities "Strength", "Dexterity", and "Mana" exist
+- WHEN `getObjects('ability', search: 'str')` is called
+- THEN the search term MUST be passed to the mapper's `findAll()`
+- AND results MUST be filtered based on the search
+
+#### Scenario: Convert jsonSerialize objects to arrays
+
+- GIVEN the mapper returns Entity objects with `jsonSerialize()` method
+- WHEN `toArray()` processes each object
+- THEN `jsonSerialize()` MUST be called to convert to an array
+
+#### Scenario: Pass through plain arrays
+
+- GIVEN the mapper returns plain arrays (OpenRegister typically returns arrays)
+- WHEN `toArray()` processes each result
+- THEN the array MUST be returned unchanged
+
+---
+
+### Requirement: Single Object Retrieval -- `getObject()`
+
+The `RegisterObjectFetcher` MUST support retrieving a single object by type and ID, with URI-format ID cleaning.
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
-| OBJ-110 | `revertObject()` MUST delegate to mapper's `revertObject()` with id, until (DateTime or audit trail ID), and overwriteVersion flag | MUST | Implemented |
+| OBJ-030 | `getObject()` MUST accept objectType (string) and id (string) | MUST | Implemented |
+| OBJ-031 | `getObject()` MUST clean URI-format IDs by extracting the last path segment | MUST | Implemented |
+| OBJ-032 | URI cleaning MUST only activate when `filter_var($id, FILTER_VALIDATE_URL)` returns a valid URL | MUST | Implemented |
+| OBJ-033 | `getObject()` MUST call the mapper's `find()` method with the cleaned ID | MUST | Implemented |
+| OBJ-034 | `getObject()` MUST convert the result to an array via `toArray()` | MUST | Implemented |
 
-### Audit Trails, Relations, Uses
+#### Scenario: Retrieve object by simple ID
+
+- GIVEN a character with ID "abc-123" exists
+- WHEN `getObject('character', 'abc-123')` is called
+- THEN the mapper's `find('abc-123')` MUST be called
+- AND the character data MUST be returned as an array
+
+#### Scenario: Retrieve object by URI-format ID
+
+- GIVEN a skill with ID "skill-uuid" exists
+- WHEN `getObject('skill', 'https://example.com/api/objects/skill/skill-uuid')` is called
+- THEN the URI MUST be parsed and "skill-uuid" extracted
+- AND the mapper's `find('skill-uuid')` MUST be called
+- AND the skill data MUST be returned as an array
+
+#### Scenario: Retrieve non-existent object
+
+- GIVEN no character with ID "nonexistent" exists
+- WHEN `getObject('character', 'nonexistent')` is called
+- THEN the mapper's `find()` MUST throw a DoesNotExistException
+- AND the exception MUST propagate to the caller
+
+---
+
+### Requirement: Object Array Conversion -- `toArray()`
+
+The `toArray()` private method MUST handle multiple input types and always return an associative array.
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
-| OBJ-120 | `getAuditTrail()` MUST delegate to mapper's `getAuditTrail()` | MUST | Implemented |
-| OBJ-121 | `getRelations()` MUST delegate to mapper's `getRelations()` | MUST | Implemented |
-| OBJ-122 | `getUses()` MUST delegate to mapper's `getUses()` | MUST | Implemented |
+| OBJ-040 | `toArray()` MUST call `jsonSerialize()` on objects that have this method | MUST | Implemented |
+| OBJ-041 | `toArray()` MUST return arrays unchanged | MUST | Implemented |
+| OBJ-042 | `toArray()` MUST cast other types to array via `(array)` | MUST | Implemented |
+| OBJ-043 | `toArray()` MUST accept `mixed` type parameter | MUST | Implemented |
 
-### OpenRegister Detection
+#### Scenario: Convert Entity object
+
+- GIVEN a Nextcloud Entity object with `jsonSerialize()` returning `['id' => 1, 'name' => 'Strength']`
+- WHEN `toArray()` is called with this object
+- THEN it MUST return `['id' => 1, 'name' => 'Strength']`
+
+#### Scenario: Pass through array
+
+- GIVEN a plain array `['id' => 'uuid', 'name' => 'Healing']`
+- WHEN `toArray()` is called with this array
+- THEN it MUST return the same array unchanged
+
+#### Scenario: Cast scalar to array
+
+- GIVEN an unexpected string value "test"
+- WHEN `toArray()` is called with this value
+- THEN it MUST return `['test']` via PHP's `(array)` cast
+
+---
+
+### Requirement: Frontend Object Store
+
+The frontend MUST use a generic Pinia object store pattern for all entity types, communicating with the backend via HTTP.
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
-| OBJ-130 | `getOpenRegisters()` MUST check if OpenRegister app is installed via `IAppManager::getInstalledApps()` | MUST | Implemented |
-| OBJ-131 | `getOpenRegisters()` MUST return the OpenRegister ObjectService from the DI container if available | MUST | Implemented |
-| OBJ-132 | `getOpenRegisters()` MUST return null if OpenRegister is not installed or the service cannot be obtained | MUST | Implemented |
+| OBJ-050 | The `object.js` store MUST provide CRUD operations for any object type | MUST | Implemented |
+| OBJ-051 | List operations MUST support `_search`, `_limit`, `_offset`, `_extend`, `_order` parameters | MUST | Implemented |
+| OBJ-052 | The store MUST manage per-type state: item (selected), list, auditTrails, relations, uses | MUST | Implemented |
+| OBJ-053 | Search MUST be debounced to avoid excessive API calls | MUST | Implemented |
+| OBJ-054 | The store MUST support OpenRegister features: audit trail, relations, uses, lock/unlock, revert | MUST | Implemented |
 
-## Constructor and Dependency Injection
+#### Scenario: Frontend lists objects with search
 
-### Constructor Type-Hints
+- GIVEN the user navigates to the Skills view
+- WHEN they type "heal" in the search field
+- THEN after debounce the store MUST call GET /api/objects/skill?_search=heal
+- AND the list MUST update with filtered results
+
+#### Scenario: Frontend creates an object
+
+- GIVEN the user fills in a new skill form
+- WHEN they click save
+- THEN the store MUST POST to /api/objects/skill with the skill data
+- AND the list MUST refresh after successful creation
+
+#### Scenario: Frontend fetches object with extensions
+
+- GIVEN a character has skills and items as UUID arrays
+- WHEN the store fetches with `_extend=skills,items`
+- THEN the response MUST contain full skill and item objects instead of UUIDs
+
+#### Scenario: Frontend fetches audit trail
+
+- GIVEN a character is selected
+- WHEN the user views the Logging tab
+- THEN the store MUST call GET /api/objects/character/{id}/audit
+- AND display the audit trail entries
+
+---
+
+### Requirement: Settings Store Integration
+
+The frontend MUST have a settings store that loads configuration from the backend and supports admin operations.
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
-| OBJ-140 | Constructor type-hints `ContainerInterface` (from `Psr\Container\ContainerInterface`) for the `$container` parameter | MUST | Implemented |
-| OBJ-141 | Constructor type-hints `IAppConfig` for the `$config` parameter, and calls `getValueString()` which is the correct method | MUST | Implemented |
-| OBJ-142 | Constructor injects all 10 entity mappers (AbilityMapper through TemplateMapper) as typed constructor parameters, plus `ContainerInterface`, `IAppManager`, and `IAppConfig` | MUST | Implemented |
+| OBJ-060 | The `settings.js` store MUST load settings via GET /api/settings | MUST | Implemented |
+| OBJ-061 | The settings store MUST save settings via POST /api/settings | MUST | Implemented |
+| OBJ-062 | The settings store MUST expose OpenRegister availability status | MUST | Implemented |
+| OBJ-063 | The settings store MUST expose admin status | MUST | Implemented |
+| OBJ-064 | The settings store MUST support reimport via POST /api/settings/reimport | MUST | Implemented |
+
+#### Scenario: Load settings on app mount
+
+- GIVEN the app is loading
+- WHEN the settings store initializes
+- THEN it MUST call GET /api/settings
+- AND populate objectTypes, openRegisters, isAdmin, and configuration
+
+#### Scenario: Save settings
+
+- GIVEN the admin changes configuration values
+- WHEN they click Save All
+- THEN the store MUST POST the configuration to /api/settings
+- AND display success/error feedback
+
+#### Scenario: Reimport configuration
+
+- GIVEN the admin clicks the reimport button
+- WHEN the store calls POST /api/settings/reimport
+- THEN the backend MUST re-import from JSON
+- AND the store MUST reload settings to reflect changes
+
+---
+
+### Requirement: Routes Configuration
+
+All API routes MUST be defined in `appinfo/routes.php` with appropriate HTTP verbs and URL patterns.
+
+| ID | Requirement | Priority | Status |
+|----|------------|----------|--------|
+| OBJ-070 | Dashboard page route MUST be defined as `dashboard#page` with URL `/` and verb GET | MUST | Implemented |
+| OBJ-071 | PDF download route MUST be defined as `characters#downloadPdf` with URL `/characters/{id}/download/{template}` | MUST | Implemented |
+| OBJ-072 | Settings routes MUST include GET and POST for `/api/settings` | MUST | Implemented |
+| OBJ-073 | Settings reimport route MUST be defined as POST `/api/settings/reimport` | MUST | Implemented |
+| OBJ-074 | No generic object CRUD routes exist in routes.php -- entity CRUD is handled by the frontend object store communicating via OpenRegister's API | MUST | Implemented |
+
+#### Scenario: Route resolution for dashboard
+
+- GIVEN a GET request to `/apps/larpingapp/`
+- WHEN Nextcloud routes the request
+- THEN `DashboardController::page()` MUST handle it
+
+#### Scenario: Route resolution for PDF download
+
+- GIVEN a GET request to `/apps/larpingapp/characters/uuid-123/download/template-456`
+- WHEN Nextcloud routes the request
+- THEN `CharactersController::downloadPdf('uuid-123', 'template-456')` MUST handle it
+
+#### Scenario: No generic object routes
+
+- GIVEN a GET request to `/apps/larpingapp/api/objects/skill`
+- WHEN Nextcloud routes the request
+- THEN no LarpingApp route MUST match
+- AND the request MUST be handled by OpenRegister's routing (or return 404)
+
+---
 
 ## Method Signatures
 
-### `getObjects(string $objectType, ?int $limit, ?int $offset, ?array $filters, ?array $sort, ?string $search, ?array $extend): array`
-Retrieves multiple objects with full filtering, sorting, search, and extension support.
+### RegisterObjectFetcher
 
-### `getObject(string $objectType, string $id, array $extend = []): mixed`
-Retrieves a single object by ID with optional extension. Cleans URI-format IDs.
+```php
+public function getObjects(
+    string $objectType,
+    ?int $limit = null,
+    ?int $offset = null,
+    ?array $filters = [],
+    ?array $sort = [],
+    ?string $search = null
+): array
 
-### `getFacets(string $objectType, array $filters = []): array`
-Returns facet aggregations for a query. Only works with OpenRegister mappers.
+public function getObject(string $objectType, string $id): array
 
-### `getMultipleObjects(string $objectType, array $ids): array`
-Bulk retrieval by an array of IDs. Supports object/array/scalar ID formats and URI cleaning.
-
-### `getAllObjects(string $objectType, ?int $limit, ?int $offset): array`
-Simplified retrieval without filters/sort/search/extend. Passes limit and offset directly.
-
-### `getResultArrayForRequest(string $objectType, array $requestParams): array`
-Parses HTTP request parameters and returns a structured response envelope `{results, facets, total}`.
-
-### `extendEntity(mixed $entity, array $extend): array`
-Resolves UUID references on an entity into full sub-objects. Supports `'all'` keyword.
-
-### `saveObject(string $objectType, array $object, array $extend = [], bool $updateVersion = true): mixed`
-Creates or updates an object based on presence of `id` key.
-
-### `deleteObject(string $objectType, string|int $id): bool`
-Deletes an object by type and ID. Returns false on failure.
-
-### `getFiles(string $objectType, string $id): array`
-Returns formatted files for an object. Has misplaced controller annotations.
-
-### `isLocked(string $objectType, string|int $id): bool`
-Checks lock status. Method exists but has no corresponding route (dead code path).
-
-### `lockObject(string $objectType, string|int $id, ?string $process, ?int $duration): mixed`
-Acquires a lock on an object.
-
-### `unlockObject(string $objectType, string|int $id): mixed`
-Releases a lock on an object.
-
-### `revertObject(string $objectType, string|int $id, $until, bool $overwriteVersion): mixed`
-Reverts an object to a previous state.
-
-### `getAuditTrail(string $objectType, string $id): array`
-Returns the audit trail for an object.
-
-### `getRelations(string $objectType, string $id): array`
-Returns relations for an object.
-
-### `getUses(string $objectType, string $id): array`
-Returns uses for an object.
-
-### `getOpenRegisters(): ?ObjectService`
-Checks for OpenRegister availability and returns its service.
+private function getMapper(string $objectType): object
+private function getOpenRegisterService(): object
+private function toArray(mixed $object): array
+```
 
 ## Known Issues
 
-1. **Constructor type-hints (Fixed)**: The constructor now correctly uses `ContainerInterface` (from PSR-11) and `IAppConfig` for the `$container` and `$config` parameters respectively. All 10 entity mappers are also injected.
+1. **No internal mapper fallback**: Unlike the previous ObjectService, RegisterObjectFetcher only works with OpenRegister. If OpenRegister is not installed or a type is not configured, all data operations will fail with exceptions.
 
-2. **`getFiles()` missing controller method**: The `getFiles()` service method no longer has misplaced controller annotations. However, the route `api/objects/{objectType}/{id}/files` exists in `routes.php` mapped to `objects#getFiles`, but the `ObjectsController` does NOT implement a `getFiles()` method. The route would result in a method not found error. The actual implementation is only on `ObjectService`.
+2. **No entity extension**: RegisterObjectFetcher does not support the `_extend` parameter for resolving UUID references to full objects. Extension must be handled by OpenRegister's mapper directly or by the frontend.
 
-3. **`isLocked()` dead code**: `ObjectService::isLocked()` exists as a method, but there is no route defined in `appinfo/routes.php` for the `isLocked` action and `ObjectsController` does not have an `isLocked()` method. The service method can never be reached via HTTP. Lock and unlock have routes, but checking lock status does not.
+3. **Constructor preload in CharacterService**: CharacterService calls `loadAllEntities()` in its constructor, which fetches ALL skills, items, conditions, events, effects, and abilities from OpenRegister. This could be a performance issue for large datasets.
 
-4. **Internal mapper `findAll()` signature mismatch**: `ObjectService.getObjects()` calls `findAll()` with named parameters `limit`, `offset`, `filters`, `sort`, `search`, `extend`. However, internal mappers have inconsistent signatures: `AbilityMapper.findAll(string $userId)`, `CharacterMapper.findAll(string $userId)`, `EffectMapper.findAll(string $userId)` take only a userId; `EventMapper.findAll(?int $limit, ?int $offset, ?array $filters, ?array $searchConditions, ?array $searchParams)` and `SkillMapper.findAll(...)` take search-related params but not `sort`, `search`, or `extend`; `ItemMapper.findAll()` takes no parameters. This means calling `getObjects()` in internal mode would fail for most entity types.
-
-5. **`getCount()` returns 0 for internal mappers**: The `getCount()` private method only returns a count for OpenRegister mappers. For internal mappers, it always returns 0, meaning the `total` field in the response envelope is always 0 in internal mode.
-
-## Scenarios
-
-### Retrieve objects with pagination
-
-```
-GIVEN object type "skill" is configured for internal storage
-WHEN a client calls GET /api/objects/skill?_limit=10&_offset=20
-THEN getResultArrayForRequest() parses limit=10, offset=20
-AND getObjects() calls SkillMapper.findAll(limit: 10, offset: 20, ...)
-AND the response contains {results: [...], facets: [], total: 0}
-```
-
-### Extend entity references
-
-```
-GIVEN a character object has skills: ["uuid-1", "uuid-2"]
-WHEN extendEntity() is called with extend: ["skills"]
-THEN it resolves "skills" to singular "skill" for mapper lookup
-AND calls getMultipleObjects("skill", ["uuid-1", "uuid-2"])
-AND replaces the skills array with full skill objects
-```
-
-### URI-format ID cleaning
-
-```
-GIVEN an ID value of "https://example.com/api/objects/skill/abc-123"
-WHEN getObject() or getMultipleObjects() processes this ID
-THEN it extracts "abc-123" as the actual ID
-AND passes "abc-123" to the mapper's find() method
-```
+4. **Legacy internal mappers still exist**: The `lib/Db/` directory still contains all 10 entity/mapper pairs (Ability, Character, Condition, Effect, Event, Item, Player, Setting, Skill, Template) but they are no longer used by RegisterObjectFetcher. They remain as dead code.
 
 ## Dependencies
 
-- **All 10 entity mappers**: AbilityMapper, CharacterMapper, ConditionMapper, EffectMapper, EventMapper, ItemMapper, PlayerMapper, SettingMapper, SkillMapper, TemplateMapper
-- **IContainer / ContainerInterface**: DI container for obtaining OpenRegister service
+- **OpenRegister ObjectService**: Required dependency for all data operations (resolved via DI container)
+- **IAppConfig**: Per-type register/schema configuration storage
 - **IAppManager**: Checking if OpenRegister app is installed
-- **IAppConfig / IConfig**: Reading per-type data source configuration
-- **OpenRegister ObjectService**: Obtaining register/schema-specific mappers when configured
+- **ContainerInterface**: DI container for resolving OpenRegister service
+- **CharacterService**: Primary consumer of RegisterObjectFetcher for stat calculation entity preloading
+- **CharactersController**: Uses RegisterObjectFetcher for character retrieval in PDF export
