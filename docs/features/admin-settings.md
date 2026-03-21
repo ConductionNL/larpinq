@@ -2,7 +2,7 @@
 
 ## Overview
 
-LarpingApp provides a dedicated admin settings page in the Nextcloud administration panel. Administrators can configure data source settings for each of the 10 entity types (ability, character, condition, effect, event, item, player, setting, skill, template), choosing between internal Nextcloud database storage or OpenRegister.
+LarpingApp provides a dedicated admin settings page in the Nextcloud administration panel. Administrators can configure data source settings for each of the 9 entity types (ability, character, condition, effect, event, item, player, setting, skill), choosing between internal Nextcloud database storage or OpenRegister.
 
 ## How to Use
 
