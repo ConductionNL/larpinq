@@ -28,7 +28,7 @@ rules:
     - Consider impact on stat calculation engine when modifying effects, skills, items, or conditions
     - Specify whether feature affects internal mappers, OpenRegister, or both data paths
     - Reference docs/Schema/*.json for entity definitions and constraints
-    - "ADR-011: Check OpenRegister core for existing functionality before proposing new features"
+    - "ADR-011: Before implementing ANY utility (validation, formatting, parsing), search OpenRegister lib/Formats/, lib/Service/, and lib/Handler/ for existing implementations. Common duplications: BSN validation (BsnFormat.php), date formatting, slug generation, UUID handling. If found, reuse via DI or document why duplication is necessary."
   specs:
     - Use CommonGateway Entity schema conventions for data model references
     - Include effect chain documentation for any feature that modifies character stats
