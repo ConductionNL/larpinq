@@ -6,7 +6,7 @@ status: enriched
 
 ## Purpose
 
-Provides per-object-type data source configuration for LarpingApp, allowing administrators to choose whether each entity type (ability, character, condition, effect, event, item, player, setting, skill, template) is stored in the internal Nextcloud database or in an OpenRegister instance. When OpenRegister is selected, administrators configure the specific register and schema for each object type. Settings are exposed via the Nextcloud Admin Settings panel and a REST API. Additionally, provides a JSON-based configuration import mechanism via `SettingsLoadService` that bootstraps registers and schemas from a bundled configuration file.
+Provides per-object-type data source configuration for LarpingApp, allowing administrators to choose whether each entity type (ability, character, condition, effect, event, item, player, setting, skill) is stored in the internal Nextcloud database or in an OpenRegister instance. When OpenRegister is selected, administrators configure the specific register and schema for each object type. Settings are exposed via the Nextcloud Admin Settings panel and a REST API. Additionally, provides a JSON-based configuration import mechanism via `SettingsLoadService` that bootstraps registers and schemas from a bundled configuration file.
 
 ## Requirements
 
@@ -50,11 +50,11 @@ The LarpingApp MUST register a dedicated section in the Nextcloud admin settings
 
 ### Requirement: Data Source Configuration
 
-Administrators MUST be able to configure each of the 10 object types to use either internal Nextcloud database storage or OpenRegister storage with a specific register and schema.
+Administrators MUST be able to configure each of the 9 object types to use either internal Nextcloud database storage or OpenRegister storage with a specific register and schema.
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
-| SET-010 | All 10 object types MUST be listed as configurable: ability, character, condition, effect, event, item, player, setting, skill, template | MUST | Implemented |
+| SET-010 | All 9 object types MUST be listed as configurable: ability, character, condition, effect, event, item, player, setting, skill | MUST | Implemented |
 | SET-011 | Each object type MUST have a source selector with options: "Internal" or "Open Register" | MUST | Implemented |
 | SET-012 | When "Open Register" is selected, a register dropdown MUST appear populated from available OpenRegister registers | MUST | Implemented |
 | SET-013 | When a register is selected, a schema dropdown MUST appear populated from that register's schemas | MUST | Implemented |
