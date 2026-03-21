@@ -28,20 +28,30 @@ rules:
     - Consider impact on stat calculation engine when modifying effects, skills, items, or conditions
     - Specify whether feature affects internal mappers, OpenRegister, or both data paths
     - Reference docs/Schema/*.json for entity definitions and constraints
+    - "ADR-011: Check OpenRegister core for existing functionality before proposing new features"
   specs:
     - Use CommonGateway Entity schema conventions for data model references
     - Include effect chain documentation for any feature that modifies character stats
     - Specify both internal (Entity/Mapper) and OpenRegister behavior where applicable
     - Reference TypeScript entity types (src/entities/*/types.ts) for frontend contracts
     - Include GIVEN/WHEN/THEN scenarios for all CRUD operations and stat calculations
+    - "ADR-009: Include test scenarios for all MUST/SHALL requirements"
   design:
     - Generic ObjectService pattern — new entity types MUST be added to the objectType match in getMapper()
     - Frontend stores follow Pinia pattern with entity class hydration
     - Modals and views follow per-entity-type directory structure (src/modals/{type}/, src/views/{type}/)
     - All API calls go through /api/objects/{objectType} generic endpoints except PDF download and settings
     - Character saves MUST trigger stat recalculation via CharacterService.calculateCharacter()
+    - "ADR-001: All data MUST be stored via OpenRegister — no custom database tables"
+    - "ADR-012: MUST use @conduction/nextcloud-vue components (CnIndexPage, CnDashboardPage, CnFormDialog, CnDataTable) — do NOT create custom equivalents"
+    - "ADR-008: Follow Controller → Service → Mapper layering pattern"
+    - "ADR-003: MUST use NL Design System tokens via Nextcloud CSS variables — no hardcoded colors"
   tasks:
     - Test with both internal mappers AND OpenRegister data sources
     - Verify stat calculation produces correct audit trails
     - Ensure TypeScript entity classes match JSON schema definitions
     - Test PDF generation with Twig templates when character features change
+    - "ADR-010: MUST include documentation task with browser screenshots using Playwright MCP"
+    - "ADR-009: MUST include unit test tasks — minimum 75% coverage for new code"
+    - "ADR-005: MUST include i18n tasks — Dutch and English translations required"
+    - "ADR-010: Every user-facing feature MUST have docs in docs/features/ with screenshots"
