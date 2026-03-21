@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace OCA\LarpingApp\AppInfo;
 
+use OCA\LarpingApp\Listener\DeepLinkRegistrationListener;
 use OCA\LarpingApp\Service\SettingsService;
 use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
@@ -62,7 +63,14 @@ class Application extends App implements IBootstrap
      */
     public function register(IRegistrationContext $context): void
     {
-        // Register services here.
+        // Register the deep link listener for OpenRegister unified search.
+        // The event class is only available when OpenRegister is installed.
+        if (class_exists('OCA\OpenRegister\Event\DeepLinkRegistrationEvent') === true) {
+            $context->registerEventListener(
+                'OCA\OpenRegister\Event\DeepLinkRegistrationEvent',
+                DeepLinkRegistrationListener::class
+            );
+        }
     }//end register()
 
     /**
