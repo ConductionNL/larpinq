@@ -21,10 +21,14 @@ namespace OCA\LarpingApp\Tests\Unit\Controller;
 
 use OCA\LarpingApp\Controller\SettingsController;
 use OCA\LarpingApp\Service\SettingsService;
+use OCP\App\IAppManager;
 use OCP\AppFramework\Http\JSONResponse;
+use OCP\IGroupManager;
 use OCP\IRequest;
+use OCP\IUserSession;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerInterface;
 
 /**
  * Tests for SettingsController.
@@ -65,9 +69,19 @@ class SettingsControllerTest extends TestCase
         $this->request         = $this->createMock(IRequest::class);
         $this->settingsService = $this->createMock(SettingsService::class);
 
+        $appManager = $this->createMock(IAppManager::class);
+        $appManager->method('getInstalledApps')->willReturn(['openregister']);
+
+        $userSession = $this->createMock(IUserSession::class);
+        $userSession->method('getUser')->willReturn(null);
+
         $this->controller = new SettingsController(
             request: $this->request,
+            container: $this->createMock(ContainerInterface::class),
+            appManager: $appManager,
             settingsService: $this->settingsService,
+            groupManager: $this->createMock(IGroupManager::class),
+            userSession: $userSession,
         );
 
     }//end setUp()

@@ -89,7 +89,7 @@ class CharactersController extends Controller
 
             // @psalm-suppress MixedMethodCall DocuDesk is an optional cross-app dependency.
             // @var array<string,mixed> $templateData
-            $templateData = $templateService->getTemplate(id: $template);
+            $templateData = $templateService->getTemplate($template);
         } catch (\Exception $exception) {
             return new JSONResponse(data: ['error' => 'Template not found'], statusCode: 404);
         }
@@ -101,9 +101,9 @@ class CharactersController extends Controller
             // @psalm-suppress MixedMethodCall DocuDesk is an optional cross-app dependency.
             // @var string $pdfString
             $pdfString = $pdfService->renderPdf(
-                templateContent: (string) ($templateData['content'] ?? ''),
-                data: ['character' => $character, 'template' => $templateData],
-                options: [
+                (string) ($templateData['content'] ?? ''),
+                ['character' => $character, 'template' => $templateData],
+                [
                     'format'      => (string) ($templateData['format'] ?? 'A4'),
                     'orientation' => (string) ($templateData['orientation'] ?? 'P'),
                 ]

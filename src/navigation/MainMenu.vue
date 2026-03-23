@@ -45,7 +45,7 @@
 			</NcAppNavigationItem>
 			<NcAppNavigationItem
 				:name="t('larpingapp', 'Documentation')"
-				@click="openLink('https://larpingapp.com', '_blank')">
+				@click="openLink('https://conduction.gitbook.io/larpingapp-nextcloud', '_blank')">
 				<template #icon>
 					<BookOpenVariantOutline :size="20" />
 				</template>
