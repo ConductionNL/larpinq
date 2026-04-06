@@ -1,0 +1,129 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e4]:
+    - generic [ref=e5]: Keyboard navigation help
+    - generic [ref=e6]:
+      - button "Skip to app navigation" [ref=e7] [cursor=pointer]:
+        - generic [ref=e9]: Skip to app navigation
+      - button "Skip to main content" [ref=e10] [cursor=pointer]:
+        - generic [ref=e12]: Skip to main content
+    - img [ref=e13]:
+      - img [ref=e15]
+  - banner [ref=e36]:
+    - generic [ref=e37]:
+      - link "Go to Dashboard" [ref=e38] [cursor=pointer]:
+        - /url: /
+      - navigation "Applications menu" [ref=e40]:
+        - list "Apps" [ref=e41]:
+          - listitem [ref=e42]:
+            - link "Dashboard" [ref=e43] [cursor=pointer]:
+              - /url: /apps/dashboard/
+          - listitem [ref=e46]:
+            - link "MyDash" [ref=e47] [cursor=pointer]:
+              - /url: /apps/mydash/
+          - listitem [ref=e50]:
+            - link "Talk" [ref=e51] [cursor=pointer]:
+              - /url: http://localhost:8080/apps/spreed/
+          - listitem [ref=e54]:
+            - link "Files" [ref=e55] [cursor=pointer]:
+              - /url: /apps/files/
+          - listitem [ref=e58]:
+            - link "Activity" [ref=e59] [cursor=pointer]:
+              - /url: /apps/activity/
+          - listitem [ref=e62]:
+            - link "Photos" [ref=e63] [cursor=pointer]:
+              - /url: /apps/photos/
+          - listitem [ref=e66]:
+            - link "Mail" [ref=e67] [cursor=pointer]:
+              - /url: /apps/mail/
+          - listitem [ref=e70]:
+            - link "Contacts" [ref=e71] [cursor=pointer]:
+              - /url: /apps/contacts/
+          - listitem [ref=e74]:
+            - link "Calendar" [ref=e75] [cursor=pointer]:
+              - /url: /apps/calendar/
+          - listitem [ref=e78]:
+            - link "Deck" [ref=e79] [cursor=pointer]:
+              - /url: /apps/deck/
+          - listitem [ref=e82]:
+            - link "Software Catalogs" [ref=e83] [cursor=pointer]:
+              - /url: /apps/softwarecatalog
+          - listitem [ref=e86]:
+            - link "Procest" [ref=e87] [cursor=pointer]:
+              - /url: /apps/procest
+          - listitem [ref=e90]:
+            - link "Pipelinq" [ref=e91] [cursor=pointer]:
+              - /url: /apps/pipelinq
+          - listitem [ref=e94]:
+            - link "Register" [ref=e95] [cursor=pointer]:
+              - /url: /apps/openregister/
+          - listitem [ref=e98]:
+            - link "Catalogi" [ref=e99] [cursor=pointer]:
+              - /url: /apps/opencatalogi
+          - listitem [ref=e102]:
+            - link "Larping" [ref=e103] [cursor=pointer]:
+              - /url: /apps/larpingapp/
+          - listitem [ref=e106]:
+            - link "DocuDesk" [ref=e107] [cursor=pointer]:
+              - /url: /apps/docudesk
+    - generic [ref=e110]:
+      - button "Unified search" [ref=e113] [cursor=pointer]:
+        - img [ref=e116]:
+          - img [ref=e117]
+      - generic "Notifications" [ref=e120]:
+        - button "Notifications" [ref=e121] [cursor=pointer]:
+          - img [ref=e125]
+      - button "Search contacts" [ref=e129] [cursor=pointer]:
+        - img [ref=e132]:
+          - img [ref=e133]
+      - navigation "Settings menu" [ref=e135]:
+        - button "Settings menu" [ref=e136] [cursor=pointer]:
+          - img [ref=e140]:
+            - img [ref=e141]
+        - generic [ref=e143]: Avatar of admin — Online
+  - generic [ref=e144]:
+    - generic [ref=e145]:
+      - navigation [ref=e146]:
+        - generic [ref=e147]:
+          - list [ref=e148]:
+            - button "Create Publication" [ref=e150] [cursor=pointer]
+            - listitem [ref=e157]
+            - listitem [ref=e165]
+            - listitem [ref=e173]
+          - button "Settings" [ref=e183] [cursor=pointer]:
+            - generic [ref=e184]
+      - button "Close navigation" [expanded] [ref=e191] [cursor=pointer]:
+        - img [ref=e194]:
+          - img [ref=e195]
+    - main [ref=e197]:
+      - generic [ref=e199]:
+        - generic [ref=e200]:
+          - heading "Dashboard" [level=2] [ref=e202]
+          - generic [ref=e203]:
+            - button "New Publication" [ref=e204] [cursor=pointer]
+            - button "Refresh dashboard" [ref=e211] [cursor=pointer]
+        - generic [ref=e218]:
+          - link "Catalogs No items found" [ref=e223] [cursor=pointer]:
+            - /url: /index.php/apps/opencatalogi/catalogi
+            - img [ref=e225]
+            - generic [ref=e228]
+          - link "Publications No items found" [ref=e236] [cursor=pointer]:
+            - /url: /index.php/apps/opencatalogi/catalogi
+            - img [ref=e238]
+            - generic [ref=e241]
+          - link "Concept Publications No items found" [ref=e249] [cursor=pointer]:
+            - /url: /index.php/apps/opencatalogi/catalogi
+            - img [ref=e251]
+            - generic [ref=e254]
+          - generic [ref=e262]:
+            - img [ref=e264]
+            - generic [ref=e267]
+          - generic [ref=e273]:
+            - heading "Catalogs Overview" [level=3] [ref=e276]
+            - generic [ref=e279]: No catalogs found
+          - generic [ref=e282]:
+            - heading "Concept Publications" [level=3] [ref=e285]
+            - generic [ref=e288]: No concept publications
+          - generic [ref=e291]:
+            - heading "Concept Attachments" [level=3] [ref=e294]
+            - generic [ref=e297]: No concept attachments
+  - img

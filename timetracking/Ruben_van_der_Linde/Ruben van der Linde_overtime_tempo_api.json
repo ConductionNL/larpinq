@@ -1,0 +1,2927 @@
+[
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-01-07",
+    "startTime": "20:44:00",
+    "description": "2 commits in openregister\n\nAdd events; Add events",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-01-08",
+    "startTime": "21:09:00",
+    "description": "2 commits in openconnector\n\nFunction for handling object removal; Do synchronysations when the mapping is updated or",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-01-11",
+    "startTime": "12:28:00",
+    "description": "3 commits in openconnector\n\nMore frontend work; Setting the frontend code; Add rules to open connector",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-01-12",
+    "startTime": "14:33:00",
+    "description": "16 commits in openconnector\n\nLet round up the rules logic; Update the rules logic in the endpoint service; Docs ... (+13 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 12600,
+    "startDate": "2025-01-15",
+    "startTime": "21:38:00",
+    "description": "14 commits in openregister\n\nLets do migrations; Lets do migrations; Add locking and ownership features to ObjectEntity ... (+11 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 11880,
+    "startDate": "2025-01-18",
+    "startTime": "09:41:00",
+    "description": "4 commits in openconnector\n\nMerge tag 'v0.1.38' into feature/CONNECTOR-155/act; More clearity in the login of synchronysation resu; Updated the synchronysation docs for force ... (+1 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-01-19",
+    "startTime": "21:53:00",
+    "description": "1 commits in openconnector\n\nFirst testing",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-01-30",
+    "startTime": "20:30:00",
+    "description": "1 commits in opencatalogi\n\nMerge remote-tracking branch 'origin/development' ",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-02-04",
+    "startTime": "20:00:00",
+    "description": "8 commits in openregister\n\nMerge branch 'main' into documentation-ibds; Merge branch 'main' into documentation-ibds; Merge branch 'documentation-ibds' ... (+5 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-02-08",
+    "startTime": "07:33:00",
+    "description": "39 commits in openregister\n\nDeploy website - based on ea07103d8ab848f58bdf5242; Found another one; Found another one ... (+36 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-02-11",
+    "startTime": "07:23:00",
+    "description": "1 commits in docudesk\n\nInitial commit",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-02-12",
+    "startTime": "07:41:00",
+    "description": "6 commits in docudesk, openregister\n\nUpdate the file service to always work on the Open; Update the file service to always work on the Open; Remove the custom sidebar ... (+3 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-02-13",
+    "startTime": "07:41:00",
+    "description": "1 commits in docudesk\n\nDeploy website - based on 22063c53ed3f4ed42c3d6730",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 15120,
+    "startDate": "2025-02-16",
+    "startTime": "21:11:00",
+    "description": "2 commits in openconnector\n\nAdd XML import support for open connector; Merge remote-tracking branch 'origin/development' ",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 14400,
+    "startDate": "2025-02-17",
+    "startTime": "22:03:00",
+    "description": "43 commits in docudesk, opencatalogi, openconnector, openregister\n\nCreate CNAME; Deploy website - based on b3c5c685904776f19e27ec65; Create CNAME ... (+40 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-02-18",
+    "startTime": "07:55:00",
+    "description": "11 commits in docudesk, opencatalogi, openconnector, openregister\n\nMerge pull request #200 from ConductionNL/developm; Merge pull request #200 from ConductionNL/developm; Deploy website - based on 335899dfe33cd2acac7ac3dc ... (+8 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 12240,
+    "startDate": "2025-02-23",
+    "startTime": "17:55:00",
+    "description": "4 commits in openregister\n\nBest workflow; Best workflow; Merge remote-tracking branch 'origin/development'  ... (+1 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-02-25",
+    "startTime": "07:35:00",
+    "description": "2 commits in openregister\n\nDeploy website - based on cd5043323d9275a27229b3bd; Deploy website - based on 8488fec2faeed3a58a3dd266",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-02-26",
+    "startTime": "07:32:00",
+    "description": "3 commits in openregister\n\nBit of bug hunting; Bit of bug hunting; Deploy website - based on b2d59363a60c22d0d3a2ef2e",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-02-28",
+    "startTime": "07:22:00",
+    "description": "4 commits in openregister\n\nThere might be other error prefenting finding a ta; There might be other error prefenting finding a ta; Fixed empty tags off case ... (+1 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-03-07",
+    "startTime": "07:42:00",
+    "description": "4 commits in openconnector, openregister\n\nDocumentation updates; Documentation updates; Deploy website - based on 26cfebc2d6ff7185a6e3b30a ... (+1 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-03-13",
+    "startTime": "19:42:00",
+    "description": "9 commits in openregister\n\nDeploy website - based on 6c4a089720eb349631cd3d06; Missed some; Missed some ... (+6 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-03-14",
+    "startTime": "00:25:00",
+    "description": "8 commits in opencatalogi, openconnector, openregister\n\nAdd lock; Add lock; Update to docusarus 3 ... (+5 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-03-15",
+    "startTime": "06:54:00",
+    "description": "29 commits in docudesk, opencatalogi, openconnector, openregister\n\nSmall fixes; Small fixes; More fixes ... (+26 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-03-16",
+    "startTime": "06:43:00",
+    "description": "19 commits in docudesk\n\nBit of extra loging; Fixed reading txt files; Lets go on to extracting the texts ... (+16 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-03-17",
+    "startTime": "02:13:00",
+    "description": "7 commits in docudesk\n\nFixed the string replacement; fixed invinite file creation; A raign of fixes ... (+4 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-03-18",
+    "startTime": "21:38:00",
+    "description": "8 commits in openregister\n\ndeploy: ddfbc96971a490b910b94a8d7cfffef00512e821; Lets update the object docs; Lets update the object docs ... (+5 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-03-19",
+    "startTime": "21:43:00",
+    "description": "2 commits in openregister\n\nTest; Test",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 12600,
+    "startDate": "2025-03-20",
+    "startTime": "07:01:00",
+    "description": "17 commits in openregister\n\ndeploy: 1bb3caa522d03d6f2a8845742182971b44ad34b0; This would be cool...; This would be cool... ... (+14 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-03-21",
+    "startTime": "06:24:00",
+    "description": "8 commits in openregister\n\nMerge remote-tracking branch 'origin/feature/VSC-2; Merge remote-tracking branch 'origin/feature/VSC-2; Lets refactor the frontend for the new urls ... (+5 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-03-22",
+    "startTime": "10:14:00",
+    "description": "28 commits in openregister\n\nSet owner and application; Set owner and application; Let quickly fix soft deleted ... (+25 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-03-23",
+    "startTime": "08:44:00",
+    "description": "12 commits in openregister\n\nCleanop the view dialog; Cleanop the view dialog; Fix code mirror in the object view ... (+9 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-03-24",
+    "startTime": "07:53:00",
+    "description": "2 commits in openregister\n\nWorking on refactoring saving objects; Working on refactoring saving objects",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-03-27",
+    "startTime": "07:18:00",
+    "description": "2 commits in openregister\n\n- Database cleanup - Preperation for authenticatio; - Database cleanup - Preperation for authenticatio",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-03-29",
+    "startTime": "10:12:00",
+    "description": "5 commits in openconnector\n\nLets get a bit of flavor into cursor; Merge branch 'documentation' into feature/CONNECTO; Merge remote-tracking branch 'origin/feature/CONNE ... (+2 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-03-30",
+    "startTime": "07:29:00",
+    "description": "24 commits in openconnector\n\nFixes on the migration files; Getting the migrations to comply; docblock fixes ... (+21 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-03-31",
+    "startTime": "07:55:00",
+    "description": "4 commits in openconnector, openregister\n\ndeploy: 31e353eb916c5f0e9c0be8ab9982f8b3111e7503; Add audit trail view description; Add audit trail view description ... (+1 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-04-01",
+    "startTime": "05:29:00",
+    "description": "4 commits in openregister\n\nphpcs on all DB items; phpcs on all DB items; Merge remote-tracking branch 'origin/feature/REGIS ... (+1 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-04-02",
+    "startTime": "21:39:00",
+    "description": "9 commits in openregister\n\nMaking the file understandable; Making the file understandable; Cleanu-up ... (+6 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 12600,
+    "startDate": "2025-04-03",
+    "startTime": "05:14:00",
+    "description": "20 commits in openregister\n\nManual fixes; Manual fixes; Remove extend entity ... (+17 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-04-04",
+    "startTime": "07:11:00",
+    "description": "10 commits in openregister\n\nMore fixes; More fixes; Merge branch 'code-refactor/ObjectService' of http ... (+7 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-04-05",
+    "startTime": "15:49:00",
+    "description": "4 commits in openregister\n\nMerge branch 'code-refactor/ObjectService' of http; Merge branch 'code-refactor/ObjectService' of http; Still fixing everythin that broke ... (+1 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-04-06",
+    "startTime": "10:08:00",
+    "description": "22 commits in openregister\n\nMerge branch 'code-refactor/ObjectService' of http; Merge branch 'code-refactor/ObjectService' of http; Fixing the audit trails ... (+19 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-04-07",
+    "startTime": "07:30:00",
+    "description": "6 commits in openregister\n\nnOOZ; nOOZ; phpcbf ... (+3 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 13320,
+    "startDate": "2025-04-08",
+    "startTime": "18:03:00",
+    "description": "4 commits in openregister\n\nFixed getting proper relations; Fixed getting proper relations; Lets use a notecard is noting can be found ... (+1 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-04-09",
+    "startTime": "06:53:00",
+    "description": "6 commits in openregister\n\nFirst work on configurations; First work on configurations; Merge branch 'code-refactor/ObjectService' of http ... (+3 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-04-10",
+    "startTime": "07:26:00",
+    "description": "8 commits in openregister\n\nForgot to lint the controllers; Forgot to lint the controllers; Finishing up the linting ... (+5 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-04-11",
+    "startTime": "07:40:00",
+    "description": "6 commits in openregister\n\nUnset id and uuid; Unset id and uuid; Add  OppenConnector to the import ... (+3 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-04-12",
+    "startTime": "07:04:00",
+    "description": "22 commits in openregister\n\nFix uses and used; Fix uses and used; Bit of data cleanup ... (+19 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-04-13",
+    "startTime": "20:04:00",
+    "description": "4 commits in openregister\n\nExtend register and schema; Extend register and schema; Dealing with extend as string ... (+1 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-04-14",
+    "startTime": "07:37:00",
+    "description": "5 commits in opencatalogi, openregister\n\nFixen schema extension; Fixen schema extension; Update all the dialogs ... (+2 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 16560,
+    "startDate": "2025-04-15",
+    "startTime": "02:36:00",
+    "description": "2 commits in opencatalogi\n\nAdd the glossery code; Let cleanup some more logs",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-04-17",
+    "startTime": "05:42:00",
+    "description": "2 commits in opencatalogi\n\nRefactor on controllers; Fixing a lot of the modals",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 15120,
+    "startDate": "2025-04-19",
+    "startTime": "09:44:00",
+    "description": "12 commits in opencatalogi, openregister\n\ndeploy: 25538e7e3f0ba074c0b12e961ff0cc28370deaeb; Oas readablitiy fix; Oas readablitiy fix ... (+9 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 13680,
+    "startDate": "2025-04-20",
+    "startTime": "11:43:00",
+    "description": "7 commits in opencatalogi, openregister\n\nMerge branch 'documentation' into feature/REGISTER; Merge branch 'documentation' into feature/REGISTER; Lets lint our php code, and name services corretly ... (+4 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-04-22",
+    "startTime": "20:40:00",
+    "description": "8 commits in openregister\n\nLets do a build; Lets do a build; Fix for totals ... (+5 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-04-30",
+    "startTime": "19:13:00",
+    "description": "30 commits in openregister\n\nDashboarding first draft; Dashboarding first draft; Let replace the RegisterIndex ... (+27 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-05-01",
+    "startTime": "07:45:00",
+    "description": "4 commits in openregister\n\nLets do a bit more linting; Lets do a bit more linting; including lint fixes and coding style ... (+1 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-05-03",
+    "startTime": "09:17:00",
+    "description": "20 commits in openregister\n\nPrevent deleting if schema's have objects; Prevent deleting if schema's have objects; Search sidebar graphics ... (+17 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-05-04",
+    "startTime": "17:54:00",
+    "description": "10 commits in openregister\n\nMerge remote-tracking branch 'origin/development' ; Merge remote-tracking branch 'origin/development' ; First setup of the schema details page ... (+7 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 12600,
+    "startDate": "2025-05-05",
+    "startTime": "23:06:00",
+    "description": "12 commits in openregister\n\nPhp styling fixes; Php styling fixes; No more npm linting errors ... (+9 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-05-06",
+    "startTime": "07:59:00",
+    "description": "7 commits in openregister\n\nMerge pull request #362 from ConductionNL/feature/; Merge pull request #362 from ConductionNL/feature/; Merge branch 'development' into feature/REGISTERS- ... (+4 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-05-08",
+    "startTime": "07:35:00",
+    "description": "2 commits in openregister\n\nMerge remote-tracking branch 'origin/feature/REGIS; Merge remote-tracking branch 'origin/feature/REGIS",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-05-10",
+    "startTime": "15:35:00",
+    "description": "2 commits in openregister\n\nFirst code on the import/export service; First code on the import/export service",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 12600,
+    "startDate": "2025-05-11",
+    "startTime": "22:12:00",
+    "description": "12 commits in openregister\n\nAdd last log to the object documentation; Add last log to the object documentation; First testing and fixing on the import functionali ... (+9 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-05-12",
+    "startTime": "07:39:00",
+    "description": "2 commits in openregister\n\nLets add the two new desired options; Lets add the two new desired options",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-05-13",
+    "startTime": "07:14:00",
+    "description": "5 commits in openconnector, openregister\n\nMerge pull request #375 from ConductionNL/feature/; Merge pull request #375 from ConductionNL/feature/; Bit of cleanup ... (+2 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-05-15",
+    "startTime": "07:24:00",
+    "description": "2 commits in openregister\n\nFix errors in validation; Fix errors in validation",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-05-16",
+    "startTime": "22:21:00",
+    "description": "1 commits in openconnector\n\nMerge remote-tracking branch 'origin/development' ",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-05-18",
+    "startTime": "15:14:00",
+    "description": "18 commits in docudesk, opencatalogi, openconnector, openregister\n\nCorrecting the function name; Correcting the function name; More fixes on the export ... (+15 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 20160,
+    "startDate": "2025-05-19",
+    "startTime": "18:06:00",
+    "description": "12 commits in docudesk, openregister\n\nMerge branch 'hotfix/zuiddrecht' of https://github; Merge branch 'hotfix/zuiddrecht' of https://github; Lets allow softValidated objects ... (+9 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-05-20",
+    "startTime": "07:43:00",
+    "description": "2 commits in docudesk\n\nFixed the autoloader issue; Procces reports",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-05-21",
+    "startTime": "07:47:00",
+    "description": "2 commits in docudesk\n\nFixed the index pages; Lets fix the frontend",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-05-22",
+    "startTime": "07:59:00",
+    "description": "1 commits in docudesk\n\nUpdate to the configuration service",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-05-23",
+    "startTime": "07:02:00",
+    "description": "2 commits in docudesk\n\nLets automate our code quality checks; Add licence checking",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-05-24",
+    "startTime": "08:18:00",
+    "description": "27 commits in docudesk, opencatalogi\n\nMerge branch 'hotfix/zuiddrecht' of https://github; Make open catalogi work for non admin users; Merge branch 'hotfix/frontend' ... (+24 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-05-25",
+    "startTime": "09:31:00",
+    "description": "3 commits in docudesk\n\nMerge branch 'main' into hotfix/frontend; Merge branch 'main' of https://github.com/Conducti; Lets add the entities Register",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 18360,
+    "startDate": "2025-05-26",
+    "startTime": "21:14:00",
+    "description": "16 commits in opencatalogi, openconnector, openregister\n\nSuporting baseencoded files; Suporting baseencoded files; Introdue special search _published that shows only ... (+13 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-05-27",
+    "startTime": "02:00:00",
+    "description": "2 commits in openconnector\n\nSpeedy gonzales; Lets keep tabs on the speed of the synhronysation ",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-05-28",
+    "startTime": "21:25:00",
+    "description": "4 commits in openregister\n\nFirst draft of delete and logs menu items; First draft of delete and logs menu items; Merge remote-tracking branch 'origin/development'  ... (+1 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-05-29",
+    "startTime": "07:55:00",
+    "description": "2 commits in openregister\n\nLets make the log page work; Lets make the log page work",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-05-31",
+    "startTime": "11:03:00",
+    "description": "2 commits in openregister\n\nMaking the sidebars work (in progress); Making the sidebars work (in progress)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-06-01",
+    "startTime": "07:27:00",
+    "description": "11 commits in openregister\n\nMerge branch 'hotfix/zuiddrecht' into development; Merge branch 'hotfix/zuiddrecht' into development; Merge remote-tracking branch 'origin/development'  ... (+8 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-06-02",
+    "startTime": "07:37:00",
+    "description": "9 commits in openconnector, openregister\n\nMerge branch 'hotfix/zuiddrecht' into development; Merge branch 'hotfix/zuiddrecht' into development; Lets ad a dialog confirmation for deleting items ... (+6 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-06-04",
+    "startTime": "07:05:00",
+    "description": "2 commits in openregister\n\nSmall order fix; Small order fix",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-06-07",
+    "startTime": "07:06:00",
+    "description": "17 commits in openconnector, openregister\n\nBug fixing on deleted and auditrtrail pages; Bug fixing on deleted and auditrtrail pages; Fixin the audit trail page ... (+14 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-06-08",
+    "startTime": "09:00:00",
+    "description": "10 commits in opencatalogi, openconnector, openregister\n\nSmall bit of maintanance on the sidebars; Small bit of maintanance on the sidebars; finishing of a consistent ui experience ... (+7 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-06-09",
+    "startTime": "23:05:00",
+    "description": "7 commits in openconnector\n\nBit more fixes, stil not everything in working ord; Updating all the stores; Proper laoding ste on job logs ... (+4 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-06-10",
+    "startTime": "07:42:00",
+    "description": "4 commits in openconnector\n\nDeleting synchronysation logs; Cleaningup the code a bit; Still fixing more routes ... (+1 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-06-13",
+    "startTime": "01:25:00",
+    "description": "2 commits in openregister\n\nLets grap files directly from the database; Lets grap files directly from the database",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-06-14",
+    "startTime": "08:29:00",
+    "description": "11 commits in opencatalogi, openconnector, openregister\n\nFirst draft of the new search objects function; First draft of the new search objects function; fix the mass delete modal ... (+8 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-06-15",
+    "startTime": "10:24:00",
+    "description": "14 commits in openregister\n\nAsync thall the faceted stuf; Async thall the faceted stuf; Lets do some final tweaks and add facetable to giv ... (+11 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-06-16",
+    "startTime": "21:31:00",
+    "description": "1 commits in opencatalogi\n\nStarting on a dymanic publications search example",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-06-18",
+    "startTime": "06:45:00",
+    "description": "5 commits in openconnector, softwarecatalog\n\n/me endpoint for storing user data; Merge remote-tracking branch 'origin/hotfix/zuidre; Merge remote-tracking branch 'origin/development'  ... (+2 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-06-19",
+    "startTime": "07:27:00",
+    "description": "1 commits in opencatalogi\n\nLets add ordering",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-06-21",
+    "startTime": "09:29:00",
+    "description": "16 commits in openregister\n\nGet the models styles in one line (delete multiple; Get the models styles in one line (delete multiple; Working on the user friendlyness ... (+13 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-06-22",
+    "startTime": "08:45:00",
+    "description": "8 commits in openregister\n\nUpdating to object for readabillity and perpering ; Updating to object for readabillity and perpering ; Lets call it purging ... (+5 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-06-23",
+    "startTime": "02:34:00",
+    "description": "13 commits in opencatalogi, openregister\n\nMerge pull request #452 from ConductionNL/feature/; Merge pull request #452 from ConductionNL/feature/; WIP on merge modal ... (+10 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-06-24",
+    "startTime": "20:23:00",
+    "description": "4 commits in opencatalogi\n\nMerge pull request #284 from ConductionNL/feature/; Let return catalogi in our directory endpoint; Merge pull request #283 from ConductionNL/feature/ ... (+1 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-06-25",
+    "startTime": "06:00:00",
+    "description": "16 commits in opencatalogi\n\nMerge pull request #291 from ConductionNL/feature/; Dirty filter fix; Merge pull request #290 from ConductionNL/feature/ ... (+13 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 19440,
+    "startDate": "2025-06-26",
+    "startTime": "02:47:00",
+    "description": "14 commits in opencatalogi, openregister\n\nFirst draft facet component; First draft facet component; Merge pull request #456 from ConductionNL/hotfix/s ... (+11 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-06-27",
+    "startTime": "06:11:00",
+    "description": "2 commits in openregister\n\nForms upgrades and facetable config; Forms upgrades and facetable config",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-06-28",
+    "startTime": "09:09:00",
+    "description": "8 commits in opencatalogi\n\nWorking on date times; Merge pull request #301 from ConductionNL/feature/; Small cleanup on fixes ... (+5 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-06-29",
+    "startTime": "17:27:00",
+    "description": "9 commits in opencatalogi, openregister\n\nMerge pull request #460 from ConductionNL/feature/; Merge pull request #460 from ConductionNL/feature/; Refactor publisheing and depublishing files ... (+6 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-06-30",
+    "startTime": "02:01:00",
+    "description": "13 commits in opencatalogi, openconnector, openregister\n\nMerge pull request #469 from ConductionNL/feature/; Merge pull request #469 from ConductionNL/feature/; Add textarea and markdown support ... (+10 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-07-01",
+    "startTime": "22:28:00",
+    "description": "1 commits in softwarecatalog\n\nLets setup the software catalog component",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-07-02",
+    "startTime": "22:13:00",
+    "description": "4 commits in opencatalogi\n\nMerge pull request #308 from ConductionNL/feature/; Facet hotfix; Merge pull request #307 from ConductionNL/feature/ ... (+1 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-07-03",
+    "startTime": "07:59:00",
+    "description": "2 commits in openregister\n\nFacetabel refactor to schema; Facetabel refactor to schema",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-07-06",
+    "startTime": "08:06:00",
+    "description": "4 commits in softwarecatalog\n\nSetting up the new organisations handlers; Merge pull request #5 from ConductionNL/developmen; Bit more composer fixes ... (+1 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-07-07",
+    "startTime": "02:11:00",
+    "description": "5 commits in softwarecatalog\n\nMerge pull request #15 from ConductionNL/developme; Uuid fixes; Lets add the mailing functionality ... (+2 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-07-08",
+    "startTime": "22:01:00",
+    "description": "10 commits in opencatalogi, openregister\n\nMerge pull request #476 from ConductionNL/feature/; Merge pull request #476 from ConductionNL/feature/; Merge remote-tracking branch 'origin/development'  ... (+7 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-07-09",
+    "startTime": "23:05:00",
+    "description": "2 commits in openregister\n\nBetter return values on import; Better return values on import",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-07-10",
+    "startTime": "07:13:00",
+    "description": "6 commits in opencatalogi, openregister\n\nMerge pull request #477 from ConductionNL/feature/; Merge pull request #477 from ConductionNL/feature/; Better import screen ... (+3 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-07-11",
+    "startTime": "07:14:00",
+    "description": "4 commits in openregister\n\nMerge pull request #480 from ConductionNL/feature/; Merge pull request #480 from ConductionNL/feature/; Lets show the file owner ... (+1 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-07-12",
+    "startTime": "09:14:00",
+    "description": "4 commits in openregister\n\nLets go search trails; Lets go search trails; Starting work on search trailing ... (+1 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-07-13",
+    "startTime": "15:42:00",
+    "description": "9 commits in openconnector, openregister\n\nFaceting  fixes; Faceting  fixes; Lets add facets to the searchbar ... (+6 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-07-15",
+    "startTime": "07:38:00",
+    "description": "2 commits in openregister\n\nFixes for object relations; Fixes for object relations",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-07-16",
+    "startTime": "22:31:00",
+    "description": "2 commits in softwarecatalog\n\nUpdates to new object flow; New event subcribers flow",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-07-17",
+    "startTime": "06:52:00",
+    "description": "3 commits in softwarecatalog\n\nMerge pull request #17 from ConductionNL/developme; Merge remote-tracking branch 'origin/main' into de; Add error catching",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-07-18",
+    "startTime": "07:50:00",
+    "description": "2 commits in softwarecatalog\n\nMerge pull request #18 from ConductionNL/developme; User creation on creaetion of contact persoon and ",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-07-21",
+    "startTime": "21:28:00",
+    "description": "3 commits in openregister\n\nLets start testing; Adding basic multitenancy; Add testing",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-07-23",
+    "startTime": "07:40:00",
+    "description": "4 commits in openregister, softwarecatalog\n\nMerge pull request #501 from ConductionNL/feature/; Okey this solves teh absic filtering shizle; Merge pull request #21 from ConductionNL/developme ... (+1 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 19440,
+    "startDate": "2025-07-24",
+    "startTime": "20:30:00",
+    "description": "6 commits in opencatalogi, softwarecatalog\n\nFixin linting errors; Merge remote-tracking branch 'origin/main' into de; Lets automate organisation entity creation ... (+3 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-07-25",
+    "startTime": "02:54:00",
+    "description": "7 commits in opencatalogi, openconnector, openregister, softwarecatalog\n\nMerge pull request #507 from ConductionNL/feature/; RBAC Testing; More cors ... (+4 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-07-29",
+    "startTime": "07:54:00",
+    "description": "2 commits in opencatalogi, openregister\n\nLets optimize the importing of config by keeping a; Lets optimize the configuration procces",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-07-30",
+    "startTime": "07:12:00",
+    "description": "2 commits in openregister, softwarecatalog\n\nHotfix on seeing all the data as admin; Add view to gemma",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-07-31",
+    "startTime": "20:42:00",
+    "description": "3 commits in softwarecatalog\n\nMerge pull request #33 from ConductionNL/developme; Fixed settings updates; Merge remote-tracking branch 'origin/main' into de",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-08-03",
+    "startTime": "10:21:00",
+    "description": "8 commits in openregister, softwarecatalog\n\nFind related schema's; Find related schema's; Merge branch 'development' into hotfix/schema-dele ... (+5 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-08-09",
+    "startTime": "19:32:00",
+    "description": "1 commits in softwarecatalog\n\nTesting the loose endpoints",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-08-10",
+    "startTime": "11:05:00",
+    "description": "9 commits in openregister, softwarecatalog\n\nFixing the bulks; Fixing the bulks; Configuraiton fixes ... (+6 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 12600,
+    "startDate": "2025-08-11",
+    "startTime": "20:09:00",
+    "description": "11 commits in openregister, softwarecatalog\n\nMerge pull request #525 from ConductionNL/hotfix/b; Merge pull request #525 from ConductionNL/hotfix/b; Merge remote-tracking branch 'origin/development'  ... (+8 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-08-12",
+    "startTime": "22:19:00",
+    "description": "5 commits in openconnector, openregister\n\nAdding the settingspage; Adding the settingspage; Lets keep retatantions a continues concept ... (+2 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-08-14",
+    "startTime": "21:39:00",
+    "description": "3 commits in opencatalogi\n\nMerge pull request #338 from ConductionNL/hotfix/c; Working on the modal; Merge remote-tracking branch 'origin/feature/OP-51",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-08-15",
+    "startTime": "23:50:00",
+    "description": "3 commits in opencatalogi\n\nMerge pull request #340 from ConductionNL/hotfix/c; Merge remote-tracking branch 'origin/hotfix/cors' ; Lets setup the menu's properly",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-08-16",
+    "startTime": "11:40:00",
+    "description": "1 commits in openconnector\n\nMerge remote-tracking branch 'origin/fix/logging' ",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-08-17",
+    "startTime": "12:37:00",
+    "description": "10 commits in opencatalogi, openconnector, openregister\n\nMerge pull request #534 from ConductionNL/hotfix/s; Merge pull request #534 from ConductionNL/hotfix/s; Trying to fix audit trails and setting schema and  ... (+7 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-08-19",
+    "startTime": "23:48:00",
+    "description": "4 commits in openregister\n\nMerge pull request #538 from ConductionNL/hotfix/s; Merge pull request #538 from ConductionNL/hotfix/s; Lets speedup the import ... (+1 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-08-21",
+    "startTime": "07:33:00",
+    "description": "4 commits in softwarecatalog\n\nKLeine fixes; Merge pull request #49 from ConductionNL/hotfix/ac; Merge remote-tracking branch 'origin/main' into ho ... (+1 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-08-22",
+    "startTime": "02:19:00",
+    "description": "8 commits in openregister, softwarecatalog\n\nMerge remote-tracking branch 'origin/development' ; Merge remote-tracking branch 'origin/development' ; Merge pull request #545 from ConductionNL/hotfix/s ... (+5 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-08-24",
+    "startTime": "10:54:00",
+    "description": "17 commits in openregister, softwarecatalog\n\nMerge pull request #549 from ConductionNL/hotfix/s; Merge pull request #549 from ConductionNL/hotfix/s; Hotfix false field unique error ... (+14 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-08-25",
+    "startTime": "18:00:00",
+    "description": "8 commits in openregister\n\nMerge pull request #554 from ConductionNL/hotfix/s; Merge pull request #554 from ConductionNL/hotfix/s; Third performance update ... (+5 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-08-26",
+    "startTime": "21:11:00",
+    "description": "7 commits in opencatalogi, openconnector, softwarecatalog\n\nSearch optimalisatie; Merge pull request #342 from ConductionNL/hotfix/c; Search optimalisatie ... (+4 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-08-27",
+    "startTime": "07:07:00",
+    "description": "4 commits in opencatalogi\n\nMerge pull request #343 from ConductionNL/hotfix/c; Merge branch 'development' into hotfix/cors; Hotfix: Hack on the publication controller ... (+1 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-08-28",
+    "startTime": "02:43:00",
+    "description": "24 commits in opencatalogi, openconnector, openregister, softwarecatalog\n\nFixing the bulk import; Fixing the bulk import; Hotfix: metadata in object when bulk importing ... (+21 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-08-29",
+    "startTime": "02:02:00",
+    "description": "1 commits in openconnector\n\nMerge pull request #592 from ConductionNL/hotfix/c",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 18000,
+    "startDate": "2025-09-01",
+    "startTime": "18:06:00",
+    "description": "15 commits in openregister, softwarecatalog\n\nMerge pull request #565 from ConductionNL/feature/; Merge pull request #565 from ConductionNL/feature/; Hotfix: migration ... (+12 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 16200,
+    "startDate": "2025-09-02",
+    "startTime": "02:02:00",
+    "description": "16 commits in openregister, softwarecatalog\n\nMerge pull request #566 from ConductionNL/feature/; Merge pull request #566 from ConductionNL/feature/; Remove the dub listener ... (+13 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-09-04",
+    "startTime": "07:05:00",
+    "description": "11 commits in opencatalogi, openregister, softwarecatalog\n\nMerge pull request #579 from ConductionNL/feature/; Merge pull request #579 from ConductionNL/feature/; Hotfix: Cashin ... (+8 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-09-07",
+    "startTime": "10:30:00",
+    "description": "8 commits in openregister\n\nMerge pull request #581 from ConductionNL/feature/; Merge pull request #581 from ConductionNL/feature/; Migration and service hotvix ... (+5 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-09-08",
+    "startTime": "07:38:00",
+    "description": "6 commits in openregister\n\nOPtimizing the bulk import by running them in the ; OPtimizing the bulk import by running them in the ; Merge pull request #582 from ConductionNL/feature/ ... (+3 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-09-09",
+    "startTime": "23:27:00",
+    "description": "2 commits in openregister\n\nLets setup solr; Lets setup solr",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-09-10",
+    "startTime": "07:56:00",
+    "description": "12 commits in openregister\n\nFirst succefull test on solr; First succefull test on solr; Fixing the migrations ... (+9 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-09-11",
+    "startTime": "07:53:00",
+    "description": "8 commits in openregister\n\nClearing up the solr documents; Clearing up the solr documents; fixing the dubble index ... (+5 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-09-12",
+    "startTime": "03:41:00",
+    "description": "4 commits in openregister\n\nMerge pull request #587 from ConductionNL/feature/; Merge pull request #587 from ConductionNL/feature/; Merge remote-tracking branch 'origin/feature/solr' ... (+1 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-09-13",
+    "startTime": "09:50:00",
+    "description": "2 commits in openregister\n\nFurther work on making solr maintanable; Further work on making solr maintanable",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-09-14",
+    "startTime": "11:22:00",
+    "description": "26 commits in openconnector, openregister, softwarecatalog\n\nfeat(changelog): add changelog-ci configuration fo; feat(changelog): add changelog-ci configuration fo; feat(changelog): add changelog-ci configuration fo ... (+23 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-09-15",
+    "startTime": "07:45:00",
+    "description": "46 commits in openregister\n\nfeat(solr): Add enhanced debugging to SolrSetup fo; feat(solr): Add enhanced debugging to SolrSetup fo; Merge pull request #601 from ConductionNL/feature/ ... (+43 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-09-16",
+    "startTime": "06:35:00",
+    "description": "84 commits in openregister\n\ndebug: add comprehensive logging to performanceCla; debug: add comprehensive logging to performanceCla; fix: add comprehensive null checks for all perform ... (+81 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-09-17",
+    "startTime": "02:00:00",
+    "description": "30 commits in openregister\n\nfix: correct SOLR weighted search query syntax; fix: correct SOLR weighted search query syntax; debug: add detailed SOLR query logging ... (+27 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-09-20",
+    "startTime": "15:41:00",
+    "description": "4 commits in openregister\n\nMerge pull request #628 from ConductionNL/hotfix/s; Merge pull request #628 from ConductionNL/hotfix/s; feat(solr): comprehensive SOLR enhancements - cach ... (+1 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-09-21",
+    "startTime": "16:47:00",
+    "description": "56 commits in openregister\n\nMerge pull request #632 from ConductionNL/hotfix/s; Merge pull request #632 from ConductionNL/hotfix/s; Delete ter && git add . && git commit -m \"fix: add ... (+53 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 19080,
+    "startDate": "2025-09-22",
+    "startTime": "20:45:00",
+    "description": "22 commits in opencatalogi, openregister\n\nMerge pull request #634 from ConductionNL/hotfix/s; Merge pull request #634 from ConductionNL/hotfix/s; fix: prevent empty register/schema values from cau ... (+19 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-09-23",
+    "startTime": "07:27:00",
+    "description": "15 commits in openregister, softwarecatalog\n\nMerge pull request #636 from ConductionNL/hotfix/s; Merge pull request #636 from ConductionNL/hotfix/s; feat: add validateAllObjects endpoint to settings ... (+12 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-09-24",
+    "startTime": "05:20:00",
+    "description": "18 commits in opencatalogi, openregister, softwarecatalog\n\ndocs: add comprehensive @self metadata handling do; docs: add comprehensive @self metadata handling do; fix: improve @self metadata handling for organizat ... (+15 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 12600,
+    "startDate": "2025-09-25",
+    "startTime": "06:20:00",
+    "description": "15 commits in openregister, softwarecatalog\n\nMerge pull request #644 from ConductionNL/feature/; Merge pull request #644 from ConductionNL/feature/; feat: add refresh button to dashboard header ... (+12 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 11880,
+    "startDate": "2025-09-29",
+    "startTime": "19:21:00",
+    "description": "10 commits in opencatalogi, openregister, softwarecatalog\n\nfix: minor cleanup in GuzzleSolrService after sear; fix: minor cleanup in GuzzleSolrService after sear; Merge pull request #647 from ConductionNL/feature/ ... (+7 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 17280,
+    "startDate": "2025-09-30",
+    "startTime": "03:13:00",
+    "description": "6 commits in docudesk, openregister, softwarecatalog\n\nfix: improve SOLR relations indexing functionality; fix: improve SOLR relations indexing functionality; Merge pull request #100 from ConductionNL/developm ... (+3 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-10-01",
+    "startTime": "19:14:00",
+    "description": "4 commits in opencatalogi\n\nMerge pull request #361 from ConductionNL/feature/; Delete ource = index' parameter from MenusControll; Delete allows the system to use the most appropria ... (+1 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-10-02",
+    "startTime": "02:29:00",
+    "description": "8 commits in opencatalogi, openregister\n\nMerge pull request #652 from ConductionNL/feature/; Merge pull request #652 from ConductionNL/feature/; hotfix(solr): temporarily disable published and or ... (+5 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-10-04",
+    "startTime": "12:25:00",
+    "description": "8 commits in openregister\n\nMerge pull request #655 from ConductionNL/feature/; Merge pull request #655 from ConductionNL/feature/; Lets fix the colours ... (+5 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-10-05",
+    "startTime": "10:04:00",
+    "description": "19 commits in opencatalogi, openregister, softwarecatalog\n\ntest; test; Uddate ... (+16 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-10-06",
+    "startTime": "07:07:00",
+    "description": "4 commits in opencatalogi, openregister, softwarecatalog\n\nMerge pull request #657 from ConductionNL/developm; Merge pull request #657 from ConductionNL/developm; Merge pull request #366 from ConductionNL/developm ... (+1 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-10-07",
+    "startTime": "07:47:00",
+    "description": "4 commits in softwarecatalog\n\nMerge pull request #111 from ConductionNL/developm; Password lengt to 10 lettters; Merge pull request #110 from ConductionNL/developm ... (+1 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-10-08",
+    "startTime": "21:16:00",
+    "description": "10 commits in openregister, softwarecatalog\n\nMerge pull request #665 from ConductionNL/feature/; Merge pull request #665 from ConductionNL/feature/; Lets fix an hardcoded thingy ... (+7 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 16560,
+    "startDate": "2025-10-09",
+    "startTime": "02:31:00",
+    "description": "4 commits in opencatalogi\n\nMerge pull request #368 from ConductionNL/feature/; missed a spot; Merge pull request #367 from ConductionNL/feature/ ... (+1 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-10-11",
+    "startTime": "21:22:00",
+    "description": "6 commits in openregister, softwarecatalog\n\nMerge pull request #670 from ConductionNL/feature/; Merge pull request #670 from ConductionNL/feature/; Fix publishing objects ... (+3 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-10-12",
+    "startTime": "23:39:00",
+    "description": "2 commits in openregister\n\nStarting the refacto on solr; Starting the refacto on solr",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-10-13",
+    "startTime": "07:40:00",
+    "description": "14 commits in opencatalogi, openregister\n\nMerge pull request #671 from ConductionNL/feature/; Merge pull request #671 from ConductionNL/feature/; Oke couple of warmup fixes ... (+11 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-10-14",
+    "startTime": "03:47:00",
+    "description": "6 commits in openregister\n\nOke lets fix the facatable bug for types; Oke lets fix the facatable bug for types; Merge pull request #672 from ConductionNL/feature/ ... (+3 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-10-15",
+    "startTime": "07:48:00",
+    "description": "2 commits in softwarecatalog\n\nMerge pull request #118 from ConductionNL/developm; Fix adding the user to the correct organisation",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-10-18",
+    "startTime": "13:12:00",
+    "description": "6 commits in openregister\n\nWorkingon the integration test; Workingon the integration test; Workingon the integration test ... (+3 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-10-19",
+    "startTime": "09:53:00",
+    "description": "2 commits in openregister\n\nMerge remote-tracking branch 'origin/feature/REGIS; Merge remote-tracking branch 'origin/feature/REGIS",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-10-20",
+    "startTime": "07:38:00",
+    "description": "4 commits in openregister\n\nMerge pull request #678 from ConductionNL/feature/; Merge pull request #678 from ConductionNL/feature/; Correct status codes and remove exec event abo ... (+1 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-10-22",
+    "startTime": "23:36:00",
+    "description": "2 commits in opencatalogi\n\nMerge pull request #378 from ConductionNL/feature/; Route fix",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-10-26",
+    "startTime": "19:53:00",
+    "description": "3 commits in opencatalogi, openregister\n\nMerge remote-tracking branch 'origin/development' ; Merge remote-tracking branch 'origin/development' ; Merge remote-tracking branch 'origin/development' ",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-10-27",
+    "startTime": "21:49:00",
+    "description": "6 commits in opencatalogi, openregister\n\nMerge pull request #692 from ConductionNL/feature/; Merge pull request #692 from ConductionNL/feature/; Correctly inserting services ... (+3 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-10-28",
+    "startTime": "06:25:00",
+    "description": "7 commits in openregister, softwarecatalog\n\nMerge pull request #693 from ConductionNL/feature/; Merge pull request #693 from ConductionNL/feature/; Fix for ordering and case sensitivity ... (+4 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-10-29",
+    "startTime": "20:52:00",
+    "description": "6 commits in openregister\n\nAlignment perfection; Alignment perfection; Lets use the proper component ... (+3 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-11-01",
+    "startTime": "23:43:00",
+    "description": "4 commits in openregister\n\nMerge remote-tracking branch 'origin/feature/REGIS; Merge remote-tracking branch 'origin/feature/REGIS; Cleaning up the ui on applicatie and organisatie ... (+1 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-11-02",
+    "startTime": "15:02:00",
+    "description": "6 commits in openregister\n\nWIP on organisation, applications and configuratio; WIP on organisation, applications and configuratio; Lets add and remove users from organisations ... (+3 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-11-03",
+    "startTime": "07:58:00",
+    "description": "8 commits in openregister\n\nfinaly got fav view to work; finaly got fav view to work; Merge remote-tracking branch 'origin/development'  ... (+5 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-11-05",
+    "startTime": "19:08:00",
+    "description": "12 commits in openregister\n\nMerge remote-tracking branch 'origin/development' ; Merge remote-tracking branch 'origin/development' ; Still working a the base for configuration and cha ... (+9 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-11-06",
+    "startTime": "07:32:00",
+    "description": "12 commits in openregister\n\nMerge pull request #711 from ConductionNL/feature/; Merge pull request #711 from ConductionNL/feature/; Setting up tools ... (+9 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-11-07",
+    "startTime": "07:12:00",
+    "description": "2 commits in openregister\n\nFixing the rag system; Fixing the rag system",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 14400,
+    "startDate": "2025-11-08",
+    "startTime": "22:32:00",
+    "description": "47 commits in openregister\n\ndeploy: 6483c1977cf2d30bf1d4dac536422f38012a505e; Merge pull request #756 from ConductionNL/feature/; Merge pull request #756 from ConductionNL/feature/ ... (+44 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-11-09",
+    "startTime": "11:22:00",
+    "description": "5 commits in openregister\n\ndeploy: 00b155b27f90e1fad7ae5dac3531b13438b5d2d1; Merge pull request #758 from ConductionNL/feature/; Merge pull request #758 from ConductionNL/feature/ ... (+2 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-11-10",
+    "startTime": "21:51:00",
+    "description": "4 commits in openregister\n\nMerge remote-tracking branch 'origin/development' ; Merge remote-tracking branch 'origin/development' ; Update the docker-compose ... (+1 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-11-11",
+    "startTime": "06:43:00",
+    "description": "4 commits in openregister\n\nMerge remote-tracking branch 'origin/development' ; Merge remote-tracking branch 'origin/development' ; Setting up open regsiter with ollama ... (+1 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-11-12",
+    "startTime": "21:52:00",
+    "description": "2 commits in openregister\n\nGetting to grips with the performance problem; Getting to grips with the performance problem",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-11-15",
+    "startTime": "09:02:00",
+    "description": "12 commits in openregister, softwarecatalog\n\nWIP for the refactord extraction pipeline; WIP for the refactord extraction pipeline; Finding configuration files online ... (+9 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-11-16",
+    "startTime": "11:42:00",
+    "description": "2 commits in openregister\n\nUpdate the migration; Update the migration",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-11-17",
+    "startTime": "21:53:00",
+    "description": "2 commits in openregister\n\nGrean borders :'); Grean borders :')",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 12600,
+    "startDate": "2025-11-20",
+    "startTime": "20:08:00",
+    "description": "10 commits in openregister\n\nMore linting, psalm and webhooks; More linting, psalm and webhooks; psalm fixes ... (+7 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-11-22",
+    "startTime": "14:22:00",
+    "description": "4 commits in openregister\n\nMore linting and getting to grips with text extrac; More linting and getting to grips with text extrac; Still working on the documentation ... (+1 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-11-23",
+    "startTime": "15:53:00",
+    "description": "4 commits in openregister\n\nContinue with the cleanup and starting psalm; Continue with the cleanup and starting psalm; All the cleanup ... (+1 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 15120,
+    "startDate": "2025-11-24",
+    "startTime": "21:04:00",
+    "description": "14 commits in openregister\n\nMore cleanup; More cleanup; phpcs fixes ... (+11 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-11-25",
+    "startTime": "07:24:00",
+    "description": "6 commits in openregister\n\nDocumenting the local setup; Documenting the local setup; Merge branch 'hotfix/registerlist' into feature/ph ... (+3 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-11-26",
+    "startTime": "07:45:00",
+    "description": "6 commits in openregister\n\nFixing admin overwrtie for multitenancy; Fixing admin overwrtie for multitenancy; Enable admin overwrite ... (+3 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-11-27",
+    "startTime": "07:09:00",
+    "description": "4 commits in openregister\n\nFix code styling; Fix code styling; Merge remote-tracking branch 'origin/development'  ... (+1 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-11-28",
+    "startTime": "06:37:00",
+    "description": "4 commits in openregister\n\nMerge pull request #855 from ConductionNL/hotfix/u; Merge pull request #855 from ConductionNL/hotfix/u; Add endpoint functionality ... (+1 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-11-29",
+    "startTime": "10:50:00",
+    "description": "2 commits in openregister\n\nAll the linting; All the linting",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-12-02",
+    "startTime": "06:34:00",
+    "description": "4 commits in openregister\n\nFixing the showing of published objects in dashboa; Fixing the showing of published objects in dashboa; Still working on the phpcs ... (+1 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-12-06",
+    "startTime": "07:36:00",
+    "description": "3 commits in openregister\n\nMerge remote-tracking branch 'origin/hotfix/object; Merge remote-tracking branch 'origin/feature/php-l; More phpcs cleanup",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 11160,
+    "startDate": "2025-12-08",
+    "startTime": "19:03:00",
+    "description": "2 commits in opencatalogi, openregister\n\nTrying to fix the foreign key error on installatio; Merge pull request #398 from ConductionNL/hotfix/l",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-12-13",
+    "startTime": "15:51:00",
+    "description": "10 commits in openregister\n\nMerge remote-tracking branch 'origin/feature/php-l; Merge remote-tracking branch 'origin/development' ; Merge remote-tracking branch 'origin/feature/php-l ... (+7 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-12-14",
+    "startTime": "11:25:00",
+    "description": "19 commits in openregister\n\nfeat: Create DataManipulationHandler with 4 utilit; feat: Complete PermissionHandler integration - all; feat: Create PermissionHandler with 5 RBAC methods ... (+16 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-12-15",
+    "startTime": "18:53:00",
+    "description": "12 commits in openregister\n\nCleanup the md files; Slowly working there; Doing the automated crud testing ... (+9 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-12-16",
+    "startTime": "07:48:00",
+    "description": "1 commits in openregister\n\nFurther phpcs fixes",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-12-19",
+    "startTime": "07:43:00",
+    "description": "3 commits in opencatalogi\n\nMerge remote-tracking branch 'origin/fix/federatio; On development: Auto stash before merge of \"develo; index on development: 16079923 Merge pull request ",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 21600,
+    "startDate": "2025-12-20",
+    "startTime": "12:34:00",
+    "description": "5 commits in openregister\n\nRemoving some more failures; Preparing for  magic tables; Fix test bugs for property inheritance and import  ... (+2 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-12-21",
+    "startTime": "10:19:00",
+    "description": "1 commits in openregister\n\nWorking on the multiform file upload madness",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-12-23",
+    "startTime": "18:02:00",
+    "description": "1 commits in openregister\n\ndocs: Phase 2 comprehensive summary - 75% complete",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 11160,
+    "startDate": "2025-12-27",
+    "startTime": "20:03:00",
+    "description": "4 commits in openregister\n\nSetting up the phpcs workflow; Fixing the newman tests; Wokring on postgress and n8n ... (+1 more commits)",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-12-28",
+    "startTime": "14:01:00",
+    "description": "3 commits in openregister\n\nWIP: Staging changes before credential removal; Bit more work on testing; Setting up our workflow for code corrections with ",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  },
+  {
+    "issueKey": "COND-1",
+    "timeSpentSeconds": 10800,
+    "startDate": "2025-12-29",
+    "startTime": "22:12:00",
+    "description": "2 commits in openregister\n\nMerge remote-tracking branch 'origin/feature/php-l; Working on getting self healing code",
+    "authorAccountId": "YOUR_ACCOUNT_ID",
+    "attributes": {
+      "_Activity_": {
+        "value": "Development"
+      }
+    }
+  }
+]

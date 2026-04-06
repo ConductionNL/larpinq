@@ -1,0 +1,202 @@
+76393844cb7f991199d938b30c1675c8c4801ce3|Ruben van der Linde|2025-12-08T09:18:08+01:00|Merge remote-tracking branch 'origin/feature/WOO-404/write-to-solr' into development
+0e341bee3fe9085412fc32773217127c0f0b33e5|Ruben van der Linde|2025-09-30T06:29:11+02:00|Merge pull request #31 from ConductionNL/feature/nextcloud-32-support
+b55a5caed16b32e25cf53b935ceb8bb739e41fb6|Ruben van der Linde|2025-09-30T03:13:31+02:00|feat: add Nextcloud 32 support
+31c04c28a119d631837600caa29f0c5feba028f7|Robert Zondervan|2025-08-22T14:53:09+02:00|Add documentation
+c82335dd87babf01182cfd0c8d1105fcce397d66|Robert Zondervan|2025-08-08T15:51:32+02:00|Finish up setting config for solr, also add a search provider to search
+b751bf06988b7512d20be56bed4fe4e262c1eedf|Robert Zondervan|2025-08-07T16:47:54+02:00|First working version including deletion
+6e75343b4baf90e6d040e505284d12b4f069f7d5|Robert Zondervan|2025-08-06T16:38:15+02:00|Add solr docker compose example
+cef357cc0f6f6dc71e7a96fde2d812d6674072ed|Robert Zondervan|2025-08-06T16:36:38+02:00|First steps in indexing documents to solr
+7ea7084cbfd36ffc2c944b2b856db9a0f27a60c0|GitHub Action|2025-05-25T07:31:28+00:00|Bump version to 0.0.31
+4147f11a3c52e485090c55f014cdb64427ce9207|Ruben van der Linde|2025-05-25T09:31:28+02:00|Merge branch 'main' into hotfix/frontend
+c63d14bda046d7fd81f8d97dfe3bda8e218cc7c1|Ruben van der Linde|2025-05-25T09:31:14+02:00|Merge branch 'main' of https://github.com/ConductionNL/DocuDesk into main
+cca1861ead0a81ebf9740fd61c87dd8046450bca|Ruben van der Linde|2025-05-25T09:31:13+02:00|Lets add the entities Register
+2b6f923fcc23d3446817ef8a8f3aa8190edfa654|GitHub Action|2025-05-24T23:29:24+00:00|Bump version to 0.0.30
+c86bcf83adc859b8927db13d6e95dd5f41f3643d|Ruben van der Linde|2025-05-25T01:28:59+02:00|Merge branch 'hotfix/frontend'
+89c2d7eb406816aff322bba4a412b5d52ab9b3ca|Ruben van der Linde|2025-05-25T01:28:41+02:00|Voorkom dubel raporteren van genonimiseerde bestanden
+7ead736c4e16deb3e84e54b0ee06bcaf78558c3b|Ruben van der Linde|2025-05-25T01:24:53+02:00|Vernieuwde opzet van anonimizeren inc gdpr register
+93b6d5584137ec70dbcfbcefe3dd5644eb2fb6ff|Ruben van der Linde|2025-05-25T00:26:21+02:00|Mooie nieuwe raportage pagina's
+b2075a80ed5fd62a0ff545dc444fb4d5adeaa821|Ruben van der Linde|2025-05-24T23:59:52+02:00|Lets switch to a reports page concept
+28125773afe15d9600587a177d1104455621794c|Ruben van der Linde|2025-05-24T22:20:20+02:00|Bit of work to get the quility checks more acurate
+117bd6eeda117056b9fc6496fd1071e731f5588d|Ruben van der Linde|2025-05-24T22:11:18+02:00|Merge branch 'main' into hotfix/frontend
+7169e0e04e9bc7b247b13d80b85b098e275a6341|GitHub Action|2025-05-24T20:11:07+00:00|Bump version to 0.0.29
+4945d5e76b9b2a00dd613fcd37ab32112755de46|Ruben van der Linde|2025-05-24T22:10:49+02:00|Merge branch 'main' of https://github.com/ConductionNL/DocuDesk into main
+f923eb25cab962057b83e6ec028c8fdd11d1285b|Ruben van der Linde|2025-05-24T22:10:48+02:00|Lets take a look at the linting of javascript files
+4d14190d591e76135f59ad64373b864575afcb8c|GitHub Action|2025-05-24T19:59:24+00:00|Bump version to 0.0.28
+a4a5fc451d574ef004f9e70e10c9297f7ff0a1c1|Ruben van der Linde|2025-05-24T21:59:10+02:00|Merge branch 'main' of https://github.com/ConductionNL/DocuDesk into main
+bbef666f20a6c14474d9bfdd964be4eeb213fa4c|Ruben van der Linde|2025-05-24T21:59:09+02:00|Lets try to setup better testing
+d43665251014d312e18145e111d7058796e3b41e|GitHub Action|2025-05-24T19:31:15+00:00|Bump version to 0.0.27
+bbffc73acf24bc8b1f4f721f8ad88e074901e11c|Ruben van der Linde|2025-05-24T21:30:57+02:00|Merge branch 'main' of https://github.com/ConductionNL/DocuDesk into main
+d85504708cd49b52813df3d1c3874120f035b4dd|Ruben van der Linde|2025-05-24T21:30:56+02:00|Bit more cleanup on the qi part
+43ad3a8a7ea49514cf99b00607eeb1691c7f3154|GitHub Action|2025-05-24T19:20:57+00:00|Bump version to 0.0.26
+6578e64927033ae56d83da890fdb5d188ecc354c|Ruben van der Linde|2025-05-24T21:20:44+02:00|Merge branch 'main' of https://github.com/ConductionNL/DocuDesk into main
+1f4f9ae89cee0552a1aaa54ba87a9209eaf7faf3|Ruben van der Linde|2025-05-24T21:20:42+02:00|Lets try to fix the quality code code
+3411723db0c13db1ce73f873f51fe3550d02c0c8|GitHub Action|2025-05-24T19:16:35+00:00|Bump version to 0.0.25
+e981d1dacb4d19b3d8a063658020f452dcb61ce6|Ruben van der Linde|2025-05-24T21:16:21+02:00|Merge branch 'main' of https://github.com/ConductionNL/DocuDesk into main
+114cf748c4bf3850ea70e23c9a175ca8979f6b0f|Ruben van der Linde|2025-05-24T21:16:19+02:00|Lets update the code quility workflow
+b3cb216171991452fa4ce857f0f29b64c5a2cb16|GitHub Action|2025-05-24T19:04:41+00:00|Bump version to 0.0.24
+f040f1630869b712c97b2ae801eb635a5051c6aa|Ruben van der Linde|2025-05-24T21:04:11+02:00|Merge branch 'hotfix/frontend'
+25a0026e713cf159eba932df126ad0a960e664a8|Ruben van der Linde|2025-05-24T20:41:26+02:00|Lets update the code quality workflow
+b1ddac992826e9574b5325dff1c6f436cce66d0d|Ruben van der Linde|2025-05-24T20:36:43+02:00|Last of the linting :)
+d9a46c7a459b82c3e84c4365ff91596dd0f2699b|Ruben van der Linde|2025-05-24T20:33:22+02:00|Remove some of the conflicting code
+5afe1acd19fdcb38751bdd3e567efb6684e45f67|Ruben van der Linde|2025-05-24T17:17:39+02:00|More styling fixes
+b842bf15cd61dc8b77e38148acce1ad82c5131bf|Ruben van der Linde|2025-05-24T10:08:10+02:00|Lets start linting this repository
+d762698fb7a4fca4e5dc72ed382d49aa521fb086|GitHub Action|2025-05-24T06:22:03+00:00|Bump version to 0.0.23
+e3e5ce5e37db8c1fc2207ec2e0c2c63cd57c6e84|Ruben van der Linde|2025-05-24T08:21:37+02:00|Merge branch 'hotfix/frontend'
+84c0ec227a4eb5328ea72cd57048593eebe9ced9|Ruben van der Linde|2025-05-24T08:18:25+02:00|Fix for non-admin users
+60f090e11b36f545adeded3e7a3bc676a98ee3d6|GitHub Action|2025-05-23T08:12:57+00:00|Bump version to 0.0.22
+f5b9a4f654cf5a63e8f4e9691d6d73039cd68352|Mark West|2025-05-23T10:12:44+02:00|Update README.md
+25d19268d879aeb57ca866a9784674d93812d708|Ruben van der Linde|2025-05-23T07:14:03+02:00|Lets automate our code quality checks
+16187d557032967efcbcdae09ee55eb811b8a89d|Ruben van der Linde|2025-05-23T07:02:28+02:00|Add licence checking
+6b0987eae18d40c1ecab068b7b2bf8630ff502de|GitHub Action|2025-05-22T14:00:26+00:00|Bump version to 0.0.21
+1801bb055b0ee4005ec0f002e3b4cb5986d2549b|Ruben van der Linde|2025-05-22T15:59:58+02:00|Merge branch 'hotfix/frontend'
+be7a4f6b195083797b633b41a36e2dd038401ff7|Ruben van der Linde|2025-05-22T15:58:50+02:00|Fixes on build and $obj
+280786ac9269e1e0d105eabd4c3ca3a3aa41b821|Ruben van der Linde|2025-05-22T15:58:49+02:00|Fixes on build and $obj
+f148707a0062f36cc414e68fb45d84f838b02888|Ruben van der Linde|2025-05-22T12:16:59+02:00|Merge branch 'main' into hotfix/frontend
+f15847f155ee376517d8a618a69bdfc521118c72|GitHub Action|2025-05-22T08:44:15+00:00|Bump version to 0.0.20
+cb4b11b95f2a190d5eb96e3cb0fa0f4783840fed|Ruben van der Linde|2025-05-22T10:43:51+02:00|Merge branch 'hotfix/frontend'
+24016be89425ba28462fd9bb887b0c1b94cf6cb4|Ruben van der Linde|2025-05-22T08:00:32+02:00|Merge remote-tracking branch 'origin/main' into hotfix/frontend
+0953d5d8d2de37ddc4a308ccc15956e7dc943f4a|Ruben van der Linde|2025-05-22T07:59:51+02:00|Update to the configuration service
+9864979e7d5c62496445ba7d07455e85fab59e04|Ruben van der Linde|2025-05-21T16:19:43+02:00|First settup for settings service
+edfc7f0e892a118fbbff6b86faa036a4d49ed0f7|GitHub Action|2025-05-21T12:20:09+00:00|Bump version to 0.0.19
+c17f0a3a99f48014a160db3247eadab704f597d5|Mark West|2025-05-21T14:19:52+02:00|Update info.xml
+bb702f7074492948116ec3d0a704e9b4226a8602|GitHub Action|2025-05-21T12:18:47+00:00|Bump version to 0.0.18
+0c9a3378fb418e487a58f641dae8abab24617f8c|Mark West|2025-05-21T14:18:31+02:00|Update info.xml
+612741cafe3b0228b771f15a438c6a153b7aedfb|Ruben van der Linde|2025-05-21T07:59:15+02:00|Fixed the index pages
+f99e0d1b0ab5b807398b6f00c0c33431df47febc|Ruben van der Linde|2025-05-21T07:47:18+02:00|Lets fix the frontend
+651aaf878eb71cc320dea8564ff1336a0fe98fc8|GitHub Action|2025-05-20T10:48:30+00:00|Bump version to 0.0.17
+7f225e2aeccb740120607c311bad172ec67f2e2d|Ruben van der Linde|2025-05-20T12:48:15+02:00|Merge remote-tracking branch 'origin/main'
+534bc5ede33f150a21a851ec14ae9089128a540d|Ruben van der Linde|2025-05-20T12:48:02+02:00|Merge branch 'hotfix/zuiddrecht'
+f192137fb863d580bfd2f0fe3bf5df6b3dedd3b0|Ruben van der Linde|2025-05-20T12:43:21+02:00|Creating annomyized word files
+16a801f2deb47b755003e1ea5da2a00eb044f6f8|Ruben van der Linde|2025-05-20T12:31:22+02:00|Dont loop anonymisations
+377b25086ad0d062d947abfab51ad5dec66e2c2e|Ruben van der Linde|2025-05-20T12:23:22+02:00|Properly creating annonymization objects
+5b7fae4a5261e462865534342fd5ebedc6761403|Ruben van der Linde|2025-05-20T11:26:18+02:00|Fixed doble reports
+e18d1808019ef25461ec3c3efb5e94ba7c170fec|Ruben van der Linde|2025-05-20T11:17:16+02:00|Getting the text from pdf
+289280d54d23899d18f83057fb8867ef0d151397|Ruben van der Linde|2025-05-20T10:01:55+02:00|Get the text from word document
+feb1e62383d6581394fdae9ea2246e4cc804e6f4|Ruben van der Linde|2025-05-20T07:57:19+02:00|Fixed the autoloader issue
+a90276db90f8504934d4269d66a03428cf9d4a62|Ruben van der Linde|2025-05-20T07:43:52+02:00|Procces reports
+3243383b1a92569d0fcd1381cc66a6178f31a00c|GitHub Action|2025-05-19T21:11:28+00:00|Bump version to 0.0.16
+88541f6b77523081915456ed44f8c48387e5e900|Ruben van der Linde|2025-05-19T23:11:12+02:00|Merge branch 'main' of https://github.com/ConductionNL/DocuDesk into main
+7dba37d65d446143d6b2b7841b8fb4de42f17d19|Ruben van der Linde|2025-05-19T23:11:11+02:00|Add the proper impoert
+317bf6012326157e81f5bb0a732a83af969786a6|Ruben van der Linde|2025-05-19T22:44:17+02:00|Merge branch 'hotfix/file-extraction' into hotfix/test-the-merge
+c4a1d65058208500affcd08bf82fc4d924e1ca6c|GitHub Action|2025-05-19T20:38:21+00:00|Bump version to 0.0.15
+3300e1e900c5694d74aa77de21ef38fdea88af1d|Ruben van der Linde|2025-05-19T22:38:07+02:00|Merge branch 'main' of https://github.com/ConductionNL/DocuDesk into main
+2bc51c64a6e39cf57908f610ebc6a7b7f456cf34|Ruben van der Linde|2025-05-19T22:38:06+02:00|Lets run report creation
+60073cee1cefcb18f85e03e5050c1a8ebc9eac26|GitHub Action|2025-05-19T20:16:16+00:00|Bump version to 0.0.14
+4a72a2a5947ae1644ec92819620a8208eaad0d96|Ruben van der Linde|2025-05-19T22:15:57+02:00|Merge branch 'main' of https://github.com/ConductionNL/DocuDesk into main
+cb6bdb2150d19a64f7a4542ac3eea3b057dbdbfe|Ruben van der Linde|2025-05-19T22:15:57+02:00|Let fix some phpcs
+679adc2e43d9be37cfe8e68768bef84fc6221ad9|GitHub Action|2025-05-19T16:07:13+00:00|Bump version to 0.0.13
+0a828805f1081f2a6f109fc8705ac1f5e4c447fa|Ruben van der Linde|2025-05-19T18:06:31+02:00|Lets get some work into supporting the new open register
+78584c22cc631a25ab4a666c1a121a8ea24ddf71|Ruben van der Linde|2025-05-19T00:32:27+02:00|Kill fix
+7f945c28813efbab8c0d384d5adc904ab7b44e41|Ruben van der Linde|2025-05-19T00:31:01+02:00|Let get some wordt and pdf content
+6bd034ec16a601d8a60a7038505bc31b673246ea|GitHub Action|2025-04-07T06:48:19+00:00|Bump version to 0.0.12
+f348f6dc0a9f97c8adc6f74ae377cecd32bbed91|Mark West|2025-04-07T08:48:04+02:00|Create beta-release.yaml
+cb99280ba21ffd1106ee23b08106ae20343f21e1|GitHub Action|2025-04-02T15:19:03+00:00|Bump version to 0.0.11
+2b1ca473694d83470515ef199b357cb2e7d09ff3|Mark West|2025-04-02T17:18:50+02:00|Update composer.json
+65dc2b74320222814d0944d34937724840b92004|GitHub Action|2025-04-02T15:15:02+00:00|Bump version to 0.0.10
+877ff243274e1cf7d950df99db43698f33e5304c|Mark West|2025-04-02T17:14:50+02:00|Update release-workflow.yaml
+63a73bf67c6bd1a7cffc69c4499376b9db995793|github-actions[bot]|2025-04-02T15:08:53+00:00|[Changelog CI] Add Changelog for Version 0.0.9
+74f941f393951d7fc772ff491adebd7aa46e874c|GitHub Action|2025-04-02T15:08:48+00:00|Bump version to 0.0.9
+b3d1fb6269a740438593ba15295b0178b3785b6c|Mark West|2025-04-02T17:08:29+02:00|Update release-workflow.yaml
+8b81d0f784d0ef6ce7e7ea4c6b4ababed7261be9|github-actions[bot]|2025-04-02T15:04:53+00:00|[Changelog CI] Add Changelog for Version 0.0.8
+74b1a07123a783c5f53330067f24106d1fa86e36|GitHub Action|2025-04-02T15:04:42+00:00|Bump version to 0.0.8
+22a82c6dedab8a0c8ff02dfc5e3a465ae88c8d7f|Mark West|2025-04-02T17:04:27+02:00|Update release-workflow.yaml
+4a1d0e2540b68bfbc275815b353be1926da2b7cd|github-actions[bot]|2025-04-02T15:02:15+00:00|[Changelog CI] Add Changelog for Version 0.0.7
+add6ebbd912e0524248ca7c8c80671469e18eb63|GitHub Action|2025-04-02T15:02:05+00:00|Bump version to 0.0.7
+37e529cd4a6a5c53e615a7e12dd42433379987dd|github-actions[bot]|2025-04-02T14:50:10+00:00|[Changelog CI] Add Changelog for Version 0.0.6
+7e5cfd32a53caeb93ae3ed72d74674d2e9aff914|GitHub Action|2025-04-02T14:49:57+00:00|Bump version to 0.0.6
+e875b1b53fd4d29ba07f2d422130a5f37b7eee72|Mark West|2025-04-02T16:49:42+02:00|Merge pull request #26 from ConductionNL/documentation
+c29ea517ad728edf83eee827ac35e6fa3583c782|GitHub Action|2025-04-01T14:34:40+00:00|Bump version to 0.0.5
+81aeb121064998bfdc11da95858d451e5ecdc7c8|Mark West|2025-04-01T16:34:23+02:00|Create docudesk.csr
+b717af0fd6bf89065ae2b32c340bfbfe19f7115a|GitHub Action|2025-04-01T14:22:06+00:00|Bump version to 0.0.4
+73ed5d687db32f4ead808962f028f749408000a7|Mark West|2025-04-01T16:21:49+02:00|Create crs-flow.yaml
+dbd03ea9e438d333886dc4bc70eaa164973814c3|rubenvdlinde|2025-03-26T15:57:46+00:00|deploy: d33fad020c9dcc106423a246c3db1cdc22a32d43
+d33fad020c9dcc106423a246c3db1cdc22a32d43|Ruben van der Linde|2025-03-26T16:56:32+01:00|More broken links
+807f0384e8b6a8388e99ec7e12c1652f46ac09b2|Ruben van der Linde|2025-03-26T16:52:52+01:00|Lets try this again
+3f141090cc752684a01d010e74c2e1af9b5521e8|Ruben van der Linde|2025-03-26T16:50:31+01:00|Build the new docs
+ddc9e45e72aea90aa93a30932b7ecbf0c59602f1|Ruben van der Linde|2025-03-17T13:50:49+01:00|Ad gdpr workflow
+73a69c6bcf90c1a18ee005a52cd21560c41f4c0b|Ruben van der Linde|2025-03-17T04:00:27+01:00|Fixed the string replacement
+80122b7346fce45810b77b13a2938584de47dddf|Ruben van der Linde|2025-03-17T03:50:35+01:00|fixed invinite file creation
+b4372bebfe54ed3780c02d7f7c53ca0d505e9d35|Ruben van der Linde|2025-03-17T03:38:35+01:00|A raign of fixes
+d3fc3dc7c676e914ce642931010cb8cf14428453|Ruben van der Linde|2025-03-17T03:19:11+01:00|Fixed circular reference
+9aa1999b718e6451ae36a253a8e016b3951e75c5|Ruben van der Linde|2025-03-17T03:11:48+01:00|Update to anonimization service
+8bb6de81f195796de595eab13311ed6152487f40|Ruben van der Linde|2025-03-17T02:27:07+01:00|Lets make it a bit more readable
+74570bcc943f948e404ff6ba8e6fd9c40ae97dcf|Ruben van der Linde|2025-03-17T02:13:13+01:00|Fixed presidio
+9d0ddc783afeca2eecffa4fbf4892bc99e607c62|Ruben van der Linde|2025-03-17T01:44:35+01:00|Bit of extra loging
+0c9e520661c8ae01ca3e9ea76d4faa5a856ac832|Ruben van der Linde|2025-03-17T01:42:04+01:00|Fixed reading txt files
+e650560635f3c088ca5a7178f9b7347cc132e18f|Ruben van der Linde|2025-03-17T01:23:21+01:00|Lets go on to extracting the texts
+c4908ad60e7a9ee8d013a7cbe1d35e75e6a9a69f|Ruben van der Linde|2025-03-17T00:48:55+01:00|Drop some non used stuff
+210536f81eec9390233e19cc3cbee00f6c69f955|Ruben van der Linde|2025-03-17T00:44:59+01:00|Remove action menu
+5840831291cccaa7ecc4aaa227829be26a2e407b|Ruben van der Linde|2025-03-17T00:42:54+01:00|Lets make our limits known
+dc1c00e9adf90161528f4f44482b239b4b891977|Ruben van der Linde|2025-03-17T00:39:03+01:00|Lets deal with no text docments
+eba2781d1fabc85ce914bcdfcbfebb4d20b1e461|Ruben van der Linde|2025-03-17T00:31:57+01:00|Cleanup on property names
+7bc703cfa9eee7005506f3311827e51a64b2f8e2|Ruben van der Linde|2025-03-17T00:23:08+01:00|Icon fixes
+912ea32c715481795b3a9bc8854aefca50dca7b6|Ruben van der Linde|2025-03-17T00:00:00+01:00|Fixing report creation
+bc8004a46984ea0d2e44f23f3aea5f0f6ba4090d|Ruben van der Linde|2025-03-16T23:23:20+01:00|Adding to the settings page
+7838fb45c213bdd174b8e64debaffd15df7c485e|Ruben van der Linde|2025-03-16T23:06:00+01:00|The actual logic for the reporting analasys
+409a21643b9d736a9ecdadd276b724fa9218ca79|Ruben van der Linde|2025-03-16T21:09:38+01:00|Fixing the settings page
+c887e18867d9040e9e6d3be61972e53e96b4c8d4|Ruben van der Linde|2025-03-16T20:38:58+01:00|So that fixes the layput
+2d187be1042e7665aa68974adc371f42737cc5fd|Ruben van der Linde|2025-03-16T20:29:23+01:00|Code cleanup
+e1ac00234d6ea5173ac836f5b1a4610263f556a5|rubenvdlinde|2025-03-16T08:28:14+00:00|deploy: 5b34f9d1c5dbab60cb94047bed03f642cb484a8b
+5b34f9d1c5dbab60cb94047bed03f642cb484a8b|Ruben van der Linde|2025-03-16T09:26:56+01:00|Update the documentation
+74e2c5d1710e742014a04f40670b8e14f394d6f1|Ruben van der Linde|2025-03-16T07:07:22+01:00|Broken api specs link
+dde2fe5b0852ae471201ac77f04cbe9ddf059ee3|Ruben van der Linde|2025-03-16T06:43:08+01:00|Lets add api docs
+f13d94aaf416085c16d356eec7915c4ca172add6|Ruben van der Linde|2025-03-15T22:19:56+01:00|Fix the settings page
+e8c30d6055a0ede901b82cb88c14615e6df37a0b|rubenvdlinde|2025-03-15T11:26:10+00:00|deploy: c11e322c9863b5e207a3b7ba136da90a864ccb9c
+c11e322c9863b5e207a3b7ba136da90a864ccb9c|Ruben van der Linde|2025-03-15T12:25:13+01:00|Switch to docusaurus
+e819bf6a32271064e0cea7ae626a613d88d4c273|Ruben van der Linde|2025-02-18T07:55:36+01:00|Fix CNAME
+142bb52129fcd21a62c8414986498bc22655acae|Ruben van der Linde|2025-02-18T00:12:35+01:00|Create CNAME
+2389aeaccfc630bbab17d0831dbf09a070a33ffe|rubenvdlinde|2025-02-17T23:09:43+00:00|Deploy website - based on 7aebb9389e84ca6d713b97b0d8a20e427fc6c337
+7aebb9389e84ca6d713b97b0d8a20e427fc6c337|Ruben van der Linde|2025-02-18T00:07:16+01:00|Opdate the DocuDesk theme
+b63865582d2b37878aaecf57d1672fde572c0be5|Ruben van der Linde|2025-02-17T23:50:07+01:00|Create CNAME
+a64794ad07aa9a06fdaf775369022f5fba80d644|rubenvdlinde|2025-02-17T22:48:54+00:00|Deploy website - based on a063dad5f29295d7d2bc9fd6e22bbd0eefad4942
+0f85f2983dfcfbdbb3d5809a8c79b37d995ff0ea|Ruben van der Linde|2025-02-17T23:48:03+01:00|Create CNAME
+a063dad5f29295d7d2bc9fd6e22bbd0eefad4942|Ruben van der Linde|2025-02-17T23:46:35+01:00|Lets try a slash deployment
+9c7eff25f419983057a349950f0d9dc184d1d5c9|rubenvdlinde|2025-02-17T22:43:06+00:00|Deploy website - based on b9579ffeb3ad3fcbe785be333c51a691b4aba21f
+b9579ffeb3ad3fcbe785be333c51a691b4aba21f|Ruben van der Linde|2025-02-17T23:40:45+01:00|Propper domain name
+4bd5caa0beaa933acd66c065cc226ee94451e105|Ruben van der Linde|2025-02-17T23:36:37+01:00|Create CNAME
+8de7fc5bf9c7cb57ac4d2ed98f8cfbce5e838281|rubenvdlinde|2025-02-17T13:43:01+00:00|Deploy website - based on 41acfce92696dcbde7fd189679a1594010cf402a
+41acfce92696dcbde7fd189679a1594010cf402a|Ruben van der Linde|2025-02-17T14:40:39+01:00|Style fixes
+003c8c40413e57a4f9f9428fc1a9cc87b38de9f9|rubenvdlinde|2025-02-13T11:15:21+00:00|Deploy website - based on dc9c5204e236a4ee7ec95b10134c4b9968ea882c
+dc9c5204e236a4ee7ec95b10134c4b9968ea882c|Ruben van der Linde|2025-02-13T12:13:02+01:00|Lets get a better tagline
+451084904fc915ab56758cd1debd03a8be6d5c01|github-actions[bot]|2025-02-13T10:59:21+00:00|Render PlantUML files
+5b60696dd02ea98036eaa3937e1fb0d58bf97725|Ruben van der Linde|2025-02-13T11:58:58+01:00|Small schema fixes
+0d9932c1a8fe8f6c482d8cedb91e62541b267cc2|rubenvdlinde|2025-02-13T10:54:00+00:00|Deploy website - based on e844ea454c3a5ade6bec4864a120047ab6bb2b38
+e844ea454c3a5ade6bec4864a120047ab6bb2b38|Ruben van der Linde|2025-02-13T11:51:49+01:00|Lets add .app to the website name
+a9271bcc73da4106b96a617997f6c0851991e195|rubenvdlinde|2025-02-13T10:33:51+00:00|Deploy website - based on 1d32cd1e2401eca21da677a0415d2098a9cbc721
+1d32cd1e2401eca21da677a0415d2098a9cbc721|Ruben van der Linde|2025-02-13T11:31:37+01:00|Lets not use the word flow two time
+aa23b7f489474e3b15cc1a6361298493c30b7f2b|Ruben van der Linde|2025-02-13T11:28:06+01:00|Correct logo
+2f7f03a24d0c14d66e350f7ca5ce075ad49d633e|rubenvdlinde|2025-02-13T10:24:49+00:00|Deploy website - based on 1759b5760d59340dfb52924415d86b5c29733481
+fa0f30af17537877160628e540d60b7e561473fa|Ruben van der Linde|2025-02-13T11:23:38+01:00|Lets make the workflow visable
+1759b5760d59340dfb52924415d86b5c29733481|Ruben van der Linde|2025-02-13T11:22:36+01:00|Merge branch 'documentation' of https://github.com/ConductionNL/DocuDesk into documentation
+59de266ba5af02cd08446284ebedb2922e7b2b26|Ruben van der Linde|2025-02-13T11:22:33+01:00|Add the logo
+b961cbe134412bba25c77511ade6aef044c09faa|rubenvdlinde|2025-02-13T10:21:39+00:00|Deploy website - based on 3c090165cdf9f2fe31f9b45a2b7223323348b302
+a71f9ad68d68857bfc04add35211b341d5b5540a|github-actions[bot]|2025-02-13T10:20:41+00:00|Render PlantUML files
+9de2f71396cfb7c37df8538af3a9a97875eea9de|Ruben van der Linde|2025-02-13T11:20:23+01:00|Let set a puml for the workflow
+3c090165cdf9f2fe31f9b45a2b7223323348b302|Ruben van der Linde|2025-02-13T11:19:25+01:00|Merge branch 'documentation' of https://github.com/ConductionNL/DocuDesk into documentation
+735a8049cbfef69cfbc7d21d5d4752d337a8f0bc|Ruben van der Linde|2025-02-13T11:19:24+01:00|Lets talk about workflows
+2d28ac54903641a95873c69fd4b04d55e905e245|rubenvdlinde|2025-02-13T10:15:11+00:00|Deploy website - based on 4a2267eae49f5461e9279516228cdf206c426b3e
+1cd19d18f507afdcc527c4d623358bcbafb59040|github-actions[bot]|2025-02-13T10:13:13+00:00|Render PlantUML files
+4a2267eae49f5461e9279516228cdf206c426b3e|Ruben van der Linde|2025-02-13T11:12:45+01:00|Merge branch 'documentation' of https://github.com/ConductionNL/DocuDesk into documentation
+fa2068856e30b23252ac2154987e50659799d9f4|Ruben van der Linde|2025-02-13T11:12:44+01:00|Remove handwritten
+5f36cf1a727abaa48d7018b1469167060450fcfd|github-actions[bot]|2025-02-13T10:12:01+00:00|Render PlantUML files
+12516951124419f8a8979554690ea3829d4059cf|Ruben van der Linde|2025-02-13T11:11:40+01:00|Small fixes to the anonimisation flow
+2783f36c19cbcb068f67927a572cb4c56b161b87|rubenvdlinde|2025-02-13T10:09:19+00:00|Deploy website - based on 52fad7ca53574b17736a0169ac666bf4811fd7a9
+52fad7ca53574b17736a0169ac666bf4811fd7a9|Ruben van der Linde|2025-02-13T11:07:05+01:00|Recovering the gdpr instruction
+37976cc67f86bc17643e451d719699995e3d5eb9|Ruben van der Linde|2025-02-13T10:59:47+01:00|Stupid typo
+c9281236f129834ea2df587a5cd89f31334d71df|Ruben van der Linde|2025-02-13T10:59:01+01:00|Merge branch 'documentation' of https://github.com/ConductionNL/DocuDesk into documentation
+e48c908db1142ac1358c7ed150c7a572564ffc00|Ruben van der Linde|2025-02-13T10:58:22+01:00|Rework the puml
+b234fccbf31c882146695b765679bb121dc28e17|github-actions[bot]|2025-02-13T09:39:58+00:00|Render PlantUML files
+582641ea5f659a8a30256c60acd6a16f4bff7257|Ruben van der Linde|2025-02-13T10:39:36+01:00|Add the puml
+50f62927bfc90b46266af5a339c5e3abc46bb990|rubenvdlinde|2025-02-13T09:14:17+00:00|Deploy website - based on 3b2e8e266e8a5161a6329d1ec8e260383baaa35f
+b8cc06b043e7388965da591ce2da58a9ba59e3fb|rubenvdlinde|2025-02-13T09:13:35+00:00|Deploy website - based on 7b3ece3316d0b1821ec14f5b21f6957b2c399b3b
+3b2e8e266e8a5161a6329d1ec8e260383baaa35f|Ruben van der Linde|2025-02-13T10:11:58+01:00|Forgot One
+7b3ece3316d0b1821ec14f5b21f6957b2c399b3b|Ruben van der Linde|2025-02-13T10:10:49+01:00|Last Docu Desk naming
+e5de86d333297b5f5f602f4ceb1c680fd0e85443|rubenvdlinde|2025-02-13T07:41:00+00:00|Deploy website - based on 22063c53ed3f4ed42c3d6730bf35df2f1ad2a627
+22063c53ed3f4ed42c3d6730bf35df2f1ad2a627|Ruben van der Linde|2025-02-13T08:38:41+01:00|Side bar fix
+f00ac4887a9aa20f784ce83f7ce770d0be0f88d3|Ruben van der Linde|2025-02-13T00:23:26+01:00|Remove the custom sidebar
+6ba3f48a9006605733b4d34323291d4e5cde6a02|Ruben van der Linde|2025-02-13T00:19:47+01:00|Setting up th docs
+5e41e39ec297adcc03c44378f2864db153c64cc6|Ruben van der Linde|2025-02-12T23:50:39+01:00|Firt tit tats of frontent
+1f361c55505c90c89ef5f8e2c97e1336e06137a1|GitHub Action|2025-02-12T22:08:51+00:00|Bump version to 0.0.3
+36e2603ddaef98704d335d20366daf1fa414d080|Ruben van der Linde|2025-02-12T23:08:36+01:00|Lets commit a bit more
+7eab9928cb4d0adb80feb671273aaf69e09765d9|Ruben van der Linde|2025-02-11T08:11:26+01:00|Lets setup the app
+442cf2af8495dfa04315bbe87b175971ab7cf919|Ruben van der Linde|2025-02-11T07:23:27+01:00|Initial commit

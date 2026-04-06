@@ -1,0 +1,366 @@
+Date,Day,Weekend,Worked,Hours,Commits,Start Time,End Time,Repositories,Work Summary
+2025-01-01,Wednesday,No,No,0.0,0,,,,No commits
+2025-01-02,Thursday,No,Yes,4.0,4,09:34,13:32,openregister,Merge pull request #114 from ConductionNL/feature/; Merge pull request #114 from ConductionNL/feature/; Extend registers withs schema's ... (+1 more commits)
+2025-01-03,Friday,No,Yes,2.0,2,08:54,08:54,openregister,Merge pull request #116 from ConductionNL/developm; Merge pull request #116 from ConductionNL/developm
+2025-01-04,Saturday,Yes,No,0.0,0,,,,No commits
+2025-01-05,Sunday,Yes,No,0.0,0,,,,No commits
+2025-01-06,Monday,No,No,0.0,0,,,,No commits
+2025-01-07,Tuesday,No,No,0.0,0,,,,No commits
+2025-01-08,Wednesday,No,Yes,2.0,2,12:14,12:34,openregister,Lets make sure that handleArrayProperty always rec; id to identifier
+2025-01-09,Thursday,No,Yes,2.0,4,09:01,10:03,openconnector,Add the listener; First draft for cloud event; Handeling object removal ... (+1 more commits)
+2025-01-10,Friday,No,No,0.0,0,,,,No commits
+2025-01-11,Saturday,Yes,No,0.0,0,,,,No commits
+2025-01-12,Sunday,Yes,No,0.0,0,,,,No commits
+2025-01-13,Monday,No,Yes,2.0,2,11:06,11:13,openconnector,Add upload and locking frontend; add authentication and dowloads to ui en documenta
+2025-01-14,Tuesday,No,Yes,2.0,4,14:03,15:28,openconnector,LInting fixes; Update documentation; Fix for getting objects from the root of a responc ... (+1 more commits)
+2025-01-15,Wednesday,No,Yes,2.0,2,11:44,11:44,openconnector,Merge branch 'feature/CONNECTOR-52/cloud-events' o; Mapping hotfix
+2025-01-16,Thursday,No,Yes,6.8,5,09:26,16:16,"opencatalogi, openregister",Proofed endpoint with menu; Add folder to register and object; Add folder to register and object ... (+2 more commits)
+2025-01-17,Friday,No,Yes,4.2,2,09:01,13:11,"opencatalogi, openconnector",Delete/Edit modals; Doc updates
+2025-01-18,Saturday,Yes,No,0.0,0,,,,No commits
+2025-01-19,Sunday,Yes,No,0.0,0,,,,No commits
+2025-01-20,Monday,No,Yes,2.0,5,15:20,16:15,openconnector,Rout fixes for actually displaying the logs; Fixing the ui; Bit of code cleanup and a backward compatibilty fi ... (+2 more commits)
+2025-01-21,Tuesday,No,Yes,2.0,6,12:42,13:53,openregister,Make files visable in Open Register file detail vi; Make files visable in Open Register file detail vi; Merge branch 'feature/CONNECTOR-179/locking' of ht ... (+3 more commits)
+2025-01-22,Wednesday,No,No,0.0,0,,,,No commits
+2025-01-23,Thursday,No,No,0.0,0,,,,No commits
+2025-01-24,Friday,No,Yes,3.8,3,10:31,14:19,opencatalogi,Code cleanup on store usage; Merge branch 'feature/IBOC-99/objects-controller' ; Codeclean up
+2025-01-25,Saturday,Yes,No,0.0,0,,,,No commits
+2025-01-26,Sunday,Yes,No,0.0,0,,,,No commits
+2025-01-27,Monday,No,Yes,2.0,3,14:50,15:00,"opencatalogi, openregister",Picking up the files from the nextcloud share; Spliting functions for getting files; Spliting functions for getting files
+2025-01-28,Tuesday,No,No,0.0,0,,,,No commits
+2025-01-29,Wednesday,No,No,0.0,0,,,,No commits
+2025-01-30,Thursday,No,No,0.0,0,,,,No commits
+2025-01-31,Friday,No,Yes,2.0,3,08:26,08:48,"opencatalogi, openregister",Use files in the open catalogi view; Add metadata to objects; Add metadata to objects
+2025-02-01,Saturday,Yes,No,0.0,0,,,,No commits
+2025-02-02,Sunday,Yes,No,0.0,0,,,,No commits
+2025-02-03,Monday,No,No,0.0,0,,,,No commits
+2025-02-04,Tuesday,No,No,0.0,0,,,,No commits
+2025-02-05,Wednesday,No,Yes,2.0,4,10:50,11:29,openregister,Merge pull request #155 from ConductionNL/document; Merge pull request #155 from ConductionNL/document; Started adding diagrams ... (+1 more commits)
+2025-02-06,Thursday,No,No,0.0,0,,,,No commits
+2025-02-07,Friday,No,No,0.0,0,,,,No commits
+2025-02-08,Saturday,Yes,No,0.0,0,,,,No commits
+2025-02-09,Sunday,Yes,No,0.0,0,,,,No commits
+2025-02-10,Monday,No,Yes,2.0,2,09:19,09:19,openregister,Lets think about contributing; Lets think about contributing
+2025-02-11,Tuesday,No,Yes,8.0,13,08:11,16:07,"docudesk, opencatalogi, openregister",Lets setup the app; Merge branch 'feature/IBOC-140/file-refactor' of h; Clean up the labels ... (+10 more commits)
+2025-02-12,Wednesday,No,Yes,7.9,21,08:08,15:05,"opencatalogi, openconnector, openregister",Merge pull request #187 from ConductionNL/developm; Merge pull request #185 from ConductionNL/feature/; First draft for documentation ... (+18 more commits)
+2025-02-13,Thursday,No,Yes,4.6,31,08:38,11:15,docudesk,Deploy website - based on dc9c5204e236a4ee7ec95b10; Lets get a better tagline; Small schema fixes ... (+28 more commits)
+2025-02-14,Friday,No,No,0.0,0,,,,No commits
+2025-02-15,Saturday,Yes,No,0.0,0,,,,No commits
+2025-02-16,Sunday,Yes,No,0.0,0,,,,No commits
+2025-02-17,Monday,No,Yes,7.2,12,10:06,16:50,"docudesk, openconnector, openregister",Deploy website - based on 41acfce92696dcbde7fd1896; Style fixes; Zin naar Nederlands ... (+9 more commits)
+2025-02-18,Tuesday,No,Yes,6.2,38,10:38,15:52,"opencatalogi, openconnector, openregister",SMall bit of code cleanup; Lets try to get the tags; Multi file support on the controller ... (+35 more commits)
+2025-02-19,Wednesday,No,Yes,2.0,1,09:03,09:03,openconnector,First draft on XML response (WIP DONT MERGE)
+2025-02-20,Thursday,No,No,0.0,0,,,,No commits
+2025-02-21,Friday,No,No,0.0,0,,,,No commits
+2025-02-22,Saturday,Yes,No,0.0,0,,,,No commits
+2025-02-23,Sunday,Yes,No,0.0,0,,,,No commits
+2025-02-24,Monday,No,Yes,2.5,15,13:21,13:38,openconnector,Deploy website - based on 0be2fb38643a6da7026964da; Merge branch 'documentation' of https://github.com; Technical breakdown of how pagination should work ... (+12 more commits)
+2025-02-25,Tuesday,No,Yes,6.1,93,08:27,12:32,openregister,Deploy website - based on c74a10c6c7a1798a7d7abb02; Add open klant; Add open klant ... (+90 more commits)
+2025-02-26,Wednesday,No,Yes,3.2,9,08:05,11:18,"opencatalogi, openregister",Very simple setup for missing file logic; Update the controller to use the new functions; Update the controller to use the new functions ... (+6 more commits)
+2025-02-27,Thursday,No,Yes,8.0,23,09:11,17:50,"opencatalogi, openregister",Let make the content optional; Merge branch 'feature/VSC-190/pagination' of https; request parameters mee sturen naar format files ... (+20 more commits)
+2025-02-28,Friday,No,Yes,2.5,20,09:33,11:08,"opencatalogi, openregister",Calling the proper function; Merge branch 'feature/VSC-190/pagination' of https; BUg fixing publish ... (+17 more commits)
+2025-03-01,Saturday,Yes,No,0.0,0,,,,No commits
+2025-03-02,Sunday,Yes,No,0.0,0,,,,No commits
+2025-03-03,Monday,No,No,0.0,0,,,,No commits
+2025-03-04,Tuesday,No,No,0.0,0,,,,No commits
+2025-03-05,Wednesday,No,No,0.0,0,,,,No commits
+2025-03-06,Thursday,No,Yes,7.9,49,09:50,15:45,"opencatalogi, openconnector, openregister",Deploy website - based on 06aab58da6ffb172e59b5d86; Een more fixes; More documentation fixes ... (+46 more commits)
+2025-03-07,Friday,No,Yes,2.0,4,09:40,09:15,opencatalogi,Deploy website - based on 6376d66e11a67f6c5a0538c2; New api docs; Deploy website - based on c26129be5890d18928e7716a ... (+1 more commits)
+2025-03-08,Saturday,Yes,No,0.0,0,,,,No commits
+2025-03-09,Sunday,Yes,No,0.0,0,,,,No commits
+2025-03-10,Monday,No,Yes,2.0,6,10:35,10:54,openregister,Lets start to create some real docs; Lets start to create some real docs; Merge branch 'documentation' of https://github.com ... (+3 more commits)
+2025-03-11,Tuesday,No,Yes,2.0,7,13:25,12:44,openregister,Deploy website - based on 75e4f5fcb6f1712a919ebcbf; Remove broken tabs; Remove broken tabs ... (+4 more commits)
+2025-03-12,Wednesday,No,No,0.0,0,,,,No commits
+2025-03-13,Thursday,No,Yes,2.0,2,09:06,09:06,openregister,Bit on the docs; Bit on the docs
+2025-03-14,Friday,No,Yes,7.5,35,10:39,16:09,opencatalogi,deploy: 1ff22e06336a262fb4ec60c281ac836cac7996b8; COntributing op de juiste plaats zetten; deploy: eca927c3444288572e6f9e67c88d762d361e0ae3 ... (+32 more commits)
+2025-03-15,Saturday,Yes,No,0.0,0,,,,No commits
+2025-03-16,Sunday,Yes,No,0.0,0,,,,No commits
+2025-03-17,Monday,No,Yes,4.2,12,10:08,13:50,"docudesk, openregister",Ad gdpr workflow; deploy: 0a7e31882f64c003aa9650b09a5d064452f4712d; Remove name ... (+9 more commits)
+2025-03-18,Tuesday,No,Yes,2.0,8,08:08,09:44,openregister,Bit more logic; Bit more logic; Bit of code clean up ... (+5 more commits)
+2025-03-19,Wednesday,No,Yes,2.0,5,09:47,09:05,openregister,deploy: dad5d7d9f504a508a37122a9775770a31d7ce589; bracket fix; bracket fix ... (+2 more commits)
+2025-03-20,Thursday,No,Yes,5.7,50,11:07,15:50,openregister,Verkeerd geplaats haakje; Verkeerd geplaats haakje; Why not ... (+47 more commits)
+2025-03-21,Friday,No,Yes,8.0,15,08:47,15:28,openregister,deploy: aaeb605122b78d94e53dc25e1ed4c01519fa9120; Quick fix on intro; Quick fix on intro ... (+12 more commits)
+2025-03-22,Saturday,Yes,No,0.0,0,,,,No commits
+2025-03-23,Sunday,Yes,No,0.0,0,,,,No commits
+2025-03-24,Monday,No,Yes,5.5,4,09:06,14:38,openregister,Fix for duplicate object  creation; Fix for duplicate object  creation; Last fixes for getting the edit to work ... (+1 more commits)
+2025-03-25,Tuesday,No,Yes,4.3,16,10:15,14:00,openregister,Fixed the audit trails; Fixed the audit trails; Prepping audit trails for uuid's ... (+13 more commits)
+2025-03-26,Wednesday,No,Yes,2.0,6,16:15,15:57,"docudesk, openregister",deploy: d33fad020c9dcc106423a246c3db1cdc22a32d43; More broken links; Lets try this again ... (+3 more commits)
+2025-03-27,Thursday,No,No,0.0,0,,,,No commits
+2025-03-28,Friday,No,No,0.0,0,,,,No commits
+2025-03-29,Saturday,Yes,No,0.0,0,,,,No commits
+2025-03-30,Sunday,Yes,No,0.0,0,,,,No commits
+2025-03-31,Monday,No,Yes,5.4,12,10:19,15:12,"openconnector, openregister",Small styling fixes; phpcs compliant endpoint service; Spliting the EndpointService ... (+9 more commits)
+2025-04-01,Tuesday,No,Yes,2.6,12,13:24,15:32,openregister,Line endings; Line endings; Fix throw spacing ... (+9 more commits)
+2025-04-02,Wednesday,No,Yes,8.0,51,09:29,16:33,openregister,More cs fixer config work; Maual labor; Down to 175 errors ... (+48 more commits)
+2025-04-03,Thursday,No,Yes,2.0,10,11:00,12:30,openregister,This feels save enough to try; This feels save enough to try; Small fixes ... (+7 more commits)
+2025-04-04,Friday,No,Yes,5.5,6,09:56,15:27,openregister,First testing; First testing; Fixin the dropdown inputs ... (+3 more commits)
+2025-04-05,Saturday,Yes,No,0.0,0,,,,No commits
+2025-04-06,Sunday,Yes,No,0.0,0,,,,No commits
+2025-04-07,Monday,No,Yes,2.0,2,12:16,12:16,openregister,Merge branch 'code-refactor/ObjectService' of http; Merge branch 'code-refactor/ObjectService' of http
+2025-04-08,Tuesday,No,Yes,2.0,4,17:57,17:57,openregister,Merge branch 'code-refactor/ObjectService' of http; Merge branch 'code-refactor/ObjectService' of http; Getting the tabse in the files view to work ... (+1 more commits)
+2025-04-09,Wednesday,No,Yes,2.0,4,08:39,08:44,openregister,First (messy) take on the import part.; First (messy) take on the import part.; Lets do the config service in a more clean way ... (+1 more commits)
+2025-04-10,Thursday,No,Yes,5.6,14,08:19,13:23,openregister,Fixing the export modals; Fixing the export modals; Fix the configuration export modal ... (+11 more commits)
+2025-04-11,Friday,No,Yes,3.8,9,09:13,13:01,"openconnector, openregister",Fixed small sql oversight; Lets lint this shizzle while we are at it; Cleaning up the mappers by ussing a base mapper ... (+6 more commits)
+2025-04-12,Saturday,Yes,No,0.0,0,,,,No commits
+2025-04-13,Sunday,Yes,No,0.0,0,,,,No commits
+2025-04-14,Monday,No,Yes,2.0,4,13:29,13:31,openregister,better order; better order; Optimalization and cleanup on extending ... (+1 more commits)
+2025-04-15,Tuesday,No,No,0.0,0,,,,No commits
+2025-04-16,Wednesday,No,Yes,2.0,2,10:30,10:30,openregister,500 fix; 500 fix
+2025-04-17,Thursday,No,Yes,6.5,10,10:45,17:12,"opencatalogi, openregister",Move FileForm to generic; Small fixes to models and revert on UseFileSelecti; Merge branch 'feature/REGISTERS-4/configuraties' o ... (+7 more commits)
+2025-04-18,Friday,No,Yes,5.4,7,10:47,16:12,"opencatalogi, openregister",Update tot proper name/title use; Getting the external endpoints to work; Fixing the publication routes ... (+4 more commits)
+2025-04-19,Saturday,Yes,No,0.0,0,,,,No commits
+2025-04-20,Sunday,Yes,No,0.0,0,,,,No commits
+2025-04-21,Monday,No,No,0.0,0,,,,No commits
+2025-04-22,Tuesday,No,Yes,6.1,7,09:33,15:41,"opencatalogi, openregister",Fixie; Fixing the oas generation; Fixing the oas generation ... (+4 more commits)
+2025-04-23,Wednesday,No,No,0.0,0,,,,No commits
+2025-04-24,Thursday,No,Yes,2.0,1,08:31,08:31,opencatalogi,Iets abstractere object store
+2025-04-25,Friday,No,No,0.0,0,,,,No commits
+2025-04-26,Saturday,Yes,No,0.0,0,,,,No commits
+2025-04-27,Sunday,Yes,No,0.0,0,,,,No commits
+2025-04-28,Monday,No,Yes,2.0,1,08:35,08:35,openconnector,Allow setting the source ad hock for a synchronisa
+2025-04-29,Tuesday,No,Yes,2.0,4,08:55,10:57,openregister,Merge branch 'feature/REGISTERS-4/configuraties' o; Merge branch 'feature/REGISTERS-4/configuraties' o; feature/REGISTERS-136/dashboard ... (+1 more commits)
+2025-04-30,Wednesday,No,Yes,8.0,16,08:49,17:16,openregister,deploy: bea0eb4fb5269c5f36c84c761716d2249bf50b78; deploy: 86748f59d7c103ee0656a025011f09a62960f815; Fixing the linting ... (+13 more commits)
+2025-05-01,Thursday,No,Yes,8.0,16,08:26,17:19,openregister,Merge pull request #353 from ConductionNL/feature/; Merge pull request #353 from ConductionNL/feature/; Merge branch 'development' into feature/REGISTERS- ... (+13 more commits)
+2025-05-02,Friday,No,Yes,2.0,4,08:00,08:00,openregister,Merge branch 'feature/REGISTERS-136/dashboard' of ; Merge branch 'feature/REGISTERS-136/dashboard' of ; Register details page ... (+1 more commits)
+2025-05-03,Saturday,Yes,No,0.0,0,,,,No commits
+2025-05-04,Sunday,Yes,No,0.0,0,,,,No commits
+2025-05-05,Monday,No,Yes,2.9,10,09:22,12:14,openregister,fixing the tags controller; fixing the tags controller; Fix tags and unset self on save ... (+7 more commits)
+2025-05-06,Tuesday,No,Yes,2.0,1,13:54,13:54,openregister,Fixes on OAS generation
+2025-05-07,Wednesday,No,Yes,2.0,1,09:24,09:24,openregister,Fix property view
+2025-05-08,Thursday,No,No,0.0,0,,,,No commits
+2025-05-09,Friday,No,Yes,2.0,2,12:38,12:38,openregister,Merge pull request #373 from ConductionNL/fix/obje; Merge pull request #373 from ConductionNL/fix/obje
+2025-05-10,Saturday,Yes,No,0.0,0,,,,No commits
+2025-05-11,Sunday,Yes,No,0.0,0,,,,No commits
+2025-05-12,Monday,No,No,0.0,0,,,,No commits
+2025-05-13,Tuesday,No,No,0.0,0,,,,No commits
+2025-05-14,Wednesday,No,No,0.0,0,,,,No commits
+2025-05-15,Thursday,No,Yes,5.4,17,09:55,14:50,"opencatalogi, openregister",Lets refamp the tempjob; Merge pull request #247 from ConductionNL/hotfix/z; Filter the properties that should not be published ... (+14 more commits)
+2025-05-16,Friday,No,No,0.0,0,,,,No commits
+2025-05-17,Saturday,Yes,No,0.0,0,,,,No commits
+2025-05-18,Sunday,Yes,No,0.0,0,,,,No commits
+2025-05-19,Monday,No,No,0.0,0,,,,No commits
+2025-05-20,Tuesday,No,Yes,6.3,10,10:01,16:20,"docudesk, openregister",Creating annomyized word files; Dont loop anonymisations; Properly creating annonymization objects ... (+7 more commits)
+2025-05-21,Wednesday,No,Yes,2.0,1,16:19,16:19,docudesk,First settup for settings service
+2025-05-22,Thursday,No,Yes,5.2,16,11:14,15:58,"docudesk, openregister",Fixes on build and $obj; Fixes on build and $obj; Fixed to ZRC ... (+13 more commits)
+2025-05-23,Friday,No,Yes,2.0,1,12:07,12:07,opencatalogi,Catalogi endpoint
+2025-05-24,Saturday,Yes,No,0.0,0,,,,No commits
+2025-05-25,Sunday,Yes,No,0.0,0,,,,No commits
+2025-05-26,Monday,No,No,0.0,0,,,,No commits
+2025-05-27,Tuesday,No,Yes,2.5,3,09:07,11:36,"opencatalogi, openregister",Fix the publication endpoint; Merge pull request #415 from ConductionNL/hotfix/z; Merge pull request #415 from ConductionNL/hotfix/z
+2025-05-28,Wednesday,No,Yes,2.0,4,13:23,13:32,"opencatalogi, openregister",Merge pull request #253 from ConductionNL/hotfix/z; Making unpublished applications available for the ; Merge pull request #419 from ConductionNL/hotfix/z ... (+1 more commits)
+2025-05-29,Thursday,No,Yes,2.0,4,08:51,08:53,openregister,Dropping NC chip; Dropping NC chip; Fix for double controller ... (+1 more commits)
+2025-05-30,Friday,No,No,0.0,0,,,,No commits
+2025-05-31,Saturday,Yes,No,0.0,0,,,,No commits
+2025-06-01,Sunday,Yes,No,0.0,0,,,,No commits
+2025-06-02,Monday,No,Yes,5.3,7,11:28,16:45,"opencatalogi, openregister",Fix for unfair objectservice use; Merge branch 'refactore/openregisters-0.2' of http; Lets have catalogi list the available schema's ... (+4 more commits)
+2025-06-03,Tuesday,No,Yes,2.0,4,12:47,14:43,"opencatalogi, openconnector, openregister",hotfix/menu-pages-controllers; setting the object identifieng tag should be part ; Lets introduce an more easy save function ... (+1 more commits)
+2025-06-04,Wednesday,No,Yes,8.0,9,08:06,16:04,"openconnector, openregister",Let get rid of the debug logging; WIP Delete removed attachements; Handle file deletions on sync (dont merge) ... (+6 more commits)
+2025-06-05,Thursday,No,No,0.0,0,,,,No commits
+2025-06-06,Friday,No,No,0.0,0,,,,No commits
+2025-06-07,Saturday,Yes,No,0.0,0,,,,No commits
+2025-06-08,Sunday,Yes,No,0.0,0,,,,No commits
+2025-06-09,Monday,No,No,0.0,0,,,,No commits
+2025-06-10,Tuesday,No,Yes,2.0,2,08:38,09:15,openconnector,Setting up mailing hooks; Run the Job  Logger
+2025-06-11,Wednesday,No,No,0.0,0,,,,No commits
+2025-06-12,Thursday,No,Yes,8.0,18,08:03,16:52,"opencatalogi, openconnector, openregister",Downloading zip archives of publications; Lets start wroking on the EditMapping modal; feat(FileService): Add comprehensive file filterin ... (+15 more commits)
+2025-06-13,Friday,No,Yes,5.3,5,11:43,17:00,opencatalogi,fixed results; Fix for uses/used; Oh noooz ... (+2 more commits)
+2025-06-14,Saturday,Yes,No,0.0,0,,,,No commits
+2025-06-15,Sunday,Yes,No,0.0,0,,,,No commits
+2025-06-16,Monday,No,No,0.0,0,,,,No commits
+2025-06-17,Tuesday,No,No,0.0,0,,,,No commits
+2025-06-18,Wednesday,No,No,0.0,0,,,,No commits
+2025-06-19,Thursday,No,Yes,2.5,5,09:27,11:55,"opencatalogi, openregister",Merge pull request #274 from ConductionNL/hotfix/n; Merge branch 'development' into hotfix/new-serach-; Merge pull request #440 from ConductionNL/hotfix/o ... (+2 more commits)
+2025-06-20,Friday,No,Yes,7.8,12,09:46,17:02,"opencatalogi, openconnector, openregister",Merge pull request #277 from ConductionNL/developm; Lets properly unset files if the labels are unset; Merge pull request #445 from ConductionNL/developm ... (+9 more commits)
+2025-06-21,Saturday,Yes,No,0.0,0,,,,No commits
+2025-06-22,Sunday,Yes,No,0.0,0,,,,No commits
+2025-06-23,Monday,No,Yes,7.4,11,09:29,16:22,openregister,Merge pull request #450 from ConductionNL/feature/; Inkorten bestandsnaam; Inkorten bestandsnaam ... (+8 more commits)
+2025-06-24,Tuesday,No,Yes,8.0,7,08:05,16:46,"opencatalogi, openregister, softwarecatalog",Merge pull request #282 from ConductionNL/feature/; Lets fix useing the proper function.; Merge pull request #453 from ConductionNL/feature/ ... (+4 more commits)
+2025-06-25,Wednesday,No,No,0.0,0,,,,No commits
+2025-06-26,Thursday,No,Yes,2.7,10,14:16,16:55,"opencatalogi, openregister",Merge pull request #295 from ConductionNL/feature/; Merge pull request #294 from ConductionNL/feature/; Ordering ... (+7 more commits)
+2025-06-27,Friday,No,Yes,8.0,11,08:31,16:27,"opencatalogi, openregister",Merge pull request #298 from ConductionNL/feature/; Yolo; Fix pagination ... (+8 more commits)
+2025-06-28,Saturday,Yes,No,0.0,0,,,,No commits
+2025-06-29,Sunday,Yes,No,0.0,0,,,,No commits
+2025-06-30,Monday,No,Yes,8.0,11,08:15,16:24,"opencatalogi, openregister",Merge pull request #304 from ConductionNL/feature/; Merge pull request #468 from ConductionNL/hotfix/p; Merge pull request #468 from ConductionNL/hotfix/p ... (+8 more commits)
+2025-07-01,Tuesday,No,Yes,2.0,1,09:21,09:21,softwarecatalog,Wroking on the settings page
+2025-07-02,Wednesday,No,Yes,2.5,6,09:39,12:12,openregister,Merge pull request #470 from ConductionNL/feature/; Merge pull request #470 from ConductionNL/feature/; Fixd ghost required properties ... (+3 more commits)
+2025-07-03,Thursday,No,Yes,4.4,11,08:01,11:56,"openregister, softwarecatalog",Merge pull request #474 from ConductionNL/feature/; Merge pull request #474 from ConductionNL/feature/; Hotfix for array facating ... (+8 more commits)
+2025-07-04,Friday,No,No,0.0,0,,,,No commits
+2025-07-05,Saturday,Yes,No,0.0,0,,,,No commits
+2025-07-06,Sunday,Yes,No,0.0,0,,,,No commits
+2025-07-07,Monday,No,Yes,3.4,5,08:10,11:35,softwarecatalog,Merge pull request #13 from ConductionNL/developme; Fix for the composer install; Merge pull request #11 from ConductionNL/developme ... (+2 more commits)
+2025-07-08,Tuesday,No,No,0.0,0,,,,No commits
+2025-07-09,Wednesday,No,No,0.0,0,,,,No commits
+2025-07-10,Thursday,No,Yes,2.0,2,15:56,15:56,openregister,Merge pull request #479 from ConductionNL/feature/; Merge pull request #479 from ConductionNL/feature/
+2025-07-11,Friday,No,Yes,5.4,16,09:28,14:20,"opencatalogi, openregister",Merge pull request #322 from ConductionNL/feature/; Integratoin level hotfix; Merge pull request #486 from ConductionNL/feature/ ... (+13 more commits)
+2025-07-12,Saturday,Yes,No,0.0,0,,,,No commits
+2025-07-13,Sunday,Yes,No,0.0,0,,,,No commits
+2025-07-14,Monday,No,Yes,4.4,6,08:24,12:45,openregister,Continue working on cacadingObjects; Continue working on cacadingObjects; Fixing the not found error on open register ... (+3 more commits)
+2025-07-15,Tuesday,No,No,0.0,0,,,,No commits
+2025-07-16,Wednesday,No,Yes,2.0,6,11:51,13:22,openregister,Merge pull request #492 from ConductionNL/hotfix/e; Merge pull request #492 from ConductionNL/hotfix/e; Merge pull request #491 from ConductionNL/feature/ ... (+3 more commits)
+2025-07-17,Thursday,No,Yes,6.5,11,09:28,15:28,"opencatalogi, openregister",Merge pull request #324 from ConductionNL/developm; Merge pull request #490 from ConductionNL/developm; Merge pull request #490 from ConductionNL/developm ... (+8 more commits)
+2025-07-18,Friday,No,Yes,2.2,2,13:56,16:06,softwarecatalog,Merge pull request #20 from ConductionNL/developme; Merge pull request #19 from ConductionNL/developme
+2025-07-19,Saturday,Yes,No,0.0,0,,,,No commits
+2025-07-20,Sunday,Yes,No,0.0,0,,,,No commits
+2025-07-21,Monday,No,Yes,2.0,2,16:28,16:29,openregister,Merge pull request #498 from ConductionNL/feature/; Lets ad basic RBAC to Open Register
+2025-07-22,Tuesday,No,Yes,3.4,3,13:45,17:11,openregister,Fix for double delete; Testing with open catalogi; Merge pull request #499 from ConductionNL/feature/
+2025-07-23,Wednesday,No,Yes,2.3,5,11:08,13:28,openregister,Merge pull request #506 from ConductionNL/feature/; Merge pull request #505 from ConductionNL/feature/; Merge pull request #504 from ConductionNL/feature/ ... (+2 more commits)
+2025-07-24,Thursday,No,Yes,4.0,2,08:18,12:15,"openconnector, softwarecatalog",Bit of savety on the mapper; Merge pull request #22 from ConductionNL/developme
+2025-07-25,Friday,No,No,0.0,0,,,,No commits
+2025-07-26,Saturday,Yes,No,0.0,0,,,,No commits
+2025-07-27,Sunday,Yes,No,0.0,0,,,,No commits
+2025-07-28,Monday,No,Yes,3.1,2,08:54,11:59,openregister,Merge pull request #510 from ConductionNL/feature/; Fixes multitenancy
+2025-07-29,Tuesday,No,Yes,6.6,7,08:01,14:39,"opencatalogi, openregister, softwarecatalog",Merge pull request #329 from ConductionNL/hotfix/c; Merge pull request #514 from ConductionNL/feature/; Merge pull request #511 from ConductionNL/feature/ ... (+4 more commits)
+2025-07-30,Wednesday,No,Yes,5.8,9,08:20,14:07,"openregister, softwarecatalog",Merge pull request #515 from ConductionNL/feature/; Merge pull request #515 from ConductionNL/feature/; Merge pull request #31 from ConductionNL/developme ... (+6 more commits)
+2025-07-31,Thursday,No,Yes,2.0,1,15:47,15:47,softwarecatalog,Merge pull request #32 from ConductionNL/developme
+2025-08-01,Friday,No,Yes,3.3,3,09:11,12:31,softwarecatalog,Merge pull request #36 from ConductionNL/developme; Merge pull request #35 from ConductionNL/developme; Merge pull request #34 from ConductionNL/developme
+2025-08-02,Saturday,Yes,No,0.0,0,,,,No commits
+2025-08-03,Sunday,Yes,No,0.0,0,,,,No commits
+2025-08-04,Monday,No,Yes,2.0,1,13:33,13:33,softwarecatalog,Archimate testing
+2025-08-05,Tuesday,No,Yes,2.0,1,08:40,08:40,softwarecatalog,Merge pull request #38 from ConductionNL/developme
+2025-08-06,Wednesday,No,No,0.0,0,,,,No commits
+2025-08-07,Thursday,No,No,0.0,0,,,,No commits
+2025-08-08,Friday,No,No,0.0,0,,,,No commits
+2025-08-09,Saturday,Yes,No,0.0,0,,,,No commits
+2025-08-10,Sunday,Yes,No,0.0,0,,,,No commits
+2025-08-11,Monday,No,No,0.0,0,,,,No commits
+2025-08-12,Tuesday,No,No,0.0,0,,,,No commits
+2025-08-13,Wednesday,No,Yes,2.0,4,13:06,14:58,openregister,Merge pull request #529 from ConductionNL/hotfix/s; Merge pull request #529 from ConductionNL/hotfix/s; Merge pull request #527 from ConductionNL/hotfix/s ... (+1 more commits)
+2025-08-14,Thursday,No,Yes,8.0,4,08:10,17:14,"opencatalogi, softwarecatalog",Merge pull request #330 from ConductionNL/hotfix/c; Merge pull request #46 from ConductionNL/feature/o; Merge pull request #44 from ConductionNL/hotfix/ac ... (+1 more commits)
+2025-08-15,Friday,No,Yes,2.0,3,10:27,10:28,opencatalogi,Merge pull request #339 from ConductionNL/hotfix/c; Update info.xml; Update info.xml
+2025-08-16,Saturday,Yes,No,0.0,0,,,,No commits
+2025-08-17,Sunday,Yes,No,0.0,0,,,,No commits
+2025-08-18,Monday,No,Yes,2.0,3,16:03,17:04,"openregister, softwarecatalog",Merge pull request #536 from ConductionNL/hotfix/s; Merge pull request #536 from ConductionNL/hotfix/s; Merge pull request #47 from ConductionNL/fixes/con
+2025-08-19,Tuesday,No,No,0.0,0,,,,No commits
+2025-08-20,Wednesday,No,Yes,2.0,3,14:45,15:57,softwarecatalog,Merge pull request #48 from ConductionNL/hotfix/ac; Updated  softwarecatalogus register; Working on the amef import
+2025-08-21,Thursday,No,Yes,3.8,8,11:21,15:11,"openregister, softwarecatalog",Merge pull request #544 from ConductionNL/hotfix/s; Merge pull request #544 from ConductionNL/hotfix/s; Merge pull request #543 from ConductionNL/hotfix/s ... (+5 more commits)
+2025-08-22,Friday,No,Yes,7.5,3,08:54,16:26,softwarecatalog,Merge pull request #55 from ConductionNL/hotfix/ac; Merge pull request #54 from ConductionNL/hotfix/ac; Merge pull request #53 from ConductionNL/hotfix/ac
+2025-08-23,Saturday,Yes,No,0.0,0,,,,No commits
+2025-08-24,Sunday,Yes,No,0.0,0,,,,No commits
+2025-08-25,Monday,No,Yes,4.9,14,10:35,15:01,"openregister, softwarecatalog",Merge pull request #553 from ConductionNL/hotfix/s; Merge pull request #553 from ConductionNL/hotfix/s; Merge pull request #552 from ConductionNL/hotfix/s ... (+11 more commits)
+2025-08-26,Tuesday,No,Yes,2.9,6,10:48,13:42,openregister,Merge pull request #556 from ConductionNL/hotfix/s; Merge pull request #556 from ConductionNL/hotfix/s; Merge pull request #555 from ConductionNL/hotfix/s ... (+3 more commits)
+2025-08-27,Wednesday,No,Yes,2.0,2,08:13,08:16,"opencatalogi, softwarecatalog",Merge pull request #344 from ConductionNL/hotfix/c; Merge pull request #61 from ConductionNL/hotfix/ac
+2025-08-28,Thursday,No,Yes,6.7,5,10:38,17:19,"openregister, softwarecatalog",Facitiing fixes; Facitiing fixes; Merge pull request #66 from ConductionNL/hotfix/ac ... (+2 more commits)
+2025-08-29,Friday,No,Yes,2.0,2,09:49,10:12,softwarecatalog,Merge pull request #69 from ConductionNL/hotfix/ac; Merge pull request #68 from ConductionNL/hotfix/ac
+2025-08-30,Saturday,Yes,No,0.0,0,,,,No commits
+2025-08-31,Sunday,Yes,No,0.0,0,,,,No commits
+2025-09-01,Monday,No,Yes,2.0,3,14:14,16:03,"openregister, softwarecatalog",Merge pull request #563 from ConductionNL/hotfix/s; Merge pull request #563 from ConductionNL/hotfix/s; Merge pull request #70 from ConductionNL/hotfix/ac
+2025-09-02,Tuesday,No,Yes,2.5,11,12:08,13:56,"openregister, softwarecatalog",Merge pull request #571 from ConductionNL/feature/; Merge pull request #571 from ConductionNL/feature/; Merge pull request #570 from ConductionNL/feature/ ... (+8 more commits)
+2025-09-03,Wednesday,No,Yes,2.0,3,10:14,10:16,"openregister, softwarecatalog",Merge pull request #572 from ConductionNL/feature/; Merge pull request #572 from ConductionNL/feature/; Merge pull request #81 from ConductionNL/hotfix/ac
+2025-09-04,Thursday,No,Yes,6.2,12,09:01,14:46,"opencatalogi, openregister",Merge pull request #331 from ConductionNL/feature/; Merge pull request #347 from ConductionNL/hotfix/c; Merge pull request #578 from ConductionNL/feature/ ... (+9 more commits)
+2025-09-05,Friday,No,No,0.0,0,,,,No commits
+2025-09-06,Saturday,Yes,No,0.0,0,,,,No commits
+2025-09-07,Sunday,Yes,No,0.0,0,,,,No commits
+2025-09-08,Monday,No,Yes,2.0,8,12:33,14:01,"openregister, softwarecatalog",Merge pull request #584 from ConductionNL/feature/; Merge pull request #584 from ConductionNL/feature/; Lets allow objects to be autopublished if the sche ... (+5 more commits)
+2025-09-09,Tuesday,No,Yes,2.0,2,09:36,09:36,openregister,Verder werken op de name import; Verder werken op de name import
+2025-09-10,Wednesday,No,Yes,2.0,4,11:32,12:54,openregister,Solr WIP; Solr WIP; Further work on the solr index ... (+1 more commits)
+2025-09-11,Thursday,No,Yes,2.0,6,09:14,10:53,openregister,Frotnend fixes; Frotnend fixes; Testing the bulk indexing ... (+3 more commits)
+2025-09-12,Friday,No,No,0.0,0,,,,No commits
+2025-09-13,Saturday,Yes,No,0.0,0,,,,No commits
+2025-09-14,Sunday,Yes,No,0.0,0,,,,No commits
+2025-09-15,Monday,No,Yes,7.8,34,08:00,14:51,openregister,docs(solr): add TODO for future Nextcloud HTTP cli; docs(solr): add TODO for future Nextcloud HTTP cli; fix(solr): use direct Guzzle client to bypass Next ... (+31 more commits)
+2025-09-16,Tuesday,No,Yes,8.0,32,09:03,17:15,openregister,refactor: remove duplicate tenant ID logic from Se; refactor: remove duplicate tenant ID logic from Se; fix: add missing getTenantId public method and rem ... (+29 more commits)
+2025-09-17,Wednesday,No,Yes,8.0,30,09:06,16:49,openregister,Delete : add comprehensive SOLR Dashboard document; Delete : add comprehensive SOLR Dashboard document; Merge pull request #614 from ConductionNL/hotfix/s ... (+27 more commits)
+2025-09-18,Thursday,No,Yes,5.7,36,08:06,12:49,"opencatalogi, openregister",Merge pull request #355 from ConductionNL/hotfix/s; fix: correct array syntax in PagesController slug ; Merge pull request #354 from ConductionNL/hotfix/s ... (+33 more commits)
+2025-09-19,Friday,No,Yes,7.5,36,08:11,14:39,openregister,Merge pull request #625 from ConductionNL/hotfix/s; Merge pull request #625 from ConductionNL/hotfix/s; feat(solr): comprehensive SOLR improvements with m ... (+33 more commits)
+2025-09-20,Saturday,Yes,No,0.0,0,,,,No commits
+2025-09-21,Sunday,Yes,No,0.0,0,,,,No commits
+2025-09-22,Monday,No,Yes,4.6,26,09:22,12:56,openregister,fix: correct type hints for resolver methods; fix: correct type hints for resolver methods; fix: correct type hints for Register and Schema en ... (+23 more commits)
+2025-09-23,Tuesday,No,Yes,2.0,2,11:07,11:07,openregister,fix: remove self_object_id from SOLR document crea; fix: remove self_object_id from SOLR document crea
+2025-09-24,Wednesday,No,Yes,8.0,16,08:42,16:16,"openregister, softwarecatalog",feat: add orphaned objects detection and cleanup f; Merge pull request #641 from ConductionNL/hotfix/s; Merge pull request #641 from ConductionNL/hotfix/s ... (+13 more commits)
+2025-09-25,Thursday,No,Yes,3.3,8,08:06,11:25,softwarecatalog,Merge pull request #97 from ConductionNL/developme; feat: implement PATCH requests for efficient parti; Merge pull request #96 from ConductionNL/developme ... (+5 more commits)
+2025-09-26,Friday,No,No,0.0,0,,,,No commits
+2025-09-27,Saturday,Yes,No,0.0,0,,,,No commits
+2025-09-28,Sunday,Yes,No,0.0,0,,,,No commits
+2025-09-29,Monday,No,Yes,2.5,15,11:41,11:57,"opencatalogi, openregister, softwarecatalog",Merge pull request #359 from ConductionNL/feature/; docs: improve README description for publication m; merge: resolve conflicts with remote development b ... (+12 more commits)
+2025-09-30,Tuesday,No,No,0.0,0,,,,No commits
+2025-10-01,Wednesday,No,Yes,7.6,20,09:05,16:10,"openregister, softwarecatalog",Merge pull request #651 from ConductionNL/feature/; Merge pull request #651 from ConductionNL/feature/; fix(solr): resolve published date filtering and cl ... (+17 more commits)
+2025-10-02,Thursday,No,Yes,2.4,4,14:12,16:38,opencatalogi,Merge pull request #364 from ConductionNL/feature/; cleanup: remove debug die statements; debug: add die statements for API endpoint testing ... (+1 more commits)
+2025-10-03,Friday,No,Yes,4.3,8,10:46,15:05,"openregister, softwarecatalog",Merge pull request #654 from ConductionNL/feature/; Merge pull request #654 from ConductionNL/feature/; feat(multitenancy): add configurable published obj ... (+5 more commits)
+2025-10-04,Saturday,Yes,No,0.0,0,,,,No commits
+2025-10-05,Sunday,Yes,No,0.0,0,,,,No commits
+2025-10-06,Monday,No,Yes,2.0,2,11:45,11:56,softwarecatalog,Merge pull request #108 from ConductionNL/developm; Merge pull request #107 from ConductionNL/developm
+2025-10-07,Tuesday,No,Yes,5.5,22,11:24,15:53,openregister,Merge pull request #661 from ConductionNL/feature/; Merge pull request #661 from ConductionNL/feature/; Merge pull request #660 from ConductionNL/feature/ ... (+19 more commits)
+2025-10-08,Wednesday,No,Yes,2.0,5,14:54,16:21,"openregister, softwarecatalog",Merge pull request #663 from ConductionNL/feature/; Merge pull request #663 from ConductionNL/feature/; Merge pull request #662 from ConductionNL/feature/ ... (+2 more commits)
+2025-10-09,Thursday,No,No,0.0,0,,,,No commits
+2025-10-10,Friday,No,Yes,3.8,10,11:31,15:22,"opencatalogi, openregister, softwarecatalog",Merge pull request #369 from ConductionNL/feature/; Merge pull request #668 from ConductionNL/feature/; Merge pull request #668 from ConductionNL/feature/ ... (+7 more commits)
+2025-10-11,Saturday,Yes,No,0.0,0,,,,No commits
+2025-10-12,Sunday,Yes,No,0.0,0,,,,No commits
+2025-10-13,Monday,No,No,0.0,0,,,,No commits
+2025-10-14,Tuesday,No,Yes,3.6,6,09:28,13:03,"opencatalogi, openregister, softwarecatalog",Merge pull request #371 from ConductionNL/feature/; Merge pull request #674 from ConductionNL/feature/; Merge pull request #674 from ConductionNL/feature/ ... (+3 more commits)
+2025-10-15,Wednesday,No,Yes,4.9,6,11:00,15:55,"opencatalogi, openregister",Merge pull request #374 from ConductionNL/feature/; Merge pull request #373 from ConductionNL/feature/; Merge pull request #677 from ConductionNL/feature/ ... (+3 more commits)
+2025-10-16,Thursday,No,Yes,2.0,1,11:25,11:25,opencatalogi,Merge pull request #375 from ConductionNL/feature/
+2025-10-17,Friday,No,No,0.0,0,,,,No commits
+2025-10-18,Saturday,Yes,No,0.0,0,,,,No commits
+2025-10-19,Sunday,Yes,No,0.0,0,,,,No commits
+2025-10-20,Monday,No,Yes,2.0,2,09:46,09:46,openregister,Merge pull request #679 from ConductionNL/feature/; Merge pull request #679 from ConductionNL/feature/
+2025-10-21,Tuesday,No,Yes,2.0,2,12:28,12:28,openregister,Merge pull request #680 from ConductionNL/feature/; Merge pull request #680 from ConductionNL/feature/
+2025-10-22,Wednesday,No,Yes,2.0,6,08:10,08:41,openregister,Merge pull request #684 from ConductionNL/feature/; Merge pull request #684 from ConductionNL/feature/; Merge pull request #683 from ConductionNL/feature/ ... (+3 more commits)
+2025-10-23,Thursday,No,Yes,2.0,3,10:37,11:56,"opencatalogi, openregister",Merge pull request #380 from ConductionNL/feature/; Merge pull request #686 from ConductionNL/feature/; Merge pull request #686 from ConductionNL/feature/
+2025-10-24,Friday,No,No,0.0,0,,,,No commits
+2025-10-25,Saturday,Yes,No,0.0,0,,,,No commits
+2025-10-26,Sunday,Yes,No,0.0,0,,,,No commits
+2025-10-27,Monday,No,Yes,2.0,1,10:00,10:00,opencatalogi,Merge pull request #385 from ConductionNL/feature/
+2025-10-28,Tuesday,No,Yes,2.6,3,09:32,12:09,opencatalogi,Merge pull request #390 from ConductionNL/feature/; Merge pull request #389 from ConductionNL/feature/; Merge pull request #388 from ConductionNL/feature/
+2025-10-29,Wednesday,No,No,0.0,0,,,,No commits
+2025-10-30,Thursday,No,Yes,2.0,1,11:20,11:20,softwarecatalog,Merge pull request #121 from ConductionNL/developm
+2025-10-31,Friday,No,No,0.0,0,,,,No commits
+2025-11-01,Saturday,Yes,No,0.0,0,,,,No commits
+2025-11-02,Sunday,Yes,No,0.0,0,,,,No commits
+2025-11-03,Monday,No,No,0.0,0,,,,No commits
+2025-11-04,Tuesday,No,No,0.0,0,,,,No commits
+2025-11-05,Wednesday,No,No,0.0,0,,,,No commits
+2025-11-06,Thursday,No,Yes,2.0,2,14:39,16:23,softwarecatalog,Merge pull request #124 from ConductionNL/developm; Merge pull request #123 from ConductionNL/feature/
+2025-11-07,Friday,No,Yes,7.0,4,08:07,15:04,openregister,Merge pull request #721 from ConductionNL/feature/; Merge pull request #721 from ConductionNL/feature/; Merge pull request #718 from ConductionNL/feature/ ... (+1 more commits)
+2025-11-08,Saturday,Yes,No,0.0,0,,,,No commits
+2025-11-09,Sunday,Yes,No,0.0,0,,,,No commits
+2025-11-10,Monday,No,No,0.0,0,,,,No commits
+2025-11-11,Tuesday,No,No,0.0,0,,,,No commits
+2025-11-12,Wednesday,No,No,0.0,0,,,,No commits
+2025-11-13,Thursday,No,No,0.0,0,,,,No commits
+2025-11-14,Friday,No,Yes,2.0,2,13:33,15:01,"openregister, softwarecatalog",Merge pull request #777 from ConductionNL/hotfix/f; Merge pull request #125 from ConductionNL/developm
+2025-11-15,Saturday,Yes,No,0.0,0,,,,No commits
+2025-11-16,Sunday,Yes,No,0.0,0,,,,No commits
+2025-11-17,Monday,No,No,0.0,0,,,,No commits
+2025-11-18,Tuesday,No,No,0.0,0,,,,No commits
+2025-11-19,Wednesday,No,No,0.0,0,,,,No commits
+2025-11-20,Thursday,No,No,0.0,0,,,,No commits
+2025-11-21,Friday,No,Yes,4.3,20,10:08,12:55,openregister,deploy: 0e98089d77b6aa8b45009eda539108fc271996fe; Merge pull request #824 from ConductionNL/feature/; Merge pull request #824 from ConductionNL/feature/ ... (+17 more commits)
+2025-11-22,Saturday,Yes,No,0.0,0,,,,No commits
+2025-11-23,Sunday,Yes,No,0.0,0,,,,No commits
+2025-11-24,Monday,No,Yes,4.0,8,09:13,13:15,openregister,Merge pull request #828 from ConductionNL/hotfix/m; Merge pull request #828 from ConductionNL/hotfix/m; Merge pull request #827 from ConductionNL/hotfix/m ... (+5 more commits)
+2025-11-25,Tuesday,No,No,0.0,0,,,,No commits
+2025-11-26,Wednesday,No,Yes,3.3,4,11:05,13:25,openregister,deploy: 9b666a8865426bd21ff6e083b972706e32d6353f; Merge pull request #843 from ConductionNL/feature/; Merge pull request #840 from ConductionNL/feature/ ... (+1 more commits)
+2025-11-27,Thursday,No,Yes,5.0,4,09:55,14:58,openregister,Merge pull request #853 from ConductionNL/feature/; Merge pull request #852 from ConductionNL/feature/; Merge pull request #851 from ConductionNL/feature/ ... (+1 more commits)
+2025-11-28,Friday,No,Yes,2.0,2,14:34,15:03,opencatalogi,Merge pull request #396 from ConductionNL/hotfix/l; Merge pull request #395 from ConductionNL/hotfix/l
+2025-11-29,Saturday,Yes,No,0.0,0,,,,No commits
+2025-11-30,Sunday,Yes,No,0.0,0,,,,No commits
+2025-12-01,Monday,No,No,0.0,0,,,,No commits
+2025-12-02,Tuesday,No,Yes,2.0,2,12:27,12:27,openregister,Merge pull request #859 from ConductionNL/hotfix/r; Merge pull request #859 from ConductionNL/hotfix/r
+2025-12-03,Wednesday,No,Yes,6.1,8,09:47,15:51,openregister,Merge pull request #865 from ConductionNL/hotfif/c; Merge pull request #865 from ConductionNL/hotfif/c; Merge pull request #864 from ConductionNL/hotfix/r ... (+5 more commits)
+2025-12-04,Thursday,No,No,0.0,0,,,,No commits
+2025-12-05,Friday,No,Yes,2.0,1,14:07,14:07,opencatalogi,Merge pull request #397 from ConductionNL/hotfix/l
+2025-12-06,Saturday,Yes,No,0.0,0,,,,No commits
+2025-12-07,Sunday,Yes,No,0.0,0,,,,No commits
+2025-12-08,Monday,No,Yes,2.0,2,10:57,12:12,softwarecatalog,Merge pull request #140 from ConductionNL/hotfix/a; Merge pull request #139 from ConductionNL/hotfix/a
+2025-12-09,Tuesday,No,Yes,5.8,5,09:27,15:12,"opencatalogi, openregister",Merge pull request #400 from ConductionNL/hotfix/l; Merge pull request #399 from ConductionNL/hotfix/l; Merge pull request #869 from ConductionNL/hotfix/u ... (+2 more commits)
+2025-12-10,Wednesday,No,No,0.0,0,,,,No commits
+2025-12-11,Thursday,No,No,0.0,0,,,,No commits
+2025-12-12,Friday,No,No,0.0,0,,,,No commits
+2025-12-13,Saturday,Yes,No,0.0,0,,,,No commits
+2025-12-14,Sunday,Yes,No,0.0,0,,,,No commits
+2025-12-15,Monday,No,Yes,2.0,2,11:17,12:18,"openregister, softwarecatalog",Remove large AI model file from tracking and add t; Merge pull request #146 from ConductionNL/hotfix/a
+2025-12-16,Tuesday,No,No,0.0,0,,,,No commits
+2025-12-17,Wednesday,No,Yes,2.0,1,13:21,13:21,opencatalogi,Merge pull request #401 from ConductionNL/fix/swc-
+2025-12-18,Thursday,No,Yes,2.0,2,09:20,09:55,"opencatalogi, openregister","Merge pull request #402 from ConductionNL/hotfix/t; Massive code quality improvements: 2,565+ issues f"
+2025-12-19,Friday,No,No,0.0,0,,,,No commits
+2025-12-20,Saturday,Yes,No,0.0,0,,,,No commits
+2025-12-21,Sunday,Yes,No,0.0,0,,,,No commits
+2025-12-22,Monday,No,No,0.0,0,,,,No commits
+2025-12-23,Tuesday,No,Yes,2.0,3,17:12,17:56,openregister,refactor: ChatController::sendMessage() - 98% comp; refactor: ObjectsController CRUD methods - elimina; fix: SchemaService unit tests - all 37 tests passi
+2025-12-24,Wednesday,No,No,0.0,0,,,,No commits
+2025-12-25,Thursday,No,No,0.0,0,,,,No commits
+2025-12-26,Friday,No,No,0.0,0,,,,No commits
+2025-12-27,Saturday,Yes,No,0.0,0,,,,No commits
+2025-12-28,Sunday,Yes,No,0.0,0,,,,No commits
+2025-12-29,Monday,No,No,0.0,0,,,,No commits
+2025-12-30,Tuesday,No,No,0.0,0,,,,No commits
+2025-12-31,Wednesday,No,No,0.0,0,,,,No commits

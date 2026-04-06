@@ -1,0 +1,430 @@
+Date,Day,Weekend,Worked,Hours,Commits,Start Time,End Time,Work Summary
+2024-10-01,Tuesday,No,Yes,3.0,10,21:29,23:11,Merge branch 'feature/working-pages' of https://github.com/C; Merge branch 'feature/working-pages' of https://github.com/C; Thats a wierd bug to mis ... (+7 more commits)
+2024-10-02,Wednesday,No,Yes,3.0,10,22:02,23:48,Getting the objects to work; Getting the objects to work; Merge branch 'feature/working-pages' of https://github.com/C ... (+7 more commits)
+2024-10-03,Thursday,No,Yes,3.0,4,21:48,21:50,Merge remote-tracking branch 'origin/feature/REGISTERS-8/rem; Merge remote-tracking branch 'origin/feature/REGISTERS-8/rem; Source verwijderd op schema ... (+1 more commits)
+2024-10-04,Friday,No,No,0.0,0,,,No commits
+2024-10-05,Saturday,Yes,No,0.0,0,,,Weekend - no work
+2024-10-06,Sunday,Yes,No,0.0,0,,,Weekend - no work
+2024-10-07,Monday,No,Yes,3.0,10,20:52,22:24,Final work on uploading schema's; Final work on uploading schema's; Store update ... (+7 more commits)
+2024-10-08,Tuesday,No,Yes,3.0,2,22:17,22:17,Load complete oas definitions; Load complete oas definitions
+2024-10-09,Wednesday,No,No,0.0,0,,,No commits
+2024-10-10,Thursday,No,No,0.0,0,,,No commits
+2024-10-11,Friday,No,No,0.0,0,,,No commits
+2024-10-12,Saturday,Yes,No,0.0,0,,,Weekend - no work
+2024-10-13,Sunday,Yes,No,0.0,0,,,Weekend - no work
+2024-10-14,Monday,No,No,0.0,0,,,No commits
+2024-10-15,Tuesday,No,No,0.0,0,,,No commits
+2024-10-16,Wednesday,No,No,0.0,0,,,No commits
+2024-10-17,Thursday,No,No,0.0,0,,,No commits
+2024-10-18,Friday,No,No,0.0,0,,,No commits
+2024-10-19,Saturday,Yes,Yes,3.0,8,20:27,22:48,Merge branch 'feature/saterday-night-fixes'; Merge branch 'feature/saterday-night-fixes'; Check if colums exsist... ... (+5 more commits)
+2024-10-20,Sunday,Yes,Yes,3.7,4,21:07,00:52,Added loging logic; Added loging logic; Fixing the deletion of objects ... (+1 more commits)
+2024-10-21,Monday,No,No,0.0,0,,,No commits
+2024-10-22,Tuesday,No,Yes,3.0,2,21:31,21:31,Merge remote-tracking branch 'origin/feature/EGISTERS-40/obj; Merge remote-tracking branch 'origin/feature/EGISTERS-40/obj
+2024-10-23,Wednesday,No,No,0.0,0,,,No commits
+2024-10-24,Thursday,No,No,0.0,0,,,No commits
+2024-10-25,Friday,No,No,0.0,0,,,No commits
+2024-10-26,Saturday,Yes,No,0.0,0,,,Weekend - no work
+2024-10-27,Sunday,Yes,No,0.0,0,,,Weekend - no work
+2024-10-28,Monday,No,No,0.0,0,,,No commits
+2024-10-29,Tuesday,No,No,0.0,0,,,No commits
+2024-10-30,Wednesday,No,No,0.0,0,,,No commits
+2024-10-31,Thursday,No,No,0.0,0,,,No commits
+2024-11-01,Friday,No,No,0.0,0,,,No commits
+2024-11-02,Saturday,Yes,No,0.0,0,,,Weekend - no work
+2024-11-03,Sunday,Yes,No,0.0,0,,,Weekend - no work
+2024-11-04,Monday,No,Yes,3.0,2,19:53,19:53,Merge remote-tracking branch 'origin/development' into fix/s; Merge remote-tracking branch 'origin/development' into fix/s
+2024-11-05,Tuesday,No,Yes,3.0,6,00:49,01:14,Propper isset ussage; Propper isset ussage; Merge branch 'fix/small-fixe-based-on-loging' of https://git ... (+3 more commits)
+2024-11-06,Wednesday,No,No,0.0,0,,,No commits
+2024-11-07,Thursday,No,Yes,3.0,1,22:02,22:02,Hotfix for object as array on the logging mapper
+2024-11-08,Friday,No,No,0.0,0,,,No commits
+2024-11-09,Saturday,Yes,No,0.0,0,,,Weekend - no work
+2024-11-10,Sunday,Yes,No,0.0,0,,,Weekend - no work
+2024-11-11,Monday,No,No,0.0,0,,,No commits
+2024-11-12,Tuesday,No,No,0.0,0,,,No commits
+2024-11-13,Wednesday,No,No,0.0,0,,,No commits
+2024-11-14,Thursday,No,No,0.0,0,,,No commits
+2024-11-15,Friday,No,No,0.0,0,,,No commits
+2024-11-16,Saturday,Yes,No,0.0,0,,,Weekend - no work
+2024-11-17,Sunday,Yes,No,0.0,0,,,Weekend - no work
+2024-11-18,Monday,No,No,0.0,0,,,No commits
+2024-11-19,Tuesday,No,No,0.0,0,,,No commits
+2024-11-20,Wednesday,No,No,0.0,0,,,No commits
+2024-11-21,Thursday,No,No,0.0,0,,,No commits
+2024-11-22,Friday,No,No,0.0,0,,,No commits
+2024-11-23,Saturday,Yes,No,0.0,0,,,Weekend - no work
+2024-11-24,Sunday,Yes,No,0.0,0,,,Weekend - no work
+2024-11-25,Monday,No,Yes,3.0,3,23:34,00:37,Lets add a bit more data; Add schema destribution; Fixed it
+2024-11-26,Tuesday,No,Yes,3.0,3,20:33,20:35,Remove abd mapping; First testing results; Fix linting errors
+2024-11-27,Wednesday,No,No,0.0,0,,,No commits
+2024-11-28,Thursday,No,Yes,3.0,2,22:10,22:10,First code for linked data; First code for linked data
+2024-11-29,Friday,No,No,0.0,0,,,No commits
+2024-11-30,Saturday,Yes,Yes,3.0,2,21:49,21:49,Merge pull request #77 from ConductionNL/development; Merge pull request #77 from ConductionNL/development
+2024-12-01,Sunday,Yes,No,0.0,0,,,Weekend - no work
+2024-12-02,Monday,No,No,0.0,0,,,No commits
+2024-12-03,Tuesday,No,No,0.0,0,,,No commits
+2024-12-04,Wednesday,No,No,0.0,0,,,No commits
+2024-12-05,Thursday,No,No,0.0,0,,,No commits
+2024-12-06,Friday,No,No,0.0,0,,,No commits
+2024-12-07,Saturday,Yes,Yes,3.0,4,17:01,17:11,First fixes; First fixes; First draft for ui logic ... (+1 more commits)
+2024-12-08,Sunday,Yes,Yes,3.0,6,21:13,22:16,Fix for relating to self; Fix for relating to self; Bit of testing on grapping the relations ... (+3 more commits)
+2024-12-09,Monday,No,No,0.0,0,,,No commits
+2024-12-10,Tuesday,No,No,0.0,0,,,No commits
+2024-12-11,Wednesday,No,No,0.0,0,,,No commits
+2024-12-12,Thursday,No,No,0.0,0,,,No commits
+2024-12-13,Friday,No,No,0.0,0,,,No commits
+2024-12-14,Saturday,Yes,No,0.0,0,,,Weekend - no work
+2024-12-15,Sunday,Yes,No,0.0,0,,,Weekend - no work
+2024-12-16,Monday,No,No,0.0,0,,,No commits
+2024-12-17,Tuesday,No,No,0.0,0,,,No commits
+2024-12-18,Wednesday,No,No,0.0,0,,,No commits
+2024-12-19,Thursday,No,No,0.0,0,,,No commits
+2024-12-20,Friday,No,No,0.0,0,,,No commits
+2024-12-21,Saturday,Yes,No,0.0,0,,,Weekend - no work
+2024-12-22,Sunday,Yes,No,0.0,0,,,Weekend - no work
+2024-12-23,Monday,No,No,0.0,0,,,No commits
+2024-12-24,Tuesday,No,No,0.0,0,,,No commits
+2024-12-25,Wednesday,No,No,0.0,0,,,No commits
+2024-12-26,Thursday,No,Yes,3.5,14,00:06,01:25,Small fixes; Small fixes; Fixing extend for service users ... (+11 more commits)
+2024-12-27,Friday,No,No,0.0,0,,,No commits
+2024-12-28,Saturday,Yes,No,0.0,0,,,Weekend - no work
+2024-12-29,Sunday,Yes,No,0.0,0,,,Weekend - no work
+2024-12-30,Monday,No,No,0.0,0,,,No commits
+2024-12-31,Tuesday,No,No,0.0,0,,,No commits
+2025-01-01,Wednesday,No,No,0.0,0,,,No commits
+2025-01-02,Thursday,No,No,0.0,0,,,No commits
+2025-01-03,Friday,No,No,0.0,0,,,No commits
+2025-01-04,Saturday,Yes,No,0.0,0,,,Weekend - no work
+2025-01-05,Sunday,Yes,No,0.0,0,,,Weekend - no work
+2025-01-06,Monday,No,No,0.0,0,,,No commits
+2025-01-07,Tuesday,No,Yes,3.0,2,20:44,20:44,Add events; Add events
+2025-01-08,Wednesday,No,No,0.0,0,,,No commits
+2025-01-09,Thursday,No,No,0.0,0,,,No commits
+2025-01-10,Friday,No,No,0.0,0,,,No commits
+2025-01-11,Saturday,Yes,No,0.0,0,,,Weekend - no work
+2025-01-12,Sunday,Yes,No,0.0,0,,,Weekend - no work
+2025-01-13,Monday,No,No,0.0,0,,,No commits
+2025-01-14,Tuesday,No,No,0.0,0,,,No commits
+2025-01-15,Wednesday,No,Yes,3.5,14,21:38,23:12,Lets do migrations; Lets do migrations; Add locking and ownership features to ObjectEntity and relat ... (+11 more commits)
+2025-01-16,Thursday,No,No,0.0,0,,,No commits
+2025-01-17,Friday,No,No,0.0,0,,,No commits
+2025-01-18,Saturday,Yes,No,0.0,0,,,Weekend - no work
+2025-01-19,Sunday,Yes,No,0.0,0,,,Weekend - no work
+2025-01-20,Monday,No,No,0.0,0,,,No commits
+2025-01-21,Tuesday,No,No,0.0,0,,,No commits
+2025-01-22,Wednesday,No,No,0.0,0,,,No commits
+2025-01-23,Thursday,No,No,0.0,0,,,No commits
+2025-01-24,Friday,No,No,0.0,0,,,No commits
+2025-01-25,Saturday,Yes,No,0.0,0,,,Weekend - no work
+2025-01-26,Sunday,Yes,No,0.0,0,,,Weekend - no work
+2025-01-27,Monday,No,No,0.0,0,,,No commits
+2025-01-28,Tuesday,No,No,0.0,0,,,No commits
+2025-01-29,Wednesday,No,No,0.0,0,,,No commits
+2025-01-30,Thursday,No,No,0.0,0,,,No commits
+2025-01-31,Friday,No,No,0.0,0,,,No commits
+2025-02-01,Saturday,Yes,No,0.0,0,,,Weekend - no work
+2025-02-02,Sunday,Yes,No,0.0,0,,,Weekend - no work
+2025-02-03,Monday,No,No,0.0,0,,,No commits
+2025-02-04,Tuesday,No,Yes,3.0,8,20:00,22:45,Merge branch 'main' into documentation-ibds; Merge branch 'main' into documentation-ibds; Merge branch 'documentation-ibds' ... (+5 more commits)
+2025-02-05,Wednesday,No,No,0.0,0,,,No commits
+2025-02-06,Thursday,No,No,0.0,0,,,No commits
+2025-02-07,Friday,No,No,0.0,0,,,No commits
+2025-02-08,Saturday,Yes,No,0.0,0,,,Weekend - no work
+2025-02-09,Sunday,Yes,No,0.0,0,,,Weekend - no work
+2025-02-10,Monday,No,No,0.0,0,,,No commits
+2025-02-11,Tuesday,No,No,0.0,0,,,No commits
+2025-02-12,Wednesday,No,No,0.0,0,,,No commits
+2025-02-13,Thursday,No,No,0.0,0,,,No commits
+2025-02-14,Friday,No,No,0.0,0,,,No commits
+2025-02-15,Saturday,Yes,No,0.0,0,,,Weekend - no work
+2025-02-16,Sunday,Yes,No,0.0,0,,,Weekend - no work
+2025-02-17,Monday,No,Yes,3.5,15,22:40,23:44,Create CNAME; Deploy website - based on b3c5c685904776f19e27ec6574eb607d78; Create CNAME ... (+12 more commits)
+2025-02-18,Tuesday,No,Yes,3.0,2,22:15,22:15,Merge pull request #200 from ConductionNL/development; Merge pull request #200 from ConductionNL/development
+2025-02-19,Wednesday,No,No,0.0,0,,,No commits
+2025-02-20,Thursday,No,No,0.0,0,,,No commits
+2025-02-21,Friday,No,No,0.0,0,,,No commits
+2025-02-22,Saturday,Yes,No,0.0,0,,,Weekend - no work
+2025-02-23,Sunday,Yes,Yes,3.4,4,17:55,21:16,Best workflow; Best workflow; Merge remote-tracking branch 'origin/development' into docum ... (+1 more commits)
+2025-02-24,Monday,No,No,0.0,0,,,No commits
+2025-02-25,Tuesday,No,No,0.0,0,,,No commits
+2025-02-26,Wednesday,No,Yes,3.0,2,21:50,21:50,Bit of bug hunting; Bit of bug hunting
+2025-02-27,Thursday,No,Yes,3.5,12,17:20,17:50,Proper property the popper; Proper property the popper; Correct function ... (+9 more commits)
+2025-02-28,Friday,No,No,0.0,0,,,No commits
+2025-03-01,Saturday,Yes,No,0.0,0,,,Weekend - no work
+2025-03-02,Sunday,Yes,No,0.0,0,,,Weekend - no work
+2025-03-03,Monday,No,No,0.0,0,,,No commits
+2025-03-04,Tuesday,No,No,0.0,0,,,No commits
+2025-03-05,Wednesday,No,No,0.0,0,,,No commits
+2025-03-06,Thursday,No,No,0.0,0,,,No commits
+2025-03-07,Friday,No,No,0.0,0,,,No commits
+2025-03-08,Saturday,Yes,No,0.0,0,,,Weekend - no work
+2025-03-09,Sunday,Yes,No,0.0,0,,,Weekend - no work
+2025-03-10,Monday,No,No,0.0,0,,,No commits
+2025-03-11,Tuesday,No,No,0.0,0,,,No commits
+2025-03-12,Wednesday,No,No,0.0,0,,,No commits
+2025-03-13,Thursday,No,Yes,3.0,9,19:42,21:04,Deploy website - based on 6c4a089720eb349631cd3d06ee6e6fac94; Missed some; Missed some ... (+6 more commits)
+2025-03-14,Friday,No,Yes,3.0,4,00:25,00:46,Add lock; Add lock; Update to docusarus 3 ... (+1 more commits)
+2025-03-15,Saturday,Yes,No,0.0,0,,,Weekend - no work
+2025-03-16,Sunday,Yes,No,0.0,0,,,Weekend - no work
+2025-03-17,Monday,No,No,0.0,0,,,No commits
+2025-03-18,Tuesday,No,Yes,3.0,8,21:38,21:26,deploy: ddfbc96971a490b910b94a8d7cfffef00512e821; Lets update the object docs; Lets update the object docs ... (+5 more commits)
+2025-03-19,Wednesday,No,Yes,3.0,2,21:43,21:43,Test; Test
+2025-03-20,Thursday,No,No,0.0,0,,,No commits
+2025-03-21,Friday,No,No,0.0,0,,,No commits
+2025-03-22,Saturday,Yes,Yes,5.3,6,17:40,22:59,Set owner and application; Set owner and application; Let quickly fix soft deleted ... (+3 more commits)
+2025-03-23,Sunday,Yes,Yes,3.0,4,21:00,21:18,Cleanop the view dialog; Cleanop the view dialog; Fix code mirror in the object view ... (+1 more commits)
+2025-03-24,Monday,No,No,0.0,0,,,No commits
+2025-03-25,Tuesday,No,No,0.0,0,,,No commits
+2025-03-26,Wednesday,No,No,0.0,0,,,No commits
+2025-03-27,Thursday,No,No,0.0,0,,,No commits
+2025-03-28,Friday,No,No,0.0,0,,,No commits
+2025-03-29,Saturday,Yes,No,0.0,0,,,Weekend - no work
+2025-03-30,Sunday,Yes,No,0.0,0,,,Weekend - no work
+2025-03-31,Monday,No,Yes,3.0,3,22:26,20:27,deploy: 31e353eb916c5f0e9c0be8ab9982f8b3111e7503; Add audit trail view description; Add audit trail view description
+2025-04-01,Tuesday,No,No,0.0,0,,,No commits
+2025-04-02,Wednesday,No,Yes,3.0,9,21:39,23:50,Making the file understandable; Making the file understandable; Cleanu-up ... (+6 more commits)
+2025-04-03,Thursday,No,No,0.0,0,,,No commits
+2025-04-04,Friday,No,Yes,3.0,6,19:37,22:03,More fixes; More fixes; Merge branch 'code-refactor/ObjectService' of https://github ... (+3 more commits)
+2025-04-05,Saturday,Yes,No,0.0,0,,,Weekend - no work
+2025-04-06,Sunday,Yes,Yes,3.5,18,21:24,23:41,Merge branch 'code-refactor/ObjectService' of https://github; Merge branch 'code-refactor/ObjectService' of https://github; Fixing the audit trails ... (+15 more commits)
+2025-04-07,Monday,No,No,0.0,0,,,No commits
+2025-04-08,Tuesday,No,Yes,3.8,8,17:57,21:44,Fixed getting proper relations; Fixed getting proper relations; Lets use a notecard is noting can be found ... (+5 more commits)
+2025-04-09,Wednesday,No,No,0.0,0,,,No commits
+2025-04-10,Thursday,No,No,0.0,0,,,No commits
+2025-04-11,Friday,No,No,0.0,0,,,No commits
+2025-04-12,Saturday,Yes,Yes,3.0,6,17:06,18:49,Fix uses and used; Fix uses and used; Bit of data cleanup ... (+3 more commits)
+2025-04-13,Sunday,Yes,Yes,3.0,4,20:04,22:03,Extend register and schema; Extend register and schema; Dealing with extend as string ... (+1 more commits)
+2025-04-14,Monday,No,No,0.0,0,,,No commits
+2025-04-15,Tuesday,No,No,0.0,0,,,No commits
+2025-04-16,Wednesday,No,No,0.0,0,,,No commits
+2025-04-17,Thursday,No,Yes,3.0,4,17:12,17:12,Merge branch 'feature/REGISTERS-4/configuraties' of https://; Merge branch 'feature/REGISTERS-4/configuraties' of https://; Small fixes on new file controller and service ... (+1 more commits)
+2025-04-18,Friday,No,No,0.0,0,,,No commits
+2025-04-19,Saturday,Yes,No,0.0,0,,,Weekend - no work
+2025-04-20,Sunday,Yes,No,0.0,0,,,Weekend - no work
+2025-04-21,Monday,No,No,0.0,0,,,No commits
+2025-04-22,Tuesday,No,Yes,3.0,8,20:40,21:00,Lets do a build; Lets do a build; Fix for totals ... (+5 more commits)
+2025-04-23,Wednesday,No,No,0.0,0,,,No commits
+2025-04-24,Thursday,No,No,0.0,0,,,No commits
+2025-04-25,Friday,No,No,0.0,0,,,No commits
+2025-04-26,Saturday,Yes,No,0.0,0,,,Weekend - no work
+2025-04-27,Sunday,Yes,No,0.0,0,,,Weekend - no work
+2025-04-28,Monday,No,No,0.0,0,,,No commits
+2025-04-29,Tuesday,No,No,0.0,0,,,No commits
+2025-04-30,Wednesday,No,Yes,6.5,31,19:13,01:21,Dashboarding first draft; Dashboarding first draft; Let replace the RegisterIndex ... (+28 more commits)
+2025-05-01,Thursday,No,Yes,4.3,4,17:19,21:36,Lets do a bit more linting; Lets do a bit more linting; Merge pull request #353 from ConductionNL/feature/REGISTERS- ... (+1 more commits)
+2025-05-02,Friday,No,No,0.0,0,,,No commits
+2025-05-03,Saturday,Yes,Yes,6.0,4,17:16,23:40,Prevent deleting if schema's have objects; Prevent deleting if schema's have objects; Search sidebar graphics ... (+1 more commits)
+2025-05-04,Sunday,Yes,Yes,6.0,10,17:54,00:46,Merge remote-tracking branch 'origin/development' into featu; Merge remote-tracking branch 'origin/development' into featu; First setup of the schema details page ... (+7 more commits)
+2025-05-05,Monday,No,Yes,3.5,12,23:06,00:54,Php styling fixes; Php styling fixes; No more npm linting errors ... (+9 more commits)
+2025-05-06,Tuesday,No,Yes,3.4,5,19:13,22:34,Merge pull request #362 from ConductionNL/feature/REGISTERS-; Merge pull request #362 from ConductionNL/feature/REGISTERS-; Merge branch 'development' into feature/REGISTERS-136/dashbo ... (+2 more commits)
+2025-05-07,Wednesday,No,No,0.0,0,,,No commits
+2025-05-08,Thursday,No,No,0.0,0,,,No commits
+2025-05-09,Friday,No,No,0.0,0,,,No commits
+2025-05-10,Saturday,Yes,No,0.0,0,,,Weekend - no work
+2025-05-11,Sunday,Yes,Yes,3.5,12,22:12,00:29,Add last log to the object documentation; Add last log to the object documentation; First testing and fixing on the import functionality ... (+9 more commits)
+2025-05-12,Monday,No,No,0.0,0,,,No commits
+2025-05-13,Tuesday,No,No,0.0,0,,,No commits
+2025-05-14,Wednesday,No,No,0.0,0,,,No commits
+2025-05-15,Thursday,No,No,0.0,0,,,No commits
+2025-05-16,Friday,No,No,0.0,0,,,No commits
+2025-05-17,Saturday,Yes,No,0.0,0,,,Weekend - no work
+2025-05-18,Sunday,Yes,Yes,3.0,4,22:09,23:15,Correcting the function name; Correcting the function name; More fixes on the export ... (+1 more commits)
+2025-05-19,Monday,No,Yes,3.0,4,21:10,21:10,Merge branch 'hotfix/zuiddrecht' of https://github.com/Condu; Merge branch 'hotfix/zuiddrecht' of https://github.com/Condu; Lets allow softValidated objects ... (+1 more commits)
+2025-05-20,Tuesday,No,No,0.0,0,,,No commits
+2025-05-21,Wednesday,No,No,0.0,0,,,No commits
+2025-05-22,Thursday,No,No,0.0,0,,,No commits
+2025-05-23,Friday,No,No,0.0,0,,,No commits
+2025-05-24,Saturday,Yes,No,0.0,0,,,Weekend - no work
+2025-05-25,Sunday,Yes,No,0.0,0,,,Weekend - no work
+2025-05-26,Monday,No,Yes,4.1,12,21:14,00:49,Suporting baseencoded files; Suporting baseencoded files; Introdue special search _published that shows only published ... (+9 more commits)
+2025-05-27,Tuesday,No,No,0.0,0,,,No commits
+2025-05-28,Wednesday,No,Yes,3.0,4,21:25,22:16,First draft of delete and logs menu items; First draft of delete and logs menu items; Merge remote-tracking branch 'origin/development' into hotfi ... (+1 more commits)
+2025-05-29,Thursday,No,No,0.0,0,,,No commits
+2025-05-30,Friday,No,No,0.0,0,,,No commits
+2025-05-31,Saturday,Yes,No,0.0,0,,,Weekend - no work
+2025-06-01,Sunday,Yes,Yes,3.0,9,23:18,00:44,Merge branch 'hotfix/zuiddrecht' into development; Merge branch 'hotfix/zuiddrecht' into development; Merge remote-tracking branch 'origin/development' into hotfi ... (+6 more commits)
+2025-06-02,Monday,No,No,0.0,0,,,No commits
+2025-06-03,Tuesday,No,No,0.0,0,,,No commits
+2025-06-04,Wednesday,No,No,0.0,0,,,No commits
+2025-06-05,Thursday,No,No,0.0,0,,,No commits
+2025-06-06,Friday,No,No,0.0,0,,,No commits
+2025-06-07,Saturday,Yes,Yes,5.9,10,18:16,00:09,Bug fixing on deleted and auditrtrail pages; Bug fixing on deleted and auditrtrail pages; Fixin the audit trail page ... (+7 more commits)
+2025-06-08,Sunday,Yes,No,0.0,0,,,Weekend - no work
+2025-06-09,Monday,No,No,0.0,0,,,No commits
+2025-06-10,Tuesday,No,No,0.0,0,,,No commits
+2025-06-11,Wednesday,No,No,0.0,0,,,No commits
+2025-06-12,Thursday,No,No,0.0,0,,,No commits
+2025-06-13,Friday,No,Yes,3.0,2,01:25,01:25,Lets grap files directly from the database; Lets grap files directly from the database
+2025-06-14,Saturday,Yes,Yes,3.0,2,20:27,20:27,First draft of the new search objects function; First draft of the new search objects function
+2025-06-15,Sunday,Yes,Yes,3.0,8,21:50,23:29,Async thall the faceted stuf; Async thall the faceted stuf; Lets do some final tweaks and add facetable to give the ui a ... (+5 more commits)
+2025-06-16,Monday,No,No,0.0,0,,,No commits
+2025-06-17,Tuesday,No,No,0.0,0,,,No commits
+2025-06-18,Wednesday,No,No,0.0,0,,,No commits
+2025-06-19,Thursday,No,No,0.0,0,,,No commits
+2025-06-20,Friday,No,No,0.0,0,,,No commits
+2025-06-21,Saturday,Yes,Yes,3.0,4,17:01,18:00,Get the models styles in one line (delete multiple needs a c; Get the models styles in one line (delete multiple needs a c; Working on the user friendlyness ... (+1 more commits)
+2025-06-22,Sunday,Yes,Yes,3.0,2,21:48,21:48,Updating to object for readabillity and perpering rights imp; Updating to object for readabillity and perpering rights imp
+2025-06-23,Monday,No,Yes,4.0,4,21:15,01:17,Merge pull request #452 from ConductionNL/feature/merging-ob; Merge pull request #452 from ConductionNL/feature/merging-ob; WIP on merge modal ... (+1 more commits)
+2025-06-24,Tuesday,No,No,0.0,0,,,No commits
+2025-06-25,Wednesday,No,No,0.0,0,,,No commits
+2025-06-26,Thursday,No,No,0.0,0,,,No commits
+2025-06-27,Friday,No,No,0.0,0,,,No commits
+2025-06-28,Saturday,Yes,No,0.0,0,,,Weekend - no work
+2025-06-29,Sunday,Yes,Yes,3.0,4,17:28,17:31,Merge pull request #460 from ConductionNL/feature/facet-exam; Merge pull request #460 from ConductionNL/feature/facet-exam; Refactor publisheing and depublishing files ... (+1 more commits)
+2025-06-30,Monday,No,Yes,4.1,8,21:11,01:15,Merge pull request #469 from ConductionNL/feature/facet-exam; Merge pull request #469 from ConductionNL/feature/facet-exam; Add textarea and markdown support ... (+5 more commits)
+2025-07-01,Tuesday,No,No,0.0,0,,,No commits
+2025-07-02,Wednesday,No,No,0.0,0,,,No commits
+2025-07-03,Thursday,No,No,0.0,0,,,No commits
+2025-07-04,Friday,No,No,0.0,0,,,No commits
+2025-07-05,Saturday,Yes,No,0.0,0,,,Weekend - no work
+2025-07-06,Sunday,Yes,No,0.0,0,,,Weekend - no work
+2025-07-07,Monday,No,No,0.0,0,,,No commits
+2025-07-08,Tuesday,No,Yes,3.0,6,23:20,23:27,Merge pull request #476 from ConductionNL/feature/facet-exam; Merge pull request #476 from ConductionNL/feature/facet-exam; Merge remote-tracking branch 'origin/development' into featu ... (+3 more commits)
+2025-07-09,Wednesday,No,Yes,3.0,2,23:05,23:05,Better return values on import; Better return values on import
+2025-07-10,Thursday,No,No,0.0,0,,,No commits
+2025-07-11,Friday,No,No,0.0,0,,,No commits
+2025-07-12,Saturday,Yes,Yes,3.0,2,00:58,00:58,Lets go search trails; Lets go search trails
+2025-07-13,Sunday,Yes,Yes,3.0,4,23:31,23:58,Faceting  fixes; Faceting  fixes; Lets add facets to the searchbar ... (+1 more commits)
+2025-07-14,Monday,No,No,0.0,0,,,No commits
+2025-07-15,Tuesday,No,No,0.0,0,,,No commits
+2025-07-16,Wednesday,No,No,0.0,0,,,No commits
+2025-07-17,Thursday,No,No,0.0,0,,,No commits
+2025-07-18,Friday,No,No,0.0,0,,,No commits
+2025-07-19,Saturday,Yes,No,0.0,0,,,Weekend - no work
+2025-07-20,Sunday,Yes,No,0.0,0,,,Weekend - no work
+2025-07-21,Monday,No,Yes,3.0,3,21:28,00:28,Lets start testing; Adding basic multitenancy; Add testing
+2025-07-22,Tuesday,No,Yes,3.0,1,17:11,17:11,Fix for double delete
+2025-07-23,Wednesday,No,No,0.0,0,,,No commits
+2025-07-24,Thursday,No,No,0.0,0,,,No commits
+2025-07-25,Friday,No,No,0.0,0,,,No commits
+2025-07-26,Saturday,Yes,No,0.0,0,,,Weekend - no work
+2025-07-27,Sunday,Yes,No,0.0,0,,,Weekend - no work
+2025-07-28,Monday,No,No,0.0,0,,,No commits
+2025-07-29,Tuesday,No,No,0.0,0,,,No commits
+2025-07-30,Wednesday,No,No,0.0,0,,,No commits
+2025-07-31,Thursday,No,No,0.0,0,,,No commits
+2025-08-01,Friday,No,No,0.0,0,,,No commits
+2025-08-02,Saturday,Yes,No,0.0,0,,,Weekend - no work
+2025-08-03,Sunday,Yes,No,0.0,0,,,Weekend - no work
+2025-08-04,Monday,No,No,0.0,0,,,No commits
+2025-08-05,Tuesday,No,No,0.0,0,,,No commits
+2025-08-06,Wednesday,No,No,0.0,0,,,No commits
+2025-08-07,Thursday,No,No,0.0,0,,,No commits
+2025-08-08,Friday,No,No,0.0,0,,,No commits
+2025-08-09,Saturday,Yes,No,0.0,0,,,Weekend - no work
+2025-08-10,Sunday,Yes,Yes,3.0,1,22:28,22:28,Fixing the bulks
+2025-08-11,Monday,No,Yes,3.0,3,20:11,20:13,Merge pull request #525 from ConductionNL/hotfix/bulkcreatio; Merge remote-tracking branch 'origin/development' into hotfi; Fixes on the bulk save
+2025-08-12,Tuesday,No,Yes,3.0,1,00:13,00:13,Adding the settingspage
+2025-08-13,Wednesday,No,No,0.0,0,,,No commits
+2025-08-14,Thursday,No,No,0.0,0,,,No commits
+2025-08-15,Friday,No,No,0.0,0,,,No commits
+2025-08-16,Saturday,Yes,No,0.0,0,,,Weekend - no work
+2025-08-17,Sunday,Yes,Yes,3.0,3,21:21,23:49,Merge pull request #534 from ConductionNL/hotfix/settingspag; Trying to fix audit trails and setting schema and register p; Better not found errors for missing registers and schemas
+2025-08-18,Monday,No,Yes,3.0,2,17:04,17:04,Merge pull request #536 from ConductionNL/hotfix/settingspag; Add security and table settings to properties
+2025-08-19,Tuesday,No,Yes,3.0,2,23:48,23:50,Merge pull request #538 from ConductionNL/hotfix/settingspag; Lets speedup the import
+2025-08-20,Wednesday,No,No,0.0,0,,,No commits
+2025-08-21,Thursday,No,No,0.0,0,,,No commits
+2025-08-22,Friday,No,Yes,3.0,1,20:42,20:42,Merge remote-tracking branch 'origin/development' into hotfi
+2025-08-23,Saturday,Yes,No,0.0,0,,,Weekend - no work
+2025-08-24,Sunday,Yes,No,0.0,0,,,Weekend - no work
+2025-08-25,Monday,No,Yes,3.0,4,18:00,18:30,Merge pull request #554 from ConductionNL/hotfix/settingspag; Third performance update; Second performance update ... (+1 more commits)
+2025-08-26,Tuesday,No,No,0.0,0,,,No commits
+2025-08-27,Wednesday,No,No,0.0,0,,,No commits
+2025-08-28,Thursday,No,Yes,6.0,3,17:16,01:51,Fixing the bulk import; Hotfix: metadata in object when bulk importing; Hotfix on migration
+2025-08-29,Friday,No,No,0.0,0,,,No commits
+2025-08-30,Saturday,Yes,No,0.0,0,,,Weekend - no work
+2025-08-31,Sunday,Yes,No,0.0,0,,,Weekend - no work
+2025-09-01,Monday,No,Yes,4.5,5,18:06,22:35,Merge pull request #565 from ConductionNL/feature/migrating-; Hotfix: migration; Merge pull request #564 from ConductionNL/feature/migrating- ... (+2 more commits)
+2025-09-02,Tuesday,No,No,0.0,0,,,No commits
+2025-09-03,Wednesday,No,No,0.0,0,,,No commits
+2025-09-04,Thursday,No,Yes,3.0,2,18:48,18:49,Merge pull request #579 from ConductionNL/feature/migrating-; Hotfix: Cashin
+2025-09-05,Friday,No,No,0.0,0,,,No commits
+2025-09-06,Saturday,Yes,No,0.0,0,,,Weekend - no work
+2025-09-07,Sunday,Yes,Yes,3.0,2,23:06,23:07,Merge pull request #581 from ConductionNL/feature/migrating-; Migration and service hotvix
+2025-09-08,Monday,No,Yes,3.0,1,23:18,23:18,OPtimizing the bulk import by running them in the database
+2025-09-09,Tuesday,No,Yes,3.0,1,23:27,23:27,Lets setup solr
+2025-09-10,Wednesday,No,Yes,3.6,3,20:55,00:31,First succefull test on solr; Fixing the migrations; Solr and bug fixes on updated
+2025-09-11,Thursday,No,Yes,3.8,3,21:34,01:21,Clearing up the solr documents; fixing the dubble index; Testing bulk import and clearing up the cash
+2025-09-12,Friday,No,No,0.0,0,,,No commits
+2025-09-13,Saturday,Yes,No,0.0,0,,,Weekend - no work
+2025-09-14,Sunday,Yes,Yes,4.8,8,18:29,23:18,feat(changelog): add changelog-ci configuration for automate; feat(changelog): add changelog-ci configuration for automate; Merge pull request #590 from ConductionNL/hotfix/solr-dashbo ... (+5 more commits)
+2025-09-15,Monday,No,Yes,6.5,21,19:22,01:41,feat(solr): Add enhanced debugging to SolrSetup for HTTP req; Merge pull request #601 from ConductionNL/feature/solr-testi; refactor(solr): Centralize authentication in GuzzleSolrServi ... (+18 more commits)
+2025-09-16,Tuesday,No,Yes,6.5,43,17:10,01:47,"debug: add comprehensive logging to performanceClass compute; fix: add comprehensive null checks for all performance prope; fix: add missing null checks for tenant_id and endpoint_url, ... (+40 more commits)"
+2025-09-17,Wednesday,No,Yes,3.0,8,20:26,20:54,fix: correct SOLR weighted search query syntax; debug: add detailed SOLR query logging; debug: add detailed logging to SOLR availability checks ... (+5 more commits)
+2025-09-18,Thursday,No,No,0.0,0,,,No commits
+2025-09-19,Friday,No,No,0.0,0,,,No commits
+2025-09-20,Saturday,Yes,No,0.0,0,,,Weekend - no work
+2025-09-21,Sunday,Yes,Yes,6.5,24,17:02,00:42,"Merge pull request #632 from ConductionNL/hotfix/solr-setup-; Delete ter && git add . && git commit -m ""fix: add confirmat; Delete how --name-only 766e64d2 ... (+21 more commits)"
+2025-09-22,Monday,No,Yes,4.1,8,20:45,00:49,Merge pull request #634 from ConductionNL/hotfix/solr-setup-; fix: prevent empty register/schema values from causing DoesN; fix: add missing uses parameter filtering to countSearchObje ... (+5 more commits)
+2025-09-23,Tuesday,No,No,0.0,0,,,No commits
+2025-09-24,Wednesday,No,Yes,3.0,3,21:26,21:44,docs: add comprehensive @self metadata handling documentatio; fix: improve @self metadata handling for organization activa; fix: improve @self metadata handling for organization activa
+2025-09-25,Thursday,No,No,0.0,0,,,No commits
+2025-09-26,Friday,No,No,0.0,0,,,No commits
+2025-09-27,Saturday,Yes,No,0.0,0,,,Weekend - no work
+2025-09-28,Sunday,Yes,No,0.0,0,,,Weekend - no work
+2025-09-29,Monday,No,Yes,3.0,3,19:21,21:25,fix: minor cleanup in GuzzleSolrService after searchable fil; Merge pull request #647 from ConductionNL/feature/improve-se; feat(solr): improve searchable schema filtering and warmup m
+2025-09-30,Tuesday,No,No,0.0,0,,,No commits
+2025-10-01,Wednesday,No,No,0.0,0,,,No commits
+2025-10-02,Thursday,No,No,0.0,0,,,No commits
+2025-10-03,Friday,No,No,0.0,0,,,No commits
+2025-10-04,Saturday,Yes,No,0.0,0,,,Weekend - no work
+2025-10-05,Sunday,Yes,Yes,3.0,2,23:15,23:15,test; Uddate
+2025-10-06,Monday,No,No,0.0,0,,,No commits
+2025-10-07,Tuesday,No,No,0.0,0,,,No commits
+2025-10-08,Wednesday,No,Yes,3.0,4,21:23,21:38,Merge pull request #665 from ConductionNL/feature/improve-se; Lets fix an hardcoded thingy; Merge pull request #664 from ConductionNL/feature/improve-se ... (+1 more commits)
+2025-10-09,Thursday,No,No,0.0,0,,,No commits
+2025-10-10,Friday,No,No,0.0,0,,,No commits
+2025-10-11,Saturday,Yes,Yes,3.0,2,21:22,21:30,Merge pull request #670 from ConductionNL/feature/improve-se; Fix publishing objects
+2025-10-12,Sunday,Yes,Yes,3.0,1,23:39,23:39,Starting the refacto on solr
+2025-10-13,Monday,No,Yes,3.0,5,22:35,23:59,Merge pull request #671 from ConductionNL/feature/improve-se; Oke couple of warmup fixes; Making the warmup specific ... (+2 more commits)
+2025-10-14,Tuesday,No,No,0.0,0,,,No commits
+2025-10-15,Wednesday,No,No,0.0,0,,,No commits
+2025-10-16,Thursday,No,No,0.0,0,,,No commits
+2025-10-17,Friday,No,No,0.0,0,,,No commits
+2025-10-18,Saturday,Yes,No,0.0,0,,,Weekend - no work
+2025-10-19,Sunday,Yes,No,0.0,0,,,Weekend - no work
+2025-10-20,Monday,No,No,0.0,0,,,No commits
+2025-10-21,Tuesday,No,No,0.0,0,,,No commits
+2025-10-22,Wednesday,No,No,0.0,0,,,No commits
+2025-10-23,Thursday,No,No,0.0,0,,,No commits
+2025-10-24,Friday,No,No,0.0,0,,,No commits
+2025-10-25,Saturday,Yes,No,0.0,0,,,Weekend - no work
+2025-10-26,Sunday,Yes,Yes,3.0,1,19:57,19:57,Merge remote-tracking branch 'origin/development' into featu
+2025-10-27,Monday,No,Yes,3.0,2,23:27,23:28,Merge pull request #692 from ConductionNL/feature/REGISTERS-; Correctly inserting services
+2025-10-28,Tuesday,No,No,0.0,0,,,No commits
+2025-10-29,Wednesday,No,Yes,3.0,3,20:52,21:39,Alignment perfection; Lets use the proper component; Styling the admin pages
+2025-10-30,Thursday,No,No,0.0,0,,,No commits
+2025-10-31,Friday,No,No,0.0,0,,,No commits
+2025-11-01,Saturday,Yes,Yes,3.0,2,23:43,23:44,Merge remote-tracking branch 'origin/feature/REGISTERS-218/f; Cleaning up the ui on applicatie and organisatie
+2025-11-02,Sunday,Yes,Yes,3.0,2,22:56,00:51,"WIP on organisation, applications and configurations; Lets add and remove users from organisations"
+2025-11-03,Monday,No,Yes,3.0,3,22:11,23:31,finaly got fav view to work; Merge remote-tracking branch 'origin/development' into featu; Save before adding patch support
+2025-11-04,Tuesday,No,No,0.0,0,,,No commits
+2025-11-05,Wednesday,No,Yes,5.9,6,19:08,01:02,Merge remote-tracking branch 'origin/development' into featu; Still working a the base for configuration and chat; More WIP ... (+3 more commits)
+2025-11-06,Thursday,No,Yes,3.0,4,22:33,01:08,Merge pull request #711 from ConductionNL/feature/configurat; Setting up tools; Getting the extraction to work ... (+1 more commits)
+2025-11-07,Friday,No,No,0.0,0,,,No commits
+2025-11-08,Saturday,Yes,Yes,4.0,24,22:32,23:44,deploy: 6483c1977cf2d30bf1d4dac536422f38012a505e; Merge pull request #756 from ConductionNL/feature/configurat; More broken links ... (+21 more commits)
+2025-11-09,Sunday,Yes,No,0.0,0,,,Weekend - no work
+2025-11-10,Monday,No,Yes,3.0,2,21:51,21:52,Merge remote-tracking branch 'origin/development' into hotfi; Update the docker-compose
+2025-11-11,Tuesday,No,No,0.0,0,,,No commits
+2025-11-12,Wednesday,No,Yes,3.0,1,21:52,21:52,Getting to grips with the performance problem
+2025-11-13,Thursday,No,No,0.0,0,,,No commits
+2025-11-14,Friday,No,No,0.0,0,,,No commits
+2025-11-15,Saturday,Yes,Yes,3.0,1,18:32,18:32,WIP for the refactord extraction pipeline
+2025-11-16,Sunday,Yes,No,0.0,0,,,Weekend - no work
+2025-11-17,Monday,No,Yes,3.0,1,21:53,21:53,Grean borders :')
+2025-11-18,Tuesday,No,No,0.0,0,,,No commits
+2025-11-19,Wednesday,No,No,0.0,0,,,No commits
+2025-11-20,Thursday,No,Yes,3.5,5,20:08,23:36,"More linting, psalm and webhooks; psalm fixes; n8n setup ... (+2 more commits)"
+2025-11-21,Friday,No,No,0.0,0,,,No commits
+2025-11-22,Saturday,Yes,No,0.0,0,,,Weekend - no work
+2025-11-23,Sunday,Yes,Yes,3.0,1,17:31,17:31,Continue with the cleanup and starting psalm
+2025-11-24,Monday,No,Yes,6.0,8,17:11,00:44,More cleanup; phpcs fixes; Save before starting to remove unused code ... (+5 more commits)
+2025-11-25,Tuesday,No,Yes,3.0,2,22:36,23:06,Documenting the local setup; Merge branch 'hotfix/registerlist' into feature/php-linting
+2025-11-26,Wednesday,No,No,0.0,0,,,No commits
+2025-11-27,Thursday,No,Yes,3.0,1,21:48,21:48,Fix code styling
+2025-11-28,Friday,No,No,0.0,0,,,No commits
+2025-11-29,Saturday,Yes,No,0.0,0,,,Weekend - no work
+2025-11-30,Sunday,Yes,No,0.0,0,,,Weekend - no work
+2025-12-01,Monday,No,No,0.0,0,,,No commits
+2025-12-02,Tuesday,No,No,0.0,0,,,No commits
+2025-12-03,Wednesday,No,No,0.0,0,,,No commits

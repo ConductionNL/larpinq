@@ -1,0 +1,366 @@
+Date,Day,Weekend,Worked,Hours,Commits,Start Time,End Time,Repositories,Work Summary
+2025-01-01,Wednesday,No,No,0.0,0,,,,No commits
+2025-01-02,Thursday,No,No,0.0,0,,,,No commits
+2025-01-03,Friday,No,No,0.0,0,,,,No commits
+2025-01-04,Saturday,Yes,No,0.0,0,,,,No commits
+2025-01-05,Sunday,Yes,No,0.0,0,,,,No commits
+2025-01-06,Monday,No,Yes,7.2,3,10:37,17:52,openconnector,A todo note; Added upload & download controllers & services; Merge branch 'development' into feature/CONNECTOR-
+2025-01-07,Tuesday,No,Yes,2.0,1,17:36,17:36,openconnector,Added upload for file(s) and check correctly by re
+2025-01-08,Wednesday,No,No,0.0,0,,,,No commits
+2025-01-09,Thursday,No,Yes,2.6,5,14:41,17:19,openconnector,Fixes for updating objects when importing; Remove findByRef function in Consumermapper; Remove newlines ... (+2 more commits)
+2025-01-10,Friday,No,Yes,6.7,15,09:50,16:03,"opencatalogi, openconnector",Merge pull request #165 from ConductionNL/developm; Merge pull request #164 from ConductionNL/fix/OP-4; Fix for adding Directory ... (+12 more commits)
+2025-01-11,Saturday,Yes,No,0.0,0,,,,No commits
+2025-01-12,Sunday,Yes,No,0.0,0,,,,No commits
+2025-01-13,Monday,No,Yes,4.9,5,12:13,17:08,openconnector,Fix routes; Code style & docblock changes; Update list of objects that are not allowed to be  ... (+2 more commits)
+2025-01-14,Tuesday,No,Yes,4.8,5,11:25,16:11,openconnector,Merge remote-tracking branch 'origin/feature/CONNE; Fix version in export filename; Small fix for checking rule method ... (+2 more commits)
+2025-01-15,Wednesday,No,No,0.0,0,,,,No commits
+2025-01-16,Thursday,No,Yes,2.0,8,16:35,17:55,openregister,Set folder property for Object & Register; Set folder property for Object & Register; Add Folder to NC for any new object created ... (+5 more commits)
+2025-01-17,Friday,No,Yes,8.0,6,09:19,17:35,openregister,Added getter for the NC Node object of an object f; Added getter for the NC Node object of an object f; Added EventListeners for NextCloud Folders ... (+3 more commits)
+2025-01-18,Saturday,Yes,No,0.0,0,,,,No commits
+2025-01-19,Sunday,Yes,No,0.0,0,,,,No commits
+2025-01-20,Monday,No,No,0.0,0,,,,No commits
+2025-01-21,Tuesday,No,No,0.0,0,,,,No commits
+2025-01-22,Wednesday,No,No,0.0,0,,,,No commits
+2025-01-23,Thursday,No,No,0.0,0,,,,No commits
+2025-01-24,Friday,No,No,0.0,0,,,,No commits
+2025-01-25,Saturday,Yes,No,0.0,0,,,,No commits
+2025-01-26,Sunday,Yes,No,0.0,0,,,,No commits
+2025-01-27,Monday,No,No,0.0,0,,,,No commits
+2025-01-28,Tuesday,No,Yes,2.0,1,17:13,17:13,openregister,Added code to find files by searching file content
+2025-01-29,Wednesday,No,No,0.0,0,,,,No commits
+2025-01-30,Thursday,No,Yes,2.0,3,14:58,15:09,openconnector,Final try{ style fixes; Some more style & docblock fixes; Code style fixes for pr
+2025-01-31,Friday,No,No,0.0,0,,,,No commits
+2025-02-01,Saturday,Yes,No,0.0,0,,,,No commits
+2025-02-02,Sunday,Yes,No,0.0,0,,,,No commits
+2025-02-03,Monday,No,No,0.0,0,,,,No commits
+2025-02-04,Tuesday,No,Yes,2.0,2,17:27,17:31,openconnector,"Style changes, for pr; Merge branch 'development' into feature/CONNECTOR-"
+2025-02-05,Wednesday,No,No,0.0,0,,,,No commits
+2025-02-06,Thursday,No,No,0.0,0,,,,No commits
+2025-02-07,Friday,No,Yes,2.0,2,15:49,15:49,openregister,A small fix for naming Register NC folders (in whi; A small fix for naming Register NC folders (in whi
+2025-02-08,Saturday,Yes,No,0.0,0,,,,No commits
+2025-02-09,Sunday,Yes,No,0.0,0,,,,No commits
+2025-02-10,Monday,No,Yes,4.2,7,11:52,16:03,"openconnector, openregister",Added a more information header at the end of full; Added a more information header at the end of full; Added some basic documentation for the fulltextsea ... (+4 more commits)
+2025-02-11,Tuesday,No,Yes,5.5,20,12:08,17:11,openregister,Merge pull request #178 from ConductionNL/fix/file; Merge pull request #178 from ConductionNL/fix/file; Fix for creating publications ... (+17 more commits)
+2025-02-12,Wednesday,No,No,0.0,0,,,,No commits
+2025-02-13,Thursday,No,Yes,6.7,3,09:36,16:16,"opencatalogi, openconnector","Merge pull request #188 from ConductionNL/feature/; Put back CatalogiController for now; Added basics for source, sync, rule & mapping RX F"
+2025-02-14,Friday,No,Yes,4.6,4,12:20,16:54,"openconnector, openregister",Small style and one-line doc change; Small style and one-line doc change; Update RX configuration ... (+1 more commits)
+2025-02-15,Saturday,Yes,No,0.0,0,,,,No commits
+2025-02-16,Sunday,Yes,No,0.0,0,,,,No commits
+2025-02-17,Monday,No,Yes,5.2,3,11:42,16:51,"openconnector, openregister",w.i.p. code cleanup / fixes; w.i.p. code cleanup / fixes; Changes to RX configuration files + some small cod
+2025-02-18,Tuesday,No,No,0.0,0,,,,No commits
+2025-02-19,Wednesday,No,No,0.0,0,,,,No commits
+2025-02-20,Thursday,No,No,0.0,0,,,,No commits
+2025-02-21,Friday,No,No,0.0,0,,,,No commits
+2025-02-22,Saturday,Yes,No,0.0,0,,,,No commits
+2025-02-23,Sunday,Yes,No,0.0,0,,,,No commits
+2025-02-24,Monday,No,No,0.0,0,,,,No commits
+2025-02-25,Tuesday,No,No,0.0,0,,,,No commits
+2025-02-26,Wednesday,No,No,0.0,0,,,,No commits
+2025-02-27,Thursday,No,Yes,4.9,4,12:26,17:20,openconnector,required symfony/serializer & begin tests for retu; Basics for sitemap config; Added 'create a SharePoint Site' & to-do for OpenC ... (+1 more commits)
+2025-02-28,Friday,No,Yes,6.7,15,09:40,15:51,openconnector,Merge pull request #265 from ConductionNL/fix/sync; Small change / fix for getting next page when hand; Small change / fix for getting next page when hand ... (+12 more commits)
+2025-03-01,Saturday,Yes,No,0.0,0,,,,No commits
+2025-03-02,Sunday,Yes,No,0.0,0,,,,No commits
+2025-03-03,Monday,No,Yes,2.6,6,15:18,17:55,"openconnector, openregister",Schema Export fix (UI uses accept header */* defau; Schema Export fix (UI uses accept header */* defau; Some fixes for default xmlResponses when using End ... (+3 more commits)
+2025-03-04,Tuesday,No,Yes,2.9,2,12:27,15:19,openconnector,Moved Archimate config files to: VNG-Realisatie/So; Update for XMLResponse with @root tag + mapping fo
+2025-03-05,Wednesday,No,No,0.0,0,,,,No commits
+2025-03-06,Thursday,No,Yes,4.3,6,10:38,14:55,"openconnector, openregister",Merge branch 'development' into feature/VSC-205/ex; Merge branch 'development' into feature/VSC-205/ex; Merge pull request #221 from ConductionNL/feature/ ... (+3 more commits)
+2025-03-07,Friday,No,Yes,6.4,7,09:42,16:05,"openconnector, openregister",Added 2 small rewordings; Added 2 small rewordings; small docu update ... (+4 more commits)
+2025-03-08,Saturday,Yes,No,0.0,0,,,,No commits
+2025-03-09,Sunday,Yes,No,0.0,0,,,,No commits
+2025-03-10,Monday,No,Yes,2.0,8,11:04,11:25,"opencatalogi, openconnector, openregister",Merge branch 'development' into feature/VSC-205/ex; Merge branch 'development' into feature/VSC-205/ex; Merge branch 'development' into feature/VSC-205/ex ... (+5 more commits)
+2025-03-11,Tuesday,No,Yes,5.2,6,12:07,17:20,openconnector,"Fix decoding xml response correctly during sync, r; Fix setting and increasing version for configurati; Fix MappingRule for after rules ... (+3 more commits)"
+2025-03-12,Wednesday,No,No,0.0,0,,,,No commits
+2025-03-13,Thursday,No,Yes,3.4,9,11:45,15:12,"opencatalogi, openconnector, openregister",Added getters for all json fields that return [] w; Added getters for all json fields that return [] w; Added getters for all json fields that return [] w ... (+6 more commits)
+2025-03-14,Friday,No,Yes,2.0,8,13:30,13:59,"openconnector, openregister",Merge pull request #251 from ConductionNL/developm; Merge pull request #251 from ConductionNL/developm; Merge pull request #250 from ConductionNL/feature/ ... (+5 more commits)
+2025-03-15,Saturday,Yes,No,0.0,0,,,,No commits
+2025-03-16,Sunday,Yes,No,0.0,0,,,,No commits
+2025-03-17,Monday,No,Yes,4.0,6,11:41,15:42,openconnector,Merge pull request #327 from ConductionNL/developm; Fix synchronization result response 'found' to sho; Merge pull request #326 from ConductionNL/feature/ ... (+3 more commits)
+2025-03-18,Tuesday,No,Yes,2.6,3,13:38,16:15,"opencatalogi, openconnector",Merge pull request #225 from ConductionNL/feature/; Update some of the getters to return object/null; Merge pull request #331 from ConductionNL/feature/
+2025-03-19,Wednesday,No,No,0.0,0,,,,No commits
+2025-03-20,Thursday,No,Yes,2.0,1,16:56,16:56,openconnector,Better user feedback for unit tests
+2025-03-21,Friday,No,Yes,6.7,13,11:20,17:34,"openconnector, openregister",Merge pull request #292 from ConductionNL/developm; Merge pull request #292 from ConductionNL/developm; Merge pull request #291 from ConductionNL/fix/unde ... (+10 more commits)
+2025-03-22,Saturday,Yes,No,0.0,0,,,,No commits
+2025-03-23,Sunday,Yes,No,0.0,0,,,,No commits
+2025-03-24,Monday,No,Yes,2.0,6,15:34,17:21,openconnector,"Merge pull request #350 from ConductionNL/feature/; Revert ""Test phpunit workflow""; Revert ""go to correct folder in phpunit.xml (test  ... (+3 more commits)"
+2025-03-25,Tuesday,No,Yes,7.2,6,10:21,17:34,openconnector,Merge pull request #360 from ConductionNL/feature/; Filter out lastRun and nextRun fields when importi; Let's ignore branches main/master for checkstyle / ... (+3 more commits)
+2025-03-26,Wednesday,No,No,0.0,0,,,,No commits
+2025-03-27,Thursday,No,Yes,4.1,6,10:59,15:04,openconnector,Only add Content-Disposition header to XMLResponse; Merge branch 'development' into feature/VSC-205/ex; Merge pull request #362 from ConductionNL/developm ... (+3 more commits)
+2025-03-28,Friday,No,Yes,2.0,3,10:17,10:52,openconnector,Merge pull request #366 from ConductionNL/developm; Merge pull request #364 from ConductionNL/feature/; PR review explicit if statements
+2025-03-29,Saturday,Yes,No,0.0,0,,,,No commits
+2025-03-30,Sunday,Yes,No,0.0,0,,,,No commits
+2025-03-31,Monday,No,Yes,2.0,2,15:49,15:49,openregister,small fixes in ObjectService; small fixes in ObjectService
+2025-04-01,Tuesday,No,Yes,2.0,3,13:49,14:42,openconnector,Merge pull request #405 from ConductionNL/developm; Merge pull request #404 from ConductionNL/fix/show; Show correct amount for skipped in sync response/r
+2025-04-02,Wednesday,No,No,0.0,0,,,,No commits
+2025-04-03,Thursday,No,No,0.0,0,,,,No commits
+2025-04-04,Friday,No,Yes,2.0,1,17:46,17:46,openregister,Some more cleanup / Pr fixes
+2025-04-05,Saturday,Yes,No,0.0,0,,,,No commits
+2025-04-06,Sunday,Yes,No,0.0,0,,,,No commits
+2025-04-07,Monday,No,Yes,2.0,1,15:08,15:08,openregister,Remove yoda semantiek
+2025-04-08,Tuesday,No,Yes,2.0,2,15:19,16:06,openregister,Remove nextcloud/ocp from require-dev in composer ; Remove friendsofphp/php-cs-fixer from require-dev 
+2025-04-09,Wednesday,No,No,0.0,0,,,,No commits
+2025-04-10,Thursday,No,Yes,4.2,12,13:43,17:23,openregister,Fixes in the UploadService; Fixes in the UploadService; fix migration ... (+9 more commits)
+2025-04-11,Friday,No,Yes,7.1,9,10:50,17:55,"openconnector, openregister",Fixes for updating with import; Fixes for updating with import; Added code for (configuration) url & file import b ... (+6 more commits)
+2025-04-12,Saturday,Yes,No,0.0,0,,,,No commits
+2025-04-13,Sunday,Yes,No,0.0,0,,,,No commits
+2025-04-14,Monday,No,Yes,5.4,6,11:31,16:54,"openconnector, openregister",More fixes; some fixes; Merge pull request #340 from ConductionNL/code-cle ... (+3 more commits)
+2025-04-15,Tuesday,No,No,0.0,0,,,,No commits
+2025-04-16,Wednesday,No,No,0.0,0,,,,No commits
+2025-04-17,Thursday,No,No,0.0,0,,,,No commits
+2025-04-18,Friday,No,No,0.0,0,,,,No commits
+2025-04-19,Saturday,Yes,No,0.0,0,,,,No commits
+2025-04-20,Sunday,Yes,No,0.0,0,,,,No commits
+2025-04-21,Monday,No,No,0.0,0,,,,No commits
+2025-04-22,Tuesday,No,Yes,2.0,1,12:10,12:10,openconnector,Added properties for elements and relative positio
+2025-04-23,Wednesday,No,No,0.0,0,,,,No commits
+2025-04-24,Thursday,No,Yes,7.1,4,10:23,17:30,openconnector,Start fixing how we set the relative positions for; fixes for custom rule and rule mapping; Merge branch 'development' into feature/softwareca ... (+1 more commits)
+2025-04-25,Friday,No,Yes,2.8,2,12:33,15:23,openconnector,fixes for element properties & node relative posit; fixes for relative position newly added subnodes
+2025-04-26,Saturday,Yes,No,0.0,0,,,,No commits
+2025-04-27,Sunday,Yes,No,0.0,0,,,,No commits
+2025-04-28,Monday,No,Yes,5.8,2,11:47,17:38,openconnector,fix for checking if source is given when running s; Merge branch 'feature/VSC-179/verijken-import-func
+2025-04-29,Tuesday,No,Yes,2.0,1,16:01,16:01,openconnector,Start adding Actors etc.
+2025-04-30,Wednesday,No,No,0.0,0,,,,No commits
+2025-05-01,Thursday,No,Yes,5.2,8,11:43,16:57,openconnector,Add relations for Application > ReferentieComponen; Merge pull request #466 from ConductionNL/feature/; Check if propertyDefinitions exist before adding t ... (+5 more commits)
+2025-05-02,Friday,No,Yes,8.0,11,09:58,17:40,"openconnector, openregister",Merge pull request #360 from ConductionNL/fix/prev; Merge pull request #360 from ConductionNL/fix/prev; Some small fixes to prevent unnecessary NextCloud  ... (+8 more commits)
+2025-05-03,Saturday,Yes,No,0.0,0,,,,No commits
+2025-05-04,Sunday,Yes,No,0.0,0,,,,No commits
+2025-05-05,Monday,No,No,0.0,0,,,,No commits
+2025-05-06,Tuesday,No,No,0.0,0,,,,No commits
+2025-05-07,Wednesday,No,No,0.0,0,,,,No commits
+2025-05-08,Thursday,No,No,0.0,0,,,,No commits
+2025-05-09,Friday,No,No,0.0,0,,,,No commits
+2025-05-10,Saturday,Yes,No,0.0,0,,,,No commits
+2025-05-11,Sunday,Yes,No,0.0,0,,,,No commits
+2025-05-12,Monday,No,No,0.0,0,,,,No commits
+2025-05-13,Tuesday,No,No,0.0,0,,,,No commits
+2025-05-14,Wednesday,No,No,0.0,0,,,,No commits
+2025-05-15,Thursday,No,No,0.0,0,,,,No commits
+2025-05-16,Friday,No,No,0.0,0,,,,No commits
+2025-05-17,Saturday,Yes,No,0.0,0,,,,No commits
+2025-05-18,Sunday,Yes,No,0.0,0,,,,No commits
+2025-05-19,Monday,No,No,0.0,0,,,,No commits
+2025-05-20,Tuesday,No,No,0.0,0,,,,No commits
+2025-05-21,Wednesday,No,No,0.0,0,,,,No commits
+2025-05-22,Thursday,No,Yes,2.0,6,13:32,14:03,openregister,Added audit trail endpoints for besluit; Added audit trail endpoints for besluit; fixex in endpointArray for BRC CRUD endpoints ... (+3 more commits)
+2025-05-23,Friday,No,No,0.0,0,,,,No commits
+2025-05-24,Saturday,Yes,No,0.0,0,,,,No commits
+2025-05-25,Sunday,Yes,No,0.0,0,,,,No commits
+2025-05-26,Monday,No,No,0.0,0,,,,No commits
+2025-05-27,Tuesday,No,No,0.0,0,,,,No commits
+2025-05-28,Wednesday,No,No,0.0,0,,,,No commits
+2025-05-29,Thursday,No,No,0.0,0,,,,No commits
+2025-05-30,Friday,No,No,0.0,0,,,,No commits
+2025-05-31,Saturday,Yes,No,0.0,0,,,,No commits
+2025-06-01,Sunday,Yes,No,0.0,0,,,,No commits
+2025-06-02,Monday,No,No,0.0,0,,,,No commits
+2025-06-03,Tuesday,No,No,0.0,0,,,,No commits
+2025-06-04,Wednesday,No,No,0.0,0,,,,No commits
+2025-06-05,Thursday,No,No,0.0,0,,,,No commits
+2025-06-06,Friday,No,No,0.0,0,,,,No commits
+2025-06-07,Saturday,Yes,No,0.0,0,,,,No commits
+2025-06-08,Sunday,Yes,No,0.0,0,,,,No commits
+2025-06-09,Monday,No,No,0.0,0,,,,No commits
+2025-06-10,Tuesday,No,No,0.0,0,,,,No commits
+2025-06-11,Wednesday,No,No,0.0,0,,,,No commits
+2025-06-12,Thursday,No,No,0.0,0,,,,No commits
+2025-06-13,Friday,No,No,0.0,0,,,,No commits
+2025-06-14,Saturday,Yes,No,0.0,0,,,,No commits
+2025-06-15,Sunday,Yes,No,0.0,0,,,,No commits
+2025-06-16,Monday,No,No,0.0,0,,,,No commits
+2025-06-17,Tuesday,No,No,0.0,0,,,,No commits
+2025-06-18,Wednesday,No,No,0.0,0,,,,No commits
+2025-06-19,Thursday,No,No,0.0,0,,,,No commits
+2025-06-20,Friday,No,No,0.0,0,,,,No commits
+2025-06-21,Saturday,Yes,No,0.0,0,,,,No commits
+2025-06-22,Sunday,Yes,No,0.0,0,,,,No commits
+2025-06-23,Monday,No,No,0.0,0,,,,No commits
+2025-06-24,Tuesday,No,No,0.0,0,,,,No commits
+2025-06-25,Wednesday,No,No,0.0,0,,,,No commits
+2025-06-26,Thursday,No,No,0.0,0,,,,No commits
+2025-06-27,Friday,No,No,0.0,0,,,,No commits
+2025-06-28,Saturday,Yes,No,0.0,0,,,,No commits
+2025-06-29,Sunday,Yes,No,0.0,0,,,,No commits
+2025-06-30,Monday,No,No,0.0,0,,,,No commits
+2025-07-01,Tuesday,No,No,0.0,0,,,,No commits
+2025-07-02,Wednesday,No,No,0.0,0,,,,No commits
+2025-07-03,Thursday,No,No,0.0,0,,,,No commits
+2025-07-04,Friday,No,No,0.0,0,,,,No commits
+2025-07-05,Saturday,Yes,No,0.0,0,,,,No commits
+2025-07-06,Sunday,Yes,No,0.0,0,,,,No commits
+2025-07-07,Monday,No,No,0.0,0,,,,No commits
+2025-07-08,Tuesday,No,No,0.0,0,,,,No commits
+2025-07-09,Wednesday,No,No,0.0,0,,,,No commits
+2025-07-10,Thursday,No,No,0.0,0,,,,No commits
+2025-07-11,Friday,No,No,0.0,0,,,,No commits
+2025-07-12,Saturday,Yes,No,0.0,0,,,,No commits
+2025-07-13,Sunday,Yes,No,0.0,0,,,,No commits
+2025-07-14,Monday,No,No,0.0,0,,,,No commits
+2025-07-15,Tuesday,No,No,0.0,0,,,,No commits
+2025-07-16,Wednesday,No,No,0.0,0,,,,No commits
+2025-07-17,Thursday,No,No,0.0,0,,,,No commits
+2025-07-18,Friday,No,No,0.0,0,,,,No commits
+2025-07-19,Saturday,Yes,No,0.0,0,,,,No commits
+2025-07-20,Sunday,Yes,No,0.0,0,,,,No commits
+2025-07-21,Monday,No,No,0.0,0,,,,No commits
+2025-07-22,Tuesday,No,No,0.0,0,,,,No commits
+2025-07-23,Wednesday,No,No,0.0,0,,,,No commits
+2025-07-24,Thursday,No,No,0.0,0,,,,No commits
+2025-07-25,Friday,No,No,0.0,0,,,,No commits
+2025-07-26,Saturday,Yes,No,0.0,0,,,,No commits
+2025-07-27,Sunday,Yes,No,0.0,0,,,,No commits
+2025-07-28,Monday,No,No,0.0,0,,,,No commits
+2025-07-29,Tuesday,No,No,0.0,0,,,,No commits
+2025-07-30,Wednesday,No,No,0.0,0,,,,No commits
+2025-07-31,Thursday,No,No,0.0,0,,,,No commits
+2025-08-01,Friday,No,No,0.0,0,,,,No commits
+2025-08-02,Saturday,Yes,No,0.0,0,,,,No commits
+2025-08-03,Sunday,Yes,No,0.0,0,,,,No commits
+2025-08-04,Monday,No,No,0.0,0,,,,No commits
+2025-08-05,Tuesday,No,No,0.0,0,,,,No commits
+2025-08-06,Wednesday,No,No,0.0,0,,,,No commits
+2025-08-07,Thursday,No,No,0.0,0,,,,No commits
+2025-08-08,Friday,No,No,0.0,0,,,,No commits
+2025-08-09,Saturday,Yes,No,0.0,0,,,,No commits
+2025-08-10,Sunday,Yes,No,0.0,0,,,,No commits
+2025-08-11,Monday,No,No,0.0,0,,,,No commits
+2025-08-12,Tuesday,No,No,0.0,0,,,,No commits
+2025-08-13,Wednesday,No,No,0.0,0,,,,No commits
+2025-08-14,Thursday,No,No,0.0,0,,,,No commits
+2025-08-15,Friday,No,No,0.0,0,,,,No commits
+2025-08-16,Saturday,Yes,No,0.0,0,,,,No commits
+2025-08-17,Sunday,Yes,No,0.0,0,,,,No commits
+2025-08-18,Monday,No,No,0.0,0,,,,No commits
+2025-08-19,Tuesday,No,No,0.0,0,,,,No commits
+2025-08-20,Wednesday,No,No,0.0,0,,,,No commits
+2025-08-21,Thursday,No,Yes,2.0,3,14:07,15:52,openconnector,"Added unit tests for all mapping cast types and fo; Added Unit tests for MappingService, ObjectService; Fix current existing Unit tests or the code being "
+2025-08-22,Friday,No,Yes,2.0,3,14:50,15:26,openconnector,"Replace skipped tests with working tests for Job, ; Replace skipped tests with actual working tests fo; Added unit tests for all Services"
+2025-08-23,Saturday,Yes,No,0.0,0,,,,No commits
+2025-08-24,Sunday,Yes,No,0.0,0,,,,No commits
+2025-08-25,Monday,No,No,0.0,0,,,,No commits
+2025-08-26,Tuesday,No,Yes,2.0,2,12:53,14:37,openconnector,"Added unit tests for all controllers; Fix some bugs, reduce the amount of skipped Servic"
+2025-08-27,Wednesday,No,No,0.0,0,,,,No commits
+2025-08-28,Thursday,No,Yes,5.4,17,10:45,15:40,openconnector,"Try again, with updated migration scripts; Try a different approach for the unit test workflo; Try adding bootstrap.php to the tests folder ... (+14 more commits)"
+2025-08-29,Friday,No,Yes,2.0,1,13:47,13:47,openconnector,w.i.p. composer and bootstrap shizzle
+2025-08-30,Saturday,Yes,No,0.0,0,,,,No commits
+2025-08-31,Sunday,Yes,No,0.0,0,,,,No commits
+2025-09-01,Monday,No,No,0.0,0,,,,No commits
+2025-09-02,Tuesday,No,Yes,2.0,2,14:45,15:00,"openconnector, openregister",Start fixing existing unit tests first; Some small fixes related to versions php 8.3 and N
+2025-09-03,Wednesday,No,No,0.0,0,,,,No commits
+2025-09-04,Thursday,No,Yes,2.0,1,17:01,17:01,openregister,w.i.p. fixing existing unit tests (Some changes ne
+2025-09-05,Friday,No,Yes,2.0,1,12:30,12:30,openregister,Make sure all existing unit tests work
+2025-09-06,Saturday,Yes,No,0.0,0,,,,No commits
+2025-09-07,Sunday,Yes,No,0.0,0,,,,No commits
+2025-09-08,Monday,No,No,0.0,0,,,,No commits
+2025-09-09,Tuesday,No,Yes,2.0,2,15:35,15:46,openregister,Added tests for a few more services + fixes; Added test coverage for all services
+2025-09-10,Wednesday,No,No,0.0,0,,,,No commits
+2025-09-11,Thursday,No,Yes,2.0,1,15:13,15:13,openregister,Make sure all unit tests pass
+2025-09-12,Friday,No,Yes,2.0,1,17:42,17:42,openregister,Added unit tests for all Controllers
+2025-09-13,Saturday,Yes,No,0.0,0,,,,No commits
+2025-09-14,Sunday,Yes,No,0.0,0,,,,No commits
+2025-09-15,Monday,No,No,0.0,0,,,,No commits
+2025-09-16,Tuesday,No,Yes,2.0,5,12:07,12:53,"openconnector, openregister",Fix function in SettingsService; Some final fixes to make sure all existing Unit te; Fixes in MappingsController & replaces skipped tes ... (+2 more commits)
+2025-09-17,Wednesday,No,No,0.0,0,,,,No commits
+2025-09-18,Thursday,No,Yes,2.4,6,13:27,15:53,"openconnector, openregister",Merge branch 'development' into feature/REGISTERS-; Some finishing touches for unit test (improved cov; Added unit tests for all mappers ... (+3 more commits)
+2025-09-19,Friday,No,Yes,2.0,6,15:36,16:35,"openconnector, openregister","small fixes, more complex tests and started adding; Fix mocking for ImportServiceTest; Improved unit test coverage and quality + changes  ... (+3 more commits)"
+2025-09-20,Saturday,Yes,No,0.0,0,,,,No commits
+2025-09-21,Sunday,Yes,No,0.0,0,,,,No commits
+2025-09-22,Monday,No,Yes,2.0,1,11:40,11:40,openregister,Merge branch 'development' into feature/REGISTERS-
+2025-09-23,Tuesday,No,Yes,6.4,16,10:55,16:48,"openconnector, openregister","Some more fixes / changes for new development code; fix PHP Fatal error: Class ""OCP\AppFramework\Db\En; add comprehensive proactive OCP mocking to prevent ... (+13 more commits)"
+2025-09-24,Wednesday,No,No,0.0,0,,,,No commits
+2025-09-25,Thursday,No,Yes,7.1,17,10:17,16:55,openconnector,Merge remote-tracking branch 'origin/feature/CONNE; resolve MockMapper compatibility issues in CI work; fix: resolve MockMapper compatibility issues in CI ... (+14 more commits)
+2025-09-26,Friday,No,Yes,7.9,21,10:10,17:05,openconnector,Fix PHPUnit path to use correct Nextcloud composer; Fix invalid Composer option and update documentati; Fix PHPUnit installation with --no-bin-links and e ... (+18 more commits)
+2025-09-27,Saturday,Yes,No,0.0,0,,,,No commits
+2025-09-28,Sunday,Yes,No,0.0,0,,,,No commits
+2025-09-29,Monday,No,Yes,4.8,18,11:25,15:43,openconnector,Fix autoloader generation with host-based approach; Add Nextcloud restart and cache clearing after aut; Fix documentation structure for Version 1.27 ... (+15 more commits)
+2025-09-30,Tuesday,No,Yes,3.0,10,11:19,14:18,openconnector,v1.35: Update documentation current status and fix; v1.35: Fix invalid Nextcloud commands and approach; v1.35: Implement sequential migration fallback tes ... (+7 more commits)
+2025-10-01,Wednesday,No,No,0.0,0,,,,No commits
+2025-10-02,Thursday,No,Yes,6.6,6,10:39,17:13,openconnector,v1.39: Fix dates for versions v1.36-v1.38 to Octob; v1.39: Add enhanced diagnostics and update documen; v1.39: Fix database verification - use proper Mari ... (+3 more commits)
+2025-10-03,Friday,No,Yes,7.1,9,10:20,17:27,openconnector,v1.45: Enhanced autoloader generation with improve; Small workflow documentation update; v1.44: Enhanced diagnostics and fixed invalid flag ... (+6 more commits)
+2025-10-04,Saturday,Yes,No,0.0,0,,,,No commits
+2025-10-05,Sunday,Yes,No,0.0,0,,,,No commits
+2025-10-06,Monday,No,Yes,2.0,1,10:43,10:43,openconnector,v1.45: Fix PHP syntax errors in autoloader generat
+2025-10-07,Tuesday,No,Yes,2.3,4,13:46,16:02,openconnector,v1.48: Fix sudo command not found errors - Install; v1.47: Update documentation - Fix version ordering; docs: Update documentation for v1.46 - Current Sta ... (+1 more commits)
+2025-10-08,Wednesday,No,No,0.0,0,,,,No commits
+2025-10-09,Thursday,No,No,0.0,0,,,,No commits
+2025-10-10,Friday,No,Yes,4.3,3,10:41,14:56,openconnector,"ci(dev-deps): refresh lock for phpunit, php-cs-fix; v1.50: Per-job PHPUnit constraint, add bcmath, use; add phpunit (^10.5|^9.6), php-cs-fixer ^3, psalm ^"
+2025-10-11,Saturday,Yes,No,0.0,0,,,,No commits
+2025-10-12,Sunday,Yes,No,0.0,0,,,,No commits
+2025-10-13,Monday,No,No,0.0,0,,,,No commits
+2025-10-14,Tuesday,No,No,0.0,0,,,,No commits
+2025-10-15,Wednesday,No,No,0.0,0,,,,No commits
+2025-10-16,Thursday,No,No,0.0,0,,,,No commits
+2025-10-17,Friday,No,No,0.0,0,,,,No commits
+2025-10-18,Saturday,Yes,No,0.0,0,,,,No commits
+2025-10-19,Sunday,Yes,No,0.0,0,,,,No commits
+2025-10-20,Monday,No,No,0.0,0,,,,No commits
+2025-10-21,Tuesday,No,No,0.0,0,,,,No commits
+2025-10-22,Wednesday,No,No,0.0,0,,,,No commits
+2025-10-23,Thursday,No,No,0.0,0,,,,No commits
+2025-10-24,Friday,No,No,0.0,0,,,,No commits
+2025-10-25,Saturday,Yes,No,0.0,0,,,,No commits
+2025-10-26,Sunday,Yes,No,0.0,0,,,,No commits
+2025-10-27,Monday,No,Yes,2.0,2,12:54,12:54,openregister,Do some code style fixes and small code quality/bu; Do some code style fixes and small code quality/bu
+2025-10-28,Tuesday,No,No,0.0,0,,,,No commits
+2025-10-29,Wednesday,No,No,0.0,0,,,,No commits
+2025-10-30,Thursday,No,No,0.0,0,,,,No commits
+2025-10-31,Friday,No,Yes,2.0,2,14:41,14:41,openregister,Code style fixes; Code style fixes
+2025-11-01,Saturday,Yes,No,0.0,0,,,,No commits
+2025-11-02,Sunday,Yes,No,0.0,0,,,,No commits
+2025-11-03,Monday,No,No,0.0,0,,,,No commits
+2025-11-04,Tuesday,No,No,0.0,0,,,,No commits
+2025-11-05,Wednesday,No,No,0.0,0,,,,No commits
+2025-11-06,Thursday,No,Yes,2.2,3,13:51,16:02,openconnector,Merge pull request #620 from ConductionNL/feature/; Add flow token to Synchronization conditions check; Some small code fixes in MappingService & Synchron
+2025-11-07,Friday,No,Yes,2.7,19,14:03,16:13,"openconnector, openregister",Update migration to remove isDefault column from o; Update migration to remove isDefault column from o; Merge pull request #725 from ConductionNL/feature/ ... (+16 more commits)
+2025-11-08,Saturday,Yes,No,0.0,0,,,,No commits
+2025-11-09,Sunday,Yes,No,0.0,0,,,,No commits
+2025-11-10,Monday,No,Yes,2.0,4,16:36,16:44,openregister,Merge pull request #770 from ConductionNL/fix/isDe; Merge pull request #770 from ConductionNL/fix/isDe; Moved removing the org. is_default column to a sep ... (+1 more commits)
+2025-11-11,Tuesday,No,Yes,2.0,1,15:55,15:55,openconnector,v1.51: Use PHP version-specific Nextcloud (dev) Do
+2025-11-12,Wednesday,No,No,0.0,0,,,,No commits
+2025-11-13,Thursday,No,No,0.0,0,,,,No commits
+2025-11-14,Friday,No,No,0.0,0,,,,No commits
+2025-11-15,Saturday,Yes,No,0.0,0,,,,No commits
+2025-11-16,Sunday,Yes,No,0.0,0,,,,No commits
+2025-11-17,Monday,No,No,0.0,0,,,,No commits
+2025-11-18,Tuesday,No,No,0.0,0,,,,No commits
+2025-11-19,Wednesday,No,No,0.0,0,,,,No commits
+2025-11-20,Thursday,No,No,0.0,0,,,,No commits
+2025-11-21,Friday,No,No,0.0,0,,,,No commits
+2025-11-22,Saturday,Yes,No,0.0,0,,,,No commits
+2025-11-23,Sunday,Yes,No,0.0,0,,,,No commits
+2025-11-24,Monday,No,Yes,5.0,2,12:08,17:07,openconnector,Lets add some logging to find out we get an 500 on; Lets give nextcloud fpm-soap image a try
+2025-11-25,Tuesday,No,No,0.0,0,,,,No commits
+2025-11-26,Wednesday,No,No,0.0,0,,,,No commits
+2025-11-27,Thursday,No,No,0.0,0,,,,No commits
+2025-11-28,Friday,No,No,0.0,0,,,,No commits
+2025-11-29,Saturday,Yes,No,0.0,0,,,,No commits
+2025-11-30,Sunday,Yes,No,0.0,0,,,,No commits
+2025-12-01,Monday,No,No,0.0,0,,,,No commits
+2025-12-02,Tuesday,No,No,0.0,0,,,,No commits
+2025-12-03,Wednesday,No,No,0.0,0,,,,No commits
+2025-12-04,Thursday,No,No,0.0,0,,,,No commits
+2025-12-05,Friday,No,No,0.0,0,,,,No commits
+2025-12-06,Saturday,Yes,No,0.0,0,,,,No commits
+2025-12-07,Sunday,Yes,No,0.0,0,,,,No commits
+2025-12-08,Monday,No,No,0.0,0,,,,No commits
+2025-12-09,Tuesday,No,No,0.0,0,,,,No commits
+2025-12-10,Wednesday,No,No,0.0,0,,,,No commits
+2025-12-11,Thursday,No,No,0.0,0,,,,No commits
+2025-12-12,Friday,No,No,0.0,0,,,,No commits
+2025-12-13,Saturday,Yes,No,0.0,0,,,,No commits
+2025-12-14,Sunday,Yes,No,0.0,0,,,,No commits
+2025-12-15,Monday,No,No,0.0,0,,,,No commits
+2025-12-16,Tuesday,No,No,0.0,0,,,,No commits
+2025-12-17,Wednesday,No,No,0.0,0,,,,No commits
+2025-12-18,Thursday,No,Yes,2.0,1,16:24,16:24,opencatalogi,Some fixes for setting up federation
+2025-12-19,Friday,No,No,0.0,0,,,,No commits
+2025-12-20,Saturday,Yes,No,0.0,0,,,,No commits
+2025-12-21,Sunday,Yes,No,0.0,0,,,,No commits
+2025-12-22,Monday,No,No,0.0,0,,,,No commits
+2025-12-23,Tuesday,No,No,0.0,0,,,,No commits
+2025-12-24,Wednesday,No,No,0.0,0,,,,No commits
+2025-12-25,Thursday,No,No,0.0,0,,,,No commits
+2025-12-26,Friday,No,No,0.0,0,,,,No commits
+2025-12-27,Saturday,Yes,No,0.0,0,,,,No commits
+2025-12-28,Sunday,Yes,No,0.0,0,,,,No commits
+2025-12-29,Monday,No,No,0.0,0,,,,No commits
+2025-12-30,Tuesday,No,No,0.0,0,,,,No commits
+2025-12-31,Wednesday,No,No,0.0,0,,,,No commits

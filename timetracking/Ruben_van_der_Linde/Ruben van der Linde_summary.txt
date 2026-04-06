@@ -1,0 +1,67 @@
+TIME TRACKING SUMMARY
+==================================================
+
+Git Handle: Ruben van der Linde
+Period: 2026-01-01 to 2026-03-02
+Total days tracked: 61
+
+HOW HOURS ARE CALCULATED:
+--------------------------------------------------
+Hours are estimated from git commit timestamps, NOT from lines of code.
+
+Timezone: Amsterdam/CET (UTC+1/+2)
+Normal workday: 08:00-18:00 on weekdays
+Overtime: Before 08:00, after 18:00, or weekends
+
+Method:
+1. Base hours: Minimum session duration (2h normal, 3h overtime)
+2. Time span: Actual time between first and last commit
+3. Commit frequency: +0.5h per 10 commits (indicates intensive work)
+
+Limitations:
+- Does not account for time without commits (meetings, planning, etc.)
+- Does not account for code review, documentation, or testing
+- May underestimate for developers who commit infrequently
+- May overestimate for developers who make many small commits
+
+==================================================
+
+NORMAL TIME BREAKDOWN:
+  Total hours: 136.5
+  Weekday hours: 136.5
+  Weekend hours: 0.0
+
+DAYS WORKED:
+  Total days: 31
+  Weekday days: 31
+  Weekend days: 0
+
+AVERAGES:
+  Average hours per day worked: 4.4
+  Average hours per week: 15.7
+
+EXPECTED VS TRACKED:
+  Expected working hours (40h/week, 5 weeks holiday): 315.1
+  Tracked hours (from commits): 136.5
+  Hours not accounted for: 178.6
+  Coverage: 43.3%
+
+  Note: Hours are estimated from commit timestamps, not lines of code.
+        Untracked hours may include: meetings, code review, planning,
+        documentation, testing without commits, or other non-coding work.
+
+==================================================
+
+OVERTIME BREAKDOWN:
+  Total hours: 137.0
+  Weekday hours: 86.0
+  Weekend hours: 51.0
+
+DAYS WORKED:
+  Total days: 29
+  Weekday days: 19
+  Weekend days: 10
+
+AVERAGES:
+  Average hours per day worked: 4.7
+  Average hours per week: 15.7

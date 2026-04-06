@@ -1,0 +1,366 @@
+Date,Day,Weekend,Worked,Hours,Commits,Start Time,End Time,Repositories,Work Summary
+2025-01-01,Wednesday,No,No,0.0,0,,,,No commits
+2025-01-02,Thursday,No,Yes,2.0,2,16:24,16:55,openconnector,added job run; added synchronization run
+2025-01-03,Friday,No,Yes,2.0,4,15:19,17:22,"openconnector, openregister",only show schemas of a specific register; only show schemas of a specific register; Merge pull request #151 from ConductionNL/feature/ ... (+1 more commits)
+2025-01-04,Saturday,Yes,No,0.0,0,,,,No commits
+2025-01-05,Sunday,Yes,No,0.0,0,,,,No commits
+2025-01-06,Monday,No,Yes,7.8,4,09:11,17:00,"openconnector, openregister",fixed schemas not loading on register edit; fixed schemas not loading on register edit; Merge pull request #149 from ConductionNL/feature/ ... (+1 more commits)
+2025-01-07,Tuesday,No,Yes,2.0,4,13:12,13:22,openregister,Merge pull request #118 from ConductionNL/feature/; Merge pull request #118 from ConductionNL/feature/; Merge pull request #121 from ConductionNL/feature/ ... (+1 more commits)
+2025-01-08,Wednesday,No,Yes,2.0,1,10:02,10:02,openconnector,Merge pull request #155 from ConductionNL/feature/
+2025-01-09,Thursday,No,Yes,4.3,4,11:59,16:16,openconnector,fixed css issue when modal is too long; actually fixed condition bug; fixed a bug ... (+1 more commits)
+2025-01-10,Friday,No,Yes,2.0,2,12:32,12:32,openregister,fixed object upload; fixed object upload
+2025-01-11,Saturday,Yes,No,0.0,0,,,,No commits
+2025-01-12,Sunday,Yes,No,0.0,0,,,,No commits
+2025-01-13,Monday,No,Yes,2.0,3,16:15,17:42,openconnector,Merge remote-tracking branch 'origin/feature/CONNE; added my own requested changes; lint-fix
+2025-01-14,Tuesday,No,No,0.0,0,,,,No commits
+2025-01-15,Wednesday,No,Yes,4.9,2,11:53,16:46,"opencatalogi, openconnector",spelling fix; many bug fixes
+2025-01-16,Thursday,No,No,0.0,0,,,,No commits
+2025-01-17,Friday,No,No,0.0,0,,,,No commits
+2025-01-18,Saturday,Yes,No,0.0,0,,,,No commits
+2025-01-19,Sunday,Yes,No,0.0,0,,,,No commits
+2025-01-20,Monday,No,Yes,6.6,3,09:09,15:45,opencatalogi,fixed 500 error; finished pages contents modal + edit fixes; WIP - pages modal improvement
+2025-01-21,Tuesday,No,Yes,2.6,3,14:27,17:00,"opencatalogi, openconnector",cleanup; fixed bug with editing menu item; cherry pick bug fixes
+2025-01-22,Wednesday,No,Yes,4.9,5,11:56,16:47,"opencatalogi, openconnector",Merge pull request #180 from ConductionNL/feature/; added copy menu option; Merge pull request #179 from ConductionNL/feature/ ... (+2 more commits)
+2025-01-23,Thursday,No,Yes,3.2,9,13:27,16:40,openconnector,removed automatic verification for dev environment; Merge pull request #191 from ConductionNL/feature/; Merge pull request #190 from ConductionNL/feature/ ... (+6 more commits)
+2025-01-24,Friday,No,Yes,2.0,3,14:22,15:43,"openconnector, openregister",lint-fix; lint-fix; show list of synchronizations in synchronization t
+2025-01-25,Saturday,Yes,No,0.0,0,,,,No commits
+2025-01-26,Sunday,Yes,No,0.0,0,,,,No commits
+2025-01-27,Monday,No,Yes,2.0,5,15:23,16:54,openconnector,deemed normal clone function to be unnecessary; WIP - utilized non-reactive getConsumerItem functi; WIP - used endpoint variable in save function ... (+2 more commits)
+2025-01-28,Tuesday,No,Yes,5.8,2,12:11,17:59,"opencatalogi, openconnector",WIP - did most of the requirements for the issue; WIP - changed endpoints store
+2025-01-29,Wednesday,No,Yes,4.0,6,13:25,17:28,opencatalogi,added draggable and save-able contents list; Merge pull request #181 from ConductionNL/feature/; changed weird name to footer ... (+3 more commits)
+2025-01-30,Thursday,No,Yes,5.4,16,12:03,16:58,"opencatalogi, openconnector, openregister",Merge pull request #152 from ConductionNL/feature/; Merge pull request #152 from ConductionNL/feature/; bug fixes ... (+13 more commits)
+2025-01-31,Friday,No,Yes,2.0,1,10:06,10:06,openconnector,Merge pull request #186 from ConductionNL/feature/
+2025-02-01,Saturday,Yes,No,0.0,0,,,,No commits
+2025-02-02,Sunday,Yes,No,0.0,0,,,,No commits
+2025-02-03,Monday,No,Yes,5.9,10,11:01,16:53,openconnector,changed source store; changed search store; changed rule store ... (+7 more commits)
+2025-02-04,Tuesday,No,Yes,2.5,14,10:32,12:35,openconnector,lint-fix; changed export param; Merge branch 'development' into feature/CONNECTOR- ... (+11 more commits)
+2025-02-05,Wednesday,No,No,0.0,0,,,,No commits
+2025-02-06,Thursday,No,No,0.0,0,,,,No commits
+2025-02-07,Friday,No,Yes,5.4,6,09:08,14:30,openconnector,Merge pull request #188 from ConductionNL/feature/; Merge pull request #205 from ConductionNL/feature/; small code style fix ... (+3 more commits)
+2025-02-08,Saturday,Yes,No,0.0,0,,,,No commits
+2025-02-09,Sunday,Yes,No,0.0,0,,,,No commits
+2025-02-10,Monday,No,Yes,2.0,5,16:10,16:43,"opencatalogi, openregister",added code mirror to object; added code mirror to object; updated caniuse-lite ... (+2 more commits)
+2025-02-11,Tuesday,No,Yes,2.0,1,14:14,14:14,opencatalogi,bug fix
+2025-02-12,Wednesday,No,No,0.0,0,,,,No commits
+2025-02-13,Thursday,No,Yes,4.3,8,11:08,15:24,"openconnector, openregister",Merge pull request #188 from ConductionNL/feature/; Merge pull request #188 from ConductionNL/feature/; lint-fix ... (+5 more commits)
+2025-02-14,Friday,No,Yes,2.0,4,10:05,10:41,"openconnector, openregister",finished table; finished table; Merge pull request #217 from ConductionNL/feature/ ... (+1 more commits)
+2025-02-15,Saturday,Yes,No,0.0,0,,,,No commits
+2025-02-16,Sunday,Yes,No,0.0,0,,,,No commits
+2025-02-17,Monday,No,Yes,4.1,4,12:06,16:12,"opencatalogi, openregister",finished upload button; Merge pull request #193 from ConductionNL/feature/; fixed menu not being saved ... (+1 more commits)
+2025-02-18,Tuesday,No,Yes,2.6,3,12:25,15:00,opencatalogi,fixed issue with schema not existing; fixed TOOI regex; admin settings opgeschoond
+2025-02-19,Wednesday,No,Yes,4.2,8,12:51,17:00,opencatalogi,fixed eigenschap bug; Merge pull request #201 from ConductionNL/feature/; Merge pull request #200 from ConductionNL/feature/ ... (+5 more commits)
+2025-02-20,Thursday,No,Yes,2.0,1,13:19,13:19,opencatalogi,fixed graph theme
+2025-02-21,Friday,No,Yes,5.5,7,10:08,15:38,"opencatalogi, openregister",added more type colors and selection colors; added more type colors and selection colors; fixed selection for JSON codemirror ... (+4 more commits)
+2025-02-22,Saturday,Yes,No,0.0,0,,,,No commits
+2025-02-23,Sunday,Yes,No,0.0,0,,,,No commits
+2025-02-24,Monday,No,Yes,3.6,8,13:26,17:01,"opencatalogi, openregister",Merge pull request #204 from ConductionNL/feature/; Merge pull request #204 from ConductionNL/feature/; changed files style to OC ... (+5 more commits)
+2025-02-25,Tuesday,No,No,0.0,0,,,,No commits
+2025-02-26,Wednesday,No,No,0.0,0,,,,No commits
+2025-02-27,Thursday,No,No,0.0,0,,,,No commits
+2025-02-28,Friday,No,Yes,2.0,2,11:40,11:40,opencatalogi,Merge remote-tracking branch 'origin/feature/VSC-1; added modal for deleting attachment
+2025-03-01,Saturday,Yes,No,0.0,0,,,,No commits
+2025-03-02,Sunday,Yes,No,0.0,0,,,,No commits
+2025-03-03,Monday,No,Yes,4.5,8,11:43,16:15,openregister,lint-fix; lint-fix; made columns toggable ... (+5 more commits)
+2025-03-04,Tuesday,No,Yes,6.7,16,10:52,17:04,openregister,small doc fixes; small doc fixes; removed upload en download button ... (+13 more commits)
+2025-03-05,Wednesday,No,Yes,6.2,14,11:05,16:46,openregister,WIP - adding pagination; WIP - adding pagination; WIP - added select boxes ... (+11 more commits)
+2025-03-06,Thursday,No,Yes,7.4,14,10:01,16:57,openregister,added mass delete modal; added mass delete modal; Merge pull request #229 from ConductionNL/feature/ ... (+11 more commits)
+2025-03-07,Friday,No,Yes,4.1,14,13:26,17:00,"openconnector, openregister",Merge pull request #235 from ConductionNL/feature/; Merge pull request #235 from ConductionNL/feature/; renamed variables ... (+11 more commits)
+2025-03-08,Saturday,Yes,No,0.0,0,,,,No commits
+2025-03-09,Sunday,Yes,No,0.0,0,,,,No commits
+2025-03-10,Monday,No,No,0.0,0,,,,No commits
+2025-03-11,Tuesday,No,Yes,4.6,4,11:55,16:29,"opencatalogi, openconnector, openregister",Merge pull request #241 from CBibop12/development; Merge pull request #241 from CBibop12/development; Merge pull request #224 from CBibop12/development ... (+1 more commits)
+2025-03-12,Wednesday,No,No,0.0,0,,,,No commits
+2025-03-13,Thursday,No,Yes,2.0,2,13:14,13:16,openconnector,Merge pull request #308 from ConductionNL/fix/remo; fixed removing rule from endpoint
+2025-03-14,Friday,No,No,0.0,0,,,,No commits
+2025-03-15,Saturday,Yes,No,0.0,0,,,,No commits
+2025-03-16,Sunday,Yes,No,0.0,0,,,,No commits
+2025-03-17,Monday,No,No,0.0,0,,,,No commits
+2025-03-18,Tuesday,No,Yes,2.0,1,11:11,11:11,opencatalogi,Merge pull request #226 from ConductionNL/feature/
+2025-03-19,Wednesday,No,No,0.0,0,,,,No commits
+2025-03-20,Thursday,No,Yes,2.0,2,13:08,13:08,openregister,Update LockObject.vue; Update LockObject.vue
+2025-03-21,Friday,No,No,0.0,0,,,,No commits
+2025-03-22,Saturday,Yes,No,0.0,0,,,,No commits
+2025-03-23,Sunday,Yes,No,0.0,0,,,,No commits
+2025-03-24,Monday,No,No,0.0,0,,,,No commits
+2025-03-25,Tuesday,No,No,0.0,0,,,,No commits
+2025-03-26,Wednesday,No,No,0.0,0,,,,No commits
+2025-03-27,Thursday,No,No,0.0,0,,,,No commits
+2025-03-28,Friday,No,No,0.0,0,,,,No commits
+2025-03-29,Saturday,Yes,No,0.0,0,,,,No commits
+2025-03-30,Sunday,Yes,No,0.0,0,,,,No commits
+2025-03-31,Monday,No,No,0.0,0,,,,No commits
+2025-04-01,Tuesday,No,No,0.0,0,,,,No commits
+2025-04-02,Wednesday,No,No,0.0,0,,,,No commits
+2025-04-03,Thursday,No,No,0.0,0,,,,No commits
+2025-04-04,Friday,No,No,0.0,0,,,,No commits
+2025-04-05,Saturday,Yes,No,0.0,0,,,,No commits
+2025-04-06,Sunday,Yes,No,0.0,0,,,,No commits
+2025-04-07,Monday,No,No,0.0,0,,,,No commits
+2025-04-08,Tuesday,No,No,0.0,0,,,,No commits
+2025-04-09,Wednesday,No,No,0.0,0,,,,No commits
+2025-04-10,Thursday,No,No,0.0,0,,,,No commits
+2025-04-11,Friday,No,Yes,2.0,1,14:05,14:05,openconnector,fixed rules not showing due to bad html
+2025-04-12,Saturday,Yes,No,0.0,0,,,,No commits
+2025-04-13,Sunday,Yes,No,0.0,0,,,,No commits
+2025-04-14,Monday,No,No,0.0,0,,,,No commits
+2025-04-15,Tuesday,No,No,0.0,0,,,,No commits
+2025-04-16,Wednesday,No,No,0.0,0,,,,No commits
+2025-04-17,Thursday,No,No,0.0,0,,,,No commits
+2025-04-18,Friday,No,No,0.0,0,,,,No commits
+2025-04-19,Saturday,Yes,No,0.0,0,,,,No commits
+2025-04-20,Sunday,Yes,No,0.0,0,,,,No commits
+2025-04-21,Monday,No,No,0.0,0,,,,No commits
+2025-04-22,Tuesday,No,No,0.0,0,,,,No commits
+2025-04-23,Wednesday,No,No,0.0,0,,,,No commits
+2025-04-24,Thursday,No,No,0.0,0,,,,No commits
+2025-04-25,Friday,No,No,0.0,0,,,,No commits
+2025-04-26,Saturday,Yes,No,0.0,0,,,,No commits
+2025-04-27,Sunday,Yes,No,0.0,0,,,,No commits
+2025-04-28,Monday,No,No,0.0,0,,,,No commits
+2025-04-29,Tuesday,No,No,0.0,0,,,,No commits
+2025-04-30,Wednesday,No,Yes,2.0,4,15:35,17:25,"openconnector, openregister",WIP - started working out how to convert it back t; WIP - started working out how to convert it back t; Merge pull request #462 from ConductionNL/feature/ ... (+1 more commits)
+2025-05-01,Thursday,No,Yes,2.0,6,12:47,13:56,openregister,finished; finished; lint-fix ... (+3 more commits)
+2025-05-02,Friday,No,Yes,2.0,4,14:54,16:39,"opencatalogi, openconnector",fixed infinite loop in edit catalog; fixed infinite loop; fixed bug not allowing me to open modal ... (+1 more commits)
+2025-05-03,Saturday,Yes,No,0.0,0,,,,No commits
+2025-05-04,Sunday,Yes,No,0.0,0,,,,No commits
+2025-05-05,Monday,No,No,0.0,0,,,,No commits
+2025-05-06,Tuesday,No,Yes,4.4,20,12:16,16:13,openregister,simplified grid column CSS; simplified grid column CSS; fixed duplicate tag issue ... (+17 more commits)
+2025-05-07,Wednesday,No,Yes,2.0,10,15:33,17:19,openregister,lint-fix; lint-fix; finished pagination improvement and limit setting ... (+7 more commits)
+2025-05-08,Thursday,No,Yes,2.0,1,16:15,16:15,opencatalogi,WIP - object modal
+2025-05-09,Friday,No,Yes,2.0,2,16:01,17:07,opencatalogi,changed button references + removed old modal; finished object modal
+2025-05-10,Saturday,Yes,No,0.0,0,,,,No commits
+2025-05-11,Sunday,Yes,No,0.0,0,,,,No commits
+2025-05-12,Monday,No,No,0.0,0,,,,No commits
+2025-05-13,Tuesday,No,No,0.0,0,,,,No commits
+2025-05-14,Wednesday,No,Yes,2.6,12,12:02,14:05,openregister,fixed spacing a bit; fixed spacing a bit; changed to english as most text is english ... (+9 more commits)
+2025-05-15,Thursday,No,No,0.0,0,,,,No commits
+2025-05-16,Friday,No,No,0.0,0,,,,No commits
+2025-05-17,Saturday,Yes,No,0.0,0,,,,No commits
+2025-05-18,Sunday,Yes,No,0.0,0,,,,No commits
+2025-05-19,Monday,No,No,0.0,0,,,,No commits
+2025-05-20,Tuesday,No,No,0.0,0,,,,No commits
+2025-05-21,Wednesday,No,No,0.0,0,,,,No commits
+2025-05-22,Thursday,No,No,0.0,0,,,,No commits
+2025-05-23,Friday,No,No,0.0,0,,,,No commits
+2025-05-24,Saturday,Yes,No,0.0,0,,,,No commits
+2025-05-25,Sunday,Yes,No,0.0,0,,,,No commits
+2025-05-26,Monday,No,No,0.0,0,,,,No commits
+2025-05-27,Tuesday,No,Yes,2.0,10,15:22,16:09,openregister,used schema to make form; used schema to make form; fix lint errors ... (+7 more commits)
+2025-05-28,Wednesday,No,No,0.0,0,,,,No commits
+2025-05-29,Thursday,No,No,0.0,0,,,,No commits
+2025-05-30,Friday,No,No,0.0,0,,,,No commits
+2025-05-31,Saturday,Yes,No,0.0,0,,,,No commits
+2025-06-01,Sunday,Yes,No,0.0,0,,,,No commits
+2025-06-02,Monday,No,No,0.0,0,,,,No commits
+2025-06-03,Tuesday,No,No,0.0,0,,,,No commits
+2025-06-04,Wednesday,No,No,0.0,0,,,,No commits
+2025-06-05,Thursday,No,No,0.0,0,,,,No commits
+2025-06-06,Friday,No,No,0.0,0,,,,No commits
+2025-06-07,Saturday,Yes,No,0.0,0,,,,No commits
+2025-06-08,Sunday,Yes,No,0.0,0,,,,No commits
+2025-06-09,Monday,No,No,0.0,0,,,,No commits
+2025-06-10,Tuesday,No,No,0.0,0,,,,No commits
+2025-06-11,Wednesday,No,No,0.0,0,,,,No commits
+2025-06-12,Thursday,No,No,0.0,0,,,,No commits
+2025-06-13,Friday,No,No,0.0,0,,,,No commits
+2025-06-14,Saturday,Yes,No,0.0,0,,,,No commits
+2025-06-15,Sunday,Yes,No,0.0,0,,,,No commits
+2025-06-16,Monday,No,No,0.0,0,,,,No commits
+2025-06-17,Tuesday,No,No,0.0,0,,,,No commits
+2025-06-18,Wednesday,No,No,0.0,0,,,,No commits
+2025-06-19,Thursday,No,No,0.0,0,,,,No commits
+2025-06-20,Friday,No,No,0.0,0,,,,No commits
+2025-06-21,Saturday,Yes,No,0.0,0,,,,No commits
+2025-06-22,Sunday,Yes,No,0.0,0,,,,No commits
+2025-06-23,Monday,No,No,0.0,0,,,,No commits
+2025-06-24,Tuesday,No,No,0.0,0,,,,No commits
+2025-06-25,Wednesday,No,No,0.0,0,,,,No commits
+2025-06-26,Thursday,No,No,0.0,0,,,,No commits
+2025-06-27,Friday,No,No,0.0,0,,,,No commits
+2025-06-28,Saturday,Yes,No,0.0,0,,,,No commits
+2025-06-29,Sunday,Yes,No,0.0,0,,,,No commits
+2025-06-30,Monday,No,No,0.0,0,,,,No commits
+2025-07-01,Tuesday,No,No,0.0,0,,,,No commits
+2025-07-02,Wednesday,No,No,0.0,0,,,,No commits
+2025-07-03,Thursday,No,No,0.0,0,,,,No commits
+2025-07-04,Friday,No,No,0.0,0,,,,No commits
+2025-07-05,Saturday,Yes,No,0.0,0,,,,No commits
+2025-07-06,Sunday,Yes,No,0.0,0,,,,No commits
+2025-07-07,Monday,No,No,0.0,0,,,,No commits
+2025-07-08,Tuesday,No,No,0.0,0,,,,No commits
+2025-07-09,Wednesday,No,No,0.0,0,,,,No commits
+2025-07-10,Thursday,No,No,0.0,0,,,,No commits
+2025-07-11,Friday,No,No,0.0,0,,,,No commits
+2025-07-12,Saturday,Yes,No,0.0,0,,,,No commits
+2025-07-13,Sunday,Yes,No,0.0,0,,,,No commits
+2025-07-14,Monday,No,No,0.0,0,,,,No commits
+2025-07-15,Tuesday,No,No,0.0,0,,,,No commits
+2025-07-16,Wednesday,No,No,0.0,0,,,,No commits
+2025-07-17,Thursday,No,Yes,2.0,1,14:19,14:19,openconnector,small fix
+2025-07-18,Friday,No,No,0.0,0,,,,No commits
+2025-07-19,Saturday,Yes,No,0.0,0,,,,No commits
+2025-07-20,Sunday,Yes,No,0.0,0,,,,No commits
+2025-07-21,Monday,No,No,0.0,0,,,,No commits
+2025-07-22,Tuesday,No,No,0.0,0,,,,No commits
+2025-07-23,Wednesday,No,No,0.0,0,,,,No commits
+2025-07-24,Thursday,No,No,0.0,0,,,,No commits
+2025-07-25,Friday,No,No,0.0,0,,,,No commits
+2025-07-26,Saturday,Yes,No,0.0,0,,,,No commits
+2025-07-27,Sunday,Yes,No,0.0,0,,,,No commits
+2025-07-28,Monday,No,No,0.0,0,,,,No commits
+2025-07-29,Tuesday,No,No,0.0,0,,,,No commits
+2025-07-30,Wednesday,No,No,0.0,0,,,,No commits
+2025-07-31,Thursday,No,No,0.0,0,,,,No commits
+2025-08-01,Friday,No,No,0.0,0,,,,No commits
+2025-08-02,Saturday,Yes,No,0.0,0,,,,No commits
+2025-08-03,Sunday,Yes,No,0.0,0,,,,No commits
+2025-08-04,Monday,No,No,0.0,0,,,,No commits
+2025-08-05,Tuesday,No,No,0.0,0,,,,No commits
+2025-08-06,Wednesday,No,No,0.0,0,,,,No commits
+2025-08-07,Thursday,No,No,0.0,0,,,,No commits
+2025-08-08,Friday,No,No,0.0,0,,,,No commits
+2025-08-09,Saturday,Yes,No,0.0,0,,,,No commits
+2025-08-10,Sunday,Yes,No,0.0,0,,,,No commits
+2025-08-11,Monday,No,No,0.0,0,,,,No commits
+2025-08-12,Tuesday,No,No,0.0,0,,,,No commits
+2025-08-13,Wednesday,No,No,0.0,0,,,,No commits
+2025-08-14,Thursday,No,No,0.0,0,,,,No commits
+2025-08-15,Friday,No,No,0.0,0,,,,No commits
+2025-08-16,Saturday,Yes,No,0.0,0,,,,No commits
+2025-08-17,Sunday,Yes,No,0.0,0,,,,No commits
+2025-08-18,Monday,No,No,0.0,0,,,,No commits
+2025-08-19,Tuesday,No,No,0.0,0,,,,No commits
+2025-08-20,Wednesday,No,No,0.0,0,,,,No commits
+2025-08-21,Thursday,No,No,0.0,0,,,,No commits
+2025-08-22,Friday,No,No,0.0,0,,,,No commits
+2025-08-23,Saturday,Yes,No,0.0,0,,,,No commits
+2025-08-24,Sunday,Yes,No,0.0,0,,,,No commits
+2025-08-25,Monday,No,No,0.0,0,,,,No commits
+2025-08-26,Tuesday,No,No,0.0,0,,,,No commits
+2025-08-27,Wednesday,No,No,0.0,0,,,,No commits
+2025-08-28,Thursday,No,No,0.0,0,,,,No commits
+2025-08-29,Friday,No,No,0.0,0,,,,No commits
+2025-08-30,Saturday,Yes,No,0.0,0,,,,No commits
+2025-08-31,Sunday,Yes,No,0.0,0,,,,No commits
+2025-09-01,Monday,No,No,0.0,0,,,,No commits
+2025-09-02,Tuesday,No,No,0.0,0,,,,No commits
+2025-09-03,Wednesday,No,No,0.0,0,,,,No commits
+2025-09-04,Thursday,No,No,0.0,0,,,,No commits
+2025-09-05,Friday,No,No,0.0,0,,,,No commits
+2025-09-06,Saturday,Yes,No,0.0,0,,,,No commits
+2025-09-07,Sunday,Yes,No,0.0,0,,,,No commits
+2025-09-08,Monday,No,No,0.0,0,,,,No commits
+2025-09-09,Tuesday,No,No,0.0,0,,,,No commits
+2025-09-10,Wednesday,No,No,0.0,0,,,,No commits
+2025-09-11,Thursday,No,No,0.0,0,,,,No commits
+2025-09-12,Friday,No,No,0.0,0,,,,No commits
+2025-09-13,Saturday,Yes,No,0.0,0,,,,No commits
+2025-09-14,Sunday,Yes,No,0.0,0,,,,No commits
+2025-09-15,Monday,No,No,0.0,0,,,,No commits
+2025-09-16,Tuesday,No,No,0.0,0,,,,No commits
+2025-09-17,Wednesday,No,No,0.0,0,,,,No commits
+2025-09-18,Thursday,No,No,0.0,0,,,,No commits
+2025-09-19,Friday,No,No,0.0,0,,,,No commits
+2025-09-20,Saturday,Yes,No,0.0,0,,,,No commits
+2025-09-21,Sunday,Yes,No,0.0,0,,,,No commits
+2025-09-22,Monday,No,No,0.0,0,,,,No commits
+2025-09-23,Tuesday,No,No,0.0,0,,,,No commits
+2025-09-24,Wednesday,No,No,0.0,0,,,,No commits
+2025-09-25,Thursday,No,No,0.0,0,,,,No commits
+2025-09-26,Friday,No,No,0.0,0,,,,No commits
+2025-09-27,Saturday,Yes,No,0.0,0,,,,No commits
+2025-09-28,Sunday,Yes,No,0.0,0,,,,No commits
+2025-09-29,Monday,No,No,0.0,0,,,,No commits
+2025-09-30,Tuesday,No,No,0.0,0,,,,No commits
+2025-10-01,Wednesday,No,No,0.0,0,,,,No commits
+2025-10-02,Thursday,No,No,0.0,0,,,,No commits
+2025-10-03,Friday,No,No,0.0,0,,,,No commits
+2025-10-04,Saturday,Yes,No,0.0,0,,,,No commits
+2025-10-05,Sunday,Yes,No,0.0,0,,,,No commits
+2025-10-06,Monday,No,No,0.0,0,,,,No commits
+2025-10-07,Tuesday,No,No,0.0,0,,,,No commits
+2025-10-08,Wednesday,No,No,0.0,0,,,,No commits
+2025-10-09,Thursday,No,No,0.0,0,,,,No commits
+2025-10-10,Friday,No,No,0.0,0,,,,No commits
+2025-10-11,Saturday,Yes,No,0.0,0,,,,No commits
+2025-10-12,Sunday,Yes,No,0.0,0,,,,No commits
+2025-10-13,Monday,No,No,0.0,0,,,,No commits
+2025-10-14,Tuesday,No,No,0.0,0,,,,No commits
+2025-10-15,Wednesday,No,No,0.0,0,,,,No commits
+2025-10-16,Thursday,No,Yes,2.0,2,16:48,16:48,openregister,WIP - deep-linking + query params SPOT; WIP - deep-linking + query params SPOT
+2025-10-17,Friday,No,No,0.0,0,,,,No commits
+2025-10-18,Saturday,Yes,No,0.0,0,,,,No commits
+2025-10-19,Sunday,Yes,No,0.0,0,,,,No commits
+2025-10-20,Monday,No,No,0.0,0,,,,No commits
+2025-10-21,Tuesday,No,Yes,2.0,8,15:54,16:49,openregister,Merge pull request #681 from ConductionNL/feature/; Merge pull request #681 from ConductionNL/feature/; lint fix ... (+5 more commits)
+2025-10-22,Wednesday,No,Yes,2.0,2,16:13,16:15,openconnector,lint-fix; openconnector deeplinking
+2025-10-23,Thursday,No,Yes,2.0,1,17:01,17:01,opencatalogi,WIP - deeplinking
+2025-10-24,Friday,No,Yes,2.0,1,15:59,15:59,opencatalogi,deeplinking should be finished
+2025-10-25,Saturday,Yes,No,0.0,0,,,,No commits
+2025-10-26,Sunday,Yes,No,0.0,0,,,,No commits
+2025-10-27,Monday,No,Yes,2.0,2,14:28,15:08,openconnector,coderabbit review; added a bunch of detail page support and routing
+2025-10-28,Tuesday,No,Yes,4.2,2,13:39,17:53,opencatalogi,bunch of bug hunting; Merge branch 'development' into feature/OP-518/dee
+2025-10-29,Wednesday,No,No,0.0,0,,,,No commits
+2025-10-30,Thursday,No,No,0.0,0,,,,No commits
+2025-10-31,Friday,No,Yes,4.7,7,11:14,15:56,"openconnector, openregister",Merge remote-tracking branch 'origin/feature/REGIS; Merge remote-tracking branch 'origin/feature/REGIS; preliminary fixes ... (+4 more commits)
+2025-11-01,Saturday,Yes,No,0.0,0,,,,No commits
+2025-11-02,Sunday,Yes,No,0.0,0,,,,No commits
+2025-11-03,Monday,No,Yes,5.1,8,12:01,17:05,"opencatalogi, openconnector, openregister",more lint fixes; more lint fixes; more base fixes ... (+5 more commits)
+2025-11-04,Tuesday,No,Yes,2.8,12,12:43,15:00,"opencatalogi, openconnector, openregister",Merge pull request #709 from ConductionNL/feature/; Merge pull request #709 from ConductionNL/feature/; Merge pull request #708 from ConductionNL/feature/ ... (+9 more commits)
+2025-11-05,Wednesday,No,No,0.0,0,,,,No commits
+2025-11-06,Thursday,No,No,0.0,0,,,,No commits
+2025-11-07,Friday,No,No,0.0,0,,,,No commits
+2025-11-08,Saturday,Yes,No,0.0,0,,,,No commits
+2025-11-09,Sunday,Yes,No,0.0,0,,,,No commits
+2025-11-10,Monday,No,No,0.0,0,,,,No commits
+2025-11-11,Tuesday,No,No,0.0,0,,,,No commits
+2025-11-12,Wednesday,No,No,0.0,0,,,,No commits
+2025-11-13,Thursday,No,Yes,2.0,2,09:44,09:51,openconnector,more lint fixes; lint fixes
+2025-11-14,Friday,No,Yes,2.0,2,14:14,14:16,openconnector,Merge pull request #624 from ConductionNL/feature/; changed default value
+2025-11-15,Saturday,Yes,No,0.0,0,,,,No commits
+2025-11-16,Sunday,Yes,No,0.0,0,,,,No commits
+2025-11-17,Monday,No,No,0.0,0,,,,No commits
+2025-11-18,Tuesday,No,No,0.0,0,,,,No commits
+2025-11-19,Wednesday,No,No,0.0,0,,,,No commits
+2025-11-20,Thursday,No,Yes,2.0,1,14:14,14:14,openregister,potentially fixed not being able to install openre
+2025-11-21,Friday,No,No,0.0,0,,,,No commits
+2025-11-22,Saturday,Yes,No,0.0,0,,,,No commits
+2025-11-23,Sunday,Yes,No,0.0,0,,,,No commits
+2025-11-24,Monday,No,No,0.0,0,,,,No commits
+2025-11-25,Tuesday,No,No,0.0,0,,,,No commits
+2025-11-26,Wednesday,No,Yes,2.0,4,16:18,16:50,openregister,toasts don't get spammed anymore; toasts don't get spammed anymore; convert array to object for properties ... (+1 more commits)
+2025-11-27,Thursday,No,Yes,2.0,6,09:25,09:27,openregister,Merge pull request #849 from ConductionNL/feature/; Merge pull request #849 from ConductionNL/feature/; Merge pull request #848 from ConductionNL/feature/ ... (+3 more commits)
+2025-11-28,Friday,No,No,0.0,0,,,,No commits
+2025-11-29,Saturday,Yes,No,0.0,0,,,,No commits
+2025-11-30,Sunday,Yes,No,0.0,0,,,,No commits
+2025-12-01,Monday,No,No,0.0,0,,,,No commits
+2025-12-02,Tuesday,No,No,0.0,0,,,,No commits
+2025-12-03,Wednesday,No,No,0.0,0,,,,No commits
+2025-12-04,Thursday,No,No,0.0,0,,,,No commits
+2025-12-05,Friday,No,No,0.0,0,,,,No commits
+2025-12-06,Saturday,Yes,No,0.0,0,,,,No commits
+2025-12-07,Sunday,Yes,No,0.0,0,,,,No commits
+2025-12-08,Monday,No,No,0.0,0,,,,No commits
+2025-12-09,Tuesday,No,No,0.0,0,,,,No commits
+2025-12-10,Wednesday,No,Yes,2.0,2,17:07,17:08,softwarecatalog,HIBP implementation; lint fix
+2025-12-11,Thursday,No,Yes,2.0,2,11:14,11:34,softwarecatalog,last lint fix; flat-config conversion + lint-fix
+2025-12-12,Friday,No,No,0.0,0,,,,No commits
+2025-12-13,Saturday,Yes,No,0.0,0,,,,No commits
+2025-12-14,Sunday,Yes,No,0.0,0,,,,No commits
+2025-12-15,Monday,No,No,0.0,0,,,,No commits
+2025-12-16,Tuesday,No,Yes,2.0,2,16:30,16:33,softwarecatalog,uncommented used code; I did something really dumb and fixed it
+2025-12-17,Wednesday,No,Yes,2.0,5,13:15,13:28,softwarecatalog,Merge pull request #145 from ConductionNL/feature/; better lint fix; Merge branch 'main' into feature/lint-fixes ... (+2 more commits)
+2025-12-18,Thursday,No,No,0.0,0,,,,No commits
+2025-12-19,Friday,No,No,0.0,0,,,,No commits
+2025-12-20,Saturday,Yes,No,0.0,0,,,,No commits
+2025-12-21,Sunday,Yes,No,0.0,0,,,,No commits
+2025-12-22,Monday,No,No,0.0,0,,,,No commits
+2025-12-23,Tuesday,No,Yes,2.0,2,13:55,14:02,"opencatalogi, openregister",fixed eslint; fixed eslint
+2025-12-24,Wednesday,No,No,0.0,0,,,,No commits
+2025-12-25,Thursday,No,No,0.0,0,,,,No commits
+2025-12-26,Friday,No,No,0.0,0,,,,No commits
+2025-12-27,Saturday,Yes,No,0.0,0,,,,No commits
+2025-12-28,Sunday,Yes,No,0.0,0,,,,No commits
+2025-12-29,Monday,No,No,0.0,0,,,,No commits
+2025-12-30,Tuesday,No,No,0.0,0,,,,No commits
+2025-12-31,Wednesday,No,No,0.0,0,,,,No commits

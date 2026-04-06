@@ -1,0 +1,67 @@
+TIME TRACKING SUMMARY
+==================================================
+
+Git Handle: cursoragent
+Period: 2025-01-01 to 2025-12-31
+Total days tracked: 365
+
+HOW HOURS ARE CALCULATED:
+--------------------------------------------------
+Hours are estimated from git commit timestamps, NOT from lines of code.
+
+Timezone: Amsterdam/CET (UTC+1/+2)
+Normal workday: 08:00-18:00 on weekdays
+Overtime: Before 08:00, after 18:00, or weekends
+
+Method:
+1. Base hours: Minimum session duration (2h normal, 3h overtime)
+2. Time span: Actual time between first and last commit
+3. Commit frequency: +0.5h per 10 commits (indicates intensive work)
+
+Limitations:
+- Does not account for time without commits (meetings, planning, etc.)
+- Does not account for code review, documentation, or testing
+- May underestimate for developers who commit infrequently
+- May overestimate for developers who make many small commits
+
+==================================================
+
+NORMAL TIME BREAKDOWN:
+  Total hours: 2.0
+  Weekday hours: 2.0
+  Weekend hours: 0.0
+
+DAYS WORKED:
+  Total days: 1
+  Weekday days: 1
+  Weekend days: 0
+
+AVERAGES:
+  Average hours per day worked: 2.0
+  Average hours per week: 0.0
+
+EXPECTED VS TRACKED:
+  Expected working hours (40h/week, 5 weeks holiday): 1885.2
+  Tracked hours (from commits): 2.0
+  Hours not accounted for: 1883.2
+  Coverage: 0.1%
+
+  Note: Hours are estimated from commit timestamps, not lines of code.
+        Untracked hours may include: meetings, code review, planning,
+        documentation, testing without commits, or other non-coding work.
+
+==================================================
+
+OVERTIME BREAKDOWN:
+  Total hours: 12.5
+  Weekday hours: 0.0
+  Weekend hours: 12.5
+
+DAYS WORKED:
+  Total days: 3
+  Weekday days: 0
+  Weekend days: 3
+
+AVERAGES:
+  Average hours per day worked: 4.2
+  Average hours per week: 0.2

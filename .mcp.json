@@ -1,0 +1,25 @@
+{
+  "mcpServers": {
+    "openregister": {
+      "type": "http",
+      "url": "http://localhost:8080/index.php/apps/openregister/api/mcp",
+      "headers": {
+        "Authorization": "Basic YWRtaW46YWRtaW4="
+      }
+    },
+    "n8n": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "n8n-mcp@latest"
+      ],
+      "env": {
+        "MCP_MODE": "stdio",
+        "LOG_LEVEL": "error",
+        "DISABLE_CONSOLE_OUTPUT": "true",
+        "N8N_API_URL": "http://localhost:5679",
+        "N8N_API_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjZjAxY2NiZC1iNWYzLTQ0ZmItODM3ZS1kMDVmZjRmYTE2MzMiLCJpc3MiOiJuOG4iLCJhdWQiOiJwdWJsaWMtYXBpIiwianRpIjoiNWU0YmM3MWEtOWU0Zi00ZjA3LTk2NTctNGQ1MTI1ZTJhMmNhIiwiaWF0IjoxNzcyOTcwMDE5LCJleHAiOjE3NzU1MTI4MDB9.lJXEzd4fCQHH726AvvWpk-wVjBtb9lla8AIL8vCwbzQ"
+      }
+    }
+  }
+}

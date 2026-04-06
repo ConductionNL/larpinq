@@ -1,0 +1,410 @@
+be735673bc3650c0cb08223b14ba7f2ebcc08bc9|rubenvdlinde|2025-11-05T11:22:04+00:00|deploy: 1ff316a45fe4b027da8c652d817419ccd561a853
+1ff316a45fe4b027da8c652d817419ccd561a853|Ruben van der Linde|2025-11-05T12:20:00+01:00|Fixing the build
+9293b96e9fc23ceea418e95c84cda43bfb3a0c91|Ruben van der Linde|2025-11-05T11:44:02+01:00|Lets try a new build
+6040845a302a0aca9941470b6cfc98dcdaef6102|Ruben van der Linde|2025-11-05T11:40:01+01:00|Laat opschoonslag op de docs voor vandaag
+049f7e228637863510423768a0248bae0a7a3f08|Ruben van der Linde|2025-11-05T11:34:38+01:00|Verdere opschoning en duiding
+0d89ad5dd8ef3f585860dd725613aa1e6521e70a|rubenvdlinde|2025-11-05T10:17:09+00:00|deploy: 30dae4505689390def330f6bed583d143449780e
+30dae4505689390def330f6bed583d143449780e|Ruben van der Linde|2025-11-05T11:15:14+01:00|Fix on build error in gebruik
+6f0d5aea7f0c31224d91c6c5b96e910f379a1aaf|Ruben van der Linde|2025-11-05T11:11:31+01:00|Toevoegen screenshots aan dienst en koppeling
+5b9144a923cffc2fd4fccb24e41416e659605d54|Ruben van der Linde|2025-11-05T10:46:08+01:00|Spel check and updates
+b2a2b2e77131e9468891e5dfb481e708809d7fc1|rubenvdlinde|2025-11-05T09:40:27+00:00|deploy: e3887eac4f4d6ebfcf7882031700ab35d4768851
+e3887eac4f4d6ebfcf7882031700ab35d4768851|Ruben van der Linde|2025-11-05T10:38:32+01:00|Concepten omgezet naar concept
+f96143da064a54e6828115742227d38be8fcd575|rubenvdlinde|2025-11-05T09:32:20+00:00|deploy: f84bcb9be7d435b3e3f45c79ccc58ce58c92cf30
+f84bcb9be7d435b3e3f45c79ccc58ce58c92cf30|Ruben van der Linde|2025-11-05T10:30:12+01:00|Wensen verwijder uit flow en benoemd als wens
+41382bdbadaad2a0470df9b7ff18b7e401f8e914|rubenvdlinde|2025-11-05T08:45:39+00:00|deploy: 6c63ce9e358021f9952cb19f366ad22c0da42cf4
+6c63ce9e358021f9952cb19f366ad22c0da42cf4|Ruben van der Linde|2025-11-05T09:43:36+01:00|Afbeeldingen toegeveogd voor organisatie aanmaken
+abe37369f24ceef86f60afb3941a5e794cfac99a|rubenvdlinde|2025-11-05T08:41:59+00:00|deploy: 89b62f66fce7483cee5c929e8270da30fe196965
+89b62f66fce7483cee5c929e8270da30fe196965|Ruben van der Linde|2025-11-05T09:40:06+01:00|We missed versies
+51fc2d07a52d07887a1a0e77b03bc5e72dab157e|Ruben van der Linde|2025-11-05T09:32:29+01:00|Lets add images to the tabs
+e81780816dba2c4f747bd2c13057d1de2a2532b8|rubenvdlinde|2025-11-05T07:17:15+00:00|deploy: 7e17107b448958704eab93a67511f4ccfe6e9134
+7e17107b448958704eab93a67511f4ccfe6e9134|Ruben van der Linde|2025-11-05T08:15:12+01:00|Build fixes
+c7b8eae54109d16ae0089cda071b7f7e9bcd2899|Ruben van der Linde|2025-11-05T08:01:51+01:00|Lets try that build again
+4b4607199e90550ce3ea0f36c88185186db35199|Ruben van der Linde|2025-11-05T07:53:25+01:00|Lets continue testing the oas
+292da35de2d0394c7d66077c22dd61b75ee10b62|Ruben van der Linde|2025-11-05T07:42:37+01:00|Lets use captilazation
+408821b03cba413098b14e3e0346a7e3f058c3cd|Ruben van der Linde|2025-11-05T07:39:57+01:00|More import and moduleVersies and contactpersonen
+255ebb2bec08d77a6b51d7e7975d1061d493fcbf|Ruben van der Linde|2025-11-05T07:33:42+01:00|Added the imports
+ef332e8b26f42ccf3a822eedbb6356a8573546ba|Ruben van der Linde|2025-11-05T07:29:01+01:00|Wizard flow applicatie testen
+93edda841e97b23a63ba9b8454743f359bc90425|rubenvdlinde|2025-11-04T21:31:29+00:00|deploy: cf1996312b16deebc58d6cbee8d44438c1dc3560
+cf1996312b16deebc58d6cbee8d44438c1dc3560|Ruben van der Linde|2025-11-04T22:29:23+01:00|Try the api directory
+90499f6beb983a480c5e2ed37a832094281d32c8|Ruben van der Linde|2025-11-04T22:25:29+01:00|Lets try that again
+178213307506f847873d32bc64a804e459f25678|Ruben van der Linde|2025-11-04T22:02:23+01:00|Lets test if the build can handle oas
+f74b8b0c8a3c5f254513311d6978a820eacd2090|rubenvdlinde|2025-11-04T20:32:29+00:00|deploy: d7c8ee93b4b596188b6546adfc1ae9c46fa9e2c0
+d7c8ee93b4b596188b6546adfc1ae9c46fa9e2c0|Ruben van der Linde|2025-11-04T21:30:34+01:00|Kern concepten toegevoegd
+0665afe06195622864070d588168ab3d4be2f86c|rubenvdlinde|2025-10-30T10:27:54+00:00|deploy: 1381330c577f8ce1e08651f893135c89c41021f7
+1381330c577f8ce1e08651f893135c89c41021f7|Ruben van der Linde|2025-10-30T11:25:57+01:00|Uitbreiding testplan naar 100% PvE coverage
+38e57ced7717562d30765d5f0ee7226a0c43b02d|rubenvdlinde|2025-10-29T15:20:42+00:00|deploy: 9e3ade18761957e982d05fbb0577c7bc19636f3a
+9e3ade18761957e982d05fbb0577c7bc19636f3a|Ruben van der Linde|2025-10-29T16:18:44+01:00|Add comprehensive use case management and privacy testing to test plan
+2bc902221ece0bd01557dad8fd6fc2778c98d4cc|Marleen73|2025-10-07T14:48:11+00:00|deploy: dc2882bbf2002b669b67056e2f228b8810ef9cd9
+dc2882bbf2002b669b67056e2f228b8810ef9cd9|Marleen Romijn|2025-10-07T16:46:18+02:00|Update testen.md
+adfb466a0f5a5bd41095df828bc8ac0e7f569c4f|Marleen73|2025-10-07T12:05:43+00:00|deploy: 8e1b526ef9524aaae46b80c8dfee070c0b39f05a
+8e1b526ef9524aaae46b80c8dfee070c0b39f05a|Marleen Romijn|2025-10-07T14:03:49+02:00|Update testen.md
+75a645c3912e9337010888a9d227a7f96ae6f1bc|Marleen73|2025-10-07T11:34:04+00:00|deploy: db1e4d90d3c8b7d3e15c530a18e69aec753b442d
+db1e4d90d3c8b7d3e15c530a18e69aec753b442d|Marleen Romijn|2025-10-07T13:32:11+02:00|Update testen.md
+e1f29ac3c856984b7a230b904a40b8f01a58387b|Marleen73|2025-10-07T11:30:20+00:00|deploy: 4e4697d5c24dca44e16499bebc7cc506529232bf
+4e4697d5c24dca44e16499bebc7cc506529232bf|Marleen Romijn|2025-10-07T13:28:34+02:00|Update testen.md
+adb92ab640b82ded42bf29bb7e27f2a38534c723|Marleen73|2025-10-07T11:10:06+00:00|deploy: 2fd2339bf5fe8a6e2ff0214d657e098db60bff90
+2fd2339bf5fe8a6e2ff0214d657e098db60bff90|Marleen Romijn|2025-10-07T13:08:14+02:00|Update testen.md
+74119d1f5ea7c1142d2f6bd8e3d9008d66372660|rubenvdlinde|2025-10-07T08:39:23+00:00|deploy: 8f7d701a2387d526838a72727f02d3484a420d3d
+8f7d701a2387d526838a72727f02d3484a420d3d|Ruben van der Linde|2025-10-07T10:37:30+02:00|Update testen.md
+90ff47978a7d538f0a05f8c069d2efe13c6543af|rubenvdlinde|2025-10-07T05:00:19+00:00|deploy: 73db8cb42adc6f6c9c30121594f96cf80e51cd1e
+73db8cb42adc6f6c9c30121594f96cf80e51cd1e|Ruben van der Linde|2025-10-07T06:58:17+02:00|Bijwerken testhandleiding met opmerkingen Marleen
+78d280038ac5cdc6aed7c8a46e4299257de82160|rubenvdlinde|2025-10-05T15:29:00+00:00|deploy: 90692647c8183780f094b327a5248dc403ecd2b0
+90692647c8183780f094b327a5248dc403ecd2b0|Ruben van der Linde|2025-10-05T17:27:01+02:00|Expand step 3 with comprehensive organization and user management testing
+ca1e8a96561baa8ff35de32504c401d6ebba2f0f|rubenvdlinde|2025-10-05T12:13:08+00:00|deploy: 5c8ba509979e033d3377d124909046ddd461333c
+5c8ba509979e033d3377d124909046ddd461333c|Ruben van der Linde|2025-10-05T14:11:11+02:00|Update testen.md based on user feedback - fix password flow, remove pricing, update AMEFF filtering
+9048829896adc2c8fec62ee9a184e456eb7ef68a|rubenvdlinde|2025-10-05T11:28:04+00:00|deploy: eaef61f8e4cd0c6144c7ea263278c987ebbdd673
+eaef61f8e4cd0c6144c7ea263278c987ebbdd673|Ruben van der Linde|2025-10-05T13:26:06+02:00|Fix MDX syntax error in testen.md and add Excel export step
+cc2adc9109bdded1f9ba9f2bd8d44308a1a38446|Ruben van der Linde|2025-10-05T12:38:18+02:00|Latenw e de test scripts eens online zetten
+e49a534f80f2c869128df63c3dfc87ba431b4f3d|rubenvdlinde|2025-09-30T14:22:41+00:00|deploy: 35f241a4b829e9fa756ad49d72a6c76be0ab7bdb
+35f241a4b829e9fa756ad49d72a6c76be0ab7bdb|Ruben van der Linde|2025-09-30T16:20:46+02:00|Remove a bit of old cold
+ba59c493b492bbc30441903adb6cd167e9a5c758|rubenvdlinde|2025-09-30T14:14:05+00:00|deploy: 343df2a4c5942f3112399c8a723ddbe1c0171f5c
+343df2a4c5942f3112399c8a723ddbe1c0171f5c|Ruben van der Linde|2025-09-30T09:46:08+02:00|fix: Repair broken documentation links
+0fe1994b26f0bbc074f2d4c7ef60b1a13350f264|Ruben van der Linde|2025-09-30T09:43:52+02:00|Linkes en planning
+52e46482a059e5b34cb95edae55daa79783133d5|Ruben van der Linde|2025-09-30T07:58:36+02:00|feat: Add F014 Data Migratie functionality and complete PvE eis coverage
+0f7d42943d0df603152f97eb346ea27d64a42e36|Ruben van der Linde|2025-09-26T15:29:20+02:00|Voorbeelden van menu's
+89b75f6edcf763120384b03111f959e3b4583610|Ruben van der Linde|2025-09-26T15:11:29+02:00|Verdere uitwerkingen klantreizen
+b671368be777cce42762223f07a45dc831fb82d1|rubenvdlinde|2025-09-26T07:53:56+00:00|deploy: 4525f9859d740d968546438e11516b8b6ce8790a
+4525f9859d740d968546438e11516b8b6ce8790a|Ruben van der Linde|2025-09-26T09:51:52+02:00|Finetuning klantreisen
+22198d0472f7f288e6e29c0f1f1aeec64e22a0bd|rubenvdlinde|2025-09-26T07:38:41+00:00|deploy: 715055752b4e1d814a668c6299d5a2946919a1d2
+715055752b4e1d814a668c6299d5a2946919a1d2|Ruben van der Linde|2025-09-26T09:36:49+02:00|Lets kill plantuml
+10accb06062c2e5e41a182a84d9fa0e746a618a5|Ruben van der Linde|2025-09-26T09:31:19+02:00|Klantreizen index toevoegen
+ce163826b4f854c2fa63f885aecea523336be16b|Ruben van der Linde|2025-09-26T09:23:17+02:00|Beetje extra validatie op de klantreizen
+3ef0deb7f05b242d160595265a7dad81d781637a|rubenvdlinde|2025-09-26T06:09:02+00:00|deploy: 0b9055b9bcac6a1be9bbe51ccf0574e87a4955e4
+0b9055b9bcac6a1be9bbe51ccf0574e87a4955e4|Ruben van der Linde|2025-09-26T08:00:45+02:00|Updating the docs
+27f7b63a74d49aaa7d07169037a14f1493ea65c9|rubenvdlinde|2025-09-25T20:13:23+00:00|deploy: 83d3f2780f7bf2e99546c71310a0ade79ce83bbe
+83d3f2780f7bf2e99546c71310a0ade79ce83bbe|Ruben van der Linde|2025-09-25T22:11:35+02:00|lets try mermaid
+c6902abfbd7644598603ffaa3efd8b2ff82fd8fa|rubenvdlinde|2025-09-25T11:58:40+00:00|deploy: 3054b014541d2035039cb8b1bc7f42c6086a98c6
+3054b014541d2035039cb8b1bc7f42c6086a98c6|Ruben van der Linde|2025-09-25T13:57:04+02:00|Omgevingen toevoegen aan project documentatie
+2323f7f2ba6fc0e603f0a00737dc09dc880fde60|rubenvdlinde|2025-09-25T11:48:01+00:00|deploy: c0e004fcb9378a6b5bb48d7337c69c57fb27dd07
+c0e004fcb9378a6b5bb48d7337c69c57fb27dd07|Ruben van der Linde|2025-09-25T13:46:33+02:00|Documentation fixes
+7951c9a52d4f5cbf95149fe19907dd3a37db5a4b|Ruben van der Linde|2025-09-25T11:58:30+02:00|Fixing the docusaurus build
+9620cd885d5d30758a5cb0e1fe0f8b9a410c107d|Ruben van der Linde|2025-09-25T11:36:25+02:00|OKe lets get the docs going
+87ea3415a606ceaa31894428045ba8894fc85022|Ruben van der Linde|2025-09-25T07:40:54+02:00|Merge remote-tracking branch 'origin/documentation' into documentation
+59b74b8fab89eca2728852853488eb9c3cbf8f0d|Ruben van der Linde|2025-09-25T07:40:46+02:00|Lets start with the user docs
+aeeb3eaa3f1d507013939884d0bdf8b5c19ba3f0|Ruben van der Linde|2025-09-24T10:47:44+02:00|Rename 2025-09-24 to 2025-09-24.md
+911240fa6a67921974d9a543260ff24a9f16291a|Ruben van der Linde|2025-09-24T10:47:18+02:00|Create 2025-09-24
+e587029fe3e228c46b084f08d0452feaa4724e6e|Ruben van der Linde|2025-08-21T16:57:21+02:00|Update 20250819_project_bijeenkomst.md
+c8d4f584a7314f3d84d041cce4209d36f8b763d7|jderuig1968|2025-08-19T15:49:03+02:00|Update 20250819_project_bijeenkomst.md
+4502c4ec34d000d49270ffbfc9e989c6a52e6edc|jderuig1968|2025-08-19T15:47:43+02:00|Update 20250819_project_bijeenkomst.md
+568a3ff145809e2c3448c3f949a22867fcc4159b|Ruben van der Linde|2025-08-19T14:30:47+02:00|Juiste datum verbeterd
+9fa7c94a4ec88b58c352a393b96adaf41c310a92|Ruben van der Linde|2025-08-19T14:29:46+02:00|Agenda en Notulen
+53b22259e3e34918e96a735e2dddecaa2c0b5f1e|Ruben van der Linde|2025-08-19T09:15:05+02:00|Merge remote-tracking branch 'origin/main' into documentation
+7c612837a42b4f734fd12897412408ce45c678b3|Robert Melskens|2025-08-15T11:00:22+02:00|Update README.md
+3f6eda99b75a49bc0101e862d99fbd552541ceac|Remko Huisman|2025-07-23T15:03:16+02:00|Create data-model-wijzegingen.md
+cf970137d5f40386338caabdc4f6e7af0b2a5be5|Robert Melskens|2025-07-03T07:26:12+02:00|Update README.md
+efea77b2591aa47cabd8c5afa4afbf5f827e2ebe|Mark|2025-06-30T09:21:34+02:00|Delete docs/Softwarecatalogus formulieren.pptx
+80cde85bc1c5cb5887ae864af8398d71eddebdf0|Mark Backer|2025-06-30T09:19:02+02:00|update: Schema's voor Openregister
+4dc749b45b070c16584522358098c6efad13af7c|Mark Backer|2025-06-28T08:34:05+02:00|update: Formulieren.md nav IM wijzigingen
+e069323975a3feb94822d3136ff87acfea3c8b3e|Mark|2025-06-27T13:41:02+02:00|Create Schema's voor Openregister.md
+64b174535521f6fffeae121c4f22466e12dc51f6|Ruben van der Linde|2025-06-24T14:04:04+02:00|Update 20250624_project_bijeenkost.md
+8403ee70bed80bc91697b36fe4a1b4fbd2d88a8f|Ruben van der Linde|2025-06-24T10:13:30+02:00|Create 20250624_project_bijeenkost.md
+8bfa5ae3aec8b0258f34b596479d4dad1160b6aa|Ruben van der Linde|2025-06-18T16:45:43+02:00|Update klantreis_leverancier.md
+95d5155894421fd9e90d629c4d946c9c92bcc91b|Ruben van der Linde|2025-06-18T16:39:05+02:00|Update klantreis_leverancier.md
+8cd423e516286617bda50fbed504cea4683dc96a|Ruben van der Linde|2025-06-18T16:13:17+02:00|Update klantreis_leverancier.md
+5d48282d0b77a2bc9cec71eaf1d76e1261580ebc|Peter Makkes|2025-06-18T11:31:41+02:00|Update klantreis_functioneel_beheer.md
+ac9a7badf07d1871521df61112164ba131ed2ded|Peter Makkes|2025-06-18T10:33:50+02:00|Update klantreis_gemeente.md
+a53867d5a36a8b874164f81384303a0be162a6b5|Ruben van der Linde|2025-06-18T09:57:43+02:00|Rename klantreis_FB.md to klantreis_functioneel_beheer.md
+79ced5dda3ad4c1929261aaab273eb3b98811a09|Mark Backer|2025-06-18T08:22:53+02:00|Add: Gebruik en start koppelingen
+f021aabcc5ac44458a7335af242c8093ed353876|Mark|2025-06-17T17:39:49+02:00|Update and rename Formulieren (weergave data).md to Softwarecatalogus formulieren.md
+22349cc49a12d57f104ac6472386f97354ffca99|Mark|2025-06-17T14:50:40+02:00|Rename Formulieren (weergave data) to Formulieren (weergave data).md
+2ce70827ff6a62b993cfd1581ccef32bae044dbc|Mark|2025-06-17T14:46:29+02:00|Create Formulieren (weergave data)
+33b048572e66b01d09a597c922a330f1955f51c9|Peter Makkes|2025-06-16T14:34:50+02:00|Update klantreis_samenwerking.md
+3fe167cf6a81352f624b777dd6008e0e19b9d90a|Peter Makkes|2025-06-16T14:33:59+02:00|Update klantreis_FB.md
+b8bdf2487a2ae7e14ca47ad9a7f4ee2544a0e924|Peter Makkes|2025-06-16T14:13:11+02:00|Create klantreis_FB.md
+28de7a4c363ec5da54bfdccac3d94d7bd7a4f9ac|Peter Makkes|2025-06-16T12:39:19+02:00|Create klantreis_samenwerking.md
+4c4444f1f8026bdfb47ce6f9fca5f82c24c5d8f7|Peter Makkes|2025-06-16T12:05:40+02:00|Update klantreis_gemeente.md
+9387b90056514b9b2b34b35f0dfbefebe20146f5|Peter Makkes|2025-06-16T11:15:36+02:00|Update klantreis_leverancier.md
+6050be461d071512837a5020a2275be8efd27140|Ruben van der Linde|2025-06-13T16:30:16+02:00|Update klantreis_gemeente.md
+be7e7eebfc66f938ea4289f3e13938c104501451|Peter Makkes|2025-06-12T13:48:39+02:00|Update klantreis_gemeente.md
+637a2be986fb6a75d0aa9bade0f8c295c662cef9|Peter Makkes|2025-06-12T13:41:19+02:00|Update klantreis_gemeente.md
+b48abd149a1e7508005fa0f197a2696616ad7875|Peter Makkes|2025-06-12T13:28:29+02:00|Update klantreis_gemeente.md
+781142ef49e2c59edf6f2db11a97d9ab6f4ed46e|Ruben van der Linde|2025-06-11T22:47:59+02:00|Deelnemingen geplot
+824803bf8c8dc6b1334321eee09bc856219470eb|Ruben van der Linde|2025-06-11T22:40:52+02:00|Eerste beschrijving
+0da4e3234d7876a1d80a0dc5a54be49451b91500|Ruben van der Linde|2025-06-11T22:33:04+02:00|Bevindingen verplaats
+01cf2cfebd0fa5a12247f8604fb04045022c9d8f|Ruben van der Linde|2025-06-11T22:30:33+02:00|Merge remote-tracking branch 'origin/documentation' into documentation
+9d535bab69a306fc60b1e95e38c0ed63295ab1f8|Ruben van der Linde|2025-06-11T22:25:04+02:00|Add checkboxes
+19648680fa59852fd2e582faa687ae092e3e730a|Remko Huisman|2025-06-11T09:15:54+02:00|Update 20250610_Project_bijeenkomst.md
+71f3b340e70033b854cba6c19c0681c32bf37809|Ruben van der Linde|2025-06-10T15:21:29+02:00|Notulen van review
+fdd9e3bf278d2ef7ff4c5665acd9bf008a86f7f0|Ruben van der Linde|2025-06-10T09:35:15+02:00|Update de agenda
+e12e2648eb43facf194922664f1c42ee19ba8bd4|Ruben van der Linde|2025-06-10T09:11:10+02:00|Agenda
+f23efcc7634b37029d962bcf6d17d1897e42d9e3|Ruben van der Linde|2025-06-10T09:08:10+02:00|Merge branch 'documentation' of https://github.com/VNG-Realisatie/softwarecatalogus into documentation
+95da666c5d8b584401d2a87ff5359edee9f66978|Ruben van der Linde|2025-06-10T09:07:55+02:00|Doc updates
+2d50868c01f82b71f43a50d90eb366d87bfb5cbb|jderuig1968|2025-06-10T08:40:31+02:00|Update 20250610_project_bijeenkomst.md
+33559a9b2de1e5443215a78b64d12c705828e239|jderuig1968|2025-06-10T08:38:49+02:00|Create 20250610_project_bijeenkomst
+cc049a4280b469dcd38546e000c9dfb7e994b7d7|Mark|2025-06-05T18:29:44+02:00|Formulieren voor organisatie, accounts en aanbod
+70edd04434488a910bb4f696300631dc50c8c474|Peter Makkes|2025-06-04T14:48:52+02:00|Create klantreis_leverancier.md
+0b6fd509e74117434cffcbf2d2ce800dbb41a8b2|Remko Huisman|2025-05-15T10:05:15+02:00|Update README.md
+7587fbd5610fb6d5315f9684df64c2e089659566|Mark|2025-05-13T16:31:42+02:00|Create 13-05-25 GEMMA ketentest.xml
+fb063f2b24b0d4903224914282f041a79bf0993b|Ruben van der Linde|2025-05-13T09:28:54+02:00|We moeten ook nog even door de door de aangepaste api lopen.
+ce54adf61ddf840f4f77c009eaadbdeaf61814ab|Ruben van der Linde|2025-05-13T09:17:18+02:00|Laten we ook een nieuwe frontend dag inplannen
+b189faaa26425ede2e582cdc79e8af7251302256|Ruben van der Linde|2025-05-13T09:15:41+02:00|Merge branch 'documentation' of https://github.com/VNG-Realisatie/softwarecatalogus into documentation
+b3c47cfc8a2fe93b55fe0069efd57dd6e44d41b0|Ruben van der Linde|2025-05-13T09:15:37+02:00|Wat toevoegingen aan de agenda
+f1a3fa127d01bc0037dfb033c6a15d98282031c0|Peter Makkes|2025-05-13T08:47:07+02:00|Update 20250513_Project_bijeenkomst.md
+ee5c72e8682d09f670a43189be537d3ee805ac3a|Ruben van der Linde|2025-05-13T08:18:15+02:00|Project bijeenkomst
+f3505423af7355c29c592aefa905da54d6b825a9|Ruben van der Linde|2025-05-13T08:18:05+02:00|Documentatie updates
+4ec9e5bb51807a49d92ad8c4d3068cc327394e44|Ruben van der Linde|2025-05-12T22:36:27+02:00|Lets update to inlcude the lates software catalog architecture
+b536e2cbed19d4df6139004020f03d653fee9f6c|Ruben van der Linde|2025-05-12T17:07:40+02:00|Lets update the docs
+43b41623f1139a8c65767639df8f6ed62935013e|Ruben van der Linde|2025-05-12T16:36:19+02:00|Koppeling verder uitgewerkt in oas schema
+483abb256de288857a2b466759670d5a991cc932|rubenvdlinde|2025-05-12T14:21:43+00:00|deploy: 3b0dfe98ddd14234ca4e33f4a2bcded259b81467
+3b0dfe98ddd14234ca4e33f4a2bcded259b81467|Ruben van der Linde|2025-05-12T16:20:23+02:00|Lets get the note field to properly work
+bf3061e9eafd7702d6905a34838aa2cd58b07ff3|Ruben van der Linde|2025-05-12T16:13:56+02:00|Lets add koppelingen and test thee nodes field
+ac46a2ccf50fde945c28b0bfb956195b706f10e7|remko48|2025-05-12T09:15:00+00:00|deploy: 6a31e063c608fbf057faf81cacbf0164ff034865
+6a31e063c608fbf057faf81cacbf0164ff034865|Remko Huisman|2025-05-12T11:13:39+02:00|Merge pull request #163 from VNG-Realisatie/updated-voorziening_register.json
+3f3a53fcb62c368683adbff45c64daca68d7cdae|Remko Huisman|2025-05-12T10:52:44+02:00|Update voorzieningen_register.json
+df7532793d0d701713ad6c14b3818d1259cc2a83|Wilco Louwerse|2025-05-08T09:45:53+02:00|Merge remote-tracking branch 'origin/documentation' into documentation
+9cfd9c38ad07af31d6be33d82e727b8cf813d2f7|Wilco Louwerse|2025-05-08T09:45:46+02:00|Add identifier to organization mapping
+edc8b16d31eef887b64a961d2c7dbaea9970e0ae|rubenvdlinde|2025-05-06T11:58:30+00:00|deploy: 40f81a7d8da433dd6868f3b743a5267fda44cd13
+40f81a7d8da433dd6868f3b743a5267fda44cd13|Ruben van der Linde|2025-05-06T13:57:10+02:00|Update to the amef api specification
+f4b77893d7cc7b6cb2e035bad27df98cb6de0018|Wilco Louwerse|2025-04-28T17:48:51+02:00|fix for model endpoint regexes
+3ad3993aa6321260f7dd03d4da1f22ac79006ea9|Wilco Louwerse|2025-04-28T16:56:10+02:00|fix model mapping json to xml
+b2a35f3fbe085769333343e5e9731583139126e5|Wilco Louwerse|2025-04-25T16:52:25+02:00|add the custom rule for custom code, adding voorzieningen to the export
+1e470cfee73b461bdff4a2e6a69fc0d946964980|Wilco Louwerse|2025-04-24T15:10:47+02:00|do some mapping fixes
+02263f4d6a89f16250d0876ea2552a49a90ca33b|rubenvdlinde|2025-04-22T13:44:20+00:00|deploy: 883ce8d61997d51cd21bbe3c20741ef03c10246a
+b65d1769d60a9d7555d59b4794bdb498558eaab0|rubenvdlinde|2025-04-22T13:43:06+00:00|deploy: 1a554015b7f4dadc57ad5658de31661e6bd836fb
+883ce8d61997d51cd21bbe3c20741ef03c10246a|Ruben van der Linde|2025-04-22T15:43:04+02:00|Fixing leveranciers organisatie
+1a554015b7f4dadc57ad5658de31661e6bd836fb|Ruben van der Linde|2025-04-22T15:41:49+02:00|Fifin the standaard object
+73554d6fe3c3d7fbaad1813a45d34ef3fd38c851|rubenvdlinde|2025-04-22T13:30:45+00:00|deploy: 16efd84d1b089bd2e11764bb734d4f87a2f0ce93
+16efd84d1b089bd2e11764bb734d4f87a2f0ce93|Ruben van der Linde|2025-04-22T15:29:23+02:00|Add paths to api specifications
+1faf4d819c1c767fab4276018a03afb59f59c7b5|rubenvdlinde|2025-04-22T11:22:29+00:00|deploy: 0f5b3654218ccbccfa36dc78019ccc4724c6c7a3
+0f5b3654218ccbccfa36dc78019ccc4724c6c7a3|Ruben van der Linde|2025-04-22T13:21:13+02:00|Lets get the correct oas in there
+ae60d5edd528da53f446b68abb80fc6a6fa92d5d|rubenvdlinde|2025-04-22T11:15:11+00:00|deploy: fca1bf6fd83c4aabe265553961af85d698570520
+fca1bf6fd83c4aabe265553961af85d698570520|Ruben van der Linde|2025-04-22T13:13:45+02:00|Lets share the registers and api docs
+9a9261c530a39bcde2236b9a4f2f84540c4bdc53|Ruben van der Linde|2025-04-22T08:54:52+02:00|Update Project bijeenkomst
+d024031863f5595f7fc3058626a8cfbc3e405401|rubenvdlinde|2025-04-09T11:51:39+00:00|deploy: c12c98e1b933d7d701cacea4f5e8cd58e416bc22
+c12c98e1b933d7d701cacea4f5e8cd58e416bc22|Ruben van der Linde|2025-04-09T13:50:23+02:00|Merge branch 'documentation' of https://github.com/VNG-Realisatie/softwarecatalogus into documentation
+e3110555db04df98774bec6dce67c8d7b43c5d49|Ruben van der Linde|2025-04-09T13:50:09+02:00|Update contributing guide lines
+979b202e4dc2fe35b1e1a7088e5ae6f00e795e13|Wilco Louwerse|2025-04-08T10:47:17+02:00|Merge pull request #159 from VNG-Realisatie/feature/VSC-205/jobs-and-schemas
+6bb7ca8a6271fc5b1104db8f44a3a3a56b8a2a5b|Wilco Louwerse|2025-04-04T12:12:43+02:00|Update Organization mapping version to 0.0.2
+57ab1d2c3618a6e048794c7ce8fe99d8e3e29ad2|Wilco Louwerse|2025-04-04T12:10:39+02:00|Remove incorrect description
+90495f155b873a34004ce929691e82668b806abe|Wilco Louwerse|2025-04-04T12:05:06+02:00|Update some descriptions
+99fd46dcba631c6baa0df608c49254fe809ce4ee|Wilco Louwerse|2025-04-04T12:01:28+02:00|Added some of the last config files
+ff477b5a0b1485ceca340d99ecbf34fe82d3e069|Wilco Louwerse|2025-04-03T14:28:22+02:00|Added / updated the Organization Schema config file
+1b3e32c2866acd4ce71a73bd5a1e36c518a424fb|Wilco Louwerse|2025-04-03T14:20:46+02:00|Fix Organization mapping
+0f7580c9402fc70b0170c156c14efddce6005699|Mark|2025-04-02T19:44:47+02:00|AMEFF export uit huidige softwarecatalogus
+904293388eab572437d198343b785715021d27dd|Wilco Louwerse|2025-04-01T17:25:05+02:00|Some mapping, synchronization and schema config file updates
+f0a0469c3ed4ac29a71f61c893f5ef870edaca10|Wilco Louwerse|2025-04-01T15:17:59+02:00|Updated config files, rename Gemma to GEMMA + schema updates
+d0bd12b9a1d23c630bd461ec875c47227d5ce910|Remko Huisman|2025-04-01T14:20:15+02:00|Merge pull request #158 from VNG-Realisatie/documentation
+f73044f0966d8ecde1f287bfd756f417a6318afb|Mark Backer|2025-04-01T14:01:49+02:00|update: rename test naar GEMMA_release
+70e1dc379e9361f9a7b5ed301410938f831189ce|markbacker|2025-04-01T11:48:13+00:00|deploy: 7982a26700a2eca35b6604420381424a95956f35
+7982a26700a2eca35b6604420381424a95956f35|Remko Huisman|2025-04-01T09:41:23+02:00|Updated images in AMEF-Bestand-Importeren.md
+6de5aec7180be15f890fccdc08d00aaffa60f401|Mark Backer|2025-04-01T13:34:34+02:00|Add: test GEMMA_release_test.xml
+3c1d6e91421a4e4089d25363f0a38f7ca85f961d|Mark Backer|2025-04-01T13:33:43+02:00|Update: AMEF -> AMEFF
+54769d7be0c711b08d64ab25e4a44a3f3f6f322b|Remko Huisman|2025-04-01T09:41:23+02:00|Updated images in AMEF-Bestand-Importeren.md
+41eb563009f22fc62d45be0c5ed45df104e3bc29|Makkmetp|2025-04-01T07:15:20+00:00|deploy: fabab36a6e06307c6b6eec82c892d393ae2c0734
+fabab36a6e06307c6b6eec82c892d393ae2c0734|Peter Makkes|2025-04-01T09:14:07+02:00|Update AutorisatieMatrix.md
+00dc44752a20bc54b5ca2a4b273975fd216b60df|Ruben van der Linde|2025-03-31T22:40:09+02:00|Voorberijding agenda project bijeenkomst
+c029875582d2953744a6fae10bc001814e7fc6e1|rubenvdlinde|2025-03-31T19:33:56+00:00|deploy: 822af39470e8bddb9d47f24bc3c8b932568b4da1
+822af39470e8bddb9d47f24bc3c8b932568b4da1|Ruben van der Linde|2025-03-31T21:32:37+02:00|Working images
+e7cfaea1bac88223870f06c1179b3dcf5d9f93f4|Ruben van der Linde|2025-03-31T21:25:32+02:00|Better image urls
+a13c080dac35c11e27b361309cf767820d9fd3e8|rubenvdlinde|2025-03-31T19:20:58+00:00|deploy: 8e3979c0978847bcd4cdc199c51ad39d4bca3dbd
+8e3979c0978847bcd4cdc199c51ad39d4bca3dbd|Ruben van der Linde|2025-03-31T21:19:35+02:00|Afbeeldingen werkend maken
+4ad95d222cc7074dd8aca5a82a1dd30b4d08514d|Ruben van der Linde|2025-03-31T21:17:15+02:00|Fix the images
+f94ef2240d81ef33e8e1549ec320ff32d0382167|rubenvdlinde|2025-03-31T19:13:56+00:00|deploy: 5c33ceeeea698bf2e840ef17f80c844c4cf510c5
+5c33ceeeea698bf2e840ef17f80c844c4cf510c5|Ruben van der Linde|2025-03-31T21:12:34+02:00|Handleiding AMEF uploaden
+0a89440ece861c73d327cc663022d8737482d0d7|Wilco Louwerse|2025-03-31T19:05:44+02:00|Let's not use spaces in a filename or url (@id/reference/$id)
+273559556cd65b707c7bce331801402a4cac1031|Wilco Louwerse|2025-03-31T17:38:33+02:00|Fix properties uniqueIdKey for OriginId & updated endpoint regexes
+cc9280ddda96984aa8f3e81e92f1f24a0d38b5d1|rubenvdlinde|2025-03-31T15:16:02+00:00|deploy: 0a067d69fe4cebd3983d79cb77494487f4770438
+0a067d69fe4cebd3983d79cb77494487f4770438|Ruben van der Linde|2025-03-31T17:14:44+02:00|Make it a markdown file
+0e2dc7481ed6fbb59f82411c694b59f9589ef85c|rubenvdlinde|2025-03-31T14:56:47+00:00|deploy: 8a96048103874a06bf2a5810d0b5550bf72608a3
+2024a08ce4638cd76036c499eac6fa1181354691|Ruben van der Linde|2025-03-31T16:56:19+02:00|Merge branch 'main' into documentation
+8a96048103874a06bf2a5810d0b5550bf72608a3|Ruben van der Linde|2025-03-31T16:55:31+02:00|Add docs for modules
+b76382231ea6087670857516654130cc760da469|Ruben van der Linde|2025-03-31T16:55:13+02:00|Add modules
+27cae3678b82c92c587544eb2fd07311df5b4d3c|jderuig1968|2025-03-31T15:41:16+02:00|Create 20250331_Project-bijeenkomst
+d48b8dd35e36ec5de94d5ca099dfe3f6f64bbf58|Wilco Louwerse|2025-03-31T14:42:41+02:00|fixes for originId in mappings
+512d37a9c2b5442ef0db6969799766506a0e5bd0|Wilco Louwerse|2025-03-28T16:39:05+01:00|Added originId's to mapping & updated endpoint regex
+cc2ce602686443b308612b1fdeab39615bc7bd43|Wilco Louwerse|2025-03-27T17:06:31+01:00|Updated views sync for synchronizing subobjects
+f4c12a629174727f1b3144a998432499e8d0d727|Wilco Louwerse|2025-03-27T17:03:31+01:00|Added schema for Property Definition
+a4e715cf778a6cccf257257cd9e6b4a67662a295|Wilco Louwerse|2025-03-27T15:36:40+01:00|Added config for endpoints Gemma model download & synchronize model
+9bc53b4a5f9286917fc24d2d61ba4b4d2316acce|rubenvdlinde|2025-03-26T12:54:37+00:00|deploy: c3aa85b174f892bae5bd59969c0fb1bb2b0e5df9
+c3aa85b174f892bae5bd59969c0fb1bb2b0e5df9|Ruben van der Linde|2025-03-26T13:53:18+01:00|Merge branch 'documentation' of https://github.com/VNG-Realisatie/softwarecatalogus into documentation
+ab547702894d872368b3d8083b7d04f38d4492ca|Ruben van der Linde|2025-03-26T13:52:57+01:00|Updating the technical documentation
+6a25a3b4035738ab06ea896d3c8cdb728a8fbd54|Wilco Louwerse|2025-03-25T17:32:24+01:00|Added Model Property Schema and updated View Schema
+1b3899a39b9879daba48e52e7fc3179692388939|Wilco Louwerse|2025-03-25T16:39:27+01:00|Updated View Node Schema
+7004e0d48f366ce2d1c6df71c0b7febed2e24cd6|Wilco Louwerse|2025-03-25T16:32:02+01:00|added View schemas
+33520072583831e5d661312e9ebf629ff032a68c|Wilco Louwerse|2025-03-25T14:59:47+01:00|Added jobs voor all synchronizations (syncs that we need/should work)
+325d155bee547ecf55816780773ff984ef0f5ffb|Wilco Louwerse|2025-03-25T14:59:11+01:00|Move config files to specific OpenConnector & 'new' OpenRegister folders
+b6f1692ffb124286e32b620f1ce7c8fabbd1b0db|Wilco Louwerse|2025-03-24T17:04:23+01:00|Added Local-GEMMA-export-response.xml to docs examples
+5ade8b8df45ac84dbbce8757f872e851b1805bcc|Wilco Louwerse|2025-03-24T16:21:22+01:00|Merge pull request #157 from VNG-Realisatie/feature/VSC-205/export-xml
+fc497706919f8a441362d45cd42da21c2924198b|Wilco Louwerse|2025-03-24T14:56:48+01:00|Update JSON to XML View mapping to contain viewpoint as well
+31b98ba5abd836637060f948e6dbe3896939b96e|Wilco Louwerse|2025-03-21T17:56:08+01:00|Updated mappings with fixes
+246dea9c9e0d042d15a551fb6ddb43cdd221f5f6|Peter Makkes|2025-03-20T17:31:39+01:00|Rename Autorisatie Matrix to AutorisatieMatrix
+33ed0445d0c2b757873be0299971f6d10a45d257|Peter Makkes|2025-03-20T17:29:23+01:00|Create Autorisatie Matrix
+56e99ef6ebba889a5f17d519bf401004fb9e0a41|Wilco Louwerse|2025-03-20T17:03:12+01:00|Fix unsetting connection if empty for view & value for model property
+d7038ee5da8256f580b0f95532d457e4cee69c6f|Wilco Louwerse|2025-03-20T14:37:58+01:00|Fix unsetting viewRef if empty correctly
+0bc39e5a66673aad16fd08faba17395948c6fb75|Wilco Louwerse|2025-03-20T14:16:53+01:00|Fix viewRef for View Node and relationshipRef for View Connection
+79b12759c474a31f379ce7ac5c790be5b1833a07|Wilco Louwerse|2025-03-20T11:46:34+01:00|Add label field to View Node if present
+2d22d5f37a656b902c2b0d3a12cb500d9d5e121c|Wilco Louwerse|2025-03-20T11:40:57+01:00|fix elementref
+6361e8e56fb4cb1fa73d6fe63786505bcddb21cd|Wilco Louwerse|2025-03-20T11:37:00+01:00|Unset elementRef if not present for View Node mappings
+60ed82218b1ffbf80c9eb8b5d11721e6d4b276f3|jderuig1968|2025-03-19T07:26:31+01:00|Update 20250318_Project_bijeenkomst.md
+d9cb5cc2e00e9ef3fb8639d96b1e5b4f87edae2c|Ruben van der Linde|2025-03-18T21:54:32+01:00|Update meeting date in Project Bijeenkomst document to 18/03/2025 and add new agenda item regarding dataset visibility
+c02e4d36996ef5908c5928d862ba31bdfaa0c3e0|Wilco Louwerse|2025-03-18T19:25:24+01:00|Some mapping fixes after doing text compare
+bd3c83bf5668b557eb92004db9585c8531e5a7e3|Wilco Louwerse|2025-03-18T18:44:01+01:00|small fix for properties.property in json to xml mappings
+f39f6ecbd01064561a3a7e96af7f5ad49cc1f04e|WilcoLouwerse|2025-03-18T16:13:15+00:00|deploy: c369fc94b719252aeeb32826c2c90ce385026407
+c369fc94b719252aeeb32826c2c90ce385026407|Wilco Louwerse|2025-03-18T17:12:03+01:00|Merge pull request #150 from VNG-Realisatie/feature/VSC-205/export-xml
+b6d4c4bcfff0bf33f89e948b7b8d1587bbe5fa6a|Wilco Louwerse|2025-03-18T16:02:38+01:00|Finish the JSON to XML mappings
+ad6d8e0ee22d17ad44fb900ad309f718da8c89dc|jderuig1968|2025-03-18T09:36:49+01:00|Rename 20250318 Projectoverleg to 20250318 Project_bijeenkomst
+146374d41e97cafc3f59f4a498f906ea96a59b19|jderuig1968|2025-03-18T09:36:20+01:00|Rename Projectoverleg 18-3-2025 to 20250318 Projectoverleg
+54bcdaa8dad852f76128a93a52b0144c626f5d38|jderuig1968|2025-03-18T09:35:37+01:00|Create Projectoverleg 18-3-2025
+60fbc1778701f4b73f360fe45fb0976fe46eb1ba|Wilco Louwerse|2025-03-18T01:44:37+01:00|w.i.p. json > xml mapping
+098b5c3e711210e6cab1b2877639d1947c764ef4|Wilco Louwerse|2025-03-18T00:45:19+01:00|Fix xml to json Model mapping
+2bf7db7e05dff23833e30d3e883eff8641c0ba5f|Wilco Louwerse|2025-03-17T15:31:27+01:00|Update gemma model sync to use resultposition = _object instead of _root
+b0c7c121936f1cdff9985a58c7e0a169e955b875|Wilco Louwerse|2025-03-17T13:34:33+01:00|Added some of the final mapping config files & some mapping&sync fixes
+89a77c231876713812ec6f76b8f8a949b5bee7e1|rubenvdlinde|2025-03-17T11:19:26+00:00|deploy: 2cd73e13b043ac6328027c9d7773190adcee187a
+2cd73e13b043ac6328027c9d7773190adcee187a|Ruben van der Linde|2025-03-17T12:18:06+01:00|Add another missing tab clodure
+8ab776c1db34512160f7742dbc7e3873b1f805b7|Ruben van der Linde|2025-03-17T12:17:04+01:00|Add missing tab closure
+0971eeeb0d13e75030ddf066f056b1f3603fc438|Ruben van der Linde|2025-03-17T12:14:13+01:00|All of the tabs
+c2183d34c393a9b0b8643ece379c207faa47cfe9|rubenvdlinde|2025-03-17T11:03:00+00:00|deploy: 9fada714756071cc84648382bee17521bd43c4a5
+9fada714756071cc84648382bee17521bd43c4a5|Ruben van der Linde|2025-03-17T12:01:45+01:00|voorzieningType fix
+581f151a1134ea08994de26a9b683d27761793cd|Ruben van der Linde|2025-03-17T11:59:14+01:00|Lets roll
+c56b80d4c7778ef825774480be9e542162eb4df9|rubenvdlinde|2025-03-17T10:34:48+00:00|deploy: bb964976d12087d2fb58853f70e4a0140f145d5d
+bb964976d12087d2fb58853f70e4a0140f145d5d|Ruben van der Linde|2025-03-17T11:33:31+01:00|Lets try api specs
+000617cab3170fc0be7eaf224c45d7e871c4d954|rubenvdlinde|2025-03-17T10:15:27+00:00|deploy: 8d8213b852fe2e43fddac25e77ab0340df026c3a
+8d8213b852fe2e43fddac25e77ab0340df026c3a|Ruben van der Linde|2025-03-17T11:14:07+01:00|Api schema test
+54ec85f3ef5d1d9311121be828ca2f062e72e1d6|rubenvdlinde|2025-03-17T10:11:04+00:00|deploy: 27f56ac62c22d64239e80882ba161d414d6c7b74
+27f56ac62c22d64239e80882ba161d414d6c7b74|Ruben van der Linde|2025-03-17T11:09:42+01:00|Another acorn fix
+2eb39e154f1b2fcf3f714233cd98826c425e1693|Ruben van der Linde|2025-03-17T11:06:34+01:00|Fix duble page
+09e8c96db3c22a9109ffdc77abb58da0084eae3a|Ruben van der Linde|2025-03-17T11:04:53+01:00|Fix acorn
+dceb5ca3b9abda4188f1bd2a8aa6bc12acda1c21|Ruben van der Linde|2025-03-17T11:02:46+01:00|Remove broken reference
+4d2fa93c050c78d900b13876ec883c32a1f36b99|Ruben van der Linde|2025-03-17T10:58:00+01:00|Removed broken reference
+978489a7d910ddd18a7aebe4a20faf23db0bb94f|Ruben van der Linde|2025-03-17T06:54:13+01:00|Tijdenlijke lijst met referentie componenten
+eb41f032f97f31e0b33027a43c599bc68bb8da9b|Ruben van der Linde|2025-03-15T00:49:43+01:00|Add lock
+62fe5b8b0e8f036349400650427f71d944afaf9a|Ruben van der Linde|2025-03-15T00:26:02+01:00|Update to docusarus 3
+f51d8fc2919ecbcdd40412cc10d1f67f18140ce0|Wilco Louwerse|2025-03-14T17:08:30+01:00|Update some mappings
+b51bdab7ef2415c822552cd3573ea5b1eed0bbc8|rubenvdlinde|2025-03-13T18:32:26+00:00|Deploy website - based on 496da3defba2654761da0a2c78a33d50f2e57fe8
+496da3defba2654761da0a2c78a33d50f2e57fe8|Ruben van der Linde|2025-03-13T19:29:43+01:00|Omzetten Voorzieningaanbod in de docs
+4f6e602f2cb1acdc3a096700e680e5882ac1a457|Wilco Louwerse|2025-03-13T17:07:23+01:00|Updated mappings
+ce7edb0d0548dcf3ea047b4f9670cbf65195b79a|rubenvdlinde|2025-03-13T15:03:23+00:00|Deploy website - based on 71e6258f60c46e8e4888ed13d797ed57f865a430
+71e6258f60c46e8e4888ed13d797ed57f865a430|Ruben van der Linde|2025-03-13T16:00:42+01:00|Small chema fixes
+d21eaa8664674d5a8b8e9ea2a02a7132aa8e7eb9|rubenvdlinde|2025-03-13T14:42:43+00:00|Deploy website - based on c37718e013ea67d7cfa0be2df62717f192fa013a
+c37718e013ea67d7cfa0be2df62717f192fa013a|Ruben van der Linde|2025-03-13T15:40:00+01:00|Van users naar gebruikers
+d02ae519bc8820e5fa6b3a568187b927e0c9c74a|rubenvdlinde|2025-03-13T12:05:00+00:00|Deploy website - based on 61f466be964091a6a8bcf9821b363a8a35e21357
+61f466be964091a6a8bcf9821b363a8a35e21357|Ruben van der Linde|2025-03-13T13:02:23+01:00|Merge branch 'documentation' of https://github.com/VNG-Realisatie/softwarecatalogus into documentation
+ed1cb3962520735128b2d0114d34c12096ff29b5|Ruben van der Linde|2025-03-13T13:02:21+01:00|Update the api docs
+e733f7e9411198332e3e7d2780277038fe8a6347|github-actions[bot]|2025-03-13T11:53:28+00:00|Render PlantUML files
+e81314ce2e7729093c33ce7581708b52052c29a0|Ruben van der Linde|2025-03-13T12:53:07+01:00|Lets do a better puml
+401b4eb234eb57d1deb79d30104eab760b0758c9|rubenvdlinde|2025-03-13T10:59:23+00:00|Deploy website - based on 312a5de5450fc5297057465f500b693f77669694
+312a5de5450fc5297057465f500b693f77669694|Ruben van der Linde|2025-03-13T11:56:44+01:00|Ugly try
+e7173f8e66a01354f73b8e799bcb78cbd68727d3|Ruben van der Linde|2025-03-13T11:52:55+01:00|Lets try this
+7900f0b41ca783709143c78682ce203b702842e2|Ruben van der Linde|2025-03-13T11:33:55+01:00|Found the broken md link
+f56f5c2c54bffa47cf795e138eafc5b7e756001a|Ruben van der Linde|2025-03-13T11:22:28+01:00|Many more link fixes
+b663e8ccb2e2e786a7941643f5bcef52fda9af49|Ruben van der Linde|2025-03-13T11:12:08+01:00|Lets try to remove some broken links
+57b0fb0791a2519e9b35e1b94a5c0e5468f16159|Ruben van der Linde|2025-03-13T10:59:25+01:00|Remove moddels
+35ae2ddd9facb25a42e69a625e740cc1f19dadc7|Ruben van der Linde|2025-03-13T10:47:42+01:00|Remove unfixalbe link
+0f3f36be714995d777f066bdd6b77b8ff5dacc39|Ruben van der Linde|2025-03-13T10:45:03+01:00|Wierd ass broken link
+bde7db68105c81644d446214614a257e0a3a47fe|Ruben van der Linde|2025-03-13T10:32:25+01:00|Spelling fix
+2d9ea1c4520511fbea31fb983525ff22c42960e1|Ruben van der Linde|2025-03-13T10:31:06+01:00|Merge branch 'documentation' of https://github.com/VNG-Realisatie/softwarecatalogus into documentation
+d701ee853c9e6b9514ad004542345a23c9dfaa0d|Ruben van der Linde|2025-03-13T10:31:04+01:00|Fix broken imports
+f8c810db56346edfa8b7684c78dc1a60612bac27|Ruben van der Linde|2025-03-13T10:30:29+01:00|Fix broken link
+24a7bd89b7de12caf41df480c5137fbb6aaf8423|github-actions[bot]|2025-03-13T09:01:26+00:00|Render PlantUML files
+a47addf58ed98afc8d6bbedc7519bf61c3cea66d|Ruben van der Linde|2025-03-13T10:01:06+01:00|Merge branch 'documentation' of https://github.com/VNG-Realisatie/softwarecatalogus into documentation
+a07c5298cca91cf8a6569e5b9c197e4810c08b7d|Ruben van der Linde|2025-03-13T10:01:04+01:00|Link fixes
+8bf489bf9c0c65d2195ce635f209f7bc81dc9991|github-actions[bot]|2025-03-13T09:00:19+00:00|Render PlantUML files
+44e4c7627327ae405ca35970f9270c1441f74f8f|Ruben van der Linde|2025-03-13T09:59:55+01:00|object updates
+8c6156a9c92c1ea84e2eea981ecffb95ee921726|Ruben van der Linde|2025-03-13T09:08:58+01:00|Lets get the old config back into place
+7f1cc5276e540572f7fcdf3e133a23b5f7d5c656|Ruben van der Linde|2025-03-12T22:52:04+01:00|Update schema definitions
+ee835633c3aaca03016ce621bd47c63cee3d3387|Ruben van der Linde|2025-03-11T22:13:46+01:00|Its worth a try
+2159057004b3a00309474689c29e59df6dc81ceb|Ruben van der Linde|2025-03-11T22:03:24+01:00|Lets try this
+df77445bd724fab4b6669d0833c28f874c198443|Wilco Louwerse|2025-03-11T18:43:43+01:00|Fixes for view JSON to XML mappings
+ea77c0e5ece4491ffabc65029966a2557d7162ac|Wilco Louwerse|2025-03-11T18:09:18+01:00|A lot of config file fixes and changes to get view sync working
+c2418518b62f85d0b1573322d928cafe159452ab|Ruben van der Linde|2025-03-11T17:23:02+01:00|Lets try integrating the docs
+2cefef95b3799f088bfddb2473c2da5b059ebb23|Wilco Louwerse|2025-03-11T15:31:01+01:00|Fix mappings for view sync and updated rules for get item endpoints
+0d524fed723048d6bf00ce4f5bd8e94bd47bdbeb|rubenvdlinde|2025-03-10T19:57:16+00:00|Deploy website - based on 99387174d418ae7a2bff5fce6a834845964c1ad6
+99387174d418ae7a2bff5fce6a834845964c1ad6|Ruben van der Linde|2025-03-10T20:54:33+01:00|Add user docs
+74072a5d03dd0b857de7a9261912e731699741cc|Wilco Louwerse|2025-03-10T16:31:36+01:00|Fixes for Endpoint(+Rule), Sync & Mapping config files
+c952d95718444bbec0a49f83f7e5f53735148dbe|Wilco Louwerse|2025-03-10T11:16:54+01:00|Merge branch 'documentation' into feature/VSC-205/export-xml
+4ed2f67a8bfd1117da5a61c4f6039fcabeb91ce7|rubenvdlinde|2025-03-10T09:53:26+00:00|Deploy website - based on a5e8e3851b7c2967ab93b8a7202520bfbac97aac
+a5e8e3851b7c2967ab93b8a7202520bfbac97aac|Ruben van der Linde|2025-03-10T10:50:44+01:00|Fix user object
+35c5d585bc6a119dace46283839967fe7316976d|rubenvdlinde|2025-03-10T08:53:29+00:00|Deploy website - based on d60dac64c4b972d7a8a2d91d4dbf204d74e3b47f
+d60dac64c4b972d7a8a2d91d4dbf204d74e3b47f|Ruben van der Linde|2025-03-10T09:50:45+01:00|U[date to the api docs
+5d3abc005f98fb295225e2cd112c2d8f13ead556|Wilco Louwerse|2025-03-07T17:05:40+01:00|some mapping changes, w.i.p. 'testing'
+3800831948be22ec5bbe853797a3e021ba494ff6|Wilco Louwerse|2025-03-07T11:20:35+01:00|Fixes for endpoints
+dd300af2e96036af1299015f56c3f36f99578a38|rubenvdlinde|2025-03-07T06:44:35+00:00|Deploy website - based on 19a3df66717fffbe3c52b3a6dc4c0d680cf68b3f
+19a3df66717fffbe3c52b3a6dc4c0d680cf68b3f|Ruben van der Linde|2025-03-07T07:42:03+01:00|Merge branch 'documentation' of https://github.com/VNG-Realisatie/softwarecatalogus into documentation
+e27dc6ab19e3a3b4ce4f0df8520a55dc5fe537c8|Ruben van der Linde|2025-03-07T07:42:00+01:00|Small api name fix
+9d100df610736110c2159dfe371b80919f90f0ff|Wilco Louwerse|2025-03-06T18:25:19+01:00|Updated configuration files for OpenConnector
+51de8c86e4bec0210ce67a9207b1c7c5c7a62db4|Ruben van der Linde|2025-03-06T11:27:01+01:00|Fix primarry collor
+41aee7f8f3ba13c28f7fc79137d1c7739d323d29|Ruben van der Linde|2025-03-06T09:44:08+01:00|Remove the issues from github
+ba63a50be6222494f5a129f630b9a4c6900397ab|Matthias Oliveiro|2025-03-04T22:03:48+01:00|Update 20250304_Project_bijeenkomst.md met afspraken
+329217c332fe04e366dced0babca6add4d6c02a9|Wilco Louwerse|2025-03-04T15:16:15+01:00|Moved OpenConnector Config json files to new Configurations folder
+26489a153aa429a75e1c384680e6213f86b3ea64|Ruben van der Linde|2025-03-04T12:05:11+01:00|Notities
+aa8ec970dac75cbb6d33808a3e576bc95d2b556c|Ruben van der Linde|2025-03-04T07:54:12+01:00|Merge remote-tracking branch 'origin/main' into documentation
+2fa5bd00d2f75fc8fd3485d20b7733ec16505b13|rubenvdlinde|2025-03-03T19:51:25+00:00|Deploy website - based on 6fdcdb9eb644cd413757117e62192b8f14665434
+6fdcdb9eb644cd413757117e62192b8f14665434|Ruben van der Linde|2025-03-03T20:48:43+01:00|Fix broken link
+5a264b198047f705547a9c6e4c9fba4b4171c4e7|Ruben van der Linde|2025-03-03T20:46:40+01:00|Lets make introduction first again!
+b3dcbcb72dc4804df1320bfdabd89dfc760f744a|Ruben van der Linde|2025-03-03T20:42:53+01:00|Let move around the documentation
+1abc0fcbe5e552ef751f108c2bfef293090d975b|rubenvdlinde|2025-03-03T19:34:40+00:00|Deploy website - based on 90fb0d1bf8ce17dcf0c37c4962f6b91b6536fb66
+90fb0d1bf8ce17dcf0c37c4962f6b91b6536fb66|Ruben van der Linde|2025-03-03T20:31:51+01:00|Lets import tabs
+ef1b09d0cd6a8367f06554d9968ed25e7a3f4f9d|rubenvdlinde|2025-03-03T19:21:53+00:00|Deploy website - based on bbb68986ec39f90e94d52456d73770c40824d144
+bbb68986ec39f90e94d52456d73770c40824d144|Ruben van der Linde|2025-03-03T20:18:48+01:00|Some more url errors
+c69f69c08e634a375ae07f5b85036943618911f8|Ruben van der Linde|2025-03-03T20:05:30+01:00|Lets add some mapping dogs
+1b6f97b4def20adbfe9b591e3b242c32d40fe22d|Ruben van der Linde|2025-03-03T19:52:16+01:00|add the mappings
+5167797a70164bc5fad03153d9d7920db500fb79|Ruben van der Linde|2025-03-03T19:43:36+01:00|url fix
+a42205be68b70b215bcbbdaf02d61c1648e7b6f3|Ruben van der Linde|2025-03-03T16:47:47+01:00|Merge branch 'documentation' of https://github.com/VNG-Realisatie/softwarecatalogus into documentation
+470cda09b52a2bdf762410546d298882fd4aa5aa|Ruben van der Linde|2025-03-03T16:47:46+01:00|Url fix
+62e49924d03efd4735af09db543a4fdd25334ae8|github-actions[bot]|2025-03-03T15:43:30+00:00|Render PlantUML files
+bb0d138a64f69257f6c80f2cdd4d4650b619f888|Ruben van der Linde|2025-03-03T16:43:06+01:00|Merge branch 'documentation' of https://github.com/VNG-Realisatie/softwarecatalogus into documentation
+526aaed60b76a93c7d55394c3a9f2c656639859a|Ruben van der Linde|2025-03-03T16:43:05+01:00|Now lets go
+02b224b2ba5ccb457bc523628d480c1b390cd974|github-actions[bot]|2025-03-03T15:15:21+00:00|Render PlantUML files
+a2d71e79219135fe37941b9ae09383eaaa541ed6|Ruben van der Linde|2025-03-03T16:14:58+01:00|Lets render the diagram
+077acd88aa0f9678f33f4370f66a304a44010a52|rubenvdlinde|2025-03-03T14:16:41+00:00|Deploy website - based on 622410495c4e6002f95789c1aa290558be993519
+622410495c4e6002f95789c1aa290558be993519|Ruben van der Linde|2025-03-03T15:13:58+01:00|Add menu item and documentation
+6f9a661ea8b6d2056e42dab81046c5f500c77530|rubenvdlinde|2025-03-03T14:13:54+00:00|Deploy website - based on dea9dad811f65c01bed95f03a44d0501317870a2
+dea9dad811f65c01bed95f03a44d0501317870a2|Ruben van der Linde|2025-03-03T15:11:16+01:00|Url fix
+75c782e6bffd5076d8e5fa5fe4fe16b5da3328a0|rubenvdlinde|2025-03-03T14:04:32+00:00|Deploy website - based on 63a2e05c79f32ba4fcbdfdc7d23b56feb05f3d7b
+63a2e05c79f32ba4fcbdfdc7d23b56feb05f3d7b|Ruben van der Linde|2025-03-03T15:01:45+01:00|Lets add api documentation
+a4283bfa6a8c5d394e2977b61f2ff6676f9c8c55|rubenvdlinde|2025-03-03T13:01:43+00:00|Deploy website - based on 98ad7d760a26bac95cbb135847cffce4a449eb5e
+98ad7d760a26bac95cbb135847cffce4a449eb5e|Ruben van der Linde|2025-03-03T13:59:23+01:00|Better endppoint naming
+5c9407eb7b6f11b9c2e74779fab87cf85440ac1a|rubenvdlinde|2025-03-03T12:57:16+00:00|Deploy website - based on 7862d6bcddaaa722ca0d278554139092d8185b53
+7862d6bcddaaa722ca0d278554139092d8185b53|Ruben van der Linde|2025-03-03T13:54:07+01:00|Lets add the oas
+4ec41a9ef3d6590e7384f80a97915d0066da87fa|Peter Makkes|2025-02-27T11:40:45+01:00|Update README.md
+29e51c91de6e67b523a009449a61e0a136b7caef|Peter Makkes|2025-02-27T11:37:48+01:00|Update README.md
+f18d96f608300a4a441cba2026f63a350efc973f|Mark|2025-02-26T18:17:36+01:00|Update: verwijzing naar Architectuur bestek en link naar DocuSaurus
+227fde74349486228001f46c7c68c3332a3f5a15|rubenvdlinde|2025-02-24T09:44:19+00:00|Deploy website - based on b660281fc4bb6eb1a3e97207859af32bda1f7219
+b660281fc4bb6eb1a3e97207859af32bda1f7219|Ruben van der Linde|2025-02-24T10:41:58+01:00|Somehow we lost the styling
+9ab4f8c689f3ce4e1fa0d457765bd48aa50896ff|rubenvdlinde|2025-02-24T09:38:26+00:00|Deploy website - based on 7aaa9d07eb388a2ca8a2927d84a5fa86f35e4a09
+7aaa9d07eb388a2ca8a2927d84a5fa86f35e4a09|Ruben van der Linde|2025-02-24T10:36:05+01:00|Litle bit better documentation page
+223f2859e91d4752d96cc79d80d3e3aa7b064c40|rubenvdlinde|2025-02-24T09:32:54+00:00|Deploy website - based on 8e172731f30ce5fb4190aed87c9cab0dbfa5402a
+b66f4f5fbe7d2e7bce2334cfa69808b928ec9626|rubenvdlinde|2025-02-24T09:32:00+00:00|Deploy website - based on f09f10538969ce28abb1a612227604fc76cf575b
+8e172731f30ce5fb4190aed87c9cab0dbfa5402a|Ruben van der Linde|2025-02-24T10:30:40+01:00|More vng styling
+f09f10538969ce28abb1a612227604fc76cf575b|Ruben van der Linde|2025-02-24T10:29:40+01:00|VNG Styling
+e34a039dcbb1fc4174089c5e8ab01bd11e8318b6|rubenvdlinde|2025-02-24T08:26:50+00:00|Deploy website - based on 9f02e425ab824823eb75fb808fe71e4b001c1c6d
+9f02e425ab824823eb75fb808fe71e4b001c1c6d|Ruben van der Linde|2025-02-24T09:24:31+01:00|Rebuild trying to find the correct url
+25c50e921b60d29f975b03c9ea66d2679f9c4e55|rubenvdlinde|2025-02-24T08:21:33+00:00|Deploy website - based on 7ea634021e51e6e1a446aed5482d67d293b6fd02
+7ea634021e51e6e1a446aed5482d67d293b6fd02|Ruben van der Linde|2025-02-24T09:19:14+01:00|Lets not do links on the intro page
+aba1543e63a1ad31524f65ae205df229b977dbd7|Ruben van der Linde|2025-02-24T09:10:55+01:00|Okey, so internal links are case sensitive thats a first
+144e027bc225c10cc1405432d8732e6abd011647|Ruben van der Linde|2025-02-24T09:07:30+01:00|So the file generation flows might miss each other
+da067dae481893d3fd6be026711924d2188f9f1a|github-actions[bot]|2025-02-24T07:10:07+00:00|Render PlantUML files
+bbe573cd2043f1e6b40e2ab33e7ca570a8d2035a|Ruben van der Linde|2025-02-24T08:09:35+01:00|Lets setup docusaurus
+8bbcc6b9b0d9cbcef1db995af031465b0797da85|Ruben van der Linde|2025-02-18T09:44:48+01:00|Update 20250218_Project_bijeenkomst.md
+28562a38ee529b28da4c6a8d160680be06119b0c|Ruben van der Linde|2025-02-18T09:05:45+01:00|Update 20250218_Project_bijeenkomst.md
+5a40c92ce14e7a76d67afe7c3ace5fc3cc932b09|Ruben van der Linde|2025-02-18T08:15:28+01:00|Update 20250218_Project_bijeenkomst.md
+16d1f66900ae37255fcf1325497395402b686897|Ruben van der Linde|2025-02-17T22:13:21+01:00|Merge branch 'main' into documentation
+45e5d2be86ab83175e2d907e8f68f3f2e2cb2c0d|Ruben van der Linde|2025-02-17T08:20:24+01:00|Kleine aanpassing test ebstand + agenda project bijeenkomst
+7934ffb088cc94998040cb24488278c0a3d0af7b|Ruben van der Linde|2025-02-16T21:58:38+01:00|Test data fix
+c53e7876b1df6fe56d1a194e2d48e8c0164b7fb5|Ruben van der Linde|2025-02-16T11:00:30+01:00|Gemma Release test
+670c28e1c84bcb5b2b25dc69c1c01122707cf734|Ruben van der Linde|2025-02-16T10:28:18+01:00|Merge branch 'main' of https://github.com/VNG-Realisatie/softwarecatalogus
+347fc05340e7d8fb19ee458f7480207b4900ff0f|Ruben van der Linde|2025-02-16T10:28:15+01:00|Upload examples
+3cef96ac79381873080d5978611edd9123723e82|Remko Huisman|2025-02-06T16:50:26+01:00|Update README.md
+d7fc76658073399ad410b5857cd2554f108e83e6|Ruben van der Linde|2025-02-06T16:45:59+01:00|Update README.md
+17a41c5c5825af44331618d51ef1d0d2574ad731|Mark Backer|2025-02-06T15:27:47+01:00|update: verplaatst
+1fb2452e45cc2a8b5ce471e6e4cc140ebc8c1391|Mark Backer|2025-02-06T15:27:24+01:00|update: Archi- en MI-tool toegevoegd
+915b6139d07edef9de248c53e865ee90b1c2fdcf|Mark Backer|2025-02-06T15:26:44+01:00|update: algemene acc. criteria
+36f8b261bc7a4db97b783afe8417a5ac3ebeb9b3|Mark Backer|2025-02-06T09:53:53+01:00|Update: link naar AMEFF, aanscherpen acceptatie-criteria
+a8ae0eb03c8fd3e317e0666210471658bdcc6285|Mark Backer|2025-02-06T09:25:08+01:00|update README
+a39815f9478da595d5185122a7ebb7c4059d3b96|Mark Backer|2025-02-06T09:24:29+01:00|Update readme
+5963ff218d56f5d67fbf07a5fe7666186e8c8e43|Mark Backer|2025-02-05T16:31:15+01:00|Update directe link naar GEMMA AMEFF bestand
+e5441b7c52cf7e45040e6e93579deef2680f590d|Mark Backer|2025-02-05T15:52:08+01:00|add: acceptatiecriteria vanuit VNG
+6e55d134a57c9d0b81a399defe016646f01a3664|Mark Backer|2025-02-05T15:51:19+01:00|add: aanbestedingsdocumenten van tendernet
+220d7f6a1ad4cc186accd276666f72c97505bcf8|Ruben van der Linde|2025-02-04T14:47:20+01:00|Merge branch 'documentation'
+0e859a30de1b1ed8e4125f1f56cf637c2008d3a7|Ruben van der Linde|2025-02-04T12:32:10+01:00|Update technical-architecture.md
+c9381d36d79f513e52359c4b99d6b348c0f10e56|Ruben van der Linde|2025-02-04T10:51:58+01:00|Merge branch 'documentation' of https://github.com/VNG-Realisatie/softwarecatalogus into documentation
+a130fa6d09528e26c6b400cfdaca6cae8238f39e|Ruben van der Linde|2025-02-04T10:51:55+01:00|First opzet personalia
+bc23e3e73eb2c80818a4e4219cd914f2c90aed0c|Ruben van der Linde|2025-02-04T10:50:11+01:00|Update 20250204_Project_bijeenkomst.md
+6cd6ac8e612d88a2190e26416f47ec1d34cfad76|jderuig1968|2025-02-04T10:10:46+01:00|Update README.md
+56f538cf5207417825e34cb08ad29a377ca72030|Ruben van der Linde|2025-02-04T03:23:54+01:00|Epics en issues
+ba6c93edee5125c26cbaf575fc4e85f261c3bbe1|Ruben van der Linde|2025-02-04T03:05:50+01:00|Project opzet
+3e17f9a4fe9cf9b1d533087f65fa3e0652b9dc77|Ruben van der Linde|2025-02-04T02:12:48+01:00|Update README.md
+e168174a63fc4f0d0abb38484a5c8ba1893233d1|Ruben van der Linde|2025-02-04T02:11:57+01:00|Create 20250204_Project_bijeenkomst.md
+aaf2638734be7512bb8080de9aad416907fa5652|Mark|2025-01-29T17:18:31+01:00|Update README.md
+763f43cc97d4c3ef130140bbcc8deaa15f05ffb8|Peter Makkes|2025-01-27T16:22:35+01:00|Update README.md
+540513cb7dea8388957f10dd943903e83b05ba2b|Peter Makkes|2025-01-22T16:33:04+01:00|Update README.md

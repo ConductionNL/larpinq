@@ -1,0 +1,80 @@
+1e3beb845d7cbd93c9f54e611dffb47d14d1ed42|Ruben van der Linde|2025-10-06T07:52:27+02:00|composer update
+dd72da37a4aa638fdb398072f6ff9306d2763b4b|Ruben van der Linde|2025-09-30T03:13:38+02:00|feat: add Nextcloud 32 support
+7ca3a1f321393203e5ebb6cad5035c071843f9c7|GitHub Action|2025-04-23T06:32:10+00:00|Bump version to 0.1.26
+a165d0499616ef501ea59f7474afc60c0c2c1173|Ruben van der Linde|2025-04-23T08:31:39+02:00|Merge remote-tracking branch 'origin/main'
+15b11fd51b5807dd8d9c4acf8ae2da8c838f7386|Ruben van der Linde|2025-04-23T08:31:12+02:00|Fixed most of the listing and details screens
+5902a52d3ef0291d82090084d278bd739023858d|Ruben van der Linde|2025-04-23T07:57:11+02:00|Working on the larping refactor for object store
+ddb53a01e515860c027d16aaecff3d066c59fe82|GitHub Action|2025-04-14T05:26:36+00:00|Bump version to 0.1.25
+66aff5c2a6c0ce28d80fce32da70e32b5fe74101|Ruben van der Linde|2025-04-14T07:26:20+02:00|Merge remote-tracking branch 'origin/main'
+b956ae8c7f66afd9ba2a77d4f58f4f82b13b9ecf|Ruben van der Linde|2025-04-14T07:20:47+02:00|Tabs fix
+d91fcef100238745c3859d2ae6837e38e18521a8|Ruben van der Linde|2025-04-14T00:11:19+02:00|Updates to the dynamic tabs
+23a4d37045d97c396842978acdb4c95ff63f22dd|Ruben van der Linde|2025-04-13T15:57:50+02:00|Fixed reactivness
+58dc83a69b0bf663f4cb9431ba147e688fbbba10|GitHub Action|2025-04-13T13:23:24+00:00|Bump version to 0.1.24
+3fc43d4fa0154f29bf4f581dddc79ae62de731cb|Ruben van der Linde|2025-04-13T15:22:25+02:00|Changing it all to the new and imporved open register
+2026ff6a65d81e008e03005e5b6bc8663c715dc6|Ruben van der Linde|2025-04-12T07:23:23+02:00|Working on applying the object store
+4b1f5a88506bf1ade7286978211f30032c0541f0|Ruben van der Linde|2025-03-15T00:47:09+01:00|Add lock
+43a18769891df6523e45d752b874378dc63bb19f|Ruben van der Linde|2025-03-15T00:26:12+01:00|Update to docusarus 3
+467d03a6ca79cc7deaf024876c7bb354c98ad860|github-actions[bot]|2025-03-13T17:50:53+00:00|[Changelog CI] Add Changelog for Version 0.1.23
+8836a5a37a26180ce06382512533d30a3631b972|GitHub Action|2025-03-13T17:50:45+00:00|Bump version to 0.1.23
+8c745a46905fb114ff23dfc4f131d2ae8c49654f|Ruben van der Linde|2025-03-13T18:50:29+01:00|Merge pull request #78 from ConductionNL/feature/many-fixes
+b07679050d1a3d12b71d12f8e7dce5bbd557cf5e|Ruben van der Linde|2025-03-13T18:46:53+01:00|Extend fall back
+ce3fe08e2444b0c3962bbfff28476820da585407|Ruben van der Linde|2025-03-13T18:46:52+01:00|Fall back in case extend doesn't work
+b801d01f6974a80ce9d56a01d854f9d364806edb|Ruben van der Linde|2025-03-13T16:43:01+01:00|Fixed line break on stat calculation
+701f5ae8cab4ece62f73e2157c9a2c678e4646f0|GitHub Action|2025-02-25T17:48:37+00:00|Bump version to 0.1.22
+efa8ebadf9433eee6c3bb65a6854b33b195aeb55|Ruben van der Linde|2025-02-25T18:48:09+01:00|Merge branch 'feature/many-fixes'
+d2eac52c67c24fc35224ab8d209eb7f7e1d6a338|Ruben van der Linde|2025-02-25T07:32:10+01:00|SMall code fixes
+6be02f419f7edfdfd877202777541c86e40492a5|Ruben van der Linde|2025-02-25T07:23:44+01:00|Like the branche says, many fixes
+7c22a5dce6d4f44dde3f738cf9e4b68973687b7c|Ruben van der Linde|2025-02-25T06:33:49+01:00|Small extend fix :')
+1ee6d10ee5b0d01acede76db0da9acda0c35079c|Ruben van der Linde|2025-02-25T06:31:42+01:00|Code cleanup on old entities
+164daa20402fd1796d7588958c095b63cba881b1|Ruben van der Linde|2025-02-25T06:22:24+01:00|Fixed the settings page
+6b42fe3ac904f2a5015ba77ff0e82e5e148c9098|Ruben van der Linde|2025-02-25T06:00:55+01:00|Lets add a style guide
+859067f3f36e57307acae20796c87e8d2d1834be|Ruben van der Linde|2025-02-25T05:24:59+01:00|Add cursor rules
+ca41b0be5cc54b82a22ce0109af48fda84898252|Ruben van der Linde|2025-02-25T05:19:33+01:00|Let do a bit of code cleanup
+2659cbb95f147eacf3bdef74b8e4534eb95b7570|Ruben van der Linde|2025-02-25T04:48:44+01:00|Remove old classes and migrations that we no longer use (since we store in open register)
+37efb8ff6f6b71fc39aa200fb1cbe590bd7d0531|rubenvdlinde|2025-02-17T23:40:23+00:00|Deploy website - based on 276cf7e523feaaf6d085ba0933044e4fa41b5a5c
+276cf7e523feaaf6d085ba0933044e4fa41b5a5c|Ruben van der Linde|2025-02-18T00:38:03+01:00|Sure lets over sell
+17bab080f95ddb098280daa85604d5f6868b8e92|Ruben van der Linde|2025-02-18T00:32:16+01:00|Lets add a CNAME file
+de31082200b75e88e29174072c6d9e86ef770e95|Ruben van der Linde|2025-02-18T00:24:21+01:00|Create CNAME
+fe5da00c4497d933da85d1ff1c751743963b79fb|rubenvdlinde|2025-02-17T23:17:13+00:00|Deploy website - based on 1776efa102587431a94b8743a6aa3524772c41d5
+1776efa102587431a94b8743a6aa3524772c41d5|Ruben van der Linde|2025-02-18T00:14:56+01:00|Lets update the css
+24b688a391c871437e51f2cf8bcb3ef9db02abb1|Ruben van der Linde|2025-02-17T23:50:59+01:00|Create CNAME
+034de25b082806a91715239d0a00ba49140d9995|rubenvdlinde|2025-02-17T22:45:06+00:00|Deploy website - based on af662e6167aa2ae1c0cf27ba6237cf5f6e8e4100
+af662e6167aa2ae1c0cf27ba6237cf5f6e8e4100|Ruben van der Linde|2025-02-17T23:42:51+01:00|Propper website
+0467f1e4a3e6333ad16f668dea1dcadf87151470|Ruben van der Linde|2025-02-17T23:38:32+01:00|Create CNAME
+f4e685ce8bcbc9c21c87f67b8a4cd6bde27f9e08|rubenvdlinde|2025-02-17T22:12:09+00:00|Deploy website - based on ca3b1f1fb14bc705781d3e160e51a60043ff9247
+ca3b1f1fb14bc705781d3e160e51a60043ff9247|Ruben van der Linde|2025-02-17T23:09:56+01:00|Remove docudesk
+5a6f4d32265834877e41ba70534dc32a4d796eb2|rubenvdlinde|2025-02-17T22:07:19+00:00|Deploy website - based on 48ffb623459434931e23d2e1f7687ccf58c893ab
+48ffb623459434931e23d2e1f7687ccf58c893ab|Ruben van der Linde|2025-02-17T23:05:01+01:00|Update for Larping app
+d8db3d62a62f367a77b7efe3e938cd4533386d91|Ruben van der Linde|2025-02-17T22:59:06+01:00|Logo fix
+663f3265335fcea5b58df6821787b29a454d890c|Ruben van der Linde|2025-02-17T22:58:03+01:00|Propper template location
+c917b5bca82910ef5baa3c67371b21e23662ff22|Ruben van der Linde|2025-02-17T22:47:14+01:00|Issue template
+640b44a076d51f7ad09d08517da843f38c969ed9|Ruben van der Linde|2025-02-17T22:41:06+01:00|Setting up the new website
+a2849c295c091ba7b93ddd30d18e4745089928dd|Ruben van der Linde|2025-02-17T22:04:37+01:00|More doc styling
+c2f433ccf053c5b0c3958bcf82414d06256966f7|Ruben van der Linde|2025-02-17T15:08:53+01:00|All of the doc blocs
+f840b1194ec84acbb3a626296ae456ee2f3c3a3d|Ruben van der Linde|2025-02-17T14:53:35+01:00|Style fixes
+69559d648656d7dce44b66af042b615d6306d260|Ruben van der Linde|2025-02-17T14:41:01+01:00|Style fixes
+826db42af24f2547564bcac1432c38bf56f30e59|github-actions[bot]|2025-02-04T11:25:52+00:00|[Changelog CI] Add Changelog for Version 0.1.21
+2d761e61ced7d40f8b7ad17a43c78a0197063c52|GitHub Action|2025-02-04T11:25:42+00:00|Bump version to 0.1.21
+aa8ce433e10110e4ec447360d2d66dcbc8b170ee|Ruben van der Linde|2025-02-04T12:25:29+01:00|Merge pull request #73 from ConductionNL/development
+6042568a4aa14440eaa187ed3d4841025ebe4b96|Ruben van der Linde|2025-02-04T12:22:39+01:00|Merge remote-tracking branch 'origin/main' into development
+c5d3b927fc0658ded2aba11559fefbae8aa4c064|Ruben van der Linde|2025-02-04T12:22:21+01:00|Require mpdf
+e2a73dde8571876ca650d2b083a7e63978b6e2ff|Ruben van der Linde|2025-02-01T13:32:27+01:00|Bit of work on the objects front
+d9388b7b0669fa11bf70842afb36efb897c99c17|github-actions[bot]|2025-01-06T21:24:37+00:00|[Changelog CI] Add Changelog for Version 0.1.20
+e796fea27dfd552d891a671bd89327dc9c318df8|GitHub Action|2025-01-06T21:23:30+00:00|Bump version to 0.1.20
+966fbfed1d1f67bdeb9b27751bfc937f0e7a63a0|Ruben van der Linde|2025-01-06T22:23:07+01:00|Merge pull request #59 from ConductionNL/development
+932c4d733869c7349c06272943f0b6fa62b10123|Ruben van der Linde|2025-01-06T22:22:18+01:00|ugh
+9bdd70bea0f24b464982fa3ec4e7cebca1457ebb|github-actions[bot]|2025-01-06T20:31:30+00:00|[Changelog CI] Add Changelog for Version 0.1.19
+47ed77d45dc7380376c00944486b7153fea27c70|GitHub Action|2025-01-06T20:30:23+00:00|Bump version to 0.1.19
+e4073ba327a04bf37de7c9e71a50cbcbb7c35297|Ruben van der Linde|2025-01-06T21:29:57+01:00|Merge pull request #57 from ConductionNL/development
+d83518d8a3e9eb732bc636d5a704deaaf3fc946b|Ruben van der Linde|2025-01-06T21:29:13+01:00|Update version fix
+c56a01bc3b8acb4c3173b128bb4d8e8fe3e39faf|Ruben van der Linde|2025-01-06T21:21:59+01:00|Fix in calculations service
+08a62f4cae2dfb922911f97e6dfe665a698e7e24|Ruben van der Linde|2025-01-02T00:09:10+01:00|Player action menu and delete fix
+1ad8a4c6fcd56ef576e9021194ffd43300594f22|Ruben van der Linde|2025-01-01T20:32:55+01:00|Adding counters and fixing action dialogs
+0e51ed442477180a1a0d2f4104be09b7342511d9|github-actions[bot]|2025-01-01T15:10:31+00:00|[Changelog CI] Add Changelog for Version 0.1.18
+d0ff2494d4d1f18223d013130d9f6d4a42098260|GitHub Action|2025-01-01T15:09:24+00:00|Bump version to 0.1.18
+11c22b55beb976be89709a852ce5929683175107|Ruben van der Linde|2025-01-01T16:08:57+01:00|Merge pull request #55 from ConductionNL/development
+0d7b560a476111f9eaa7bc58e4aa817848ce3b79|Ruben van der Linde|2025-01-01T16:07:36+01:00|Audit trail fixes
+5223596db2fcdbb7f5e70dd993dce2d4c5e72592|Ruben van der Linde|2025-01-01T15:20:44+01:00|Loading states and search functionality
+2570c59d417134859c3cb819c86ad0464c4b4141|Ruben van der Linde|2024-12-31T14:45:38+01:00|Keep track of ability calculations
+7fe2d6b5d20c9ef08da10c02d3a761044cf18097|Ruben van der Linde|2024-12-31T14:13:06+01:00|Gebruik extend ook bij het creëren en opslaan van objecten
+e4b59196fa173111c970d50b32caeb22b1a7bd8a|Ruben van der Linde|2024-12-31T13:41:09+01:00|Fix for logs and relations on items and players

@@ -1,0 +1,245 @@
+{
+  "author": "712020:3bd64318-ed80-4532-a30c-2c6821bca14a",
+  "author_name": "Goya van Boven",
+  "period": "2025-10-13 to 2025-11-21",
+  "total_hours": 239.5,
+  "entries": [
+    {
+      "date": "2025-10-13",
+      "issue": "DOCD-34",
+      "hours": 8.0
+    },
+    {
+      "date": "2025-10-14",
+      "issue": "DOCD-34",
+      "hours": 8.0
+    },
+    {
+      "date": "2025-10-15",
+      "issue": "LLM-32",
+      "hours": 8.0
+    },
+    {
+      "date": "2025-10-16",
+      "issue": "DOCD-34",
+      "hours": 8.0
+    },
+    {
+      "date": "2025-10-17",
+      "issue": "LLM-32",
+      "hours": 8.0
+    },
+    {
+      "date": "2025-10-20",
+      "issue": "LLM-17",
+      "hours": 8.0
+    },
+    {
+      "date": "2025-10-21",
+      "issue": "DOCD-34",
+      "hours": 8.0
+    },
+    {
+      "date": "2025-10-22",
+      "issue": "LLM-32",
+      "hours": 8.0
+    },
+    {
+      "date": "2025-10-23",
+      "issue": "LLM-17",
+      "hours": 8.0
+    },
+    {
+      "date": "2025-10-24",
+      "issue": "DOCD-34",
+      "hours": 8.0
+    },
+    {
+      "date": "2025-10-27",
+      "issue": "LLM-32",
+      "hours": 8.0
+    },
+    {
+      "date": "2025-10-28",
+      "issue": "DOCD-6",
+      "hours": 8.0
+    },
+    {
+      "date": "2025-10-29",
+      "issue": "DOCD-31",
+      "hours": 8.0
+    },
+    {
+      "date": "2025-10-30",
+      "issue": "LLM-31",
+      "hours": 8.0
+    },
+    {
+      "date": "2025-10-31",
+      "issue": "LLM-17",
+      "hours": 8.0
+    },
+    {
+      "date": "2025-11-03",
+      "issue": "LLM-28",
+      "hours": 8.0
+    },
+    {
+      "date": "2025-11-04",
+      "issue": "DOCD-34",
+      "hours": 8.0
+    },
+    {
+      "date": "2025-11-05",
+      "issue": "DOCD-33",
+      "hours": 8.0
+    },
+    {
+      "date": "2025-11-06",
+      "issue": "LLM-33",
+      "hours": 8.0
+    },
+    {
+      "date": "2025-11-07",
+      "issue": "WEBSITE-11",
+      "hours": 8.0
+    },
+    {
+      "date": "2025-11-10",
+      "issue": "WEBSITE-9",
+      "hours": 8.0
+    },
+    {
+      "date": "2025-11-11",
+      "issue": "LLM-32",
+      "hours": 8.0
+    },
+    {
+      "date": "2025-11-12",
+      "issue": "DOCD-6",
+      "hours": 7.5
+    },
+    {
+      "date": "2025-11-12",
+      "issue": "DOCD-31",
+      "hours": 0.5
+    },
+    {
+      "date": "2025-11-13",
+      "issue": "LLM-31",
+      "hours": 7.5
+    },
+    {
+      "date": "2025-11-13",
+      "issue": "DOCD-31",
+      "hours": 0.5
+    },
+    {
+      "date": "2025-11-14",
+      "issue": "LLM-17",
+      "hours": 6.5
+    },
+    {
+      "date": "2025-11-14",
+      "issue": "DOCD-31",
+      "hours": 1.5
+    },
+    {
+      "date": "2025-11-17",
+      "issue": "DOCD-5",
+      "hours": 5.0
+    },
+    {
+      "date": "2025-11-17",
+      "issue": "WEBSITE-7",
+      "hours": 3.0
+    },
+    {
+      "date": "2025-11-18",
+      "issue": "WEBSITE-10",
+      "hours": 5.0
+    },
+    {
+      "date": "2025-11-18",
+      "issue": "WEBSITE-12",
+      "hours": 3.0
+    },
+    {
+      "date": "2025-11-19",
+      "issue": "DOCD-31",
+      "hours": 5.0
+    },
+    {
+      "date": "2025-11-19",
+      "issue": "LLM-28",
+      "hours": 3.0
+    },
+    {
+      "date": "2025-11-20",
+      "issue": "DOCD-34",
+      "hours": 3.0
+    },
+    {
+      "date": "2025-11-20",
+      "issue": "DOCD-33",
+      "hours": 2.0
+    },
+    {
+      "date": "2025-11-20",
+      "issue": "LLM-33",
+      "hours": 2.0
+    },
+    {
+      "date": "2025-11-20",
+      "issue": "WEBSITE-11",
+      "hours": 1.0
+    },
+    {
+      "date": "2025-11-21",
+      "issue": "WEBSITE-7",
+      "hours": 2.0
+    },
+    {
+      "date": "2025-11-21",
+      "issue": "WEBSITE-12",
+      "hours": 2.0
+    },
+    {
+      "date": "2025-11-21",
+      "issue": "WEBSITE-11",
+      "hours": 1.0
+    },
+    {
+      "date": "2025-11-21",
+      "issue": "WEBSITE-9",
+      "hours": 1.0
+    },
+    {
+      "date": "2025-11-21",
+      "issue": "LLM-32",
+      "hours": 1.0
+    },
+    {
+      "date": "2025-11-21",
+      "issue": "LLM-28",
+      "hours": 0.5
+    }
+  ],
+  "issue_distribution": {
+    "DOCD-34": 51.2,
+    "LLM-32": 40.9,
+    "LLM-17": 30.6,
+    "DOCD-6": 15.3,
+    "DOCD-31": 15.3,
+    "LLM-31": 15.3,
+    "LLM-28": 11.5,
+    "DOCD-33": 10.2,
+    "LLM-33": 10.2,
+    "DOCD-5": 5.1,
+    "WEBSITE-11": 10.2,
+    "WEBSITE-9": 8.9,
+    "WEBSITE-7": 5.1,
+    "WEBSITE-10": 5.1,
+    "WEBSITE-12": 5.1
+  }
+}

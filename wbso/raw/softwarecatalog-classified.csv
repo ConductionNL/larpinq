@@ -1,0 +1,524 @@
+hash,author,date,repo,subject,project,confidence,automated
+42fb3ccab7bf56ff9870e42035985a50f1a64ecb,GitHub Action,2025-12-29T10:55:22+00:00,softwarecatalog,Bump version to 0.1.133,14283/119/02,low,true
+0cbf8ff179d4f04d4826260665d552fee21a5c91,Remko Huisman,2025-12-29T11:55:09+01:00,softwarecatalog,Merge pull request #150 from ConductionNL/fix/proper-eslint,14283/119/01,low,true
+a06339e670e8088fca35a2723757ac1687b72a59,Thijn,2025-12-23T14:24:01+01:00,softwarecatalog,fixed eslint,14283/119/01,low,false
+a6c51d851f63da50f92c53587cba8d36a8d37271,GitHub Action,2025-12-19T16:21:30+00:00,softwarecatalog,Bump version to 0.1.132,14283/119/02,low,true
+d054921ded6a34a1c7f84f4a190e0853dc87ae7d,Remko Huisman,2025-12-19T17:21:20+01:00,softwarecatalog,Merge pull request #149 from ConductionNL/module-versie,14283/119/02,high,true
+fb3beed78b6a445a9f06e5cc99b1f92a3ad26cce,Remko,2025-12-19T17:20:56+01:00,softwarecatalog,Added standaardVersies array,14283/119/02,high,false
+1b9013d822de988b5d4de00926a9317eb84067cd,GitHub Action,2025-12-19T16:13:25+00:00,softwarecatalog,Bump version to 0.1.131,14283/119/02,low,true
+da7a7e4b8de068dc14d202f8acb5a164f2ca6553,Remko Huisman,2025-12-19T17:13:10+01:00,softwarecatalog,Merge pull request #148 from ConductionNL/module-versie,14283/119/02,high,true
+fda326b598f4b4d1f4de94c15b7e50f489ddfc89,Remko,2025-12-19T15:06:32+01:00,softwarecatalog,Module versie update,14283/119/02,high,false
+3a3772dfaab08c60486cb3a8c5b8cced911f763f,GitHub Action,2025-12-17T12:28:18+00:00,softwarecatalog,Bump version to 0.1.130,14283/119/02,low,true
+8ccc79e80975abd7daaedca6758be025ca9a49c6,Thijn,2025-12-17T13:28:09+01:00,softwarecatalog,Merge pull request #145 from ConductionNL/feature/lint-fixes,14283/119/01,low,true
+b5944453161993df7c0e5cf77efe0cf6af1b6b26,Thijn,2025-12-17T13:27:53+01:00,softwarecatalog,better lint fix,14283/119/01,low,false
+e8ac7ea471053ece8a0fff64c4b47d5e83368e3b,Thijn,2025-12-17T13:26:33+01:00,softwarecatalog,Merge branch 'main' into feature/lint-fixes,14283/119/01,low,true
+602d04d80b1ba8afe5ca657366cc5dfe80304f2a,GitHub Action,2025-12-17T12:26:01+00:00,softwarecatalog,Bump version to 0.1.129,14283/119/02,low,true
+60d0f67de520fdabf6667641814d112ca3edf9fc,Thijn,2025-12-17T13:25:46+01:00,softwarecatalog,Merge pull request #144 from ConductionNL/feature/known-password-check,14283/119/02,low,true
+869653fa5d6df20f83ced47aebb19d8b794ea273,Thijn,2025-12-17T13:15:18+01:00,softwarecatalog,tightened up the pwned logic,14283/120/02,low,false
+be29e3a94a81e4f5411a23ac5c230f8d2fd8b30e,Thijn,2025-12-16T16:33:13+01:00,softwarecatalog,uncommented used code,14283/119/02,low,false
+e25a9a537404c9b683047f5ecb95d8bff740560a,Thijn,2025-12-16T16:30:35+01:00,softwarecatalog,I did something really dumb and fixed it,14283/119/02,low,false
+dafcbde5f68b95574d894d6769b6dba824c43898,GitHub Action,2025-12-16T12:46:34+00:00,softwarecatalog,Bump version to 0.1.128,14283/119/02,low,true
+9e8bf60d0e664bde62b3fb51b0989c95d90119e3,Remko Huisman,2025-12-16T13:46:22+01:00,softwarecatalog,Merge pull request #147 from ConductionNL/remove-kvknummer,14283/119/02,low,true
+6970fd8c7855056403ddd3fad6a9a134d8554da5,Remko,2025-12-16T13:42:44+01:00,softwarecatalog,removed KvKnummer from organisatie,14283/119/02,high,false
+9bdbd6dead08b4a3c623caa5fd3b83e1dc1cead2,GitHub Action,2025-12-15T11:18:41+00:00,softwarecatalog,Bump version to 0.1.127,14283/119/02,low,true
+3d642f7523b56d66e3aa2e7d1aaa4b473208b906,Ruben van der Linde,2025-12-15T12:18:31+01:00,softwarecatalog,Merge pull request #146 from ConductionNL/hotfix/aanbodendpoint,14283/119/02,low,true
+a0318b9b06c9d7cccd4757f008725ef23a16133d,Ruben van der Linde,2025-12-15T12:17:43+01:00,softwarecatalog,Merge remote-tracking branch 'origin/hotfix/aanbodendpoint' into hotfix/aanbodendpoint,14283/119/02,low,true
+923237af5f511225ad0a705afb7b0a7625f038e1,Ruben van der Linde,2025-12-15T12:17:35+01:00,softwarecatalog,Lets fix the parent organisation,14283/120/01,high,false
+168c724cd6456a3eea482bd1a18a7efa024abb14,SudoThijn,2025-12-11T11:34:04+01:00,softwarecatalog,last lint fix,14283/119/01,low,false
+602c1c4a0bab34d20384274aef715d9ba39e5b20,SudoThijn,2025-12-11T11:14:29+01:00,softwarecatalog,flat-config conversion + lint-fix,14283/119/01,low,false
+0575a0c741dbf5ab13db4ab7468b833305dcd7fd,Thijn,2025-12-10T17:08:19+01:00,softwarecatalog,HIBP implementation,14283/119/02,low,false
+af972d8f4fe642bc500c32bf7dfae4a919a02bf0,Thijn,2025-12-10T17:07:58+01:00,softwarecatalog,lint fix,14283/119/01,low,false
+0aabda4e1e214ad92345d63c3283321015d628f1,GitHub Action,2025-12-10T09:33:32+00:00,softwarecatalog,Bump version to 0.1.126,14283/119/02,low,true
+78e6f194ebaaed0511c580576f40e7893f5c3c5d,Robert Zondervan,2025-12-10T10:26:02+01:00,softwarecatalog,Merge pull request #143 from ConductionNL/hotfix/hardening,14283/119/02,low,true
+f6073127325521972ce8476b8ab5d2d3dde3a573,Robert Zondervan,2025-12-10T08:55:55+01:00,softwarecatalog,Hardening of gebruik endpoints,14283/119/02,low,false
+7bee29333ce7e1f45fa5cfb2518b56448021a6ee,GitHub Action,2025-12-08T14:07:27+00:00,softwarecatalog,Bump version to 0.1.125,14283/119/02,low,true
+3f59fe0cf3cc2307b3135b6a79c1d6b7ca2bc260,Robert Zondervan,2025-12-08T15:07:13+01:00,softwarecatalog,Merge pull request #142 from ConductionNL/hotfix/aanbodendpoint,14283/119/02,low,true
+8d6566aeef6565a1d5ba73beca95dbed48d283ae,Robert Zondervan,2025-12-08T15:04:59+01:00,softwarecatalog,Hotfix the hotfix,14283/119/02,low,false
+ede652a039b10f55c7c09d6a8509d0dbdc064621,GitHub Action,2025-12-08T13:37:41+00:00,softwarecatalog,Bump version to 0.1.124,14283/119/02,low,true
+4cb79d0552994ed06408beb75af5489db33f194e,Robert Zondervan,2025-12-08T14:37:29+01:00,softwarecatalog,Merge pull request #141 from ConductionNL/hotfix/aanbodendpoint,14283/119/02,low,true
+9d8d9eb3b0d66796907321ef7cda511962f5baba,Ruben van der Linde,2025-12-08T14:36:19+01:00,softwarecatalog,Remove check for register and schema,14283/119/02,medium,false
+e54980dc1d8aff3a3bd3014f0b58ab2f9b55f369,GitHub Action,2025-12-08T11:12:35+00:00,softwarecatalog,Bump version to 0.1.123,14283/119/02,low,true
+92f0f3b57d222d2f0a8b9de2a4da9a80bd506521,Ruben van der Linde,2025-12-08T12:12:25+01:00,softwarecatalog,Merge pull request #140 from ConductionNL/hotfix/aanbodendpoint,14283/119/02,low,true
+b531edc430d046a56f08d9a79e3ae1386d2dfe15,Ruben van der Linde,2025-12-08T12:11:21+01:00,softwarecatalog,Lets get a new more abstract setup,14283/119/02,low,false
+c7f3408b3147fc2478660b7ce3cb75c361d26938,Ruben van der Linde,2025-12-08T11:44:32+01:00,softwarecatalog,Exluding own organisation,14283/120/01,high,false
+5b437bb16cadd62e4d48a5d8bcc8f5903d661518,GitHub Action,2025-12-08T09:57:44+00:00,softwarecatalog,Bump version to 0.1.122,14283/119/02,low,true
+2a66186d129bbd208f9e3ee083a953cee445df93,Ruben van der Linde,2025-12-08T10:57:34+01:00,softwarecatalog,Merge pull request #139 from ConductionNL/hotfix/aanbodendpoint,14283/119/02,low,true
+c7bfb36aa32e783e89778d2540e71a19b1e09435,Ruben van der Linde,2025-12-08T10:31:31+01:00,softwarecatalog,Hotfix voor aanamen / afwijzen van aanbod,14283/119/02,low,false
+0ac11e0e5f6c923826fcf15f19e3b33cca1606f1,Ruben van der Linde,2025-12-08T10:22:44+01:00,softwarecatalog,Merge remote-tracking branch 'origin/main' into hotfix/aanbodendpoint,14283/119/02,low,true
+9dde6b2309532e82d525422d7cea860e8545296b,GitHub Action,2025-12-05T15:07:35+00:00,softwarecatalog,Bump version to 0.1.121,14283/119/02,low,true
+b31f7c862d00fbb94c97033c6b9d58ef25bc0019,Remko Huisman,2025-12-05T16:07:24+01:00,softwarecatalog,Merge pull request #137 from ConductionNL/hotfix/aanbodendpoint,14283/119/02,low,true
+f559a3480d87dba2e380e2298d40aa42afce17d1,GitHub Action,2025-12-05T14:55:40+00:00,softwarecatalog,Bump version to 0.1.120,14283/119/02,low,true
+db974b8dee640b330ba6a221a3a815955fc2c1d7,Robert Zondervan,2025-12-05T15:55:26+01:00,softwarecatalog,Merge pull request #138 from ConductionNL/hotfix/gebruiks-endpoints,14283/119/02,low,true
+99492cc35c5c174ff3ecff1575dd6716a868c1a4,GitHub Action,2025-12-05T14:50:19+00:00,softwarecatalog,Bump version to 0.1.119,14283/119/02,low,true
+f2a81581bcd22955d9b15b70328bb1eb4c850d4d,Remko Huisman,2025-12-05T15:50:09+01:00,softwarecatalog,Merge pull request #136 from ConductionNL/feature/update-module-versies,14283/119/02,high,true
+5569e87cae5c245dcc5e1e10f383be9d335eb7b9,Robert Zondervan,2025-12-05T15:50:07+01:00,softwarecatalog,Fixes from test,14283/119/02,low,false
+62f0d6c092db740f7b74b2e0e314af6e6f80af1d,Robert Zondervan,2025-12-05T15:31:30+01:00,softwarecatalog,Fix error when org has no applications,14283/120/02,medium,false
+c69099ebc2ff8249475333aef6688ececf9e9150,Ruben van der Linde,2025-12-05T15:21:13+01:00,softwarecatalog,Yolo,14283/119/02,low,false
+d621fc101adf4eae9a74351457ba7bdd6246c90a,Remko,2025-12-05T14:39:53+01:00,softwarecatalog,Updated visible text from module to applicatie,14283/119/02,high,false
+72429ca1605966c47ee5c95207ca8f152136b1a0,GitHub Action,2025-12-05T13:39:41+00:00,softwarecatalog,Bump version to 0.1.118,14283/119/02,low,true
+07f0f5098703e318f774e58c4a215a4f7a5f4d92,Remko Huisman,2025-12-05T14:39:28+01:00,softwarecatalog,Merge pull request #135 from ConductionNL/feature/update-module-versies,14283/119/02,high,true
+d61076ec7264001e9668a02480ad4d3e14170298,Remko,2025-12-05T14:30:50+01:00,softwarecatalog,Update softwarecatalogus_register,14283/119/02,high,false
+e0851277e0d5a5e98048504af2724320c042f3bd,Remko,2025-12-05T14:30:09+01:00,softwarecatalog,Merge remote-tracking branch 'origin/main' into feature/update-module-versies,14283/119/02,high,true
+eb3ed6d7152bf988aed6aca22fce5226b744d904,GitHub Action,2025-12-05T13:00:30+00:00,softwarecatalog,Bump version to 0.1.117,14283/119/02,low,true
+e92d7af03560109df04b1effe9eec748e09d6abc,Robert Zondervan,2025-12-05T14:00:18+01:00,softwarecatalog,Merge pull request #134 from ConductionNL/hotfix/gebruiks-endpoints,14283/119/02,low,true
+9ee1717ce667b2e8eed785b8aa51ba4ad3bd918c,Robert Zondervan,2025-12-05T13:59:52+01:00,softwarecatalog,Yet another style fix,14283/119/02,low,false
+4875fa0b12d3893b5607fccd7238018acb8debb4,Robert Zondervan,2025-12-05T13:56:32+01:00,softwarecatalog,Style fix,14283/119/02,low,false
+1b1c10a18ec4d4d181383190af4bcaffd65be61a,Robert Zondervan,2025-12-05T13:55:00+01:00,softwarecatalog,"Corrected use of endpoints, added deelnemers-endpoint",14283/119/02,low,false
+f9aa7c0508ce6031546b80649e127300df489ddb,GitHub Action,2025-12-05T10:58:45+00:00,softwarecatalog,Bump version to 0.1.116,14283/119/02,low,true
+eea6508e7be2b154511d59e3fa0b17b3214e71fc,Robert Zondervan,2025-12-05T11:58:32+01:00,softwarecatalog,Merge pull request #133 from ConductionNL/hotfix/gebruiks-endpoints,14283/119/02,low,true
+5b0f023861f3fcd1d7a32188f95125f496232368,Robert Zondervan,2025-12-05T11:40:36+01:00,softwarecatalog,Create endpoints for gebruik,14283/119/02,low,false
+e6fb44e943d5cab74ab4469e3bb2a4b3e993caa3,GitHub Action,2025-12-04T14:07:08+00:00,softwarecatalog,Bump version to 0.1.115,14283/119/02,low,true
+3138c9b04910d3a0dab9f9a0ed9fd297e9762c5f,Robert Zondervan,2025-12-04T15:06:56+01:00,softwarecatalog,Merge pull request #132 from ConductionNL/fix/VSC-430/Fix-create-user-flow,14283/120/01,medium,true
+7f0ca61496056695fedd90a09d9813219e14ae05,Robert Zondervan,2025-12-04T13:23:20+01:00,softwarecatalog,Fix creating the user by assigning the user to the appropriate organisation,14283/120/01,high,false
+01da6aea998157631aecbcd05389d7a61253b3c9,Ruben van der Linde,2025-12-03T15:50:26+01:00,softwarecatalog,Fixing the background checks,14283/120/02,high,false
+d0aca98fc739189a3168441e1c9b792e17983bf4,Ruben van der Linde,2025-12-03T14:06:51+01:00,softwarecatalog,Merge remote-tracking branch 'origin/main' into development,14283/119/02,low,true
+81b5472a6d33deee24e464c3a405a37619de7722,GitHub Action,2025-11-28T11:44:48+00:00,softwarecatalog,Bump version to 0.1.114,14283/119/02,low,true
+8c4972cbb287c81007e2c13a431df87a01a0ce6e,Remko Huisman,2025-11-28T12:44:35+01:00,softwarecatalog,Merge pull request #130 from ConductionNL/feature/update-module-versies,14283/119/02,high,true
+20aef8224fc205bb49580ac8d9256511e5823904,Remko,2025-11-28T12:01:56+01:00,softwarecatalog,Fixed dienst not setting relation,14283/119/02,low,false
+f3b22d7d2c2163063457d92af1959d647a21d1b1,GitHub Action,2025-11-28T08:41:59+00:00,softwarecatalog,Bump version to 0.1.113,14283/119/02,low,true
+d58f5d8463a06af5781cd77f766a3a741f00c0be,Remko Huisman,2025-11-28T09:41:45+01:00,softwarecatalog,Merge pull request #129 from ConductionNL/feature/update-module-versies,14283/119/02,high,true
+604480a499e1c3ecfbb29c5d780b0c439a863c7b,Remko,2025-11-28T09:21:38+01:00,softwarecatalog,Added inversed by to moduleVersie on module,14283/119/02,high,false
+e5c6291808ce48fa713d7e7aa2b84d101697c63a,Ruben van der Linde,2025-11-24T13:51:09+01:00,softwarecatalog,Fixing some backend logging errors,14283/120/02,medium,false
+b977f9944709298cbbd0e09df70b0195e1cf0583,GitHub Action,2025-11-15T15:41:02+00:00,softwarecatalog,Bump version to 0.1.112,14283/119/02,low,true
+4343d8a17c5e4759d54f5f905cb6e6bbebccb4cb,Ruben van der Linde,2025-11-15T16:40:51+01:00,softwarecatalog,Merge pull request #128 from ConductionNL/development,14283/119/02,low,true
+94e8e473b21a7690811738ef347be599ac910f14,Ruben van der Linde,2025-11-15T16:40:24+01:00,softwarecatalog,Testing other open register routes,14283/119/02,medium,false
+a117a8af3abd856c7e25645abc9b6381fca2ea5f,Ruben van der Linde,2025-11-15T16:38:27+01:00,softwarecatalog,Merge remote-tracking branch 'origin/main' into development,14283/119/02,low,true
+d85f4c4fdb89458188ab6fa59c4380d24149b480,GitHub Action,2025-11-15T14:32:16+00:00,softwarecatalog,Bump version to 0.1.111,14283/119/02,low,true
+7b5d662fcf149ac4ad4a3ec34ef99f614853812d,Ruben van der Linde,2025-11-15T15:32:03+01:00,softwarecatalog,Merge pull request #126 from ConductionNL/development,14283/119/02,low,true
+b5cb730d81bd19e8f3e8ce5a54b463230fcabb9f,Ruben van der Linde,2025-11-15T15:31:49+01:00,softwarecatalog,Let keep the old file as backup,14283/119/02,low,false
+42f586cd666d97987d72baf688dc357f8f076c00,Ruben van der Linde,2025-11-15T15:29:54+01:00,softwarecatalog,Rename the config file,14283/120/01,low,false
+1484ca71788f4e0b68655d857f3d08ee9fc50933,GitHub Action,2025-11-14T14:01:14+00:00,softwarecatalog,Bump version to 0.1.110,14283/119/02,low,true
+a3d2a8628cb077e1977051fbd858ce446c92d8e6,Ruben van der Linde,2025-11-14T15:01:04+01:00,softwarecatalog,Merge pull request #125 from ConductionNL/development,14283/119/02,low,true
+fa3d9a1fdc9a6a28bc1b8c7e89b70b6d68d3a8bd,Ruben van der Linde,2025-11-14T15:00:15+01:00,softwarecatalog,Lets test the new configuration route,14283/119/02,low,false
+9bd48050727e2856b574fdc77075dfdd3df030f3,GitHub Action,2025-11-06T15:23:14+00:00,softwarecatalog,Bump version to 0.1.109,14283/119/02,low,true
+49cca57c3ab0ed494a9b27a99c9ef2fdc80a9d30,Ruben van der Linde,2025-11-06T16:23:03+01:00,softwarecatalog,Merge pull request #124 from ConductionNL/development,14283/119/02,low,true
+d3304e9bee5b43b5fcff7a00e28d2a8b8f47d429,Ruben van der Linde,2025-11-06T14:39:43+01:00,softwarecatalog,Merge pull request #123 from ConductionNL/feature/dataverkenning,14283/119/02,low,true
+0f5a02930e544975cc8bf21c01aec52a0af876d9,Ruben van der Linde,2025-11-06T14:39:09+01:00,softwarecatalog,Lets up the schemas,14283/119/02,medium,false
+e2e53d751cab942c4fbb6631c2beb62f64567e81,Ruben van der Linde,2025-11-05T12:40:31+01:00,softwarecatalog,Updating the registers with the new schema specs,14283/119/02,medium,false
+ea304683540e88b1efb589256cae29b2031ab7a3,GitHub Action,2025-11-05T07:52:55+00:00,softwarecatalog,Bump version to 0.1.108,14283/119/02,low,true
+0181803b0a8e28ef4ffb476b4ab81bb6ac91ebcc,Remko Huisman,2025-11-05T08:52:42+01:00,softwarecatalog,Merge pull request #122 from ConductionNL/koppeling-change,14283/119/02,low,true
+d3cd5b240cd17fadb3776b89e6acfbfcc280cebc,Remko,2025-11-03T16:18:27+01:00,softwarecatalog,Updated moduleB to ensure that it can be a module or a element,14283/119/02,high,false
+1036654f80b8490d8865d5f1b747ac65b6a23b7c,GitHub Action,2025-10-30T10:20:39+00:00,softwarecatalog,Bump version to 0.1.107,14283/119/02,low,true
+8e7eaf7ac75bc3b588c86bc9d08f9615f93ffced,Ruben van der Linde,2025-10-30T11:20:26+01:00,softwarecatalog,Merge pull request #121 from ConductionNL/development,14283/119/02,low,true
+919697e96ce46798b96a64508fd4e8242244347b,Ruben van der Linde,2025-10-30T11:16:32+01:00,softwarecatalog,Lets properly setup the new endpoint for koppelingen and gebruik,14283/119/02,low,false
+57d3797acf5d6e104999629494454ad8f26d5184,GitHub Action,2025-10-28T06:47:17+00:00,softwarecatalog,Bump version to 0.1.106,14283/119/02,low,true
+db15a27aef62b76bae5f649757c4170a7fd3bd1b,Ruben van der Linde,2025-10-28T07:47:07+01:00,softwarecatalog,Merge pull request #120 from ConductionNL/development,14283/119/02,low,true
+32363d688f0c23cc907619e507cf24b4da1fc6f6,Ruben van der Linde,2025-10-28T07:37:43+01:00,softwarecatalog,Merge remote-tracking branch 'origin/development' into development,14283/119/02,low,true
+a1044a7762e74aed9ba28b2d556441202f0a697e,Ruben van der Linde,2025-10-28T07:37:31+01:00,softwarecatalog,Fixing standaarden on modules,14283/119/02,high,false
+9cebca2de877930a2ec2af6898b0665176ae427a,GitHub Action,2025-10-27T15:28:21+00:00,softwarecatalog,Bump version to 0.1.105,14283/119/02,low,true
+1b475d3d6394594d6381ac1d72925b980a63c099,Remko Huisman,2025-10-27T16:28:08+01:00,softwarecatalog,Merge pull request #119 from ConductionNL/development,14283/119/02,low,true
+5cb91efbfa008eecae3b3c0b868b7ab34cba7c14,Remko,2025-10-27T16:23:28+01:00,softwarecatalog,cleanup,14283/119/02,low,false
+14a779ae5f5290bcde395cc1e99397fcefa397c7,Remko,2025-10-27T16:22:40+01:00,softwarecatalog,Added url to complianc and made dienst type required,14283/119/02,low,false
+ab39fd66c9fad1580accc79a89b6bee3e305a660,Ruben van der Linde,2025-10-17T12:33:03+02:00,softwarecatalog,Lets add a test,14283/119/02,low,false
+0b95549c593fddf089a8828c2b514a7a5544996d,GitHub Action,2025-10-15T05:49:18+00:00,softwarecatalog,Bump version to 0.1.104,14283/119/02,low,true
+ebf213f415298bc6aa7985419f783482eacaae3f,Ruben van der Linde,2025-10-15T07:49:06+02:00,softwarecatalog,Merge pull request #118 from ConductionNL/development,14283/119/02,low,true
+bdf3bafffc4f7e1dbaf4798881fe3c0f2c6616d6,Ruben van der Linde,2025-10-15T07:48:25+02:00,softwarecatalog,Fix adding the user to the correct organisation,14283/120/01,high,false
+78e8246bf6288b74c5f4d1f754b1120b8c0a03c4,GitHub Action,2025-10-14T11:04:10+00:00,softwarecatalog,Bump version to 0.1.103,14283/119/02,low,true
+9e33520d287b7913275160850b8b411bf61aacce,Ruben van der Linde,2025-10-14T13:03:57+02:00,softwarecatalog,Merge pull request #117 from ConductionNL/development,14283/119/02,low,true
+b40bf8d6a7736f0e420cdaf97906761fb1fe21bf,Ruben van der Linde,2025-10-14T09:26:25+02:00,softwarecatalog,Lets make the type properties facatable,14283/119/02,low,false
+cb0a7753a0b9eb7b8eaf410a7e1b5e259102d2a8,GitHub Action,2025-10-11T20:17:56+00:00,softwarecatalog,Bump version to 0.1.102,14283/119/02,low,true
+234a24c469c10395669a2fca4906303bbf5f1aa0,Ruben van der Linde,2025-10-11T22:17:45+02:00,softwarecatalog,Merge pull request #116 from ConductionNL/development,14283/119/02,low,true
+b0aeba395288d7c182a35c4ddbf007a9316f41b0,Ruben van der Linde,2025-10-11T22:17:22+02:00,softwarecatalog,Fixing gebruik,14283/119/02,low,false
+8d0d29ffccfa6f224975a8eacfca6dca45e65f62,GitHub Action,2025-10-10T13:22:21+00:00,softwarecatalog,Bump version to 0.1.101,14283/119/02,low,true
+52ac9dca29794aaf005db6ec24f4809a57dc2082,Ruben van der Linde,2025-10-10T15:22:10+02:00,softwarecatalog,Merge pull request #115 from ConductionNL/development,14283/119/02,low,true
+40cc1fd2524dc02b7f168820238a5856374230f7,Ruben van der Linde,2025-10-10T15:19:53+02:00,softwarecatalog,Correct werkend endpoint voor aangeboden gebruik,14283/119/02,low,false
+1a1f6641dad3abab273726ee803bfbe8ce5a936c,GitHub Action,2025-10-08T19:17:32+00:00,softwarecatalog,Bump version to 0.1.100,14283/119/02,low,true
+998e47b579e967026cc7b75fca9f1d5f0df007ce,Ruben van der Linde,2025-10-08T21:17:19+02:00,softwarecatalog,Merge pull request #114 from ConductionNL/development,14283/119/02,low,true
+6471cc6a3e88950dd7a69c2b66b0a03e5dea338f,Ruben van der Linde,2025-10-08T21:16:52+02:00,softwarecatalog,Koppelscript voor compliancies,14283/119/02,low,false
+dce152b42173a0b16a9d78531b1e227b3cc261e1,GitHub Action,2025-10-08T12:54:36+00:00,softwarecatalog,Bump version to 0.1.99,14283/119/02,low,true
+a72dad44e6ea39aca838c2864c13ccf66a63528b,Ruben van der Linde,2025-10-08T14:54:21+02:00,softwarecatalog,Merge pull request #113 from ConductionNL/development,14283/119/02,low,true
+2ad6b8528b2204245c6a969c2ea142fafb24e16e,Ruben van der Linde,2025-10-08T14:03:04+02:00,softwarecatalog,Bit more debuging on archimate,14283/120/02,low,false
+a7cbd36d3fd4fdeedcdcf96e5084bd129469578f,GitHub Action,2025-10-07T12:31:50+00:00,softwarecatalog,Bump version to 0.1.98,14283/119/02,low,true
+873a4fd682eea5d9aa3129ca1cf13bb18adb657f,Robert Zondervan,2025-10-07T14:31:37+02:00,softwarecatalog,Merge pull request #112 from ConductionNL/development,14283/119/02,low,true
+982add57a82e53596530f32ab5f13823e8d07501,Robert Zondervan,2025-10-07T14:17:53+02:00,softwarecatalog,Fix standaarden if compliancy is not made into a related object,14283/119/02,high,false
+9a95eca3c0447689fa80ee671f327139f175250b,GitHub Action,2025-10-07T05:57:24+00:00,softwarecatalog,Bump version to 0.1.97,14283/119/02,low,true
+2e0cc398d545947678b28ad498da99e57664aa15,Ruben van der Linde,2025-10-07T07:57:12+02:00,softwarecatalog,Merge pull request #111 from ConductionNL/development,14283/119/02,low,true
+81e8774d583f1839f7f9a4a6633b86f555cbf40e,Ruben van der Linde,2025-10-07T07:56:55+02:00,softwarecatalog,Password lengt to 10 lettters,14283/119/02,low,false
+56b362afae048cff8daae08f8fde70a955ad7787,GitHub Action,2025-10-07T05:48:26+00:00,softwarecatalog,Bump version to 0.1.96,14283/119/02,low,true
+d5333f61fe6752ca1b0ae02f68b461e229b54c2c,Ruben van der Linde,2025-10-07T07:48:11+02:00,softwarecatalog,Merge pull request #110 from ConductionNL/development,14283/119/02,low,true
+2fd93fb9a5ef61724f28aedc79950070159f44b6,Ruben van der Linde,2025-10-07T07:47:53+02:00,softwarecatalog,Setting the proper organisation on contactpersoon,14283/120/01,high,false
+2802e1e5613c2a3bff11c41a56c92f51f44e9ab2,GitHub Action,2025-10-06T21:04:04+00:00,softwarecatalog,Bump version to 0.1.95,14283/119/02,low,true
+81c32c9fab44aeddfc42c0c57a61fa8023fec797,Robert Zondervan,2025-10-06T23:03:51+02:00,softwarecatalog,Merge pull request #109 from ConductionNL/development,14283/119/02,low,true
+5ba4eede9404a3e591ac81c2086d05c151fec844,Robert Zondervan,2025-10-06T17:05:36+02:00,softwarecatalog,Small fixes on module standaarden,14283/119/02,high,false
+862507c43030c029d6ab16e893bf4a508bc1ffa5,Ruben van der Linde,2025-10-06T14:23:13+02:00,softwarecatalog,getting all the standaarden,14283/119/02,high,false
+f8910d762b711ef0d89afa3446cc119ad0b0ec7f,GitHub Action,2025-10-06T09:56:20+00:00,softwarecatalog,Bump version to 0.1.94,14283/119/02,low,true
+03db3512dd73b8dbec678b81c947a5ae5d7b8e30,Ruben van der Linde,2025-10-06T11:56:08+02:00,softwarecatalog,Merge pull request #108 from ConductionNL/development,14283/119/02,low,true
+15d933ce02e00492e9e88a047ef552e5bf773b59,Ruben van der Linde,2025-10-06T11:55:36+02:00,softwarecatalog,Add Gemmatype to propererties,14283/119/02,low,false
+facab1b544ec9621225144e921f9076448b0862f,GitHub Action,2025-10-06T09:45:51+00:00,softwarecatalog,Bump version to 0.1.93,14283/119/02,low,true
+e4adf8bbdf9a04b2d96d63f130c2b20ad8b0e848,Ruben van der Linde,2025-10-06T11:45:38+02:00,softwarecatalog,Merge pull request #107 from ConductionNL/development,14283/119/02,low,true
+ad77c9265df816cb52c7b38db4eac9071b2f79e5,Ruben van der Linde,2025-10-06T11:45:12+02:00,softwarecatalog,deactivating and activating users,14283/120/01,medium,false
+c0b02309fba3b6cf6028519f0340e543bacdc6dd,Ruben van der Linde,2025-10-06T07:10:02+02:00,softwarecatalog,Merge pull request #106 from ConductionNL/main,14283/119/02,low,true
+8856dda42dd9154361997fb45c2a1825bb4aed05,Ruben van der Linde,2025-10-05T22:22:33+02:00,softwarecatalog,activating and deactivating users,14283/120/01,medium,false
+770b8150252d87f88db35dac8fc423a114fbe77e,Ruben van der Linde,2025-10-05T22:12:44+02:00,softwarecatalog,bulk user endpint,14283/120/01,medium,false
+ebd88c0292004ecb3bc785fe6f8988163e0fdbcb,GitHub Action,2025-10-05T19:07:38+00:00,softwarecatalog,Bump version to 0.1.92,14283/119/02,low,true
+714c64f4eaabeba06446e27dc1ad75d744bfa546,Ruben van der Linde,2025-10-05T21:07:28+02:00,softwarecatalog,Merge pull request #105 from ConductionNL/development,14283/119/02,low,true
+827f955a89aab06482d8b7be4f3ae637b58d09f3,Ruben van der Linde,2025-10-05T21:05:45+02:00,softwarecatalog,publish organisations,14283/120/01,high,false
+345f93649800941641bed75120c389fcd7e67038,GitHub Action,2025-10-05T10:08:27+00:00,softwarecatalog,Bump version to 0.1.91,14283/119/02,low,true
+f1fd849454ea395b44ff976d45a8983d39eeb065,Ruben van der Linde,2025-10-05T12:08:17+02:00,softwarecatalog,Merge pull request #104 from ConductionNL/development,14283/119/02,low,true
+c3344a8ae7cbefbc81aef9319bce91510e14b92d,Ruben van der Linde,2025-10-05T12:06:42+02:00,softwarecatalog,Setting the propper facating and autopublish,14283/119/02,low,false
+43059ae6d698316117d48c5b1815b96d566ab9b0,GitHub Action,2025-10-03T08:58:11+00:00,softwarecatalog,Bump version to 0.1.90,14283/119/02,low,true
+17c506c2a55d38039d5d05cda1f3d7be0720f65e,Ruben van der Linde,2025-10-03T10:58:00+02:00,softwarecatalog,Merge pull request #103 from ConductionNL/development,14283/119/02,low,true
+2928648fd096b3fa75943523cec3724b26f37dd0,Ruben van der Linde,2025-10-03T10:56:13+02:00,softwarecatalog,Workflow fix,14283/119/02,low,false
+b8847df7e33ef766c019650dd2c38c482a691d5e,GitHub Action,2025-10-03T08:51:34+00:00,softwarecatalog,Bump version to 0.1.89,14283/119/02,low,true
+0bdef2d02fca440458b8a580bff9624f7191e181,Ruben van der Linde,2025-10-03T10:51:24+02:00,softwarecatalog,Merge pull request #102 from ConductionNL/development,14283/119/02,low,true
+c5fd6fb4a5b2a429640a1e0054dea30883e6d276,Ruben van der Linde,2025-10-03T10:46:01+02:00,softwarecatalog,feat(dashboard): add Dutch translations and improve organization management info,14283/120/01,high,false
+e4d4e4888ec33dd97f8b3a31d9b9018aface88cf,GitHub Action,2025-10-01T07:08:55+00:00,softwarecatalog,Bump version to 0.1.88,14283/119/02,low,true
+08b6fc91f64d3bdce95673489677e5bce048a431,Ruben van der Linde,2025-10-01T09:08:41+02:00,softwarecatalog,Merge pull request #101 from ConductionNL/development,14283/119/02,low,true
+48cc8b024c9683dabd8778011a710032ddc389c8,Ruben van der Linde,2025-10-01T09:05:45+02:00,softwarecatalog,chore: update max Nextcloud version to 32,14283/119/02,low,false
+27a39e8fb10415f9df0371a029304f5ebb1ba317,GitHub Action,2025-09-30T01:40:21+00:00,softwarecatalog,Bump version to 0.1.87,14283/119/02,low,true
+008801fe03be3e256fde6746b8d59eed1276544f,Ruben van der Linde,2025-09-30T03:40:11+02:00,softwarecatalog,Merge pull request #100 from ConductionNL/development,14283/119/02,low,true
+e3c58585e4011979c77a1c1387bedcf306810684,Ruben van der Linde,2025-09-30T03:14:18+02:00,softwarecatalog,feat: add Nextcloud 32 support,14283/119/01,medium,false
+68fe6659f8bbc289f9fbbeb46c8c0ded19ef44cf,Ruben van der Linde,2025-09-29T22:36:14+02:00,softwarecatalog,Merge pull request #99 from ConductionNL/feature/documentation-improvements,14283/119/02,low,true
+8f11dc52a0932358ac8108f42c9b58ca8d60fe7d,Ruben van der Linde,2025-09-29T21:28:40+02:00,softwarecatalog,feat(schemas): set all software catalog register schemas to searchable=true,14283/119/02,high,false
+afe71c3a23b26cec08ef3f75161abeb5dc8ba772,Ruben van der Linde,2025-09-29T11:57:09+02:00,softwarecatalog,Merge pull request #98 from ConductionNL/feature/documentation-improvements,14283/119/02,low,true
+db415c229b72b5769de74f2b5df15f2168f7542d,Ruben van der Linde,2025-09-29T11:55:49+02:00,softwarecatalog,docs: enhance README with organization management and API integration features,14283/120/01,high,false
+20e18477b43838c001360382899199835bb43c96,Ruben van der Linde,2025-09-29T11:48:37+02:00,softwarecatalog,feat: enhance organization synchronization and API improvements,14283/119/02,high,false
+d0a2880ba086fa4a4a845a4e4e1dea8601962bb4,GitHub Action,2025-09-25T09:25:43+00:00,softwarecatalog,Bump version to 0.1.86,14283/119/02,low,true
+ce2dcdf2fe7e6790fec330d1c0814065e9dd2f10,Ruben van der Linde,2025-09-25T11:25:26+02:00,softwarecatalog,Merge pull request #97 from ConductionNL/development,14283/119/02,low,true
+f858d0a79d0735a2715f1bc8f5b119b4c4f8c3b5,Ruben van der Linde,2025-09-25T10:50:56+02:00,softwarecatalog,feat: implement PATCH requests for efficient partial updates,14283/119/02,low,false
+912dbd7e2ff1dcd40ad4e74403211d84c1f4e781,GitHub Action,2025-09-25T08:40:24+00:00,softwarecatalog,Bump version to 0.1.85,14283/119/02,low,true
+895645746ef30a3d27e96195f58a9eb8431fd1e2,Ruben van der Linde,2025-09-25T10:40:13+02:00,softwarecatalog,Merge pull request #96 from ConductionNL/development,14283/119/02,low,true
+8ce51ac93d29b47243c880bdfa76ad9abf06d797,Ruben van der Linde,2025-09-25T10:35:34+02:00,softwarecatalog,fix: convert comma-separated _extend to multiple _extend[] parameters,14283/119/01,medium,false
+5fd002bf5babe04dbc850e2b366bbe23f1711968,Ruben van der Linde,2025-09-25T10:33:47+02:00,softwarecatalog,refactor: remove frontend filtering and trust API response,14283/119/02,high,false
+c4891e2c7ebd53c0ba2e6fa9caccff25ca69ab12,Ruben van der Linde,2025-09-25T10:29:47+02:00,softwarecatalog,fix: make frontend filtering case-insensitive for status values,14283/119/02,high,false
+6d3380a5da40b022e8a00ba053a5749759080eb1,Ruben van der Linde,2025-09-25T10:22:07+02:00,softwarecatalog,fix: standardize status values to use 'Concept' with uppercase,14283/120/02,low,false
+881b8771da6d97eed37627ea3dfee436c3a177ef,GitHub Action,2025-09-25T06:06:25+00:00,softwarecatalog,Bump version to 0.1.84,14283/119/02,low,true
+ae2c4f76d37f235ef06bf582e5fee8e07444f62d,Ruben van der Linde,2025-09-25T08:06:15+02:00,softwarecatalog,Merge pull request #95 from ConductionNL/development,14283/119/02,low,true
+daa030c43008c6f49a223c6f81b939608b56c4a6,Ruben van der Linde,2025-09-25T07:27:35+02:00,softwarecatalog,fix: improve type selection and remove links field,14283/119/02,low,false
+c6f0ea22d87fe1ef2520a456a135c40b4c7e6574,Ruben van der Linde,2025-09-25T07:21:48+02:00,softwarecatalog,fix: resolve modal title and NcSelect issues,14283/119/02,low,false
+1d52a683aa43a424f56ae11575a24d6f6be994e1,Ruben van der Linde,2025-09-25T07:15:46+02:00,softwarecatalog,fix: improve organisation modal UX,14283/120/01,high,false
+aff8d5707bc7f0913bf3ba49c651962f26724c04,Ruben van der Linde,2025-09-25T07:07:28+02:00,softwarecatalog,fix: resolve organisation modal issues,14283/120/01,high,false
+b7f65160f48e0abe2f81fea2c18f3ca6e154bfca,Ruben van der Linde,2025-09-25T06:50:33+02:00,softwarecatalog,feat: add organisation modal to softwarecatalog OrganisatieIndex,14283/120/01,high,false
+e960c50425abfc86b36f9f3de7d60b2f6a46d6ec,Ruben van der Linde,2025-09-25T06:46:22+02:00,softwarecatalog,feat: remove Quick Actions section and add refresh button to dashboard header,14283/119/02,medium,false
+200ba77c0df06f41dda79eef5a9d4e0d29530a60,Ruben van der Linde,2025-09-25T06:26:15+02:00,softwarecatalog,feat: add comprehensive password requirements to change password modal,14283/119/02,low,false
+e875523b0153ee86df60b61613212b6382ee62da,Ruben van der Linde,2025-09-24T21:30:59+02:00,softwarecatalog,fix: ensure organization type-based groups are assigned in convertToUser API,14283/120/01,high,false
+b2be7a91185b410ea6fc24fb94de2da50bfc4d08,Ruben van der Linde,2025-09-24T21:26:24+02:00,softwarecatalog,feat: improve organization activation and contactpersonen management,14283/120/01,high,false
+72ed270efa2d3dd94f1ac830d0a6bcb4269f1d7a,GitHub Action,2025-09-24T14:16:37+00:00,softwarecatalog,Bump version to 0.1.83,14283/119/02,low,true
+b6679aeb4c4375e2cedf9d8e3e646240db6e85f6,Ruben van der Linde,2025-09-24T16:16:23+02:00,softwarecatalog,Merge pull request #94 from ConductionNL/development,14283/119/02,low,true
+b30a74cc9542e6c35b7d86131faa3b249bf75306,Ruben van der Linde,2025-09-24T16:11:58+02:00,softwarecatalog,feat: improve organization activation and contactpersonen management,14283/120/01,high,false
+85f62ff78163ec55d3feaa7cd75ad1d8f3e32d4c,Ruben van der Linde,2025-09-24T08:42:23+02:00,softwarecatalog,Merge pull request #93 from ConductionNL/chore/update-schema-versions,14283/119/02,medium,true
+c04f3ed845f42a311ac5b9b5365aeaa35fa8e7fb,Ruben van der Linde,2025-09-24T06:53:15+02:00,softwarecatalog,chore: update all schema versions by incrementing patch version,14283/119/02,medium,false
+7d30049d8ac3751fc04c7a158903abcbd5d24c43,GitHub Action,2025-09-23T23:24:15+00:00,softwarecatalog,Bump version to 0.1.82,14283/119/02,low,true
+87e2410851af1bcc40b34347acde5edcd691f028,Ruben van der Linde,2025-09-24T01:24:03+02:00,softwarecatalog,Merge pull request #92 from ConductionNL/feature/update-oas-file,14283/119/02,low,true
+f50b9f06100640083d032ca49b1a06b067fb4796,Ruben van der Linde,2025-09-24T01:18:03+02:00,softwarecatalog,fix: update facetable properties for SOLR DocValues optimization,14283/119/02,high,false
+6a4ac8daa22854e6f795c2037012b13c2ff2b81b,Ruben van der Linde,2025-09-24T00:26:38+02:00,softwarecatalog,hotfix: update settings configuration and remove deprecated component,14283/120/01,low,false
+848f3a04078f94aec062defa17709b0839caea8c,GitHub Action,2025-09-23T16:43:57+00:00,softwarecatalog,Bump version to 0.1.81,14283/119/02,low,true
+5a3e96511db0d957522ecdff0fb6cafaabb7bf63,Remko Huisman,2025-09-23T18:43:43+02:00,softwarecatalog,Merge pull request #86 from ConductionNL/remko48-patch-1,14283/119/02,low,true
+a1b2f0bf0f4a338fddc84a63653cf0702dc92bbe,Remko,2025-09-23T18:43:17+02:00,softwarecatalog,data source update,14283/119/02,high,false
+14b02a562cbed3744a7fc8d9fd2c8f0c93fa58ca,Remko,2025-09-23T18:41:36+02:00,softwarecatalog,Updated register,14283/119/02,medium,false
+135e1ae494b06a8b39aab058b5909ab8573119b5,Remko,2025-09-23T18:41:24+02:00,softwarecatalog,Merge remote-tracking branch 'origin/main' into remko48-patch-1,14283/119/02,low,true
+56faeba55a43049a0556108755a8ab2e215dd51a,GitHub Action,2025-09-23T14:14:20+00:00,softwarecatalog,Bump version to 0.1.80,14283/119/02,low,true
+71b5549465cc9e9028acb9c4e380ce7c4007d3da,Remko Huisman,2025-09-23T16:14:06+02:00,softwarecatalog,Merge pull request #91 from ConductionNL/development,14283/119/02,low,true
+8efd4df36b1177f156b521897765c22aff99ec75,Barry Brands,2025-09-23T16:10:23+02:00,softwarecatalog,Merge pull request #90 from ConductionNL/fix/skip-non-string-keys,14283/119/02,low,true
+bd2416d40651dc1f9942bd263a623e6347bd99ea,Barry Brands,2025-09-23T16:06:25+02:00,softwarecatalog,Skip non string keys,14283/119/02,low,false
+2a89ccd040a403600b6bc65e732e4b203aea5d17,GitHub Action,2025-09-23T12:51:47+00:00,softwarecatalog,Bump version to 0.1.79,14283/119/02,low,true
+0693802ce2aa4db347f6c99f2377735d9524e5de,Robert Zondervan,2025-09-23T14:51:35+02:00,softwarecatalog,Merge pull request #89 from ConductionNL/hotfix/infinite-loop,14283/119/02,low,true
+2a0abf68e18f07a0c57aa03c7f8282faba4bd309,Robert Zondervan,2025-09-23T14:42:05+02:00,softwarecatalog,fix infinite loop on publishing org,14283/119/02,low,false
+8e283acde9132055b1baaf4b29192566a9496f47,GitHub Action,2025-09-23T12:27:36+00:00,softwarecatalog,Bump version to 0.1.78,14283/119/02,low,true
+665e5976eb26e1bf04f7647dc12c7eeadcb14778,Remko Huisman,2025-09-23T14:27:24+02:00,softwarecatalog,Merge pull request #88 from ConductionNL/development,14283/119/02,low,true
+7fecdee6028849d8768e298175b2a92ee4f90bd6,Remko Huisman,2025-09-23T14:24:49+02:00,softwarecatalog,Merge pull request #87 from ConductionNL/org-fix,14283/119/02,low,true
+9ffb0074f3b9f75354902071c4f0d69c959475d8,Remko,2025-09-23T14:24:13+02:00,softwarecatalog,Set organisation fetch to database. And linting,14283/120/01,high,false
+8f082a48cf6a3deb91d6b7de81ce8775a7f156da,Remko Huisman,2025-09-19T17:06:18+02:00,softwarecatalog,Update softwarecatalogus_register.json,14283/119/02,high,false
+31f199efb57ee03d5d44f14d5c380a4533c886d8,Barry Brands,2025-09-18T15:14:08+02:00,softwarecatalog,Merge pull request #85 from ConductionNL/fix/generate-pw,14283/119/02,low,true
+c1be1be806f9ab27b568e2e6f0156466183aeca7,Barry Brands,2025-09-18T15:11:05+02:00,softwarecatalog,Fixes for creating user through eventlistener,14283/120/01,medium,false
+0ea1fee484249db48ea514411b40ff6a5a0516bf,Barry Brands,2025-09-18T11:02:28+02:00,softwarecatalog,Fix test background job,14283/120/02,high,false
+1225951cf6998c870d196efac4657ed6562502de,Barry Brands,2025-09-17T10:28:25+02:00,softwarecatalog,Generate pw for contact person,14283/119/02,low,false
+db1fd635b1c282e4cdc693ae346363b69d697b6a,GitHub Action,2025-09-14T10:51:36+00:00,softwarecatalog,Bump version to 0.1.77,14283/119/02,low,true
+38aa4d27513284827850cf0c997764386292aa54,Ruben van der Linde,2025-09-14T12:51:28+02:00,softwarecatalog,Merge pull request #84 from ConductionNL/development,14283/119/02,low,true
+618d557d75d3d1d2e2e104132ae1cffd21b80728,Ruben van der Linde,2025-09-14T12:51:06+02:00,softwarecatalog,Merge pull request #83 from ConductionNL/hotfix/activating-organisations,14283/120/01,high,true
+1ced890e211a6ae55aad7dc70faaf585bdb6a286,Ruben van der Linde,2025-09-14T11:22:49+02:00,softwarecatalog,Fixed the default organisation issue,14283/120/01,high,false
+8487ccf1f626661081e5b20db63753f6e28b33e9,GitHub Action,2025-09-08T10:39:51+00:00,softwarecatalog,Bump version to 0.1.76,14283/119/02,low,true
+c41eb9f00d9a0f1d064a33d61f6c184f3b7aa019,Ruben van der Linde,2025-09-08T12:39:41+02:00,softwarecatalog,Merge pull request #82 from ConductionNL/hotfix/activating-organisations,14283/120/01,high,true
+10b3c9895cf7d288e55cb96e5595e00d8a1c774c,Ruben van der Linde,2025-09-08T12:38:36+02:00,softwarecatalog,Make Contactpersoonen be properly owned,14283/119/02,low,false
+dde13ca418e4c6b89697b44de11686db7985b31a,Ruben van der Linde,2025-09-08T12:33:22+02:00,softwarecatalog,Make organisaties own themself,14283/119/02,high,false
+d5b81fd5f2f6060d7ac177054e50906a684e5b7d,Ruben van der Linde,2025-09-04T14:36:21+02:00,softwarecatalog,Verder op aanbod en gebruik,14283/119/02,low,false
+2bf1014d7d5067ac315a9ed2ea89469f5b43b3b7,Ruben van der Linde,2025-09-04T12:15:51+02:00,softwarecatalog,Voorereiding op gebruik accepteren,14283/119/02,low,false
+81ede67b21c79d65cef25520cdbb1b79a1de1fd5,Ruben van der Linde,2025-09-04T07:20:20+02:00,softwarecatalog,Drop required fields,14283/119/02,low,false
+6030d13f8b46d706da83d7e4ff91c150575fd17b,GitHub Action,2025-09-03T08:16:40+00:00,softwarecatalog,Bump version to 0.1.75,14283/119/02,low,true
+cfccf3f246d5134e2785abaa4a7e9a9b62f014d3,Ruben van der Linde,2025-09-03T10:16:25+02:00,softwarecatalog,Merge pull request #81 from ConductionNL/hotfix/activating-organisations,14283/120/01,high,true
+3aba21fd16cfe1dac12a680f3e47e05bc23aa98f,Ruben van der Linde,2025-09-03T10:15:59+02:00,softwarecatalog,Contactpersoon schema updates,14283/119/02,medium,false
+27c74267030285acf4983b8d0f259a18dd398fa4,GitHub Action,2025-09-02T11:25:13+00:00,softwarecatalog,Bump version to 0.1.74,14283/119/02,low,true
+023b833434f840702c20705057933eb8f0c9fb68,Ruben van der Linde,2025-09-02T13:25:00+02:00,softwarecatalog,Merge pull request #79 from ConductionNL/hotfix/activating-organisations,14283/120/01,high,true
+0992b167d3fae215777a05aea845dcdc8aee91cb,Ruben van der Linde,2025-09-02T13:24:26+02:00,softwarecatalog,Lets update our group managment,14283/120/01,medium,false
+5843b98437f00d997f527f918824783a55903d1a,Ruben van der Linde,2025-09-02T12:52:35+02:00,softwarecatalog,Remove error_log,14283/120/02,medium,false
+7b7809b5111cd53ccfc65c676fabbfc33f4b20c3,Ruben van der Linde,2025-09-02T12:35:56+02:00,softwarecatalog,do not use error_log!,14283/120/02,medium,false
+22218b413a464b4e9b3ced809ec9c2203433a625,GitHub Action,2025-09-02T04:00:53+00:00,softwarecatalog,Bump version to 0.1.73,14283/119/02,low,true
+9130c8515b996989f8363aa16b742f5738281b38,Ruben van der Linde,2025-09-02T06:00:40+02:00,softwarecatalog,Merge pull request #78 from ConductionNL/hotfix/activating-organisations,14283/120/01,high,true
+29f66cf14611ff3fe1095d26e17f48504e1b3c3b,Ruben van der Linde,2025-09-02T06:00:03+02:00,softwarecatalog,Small import fixes,14283/119/02,high,false
+c45a387a5eed9e74885026a932897b7cdba57475,GitHub Action,2025-09-02T03:31:50+00:00,softwarecatalog,Bump version to 0.1.72,14283/119/02,low,true
+0ab423c866fbd4e6dbea1448dadef5da3aed44ac,Ruben van der Linde,2025-09-02T05:31:40+02:00,softwarecatalog,Merge pull request #77 from ConductionNL/hotfix/activating-organisations,14283/120/01,high,true
+20d5db7d750ff3094210d640f383bd6a963bd693,Ruben van der Linde,2025-09-02T05:31:09+02:00,softwarecatalog,Found another harcoded schema,14283/119/02,medium,false
+b939f6e8ce8bafe856e7221c0ca43c5963fb2cc0,Ruben van der Linde,2025-09-02T05:07:24+02:00,softwarecatalog,Found a couple more,14283/119/02,low,false
+0280645f7a66f926533f66d7d5e0b65c03a942ae,GitHub Action,2025-09-02T03:06:51+00:00,softwarecatalog,Bump version to 0.1.71,14283/119/02,low,true
+356d2d57b4ccb8f77c6749b72c975f4d18c50b8d,Ruben van der Linde,2025-09-02T05:06:41+02:00,softwarecatalog,Merge pull request #76 from ConductionNL/hotfix/activating-organisations,14283/120/01,high,true
+2f3f3f9fc09e867d64bea73df4027fda297adc38,Ruben van der Linde,2025-09-02T05:05:41+02:00,softwarecatalog,Lets drop some more hardcoded ids,14283/119/02,low,false
+3b621e2d2b8aed04b4274e9963353cd788454c40,GitHub Action,2025-09-02T02:25:24+00:00,softwarecatalog,Bump version to 0.1.70,14283/119/02,low,true
+f28275dba6258ccddb4abf563ac580c026f514f3,Ruben van der Linde,2025-09-02T04:25:12+02:00,softwarecatalog,Merge pull request #75 from ConductionNL/hotfix/activating-organisations,14283/120/01,high,true
+f0a176d4ccd27e42ebaae3b52dcd1e70d9c000b9,Ruben van der Linde,2025-09-02T04:24:25+02:00,softwarecatalog,Fixing the store,14283/119/02,low,false
+3f62041a5d3df8f22ca23de4f1c2c46c82e35ea0,Ruben van der Linde,2025-09-02T04:16:24+02:00,softwarecatalog,Fixinf the  schema mapping of the amef import,14283/119/02,high,false
+1b3c51dd2b4d8d751debdcd49c159be20dc5e88b,GitHub Action,2025-09-02T00:05:25+00:00,softwarecatalog,Bump version to 0.1.69,14283/119/02,low,true
+f90cf451ba69f0f108bf27934b1c3581bb6b372f,Ruben van der Linde,2025-09-02T02:05:12+02:00,softwarecatalog,Merge pull request #74 from ConductionNL/hotfix/activating-organisations,14283/120/01,high,true
+56d87ac1bb844db58f0e231efb927852b71b33c2,Ruben van der Linde,2025-09-02T02:04:36+02:00,softwarecatalog,Working on export Service,14283/119/02,high,false
+b50899a861aff16f45d0ca655d5f022658ad25c6,GitHub Action,2025-09-01T19:48:05+00:00,softwarecatalog,Bump version to 0.1.68,14283/119/02,low,true
+3a428d743f40a6f60eb3beb47c2e84052ba8240e,Ruben van der Linde,2025-09-01T21:47:53+02:00,softwarecatalog,Merge pull request #73 from ConductionNL/hotfix/activating-organisations,14283/120/01,high,true
+1d79b018559b49cb5a422d73c2b3992c81628b5a,Ruben van der Linde,2025-09-01T21:47:20+02:00,softwarecatalog,Error reports,14283/119/01,medium,false
+edfc2378697cdbb837fd687310f22888cd55dbef,GitHub Action,2025-09-01T19:18:01+00:00,softwarecatalog,Bump version to 0.1.67,14283/119/02,low,true
+730528008c0c09bdc3a08392950ddf225ce0a253,Ruben van der Linde,2025-09-01T21:17:51+02:00,softwarecatalog,Merge pull request #72 from ConductionNL/hotfix/activating-organisations,14283/120/01,high,true
+6be2cb49f74405a62b3f43f70cbabd2e99c3423f,Ruben van der Linde,2025-09-01T21:07:49+02:00,softwarecatalog,Let tell the user where the errors are from,14283/120/01,medium,false
+8e79f6df764ad99c95875f3f4d237f70440070e4,GitHub Action,2025-09-01T16:15:31+00:00,softwarecatalog,Bump version to 0.1.66,14283/119/02,low,true
+dfc130826cd75f0f5c6d83a539c1745a8fd761fc,Ruben van der Linde,2025-09-01T18:15:19+02:00,softwarecatalog,Merge pull request #71 from ConductionNL/hotfix/activating-organisations,14283/120/01,high,true
+a7e8e10b77a74bbc3abf8f9d52d508c833706242,Ruben van der Linde,2025-09-01T18:13:28+02:00,softwarecatalog,Set proper viewNode property,14283/119/02,high,false
+b6f704bffb419de995ae3f927b0ffa7e8f24c99d,GitHub Action,2025-09-01T14:03:59+00:00,softwarecatalog,Bump version to 0.1.65,14283/119/02,low,true
+1d7fb01bca3544e730e01fa6f9c1ac2e545a0df8,Ruben van der Linde,2025-09-01T16:03:50+02:00,softwarecatalog,Merge pull request #70 from ConductionNL/hotfix/activating-organisations,14283/120/01,high,true
+506068d27f2669b51e6215d3ac3c641eeab012b9,Ruben van der Linde,2025-09-01T16:02:50+02:00,softwarecatalog,Optimalisation round,14283/119/02,low,false
+e26e0b18d30b2bcb53f0c9d808e611a80f6374c9,Ruben van der Linde,2025-09-01T14:12:15+02:00,softwarecatalog,Hotfix hardcoded id's,14283/119/02,low,false
+38f5ab0adb23776144539d8047c6d5beac9da41c,GitHub Action,2025-08-29T08:12:20+00:00,softwarecatalog,Bump version to 0.1.64,14283/119/02,low,true
+0d93236084e783b793536e6fcc7380ba9a69590e,Ruben van der Linde,2025-08-29T10:12:07+02:00,softwarecatalog,Merge pull request #69 from ConductionNL/hotfix/activating-organisations,14283/120/01,high,true
+167ebb5bb00df7ab98eda925b9101bfb30523b74,Ruben van der Linde,2025-08-29T10:11:31+02:00,softwarecatalog,Making the ui less confussing,14283/119/02,low,false
+410615544a7c3b371fdeee31effc55ea60935516,GitHub Action,2025-08-29T07:49:23+00:00,softwarecatalog,Bump version to 0.1.63,14283/119/02,low,true
+a467e3db960b314d42c42523f99bc2367b58101d,Ruben van der Linde,2025-08-29T09:49:13+02:00,softwarecatalog,Merge pull request #68 from ConductionNL/hotfix/activating-organisations,14283/120/01,high,true
+10dfb2ec341ef380e8eab68754d3f2ed0e52659a,Ruben van der Linde,2025-08-29T09:48:24+02:00,softwarecatalog,Lex fix the auto configure,14283/120/01,low,false
+0192ac5cbbf96d4c691705a533fef9dffb97679c,GitHub Action,2025-08-28T23:59:47+00:00,softwarecatalog,Bump version to 0.1.62,14283/119/02,low,true
+1b79f0c775220e010616c5e13a31f3ce31dcd90c,Ruben van der Linde,2025-08-29T01:59:34+02:00,softwarecatalog,Merge pull request #67 from ConductionNL/hotfix/activating-organisations,14283/120/01,high,true
+2bb7cdfb9542c20d88cf66b2e45c68e0138b2f5b,Ruben van der Linde,2025-08-29T01:58:41+02:00,softwarecatalog,Update archimate xport for new saveObjects method,14283/119/01,medium,false
+551007d991bfb1df4fab4310a0b72da10b02b03e,GitHub Action,2025-08-28T15:19:19+00:00,softwarecatalog,Bump version to 0.1.61,14283/119/02,low,true
+c979920beb67aa054c279ef00b5caaddfc393073,Ruben van der Linde,2025-08-28T17:19:08+02:00,softwarecatalog,Merge pull request #66 from ConductionNL/hotfix/activating-organisations,14283/120/01,high,true
+e9d0d70b2c3ff14a1d2fb1b82330630e2450493d,Ruben van der Linde,2025-08-28T17:18:38+02:00,softwarecatalog,Endpoint hotfix,14283/119/02,low,false
+67685a3c54aebdb1d313b578d7a7c1874c739500,GitHub Action,2025-08-28T13:37:48+00:00,softwarecatalog,Bump version to 0.1.60,14283/119/02,low,true
+0c1f0483f4b485541dc94490e87e33580d6af9a1,Ruben van der Linde,2025-08-28T15:37:38+02:00,softwarecatalog,Merge pull request #65 from ConductionNL/hotfix/activating-organisations,14283/120/01,high,true
+d65b67fa097e1de91687027af6c9e6e87ba5a402,Ruben van der Linde,2025-08-28T15:37:09+02:00,softwarecatalog,Add views endpoint,14283/119/02,high,false
+84193752d28aa229381bbb99a438bdbcc259106a,Ruben van der Linde,2025-08-28T15:34:27+02:00,softwarecatalog,Archimate enrichment,14283/119/02,low,false
+c9c27393e5b0ed00ac989eab6a09a71c0e6cf626,Ruben van der Linde,2025-08-28T10:38:45+02:00,softwarecatalog,Lets auto fix gebruik objecten,14283/119/02,low,false
+41fa9f8de380884c40986c8395afcaa73e62fe01,GitHub Action,2025-08-28T01:08:06+00:00,softwarecatalog,Bump version to 0.1.59,14283/119/02,low,true
+1ee8680c5bddc89bbc4d8780f1bfb191ca2d08b1,Ruben van der Linde,2025-08-28T03:07:55+02:00,softwarecatalog,Merge pull request #64 from ConductionNL/hotfix/activating-organisations,14283/120/01,high,true
+a7eb75b9a01b9461ca42ebd7ffc24287b4873c05,Ruben van der Linde,2025-08-28T03:01:12+02:00,softwarecatalog,Remove error_log,14283/120/02,medium,false
+cb59957d98da39074d2f26e219c7820df86bb8f8,GitHub Action,2025-08-28T00:52:02+00:00,softwarecatalog,Bump version to 0.1.58,14283/119/02,low,true
+e97df5b389308a7c071d9a5b66c050db416c8b7d,Ruben van der Linde,2025-08-28T02:51:51+02:00,softwarecatalog,Merge pull request #63 from ConductionNL/hotfix/activating-organisations,14283/120/01,high,true
+2855d00aa07327d733eb23efb7d2b8c8efd39878,Ruben van der Linde,2025-08-28T02:47:20+02:00,softwarecatalog,Schema update,14283/119/02,medium,false
+8da2589b25475378f96fc1cd8b5ec2a6952f7a6d,Ruben van der Linde,2025-08-28T02:43:34+02:00,softwarecatalog,Merge remote-tracking branch 'origin/remko48-patch-1' into hotfix/activating-organisations,14283/120/01,high,true
+2da36d1cdbc2c6a5c36a642f4a64ecedd7d74831,Ruben van der Linde,2025-08-28T02:43:05+02:00,softwarecatalog,All of the fixes on all of the events,14283/120/02,medium,false
+8307cf95c60d539072302a0f9c1aaf6a4a3a5f6c,Remko Huisman,2025-08-27T18:03:04+02:00,softwarecatalog,Update softwarecatalogus_register.json,14283/119/02,high,false
+7b74da3e2098b095be72d2b46fa025ac73d72be3,GitHub Action,2025-08-27T06:13:41+00:00,softwarecatalog,Bump version to 0.1.57,14283/119/02,low,true
+5d5927d2e34cba13b1d026d2c3e9021c52849fc3,Ruben van der Linde,2025-08-27T08:13:31+02:00,softwarecatalog,Merge pull request #61 from ConductionNL/hotfix/activating-organisations,14283/120/01,high,true
+3fcf29f584f5e4d1d21c4a8320e4731c3f051238,Ruben van der Linde,2025-08-27T08:12:50+02:00,softwarecatalog,Optimizing the sync,14283/119/02,high,false
+81b2afa013129b079bfccad58817040f11fcd39e,GitHub Action,2025-08-26T21:43:26+00:00,softwarecatalog,Bump version to 0.1.56,14283/119/02,low,true
+bfe8f34dd907b6dbfad8f2244a86ebb980cf81e4,Ruben van der Linde,2025-08-26T23:43:12+02:00,softwarecatalog,Merge pull request #60 from ConductionNL/hotfix/activating-organisations,14283/120/01,high,true
+ce1ea9e92de2112cc2f75929aa73f85930fd9a33,Ruben van der Linde,2025-08-26T23:42:37+02:00,softwarecatalog,Hotfix: cron on objects,14283/120/02,high,false
+fe49d6712d88f99263633b58697389661d04c806,GitHub Action,2025-08-25T13:01:59+00:00,softwarecatalog,Bump version to 0.1.55,14283/119/02,low,true
+3332e0105958ddf243ff03ce84ad9ed86c08aaad,Ruben van der Linde,2025-08-25T15:01:47+02:00,softwarecatalog,Merge pull request #59 from ConductionNL/hotfix/activating-organisations,14283/120/01,high,true
+a49b43235d3e79144a62baa112a38e2958d0529f,Ruben van der Linde,2025-08-25T15:01:11+02:00,softwarecatalog,Introducing a heartbeat script,14283/119/02,low,false
+00be54c56f76ab1e897abd898a4c5a58e42dff1e,GitHub Action,2025-08-25T12:08:50+00:00,softwarecatalog,Bump version to 0.1.54,14283/119/02,low,true
+1b41a7e84cddf5c41d9415779b5c0ad3964c0437,Ruben van der Linde,2025-08-25T14:08:37+02:00,softwarecatalog,Merge pull request #58 from ConductionNL/hotfix/activating-organisations,14283/120/01,high,true
+f9417b4c6cb4a312183b03bf3e137239dbf4d4ea,Ruben van der Linde,2025-08-25T12:54:36+02:00,softwarecatalog,Fixing the archimate import,14283/119/02,high,false
+b8056251101ed698683910a5d7c54410f08df8b1,GitHub Action,2025-08-24T14:33:29+00:00,softwarecatalog,Bump version to 0.1.53,14283/119/02,low,true
+01f2e9f20535b8638ec345eda9a5d582adf0bfe8,Ruben van der Linde,2025-08-24T16:33:18+02:00,softwarecatalog,Merge pull request #57 from ConductionNL/hotfix/activating-organisations,14283/120/01,high,true
+e75d7cbf3bf488a906d427e3dcb92a1921ed47a6,Ruben van der Linde,2025-08-24T16:32:47+02:00,softwarecatalog,Finisched optimizing the amef import,14283/119/02,high,false
+6391d8ecea060d9c95872115bbdfd8641e961d34,GitHub Action,2025-08-24T13:14:39+00:00,softwarecatalog,Bump version to 0.1.52,14283/119/02,low,true
+f08262d364d27849a723f80221ad824fb7bd3af6,Ruben van der Linde,2025-08-24T15:14:28+02:00,softwarecatalog,Merge pull request #56 from ConductionNL/hotfix/activating-organisations,14283/120/01,high,true
+f8f1e1df4ef677c6b9c0e4e376733db528fb0445,Ruben van der Linde,2025-08-24T15:13:58+02:00,softwarecatalog,Start optimizing the amef import,14283/119/02,high,false
+92a7ada97bd2c88f2e38e6fbe02e53d276c090d6,Ruben van der Linde,2025-08-24T10:55:47+02:00,softwarecatalog,Work on ui and archimate import,14283/119/02,high,false
+04cbbc510625f18a264fd79e12e1b8c3ef9d9828,GitHub Action,2025-08-22T14:26:44+00:00,softwarecatalog,Bump version to 0.1.51,14283/119/02,low,true
+f4a9be32778ec03aead1210f7daec30c29ae43fe,Ruben van der Linde,2025-08-22T16:26:33+02:00,softwarecatalog,Merge pull request #55 from ConductionNL/hotfix/activating-organisations,14283/120/01,high,true
+8a3ac19c698e5e2b3bcc8ed67a7b72007b4a0ae0,Ruben van der Linde,2025-08-22T16:25:53+02:00,softwarecatalog,camelCase properties,14283/119/02,low,false
+3f4d23f4bf4e06e2de3551707265a1fa6b97450e,GitHub Action,2025-08-22T12:50:51+00:00,softwarecatalog,Bump version to 0.1.50,14283/119/02,low,true
+3ee55beb0a2351b6d06f62b8f3da7b31e436ab82,Ruben van der Linde,2025-08-22T14:50:41+02:00,softwarecatalog,Merge pull request #54 from ConductionNL/hotfix/activating-organisations,14283/120/01,high,true
+6767d0136ee2064b7d9887f4e82528986d6aed6a,Ruben van der Linde,2025-08-22T14:50:04+02:00,softwarecatalog,Logger and save  hotfix fix,14283/120/02,low,false
+6163a9a24aa9d2e1a439eaa7a19cc4930be3188a,GitHub Action,2025-08-22T06:55:00+00:00,softwarecatalog,Bump version to 0.1.49,14283/119/02,low,true
+1ba7576878d44dec12f8c588920f376f3efc60d4,Ruben van der Linde,2025-08-22T08:54:48+02:00,softwarecatalog,Merge pull request #53 from ConductionNL/hotfix/activating-organisations,14283/120/01,high,true
+9860ef5847da9de209d17c8118aa53c6093c40fc,Ruben van der Linde,2025-08-22T08:54:26+02:00,softwarecatalog,Schema versies gepatched,14283/119/02,medium,false
+00a97e41560be0b25b2e98fc82c9888a4b0646f7,GitHub Action,2025-08-22T00:21:50+00:00,softwarecatalog,Bump version to 0.1.48,14283/119/02,low,true
+f479421cf4fbd277e96489b9c465155089b7fdf7,Ruben van der Linde,2025-08-22T02:21:38+02:00,softwarecatalog,Merge pull request #52 from ConductionNL/hotfix/activating-organisations,14283/120/01,high,true
+b7802e320a61dde879e3445ad65b94718db1473a,Ruben van der Linde,2025-08-22T02:21:16+02:00,softwarecatalog,Meer schema werk,14283/119/02,medium,false
+ef0b0fdbc1f35b671d2d5e50d2ec5e2c57f8788d,Ruben van der Linde,2025-08-22T00:12:14+02:00,softwarecatalog,KLeine fixes,14283/119/02,low,false
+0c22fac6f94984d21860ae91c1aafecc39e5a8c7,GitHub Action,2025-08-21T13:07:28+00:00,softwarecatalog,Bump version to 0.1.47,14283/119/02,low,true
+ff808c7ccebd900f2ba2a2322243c7c0a21cd7a1,Ruben van der Linde,2025-08-21T15:07:16+02:00,softwarecatalog,Merge pull request #51 from ConductionNL/hotfix/activating-organisations,14283/120/01,high,true
+a080f9f5f3188d89e4af371083c5bb9477b56298,Ruben van der Linde,2025-08-21T15:06:41+02:00,softwarecatalog,Small register fix and export fix,14283/119/02,high,false
+62ce5c6ad323c74969af34de2b40ff4e5170223e,GitHub Action,2025-08-21T09:21:18+00:00,softwarecatalog,Bump version to 0.1.46,14283/119/02,low,true
+559062b0cb094ebade014748a5aa9a1446379386,Ruben van der Linde,2025-08-21T11:21:05+02:00,softwarecatalog,Merge pull request #50 from ConductionNL/hotfix/activating-organisations,14283/120/01,high,true
+75fd586fb53bf178d410da089a1d55b7a679b6ce,Ruben van der Linde,2025-08-21T11:20:36+02:00,softwarecatalog,Small changes to datamodel,14283/119/02,low,false
+5ec4a9a34c767d484ae616d6801bca5797924cb8,GitHub Action,2025-08-21T05:35:37+00:00,softwarecatalog,Bump version to 0.1.45,14283/119/02,low,true
+3be5ce45f7aaac00228eac60da43bf6f1a67133a,Ruben van der Linde,2025-08-21T07:35:26+02:00,softwarecatalog,Merge pull request #49 from ConductionNL/hotfix/activating-organisations,14283/120/01,high,true
+78ba3d0e9622aa278c90e98c46947f6dce4b1004,Ruben van der Linde,2025-08-21T07:34:36+02:00,softwarecatalog,Merge remote-tracking branch 'origin/main' into hotfix/activating-organisations,14283/120/01,high,true
+27600d07da71728280eceff5811a304b6fb49efc,Ruben van der Linde,2025-08-21T07:33:31+02:00,softwarecatalog,Opzoeken van de import fout,14283/119/02,high,false
+576d245f4159e417b37c7a794e326dd07979ee3c,GitHub Action,2025-08-20T13:58:03+00:00,softwarecatalog,Bump version to 0.1.44,14283/119/02,low,true
+b29dcf393d262996f558917878f9f94928a36fba,Ruben van der Linde,2025-08-20T15:57:52+02:00,softwarecatalog,Merge pull request #48 from ConductionNL/hotfix/activating-organisations,14283/120/01,high,true
+68b81a9a352ca4e33535bcd318d06d14ecbd8dd8,Ruben van der Linde,2025-08-20T15:56:36+02:00,softwarecatalog,Update the test script,14283/119/02,low,false
+879809f2a4e0060627c3330f0dbbdffa176a2e62,Ruben van der Linde,2025-08-20T15:55:31+02:00,softwarecatalog,Updated  softwarecatalogus register,14283/119/02,high,false
+9962beeeeb6ea41727f3365bc1b705dd06a69242,Ruben van der Linde,2025-08-20T14:45:20+02:00,softwarecatalog,Working on the amef import,14283/119/02,high,false
+ed94c21f4739b5afd0566fa13b6229761f0412f5,GitHub Action,2025-08-18T14:03:20+00:00,softwarecatalog,Bump version to 0.1.43,14283/119/02,low,true
+b856239161bb3ff7acd5d135f1d358ce7438c483,Ruben van der Linde,2025-08-18T16:03:07+02:00,softwarecatalog,Merge pull request #47 from ConductionNL/fixes/conditions,14283/119/02,low,true
+0e147b5a3dc5bdfea90eb0bf8d6eb9778cf1da31,Robert Zondervan,2025-08-18T15:46:41+02:00,softwarecatalog,Remove 'ambtenaar' and 'vng-raadpleger' from default generic usergroups,14283/120/02,high,false
+293b195d5b2d7b34f85e7747c35fa0f65fbc4837,Robert Zondervan,2025-08-18T15:22:45+02:00,softwarecatalog,A bit more efficient org checking,14283/119/02,low,false
+57655374b3353dccd63482dd212fc2cc3198a110,Robert Zondervan,2025-08-18T15:10:17+02:00,softwarecatalog,Set registers and schemas hard,14283/119/02,medium,false
+279946490fc227c07d5ddfa6acd147e671e1683f,Robert Zondervan,2025-08-18T15:09:58+02:00,softwarecatalog,Set conditions for syncs,14283/119/02,high,false
+94fbd5cb08133e13c0976b1c45a5149814db256b,GitHub Action,2025-08-14T15:14:19+00:00,softwarecatalog,Bump version to 0.1.42,14283/119/02,low,true
+bd1b43facdb7340e5a1afef530f43c3c2e49b47d,Ruben van der Linde,2025-08-14T17:14:04+02:00,softwarecatalog,Merge pull request #46 from ConductionNL/feature/organisation-sync,14283/120/01,high,true
+cdf026cece4ce7db8551ea9746f49f097ecf191e,Robert Zondervan,2025-08-14T16:35:37+02:00,softwarecatalog,Merge remote-tracking branch 'origin/main' into feature/organisation-sync,14283/120/01,high,true
+fbaa6cfa375b9602441d5c57baada54de16be262,Robert Zondervan,2025-08-14T16:34:26+02:00,softwarecatalog,Fix emailing,14283/119/02,low,false
+3eb00d659dfbde737ab0abbedf9c58c585e577ec,GitHub Action,2025-08-14T12:05:20+00:00,softwarecatalog,Bump version to 0.1.41,14283/119/02,low,true
+c476cadcd523793da4395e66fd59cba37d27f681,Robert Zondervan,2025-08-14T14:05:10+02:00,softwarecatalog,Merge pull request #45 from ConductionNL/feature/organisation-sync,14283/120/01,high,true
+4c7099adeb4b0a9f4ee23ce88853fa197bc1a299,Robert Zondervan,2025-08-14T14:00:25+02:00,softwarecatalog,Also add this new code to cron syncs,14283/120/02,high,false
+95eff06e3aeaa3d26569db1e783c0311acecd467,Robert Zondervan,2025-08-14T13:59:25+02:00,softwarecatalog,Add user to openregister organisation,14283/120/01,high,false
+905c9faa48d2697e5486dce697d9a197a2a66f33,GitHub Action,2025-08-14T06:13:03+00:00,softwarecatalog,Bump version to 0.1.40,14283/119/02,low,true
+1699a0a95d77611e4e7a6a56b5068cc93b0be76b,Ruben van der Linde,2025-08-14T08:12:53+02:00,softwarecatalog,Merge pull request #44 from ConductionNL/hotfix/activating-organisations,14283/120/01,high,true
+746aabfbeccbb7f842a9290d7aa60cffd1e22b79,Ruben van der Linde,2025-08-14T08:12:27+02:00,softwarecatalog,Organisation activation,14283/120/01,high,false
+7f5385276e2a301e90a056765fbd7d30cfe8624d,GitHub Action,2025-08-14T06:10:57+00:00,softwarecatalog,Bump version to 0.1.39,14283/119/02,low,true
+f1bab57d924b9ff74a5641b683540cd79a87441b,Ruben van der Linde,2025-08-14T08:10:44+02:00,softwarecatalog,Merge pull request #43 from ConductionNL/hotfix/activating-organisations,14283/120/01,high,true
+cdefc43d3d99c87d1de67d839ac7a05e18a5e242,Robert Zondervan,2025-08-13T17:10:18+02:00,softwarecatalog,Create users for contacts,14283/120/01,medium,false
+c0dcf406d00ebd4fe01c5fcb76421dbb46618e39,Ruben van der Linde,2025-08-13T14:52:08+02:00,softwarecatalog,Merge remote-tracking branch 'origin/main' into hotfix/activating-organisations,14283/120/01,high,true
+5c33f0b0284c33146a382aafd99ddecd45fc05b1,Ruben van der Linde,2025-08-13T14:51:28+02:00,softwarecatalog,Working on the detail pages,14283/119/02,low,false
+3c420a5b7bde0711c5c08ea9d83eeeaf32fb501d,GitHub Action,2025-08-13T12:28:05+00:00,softwarecatalog,Bump version to 0.1.38,14283/119/02,low,true
+c4a7e324efbfdb5cabe7a552092bc88f9c950d79,Robert Zondervan,2025-08-13T14:27:55+02:00,softwarecatalog,Merge pull request #42 from ConductionNL/feature/organisation-sync,14283/120/01,high,true
+2ec09497ab6d9ab1302c4d87f8f0a50cba66cc8d,Robert Zondervan,2025-08-13T13:42:51+02:00,softwarecatalog,Simplify organisation syncs,14283/120/01,high,false
+77dcb10ab46cd1819145f8d77aba1676a7b12e27,Ruben van der Linde,2025-08-13T13:07:39+02:00,softwarecatalog,Lets start our work on our custom organisation card,14283/120/01,high,false
+716e0f24d7729954d6b062690cfa61654579678d,Ruben van der Linde,2025-08-13T13:00:42+02:00,softwarecatalog,Workin on the organisation dashboard,14283/120/01,high,false
+74b87e947ba9e9749677c2d6b5fd66968541e8c7,GitHub Action,2025-08-11T19:30:24+00:00,softwarecatalog,Bump version to 0.1.37,14283/119/02,low,true
+be09247eb5d21592ed0c27841805cba17332e4c3,Ruben van der Linde,2025-08-11T21:30:13+02:00,softwarecatalog,Merge pull request #41 from ConductionNL/development,14283/119/02,low,true
+f0d1ae5ae8a6a9dc82126684e2eda1942fa0876c,Ruben van der Linde,2025-08-11T21:30:06+02:00,softwarecatalog,Merge branch 'main' into development,14283/119/02,low,true
+05203cf2d8a002a4189fbcc84d48725e898a79a6,Ruben van der Linde,2025-08-11T21:29:09+02:00,softwarecatalog,Lets up the version,14283/119/02,low,false
+f60e1819119d2886b5b2feedf8d51d4250d9cd55,GitHub Action,2025-08-11T18:11:00+00:00,softwarecatalog,Bump version to 0.1.30,14283/119/02,low,true
+5cbdc8c973bdd770c80b7ce12d215744b35c7839,Ruben van der Linde,2025-08-11T20:10:47+02:00,softwarecatalog,Merge pull request #40 from ConductionNL/development,14283/119/02,low,true
+d4372b4ce23bba06379ffe979507aaaabd5b8b1c,Ruben van der Linde,2025-08-11T20:09:54+02:00,softwarecatalog,Further fine tuning of the export service,14283/119/02,high,false
+aaf7c1a7f1809b44bd6226b42ff0d5e1724f7498,Ruben van der Linde,2025-08-10T15:00:27+02:00,softwarecatalog,Rewriting the amef import,14283/119/02,high,false
+df3637e1aff69383b8a37f0d95e85cc4a6526a21,Ruben van der Linde,2025-08-10T15:00:12+02:00,softwarecatalog,still tweeking the autoconfiguration,14283/120/01,low,false
+fd931b3649d676482d076fbd6c9a6686ab88ed0f,Ruben van der Linde,2025-08-10T11:11:13+02:00,softwarecatalog,"Revert ""Merge branch 'cursor/investigate-schema-registration-in-voorzieningen-register-f13d' into development""",14283/119/02,medium,true
+2074a1d74df42db8cd5c8654e556c517c0b21b4e,Ruben van der Linde,2025-08-10T11:06:48+02:00,softwarecatalog,Merge branch 'cursor/investigate-schema-registration-in-voorzieningen-register-f13d' into development,14283/119/02,medium,true
+d72b1dd83043d3027e61484ce95f14e24f78533d,Ruben van der Linde,2025-08-10T11:05:32+02:00,softwarecatalog,In between save,14283/119/02,low,false
+c35737e11ff7540ef21de441b5e84fa54aeea854,Cursor Agent,2025-08-10T09:03:35+00:00,softwarecatalog,Update schema mappings and add new schemas for AMEF and Voorzieningen,14283/119/02,high,false
+47dd92adedcaabb29310b9c6c4999bd4b1a76f00,Cursor Agent,2025-08-10T08:54:56+00:00,softwarecatalog,Enhance OpenRegister integration with expanded schema mapping and AMEF support,14283/119/02,high,false
+797e62f9cd2ce231f3c8b3c0ba2ba8fd8033e36d,Cursor Agent,2025-08-10T08:47:49+00:00,softwarecatalog,Update catalog entries: rename VNG Gemma to AMEF and adjust titles,14283/119/02,high,false
+8705778676a4cdc6936f94111a91ab5c83f5aac7,Cursor Agent,2025-08-10T08:30:21+00:00,softwarecatalog,Fix schema auto-configuration by searching all available schemas,14283/119/02,high,false
+b62d16f0139fbbe06ea325e4c3ab5b88440fa3b6,Ruben van der Linde,2025-08-09T19:32:49+02:00,softwarecatalog,Testing the loose endpoints,14283/119/02,low,false
+5c0ab8fd3786995775de92a52b71be1b9da97ada,Ruben van der Linde,2025-08-08T09:29:55+02:00,softwarecatalog,In between commit before we apply loose endpoints,14283/119/02,low,false
+b60206d7ad2cd68296575f9b1ac6fe902aa6ce4b,Ruben van der Linde,2025-08-07T14:34:25+02:00,softwarecatalog,Working on an exact archimate export,14283/119/02,high,false
+748a4a14dce686c9fa143ad1b08d0149c41c81f2,Ruben van der Linde,2025-08-07T13:06:59+02:00,softwarecatalog,Lets get import working :),14283/119/02,high,false
+a2254b3c45eca33e151e27cf921a1968d5c7f531,Ruben van der Linde,2025-08-05T12:58:29+02:00,softwarecatalog,Lets save before doing optimalization,14283/119/02,low,false
+104b2f45e70b788effe7b07f5be2525da4e136e7,Ruben van der Linde,2025-08-05T12:13:13+02:00,softwarecatalog,More detaild progress reports,14283/119/01,medium,false
+1393d668d539ef4c159db4972e7177237c127529,Ruben van der Linde,2025-08-05T11:50:52+02:00,softwarecatalog,Add the missing objects,14283/119/02,low,false
+00b612839fe78e6d5b77b3fd2050bfe3e377d05e,GitHub Action,2025-08-05T06:40:23+00:00,softwarecatalog,Bump version to 0.1.35,14283/119/02,low,true
+986403ae6513b59006a05f269583561dcd8496d2,Ruben van der Linde,2025-08-05T08:40:09+02:00,softwarecatalog,Merge pull request #38 from ConductionNL/development,14283/119/02,low,true
+ec10e748dbe0f6485b15d308b3297f95edaa77d5,Ruben van der Linde,2025-08-05T08:39:09+02:00,softwarecatalog,Getting the export to grap all the objects,14283/119/02,high,false
+7912af5ded13a4a15a9ade50a1820c6bc9fd8940,Ruben van der Linde,2025-08-04T15:25:58+02:00,softwarecatalog,Setting up polling n the archimate service,14283/119/02,low,false
+147460ce6b6fa32fd740e1560b04ba680969f34f,Ruben van der Linde,2025-08-04T13:33:54+02:00,softwarecatalog,Archimate testing,14283/119/02,low,false
+94788d54615913201cda703cc39bb8fbc9c7c95f,GitHub Action,2025-08-03T20:57:57+00:00,softwarecatalog,Bump version to 0.1.34,14283/119/02,low,true
+aa0f9a8476a3c712cdb65cc9721e2fb726e91c76,Ruben van der Linde,2025-08-03T22:57:46+02:00,softwarecatalog,Merge pull request #37 from ConductionNL/development,14283/119/02,low,true
+05b5ca51cc4c7db557b7e69dc159b2dd52ff4af0,Ruben van der Linde,2025-08-03T22:56:53+02:00,softwarecatalog,Fixed the archimate impoert,14283/119/02,low,false
+6d0e9b942f8f6d2b06c15cd2631366217e7d9aad,Ruben van der Linde,2025-08-03T22:12:47+02:00,softwarecatalog,Compartemalising the code,14283/119/02,low,false
+39b8f41b1dc0f0e3992a4f8d762c175aa6e11dfb,Ruben van der Linde,2025-08-03T10:21:12+02:00,softwarecatalog,Stil working an the damned cleanup,14283/119/02,low,false
+009e1df7acb00370d9db86043931f1b85e9d0bc8,GitHub Action,2025-08-01T10:31:20+00:00,softwarecatalog,Bump version to 0.1.33,14283/119/02,low,true
+f4e32dad072f919a5b803ff73b9b577703bbe962,Ruben van der Linde,2025-08-01T12:31:08+02:00,softwarecatalog,Merge pull request #36 from ConductionNL/development,14283/119/02,low,true
+d1074f2f33e100d8e2aa0c9c5d5b3d1b4324ae9b,Ruben van der Linde,2025-08-01T12:30:29+02:00,softwarecatalog,Duffe fatal error,14283/120/02,medium,false
+a7048b774de6344008cdf8f017f6c05892112eac,GitHub Action,2025-08-01T08:51:44+00:00,softwarecatalog,Bump version to 0.1.32,14283/119/02,low,true
+211455fc2b6c24da08daf5600436b023b6937c37,Ruben van der Linde,2025-08-01T10:51:32+02:00,softwarecatalog,Merge pull request #35 from ConductionNL/development,14283/119/02,low,true
+76784250c8c9afd2ae583c97dc03b106447b66e2,Ruben van der Linde,2025-08-01T10:51:04+02:00,softwarecatalog,Refactoring the config use,14283/119/01,medium,false
+69f6270b6fabf7ab5a72d1a43e0c02d6d0de03d4,GitHub Action,2025-08-01T07:11:35+00:00,softwarecatalog,Bump version to 0.1.31,14283/119/02,low,true
+7cecc7aed0cf71005b61eb2664a2b5b2fa175c06,Ruben van der Linde,2025-08-01T09:11:25+02:00,softwarecatalog,Merge pull request #34 from ConductionNL/development,14283/119/02,low,true
+5cef04824ad15f1d77f5b7260fad0cf3308e300a,Ruben van der Linde,2025-08-01T09:10:30+02:00,softwarecatalog,Lets remove backup,14283/119/02,low,false
+badc310797ddf74e77e3aa63f6ae71de001944e3,GitHub Action,2025-07-31T19:18:42+00:00,softwarecatalog,Bump version to 0.1.30,14283/119/02,low,true
+c0046b173a96943773e599e88de1c2dc06a00cfc,Ruben van der Linde,2025-07-31T21:18:32+02:00,softwarecatalog,Merge pull request #33 from ConductionNL/development,14283/119/02,low,true
+1785cf0eb59640767b26e0aa182a91724f51381d,Ruben van der Linde,2025-07-31T21:17:58+02:00,softwarecatalog,Fixed settings updates,14283/120/01,low,false
+77dec175faf47678d600d90810f095056910edb0,Ruben van der Linde,2025-07-31T20:42:22+02:00,softwarecatalog,Merge remote-tracking branch 'origin/main' into development,14283/119/02,low,true
+7168417f7d08e9039d3701eca5b35692a1e15416,GitHub Action,2025-07-31T13:48:14+00:00,softwarecatalog,Bump version to 0.1.29,14283/119/02,low,true
+11f8c86acb8d1c86d0f319c951b979f020542dc4,Ruben van der Linde,2025-07-31T15:47:59+02:00,softwarecatalog,Merge pull request #32 from ConductionNL/development,14283/119/02,low,true
+24e72fd962c2ecfe2b9b6326788dd8fbc153b287,Ruben van der Linde,2025-07-31T15:47:28+02:00,softwarecatalog,"getting anoyed on the momery issue, it that also there online?",14283/119/02,low,false
+5e8a9bc59e940104919824790353200ab6836630,Ruben van der Linde,2025-07-31T13:45:15+02:00,softwarecatalog,Pre-phpreact commit,14283/119/02,low,false
+e35c72a474d4464f0eee54a275c4507772565829,Ruben van der Linde,2025-07-31T08:17:50+02:00,softwarecatalog,Lets rebuild the amef import,14283/119/02,high,false
+3ced2c0f4638bd9f0875fe63c2e550196c737f07,Ruben van der Linde,2025-07-30T20:53:09+02:00,softwarecatalog,Add view to gemma,14283/119/02,high,false
+13272bc7ae6d9a00bb58693608ff838fcea62565,GitHub Action,2025-07-30T12:07:44+00:00,softwarecatalog,Bump version to 0.1.28,14283/119/02,low,true
+e113aecc861befa43401f16595390efa54bc5c40,Ruben van der Linde,2025-07-30T14:07:34+02:00,softwarecatalog,Merge pull request #31 from ConductionNL/development,14283/119/02,low,true
+49bdb2cbbe4a737265fc2e2eaca5ca9eb3ac6c58,Ruben van der Linde,2025-07-30T14:06:40+02:00,softwarecatalog,Lets properly configure the voorziening object,14283/120/01,low,false
+e27d494261ed0664190e3082528cd212b8a0d889,Ruben van der Linde,2025-07-30T14:00:39+02:00,softwarecatalog,Turn kwetsbaarheid back into its own object,14283/119/02,low,false
+0359e809ce42b46e0ecf0dd241b0430881558a43,GitHub Action,2025-07-30T11:54:25+00:00,softwarecatalog,Bump version to 0.1.27,14283/119/02,low,true
+ad9039a6157d87197fbb557ae7215fc14bbf061b,Ruben van der Linde,2025-07-30T13:54:11+02:00,softwarecatalog,Merge pull request #30 from ConductionNL/development,14283/119/02,low,true
+af1d5dac51fa788ec6ad3cf44640876c2263cb84,Ruben van der Linde,2025-07-30T13:50:22+02:00,softwarecatalog,Fixed missing slug,14283/119/02,low,false
+30aaa3e0852e7d1c2a810ddc6ec9864afff2f1fb,GitHub Action,2025-07-30T09:00:40+00:00,softwarecatalog,Bump version to 0.1.26,14283/119/02,low,true
+9b60c16601df49fdcd0651bb383527b6d3b8bc05,Ruben van der Linde,2025-07-30T11:00:28+02:00,softwarecatalog,Merge pull request #29 from ConductionNL/development,14283/119/02,low,true
+d766cd26c6755164ba8377524f8526bee07417ce,Ruben van der Linde,2025-07-30T10:59:19+02:00,softwarecatalog,Fix in the boot procces,14283/119/02,low,false
+817ed58f0704349a1245236f84631e6f9d2ce031,GitHub Action,2025-07-30T08:55:50+00:00,softwarecatalog,Bump version to 0.1.25,14283/119/02,low,true
+e17e399737de324d5c93f78e2d750f937382ac68,Ruben van der Linde,2025-07-30T10:55:40+02:00,softwarecatalog,Merge pull request #28 from ConductionNL/development,14283/119/02,low,true
+724b885e07e1aecbc15b8a2df4363844ece7e6b3,Ruben van der Linde,2025-07-30T10:54:22+02:00,softwarecatalog,Config hotfixes,14283/120/01,low,false
+1cd0cbe6f1e8dd91909004db2110843063908dc2,GitHub Action,2025-07-30T06:20:29+00:00,softwarecatalog,Bump version to 0.1.24,14283/119/02,low,true
+7131ad7d3cd009cd093d1150ab267e6bf4354994,Ruben van der Linde,2025-07-30T08:20:17+02:00,softwarecatalog,Merge pull request #27 from ConductionNL/development,14283/119/02,low,true
+8e53e924e3f4b56e86924dee91bba7c031c79cb1,Ruben van der Linde,2025-07-30T08:19:53+02:00,softwarecatalog,Auto configuration fix,14283/120/01,low,false
+9a2ec20eed26aaebf74435c1193499335e5ea2cf,GitHub Action,2025-07-29T12:38:57+00:00,softwarecatalog,Bump version to 0.1.23,14283/119/02,low,true
+763429dd1c5c3918b71fc1a57ed3f563795e8eb6,Ruben van der Linde,2025-07-29T14:38:44+02:00,softwarecatalog,Merge pull request #26 from ConductionNL/development,14283/119/02,low,true
+279898b1ba7a7880ea34d0b1c535d35e73689153,Ruben van der Linde,2025-07-29T14:38:11+02:00,softwarecatalog,Fix for the configuration page,14283/120/01,low,false
+7340843a5687859f8d7e6a0d0df0339d5f5d7e7a,GitHub Action,2025-07-29T09:53:14+00:00,softwarecatalog,Bump version to 0.1.22,14283/119/02,low,true
+12fae5afaa09943ff4be130d9d48927208e8fea0,Ruben van der Linde,2025-07-29T11:53:00+02:00,softwarecatalog,Merge pull request #25 from ConductionNL/development,14283/119/02,low,true
+cb24fe7d487e8304a7a0250f6fb25342fe9a20dc,Ruben van der Linde,2025-07-29T11:52:31+02:00,softwarecatalog,Update the voorzieningen register with the changes from mark,14283/119/02,medium,false
+edd1946e59a7f0cb3f96c21a26713877293730a9,GitHub Action,2025-07-29T06:12:43+00:00,softwarecatalog,Bump version to 0.1.21,14283/119/02,low,true
+c7ab63ca273fb4ee0181baf1cf344337bf999f0c,Ruben van der Linde,2025-07-29T08:07:42+02:00,softwarecatalog,Merge pull request #24 from ConductionNL/development,14283/119/02,low,true
+c7138d1a06b86e9e548007827fe248e15ce7aa92,Ruben van der Linde,2025-07-29T08:07:13+02:00,softwarecatalog,Lets update the configuration procces,14283/120/01,low,false
+03a96f4837ea2daf9bba77bad2fcb0b9259cd11b,GitHub Action,2025-07-25T02:50:49+00:00,softwarecatalog,Bump version to 0.1.20,14283/119/02,low,true
+381d5535ec94b5cd8e893231559eb8a6868ff184,Ruben van der Linde,2025-07-25T04:50:36+02:00,softwarecatalog,Merge pull request #23 from ConductionNL/development,14283/119/02,low,true
+4c645707fa45999af9b031eb39dc4295cc25be56,Ruben van der Linde,2025-07-25T04:50:13+02:00,softwarecatalog,Sending emails,14283/119/02,low,false
+74d950147880ee6478db4d16613aef3f3e02f331,Ruben van der Linde,2025-07-25T01:54:44+02:00,softwarecatalog,Merge remote-tracking branch 'origin/main' into development,14283/119/02,low,true
+619baa4ad3f7c45e927ef3d1189a7d2d94dc408a,Ruben van der Linde,2025-07-25T01:54:13+02:00,softwarecatalog,Lets automate organisation entity creation,14283/120/01,high,false
+4bede749218d91108f8cfca22da2d2ac8b883767,Ruben van der Linde,2025-07-25T00:53:23+02:00,softwarecatalog,Proper setup for organisations to sync,14283/120/01,high,false
+8a763a754a39a994c2db39b648e5555b6d9bf6a9,Ruben van der Linde,2025-07-24T22:27:52+02:00,softwarecatalog,Get the cronjobs to work,14283/120/02,high,false
+cb48063552afcc6a9c8b587e1cadfae88912b0b0,Ruben van der Linde,2025-07-24T20:30:32+02:00,softwarecatalog,Let turn the thing into a cron job,14283/120/02,high,false
+f28a429eff64b4ba4558490223a05a7e31e27b9e,Ruben van der Linde,2025-07-24T11:22:29+02:00,softwarecatalog,Fixing organisation registration,14283/120/01,high,false
+ae13c2676426d20c13909d99216a627d095d1713,Ruben van der Linde,2025-07-24T08:26:11+02:00,softwarecatalog,Lets do a beter setup of testing,14283/119/02,low,false
+5b2accc5140f4d39a82e8801f4a92240126473e1,GitHub Action,2025-07-24T06:18:21+00:00,softwarecatalog,Bump version to 0.1.19,14283/119/02,low,true
+84b86e2f1ad79407fe0b312715ef4c1bb9e513b0,Ruben van der Linde,2025-07-24T08:18:08+02:00,softwarecatalog,Merge pull request #22 from ConductionNL/development,14283/119/02,low,true
+fe47be62b7d83bf6f14f03149f35afd188cbba86,Ruben van der Linde,2025-07-24T08:16:27+02:00,softwarecatalog,Allow unsigned users to create orgnisations,14283/120/01,medium,false
+baac8a1fe00005cc6d049a97d5bb9b520cd76365,GitHub Action,2025-07-23T20:58:10+00:00,softwarecatalog,Bump version to 0.1.18,14283/119/02,low,true
+63a224bb22f2020da34a5ee7bef8697e5d41d7c0,Ruben van der Linde,2025-07-23T22:57:55+02:00,softwarecatalog,Merge pull request #21 from ConductionNL/development,14283/119/02,low,true
+4f0da02bd6a4bc97aa4a9225f75daf542e8dd1da,Ruben van der Linde,2025-07-23T22:57:03+02:00,softwarecatalog,Lets setup proper user creation,14283/120/01,medium,false
+e431d6eaf32be8dddb491192f34d880be0da0528,GitHub Action,2025-07-18T14:06:52+00:00,softwarecatalog,Bump version to 0.1.17,14283/119/02,low,true
+100e00f46648412d37b67c433c0b8616da202139,Ruben van der Linde,2025-07-18T16:06:43+02:00,softwarecatalog,Merge pull request #20 from ConductionNL/development,14283/119/02,low,true
+6365e4b8d0d5fc95568e78d26b96064d9b8e206e,Ruben van der Linde,2025-07-18T16:05:56+02:00,softwarecatalog,code cleanup,14283/119/01,low,false
+11709565dae04d82615f737489e18b921c0c728e,GitHub Action,2025-07-18T11:56:43+00:00,softwarecatalog,Bump version to 0.1.16,14283/119/02,low,true
+ad389d3230ea8cb8a97980f348faac5c8418fe89,Ruben van der Linde,2025-07-18T13:56:29+02:00,softwarecatalog,Merge pull request #19 from ConductionNL/development,14283/119/02,low,true
+a6150f695c69a83dac7af21cc8976786ef6cf52f,Ruben van der Linde,2025-07-18T12:54:28+02:00,softwarecatalog,email to e-mailadres,14283/119/02,low,false
+2844649bbe2f382f30a4faef800e08ecd2c38be1,GitHub Action,2025-07-18T05:51:34+00:00,softwarecatalog,Bump version to 0.1.15,14283/119/02,low,true
+ba23f6ab2e586dd64f57c03ad42e5c06a3ed2d6e,Ruben van der Linde,2025-07-18T07:51:25+02:00,softwarecatalog,Merge pull request #18 from ConductionNL/development,14283/119/02,low,true
+5f2c10930ae9c344af4e7dc8283c25a4569a33ed,Ruben van der Linde,2025-07-18T07:50:20+02:00,softwarecatalog,User creation on creaetion of contact persoon and organisation,14283/120/01,high,false
+d4eefdf15451824f585dd13049922d1aca16b5d3,Ruben van der Linde,2025-07-17T14:08:14+02:00,softwarecatalog,All of the fixes,14283/119/02,low,false
+83486cb1857b406734b6d98cd862b23e3ed70b38,GitHub Action,2025-07-17T04:54:05+00:00,softwarecatalog,Bump version to 0.1.14,14283/119/02,low,true
+d8392960b88d4fd8725ef951ba6d1f7f9bb6a2c3,Ruben van der Linde,2025-07-17T06:53:54+02:00,softwarecatalog,Merge pull request #17 from ConductionNL/development,14283/119/02,low,true
+b80ac23a10b6ba662ca57f720e8d40d312b8bdbd,Ruben van der Linde,2025-07-17T06:53:05+02:00,softwarecatalog,Merge remote-tracking branch 'origin/main' into development,14283/119/02,low,true
+447f9203947a19e29c5039bbb50c7f56aadcfd1c,Ruben van der Linde,2025-07-17T06:52:47+02:00,softwarecatalog,Add error catching,14283/120/02,medium,false
+e512b93e836802d29a307c7ab4e6b12b2acac5fd,Ruben van der Linde,2025-07-16T22:55:16+02:00,softwarecatalog,Updates to new object flow,14283/119/02,low,false
+60f0161d1edf6ced21c115b66bc4ad134c46518b,Ruben van der Linde,2025-07-16T22:31:53+02:00,softwarecatalog,New event subcribers flow,14283/120/02,medium,false
+1d5c5e2318b838bec8e5ac6f30f6e3f3c12fe126,github-actions[bot],2025-07-07T19:01:03+00:00,softwarecatalog,[Changelog CI] Add Changelog for Version 0.1.13,14283/120/02,low,true
+dac4eccbe0723e68c7d33870e7550db9a82f6f5c,GitHub Action,2025-07-07T19:00:58+00:00,softwarecatalog,Bump version to 0.1.13,14283/119/02,low,true
+a62393f0cfe3a957831ba27d2c66d40bd95114e8,Ruben van der Linde,2025-07-07T21:00:39+02:00,softwarecatalog,Merge pull request #15 from ConductionNL/development,14283/119/02,low,true
+0c9acc58d06f816e6d5c5d29c87dc36eabdee2f9,Ruben van der Linde,2025-07-07T21:00:17+02:00,softwarecatalog,Uuid fixes,14283/119/02,low,false
+4132988d6387c50bb9780c14960f72bd420bb223,github-actions[bot],2025-07-07T09:35:36+00:00,softwarecatalog,[Changelog CI] Add Changelog for Version 0.1.12,14283/120/02,low,true
+9ebea5e3dca4c03944ccdefcbddf2dd0654d2a84,GitHub Action,2025-07-07T09:35:27+00:00,softwarecatalog,Bump version to 0.1.12,14283/119/02,low,true
+672a0d1b78a675e99508bd55f2a5f24e3273f9d8,Ruben van der Linde,2025-07-07T11:35:13+02:00,softwarecatalog,Merge pull request #13 from ConductionNL/development,14283/119/02,low,true
+5e5e61afd51da5fabdcac092572801fa0ae82d82,Ruben van der Linde,2025-07-07T11:34:52+02:00,softwarecatalog,Fix for the composer install,14283/119/01,high,false
+d38c354f2cc3b45e32e3e4de64e9bffde02f1c6e,github-actions[bot],2025-07-07T08:27:50+00:00,softwarecatalog,[Changelog CI] Add Changelog for Version 0.1.11,14283/120/02,low,true
+ddbec8d39e7f80c80e7428b38a8e7181052ff7c0,GitHub Action,2025-07-07T08:27:40+00:00,softwarecatalog,Bump version to 0.1.11,14283/119/02,low,true
+a01ebb948970c253427b00ef2c11d40d918adc8c,Ruben van der Linde,2025-07-07T10:27:28+02:00,softwarecatalog,Merge pull request #11 from ConductionNL/development,14283/119/02,low,true
+88eb1bea49438eaa77e0bb60a6ae67f97a68c6db,Ruben van der Linde,2025-07-07T10:24:59+02:00,softwarecatalog,Fixes for proper organisations uuid,14283/120/01,high,false
+cbc83f5209c93b32760c7fde9eeb80abec675cf2,github-actions[bot],2025-07-07T06:58:37+00:00,softwarecatalog,[Changelog CI] Add Changelog for Version 0.1.10,14283/120/02,low,true
+569983763c88a908204ed5bc7e562b83c1465eb5,GitHub Action,2025-07-07T06:58:28+00:00,softwarecatalog,Bump version to 0.1.10,14283/119/02,low,true
+9bbe87b07b8ff80c2cc6d42372a44ba5dc46861c,Ruben van der Linde,2025-07-07T08:58:18+02:00,softwarecatalog,Merge pull request #9 from ConductionNL/development,14283/119/02,low,true
+0f6b0c3ca36c64885fc40a24d226630da4b69b03,Ruben van der Linde,2025-07-07T08:57:44+02:00,softwarecatalog,Added test files,14283/119/02,low,false
+62efcd6909df7f1ff1d25be2d195f4d72584677d,Ruben van der Linde,2025-07-07T08:10:02+02:00,softwarecatalog,Lets add symfony mailer,14283/119/01,high,false
+7493e93092693dce71bd3d973e41143cd55c29ce,Ruben van der Linde,2025-07-07T03:22:47+02:00,softwarecatalog,Lets add the mailing functionality,14283/119/02,low,false
+6c37134f1411e6e6f520056acabe9c3741255181,github-actions[bot],2025-07-07T00:15:32+00:00,softwarecatalog,[Changelog CI] Add Changelog for Version 0.1.9,14283/120/02,low,true
+3be2e8abe0b1194e8b5419d1f471902877481f9a,GitHub Action,2025-07-07T00:15:22+00:00,softwarecatalog,Bump version to 0.1.9,14283/119/02,low,true
+1566689edcf78117d16ab882e32f7086bb075c7e,Ruben van der Linde,2025-07-07T02:15:11+02:00,softwarecatalog,Merge pull request #7 from ConductionNL/development,14283/119/02,low,true
+27be8a4f99b8f21d918dca4ed425ba5dadb31747,Ruben van der Linde,2025-07-07T02:11:57+02:00,softwarecatalog,Finishing up on the users acounts,14283/120/01,medium,false
+7a63c70978d34764bbb199dd6698b8f17fc46939,Ruben van der Linde,2025-07-06T22:58:14+02:00,softwarecatalog,Setting up the new organisations handlers,14283/120/01,high,false
+7d1bf745b8a1379a7d8c50394baa1f43f32b5683,github-actions[bot],2025-07-06T06:12:33+00:00,softwarecatalog,[Changelog CI] Add Changelog for Version 0.1.8,14283/120/02,low,true
+9c718a7ca9733e74dc34188c29c30926cf901b39,GitHub Action,2025-07-06T06:12:22+00:00,softwarecatalog,Bump version to 0.1.8,14283/119/02,low,true
+baa7a9616516aef6889e84ee2c57a7da773fbbb3,Ruben van der Linde,2025-07-06T08:12:11+02:00,softwarecatalog,Merge pull request #5 from ConductionNL/development,14283/119/02,low,true
+609dfb2c959c71fff95b77ed7efafe5917a447ac,Ruben van der Linde,2025-07-06T08:10:51+02:00,softwarecatalog,Bit more composer fixes,14283/119/01,high,false
+a3ac4399976e8284cc9868587880a8a4bb67a2da,Ruben van der Linde,2025-07-06T08:06:13+02:00,softwarecatalog,Composer fixes,14283/119/01,high,false
+1d630822067b10779acd7344e4ac9ec94bdb20c8,github-actions[bot],2025-07-03T09:57:16+00:00,softwarecatalog,[Changelog CI] Add Changelog for Version 0.1.7,14283/120/02,low,true
+3195b399154681bc6cc1685944d89d9a6a67ef91,GitHub Action,2025-07-03T09:56:22+00:00,softwarecatalog,Bump version to 0.1.7,14283/119/02,low,true
+488f124cab4d1f0619a1e30e3c7330995a1a4e50,Ruben van der Linde,2025-07-03T11:56:00+02:00,softwarecatalog,Merge pull request #3 from ConductionNL/development,14283/119/02,low,true
+fdcc0120d9b4c6c33cf6fac7234b3f16b5e1afd2,Ruben van der Linde,2025-07-03T11:55:25+02:00,softwarecatalog,Generate users and groups,14283/120/01,medium,false
+3bdba4ae48f631ad4556dfde3d5c036fda226101,Ruben van der Linde,2025-07-01T22:28:14+02:00,softwarecatalog,Lets setup the software catalog component,14283/119/02,high,false
+2dbb193d80515d306f9d27bc702209ae0dbc03a4,Ruben van der Linde,2025-07-01T09:21:54+02:00,softwarecatalog,Wroking on the settings page,14283/120/01,low,false
+8e987382fbc150edd48510df670871efd54f63cf,Ruben van der Linde,2025-06-24T08:05:55+02:00,softwarecatalog,Setting up the mail service,14283/119/02,low,false
+c816c94fdec4a26cf10f5676a59ffe8c6a0ed5cc,Ruben van der Linde,2025-06-18T08:03:34+02:00,softwarecatalog,Merge remote-tracking branch 'origin/main' into development,14283/119/02,low,true
+47c8ff3db721bd9a9e9b82ed30639ec919b388ec,Ruben van der Linde,2025-06-18T08:03:27+02:00,softwarecatalog,Lets setup configuration pages,14283/120/01,low,false
+28a379020f7411ed3df6d333a58d01fe0503e132,GitHub Action,2025-06-18T04:47:02+00:00,softwarecatalog,Update CHANGELOG.md for version 0.1.6,14283/120/02,low,true
+079eeac8f9e96d10db8c9ec16b3c06c0a44cb5aa,GitHub Action,2025-06-18T04:46:03+00:00,softwarecatalog,Bump version to 0.1.6,14283/119/02,low,true
+a119742247ad72f82f8702551cfc59ecc488689f,Ruben van der Linde,2025-06-18T06:45:39+02:00,softwarecatalog,Merge branch 'main' of https://github.com/ConductionNL/softwarecatalog into main,14283/119/02,high,true
+61dc0241846fca98d66a595095a0dc479c766d83,Ruben van der Linde,2025-06-18T06:45:38+02:00,softwarecatalog,Lets set  a propper logo,14283/120/02,low,false

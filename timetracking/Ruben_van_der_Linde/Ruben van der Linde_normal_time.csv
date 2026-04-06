@@ -1,0 +1,62 @@
+Date,Day,Weekend,Worked,Hours,Commits,Start Time,End Time,Repositories,Work Summary
+2026-01-01,Thursday,No,No,0.0,0,,,,No commits
+2026-01-02,Friday,No,Yes,2.0,1,15:28,15:28,openregister,Setting up postgress support part 1
+2026-01-03,Saturday,Yes,No,0.0,0,,,,No commits
+2026-01-04,Sunday,Yes,No,0.0,0,,,,No commits
+2026-01-05,Monday,No,Yes,4.3,6,09:42,14:01,openregister,Finishing of on the magic mapper; phpcs fixes afhter phpmd changes; Starting the work on phpmd errors ... (+3 more commits)
+2026-01-06,Tuesday,No,Yes,7.1,4,08:49,15:53,"openregister, tilburg-woo-ui",Working on getting easy software catalog deploys; Config modificaties; Merge remote-tracking branch 'origin/feature/koppe ... (+1 more commits)
+2026-01-07,Wednesday,No,Yes,7.0,4,10:33,17:32,"opencatalogi, openregister",Another day of fixing and testing; More updates for working with open registers; Working on getting open catalogi back up and runni ... (+1 more commits)
+2026-01-08,Thursday,No,Yes,5.2,2,11:43,16:52,openregister,Fixing the names endpoint; Working on facating
+2026-01-09,Friday,No,Yes,6.7,19,09:18,15:29,"opencatalogi, openregister, softwarecatalog, tilburg-woo-ui",Bit of cleanup; Update workflows and add user/schema improvements; Merge remote-tracking branch 'origin/feature/php-l ... (+16 more commits)
+2026-01-10,Saturday,Yes,No,0.0,0,,,,No commits
+2026-01-11,Sunday,Yes,No,0.0,0,,,,No commits
+2026-01-12,Monday,No,Yes,2.0,2,10:47,10:47,"openregister, tilburg-woo-ui",testen testen testen; Registratie formulier over geztet naar open regist
+2026-01-13,Tuesday,No,Yes,2.0,2,09:31,09:32,softwarecatalog,Merge remote-tracking branch 'origin/feature/newop; Lets test GEMMA
+2026-01-14,Wednesday,No,Yes,2.0,2,08:19,08:19,openregister,Merge remote-tracking branch 'origin/beta' into fe; Adding some speed
+2026-01-15,Thursday,No,Yes,4.0,12,09:51,13:24,"opencatalogi, openregister, softwarecatalog",Fixing the imports; Fix bulk import statistics in ObjectService; fix on the register import ... (+9 more commits)
+2026-01-16,Friday,No,Yes,4.0,4,09:07,13:04,"opencatalogi, openregister, softwarecatalog",small fix for id's; Small fixes for VNG; Test scripts ... (+1 more commits)
+2026-01-17,Saturday,Yes,No,0.0,0,,,,No commits
+2026-01-18,Sunday,Yes,No,0.0,0,,,,No commits
+2026-01-19,Monday,No,Yes,7.2,17,09:16,16:01,"opencatalogi, openregister, softwarecatalog, tilburg-woo-ui",OPtimizing the facets; proper counts; Lets manage the names cache ... (+14 more commits)
+2026-01-20,Tuesday,No,Yes,8.0,42,08:03,17:26,"opencatalogi, openregister, softwarecatalog, tilburg-woo-ui",feat: Add global relations search across all magic; feat: Add global ID search across all magic tables; fix: Accept non-RFC4122 UUIDs in relation scanning ... (+39 more commits)
+2026-01-21,Wednesday,No,Yes,8.0,22,08:06,17:02,"opencatalogi, openregister, softwarecatalog, tilburg-woo-ui",Fixing magic mapper for multy tennancy exlusion; Speedup the applicatie wizard; Hotfix on multy tenancy ... (+19 more commits)
+2026-01-22,Thursday,No,Yes,2.0,6,17:23,17:31,"opencatalogi, openregister, softwarecatalog, tilburg-woo-ui",All a days work; Lets trust rbac; Merge pull request #166 from ConductionNL/beta-rel ... (+3 more commits)
+2026-01-23,Friday,No,Yes,4.5,6,09:57,14:29,"openregister, tilburg-woo-ui",Code fix on description; Fixing the install to be first time right; Lets make our setup testable ... (+3 more commits)
+2026-01-24,Saturday,Yes,No,0.0,0,,,,No commits
+2026-01-25,Sunday,Yes,No,0.0,0,,,,No commits
+2026-01-26,Monday,No,Yes,6.3,13,09:44,15:30,"openregister, softwarecatalog, tilburg-woo-ui",Fix empty json handling; Always use magic tables; Filter fix ... (+10 more commits)
+2026-01-27,Tuesday,No,Yes,6.0,9,08:11,14:08,"openregister, softwarecatalog, tilburg-woo-ui",Multi fix; Runtime facets; Applying the rbac filters and updating the facet h ... (+6 more commits)
+2026-01-28,Wednesday,No,Yes,4.1,9,10:37,14:45,"openregister, softwarecatalog, tilburg-woo-ui",Event toegevoeg voor het bijwerken van een user; Fixes for diensten; Reinsted the schema facet ... (+6 more commits)
+2026-01-29,Thursday,No,Yes,3.9,2,08:09,12:03,openregister,More fixes on entity extraction; Fixing anonimization
+2026-01-30,Friday,No,Yes,2.0,1,09:22,09:22,openregister,Volume mount to inline script
+2026-01-31,Saturday,Yes,No,0.0,0,,,,No commits
+2026-02-01,Sunday,Yes,No,0.0,0,,,,No commits
+2026-02-02,Monday,No,No,0.0,0,,,,No commits
+2026-02-03,Tuesday,No,No,0.0,0,,,,No commits
+2026-02-04,Wednesday,No,No,0.0,0,,,,No commits
+2026-02-05,Thursday,No,No,0.0,0,,,,No commits
+2026-02-06,Friday,No,Yes,5.6,13,10:23,15:31,"docudesk, opencatalogi, openconnector, openregister, softwarecatalog","Update branch protection: main from beta, beta fro; Standardize CI/CD workflows for release pipeline; Update branch protection: main from beta, beta fro ... (+10 more commits)"
+2026-02-07,Saturday,Yes,No,0.0,0,,,,No commits
+2026-02-08,Sunday,Yes,No,0.0,0,,,,No commits
+2026-02-09,Monday,No,No,0.0,0,,,,No commits
+2026-02-10,Tuesday,No,No,0.0,0,,,,No commits
+2026-02-11,Wednesday,No,No,0.0,0,,,,No commits
+2026-02-12,Thursday,No,No,0.0,0,,,,No commits
+2026-02-13,Friday,No,Yes,2.0,2,14:08,14:09,openregister,Merge remote-tracking branch 'origin/feature/php-l; Fixes on VNG issues
+2026-02-14,Saturday,Yes,No,0.0,0,,,,No commits
+2026-02-15,Sunday,Yes,No,0.0,0,,,,No commits
+2026-02-16,Monday,No,Yes,4.2,9,09:57,14:12,"docudesk, openregister, softwarecatalog, tilburg-woo-ui",Getting the project up and running; FFixing the archimate export; Merge pull request #174 from ConductionNL/feature/ ... (+6 more commits)
+2026-02-17,Tuesday,No,Yes,7.8,21,09:23,16:11,"opencatalogi, openregister, softwarecatalog, tilburg-woo-ui",Let make a release; Improve the base oas; Oas files ... (+18 more commits)
+2026-02-18,Wednesday,No,Yes,2.0,5,08:01,08:08,"docudesk, softwarecatalog",Add three-tier release workflow files [skip ci]; Add three-tier release workflow files [skip ci]; Add three-tier release workflow files [skip ci] ... (+2 more commits)
+2026-02-19,Thursday,No,Yes,8.0,23,08:06,17:55,"opencatalogi, openregister, softwarecatalog, tilburg-woo-ui",Bump version to 0.2.12-unstable.5; Fix form support and facets; Testing agregeted mapper ... (+20 more commits)
+2026-02-20,Friday,No,Yes,2.0,3,08:30,09:15,openregister,Fix facet cache not invalidating when schema facet; Merge branch 'feature/php-linting' of https://gith; Remove bad @cors
+2026-02-21,Saturday,Yes,No,0.0,0,,,,No commits
+2026-02-22,Sunday,Yes,No,0.0,0,,,,No commits
+2026-02-23,Monday,No,No,0.0,0,,,,No commits
+2026-02-24,Tuesday,No,Yes,2.0,5,08:00,09:58,"openregister, softwarecatalog, tilburg-woo-ui",fix(#355): Bypass multi-tenancy in export register; fix(#148): Bypass multi-tenancy in OAS schema reso; fix(#375): Register ModuleVersionService in DI con ... (+2 more commits)
+2026-02-25,Wednesday,No,No,0.0,0,,,,No commits
+2026-02-26,Thursday,No,Yes,2.4,6,12:35,15:01,"openregister, tilburg-woo-ui","feat: Add deep link registry, notes, tasks, and gl; docs: Add OpenSpec configurations and shared speci; ci: Add code quality GitHub Actions workflow ... (+3 more commits)"
+2026-02-27,Friday,No,Yes,2.2,6,11:38,13:49,openregister,revert: Remove @conduction/nextcloud-vue dependenc; build: Switch @conduction/nextcloud-vue from git t; build: Add @conduction/nextcloud-vue git dependenc ... (+3 more commits)
+2026-02-28,Saturday,Yes,No,0.0,0,,,,No commits
+2026-03-01,Sunday,Yes,No,0.0,0,,,,No commits
+2026-03-02,Monday,No,No,0.0,0,,,,No commits

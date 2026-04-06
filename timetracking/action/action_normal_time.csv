@@ -1,0 +1,366 @@
+Date,Day,Weekend,Worked,Hours,Commits,Start Time,End Time,Repositories,Work Summary
+2025-01-01,Wednesday,No,No,0.0,0,,,,No commits
+2025-01-02,Thursday,No,No,0.0,0,,,,No commits
+2025-01-03,Friday,No,No,0.0,0,,,,No commits
+2025-01-04,Saturday,Yes,No,0.0,0,,,,No commits
+2025-01-05,Sunday,Yes,No,0.0,0,,,,No commits
+2025-01-06,Monday,No,Yes,2.0,5,09:11,10:19,"openconnector, openregister",[Changelog CI] Add Changelog for Version 0.1.35; Bump version to 0.1.35; Bump version to 0.1.35 ... (+2 more commits)
+2025-01-07,Tuesday,No,No,0.0,0,,,,No commits
+2025-01-08,Wednesday,No,No,0.0,0,,,,No commits
+2025-01-09,Thursday,No,No,0.0,0,,,,No commits
+2025-01-10,Friday,No,Yes,6.0,4,09:06,15:04,"opencatalogi, openconnector",Bump version to 0.6.56; Bump version to 0.6.55; [Changelog CI] Add Changelog for Version 0.1.33 ... (+1 more commits)
+2025-01-11,Saturday,Yes,No,0.0,0,,,,No commits
+2025-01-12,Sunday,Yes,No,0.0,0,,,,No commits
+2025-01-13,Monday,No,No,0.0,0,,,,No commits
+2025-01-14,Tuesday,No,Yes,2.0,2,14:50,14:50,openconnector,[Changelog CI] Add Changelog for Version 0.1.34; Bump version to 0.1.34
+2025-01-15,Wednesday,No,Yes,2.0,4,09:23,10:48,openconnector,[Changelog CI] Add Changelog for Version 0.1.36; Bump version to 0.1.36; [Changelog CI] Add Changelog for Version 0.1.35 ... (+1 more commits)
+2025-01-16,Thursday,No,Yes,3.7,12,09:40,12:52,"openconnector, openregister",[Changelog CI] Add Changelog for Version 0.1.37; Bump version to 0.1.37; Bump version to 0.1.37 ... (+9 more commits)
+2025-01-17,Friday,No,Yes,3.5,9,10:04,13:32,openregister,[Changelog CI] Add Changelog for Version 0.1.40; Bump version to 0.1.40; Bump version to 0.1.40 ... (+6 more commits)
+2025-01-18,Saturday,Yes,No,0.0,0,,,,No commits
+2025-01-19,Sunday,Yes,No,0.0,0,,,,No commits
+2025-01-20,Monday,No,No,0.0,0,,,,No commits
+2025-01-21,Tuesday,No,Yes,2.0,3,15:04,15:29,opencatalogi,Bump version to 0.6.59; Bump version to 0.6.58; Bump version to 0.6.57
+2025-01-22,Wednesday,No,No,0.0,0,,,,No commits
+2025-01-23,Thursday,No,No,0.0,0,,,,No commits
+2025-01-24,Friday,No,No,0.0,0,,,,No commits
+2025-01-25,Saturday,Yes,No,0.0,0,,,,No commits
+2025-01-26,Sunday,Yes,No,0.0,0,,,,No commits
+2025-01-27,Monday,No,Yes,2.0,3,15:40,15:40,openregister,[Changelog CI] Add Changelog for Version 0.1.41; Bump version to 0.1.41; Bump version to 0.1.41
+2025-01-28,Tuesday,No,No,0.0,0,,,,No commits
+2025-01-29,Wednesday,No,No,0.0,0,,,,No commits
+2025-01-30,Thursday,No,Yes,2.0,6,14:12,14:31,"opencatalogi, openconnector, openregister",[Changelog CI] Add Changelog for Version 0.1.42; Bump version to 0.1.42; Bump version to 0.1.42 ... (+3 more commits)
+2025-01-31,Friday,No,No,0.0,0,,,,No commits
+2025-02-01,Saturday,Yes,No,0.0,0,,,,No commits
+2025-02-02,Sunday,Yes,No,0.0,0,,,,No commits
+2025-02-03,Monday,No,No,0.0,0,,,,No commits
+2025-02-04,Tuesday,No,No,0.0,0,,,,No commits
+2025-02-05,Wednesday,No,Yes,2.0,3,10:30,10:30,openregister,[Changelog CI] Add Changelog for Version 0.1.43; Bump version to 0.1.43; Bump version to 0.1.43
+2025-02-06,Thursday,No,No,0.0,0,,,,No commits
+2025-02-07,Friday,No,No,0.0,0,,,,No commits
+2025-02-08,Saturday,Yes,No,0.0,0,,,,No commits
+2025-02-09,Sunday,Yes,No,0.0,0,,,,No commits
+2025-02-10,Monday,No,Yes,2.0,2,10:16,10:16,openconnector,[Changelog CI] Add Changelog for Version 0.1.40; Bump version to 0.1.40
+2025-02-11,Tuesday,No,No,0.0,0,,,,No commits
+2025-02-12,Wednesday,No,Yes,3.9,11,10:43,14:06,"opencatalogi, openconnector, openregister",[Changelog CI] Add Changelog for Version 0.1.45; Bump version to 0.1.45; Bump version to 0.1.45 ... (+8 more commits)
+2025-02-13,Thursday,No,Yes,7.2,15,09:39,16:22,"docudesk, opencatalogi, openconnector, openregister",[Changelog CI] Add Changelog for Version 0.1.47; Bump version to 0.1.47; Bump version to 0.1.47 ... (+12 more commits)
+2025-02-14,Friday,No,No,0.0,0,,,,No commits
+2025-02-15,Saturday,Yes,No,0.0,0,,,,No commits
+2025-02-16,Sunday,Yes,No,0.0,0,,,,No commits
+2025-02-17,Monday,No,Yes,2.0,2,16:05,16:05,openconnector,[Changelog CI] Add Changelog for Version 0.1.44; Bump version to 0.1.44
+2025-02-18,Tuesday,No,Yes,2.0,3,16:46,16:46,openregister,[Changelog CI] Add Changelog for Version 0.1.48; Bump version to 0.1.48; Bump version to 0.1.48
+2025-02-19,Wednesday,No,Yes,2.0,2,15:27,15:27,openconnector,[Changelog CI] Add Changelog for Version 0.1.45; Bump version to 0.1.45
+2025-02-20,Thursday,No,No,0.0,0,,,,No commits
+2025-02-21,Friday,No,No,0.0,0,,,,No commits
+2025-02-22,Saturday,Yes,No,0.0,0,,,,No commits
+2025-02-23,Sunday,Yes,No,0.0,0,,,,No commits
+2025-02-24,Monday,No,Yes,2.0,4,12:22,13:22,openconnector,Render PlantUML files; Render PlantUML files; Render PlantUML files ... (+1 more commits)
+2025-02-25,Tuesday,No,Yes,2.7,5,12:11,14:52,"opencatalogi, openconnector, openregister",Render PlantUML files; Render PlantUML files; Bump version to 0.6.65 ... (+2 more commits)
+2025-02-26,Wednesday,No,Yes,2.0,7,13:41,15:43,"openconnector, openregister",[Changelog CI] Add Changelog for Version 0.1.50; Bump version to 0.1.50; Bump version to 0.1.50 ... (+4 more commits)
+2025-02-27,Thursday,No,Yes,6.2,5,09:23,15:36,"opencatalogi, openconnector",Bump version to 0.6.66; [Changelog CI] Add Changelog for Version 0.1.50; Bump version to 0.1.50 ... (+2 more commits)
+2025-02-28,Friday,No,Yes,3.5,10,10:30,13:57,"opencatalogi, openconnector, openregister",[Changelog CI] Add Changelog for Version 0.1.51; Bump version to 0.1.51; Bump version to 0.1.51 ... (+7 more commits)
+2025-03-01,Saturday,Yes,No,0.0,0,,,,No commits
+2025-03-02,Sunday,Yes,No,0.0,0,,,,No commits
+2025-03-03,Monday,No,Yes,2.0,2,12:41,12:42,openconnector,[Changelog CI] Add Changelog for Version 0.1.53; Bump version to 0.1.53
+2025-03-04,Tuesday,No,Yes,2.0,2,15:46,15:46,openconnector,[Changelog CI] Add Changelog for Version 0.1.54; Bump version to 0.1.54
+2025-03-05,Wednesday,No,No,0.0,0,,,,No commits
+2025-03-06,Thursday,No,Yes,2.0,1,11:33,11:33,opencatalogi,Render PlantUML files
+2025-03-07,Friday,No,Yes,4.4,10,10:37,15:01,"opencatalogi, openconnector, openregister",[Changelog CI] Add Changelog for Version 0.1.53; Bump version to 0.1.53; Bump version to 0.1.53 ... (+7 more commits)
+2025-03-08,Saturday,Yes,No,0.0,0,,,,No commits
+2025-03-09,Sunday,Yes,No,0.0,0,,,,No commits
+2025-03-10,Monday,No,Yes,2.8,3,10:25,13:12,"opencatalogi, openconnector",Bump version to 0.6.71; [Changelog CI] Add Changelog for Version 0.1.57; Bump version to 0.1.57
+2025-03-11,Tuesday,No,Yes,4.0,4,09:02,13:01,"opencatalogi, openconnector",Bump version to 0.6.73; Bump version to 0.6.72; [Changelog CI] Add Changelog for Version 0.1.58 ... (+1 more commits)
+2025-03-12,Wednesday,No,Yes,2.0,2,09:26,09:26,openconnector,[Changelog CI] Add Changelog for Version 0.1.59; Bump version to 0.1.59
+2025-03-13,Thursday,No,Yes,2.0,5,09:52,10:00,"openconnector, openregister",[Changelog CI] Add Changelog for Version 0.1.54; Bump version to 0.1.54; Bump version to 0.1.54 ... (+2 more commits)
+2025-03-14,Friday,No,Yes,2.0,6,12:35,12:59,"opencatalogi, openconnector, openregister",[Changelog CI] Add Changelog for Version 0.1.55; Bump version to 0.1.55; Bump version to 0.1.55 ... (+3 more commits)
+2025-03-15,Saturday,Yes,No,0.0,0,,,,No commits
+2025-03-16,Sunday,Yes,No,0.0,0,,,,No commits
+2025-03-17,Monday,No,Yes,2.0,7,13:24,14:43,"openconnector, openregister",[Changelog CI] Add Changelog for Version 0.1.56; Bump version to 0.1.56; Bump version to 0.1.56 ... (+4 more commits)
+2025-03-18,Tuesday,No,Yes,2.0,3,11:55,11:55,openregister,[Changelog CI] Add Changelog for Version 0.1.57; Bump version to 0.1.57; Bump version to 0.1.57
+2025-03-19,Wednesday,No,No,0.0,0,,,,No commits
+2025-03-20,Thursday,No,Yes,5.1,6,09:29,14:36,"openconnector, openregister",docs: Update service documentation; docs: Update service documentation; docs: Update service documentation ... (+3 more commits)
+2025-03-21,Friday,No,Yes,4.6,12,10:34,14:41,"openconnector, openregister",[Changelog CI] Add Changelog for Version 0.1.59; Bump version to 0.1.59; Bump version to 0.1.59 ... (+9 more commits)
+2025-03-22,Saturday,Yes,No,0.0,0,,,,No commits
+2025-03-23,Sunday,Yes,No,0.0,0,,,,No commits
+2025-03-24,Monday,No,Yes,5.9,8,10:06,15:57,"opencatalogi, openconnector, openregister",Bump version to 0.1.60; Bump version to 0.1.60; [Changelog CI] Add Changelog for Version 0.1.60 ... (+5 more commits)
+2025-03-25,Tuesday,No,Yes,2.9,4,09:38,12:34,openconnector,[Changelog CI] Add Changelog for Version 0.1.71; Bump version to 0.1.71; [Changelog CI] Add Changelog for Version 0.1.70 ... (+1 more commits)
+2025-03-26,Wednesday,No,No,0.0,0,,,,No commits
+2025-03-27,Thursday,No,Yes,2.0,5,08:59,10:07,"openconnector, openregister",[Changelog CI] Add Changelog for Version 0.1.61; Bump version to 0.1.61; Bump version to 0.1.61 ... (+2 more commits)
+2025-03-28,Friday,No,Yes,2.0,2,09:52,09:52,openconnector,[Changelog CI] Add Changelog for Version 0.1.73; Bump version to 0.1.73
+2025-03-29,Saturday,Yes,No,0.0,0,,,,No commits
+2025-03-30,Sunday,Yes,No,0.0,0,,,,No commits
+2025-03-31,Monday,No,Yes,2.0,2,15:37,15:37,openconnector,[Changelog CI] Add Changelog for Version 0.1.74; Bump version to 0.1.74
+2025-04-01,Tuesday,No,Yes,5.7,15,09:21,14:34,"docudesk, openconnector, openregister",Bump version to 0.1.63; Bump version to 0.1.63; [Changelog CI] Add Changelog for Version 0.1.63 ... (+12 more commits)
+2025-04-02,Wednesday,No,Yes,2.0,10,14:49,15:19,docudesk,Bump version to 0.0.11; Bump version to 0.0.10; [Changelog CI] Add Changelog for Version 0.0.9 ... (+7 more commits)
+2025-04-03,Thursday,No,No,0.0,0,,,,No commits
+2025-04-04,Friday,No,Yes,3.0,8,14:34,17:37,openregister,Bump beta version to 0.1.66-beta.4 [skip ci]; Bump beta version to 0.1.66-beta.4 [skip ci]; Bump beta version to 0.1.65-beta.3 [skip ci] ... (+5 more commits)
+2025-04-05,Saturday,Yes,No,0.0,0,,,,No commits
+2025-04-06,Sunday,Yes,No,0.0,0,,,,No commits
+2025-04-07,Monday,No,Yes,2.2,7,10:16,12:28,"openconnector, openregister",[Changelog CI] Add Changelog for Version 0.1.64; Bump version to 0.1.64; Bump version to 0.1.64 ... (+4 more commits)
+2025-04-08,Tuesday,No,Yes,8.0,11,08:26,15:58,"openconnector, openregister",Bump beta version to 0.1.75-beta.13 [skip ci]; Bump beta version to 0.1.75-beta.13 [skip ci]; Bump beta version to 0.1.79-beta.7 [skip ci] ... (+8 more commits)
+2025-04-09,Wednesday,No,No,0.0,0,,,,No commits
+2025-04-10,Thursday,No,Yes,2.7,7,08:34,11:17,"openconnector, openregister",[Changelog CI] Add Changelog for Version 0.1.65; Bump version to 0.1.65; Bump version to 0.1.65 ... (+4 more commits)
+2025-04-11,Friday,No,Yes,4.5,12,08:55,12:53,"openconnector, openregister",Bump beta version to 0.1.78-beta.18 [skip ci]; Bump beta version to 0.1.78-beta.18 [skip ci]; Bump beta version to 0.1.78-beta.17 [skip ci] ... (+9 more commits)
+2025-04-12,Saturday,Yes,No,0.0,0,,,,No commits
+2025-04-13,Sunday,Yes,No,0.0,0,,,,No commits
+2025-04-14,Monday,No,No,0.0,0,,,,No commits
+2025-04-15,Tuesday,No,No,0.0,0,,,,No commits
+2025-04-16,Wednesday,No,No,0.0,0,,,,No commits
+2025-04-17,Thursday,No,No,0.0,0,,,,No commits
+2025-04-18,Friday,No,No,0.0,0,,,,No commits
+2025-04-19,Saturday,Yes,No,0.0,0,,,,No commits
+2025-04-20,Sunday,Yes,No,0.0,0,,,,No commits
+2025-04-21,Monday,No,No,0.0,0,,,,No commits
+2025-04-22,Tuesday,No,No,0.0,0,,,,No commits
+2025-04-23,Wednesday,No,No,0.0,0,,,,No commits
+2025-04-24,Thursday,No,No,0.0,0,,,,No commits
+2025-04-25,Friday,No,No,0.0,0,,,,No commits
+2025-04-26,Saturday,Yes,No,0.0,0,,,,No commits
+2025-04-27,Sunday,Yes,No,0.0,0,,,,No commits
+2025-04-28,Monday,No,No,0.0,0,,,,No commits
+2025-04-29,Tuesday,No,No,0.0,0,,,,No commits
+2025-04-30,Wednesday,No,Yes,2.0,2,12:43,12:43,openregister,Render PlantUML files; Render PlantUML files
+2025-05-01,Thursday,No,No,0.0,0,,,,No commits
+2025-05-02,Friday,No,No,0.0,0,,,,No commits
+2025-05-03,Saturday,Yes,No,0.0,0,,,,No commits
+2025-05-04,Sunday,Yes,No,0.0,0,,,,No commits
+2025-05-05,Monday,No,No,0.0,0,,,,No commits
+2025-05-06,Tuesday,No,No,0.0,0,,,,No commits
+2025-05-07,Wednesday,No,No,0.0,0,,,,No commits
+2025-05-08,Thursday,No,No,0.0,0,,,,No commits
+2025-05-09,Friday,No,No,0.0,0,,,,No commits
+2025-05-10,Saturday,Yes,No,0.0,0,,,,No commits
+2025-05-11,Sunday,Yes,No,0.0,0,,,,No commits
+2025-05-12,Monday,No,No,0.0,0,,,,No commits
+2025-05-13,Tuesday,No,No,0.0,0,,,,No commits
+2025-05-14,Wednesday,No,No,0.0,0,,,,No commits
+2025-05-15,Thursday,No,No,0.0,0,,,,No commits
+2025-05-16,Friday,No,Yes,2.0,2,13:13,13:13,opencatalogi,Bump beta version to 0.6.75-beta.18 [skip ci]; Merge remote-tracking branch 'origin/refactore/ope
+2025-05-17,Saturday,Yes,No,0.0,0,,,,No commits
+2025-05-18,Sunday,Yes,No,0.0,0,,,,No commits
+2025-05-19,Monday,No,Yes,2.0,1,16:07,16:07,docudesk,Bump version to 0.0.13
+2025-05-20,Tuesday,No,Yes,2.0,1,10:48,10:48,docudesk,Bump version to 0.0.17
+2025-05-21,Wednesday,No,Yes,2.0,2,12:18,12:20,docudesk,Bump version to 0.0.19; Bump version to 0.0.18
+2025-05-22,Thursday,No,Yes,5.3,2,08:44,14:00,docudesk,Bump version to 0.0.21; Bump version to 0.0.20
+2025-05-23,Friday,No,Yes,2.0,1,08:12,08:12,docudesk,Bump version to 0.0.22
+2025-05-24,Saturday,Yes,No,0.0,0,,,,No commits
+2025-05-25,Sunday,Yes,No,0.0,0,,,,No commits
+2025-05-26,Monday,No,No,0.0,0,,,,No commits
+2025-05-27,Tuesday,No,No,0.0,0,,,,No commits
+2025-05-28,Wednesday,No,No,0.0,0,,,,No commits
+2025-05-29,Thursday,No,No,0.0,0,,,,No commits
+2025-05-30,Friday,No,No,0.0,0,,,,No commits
+2025-05-31,Saturday,Yes,No,0.0,0,,,,No commits
+2025-06-01,Sunday,Yes,No,0.0,0,,,,No commits
+2025-06-02,Monday,No,No,0.0,0,,,,No commits
+2025-06-03,Tuesday,No,No,0.0,0,,,,No commits
+2025-06-04,Wednesday,No,No,0.0,0,,,,No commits
+2025-06-05,Thursday,No,No,0.0,0,,,,No commits
+2025-06-06,Friday,No,No,0.0,0,,,,No commits
+2025-06-07,Saturday,Yes,No,0.0,0,,,,No commits
+2025-06-08,Sunday,Yes,No,0.0,0,,,,No commits
+2025-06-09,Monday,No,No,0.0,0,,,,No commits
+2025-06-10,Tuesday,No,No,0.0,0,,,,No commits
+2025-06-11,Wednesday,No,No,0.0,0,,,,No commits
+2025-06-12,Thursday,No,No,0.0,0,,,,No commits
+2025-06-13,Friday,No,No,0.0,0,,,,No commits
+2025-06-14,Saturday,Yes,No,0.0,0,,,,No commits
+2025-06-15,Sunday,Yes,No,0.0,0,,,,No commits
+2025-06-16,Monday,No,No,0.0,0,,,,No commits
+2025-06-17,Tuesday,No,No,0.0,0,,,,No commits
+2025-06-18,Wednesday,No,No,0.0,0,,,,No commits
+2025-06-19,Thursday,No,No,0.0,0,,,,No commits
+2025-06-20,Friday,No,Yes,2.0,10,14:53,15:42,"opencatalogi, openconnector, openregister",[Changelog CI] Add Changelog for Version 0.2.2; Bump version to 0.2.2; Bump version to 0.2.2 ... (+7 more commits)
+2025-06-21,Saturday,Yes,No,0.0,0,,,,No commits
+2025-06-22,Sunday,Yes,No,0.0,0,,,,No commits
+2025-06-23,Monday,No,No,0.0,0,,,,No commits
+2025-06-24,Tuesday,No,No,0.0,0,,,,No commits
+2025-06-25,Wednesday,No,No,0.0,0,,,,No commits
+2025-06-26,Thursday,No,No,0.0,0,,,,No commits
+2025-06-27,Friday,No,No,0.0,0,,,,No commits
+2025-06-28,Saturday,Yes,No,0.0,0,,,,No commits
+2025-06-29,Sunday,Yes,No,0.0,0,,,,No commits
+2025-06-30,Monday,No,No,0.0,0,,,,No commits
+2025-07-01,Tuesday,No,No,0.0,0,,,,No commits
+2025-07-02,Wednesday,No,No,0.0,0,,,,No commits
+2025-07-03,Thursday,No,Yes,2.0,2,09:56,09:57,softwarecatalog,[Changelog CI] Add Changelog for Version 0.1.7; Bump version to 0.1.7
+2025-07-04,Friday,No,No,0.0,0,,,,No commits
+2025-07-05,Saturday,Yes,No,0.0,0,,,,No commits
+2025-07-06,Sunday,Yes,No,0.0,0,,,,No commits
+2025-07-07,Monday,No,Yes,2.0,4,08:27,09:35,softwarecatalog,[Changelog CI] Add Changelog for Version 0.1.12; Bump version to 0.1.12; [Changelog CI] Add Changelog for Version 0.1.11 ... (+1 more commits)
+2025-07-08,Tuesday,No,No,0.0,0,,,,No commits
+2025-07-09,Wednesday,No,No,0.0,0,,,,No commits
+2025-07-10,Thursday,No,No,0.0,0,,,,No commits
+2025-07-11,Friday,No,No,0.0,0,,,,No commits
+2025-07-12,Saturday,Yes,No,0.0,0,,,,No commits
+2025-07-13,Sunday,Yes,No,0.0,0,,,,No commits
+2025-07-14,Monday,No,No,0.0,0,,,,No commits
+2025-07-15,Tuesday,No,No,0.0,0,,,,No commits
+2025-07-16,Wednesday,No,Yes,2.0,1,15:41,15:41,openconnector,Bump version to 0.2.3
+2025-07-17,Thursday,No,Yes,2.0,3,13:28,13:29,"opencatalogi, openregister",Bump version to 0.2.3; Bump version to 0.2.3; Bump version to 0.7.3
+2025-07-18,Friday,No,Yes,2.2,4,11:56,14:06,"openregister, softwarecatalog",Bump version to 0.2.4; Bump version to 0.2.4; Bump version to 0.1.17 ... (+1 more commits)
+2025-07-19,Saturday,Yes,No,0.0,0,,,,No commits
+2025-07-20,Sunday,Yes,No,0.0,0,,,,No commits
+2025-07-21,Monday,No,No,0.0,0,,,,No commits
+2025-07-22,Tuesday,No,No,0.0,0,,,,No commits
+2025-07-23,Wednesday,No,No,0.0,0,,,,No commits
+2025-07-24,Thursday,No,No,0.0,0,,,,No commits
+2025-07-25,Friday,No,No,0.0,0,,,,No commits
+2025-07-26,Saturday,Yes,No,0.0,0,,,,No commits
+2025-07-27,Sunday,Yes,No,0.0,0,,,,No commits
+2025-07-28,Monday,No,No,0.0,0,,,,No commits
+2025-07-29,Tuesday,No,Yes,2.8,2,09:53,12:38,softwarecatalog,Bump version to 0.1.23; Bump version to 0.1.22
+2025-07-30,Wednesday,No,Yes,3.2,4,08:55,12:07,softwarecatalog,Bump version to 0.1.28; Bump version to 0.1.27; Bump version to 0.1.26 ... (+1 more commits)
+2025-07-31,Thursday,No,Yes,2.0,1,13:48,13:48,softwarecatalog,Bump version to 0.1.29
+2025-08-01,Friday,No,Yes,2.0,2,08:51,10:31,softwarecatalog,Bump version to 0.1.33; Bump version to 0.1.32
+2025-08-02,Saturday,Yes,No,0.0,0,,,,No commits
+2025-08-03,Sunday,Yes,No,0.0,0,,,,No commits
+2025-08-04,Monday,No,No,0.0,0,,,,No commits
+2025-08-05,Tuesday,No,No,0.0,0,,,,No commits
+2025-08-06,Wednesday,No,No,0.0,0,,,,No commits
+2025-08-07,Thursday,No,Yes,2.0,1,12:29,12:29,openconnector,Bump version to 0.2.5
+2025-08-08,Friday,No,No,0.0,0,,,,No commits
+2025-08-09,Saturday,Yes,No,0.0,0,,,,No commits
+2025-08-10,Sunday,Yes,No,0.0,0,,,,No commits
+2025-08-11,Monday,No,No,0.0,0,,,,No commits
+2025-08-12,Tuesday,No,No,0.0,0,,,,No commits
+2025-08-13,Wednesday,No,Yes,2.0,1,12:28,12:28,softwarecatalog,Bump version to 0.1.38
+2025-08-14,Thursday,No,Yes,5.9,4,09:19,15:14,"openregister, softwarecatalog",Bump version to 0.2.6; Bump version to 0.2.6; Bump version to 0.1.42 ... (+1 more commits)
+2025-08-15,Friday,No,No,0.0,0,,,,No commits
+2025-08-16,Saturday,Yes,No,0.0,0,,,,No commits
+2025-08-17,Sunday,Yes,No,0.0,0,,,,No commits
+2025-08-18,Monday,No,Yes,2.0,1,14:03,14:03,softwarecatalog,Bump version to 0.1.43
+2025-08-19,Tuesday,No,No,0.0,0,,,,No commits
+2025-08-20,Wednesday,No,Yes,2.0,1,13:58,13:58,softwarecatalog,Bump version to 0.1.44
+2025-08-21,Thursday,No,Yes,3.8,2,09:21,13:07,softwarecatalog,Bump version to 0.1.47; Bump version to 0.1.46
+2025-08-22,Friday,No,Yes,2.0,2,12:50,14:26,softwarecatalog,Bump version to 0.1.51; Bump version to 0.1.50
+2025-08-23,Saturday,Yes,No,0.0,0,,,,No commits
+2025-08-24,Sunday,Yes,No,0.0,0,,,,No commits
+2025-08-25,Monday,No,Yes,2.0,2,12:08,13:01,softwarecatalog,Bump version to 0.1.55; Bump version to 0.1.54
+2025-08-26,Tuesday,No,No,0.0,0,,,,No commits
+2025-08-27,Wednesday,No,No,0.0,0,,,,No commits
+2025-08-28,Thursday,No,Yes,2.0,2,13:37,15:19,softwarecatalog,Bump version to 0.1.61; Bump version to 0.1.60
+2025-08-29,Friday,No,Yes,2.0,1,08:12,08:12,softwarecatalog,Bump version to 0.1.64
+2025-08-30,Saturday,Yes,No,0.0,0,,,,No commits
+2025-08-31,Sunday,Yes,No,0.0,0,,,,No commits
+2025-09-01,Monday,No,Yes,2.2,2,14:03,16:15,softwarecatalog,Bump version to 0.1.66; Bump version to 0.1.65
+2025-09-02,Tuesday,No,Yes,2.0,1,11:25,11:25,softwarecatalog,Bump version to 0.1.74
+2025-09-03,Wednesday,No,Yes,2.0,1,08:16,08:16,softwarecatalog,Bump version to 0.1.75
+2025-09-04,Thursday,No,No,0.0,0,,,,No commits
+2025-09-05,Friday,No,No,0.0,0,,,,No commits
+2025-09-06,Saturday,Yes,No,0.0,0,,,,No commits
+2025-09-07,Sunday,Yes,No,0.0,0,,,,No commits
+2025-09-08,Monday,No,Yes,2.0,1,10:39,10:39,softwarecatalog,Bump version to 0.1.76
+2025-09-09,Tuesday,No,No,0.0,0,,,,No commits
+2025-09-10,Wednesday,No,No,0.0,0,,,,No commits
+2025-09-11,Thursday,No,No,0.0,0,,,,No commits
+2025-09-12,Friday,No,No,0.0,0,,,,No commits
+2025-09-13,Saturday,Yes,No,0.0,0,,,,No commits
+2025-09-14,Sunday,Yes,No,0.0,0,,,,No commits
+2025-09-15,Monday,No,No,0.0,0,,,,No commits
+2025-09-16,Tuesday,No,No,0.0,0,,,,No commits
+2025-09-17,Wednesday,No,No,0.0,0,,,,No commits
+2025-09-18,Thursday,No,No,0.0,0,,,,No commits
+2025-09-19,Friday,No,No,0.0,0,,,,No commits
+2025-09-20,Saturday,Yes,No,0.0,0,,,,No commits
+2025-09-21,Sunday,Yes,No,0.0,0,,,,No commits
+2025-09-22,Monday,No,No,0.0,0,,,,No commits
+2025-09-23,Tuesday,No,Yes,4.3,4,12:27,16:43,softwarecatalog,Bump version to 0.1.81; Bump version to 0.1.80; Bump version to 0.1.79 ... (+1 more commits)
+2025-09-24,Wednesday,No,Yes,2.0,1,14:16,14:16,softwarecatalog,Bump version to 0.1.83
+2025-09-25,Thursday,No,Yes,2.0,2,08:40,09:25,softwarecatalog,Bump version to 0.1.86; Bump version to 0.1.85
+2025-09-26,Friday,No,No,0.0,0,,,,No commits
+2025-09-27,Saturday,Yes,No,0.0,0,,,,No commits
+2025-09-28,Sunday,Yes,No,0.0,0,,,,No commits
+2025-09-29,Monday,No,No,0.0,0,,,,No commits
+2025-09-30,Tuesday,No,No,0.0,0,,,,No commits
+2025-10-01,Wednesday,No,No,0.0,0,,,,No commits
+2025-10-02,Thursday,No,No,0.0,0,,,,No commits
+2025-10-03,Friday,No,Yes,2.0,2,08:51,08:58,softwarecatalog,Bump version to 0.1.90; Bump version to 0.1.89
+2025-10-04,Saturday,Yes,No,0.0,0,,,,No commits
+2025-10-05,Sunday,Yes,No,0.0,0,,,,No commits
+2025-10-06,Monday,No,Yes,2.0,2,09:45,09:56,softwarecatalog,Bump version to 0.1.94; Bump version to 0.1.93
+2025-10-07,Tuesday,No,Yes,2.0,1,12:31,12:31,softwarecatalog,Bump version to 0.1.98
+2025-10-08,Wednesday,No,Yes,2.0,1,12:54,12:54,softwarecatalog,Bump version to 0.1.99
+2025-10-09,Thursday,No,No,0.0,0,,,,No commits
+2025-10-10,Friday,No,Yes,2.0,1,13:22,13:22,softwarecatalog,Bump version to 0.1.101
+2025-10-11,Saturday,Yes,No,0.0,0,,,,No commits
+2025-10-12,Sunday,Yes,No,0.0,0,,,,No commits
+2025-10-13,Monday,No,No,0.0,0,,,,No commits
+2025-10-14,Tuesday,No,Yes,2.0,1,11:04,11:04,softwarecatalog,Bump version to 0.1.103
+2025-10-15,Wednesday,No,No,0.0,0,,,,No commits
+2025-10-16,Thursday,No,No,0.0,0,,,,No commits
+2025-10-17,Friday,No,No,0.0,0,,,,No commits
+2025-10-18,Saturday,Yes,No,0.0,0,,,,No commits
+2025-10-19,Sunday,Yes,No,0.0,0,,,,No commits
+2025-10-20,Monday,No,No,0.0,0,,,,No commits
+2025-10-21,Tuesday,No,No,0.0,0,,,,No commits
+2025-10-22,Wednesday,No,No,0.0,0,,,,No commits
+2025-10-23,Thursday,No,No,0.0,0,,,,No commits
+2025-10-24,Friday,No,No,0.0,0,,,,No commits
+2025-10-25,Saturday,Yes,No,0.0,0,,,,No commits
+2025-10-26,Sunday,Yes,No,0.0,0,,,,No commits
+2025-10-27,Monday,No,Yes,2.0,1,15:28,15:28,softwarecatalog,Bump version to 0.1.105
+2025-10-28,Tuesday,No,No,0.0,0,,,,No commits
+2025-10-29,Wednesday,No,Yes,2.0,4,09:51,09:51,"opencatalogi, openconnector, openregister",Bump version to 0.2.7; Bump version to 0.2.7; Bump version to 0.7.5 ... (+1 more commits)
+2025-10-30,Thursday,No,Yes,2.0,1,10:20,10:20,softwarecatalog,Bump version to 0.1.107
+2025-10-31,Friday,No,Yes,2.0,1,13:11,13:11,opencatalogi,Bump version to 0.7.6
+2025-11-01,Saturday,Yes,No,0.0,0,,,,No commits
+2025-11-02,Sunday,Yes,No,0.0,0,,,,No commits
+2025-11-03,Monday,No,No,0.0,0,,,,No commits
+2025-11-04,Tuesday,No,No,0.0,0,,,,No commits
+2025-11-05,Wednesday,No,No,0.0,0,,,,No commits
+2025-11-06,Thursday,No,Yes,2.0,1,15:23,15:23,softwarecatalog,Bump version to 0.1.109
+2025-11-07,Friday,No,No,0.0,0,,,,No commits
+2025-11-08,Saturday,Yes,No,0.0,0,,,,No commits
+2025-11-09,Sunday,Yes,No,0.0,0,,,,No commits
+2025-11-10,Monday,No,No,0.0,0,,,,No commits
+2025-11-11,Tuesday,No,No,0.0,0,,,,No commits
+2025-11-12,Wednesday,No,No,0.0,0,,,,No commits
+2025-11-13,Thursday,No,No,0.0,0,,,,No commits
+2025-11-14,Friday,No,Yes,2.0,2,12:34,14:01,"openregister, softwarecatalog",Bump version to 0.2.8; Bump version to 0.1.110
+2025-11-15,Saturday,Yes,No,0.0,0,,,,No commits
+2025-11-16,Sunday,Yes,No,0.0,0,,,,No commits
+2025-11-17,Monday,No,No,0.0,0,,,,No commits
+2025-11-18,Tuesday,No,No,0.0,0,,,,No commits
+2025-11-19,Wednesday,No,No,0.0,0,,,,No commits
+2025-11-20,Thursday,No,No,0.0,0,,,,No commits
+2025-11-21,Friday,No,No,0.0,0,,,,No commits
+2025-11-22,Saturday,Yes,No,0.0,0,,,,No commits
+2025-11-23,Sunday,Yes,No,0.0,0,,,,No commits
+2025-11-24,Monday,No,No,0.0,0,,,,No commits
+2025-11-25,Tuesday,No,No,0.0,0,,,,No commits
+2025-11-26,Wednesday,No,No,0.0,0,,,,No commits
+2025-11-27,Thursday,No,Yes,3.0,2,11:02,14:00,openregister,deploy: ba8968df8a2aab93eed9c967cdfaa0c3f9fac538; deploy: 645be58ba5946fd2f4c8426ca883ba76a1544ac2
+2025-11-28,Friday,No,Yes,3.0,2,08:41,11:44,softwarecatalog,Bump version to 0.1.114; Bump version to 0.1.113
+2025-11-29,Saturday,Yes,No,0.0,0,,,,No commits
+2025-11-30,Sunday,Yes,No,0.0,0,,,,No commits
+2025-12-01,Monday,No,No,0.0,0,,,,No commits
+2025-12-02,Tuesday,No,No,0.0,0,,,,No commits
+2025-12-03,Wednesday,No,No,0.0,0,,,,No commits
+2025-12-04,Thursday,No,Yes,2.0,1,14:07,14:07,softwarecatalog,Bump version to 0.1.115
+2025-12-05,Friday,No,Yes,4.1,7,10:58,15:07,"openregister, softwarecatalog",Bump unstable version to 0.2.9-unstable.1 [skip ci; Bump version to 0.1.121; Bump version to 0.1.120 ... (+4 more commits)
+2025-12-06,Saturday,Yes,No,0.0,0,,,,No commits
+2025-12-07,Sunday,Yes,No,0.0,0,,,,No commits
+2025-12-08,Monday,No,Yes,4.8,6,09:17,14:07,"openregister, softwarecatalog",Bump unstable version to 0.2.9-unstable.5 [skip ci; Bump unstable version to 0.2.9-unstable.4 [skip ci; Bump version to 0.1.125 ... (+3 more commits)
+2025-12-09,Tuesday,No,No,0.0,0,,,,No commits
+2025-12-10,Wednesday,No,Yes,2.0,1,09:33,09:33,softwarecatalog,Bump version to 0.1.126
+2025-12-11,Thursday,No,Yes,2.0,2,08:42,08:42,openconnector,Bump beta version to 0.2.7-beta.13 [skip ci]; Merge pull request #630 from ConductionNL/fix/targ
+2025-12-12,Friday,No,Yes,2.0,1,10:43,10:43,openregister,Bump unstable version to 0.2.9-unstable.7 [skip ci
+2025-12-13,Saturday,Yes,No,0.0,0,,,,No commits
+2025-12-14,Sunday,Yes,No,0.0,0,,,,No commits
+2025-12-15,Monday,No,Yes,2.0,2,10:18,11:18,"openregister, softwarecatalog",Bump unstable version to 0.2.9-unstable.10 [skip c; Bump version to 0.1.127
+2025-12-16,Tuesday,No,Yes,2.0,1,12:46,12:46,softwarecatalog,Bump version to 0.1.128
+2025-12-17,Wednesday,No,Yes,2.0,2,12:26,12:28,softwarecatalog,Bump version to 0.1.130; Bump version to 0.1.129
+2025-12-18,Thursday,No,No,0.0,0,,,,No commits
+2025-12-19,Friday,No,Yes,2.0,2,08:02,08:02,opencatalogi,Bump beta version to 0.7.7-beta.12 [skip ci]; hotfix/schemas
+2025-12-20,Saturday,Yes,No,0.0,0,,,,No commits
+2025-12-21,Sunday,Yes,No,0.0,0,,,,No commits
+2025-12-22,Monday,No,No,0.0,0,,,,No commits
+2025-12-23,Tuesday,No,No,0.0,0,,,,No commits
+2025-12-24,Wednesday,No,No,0.0,0,,,,No commits
+2025-12-25,Thursday,No,No,0.0,0,,,,No commits
+2025-12-26,Friday,No,No,0.0,0,,,,No commits
+2025-12-27,Saturday,Yes,No,0.0,0,,,,No commits
+2025-12-28,Sunday,Yes,No,0.0,0,,,,No commits
+2025-12-29,Monday,No,Yes,2.0,3,08:56,10:55,openregister,Bump beta version to 0.2.9-beta.30 [skip ci]; Merge pull request #874 from ConductionNL/fix/prop; Bump unstable version to 0.2.9-unstable.11 [skip c
+2025-12-30,Tuesday,No,No,0.0,0,,,,No commits
+2025-12-31,Wednesday,No,No,0.0,0,,,,No commits

@@ -1,0 +1,71 @@
+Session,Date Label,Type,Start,End,Duration (h),Calculated Hours,Commits,Repositories,Summary
+1,2026-01-02,normal,2026-01-02 15:28,2026-01-02 15:28,0.0,1.5,1,openregister,Setting up postgress support part 1
+2,2026-01-04,weekend,2026-01-04 10:07,2026-01-04 10:07,0.0,1.5,1,openregister,Fixing resutls from first postgress integration te
+3,2026-01-05,normal,2026-01-05 09:42,2026-01-05 14:01,4.3,5.8,6,openregister,Figing the last of the phpcs errors; psalm fixes an codebase cleanup; 0 PHPCS en PHPMD fouten! ... (+3 more)
+4,2026-01-05,all_nighter,2026-01-05 22:34,2026-01-06 00:49,2.2,3.2,5,"opencatalogi, openregister, softwarecatalog",Lets add a magic mapper; Merge remote-tracking branch 'origin/main'; Merge remote-tracking branch 'origin/main' ... (+2 more)
+5,2026-01-06,normal,2026-01-06 08:49,2026-01-06 10:00,1.2,2.2,3,"openregister, tilburg-woo-ui",Adding chat functionality; Merge remote-tracking branch 'origin/feature/koppe; Config modificaties
+6,2026-01-06,normal,2026-01-06 15:53,2026-01-06 15:53,0.0,1.5,1,openregister,Working on getting easy software catalog deploys
+7,2026-01-07,normal,2026-01-07 07:58,2026-01-07 10:33,2.6,3.6,2,"opencatalogi, openregister",Still fixing the new stack; Updating open catalogi to comply with the new open
+8,2026-01-07,normal,2026-01-07 13:47,2026-01-07 17:32,3.8,4.8,3,"opencatalogi, openregister",Working on getting open catalogi back up and runni; More updates for working with open registers; Another day of fixing and testing
+9,2026-01-08,normal,2026-01-08 11:43,2026-01-08 11:43,0.0,1.5,1,openregister,Working on facating
+10,2026-01-08,normal,2026-01-08 16:52,2026-01-08 16:52,0.0,1.5,1,openregister,Fixing the names endpoint
+11,2026-01-09,normal,2026-01-09 07:09,2026-01-09 15:29,8.3,9.8,20,"opencatalogi, openregister, softwarecatalog, tilburg-woo-ui",Fixing relations; Merge remote-tracking branch 'origin/softwarecatal; Found some uses of product still ... (+17 more)
+12,2026-01-11,weekend,2026-01-11 13:17,2026-01-11 14:10,0.9,2.4,7,openregister,feat: Achieve zero errors across all quality tools; fix: Quote POSTGRES_PASSWORD to resolve YAML synta; fix: Quote second POSTGRES_PASSWORD occurrence in  ... (+4 more)
+13,2026-01-12,normal,2026-01-12 10:47,2026-01-12 10:47,0.0,1.5,2,"openregister, tilburg-woo-ui",Registratie formulier over geztet naar open regist; testen testen testen
+14,2026-01-13,normal,2026-01-13 09:31,2026-01-13 09:32,0.0,1.5,2,softwarecatalog,Lets test GEMMA; Merge remote-tracking branch 'origin/feature/newop
+15,2026-01-14,normal,2026-01-14 08:19,2026-01-14 08:19,0.0,1.5,2,openregister,Adding some speed; Merge remote-tracking branch 'origin/beta' into fe
+16,2026-01-15,normal,2026-01-15 09:51,2026-01-15 13:24,3.5,5.0,12,"opencatalogi, openregister, softwarecatalog",Full chain test for open register with software ca; Fix loading the correct settings file; Merge branch 'feature/newopenregister' of https:// ... (+9 more)
+17,2026-01-16,normal,2026-01-16 09:07,2026-01-16 09:35,0.5,1.5,3,"openregister, softwarecatalog",Merge remote-tracking branch 'origin/fix/settingsS; Test scripts; small fix for id's
+18,2026-01-16,normal,2026-01-16 13:04,2026-01-16 13:04,0.0,1.5,1,opencatalogi,Small fixes for VNG
+19,2026-01-18,weekend,2026-01-18 07:40,2026-01-18 10:44,3.1,4.6,9,"openregister, softwarecatalog","Fix organisation page to only extend contactperson; Fix: Remove unnecessary _extend from audit-trails ; Remove frontend-forced _source parameter, let back ... (+6 more)"
+20,2026-01-18,weekend,2026-01-18 16:42,2026-01-18 17:40,1.0,2.5,6,"openregister, softwarecatalog",fix: Add datetime transformation for created/updat; fix: Add UnifiedObjectMapper support for audit-tra; Redoing some earlier fixes ... (+3 more)
+21,2026-01-18,all_nighter,2026-01-18 21:01,2026-01-19 10:45,13.7,15.7,43,"opencatalogi, openregister, softwarecatalog, tilburg-woo-ui",Merge remote-tracking branch 'origin/feature/newop; Frontend hotfixes; Merge remote-tracking branch 'origin/feature/chat' ... (+40 more)
+22,2026-01-19,normal,2026-01-19 15:18,2026-01-19 16:01,0.7,2.2,7,"opencatalogi, openregister, softwarecatalog, tilburg-woo-ui",Lets manage the names cache; proper counts; Lets speed up the facets ... (+4 more)
+23,2026-01-19,all_nighter,2026-01-19 23:31,2026-01-20 02:22,2.9,4.4,16,"openregister, softwarecatalog, tilburg-woo-ui",Fixing organisation and user creation; Merge remote-tracking branch 'origin/feature/newop; New metadata hydrator ... (+13 more)
+24,2026-01-20,normal,2026-01-20 06:48,2026-01-20 18:38,11.8,13.8,47,"opencatalogi, openregister, softwarecatalog, tilburg-woo-ui",clearname cache; Small fixes on activating users; Permentantly deleting items ... (+44 more)
+25,2026-01-21,early_morning,2026-01-21 05:31,2026-01-21 13:41,8.2,10.2,27,"opencatalogi, openregister, softwarecatalog, tilburg-woo-ui",Fixing the _extend for nextcloud 30; upadting auth for open catalogi; Updating configuration ... (+24 more)
+26,2026-01-21,normal,2026-01-21 16:56,2026-01-21 17:02,0.1,1.5,5,"openregister, softwarecatalog, tilburg-woo-ui",Fixing magic mapper for multy tennancy exlusion; import fix; realigning the environment for final test ... (+2 more)
+27,2026-01-22,normal,2026-01-22 17:23,2026-01-22 18:36,1.2,2.7,7,"opencatalogi, openregister, softwarecatalog, tilburg-woo-ui",All a days work; Lets trust rbac; RBAC on schemas ... (+4 more)
+28,2026-01-23,early_morning,2026-01-23 01:40,2026-01-23 01:40,0.0,1.5,1,openregister,Improve facet performance by caching
+29,2026-01-23,normal,2026-01-23 09:57,2026-01-23 14:29,4.5,6.0,6,"openregister, tilburg-woo-ui",add _names extension; Testing the _names functionality; Integrate the new and imporved names functionality ... (+3 more)
+30,2026-01-24,weekend,2026-01-24 08:25,2026-01-24 09:55,1.5,2.5,3,"openregister, tilburg-woo-ui",Merge remote-tracking branch 'origin/softwarecatal; Merge pull request #331 from ConductionNL/feature/; Type is a regular property so lets allow that
+31,2026-01-24,weekend,2026-01-24 15:57,2026-01-24 15:57,0.0,1.5,1,softwarecatalog,Load fix
+32,2026-01-25,weekend,2026-01-25 08:39,2026-01-25 09:16,0.6,1.6,3,"openregister, tilburg-woo-ui",Small bit of api cleanup; Merge remote-tracking branch 'origin/feature/perfo; Added more suport for amef id's
+33,2026-01-25,weekend,2026-01-25 12:38,2026-01-25 15:25,2.8,3.8,5,"openregister, tilburg-woo-ui",File upload fix; Proper multitenancy parameters; Speeding up the dashboard ... (+2 more)
+34,2026-01-25,all_nighter,2026-01-25 19:33,2026-01-26 06:10,10.6,12.1,20,"openregister, softwarecatalog, tilburg-woo-ui",Updated our file to file logic; Small changes to the schemas; Merge remote-tracking branch 'origin/feature/perfo ... (+17 more)
+35,2026-01-26,normal,2026-01-26 09:44,2026-01-26 15:30,5.8,7.3,13,"openregister, softwarecatalog, tilburg-woo-ui",Sorting on the searchpages; Correct metadata ordening; Updating save perfomance ... (+10 more)
+36,2026-01-27,normal,2026-01-27 06:30,2026-01-27 14:08,7.6,9.1,13,"openregister, softwarecatalog, tilburg-woo-ui",Fix for registerering organisatations; Bad facet code; Merge branch 'stag-badfacetcode' into feature/php- ... (+10 more)
+37,2026-01-27,evening,2026-01-27 22:08,2026-01-27 22:08,0.0,1.5,1,openregister,Facit fix
+38,2026-01-28,normal,2026-01-28 10:37,2026-01-28 14:45,4.1,5.6,9,"openregister, softwarecatalog, tilburg-woo-ui",Some fixes; Fixes for user creation; Merge pull request #170 from ConductionNL/beta-rel ... (+6 more)
+39,2026-01-29,normal,2026-01-29 08:09,2026-01-29 08:09,0.0,1.5,1,openregister,Fixing anonimization
+40,2026-01-29,normal,2026-01-29 12:03,2026-01-29 12:03,0.0,1.5,1,openregister,More fixes on entity extraction
+41,2026-01-30,normal,2026-01-30 09:22,2026-01-30 09:22,0.0,1.5,1,openregister,Volume mount to inline script
+42,2026-02-03,evening,2026-02-03 21:35,2026-02-03 21:37,0.0,1.5,2,"docudesk, openregister",Let get the code back to work; lets setup the exapps
+43,2026-02-06,normal,2026-02-06 10:23,2026-02-06 15:31,5.1,6.6,13,"docudesk, opencatalogi, openconnector, openregister, softwarecatalog",Getting the listing back on track; Standardize CI/CD workflows and add quality checks; Standardize CI/CD workflows for release pipeline ... (+10 more)
+44,2026-02-13,normal,2026-02-13 07:02,2026-02-13 07:36,0.6,1.6,2,tilburg-woo-ui,Merge remote-tracking branch 'origin/softwarecatal; Add back text support
+45,2026-02-13,normal,2026-02-13 14:08,2026-02-13 14:09,0.0,1.5,2,openregister,Fixes on VNG issues; Merge remote-tracking branch 'origin/feature/php-l
+46,2026-02-14,weekend,2026-02-14 21:04,2026-02-14 21:04,0.0,1.5,1,tilburg-woo-ui,Merge remote-tracking branch 'origin/softwarecatal
+47,2026-02-16,normal,2026-02-16 09:57,2026-02-16 14:12,4.2,5.7,9,"docudesk, openregister, softwarecatalog, tilburg-woo-ui",Automatische versies; Add missing config; Fixing the dashboarding ... (+6 more)
+48,2026-02-16,all_nighter,2026-02-16 22:53,2026-02-17 01:35,2.7,4.2,9,"opencatalogi, openregister, softwarecatalog, tilburg-woo-ui",Fixing the views; Merge remote-tracking branch 'origin/softwarecatal; Fixing z order and colors ... (+6 more)
+49,2026-02-17,normal,2026-02-17 07:21,2026-02-17 16:11,8.8,10.8,22,"opencatalogi, openregister, softwarecatalog, tilburg-woo-ui",Added deelnames to amef viw; Glossery sidebar; Merge pull request #175 from ConductionNL/feature/ ... (+19 more)
+50,2026-02-17,evening,2026-02-17 21:20,2026-02-17 21:20,0.0,1.5,1,openregister,Add three-tier release workflow files [skip ci]
+51,2026-02-18,normal,2026-02-18 06:47,2026-02-18 08:08,1.4,2.9,11,"docudesk, opencatalogi, openregister, softwarecatalog",App aware fix; Sopporting open anominizer; Add three-tier release workflow files [skip ci] ... (+8 more)
+52,2026-02-18,evening,2026-02-18 21:17,2026-02-18 22:10,0.9,2.4,11,"softwarecatalog, tilburg-woo-ui",Let see is we can trigger a build; Merge remote-tracking branch 'origin/development' ; Merge pull request #176 from ConductionNL/feature/ ... (+8 more)
+53,2026-02-19,all_nighter,2026-02-19 05:50,2026-02-20 03:54,22.1,24.1,51,"opencatalogi, openregister, softwarecatalog, tilburg-woo-ui",Bump version to 0.1.138; Bump version to 0.1.138; fix: Use version from info.xml in unstable release ... (+48 more)
+54,2026-02-20,normal,2026-02-20 08:30,2026-02-20 09:15,0.8,1.8,3,openregister,Remove bad @cors; Merge branch 'feature/php-linting' of https://gith; Fix facet cache not invalidating when schema facet
+55,2026-02-20,evening,2026-02-20 22:00,2026-02-20 22:30,0.5,1.5,2,openregister,"Remove register-level export, use schema-level exp; Fix metadata hydration to resolve UUIDs to object "
+56,2026-02-21,weekend,2026-02-21 10:24,2026-02-21 10:33,0.2,1.5,2,openregister,Small fix for koppelingen namen; Restore register-level export backend API
+57,2026-02-21,weekend,2026-02-21 15:21,2026-02-21 20:13,4.9,6.4,13,"openregister, softwarecatalog, tilburg-woo-ui",Fixing hydration options; feat: Add applicaties and deelnames overlay suppor; Updates to koppelingen form ... (+10 more)
+58,2026-02-22,weekend,2026-02-22 09:36,2026-02-22 14:33,4.9,6.4,12,"openregister, softwarecatalog, tilburg-woo-ui",Merge pull request #895 from ConductionNL/feature/; fix: Contactpersoon sync via /me endpoint with ema; perf: Remove per-request boot() overhead and optim ... (+9 more)
+59,2026-02-22,weekend,2026-02-22 17:57,2026-02-22 21:15,3.3,4.8,7,"openregister, softwarecatalog, tilburg-woo-ui",Agentic testing; fix: Handle organisation slug collisions gracefull; fix: Prevent duplicate organisation entities in Co ... (+4 more)
+60,2026-02-23,normal,2026-02-23 07:16,2026-02-23 07:55,0.7,1.6,2,tilburg-woo-ui,Fixing view naming; Kleine hotfix voor koppelingen
+61,2026-02-23,all_nighter,2026-02-23 21:59,2026-02-24 01:26,3.4,5.4,24,"opencatalogi, openregister, softwarecatalog, tilburg-woo-ui",Merge remote-tracking branch 'origin/hotfix/koppel; fix(#410): use lowercase schrijfwijze 'softwarecat; fix(#410): use lowercase schrijfwijze 'softwarecat ... (+21 more)
+62,2026-02-24,normal,2026-02-24 07:38,2026-02-24 09:58,2.3,3.8,6,"openregister, softwarecatalog, tilburg-woo-ui",fix(#373): Bypass multi-tenancy in schema resoluti; fix(#148): Bypass multi-tenancy in OAS schema reso; chore: Normalize line endings to LF ... (+3 more)
+63,2026-02-26,normal,2026-02-26 07:55,2026-02-26 07:55,0.0,2.0,14,"docudesk, larpingapp, opencatalogi, openconnector, openregister, softwarecatalog, tilburg-woo-ui",chore: Switch license to EUPL-1.2; chore: Switch license to EUPL-1.2; chore: Switch license to EUPL-1.2 ... (+11 more)
+64,2026-02-26,normal,2026-02-26 12:35,2026-02-26 15:01,2.4,3.9,6,"openregister, tilburg-woo-ui","fix: Add defensive null checks for user store and ; fix: UI improvements for beheer tables, delete dia; fix: Resolve koppeling names via API to prevent UU ... (+3 more)"
+65,2026-02-27,normal,2026-02-27 11:38,2026-02-27 13:49,2.2,3.7,6,openregister,docs: Rewrite RBAC documentation as comprehensive ; refactor: Migrate admin settings to @conduction/ne; chore: Update package-lock.json ... (+3 more)
+66,2026-02-28,weekend,2026-02-28 14:04,2026-02-28 14:08,0.1,2.0,8,"docudesk, larpingapp, opencatalogi","fix: Resolve PDF download, config injection, undef; fix: Remove dead dashboard code, CSP wildcard, and; fix: Remove dead code, CSP wildcard, and broken Fl ... (+5 more)"
+67,2026-02-28,weekend,2026-02-28 20:55,2026-02-28 20:55,0.0,1.5,4,"docudesk, larpingapp, opencatalogi, openregister",docs: Review and fix OpenSpec specs against codeba; docs: Review and fix OpenSpec specs against codeba; docs: Review and fix OpenSpec specs against codeba ... (+1 more)
+68,2026-03-01,weekend,2026-03-01 10:34,2026-03-01 10:34,0.0,1.5,2,openregister,fix: Include schema property columns in multi-sche; fix: Scope non-aggregated facets to their own sche
+69,2026-03-01,weekend,2026-03-01 17:18,2026-03-01 17:20,0.0,2.0,11,"opencatalogi, openregister, softwarecatalog, tilburg-woo-ui",fix: Support 'authenticated' RBAC keyword and expo; fix: OAS path generation and merge handler bugs (#; feat: Add interactive ReDoc API documentation view ... (+8 more)
+70,2026-03-02,early_morning,2026-03-02 00:00,2026-03-02 00:24,0.4,2.5,22,"docudesk, larpingapp, opencatalogi, openconnector, openregister, softwarecatalog, tilburg-woo-ui","feat: Add Docker Compose profiles and fix n8n ExAp; refactor: Remove ReDoc docs endpoints from OAS con; fix: Organisation filter, export RBAC, merge handl ... (+19 more)"

@@ -1,0 +1,17 @@
+# ConductionNL Repositories Configuration
+# List all ConductionNL repositories to track
+# Format: repository_name (one per line)
+# The script will search for these repositories in common locations
+
+openregister
+opencatalogi
+openconnector
+softwarecatalog
+tilburg-woo-ui
+docudesk
+larpingapp
+commonground-gateway
+woo-website-template-apiv2
+openconnector-ui
+
+

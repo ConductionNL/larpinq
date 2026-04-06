@@ -1,0 +1,226 @@
+Issue Key,Start Date,Hours,Work Description,Activity Name
+CATALOGI-1,2025-01-30,3.0,1 commits in opencatalogi: Merge remote-tracking branch 'origin/development' ,Development
+CATALOGI-1,2025-04-14,6.0,"5 commits in opencatalogi, openregister: Fixen schema extension; Fixen schema extension; Update all the dialogs ... (+2 more commits)",Development
+CATALOGI-1,2025-04-15,4.6,2 commits in opencatalogi: Add the glossery code; Let cleanup some more logs,Development
+CATALOGI-1,2025-04-17,6.0,2 commits in opencatalogi: Refactor on controllers; Fixing a lot of the modals,Development
+CATALOGI-1,2025-04-19,4.2,"12 commits in opencatalogi, openregister: deploy: 25538e7e3f0ba074c0b12e961ff0cc28370deaeb; Oas readablitiy fix; Oas readablitiy fix ... (+9 more commits)",Development
+CATALOGI-1,2025-04-20,3.8,"7 commits in opencatalogi, openregister: Merge branch 'documentation' into feature/REGISTER; Merge branch 'documentation' into feature/REGISTER; Lets lint our php code, and name services corretly ... (+4 more commits)",Development
+CATALOGI-1,2025-05-24,6.0,"27 commits in docudesk, opencatalogi: Merge branch 'hotfix/zuiddrecht' of https://github; Make open catalogi work for non admin users; Merge branch 'hotfix/frontend' ... (+24 more commits)",Development
+CATALOGI-1,2025-06-16,3.0,1 commits in opencatalogi: Starting on a dymanic publications search example,Development
+CATALOGI-1,2025-06-19,3.0,1 commits in opencatalogi: Lets add ordering,Development
+CATALOGI-1,2025-06-23,6.0,"13 commits in opencatalogi, openregister: Merge pull request #452 from ConductionNL/feature/; Merge pull request #452 from ConductionNL/feature/; WIP on merge modal ... (+10 more commits)",Development
+CATALOGI-1,2025-06-24,3.0,4 commits in opencatalogi: Merge pull request #284 from ConductionNL/feature/; Let return catalogi in our directory endpoint; Merge pull request #283 from ConductionNL/feature/ ... (+1 more commits),Development
+CATALOGI-1,2025-06-25,6.0,16 commits in opencatalogi: Merge pull request #291 from ConductionNL/feature/; Dirty filter fix; Merge pull request #290 from ConductionNL/feature/ ... (+13 more commits),Development
+CATALOGI-1,2025-06-26,5.4,"14 commits in opencatalogi, openregister: First draft facet component; First draft facet component; Merge pull request #456 from ConductionNL/hotfix/s ... (+11 more commits)",Development
+CATALOGI-1,2025-06-28,6.0,8 commits in opencatalogi: Working on date times; Merge pull request #301 from ConductionNL/feature/; Small cleanup on fixes ... (+5 more commits),Development
+CATALOGI-1,2025-06-29,6.0,"9 commits in opencatalogi, openregister: Merge pull request #460 from ConductionNL/feature/; Merge pull request #460 from ConductionNL/feature/; Refactor publisheing and depublishing files ... (+6 more commits)",Development
+CATALOGI-1,2025-07-02,3.0,4 commits in opencatalogi: Merge pull request #308 from ConductionNL/feature/; Facet hotfix; Merge pull request #307 from ConductionNL/feature/ ... (+1 more commits),Development
+CATALOGI-1,2025-07-08,3.0,"10 commits in opencatalogi, openregister: Merge pull request #476 from ConductionNL/feature/; Merge pull request #476 from ConductionNL/feature/; Merge remote-tracking branch 'origin/development'  ... (+7 more commits)",Development
+CATALOGI-1,2025-07-10,3.0,"6 commits in opencatalogi, openregister: Merge pull request #477 from ConductionNL/feature/; Merge pull request #477 from ConductionNL/feature/; Better import screen ... (+3 more commits)",Development
+CATALOGI-1,2025-07-24,5.4,"6 commits in opencatalogi, softwarecatalog: Fixin linting errors; Merge remote-tracking branch 'origin/main' into de; Lets automate organisation entity creation ... (+3 more commits)",Development
+CATALOGI-1,2025-07-29,3.0,"2 commits in opencatalogi, openregister: Lets optimize the importing of config by keeping a; Lets optimize the configuration procces",Development
+CATALOGI-1,2025-08-14,3.0,3 commits in opencatalogi: Merge pull request #338 from ConductionNL/hotfix/c; Working on the modal; Merge remote-tracking branch 'origin/feature/OP-51,Development
+CATALOGI-1,2025-08-15,3.0,3 commits in opencatalogi: Merge pull request #340 from ConductionNL/hotfix/c; Merge remote-tracking branch 'origin/hotfix/cors' ; Lets setup the menu's properly,Development
+CATALOGI-1,2025-08-27,3.0,4 commits in opencatalogi: Merge pull request #343 from ConductionNL/hotfix/c; Merge branch 'development' into hotfix/cors; Hotfix: Hack on the publication controller ... (+1 more commits),Development
+CATALOGI-1,2025-09-04,6.0,"11 commits in opencatalogi, openregister, softwarecatalog: Merge pull request #579 from ConductionNL/feature/; Merge pull request #579 from ConductionNL/feature/; Hotfix: Cashin ... (+8 more commits)",Development
+CATALOGI-1,2025-09-22,5.3,"22 commits in opencatalogi, openregister: Merge pull request #634 from ConductionNL/hotfix/s; Merge pull request #634 from ConductionNL/hotfix/s; fix: prevent empty register/schema values from cau ... (+19 more commits)",Development
+CATALOGI-1,2025-09-24,6.0,"18 commits in opencatalogi, openregister, softwarecatalog: docs: add comprehensive @self metadata handling do; docs: add comprehensive @self metadata handling do; fix: improve @self metadata handling for organizat ... (+15 more commits)",Development
+CATALOGI-1,2025-09-29,3.3,"10 commits in opencatalogi, openregister, softwarecatalog: fix: minor cleanup in GuzzleSolrService after sear; fix: minor cleanup in GuzzleSolrService after sear; Merge pull request #647 from ConductionNL/feature/ ... (+7 more commits)",Development
+CATALOGI-1,2025-10-01,3.0,4 commits in opencatalogi: Merge pull request #361 from ConductionNL/feature/; Delete ource = index' parameter from MenusControll; Delete allows the system to use the most appropria ... (+1 more commits),Development
+CATALOGI-1,2025-10-02,3.0,"8 commits in opencatalogi, openregister: Merge pull request #652 from ConductionNL/feature/; Merge pull request #652 from ConductionNL/feature/; hotfix(solr): temporarily disable published and or ... (+5 more commits)",Development
+CATALOGI-1,2025-10-05,6.0,"19 commits in opencatalogi, openregister, softwarecatalog: test; test; Uddate ... (+16 more commits)",Development
+CATALOGI-1,2025-10-06,3.0,"4 commits in opencatalogi, openregister, softwarecatalog: Merge pull request #657 from ConductionNL/developm; Merge pull request #657 from ConductionNL/developm; Merge pull request #366 from ConductionNL/developm ... (+1 more commits)",Development
+CATALOGI-1,2025-10-09,4.6,4 commits in opencatalogi: Merge pull request #368 from ConductionNL/feature/; missed a spot; Merge pull request #367 from ConductionNL/feature/ ... (+1 more commits),Development
+CATALOGI-1,2025-10-13,6.0,"14 commits in opencatalogi, openregister: Merge pull request #671 from ConductionNL/feature/; Merge pull request #671 from ConductionNL/feature/; Oke couple of warmup fixes ... (+11 more commits)",Development
+CATALOGI-1,2025-10-22,3.0,2 commits in opencatalogi: Merge pull request #378 from ConductionNL/feature/; Route fix,Development
+CATALOGI-1,2025-10-26,3.0,"3 commits in opencatalogi, openregister: Merge remote-tracking branch 'origin/development' ; Merge remote-tracking branch 'origin/development' ; Merge remote-tracking branch 'origin/development' ",Development
+CATALOGI-1,2025-10-27,3.0,"6 commits in opencatalogi, openregister: Merge pull request #692 from ConductionNL/feature/; Merge pull request #692 from ConductionNL/feature/; Correctly inserting services ... (+3 more commits)",Development
+CATALOGI-1,2025-12-08,3.1,"2 commits in opencatalogi, openregister: Trying to fix the foreign key error on installatio; Merge pull request #398 from ConductionNL/hotfix/l",Development
+CATALOGI-1,2025-12-19,3.0,"3 commits in opencatalogi: Merge remote-tracking branch 'origin/fix/federatio; On development: Auto stash before merge of ""develo; index on development: 16079923 Merge pull request ",Development
+COND-9999,2025-02-11,3.0,1 commits in docudesk: Initial commit,Development
+COND-9999,2025-02-13,3.0,1 commits in docudesk: Deploy website - based on 22063c53ed3f4ed42c3d6730,Development
+COND-9999,2025-03-16,6.0,19 commits in docudesk: Bit of extra loging; Fixed reading txt files; Lets go on to extracting the texts ... (+16 more commits),Development
+COND-9999,2025-03-17,3.0,7 commits in docudesk: Fixed the string replacement; fixed invinite file creation; A raign of fixes ... (+4 more commits),Development
+COND-9999,2025-05-20,3.0,2 commits in docudesk: Fixed the autoloader issue; Procces reports,Development
+COND-9999,2025-05-21,3.0,2 commits in docudesk: Fixed the index pages; Lets fix the frontend,Development
+COND-9999,2025-05-22,3.0,1 commits in docudesk: Update to the configuration service,Development
+COND-9999,2025-05-23,3.0,2 commits in docudesk: Lets automate our code quality checks; Add licence checking,Development
+COND-9999,2025-05-25,3.0,3 commits in docudesk: Merge branch 'main' into hotfix/frontend; Merge branch 'main' of https://github.com/Conducti; Lets add the entities Register,Development
+COND-9999,2025-07-01,3.0,1 commits in softwarecatalog: Lets setup the software catalog component,Development
+COND-9999,2025-07-06,6.0,4 commits in softwarecatalog: Setting up the new organisations handlers; Merge pull request #5 from ConductionNL/developmen; Bit more composer fixes ... (+1 more commits),Development
+COND-9999,2025-07-07,6.0,5 commits in softwarecatalog: Merge pull request #15 from ConductionNL/developme; Uuid fixes; Lets add the mailing functionality ... (+2 more commits),Development
+COND-9999,2025-07-16,3.0,2 commits in softwarecatalog: Updates to new object flow; New event subcribers flow,Development
+COND-9999,2025-07-17,3.0,3 commits in softwarecatalog: Merge pull request #17 from ConductionNL/developme; Merge remote-tracking branch 'origin/main' into de; Add error catching,Development
+COND-9999,2025-07-18,3.0,2 commits in softwarecatalog: Merge pull request #18 from ConductionNL/developme; User creation on creaetion of contact persoon and ,Development
+COND-9999,2025-07-31,3.0,3 commits in softwarecatalog: Merge pull request #33 from ConductionNL/developme; Fixed settings updates; Merge remote-tracking branch 'origin/main' into de,Development
+COND-9999,2025-08-09,3.0,1 commits in softwarecatalog: Testing the loose endpoints,Development
+COND-9999,2025-08-21,6.0,4 commits in softwarecatalog: KLeine fixes; Merge pull request #49 from ConductionNL/hotfix/ac; Merge remote-tracking branch 'origin/main' into ho ... (+1 more commits),Development
+COND-9999,2025-10-07,3.0,4 commits in softwarecatalog: Merge pull request #111 from ConductionNL/developm; Password lengt to 10 lettters; Merge pull request #110 from ConductionNL/developm ... (+1 more commits),Development
+COND-9999,2025-10-15,3.0,2 commits in softwarecatalog: Merge pull request #118 from ConductionNL/developm; Fix adding the user to the correct organisation,Development
+CONNECTOR,2025-01-18,3.3,4 commits in openconnector: Merge tag 'v0.1.38' into feature/CONNECTOR-155/act; More clearity in the login of synchronysation resu; Updated the synchronysation docs for force ... (+1 more commits),Development
+CONNECTOR-1,2025-01-08,3.0,2 commits in openconnector: Function for handling object removal; Do synchronysations when the mapping is updated or,Development
+CONNECTOR-1,2025-01-11,3.0,3 commits in openconnector: More frontend work; Setting the frontend code; Add rules to open connector,Development
+CONNECTOR-1,2025-01-12,6.0,16 commits in openconnector: Let round up the rules logic; Update the rules logic in the endpoint service; Docs ... (+13 more commits),Development
+CONNECTOR-1,2025-01-19,3.0,1 commits in openconnector: First testing,Development
+CONNECTOR-1,2025-02-16,4.2,2 commits in openconnector: Add XML import support for open connector; Merge remote-tracking branch 'origin/development' ,Development
+CONNECTOR-1,2025-02-17,4.0,"43 commits in docudesk, opencatalogi, openconnector, openregister: Create CNAME; Deploy website - based on b3c5c685904776f19e27ec65; Create CNAME ... (+40 more commits)",Development
+CONNECTOR-1,2025-02-18,6.0,"11 commits in docudesk, opencatalogi, openconnector, openregister: Merge pull request #200 from ConductionNL/developm; Merge pull request #200 from ConductionNL/developm; Deploy website - based on 335899dfe33cd2acac7ac3dc ... (+8 more commits)",Development
+CONNECTOR-1,2025-03-07,3.0,"4 commits in openconnector, openregister: Documentation updates; Documentation updates; Deploy website - based on 26cfebc2d6ff7185a6e3b30a ... (+1 more commits)",Development
+CONNECTOR-1,2025-03-14,3.0,"8 commits in opencatalogi, openconnector, openregister: Add lock; Add lock; Update to docusarus 3 ... (+5 more commits)",Development
+CONNECTOR-1,2025-03-15,6.0,"29 commits in docudesk, opencatalogi, openconnector, openregister: Small fixes; Small fixes; More fixes ... (+26 more commits)",Development
+CONNECTOR-1,2025-03-29,6.0,5 commits in openconnector: Lets get a bit of flavor into cursor; Merge branch 'documentation' into feature/CONNECTO; Merge remote-tracking branch 'origin/feature/CONNE ... (+2 more commits),Development
+CONNECTOR-1,2025-03-30,6.0,24 commits in openconnector: Fixes on the migration files; Getting the migrations to comply; docblock fixes ... (+21 more commits),Development
+CONNECTOR-1,2025-03-31,6.0,"4 commits in openconnector, openregister: deploy: 31e353eb916c5f0e9c0be8ab9982f8b3111e7503; Add audit trail view description; Add audit trail view description ... (+1 more commits)",Development
+CONNECTOR-1,2025-05-13,6.0,"5 commits in openconnector, openregister: Merge pull request #375 from ConductionNL/feature/; Merge pull request #375 from ConductionNL/feature/; Bit of cleanup ... (+2 more commits)",Development
+CONNECTOR-1,2025-05-16,3.0,1 commits in openconnector: Merge remote-tracking branch 'origin/development' ,Development
+CONNECTOR-1,2025-05-18,6.0,"18 commits in docudesk, opencatalogi, openconnector, openregister: Correcting the function name; Correcting the function name; More fixes on the export ... (+15 more commits)",Development
+CONNECTOR-1,2025-05-26,5.1,"16 commits in opencatalogi, openconnector, openregister: Suporting baseencoded files; Suporting baseencoded files; Introdue special search _published that shows only ... (+13 more commits)",Development
+CONNECTOR-1,2025-05-27,3.0,2 commits in openconnector: Speedy gonzales; Lets keep tabs on the speed of the synhronysation ,Development
+CONNECTOR-1,2025-06-02,6.0,"9 commits in openconnector, openregister: Merge branch 'hotfix/zuiddrecht' into development; Merge branch 'hotfix/zuiddrecht' into development; Lets ad a dialog confirmation for deleting items ... (+6 more commits)",Development
+CONNECTOR-1,2025-06-07,6.0,"17 commits in openconnector, openregister: Bug fixing on deleted and auditrtrail pages; Bug fixing on deleted and auditrtrail pages; Fixin the audit trail page ... (+14 more commits)",Development
+CONNECTOR-1,2025-06-08,6.0,"10 commits in opencatalogi, openconnector, openregister: Small bit of maintanance on the sidebars; Small bit of maintanance on the sidebars; finishing of a consistent ui experience ... (+7 more commits)",Development
+CONNECTOR-1,2025-06-09,3.0,"7 commits in openconnector: Bit more fixes, stil not everything in working ord; Updating all the stores; Proper laoding ste on job logs ... (+4 more commits)",Development
+CONNECTOR-1,2025-06-10,6.0,4 commits in openconnector: Deleting synchronysation logs; Cleaningup the code a bit; Still fixing more routes ... (+1 more commits),Development
+CONNECTOR-1,2025-06-14,6.0,"11 commits in opencatalogi, openconnector, openregister: First draft of the new search objects function; First draft of the new search objects function; fix the mass delete modal ... (+8 more commits)",Development
+CONNECTOR-1,2025-06-18,6.0,"5 commits in openconnector, softwarecatalog: /me endpoint for storing user data; Merge remote-tracking branch 'origin/hotfix/zuidre; Merge remote-tracking branch 'origin/development'  ... (+2 more commits)",Development
+CONNECTOR-1,2025-06-30,6.0,"13 commits in opencatalogi, openconnector, openregister: Merge pull request #469 from ConductionNL/feature/; Merge pull request #469 from ConductionNL/feature/; Add textarea and markdown support ... (+10 more commits)",Development
+CONNECTOR-1,2025-07-13,6.0,"9 commits in openconnector, openregister: Faceting  fixes; Faceting  fixes; Lets add facets to the searchbar ... (+6 more commits)",Development
+CONNECTOR-1,2025-07-25,3.0,"7 commits in opencatalogi, openconnector, openregister, softwarecatalog: Merge pull request #507 from ConductionNL/feature/; RBAC Testing; More cors ... (+4 more commits)",Development
+CONNECTOR-1,2025-08-12,3.0,"5 commits in openconnector, openregister: Adding the settingspage; Adding the settingspage; Lets keep retatantions a continues concept ... (+2 more commits)",Development
+CONNECTOR-1,2025-08-16,3.0,1 commits in openconnector: Merge remote-tracking branch 'origin/fix/logging' ,Development
+CONNECTOR-1,2025-08-17,6.0,"10 commits in opencatalogi, openconnector, openregister: Merge pull request #534 from ConductionNL/hotfix/s; Merge pull request #534 from ConductionNL/hotfix/s; Trying to fix audit trails and setting schema and  ... (+7 more commits)",Development
+CONNECTOR-1,2025-08-26,3.0,"7 commits in opencatalogi, openconnector, softwarecatalog: Search optimalisatie; Merge pull request #342 from ConductionNL/hotfix/c; Search optimalisatie ... (+4 more commits)",Development
+CONNECTOR-1,2025-08-28,6.0,"24 commits in opencatalogi, openconnector, openregister, softwarecatalog: Fixing the bulk import; Fixing the bulk import; Hotfix: metadata in object when bulk importing ... (+21 more commits)",Development
+CONNECTOR-1,2025-08-29,3.0,1 commits in openconnector: Merge pull request #592 from ConductionNL/hotfix/c,Development
+CONNECTOR-1,2025-09-14,6.0,"26 commits in openconnector, openregister, softwarecatalog: feat(changelog): add changelog-ci configuration fo; feat(changelog): add changelog-ci configuration fo; feat(changelog): add changelog-ci configuration fo ... (+23 more commits)",Development
+REGISTER-1,2025-01-07,3.0,2 commits in openregister: Add events; Add events,Development
+REGISTER-1,2025-01-15,3.5,14 commits in openregister: Lets do migrations; Lets do migrations; Add locking and ownership features to ObjectEntity ... (+11 more commits),Development
+REGISTER-1,2025-02-04,3.0,8 commits in openregister: Merge branch 'main' into documentation-ibds; Merge branch 'main' into documentation-ibds; Merge branch 'documentation-ibds' ... (+5 more commits),Development
+REGISTER-1,2025-02-08,6.0,39 commits in openregister: Deploy website - based on ea07103d8ab848f58bdf5242; Found another one; Found another one ... (+36 more commits),Development
+REGISTER-1,2025-02-12,6.0,"6 commits in docudesk, openregister: Update the file service to always work on the Open; Update the file service to always work on the Open; Remove the custom sidebar ... (+3 more commits)",Development
+REGISTER-1,2025-02-23,3.4,4 commits in openregister: Best workflow; Best workflow; Merge remote-tracking branch 'origin/development'  ... (+1 more commits),Development
+REGISTER-1,2025-02-25,3.0,2 commits in openregister: Deploy website - based on cd5043323d9275a27229b3bd; Deploy website - based on 8488fec2faeed3a58a3dd266,Development
+REGISTER-1,2025-02-26,6.0,3 commits in openregister: Bit of bug hunting; Bit of bug hunting; Deploy website - based on b2d59363a60c22d0d3a2ef2e,Development
+REGISTER-1,2025-02-28,3.0,4 commits in openregister: There might be other error prefenting finding a ta; There might be other error prefenting finding a ta; Fixed empty tags off case ... (+1 more commits),Development
+REGISTER-1,2025-03-13,3.0,9 commits in openregister: Deploy website - based on 6c4a089720eb349631cd3d06; Missed some; Missed some ... (+6 more commits),Development
+REGISTER-1,2025-03-18,3.0,8 commits in openregister: deploy: ddfbc96971a490b910b94a8d7cfffef00512e821; Lets update the object docs; Lets update the object docs ... (+5 more commits),Development
+REGISTER-1,2025-03-19,3.0,2 commits in openregister: Test; Test,Development
+REGISTER-1,2025-03-20,3.5,17 commits in openregister: deploy: 1bb3caa522d03d6f2a8845742182971b44ad34b0; This would be cool...; This would be cool... ... (+14 more commits),Development
+REGISTER-1,2025-03-21,3.0,8 commits in openregister: Merge remote-tracking branch 'origin/feature/VSC-2; Merge remote-tracking branch 'origin/feature/VSC-2; Lets refactor the frontend for the new urls ... (+5 more commits),Development
+REGISTER-1,2025-03-22,6.0,28 commits in openregister: Set owner and application; Set owner and application; Let quickly fix soft deleted ... (+25 more commits),Development
+REGISTER-1,2025-03-23,6.0,12 commits in openregister: Cleanop the view dialog; Cleanop the view dialog; Fix code mirror in the object view ... (+9 more commits),Development
+REGISTER-1,2025-03-24,3.0,2 commits in openregister: Working on refactoring saving objects; Working on refactoring saving objects,Development
+REGISTER-1,2025-03-27,3.0,2 commits in openregister: - Database cleanup - Preperation for authenticatio; - Database cleanup - Preperation for authenticatio,Development
+REGISTER-1,2025-04-01,3.0,4 commits in openregister: phpcs on all DB items; phpcs on all DB items; Merge remote-tracking branch 'origin/feature/REGIS ... (+1 more commits),Development
+REGISTER-1,2025-04-02,3.0,9 commits in openregister: Making the file understandable; Making the file understandable; Cleanu-up ... (+6 more commits),Development
+REGISTER-1,2025-04-03,3.5,20 commits in openregister: Manual fixes; Manual fixes; Remove extend entity ... (+17 more commits),Development
+REGISTER-1,2025-04-04,6.0,10 commits in openregister: More fixes; More fixes; Merge branch 'code-refactor/ObjectService' of http ... (+7 more commits),Development
+REGISTER-1,2025-04-05,3.0,4 commits in openregister: Merge branch 'code-refactor/ObjectService' of http; Merge branch 'code-refactor/ObjectService' of http; Still fixing everythin that broke ... (+1 more commits),Development
+REGISTER-1,2025-04-06,6.0,22 commits in openregister: Merge branch 'code-refactor/ObjectService' of http; Merge branch 'code-refactor/ObjectService' of http; Fixing the audit trails ... (+19 more commits),Development
+REGISTER-1,2025-04-07,3.0,6 commits in openregister: nOOZ; nOOZ; phpcbf ... (+3 more commits),Development
+REGISTER-1,2025-04-08,3.7,4 commits in openregister: Fixed getting proper relations; Fixed getting proper relations; Lets use a notecard is noting can be found ... (+1 more commits),Development
+REGISTER-1,2025-04-09,3.0,6 commits in openregister: First work on configurations; First work on configurations; Merge branch 'code-refactor/ObjectService' of http ... (+3 more commits),Development
+REGISTER-1,2025-04-10,3.0,8 commits in openregister: Forgot to lint the controllers; Forgot to lint the controllers; Finishing up the linting ... (+5 more commits),Development
+REGISTER-1,2025-04-11,3.0,6 commits in openregister: Unset id and uuid; Unset id and uuid; Add  OppenConnector to the import ... (+3 more commits),Development
+REGISTER-1,2025-04-12,6.0,22 commits in openregister: Fix uses and used; Fix uses and used; Bit of data cleanup ... (+19 more commits),Development
+REGISTER-1,2025-04-13,3.0,4 commits in openregister: Extend register and schema; Extend register and schema; Dealing with extend as string ... (+1 more commits),Development
+REGISTER-1,2025-04-22,3.0,8 commits in openregister: Lets do a build; Lets do a build; Fix for totals ... (+5 more commits),Development
+REGISTER-1,2025-04-30,6.0,30 commits in openregister: Dashboarding first draft; Dashboarding first draft; Let replace the RegisterIndex ... (+27 more commits),Development
+REGISTER-1,2025-05-01,6.0,4 commits in openregister: Lets do a bit more linting; Lets do a bit more linting; including lint fixes and coding style ... (+1 more commits),Development
+REGISTER-1,2025-05-03,6.0,20 commits in openregister: Prevent deleting if schema's have objects; Prevent deleting if schema's have objects; Search sidebar graphics ... (+17 more commits),Development
+REGISTER-1,2025-05-04,6.0,10 commits in openregister: Merge remote-tracking branch 'origin/development' ; Merge remote-tracking branch 'origin/development' ; First setup of the schema details page ... (+7 more commits),Development
+REGISTER-1,2025-05-05,3.5,12 commits in openregister: Php styling fixes; Php styling fixes; No more npm linting errors ... (+9 more commits),Development
+REGISTER-1,2025-05-06,6.0,7 commits in openregister: Merge pull request #362 from ConductionNL/feature/; Merge pull request #362 from ConductionNL/feature/; Merge branch 'development' into feature/REGISTERS- ... (+4 more commits),Development
+REGISTER-1,2025-05-08,3.0,2 commits in openregister: Merge remote-tracking branch 'origin/feature/REGIS; Merge remote-tracking branch 'origin/feature/REGIS,Development
+REGISTER-1,2025-05-10,3.0,2 commits in openregister: First code on the import/export service; First code on the import/export service,Development
+REGISTER-1,2025-05-11,3.5,12 commits in openregister: Add last log to the object documentation; Add last log to the object documentation; First testing and fixing on the import functionali ... (+9 more commits),Development
+REGISTER-1,2025-05-12,3.0,2 commits in openregister: Lets add the two new desired options; Lets add the two new desired options,Development
+REGISTER-1,2025-05-15,3.0,2 commits in openregister: Fix errors in validation; Fix errors in validation,Development
+REGISTER-1,2025-05-19,5.6,"12 commits in docudesk, openregister: Merge branch 'hotfix/zuiddrecht' of https://github; Merge branch 'hotfix/zuiddrecht' of https://github; Lets allow softValidated objects ... (+9 more commits)",Development
+REGISTER-1,2025-05-28,3.0,4 commits in openregister: First draft of delete and logs menu items; First draft of delete and logs menu items; Merge remote-tracking branch 'origin/development'  ... (+1 more commits),Development
+REGISTER-1,2025-05-29,3.0,2 commits in openregister: Lets make the log page work; Lets make the log page work,Development
+REGISTER-1,2025-05-31,3.0,2 commits in openregister: Making the sidebars work (in progress); Making the sidebars work (in progress),Development
+REGISTER-1,2025-06-01,6.0,11 commits in openregister: Merge branch 'hotfix/zuiddrecht' into development; Merge branch 'hotfix/zuiddrecht' into development; Merge remote-tracking branch 'origin/development'  ... (+8 more commits),Development
+REGISTER-1,2025-06-04,3.0,2 commits in openregister: Small order fix; Small order fix,Development
+REGISTER-1,2025-06-13,3.0,2 commits in openregister: Lets grap files directly from the database; Lets grap files directly from the database,Development
+REGISTER-1,2025-06-15,6.0,14 commits in openregister: Async thall the faceted stuf; Async thall the faceted stuf; Lets do some final tweaks and add facetable to giv ... (+11 more commits),Development
+REGISTER-1,2025-06-21,6.0,16 commits in openregister: Get the models styles in one line (delete multiple; Get the models styles in one line (delete multiple; Working on the user friendlyness ... (+13 more commits),Development
+REGISTER-1,2025-06-22,6.0,8 commits in openregister: Updating to object for readabillity and perpering ; Updating to object for readabillity and perpering ; Lets call it purging ... (+5 more commits),Development
+REGISTER-1,2025-06-27,3.0,2 commits in openregister: Forms upgrades and facetable config; Forms upgrades and facetable config,Development
+REGISTER-1,2025-07-03,3.0,2 commits in openregister: Facetabel refactor to schema; Facetabel refactor to schema,Development
+REGISTER-1,2025-07-09,3.0,2 commits in openregister: Better return values on import; Better return values on import,Development
+REGISTER-1,2025-07-11,3.0,4 commits in openregister: Merge pull request #480 from ConductionNL/feature/; Merge pull request #480 from ConductionNL/feature/; Lets show the file owner ... (+1 more commits),Development
+REGISTER-1,2025-07-12,6.0,4 commits in openregister: Lets go search trails; Lets go search trails; Starting work on search trailing ... (+1 more commits),Development
+REGISTER-1,2025-07-15,3.0,2 commits in openregister: Fixes for object relations; Fixes for object relations,Development
+REGISTER-1,2025-07-21,3.0,3 commits in openregister: Lets start testing; Adding basic multitenancy; Add testing,Development
+REGISTER-1,2025-07-23,6.0,"4 commits in openregister, softwarecatalog: Merge pull request #501 from ConductionNL/feature/; Okey this solves teh absic filtering shizle; Merge pull request #21 from ConductionNL/developme ... (+1 more commits)",Development
+REGISTER-1,2025-07-30,6.0,"2 commits in openregister, softwarecatalog: Hotfix on seeing all the data as admin; Add view to gemma",Development
+REGISTER-1,2025-08-03,6.0,"8 commits in openregister, softwarecatalog: Find related schema's; Find related schema's; Merge branch 'development' into hotfix/schema-dele ... (+5 more commits)",Development
+REGISTER-1,2025-08-10,6.0,"9 commits in openregister, softwarecatalog: Fixing the bulks; Fixing the bulks; Configuraiton fixes ... (+6 more commits)",Development
+REGISTER-1,2025-08-11,3.5,"11 commits in openregister, softwarecatalog: Merge pull request #525 from ConductionNL/hotfix/b; Merge pull request #525 from ConductionNL/hotfix/b; Merge remote-tracking branch 'origin/development'  ... (+8 more commits)",Development
+REGISTER-1,2025-08-19,3.0,4 commits in openregister: Merge pull request #538 from ConductionNL/hotfix/s; Merge pull request #538 from ConductionNL/hotfix/s; Lets speedup the import ... (+1 more commits),Development
+REGISTER-1,2025-08-22,6.0,"8 commits in openregister, softwarecatalog: Merge remote-tracking branch 'origin/development' ; Merge remote-tracking branch 'origin/development' ; Merge pull request #545 from ConductionNL/hotfix/s ... (+5 more commits)",Development
+REGISTER-1,2025-08-24,6.0,"17 commits in openregister, softwarecatalog: Merge pull request #549 from ConductionNL/hotfix/s; Merge pull request #549 from ConductionNL/hotfix/s; Hotfix false field unique error ... (+14 more commits)",Development
+REGISTER-1,2025-08-25,3.0,8 commits in openregister: Merge pull request #554 from ConductionNL/hotfix/s; Merge pull request #554 from ConductionNL/hotfix/s; Third performance update ... (+5 more commits),Development
+REGISTER-1,2025-09-01,5.0,"15 commits in openregister, softwarecatalog: Merge pull request #565 from ConductionNL/feature/; Merge pull request #565 from ConductionNL/feature/; Hotfix: migration ... (+12 more commits)",Development
+REGISTER-1,2025-09-02,4.5,"16 commits in openregister, softwarecatalog: Merge pull request #566 from ConductionNL/feature/; Merge pull request #566 from ConductionNL/feature/; Remove the dub listener ... (+13 more commits)",Development
+REGISTER-1,2025-09-07,6.0,8 commits in openregister: Merge pull request #581 from ConductionNL/feature/; Merge pull request #581 from ConductionNL/feature/; Migration and service hotvix ... (+5 more commits),Development
+REGISTER-1,2025-09-08,6.0,6 commits in openregister: OPtimizing the bulk import by running them in the ; OPtimizing the bulk import by running them in the ; Merge pull request #582 from ConductionNL/feature/ ... (+3 more commits),Development
+REGISTER-1,2025-09-09,3.0,2 commits in openregister: Lets setup solr; Lets setup solr,Development
+REGISTER-1,2025-09-10,6.0,12 commits in openregister: First succefull test on solr; First succefull test on solr; Fixing the migrations ... (+9 more commits),Development
+REGISTER-1,2025-09-11,6.0,8 commits in openregister: Clearing up the solr documents; Clearing up the solr documents; fixing the dubble index ... (+5 more commits),Development
+REGISTER-1,2025-09-12,3.0,4 commits in openregister: Merge pull request #587 from ConductionNL/feature/; Merge pull request #587 from ConductionNL/feature/; Merge remote-tracking branch 'origin/feature/solr' ... (+1 more commits),Development
+REGISTER-1,2025-09-13,3.0,2 commits in openregister: Further work on making solr maintanable; Further work on making solr maintanable,Development
+REGISTER-1,2025-09-15,6.0,46 commits in openregister: feat(solr): Add enhanced debugging to SolrSetup fo; feat(solr): Add enhanced debugging to SolrSetup fo; Merge pull request #601 from ConductionNL/feature/ ... (+43 more commits),Development
+REGISTER-1,2025-09-16,6.0,84 commits in openregister: debug: add comprehensive logging to performanceCla; debug: add comprehensive logging to performanceCla; fix: add comprehensive null checks for all perform ... (+81 more commits),Development
+REGISTER-1,2025-09-17,6.0,30 commits in openregister: fix: correct SOLR weighted search query syntax; fix: correct SOLR weighted search query syntax; debug: add detailed SOLR query logging ... (+27 more commits),Development
+REGISTER-1,2025-09-20,3.0,4 commits in openregister: Merge pull request #628 from ConductionNL/hotfix/s; Merge pull request #628 from ConductionNL/hotfix/s; feat(solr): comprehensive SOLR enhancements - cach ... (+1 more commits),Development
+REGISTER-1,2025-09-21,6.0,"56 commits in openregister: Merge pull request #632 from ConductionNL/hotfix/s; Merge pull request #632 from ConductionNL/hotfix/s; Delete ter && git add . && git commit -m ""fix: add ... (+53 more commits)",Development
+REGISTER-1,2025-09-23,6.0,"15 commits in openregister, softwarecatalog: Merge pull request #636 from ConductionNL/hotfix/s; Merge pull request #636 from ConductionNL/hotfix/s; feat: add validateAllObjects endpoint to settings ... (+12 more commits)",Development
+REGISTER-1,2025-09-25,3.5,"15 commits in openregister, softwarecatalog: Merge pull request #644 from ConductionNL/feature/; Merge pull request #644 from ConductionNL/feature/; feat: add refresh button to dashboard header ... (+12 more commits)",Development
+REGISTER-1,2025-09-30,4.8,"6 commits in docudesk, openregister, softwarecatalog: fix: improve SOLR relations indexing functionality; fix: improve SOLR relations indexing functionality; Merge pull request #100 from ConductionNL/developm ... (+3 more commits)",Development
+REGISTER-1,2025-10-04,3.0,8 commits in openregister: Merge pull request #655 from ConductionNL/feature/; Merge pull request #655 from ConductionNL/feature/; Lets fix the colours ... (+5 more commits),Development
+REGISTER-1,2025-10-08,3.0,"10 commits in openregister, softwarecatalog: Merge pull request #665 from ConductionNL/feature/; Merge pull request #665 from ConductionNL/feature/; Lets fix an hardcoded thingy ... (+7 more commits)",Development
+REGISTER-1,2025-10-11,3.0,"6 commits in openregister, softwarecatalog: Merge pull request #670 from ConductionNL/feature/; Merge pull request #670 from ConductionNL/feature/; Fix publishing objects ... (+3 more commits)",Development
+REGISTER-1,2025-10-12,3.0,2 commits in openregister: Starting the refacto on solr; Starting the refacto on solr,Development
+REGISTER-1,2025-10-14,3.0,6 commits in openregister: Oke lets fix the facatable bug for types; Oke lets fix the facatable bug for types; Merge pull request #672 from ConductionNL/feature/ ... (+3 more commits),Development
+REGISTER-1,2025-10-18,3.0,6 commits in openregister: Workingon the integration test; Workingon the integration test; Workingon the integration test ... (+3 more commits),Development
+REGISTER-1,2025-10-19,3.0,2 commits in openregister: Merge remote-tracking branch 'origin/feature/REGIS; Merge remote-tracking branch 'origin/feature/REGIS,Development
+REGISTER-1,2025-10-20,3.0,4 commits in openregister: Merge pull request #678 from ConductionNL/feature/; Merge pull request #678 from ConductionNL/feature/; Correct status codes and remove exec event abo ... (+1 more commits),Development
+REGISTER-1,2025-10-28,3.0,"7 commits in openregister, softwarecatalog: Merge pull request #693 from ConductionNL/feature/; Merge pull request #693 from ConductionNL/feature/; Fix for ordering and case sensitivity ... (+4 more commits)",Development
+REGISTER-1,2025-10-29,3.0,6 commits in openregister: Alignment perfection; Alignment perfection; Lets use the proper component ... (+3 more commits),Development
+REGISTER-1,2025-11-01,3.0,4 commits in openregister: Merge remote-tracking branch 'origin/feature/REGIS; Merge remote-tracking branch 'origin/feature/REGIS; Cleaning up the ui on applicatie and organisatie ... (+1 more commits),Development
+REGISTER-1,2025-11-02,6.0,"6 commits in openregister: WIP on organisation, applications and configuratio; WIP on organisation, applications and configuratio; Lets add and remove users from organisations ... (+3 more commits)",Development
+REGISTER-1,2025-11-03,6.0,8 commits in openregister: finaly got fav view to work; finaly got fav view to work; Merge remote-tracking branch 'origin/development'  ... (+5 more commits),Development
+REGISTER-1,2025-11-05,6.0,12 commits in openregister: Merge remote-tracking branch 'origin/development' ; Merge remote-tracking branch 'origin/development' ; Still working a the base for configuration and cha ... (+9 more commits),Development
+REGISTER-1,2025-11-06,6.0,12 commits in openregister: Merge pull request #711 from ConductionNL/feature/; Merge pull request #711 from ConductionNL/feature/; Setting up tools ... (+9 more commits),Development
+REGISTER-1,2025-11-07,3.0,2 commits in openregister: Fixing the rag system; Fixing the rag system,Development
+REGISTER-1,2025-11-08,4.0,47 commits in openregister: deploy: 6483c1977cf2d30bf1d4dac536422f38012a505e; Merge pull request #756 from ConductionNL/feature/; Merge pull request #756 from ConductionNL/feature/ ... (+44 more commits),Development
+REGISTER-1,2025-11-09,3.0,5 commits in openregister: deploy: 00b155b27f90e1fad7ae5dac3531b13438b5d2d1; Merge pull request #758 from ConductionNL/feature/; Merge pull request #758 from ConductionNL/feature/ ... (+2 more commits),Development
+REGISTER-1,2025-11-10,3.0,4 commits in openregister: Merge remote-tracking branch 'origin/development' ; Merge remote-tracking branch 'origin/development' ; Update the docker-compose ... (+1 more commits),Development
+REGISTER-1,2025-11-11,3.0,4 commits in openregister: Merge remote-tracking branch 'origin/development' ; Merge remote-tracking branch 'origin/development' ; Setting up open regsiter with ollama ... (+1 more commits),Development
+REGISTER-1,2025-11-12,3.0,2 commits in openregister: Getting to grips with the performance problem; Getting to grips with the performance problem,Development
+REGISTER-1,2025-11-15,6.0,"12 commits in openregister, softwarecatalog: WIP for the refactord extraction pipeline; WIP for the refactord extraction pipeline; Finding configuration files online ... (+9 more commits)",Development
+REGISTER-1,2025-11-16,3.0,2 commits in openregister: Update the migration; Update the migration,Development
+REGISTER-1,2025-11-17,3.0,2 commits in openregister: Grean borders :'); Grean borders :'),Development
+REGISTER-1,2025-11-20,3.5,"10 commits in openregister: More linting, psalm and webhooks; More linting, psalm and webhooks; psalm fixes ... (+7 more commits)",Development
+REGISTER-1,2025-11-22,3.0,4 commits in openregister: More linting and getting to grips with text extrac; More linting and getting to grips with text extrac; Still working on the documentation ... (+1 more commits),Development
+REGISTER-1,2025-11-23,3.0,4 commits in openregister: Continue with the cleanup and starting psalm; Continue with the cleanup and starting psalm; All the cleanup ... (+1 more commits),Development
+REGISTER-1,2025-11-24,4.2,14 commits in openregister: More cleanup; More cleanup; phpcs fixes ... (+11 more commits),Development
+REGISTER-1,2025-11-25,6.0,6 commits in openregister: Documenting the local setup; Documenting the local setup; Merge branch 'hotfix/registerlist' into feature/ph ... (+3 more commits),Development
+REGISTER-1,2025-11-26,3.0,6 commits in openregister: Fixing admin overwrtie for multitenancy; Fixing admin overwrtie for multitenancy; Enable admin overwrite ... (+3 more commits),Development
+REGISTER-1,2025-11-27,6.0,4 commits in openregister: Fix code styling; Fix code styling; Merge remote-tracking branch 'origin/development'  ... (+1 more commits),Development
+REGISTER-1,2025-11-28,3.0,4 commits in openregister: Merge pull request #855 from ConductionNL/hotfix/u; Merge pull request #855 from ConductionNL/hotfix/u; Add endpoint functionality ... (+1 more commits),Development
+REGISTER-1,2025-11-29,3.0,2 commits in openregister: All the linting; All the linting,Development
+REGISTER-1,2025-12-02,3.0,4 commits in openregister: Fixing the showing of published objects in dashboa; Fixing the showing of published objects in dashboa; Still working on the phpcs ... (+1 more commits),Development
+REGISTER-1,2025-12-06,3.0,3 commits in openregister: Merge remote-tracking branch 'origin/hotfix/object; Merge remote-tracking branch 'origin/feature/php-l; More phpcs cleanup,Development
+REGISTER-1,2025-12-13,6.0,10 commits in openregister: Merge remote-tracking branch 'origin/feature/php-l; Merge remote-tracking branch 'origin/development' ; Merge remote-tracking branch 'origin/feature/php-l ... (+7 more commits),Development
+REGISTER-1,2025-12-14,6.0,19 commits in openregister: feat: Create DataManipulationHandler with 4 utilit; feat: Complete PermissionHandler integration - all; feat: Create PermissionHandler with 5 RBAC methods ... (+16 more commits),Development
+REGISTER-1,2025-12-15,6.0,12 commits in openregister: Cleanup the md files; Slowly working there; Doing the automated crud testing ... (+9 more commits),Development
+REGISTER-1,2025-12-16,3.0,1 commits in openregister: Further phpcs fixes,Development
+REGISTER-1,2025-12-20,6.0,5 commits in openregister: Removing some more failures; Preparing for  magic tables; Fix test bugs for property inheritance and import  ... (+2 more commits),Development
+REGISTER-1,2025-12-21,3.0,1 commits in openregister: Working on the multiform file upload madness,Development
+REGISTER-1,2025-12-23,3.0,1 commits in openregister: docs: Phase 2 comprehensive summary - 75% complete,Development
+REGISTER-1,2025-12-27,3.1,4 commits in openregister: Setting up the phpcs workflow; Fixing the newman tests; Wokring on postgress and n8n ... (+1 more commits),Development
+REGISTER-1,2025-12-28,3.0,3 commits in openregister: WIP: Staging changes before credential removal; Bit more work on testing; Setting up our workflow for code corrections with ,Development
+REGISTER-1,2025-12-29,3.0,2 commits in openregister: Merge remote-tracking branch 'origin/feature/php-l; Working on getting self healing code,Development

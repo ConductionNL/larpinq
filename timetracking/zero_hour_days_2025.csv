@@ -1,0 +1,179 @@
+date,issue_id,hours,description
+2025-01-01,29854,9.0,Development work - Werken aan issue CON-2433
+2025-01-06,29390,4.5,Development work - Working on issue PC108-128
+2025-01-06,29065,2.25,Development work - Working on issue REGISTERS-83
+2025-01-06,29399,2.25,Development work - Working on issue PC108-137
+2025-01-07,29258,1.12,Development work - Review
+2025-01-07,29322,1.12,Development work - Review
+2025-01-07,29396,2.25,Development work - Working on issue PC108-134
+2025-01-07,29678,1.12,Development work - Overleg
+2025-01-07,29399,1.69,Development work - Working on issue PC108-137
+2025-01-07,29398,1.69,Development work - Working on issue PC108-136
+2025-01-10,29694,2.25,Development work - Working on issue CONNECTOR-172
+2025-01-10,29696,5.06,Development work - Working on issue CONNECTOR-174
+2025-01-10,29726,1.69,Development work - Working on issue OP-451
+2025-01-22,29824,2.81,Development work - Working on issue IBOC-129
+2025-01-22,29779,1.69,Development work - Working on issue IBOC-95
+2025-01-22,30075,4.5,Development work - Working on issue VSC-182
+2025-01-23,29800,0.56,Development work - Working on issue IBOC-116
+2025-01-23,29796,0.56,Development work - Working on issue IBOC-112
+2025-01-23,29822,0.28,"Development work - Activity: Jira, Created, Commented"
+2025-01-23,29824,0.28,"Development work - Activity: Jira, Changed Status, Assigned, Created"
+2025-01-23,29697,5.62,Development work - Working on issue CONNECTOR-175
+2025-01-23,29793,0.56,Development work - Working on issue IBOC-109
+2025-01-23,29190,1.12,Development work - Working on issue CONNECTOR-155
+2025-01-28,29829,3.38,"Development work - Issue maken, reviewen mergen etc"
+2025-01-28,29838,3.38,Development work - Working on issue CONNECTOR-203
+2025-01-28,29837,2.25,Development work - Working on issue CONNECTOR-202
+2025-01-29,29864,1.69,Development work - Refinement
+2025-01-29,29836,1.12,Development work - refinement
+2025-01-29,29838,1.12,Development work - Working on issue CONNECTOR-203
+2025-01-29,29837,1.69,Development work - Working on issue CONNECTOR-202
+2025-01-29,29833,3.38,Development work - Review
+2025-01-30,29864,4.5,Development work - Refinement
+2025-01-30,29836,4.5,Development work - Working on issue IBOC-137
+2025-02-03,29911,1.12,"Development work - Activity: Jira, Changed Status, Assigned"
+2025-02-03,29784,1.12,"Development work - Activity: Jira, Changed Status, Commented, Assigne"
+2025-02-03,29396,1.12,"Development work - Activity: Jira, Commented, Assigned, Changed Statu"
+2025-02-03,24607,1.12,"Development work - Activity: Jira, Changed Status, Commented"
+2025-02-03,29784,2.25,"Development work - Activity: Jira, Assigned, Changed Status"
+2025-02-03,30098,1.12,"Development work - Activity: Jira, Commented, Assigned, Changed Statu"
+2025-02-03,29399,1.12,Development work - Activity: Jira
+2025-02-04,29731,4.5,Development work - Working on issue CONNECTOR-192
+2025-02-04,29286,1.12,Development work - Working on issue PC108-114
+2025-02-04,29679,1.12,Development work - Working on issue PC108-114
+2025-02-04,29680,1.12,Development work - Working on issue PC108-114
+2025-02-04,29681,1.12,Development work - Working on issue PC108-114
+2025-02-06,29398,1.12,Development work - Working on issue PC108-136
+2025-02-06,30069,1.69,Development work - Working on issue NDT-63
+2025-02-06,29678,1.69,Development work - Working on issue PC108-147
+2025-02-06,29399,4.5,Development work - Working on issue PC108-137
+2025-02-07,30098,1.0,Development work - Working on issue CONNECTOR-228
+2025-02-07,29190,1.0,Development work - Working on issue CONNECTOR-155
+2025-02-07,30113,5.0,"Development work - Activity: Jira, Created, Changed Status"
+2025-02-07,11022,2.0,Development work - Doelstellingen 2025Q1
+2025-02-13,30147,2.25,Development work - Working on issue REGISTERS-105
+2025-02-13,29824,3.38,Development work - Working on issue IBOC-129
+2025-02-13,30128,3.38,Development work - Working on issue IBOC-146
+2025-02-14,30128,9.0,"Development work - Activity: Jira, Changed Status"
+2025-02-20,30208,1.12,Development work - Working on issue REGISTERS-117
+2025-02-20,30207,1.12,Development work - Working on issue REGISTERS-116
+2025-02-20,30218,1.12,Development work - Working on issue IBOC-168
+2025-02-20,30217,1.12,Development work - Working on issue IBOC-167
+2025-02-20,30214,1.12,Development work - Working on issue IBOC-165
+2025-02-20,30213,1.12,Development work - Working on issue IBOC-164
+2025-02-20,30212,1.12,Development work - Working on issue IBOC-163
+2025-02-20,11022,1.12,Development work - Jaargesprek
+2025-02-21,30197,1.12,Development work - review
+2025-02-21,30195,1.12,Development work - Review
+2025-02-21,30144,1.12,Development work - Review
+2025-02-21,30207,1.12,Development work - Review
+2025-02-21,29384,0.56,Development work - Review
+2025-02-21,29076,0.56,Development work - Review
+2025-02-21,29077,0.56,Development work - Review
+2025-02-21,14054,2.81,Development work - Working on issue CON-1461
+2025-03-03,30321,9.0,Development work - Working on issue VSC-208
+2025-03-04,30321,9.0,Development work - Working on issue VSC-208
+2025-03-05,30321,4.5,Development work - Working on issue VSC-208
+2025-03-05,30325,4.5,Development work - Working on issue REGISTERS-122
+2025-03-12,30321,9.0,Development work - Working on issue VSC-208
+2025-03-27,30368,9.0,Development work - Working on issue VSC-225
+2025-03-28,30376,2.81,Development work - Review
+2025-03-28,30368,6.19,Development work - Working on issue VSC-225
+2025-04-15,30624,9.0,Development work - Working on issue VSC-253
+2025-04-21,29854,9.0,Development work - Working on issue CON-2433
+2025-04-23,30645,9.0,Development work - Working on issue VSC-256
+2025-04-25,30645,9.0,Development work - Working on issue VSC-256
+2025-05-08,31068,4.5,Development work - Working on issue WOO-316
+2025-05-08,31069,4.5,Development work - Working on issue VSC-290
+2025-05-12,30947,2.25,Development work - Review
+2025-05-12,31069,3.38,Development work - Working on issue VSC-290
+2025-05-12,30931,3.38,Development work - Working on issue REGISTERS-173
+2025-05-13,30829,9.0,Development work - Working on issue VSC-262
+2025-05-14,31067,9.0,Development work - Working on issue WOO-315
+2025-05-16,31065,3.27,Development work - Working on issue VSC-288
+2025-05-16,31066,3.27,Development work - Working on issue VSC-289
+2025-05-16,31067,2.45,Development work - Working on issue WOO-315
+2025-05-19,31067,1.12,"Development work - Activity: Jira, Created, Changed Status"
+2025-05-19,31066,1.12,Development work - Activity: Jira
+2025-05-19,30947,1.12,"Development work - Activity: Jira, Assigned, Changed Status"
+2025-05-19,30999,0.28,Development work - Activity: Jira
+2025-05-19,31042,1.12,Development work - Activity: Jira
+2025-05-19,31042,1.12,Development work - Activity: Jira
+2025-05-19,30961,1.12,Development work - Activity: Jira
+2025-05-19,31041,0.28,Development work - Activity: Jira
+2025-05-19,31042,0.84,"Development work - Activity: Jira, Commented"
+2025-05-19,31064,0.28,Development work - Activity: Jira
+2025-05-19,31066,0.56,Development work - Activity: Jira
+2025-05-21,31044,4.5,Development work - Activity: Jira
+2025-05-21,31067,4.5,Development work - Activity: Jira
+2025-05-26,31216,2.25,Development work - Schrijven en reviewen
+2025-05-26,31218,2.25,Development work - Schrijven en reviewen
+2025-05-26,31220,2.25,Development work - Schrijven en reviewen
+2025-05-26,31222,1.12,Development work - Schrijven en reviewen
+2025-05-26,31223,1.12,Development work - Schrijven en reviewen
+2025-05-30,31231,1.12,Development work - Activity: Jira
+2025-05-30,30859,1.12,Development work - Activity: Jira
+2025-05-30,31259,2.25,"Development work - Activity: Jira, Created"
+2025-05-30,31260,2.25,Development work - Activity: Jira
+2025-05-30,31231,0.56,Development work - Activity: Jira
+2025-05-30,31264,1.69,Development work - Activity: Jira
+2025-06-05,31230,9.0,Development work - Working on issue VSC-302
+2025-06-06,31230,9.0,Development work - Working on issue VSC-302
+2025-06-09,29854,9.0,Development work - Pinksteren
+2025-06-11,31342,5.62,Development work - Working on issue VSC-317
+2025-06-11,31344,3.38,Development work - Working on issue VSC-319
+2025-06-16,31384,9.0,Development work - Activity: Jira
+2025-06-17,31384,9.0,Development work - Activity: Jira
+2025-06-18,31384,4.5,Development work - Activity: Jira
+2025-06-18,31383,4.5,Development work - Working on issue VSC-342
+2025-06-25,31388,9.0,Development work - Working on issue VSC-347
+2025-07-04,31388,7.58,Development work - Working on issue VSC-347
+2025-07-04,31388,1.42,Development work - Over-werk
+2025-07-08,31390,9.0,Development work - Working on issue VSC-349
+2025-07-09,31390,9.0,Development work - Working on issue VSC-349
+2025-07-15,31665,2.25,Development work - Working on issue NDT-65
+2025-07-15,31580,6.75,Development work - Working on issue VSC-355
+2025-07-25,31821,9.0,Development work - Working on issue GW-1865
+2025-08-06,14054,9.0,Development work - Working on issue CON-1461
+2025-08-07,14054,9.0,Development work - Working on issue CON-1461
+2025-08-08,14054,9.0,Development work - Working on issue CON-1461
+2025-08-11,14054,9.0,Development work - Working on issue CON-1461
+2025-08-12,14054,9.0,Development work - Working on issue CON-1461
+2025-08-19,32224,9.0,Development work - Working on issue VSC-397
+2025-09-05,32224,9.0,Development work - Working on issue VSC-397
+2025-09-12,32224,9.0,Development work - Working on issue VSC-397
+2025-09-26,32224,9.0,Development work - Working on issue VSC-397
+2025-09-30,32224,9.0,Development work - Working on issue VSC-397
+2025-10-09,32224,9.0,Development work - Working on issue VSC-397
+2025-10-13,32224,9.0,Development work - Working on issue VSC-397
+2025-10-17,32224,9.0,Development work - Working on issue VSC-397
+2025-10-24,32224,9.0,Development work - Working on issue VSC-397
+2025-10-29,32224,9.0,Development work - Working on issue VSC-397
+2025-10-31,32224,9.0,Development work - Working on issue VSC-397
+2025-11-03,32224,9.0,Development work - Working on issue VSC-397
+2025-11-04,32224,9.0,Development work - Working on issue VSC-397
+2025-11-05,32224,9.0,Development work - Working on issue VSC-397
+2025-11-10,32224,9.0,Development work - Working on issue VSC-397
+2025-11-11,32224,9.0,Development work - Working on issue VSC-397
+2025-11-12,14054,9.0,Development work - Working on issue CON-1461
+2025-11-13,14054,9.0,Development work - Working on issue CON-1461
+2025-11-17,32224,9.0,Development work - Working on issue VSC-397
+2025-11-18,32224,9.0,Development work - Working on issue VSC-397
+2025-11-19,32224,9.0,Development work - Working on issue VSC-397
+2025-11-20,32224,9.0,Development work - Working on issue VSC-397
+2025-11-25,32224,9.0,Development work - Working on issue VSC-397
+2025-12-01,32224,9.0,Development work - Working on issue VSC-397
+2025-12-04,32224,9.0,Development work - Working on issue VSC-397
+2025-12-10,32224,9.0,Development work - Working on issue VSC-397
+2025-12-11,32224,9.0,Development work - Working on issue VSC-397
+2025-12-12,32224,9.0,Development work - Working on issue VSC-397
+2025-12-16,32224,9.0,Development work - Working on issue VSC-397
+2025-12-19,32224,9.0,Development work - Working on issue VSC-397
+2025-12-22,14054,9.0,Development work - Working on issue CON-1461
+2025-12-24,14054,9.0,Development work - Working on issue CON-1461
+2025-12-25,29854,9.0,Development work - Working on issue CON-2433
+2025-12-26,29854,9.0,Development work - Working on issue CON-2433
+2025-12-29,32224,9.0,Development work - Working on issue VSC-397
+2025-12-30,32224,9.0,Development work - Working on issue VSC-397
+2025-12-31,32224,9.0,Development work - Working on issue VSC-397

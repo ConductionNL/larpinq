@@ -1,0 +1,30 @@
+TEMPO IMPORT - ISSUE SUMMARY
+============================================================
+
+Total Issues: 5
+Total Entries: 201
+Total Hours: 857.0
+
+BREAKDOWN BY ISSUE:
+------------------------------------------------------------
+Issue Key               Entries        Hours
+------------------------------------------------------------
+REGISTER-1                   94        385.5
+CATALOGI-1                   54        246.3
+CONNECTOR-1                  38        173.5
+COND-9999                    13         47.7
+CONNECTOR                     2          4.0
+------------------------------------------------------------
+TOTAL                       201        857.0
+============================================================
+
+NOTES:
+- Issues extracted from commit messages where possible
+- Repository-based fallbacks used when no issue found
+- Generic fallback issue used for unmapped commits
+
+NEXT STEPS:
+1. Review the issue mapping
+2. Create missing Jira issues if needed
+3. Update CSV manually for any incorrect mappings
+4. Import CSV to Tempo

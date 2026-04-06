@@ -1,0 +1,127 @@
+OVERNIGHT ANALYSIS - Ruben van der Linde
+Period: 2026-01-01 to 2026-03-02
+============================================================
+
+TOTAL: 70 work sessions, 283.0 hours
+
+ALL-NIGHTERS DETECTED: 7
+------------------------------------------------------------
+  1. Mon Jan 05 22:34 -> Tue Jan 06 00:49 (2.2h span, 3.2h calculated, 5 commits)
+     Repos: opencatalogi, openregister, softwarecatalog
+  2. Sun Jan 18 21:01 -> Mon Jan 19 10:45 (13.7h span, 15.7h calculated, 43 commits)
+     Repos: opencatalogi, openregister, softwarecatalog, tilburg-woo-ui
+  3. Mon Jan 19 23:31 -> Tue Jan 20 02:22 (2.9h span, 4.4h calculated, 16 commits)
+     Repos: openregister, softwarecatalog, tilburg-woo-ui
+  4. Sun Jan 25 19:33 -> Mon Jan 26 06:10 (10.6h span, 12.1h calculated, 20 commits)
+     Repos: openregister, softwarecatalog, tilburg-woo-ui
+  5. Mon Feb 16 22:53 -> Tue Feb 17 01:35 (2.7h span, 4.2h calculated, 9 commits)
+     Repos: opencatalogi, openregister, softwarecatalog, tilburg-woo-ui
+  6. Thu Feb 19 05:50 -> Fri Feb 20 03:54 (22.1h span, 24.1h calculated, 51 commits)
+     Repos: opencatalogi, openregister, softwarecatalog, tilburg-woo-ui
+  7. Mon Feb 23 21:59 -> Tue Feb 24 01:26 (3.4h span, 5.4h calculated, 24 commits)
+     Repos: opencatalogi, openregister, softwarecatalog, tilburg-woo-ui
+
+SHORT-SLEEP NIGHTS (gap <= 4h): 0
+------------------------------------------------------------
+  None detected.
+
+SESSION TIMELINE
+------------------------------------------------------------
+    1. Fri Jan 02 15:28 - 15:28    1.5h    1 commits  openregister
+    2. Sun Jan 04 10:07 - 10:07    1.5h    1 commits  openregister [weekend]
+    3. Mon Jan 05 09:42 - 14:01    5.8h    6 commits  openregister
+    4. Mon Jan 05 22:34 - 00:49    3.2h    5 commits  opencatalogi, openregister, softwarecatalog ** ALL-NIGHTER **
+    5. Tue Jan 06 08:49 - 10:00    2.2h    3 commits  openregister, tilburg-woo-ui
+        ~~~ 5.9h gap ~~~
+    6. Tue Jan 06 15:53 - 15:53    1.5h    1 commits  openregister
+    7. Wed Jan 07 07:58 - 10:33    3.6h    2 commits  opencatalogi, openregister
+        ~~~ 3.2h gap ~~~
+    8. Wed Jan 07 13:47 - 17:32    4.8h    3 commits  opencatalogi, openregister
+    9. Thu Jan 08 11:43 - 11:43    1.5h    1 commits  openregister
+        ~~~ 5.2h gap ~~~
+   10. Thu Jan 08 16:52 - 16:52    1.5h    1 commits  openregister
+   11. Fri Jan 09 07:09 - 15:29    9.8h   20 commits  opencatalogi, openregister, softwarecatalog, tilburg-woo-ui
+   12. Sun Jan 11 13:17 - 14:10    2.4h    7 commits  openregister [weekend]
+   13. Mon Jan 12 10:47 - 10:47    1.5h    2 commits  openregister, tilburg-woo-ui
+   14. Tue Jan 13 09:31 - 09:32    1.5h    2 commits  softwarecatalog
+   15. Wed Jan 14 08:19 - 08:19    1.5h    2 commits  openregister
+   16. Thu Jan 15 09:51 - 13:24    5.0h   12 commits  opencatalogi, openregister, softwarecatalog
+   17. Fri Jan 16 09:07 - 09:35    1.5h    3 commits  openregister, softwarecatalog
+        ~~~ 3.5h gap ~~~
+   18. Fri Jan 16 13:04 - 13:04    1.5h    1 commits  opencatalogi
+   19. Sun Jan 18 07:40 - 10:44    4.6h    9 commits  openregister, softwarecatalog [weekend]
+        ~~~ 6.0h gap ~~~
+   20. Sun Jan 18 16:42 - 17:40    2.5h    6 commits  openregister, softwarecatalog [weekend]
+        ~~~ 3.4h gap ~~~
+   21. Sun Jan 18 21:01 - 10:45   15.7h   43 commits  opencatalogi, openregister, softwarecatalog, tilburg-woo-ui ** ALL-NIGHTER **
+        ~~~ 4.5h gap ~~~
+   22. Mon Jan 19 15:18 - 16:01    2.2h    7 commits  opencatalogi, openregister, softwarecatalog, tilburg-woo-ui
+   23. Mon Jan 19 23:31 - 02:22    4.4h   16 commits  openregister, softwarecatalog, tilburg-woo-ui ** ALL-NIGHTER **
+        ~~~ 4.4h gap ~~~
+   24. Tue Jan 20 06:48 - 18:38   13.8h   47 commits  opencatalogi, openregister, softwarecatalog, tilburg-woo-ui
+   25. Wed Jan 21 05:31 - 13:41   10.2h   27 commits  opencatalogi, openregister, softwarecatalog, tilburg-woo-ui [early morning]
+        ~~~ 3.3h gap ~~~
+   26. Wed Jan 21 16:56 - 17:02    1.5h    5 commits  openregister, softwarecatalog, tilburg-woo-ui
+   27. Thu Jan 22 17:23 - 18:36    2.7h    7 commits  opencatalogi, openregister, softwarecatalog, tilburg-woo-ui
+   28. Fri Jan 23 01:40 - 01:40    1.5h    1 commits  openregister [early morning]
+   29. Fri Jan 23 09:57 - 14:29    6.0h    6 commits  openregister, tilburg-woo-ui
+   30. Sat Jan 24 08:25 - 09:55    2.5h    3 commits  openregister, tilburg-woo-ui [weekend]
+   31. Sat Jan 24 15:57 - 15:57    1.5h    1 commits  softwarecatalog [weekend]
+   32. Sun Jan 25 08:39 - 09:16    1.6h    3 commits  openregister, tilburg-woo-ui [weekend]
+        ~~~ 3.4h gap ~~~
+   33. Sun Jan 25 12:38 - 15:25    3.8h    5 commits  openregister, tilburg-woo-ui [weekend]
+        ~~~ 4.1h gap ~~~
+   34. Sun Jan 25 19:33 - 06:10   12.1h   20 commits  openregister, softwarecatalog, tilburg-woo-ui ** ALL-NIGHTER **
+        ~~~ 3.6h gap ~~~
+   35. Mon Jan 26 09:44 - 15:30    7.3h   13 commits  openregister, softwarecatalog, tilburg-woo-ui
+   36. Tue Jan 27 06:30 - 14:08    9.1h   13 commits  openregister, softwarecatalog, tilburg-woo-ui
+   37. Tue Jan 27 22:08 - 22:08    1.5h    1 commits  openregister [evening]
+   38. Wed Jan 28 10:37 - 14:45    5.6h    9 commits  openregister, softwarecatalog, tilburg-woo-ui
+   39. Thu Jan 29 08:09 - 08:09    1.5h    1 commits  openregister
+        ~~~ 3.9h gap ~~~
+   40. Thu Jan 29 12:03 - 12:03    1.5h    1 commits  openregister
+   41. Fri Jan 30 09:22 - 09:22    1.5h    1 commits  openregister
+   42. Tue Feb 03 21:35 - 21:37    1.5h    2 commits  docudesk, openregister [evening]
+   43. Fri Feb 06 10:23 - 15:31    6.6h   13 commits  docudesk, opencatalogi, openconnector, openregister, softwarecatalog
+   44. Fri Feb 13 07:02 - 07:36    1.6h    2 commits  tilburg-woo-ui
+   45. Fri Feb 13 14:08 - 14:09    1.5h    2 commits  openregister
+   46. Sat Feb 14 21:04 - 21:04    1.5h    1 commits  tilburg-woo-ui [weekend]
+   47. Mon Feb 16 09:57 - 14:12    5.7h    9 commits  docudesk, openregister, softwarecatalog, tilburg-woo-ui
+   48. Mon Feb 16 22:53 - 01:35    4.2h    9 commits  opencatalogi, openregister, softwarecatalog, tilburg-woo-ui ** ALL-NIGHTER **
+        ~~~ 5.8h gap ~~~
+   49. Tue Feb 17 07:21 - 16:11   10.8h   22 commits  opencatalogi, openregister, softwarecatalog, tilburg-woo-ui
+        ~~~ 5.2h gap ~~~
+   50. Tue Feb 17 21:20 - 21:20    1.5h    1 commits  openregister [evening]
+   51. Wed Feb 18 06:47 - 08:08    2.9h   11 commits  docudesk, opencatalogi, openregister, softwarecatalog
+   52. Wed Feb 18 21:17 - 22:10    2.4h   11 commits  softwarecatalog, tilburg-woo-ui [evening]
+   53. Thu Feb 19 05:50 - 03:54   24.1h   51 commits  opencatalogi, openregister, softwarecatalog, tilburg-woo-ui ** ALL-NIGHTER **
+        ~~~ 4.6h gap ~~~
+   54. Fri Feb 20 08:30 - 09:15    1.8h    3 commits  openregister
+   55. Fri Feb 20 22:00 - 22:30    1.5h    2 commits  openregister [evening]
+   56. Sat Feb 21 10:24 - 10:33    1.5h    2 commits  openregister [weekend]
+        ~~~ 4.8h gap ~~~
+   57. Sat Feb 21 15:21 - 20:13    6.4h   13 commits  openregister, softwarecatalog, tilburg-woo-ui [weekend]
+   58. Sun Feb 22 09:36 - 14:33    6.4h   12 commits  openregister, softwarecatalog, tilburg-woo-ui [weekend]
+        ~~~ 3.4h gap ~~~
+   59. Sun Feb 22 17:57 - 21:15    4.8h    7 commits  openregister, softwarecatalog, tilburg-woo-ui [weekend]
+   60. Mon Feb 23 07:16 - 07:55    1.6h    2 commits  tilburg-woo-ui
+   61. Mon Feb 23 21:59 - 01:26    5.4h   24 commits  opencatalogi, openregister, softwarecatalog, tilburg-woo-ui ** ALL-NIGHTER **
+   62. Tue Feb 24 07:38 - 09:58    3.8h    6 commits  openregister, softwarecatalog, tilburg-woo-ui
+   63. Thu Feb 26 07:55 - 07:55    2.0h   14 commits  docudesk, larpingapp, opencatalogi, openconnector, openregister, softwarecatalog, tilburg-woo-ui
+        ~~~ 4.7h gap ~~~
+   64. Thu Feb 26 12:35 - 15:01    3.9h    6 commits  openregister, tilburg-woo-ui
+   65. Fri Feb 27 11:38 - 13:49    3.7h    6 commits  openregister
+   66. Sat Feb 28 14:04 - 14:08    2.0h    8 commits  docudesk, larpingapp, opencatalogi [weekend]
+   67. Sat Feb 28 20:55 - 20:55    1.5h    4 commits  docudesk, larpingapp, opencatalogi, openregister [weekend]
+   68. Sun Mar 01 10:34 - 10:34    1.5h    2 commits  openregister [weekend]
+   69. Sun Mar 01 17:18 - 17:20    2.0h   11 commits  opencatalogi, openregister, softwarecatalog, tilburg-woo-ui [weekend]
+   70. Mon Mar 02 00:00 - 00:24    2.5h   22 commits  docudesk, larpingapp, opencatalogi, openconnector, openregister, softwarecatalog, tilburg-woo-ui [early morning]
+
+HOURS BY SESSION TYPE
+------------------------------------------------------------
+  normal         :  143.3h across 38 sessions
+  evening        :    8.4h across 5 sessions
+  early_morning  :   14.2h across 3 sessions
+  all_nighter    :   69.1h across 7 sessions
+  weekend        :   48.0h across 17 sessions
+  TOTAL          :  283.0h across 70 sessions

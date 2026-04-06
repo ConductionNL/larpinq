@@ -1,0 +1,968 @@
+e849aae8bb496c3c33f6eae420d36e1d0c574b44|Remko Huisman|2025-12-29T11:54:55+01:00|Merge pull request #404 from ConductionNL/fix/proper-eslint
+f656cd18693dc6aef6e9524a2eec2bfae734f0ce|Barry Brands|2025-12-24T17:08:59+01:00|check for schemas
+9027afffdde505b143e64ff13897a61b5e092492|Thijn|2025-12-23T14:02:41+01:00|fixed eslint
+77a36083e8293acff6a79980348b7926cf017ef6|Ruben van der Linde|2025-12-19T11:36:43+01:00|Lets fix the federation service
+abbd3d0adfb6d2034e1ed69c4c28101c5d9251f1|Ruben van der Linde|2025-12-19T09:02:24+01:00|hotfix/schemas
+eb66c48f756665e68071b0ba784f8aac5d01603c|Ruben van der Linde|2025-12-19T07:43:40+01:00|Merge remote-tracking branch 'origin/fix/federation' into development
+afa8b6ebd6b56c7f017d4dc01feed443407ab9e0|Wilco Louwerse|2025-12-18T16:24:04+01:00|Some fixes for setting up federation
+160799230277c5c39e5720311f0b15a674ebd1c3|Ruben van der Linde|2025-12-18T09:55:52+01:00|Merge pull request #402 from ConductionNL/hotfix/tooling
+71065611079d0be20a5d4633fc749c0f7db27c06|Ruben van der Linde|2025-12-18T09:55:15+01:00|Continue code cleanup setup
+6bd0fc17fd997ec24689346adde7890007f93565|Ruben van der Linde|2025-12-18T09:22:50+01:00|Let prepare for code cleanup
+7029ddf04225620bed2cdfe75ac7997a39e3f549|Ruben van der Linde|2025-12-18T08:49:33+01:00|Merge remote-tracking branch 'origin/development' into hotfix/tooling
+1fdf5a90cde6a304d4072707abd988956439e029|Ruben van der Linde|2025-12-17T13:21:57+01:00|Merge pull request #401 from ConductionNL/fix/swc-331/change-rights-of-used-endpoint
+17a9bd643d414efe4624c3fa6e22790e767c4fa6|Robert Zondervan|2025-12-17T13:21:40+01:00|Remove parameters that are set to default values
+4c2bcf03d2d3c61142807c1576d6943e074c4e9d|Robert Zondervan|2025-12-17T12:10:23+01:00|Change rights of used endpoint to use rbac and multitenancy
+e36f5f4859eb39ed0b07b47296ed6809ca4ab33c|Barry Brands|2025-12-11T11:32:10+01:00|Merge pull request #394 from ConductionNL/feature/robots-and-sitemaps
+4a5cbec784ca408925a5feb0e555a1c348bd99cc|Barry Brands|2025-12-11T11:11:37+01:00|Add hasWooSitemap to frontend
+fee15b5ca1e313fcadfb0d92d53afbb94698bdf1|Barry Brands|2025-12-11T11:11:13+01:00|Add sitemap pagination
+b8e2d1aaceb81e37a96c3abc5aaa1ea7138e9320|Barry Brands|2025-12-11T11:10:39+01:00|Cleanup RobotsController
+8a675753636b5950253c58a261955602a52afabf|Ruben van der Linde|2025-12-10T12:01:31+01:00|Tooling fixes
+95851baae1c6fadbae6c4c0f7a1aed93411adf7f|Ruben van der Linde|2025-12-10T10:57:32+01:00|Merge remote-tracking branch 'origin/development' into hotfix/tooling
+bffa3bf9c7c1dc23b4554c9771d45c3c2eed4a29|Ruben van der Linde|2025-12-09T15:12:49+01:00|Merge pull request #400 from ConductionNL/hotfix/logcatalogresult
+0b615719ec7e64aa923340d68fbc1153ba37250a|Ruben van der Linde|2025-12-09T14:04:41+01:00|used/uses
+5037b7dade6d71acc70896abbb0b1b98fdf53b92|Ruben van der Linde|2025-12-09T09:27:19+01:00|Merge pull request #399 from ConductionNL/hotfix/logcatalogresult
+fec91b09da59ab930e7ae919224e018738fe449f|Ruben van der Linde|2025-12-09T09:26:36+01:00|Lets remove wrongfull source use
+a1a74d1b1cdbae7e6fcef34c5dfc6e4e21b07c91|Ruben van der Linde|2025-12-08T19:03:07+01:00|Merge pull request #398 from ConductionNL/hotfix/logcatalogresult
+6c2a70e748600a673b4e2192b5bd93d8d6114c71|Barry Brands|2025-12-08T17:59:36+01:00|Add sitemapIndex pagination
+4e24a7fd83ee177bc9b9f8fa8800d0455c6a6bf6|Barry Brands|2025-12-08T17:58:33+01:00|Only map files with downloadUrl
+8339a86ef306c8719e6da5a845689f82be5698ab|Ruben van der Linde|2025-12-08T16:49:38+01:00|Lets force database en published
+8e8fc64b3dd217bee3aeaa25a8b7b36b97854653|Barry Brands|2025-12-05T16:35:21+01:00|SITEMAP.md update
+b11c9ebb399b322eaf3ea125f54b729f494d047e|Barry Brands|2025-12-05T16:35:13+01:00|Added Text and XML Response
+fca5f787e5e771571e1c9075cf28350cebd11234|Barry Brands|2025-12-05T16:35:01+01:00|Added SitemapController and Service
+695473fe078b9993e92389f07cf9b3bb7788ffca|Barry Brands|2025-12-05T16:34:41+01:00|Added RobotsController
+754efe300530fa1eeb82bd7fec61704421b0da81|Barry Brands|2025-12-05T16:34:24+01:00|Added routes
+8e77b93487b16d8835f4e479fd696c9ab1051382|Ruben van der Linde|2025-12-05T14:07:20+01:00|Merge pull request #397 from ConductionNL/hotfix/logcatalogresult
+62d3beb5b17debd89ded7ee2efb1626d116c8b03|Ruben van der Linde|2025-12-04T13:14:42+01:00|Lets activate multi tenancy on used an uses
+192d9add5e1d26d06201d704261106703d018a8c|Barry Brands|2025-12-04T11:26:43+01:00|Merge remote-tracking branch 'origin/development' into feature/robots-and-sitemaps
+cdf7ba6f00c0d62286a8331c9d4592b5be9f712c|Ruben van der Linde|2025-11-28T15:03:37+01:00|Merge pull request #396 from ConductionNL/hotfix/logcatalogresult
+fcc0bd4325fb3ae6431be8062265dc8cb65a3938|Ruben van der Linde|2025-11-28T15:00:16+01:00|Lets disable rbac and multitanancy
+b1c3081c6800a1869371a35eab6dcbf716d8beff|Ruben van der Linde|2025-11-28T14:34:47+01:00|Merge pull request #395 from ConductionNL/hotfix/logcatalogresult
+a00b1c4d81f55ed23019e9d9a7bfa47ece28a749|Ruben van der Linde|2025-11-28T14:32:16+01:00|Lets also log if we cant finds
+35380ab690fe99c60d9534bb09917bf36ca24db2|Ruben van der Linde|2025-11-28T14:29:18+01:00|Lets log when we cannot find a catlog
+5b0942ef681b52221849d9d6539185a6b0dca0fe|Ruben van der Linde|2025-11-28T14:16:52+01:00|Hotfix tooling
+d8a2cdd06c627e51fe277bb0865a7ccb11cdf2d5|Barry Brands|2025-11-27T15:28:57+01:00|Added more info for SITEMAP.md
+7e34c0a382c14117ae26e29ab0bf640e60935506|Barry Brands|2025-11-27T14:30:45+01:00|Added info about $DOMAIN replacement
+c814a31cce290a17cb891ddc6b66c35ff06f8094|Barry Brands|2025-11-17T11:33:29+01:00|moved some text
+84041112848e36abd5b2ca3d60908f95581b5f69|Barry Brands|2025-11-17T11:31:44+01:00|SITEMAP.md added
+76a38b178728b5d8aabdd2d7eaf513d2a14525cd|Barry Brands|2025-11-06T17:05:14+01:00|added SITEMAP.md
+697fc3657b359a832d70d8a3bda4ff4b41a96e44|Barry Brands|2025-11-06T15:22:43+01:00|Merge remote-tracking branch 'origin/development' into feature/robots-and-sitemap
+ecb534c552bb7ccdb6b536a6cbf80ad90a085509|Ruben van der Linde|2025-11-04T15:04:35+01:00|Merge branch 'feature/enhance-publication-management' into HEAD
+c6945291de3524326a16f824d2205dac1dc492a9|Ruben van der Linde|2025-11-04T15:03:29+01:00|Propper image links
+14f1904d7ec52f567f35d0b715c5ecf50d38c405|Thijn|2025-11-04T14:59:16+01:00|Merge pull request #393 from ConductionNL/feature/eslint-flat-config
+a931e4f5214aafdbb5efa1db28cdd6f0e2d49044|Ruben van der Linde|2025-11-04T14:58:50+01:00|Translate instructions to english
+3c93c1ee9faae256da7651ce90a35959a6cbf921|Thijn|2025-11-04T14:50:43+01:00|flat config
+0926cbe895b32175f805354cb1424f281c0f81b6|Ruben van der Linde|2025-11-04T14:47:57+01:00|Merge remote-tracking branch 'origin/development' into feature/enhance-publication-management
+9a474d3e1932edfb992f8fb9460a07fca814567c|Thijn|2025-11-03T17:05:59+01:00|Merge pull request #384 from ConductionNL/feature/OP-518/deeplinking
+50c0fe4cb54799fccff023ef0fce8fa8cbe4e267|Remko|2025-11-03T16:50:03+01:00|Merge remote-tracking branch 'origin/development' into feature/OP-518/deeplinking
+675c1498d1fe908953270e1a28b90f428fb7ccde|Thijn|2025-11-03T16:01:33+01:00|fixed slug change not causing refetch
+1a91ee4da79a3e3e82e9eb28847a501bcd536e73|GitHub Action|2025-10-31T13:11:38+00:00|Bump version to 0.7.6
+33a34638cc78b1304c61b48b4a35d8d135324345|Robert Zondervan|2025-10-31T14:11:24+01:00|Merge pull request #392 from ConductionNL/development
+e7f5380b403b3b07def2b31e78793feff7a3f65d|Robert Zondervan|2025-10-31T12:27:04+01:00|Merge pull request #391 from ConductionNL/fix/hotfix-error
+c03dc505aa314beabebf5f74c339bead0bbd2ad4|Robert Zondervan|2025-10-31T12:23:16+01:00|Fix on last hotfix
+c31222d5cd75dbe2e05a0d9c5c251a2ea2f755f9|Barry Brands|2025-10-30T08:29:18+01:00|WIP robots and sitemap
+6c4c26e9af49bddcb26342865109282176017fa9|Alex|2025-10-29T12:57:57+01:00|Merge pull request #386 from ConductionNL/feature/OP-519/publish-depublish-edit-labels
+61d120e64967e2fca099aa866656e481d320a6b1|GitHub Action|2025-10-29T09:51:41+00:00|Bump version to 0.7.5
+4c7bdc38db186bf25ed9c3f4f68b1715245bfd0d|Robert Zondervan|2025-10-29T10:51:27+01:00|Merge pull request #383 from ConductionNL/development
+fc5b274a344c9d6c693f21b474ebdf9add851ac5|Thijn|2025-10-28T17:53:05+01:00|bunch of bug hunting
+bd6a737d1030b7cbc917d55caee82b915f321ae3|Thijn|2025-10-28T13:39:08+01:00|Merge branch 'development' into feature/OP-518/deeplinking
+4d8d2784a7544838350dd71b8037ce801ad643f9|Ruben van der Linde|2025-10-28T13:36:38+01:00|Reactive filter on not showing unpublished objects
+ae5a4479b16555ab4df9749de6cd9fd53dbf4df7|Ruben van der Linde|2025-10-28T12:09:52+01:00|Merge pull request #390 from ConductionNL/feature/enhance-publication-management
+2a15962d37c06156803b765d7d3682e279396161|Ruben van der Linde|2025-10-28T12:08:16+01:00|Hotfix: tabs
+4ddc38d1fab74d0d5a01b12be2fcc0952eecf420|Ruben van der Linde|2025-10-28T11:43:52+01:00|Merge pull request #389 from ConductionNL/feature/enhance-publication-management
+0ba2c3b83f2b535d3bf927f6104b14894f9d921d|Ruben van der Linde|2025-10-28T11:42:35+01:00|Hotfix for catalogi filtering
+e9830b0662fdd4eaaa1825b5b5c8e23e0b17bdb3|Ruben van der Linde|2025-10-28T09:32:40+01:00|Merge pull request #388 from ConductionNL/feature/enhance-publication-management
+a2deaeecf040b8d7f405f989bda7fbd519fd1cc2|Ruben van der Linde|2025-10-28T09:30:27+01:00|Trying to fix the uses endpoint
+42b74b66ddcfbf0333d0158b5775b8a2dfaef939|Ruben van der Linde|2025-10-27T21:50:23+01:00|Merge pull request #387 from ConductionNL/feature/enhance-publication-management
+df78ded21bfc4363874f0ee8cdd95a6d90cbfb25|Ruben van der Linde|2025-10-27T21:49:36+01:00|Fix on published
+744a4912b55768560bf0bf03275faf7d88037679|Alex Rekachynskyi|2025-10-27T15:14:12+01:00|fixes
+b68ab006012c47bf4a503d3da55698097c6a7055|Alex Rekachynskyi|2025-10-27T12:06:59+01:00|possible fix for layering
+57f8d3528a2fcb4f500900b9ecd8ed6844e9d571|Alex Rekachynskyi|2025-10-27T11:47:20+01:00|tags update plus counter
+fec5177284ab95cbdf1a2259cbc6a70775943040|Ruben van der Linde|2025-10-27T10:00:08+01:00|Merge pull request #385 from ConductionNL/feature/enhance-publication-management
+3dd289ae57af2c51d3b6497885646d4ab07ccfde|Ruben van der Linde|2025-10-27T09:58:57+01:00|Hotfix: making pages visable
+17620b9c568f3279c321ada0b7b9e03335d3a19c|Ruben van der Linde|2025-10-26T19:53:11+01:00|Merge remote-tracking branch 'origin/development' into feature/enhance-publication-management
+a61b4c2e235a0b644b3f04922f07728321e08ab6|Remko|2025-10-24T16:04:51+02:00|Package.json format
+1f279c2a118ba46185b52c19207d13984b6d8054|Thijn|2025-10-24T15:59:02+02:00|deeplinking should be finished
+ead407b3cb6ca2bbcfb334dc1427a111306e589b|Alex|2025-10-24T13:15:53+02:00|Merge pull request #381 from ConductionNL/feature/OP-519/publish-depublish-edit-labels
+b1d257e2c760a0dc62ceb6f3756915f063522e5e|Alex Rekachynskyi|2025-10-24T13:11:51+02:00|No label is back
+814ffb8fafdd34fd156f66e4862e4fee181f59ac|Alex Rekachynskyi|2025-10-24T12:44:41+02:00|tags update
+3c670ee92aded912233b5f94a1a6d13b35f4fce3|Robert Zondervan|2025-10-24T11:33:19+02:00|Merge pull request #382 from ConductionNL/fix/unpublished-pubs
+dd7779758d2f3d9feba1334a36d73487bf23ef79|Robert Zondervan|2025-10-24T11:20:04+02:00|Fix showing unpublished publications
+6a7891098dd575d47029dcd549fd3b2d2179180e|Thijn|2025-10-23T17:01:21+02:00|WIP - deeplinking
+fd55dc7976cf625dc83a4cf886ce6acedf2de192|Alex Rekachynskyi|2025-10-23T16:06:36+02:00|Publish depublish and edit labels of attachments now work well
+4325e25b531e9394d22000b9a0610200c1072dc7|Ruben van der Linde|2025-10-23T11:56:44+02:00|Merge pull request #380 from ConductionNL/feature/enhance-publication-management
+5c55efebe87aaf069602600f7ebaedf6c4784b61|Ruben van der Linde|2025-10-23T11:53:14+02:00|Hotfic on the catalog check
+3694e4eb9c7f26d38f023e02bd15edd5b092102f|Robert Zondervan|2025-10-23T10:37:27+02:00|Merge pull request #379 from ConductionNL/feature/enhance-publication-management
+616b5de0de8a77c62b43c29ed97a9fb07fddd4e7|Ruben van der Linde|2025-10-23T10:36:21+02:00|Unnused facets
+42f1b7c181926f1b30a2db7bdae583e250262b2c|Ruben van der Linde|2025-10-22T23:36:54+02:00|Merge pull request #378 from ConductionNL/feature/enhance-publication-management
+6ff8bde30f3077f926e7baf55f351cf81da2b261|Ruben van der Linde|2025-10-22T23:36:15+02:00|Route fix
+f7146059cf056a16f21757f95e5cff20bf860cbe|Robert Zondervan|2025-10-22T15:29:56+02:00|Merge pull request #377 from ConductionNL/feature/enhance-publication-management
+ffd3bbdb72492453ead92b5fe90134246c466f96|Ruben van der Linde|2025-10-22T08:05:24+02:00|Correctly filtering for publications
+db93c111f09c8331850e13a9a005367a684086a4|Ruben van der Linde|2025-10-20T13:05:33+02:00|Working on filtering
+0fd6768d279fd394a18e015896dac9bf32caba7b|Robert Zondervan|2025-10-16T13:10:39+02:00|Merge pull request #376 from ConductionNL/feature/enhance-publication-management
+da8e2d26bb6ebb43ff6c32b060d688137776a26b|Ruben van der Linde|2025-10-16T12:38:06+02:00|used/uses
+889542202f76df04fc75de8fe5bfe352ca6ac269|Ruben van der Linde|2025-10-16T12:11:45+02:00| Voorkom dat niet gepubliceerde objecten gepubliceerd worden ;)
+3646c15ffb23f6253035512b570e0d20e946c1e0|Ruben van der Linde|2025-10-16T11:25:41+02:00|Merge pull request #375 from ConductionNL/feature/enhance-publication-management
+e385a9f27a322909e6f61abb33766f5c7facdc71|Ruben van der Linde|2025-10-16T11:23:31+02:00|Remove force to index
+44f5c127411eaf5ed248c63ed6aa1b208bd23509|Ruben van der Linde|2025-10-15T15:55:08+02:00|Merge pull request #374 from ConductionNL/feature/enhance-publication-management
+fc29aa0509a6f80b78702c6aa982bf27952e17a5|Ruben van der Linde|2025-10-15T15:54:36+02:00|Fixing used and uses
+b6a1cbdfd054ee339b5328c8d3234ff4b678779d|Robert Zondervan|2025-10-15T14:41:39+02:00|Merge pull request #372 from ConductionNL/feature/WOO-425/stabilisation-fixes
+bff7ec397bbd1038c9fc24f7ff9456176c9b6ca4|Robert Zondervan|2025-10-15T11:26:23+02:00|Fix PR comment Wilco
+57521134920263e4e815ee0a98877a4271d355f7|Ruben van der Linde|2025-10-15T11:00:58+02:00|Merge pull request #373 from ConductionNL/feature/enhance-publication-management
+be09f1cc0ad1640b464ffc48cf4c332122d4ee47|Ruben van der Linde|2025-10-15T10:59:55+02:00|Lets refactor the broken fix
+db019832f073e7c5d54505138b5f0b442493a702|Ruben van der Linde|2025-10-15T10:55:52+02:00|Lets not extend on the index
+a8fbd36188225ef1869d81d8abfe487af959afe3|Ruben van der Linde|2025-10-14T12:53:33+02:00|Merge pull request #371 from ConductionNL/feature/enhance-publication-management
+e93da2fcfd66f2bb18a7d800bf9628f0b1143841|Ruben van der Linde|2025-10-14T12:53:04+02:00|Lets raise the limit for finding related items
+14b63e889e08f72ff4d2927015920bec44b22781|Ruben van der Linde|2025-10-13T21:37:26+02:00|Merge pull request #370 from ConductionNL/feature/enhance-publication-management
+e5175344f7ae9d96297d133e006734fa1a1e2287|Ruben van der Linde|2025-10-13T21:33:12+02:00|Lets only take the published objects for used and uses
+c192ba1c9c6eb6a4164fa7af2cdb283ae4e9e4e3|Robert Zondervan|2025-10-13T16:38:49+02:00|Stabilisation fixes for new stable
+85e68c1329b2f514fea8d9ae51fffc7b6fb12819|Robert Zondervan|2025-10-13T14:57:33+02:00|Prevent setting ZGW Catalog scheme when ZGW is installed
+3f5de189f13b581f4d25decd1bd6dd032baac2cc|Ruben van der Linde|2025-10-10T11:39:36+02:00|Merge pull request #369 from ConductionNL/feature/enhance-publication-management
+a045e77f65a9902ead8aeee11d128ce0c21b023f|Ruben van der Linde|2025-10-10T11:36:59+02:00|Config fix
+abcbd0344c9f3046c4a09657481ee5d2281fcf8c|Ruben van der Linde|2025-10-09T07:08:10+02:00|Merge pull request #368 from ConductionNL/feature/enhance-publication-management
+435962026d0ad7342595fc83de47fbd07de2e76d|Ruben van der Linde|2025-10-09T07:07:41+02:00|missed a spot
+3451436aecd5be75e0722efa67d05d3cca4efc17|Ruben van der Linde|2025-10-09T02:32:11+02:00|Merge pull request #367 from ConductionNL/feature/enhance-publication-management
+0a12d30ec3a3c71ba62f8535539e62e5e48d7c32|Ruben van der Linde|2025-10-09T02:31:40+02:00|Bad hotfix
+c6e4ee52856810d4d56a34653c335cd506b7c91a|Ruben van der Linde|2025-10-06T07:11:31+02:00|Merge pull request #366 from ConductionNL/development
+a6848f7b3c14e67dca272ddeeac2871213f5e9e3|Ruben van der Linde|2025-10-05T12:11:14+02:00|Merge pull request #365 from ConductionNL/feature/enhance-publication-management
+44cf98cbd82ad3722f2292c33c33a1a0d0ddc1c5|Ruben van der Linde|2025-10-05T12:03:05+02:00|deleting menu items fix
+6275d6d79e0cda6ebac3658bd6bd81e0bf227e12|Ruben van der Linde|2025-10-05T10:11:31+02:00|Getting the menus changable again
+d719d4256d10fd95692ad3d2e877b99c6e3210e1|Ruben van der Linde|2025-10-02T16:38:46+02:00|Merge pull request #364 from ConductionNL/feature/enhance-publication-management
+318aa5ec037b10c2d21409724f9b2dcfe10fe74f|Ruben van der Linde|2025-10-02T16:32:15+02:00|cleanup: remove debug die statements
+ee66dc70455716057886b0d0e47f51177a7ba6d7|Ruben van der Linde|2025-10-02T16:30:44+02:00|debug: add die statements for API endpoint testing
+98764b287d024b419a6c7d779186c61329c01a14|Remko|2025-10-02T14:37:26+02:00|updated info
+1040642c43f5bb99102479c18591dde171a04c8c|Ruben van der Linde|2025-10-02T14:12:56+02:00|fix(publications): replace broken search-based object fetching with direct find() calls
+fb7c590718c62b7adb3ee1475c0af9eb2b123fab|Remko|2025-10-02T13:41:46+02:00|added workflow
+062ef63f5b022aad5e14237f5f820b34ea4dde9e|Remko|2025-10-02T13:13:41+02:00|Merge branch 'Update-menu-icons'
+cd9f886256a15bc8aebb8944ff4191e473e70497|Ruben van der Linde|2025-10-02T03:33:59+02:00|Merge pull request #363 from ConductionNL/feature/enhance-publication-management
+9b84f3f38677d679d390b0ab8eafe445e569f680|Ruben van der Linde|2025-10-02T03:13:08+02:00|hotfix(publications): update controller comments for SOLR filtering hotfix
+55c15d502cdfe081cb47b5c11bb436fae45d693a|Ruben van der Linde|2025-10-02T02:30:52+02:00|Merge pull request #362 from ConductionNL/feature/enhance-publication-management
+94549d0393ab7ada7b3953014ab20eacd08a798e|Ruben van der Linde|2025-10-02T02:29:07+02:00|fix(publications): disable published filtering to resolve zero results issue
+08b3b9a77069c096e744fde9ab94be5c2b09c47a|Ruben van der Linde|2025-10-01T19:16:05+02:00|Merge pull request #361 from ConductionNL/feature/enhance-publication-management
+b98a8dbe7b6822a404239fcc07e1d5c808abbe64|Ruben van der Linde|2025-10-01T19:15:45+02:00|Delete ource = index' parameter from MenusController and PagesController
+1444e34ea3d79ab732019909c90fb6e8a1791729|Ruben van der Linde|2025-10-01T19:15:26+02:00|Delete allows the system to use the most appropriate data source (database or SOLR)
+5d68e817d87fd9af2492115433c6bc53823e036d|Ruben van der Linde|2025-10-01T19:14:03+02:00|update
+760533e3bd85fa2db5d0f6d0c47072facc73dc15|Ruben van der Linde|2025-09-29T22:36:46+02:00|Merge pull request #360 from ConductionNL/feature/enhance-publication-management
+c0fed4502a919775289ebb57e288ac9724339cbe|Ruben van der Linde|2025-09-29T21:27:26+02:00|feat(schemas): set all publication register schemas to searchable=true
+3e71b1d78ad5974281ddcbd6dcbcb2c182fff668|Ruben van der Linde|2025-09-29T11:57:14+02:00|Merge pull request #359 from ConductionNL/feature/enhance-publication-management
+2d030b4d20aa36471b19e8ef2178f62683912df7|Ruben van der Linde|2025-09-29T11:55:29+02:00|docs: improve README description for publication management capabilities
+12907560f26d24b951ee60929480d0c48e917f6f|Ruben van der Linde|2025-09-29T11:48:18+02:00|merge: resolve conflicts with remote development branch
+efccadbd02870ca22b25b4f579c303f04eeb5491|Ruben van der Linde|2025-09-29T11:42:01+02:00|feat: enhance publication management and controller improvements
+4f6d8287bdac0a728b9f21294edfe36a7e61f66f|Remko Huisman|2025-09-25T10:29:13+02:00|Merge pull request #358 from ConductionNL/fix/allow-extend-id-endpoint
+320f92d13550fdd957071d9e4e7b97e57513c117|Barry Brands|2025-09-24T15:44:22+02:00|Allow all extend on id endpoint
+feea3b7553a2b9786755b88b9ee0415b10fd18c9|Ruben van der Linde|2025-09-24T05:28:00+02:00|Merge pull request #357 from ConductionNL/hotfix/slug-searching-database
+804bbe0d3897dd4f1c7ca678d0bfe015e2cbe5f8|Ruben van der Linde|2025-09-24T05:21:23+02:00|fix: improve PublicationsController searchObjectsPaginated calls
+8a6c0a9f6bae64bfaa8c01271a9303d716cf9f1f|Ruben van der Linde|2025-09-23T01:02:11+02:00|Merge pull request #356 from ConductionNL/hotfix/slug-searching-database
+6408f557f1de8fb77a941a240eacf85da82b673d|Ruben van der Linde|2025-09-23T01:01:00+02:00|style: fix whitespace in comment for consistency
+053ff6a2ba3676e39a5bc4b60dea1503a793f0b8|Ruben van der Linde|2025-09-23T00:10:16+02:00|fix: allow access to attachments of published objects regardless of catalog restrictions
+f59f330466dde73db6bc579f52a93c2c62aa951c|Ruben van der Linde|2025-09-22T23:22:48+02:00|fix: remove extend parameter from search query in uses/used endpoints
+12dab8c8c7cae094d921a37b21c4e7a44554fcd9|Ruben van der Linde|2025-09-22T23:13:25+02:00|fix: use fresh ObjectService instance for cross-register/schema searches in uses/used endpoints
+7551311aa03f37f1148533cb526f84332129bd34|Ruben van der Linde|2025-09-22T22:35:59+02:00|feat: update PublicationsController uses/used endpoints with named parameters
+615eb53d56255b127d0b3dddb018e39b83117331|Ruben van der Linde|2025-09-18T11:15:46+02:00|Merge pull request #355 from ConductionNL/hotfix/slug-searching-database
+104f03826b195b8deb3f1599896488d76a0eaad2|Ruben van der Linde|2025-09-18T10:57:30+02:00|fix: correct array syntax in PagesController slug search
+4f866b2dcab430e594e2e5676333d163253934e4|Ruben van der Linde|2025-09-18T10:47:17+02:00|Merge pull request #354 from ConductionNL/hotfix/slug-searching-database
+d2173f0f53d5fc9b53c6eeb987fb615da64cd7c8|Ruben van der Linde|2025-09-18T10:43:52+02:00|hotfix: force slug searching to use database source
+4d1b0bd7da497cae8b76c3b9aa38b23f3c657d7e|Remko Huisman|2025-09-17T15:15:15+02:00|Merge pull request #353 from ConductionNL/Update-menu-icons
+f0f2c583050fb89c36a3c74b3f6a14d4e52d8d7b|Remko|2025-09-17T15:08:10+02:00|Updated switches
+6b862f9290ae0fcab4a6db96833ce31b28245fc7|Remko Huisman|2025-09-17T15:02:25+02:00|Merge pull request #352 from ConductionNL/Update-menu-icons
+5db43c0390dddb52a657953ca106aa67c6a160c8|Remko|2025-09-17T14:34:42+02:00|Added icons for FAS, FAR and FAB
+c6ef1760798e767346479171609c8cee134026e5|Remko|2025-09-17T12:21:02+02:00|Updated menu items to allow more values
+578de2b7dd43d25bb7f2895577cc14bb4a314356|Remko Huisman|2025-09-12T17:11:06+02:00|Merge pull request #351 from ConductionNL/Update-menu-icons
+a2da5ce62356ae1f7a5021115ef805776e9a034c|Remko|2025-09-12T17:07:48+02:00|cleanup
+983be12dd9e249cdb3c782d74e49a89c271fe977|Remko|2025-09-12T17:06:46+02:00|Small update
+02329e4da1b159c770f576c80bc14634bb60288c|Remko Huisman|2025-09-12T16:23:30+02:00|Merge pull request #350 from ConductionNL/Update-menu-icons
+37f6da635151ec9167de18aef8590bf774989b76|Remko|2025-09-12T16:09:52+02:00|Updated the menu icons
+8bc4ee28c522f15021b3b4667805aedf06c96fff|Ruben van der Linde|2025-09-12T10:28:57+02:00|Merge remote-tracking branch 'origin/development' into hotfix/cors
+a592d5fe1ca0549537ada52721fb125df4e81223|Alex|2025-09-11T15:29:13+02:00|Merge pull request #349 from ConductionNL/fix/order-data
+4e9ee0f4e8ab398d415050141a6d8b00555963a5|Alex Rekachynskyi|2025-09-11T15:17:29+02:00|Order is set in register object
+d7c50d09f9751ecf0ab769cd633000d8a8d33480|Ruben van der Linde|2025-09-08T13:11:38+02:00|Lets setup code for reaactivating the catalog filters
+4837d4a575adcbaecfb1a0c1900a6e99565a1c63|Ruben van der Linde|2025-09-04T16:39:10+02:00|Hotfix: RBAC
+d94d4f7d4727ec02bd3b50074314a24359d89ccb|Ruben van der Linde|2025-09-04T16:21:00+02:00|Merge remote-tracking branch 'origin/development' into hotfix/cors
+a69df8f0bf972b678612ebaf52f22cc9f9bde87c|Ruben van der Linde|2025-09-04T14:46:19+02:00|Merge pull request #331 from ConductionNL/feature/OP-514/publish-depublish-attachments
+e1f3252bac7d5351cc01068ccd3eb1a9092ddaef|Ruben van der Linde|2025-09-04T14:45:11+02:00|Merge pull request #347 from ConductionNL/hotfix/cors
+f8b6f0cb53f27996baa52597e15bb31996b9f3c9|Ruben van der Linde|2025-09-04T14:43:24+02:00|Merge remote-tracking branch 'origin/development' into hotfix/cors
+20d7140756e06a0f4829ed195ef0434dfac624fe|Ruben van der Linde|2025-09-04T14:42:54+02:00|Fix facating
+2f0a870cf2f5d07df1141c73ae29d592c253b2b6|Ruben van der Linde|2025-09-04T07:09:13+02:00|Merge pull request #346 from ConductionNL/hotfix/cors
+d508117b72172763b594431672612161c1be947b|Ruben van der Linde|2025-09-04T07:05:26+02:00|Perfomance upgrade
+461b88a676718e8d91a60525b3fd09d60c5b5eeb|Ruben van der Linde|2025-08-28T03:00:32+02:00|Merge pull request #345 from ConductionNL/hotfix/cors
+b8c21f68a4f55c8608504bc533a5b7771016ae5f|Ruben van der Linde|2025-08-28T03:00:05+02:00|Removing error_;og
+a5f65fb6e213be8fa54b3b7f40f9e7fee6188e7b|Ruben van der Linde|2025-08-27T08:16:15+02:00|Merge pull request #344 from ConductionNL/hotfix/cors
+9af728be80bbacbab331664a1a43e0729a351b2d|Ruben van der Linde|2025-08-27T08:15:38+02:00|hotfix used and uses
+680134f77eff2157ed82bb276457862c4bf1b869|Ruben van der Linde|2025-08-27T07:33:30+02:00|Merge pull request #343 from ConductionNL/hotfix/cors
+c84635877e802a3b1067d1ba7df176c21ed7cc4f|Ruben van der Linde|2025-08-27T07:33:24+02:00|Merge branch 'development' into hotfix/cors
+bf3ec99146f2510ec4ef3ba3cddb12965d1a1e29|Ruben van der Linde|2025-08-27T07:30:46+02:00|Hotfix: Hack on the publication controller
+ef6e84cb1da90a0351c3b0c7c63948a9688b1284|Ruben van der Linde|2025-08-27T07:07:17+02:00|Return facets
+5656777d65426d498967e39065ee23833f694a88|Ruben van der Linde|2025-08-26T23:24:51+02:00|Search optimalisatie
+2052fb9f296bc9c33d6b0bca347326677f89998f|Ruben van der Linde|2025-08-26T23:25:37+02:00|Merge pull request #342 from ConductionNL/hotfix/cors
+2546118c3dc94c4aa3e6b4d1547695165f9afe9c|Ruben van der Linde|2025-08-26T23:24:51+02:00|Search optimalisatie
+a883fc1a8de9a3f718589185cdd7a128cf939442|Ruben van der Linde|2025-08-17T12:37:47+02:00|Merge pull request #341 from ConductionNL/hotfix/cors
+915e1dbbc716385f2ac119974ab320f0cbed36d8|Ruben van der Linde|2025-08-17T12:37:05+02:00|More functions on menu and pages
+65543417d2536c72aa3971ace1da728368b97d00|Ruben van der Linde|2025-08-15T23:52:56+02:00|Merge pull request #340 from ConductionNL/hotfix/cors
+5e99432faf37d8926508d1206391f9a7836eb9e1|Ruben van der Linde|2025-08-15T23:51:53+02:00|Merge remote-tracking branch 'origin/hotfix/cors' into hotfix/cors
+50a98de6b4e8bbd756651658433f3b3629e2ec84|Ruben van der Linde|2025-08-15T23:50:37+02:00|Lets setup the menu's properly
+8a5dfd76cb781b67ee278dabbe3080c587e92e3e|Ruben van der Linde|2025-08-15T10:28:11+02:00|Merge pull request #339 from ConductionNL/hotfix/cors
+ee1f1f6f4feeae32c7ab03eec398fc9dfba487e1|Ruben van der Linde|2025-08-15T10:27:49+02:00|Update info.xml
+3bd79684a0d41ea64845c9b2368056416b20e6b9|Ruben van der Linde|2025-08-15T10:27:28+02:00|Update info.xml
+a192558f68d233bf66752d195e946e421ecbe4ce|Ruben van der Linde|2025-08-15T10:20:33+02:00|Updating the schema's
+de6c0758f8622a2ac82711544bb027e137c1792b|Ruben van der Linde|2025-08-15T08:58:31+02:00|Merge remote-tracking branch 'origin/beta' into hotfix/cors
+053c027e6f690876f6028e2910091715343db50f|Ruben van der Linde|2025-08-15T08:57:57+02:00|Trying to perfect the modals
+6a66f15f58eff3492e13e9771797a1d5f01c787d|GitHub Action|2025-08-14T21:26:04+00:00|Bump beta version to 0.7.5-beta.6 [skip ci]
+3bd444bb7a9c3fa168e7acc6609ed4b8c4fc0cc2|GitHub Action|2025-08-14T21:25:49+00:00|Merge pull request #338 from ConductionNL/hotfix/cors
+b8346961149c9d218eba5efa78a07c2f941e5ffe|Ruben van der Linde|2025-08-14T23:25:39+02:00|Merge pull request #338 from ConductionNL/hotfix/cors
+9ca0a2b46600bd74d3b9eb051a979e99c23fcb4f|Ruben van der Linde|2025-08-14T23:21:46+02:00|Working on the modal
+34aa1fa9559f10ad5e40c9bbd0f959bda046148d|Ruben van der Linde|2025-08-14T21:39:29+02:00|Merge remote-tracking branch 'origin/feature/OP-511/ugly-spacing' into hotfix/cors
+2c813dd7bfd4b48b443852f0ee0e1ce27fd79fde|Alex Rekachynskyi|2025-08-14T18:09:34+02:00|Close buttons and titles
+aa4bc53abb6671f9daa5388d9a3ebbfe44ac874e|Alex Rekachynskyi|2025-08-14T16:54:20+02:00|Merge remote-tracking branch 'origin/hotfix/cors' into feature/OP-511/ugly-spacing
+d5ea6459928c2ebaea6691eb3906d1f653e31b4a|Ruben van der Linde|2025-08-14T16:50:23+02:00|Fixed getting user groups
+f4d876e1bc872cc19046f93eade65a546f9565de|Ruben van der Linde|2025-08-14T16:15:27+02:00|Merge remote-tracking branch 'origin/feature/OP-511/ugly-spacing' into hotfix/cors
+6a1e0fbf73d5d9db3e3f1fc65ac9bb45f56657e7|Alex Rekachynskyi|2025-08-14T15:46:29+02:00|styles polishing
+3d2dc474e6856b1805b9670c7f1abaa7de0a15e4|Alex Rekachynskyi|2025-08-14T15:46:09+02:00|sync fix
+655864fc5b473cfda0de927b7334b50baa07bef3|Alex Rekachynskyi|2025-08-14T15:04:12+02:00|Merge branch 'development' into feature/OP-511/ugly-spacing
+d4de70d51d635214245c19512379cb8e65bea70d|Alex Rekachynskyi|2025-08-14T14:49:18+02:00|Menu Item CRUD
+23516af8ff4dfd7b4edf057ab7187a6adf78a0d9|Alex Rekachynskyi|2025-08-14T14:24:49+02:00|spacing update + Page content CRUD
+1e46e09abdf49a16b897905984d0824582fae1eb|Ruben van der Linde|2025-08-14T13:06:57+02:00|Merge pull request #330 from ConductionNL/hotfix/cors
+88eda3953eb28d68447d840088409cee6a5d0667|Ruben van der Linde|2025-08-14T13:05:31+02:00|Merge remote-tracking branch 'origin/development' into hotfix/cors
+257fd33b8d7507bc732f0048ee0b4d3cc17a7651|Ruben van der Linde|2025-08-14T11:54:19+02:00|Last updated
+ebdfed540d2b58e7c2fb2b847ada811eae8da276|Ruben van der Linde|2025-08-14T11:12:12+02:00|Updating the menu items
+90d0734c3b14800a0b91012496bc394d79da3d95|Alex|2025-08-14T10:59:55+02:00|Merge pull request #336 from ConductionNL/feature/OP-516/markdown-text-editor
+37cfb685e1fb82c0143a9debf8702fcf2c3d1a33|Alex|2025-08-14T10:59:43+02:00|Merge pull request #335 from ConductionNL/feature/OP-515/language-inconsistencies
+0f4e0ccbc90c9de7016c424508d3114dc22b06b0|Ruben van der Linde|2025-08-14T10:25:47+02:00|Trying to mkae the page work
+37f1c61710ebffd6d5897ca3d17806d0c26bb40c|Ruben van der Linde|2025-08-14T10:25:20+02:00|Merge remote-tracking branch 'origin/development' into hotfix/cors
+934c32ae42e15894f2f157e887db4272d4336747|Alex Rekachynskyi|2025-08-12T12:16:26+02:00|Added markdown text editor / refernce for future
+a517de535361f05b16d0778a3400687627e9fd5b|Alex Rekachynskyi|2025-08-11T16:11:13+02:00|Minor changes
+86ff346f2de8dc94deb92f99a4277d41564c19e9|Alex|2025-08-11T11:25:56+02:00|Merge pull request #334 from ConductionNL/feature/BEHEER-3261/multiple-attahments-publishing
+fbe3090c60a49e8f4155f13d7ec93bbd6e342816|Alex Rekachynskyi|2025-08-08T14:23:35+02:00|multiattachment publishing
+aa23afba9b44a391225a9a777a5634cd62da1bdd|Alex|2025-08-07T11:18:46+02:00|Merge pull request #332 from ConductionNL/feature/OP-513/theme-deleting
+16bb3e78f633b089f940a9b26cb60b0789f9e3c8|Alex Rekachynskyi|2025-08-07T11:15:27+02:00|minor fixes
+5465fd3737972f37f3a828fff59d9609ebef411e|GitHub Action|2025-08-06T07:30:56+00:00|Bump version to 0.7.4
+10b451ff22b4c36293da444d0692156ed6673532|Robert Zondervan|2025-08-06T09:30:43+02:00|Merge pull request #333 from ConductionNL/development
+3440b49406bdaade5f043e80e47e3a9d698c9f3b|Alex Rekachynskyi|2025-08-04T14:45:12+02:00|deleting themes
+f9c074881dc197862445cc90fb820c276dce633c|Alex Rekachynskyi|2025-08-04T10:04:25+02:00|publish/depublish attachments hotfix
+f9808c172a9176f80d9e2b96ba7d478da2815360|Ruben van der Linde|2025-07-30T09:01:53+02:00|Lets at starting data to Open Catalogi
+123b4c2b7d368c05b7b86c39b40c649471e5bd04|Ruben van der Linde|2025-07-29T08:05:42+02:00|Merge pull request #329 from ConductionNL/hotfix/cors
+7156ce463f01325d51698953a09e59c8263fdebc|Ruben van der Linde|2025-07-29T07:58:44+02:00|Lets optimize the configuration procces
+0c3050033d8ec528ce78648f78c05dd69482a4fb|Ruben van der Linde|2025-07-25T04:56:09+02:00|More cors
+a90de69e1da2e21f8045c520d39cf03eac1017b0|Ruben van der Linde|2025-07-25T00:12:55+02:00|Fixin linting errors
+cad0b3b65788f18e6aa4719552ea9a231e291d63|GitHub Action|2025-07-17T13:29:06+00:00|Bump version to 0.7.3
+cea5a36622784a549450f8b1cfce0e93f6894449|Ruben van der Linde|2025-07-17T15:28:48+02:00|Merge pull request #324 from ConductionNL/development
+d241493d4df812a43b78ee776fdf89868faedc7c|Alex Rekachynskyi|2025-07-17T11:27:31+02:00|Removed restriction
+452c96cd78e5e178d14652bd5004540aa4aba1f5|Alex Rekachynskyi|2025-07-16T15:49:45+02:00|asterisk changed to *
+506585ee6031434baf071cacdb51cf7da11766d2|Alex Rekachynskyi|2025-07-16T14:38:11+02:00|Styles for publication modal
+5844349052816907650f4e8e0fb3200d6bad372c|Alex|2025-07-16T12:14:49+02:00|Merge pull request #326 from ConductionNL/feature/OP-489/edit-detail-styling
+3d0093b8ccf36f723bfc60f729ab17a9e233181d|Alex Rekachynskyi|2025-07-16T11:17:30+02:00|Labels positioning
+7f4d4ac502713541a79256f2ce568d01bc2892b7|Alex Rekachynskyi|2025-07-15T17:02:04+02:00|label input width
+a2a6e61c20f60f544f84b1c3bf3285c175622df7|Alex Rekachynskyi|2025-07-15T16:37:03+02:00|everything except labels
+f8a9b8f542ce0a72164a9aa17d98d546a08cf9d7|Alex Rekachynskyi|2025-07-15T09:24:07+02:00|updated styles for publications list page
+473e0c663472f0cebd36a3d198f59f02bd947407|Remko Huisman|2025-07-11T12:43:19+02:00|Merge pull request #323 from ConductionNL/feature/federation
+fccbfa901a57ebbda3fe6fb358e4751d7b5d36b2|Ruben van der Linde|2025-07-11T12:14:20+02:00|Lets update the files based on id
+77f3b4dcbfe06475c9f6f8dd8db55eea78b497b8|Ruben van der Linde|2025-07-11T09:33:36+02:00|Merge pull request #322 from ConductionNL/feature/federation
+32daedbb957f6b207498f33730cb612564fe6eab|Ruben van der Linde|2025-07-11T09:32:54+02:00|Merge remote-tracking branch 'origin/development' into feature/federation
+7133f5bb7770890b18b8458c128c5e36deb8d2f8|Ruben van der Linde|2025-07-11T09:32:06+02:00|Integratoin level hotfix
+7c5899a4d5068320613c559b72cb5f0ff6f3680c|Ruben van der Linde|2025-07-10T07:19:14+02:00|Lint fixes
+ff27665ad7be812f7fd1d0ef77c24860545dbc15|Ruben van der Linde|2025-07-10T07:13:13+02:00|File loading visualisation
+3b4a0274325b47d92e37bb041181d969088e4b33|Alex|2025-07-09T10:09:33+02:00|Merge pull request #315 from ConductionNL/feature/WOO-371/refresh-retry
+7af4253f416edaf5d83e8b450875e1af26690604|Alex Rekachynskyi|2025-07-09T10:08:41+02:00|different loading statuses for retry and normal upload
+4af91296a4553d39ce5b151ef08cc91bfbd56e6f|Alex Rekachynskyi|2025-07-09T09:46:00+02:00|async files update
+fd89603e69fef4476b4ba228ade771ae5f30be52|Remko|2025-07-09T09:18:23+02:00|Merge remote-tracking branch 'origin/development' into feature/WOO-371/refresh-retry
+fc14a5558344c0b55f56726deee8a126adc2596d|Ruben van der Linde|2025-07-08T23:19:37+02:00|Merge pull request #321 from ConductionNL/feature/federation
+958407e686d14140a8daa3541a3c7a0224743533|Ruben van der Linde|2025-07-08T23:19:00+02:00|Fix for label aditing
+c8fd477447b594193688a99edc3a9416afa82878|Ruben van der Linde|2025-07-08T22:40:35+02:00|Pagination
+5105e6f866c4ff0f98d2dedb87c626aaa086f4d0|Ruben van der Linde|2025-07-08T22:01:48+02:00|Merge remote-tracking branch 'origin/development' into feature/federation
+2ec9e3695efe080feedfbbd512be406a80277f8f|Alex|2025-07-08T13:24:16+02:00|Merge pull request #320 from ConductionNL/feature/WOO-376/overflow-hidden-again
+72c4a99a3e6c4304008d49fed7f9627b09dfc90c|Alex Rekachynskyi|2025-07-08T13:11:42+02:00|date stays the same
+053fd9a9746b741d487656f39b55782df226f9d9|Alex Rekachynskyi|2025-07-08T12:46:10+02:00|Datepicker is still visible, but the rest is hidden again
+a7b9e6d13a05cdfe373157c909dc67d3b5d158d9|Remko Huisman|2025-07-08T12:31:59+02:00|Merge pull request #318 from ConductionNL/feature/WOO-363/directory-schema
+5ed31efd12d48a55b3fa9c83b16f24e5eb84fb78|Remko|2025-07-08T11:21:22+02:00|Updated import of catalogi types
+754cd08acb94029794c1932ce63922a47d8e0931|Alex|2025-07-08T10:45:20+02:00|Merge pull request #319 from ConductionNL/feature/WOO-367/file-counter-tab-title
+14b7aa59652fd47364cac00ac772dcc66d98e182|Alex Rekachynskyi|2025-07-08T10:40:33+02:00|File tab in viewObject has counterBubble
+f21f7a8e6851f077b3399c85b90c07799577a879|Remko|2025-07-07T16:58:25+02:00|Updated directory
+3d4fb8916f06502e78289f0aef08f89a73fbc4ef|Alex Rekachynskyi|2025-07-07T15:28:23+02:00|added changable catalogi status
+c30336ba5fb3be106119710bf9481385e68e9143|Alex|2025-07-07T14:12:38+02:00|Merge pull request #314 from ConductionNL/feature/WOO-366/datepicker-position
+bd2ac8f3288a073efc10884c974d7c05ad4cf83c|Robert Zondervan|2025-07-07T13:10:44+02:00|Merge pull request #317 from ConductionNL/feature/WOO-363/Correct-totals
+99d9e5135ecb93b66441c336f92a3bcbf0303cc0|Robert Zondervan|2025-07-07T13:08:27+02:00|offset to _offset in unsetting
+78f0f709be26e9c88bcfd7c7913f752e3da251a1|Alex Rekachynskyi|2025-07-07T11:05:46+02:00|upload fixes
+bf9496727b972a9fecbff549c420b23966c5c294|Alex Rekachynskyi|2025-07-07T09:56:08+02:00|Retry and initial uploading made parallel
+8d8039b2e669dd056b10b336418cecb975722442|Robert Zondervan|2025-07-04T18:06:43+02:00|Merge pull request #316 from ConductionNL/feature/WOO-363/Correct-totals
+856f6441ecbb4fc4a97502191c8ef3a6848d95de|Robert Zondervan|2025-07-04T18:03:39+02:00|Changes to listing schema
+d2fe35ac1d7d006ee14be48ef0fffa525a1271c7|Robert Zondervan|2025-07-04T18:01:11+02:00|Fix offset
+d180d88bdfe425c1ad310f8f68c3d1f0eb7250a7|Alex Rekachynskyi|2025-07-04T17:42:23+02:00|more efficient retry uploading
+53ed71e8cf9fb7ee206158414df7c237ab6a1280|Alex Rekachynskyi|2025-07-04T17:20:59+02:00|Upload files flow
+bbef3e4ddde3c16c5daf301213f1f5dd369e6402|Robert Zondervan|2025-07-04T15:17:52+02:00|Merge pull request #313 from ConductionNL/feature/WOO-363/Correct-totals
+f781ed257148db02e0520a8fb82f81b2e776d3e8|Alex Rekachynskyi|2025-07-04T14:48:11+02:00|datepicker is visible
+146fdcdd7e1bd0ae04cf62c4640f1c64161effd6|Robert Zondervan|2025-07-04T14:34:20+02:00|Calculate correct total results based upon the various totals
+92b7cf2247f66cd222fb5a29730a53a8daa05db8|Remko Huisman|2025-07-04T08:49:38+02:00|Merge pull request #311 from ConductionNL/feature/WOO-355/navigation-from-files-modal
+7c0a7cb6677dd91f71cb34f12f435aeea3c8b991|Remko Huisman|2025-07-03T17:08:16+02:00|Merge pull request #312 from ConductionNL/feature/array-form-field
+bb8179a11b53d0e2cd9c6253abfb722eb83eafa5|Remko|2025-07-03T17:08:09+02:00|Merge remote-tracking branch 'origin/development' into feature/array-form-field
+f5a611dabc6ae0b0e1c6d4cdd618315dca823aac|Remko|2025-07-03T17:05:25+02:00|Added theme's select
+528f0a2b2bcf396753c2a83bab1b4cb4d355263e|Remko Huisman|2025-07-03T16:22:34+02:00|Merge pull request #310 from ConductionNL/feature/array-form-field
+62f9c0fef850b0a2d682ec8f12b1a591fab0e3ee|Remko Huisman|2025-07-03T16:21:14+02:00|Update src/modals/object/ViewObject.vue
+26019c7655352bcea277e33f7540d8dcb98b0605|Remko Huisman|2025-07-03T16:21:09+02:00|Update src/modals/object/ViewObject.vue
+dc2ce78aa3a44d1e1a9661b90f822238f87a2611|Alex Rekachynskyi|2025-07-03T16:11:57+02:00|Closing modal redirects user to viewObject
+ac05d589d42af9860de5a620a831a19c41e8ca4f|Alex|2025-07-03T15:15:04+02:00|Merge pull request #309 from ConductionNL/feature/WOO-360/column-width
+b906b7a86700295acaa2fc76f1b6ab7bd9af6c47|Remko|2025-07-03T15:11:01+02:00|Quickfix for autoform with array
+cb1de4baf8f5617cff7e981941cc93b8a450bbca|Alex Rekachynskyi|2025-07-03T13:38:39+02:00|Inline styles moved to classes
+85997c3d27e509145d970694d8cf1bb9f153a3f0|Alex Rekachynskyi|2025-07-03T13:31:43+02:00|Moved styles into classes, simplified dynamic classes function
+3031e74013d5ca248915c6375e51ca327295f6e9|Alex|2025-07-03T11:31:36+02:00|Merge pull request #306 from ConductionNL/feature/WOO-356/multiple-drag-drop
+c8b8b90af547e6446bdae00923a0a75546eaece6|Alex Rekachynskyi|2025-07-03T11:15:49+02:00|Changes to column styles
+5dd92f6ea8e2b69e39abff555a475bf68dd67de3|Ruben van der Linde|2025-07-02T22:56:00+02:00|Merge pull request #308 from ConductionNL/feature/federation
+b15f28019943eb3151f8c1623b993f188f9bcbc1|Ruben van der Linde|2025-07-02T22:55:36+02:00|Facet hotfix
+e9b3905f18d81219aa10b0c441d68dd68a5e0bbf|Ruben van der Linde|2025-07-02T22:14:40+02:00|Merge pull request #307 from ConductionNL/feature/federation
+2d3c837c66dad5d8d5e375ea58b44b0b09c33fb9|Ruben van der Linde|2025-07-02T22:13:54+02:00|Fix on organisation modal and federated faceting
+48cd8e83eafe8790f5b6e8a74e8ad98f91b02f40|Alex Rekachynskyi|2025-07-02T13:34:40+02:00|error type control
+24e5b80468305165bb51f484ce35d98775a4169c|Alex Rekachynskyi|2025-07-02T13:06:15+02:00|drag and drop multiple files
+2cf3262c4355dc059e11b67eb73aeeeb96897a30|Ruben van der Linde|2025-07-01T01:15:47+02:00|Merge pull request #305 from ConductionNL/feature/federation
+c2b7489242575209b5de78b3e3ed27c92e44a112|Ruben van der Linde|2025-07-01T01:13:12+02:00|Fixes to the directory service
+e0cb95622b2dd185a2dd15031af8dd34d894ffeb|Ruben van der Linde|2025-07-01T00:32:57+02:00|Ede - regie omgeving aanpassingen
+192372162dab26df42122add45bfccfeab6fa3ea|Ruben van der Linde|2025-06-30T08:15:30+02:00|Merge pull request #304 from ConductionNL/feature/federation
+47f64c1079685333ae6468a78db6513a09905f03|Ruben van der Linde|2025-06-30T02:01:23+02:00|Visual fixes
+16e82ec849999eab7f7edc8b0db258698edd3a7d|Ruben van der Linde|2025-06-30T00:14:27+02:00|Lets use our own faceted search
+8a64892da797a2d24351f08c376bfcfa42e4bcfc|Ruben van der Linde|2025-06-29T22:57:55+02:00|Hotfix on searching
+29aad34232d082fedc88a823400ce669169c898d|Ruben van der Linde|2025-06-29T22:29:13+02:00|Fixed correctly searching
+b9f207e0064fc8825defa34732a65fa8afc256f0|Ruben van der Linde|2025-06-29T17:28:53+02:00|Merge pull request #302 from ConductionNL/feature/federation
+94fb8e838d04298d1a9cde051b6ca92f8b80837e|Ruben van der Linde|2025-06-29T17:27:26+02:00|Remove source from results
+9954e07b415cfc1597b9e58a1ca9fd0594312aa2|Ruben van der Linde|2025-06-29T00:17:30+02:00|Working on date times
+9055955096a2a2818177401ab353e298282b6331|Ruben van der Linde|2025-06-28T22:16:22+02:00|Merge pull request #301 from ConductionNL/feature/federation
+d430f999d1b2c8175c2f244a8707b2c2d566c6f1|Ruben van der Linde|2025-06-28T22:15:21+02:00|Small cleanup on fixes
+245c54509d4d8c325ff68192046b335a5411261e|Ruben van der Linde|2025-06-28T22:07:07+02:00|Hotfix bassed on reggresie matt
+18d97fbfc51491f3d0acffa749f42ca6110011a6|Ruben van der Linde|2025-06-28T16:15:11+02:00|Merge pull request #300 from ConductionNL/feature/federation
+e05b1032ddd58c9591dc86a0fd60399eb081ad36|Ruben van der Linde|2025-06-28T16:13:38+02:00|Bevindingen Ede 28-6 accept omgeving Mass action schermen (Tested on 0.7.3-beta.20)
+118d9c979d77ce8777e1632d8a10368dbe220b9f|Ruben van der Linde|2025-06-28T09:10:36+02:00|Merge pull request #299 from ConductionNL/feature/federation
+41ffb837b3b5c62e503ad3dd66d18fd3f8c382e5|Ruben van der Linde|2025-06-28T09:09:57+02:00|Fixing publish and depublish button
+bbfee2ba7c474b4586c4ae3b30037f7e09fb29f6|Ruben van der Linde|2025-06-27T16:27:07+02:00|Merge pull request #298 from ConductionNL/feature/federation
+e4674477370abdf4942c5c7ed8dbf43d4627aa42|Ruben van der Linde|2025-06-27T16:25:59+02:00|Yolo
+1869f6276945b46465aab778062ac00a88537304|Ruben van der Linde|2025-06-27T13:04:49+02:00|Many fixes
+aa390c1ffe88fc8016ff454119b3ae2856efe4db|Ruben van der Linde|2025-06-27T11:55:14+02:00|Fix pagination
+c7d6e24e00bad39b49c7a14c142a1c79ae863112|Ruben van der Linde|2025-06-27T11:53:07+02:00|Merge pull request #297 from ConductionNL/feature/federation
+eb0d6bdcec992d71cb9afa84141279ee958a7219|Ruben van der Linde|2025-06-27T11:50:31+02:00|Fixed creating publications
+7827eaddef9f9da89519595a490903671af11463|Ruben van der Linde|2025-06-27T11:14:02+02:00|Merge pull request #296 from ConductionNL/feature/federation
+82d4dab316d20a423aebbd34f9f10974c4ccb0d9|Ruben van der Linde|2025-06-27T11:13:10+02:00|Add and update the modals
+10541b8657e6efbe0f0cbd4e61a8106623b3b17c|Ruben van der Linde|2025-06-27T11:02:24+02:00|Fixes to the publication table
+dc40852623977c93953a947a26a09f6a284b18d5|Ruben van der Linde|2025-06-27T10:50:26+02:00|Update the modals to say publication instead of object
+4e761c92129a2b708179f7eaa7aa6941af37d5cd|Ruben van der Linde|2025-06-27T10:33:02+02:00|Lets lounch our brand new designs
+da60d8e058072cd80635229bf1be5051869af92e|Ruben van der Linde|2025-06-26T16:55:31+02:00|Merge pull request #295 from ConductionNL/feature/federation
+821314618487917b2b5a2094df7d760c353d8689|Ruben van der Linde|2025-06-26T16:55:02+02:00|Extend hotfix
+148f83e2077a01b486d7f5b358026058bd767939|Ruben van der Linde|2025-06-26T14:25:06+02:00|Merge pull request #294 from ConductionNL/feature/federation
+bdebb9888fd7dfaed4b8eccc883a605c11fc0975|Ruben van der Linde|2025-06-26T14:24:49+02:00|Ordering
+91a08c3e6a1a0684dceca16493740368a9c16706|Ruben van der Linde|2025-06-26T14:16:00+02:00|Proper pagination
+3f078c8af8984288f235d20724bfb7b9e77b0be1|Ruben van der Linde|2025-06-26T07:41:24+02:00|Merge pull request #293 from ConductionNL/feature/federation
+5da5a02b14ba3105e623a2e919dc8c0ca9e3e9fd|Ruben van der Linde|2025-06-26T07:40:34+02:00|Bit more directory and styling fixes
+f61734c1cfeb31fb833524d70c380071d42e6cc3|Ruben van der Linde|2025-06-26T02:47:31+02:00|Merge pull request #292 from ConductionNL/feature/federation
+18ef6ee0eac400d0753e2c0e43a1154312aecc00|Ruben van der Linde|2025-06-26T02:47:02+02:00|Found another bad interface use
+7b4b3fcfee239caea9775162b9b4c6dad37a74dc|Ruben van der Linde|2025-06-26T00:52:34+02:00|Merge pull request #291 from ConductionNL/feature/federation
+6244d477c19b7e6cdad3e17b96f16b679e65c112|Ruben van der Linde|2025-06-26T00:51:19+02:00|Dirty filter fix
+50f36e2e027af260938323b434cf648061fdb802|Ruben van der Linde|2025-06-26T00:44:42+02:00|Merge pull request #290 from ConductionNL/feature/federation
+d291d91b710a4c88d6bab4566c79722e1499b117|Ruben van der Linde|2025-06-26T00:43:47+02:00|Cleaning up the logging
+f24e63336142bab13c64f9340cc38de9fde71524|Ruben van der Linde|2025-06-26T00:37:43+02:00|Auto publish objects and/or attachments
+72fab30f0d1a121dacfffb481ba8f8a7e92f670e|Ruben van der Linde|2025-06-25T22:36:32+02:00|Getting to work on object events
+88ae8fe77f63a8c9a06a1439fc0afa27fba3943e|Ruben van der Linde|2025-06-25T22:13:23+02:00|Merge pull request #289 from ConductionNL/feature/federation
+866d463b181d9c1d0543aa57d078e0cc7c1a9baa|Ruben van der Linde|2025-06-25T22:12:58+02:00|Lets default directories to not available and not default
+cbcfb51fd79b827369f7b60185491c534b0018b0|Ruben van der Linde|2025-06-25T22:02:36+02:00|Merge pull request #288 from ConductionNL/feature/federation
+bc456c322bb50649e0231c0e01499a762b0ac4d0|Ruben van der Linde|2025-06-25T22:02:05+02:00|Fix for lege publicatie pagina;s
+5ab40f6d244d2cf83f1cfdf4f9a55af7e844d045|Ruben van der Linde|2025-06-25T21:49:18+02:00|Merge pull request #287 from ConductionNL/feature/federation
+045858e6c698e316731ab89b073f7a699515df35|Ruben van der Linde|2025-06-25T21:48:33+02:00|Let prevent a broadcast loop
+9efee1f883197e751f9002bbb3a0657113cfe672|Ruben van der Linde|2025-06-25T21:39:42+02:00|Merge pull request #286 from ConductionNL/feature/federation
+1886edd0d684141525b7c6c7499adbcb9c1097fc|Ruben van der Linde|2025-06-25T21:38:47+02:00|lets use catalogId instead of catalog
+21f8ba5d9ce17cfe0dacc88bc05eb70a9a576276|Ruben van der Linde|2025-06-25T06:01:21+02:00|Merge pull request #285 from ConductionNL/feature/federation
+bd2ad133b9e5cf9baa5a1d2b91f844c11f972c9f|Ruben van der Linde|2025-06-25T06:00:34+02:00|ad id to catalog listing
+3ce4373c4a225da09dba36430f9ac709c4f88513|Ruben van der Linde|2025-06-24T21:06:46+02:00|Merge pull request #284 from ConductionNL/feature/federation
+fb0b24d35fe28afb57deb1edbe4d680b98ca7237|Ruben van der Linde|2025-06-24T21:06:01+02:00|Let return catalogi in our directory endpoint
+f8b919a59a316402f34b4364fc509489900d0b79|Ruben van der Linde|2025-06-24T20:23:37+02:00|Merge pull request #283 from ConductionNL/feature/federation
+79e6fe4d516732dda8707a0630d702d683738ec2|Ruben van der Linde|2025-06-24T20:23:12+02:00|/Directories should return a list of listings
+2e664a877ca68f89323b84a503ee6edbf13f21d2|Ruben van der Linde|2025-06-24T16:46:18+02:00|Merge pull request #282 from ConductionNL/feature/federation
+d3f897a09565a8669ad863c863cb861db9cdc3f0|Ruben van der Linde|2025-06-24T16:42:10+02:00|Lets fix useing the proper function.
+a671818ad0caeb24507dd75385d5ce96afaf9935|Ruben van der Linde|2025-06-24T01:23:02+02:00|Merge pull request #281 from ConductionNL/feature/federation
+5c6b2b689341028beefa2aa860f6214b0130caa9|Ruben van der Linde|2025-06-24T01:21:25+02:00|Last bit of clear up and testing
+3739ea566fbf6bbc2ad0664d1b430064b6cbb9b9|Ruben van der Linde|2025-06-24T00:18:39+02:00|Clearing up the agegeted results
+6ff6fb3eb43ad136e4df3ba0dd570e0774bd87b0|Ruben van der Linde|2025-06-23T23:49:01+02:00|Lets start agregating our search results (to make  this really work)
+8a658ce91126b01c8cb724e0598d85fe9ce2f412|Ruben van der Linde|2025-06-23T22:48:23+02:00|Lets start discovering other directories again
+5324e7493bf4b840727359cdb1d3215712a770d9|Remko Huisman|2025-06-20T17:50:19+02:00|Merge pull request #280 from ConductionNL/master
+aeb6711eac651c4b39ce8e7473bb6f7f3468dcab|GitHub Action|2025-06-20T15:42:25+00:00|Bump version to 0.7.2
+3abf4f6f0e4e032a87ea6e1fdd83a60d1cb6aa38|Remko|2025-06-20T17:42:13+02:00|updated version
+7a4b32634f491281c35c61e14c79663d4d1c03c7|Remko Huisman|2025-06-20T17:24:33+02:00|Merge pull request #279 from ConductionNL/up-version
+189778d6511f0169892f1f16fb60600d84496add|Remko|2025-06-20T17:23:51+02:00|updated release workflow
+f436f89142686089047879155edc6665950c518c|Remko Huisman|2025-06-20T17:14:18+02:00|Merge pull request #278 from ConductionNL/up-version
+5e5f4ef10c6420862c47aa96b1b632e999ce8698|Remko|2025-06-20T17:14:01+02:00|upped version to 0.7
+853a8ab6b0e57f0910275af3471c9ce6497c2589|GitHub Action|2025-06-20T15:02:33+00:00|Bump version to 0.6.75
+5e0302e326af07a075808bcd5b60baaf90eb8f13|Ruben van der Linde|2025-06-20T17:02:20+02:00|Merge pull request #277 from ConductionNL/development
+3891b9914c3816a0939b3b5ac298f38bb19fbb9b|Remko Huisman|2025-06-19T14:06:20+02:00|Merge pull request #276 from ConductionNL/hotfix-build
+f66755ec7ceeb170af38f22e7d8aafd0b3cd2d2a|Remko|2025-06-19T14:02:56+02:00|Build fix
+3e6dcc17d6d644b41c46992999429ece3178e1ff|Remko|2025-06-19T13:53:19+02:00|Merge branch 'development' into hotfix-build
+f08eeaca1870dcbcc6417b1dabd44d0383a70adb|Ruben van der Linde|2025-06-19T11:55:29+02:00|Merge pull request #274 from ConductionNL/hotfix/new-serach-function
+5614834d62e33d538a21fceadb8d419d813048ad|Ruben van der Linde|2025-06-19T10:35:50+02:00|Merge branch 'development' into hotfix/new-serach-function
+cb7e5bfb674e3a61aff8c7a730b1c1a69643d2fd|Ruben van der Linde|2025-06-19T07:27:17+02:00|Lets add ordering
+a83c0fa9c4c38435aa616774baa07645569f51a3|Ruben van der Linde|2025-06-16T21:31:27+02:00|Starting on a dymanic publications search example
+3c1641fea48cbce880fb0b0fd454199149f05edc|Remko Huisman|2025-06-16T09:57:59+02:00|Merge pull request #273 from ConductionNL/feature/used-uses
+143275f06267dc8c21be98ced5e2e8815e119133|Ruben van der Linde|2025-06-13T17:00:20+02:00|fixed results
+9786d27f20ac1b9dca76985458882a8145e45578|Ruben van der Linde|2025-06-13T16:36:46+02:00|Fix for uses/used
+18256239b703de85665b453004edad8d195b50fc|Remko|2025-06-16T09:16:50+02:00|Add used/uses to publications
+1842c3c394bf5ed2bbf06c44f26d8855a26a43f8|Ruben van der Linde|2025-06-15T00:03:57+02:00|Get the proper count
+f449033527dcd9cca7ae0f90a4a13552c0e0ec79|Ruben van der Linde|2025-06-14T20:26:36+02:00|Hooking the publication service into the new searchObects logic
+41f251aa724b91b4057c758aad401a1fd915a23d|Ruben van der Linde|2025-06-14T08:29:07+02:00|Letsd double check to filter out non published files
+bbb0974e8c1e6fbcf86758f865e16f9109a3ff10|Ruben van der Linde|2025-06-13T17:00:20+02:00|Oh noooz
+eefb1081c48d32701d422844e62ddc6434401996|Ruben van der Linde|2025-06-13T16:36:46+02:00|Fix for uses/used
+d5d16e96fd563529445093ab13e44f1b611fc5bf|Ruben van der Linde|2025-06-13T11:43:57+02:00|Add used/uses to publications
+7f5834d6f14a18fd59bf2bcf20c2f48e4d8eb83c|Ruben van der Linde|2025-06-12T16:52:15+02:00|Downloading zip archives of publications
+0a3b65689bdcb8da8df06defae86a52e70fac498|Remko Huisman|2025-06-12T12:36:13+02:00|Merge pull request #272 from ConductionNL/feaure/file-tags
+8573f98c9fc758664ae686b92e2eabfcb5b24566|Remko|2025-06-12T12:24:57+02:00|Update attachment tags
+e64126f97d31d36413c0d6a3870936cad3b04cc6|Remko|2025-06-12T09:42:18+02:00|Small attachment fix
+d5f107d74aed64b4c7bec53a50257ecfd3b7ddf3|Remko|2025-06-12T09:42:18+02:00|Small attachment fix
+daa5369c7b039297fede9fc8668d947a5727fc02|Ruben van der Linde|2025-06-10T09:29:34+02:00|Disable wrongfull cron
+4ede5c0f7539c996c7d53af33b78d34a212e3115|Ruben van der Linde|2025-06-08T23:38:21+02:00|Lets add all the new modal to the views
+0e4e95f5384c34e0ddb2350eee73a2722f98f908|Ruben van der Linde|2025-06-08T23:17:27+02:00|Add proper label
+281a169ffb43114604aabbd876a9fa13f2f5fa9c|Ruben van der Linde|2025-06-08T23:11:11+02:00|Lets start working on the new generic ui elements
+8923a536baebfbec143b461e7f071bd0b505e6cf|Remko Huisman|2025-06-06T16:03:14+02:00|Merge pull request #270 from ConductionNL/publication-list-fix
+31cf768837b88ccb60987870c975c91ea9ed2ce2|Remko|2025-06-06T16:02:38+02:00|small fix
+ceea31c38bece729ae6297334b85d9b30ee62285|Alex|2025-06-06T14:39:59+02:00|Merge pull request #269 from ConductionNL/feature/OP-481/close-after-click
+cde9cb3da98429b4d98b399381170340c654529a|Alex Rekachynskyi|2025-06-06T12:50:57+02:00|Added propety close-after-click to every NcActionButton
+fd22fa8fd88f47f4d743c8b6a07c7ba5a833e148|Remko Huisman|2025-06-04T12:48:49+02:00|Merge pull request #268 from ConductionNL/hotfix/organization-schema
+5205b366847726d5c63e2efdd3091c5fa6fa33a7|Remko|2025-06-04T12:48:40+02:00|Updated page
+c2a940eee569fee482129de5e4de527ac9c4db32|Remko|2025-06-04T12:33:56+02:00|Updated organization schema required from title to name
+c87ea9c20e8282a2d70e51f87cc15305359ff93e|Remko Huisman|2025-06-03T16:02:40+02:00|Merge pull request #267 from ConductionNL/feature/OP-475/attachment-tags
+5def79ce0b53dd3732e44d063117c68a7a4c7b0b|Remko|2025-06-03T16:02:05+02:00|Merge remote-tracking branch 'origin/refactore/openregisters-0.2' into feature/OP-475/attachment-tags
+ce82315acf1844852721296f8041f7078cacba86|Remko Huisman|2025-06-03T15:58:11+02:00|Merge pull request #266 from ConductionNL/feature/OP-471/edit-tags
+0a1392386bf02302a075bf42d44f98a4db485141|Remko|2025-06-03T15:56:28+02:00|cleanup
+d09003e1cbb470e8093fb5ad55178d12267af033|Remko|2025-06-03T15:15:44+02:00|Merge remote-tracking branch 'origin/refactore/openregisters-0.2' into feature/OP-471/edit-tags
+ccd0eb4ae05d84369e3731a1f678a2f2dc29b9e6|Remko Huisman|2025-06-03T15:14:57+02:00|Merge pull request #265 from ConductionNL/feature/op-473/remove-attachment
+1b4e0e9ecb284855b48e01fa4972b817a20b133e|Remko|2025-06-03T15:10:53+02:00|Merge remote-tracking branch 'origin/refactore/openregisters-0.2' into feature/op-473/remove-attachment
+0334da6291f81402d9f4753f7d1828a91f1ae734|Remko Huisman|2025-06-03T15:10:06+02:00|Merge pull request #264 from ConductionNL/feature/OP-427/publish-depublish
+7db01589113cbe0ff2bae88f37643a76a9ee8e90|Remko|2025-06-03T14:27:29+02:00|updated long url
+fdfaba19166c95f180ffb58bb1e987a99d213d58|Remko|2025-06-03T14:18:35+02:00|cleanup
+b05f4208ba6d2c1ad703dfbcc106be05c99ef63c|Remko|2025-06-03T14:07:40+02:00|fixed labels
+c8e41332b097db070606ba32b85c753163783226|Remko|2025-06-03T13:20:51+02:00|cleanup
+4e02785a03909da9d1bce284778bb13972521514|Remko|2025-06-03T13:07:47+02:00|Cleanup
+d7d05471f6eb4f4eb0b19eeb281f80f4fd0edf37|Remko|2025-06-03T12:52:10+02:00|Merge branch 'feature/OP-471/edit-tags' into feature/OP-475/attachment-tags
+daaaac3d51d8ba92e02e2dd783149aec32abd945|Remko|2025-06-03T12:49:02+02:00|Merge branch 'feature/OP-471/edit-tags' into collection/attachment-fe-fixes
+cc87509e861390d251edc5240fd24f97d0c4ea9b|Remko|2025-06-03T12:47:58+02:00|Added stop editing button
+52fe1a7ce523fd682717881995485ab3f9da5b9c|Ruben van der Linde|2025-06-03T12:47:25+02:00|hotfix/menu-pages-controllers
+ff4230770607fd773ab396aa8a5d0df91efeb581|Remko|2025-06-03T12:44:15+02:00|fix
+7211f62c6100fa4e90b2232efde576a386ee4b80|Remko|2025-06-03T12:41:58+02:00|Merge branch 'feature/op-473/remove-attachment' into collection/attachment-fe-fixes
+664e696fd38c684489a29f919f03da85967f9475|Remko|2025-06-03T12:40:24+02:00|Added file delete modal and function
+2027c339c09af2ea54dbec0d3eacd109920e2b36|Remko|2025-06-03T11:56:06+02:00|cleanup
+e9f4692ecfd34ab79fee42daeebc0945cdd158be|Remko|2025-06-03T11:55:35+02:00|cleanup
+28f51cd730737388e263f84903c8d4d247c90941|Remko|2025-06-03T11:52:14+02:00|Merge branch 'feature/OP-427/publish-depublish' into collection/attachment-fe-fixes
+9fd862b605dbed4b3006ebfb23f008ab0485e468|Remko|2025-06-03T11:52:05+02:00|Added publish/depublish file
+aed53e42c4fca2076f83139412790ac970578b70|Remko|2025-06-03T11:46:05+02:00|Updated publish flow
+287fae8d356abd9fd125f3dcdfc19964442b5db9|Remko|2025-06-03T11:41:19+02:00|Merge branch 'refactore/openregisters-0.2' into feature/OP-427/publish-depublish
+440798822a0259dfaa0a220b7bf7643dc59e0254|Remko|2025-06-03T11:41:08+02:00|Merge branch 'refactore/openregisters-0.2' into collection/attachment-fe-fixes
+ae834e173558dcb7871cef27a725726b2d4ba67f|Remko Huisman|2025-06-03T11:39:49+02:00|Merge pull request #263 from ConductionNL/multiple-features
+377fcd8601ad161ece4ca07cc87b4bb4c0f500b7|Remko|2025-06-03T11:38:19+02:00|Merge branch 'feature/OP-468/unnecessary-actions-removed' into multiple-features
+2c23fd2f3ca0085cc5b8253e6239c257bd8455f8|Remko|2025-06-03T11:38:09+02:00|Merge branch 'feature/OP-469/catalogi-tabs' into multiple-features
+7bdc2f4182cf55d27edad10d965f884cbd670616|Remko|2025-06-03T11:37:58+02:00|Merge branch 'feature/OP-467/delete-publications' into multiple-features
+b6a5718c67a14e11b9382b12d72c02c92232e4da|Remko|2025-06-03T11:37:48+02:00|Merge branch 'multiple-features' into feature/OP-467/delete-publications
+d684ba225e4b57a7ca86009cb5aa00eb031b7409|Remko|2025-06-03T11:37:29+02:00|Merge branch 'feature/OP-470/organisation-select' into multiple-features
+8d7fc591564e4c08169ad4e8f31af68ecf37684d|Remko|2025-06-03T11:27:55+02:00|WIP edit tag
+4d9886e8643e707c3b533921c4f3cf5e16b17069|Remko|2025-06-03T11:27:55+02:00|WIP edit tag
+1011e1df2f6da425a52def14c369221c361ddc1d|Remko|2025-06-03T11:26:53+02:00|Merge branch 'refactore/openregisters-0.2' into feature/OP-471/edit-tags
+0e2565f980c745b78fd5c083fc0a82fde1b039ce|Ruben van der Linde|2025-06-03T09:35:16+02:00|Merge branch 'hotfix/zuiddrecht' into refactore/openregisters-0.2
+201bf930371a7b36d6af4cc70ca916be7d4de3b3|Ruben van der Linde|2025-06-02T16:04:15+02:00|Fix for unfair objectservice use
+a8f7bb22bf5b2cf4157b89892eb65f00a7ab5e2d|Ruben van der Linde|2025-06-02T15:32:46+02:00|Merge branch 'refactore/openregisters-0.2' into hotfix/zuiddrecht
+ac889270368316fe8e8f0194c8b0aa9254a81822|Ruben van der Linde|2025-06-02T15:32:15+02:00|Merge branch 'refactore/openregisters-0.2' of https://github.com/ConductionNL/opencatalogi into refactore/openregisters-0.2
+2b99482504748b3ed5c03fa71635a77128774bd2|Ruben van der Linde|2025-06-02T15:32:14+02:00|Lets have catalogi list the available schema's
+524e8816e96f5f8bb37e90b3ed4881c72311bd61|Alex|2025-06-02T15:16:49+02:00|Merge pull request #262 from ConductionNL/feature/OP-469/catalogi-tabs
+fdff91bdfc41af29ff3931b8f19831383cf1f9e8|Alex Rekachynskyi|2025-06-02T15:15:57+02:00|Actions removed
+8c2dc3f7be1a518ec37691738be23a6d93890cdf|Alex|2025-06-02T14:55:24+02:00|Merge pull request #259 from ConductionNL/feature/OP-467/delete-publications
+32ab4c820d8bccb701335257201c7951a593c597|Alex Rekachynskyi|2025-06-02T14:54:15+02:00|Correct Tabs on Catalogi detail
+159d8e6508a918df953bcab027f1614c379ff0b1|Alex|2025-06-02T14:14:00+02:00|Merge pull request #261 from ConductionNL/feature/OP-470/organisation-select
+2d6a5d4ca400f93ab485a3f119706d6fba738ec3|Alex|2025-06-02T14:13:47+02:00|Merge pull request #260 from ConductionNL/feature/OP-468/unnecessary-actions-removed
+f519068a680c0c0ecc0709f7e3741b9f68719490|Alex Rekachynskyi|2025-06-02T14:06:16+02:00|typos and logs removed
+4ca92bfe20fa779d4f83a7026ff7dd2bb25df14b|Ruben van der Linde|2025-06-02T13:19:41+02:00|Lets give better directory responces
+a8adfc964801fd518bbef70e90d424aea8d2912f|Alex Rekachynskyi|2025-06-02T13:08:31+02:00|organisation labels are visible on selectbox
+5ee57e57a6bb4b44b41a8c7df62fd121e3bbacc6|Alex Rekachynskyi|2025-06-02T12:49:40+02:00|Unnecessary actions removed
+439b5f5dbc1946e2f497d4cc941afed17d1b5780|Ruben van der Linde|2025-06-02T12:21:15+02:00|Merge branch 'hotfix/zuiddrecht' into refactore/openregisters-0.2
+2f8ba8f078e36e646fc9adc2066960d01a60cd97|Ruben van der Linde|2025-06-02T12:20:19+02:00|Lets make the directory great again
+57a8bb69ccf14a3a490661cb91a0bcb364e7f95c|Alex Rekachynskyi|2025-06-02T11:28:40+02:00|publication is deletable
+a2b3e1bbfa8c9d81a59c1df85bde0260a7c2ae47|Ruben van der Linde|2025-06-02T11:28:27+02:00|Removing the old object service
+5332a14c8e3ed4d29145c70ee0705e2831dfc3e6|Ruben van der Linde|2025-06-02T10:07:59+02:00|Merge remote-tracking branch 'origin/refactore/openregisters-0.2' into hotfix/zuiddrecht
+e1835e2aaa23f305aa1614e20e8091aa44519da0|Alex Rekachynskyi|2025-05-30T15:23:02+02:00|modal window shown
+6ca7e26b4794ef721ba6e81f226fa89ea8b726a8|Remko Huisman|2025-05-30T09:44:55+02:00|Merge pull request #258 from ConductionNL/feature/OP-465/attachments-view
+ff25738a08fce35fd7c28490d303df26058002c5|Remko|2025-05-30T09:44:31+02:00|Edit object now sends a put instead of a post and the edit form does not update the object in the store anymore
+35092549866dd51ca3f1e372c55b7cad1a9c93f0|Remko|2025-05-30T09:24:47+02:00|Fixed list icon and new publication becomes active after adding
+2e5602fc358d2dc30adc353f1d367cb6c1f3a1a7|Remko|2025-05-30T09:24:11+02:00|Updated sync between list and detail page
+8be09b45a0161f50876768959079c7fe84ec977d|Remko|2025-05-30T09:11:43+02:00|revert
+50382c78202e06514659bb231c3de72c61c04bf4|Alex Rekachynskyi|2025-05-28T17:27:58+02:00|publications on list are now possible to publish/depublish
+993d26abf92a43691bbc53f6f4715a18baf36ea7|Remko Huisman|2025-05-28T17:16:34+02:00|Merge pull request #257 from ConductionNL/feature/OP-465/attachments-view
+572bc908f4429944f9b7572281ee0a15a17fd8f7|Alex Rekachynskyi|2025-05-28T16:25:16+02:00|attachments are now visible
+0b19ec90307b73f3bbd958a7835fa73084223d5b|Remko Huisman|2025-05-28T14:59:34+02:00|Merge pull request #256 from ConductionNL/feature/OP-466/refresh
+b0d1a501911249d025937cada098fa3202a3c18a|Remko|2025-05-28T14:59:13+02:00|Fixed refresh
+2f18576e4d8f396889923f6fc5b0a813af7a9a69|Remko Huisman|2025-05-28T14:41:40+02:00|Merge pull request #255 from ConductionNL/feature/OP-464/publish-depublish
+429a67799db087dd0b4a671bade5b3ff44e08736|Remko Huisman|2025-05-28T14:26:02+02:00|Merge pull request #254 from ConductionNL/feature/OP-463/detail-fix
+c92a675dd35c9f87a917969354702bad0407a009|Alex Rekachynskyi|2025-05-28T14:21:21+02:00|Merge remote-tracking branch 'origin/feature/OP-463/detail-fix' into feature/OP-464/publish-depublish
+f7ac84ddb5d46acd3dd737fa2675fe2fb5b53b19|Alex Rekachynskyi|2025-05-28T14:20:56+02:00|publish/depublish
+c69804603f0beaf7a8ef0757d6fc32c89c524790|Remko|2025-05-28T14:09:51+02:00|cleanup
+5237a8ce69c50aaf7d09466cb34ec1390a613ba6|Remko|2025-05-28T13:51:59+02:00|Revert publicationService quickFix for frontend
+686c84bfecd072e7ca1c18d0e9c970fc28ea957c|Remko|2025-05-28T13:50:28+02:00|Merge remote-tracking branch 'origin/refactore/openregisters-0.2' into feature/OP-463/detail-fix
+12d5118c8bc7a3ae43c87c08636d6c28b949b546|Remko|2025-05-28T13:49:41+02:00|Fixed getAttachment
+b90c507be5281d33683c9a82cb39ecc4a5f8018c|Ruben van der Linde|2025-05-28T13:32:33+02:00|Merge pull request #253 from ConductionNL/hotfix/zuiddrecht
+3c0bd9fbb19ff8a514fad28e8dbe535277bfe617|Ruben van der Linde|2025-05-28T13:23:50+02:00|Making unpublished applications available for the backend
+18486ce703aeadd76c14fd0bbcd783f3a13cdffc|Alex Rekachynskyi|2025-05-28T11:33:24+02:00|Fixed publication detail page and added partial attachments fix
+571258038917a48de8f5a3eafcce5e5512177340|Remko Huisman|2025-05-27T10:45:45+02:00|Merge pull request #252 from ConductionNL/hotfix/zuiddrecht
+7e491119359312e627f9be2fcf70590176073cd7|Ruben van der Linde|2025-05-27T09:07:22+02:00|Fix the publication endpoint
+6641958c3c3f68057ac94ad794451abecc2834c8|Ruben van der Linde|2025-05-26T23:09:48+02:00|Dont show depublished items
+8ecc167365740d83c99d177709bef3e6aade26aa|Ruben van der Linde|2025-05-24T08:18:17+02:00|Merge branch 'hotfix/zuiddrecht' of https://github.com/ConductionNL/opencatalogi into hotfix/zuiddrecht
+51fcf277018bf13c6a0d0a9be130c95d599be2fa|Ruben van der Linde|2025-05-24T08:18:16+02:00|Make open catalogi work for non admin users
+ae6703c31e995eb067af5299b3f1ba8a2801fac5|Barry Brands|2025-05-23T14:42:55+02:00|Merge pull request #251 from ConductionNL/hotfix/zuiddrecht
+318cb3c904e9eca440f2895f1127ac59be027161|Barry Brands|2025-05-23T13:21:47+02:00|Fix ObjectService index
+216a30bb1b126551f75f5dd518a8d4c85036c005|Barry Brands|2025-05-23T13:17:41+02:00|Fix catalogi index endpoint
+bf977f8729753f3f53ec3b8892af3d20b84841eb|Barry Brands|2025-05-23T13:17:32+02:00|Reset version
+51946ffb8fa9326d619863f74b4fb5fdfd9e3430|Ruben van der Linde|2025-05-23T12:07:28+02:00|Catalogi endpoint
+268d975d6b762c3039001b4b1da93c591382a284|Ruben van der Linde|2025-05-21T15:27:25+02:00|Merge remote-tracking branch 'origin/refactore/openregisters-0.2' into hotfix/zuiddrecht
+12013491a19534231f373e42ea44a5b2671c57cc|Barry Brands|2025-05-21T14:44:48+02:00|Merge pull request #250 from ConductionNL/fix/publication-attachments
+08e04967e1950d16dc7a36895762285b25bcf139|Barry Brands|2025-05-21T14:28:31+02:00|get shared files only
+3cfb0fac278ae6956d2358b5a3aa6a734a924c27|Barry Brands|2025-05-21T11:01:18+02:00|Added attachment endpoint and functionality
+075558adae2db001588afed4f9a6aca2a4f6b9db|Barry Brands|2025-05-21T10:20:34+02:00|Merge pull request #249 from ConductionNL/fix/publications-facets
+f59a76b5e27691d82dcde16091199fc7f730057c|Barry Brands|2025-05-20T19:53:53+02:00|Add facets search to publications
+36b60487b3a7995e0543c52443fc4e5bb698b22d|Barry Brands|2025-05-20T17:40:03+02:00|Merge pull request #248 from ConductionNL/fix/publication-extend-self
+e30628d5b46067456beb8bbe8d5dee1a1b6466fd|Barry Brands|2025-05-20T17:09:05+02:00|Extend @self publication item endpoint
+37491d4a0e74a279846b2821fc9d07de9071b0d2|Ruben van der Linde|2025-05-20T12:50:33+02:00|Merge remote-tracking branch 'origin/beta' into hotfix/zuiddrecht
+acf73ce262849c4648cbd1347319c5d93130fa93|Ruben van der Linde|2025-05-20T12:49:52+02:00|Fixes on run error's from open catalogi that clutter the logs
+e863e6156fce3ff1bcb77499f739efa35b9bfc2f|Ruben van der Linde|2025-05-19T00:40:29+02:00|Hotfix on attachments
+230fd5299449ccd9e4bd7bf57d170726eeccef83|GitHub Action|2025-05-16T13:13:26+00:00|Bump beta version to 0.6.75-beta.18 [skip ci]
+c8530803916f7d38b01042767db8e2d0a1225f2f|GitHub Action|2025-05-16T13:13:07+00:00|Merge remote-tracking branch 'origin/refactore/openregisters-0.2' into refactore/openregisters-0.2
+3bbb94a63a5a4e4a52cf7e12d2f212d35bb9b632|Barry Brands|2025-05-16T15:12:48+02:00|Merge remote-tracking branch 'origin/refactore/openregisters-0.2' into refactore/openregisters-0.2
+611960eb8cda2800722cfde1427140d13b75c759|Barry Brands|2025-05-16T15:12:43+02:00|Stop running directoryservice
+b734b6d9a6fc54aafbecd4d3a9c7e203ef737fd4|Remko|2025-05-16T14:54:56+02:00|build fix
+e2667366d4bb2fc74c99ae7bdf0fc67f9a863351|Barry Brands|2025-05-16T14:48:38+02:00|Ignore DirectorySync
+b052ef7f012e19d555af9eee202f6dded040fe50|Ruben van der Linde|2025-05-15T14:50:13+02:00|Lets refamp the tempjob
+fbc956478fa56f33bbe975ea63bceeeb41967335|Ruben van der Linde|2025-05-15T13:41:22+02:00|Merge pull request #247 from ConductionNL/hotfix/zuiddrecht
+dbdbaf6efb5b2002292329683d314aa58662b038|Ruben van der Linde|2025-05-15T13:26:10+02:00|Filter the properties that should not be published
+d0479a2d7ff4a286fadea1ea66aa70ea95a8ce2d|Remko Huisman|2025-05-12T19:49:19+02:00|Merge pull request #246 from ConductionNL/feature/object-modal
+082b5d199ae8d2fb3b7daae23af6930f473d45e9|Thijn|2025-05-09T17:07:50+02:00|changed button references + removed old modal
+f51ee89920e8b1df3f5f465cb206d6b3f61c01c5|Thijn|2025-05-09T16:01:25+02:00|finished object modal
+6ced28c224826651d77406395a1ac647cf3781a9|Remko Huisman|2025-05-09T15:15:24+02:00|Merge pull request #245 from ConductionNL/feature/WOO-306/selectboxes-reactive
+4f8c8d8097a5aeead6bde91922286dd384852d20|Thijn|2025-05-08T16:15:17+02:00|WIP - object modal
+c7b1a85707f7e34fc8f1668dbcf9e564e6c9e362|Remko|2025-05-08T10:44:46+02:00|Enabled workflow
+b51981b44641411ba1014d2575ee67537198d2aa|Alex Rekachynskyi|2025-05-06T11:57:26+02:00|Selectboxes on setting page are working reactively
+932c9b94fcca95bf1f2687f889bf977b6f925866|Thijn|2025-05-02T15:35:44+02:00|fixed infinite loop in edit catalog
+da961cc53b42d59da7e1c2d187780d1c4f8efd29|Thijn|2025-05-02T14:55:58+02:00|fixed infinite loop
+94d56f183a4803cd20e0403701d4588649091360|Thijn|2025-05-02T14:54:28+02:00|fixed bug not allowing me to open modal
+3ab9f95f9ff3835ffe24176425bf32cea37ccabc|Remko|2025-05-01T15:09:38+02:00|update
+febae4a7c1eb8878420666976ed5d9e2196bed17|Barry Brands|2025-05-01T14:25:45+02:00|Merge branch 'refactor/openregisters-0.2/frontend' into refactore/openregisters-0.2
+625f27197aab29e5de12d659f6a3261c05d35029|Barry Brands|2025-05-01T14:04:45+02:00|Syntax fixes
+9d1825ff53883506a6afc90a8a2abceb40db0c56|Remko|2025-04-25T15:51:18+02:00|Updated workflow
+9a0ec9c5a54bbb0c927d8d6079adf06aa80b7cba|Robert Zondervan|2025-04-25T15:45:03+02:00|Fixes to work with OpenRegisters 0.2
+5eabf87af1b99e64d4f9f69cff751435da0d6f73|Robert Zondervan|2025-04-25T13:46:48+02:00|fix syntax error
+b8f1fe85588557252f00873616aca5a1f8e01c2a|Remko|2025-04-25T11:21:00+02:00|Updated detail page
+c79b809b64852c3b447d16433ecfa0aa69424193|Ruben van der Linde|2025-04-24T08:31:47+02:00|Iets abstractere object store
+9db93624727fb5a28c4f89a2f02e88431f5f321b|Remko|2025-04-23T19:50:21+02:00|added partial update to publicationDetail page
+8d716e754bd309b9e71250ca9f097078198fd5fc|Remko|2025-04-23T19:49:23+02:00|Merge branch 'refactore/openregisters-0.2' into refactor/openregisters-0.2/frontend
+884d041f4f70223fb5f94a80d7bd291d58c7cda3|Remko|2025-04-23T15:46:26+02:00|Fixed publication list
+e39fe46486b05f7b188a86d1ff493482f71a49ce|Remko|2025-04-23T15:41:46+02:00|Fixed admin page visibility
+9e28558eab0a15b800d09607e57f8dda974f17fc|Remko|2025-04-23T11:47:47+02:00|Possible fix for migration
+a2751ae2b5082eddeeb5701fe4bfa53e174edf40|Remko|2025-04-23T09:41:46+02:00|new build
+939a97ae5fa0e948aea833917bd276eaef29809c|Remko|2025-04-23T08:02:08+02:00|disabled workflow
+1c52063c671c3b6f310e005c352f5e9f97917d86|Remko|2025-04-23T08:01:17+02:00|Added fix and enabled refactor to beta workflow
+0628739f5359e3482fad17867adf47452f9e7b67|Ruben van der Linde|2025-04-22T09:33:08+02:00|Fixie
+b847714076fe8897b44186f00c47b4c2f0954e61|Ruben van der Linde|2025-04-20T15:29:19+02:00|Massive linting fix
+699ece842172cf266b55b0cc0859a0ae319c4dbd|Ruben van der Linde|2025-04-19T13:25:11+02:00|Bug fixes on intitialization
+b9de38347f8031bab0f5f6060b17fb329ddce633|Ruben van der Linde|2025-04-19T13:00:30+02:00|Lets also configure
+17e6d7328c84ea708ae07d170cf2cb238158096a|Ruben van der Linde|2025-04-19T12:54:58+02:00|Moved Open Register installation to the boot
+f34a1cc50a4ac456a20d1a594feb327068af2500|Ruben van der Linde|2025-04-19T12:39:19+02:00|Automaticly install and configure Open Register
+6522415cc3d70bc386b2323aa36cb92bcbfd8c5d|Ruben van der Linde|2025-04-18T16:12:28+02:00|Update tot proper name/title use
+21f3d94c1e0b01ea1e6be4a6cb499585b8436f2b|Ruben van der Linde|2025-04-18T14:55:53+02:00|Merge remote-tracking branch 'origin/refactor/openregisters-0.2/frontend' into refactore/openregisters-0.2
+6586bca73e8a375c5f76543b2cdc81db101231f4|Ruben van der Linde|2025-04-18T14:48:04+02:00|Merge branch 'documentation' into refactore/openregisters-0.2
+337f586512d0f2054ec8a0179a6a1e9c0002c4fc|Ruben van der Linde|2025-04-18T14:46:49+02:00|Merge branch 'refactore/openregisters-0.2' into documentation
+690b24c09e2e80d0944c42b1f0bcf9f714d97e26|Remko|2025-04-18T14:04:14+02:00|Fixed lint
+d85b876ac7501fe9c580369c94a2cc0f0a9ef138|Ruben van der Linde|2025-04-18T13:37:58+02:00|Merge remote-tracking branch 'origin/refactor/openregisters-0.2/frontend' into refactore/openregisters-0.2
+b069fa85a0940bda69b3cf2213ddf7d6371b190f|Remko|2025-04-18T13:36:34+02:00|Some lint fixes
+b73f6d50bac55ce1b1c2d2ab347ff8286251214c|Ruben van der Linde|2025-04-18T13:36:20+02:00|Merge remote-tracking branch 'origin/refactor/openregisters-0.2/frontend' into refactore/openregisters-0.2
+cf0ea048067bf9b6899a58ab7902625da8e24d34|Remko|2025-04-18T13:35:16+02:00|Merge remote-tracking branch 'origin/refactore/openregisters-0.2' into refactor/openregisters-0.2/frontend
+43edb41d9d24df4f840b33e8520ae5ce00d20b9a|Remko|2025-04-18T13:34:33+02:00|Fixed menus
+b8edd739be708db20564aba0501576790f66b223|Ruben van der Linde|2025-04-18T13:12:57+02:00|Getting the external endpoints to work
+017c5f4439f734ef3e1c473aadd30d409170dac1|Ruben van der Linde|2025-04-18T12:25:25+02:00|Fixing the publication routes
+a1643a32ddedbe1e949979d5e6117c40c13ecac2|Remko|2025-04-18T12:18:46+02:00|Fixed pages
+91457cb46d22d2e3f197ee93bb1f3d61a015d734|Ruben van der Linde|2025-04-18T11:09:18+02:00|Fix on edit schema
+693f329b47a86f18a3e60baf03457f576c0fbf9b|Ruben van der Linde|2025-04-18T10:47:55+02:00|Getting the cataloge en publications to wrok in the new styling
+c804f02878c4417376a4e207826d50d6808a4102|Remko|2025-04-18T08:41:29+02:00|Fixed Theme
+31e27a65ce078523a0e5282b79b732e746cc97b0|Remko|2025-04-18T08:08:45+02:00|Merge remote-tracking branch 'origin/refactore/openregisters-0.2' into refactor/openregisters-0.2/frontend
+1fcf73219438644fe945b41bf57b55383250a299|Ruben van der Linde|2025-04-17T23:43:05+02:00|Refactor on controllers
+31f8de5201a3799760e605f0a0fa6b7668bcc99b|Ruben van der Linde|2025-04-17T17:15:48+02:00|Merge remote-tracking branch 'origin/refactor/openregisters-0.2/frontend' into refactore/openregisters-0.2
+11126ac21132c3bd099bf65c5395b84c6048f58d|Ruben van der Linde|2025-04-17T17:15:36+02:00|Merge remote-tracking branch 'origin/refactore/openregisters-0.2' into refactore/openregisters-0.2
+8ce81c09bf0b32ae82eb4df75fa663c3b4b61c54|Ruben van der Linde|2025-04-17T17:15:24+02:00|Model and list fixes
+b1fa28860320146409f73c04142d859d801b9ef0|Remko|2025-04-17T16:16:38+02:00|Fixed organizations
+0809d5610cd59c85f713baa1c925b3b6e55113bd|Remko|2025-04-17T15:01:13+02:00|Some fixes
+11f1f52fea531059c773b6e8a61a5417b15b28e5|Remko|2025-04-17T14:48:43+02:00|Merge branch 'refactore/openregisters-0.2' into refactor/openregisters-0.2/frontend
+3f71b09cf356a5f14bceea078bc7321134cb43b7|Remko|2025-04-17T14:48:30+02:00|disableActiveObject fix
+07e8712ea5d44889a14e55fd673601c9175940e3|Remko|2025-04-17T11:22:28+02:00|Merge remote-tracking branch 'origin/refactore/openregisters-0.2' into refactor/openregisters-0.2/frontend
+061f592646400be4380c9096b6e3be3fa5ca235c|Ruben van der Linde|2025-04-17T11:16:41+02:00|Move FileForm to generic
+4d63ca049cdc563f2ba97d25b962e3763cb6a5c9|Ruben van der Linde|2025-04-17T11:14:21+02:00|Small fixes to models and revert on UseFileSelection
+69a41036d0cb5f567c0c7e93be3c3c6a30fdcce8|Ruben van der Linde|2025-04-17T05:42:27+02:00|Fixing a lot of the modals
+5bc8b851cbdd579a812df6ae9bcfa1827472dd73|Alex|2025-04-15T11:50:33+02:00|Merge pull request #242 from ConductionNL/feature/WOO-290/multiple-actions-themas
+47b4022d5c29c6d1664a05a5fdb96ad212e5c113|Alex Rekachynskyi|2025-04-15T11:48:37+02:00|Multiple actions on themas
+1022f3802daa4ca3a1c04ace6b91dac0a1a019d7|Ruben van der Linde|2025-04-15T07:12:37+02:00|Add the glossery code
+47c1f7512e9bca3614c1bd3313c33c64fe9c059a|Ruben van der Linde|2025-04-15T02:36:23+02:00|Let cleanup some more logs
+e717d14e0f24fa9643e0c462f45258349a3495cc|Ruben van der Linde|2025-04-15T00:50:42+02:00|Update all the dialogs
+775ff134f5369e1be8849732632b12958f7c1c74|Ruben van der Linde|2025-04-15T00:06:10+02:00|Oke lets get the models and views into the new world
+934f81b79ff0d05c6a7914e26628d6c41d359e4e|Ruben van der Linde|2025-04-14T20:42:53+02:00|Basic setup
+b6d484c7bccd71dc88a3c8f2d09691f8c644cd4f|Ruben van der Linde|2025-04-14T16:39:20+02:00|Opn Api cecs
+c27e2ac035c6e37996a34fd4f53e315ab7041d49|Alex Rekachynskyi|2025-04-14T11:47:38+02:00|Multiple actions on themas
+742f0af3d8b34f75c092d45f2a51dbf37bd9582a|Alex|2025-04-14T10:57:59+02:00|Merge pull request #240 from ConductionNL/feature/WOO-289/multiple-eigenschappen-actions
+874935ba6b02a129e24a0e4d94de77c10900c447|Remko|2025-04-11T15:07:15+02:00|Merge remote-tracking branch 'origin/master' into development
+220b489df3144044f8bad0c49069a1d3fa7c35bf|Remko Huisman|2025-04-11T15:06:16+02:00|Merge pull request #241 from ConductionNL/add-beta-branch
+1b85b4656fcceac267f32bb36ff10b00906cbfa8|Remko|2025-04-11T14:57:07+02:00|Added workflows to set beta-release to beta branch
+fcba537be5f4707205bff875b10800dfea2231f8|Alex Rekachynskyi|2025-04-11T14:48:11+02:00|multiple actions on eigenschap
+883d3484222de40b864ddf98679e16d73994bed2|Barry Brands|2025-04-11T12:05:07+02:00|allow return jsonresponse
+81dd0a23980cff901e5f4005d62de2bdf073e4e4|Barry Brands|2025-04-11T11:59:56+02:00|use finfo
+56db8a58389bef4e821d447331003875536dea7f|Barry Brands|2025-04-11T11:55:47+02:00|Change to streamresponse
+80eace396c26a96d68da01984403c8da9955185b|Barry Brands|2025-04-11T11:53:18+02:00|Fix image proxy
+7a4f986fa947b671007f341065e0c44730290889|Barry Brands|2025-04-11T11:30:03+02:00|Added images controller
+32750413f579b88563381b401a6b7a4ba8df2d9a|Alex|2025-04-10T14:48:27+02:00|Merge pull request #236 from ConductionNL/feature/WOO-286/multiple-attachments-actions
+067cb085518b0aaf31495f8fe09b0633adfba793|Alex Rekachynskyi|2025-04-10T13:47:09+02:00|spelling mistaek
+abf9c288f3e528464ea2772186b36ce9fe87ae67|Alex Rekachynskyi|2025-04-10T13:34:41+02:00|spelling mistaek
+46c2f983d8e153489b0c42624dee5ecf4e2ea37b|Alex Rekachynskyi|2025-04-10T13:26:46+02:00|deselecteer + bulk delete logic upgraded
+2d1868adb47cb9daf2d39a7a76754b8983397a0d|Alex|2025-04-09T16:06:52+02:00|Merge pull request #239 from ConductionNL/feature/WOO-292/unnecessary-ui-simplified
+7b7d4111d185a6f7c59f3400fd89677a3737a0b4|Alex Rekachynskyi|2025-04-09T15:31:34+02:00|commented lines are deleted
+39c68941d5450fa3e77deec0a1c0d04a3059f860|Alex Rekachynskyi|2025-04-09T15:05:16+02:00|Unnecessary buttons removed
+2d7c0208bd87ad0157d188d558ac679db52c3663|Alex Rekachynskyi|2025-04-09T15:17:06+02:00|Unnecessary buttons removed
+f144af0ecfd99eea19aaa615e87a5c6f2b8954c9|Alex Rekachynskyi|2025-04-09T15:05:16+02:00|Unnecessary buttons removed
+9b9803b27125f783943198001ebed478aadb0694|Alex Rekachynskyi|2025-04-09T14:23:35+02:00|Image preview on ThemeDetail
+449f43a7ff03c6fa5ae824c360dd0fa1eabc7a1d|Alex Rekachynskyi|2025-04-09T12:00:34+02:00|multiple attachments actions
+d03c218d322c7b9e4e925647ea521e8740cea7ea|Mark West|2025-04-08T10:29:05+02:00|Update beta-release.yaml
+0e914c553d6d227b48fad1c7764c1f2dbd934928|Wilco Louwerse|2025-04-07T20:49:58+02:00|Filters search results by publication status = published
+e8c3bf5df1752f4278aa0b7b8b9eab4eddc9b1e8|Wilco Louwerse|2025-04-07T18:34:39+02:00|Adds endpoints to filter attachments by label
+e328dc65459da1352a705f24626ba1fc5f45d703|Mark West|2025-04-07T17:04:37+02:00|Create beta-release.yaml
+befa75700bc164806769b7297175fabcac3c3a0c|Remko Huisman|2025-04-07T13:04:17+02:00|Merge pull request #232 from ConductionNL/feature/small-change
+682b53eef8ad826c110bc640421af26bf70dd3e9|Remko|2025-04-07T12:59:56+02:00|Empty attachments after modal close
+f5d05b68c3fd16d3a4919af2a1bf2138ef97604d|Alex|2025-04-03T13:28:55+02:00|Merge pull request #231 from ConductionNL/feature/WOO-282/markup-updated
+d9b24f171dd40e2cca9356a378f1879f83796993|Alex Rekachynskyi|2025-04-03T13:27:47+02:00|minor changes
+38ff59520c0d2534d21bbbe98840912bdaa5e3a7|Alex Rekachynskyi|2025-04-02T20:12:37+02:00|minor changes
+04ea0d39708f91a68121e943523b6abd99cfcafe|Alex Rekachynskyi|2025-03-26T11:12:51+01:00|Merge remote-tracking branch 'origin/development' into feature/WOO-282/markup-updated
+1dd88d9b6e4df85f2f87a247dc105294cd6e8ebe|GitHub Action|2025-03-24T15:57:57+00:00|Bump version to 0.6.74
+03d810ad7201a7e37050e46b6e73c9c82907cb58|Remko Huisman|2025-03-24T16:57:38+01:00|Merge pull request #230 from ConductionNL/development
+648a2137391eeb65e7cdcffb2d90fa22bc8ffc08|Remko Huisman|2025-03-24T16:33:15+01:00|Merge pull request #229 from ConductionNL/feature/publication-files-pagination
+7a665ea2828377303282395ee3e5488586f0411c|Remko|2025-03-24T14:08:44+01:00|Updated pagination
+44f0d9a6b2db13e486ff5d5af2a11be3f9279400|Alex|2025-03-20T13:43:20+01:00|Merge pull request #228 from ConductionNL/feature/WOO-284/catalogi-bug-solved
+512a326b24c81bcc44dc740c9005c50a97b58966|Alex Rekachynskyi|2025-03-20T13:00:48+01:00|Merge remote-tracking branch 'origin/development' into feature/WOO-284/catalogi-bug-solved
+fb5047995fdbf2b986d47b1c018044ff76f26d5e|Alex Rekachynskyi|2025-03-20T12:16:30+01:00|Main page publication create form, catalogi bug solved
+e6765783de1d983a7dbd53607eb946848e93cb98|Remko Huisman|2025-03-20T11:34:04+01:00|Merge pull request #227 from ConductionNL/cleanup
+f9208b3dccad62b541de4b8bd9e6415ce0a536d6|Remko|2025-03-20T11:01:53+01:00|Small fixes
+0135fa1121fb84951c377970342dc41588a29be0|Wilco Louwerse|2025-03-18T16:15:56+01:00|Merge pull request #225 from ConductionNL/feature/VSC-205/export-xml
+f4c65a2f6c5eb7e255295050441adaa4849d3adf|Wilco Louwerse|2025-03-18T16:13:41+01:00|Update some of the getters to return object/null
+da3edcc47c8d9165eeb8357d53ad6b3f71bf1907|Thijn|2025-03-18T11:11:40+01:00|Merge pull request #226 from ConductionNL/feature/WOO-277/filtered-data-shown
+334a977e9384f14778cab02d97b63bb540b4f94b|Alex Rekachynskyi|2025-03-18T11:10:42+01:00|parameter name fixed
+cea2f6aa55c1c163867afe89356f3e92be04c78d|Alex Rekachynskyi|2025-03-17T17:05:23+01:00|Overlaying inputs fixed, buttons spacing increased
+93d12c9a2756e97a0a14aa008ea1fd1cac46fa8f|Alex Rekachynskyi|2025-03-17T16:59:23+01:00|Only the data that is filled will be shown
+3ddeb975db95f5fb9fcae04c1f8f2eb19b6f7462|rubenvdlinde|2025-03-15T10:20:54+00:00|deploy: fce63519e769d7dab0ecd32fdb9b6997a7d04724
+fce63519e769d7dab0ecd32fdb9b6997a7d04724|Ruben van der Linde|2025-03-15T11:19:15+01:00|Move api to proper possition
+55df9fb03f39f936becc658b760e2f8fb2093298|Ruben van der Linde|2025-03-15T00:46:58+01:00|Add lock
+0c3e3cb0056db589cec8b31bdab9689f9d2aab5b|Ruben van der Linde|2025-03-15T00:25:51+01:00|Update to docusarus 3
+f7effbd01d8b5369420d964540300545cc5266eb|rubenvdlinde|2025-03-14T16:09:05+00:00|deploy: 1ff22e06336a262fb4ec60c281ac836cac7996b8
+1ff22e06336a262fb4ec60c281ac836cac7996b8|Ruben van der Linde|2025-03-14T17:07:26+01:00|COntributing op de juiste plaats zetten
+6b46cb2e567fedced6e42ef3f0d5a51fa9b47087|rubenvdlinde|2025-03-14T16:03:29+00:00|deploy: eca927c3444288572e6f9e67c88d762d361e0ae3
+eca927c3444288572e6f9e67c88d762d361e0ae3|Ruben van der Linde|2025-03-14T17:01:54+01:00|Try to fix it
+81a5045f15c4ef4d3103c7af32919b954c3b20a0|rubenvdlinde|2025-03-14T15:57:13+00:00|deploy: 73677317e6325e5cc85715887ee2b248fc279629
+73677317e6325e5cc85715887ee2b248fc279629|Ruben van der Linde|2025-03-14T16:55:33+01:00|We need an email addres
+ffc4c90be3318b3679ec66283e7e4d30ff1d79d1|Ruben van der Linde|2025-03-14T16:45:33+01:00|Slowly getting there
+d36b0aacc73d2e418be12b225b052f642ff9e626|Ruben van der Linde|2025-03-14T16:41:54+01:00|Let try this
+1d1ad6fc9969af88de2ac6d956a20a12d7527ba0|Ruben van der Linde|2025-03-14T16:32:43+01:00|Lets fix docs intro
+695eaa95cdd7254baeba9d009c97adb8f5d2aa45|Ruben van der Linde|2025-03-14T16:30:55+01:00|Let re add the api docs
+d6daaf155c87937833ac75f339682df086567239|Ruben van der Linde|2025-03-14T16:22:36+01:00|More fixes
+59e834434aa8d9ad2ad8e749500e79a16673030c|Ruben van der Linde|2025-03-14T14:01:02+01:00|Starting on the user documentation
+567a1669d18d1290346bfa86e87e18f4766ad90c|Ruben van der Linde|2025-03-14T13:55:03+01:00|Merge branch 'documentation' of https://github.com/ConductionNL/opencatalogi into documentation
+3e223472c2f8d0fa67e833598969713ad32b1ceb|Ruben van der Linde|2025-03-14T13:55:01+01:00|installatie-van-nextcloud-development-omgevingHUnting for al the broken shizle
+3126ea49cfe61f4f6cfd266e04dcb42bf53a45b4|github-actions[bot]|2025-03-14T12:43:41+00:00|Render PlantUML files
+4aabd51f8472160a1185c1c6d20bbd33e1397d09|Ruben van der Linde|2025-03-14T13:43:22+01:00|Renaming folders
+3aa4026f5605ba17f820fa91e1cccb3b5c4c7ad9|Ruben van der Linde|2025-03-14T13:32:14+01:00|Whoo hoo, lets go docu
+163b7de788f22b10e79ca5ee057028dca7249683|Ruben van der Linde|2025-03-14T12:56:28+01:00|Add max runtime
+bf04597ce37f7eefeaf2eb94fc3da2e15b8ca9f9|rubenvdlinde|2025-03-14T11:56:10+00:00|deploy: d54714cef93b3890c7217180927fbc15d25efb4b
+baed4ce49aee9969adfce51da828f87dfe628595|Ruben van der Linde|2025-03-14T12:55:00+01:00|Can we do it wothout the email
+d54714cef93b3890c7217180927fbc15d25efb4b|Ruben van der Linde|2025-03-14T12:54:46+01:00|New workflwo test
+9562acc80acda845c30e1439bf38c0aeacefbbe0|Ruben van der Linde|2025-03-14T12:51:24+01:00|Kick node to 18
+7636340805d3c5afa66175584f848947c60c3298|Ruben van der Linde|2025-03-14T12:49:00+01:00|Let try forcing it trough the packadge
+45fdcb03ce4d7be5e20d69232e9e702f3ebb6792|Ruben van der Linde|2025-03-14T12:42:12+01:00|Remove redousaurus stuf
+9c908659fbc304c567104dd7cb6eff3e5fb9e72c|Ruben van der Linde|2025-03-14T12:39:39+01:00|Let update the packadge
+ed95483107cac476651b6d62038efd77c84a4b73|Ruben van der Linde|2025-03-14T12:33:47+01:00|Fixing all the docs errors
+f71f9fc41ccd8c3852b857188723e72d1f55b55f|Ruben van der Linde|2025-03-14T12:26:11+01:00|Doc fix
+215345f6b8a53bf0264c557245090795cf26a807|Ruben van der Linde|2025-03-14T12:18:31+01:00|Doc fixws
+10341ee853e5db4c77627f367dbac939074d132e|Ruben van der Linde|2025-03-14T12:18:29+01:00|More docs fixes
+f32067afac0d2af473352a90d5bbc0a7374da81a|Ruben van der Linde|2025-03-14T12:08:04+01:00|Stil some doc fixes
+e029ba8f1b89b5af0916b9f94785cfb63737dcec|Ruben van der Linde|2025-03-14T12:02:18+01:00|Really
+24f23d545903990b46dd6ff96e39f7a20fd68554|Ruben van der Linde|2025-03-14T12:01:08+01:00|Fix breaks in zoeken
+4bb398d2a3c507138b91f62eee6ae2f1c4543f30|Ruben van der Linde|2025-03-14T11:24:23+01:00|Lets do a packadge update
+849ef56f9ca66ec5946ac181c9cfc224c6dd220f|Ruben van der Linde|2025-03-14T11:22:03+01:00|Fixing the broken links
+84568189c8c190e242dce23bf1e522721aa056a5|Ruben van der Linde|2025-03-14T10:51:11+01:00|Merge remote-tracking branch 'origin/development' into documentation
+ccff0aad537d2041b6eaae2b6845d6a585350683|Ruben van der Linde|2025-03-14T10:50:13+01:00|Lets update docusaurus
+2d063d6141469a2826799bd3deccbe3032a6d722|Ruben van der Linde|2025-03-14T10:42:51+01:00|activating mermaid
+04329cf02a968e191481bded2bac89763eaee430|Ruben van der Linde|2025-03-14T10:39:59+01:00|Clean up de basic docs folder
+db4c22f3d970718550ca1369864bfff18a527226|Wilco Louwerse|2025-03-13T15:11:36+01:00|Added getters for all json fields that return [] when DB value = null
+375fb9324e7207a35410703633bd71871ec8a84a|Thijn|2025-03-11T14:57:51+01:00|Merge pull request #224 from CBibop12/development
+33e3f4cebf00937cfdfd9614e6cf048402874e6b|Alex Rekachynskyi|2025-03-11T14:32:27+01:00|extra data is shown, empty fields prevented
+8218473653bad52b578fc3e770b68492218b01c4|GitHub Action|2025-03-11T13:01:58+00:00|Bump version to 0.6.73
+b141a6430f3308cea774846b5cb76e244869452c|Remko Huisman|2025-03-11T14:01:43+01:00|Merge pull request #223 from ConductionNL/development
+7302b36ba1a3bfb1b1d3b4c6fccb972ad3e854e0|Remko Huisman|2025-03-11T11:11:07+01:00|Merge pull request #161 from ConductionNL/feature/REGISTERS-83/workflows
+a01b75e49bcd97c11f5d3027d2d62c7c52d44e8c|GitHub Action|2025-03-11T09:02:51+00:00|Bump version to 0.6.72
+b96e90080f84c3d8848110dcbce218b91988c1ff|Robert Zondervan|2025-03-11T10:02:23+01:00|Merge pull request #222 from ConductionNL/hotfix/unsupported-database-file
+e4180c65fcee42b3e134e3572a607232e1998170|Robert Zondervan|2025-03-11T09:56:05+01:00|Remove unsupported database file
+5639e72c2543ce046dcd58110f4ad640ba396050|GitHub Action|2025-03-10T13:12:44+00:00|Bump version to 0.6.71
+9d62a4db81ed37949579a8db2195aded2e065cb1|Remko Huisman|2025-03-10T14:12:05+01:00|Merge pull request #221 from ConductionNL/development
+8c6d31b72ed00affd9614663d0330de70bb4a1f8|Remko Huisman|2025-03-10T13:55:25+01:00|Merge pull request #220 from ConductionNL/adminsettings-fix
+15276ef500fa95b17a474f6f02fa8e0fad350788|Remko|2025-03-10T13:51:49+01:00|Fixed adminsettings not loading on register withoud schema's
+1293be4f017d0d1663ff690663dec9bd70f1f8a4|Wilco Louwerse|2025-03-10T11:15:46+01:00|Merge branch 'development' into feature/VSC-205/export-xml
+2bfd0b19d7e8db453f601b80f5632407c3dae705|GitHub Action|2025-03-07T12:33:02+00:00|Bump version to 0.6.70
+768572e1ba4e172409306f45b8b1d3db18ffe237|Mwest2020|2025-03-07T13:32:05+01:00|Resolve merge conflicts
+643be5bfa63eefbafe570466815c48d1e5fd8821|rubenvdlinde|2025-03-07T09:15:05+00:00|Deploy website - based on 6376d66e11a67f6c5a0538c284ade1e6fd8b016e
+6376d66e11a67f6c5a0538c284ade1e6fd8b016e|Ruben van der Linde|2025-03-07T10:12:38+01:00|New api docs
+92baa1c75ef7155d884f3c80995ab20468ec3215|rubenvdlinde|2025-03-07T08:42:34+00:00|Deploy website - based on c26129be5890d18928e7716a32fb9e169306e3f3
+c26129be5890d18928e7716a32fb9e169306e3f3|Ruben van der Linde|2025-03-07T09:40:12+01:00|Add search endpoint
+4802d19614d01ee34413da25c9e1af30442d7b95|rubenvdlinde|2025-03-06T15:45:12+00:00|Deploy website - based on 06aab58da6ffb172e59b5d8679e82c4344de0db8
+06aab58da6ffb172e59b5d8679e82c4344de0db8|Ruben van der Linde|2025-03-06T16:42:44+01:00|Een more fixes
+889771152050b6a7b64e6d9d8ecb7d2bde39dcf3|Ruben van der Linde|2025-03-06T16:34:24+01:00|More documentation fixes
+59206491b92b946e17ce8ec82dcb170e2b0ee0bb|Ruben van der Linde|2025-03-06T16:22:49+01:00|Update the gitnore
+8d44598355ecbab6b7323f54e4bcb3acd8917992|Ruben van der Linde|2025-03-06T16:18:45+01:00|Try to fix the other markdowns
+ddef428d353b2d460afd145099d270e3ed40675e|Ruben van der Linde|2025-03-06T16:13:15+01:00|fixed many files
+cb20b859302b3b822b3d39d6e46d1c862bb904c3|Ruben van der Linde|2025-03-06T15:57:34+01:00|Lets fix some files
+97ed4dd53336d8571145c7fcf9e0c4bb4cc45396|Ruben van der Linde|2025-03-06T15:42:52+01:00|Fixin broken links
+1e0d539d52f923a9818972f07a9448af6638a127|Ruben van der Linde|2025-03-06T15:21:18+01:00|Link fix
+6e0ad627d68c5dbd027bbb589b942ae59a8018a1|Ruben van der Linde|2025-03-06T15:20:00+01:00|Time out
+debadfa31f6304ec647b971d8c4d5544ac50146a|Ruben van der Linde|2025-03-06T14:51:39+01:00|Merge branch 'documentation' of https://github.com/ConductionNL/opencatalogi into documentation
+b51817e7bc4a144986e990c3749ea10c4d2ffd5f|Ruben van der Linde|2025-03-06T14:51:38+01:00|still workin on the redocsuarus
+bda74ef71211e67617681891a5dcd8b1ea272e64|github-actions[bot]|2025-03-06T11:33:41+00:00|Render PlantUML files
+89bfb102c83274cd980268cf738a0a066b591bbb|Ruben van der Linde|2025-03-06T12:32:56+01:00|Lets get the content in the product page
+7a748fd51a15f489742aa460e5e86ae6e4cc93df|Ruben van der Linde|2025-03-06T12:25:16+01:00|Lets setup api documentation
+1cbe474dad651e4a82c27d33a84b1ccf889b6a60|rubenvdlinde|2025-03-06T11:21:18+00:00|Deploy website - based on 57871a791f952f7a0f2f9e5625c88de91db37147
+f1b1ede951c4d4c01f5285e7cf22a3861ab1fe31|Ruben van der Linde|2025-03-06T12:20:29+01:00|Create CNAME
+e1bf463a7a81c3ebcd43b8c1c3bb6f25c5574133|Ruben van der Linde|2025-03-06T12:20:26+01:00|Delete CNAME
+57871a791f952f7a0f2f9e5625c88de91db37147|Ruben van der Linde|2025-03-06T12:18:57+01:00|propper domain switch
+5738ce290904139cfec11fe47f4774afbbab3956|rubenvdlinde|2025-03-06T11:12:46+00:00|Deploy website - based on c5e4543585a5a5ed937dcaa4f32be8bcc71dc8bc
+c5e4543585a5a5ed937dcaa4f32be8bcc71dc8bc|Ruben van der Linde|2025-03-06T12:10:23+01:00|Propper api link
+05f94a16f312fb7e795d5bf9ed7dbfabb8ff9208|rubenvdlinde|2025-03-06T10:46:25+00:00|Deploy website - based on b3a2b20414b0049915a0811ac08b6b89af0d7b70
+b3a2b20414b0049915a0811ac08b6b89af0d7b70|Ruben van der Linde|2025-03-06T11:44:03+01:00|Add redocsaurus
+95eb8271bc76c55d28c3cb76cb39cd498bf457c2|Remko Huisman|2025-03-05T11:38:45+01:00|Merge pull request #219 from ConductionNL/feature/fix-limit-on-attachments
+c96b62bc5037f35920de7ad9b4b55dd5293b555a|Remko|2025-03-05T11:35:12+01:00|Added requestParams to attachments
+dd2bcf912df1e99c74cd818b4cae580f1189e1f3|Remko Huisman|2025-02-28T16:13:13+01:00|Merge pull request #218 from ConductionNL/master
+f8a1c6241a05e38e0b02772c973563228eb6b3fd|Remko Huisman|2025-02-28T14:57:13+01:00|Merge pull request #216 from ConductionNL/fix/publication-source-feild
+8a3aa9814b002538116c53a2d96157b848e9b682|GitHub Action|2025-02-28T13:57:11+00:00|Bump version to 0.6.69
+7bdaacb68d3298d7c56a39b9828702e118665332|Remko Huisman|2025-02-28T14:56:46+01:00|Merge pull request #217 from ConductionNL/hotfix/attachments-show-no-results
+79c7c1d3fb8b7eab47437db5226b86a1fa2f4b54|Remko|2025-02-28T14:52:32+01:00|Merge branch 'fix/publication-source-feild' into hotfix/attachments-show-no-results
+070a3ff89a511e8b2cc7bde15902668546191b35|Remko|2025-02-28T14:49:35+01:00|Fixed attachments showing empty results array
+178e3233446018ca284a0f4ef06fe977c944cda8|Remko|2025-02-28T14:48:22+01:00|Fixed object:uuid showing in tags
+4480d13f98a8120723a4fe05277fdaba2c9d79e8|Barry Brands|2025-02-28T14:35:44+01:00|Added source field publication.ts
+bee731ffd03d136a30b29bf99a48d48bda78e2ea|GitHub Action|2025-02-28T13:09:01+00:00|Bump version to 0.6.68
+a050875697fec4191e608c20a48b81981dd3a9e2|Remko Huisman|2025-02-28T14:08:38+01:00|Merge pull request #215 from ConductionNL/hotfix/getFiles
+c4fa026920529df24ec631d9c38ae13eb39dc03f|Remko|2025-02-28T14:07:02+01:00|hotfix
+aa21a93ccbfcd6d2f9e017ad9dba322a0ca5b8a5|GitHub Action|2025-02-28T12:39:52+00:00|Bump version to 0.6.67
+2215fbb18c45cee278bcd29e0b2ad78b29abe8b9|Remko Huisman|2025-02-28T13:39:22+01:00|Merge pull request #214 from ConductionNL/development
+41d9f86148e63e1350260ad0970895fe52cefd7b|Remko Huisman|2025-02-28T13:28:01+01:00|Merge pull request #213 from ConductionNL/feature/VSC-190/pagination
+883b0c0461c04235876b293593319be0801fd3c2|Remko|2025-02-28T12:46:06+01:00|cleanup
+6136d84b8e3c3a65b1de23edeeaaacfa2f5b72ae|Remko|2025-02-28T12:39:36+01:00|Updated getPublicationAttachments to have options
+630a49cd092de54784c69c82b12a9e8b0a55a6b9|Remko|2025-02-28T12:27:21+01:00|Added loading state
+a9d73b663243c62d5946656b8af0549ab7ab9a9e|Remko|2025-02-28T12:14:19+01:00|Updated file buttons
+d447eee1337828638821bde6c8a0f32a7b2954c5|Thijn|2025-02-28T11:40:49+01:00|Merge remote-tracking branch 'origin/feature/VSC-190/pagination' into feature/VSC-190/pagination
+cffbddca81e28d9f8b72427abece0d0880cb399e|Thijn|2025-02-28T11:40:22+01:00|added modal for deleting attachment
+1f73661683960d599c3e4c9fb18e084adadb4476|Remko|2025-02-28T11:39:53+01:00|Added better readability for issue https://github.com/OpenCatalogi/.github/issues/399
+73216fec224f36bd9da927fe71699afba02b0f03|Ruben van der Linde|2025-02-28T11:05:46+01:00|Calling the proper function
+f549a29dae0fc8e94b99b3c883d977e24e82838b|Ruben van der Linde|2025-02-28T10:32:04+01:00|Merge branch 'feature/VSC-190/pagination' of https://github.com/ConductionNL/opencatalogi into feature/VSC-190/pagination
+615f86ef3d2a251fcf764d3c78b404c6babfb1de|Ruben van der Linde|2025-02-28T10:32:03+01:00|BUg fixing publish
+6831aadc8f57f972eb20a92f0ac349c55ad068f6|Remko|2025-02-28T10:31:49+01:00|Tags now are fetched from backend and include recently added tags
+213717bfcba0323112dd637732e41f61b0faca67|Ruben van der Linde|2025-02-28T09:50:04+01:00|Merge branch 'feature/VSC-190/pagination' of https://github.com/ConductionNL/opencatalogi into feature/VSC-190/pagination
+e4877378ef08fc31fded9ecb1a32cbd526ad1206|Ruben van der Linde|2025-02-28T09:50:03+01:00|Add the route to get all the tags
+c56652f154e3578b3cb3fa193316954806f449c3|Remko|2025-02-28T09:44:59+01:00|Added taggable to NcSelect
+bb1bd9e60b1223a70b4f0c70dbc209a11eb4f774|Ruben van der Linde|2025-02-28T09:33:44+01:00|Lets allow an empty tag array so that user can set tags to zero
+4ad67cdb6584389da32e8f5ba11461131197e070|Remko|2025-02-28T09:13:13+01:00|Set tags to multi formData
+3f81319ee300b9470cebbffbb68a8e8a44dd012b|Remko|2025-02-27T17:54:57+01:00|Update
+a23bd3a8c097583bbfe71bd7b19bb53d406853be|Ruben van der Linde|2025-02-27T17:24:10+01:00|Let make the content optional
+1688d685d682dd1c8a21c3f23d80c410df25d527|Ruben van der Linde|2025-02-27T16:56:36+01:00|Merge branch 'feature/VSC-190/pagination' of https://github.com/ConductionNL/opencatalogi into feature/VSC-190/pagination
+6e8ac062743acd9152cdfdb9d901bbf12c80ee92|Ruben van der Linde|2025-02-27T16:56:36+01:00|request parameters mee sturen naar format files
+922057a27542c7e2be97f69a256a090ad57bfcae|Remko|2025-02-27T16:30:30+01:00|cleanup
+c8b47a106e23cdde5c49037670ab75bcd4a34032|Remko|2025-02-27T16:30:30+01:00|cleanup
+0474bd4fde2d36da2f31692530097fb063cc7008|Remko|2025-02-27T16:22:56+01:00|Merge branch 'feature/VSC-186/attachment-buttons' into feature/VSC-190/pagination
+fc5db08dba8451513336abe7e04ba00d85d5ed7d|Remko|2025-02-27T16:22:35+01:00|Added buttons
+39f0f332cb9f54be883894541839b893995aa09f|GitHub Action|2025-02-27T09:23:08+00:00|Bump version to 0.6.66
+b33f1bd150d8f1721c475152b021d754fc7e593b|Remko Huisman|2025-02-27T10:22:39+01:00|Merge pull request #211 from ConductionNL/development
+90d7f5eb1f1a9f465577ccdb3eac9fa61b6e1bb1|Remko Huisman|2025-02-27T10:16:03+01:00|Merge pull request #210 from ConductionNL/feature/VSC-186/attachment-buttons
+f534e4f7ff271b0714e796dfaac535e0b3f3657e|Remko|2025-02-27T10:14:06+01:00|Updated publication validation
+3e7b4da1c2f7389f2af4696739a1d5c519a4df73|Remko Huisman|2025-02-26T10:06:57+01:00|Merge pull request #209 from ConductionNL/feature/IBOC-165/auto-upload
+f122b9a59f27c0568c7d39e7411ae7d7e9f7e5f8|Remko|2025-02-26T10:06:34+01:00|Fixed get files on all calls, remove to large file from list, fixed lint issues
+1490a2844da24c1259b216ccce60f3a70d0db310|Ruben van der Linde|2025-02-26T08:05:36+01:00|Very simple setup for missing file logic
+8045bf0c5761a3cc07140117dfc726bade061f2e|Thijn|2025-02-25T18:24:55+01:00|Merge branch 'development' into feature/IBOC-165/auto-upload
+e230d84605077f665d30c290dee309a31a6917b0|Thijn|2025-02-25T18:23:56+01:00|Merge pull request #206 from ConductionNL/feature/IBOC-164/files-upload-singular
+277a35529cd1cf1d57806bb9af1facb44be835bf|Thijn|2025-02-25T18:22:34+01:00|added auto-upload functionality
+3e3d94668bf9f056cb372b9b9cd78b62e955129b|GitHub Action|2025-02-25T14:52:11+00:00|Bump version to 0.6.65
+dbdb2a63787d15f700dd3130838a5b97da26b58e|Barry Brands|2025-02-25T15:51:37+01:00|Merge pull request #208 from ConductionNL/development
+a49b70726a674a9d2ea69cd5aeb04e0eff20733c|Barry Brands|2025-02-25T15:27:33+01:00|Merge pull request #207 from ConductionNL/fix/REGISTERS-105/continue-on-error-extend
+8cab6c4a2a344a17aa290f69f9a596ceb2a90a2b|Barry Brands|2025-02-25T10:56:40+01:00|removed commented code
+2974d70c887e37415a25d54ee311c8ebd028d95d|Barry Brands|2025-02-24T18:00:20+01:00|Continue on error while extending
+53bd68f9366da7011356aeaddf89b314abf94615|Thijn|2025-02-24T17:00:21+01:00|made files upload individually
+e99aca3eba84a698f27b248df200ef1a90634730|Thijn|2025-02-24T16:19:53+01:00|Merge branch 'development' into feature/IBOC-164/files-upload-singular
+1bab2060731b796ae9b204061d32345ff17b0ecf|Remko Huisman|2025-02-24T15:53:14+01:00|Merge pull request #205 from ConductionNL/feature/IBOC-163/Autoshare
+ef7b368225d67a9f5107e4f6d91cc30182daca31|Remko|2025-02-24T15:30:24+01:00|Cleanup
+ddb98d8a738ef0821f0d75574e5480d9cfa95096|Remko|2025-02-24T15:27:21+01:00|Added auto-share switch
+4a44fecadc75c4c38bcd7909074160555bde9df5|Thijn|2025-02-21T11:43:22+01:00|Merge pull request #203 from ConductionNL/feature/IBOC-158/add-eigenschap-fix
+ac7f80b5583c3c33622d3e582256d7021e1e5b6d|Thijn|2025-02-21T11:37:30+01:00|added proper modal closing cleanup
+05da537a6214aa85c2bf6a8eee35aa6a241bf79a|Thijn|2025-02-21T10:59:30+01:00|Merge pull request #204 from ConductionNL/feature/IBOC-160/stats-graph-dark-mode
+b388d288bcc4aaa1a63c6ae869d9049c428a4ed2|Remko Huisman|2025-02-20T17:13:43+01:00|Merge pull request #202 from ConductionNL/feature/IBOC-154/multi-file
+9dcce54eea3899f785e7ed8488e868b43f5478c6|Remko|2025-02-20T17:10:09+01:00|Right file size fix
+8c514a4573bc0334406055436ba93e1a926c4b67|Remko Huisman|2025-02-20T17:09:09+01:00|Update src/modals/attachment/AddAttachmentModal.vue
+85196945e08a8b88e0fe61c7120350f6c646f410|Thijn|2025-02-20T13:19:21+01:00|fixed graph theme
+422db0827616d6fbabdb515dffe63856057e019b|Thijn|2025-02-19T17:00:49+01:00|fixed eigenschap bug
+5400b6f15200948523f9b62ea15560f3ab1268cb|Thijn|2025-02-19T15:50:28+01:00|Merge pull request #201 from ConductionNL/feature/IBOC-157/acties-top-right
+c295cb5c511a352b5e8487c4299cc46d581e7314|Thijn|2025-02-19T15:50:03+01:00|Merge pull request #200 from ConductionNL/feature/IBOC-156/image-field-fix
+81d399fd35754aee5accaaa7039dda59c301801b|Thijn|2025-02-19T15:49:23+01:00|Merge pull request #197 from ConductionNL/feature/IBOC-145/TOOI-fix
+4554fd56a42d8ee558fbf1f53241fdb0770fa83f|Thijn|2025-02-19T15:48:34+01:00|Merge pull request #192 from ConductionNL/feature/IBOC-139/drag-fix
+45c153529d0ae8f647e37d1d0b9342c35b9f76c0|Remko|2025-02-19T14:39:27+01:00|Fixed edit tags
+91a558648dbeab33c0ce8fc8b4c6060237e9538f|Thijn|2025-02-19T14:13:56+01:00|put actions button at top right no matter what
+fd8311baac9d948cb5a33ebc581f683f19d9dffc|Thijn|2025-02-19T13:54:30+01:00|fixed image field bug
+04bd630a3e8b8b12ff6dce78fb1e29181cd2ec80|Thijn|2025-02-19T12:51:35+01:00|Merge pull request #196 from ConductionNL/feature/IBOC-161/admin-settings-opschonen
+d8ce5dc66dd1f7774497e98ee844ec5205ecfe76|Remko|2025-02-19T10:54:15+01:00|Merge branch 'development' into feature/IBOC-154/multi-file
+eee3151bce75a187be1bbe2373978512211811b6|GitHub Action|2025-02-18T21:15:54+00:00|Bump version to 0.6.64
+f42d6128118f66ed92f4fca93e95f9dc0056714e|Ruben van der Linde|2025-02-18T22:15:30+01:00|Merge pull request #199 from ConductionNL/development
+240911db5d8cb8ba72a78942b7d01b63729f9c47|Remko Huisman|2025-02-18T21:37:45+01:00|Merge pull request #195 from ConductionNL/feature/OP-453/audit-trials
+9268f24e5102bde568e32372e3fa92aa52874ed3|Remko|2025-02-18T21:31:45+01:00|Merge branch 'feature/IBOC-154/multi-file' into feature/OP-453/audit-trials
+c44be31451f2d3cc0ca351217d52fc40ffa59a6e|Remko|2025-02-18T21:31:37+01:00|cleanup
+069df94d9000253bcc8965102a7b6d04200e5057|Remko|2025-02-18T21:28:14+01:00|Fixed frontend
+50d881804d8cba7bcc2a545fc85be9771a38b566|Remko|2025-02-18T21:27:09+01:00|Updated file to binary
+8d306f4fbb5ae6b3267210f76baa4568a335d203|Remko|2025-02-18T21:26:20+01:00|cleanup
+2e5aed3adb12d502fa26f292b8d890e94b6760dc|Remko|2025-02-18T21:24:42+01:00|Update
+22e40c7d07cb9f540a4a522966cd9834b316480a|Remko|2025-02-18T19:58:01+01:00|Fix for tagging files
+dafc8d9096744cc54c9442a9b5f4d64ccf83ab62|Wilco Louwerse|2025-02-18T18:03:33+01:00|Fix for tagging files
+6221afb357d157523e025b27137aedc053c9b8cf|Remko|2025-02-18T16:52:36+01:00|Merge remote-tracking branch 'origin/feature/OP-453/audit-trials' into test-multi-file
+48ebc4602f8c1eb87876e89fa08a1568891276fa|Remko|2025-02-18T16:52:22+01:00|Updated file to binary
+a5e78dca3b5521bb3750f57a75fd1cf202fb10fb|Ruben van der Linde|2025-02-18T15:31:26+01:00|SMall bit of code cleanup
+244d23ecdc2508f9b4c4f0104f07d4943c267ca8|Ruben van der Linde|2025-02-18T15:16:43+01:00|Lets try to get the tags
+2a4cff0ea5d2c80b51e10c0cf1265a12b25ee0cb|Remko|2025-02-18T15:16:30+01:00|Merge remote-tracking branch 'origin/feature/OP-453/audit-trials' into test-multi-file
+aff4216501c840c2cce65b0b347323aaf9e89c4e|Ruben van der Linde|2025-02-18T15:15:46+01:00|Multi file support on the controller
+e6e4188a37ee7441c1dfb8d09bb5c9c1da37e88b|Thijn|2025-02-18T15:00:08+01:00|fixed issue with schema not existing
+1aca4771ea6efa597077a1bd2504d07278fdf3d2|Remko|2025-02-18T14:58:57+01:00|fixed testing
+cd5703922c77104109c8d1c9a07adb9855ebbb3d|Remko|2025-02-18T14:53:02+01:00|Merge branch 'feature/IBOC-154/multi-file' into test-multi-file
+a693cd4853c9cddf4a4b785c997a910888828f70|Thijn|2025-02-18T14:43:30+01:00|fixed TOOI regex
+7762a6ed72346b82d4f104b62fd8cd902baebbc8|Remko|2025-02-18T14:37:51+01:00|WIP
+1625abecbb49f8819e3a016debc7ab9aa7f9241e|Ruben van der Linde|2025-02-18T14:04:06+01:00|OP-453: Add multipart file upload
+95857d35c969baf591b2bb8b01f48963d11a49bc|Ruben van der Linde|2025-02-18T14:04:05+01:00|Add endpoint for multipart
+a8fc2a056a75051a9cb6f93545325839be112c83|Ruben van der Linde|2025-02-18T13:36:31+01:00|Small bits of insight based on the Open Register code
+e60f05c40cba52a091ba99bc8be597766cc447a0|Ruben van der Linde|2025-02-18T13:13:59+01:00|Missed some formating
+d4f30072ceed3a41f5096cd28431acc589e61a75|Ruben van der Linde|2025-02-18T13:05:49+01:00|First small fixes
+1ad8be6e219e10e64ce7a49a04d3c4c8f1cfc9a3|Ruben van der Linde|2025-02-18T12:58:37+01:00|Hotfix on the old create attachment endpoint
+921bcd27b88ab526b6631fbb9a70d10820c1ff60|Thijn|2025-02-18T12:25:38+01:00|admin settings opgeschoond
+3e57fe46867cd297cf80516fe9542708e4a4d090|Ruben van der Linde|2025-02-18T12:17:15+01:00|File, Audit trails and note refactor
+ef95332c52b4f1c7e5b930e7bfb98ccd7c036bc7|Ruben van der Linde|2025-02-18T11:04:40+01:00|Merge pull request #194 from ConductionNL/feature/REGISTERS-112/remove-guest-acount
+bbe5ac8503a6b41c89ff39e19d3f4995bd1b91a4|Ruben van der Linde|2025-02-18T10:58:22+01:00|Remove guest user
+b2d62f206871907f795f6484d6b40684241bf14a|rubenvdlinde|2025-02-18T06:59:27+00:00|Deploy website - based on 74407aaf49eb6c9502ba7757422c0c8d134b2c11
+74407aaf49eb6c9502ba7757422c0c8d134b2c11|Ruben van der Linde|2025-02-18T07:57:13+01:00|Fix CNAME and style
+c7a0069607681adee712a01912c273b114e682d9|rubenvdlinde|2025-02-17T22:09:47+00:00|Deploy website - based on e54f0348605002617b6a4c7aad3dfb90eb919b84
+e54f0348605002617b6a4c7aad3dfb90eb919b84|Ruben van der Linde|2025-02-17T23:06:55+01:00|Sidbar en config fix
+65a56380e4bd074346861355ec9a7c98b74959db|Ruben van der Linde|2025-02-17T23:01:08+01:00|Logo
+cdfcfb8581559a793f5e81a632ddd89e1622169f|Ruben van der Linde|2025-02-17T22:57:19+01:00|Lets not create an issue on failure
+e8fe3b3f9f7856ac69a52b7bc466ba591e3dfe00|Ruben van der Linde|2025-02-17T22:52:48+01:00|Fixing the side bar
+a7d89134abc0f762f2df60370da2951da09572fb|Ruben van der Linde|2025-02-17T22:46:48+01:00|Issue template
+11943bb3127ad3dfb7f83e636fdcf2563addd3aa|Ruben van der Linde|2025-02-17T22:40:19+01:00|Proper logo
+4b9619a83d0b35ccd681ac0c3187a2f20f8608d3|Ruben van der Linde|2025-02-17T22:35:15+01:00|Website update
+e70f6fc5faf2f2c0a1d60d1c3e351501df9b227c|Ruben van der Linde|2025-02-17T22:09:13+01:00|Merge branch 'development' into documentation
+a8c9b59f2c66bc345f86d1aaed2b6d141fe1151d|Thijn|2025-02-17T16:12:43+01:00|Merge pull request #193 from ConductionNL/feature/OP-454/fix-menu-settings-save
+2d872a325a815fd43e797f77c2dda06924d0705c|Thijn|2025-02-17T15:38:14+01:00|fixed menu not being saved
+c6caf4ede242bf4e9d535968b10a88ed07ced9f1|Thijn|2025-02-17T13:48:38+01:00|fixed menu items drag and save function
+dca3c6e386ff9c3d22ff3b587e549c6d198bef71|GitHub Action|2025-02-13T16:04:57+00:00|Bump version to 0.6.63
+699cd5e4607dcae970749656a3f3f77fa388b398|Remko Huisman|2025-02-13T17:04:13+01:00|Merge pull request #191 from ConductionNL/development
+84cc2971b19cb7506a05ece264839d2df351c689|Remko Huisman|2025-02-13T16:57:41+01:00|Merge pull request #184 from ConductionNL/feature/IBOC-139/menu-drag-bug
+9b43bbb0466d738d65c97a9da5c8c89193b8d5fa|Remko Huisman|2025-02-13T16:53:12+01:00|Merge pull request #190 from ConductionNL/feature/IBOC-140/file-refactor
+14a9e41c2b346852476666ec1878a9739f7c3489|Remko|2025-02-13T16:45:50+01:00|Fixed open map button
+0b2f8ef3d718df92e015d6dd33678b7ecac6966a|Remko|2025-02-13T14:39:59+01:00|Merge branch 'development' into feature/IBOC-140/file-refactor
+bbf353daf07a075cf1c909c6857759ca9268cdee|GitHub Action|2025-02-13T12:39:22+00:00|Bump version to 0.6.62
+0fd97d1179c896e3d0ab3474d8b0fac8dadfdb79|Remko Huisman|2025-02-13T13:38:55+01:00|Merge pull request #189 from ConductionNL/development
+477fe4c3ba5fb53980486eab2654fecf08447358|Wilco Louwerse|2025-02-13T09:59:26+01:00|Merge pull request #188 from ConductionNL/feature/IBOC-140/file-refactor
+2668151a54683a9fe032aebadaacc8262d3bb43f|Wilco Louwerse|2025-02-13T09:36:34+01:00|Put back CatalogiController for now
+a507edcd6e069f40db616aa497eaadd81963ade7|GitHub Action|2025-02-12T14:06:10+00:00|Bump version to 0.6.61
+cc0391c927aa6e214b4b266ec928ffee450bd770|Ruben van der Linde|2025-02-12T15:05:39+01:00|Merge pull request #187 from ConductionNL/development
+fb1a6c18ab042d24de9c95d4896364306b576c79|Ruben van der Linde|2025-02-12T14:23:17+01:00|Merge pull request #185 from ConductionNL/feature/IBOC-140/file-refactor
+1d3f90539a90c4174c3c1f52ee56f6c535c04149|Remko|2025-02-12T14:18:39+01:00|Added requested changes
+30081b07b45861c8c82ea3dd2357a5090bd67dba|Remko Huisman|2025-02-12T14:14:03+01:00|Update src/sidebars/dashboard/DashboardSideBar.vue
+dff677c806fa78f9ff2317ee8dae69c121f6dd89|Remko|2025-02-11T17:57:59+01:00|Updated icon
+ede0fb1d1f4ba37049138aad99adef9bef5d2786|Remko Huisman|2025-02-11T17:15:25+01:00|Merge pull request #186 from ConductionNL/hotfix/adminsettings
+1a496fc42478ea44be2dad8bd5cc8669fed3dc3e|Remko|2025-02-11T13:55:16+01:00|Possible adminsettings fix
+c0c51be1a70a7e576c033ddc6d48b52684f8c612|Remko|2025-02-11T17:12:16+01:00|Small fix
+0cc983b8144d8d8505849d26bbce650626658a5d|Ruben van der Linde|2025-02-11T16:07:16+01:00|Merge branch 'feature/IBOC-140/file-refactor' of https://github.com/ConductionNL/opencatalogi into feature/IBOC-140/file-refactor
+666ae6a35f6b1392c5277327e00633d02185f4ec|Ruben van der Linde|2025-02-11T16:07:14+01:00|Clean up the labels
+8669a1d4ec2371597e765e1af5ac5bfffe310b46|Thijn|2025-02-11T14:14:39+01:00|bug fix
+bff137f55f83b365dc91d885e554440b435ef6b3|Remko|2025-02-11T13:55:16+01:00|Possible adminsettings fix
+a055490bc8bb2575e2e7180edaf38c8f56ef038b|Ruben van der Linde|2025-02-11T12:02:09+01:00|Set the guest user on the session
+40adaee7723d2aeaaab294b5dfe7ffba08b88853|Ruben van der Linde|2025-02-11T11:27:26+01:00|Id fix
+1e14f93fe320607bd32c80103273013bf15a5247|Ruben van der Linde|2025-02-11T11:04:07+01:00|Set attachements to
+ba6a1927a361ebf8879b9b18ad7ca9abac4b0828|Ruben van der Linde|2025-02-11T10:56:49+01:00|Setting up the new open catalogi docusaures from a cop of open registers
+7a1e1781da6405244cb364097f11db9c87083d40|Thijn|2025-02-10T16:10:18+01:00|made a new system to recognize which item to edit
+9a173c4e3a9c3b7d096b1d43b1a7443d0fb570bd|Ruben van der Linde|2025-01-31T08:26:19+01:00|Use files in the open catalogi view
+10aa349259bcf66134752c003cc97cd39221f3f3|Ruben van der Linde|2025-01-30T20:30:40+01:00|Merge remote-tracking branch 'origin/development' into feature/IBOC-99/objects-controller
+2a6609909123704c5cc30c39c811ab69f78f1d3a|GitHub Action|2025-01-30T14:12:47+00:00|Bump version to 0.6.60
+e4706081d03dc35b732d7948b9e24770d4637615|Thijn|2025-01-30T15:12:21+01:00|Merge pull request #183 from ConductionNL/development
+d670a45afa620d3d3a9d23aaa1b7c06ba81cbab5|Remko Huisman|2025-01-30T15:10:08+01:00|Merge pull request #182 from ConductionNL/feature/IBOC-137/pages-content
+0353393c2374d8789c9eda548ab769e287900947|Remko|2025-01-30T15:09:51+01:00|cleanup
+164254475004f444282d7ee17922ae210ae79d15|Remko|2025-01-30T15:05:02+01:00|Menu item fixes
+6ba27e71b4da3b91fb2a37e9a1c305edc0570c53|Thijn|2025-01-30T14:38:28+01:00|changed slug error message
+fec106aebffe07502f20c52c0dc8d13b39177146|Thijn|2025-01-30T14:37:50+01:00|removed / from requirement
+36b5f77a973cc94d853513874c4b7fe90d9ea99a|Thijn|2025-01-30T14:09:03+01:00|removed uuid since its not needed
+a5067f0a4f75abf80851db3c2c2e920457fab6b2|Thijn|2025-01-30T13:54:06+01:00|finished editing contents
+767a42abbba34d4d4c45bb0782a38474f69e7bdb|Thijn|2025-01-30T12:04:39+01:00|Merge branch 'development' into feature/IBOC-137/pages-content
+2409bdb94f2aa0349a711ce1c7c9e8aaedc95cf2|Thijn|2025-01-29T17:28:21+01:00|added draggable and save-able contents list
+69ea7884c797544a5e7a5c536ebb7bb53353da0c|Thijn|2025-01-29T16:15:59+01:00|Merge pull request #181 from ConductionNL/feature/IBOC-134/menu-items
+7962933bb01234e3aaaf41e543583b3cf91c2de3|Thijn|2025-01-29T16:15:25+01:00|changed weird name to footer
+3358a32181952bcce3207e0dd822b32091bbdf5a|Thijn|2025-01-29T16:13:43+01:00|added drag en drop save functionaliteit
+a5f2a27721cab0bf2aa60fee941944615e53ad8d|Thijn|2025-01-29T13:44:14+01:00|fixed a few bugs
+b10718caa9769c40eb4a2bc98a964502fdc8facc|Thijn|2025-01-29T13:25:47+01:00|made link optional
+473a65a562630449bc8f4cbbfc87a58edb02a530|Thijn|2025-01-28T17:59:07+01:00|WIP - did most of the requirements for the issue
+520cee0aa24781eb874c5fdce5e6aab0513d8980|Ruben van der Linde|2025-01-27T15:00:19+01:00|Picking up the files from the nextcloud share
+d1d724bb14af1e037cc6aec06e705bdfd31e9cef|Ruben van der Linde|2025-01-24T14:19:39+01:00|Code cleanup on store usage
+d2d4258821053dcdf86b7d8c4464889ddb759681|Ruben van der Linde|2025-01-24T10:32:13+01:00|Merge remote-tracking branch 'origin/development' into feature/IBOC-99/objects-controller
+1740c5f30a56f57bd49f620ebca78bcad1830e96|Ruben van der Linde|2025-01-24T10:31:20+01:00|Merge branch 'feature/IBOC-99/objects-controller' of https://github.com/ConductionNL/opencatalogi into feature/IBOC-99/objects-controller
+c130864b1e8b2b0a9c56200b47b9e0706dc5400e|Ruben van der Linde|2025-01-24T10:31:16+01:00|Codeclean up
+2b9ed538e937cec3548fd0fa24f3ac8417e576ec|Thijn|2025-01-22T16:47:36+01:00|Merge pull request #180 from ConductionNL/feature/IBOC-107/kopie-menu
+82a8c3cb2e64d582d5b3c748d79d35c17b3b6cfd|Thijn|2025-01-22T16:45:11+01:00|added copy menu option
+e49a3cfeecdeacb65a2f91f4f54f924493682684|Thijn|2025-01-22T15:55:37+01:00|Merge pull request #179 from ConductionNL/feature/IBOC-95/delete-page-modal
+ce54eb5066ebc33e2d6070cbabeb61325642ad53|Thijn|2025-01-22T13:25:12+01:00|fixed delete page modal functionality
+5e9f7920fb848ff38705c04a044e1818f735d359|GitHub Action|2025-01-21T15:29:14+00:00|Bump version to 0.6.59
+efacdfc4453c08a3190b0c5a7ec368df82f64241|Remko Huisman|2025-01-21T16:28:49+01:00|Merge pull request #178 from ConductionNL/development
+b02ad9e293f236b67f809e4a307fa1c8699477db|Remko Huisman|2025-01-21T16:28:05+01:00|Merge pull request #177 from ConductionNL/feature/IBOC-107/nextcloud-menu
+67911a7493c396636283e450a97a76e02bb0975f|Remko|2025-01-21T16:27:35+01:00|cleanup
+c38871bd9151954eb0ebe0833f98f3223a732a30|Remko|2025-01-21T16:26:45+01:00|fix saveObjected out of sync with openregister
+76cced0b3783f15bc21c9f1615a865545dcc1f6e|GitHub Action|2025-01-21T15:15:17+00:00|Bump version to 0.6.58
+ee730c970dc325ef4d7de52898ea226cc03703e4|Remko Huisman|2025-01-21T16:14:47+01:00|Merge pull request #176 from ConductionNL/development
+7d9ea48fd0bb0851911250394f47be897418a1b0|Remko Huisman|2025-01-21T16:14:02+01:00|Merge pull request #175 from ConductionNL/feature/IBOC-107/nextcloud-menu
+8ea4a8604ebb8dccbedc3b4b274449b92e718c3d|Remko|2025-01-21T16:12:10+01:00|cleanup
+b8bb570e87dbf26a30394a30690be64fdec8e1ed|Remko|2025-01-21T16:10:45+01:00|Merge remote-tracking branch 'origin/development' into feature/IBOC-107/nextcloud-menu
+c5278de6346899cc4f6b3eb6ea2a96d6d777bf8e|GitHub Action|2025-01-21T15:04:46+00:00|Bump version to 0.6.57
+7e2406fdea1e9b177b72f9c9dcb255b42964a46e|Remko Huisman|2025-01-21T16:04:19+01:00|Merge pull request #173 from ConductionNL/development
+b84368e2976a0cb528e46cbc8ecb9f77833136a1|Remko Huisman|2025-01-21T14:58:06+01:00|Merge pull request #174 from ConductionNL/feature/IBOC-107/nextcloud-menu
+91c11a68fa0e92d3d69a55be4f874724ef73ca61|Remko|2025-01-21T14:53:25+01:00|added link
+e4247d227902062184c4cbe020c64060a4c69838|Thijn|2025-01-21T14:44:52+01:00|cleanup
+f4be269a1274f8d65b300f2f42ec5e2103c41312|Thijn|2025-01-21T14:27:24+01:00|fixed bug with editing menu item
+07d1015e1359a13f1967708475a53944a092b2d1|Remko|2025-01-21T12:17:34+01:00|cleanup
+4819d55c040c05d76b2b9cd0d0c8386a470f6876|Remko|2025-01-21T12:15:01+01:00|Merge remote-tracking branch 'origin/feature/IBOC-107/nextcloud-menu' into feature/IBOC-107/nextcloud-menu
+db304064515ca6256bb1edc94000f4daebf03117|Remko|2025-01-21T12:14:55+01:00|Added types
+9924a691a69d3201f88ade474e9e8b297105d25d|Robert Zondervan|2025-01-21T11:46:35+01:00|WIP on feature/IBOC-99/objects-controller
+1e8a64067aa2218a2b5f067c0706d0b95bc21493|Remko|2025-01-21T11:43:24+01:00|updated controlers
+776d41ee376a66cc2a6d60f38703e8e432bd4d84|Remko|2025-01-21T11:25:32+01:00|updated detail page
+69050b2b93a47ee771c662f434a6f2d8b33b964b|Remko|2025-01-21T11:12:43+01:00|Lint
+ba9e01181cf3b4a151dff5722605d78914a2e359|Remko|2025-01-21T11:09:06+01:00|Merge branch 'development' into feature/IBOC-107/nextcloud-menu
+7434ca19dfc92df4d2127f449066f90dfc83d519|Remko|2025-01-21T11:03:34+01:00|fixed menu modals
+faea2c6151d6ae85ff086769a3b661fae1dceb18|Remko Huisman|2025-01-21T10:52:40+01:00|Merge pull request #172 from ConductionNL/feature/IBOC-99/objects-controller-merge
+6b14d21af779b039423c0e2a5dde21b96d37abd7|Robert Zondervan|2025-01-21T10:24:19+01:00|Fix breaking issue
+116e0475a388abc1cfffe1466e44a075aa5eacf3|Remko|2025-01-20T18:00:39+01:00|Added menu endpoint
+f422bbacf39e4f1608770a8ee4281732bb5ae3d6|Thijn|2025-01-20T15:45:56+01:00|fixed 500 error
+541e9729826aecfd0a7a16b5bc6d8bac6ee53d58|Remko|2025-01-20T14:36:56+01:00|fix 500 error
+f3a5f0913ef12fa739fa23f5b3c086a6746f13e1|Remko|2025-01-20T14:33:03+01:00|Merge remote-tracking branch 'origin/development' into feature/IBOC-107/nextcloud-menu
+5c64cb8289eb2766e3727fa5b02eb3c6bfaf280e|Remko Huisman|2025-01-20T14:03:16+01:00|Merge pull request #171 from ConductionNL/feature/IBOC-94/pages-detail
+d0f890eb2286cdbd6d685c239f59233116c8fd33|Remko|2025-01-20T12:51:02+01:00|Updated detail page
+35e9e7b8b880db01a9cb82107f16ba10e256fb9d|Remko Huisman|2025-01-20T12:47:20+01:00|Merge pull request #170 from ConductionNL/revert-168-feature/IBOC-107/nextcloud-menu
+0a07f2b3dbcfd1a826cd38d2e556c3f8b4175324|Remko Huisman|2025-01-20T12:46:38+01:00|Revert "feature/IBOC-107/nextcloud-menu"
+39a3fa1ccb2e195cc713ff308c44e8c49c809f97|Remko Huisman|2025-01-20T12:46:20+01:00|Merge pull request #168 from ConductionNL/feature/IBOC-107/nextcloud-menu
+0a404e59b52d2edd97a5a0eeeaaec83bd67a3d8b|Remko Huisman|2025-01-20T12:46:05+01:00|Merge pull request #169 from ConductionNL/feature/IBOC-94/slug-values
+61446ac8f7ec22ca6b84063ec7408a1be7570096|Remko|2025-01-20T12:20:58+01:00|small fix
+16bc55ce6b34bf00e263fddf93801262ccaceea1|Remko|2025-01-20T11:41:03+01:00|cleanup
+8a800b93d1e83dc1143d97effdbea9779c4e97ec|Thijn|2025-01-20T11:36:30+01:00|finished pages contents modal + edit fixes
+7d81cff778fa580dcf63a0ccbd0291f3a2b42562|Thijn|2025-01-20T09:09:06+01:00|WIP - pages modal improvement
+991504c9ee8392be49179604855fdf9b3cb03f78|Remko|2025-01-17T11:11:20+01:00|Backend fix
+bdacfc4b7ef96c479c6ac53f3b8b55a05f924e5b|Remko|2025-01-17T11:32:44+01:00|english to dutch
+a97ad60c71a016bcc2c14c87257da8a694d94a29|Remko|2025-01-17T11:26:37+01:00|Fixed menu modals and details
+e623ca22482ce48deff5ece9be9079f40cbe0bbb|Remko|2025-01-17T11:18:42+01:00|Lint
+bd3f8093ffa7d2dbd3aa0ed8852d6b7647e7e064|Remko|2025-01-17T11:12:40+01:00|Lint
+5e3029fb7e9643b18a0bd96378e3c3e4fa2548aa|Remko|2025-01-17T11:11:20+01:00|Backend fix
+122fe90ed5d498ed433fb5cfea8c2d516c59a2b6|Ruben van der Linde|2025-01-17T09:01:20+01:00|Delete/Edit modals
+190da7eec9891ccece8cad5f15be6ae430a0004d|Thijn|2025-01-15T02:57:32-08:00|draggable items example
+ba459f19366074d02a83e8369ae9bc17ccaa9f5e|Ruben van der Linde|2025-01-16T16:17:54+01:00|Merge remote-tracking branch 'origin/master' into feature/IBOC-99/objects-controller
+e52193e62c31e8c3a6e3ffe93daac9b15da67603|Ruben van der Linde|2025-01-16T16:16:19+01:00|Proofed endpoint with menu
+c294da4cd74d81d997330bcde9c07f8a315213f5|Thijn|2025-01-15T02:57:32-08:00|Merge pull request #166 from ConductionNL/feature/IBOC-70/spelling-fix
+3cc062c9e7cbcc7faddcc57016fca5e01c3a0655|Thijn|2025-01-15T11:53:19+01:00|spelling fix
+d3953ca217f8c2c75d323baac5cc947d54a2ed4f|GitHub Action|2025-01-10T10:09:02+00:00|Bump version to 0.6.56
+a0293e20eebc25b3265ea7bb06fb95e985523bf9|Wilco Louwerse|2025-01-10T11:08:30+01:00|Merge pull request #165 from ConductionNL/development
+cb5a2e74eccaab79c243a761ef1ac72fd97a6110|Wilco Louwerse|2025-01-10T11:07:11+01:00|Merge pull request #164 from ConductionNL/fix/OP-450/directory-service
+c562a7aeb4c5a87a28af6202deadbd096155d903|Wilco Louwerse|2025-01-10T11:04:14+01:00|Fix for adding Directory
+20a6d12b04c731c614a80e62a3ec004ca9031653|GitHub Action|2025-01-10T09:06:01+00:00|Bump version to 0.6.55
+b5a2716e9da4fa35d2dcec450e5354b2a86a3299|Wilco Louwerse|2025-01-10T10:05:31+01:00|Merge pull request #163 from ConductionNL/development
+303b3827b24c11b4baa383aeaf1ae8da7ba87f1c|Wilco Louwerse|2025-01-10T10:01:03+01:00|Merge pull request #162 from ConductionNL/fix/OP-450/directory-service
+c028dbac6ba22ea7432f8dc9840eb3728d25325d|Wilco Louwerse|2025-01-10T09:50:21+01:00|Fix for adding Directory
+b1e29c9ed3c309f4e63eefd4d6c5025b5e8d6fc8|Remko|2025-01-06T15:34:25+01:00|updated release workflow

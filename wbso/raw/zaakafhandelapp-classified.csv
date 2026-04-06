@@ -1,0 +1,136 @@
+hash,author,date,repo,subject,project,confidence,automated
+16a5eebe2ed1cb08e4b95a7043a9fc651ad9b7bc,Robert Zondervan,2025-10-16T15:47:21+02:00,zaakafhandelapp,Remove locks from body when object is unlocked,14283/119/01,low,false
+949b09452d9b33e0c6b14b261a26edab82e73fd5,Robert Zondervan,2025-10-16T14:50:38+02:00,zaakafhandelapp,Connect zaaktypen and informatieobjecttypen when a ZT-IOT is made,14283/119/01,high,false
+6781ab8ec94024b96a67c97c1a5ebf2bcd159722,GitHub Action,2025-10-07T09:32:15+00:00,zaakafhandelapp,Bump version to 0.1.29,14283/119/01,low,true
+38c3b723059a7a7b35883f9f2350642e42b4e83b,Robert Zondervan,2025-10-07T11:32:01+02:00,zaakafhandelapp,Merge pull request #166 from ConductionNL/development,14283/119/01,low,true
+65ff0f22e8b846eaae19cc5d77183ed1fb31e46e,Robert Zondervan,2025-10-07T11:04:30+02:00,zaakafhandelapp,Merge pull request #165 from ConductionNL/feature/zaakreg-108/complex-checks,14283/119/01,high,true
+d6234c0ece23cf47fac52c722b0c3e04d75439aa,Robert Zondervan,2025-10-07T11:01:01+02:00,zaakafhandelapp,remove vardump,14283/119/01,low,false
+71f495196833580a4e3580c307508720c61d73ca,Robert Zondervan,2025-10-07T10:58:25+02:00,zaakafhandelapp,Fix deleting besluiten,14283/119/01,high,false
+944bd7a424de01ceb001ba2b72193d299913408a,Robert Zondervan,2025-10-03T17:03:12+02:00,zaakafhandelapp,BRC rules,14283/119/01,high,false
+79e2c74906eaae4a11b6959399ed37a58ff15172,GitHub Action,2025-10-03T09:49:53+00:00,zaakafhandelapp,Bump version to 0.1.28,14283/119/01,low,true
+dccec7149d5723e0c2c38d331fe54e724effb3c5,Robert Zondervan,2025-10-03T11:49:43+02:00,zaakafhandelapp,Merge pull request #164 from ConductionNL/development,14283/119/01,low,true
+11592abfe00a650605be9713b280936b59ae43df,Robert Zondervan,2025-10-03T11:49:06+02:00,zaakafhandelapp,Merge pull request #163 from ConductionNL/feature/zaakreg-108/complex-checks,14283/119/01,high,true
+538c8c02ac5c2337d2fea3cb6d76d3b1f9614857,Robert Zondervan,2025-10-03T11:22:44+02:00,zaakafhandelapp,ZRC-012: Check gegevensgroepen,14283/119/01,high,false
+4dac99630962200d5146e134507b98150a87d7ba,Robert Zondervan,2025-10-03T10:31:01+02:00,zaakafhandelapp,Last fix on ZRC-007,14283/119/01,high,false
+d4d466a5c78fd5206768583274f5ca436a4537d9,Robert Zondervan,2025-10-02T17:13:03+02:00,zaakafhandelapp,Fix for checking gebruiksrechten,14283/119/01,high,false
+c5bf090a4443e9b051beda6efda4e7a3d829ad21,Robert Zondervan,2025-10-02T17:09:38+02:00,zaakafhandelapp,Merge pull request #162 from ConductionNL/feature/zaakreg-108/complex-checks,14283/119/01,high,true
+16e4cb93d4e295a9b8382574ff0b5e0e8d938787,Robert Zondervan,2025-10-02T16:06:16+02:00,zaakafhandelapp,Add complex object checking,14283/119/01,high,false
+67ef55a14131b31cb8b29ea25bf82e43955dba8e,GitHub Action,2025-10-02T09:11:42+00:00,zaakafhandelapp,Bump version to 0.1.27,14283/119/01,low,true
+8859b973a9bb3200f916e307b84f59d56a0917e6,Robert Zondervan,2025-10-02T11:11:28+02:00,zaakafhandelapp,Merge pull request #161 from ConductionNL/development,14283/119/01,low,true
+a373a542f19e94b8ec84f91ad7ada1d04cb32b3d,Robert Zondervan,2025-10-02T11:10:37+02:00,zaakafhandelapp,Merge pull request #160 from ConductionNL/feature/ZAAKREG-95/set-vertrouwelijkheidaanduiding,14283/119/01,high,true
+f69cc149f7196ebbc785897f6137eba4f138d0c3,Robert Zondervan,2025-10-02T11:08:24+02:00,zaakafhandelapp,Derive vertrouwelijkheidaanduiding from zaaktype if zaak does not contain it,14283/119/01,high,false
+d19e1c6d0e6c888be35fe663da238bb4f5ad4332,GitHub Action,2025-10-02T08:45:07+00:00,zaakafhandelapp,Bump version to 0.1.26,14283/119/01,low,true
+b97871b3ce4e62d891fda311eefeb334541b9123,Robert Zondervan,2025-10-02T10:44:56+02:00,zaakafhandelapp,Merge pull request #158 from ConductionNL/development,14283/119/01,low,true
+3781b88a4c549f7b045586cf160fa1f138ad2489,Robert Zondervan,2025-10-02T10:43:24+02:00,zaakafhandelapp,Merge pull request #159 from ConductionNL/feature/zaakreg-109/ZGW-logic,14283/119/01,high,true
+341fdd26ea77bcae44d424512b4a12e8edeefe47,Robert Zondervan,2025-10-02T10:41:40+02:00,zaakafhandelapp,Remove dumps,14283/119/01,low,false
+1e71a6917f93e349ee38be57959fd8227428b84f,Robert Zondervan,2025-10-01T15:42:52+02:00,zaakafhandelapp,Merge pull request #157 from ConductionNL/feature/zaakreg-109/ZGW-logic,14283/119/01,high,true
+a7734dc200f5b1bc449654185cc097e02e07afe9,Robert Zondervan,2025-09-30T16:13:00+02:00,zaakafhandelapp,Working inner logic for ZGW,14283/119/01,high,false
+2a668272aacf75e5f255dd463a083732f7d980e3,Robert Zondervan,2025-09-30T08:57:01+02:00,zaakafhandelapp,ZGW Business logic WIP (2),14283/119/01,high,false
+94de689711a5ac2b6424f0b61cbc43003706336c,Robert Zondervan,2025-09-30T08:56:48+02:00,zaakafhandelapp,ZGW Business logic WIP,14283/119/01,high,false
+d4724632e646490fda9497372579a22c52e9acdc,Ruben van der Linde,2025-09-30T03:13:45+02:00,zaakafhandelapp,feat: add Nextcloud 32 support,14283/119/01,medium,false
+2f5ff62858f310d86f912cff90e59c10d4d9bf56,Thijn,2025-04-22T17:50:00+02:00,zaakafhandelapp,WIP - applying object store to the entire app,14283/119/01,high,false
+bb0e5e9214803b09e46b3552385fb8500584855a,Thijn,2025-04-22T17:49:45+02:00,zaakafhandelapp,further fixed the object store,14283/119/01,high,false
+39c878ebf11cda11d5adb5fca7b8621c162de9ee,Thijn,2025-04-22T15:59:01+02:00,zaakafhandelapp,changed TSconfig and fixed TS errors,14283/120/02,medium,false
+1d2c68c2c56a05de4c2397b02afe407cb4c91871,Thijn,2025-04-22T15:53:52+02:00,zaakafhandelapp,finished object store conversion to TS,14283/119/01,high,false
+522578ecc0c67683c268940684aeaa229d5c0e59,Thijn,2025-04-17T17:25:56+02:00,zaakafhandelapp,used the new store,14283/119/01,low,false
+dfb28162d45fe2b6f77ab874ad971312710705c0,Thijn,2025-04-17T17:25:34+02:00,zaakafhandelapp,"WIP - added objects store, started reworking error handling",14283/120/02,medium,false
+6a0d1f2af3154b4971168b77d2b737443fa01fc1,github-actions[bot],2025-03-24T15:23:51+00:00,zaakafhandelapp,[Changelog CI] Add Changelog for Version 0.1.25,14283/119/01,low,true
+53350f91323e2d49a43b6f39d2527e5f4fdc1580,GitHub Action,2025-03-24T15:23:38+00:00,zaakafhandelapp,Bump version to 0.1.25,14283/119/01,low,true
+9f68fe00957c835124af9fc8cff9fb078c3df6c5,Barry Brands,2025-03-24T16:23:21+01:00,zaakafhandelapp,Merge pull request #154 from ConductionNL/development,14283/119/01,low,true
+f612702a7e32439378bbf7ba6e8ec56e8c0029da,Barry Brands,2025-03-24T14:42:21+01:00,zaakafhandelapp,Merge pull request #153 from ConductionNL/fix/BKISS-154/rollen-filter,14283/119/01,high,true
+5120b63c54fdb0446389fd0b74673f0449f8a50e,Barry Brands,2025-03-24T13:53:25+01:00,zaakafhandelapp,Zaak rollen improvements,14283/119/01,high,false
+f11b7a749e6f24e609e27c0f0d2607ae2dc37857,Remko Huisman,2025-03-07T10:22:58+01:00,zaakafhandelapp,Merge pull request #149 from ConductionNL/feature/PC108-124/no-me-endpoint,14283/119/02,low,true
+96bada7fb07a5b842de0a1954c60085ca5a1171b,Thijn,2025-02-21T16:08:47+01:00,zaakafhandelapp,Merge pull request #150 from ConductionNL/feature/klant-fix,14283/119/01,high,true
+678c696c8e30055f69fbbde0d57e42c319bdb167,rubenvdlinde,2025-02-18T06:59:05+00:00,zaakafhandelapp,Deploy website - based on 829c8aeca31efc052e8e4b307668539759f7d500,14283/119/01,low,true
+829c8aeca31efc052e8e4b307668539759f7d500,Ruben van der Linde,2025-02-18T07:56:50+01:00,zaakafhandelapp,Fix CNAME and style,14283/119/01,low,false
+cd78854d006deb410a508f7f3fc1062ecba6f997,Ruben van der Linde,2025-02-17T23:54:37+01:00,zaakafhandelapp,Create CNAME,14283/119/01,low,false
+61e529e986329462074dc86ad8af9642577ce0e3,rubenvdlinde,2025-02-17T22:10:56+00:00,zaakafhandelapp,Deploy website - based on 4850bd6ae9325d98f89f8ae1ff4a47d07a2886df,14283/119/01,low,true
+4850bd6ae9325d98f89f8ae1ff4a47d07a2886df,Ruben van der Linde,2025-02-17T23:08:37+01:00,zaakafhandelapp,Remove docudesk naming,14283/119/01,low,false
+4cb0d487b5471459e113c6709ced28cca4548005,Ruben van der Linde,2025-02-17T23:04:49+01:00,zaakafhandelapp,Update for zaakafhandel app,14283/119/01,high,false
+eb32dd00fd31d700d32a797dcf75e4faffdf262d,Ruben van der Linde,2025-02-17T22:59:45+01:00,zaakafhandelapp,logo fix,14283/119/01,low,false
+f59196eef6ffe3240b3e28a1e724c2d73e1592cc,Ruben van der Linde,2025-02-17T22:48:53+01:00,zaakafhandelapp,Issue template,14283/119/01,low,false
+e21f490452197c513a4ee39b14c8d9a11181bef8,Ruben van der Linde,2025-02-17T22:47:07+01:00,zaakafhandelapp,Issue template,14283/119/01,low,false
+c8d2e1cd9124e841ec61e695d949367bd0d6077b,Ruben van der Linde,2025-02-17T22:43:43+01:00,zaakafhandelapp,Update the website,14283/119/01,low,false
+1c960735c1fbde92f82897113f3e499788f28fe0,Ruben van der Linde,2025-02-17T22:07:46+01:00,zaakafhandelapp,Merge remote-tracking branch 'origin/documentation' into documentation,14283/119/01,high,true
+f4777743398e2fe87d17fcacb2b1180b23635c2c,Remko Huisman,2025-02-13T10:39:23+01:00,zaakafhandelapp,Merge pull request #146 from ConductionNL/feature/PC108-114/rol,14283/119/01,high,true
+427de8b250f1e3f25f50ff3e382c0f685f1d1464,Thijn,2025-02-11T16:20:46+01:00,zaakafhandelapp,added klant delete,14283/119/01,high,false
+e247f429dc3e6a522a3f61ac8cbe08fbd3739b4a,Thijn,2025-02-10T14:17:35+01:00,zaakafhandelapp,changed all me endpoints to Nextcloud OCS endpoint,14283/119/02,low,false
+e57c06283fbdd3e584653612be96e2b6226e1cb5,Remko Huisman,2025-02-06T16:59:52+01:00,zaakafhandelapp,Merge pull request #148 from ConductionNL/feature/PC108-147/task-to-contactmoment,14283/119/01,high,true
+bcc6b95f35af01f64c91d11e8d60195602d86e92,Remko,2025-02-06T10:22:02+01:00,zaakafhandelapp,Set created taak as selected,14283/119/01,low,false
+5245802c88b08499f9ad6190fb090bc6231beab1,Remko,2025-02-06T10:21:42+01:00,zaakafhandelapp,cleanup,14283/119/01,low,false
+fbf89cbd6b16923c0399c6c79a3bc43f5951fc1f,Remko,2025-02-06T10:21:09+01:00,zaakafhandelapp,Removed vue warnings,14283/119/01,low,false
+f31b8180296812eadda6a860a4ba58d7a3e7a9f0,Remko,2025-02-05T13:54:53+01:00,zaakafhandelapp,Contactmoment needs to be saved to add tasks,14283/119/01,high,false
+cf97cac882c44d1cca0b273a9169b1839e9aab49,Remko Huisman,2025-02-05T13:31:17+01:00,zaakafhandelapp,Merge pull request #141 from ConductionNL/feature/PC108-147/auto-task-bind,14283/119/01,low,true
+d3f0f702c5dc09528a92abded69a64dc0614e71e,Remko,2025-02-05T13:29:56+01:00,zaakafhandelapp,Requested changes,14283/119/01,low,false
+0cc88d3cf8a2df9bc0280de8ae24e46859a2cefc,Remko,2025-01-31T13:38:42+01:00,zaakafhandelapp,Merge remote-tracking branch 'origin/development' into feature/PC108-114/rol,14283/119/01,high,true
+20cd1f36490900e6630774bf1cd2d5f6f1eeb67d,Thijn,2025-01-16T00:36:18-08:00,zaakafhandelapp,Merge branch 'development' into feature/PC108-147/auto-task-bind,14283/119/01,low,true
+a7dc8d42660dfef96ebd99212efc3367c855f724,Ralkey,2025-01-13T07:35:40-08:00,zaakafhandelapp,Merge pull request #147 from ConductionNL/feature/PC108-146/contactmoment-no-close,14283/119/01,high,true
+62749c4f428d8be94ace72e396bd1f5f6e24e49e,Thijn,2025-01-13T16:05:52+01:00,zaakafhandelapp,removed debug comment,14283/120/02,low,false
+d594e66d5be48a71df1544b04afc8eeb1d4ffeeb,Thijn,2025-01-13T16:00:37+01:00,zaakafhandelapp,finished stopping contactmoment from closing,14283/119/01,high,false
+07db65e4ea3ff12a2a8080562fdaf55c5006fbea,Thijn,2025-01-13T15:04:36+01:00,zaakafhandelapp,Merge remote-tracking branch 'origin/development' into feature/PC108-146/contactmoment-no-close,14283/119/01,high,true
+3da858b9d36fbdfcdd8e61c6621d8b4f0719d2d8,Thijn,2025-01-13T15:04:30+01:00,zaakafhandelapp,WIP - change button based on modal type,14283/119/01,low,false
+a6d2491bce9c2e7d3e8d0ed0461ee0d1591aa356,Ralkey,2025-01-13T06:03:04-08:00,zaakafhandelapp,Merge pull request #144 from ConductionNL/feature/PC108-127/contactmoment-bekijken-binnen-modal,14283/119/01,high,true
+1eeb53777581f8264dd720c908cf542566b62502,Remko,2025-01-13T10:06:20+01:00,zaakafhandelapp,Merge remote-tracking branch 'origin/development' into feature/PC108-127/contactmoment-bekijken-binnen-modal,14283/119/01,high,true
+f150bbb7d83e5b850b84a83da25925eb0e80e6a1,Thijn,2025-01-10T16:53:05+01:00,zaakafhandelapp,stopped modal from closing,14283/119/01,low,false
+f979af8bbf4983e5ee88d66ac646402d4f6a723a,Thijn,2025-01-10T14:42:53+01:00,zaakafhandelapp,finished rollen,14283/119/01,high,false
+4b6fa33231ebd1d6e844e639b4af9251f04ee502,Thijn,2025-01-09T09:25:54+01:00,zaakafhandelapp,Merge remote-tracking branch 'origin/development' into feature/PC108-147/auto-task-bind,14283/119/01,low,true
+93d811ae0bbbfa72ec21cf416ed2c83c2ac128ff,Ralkey,2025-01-09T00:24:31-08:00,zaakafhandelapp,Merge pull request #142 from ConductionNL/feature/PC108-152/personen-actie-menu,14283/119/01,high,true
+6e40146572d447f33bbaed1f3aeb0397d82ce3df,Remko,2025-01-09T09:21:12+01:00,zaakafhandelapp,Updated workflow to also go off on main,14283/119/01,low,false
+b95adb0b02824995fe41acfe36975656c0181567,Remko,2025-01-09T09:18:53+01:00,zaakafhandelapp,worfklow fix,14283/119/01,low,false
+866600afc8a2740f75433425bb1305fe63312e2f,Thijn,2025-01-08T16:52:47+01:00,zaakafhandelapp,added some comments,14283/119/01,low,false
+f3383edf1b8bfa3fc648f58174bcde8c2e92d823,Thijn,2025-01-08T16:49:45+01:00,zaakafhandelapp,fixed a comment,14283/119/01,low,false
+2ad06727a6496ce0b11b5e25ad45937d273108f0,github-actions[bot],2025-01-08T15:49:30+00:00,zaakafhandelapp,[Changelog CI] Add Changelog for Version 0.1.24,14283/119/01,low,true
+05f35ae1923639380d353f19d36b802d81bb5cf6,GitHub Action,2025-01-08T15:49:17+00:00,zaakafhandelapp,Bump version to 0.1.24,14283/119/01,low,true
+73b3b521c554e0641de232c05d527ecd4ce6a827,Remko Huisman,2025-01-08T16:49:03+01:00,zaakafhandelapp,Merge pull request #143 from ConductionNL/development,14283/119/01,low,true
+8cad0926ca14ca84292e02da473b8b6519969d28,Thijn,2025-01-08T16:48:06+01:00,zaakafhandelapp,hopefully finished open contactmoment in new tab,14283/119/01,high,false
+99317ea82576222b21e3a8904b3e463871219b95,Thijn,2025-01-08T14:54:53+01:00,zaakafhandelapp,finished klant actions,14283/119/01,high,false
+7a03c4cd1de8eda89c1f28fbad1fcce2aac58592,Thijn,2025-01-07T16:42:06+01:00,zaakafhandelapp,revert PC108-147,14283/119/01,low,true
+f6a5807d99f41193694e084324af3ee5e0fc62f7,Thijn,2025-01-07T16:23:54+01:00,zaakafhandelapp,PC108-150 - added X close button to tabs,14283/119/01,low,false
+6fdfe48530dd5393c7da6f82759b8e8f631bf3b4,Thijn,2025-01-07T15:35:50+01:00,zaakafhandelapp,PC108-149 - plus button replaced with nieuw contactmoment button,14283/119/01,high,false
+82ee5db0053fcbdca7efb9e59908d807a7bc340e,Thijn,2025-01-07T15:26:10+01:00,zaakafhandelapp,PC108-148 - modal name changes to multi form,14283/119/01,low,false
+55a8f26f716a2cc514f027745d97c9ddd4f4a9f9,Thijn,2025-01-07T15:02:07+01:00,zaakafhandelapp,PC108-147 - set selected taak to newly made taak,14283/119/01,low,false
+bea191f381c0c7a41a04f1bb2331541e56b548c4,Remko Huisman,2025-01-07T12:11:41+01:00,zaakafhandelapp,Merge pull request #139 from ConductionNL/feature/cleanup,14283/119/01,low,true
+1ed1c5055ad98e27cc7b404bc1709e5a7c1df1df,Remko,2025-01-07T12:07:19+01:00,zaakafhandelapp,lint fixes,14283/119/01,low,false
+572e96e4a23f42141ccf46949a91cdfc24ec0749,Remko,2025-01-07T10:02:32+01:00,zaakafhandelapp,extra fix icons,14283/119/01,low,false
+c542b95c05031cf778c1936e959902efc7f26455,Ralkey,2025-01-07T09:54:15+01:00,zaakafhandelapp,Merge pull request #138 from ConductionNL/feature/widget-bugfix,14283/119/01,low,true
+02effce722eb63df4905a6c4302cd7b1601976c8,Remko,2025-01-07T09:52:44+01:00,zaakafhandelapp,Merge branch 'feature/widget-bugfix' into feature/cleanup,14283/119/01,low,true
+bfa619318fee8c27012bc4a504363d55591f6767,Remko,2025-01-07T09:50:03+01:00,zaakafhandelapp,possible fix icons on dashboard widgets,14283/119/02,medium,false
+a986ef435e0b8f1111230fd18854226962b04e5e,Thijn,2025-01-06T16:12:03+01:00,zaakafhandelapp,fixed CSS bug with organisation widget,14283/120/01,high,false
+a12f149b375c7571652236269ef4a0371764bf7b,Thijn,2025-01-06T16:02:52+01:00,zaakafhandelapp,fixed infinite modal opening,14283/119/01,low,false
+71e06300a8bc2d32232999089466482ab10592b3,Thijn,2025-01-06T15:52:44+01:00,zaakafhandelapp,fixed console error for view personen widget,14283/119/01,high,false
+4252f3defd5de550c55d2afb204179c998ae6ce4,Thijn,2025-01-06T15:48:42+01:00,zaakafhandelapp,fixed console error and unexpected redirect,14283/120/02,medium,false
+c74eae4e47f4806f54e7038cc446c0fee6db0c7b,Thijn,2025-01-06T15:48:30+01:00,zaakafhandelapp,fixed widgets not loading,14283/119/01,low,false
+7d3e4abe47c9c8fd9fd487e7ce2a5d51fb883551,github-actions[bot],2025-01-06T14:04:15+00:00,zaakafhandelapp,[Changelog CI] Add Changelog for Version 0.1.23,14283/119/01,low,true
+77834b71978e80e895332222d34cc40848d03e83,GitHub Action,2025-01-06T14:04:04+00:00,zaakafhandelapp,Bump version to 0.1.23,14283/119/01,low,true
+42d3f5e3b25e5fb3ac7a047c80909dd58e7d0d8d,Remko Huisman,2025-01-06T15:03:51+01:00,zaakafhandelapp,Merge pull request #136 from ConductionNL/development,14283/119/01,low,true
+5895576351fde4f8d1b6bbb76ec5bb2eea1c10a7,Remko Huisman,2025-01-06T15:03:21+01:00,zaakafhandelapp,Merge pull request #135 from ConductionNL/hotfix-medewekerselect,14283/119/01,low,true
+d91cb0fa45a29e886fab09e952e2c7ae2bd69944,Remko,2025-01-06T15:01:52+01:00,zaakafhandelapp,hotfix,14283/119/01,low,false
+7e27e941e25e1b0da797d267b43a89cedb33c9c8,github-actions[bot],2025-01-06T12:19:32+00:00,zaakafhandelapp,[Changelog CI] Add Changelog for Version 0.1.22,14283/119/01,low,true
+1c3e591a5fbb32d54daacac615ebdfd590d6ff1e,GitHub Action,2025-01-06T12:19:20+00:00,zaakafhandelapp,Bump version to 0.1.22,14283/119/01,low,true
+2763e4e24ce3c33bfc8546ac481dea3d46d2b57f,Remko Huisman,2025-01-06T13:19:06+01:00,zaakafhandelapp,Merge pull request #132 from ConductionNL/development,14283/119/01,low,true
+3ba5a1829abc3a44eadb881c831ed6db0bb3124c,Remko Huisman,2025-01-06T13:17:39+01:00,zaakafhandelapp,Merge branch 'main' into development,14283/119/01,low,true
+3971e1239d372265761dd06beafbc5a8c3ccb22d,Remko Huisman,2025-01-06T13:09:49+01:00,zaakafhandelapp,Merge pull request #130 from ConductionNL/feature/PC108-131/cannot-open-klant-fix,14283/119/01,high,true
+8948a0a546d48d8e8c3b53b4ba16c4273f6c6155,Remko,2025-01-06T13:09:40+01:00,zaakafhandelapp,fixed viewing of contactmoment,14283/119/01,high,false
+ceb9a8cd33aea7eadde0997c24db3ea10b2ddb8a,Remko,2025-01-06T11:31:01+01:00,zaakafhandelapp,Add klant with disabled button if employe or channel is not selected,14283/119/01,high,false
+13e565eb06baeba47391fb0151dcf7383791606b,Thijn,2025-01-06T09:13:32+01:00,zaakafhandelapp,Merge remote-tracking branch 'origin/development' into feature/PC108-131/cannot-open-klant-fix,14283/119/01,high,true
+eaf2cd603dc67b4eb92238d476f7743c29e8977d,Ralkey,2025-01-03T13:33:53+01:00,zaakafhandelapp,Merge pull request #131 from ConductionNL/feature/PC108-144/bugfix,14283/119/01,low,true
+2137849916c992713328f82ea3a3a216c6bbdea8,Thijn,2025-01-03T13:31:12+01:00,zaakafhandelapp,added new medewerker endpoint,14283/119/01,high,false
+f305259ffcb8b70f334910e910adfc4553503cf3,Thijn,2025-01-03T13:01:15+01:00,zaakafhandelapp,fixed weird alignment of input fields on klant search,14283/119/01,high,false
+068b751e6ef345d7af9be93df38d5c3a4ffd2a15,Thijn,2025-01-03T11:51:44+01:00,zaakafhandelapp,Merge remote-tracking branch 'origin/development' into feature/PC108-131/cannot-open-klant-fix,14283/119/01,high,true
+d82ed2ec2fc938aaa99b6e7081cfee4007dd6a6f,Ralkey,2025-01-03T11:50:44+01:00,zaakafhandelapp,Merge pull request #129 from ConductionNL/feature/PC108-129/contactmoment-extra-details,14283/119/01,high,true
+7f314f0964abb2b655b352fafc6b39ce27b46431,Thijn,2025-01-03T11:50:31+01:00,zaakafhandelapp,Merge remote-tracking branch 'origin/development' into feature/PC108-129/contactmoment-extra-details,14283/119/01,high,true
+e225e4843f775cd4761e778c6763036d2c0d9272,Ralkey,2025-01-03T11:48:01+01:00,zaakafhandelapp,Merge pull request #128 from ConductionNL/feature/PC108-101/contactmoment-my-moments,14283/119/01,high,true
+515aae1a2cc8a34067d5fefbcf35cb874668ca1f,Thijn,2025-01-03T11:47:22+01:00,zaakafhandelapp,Merge remote-tracking branch 'origin/development' into feature/PC108-101/contactmoment-my-moments,14283/119/01,high,true
+672151ed3b9ec66bf5d135b5d3298de9cf058d58,Ralkey,2025-01-03T11:45:38+01:00,zaakafhandelapp,Merge pull request #101 from ConductionNL/feature/PC108-74/klant-register-rename,14283/119/01,high,true
+1d96f8e9203189cde1d4f54bbdcc7e84c3b1b8a3,Thijn,2025-01-03T11:45:25+01:00,zaakafhandelapp,origin/development to feature/PC108-74/klant-register-rename merge,14283/119/01,high,false
+076f0a388a7ea4f9022a44b96ae125391418c8e6,Ralkey,2025-01-03T10:04:31+01:00,zaakafhandelapp,Merge pull request #82 from ConductionNL/feature/PC108-73/no-customer-before-search,14283/119/02,high,true
+ff62150cb07da3faf8e0a3e3377115262cbbbbad,Thijn,2025-01-02T13:21:51+01:00,zaakafhandelapp,fixed search customer modal not opening,14283/119/02,high,false
+df7010cd371b6618742eef7de398fb3c890e5605,Thijn,2025-01-02T10:15:06+01:00,zaakafhandelapp,Merge remote-tracking branch 'origin/development' into feature/PC108-73/no-customer-before-search,14283/119/02,high,true
+ae7f78e213092f63c7a7c43a835b64fa6f665ac6,Thijn,2025-01-02T10:14:38+01:00,zaakafhandelapp,Merge remote-tracking branch 'origin/development' into feature/PC108-74/klant-register-rename,14283/119/01,high,true
+e2df94d58b42b182026e5839ab14d47af9d218a7,Thijn,2025-01-02T10:13:25+01:00,zaakafhandelapp,Merge remote-tracking branch 'origin/development' into feature/PC108-129/contactmoment-extra-details,14283/119/01,high,true
+546b6f2cccc107201e7fad9309435ee359c8d390,Thijn,2025-01-02T10:11:35+01:00,zaakafhandelapp,Merge remote-tracking branch 'origin/development' into feature/PC108-101/contactmoment-my-moments,14283/119/01,high,true
+eb6ccf7c83eb0c34c4a8926c45319ec7c3373f07,Ralkey,2025-01-02T10:08:52+01:00,zaakafhandelapp,Merge pull request #125 from ConductionNL/feature/PC108-99/contactmoment-close,14283/119/01,high,true
+b015145ca2c8e9ec587acb3bbb75916be8a6494f,Thijn,2025-01-02T10:08:37+01:00,zaakafhandelapp,Merge remote-tracking branch 'origin/development' into feature/PC108-99/contactmoment-close,14283/119/01,high,true
+3be652b8df42f293226f585acbc1969fb96ae1df,Thijn,2024-12-31T17:03:59+01:00,zaakafhandelapp,added dashboard icons,14283/119/02,medium,false
+1077bebed87a860988ee5de58b0bc718836d9ffb,Thijn,2024-12-31T16:41:11+01:00,zaakafhandelapp,added channel to contactmoment,14283/119/01,high,false
+ceabe4905faa0a1f745b8ec6dded4bb832e29a7d,Thijn,2024-12-31T15:28:55+01:00,zaakafhandelapp,"finished ""see only my contactmoments""",14283/119/01,high,false

@@ -1,0 +1,22 @@
+TIME TRACKING SUMMARY FOR ALL EMPLOYEES
+======================================================================
+Employee                          Normal Hours  Overtime Hours     Total Hours
+----------------------------------------------------------------------
+Ruben van der Linde                      857.0           941.6          1798.6
+Robert Zondervan                         547.3            12.0           559.3
+action                                   281.1           202.8           483.9
+Barry Brands                             390.9            60.5           451.4
+Wilco Louwerse                           310.2            57.0           367.2
+Remko Huisman                            320.8            27.0           347.8
+Thijn Douwma                             228.9            21.0           249.9
+Alex Rekachynskyi                        221.1            12.0           233.1
+actions                                  120.1            30.0           150.1
+Mark West                                 32.5             3.0            35.5
+Matthias Oliveiro                         13.8             3.0            16.8
+cursoragent                                2.0            12.5            14.5
+cursoragent@cursor.com                     2.0            12.5            14.5
+thijn.douwma                               2.0             0.0             2.0
+thijn.douwma@outlook.com                   2.0             0.0             2.0
+----------------------------------------------------------------------
+TOTAL                                   3331.7          1394.9          4726.6
+======================================================================

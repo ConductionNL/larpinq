@@ -1,0 +1,232 @@
+{
+  "completed": 607,
+  "field_ok": 584,
+  "field_skip": 1,
+  "field_fail": 22,
+  "comment_ok": 585,
+  "comment_fail": 22,
+  "errors": {
+    "PSR-4": {
+      "step": "field",
+      "status": 404,
+      "detail": "{\"errorMessages\":[\"De issue bestaat niet of je hebt geen toestemming om hem te bekijken.\"],\"errors\":{}}"
+    },
+    "PSR-4_comment": {
+      "step": "comment",
+      "status": 404,
+      "detail": "{\"errorMessages\":[\"De issue bestaat niet of je hebt geen toestemming om hem te bekijken.\"],\"errors\":{}}"
+    },
+    "REGISTER-57": {
+      "step": "field",
+      "status": 404,
+      "detail": "{\"errorMessages\":[\"De issue bestaat niet of je hebt geen toestemming om hem te bekijken.\"],\"errors\":{}}"
+    },
+    "REGISTER-57_comment": {
+      "step": "comment",
+      "status": 404,
+      "detail": "{\"errorMessages\":[\"De issue bestaat niet of je hebt geen toestemming om hem te bekijken.\"],\"errors\":{}}"
+    },
+    "TILBURG-350": {
+      "step": "field",
+      "status": 404,
+      "detail": "{\"errorMessages\":[\"De issue bestaat niet of je hebt geen toestemming om hem te bekijken.\"],\"errors\":{}}"
+    },
+    "TILBURG-350_comment": {
+      "step": "comment",
+      "status": 404,
+      "detail": "{\"errorMessages\":[\"De issue bestaat niet of je hebt geen toestemming om hem te bekijken.\"],\"errors\":{}}"
+    },
+    "TILBURG-437": {
+      "step": "field",
+      "status": 404,
+      "detail": "{\"errorMessages\":[\"De issue bestaat niet of je hebt geen toestemming om hem te bekijken.\"],\"errors\":{}}"
+    },
+    "TILBURG-437_comment": {
+      "step": "comment",
+      "status": 404,
+      "detail": "{\"errorMessages\":[\"De issue bestaat niet of je hebt geen toestemming om hem te bekijken.\"],\"errors\":{}}"
+    },
+    "TILBURG-436": {
+      "step": "field",
+      "status": 404,
+      "detail": "{\"errorMessages\":[\"De issue bestaat niet of je hebt geen toestemming om hem te bekijken.\"],\"errors\":{}}"
+    },
+    "TILBURG-436_comment": {
+      "step": "comment",
+      "status": 404,
+      "detail": "{\"errorMessages\":[\"De issue bestaat niet of je hebt geen toestemming om hem te bekijken.\"],\"errors\":{}}"
+    },
+    "TILBURG-435": {
+      "step": "field",
+      "status": 404,
+      "detail": "{\"errorMessages\":[\"De issue bestaat niet of je hebt geen toestemming om hem te bekijken.\"],\"errors\":{}}"
+    },
+    "TILBURG-435_comment": {
+      "step": "comment",
+      "status": 404,
+      "detail": "{\"errorMessages\":[\"De issue bestaat niet of je hebt geen toestemming om hem te bekijken.\"],\"errors\":{}}"
+    },
+    "TILBURG-430": {
+      "step": "field",
+      "status": 404,
+      "detail": "{\"errorMessages\":[\"De issue bestaat niet of je hebt geen toestemming om hem te bekijken.\"],\"errors\":{}}"
+    },
+    "TILBURG-430_comment": {
+      "step": "comment",
+      "status": 404,
+      "detail": "{\"errorMessages\":[\"De issue bestaat niet of je hebt geen toestemming om hem te bekijken.\"],\"errors\":{}}"
+    },
+    "TILBURG-423": {
+      "step": "field",
+      "status": 404,
+      "detail": "{\"errorMessages\":[\"De issue bestaat niet of je hebt geen toestemming om hem te bekijken.\"],\"errors\":{}}"
+    },
+    "TILBURG-423_comment": {
+      "step": "comment",
+      "status": 404,
+      "detail": "{\"errorMessages\":[\"De issue bestaat niet of je hebt geen toestemming om hem te bekijken.\"],\"errors\":{}}"
+    },
+    "TILBURG-417": {
+      "step": "field",
+      "status": 404,
+      "detail": "{\"errorMessages\":[\"De issue bestaat niet of je hebt geen toestemming om hem te bekijken.\"],\"errors\":{}}"
+    },
+    "TILBURG-417_comment": {
+      "step": "comment",
+      "status": 404,
+      "detail": "{\"errorMessages\":[\"De issue bestaat niet of je hebt geen toestemming om hem te bekijken.\"],\"errors\":{}}"
+    },
+    "TILBURG-420": {
+      "step": "field",
+      "status": 404,
+      "detail": "{\"errorMessages\":[\"De issue bestaat niet of je hebt geen toestemming om hem te bekijken.\"],\"errors\":{}}"
+    },
+    "TILBURG-420_comment": {
+      "step": "comment",
+      "status": 404,
+      "detail": "{\"errorMessages\":[\"De issue bestaat niet of je hebt geen toestemming om hem te bekijken.\"],\"errors\":{}}"
+    },
+    "TILBURG-310": {
+      "step": "field",
+      "status": 404,
+      "detail": "{\"errorMessages\":[\"De issue bestaat niet of je hebt geen toestemming om hem te bekijken.\"],\"errors\":{}}"
+    },
+    "TILBURG-310_comment": {
+      "step": "comment",
+      "status": 404,
+      "detail": "{\"errorMessages\":[\"De issue bestaat niet of je hebt geen toestemming om hem te bekijken.\"],\"errors\":{}}"
+    },
+    "TILBURG-422": {
+      "step": "field",
+      "status": 404,
+      "detail": "{\"errorMessages\":[\"De issue bestaat niet of je hebt geen toestemming om hem te bekijken.\"],\"errors\":{}}"
+    },
+    "TILBURG-422_comment": {
+      "step": "comment",
+      "status": 404,
+      "detail": "{\"errorMessages\":[\"De issue bestaat niet of je hebt geen toestemming om hem te bekijken.\"],\"errors\":{}}"
+    },
+    "TILBURG-326": {
+      "step": "field",
+      "status": 404,
+      "detail": "{\"errorMessages\":[\"De issue bestaat niet of je hebt geen toestemming om hem te bekijken.\"],\"errors\":{}}"
+    },
+    "TILBURG-326_comment": {
+      "step": "comment",
+      "status": 404,
+      "detail": "{\"errorMessages\":[\"De issue bestaat niet of je hebt geen toestemming om hem te bekijken.\"],\"errors\":{}}"
+    },
+    "TILBURG-411": {
+      "step": "field",
+      "status": 404,
+      "detail": "{\"errorMessages\":[\"De issue bestaat niet of je hebt geen toestemming om hem te bekijken.\"],\"errors\":{}}"
+    },
+    "TILBURG-411_comment": {
+      "step": "comment",
+      "status": 404,
+      "detail": "{\"errorMessages\":[\"De issue bestaat niet of je hebt geen toestemming om hem te bekijken.\"],\"errors\":{}}"
+    },
+    "TILBURG-410": {
+      "step": "field",
+      "status": 404,
+      "detail": "{\"errorMessages\":[\"De issue bestaat niet of je hebt geen toestemming om hem te bekijken.\"],\"errors\":{}}"
+    },
+    "TILBURG-410_comment": {
+      "step": "comment",
+      "status": 404,
+      "detail": "{\"errorMessages\":[\"De issue bestaat niet of je hebt geen toestemming om hem te bekijken.\"],\"errors\":{}}"
+    },
+    "TILBURG-323": {
+      "step": "field",
+      "status": 404,
+      "detail": "{\"errorMessages\":[\"De issue bestaat niet of je hebt geen toestemming om hem te bekijken.\"],\"errors\":{}}"
+    },
+    "TILBURG-323_comment": {
+      "step": "comment",
+      "status": 404,
+      "detail": "{\"errorMessages\":[\"De issue bestaat niet of je hebt geen toestemming om hem te bekijken.\"],\"errors\":{}}"
+    },
+    "TILBURG-339": {
+      "step": "field",
+      "status": 404,
+      "detail": "{\"errorMessages\":[\"De issue bestaat niet of je hebt geen toestemming om hem te bekijken.\"],\"errors\":{}}"
+    },
+    "TILBURG-339_comment": {
+      "step": "comment",
+      "status": 404,
+      "detail": "{\"errorMessages\":[\"De issue bestaat niet of je hebt geen toestemming om hem te bekijken.\"],\"errors\":{}}"
+    },
+    "TILBURG-338": {
+      "step": "field",
+      "status": 404,
+      "detail": "{\"errorMessages\":[\"De issue bestaat niet of je hebt geen toestemming om hem te bekijken.\"],\"errors\":{}}"
+    },
+    "TILBURG-338_comment": {
+      "step": "comment",
+      "status": 404,
+      "detail": "{\"errorMessages\":[\"De issue bestaat niet of je hebt geen toestemming om hem te bekijken.\"],\"errors\":{}}"
+    },
+    "TILBURG-335": {
+      "step": "field",
+      "status": 404,
+      "detail": "{\"errorMessages\":[\"De issue bestaat niet of je hebt geen toestemming om hem te bekijken.\"],\"errors\":{}}"
+    },
+    "TILBURG-335_comment": {
+      "step": "comment",
+      "status": 404,
+      "detail": "{\"errorMessages\":[\"De issue bestaat niet of je hebt geen toestemming om hem te bekijken.\"],\"errors\":{}}"
+    },
+    "TILBURG-334": {
+      "step": "field",
+      "status": 404,
+      "detail": "{\"errorMessages\":[\"De issue bestaat niet of je hebt geen toestemming om hem te bekijken.\"],\"errors\":{}}"
+    },
+    "TILBURG-334_comment": {
+      "step": "comment",
+      "status": 404,
+      "detail": "{\"errorMessages\":[\"De issue bestaat niet of je hebt geen toestemming om hem te bekijken.\"],\"errors\":{}}"
+    },
+    "ZRC-012": {
+      "step": "field",
+      "status": 404,
+      "detail": "{\"errorMessages\":[\"De issue bestaat niet of je hebt geen toestemming om hem te bekijken.\"],\"errors\":{}}"
+    },
+    "ZRC-012_comment": {
+      "step": "comment",
+      "status": 404,
+      "detail": "{\"errorMessages\":[\"De issue bestaat niet of je hebt geen toestemming om hem te bekijken.\"],\"errors\":{}}"
+    },
+    "ZRC-007": {
+      "step": "field",
+      "status": 404,
+      "detail": "{\"errorMessages\":[\"De issue bestaat niet of je hebt geen toestemming om hem te bekijken.\"],\"errors\":{}}"
+    },
+    "ZRC-007_comment": {
+      "step": "comment",
+      "status": 404,
+      "detail": "{\"errorMessages\":[\"De issue bestaat niet of je hebt geen toestemming om hem te bekijken.\"],\"errors\":{}}"
+    }
+  },
+  "elapsed_minutes": 18.3,
+  "timestamp": "2026-02-25T14:45:30.306374"
+}
