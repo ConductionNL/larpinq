@@ -9,6 +9,8 @@
 
 /node_modules/
 /js/
+/docs/node_modules/
+/docs/.docusaurus/
 
 src/data/TempAuthKey.js
 
