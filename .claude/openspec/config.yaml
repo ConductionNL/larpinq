@@ -1,0 +1,44 @@
+schema: conduction
+
+context: |
+  Organization: Conduction BV
+  Workspace: Nextcloud apps-extra (multi-repo)
+  Tech stack: PHP 8.1+ (Nextcloud App Framework), Vue.js 2 + Pinia (frontends)
+  Database: PostgreSQL with pgvector
+  Design system: NL Design System (Rijkshuisstijl, Utrecht tokens)
+  Compliance: WCAG AA, Dutch government design standards
+  Container: Docker (Apache + mod_php for NC, Node for frontends)
+  CI/CD: GitHub Actions
+  All projects are under the ConductionNL GitHub organization.
+
+rules:
+  proposal:
+    - Reference which project(s) this change affects
+    - Identify cross-project dependencies if any
+    - Include rollback strategy
+  specs:
+    - Use Given/When/Then format for all scenarios
+    - Use RFC 2119 keywords (MUST, SHALL, SHOULD, MAY)
+    - Reference shared specs from openspec/specs/ where applicable
+    - Every spec MUST include Status and Scope fields in the header
+    - Delta specs MUST use section prefixes (ADDED/MODIFIED/REMOVED/RENAMED) per writing-specs.md
+    - REMOVED Requirements sections MUST include Reason and Migration fields
+    - RENAMED Requirements sections MUST use FROM:/TO: format with "No behavior change — rename only"
+  design:
+    - Include API endpoint definitions with request/response examples
+    - Note Nextcloud-specific patterns (DI, OCP interfaces, annotations)
+    - Include database migration plan if schema changes are needed
+    - Design decisions (the "why") belong in openspec/architecture/adr-{NNN}-*.md, not inline
+  tasks:
+    - Each task should be small enough for a single Ralph Wiggum iteration
+    - Include spec_ref pointing to the relevant spec section
+    - Include files list
+    - Tasks should be ordered by dependency (implement foundations first)
+    - Each task MUST include three-layer deliverables (backend + UI + tests) where applicable
+    - Include specific acceptance criteria extracted from spec scenarios
+    - Include test commands to verify task completion
+  docs:
+    - Follow writing-docs.md principles (reference don't duplicate, audience determines location)
+    - Update affected docs/ guides when a change modifies documented behavior
+    - Use [Future] markers only for features on the active roadmap
+    - Use [Legacy] markers for superseded approaches

@@ -1,0 +1,32 @@
+{
+  "mcpServers": {
+    "browser-1": {
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest", "--browser", "chromium", "--headless", "--isolated"]
+    },
+    "browser-2": {
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest", "--browser", "chromium", "--headless", "--isolated"]
+    },
+    "browser-3": {
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest", "--browser", "chromium", "--headless", "--isolated"]
+    },
+    "browser-4": {
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest", "--browser", "chromium", "--headless", "--isolated"]
+    },
+    "browser-5": {
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest", "--browser", "chromium", "--headless", "--isolated"]
+    },
+    "browser-6": {
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest", "--browser", "chromium", "--isolated"]
+    },
+    "browser-7": {
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest", "--browser", "chromium", "--headless", "--isolated"]
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "browser-1": { "url": "http://localhost:9221/mcp" },
+    "browser-2": { "url": "http://localhost:9222/mcp" },
+    "browser-3": { "url": "http://localhost:9223/mcp" },
+    "browser-4": { "url": "http://localhost:9224/mcp" },
+    "browser-5": { "url": "http://localhost:9225/mcp" },
+    "browser-6": { "url": "http://localhost:9226/mcp" },
+    "browser-7": { "url": "http://localhost:9227/mcp" }
+  }
+}

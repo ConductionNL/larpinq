@@ -1,0 +1,29 @@
+# Local Credentials (DO NOT COMMIT)
+
+Copy this file to `CLAUDE.local.md` and fill in your values:
+
+```bash
+cp CLAUDE.local.md.example CLAUDE.local.md
+```
+
+## Local Backend Login
+
+- Email: admin
+- Password: admin
+
+## Test Backend Login
+
+- Email: your-email@conduction.nl
+- Password: (get from 1Password / team lead)
+
+## Production Backend Login
+
+- Email: your-email@conduction.nl
+- Password: (get from 1Password / team lead)
+
+## Jira / Tempo API (optional, for WBSO tracking)
+
+- Jira URL: https://conduction.atlassian.net
+- Jira Email: your-email@conduction.nl
+- Jira API Token: (generate at https://id.atlassian.com/manage-profile/security/api-tokens)
+- Tempo API Token: (generate in Tempo > Settings > API Integration)
