@@ -14,3 +14,8 @@ src/data/TempAuthKey.js
 
 *.Identifier
 .claude/worktrees/
+
+# Test/build artifacts
+.docusaurus
+coverage/
+.phpunit.result.cache
