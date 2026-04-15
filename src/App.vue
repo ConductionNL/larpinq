@@ -13,7 +13,7 @@
 				<router-view />
 			</NcAppContent>
 			<CnIndexSidebar
-				v-if="sidebarState.active"
+				v-if="sidebarState.active && !objectSidebarState.active"
 				:schema="sidebarState.schema"
 				:visible-columns="sidebarState.visibleColumns"
 				:search-value="sidebarState.searchValue"
@@ -24,6 +24,12 @@
 				@search="onSidebarSearch"
 				@columns-change="onSidebarColumnsChange"
 				@filter-change="onSidebarFilterChange" />
+			<CnObjectSidebar
+				v-if="objectSidebarState.active"
+				:object-item="objectSidebarState.objectItem"
+				:schema="objectSidebarState.schema"
+				:open="objectSidebarState.open"
+				@update:open="objectSidebarState.open = $event" />
 			<UserSettings :open.sync="showSettingsDialog" />
 		</template>
 		<!-- Loading state -->
@@ -39,7 +45,7 @@
 import Vue from 'vue'
 import { NcContent, NcAppContent, NcLoadingIcon, NcButton, NcNoteCard } from '@nextcloud/vue'
 import { generateUrl, imagePath } from '@nextcloud/router'
-import { CnIndexSidebar } from '@conduction/nextcloud-vue'
+import { CnIndexSidebar, CnObjectSidebar } from '@conduction/nextcloud-vue'
 import MainMenu from './navigation/MainMenu.vue'
 import UserSettings from './views/settings/UserSettings.vue'
 import { initializeStores } from './store/store.js'
@@ -54,6 +60,7 @@ export default {
 		NcButton,
 		NcNoteCard,
 		CnIndexSidebar,
+		CnObjectSidebar,
 		MainMenu,
 		UserSettings,
 	},
@@ -61,6 +68,7 @@ export default {
 	provide() {
 		return {
 			sidebarState: this.sidebarState,
+			objectSidebarState: this.objectSidebarState,
 		}
 	},
 
@@ -79,6 +87,12 @@ export default {
 				onSearch: null,
 				onColumnsChange: null,
 				onFilterChange: null,
+			}),
+			objectSidebarState: Vue.observable({
+				active: false,
+				open: true,
+				objectItem: null,
+				schema: null,
 			}),
 		}
 	},
