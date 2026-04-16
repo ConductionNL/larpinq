@@ -202,7 +202,7 @@ export default {
 	methods: {
 		formatValue(value, field) {
 			if (value === undefined || value === null) return '-'
-			if (field.type === 'boolean') return value ? 'Yes' : 'No'
+			if (field.type === 'boolean') return value ? t('larpingapp', 'Yes') : t('larpingapp', 'No')
 			return String(value) || '-'
 		},
 		async onSave() {

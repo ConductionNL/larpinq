@@ -26,10 +26,14 @@
 				@filter-change="onSidebarFilterChange" />
 			<CnObjectSidebar
 				v-if="objectSidebarState.active"
-				:object-item="objectSidebarState.objectItem"
+				:object-type="objectSidebarState.objectType"
+				:object-id="objectSidebarState.objectId"
+				:title="objectSidebarState.title"
+				:subtitle="objectSidebarState.subtitle"
+				:register="objectSidebarState.register"
 				:schema="objectSidebarState.schema"
-				:open="objectSidebarState.open"
-				@update:open="objectSidebarState.open = $event" />
+				:hidden-tabs="objectSidebarState.hiddenTabs"
+				:open.sync="objectSidebarState.open" />
 			<UserSettings :open.sync="showSettingsDialog" />
 		</template>
 		<!-- Loading state -->
@@ -91,8 +95,13 @@ export default {
 			objectSidebarState: Vue.observable({
 				active: false,
 				open: true,
-				objectItem: null,
-				schema: null,
+				objectType: '',
+				objectId: '',
+				title: '',
+				subtitle: '',
+				register: '',
+				schema: '',
+				hiddenTabs: [],
 			}),
 		}
 	},

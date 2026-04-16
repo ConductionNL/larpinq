@@ -104,7 +104,7 @@
 							@click="$router.push({ name: 'Characters' })">
 							<AccountGroup :size="20" class="item-icon" />
 							<div class="item-content">
-								<span class="item-title">{{ character.name || 'Unnamed Character' }}</span>
+								<span class="item-title">{{ character.name || t('larpingapp', 'Unnamed Character') }}</span>
 							</div>
 						</div>
 						<button
@@ -131,7 +131,7 @@
 							@click="$router.push({ name: 'Events' })">
 							<CalendarStar :size="20" class="item-icon" />
 							<div class="item-content">
-								<span class="item-title">{{ event.name || 'Unnamed Event' }}</span>
+								<span class="item-title">{{ event.name || t('larpingapp', 'Unnamed Event') }}</span>
 							</div>
 						</div>
 						<button
@@ -153,24 +153,24 @@
 		<CnAdvancedFormDialog
 			v-if="showCharacterDialog"
 			:schema="characterSchema"
-			:cancel-label="t('larpingapp', 'Annuleren')"
-			:confirm-label="t('larpingapp', 'Aanmaken')"
+			:cancel-label="t('larpingapp', 'Cancel')"
+			:confirm-label="t('larpingapp', 'Create')"
 			@confirm="onCreateCharacter"
 			@close="showCharacterDialog = false" />
 
 		<CnAdvancedFormDialog
 			v-if="showItemDialog"
 			:schema="itemSchema"
-			:cancel-label="t('larpingapp', 'Annuleren')"
-			:confirm-label="t('larpingapp', 'Aanmaken')"
+			:cancel-label="t('larpingapp', 'Cancel')"
+			:confirm-label="t('larpingapp', 'Create')"
 			@confirm="onCreateItem"
 			@close="showItemDialog = false" />
 
 		<CnAdvancedFormDialog
 			v-if="showConditionDialog"
 			:schema="conditionSchema"
-			:cancel-label="t('larpingapp', 'Annuleren')"
-			:confirm-label="t('larpingapp', 'Aanmaken')"
+			:cancel-label="t('larpingapp', 'Cancel')"
+			:confirm-label="t('larpingapp', 'Create')"
 			@confirm="onCreateCondition"
 			@close="showConditionDialog = false" />
 	</div>
