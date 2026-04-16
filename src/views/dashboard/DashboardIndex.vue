@@ -8,24 +8,24 @@
 			:empty-label="t('larpingapp', 'Welcome to the Larping App!')"
 			@layout-change="onLayoutChange">
 			<!-- Header actions -->
-			<template #header-actions>
+			<template #actions>
 				<NcButton type="primary" @click="showCharacterDialog = true">
 					<template #icon>
 						<Plus :size="20" />
 					</template>
-					{{ t('larpingapp', 'New Character') }}
+					{{ t('larpingapp', 'New character') }}
 				</NcButton>
 				<NcButton @click="showItemDialog = true">
 					<template #icon>
 						<Plus :size="20" />
 					</template>
-					{{ t('larpingapp', 'New Item') }}
+					{{ t('larpingapp', 'New item') }}
 				</NcButton>
 				<NcButton @click="showConditionDialog = true">
 					<template #icon>
 						<Plus :size="20" />
 					</template>
-					{{ t('larpingapp', 'New Condition') }}
+					{{ t('larpingapp', 'New condition') }}
 				</NcButton>
 				<NcButton
 					:disabled="loading"
@@ -235,9 +235,9 @@ export default {
 				{ id: 'count-events', title: t('larpingapp', 'Events') },
 				{ id: 'count-items', title: t('larpingapp', 'Items') },
 				{ id: 'count-players', title: t('larpingapp', 'Players') },
-				{ id: 'recent-characters', title: t('larpingapp', 'Recent Characters') },
-				{ id: 'recent-events', title: t('larpingapp', 'Recent Events') },
-				{ id: 'skill-usage', title: t('larpingapp', 'Skill Usage by Characters') },
+				{ id: 'recent-characters', title: t('larpingapp', 'Recent characters') },
+				{ id: 'recent-events', title: t('larpingapp', 'Recent events') },
+				{ id: 'skill-usage', title: t('larpingapp', 'Skill usage by characters') },
 			]
 		},
 		characters() {
