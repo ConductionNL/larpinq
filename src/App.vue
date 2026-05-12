@@ -6,7 +6,10 @@
 			<NcAppContent>
 				<NcNoteCard v-if="!hasOpenRegisters" type="warning" class="open-register-warning">
 					{{ t('larpingapp', 'OpenRegister is not configured. Some features may be limited.') }}
-					<NcButton v-if="isAdmin" type="tertiary" :href="appStoreUrl" size="small">
+					<NcButton v-if="isAdmin"
+						type="tertiary"
+						:href="appStoreUrl"
+						size="small">
 						{{ t('larpingapp', 'Configure') }}
 					</NcButton>
 				</NcNoteCard>
