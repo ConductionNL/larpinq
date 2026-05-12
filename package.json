@@ -55,6 +55,7 @@
 		"eslint-plugin-n": "^16.6.2",
 		"eslint-plugin-promise": "^6.6.0",
 		"eslint-plugin-vue": "^9.32.0",
+		"node-polyfill-webpack-plugin": "^4.1.0",
 		"style-loader": "~4.0.0",
 		"vue-loader": "^15.11.1 <16.0.0",
 		"vue-template-compiler": "^2.7.16",
