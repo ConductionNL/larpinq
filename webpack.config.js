@@ -50,4 +50,10 @@ webpackConfig.plugins = [
 	new webpack.DefinePlugin({ appVersion: JSON.stringify(process.env.npm_package_version) }),
 ]
 
+// Force @nextcloud/dialogs to resolve from this app's node_modules (the Vue-2
+// `^3.x` line), preventing @conduction/nextcloud-vue's nested `@nextcloud/dialogs@^7`
+// — which drags in a Vue-3 `@nextcloud/vue` + floating-vue and breaks the Vue-2
+// build with "export 'createApp' was not found in 'vue'". Mirrors procest/decidesk.
+webpackConfig.resolve.alias['@nextcloud/dialogs'] = path.resolve(__dirname, 'node_modules/@nextcloud/dialogs')
+
 module.exports = webpackConfig
