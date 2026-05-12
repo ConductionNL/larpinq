@@ -12,6 +12,7 @@
     "watch": "NODE_ENV=development webpack --config webpack.config.js --progress --watch",
     "lint": "eslint src",
     "lint-fix": "npm run lint -- --fix",
+    "check:manifest": "node tests/validate-manifest.js",
     "test": "jest --silent",
     "test-coverage": "jest --silent --coverage",
     "stylelint": "stylelint src/**/*.vue src/**/*.scss src/**/*.css"
@@ -21,8 +22,8 @@
   ],
   "sideEffects": true,
   "dependencies": {
-    "@conduction/nextcloud-vue": "^0.1.0-beta.1",
-    "@nextcloud/axios": "^2.5.0",
+    "@conduction/nextcloud-vue": "^1.0.0-beta.40",
+    "@nextcloud/axios": "~2.5.2",
     "@nextcloud/dialogs": "^3.2.0",
     "@nextcloud/initial-state": "^2.2.0",
     "@nextcloud/l10n": "^2.0.1",
@@ -33,11 +34,16 @@
     "vue-material-design-icons": "^5.3.0",
     "vue-router": "^3.6.5"
   },
+  "overrides": {
+    "@nextcloud/axios": "~2.5.2"
+  },
   "devDependencies": {
     "@nextcloud/browserslist-config": "^3.0.1",
     "@nextcloud/eslint-config": "^8.4.1",
     "@nextcloud/stylelint-config": "^2.4.0",
     "@nextcloud/webpack-vue-config": "^6.0.1",
+    "ajv": "^8.20.0",
+    "ajv-formats": "^3.0.1",
     "css-loader": "~7.1.1",
     "eslint": "^8.57.0",
     "style-loader": "~4.0.0",

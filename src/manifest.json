@@ -1,0 +1,288 @@
+{
+	"$schema": "https://raw.githubusercontent.com/ConductionNL/nextcloud-vue/main/src/schemas/app-manifest.schema.json",
+	"version": "1.0.0",
+	"dependencies": ["openregister"],
+	"menu": [
+		{ "id": "Dashboard", "label": "Dashboard", "icon": "icon-category-dashboard", "route": "Dashboard", "order": 10 },
+		{ "id": "Characters", "label": "Characters", "icon": "icon-user", "route": "Characters", "order": 20 },
+		{ "id": "Players", "label": "Players", "icon": "icon-group", "route": "Players", "order": 30 },
+		{ "id": "Items", "label": "Items", "icon": "icon-category-organization", "route": "Items", "order": 40 },
+		{ "id": "Events", "label": "Events", "icon": "icon-calendar-dark", "route": "Events", "order": 50 },
+		{ "id": "Conditions", "label": "Conditions", "icon": "icon-category-monitoring", "route": "Conditions", "order": 60 },
+		{ "id": "Abilities", "label": "Abilities", "icon": "icon-category-security", "route": "Abilities", "section": "settings", "order": 70 },
+		{ "id": "Skills", "label": "Skills", "icon": "icon-category-customization", "route": "Skills", "section": "settings", "order": 75 },
+		{ "id": "Effects", "label": "Effects", "icon": "icon-category-workflow", "route": "Effects", "section": "settings", "order": 80 },
+		{ "id": "GameSettings", "label": "Game settings", "icon": "icon-category-customization", "route": "GameSettings", "section": "settings", "order": 85 },
+		{ "id": "Documentation", "label": "Documentation", "icon": "icon-info", "href": "https://larpingapp.com", "section": "settings", "order": 90 },
+		{ "id": "Settings", "label": "Settings", "icon": "icon-settings", "route": "Settings", "section": "settings", "order": 99 }
+	],
+	"pages": [
+		{
+			"id": "Dashboard",
+			"route": "/",
+			"type": "dashboard",
+			"title": "Dashboard",
+			"config": {
+				"widgets": [],
+				"layout": []
+			}
+		},
+		{
+			"id": "Characters",
+			"route": "/characters",
+			"type": "index",
+			"title": "Characters",
+			"config": {
+				"register": "larpingapp",
+				"schema": "character",
+				"columns": ["name", "type", "background", "approved", "gold", "silver"],
+				"sidebar": { "enabled": true, "showMetadata": true }
+			}
+		},
+		{
+			"id": "CharacterDetail",
+			"route": "/characters/:id",
+			"type": "detail",
+			"title": "Character",
+			"config": {
+				"register": "larpingapp",
+				"schema": "character",
+				"sidebarTabs": [
+					{ "id": "overview", "label": "Overview", "icon": "icon-info", "widgets": [{ "type": "data" }, { "type": "metadata" }], "order": 10 },
+					{ "id": "audit", "label": "Audit trail", "icon": "icon-history", "widgets": [{ "type": "audit-trail" }], "order": 90 }
+				]
+			}
+		},
+		{
+			"id": "Players",
+			"route": "/players",
+			"type": "index",
+			"title": "Players",
+			"config": {
+				"register": "larpingapp",
+				"schema": "player",
+				"columns": ["name", "description"],
+				"sidebar": { "enabled": true, "showMetadata": true }
+			}
+		},
+		{
+			"id": "PlayerDetail",
+			"route": "/players/:id",
+			"type": "detail",
+			"title": "Player",
+			"config": {
+				"register": "larpingapp",
+				"schema": "player",
+				"sidebarTabs": [
+					{ "id": "overview", "label": "Overview", "icon": "icon-info", "widgets": [{ "type": "data" }, { "type": "metadata" }], "order": 10 },
+					{ "id": "audit", "label": "Audit trail", "icon": "icon-history", "widgets": [{ "type": "audit-trail" }], "order": 90 }
+				]
+			}
+		},
+		{
+			"id": "Items",
+			"route": "/items",
+			"type": "index",
+			"title": "Items",
+			"config": {
+				"register": "larpingapp",
+				"schema": "item",
+				"columns": ["name", "effect", "unique", "description"],
+				"sidebar": { "enabled": true, "showMetadata": true }
+			}
+		},
+		{
+			"id": "ItemDetail",
+			"route": "/items/:id",
+			"type": "detail",
+			"title": "Item",
+			"config": {
+				"register": "larpingapp",
+				"schema": "item",
+				"sidebarTabs": [
+					{ "id": "overview", "label": "Overview", "icon": "icon-info", "widgets": [{ "type": "data" }, { "type": "metadata" }], "order": 10 },
+					{ "id": "audit", "label": "Audit trail", "icon": "icon-history", "widgets": [{ "type": "audit-trail" }], "order": 90 }
+				]
+			}
+		},
+		{
+			"id": "Events",
+			"route": "/events",
+			"type": "index",
+			"title": "Events",
+			"config": {
+				"register": "larpingapp",
+				"schema": "event",
+				"columns": ["name", "startDate", "endDate", "location"],
+				"sidebar": { "enabled": true, "showMetadata": true }
+			}
+		},
+		{
+			"id": "EventDetail",
+			"route": "/events/:id",
+			"type": "detail",
+			"title": "Event",
+			"config": {
+				"register": "larpingapp",
+				"schema": "event",
+				"sidebarTabs": [
+					{ "id": "overview", "label": "Overview", "icon": "icon-info", "widgets": [{ "type": "data" }, { "type": "metadata" }], "order": 10 },
+					{ "id": "audit", "label": "Audit trail", "icon": "icon-history", "widgets": [{ "type": "audit-trail" }], "order": 90 }
+				]
+			}
+		},
+		{
+			"id": "Conditions",
+			"route": "/conditions",
+			"type": "index",
+			"title": "Conditions",
+			"config": {
+				"register": "larpingapp",
+				"schema": "condition",
+				"columns": ["name", "effect", "unique", "description"],
+				"sidebar": { "enabled": true, "showMetadata": true }
+			}
+		},
+		{
+			"id": "ConditionDetail",
+			"route": "/conditions/:id",
+			"type": "detail",
+			"title": "Condition",
+			"config": {
+				"register": "larpingapp",
+				"schema": "condition",
+				"sidebarTabs": [
+					{ "id": "overview", "label": "Overview", "icon": "icon-info", "widgets": [{ "type": "data" }, { "type": "metadata" }], "order": 10 },
+					{ "id": "audit", "label": "Audit trail", "icon": "icon-history", "widgets": [{ "type": "audit-trail" }], "order": 90 }
+				]
+			}
+		},
+		{
+			"id": "Abilities",
+			"route": "/abilities",
+			"type": "index",
+			"title": "Abilities",
+			"config": {
+				"register": "larpingapp",
+				"schema": "ability",
+				"columns": ["name", "base", "description"],
+				"sidebar": { "enabled": true, "showMetadata": true }
+			}
+		},
+		{
+			"id": "AbilityDetail",
+			"route": "/abilities/:id",
+			"type": "detail",
+			"title": "Ability",
+			"config": {
+				"register": "larpingapp",
+				"schema": "ability",
+				"sidebarTabs": [
+					{ "id": "overview", "label": "Overview", "icon": "icon-info", "widgets": [{ "type": "data" }, { "type": "metadata" }], "order": 10 },
+					{ "id": "audit", "label": "Audit trail", "icon": "icon-history", "widgets": [{ "type": "audit-trail" }], "order": 90 }
+				]
+			}
+		},
+		{
+			"id": "Skills",
+			"route": "/skills",
+			"type": "index",
+			"title": "Skills",
+			"config": {
+				"register": "larpingapp",
+				"schema": "skill",
+				"columns": ["name", "effect", "description"],
+				"sidebar": { "enabled": true, "showMetadata": true }
+			}
+		},
+		{
+			"id": "SkillDetail",
+			"route": "/skills/:id",
+			"type": "detail",
+			"title": "Skill",
+			"config": {
+				"register": "larpingapp",
+				"schema": "skill",
+				"sidebarTabs": [
+					{ "id": "overview", "label": "Overview", "icon": "icon-info", "widgets": [{ "type": "data" }, { "type": "metadata" }], "order": 10 },
+					{ "id": "audit", "label": "Audit trail", "icon": "icon-history", "widgets": [{ "type": "audit-trail" }], "order": 90 }
+				]
+			}
+		},
+		{
+			"id": "Effects",
+			"route": "/effects",
+			"type": "index",
+			"title": "Effects",
+			"config": {
+				"register": "larpingapp",
+				"schema": "effect",
+				"columns": ["name", "modifier", "modification", "cumulative", "description"],
+				"sidebar": { "enabled": true, "showMetadata": true }
+			}
+		},
+		{
+			"id": "EffectDetail",
+			"route": "/effects/:id",
+			"type": "detail",
+			"title": "Effect",
+			"config": {
+				"register": "larpingapp",
+				"schema": "effect",
+				"sidebarTabs": [
+					{ "id": "overview", "label": "Overview", "icon": "icon-info", "widgets": [{ "type": "data" }, { "type": "metadata" }], "order": 10 },
+					{ "id": "audit", "label": "Audit trail", "icon": "icon-history", "widgets": [{ "type": "audit-trail" }], "order": 90 }
+				]
+			}
+		},
+		{
+			"id": "GameSettings",
+			"route": "/game-settings",
+			"type": "index",
+			"title": "Game settings",
+			"config": {
+				"register": "larpingapp",
+				"schema": "setting",
+				"columns": ["name", "value", "description"],
+				"sidebar": { "enabled": true, "showMetadata": true }
+			}
+		},
+		{
+			"id": "SettingDetail",
+			"route": "/game-settings/:id",
+			"type": "detail",
+			"title": "Game setting",
+			"config": {
+				"register": "larpingapp",
+				"schema": "setting",
+				"sidebarTabs": [
+					{ "id": "overview", "label": "Overview", "icon": "icon-info", "widgets": [{ "type": "data" }, { "type": "metadata" }], "order": 10 },
+					{ "id": "audit", "label": "Audit trail", "icon": "icon-history", "widgets": [{ "type": "audit-trail" }], "order": 90 }
+				]
+			}
+		},
+		{
+			"id": "Settings",
+			"route": "/settings",
+			"type": "settings",
+			"title": "Settings",
+			"config": {
+				"saveEndpoint": "/index.php/apps/larpingapp/api/settings",
+				"sections": [
+					{
+						"id": "version",
+						"title": "Version Information",
+						"widgets": [{ "type": "version-info" }]
+					},
+					{
+						"id": "configuration",
+						"title": "Configuration",
+						"fields": [
+							{ "key": "register", "label": "Register", "type": "string", "help": "OpenRegister register ID" }
+						]
+					}
+				]
+			}
+		}
+	]
+}
