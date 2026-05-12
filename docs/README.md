@@ -20,4 +20,4 @@
 
 ## Screenshots
 
-Screenshots are stored in `screenshots/` and referenced from feature docs.
+Screenshots are stored under `static/screenshots/` (so Docusaurus copies them into the build root) and referenced root-absolute as `/screenshots/...` from feature docs.

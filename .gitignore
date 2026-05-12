@@ -10,7 +10,11 @@
 /node_modules/
 /js/
 /docs/node_modules/
+/docs/build/
 /docs/.docusaurus/
+/docs/.cache-loader/
+# Generated translation files — re-enable when a Dutch translation pass ships (ADR-030)
+/docs/i18n/nl/
 
 src/data/TempAuthKey.js
 
@@ -21,3 +25,10 @@ src/data/TempAuthKey.js
 .docusaurus
 coverage/
 .phpunit.result.cache
+
+# Playwright (journeydoc capture / e2e)
+/test-results/
+/playwright-report/
+/tests/e2e/.auth/
+/tests/e2e/playwright-report/
+/tests/e2e/test-results/

@@ -27,7 +27,7 @@ Characters are accessible from the main navigation sidebar with the BriefcaseAcc
 
 ## Screenshot
 
-![Character Management](../screenshots/character-management.png)
+![Character Management](/screenshots/character-management.png)
 
 ## Technical Details
 
