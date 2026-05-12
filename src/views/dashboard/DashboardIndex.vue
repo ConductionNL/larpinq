@@ -8,24 +8,24 @@
 			:empty-label="t('larpingapp', 'Welcome to the Larping App!')"
 			@layout-change="onLayoutChange">
 			<!-- Header actions -->
-			<template #header-actions>
+			<template #actions>
 				<NcButton type="primary" @click="showCharacterDialog = true">
 					<template #icon>
 						<Plus :size="20" />
 					</template>
-					{{ t('larpingapp', 'New Character') }}
+					{{ t('larpingapp', 'New character') }}
 				</NcButton>
 				<NcButton @click="showItemDialog = true">
 					<template #icon>
 						<Plus :size="20" />
 					</template>
-					{{ t('larpingapp', 'New Item') }}
+					{{ t('larpingapp', 'New item') }}
 				</NcButton>
 				<NcButton @click="showConditionDialog = true">
 					<template #icon>
 						<Plus :size="20" />
 					</template>
-					{{ t('larpingapp', 'New Condition') }}
+					{{ t('larpingapp', 'New condition') }}
 				</NcButton>
 				<NcButton
 					:disabled="loading"
@@ -104,7 +104,7 @@
 							@click="$router.push({ name: 'Characters' })">
 							<AccountGroup :size="20" class="item-icon" />
 							<div class="item-content">
-								<span class="item-title">{{ character.name || 'Unnamed Character' }}</span>
+								<span class="item-title">{{ character.name || t('larpingapp', 'Unnamed Character') }}</span>
 							</div>
 						</div>
 						<button
@@ -131,7 +131,7 @@
 							@click="$router.push({ name: 'Events' })">
 							<CalendarStar :size="20" class="item-icon" />
 							<div class="item-content">
-								<span class="item-title">{{ event.name || 'Unnamed Event' }}</span>
+								<span class="item-title">{{ event.name || t('larpingapp', 'Unnamed Event') }}</span>
 							</div>
 						</div>
 						<button
@@ -153,24 +153,24 @@
 		<CnAdvancedFormDialog
 			v-if="showCharacterDialog"
 			:schema="characterSchema"
-			:cancel-label="t('larpingapp', 'Annuleren')"
-			:confirm-label="t('larpingapp', 'Aanmaken')"
+			:cancel-label="t('larpingapp', 'Cancel')"
+			:confirm-label="t('larpingapp', 'Create')"
 			@confirm="onCreateCharacter"
 			@close="showCharacterDialog = false" />
 
 		<CnAdvancedFormDialog
 			v-if="showItemDialog"
 			:schema="itemSchema"
-			:cancel-label="t('larpingapp', 'Annuleren')"
-			:confirm-label="t('larpingapp', 'Aanmaken')"
+			:cancel-label="t('larpingapp', 'Cancel')"
+			:confirm-label="t('larpingapp', 'Create')"
 			@confirm="onCreateItem"
 			@close="showItemDialog = false" />
 
 		<CnAdvancedFormDialog
 			v-if="showConditionDialog"
 			:schema="conditionSchema"
-			:cancel-label="t('larpingapp', 'Annuleren')"
-			:confirm-label="t('larpingapp', 'Aanmaken')"
+			:cancel-label="t('larpingapp', 'Cancel')"
+			:confirm-label="t('larpingapp', 'Create')"
 			@confirm="onCreateCondition"
 			@close="showConditionDialog = false" />
 	</div>
@@ -235,9 +235,9 @@ export default {
 				{ id: 'count-events', title: t('larpingapp', 'Events') },
 				{ id: 'count-items', title: t('larpingapp', 'Items') },
 				{ id: 'count-players', title: t('larpingapp', 'Players') },
-				{ id: 'recent-characters', title: t('larpingapp', 'Recent Characters') },
-				{ id: 'recent-events', title: t('larpingapp', 'Recent Events') },
-				{ id: 'skill-usage', title: t('larpingapp', 'Skill Usage by Characters') },
+				{ id: 'recent-characters', title: t('larpingapp', 'Recent characters') },
+				{ id: 'recent-events', title: t('larpingapp', 'Recent events') },
+				{ id: 'skill-usage', title: t('larpingapp', 'Skill usage by characters') },
 			]
 		},
 		characters() {

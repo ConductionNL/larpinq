@@ -48,12 +48,12 @@
 		</div>
 
 		<NcSettingsSection
-			name="Data storage"
-			description="Configure where to store your LARP data">
+			:name="t('larpingapp', 'Data storage')"
+			:description="t('larpingapp', 'Configure where to store your LARP data')">
 			<div v-if="!loading">
 				<!-- Warning if OpenRegister is not installed but selected -->
 				<NcNoteCard v-if="!settings.openRegisters" type="warning">
-					Open Register is not installed. Some features might be unavailable.
+					{{ t('larpingapp', 'Open Register is not installed. Some features might be unavailable.') }}
 				</NcNoteCard>
 
 				<!-- Object Type Configuration -->
@@ -65,7 +65,7 @@
 						<NcSelect
 							v-model="configuration[objectType].source"
 							:options="sourceOptions"
-							input-label="Source"
+							:input-label="t('larpingapp', 'Source')"
 							:disabled="loading"
 							@change="handleSourceChange(objectType)" />
 
@@ -74,7 +74,7 @@
 							v-if="configuration[objectType].source?.value === 'openregister'"
 							v-model="configuration[objectType].register"
 							:options="registerOptions"
-							input-label="Register"
+							:input-label="t('larpingapp', 'Register')"
 							:disabled="loading"
 							@change="handleRegisterChange(objectType)" />
 
@@ -83,7 +83,7 @@
 							v-if="configuration[objectType].source?.value === 'openregister' && configuration[objectType].register"
 							v-model="configuration[objectType].schema"
 							:options="getSchemaOptions(configuration[objectType].register?.value)"
-							input-label="Schema"
+							:input-label="t('larpingapp', 'Schema')"
 							:disabled="loading" />
 					</div>
 				</div>
@@ -98,7 +98,7 @@
 							<NcLoadingIcon v-if="saving" :size="20" />
 							<Save v-else :size="20" />
 						</template>
-						Save All
+						{{ t('larpingapp', 'Save All') }}
 					</NcButton>
 				</div>
 			</div>
@@ -154,8 +154,8 @@ export default defineComponent({
 			},
 			configuration: {},
 			sourceOptions: [
-				{ label: 'Internal', value: 'internal' },
-				{ label: 'Open Register', value: 'openregister' },
+				{ label: t('larpingapp', 'Internal'), value: 'internal' },
+				{ label: t('larpingapp', 'Open Register'), value: 'openregister' },
 			],
 		}
 	},
