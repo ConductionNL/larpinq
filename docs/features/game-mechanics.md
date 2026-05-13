@@ -35,7 +35,7 @@ The game mechanics system encompasses Skills, Items, Conditions, Effects, and Ab
 
 ## Screenshot
 
-![Game Mechanics](../screenshots/game-mechanics.png)
+![Game Mechanics](/screenshots/game-mechanics.png)
 
 ## Technical Details
 

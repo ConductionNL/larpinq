@@ -3,7 +3,7 @@
   "info": {
     "title": "LarpingApp Register",
     "description": "Live Action Role Playing character management register for the LarpingApp Nextcloud app. Manages characters, players, abilities, skills, items, conditions, effects, events, and settings.",
-    "version": "1.0.0"
+    "version": "1.1.0"
   },
   "x-openregister": {
     "type": "application",
@@ -39,7 +39,7 @@
         "slug": "character",
         "title": "Character",
         "icon": "BriefcaseAccountOutline",
-        "version": "1.0.0",
+        "version": "1.1.0",
         "summary": "A playable or non-playable character in the LARP game",
         "description": "Represents a character entity with stats, skills, items, conditions, and event participation. Characters can be player characters, NPCs, or other types. Game masters approve characters before play.",
         "required": [
@@ -181,6 +181,31 @@
               "format": "uuid"
             },
             "visible": false
+          }
+        },
+        "configuration": {
+          "x-openregister-lifecycle": {
+            "field": "approved",
+            "initial": "no",
+            "final": [
+              "approved"
+            ],
+            "transitions": {
+              "approve": {
+                "from": [
+                  "no"
+                ],
+                "to": "approved",
+                "description": "Game master approves the character for play."
+              },
+              "unapprove": {
+                "from": [
+                  "approved"
+                ],
+                "to": "no",
+                "description": "Revoke approval (e.g. character changed substantially)."
+              }
+            }
           }
         }
       },

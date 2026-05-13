@@ -19,7 +19,7 @@ Provides a settings dialog accessible from the navigation footer, allowing users
 
 ## Screenshot
 
-![User Settings](../screenshots/user-settings.png)
+![User Settings](/screenshots/user-settings.png)
 
 ## Technical Details
 

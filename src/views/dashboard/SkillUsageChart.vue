@@ -1,23 +1,23 @@
 <template>
 	<div class="skill-usage-chart">
 		<div v-if="!openRegisterConfigured" class="chart-empty">
-			<p>Configure OpenRegister data source to enable this widget</p>
+			<p>{{ t('larpingapp', 'Configure OpenRegister data source to enable this widget') }}</p>
 		</div>
 
 		<div v-else-if="loading" class="chart-loading">
 			<NcLoadingIcon :size="44" />
-			<span>Loading skill data...</span>
+			<span>{{ t('larpingapp', 'Loading skill data...') }}</span>
 		</div>
 
 		<div v-else-if="error" class="chart-error">
 			<p>{{ error }}</p>
 			<NcButton type="secondary" @click="fetchData">
-				Retry
+				{{ t('larpingapp', 'Retry') }}
 			</NcButton>
 		</div>
 
 		<div v-else-if="!hasData" class="chart-empty">
-			<p>No skill data available</p>
+			<p>{{ t('larpingapp', 'No skill data available') }}</p>
 		</div>
 
 		<VueApexCharts
@@ -86,8 +86,8 @@ export default {
 				},
 				tooltip: {
 					y: {
-						formatter(val) {
-							return val + ' characters'
+						formatter: (val) => {
+							return val + ' ' + t('larpingapp', 'characters')
 						},
 					},
 				},
@@ -154,11 +154,11 @@ export default {
 
 				if (rest.length > 0) {
 					const otherCount = rest.reduce((sum, b) => sum + b.count, 0)
-					this.skillLabels.push('Other')
+					this.skillLabels.push(t('larpingapp', 'Other'))
 					this.skillCounts.push(otherCount)
 				}
 			} catch (err) {
-				this.error = err.message || 'Failed to load skill data'
+				this.error = err.message || t('larpingapp', 'Failed to load skill data')
 				console.error('[SkillUsageChart] Error:', err)
 			} finally {
 				this.loading = false

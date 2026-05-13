@@ -16,7 +16,7 @@ LarpingApp provides a dedicated admin settings page in the Nextcloud administrat
 
 ## Screenshots
 
-![Admin Settings Page](../screenshots/admin-settings.png)
+![Admin Settings Page](/screenshots/admin-settings.png)
 
 *The LarpingApp admin settings page in the Nextcloud administration panel.*
 

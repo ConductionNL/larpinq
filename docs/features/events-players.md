@@ -30,7 +30,7 @@ Manages LARP events (game gatherings with date ranges, locations, and participan
 
 ## Screenshot
 
-![Events and Players](../screenshots/events-players.png)
+![Events and Players](/screenshots/events-players.png)
 
 ## Technical Details
 
