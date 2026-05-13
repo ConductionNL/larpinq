@@ -12,8 +12,13 @@ jobs:
     with:
       app-name: larpingapp
       php-version: "8.3"
+      # appinfo/info.xml declares <nextcloud min-version="28" max-version="32"/>,
+      # so the PHPUnit matrix only targets the supported server branches.
+      php-test-versions: '["8.3", "8.4"]'
+      nextcloud-test-refs: '["stable31", "stable32"]'
       enable-psalm: false
       enable-phpstan: false
       enable-phpmetrics: true
       enable-frontend: true
       enable-eslint: true
+      enable-phpunit: true
