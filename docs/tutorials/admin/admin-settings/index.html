@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="generator" content="Docusaurus v3.9.2">
 <title data-rh="true">Manage Larping settings | LarpingApp</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:url" content="https://larpingapp.conduction.nl/docs/tutorials/admin/admin-settings/"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="Manage Larping settings | LarpingApp"><meta data-rh="true" name="description" content="Pick the data source (Nextcloud DB or OpenRegister) for each of the 9 entity types, set the register / schema mappings, and save."><meta data-rh="true" property="og:description" content="Pick the data source (Nextcloud DB or OpenRegister) for each of the 9 entity types, set the register / schema mappings, and save."><link data-rh="true" rel="icon" href="/img/favicon.svg"><link data-rh="true" rel="canonical" href="https://larpingapp.conduction.nl/docs/tutorials/admin/admin-settings/"><link data-rh="true" rel="alternate" href="https://larpingapp.conduction.nl/docs/tutorials/admin/admin-settings/" hreflang="en"><link data-rh="true" rel="alternate" href="https://larpingapp.conduction.nl/docs/tutorials/admin/admin-settings/" hreflang="x-default"><link data-rh="true" rel="stylesheet" href="/lib/canal-footer.css"><link data-rh="true" rel="stylesheet" href="/lib/kade-cyclist.css"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Tutorials","item":"https://larpingapp.conduction.nl/docs/category/tutorials"},{"@type":"ListItem","position":2,"name":"Admin guide","item":"https://larpingapp.conduction.nl/docs/category/admin-guide"},{"@type":"ListItem","position":3,"name":"Manage Larping settings","item":"https://larpingapp.conduction.nl/docs/tutorials/admin/admin-settings"}]}</script><link rel="stylesheet" href="/assets/css/styles.f618d03c.css">
-<script src="/assets/js/runtime~main.a46ec294.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.e7ca29c9.js" defer="defer"></script>
 <script src="/assets/js/main.7db96982.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -25,23 +25,23 @@
 <ol>
 <li class="">
 <p>Go to <strong>Settings → Administration → Larping</strong>. The page lists the 9 entity types as rows.</p>
-<p><img decoding="async" loading="lazy" src="/screenshots/tutorials/admin/03-admin-settings-01.png" alt="Larping admin settings page" class="img_ev3q"></p>
+<p><img decoding="async" loading="lazy" alt="Larping admin settings page" src="/assets/images/03-admin-settings-01-089850551852e1ff846fd4d82dc4454d.png" width="1280" height="800" class="img_ev3q"></p>
 </li>
 <li class="">
 <p>For each entity type, pick the <strong>data source</strong> — <strong>Internal</strong> (Nextcloud&#x27;s database via Entity/Mapper) or <strong>Open Register</strong> (JSON object storage with schema validation). Internal is fine for small installs that don&#x27;t want OpenRegister; Open Register is the recommended choice and unlocks audit trails, cross-object relations, and search.</p>
-<p><img decoding="async" loading="lazy" src="/screenshots/tutorials/admin/03-admin-settings-02.png" alt="Per-entity data-source picker" class="img_ev3q"></p>
+<p><img decoding="async" loading="lazy" alt="Per-entity data-source picker" src="/assets/images/03-admin-settings-02-089850551852e1ff846fd4d82dc4454d.png" width="1280" height="800" class="img_ev3q"></p>
 </li>
 <li class="">
 <p>For each row set to <strong>Open Register</strong>, pick the <strong>register</strong> from the dropdown. The schema dropdown filters to schemas on the chosen register. Pick the matching schema — <code>character</code> for the character row, <code>ability</code> for the ability row, and so on. The default Larping register ships these named correctly so the pairing is mechanical.</p>
-<p><img decoding="async" loading="lazy" src="/screenshots/tutorials/admin/03-admin-settings-03.png" alt="Register and schema mapping per entity" class="img_ev3q"></p>
+<p><img decoding="async" loading="lazy" alt="Register and schema mapping per entity" src="/assets/images/03-admin-settings-03-089850551852e1ff846fd4d82dc4454d.png" width="1280" height="800" class="img_ev3q"></p>
 </li>
 <li class="">
 <p>Click <strong>Save All</strong> to persist. The page reloads with the saved selections; the config keys (<code>register</code>, <code>character_schema</code>, <code>player_schema</code>, <code>ability_schema</code>, <code>skill_schema</code>, <code>item_schema</code>, <code>condition_schema</code>, <code>effect_schema</code>, <code>event_schema</code>, <code>setting_schema</code>) land under the <code>larpingapp</code> app in Nextcloud&#x27;s <code>IAppConfig</code>.</p>
-<p><img decoding="async" loading="lazy" src="/screenshots/tutorials/admin/03-admin-settings-04.png" alt="Settings saved confirmation" class="img_ev3q"></p>
+<p><img decoding="async" loading="lazy" alt="Settings saved confirmation" src="/assets/images/03-admin-settings-04-089850551852e1ff846fd4d82dc4454d.png" width="1280" height="800" class="img_ev3q"></p>
 </li>
 <li class="">
 <p>Open the Larping app and confirm: the <strong>Characters</strong>, <strong>Items</strong>, <strong>Events</strong>, <strong>Skills</strong>, <strong>Conditions</strong> lists load, and <strong>Add Item</strong> on each opens a dialog with real form fields. If you switched a row from Internal to Open Register, existing data is <em>not</em> migrated automatically — pre-existing internal rows stay where they were; new entries land in the configured source.</p>
-<p><img decoding="async" loading="lazy" src="/screenshots/tutorials/admin/03-admin-settings-05.png" alt="Larping lists working after the mapping" class="img_ev3q"></p>
+<p><img decoding="async" loading="lazy" alt="Larping lists working after the mapping" src="/assets/images/03-admin-settings-05-e5e45c4a7e76d979907189b964509f10.png" width="1280" height="800" class="img_ev3q"></p>
 </li>
 </ol>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="verification">Verification<a href="#verification" class="hash-link" aria-label="Direct link to Verification" title="Direct link to Verification" translate="no">​</a></h2>

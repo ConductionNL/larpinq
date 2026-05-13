@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="generator" content="Docusaurus v3.9.2">
 <title data-rh="true">Approve characters and manage players | LarpingApp</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:url" content="https://larpingapp.conduction.nl/docs/tutorials/admin/approve-players/"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="Approve characters and manage players | LarpingApp"><meta data-rh="true" name="description" content="Review a player&#x27;s character background, approve it for play, link the player record to the character, and roll up post-event effects."><meta data-rh="true" property="og:description" content="Review a player&#x27;s character background, approve it for play, link the player record to the character, and roll up post-event effects."><link data-rh="true" rel="icon" href="/img/favicon.svg"><link data-rh="true" rel="canonical" href="https://larpingapp.conduction.nl/docs/tutorials/admin/approve-players/"><link data-rh="true" rel="alternate" href="https://larpingapp.conduction.nl/docs/tutorials/admin/approve-players/" hreflang="en"><link data-rh="true" rel="alternate" href="https://larpingapp.conduction.nl/docs/tutorials/admin/approve-players/" hreflang="x-default"><link data-rh="true" rel="stylesheet" href="/lib/canal-footer.css"><link data-rh="true" rel="stylesheet" href="/lib/kade-cyclist.css"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Tutorials","item":"https://larpingapp.conduction.nl/docs/category/tutorials"},{"@type":"ListItem","position":2,"name":"Admin guide","item":"https://larpingapp.conduction.nl/docs/category/admin-guide"},{"@type":"ListItem","position":3,"name":"Approve characters and manage players","item":"https://larpingapp.conduction.nl/docs/tutorials/admin/approve-players"}]}</script><link rel="stylesheet" href="/assets/css/styles.f618d03c.css">
-<script src="/assets/js/runtime~main.a46ec294.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.e7ca29c9.js" defer="defer"></script>
 <script src="/assets/js/main.7db96982.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -25,23 +25,23 @@
 <ol>
 <li class="">
 <p>Open the <strong>Players</strong> list from the Larping navigation. Each entry is a real-world person who plays in the LARP — name, description, contact. Add players who aren&#x27;t there yet via <strong>Add Item</strong>.</p>
-<p><img decoding="async" loading="lazy" src="/screenshots/tutorials/admin/02-approve-players-01.png" alt="Players list" class="img_ev3q"></p>
+<p><img decoding="async" loading="lazy" alt="Players list" src="/assets/images/02-approve-players-01-33e4507396fd5887033f294262cc96d5.png" width="1280" height="800" class="img_ev3q"></p>
 </li>
 <li class="">
 <p>Open the <strong>Characters</strong> list and filter to characters with <code>approved = false</code>. These are the submissions waiting for game-master review.</p>
-<p><img decoding="async" loading="lazy" src="/screenshots/tutorials/admin/02-approve-players-02.png" alt="Characters list filtered to unapproved" class="img_ev3q"></p>
+<p><img decoding="async" loading="lazy" alt="Characters list filtered to unapproved" src="/assets/images/02-approve-players-02-5e5791da7f5039878d1ce40fa432b465.png" width="1280" height="800" class="img_ev3q"></p>
 </li>
 <li class="">
 <p>Open a character. Read the <strong>background</strong> field on the <strong>Properties</strong> tab. Check the <strong>Relations</strong> tab to make sure the <strong>player</strong> link (<code>ocName</code> on the character) points at the right <strong>Player</strong> record — if not, fix it now (this is how post-event effects find the right player at scoring time).</p>
-<p><img decoding="async" loading="lazy" src="/screenshots/tutorials/admin/02-approve-players-03.png" alt="Character detail with background story" class="img_ev3q"></p>
+<p><img decoding="async" loading="lazy" alt="Character detail with background story" src="/assets/images/02-approve-players-03-5e5791da7f5039878d1ce40fa432b465.png" width="1280" height="800" class="img_ev3q"></p>
 </li>
 <li class="">
 <p>Flip the <strong>approved</strong> field to <code>true</code> and save. The character is now allowed to participate in events. The audit trail records the approval, who approved it, and when.</p>
-<p><img decoding="async" loading="lazy" src="/screenshots/tutorials/admin/02-approve-players-04.png" alt="Approval flipped to true on the character" class="img_ev3q"></p>
+<p><img decoding="async" loading="lazy" alt="Approval flipped to true on the character" src="/assets/images/02-approve-players-04-5e5791da7f5039878d1ce40fa432b465.png" width="1280" height="800" class="img_ev3q"></p>
 </li>
 <li class="">
 <p>After an event, open the event and apply its post-event effects to participating characters. The effects flow through the stat engine on the <strong>events</strong> layer — XP awarded, items granted, conditions inflicted. Each character&#x27;s audit trail picks up <code>Event: …</code> entries for the changes.</p>
-<p><img decoding="async" loading="lazy" src="/screenshots/tutorials/admin/02-approve-players-05.png" alt="Post-event effects applied across the roster" class="img_ev3q"></p>
+<p><img decoding="async" loading="lazy" alt="Post-event effects applied across the roster" src="/assets/images/02-approve-players-05-c808e1c4b05fd0cd8b7b659ea8a16c8e.png" width="1280" height="800" class="img_ev3q"></p>
 </li>
 </ol>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="verification">Verification<a href="#verification" class="hash-link" aria-label="Direct link to Verification" title="Direct link to Verification" translate="no">​</a></h2>

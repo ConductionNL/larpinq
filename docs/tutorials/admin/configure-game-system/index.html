@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="generator" content="Docusaurus v3.9.2">
 <title data-rh="true">Configure the game system (skills, items, conditions, backgrounds) | LarpingApp</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:url" content="https://larpingapp.conduction.nl/docs/tutorials/admin/configure-game-system/"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="Configure the game system (skills, items, conditions, backgrounds) | LarpingApp"><meta data-rh="true" name="description" content="Build the LARP rule engine — abilities, effects, skills, items, conditions — that every character is scored against."><meta data-rh="true" property="og:description" content="Build the LARP rule engine — abilities, effects, skills, items, conditions — that every character is scored against."><link data-rh="true" rel="icon" href="/img/favicon.svg"><link data-rh="true" rel="canonical" href="https://larpingapp.conduction.nl/docs/tutorials/admin/configure-game-system/"><link data-rh="true" rel="alternate" href="https://larpingapp.conduction.nl/docs/tutorials/admin/configure-game-system/" hreflang="en"><link data-rh="true" rel="alternate" href="https://larpingapp.conduction.nl/docs/tutorials/admin/configure-game-system/" hreflang="x-default"><link data-rh="true" rel="stylesheet" href="/lib/canal-footer.css"><link data-rh="true" rel="stylesheet" href="/lib/kade-cyclist.css"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Tutorials","item":"https://larpingapp.conduction.nl/docs/category/tutorials"},{"@type":"ListItem","position":2,"name":"Admin guide","item":"https://larpingapp.conduction.nl/docs/category/admin-guide"},{"@type":"ListItem","position":3,"name":"Configure the game system (skills, items, conditions, backgrounds)","item":"https://larpingapp.conduction.nl/docs/tutorials/admin/configure-game-system"}]}</script><link rel="stylesheet" href="/assets/css/styles.f618d03c.css">
-<script src="/assets/js/runtime~main.a46ec294.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.e7ca29c9.js" defer="defer"></script>
 <script src="/assets/js/main.7db96982.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -25,23 +25,23 @@
 <ol>
 <li class="">
 <p>Start with <strong>Abilities</strong> (under <strong>Game settings</strong> in the Larping navigation, or via <strong>Abilities</strong> directly). Add the ability scores your system uses — <em>Strength</em>, <em>Health</em>, <em>Mana</em>, <em>XP</em>, whatever the LARP rules call out. Each ability gets a name, an optional description, and a base value.</p>
-<p><img decoding="async" loading="lazy" src="/screenshots/tutorials/admin/01-configure-game-system-01.png" alt="Abilities list with rule-system entries" class="img_ev3q"></p>
+<p><img decoding="async" loading="lazy" alt="Abilities list with rule-system entries" src="/assets/images/01-configure-game-system-01-302fcfd4aa28a45c1a0cf9c0b8f10353.png" width="1280" height="800" class="img_ev3q"></p>
 </li>
 <li class="">
 <p>Move to <strong>Effects</strong>. An effect is the atomic modifier — <code>+2 to Strength</code>, <code>-1 to Health</code>. Add one effect per atomic rule the system needs. Pick the <strong>abilities</strong> it targets, set the <strong>modifier</strong> (an integer), and decide whether it is <strong>cumulative</strong> (applies again every time it is reached) or one-shot.</p>
-<p><img decoding="async" loading="lazy" src="/screenshots/tutorials/admin/01-configure-game-system-02.png" alt="Effects list with example modifiers" class="img_ev3q"></p>
+<p><img decoding="async" loading="lazy" alt="Effects list with example modifiers" src="/assets/images/01-configure-game-system-02-010f70aad81720fbaf962962a6caacee.png" width="1280" height="800" class="img_ev3q"></p>
 </li>
 <li class="">
 <p>Build the <strong>Skills</strong> catalogue. Each skill carries one or more effects, an <strong>xpCost</strong>, and a prerequisite list — required other skills, required ability thresholds, required conditions. Players pay XP to attach a skill; the stat engine applies its effects when the character recalculates.</p>
-<p><img decoding="async" loading="lazy" src="/screenshots/tutorials/admin/01-configure-game-system-03.png" alt="Skills list with effects attached" class="img_ev3q"></p>
+<p><img decoding="async" loading="lazy" alt="Skills list with effects attached" src="/assets/images/01-configure-game-system-03-57ce15cb6b063211d744de2d4a48bcb8.png" width="1280" height="800" class="img_ev3q"></p>
 </li>
 <li class="">
 <p>Build the <strong>Items</strong> and <strong>Conditions</strong> catalogues the same way. Items are equipment with effects; the <strong>unique</strong> flag locks them to a single character. Conditions are status effects (poisoned, blessed, exhausted) with the same <code>unique</code> option. Both reference the effects you defined in step 2.</p>
-<p><img decoding="async" loading="lazy" src="/screenshots/tutorials/admin/01-configure-game-system-04.png" alt="Items and conditions catalogues" class="img_ev3q"></p>
+<p><img decoding="async" loading="lazy" alt="Items and conditions catalogues" src="/assets/images/01-configure-game-system-04-3d8eda1c9864e45f303ad74aae721143.png" width="1280" height="800" class="img_ev3q"></p>
 </li>
 <li class="">
 <p>Open <strong>Events</strong> and create the events your LARP runs (date range, location). Attach post-event effects — <code>+10 XP for participation</code>, <code>Battle Scar condition for the losing side</code> — that will apply to participating characters after the event closes (see <a class="" href="/docs/tutorials/user/event-subscription/">Subscribe to an event</a>).</p>
-<p><img decoding="async" loading="lazy" src="/screenshots/tutorials/admin/01-configure-game-system-05.png" alt="Events with post-event effects" class="img_ev3q"></p>
+<p><img decoding="async" loading="lazy" alt="Events with post-event effects" src="/assets/images/01-configure-game-system-05-78f2c74861ae2dc4be32c0112454977c.png" width="1280" height="800" class="img_ev3q"></p>
 </li>
 </ol>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="verification">Verification<a href="#verification" class="hash-link" aria-label="Direct link to Verification" title="Direct link to Verification" translate="no">​</a></h2>
