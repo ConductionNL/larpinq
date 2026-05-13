@@ -19,7 +19,7 @@ Dashboard is the default route (`/`) and has a ViewDashboard icon in the navigat
 
 ## Screenshot
 
-![Dashboard](../screenshots/dashboard.png)
+![Dashboard](/screenshots/dashboard.png)
 
 ## Technical Details
 

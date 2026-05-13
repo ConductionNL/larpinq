@@ -4,10 +4,15 @@
  * LarpingApp documentation site.
  *
  * Built on @conduction/docusaurus-preset for brand defaults (tokens,
- * theme swizzles for Navbar / Footer, four-locale i18n scaffolding,
- * KvK / BTW copyright). Site-specific overrides — locales, sidebar
+ * theme swizzles for Navbar / Footer, i18n scaffolding, KvK / BTW
+ * copyright). Site-specific overrides — locale (en only), sidebar
  * path, mermaid theme, custom prism themes, larpingapp-only navbar
  * items — are passed through createConfig() opts.
+ *
+ * Journeydoc scaffold (ADR-030): tutorials live under
+ * `docs/tutorials/{user,admin}/`, screenshots under
+ * `docs/static/screenshots/tutorials/{user,admin}/`, capture spec at
+ * `tests/e2e/docs-screenshots.spec.ts`.
  */
 
 const { createConfig, baseFooterLinks } = require('@conduction/docusaurus-preset');
@@ -27,15 +32,20 @@ const config = createConfig({
   organizationName: 'ConductionNL',
   projectName: 'larpingapp',
 
-  /* The brand preset's default i18n block (nl/en/de/fr) is replaced
-     wholesale here. LarpingApp docs ship with NL + EN translation
-     surfaces; keep both. */
+  /* English-only for now (ADR-030 / journeydoc). The brand preset
+     ships a multi-locale i18n block (nl/en/de/fr); enabling 'nl' here
+     without a complete `i18n/nl/docusaurus-plugin-content-docs/current/`
+     translated-markdown tree breaks SSR on doc pages — stale locale
+     metadata trips `Cannot read properties of undefined (reading 'id')`.
+     The previous config carried `locales: ['en', 'nl']` plus an
+     `i18n/nl/` dir holding only `current.json` (no translated markdown),
+     which is exactly that failure mode. Re-add 'nl' once a real Dutch
+     translation pass has shipped the translated-markdown tree. */
   i18n: {
     defaultLocale: 'en',
-    locales: ['en', 'nl'],
+    locales: ['en'],
     localeConfigs: {
       en: { label: 'English' },
-      nl: { label: 'Nederlands' },
     },
   },
 
@@ -72,7 +82,7 @@ const config = createConfig({
             'features/deep-link-registration.md',
           ],
           sidebarPath: require.resolve('./sidebars.js'),
-          editUrl: 'https://github.com/ConductionNL/larpingapp/tree/main/docs/',
+          editUrl: 'https://github.com/ConductionNL/larpingapp/tree/development/docs/',
         },
         blog: false,
         theme: {
@@ -133,9 +143,24 @@ const config = createConfig({
 });
 
 /* createConfig doesn't pass-through arbitrary top-level fields; assign
-   markdown directly so it makes it into the final Docusaurus config. */
+   markdown + onBroken* directly so they make it into the final
+   Docusaurus config. */
+config.onBrokenLinks = 'warn';
+config.onBrokenMarkdownLinks = 'warn';
+config.onBrokenAnchors = 'warn';
 config.markdown = {
   mermaid: true,
+  /* Tutorial pages under `tutorials/{user,admin}/` reference
+     screenshots populated by `tests/e2e/docs-screenshots.spec.ts`. The
+     Playwright capture run is separate from the docs build, so the
+     build must succeed even when a fresh checkout doesn't have every
+     PNG yet (the journeydoc skeletons ship with TODO bodies, no images
+     yet). Warn instead of failing — absence is visible at preview time
+     and the capture spec brings everything back on demand. Flip to
+     'throw' once screenshots are committed. (ADR-030) */
+  hooks: {
+    onBrokenMarkdownImages: 'warn',
+  },
 };
 
 module.exports = config;

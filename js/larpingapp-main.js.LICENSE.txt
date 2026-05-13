@@ -17,16 +17,19 @@
  */
 
 /*!
+ * GridStack 10.3.1
+ * https://gridstackjs.com/
+ *
+ * Copyright (c) 2021-2022 Alain Dumesny
+ * see root license https://github.com/gridstack/gridstack.js/tree/master/LICENSE
+ */
+
+/*!
  * SPDX-FileCopyrightText: 2019 Nextcloud GmbH and Nextcloud contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 /*!
- * SPDX-FileCopyrightText: 2022 Nextcloud GmbH and Nextcloud contributors
- * SPDX-License-Identifier: GPL-3.0-or-later
- */
-
-/*!
  * SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
@@ -39,16 +42,18 @@
 /*!
  * SPDX-FileCopyrightText: 2025 Nextcloud GmbH and Nextcloud contributors
  * SPDX-License-Identifier: AGPL-3.0-or-later
- */
-
-/*!
- * SPDX-FileCopyrightText: 2025 Nextcloud GmbH and Nextcloud contributors
- * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 /*!
  * SPDX-FileCopyrightText: 2026 Nextcloud GmbH and Nextcloud contributors
  * SPDX-License-Identifier: AGPL-3.0-or-later
+ */
+
+/*!
+ * The buffer module from node.js, for the browser.
+ *
+ * @author   Feross Aboukhadijeh <https://feross.org>
+ * @license  MIT
  */
 
 /*!
@@ -86,3 +91,5 @@
 /*! @license DOMPurify 3.3.3 | (c) Cure53 and other contributors | Released under the Apache license 2.0 and Mozilla Public License 2.0 | github.com/cure53/DOMPurify/blob/3.3.3/LICENSE */
 
 /*! Axios v1.13.6 Copyright (c) 2026 Matt Zabriskie and contributors */
+
+/*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */

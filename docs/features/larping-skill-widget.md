@@ -28,7 +28,7 @@ Uses GraphQL faceting query:
 
 ## Screenshot
 
-![Skill Widget](../screenshots/larping-skill-widget.png)
+![Skill Widget](/screenshots/larping-skill-widget.png)
 
 ## Technical Details
 

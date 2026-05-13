@@ -1,0 +1,11 @@
+{
+  "label": "Admin guide",
+  "position": 2,
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "Admin guide",
+    "description": "Game-master and administrator tasks — configuring the game system (skills, items, conditions, backgrounds), approving characters and managing players, and configuring Larping's admin settings."
+  }
+}
