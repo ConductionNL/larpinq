@@ -1,0 +1,23 @@
+# LarpingApp
+
+> LarpingApp is an open-source live-action role-playing (LARP) management app for the Nextcloud workspace.
+
+LarpingApp is an open-source live-action role-playing (LARP) management app for the Nextcloud workspace. Organizers design characters, skills, items, and conditions with custom attributes, and the app recalculates stats automatically as players gain experience or apply effects. It also handles event subscriptions, waiting lists, and background-approval workflows, giving game masters one place to run a campaign. Released under EUPL-1.2 and maintained by Conduction since 2019.
+
+## Docs
+
+- [Documentation](https://larpingapp.conduction.nl/docs/intro): main entry, including tutorials, user guide, and admin guide.
+- [API reference](https://larpingapp.conduction.nl/api): OpenAPI documentation.
+
+## Optional
+
+- [Install](https://www.conduction.nl/install): self-host on your Nextcloud instance.
+- [Source code](https://github.com/ConductionNL/LarpingNextApp): repository and issue tracker.
+- [App page](https://www.conduction.nl/apps/larpingapp): product positioning on conduction.nl.
+
+## Contact
+
+- Email: info@conduction.nl
+- Web: https://www.conduction.nl
+- GitHub: https://github.com/ConductionNL
+- Conduction B.V. · KvK 76741850 · Lauriergracht 14h, Amsterdam, Netherlands
