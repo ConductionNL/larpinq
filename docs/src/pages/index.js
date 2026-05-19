@@ -281,7 +281,7 @@ const WIDGETS = [
 export default function Home() {
   return (
     <Layout
-      title="LarpingApp"
+      title="LarpingApp, character and event management for LARP groups"
       description="Characters, rules, scenes, and NPC stats for live-action role-play. Build a setting in Nextcloud and run sessions without spreadsheets-with-six-tabs."
     >
       <main className="marketing-page">
