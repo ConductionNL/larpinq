@@ -1,100 +1,119 @@
+<!-- SPDX-License-Identifier: EUPL-1.2 -->
+<!-- Copyright (C) 2026 Conduction B.V. -->
+
+<!--
+ Larping app shell. Mounts CnAppRoot with the bundled manifest and the
+ customComponents registry; provides the `objectSidebarState` channel so
+ detail pages (CnDetailPage) can drive a single host-rendered CnObjectSidebar
+ through the #sidebar slot.
+
+ This file follows the canonical Tier-4 scaffold for the JSON manifest
+ renderer pattern (hydra ADR-024). The Settings menu entry uses
+ action: "user-settings" → opens NcAppSettingsDialog via CnAppRoot's
+ cnOpenUserSettings inject.
+
+ @spec openspec/changes/manifest-v2-vue-scaffold/specs/manifest-v2-vue-scaffold/spec.md
+-->
 <template>
-	<NcContent app-name="larpingapp">
-		<!-- Normal state: app loaded -->
-		<template v-if="storesReady">
-			<MainMenu @open-settings="showSettingsDialog = true" />
-			<NcAppContent>
-				<NcNoteCard v-if="!hasOpenRegisters" type="warning" class="open-register-warning">
-					{{ t('larpingapp', 'OpenRegister is not configured. Some features may be limited.') }}
-					<NcButton v-if="isAdmin"
-						type="tertiary"
-						:href="appStoreUrl"
-						size="small">
-						{{ t('larpingapp', 'Configure') }}
-					</NcButton>
-				</NcNoteCard>
-				<router-view />
-			</NcAppContent>
-			<CnIndexSidebar
-				v-if="sidebarState.active && !objectSidebarState.active"
-				:schema="sidebarState.schema"
-				:visible-columns="sidebarState.visibleColumns"
-				:search-value="sidebarState.searchValue"
-				:active-filters="sidebarState.activeFilters"
-				:facet-data="sidebarState.facetData"
-				:open="sidebarState.open"
-				@update:open="sidebarState.open = $event"
-				@search="onSidebarSearch"
-				@columns-change="onSidebarColumnsChange"
-				@filter-change="onSidebarFilterChange" />
+	<CnAppRoot
+		:manifest="manifest"
+		:custom-components="customComponents"
+		:registry="registry"
+		:page-types="pageTypes"
+		app-id="larpingapp"
+		:translate="translateForApp"
+		:permissions="permissions">
+		<template #sidebar>
 			<CnObjectSidebar
 				v-if="objectSidebarState.active"
-				:object-type="objectSidebarState.objectType"
-				:object-id="objectSidebarState.objectId"
 				:title="objectSidebarState.title"
 				:subtitle="objectSidebarState.subtitle"
+				:object-type="objectSidebarState.objectType"
+				:object-id="objectSidebarState.objectId"
 				:register="objectSidebarState.register"
 				:schema="objectSidebarState.schema"
 				:hidden-tabs="objectSidebarState.hiddenTabs"
-				:open.sync="objectSidebarState.open" />
-			<UserSettings :open.sync="showSettingsDialog" />
+				:tabs="objectSidebarState.tabs"
+				:open="objectSidebarState.open"
+				@update:open="objectSidebarState.open = $event" />
 		</template>
-		<!-- Loading state -->
-		<NcAppContent v-else>
-			<div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-				<NcLoadingIcon :size="64" />
-			</div>
-		</NcAppContent>
-	</NcContent>
+		<template #user-settings>
+			<NcAppSettingsSection
+				id="general"
+				:name="t('larpingapp', 'General')">
+				<p class="app-root__settings-hint">
+					{{ t('larpingapp', 'Configure your Larping app settings here.') }}
+				</p>
+			</NcAppSettingsSection>
+		</template>
+	</CnAppRoot>
 </template>
 
 <script>
 import Vue from 'vue'
-import { NcContent, NcAppContent, NcLoadingIcon, NcButton, NcNoteCard } from '@nextcloud/vue'
-import { generateUrl, imagePath } from '@nextcloud/router'
-import { CnIndexSidebar, CnObjectSidebar } from '@conduction/nextcloud-vue'
-import MainMenu from './navigation/MainMenu.vue'
-import UserSettings from './views/settings/UserSettings.vue'
-import { initializeStores } from './store/store.js'
-import { useSettingsStore } from './store/modules/settings.js'
+import { translate as ncT } from '@nextcloud/l10n'
+import { NcAppSettingsSection } from '@nextcloud/vue'
+import { CnAppRoot, CnObjectSidebar } from '@conduction/nextcloud-vue'
 
 export default {
 	name: 'App',
+
 	components: {
-		NcContent,
-		NcAppContent,
-		NcLoadingIcon,
-		NcButton,
-		NcNoteCard,
-		CnIndexSidebar,
+		CnAppRoot,
 		CnObjectSidebar,
-		MainMenu,
-		UserSettings,
+		NcAppSettingsSection,
 	},
 
 	provide() {
 		return {
-			sidebarState: this.sidebarState,
+			// Channel for CnDetailPage → host-rendered CnObjectSidebar.
+			// Vue.observable makes the plain object reactive for Vue 2.
 			objectSidebarState: this.objectSidebarState,
 		}
 	},
 
+	props: {
+		/**
+		 * Manifest object — passed from main.js bootstrap. CnAppRoot reads
+		 * `manifest.dependencies` for the dependency-check phase and
+		 * `manifest.menu` for the default CnAppNav.
+		 */
+		manifest: {
+			type: Object,
+			required: true,
+		},
+		/**
+		 * Registry of consumer-injected components used by:
+		 *   - `type: "custom"` pages (`page.component`)
+		 *   - `headerComponent` / `actionsComponent` slot overrides
+		 *   - `pages[].config.sidebarTabs[].component` (detail tab tabs)
+		 *   - `pages[].config.sections[].component` (settings rich sections)
+		 */
+		customComponents: {
+			type: Object,
+			default: () => ({}),
+		},
+		/**
+		 * 5-kind component registry (v2 manifest pattern per hydra ADR-036).
+		 * Each entry: { kind, component, ...kindMetadata }.
+		 */
+		registry: {
+			type: Object,
+			default: () => ({}),
+		},
+		/**
+		 * Page-type registry — `{ index, detail, dashboard, settings, ... }`.
+		 * Wired through to descendant `CnPageRenderer` instances via
+		 * provide/inject.
+		 */
+		pageTypes: {
+			type: Object,
+			default: null,
+		},
+	},
+
 	data() {
 		return {
-			storesReady: false,
-			showSettingsDialog: false,
-			sidebarState: Vue.observable({
-				active: false,
-				open: true,
-				schema: null,
-				visibleColumns: null,
-				searchValue: '',
-				activeFilters: {},
-				facetData: {},
-				onSearch: null,
-				onColumnsChange: null,
-				onFilterChange: null,
-			}),
 			objectSidebarState: Vue.observable({
 				active: false,
 				open: true,
@@ -105,49 +124,28 @@ export default {
 				register: '',
 				schema: '',
 				hiddenTabs: [],
+				tabs: undefined,
 			}),
 		}
 	},
 
 	computed: {
-		hasOpenRegisters() {
-			const settingsStore = useSettingsStore()
-			return settingsStore.hasOpenRegisters
+		permissions() {
+			return window.OC?.currentUser?.permissions ?? []
 		},
-		isAdmin() {
-			const settingsStore = useSettingsStore()
-			return settingsStore.getIsAdmin
-		},
-		appIcon() {
-			return imagePath('larpingapp', 'app-dark.svg')
-		},
-		appStoreUrl() {
-			return generateUrl('/settings/apps/integration/openregister')
-		},
-	},
-
-	async created() {
-		await initializeStores()
-		this.storesReady = true
 	},
 
 	methods: {
-		onSidebarSearch(value) {
-			this.sidebarState.searchValue = value
-			if (typeof this.sidebarState.onSearch === 'function') {
-				this.sidebarState.onSearch(value)
-			}
-		},
-		onSidebarColumnsChange(columns) {
-			this.sidebarState.visibleColumns = columns
-			if (typeof this.sidebarState.onColumnsChange === 'function') {
-				this.sidebarState.onColumnsChange(columns)
-			}
-		},
-		onSidebarFilterChange(filter) {
-			if (typeof this.sidebarState.onFilterChange === 'function') {
-				this.sidebarState.onFilterChange(filter)
-			}
+		/**
+		 * Translate function passed down to CnAppRoot / CnAppNav /
+		 * CnPageRenderer. Closes over the Nextcloud `translate` import so
+		 * the lib never has to know our app id.
+		 *
+		 * @param {string} key Translation key.
+		 * @return {string} Translated string (or the key on miss).
+		 */
+		translateForApp(key) {
+			return ncT('larpingapp', key)
 		},
 	},
 }
