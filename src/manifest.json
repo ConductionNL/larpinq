@@ -1,0 +1,179 @@
+{
+	"$schema": "https://raw.githubusercontent.com/ConductionNL/nextcloud-vue/main/src/schemas/app-manifest-v2.schema.json",
+	"version": "0.1.0",
+	"dependencies": ["openregister"],
+	"menu": [
+		{ "id": "Dashboard", "label": "Dashboard", "icon": "ViewDashboard", "route": "Dashboard", "order": 10 },
+		{ "id": "Characters", "label": "Characters", "icon": "BriefcaseAccountOutline", "route": "Characters", "order": 20 },
+		{ "id": "Players", "label": "Players", "icon": "AccountGroupOutline", "route": "Players", "order": 30 },
+		{ "id": "Abilities", "label": "Abilities", "icon": "FlashOutline", "route": "Abilities", "order": 40 },
+		{ "id": "Skills", "label": "Skills", "icon": "StarOutline", "route": "Skills", "order": 50 },
+		{ "id": "Items", "label": "Items", "icon": "Sword", "route": "Items", "order": 60 },
+		{ "id": "Conditions", "label": "Conditions", "icon": "EmoticonSickOutline", "route": "Conditions", "order": 70 },
+		{ "id": "Effects", "label": "Effects", "icon": "MagicStaff", "route": "Effects", "order": 80 },
+		{ "id": "Events", "label": "Events", "icon": "CalendarMonthOutline", "route": "Events", "order": 90 },
+		{ "id": "GameSettings", "label": "Game Settings", "icon": "Cog", "route": "GameSettings", "order": 100, "section": "settings" }
+	],
+	"pages": [
+		{
+			"id": "Dashboard",
+			"route": "/",
+			"type": "custom",
+			"title": "Dashboard",
+			"component": "DashboardView",
+			"_note": "Bespoke dashboard surface with SkillUsageChart; not decomposable into a typed dashboard primitive yet"
+		},
+		{
+			"id": "Characters",
+			"route": "/characters",
+			"type": "custom",
+			"title": "Characters",
+			"component": "ObjectList",
+			"config": { "objectType": "character", "register": "larpingapp", "schema": "character" },
+			"_note": "Generic ObjectList wrapping CnIndexPage; objectType drives register/schema resolution at runtime"
+		},
+		{
+			"id": "CharacterDetail",
+			"route": "/characters/:id",
+			"type": "custom",
+			"title": "Character",
+			"component": "ObjectDetail",
+			"config": { "objectType": "character", "register": "larpingapp", "schema": "character" },
+			"_note": "Generic ObjectDetail; objectId from route params"
+		},
+		{
+			"id": "Players",
+			"route": "/players",
+			"type": "custom",
+			"title": "Players",
+			"component": "ObjectList",
+			"config": { "objectType": "player", "register": "larpingapp", "schema": "player" },
+			"_note": "Generic ObjectList"
+		},
+		{
+			"id": "PlayerDetail",
+			"route": "/players/:id",
+			"type": "custom",
+			"title": "Player",
+			"component": "ObjectDetail",
+			"config": { "objectType": "player", "register": "larpingapp", "schema": "player" },
+			"_note": "Generic ObjectDetail"
+		},
+		{
+			"id": "Abilities",
+			"route": "/abilities",
+			"type": "custom",
+			"title": "Abilities",
+			"component": "ObjectList",
+			"config": { "objectType": "ability", "register": "larpingapp", "schema": "ability" },
+			"_note": "Generic ObjectList"
+		},
+		{
+			"id": "AbilityDetail",
+			"route": "/abilities/:id",
+			"type": "custom",
+			"title": "Ability",
+			"component": "ObjectDetail",
+			"config": { "objectType": "ability", "register": "larpingapp", "schema": "ability" },
+			"_note": "Generic ObjectDetail"
+		},
+		{
+			"id": "Skills",
+			"route": "/skills",
+			"type": "custom",
+			"title": "Skills",
+			"component": "ObjectList",
+			"config": { "objectType": "skill", "register": "larpingapp", "schema": "skill" },
+			"_note": "Generic ObjectList"
+		},
+		{
+			"id": "SkillDetail",
+			"route": "/skills/:id",
+			"type": "custom",
+			"title": "Skill",
+			"component": "ObjectDetail",
+			"config": { "objectType": "skill", "register": "larpingapp", "schema": "skill" },
+			"_note": "Generic ObjectDetail"
+		},
+		{
+			"id": "Items",
+			"route": "/items",
+			"type": "custom",
+			"title": "Items",
+			"component": "ObjectList",
+			"config": { "objectType": "item", "register": "larpingapp", "schema": "item" },
+			"_note": "Generic ObjectList"
+		},
+		{
+			"id": "ItemDetail",
+			"route": "/items/:id",
+			"type": "custom",
+			"title": "Item",
+			"component": "ObjectDetail",
+			"config": { "objectType": "item", "register": "larpingapp", "schema": "item" },
+			"_note": "Generic ObjectDetail"
+		},
+		{
+			"id": "Conditions",
+			"route": "/conditions",
+			"type": "custom",
+			"title": "Conditions",
+			"component": "ObjectList",
+			"config": { "objectType": "condition", "register": "larpingapp", "schema": "condition" },
+			"_note": "Generic ObjectList"
+		},
+		{
+			"id": "ConditionDetail",
+			"route": "/conditions/:id",
+			"type": "custom",
+			"title": "Condition",
+			"component": "ObjectDetail",
+			"config": { "objectType": "condition", "register": "larpingapp", "schema": "condition" },
+			"_note": "Generic ObjectDetail"
+		},
+		{
+			"id": "Effects",
+			"route": "/effects",
+			"type": "custom",
+			"title": "Effects",
+			"component": "ObjectList",
+			"config": { "objectType": "effect", "register": "larpingapp", "schema": "effect" },
+			"_note": "Generic ObjectList"
+		},
+		{
+			"id": "EffectDetail",
+			"route": "/effects/:id",
+			"type": "custom",
+			"title": "Effect",
+			"component": "ObjectDetail",
+			"config": { "objectType": "effect", "register": "larpingapp", "schema": "effect" },
+			"_note": "Generic ObjectDetail"
+		},
+		{
+			"id": "Events",
+			"route": "/events",
+			"type": "custom",
+			"title": "Events",
+			"component": "ObjectList",
+			"config": { "objectType": "event", "register": "larpingapp", "schema": "event" },
+			"_note": "Generic ObjectList"
+		},
+		{
+			"id": "EventDetail",
+			"route": "/events/:id",
+			"type": "custom",
+			"title": "Event",
+			"component": "ObjectDetail",
+			"config": { "objectType": "event", "register": "larpingapp", "schema": "event" },
+			"_note": "Generic ObjectDetail"
+		},
+		{
+			"id": "GameSettings",
+			"route": "/game-settings",
+			"type": "custom",
+			"title": "Game Settings",
+			"component": "SettingsView",
+			"_note": "Bespoke settings page"
+		}
+	]
+}
