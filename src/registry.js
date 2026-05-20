@@ -8,18 +8,26 @@
 // resolves them directly without going through this registry.
 //
 // Remaining entries are non-page kinds referenced from INSIDE typed
-// pages (page.slots[*] or page.config.sections[*].component):
-//   - DashboardHomeWidget — full-page widget inside type:"dashboard"
-//   - GameSettingsSection — section body inside type:"settings"
+// pages (page.slots[*], page.actionsComponent, page.config.sections[*].component):
+//   - DashboardKpi          — generic KPI widget, driven by config.objectType
+//   - DashboardRecentList   — generic recent-items list, driven by config.objectType
+//   - DashboardSkillUsage   — skill-usage chart widget
+//   - DashboardActions      — header actions (create dialogs + refresh)
+//   - GameSettingsSection   — settings section body (still bespoke)
 //
-// Future cleanup: decompose the Dashboard into per-KPI widgets + an
-// integration-registry-driven recent-activity widget; split Settings
-// into typed-form sections.
+// Future cleanup: decompose GameSettingsSection into version-info +
+// register-mapping built-in settings widgets.
 
-import DashboardHomeWidget from './views/dashboard/DashboardIndex.vue'
+import DashboardKpi from './views/dashboard/DashboardKpi.vue'
+import DashboardRecentList from './views/dashboard/DashboardRecentList.vue'
+import DashboardSkillUsage from './views/dashboard/DashboardSkillUsage.vue'
+import DashboardActions from './views/dashboard/DashboardActions.vue'
 import GameSettingsSection from './views/settings/Settings.vue'
 
 export default {
-	DashboardHomeWidget: { kind: 'widget',  component: DashboardHomeWidget },
-	GameSettingsSection: { kind: 'section', component: GameSettingsSection },
+	DashboardKpi:           { kind: 'widget',  component: DashboardKpi },
+	DashboardRecentList:    { kind: 'widget',  component: DashboardRecentList },
+	DashboardSkillUsage:    { kind: 'widget',  component: DashboardSkillUsage },
+	DashboardActions:       { kind: 'actions', component: DashboardActions },
+	GameSettingsSection:    { kind: 'section', component: GameSettingsSection },
 }
