@@ -3,18 +3,15 @@
 //
 // Custom-component registry (v1 pattern) for the manifest-driven app shell.
 //
-// Preserved alongside the v2 registry.js during the migration window.
-// CnAppRoot accepts both props; v2 renderer emits a one-shot deprecation
-// warning when both are present and the manifest is v2.
+// All page-level entries migrated to typed primitives in manifest v2.
+// Remaining entries live inside typed pages (Dashboard widget slot,
+// Settings section). Kept exported for CnAppRoot's `customComponents`
+// prop (v1 compat path).
 
-import ObjectList from './views/ObjectList.vue'
-import ObjectDetail from './views/ObjectDetail.vue'
-import DashboardIndex from './views/dashboard/DashboardIndex.vue'
-import Settings from './views/settings/Settings.vue'
+import DashboardHomeWidget from './views/dashboard/DashboardIndex.vue'
+import GameSettingsSection from './views/settings/Settings.vue'
 
 export default {
-	ObjectList,
-	ObjectDetail,
-	DashboardView: DashboardIndex,
-	SettingsView: Settings,
+	DashboardHomeWidget,
+	GameSettingsSection,
 }
