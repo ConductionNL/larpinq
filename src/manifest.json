@@ -20,16 +20,35 @@
 			"route": "/",
 			"type": "dashboard",
 			"title": "Dashboard",
+			"actionsComponent": "DashboardActions",
 			"config": {
 				"widgets": [
-					{ "id": "dashboardHome", "title": "Dashboard", "type": "custom" }
+					{ "id": "kpi-characters", "title": "Characters",       "type": "custom", "config": { "objectType": "character", "label": "Characters", "iconName": "AccountGroup" } },
+					{ "id": "kpi-events",     "title": "Events",           "type": "custom", "config": { "objectType": "event",     "label": "Events",     "iconName": "CalendarStar" } },
+					{ "id": "kpi-items",      "title": "Items",            "type": "custom", "config": { "objectType": "item",      "label": "Items",      "iconName": "Sword" } },
+					{ "id": "kpi-players",    "title": "Players",          "type": "custom", "config": { "objectType": "player",    "label": "Players",    "iconName": "AccountMultiple" } },
+					{ "id": "recent-characters", "title": "Recent characters", "type": "custom", "config": { "objectType": "character", "indexRoute": "Characters", "emptyLabel": "No characters yet", "fallbackLabel": "Unnamed Character", "iconName": "AccountGroup" } },
+					{ "id": "recent-events",     "title": "Recent events",     "type": "custom", "config": { "objectType": "event",     "indexRoute": "Events",     "emptyLabel": "No events yet",     "fallbackLabel": "Unnamed Event",     "iconName": "CalendarStar" } },
+					{ "id": "skill-usage",    "title": "Skill usage by characters", "type": "custom" }
 				],
 				"layout": [
-					{ "id": 1, "widgetId": "dashboardHome", "gridX": 0, "gridY": 0, "gridWidth": 12, "gridHeight": 12, "showTitle": false }
+					{ "id": 1, "widgetId": "kpi-characters", "gridX": 0, "gridY": 0, "gridWidth": 3, "gridHeight": 2, "showTitle": false },
+					{ "id": 2, "widgetId": "kpi-events",     "gridX": 3, "gridY": 0, "gridWidth": 3, "gridHeight": 2, "showTitle": false },
+					{ "id": 3, "widgetId": "kpi-items",      "gridX": 6, "gridY": 0, "gridWidth": 3, "gridHeight": 2, "showTitle": false },
+					{ "id": 4, "widgetId": "kpi-players",    "gridX": 9, "gridY": 0, "gridWidth": 3, "gridHeight": 2, "showTitle": false },
+					{ "id": 5, "widgetId": "recent-characters", "gridX": 0, "gridY": 2, "gridWidth": 6, "gridHeight": 4 },
+					{ "id": 6, "widgetId": "recent-events",     "gridX": 6, "gridY": 2, "gridWidth": 6, "gridHeight": 4 },
+					{ "id": 7, "widgetId": "skill-usage",    "gridX": 0, "gridY": 6, "gridWidth": 12, "gridHeight": 5 }
 				]
 			},
 			"slots": {
-				"widget-dashboardHome": "DashboardHomeWidget"
+				"widget-kpi-characters":   "DashboardKpi",
+				"widget-kpi-events":       "DashboardKpi",
+				"widget-kpi-items":        "DashboardKpi",
+				"widget-kpi-players":      "DashboardKpi",
+				"widget-recent-characters": "DashboardRecentList",
+				"widget-recent-events":     "DashboardRecentList",
+				"widget-skill-usage":      "DashboardSkillUsage"
 			}
 		},
 		{
