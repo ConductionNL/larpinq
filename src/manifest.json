@@ -1,6 +1,6 @@
 {
 	"$schema": "https://raw.githubusercontent.com/ConductionNL/nextcloud-vue/main/src/schemas/app-manifest-v2.schema.json",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"dependencies": ["openregister"],
 	"menu": [
 		{ "id": "Dashboard", "label": "Dashboard", "icon": "ViewDashboard", "route": "Dashboard", "order": 10 },
@@ -18,162 +18,142 @@
 		{
 			"id": "Dashboard",
 			"route": "/",
-			"type": "custom",
+			"type": "dashboard",
 			"title": "Dashboard",
-			"component": "DashboardView",
-			"_note": "Bespoke dashboard surface with SkillUsageChart; not decomposable into a typed dashboard primitive yet"
+			"config": {
+				"widgets": [
+					{ "id": "dashboardHome", "title": "Dashboard", "type": "custom" }
+				],
+				"layout": [
+					{ "id": 1, "widgetId": "dashboardHome", "gridX": 0, "gridY": 0, "gridWidth": 12, "gridHeight": 12, "showTitle": false }
+				]
+			},
+			"slots": {
+				"widget-dashboardHome": "DashboardHomeWidget"
+			}
 		},
 		{
 			"id": "Characters",
 			"route": "/characters",
-			"type": "custom",
+			"type": "index",
 			"title": "Characters",
-			"component": "ObjectList",
-			"config": { "objectType": "character", "register": "larpingapp", "schema": "character" },
-			"_note": "Generic ObjectList wrapping CnIndexPage; objectType drives register/schema resolution at runtime"
+			"config": { "register": "larpingapp", "schema": "character" }
 		},
 		{
 			"id": "CharacterDetail",
 			"route": "/characters/:id",
-			"type": "custom",
+			"type": "detail",
 			"title": "Character",
-			"component": "ObjectDetail",
-			"config": { "objectType": "character", "register": "larpingapp", "schema": "character" },
-			"_note": "Generic ObjectDetail; objectId from route params"
+			"config": { "register": "larpingapp", "schema": "character" }
 		},
 		{
 			"id": "Players",
 			"route": "/players",
-			"type": "custom",
+			"type": "index",
 			"title": "Players",
-			"component": "ObjectList",
-			"config": { "objectType": "player", "register": "larpingapp", "schema": "player" },
-			"_note": "Generic ObjectList"
+			"config": { "register": "larpingapp", "schema": "player" }
 		},
 		{
 			"id": "PlayerDetail",
 			"route": "/players/:id",
-			"type": "custom",
+			"type": "detail",
 			"title": "Player",
-			"component": "ObjectDetail",
-			"config": { "objectType": "player", "register": "larpingapp", "schema": "player" },
-			"_note": "Generic ObjectDetail"
+			"config": { "register": "larpingapp", "schema": "player" }
 		},
 		{
 			"id": "Abilities",
 			"route": "/abilities",
-			"type": "custom",
+			"type": "index",
 			"title": "Abilities",
-			"component": "ObjectList",
-			"config": { "objectType": "ability", "register": "larpingapp", "schema": "ability" },
-			"_note": "Generic ObjectList"
+			"config": { "register": "larpingapp", "schema": "ability" }
 		},
 		{
 			"id": "AbilityDetail",
 			"route": "/abilities/:id",
-			"type": "custom",
+			"type": "detail",
 			"title": "Ability",
-			"component": "ObjectDetail",
-			"config": { "objectType": "ability", "register": "larpingapp", "schema": "ability" },
-			"_note": "Generic ObjectDetail"
+			"config": { "register": "larpingapp", "schema": "ability" }
 		},
 		{
 			"id": "Skills",
 			"route": "/skills",
-			"type": "custom",
+			"type": "index",
 			"title": "Skills",
-			"component": "ObjectList",
-			"config": { "objectType": "skill", "register": "larpingapp", "schema": "skill" },
-			"_note": "Generic ObjectList"
+			"config": { "register": "larpingapp", "schema": "skill" }
 		},
 		{
 			"id": "SkillDetail",
 			"route": "/skills/:id",
-			"type": "custom",
+			"type": "detail",
 			"title": "Skill",
-			"component": "ObjectDetail",
-			"config": { "objectType": "skill", "register": "larpingapp", "schema": "skill" },
-			"_note": "Generic ObjectDetail"
+			"config": { "register": "larpingapp", "schema": "skill" }
 		},
 		{
 			"id": "Items",
 			"route": "/items",
-			"type": "custom",
+			"type": "index",
 			"title": "Items",
-			"component": "ObjectList",
-			"config": { "objectType": "item", "register": "larpingapp", "schema": "item" },
-			"_note": "Generic ObjectList"
+			"config": { "register": "larpingapp", "schema": "item" }
 		},
 		{
 			"id": "ItemDetail",
 			"route": "/items/:id",
-			"type": "custom",
+			"type": "detail",
 			"title": "Item",
-			"component": "ObjectDetail",
-			"config": { "objectType": "item", "register": "larpingapp", "schema": "item" },
-			"_note": "Generic ObjectDetail"
+			"config": { "register": "larpingapp", "schema": "item" }
 		},
 		{
 			"id": "Conditions",
 			"route": "/conditions",
-			"type": "custom",
+			"type": "index",
 			"title": "Conditions",
-			"component": "ObjectList",
-			"config": { "objectType": "condition", "register": "larpingapp", "schema": "condition" },
-			"_note": "Generic ObjectList"
+			"config": { "register": "larpingapp", "schema": "condition" }
 		},
 		{
 			"id": "ConditionDetail",
 			"route": "/conditions/:id",
-			"type": "custom",
+			"type": "detail",
 			"title": "Condition",
-			"component": "ObjectDetail",
-			"config": { "objectType": "condition", "register": "larpingapp", "schema": "condition" },
-			"_note": "Generic ObjectDetail"
+			"config": { "register": "larpingapp", "schema": "condition" }
 		},
 		{
 			"id": "Effects",
 			"route": "/effects",
-			"type": "custom",
+			"type": "index",
 			"title": "Effects",
-			"component": "ObjectList",
-			"config": { "objectType": "effect", "register": "larpingapp", "schema": "effect" },
-			"_note": "Generic ObjectList"
+			"config": { "register": "larpingapp", "schema": "effect" }
 		},
 		{
 			"id": "EffectDetail",
 			"route": "/effects/:id",
-			"type": "custom",
+			"type": "detail",
 			"title": "Effect",
-			"component": "ObjectDetail",
-			"config": { "objectType": "effect", "register": "larpingapp", "schema": "effect" },
-			"_note": "Generic ObjectDetail"
+			"config": { "register": "larpingapp", "schema": "effect" }
 		},
 		{
 			"id": "Events",
 			"route": "/events",
-			"type": "custom",
+			"type": "index",
 			"title": "Events",
-			"component": "ObjectList",
-			"config": { "objectType": "event", "register": "larpingapp", "schema": "event" },
-			"_note": "Generic ObjectList"
+			"config": { "register": "larpingapp", "schema": "event" }
 		},
 		{
 			"id": "EventDetail",
 			"route": "/events/:id",
-			"type": "custom",
+			"type": "detail",
 			"title": "Event",
-			"component": "ObjectDetail",
-			"config": { "objectType": "event", "register": "larpingapp", "schema": "event" },
-			"_note": "Generic ObjectDetail"
+			"config": { "register": "larpingapp", "schema": "event" }
 		},
 		{
 			"id": "GameSettings",
 			"route": "/game-settings",
-			"type": "custom",
+			"type": "settings",
 			"title": "Game Settings",
-			"component": "SettingsView",
-			"_note": "Bespoke settings page"
+			"config": {
+				"sections": [
+					{ "id": "general", "title": "General", "component": "GameSettingsSection" }
+				]
+			}
 		}
 	]
 }

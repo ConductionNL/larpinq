@@ -3,20 +3,23 @@
 //
 // 5-kind component registry (v2 manifest pattern per hydra ADR-036).
 //
-// Larpingapp uses generic ObjectList/ObjectDetail wrappers around
-// CnIndexPage/CnDetailPage. Each manifest page entry is type:'custom'
-// with config.objectType driving the runtime register/schema selection.
-// As the lib gains better support for parameterized typed pages, these
-// can shrink toward zero.
+// All page-level entries removed — manifest pages are typed primitives
+// (type: "index" / "detail" / "dashboard" / "settings"), so the renderer
+// resolves them directly without going through this registry.
+//
+// Remaining entries are non-page kinds referenced from INSIDE typed
+// pages (page.slots[*] or page.config.sections[*].component):
+//   - DashboardHomeWidget — full-page widget inside type:"dashboard"
+//   - GameSettingsSection — section body inside type:"settings"
+//
+// Future cleanup: decompose the Dashboard into per-KPI widgets + an
+// integration-registry-driven recent-activity widget; split Settings
+// into typed-form sections.
 
-import ObjectList from './views/ObjectList.vue'
-import ObjectDetail from './views/ObjectDetail.vue'
-import DashboardIndex from './views/dashboard/DashboardIndex.vue'
-import Settings from './views/settings/Settings.vue'
+import DashboardHomeWidget from './views/dashboard/DashboardIndex.vue'
+import GameSettingsSection from './views/settings/Settings.vue'
 
 export default {
-	ObjectList: { kind: 'page', component: ObjectList },
-	ObjectDetail: { kind: 'page', component: ObjectDetail },
-	DashboardView: { kind: 'page', component: DashboardIndex },
-	SettingsView: { kind: 'page', component: Settings },
+	DashboardHomeWidget: { kind: 'widget',  component: DashboardHomeWidget },
+	GameSettingsSection: { kind: 'section', component: GameSettingsSection },
 }
