@@ -1,0 +1,19 @@
+# PHPStan baseline for larpingapp.
+#
+# Each entry below corresponds to real type/DI debt that should be resolved
+# rather than ignored long-term. Tracked in:
+#   https://github.com/ConductionNL/larpingapp/issues/166
+#
+# Generated as part of the Phase 2 fleet root-config consolidation sync
+# (pattern: shillinq#300, decidesk#243).
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Property OCA\\\\LarpingApp\\\\Controller\\\\CharactersController\\:\\:\\$characterService is never read, only written\\.$#"
+			count: 1
+			path: lib/Controller/CharactersController.php
+
+		-
+			message: "#^Property OCA\\\\LarpingApp\\\\Controller\\\\DashboardController\\:\\:\\$config is never read, only written\\.$#"
+			count: 1
+			path: lib/Controller/DashboardController.php
