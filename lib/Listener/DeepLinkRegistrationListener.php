@@ -12,6 +12,18 @@
  * @copyright 2024 Ruben Linde
  * @license   AGPL-3.0-or-later https://www.gnu.org/licenses/agpl-3.0.en.html
  * @link      https://larpingapp.com
+ *
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-2
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-6
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-7
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-8
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-9
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-10
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-11
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-12
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-13
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-14
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-15
  */
 
 declare(strict_types=1);
@@ -64,6 +76,18 @@ class DeepLinkRegistrationListener implements IEventListener
      * @return void
      *
      * @psalm-suppress MixedMethodCall OpenRegister event is an optional dependency.
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-2
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-6
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-7
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-8
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-9
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-10
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-11
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-12
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-13
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-14
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-15
      */
     public function handle(Event $event): void
     {

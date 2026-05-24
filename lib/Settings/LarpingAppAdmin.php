@@ -9,6 +9,9 @@
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @version   GIT: <git_id>
  * @link      https://larpingapp.com
+ *
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-17
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-19
  */
 
 declare(strict_types=1);
@@ -41,6 +44,8 @@ class LarpingAppAdmin implements ISettings
      * Get the admin settings form.
      *
      * @return TemplateResponse The settings form template.
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-19
      */
     public function getForm(): TemplateResponse
     {
@@ -57,6 +62,8 @@ class LarpingAppAdmin implements ISettings
      * Get the settings section ID.
      *
      * @return string The section ID.
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-17
      */
     public function getSection(): string
     {

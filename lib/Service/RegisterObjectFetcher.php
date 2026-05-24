@@ -13,6 +13,33 @@
  * @copyright 2024 Ruben Linde
  * @license   AGPL-3.0-or-later https://www.gnu.org/licenses/agpl-3.0.en.html
  * @link      https://larpingapp.com
+ *
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-38
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-39
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-40
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-41
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-42
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-43
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-44
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-45
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-46
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-47
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-48
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-49
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-50
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-51
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-52
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-53
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-54
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-55
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-56
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-57
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-58
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-59
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-60
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-61
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-62
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-63
  */
 
 declare(strict_types=1);
@@ -77,6 +104,12 @@ class RegisterObjectFetcher
      * @throws Exception If OpenRegister is not installed or not available.
      *
      * @psalm-suppress MixedAssignment OpenRegister resolved dynamically.
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-38
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-39
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-40
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-41
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-42
      */
     private function getOpenRegisterService(): object
     {
@@ -107,6 +140,14 @@ class RegisterObjectFetcher
      * @throws Exception If register or schema is not configured.
      *
      * @psalm-suppress MixedMethodCall OpenRegister is an optional cross-app dependency.
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-43
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-44
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-45
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-46
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-47
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-48
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-49
      */
     private function getMapper(string $objectType): object
     {
@@ -136,6 +177,12 @@ class RegisterObjectFetcher
      * @return array<string,mixed> The object as an array.
      *
      * @psalm-suppress MixedAssignment Mapper resolved dynamically.
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-59
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-60
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-61
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-62
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-63
      */
     private function toArray(mixed $object): array
     {
@@ -166,6 +213,11 @@ class RegisterObjectFetcher
      *
      * @psalm-suppress MixedMethodCall Mapper resolved dynamically via getMapper().
      * @psalm-suppress MixedAssignment Mapper resolved dynamically.
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-50
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-51
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-52
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-53
      */
     public function getObjects(
         string $objectType,
@@ -203,6 +255,12 @@ class RegisterObjectFetcher
      * @psalm-suppress MixedAssignment Mapper resolved dynamically.
      *
      * @SuppressWarnings(PHPMD.ShortVariable)
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-54
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-55
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-56
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-57
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-58
      */
     public function getObject(string $objectType, string $id): array
     {

@@ -12,6 +12,14 @@
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @version   GIT: <git_id>
  * @link      https://larpingapp.com
+ *
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-20
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-21
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-22
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-23
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-24
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-25
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-26
  */
 
 declare(strict_types=1);
@@ -118,6 +126,11 @@ class SettingsController extends Controller
      *
      * @NoAdminRequired
      * @NoCSRFRequired
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-20
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-21
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-22
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-23
      */
     public function index(): JSONResponse
     {
@@ -151,6 +164,8 @@ class SettingsController extends Controller
      * @return JSONResponse The updated settings response.
      *
      * @NoCSRFRequired
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-24
      */
     public function create(): JSONResponse
     {
@@ -176,6 +191,9 @@ class SettingsController extends Controller
      * @return JSONResponse The re-import result.
      *
      * @NoCSRFRequired
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-25
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-26
      */
     public function reimport(): JSONResponse
     {
