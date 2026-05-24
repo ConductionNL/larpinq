@@ -1,8 +1,12 @@
 ---
-status: implemented
+status: archived
+archived_on: 2026-05-24
+archive_reason: SearchService class deleted from lib/Service/; spec retained as retrospective dead-code documentation only. See openspec/changes/archive/2026-03-21-search-service/ for the removal change.
 ---
 
-# Search Service
+# Search Service (ARCHIVED)
+
+> **ARCHIVED 2026-05-24.** The `SearchService` class was deleted from `lib/Service/`. This spec is retained as historical dead-code documentation under `openspec/specs/_archive/` and is excluded from active coverage scans. All 17 REQs below are dead code or bugs in the original (now-removed) implementation. Do not extend or implement against this spec — search in LarpingApp goes through the frontend object store + OpenRegister API.
 
 ## Purpose
 
