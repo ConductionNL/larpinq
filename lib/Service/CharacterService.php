@@ -9,6 +9,23 @@
  * @copyright 2024 Ruben Linde
  * @license   AGPL-3.0-or-later https://www.gnu.org/licenses/agpl-3.0.en.html
  * @link      https://larpingapp.com
+ *
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-64
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-65
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-66
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-67
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-68
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-69
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-70
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-71
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-72
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-73
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-74
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-75
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-76
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-77
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-78
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-79
  */
 
 declare(strict_types=1);
@@ -122,6 +139,10 @@ class CharacterService
      * @return array Updated array of Character objects.
      *
      * @psalm-suppress PossiblyUnusedMethod Public API for batch character stat calculation.
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-64
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-65
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-66
      */
     public function calculateAllCharacters(): array
     {
@@ -139,6 +160,9 @@ class CharacterService
      * Initialize ability scores from base ability values.
      *
      * @return array<string, array{name: string, base: int, value: int, audit: array}> Ability scores.
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-71
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-72
      */
     private function initializeAbilityScores(): array
     {
@@ -168,6 +192,8 @@ class CharacterService
      * @param array<string, array<string, mixed>> $lookup        Entity lookup table indexed by ID.
      *
      * @return void
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-69
      */
     private function applyEntityEffects(
         array &$abilityScores,
@@ -203,6 +229,11 @@ class CharacterService
      * @param array $character Character data array.
      *
      * @return array Updated character data array with calculated stats.
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-67
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-68
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-69
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-70
      */
     public function calculateCharacter(array $character): array
     {
@@ -249,6 +280,8 @@ class CharacterService
      * @return void
      *
      * @psalm-suppress MixedArgumentTypeCoercion Abilities array keys may widen during mutation.
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-73
      */
     private function applyEffects(array &$abilities, ?array $effects): void
     {
@@ -277,6 +310,10 @@ class CharacterService
      * @param array<string, mixed> $effect Effect data.
      *
      * @return array List of ability IDs.
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-74
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-75
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-76
      */
     private function collectEffectAbilities(array $effect): array
     {
@@ -302,6 +339,10 @@ class CharacterService
      * @param array<string, mixed>                $effect    Effect data.
      *
      * @return void
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-77
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-78
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-79
      */
     private function applyModifierToAbility(array &$abilities, string $abilityId, array $effect): void
     {
@@ -338,6 +379,8 @@ class CharacterService
      * @param array<string, mixed>                                                      $effect    Effect data.
      *
      * @return void
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-76
      */
     private function calculateEffect(array &$abilities, array $effect): void
     {

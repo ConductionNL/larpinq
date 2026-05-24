@@ -8,6 +8,10 @@
  * @copyright 2024 Ruben Linde
  * @license   https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
  * @link      https://larpingapp.com
+ *
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-16
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-17
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-18
  */
 
 declare(strict_types=1);
@@ -65,6 +69,8 @@ class LarpingAppAdmin implements IIconSection
      * Get the section icon
      *
      * @return string
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-16
      */
     public function getIcon(): string
     {
@@ -75,6 +81,8 @@ class LarpingAppAdmin implements IIconSection
      * Get the section ID
      *
      * @return string The section ID
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-17
      */
     public function getID(): string
     {
@@ -85,6 +93,8 @@ class LarpingAppAdmin implements IIconSection
      * Get the section name
      *
      * @return string The section name
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-17
      */
     public function getName(): string
     {
@@ -95,6 +105,8 @@ class LarpingAppAdmin implements IIconSection
      * Get the section priority
      *
      * @return int The section priority
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-18
      */
     public function getPriority(): int
     {
