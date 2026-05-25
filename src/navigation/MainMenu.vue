@@ -119,6 +119,10 @@ export default {
 		Cog,
 	},
 	methods: {
+		/**
+		 * @spec exclude Thin window.open() wrapper for the documentation nav
+		 * item — trivial UI glue, no business logic.
+		 */
 		openLink(url, target) {
 			window.open(url, target)
 		},

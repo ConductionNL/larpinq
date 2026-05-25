@@ -90,6 +90,9 @@ export default {
 		}
 	},
 	computed: {
+		/**
+		 * @spec exclude Pinia store accessor passthrough — framework glue.
+		 */
 		objectStore() {
 			return useObjectStore()
 		},
@@ -98,6 +101,9 @@ export default {
 		await this.refreshData()
 	},
 	methods: {
+		/**
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-3
+		 */
 		async loadSchema(type) {
 			const config = this.objectStore.objectTypeRegistry?.[type]
 			if (!config) return null
@@ -110,6 +116,9 @@ export default {
 				return null
 			}
 		},
+		/**
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-3
+		 */
 		async refreshData() {
 			this.loading = true
 			try {
@@ -133,6 +142,9 @@ export default {
 				this.loading = false
 			}
 		},
+		/**
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-3
+		 */
 		async onCreate(type, formData, detailRouteName, onSuccess) {
 			const result = await this.objectStore.saveObject(type, formData)
 			if (result) {

@@ -49,18 +49,33 @@ export default {
 		},
 	},
 	computed: {
+		/**
+		 * @spec exclude Pinia store accessor passthrough — framework glue.
+		 */
 		objectStore() {
 			return useObjectStore()
 		},
+		/**
+		 * @spec exclude Trivial config getter (objectType from prop) — no logic.
+		 */
 		objectType() {
 			return this.config.objectType || ''
 		},
+		/**
+		 * @spec exclude Trivial translated-label getter from config — formatter glue.
+		 */
 		label() {
 			return t('larpingapp', this.config.label || this.objectType)
 		},
+		/**
+		 * @spec exclude Static icon-map lookup by config.iconName — UI glue.
+		 */
 		iconComponent() {
 			return ICONS[this.config.iconName] || null
 		},
+		/**
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-1
+		 */
 		count() {
 			const pagination = this.objectStore.getPagination(this.objectType) || {}
 			return pagination.total || 0
