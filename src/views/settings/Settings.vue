@@ -161,6 +161,9 @@ export default defineComponent({
 	},
 
 	computed: {
+		/**
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-9
+		 */
 		registerOptions() {
 			return this.settings.availableRegisters.map(register => ({
 				label: register.title,
@@ -174,6 +177,9 @@ export default defineComponent({
 	},
 
 	methods: {
+		/**
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-10
+		 */
 		async reimport() {
 			this.reimporting = true
 			this.message = ''
@@ -206,6 +212,9 @@ export default defineComponent({
 			}
 		},
 
+		/**
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-8
+		 */
 		async loadSettings() {
 			try {
 				const response = await fetch('/index.php/apps/larpingapp/api/settings')
@@ -241,21 +250,34 @@ export default defineComponent({
 			}
 		},
 
+		/**
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-9
+		 */
 		getRegisterLabel(registerId) {
 			const register = this.settings.availableRegisters.find(r => r.id.toString() === registerId)
 			return register?.title || ''
 		},
 
+		/**
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-9
+		 */
 		getSchemaLabel(registerId, schemaId) {
 			const register = this.settings.availableRegisters.find(r => r.id.toString() === registerId)
 			const schema = register?.schemas.find(s => s.id.toString() === schemaId)
 			return schema?.title || ''
 		},
 
+		/**
+		 * @spec exclude Trivial capitalize-first-letter formatter for the
+		 * object-type section header — display-only, no business logic.
+		 */
 		formatTitle(objectType) {
 			return objectType.charAt(0).toUpperCase() + objectType.slice(1)
 		},
 
+		/**
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-9
+		 */
 		getSchemaOptions(registerId) {
 			if (!registerId) return []
 			const register = this.settings.availableRegisters.find(r => r.id.toString() === registerId)
@@ -265,6 +287,9 @@ export default defineComponent({
 			})) || []
 		},
 
+		/**
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-9
+		 */
 		handleSourceChange(objectType) {
 			const config = this.configuration[objectType]
 			if (config.source.value === 'internal') {
@@ -273,10 +298,16 @@ export default defineComponent({
 			}
 		},
 
+		/**
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-9
+		 */
 		handleRegisterChange(objectType) {
 			this.configuration[objectType].schema = null
 		},
 
+		/**
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-8
+		 */
 		async saveAll() {
 			this.saving = true
 			try {

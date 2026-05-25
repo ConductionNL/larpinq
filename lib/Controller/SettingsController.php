@@ -87,6 +87,9 @@ class SettingsController extends Controller
      *
      * @return object|null The OpenRegister service if available, null otherwise.
      * @throws RuntimeException If the service is not available.
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-22
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-38
      */
     public function getObjectService(): ?object
     {
@@ -106,6 +109,9 @@ class SettingsController extends Controller
      *
      * @return object|null The Configuration service if available, null otherwise.
      * @throws RuntimeException If the service is not available.
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-22
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-38
      */
     public function getConfigurationService(): ?object
     {
