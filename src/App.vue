@@ -64,6 +64,10 @@ export default {
 		NcAppSettingsSection,
 	},
 
+	/**
+	 * @spec exclude Vue provide() lifecycle hook — exposes the reactive
+	 * objectSidebarState channel to descendants; framework glue, no behavior.
+	 */
 	provide() {
 		return {
 			// Channel for CnDetailPage → host-rendered CnObjectSidebar.
@@ -130,6 +134,10 @@ export default {
 	},
 
 	computed: {
+		/**
+		 * @spec exclude Trivial passthrough of window.OC.currentUser.permissions
+		 * to CnAppRoot — reads framework global, no business logic.
+		 */
 		permissions() {
 			return window.OC?.currentUser?.permissions ?? []
 		},
@@ -143,6 +151,9 @@ export default {
 		 *
 		 * @param {string} key Translation key.
 		 * @return {string} Translated string (or the key on miss).
+		 *
+		 * @spec exclude Trivial translate passthrough closing over the app id
+		 * so the shared lib never needs to know it — framework glue.
 		 */
 		translateForApp(key) {
 			return ncT('larpingapp', key)

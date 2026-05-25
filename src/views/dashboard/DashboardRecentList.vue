@@ -55,33 +55,60 @@ export default {
 		},
 	},
 	computed: {
+		/**
+		 * @spec exclude Pinia store accessor passthrough — framework glue.
+		 */
 		objectStore() {
 			return useObjectStore()
 		},
+		/**
+		 * @spec exclude Trivial config getter (objectType from prop) — no logic.
+		 */
 		objectType() {
 			return this.config.objectType || ''
 		},
+		/**
+		 * @spec exclude Trivial numeric config getter with default — no logic.
+		 */
 		limit() {
 			return Number(this.config.limit || 5)
 		},
+		/**
+		 * @spec exclude Trivial translated-label getter from config — formatter glue.
+		 */
 		emptyLabel() {
 			return t('larpingapp', this.config.emptyLabel || 'No items yet')
 		},
+		/**
+		 * @spec exclude Trivial translated-fallback getter from config — formatter glue.
+		 */
 		fallbackLabel() {
 			return t('larpingapp', this.config.fallbackLabel || 'Untitled')
 		},
+		/**
+		 * @spec exclude Static icon-map lookup by config.iconName — UI glue.
+		 */
 		iconComponent() {
 			return ICONS[this.config.iconName] || null
 		},
+		/**
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-2
+		 */
 		items() {
 			return this.objectStore.getCollection(this.objectType).results || []
 		},
+		/**
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-2
+		 */
 		totalCount() {
 			const pagination = this.objectStore.getPagination(this.objectType) || {}
 			return pagination.total || this.items.length
 		},
 	},
 	methods: {
+		/**
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-2
+		 */
 		goToIndex() {
 			if (this.config.indexRoute) {
 				this.$router.push({ name: this.config.indexRoute })
