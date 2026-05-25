@@ -12,7 +12,9 @@
 		{ "id": "Conditions", "label": "Conditions", "icon": "EmoticonSickOutline", "route": "Conditions", "order": 70 },
 		{ "id": "Effects", "label": "Effects", "icon": "MagicStaff", "route": "Effects", "order": 80 },
 		{ "id": "Events", "label": "Events", "icon": "CalendarMonthOutline", "route": "Events", "order": 90 },
-		{ "id": "GameSettings", "label": "Game Settings", "icon": "Cog", "route": "GameSettings", "order": 100, "section": "settings" }
+		{ "id": "GameSettings", "label": "Game Settings", "icon": "Cog", "route": "GameSettings", "order": 100, "section": "settings" },
+		{ "id": "Documentation", "label": "Documentation", "icon": "icon-info", "href": "https://larpingapp.conduction.nl", "section": "footer", "order": 90 },
+		{ "id": "FeaturesRoadmapMenu", "label": "Features & roadmap", "icon": "icon-toggle", "route": "FeaturesRoadmap", "section": "footer", "order": 91 }
 	],
 	"pages": [
 		{
@@ -173,6 +175,13 @@
 					{ "id": "general", "title": "General", "component": "GameSettingsSection" }
 				]
 			}
+		},
+		{
+			"id": "FeaturesRoadmap",
+			"route": "/features-roadmap",
+			"type": "roadmap",
+			"title": "Features & roadmap",
+			"config": { "documentationUrl": "https://larpingapp.conduction.nl" }
 		}
 	]
 }
