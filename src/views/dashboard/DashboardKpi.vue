@@ -68,7 +68,7 @@ export default {
 			return t('larpingapp', this.config.label || this.objectType)
 		},
 		/**
-		 * @spec exclude Static icon-map lookup by config.iconName — UI glue.
+		 * @spec openspec/changes/retrofit-2026-05-26-larpingapp-display-capabilities/tasks.md#task-1
 		 */
 		iconComponent() {
 			return ICONS[this.config.iconName] || null
