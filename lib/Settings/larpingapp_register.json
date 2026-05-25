@@ -207,6 +207,55 @@
               }
             }
           }
+        },
+        "x-openregister-notifications": {
+          "character-submitted": {
+            "trigger": {
+              "type": "created"
+            },
+            "enabled": true,
+            "channels": [
+              "nc-notification"
+            ],
+            "recipients": [
+              {
+                "kind": "groups",
+                "groups": [
+                  "gamemasters"
+                ]
+              }
+            ],
+            "subject": {
+              "nl": "Nieuw personage ingediend: {{name}}",
+              "en": "New character submitted: {{name}}"
+            }
+          },
+          "character-approved": {
+            "trigger": {
+              "type": "transition",
+              "action": "approve"
+            },
+            "enabled": true,
+            "channels": [
+              "nc-notification"
+            ],
+            "recipients": [
+              {
+                "kind": "object-acl",
+                "permission": "manage"
+              },
+              {
+                "kind": "groups",
+                "groups": [
+                  "gamemasters"
+                ]
+              }
+            ],
+            "subject": {
+              "nl": "Personage {{name}} is goedgekeurd",
+              "en": "Character {{name}} has been approved"
+            }
+          }
         }
       },
       "player": {
@@ -562,6 +611,33 @@
               "format": "uuid"
             },
             "visible": false
+          }
+        },
+        "x-openregister-notifications": {
+          "event-reminder": {
+            "trigger": {
+              "type": "scheduled",
+              "intervalSec": 86400,
+              "filter": {
+                "field": "startDate"
+              }
+            },
+            "enabled": true,
+            "channels": [
+              "nc-notification"
+            ],
+            "recipients": [
+              {
+                "kind": "groups",
+                "groups": [
+                  "players"
+                ]
+              }
+            ],
+            "subject": {
+              "nl": "Herinnering: {{name}} begint binnenkort ({{startDate}})",
+              "en": "Reminder: {{name}} starts soon ({{startDate}})"
+            }
           }
         }
       },
