@@ -6,6 +6,8 @@ status: implemented
 
 ## Purpose
 
+@e2e exclude larpingapp Vue SPA fails to mount at localhost:8080 (empty #content, no Vue instance attached); Settings.vue panel lives inside NC admin settings which is a separate Vue entrypoint that also requires larpingapp JS to bootstrap; backend API/migration scenarios are PHPUnit scope
+
 Provides per-object-type data source configuration for LarpingApp, allowing administrators to choose whether each entity type (ability, character, condition, effect, event, item, player, setting, skill) is stored in the internal Nextcloud database or in an OpenRegister instance. When OpenRegister is selected, administrators configure the specific register and schema for each object type. Settings are exposed via the Nextcloud Admin Settings panel and a REST API. Additionally, provides a JSON-based configuration import mechanism via `SettingsLoadService` that bootstraps registers and schemas from a bundled configuration file.
 
 ## Requirements

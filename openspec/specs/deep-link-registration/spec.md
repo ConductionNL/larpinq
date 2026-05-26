@@ -6,6 +6,8 @@ status: implemented
 
 ## Purpose
 
+@e2e exclude pure-backend event-listener spec — DeepLinkRegistrationListener registers URL patterns via PHP event dispatch; no browser-navigable UI surface to drive with Playwright
+
 Registers deep link URL patterns with OpenRegister's unified search provider so that LarpingApp objects found via Nextcloud unified search link directly to LarpingApp's detail views instead of OpenRegister's generic view.
 
 ## Requirements
