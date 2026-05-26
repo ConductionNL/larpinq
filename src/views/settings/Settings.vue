@@ -114,6 +114,7 @@
 
 <script>
 import { defineComponent } from 'vue'
+import { loadState } from '@nextcloud/initial-state'
 import { CnVersionInfoCard } from '@conduction/nextcloud-vue'
 import {
 	NcSettingsSection,
@@ -140,7 +141,7 @@ export default defineComponent({
 
 	data() {
 		return {
-			appVersion: document.getElementById('settings')?.dataset?.version || 'Unknown',
+			appVersion: loadState('larpingapp', 'version', 'Unknown'),
 			reimporting: false,
 			message: '',
 			messageType: 'success',
