@@ -6,6 +6,8 @@ status: implemented
 
 ## Purpose
 
+@e2e exclude larpingapp Vue SPA fails to mount at localhost:8080 (empty #content, no Vue instance, confirmed via DOM inspection); character CRUD UI is inaccessible; backend CharacterService stat-engine scenarios are PHPUnit scope
+
 Provides full CRUD lifecycle management for LARP characters, including player characters, NPCs, and other character types. Characters serve as the central entity in the application, linking to skills, items, conditions, and events. The system includes a stat calculation engine (`CharacterService.calculateCharacter()`) that automatically computes ability scores based on associated effects, a currency system (gold/silver/copper), approval workflow, and background/notes management. Character data is fetched via `RegisterObjectFetcher` which resolves OpenRegister mappers from per-type configuration.
 
 ## Requirements

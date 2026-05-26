@@ -6,6 +6,8 @@ status: implemented
 
 ## Purpose
 
+@e2e exclude pure-backend PHP service — mapper resolution, OpenRegister DI, and array conversion are PHPUnit concerns; no UI surface to drive via Playwright
+
 The data access layer for LarpingApp has been refactored from a single monolithic `ObjectService` to a thin, focused `RegisterObjectFetcher` (`lib/Service/RegisterObjectFetcher.php`). This service provides object retrieval from OpenRegister by resolving register and schema IDs from IAppConfig per object type. It replaces the previous generic CRUD dispatch pattern (internal mappers vs OpenRegister) with direct cross-app calls to OpenRegister's ObjectService. The `CharacterService` uses `RegisterObjectFetcher` to load entities for stat calculation, and the `CharactersController` uses it to fetch character data for PDF export.
 
 **Key source files:**

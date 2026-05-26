@@ -7,6 +7,9 @@ status: implemented
 **Owned by**: LarpingApp (app-specific dashboard widget)
 
 ## Purpose
+
+@e2e exclude larpingapp Vue SPA fails to mount at localhost:8080; SkillUsageChart widget is inaccessible; character stat breakdown, multi-character comparison, skill dependency graph, and effect chain visualization widgets are not yet implemented per spec status note; GraphQL transport and facet-processing scenarios are JS unit-test scope
+
 Provide a LarpingApp-specific dashboard widget that visualizes skill usage distribution across characters using data from OpenRegister's GraphQL faceting API. This widget is part of LarpingApp's dashboard experience, following the cross-app dashboard patterns defined in the `built-in-dashboards` spec and using the `CnDashboardPage` shared component from `@conduction/nextcloud-vue`.
 
 ## Requirements

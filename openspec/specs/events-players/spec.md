@@ -6,6 +6,8 @@ status: implemented
 
 ## Purpose
 
+@e2e exclude larpingapp Vue SPA fails to mount at localhost:8080; EventsList/PlayersList views and association modals are inaccessible; backend EventMapper/PlayerMapper and CharacterService.applyEntityEffects scenarios are PHPUnit scope
+
 Manages LARP events (game gatherings with date ranges, locations, and participant tracking) and player profiles (real-world people who play characters). Events can carry Effects that are applied to participating characters during stat calculation via `CharacterService.applyEntityEffects()`. Players serve as the link between real-world people and their in-game characters via the character's `ocName` field. Both entity types are managed through the generic object store pattern and support OpenRegister features (audit trails, relations, locking).
 
 ## Requirements
