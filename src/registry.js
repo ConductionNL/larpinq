@@ -25,9 +25,9 @@ import DashboardActions from './views/dashboard/DashboardActions.vue'
 import GameSettingsSection from './views/settings/Settings.vue'
 
 export default {
-	DashboardKpi:           { kind: 'widget',  component: DashboardKpi },
-	DashboardRecentList:    { kind: 'widget',  component: DashboardRecentList },
-	DashboardSkillUsage:    { kind: 'widget',  component: DashboardSkillUsage },
-	DashboardActions:       { kind: 'actions', component: DashboardActions },
-	GameSettingsSection:    { kind: 'section', component: GameSettingsSection },
+	DashboardKpi: { kind: 'widget', component: DashboardKpi },
+	DashboardRecentList: { kind: 'widget', component: DashboardRecentList },
+	DashboardSkillUsage: { kind: 'widget', component: DashboardSkillUsage },
+	DashboardActions: { kind: 'actions', component: DashboardActions },
+	GameSettingsSection: { kind: 'section', component: GameSettingsSection },
 }
