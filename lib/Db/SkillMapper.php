@@ -91,13 +91,17 @@ class SkillMapper extends QBMapper
         foreach ($filters as $filter => $value) {
             if ($value === 'IS NOT NULL') {
                 $queryBuilder->andWhere($queryBuilder->expr()->isNotNull($filter));
-            } else if ($value === 'IS NULL') {
-                $queryBuilder->andWhere($queryBuilder->expr()->isNull($filter));
-            } else {
-                $queryBuilder->andWhere(
-                    $queryBuilder->expr()->eq($filter, $queryBuilder->createNamedParameter($value))
-                );
+                continue;
             }
+
+            if ($value === 'IS NULL') {
+                $queryBuilder->andWhere($queryBuilder->expr()->isNull($filter));
+                continue;
+            }
+
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->eq($filter, $queryBuilder->createNamedParameter($value))
+            );
         }
     }//end applyFilters()
 

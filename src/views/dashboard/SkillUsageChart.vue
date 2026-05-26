@@ -55,9 +55,15 @@ export default {
 		hasData() {
 			return this.skillLabels.length > 0
 		},
+		/**
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-4
+		 */
 		chartSeries() {
 			return this.skillCounts
 		},
+		/**
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-4
+		 */
 		chartOptions() {
 			return {
 				chart: {
@@ -80,6 +86,10 @@ export default {
 				},
 				dataLabels: {
 					enabled: true,
+					/**
+					 * @spec exclude ApexCharts dataLabel percent formatter —
+					 * trivial display rounding, no business logic.
+					 */
 					formatter(val) {
 						return Math.round(val) + '%'
 					},
@@ -93,6 +103,10 @@ export default {
 				},
 			}
 		},
+		/**
+		 * @spec exclude Reads Nextcloud theme data-attributes / prefers-color-scheme
+		 * to pick the chart light/dark mode — framework theme-detection glue.
+		 */
 		isDarkTheme() {
 			return document.body.dataset.themeDark !== undefined
 				|| (window.matchMedia
@@ -104,6 +118,9 @@ export default {
 		this.fetchData()
 	},
 	methods: {
+		/**
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-4
+		 */
 		async fetchData() {
 			this.loading = true
 			this.error = null
@@ -122,12 +139,16 @@ export default {
 				}
 				this.openRegisterConfigured = true
 
-				const result = await queryGraphQL(`{
-					character(first: 1, facets: ["skills"]) {
-						totalCount
-						facets
-					}
-				}`)
+				const skillFacetQuery = [
+					'{',
+					'  character(first: 1, facets: ["skills"])',
+					'  {',
+					'    totalCount',
+					'    facets',
+					'  }',
+					'}',
+				].join('\n')
+				const result = await queryGraphQL(skillFacetQuery)
 
 				const characterData = result?.data?.character
 				if (!characterData) {

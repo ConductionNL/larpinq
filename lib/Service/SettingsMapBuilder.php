@@ -12,6 +12,8 @@
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @version   GIT: <git_id>
  * @link      https://larpingapp.com
+ *
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-37
  */
 
 declare(strict_types=1);
@@ -43,6 +45,8 @@ class SettingsMapBuilder
      * @param array $schemas The imported schemas.
      *
      * @return array The slug-to-ID map.
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-37
      */
     public function buildSchemaSlugMap(array $schemas): array
     {
@@ -65,6 +69,8 @@ class SettingsMapBuilder
      * @param array $registers The imported registers.
      *
      * @return mixed The register ID or null.
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-37
      */
     public function findRegisterIdBySlug(array $registers): mixed
     {
@@ -87,6 +93,8 @@ class SettingsMapBuilder
      * @param array $schemaMap The map to populate.
      *
      * @return void
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-37
      */
     private function addSchemaToMap(mixed $schema, array &$schemaMap): void
     {
@@ -111,6 +119,8 @@ class SettingsMapBuilder
      * @param mixed $register The register object or array.
      *
      * @return mixed The register ID or null.
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-37
      */
     private function extractRegisterIdIfMatch(mixed $register): mixed
     {
@@ -137,6 +147,8 @@ class SettingsMapBuilder
      * @param mixed $value The value to normalize.
      *
      * @return array<array-key, mixed>|null The array or null if not normalizable.
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-37
      */
     private function normalizeToArray(mixed $value): ?array
     {

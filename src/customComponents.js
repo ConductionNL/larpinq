@@ -3,18 +3,23 @@
 //
 // Custom-component registry (v1 pattern) for the manifest-driven app shell.
 //
-// Preserved alongside the v2 registry.js during the migration window.
-// CnAppRoot accepts both props; v2 renderer emits a one-shot deprecation
-// warning when both are present and the manifest is v2.
+// All page-level entries are typed primitives. Remaining entries are
+// focused widget / section / actions components referenced from
+// inside typed pages:
+//   - Dashboard widgets (KPIs, recent lists, skill-usage chart) — slot resolution
+//   - Dashboard actions (header buttons + create dialogs) — actionsComponent resolution
+//   - Game Settings section — section.component resolution
 
-import ObjectList from './views/ObjectList.vue'
-import ObjectDetail from './views/ObjectDetail.vue'
-import DashboardIndex from './views/dashboard/DashboardIndex.vue'
-import Settings from './views/settings/Settings.vue'
+import DashboardKpi from './views/dashboard/DashboardKpi.vue'
+import DashboardRecentList from './views/dashboard/DashboardRecentList.vue'
+import DashboardSkillUsage from './views/dashboard/DashboardSkillUsage.vue'
+import DashboardActions from './views/dashboard/DashboardActions.vue'
+import GameSettingsSection from './views/settings/Settings.vue'
 
 export default {
-	ObjectList,
-	ObjectDetail,
-	DashboardView: DashboardIndex,
-	SettingsView: Settings,
+	DashboardKpi,
+	DashboardRecentList,
+	DashboardSkillUsage,
+	DashboardActions,
+	GameSettingsSection,
 }

@@ -10,6 +10,12 @@
  * @license   https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
  * @link      https://larpingapp.com
  *
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-1
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-2
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-3
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-4
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-5
+ *
  * @phpversion 8.2
  */
 
@@ -60,6 +66,10 @@ class Application extends App implements IBootstrap
      * @return void
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-1
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-2
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-3
      */
     public function register(IRegistrationContext $context): void
     {
@@ -79,6 +89,9 @@ class Application extends App implements IBootstrap
      * @param IBootContext $context Boot context
      *
      * @return void
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-4
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-5
      */
     public function boot(IBootContext $context): void
     {
