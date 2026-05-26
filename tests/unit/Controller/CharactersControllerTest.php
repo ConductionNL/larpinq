@@ -22,6 +22,8 @@ use OCP\App\IAppManager;
 use OCP\AppFramework\Http\DataDownloadResponse;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\IRequest;
+use OCP\IUser;
+use OCP\IUserSession;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
@@ -37,15 +39,21 @@ class CharactersControllerTest extends TestCase
     private CharacterService&MockObject $characterService;
     private IAppManager&MockObject $appManager;
     private ContainerInterface&MockObject $container;
+    private IUserSession&MockObject $userSession;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->objectFetcher = $this->createMock(RegisterObjectFetcher::class);
+        $this->objectFetcher  = $this->createMock(RegisterObjectFetcher::class);
         $this->characterService = $this->createMock(CharacterService::class);
-        $this->appManager = $this->createMock(IAppManager::class);
-        $this->container = $this->createMock(ContainerInterface::class);
+        $this->appManager     = $this->createMock(IAppManager::class);
+        $this->container      = $this->createMock(ContainerInterface::class);
+        $this->userSession    = $this->createMock(IUserSession::class);
+
+        // Default: authenticated user.
+        $mockUser = $this->createMock(IUser::class);
+        $this->userSession->method('getUser')->willReturn($mockUser);
 
         $this->controller = new CharactersController(
             'larpingapp',
@@ -54,7 +62,30 @@ class CharactersControllerTest extends TestCase
             $this->characterService,
             $this->appManager,
             $this->container,
+            $this->userSession,
         );
+    }
+
+    public function testDownloadPdfReturns401WhenNotAuthenticated(): void
+    {
+        $unauthSession = $this->createMock(IUserSession::class);
+        $unauthSession->method('getUser')->willReturn(null);
+
+        $controller = new CharactersController(
+            'larpingapp',
+            $this->createMock(IRequest::class),
+            $this->objectFetcher,
+            $this->characterService,
+            $this->appManager,
+            $this->container,
+            $unauthSession,
+        );
+
+        $result = $controller->downloadPdf('char-1', 'tpl-1');
+
+        self::assertInstanceOf(JSONResponse::class, $result);
+        self::assertSame(401, $result->getStatus());
+        self::assertArrayHasKey('error', $result->getData());
     }
 
     public function testDownloadPdfReturns424WhenDocuDeskNotInstalled(): void
@@ -120,8 +151,8 @@ class CharactersControllerTest extends TestCase
             ->getMock();
         $mockTemplateService->method('getTemplate')
             ->willReturn([
-                'content' => '<h1>{{ character.name }}</h1>',
-                'format' => 'A4',
+                'content'     => '<h1>{{ character.name }}</h1>',
+                'format'      => 'A4',
                 'orientation' => 'P',
             ]);
 
