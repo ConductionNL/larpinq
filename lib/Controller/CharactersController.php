@@ -8,6 +8,25 @@
  * @copyright 2024 Ruben Linde
  * @license   https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
  * @link      https://larpingapp.com
+ *
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-80
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-81
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-82
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-83
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-84
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-85
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-86
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-87
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-88
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-89
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-90
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-91
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-92
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-93
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-94
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-95
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-96
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-97
  */
 
 declare(strict_types=1);
@@ -67,6 +86,25 @@ class CharactersController extends Controller
      * @NoCSRFRequired
      *
      * @SuppressWarnings(PHPMD.ShortVariable)
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-80
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-81
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-82
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-83
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-84
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-85
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-86
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-87
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-88
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-89
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-90
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-91
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-92
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-93
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-94
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-95
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-96
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-97
      */
     public function downloadPdf(string $id, string $template): DataDownloadResponse|JSONResponse
     {

@@ -54,6 +54,9 @@ export default {
 		}
 	},
 	methods: {
+		/**
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-10
+		 */
 		async reimport() {
 			this.reimporting = true
 			this.reimportResult = null

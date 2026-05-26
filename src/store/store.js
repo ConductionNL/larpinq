@@ -13,6 +13,9 @@ const SCHEMA_SLUGS = [
 	'setting',
 ]
 
+/**
+ * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-7
+ */
 export async function initializeStores() {
 	const settingsStore = useSettingsStore()
 	const objectStore = useObjectStore()

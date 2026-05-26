@@ -12,6 +12,10 @@
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @version   GIT: <git_id>
  * @link      https://larpingapp.com
+ *
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-4
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-23
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-24
  */
 
 declare(strict_types=1);
@@ -75,6 +79,8 @@ class SettingsService
      * Get all LarpingApp settings.
      *
      * @return array The settings as key-value pairs.
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-23
      */
     public function getSettings(): array
     {
@@ -93,6 +99,8 @@ class SettingsService
      * @param array $data The settings data to update.
      *
      * @return array The updated settings.
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-24
      */
     public function updateSettings(array $data): array
     {
@@ -117,6 +125,8 @@ class SettingsService
      * @return array The import result.
      *
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-4
      */
     public function loadSettings(bool $force=false): array
     {

@@ -12,6 +12,13 @@
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @version   GIT: <git_id>
  * @link      https://larpingapp.com
+ *
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-27
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-28
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-29
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-30
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-31
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-32
  */
 
 declare(strict_types=1);
@@ -86,6 +93,11 @@ class SettingsLoadService
      * @return array The import result.
      *
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-27
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-28
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-29
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-30
      */
     public function loadSettings(bool $force=false): array
     {
@@ -116,6 +128,9 @@ class SettingsLoadService
      * @param array $importResult The import result from ConfigurationService.
      *
      * @return void
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-31
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-32
      */
     private function updateObjectTypeConfiguration(array $importResult): void
     {
@@ -151,6 +166,8 @@ class SettingsLoadService
      * Get the OpenRegister ConfigurationService via the container.
      *
      * @return object The configuration service.
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-27
      */
     private function getConfigurationService(): object
     {

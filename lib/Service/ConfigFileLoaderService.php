@@ -12,6 +12,11 @@
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @version   GIT: <git_id>
  * @link      https://larpingapp.com
+ *
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-33
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-34
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-35
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-36
  */
 
 declare(strict_types=1);
@@ -62,6 +67,10 @@ class ConfigFileLoaderService
      * @return array<string, mixed> The parsed configuration data.
      *
      * @throws RuntimeException If the file cannot be read or parsed.
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-33
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-34
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-35
      */
     public function loadConfigurationFile(): array
     {
@@ -93,6 +102,8 @@ class ConfigFileLoaderService
      * @param array<string, mixed> $data The configuration data.
      *
      * @return array<string, mixed> The data with sourceType ensured.
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-36
      */
     public function ensureSourceType(array $data): array
     {
