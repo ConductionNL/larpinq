@@ -7,4 +7,4 @@ Util::addStyle($appId, 'main');
 
 ?>
 
-<div id="settings" data-version="<?php p($_['version'] ?? ''); ?>"></div>
+<div id="settings"></div>
