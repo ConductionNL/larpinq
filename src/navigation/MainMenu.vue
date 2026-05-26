@@ -120,6 +120,8 @@ export default {
 	},
 	methods: {
 		/**
+		 * @param url
+		 * @param target
 		 * @spec exclude Thin window.open() wrapper for the documentation nav
 		 * item — trivial UI glue, no business logic.
 		 */
