@@ -1,0 +1,64 @@
+publiccodeYmlVersion: "0.4"
+
+name: Larping
+url: "https://github.com/ConductionNL/larpingapp"
+softwareVersion: "0.1.21"
+releaseDate: "2026-05-26"
+developmentStatus: beta
+softwareType: "standalone/other"
+
+platforms:
+  - nextcloud
+
+categories:
+  - collaboration
+  - event-management
+
+description:
+  en:
+    shortDescription: >
+      Live action role-playing (LARP) event and character management for Nextcloud.
+    longDescription: >
+      LarpingApp provides comprehensive management tools for live action role-playing
+      (LARP) communities and events. It supports character creation and management,
+      event organisation, player registration, skill and item tracking, and community
+      administration. Built on Nextcloud and Open Register, it offers a collaborative
+      platform for LARP groups of all sizes.
+    features:
+      - Character creation and management
+      - Event organisation and player registration
+      - Skill and item tracking
+      - Community administration
+
+  nl:
+    shortDescription: >
+      Live action role-playing (LARP) evenement- en karakterbeheer voor Nextcloud.
+    longDescription: >
+      LarpingApp biedt uitgebreide beheertools voor live action role-playing (LARP)
+      gemeenschappen en evenementen. Het ondersteunt het aanmaken en beheren van
+      karakters, evenementorganisatie, spelersregistratie, vaardigheids- en
+      itembeheer, en gemeenschapsadministratie. Gebouwd op Nextcloud en Open Register
+      biedt het een collaboratief platform voor LARP-groepen van elke omvang.
+    features:
+      - Karakter aanmaken en beheren
+      - Evenementorganisatie en spelersregistratie
+      - Vaardigheids- en itembeheer
+      - Gemeenschapsadministratie
+
+legal:
+  license: EUPL-1.2
+  mainCopyrightOwner: "Conduction B.V."
+  repoOwner: "Conduction B.V."
+
+maintenance:
+  type: community
+  contacts:
+    - name: Conduction B.V.
+      email: info@conduction.nl
+      affiliation: Conduction B.V.
+
+localisation:
+  localisationReady: true
+  availableLanguages:
+    - nl
+    - en
