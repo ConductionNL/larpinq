@@ -42,6 +42,7 @@
         "version": "1.1.0",
         "summary": "A playable or non-playable character in the LARP game",
         "description": "Represents a character entity with stats, skills, items, conditions, and event participation. Characters can be player characters, NPCs, or other types. Game masters approve characters before play.",
+        "type": "object",
         "required": [
           "name",
           "ocName"
@@ -265,6 +266,7 @@
         "version": "1.0.0",
         "summary": "A real-world player participating in the LARP",
         "description": "Represents a player who controls one or more characters. Tracks player identity and contact information.",
+        "type": "object",
         "required": [
           "name"
         ],
@@ -289,6 +291,7 @@
         "version": "1.0.0",
         "summary": "A numeric stat tracked on characters (e.g., XP, Mana, Health)",
         "description": "Represents a numeric ability or stat that characters track. Effects modify abilities by adding or subtracting from the base value. Used for experience points, mana, health, armor, and other quantifiable attributes.",
+        "type": "object",
         "required": [
           "name"
         ],
@@ -318,6 +321,7 @@
         "version": "1.0.0",
         "summary": "A learnable ability that characters can acquire",
         "description": "Represents a skill that characters can learn, usually purchased with experience points. Skills provide effects and may have prerequisites (other skills, stats, conditions, or effects).",
+        "type": "object",
         "required": [
           "name"
         ],
@@ -398,6 +402,7 @@
         "version": "1.0.0",
         "summary": "A magical or special item that characters can own",
         "description": "Represents a special or magical item in the game. Items provide effects to their holder. Items can be unique artifacts (only one instance exists) or regular items.",
+        "type": "object",
         "required": [
           "name"
         ],
@@ -451,6 +456,7 @@
         "version": "1.0.0",
         "summary": "A positive or negative condition affecting characters",
         "description": "Represents a condition that can be applied to characters as a consequence of gameplay. Conditions differ from skills in that they are not purchased but earned through in-game events.",
+        "type": "object",
         "required": [
           "name"
         ],
@@ -504,6 +510,7 @@
         "version": "1.0.0",
         "summary": "A calculated modification to a character ability",
         "description": "Represents a numeric modification to one or more abilities. Effects come from skills, items, conditions, or events and automatically adjust character stats.",
+        "type": "object",
         "required": [
           "name"
         ],
@@ -564,6 +571,7 @@
         "version": "1.0.0",
         "summary": "A LARP event or gathering where players come together",
         "description": "Represents a LARP event — a gathering where players come with their characters. Can be multi-day events or casual meetups. Characters subscribe to events and receive effects after the event.",
+        "type": "object",
         "required": [
           "name"
         ],
@@ -648,6 +656,7 @@
         "version": "1.0.0",
         "summary": "A game setting or configuration value",
         "description": "Represents a game-level setting or configuration parameter for the LARP campaign.",
+        "type": "object",
         "required": [
           "name"
         ],
