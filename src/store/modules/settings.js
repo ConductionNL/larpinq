@@ -56,6 +56,7 @@ export const useSettingsStore = defineStore('settings', {
 		},
 
 		/**
+		 * @param settingsData
 		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-6
 		 */
 		async saveSettings(settingsData) {

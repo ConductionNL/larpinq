@@ -24,7 +24,10 @@
 				:key="item.id"
 				class="widget-list-item"
 				@click="goToIndex">
-				<component :is="iconComponent" v-if="iconComponent" :size="20" class="item-icon" />
+				<component :is="iconComponent"
+					v-if="iconComponent"
+					:size="20"
+					class="item-icon" />
 				<div class="item-content">
 					<span class="item-title">{{ item.name || fallbackLabel }}</span>
 				</div>

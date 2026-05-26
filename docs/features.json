@@ -1,0 +1,74 @@
+[
+  {
+    "slug": "admin-settings",
+    "title": "Admin Settings",
+    "summary": "Provides per-object-type data source configuration for LarpingApp, allowing administrators to choose whether each entity type (ability, character, condition, effect, event, item, player, setting, skill) is stored in the internal Nextcloud database or in an OpenRegister instance. When OpenRegister is selected, administrators configure the specific register and schema for each object type. Settings are exposed via the Nextcloud Admin Settings panel and a REST API. Additionally, provides a JSON-based configuration import mechanism via `SettingsLoadService` that bootstraps registers and schemas from a bundled configuration file.",
+    "docsUrl": "openspec/specs/admin-settings/spec.md"
+  },
+  {
+    "slug": "character-management",
+    "title": "Character Management",
+    "summary": "Provides full CRUD lifecycle management for LARP characters, including player characters, NPCs, and other character types. Characters serve as the central entity in the application, linking to skills, items, conditions, and events. The system includes a stat calculation engine (`CharacterService.calculateCharacter()`) that automatically computes ability scores based on associated effects, a currency system (gold/silver/copper), approval workflow, and background/notes management. Character data is fetched via `RegisterObjectFetcher` which resolves OpenRegister mappers from per-type configuration.",
+    "docsUrl": "openspec/specs/character-management/spec.md"
+  },
+  {
+    "slug": "dashboard",
+    "title": "Dashboard",
+    "summary": "The dashboard is the landing page of the LarpingApp, serving as the entry point when users navigate to the app. Currently it provides a basic welcome view. The dashboard has infrastructure in place for future analytics features using ApexCharts (which is already a project dependency). The `DashboardController` serves the main app template (a Vue SPA entry point), while the Vue `DashboardIndex.vue` component renders the actual dashboard content. The navigation sidebar provides quick access to all entity views and a quick-create button for characters.",
+    "docsUrl": "openspec/specs/dashboard/spec.md"
+  },
+  {
+    "slug": "deep-link-registration",
+    "title": "Deep Link Registration",
+    "summary": "Registers deep link URL patterns with OpenRegister's unified search provider so that LarpingApp objects found via Nextcloud unified search link directly to LarpingApp's detail views instead of OpenRegister's generic view.",
+    "docsUrl": "openspec/specs/deep-link-registration/spec.md"
+  },
+  {
+    "slug": "events-players",
+    "title": "Events and Players",
+    "summary": "Manages LARP events (game gatherings with date ranges, locations, and participant tracking) and player profiles (real-world people who play characters). Events can carry Effects that are applied to participating characters during stat calculation via `CharacterService.applyEntityEffects()`. Players serve as the link between real-world people and their in-game characters via the character's `ocName` field. Both entity types are managed through the generic object store pattern and support OpenRegister features (audit trails, relations, locking).",
+    "docsUrl": "openspec/specs/events-players/spec.md"
+  },
+  {
+    "slug": "game-mechanics",
+    "title": "Game Mechanics",
+    "summary": "Game mechanics covers the interconnected system of Skills, Items, Conditions, Effects, and Abilities (stats) that form the LARP rule engine. Effects are the fundamental building blocks -- they modify ability scores via positive or negative modifiers. Skills, items, conditions, and events each contain arrays of effect references that are applied to characters during stat calculation by `CharacterService.calculateCharacter()`. Abilities define the numeric stats that effects target. Skills additionally support a prerequisite system. This specification documents the CRUD operations, data models, effect chain integrity, and interactions between these entity types.",
+    "docsUrl": "openspec/specs/game-mechanics/spec.md"
+  },
+  {
+    "slug": "larping-skill-widget",
+    "title": "Larping Skill Widget",
+    "summary": "Provide a LarpingApp-specific dashboard widget that visualizes skill usage distribution across characters using data from OpenRegister's GraphQL faceting API. This widget is part of LarpingApp's dashboard experience, following the cross-app dashboard patterns defined in the `built-in-dashboards` spec and using the `CnDashboardPage` shared component from `@conduction/nextcloud-vue`.",
+    "docsUrl": "openspec/specs/larping-skill-widget/spec.md"
+  },
+  {
+    "slug": "object-service",
+    "title": "Object Service",
+    "summary": "The data access layer for LarpingApp has been refactored from a single monolithic `ObjectService` to a thin, focused `RegisterObjectFetcher` (`lib/Service/RegisterObjectFetcher.php`). This service provides object retrieval from OpenRegister by resolving register and schema IDs from IAppConfig per object type. It replaces the previous generic CRUD dispatch pattern (internal mappers vs OpenRegister) with direct cross-app calls to OpenRegister's ObjectService. The `CharacterService` uses `RegisterObjectFetcher` to load entities for stat calculation, and the `CharactersController` uses it to fetch character data for PDF export.",
+    "docsUrl": "openspec/specs/object-service/spec.md"
+  },
+  {
+    "slug": "pdf-export",
+    "title": "PDF Character Sheet Export",
+    "summary": "Enables game masters and players to export character data as downloadable PDF files. PDF rendering and template management are delegated to the DocuDesk app -- LarpingApp's `CharactersController` resolves DocuDesk's `PdfService` and `TemplateService` via Nextcloud's DI container. Templates are managed in DocuDesk, scoped to LarpingApp via the `namespace=larpingapp` filter. The PDF download flow gracefully degrades when DocuDesk is not installed, hiding the download button and returning a 424 error if accessed directly.",
+    "docsUrl": "openspec/specs/pdf-export/spec.md"
+  },
+  {
+    "slug": "register-config-json",
+    "title": "Register Config JSON Auto-Import",
+    "summary": "Automatically imports all LarpingApp schemas and registers into OpenRegister on app install/enable, eliminating manual configuration. Uses the `larpingapp_register.json` file (OpenAPI 3.0.0 format) with `ConfigurationService.importFromApp()`.",
+    "docsUrl": "openspec/specs/register-config-json/spec.md"
+  },
+  {
+    "slug": "rpg-system",
+    "title": "RPG System",
+    "summary": "Defines the core RPG mechanics of LarpingApp: Skills, Items, Conditions, Effects, and Abilities (stats). These entities form an interconnected system where Effects serve as the bridge between game elements and character stats. Skills, Items, Conditions, and Events each carry Effects that modify Abilities. Skills additionally support a prerequisite system requiring other skills, stats, conditions, effects, or a minimum score. The stat calculation is performed by `CharacterService` which applies effects in a deterministic order (skills -> items -> conditions -> events) with full audit trail. This spec focuses on the RPG system as a cohesive rule engine rather than individual entity CRUD.",
+    "docsUrl": "openspec/specs/rpg-system/spec.md"
+  },
+  {
+    "slug": "user-settings",
+    "title": "User Settings",
+    "summary": "Provides a settings dialog accessible from the navigation footer, allowing users to re-import configuration. Uses `NcAppSettingsDialog` from `@nextcloud/vue`.",
+    "docsUrl": "openspec/specs/user-settings/spec.md"
+  }
+]

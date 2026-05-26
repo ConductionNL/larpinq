@@ -251,6 +251,7 @@ export default defineComponent({
 		},
 
 		/**
+		 * @param registerId
 		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-9
 		 */
 		getRegisterLabel(registerId) {
@@ -259,6 +260,8 @@ export default defineComponent({
 		},
 
 		/**
+		 * @param registerId
+		 * @param schemaId
 		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-9
 		 */
 		getSchemaLabel(registerId, schemaId) {
@@ -268,6 +271,7 @@ export default defineComponent({
 		},
 
 		/**
+		 * @param objectType
 		 * @spec exclude Trivial capitalize-first-letter formatter for the
 		 * object-type section header — display-only, no business logic.
 		 */
@@ -276,6 +280,7 @@ export default defineComponent({
 		},
 
 		/**
+		 * @param registerId
 		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-9
 		 */
 		getSchemaOptions(registerId) {
@@ -288,6 +293,7 @@ export default defineComponent({
 		},
 
 		/**
+		 * @param objectType
 		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-9
 		 */
 		handleSourceChange(objectType) {
@@ -299,6 +305,7 @@ export default defineComponent({
 		},
 
 		/**
+		 * @param objectType
 		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-9
 		 */
 		handleRegisterChange(objectType) {
