@@ -6,6 +6,8 @@ status: implemented
 
 ## Purpose
 
+@e2e exclude pure-backend stat-engine spec — ability/effect/skill CRUD and CharacterService calculation order are covered by PHPUnit; RPG logic has no distinct UI surface beyond the game-mechanics CRUD spec
+
 Defines the core RPG mechanics of LarpingApp: Skills, Items, Conditions, Effects, and Abilities (stats). These entities form an interconnected system where Effects serve as the bridge between game elements and character stats. Skills, Items, Conditions, and Events each carry Effects that modify Abilities. Skills additionally support a prerequisite system requiring other skills, stats, conditions, effects, or a minimum score. The stat calculation is performed by `CharacterService` which applies effects in a deterministic order (skills -> items -> conditions -> events) with full audit trail. This spec focuses on the RPG system as a cohesive rule engine rather than individual entity CRUD.
 
 ## Requirements

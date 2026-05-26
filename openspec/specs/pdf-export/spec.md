@@ -6,6 +6,8 @@ status: implemented
 
 ## Purpose
 
+@e2e exclude larpingapp Vue SPA fails to mount at localhost:8080; RenderPdfFromCharacter.vue modal and "Als pdf downloaden" action are inaccessible; CharactersController.downloadPdf backend and DocuDesk integration scenarios are PHPUnit/integration-test scope
+
 Enables game masters and players to export character data as downloadable PDF files. PDF rendering and template management are delegated to the DocuDesk app -- LarpingApp's `CharactersController` resolves DocuDesk's `PdfService` and `TemplateService` via Nextcloud's DI container. Templates are managed in DocuDesk, scoped to LarpingApp via the `namespace=larpingapp` filter. The PDF download flow gracefully degrades when DocuDesk is not installed, hiding the download button and returning a 424 error if accessed directly.
 
 **Key source files:**
