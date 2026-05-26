@@ -87,6 +87,7 @@ export default {
 				dataLabels: {
 					enabled: true,
 					/**
+					 * @param val
 					 * @spec exclude ApexCharts dataLabel percent formatter —
 					 * trivial display rounding, no business logic.
 					 */

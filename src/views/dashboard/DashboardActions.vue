@@ -102,6 +102,7 @@ export default {
 	},
 	methods: {
 		/**
+		 * @param type
 		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-3
 		 */
 		async loadSchema(type) {
@@ -143,6 +144,10 @@ export default {
 			}
 		},
 		/**
+		 * @param type
+		 * @param formData
+		 * @param detailRouteName
+		 * @param onSuccess
 		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-3
 		 */
 		async onCreate(type, formData, detailRouteName, onSuccess) {
