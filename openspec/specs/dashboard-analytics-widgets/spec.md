@@ -6,6 +6,8 @@ retrofit: true
 
 ## Purpose
 
+@e2e exclude larpingapp Vue SPA fails to mount at localhost:8080; DashboardKpi/DashboardRecentList/DashboardActions/SkillUsageChart components are inaccessible; GraphQL transport scenarios are JS unit-test scope
+
 The larpingapp dashboard renders a set of manifest-driven analytics widgets that
 surface live counts, recent items, quick-create actions, and a skill-distribution
 chart. These widgets were previously described only as "Planned" REQs in the

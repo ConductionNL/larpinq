@@ -6,6 +6,8 @@ retrofit: true
 
 ## Purpose
 
+@e2e exclude larpingapp Vue SPA fails to mount at localhost:8080; Settings.vue admin panel and settings store bootstrap are inaccessible; store lifecycle and cascade logic are JS unit-test scope
+
 LarpingApp exposes its data-source configuration through a Vue settings surface
 backed by a Pinia settings store. The admin `Settings.vue` panel reads and writes
 per-object-type source/register/schema selections, the `UserSettings.vue` dialog

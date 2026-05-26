@@ -6,6 +6,8 @@ status: implemented
 
 ## Purpose
 
+@e2e exclude larpingapp Vue SPA fails to mount at localhost:8080; Ability/Effect/Skill/Item/Condition CRUD views are inaccessible; CharacterService effect-chain scenarios are PHPUnit scope
+
 Game mechanics covers the interconnected system of Skills, Items, Conditions, Effects, and Abilities (stats) that form the LARP rule engine. Effects are the fundamental building blocks -- they modify ability scores via positive or negative modifiers. Skills, items, conditions, and events each contain arrays of effect references that are applied to characters during stat calculation by `CharacterService.calculateCharacter()`. Abilities define the numeric stats that effects target. Skills additionally support a prerequisite system. This specification documents the CRUD operations, data models, effect chain integrity, and interactions between these entity types.
 
 **Key source files:**

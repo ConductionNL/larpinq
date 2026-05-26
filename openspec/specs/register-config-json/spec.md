@@ -6,6 +6,8 @@ status: implemented
 
 ## Purpose
 
+@e2e exclude pure-backend config-import spec — JSON auto-import runs in Application::boot() via PHP; ConfigFileLoaderService/SettingsLoadService/SettingsMapBuilder logic is covered by PHPUnit; no browser-navigable UI surface
+
 Automatically imports all LarpingApp schemas and registers into OpenRegister on app install/enable, eliminating manual configuration. Uses the `larpingapp_register.json` file (OpenAPI 3.0.0 format) with `ConfigurationService.importFromApp()`.
 
 ## Requirements
