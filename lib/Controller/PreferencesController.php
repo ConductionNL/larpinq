@@ -96,6 +96,9 @@ class PreferencesController extends Controller
     /**
      * Write a per-user preference value. An empty value clears it.
      *
+     * CSRF protection is required — this is a state-mutating PUT endpoint.
+     * @NoCSRFRequired removed to close the CSRF-forgery surface (closes #213).
+     *
      * @param string $key   The preference key (kebab/alphanumeric).
      * @param string $value The value to store (empty string clears it).
      *
@@ -104,7 +107,6 @@ class PreferencesController extends Controller
      * @spec openspec/changes/retrofit-2026-05-26-preferences-api/tasks.md#task-2
      *
      * @NoAdminRequired
-     * @NoCSRFRequired
      */
     public function setPreference(string $key, string $value=''): JSONResponse
     {

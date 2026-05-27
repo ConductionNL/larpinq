@@ -167,9 +167,10 @@ class SettingsController extends Controller
     /**
      * Update LarpingApp settings.
      *
-     * @return JSONResponse The updated settings response.
+     * CSRF protection is required — this is a state-mutating admin POST.
+     * @NoCSRFRequired removed to close the CSRF-forgery surface (closes #206).
      *
-     * @NoCSRFRequired
+     * @return JSONResponse The updated settings response.
      *
      * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-24
      */
@@ -194,9 +195,10 @@ class SettingsController extends Controller
     /**
      * Re-import the LarpingApp configuration from the JSON file.
      *
-     * @return JSONResponse The re-import result.
+     * CSRF protection is required — this is a state-mutating admin POST.
+     * @NoCSRFRequired removed to close the CSRF-forgery surface (closes #206).
      *
-     * @NoCSRFRequired
+     * @return JSONResponse The re-import result.
      *
      * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-25
      * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-26
