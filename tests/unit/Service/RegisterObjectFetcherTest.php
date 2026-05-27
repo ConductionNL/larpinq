@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace OCA\LarpingApp\Tests\Unit\Service;
 
 use Exception;
+use InvalidArgumentException;
 use OCA\LarpingApp\Service\RegisterObjectFetcher;
 use OCP\App\IAppManager;
 use OCP\IAppConfig;
@@ -169,10 +170,12 @@ class RegisterObjectFetcherTest extends TestCase
     {
         $this->appManager->method('getInstalledApps')->willReturn(['openregister']);
 
+        $testUuid = '00000000-0000-0000-0000-000000000001';
+
         $mockMapper = $this->getMockBuilder(className: \stdClass::class)
             ->addMethods(['find'])
             ->getMock();
-        $mockMapper->method('find')->willReturn(['id' => 'obj-1', 'name' => 'Test']);
+        $mockMapper->method('find')->willReturn(['id' => $testUuid, 'name' => 'Test']);
 
         $mockObjectService = $this->getMockBuilder(className: \stdClass::class)
             ->addMethods(['getMapper'])
@@ -198,59 +201,43 @@ class RegisterObjectFetcherTest extends TestCase
             );
 
         // Pass 'Skill' with uppercase S.
-        $result = $this->service->getObject('Skill', 'obj-1');
+        $result = $this->service->getObject('Skill', $testUuid);
 
-        self::assertSame(expected: 'obj-1', actual: $result['id']);
+        self::assertSame(expected: $testUuid, actual: $result['id']);
         self::assertSame(expected: 'Test', actual: $result['name']);
 
     }//end testGetObjectConvertsUppercaseTypeToLowercase()
 
     /**
-     * Test that getObject cleans URI-format IDs.
+     * Test that getObject rejects URI-format IDs (closes #212).
+     *
+     * URL-slicing was removed because it silently derived an object ID from
+     * any valid URL regardless of domain, providing an IDOR primitive.
      *
      * @return void
      */
-    public function testGetObjectCleansUriFormatIds(): void
+    public function testGetObjectRejectsUriFormatId(): void
     {
-        $this->appManager->method('getInstalledApps')->willReturn(['openregister']);
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid object ID: expected a UUID');
 
-        $mockMapper = $this->getMockBuilder(className: \stdClass::class)
-            ->addMethods(['find'])
-            ->getMock();
+        $this->service->getObject('character', 'https://example.com/api/objects/abc-123');
 
-        // Expect 'abc-123' after URI cleaning.
-        $mockMapper->expects($this->once())
-            ->method('find')
-            ->with('abc-123')
-            ->willReturn(['id' => 'abc-123']);
+    }//end testGetObjectRejectsUriFormatId()
 
-        $mockObjectService = $this->getMockBuilder(className: \stdClass::class)
-            ->addMethods(['getMapper'])
-            ->getMock();
-        $mockObjectService->method('getMapper')->willReturn($mockMapper);
+    /**
+     * Test that getObject rejects non-UUID string IDs.
+     *
+     * @return void
+     */
+    public function testGetObjectRejectsNonUuidId(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid object ID: expected a UUID');
 
-        $this->container->method('get')->willReturn($mockObjectService);
+        $this->service->getObject('character', 'not-a-uuid');
 
-        $this->config->method('getValueString')
-            ->willReturnCallback(
-                function (string $app, string $key, string $default): string {
-                    if ($key === 'character_register') {
-                        return 'reg-1';
-                    }
-
-                    if ($key === 'character_schema') {
-                        return 'sch-1';
-                    }
-
-                    return $default;
-                }
-            );
-
-        $result = $this->service->getObject('character', 'https://example.com/api/objects/abc-123');
-
-        self::assertSame(expected: 'abc-123', actual: $result['id']);
-
-    }//end testGetObjectCleansUriFormatIds()
+    }//end testGetObjectRejectsNonUuidId()
 
     /**
      * Test that getObjects returns arrays of arrays.
@@ -373,7 +360,14 @@ class RegisterObjectFetcherTest extends TestCase
     {
         $this->appManager->method('getInstalledApps')->willReturn(['openregister']);
 
-        $mockObj = new class implements \JsonSerializable {
+        $testUuid = '12345678-1234-1234-1234-123456789012';
+
+        $mockObj = new class ($testUuid) implements \JsonSerializable {
+            /**
+             * @param string $id The UUID for the object.
+             */
+            public function __construct(private string $id) {}
+
             /**
              * Serialize the object to JSON.
              *
@@ -381,7 +375,7 @@ class RegisterObjectFetcherTest extends TestCase
              */
             public function jsonSerialize(): array
             {
-                return ['id' => 'json-1', 'name' => 'Serializable'];
+                return ['id' => $this->id, 'name' => 'Serializable'];
             }//end jsonSerialize()
         };
 
@@ -412,9 +406,9 @@ class RegisterObjectFetcherTest extends TestCase
                 }
             );
 
-        $result = $this->service->getObject('character', 'json-1');
+        $result = $this->service->getObject('character', $testUuid);
 
-        self::assertSame(expected: 'json-1', actual: $result['id']);
+        self::assertSame(expected: $testUuid, actual: $result['id']);
         self::assertSame(expected: 'Serializable', actual: $result['name']);
 
     }//end testGetObjectHandlesJsonSerializableObjects()

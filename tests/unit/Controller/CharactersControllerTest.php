@@ -16,7 +16,6 @@ namespace OCA\LarpingApp\Tests\Unit\Controller;
 
 use Exception;
 use OCA\LarpingApp\Controller\CharactersController;
-use OCA\LarpingApp\Service\CharacterService;
 use OCA\LarpingApp\Service\RegisterObjectFetcher;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Http\DataDownloadResponse;
@@ -38,7 +37,6 @@ class CharactersControllerTest extends TestCase
 
     private CharactersController $controller;
     private RegisterObjectFetcher&MockObject $objectFetcher;
-    private CharacterService&MockObject $characterService;
     private IAppManager&MockObject $appManager;
     private ContainerInterface&MockObject $container;
     private IUserSession&MockObject $userSession;
@@ -49,13 +47,12 @@ class CharactersControllerTest extends TestCase
     {
         parent::setUp();
 
-        $this->objectFetcher    = $this->createMock(RegisterObjectFetcher::class);
-        $this->characterService = $this->createMock(CharacterService::class);
-        $this->appManager       = $this->createMock(IAppManager::class);
-        $this->container        = $this->createMock(ContainerInterface::class);
-        $this->userSession      = $this->createMock(IUserSession::class);
-        $this->groupManager     = $this->createMock(IGroupManager::class);
-        $this->logger           = $this->createMock(LoggerInterface::class);
+        $this->objectFetcher = $this->createMock(RegisterObjectFetcher::class);
+        $this->appManager    = $this->createMock(IAppManager::class);
+        $this->container     = $this->createMock(ContainerInterface::class);
+        $this->userSession   = $this->createMock(IUserSession::class);
+        $this->groupManager  = $this->createMock(IGroupManager::class);
+        $this->logger        = $this->createMock(LoggerInterface::class);
 
         // Default: authenticated admin user.
         $mockUser = $this->createMock(IUser::class);
@@ -67,7 +64,6 @@ class CharactersControllerTest extends TestCase
             'larpingapp',
             $this->createMock(IRequest::class),
             $this->objectFetcher,
-            $this->characterService,
             $this->appManager,
             $this->container,
             $this->userSession,
@@ -85,7 +81,6 @@ class CharactersControllerTest extends TestCase
             'larpingapp',
             $this->createMock(IRequest::class),
             $this->objectFetcher,
-            $this->characterService,
             $this->appManager,
             $this->container,
             $unauthSession,
@@ -115,7 +110,6 @@ class CharactersControllerTest extends TestCase
             'larpingapp',
             $this->createMock(IRequest::class),
             $this->objectFetcher,
-            $this->characterService,
             $this->appManager,
             $this->container,
             $nonAdminSession,

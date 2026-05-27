@@ -165,12 +165,22 @@ class SettingsLoadService
     /**
      * Get the OpenRegister ConfigurationService via the container.
      *
+     * Mirrors the OR-availability guard in SettingsController::getConfigurationService
+     * so that a missing openregister app produces a clean RuntimeException rather
+     * than an opaque container-not-found error. Closes #214.
+     *
      * @return object The configuration service.
+     *
+     * @throws \RuntimeException If OpenRegister is not installed.
      *
      * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-27
      */
     private function getConfigurationService(): object
     {
+        if (in_array(needle: 'openregister', haystack: $this->appManager->getInstalledApps()) === false) {
+            throw new \RuntimeException('Configuration service is not available.');
+        }
+
         // @var object $service
         $service = $this->container->get('OCA\OpenRegister\Service\ConfigurationService');
         return $service;

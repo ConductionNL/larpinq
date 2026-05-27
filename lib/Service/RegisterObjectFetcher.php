@@ -76,13 +76,6 @@ class RegisterObjectFetcher
     private string $appName = 'larpingapp';
 
     /**
-     * Cached OpenRegister ObjectService instance.
-     *
-     * @var object|null
-     */
-    private ?object $openRegisterService = null;
-
-    /**
      * Constructor for RegisterObjectFetcher.
      *
      * @param ContainerInterface $container  DI container.
@@ -101,6 +94,12 @@ class RegisterObjectFetcher
     /**
      * Get the OpenRegister ObjectService.
      *
+     * The ObjectService is resolved fresh from the DI container on every call
+     * to prevent stale-state cross-contamination. OR's ObjectService mutates
+     * currentRegister/currentSchema on each operation; caching a single instance
+     * leaks state between calls when multiple object types are fetched in the
+     * same request (closes #207).
+     *
      * @return object The OpenRegister ObjectService.
      *
      * @throws Exception If OpenRegister is not installed or not available.
@@ -115,18 +114,16 @@ class RegisterObjectFetcher
      */
     private function getOpenRegisterService(): object
     {
-        if ($this->openRegisterService !== null) {
-            return $this->openRegisterService;
-        }
-
         if (in_array(needle: 'openregister', haystack: $this->appManager->getInstalledApps()) === false) {
             throw new Exception('OpenRegister app is not installed');
         }
 
-        // @var object $service
+        // Resolve fresh on every call — never cache. OR's ObjectService mutates
+        // currentRegister/currentSchema on each getMapper() call; caching the
+        // instance causes stale-state contamination between object types.
+        // @var object $service The resolved OpenRegister ObjectService.
         $service = $this->container->get('OCA\OpenRegister\Service\ObjectService');
-        $this->openRegisterService = $service;
-        return $this->openRegisterService;
+        return $service;
     }//end getOpenRegisterService()
 
     /**
@@ -254,12 +251,19 @@ class RegisterObjectFetcher
     /**
      * Get a single object by type and ID from OpenRegister.
      *
+     * The `$id` parameter must be a valid UUID. URI-format IDs (full URLs) are
+     * no longer accepted — the previous URL-slicing behaviour silently derived
+     * a lookup ID from any valid URL regardless of domain or register scope,
+     * providing an IDOR primitive. Callers that previously passed URLs must
+     * normalise to a UUID before calling. Closes #212.
+     *
      * @param string $objectType The object type (e.g. 'character').
-     * @param string $id         The object ID.
+     * @param string $id         The object UUID.
      *
      * @return array<string,mixed> The object as an array.
      *
-     * @throws Exception If OpenRegister is not available or type is not configured.
+     * @throws Exception If OpenRegister is not available, type is not configured,
+     *                   or the ID is not a valid UUID.
      *
      * @psalm-suppress MixedMethodCall Mapper resolved dynamically via getMapper().
      * @psalm-suppress MixedAssignment Mapper resolved dynamically.
@@ -274,13 +278,14 @@ class RegisterObjectFetcher
      */
     public function getObject(string $objectType, string $id): array
     {
-        $mapper = $this->getMapper(objectType: $objectType);
-
-        // Clean URI-format IDs.
-        if (filter_var($id, FILTER_VALIDATE_URL) !== false) {
-            $parts = explode('/', rtrim($id, '/'));
-            $id    = end($parts);
+        // Require a clean UUID. Reject URL-format IDs to close the URL-slicing
+        // IDOR primitive (closes #212). Any caller that previously passed a full
+        // URL must extract the UUID before calling this method.
+        if (preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i', $id) !== 1) {
+            throw new \InvalidArgumentException('Invalid object ID: expected a UUID');
         }
+
+        $mapper = $this->getMapper(objectType: $objectType);
 
         // @var mixed $object
         $object = $mapper->find($id);
