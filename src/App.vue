@@ -3,7 +3,7 @@
 
 <!--
  Larping app shell. Mounts CnAppRoot with the bundled manifest and the
- customComponents registry; provides the `objectSidebarState` channel so
+ v2 kind-tagged registry (ADR-036); provides the `objectSidebarState` channel so
  detail pages (CnDetailPage) can drive a single host-rendered CnObjectSidebar
  through the #sidebar slot.
 
@@ -17,7 +17,6 @@
 <template>
 	<CnAppRoot
 		:manifest="manifest"
-		:custom-components="customComponents"
 		:registry="registry"
 		:page-types="pageTypes"
 		app-id="larpingapp"
@@ -87,19 +86,12 @@ export default {
 			required: true,
 		},
 		/**
-		 * Registry of consumer-injected components used by:
-		 *   - `type: "custom"` pages (`page.component`)
-		 *   - `headerComponent` / `actionsComponent` slot overrides
-		 *   - `pages[].config.sidebarTabs[].component` (detail tab tabs)
-		 *   - `pages[].config.sections[].component` (settings rich sections)
-		 */
-		customComponents: {
-			type: Object,
-			default: () => ({}),
-		},
-		/**
-		 * 5-kind component registry (v2 manifest pattern per hydra ADR-036).
-		 * Each entry: { kind, component, ...kindMetadata }.
+		 * v2 kind-tagged component registry (ADR-036). Passed to CnAppRoot's
+		 * `registry` prop. Each entry: `{ kind, component, ...kindMetadata }`
+		 * where `kind` is one of "page" | "widget" | "actions" | "section" |
+		 * "modal" | "form-field" | "cell-renderer". CnPageRenderer keys page
+		 * dispatch off `kind === "page"` entries; other kinds serve slot
+		 * resolution inside typed pages.
 		 */
 		registry: {
 			type: Object,
