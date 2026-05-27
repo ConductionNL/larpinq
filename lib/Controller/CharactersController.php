@@ -50,6 +50,8 @@ use Psr\Container\ContainerInterface;
  * Controller for handling characters related operations
  *
  * @psalm-suppress UnusedClass Instantiated by Nextcloud routing (appinfo/routes.php).
+ *
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-80
  */
 class CharactersController extends Controller
 {
