@@ -169,8 +169,6 @@ class SettingsController extends Controller
      *
      * @return JSONResponse The updated settings response.
      *
-     * @NoCSRFRequired
-     *
      * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-24
      */
     public function create(): JSONResponse
@@ -195,8 +193,6 @@ class SettingsController extends Controller
      * Re-import the LarpingApp configuration from the JSON file.
      *
      * @return JSONResponse The re-import result.
-     *
-     * @NoCSRFRequired
      *
      * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-25
      * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-26

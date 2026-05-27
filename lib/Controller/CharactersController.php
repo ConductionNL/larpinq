@@ -42,9 +42,11 @@ use OCP\AppFramework\Http\Attribute\NoAdminRequired;
 use OCP\AppFramework\Http\Attribute\NoCSRFRequired;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http\DataDownloadResponse;
+use OCP\IGroupManager;
 use OCP\IRequest;
 use OCP\IUserSession;
 use Psr\Container\ContainerInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Controller for handling characters related operations
@@ -65,6 +67,8 @@ class CharactersController extends Controller
      * @param IAppManager           $appManager       The app manager for checking installed apps
      * @param ContainerInterface    $container        The DI container for resolving cross-app services
      * @param IUserSession          $userSession      The user session for authentication checks
+     * @param IGroupManager         $groupManager     The group manager for permission checks
+     * @param LoggerInterface       $logger           The logger for server-side error logging
      */
     public function __construct(
         $appName,
@@ -73,13 +77,20 @@ class CharactersController extends Controller
         private readonly CharacterService $characterService,
         private readonly IAppManager $appManager,
         private readonly ContainerInterface $container,
-        private readonly IUserSession $userSession
+        private readonly IUserSession $userSession,
+        private readonly IGroupManager $groupManager,
+        private readonly LoggerInterface $logger
     ) {
         parent::__construct(appName: $appName, request: $request);
     }//end __construct()
 
     /**
-     * Downloads a character PDF using a specific template
+     * Downloads a character PDF using a specific template.
+     *
+     * Only administrators (GMs) may download character sheets. Per-player access
+     * requires the character schema to gain a `player` ownership field — tracked
+     * as a follow-up. This guard prevents unauthenticated users and non-admin
+     * NC users from reading GM-private notes (closes #205).
      *
      * Delegates PDF generation to DocuDesk's PdfService and template
      * lookup to DocuDesk's TemplateService. Returns 424 if DocuDesk
@@ -123,6 +134,14 @@ class CharactersController extends Controller
             return new JSONResponse(data: ['error' => 'Not authenticated'], statusCode: Http::STATUS_UNAUTHORIZED);
         }
 
+        // Only admins (GMs) may download character sheets that include GM-private fields.
+        // Per-player self-access requires the character schema to include a `player` ownership
+        // field so the controller can verify ownership — that is a follow-up schema change.
+        // Closes #205 (Character PDF IDOR).
+        if ($this->groupManager->isAdmin($user->getUID()) === false) {
+            return new JSONResponse(data: ['error' => 'Access denied'], statusCode: Http::STATUS_FORBIDDEN);
+        }
+
         if ($this->appManager->isEnabledForUser(appId: 'docudesk') === false) {
             return new JSONResponse(
                 data: ['error' => 'PDF generation requires the DocuDesk app to be installed and enabled'],
@@ -162,7 +181,10 @@ class CharactersController extends Controller
                 ]
             );
         } catch (\Exception $exception) {
-            return new JSONResponse(data: ['error' => 'PDF generation failed: '.$exception->getMessage()], statusCode: 500);
+            // Log the full exception server-side; return a generic user-facing message
+            // to avoid leaking DocuDesk internals (filesystem paths, traces) — closes #218.
+            $this->logger->error('PDF generation failed', ['exception' => $exception]);
+            return new JSONResponse(data: ['error' => 'PDF generation failed. Please contact your administrator.'], statusCode: 500);
         }
 
         $fileName = ((string) ($character['name'] ?? 'character')).'_character_sheet.pdf';
