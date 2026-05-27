@@ -6,7 +6,7 @@ status: implemented
 
 ## Purpose
 
-@e2e exclude larpingapp Vue SPA fails to mount at localhost:8080; EventsList/PlayersList views and association modals are inaccessible; backend EventMapper/PlayerMapper and CharacterService.applyEntityEffects scenarios are PHPUnit scope
+SPA mount fixed in #202 — list view scenarios covered by tests/e2e/spec-coverage/spa-ui.spec.ts; backend CharacterService.applyEntityEffects and mapper scenarios annotated @e2e exclude below
 
 Manages LARP events (game gatherings with date ranges, locations, and participant tracking) and player profiles (real-world people who play characters). Events can carry Effects that are applied to participating characters during stat calculation via `CharacterService.applyEntityEffects()`. Players serve as the link between real-world people and their in-game characters via the character's `ocName` field. Both entity types are managed through the generic object store pattern and support OpenRegister features (audit trails, relations, locking).
 
@@ -71,6 +71,8 @@ The system MUST support creating, reading, updating, and deleting LARP events wi
 ---
 
 ### Requirement: Event Effect Application to Characters
+
+@e2e exclude PHPUnit scope — CharacterService.applyEntityEffects() is PHP stat engine logic; no browser UI surface for effect calculation scenarios
 
 When a character has events in their `events[]` array, the stat calculation engine MUST apply those events' effects to the character's ability scores.
 
@@ -199,6 +201,8 @@ Events and Players MUST support OpenRegister-specific features when backed by Op
 
 ### Requirement: Internal vs OpenRegister Storage
 
+@e2e exclude PHPUnit/integration scope — storage backend differences tested via PHPUnit mappers; field name mismatches (title vs name) are not browser-navigable UI scenarios
+
 Events and Players MUST support both internal and OpenRegister storage modes, with significant data model differences between the two.
 
 | ID | Requirement | Priority | Status |
@@ -238,6 +242,8 @@ Events and Players MUST support both internal and OpenRegister storage modes, wi
 ---
 
 ### Requirement: Event-Character Linking
+
+@e2e exclude PHPUnit scope — character-event association is tested via CharacterService unit tests; no standalone browser UI surface for programmatic linking scenarios
 
 Characters MUST be able to link to events, and events MUST be able to track which characters participated.
 

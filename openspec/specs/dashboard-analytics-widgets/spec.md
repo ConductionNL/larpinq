@@ -6,7 +6,7 @@ retrofit: true
 
 ## Purpose
 
-@e2e exclude larpingapp Vue SPA fails to mount at localhost:8080; DashboardKpi/DashboardRecentList/DashboardActions/SkillUsageChart components are inaccessible; GraphQL transport scenarios are JS unit-test scope
+SPA mount fixed in #202 — dashboard widget rendering scenarios covered by tests/e2e/spec-coverage/spa-ui.spec.ts; GraphQL transport scenarios annotated @e2e exclude below
 
 The larpingapp dashboard renders a set of manifest-driven analytics widgets that
 surface live counts, recent items, quick-create actions, and a skill-distribution
@@ -95,6 +95,8 @@ query fails, or no skill data exists.
 - THEN the widget MUST surface the error with a Retry control
 
 ### REQ-005: GraphQL Transport
+
+@e2e exclude JS unit-test scope — queryGraphQL() HTTP contract is tested via Jest mocks; no browser-navigable UI surface for transport error scenarios
 
 A GraphQL transport helper MUST POST queries to the OpenRegister GraphQL endpoint
 with the Nextcloud CSRF request token and same-origin credentials, and translate
