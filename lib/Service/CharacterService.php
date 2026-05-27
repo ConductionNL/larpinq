@@ -188,10 +188,11 @@ class CharacterService
      * Looks up each entity ID in the provided lookup table,
      * then applies any effects found on those entities.
      *
-     * @param array<string, array<string, mixed>> $abilityScores Reference to ability scores.
-     * @param array                               $character     Character data array.
-     * @param string                              $property      Character property name (e.g. 'skills').
-     * @param array<string, array<string, mixed>> $lookup        Entity lookup table indexed by ID.
+     * @param array<string, array<string, mixed>> $abilityScores  Reference to ability scores.
+     * @param array                               $character      Character data array.
+     * @param string                              $property       Character property name (e.g. 'skills').
+     * @param array<string, array<string, mixed>> $lookup         Entity lookup table indexed by ID.
+     * @param array<string, bool>                 $appliedEffects Tracks which non-cumulative effects have been applied.
      *
      * @return void
      *
@@ -201,7 +202,8 @@ class CharacterService
         array &$abilityScores,
         array $character,
         string $property,
-        array $lookup
+        array $lookup,
+        array &$appliedEffects
     ): void {
         if (isset($character[$property]) === false
             || is_array($character[$property]) === false
@@ -220,7 +222,11 @@ class CharacterService
             if (isset($entity['effects']) === true && empty($entity['effects']) === false) {
                 // @var array|null $entityEffects
                 $entityEffects = $entity['effects'];
-                $this->applyEffects(abilities: $abilityScores, effects: $entityEffects);
+                $this->applyEffects(
+                    abilities: $abilityScores,
+                    effects: $entityEffects,
+                    appliedEffects: $appliedEffects
+                );
             }
         }
     }//end applyEntityEffects()
@@ -241,30 +247,39 @@ class CharacterService
     {
         $abilityScores = $this->initializeAbilityScores();
 
+        // Track which non-cumulative effect IDs have already been applied this pass.
+        // Resets per calculateCharacter() call (not shared across characters).
+        // Closes #208.
+        $appliedEffects = [];
+
         // Apply effects from each entity type the character has.
         $this->applyEntityEffects(
             abilityScores: $abilityScores,
             character: $character,
             property: 'skills',
-            lookup: $this->allSkills
+            lookup: $this->allSkills,
+            appliedEffects: $appliedEffects
         );
         $this->applyEntityEffects(
             abilityScores: $abilityScores,
             character: $character,
             property: 'items',
-            lookup: $this->allItems
+            lookup: $this->allItems,
+            appliedEffects: $appliedEffects
         );
         $this->applyEntityEffects(
             abilityScores: $abilityScores,
             character: $character,
             property: 'conditions',
-            lookup: $this->allConditions
+            lookup: $this->allConditions,
+            appliedEffects: $appliedEffects
         );
         $this->applyEntityEffects(
             abilityScores: $abilityScores,
             character: $character,
             property: 'events',
-            lookup: $this->allEvents
+            lookup: $this->allEvents,
+            appliedEffects: $appliedEffects
         );
 
         // Update character array with calculated stats.
@@ -276,8 +291,9 @@ class CharacterService
     /**
      * Apply effects to abilities.
      *
-     * @param array<string, array{name?: string, base?: int, value: int, audit: array}> $abilities Reference to abilities.
-     * @param array|null                                                                $effects   Array of effect IDs.
+     * @param array<string, array{name?: string, base?: int, value: int, audit: array}> $abilities      Reference to abilities.
+     * @param array|null                                                                $effects        Array of effect IDs.
+     * @param array<string, bool>                                                       $appliedEffects Tracks applied non-cumulative effects.
      *
      * @return void
      *
@@ -285,7 +301,7 @@ class CharacterService
      *
      * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-73
      */
-    private function applyEffects(array &$abilities, ?array $effects): void
+    private function applyEffects(array &$abilities, ?array $effects, array &$appliedEffects): void
     {
         // Return early if effects is null or empty.
         if ($effects === null || count($effects) === 0) {
@@ -301,17 +317,24 @@ class CharacterService
 
             $effect = $this->allEffects[(string) $effectId] ?? null;
             if ($effect !== null) {
-                $this->calculateEffect(abilities: $abilities, effect: $effect);
+                $this->calculateEffect(
+                    abilities: $abilities,
+                    effect: $effect,
+                    appliedEffects: $appliedEffects
+                );
             }
         }
     }//end applyEffects()
 
     /**
-     * Collect all ability IDs affected by a given effect.
+     * Collect all unique ability IDs affected by a given effect.
+     *
+     * Merges `abilities` array and `stat_id` field, then deduplicates to prevent
+     * double-application when `stat_id` is also present in `abilities`. Closes #208.
      *
      * @param array<string, mixed> $effect Effect data.
      *
-     * @return array List of ability IDs.
+     * @return array List of unique ability IDs.
      *
      * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-74
      * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-75
@@ -330,11 +353,24 @@ class CharacterService
             $effectAbilities[] = $effect['stat_id'];
         }
 
-        return $effectAbilities;
+        // Deduplicate to prevent double-application when stat_id is also in abilities.
+        // Closes #208 (stat_id double-apply).
+        return array_values(array_unique($effectAbilities));
     }//end collectEffectAbilities()
 
     /**
      * Apply a modifier to a single ability based on an effect.
+     *
+     * The `modifier` value is always coerced to its absolute value; the
+     * `modification` enum (positive/negative) controls direction. This
+     * eliminates the sign-direction confusion where `{modifier: -3,
+     * modification: 'negative'}` would have added 3 instead of subtracting it.
+     * Closes #209.
+     *
+     * The audit trail stores only the minimal scalar fields needed to explain
+     * the change (effect ID + label + delta), not the full effect object.
+     * This avoids denormalisation bloat if derived stats are ever persisted.
+     * Closes #219.
      *
      * @param array<string, array<string, mixed>> $abilities Reference to abilities.
      * @param string                              $abilityId The ability ID.
@@ -354,7 +390,13 @@ class CharacterService
 
         // Get current value and modifiers.
         $currentValue = (int) $abilities[$abilityId]['value'];
-        $modifier     = (int) ($effect['modifier'] ?? 0);
+
+        // Coerce modifier to a non-negative integer. The `modification` enum (positive/negative)
+        // controls the sign. This prevents sign-direction confusion where a GM authors
+        // `{modifier: -3, modification: 'negative'}` and gets +3 instead of -3.
+        // Closes #209.
+        $modifier = abs((int) ($effect['modifier'] ?? 0));
+
         // @var string $modification.
         $modification = $effect['modification'] ?? 'positive';
 
@@ -365,27 +407,47 @@ class CharacterService
             $abilities[$abilityId]['value'] = $currentValue - $modifier;
         }
 
-        // Add audit trail.
+        $newValue = $abilities[$abilityId]['value'];
+
+        // Store a lean audit entry — effect ID + label + delta only.
+        // Storing the full $effect object risks denormalisation bloat when stats
+        // are ever persisted back to OR. Closes #219.
         $abilities[$abilityId]['audit'][] = [
-            'type'   => 'effect',
-            'effect' => $effect,
-            'old'    => $currentValue,
-            'new'    => $abilities[$abilityId]['value'],
+            'type'       => 'effect',
+            'effectId'   => (string) ($effect['id'] ?? ''),
+            'effectName' => (string) ($effect['name'] ?? ''),
+            'old'        => $currentValue,
+            'new'        => $newValue,
         ];
     }//end applyModifierToAbility()
 
     /**
      * Calculate and apply a single effect.
      *
-     * @param array<string, array{name?: string, base?: int, value: int, audit: array}> $abilities Reference to abilities.
-     * @param array<string, mixed>                                                      $effect    Effect data.
+     * Skips non-cumulative effects that have already been applied in this
+     * calculation pass. Closes #208.
+     *
+     * @param array<string, array{name?: string, base?: int, value: int, audit: array}> $abilities      Reference to abilities.
+     * @param array<string, mixed>                                                      $effect         Effect data.
+     * @param array<string, bool>                                                       $appliedEffects Tracks applied non-cumulative effects.
      *
      * @return void
      *
      * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-76
      */
-    private function calculateEffect(array &$abilities, array $effect): void
+    private function calculateEffect(array &$abilities, array $effect, array &$appliedEffects): void
     {
+        $effectId = (string) ($effect['id'] ?? '');
+
+        // Enforce the non-cumulative dedup rule. If this effect has been applied
+        // already and is marked non-cumulative, skip it. Closes #208.
+        if ($effectId !== '' && isset($appliedEffects[$effectId]) === true) {
+            $cumulative = (string) ($effect['cumulative'] ?? 'cumulative');
+            if ($cumulative === 'non-cumulative') {
+                return;
+            }
+        }
+
         $effectAbilities = $this->collectEffectAbilities(effect: $effect);
 
         // Skip if no abilities are affected.
@@ -406,6 +468,12 @@ class CharacterService
                 abilityId: (string) $rawAbilityId,
                 effect: $effect
             );
+        }
+
+        // Record that this effect was applied so non-cumulative dedupe works
+        // on the next encounter of the same effect ID within this pass.
+        if ($effectId !== '') {
+            $appliedEffects[$effectId] = true;
         }
     }//end calculateEffect()
 }//end class

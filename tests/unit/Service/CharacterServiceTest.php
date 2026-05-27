@@ -121,6 +121,10 @@ class CharacterServiceTest extends TestCase
         self::assertCount(1, $result['stats']['abil-1']['audit']);
         self::assertSame(10, $result['stats']['abil-1']['audit'][0]['old']);
         self::assertSame(15, $result['stats']['abil-1']['audit'][0]['new']);
+        // Audit stores id/name, not the full effect object.
+        self::assertSame('eff-1', $result['stats']['abil-1']['audit'][0]['effectId']);
+        self::assertSame('Str Bonus', $result['stats']['abil-1']['audit'][0]['effectName']);
+        self::assertArrayNotHasKey('effect', $result['stats']['abil-1']['audit'][0]);
     }
 
     public function testCalculateCharacterAppliesNegativeEffect(): void
@@ -318,5 +322,189 @@ class CharacterServiceTest extends TestCase
         self::assertCount(2, $results);
         self::assertArrayHasKey('stats', $results[0]);
         self::assertArrayHasKey('stats', $results[1]);
+    }
+
+    // -----------------------------------------------------------------------
+    // #208 — non-cumulative dedup + stat_id double-apply fix
+    // -----------------------------------------------------------------------
+
+    public function testNonCumulativeEffectAppliedOnlyOnce(): void
+    {
+        // The same non-cumulative effect is attached to BOTH a skill and an item.
+        // It should only be applied once regardless.
+        $abilities = [
+            ['id' => 'abil-1', 'name' => 'Strength', 'base' => 10],
+        ];
+        $effects = [
+            [
+                'id'          => 'eff-1',
+                'name'        => 'Iron Will',
+                'modifier'    => 5,
+                'modification' => 'positive',
+                'cumulative'  => 'non-cumulative',
+                'abilities'   => ['abil-1'],
+            ],
+        ];
+        $skills = [['id' => 'skill-1', 'effects' => ['eff-1']]];
+        $items  = [['id' => 'item-1',  'effects' => ['eff-1']]];
+
+        $service = $this->createServiceWithData(abilities: $abilities, effects: $effects, skills: $skills, items: $items);
+        $character = [
+            'id'     => 'char-1',
+            'skills' => ['skill-1'],
+            'items'  => ['item-1'],
+        ];
+        $result = $service->calculateCharacter($character);
+
+        // 10 + 5 (once, not 10). Closes #208.
+        self::assertSame(15, $result['stats']['abil-1']['value']);
+        self::assertCount(1, $result['stats']['abil-1']['audit']);
+    }
+
+    public function testCumulativeEffectAppliedMultipleTimes(): void
+    {
+        // A cumulative effect on skill + item must stack.
+        $abilities = [
+            ['id' => 'abil-1', 'name' => 'Strength', 'base' => 10],
+        ];
+        $effects = [
+            [
+                'id'          => 'eff-1',
+                'modifier'    => 5,
+                'modification' => 'positive',
+                'cumulative'  => 'cumulative',
+                'abilities'   => ['abil-1'],
+            ],
+        ];
+        $skills = [['id' => 'skill-1', 'effects' => ['eff-1']]];
+        $items  = [['id' => 'item-1',  'effects' => ['eff-1']]];
+
+        $service = $this->createServiceWithData(abilities: $abilities, effects: $effects, skills: $skills, items: $items);
+        $character = ['id' => 'char-1', 'skills' => ['skill-1'], 'items' => ['item-1']];
+        $result = $service->calculateCharacter($character);
+
+        // 10 + 5 + 5 = 20 (cumulative stacks).
+        self::assertSame(20, $result['stats']['abil-1']['value']);
+    }
+
+    public function testStatIdAndAbilitiesDeduplication(): void
+    {
+        // stat_id = 'abil-1' AND abilities = ['abil-1']: must apply only once. Closes #208.
+        $abilities = [
+            ['id' => 'abil-1', 'name' => 'Strength', 'base' => 10],
+        ];
+        $effects = [
+            [
+                'id'          => 'eff-1',
+                'modifier'    => 4,
+                'modification' => 'positive',
+                'abilities'   => ['abil-1'],
+                'stat_id'     => 'abil-1',
+            ],
+        ];
+        $skills = [['id' => 'skill-1', 'effects' => ['eff-1']]];
+
+        $service = $this->createServiceWithData(abilities: $abilities, effects: $effects, skills: $skills);
+        $character = ['id' => 'char-1', 'skills' => ['skill-1']];
+        $result = $service->calculateCharacter($character);
+
+        // 10 + 4 = 14 (not 18, because stat_id dedup removes the duplicate ability). Closes #208.
+        self::assertSame(14, $result['stats']['abil-1']['value']);
+        self::assertCount(1, $result['stats']['abil-1']['audit']);
+    }
+
+    // -----------------------------------------------------------------------
+    // #209 — sign-direction confusion fix
+    // -----------------------------------------------------------------------
+
+    public function testNegativeModifierWithNegativeModificationSubtracts(): void
+    {
+        // {modifier: -3, modification: 'negative'} must subtract 3, NOT add 3.
+        // Before the fix this would have computed value - (-3) = value + 3.
+        // Closes #209.
+        $abilities = [
+            ['id' => 'abil-1', 'name' => 'HP', 'base' => 20],
+        ];
+        $effects = [
+            [
+                'id'          => 'eff-1',
+                'modifier'    => -3,
+                'modification' => 'negative',
+                'abilities'   => ['abil-1'],
+            ],
+        ];
+        $skills = [['id' => 'skill-1', 'effects' => ['eff-1']]];
+
+        $service = $this->createServiceWithData(abilities: $abilities, effects: $effects, skills: $skills);
+        $character = ['id' => 'char-1', 'skills' => ['skill-1']];
+        $result = $service->calculateCharacter($character);
+
+        // abs(-3) = 3; modification='negative' → 20 - 3 = 17.
+        self::assertSame(17, $result['stats']['abil-1']['value']);
+    }
+
+    public function testNegativeModifierWithPositiveModificationAdds(): void
+    {
+        // {modifier: -5, modification: 'positive'} must add 5 (abs coercion).
+        $abilities = [
+            ['id' => 'abil-1', 'name' => 'HP', 'base' => 10],
+        ];
+        $effects = [
+            [
+                'id'          => 'eff-1',
+                'modifier'    => -5,
+                'modification' => 'positive',
+                'abilities'   => ['abil-1'],
+            ],
+        ];
+        $skills = [['id' => 'skill-1', 'effects' => ['eff-1']]];
+
+        $service = $this->createServiceWithData(abilities: $abilities, effects: $effects, skills: $skills);
+        $character = ['id' => 'char-1', 'skills' => ['skill-1']];
+        $result = $service->calculateCharacter($character);
+
+        // abs(-5) = 5; modification='positive' → 10 + 5 = 15.
+        self::assertSame(15, $result['stats']['abil-1']['value']);
+    }
+
+    // -----------------------------------------------------------------------
+    // #219 — lean audit trail
+    // -----------------------------------------------------------------------
+
+    public function testAuditTrailContainsOnlyMinimalFields(): void
+    {
+        $abilities = [
+            ['id' => 'abil-1', 'name' => 'Strength', 'base' => 10],
+        ];
+        $effects = [
+            [
+                'id'          => 'eff-42',
+                'name'        => 'Battle Fury',
+                'modifier'    => 3,
+                'modification' => 'positive',
+                'abilities'   => ['abil-1'],
+                'secret_field' => 'should-not-appear',
+            ],
+        ];
+        $skills = [['id' => 'skill-1', 'effects' => ['eff-42']]];
+
+        $service = $this->createServiceWithData(abilities: $abilities, effects: $effects, skills: $skills);
+        $character = ['id' => 'char-1', 'skills' => ['skill-1']];
+        $result = $service->calculateCharacter($character);
+
+        $audit = $result['stats']['abil-1']['audit'][0];
+
+        // Required fields must be present.
+        self::assertArrayHasKey('type', $audit);
+        self::assertArrayHasKey('effectId', $audit);
+        self::assertArrayHasKey('effectName', $audit);
+        self::assertArrayHasKey('old', $audit);
+        self::assertArrayHasKey('new', $audit);
+        self::assertSame('eff-42', $audit['effectId']);
+        self::assertSame('Battle Fury', $audit['effectName']);
+
+        // The full effect object must NOT be stored. Closes #219.
+        self::assertArrayNotHasKey('effect', $audit);
+        self::assertArrayNotHasKey('secret_field', $audit);
     }
 }
