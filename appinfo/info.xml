@@ -38,6 +38,13 @@ Create a [feature request](https://github.com/OpenCatalogi/.github/issues/new/ch
         <database>sqlite</database>
         <database min-version="8.0">mysql</database>
     </dependencies>
+    <!-- Restrict app visibility to the 'larpers' group so that only enrolled GMs and
+         players see the navigation entry and can probe endpoints. Admins may add users
+         to this group via the Nextcloud admin panel. Closes #216. -->
+    <groups>
+        <group>larpers</group>
+    </groups>
+
     <navigations>
         <navigation>
             <id>larpingapp</id>

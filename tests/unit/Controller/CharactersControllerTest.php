@@ -21,12 +21,14 @@ use OCA\LarpingApp\Service\RegisterObjectFetcher;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Http\DataDownloadResponse;
 use OCP\AppFramework\Http\JSONResponse;
+use OCP\IGroupManager;
 use OCP\IRequest;
 use OCP\IUser;
 use OCP\IUserSession;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Tests for CharactersController.
@@ -40,20 +42,26 @@ class CharactersControllerTest extends TestCase
     private IAppManager&MockObject $appManager;
     private ContainerInterface&MockObject $container;
     private IUserSession&MockObject $userSession;
+    private IGroupManager&MockObject $groupManager;
+    private LoggerInterface&MockObject $logger;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->objectFetcher  = $this->createMock(RegisterObjectFetcher::class);
+        $this->objectFetcher    = $this->createMock(RegisterObjectFetcher::class);
         $this->characterService = $this->createMock(CharacterService::class);
-        $this->appManager     = $this->createMock(IAppManager::class);
-        $this->container      = $this->createMock(ContainerInterface::class);
-        $this->userSession    = $this->createMock(IUserSession::class);
+        $this->appManager       = $this->createMock(IAppManager::class);
+        $this->container        = $this->createMock(ContainerInterface::class);
+        $this->userSession      = $this->createMock(IUserSession::class);
+        $this->groupManager     = $this->createMock(IGroupManager::class);
+        $this->logger           = $this->createMock(LoggerInterface::class);
 
-        // Default: authenticated user.
+        // Default: authenticated admin user.
         $mockUser = $this->createMock(IUser::class);
+        $mockUser->method('getUID')->willReturn('admin');
         $this->userSession->method('getUser')->willReturn($mockUser);
+        $this->groupManager->method('isAdmin')->with('admin')->willReturn(true);
 
         $this->controller = new CharactersController(
             'larpingapp',
@@ -63,6 +71,8 @@ class CharactersControllerTest extends TestCase
             $this->appManager,
             $this->container,
             $this->userSession,
+            $this->groupManager,
+            $this->logger,
         );
     }
 
@@ -79,12 +89,44 @@ class CharactersControllerTest extends TestCase
             $this->appManager,
             $this->container,
             $unauthSession,
+            $this->groupManager,
+            $this->logger,
         );
 
         $result = $controller->downloadPdf('char-1', 'tpl-1');
 
         self::assertInstanceOf(JSONResponse::class, $result);
         self::assertSame(401, $result->getStatus());
+        self::assertArrayHasKey('error', $result->getData());
+    }
+
+    public function testDownloadPdfReturns403ForNonAdminUser(): void
+    {
+        $nonAdminUser = $this->createMock(IUser::class);
+        $nonAdminUser->method('getUID')->willReturn('player1');
+
+        $nonAdminSession = $this->createMock(IUserSession::class);
+        $nonAdminSession->method('getUser')->willReturn($nonAdminUser);
+
+        $nonAdminGroupManager = $this->createMock(IGroupManager::class);
+        $nonAdminGroupManager->method('isAdmin')->with('player1')->willReturn(false);
+
+        $controller = new CharactersController(
+            'larpingapp',
+            $this->createMock(IRequest::class),
+            $this->objectFetcher,
+            $this->characterService,
+            $this->appManager,
+            $this->container,
+            $nonAdminSession,
+            $nonAdminGroupManager,
+            $this->logger,
+        );
+
+        $result = $controller->downloadPdf('char-1', 'tpl-1');
+
+        self::assertInstanceOf(JSONResponse::class, $result);
+        self::assertSame(403, $result->getStatus());
         self::assertArrayHasKey('error', $result->getData());
     }
 
@@ -178,7 +220,7 @@ class CharactersControllerTest extends TestCase
         self::assertInstanceOf(DataDownloadResponse::class, $result);
     }
 
-    public function testDownloadPdfReturns500OnRenderFailure(): void
+    public function testDownloadPdfReturns500OnRenderFailureWithGenericMessage(): void
     {
         $this->appManager->method('isEnabledForUser')->willReturn(true);
         $this->objectFetcher->method('getObject')
@@ -194,7 +236,7 @@ class CharactersControllerTest extends TestCase
             ->addMethods(['renderPdf'])
             ->getMock();
         $mockPdfService->method('renderPdf')
-            ->willThrowException(new Exception('Render failed'));
+            ->willThrowException(new Exception('Render failed: /internal/path/file.php line 42'));
 
         $this->container->method('get')
             ->willReturnCallback(function (string $class) use ($mockTemplateService, $mockPdfService) {
@@ -212,5 +254,7 @@ class CharactersControllerTest extends TestCase
         self::assertInstanceOf(JSONResponse::class, $result);
         self::assertSame(500, $result->getStatus());
         self::assertStringContainsString('PDF generation failed', $result->getData()['error']);
+        // The raw exception message (including internal paths) must NOT be leaked.
+        self::assertStringNotContainsString('/internal/path/file.php', $result->getData()['error']);
     }
 }
