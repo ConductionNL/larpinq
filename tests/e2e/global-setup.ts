@@ -100,10 +100,8 @@ export default async function globalSetup(config: FullConfig): Promise<void> {
 	await page.locator('input[name="password"]').fill(password)
 	await page.locator('button[type="submit"]').first().click()
 	// Nextcloud bounces to /apps/dashboard/ (or another default app) on
-	// success. Wait for the global header that only renders on
-	// authenticated pages — the URL-based wait races with the in-flight
-	// click navigation and is unreliable on slower test rigs.
-	await page.waitForSelector('#header, header.header', { timeout: 20_000 })
+	// success. Wait for navigation away from the login page.
+	await page.waitForURL((url) => !url.pathname.includes('/login'), { timeout: 60_000 })
 	// Catch wrong-credentials early so the failure message is clear.
 	const currentUrl = page.url()
 	if (/\/login(\?|$|\/)/.test(currentUrl)) {
@@ -112,6 +110,8 @@ export default async function globalSetup(config: FullConfig): Promise<void> {
 			`Check NC_ADMIN_USER / NC_ADMIN_PASS (defaults admin/admin).`,
 		)
 	}
+	// Wait for the NC header to confirm page is fully loaded
+	await page.locator('#header, header.header').first().waitFor({ state: 'visible', timeout: 30_000 })
 
 	// Persist the storage state so individual specs reuse the session.
 	await context.storageState({ path: STORAGE_STATE })

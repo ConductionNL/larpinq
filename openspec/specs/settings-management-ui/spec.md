@@ -6,7 +6,7 @@ retrofit: true
 
 ## Purpose
 
-@e2e exclude larpingapp Vue SPA fails to mount at localhost:8080; Settings.vue admin panel and settings store bootstrap are inaccessible; store lifecycle and cascade logic are JS unit-test scope
+SPA mount fixed in #202 — settings panel load scenario covered by tests/e2e/spec-coverage/spa-ui.spec.ts; Pinia store lifecycle scenarios annotated @e2e exclude below
 
 LarpingApp exposes its data-source configuration through a Vue settings surface
 backed by a Pinia settings store. The admin `Settings.vue` panel reads and writes
@@ -27,6 +27,8 @@ behavior of the frontend store + UI layer that drives them.
 
 ### REQ-001: Settings Store Lifecycle
 
+@e2e exclude JS unit-test scope — Pinia store fetch/persist lifecycle is tested via Jest with mocked fetch; internal store state not browser-navigable
+
 The settings store MUST fetch the current configuration from `GET /api/settings`,
 persist updates via `POST /api/settings`, and trigger a forced re-import via
 `POST /api/settings/reimport` — tracking loading/error state and exposing the
@@ -41,6 +43,8 @@ resulting configuration, OpenRegister availability, and admin flag.
 - THEN the store MUST capture the error message and clear the loading flag
 
 ### REQ-002: Store Bootstrap and Object-Type Registration
+
+@e2e exclude JS unit-test scope — store bootstrap and object-type registration is tested via Jest mocks; internal Pinia state not browser-navigable
 
 The store bootstrap helper MUST fetch settings on startup and, for each of the
 nine LARP object types that has both a configured register and a per-type schema,

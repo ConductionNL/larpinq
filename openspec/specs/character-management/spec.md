@@ -6,7 +6,7 @@ status: implemented
 
 ## Purpose
 
-@e2e exclude larpingapp Vue SPA fails to mount at localhost:8080 (empty #content, no Vue instance, confirmed via DOM inspection); character CRUD UI is inaccessible; backend CharacterService stat-engine scenarios are PHPUnit scope
+SPA mount fixed in #202 — UI scenarios covered by tests/e2e/spec-coverage/spa-ui.spec.ts; backend CharacterService stat-engine scenarios annotated @e2e exclude below
 
 Provides full CRUD lifecycle management for LARP characters, including player characters, NPCs, and other character types. Characters serve as the central entity in the application, linking to skills, items, conditions, and events. The system includes a stat calculation engine (`CharacterService.calculateCharacter()`) that automatically computes ability scores based on associated effects, a currency system (gold/silver/copper), approval workflow, and background/notes management. Character data is fetched via `RegisterObjectFetcher` which resolves OpenRegister mappers from per-type configuration.
 
@@ -210,6 +210,8 @@ Characters MUST support many-to-many relationships with skills, items, condition
 
 ### Requirement: Stat Calculation Engine
 
+@e2e exclude PHPUnit scope — CharacterService.calculateCharacter() is a PHP stat engine; no browser-navigable UI surface for these scenarios
+
 The `CharacterService.calculateCharacter()` MUST aggregate effects from all associated entities to compute final ability scores with a full audit trail.
 
 | ID | Requirement | Priority | Status |
@@ -277,6 +279,8 @@ The `CharacterService.calculateCharacter()` MUST aggregate effects from all asso
 
 ### Requirement: Batch Recalculation
 
+@e2e exclude PHPUnit scope — calculateAllCharacters() is a programmatic-only method with no browser UI surface
+
 The system MUST support batch recalculation of stats for all characters.
 
 | ID | Requirement | Priority | Status |
@@ -311,6 +315,8 @@ The system MUST support batch recalculation of stats for all characters.
 
 ### Requirement: Entity Preloading
 
+@e2e exclude PHPUnit scope — CharacterService constructor preloading is PHP internals, no browser UI surface
+
 The `CharacterService` MUST preload all entity data on construction for efficient stat calculation.
 
 | ID | Requirement | Priority | Status |
@@ -344,6 +350,8 @@ The `CharacterService` MUST preload all entity data on construction for efficien
 ---
 
 ### Requirement: Internal vs OpenRegister Storage
+
+@e2e exclude PHPUnit/integration scope — storage backend differences are not browser-navigable; broken internal mode cannot be UI-tested
 
 The character entity MUST support dual storage modes, with the full data model only available in OpenRegister mode.
 

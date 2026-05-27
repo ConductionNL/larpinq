@@ -6,7 +6,7 @@ status: implemented
 
 ## Purpose
 
-@e2e exclude larpingapp Vue SPA fails to mount at localhost:8080 (empty #content, no Vue instance attached); Settings.vue panel lives inside NC admin settings which is a separate Vue entrypoint that also requires larpingapp JS to bootstrap; backend API/migration scenarios are PHPUnit scope
+SPA mount fixed in #202 — admin panel load scenario covered by tests/e2e/spec-coverage/spa-ui.spec.ts; backend API/migration scenarios annotated @e2e exclude below
 
 Provides per-object-type data source configuration for LarpingApp, allowing administrators to choose whether each entity type (ability, character, condition, effect, event, item, player, setting, skill) is stored in the internal Nextcloud database or in an OpenRegister instance. When OpenRegister is selected, administrators configure the specific register and schema for each object type. Settings are exposed via the Nextcloud Admin Settings panel and a REST API. Additionally, provides a JSON-based configuration import mechanism via `SettingsLoadService` that bootstraps registers and schemas from a bundled configuration file.
 
@@ -148,6 +148,8 @@ The settings UI MUST detect whether OpenRegister is installed and display approp
 
 ### Requirement: Configuration Storage
 
+@e2e exclude PHP/IAppConfig persistence is tested via PHPUnit with mocked IAppConfig; not browser-navigable
+
 Settings MUST be persisted in Nextcloud's IAppConfig as key-value pairs following a consistent naming convention.
 
 | ID | Requirement | Priority | Status |
@@ -182,6 +184,8 @@ Settings MUST be persisted in Nextcloud's IAppConfig as key-value pairs followin
 ---
 
 ### Requirement: Settings API
+
+@e2e exclude REST endpoint contract is tested via PHPUnit SettingsControllerTest; HTTP-level API not covered by browser E2E
 
 The system MUST expose REST endpoints for reading and updating settings.
 
@@ -219,6 +223,8 @@ The system MUST expose REST endpoints for reading and updating settings.
 
 ### Requirement: Settings API Security
 
+@e2e exclude Auth-annotation enforcement is a PHP/Nextcloud middleware concern tested via PHPUnit; non-admin 403 is not a browser UI scenario
+
 Both settings endpoints MUST be restricted to admin users.
 
 | ID | Requirement | Priority | Status |
@@ -253,6 +259,8 @@ Both settings endpoints MUST be restricted to admin users.
 ---
 
 ### Requirement: Configuration Import via JSON
+
+@e2e exclude SettingsLoadService JSON import runs server-side at install/repair time; tested via PHPUnit with mocked OR service; not browser-navigable in isolation
 
 The system MUST support bootstrapping register and schema configuration from a bundled JSON file via `SettingsLoadService`.
 
@@ -291,6 +299,8 @@ The system MUST support bootstrapping register and schema configuration from a b
 
 ### Requirement: RegisterObjectFetcher Data Source Dispatch
 
+@e2e exclude PHP DI-container mapper dispatch is tested via PHPUnit with mocked IAppConfig and ObjectService; internal PHP service not browser-navigable
+
 The `RegisterObjectFetcher` MUST read per-type configuration from IAppConfig to obtain the correct OpenRegister mapper.
 
 | ID | Requirement | Priority | Status |
@@ -324,6 +334,8 @@ The `RegisterObjectFetcher` MUST read per-type configuration from IAppConfig to 
 ---
 
 ### Requirement: Database Schema
+
+@e2e exclude Database migration correctness is tested via PHPUnit MigrationTest; SQL DDL execution is not a browser-navigable scenario
 
 Database migrations MUST create tables for all entity types used in internal storage mode.
 
