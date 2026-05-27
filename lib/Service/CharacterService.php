@@ -89,7 +89,19 @@ class CharacterService
     private array $allAbilities = [];
 
     /**
+     * Flag indicating whether entity collections have been loaded.
+     *
+     * @var boolean
+     */
+    private bool $entitiesLoaded = false;
+
+    /**
      * Constructor for CharacterService.
+     *
+     * Entity collections are NOT loaded here. Loading is deferred until
+     * calculateCharacter() is first called, so DI resolution of this service
+     * does not issue 6 OR queries unless stat calculation is actually needed.
+     * Closes #217.
      *
      * @param RegisterObjectFetcher $objectFetcher The register object fetcher.
      *
@@ -98,7 +110,6 @@ class CharacterService
     public function __construct(
         private readonly RegisterObjectFetcher $objectFetcher
     ) {
-        $this->loadAllEntities();
     }//end __construct()
 
     /**
@@ -123,16 +134,25 @@ class CharacterService
     /**
      * Load all entities into memory and index them by ID.
      *
+     * Guarded by $entitiesLoaded so the 6 OR queries are only issued once per
+     * service instance and only when a calculation is actually requested.
+     * Closes #217.
+     *
      * @return void
      */
     private function loadAllEntities(): void
     {
-        $this->allSkills     = $this->indexById(entities: $this->objectFetcher->getObjects('skill'));
-        $this->allItems      = $this->indexById(entities: $this->objectFetcher->getObjects('item'));
-        $this->allConditions = $this->indexById(entities: $this->objectFetcher->getObjects('condition'));
-        $this->allEvents     = $this->indexById(entities: $this->objectFetcher->getObjects('event'));
-        $this->allEffects    = $this->indexById(entities: $this->objectFetcher->getObjects('effect'));
-        $this->allAbilities  = $this->indexById(entities: $this->objectFetcher->getObjects('ability'));
+        if ($this->entitiesLoaded === true) {
+            return;
+        }
+
+        $this->allSkills      = $this->indexById(entities: $this->objectFetcher->getObjects('skill'));
+        $this->allItems       = $this->indexById(entities: $this->objectFetcher->getObjects('item'));
+        $this->allConditions  = $this->indexById(entities: $this->objectFetcher->getObjects('condition'));
+        $this->allEvents      = $this->indexById(entities: $this->objectFetcher->getObjects('event'));
+        $this->allEffects     = $this->indexById(entities: $this->objectFetcher->getObjects('effect'));
+        $this->allAbilities   = $this->indexById(entities: $this->objectFetcher->getObjects('ability'));
+        $this->entitiesLoaded = true;
     }//end loadAllEntities()
 
     /**
@@ -245,6 +265,9 @@ class CharacterService
      */
     public function calculateCharacter(array $character): array
     {
+        // Load entity collections lazily on first call. Closes #217.
+        $this->loadAllEntities();
+
         $abilityScores = $this->initializeAbilityScores();
 
         // Track which non-cumulative effect IDs have already been applied this pass.

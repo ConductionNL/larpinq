@@ -39,21 +39,44 @@ class SettingsService
 {
 
     /**
-     * Configuration keys to expose.
+     * Configuration keys that the settings UI reads and writes.
+     *
+     * Must match the full set written by SettingsLoadService::updateObjectTypeConfiguration
+     * AND read at runtime by RegisterObjectFetcher::getMapper (i.e. {slug}_register and
+     * {slug}_schema for every object type). Without this alignment, the settings UI only
+     * persists a subset of keys, leaving {slug}_register stale after a UI edit. Closes #210.
      *
      * @var string[]
      */
     private const CONFIG_KEYS = [
         'register',
         'character_schema',
+        'character_register',
+        'character_source',
         'player_schema',
+        'player_register',
+        'player_source',
         'ability_schema',
+        'ability_register',
+        'ability_source',
         'skill_schema',
+        'skill_register',
+        'skill_source',
         'item_schema',
+        'item_register',
+        'item_source',
         'condition_schema',
+        'condition_register',
+        'condition_source',
         'effect_schema',
+        'effect_register',
+        'effect_source',
         'event_schema',
+        'event_register',
+        'event_source',
         'setting_schema',
+        'setting_register',
+        'setting_source',
     ];
 
     /**
