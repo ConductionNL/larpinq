@@ -6,7 +6,7 @@ status: implemented
 
 ## Purpose
 
-@e2e exclude larpingapp Vue SPA fails to mount at localhost:8080; Ability/Effect/Skill/Item/Condition CRUD views are inaccessible; CharacterService effect-chain scenarios are PHPUnit scope
+SPA mount fixed in #202 — list view scenarios covered by tests/e2e/spec-coverage/spa-ui.spec.ts; CharacterService effect-chain scenarios annotated @e2e exclude below
 
 Game mechanics covers the interconnected system of Skills, Items, Conditions, Effects, and Abilities (stats) that form the LARP rule engine. Effects are the fundamental building blocks -- they modify ability scores via positive or negative modifiers. Skills, items, conditions, and events each contain arrays of effect references that are applied to characters during stat calculation by `CharacterService.calculateCharacter()`. Abilities define the numeric stats that effects target. Skills additionally support a prerequisite system. This specification documents the CRUD operations, data models, effect chain integrity, and interactions between these entity types.
 
@@ -67,6 +67,8 @@ The system MUST support creating, reading, updating, and deleting abilities. Abi
 - THEN only "Mana" MUST appear in the results
 
 #### Scenario: Ability initialization in stat engine
+
+@e2e exclude PHPUnit scope — CharacterService.initializeAbilityScores() is PHP internal; no browser UI surface
 
 - GIVEN abilities "Strength" (base 10), "Dexterity" (base 8), "Mana" (base 0) exist
 - WHEN `CharacterService.initializeAbilityScores()` is called
@@ -272,6 +274,8 @@ The system MUST support creating, reading, updating, and deleting conditions. Co
 
 ### Requirement: Effect Chain Integrity
 
+@e2e exclude PHPUnit scope — effect chain calculation is CharacterService PHP logic; no browser-navigable UI surface for recalculation scenarios
+
 The effect system MUST maintain integrity across the chain: Ability <- Effect <- Skill/Item/Condition/Event <- Character.
 
 | ID | Requirement | Priority | Status |
@@ -361,6 +365,8 @@ All game mechanic entities MUST support audit trail viewing when backed by OpenR
 ---
 
 ### Requirement: Internal vs OpenRegister Storage
+
+@e2e exclude PHPUnit/integration scope — storage backend is not browser-navigable; broken internal storage cannot be UI-tested
 
 All game mechanics entities have a dual data model with significant differences between internal and OpenRegister storage.
 
