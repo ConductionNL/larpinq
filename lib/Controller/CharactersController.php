@@ -34,7 +34,6 @@ declare(strict_types=1);
 namespace OCA\LarpingApp\Controller;
 
 use OCA\LarpingApp\Service\RegisterObjectFetcher;
-use OCA\LarpingApp\Service\CharacterService;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
@@ -60,21 +59,24 @@ class CharactersController extends Controller
     /**
      * Constructor for the CharactersController
      *
-     * @param string                $appName          The name of the app
-     * @param IRequest              $request          The request object
-     * @param RegisterObjectFetcher $objectFetcher    The register object fetcher
-     * @param CharacterService      $characterService The character service object
-     * @param IAppManager           $appManager       The app manager for checking installed apps
-     * @param ContainerInterface    $container        The DI container for resolving cross-app services
-     * @param IUserSession          $userSession      The user session for authentication checks
-     * @param IGroupManager         $groupManager     The group manager for permission checks
-     * @param LoggerInterface       $logger           The logger for server-side error logging
+     * CharacterService is intentionally not injected here. The service would
+     * call loadAllEntities() (6 full OR queries) on construction, but
+     * downloadPdf does not call calculateCharacter(). Removing the dep avoids
+     * those unnecessary queries on every PDF request. Closes #211.
+     *
+     * @param string                $appName       The name of the app
+     * @param IRequest              $request       The request object
+     * @param RegisterObjectFetcher $objectFetcher The register object fetcher
+     * @param IAppManager           $appManager    The app manager for checking installed apps
+     * @param ContainerInterface    $container     The DI container for resolving cross-app services
+     * @param IUserSession          $userSession   The user session for authentication checks
+     * @param IGroupManager         $groupManager  The group manager for permission checks
+     * @param LoggerInterface       $logger        The logger for server-side error logging
      */
     public function __construct(
         $appName,
         IRequest $request,
         private readonly RegisterObjectFetcher $objectFetcher,
-        private readonly CharacterService $characterService,
         private readonly IAppManager $appManager,
         private readonly ContainerInterface $container,
         private readonly IUserSession $userSession,
