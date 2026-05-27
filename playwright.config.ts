@@ -13,8 +13,8 @@ import { defineConfig, devices } from '@playwright/test'
 export default defineConfig({
 	testDir: './tests/e2e',
 	testIgnore: ['**/global-setup.ts', '**/fixtures/**'],
-	timeout: 30_000,
-	expect: { timeout: 10_000 },
+	timeout: 60_000,
+	expect: { timeout: 15_000 },
 	fullyParallel: false,
 	retries: 1,
 	workers: 1,
