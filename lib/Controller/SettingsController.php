@@ -228,7 +228,7 @@ class SettingsController extends Controller
         $openRegisters      = in_array(needle: 'openregister', haystack: $this->appManager->getInstalledApps());
         $availableRegisters = [];
 
-        if ($openRegisters === true) {
+        if ($isAdmin === true && $openRegisters === true) {
             try {
                 $registerMapper = $this->getRegisterMapper();
                 $schemaMapper   = $this->getSchemaMapper();
@@ -260,8 +260,11 @@ class SettingsController extends Controller
                 'setting',
                 'skill',
             ],
-            'configuration'      => $this->settingsService->getSettings(),
         ];
+
+        if ($isAdmin === true) {
+            $data['configuration'] = $this->settingsService->getSettings();
+        }
 
         return new JSONResponse($data);
 

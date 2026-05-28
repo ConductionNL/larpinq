@@ -156,7 +156,9 @@ class SettingsLoadService
             if (isset($schemaMap[$slug]) === true && $schemaMap[$slug] !== null) {
                 $this->appConfig->setValueString(Application::APP_ID, "{$slug}_schema", (string) $schemaMap[$slug]);
                 $this->appConfig->setValueString(Application::APP_ID, "{$slug}_source", 'openregister');
-                $this->appConfig->setValueString(Application::APP_ID, "{$slug}_register", (string) $registerId);
+                if ($registerId !== null) {
+                    $this->appConfig->setValueString(Application::APP_ID, "{$slug}_register", (string) $registerId);
+                }
             }
         }
 

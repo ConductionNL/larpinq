@@ -23,7 +23,7 @@ Create a [feature request](https://github.com/OpenCatalogi/.github/issues/new/ch
 
 **Support:** For support, contact support@conduction.nl. For a Service Level Agreement (SLA), contact sales@conduction.nl.
     ]]></description>
-    <version>0.1.24</version>
+    <version>0.1.25</version>
     <licence>agpl</licence>
     <author mail="info@conduction.nl" homepage="https://www.conduction.nl/">Conduction</author>
 	<namespace>LarpingApp</namespace>

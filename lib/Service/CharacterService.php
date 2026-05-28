@@ -480,7 +480,7 @@ class CharacterService
         // Enforce the non-cumulative dedup rule. If this effect has been applied
         // already and is marked non-cumulative, skip it. Closes #208.
         if ($effectId !== '' && isset($appliedEffects[$effectId]) === true) {
-            $cumulative = (string) ($effect['cumulative'] ?? 'cumulative');
+            $cumulative = (string) ($effect['cumulative'] ?? 'non-cumulative');
             if ($cumulative === 'non-cumulative') {
                 return;
             }

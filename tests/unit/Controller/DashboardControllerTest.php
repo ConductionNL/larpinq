@@ -16,7 +16,6 @@ namespace OCA\LarpingApp\Tests\Unit\Controller;
 
 use OCA\LarpingApp\Controller\DashboardController;
 use OCP\AppFramework\Http\TemplateResponse;
-use OCP\IAppConfig;
 use OCP\IRequest;
 use PHPUnit\Framework\TestCase;
 
@@ -35,7 +34,6 @@ class DashboardControllerTest extends TestCase
         $this->controller = new DashboardController(
             'larpingapp',
             $this->createMock(IRequest::class),
-            $this->createMock(IAppConfig::class),
         );
     }
 
