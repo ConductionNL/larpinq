@@ -14,19 +14,26 @@
 -->
 <template>
 	<div class="dashboard-actions">
-		<NcButton type="primary" @click="showCharacterDialog = true">
+		<NcButton
+			type="primary"
+			:aria-label="t('larpingapp', 'New character')"
+			@click="showCharacterDialog = true">
 			<template #icon>
 				<Plus :size="20" />
 			</template>
 			{{ t('larpingapp', 'New character') }}
 		</NcButton>
-		<NcButton @click="showItemDialog = true">
+		<NcButton
+			:aria-label="t('larpingapp', 'New item')"
+			@click="showItemDialog = true">
 			<template #icon>
 				<Plus :size="20" />
 			</template>
 			{{ t('larpingapp', 'New item') }}
 		</NcButton>
-		<NcButton @click="showConditionDialog = true">
+		<NcButton
+			:aria-label="t('larpingapp', 'New condition')"
+			@click="showConditionDialog = true">
 			<template #icon>
 				<Plus :size="20" />
 			</template>
