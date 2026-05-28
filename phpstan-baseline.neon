@@ -8,12 +8,3 @@
 # (pattern: shillinq#300, decidesk#243).
 parameters:
 	ignoreErrors:
-		-
-			message: "#^Property OCA\\\\LarpingApp\\\\Controller\\\\CharactersController\\:\\:\\$characterService is never read, only written\\.$#"
-			count: 1
-			path: lib/Controller/CharactersController.php
-
-		-
-			message: "#^Property OCA\\\\LarpingApp\\\\Controller\\\\DashboardController\\:\\:\\$config is never read, only written\\.$#"
-			count: 1
-			path: lib/Controller/DashboardController.php
