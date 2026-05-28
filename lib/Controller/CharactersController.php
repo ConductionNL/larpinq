@@ -37,15 +37,21 @@ use OCA\LarpingApp\Service\RegisterObjectFetcher;
 use OCA\LarpingApp\Service\CharacterService;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Controller;
+use OCP\AppFramework\Http;
+use OCP\AppFramework\Http\Attribute\NoAdminRequired;
+use OCP\AppFramework\Http\Attribute\NoCSRFRequired;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http\DataDownloadResponse;
 use OCP\IRequest;
+use OCP\IUserSession;
 use Psr\Container\ContainerInterface;
 
 /**
  * Controller for handling characters related operations
  *
  * @psalm-suppress UnusedClass Instantiated by Nextcloud routing (appinfo/routes.php).
+ *
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-80
  */
 class CharactersController extends Controller
 {
@@ -58,6 +64,7 @@ class CharactersController extends Controller
      * @param CharacterService      $characterService The character service object
      * @param IAppManager           $appManager       The app manager for checking installed apps
      * @param ContainerInterface    $container        The DI container for resolving cross-app services
+     * @param IUserSession          $userSession      The user session for authentication checks
      */
     public function __construct(
         $appName,
@@ -65,7 +72,8 @@ class CharactersController extends Controller
         private readonly RegisterObjectFetcher $objectFetcher,
         private readonly CharacterService $characterService,
         private readonly IAppManager $appManager,
-        private readonly ContainerInterface $container
+        private readonly ContainerInterface $container,
+        private readonly IUserSession $userSession
     ) {
         parent::__construct(appName: $appName, request: $request);
     }//end __construct()
@@ -106,8 +114,15 @@ class CharactersController extends Controller
      * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-96
      * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-97
      */
+    #[NoAdminRequired]
+    #[NoCSRFRequired]
     public function downloadPdf(string $id, string $template): DataDownloadResponse|JSONResponse
     {
+        $user = $this->userSession->getUser();
+        if ($user === null) {
+            return new JSONResponse(data: ['error' => 'Not authenticated'], statusCode: Http::STATUS_UNAUTHORIZED);
+        }
+
         if ($this->appManager->isEnabledForUser(appId: 'docudesk') === false) {
             return new JSONResponse(
                 data: ['error' => 'PDF generation requires the DocuDesk app to be installed and enabled'],

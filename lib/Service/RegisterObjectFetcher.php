@@ -62,6 +62,8 @@ use Psr\Container\ContainerInterface;
  * @link     https://larpingapp.com
  *
  * @psalm-suppress UndefinedClass, UndefinedDocblockClass OpenRegister is an optional dependency.
+ *
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-38
  */
 class RegisterObjectFetcher
 {
@@ -230,7 +232,15 @@ class RegisterObjectFetcher
         $mapper = $this->getMapper(objectType: $objectType);
 
         // @var array $objects
-        $objects = $mapper->findAll($limit, $offset, $filters, $sort, $search);
+        $objects = $mapper->findAll(
+                [
+                    'limit'   => $limit,
+                    'offset'  => $offset,
+                    'filters' => $filters ?? [],
+                    'sort'    => $sort ?? [],
+                    'search'  => $search,
+                ]
+                );
 
         // @psalm-suppress MixedArgument Mapper resolved dynamically.
         return array_map(
