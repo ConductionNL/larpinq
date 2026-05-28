@@ -32,6 +32,8 @@ declare(strict_types=1);
 
 namespace OCA\LarpingApp\Service;
 
+use Psr\Log\LoggerInterface;
+
 /**
  * Service class for character-related operations.
  *
@@ -104,11 +106,13 @@ class CharacterService
      * Closes #217.
      *
      * @param RegisterObjectFetcher $objectFetcher The register object fetcher.
+     * @param LoggerInterface       $logger        The logger interface.
      *
      * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
      */
     public function __construct(
-        private readonly RegisterObjectFetcher $objectFetcher
+        private readonly RegisterObjectFetcher $objectFetcher,
+        private readonly LoggerInterface $logger
     ) {
     }//end __construct()
 
@@ -191,6 +195,17 @@ class CharacterService
         // @var array<string, array{name: string, base: int, value: int, audit: array}> $abilityScores
         $abilityScores = [];
         foreach ($this->allAbilities as $ability) {
+            if (isset($ability['base']) && is_numeric($ability['base']) === false) {
+                $this->logger->warning(
+                    'LarpingApp: ability has non-numeric base value; defaulting to 0',
+                    [
+                        'abilityId'   => (string) ($ability['id'] ?? 'unknown'),
+                        'abilityName' => (string) ($ability['name'] ?? 'unknown'),
+                        'base'        => $ability['base'],
+                    ]
+                );
+            }
+
             $abilityScores[(string) $ability['id']] = [
                 'name'  => (string) ($ability['name'] ?? ''),
                 'base'  => (int) ($ability['base'] ?? 0),

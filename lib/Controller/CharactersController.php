@@ -151,6 +151,13 @@ class CharactersController extends Controller
             );
         }
 
+        // Validate the template ID to a UUID before delegating to DocuDesk,
+        // preventing path-traversal or injection via a crafted template value.
+        $templateLower = strtolower($template);
+        if (preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/', $templateLower) !== 1) {
+            return new JSONResponse(data: ['error' => 'Invalid template ID: expected a UUID'], statusCode: Http::STATUS_BAD_REQUEST);
+        }
+
         try {
             $character = $this->objectFetcher->getObject(objectType: 'character', id: $id);
         } catch (\Exception $exception) {
@@ -163,7 +170,7 @@ class CharactersController extends Controller
 
             // @psalm-suppress MixedMethodCall DocuDesk is an optional cross-app dependency.
             // @var array<string,mixed> $templateData
-            $templateData = $templateService->getTemplate($template);
+            $templateData = $templateService->getTemplate($templateLower);
         } catch (\Exception $exception) {
             return new JSONResponse(data: ['error' => 'Template not found'], statusCode: 404);
         }
