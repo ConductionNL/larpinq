@@ -35,6 +35,7 @@ use OCP\IGroupManager;
 use OCP\IRequest;
 use OCP\IUserSession;
 use Psr\Container\ContainerInterface;
+use Psr\Log\LoggerInterface;
 use RuntimeException;
 
 /**
@@ -67,6 +68,7 @@ class SettingsController extends Controller
      * @param SettingsService    $settingsService The settings service.
      * @param IGroupManager      $groupManager    The group manager.
      * @param IUserSession       $userSession     The user session.
+     * @param LoggerInterface    $logger          The logger.
      *
      * @return void
      */
@@ -77,6 +79,7 @@ class SettingsController extends Controller
         private readonly SettingsService $settingsService,
         private readonly IGroupManager $groupManager,
         private readonly IUserSession $userSession,
+        private readonly LoggerInterface $logger,
     ) {
         parent::__construct(appName: Application::APP_ID, request: $request);
 
@@ -126,6 +129,85 @@ class SettingsController extends Controller
     }//end getConfigurationService()
 
     /**
+     * Attempts to retrieve the OpenRegister RegisterMapper from the container.
+     *
+     * @return object|null The RegisterMapper if available, null otherwise.
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-22
+     */
+    private function getRegisterMapper(): ?object
+    {
+        if (in_array(needle: 'openregister', haystack: $this->appManager->getInstalledApps()) === true) {
+            // @var object $registerMapper
+            $registerMapper = $this->container->get('OCA\OpenRegister\Db\RegisterMapper');
+            return $registerMapper;
+        }
+
+        return null;
+
+    }//end getRegisterMapper()
+
+    /**
+     * Attempts to retrieve the OpenRegister SchemaMapper from the container.
+     *
+     * @return object|null The SchemaMapper if available, null otherwise.
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-22
+     */
+    private function getSchemaMapper(): ?object
+    {
+        if (in_array(needle: 'openregister', haystack: $this->appManager->getInstalledApps()) === true) {
+            // @var object $schemaMapper
+            $schemaMapper = $this->container->get('OCA\OpenRegister\Db\SchemaMapper');
+            return $schemaMapper;
+        }
+
+        return null;
+
+    }//end getSchemaMapper()
+
+    /**
+     * Enrich registers with full schema objects instead of just schema IDs.
+     *
+     * @param array       $registers    The registers to enrich.
+     * @param object|null $schemaMapper The SchemaMapper, or null.
+     *
+     * @return array Registers serialized as arrays with full schema objects.
+     */
+    private function enrichRegistersWithSchemas(array $registers, ?object $schemaMapper): array
+    {
+        $result = [];
+
+        foreach ($registers as $register) {
+            // @psalm-suppress MixedMethodCall Register entity from OpenRegister.
+            $registerArray = $register->jsonSerialize();
+            $schemaIds     = $registerArray['schemas'] ?? [];
+            $schemas       = [];
+
+            if ($schemaMapper !== null && empty($schemaIds) === false) {
+                foreach ($schemaIds as $schemaId) {
+                    try {
+                        // @psalm-suppress MixedMethodCall SchemaMapper from OpenRegister.
+                        $schema    = $schemaMapper->find((int) $schemaId);
+                        $schemas[] = $schema->jsonSerialize();
+                    } catch (\Exception $e) {
+                        $this->logger->debug(
+                            'Schema not found while enriching register',
+                            ['schemaId' => $schemaId, 'exception' => $e->getMessage()]
+                        );
+                    }
+                }
+            }
+
+            $registerArray['schemas'] = $schemas;
+            $result[] = $registerArray;
+        }//end foreach
+
+        return $result;
+
+    }//end enrichRegistersWithSchemas()
+
+    /**
      * Get current LarpingApp settings.
      *
      * @return JSONResponse The settings response.
@@ -143,10 +225,31 @@ class SettingsController extends Controller
         $user    = $this->userSession->getUser();
         $isAdmin = $user !== null && $this->groupManager->isAdmin($user->getUID());
 
+        $openRegisters      = in_array(needle: 'openregister', haystack: $this->appManager->getInstalledApps());
+        $availableRegisters = [];
+
+        if ($openRegisters === true) {
+            try {
+                $registerMapper = $this->getRegisterMapper();
+                $schemaMapper   = $this->getSchemaMapper();
+                if ($registerMapper !== null) {
+                    // @psalm-suppress MixedMethodCall RegisterMapper from OpenRegister.
+                    $registers          = $registerMapper->findAll(_rbac: false, _multitenancy: false);
+                    $availableRegisters = $this->enrichRegistersWithSchemas(registers: $registers, schemaMapper: $schemaMapper);
+                }
+            } catch (\Exception $e) {
+                $this->logger->warning(
+                    'Failed to load available registers for settings',
+                    ['exception' => $e->getMessage()]
+                );
+            }
+        }
+
         $data = [
-            'openRegisters' => in_array(needle: 'openregister', haystack: $this->appManager->getInstalledApps()),
-            'isAdmin'       => $isAdmin,
-            'objectTypes'   => [
+            'openRegisters'      => $openRegisters,
+            'isAdmin'            => $isAdmin,
+            'availableRegisters' => $availableRegisters,
+            'objectTypes'        => [
                 'ability',
                 'character',
                 'condition',
@@ -157,7 +260,7 @@ class SettingsController extends Controller
                 'setting',
                 'skill',
             ],
-            'configuration' => $this->settingsService->getSettings(),
+            'configuration'      => $this->settingsService->getSettings(),
         ];
 
         return new JSONResponse($data);
@@ -168,6 +271,7 @@ class SettingsController extends Controller
      * Update LarpingApp settings.
      *
      * CSRF protection is required — this is a state-mutating admin POST.
+     *
      * @NoCSRFRequired removed to close the CSRF-forgery surface (closes #206).
      *
      * @return JSONResponse The updated settings response.
@@ -196,6 +300,7 @@ class SettingsController extends Controller
      * Re-import the LarpingApp configuration from the JSON file.
      *
      * CSRF protection is required — this is a state-mutating admin POST.
+     *
      * @NoCSRFRequired removed to close the CSRF-forgery surface (closes #206).
      *
      * @return JSONResponse The re-import result.

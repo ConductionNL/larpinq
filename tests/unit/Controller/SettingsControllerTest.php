@@ -29,6 +29,7 @@ use OCP\IUserSession;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Tests for SettingsController.
@@ -82,6 +83,7 @@ class SettingsControllerTest extends TestCase
             settingsService: $this->settingsService,
             groupManager: $this->createMock(IGroupManager::class),
             userSession: $userSession,
+            logger: $this->createMock(LoggerInterface::class),
         );
 
     }//end setUp()
@@ -102,6 +104,7 @@ class SettingsControllerTest extends TestCase
         self::assertInstanceOf(JSONResponse::class, $result);
         self::assertArrayHasKey('objectTypes', $result->getData());
         self::assertArrayHasKey('configuration', $result->getData());
+        self::assertArrayHasKey('availableRegisters', $result->getData());
 
     }//end testIndexReturnsJsonResponseWithExpectedKeys()
 

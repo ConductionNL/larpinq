@@ -17,6 +17,7 @@ namespace OCA\LarpingApp\Tests\Unit\Service;
 use OCA\LarpingApp\Service\CharacterService;
 use OCA\LarpingApp\Service\RegisterObjectFetcher;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 
 /**
  * Tests for the CharacterService stat calculation engine.
@@ -26,12 +27,14 @@ class CharacterServiceTest extends TestCase
 
     private CharacterService $service;
     private RegisterObjectFetcher $objectFetcher;
+    private LoggerInterface $logger;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->objectFetcher = $this->createMock(RegisterObjectFetcher::class);
+        $this->logger        = $this->createMock(LoggerInterface::class);
 
         // Return empty arrays for all entity types by default.
         $this->objectFetcher->method('getObjects')
@@ -39,7 +42,7 @@ class CharacterServiceTest extends TestCase
                 return [];
             });
 
-        $this->service = new CharacterService($this->objectFetcher);
+        $this->service = new CharacterService($this->objectFetcher, $this->logger);
     }
 
     /**
@@ -67,7 +70,7 @@ class CharacterServiceTest extends TestCase
                 };
             });
 
-        return new CharacterService($fetcher);
+        return new CharacterService($fetcher, $this->createMock(LoggerInterface::class));
     }
 
     public function testCalculateCharacterWithNoAbilities(): void
@@ -316,7 +319,7 @@ class CharacterServiceTest extends TestCase
                 return [];
             });
 
-        $service = new CharacterService($fetcher);
+        $service = new CharacterService($fetcher, $this->createMock(LoggerInterface::class));
         $results = $service->calculateAllCharacters();
 
         self::assertCount(2, $results);

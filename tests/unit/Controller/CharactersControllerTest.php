@@ -143,7 +143,7 @@ class CharactersControllerTest extends TestCase
         $this->objectFetcher->method('getObject')
             ->willThrowException(new Exception('Not found'));
 
-        $result = $this->controller->downloadPdf('nonexistent', 'tpl-1');
+        $result = $this->controller->downloadPdf('nonexistent', '00000000-0000-0000-0000-000000000001');
 
         self::assertInstanceOf(JSONResponse::class, $result);
         self::assertSame(404, $result->getStatus());
@@ -170,7 +170,7 @@ class CharactersControllerTest extends TestCase
                 return null;
             });
 
-        $result = $this->controller->downloadPdf('char-1', 'nonexistent');
+        $result = $this->controller->downloadPdf('char-1', '00000000-0000-0000-0000-000000000002');
 
         self::assertInstanceOf(JSONResponse::class, $result);
         self::assertSame(404, $result->getStatus());
@@ -209,7 +209,7 @@ class CharactersControllerTest extends TestCase
                 return null;
             });
 
-        $result = $this->controller->downloadPdf('char-1', 'tpl-1');
+        $result = $this->controller->downloadPdf('char-1', '00000000-0000-0000-0000-000000000003');
 
         self::assertInstanceOf(DataDownloadResponse::class, $result);
     }
@@ -243,7 +243,7 @@ class CharactersControllerTest extends TestCase
                 return null;
             });
 
-        $result = $this->controller->downloadPdf('char-1', 'tpl-1');
+        $result = $this->controller->downloadPdf('char-1', '00000000-0000-0000-0000-000000000004');
 
         self::assertInstanceOf(JSONResponse::class, $result);
         self::assertSame(500, $result->getStatus());

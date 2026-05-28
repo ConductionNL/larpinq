@@ -166,7 +166,7 @@ export default defineComponent({
 		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-9
 		 */
 		registerOptions() {
-			return this.settings.availableRegisters.map(register => ({
+			return (this.settings.availableRegisters || []).map(register => ({
 				label: register.title,
 				value: register.id.toString(),
 			}))
@@ -318,6 +318,7 @@ export default defineComponent({
 		 */
 		async saveAll() {
 			this.saving = true
+			this.message = ''
 			try {
 				const configToSave = {}
 
@@ -334,15 +335,27 @@ export default defineComponent({
 					}
 				})
 
-				await fetch('/index.php/apps/larpingapp/api/settings', {
+				const response = await fetch('/index.php/apps/larpingapp/api/settings', {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
+						requesttoken: OC.requestToken,
+						'OCS-APIREQUEST': 'true',
 					},
 					body: JSON.stringify(configToSave),
 				})
+
+				if (response.ok) {
+					this.message = t('larpingapp', 'Settings saved successfully')
+					this.messageType = 'success'
+				} else {
+					this.message = t('larpingapp', 'Failed to save settings')
+					this.messageType = 'error'
+				}
 			} catch (error) {
 				console.error('Failed to save settings:', error)
+				this.message = error.message || t('larpingapp', 'Failed to save settings')
+				this.messageType = 'error'
 			} finally {
 				this.saving = false
 			}

@@ -24,7 +24,6 @@ declare(strict_types=1);
 namespace OCA\LarpingApp\AppInfo;
 
 use OCA\LarpingApp\Listener\DeepLinkRegistrationListener;
-use OCA\LarpingApp\Service\SettingsService;
 use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
@@ -84,27 +83,24 @@ class Application extends App implements IBootstrap
     }//end register()
 
     /**
-     * Boot the application and import register configuration
+     * Boot the application.
+     *
+     * Register/schema initialization has been moved to InitializeRegister repair step
+     * (lib/Repair/InitializeRegister.php), which runs once on install and upgrade instead
+     * of on every HTTP request. Closes the per-request overhead regression.
      *
      * @param IBootContext $context Boot context
      *
      * @return void
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      *
      * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-4
      * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-5
      */
     public function boot(IBootContext $context): void
     {
-        // @psalm-suppress DeprecatedInterface IServerContainer is deprecated but still used in boot().
-        $server = $context->getServerContainer();
-
-        try {
-            // @var SettingsService $settingsService
-            $settingsService = $server->get(SettingsService::class);
-            $settingsService->loadSettings();
-        } catch (\Exception $e) {
-            // OpenRegister not available or import failed — skip silently.
-        }//end try
-
+        // Register/schema initialization is handled by the repair step.
+        // See lib/Repair/InitializeRegister.php.
     }//end boot()
 }//end class

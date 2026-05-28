@@ -18,12 +18,9 @@ declare(strict_types=1);
 
 namespace OCA\LarpingApp\Controller;
 
-use GuzzleHttp\Client;
 use OCA\LarpingApp\AppInfo\Application;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\TemplateResponse;
-use OCP\AppFramework\Http\JSONResponse;
-use OCP\IAppConfig;
 use OCP\IRequest;
 
 /**
@@ -43,14 +40,12 @@ class DashboardController extends Controller
     /**
      * Constructor for DashboardController
      *
-     * @param string     $appName Application name
-     * @param IRequest   $request HTTP request object
-     * @param IAppConfig $config  Application configuration service
+     * @param string   $appName Application name
+     * @param IRequest $request HTTP request object
      */
     public function __construct(
         $appName,
-        IRequest $request,
-        private readonly IAppConfig $config
+        IRequest $request
     ) {
         parent::__construct(appName: $appName, request: $request);
     }//end __construct()
