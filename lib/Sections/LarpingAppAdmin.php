@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace OCA\LarpingApp\Sections;
 
+use OCA\LarpingApp\AppInfo\Application;
 use OCP\IL10N;
 use OCP\IURLGenerator;
 use OCP\Settings\IIconSection;
@@ -74,7 +75,7 @@ class LarpingAppAdmin implements IIconSection
      */
     public function getIcon(): string
     {
-        return $this->urlGenerator->imagePath(appName: 'larpingapp', file: 'app-dark.svg');
+        return $this->urlGenerator->imagePath(appName: Application::APP_ID, file: 'app-dark.svg');
     }//end getIcon()
 
     /**
@@ -86,7 +87,7 @@ class LarpingAppAdmin implements IIconSection
      */
     public function getID(): string
     {
-        return 'larpingapp';
+        return Application::APP_ID;
     }//end getID()
 
     /**

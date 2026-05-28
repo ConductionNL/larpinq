@@ -128,7 +128,9 @@ class SettingsService
     public function updateSettings(array $data): array
     {
         foreach (self::CONFIG_KEYS as $key) {
-            if (isset($data[$key]) === true) {
+            if (isset($data[$key]) === true
+                && (is_string($data[$key]) === true || is_int($data[$key]) === true)
+            ) {
                 $this->appConfig->setValueString(Application::APP_ID, $key, (string) $data[$key]);
             }
         }

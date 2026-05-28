@@ -72,7 +72,7 @@ class LarpingAppAdmin implements ISettings
      */
     public function getSection(): string
     {
-        return 'larpingapp';
+        return Application::APP_ID;
     }//end getSection()
 
     /**
