@@ -15,31 +15,6 @@
  * @link      https://larpingapp.com
  *
  * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-38
- * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-39
- * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-40
- * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-41
- * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-42
- * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-43
- * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-44
- * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-45
- * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-46
- * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-47
- * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-48
- * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-49
- * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-50
- * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-51
- * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-52
- * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-53
- * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-54
- * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-55
- * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-56
- * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-57
- * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-58
- * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-59
- * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-60
- * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-61
- * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-62
- * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-63
  */
 
 declare(strict_types=1);
@@ -47,6 +22,7 @@ declare(strict_types=1);
 namespace OCA\LarpingApp\Service;
 
 use Exception;
+use OCA\LarpingApp\AppInfo\Application;
 use OCP\App\IAppManager;
 use OCP\IAppConfig;
 use Psr\Container\ContainerInterface;
@@ -73,7 +49,7 @@ class RegisterObjectFetcher
      *
      * @var string
      */
-    private string $appName = 'larpingapp';
+    private string $appName = Application::APP_ID;
 
     /**
      * Constructor for RegisterObjectFetcher.
@@ -120,7 +96,9 @@ class RegisterObjectFetcher
 
         // Resolve fresh on every call — never cache. OR's ObjectService mutates
         // currentRegister/currentSchema on each getMapper() call; caching the
-        // instance causes stale-state contamination between object types.
+        // instance causes stale-state contamination between object types in the
+        // same request. The adapter already binds register/schema on getMapper(),
+        // so the fresh-resolve is belt-and-braces against future OR refactoring.
         // @var object $service The resolved OpenRegister ObjectService.
         $service = $this->container->get('OCA\OpenRegister\Service\ObjectService');
         return $service;
@@ -281,14 +259,17 @@ class RegisterObjectFetcher
         // Require a clean UUID. Reject URL-format IDs to close the URL-slicing
         // IDOR primitive (closes #212). Any caller that previously passed a full
         // URL must extract the UUID before calling this method.
-        if (preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i', $id) !== 1) {
+        // Normalise to lower-case so mixed-case UUIDs (e.g. from Windows GUIDs)
+        // pass validation and reach the mapper without the case-insensitive /i flag.
+        $idLower = strtolower($id);
+        if (preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/', $idLower) !== 1) {
             throw new \InvalidArgumentException('Invalid object ID: expected a UUID');
         }
 
         $mapper = $this->getMapper(objectType: $objectType);
 
         // @var mixed $object
-        $object = $mapper->find($id);
+        $object = $mapper->find($idLower);
 
         return $this->toArray(object: $object);
     }//end getObject()

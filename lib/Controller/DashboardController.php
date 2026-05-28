@@ -19,6 +19,7 @@ declare(strict_types=1);
 namespace OCA\LarpingApp\Controller;
 
 use GuzzleHttp\Client;
+use OCA\LarpingApp\AppInfo\Application;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Http\JSONResponse;
@@ -71,8 +72,7 @@ class DashboardController extends Controller
     public function page(): TemplateResponse
     {
         return new TemplateResponse(
-            // Application::APP_ID.
-            'larpingapp',
+            Application::APP_ID,
             'index',
             []
         );

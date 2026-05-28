@@ -40,7 +40,12 @@ Create a [feature request](https://github.com/OpenCatalogi/.github/issues/new/ch
     </dependencies>
     <!-- Restrict app visibility to the 'larpers' group so that only enrolled GMs and
          players see the navigation entry and can probe endpoints. Admins may add users
-         to this group via the Nextcloud admin panel. Closes #216. -->
+         to this group via the Nextcloud admin panel. Closes #216.
+
+         DUAL-GROUP REQUIREMENT: Game Masters need to be in BOTH the built-in 'admin'
+         Nextcloud group AND the 'larpers' group. The 'larpers' group controls app
+         visibility; admin privileges gate GM-only endpoints (e.g. downloadPdf).
+         Regular players only need the 'larpers' group. -->
     <groups>
         <group>larpers</group>
     </groups>
