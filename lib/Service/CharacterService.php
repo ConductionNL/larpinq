@@ -195,7 +195,7 @@ class CharacterService
         // @var array<string, array{name: string, base: int, value: int, audit: array}> $abilityScores
         $abilityScores = [];
         foreach ($this->allAbilities as $ability) {
-            if (isset($ability['base']) && is_numeric($ability['base']) === false) {
+            if (isset($ability['base']) === true && is_numeric($ability['base']) === false) {
                 $this->logger->warning(
                     'LarpingApp: ability has non-numeric base value; defaulting to 0',
                     [
@@ -480,7 +480,7 @@ class CharacterService
         // Enforce the non-cumulative dedup rule. If this effect has been applied
         // already and is marked non-cumulative, skip it. Closes #208.
         if ($effectId !== '' && isset($appliedEffects[$effectId]) === true) {
-            $cumulative = (string) ($effect['cumulative'] ?? 'cumulative');
+            $cumulative = (string) ($effect['cumulative'] ?? 'non-cumulative');
             if ($cumulative === 'non-cumulative') {
                 return;
             }

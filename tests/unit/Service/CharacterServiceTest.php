@@ -331,6 +331,39 @@ class CharacterServiceTest extends TestCase
     // #208 — non-cumulative dedup + stat_id double-apply fix
     // -----------------------------------------------------------------------
 
+    public function testEffectWithMissingCumulativeFieldDefaultsToNonCumulative(): void
+    {
+        // When the 'cumulative' field is entirely absent from the effect array the
+        // schema default is 'non-cumulative'. The same effect attached to both a skill
+        // and an item must therefore apply ONCE, not twice. Fixes C1 (wave-9).
+        $abilities = [
+            ['id' => 'abil-1', 'name' => 'Strength', 'base' => 10],
+        ];
+        $effects = [
+            [
+                'id'           => 'eff-missing-cumulative',
+                'modifier'     => 5,
+                'modification' => 'positive',
+                // 'cumulative' key intentionally absent — no key, no default override.
+                'abilities'    => ['abil-1'],
+            ],
+        ];
+        $skills = [['id' => 'skill-1', 'effects' => ['eff-missing-cumulative']]];
+        $items  = [['id' => 'item-1',  'effects' => ['eff-missing-cumulative']]];
+
+        $service = $this->createServiceWithData(abilities: $abilities, effects: $effects, skills: $skills, items: $items);
+        $character = [
+            'id'     => 'char-1',
+            'skills' => ['skill-1'],
+            'items'  => ['item-1'],
+        ];
+        $result = $service->calculateCharacter($character);
+
+        // 10 + 5 = 15 (applied once). Were the default 'cumulative' it would be 20.
+        self::assertSame(15, $result['stats']['abil-1']['value']);
+        self::assertCount(1, $result['stats']['abil-1']['audit']);
+    }
+
     public function testNonCumulativeEffectAppliedOnlyOnce(): void
     {
         // The same non-cumulative effect is attached to BOTH a skill and an item.
