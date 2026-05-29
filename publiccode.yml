@@ -1,7 +1,7 @@
 publiccodeYmlVersion: "0.4"
 
 name: Larping
-url: "https://github.com/ConductionNL/larpingapp"
+url: "https://codeberg.org/Conduction/larpingapp"
 softwareVersion: "0.1.21"
 releaseDate: "2026-05-26"
 developmentStatus: beta
