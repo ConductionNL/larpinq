@@ -9,9 +9,9 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/ConductionNL/larpingapp/releases"><img src="https://img.shields.io/github/v/release/ConductionNL/larpingapp" alt="Latest release"></a>
-  <a href="https://github.com/ConductionNL/larpingapp/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-AGPL--3.0-blue" alt="License"></a>
-  <a href="https://github.com/ConductionNL/larpingapp/actions"><img src="https://img.shields.io/github/actions/workflow/status/ConductionNL/larpingapp/code-quality.yml?label=quality" alt="Code quality"></a>
+  <a href="https://codeberg.org/Conduction/larpingapp/releases"><img src="https://img.shields.io/gitea/v/release/Conduction/larpingapp?gitea_url=https%3A%2F%2Fcodeberg.org" alt="Latest release"></a>
+  <a href="https://codeberg.org/Conduction/larpingapp/src/branch/main/LICENSE"><img src="https://img.shields.io/badge/license-AGPL--3.0-blue" alt="License"></a>
+  <a href="https://ci.codeberg.org/repos/Conduction/larpingapp"><img src="https://ci.codeberg.org/api/badges/Conduction/larpingapp/status.svg" alt="Code quality"></a>
   <a href="https://larpingapp.app"><img src="https://img.shields.io/badge/docs-larpingapp.app-green" alt="Documentation"></a>
 </p>
 
@@ -19,7 +19,7 @@
 
 Larping brings live-action role-playing management natively into Nextcloud. Game masters define abilities, skills, items, conditions, and effects; the app automatically computes each character's stats and keeps them synchronized as game state changes. Players register for events, track XP, and print their character sheet — all without leaving Nextcloud.
 
-> **Optional:** [OpenRegister](https://github.com/ConductionNL/openregister) — enables advanced features like audit trails, object locking, cross-object relations, and JSON-based data storage.
+> **Optional:** [OpenRegister](https://codeberg.org/Conduction/openregister) — enables advanced features like audit trails, object locking, cross-object relations, and JSON-based data storage.
 
 ## Screenshots
 
@@ -118,7 +118,7 @@ larpingapp/
 | Nextcloud | 28 – 33 |
 | PHP | 8.1+ |
 | Database | PostgreSQL 10+, MySQL 8.0+, SQLite |
-| [OpenRegister](https://github.com/ConductionNL/openregister) | optional |
+| [OpenRegister](https://codeberg.org/Conduction/openregister) | optional |
 
 ## Installation
 
@@ -132,7 +132,7 @@ larpingapp/
 
 ```bash
 cd /var/www/html/custom_apps
-git clone https://github.com/ConductionNL/larpingapp.git
+git clone https://codeberg.org/Conduction/larpingapp.git
 cd larpingapp
 npm install
 npm run build
@@ -202,9 +202,9 @@ Full documentation is available at **[larpingapp.app](https://larpingapp.app)**
 
 ## Related Apps
 
-- **[OpenRegister](https://github.com/ConductionNL/openregister)** — Object storage layer (optional dependency for advanced features)
-- **[OpenCatalogi](https://github.com/ConductionNL/opencatalogi)** — Publication and catalogue management
-- **[NL Design](https://github.com/ConductionNL/nldesign)** — Design token theming for Nextcloud
+- **[OpenRegister](https://codeberg.org/Conduction/openregister)** — Object storage layer (optional dependency for advanced features)
+- **[OpenCatalogi](https://codeberg.org/Conduction/opencatalogi)** — Publication and catalogue management
+- **[NL Design](https://codeberg.org/Conduction/nldesign)** — Design token theming for Nextcloud
 
 ## Support
 
