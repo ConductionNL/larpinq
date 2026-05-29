@@ -28,9 +28,9 @@ Create a [feature request](https://github.com/OpenCatalogi/.github/issues/new/ch
     <author mail="info@conduction.nl" homepage="https://www.conduction.nl/">Conduction</author>
 	<namespace>LarpingApp</namespace>
 	<category>organization</category>
-    <website>https://github.com/ConductionNL/LarpingNextApp</website>
-    <bugs>https://github.com/ConductionNL/LarpingNextApp/issues</bugs>
-    <repository type="git">https://github.com/ConductionNL/LarpingNextApp.git</repository>
+    <website>https://codeberg.org/Conduction/LarpingNextApp</website>
+    <bugs>https://codeberg.org/Conduction/LarpingNextApp/issues</bugs>
+    <repository type="git">https://codeberg.org/Conduction/LarpingNextApp.git</repository>
     <dependencies>
         <nextcloud min-version="28" max-version="34"/>
         <php min-version="8.3" min-int-size="64"/>
