@@ -1,0 +1,18 @@
+{
+  "schema_version": 2,
+  "spec_slug": "character-photos-leaf",
+  "repo": "https://codeberg.org/Conduction/larpingapp",
+  "issue": 5,
+  "cycles": [
+    {
+      "cycle": 1,
+      "trigger": "build:queued",
+      "started_at": "2026-05-30T23:08:58Z",
+      "ended_at": null,
+      "outcome": "in-flight",
+      "outcome_reason": null,
+      "pattern_tags": [],
+      "stages": []
+    }
+  ]
+}
