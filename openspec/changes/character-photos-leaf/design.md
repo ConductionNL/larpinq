@@ -1,3 +1,7 @@
+---
+status: pr-created
+---
+
 # Design — character-photos-leaf
 
 ## Context
@@ -31,6 +35,17 @@ image-upload field to the Character schema.
 
 Lower priority than the event/player leaf changes. Included for completeness of
 the leaf-migration set. No stat-engine interaction.
+
+## Implementation note
+
+The app uses a manifest-driven architecture (`CnDetailPage` from
+`@conduction/nextcloud-vue`) — there is no `src/views/ObjectDetail.vue`. The
+photos leaf surfaces via `CnObjectSidebar` with `useRegistry=true` (default) in
+`App.vue`. Character schema `configuration.linkedTypes: ["files"]` enables the
+OR files/object-interactions abstraction for character objects. Graceful
+degradation is handled automatically by `CnObjectSidebar`: when the photos
+integration is not registered in OR's integration registry, no portrait widget
+is shown and the rest of the character detail page renders normally.
 
 ## Risks
 

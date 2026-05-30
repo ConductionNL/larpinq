@@ -185,6 +185,7 @@
           }
         },
         "configuration": {
+          "linkedTypes": ["files"],
           "x-openregister-lifecycle": {
             "field": "approved",
             "initial": "no",
