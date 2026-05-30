@@ -1,0 +1,43 @@
+{
+  "spec": "openspec/changes/character-photos-leaf",
+  "verified": [
+    {
+      "task": "1.1",
+      "file": "openspec/changes/character-photos-leaf/design.md",
+      "ok": true,
+      "note": "Photos leaf is an ADR-019 integration registry integration. CnObjectSidebar with useRegistry=true (default) in App.vue surfaces it automatically when OR registers the photos integration. No LarpingApp code change needed beyond the schema configuration — ADR-019 Stage 1 is upstream in OR."
+    },
+    {
+      "task": "1.2",
+      "file": "lib/Settings/larpingapp_register.json",
+      "ok": true,
+      "note": "Added linkedTypes:[\"files\"] to character schema configuration. No src/views/ObjectDetail.vue exists — app uses manifest-driven CnDetailPage. CnObjectSidebar in App.vue handles photos leaf rendering for all detail pages including characters via useRegistry=true."
+    },
+    {
+      "task": "2.1",
+      "file": "lib/Settings/larpingapp_register.json",
+      "ok": true,
+      "note": "linkedTypes:[\"files\"] enables OR files/object-interactions abstraction for character objects. No app-local image column added. ADR-022 compliant."
+    },
+    {
+      "task": "3.1",
+      "file": "src/App.vue",
+      "ok": true,
+      "note": "Graceful degradation handled automatically by CnObjectSidebar with useRegistry=true: when photos integration is not registered in OR, no portrait widget is shown and character detail page renders normally."
+    },
+    {
+      "task": "4.1",
+      "file": "tests/e2e/spec-coverage/spa-ui.spec.ts",
+      "ok": true,
+      "note": "Added spec-coverage Playwright test: character list renders and detail page is accessible for photos leaf."
+    },
+    {
+      "task": "4.2",
+      "file": "tests/e2e/spec-coverage/spa-ui.spec.ts",
+      "ok": true,
+      "note": "Added spec-coverage Playwright test: character detail page renders normally when photos leaf absent."
+    }
+  ],
+  "stubs": [],
+  "missing_routes": []
+}
