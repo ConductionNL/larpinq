@@ -164,12 +164,19 @@ npm run build      # Production build
 composer phpcs          # Check coding standards
 composer cs:fix         # Auto-fix issues
 composer phpmd          # Mess detection
+composer phpstan        # Static analysis (level 5, empty baseline)
 composer phpmetrics     # HTML metrics report
+composer check:strict   # Unified gate: lint + phpcs + phpmd + psalm + phpstan + tests
 
 # Frontend
 npm run lint            # ESLint
 npm run stylelint       # CSS linting
 ```
+
+The unified `check:strict` gate (PHPCS, PHPMD, PHPStan) runs in CI on every
+PR. All three pass clean with no file-level exclude-patterns and an empty
+PHPStan baseline — the legacy quality debt has been burned down, so the gates
+catch real regressions rather than absorbing pre-existing issues.
 
 ## Tech Stack
 
@@ -181,7 +188,7 @@ npm run stylelint       # CSS linting
 | Backend | PHP 8.1+, Nextcloud App Framework |
 | Data | Nextcloud DB (internal) or OpenRegister (optional) |
 | PDF | mPDF 8 + Twig 3 |
-| Quality | PHPCS, PHPMD, phpmetrics, Psalm, ESLint, Stylelint |
+| Quality | PHPCS, PHPMD, PHPStan, phpmetrics, Psalm, ESLint, Stylelint |
 
 ## Documentation
 
