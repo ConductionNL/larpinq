@@ -107,6 +107,14 @@ class SettingsLoadService
         $configurationService = $this->getConfigurationService();
         $currentAppVersion    = $this->appManager->getAppVersion(Application::APP_ID);
 
+        // ADR-037: fold the merged register-fragment signature into the import
+        // version so OpenRegister's version-gated import re-runs whenever any
+        // lib/Settings/register.d/*.json fragment changes.
+        $fragmentSignature = $this->fileLoader->getFragmentSignature();
+        if ($fragmentSignature !== '') {
+            $currentAppVersion .= '+frag.'.$fragmentSignature;
+        }
+
         // @psalm-suppress MixedMethodCall ConfigurationService is from OpenRegister.
         // @var array $result
         $result = $configurationService->importFromApp(
