@@ -17,6 +17,8 @@ const GRAPHQL_ENDPOINT = '/apps/openregister/api/graphql'
  * @param {object} variables Optional query variables
  * @return {Promise<object>} The GraphQL response data
  * @throws {Error} On network, auth, or GraphQL errors
+ *
+ * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-5
  */
 export async function queryGraphQL(query, variables = null) {
 	const url = generateUrl(GRAPHQL_ENDPOINT)

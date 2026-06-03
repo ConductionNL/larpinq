@@ -10,6 +10,12 @@
  * @license   https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
  * @link      https://larpingapp.com
  *
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-1
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-2
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-3
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-4
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-5
+ *
  * @phpversion 8.2
  */
 
@@ -17,7 +23,7 @@ declare(strict_types=1);
 
 namespace OCA\LarpingApp\AppInfo;
 
-use OCA\LarpingApp\Service\SettingsService;
+use OCA\LarpingApp\Listener\DeepLinkRegistrationListener;
 use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
@@ -59,31 +65,42 @@ class Application extends App implements IBootstrap
      * @return void
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-1
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-2
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-3
      */
     public function register(IRegistrationContext $context): void
     {
-        // Register services here.
+        // Register the deep link listener for OpenRegister unified search.
+        // The event class is only available when OpenRegister is installed.
+        if (class_exists('OCA\OpenRegister\Event\DeepLinkRegistrationEvent') === true) {
+            $context->registerEventListener(
+                'OCA\OpenRegister\Event\DeepLinkRegistrationEvent',
+                DeepLinkRegistrationListener::class
+            );
+        }
     }//end register()
 
     /**
-     * Boot the application and import register configuration
+     * Boot the application.
+     *
+     * Register/schema initialization has been moved to InitializeRegister repair step
+     * (lib/Repair/InitializeRegister.php), which runs once on install and upgrade instead
+     * of on every HTTP request. Closes the per-request overhead regression.
      *
      * @param IBootContext $context Boot context
      *
      * @return void
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-4
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-5
      */
     public function boot(IBootContext $context): void
     {
-        // @psalm-suppress DeprecatedInterface IServerContainer is deprecated but still used in boot().
-        $server = $context->getServerContainer();
-
-        try {
-            // @var SettingsService $settingsService
-            $settingsService = $server->get(SettingsService::class);
-            $settingsService->loadSettings();
-        } catch (\Exception $e) {
-            // OpenRegister not available or import failed — skip silently.
-        }//end try
-
+        // Register/schema initialization is handled by the repair step.
+        // See lib/Repair/InitializeRegister.php.
     }//end boot()
 }//end class

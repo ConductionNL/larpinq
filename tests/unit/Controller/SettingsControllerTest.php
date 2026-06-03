@@ -21,10 +21,15 @@ namespace OCA\LarpingApp\Tests\Unit\Controller;
 
 use OCA\LarpingApp\Controller\SettingsController;
 use OCA\LarpingApp\Service\SettingsService;
+use OCP\App\IAppManager;
 use OCP\AppFramework\Http\JSONResponse;
+use OCP\IGroupManager;
 use OCP\IRequest;
+use OCP\IUserSession;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Tests for SettingsController.
@@ -65,31 +70,88 @@ class SettingsControllerTest extends TestCase
         $this->request         = $this->createMock(IRequest::class);
         $this->settingsService = $this->createMock(SettingsService::class);
 
+        $appManager = $this->createMock(IAppManager::class);
+        $appManager->method('getInstalledApps')->willReturn(['openregister']);
+
+        $userSession = $this->createMock(IUserSession::class);
+        $userSession->method('getUser')->willReturn(null);
+
         $this->controller = new SettingsController(
             request: $this->request,
+            container: $this->createMock(ContainerInterface::class),
+            appManager: $appManager,
             settingsService: $this->settingsService,
+            groupManager: $this->createMock(IGroupManager::class),
+            userSession: $userSession,
+            logger: $this->createMock(LoggerInterface::class),
         );
 
     }//end setUp()
 
     /**
-     * Test that index() returns a JSONResponse with objectTypes and configuration keys.
+     * Test that index() returns a JSONResponse with objectTypes and availableRegisters for a
+     * non-admin user. The 'configuration' key must NOT be present (C2 security fix).
      *
      * @return void
      */
     public function testIndexReturnsJsonResponseWithExpectedKeys(): void
     {
-        $this->settingsService->expects($this->once())
-            ->method('getSettings')
-            ->willReturn(['openRegisterUrl' => 'http://localhost']);
+        // setUp() creates a null user → isAdmin = false; getSettings must NOT be called.
+        $this->settingsService->expects($this->never())->method('getSettings');
 
         $result = $this->controller->index();
 
         self::assertInstanceOf(JSONResponse::class, $result);
         self::assertArrayHasKey('objectTypes', $result->getData());
-        self::assertArrayHasKey('configuration', $result->getData());
+        self::assertArrayHasKey('availableRegisters', $result->getData());
+        // Non-admin must not receive the configuration block (register/schema IDs).
+        self::assertArrayNotHasKey('configuration', $result->getData());
+        // Non-admin must receive an empty availableRegisters list.
+        self::assertEmpty($result->getData()['availableRegisters']);
 
     }//end testIndexReturnsJsonResponseWithExpectedKeys()
+
+    /**
+     * Test that index() returns the configuration block only for admin users.
+     *
+     * @return void
+     */
+    public function testIndexReturnsConfigurationForAdmin(): void
+    {
+        $mockUser = $this->createMock(\OCP\IUser::class);
+        $mockUser->method('getUID')->willReturn('admin');
+
+        $userSession = $this->createMock(IUserSession::class);
+        $userSession->method('getUser')->willReturn($mockUser);
+
+        $groupManager = $this->createMock(IGroupManager::class);
+        $groupManager->method('isAdmin')->with('admin')->willReturn(true);
+
+        $appManager = $this->createMock(IAppManager::class);
+        $appManager->method('getInstalledApps')->willReturn([]);
+
+        $settingsService = $this->createMock(SettingsService::class);
+        $settingsService->expects($this->once())
+            ->method('getSettings')
+            ->willReturn(['openRegisterUrl' => 'http://localhost']);
+
+        $adminController = new SettingsController(
+            request: $this->request,
+            container: $this->createMock(ContainerInterface::class),
+            appManager: $appManager,
+            settingsService: $settingsService,
+            groupManager: $groupManager,
+            userSession: $userSession,
+            logger: $this->createMock(LoggerInterface::class),
+        );
+
+        $result = $adminController->index();
+
+        self::assertInstanceOf(JSONResponse::class, $result);
+        self::assertArrayHasKey('configuration', $result->getData());
+        self::assertSame('http://localhost', $result->getData()['configuration']['openRegisterUrl']);
+
+    }//end testIndexReturnsConfigurationForAdmin()
 
     /**
      * Test that index() includes all expected object types.

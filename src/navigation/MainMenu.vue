@@ -45,7 +45,7 @@
 			</NcAppNavigationItem>
 			<NcAppNavigationItem
 				:name="t('larpingapp', 'Documentation')"
-				@click="openLink('https://larpingapp.com', '_blank')">
+				@click="openLink('https://conduction.gitbook.io/larpingapp-nextcloud', '_blank')">
 				<template #icon>
 					<BookOpenVariantOutline :size="20" />
 				</template>
@@ -119,6 +119,12 @@ export default {
 		Cog,
 	},
 	methods: {
+		/**
+		 * @param url
+		 * @param target
+		 * @spec exclude Thin window.open() wrapper for the documentation nav
+		 * item — trivial UI glue, no business logic.
+		 */
 		openLink(url, target) {
 			window.open(url, target)
 		},

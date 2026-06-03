@@ -48,12 +48,12 @@
 		</div>
 
 		<NcSettingsSection
-			name="Data storage"
-			description="Configure where to store your LARP data">
+			:name="t('larpingapp', 'Data storage')"
+			:description="t('larpingapp', 'Configure where to store your LARP data')">
 			<div v-if="!loading">
 				<!-- Warning if OpenRegister is not installed but selected -->
 				<NcNoteCard v-if="!settings.openRegisters" type="warning">
-					Open Register is not installed. Some features might be unavailable.
+					{{ t('larpingapp', 'Open Register is not installed. Some features might be unavailable.') }}
 				</NcNoteCard>
 
 				<!-- Object Type Configuration -->
@@ -65,7 +65,7 @@
 						<NcSelect
 							v-model="configuration[objectType].source"
 							:options="sourceOptions"
-							input-label="Source"
+							:input-label="t('larpingapp', 'Source')"
 							:disabled="loading"
 							@change="handleSourceChange(objectType)" />
 
@@ -74,7 +74,7 @@
 							v-if="configuration[objectType].source?.value === 'openregister'"
 							v-model="configuration[objectType].register"
 							:options="registerOptions"
-							input-label="Register"
+							:input-label="t('larpingapp', 'Register')"
 							:disabled="loading"
 							@change="handleRegisterChange(objectType)" />
 
@@ -83,7 +83,7 @@
 							v-if="configuration[objectType].source?.value === 'openregister' && configuration[objectType].register"
 							v-model="configuration[objectType].schema"
 							:options="getSchemaOptions(configuration[objectType].register?.value)"
-							input-label="Schema"
+							:input-label="t('larpingapp', 'Schema')"
 							:disabled="loading" />
 					</div>
 				</div>
@@ -98,7 +98,7 @@
 							<NcLoadingIcon v-if="saving" :size="20" />
 							<Save v-else :size="20" />
 						</template>
-						Save All
+						{{ t('larpingapp', 'Save All') }}
 					</NcButton>
 				</div>
 			</div>
@@ -114,6 +114,7 @@
 
 <script>
 import { defineComponent } from 'vue'
+import { loadState } from '@nextcloud/initial-state'
 import { CnVersionInfoCard } from '@conduction/nextcloud-vue'
 import {
 	NcSettingsSection,
@@ -140,7 +141,7 @@ export default defineComponent({
 
 	data() {
 		return {
-			appVersion: document.getElementById('settings')?.dataset?.version || 'Unknown',
+			appVersion: loadState('larpingapp', 'version', 'Unknown'),
 			reimporting: false,
 			message: '',
 			messageType: 'success',
@@ -154,15 +155,18 @@ export default defineComponent({
 			},
 			configuration: {},
 			sourceOptions: [
-				{ label: 'Internal', value: 'internal' },
-				{ label: 'Open Register', value: 'openregister' },
+				{ label: t('larpingapp', 'Internal'), value: 'internal' },
+				{ label: t('larpingapp', 'Open Register'), value: 'openregister' },
 			],
 		}
 	},
 
 	computed: {
+		/**
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-9
+		 */
 		registerOptions() {
-			return this.settings.availableRegisters.map(register => ({
+			return (this.settings.availableRegisters || []).map(register => ({
 				label: register.title,
 				value: register.id.toString(),
 			}))
@@ -174,6 +178,9 @@ export default defineComponent({
 	},
 
 	methods: {
+		/**
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-10
+		 */
 		async reimport() {
 			this.reimporting = true
 			this.message = ''
@@ -206,6 +213,9 @@ export default defineComponent({
 			}
 		},
 
+		/**
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-8
+		 */
 		async loadSettings() {
 			try {
 				const response = await fetch('/index.php/apps/larpingapp/api/settings')
@@ -241,21 +251,39 @@ export default defineComponent({
 			}
 		},
 
+		/**
+		 * @param registerId
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-9
+		 */
 		getRegisterLabel(registerId) {
 			const register = this.settings.availableRegisters.find(r => r.id.toString() === registerId)
 			return register?.title || ''
 		},
 
+		/**
+		 * @param registerId
+		 * @param schemaId
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-9
+		 */
 		getSchemaLabel(registerId, schemaId) {
 			const register = this.settings.availableRegisters.find(r => r.id.toString() === registerId)
 			const schema = register?.schemas.find(s => s.id.toString() === schemaId)
 			return schema?.title || ''
 		},
 
+		/**
+		 * @param objectType
+		 * @spec exclude Trivial capitalize-first-letter formatter for the
+		 * object-type section header — display-only, no business logic.
+		 */
 		formatTitle(objectType) {
 			return objectType.charAt(0).toUpperCase() + objectType.slice(1)
 		},
 
+		/**
+		 * @param registerId
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-9
+		 */
 		getSchemaOptions(registerId) {
 			if (!registerId) return []
 			const register = this.settings.availableRegisters.find(r => r.id.toString() === registerId)
@@ -265,6 +293,10 @@ export default defineComponent({
 			})) || []
 		},
 
+		/**
+		 * @param objectType
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-9
+		 */
 		handleSourceChange(objectType) {
 			const config = this.configuration[objectType]
 			if (config.source.value === 'internal') {
@@ -273,12 +305,20 @@ export default defineComponent({
 			}
 		},
 
+		/**
+		 * @param objectType
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-9
+		 */
 		handleRegisterChange(objectType) {
 			this.configuration[objectType].schema = null
 		},
 
+		/**
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-8
+		 */
 		async saveAll() {
 			this.saving = true
+			this.message = ''
 			try {
 				const configToSave = {}
 
@@ -295,15 +335,27 @@ export default defineComponent({
 					}
 				})
 
-				await fetch('/index.php/apps/larpingapp/api/settings', {
+				const response = await fetch('/index.php/apps/larpingapp/api/settings', {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
+						requesttoken: OC.requestToken,
+						'OCS-APIREQUEST': 'true',
 					},
 					body: JSON.stringify(configToSave),
 				})
+
+				if (response.ok) {
+					this.message = t('larpingapp', 'Settings saved successfully')
+					this.messageType = 'success'
+				} else {
+					this.message = t('larpingapp', 'Failed to save settings')
+					this.messageType = 'error'
+				}
 			} catch (error) {
 				console.error('Failed to save settings:', error)
+				this.message = error.message || t('larpingapp', 'Failed to save settings')
+				this.messageType = 'error'
 			} finally {
 				this.saving = false
 			}

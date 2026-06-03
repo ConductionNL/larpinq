@@ -23,7 +23,7 @@ Create a [feature request](https://github.com/OpenCatalogi/.github/issues/new/ch
 
 **Support:** For support, contact support@conduction.nl. For a Service Level Agreement (SLA), contact sales@conduction.nl.
     ]]></description>
-    <version>0.1.20</version>
+    <version>0.1.26</version>
     <licence>agpl</licence>
     <author mail="info@conduction.nl" homepage="https://www.conduction.nl/">Conduction</author>
 	<namespace>LarpingApp</namespace>
@@ -32,12 +32,24 @@ Create a [feature request](https://github.com/OpenCatalogi/.github/issues/new/ch
     <bugs>https://github.com/ConductionNL/LarpingNextApp/issues</bugs>
     <repository type="git">https://github.com/ConductionNL/LarpingNextApp.git</repository>
     <dependencies>
-        <nextcloud min-version="28" max-version="32"/>
-        <php min-version="8.0" min-int-size="64"/>
+        <nextcloud min-version="28" max-version="34"/>
+        <php min-version="8.3" min-int-size="64"/>
         <database min-version="10">pgsql</database>
         <database>sqlite</database>
         <database min-version="8.0">mysql</database>
     </dependencies>
+    <!-- Restrict app visibility to the 'larpers' group so that only enrolled GMs and
+         players see the navigation entry and can probe endpoints. Admins may add users
+         to this group via the Nextcloud admin panel. Closes #216.
+
+         DUAL-GROUP REQUIREMENT: Game Masters need to be in BOTH the built-in 'admin'
+         Nextcloud group AND the 'larpers' group. The 'larpers' group controls app
+         visibility; admin privileges gate GM-only endpoints (e.g. downloadPdf).
+         Regular players only need the 'larpers' group. -->
+    <groups>
+        <group>larpers</group>
+    </groups>
+
     <navigations>
         <navigation>
             <id>larpingapp</id>
@@ -46,6 +58,15 @@ Create a [feature request](https://github.com/OpenCatalogi/.github/issues/new/ch
             <icon>app.svg</icon>
         </navigation>
     </navigations>
+
+	<repair-steps>
+		<install>
+			<step>OCA\LarpingApp\Repair\InitializeRegister</step>
+		</install>
+		<post-migration>
+			<step>OCA\LarpingApp\Repair\InitializeRegister</step>
+		</post-migration>
+	</repair-steps>
 
 	<settings>
 		<admin>OCA\LarpingApp\Settings\LarpingAppAdmin</admin>

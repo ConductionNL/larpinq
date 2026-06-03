@@ -18,6 +18,9 @@ export const useSettingsStore = defineStore('settings', {
 		getIsAdmin: (state) => state.isAdmin,
 	},
 	actions: {
+		/**
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-6
+		 */
 		async fetchSettings() {
 			this.loading = true
 			this.error = null
@@ -52,6 +55,10 @@ export const useSettingsStore = defineStore('settings', {
 			}
 		},
 
+		/**
+		 * @param settingsData
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-6
+		 */
 		async saveSettings(settingsData) {
 			this.loading = true
 			this.error = null
@@ -84,6 +91,9 @@ export const useSettingsStore = defineStore('settings', {
 			}
 		},
 
+		/**
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-6
+		 */
 		async reimportConfiguration() {
 			this.loading = true
 			this.error = null

@@ -1,0 +1,187 @@
+{
+	"$schema": "https://raw.githubusercontent.com/ConductionNL/nextcloud-vue/main/src/schemas/app-manifest-v2.schema.json",
+	"version": "0.2.0",
+	"dependencies": ["openregister"],
+	"menu": [
+		{ "id": "Dashboard", "label": "Dashboard", "icon": "ViewDashboard", "route": "Dashboard", "order": 10 },
+		{ "id": "Characters", "label": "Characters", "icon": "BriefcaseAccountOutline", "route": "Characters", "order": 20 },
+		{ "id": "Players", "label": "Players", "icon": "AccountGroupOutline", "route": "Players", "order": 30 },
+		{ "id": "Abilities", "label": "Abilities", "icon": "FlashOutline", "route": "Abilities", "order": 40 },
+		{ "id": "Skills", "label": "Skills", "icon": "StarOutline", "route": "Skills", "order": 50 },
+		{ "id": "Items", "label": "Items", "icon": "Sword", "route": "Items", "order": 60 },
+		{ "id": "Conditions", "label": "Conditions", "icon": "EmoticonSickOutline", "route": "Conditions", "order": 70 },
+		{ "id": "Effects", "label": "Effects", "icon": "MagicStaff", "route": "Effects", "order": 80 },
+		{ "id": "Events", "label": "Events", "icon": "CalendarMonthOutline", "route": "Events", "order": 90 },
+		{ "id": "GameSettings", "label": "Game Settings", "icon": "Cog", "route": "GameSettings", "order": 100, "section": "settings" },
+		{ "id": "Documentation", "label": "Documentation", "icon": "icon-info", "href": "https://larpingapp.conduction.nl", "section": "footer", "order": 90 },
+		{ "id": "FeaturesRoadmapMenu", "label": "Features & roadmap", "icon": "icon-toggle", "route": "FeaturesRoadmap", "section": "footer", "order": 91 }
+	],
+	"pages": [
+		{
+			"id": "Dashboard",
+			"route": "/",
+			"type": "dashboard",
+			"title": "Dashboard",
+			"actionsComponent": "DashboardActions",
+			"config": {
+				"widgets": [
+					{ "id": "kpi-characters", "title": "Characters",       "type": "custom", "config": { "objectType": "character", "label": "Characters", "iconName": "AccountGroup" } },
+					{ "id": "kpi-events",     "title": "Events",           "type": "custom", "config": { "objectType": "event",     "label": "Events",     "iconName": "CalendarStar" } },
+					{ "id": "kpi-items",      "title": "Items",            "type": "custom", "config": { "objectType": "item",      "label": "Items",      "iconName": "Sword" } },
+					{ "id": "kpi-players",    "title": "Players",          "type": "custom", "config": { "objectType": "player",    "label": "Players",    "iconName": "AccountMultiple" } },
+					{ "id": "recent-characters", "title": "Recent characters", "type": "custom", "config": { "objectType": "character", "indexRoute": "Characters", "emptyLabel": "No characters yet", "fallbackLabel": "Unnamed Character", "iconName": "AccountGroup" } },
+					{ "id": "recent-events",     "title": "Recent events",     "type": "custom", "config": { "objectType": "event",     "indexRoute": "Events",     "emptyLabel": "No events yet",     "fallbackLabel": "Unnamed Event",     "iconName": "CalendarStar" } },
+					{ "id": "skill-usage",    "title": "Skill usage by characters", "type": "custom" }
+				],
+				"layout": [
+					{ "id": 1, "widgetId": "kpi-characters", "gridX": 0, "gridY": 0, "gridWidth": 3, "gridHeight": 2, "showTitle": false },
+					{ "id": 2, "widgetId": "kpi-events",     "gridX": 3, "gridY": 0, "gridWidth": 3, "gridHeight": 2, "showTitle": false },
+					{ "id": 3, "widgetId": "kpi-items",      "gridX": 6, "gridY": 0, "gridWidth": 3, "gridHeight": 2, "showTitle": false },
+					{ "id": 4, "widgetId": "kpi-players",    "gridX": 9, "gridY": 0, "gridWidth": 3, "gridHeight": 2, "showTitle": false },
+					{ "id": 5, "widgetId": "recent-characters", "gridX": 0, "gridY": 2, "gridWidth": 6, "gridHeight": 4 },
+					{ "id": 6, "widgetId": "recent-events",     "gridX": 6, "gridY": 2, "gridWidth": 6, "gridHeight": 4 },
+					{ "id": 7, "widgetId": "skill-usage",    "gridX": 0, "gridY": 6, "gridWidth": 12, "gridHeight": 5 }
+				]
+			},
+			"slots": {
+				"widget-kpi-characters":   "DashboardKpi",
+				"widget-kpi-events":       "DashboardKpi",
+				"widget-kpi-items":        "DashboardKpi",
+				"widget-kpi-players":      "DashboardKpi",
+				"widget-recent-characters": "DashboardRecentList",
+				"widget-recent-events":     "DashboardRecentList",
+				"widget-skill-usage":      "DashboardSkillUsage"
+			}
+		},
+		{
+			"id": "Characters",
+			"route": "/characters",
+			"type": "index",
+			"title": "Characters",
+			"config": { "register": "larpingapp", "schema": "character" }
+		},
+		{
+			"id": "CharacterDetail",
+			"route": "/characters/:id",
+			"type": "detail",
+			"title": "Character",
+			"config": { "register": "larpingapp", "schema": "character" }
+		},
+		{
+			"id": "Players",
+			"route": "/players",
+			"type": "index",
+			"title": "Players",
+			"config": { "register": "larpingapp", "schema": "player" }
+		},
+		{
+			"id": "PlayerDetail",
+			"route": "/players/:id",
+			"type": "detail",
+			"title": "Player",
+			"config": { "register": "larpingapp", "schema": "player" }
+		},
+		{
+			"id": "Abilities",
+			"route": "/abilities",
+			"type": "index",
+			"title": "Abilities",
+			"config": { "register": "larpingapp", "schema": "ability" }
+		},
+		{
+			"id": "AbilityDetail",
+			"route": "/abilities/:id",
+			"type": "detail",
+			"title": "Ability",
+			"config": { "register": "larpingapp", "schema": "ability" }
+		},
+		{
+			"id": "Skills",
+			"route": "/skills",
+			"type": "index",
+			"title": "Skills",
+			"config": { "register": "larpingapp", "schema": "skill" }
+		},
+		{
+			"id": "SkillDetail",
+			"route": "/skills/:id",
+			"type": "detail",
+			"title": "Skill",
+			"config": { "register": "larpingapp", "schema": "skill" }
+		},
+		{
+			"id": "Items",
+			"route": "/items",
+			"type": "index",
+			"title": "Items",
+			"config": { "register": "larpingapp", "schema": "item" }
+		},
+		{
+			"id": "ItemDetail",
+			"route": "/items/:id",
+			"type": "detail",
+			"title": "Item",
+			"config": { "register": "larpingapp", "schema": "item" }
+		},
+		{
+			"id": "Conditions",
+			"route": "/conditions",
+			"type": "index",
+			"title": "Conditions",
+			"config": { "register": "larpingapp", "schema": "condition" }
+		},
+		{
+			"id": "ConditionDetail",
+			"route": "/conditions/:id",
+			"type": "detail",
+			"title": "Condition",
+			"config": { "register": "larpingapp", "schema": "condition" }
+		},
+		{
+			"id": "Effects",
+			"route": "/effects",
+			"type": "index",
+			"title": "Effects",
+			"config": { "register": "larpingapp", "schema": "effect" }
+		},
+		{
+			"id": "EffectDetail",
+			"route": "/effects/:id",
+			"type": "detail",
+			"title": "Effect",
+			"config": { "register": "larpingapp", "schema": "effect" }
+		},
+		{
+			"id": "Events",
+			"route": "/events",
+			"type": "index",
+			"title": "Events",
+			"config": { "register": "larpingapp", "schema": "event" }
+		},
+		{
+			"id": "EventDetail",
+			"route": "/events/:id",
+			"type": "detail",
+			"title": "Event",
+			"config": { "register": "larpingapp", "schema": "event" }
+		},
+		{
+			"id": "GameSettings",
+			"route": "/game-settings",
+			"type": "settings",
+			"title": "Game Settings",
+			"config": {
+				"sections": [
+					{ "id": "general", "title": "General", "component": "GameSettingsSection" }
+				]
+			}
+		},
+		{
+			"id": "FeaturesRoadmap",
+			"route": "/features-roadmap",
+			"type": "roadmap",
+			"title": "Features & roadmap",
+			"config": { "documentationUrl": "https://larpingapp.conduction.nl" }
+		}
+	]
+}

@@ -22,6 +22,7 @@ module.exports = defineConfig([{
 			alias: {
 				map: [
 					['@', './src'],
+					['@floating-ui/dom-actual', './node_modules/@floating-ui/dom'],
 					['@conduction/nextcloud-vue', '../nextcloud-vue/src'],
 				],
 				extensions: ['.js', '.ts', '.vue', '.json', '.css'],
@@ -30,16 +31,24 @@ module.exports = defineConfig([{
 	},
 
 	rules: {
+		// Allow unused i18n functions (t, n) — imported for future translation wiring
+		'no-unused-vars': ['error', { varsIgnorePattern: '^(t|n)$', argsIgnorePattern: '^_' }],
 		'jsdoc/require-jsdoc': 'off',
 		'vue/first-attribute-linebreak': 'off',
-		'vue/enforce-style-attribute': ['error', { allow: ['scoped'] }],
 		'@typescript-eslint/no-explicit-any': 'off',
 		'n/no-missing-import': 'off',
-		'import/named': 'off',
 		'import/namespace': 'off',
 		'import/default': 'off',
 		'import/no-named-as-default': 'off',
 		'import/no-named-as-default-member': 'off',
-		'import/no-unresolved': ['error', { ignore: ['^@conduction/nextcloud-vue'] }],
+	},
+}, {
+	// Node-side CLI tools (build / validate scripts) legitimately use
+	// console + process.exit and ship as plain JS (no shebang).
+	files: ['tests/validate-manifest.js', 'tests/validate-register.js', 'tests/validate-json-strict.js'],
+	rules: {
+		'no-console': 'off',
+		'n/no-process-exit': 'off',
+		'n/shebang': 'off',
 	},
 }])

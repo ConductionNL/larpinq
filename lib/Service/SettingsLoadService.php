@@ -12,6 +12,13 @@
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @version   GIT: <git_id>
  * @link      https://larpingapp.com
+ *
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-27
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-28
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-29
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-30
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-31
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-32
  */
 
 declare(strict_types=1);
@@ -22,6 +29,7 @@ use OCA\LarpingApp\AppInfo\Application;
 use OCP\App\IAppManager;
 use OCP\IAppConfig;
 use Psr\Container\ContainerInterface;
+use RuntimeException;
 
 /**
  * Service for loading and importing LarpingApp configuration.
@@ -86,6 +94,11 @@ class SettingsLoadService
      * @return array The import result.
      *
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-27
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-28
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-29
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-30
      */
     public function loadSettings(bool $force=false): array
     {
@@ -94,6 +107,14 @@ class SettingsLoadService
 
         $configurationService = $this->getConfigurationService();
         $currentAppVersion    = $this->appManager->getAppVersion(Application::APP_ID);
+
+        // ADR-037: fold the merged register-fragment signature into the import
+        // version so OpenRegister's version-gated import re-runs whenever any
+        // lib/Settings/register.d/*.json fragment changes.
+        $fragmentSignature = $this->fileLoader->getFragmentSignature();
+        if ($fragmentSignature !== '') {
+            $currentAppVersion .= '+frag.'.$fragmentSignature;
+        }
 
         // @psalm-suppress MixedMethodCall ConfigurationService is from OpenRegister.
         // @var array $result
@@ -116,6 +137,9 @@ class SettingsLoadService
      * @param array $importResult The import result from ConfigurationService.
      *
      * @return void
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-31
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-32
      */
     private function updateObjectTypeConfiguration(array $importResult): void
     {
@@ -141,7 +165,9 @@ class SettingsLoadService
             if (isset($schemaMap[$slug]) === true && $schemaMap[$slug] !== null) {
                 $this->appConfig->setValueString(Application::APP_ID, "{$slug}_schema", (string) $schemaMap[$slug]);
                 $this->appConfig->setValueString(Application::APP_ID, "{$slug}_source", 'openregister');
-                $this->appConfig->setValueString(Application::APP_ID, "{$slug}_register", (string) $registerId);
+                if ($registerId !== null) {
+                    $this->appConfig->setValueString(Application::APP_ID, "{$slug}_register", (string) $registerId);
+                }
             }
         }
 
@@ -150,10 +176,22 @@ class SettingsLoadService
     /**
      * Get the OpenRegister ConfigurationService via the container.
      *
+     * Mirrors the OR-availability guard in SettingsController::getConfigurationService
+     * so that a missing openregister app produces a clean RuntimeException rather
+     * than an opaque container-not-found error. Closes #214.
+     *
      * @return object The configuration service.
+     *
+     * @throws \RuntimeException If OpenRegister is not installed.
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-27
      */
     private function getConfigurationService(): object
     {
+        if (in_array(needle: 'openregister', haystack: $this->appManager->getInstalledApps()) === false) {
+            throw new RuntimeException('Configuration service is not available.');
+        }
+
         // @var object $service
         $service = $this->container->get('OCA\OpenRegister\Service\ConfigurationService');
         return $service;

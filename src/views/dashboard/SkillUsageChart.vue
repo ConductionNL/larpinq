@@ -1,23 +1,23 @@
 <template>
 	<div class="skill-usage-chart">
 		<div v-if="!openRegisterConfigured" class="chart-empty">
-			<p>Configure OpenRegister data source to enable this widget</p>
+			<p>{{ t('larpingapp', 'Configure OpenRegister data source to enable this widget') }}</p>
 		</div>
 
 		<div v-else-if="loading" class="chart-loading">
 			<NcLoadingIcon :size="44" />
-			<span>Loading skill data...</span>
+			<span>{{ t('larpingapp', 'Loading skill data...') }}</span>
 		</div>
 
 		<div v-else-if="error" class="chart-error">
 			<p>{{ error }}</p>
 			<NcButton type="secondary" @click="fetchData">
-				Retry
+				{{ t('larpingapp', 'Retry') }}
 			</NcButton>
 		</div>
 
 		<div v-else-if="!hasData" class="chart-empty">
-			<p>No skill data available</p>
+			<p>{{ t('larpingapp', 'No skill data available') }}</p>
 		</div>
 
 		<VueApexCharts
@@ -55,9 +55,15 @@ export default {
 		hasData() {
 			return this.skillLabels.length > 0
 		},
+		/**
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-4
+		 */
 		chartSeries() {
 			return this.skillCounts
 		},
+		/**
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-4
+		 */
 		chartOptions() {
 			return {
 				chart: {
@@ -80,19 +86,28 @@ export default {
 				},
 				dataLabels: {
 					enabled: true,
+					/**
+					 * @param val
+					 * @spec exclude ApexCharts dataLabel percent formatter —
+					 * trivial display rounding, no business logic.
+					 */
 					formatter(val) {
 						return Math.round(val) + '%'
 					},
 				},
 				tooltip: {
 					y: {
-						formatter(val) {
-							return val + ' characters'
+						formatter: (val) => {
+							return val + ' ' + t('larpingapp', 'characters')
 						},
 					},
 				},
 			}
 		},
+		/**
+		 * @spec exclude Reads Nextcloud theme data-attributes / prefers-color-scheme
+		 * to pick the chart light/dark mode — framework theme-detection glue.
+		 */
 		isDarkTheme() {
 			return document.body.dataset.themeDark !== undefined
 				|| (window.matchMedia
@@ -104,6 +119,9 @@ export default {
 		this.fetchData()
 	},
 	methods: {
+		/**
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-4
+		 */
 		async fetchData() {
 			this.loading = true
 			this.error = null
@@ -122,12 +140,16 @@ export default {
 				}
 				this.openRegisterConfigured = true
 
-				const result = await queryGraphQL(`{
-					character(first: 1, facets: ["skills"]) {
-						totalCount
-						facets
-					}
-				}`)
+				const skillFacetQuery = [
+					'{',
+					'  character(first: 1, facets: ["skills"])',
+					'  {',
+					'    totalCount',
+					'    facets',
+					'  }',
+					'}',
+				].join('\n')
+				const result = await queryGraphQL(skillFacetQuery)
 
 				const characterData = result?.data?.character
 				if (!characterData) {
@@ -154,11 +176,11 @@ export default {
 
 				if (rest.length > 0) {
 					const otherCount = rest.reduce((sum, b) => sum + b.count, 0)
-					this.skillLabels.push('Other')
+					this.skillLabels.push(t('larpingapp', 'Other'))
 					this.skillCounts.push(otherCount)
 				}
 			} catch (err) {
-				this.error = err.message || 'Failed to load skill data'
+				this.error = err.message || t('larpingapp', 'Failed to load skill data')
 				console.error('[SkillUsageChart] Error:', err)
 			} finally {
 				this.loading = false

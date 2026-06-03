@@ -1,16 +1,45 @@
+# IDE
 /.idea/
 /*.iml
+*.Identifier
 
+# Dependencies
 /vendor/
 /vendor-bin/*/vendor/
-
-/.php-cs-fixer.cache
-/tests/.phpunit.cache
-
 /node_modules/
+
+# Build artifacts
 /js/
 
-src/data/TempAuthKey.js
+# Documentation
+/docs/node_modules/
+/docs/build/
+/docs/.docusaurus/
+/website/node_modules/
+/website/.docusaurus/
 
-*.Identifier
+# Testing & Quality
+/.php-cs-fixer.cache
+/tests/.phpunit.cache
+/.phpunit.cache/
+.phpunit.cache/
+.phpunit.result.cache
+/coverage/
+/coverage-frontend/
+/phpmetrics/
+/quality-reports/
+/phpqa/
+
+# Nextcloud
+/custom_apps/
+/config/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Claude Code
 .claude/worktrees/
+
+# Repo-specific
+src/data/TempAuthKey.js
