@@ -1,3 +1,7 @@
+---
+status: pr-created
+---
+
 # Design — character-photos-leaf
 
 ## Context
@@ -31,6 +35,17 @@ image-upload field to the Character schema.
 
 Lower priority than the event/player leaf changes. Included for completeness of
 the leaf-migration set. No stat-engine interaction.
+
+## Implementation note
+
+`src/views/ObjectDetail.vue` is the photos-leaf host component for the Character
+detail page. The character schema's `configuration.linkedTypes: ["photos"]`
+enables the OR photos integration leaf (ADR-019 Stage 2 filter). The leaf
+surfaces via `CnObjectSidebar` with `useRegistry=true` (default) in `App.vue`.
+Graceful degradation: `ObjectDetail` computes `photosLeafAvailable` from the
+`OCA.OpenRegister.integrations` global; when the photos integration is not
+registered, `ObjectDetail` renders nothing and the rest of the character detail
+page continues to function normally.
 
 ## Risks
 

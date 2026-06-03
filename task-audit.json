@@ -1,0 +1,43 @@
+{
+  "spec": "openspec/changes/character-photos-leaf",
+  "verified": [
+    {
+      "task": "1.1",
+      "file": "openspec/changes/character-photos-leaf/design.md",
+      "ok": true,
+      "note": "Photos leaf is an ADR-019 integration registry integration. CnObjectSidebar with useRegistry=true (default) in App.vue surfaces it automatically when OR registers the photos integration. No LarpingApp code change needed beyond the schema configuration — ADR-019 Stage 1 is upstream in OR."
+    },
+    {
+      "task": "1.2",
+      "file": "src/views/ObjectDetail.vue",
+      "ok": true,
+      "note": "Created ObjectDetail.vue as photos-leaf host component; registered in registry.js as kind:section; wired into CharacterDetail page via manifest.json slots.photos-leaf."
+    },
+    {
+      "task": "2.1",
+      "file": "lib/Settings/larpingapp_register.json",
+      "ok": true,
+      "note": "linkedTypes:[\"photos\"] enables OR photos integration leaf for character objects. No app-local image column added. ADR-022 compliant."
+    },
+    {
+      "task": "3.1",
+      "file": "src/views/ObjectDetail.vue",
+      "ok": true,
+      "note": "photosLeafAvailable computed checks OCA.OpenRegister.integrations global. When unavailable, component renders nothing (v-if guard). Character detail page continues to function normally."
+    },
+    {
+      "task": "4.1",
+      "file": "tests/e2e/spec-coverage/spa-ui.spec.ts",
+      "ok": true,
+      "note": "character-photos-leaf describe block: 'photos leaf host present when integration available' test."
+    },
+    {
+      "task": "4.2",
+      "file": "tests/e2e/spec-coverage/spa-ui.spec.ts",
+      "ok": true,
+      "note": "character-photos-leaf describe block: 'character detail page renders normally when photos leaf absent' test."
+    }
+  ],
+  "stubs": [],
+  "missing_routes": []
+}

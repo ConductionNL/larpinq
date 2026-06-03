@@ -190,6 +190,7 @@
           }
         },
         "configuration": {
+          "linkedTypes": ["photos"],
           "x-openregister-lifecycle": {
             "field": "approved",
             "initial": "no",

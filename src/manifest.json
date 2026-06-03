@@ -65,7 +65,8 @@
 			"route": "/characters/:id",
 			"type": "detail",
 			"title": "Character",
-			"config": { "register": "larpingapp", "schema": "character" }
+			"config": { "register": "larpingapp", "schema": "character" },
+			"slots": { "photos-leaf": "ObjectDetail" }
 		},
 		{
 			"id": "Players",
