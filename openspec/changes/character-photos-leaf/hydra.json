@@ -1,0 +1,103 @@
+{
+  "schema_version": 2,
+  "spec_slug": "character-photos-leaf",
+  "repo": "https://codeberg.org/Conduction/larpingapp",
+  "issue": 5,
+  "cycles": [
+    {
+      "cycle": 1,
+      "trigger": "build:queued",
+      "started_at": "2026-05-30T23:08:58Z",
+      "ended_at": "2026-05-31T06:42:50Z",
+      "outcome": "aborted",
+      "outcome_reason": "rebuild:queued \u2014 human wiped prior cycle",
+      "pattern_tags": [],
+      "stages": [
+        {
+          "stage": "build",
+          "persona": "Al Gorithm",
+          "model": "sonnet",
+          "container": "hydra-builder",
+          "started_at": "2026-05-30T22:50:16Z",
+          "ended_at": "2026-05-30T23:08:53Z",
+          "exit_code": 0,
+          "turns_used": 234,
+          "turns_budget": 200,
+          "checks_run": [
+            "composer check:strict (phpcs)"
+          ],
+          "checks_skipped": [
+            "composer test:unit (phpunit) \u2014 Rule 0b"
+          ],
+          "findings": [
+            {
+              "id": "build-rule-0b-skipped",
+              "severity": "CRITICAL",
+              "gate": "rule-0b",
+              "rule": "builder did not invoke mandatory pre-push gate (phpunit)",
+              "status": "open",
+              "note": "Rule 0b in images/builder/CLAUDE.md requires composer check:strict + phpunit before push. No invocations found in transcript \u2014 the pipeline will likely catch pre-review-quality failures downstream.",
+              "autofixable": false
+            }
+          ],
+          "decisions": [],
+          "verdict": "pass",
+          "duration_seconds": 1117
+        }
+      ]
+    },
+    {
+      "cycle": 2,
+      "trigger": "build:queued",
+      "started_at": "2026-05-31T06:58:47Z",
+      "ended_at": "2026-06-01T23:38:36Z",
+      "outcome": "aborted",
+      "outcome_reason": "rebuild:queued \u2014 human wiped prior cycle",
+      "pattern_tags": [],
+      "stages": [
+        {
+          "stage": "build",
+          "persona": "Al Gorithm",
+          "model": "sonnet",
+          "container": "hydra-builder",
+          "started_at": "2026-05-31T06:43:05Z",
+          "ended_at": "2026-05-31T06:58:43Z",
+          "exit_code": 1,
+          "turns_used": 0,
+          "turns_budget": 40,
+          "checks_run": [],
+          "checks_skipped": [],
+          "findings": [
+            {
+              "id": "build-failed",
+              "severity": "CRITICAL",
+              "gate": "builder",
+              "rule": "builder container exited non-zero",
+              "status": "open",
+              "note": "Builder container failed to complete. See logs/pipeline-*/builder-build.jsonl for detail.",
+              "autofixable": false
+            }
+          ],
+          "decisions": [],
+          "verdict": "fail",
+          "duration_seconds": 938
+        }
+      ]
+    }
+  ],
+  "totals": {
+    "runs": 2,
+    "turns_used": 234,
+    "cost_usd": 0.0,
+    "duration_seconds": 2055,
+    "cycles": 2,
+    "by_stage": {
+      "build": {
+        "runs": 2,
+        "turns_used": 234,
+        "cost_usd": 0.0,
+        "duration_seconds": 2055
+      }
+    }
+  }
+}
