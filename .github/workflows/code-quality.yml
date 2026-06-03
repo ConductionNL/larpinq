@@ -17,7 +17,10 @@ jobs:
       php-test-versions: '["8.3", "8.4"]'
       nextcloud-test-refs: '["stable31", "stable32"]'
       enable-psalm: false
-      enable-phpstan: false
+      # PHPStan runs clean at level 5 with an empty baseline after the legacy
+      # quality cleanup (larpingapp-legacy-quality-cleanup), so it is now part
+      # of the unified CI gate alongside phpcs + phpmd.
+      enable-phpstan: true
       enable-phpmetrics: true
       enable-frontend: true
       enable-eslint: true

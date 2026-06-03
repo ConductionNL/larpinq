@@ -22,6 +22,7 @@ declare(strict_types=1);
 namespace OCA\LarpingApp\Service;
 
 use Exception;
+use InvalidArgumentException;
 use OCA\LarpingApp\AppInfo\Application;
 use OCP\App\IAppManager;
 use OCP\IAppConfig;
@@ -263,7 +264,7 @@ class RegisterObjectFetcher
         // pass validation and reach the mapper without the case-insensitive /i flag.
         $idLower = strtolower($id);
         if (preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/', $idLower) !== 1) {
-            throw new \InvalidArgumentException('Invalid object ID: expected a UUID');
+            throw new InvalidArgumentException('Invalid object ID: expected a UUID');
         }
 
         $mapper = $this->getMapper(objectType: $objectType);

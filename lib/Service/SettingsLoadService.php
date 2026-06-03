@@ -29,6 +29,7 @@ use OCA\LarpingApp\AppInfo\Application;
 use OCP\App\IAppManager;
 use OCP\IAppConfig;
 use Psr\Container\ContainerInterface;
+use RuntimeException;
 
 /**
  * Service for loading and importing LarpingApp configuration.
@@ -188,7 +189,7 @@ class SettingsLoadService
     private function getConfigurationService(): object
     {
         if (in_array(needle: 'openregister', haystack: $this->appManager->getInstalledApps()) === false) {
-            throw new \RuntimeException('Configuration service is not available.');
+            throw new RuntimeException('Configuration service is not available.');
         }
 
         // @var object $service
