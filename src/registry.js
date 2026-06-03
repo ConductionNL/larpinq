@@ -23,6 +23,7 @@ import DashboardRecentList from './views/dashboard/DashboardRecentList.vue'
 import DashboardSkillUsage from './views/dashboard/DashboardSkillUsage.vue'
 import DashboardActions from './views/dashboard/DashboardActions.vue'
 import GameSettingsSection from './views/settings/Settings.vue'
+import ObjectDetail from './views/ObjectDetail.vue'
 
 export default {
 	DashboardKpi: { kind: 'widget', component: DashboardKpi },
@@ -30,4 +31,5 @@ export default {
 	DashboardSkillUsage: { kind: 'widget', component: DashboardSkillUsage },
 	DashboardActions: { kind: 'actions', component: DashboardActions },
 	GameSettingsSection: { kind: 'section', component: GameSettingsSection },
+	ObjectDetail: { kind: 'section', component: ObjectDetail },
 }
