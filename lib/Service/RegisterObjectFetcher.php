@@ -27,6 +27,8 @@ use OCA\LarpingApp\AppInfo\Application;
 use OCP\App\IAppManager;
 use OCP\IAppConfig;
 use Psr\Container\ContainerInterface;
+use Psr\Log\LoggerInterface;
+use Throwable;
 
 /**
  * Fetches objects from OpenRegister by resolving register/schema
@@ -53,20 +55,155 @@ class RegisterObjectFetcher
     private string $appName = Application::APP_ID;
 
     /**
+     * Whether the resolver-absence deprecation warning has already been logged
+     * this request. Avoids flooding the log on every getMapper() call.
+     *
+     * @var boolean
+     */
+    private bool $fallbackLogged = false;
+
+    /**
      * Constructor for RegisterObjectFetcher.
      *
      * @param ContainerInterface $container  DI container.
      * @param IAppManager        $appManager App manager.
      * @param IAppConfig         $config     Config service.
+     * @param LoggerInterface    $logger     Logger for the resolver fallback path.
      *
      * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
      */
     public function __construct(
         private readonly ContainerInterface $container,
         private readonly IAppManager $appManager,
-        private readonly IAppConfig $config
+        private readonly IAppConfig $config,
+        private readonly LoggerInterface $logger
     ) {
     }//end __construct()
+
+    /**
+     * Resolve OpenRegister's RegisterResolverService from the DI container.
+     *
+     * The resolver is an OPTIONAL cross-app dependency: it ships with newer
+     * OpenRegister releases (per openregister/openspec/changes/register-resolver-service/).
+     * When OpenRegister predates the resolver — or the class is otherwise not
+     * bound — this returns null and callers fall back to the legacy
+     * IAppConfig::getValueString path. Resolved fresh per call; OR's container
+     * is the single source of truth for whether the service exists.
+     *
+     * @return object|null The RegisterResolverService, or null when unavailable.
+     *
+     * @psalm-suppress MixedReturnStatement OpenRegister is an optional dependency resolved dynamically.
+     * @psalm-suppress MixedInferredReturnType OpenRegister is an optional dependency resolved dynamically.
+     */
+    private function getRegisterResolver(): ?object
+    {
+        if (class_exists('OCA\OpenRegister\Service\RegisterResolverService') === false) {
+            return null;
+        }
+
+        try {
+            // @var object $resolver The resolved OpenRegister RegisterResolverService.
+            $resolver = $this->container->get('OCA\OpenRegister\Service\RegisterResolverService');
+            return $resolver;
+        } catch (Throwable $e) {
+            // Service class exists but is not bindable in this container — treat
+            // as absent and fall back. Never fail-open on a missing dependency.
+            return $resolver = null;
+        }
+    }//end getRegisterResolver()
+
+    /**
+     * Log the resolver-fallback deprecation warning at most once per request.
+     *
+     * @return void
+     */
+    private function logResolverFallbackOnce(): void
+    {
+        if ($this->fallbackLogged === true) {
+            return;
+        }
+
+        $this->fallbackLogged = true;
+        $this->logger->debug(
+            'LarpingApp: OpenRegister RegisterResolverService is unavailable; '
+            .'resolving register/schema IDs via the legacy IAppConfig path. '
+            .'Upgrade OpenRegister to consolidate register/schema resolution.',
+            ['app' => $this->appName]
+        );
+    }//end logResolverFallbackOnce()
+
+    /**
+     * Resolve the configured register and schema IDs for an object type.
+     *
+     * Prefers OpenRegister's RegisterResolverService (real API:
+     * resolveRegisterId / resolveSchemaId, keyed by the `{type}_register` /
+     * `{type}_schema` IAppConfig convention) when it is available. Falls back
+     * to a direct IAppConfig::getValueString lookup — preserving the exact
+     * legacy behaviour, including the "not configured" exceptions — when the
+     * resolver is absent (older OpenRegister, or during an upgrade window).
+     *
+     * @param string $objectTypeLower The lower-cased object type slug.
+     *
+     * @return array{0: string, 1: string} A [registerId, schemaId] tuple.
+     *
+     * @throws Exception If the register or schema is not configured.
+     *
+     * @psalm-suppress MixedMethodCall    The resolver is an optional cross-app dependency.
+     * @psalm-suppress MixedAssignment    The resolver is an optional cross-app dependency.
+     * @psalm-suppress MixedArgument      The resolver is an optional cross-app dependency.
+     */
+    private function resolveRegisterAndSchema(string $objectTypeLower): array
+    {
+        $resolver = $this->getRegisterResolver();
+
+        if ($resolver !== null) {
+            // Real OpenRegister RegisterResolverService API (ADR-022):
+            // resolveRegisterId/resolveSchemaId read `{appId}.{configKey}` and
+            // throw MissingConfigException when both the value and default are
+            // empty. Passing the empty-string default keeps the throw-on-missing
+            // semantics consistent with the legacy path below.
+            try {
+                $register = (string) $resolver->resolveRegisterId($this->appName, $objectTypeLower.'_register');
+                $schema   = (string) $resolver->resolveSchemaId($this->appName, $objectTypeLower.'_schema');
+
+                if ($register === '') {
+                    throw new Exception("Register not configured for $objectTypeLower");
+                }
+
+                if ($schema === '') {
+                    throw new Exception("Schema not configured for $objectTypeLower");
+                }
+
+                return [$register, $schema];
+            } catch (Exception $e) {
+                // Re-throw our own "not configured" signal unchanged so callers
+                // and tests see identical error semantics across both paths.
+                if (str_contains($e->getMessage(), 'not configured for') === true) {
+                    throw $e;
+                }
+
+                // The resolver raised its own typed exception (e.g.
+                // MissingConfigException) — normalise to the legacy message so
+                // downstream callers keep one contract.
+                throw new Exception("Register or schema not configured for $objectTypeLower", 0, $e);
+            }//end try
+        }//end if
+
+        // Legacy fallback: resolver unavailable. Behaviour-preserving.
+        $this->logResolverFallbackOnce();
+
+        $register = $this->config->getValueString($this->appName, $objectTypeLower.'_register', '');
+        if (empty($register) === true) {
+            throw new Exception("Register not configured for $objectTypeLower");
+        }
+
+        $schema = $this->config->getValueString($this->appName, $objectTypeLower.'_schema', '');
+        if (empty($schema) === true) {
+            throw new Exception("Schema not configured for $objectTypeLower");
+        }
+
+        return [$register, $schema];
+    }//end resolveRegisterAndSchema()
 
     /**
      * Get the OpenRegister ObjectService.
@@ -132,15 +269,7 @@ class RegisterObjectFetcher
         $objectTypeLower = strtolower($objectType);
         $openRegister    = $this->getOpenRegisterService();
 
-        $register = $this->config->getValueString($this->appName, $objectTypeLower.'_register', '');
-        if (empty($register) === true) {
-            throw new Exception("Register not configured for $objectTypeLower");
-        }
-
-        $schema = $this->config->getValueString($this->appName, $objectTypeLower.'_schema', '');
-        if (empty($schema) === true) {
-            throw new Exception("Schema not configured for $objectTypeLower");
-        }
+        [$register, $schema] = $this->resolveRegisterAndSchema(objectTypeLower: $objectTypeLower);
 
         // @var object $mapper
         $mapper = $openRegister->getMapper($register, $schema);
