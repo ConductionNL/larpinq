@@ -22,6 +22,7 @@ use OCP\IAppConfig;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Tests for RegisterObjectFetcher service.
@@ -64,6 +65,13 @@ class RegisterObjectFetcherTest extends TestCase
     private IAppConfig&MockObject $config;
 
     /**
+     * Logger mock.
+     *
+     * @var LoggerInterface&MockObject
+     */
+    private LoggerInterface&MockObject $logger;
+
+    /**
      * Set up test fixtures.
      *
      * @return void
@@ -75,11 +83,13 @@ class RegisterObjectFetcherTest extends TestCase
         $this->container  = $this->createMock(originalClassName: ContainerInterface::class);
         $this->appManager = $this->createMock(originalClassName: IAppManager::class);
         $this->config     = $this->createMock(originalClassName: IAppConfig::class);
+        $this->logger     = $this->createMock(originalClassName: LoggerInterface::class);
 
         $this->service = new RegisterObjectFetcher(
             container: $this->container,
             appManager: $this->appManager,
             config: $this->config,
+            logger: $this->logger,
         );
 
     }//end setUp()
@@ -218,8 +228,8 @@ class RegisterObjectFetcherTest extends TestCase
      */
     public function testGetObjectRejectsUriFormatId(): void
     {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Invalid object ID: expected a UUID');
+        $this->expectException(exception: InvalidArgumentException::class);
+        $this->expectExceptionMessage(message: 'Invalid object ID: expected a UUID');
 
         $this->service->getObject('character', 'https://example.com/api/objects/abc-123');
 
@@ -232,8 +242,8 @@ class RegisterObjectFetcherTest extends TestCase
      */
     public function testGetObjectRejectsNonUuidId(): void
     {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Invalid object ID: expected a UUID');
+        $this->expectException(exception: InvalidArgumentException::class);
+        $this->expectExceptionMessage(message: 'Invalid object ID: expected a UUID');
 
         $this->service->getObject('character', 'not-a-uuid');
 
@@ -364,9 +374,13 @@ class RegisterObjectFetcherTest extends TestCase
 
         $mockObj = new class ($testUuid) implements \JsonSerializable {
             /**
+             * Construct the serializable fixture.
+             *
              * @param string $id The UUID for the object.
              */
-            public function __construct(private string $id) {}
+            public function __construct(private string $id)
+            {
+            }//end __construct()
 
             /**
              * Serialize the object to JSON.
@@ -412,4 +426,64 @@ class RegisterObjectFetcherTest extends TestCase
         self::assertSame(expected: 'Serializable', actual: $result['name']);
 
     }//end testGetObjectHandlesJsonSerializableObjects()
+
+    /**
+     * Test that the legacy IAppConfig fallback path is taken when the OpenRegister
+     * RegisterResolverService class is absent from the classpath.
+     *
+     * In the unit-test environment OpenRegister is not autoloadable, so
+     * `class_exists('OCA\OpenRegister\Service\RegisterResolverService')` is false
+     * and resolveRegisterAndSchema() MUST resolve register/schema IDs via
+     * IAppConfig::getValueString rather than the resolver. This guards the
+     * BC-safe fallback required by the resolver-absence scenario of
+     * larpingapp-adopt-or-abstractions.
+     *
+     * @return void
+     */
+    public function testFallsBackToAppConfigWhenResolverAbsent(): void
+    {
+        $this->appManager->method('getInstalledApps')->willReturn(['openregister']);
+
+        $testUuid = 'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee';
+
+        $mockMapper = $this->getMockBuilder(className: \stdClass::class)
+            ->addMethods(['find'])
+            ->getMock();
+        $mockMapper->method('find')->willReturn(['id' => $testUuid, 'name' => 'Fallback']);
+
+        $mockObjectService = $this->getMockBuilder(className: \stdClass::class)
+            ->addMethods(['getMapper'])
+            ->getMock();
+        $mockObjectService->method('getMapper')->willReturn($mockMapper);
+
+        $this->container->method('get')->willReturn($mockObjectService);
+
+        // The fallback path MUST consult IAppConfig::getValueString for the
+        // _register and _schema keys. We capture the keys it was called with and
+        // assert both appear (proving the legacy resolution path ran).
+        $seenKeys = [];
+        $this->config->expects($this->atLeastOnce())
+            ->method('getValueString')
+            ->willReturnCallback(
+                function (string $app, string $key, string $default) use (&$seenKeys): string {
+                    $seenKeys[] = $key;
+                    if ($key === 'character_register') {
+                        return 'reg-7';
+                    }
+
+                    if ($key === 'character_schema') {
+                        return 'sch-7';
+                    }
+
+                    return $default;
+                }
+            );
+
+        $result = $this->service->getObject('character', $testUuid);
+
+        self::assertSame(expected: $testUuid, actual: $result['id']);
+        self::assertContains(needle: 'character_register', haystack: $seenKeys);
+        self::assertContains(needle: 'character_schema', haystack: $seenKeys);
+
+    }//end testFallsBackToAppConfigWhenResolverAbsent()
 }//end class

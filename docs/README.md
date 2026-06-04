@@ -1,5 +1,12 @@
 # LarpingApp Documentation
 
+## Architecture
+
+See [architecture.md](architecture.md) for the cross-cutting patterns:
+the declarative manifest (routes/menu), backward-compatible
+`RegisterResolverService` consumption, and the planned i18n /
+multi-tenancy wiring.
+
 ## Features
 
 | Feature | Description | Documentation |
