@@ -173,6 +173,7 @@ The widget MUST verify that LarpingApp is configured to use OpenRegister as its 
 - **AND** the widget MUST NOT execute any GraphQL queries (early return before fetch)
 
 #### Scenario: Widget initializes settings store if not yet loaded
+@e2e exclude Pinia store-initialization internals (useSettingsStore().isInitialized gating fetchData) are JS unit-test scope tested via Jest; internal store state ordering is not browser-navigable.
 - **GIVEN** the `useSettingsStore().isInitialized` is `false`
 - **WHEN** `fetchData()` is invoked
 - **THEN** it MUST call `settingsStore.fetchSettings()` and await the result
@@ -373,6 +374,7 @@ The dashboard MUST include a character sheet widget that displays a comprehensiv
 All dashboard widgets MUST follow NL Design System conventions for government theming compatibility, using CSS custom properties exclusively instead of hardcoded colors.
 
 #### Scenario: Widgets use CSS custom properties for all colors
+@e2e exclude CSS computed-style assertion — verifying var(--color-*) usage and absence of hardcoded hex in widget stylesheets is a static/style-source check, not a browser-interaction UI surface.
 - **GIVEN** a municipality has applied a custom NL Design theme
 - **WHEN** any dashboard widget renders
 - **THEN** all text MUST use `var(--color-main-text)` or `var(--color-text-maxcontrast)`
@@ -381,12 +383,14 @@ All dashboard widgets MUST follow NL Design System conventions for government th
 - **AND** no hardcoded hex/rgb color values MUST appear in widget stylesheets
 
 #### Scenario: Chart colors adapt to NL Design theme
+@e2e exclude CSS computed-style assertion — theme-derived chart colors and WCAG contrast ratios are validated via computed styles, not a browser-interaction UI surface.
 - **GIVEN** a custom theme sets `--color-primary-element` to `#154273` (Rijkshuisstijl blue)
 - **WHEN** the donut chart renders
 - **THEN** the chart MUST use theme-derived colors that maintain WCAG AA contrast ratios
 - **AND** the legend text MUST use `var(--color-main-text)`
 
 #### Scenario: Widget border radius follows theme
+@e2e exclude CSS computed-style assertion — var(--border-radius) usage on widget cards is a computed-style check, not a browser-interaction UI surface.
 - **GIVEN** the NL Design theme sets `--border-radius` to `8px`
 - **WHEN** widget cards and interactive elements render
 - **THEN** all rounded corners MUST use `var(--border-radius)` or `var(--border-radius-large)`
