@@ -167,6 +167,20 @@ test.describe('dashboard', () => {
 		await expect(page.locator('.app-content')).toBeVisible()
 	})
 
+	// @e2e openspec/specs/dashboard/spec.md#empty-dashboard-with-no-data-planned
+	test('empty dashboard renders KPI 0 counts and empty-state widgets', async ({ page }) => {
+		await go(page, '/')
+		const heading = page.getByRole('heading', { name: 'Dashboard', level: 2 })
+		await expect(heading).toBeVisible({ timeout: 10_000 })
+		// In a bare test-env with no entities, every KPI card shows "0"
+		const firstKpi = page.locator('.kpi-card .kpi-value').first()
+		await expect(firstKpi).toBeVisible({ timeout: 10_000 })
+		await expect(firstKpi).toHaveText('0')
+		// Recent-list widgets render their empty-state container instead of items
+		const emptyState = page.locator('.widget-empty').first()
+		await expect(emptyState).toBeVisible({ timeout: 10_000 })
+	})
+
 	// @e2e openspec/specs/dashboard/spec.md#quick-create-a-character-from-dashboard
 	test('quick-create new-character button is visible on dashboard', async ({ page }) => {
 		await go(page, '/')
