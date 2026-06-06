@@ -36,12 +36,16 @@ The LarpingApp MUST register a dedicated section in the Nextcloud admin settings
 
 #### Scenario: Non-admin user cannot access admin settings
 
+@e2e exclude Nextcloud settings-framework + SecurityMiddleware concern — section visibility and the 403 for a non-admin session are enforced server-side by AdminSettings registration, not browser-navigable from the authenticated admin storageState; covered by PHPUnit.
+
 - GIVEN a regular (non-admin) Nextcloud user
 - WHEN they navigate to Admin Settings
 - THEN the LarpingApp admin section MUST NOT be visible
 - AND direct URL access to the settings page MUST be denied
 
 #### Scenario: Settings panel rendering with IIconSection bug
+
+@e2e exclude Describes a hypothetical regression (LarpingAppAdmin implementing IIconSection instead of ISettings) that is not the current implementation; no browser-navigable UI surface for the bug condition.
 
 - GIVEN `LarpingAppAdmin` in `lib/Settings/` implements `IIconSection` instead of `ISettings`
 - WHEN the admin navigates to the LarpingApp settings section
@@ -123,6 +127,8 @@ The settings UI MUST detect whether OpenRegister is installed and display approp
 | SET-022 | When OpenRegister is unavailable, register/schema selectors MUST NOT be displayed | MUST | Implemented |
 
 #### Scenario: OpenRegister not installed
+
+@e2e exclude Requires the OpenRegister app to be absent; not reproducible on this OR-installed instance and uninstalling OR is outside the app's browser-navigable surface; the not-installed NcNoteCard path is covered by PHPUnit with a mocked IAppManager.
 
 - GIVEN OpenRegister is not installed on the Nextcloud instance
 - WHEN an administrator opens the LarpingApp admin settings
@@ -384,6 +390,8 @@ The app MUST declare correct metadata in `info.xml` for Nextcloud compatibility.
 
 #### Scenario: App installs on supported Nextcloud version
 
+@e2e exclude appinfo/info.xml min/max Nextcloud version gate is enforced by the Nextcloud app installer, not a browser-navigable in-app UI surface.
+
 - GIVEN a Nextcloud 29 instance
 - WHEN an administrator installs LarpingApp
 - THEN the app MUST install successfully
@@ -391,11 +399,15 @@ The app MUST declare correct metadata in `info.xml` for Nextcloud compatibility.
 
 #### Scenario: App rejected on unsupported Nextcloud version
 
+@e2e exclude appinfo/info.xml version-incompatibility rejection is enforced by the Nextcloud app installer, not a browser-navigable in-app UI surface.
+
 - GIVEN a Nextcloud 27 instance
 - WHEN an administrator attempts to install LarpingApp
 - THEN the installation MUST be rejected due to `min-version="28"` constraint
 
 #### Scenario: App metadata displayed in app store
+
+@e2e exclude App-store listing metadata (name, description, screenshots from appinfo/info.xml) is rendered by the external Nextcloud app store, not a browser-navigable surface of this app.
 
 - GIVEN LarpingApp is listed in the Nextcloud app store
 - THEN the license MUST show as EUPL-1.2
