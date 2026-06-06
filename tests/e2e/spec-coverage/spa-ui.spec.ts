@@ -201,8 +201,10 @@ test.describe('dashboard-analytics-widgets', () => {
 		await go(page, '/')
 		const heading = page.getByRole('heading', { name: 'Dashboard', level: 2 })
 		await expect(heading).toBeVisible({ timeout: 10_000 })
-		// KPI widgets render (even with 0 values)
-		await expect(page.locator('.app-content')).toBeVisible()
+		// DashboardKpi tiles render — at least one .kpi-card with a numeric value
+		const kpi = page.locator('.kpi-card').first()
+		await expect(kpi).toBeVisible({ timeout: 10_000 })
+		await expect(kpi.locator('.kpi-value')).toHaveText(/^\d+$/)
 	})
 
 	// @e2e openspec/specs/dashboard-analytics-widgets/spec.md#recent-list-renders-and-navigates
@@ -210,8 +212,9 @@ test.describe('dashboard-analytics-widgets', () => {
 		await go(page, '/')
 		const heading = page.getByRole('heading', { name: 'Dashboard', level: 2 })
 		await expect(heading).toBeVisible({ timeout: 10_000 })
-		// App content is present — recent list widget area rendered
-		await expect(page.locator('.app-content')).toBeVisible()
+		// DashboardRecentList renders its content container (items or empty-state)
+		const list = page.locator('.list-widget-content').first()
+		await expect(list).toBeVisible({ timeout: 10_000 })
 	})
 
 	// @e2e openspec/specs/dashboard-analytics-widgets/spec.md#refresh-loads-schemas-and-collections
