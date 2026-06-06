@@ -419,17 +419,21 @@ Dashboard widgets MUST adapt their layout and content to work on screens from 36
 
 ### Requirement: Widget data MUST bind to OpenRegister objects via the object store
 
-@e2e exclude Pinia store registration and OpenRegister binding are JS unit-test scope tested via Jest; internal store state not directly browser-navigable
-
 All entity data displayed in widgets MUST be fetched and managed through the centralized `useObjectStore()` Pinia store, which registers object types against OpenRegister register/schema pairs from `useSettingsStore()` configuration.
 
 #### Scenario: Object store has registered all LarpingApp entity types
+
+@e2e exclude Pinia store registration is JS unit-test scope tested via Jest; `objectStore.registerObjectType()` internal state is not browser-navigable
+
 - **GIVEN** the LarpingApp `initializeStores()` function has run
 - **AND** the settings store has a valid `register` and schema IDs for character, player, ability, skill, item, condition, effect, event, setting
 - **WHEN** any widget requests entity data
 - **THEN** the object store MUST have all 9 schema slugs registered via `objectStore.registerObjectType(slug, schemaId, registerId)`
 
 #### Scenario: Widget fetches collection data through object store
+
+@e2e exclude `refreshData()`/`fetchCollection()` call-shape (limits, type list) is JS unit-test scope tested via Jest; internal fetch wiring is not browser-navigable
+
 - **GIVEN** the DashboardIndex component needs to display recent characters
 - **WHEN** the `refreshData()` method executes
 - **THEN** it MUST call `objectStore.fetchCollection('character', { _limit: 5 })` for the recent characters list

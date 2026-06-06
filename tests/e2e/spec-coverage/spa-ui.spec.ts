@@ -384,4 +384,19 @@ test.describe('larping-skill-widget', () => {
 		// Dashboard renders — skill usage widget area present (even if empty)
 		await expect(page.locator('.app-content')).toBeVisible()
 	})
+
+	// @e2e openspec/specs/larping-skill-widget/spec.md#widget-displays-pagination-totals-from-object-store
+	test('KPI card renders a value and label (0 fallback when no data)', async ({ page }) => {
+		await go(page, '/')
+		const heading = page.getByRole('heading', { name: 'Dashboard', level: 2 })
+		await expect(heading).toBeVisible({ timeout: 10_000 })
+		// DashboardKpi renders a .kpi-card with a numeric .kpi-value and a .kpi-label.
+		// In a bare test-env with no objects loaded the value falls back to "0".
+		const kpiCard = page.locator('.kpi-card').first()
+		await expect(kpiCard).toBeVisible({ timeout: 10_000 })
+		const value = kpiCard.locator('.kpi-value')
+		await expect(value).toBeVisible()
+		await expect(value).toHaveText(/^\d+$/)
+		await expect(kpiCard.locator('.kpi-label')).toBeVisible()
+	})
 })
