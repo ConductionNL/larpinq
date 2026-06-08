@@ -18,6 +18,7 @@
 	<CnAppRoot
 		:manifest="manifest"
 		:registry="registry"
+		:custom-components="customComponents"
 		:page-types="pageTypes"
 		app-id="larpingapp"
 		:translate="translateForApp"
@@ -133,6 +134,31 @@ export default {
 		 */
 		permissions() {
 			return window.OC?.currentUser?.permissions ?? []
+		},
+		/**
+		 * Flat name→component map derived from the v2 `registry` prop.
+		 *
+		 * `CnPageRenderer.effectiveCustomComponents` resolves `actionsComponent`,
+		 * `headerComponent`, and `page.slots.*` keys against the legacy
+		 * `customComponents` inject, not against `cnRegistry`. Until the library
+		 * unifies both resolution paths, we derive a flat shim here so that
+		 * slot-override lookups (e.g. `actionsComponent: "DashboardActions"`)
+		 * continue to work when the registry uses the v2 kind-tagged format.
+		 *
+		 * Entries that carry a `component` field are included; pure-metadata
+		 * entries without a `component` field are skipped.
+		 *
+		 * @spec exclude Framework shim — bridges v2 registry to legacy
+		 * customComponents inject used by CnPageRenderer slot resolution.
+		 */
+		customComponents() {
+			const result = {}
+			for (const [key, entry] of Object.entries(this.registry || {})) {
+				if (entry && typeof entry.component !== 'undefined') {
+					result[key] = entry.component
+				}
+			}
+			return result
 		},
 	},
 

@@ -29,6 +29,7 @@ use OCA\LarpingApp\AppInfo\Application;
 use OCP\App\IAppManager;
 use OCP\IAppConfig;
 use Psr\Container\ContainerInterface;
+use RuntimeException;
 
 /**
  * Service for loading and importing LarpingApp configuration.
@@ -107,6 +108,14 @@ class SettingsLoadService
         $configurationService = $this->getConfigurationService();
         $currentAppVersion    = $this->appManager->getAppVersion(Application::APP_ID);
 
+        // ADR-037: fold the merged register-fragment signature into the import
+        // version so OpenRegister's version-gated import re-runs whenever any
+        // lib/Settings/register.d/*.json fragment changes.
+        $fragmentSignature = $this->fileLoader->getFragmentSignature();
+        if ($fragmentSignature !== '') {
+            $currentAppVersion .= '+frag.'.$fragmentSignature;
+        }
+
         // @psalm-suppress MixedMethodCall ConfigurationService is from OpenRegister.
         // @var array $result
         $result = $configurationService->importFromApp(
@@ -156,7 +165,9 @@ class SettingsLoadService
             if (isset($schemaMap[$slug]) === true && $schemaMap[$slug] !== null) {
                 $this->appConfig->setValueString(Application::APP_ID, "{$slug}_schema", (string) $schemaMap[$slug]);
                 $this->appConfig->setValueString(Application::APP_ID, "{$slug}_source", 'openregister');
-                $this->appConfig->setValueString(Application::APP_ID, "{$slug}_register", (string) $registerId);
+                if ($registerId !== null) {
+                    $this->appConfig->setValueString(Application::APP_ID, "{$slug}_register", (string) $registerId);
+                }
             }
         }
 
@@ -178,7 +189,7 @@ class SettingsLoadService
     private function getConfigurationService(): object
     {
         if (in_array(needle: 'openregister', haystack: $this->appManager->getInstalledApps()) === false) {
-            throw new \RuntimeException('Configuration service is not available.');
+            throw new RuntimeException('Configuration service is not available.');
         }
 
         // @var object $service
