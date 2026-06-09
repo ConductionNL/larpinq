@@ -4,7 +4,9 @@
     <id>larpingapp</id>
     <name>Larping</name>
     <summary>Manage your live roleplaying setting</summary>
-    <description><![CDATA[📰 A management tool for larp organisation
+    <description><![CDATA[> ⚠️ **Active development — not for production use yet.** This app is under active development. Although it may carry a stable release status, **please do not use it in production environments before 12 June 2026.** See the [app page on conduction.nl](https://conduction.nl/apps/larpingapp) for release planning and what this app does.
+
+📰 A management tool for larp organisation
 
 **Requires:** [OpenRegister](https://apps.nextcloud.com/apps/openregister) (install from the [Nextcloud App Store](https://apps.nextcloud.com/apps/openregister)).
 
