@@ -79,5 +79,5 @@
       `composer check:strict`, and the empty-baseline / no-exclude burn-down
       state in the Code quality section + Tech Stack table.
 - [x] `app-config.json` does not exist in this repo — N/A.
-- [ ] Close the burn-down tracking issue (deferred to the coordinator; issue
+- [~] Close the burn-down tracking issue (deferred to the coordinator; issue — deferred to downstream cycle (handoff)
       management is not part of the build).
