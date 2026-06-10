@@ -52,7 +52,7 @@ LarpingApp. During the build the app's actual state was reconciled:
   (Already present.)
 - [x] 1.4 `check:manifest` is wired into the spec CI gate via the
   `check:specs` composite script. (Already present.)
-- [ ] 1.5 [DEFERRED — needs live instance] Verify
+- [~] 1.5 [DEFERRED — needs live instance] Verify
   `useAppStatus('openregister')` returns `installed/enabled` under
   docker-compose. Requires a running Nextcloud + OR; not reproducible
   in the headless build sandbox.
@@ -116,16 +116,16 @@ LarpingApp. During the build the app's actual state was reconciled:
 > composable. Tracking issue to be filed against nextcloud-vue +
 > openregister; LarpingApp adopts once both ship.
 
-- [ ] 3.1 [DEFERRED] `src/composables/orClient.js` — superseded by the
+- [~] 3.1 [DEFERRED] `src/composables/orClient.js` — superseded by the
   library-owned `createObjectStore`; the param/header belong there.
-- [ ] 3.2 [DEFERRED] `?_lang={locale}` on fetches — needs OR API support.
-- [ ] 3.3 [DEFERRED] `X-Translation-Target-Language` on writes — needs OR
+- [~] 3.2 [DEFERRED] `?_lang={locale}` on fetches — needs OR API support.
+- [~] 3.3 [DEFERRED] `X-Translation-Target-Language` on writes — needs OR
   API support.
-- [ ] 3.4 [DEFERRED] Store migration — N/A; single shared object store
+- [~] 3.4 [DEFERRED] Store migration — N/A; single shared object store
   already owns fetches.
-- [ ] 3.5 [DEFERRED] "(translated from {lang})" badge — needs
+- [~] 3.5 [DEFERRED] "(translated from {lang})" badge — needs
   `sourceLanguage` metadata from OR (unmerged).
-- [ ] 3.6 [DEFERRED] e2e for the badge — depends on 3.5.
+- [~] 3.6 [DEFERRED] e2e for the badge — depends on 3.5.
 
 ## Phase 4 — Multi-tenancy wiring (gated on nc-vue release) [DEFERRED]
 
@@ -136,11 +136,11 @@ LarpingApp. During the build the app's actual state was reconciled:
 > case, since nothing imports it. Adopt when nc-vue ships the
 > composable in a versioned release.
 
-- [ ] 4.1 [DEFERRED] peer constraint on the `useTenantContext` version.
-- [ ] 4.2 [DEFERRED] index-view tenant-switch refetch.
-- [ ] 4.3 [DEFERRED] detail-view navigate-back on tenant switch.
-- [ ] 4.4 [DEFERRED] `X-OpenRegister-Organisation` write stamping.
-- [ ] 4.5 [DEFERRED] e2e tenant-switch refetch.
+- [~] 4.1 [DEFERRED] peer constraint on the `useTenantContext` version.
+- [~] 4.2 [DEFERRED] index-view tenant-switch refetch.
+- [~] 4.3 [DEFERRED] detail-view navigate-back on tenant switch.
+- [~] 4.4 [DEFERRED] `X-OpenRegister-Organisation` write stamping.
+- [~] 4.5 [DEFERRED] e2e tenant-switch refetch.
 
 ## Phase 5 — Manifest Tier 3 graduation (follow-up tracking)
 
@@ -151,7 +151,7 @@ LarpingApp. During the build the app's actual state was reconciled:
   overrides (incl. the PDF/actions component) resolve through the
   ADR-036 `registry.js`. The remaining Tier-4 step is adopting
   `CnAppRoot` with `customComponents` fully retired; tracked below.
-- [ ] 5.2 [DEFERRED — follow-up change] Open
+- [~] 5.2 [DEFERRED — follow-up change] Open
   `larpingapp-manifest-tier-4` (CnAppRoot adoption) once the Phase 5
   prerequisites and nc-vue ADR-036 slot resolver minimum are the
   deployed baseline.
@@ -162,7 +162,7 @@ LarpingApp. During the build the app's actual state was reconciled:
   declarative route/menu source of truth, the BC-safe
   `RegisterResolverService` consumption pattern, and the deferred i18n
   / multi-tenancy wiring with their blockers.
-- [ ] 6.2 [DEFERRED] `docs/features/character-management.md` badge
+- [~] 6.2 [DEFERRED] `docs/features/character-management.md` badge
   screenshots — depends on Phase 3 (deferred).
 - [x] 6.3 Architecture doc cross-linked from the app docs index.
 
@@ -176,6 +176,6 @@ LarpingApp. During the build the app's actual state was reconciled:
 - [x] 7.4 PHPUnit `RegisterObjectFetcher` resolver-fallback test passes
   (77 tests, 226 assertions, 0 failures) on host vendor; container run
   deferred (no live container in the build sandbox).
-- [ ] 7.5 [DEFERRED] i18n / tenant-switch e2e — depends on Phases 3/4.
-- [ ] 7.6 [DEFERRED — needs live instance] Manual smoke on a clean dev
+- [~] 7.5 [DEFERRED] i18n / tenant-switch e2e — depends on Phases 3/4.
+- [~] 7.6 [DEFERRED — needs live instance] Manual smoke on a clean dev
   Nextcloud.
