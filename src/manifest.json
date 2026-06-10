@@ -80,7 +80,8 @@
 			"route": "/players/:id",
 			"type": "detail",
 			"title": "Player",
-			"config": { "register": "larpingapp", "schema": "player" }
+			"config": { "register": "larpingapp", "schema": "player" },
+			"slots": { "contacts-leaf": "ObjectDetail" }
 		},
 		{
 			"id": "Abilities",
@@ -164,7 +165,12 @@
 			"route": "/events/:id",
 			"type": "detail",
 			"title": "Event",
-			"config": { "register": "larpingapp", "schema": "event" }
+			"config": { "register": "larpingapp", "schema": "event" },
+			"slots": {
+				"calendar-leaf": "ObjectDetail",
+				"maps-leaf": "ObjectDetail",
+				"forms-leaf": "ObjectDetail"
+			}
 		},
 		{
 			"id": "GameSettings",
