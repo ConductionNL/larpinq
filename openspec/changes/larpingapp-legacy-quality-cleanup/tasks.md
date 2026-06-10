@@ -79,5 +79,8 @@
       `composer check:strict`, and the empty-baseline / no-exclude burn-down
       state in the Code quality section + Tech Stack table.
 - [x] `app-config.json` does not exist in this repo — N/A.
-- [ ] Close the burn-down tracking issue (deferred to the coordinator; issue
-      management is not part of the build).
+- [~] Close the burn-down tracking issue — deferred to the coordinator;
+      issue management is not part of the build (all underlying gates are
+      green: phpcs 0e/21w surfaced-only, phpmd 0v, phpstan 0e@L5, no legacy
+      excludes; the tracking issue can be closed by the coordinator without
+      further code work).
