@@ -90,13 +90,6 @@ const STAT_UI_BLOCKER
 	+ 'SPA does not compute stats and its detail page is slug-500-blocked). '
 	+ 'Not drivable via the UI on this instance — env/OR defect, not a source bug.'
 
-const FINDALL_EMPTY_BLOCKER
-	= 'FINDALL_EMPTY_BLOCKER: RegisterObjectFetcher::getObjects (MagicMapper '
-	+ 'findAll) returns ZERO rows for register 8 in this environment, so '
-	+ 'CharacterService::loadAllEntities() loads no abilities and the live '
-	+ 'calculateCharacter() yields empty stats (the +3 never applies). OR '
-	+ 'env-data defect (duplicate "larpingapp" registers / no CLI org context), '
-	+ 'not a larpingapp source bug.'
 
 let api: APIRequestContext
 const ledger = new FixtureLedger()
@@ -177,10 +170,11 @@ test.describe('character-stat computation — correctness (real service, real da
 	// -----------------------------------------------------------------------
 
 	// @e2e openspec/specs/character-management/spec.md#view-computed-stats-in-eigenschappen-tab
-	// FIXME(findall-empty): live calculateCharacter yields EMPTY stats because
-	// getObjects/findAll returns no abilities for register 8 here — FINDALL_EMPTY_BLOCKER.
-	test.fixme('live: calculateCharacter applies +3 onto strength through real OR findAll', async () => {
-		test.info().annotations.push({ type: 'blocker', description: FINDALL_EMPTY_BLOCKER })
+	// FIXED (2026-06-10, wave-3): OR-core made findAll work in CLI/system
+	// context, so CharacterService::loadAllEntities() now loads the seeded
+	// abilities/effects and the live calculateCharacter() applies the +3
+	// (verified: base 10 -> value 13 with a non-empty audit trail).
+	test('live: calculateCharacter applies +3 onto strength through real OR findAll', async () => {
 		const s = await seedStatScenario(api, ledger, { base: 10, modifier: 3, modification: 'positive' })
 		// NATIVE path: lets CharacterService::loadAllEntities() pull the
 		// collections via OR findAll (no reflection injection).

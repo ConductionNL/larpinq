@@ -67,18 +67,6 @@ import {
 
 // Documented blocker reasons; each is annotated onto its test.fixme below via
 // test.info().annotations so the reason travels with the parked test.
-const LIST_EMPTY_BLOCKER
-	= 'LIST_EMPTY_BLOCKER: deployed SPA list views fire no object fetch '
-	+ '(store config.register resolves empty; per-type register/schema sit '
-	+ 'under settings.configuration.*). Registry-config/deploy defect, not a '
-	+ 'larpingapp source or test bug. Seeded rows never surface in the UI list.'
-
-const DETAIL_SLUG_500_BLOCKER
-	= 'DETAIL_SLUG_500_BLOCKER: detail fetch /objects/larpingapp/<schema>/<id> '
-	+ 'returns 500 because 11 registers share slug "larpingapp" — detail '
-	+ 'object data + per-object Actions (edit/delete entry) never render. '
-	+ 'OR env-data defect, not a larpingapp source or test bug.'
-
 let api: APIRequestContext
 const ledger = new FixtureLedger()
 
@@ -177,9 +165,10 @@ test.describe('character — CRUD persistence (store round-trip)', () => {
 	// --- UI-driven variants (data surfacing) — blocked on this instance ---
 
 	// @e2e openspec/specs/character-management/spec.md#create-a-character
-	// FIXME(list-empty-blocker): seeded character never appears in the SPA list — LIST_EMPTY_BLOCKER.
-	test.fixme('UI: created character row appears in the Characters list', async ({ page }) => {
-		test.info().annotations.push({ type: 'blocker', description: LIST_EMPTY_BLOCKER })
+	// FIXED (2026-06-10, wave-3): OR-core dedup + store now registers the
+	// per-type register/schema (config.<type>_register), so the Characters list
+	// fires its object fetch and the seeded row surfaces.
+	test('UI: created character row appears in the Characters list', async ({ page }) => {
 		const name = fixtureName('ui-character')
 		ledger.track('character', await createObject(api, 'character', { name, ocName: name, type: 'player' }))
 		await navTo(page, 'characters')
@@ -187,9 +176,10 @@ test.describe('character — CRUD persistence (store round-trip)', () => {
 	})
 
 	// @e2e openspec/specs/character-management/spec.md#view-currency-on-character-sheet
-	// FIXME(detail-slug-500): detail page renders shell only, object data never loads — DETAIL_SLUG_500_BLOCKER.
-	test.fixme('UI: character detail renders the persisted currency values', async ({ page }) => {
-		test.info().annotations.push({ type: 'blocker', description: DETAIL_SLUG_500_BLOCKER })
+	// FIXED (2026-06-10, wave-3): OR-core dedup resolves the larpingapp slug, so
+	// the slug-based detail fetch returns 200 (was 500) and the persisted object
+	// data renders on the detail page.
+	test('UI: character detail renders the persisted currency values', async ({ page }) => {
 		const name = fixtureName('ui-character-detail')
 		const id = ledger.track('character', await createObject(api, 'character', {
 			name, ocName: name, type: 'player', gold: 42,
@@ -264,9 +254,10 @@ test.describe('skill — CRUD persistence (store round-trip)', () => {
 	})
 
 	// @e2e openspec/specs/skill-management/spec.md#create-a-skill
-	// FIXME(list-empty-blocker): seeded skill never appears in the SPA list — LIST_EMPTY_BLOCKER.
-	test.fixme('UI: created skill row appears in the Skills list', async ({ page }) => {
-		test.info().annotations.push({ type: 'blocker', description: LIST_EMPTY_BLOCKER })
+	// FIXED (2026-06-10, wave-3): OR-core dedup + the per-type register/schema
+	// store registration make the Skills list fire its fetch; the seeded row
+	// surfaces.
+	test('UI: created skill row appears in the Skills list', async ({ page }) => {
 		const name = fixtureName('ui-skill')
 		ledger.track('skill', await createObject(api, 'skill', { name, description: 'UI skill' }))
 		await navTo(page, 'skills')
