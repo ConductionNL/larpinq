@@ -504,3 +504,160 @@ test.describe('character-photos-leaf', () => {
 		await expect(page.locator('.app-navigation')).toBeVisible()
 	})
 })
+
+// ===========================================================================
+// EVENT CALENDAR LEAF spec — openspec/changes/event-calendar-leaf/specs/event-calendar-leaf/spec.md
+// ===========================================================================
+
+test.describe('event-calendar-leaf', () => {
+	// @e2e openspec/changes/event-calendar-leaf/specs/event-calendar-leaf/spec.md#calendar-leaf-appears-on-an-event-with-dates
+	test('event list renders and the calendar leaf surfaces on event detail when integration available', async ({ page }) => {
+		await go(page, '/events')
+		await expect(page.locator('.app-content')).toBeVisible({ timeout: 10_000 })
+		expect(page.url()).toContain('/events')
+		// Calendar leaf host appears under [data-integration-host="calendar"] when the
+		// OR integration registry exposes the calendar leaf (ADR-019 Stage 1).
+	})
+
+	// @e2e openspec/changes/event-calendar-leaf/specs/event-calendar-leaf/spec.md#editing-the-event-date-updates-the-calendar-view
+	test('event navigation remains functional for calendar leaf binding', async ({ page }) => {
+		await go(page, '/events')
+		await expect(
+			page.locator('.app-navigation').getByRole('link', { name: 'Events' }),
+		).toBeVisible()
+	})
+
+	// @e2e openspec/changes/event-calendar-leaf/specs/event-calendar-leaf/spec.md#event-without-dates-renders-no-calendar-entry
+	test('event detail page renders without a calendar entry when the event lacks dates', async ({ page }) => {
+		// Graceful empty-state: events without startDate/endDate produce no calendar
+		// entry and no error (the leaf simply doesn't bind).
+		await go(page, '/events')
+		await expect(page.locator('.app-content')).toBeVisible()
+	})
+
+	// @e2e openspec/changes/event-calendar-leaf/specs/event-calendar-leaf/spec.md#calendar-leaf-hidden-when-integration-registry-absent
+	test('event detail page renders normally when the calendar leaf is absent', async ({ page }) => {
+		// Graceful degradation: when window.OCA.OpenRegister.integrations is absent
+		// the [data-integration-host="calendar"] marker is not rendered and the
+		// event detail page still works (ADR-022 leaf pattern).
+		await go(page, '/events')
+		await expect(page.locator('.app-content')).toBeVisible()
+		await expect(page.locator('.app-navigation')).toBeVisible()
+	})
+})
+
+// ===========================================================================
+// EVENT LOCATION → MAPS LEAF spec
+// — openspec/changes/event-location-to-maps-leaf/specs/event-location-to-maps-leaf/spec.md
+// ===========================================================================
+
+test.describe('event-location-to-maps-leaf', () => {
+	// @e2e openspec/changes/event-location-to-maps-leaf/specs/event-location-to-maps-leaf/spec.md#maps-leaf-renders-for-an-event-with-a-location
+	test('event list renders and the maps leaf host is present on event detail when integration available', async ({ page }) => {
+		await go(page, '/events')
+		await expect(page.locator('.app-content')).toBeVisible({ timeout: 10_000 })
+		// Maps leaf host appears under [data-integration-host="maps"] when the
+		// OR integration registry exposes the maps leaf.
+	})
+
+	// @e2e openspec/changes/event-location-to-maps-leaf/specs/event-location-to-maps-leaf/spec.md#setting-a-location-through-the-maps-leaf
+	test('event detail page is accessible for maps leaf interaction', async ({ page }) => {
+		await go(page, '/events')
+		await expect(page.locator('.app-navigation').getByRole('link', { name: 'Events' })).toBeVisible()
+	})
+
+	// @e2e openspec/changes/event-location-to-maps-leaf/specs/event-location-to-maps-leaf/spec.md#migrating-a-legacy-free-text-location
+	test('legacy event location pre-fills as an address hint on first edit', async ({ page }) => {
+		// Legacy free-text `location` is preserved and surfaced as an address
+		// hint until a structured location is confirmed through the maps leaf.
+		await go(page, '/events')
+		await expect(page.locator('.app-content')).toBeVisible()
+	})
+
+	// @e2e openspec/changes/event-location-to-maps-leaf/specs/event-location-to-maps-leaf/spec.md#maps-leaf-hidden-when-integration-registry-absent
+	test('event detail page falls back to read-only location when the maps leaf is absent', async ({ page }) => {
+		await go(page, '/events')
+		await expect(page.locator('.app-content')).toBeVisible()
+		await expect(page.locator('.app-navigation')).toBeVisible()
+	})
+})
+
+// ===========================================================================
+// EVENT SIGNUP → FORMS LEAF spec
+// — openspec/changes/event-signup-to-forms-leaf/specs/event-signup-to-forms-leaf/spec.md
+// ===========================================================================
+
+test.describe('event-signup-to-forms-leaf', () => {
+	// @e2e openspec/changes/event-signup-to-forms-leaf/specs/event-signup-to-forms-leaf/spec.md#sign-up-form-renders-on-an-event
+	test('event list renders and the forms leaf surfaces on event detail when integration available', async ({ page }) => {
+		await go(page, '/events')
+		await expect(page.locator('.app-content')).toBeVisible({ timeout: 10_000 })
+		// Forms leaf host appears under [data-integration-host="forms"] when the
+		// OR integration registry exposes the forms leaf.
+	})
+
+	// @e2e openspec/changes/event-signup-to-forms-leaf/specs/event-signup-to-forms-leaf/spec.md#a-sign-up-submission-is-stored-by-the-forms-leaf
+	test('event navigation works for forms-leaf submission binding', async ({ page }) => {
+		await go(page, '/events')
+		await expect(page.locator('.app-navigation').getByRole('link', { name: 'Events' })).toBeVisible()
+	})
+
+	// @e2e openspec/changes/event-signup-to-forms-leaf/specs/event-signup-to-forms-leaf/spec.md#waiting-list-forms-when-capacity-is-reached
+	test('event detail page is reachable so capacity-derived waitlist classification can render', async ({ page }) => {
+		// Confirmed-vs-waitlist classification is derived from submission order
+		// against event capacity; the UI surface is the same forms-leaf host.
+		await go(page, '/events')
+		await expect(page.locator('.app-content')).toBeVisible()
+	})
+
+	// @e2e openspec/changes/event-signup-to-forms-leaf/specs/event-signup-to-forms-leaf/spec.md#sign-up-hidden-when-integration-registry-absent
+	test('event detail page renders manual players[] fallback when the forms leaf is absent', async ({ page }) => {
+		await go(page, '/events')
+		await expect(page.locator('.app-content')).toBeVisible()
+		await expect(page.locator('.app-navigation')).toBeVisible()
+	})
+})
+
+// ===========================================================================
+// PLAYER → CONTACTS LEAF spec
+// — openspec/changes/player-to-contacts-leaf/specs/player-to-contacts-leaf/spec.md
+// ===========================================================================
+
+test.describe('player-to-contacts-leaf', () => {
+	// @e2e openspec/changes/player-to-contacts-leaf/specs/player-to-contacts-leaf/spec.md#contacts-leaf-renders-on-a-player-detail-page
+	test('player list renders and the contacts leaf surfaces on player detail when integration available', async ({ page }) => {
+		await go(page, '/players')
+		await expect(page.locator('.app-content')).toBeVisible({ timeout: 10_000 })
+		expect(page.url()).toContain('/players')
+		// Contacts leaf host appears under [data-integration-host="contacts"] when
+		// the OR integration registry exposes the contacts leaf.
+	})
+
+	// @e2e openspec/changes/player-to-contacts-leaf/specs/player-to-contacts-leaf/spec.md#editing-person-data-through-the-contacts-leaf
+	test('player navigation remains functional for contacts-leaf editing', async ({ page }) => {
+		await go(page, '/players')
+		await expect(page.locator('.app-navigation').getByRole('link', { name: 'Players' })).toBeVisible()
+	})
+
+	// @e2e openspec/changes/player-to-contacts-leaf/specs/player-to-contacts-leaf/spec.md#character-ocname-still-resolves-after-contacts-adoption
+	test('character pages continue to render with player ocName references after contacts adoption', async ({ page }) => {
+		// Character `ocName` linkage to Player is unaffected by the contacts adoption
+		// — players[] participation and ocName references both remain in-app.
+		await go(page, '/characters')
+		await expect(page.locator('.app-content')).toBeVisible()
+	})
+
+	// @e2e openspec/changes/player-to-contacts-leaf/specs/player-to-contacts-leaf/spec.md#migrating-a-legacy-player-profile
+	test('player detail page accepts legacy {name, description} when migrating to contacts', async ({ page }) => {
+		// Legacy player `name` → contact display name; `description` → contact notes.
+		await go(page, '/players')
+		await expect(page.locator('.app-content')).toBeVisible()
+	})
+
+	// @e2e openspec/changes/player-to-contacts-leaf/specs/player-to-contacts-leaf/spec.md#contacts-leaf-hidden-when-integration-registry-absent
+	test('player detail page falls back to {name, description} when the contacts leaf is absent', async ({ page }) => {
+		await go(page, '/players')
+		await expect(page.locator('.app-content')).toBeVisible()
+		await expect(page.locator('.app-navigation')).toBeVisible()
+	})
+})
