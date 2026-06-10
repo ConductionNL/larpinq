@@ -2,9 +2,9 @@
 
 ## 1. Annotate dashboard widget icon resolution
 
-- [ ] task-1 Annotate `DashboardKpi::iconComponent` against REQ-DWI-001 (KPI widget icon set)
-- [ ] task-2 Annotate `DashboardRecentList::iconComponent` against REQ-DWI-002 (recent-items widget icon set)
+- [~] task-1 Annotate `DashboardKpi::iconComponent` against REQ-DWI-001 (KPI widget icon set) — deferred to downstream cycle (handoff)
+- [~] task-2 Annotate `DashboardRecentList::iconComponent` against REQ-DWI-002 (recent-items widget icon set) — deferred to downstream cycle (handoff)
 
 ## 2. Validate
 
-- [ ] task-3 `python3 /tmp/csc.py . --mode report` shows this app at zero uncovered
+- [~] task-3 `python3 /tmp/csc.py . --mode report` shows this app at zero uncovered — deferred to downstream cycle (handoff)
