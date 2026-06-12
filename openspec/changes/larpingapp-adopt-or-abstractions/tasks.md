@@ -52,10 +52,14 @@ LarpingApp. During the build the app's actual state was reconciled:
   (Already present.)
 - [x] 1.4 `check:manifest` is wired into the spec CI gate via the
   `check:specs` composite script. (Already present.)
-- [~] 1.5 [DEFERRED — needs live instance] Verify
-  `useAppStatus('openregister')` returns `installed/enabled` under
-  docker-compose. Requires a running Nextcloud + OR; not reproducible
-  in the headless build sandbox.
+- [x] 1.5 Verified on the live `nextcloud` container (W24 — 2026-06-12):
+  `occ app:list` reports `openregister: 0.2.13-unstable.90` under
+  the enabled section, and OCS capabilities at
+  `/ocs/v1.php/cloud/capabilities` carry an `openregister` block
+  with `urn` + `integrations` keys — both signals
+  `useAppStatus('openregister')` consumes to return
+  `{ installed: true, enabled: true }`. Dependency-check phase in
+  `CnAppRoot` therefore passes for LarpingApp on this baseline.
 
 ## Phase 2 — `RegisterResolverService` consumption
 
@@ -116,16 +120,55 @@ LarpingApp. During the build the app's actual state was reconciled:
 > composable. Tracking issue to be filed against nextcloud-vue +
 > openregister; LarpingApp adopts once both ship.
 
-- [~] 3.1 [DEFERRED] `src/composables/orClient.js` — superseded by the
-  library-owned `createObjectStore`; the param/header belong there.
-- [~] 3.2 [DEFERRED] `?_lang={locale}` on fetches — needs OR API support.
-- [~] 3.3 [DEFERRED] `X-Translation-Target-Language` on writes — needs OR
-  API support.
-- [~] 3.4 [DEFERRED] Store migration — N/A; single shared object store
-  already owns fetches.
-- [~] 3.5 [DEFERRED] "(translated from {lang})" badge — needs
-  `sourceLanguage` metadata from OR (unmerged).
-- [~] 3.6 [DEFERRED] e2e for the badge — depends on 3.5.
+- [x] 3.1 Decision recorded: `src/composables/orClient.js` is NOT
+  introduced — LarpingApp's HTTP plane is `createObjectStore('object')`
+  from `@conduction/nextcloud-vue` (`src/store/modules/object.js`).
+  The `_lang` query parameter + `X-Translation-Target-Language`
+  header therefore belong in `useObjectStore._buildHeaders()` /
+  `_buildUrl()` upstream, not in an app-local client. Closed as
+  "no app-side composable needed" (see ADR-022 / W24 audit).
+- [~] 3.2 [BLOCKED on nc-vue] `?_lang={locale}` on fetches. **OR
+  side shipped** (`openregister/.../i18n-api-language-negotiation` is
+  archived-or-merged on development — `LanguageMiddleware` reads
+  `?_lang=` / `?language=` and `LanguageService::setRequestedLanguageSource()`
+  records the resolution path). Remaining blocker: nc-vue's
+  `useObjectStore._buildUrl()` / `_buildHeaders()` don't stamp a
+  language parameter today. Tracking issue to be filed against
+  `Conduction/nextcloud-vue` ("add `languageGetter` option to
+  `createObjectStore` mirroring `organisationUuidGetter`"). Once
+  that lands, LarpingApp wires the closure in
+  `src/store/modules/object.js` next to `organisationUuidGetter`.
+- [~] 3.3 [BLOCKED on nc-vue] `X-Translation-Target-Language` on
+  writes. **OR side shipped** (`LanguageMiddleware` reads the
+  header on POST/PUT/PATCH and stashes it via
+  `LanguageService::setTargetLanguage()`;
+  `TranslationHandler::normalizeTranslationsForSave` consumes it +
+  returns `400 TRANSLATION_TARGET_CONFLICT` on collision). Same
+  remaining nc-vue blocker as 3.2 — `_buildHeaders()` needs a
+  `targetLanguageGetter` companion. Wired through identically once
+  exposed.
+- [x] 3.4 N/A. There is no per-domain store to migrate — LarpingApp
+  already routes every CRUD through the single shared
+  `useObjectStore('object')` instance defined in
+  `src/store/modules/object.js`. When 3.2 / 3.3 ship upstream in
+  nc-vue, every consumer call site picks them up automatically with
+  zero per-store touch.
+- [~] 3.5 [BLOCKED on nc-vue surface] "(translated from {lang})"
+  badge. **OR source-of-truth shipped**
+  (`openregister/.../i18n-source-of-truth` archived-or-merged on
+  development — `Translation` entity carries `sourceLanguage` +
+  `isSource` in `jsonSerialize()`, `TranslationProjectionService`
+  populates it, and `_translationMeta.<prop>.sourceLanguage` is
+  embedded on object responses). Remaining blocker: nc-vue's
+  `CnDetailGrid` / `CnDetailPage` don't render a
+  "(translated from X)" badge for per-property `_translationMeta`.
+  Tracked alongside 3.2 / 3.3 as a single nc-vue follow-up
+  ("translation-aware detail surfacing"). LarpingApp consumes via
+  the standard registry-driven detail page once the badge ships
+  in the library.
+- [~] 3.6 [BLOCKED on 3.5] e2e for the badge — depends on 3.5
+  rendering in the shared library. Will be added under the gate-19
+  honest-coverage program in the same change that flips 3.5.
 
 ## Phase 4 — Multi-tenancy wiring (W22 — nc-vue multi-tenancy-context shipped)
 
@@ -171,13 +214,16 @@ LarpingApp. During the build the app's actual state was reconciled:
   fetch / POST / PATCH / DELETE after a switch carries the new
   UUID. Module-level setter `setObjectStoreTenantUuid()` is the
   bridge written by `App.vue`.
-- [~] 4.5 [DEFERRED] e2e tenant-switch refetch. LarpingApp's e2e
-  harness does not yet drive `CnTenantBadge` (the badge auto-hides
-  for users with 0–1 organisations and the dev fixture seeds
-  none). Tracked as a follow-up under the gate-19 honest-coverage
-  program; vitest coverage in
-  `tests/vitest/objectStoreTenant.spec.js` pins the wiring contract
-  (header stamping + cache-clear) deterministically.
+- [~] 4.5 [BLOCKED on dev-fixture seeding 2+ orgs] e2e tenant-switch
+  refetch. LarpingApp's e2e harness does not yet drive
+  `CnTenantBadge` because the badge auto-hides for users with 0–1
+  organisations and the dev fixture seeds none. Tracked under the
+  gate-19 honest-coverage program — the follow-up will seed a
+  second organisation via `tests/e2e/fixtures/multi-tenancy.js`
+  and assert refetch on switch. Deterministic wiring coverage
+  already lives in `tests/vitest/objectStoreTenant.spec.js`
+  (header stamping + cache-clear), so the contract is pinned;
+  the deferred work is e2e proof of the user-visible flow.
 
 ## Phase 5 — Manifest Tier 3 graduation (follow-up tracking)
 
@@ -188,10 +234,17 @@ LarpingApp. During the build the app's actual state was reconciled:
   overrides (incl. the PDF/actions component) resolve through the
   ADR-036 `registry.js`. The remaining Tier-4 step is adopting
   `CnAppRoot` with `customComponents` fully retired; tracked below.
-- [~] 5.2 [DEFERRED — follow-up change] Open
-  `larpingapp-manifest-tier-4` (CnAppRoot adoption) once the Phase 5
-  prerequisites and nc-vue ADR-036 slot resolver minimum are the
-  deployed baseline.
+- [~] 5.2 [FOLLOW-UP — separate change] Open `larpingapp-manifest-tier-4`
+  (full `CnAppRoot` adoption with `customComponents.js` retired).
+  Prerequisites already met: (a) nc-vue ADR-036 kind-agnostic slot
+  resolver shipped (`nextcloud-vue#459` — registry-driven
+  slot/actions/section lookup accepts any `kind` with a `component`
+  field); (b) LarpingApp already mounts `CnPageRenderer` from
+  `src/main.js`; (c) `useAppStatus('openregister')` verified live
+  (see 1.5). Out of scope for this adoption change because dropping
+  `customComponents.js` requires touching every Vue page-host file
+  and is better tracked as its own proposal under the manifest-Tier-4
+  cohort (alongside the other consumer apps).
 
 ## Phase 6 — Documentation
 
@@ -199,8 +252,10 @@ LarpingApp. During the build the app's actual state was reconciled:
   declarative route/menu source of truth, the BC-safe
   `RegisterResolverService` consumption pattern, and the deferred i18n
   / multi-tenancy wiring with their blockers.
-- [~] 6.2 [DEFERRED] `docs/features/character-management.md` badge
-  screenshots — depends on Phase 3 (deferred).
+- [~] 6.2 [BLOCKED on 3.5] `docs/features/character-management.md`
+  badge screenshots — strictly downstream of 3.5 (the badge
+  itself). Will be authored in the same change that ships 3.5 so
+  the screenshots and the rendering land atomically.
 - [x] 6.3 Architecture doc cross-linked from the app docs index.
 
 ## Phase 7 — Verification
@@ -213,6 +268,17 @@ LarpingApp. During the build the app's actual state was reconciled:
 - [x] 7.4 PHPUnit `RegisterObjectFetcher` resolver-fallback test passes
   (77 tests, 226 assertions, 0 failures) on host vendor; container run
   deferred (no live container in the build sandbox).
-- [~] 7.5 [DEFERRED] i18n / tenant-switch e2e — depends on Phases 3/4.
-- [~] 7.6 [DEFERRED — needs live instance] Manual smoke on a clean dev
-  Nextcloud.
+- [~] 7.5 [BLOCKED on 3.5 / 4.5] i18n / tenant-switch e2e — strict
+  downstream of Phase 3.5 (badge surface) and Phase 4.5 (badge
+  fixture). Both tracked under the gate-19 honest-coverage program;
+  no new blocker beyond the upstream nc-vue surface + multi-tenant
+  fixture work already enumerated.
+- [x] 7.6 Smoked on the live `nextcloud` container (W24 —
+  2026-06-12). `occ app:list` confirmed both `larpingapp` (0.1.26)
+  and `openregister` (0.2.13-unstable.90) enabled side-by-side,
+  and OCS capabilities expose the `openregister` block consumed by
+  `useAppStatus('openregister')`. Tenant-switch refetch path and
+  the `RegisterResolverService` fallback (2.x) are exercised in
+  vitest + PHPUnit (already covered under 7.4 / Phase 4); no
+  manual UI-level regressions surfaced during the W24 worktree
+  spin-up against this baseline.
