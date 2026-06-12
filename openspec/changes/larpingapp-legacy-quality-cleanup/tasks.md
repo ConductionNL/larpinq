@@ -79,8 +79,12 @@
       `composer check:strict`, and the empty-baseline / no-exclude burn-down
       state in the Code quality section + Tech Stack table.
 - [x] `app-config.json` does not exist in this repo — N/A.
-- [~] Close the burn-down tracking issue — deferred to the coordinator;
-      issue management is not part of the build (all underlying gates are
-      green: phpcs 0e/21w surfaced-only, phpmd 0v, phpstan 0e@L5, no legacy
-      excludes; the tracking issue can be closed by the coordinator without
-      further code work).
+- [~] [COORDINATOR ACTION — non-code] Close the burn-down tracking
+      issue. All code-side work is complete (gates green: phpcs
+      0e/21w surfaced-only, phpmd 0v, phpstan 0e at level 5, empty
+      baselines, no legacy excludes). This task remains `[~]` only
+      because it represents an out-of-repo lifecycle action
+      (closing the Codeberg issue) that does NOT block the change
+      from archiving — the spec deltas + production code are
+      complete and shipping. Coordinator closes the issue
+      asynchronously once the wave's PRs land on `development`.
