@@ -54,6 +54,25 @@ import Vue from 'vue'
 import { translate as ncT } from '@nextcloud/l10n'
 import { NcAppSettingsSection } from '@nextcloud/vue'
 import { CnAppRoot, CnObjectSidebar } from '@conduction/nextcloud-vue'
+import { useObjectStore, setObjectStoreTenantUuid } from './store/modules/object.js'
+
+// Multi-tenancy composable (multi-tenancy-context, ADR-025).
+// Imported defensively via a try/catch in setup() so that running against
+// a nc-vue version that pre-dates the export ("Pre-release fallback"
+// scenario in larpingapp-adopt-or-abstractions/spec.md) renders the app as
+// single-tenant rather than crashing.
+let _useTenantContext = null
+try {
+	// eslint-disable-next-line global-require
+	const mod = require('@conduction/nextcloud-vue')
+	if (typeof mod.useTenantContext === 'function') {
+		_useTenantContext = mod.useTenantContext
+	}
+} catch (e) {
+	// nc-vue not resolvable at module-eval — extremely unlikely; fallback
+	// keeps the app single-tenant.
+	_useTenantContext = null
+}
 
 export default {
 	name: 'App',
@@ -110,6 +129,42 @@ export default {
 		},
 	},
 
+	/**
+	 * Mount the tenant-context bridge in setup() so the watcher fires
+	 * inside the component's reactive scope (auto-cleanup on unmount).
+	 *
+	 * CnAppRoot itself calls `provideTenantContext()` in ITS own setup(),
+	 * so by the time descendants — including this consumer — render,
+	 * the provider is mounted. We consume via `useTenantContext()` here.
+	 *
+	 * On every tenant change we:
+	 *   1. Update the module-local UUID closure read by the object store
+	 *      factory's `organisationUuidGetter` (stamps the next request's
+	 *      `X-OpenRegister-Organisation` header).
+	 *   2. Call `store.setActiveTenantOrganisation(uuid)` to clear the
+	 *      in-memory collection / object / pagination caches so the next
+	 *      fetch hits the new tenant cleanly.
+	 *   3. If the current route is a `:id` detail view, navigate back to
+	 *      the parent index — the object may not exist in the new tenant
+	 *      (spec scenario: "Tenant switch on detail view navigates back").
+	 *
+	 * The composable returns a no-op fallback when no provider is mounted,
+	 * so this code is safe even if `useTenantContext` is missing — the
+	 * watcher just never fires.
+	 *
+	 * @return {object} Setup return — none needed externally.
+	 */
+	setup() {
+		if (typeof _useTenantContext !== 'function') {
+			// Pre-release fallback (single-tenant): the spec mandates
+			// absence MUST NOT crash. Nothing to wire.
+			return {}
+		}
+		const { activeOrganisationUuid } = _useTenantContext()
+
+		return { cnActiveOrganisationUuid: activeOrganisationUuid }
+	},
+
 	data() {
 		return {
 			objectSidebarState: Vue.observable({
@@ -124,6 +179,10 @@ export default {
 				hiddenTabs: [],
 				tabs: undefined,
 			}),
+			// Tracks the last tenant UUID we wired into the object store so
+			// the watcher (which fires immediate: true) can no-op on the
+			// initial undefined→null transition.
+			tenantSyncedUuid: undefined,
 		}
 	},
 
@@ -159,6 +218,74 @@ export default {
 				}
 			}
 			return result
+		},
+	},
+
+	watch: {
+		/**
+		 * React to tenant switches via the nc-vue multi-tenancy-context
+		 * composable (`useTenantContext().activeOrganisationUuid`).
+		 * Watcher only mounts when `setup()` returned a value (i.e. when
+		 * nc-vue exports the composable); the data-default `undefined`
+		 * sentinel keeps the very first call a no-op.
+		 *
+		 * Steps on every actual change:
+		 *   1. Update the module-local closure read by the object store
+		 *      factory so the next request stamps the new UUID.
+		 *   2. Call `setActiveTenantOrganisation()` on the store to wipe
+		 *      the collection / object / pagination caches.
+		 *   3. If the current route includes `:id` segments (detail view),
+		 *      navigate back to the parent index, since the object may
+		 *      not be visible in the new tenant.
+		 *
+		 * @spec openspec/changes/larpingapp-adopt-or-abstractions/specs/larpingapp-adopt-or-abstractions/spec.md
+		 */
+		cnActiveOrganisationUuid: {
+			immediate: true,
+			handler(uuid) {
+				const next = (typeof uuid === 'string' && uuid.length > 0) ? uuid : null
+				if (this.tenantSyncedUuid === next) {
+					return
+				}
+				const previous = this.tenantSyncedUuid
+				this.tenantSyncedUuid = next
+
+				// 1. Update header stamping for the object store factory.
+				setObjectStoreTenantUuid(next)
+
+				// 2. Clear caches via the store action.
+				try {
+					const store = useObjectStore()
+					if (store && typeof store.setActiveTenantOrganisation === 'function') {
+						store.setActiveTenantOrganisation(next)
+					}
+				} catch (e) {
+					// Pinia not active yet on first immediate fire — safe
+					// to ignore; subsequent fires will reach the store.
+				}
+
+				// 3. Detail view → navigate back to parent index on switch.
+				// Skip the initial mount (previous === undefined) so a deep
+				// link into a detail page doesn't redirect on first paint.
+				if (previous !== undefined && this.$route && /:|\//.test(this.$route.path)) {
+					const params = this.$route.params || {}
+					const hasIdParam = Object.keys(params).some(
+						(k) => params[k] !== undefined && params[k] !== null && params[k] !== '',
+					)
+					if (hasIdParam) {
+						// Find the parent index route by stripping the
+						// trailing `/:id` segment from the matched path.
+						const matched = this.$route.matched && this.$route.matched[0]
+						const indexPath = matched
+							? matched.path.replace(/\/:[^/]+$/, '')
+							: this.$route.path.replace(/\/[^/]+\/?$/, '')
+						const target = indexPath || '/'
+						if (this.$router && target !== this.$route.path) {
+							this.$router.push(target).catch(() => {})
+						}
+					}
+				}
+			},
 		},
 	},
 

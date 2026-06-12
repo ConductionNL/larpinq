@@ -127,20 +127,57 @@ LarpingApp. During the build the app's actual state was reconciled:
   `sourceLanguage` metadata from OR (unmerged).
 - [~] 3.6 [DEFERRED] e2e for the badge — depends on 3.5.
 
-## Phase 4 — Multi-tenancy wiring (gated on nc-vue release) [DEFERRED]
+## Phase 4 — Multi-tenancy wiring (W22 — nc-vue multi-tenancy-context shipped)
 
-> **Deferred — explicitly gated by the spec on an unreleased nc-vue
-> `useTenantContext()` export** (`multi-tenancy-context` change, no
-> versioned release). The spec's own "Pre-release fallback" scenario
-> requires that absence MUST NOT crash the app — which is already the
-> case, since nothing imports it. Adopt when nc-vue ships the
-> composable in a versioned release.
+> **W22 update.** nc-vue's `multi-tenancy-context` change has shipped
+> on `development` (W21-C verified): `useTenantContext` /
+> `provideTenantContext` composables, the Options-API `tenantContextMixin`,
+> `buildHeaders({ organisationUuid })`, and the
+> `useObjectStore` `_buildHeaders` / `_resolveOrganisationUuid` /
+> `setActiveTenantOrganisation` action wiring are all on the
+> library's `src/index.js`. `CnAppRoot` mounts the provider in its
+> own setup() and renders the `CnTenantBadge` in the top bar
+> automatically, so consuming apps only need to (a) bridge their
+> Pinia object store to the composable and (b) react to switches.
+> The published nc-vue tag bump is pending; LarpingApp's `setup()`
+> handles the pre-release fallback path defensively via a runtime
+> `typeof useTenantContext === 'function'` guard so the existing
+> `@conduction/nextcloud-vue` constraint range continues to install
+> cleanly.
 
-- [~] 4.1 [DEFERRED] peer constraint on the `useTenantContext` version.
-- [~] 4.2 [DEFERRED] index-view tenant-switch refetch.
-- [~] 4.3 [DEFERRED] detail-view navigate-back on tenant switch.
-- [~] 4.4 [DEFERRED] `X-OpenRegister-Organisation` write stamping.
-- [~] 4.5 [DEFERRED] e2e tenant-switch refetch.
+- [x] 4.1 Peer constraint left at `^1.0.0-beta.101`; the runtime
+  guard in `src/App.vue` (`setup()`) detects the composable's
+  presence and falls back to single-tenant mode when absent
+  (covers the "Pre-release fallback" scenario in the spec). A
+  hard bump will land alongside the next nc-vue tag.
+- [x] 4.2 Index-view tenant-switch refetch — `src/App.vue` watches
+  `useTenantContext().activeOrganisationUuid` and calls
+  `useObjectStore().setActiveTenantOrganisation(uuid)` which clears
+  the in-memory `collections` / `objects` / `pagination` / `facets`
+  caches; the next render of `CnIndexPage` (via `useObjectStore`)
+  refetches against the new tenant.
+- [x] 4.3 Detail-view navigate-back on tenant switch — the same
+  watcher inspects `this.$route.params`; when any `:id` param is
+  populated it `$router.push()`-es to the matched parent index
+  path (with the trailing `/:id` stripped). The initial mount is
+  exempt via a `tenantSyncedUuid === undefined` sentinel so a
+  deep-link into a detail page does not redirect on first paint.
+- [x] 4.4 `X-OpenRegister-Organisation` write stamping —
+  `src/store/modules/object.js` passes
+  `organisationUuidGetter: () => _activeTenantUuid` to
+  `createObjectStore('object', …)`. The library's
+  `_buildHeaders()` / `_resolveOrganisationUuid()` read the closure
+  on every outbound request (read AND write), so the next
+  fetch / POST / PATCH / DELETE after a switch carries the new
+  UUID. Module-level setter `setObjectStoreTenantUuid()` is the
+  bridge written by `App.vue`.
+- [~] 4.5 [DEFERRED] e2e tenant-switch refetch. LarpingApp's e2e
+  harness does not yet drive `CnTenantBadge` (the badge auto-hides
+  for users with 0–1 organisations and the dev fixture seeds
+  none). Tracked as a follow-up under the gate-19 honest-coverage
+  program; vitest coverage in
+  `tests/vitest/objectStoreTenant.spec.js` pins the wiring contract
+  (header stamping + cache-clear) deterministically.
 
 ## Phase 5 — Manifest Tier 3 graduation (follow-up tracking)
 
