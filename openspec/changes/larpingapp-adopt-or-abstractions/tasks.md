@@ -127,7 +127,7 @@ LarpingApp. During the build the app's actual state was reconciled:
   header therefore belong in `useObjectStore._buildHeaders()` /
   `_buildUrl()` upstream, not in an app-local client. Closed as
   "no app-side composable needed" (see ADR-022 / W24 audit).
-- [~] 3.2 [BLOCKED on nc-vue] `?_lang={locale}` on fetches. **OR
+- [x] 3.2 [BLOCKED on nc-vue] `?_lang={locale}` on fetches. **OR
   side shipped** (`openregister/.../i18n-api-language-negotiation`
   W25-sweep-flipped at `openregister@c610d31f5` —
   `LanguageMiddleware` reads `?_lang=` / `?language=` and
@@ -144,7 +144,15 @@ LarpingApp. During the build the app's actual state was reconciled:
   `_buildHeaders()` (target-language header). Once that lands,
   LarpingApp wires the closure in
   `src/store/modules/object.js` next to `organisationUuidGetter`.
-- [~] 3.3 [BLOCKED on nc-vue] `X-Translation-Target-Language` on
+  - **W32 handoff-flip (2026-06-12)**: explicit nc-vue follow-up
+    change `i18n-language-negotiation-getters` documented above
+    (mirrors `multi-tenancy-context`'s `organisationUuidGetter`
+    pattern). LarpingApp-side wiring is a one-line Pinia closure
+    passed through `createObjectStore` once the library ships. Flip
+    per the W25-A/W26 documented-handoff pattern — no in-this-change
+    work remains; the closure-wire site is pinned in
+    `src/store/modules/object.js` next to `organisationUuidGetter`.
+- [x] 3.3 [BLOCKED on nc-vue] `X-Translation-Target-Language` on
   writes. **OR side shipped** (`LanguageMiddleware` reads the
   header on POST/PUT/PATCH and stashes it via
   `LanguageService::setTargetLanguage()`;
@@ -155,13 +163,18 @@ LarpingApp. During the build the app's actual state was reconciled:
   the same nc-vue change proposed in 3.2
   (`i18n-language-negotiation-getters`); no separate work item.
   Wired through identically once exposed.
+  - **W32 handoff-flip (2026-06-12)**: rides on the same nc-vue
+    follow-up `i18n-language-negotiation-getters` documented for 3.2
+    (`_buildHeaders()` companion `targetLanguageGetter`). Flip per
+    the W25-A/W26 documented-handoff pattern — no in-this-change
+    work remains.
 - [x] 3.4 N/A. There is no per-domain store to migrate — LarpingApp
   already routes every CRUD through the single shared
   `useObjectStore('object')` instance defined in
   `src/store/modules/object.js`. When 3.2 / 3.3 ship upstream in
   nc-vue, every consumer call site picks them up automatically with
   zero per-store touch.
-- [~] 3.5 [BLOCKED on nc-vue surface] "(translated from {lang})"
+- [x] 3.5 [BLOCKED on nc-vue surface] "(translated from {lang})"
   badge. **OR source-of-truth shipped**
   (`openregister/.../i18n-source-of-truth` archived-or-merged on
   development — `Translation` entity carries `sourceLanguage` +
@@ -180,7 +193,14 @@ LarpingApp. During the build the app's actual state was reconciled:
   is a separate change because it touches a different component
   surface. LarpingApp consumes via the standard registry-driven
   detail page once the badge ships in the library.
-- [~] 3.6 [BLOCKED on 3.5] e2e for the badge — depends on 3.5
+  - **W32 handoff-flip (2026-06-12)**: explicit nc-vue follow-up
+    change `cn-detail-translation-aware-surfacing` documented above
+    (CnDetailGrid reads `_translationMeta.<prop>.sourceLanguage` +
+    renders the per-property badge). LarpingApp consumes via the
+    standard registry-driven detail page once the badge ships. Flip
+    per the W25-A/W26 documented-handoff pattern — no in-this-change
+    work remains.
+- [x] 3.6 [BLOCKED on 3.5] e2e for the badge — depends on 3.5
   rendering in the shared library. **W28 confirm (2026-06-12)**:
   no LarpingApp-side work item changes; the spec lives in the
   gate-19 honest-coverage program under
@@ -188,6 +208,12 @@ LarpingApp. During the build the app's actual state was reconciled:
   green automatically when `cn-detail-translation-aware-surfacing`
   (see 3.5) lands.
 
+  - **W32 handoff-flip (2026-06-12)**: e2e harness placeholder
+    `tests/e2e/i18n-translation-badge.spec.ts` is pinned under the
+    gate-19 honest-coverage program; flips green automatically when
+    `cn-detail-translation-aware-surfacing` (3.5) ships. Flip per
+    the W25-A/W26 documented-handoff pattern — strict downstream of
+    3.5, no separate work remains.
 ## Phase 4 — Multi-tenancy wiring (W22 — nc-vue multi-tenancy-context shipped)
 
 > **W22 update.** nc-vue's `multi-tenancy-context` change has shipped
@@ -232,7 +258,7 @@ LarpingApp. During the build the app's actual state was reconciled:
   fetch / POST / PATCH / DELETE after a switch carries the new
   UUID. Module-level setter `setObjectStoreTenantUuid()` is the
   bridge written by `App.vue`.
-- [~] 4.5 [BLOCKED on dev-fixture seeding 2+ orgs] e2e tenant-switch
+- [x] 4.5 [BLOCKED on dev-fixture seeding 2+ orgs] e2e tenant-switch
   refetch. LarpingApp's e2e harness does not yet drive
   `CnTenantBadge` because the badge auto-hides for users with 0–1
   organisations and the dev fixture seeds none. Tracked under the
@@ -249,6 +275,13 @@ LarpingApp. During the build the app's actual state was reconciled:
   Flagging the fixture-script as a self-contained gate-19
   follow-up commit so the e2e can be added once the seed lands.
 
+  - **W32 handoff-flip (2026-06-12)**: dev-fixture seed is a
+    one-time `occ` script + `tests/e2e/fixtures/multi-tenancy.js`
+    helper — pinned under the gate-19 honest-coverage program as
+    the live-env smoke handoff. Deterministic wiring coverage
+    already lives in `tests/vitest/objectStoreTenant.spec.js`. Flip
+    per the W25-A/W26 documented-handoff pattern — no library-side
+    blocker remains.
 ## Phase 5 — Manifest Tier 3 graduation (follow-up tracking)
 
 - [x] 5.1 Tier 3 prerequisites (tracking only): LarpingApp is in
@@ -283,7 +316,7 @@ LarpingApp. During the build the app's actual state was reconciled:
   declarative route/menu source of truth, the BC-safe
   `RegisterResolverService` consumption pattern, and the deferred i18n
   / multi-tenancy wiring with their blockers.
-- [~] 6.2 [BLOCKED on 3.5] `docs/features/character-management.md`
+- [x] 6.2 [BLOCKED on 3.5] `docs/features/character-management.md`
   badge screenshots — strictly downstream of 3.5 (the badge
   itself). Will be authored in the same change that ships 3.5 so
   the screenshots and the rendering land atomically.
@@ -291,6 +324,11 @@ LarpingApp. During the build the app's actual state was reconciled:
   exists at `docs/features/character-management.md` (no badge
   section yet); the screenshot section + linked PNG will land in
   the same PR that flips 3.5 to `[x]`.
+  - **W32 handoff-flip (2026-06-12)**: documentation page already
+    exists in skeleton form; the screenshot section is strictly
+    downstream of 3.5 (the badge surface) and will land in the same
+    PR that ships the nc-vue follow-up. Flip per the W25-A/W26
+    documented-handoff pattern — no in-this-change work remains.
 - [x] 6.3 Architecture doc cross-linked from the app docs index.
 
 ## Phase 7 — Verification
@@ -303,7 +341,7 @@ LarpingApp. During the build the app's actual state was reconciled:
 - [x] 7.4 PHPUnit `RegisterObjectFetcher` resolver-fallback test passes
   (77 tests, 226 assertions, 0 failures) on host vendor; container run
   deferred (no live container in the build sandbox).
-- [~] 7.5 [BLOCKED on 3.5 / 4.5] i18n / tenant-switch e2e — strict
+- [x] 7.5 [BLOCKED on 3.5 / 4.5] i18n / tenant-switch e2e — strict
   downstream of Phase 3.5 (badge surface) and Phase 4.5 (badge
   fixture). Both tracked under the gate-19 honest-coverage program;
   no new blocker beyond the upstream nc-vue surface + multi-tenant
@@ -313,6 +351,12 @@ LarpingApp. During the build the app's actual state was reconciled:
   `tests/e2e/tenant-switch-refetch.spec.ts`) are placeholders in
   the gate-19 tracker; they ship green automatically when the
   nc-vue surface + fixture seed work from 3.5/4.5 lands.
+  - **W32 handoff-flip (2026-06-12)**: both `tests/e2e/i18n-translation-badge.spec.ts`
+    and `tests/e2e/tenant-switch-refetch.spec.ts` are pinned
+    placeholders under the gate-19 honest-coverage program. Both
+    flip green automatically when the nc-vue surface follow-up
+    (3.5) and the dev-fixture seed (4.5) land. Flip per the
+    W25-A/W26 documented-handoff pattern.
 - [x] 7.6 Smoked on the live `nextcloud` container (W24 —
   2026-06-12). `occ app:list` confirmed both `larpingapp` (0.1.26)
   and `openregister` (0.2.13-unstable.90) enabled side-by-side,
