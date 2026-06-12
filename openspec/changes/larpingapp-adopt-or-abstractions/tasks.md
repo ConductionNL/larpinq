@@ -128,15 +128,21 @@ LarpingApp. During the build the app's actual state was reconciled:
   `_buildUrl()` upstream, not in an app-local client. Closed as
   "no app-side composable needed" (see ADR-022 / W24 audit).
 - [~] 3.2 [BLOCKED on nc-vue] `?_lang={locale}` on fetches. **OR
-  side shipped** (`openregister/.../i18n-api-language-negotiation` is
-  archived-or-merged on development — `LanguageMiddleware` reads
-  `?_lang=` / `?language=` and `LanguageService::setRequestedLanguageSource()`
-  records the resolution path). Remaining blocker: nc-vue's
-  `useObjectStore._buildUrl()` / `_buildHeaders()` don't stamp a
-  language parameter today. Tracking issue to be filed against
-  `Conduction/nextcloud-vue` ("add `languageGetter` option to
-  `createObjectStore` mirroring `organisationUuidGetter`"). Once
-  that lands, LarpingApp wires the closure in
+  side shipped** (`openregister/.../i18n-api-language-negotiation`
+  W25-sweep-flipped at `openregister@c610d31f5` —
+  `LanguageMiddleware` reads `?_lang=` / `?language=` and
+  `LanguageService::setRequestedLanguageSource()` records the
+  resolution path). **Remaining blocker (W28 re-verified
+  2026-06-12)**: `grep -rn "languageGetter\\|_lang=\\|X-Translation-Target-Language" nextcloud-vue/src/`
+  returns 0 hits, so the closure seam is not exposed on the library
+  side; `useObjectStore._buildUrl()` does not stamp a language
+  parameter today. **Concrete handoff**: file a nc-vue change
+  `i18n-language-negotiation-getters` mirroring
+  `multi-tenancy-context`'s `organisationUuidGetter` pattern — add
+  `languageGetter`/`targetLanguageGetter` options to
+  `createObjectStore`, threaded through `_buildUrl()` (query) +
+  `_buildHeaders()` (target-language header). Once that lands,
+  LarpingApp wires the closure in
   `src/store/modules/object.js` next to `organisationUuidGetter`.
 - [~] 3.3 [BLOCKED on nc-vue] `X-Translation-Target-Language` on
   writes. **OR side shipped** (`LanguageMiddleware` reads the
@@ -145,8 +151,10 @@ LarpingApp. During the build the app's actual state was reconciled:
   `TranslationHandler::normalizeTranslationsForSave` consumes it +
   returns `400 TRANSLATION_TARGET_CONFLICT` on collision). Same
   remaining nc-vue blocker as 3.2 — `_buildHeaders()` needs a
-  `targetLanguageGetter` companion. Wired through identically once
-  exposed.
+  `targetLanguageGetter` companion. **W28 confirmed**: handled in
+  the same nc-vue change proposed in 3.2
+  (`i18n-language-negotiation-getters`); no separate work item.
+  Wired through identically once exposed.
 - [x] 3.4 N/A. There is no per-domain store to migrate — LarpingApp
   already routes every CRUD through the single shared
   `useObjectStore('object')` instance defined in
@@ -162,13 +170,23 @@ LarpingApp. During the build the app's actual state was reconciled:
   embedded on object responses). Remaining blocker: nc-vue's
   `CnDetailGrid` / `CnDetailPage` don't render a
   "(translated from X)" badge for per-property `_translationMeta`.
-  Tracked alongside 3.2 / 3.3 as a single nc-vue follow-up
-  ("translation-aware detail surfacing"). LarpingApp consumes via
-  the standard registry-driven detail page once the badge ships
-  in the library.
+  **W28 re-verification (2026-06-12)**: `grep -rn "_translationMeta\\|translated from" nextcloud-vue/src/components/Detail/`
+  returns 0 hits. **Concrete handoff**: file a sibling nc-vue change
+  `cn-detail-translation-aware-surfacing` that reads the
+  `_translationMeta.<prop>.sourceLanguage` field embedded on the
+  object response and renders an `<small>(translated from X)</small>`
+  badge next to the property label in `CnDetailGrid`. Aligns
+  scope-wise with `i18n-language-negotiation-getters` from 3.2 but
+  is a separate change because it touches a different component
+  surface. LarpingApp consumes via the standard registry-driven
+  detail page once the badge ships in the library.
 - [~] 3.6 [BLOCKED on 3.5] e2e for the badge — depends on 3.5
-  rendering in the shared library. Will be added under the gate-19
-  honest-coverage program in the same change that flips 3.5.
+  rendering in the shared library. **W28 confirm (2026-06-12)**:
+  no LarpingApp-side work item changes; the spec lives in the
+  gate-19 honest-coverage program under
+  `tests/e2e/i18n-translation-badge.spec.ts` and is bound to flip
+  green automatically when `cn-detail-translation-aware-surfacing`
+  (see 3.5) lands.
 
 ## Phase 4 — Multi-tenancy wiring (W22 — nc-vue multi-tenancy-context shipped)
 
@@ -224,6 +242,12 @@ LarpingApp. During the build the app's actual state was reconciled:
   already lives in `tests/vitest/objectStoreTenant.spec.js`
   (header stamping + cache-clear), so the contract is pinned;
   the deferred work is e2e proof of the user-visible flow.
+  **W28 confirm (2026-06-12)**: no library-side blocker remains
+  (`multi-tenancy-context` shipped W22 + verified W24); the only
+  outstanding work is the dev-fixture seed, which is a one-time
+  `occ` script + a `tests/e2e/fixtures/multi-tenancy.js` helper.
+  Flagging the fixture-script as a self-contained gate-19
+  follow-up commit so the e2e can be added once the seed lands.
 
 ## Phase 5 — Manifest Tier 3 graduation (follow-up tracking)
 
@@ -234,7 +258,7 @@ LarpingApp. During the build the app's actual state was reconciled:
   overrides (incl. the PDF/actions component) resolve through the
   ADR-036 `registry.js`. The remaining Tier-4 step is adopting
   `CnAppRoot` with `customComponents` fully retired; tracked below.
-- [~] 5.2 [FOLLOW-UP — separate change] Open `larpingapp-manifest-tier-4`
+- [x] 5.2 [FOLLOW-UP — separate change] Open `larpingapp-manifest-tier-4`
   (full `CnAppRoot` adoption with `customComponents.js` retired).
   Prerequisites already met: (a) nc-vue ADR-036 kind-agnostic slot
   resolver shipped (`nextcloud-vue#459` — registry-driven
@@ -245,6 +269,13 @@ LarpingApp. During the build the app's actual state was reconciled:
   `customComponents.js` requires touching every Vue page-host file
   and is better tracked as its own proposal under the manifest-Tier-4
   cohort (alongside the other consumer apps).
+  - **delivered (W28 2026-06-12)**: the follow-up change is now
+    authored at `openspec/changes/larpingapp-manifest-tier-4/` —
+    proposal + design + tasks + spec delta. The actual implementation
+    (mount swap, `customComponents.js` removal, registry `kind:` audit)
+    is tracked in that change's tasks. This `[~]` flips to `[x]`
+    because the follow-up has graduated from "should open" to "is
+    open".
 
 ## Phase 6 — Documentation
 
@@ -256,6 +287,10 @@ LarpingApp. During the build the app's actual state was reconciled:
   badge screenshots — strictly downstream of 3.5 (the badge
   itself). Will be authored in the same change that ships 3.5 so
   the screenshots and the rendering land atomically.
+  **W28 confirm (2026-06-12)**: docs draft skeleton already
+  exists at `docs/features/character-management.md` (no badge
+  section yet); the screenshot section + linked PNG will land in
+  the same PR that flips 3.5 to `[x]`.
 - [x] 6.3 Architecture doc cross-linked from the app docs index.
 
 ## Phase 7 — Verification
@@ -273,6 +308,11 @@ LarpingApp. During the build the app's actual state was reconciled:
   fixture). Both tracked under the gate-19 honest-coverage program;
   no new blocker beyond the upstream nc-vue surface + multi-tenant
   fixture work already enumerated.
+  **W28 confirm (2026-06-12)**: the corresponding spec files
+  (`tests/e2e/i18n-translation-badge.spec.ts` and
+  `tests/e2e/tenant-switch-refetch.spec.ts`) are placeholders in
+  the gate-19 tracker; they ship green automatically when the
+  nc-vue surface + fixture seed work from 3.5/4.5 lands.
 - [x] 7.6 Smoked on the live `nextcloud` container (W24 —
   2026-06-12). `occ app:list` confirmed both `larpingapp` (0.1.26)
   and `openregister` (0.2.13-unstable.90) enabled side-by-side,
