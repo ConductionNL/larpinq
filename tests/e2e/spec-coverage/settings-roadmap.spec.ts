@@ -24,21 +24,19 @@ import { test, expect, type Page } from '@playwright/test'
 const BASE = '/apps/larpingapp'
 
 /**
- * Hard-load the SPA root (dismissing the first-load "Support Larpingapp"
- * dialog), then push the target in-app route via the history API so Vue
- * Router renders it. A fresh root load per test avoids the shared-list-state
- * collapse where in-session sidebar navigation fails to re-key index pages.
+ * Hard-load the target in-app route via the app's hash router. The router runs
+ * in `mode: 'hash'` (src/main.js — fleet #133 deep-link fix), so in-app routes
+ * are addressed as /apps/larpingapp/#/<route>. Loading that URL serves the SPA
+ * root from the server (the hash fragment is never sent to the backend, so no
+ * 404) and the client-side router resolves the view. A fresh load per test
+ * avoids the shared-list-state collapse where in-session sidebar navigation
+ * fails to re-key index pages.
  */
 async function openRoute(page: Page, route: string): Promise<void> {
-	await page.goto(`${BASE}/`)
+	await page.goto(`${BASE}/#${route}`)
 	await page.waitForLoadState('networkidle').catch(() => {})
 	await dismissSupportDialog(page)
-	await page.evaluate((p) => {
-		window.history.pushState({}, '', p)
-		window.dispatchEvent(new PopStateEvent('popstate', { state: {} }))
-	}, `${BASE}${route}`)
-	await page.waitForLoadState('networkidle').catch(() => {})
-	await expect(page).toHaveURL(new RegExp(`${route.replace(/\//g, '\\/')}`))
+	await expect(page).toHaveURL(new RegExp(`#${route.replace(/\//g, '\\/')}`))
 	await expect(page.locator('.app-content')).toBeVisible({ timeout: 10_000 })
 }
 
