@@ -98,11 +98,39 @@ async function openApp(page: Page): Promise<void> {
 
 async function navTo(page: Page, slug: string): Promise<void> {
 	await openApp(page)
-	const link = page.locator(`.app-navigation a[href="${BASE}/${slug}"]`).first()
+	const link = page.locator(`.app-navigation a[href="${BASE}/#/${slug}"]`).first()
 	await expect(link).toBeVisible({ timeout: 10_000 })
 	await link.click()
-	await expect(page).toHaveURL(new RegExp(`${slug}(\\b|/|$|\\?)`))
+	await expect(page).toHaveURL(new RegExp(`#/${slug}(\\b|/|$|\\?)`))
 	await expect(page.locator('.app-content')).toBeVisible()
+}
+
+/**
+ * Assert a freshly-created row surfaces in the current index list.
+ *
+ * The index lists are server-paginated (default 20 rows/page). On the shared
+ * dev instance the registers hold dozens of accumulated objects, so a newly
+ * created row lands on a later page rather than page 1. We therefore page
+ * forward (clicking the list's "Next" control) until the row is visible or the
+ * pages are exhausted — this honestly verifies the created object surfaces in
+ * the list UI without assuming it lands on the first page (which only held on a
+ * near-empty register).
+ */
+async function expectRowInList(page: Page, text: string, maxPages = 12): Promise<void> {
+	const target = page.locator('.app-content').getByText(text).first()
+	for (let i = 0; i < maxPages; i++) {
+		if (await target.isVisible({ timeout: i === 0 ? 8_000 : 2_000 }).catch(() => false)) {
+			await expect(target).toBeVisible()
+			return
+		}
+		const next = page.locator('.app-content').getByRole('button', { name: /^\s*Next\s*$/i }).first()
+		const canPage = await next.isEnabled({ timeout: 1_000 }).catch(() => false)
+		if (!canPage) break
+		await next.click().catch(() => {})
+		await page.waitForTimeout(800)
+	}
+	// Final assertion surfaces a clear failure if the row never appeared.
+	await expect(target, `Created row "${text}" must surface in the list (paged ${maxPages})`).toBeVisible({ timeout: 5_000 })
 }
 
 // ===========================================================================
@@ -172,7 +200,7 @@ test.describe('character — CRUD persistence (store round-trip)', () => {
 		const name = fixtureName('ui-character')
 		ledger.track('character', await createObject(api, 'character', { name, ocName: name, type: 'player' }))
 		await navTo(page, 'characters')
-		await expect(page.locator('.app-content').getByText(name).first()).toBeVisible({ timeout: 10_000 })
+		await expectRowInList(page, name)
 	})
 
 	// @e2e openspec/specs/character-management/spec.md#view-currency-on-character-sheet
@@ -184,11 +212,11 @@ test.describe('character — CRUD persistence (store round-trip)', () => {
 		const id = ledger.track('character', await createObject(api, 'character', {
 			name, ocName: name, type: 'player', gold: 42,
 		}))
-		await openApp(page)
-		await page.evaluate(({ p }) => {
-			window.history.pushState({}, '', p)
-			window.dispatchEvent(new PopStateEvent('popstate', { state: {} }))
-		}, { p: `${BASE}/characters/${id}` })
+		// Hash-mode deep link (src/main.js — fleet #133): the detail route is
+		// addressed via the URL hash, served from the SPA root and resolved
+		// client-side.
+		await page.goto(`${BASE}/#/characters/${id}`)
+		await page.waitForLoadState('networkidle').catch(() => {})
 		await expect(page.locator('.app-content').getByText('42').first()).toBeVisible({ timeout: 10_000 })
 	})
 
@@ -261,7 +289,7 @@ test.describe('skill — CRUD persistence (store round-trip)', () => {
 		const name = fixtureName('ui-skill')
 		ledger.track('skill', await createObject(api, 'skill', { name, description: 'UI skill' }))
 		await navTo(page, 'skills')
-		await expect(page.locator('.app-content').getByText(name).first()).toBeVisible({ timeout: 10_000 })
+		await expectRowInList(page, name)
 	})
 
 	test('UI shell: Skills list view + Add control render', async ({ page }) => {

@@ -61,10 +61,10 @@ async function freshNav(page: Page, slug: string, navLabel: string): Promise<voi
 	await page.goto(`${BASE}/`)
 	await page.waitForLoadState('networkidle').catch(() => {})
 	await dismissSupportDialog(page)
-	const link = page.locator(`.app-navigation a[href="${BASE}/${slug}"]`).first()
+	const link = page.locator(`.app-navigation a[href="${BASE}/#/${slug}"]`).first()
 	await expect(link).toBeVisible({ timeout: 10_000 })
 	await link.click()
-	await expect(page).toHaveURL(new RegExp(`/${slug}(\\b|/|$|\\?)`))
+	await expect(page).toHaveURL(new RegExp(`#/${slug}(\\b|/|$|\\?)`))
 	await expect(page.locator('.app-content')).toBeVisible({ timeout: 10_000 })
 	await page.waitForLoadState('networkidle').catch(() => {})
 }
@@ -95,9 +95,14 @@ for (const { slug, nav, entity } of INDEX_PAGES) {
 				page.locator('.app-content button').filter({ hasText: new RegExp(`Add ${entity}`, 'i') }).first(),
 			).toBeVisible({ timeout: 10_000 })
 
-			// The sidebar still highlights this entity as an accessible link.
+			// The sidebar still exposes this entity as an accessible link. The nav
+			// is grouped/collapsed (CnAppNav), so the entity label can appear twice
+			// — once on the collapsible group header (href="#") and once on the
+			// real entry link — which trips strict-mode on a bare role+name lookup.
+			// Assert on the stable per-entry test id so we target the actual nav
+			// entry (its link carries the hash route href).
 			await expect(
-				page.locator('.app-navigation').getByRole('link', { name: nav }),
+				page.getByTestId(`cn-nav-entry-${nav}`).getByRole('link', { name: nav }),
 			).toBeVisible()
 
 			// No larpingapp-origin fatal page errors (the OR data-fetch 500 is a

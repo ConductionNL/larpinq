@@ -70,7 +70,7 @@ async function openApp(page: Page): Promise<void> {
 /** Click an in-app sidebar nav entry (real <a href> SPA navigation). */
 async function navTo(page: Page, slug: string): Promise<void> {
 	await openApp(page)
-	const link = page.locator(`.app-navigation a[href="${BASE}/${slug}"]`).first()
+	const link = page.locator(`.app-navigation a[href="${BASE}/#/${slug}"]`).first()
 	await expect(link).toBeVisible({ timeout: 10_000 })
 	await link.click()
 	await expect(page).toHaveURL(new RegExp(`${slug}(\\b|/|$|\\?)`))
@@ -78,17 +78,24 @@ async function navTo(page: Page, slug: string): Promise<void> {
 }
 
 /**
- * Navigate to a detail route via the SPA history API (sub-routes 404 on a
- * hard reload because the server only serves the SPA root). Asserts the
- * CnDetailPage shell renders for the entity type.
+ * Navigate to a detail route via the app's hash router.
+ *
+ * The router runs in `mode: 'hash'` (src/main.js — fleet #133 deep-link fix),
+ * so the canonical detail URL is `/apps/larpingapp/#/<slug>/<id>`. Loading that
+ * URL serves the SPA root from the server (no 404 — the hash fragment is never
+ * sent to the backend) and the client-side hash router resolves the detail
+ * route. This is the deep-link path the hash-mode change exists to support, so
+ * we drive it directly rather than poking history.pushState (which addressed a
+ * non-existent server sub-path and broke once routing moved to hash mode).
  */
 async function gotoDetail(page: Page, slug: string, id: string, typeHeading: string): Promise<void> {
-	await openApp(page)
-	await page.evaluate(({ p }) => {
-		window.history.pushState({}, '', p)
-		window.dispatchEvent(new PopStateEvent('popstate', { state: {} }))
-	}, { p: `${BASE}/${slug}/${id}` })
-	await expect(page).toHaveURL(new RegExp(`${slug}/${id}`))
+	await page.goto(`${BASE}/#/${slug}/${id}`)
+	await page.waitForLoadState('networkidle').catch(() => {})
+	const supportClose = page.locator('[role="dialog"] button[aria-label="Close"]').first()
+	if (await supportClose.isVisible({ timeout: 1500 }).catch(() => false)) {
+		await supportClose.click().catch(() => {})
+	}
+	await expect(page).toHaveURL(new RegExp(`#/${slug}/${id}`))
 	await expect(page.locator('.app-content')).toBeVisible({ timeout: 10_000 })
 	await expect(
 		page.locator('.app-content').getByRole('heading', { name: new RegExp(typeHeading, 'i') }).first(),

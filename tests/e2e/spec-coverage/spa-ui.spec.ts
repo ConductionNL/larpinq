@@ -27,14 +27,16 @@ const TS = Date.now()
 // ---------------------------------------------------------------------------
 
 /**
- * Navigate to an in-app history-mode route.
+ * Navigate to an in-app hash-mode route.
  *
- * The Vue SPA uses history mode with base `/apps/larpingapp`. Sub-routes
- * (/characters, /abilities, …) only exist client-side — navigating directly
- * to them returns a 404 from PHP. Strategy: always land on the SPA root
- * first, wait for Vue to mount, then push the desired path via
- * window.history.pushState so Vue Router picks it up without a page reload.
- * For external paths (settings, other NC apps) we do a regular goto.
+ * The Vue SPA uses hash mode with base `/apps/larpingapp` (src/main.js —
+ * fleet #133 deep-link fix). In-app routes (/characters, /abilities, …) are
+ * addressed via the URL hash: /apps/larpingapp/#/<route>. The hash fragment is
+ * never sent to the backend, so the SPA root is always served and Vue Router's
+ * hashchange listener resolves the view client-side. Strategy: land on the SPA
+ * root first, wait for Vue to mount, then set window.location.hash so the
+ * router renders the desired view without a page reload. For external paths
+ * (settings, other NC apps) we do a regular goto.
  */
 async function go(page: Page, route: string): Promise<void> {
 	const isExternal = route.startsWith('/apps/') || route.startsWith('/settings')
@@ -55,27 +57,42 @@ async function go(page: Page, route: string): Promise<void> {
 			await supportClose.click().catch(() => {})
 		}
 	}
-	// Resolve the target path relative to the app base
+	// Resolve the target path relative to the app base. The router runs in
+	// hash mode (src/main.js — fleet #133 deep-link fix), so in-app routes are
+	// addressed via the URL hash: /apps/larpingapp/#/<route>. Driving the hash
+	// directly lets Vue Router's hashchange listener resolve the view (the old
+	// history.pushState to a bare /apps/larpingapp/<route> path no longer routes
+	// under hash mode and addresses a server path that 404s on reload).
 	const targetPath = route.startsWith('/') ? route : `/${route}`
-	const fullPath = `/apps/larpingapp${targetPath === '/' ? '' : targetPath}`
-	if (!page.url().endsWith(fullPath) && !page.url().includes(fullPath + '?')) {
-		// Push route via history API — Vue Router's popstate listener handles it
-		await page.evaluate((path) => {
-			window.history.pushState({}, '', path)
-			window.dispatchEvent(new PopStateEvent('popstate', { state: {} }))
-		}, fullPath)
+	const hashFragment = `#${targetPath}`
+	// Compare the *exact* current hash, not a substring: the root route's
+	// fragment "#/" is a substring of every other hash (e.g. "#/characters"),
+	// so an includes() check would wrongly treat any view as "already on root"
+	// and skip navigating back to the dashboard.
+	const currentHash = await page.evaluate(() => window.location.hash || '#/')
+	const normalisedCurrent = currentHash === '#' ? '#/' : currentHash
+	if (normalisedCurrent !== hashFragment) {
+		await page.evaluate((hash) => {
+			window.location.hash = hash
+		}, hashFragment)
 		await page.waitForLoadState('networkidle').catch(() => {})
 	}
 }
 
 /**
  * Assert the app-navigation sidebar is present and contains expected links.
+ *
+ * The nav is grouped/collapsed (CnAppNav), so an entity label may render twice
+ * — once on a collapsible group header (href="#") and once on the real entry
+ * link — which trips strict-mode on a bare role+name lookup. We target the
+ * stable per-entry test id (`cn-nav-entry-<Label>`) so we always assert the
+ * real nav entry rather than the group header.
  */
 async function expectSidebar(page: Page, links: string[]): Promise<void> {
 	const nav = page.locator('.app-navigation')
 	await expect(nav).toBeVisible()
 	for (const link of links) {
-		await expect(nav.getByRole('link', { name: link })).toBeVisible()
+		await expect(page.getByTestId(`cn-nav-entry-${link}`).getByRole('link', { name: link })).toBeVisible()
 	}
 }
 
@@ -298,7 +315,7 @@ test.describe('character-photos-leaf', () => {
 		await expect(page.locator('.app-content')).toBeVisible({ timeout: 10_000 })
 		// Navigation link must remain functional.
 		await expect(
-			page.locator('.app-navigation').getByRole('link', { name: 'Characters' }),
+			page.getByTestId('cn-nav-entry-Characters').getByRole('link', { name: 'Characters' }),
 		).toBeVisible()
 		// The absence of [data-integration-host="photos"] must not break the page.
 		const photosHost = page.locator('[data-integration-host="photos"]')
@@ -328,7 +345,7 @@ test.describe('game-mechanics', () => {
 		await go(page, '/abilities')
 		await expect(page.locator('.app-content')).toBeVisible()
 		// Sidebar nav shows Abilities as accessible link
-		await expect(page.locator('.app-navigation').getByRole('link', { name: 'Abilities' })).toBeVisible()
+		await expect(page.getByTestId('cn-nav-entry-Abilities').getByRole('link', { name: 'Abilities' })).toBeVisible()
 	})
 
 	// @e2e openspec/specs/game-mechanics/spec.md#create-a-positive-effect-targeting-one-ability
@@ -349,7 +366,7 @@ test.describe('game-mechanics', () => {
 	test('skills list loads successfully', async ({ page }) => {
 		await go(page, '/skills')
 		await expect(page.locator('.app-content')).toBeVisible()
-		await expect(page.locator('.app-navigation').getByRole('link', { name: 'Skills' })).toBeVisible()
+		await expect(page.getByTestId('cn-nav-entry-Skills').getByRole('link', { name: 'Skills' })).toBeVisible()
 	})
 
 	// @e2e openspec/specs/game-mechanics/spec.md#create-a-unique-item
@@ -384,7 +401,7 @@ test.describe('events-players', () => {
 	test('events list loads successfully', async ({ page }) => {
 		await go(page, '/events')
 		await expect(page.locator('.app-content')).toBeVisible()
-		await expect(page.locator('.app-navigation').getByRole('link', { name: 'Events' })).toBeVisible()
+		await expect(page.getByTestId('cn-nav-entry-Events').getByRole('link', { name: 'Events' })).toBeVisible()
 	})
 
 	// @e2e openspec/specs/events-players/spec.md#create-a-player-and-link-to-character
@@ -399,7 +416,7 @@ test.describe('events-players', () => {
 	test('players list loads successfully', async ({ page }) => {
 		await go(page, '/players')
 		await expect(page.locator('.app-content')).toBeVisible()
-		await expect(page.locator('.app-navigation').getByRole('link', { name: 'Players' })).toBeVisible()
+		await expect(page.getByTestId('cn-nav-entry-Players').getByRole('link', { name: 'Players' })).toBeVisible()
 	})
 })
 
@@ -480,7 +497,7 @@ test.describe('character-photos-leaf', () => {
 		// Character detail page is reachable — the photos leaf sidebar surfaces here when OR
 		// integration registry exposes the photos integration (ADR-019 Stage 1).
 		// If no characters exist, the list renders without error (graceful state).
-		await expect(page.locator('.app-navigation').getByRole('link', { name: 'Characters' })).toBeVisible()
+		await expect(page.getByTestId('cn-nav-entry-Characters').getByRole('link', { name: 'Characters' })).toBeVisible()
 	})
 
 	// @e2e openspec/changes/character-photos-leaf/specs/character-photos-leaf/spec.md#photos-leaf-hidden-when-integration-registry-absent
@@ -523,7 +540,7 @@ test.describe('event-calendar-leaf', () => {
 	test('event navigation remains functional for calendar leaf binding', async ({ page }) => {
 		await go(page, '/events')
 		await expect(
-			page.locator('.app-navigation').getByRole('link', { name: 'Events' }),
+			page.getByTestId('cn-nav-entry-Events').getByRole('link', { name: 'Events' }),
 		).toBeVisible()
 	})
 
@@ -563,7 +580,7 @@ test.describe('event-location-to-maps-leaf', () => {
 	// @e2e openspec/changes/event-location-to-maps-leaf/specs/event-location-to-maps-leaf/spec.md#setting-a-location-through-the-maps-leaf
 	test('event detail page is accessible for maps leaf interaction', async ({ page }) => {
 		await go(page, '/events')
-		await expect(page.locator('.app-navigation').getByRole('link', { name: 'Events' })).toBeVisible()
+		await expect(page.getByTestId('cn-nav-entry-Events').getByRole('link', { name: 'Events' })).toBeVisible()
 	})
 
 	// @e2e openspec/changes/event-location-to-maps-leaf/specs/event-location-to-maps-leaf/spec.md#migrating-a-legacy-free-text-location
@@ -599,7 +616,7 @@ test.describe('event-signup-to-forms-leaf', () => {
 	// @e2e openspec/changes/event-signup-to-forms-leaf/specs/event-signup-to-forms-leaf/spec.md#a-sign-up-submission-is-stored-by-the-forms-leaf
 	test('event navigation works for forms-leaf submission binding', async ({ page }) => {
 		await go(page, '/events')
-		await expect(page.locator('.app-navigation').getByRole('link', { name: 'Events' })).toBeVisible()
+		await expect(page.getByTestId('cn-nav-entry-Events').getByRole('link', { name: 'Events' })).toBeVisible()
 	})
 
 	// @e2e openspec/changes/event-signup-to-forms-leaf/specs/event-signup-to-forms-leaf/spec.md#waiting-list-forms-when-capacity-is-reached
@@ -636,7 +653,7 @@ test.describe('player-to-contacts-leaf', () => {
 	// @e2e openspec/changes/player-to-contacts-leaf/specs/player-to-contacts-leaf/spec.md#editing-person-data-through-the-contacts-leaf
 	test('player navigation remains functional for contacts-leaf editing', async ({ page }) => {
 		await go(page, '/players')
-		await expect(page.locator('.app-navigation').getByRole('link', { name: 'Players' })).toBeVisible()
+		await expect(page.getByTestId('cn-nav-entry-Players').getByRole('link', { name: 'Players' })).toBeVisible()
 	})
 
 	// @e2e openspec/changes/player-to-contacts-leaf/specs/player-to-contacts-leaf/spec.md#character-ocname-still-resolves-after-contacts-adoption
