@@ -8,6 +8,9 @@ Larping is a live-action role-playing (LARP) management app for Nextcloud. It pr
 
 ## Core Features
 
+### Setting (World / Campaign) Management
+Manage your LARP settings as first-class worlds/campaigns. Each setting has a name, description, and status (active or archived). Characters, events, and mechanics can optionally be scoped to a setting; entities without a setting are shared across all settings, so existing data needs no migration. Finished campaigns are archived rather than deleted, keeping their data readable.
+
 ### Character Management
 Create and manage player characters with full stat calculation, background stories, and approval workflows. Track character progression and XP across sessions.
 

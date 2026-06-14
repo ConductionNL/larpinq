@@ -1,6 +1,6 @@
 {
 	"$schema": "https://codeberg.org/Conduction/nextcloud-vue/raw/branch/main/src/schemas/app-manifest-v2.schema.json",
-	"version": "0.2.0",
+	"version": "0.3.0",
 	"dependencies": ["openregister"],
 	"menu": [
 		{ "id": "Dashboard", "label": "Dashboard", "icon": "ViewDashboard", "route": "Dashboard", "order": 10 },
@@ -36,6 +36,7 @@
 				{ "id": "Events", "label": "Events", "icon": "CalendarMonthOutline","route": "Events", "order": 90 }
 			]
 		},
+		{ "id": "Settings",          "label": "Settings (Worlds)","icon": "Globe",       "route": "Settings",     "order": 25 },
 		{ "id": "GameSettings",      "label": "Game Settings",    "icon": "Cog",         "route": "GameSettings", "order": 100, "section": "settings" },
 		{ "id": "Documentation",     "label": "Documentation",    "icon": "icon-info",   "href": "https://larpingapp.conduction.nl", "section": "footer", "order": 90 },
 		{ "id": "FeaturesRoadmapMenu","label": "Features & roadmap","icon": "icon-toggle","route": "FeaturesRoadmap", "section": "footer", "order": 91 }
@@ -196,6 +197,20 @@
 				"maps-leaf": "ObjectDetail",
 				"forms-leaf": "ObjectDetail"
 			}
+		},
+		{
+			"id": "Settings",
+			"route": "/settings",
+			"type": "index",
+			"title": "Settings",
+			"config": { "register": "larpingapp", "schema": "setting", "documentationUrl": "https://larpingapp.conduction.nl" }
+		},
+		{
+			"id": "SettingDetail",
+			"route": "/settings/:id",
+			"type": "detail",
+			"title": "Setting",
+			"config": { "register": "larpingapp", "schema": "setting", "documentationUrl": "https://larpingapp.conduction.nl" }
 		},
 		{
 			"id": "GameSettings",

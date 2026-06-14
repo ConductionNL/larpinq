@@ -39,7 +39,7 @@
         "slug": "character",
         "title": "Character",
         "icon": "BriefcaseAccountOutline",
-        "version": "1.2.0",
+        "version": "1.3.0",
         "summary": "A playable or non-playable character in the LARP game",
         "description": "Represents a character entity with stats, skills, items, conditions, and event participation. Characters can be player characters, NPCs, or other types. Game masters approve characters before play.",
         "type": "object",
@@ -187,6 +187,12 @@
               "format": "uuid"
             },
             "visible": false
+          },
+          "setting": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Optional setting (world/campaign) this character belongs to. Empty means shared across all settings.",
+            "visible": false
           }
         },
         "configuration": {
@@ -288,7 +294,7 @@
         "slug": "ability",
         "title": "Ability",
         "icon": "ShieldSwordOutline",
-        "version": "1.0.0",
+        "version": "1.1.0",
         "summary": "A numeric stat tracked on characters (e.g., XP, Mana, Health)",
         "description": "Represents a numeric ability or stat that characters track. Effects modify abilities by adding or subtracting from the base value. Used for experience points, mana, health, armor, and other quantifiable attributes.",
         "type": "object",
@@ -311,6 +317,12 @@
             "type": "integer",
             "description": "Starting value for all characters",
             "default": 0
+          },
+          "setting": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Optional setting (world/campaign) this ability belongs to. Empty means shared across all settings.",
+            "visible": false
           }
         }
       },
@@ -318,7 +330,7 @@
         "slug": "skill",
         "title": "Skill",
         "icon": "SwordCross",
-        "version": "1.0.0",
+        "version": "1.1.0",
         "summary": "A learnable ability that characters can acquire",
         "description": "Represents a skill that characters can learn, usually purchased with experience points. Skills provide effects and may have prerequisites (other skills, stats, conditions, or effects).",
         "type": "object",
@@ -392,6 +404,12 @@
             "type": "integer",
             "description": "Minimum ability score needed when requirements are abilities",
             "visible": false
+          },
+          "setting": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Optional setting (world/campaign) this skill belongs to. Empty means shared across all settings.",
+            "visible": false
           }
         }
       },
@@ -399,7 +417,7 @@
         "slug": "item",
         "title": "Item",
         "icon": "Sword",
-        "version": "1.0.0",
+        "version": "1.1.0",
         "summary": "A magical or special item that characters can own",
         "description": "Represents a special or magical item in the game. Items provide effects to their holder. Items can be unique artifacts (only one instance exists) or regular items.",
         "type": "object",
@@ -446,6 +464,12 @@
               "format": "uuid"
             },
             "visible": false
+          },
+          "setting": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Optional setting (world/campaign) this item belongs to. Empty means shared across all settings.",
+            "visible": false
           }
         }
       },
@@ -453,7 +477,7 @@
         "slug": "condition",
         "title": "Condition",
         "icon": "EmoticonSickOutline",
-        "version": "1.0.0",
+        "version": "1.1.0",
         "summary": "A positive or negative condition affecting characters",
         "description": "Represents a condition that can be applied to characters as a consequence of gameplay. Conditions differ from skills in that they are not purchased but earned through in-game events.",
         "type": "object",
@@ -500,6 +524,12 @@
               "format": "uuid"
             },
             "visible": false
+          },
+          "setting": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Optional setting (world/campaign) this condition belongs to. Empty means shared across all settings.",
+            "visible": false
           }
         }
       },
@@ -507,7 +537,7 @@
         "slug": "effect",
         "title": "Effect",
         "icon": "MagicStaff",
-        "version": "1.0.0",
+        "version": "1.1.0",
         "summary": "A calculated modification to a character ability",
         "description": "Represents a numeric modification to one or more abilities. Effects come from skills, items, conditions, or events and automatically adjust character stats.",
         "type": "object",
@@ -561,6 +591,12 @@
               "format": "uuid"
             },
             "visible": false
+          },
+          "setting": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Optional setting (world/campaign) this effect belongs to. Empty means shared across all settings.",
+            "visible": false
           }
         }
       },
@@ -568,7 +604,7 @@
         "slug": "event",
         "title": "Event",
         "icon": "CalendarMonthOutline",
-        "version": "1.0.0",
+        "version": "1.1.0",
         "summary": "A LARP event or gathering where players come together",
         "description": "Represents a LARP event — a gathering where players come with their characters. Can be multi-day events or casual meetups. Characters subscribe to events and receive effects after the event.",
         "type": "object",
@@ -619,6 +655,12 @@
               "format": "uuid"
             },
             "visible": false
+          },
+          "setting": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Optional setting (world/campaign) this event belongs to. Empty means shared across all settings.",
+            "visible": false
           }
         },
         "x-openregister-notifications": {
@@ -652,10 +694,10 @@
       "setting": {
         "slug": "setting",
         "title": "Setting",
-        "icon": "Cog",
-        "version": "1.0.0",
-        "summary": "A game setting or configuration value",
-        "description": "Represents a game-level setting or configuration parameter for the LARP campaign.",
+        "icon": "Globe",
+        "version": "2.0.0",
+        "summary": "A LARP world / campaign (setting)",
+        "description": "A first-class LARP setting: a world or campaign that organises characters, events, and mechanics. Real organisations run several campaigns (a fantasy summer world, a sci-fi winter world) with disjoint rosters and rule sets. Game entities can optionally be scoped to a setting; entities without a setting are shared across all settings. Finished campaigns are archived rather than deleted.",
         "type": "object",
         "required": [
           "name"
@@ -663,19 +705,25 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "Setting name",
+            "description": "The name of the setting / campaign",
             "maxLength": 255,
             "minLength": 1
           },
           "description": {
             "type": "string",
-            "description": "Description of the setting",
+            "description": "Description of the setting / campaign",
             "maxLength": 2555
           },
-          "value": {
+          "status": {
             "type": "string",
-            "description": "The setting value",
-            "maxLength": 2555
+            "description": "Lifecycle status of the setting",
+            "enum": [
+              "active",
+              "archived"
+            ],
+            "default": "active",
+            "title": "Status",
+            "facetable": true
           }
         }
       }
