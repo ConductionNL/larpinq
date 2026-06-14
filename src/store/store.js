@@ -11,6 +11,7 @@ const SCHEMA_SLUGS = [
 	'effect',
 	'event',
 	'setting',
+	'xpAward',
 ]
 
 /**
