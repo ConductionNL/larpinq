@@ -91,6 +91,13 @@ class CharacterService
     private array $allAbilities = [];
 
     /**
+     * All XP awards grouped by the character they were granted to.
+     *
+     * @var array<string, array<int, array<string, mixed>>>
+     */
+    private array $xpAwardsByCharacter = [];
+
+    /**
      * Flag indicating whether entity collections have been loaded.
      *
      * @var boolean
@@ -150,14 +157,83 @@ class CharacterService
             return;
         }
 
-        $this->allSkills      = $this->indexById(entities: $this->objectFetcher->getObjects('skill'));
-        $this->allItems       = $this->indexById(entities: $this->objectFetcher->getObjects('item'));
-        $this->allConditions  = $this->indexById(entities: $this->objectFetcher->getObjects('condition'));
-        $this->allEvents      = $this->indexById(entities: $this->objectFetcher->getObjects('event'));
-        $this->allEffects     = $this->indexById(entities: $this->objectFetcher->getObjects('effect'));
-        $this->allAbilities   = $this->indexById(entities: $this->objectFetcher->getObjects('ability'));
-        $this->entitiesLoaded = true;
+        $this->allSkills           = $this->indexById(entities: $this->objectFetcher->getObjects('skill'));
+        $this->allItems            = $this->indexById(entities: $this->objectFetcher->getObjects('item'));
+        $this->allConditions       = $this->indexById(entities: $this->objectFetcher->getObjects('condition'));
+        $this->allEvents           = $this->indexById(entities: $this->objectFetcher->getObjects('event'));
+        $this->allEffects          = $this->indexById(entities: $this->objectFetcher->getObjects('effect'));
+        $this->allAbilities        = $this->indexById(entities: $this->objectFetcher->getObjects('ability'));
+        $this->xpAwardsByCharacter = $this->loadXpAwards();
+        $this->entitiesLoaded      = true;
     }//end loadAllEntities()
+
+    /**
+     * Load XP awards and group them by the character they were granted to.
+     *
+     * The xpAward schema is optional: older deployments without it (or without
+     * OpenRegister) simply yield no awards. Never throws — a missing schema
+     * degrades to "no awards" so stat calculation keeps working (CALC-006).
+     *
+     * @return array<string, array<int, array<string, mixed>>> Awards keyed by character id.
+     *
+     * @spec openspec/changes/event-xp-award-workflow/specs/event-xp-awards/spec.md
+     */
+    private function loadXpAwards(): array
+    {
+        $grouped = [];
+        try {
+            $awards = $this->objectFetcher->getObjects('xpAward');
+        } catch (\Throwable $e) {
+            $this->logger->debug(
+                'LarpingApp: xpAward schema unavailable; stat calculation proceeds with no awards.',
+                ['exception' => $e]
+            );
+            return $grouped;
+        }
+
+        // @psalm-suppress MixedAssignment Award entries from the object fetcher.
+        foreach ($awards as $award) {
+            if (is_array($award) === false) {
+                continue;
+            }
+
+            $characterId = (string) ($award['character'] ?? '');
+            if ($characterId === '') {
+                continue;
+            }
+
+            if (isset($grouped[$characterId]) === false) {
+                $grouped[$characterId] = [];
+            }
+
+            $grouped[$characterId][] = $award;
+        }
+
+        return $grouped;
+    }//end loadXpAwards()
+
+    /**
+     * Resolve the XP ability id from the loaded abilities by name.
+     *
+     * No hardcoded UUIDs: matches an ability whose name is "xp" or contains
+     * "experience" (case-insensitive). Shared resolution rule with
+     * skill-requirement-enforcement.
+     *
+     * @return string|null The XP ability id, or null when none resolves.
+     *
+     * @spec openspec/changes/event-xp-award-workflow/specs/event-xp-awards/spec.md
+     */
+    private function resolveXpAbilityId(): ?string
+    {
+        foreach ($this->allAbilities as $abilityId => $ability) {
+            $name = strtolower((string) ($ability['name'] ?? ''));
+            if ($name === 'xp' || str_contains($name, 'experience') === true) {
+                return (string) $abilityId;
+            }
+        }
+
+        return null;
+    }//end resolveXpAbilityId()
 
     /**
      * Calculate stats for all characters.
@@ -320,11 +396,72 @@ class CharacterService
             appliedEffects: $appliedEffects
         );
 
+        // Fifth stage: per-participant XP awards (event-xp-award-workflow).
+        // Applied after the four entity-effect stages so existing CALC ordering
+        // and arithmetic stay byte-identical.
+        $this->applyXpAwards(abilityScores: $abilityScores, character: $character);
+
         // Update character array with calculated stats.
         $character['stats'] = $abilityScores;
 
         return $character;
     }//end calculateCharacter()
+
+    /**
+     * Apply the character's XP awards onto the XP ability (fifth stage).
+     *
+     * Each award sums its amount onto the resolved XP ability and appends an
+     * audit entry `{type: "xpAward", award, old, new}`. The XP ability is
+     * resolved by name (no hardcoded UUIDs). When no XP ability resolves, or
+     * the character has no awards, this is a no-op — never throws (CALC-006).
+     *
+     * @param array<string, array<string, mixed>> $abilityScores Reference to the ability scores.
+     * @param array<string, mixed>                $character     The character being calculated.
+     *
+     * @return void
+     *
+     * @spec openspec/changes/event-xp-award-workflow/specs/event-xp-awards/spec.md
+     */
+    private function applyXpAwards(array &$abilityScores, array $character): void
+    {
+        $characterId = (string) ($character['id'] ?? '');
+        if ($characterId === '') {
+            return;
+        }
+
+        $awards = $this->xpAwardsByCharacter[$characterId] ?? [];
+        if (empty($awards) === true) {
+            return;
+        }
+
+        $xpAbilityId = $this->resolveXpAbilityId();
+        if ($xpAbilityId === null || isset($abilityScores[$xpAbilityId]) === false) {
+            return;
+        }
+
+        foreach ($awards as $award) {
+            $amount = $award['amount'] ?? 0;
+            if (is_numeric($amount) === false) {
+                continue;
+            }
+
+            $currentValue = (int) $abilityScores[$xpAbilityId]['value'];
+            $newValue     = ($currentValue + (int) $amount);
+
+            $abilityScores[$xpAbilityId]['value']   = $newValue;
+            $abilityScores[$xpAbilityId]['audit'][] = [
+                'type'  => 'xpAward',
+                'award' => [
+                    'id'     => (string) ($award['id'] ?? ''),
+                    'event'  => (string) ($award['event'] ?? ''),
+                    'amount' => (int) $amount,
+                    'reason' => (string) ($award['reason'] ?? ''),
+                ],
+                'old'   => $currentValue,
+                'new'   => $newValue,
+            ];
+        }//end foreach
+    }//end applyXpAwards()
 
     /**
      * Apply effects to abilities.

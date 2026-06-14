@@ -8,6 +8,9 @@ Larping is a live-action role-playing (LARP) management app for Nextcloud. It pr
 
 ## Core Features
 
+### Setting (World / Campaign) Management
+Manage your LARP settings as first-class worlds/campaigns. Each setting has a name, description, and status (active or archived). Characters, events, and mechanics can optionally be scoped to a setting; entities without a setting are shared across all settings, so existing data needs no migration. Finished campaigns are archived rather than deleted, keeping their data readable.
+
 ### Character Management
 Create and manage player characters with full stat calculation, background stories, and approval workflows. Track character progression and XP across sessions.
 
@@ -20,11 +23,14 @@ Stats are calculated in real-time based on character skills, items, and conditio
 ### Event Subscriptions
 Manage LARP events and player subscriptions. Track attendance, assign characters to events, and manage event-specific rules.
 
+### Post-event XP Awards
+After an event, game masters award experience points per participant. Each award is a recorded `xpAward` (event, character, amount, reason, grantor, timestamp) and feeds the character's computed XP ability as a dedicated stat-engine stage, with a full audit entry per grant. Award writes are restricted to game masters; players can read the award provenance on their characters.
+
 ### Background Approval Workflow
 Players submit character backgrounds for game master review. Built-in approval workflow ensures story consistency before characters enter play.
 
 ### XP Tracking
-Track experience points (XP) and character advancement. Define XP costs for skills and abilities, and automatically apply restrictions.
+Track experience points (XP) and character advancement. Define XP costs for skills and abilities. Restrictions are enforced server-authoritatively: a character write that adds a skill with unmet prerequisites, or that drives the computed XP ability below zero, is rejected at the OpenRegister write boundary with an itemised list of what is unmet — unless a game master attaches an explicit, audited override (with a reason). The same checks are available on demand via `GET /api/characters/{id}/requirement-report`.
 
 ### PDF Character Sheets
 Generate printable PDF character sheets with all stats, skills, items, and background information. Ready for table use at events.

@@ -34,6 +34,7 @@ declare(strict_types=1);
 namespace OCA\LarpingApp\Controller;
 
 use OCA\LarpingApp\Service\RegisterObjectFetcher;
+use OCA\LarpingApp\Service\SkillRequirementService;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
@@ -64,14 +65,15 @@ class CharactersController extends Controller
      * downloadPdf does not call calculateCharacter(). Removing the dep avoids
      * those unnecessary queries on every PDF request. Closes #211.
      *
-     * @param string                $appName       The name of the app
-     * @param IRequest              $request       The request object
-     * @param RegisterObjectFetcher $objectFetcher The register object fetcher
-     * @param IAppManager           $appManager    The app manager for checking installed apps
-     * @param ContainerInterface    $container     The DI container for resolving cross-app services
-     * @param IUserSession          $userSession   The user session for authentication checks
-     * @param IGroupManager         $groupManager  The group manager for permission checks
-     * @param LoggerInterface       $logger        The logger for server-side error logging
+     * @param string                  $appName            The name of the app
+     * @param IRequest                $request            The request object
+     * @param RegisterObjectFetcher   $objectFetcher      The register object fetcher
+     * @param IAppManager             $appManager         The app manager for checking installed apps
+     * @param ContainerInterface      $container          The DI container for resolving cross-app services
+     * @param IUserSession            $userSession        The user session for authentication checks
+     * @param IGroupManager           $groupManager       The group manager for permission checks
+     * @param LoggerInterface         $logger             The logger for server-side error logging
+     * @param SkillRequirementService $requirementService The skill-requirement validation service
      */
     public function __construct(
         $appName,
@@ -81,7 +83,8 @@ class CharactersController extends Controller
         private readonly ContainerInterface $container,
         private readonly IUserSession $userSession,
         private readonly IGroupManager $groupManager,
-        private readonly LoggerInterface $logger
+        private readonly LoggerInterface $logger,
+        private readonly SkillRequirementService $requirementService
     ) {
         parent::__construct(appName: $appName, request: $request);
     }//end __construct()
@@ -204,4 +207,50 @@ class CharactersController extends Controller
             'application/pdf'
         );
     }//end downloadPdf()
+
+    /**
+     * Recompute the skill-requirement report for one character on demand.
+     *
+     * Returns the structured validation result (unmet prerequisites, overridden
+     * entries, dependent-now-unmet skills from past removals/global edits, the
+     * XP budget block). Read-only: it never writes. Authorization is delegated
+     * to OpenRegister via the fetch — a user who cannot read the character via
+     * the OR-backed fetch gets a 404, so this endpoint exposes nothing the
+     * caller could not already read through the OR objects API.
+     *
+     * @param string $id The character UUID.
+     *
+     * @return JSONResponse The requirement report, or an error response.
+     *
+     * @NoAdminRequired
+     * @NoCSRFRequired
+     *
+     * @SuppressWarnings(PHPMD.ShortVariable)
+     *
+     * @spec openspec/changes/skill-requirement-enforcement/specs/skill-requirement-enforcement/spec.md
+     */
+    #[NoAdminRequired]
+    #[NoCSRFRequired]
+    public function requirementReport(string $id): JSONResponse
+    {
+        $user = $this->userSession->getUser();
+        if ($user === null) {
+            return new JSONResponse(data: ['error' => 'Not authenticated'], statusCode: Http::STATUS_UNAUTHORIZED);
+        }
+
+        try {
+            // Per-object access is OR-delegated: the fetch enforces read access
+            // for the current user; a non-readable id yields a not-found.
+            // @no-admin-idor-exempt OR-delegated read via RegisterObjectFetcher::getObject (ADR-022).
+            $character = $this->objectFetcher->getObject(objectType: 'character', id: $id);
+        } catch (\Exception $exception) {
+            return new JSONResponse(data: ['error' => 'Character not found'], statusCode: 404);
+        }
+
+        // Treat the persisted state as both old and candidate: this surfaces
+        // dependents and budget drift for the character as it currently stands.
+        $report = $this->requirementService->validate(candidate: $character, oldCharacter: $character);
+
+        return new JSONResponse(data: $report);
+    }//end requirementReport()
 }//end class

@@ -16,7 +16,7 @@ Defines the core RPG mechanics of LarpingApp: Skills, Items, Conditions, Effects
 
 ### Requirement: Ability (Stat) Management
 
-Abilities represent numeric values on which characters are scored (XP, mana types, HP, combat stats, etc.). They provide the base values that effects modify.
+Abilities represent numeric values on which characters are scored (XP, mana types, HP, combat stats, etc.). They provide the base values that effects modify. The system MUST support creating, listing, and managing abilities as the stat foundation of the engine.
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
@@ -70,7 +70,7 @@ Abilities represent numeric values on which characters are scored (XP, mana type
 
 ### Requirement: Effect System Core
 
-Effects are the atomic unit of the RPG system. They define numeric modifiers applied to one or more abilities with a positive or negative direction and cumulative/non-cumulative stacking.
+Effects are the atomic unit of the RPG system. They define numeric modifiers applied to one or more abilities with a positive or negative direction and cumulative/non-cumulative stacking. Effects MUST be applicable to abilities by the stat engine in the directions and stacking modes defined here.
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
@@ -129,7 +129,7 @@ Effects are the atomic unit of the RPG system. They define numeric modifiers app
 
 ### Requirement: Skill Management and Prerequisites
 
-Skills represent learnable abilities that characters acquire. They carry effects and can require prerequisites before a character can take them.
+Skills represent learnable abilities that characters acquire. They carry effects and can require prerequisites before a character can take them. The system MUST support managing skills and their prerequisite metadata. Prerequisites and XP costs MUST be enforced server-side during character assignment (see the `skill-requirement-enforcement` capability for the enforcement, override, and report semantics).
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
@@ -146,7 +146,24 @@ Skills represent learnable abilities that characters acquire. They carry effects
 | SKILL-011 | Skills can require specific conditions (`requiredConditions[]`) | MUST | Implemented |
 | SKILL-012 | Skills can require specific effects (`requiredEffects[]`) | MUST | Implemented |
 | SKILL-013 | Skills can require a minimum score threshold (`requiredScore`) | MUST | Implemented |
-| SKILL-014 | Prerequisite validation is data-only -- the system stores prerequisites but does NOT enforce them during character assignment | SHOULD | Implemented |
+| SKILL-014 | Prerequisites and XP budget MUST be enforced server-side when skills are assigned to a character (vetoable OR pre-write hook; was data-only) | MUST | Implemented |
+| SKILL-015 | Enforcement MUST be overridable per assignment by a GM via an explicit, reasoned `requirementOverrides[]` entry, audited through the OR object audit trail | MUST | Implemented |
+| SKILL-016 | Removing an assigned prerequisite skill MUST flag dependent skills via a validation report and MUST NOT cascade-delete them | MUST | Implemented |
+
+#### Scenario: Prerequisites enforced on character assignment
+
+- GIVEN skill "Advanced Swordplay" with requiredSkills=["basic-swordplay"]
+- AND character "Squire" who does not have "Basic Swordplay"
+- WHEN "Advanced Swordplay" is assigned to "Squire" without a GM override
+- THEN the character write MUST be rejected server-side
+- AND the unmet prerequisite MUST be itemised in the error payload
+
+#### Scenario: XP budget enforced on character assignment
+
+- GIVEN character "Novice" whose computed XP ability value is 10
+- AND skill "Master Smithing" carrying effect "XP Cost -15"
+- WHEN the skill is assigned without a GM override
+- THEN the write MUST be rejected because the engine-computed candidate XP would be negative
 
 #### Scenario: Create a skill with effects
 
@@ -179,7 +196,7 @@ Skills represent learnable abilities that characters acquire. They carry effects
 
 ### Requirement: Item Management
 
-Items represent magical or special objects that characters hold. They carry effects and have a uniqueness flag.
+Items represent magical or special objects that characters hold. They carry effects and have a uniqueness flag. The system MUST support managing items and applying their effects to the characters that hold them.
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
@@ -221,7 +238,7 @@ Items represent magical or special objects that characters hold. They carry effe
 
 ### Requirement: Condition Management
 
-Conditions represent positive or negative states applied to characters during gameplay (curses, blessings, diseases, etc.).
+Conditions represent positive or negative states applied to characters during gameplay (curses, blessings, diseases, etc.). The system MUST support managing conditions and applying their effects to affected characters.
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
@@ -265,17 +282,19 @@ Conditions represent positive or negative states applied to characters during ga
 
 ### Requirement: Stat Calculation Order and Audit
 
-The stat calculation engine MUST apply effects in a deterministic order and produce a complete audit trail.
+The stat calculation engine MUST apply effects in a deterministic order and produce a complete audit trail. XP awards (see the `event-xp-awards` capability) are applied as a fifth stage after the four entity-effect stages, affecting only the XP ability.
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
 | CALC-001 | `calculateCharacter()` MUST initialize ability scores from base values via `initializeAbilityScores()` | MUST | Implemented |
-| CALC-002 | Effects MUST be applied in order: skills first, then items, then conditions, then events | MUST | Implemented |
+| CALC-002 | Effects MUST be applied in order: skills first, then items, then conditions, then events; XP awards are applied after all entity effects | MUST | Implemented |
 | CALC-003 | Within each entity type, effects MUST be applied in the order the entities appear in the character's association array | MUST | Implemented |
 | CALC-004 | Each effect application MUST produce an audit entry with `{type: "effect", effect: {...}, old: number, new: number}` | MUST | Implemented |
 | CALC-005 | The final stats object MUST contain per-ability entries with `{name, base, value, audit[]}` | MUST | Implemented |
 | CALC-006 | Missing entities (referenced by UUID but not found in preloaded maps) MUST be silently skipped | MUST | Implemented |
 | CALC-007 | Empty or null entity association arrays MUST be skipped without error by `applyEntityEffects()` | MUST | Implemented |
+| CALC-008 | Each XP award applied MUST produce an audit entry with `{type: "xpAward", award: {...}, old: number, new: number}` on the XP ability, resolved by name-match (no hardcoded UUID) | MUST | Implemented |
+| CALC-009 | XP awards whose character cannot be resolved MUST be skipped; an award whose event is missing MUST still count (provenance, not validity) — never an error | MUST | Implemented |
 
 #### Scenario: Full stat calculation with all entity types
 
@@ -304,6 +323,15 @@ The stat calculation engine MUST apply effects in a deterministic order and prod
 - WHEN `applyEntityEffects()` processes the skills
 - THEN "valid-skill-uuid" MUST be processed normally
 - AND "deleted-skill-uuid" MUST be skipped (entity lookup returns null)
+
+#### Scenario: XP awards applied as the fifth stage
+
+- GIVEN ability "XP" (base 0)
+- AND character has an event effect "+2 XP" and xpAwards of 3 and 1
+- WHEN stats are calculated
+- THEN XP MUST equal 6 (0 + 2 + 3 + 1)
+- AND the XP audit MUST contain the event-effect entry first, then two entries of type "xpAward"
+- AND abilities other than XP MUST be unaffected by the awards
 
 ---
 
@@ -342,7 +370,7 @@ All RPG entities MUST support OpenRegister-specific features when backed by Open
 
 ### Requirement: Internal vs OpenRegister Storage
 
-All RPG entities have a dual data model. Internal storage is skeletal; full functionality requires OpenRegister.
+All RPG entities have a dual data model. Internal storage is skeletal; full functionality requires OpenRegister. Entities MUST be stored through OpenRegister for full functionality, with the internal model serving only as a skeletal fallback.
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
