@@ -4,14 +4,38 @@
 	"dependencies": ["openregister"],
 	"menu": [
 		{ "id": "Dashboard", "label": "Dashboard", "icon": "ViewDashboard", "route": "Dashboard", "order": 10 },
-		{ "id": "Characters", "label": "Characters", "icon": "BriefcaseAccountOutline", "route": "Characters", "order": 20 },
-		{ "id": "Players", "label": "Players", "icon": "AccountGroupOutline", "route": "Players", "order": 30 },
-		{ "id": "Abilities", "label": "Abilities", "icon": "FlashOutline", "route": "Abilities", "order": 40 },
-		{ "id": "Skills", "label": "Skills", "icon": "StarOutline", "route": "Skills", "order": 50 },
-		{ "id": "Items", "label": "Items", "icon": "Sword", "route": "Items", "order": 60 },
-		{ "id": "Conditions", "label": "Conditions", "icon": "EmoticonSickOutline", "route": "Conditions", "order": 70 },
-		{ "id": "Effects", "label": "Effects", "icon": "MagicStaff", "route": "Effects", "order": 80 },
-		{ "id": "Events", "label": "Events", "icon": "CalendarMonthOutline", "route": "Events", "order": 90 },
+		{
+			"id": "CharactersGroup",
+			"label": "Characters",
+			"icon": "BriefcaseAccountOutline",
+			"order": 20,
+			"children": [
+				{ "id": "Characters", "label": "Characters", "icon": "BriefcaseAccountOutline", "route": "Characters", "order": 20 },
+				{ "id": "Players", "label": "Players", "icon": "AccountGroupOutline", "route": "Players", "order": 30 }
+			]
+		},
+		{
+			"id": "MechanicsGroup",
+			"label": "Mechanics",
+			"icon": "FlashOutline",
+			"order": 40,
+			"children": [
+				{ "id": "Abilities", "label": "Abilities", "icon": "FlashOutline", "route": "Abilities", "order": 40 },
+				{ "id": "Skills", "label": "Skills", "icon": "StarOutline", "route": "Skills", "order": 50 },
+				{ "id": "Conditions", "label": "Conditions", "icon": "EmoticonSickOutline", "route": "Conditions", "order": 70 },
+				{ "id": "Effects", "label": "Effects", "icon": "MagicStaff", "route": "Effects", "order": 80 }
+			]
+		},
+		{
+			"id": "WorldGroup",
+			"label": "World",
+			"icon": "EarthOutline",
+			"order": 60,
+			"children": [
+				{ "id": "Items", "label": "Items", "icon": "Sword", "route": "Items", "order": 60 },
+				{ "id": "Events", "label": "Events", "icon": "CalendarMonthOutline", "route": "Events", "order": 90 }
+			]
+		},
 		{ "id": "GameSettings", "label": "Game Settings", "icon": "Cog", "route": "GameSettings", "order": 100, "section": "settings" },
 		{ "id": "Documentation", "label": "Documentation", "icon": "icon-info", "href": "https://larpingapp.conduction.nl", "section": "footer", "order": 90 },
 		{ "id": "FeaturesRoadmapMenu", "label": "Features & roadmap", "icon": "icon-toggle", "route": "FeaturesRoadmap", "section": "footer", "order": 91 }
