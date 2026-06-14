@@ -14,6 +14,8 @@ pickers, and the guarded archive/delete lifecycle. Scoping is an
 organisational lens, not a security boundary; authorization stays
 OR-delegated (ADR-022).
 
+@e2e exclude The repurposed setting schema shape, entity scoping, and the guarded archive/delete lifecycle are server-authoritative (OpenRegister schema + lifecycle); proven by PHPUnit (SettingSchemaTest). The per-user active-setting lens (index/dashboard/picker filtering, switcher, persistence, deep-link fallthrough) is deferred (custom app-nav + useObjectStore plumbing — a nc-vue follow-up). The shipped browser surface (the type:index Settings page) is covered by tests/e2e/spec-coverage/setting-management.spec.ts.
+
 ## Requirements
 
 ### Requirement: Setting MUST be a managed campaign entity
