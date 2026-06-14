@@ -43,9 +43,10 @@ the content types).
 
 ### Requirement: Game entities MUST support optional setting scoping
 
-The `character`, `event`, `skill`, `item`, `condition`, `ability`, and
-`effect` schemas MUST gain an optional `setting` property holding the UUID of
-a setting object. An entity with the property set belongs to that setting;
+Game entities MUST support optional setting scoping. The character, event,
+skill, item, condition, ability, and effect schemas MUST gain an optional
+`setting` property holding the UUID of a setting object. An entity with the
+property set belongs to that setting;
 an entity without it is shared and MUST be treated as belonging to every
 setting. The `player` schema MUST NOT be scoped (players are real people who
 span campaigns). Existing data (no `setting` value) MUST remain fully valid
