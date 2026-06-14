@@ -7,7 +7,7 @@ parent: openspec/specs/game-mechanics/spec.md
 
 ## ADDED Requirements
 
-### Requirement: All game mechanics unit-tested over the OpenRegister object model
+### Requirement: All game mechanics MUST be unit-tested over the OpenRegister object model
 
 Each game mechanic (Ability, Effect, Skill, Item, Condition) MUST be covered by
 a focused unit test that verifies its data shape is correctly consumed and
@@ -41,7 +41,7 @@ than asserting against non-existent entity classes.
 - **WHEN** a character carries a Condition object whose effect uses a negative modification
 - **THEN** the targeted ability is reduced and the audit records the debuff delta
 
-### Requirement: The effect chain verified end-to-end
+### Requirement: The effect chain MUST be verified end-to-end
 
 The system MUST provide an integration test that verifies the full effect
 chain end-to-end: character through skills, items, conditions and events, to
