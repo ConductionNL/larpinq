@@ -1,6 +1,6 @@
 {
 	"$schema": "https://codeberg.org/Conduction/nextcloud-vue/raw/branch/main/src/schemas/app-manifest-v2.schema.json",
-	"version": "0.2.0",
+	"version": "0.3.0",
 	"dependencies": ["openregister"],
 	"menu": [
 		{ "id": "Dashboard", "label": "Dashboard", "icon": "ViewDashboard", "route": "Dashboard", "order": 10 },
@@ -33,7 +33,8 @@
 			"order": 60,
 			"children": [
 				{ "id": "Items",  "label": "Items",  "icon": "Sword",              "route": "Items",  "order": 60 },
-				{ "id": "Events", "label": "Events", "icon": "CalendarMonthOutline","route": "Events", "order": 90 }
+				{ "id": "Events", "label": "Events", "icon": "CalendarMonthOutline","route": "Events", "order": 90 },
+				{ "id": "XpAwards", "label": "XP Awards", "icon": "StarPlusOutline", "route": "XpAwards", "order": 95 }
 			]
 		},
 		{ "id": "GameSettings",      "label": "Game Settings",    "icon": "Cog",         "route": "GameSettings", "order": 100, "section": "settings" },
@@ -196,6 +197,20 @@
 				"maps-leaf": "ObjectDetail",
 				"forms-leaf": "ObjectDetail"
 			}
+		},
+		{
+			"id": "XpAwards",
+			"route": "/xp-awards",
+			"type": "index",
+			"title": "XP Awards",
+			"config": { "register": "larpingapp", "schema": "xpAward", "documentationUrl": "https://larpingapp.conduction.nl" }
+		},
+		{
+			"id": "XpAwardDetail",
+			"route": "/xp-awards/:id",
+			"type": "detail",
+			"title": "XP Award",
+			"config": { "register": "larpingapp", "schema": "xpAward", "documentationUrl": "https://larpingapp.conduction.nl" }
 		},
 		{
 			"id": "GameSettings",

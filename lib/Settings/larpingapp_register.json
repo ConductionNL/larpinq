@@ -28,7 +28,8 @@
           "condition",
           "effect",
           "event",
-          "setting"
+          "setting",
+          "xpAward"
         ],
         "tablePrefix": "",
         "folder": "Open Registers/LarpingApp"
@@ -705,6 +706,63 @@
             "description": "The setting value",
             "maxLength": 2555
           }
+        }
+      },
+      "xpAward": {
+        "slug": "xpAward",
+        "title": "XP Award",
+        "icon": "StarPlusOutline",
+        "version": "1.0.0",
+        "summary": "A per-participant experience-point grant for an event",
+        "description": "Records a single experience-point award made by a game master to one character for one event. The post-event awarding ritual produces one xpAward per grant: who earned how much, why, and who granted it. Awards feed the character's computed XP ability as a fifth stat-engine stage. Writes are restricted to game masters; reads are open to authenticated app users.",
+        "type": "object",
+        "required": [
+          "event",
+          "character",
+          "amount"
+        ],
+        "properties": {
+          "event": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The event this award was granted for"
+          },
+          "character": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The character receiving the award"
+          },
+          "amount": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "description": "The positive amount of experience points awarded"
+          },
+          "reason": {
+            "type": "string",
+            "description": "Optional reason for the award (e.g. full attendance, plot bonus)",
+            "maxLength": 2555
+          },
+          "awardedBy": {
+            "type": "string",
+            "description": "Nextcloud uid of the game master who granted the award (server-stamped)",
+            "maxLength": 255
+          },
+          "awardedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the award was granted (server-stamped)"
+          }
+        },
+        "authorization": {
+          "create": [
+            "gamemasters"
+          ],
+          "update": [
+            "gamemasters"
+          ],
+          "delete": [
+            "gamemasters"
+          ]
         }
       }
     }

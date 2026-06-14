@@ -20,6 +20,9 @@ Stats are calculated in real-time based on character skills, items, and conditio
 ### Event Subscriptions
 Manage LARP events and player subscriptions. Track attendance, assign characters to events, and manage event-specific rules.
 
+### Post-event XP Awards
+After an event, game masters award experience points per participant. Each award is a recorded `xpAward` (event, character, amount, reason, grantor, timestamp) and feeds the character's computed XP ability as a dedicated stat-engine stage, with a full audit entry per grant. Award writes are restricted to game masters; players can read the award provenance on their characters.
+
 ### Background Approval Workflow
 Players submit character backgrounds for game master review. Built-in approval workflow ensures story consistency before characters enter play.
 

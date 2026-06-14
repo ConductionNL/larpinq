@@ -129,7 +129,7 @@ Effects are the atomic unit of the RPG system. They define numeric modifiers app
 
 ### Requirement: Skill Management and Prerequisites
 
-Skills represent learnable abilities that characters acquire. They carry effects and can require prerequisites before a character can take them. Prerequisites and XP costs MUST be enforced server-side during character assignment (see the `skill-requirement-enforcement` capability for the enforcement, override, and report semantics).
+Skills represent learnable abilities that characters acquire. They carry effects and can require prerequisites before a character can take them. The system MUST support managing skills and their prerequisite metadata. Prerequisites and XP costs MUST be enforced server-side during character assignment (see the `skill-requirement-enforcement` capability for the enforcement, override, and report semantics).
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
@@ -282,17 +282,19 @@ Conditions represent positive or negative states applied to characters during ga
 
 ### Requirement: Stat Calculation Order and Audit
 
-The stat calculation engine MUST apply effects in a deterministic order and produce a complete audit trail.
+The stat calculation engine MUST apply effects in a deterministic order and produce a complete audit trail. XP awards (see the `event-xp-awards` capability) are applied as a fifth stage after the four entity-effect stages, affecting only the XP ability.
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
 | CALC-001 | `calculateCharacter()` MUST initialize ability scores from base values via `initializeAbilityScores()` | MUST | Implemented |
-| CALC-002 | Effects MUST be applied in order: skills first, then items, then conditions, then events | MUST | Implemented |
+| CALC-002 | Effects MUST be applied in order: skills first, then items, then conditions, then events; XP awards are applied after all entity effects | MUST | Implemented |
 | CALC-003 | Within each entity type, effects MUST be applied in the order the entities appear in the character's association array | MUST | Implemented |
 | CALC-004 | Each effect application MUST produce an audit entry with `{type: "effect", effect: {...}, old: number, new: number}` | MUST | Implemented |
 | CALC-005 | The final stats object MUST contain per-ability entries with `{name, base, value, audit[]}` | MUST | Implemented |
 | CALC-006 | Missing entities (referenced by UUID but not found in preloaded maps) MUST be silently skipped | MUST | Implemented |
 | CALC-007 | Empty or null entity association arrays MUST be skipped without error by `applyEntityEffects()` | MUST | Implemented |
+| CALC-008 | Each XP award applied MUST produce an audit entry with `{type: "xpAward", award: {...}, old: number, new: number}` on the XP ability, resolved by name-match (no hardcoded UUID) | MUST | Implemented |
+| CALC-009 | XP awards whose character cannot be resolved MUST be skipped; an award whose event is missing MUST still count (provenance, not validity) — never an error | MUST | Implemented |
 
 #### Scenario: Full stat calculation with all entity types
 
@@ -321,6 +323,15 @@ The stat calculation engine MUST apply effects in a deterministic order and prod
 - WHEN `applyEntityEffects()` processes the skills
 - THEN "valid-skill-uuid" MUST be processed normally
 - AND "deleted-skill-uuid" MUST be skipped (entity lookup returns null)
+
+#### Scenario: XP awards applied as the fifth stage
+
+- GIVEN ability "XP" (base 0)
+- AND character has an event effect "+2 XP" and xpAwards of 3 and 1
+- WHEN stats are calculated
+- THEN XP MUST equal 6 (0 + 2 + 3 + 1)
+- AND the XP audit MUST contain the event-effect entry first, then two entries of type "xpAward"
+- AND abilities other than XP MUST be unaffected by the awards
 
 ---
 
