@@ -39,10 +39,11 @@ delegating to the same DocuDesk pipeline as character sheets.
 
 ### Requirement: Run-Sheet Access MUST Be Restricted to Game Masters
 
-The run-sheet aggregates GM-facing material (approval status, GM notes
-including `slNotesPrivate`, whole-cast overview) and MUST therefore be
-restricted server-side to the GM group: the controller method MUST verify
-GM-group membership and return 403 otherwise (route remains
+Run-sheet access MUST be restricted to game masters. The run-sheet aggregates
+GM-facing material (approval status, GM notes including slNotesPrivate,
+whole-cast overview) and MUST therefore be restricted server-side to the GM
+group: the controller method MUST verify GM-group membership and return 403
+otherwise (route remains
 `#[NoAdminRequired]` — GMs are not Nextcloud admins — with the explicit
 group guard in the method body). The event-detail action MUST be shown to
 GM-group members only, as presentation over the server check.
