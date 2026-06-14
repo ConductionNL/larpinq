@@ -15,6 +15,8 @@ income side of the XP ledger; the spend side is `skill-requirement-
 enforcement`. Ambient event effects (EVT-007/008) keep working for
 world-level modifiers and are not changed.
 
+@e2e exclude xpAward write/validation/RBAC and the fifth stat-engine application stage are server-authoritative (OpenRegister schema RBAC + CharacterService); proven by PHPUnit CharacterServiceXpAwardTest. The batch "Award XP" surface on the event detail page is deferred (no bespoke event-detail component in this app's src/ — declarative manifest UI is a nc-vue follow-up). The shipped browser surface (the type:index XP Awards page) is covered by tests/e2e/spec-coverage/event-xp-award-workflow.spec.ts.
+
 ## Requirements
 
 ### Requirement: XP awards MUST be recorded as first-class objects
