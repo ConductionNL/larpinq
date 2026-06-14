@@ -29,5 +29,8 @@ Track experience points (XP) and character advancement. Define XP costs for skil
 ### PDF Character Sheets
 Generate printable PDF character sheets with all stats, skills, items, and background information. Ready for table use at events.
 
+### GM Run-sheet / Cast List
+Game masters download a per-event run-sheet (cast list) as a PDF: the whole cast on the field with player names, types, approval status, computed stats, conditions, unique items in play, and GM notes — sorted by character name. Rendered through DocuDesk on the same pipeline as the character sheet, GM-group restricted, and degrades gracefully when DocuDesk is not installed.
+
 ### OpenRegister Integration
 All game data stored as flexible OpenRegister objects with full audit trails and versioning. Optional integration unlocks advanced filtering and search capabilities.
