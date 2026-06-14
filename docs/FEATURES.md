@@ -27,7 +27,7 @@ After an event, game masters award experience points per participant. Each award
 Players submit character backgrounds for game master review. Built-in approval workflow ensures story consistency before characters enter play.
 
 ### XP Tracking
-Track experience points (XP) and character advancement. Define XP costs for skills and abilities, and automatically apply restrictions.
+Track experience points (XP) and character advancement. Define XP costs for skills and abilities. Restrictions are enforced server-authoritatively: a character write that adds a skill with unmet prerequisites, or that drives the computed XP ability below zero, is rejected at the OpenRegister write boundary with an itemised list of what is unmet — unless a game master attaches an explicit, audited override (with a reason). The same checks are available on demand via `GET /api/characters/{id}/requirement-report`.
 
 ### PDF Character Sheets
 Generate printable PDF character sheets with all stats, skills, items, and background information. Ready for table use at events.

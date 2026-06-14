@@ -40,7 +40,7 @@
         "slug": "character",
         "title": "Character",
         "icon": "BriefcaseAccountOutline",
-        "version": "1.2.0",
+        "version": "1.3.0",
         "summary": "A playable or non-playable character in the LARP game",
         "description": "Represents a character entity with stats, skills, items, conditions, and event participation. Characters can be player characters, NPCs, or other types. Game masters approve characters before play.",
         "type": "object",
@@ -186,6 +186,34 @@
             "items": {
               "type": "string",
               "format": "uuid"
+            },
+            "visible": false
+          },
+          "requirementOverrides": {
+            "type": "array",
+            "description": "Explicit, audited GM overrides of unmet skill requirements. Each entry waives requirement enforcement for one skill assignment, recording who overrode it and why. Writing this field is restricted to game masters server-side.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "skill": {
+                  "type": "string",
+                  "format": "uuid",
+                  "description": "The assigned skill whose requirements are waived"
+                },
+                "reason": {
+                  "type": "string",
+                  "description": "Mandatory reason for the override (audited)"
+                },
+                "overriddenBy": {
+                  "type": "string",
+                  "description": "Nextcloud uid of the GM who authored the override (server-stamped)"
+                },
+                "overriddenAt": {
+                  "type": "string",
+                  "format": "date-time",
+                  "description": "When the override was authored (server-stamped)"
+                }
+              }
             },
             "visible": false
           }

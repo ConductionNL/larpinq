@@ -129,7 +129,7 @@ Effects are the atomic unit of the RPG system. They define numeric modifiers app
 
 ### Requirement: Skill Management and Prerequisites
 
-Skills represent learnable abilities that characters acquire. They carry effects and can require prerequisites before a character can take them. The system MUST support managing skills and their prerequisite metadata.
+Skills represent learnable abilities that characters acquire. They carry effects and can require prerequisites before a character can take them. The system MUST support managing skills and their prerequisite metadata. Prerequisites and XP costs MUST be enforced server-side during character assignment (see the `skill-requirement-enforcement` capability for the enforcement, override, and report semantics).
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
@@ -146,7 +146,24 @@ Skills represent learnable abilities that characters acquire. They carry effects
 | SKILL-011 | Skills can require specific conditions (`requiredConditions[]`) | MUST | Implemented |
 | SKILL-012 | Skills can require specific effects (`requiredEffects[]`) | MUST | Implemented |
 | SKILL-013 | Skills can require a minimum score threshold (`requiredScore`) | MUST | Implemented |
-| SKILL-014 | Prerequisite validation is data-only -- the system stores prerequisites but does NOT enforce them during character assignment | SHOULD | Implemented |
+| SKILL-014 | Prerequisites and XP budget MUST be enforced server-side when skills are assigned to a character (vetoable OR pre-write hook; was data-only) | MUST | Implemented |
+| SKILL-015 | Enforcement MUST be overridable per assignment by a GM via an explicit, reasoned `requirementOverrides[]` entry, audited through the OR object audit trail | MUST | Implemented |
+| SKILL-016 | Removing an assigned prerequisite skill MUST flag dependent skills via a validation report and MUST NOT cascade-delete them | MUST | Implemented |
+
+#### Scenario: Prerequisites enforced on character assignment
+
+- GIVEN skill "Advanced Swordplay" with requiredSkills=["basic-swordplay"]
+- AND character "Squire" who does not have "Basic Swordplay"
+- WHEN "Advanced Swordplay" is assigned to "Squire" without a GM override
+- THEN the character write MUST be rejected server-side
+- AND the unmet prerequisite MUST be itemised in the error payload
+
+#### Scenario: XP budget enforced on character assignment
+
+- GIVEN character "Novice" whose computed XP ability value is 10
+- AND skill "Master Smithing" carrying effect "XP Cost -15"
+- WHEN the skill is assigned without a GM override
+- THEN the write MUST be rejected because the engine-computed candidate XP would be negative
 
 #### Scenario: Create a skill with effects
 
