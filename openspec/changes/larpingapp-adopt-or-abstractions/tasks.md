@@ -2,6 +2,18 @@
 
 > Spec-only change. No PR / merge / archive tasks here.
 
+> Reconciliation 2026-06-14: KEPT OPEN. In-app deliverables verified PRESENT in `development`:
+> `src/manifest.json` (Phase 1), the BC-safe `RegisterResolverService` consumption in
+> `lib/Service/RegisterObjectFetcher.php` (Phase 2), and the `useTenantContext` multi-tenancy wiring
+> in `src/App.vue` + `src/store/modules/object.js` (Phase 4). However the Phase 3 spec requirements
+> (`?_lang=` stamping, `X-Translation-Target-Language` header, the "(translated from {lang})" badge)
+> have NO code — confirmed blocked on unmerged nc-vue follow-ups `i18n-language-negotiation-getters`
+> and `cn-detail-translation-aware-surfacing`. The change also fails `openspec validate` (pre-existing
+> requirement-body MUST-parse quirk on 5 forward-looking requirements). Not archived: forcing the
+> archive would promote the unbuilt i18n/badge requirements into the main spec. Re-archive once the
+> two nc-vue follow-ups land and the deferred requirements are built (or split the i18n requirements
+> into their own downstream change).
+
 ## Implementation note (build 2026-06-04)
 
 The proposal/design/spec were authored against an earlier snapshot of
