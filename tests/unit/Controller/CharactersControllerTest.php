@@ -42,6 +42,7 @@ class CharactersControllerTest extends TestCase
     private IUserSession&MockObject $userSession;
     private IGroupManager&MockObject $groupManager;
     private LoggerInterface&MockObject $logger;
+    private \OCA\LarpingApp\Service\SkillRequirementService&MockObject $requirementService;
 
     protected function setUp(): void
     {
@@ -53,6 +54,7 @@ class CharactersControllerTest extends TestCase
         $this->userSession   = $this->createMock(IUserSession::class);
         $this->groupManager  = $this->createMock(IGroupManager::class);
         $this->logger        = $this->createMock(LoggerInterface::class);
+        $this->requirementService = $this->createMock(\OCA\LarpingApp\Service\SkillRequirementService::class);
 
         // Default: authenticated admin user.
         $mockUser = $this->createMock(IUser::class);
@@ -69,6 +71,7 @@ class CharactersControllerTest extends TestCase
             $this->userSession,
             $this->groupManager,
             $this->logger,
+            $this->requirementService,
         );
     }
 
@@ -86,6 +89,7 @@ class CharactersControllerTest extends TestCase
             $unauthSession,
             $this->groupManager,
             $this->logger,
+            $this->requirementService,
         );
 
         $result = $controller->downloadPdf('char-1', 'tpl-1');
@@ -115,6 +119,7 @@ class CharactersControllerTest extends TestCase
             $nonAdminSession,
             $nonAdminGroupManager,
             $this->logger,
+            $this->requirementService,
         );
 
         $result = $controller->downloadPdf('char-1', 'tpl-1');
@@ -250,5 +255,54 @@ class CharactersControllerTest extends TestCase
         self::assertStringContainsString('PDF generation failed', $result->getData()['error']);
         // The raw exception message (including internal paths) must NOT be leaked.
         self::assertStringNotContainsString('/internal/path/file.php', $result->getData()['error']);
+    }
+
+    public function testRequirementReportReturns401WhenNotAuthenticated(): void
+    {
+        $unauthSession = $this->createMock(IUserSession::class);
+        $unauthSession->method('getUser')->willReturn(null);
+
+        $controller = new CharactersController(
+            'larpingapp',
+            $this->createMock(IRequest::class),
+            $this->objectFetcher,
+            $this->appManager,
+            $this->container,
+            $unauthSession,
+            $this->groupManager,
+            $this->logger,
+            $this->requirementService,
+        );
+
+        $result = $controller->requirementReport('00000000-0000-0000-0000-000000000005');
+
+        self::assertInstanceOf(JSONResponse::class, $result);
+        self::assertSame(401, $result->getStatus());
+    }
+
+    public function testRequirementReportReturns404WhenCharacterNotFound(): void
+    {
+        $this->objectFetcher->method('getObject')
+            ->willThrowException(new Exception('Not found'));
+
+        $result = $this->controller->requirementReport('00000000-0000-0000-0000-000000000006');
+
+        self::assertInstanceOf(JSONResponse::class, $result);
+        self::assertSame(404, $result->getStatus());
+    }
+
+    public function testRequirementReportReturnsReport(): void
+    {
+        $this->objectFetcher->method('getObject')
+            ->willReturn(['id' => 'char-1', 'name' => 'Fighter', 'skills' => []]);
+
+        $report = ['valid' => true, 'requirements' => [], 'budget' => ['ok' => true], 'dependents' => []];
+        $this->requirementService->method('validate')->willReturn($report);
+
+        $result = $this->controller->requirementReport('00000000-0000-0000-0000-000000000007');
+
+        self::assertInstanceOf(JSONResponse::class, $result);
+        self::assertSame(200, $result->getStatus());
+        self::assertSame($report, $result->getData());
     }
 }

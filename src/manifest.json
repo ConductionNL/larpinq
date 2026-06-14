@@ -33,7 +33,8 @@
 			"order": 60,
 			"children": [
 				{ "id": "Items",  "label": "Items",  "icon": "Sword",              "route": "Items",  "order": 60 },
-				{ "id": "Events", "label": "Events", "icon": "CalendarMonthOutline","route": "Events", "order": 90 }
+				{ "id": "Events", "label": "Events", "icon": "CalendarMonthOutline","route": "Events", "order": 90 },
+				{ "id": "XpAwards", "label": "XP Awards", "icon": "StarPlusOutline", "route": "XpAwards", "order": 95 }
 			]
 		},
 		{ "id": "Settings",          "label": "Settings (Worlds)","icon": "Globe",       "route": "Settings",     "order": 25 },
@@ -211,6 +212,20 @@
 			"type": "detail",
 			"title": "Setting",
 			"config": { "register": "larpingapp", "schema": "setting", "documentationUrl": "https://larpingapp.conduction.nl" }
+		},
+		{
+			"id": "XpAwards",
+			"route": "/xp-awards",
+			"type": "index",
+			"title": "XP Awards",
+			"config": { "register": "larpingapp", "schema": "xpAward", "documentationUrl": "https://larpingapp.conduction.nl" }
+		},
+		{
+			"id": "XpAwardDetail",
+			"route": "/xp-awards/:id",
+			"type": "detail",
+			"title": "XP Award",
+			"config": { "register": "larpingapp", "schema": "xpAward", "documentationUrl": "https://larpingapp.conduction.nl" }
 		},
 		{
 			"id": "GameSettings",
