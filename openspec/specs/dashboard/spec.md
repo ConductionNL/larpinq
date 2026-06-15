@@ -277,7 +277,7 @@ The application MUST initialize correctly via Nextcloud's auto-wiring without ex
 
 ### Requirement: Planned Analytics Dashboard
 
-Future enhancement to add analytics widgets using the ApexCharts library.
+As a planned future enhancement, when implemented the dashboard MUST provide analytics widgets built with the ApexCharts library, as detailed in the SHOULD-level items below.
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|

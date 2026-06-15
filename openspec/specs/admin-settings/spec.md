@@ -154,9 +154,9 @@ The settings UI MUST detect whether OpenRegister is installed and display approp
 
 ### Requirement: Configuration Storage
 
-@e2e exclude PHP/IAppConfig persistence is tested via PHPUnit with mocked IAppConfig; not browser-navigable
-
 Settings MUST be persisted in Nextcloud's IAppConfig as key-value pairs following a consistent naming convention.
+
+@e2e exclude PHP/IAppConfig persistence is tested via PHPUnit with mocked IAppConfig; not browser-navigable
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
@@ -191,9 +191,9 @@ Settings MUST be persisted in Nextcloud's IAppConfig as key-value pairs followin
 
 ### Requirement: Settings API
 
-@e2e exclude REST endpoint contract is tested via PHPUnit SettingsControllerTest; HTTP-level API not covered by browser E2E
-
 The system MUST expose REST endpoints for reading and updating settings.
+
+@e2e exclude REST endpoint contract is tested via PHPUnit SettingsControllerTest; HTTP-level API not covered by browser E2E
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
@@ -229,9 +229,9 @@ The system MUST expose REST endpoints for reading and updating settings.
 
 ### Requirement: Settings API Security
 
-@e2e exclude Auth-annotation enforcement is a PHP/Nextcloud middleware concern tested via PHPUnit; non-admin 403 is not a browser UI scenario
-
 Both settings endpoints MUST be restricted to admin users.
+
+@e2e exclude Auth-annotation enforcement is a PHP/Nextcloud middleware concern tested via PHPUnit; non-admin 403 is not a browser UI scenario
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
@@ -266,9 +266,9 @@ Both settings endpoints MUST be restricted to admin users.
 
 ### Requirement: Configuration Import via JSON
 
-@e2e exclude SettingsLoadService JSON import runs server-side at install/repair time; tested via PHPUnit with mocked OR service; not browser-navigable in isolation
-
 The system MUST support bootstrapping register and schema configuration from a bundled JSON file via `SettingsLoadService`.
+
+@e2e exclude SettingsLoadService JSON import runs server-side at install/repair time; tested via PHPUnit with mocked OR service; not browser-navigable in isolation
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
@@ -305,9 +305,9 @@ The system MUST support bootstrapping register and schema configuration from a b
 
 ### Requirement: RegisterObjectFetcher Data Source Dispatch
 
-@e2e exclude PHP DI-container mapper dispatch is tested via PHPUnit with mocked IAppConfig and ObjectService; internal PHP service not browser-navigable
-
 The `RegisterObjectFetcher` MUST read per-type configuration from IAppConfig to obtain the correct OpenRegister mapper.
+
+@e2e exclude PHP DI-container mapper dispatch is tested via PHPUnit with mocked IAppConfig and ObjectService; internal PHP service not browser-navigable
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
@@ -341,9 +341,9 @@ The `RegisterObjectFetcher` MUST read per-type configuration from IAppConfig to 
 
 ### Requirement: Database Schema
 
-@e2e exclude Database migration correctness is tested via PHPUnit MigrationTest; SQL DDL execution is not a browser-navigable scenario
-
 Database migrations MUST create tables for all entity types used in internal storage mode.
+
+@e2e exclude Database migration correctness is tested via PHPUnit MigrationTest; SQL DDL execution is not a browser-navigable scenario
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
