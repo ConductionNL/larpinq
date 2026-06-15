@@ -72,9 +72,9 @@ The system MUST support creating, reading, updating, and deleting LARP events wi
 
 ### Requirement: Event Effect Application to Characters
 
-@e2e exclude PHPUnit scope — CharacterService.applyEntityEffects() is PHP stat engine logic; no browser UI surface for effect calculation scenarios
-
 When a character has events in their `events[]` array, the stat calculation engine MUST apply those events' effects to the character's ability scores.
+
+@e2e exclude PHPUnit scope — CharacterService.applyEntityEffects() is PHP stat engine logic; no browser UI surface for effect calculation scenarios
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
@@ -201,9 +201,9 @@ Events and Players MUST support OpenRegister-specific features when backed by Op
 
 ### Requirement: Internal vs OpenRegister Storage
 
-@e2e exclude PHPUnit/integration scope — storage backend differences tested via PHPUnit mappers; field name mismatches (title vs name) are not browser-navigable UI scenarios
-
 Events and Players MUST support both internal and OpenRegister storage modes, with significant data model differences between the two.
+
+@e2e exclude PHPUnit/integration scope — storage backend differences tested via PHPUnit mappers; field name mismatches (title vs name) are not browser-navigable UI scenarios
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
@@ -243,9 +243,9 @@ Events and Players MUST support both internal and OpenRegister storage modes, wi
 
 ### Requirement: Event-Character Linking
 
-@e2e exclude PHPUnit scope — character-event association is tested via CharacterService unit tests; no standalone browser UI surface for programmatic linking scenarios
-
 Characters MUST be able to link to events, and events MUST be able to track which characters participated.
+
+@e2e exclude PHPUnit scope — character-event association is tested via CharacterService unit tests; no standalone browser UI surface for programmatic linking scenarios
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|

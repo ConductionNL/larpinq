@@ -14,6 +14,8 @@ Registers deep link URL patterns with OpenRegister's unified search provider so 
 
 ### Requirement: Deep Link Listener
 
+A `DeepLinkRegistrationListener` MUST register LarpingApp deep link URL templates with OpenRegister's unified search provider when OpenRegister dispatches its registration event, and MUST degrade gracefully when OpenRegister is not installed.
+
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
 | DEEP-001 | A `DeepLinkRegistrationListener` MUST be registered in Application.php | MUST | Implemented |
@@ -22,7 +24,17 @@ Registers deep link URL patterns with OpenRegister's unified search provider so 
 | DEEP-004 | The listener MUST only fire when OpenRegister dispatches DeepLinkRegistrationEvent | MUST | Implemented |
 | DEEP-005 | The listener MUST gracefully handle OpenRegister not being installed | MUST | Implemented |
 
+#### Scenario: Listener registers URL templates on OpenRegister event
+
+- GIVEN OpenRegister is installed and dispatches `DeepLinkRegistrationEvent`
+- WHEN the `DeepLinkRegistrationListener` handles the event
+- THEN it MUST register URL templates of the form `/apps/larpingapp/#/{type}/{uuid}` for all 8 object types
+- AND WHEN OpenRegister is not installed
+- THEN the listener MUST NOT throw and registration MUST be skipped
+
 ### Requirement: Object Type URL Mapping
+
+Each LarpingApp object type MUST map to its corresponding LarpingApp detail-view deep link URL so unified-search results route to the in-app view.
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
@@ -34,3 +46,10 @@ Registers deep link URL patterns with OpenRegister's unified search provider so 
 | DEEP-011 | Conditions MUST link to `/apps/larpingapp/#/conditions/{uuid}` | MUST | Implemented |
 | DEEP-012 | Effects MUST link to `/apps/larpingapp/#/effects/{uuid}` | MUST | Implemented |
 | DEEP-013 | Events MUST link to `/apps/larpingapp/#/events/{uuid}` | MUST | Implemented |
+
+#### Scenario: Object type resolves to its detail-view URL
+
+- GIVEN a unified-search result references a LarpingApp object by type and uuid
+- WHEN the deep link URL is resolved for a `character` with uuid `abc`
+- THEN the URL MUST be `/apps/larpingapp/#/characters/abc`
+- AND each of the 8 object types MUST resolve to its corresponding pluralized detail-view path

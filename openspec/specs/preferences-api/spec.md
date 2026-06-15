@@ -5,9 +5,9 @@ TBD - created by archiving change retrofit-2026-05-26-preferences-api. Update Pu
 ## Requirements
 ### Requirement: Get user preference (REQ-PREF-001)
 
-@e2e exclude pure-backend HTTP API — PreferencesController.getPreference() is an IConfig-backed key/value endpoint consumed by shared nextcloud-vue widgets (CnSupportDialog "seen" flag); 401-auth-rejection and server-side sanitizeKey() behaviors have no browser-navigable UI surface and are covered by Newman/PHPUnit
-
 The system SHALL return a stored per-user preference value for a given key (scoped to the current user), or a default when unset. The get-preference endpoint MUST require an authenticated user, MUST sanitize the requested key to a safe charset within the `pref_` namespace, and MUST return the stored value (or null when unset). An unauthenticated request MUST be rejected and an invalid key MUST yield a bad-request response.
+
+@e2e exclude pure-backend HTTP API — PreferencesController.getPreference() is an IConfig-backed key/value endpoint consumed by shared nextcloud-vue widgets (CnSupportDialog "seen" flag); 401-auth-rejection and server-side sanitizeKey() behaviors have no browser-navigable UI surface and are covered by Newman/PHPUnit
 
 #### Scenario: Unauthenticated read rejected
 - **GIVEN** no logged-in user
@@ -21,9 +21,9 @@ The system SHALL return a stored per-user preference value for a given key (scop
 
 ### Requirement: Set user preference (REQ-PREF-002)
 
-@e2e exclude pure-backend HTTP API — PreferencesController.setPreference() persists/clears IConfig user values via a state-mutating PUT; empty-value-clears (deleteUserValue) and sanitization persistence behaviors have no browser-navigable UI surface and are covered by Newman/PHPUnit
-
 The system SHALL persist a per-user preference value for a given key scoped to the authenticated user. The set-preference endpoint MUST require an authenticated user, MUST sanitize the key, MUST store a non-empty value, and MUST clear the value when an empty string is supplied; an unauthenticated request MUST be rejected and an invalid key MUST yield a bad-request response.
+
+@e2e exclude pure-backend HTTP API — PreferencesController.setPreference() persists/clears IConfig user values via a state-mutating PUT; empty-value-clears (deleteUserValue) and sanitization persistence behaviors have no browser-navigable UI surface and are covered by Newman/PHPUnit
 
 #### Scenario: Empty value clears the preference
 - **GIVEN** an existing stored preference

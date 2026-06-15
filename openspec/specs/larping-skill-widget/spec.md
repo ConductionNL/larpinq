@@ -64,9 +64,9 @@ The LarpingApp dashboard MUST include a donut chart showing the distribution of 
 
 ### Requirement: The widget MUST fetch data via a single GraphQL faceting query
 
-@e2e exclude GraphQL HTTP transport scenarios are JS unit-test scope (queryGraphQL mocked via Jest); rate-limit/auth-fail responses are not browser-navigable
-
 The skill usage data MUST be retrieved using a single GraphQL query that leverages OpenRegister's faceting capability on the `skills` field. This replaces the earlier two-query approach (characters + skill name resolution) with a server-side aggregation that returns pre-resolved labels.
+
+@e2e exclude GraphQL HTTP transport scenarios are JS unit-test scope (queryGraphQL mocked via Jest); rate-limit/auth-fail responses are not browser-navigable
 
 #### Scenario: Single faceted query fetches skill distribution
 - **GIVEN** the LarpingApp has characters stored in OpenRegister with a `skills` array property
@@ -110,9 +110,9 @@ The skill usage data MUST be retrieved using a single GraphQL query that leverag
 
 ### Requirement: The widget MUST aggregate skill counts from facet buckets
 
-@e2e exclude Facet bucket aggregation is pure JS transformation logic tested via Jest unit tests; requires mocked GraphQL response data not available in browser E2E
-
 Skill popularity counts MUST be extracted from the GraphQL faceting response, which provides pre-aggregated server-side counts.
+
+@e2e exclude Facet bucket aggregation is pure JS transformation logic tested via Jest unit tests; requires mocked GraphQL response data not available in browser E2E
 
 #### Scenario: Process facet buckets into chart data
 - **GIVEN** the GraphQL response contains `data.character.facets.skills.data.buckets` as an array of `{label, value, count}` objects
@@ -181,9 +181,9 @@ The widget MUST verify that LarpingApp is configured to use OpenRegister as its 
 
 ### Requirement: The widget MUST display a character stat breakdown panel
 
-@e2e exclude Character stat breakdown widget is not yet implemented per spec status note; scenarios are deferred pending implementation
-
 The dashboard MUST include a widget that shows the calculated ability scores for a selected character, displaying the base value, applied modifiers from skills/items/conditions/events, and the final computed value. This mirrors the server-side calculation performed by `CharacterService.calculateCharacter()`.
+
+@e2e exclude Character stat breakdown widget is not yet implemented per spec status note; scenarios are deferred pending implementation
 
 #### Scenario: Display ability scores for a character
 - **GIVEN** a character "Aldric" exists with skills ["Swordsmanship"] and items ["Iron Shield"]
@@ -213,9 +213,9 @@ The dashboard MUST include a widget that shows the calculated ability scores for
 
 ### Requirement: The widget MUST display an effect audit trail for each ability
 
-@e2e exclude Effect audit trail widget is not yet implemented per spec status note; scenarios are deferred pending implementation
-
 Each ability score in the character stat widget MUST have an expandable audit trail that shows every effect that was applied, in the order they were applied, matching the `audit` array produced by `CharacterService.applyModifierToAbility()`.
+
+@e2e exclude Effect audit trail widget is not yet implemented per spec status note; scenarios are deferred pending implementation
 
 #### Scenario: Expand audit trail for an ability
 - **GIVEN** a character's "Strength" ability has the following audit entries:
@@ -234,9 +234,9 @@ Each ability score in the character stat widget MUST have an expandable audit tr
 
 ### Requirement: The widget MUST support multi-character comparison
 
-@e2e exclude Multi-character comparison widget is not yet implemented per spec status note; scenarios are deferred pending implementation
-
 The dashboard MUST allow selecting two or more characters to compare their calculated ability scores side by side.
+
+@e2e exclude Multi-character comparison widget is not yet implemented per spec status note; scenarios are deferred pending implementation
 
 #### Scenario: Compare two characters
 - **GIVEN** character "Aldric" has Strength=14, Agility=8, Wisdom=6
@@ -262,9 +262,9 @@ The dashboard MUST allow selecting two or more characters to compare their calcu
 
 ### Requirement: The widget MUST display a skill dependency graph
 
-@e2e exclude Skill dependency graph widget is not yet implemented per spec status note; scenarios are deferred pending implementation
-
 Skills in LarpingApp can have prerequisite skills. The widget MUST visualize these dependencies as a directed graph showing which skills require other skills.
+
+@e2e exclude Skill dependency graph widget is not yet implemented per spec status note; scenarios are deferred pending implementation
 
 #### Scenario: Render skill dependency tree
 - **GIVEN** the following skill dependencies exist:
@@ -291,9 +291,9 @@ Skills in LarpingApp can have prerequisite skills. The widget MUST visualize the
 
 ### Requirement: The widget MUST display an effect chain visualization
 
-@e2e exclude Effect chain visualization widget is not yet implemented per spec status note; scenarios are deferred pending implementation
-
 Effects in LarpingApp flow from source entities (skills, items, conditions, events) through effects to abilities. The widget MUST visualize this chain for a selected character.
+
+@e2e exclude Effect chain visualization widget is not yet implemented per spec status note; scenarios are deferred pending implementation
 
 #### Scenario: Render effect chain for a character
 - **GIVEN** character "Grimm" has:
@@ -315,9 +315,9 @@ Effects in LarpingApp flow from source entities (skills, items, conditions, even
 
 ### Requirement: The widget MUST support interactive skill selection for characters
 
-@e2e exclude Interactive skill selection widget is not yet implemented per spec status note; scenarios are deferred pending implementation
-
 The dashboard MUST allow game masters to quickly assign or remove skills from a character directly from the widget, with immediate recalculation of ability scores.
+
+@e2e exclude Interactive skill selection widget is not yet implemented per spec status note; scenarios are deferred pending implementation
 
 #### Scenario: Add a skill to a character from the widget
 - **GIVEN** the user is viewing the stat breakdown for character "Aldric"
@@ -337,9 +337,9 @@ The dashboard MUST allow game masters to quickly assign or remove skills from a 
 
 ### Requirement: The character sheet widget MUST display a printable summary
 
-@e2e exclude Character sheet widget is not yet implemented per spec status note; PDF export scenarios require DocuDesk integration; deferred pending implementation
-
 The dashboard MUST include a character sheet widget that displays a comprehensive read-only view of a character's full state, suitable for printing or PDF export via DocuDesk integration.
+
+@e2e exclude Character sheet widget is not yet implemented per spec status note; PDF export scenarios require DocuDesk integration; deferred pending implementation
 
 #### Scenario: Character sheet displays all entity types
 - **GIVEN** character "Elara" has:
@@ -448,9 +448,9 @@ All entity data displayed in widgets MUST be fetched and managed through the cen
 
 ### Requirement: The widget MUST support real-time stat recalculation display
 
-@e2e exclude Real-time recalculation depends on character stat breakdown widget which is not yet implemented; scenarios are deferred pending implementation
-
 When a character's linked entities change (skill added/removed, item equipped/unequipped, condition applied/cleared), the ability score display MUST recalculate and update visually without requiring a page refresh.
+
+@e2e exclude Real-time recalculation depends on character stat breakdown widget which is not yet implemented; scenarios are deferred pending implementation
 
 #### Scenario: Real-time recalculation after skill addition
 - **GIVEN** the character stat widget is displaying "Aldric" with Strength=10
@@ -474,9 +474,9 @@ When a character's linked entities change (skill added/removed, item equipped/un
 
 ### Requirement: Dashboard widgets MUST support configurable widget visibility
 
-@e2e exclude Widget visibility persistence via CnDashboardPage layout-change events is not yet exercisable in isolation; depends on drag-and-drop interactions that are not reliably testable in headless Playwright without real data in OpenRegister
-
 The DashboardIndex component MUST allow users to show or hide individual widgets via the CnDashboardPage configuration, persisting their preferences.
+
+@e2e exclude Widget visibility persistence via CnDashboardPage layout-change events is not yet exercisable in isolation; depends on drag-and-drop interactions that are not reliably testable in headless Playwright without real data in OpenRegister
 
 #### Scenario: User hides the skill usage widget
 - **GIVEN** the user is viewing the dashboard with all 7 default widgets visible
