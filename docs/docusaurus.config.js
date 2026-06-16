@@ -82,7 +82,7 @@ const config = createConfig({
             'features/deep-link-registration.md',
           ],
           sidebarPath: require.resolve('./sidebars.js'),
-          editUrl: 'https://github.com/ConductionNL/larpingapp/tree/development/docs/',
+          editUrl: 'https://codeberg.org/Conduction/larpingapp/src/branch/development/docs/',
         },
         blog: false,
         theme: {
@@ -106,8 +106,8 @@ const config = createConfig({
         label: 'Documentation',
       },
       {
-        href: 'https://github.com/ConductionNL/larpingapp',
-        label: 'GitHub',
+        href: 'https://codeberg.org/Conduction/larpingapp',
+        label: 'Codeberg',
         position: 'right',
       },
       { type: 'localeDropdown', position: 'right' },

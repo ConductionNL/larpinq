@@ -1,0 +1,11 @@
+{
+  "components": {
+    "schemas": {
+      "player": {
+        "configuration": {
+          "linkedTypes": ["contacts"]
+        }
+      }
+    }
+  }
+}

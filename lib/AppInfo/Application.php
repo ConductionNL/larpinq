@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace OCA\LarpingApp\AppInfo;
 
+use OCA\LarpingApp\Listener\CharacterRequirementListener;
 use OCA\LarpingApp\Listener\DeepLinkRegistrationListener;
 use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
@@ -78,6 +79,24 @@ class Application extends App implements IBootstrap
             $context->registerEventListener(
                 'OCA\OpenRegister\Event\DeepLinkRegistrationEvent',
                 DeepLinkRegistrationListener::class
+            );
+        }
+
+        // Server-authoritative skill-requirement / XP-budget enforcement on
+        // character writes. The OR pre-write event classes only exist on
+        // newer OpenRegister releases; guard so older deployments degrade to
+        // data-only instead of fataling at boot (skill-requirement-enforcement).
+        if (class_exists('OCA\OpenRegister\Event\ObjectCreatingEvent') === true) {
+            $context->registerEventListener(
+                'OCA\OpenRegister\Event\ObjectCreatingEvent',
+                CharacterRequirementListener::class
+            );
+        }
+
+        if (class_exists('OCA\OpenRegister\Event\ObjectUpdatingEvent') === true) {
+            $context->registerEventListener(
+                'OCA\OpenRegister\Event\ObjectUpdatingEvent',
+                CharacterRequirementListener::class
             );
         }
     }//end register()

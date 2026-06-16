@@ -16,7 +16,7 @@
  * across NC 28 / 29 / 30.
  *
  * Pattern reference: ADR-030 (hydra/openspec/architecture/), mirrored
- * from mydash's journeydoc setup (the longest-running journeydoc
+ * from launchpad's journeydoc setup (the longest-running journeydoc
  * adopter).
  */
 

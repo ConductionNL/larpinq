@@ -17,7 +17,7 @@
  *
  * @version GIT: <git_id>
  *
- * @link https://github.com/ConductionNL/larpingapp
+ * @link https://codeberg.org/Conduction/larpingapp
  */
 
 declare(strict_types=1);

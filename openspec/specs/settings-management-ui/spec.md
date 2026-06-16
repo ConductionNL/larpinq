@@ -27,12 +27,12 @@ behavior of the frontend store + UI layer that drives them.
 
 ### REQ-001: Settings Store Lifecycle
 
-@e2e exclude JS unit-test scope — Pinia store fetch/persist lifecycle is tested via Jest with mocked fetch; internal store state not browser-navigable
-
 The settings store MUST fetch the current configuration from `GET /api/settings`,
 persist updates via `POST /api/settings`, and trigger a forced re-import via
 `POST /api/settings/reimport` — tracking loading/error state and exposing the
 resulting configuration, OpenRegister availability, and admin flag.
+
+@e2e exclude JS unit-test scope — Pinia store fetch/persist lifecycle is tested via Jest with mocked fetch; internal store state not browser-navigable
 
 #### Scenario: Fetch hydrates store state
 
@@ -44,12 +44,12 @@ resulting configuration, OpenRegister availability, and admin flag.
 
 ### REQ-002: Store Bootstrap and Object-Type Registration
 
-@e2e exclude JS unit-test scope — store bootstrap and object-type registration is tested via Jest mocks; internal Pinia state not browser-navigable
-
 The store bootstrap helper MUST fetch settings on startup and, for each of the
 nine LARP object types that has both a configured register and a per-type schema,
 register that object type with the object store so subsequent CRUD resolves to
 the correct OpenRegister mapper.
+
+@e2e exclude JS unit-test scope — store bootstrap and object-type registration is tested via Jest mocks; internal Pinia state not browser-navigable
 
 #### Scenario: Configured types are registered
 

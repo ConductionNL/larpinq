@@ -9,7 +9,7 @@ already-merged OR / nc-vue / hydra specs:
 1. **No architectural manifest** — LarpingApp wires its router by
    hand and has no `src/manifest.json`. Per the migration order in
    **ADR-024** (`hydra/openspec/architecture/`), LarpingApp is in the
-   second-wave cohort (small, schema-driven) — adopt after MyDash
+   second-wave cohort (small, schema-driven) — adopt after LaunchPad
    (the pilot), before the larger apps.
 2. **`getValueString(...register/schema...)` consolidation** —
    `lib/Service/RegisterObjectFetcher.php:116-127` resolves register

@@ -301,7 +301,7 @@ export default function Home() {
           secondaryCta={{ label: 'Read the docs', href: '/docs/FEATURES' }}
           tertiaryCta={{
             label: 'View on GitHub',
-            href: 'https://github.com/ConductionNL/larpingapp',
+            href: 'https://codeberg.org/Conduction/larpingapp',
           }}
           iconColor="var(--c-orange-knvb)"
           icon={LARPINGAPP_ICON}

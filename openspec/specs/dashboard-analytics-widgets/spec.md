@@ -96,11 +96,11 @@ query fails, or no skill data exists.
 
 ### REQ-005: GraphQL Transport
 
-@e2e exclude JS unit-test scope — queryGraphQL() HTTP contract is tested via Jest mocks; no browser-navigable UI surface for transport error scenarios
-
 A GraphQL transport helper MUST POST queries to the OpenRegister GraphQL endpoint
 with the Nextcloud CSRF request token and same-origin credentials, and translate
 HTTP and GraphQL error responses into thrown Errors.
+
+@e2e exclude JS unit-test scope — queryGraphQL() HTTP contract is tested via Jest mocks; no browser-navigable UI surface for transport error scenarios
 
 #### Scenario: Query posts with auth and maps errors
 

@@ -113,7 +113,14 @@
         "Save all": "Alles opslaan",
         "Unnamed character": "Naamloos karakter",
         "Unnamed event": "Naamloos evenement",
-        "Welcome to the larping app!": "Welkom bij de Larping App!"
+        "Welcome to the larping app!": "Welkom bij de Larping App!",
+        "Configure your Larping app settings here.": "Configureer hier de instellingen van uw Larping-app.",
+        "Failed to save settings": "Opslaan van instellingen mislukt",
+        "General": "Algemeen",
+        "LarpingApp Settings": "LarpingApp-instellingen",
+        "Save All": "Alles opslaan",
+        "Settings saved successfully": "Instellingen succesvol opgeslagen",
+        "Version Information": "Versie-informatie"
     },
     "plurals": {}
 }

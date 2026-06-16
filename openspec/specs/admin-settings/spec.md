@@ -36,12 +36,16 @@ The LarpingApp MUST register a dedicated section in the Nextcloud admin settings
 
 #### Scenario: Non-admin user cannot access admin settings
 
+@e2e exclude Nextcloud settings-framework + SecurityMiddleware concern — section visibility and the 403 for a non-admin session are enforced server-side by AdminSettings registration, not browser-navigable from the authenticated admin storageState; covered by PHPUnit.
+
 - GIVEN a regular (non-admin) Nextcloud user
 - WHEN they navigate to Admin Settings
 - THEN the LarpingApp admin section MUST NOT be visible
 - AND direct URL access to the settings page MUST be denied
 
 #### Scenario: Settings panel rendering with IIconSection bug
+
+@e2e exclude Describes a hypothetical regression (LarpingAppAdmin implementing IIconSection instead of ISettings) that is not the current implementation; no browser-navigable UI surface for the bug condition.
 
 - GIVEN `LarpingAppAdmin` in `lib/Settings/` implements `IIconSection` instead of `ISettings`
 - WHEN the admin navigates to the LarpingApp settings section
@@ -124,6 +128,8 @@ The settings UI MUST detect whether OpenRegister is installed and display approp
 
 #### Scenario: OpenRegister not installed
 
+@e2e exclude Requires the OpenRegister app to be absent; not reproducible on this OR-installed instance and uninstalling OR is outside the app's browser-navigable surface; the not-installed NcNoteCard path is covered by PHPUnit with a mocked IAppManager.
+
 - GIVEN OpenRegister is not installed on the Nextcloud instance
 - WHEN an administrator opens the LarpingApp admin settings
 - THEN a warning NcNoteCard MUST be displayed with text "Open Register is not installed. Some features might be unavailable."
@@ -148,9 +154,9 @@ The settings UI MUST detect whether OpenRegister is installed and display approp
 
 ### Requirement: Configuration Storage
 
-@e2e exclude PHP/IAppConfig persistence is tested via PHPUnit with mocked IAppConfig; not browser-navigable
-
 Settings MUST be persisted in Nextcloud's IAppConfig as key-value pairs following a consistent naming convention.
+
+@e2e exclude PHP/IAppConfig persistence is tested via PHPUnit with mocked IAppConfig; not browser-navigable
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
@@ -185,9 +191,9 @@ Settings MUST be persisted in Nextcloud's IAppConfig as key-value pairs followin
 
 ### Requirement: Settings API
 
-@e2e exclude REST endpoint contract is tested via PHPUnit SettingsControllerTest; HTTP-level API not covered by browser E2E
-
 The system MUST expose REST endpoints for reading and updating settings.
+
+@e2e exclude REST endpoint contract is tested via PHPUnit SettingsControllerTest; HTTP-level API not covered by browser E2E
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
@@ -223,9 +229,9 @@ The system MUST expose REST endpoints for reading and updating settings.
 
 ### Requirement: Settings API Security
 
-@e2e exclude Auth-annotation enforcement is a PHP/Nextcloud middleware concern tested via PHPUnit; non-admin 403 is not a browser UI scenario
-
 Both settings endpoints MUST be restricted to admin users.
+
+@e2e exclude Auth-annotation enforcement is a PHP/Nextcloud middleware concern tested via PHPUnit; non-admin 403 is not a browser UI scenario
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
@@ -260,9 +266,9 @@ Both settings endpoints MUST be restricted to admin users.
 
 ### Requirement: Configuration Import via JSON
 
-@e2e exclude SettingsLoadService JSON import runs server-side at install/repair time; tested via PHPUnit with mocked OR service; not browser-navigable in isolation
-
 The system MUST support bootstrapping register and schema configuration from a bundled JSON file via `SettingsLoadService`.
+
+@e2e exclude SettingsLoadService JSON import runs server-side at install/repair time; tested via PHPUnit with mocked OR service; not browser-navigable in isolation
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
@@ -299,9 +305,9 @@ The system MUST support bootstrapping register and schema configuration from a b
 
 ### Requirement: RegisterObjectFetcher Data Source Dispatch
 
-@e2e exclude PHP DI-container mapper dispatch is tested via PHPUnit with mocked IAppConfig and ObjectService; internal PHP service not browser-navigable
-
 The `RegisterObjectFetcher` MUST read per-type configuration from IAppConfig to obtain the correct OpenRegister mapper.
+
+@e2e exclude PHP DI-container mapper dispatch is tested via PHPUnit with mocked IAppConfig and ObjectService; internal PHP service not browser-navigable
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
@@ -335,9 +341,9 @@ The `RegisterObjectFetcher` MUST read per-type configuration from IAppConfig to 
 
 ### Requirement: Database Schema
 
-@e2e exclude Database migration correctness is tested via PHPUnit MigrationTest; SQL DDL execution is not a browser-navigable scenario
-
 Database migrations MUST create tables for all entity types used in internal storage mode.
+
+@e2e exclude Database migration correctness is tested via PHPUnit MigrationTest; SQL DDL execution is not a browser-navigable scenario
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
@@ -384,6 +390,8 @@ The app MUST declare correct metadata in `info.xml` for Nextcloud compatibility.
 
 #### Scenario: App installs on supported Nextcloud version
 
+@e2e exclude appinfo/info.xml min/max Nextcloud version gate is enforced by the Nextcloud app installer, not a browser-navigable in-app UI surface.
+
 - GIVEN a Nextcloud 29 instance
 - WHEN an administrator installs LarpingApp
 - THEN the app MUST install successfully
@@ -391,11 +399,15 @@ The app MUST declare correct metadata in `info.xml` for Nextcloud compatibility.
 
 #### Scenario: App rejected on unsupported Nextcloud version
 
+@e2e exclude appinfo/info.xml version-incompatibility rejection is enforced by the Nextcloud app installer, not a browser-navigable in-app UI surface.
+
 - GIVEN a Nextcloud 27 instance
 - WHEN an administrator attempts to install LarpingApp
 - THEN the installation MUST be rejected due to `min-version="28"` constraint
 
 #### Scenario: App metadata displayed in app store
+
+@e2e exclude App-store listing metadata (name, description, screenshots from appinfo/info.xml) is rendered by the external Nextcloud app store, not a browser-navigable surface of this app.
 
 - GIVEN LarpingApp is listed in the Nextcloud app store
 - THEN the license MUST show as EUPL-1.2

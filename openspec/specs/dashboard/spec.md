@@ -277,7 +277,7 @@ The application MUST initialize correctly via Nextcloud's auto-wiring without ex
 
 ### Requirement: Planned Analytics Dashboard
 
-Future enhancement to add analytics widgets using the ApexCharts library.
+As a planned future enhancement, when implemented the dashboard MUST provide analytics widgets built with the ApexCharts library, as detailed in the SHOULD-level items below.
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
@@ -291,7 +291,7 @@ Future enhancement to add analytics widgets using the ApexCharts library.
 
 #### Scenario: View character distribution chart (planned)
 
-@e2e exclude planned feature — analytics charts not yet implemented (status: Planned)
+@e2e exclude planned feature (DASH-061, status: Planned) — a player-vs-NPC distribution pie chart is not implemented; the realized dashboard ships KPI/recent/skill-usage widgets instead (covered under dashboard-analytics-widgets and larping-skill-widget specs)
 
 - GIVEN 15 player characters, 8 NPCs, and 2 "other" characters exist
 - WHEN the user views the dashboard
@@ -300,7 +300,7 @@ Future enhancement to add analytics widgets using the ApexCharts library.
 
 #### Scenario: View KPI cards (planned)
 
-@e2e exclude planned feature — analytics KPI cards not yet implemented (status: Planned)
+@e2e exclude planned feature (DASH-060/DASH-065, status: Planned) — this scenario specifies the unbuilt `.most-searched-terms` grid design with seeded counts; the realized KPI tiles (DashboardKpi) and their pagination-total render are covered under larping-skill-widget#widget-displays-pagination-totals-from-object-store and dashboard-analytics-widgets#kpi-reflects-store-pagination-total
 
 - GIVEN 25 characters, 12 players, 5 events, and 30 skills exist
 - WHEN the user views the dashboard
@@ -309,15 +309,13 @@ Future enhancement to add analytics widgets using the ApexCharts library.
 
 #### Scenario: View skill popularity chart (planned)
 
-@e2e exclude planned feature — analytics skill chart not yet implemented (status: Planned)
+@e2e exclude planned feature (DASH-062, status: Planned) — this scenario specifies a ranked bar chart in the unbuilt `.graphs` grid; the realized skill-usage donut widget render is covered under larping-skill-widget#skill-usage-chart-with-no-data and dashboard-analytics-widgets#chart-aggregates-skill-facets
 
 - GIVEN skills "Healing" is used by 10 characters, "Fireball" by 8, and "Stealth" by 3
 - WHEN the user views the dashboard
 - THEN a bar chart MUST show skill usage ranked by frequency
 
 #### Scenario: Empty dashboard with no data (planned)
-
-@e2e exclude planned feature — analytics empty state not yet implemented (status: Planned)
 
 - GIVEN no entities exist in the system
 - WHEN the user views the dashboard

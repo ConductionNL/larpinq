@@ -11,6 +11,7 @@ const SCHEMA_SLUGS = [
 	'effect',
 	'event',
 	'setting',
+	'xpAward',
 ]
 
 /**
@@ -25,8 +26,13 @@ export async function initializeStores() {
 	if (config) {
 		for (const slug of SCHEMA_SLUGS) {
 			const schemaKey = `${slug}_schema`
-			if (config.register && config[schemaKey]) {
-				objectStore.registerObjectType(slug, config[schemaKey], config.register)
+			const registerKey = `${slug}_register`
+			// Prefer the per-type register id (config.<type>_register); fall back
+			// to the shared top-level register. Reading config.register alone
+			// broke list fetches whenever the per-type id diverged from it.
+			const register = config[registerKey] || config.register
+			if (register && config[schemaKey]) {
+				objectStore.registerObjectType(slug, config[schemaKey], register)
 			}
 		}
 	}

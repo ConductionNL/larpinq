@@ -43,3 +43,5 @@ Thumbs.db
 
 # Repo-specific
 src/data/TempAuthKey.js
+/coverage-vitest/
+/coverage/

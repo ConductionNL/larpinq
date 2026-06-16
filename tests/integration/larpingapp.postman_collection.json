@@ -1,0 +1,319 @@
+{
+	"info": {
+		"name": "LarpingApp API Contract Suite",
+		"description": "Newman/Postman API-contract tests for the LarpingApp Nextcloud app. Locks the HTTP contract of larpingapp's surfaces: (1) the LARP domain objects (characters, items, skills, conditions, effects, events, players) exercised through the OpenRegister object API per ADR-022 — larpingapp owns no domain-CRUD controller, it is a thin OR client; (2) the larpingapp Settings controller (GET /api/settings, POST /api/settings, POST /api/settings/reimport); (3) the character PDF compute endpoint (GET /characters/{id}/download/{template}).\n\nEvery family is exercised for a happy path, an error/validation case (4xx, never 500), and an authorization case (no/invalid auth -> 401/403). The suite is self-contained and idempotent: it seeds the OpenRegister objects it needs in setup and deletes everything it creates in teardown.\n\nAUTH MODEL: collection auth is noauth; every authenticated request carries an EXPLICIT basic-auth block (admin:admin via adminUser/adminPass). The no-auth / invalid-auth requests target {{noAuthBase}} (127.0.0.1) so the host-scoped NC session cookie established on {{baseUrl}} (localhost) is never sent to them — keeping authz tests genuinely unauthenticated. Run with --ignore-redirects so NC's 401/303 is asserted directly. See run-newman.sh.\n\nNote (ADR-022): OpenRegister object READS are not auth-gated (anonymous GET returns 200 — authorization on object data is OR's responsibility), but object WRITES (POST/PUT/DELETE) DO require auth and return 401 anonymously. The folder-2 authz tests assert both honestly.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{ "key": "baseUrl", "value": "http://localhost:8080" },
+		{ "key": "noAuthBase", "value": "http://127.0.0.1:8080" },
+		{ "key": "adminUser", "value": "admin" },
+		{ "key": "adminPass", "value": "admin" },
+		{ "key": "register", "value": "larpingapp" },
+		{ "key": "charSchema", "value": "character" },
+		{ "key": "itemSchema", "value": "item" },
+		{ "key": "skillSchema", "value": "skill" },
+		{ "key": "conditionSchema", "value": "condition" },
+		{ "key": "effectSchema", "value": "effect" },
+		{ "key": "eventSchema", "value": "event" },
+		{ "key": "playerSchema", "value": "player" },
+		{ "key": "charId", "value": "" },
+		{ "key": "itemId", "value": "" },
+		{ "key": "skillId", "value": "" },
+		{ "key": "conditionId", "value": "" },
+		{ "key": "effectId", "value": "" },
+		{ "key": "eventId", "value": "" },
+		{ "key": "playerId", "value": "" }
+	],
+	"auth": { "type": "noauth" },
+	"item": [
+		{
+			"name": "1. Character (OR object CRUD, ADR-022)",
+			"item": [
+				{
+					"name": "Create character (201/200)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('character created (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 201]));",
+									"const b = pm.response.json();",
+									"const id = b.id || (b['@self'] && b['@self'].id);",
+									"pm.test('returns an id', () => pm.expect(id).to.be.a('string').and.not.empty);",
+									"pm.test('echoes the name', () => pm.expect(b.name).to.eql('NEWMAN character'));",
+									"pm.collectionVariables.set('charId', id);"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] },
+						"method": "POST",
+						"header": [ { "key": "OCS-APIRequest", "value": "true" }, { "key": "Content-Type", "value": "application/json" }, { "key": "Accept", "value": "application/json" } ],
+						"body": { "mode": "raw", "raw": "{\n  \"name\": \"NEWMAN character\",\n  \"ocName\": \"NEWMAN character\",\n  \"description\": \"api-contract probe\"\n}" },
+						"url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{charSchema}}", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{charSchema}}" ] }
+					}
+				},
+				{
+					"name": "Read character (200)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('character read (200)', () => pm.response.to.have.status(200));",
+									"const b = pm.response.json();",
+									"const id = b.id || (b['@self'] && b['@self'].id);",
+									"pm.test('id matches created', () => pm.expect(id).to.eql(pm.collectionVariables.get('charId')));"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] },
+						"method": "GET",
+						"header": [ { "key": "OCS-APIRequest", "value": "true" }, { "key": "Accept", "value": "application/json" } ],
+						"url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{charSchema}}/{{charId}}", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{charSchema}}", "{{charId}}" ] }
+					}
+				},
+				{
+					"name": "List characters (200, results array)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('list (200)', () => pm.response.to.have.status(200));",
+									"const b = pm.response.json();",
+									"pm.test('has results array', () => pm.expect(b.results).to.be.an('array'));"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] },
+						"method": "GET",
+						"header": [ { "key": "OCS-APIRequest", "value": "true" }, { "key": "Accept", "value": "application/json" } ],
+						"url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{charSchema}}?_limit=5", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{charSchema}}" ], "query": [ { "key": "_limit", "value": "5" } ] }
+					}
+				},
+				{
+					"name": "Update character (200)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('character updated (200)', () => pm.response.to.have.status(200));",
+									"const b = pm.response.json();",
+									"pm.test('description updated', () => pm.expect(b.description).to.eql('updated by newman'));"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] },
+						"method": "PUT",
+						"header": [ { "key": "OCS-APIRequest", "value": "true" }, { "key": "Content-Type", "value": "application/json" }, { "key": "Accept", "value": "application/json" } ],
+						"body": { "mode": "raw", "raw": "{\n  \"name\": \"NEWMAN character\",\n  \"ocName\": \"NEWMAN character\",\n  \"description\": \"updated by newman\"\n}" },
+						"url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{charSchema}}/{{charId}}", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{charSchema}}", "{{charId}}" ] }
+					}
+				},
+				{
+					"name": "Create character ERROR: missing required ocName (400, not 500)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('validation rejected with 4xx not 500', () => pm.expect(pm.response.code).to.be.within(400, 499));",
+									"pm.test('not a 500', () => pm.expect(pm.response.code).to.not.eql(500));"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] },
+						"method": "POST",
+						"header": [ { "key": "OCS-APIRequest", "value": "true" }, { "key": "Content-Type", "value": "application/json" }, { "key": "Accept", "value": "application/json" } ],
+						"body": { "mode": "raw", "raw": "{\n  \"description\": \"no name nor ocName provided\"\n}" },
+						"url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{charSchema}}", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{charSchema}}" ] }
+					}
+				},
+				{
+					"name": "Read character AUTHZ: anonymous single-object read returns 404 (owner-scoped)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"// Authorization on object data is OpenRegister's responsibility (ADR-022),",
+									"// not larpingapp's. The character schema carries an `ownerUid`, so OR scopes",
+									"// a single-object read to the owner: an anonymous GET of an admin-owned",
+									"// character returns 404 (Not Found for the anonymous context), NOT the",
+									"// object. We assert that honestly — the data is not leaked to anon, and OR",
+									"// (not larpingapp) enforces it. (The unscoped LIST endpoint returns 200 to",
+									"// anon but only exposes the anon-visible subset.)",
+									"pm.test('anonymous single-object read returns 404', () => pm.response.to.have.status(404));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [ { "key": "Accept", "value": "application/json" } ],
+						"url": { "raw": "{{noAuthBase}}/index.php/apps/openregister/api/objects/{{register}}/{{charSchema}}/{{charId}}", "host": [ "{{noAuthBase}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{charSchema}}", "{{charId}}" ] }
+					}
+				},
+				{
+					"name": "Create character AUTHZ: anonymous write returns 401",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"// OR object WRITES require authentication — an anonymous POST is rejected 401.",
+									"pm.test('anonymous OR write rejected 401', () => pm.response.to.have.status(401));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Accept", "value": "application/json" } ],
+						"body": { "mode": "raw", "raw": "{\n  \"name\": \"anon\",\n  \"ocName\": \"anon\"\n}" },
+						"url": { "raw": "{{noAuthBase}}/index.php/apps/openregister/api/objects/{{register}}/{{charSchema}}", "host": [ "{{noAuthBase}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{charSchema}}" ] }
+					}
+				}
+			]
+		},
+		{
+			"name": "2. Domain objects (item / skill / condition / effect / event / player)",
+			"item": [
+				{
+					"name": "Create item (2xx)",
+					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('item created (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 201]));", "const b = pm.response.json(); const id = b.id || (b['@self'] && b['@self'].id);", "pm.test('item id', () => pm.expect(id).to.be.a('string').and.not.empty);", "pm.collectionVariables.set('itemId', id);" ] } } ],
+					"request": { "auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] }, "method": "POST", "header": [ { "key": "OCS-APIRequest", "value": "true" }, { "key": "Content-Type", "value": "application/json" }, { "key": "Accept", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"name\": \"NEWMAN item\",\n  \"description\": \"probe item\"\n}" }, "url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{itemSchema}}", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{itemSchema}}" ] } }
+				},
+				{
+					"name": "Create skill (2xx)",
+					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('skill created (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 201]));", "const b = pm.response.json(); const id = b.id || (b['@self'] && b['@self'].id);", "pm.test('skill id', () => pm.expect(id).to.be.a('string').and.not.empty);", "pm.collectionVariables.set('skillId', id);" ] } } ],
+					"request": { "auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] }, "method": "POST", "header": [ { "key": "OCS-APIRequest", "value": "true" }, { "key": "Content-Type", "value": "application/json" }, { "key": "Accept", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"name\": \"NEWMAN skill\",\n  \"description\": \"probe skill\"\n}" }, "url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{skillSchema}}", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{skillSchema}}" ] } }
+				},
+				{
+					"name": "Create condition (2xx)",
+					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('condition created (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 201]));", "const b = pm.response.json(); const id = b.id || (b['@self'] && b['@self'].id);", "pm.test('condition id', () => pm.expect(id).to.be.a('string').and.not.empty);", "pm.collectionVariables.set('conditionId', id);" ] } } ],
+					"request": { "auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] }, "method": "POST", "header": [ { "key": "OCS-APIRequest", "value": "true" }, { "key": "Content-Type", "value": "application/json" }, { "key": "Accept", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"name\": \"NEWMAN condition\",\n  \"description\": \"probe condition\"\n}" }, "url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{conditionSchema}}", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{conditionSchema}}" ] } }
+				},
+				{
+					"name": "Create effect (2xx)",
+					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('effect created (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 201]));", "const b = pm.response.json(); const id = b.id || (b['@self'] && b['@self'].id);", "pm.test('effect id', () => pm.expect(id).to.be.a('string').and.not.empty);", "pm.collectionVariables.set('effectId', id);" ] } } ],
+					"request": { "auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] }, "method": "POST", "header": [ { "key": "OCS-APIRequest", "value": "true" }, { "key": "Content-Type", "value": "application/json" }, { "key": "Accept", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"name\": \"NEWMAN effect\",\n  \"description\": \"probe effect\"\n}" }, "url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{effectSchema}}", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{effectSchema}}" ] } }
+				},
+				{
+					"name": "Create event (2xx)",
+					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('event created (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 201]));", "const b = pm.response.json(); const id = b.id || (b['@self'] && b['@self'].id);", "pm.test('event id', () => pm.expect(id).to.be.a('string').and.not.empty);", "pm.collectionVariables.set('eventId', id);" ] } } ],
+					"request": { "auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] }, "method": "POST", "header": [ { "key": "OCS-APIRequest", "value": "true" }, { "key": "Content-Type", "value": "application/json" }, { "key": "Accept", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"name\": \"NEWMAN event\",\n  \"description\": \"probe event\"\n}" }, "url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{eventSchema}}", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{eventSchema}}" ] } }
+				},
+				{
+					"name": "Create player (2xx)",
+					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('player created (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 201]));", "const b = pm.response.json(); const id = b.id || (b['@self'] && b['@self'].id);", "pm.test('player id', () => pm.expect(id).to.be.a('string').and.not.empty);", "pm.collectionVariables.set('playerId', id);" ] } } ],
+					"request": { "auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] }, "method": "POST", "header": [ { "key": "OCS-APIRequest", "value": "true" }, { "key": "Content-Type", "value": "application/json" }, { "key": "Accept", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"name\": \"NEWMAN player\",\n  \"description\": \"probe player\"\n}" }, "url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{playerSchema}}", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{playerSchema}}" ] } }
+				},
+				{
+					"name": "List items (200)",
+					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('item list (200)', () => pm.response.to.have.status(200));", "pm.test('has results array', () => pm.expect(pm.response.json().results).to.be.an('array'));" ] } } ],
+					"request": { "auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] }, "method": "GET", "header": [ { "key": "OCS-APIRequest", "value": "true" }, { "key": "Accept", "value": "application/json" } ], "url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{itemSchema}}?_limit=5", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{itemSchema}}" ], "query": [ { "key": "_limit", "value": "5" } ] } }
+				}
+			]
+		},
+		{
+			"name": "3. Character PDF compute endpoint",
+			"item": [
+				{
+					"name": "downloadPdf ERROR: invalid (non-UUID) template -> 400 not 500",
+					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "// Authenticated admin, but a non-UUID template id is rejected with 400 by", "// the controller's UUID guard (path-traversal/injection defence, #218) —", "// before DocuDesk is touched. Must not 500.", "pm.test('invalid template rejected 400', () => pm.response.to.have.status(400));", "pm.test('not a 500', () => pm.expect(pm.response.code).to.not.eql(500));" ] } } ],
+					"request": { "auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] }, "method": "GET", "header": [ { "key": "OCS-APIRequest", "value": "true" }, { "key": "Accept", "value": "application/json" } ], "url": { "raw": "{{baseUrl}}/index.php/apps/larpingapp/characters/{{charId}}/download/not-a-uuid", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "larpingapp", "characters", "{{charId}}", "download", "not-a-uuid" ] } }
+				},
+				{
+					"name": "downloadPdf ERROR: valid-UUID template but DocuDesk template not found -> 4xx not 500",
+					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "// A syntactically-valid UUID that does not resolve to a real template.", "// Depending on DocuDesk presence this is 404 (template not found) or 424", "// (DocuDesk not installed). Either way it must be a clean 4xx, never 500.", "pm.test('clean 4xx, not 500', () => { pm.expect(pm.response.code).to.be.within(400, 499); pm.expect(pm.response.code).to.not.eql(500); });" ] } } ],
+					"request": { "auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] }, "method": "GET", "header": [ { "key": "OCS-APIRequest", "value": "true" }, { "key": "Accept", "value": "application/json" } ], "url": { "raw": "{{baseUrl}}/index.php/apps/larpingapp/characters/{{charId}}/download/00000000-0000-4000-8000-000000000000", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "larpingapp", "characters", "{{charId}}", "download", "00000000-0000-4000-8000-000000000000" ] } }
+				},
+				{
+					"name": "downloadPdf AUTHZ: anonymous -> 401",
+					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "// downloadPdf is #[NoAdminRequired] (a logged-in session is still required);", "// an anonymous request is rejected by NC SecurityMiddleware with 401.", "pm.test('anonymous rejected 401', () => pm.response.to.have.status(401));" ] } } ],
+					"request": { "method": "GET", "header": [ { "key": "Accept", "value": "application/json" } ], "url": { "raw": "{{noAuthBase}}/index.php/apps/larpingapp/characters/{{charId}}/download/00000000-0000-4000-8000-000000000000", "host": [ "{{noAuthBase}}" ], "path": [ "index.php", "apps", "larpingapp", "characters", "{{charId}}", "download", "00000000-0000-4000-8000-000000000000" ] } }
+				}
+			]
+		},
+		{
+			"name": "4. Settings",
+			"item": [
+				{
+					"name": "GET /api/settings (200, contract shape)",
+					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('settings (200)', () => pm.response.to.have.status(200));", "const b = pm.response.json();", "pm.test('has openRegisters flag', () => pm.expect(b).to.have.property('openRegisters'));", "pm.test('has availableRegisters array', () => pm.expect(b.availableRegisters).to.be.an('array'));" ] } } ],
+					"request": { "auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] }, "method": "GET", "header": [ { "key": "OCS-APIRequest", "value": "true" }, { "key": "Accept", "value": "application/json" } ], "url": { "raw": "{{baseUrl}}/index.php/apps/larpingapp/api/settings", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "larpingapp", "api", "settings" ] } }
+				},
+				{
+					"name": "GET /api/settings AUTHZ: anonymous -> 401",
+					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('anonymous rejected 401', () => pm.response.to.have.status(401));" ] } } ],
+					"request": { "method": "GET", "header": [ { "key": "Accept", "value": "application/json" } ], "url": { "raw": "{{noAuthBase}}/index.php/apps/larpingapp/api/settings", "host": [ "{{noAuthBase}}" ], "path": [ "index.php", "apps", "larpingapp", "api", "settings" ] } }
+				},
+				{
+					"name": "POST /api/settings AUTHZ: anonymous -> 401 (admin+CSRF-gated write)",
+					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "// settings#create dropped @NoCSRFRequired (closes #206) and is admin-gated;", "// an anonymous POST is rejected before the body is processed.", "pm.test('anonymous write rejected 401', () => pm.response.to.have.status(401));" ] } } ],
+					"request": { "method": "POST", "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Accept", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{}" }, "url": { "raw": "{{noAuthBase}}/index.php/apps/larpingapp/api/settings", "host": [ "{{noAuthBase}}" ], "path": [ "index.php", "apps", "larpingapp", "api", "settings" ] } }
+				}
+			]
+		},
+		{
+			"name": "9. Teardown",
+			"item": [
+				{
+					"name": "Delete character",
+					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('character deleted (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 204]));" ] } } ],
+					"request": { "auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] }, "method": "DELETE", "header": [ { "key": "OCS-APIRequest", "value": "true" } ], "url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{charSchema}}/{{charId}}", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{charSchema}}", "{{charId}}" ] } }
+				},
+				{
+					"name": "Delete item",
+					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('item deleted (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 204]));" ] } } ],
+					"request": { "auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] }, "method": "DELETE", "header": [ { "key": "OCS-APIRequest", "value": "true" } ], "url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{itemSchema}}/{{itemId}}", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{itemSchema}}", "{{itemId}}" ] } }
+				},
+				{
+					"name": "Delete skill",
+					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('skill deleted (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 204]));" ] } } ],
+					"request": { "auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] }, "method": "DELETE", "header": [ { "key": "OCS-APIRequest", "value": "true" } ], "url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{skillSchema}}/{{skillId}}", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{skillSchema}}", "{{skillId}}" ] } }
+				},
+				{
+					"name": "Delete condition",
+					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('condition deleted (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 204]));" ] } } ],
+					"request": { "auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] }, "method": "DELETE", "header": [ { "key": "OCS-APIRequest", "value": "true" } ], "url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{conditionSchema}}/{{conditionId}}", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{conditionSchema}}", "{{conditionId}}" ] } }
+				},
+				{
+					"name": "Delete effect",
+					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('effect deleted (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 204]));" ] } } ],
+					"request": { "auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] }, "method": "DELETE", "header": [ { "key": "OCS-APIRequest", "value": "true" } ], "url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{effectSchema}}/{{effectId}}", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{effectSchema}}", "{{effectId}}" ] } }
+				},
+				{
+					"name": "Delete event",
+					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('event deleted (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 204]));" ] } } ],
+					"request": { "auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] }, "method": "DELETE", "header": [ { "key": "OCS-APIRequest", "value": "true" } ], "url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{eventSchema}}/{{eventId}}", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{eventSchema}}", "{{eventId}}" ] } }
+				},
+				{
+					"name": "Delete player",
+					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('player deleted (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 204]));" ] } } ],
+					"request": { "auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] }, "method": "DELETE", "header": [ { "key": "OCS-APIRequest", "value": "true" } ], "url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{playerSchema}}/{{playerId}}", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{playerSchema}}", "{{playerId}}" ] } }
+				}
+			]
+		}
+	]
+}

@@ -113,7 +113,14 @@
         "Save all": "Save All",
         "Unnamed character": "Unnamed Character",
         "Unnamed event": "Unnamed Event",
-        "Welcome to the larping app!": "Welcome to the Larping App!"
+        "Welcome to the larping app!": "Welcome to the Larping App!",
+        "Configure your Larping app settings here.": "Configure your Larping app settings here.",
+        "Failed to save settings": "Failed to save settings",
+        "General": "General",
+        "LarpingApp Settings": "LarpingApp Settings",
+        "Save All": "Save All",
+        "Settings saved successfully": "Settings saved successfully",
+        "Version Information": "Version Information"
     },
     "plurals": {}
 }

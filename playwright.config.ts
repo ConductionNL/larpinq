@@ -39,7 +39,7 @@ export default defineConfig({
 		// PR pipelines don't reshoot screenshots on every push.
 		{
 			name: 'chromium',
-			testIgnore: ['**/docs-screenshots.spec.ts'],
+			testIgnore: ['**/docs-screenshots.spec.ts', '**/visual/**'],
 			use: {
 				...devices['Desktop Chrome'],
 				// Pick up the authenticated storage state globalSetup wrote.
@@ -57,6 +57,24 @@ export default defineConfig({
 				viewport: { width: 1280, height: 800 },
 				// Same authed session — capture spec navigates into the app,
 				// which is admin-only on most ConductionNL deployments.
+				storageState: 'tests/e2e/.auth/admin.json',
+			},
+			timeout: 90_000,
+		},
+		// Visual-regression project (GAP-5). Opt-in / non-gating:
+		//   npx playwright test --project visual
+		//   npx playwright test --project visual --update-snapshots  (rebaseline)
+		// Fixed viewport + authenticated session => deterministic shots.
+		// Baselines live in tests/e2e/visual/*-snapshots/ and ARE committed.
+		// PLATFORM CAVEAT: PNG baselines are host-font/GPU specific, so a CI
+		// Linux runner will not byte-match a dev-container baseline; the visual
+		// project must regenerate its baselines in-CI before it can gate.
+		{
+			name: 'visual',
+			testMatch: /visual\/.*\.visual\.spec\.ts$/,
+			use: {
+				...devices['Desktop Chrome'],
+				viewport: { width: 1280, height: 800 },
 				storageState: 'tests/e2e/.auth/admin.json',
 			},
 			timeout: 90_000,
