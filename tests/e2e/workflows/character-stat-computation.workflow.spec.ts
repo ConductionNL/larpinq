@@ -74,6 +74,7 @@ import { test, expect, type APIRequestContext } from '@playwright/test'
 import {
 	RUN_ID,
 	newApi,
+	resolveSchemaIds,
 	FixtureLedger,
 	createObject,
 	seedStatScenario,
@@ -96,6 +97,10 @@ const ledger = new FixtureLedger()
 
 test.beforeAll(async () => {
 	api = await newApi()
+	// Resolve register/schema ids from LarpingApp's own settings API so the
+	// workflow never trusts a stale hardcoded id (e.g. the old item=22 that
+	// pointed at a foreign QTI schema). Instance-independent.
+	await resolveSchemaIds(api)
 })
 
 test.afterAll(async () => {

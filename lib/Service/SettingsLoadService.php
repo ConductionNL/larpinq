@@ -46,20 +46,38 @@ class SettingsLoadService
 {
 
     /**
-     * Schema slugs to map.
+     * Map of LarpingApp object type to its OpenRegister schema slug.
      *
-     * @var string[]
+     * The object type is LarpingApp's internal key — it drives the
+     * `{type}_schema` / `{type}_register` IAppConfig keys read at runtime by
+     * RegisterObjectFetcher AND the frontend object-type used by the SPA. The
+     * schema slug is what OpenRegister stores and resolves by.
+     *
+     * Most types map identity (type === slug). Two are deliberately namespaced:
+     * `item` and `event` are extremely common slugs that OpenRegister matches
+     * GLOBALLY (ImportHandler::importSchema looks up an existing schema by slug
+     * with `_multitenancy: false` and no application scope). On a shared
+     * instance another app's `item`/`event` schema is created first, so the
+     * bare-slug import bound LarpingApp's `item_schema` to a foreign schema
+     * (e.g. Scholiq's QTI "Item", which hard-fails RPG item creation with a
+     * 400). Namespacing the slug to `larping_item` / `larping_event` makes
+     * LarpingApp own its schema regardless of import order or instance state,
+     * while the `item` / `event` object-type keys (and `item_schema` /
+     * `event_schema` config keys) stay unchanged for the runtime + frontend.
+     * Closes the item-schema-collision bug.
+     *
+     * @var array<string, string>
      */
-    private const SCHEMA_SLUGS = [
-        'character',
-        'player',
-        'ability',
-        'skill',
-        'item',
-        'condition',
-        'effect',
-        'event',
-        'setting',
+    private const OBJECT_TYPE_SCHEMA_SLUGS = [
+        'character' => 'character',
+        'player'    => 'player',
+        'ability'   => 'ability',
+        'skill'     => 'skill',
+        'item'      => 'larping_item',
+        'condition' => 'condition',
+        'effect'    => 'effect',
+        'event'     => 'larping_event',
+        'setting'   => 'setting',
     ];
 
     /**
@@ -161,12 +179,12 @@ class SettingsLoadService
             $this->appConfig->setValueString(Application::APP_ID, 'register', (string) $registerId);
         }
 
-        foreach (self::SCHEMA_SLUGS as $slug) {
-            if (isset($schemaMap[$slug]) === true && $schemaMap[$slug] !== null) {
-                $this->appConfig->setValueString(Application::APP_ID, "{$slug}_schema", (string) $schemaMap[$slug]);
-                $this->appConfig->setValueString(Application::APP_ID, "{$slug}_source", 'openregister');
+        foreach (self::OBJECT_TYPE_SCHEMA_SLUGS as $objectType => $schemaSlug) {
+            if (isset($schemaMap[$schemaSlug]) === true && $schemaMap[$schemaSlug] !== null) {
+                $this->appConfig->setValueString(Application::APP_ID, "{$objectType}_schema", (string) $schemaMap[$schemaSlug]);
+                $this->appConfig->setValueString(Application::APP_ID, "{$objectType}_source", 'openregister');
                 if ($registerId !== null) {
-                    $this->appConfig->setValueString(Application::APP_ID, "{$slug}_register", (string) $registerId);
+                    $this->appConfig->setValueString(Application::APP_ID, "{$objectType}_register", (string) $registerId);
                 }
             }
         }
