@@ -24,10 +24,10 @@
           "player",
           "ability",
           "skill",
-          "item",
+          "larping_item",
           "condition",
           "effect",
-          "event",
+          "larping_event",
           "setting",
           "xpAward"
         ],
@@ -443,10 +443,10 @@
         }
       },
       "item": {
-        "slug": "item",
+        "slug": "larping_item",
         "title": "Item",
         "icon": "Sword",
-        "version": "1.1.0",
+        "version": "2.0.0",
         "summary": "A magical or special item that characters can own",
         "description": "Represents a special or magical item in the game. Items provide effects to their holder. Items can be unique artifacts (only one instance exists) or regular items.",
         "type": "object",
@@ -630,10 +630,10 @@
         }
       },
       "event": {
-        "slug": "event",
+        "slug": "larping_event",
         "title": "Event",
         "icon": "CalendarMonthOutline",
-        "version": "1.1.0",
+        "version": "2.0.0",
         "summary": "A LARP event or gathering where players come together",
         "description": "Represents a LARP event — a gathering where players come with their characters. Can be multi-day events or casual meetups. Characters subscribe to events and receive effects after the event.",
         "type": "object",

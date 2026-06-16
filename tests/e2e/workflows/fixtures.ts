@@ -53,10 +53,28 @@ import { request, type APIRequestContext } from '@playwright/test'
 export const BASE = '/apps/larpingapp'
 export const OR_BASE = 'http://localhost:8080/index.php/apps/openregister/api/objects'
 
-/** Register the app's data actually lives in (numeric, not the 156 slug-dupe). */
-export const REGISTER_ID = process.env.LARP_REGISTER_ID || '8'
+export const SETTINGS_API = 'http://localhost:8080/index.php/apps/larpingapp/api/settings'
 
-/** Numeric OpenRegister schema ids per entity type on the dev instance. */
+/**
+ * Register the app's data actually lives in. Resolved from LarpingApp's own
+ * settings API at runtime (resolveSchemaIds), never hardcoded — numeric
+ * register/schema IDs are assigned by OpenRegister per instance and DRIFT on a
+ * shared instance with many registers. The literal here is only a last-resort
+ * fallback when the settings call fails. Override with LARP_REGISTER_ID.
+ */
+export let REGISTER_ID = process.env.LARP_REGISTER_ID || '8'
+
+/**
+ * Numeric OpenRegister schema ids per LarpingApp object type.
+ *
+ * MUST NOT be trusted as static: a previous bug bound `item` to a foreign
+ * app's QTI "Item" schema (id 22) because the bare `item` slug collided
+ * globally, so item creation 400'd. The fix namespaced the slug to
+ * `larping_item` / `larping_event`, which changes the numeric id. To stay
+ * correct on ANY instance, resolveSchemaIds() overwrites this map from the
+ * live `{type}_schema` config returned by the LarpingApp settings API before
+ * the workflow runs. These literals are only a bootstrap fallback.
+ */
 export const SCHEMA_IDS: Record<string, string> = {
 	character: '18',
 	player: '19',
@@ -66,6 +84,34 @@ export const SCHEMA_IDS: Record<string, string> = {
 	condition: '23',
 	effect: '24',
 	event: '25',
+}
+
+/**
+ * Resolve register + schema ids from LarpingApp's own settings API — the
+ * single source of truth the app itself reads at runtime — and mutate
+ * REGISTER_ID / SCHEMA_IDS in place. Keeps the e2e workflow correct after a
+ * schema rename or any instance-specific id reassignment instead of failing on
+ * a stale hardcoded id. Falls back to the bootstrap literals on any error.
+ */
+export async function resolveSchemaIds(api: APIRequestContext): Promise<void> {
+	const res = await api.get(SETTINGS_API, { headers: { 'OCS-APIRequest': 'true' } })
+	if (!res.ok()) {
+		return
+	}
+	const json = await res.json().catch(() => null)
+	const cfg = json?.configuration
+	if (!cfg || typeof cfg !== 'object') {
+		return
+	}
+	if (typeof cfg.register === 'string' && cfg.register !== '') {
+		REGISTER_ID = cfg.register
+	}
+	for (const type of Object.keys(SCHEMA_IDS)) {
+		const id = cfg[`${type}_schema`]
+		if (typeof id === 'string' && id !== '') {
+			SCHEMA_IDS[type] = id
+		}
+	}
 }
 
 /** Unique run id so parallel/serial runs never collide and cleanup is exact. */
