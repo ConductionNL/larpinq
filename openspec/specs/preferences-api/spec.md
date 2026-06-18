@@ -1,7 +1,11 @@
+---
+status: done
+---
+
 # preferences-api Specification
 
 ## Purpose
-TBD - created by archiving change retrofit-2026-05-26-preferences-api. Update Purpose after archive.
+Provides the per-user preference read/write surface of the app. It retrieves and persists per-user key/value preferences scoped to the authenticated user within the `pref_` namespace, sanitising keys to a safe charset, returning a default when unset, and clearing a preference when an empty value is supplied. Unauthenticated requests are rejected and invalid keys yield a bad-request response.
 ## Requirements
 ### Requirement: Get user preference (REQ-PREF-001)
 
