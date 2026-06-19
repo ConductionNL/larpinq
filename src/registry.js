@@ -29,7 +29,7 @@ export default {
 	DashboardKpi: { kind: 'widget', component: DashboardKpi },
 	DashboardRecentList: { kind: 'widget', component: DashboardRecentList },
 	DashboardSkillUsage: { kind: 'widget', component: DashboardSkillUsage },
-	DashboardActions: { kind: 'actions', component: DashboardActions },
+	DashboardActions: { kind: 'widget', component: DashboardActions },
 	GameSettingsSection: { kind: 'section', component: GameSettingsSection },
 	ObjectDetail: { kind: 'section', component: ObjectDetail },
 }
