@@ -33,7 +33,7 @@
     "extends @nextcloud/browserslist-config"
   ],
   "dependencies": {
-    "@conduction/nextcloud-vue": "^1.0.0-beta.125",
+    "@conduction/nextcloud-vue": "^1.0.0-beta.134",
     "@nextcloud/auth": "^2.5.0",
     "@nextcloud/axios": "~2.5.2",
     "@nextcloud/dialogs": "^3.2.0",
