@@ -1,0 +1,16 @@
+{
+	"_meta": {
+		"spdx-license": "EUPL-1.2",
+		"spdx-copyright": "2026 Conduction B.V.",
+		"description": "Canonical navigation layout applied AFTER all manifest.d fragments merge (see applyMenuRelocations / applySettingsSection in main.js). Fragments stay the source of WHAT exists in the menu (ADR-037); this file is the single place deciding WHERE entries live. relocations: sourceId -> targetGroupId (a relocated leaf moves under the target group; a relocated group dissolves into the target). removals: leaf menu-entry ids retired as duplicate navigation — their PAGES stay routable for deep links and e2e specs. settingsSection: top-level config/definition/admin ids lifted into Nextcloud's settings foldout (NcAppNavigationSettings gear, OUTSIDE the scrollable nav) — operational/report/dashboard items stay in the main nav. Lives outside manifest.json because the app-manifest-v2 schema has additionalProperties:false at the root."
+	},
+	"relocations": {
+		"Settings": "WorldGroup"
+	},
+	"_relocationsNote": "The top-level 'Settings (Worlds)' entry (id=Settings) is NOT app configuration — it is an OpenRegister index over the `setting` schema (per-world game-setting OBJECTS, operational content). It sat awkwardly at order 25 between the Dashboard and the content groups, reading like a duplicate of the genuine Game Settings page. It is re-homed under the World group (where the rest of the world/operational content lives) and relabelled 'World Settings' in the manifest so the split reads cleanly: operational world data under World, genuine app config under the Settings foldout.",
+	"removals": [],
+	"settingsSection": [
+		"GameSettings"
+	],
+	"_settingsSectionNote": "GameSettings (page type:'settings' with config sections — the genuine app-configuration surface) is promoted into the NC settings foldout (the bottom-left gear, OUTSIDE the scrollable nav) by applySettingsSection in main.js. It already carried section:'settings' natively in the manifest menu; listing it here makes the placement explicit and fleet-consistent (matches pipelinq / procest), and keeps the lift robust if a future manifest.d fragment redefines the entry without the section tag."
+}

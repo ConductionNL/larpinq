@@ -37,8 +37,8 @@
 				{ "id": "XpAwards", "label": "XP Awards", "icon": "StarPlusOutline", "route": "XpAwards", "order": 95 }
 			]
 		},
-		{ "id": "Settings",          "label": "Settings (Worlds)","icon": "Globe",       "route": "Settings",     "order": 25 },
-		{ "id": "GameSettings",      "label": "Game Settings",    "icon": "Cog",         "route": "GameSettings", "order": 100, "section": "settings" },
+		{ "id": "Settings",          "label": "World Settings",   "icon": "Globe",       "route": "Settings",     "order": 100 },
+		{ "id": "GameSettings",      "label": "Game Settings",    "icon": "Cog",         "route": "GameSettings", "order": 110, "section": "settings" },
 		{ "id": "Documentation",     "label": "Documentation",    "icon": "icon-info",   "href": "https://larpingapp.conduction.nl", "section": "footer", "order": 90 },
 		{ "id": "FeaturesRoadmapMenu","label": "Features & roadmap","icon": "icon-toggle","route": "FeaturesRoadmap", "section": "footer", "order": 91 }
 	],
@@ -50,6 +50,19 @@
 			"title": "Dashboard",
 			"actionsComponent": "DashboardActions",
 			"config": {
+				"dateRange": {
+					"enabled": true,
+					"showHeaderPicker": true,
+					"persistKey": "larpingapp-dashboard-range",
+					"default": { "preset": "month" },
+					"presets": [
+						{ "id": "week", "label": "Week", "days": 7 },
+						{ "id": "month", "label": "Month", "days": 30 },
+						{ "id": "quarter", "label": "Quarter", "days": 90 },
+						{ "id": "year", "label": "Year", "days": 365 },
+						{ "id": "all", "label": "All", "days": null }
+					]
+				},
 				"widgets": [
 					{ "id": "kpi-characters", "title": "Characters",       "type": "stat", "content": { "label": "Characters", "icon": "AccountGroup", "valueColor": "#0082c9", "format": { "style": "number" }, "source": { "register": "larpingapp", "schema": "character", "metric": "count", "filter": {} } } },
 					{ "id": "kpi-events",     "title": "Events",           "type": "stat", "content": { "label": "Events", "icon": "Calendar", "valueColor": "#0082c9", "format": { "style": "number" }, "source": { "register": "larpingapp", "schema": "event", "metric": "count", "filter": {} } } },
