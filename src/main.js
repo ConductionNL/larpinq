@@ -11,10 +11,12 @@ import {
 	defaultPageTypes,
 	registerIcons,
 	registerTranslations,
+	buildManifest,
 } from '@conduction/nextcloud-vue'
 import pinia from './pinia.js'
 import App from './App.vue'
 import baseManifest from './manifest.json'
+import menuLayout from './menu-layout.json'
 import registry from './registry.js'
 
 // Library CSS — must be explicit import (webpack tree-shakes side-effect imports from aliased packages)
@@ -23,38 +25,9 @@ import '@conduction/nextcloud-vue/css/index.css'
 // Global (unscoped) app styles
 import './assets/app.css'
 
-/**
- * Deep-merge every src/manifest.d/*.json fragment onto the bundled base
- * manifest (ADR-037). Each concurrent same-app build adds its own fragment
- * file under src/manifest.d/ instead of editing the shared manifest.json, so
- * disjoint builds never conflict. `pages` and `menu` arrays concatenate;
- * other top-level keys from the base are preserved.
- *
- * @param {object} base The bundled base manifest (with `pages[]` + `menu[]`).
- * @return {object} The merged manifest.
- */
-function mergeManifestFragments(base) {
-	const merged = {
-		...base,
-		pages: [...(base.pages || [])],
-		menu: [...(base.menu || [])],
-	}
-	// require.context is resolved at build time by webpack; the _placeholder
-	// fragment guarantees at least one match so the context never throws.
-	const context = require.context('./manifest.d', false, /\.json$/)
-	context.keys().sort().forEach((key) => {
-		const fragment = context(key)
-		if (Array.isArray(fragment.pages)) {
-			merged.pages.push(...fragment.pages)
-		}
-		if (Array.isArray(fragment.menu)) {
-			merged.menu.push(...fragment.menu)
-		}
-	})
-	return merged
-}
-
-const bundledManifest = mergeManifestFragments(baseManifest)
+const fragmentCtx = require.context('./manifest.d/', false, /\.json$/)
+const fragments = fragmentCtx.keys().sort().map((key) => fragmentCtx(key))
+const bundledManifest = buildManifest(baseManifest, fragments, menuLayout)
 
 Vue.mixin({ methods: { t, n } })
 Vue.use(PiniaVuePlugin)
