@@ -11,11 +11,10 @@ import {
 	defaultPageTypes,
 	registerIcons,
 	registerTranslations,
-	buildManifest,
 } from '@conduction/nextcloud-vue'
 import pinia from './pinia.js'
 import App from './App.vue'
-import baseManifest from './manifest.json'
+import bundledManifest from './manifest.json'
 import menuLayout from './menu-layout.json'
 import registry from './registry.js'
 
@@ -24,10 +23,6 @@ import '@conduction/nextcloud-vue/css/index.css'
 
 // Global (unscoped) app styles
 import './assets/app.css'
-
-const fragmentCtx = require.context('./manifest.d/', false, /\.json$/)
-const fragments = fragmentCtx.keys().sort().map((key) => fragmentCtx(key))
-const bundledManifest = buildManifest(baseManifest, fragments, menuLayout)
 
 Vue.mixin({ methods: { t, n } })
 Vue.use(PiniaVuePlugin)
@@ -55,6 +50,199 @@ function tryLoadTranslations() {
 		// no-op
 	}
 }
+
+/**
+ * Merge an array of incoming menu items into a target array, keyed by `id`.
+ * New ids are appended; existing ids are merged in place (first definition
+ * of label/icon/route wins) with children unioned recursively.
+ *
+ * @param {Array<object>} target The accumulated menu (mutated in place).
+ * @param {Array<object>} incoming Menu items from a fragment.
+ * @return {void}
+ */
+function mergeMenuItems(target, incoming) {
+	incoming.forEach((item) => {
+		const existing = target.find((t) => t.id === item.id)
+		if (!existing) {
+			target.push({ ...item, children: Array.isArray(item.children) ? [...item.children] : item.children })
+			return
+		}
+		for (const key of ['label', 'icon', 'route', 'order', 'section', 'permission', 'href']) {
+			if (existing[key] === undefined && item[key] !== undefined) {
+				existing[key] = item[key]
+			}
+		}
+		if (Array.isArray(item.children) && item.children.length > 0) {
+			if (!Array.isArray(existing.children)) {
+				existing.children = []
+			}
+			mergeMenuItems(existing.children, item.children)
+		}
+	})
+}
+
+/**
+ * Re-home merged menu entries onto the canonical navigation layout declared
+ * by `src/menu-layout.json#relocations` (`{ sourceId: targetGroupId }`).
+ *
+ * A relocated GROUP dissolves: its children merge into the target and the
+ * shell is dropped. A relocated LEAF moves under the target group.
+ * Unknown source ids are inert; a missing target group keeps the entry at
+ * the top level so nothing silently disappears. Runs in passes until stable.
+ *
+ * @param {Array<object>} menu The merged menu (mutated in place).
+ * @param {Record<string, string>|undefined} relocations Source-id → target-group-id map.
+ * @return {Array<object>} The menu with relocations applied.
+ */
+function applyMenuRelocations(menu, relocations) {
+	if (!relocations || typeof relocations !== 'object') return menu
+	for (let pass = 0; pass < 5; pass++) {
+		const moves = []
+		for (let i = menu.length - 1; i >= 0; i--) {
+			const node = menu[i]
+			const target = relocations[node.id]
+			if (target && target !== node.id) {
+				menu.splice(i, 1)
+				moves.push({ node, target })
+				continue
+			}
+			if (!Array.isArray(node.children)) continue
+			for (let j = node.children.length - 1; j >= 0; j--) {
+				const child = node.children[j]
+				const childTarget = relocations[child.id]
+				if (!childTarget) continue
+				if (childTarget === node.id && !Array.isArray(child.children)) continue
+				node.children.splice(j, 1)
+				moves.push({ node: child, target: childTarget })
+			}
+		}
+		if (moves.length === 0) break
+		moves.forEach(({ node, target }) => {
+			const group = menu.find((m) => m.id === target)
+			if (!group) {
+				menu.push(node)
+				return
+			}
+			if (!Array.isArray(group.children)) group.children = []
+			if (Array.isArray(node.children)) {
+				mergeMenuItems(group.children, node.children)
+			} else {
+				mergeMenuItems(group.children, [node])
+			}
+		})
+	}
+	return menu.filter((m) => m.route || m.href || m.action
+		|| (Array.isArray(m.children) && m.children.length > 0))
+}
+
+/**
+ * Remove individual leaf menu entries by id after relocation — used to retire
+ * duplicate navigation entries whose PAGE must stay routable.
+ *
+ * @param {Array<object>} menu The merged menu (mutated in place).
+ * @param {Array<string>|undefined} removals Menu-entry ids to drop.
+ * @return {Array<object>} The menu without the removed entries.
+ */
+function applyMenuRemovals(menu, removals) {
+	if (!Array.isArray(removals) || removals.length === 0) return menu
+	const drop = new Set(removals)
+	const isLeaf = (n) => !Array.isArray(n.children) || n.children.length === 0
+	menu.forEach((node) => {
+		if (Array.isArray(node.children)) {
+			node.children = node.children.filter((c) => !(drop.has(c.id) && isLeaf(c)))
+		}
+	})
+	return menu.filter((node) => !(drop.has(node.id) && isLeaf(node)))
+}
+
+/**
+ * Promote the menu entries listed in `src/menu-layout.json#settingsSection`
+ * into Nextcloud's settings foldout — the NcAppNavigationSettings gear at the
+ * bottom-left of the navigation, OUTSIDE the scrollable list. CnAppNav renders
+ * every TOP-LEVEL item carrying `section: "settings"` as a flat entry inside
+ * that foldout (with an auto-prepended "Personal settings"). This lifts each
+ * listed id out of wherever it currently sits, tags it `section: "settings"`,
+ * flattens it (the foldout has no nested groups), and appends it to the top
+ * level. Empty non-clickable groups left behind are dropped; a clickable group
+ * (one with route/href/action) is kept.
+ *
+ * @param {Array<object>} menu        The merged + relocated + pruned menu.
+ * @param {Array<string>|undefined} settingsIds Entry ids to move to the foldout.
+ * @return {Array<object>} The menu with the settings entries lifted out.
+ */
+function applySettingsSection(menu, settingsIds) {
+	if (!Array.isArray(settingsIds) || settingsIds.length === 0) return menu
+	const want = new Set(settingsIds)
+	const isClickable = (n) => n.route !== undefined || n.href !== undefined || n.action !== undefined
+	const lifted = []
+	const strip = (nodes) => nodes.reduce((acc, n) => {
+		if (want.has(n.id)) {
+			const { children, ...leaf } = n
+			lifted.push({ ...leaf, section: 'settings' })
+			return acc
+		}
+		if (Array.isArray(n.children)) {
+			const children = strip(n.children)
+			if (children.length === 0 && n.children.length > 0 && !isClickable(n)) return acc
+			acc.push({ ...n, children })
+			return acc
+		}
+		acc.push(n)
+		return acc
+	}, [])
+	const remaining = strip(menu)
+	return [...remaining, ...lifted]
+}
+
+/**
+ * ADR-037: Merge modular manifest fragments onto the bundled manifest.
+ *
+ * Every `*.json` file under `src/manifest.d/` is merged (in sorted filename
+ * order) onto the bundled manifest. This lets concurrent same-app builds add
+ * pages/menu entries via isolated fragment files instead of all editing
+ * `src/manifest.json` and conflicting. `pages` and `menu` arrays are
+ * concatenated; any other key on a fragment overrides the base value.
+ * After merging, src/menu-layout.json relocations and removals are applied to
+ * consolidate entries into their canonical navigation clusters.
+ *
+ * @param {object} base The bundled manifest.
+ * @return {object} The merged manifest.
+ */
+function mergeManifestFragments(base) {
+	// `require.context` is resolved at build time by webpack; the
+	// `manifest.d/_placeholder.json` keeps the context non-empty so this
+	// never throws when no real fragments exist yet.
+	const context = require.context('./manifest.d', false, /\.json$/)
+	const merged = { ...base }
+	// Defensive copies so fragments never mutate the imported manifest.
+	merged.pages = Array.isArray(base.pages) ? [...base.pages] : []
+	merged.menu = Array.isArray(base.menu) ? [...base.menu] : []
+
+	context.keys().sort().forEach((key) => {
+		const fragment = context(key)
+		if (!fragment || typeof fragment !== 'object') {
+			return
+		}
+		Object.keys(fragment).forEach((prop) => {
+			if (prop === 'pages' && Array.isArray(fragment.pages)) {
+				merged.pages = merged.pages.concat(fragment.pages)
+			} else if (prop === 'menu' && Array.isArray(fragment.menu)) {
+				merged.menu = merged.menu.concat(fragment.menu)
+			} else {
+				merged[prop] = fragment[prop]
+			}
+		})
+	})
+
+	merged.menu = applyMenuRelocations(merged.menu, menuLayout.relocations)
+	merged.menu = applyMenuRemovals(merged.menu, menuLayout.removals)
+	merged.menu = applySettingsSection(merged.menu, menuLayout.settingsSection)
+
+	return merged
+}
+
+// Apply ADR-037 manifest fragments before routes/app consume the manifest.
+const manifest = mergeManifestFragments(bundledManifest)
 
 // Shallow-clone CnPageRenderer because the lib's barrel exports are
 // non-extensible (webpack ESM module records). Vue 2's `Vue.extend()`
@@ -86,7 +274,7 @@ function routesFromManifest(manifest) {
 const router = new VueRouter({
 	mode: 'hash',
 	base: generateUrl('/apps/larpingapp'),
-	routes: routesFromManifest(bundledManifest),
+	routes: routesFromManifest(manifest),
 })
 
 tryLoadTranslations()
@@ -107,7 +295,7 @@ new Vue({
 	router,
 	render: (h) => h(App, {
 		props: {
-			manifest: bundledManifest,
+			manifest,
 			registry: registryProp,
 			pageTypes: pageTypesProp,
 		},
