@@ -22,14 +22,19 @@ use OCA\LarpingApp\AppInfo\Application;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Services\IInitialState;
-use OCP\Settings\ISettings;
+use OCP\Settings\IDelegatedSettings;
 
 /**
  * Admin settings form for the LarpingApp application.
  *
+ * Implements IDelegatedSettings so #[AuthorizedAdminSetting(LarpingAppAdmin::class)]
+ * on the SetupController can gate the first-time setup endpoints to admins
+ * (IDelegatedSettings extends ISettings; the attribute requires the delegated
+ * interface).
+ *
  * @psalm-suppress UnusedClass Registered in appinfo/info.xml as admin settings.
  */
-class LarpingAppAdmin implements ISettings
+class LarpingAppAdmin implements IDelegatedSettings
 {
     /**
      * Constructor.
@@ -84,4 +89,26 @@ class LarpingAppAdmin implements ISettings
     {
         return 10;
     }//end getPriority()
+
+    /**
+     * Human-readable name of the delegated settings section.
+     *
+     * @return string|null The section name, or null to use the section default.
+     */
+    public function getName(): ?string
+    {
+        return null;
+    }//end getName()
+
+    /**
+     * App-config keys an authorized (delegated) admin may manage.
+     *
+     * @return array<string, string[]> Map of appId to allowed config keys.
+     *
+     * @spec exclude IDelegatedSettings contract method for the setup-wizard admin gate (ADR-042).
+     */
+    public function getAuthorizedAppConfig(): array
+    {
+        return [];
+    }//end getAuthorizedAppConfig()
 }//end class
