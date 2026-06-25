@@ -1,0 +1,165 @@
+[
+  {
+    "slug": "transparent-stat-audit-trail",
+    "title": "Transparent stat audit trail",
+    "title_nl": "Transparant overzicht van elke statwijziging",
+    "summary": "Each ability shows exactly which skill, item or condition added every modifier.",
+    "summary_nl": "Bij elke eigenschap zie je precies welke vaardigheid, voorwerp of conditie elke wijziging toevoegde.",
+    "status": "stable",
+    "docsUrl": "openspec/specs/game-mechanics/spec.md"
+  },
+  {
+    "slug": "self-recomputing-character-sheets",
+    "title": "Character sheets that recompute themselves",
+    "title_nl": "Karakterbladen die zichzelf herberekenen",
+    "summary": "A skill, gear or condition changes a stat and the sheet updates instantly.",
+    "summary_nl": "Een vaardigheid, voorwerp of conditie verandert een stat en het blad werkt direct bij.",
+    "status": "stable",
+    "docsUrl": "openspec/specs/character-management/spec.md"
+  },
+  {
+    "slug": "skill-requirement-enforcement",
+    "title": "Rules the system enforces for you",
+    "title_nl": "Regels die het systeem voor je afdwingt",
+    "summary": "Illegal builds and overspent XP are rejected at save, with a GM override.",
+    "summary_nl": "Ongeldige builds en te veel uitgegeven XP worden bij opslaan geweigerd, met een GM-override.",
+    "status": "stable",
+    "docsUrl": "openspec/specs/skill-requirement-enforcement/spec.md"
+  },
+  {
+    "slug": "event-xp-awards",
+    "title": "XP awards after every event",
+    "title_nl": "XP toekennen na elk evenement",
+    "summary": "Hand out experience after an event and characters level up automatically.",
+    "summary_nl": "Ken na een evenement ervaring toe en karakters gaan automatisch in level omhoog.",
+    "status": "stable",
+    "docsUrl": "openspec/specs/event-xp-awards/spec.md"
+  },
+  {
+    "slug": "rpg-system",
+    "title": "Configurable rules engine",
+    "title_nl": "Instelbare regelmotor",
+    "summary": "Model your own ruleset with custom abilities, skills, items and effects.",
+    "summary_nl": "Bouw je eigen regelset met eigen eigenschappen, vaardigheden, voorwerpen en effecten.",
+    "status": "stable",
+    "docsUrl": "openspec/specs/rpg-system/spec.md"
+  },
+  {
+    "slug": "pdf-character-sheets",
+    "title": "Printable character sheets",
+    "title_nl": "Printbare karakterbladen",
+    "summary": "Players bring a clean PDF character sheet to the field.",
+    "summary_nl": "Spelers nemen een net PDF-karakterblad mee naar het veld.",
+    "status": "stable",
+    "docsUrl": "openspec/specs/pdf-export/spec.md"
+  },
+  {
+    "slug": "gm-run-sheet",
+    "title": "GM run-sheet per event",
+    "title_nl": "GM-draaiboek per evenement",
+    "summary": "Print one cast list with names, stats, conditions and notes per event.",
+    "summary_nl": "Print per evenement een castlijst met namen, stats, condities en notities.",
+    "status": "stable",
+    "docsUrl": "openspec/specs/pdf-export/spec.md"
+  },
+  {
+    "slug": "setting-management",
+    "title": "Worlds and campaigns",
+    "title_nl": "Werelden en campagnes",
+    "summary": "Scope characters and events per setting and archive a campaign without losing its history.",
+    "summary_nl": "Koppel karakters en evenementen aan een setting en archiveer een campagne zonder de geschiedenis te verliezen.",
+    "status": "stable",
+    "docsUrl": "openspec/specs/setting-management/spec.md"
+  },
+  {
+    "slug": "guided-setup-and-walkthrough",
+    "title": "Guided setup and walkthrough",
+    "title_nl": "Begeleide installatie en rondleiding",
+    "summary": "A first-run wizard provisions everything and a tour shows you around.",
+    "summary_nl": "Een wizard bij de eerste start regelt alles en een rondleiding wijst je de weg.",
+    "status": "stable"
+  },
+  {
+    "slug": "campaign-dashboard",
+    "title": "Campaign dashboard",
+    "title_nl": "Campagnedashboard",
+    "summary": "See character, event, item and player counts at a glance.",
+    "summary_nl": "Zie in een oogopslag het aantal karakters, evenementen, voorwerpen en spelers.",
+    "status": "stable",
+    "docsUrl": "openspec/specs/dashboard/spec.md"
+  },
+  {
+    "slug": "skill-usage-insights",
+    "title": "Skill usage insights",
+    "title_nl": "Inzicht in vaardigheidsgebruik",
+    "summary": "See which skills your players pick most across a campaign.",
+    "summary_nl": "Zie welke vaardigheden je spelers het vaakst kiezen in een campagne.",
+    "status": "beta",
+    "providedBy": "openregister",
+    "docsUrl": "openspec/specs/larping-skill-widget/spec.md"
+  },
+  {
+    "slug": "event-rosters-and-signup",
+    "title": "Event rosters and sign-up",
+    "title_nl": "Evenementrosters en aanmelding",
+    "summary": "Players sign up through a form and you see who is attending.",
+    "summary_nl": "Spelers melden zich aan via een formulier en jij ziet wie er komt.",
+    "status": "beta",
+    "providedBy": "openregister",
+    "docsUrl": "openspec/specs/event-signup-to-forms-leaf/spec.md"
+  },
+  {
+    "slug": "player-and-contact-records",
+    "title": "Player and contact records",
+    "title_nl": "Speler- en contactgegevens",
+    "summary": "Link a player to their characters and reach them by email or phone.",
+    "summary_nl": "Koppel een speler aan zijn karakters en bereik hem via e-mail of telefoon.",
+    "status": "beta",
+    "providedBy": "openregister",
+    "docsUrl": "openspec/specs/player-to-contacts-leaf/spec.md"
+  },
+  {
+    "slug": "lifecycle-notifications",
+    "title": "Lifecycle notifications",
+    "title_nl": "Meldingen bij statuswijzigingen",
+    "summary": "Get notified when a character is submitted or approved.",
+    "summary_nl": "Ontvang een melding wanneer een karakter wordt ingediend of goedgekeurd.",
+    "status": "beta",
+    "providedBy": "openregister",
+    "docsUrl": "openspec/specs/notifications/spec.md"
+  },
+  {
+    "slug": "photos-maps-and-calendar",
+    "title": "Photos, maps and calendar on detail pages",
+    "title_nl": "Foto's, kaarten en agenda op detailpagina's",
+    "summary": "Add a portrait, pin a location and put sessions in the calendar.",
+    "summary_nl": "Voeg een portret toe, prik een locatie op de kaart en zet sessies in de agenda.",
+    "status": "beta",
+    "providedBy": "openregister",
+    "docsUrl": "openspec/specs/character-photos-leaf/spec.md"
+  },
+  {
+    "slug": "online-event-payments",
+    "title": "Online payments for event fees",
+    "title_nl": "Online betalingen voor deelnamekosten",
+    "summary": "Collect ticket fees when players register for an event.",
+    "summary_nl": "Int deelnamekosten wanneer spelers zich aanmelden voor een evenement.",
+    "status": "soon"
+  },
+  {
+    "slug": "onsite-check-in",
+    "title": "On-site check-in",
+    "title_nl": "Inchecken op locatie",
+    "summary": "Check players in at the door with a QR scan.",
+    "summary_nl": "Check spelers bij de deur in met een QR-scan.",
+    "status": "soon"
+  },
+  {
+    "slug": "faction-and-group-management",
+    "title": "Faction and group management",
+    "title_nl": "Beheer van facties en groepen",
+    "summary": "Organise characters into factions and guilds.",
+    "summary_nl": "Organiseer karakters in facties en gilden.",
+    "status": "soon"
+  }
+]
