@@ -80,7 +80,7 @@ cross-app dependencies ship:
 
 - **i18n (ADR-025).** Passing `?_lang={locale}` on reads, stamping
   `X-Translation-Target-Language` on non-default-language writes, and
-  rendering a "(translated from {lang})" badge from `sourceLanguage`
+  rendering a `(translated from {lang})` badge from `sourceLanguage`
   metadata. These depend on OpenRegister's object API honouring those
   signals (unmerged `i18n-api-language-negotiation` /
   `i18n-source-of-truth`). LarpingApp fetches objects through the shared

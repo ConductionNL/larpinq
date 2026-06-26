@@ -32,7 +32,7 @@ module.exports = defineConfig([{
 
 	rules: {
 		// Allow unused i18n functions (t, n) — imported for future translation wiring
-		'no-unused-vars': ['error', { varsIgnorePattern: '^(t|n)$', argsIgnorePattern: '^_' }],
+		'no-unused-vars': ['error', { varsIgnorePattern: '^(t|n)$', argsIgnorePattern: '^_', ignoreRestSiblings: true }],
 		'jsdoc/require-jsdoc': 'off',
 		'vue/first-attribute-linebreak': 'off',
 		'@typescript-eslint/no-explicit-any': 'off',

@@ -2,6 +2,37 @@
 	"$schema": "https://codeberg.org/Conduction/nextcloud-vue/raw/branch/main/src/schemas/app-manifest-v2.schema.json",
 	"version": "0.3.0",
 	"dependencies": ["openregister"],
+	"setup": {
+		"enabled": true,
+		"version": 1,
+		"completionConfigKey": "setup_completed_version",
+		"steps": [
+			{ "id": "welcome", "type": "info", "title": "Welcome to LARPing", "body": "Manage your live-action roleplay world — characters, players, items and events — all in one place. One quick step provisions your data store, then you're ready to play." },
+			{ "id": "provision", "type": "run-action", "title": "Provision your world", "required": true, "action": "provision", "body": "Create the LarpingApp register and schemas in OpenRegister — the data store for characters, players, abilities, skills, items, conditions, effects, events and settings. This normally runs automatically on install; run it here if OpenRegister was enabled after LarpingApp, or to repair a partial install. It is safe to run more than once." },
+			{ "id": "done", "type": "summary", "title": "You're ready", "healthCheck": true, "body": "That's it — your world's data store is provisioned. Jump into the Dashboard to see it at a glance, and reopen this setup or the guided tour anytime from the app's … menu." }
+		]
+	},
+	"walkthrough": {
+		"enabled": true,
+		"version": 1,
+		"completionConfigKey": "walkthrough_completed_version",
+		"tours": [
+			{
+				"id": "larpingapp:getting-started",
+				"title": "Getting started",
+				"trigger": "first-visit",
+				"minAppVersion": "0.1.27",
+				"steps": [
+					{ "id": "welcome", "sinceVersion": "0.1.27", "placement": "center", "title": "Welcome to LARPing", "body": "Let's take a quick spin through your world — we'll create a character and an event together so you can see how the pieces fit. You'll add each record yourself.", "target": { "kind": "page", "ref": "Dashboard" }, "advanceOn": { "type": "manual" } },
+					{ "id": "go-characters", "sinceVersion": "0.1.27", "placement": "right", "body": "Characters are the heart of your world. Open Characters from the menu to get started.", "task": "Click Characters in the menu", "target": { "kind": "nav-item", "ref": "Characters" }, "advanceOn": { "type": "route-match", "route": "Characters" } },
+					{ "id": "create-character", "sinceVersion": "0.1.27", "placement": "bottom", "allowManualNext": true, "body": "Add your first character — give them a name and a type, and save. You can flesh out abilities, skills and items later.", "task": "Click New and save a character", "target": { "kind": "element", "ref": "index-add" }, "advanceOn": { "type": "object-created", "register": "larpingapp", "schema": "character", "capture": { "characterId": ":id" } } },
+					{ "id": "go-events", "sinceVersion": "0.1.27", "placement": "right", "body": "Events are the game sessions where your world comes alive. Open Events from the menu.", "task": "Click Events in the menu", "target": { "kind": "nav-item", "ref": "Events" }, "advanceOn": { "type": "route-match", "route": "Events" } },
+					{ "id": "create-event", "sinceVersion": "0.1.27", "placement": "bottom", "allowManualNext": true, "body": "Create your first event — name it and set a start date, then save. Your characters can join it from here.", "task": "Click New and save an event", "target": { "kind": "element", "ref": "index-add" }, "advanceOn": { "type": "object-created", "register": "larpingapp", "schema": "event", "capture": { "eventId": ":id" } } },
+					{ "id": "done", "sinceVersion": "0.1.27", "placement": "center", "title": "You're all set", "body": "Nicely done — your world has its first character and event. Head back to the Dashboard to watch it grow, and reopen this tour anytime from the … menu.", "target": { "kind": "page", "ref": "Dashboard" }, "advanceOn": { "type": "manual" } }
+				]
+			}
+		]
+	},
 	"menu": [
 		{ "id": "Dashboard", "label": "Dashboard", "icon": "ViewDashboard", "route": "Dashboard", "order": 10 },
 		{
@@ -51,12 +82,12 @@
 			"actionsComponent": "DashboardActions",
 			"config": {
 				"widgets": [
-					{ "id": "kpi-characters", "title": "Characters",       "type": "stat", "content": { "label": "Characters", "icon": "AccountGroup", "valueColor": "#0082c9", "format": { "style": "number" }, "source": { "register": "larpingapp", "schema": "character", "metric": "count", "filter": {} } } },
-					{ "id": "kpi-events",     "title": "Events",           "type": "stat", "content": { "label": "Events", "icon": "Calendar", "valueColor": "#0082c9", "format": { "style": "number" }, "source": { "register": "larpingapp", "schema": "event", "metric": "count", "filter": {} } } },
-					{ "id": "kpi-items",      "title": "Items",            "type": "stat", "content": { "label": "Items", "icon": "Star", "valueColor": "#0082c9", "format": { "style": "number" }, "source": { "register": "larpingapp", "schema": "item", "metric": "count", "filter": {} } } },
-					{ "id": "kpi-players",    "title": "Players",          "type": "stat", "content": { "label": "Players", "icon": "Account", "valueColor": "#0082c9", "format": { "style": "number" }, "source": { "register": "larpingapp", "schema": "player", "metric": "count", "filter": {} } } },
-					{ "id": "recent-characters", "title": "Recent characters", "type": "object-list", "content": { "register": "larpingapp", "schema": "character", "filter": {}, "sort": { "field": "created", "dir": "desc" }, "limit": 6, "columns": [{ "key": "name", "label": "Name" }, { "key": "type", "label": "Type" }] } },
-					{ "id": "recent-events",     "title": "Recent events",     "type": "object-list", "content": { "register": "larpingapp", "schema": "event", "filter": {}, "sort": { "field": "startDate", "dir": "desc" }, "limit": 6, "columns": [{ "key": "name", "label": "Event" }, { "key": "startDate", "label": "Starts" }] } },
+					{ "id": "kpi-characters", "title": "Characters",       "type": "stat", "content": { "label": "Characters", "route": { "name": "Characters" }, "icon": "AccountGroup", "valueColor": "#0082c9", "format": { "style": "number" }, "source": { "register": "larpingapp", "schema": "character", "metric": "count", "filter": {} } } },
+					{ "id": "kpi-events",     "title": "Events",           "type": "stat", "content": { "label": "Events", "route": { "name": "Events" }, "icon": "Calendar", "valueColor": "#0082c9", "format": { "style": "number" }, "source": { "register": "larpingapp", "schema": "event", "metric": "count", "filter": {} } } },
+					{ "id": "kpi-items",      "title": "Items",            "type": "stat", "content": { "label": "Items", "route": { "name": "Items" }, "icon": "Star", "valueColor": "#0082c9", "format": { "style": "number" }, "source": { "register": "larpingapp", "schema": "item", "metric": "count", "filter": {} } } },
+					{ "id": "kpi-players",    "title": "Players",          "type": "stat", "content": { "label": "Players", "route": { "name": "Players" }, "icon": "Account", "valueColor": "#0082c9", "format": { "style": "number" }, "source": { "register": "larpingapp", "schema": "player", "metric": "count", "filter": {} } } },
+					{ "id": "recent-characters", "title": "Recent characters", "type": "object-list", "content": { "register": "larpingapp", "schema": "character", "filter": {}, "sort": { "field": "created", "dir": "desc" }, "limit": 6, "rowRoute": "CharacterDetail", "columns": [{ "key": "name", "label": "Name" }, { "key": "type", "label": "Type" }] } },
+					{ "id": "recent-events",     "title": "Recent events",     "type": "object-list", "content": { "register": "larpingapp", "schema": "event", "filter": {}, "sort": { "field": "startDate", "dir": "desc" }, "limit": 6, "rowRoute": "EventDetail", "columns": [{ "key": "name", "label": "Event" }, { "key": "startDate", "label": "Starts" }] } },
 					{ "id": "skill-usage",    "title": "Skill usage by characters", "type": "custom" }
 				],
 				"layout": [
