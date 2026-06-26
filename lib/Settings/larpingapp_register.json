@@ -53,28 +53,33 @@
             "type": "string",
             "description": "The chosen in-game name for this character",
             "maxLength": 255,
-            "minLength": 1
+            "minLength": 1,
+            "title": "Character Name"
           },
           "ocName": {
             "type": "string",
             "description": "The name of the player playing this character",
-            "maxLength": 255
+            "maxLength": 255,
+            "title": "Player Name"
           },
           "ownerUid": {
             "type": "string",
             "description": "Nextcloud uid of the player who owns this character. Used for per-player notifications (e.g. character-approved).",
-            "maxLength": 255
+            "maxLength": 255,
+            "title": "Owner UID"
           },
           "description": {
             "type": "string",
             "description": "Public description visible to all players",
-            "maxLength": 2555
+            "maxLength": 2555,
+            "title": "Description"
           },
           "background": {
             "type": "string",
             "description": "Character background story (visible to GMs only)",
             "maxLength": 2555,
-            "visible": false
+            "visible": false,
+            "title": "Background Story"
           },
           "type": {
             "type": "string",
@@ -103,55 +108,64 @@
             "type": "integer",
             "description": "Amount of gold pieces",
             "default": 0,
-            "visible": false
+            "visible": false,
+            "title": "Gold Pieces"
           },
           "silver": {
             "type": "integer",
             "description": "Amount of silver pieces",
             "default": 0,
-            "visible": false
+            "visible": false,
+            "title": "Silver Pieces"
           },
           "copper": {
             "type": "integer",
             "description": "Amount of copper pieces",
             "default": 0,
-            "visible": false
+            "visible": false,
+            "title": "Copper Pieces"
           },
           "faith": {
             "type": "string",
             "description": "The faith or religion of the character",
             "maxLength": 2555,
-            "visible": false
+            "visible": false,
+            "title": "Faith"
           },
           "slNotesPublic": {
             "type": "string",
             "description": "Game master notes visible to players",
             "maxLength": 2555,
-            "visible": false
+            "visible": false,
+            "title": "Game Master Notes (Public)"
           },
           "slNotesPrivate": {
             "type": "string",
             "description": "Game master notes NOT visible to players",
             "maxLength": 2555,
-            "visible": false
+            "visible": false,
+            "title": "Game Master Notes (Private)"
           },
           "card": {
             "type": "string",
             "description": "Character card as markdown table",
             "maxLength": 5000,
-            "visible": false
+            "visible": false,
+            "title": "Character Card"
           },
           "itemsAndMoney": {
             "type": "string",
             "description": "Notes about items and money",
             "maxLength": 2555,
-            "visible": false
+            "visible": false,
+            "title": "Items and Money"
           },
           "notice": {
             "type": "string",
             "description": "Automatic system notices",
             "maxLength": 2555,
-            "visible": false
+            "visible": false,
+            "title": "System Notice"
           },
           "skills": {
             "type": "array",
@@ -160,7 +174,8 @@
               "type": "string",
               "format": "uuid"
             },
-            "visible": false
+            "visible": false,
+            "title": "Skills"
           },
           "items": {
             "type": "array",
@@ -169,7 +184,8 @@
               "type": "string",
               "format": "uuid"
             },
-            "visible": false
+            "visible": false,
+            "title": "Items"
           },
           "conditions": {
             "type": "array",
@@ -178,7 +194,8 @@
               "type": "string",
               "format": "uuid"
             },
-            "visible": false
+            "visible": false,
+            "title": "Conditions"
           },
           "events": {
             "type": "array",
@@ -187,13 +204,15 @@
               "type": "string",
               "format": "uuid"
             },
-            "visible": false
+            "visible": false,
+            "title": "Events"
           },
           "setting": {
             "type": "string",
             "format": "uuid",
             "description": "Optional setting (world/campaign) this character belongs to. Empty means shared across all settings.",
-            "visible": false
+            "visible": false,
+            "title": "Setting"
           },
           "requirementOverrides": {
             "type": "array",
@@ -204,28 +223,35 @@
                 "skill": {
                   "type": "string",
                   "format": "uuid",
-                  "description": "The assigned skill whose requirements are waived"
+                  "description": "The assigned skill whose requirements are waived",
+                  "title": "Skill"
                 },
                 "reason": {
                   "type": "string",
-                  "description": "Mandatory reason for the override (audited)"
+                  "description": "Mandatory reason for the override (audited)",
+                  "title": "Override Reason"
                 },
                 "overriddenBy": {
                   "type": "string",
-                  "description": "Nextcloud uid of the GM who authored the override (server-stamped)"
+                  "description": "Nextcloud uid of the GM who authored the override (server-stamped)",
+                  "title": "Overridden By"
                 },
                 "overriddenAt": {
                   "type": "string",
                   "format": "date-time",
-                  "description": "When the override was authored (server-stamped)"
+                  "description": "When the override was authored (server-stamped)",
+                  "title": "Overridden At"
                 }
               }
             },
-            "visible": false
+            "visible": false,
+            "title": "Requirement Overrides"
           }
         },
         "configuration": {
-          "linkedTypes": ["photos"],
+          "linkedTypes": [
+            "photos"
+          ],
           "x-openregister-lifecycle": {
             "field": "approved",
             "initial": "no",
@@ -310,12 +336,14 @@
             "type": "string",
             "description": "Full name of the player",
             "maxLength": 255,
-            "minLength": 1
+            "minLength": 1,
+            "title": "Player Name"
           },
           "description": {
             "type": "string",
             "description": "Notes about the player",
-            "maxLength": 2555
+            "maxLength": 2555,
+            "title": "Description"
           }
         }
       },
@@ -335,23 +363,27 @@
             "type": "string",
             "description": "Unique name of the ability (e.g., Experience Points, Mana)",
             "maxLength": 255,
-            "minLength": 1
+            "minLength": 1,
+            "title": "Ability Name"
           },
           "description": {
             "type": "string",
             "description": "What this ability represents within the game setting",
-            "maxLength": 2555
+            "maxLength": 2555,
+            "title": "Description"
           },
           "base": {
             "type": "integer",
             "description": "Starting value for all characters",
-            "default": 0
+            "default": 0,
+            "title": "Base Value"
           },
           "setting": {
             "type": "string",
             "format": "uuid",
             "description": "Optional setting (world/campaign) this ability belongs to. Empty means shared across all settings.",
-            "visible": false
+            "visible": false,
+            "title": "Setting"
           }
         }
       },
@@ -371,18 +403,21 @@
             "type": "string",
             "description": "Name of the skill (e.g., Healing LvL 1)",
             "maxLength": 255,
-            "minLength": 1
+            "minLength": 1,
+            "title": "Skill Name"
           },
           "description": {
             "type": "string",
             "description": "In-game flavor description of the skill",
-            "maxLength": 2555
+            "maxLength": 2555,
+            "title": "Description"
           },
           "effect": {
             "type": "string",
             "description": "Technical description of what the skill does mechanically",
             "maxLength": 2555,
-            "visible": false
+            "visible": false,
+            "title": "Mechanical Effect"
           },
           "effects": {
             "type": "array",
@@ -391,7 +426,8 @@
               "type": "string",
               "format": "uuid"
             },
-            "visible": false
+            "visible": false,
+            "title": "Effects"
           },
           "requiredSkills": {
             "type": "array",
@@ -400,7 +436,8 @@
               "type": "string",
               "format": "uuid"
             },
-            "visible": false
+            "visible": false,
+            "title": "Required Skills"
           },
           "requiredStats": {
             "type": "array",
@@ -409,7 +446,8 @@
               "type": "string",
               "format": "uuid"
             },
-            "visible": false
+            "visible": false,
+            "title": "Required Stats"
           },
           "requiredConditions": {
             "type": "array",
@@ -418,7 +456,8 @@
               "type": "string",
               "format": "uuid"
             },
-            "visible": false
+            "visible": false,
+            "title": "Required Conditions"
           },
           "requiredEffects": {
             "type": "array",
@@ -427,18 +466,21 @@
               "type": "string",
               "format": "uuid"
             },
-            "visible": false
+            "visible": false,
+            "title": "Required Effects"
           },
           "requiredScore": {
             "type": "integer",
             "description": "Minimum ability score needed when requirements are abilities",
-            "visible": false
+            "visible": false,
+            "title": "Required Score"
           },
           "setting": {
             "type": "string",
             "format": "uuid",
             "description": "Optional setting (world/campaign) this skill belongs to. Empty means shared across all settings.",
-            "visible": false
+            "visible": false,
+            "title": "Setting"
           }
         }
       },
@@ -458,18 +500,21 @@
             "type": "string",
             "description": "Item name (e.g., Hand of Vecna)",
             "maxLength": 255,
-            "minLength": 1
+            "minLength": 1,
+            "title": "Item Name"
           },
           "description": {
             "type": "string",
             "description": "Player-visible description with story pointers",
-            "maxLength": 2555
+            "maxLength": 2555,
+            "title": "Description"
           },
           "effect": {
             "type": "string",
             "description": "Technical description of item effects (GM-visible only)",
             "maxLength": 2555,
-            "visible": false
+            "visible": false,
+            "title": "Mechanical Effect"
           },
           "effects": {
             "type": "array",
@@ -478,12 +523,14 @@
               "type": "string",
               "format": "uuid"
             },
-            "visible": false
+            "visible": false,
+            "title": "Effects"
           },
           "unique": {
             "type": "boolean",
             "description": "Whether this is a unique artifact (only one instance can exist)",
-            "default": true
+            "default": true,
+            "title": "Unique Artifact"
           },
           "characters": {
             "type": "array",
@@ -492,13 +539,15 @@
               "type": "string",
               "format": "uuid"
             },
-            "visible": false
+            "visible": false,
+            "title": "Characters"
           },
           "setting": {
             "type": "string",
             "format": "uuid",
             "description": "Optional setting (world/campaign) this item belongs to. Empty means shared across all settings.",
-            "visible": false
+            "visible": false,
+            "title": "Setting"
           }
         }
       },
@@ -518,18 +567,21 @@
             "type": "string",
             "description": "Unique name of the condition",
             "maxLength": 255,
-            "minLength": 1
+            "minLength": 1,
+            "title": "Condition Name"
           },
           "description": {
             "type": "string",
             "description": "In-game flavor text description",
-            "maxLength": 2555
+            "maxLength": 2555,
+            "title": "Description"
           },
           "effect": {
             "type": "string",
             "description": "Mechanical description of what the condition does",
             "maxLength": 2555,
-            "visible": false
+            "visible": false,
+            "title": "Mechanical Effect"
           },
           "effects": {
             "type": "array",
@@ -538,12 +590,14 @@
               "type": "string",
               "format": "uuid"
             },
-            "visible": false
+            "visible": false,
+            "title": "Effects"
           },
           "unique": {
             "type": "boolean",
             "description": "Whether only one character can have this condition at a time",
-            "default": false
+            "default": false,
+            "title": "Unique Condition"
           },
           "characters": {
             "type": "array",
@@ -552,13 +606,15 @@
               "type": "string",
               "format": "uuid"
             },
-            "visible": false
+            "visible": false,
+            "title": "Affected Characters"
           },
           "setting": {
             "type": "string",
             "format": "uuid",
             "description": "Optional setting (world/campaign) this condition belongs to. Empty means shared across all settings.",
-            "visible": false
+            "visible": false,
+            "title": "Setting"
           }
         }
       },
@@ -578,17 +634,20 @@
             "type": "string",
             "description": "Descriptive name (e.g., +5 Healing Mana)",
             "maxLength": 255,
-            "minLength": 1
+            "minLength": 1,
+            "title": "Effect Name"
           },
           "description": {
             "type": "string",
             "description": "Technical description of the effect",
-            "maxLength": 2555
+            "maxLength": 2555,
+            "title": "Description"
           },
           "modifier": {
             "type": "integer",
             "description": "The numeric value applied to the ability",
-            "default": 0
+            "default": 0,
+            "title": "Modifier Value"
           },
           "modification": {
             "type": "string",
@@ -619,13 +678,15 @@
               "type": "string",
               "format": "uuid"
             },
-            "visible": false
+            "visible": false,
+            "title": "Abilities"
           },
           "setting": {
             "type": "string",
             "format": "uuid",
             "description": "Optional setting (world/campaign) this effect belongs to. Empty means shared across all settings.",
-            "visible": false
+            "visible": false,
+            "title": "Setting"
           }
         }
       },
@@ -645,27 +706,32 @@
             "type": "string",
             "description": "Event name",
             "maxLength": 255,
-            "minLength": 1
+            "minLength": 1,
+            "title": "Event Name"
           },
           "description": {
             "type": "string",
             "description": "Event description",
-            "maxLength": 2555
+            "maxLength": 2555,
+            "title": "Description"
           },
           "startDate": {
             "type": "string",
             "description": "Event start date and time",
-            "format": "date-time"
+            "format": "date-time",
+            "title": "Start Date"
           },
           "endDate": {
             "type": "string",
             "description": "Event end date and time",
-            "format": "date-time"
+            "format": "date-time",
+            "title": "End Date"
           },
           "location": {
             "type": "string",
             "description": "Event location",
-            "maxLength": 255
+            "maxLength": 255,
+            "title": "Location"
           },
           "players": {
             "type": "array",
@@ -674,7 +740,8 @@
               "type": "string",
               "format": "uuid"
             },
-            "visible": false
+            "visible": false,
+            "title": "Participating Characters"
           },
           "effects": {
             "type": "array",
@@ -683,13 +750,15 @@
               "type": "string",
               "format": "uuid"
             },
-            "visible": false
+            "visible": false,
+            "title": "Post-Event Effects"
           },
           "setting": {
             "type": "string",
             "format": "uuid",
             "description": "Optional setting (world/campaign) this event belongs to. Empty means shared across all settings.",
-            "visible": false
+            "visible": false,
+            "title": "Setting"
           }
         },
         "x-openregister-notifications": {
@@ -736,12 +805,14 @@
             "type": "string",
             "description": "The name of the setting / campaign",
             "maxLength": 255,
-            "minLength": 1
+            "minLength": 1,
+            "title": "Setting Name"
           },
           "description": {
             "type": "string",
             "description": "Description of the setting / campaign",
-            "maxLength": 2555
+            "maxLength": 2555,
+            "title": "Description"
           },
           "status": {
             "type": "string",
@@ -773,32 +844,38 @@
           "event": {
             "type": "string",
             "format": "uuid",
-            "description": "The event this award was granted for"
+            "description": "The event this award was granted for",
+            "title": "Event"
           },
           "character": {
             "type": "string",
             "format": "uuid",
-            "description": "The character receiving the award"
+            "description": "The character receiving the award",
+            "title": "Character"
           },
           "amount": {
             "type": "number",
             "exclusiveMinimum": 0,
-            "description": "The positive amount of experience points awarded"
+            "description": "The positive amount of experience points awarded",
+            "title": "XP Amount"
           },
           "reason": {
             "type": "string",
             "description": "Optional reason for the award (e.g. full attendance, plot bonus)",
-            "maxLength": 2555
+            "maxLength": 2555,
+            "title": "Award Reason"
           },
           "awardedBy": {
             "type": "string",
             "description": "Nextcloud uid of the game master who granted the award (server-stamped)",
-            "maxLength": 255
+            "maxLength": 255,
+            "title": "Awarded By"
           },
           "awardedAt": {
             "type": "string",
             "format": "date-time",
-            "description": "When the award was granted (server-stamped)"
+            "description": "When the award was granted (server-stamped)",
+            "title": "Awarded At"
           }
         },
         "authorization": {
