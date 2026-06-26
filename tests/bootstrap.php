@@ -23,6 +23,14 @@ define('PHPUNIT_RUN', 1);
 // Include Composer's autoloader.
 require_once __DIR__ . '/../vendor/autoload.php';
 
+// Include the Nextcloud 3rdparty autoloader so that Symfony and other NC
+// runtime dependencies (e.g. Symfony\Component\HttpFoundation\HeaderUtils)
+// are available during unit tests executed inside the container.
+$nc3rdpartyAutoload = __DIR__ . '/../../../3rdparty/autoload.php';
+if (file_exists($nc3rdpartyAutoload) === true) {
+    require_once $nc3rdpartyAutoload;
+}
+
 // Register OCP/NCU classes from nextcloud/ocp package.
 // nextcloud/ocp has no autoload section in its composer.json, so we register it manually.
 spl_autoload_register(function (string $class): void {

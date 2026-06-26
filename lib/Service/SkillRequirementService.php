@@ -40,6 +40,8 @@ use Psr\Log\LoggerInterface;
  * @license  https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
  * @link     https://larpingapp.com
  *
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ *
  * @spec openspec/changes/skill-requirement-enforcement/specs/skill-requirement-enforcement/spec.md
  */
 class SkillRequirementService
@@ -77,6 +79,10 @@ class SkillRequirementService
      *   budget: array{ability: string, value: int, shortfall: int, ok: bool},
      *   dependents: array<int, array<string,mixed>>
      * } The structured validation result.
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      *
      * @spec openspec/changes/skill-requirement-enforcement/specs/skill-requirement-enforcement/spec.md
      */

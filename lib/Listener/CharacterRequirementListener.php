@@ -91,24 +91,36 @@ class CharacterRequirementListener implements IEventListener
      * @psalm-suppress MixedAssignment  OpenRegister event/entity classes are optional dependencies.
      * @psalm-suppress MixedArgument    OpenRegister event/entity classes are optional dependencies.
      *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.ElseExpression)
+     *
      * @spec openspec/changes/skill-requirement-enforcement/specs/skill-requirement-enforcement/spec.md
      */
     public function handle(Event $event): void
     {
-        $isCreate = ($event instanceof \OCA\OpenRegister\Event\ObjectCreatingEvent);
-        $isUpdate = ($event instanceof \OCA\OpenRegister\Event\ObjectUpdatingEvent);
-        if ($isCreate === false && $isUpdate === false) {
+        if (($event instanceof \OCA\OpenRegister\Event\ObjectCreatingEvent) === false
+            && ($event instanceof \OCA\OpenRegister\Event\ObjectUpdatingEvent) === false
+        ) {
             return;
         }
 
+        // At this point $event is a vetoable OpenRegister pre-write event.
+        // We call its methods via the generic Event reference because both
+        // ObjectCreatingEvent and ObjectUpdatingEvent are optional runtime
+        // dependencies (OpenRegister may be absent).  Static analysis does not
+        // know about these optional classes; see the ignore annotations below.
         try {
-            if ($isCreate === true) {
+            if ($event instanceof \OCA\OpenRegister\Event\ObjectCreatingEvent) {
+                // @phpstan-ignore-next-line
                 $newEntity = $event->getObject();
                 $oldEntity = null;
             } else {
+                // @phpstan-ignore-next-line
                 $newEntity = $event->getNewObject();
+                // @phpstan-ignore-next-line
                 $oldEntity = $event->getOldObject();
-            }
+            }//end if
 
             if ($this->isCharacterSchema(entity: $newEntity) === false) {
                 return;
@@ -132,6 +144,7 @@ class CharacterRequirementListener implements IEventListener
             $authError = $this->checkOverrideAuthorization(candidate: $candidate, old: $oldCharacter);
             if ($authError !== null) {
                 $event->stopPropagation();
+                // @phpstan-ignore-next-line
                 $event->setErrors(['requirementOverrides' => [$authError]]);
                 return;
             }
@@ -139,6 +152,7 @@ class CharacterRequirementListener implements IEventListener
             $result = $this->requirementService->validate(candidate: $candidate, oldCharacter: $oldCharacter);
             if ($result['valid'] === false) {
                 $event->stopPropagation();
+                // @phpstan-ignore-next-line
                 $event->setErrors($this->buildErrorPayload(result: $result));
             }
         } catch (\Throwable $e) {

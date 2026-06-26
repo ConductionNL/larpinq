@@ -84,6 +84,8 @@ class EventsController extends Controller
      * @NoCSRFRequired
      *
      * @SuppressWarnings(PHPMD.ShortVariable)
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      *
      * @spec openspec/changes/event-runsheet-export/specs/pdf-export/spec.md
      */
@@ -154,6 +156,8 @@ class EventsController extends Controller
      *
      * @return array<string,mixed> The render context.
      *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     *
      * @spec openspec/changes/event-runsheet-export/specs/pdf-export/spec.md
      */
     private function buildRunsheetContext(array $event, string $eventId): array
@@ -179,13 +183,11 @@ class EventsController extends Controller
                 continue;
             }
 
-            $playerName = '';
+            // OcName carries the player's name as fallback in this data model.
+            $playerName = (string) ($character['ocName'] ?? '');
             $playerId   = (string) ($character['player'] ?? ($character['ocName'] ?? ''));
             if ($playerId !== '' && isset($players[$playerId]) === true) {
                 $playerName = (string) ($players[$playerId]['name'] ?? '');
-            } else {
-                // OcName already carries the player's name in this data model.
-                $playerName = (string) ($character['ocName'] ?? '');
             }
 
             $cast[] = [
