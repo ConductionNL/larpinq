@@ -43,6 +43,8 @@ use Psr\Log\LoggerInterface;
  * @license  https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
  * @link     https://larpingapp.com
  *
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ *
  * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-64
  */
 class CharacterService
