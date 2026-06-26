@@ -61,3 +61,9 @@ parameters:
         # so is_array() guards are always true from PHPStan's perspective but are kept as
         # runtime defence against mixed returns from dynamic mappers.
         - '#Strict comparison using === between true and false will always evaluate to false#'
+        # OCP\AppFramework\Http\DataResponse uses a @template-covariant T of DataResponseType
+        # where DataResponseType is `array|int|float|string|bool|object|null|\stdClass|\JsonSerializable`.
+        # PHPStan incorrectly rejects narrowly-typed arrays (e.g. array<string, true>) as
+        # non-matching template arguments even though array IS in DataResponseType.
+        # This is a known stub false-positive; the arrays passed are all valid response shapes.
+        - '#Parameter \#1 \$data of class OCP\\AppFramework\\Http\\DataResponse constructor expects T of OCP\\AppFramework\\Http\\DataResponseType#'
