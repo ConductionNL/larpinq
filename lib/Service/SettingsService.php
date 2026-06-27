@@ -34,6 +34,8 @@ use Psr\Log\LoggerInterface;
  * @author   Ruben Linde <ruben@larpingapp.com>
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
+ *
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-23
  */
 class SettingsService
 {
@@ -168,6 +170,8 @@ class SettingsService
      * @return string The config value.
      *
      * @psalm-suppress PossiblyUnusedMethod Public API for reading individual config values.
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-23
      */
     public function getConfigValue(string $key, string $default=''): string
     {
@@ -184,6 +188,8 @@ class SettingsService
      * @return void
      *
      * @psalm-suppress PossiblyUnusedMethod Public API for writing individual config values.
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-23
      */
     public function setConfigValue(string $key, string $value): void
     {

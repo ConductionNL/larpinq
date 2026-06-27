@@ -46,6 +46,8 @@ use OCP\EventDispatcher\IEventListener;
  * @link     https://larpingapp.com
  *
  * @template-implements IEventListener<Event>
+ *
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-2
  */
 class DeepLinkRegistrationListener implements IEventListener
 {

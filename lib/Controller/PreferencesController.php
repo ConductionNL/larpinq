@@ -34,6 +34,8 @@ use OCP\IUserSession;
 
 /**
  * Per-user preferences controller.
+ *
+ * @spec openspec/changes/retrofit-2026-05-26-preferences-api/tasks.md#task-1
  */
 class PreferencesController extends Controller
 {

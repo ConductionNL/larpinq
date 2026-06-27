@@ -35,6 +35,8 @@ use RuntimeException;
  * @author   Ruben Linde <ruben@larpingapp.com>
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
+ *
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-33
  */
 class ConfigFileLoaderService
 {
