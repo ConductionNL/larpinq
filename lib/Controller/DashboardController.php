@@ -34,6 +34,8 @@ use OCP\IRequest;
  * @link      https://larpingapp.com
  *
  * @psalm-suppress UnusedClass Instantiated by Nextcloud routing (appinfo/routes.php).
+ *
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-98
  */
 class DashboardController extends Controller
 {

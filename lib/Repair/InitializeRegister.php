@@ -36,6 +36,8 @@ use Psr\Log\LoggerInterface;
  * @link     https://larpingapp.com
  *
  * @psalm-suppress UnusedClass Instantiated by Nextcloud repair step runner.
+ *
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-4
  */
 class InitializeRegister implements IRepairStep
 {
@@ -57,6 +59,8 @@ class InitializeRegister implements IRepairStep
      * Get the name of this repair step.
      *
      * @return string
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-4
      */
     public function getName(): string
     {
@@ -70,6 +74,8 @@ class InitializeRegister implements IRepairStep
      * @param IOutput $output The output interface for progress reporting.
      *
      * @return void
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-4
      */
     public function run(IOutput $output): void
     {

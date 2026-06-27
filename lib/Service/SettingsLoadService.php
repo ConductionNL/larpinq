@@ -41,6 +41,8 @@ use RuntimeException;
  * @link     https://larpingapp.com
  *
  * @psalm-suppress UnusedProperty Container used in getConfigurationService().
+ *
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-27
  */
 class SettingsLoadService
 {

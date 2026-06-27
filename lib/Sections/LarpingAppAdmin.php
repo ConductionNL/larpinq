@@ -34,6 +34,8 @@ use OCP\Settings\IIconSection;
  *
  * @psalm-api
  * @php-version 8.2
+ *
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-16
  */
 class LarpingAppAdmin implements IIconSection
 {

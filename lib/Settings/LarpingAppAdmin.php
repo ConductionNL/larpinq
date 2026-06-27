@@ -33,6 +33,8 @@ use OCP\Settings\IDelegatedSettings;
  * interface).
  *
  * @psalm-suppress UnusedClass Registered in appinfo/info.xml as admin settings.
+ *
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-17
  */
 class LarpingAppAdmin implements IDelegatedSettings
 {
@@ -84,6 +86,8 @@ class LarpingAppAdmin implements IDelegatedSettings
      * Get the settings priority.
      *
      * @return int The priority.
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-17
      */
     public function getPriority(): int
     {
@@ -94,6 +98,8 @@ class LarpingAppAdmin implements IDelegatedSettings
      * Human-readable name of the delegated settings section.
      *
      * @return string|null The section name, or null to use the section default.
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-17
      */
     public function getName(): ?string
     {
