@@ -1,0 +1,17 @@
+{
+  "components": {
+    "schemas": {
+      "character": {
+        "version": "1.4.0",
+        "properties": {
+          "ownerRef": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Owner",
+            "description": "UUID reference to the player/contact object — the portal-subject scoping key; distinct from ownerUid which is the Nextcloud user id"
+          }
+        }
+      }
+    }
+  }
+}
