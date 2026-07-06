@@ -1,0 +1,10 @@
+{
+  "spec_slug": "portal-contribution",
+  "title": "Player-audience portaliq contribution provider",
+  "app": "larpingapp",
+  "repo": "https://codeberg.org/Conduction/larpingapp",
+  "depends_on": [
+    "portal-identity"
+  ],
+  "issue": "Conduction/larpingapp#51"
+}
