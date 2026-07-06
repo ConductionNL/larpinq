@@ -16,6 +16,7 @@
 -->
 <template>
 	<CnAppRoot
+		:ai-companion="true"
 		:manifest="manifest"
 		:registry="registry"
 		:custom-components="customComponents"
