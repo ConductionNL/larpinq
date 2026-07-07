@@ -79,16 +79,15 @@
 			"route": "/",
 			"type": "dashboard",
 			"title": "Dashboard",
-			"actionsComponent": "DashboardActions",
 			"config": {
 				"widgets": [
 					{ "id": "kpi-characters", "title": "Characters",       "type": "stat", "content": { "label": "Characters", "route": { "name": "Characters" }, "icon": "AccountGroup", "valueColor": "#0082c9", "format": { "style": "number" }, "source": { "register": "larpingapp", "schema": "character", "metric": "count", "filter": {} } } },
 					{ "id": "kpi-events",     "title": "Events",           "type": "stat", "content": { "label": "Events", "route": { "name": "Events" }, "icon": "Calendar", "valueColor": "#0082c9", "format": { "style": "number" }, "source": { "register": "larpingapp", "schema": "event", "metric": "count", "filter": {} } } },
 					{ "id": "kpi-items",      "title": "Items",            "type": "stat", "content": { "label": "Items", "route": { "name": "Items" }, "icon": "Star", "valueColor": "#0082c9", "format": { "style": "number" }, "source": { "register": "larpingapp", "schema": "item", "metric": "count", "filter": {} } } },
 					{ "id": "kpi-players",    "title": "Players",          "type": "stat", "content": { "label": "Players", "route": { "name": "Players" }, "icon": "Account", "valueColor": "#0082c9", "format": { "style": "number" }, "source": { "register": "larpingapp", "schema": "player", "metric": "count", "filter": {} } } },
-					{ "id": "recent-characters", "title": "Recent characters", "type": "object-list", "content": { "register": "larpingapp", "schema": "character", "filter": {}, "sort": { "field": "created", "dir": "desc" }, "limit": 6, "rowRoute": "CharacterDetail", "columns": [{ "key": "name", "label": "Name" }, { "key": "type", "label": "Type" }] } },
-					{ "id": "recent-events",     "title": "Recent events",     "type": "object-list", "content": { "register": "larpingapp", "schema": "event", "filter": {}, "sort": { "field": "startDate", "dir": "desc" }, "limit": 6, "rowRoute": "EventDetail", "columns": [{ "key": "name", "label": "Event" }, { "key": "startDate", "label": "Starts" }] } },
-					{ "id": "skill-usage",    "title": "Skill usage by characters", "type": "custom" }
+					{ "id": "recent-characters", "title": "Recent characters", "type": "object-table", "content": { "register": "larpingapp", "schema": "character", "filter": {}, "sort": { "field": "created", "dir": "desc" }, "limit": 6, "rowRoute": "CharacterDetail", "rowIcon": "AccountGroup", "hideHeader": true, "viewAllRoute": { "name": "Characters" }, "viewAllLabel": "View all characters", "emptyText": "No characters yet", "columns": [{ "key": "name", "label": "Name" }, { "key": "type", "label": "Type" }] } },
+					{ "id": "recent-events",     "title": "Recent events",     "type": "object-table", "content": { "register": "larpingapp", "schema": "event", "filter": {}, "sort": { "field": "startDate", "dir": "desc" }, "limit": 6, "rowRoute": "EventDetail", "rowIcon": "CalendarStar", "hideHeader": true, "viewAllRoute": { "name": "Events" }, "viewAllLabel": "View all events", "emptyText": "No events yet", "columns": [{ "key": "name", "label": "Event" }, { "key": "startDate", "label": "Starts" }] } },
+					{ "id": "skill-usage",    "title": "Skill usage by characters", "type": "chart", "content": { "chartKind": "donut", "legendPosition": "bottom", "emptyLabel": "No skill data available", "dataSource": { "register": "larpingapp", "schema": "character", "aggregate": { "groupBy": "skills", "metric": "count", "topN": 10, "otherBucket": true, "labelResolve": { "schema": "skill", "labelField": "name" } } } } }
 				],
 				"layout": [
 					{ "id": 1, "widgetId": "kpi-characters", "gridX": 0, "gridY": 0, "gridWidth": 3, "gridHeight": 2, "showTitle": false },
@@ -99,10 +98,13 @@
 					{ "id": 6, "widgetId": "recent-events",     "gridX": 6, "gridY": 2, "gridWidth": 6, "gridHeight": 4 },
 					{ "id": 7, "widgetId": "skill-usage",    "gridX": 0, "gridY": 6, "gridWidth": 12, "gridHeight": 5 }
 				],
-				"documentationUrl": "https://larpingapp.conduction.nl"
-			},
-			"slots": {
-				"widget-skill-usage":      "DashboardSkillUsage"
+				"documentationUrl": "https://larpingapp.conduction.nl",
+				"headerActions": [
+					{ "id": "new-character", "label": "New character", "type": "open-form", "icon": "Plus", "variant": "primary", "register": "larpingapp", "schema": "character", "onSuccessRoute": "Characters" },
+					{ "id": "new-item", "label": "New item", "type": "open-form", "icon": "Plus", "register": "larpingapp", "schema": "item", "onSuccessRoute": "Items" },
+					{ "id": "new-condition", "label": "New condition", "type": "open-form", "icon": "Plus", "register": "larpingapp", "schema": "condition", "onSuccessRoute": "Conditions" },
+					{ "id": "refresh-dashboard", "label": "Refresh dashboard", "type": "refresh", "icon": "Refresh" }
+				]
 			}
 		},
 		{
