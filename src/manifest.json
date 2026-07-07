@@ -121,7 +121,7 @@
 				"register": "larpingapp",
 				"schema": "character",
 				"documentationUrl": "https://larpingapp.conduction.nl",
-				"_note": "Character sheet — the richest record in the app. The body leads with the character's identity/stats (data, 8-wide) plus a live XP/gold stat rail and approval state; the right rail lists the linked mechanics (abilities via effects, skills, items, conditions) and event participation as related groups so a GM can see the whole build at a glance. The character portrait/sheet lives in the photos leaf (schema declares linkedType 'photos'). XP awards granted to this character are shown as an object-list (xpAward.character FK = @objectId). No email/calendar on the body: the character schema declares only 'photos'. GM-only long-text notes (background, private notes, character card) are pushed to sidebar tabs to keep the main sheet clean.",
+				"_note": "Character sheet — the richest record in the app. The body leads with the character's identity/stats (data, 8-wide, including background/private notes/character card fields — the schema has no separate GM-notes archetype so they stay in the main sheet) plus a live XP/gold stat rail and approval state; the right rail lists the linked mechanics (abilities via effects, skills, items, conditions) and event participation as related groups so a GM can see the whole build at a glance. The character portrait/sheet lives in the photos leaf (schema declares linkedType 'photos') as a body integration widget. XP awards granted to this character are shown as an object-list (xpAward.character FK = @objectId). No email/calendar on the body: the character schema declares only 'photos'. Sidebar is audit-history only — the photos leaf already lives in the body, so it is not duplicated as a sidebar tab.",
 				"widgets": [
 					{ "id": "char-data", "type": "data", "title": "Character sheet", "content": { "columns": 2 } },
 					{ "id": "char-xp", "type": "stat", "title": "XP awarded", "content": { "label": "Total XP awarded", "icon": "StarPlus", "format": { "style": "number" }, "source": { "register": "larpingapp", "schema": "xpAward", "metric": "sum", "field": "amount", "filter": { "character": "@objectId" } } } },
@@ -142,11 +142,10 @@
 					"enabled": true,
 					"showMetadata": true,
 					"tabs": [
-						{ "id": "photos", "label": "Portrait", "component": "ObjectDetail", "config": { "linkedType": "photos" } }
+						{ "id": "audit", "label": "History", "component": "CnAuditTrailTab" }
 					]
 				}
-			},
-			"slots": { "photos-leaf": "ObjectDetail" }
+			}
 		},
 		{
 			"id": "Players",
@@ -164,7 +163,7 @@
 				"register": "larpingapp",
 				"schema": "player",
 				"documentationUrl": "https://larpingapp.conduction.nl",
-				"_note": "Player = the real-world person behind the characters (person archetype). The player schema is deliberately thin (name + notes) and its only declared linkedType is 'contacts', so the body is person-first: identity/notes (data, 7-wide) beside the linked Nextcloud contact card (contacts integration, 5-wide) for phone/email/address. Related shows any objects that reference this player. No email/calendar/talk widgets on the body — the schema declares only 'contacts', and characters attach to a player by owner UID / OC name (string), not a hard FK, so there is no reliable child object-list. Directory/address details live in the contacts leaf tab.",
+				"_note": "Player = the real-world person behind the characters (person archetype). The player schema is deliberately thin (name + notes) and its only declared linkedType is 'contacts', so the body is person-first: identity/notes (data, 7-wide) beside the linked Nextcloud contact card (contacts integration, 5-wide) for phone/email/address. Related shows any objects that reference this player. No email/calendar/talk widgets on the body — the schema declares only 'contacts', and characters attach to a player by owner UID / OC name (string), not a hard FK, so there is no reliable child object-list. Sidebar is audit-history only — the contact card already lives in the body, so it is not duplicated as a sidebar tab.",
 				"widgets": [
 					{ "id": "player-data", "type": "data", "title": "Player", "content": { "columns": 1 } },
 					{ "id": "player-contacts", "type": "integration", "integrationId": "contacts", "title": "Contact card" },
@@ -179,11 +178,10 @@
 					"enabled": true,
 					"showMetadata": true,
 					"tabs": [
-						{ "id": "contacts", "label": "Contact", "component": "ObjectDetail", "config": { "linkedType": "contacts" } }
+						{ "id": "audit", "label": "History", "component": "CnAuditTrailTab" }
 					]
 				}
-			},
-			"slots": { "contacts-leaf": "ObjectDetail" }
+			}
 		},
 		{
 			"id": "Abilities",
@@ -215,7 +213,14 @@
 					{ "id": "3", "widgetId": "ability-effects", "gridX": 0, "gridY": 3, "gridWidth": 6, "gridHeight": 4 },
 					{ "id": "4", "widgetId": "ability-skills", "gridX": 6, "gridY": 3, "gridWidth": 6, "gridHeight": 4 },
 					{ "id": "5", "widgetId": "ability-related", "gridX": 0, "gridY": 7, "gridWidth": 12, "gridHeight": 3 }
-				]
+				],
+				"sidebar": {
+					"enabled": true,
+					"showMetadata": true,
+					"tabs": [
+						{ "id": "audit", "label": "History", "component": "CnAuditTrailTab" }
+					]
+				}
 			}
 		},
 		{
@@ -244,7 +249,14 @@
 					{ "id": "1", "widgetId": "skill-data", "gridX": 0, "gridY": 0, "gridWidth": 8, "gridHeight": 5 },
 					{ "id": "2", "widgetId": "skill-prereqs", "gridX": 8, "gridY": 0, "gridWidth": 4, "gridHeight": 5 },
 					{ "id": "3", "widgetId": "skill-characters", "gridX": 0, "gridY": 5, "gridWidth": 12, "gridHeight": 4 }
-				]
+				],
+				"sidebar": {
+					"enabled": true,
+					"showMetadata": true,
+					"tabs": [
+						{ "id": "audit", "label": "History", "component": "CnAuditTrailTab" }
+					]
+				}
 			}
 		},
 		{
@@ -275,7 +287,14 @@
 					{ "id": "2", "widgetId": "item-effects", "gridX": 8, "gridY": 0, "gridWidth": 4, "gridHeight": 4 },
 					{ "id": "3", "widgetId": "item-holders", "gridX": 0, "gridY": 4, "gridWidth": 6, "gridHeight": 4 },
 					{ "id": "4", "widgetId": "item-files", "gridX": 6, "gridY": 4, "gridWidth": 6, "gridHeight": 4 }
-				]
+				],
+				"sidebar": {
+					"enabled": true,
+					"showMetadata": true,
+					"tabs": [
+						{ "id": "audit", "label": "History", "component": "CnAuditTrailTab" }
+					]
+				}
 			}
 		},
 		{
@@ -304,7 +323,14 @@
 					{ "id": "1", "widgetId": "condition-data", "gridX": 0, "gridY": 0, "gridWidth": 8, "gridHeight": 4 },
 					{ "id": "2", "widgetId": "condition-effects", "gridX": 8, "gridY": 0, "gridWidth": 4, "gridHeight": 4 },
 					{ "id": "3", "widgetId": "condition-characters", "gridX": 0, "gridY": 4, "gridWidth": 12, "gridHeight": 4 }
-				]
+				],
+				"sidebar": {
+					"enabled": true,
+					"showMetadata": true,
+					"tabs": [
+						{ "id": "audit", "label": "History", "component": "CnAuditTrailTab" }
+					]
+				}
 			}
 		},
 		{
@@ -339,7 +365,14 @@
 					{ "id": "4", "widgetId": "effect-skills", "gridX": 0, "gridY": 3, "gridWidth": 4, "gridHeight": 4 },
 					{ "id": "5", "widgetId": "effect-items", "gridX": 4, "gridY": 3, "gridWidth": 4, "gridHeight": 4 },
 					{ "id": "6", "widgetId": "effect-conditions", "gridX": 0, "gridY": 7, "gridWidth": 8, "gridHeight": 4 }
-				]
+				],
+				"sidebar": {
+					"enabled": true,
+					"showMetadata": true,
+					"tabs": [
+						{ "id": "audit", "label": "History", "component": "CnAuditTrailTab" }
+					]
+				}
 			}
 		},
 		{
@@ -358,14 +391,16 @@
 				"register": "larpingapp",
 				"schema": "event",
 				"documentationUrl": "https://larpingapp.conduction.nl",
-				"_note": "Event = a LARP gathering where players bring their characters (session/meeting archetype). This is the one entity that communicates: the schema declares calendar, maps and forms linkedTypes, so the body earns a calendar widget (scheduling the session from startDate/endDate) and shows the participating characters (event.players contains @objectId / character.events) as the primary roster. Post-event effects applied to attendees are shown via related. After the event, the XP awarding ritual produces one xpAward per grant (xpAward.event FK = @objectId), shown as an object-list. Files carries the event pack/handouts/photos. Location→Maps and sign-up→Forms are situational, so they live in sidebar tabs rather than crowding the body. No email/talk: the schema declares calendar/maps/forms only.",
+				"_note": "Event = a LARP gathering where players bring their characters (session/meeting archetype). This is the one entity that communicates: the schema declares calendar, maps and forms linkedTypes (merged from the event-calendar-leaf / event-location-to-maps-leaf / event-signup-to-forms-leaf register fragments), so the body earns a calendar widget (scheduling the session from startDate/endDate), a location map, and the sign-up form, plus the participating characters (character.events contains @objectId) as the primary roster. Post-event effects applied to attendees are shown via related. After the event, the XP awarding ritual produces one xpAward per grant (xpAward.event FK = @objectId), shown as an object-list. Files carries the event pack/handouts. All three declared leaves (calendar, maps, forms) are now body widgets — none are held back to sidebar tabs, so the sidebar is audit-history only. No email/talk: the schema declares calendar/maps/forms only.",
 				"widgets": [
 					{ "id": "event-data", "type": "data", "title": "Event", "content": { "columns": 2 } },
 					{ "id": "event-attendees", "type": "stat", "title": "Attendees", "content": { "label": "Participating characters", "icon": "AccountGroup", "format": { "style": "number" }, "source": { "register": "larpingapp", "schema": "character", "metric": "count", "filter": { "events": "@objectId" } } } },
 					{ "id": "event-xp", "type": "stat", "title": "XP granted", "content": { "label": "Total XP granted", "icon": "StarPlus", "format": { "style": "number" }, "source": { "register": "larpingapp", "schema": "xpAward", "metric": "sum", "field": "amount", "filter": { "event": "@objectId" } } } },
 					{ "id": "event-calendar", "type": "integration", "integrationId": "calendar", "title": "Schedule" },
-					{ "id": "event-roster", "type": "object-list", "title": "Participating characters", "content": { "register": "larpingapp", "schema": "character", "filter": { "events": "@objectId" }, "columns": [ { "key": "name", "label": "Character" }, { "key": "ocName", "label": "Player" }, { "key": "type", "label": "Type" }, { "key": "approved", "label": "Approved" } ], "limit": 100 } },
 					{ "id": "event-effects", "type": "related", "title": "Post-event effects", "content": { "groups": [ { "key": "effects", "label": "Effects applied after event" } ] } },
+					{ "id": "event-maps", "type": "integration", "integrationId": "maps", "title": "Location" },
+					{ "id": "event-forms", "type": "integration", "integrationId": "forms", "title": "Sign-up" },
+					{ "id": "event-roster", "type": "object-list", "title": "Participating characters", "content": { "register": "larpingapp", "schema": "character", "filter": { "events": "@objectId" }, "columns": [ { "key": "name", "label": "Character" }, { "key": "ocName", "label": "Player" }, { "key": "type", "label": "Type" }, { "key": "approved", "label": "Approved" } ], "limit": 100 } },
 					{ "id": "event-xpawards", "type": "object-list", "title": "XP awards", "content": { "register": "larpingapp", "schema": "xpAward", "filter": { "event": "@objectId" }, "sort": { "field": "awardedAt", "dir": "desc" }, "columns": [ { "key": "character", "label": "Character" }, { "key": "amount", "label": "XP" }, { "key": "reason", "label": "Reason" } ], "limit": 100 } },
 					{ "id": "event-files", "type": "integration", "integrationId": "files", "title": "Event pack" }
 				],
@@ -375,23 +410,19 @@
 					{ "id": "3", "widgetId": "event-xp", "gridX": 8, "gridY": 2, "gridWidth": 4, "gridHeight": 2, "showTitle": false },
 					{ "id": "4", "widgetId": "event-calendar", "gridX": 0, "gridY": 4, "gridWidth": 8, "gridHeight": 4 },
 					{ "id": "5", "widgetId": "event-effects", "gridX": 8, "gridY": 4, "gridWidth": 4, "gridHeight": 4 },
-					{ "id": "6", "widgetId": "event-roster", "gridX": 0, "gridY": 8, "gridWidth": 12, "gridHeight": 4 },
-					{ "id": "7", "widgetId": "event-xpawards", "gridX": 0, "gridY": 12, "gridWidth": 6, "gridHeight": 4 },
-					{ "id": "8", "widgetId": "event-files", "gridX": 6, "gridY": 12, "gridWidth": 6, "gridHeight": 4 }
+					{ "id": "6", "widgetId": "event-maps", "gridX": 0, "gridY": 8, "gridWidth": 6, "gridHeight": 4 },
+					{ "id": "7", "widgetId": "event-forms", "gridX": 6, "gridY": 8, "gridWidth": 6, "gridHeight": 4 },
+					{ "id": "8", "widgetId": "event-roster", "gridX": 0, "gridY": 12, "gridWidth": 12, "gridHeight": 4 },
+					{ "id": "9", "widgetId": "event-xpawards", "gridX": 0, "gridY": 16, "gridWidth": 6, "gridHeight": 4 },
+					{ "id": "10", "widgetId": "event-files", "gridX": 6, "gridY": 16, "gridWidth": 6, "gridHeight": 4 }
 				],
 				"sidebar": {
 					"enabled": true,
 					"showMetadata": true,
 					"tabs": [
-						{ "id": "maps", "label": "Location", "component": "ObjectDetail", "config": { "linkedType": "maps" } },
-						{ "id": "forms", "label": "Sign-up", "component": "ObjectDetail", "config": { "linkedType": "forms" } }
+						{ "id": "audit", "label": "History", "component": "CnAuditTrailTab" }
 					]
 				}
-			},
-			"slots": {
-				"calendar-leaf": "ObjectDetail",
-				"maps-leaf": "ObjectDetail",
-				"forms-leaf": "ObjectDetail"
 			}
 		},
 		{
@@ -426,7 +457,14 @@
 					{ "id": "4", "widgetId": "setting-characters", "gridX": 0, "gridY": 4, "gridWidth": 6, "gridHeight": 4 },
 					{ "id": "5", "widgetId": "setting-events", "gridX": 6, "gridY": 4, "gridWidth": 6, "gridHeight": 4 },
 					{ "id": "6", "widgetId": "setting-related", "gridX": 0, "gridY": 8, "gridWidth": 12, "gridHeight": 3 }
-				]
+				],
+				"sidebar": {
+					"enabled": true,
+					"showMetadata": true,
+					"tabs": [
+						{ "id": "audit", "label": "History", "component": "CnAuditTrailTab" }
+					]
+				}
 			}
 		},
 		{
@@ -455,7 +493,14 @@
 					{ "id": "1", "widgetId": "xpaward-data", "gridX": 0, "gridY": 0, "gridWidth": 8, "gridHeight": 4 },
 					{ "id": "2", "widgetId": "xpaward-amount", "gridX": 8, "gridY": 0, "gridWidth": 4, "gridHeight": 2, "showTitle": false },
 					{ "id": "3", "widgetId": "xpaward-related", "gridX": 8, "gridY": 2, "gridWidth": 4, "gridHeight": 2 }
-				]
+				],
+				"sidebar": {
+					"enabled": true,
+					"showMetadata": true,
+					"tabs": [
+						{ "id": "audit", "label": "History", "component": "CnAuditTrailTab" }
+					]
+				}
 			}
 		},
 		{
