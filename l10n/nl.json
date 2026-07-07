@@ -128,7 +128,25 @@
         "Registered": "Ingeschreven",
         "Checked in": "Ingecheckt",
         "No confirmed participants for this event yet.": "Nog geen bevestigde deelnemers voor dit evenement.",
-        "Attendance tracking is unavailable — showing the participant list read-only.": "Aanwezigheidsregistratie is niet beschikbaar — de deelnemerslijst wordt alleen-lezen getoond."
+        "Attendance tracking is unavailable — showing the participant list read-only.": "Aanwezigheidsregistratie is niet beschikbaar — de deelnemerslijst wordt alleen-lezen getoond.",
+        "Skill tree": "Vaardigheidsboom",
+        "No character (uncoloured)": "Geen personage (ongekleurd)",
+        "All settings": "Alle werelden",
+        "Owned": "In bezit",
+        "Available": "Beschikbaar",
+        "Locked": "Vergrendeld",
+        "Unknown": "Onbekend",
+        "No skills to show": "Geen skills om te tonen",
+        "No skills exist yet for the selected setting.": "Er bestaan nog geen skills voor de geselecteerde wereld.",
+        "Requires: {list}": "Vereist: {list}",
+        "No prerequisites": "Geen vereisten",
+        "Required skills": "Vereiste skills",
+        "Required abilities": "Vereiste vaardigheden",
+        "(score ≥ {n})": "(score ≥ {n})",
+        "Required conditions": "Vereiste condities",
+        "Required effects": "Vereiste effecten",
+        "Prerequisites": "Vereisten",
+        "None — this is a root skill.": "Geen — dit is een basisskill."
     },
     "plurals": {}
 }

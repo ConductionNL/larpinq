@@ -1,6 +1,6 @@
 {
 	"$schema": "https://codeberg.org/Conduction/nextcloud-vue/raw/branch/main/src/schemas/app-manifest-v2.schema.json",
-	"version": "0.4.0",
+	"version": "0.5.0",
 	"dependencies": ["openregister"],
 	"setup": {
 		"enabled": true,
@@ -53,6 +53,7 @@
 			"children": [
 				{ "id": "Abilities",   "label": "Abilities",   "icon": "FlashOutline",        "route": "Abilities",   "order": 40 },
 				{ "id": "Skills",      "label": "Skills",      "icon": "StarOutline",          "route": "Skills",      "order": 50 },
+				{ "id": "SkillTree",   "label": "Skill tree",  "icon": "Sitemap",              "route": "SkillTree",   "order": 55 },
 				{ "id": "Conditions",  "label": "Conditions",  "icon": "EmoticonSickOutline",  "route": "Conditions",  "order": 70 },
 				{ "id": "Effects",     "label": "Effects",     "icon": "MagicStaff",           "route": "Effects",     "order": 80 }
 			]
@@ -226,6 +227,14 @@
 			"type": "index",
 			"title": "Skills",
 			"config": { "register": "larpingapp", "schema": "skill", "documentationUrl": "https://larpingapp.conduction.nl" }
+		},
+		{
+			"id": "SkillTree",
+			"route": "/skill-tree",
+			"type": "custom",
+			"title": "Skill tree",
+			"component": "SkillTree",
+			"config": { "documentationUrl": "https://larpingapp.conduction.nl" }
 		},
 		{
 			"id": "SkillDetail",

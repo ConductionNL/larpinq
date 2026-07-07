@@ -25,6 +25,7 @@
 import GameSettingsSection from './views/settings/Settings.vue'
 import ObjectDetail from './views/ObjectDetail.vue'
 import EventRoster from './views/EventRoster.vue'
+import SkillTree from './views/SkillTree.vue'
 
 export default {
 	GameSettingsSection: { kind: 'section', component: GameSettingsSection },
@@ -33,4 +34,8 @@ export default {
 	// (event-checkin-roster). Not a kind:"widget" (no custom-widget-ratchet
 	// entry); it renders inside the CnObjectSidebar tab strip.
 	EventRoster: { kind: 'section', component: EventRoster },
+	// Skill-tree visualization — a read-only type:"custom" page
+	// (skill-tree-visualization). Resolved by CnPageRenderer as the page body
+	// component for the SkillTree manifest page.
+	SkillTree: { kind: 'page', component: SkillTree },
 }
