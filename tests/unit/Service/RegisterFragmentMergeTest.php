@@ -123,4 +123,60 @@ class RegisterFragmentMergeTest extends TestCase
         $this->assertArrayHasKey('/characters', $merged['components']['paths']);
 
     }//end testNestedMergePreservesSiblings()
+
+    /**
+     * The event-checkin-roster fragment adds the larping_attendance schema
+     * over the real monolith without removing any existing schema or property.
+     *
+     * @return void
+     *
+     * @spec openspec/changes/event-checkin-roster/specs/event-checkin-roster/spec.md
+     */
+    public function testEventCheckinRosterFragmentAddsAttendanceSchema(): void
+    {
+        $baseDir  = dirname(__DIR__, 3);
+        $monolith = json_decode((string) file_get_contents($baseDir.'/lib/Settings/larpingapp_register.json'), true);
+        $fragment = json_decode((string) file_get_contents($baseDir.'/lib/Settings/register.d/event-checkin-roster.json'), true);
+
+        $this->assertIsArray($monolith, 'monolith register JSON must parse');
+        $this->assertIsArray($fragment, 'fragment JSON must parse');
+
+        $existingSchemaNames = array_keys($monolith['components']['schemas']);
+
+        $merged      = $this->deepMerge($monolith, $fragment);
+        $mergedNames = array_keys($merged['components']['schemas']);
+
+        // No existing schema is removed by the merge.
+        foreach ($existingSchemaNames as $name) {
+            $this->assertContains($name, $mergedNames, "existing schema {$name} must survive the merge");
+        }
+
+        // The attendance schema is added with the namespaced slug.
+        $this->assertArrayHasKey('attendance', $merged['components']['schemas']);
+        $attendance = $merged['components']['schemas']['attendance'];
+        $this->assertSame('larping_attendance', $attendance['slug']);
+
+        // All five properties are present, each with a non-empty title (gate-28).
+        foreach (['event', 'character', 'status', 'checkedInAt', 'checkedInBy'] as $prop) {
+            $this->assertArrayHasKey($prop, $attendance['properties'], "property {$prop} present");
+            $this->assertNotEmpty($attendance['properties'][$prop]['title'], "property {$prop} has a title");
+        }
+
+        // Status is constrained to the three attendance states.
+        $this->assertSame(
+            ['registered', 'checked-in', 'no-show'],
+            $attendance['properties']['status']['enum']
+        );
+
+        // GM-group write RBAC is delegated to OpenRegister on the schema.
+        $this->assertSame(['gamemasters'], $attendance['authorization']['create']);
+
+        // A representative existing schema keeps all its properties.
+        $this->assertArrayHasKey(
+            'awardedBy',
+            $merged['components']['schemas']['xpAward']['properties'],
+            'xpAward.awardedBy must survive the merge'
+        );
+
+    }//end testEventCheckinRosterFragmentAddsAttendanceSchema()
 }//end class

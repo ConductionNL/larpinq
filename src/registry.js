@@ -24,8 +24,13 @@
 
 import GameSettingsSection from './views/settings/Settings.vue'
 import ObjectDetail from './views/ObjectDetail.vue'
+import EventRoster from './views/EventRoster.vue'
 
 export default {
 	GameSettingsSection: { kind: 'section', component: GameSettingsSection },
 	ObjectDetail: { kind: 'section', component: ObjectDetail },
+	// Event check-in roster — a sidebar-tab section on the event detail page
+	// (event-checkin-roster). Not a kind:"widget" (no custom-widget-ratchet
+	// entry); it renders inside the CnObjectSidebar tab strip.
+	EventRoster: { kind: 'section', component: EventRoster },
 }

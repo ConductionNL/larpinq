@@ -1,6 +1,6 @@
 {
 	"$schema": "https://codeberg.org/Conduction/nextcloud-vue/raw/branch/main/src/schemas/app-manifest-v2.schema.json",
-	"version": "0.3.0",
+	"version": "0.4.0",
 	"dependencies": ["openregister"],
 	"setup": {
 		"enabled": true,
@@ -385,6 +385,7 @@
 					"enabled": true,
 					"showMetadata": true,
 					"tabs": [
+						{ "id": "roster", "label": "Check-in", "component": "EventRoster" },
 						{ "id": "maps", "label": "Location", "component": "ObjectDetail", "config": { "linkedType": "maps" } },
 						{ "id": "forms", "label": "Sign-up", "component": "ObjectDetail", "config": { "linkedType": "forms" } }
 					]

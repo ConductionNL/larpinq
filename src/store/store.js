@@ -12,6 +12,7 @@ const SCHEMA_SLUGS = [
 	'event',
 	'setting',
 	'xpAward',
+	'attendance',
 ]
 
 /**

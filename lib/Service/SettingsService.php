@@ -79,6 +79,9 @@ class SettingsService
         'setting_schema',
         'setting_register',
         'setting_source',
+        'attendance_schema',
+        'attendance_register',
+        'attendance_source',
     ];
 
     /**

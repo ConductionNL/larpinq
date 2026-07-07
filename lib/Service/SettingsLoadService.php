@@ -71,15 +71,16 @@ class SettingsLoadService
      * @var array<string, string>
      */
     private const OBJECT_TYPE_SCHEMA_SLUGS = [
-        'character' => 'character',
-        'player'    => 'player',
-        'ability'   => 'ability',
-        'skill'     => 'skill',
-        'item'      => 'larping_item',
-        'condition' => 'condition',
-        'effect'    => 'effect',
-        'event'     => 'larping_event',
-        'setting'   => 'setting',
+        'character'  => 'character',
+        'player'     => 'player',
+        'ability'    => 'ability',
+        'skill'      => 'skill',
+        'item'       => 'larping_item',
+        'condition'  => 'condition',
+        'effect'     => 'effect',
+        'event'      => 'larping_event',
+        'setting'    => 'setting',
+        'attendance' => 'larping_attendance',
     ];
 
     /**

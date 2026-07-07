@@ -120,7 +120,15 @@
         "LarpingApp Settings": "LarpingApp-instellingen",
         "Save All": "Alles opslaan",
         "Settings saved successfully": "Instellingen succesvol opgeslagen",
-        "Version Information": "Versie-informatie"
+        "Version Information": "Versie-informatie",
+        "Check-in": "Inchecken",
+        "Attendance": "Aanwezigheid",
+        "Check in": "Inchecken",
+        "No-show": "Niet verschenen",
+        "Registered": "Ingeschreven",
+        "Checked in": "Ingecheckt",
+        "No confirmed participants for this event yet.": "Nog geen bevestigde deelnemers voor dit evenement.",
+        "Attendance tracking is unavailable — showing the participant list read-only.": "Aanwezigheidsregistratie is niet beschikbaar — de deelnemerslijst wordt alleen-lezen getoond."
     },
     "plurals": {}
 }
