@@ -121,22 +121,22 @@
 				"register": "larpingapp",
 				"schema": "character",
 				"documentationUrl": "https://larpingapp.conduction.nl",
-				"_note": "Character sheet — the richest record in the app. The body leads with the character's identity/stats (data, 8-wide, including background/private notes/character card fields — the schema has no separate GM-notes archetype so they stay in the main sheet) plus a live XP/gold stat rail and approval state; the right rail lists the linked mechanics (abilities via effects, skills, items, conditions) and event participation as related groups so a GM can see the whole build at a glance. The character portrait/sheet lives in the photos leaf (schema declares linkedType 'photos') as a body integration widget. XP awards granted to this character are shown as an object-list (xpAward.character FK = @objectId). No email/calendar on the body: the character schema declares only 'photos'. Sidebar is audit-history only — the photos leaf already lives in the body, so it is not duplicated as a sidebar tab.",
+				"_note": "ADR-062 rollout: split the sheet into identity (name/player/setting/description/background/faith, 6 fields) vs game state & notes (type/approved/gold/silver/copper/itemsAndMoney/card/notice/GM notes, 10 fields) per rule 3. The loose XP + Gold stat cards fold into one stats-block (rule 2, same-flavor simple KPIs) top-right, aligned with the identity row. The right rail lists the linked mechanics (skills/items/conditions) and event participation as related groups so a GM can see the whole build at a glance. The character portrait/sheet lives in the photos leaf (schema declares linkedType 'photos') as a body integration widget. XP awards granted to this character are shown as an object-list (xpAward.character FK = @objectId) — GM hand-awarded per xpAward's schema description, so allowCreate stays on (default). No email/calendar on the body: the character schema declares only 'photos'. Sidebar is audit-history only — the photos leaf already lives in the body, so it is not duplicated as a sidebar tab.",
 				"widgets": [
-					{ "id": "char-data", "type": "data", "title": "Character sheet", "content": { "columns": 2 } },
-					{ "id": "char-xp", "type": "stat", "title": "XP awarded", "content": { "label": "Total XP awarded", "icon": "StarPlus", "format": { "style": "number" }, "source": { "register": "larpingapp", "schema": "xpAward", "metric": "sum", "field": "amount", "filter": { "character": "@objectId" } } } },
-					{ "id": "char-gold", "type": "stat", "title": "Gold", "content": { "label": "Gold pieces", "icon": "CircleMultiple", "format": { "style": "number" }, "source": { "register": "larpingapp", "schema": "character", "metric": "sum", "field": "gold", "filter": { "id": "@objectId" } } } },
-					{ "id": "char-related", "type": "related", "title": "Build & world", "content": { "groups": [ { "key": "skills", "label": "Skills" }, { "key": "items", "label": "Items" }, { "key": "conditions", "label": "Conditions" }, { "key": "events", "label": "Events" } ] } },
-					{ "id": "char-xpawards", "type": "object-list", "title": "XP award history", "content": { "register": "larpingapp", "schema": "xpAward", "filter": { "character": "@objectId" }, "sort": { "field": "awardedAt", "dir": "desc" }, "columns": [ { "key": "event", "label": "Event" }, { "key": "amount", "label": "XP" }, { "key": "reason", "label": "Reason" }, { "key": "awardedAt", "label": "Awarded" } ], "limit": 50 } },
-					{ "id": "char-photos", "type": "integration", "integrationId": "photos", "title": "Portrait & sheet" }
+					{ "id": "char-identity", "type": "data", "title": "Identity", "icon": "Account", "content": { "columns": 2, "include": [ "name", "ocName", "setting", "description", "background", "faith" ] } },
+					{ "id": "char-stats", "type": "stats-block", "title": "Snapshot", "icon": "Trophy", "content": { "entries": [ { "title": "XP awarded", "register": "larpingapp", "schema": "xpAward", "metric": "sum", "field": "amount", "filter": { "character": "@objectId" }, "route": { "name": "XpAwards", "query": { "character": "@objectId" } } }, { "title": "Gold pieces", "register": "larpingapp", "schema": "character", "metric": "sum", "field": "gold", "filter": { "id": "@objectId" } } ] } },
+					{ "id": "char-progress", "type": "data", "title": "Game state & notes", "icon": "ClipboardList", "content": { "columns": 2, "include": [ "type", "approved", "gold", "silver", "copper", "itemsAndMoney", "card", "notice", "slNotesPublic", "slNotesPrivate" ] } },
+					{ "id": "char-related", "type": "related", "title": "Build & world", "icon": "LinkVariant", "content": { "groups": [ { "key": "skills", "label": "Skills" }, { "key": "items", "label": "Items" }, { "key": "conditions", "label": "Conditions" }, { "key": "events", "label": "Events" } ] } },
+					{ "id": "char-xpawards", "type": "object-list", "title": "XP award history", "icon": "Trophy", "content": { "register": "larpingapp", "schema": "xpAward", "filter": { "character": "@objectId" }, "sort": { "field": "awardedAt", "dir": "desc" }, "columns": [ { "key": "event", "label": "Event" }, { "key": "amount", "label": "XP" }, { "key": "reason", "label": "Reason" }, { "key": "awardedAt", "label": "Awarded" } ], "limit": 50, "viewAllRoute": "XpAwards", "viewAllQuery": { "character": "@objectId" }, "emptyText": "No XP awarded yet." } },
+					{ "id": "char-photos", "type": "integration", "integrationId": "photos", "title": "Portrait & sheet", "icon": "FileDocument" }
 				],
 				"layout": [
-					{ "id": "1", "widgetId": "char-data", "gridX": 0, "gridY": 0, "gridWidth": 8, "gridHeight": 5 },
-					{ "id": "2", "widgetId": "char-xp", "gridX": 8, "gridY": 0, "gridWidth": 4, "gridHeight": 2, "showTitle": false },
-					{ "id": "3", "widgetId": "char-gold", "gridX": 8, "gridY": 2, "gridWidth": 4, "gridHeight": 2, "showTitle": false },
-					{ "id": "4", "widgetId": "char-related", "gridX": 8, "gridY": 4, "gridWidth": 4, "gridHeight": 5 },
-					{ "id": "5", "widgetId": "char-xpawards", "gridX": 0, "gridY": 5, "gridWidth": 8, "gridHeight": 4 },
-					{ "id": "6", "widgetId": "char-photos", "gridX": 0, "gridY": 9, "gridWidth": 12, "gridHeight": 4 }
+					{ "id": "1", "widgetId": "char-identity", "gridX": 0, "gridY": 0, "gridWidth": 8, "gridHeight": 4 },
+					{ "id": "2", "widgetId": "char-stats", "gridX": 8, "gridY": 0, "gridWidth": 4, "gridHeight": 4 },
+					{ "id": "3", "widgetId": "char-progress", "gridX": 0, "gridY": 4, "gridWidth": 8, "gridHeight": 6 },
+					{ "id": "4", "widgetId": "char-related", "gridX": 8, "gridY": 4, "gridWidth": 4, "gridHeight": 6 },
+					{ "id": "5", "widgetId": "char-xpawards", "gridX": 0, "gridY": 10, "gridWidth": 12, "gridHeight": 4 },
+					{ "id": "6", "widgetId": "char-photos", "gridX": 0, "gridY": 14, "gridWidth": 12, "gridHeight": 4 }
 				],
 				"sidebar": {
 					"enabled": true,
@@ -163,16 +163,18 @@
 				"register": "larpingapp",
 				"schema": "player",
 				"documentationUrl": "https://larpingapp.conduction.nl",
-				"_note": "Player = the real-world person behind the characters (person archetype). The player schema is deliberately thin (name + notes) and its only declared linkedType is 'contacts', so the body is person-first: identity/notes (data, 7-wide) beside the linked Nextcloud contact card (contacts integration, 5-wide) for phone/email/address. Related shows any objects that reference this player. No email/calendar/talk widgets on the body — the schema declares only 'contacts', and characters attach to a player by owner UID / OC name (string), not a hard FK, so there is no reliable child object-list. Sidebar is audit-history only — the contact card already lives in the body, so it is not duplicated as a sidebar tab.",
+				"_note": "Player = the real-world person behind the characters (person archetype). The player schema is deliberately thin (name + notes) and its only declared linkedType is 'contacts', so the body is person-first: identity/notes (data, 7-wide) beside the linked Nextcloud contact card (contacts integration, 5-wide) for phone/email/address. ADR-062 correction: round 1 claimed characters attach by OC name string with no reliable FK — that was stale; character.ocName carries a canonical $ref to player, so a 'characters played' object-list (character.ocName = @objectId) is now added beside Related. No email/calendar/talk widgets on the body — the schema declares only 'contacts'. Sidebar is audit-history only — the contact card already lives in the body, so it is not duplicated as a sidebar tab.",
 				"widgets": [
-					{ "id": "player-data", "type": "data", "title": "Player", "content": { "columns": 1 } },
-					{ "id": "player-contacts", "type": "integration", "integrationId": "contacts", "title": "Contact card" },
-					{ "id": "player-related", "type": "related", "title": "Related" }
+					{ "id": "player-data", "type": "data", "title": "Player", "icon": "Account", "content": { "columns": 1 } },
+					{ "id": "player-contacts", "type": "integration", "integrationId": "contacts", "title": "Contact card", "icon": "AccountBoxOutline" },
+					{ "id": "player-related", "type": "related", "title": "Related", "icon": "LinkVariant" },
+					{ "id": "player-characters", "type": "object-list", "title": "Characters played", "icon": "Briefcase", "content": { "register": "larpingapp", "schema": "character", "filter": { "ocName": "@objectId" }, "columns": [ { "key": "name", "label": "Character" }, { "key": "type", "label": "Type" }, { "key": "approved", "label": "Approved" } ], "limit": 50, "viewAllRoute": "Characters", "viewAllQuery": { "ocName": "@objectId" }, "emptyText": "No characters played yet." } }
 				],
 				"layout": [
 					{ "id": "1", "widgetId": "player-data", "gridX": 0, "gridY": 0, "gridWidth": 7, "gridHeight": 4 },
 					{ "id": "2", "widgetId": "player-contacts", "gridX": 7, "gridY": 0, "gridWidth": 5, "gridHeight": 4 },
-					{ "id": "3", "widgetId": "player-related", "gridX": 0, "gridY": 4, "gridWidth": 12, "gridHeight": 3 }
+					{ "id": "3", "widgetId": "player-related", "gridX": 0, "gridY": 4, "gridWidth": 6, "gridHeight": 4 },
+					{ "id": "4", "widgetId": "player-characters", "gridX": 6, "gridY": 4, "gridWidth": 6, "gridHeight": 4 }
 				],
 				"sidebar": {
 					"enabled": true,
@@ -199,13 +201,13 @@
 				"register": "larpingapp",
 				"schema": "ability",
 				"documentationUrl": "https://larpingapp.conduction.nl",
-				"_note": "Ability = a numeric stat (XP, Mana, Health, Armor) that characters track (rules-object archetype). The body is definition-first: the stat's name/description/base value (data, 8-wide) plus a large base-value stat card, then the reverse index of what touches this stat — the effects that modify it (effect.abilities FK = @objectId) and the skills that gate on it (skill.requiredStats contains @objectId). This is a pure rules object: no comms, no files, no attachments — a GM reads it to understand how a stat is wired into the ruleset.",
+				"_note": "Ability = a numeric stat (XP, Mana, Health, Armor) that characters track (rules-object archetype). The body is definition-first: the stat's name/description/base value (data, 8-wide) plus a large base-value stat card (single distinct KPI — kept loose, not folded into a stats-block), then the reverse index of what touches this stat — the effects that modify it (effect.abilities FK = @objectId) and the skills that gate on it (skill.requiredStats contains @objectId). This is a pure rules object: no comms, no files, no attachments — a GM reads it to understand how a stat is wired into the ruleset.",
 				"widgets": [
-					{ "id": "ability-data", "type": "data", "title": "Ability", "content": { "columns": 2 } },
-					{ "id": "ability-base", "type": "stat", "title": "Base value", "content": { "label": "Base value", "icon": "ShieldSword", "format": { "style": "number" }, "source": { "register": "larpingapp", "schema": "ability", "metric": "sum", "field": "base", "filter": { "id": "@objectId" } } } },
-					{ "id": "ability-effects", "type": "object-list", "title": "Effects modifying this ability", "content": { "register": "larpingapp", "schema": "effect", "filter": { "abilities": "@objectId" }, "columns": [ { "key": "name", "label": "Effect" }, { "key": "modifier", "label": "Modifier" }, { "key": "modification", "label": "Direction" }, { "key": "cumulative", "label": "Stacks" } ], "limit": 50 } },
-					{ "id": "ability-skills", "type": "object-list", "title": "Skills requiring this stat", "content": { "register": "larpingapp", "schema": "skill", "filter": { "requiredStats": "@objectId" }, "columns": [ { "key": "name", "label": "Skill" }, { "key": "requiredScore", "label": "Min score" } ], "limit": 50 } },
-					{ "id": "ability-related", "type": "related", "title": "Related" }
+					{ "id": "ability-data", "type": "data", "title": "Ability", "icon": "Gauge", "content": { "columns": 2 } },
+					{ "id": "ability-base", "type": "stat", "title": "Base value", "icon": "Gauge", "content": { "label": "Base value", "icon": "Gauge", "format": { "style": "number" }, "source": { "register": "larpingapp", "schema": "ability", "metric": "sum", "field": "base", "filter": { "id": "@objectId" } } } },
+					{ "id": "ability-effects", "type": "object-list", "title": "Effects modifying this ability", "icon": "TrendingUp", "content": { "register": "larpingapp", "schema": "effect", "filter": { "abilities": "@objectId" }, "columns": [ { "key": "name", "label": "Effect" }, { "key": "modifier", "label": "Modifier" }, { "key": "modification", "label": "Direction" }, { "key": "cumulative", "label": "Stacks" } ], "limit": 50, "viewAllRoute": "Effects", "viewAllQuery": { "abilities": "@objectId" }, "emptyText": "No effects modify this stat yet." } },
+					{ "id": "ability-skills", "type": "object-list", "title": "Skills requiring this stat", "icon": "School", "content": { "register": "larpingapp", "schema": "skill", "filter": { "requiredStats": "@objectId" }, "columns": [ { "key": "name", "label": "Skill" }, { "key": "requiredScore", "label": "Min score" } ], "limit": 50, "viewAllRoute": "Skills", "viewAllQuery": { "requiredStats": "@objectId" }, "emptyText": "No skills require this stat yet." } },
+					{ "id": "ability-related", "type": "related", "title": "Related", "icon": "LinkVariant" }
 				],
 				"layout": [
 					{ "id": "1", "widgetId": "ability-data", "gridX": 0, "gridY": 0, "gridWidth": 8, "gridHeight": 3 },
@@ -241,9 +243,9 @@
 				"documentationUrl": "https://larpingapp.conduction.nl",
 				"_note": "Skill = a learnable, XP-purchased ability with prerequisites (rules-object archetype, prerequisite-heavy). The body leads with the skill's flavour + mechanical effect (data, 8-wide) beside a related rail that surfaces the four prerequisite groups the schema carries (required skills, required stats, required conditions, required effects) plus the effects it grants — the whole dependency tree in one place. Below, an object-list of characters who have learned this skill (character.skills contains @objectId) lets a GM see adoption. Pure rules object: no comms, no files.",
 				"widgets": [
-					{ "id": "skill-data", "type": "data", "title": "Skill", "content": { "columns": 2 } },
-					{ "id": "skill-prereqs", "type": "related", "title": "Effects & prerequisites", "content": { "groups": [ { "key": "effects", "label": "Grants effects" }, { "key": "requiredSkills", "label": "Requires skills" }, { "key": "requiredStats", "label": "Requires stats" }, { "key": "requiredConditions", "label": "Requires conditions" }, { "key": "requiredEffects", "label": "Requires effects" } ] } },
-					{ "id": "skill-characters", "type": "object-list", "title": "Characters with this skill", "content": { "register": "larpingapp", "schema": "character", "filter": { "skills": "@objectId" }, "columns": [ { "key": "name", "label": "Character" }, { "key": "type", "label": "Type" }, { "key": "approved", "label": "Approved" } ], "limit": 50 } }
+					{ "id": "skill-data", "type": "data", "title": "Skill", "icon": "School", "content": { "columns": 2 } },
+					{ "id": "skill-prereqs", "type": "related", "title": "Effects & prerequisites", "icon": "Sitemap", "content": { "groups": [ { "key": "effects", "label": "Grants effects" }, { "key": "requiredSkills", "label": "Requires skills" }, { "key": "requiredStats", "label": "Requires stats" }, { "key": "requiredConditions", "label": "Requires conditions" }, { "key": "requiredEffects", "label": "Requires effects" } ] } },
+					{ "id": "skill-characters", "type": "object-list", "title": "Characters with this skill", "icon": "AccountGroup", "content": { "register": "larpingapp", "schema": "character", "filter": { "skills": "@objectId" }, "columns": [ { "key": "name", "label": "Character" }, { "key": "type", "label": "Type" }, { "key": "approved", "label": "Approved" } ], "limit": 50, "viewAllRoute": "Characters", "viewAllQuery": { "skills": "@objectId" }, "emptyText": "No characters have learned this skill yet." } }
 				],
 				"layout": [
 					{ "id": "1", "widgetId": "skill-data", "gridX": 0, "gridY": 0, "gridWidth": 8, "gridHeight": 5 },
@@ -277,10 +279,10 @@
 				"documentationUrl": "https://larpingapp.conduction.nl",
 				"_note": "Item = a magical/special object that grants effects to its holder (rules-object archetype, ownership-tracked). The body leads with the item's player-visible story description + GM mechanical effect (data, 8-wide) beside the effects it confers (related), then an object-list of the characters currently holding it (item.characters contains @objectId / character.items) — critical for unique artifacts where only one holder may exist. Files are on the body because props and physrep photos/handouts are commonly attached to items. No email/calendar: the item schema declares no comms linkedTypes.",
 				"widgets": [
-					{ "id": "item-data", "type": "data", "title": "Item", "content": { "columns": 2 } },
-					{ "id": "item-effects", "type": "related", "title": "Effects", "content": { "groups": [ { "key": "effects", "label": "Grants effects" } ] } },
-					{ "id": "item-holders", "type": "object-list", "title": "Held by", "content": { "register": "larpingapp", "schema": "character", "filter": { "items": "@objectId" }, "columns": [ { "key": "name", "label": "Character" }, { "key": "type", "label": "Type" } ], "limit": 50 } },
-					{ "id": "item-files", "type": "integration", "integrationId": "files", "title": "Props & handouts" }
+					{ "id": "item-data", "type": "data", "title": "Item", "icon": "Package", "content": { "columns": 2 } },
+					{ "id": "item-effects", "type": "related", "title": "Effects", "icon": "LinkVariant", "content": { "groups": [ { "key": "effects", "label": "Grants effects" } ] } },
+					{ "id": "item-holders", "type": "object-list", "title": "Held by", "icon": "AccountGroup", "content": { "register": "larpingapp", "schema": "character", "filter": { "items": "@objectId" }, "columns": [ { "key": "name", "label": "Character" }, { "key": "type", "label": "Type" } ], "limit": 50, "viewAllRoute": "Characters", "viewAllQuery": { "items": "@objectId" }, "emptyText": "Nobody is holding this item yet." } },
+					{ "id": "item-files", "type": "integration", "integrationId": "files", "title": "Props & handouts", "icon": "FolderOutline" }
 				],
 				"layout": [
 					{ "id": "1", "widgetId": "item-data", "gridX": 0, "gridY": 0, "gridWidth": 8, "gridHeight": 4 },
@@ -315,9 +317,9 @@
 				"documentationUrl": "https://larpingapp.conduction.nl",
 				"_note": "Condition = a positive/negative status earned through gameplay (not purchased) that applies automated effects (rules-object archetype). The body leads with the flavour + mechanical description (data, 8-wide) beside the automated effects it applies (related), then an object-list of the characters currently affected (condition.characters contains @objectId / character.conditions) — the live 'who is currently poisoned/blessed' roster a GM needs during play. Pure rules object: no comms, no files.",
 				"widgets": [
-					{ "id": "condition-data", "type": "data", "title": "Condition", "content": { "columns": 2 } },
-					{ "id": "condition-effects", "type": "related", "title": "Applied effects", "content": { "groups": [ { "key": "effects", "label": "Applies effects" } ] } },
-					{ "id": "condition-characters", "type": "object-list", "title": "Currently affecting", "content": { "register": "larpingapp", "schema": "character", "filter": { "conditions": "@objectId" }, "columns": [ { "key": "name", "label": "Character" }, { "key": "type", "label": "Type" } ], "limit": 50 } }
+					{ "id": "condition-data", "type": "data", "title": "Condition", "icon": "AlertCircleOutline", "content": { "columns": 2 } },
+					{ "id": "condition-effects", "type": "related", "title": "Applied effects", "icon": "LinkVariant", "content": { "groups": [ { "key": "effects", "label": "Applies effects" } ] } },
+					{ "id": "condition-characters", "type": "object-list", "title": "Currently affecting", "icon": "AccountGroup", "content": { "register": "larpingapp", "schema": "character", "filter": { "conditions": "@objectId" }, "columns": [ { "key": "name", "label": "Character" }, { "key": "type", "label": "Type" } ], "limit": 50, "viewAllRoute": "Characters", "viewAllQuery": { "conditions": "@objectId" }, "emptyText": "No characters are currently affected." } }
 				],
 				"layout": [
 					{ "id": "1", "widgetId": "condition-data", "gridX": 0, "gridY": 0, "gridWidth": 8, "gridHeight": 4 },
@@ -351,12 +353,12 @@
 				"documentationUrl": "https://larpingapp.conduction.nl",
 				"_note": "Effect = the atomic stat modifier (+N / -N to an ability, cumulative or not) that the stat engine applies (rules-object archetype, leaf of the mechanics graph). The body leads with the definition (data, 8-wide) and a bold signed-modifier stat card so the magnitude reads instantly, plus the abilities it modifies (related). Below, three object-lists give the full reverse index of what carries this effect — skills, items and conditions (each schema's effects[] contains @objectId) — so a designer can trace every source before rebalancing. Pure rules object: no comms, no files.",
 				"widgets": [
-					{ "id": "effect-data", "type": "data", "title": "Effect", "content": { "columns": 2 } },
-					{ "id": "effect-modifier", "type": "stat", "title": "Modifier", "content": { "label": "Modifier value", "icon": "MagicStaff", "format": { "style": "number" }, "source": { "register": "larpingapp", "schema": "effect", "metric": "sum", "field": "modifier", "filter": { "id": "@objectId" } } } },
-					{ "id": "effect-abilities", "type": "related", "title": "Modifies abilities", "content": { "groups": [ { "key": "abilities", "label": "Abilities" } ] } },
-					{ "id": "effect-skills", "type": "object-list", "title": "Skills granting this effect", "content": { "register": "larpingapp", "schema": "skill", "filter": { "effects": "@objectId" }, "columns": [ { "key": "name", "label": "Skill" } ], "limit": 50 } },
-					{ "id": "effect-items", "type": "object-list", "title": "Items granting this effect", "content": { "register": "larpingapp", "schema": "larping_item", "filter": { "effects": "@objectId" }, "columns": [ { "key": "name", "label": "Item" } ], "limit": 50 } },
-					{ "id": "effect-conditions", "type": "object-list", "title": "Conditions granting this effect", "content": { "register": "larpingapp", "schema": "condition", "filter": { "effects": "@objectId" }, "columns": [ { "key": "name", "label": "Condition" } ], "limit": 50 } }
+					{ "id": "effect-data", "type": "data", "title": "Effect", "icon": "Lightbulb", "content": { "columns": 2 } },
+					{ "id": "effect-modifier", "type": "stat", "title": "Modifier", "icon": "TrendingUp", "content": { "label": "Modifier value", "icon": "TrendingUp", "format": { "style": "number" }, "source": { "register": "larpingapp", "schema": "effect", "metric": "sum", "field": "modifier", "filter": { "id": "@objectId" } } } },
+					{ "id": "effect-abilities", "type": "related", "title": "Modifies abilities", "icon": "LinkVariant", "content": { "groups": [ { "key": "abilities", "label": "Abilities" } ] } },
+					{ "id": "effect-skills", "type": "object-list", "title": "Skills granting this effect", "icon": "School", "content": { "register": "larpingapp", "schema": "skill", "filter": { "effects": "@objectId" }, "columns": [ { "key": "name", "label": "Skill" } ], "limit": 50, "viewAllRoute": "Skills", "viewAllQuery": { "effects": "@objectId" }, "emptyText": "No skills grant this effect yet." } },
+					{ "id": "effect-items", "type": "object-list", "title": "Items granting this effect", "icon": "Package", "content": { "register": "larpingapp", "schema": "larping_item", "filter": { "effects": "@objectId" }, "columns": [ { "key": "name", "label": "Item" } ], "limit": 50, "viewAllRoute": "Items", "viewAllQuery": { "effects": "@objectId" }, "emptyText": "No items grant this effect yet." } },
+					{ "id": "effect-conditions", "type": "object-list", "title": "Conditions granting this effect", "icon": "AlertCircleOutline", "content": { "register": "larpingapp", "schema": "condition", "filter": { "effects": "@objectId" }, "columns": [ { "key": "name", "label": "Condition" } ], "limit": 50, "viewAllRoute": "Conditions", "viewAllQuery": { "effects": "@objectId" }, "emptyText": "No conditions grant this effect yet." } }
 				],
 				"layout": [
 					{ "id": "1", "widgetId": "effect-data", "gridX": 0, "gridY": 0, "gridWidth": 8, "gridHeight": 3 },
@@ -391,23 +393,21 @@
 				"register": "larpingapp",
 				"schema": "larping_event",
 				"documentationUrl": "https://larpingapp.conduction.nl",
-				"_note": "Event = a LARP gathering where players bring their characters (session/meeting archetype). This is the one entity that communicates: the schema declares calendar, maps and forms linkedTypes (merged from the event-calendar-leaf / event-location-to-maps-leaf / event-signup-to-forms-leaf register fragments), so the body earns a calendar widget (scheduling the session from startDate/endDate), a location map, and the sign-up form, plus the participating characters (character.events contains @objectId) as the primary roster. Post-event effects applied to attendees are shown via related. After the event, the XP awarding ritual produces one xpAward per grant (xpAward.event FK = @objectId), shown as an object-list. Files carries the event pack/handouts. All three declared leaves (calendar, maps, forms) are now body widgets — none are held back to sidebar tabs, so the sidebar is audit-history only. No email/talk: the schema declares calendar/maps/forms only.",
+				"_note": "Event = a LARP gathering where players bring their characters (session/meeting archetype). This is the one entity that communicates: the schema declares calendar, maps and forms linkedTypes (merged from the event-calendar-leaf / event-location-to-maps-leaf / event-signup-to-forms-leaf register fragments), so the body earns a calendar widget (scheduling the session from startDate/endDate), a location map, and the sign-up form, plus the participating characters (character.events contains @objectId) as the primary roster. The loose Attendees + XP-granted stat cards fold into one stats-block (rule 2, same-flavor simple KPIs) top-right. Post-event effects applied to attendees are shown via related. After the event, the XP awarding ritual produces one xpAward per grant (xpAward.event FK = @objectId), shown as an object-list — GM hand-awarded per xpAward's schema description, so allowCreate stays on. Files carries the event pack/handouts. All three declared leaves (calendar, maps, forms) are now body widgets — none are held back to sidebar tabs, so the sidebar is audit-history only. No email/talk: the schema declares calendar/maps/forms only.",
 				"widgets": [
-					{ "id": "event-data", "type": "data", "title": "Event", "content": { "columns": 2 } },
-					{ "id": "event-attendees", "type": "stat", "title": "Attendees", "content": { "label": "Participating characters", "icon": "AccountGroup", "format": { "style": "number" }, "source": { "register": "larpingapp", "schema": "character", "metric": "count", "filter": { "events": "@objectId" } } } },
-					{ "id": "event-xp", "type": "stat", "title": "XP granted", "content": { "label": "Total XP granted", "icon": "StarPlus", "format": { "style": "number" }, "source": { "register": "larpingapp", "schema": "xpAward", "metric": "sum", "field": "amount", "filter": { "event": "@objectId" } } } },
-					{ "id": "event-calendar", "type": "integration", "integrationId": "calendar", "title": "Schedule" },
-					{ "id": "event-effects", "type": "related", "title": "Post-event effects", "content": { "groups": [ { "key": "effects", "label": "Effects applied after event" } ] } },
-					{ "id": "event-maps", "type": "integration", "integrationId": "maps", "title": "Location" },
-					{ "id": "event-forms", "type": "integration", "integrationId": "forms", "title": "Sign-up" },
-					{ "id": "event-roster", "type": "object-list", "title": "Participating characters", "content": { "register": "larpingapp", "schema": "character", "filter": { "events": "@objectId" }, "columns": [ { "key": "name", "label": "Character" }, { "key": "ocName", "label": "Player" }, { "key": "type", "label": "Type" }, { "key": "approved", "label": "Approved" } ], "limit": 100 } },
-					{ "id": "event-xpawards", "type": "object-list", "title": "XP awards", "content": { "register": "larpingapp", "schema": "xpAward", "filter": { "event": "@objectId" }, "sort": { "field": "awardedAt", "dir": "desc" }, "columns": [ { "key": "character", "label": "Character" }, { "key": "amount", "label": "XP" }, { "key": "reason", "label": "Reason" } ], "limit": 100 } },
-					{ "id": "event-files", "type": "integration", "integrationId": "files", "title": "Event pack" }
+					{ "id": "event-data", "type": "data", "title": "Event", "icon": "Calendar", "content": { "columns": 2 } },
+					{ "id": "event-stats", "type": "stats-block", "title": "Snapshot", "icon": "AccountGroup", "content": { "entries": [ { "title": "Attendees", "register": "larpingapp", "schema": "character", "metric": "count", "filter": { "events": "@objectId" } }, { "title": "XP granted", "register": "larpingapp", "schema": "xpAward", "metric": "sum", "field": "amount", "filter": { "event": "@objectId" } } ] } },
+					{ "id": "event-calendar", "type": "integration", "integrationId": "calendar", "title": "Schedule", "icon": "Calendar" },
+					{ "id": "event-effects", "type": "related", "title": "Post-event effects", "icon": "LinkVariant", "content": { "groups": [ { "key": "effects", "label": "Effects applied after event" } ] } },
+					{ "id": "event-maps", "type": "integration", "integrationId": "maps", "title": "Location", "icon": "MapMarker" },
+					{ "id": "event-forms", "type": "integration", "integrationId": "forms", "title": "Sign-up", "icon": "FileSign" },
+					{ "id": "event-roster", "type": "object-list", "title": "Participating characters", "icon": "AccountGroup", "content": { "register": "larpingapp", "schema": "character", "filter": { "events": "@objectId" }, "columns": [ { "key": "name", "label": "Character" }, { "key": "ocName", "label": "Player" }, { "key": "type", "label": "Type" }, { "key": "approved", "label": "Approved" } ], "limit": 100, "viewAllRoute": "Characters", "viewAllQuery": { "events": "@objectId" }, "emptyText": "No characters registered yet." } },
+					{ "id": "event-xpawards", "type": "object-list", "title": "XP awards", "icon": "Trophy", "content": { "register": "larpingapp", "schema": "xpAward", "filter": { "event": "@objectId" }, "sort": { "field": "awardedAt", "dir": "desc" }, "columns": [ { "key": "character", "label": "Character" }, { "key": "amount", "label": "XP" }, { "key": "reason", "label": "Reason" } ], "limit": 100, "viewAllRoute": "XpAwards", "viewAllQuery": { "event": "@objectId" }, "emptyText": "No XP granted yet." } },
+					{ "id": "event-files", "type": "integration", "integrationId": "files", "title": "Event pack", "icon": "FolderOutline" }
 				],
 				"layout": [
 					{ "id": "1", "widgetId": "event-data", "gridX": 0, "gridY": 0, "gridWidth": 8, "gridHeight": 4 },
-					{ "id": "2", "widgetId": "event-attendees", "gridX": 8, "gridY": 0, "gridWidth": 4, "gridHeight": 2, "showTitle": false },
-					{ "id": "3", "widgetId": "event-xp", "gridX": 8, "gridY": 2, "gridWidth": 4, "gridHeight": 2, "showTitle": false },
+					{ "id": "2", "widgetId": "event-stats", "gridX": 8, "gridY": 0, "gridWidth": 4, "gridHeight": 4 },
 					{ "id": "4", "widgetId": "event-calendar", "gridX": 0, "gridY": 4, "gridWidth": 8, "gridHeight": 4 },
 					{ "id": "5", "widgetId": "event-effects", "gridX": 8, "gridY": 4, "gridWidth": 4, "gridHeight": 4 },
 					{ "id": "6", "widgetId": "event-maps", "gridX": 0, "gridY": 8, "gridWidth": 6, "gridHeight": 4 },
@@ -441,19 +441,17 @@
 				"register": "larpingapp",
 				"schema": "setting",
 				"documentationUrl": "https://larpingapp.conduction.nl",
-				"_note": "Setting = a world/campaign that scopes the roster and rules (config/container archetype). Most game entities carry an optional 'setting' UUID that points here, so this page is a scoping dashboard: the definition + active/archived status (data) sits beside count stats for its characters and events, then object-lists roll up everything scoped to this campaign — characters and events (each filtered where setting = @objectId). Related surfaces any other scoped mechanics. A pure configuration container: no comms, no files.",
+				"_note": "Setting = a world/campaign that scopes the roster and rules (config/container archetype). Most game entities carry an optional 'setting' UUID that points here, so this page is a scoping dashboard: the definition + active/archived status (data) sits beside a stats-block (characters + events counts, folded from two loose KPIs per rule 2), then object-lists roll up everything scoped to this campaign — characters and events (each filtered where setting = @objectId). Related surfaces any other scoped mechanics. A pure configuration container: no comms, no files.",
 				"widgets": [
-					{ "id": "setting-data", "type": "data", "title": "Setting", "content": { "columns": 1 } },
-					{ "id": "setting-characters-kpi", "type": "stat", "title": "Characters", "content": { "label": "Characters", "icon": "AccountGroup", "format": { "style": "number" }, "source": { "register": "larpingapp", "schema": "character", "metric": "count", "filter": { "setting": "@objectId" } } } },
-					{ "id": "setting-events-kpi", "type": "stat", "title": "Events", "content": { "label": "Events", "icon": "Calendar", "format": { "style": "number" }, "source": { "register": "larpingapp", "schema": "larping_event", "metric": "count", "filter": { "setting": "@objectId" } } } },
-					{ "id": "setting-characters", "type": "object-list", "title": "Characters in this setting", "content": { "register": "larpingapp", "schema": "character", "filter": { "setting": "@objectId" }, "columns": [ { "key": "name", "label": "Character" }, { "key": "type", "label": "Type" }, { "key": "approved", "label": "Approved" } ], "limit": 100 } },
-					{ "id": "setting-events", "type": "object-list", "title": "Events in this setting", "content": { "register": "larpingapp", "schema": "larping_event", "filter": { "setting": "@objectId" }, "sort": { "field": "startDate", "dir": "desc" }, "columns": [ { "key": "name", "label": "Event" }, { "key": "startDate", "label": "Starts" }, { "key": "location", "label": "Location" } ], "limit": 100 } },
-					{ "id": "setting-related", "type": "related", "title": "Related" }
+					{ "id": "setting-data", "type": "data", "title": "Setting", "icon": "Earth", "content": { "columns": 1 } },
+					{ "id": "setting-stats", "type": "stats-block", "title": "Snapshot", "icon": "ChartBar", "content": { "entries": [ { "title": "Characters", "register": "larpingapp", "schema": "character", "metric": "count", "filter": { "setting": "@objectId" }, "route": { "name": "Characters", "query": { "setting": "@objectId" } } }, { "title": "Events", "register": "larpingapp", "schema": "larping_event", "metric": "count", "filter": { "setting": "@objectId" }, "route": { "name": "Events", "query": { "setting": "@objectId" } } } ] } },
+					{ "id": "setting-characters", "type": "object-list", "title": "Characters in this setting", "icon": "AccountGroup", "content": { "register": "larpingapp", "schema": "character", "filter": { "setting": "@objectId" }, "columns": [ { "key": "name", "label": "Character" }, { "key": "type", "label": "Type" }, { "key": "approved", "label": "Approved" } ], "limit": 100, "viewAllRoute": "Characters", "viewAllQuery": { "setting": "@objectId" }, "emptyText": "No characters in this setting yet." } },
+					{ "id": "setting-events", "type": "object-list", "title": "Events in this setting", "icon": "Calendar", "content": { "register": "larpingapp", "schema": "larping_event", "filter": { "setting": "@objectId" }, "sort": { "field": "startDate", "dir": "desc" }, "columns": [ { "key": "name", "label": "Event" }, { "key": "startDate", "label": "Starts" }, { "key": "location", "label": "Location" } ], "limit": 100, "viewAllRoute": "Events", "viewAllQuery": { "setting": "@objectId" }, "emptyText": "No events in this setting yet." } },
+					{ "id": "setting-related", "type": "related", "title": "Related", "icon": "LinkVariant" }
 				],
 				"layout": [
 					{ "id": "1", "widgetId": "setting-data", "gridX": 0, "gridY": 0, "gridWidth": 8, "gridHeight": 4 },
-					{ "id": "2", "widgetId": "setting-characters-kpi", "gridX": 8, "gridY": 0, "gridWidth": 4, "gridHeight": 2, "showTitle": false },
-					{ "id": "3", "widgetId": "setting-events-kpi", "gridX": 8, "gridY": 2, "gridWidth": 4, "gridHeight": 2, "showTitle": false },
+					{ "id": "2", "widgetId": "setting-stats", "gridX": 8, "gridY": 0, "gridWidth": 4, "gridHeight": 4 },
 					{ "id": "4", "widgetId": "setting-characters", "gridX": 0, "gridY": 4, "gridWidth": 6, "gridHeight": 4 },
 					{ "id": "5", "widgetId": "setting-events", "gridX": 6, "gridY": 4, "gridWidth": 6, "gridHeight": 4 },
 					{ "id": "6", "widgetId": "setting-related", "gridX": 0, "gridY": 8, "gridWidth": 12, "gridHeight": 3 }
@@ -485,9 +483,9 @@
 				"documentationUrl": "https://larpingapp.conduction.nl",
 				"_note": "XP Award = a single audited grant of experience to one character for one event (log/ledger-record archetype). GM-write-only, effectively append-only, so the page is read-oriented: the full grant record (amount, reason, awardedBy, awardedAt — data, single column for readability) beside a bold amount stat card, with a related rail linking straight to the two FK parents (the event it was earned at and the character who received it) so a reviewer can jump up the chain. No object-lists, no comms, no files — a ledger line has no children and nothing to communicate.",
 				"widgets": [
-					{ "id": "xpaward-data", "type": "data", "title": "Award record", "content": { "columns": 1 } },
-					{ "id": "xpaward-amount", "type": "stat", "title": "XP", "content": { "label": "XP awarded", "icon": "StarPlus", "format": { "style": "number" }, "source": { "register": "larpingapp", "schema": "xpAward", "metric": "sum", "field": "amount", "filter": { "id": "@objectId" } } } },
-					{ "id": "xpaward-related", "type": "related", "title": "Event & character", "content": { "groups": [ { "key": "event", "label": "Event" }, { "key": "character", "label": "Character" } ] } }
+					{ "id": "xpaward-data", "type": "data", "title": "Award record", "icon": "ClipboardList", "content": { "columns": 1 } },
+					{ "id": "xpaward-amount", "type": "stat", "title": "XP", "icon": "Trophy", "content": { "label": "XP awarded", "icon": "Trophy", "format": { "style": "number" }, "source": { "register": "larpingapp", "schema": "xpAward", "metric": "sum", "field": "amount", "filter": { "id": "@objectId" } } } },
+					{ "id": "xpaward-related", "type": "related", "title": "Event & character", "icon": "LinkVariant", "content": { "groups": [ { "key": "event", "label": "Event" }, { "key": "character", "label": "Character" } ] } }
 				],
 				"layout": [
 					{ "id": "1", "widgetId": "xpaward-data", "gridX": 0, "gridY": 0, "gridWidth": 8, "gridHeight": 4 },

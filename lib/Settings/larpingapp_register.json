@@ -177,9 +177,10 @@
             "description": "Skills this character possesses",
             "items": {
               "type": "string",
-              "format": "uuid",
-              "x-relation-filter": { "setting": "@object.setting" }
+              "format": "uuid"
             },
+            "$ref": "skill",
+            "x-relation-filter": { "setting": "@object.setting" },
             "visible": false,
             "title": "Skills"
           },
@@ -188,9 +189,10 @@
             "description": "Items this character owns",
             "items": {
               "type": "string",
-              "format": "uuid",
-              "x-relation-filter": { "setting": "@object.setting" }
+              "format": "uuid"
             },
+            "$ref": "item",
+            "x-relation-filter": { "setting": "@object.setting" },
             "visible": false,
             "title": "Items"
           },
@@ -199,9 +201,10 @@
             "description": "Conditions currently affecting this character",
             "items": {
               "type": "string",
-              "format": "uuid",
-              "x-relation-filter": { "setting": "@object.setting" }
+              "format": "uuid"
             },
+            "$ref": "condition",
+            "x-relation-filter": { "setting": "@object.setting" },
             "visible": false,
             "title": "Conditions"
           },
@@ -210,15 +213,17 @@
             "description": "Events this character is subscribed to",
             "items": {
               "type": "string",
-              "format": "uuid",
-              "x-relation-filter": { "setting": "@object.setting" }
+              "format": "uuid"
             },
+            "$ref": "event",
+            "x-relation-filter": { "setting": "@object.setting" },
             "visible": false,
             "title": "Events"
           },
           "setting": {
             "type": "string",
             "format": "uuid",
+            "$ref": "setting",
             "description": "Optional setting (world/campaign) this character belongs to. Empty means shared across all settings.",
             "visible": false,
             "title": "Setting"
@@ -232,6 +237,7 @@
                 "skill": {
                   "type": "string",
                   "format": "uuid",
+                  "$ref": "skill",
                   "x-relation-filter": { "setting": "@object.setting" },
                   "description": "The assigned skill whose requirements are waived",
                   "title": "Skill"
@@ -414,6 +420,7 @@
           "setting": {
             "type": "string",
             "format": "uuid",
+            "$ref": "setting",
             "description": "Optional setting (world/campaign) this ability belongs to. Empty means shared across all settings.",
             "visible": false,
             "title": "Setting"
@@ -457,9 +464,10 @@
             "description": "Effects applied when this skill is taken",
             "items": {
               "type": "string",
-              "format": "uuid",
-              "x-relation-filter": { "setting": "@object.setting" }
+              "format": "uuid"
             },
+            "$ref": "effect",
+            "x-relation-filter": { "setting": "@object.setting" },
             "visible": false,
             "title": "Effects"
           },
@@ -468,9 +476,10 @@
             "description": "Prerequisite skills needed before learning this skill",
             "items": {
               "type": "string",
-              "format": "uuid",
-              "x-relation-filter": { "setting": "@object.setting" }
+              "format": "uuid"
             },
+            "$ref": "skill",
+            "x-relation-filter": { "setting": "@object.setting" },
             "visible": false,
             "title": "Required Skills"
           },
@@ -479,9 +488,10 @@
             "description": "Required ability scores",
             "items": {
               "type": "string",
-              "format": "uuid",
-              "x-relation-filter": { "setting": "@object.setting" }
+              "format": "uuid"
             },
+            "$ref": "ability",
+            "x-relation-filter": { "setting": "@object.setting" },
             "visible": false,
             "title": "Required Stats"
           },
@@ -490,9 +500,10 @@
             "description": "Required conditions",
             "items": {
               "type": "string",
-              "format": "uuid",
-              "x-relation-filter": { "setting": "@object.setting" }
+              "format": "uuid"
             },
+            "$ref": "condition",
+            "x-relation-filter": { "setting": "@object.setting" },
             "visible": false,
             "title": "Required Conditions"
           },
@@ -501,9 +512,10 @@
             "description": "Required effects",
             "items": {
               "type": "string",
-              "format": "uuid",
-              "x-relation-filter": { "setting": "@object.setting" }
+              "format": "uuid"
             },
+            "$ref": "effect",
+            "x-relation-filter": { "setting": "@object.setting" },
             "visible": false,
             "title": "Required Effects"
           },
@@ -516,6 +528,7 @@
           "setting": {
             "type": "string",
             "format": "uuid",
+            "$ref": "setting",
             "description": "Optional setting (world/campaign) this skill belongs to. Empty means shared across all settings.",
             "visible": false,
             "title": "Setting"
@@ -559,9 +572,10 @@
             "description": "Predefined effects applied to the item holder",
             "items": {
               "type": "string",
-              "format": "uuid",
-              "x-relation-filter": { "setting": "@object.setting" }
+              "format": "uuid"
             },
+            "$ref": "effect",
+            "x-relation-filter": { "setting": "@object.setting" },
             "visible": false,
             "title": "Effects"
           },
@@ -576,15 +590,17 @@
             "description": "Characters currently holding this item",
             "items": {
               "type": "string",
-              "format": "uuid",
-              "x-relation-filter": { "setting": "@object.setting" }
+              "format": "uuid"
             },
+            "$ref": "character",
+            "x-relation-filter": { "setting": "@object.setting" },
             "visible": false,
             "title": "Characters"
           },
           "setting": {
             "type": "string",
             "format": "uuid",
+            "$ref": "setting",
             "description": "Optional setting (world/campaign) this item belongs to. Empty means shared across all settings.",
             "visible": false,
             "title": "Setting"
@@ -628,9 +644,10 @@
             "description": "Automated effects applied by this condition",
             "items": {
               "type": "string",
-              "format": "uuid",
-              "x-relation-filter": { "setting": "@object.setting" }
+              "format": "uuid"
             },
+            "$ref": "effect",
+            "x-relation-filter": { "setting": "@object.setting" },
             "visible": false,
             "title": "Effects"
           },
@@ -645,15 +662,17 @@
             "description": "Characters currently affected by this condition",
             "items": {
               "type": "string",
-              "format": "uuid",
-              "x-relation-filter": { "setting": "@object.setting" }
+              "format": "uuid"
             },
+            "$ref": "character",
+            "x-relation-filter": { "setting": "@object.setting" },
             "visible": false,
             "title": "Affected Characters"
           },
           "setting": {
             "type": "string",
             "format": "uuid",
+            "$ref": "setting",
             "description": "Optional setting (world/campaign) this condition belongs to. Empty means shared across all settings.",
             "visible": false,
             "title": "Setting"
@@ -718,15 +737,17 @@
             "description": "Abilities this effect modifies",
             "items": {
               "type": "string",
-              "format": "uuid",
-              "x-relation-filter": { "setting": "@object.setting" }
+              "format": "uuid"
             },
+            "$ref": "ability",
+            "x-relation-filter": { "setting": "@object.setting" },
             "visible": false,
             "title": "Abilities"
           },
           "setting": {
             "type": "string",
             "format": "uuid",
+            "$ref": "setting",
             "description": "Optional setting (world/campaign) this effect belongs to. Empty means shared across all settings.",
             "visible": false,
             "title": "Setting"
@@ -781,9 +802,10 @@
             "description": "Characters participating in this event",
             "items": {
               "type": "string",
-              "format": "uuid",
-              "x-relation-filter": { "setting": "@object.setting" }
+              "format": "uuid"
             },
+            "$ref": "character",
+            "x-relation-filter": { "setting": "@object.setting" },
             "visible": false,
             "title": "Participating Characters"
           },
@@ -792,15 +814,17 @@
             "description": "Effects applied to participating characters after the event",
             "items": {
               "type": "string",
-              "format": "uuid",
-              "x-relation-filter": { "setting": "@object.setting" }
+              "format": "uuid"
             },
+            "$ref": "effect",
+            "x-relation-filter": { "setting": "@object.setting" },
             "visible": false,
             "title": "Post-Event Effects"
           },
           "setting": {
             "type": "string",
             "format": "uuid",
+            "$ref": "setting",
             "description": "Optional setting (world/campaign) this event belongs to. Empty means shared across all settings.",
             "visible": false,
             "title": "Setting"
@@ -889,12 +913,14 @@
           "event": {
             "type": "string",
             "format": "uuid",
+            "$ref": "event",
             "description": "The event this award was granted for",
             "title": "Event"
           },
           "character": {
             "type": "string",
             "format": "uuid",
+            "$ref": "character",
             "description": "The character receiving the award",
             "title": "Character"
           },
