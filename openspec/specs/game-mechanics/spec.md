@@ -4,6 +4,9 @@ status: implemented
 
 # Game Mechanics Specification
 
+**OpenSpec changes**:
+- `manifest-namespaced-schema-slugs` (in progress) — repoints Items manifest references from the bare, collision-prone `item` slug to the real `larping_item` slug
+
 ## Purpose
 
 SPA mount fixed in #202 — list view scenarios covered by tests/e2e/spec-coverage/spa-ui.spec.ts; CharacterService effect-chain scenarios annotated @e2e exclude below
