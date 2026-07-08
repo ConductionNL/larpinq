@@ -2,29 +2,52 @@
 <info xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
     <id>larpingapp</id>
-    <name>Larping</name>
-    <summary>Manage your live roleplaying setting</summary>
-    <description><![CDATA[📰 A management tool for larp organisation
+    <name lang="en">Larping</name>
+    <name lang="nl">Larping</name>
+    <summary lang="en">Character, event and rules management for live-action role-play (LARP) groups</summary>
+    <summary lang="nl">Karakter-, event- en regelbeheer voor live-action roleplay (LARP)-groepen</summary>
+    <description lang="en"><![CDATA[Larping is a management tool for LARP (live-action role-play) organisations, built on Nextcloud and OpenRegister.
 
-**Requires:** [OpenRegister](https://apps.nextcloud.com/apps/openregister) (install from the [Nextcloud App Store](https://apps.nextcloud.com/apps/openregister)).
+**Requires:** [OpenRegister](https://apps.nextcloud.com/apps/openregister) (install from the Nextcloud App Store).
 
-Larping provides a tool to manage your setting
+Larping covers:
 
-- 📲 Create skills, items, conditions
-- 🔄 Manage characters
-- 🆓 Automatically calculate abilities and XP
-- Manage backgrounds, approve characters
-- Handle event subscription and experience score
+- Settings (worlds/campaigns) that scope characters, events and rules, archived rather than deleted when a campaign ends
+- Character sheets with background stories and a game-master approval workflow
+- Players linked to Nextcloud contacts — the person behind the character
+- Game mechanics as typed records: abilities, skills, items, conditions and effects, with a deterministic stat-calculation engine
+- Events with a participant roster, Nextcloud Calendar scheduling, and location/sign-up sidebar tabs
+- Post-event XP awards with a full audit trail and server-enforced prerequisite checks (with GM override)
+- Printable PDF character sheets and per-event GM run-sheets (cast lists), rendered via DocuDesk
+- Group-restricted access: app visibility is limited to an enrolled `larpers` Nextcloud group
 
-Requirements can be found [here](https://conduction.gitbook.io/opencatalogi-nextcloud/installatie)
-The Roadmap is available [here](https://github.com/orgs/OpenCatalogi/projects/1/views/2)
-Create a [bug report](https://github.com/OpenCatalogi/.github/issues/new/choose)
-Create a [feature request](https://github.com/OpenCatalogi/.github/issues/new/choose)
+Create a [bug report](https://codeberg.org/Conduction/larpingapp/issues)
+Create a [feature request](https://codeberg.org/Conduction/larpingapp/issues)
 
 **Support:** For support, contact support@conduction.nl. For a Service Level Agreement (SLA), contact sales@conduction.nl.
     ]]></description>
-    <version>0.1.32</version>
-    <licence>agpl</licence>
+    <description lang="nl"><![CDATA[Larping is een beheertool voor LARP-organisaties (live-action roleplay), gebouwd op Nextcloud en OpenRegister.
+
+**Vereist:** [OpenRegister](https://apps.nextcloud.com/apps/openregister) (installeren via de Nextcloud App Store).
+
+Larping biedt:
+
+- Settings (werelden/campagnes) die karakters, events en regels afbakenen, en die je archiveert in plaats van verwijdert als een campagne afloopt
+- Karakterbladen met achtergrondverhaal en een goedkeuringsworkflow voor de spelleider
+- Spelers gekoppeld aan Nextcloud-contacten — de speler achter het karakter
+- Spelmechanica als getypeerde records: abilities, skills, items, conditions en effects, met een deterministische stat-berekeningsmotor
+- Events met een deelnemerslijst, planning via Nextcloud Agenda, en zijbalktabbladen voor locatie en aanmelden
+- XP-toekenningen na afloop van een event, met volledige audit trail en server-side gecontroleerde vereisten (met GM-override)
+- Afdrukbare PDF-karakterbladen en per-event GM-castlijsten, gerenderd via DocuDesk
+- Toegang beperkt tot een aangemelde `larpers`-Nextcloud-groep
+
+Maak een [bugmelding](https://codeberg.org/Conduction/larpingapp/issues)
+Maak een [featureverzoek](https://codeberg.org/Conduction/larpingapp/issues)
+
+**Support:** neem voor support contact op met support@conduction.nl. Voor een Service Level Agreement (SLA), neem contact op met sales@conduction.nl.
+    ]]></description>
+    <version>0.1.34</version>
+    <licence>EUPL-1.2</licence>
     <author mail="info@conduction.nl" homepage="https://www.conduction.nl/">Conduction</author>
 	<namespace>LarpingApp</namespace>
 	<category>organization</category>
@@ -35,6 +58,7 @@ Create a [feature request](https://github.com/OpenCatalogi/.github/issues/new/ch
     <screenshot>https://codeberg.org/Conduction/larpingapp/raw/branch/main/img/screenshot-characters.png</screenshot>
     <screenshot>https://codeberg.org/Conduction/larpingapp/raw/branch/main/img/screenshot-events.png</screenshot>
     <dependencies>
+        <app>openregister</app>
         <nextcloud min-version="28" max-version="34"/>
         <php min-version="8.3" min-int-size="64"/>
         <database min-version="10">pgsql</database>

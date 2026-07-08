@@ -1,8 +1,12 @@
 ---
-status: done
+status: in-progress
 ---
 
 # Events and Players
+
+**OpenSpec changes**:
+- `character-player-picker` (in progress) — adds `player.userUid` Nextcloud-account link
+- `manifest-namespaced-schema-slugs` (in progress) — repoints Events manifest references from the bare, collision-prone `event` slug to the real `larping_event` slug
 
 ## Purpose
 
