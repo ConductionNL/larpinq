@@ -69,7 +69,7 @@
 				{ "id": "XpAwards", "label": "XP Awards", "icon": "StarPlusOutline", "route": "XpAwards", "order": 95 }
 			]
 		},
-		{ "id": "Settings",          "label": "Settings (Worlds)","icon": "Globe",       "route": "Settings",     "order": 25 },
+		{ "id": "Settings",          "label": "Settings (Worlds)","icon": "Earth",       "route": "Settings",     "order": 25 },
 		{ "id": "GameSettings",      "label": "Game Settings",    "icon": "Cog",         "route": "GameSettings", "order": 100, "section": "settings" },
 		{ "id": "Documentation",     "label": "Documentation",    "icon": "icon-info",   "href": "https://larpingapp.conduction.nl", "section": "footer", "order": 90 },
 		{ "id": "FeaturesRoadmapMenu","label": "Features & roadmap","icon": "icon-toggle","route": "FeaturesRoadmap", "section": "footer", "order": 91 }

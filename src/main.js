@@ -18,6 +18,47 @@ import bundledManifest from './manifest.json'
 import menuLayout from './menu-layout.json'
 import registry from './registry.js'
 
+// MDI icons referenced by the manifest (menu, KPIs, widgets). CnIcon resolves
+// names from the registry populated by registerIcons(), so every icon the
+// manifest uses must be imported + registered here — otherwise it falls back
+// to the help-circle placeholder.
+import Account from 'vue-material-design-icons/Account.vue'
+import AccountBoxOutline from 'vue-material-design-icons/AccountBoxOutline.vue'
+import AccountGroup from 'vue-material-design-icons/AccountGroup.vue'
+import AccountGroupOutline from 'vue-material-design-icons/AccountGroupOutline.vue'
+import AlertCircleOutline from 'vue-material-design-icons/AlertCircleOutline.vue'
+import Briefcase from 'vue-material-design-icons/Briefcase.vue'
+import BriefcaseAccountOutline from 'vue-material-design-icons/BriefcaseAccountOutline.vue'
+import Calendar from 'vue-material-design-icons/Calendar.vue'
+import CalendarMonthOutline from 'vue-material-design-icons/CalendarMonthOutline.vue'
+import ChartBar from 'vue-material-design-icons/ChartBar.vue'
+import ClipboardList from 'vue-material-design-icons/ClipboardList.vue'
+import Cog from 'vue-material-design-icons/Cog.vue'
+import Earth from 'vue-material-design-icons/Earth.vue'
+import EmoticonSickOutline from 'vue-material-design-icons/EmoticonSickOutline.vue'
+import FileDocument from 'vue-material-design-icons/FileDocument.vue'
+import FileSign from 'vue-material-design-icons/FileSign.vue'
+import FlashOutline from 'vue-material-design-icons/FlashOutline.vue'
+import FolderOutline from 'vue-material-design-icons/FolderOutline.vue'
+import Gauge from 'vue-material-design-icons/Gauge.vue'
+import History from 'vue-material-design-icons/History.vue'
+import Lightbulb from 'vue-material-design-icons/Lightbulb.vue'
+import LinkVariant from 'vue-material-design-icons/LinkVariant.vue'
+import MagicStaff from 'vue-material-design-icons/MagicStaff.vue'
+import MapMarker from 'vue-material-design-icons/MapMarker.vue'
+import Package from 'vue-material-design-icons/Package.vue'
+import Plus from 'vue-material-design-icons/Plus.vue'
+import Refresh from 'vue-material-design-icons/Refresh.vue'
+import School from 'vue-material-design-icons/School.vue'
+import Sitemap from 'vue-material-design-icons/Sitemap.vue'
+import Star from 'vue-material-design-icons/Star.vue'
+import StarOutline from 'vue-material-design-icons/StarOutline.vue'
+import StarPlusOutline from 'vue-material-design-icons/StarPlusOutline.vue'
+import Sword from 'vue-material-design-icons/Sword.vue'
+import TrendingUp from 'vue-material-design-icons/TrendingUp.vue'
+import Trophy from 'vue-material-design-icons/Trophy.vue'
+import ViewDashboard from 'vue-material-design-icons/ViewDashboard.vue'
+
 // Library CSS — must be explicit import (webpack tree-shakes side-effect imports from aliased packages)
 import '@conduction/nextcloud-vue/css/index.css'
 
@@ -28,8 +69,15 @@ Vue.mixin({ methods: { t, n } })
 Vue.use(PiniaVuePlugin)
 Vue.use(VueRouter)
 
-// Register library-side icon set + lib translations once at bootstrap.
-registerIcons()
+// Register the MDI icons the manifest references + lib translations at bootstrap.
+registerIcons({
+	Account, AccountBoxOutline, AccountGroup, AccountGroupOutline, AlertCircleOutline,
+	Briefcase, BriefcaseAccountOutline, Calendar, CalendarMonthOutline, ChartBar,
+	ClipboardList, Cog, Earth, EmoticonSickOutline, FileDocument, FileSign, FlashOutline,
+	FolderOutline, Gauge, History, Lightbulb, LinkVariant, MagicStaff, MapMarker,
+	Package, Plus, Refresh, School, Sitemap, Star, StarOutline, StarPlusOutline,
+	Sword, TrendingUp, Trophy, ViewDashboard,
+})
 try {
 	registerTranslations()
 } catch (e) {
