@@ -54,6 +54,9 @@ Maak een [featureverzoek](https://codeberg.org/Conduction/larpingapp/issues)
     <website>https://codeberg.org/Conduction/larpingapp</website>
     <bugs>https://codeberg.org/Conduction/larpingapp/issues</bugs>
     <repository type="git">https://codeberg.org/Conduction/larpingapp.git</repository>
+    <screenshot>https://codeberg.org/Conduction/larpingapp/raw/branch/main/img/screenshot-dashboard.png</screenshot>
+    <screenshot>https://codeberg.org/Conduction/larpingapp/raw/branch/main/img/screenshot-characters.png</screenshot>
+    <screenshot>https://codeberg.org/Conduction/larpingapp/raw/branch/main/img/screenshot-events.png</screenshot>
     <dependencies>
         <app>openregister</app>
         <nextcloud min-version="28" max-version="34"/>

@@ -16,6 +16,7 @@
 -->
 <template>
 	<CnAppRoot
+		:ai-companion="true"
 		:manifest="manifest"
 		:registry="registry"
 		:custom-components="customComponents"
@@ -201,8 +202,9 @@ export default {
 		 * `headerComponent`, and `page.slots.*` keys against the legacy
 		 * `customComponents` inject, not against `cnRegistry`. Until the library
 		 * unifies both resolution paths, we derive a flat shim here so that
-		 * slot-override lookups (e.g. `actionsComponent: "DashboardActions"`)
-		 * continue to work when the registry uses the v2 kind-tagged format.
+		 * slot-override lookups (e.g. a detail page's `slots.photos-leaf:
+		 * "ObjectDetail"`) continue to work when the registry uses the v2
+		 * kind-tagged format.
 		 *
 		 * Entries that carry a `component` field are included; pure-metadata
 		 * entries without a `component` field are skipped.

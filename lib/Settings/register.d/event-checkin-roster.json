@@ -1,0 +1,68 @@
+{
+  "components": {
+    "schemas": {
+      "attendance": {
+        "slug": "larping_attendance",
+        "title": "Attendance",
+        "icon": "AccountCheck",
+        "version": "1.0.0",
+        "summary": "A per-participant day-of attendance record for an event",
+        "description": "Records whether one character actually showed up to one event. One record per (event, character) pair. The game master ticks participants in at the door: `status` moves from `registered` to `checked-in` or `no-show`. `checkedInAt` and `checkedInBy` are stamped server-side and are never accepted from the client. Attendance grounds the post-event 'full attendance' XP award and enriches the GM run-sheet; it never grants XP by itself. Writes are restricted to game masters; reads are open to authenticated app users.",
+        "type": "object",
+        "x-schema-org": "schema:Action",
+        "required": [
+          "event",
+          "character"
+        ],
+        "properties": {
+          "event": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Event",
+            "description": "UUID reference to the larping_event this attendance record belongs to"
+          },
+          "character": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Character",
+            "description": "UUID reference to the character whose attendance this record captures"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "The participant's day-of attendance state for this event",
+            "enum": [
+              "registered",
+              "checked-in",
+              "no-show"
+            ],
+            "default": "registered"
+          },
+          "checkedInAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Checked In At",
+            "description": "When the game master recorded this attendance (server-stamped; ignored from the client body)"
+          },
+          "checkedInBy": {
+            "type": "string",
+            "title": "Checked In By",
+            "description": "Nextcloud uid of the game master who recorded this attendance (server-stamped; ignored from the client body)",
+            "maxLength": 255
+          }
+        },
+        "authorization": {
+          "create": [
+            "gamemasters"
+          ],
+          "update": [
+            "gamemasters"
+          ],
+          "delete": [
+            "gamemasters"
+          ]
+        }
+      }
+    }
+  }
+}

@@ -52,9 +52,11 @@ class SettingsServiceTest extends TestCase
         $this->assertArrayHasKey('effect_schema', $result);
         $this->assertArrayHasKey('event_schema', $result);
         $this->assertArrayHasKey('setting_schema', $result);
-        // CONFIG_KEYS now includes {slug}_register + {slug}_source for all 9 slugs
-        // plus the global 'register' key = 1 + 9*3 = 28.
-        $this->assertCount(28, $result);
+        $this->assertArrayHasKey('attendance_schema', $result);
+        // CONFIG_KEYS now includes {slug}_schema + {slug}_register + {slug}_source
+        // for all 10 slugs (9 original + attendance) plus the global 'register'
+        // key = 1 + 10*3 = 31.
+        $this->assertCount(31, $result);
     }
 
     public function testGetSettingsReturnsEmptyStringsAsDefaults(): void
@@ -115,7 +117,7 @@ class SettingsServiceTest extends TestCase
         $result = $this->service->updateSettings(['register' => 'reg-1']);
 
         $this->assertIsArray($result);
-        $this->assertCount(28, $result);
+        $this->assertCount(31, $result);
     }
 
     public function testLoadSettingsDelegatesToLoadService(): void

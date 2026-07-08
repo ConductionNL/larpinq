@@ -12,6 +12,7 @@ const SCHEMA_SLUGS = [
 	'larping_event',
 	'setting',
 	'xpAward',
+	'attendance',
 ]
 
 // A few schemas are namespaced at the slug level to avoid a global OpenRegister

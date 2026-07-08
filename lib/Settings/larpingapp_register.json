@@ -44,6 +44,7 @@
         "summary": "A playable or non-playable character in the LARP game",
         "description": "Represents a character entity with stats, skills, items, conditions, and event participation. Characters can be player characters, NPCs, or other types. Game masters approve characters before play.",
         "type": "object",
+        "x-schema-org": "schema:Person",
         "required": [
           "name",
           "ocName"
@@ -360,6 +361,7 @@
         "summary": "A real-world player participating in the LARP",
         "description": "Represents a player who controls one or more characters. Tracks player identity and contact information.",
         "type": "object",
+        "x-schema-org": "schema:Person",
         "required": [
           "name"
         ],
@@ -394,6 +396,7 @@
         "summary": "A numeric stat tracked on characters (e.g., XP, Mana, Health)",
         "description": "Represents a numeric ability or stat that characters track. Effects modify abilities by adding or subtracting from the base value. Used for experience points, mana, health, armor, and other quantifiable attributes.",
         "type": "object",
+        "x-schema-org": "schema:PropertyValue",
         "required": [
           "name"
         ],
@@ -435,6 +438,7 @@
         "summary": "A learnable ability that characters can acquire",
         "description": "Represents a skill that characters can learn, usually purchased with experience points. Skills provide effects and may have prerequisites (other skills, stats, conditions, or effects).",
         "type": "object",
+        "x-schema-org": "schema:DefinedTerm",
         "required": [
           "name"
         ],
@@ -543,6 +547,7 @@
         "summary": "A magical or special item that characters can own",
         "description": "Represents a special or magical item in the game. Items provide effects to their holder. Items can be unique artifacts (only one instance exists) or regular items.",
         "type": "object",
+        "x-schema-org": "schema:Product",
         "required": [
           "name"
         ],
@@ -687,6 +692,7 @@
         "summary": "A calculated modification to a character ability",
         "description": "Represents a numeric modification to one or more abilities. Effects come from skills, items, conditions, or events and automatically adjust character stats.",
         "type": "object",
+        "x-schema-org": "schema:PropertyValue",
         "required": [
           "name"
         ],
@@ -762,6 +768,7 @@
         "summary": "A LARP event or gathering where players come together",
         "description": "Represents a LARP event — a gathering where players come with their characters. Can be multi-day events or casual meetups. Characters subscribe to events and receive effects after the event.",
         "type": "object",
+        "x-schema-org": "schema:Event",
         "required": [
           "name"
         ],
@@ -866,6 +873,7 @@
         "summary": "A LARP world / campaign (setting)",
         "description": "A first-class LARP setting: a world or campaign that organises characters, events, and mechanics. Real organisations run several campaigns (a fantasy summer world, a sci-fi winter world) with disjoint rosters and rule sets. Game entities can optionally be scoped to a setting; entities without a setting are shared across all settings. Finished campaigns are archived rather than deleted.",
         "type": "object",
+        "x-schema-org": "schema:CreativeWork",
         "required": [
           "name"
         ],
@@ -904,6 +912,7 @@
         "summary": "A per-participant experience-point grant for an event",
         "description": "Records a single experience-point award made by a game master to one character for one event. The post-event awarding ritual produces one xpAward per grant: who earned how much, why, and who granted it. Awards feed the character's computed XP ability as a fifth stat-engine stage. Writes are restricted to game masters; reads are open to authenticated app users.",
         "type": "object",
+        "x-schema-org": "schema:Action",
         "required": [
           "event",
           "character",

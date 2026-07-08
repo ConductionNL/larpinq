@@ -8,28 +8,34 @@
  * (type: "index" / "detail" / "dashboard" / "settings"), so no `kind: "page"`
  * entries are needed here — the renderer resolves them directly via
  * `pageTypes`. The entries below are non-page kinds referenced from inside
- * typed pages via slot keys (page.slots[*]), page.actionsComponent, and
- * page.config.sections[*].component. CnPageRenderer's slot-override
- * resolution is kind-agnostic — any entry with a `component` field
- * resolves — so semantic kinds (widget / actions / section) document the
+ * typed pages via slot keys (page.slots[*]) and page.config.sections[*].component.
+ * CnPageRenderer's slot-override resolution is kind-agnostic — any entry with a
+ * `component` field resolves — so the semantic `section` kind documents the
  * intent without affecting dispatch.
+ *
+ * The dashboard is fully declarative (ADR-049): its KPI tiles (`stat`), recent
+ * lists (`object-table`), skill-usage chart (`chart` with an aggregate
+ * dataSource) and header actions (`config.headerActions[]` open-form + refresh)
+ * are all built-in manifest widgets — no custom `kind: "widget"` components.
  *
  * SPDX-License-Identifier: EUPL-1.2
  * SPDX-FileCopyrightText: 2026 Conduction B.V.
  */
 
-import DashboardKpi from './views/dashboard/DashboardKpi.vue'
-import DashboardRecentList from './views/dashboard/DashboardRecentList.vue'
-import DashboardSkillUsage from './views/dashboard/DashboardSkillUsage.vue'
-import DashboardActions from './views/dashboard/DashboardActions.vue'
 import GameSettingsSection from './views/settings/Settings.vue'
 import ObjectDetail from './views/ObjectDetail.vue'
+import EventRoster from './views/EventRoster.vue'
+import SkillTree from './views/SkillTree.vue'
 
 export default {
-	DashboardKpi: { kind: 'widget', component: DashboardKpi },
-	DashboardRecentList: { kind: 'widget', component: DashboardRecentList },
-	DashboardSkillUsage: { kind: 'widget', component: DashboardSkillUsage },
-	DashboardActions: { kind: 'widget', component: DashboardActions },
 	GameSettingsSection: { kind: 'section', component: GameSettingsSection },
 	ObjectDetail: { kind: 'section', component: ObjectDetail },
+	// Event check-in roster — a sidebar-tab section on the event detail page
+	// (event-checkin-roster). Not a kind:"widget" (no custom-widget-ratchet
+	// entry); it renders inside the CnObjectSidebar tab strip.
+	EventRoster: { kind: 'section', component: EventRoster },
+	// Skill-tree visualization — a read-only type:"custom" page
+	// (skill-tree-visualization). Resolved by CnPageRenderer as the page body
+	// component for the SkillTree manifest page.
+	SkillTree: { kind: 'page', component: SkillTree },
 }

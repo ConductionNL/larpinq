@@ -403,4 +403,47 @@ class RegisterObjectFetcher
 
         return $this->toArray(object: $object);
     }//end getObject()
+
+    /**
+     * Create or update an object of a given type in OpenRegister.
+     *
+     * Writes through OpenRegister's ObjectService::saveObject so storage,
+     * audit trail and schema-level RBAC (ADR-022) are OR-owned — the app keeps
+     * no parallel write path. RBAC is left enabled (`_rbac: true`), so a schema
+     * whose `authorization.create/update` restricts a group (e.g. the
+     * `larping_attendance` gamemasters restriction) is enforced by OR itself in
+     * addition to any controller-level guard. When `$uuid` is null a new object
+     * is created; otherwise the existing object is updated in place.
+     *
+     * @param string              $objectType The object type (e.g. 'attendance').
+     * @param array<string,mixed> $data       The object payload to persist.
+     * @param string|null         $uuid       The UUID to update, or null to create.
+     *
+     * @return array<string,mixed> The persisted object as an array.
+     *
+     * @throws Exception If OpenRegister is not available or the type is not configured.
+     *
+     * @psalm-suppress MixedMethodCall OpenRegister ObjectService resolved dynamically.
+     * @psalm-suppress MixedAssignment  OpenRegister ObjectService resolved dynamically.
+     *
+     * @spec openspec/changes/event-checkin-roster/specs/event-checkin-roster/spec.md
+     */
+    public function saveObject(string $objectType, array $data, ?string $uuid=null): array
+    {
+        $objectTypeLower = strtolower($objectType);
+        $openRegister    = $this->getOpenRegisterService();
+
+        [$register, $schema] = $this->resolveRegisterAndSchema(objectTypeLower: $objectTypeLower);
+
+        // @var mixed $saved
+        $saved = $openRegister->saveObject(
+            $data,
+            [],
+            $register,
+            $schema,
+            $uuid
+        );
+
+        return $this->toArray(object: $saved);
+    }//end saveObject()
 }//end class

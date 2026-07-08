@@ -189,12 +189,12 @@ test.describe('dashboard', () => {
 		await go(page, '/')
 		const heading = page.getByRole('heading', { name: 'Dashboard', level: 2 })
 		await expect(heading).toBeVisible({ timeout: 10_000 })
-		// In a bare test-env with no entities, every KPI card shows "0"
-		const firstKpi = page.locator('.kpi-card .kpi-value').first()
+		// In a bare test-env with no entities, every KPI stat tile shows "0"
+		const firstKpi = page.locator('.cn-stat-widget__value').first()
 		await expect(firstKpi).toBeVisible({ timeout: 10_000 })
 		await expect(firstKpi).toHaveText('0')
-		// Recent-list widgets render their empty-state container instead of items
-		const emptyState = page.locator('.widget-empty').first()
+		// Recent-list object-tables render their empty-state row instead of items
+		const emptyState = page.locator('[data-testid="cn-object-list-empty"]').first()
 		await expect(emptyState).toBeVisible({ timeout: 10_000 })
 	})
 
@@ -202,7 +202,7 @@ test.describe('dashboard', () => {
 	test('quick-create new-character button is visible on dashboard', async ({ page }) => {
 		await go(page, '/')
 		await expect(page.locator('.app-content')).toBeVisible()
-		// DashboardActions "New character" button is accessible on the dashboard
+		// The declarative "New character" open-form header action is accessible on the dashboard
 		const newCharBtn = page.getByRole('button', { name: /New character/i }).first()
 		await expect(newCharBtn).toBeVisible({ timeout: 10_000 })
 	})
@@ -218,10 +218,10 @@ test.describe('dashboard-analytics-widgets', () => {
 		await go(page, '/')
 		const heading = page.getByRole('heading', { name: 'Dashboard', level: 2 })
 		await expect(heading).toBeVisible({ timeout: 10_000 })
-		// DashboardKpi tiles render — at least one .kpi-card with a numeric value
-		const kpi = page.locator('.kpi-card').first()
+		// Native stat tiles render — at least one .cn-stat-widget with a numeric value
+		const kpi = page.locator('.cn-stat-widget').first()
 		await expect(kpi).toBeVisible({ timeout: 10_000 })
-		await expect(kpi.locator('.kpi-value')).toHaveText(/^\d+$/)
+		await expect(kpi.locator('.cn-stat-widget__value')).toHaveText(/^\d+$/)
 	})
 
 	// @e2e openspec/specs/dashboard-analytics-widgets/spec.md#recent-list-renders-and-navigates
@@ -229,8 +229,8 @@ test.describe('dashboard-analytics-widgets', () => {
 		await go(page, '/')
 		const heading = page.getByRole('heading', { name: 'Dashboard', level: 2 })
 		await expect(heading).toBeVisible({ timeout: 10_000 })
-		// DashboardRecentList renders its content container (items or empty-state)
-		const list = page.locator('.list-widget-content').first()
+		// Recent-list object-table renders its content container (items or empty-state)
+		const list = page.locator('.cn-widget-object-table').first()
 		await expect(list).toBeVisible({ timeout: 10_000 })
 	})
 
@@ -238,7 +238,7 @@ test.describe('dashboard-analytics-widgets', () => {
 	test('dashboard actions area renders on dashboard', async ({ page }) => {
 		await go(page, '/')
 		await expect(page.locator('.app-content')).toBeVisible()
-		// DashboardActions renders at least one action button (New character / Refresh)
+		// Declarative headerActions render at least one action button (New character / Refresh)
 		const actionBtn = page.getByRole('button', { name: /New character|New item|Refresh dashboard/i }).first()
 		await expect(actionBtn).toBeVisible({ timeout: 10_000 })
 	})
@@ -468,19 +468,17 @@ test.describe('larping-skill-widget', () => {
 		await go(page, '/')
 		const heading = page.getByRole('heading', { name: 'Dashboard', level: 2 })
 		await expect(heading).toBeVisible({ timeout: 10_000 })
-		// DashboardKpi renders a .kpi-card with a numeric .kpi-value and a .kpi-label.
-		// In a bare test-env with no objects loaded the value falls back to "0".
-		const kpiCard = page.locator('.kpi-card').first()
+		// The native stat tile renders a .cn-stat-widget with a numeric
+		// .cn-stat-widget__value and a .cn-stat-widget__label. In a bare
+		// test-env with no objects the OpenRegister count source resolves to "0".
+		const kpiCard = page.locator('.cn-stat-widget').first()
 		await expect(kpiCard).toBeVisible({ timeout: 10_000 })
-		const value = kpiCard.locator('.kpi-value')
+		const value = kpiCard.locator('.cn-stat-widget__value')
 		await expect(value).toBeVisible()
 		await expect(value).toHaveText(/^\d+$/)
-		// The .kpi-label span is part of the rendered KPI shell. Its text is
-		// data-dependent and stays empty in a bare test-env with no objects
-		// loaded (OR MagicMapper returns no series), which makes the zero-size
-		// span "hidden" to Playwright. Assert the label element is present in
-		// the rendered shell rather than visibly painted.
-		await expect(kpiCard.locator('.kpi-label')).toBeAttached()
+		// The label span is part of the rendered stat shell; assert it is
+		// present in the DOM rather than relying on it being visibly painted.
+		await expect(kpiCard.locator('.cn-stat-widget__label')).toBeAttached()
 	})
 })
 

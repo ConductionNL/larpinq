@@ -1,0 +1,8 @@
+{
+  "spec_slug": "skill-tree-visualization",
+  "title": "Skill prerequisite tree / progression visualization",
+  "app": "larpingapp",
+  "repo": "https://codeberg.org/Conduction/larpingapp",
+  "depends_on": [],
+  "issue": null
+}
