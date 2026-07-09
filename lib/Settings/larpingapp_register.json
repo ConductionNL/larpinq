@@ -24,10 +24,10 @@
           "player",
           "ability",
           "skill",
-          "item",
+          "larping_item",
           "condition",
           "effect",
-          "event",
+          "larping_event",
           "setting",
           "xpAward"
         ],
@@ -192,7 +192,7 @@
               "type": "string",
               "format": "uuid"
             },
-            "$ref": "item",
+            "$ref": "larping_item",
             "x-relation-filter": { "setting": "@object.setting" },
             "visible": false,
             "title": "Items"
@@ -216,7 +216,7 @@
               "type": "string",
               "format": "uuid"
             },
-            "$ref": "event",
+            "$ref": "larping_event",
             "x-relation-filter": { "setting": "@object.setting" },
             "visible": false,
             "title": "Events"
@@ -540,7 +540,7 @@
         }
       },
       "item": {
-        "slug": "item",
+        "slug": "larping_item",
         "title": "Item",
         "icon": "Sword",
         "version": "2.0.0",
@@ -761,7 +761,7 @@
         }
       },
       "event": {
-        "slug": "event",
+        "slug": "larping_event",
         "title": "Event",
         "icon": "CalendarMonthOutline",
         "version": "2.0.0",
@@ -922,7 +922,7 @@
           "event": {
             "type": "string",
             "format": "uuid",
-            "$ref": "event",
+            "$ref": "larping_event",
             "description": "The event this award was granted for",
             "title": "Event"
           },

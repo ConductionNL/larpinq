@@ -27,7 +27,7 @@
 					{ "id": "go-characters", "sinceVersion": "0.1.27", "placement": "right", "body": "Characters are the heart of your world. Open Characters from the menu to get started.", "task": "Click Characters in the menu", "target": { "kind": "nav-item", "ref": "Characters" }, "advanceOn": { "type": "route-match", "route": "Characters" } },
 					{ "id": "create-character", "sinceVersion": "0.1.27", "placement": "bottom", "allowManualNext": true, "body": "Add your first character — give them a name and a type, and save. You can flesh out abilities, skills and items later.", "task": "Click New and save a character", "target": { "kind": "element", "ref": "index-add" }, "advanceOn": { "type": "object-created", "register": "larpingapp", "schema": "character", "capture": { "characterId": ":id" } } },
 					{ "id": "go-events", "sinceVersion": "0.1.27", "placement": "right", "body": "Events are the game sessions where your world comes alive. Open Events from the menu.", "task": "Click Events in the menu", "target": { "kind": "nav-item", "ref": "Events" }, "advanceOn": { "type": "route-match", "route": "Events" } },
-					{ "id": "create-event", "sinceVersion": "0.1.27", "placement": "bottom", "allowManualNext": true, "body": "Create your first event — name it and set a start date, then save. Your characters can join it from here.", "task": "Click New and save an event", "target": { "kind": "element", "ref": "index-add" }, "advanceOn": { "type": "object-created", "register": "larpingapp", "schema": "event", "capture": { "eventId": ":id" } } },
+					{ "id": "create-event", "sinceVersion": "0.1.27", "placement": "bottom", "allowManualNext": true, "body": "Create your first event — name it and set a start date, then save. Your characters can join it from here.", "task": "Click New and save an event", "target": { "kind": "element", "ref": "index-add" }, "advanceOn": { "type": "object-created", "register": "larpingapp", "schema": "larping_event", "capture": { "eventId": ":id" } } },
 					{ "id": "done", "sinceVersion": "0.1.27", "placement": "center", "title": "You're all set", "body": "Nicely done — your world has its first character and event. Head back to the Dashboard to watch it grow, and reopen this tour anytime from the … menu.", "target": { "kind": "page", "ref": "Dashboard" }, "advanceOn": { "type": "manual" } }
 				]
 			}
@@ -83,11 +83,11 @@
 			"config": {
 				"widgets": [
 					{ "id": "kpi-characters", "title": "Characters",       "type": "stat", "content": { "label": "Characters", "route": { "name": "Characters" }, "icon": "AccountGroup", "valueColor": "#0082c9", "format": { "style": "number" }, "source": { "register": "larpingapp", "schema": "character", "metric": "count", "filter": {} } } },
-					{ "id": "kpi-events",     "title": "Events",           "type": "stat", "content": { "label": "Events", "route": { "name": "Events" }, "icon": "Calendar", "valueColor": "#0082c9", "format": { "style": "number" }, "source": { "register": "larpingapp", "schema": "event", "metric": "count", "filter": {} } } },
-					{ "id": "kpi-items",      "title": "Items",            "type": "stat", "content": { "label": "Items", "route": { "name": "Items" }, "icon": "Star", "valueColor": "#0082c9", "format": { "style": "number" }, "source": { "register": "larpingapp", "schema": "item", "metric": "count", "filter": {} } } },
+					{ "id": "kpi-events",     "title": "Events",           "type": "stat", "content": { "label": "Events", "route": { "name": "Events" }, "icon": "Calendar", "valueColor": "#0082c9", "format": { "style": "number" }, "source": { "register": "larpingapp", "schema": "larping_event", "metric": "count", "filter": {} } } },
+					{ "id": "kpi-items",      "title": "Items",            "type": "stat", "content": { "label": "Items", "route": { "name": "Items" }, "icon": "Star", "valueColor": "#0082c9", "format": { "style": "number" }, "source": { "register": "larpingapp", "schema": "larping_item", "metric": "count", "filter": {} } } },
 					{ "id": "kpi-players",    "title": "Players",          "type": "stat", "content": { "label": "Players", "route": { "name": "Players" }, "icon": "Account", "valueColor": "#0082c9", "format": { "style": "number" }, "source": { "register": "larpingapp", "schema": "player", "metric": "count", "filter": {} } } },
 					{ "id": "recent-characters", "title": "Recent characters", "type": "object-table", "content": { "register": "larpingapp", "schema": "character", "filter": {}, "sort": { "field": "created", "dir": "desc" }, "limit": 6, "rowRoute": "CharacterDetail", "rowIcon": "AccountGroup", "hideHeader": true, "viewAllRoute": { "name": "Characters" }, "viewAllLabel": "View all characters", "emptyText": "No characters yet", "columns": [{ "key": "name", "label": "Name" }, { "key": "type", "label": "Type" }] } },
-					{ "id": "recent-events",     "title": "Recent events",     "type": "object-table", "content": { "register": "larpingapp", "schema": "event", "filter": {}, "sort": { "field": "startDate", "dir": "desc" }, "limit": 6, "rowRoute": "EventDetail", "rowIcon": "CalendarStar", "hideHeader": true, "viewAllRoute": { "name": "Events" }, "viewAllLabel": "View all events", "emptyText": "No events yet", "columns": [{ "key": "name", "label": "Event" }, { "key": "startDate", "label": "Starts" }] } },
+					{ "id": "recent-events",     "title": "Recent events",     "type": "object-table", "content": { "register": "larpingapp", "schema": "larping_event", "filter": {}, "sort": { "field": "startDate", "dir": "desc" }, "limit": 6, "rowRoute": "EventDetail", "rowIcon": "CalendarStar", "hideHeader": true, "viewAllRoute": { "name": "Events" }, "viewAllLabel": "View all events", "emptyText": "No events yet", "columns": [{ "key": "name", "label": "Event" }, { "key": "startDate", "label": "Starts" }] } },
 					{ "id": "skill-usage",    "title": "Skill usage by characters", "type": "chart", "content": { "chartKind": "donut", "legendPosition": "bottom", "emptyLabel": "No skill data available", "dataSource": { "register": "larpingapp", "schema": "character", "aggregate": { "groupBy": "skills", "metric": "count", "topN": 10, "otherBucket": true, "labelResolve": { "schema": "skill", "labelField": "name" } } } } }
 				],
 				"layout": [
@@ -102,7 +102,7 @@
 				"documentationUrl": "https://larpingapp.conduction.nl",
 				"headerActions": [
 					{ "id": "new-character", "label": "New character", "type": "open-form", "icon": "Plus", "variant": "primary", "register": "larpingapp", "schema": "character", "onSuccessRoute": "Characters" },
-					{ "id": "new-item", "label": "New item", "type": "open-form", "icon": "Plus", "register": "larpingapp", "schema": "item", "onSuccessRoute": "Items" },
+					{ "id": "new-item", "label": "New item", "type": "open-form", "icon": "Plus", "register": "larpingapp", "schema": "larping_item", "onSuccessRoute": "Items" },
 					{ "id": "new-condition", "label": "New condition", "type": "open-form", "icon": "Plus", "register": "larpingapp", "schema": "condition", "onSuccessRoute": "Conditions" },
 					{ "id": "refresh-dashboard", "label": "Refresh dashboard", "type": "refresh", "icon": "Refresh" }
 				]
@@ -277,7 +277,7 @@
 			"route": "/items",
 			"type": "index",
 			"title": "Items",
-			"config": { "register": "larpingapp", "schema": "item", "documentationUrl": "https://larpingapp.conduction.nl" }
+			"config": { "register": "larpingapp", "schema": "larping_item", "documentationUrl": "https://larpingapp.conduction.nl" }
 		},
 		{
 			"id": "ItemDetail",
@@ -286,7 +286,7 @@
 			"title": "Item",
 			"config": {
 				"register": "larpingapp",
-				"schema": "item",
+				"schema": "larping_item",
 				"documentationUrl": "https://larpingapp.conduction.nl",
 				"_note": "Item = a magical/special object that grants effects to its holder (rules-object archetype, ownership-tracked). The body leads with the item's player-visible story description + GM mechanical effect (data, 8-wide) beside the effects it confers (related), then an object-list of the characters currently holding it (item.characters contains @objectId / character.items) — critical for unique artifacts where only one holder may exist. Files are on the body because props and physrep photos/handouts are commonly attached to items. No email/calendar: the item schema declares no comms linkedTypes.",
 				"widgets": [
@@ -368,7 +368,7 @@
 					{ "id": "effect-modifier", "type": "stat", "title": "Modifier", "icon": "TrendingUp", "content": { "label": "Modifier value", "icon": "TrendingUp", "format": { "style": "number" }, "source": { "register": "larpingapp", "schema": "effect", "metric": "sum", "field": "modifier", "filter": { "id": "@objectId" } } } },
 					{ "id": "effect-abilities", "type": "related", "title": "Modifies abilities", "icon": "LinkVariant", "content": { "groups": [ { "key": "abilities", "label": "Abilities" } ] } },
 					{ "id": "effect-skills", "type": "object-list", "title": "Skills granting this effect", "icon": "School", "content": { "register": "larpingapp", "schema": "skill", "filter": { "effects": "@objectId" }, "columns": [ { "key": "name", "label": "Skill" } ], "limit": 50, "viewAllRoute": "Skills", "viewAllQuery": { "effects": "@objectId" }, "emptyText": "No skills grant this effect yet." } },
-					{ "id": "effect-items", "type": "object-list", "title": "Items granting this effect", "icon": "Package", "content": { "register": "larpingapp", "schema": "item", "filter": { "effects": "@objectId" }, "columns": [ { "key": "name", "label": "Item" } ], "limit": 50, "viewAllRoute": "Items", "viewAllQuery": { "effects": "@objectId" }, "emptyText": "No items grant this effect yet." } },
+					{ "id": "effect-items", "type": "object-list", "title": "Items granting this effect", "icon": "Package", "content": { "register": "larpingapp", "schema": "larping_item", "filter": { "effects": "@objectId" }, "columns": [ { "key": "name", "label": "Item" } ], "limit": 50, "viewAllRoute": "Items", "viewAllQuery": { "effects": "@objectId" }, "emptyText": "No items grant this effect yet." } },
 					{ "id": "effect-conditions", "type": "object-list", "title": "Conditions granting this effect", "icon": "AlertCircleOutline", "content": { "register": "larpingapp", "schema": "condition", "filter": { "effects": "@objectId" }, "columns": [ { "key": "name", "label": "Condition" } ], "limit": 50, "viewAllRoute": "Conditions", "viewAllQuery": { "effects": "@objectId" }, "emptyText": "No conditions grant this effect yet." } }
 				],
 				"layout": [
@@ -393,7 +393,7 @@
 			"route": "/events",
 			"type": "index",
 			"title": "Events",
-			"config": { "register": "larpingapp", "schema": "event", "documentationUrl": "https://larpingapp.conduction.nl" }
+			"config": { "register": "larpingapp", "schema": "larping_event", "documentationUrl": "https://larpingapp.conduction.nl" }
 		},
 		{
 			"id": "EventDetail",
@@ -402,7 +402,7 @@
 			"title": "Event",
 			"config": {
 				"register": "larpingapp",
-				"schema": "event",
+				"schema": "larping_event",
 				"documentationUrl": "https://larpingapp.conduction.nl",
 				"_note": "Event = a LARP gathering where players bring their characters (session/meeting archetype). This is the one entity that communicates: the schema declares calendar, maps and forms linkedTypes (merged from the event-calendar-leaf / event-location-to-maps-leaf / event-signup-to-forms-leaf register fragments), so the body earns a calendar widget (scheduling the session from startDate/endDate), a location map, and the sign-up form, plus the participating characters (character.events contains @objectId) as the primary roster. The loose Attendees + XP-granted stat cards fold into one stats-block (rule 2, same-flavor simple KPIs) top-right. Post-event effects applied to attendees are shown via related. After the event, the XP awarding ritual produces one xpAward per grant (xpAward.event FK = @objectId), shown as an object-list — GM hand-awarded per xpAward's schema description, so allowCreate stays on. Files carries the event pack/handouts. All three declared leaves (calendar, maps, forms) are now body widgets — none are held back to sidebar tabs, so the sidebar is audit-history only. No email/talk: the schema declares calendar/maps/forms only.",
 				"widgets": [
@@ -455,9 +455,9 @@
 				"_note": "Setting = a world/campaign that scopes the roster and rules (config/container archetype). Most game entities carry an optional 'setting' UUID that points here, so this page is a scoping dashboard: the definition + active/archived status (data) sits beside a stats-block (characters + events counts, folded from two loose KPIs per rule 2), then object-lists roll up everything scoped to this campaign — characters and events (each filtered where setting = @objectId). Related surfaces any other scoped mechanics. A pure configuration container: no comms, no files.",
 				"widgets": [
 					{ "id": "setting-data", "type": "data", "title": "Setting", "icon": "Earth", "content": { "columns": 1 } },
-					{ "id": "setting-stats", "type": "stats-block", "title": "Snapshot", "icon": "ChartBar", "content": { "entries": [ { "title": "Characters", "register": "larpingapp", "schema": "character", "metric": "count", "filter": { "setting": "@objectId" }, "route": { "name": "Characters", "query": { "setting": "@objectId" } } }, { "title": "Events", "register": "larpingapp", "schema": "event", "metric": "count", "filter": { "setting": "@objectId" }, "route": { "name": "Events", "query": { "setting": "@objectId" } } } ] } },
+					{ "id": "setting-stats", "type": "stats-block", "title": "Snapshot", "icon": "ChartBar", "content": { "entries": [ { "title": "Characters", "register": "larpingapp", "schema": "character", "metric": "count", "filter": { "setting": "@objectId" }, "route": { "name": "Characters", "query": { "setting": "@objectId" } } }, { "title": "Events", "register": "larpingapp", "schema": "larping_event", "metric": "count", "filter": { "setting": "@objectId" }, "route": { "name": "Events", "query": { "setting": "@objectId" } } } ] } },
 					{ "id": "setting-characters", "type": "object-list", "title": "Characters in this setting", "icon": "AccountGroup", "content": { "register": "larpingapp", "schema": "character", "filter": { "setting": "@objectId" }, "columns": [ { "key": "name", "label": "Character" }, { "key": "type", "label": "Type" }, { "key": "approved", "label": "Approved" } ], "limit": 100, "viewAllRoute": "Characters", "viewAllQuery": { "setting": "@objectId" }, "emptyText": "No characters in this setting yet." } },
-					{ "id": "setting-events", "type": "object-list", "title": "Events in this setting", "icon": "Calendar", "content": { "register": "larpingapp", "schema": "event", "filter": { "setting": "@objectId" }, "sort": { "field": "startDate", "dir": "desc" }, "columns": [ { "key": "name", "label": "Event" }, { "key": "startDate", "label": "Starts" }, { "key": "location", "label": "Location" } ], "limit": 100, "viewAllRoute": "Events", "viewAllQuery": { "setting": "@objectId" }, "emptyText": "No events in this setting yet." } },
+					{ "id": "setting-events", "type": "object-list", "title": "Events in this setting", "icon": "Calendar", "content": { "register": "larpingapp", "schema": "larping_event", "filter": { "setting": "@objectId" }, "sort": { "field": "startDate", "dir": "desc" }, "columns": [ { "key": "name", "label": "Event" }, { "key": "startDate", "label": "Starts" }, { "key": "location", "label": "Location" } ], "limit": 100, "viewAllRoute": "Events", "viewAllQuery": { "setting": "@objectId" }, "emptyText": "No events in this setting yet." } },
 					{ "id": "setting-related", "type": "related", "title": "Related", "icon": "LinkVariant" }
 				],
 				"layout": [
