@@ -127,7 +127,8 @@
 				"_note": "ADR-062 rollout: split the sheet into identity (name/player/setting/description/background/faith, 6 fields) vs game state & notes (type/approved/gold/silver/copper/itemsAndMoney/card/notice/GM notes, 10 fields) per rule 3. The loose XP + Gold stat cards fold into one stats-block (rule 2, same-flavor simple KPIs) top-right, aligned with the identity row. The right rail lists the linked mechanics (skills/items/conditions) and event participation as related groups so a GM can see the whole build at a glance. The character portrait/sheet lives in the photos leaf (schema declares linkedType 'photos') as a body integration widget. XP awards granted to this character are shown as an object-list (xpAward.character FK = @objectId) — GM hand-awarded per xpAward's schema description, so allowCreate stays on (default). No email/calendar on the body: the character schema declares only 'photos'. Sidebar is audit-history only — the photos leaf already lives in the body, so it is not duplicated as a sidebar tab.",
 				"widgets": [
 					{ "id": "char-identity", "type": "data", "title": "Identity", "icon": "Account", "content": { "columns": 2, "include": [ "name", "ocName", "setting", "description", "background", "faith" ] } },
-					{ "id": "char-stats", "type": "stats-block", "title": "Snapshot", "icon": "Trophy", "content": { "entries": [ { "title": "XP awarded", "register": "larpingapp", "schema": "xpAward", "metric": "sum", "field": "amount", "filter": { "character": "@objectId" }, "route": { "name": "XpAwards", "query": { "character": "@objectId" } } }, { "title": "Gold pieces", "register": "larpingapp", "schema": "character", "metric": "sum", "field": "gold", "filter": { "id": "@objectId" } } ] } },
+					{ "id": "char-stats-xp-awarded", "type": "stats-block", "title": "XP awarded", "icon": "Trophy", "content": { "entries": [ { "title": "XP awarded", "register": "larpingapp", "schema": "xpAward", "metric": "sum", "field": "amount", "filter": { "character": "@objectId" }, "route": { "name": "XpAwards", "query": { "character": "@objectId" } } } ] } },
+					{ "id": "char-stats-gold-pieces", "type": "stats-block", "title": "Gold pieces", "icon": "Trophy", "content": { "entries": [ { "title": "Gold pieces", "register": "larpingapp", "schema": "character", "metric": "sum", "field": "gold", "filter": { "id": "@objectId" } } ] } },
 					{ "id": "char-progress", "type": "data", "title": "Game state & notes", "icon": "ClipboardList", "content": { "columns": 2, "include": [ "type", "approved", "gold", "silver", "copper", "itemsAndMoney", "card", "notice", "slNotesPublic", "slNotesPrivate" ] } },
 					{ "id": "char-related", "type": "related", "title": "Build & world", "icon": "LinkVariant", "content": { "groups": [ { "key": "skills", "label": "Skills" }, { "key": "items", "label": "Items" }, { "key": "conditions", "label": "Conditions" }, { "key": "events", "label": "Events" } ] } },
 					{ "id": "char-xpawards", "type": "object-list", "title": "XP award history", "icon": "Trophy", "content": { "register": "larpingapp", "schema": "xpAward", "filter": { "character": "@objectId" }, "sort": { "field": "awardedAt", "dir": "desc" }, "columns": [ { "key": "event", "label": "Event" }, { "key": "amount", "label": "XP" }, { "key": "reason", "label": "Reason" }, { "key": "awardedAt", "label": "Awarded" } ], "limit": 50, "viewAllRoute": "XpAwards", "viewAllQuery": { "character": "@objectId" }, "emptyText": "No XP awarded yet." } },
@@ -135,7 +136,8 @@
 				],
 				"layout": [
 					{ "id": "1", "widgetId": "char-identity", "gridX": 0, "gridY": 0, "gridWidth": 8, "gridHeight": 4 },
-					{ "id": "2", "widgetId": "char-stats", "gridX": 8, "gridY": 0, "gridWidth": 4, "gridHeight": 4 },
+					{ "id": "2a", "widgetId": "char-stats-xp-awarded", "gridX": 8, "gridY": 0, "gridWidth": 4, "gridHeight": 2 },
+					{ "id": "2b", "widgetId": "char-stats-gold-pieces", "gridX": 8, "gridY": 2, "gridWidth": 4, "gridHeight": 2 },
 					{ "id": "3", "widgetId": "char-progress", "gridX": 0, "gridY": 4, "gridWidth": 8, "gridHeight": 6 },
 					{ "id": "4", "widgetId": "char-related", "gridX": 8, "gridY": 4, "gridWidth": 4, "gridHeight": 6 },
 					{ "id": "5", "widgetId": "char-xpawards", "gridX": 0, "gridY": 10, "gridWidth": 12, "gridHeight": 4 },
@@ -407,7 +409,8 @@
 				"_note": "Event = a LARP gathering where players bring their characters (session/meeting archetype). This is the one entity that communicates: the schema declares calendar, maps and forms linkedTypes (merged from the event-calendar-leaf / event-location-to-maps-leaf / event-signup-to-forms-leaf register fragments), so the body earns a calendar widget (scheduling the session from startDate/endDate), a location map, and the sign-up form, plus the participating characters (character.events contains @objectId) as the primary roster. The loose Attendees + XP-granted stat cards fold into one stats-block (rule 2, same-flavor simple KPIs) top-right. Post-event effects applied to attendees are shown via related. After the event, the XP awarding ritual produces one xpAward per grant (xpAward.event FK = @objectId), shown as an object-list — GM hand-awarded per xpAward's schema description, so allowCreate stays on. Files carries the event pack/handouts. All three declared leaves (calendar, maps, forms) are now body widgets — none are held back to sidebar tabs, so the sidebar is audit-history only. No email/talk: the schema declares calendar/maps/forms only.",
 				"widgets": [
 					{ "id": "event-data", "type": "data", "title": "Event", "icon": "Calendar", "content": { "columns": 2 } },
-					{ "id": "event-stats", "type": "stats-block", "title": "Snapshot", "icon": "AccountGroup", "content": { "entries": [ { "title": "Attendees", "register": "larpingapp", "schema": "character", "metric": "count", "filter": { "events": "@objectId" } }, { "title": "XP granted", "register": "larpingapp", "schema": "xpAward", "metric": "sum", "field": "amount", "filter": { "event": "@objectId" } } ] } },
+					{ "id": "event-stats-attendees", "type": "stats-block", "title": "Attendees", "icon": "AccountGroup", "content": { "entries": [ { "title": "Attendees", "register": "larpingapp", "schema": "character", "metric": "count", "filter": { "events": "@objectId" } } ] } },
+					{ "id": "event-stats-xp-granted", "type": "stats-block", "title": "XP granted", "icon": "AccountGroup", "content": { "entries": [ { "title": "XP granted", "register": "larpingapp", "schema": "xpAward", "metric": "sum", "field": "amount", "filter": { "event": "@objectId" } } ] } },
 					{ "id": "event-calendar", "type": "integration", "integrationId": "calendar", "title": "Schedule", "icon": "Calendar" },
 					{ "id": "event-effects", "type": "related", "title": "Post-event effects", "icon": "LinkVariant", "content": { "groups": [ { "key": "effects", "label": "Effects applied after event" } ] } },
 					{ "id": "event-maps", "type": "integration", "integrationId": "maps", "title": "Location", "icon": "MapMarker" },
@@ -418,7 +421,8 @@
 				],
 				"layout": [
 					{ "id": "1", "widgetId": "event-data", "gridX": 0, "gridY": 0, "gridWidth": 8, "gridHeight": 4 },
-					{ "id": "2", "widgetId": "event-stats", "gridX": 8, "gridY": 0, "gridWidth": 4, "gridHeight": 4 },
+					{ "id": "2a", "widgetId": "event-stats-attendees", "gridX": 8, "gridY": 0, "gridWidth": 4, "gridHeight": 2 },
+					{ "id": "2b", "widgetId": "event-stats-xp-granted", "gridX": 8, "gridY": 2, "gridWidth": 4, "gridHeight": 2 },
 					{ "id": "4", "widgetId": "event-calendar", "gridX": 0, "gridY": 4, "gridWidth": 8, "gridHeight": 4 },
 					{ "id": "5", "widgetId": "event-effects", "gridX": 8, "gridY": 4, "gridWidth": 4, "gridHeight": 4 },
 					{ "id": "6", "widgetId": "event-maps", "gridX": 0, "gridY": 8, "gridWidth": 6, "gridHeight": 4 },
@@ -455,14 +459,16 @@
 				"_note": "Setting = a world/campaign that scopes the roster and rules (config/container archetype). Most game entities carry an optional 'setting' UUID that points here, so this page is a scoping dashboard: the definition + active/archived status (data) sits beside a stats-block (characters + events counts, folded from two loose KPIs per rule 2), then object-lists roll up everything scoped to this campaign — characters and events (each filtered where setting = @objectId). Related surfaces any other scoped mechanics. A pure configuration container: no comms, no files.",
 				"widgets": [
 					{ "id": "setting-data", "type": "data", "title": "Setting", "icon": "Earth", "content": { "columns": 1 } },
-					{ "id": "setting-stats", "type": "stats-block", "title": "Snapshot", "icon": "ChartBar", "content": { "entries": [ { "title": "Characters", "register": "larpingapp", "schema": "character", "metric": "count", "filter": { "setting": "@objectId" }, "route": { "name": "Characters", "query": { "setting": "@objectId" } } }, { "title": "Events", "register": "larpingapp", "schema": "larping_event", "metric": "count", "filter": { "setting": "@objectId" }, "route": { "name": "Events", "query": { "setting": "@objectId" } } } ] } },
+					{ "id": "setting-stats-characters", "type": "stats-block", "title": "Characters", "icon": "ChartBar", "content": { "entries": [ { "title": "Characters", "register": "larpingapp", "schema": "character", "metric": "count", "filter": { "setting": "@objectId" }, "route": { "name": "Characters", "query": { "setting": "@objectId" } } } ] } },
+					{ "id": "setting-stats-events", "type": "stats-block", "title": "Events", "icon": "ChartBar", "content": { "entries": [ { "title": "Events", "register": "larpingapp", "schema": "larping_event", "metric": "count", "filter": { "setting": "@objectId" }, "route": { "name": "Events", "query": { "setting": "@objectId" } } } ] } },
 					{ "id": "setting-characters", "type": "object-list", "title": "Characters in this setting", "icon": "AccountGroup", "content": { "register": "larpingapp", "schema": "character", "filter": { "setting": "@objectId" }, "columns": [ { "key": "name", "label": "Character" }, { "key": "type", "label": "Type" }, { "key": "approved", "label": "Approved" } ], "limit": 100, "viewAllRoute": "Characters", "viewAllQuery": { "setting": "@objectId" }, "emptyText": "No characters in this setting yet." } },
 					{ "id": "setting-events", "type": "object-list", "title": "Events in this setting", "icon": "Calendar", "content": { "register": "larpingapp", "schema": "larping_event", "filter": { "setting": "@objectId" }, "sort": { "field": "startDate", "dir": "desc" }, "columns": [ { "key": "name", "label": "Event" }, { "key": "startDate", "label": "Starts" }, { "key": "location", "label": "Location" } ], "limit": 100, "viewAllRoute": "Events", "viewAllQuery": { "setting": "@objectId" }, "emptyText": "No events in this setting yet." } },
 					{ "id": "setting-related", "type": "related", "title": "Related", "icon": "LinkVariant" }
 				],
 				"layout": [
 					{ "id": "1", "widgetId": "setting-data", "gridX": 0, "gridY": 0, "gridWidth": 8, "gridHeight": 4 },
-					{ "id": "2", "widgetId": "setting-stats", "gridX": 8, "gridY": 0, "gridWidth": 4, "gridHeight": 4 },
+					{ "id": "2a", "widgetId": "setting-stats-characters", "gridX": 8, "gridY": 0, "gridWidth": 4, "gridHeight": 2 },
+					{ "id": "2b", "widgetId": "setting-stats-events", "gridX": 8, "gridY": 2, "gridWidth": 4, "gridHeight": 2 },
 					{ "id": "4", "widgetId": "setting-characters", "gridX": 0, "gridY": 4, "gridWidth": 6, "gridHeight": 4 },
 					{ "id": "5", "widgetId": "setting-events", "gridX": 6, "gridY": 4, "gridWidth": 6, "gridHeight": 4 },
 					{ "id": "6", "widgetId": "setting-related", "gridX": 0, "gridY": 8, "gridWidth": 12, "gridHeight": 3 }
