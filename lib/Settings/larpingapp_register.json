@@ -24,10 +24,10 @@
           "player",
           "ability",
           "skill",
-          "larping_item",
+          "item",
           "condition",
           "effect",
-          "larping_event",
+          "event",
           "setting",
           "xpAward"
         ],
@@ -540,7 +540,7 @@
         }
       },
       "item": {
-        "slug": "larping_item",
+        "slug": "item",
         "title": "Item",
         "icon": "Sword",
         "version": "2.0.0",
@@ -761,7 +761,7 @@
         }
       },
       "event": {
-        "slug": "larping_event",
+        "slug": "event",
         "title": "Event",
         "icon": "CalendarMonthOutline",
         "version": "2.0.0",
