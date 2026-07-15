@@ -154,6 +154,15 @@ export default {
 			selectedNodeId: null,
 			report: null,
 			loading: false,
+			// Live-updates handles for the or-collection-{register}-{schema}
+			// subscriptions of the skill + character collections
+			// (adopt-live-updates-ui). Managed by syncLiveSubscriptions();
+			// liveEpoch invalidates in-flight subscribes after a release
+			// (destroy) so awaited handles are dropped instead of leaked.
+			liveHandles: [],
+			liveActive: false,
+			liveEpoch: 0,
+			liveUnwatch: null,
 		}
 	},
 
@@ -257,9 +266,113 @@ export default {
 
 	async mounted() {
 		await this.load()
+		this.syncLiveSubscriptions()
+	},
+
+	/**
+	 * Lifecycle hook: release the live collection subscriptions on unmount.
+	 *
+	 * @spec openspec/specs/realtime-updates/spec.md
+	 * @return {void}
+	 */
+	beforeDestroy() {
+		this.releaseLiveSubscriptions()
 	},
 
 	methods: {
+		/**
+		 * Subscribe to live updates for the skill and character collections
+		 * (adopt-live-updates-ui). Events are refetch hints only: the
+		 * liveUpdatesPlugin re-runs fetchCollection with the last-used
+		 * params, so the store cache refreshes; the watcher installed here
+		 * bridges the fresh collections into this view's local copies.
+		 * Idempotent (single-shot per mount — the scope is fixed). Uses
+		 * notify_push when available, visibility-gated polling otherwise.
+		 * The reference-data collections (ability/condition/effect names)
+		 * change rarely and are intentionally not subscribed.
+		 *
+		 * @spec openspec/specs/realtime-updates/spec.md
+		 * @return {Promise<void>}
+		 */
+		async syncLiveSubscriptions() {
+			const store = useObjectStore()
+			if (typeof store.subscribe !== 'function' || this.liveActive) {
+				return
+			}
+			// Only subscribe to types that initializeStores() registered —
+			// subscribe() throws on unregistered types (settings not loaded).
+			const types = ['skill', 'character'].filter(
+				(type) => Array.isArray(store.objectTypes) && store.objectTypes.includes(type),
+			)
+			if (types.length === 0) {
+				return
+			}
+			this.liveActive = true
+			const epoch = this.liveEpoch
+			try {
+				const handles = await Promise.all(types.map((type) => store.subscribe(type)))
+				if (this.liveEpoch !== epoch) {
+					// Released while awaiting (component destroyed) — drop the
+					// now-stale subscriptions instead of leaking them.
+					handles.forEach((handle) => store.unsubscribe(handle))
+					return
+				}
+				this.liveHandles = handles
+				// Bridge: event → plugin refetch → store collection cache →
+				// local copies (which the tree computeds render from).
+				this.liveUnwatch = this.$watch(
+					() => types.map((type) => store.getCollection(type)),
+					() => this.syncFromStore(store),
+				)
+			} catch (e) {
+				this.liveActive = false
+				this.liveHandles = []
+				// eslint-disable-next-line no-console
+				console.warn('[larpingapp] skill-tree live subscription failed:', e?.message ?? e)
+			}
+		},
+
+		/**
+		 * Refresh the local skill/character copies from the store's
+		 * collection cache after a live-update refetch.
+		 *
+		 * @param {object} store The object store instance.
+		 * @spec openspec/specs/realtime-updates/spec.md
+		 * @return {void}
+		 */
+		syncFromStore(store) {
+			const skills = store.getCollection('skill')
+			const characters = store.getCollection('character')
+			if (Array.isArray(skills)) {
+				this.skills = skills
+			}
+			if (Array.isArray(characters)) {
+				this.characters = characters
+			}
+		},
+
+		/**
+		 * Release the live collection subscriptions and their cache watcher,
+		 * and invalidate any in-flight subscribe (its resolution unsubscribes
+		 * itself via the epoch check).
+		 *
+		 * @spec openspec/specs/realtime-updates/spec.md
+		 * @return {void}
+		 */
+		releaseLiveSubscriptions() {
+			this.liveEpoch += 1
+			if (this.liveUnwatch) {
+				this.liveUnwatch()
+				this.liveUnwatch = null
+			}
+			const store = useObjectStore()
+			if (typeof store.unsubscribe === 'function') {
+				this.liveHandles.forEach((handle) => store.unsubscribe(handle))
+			}
+			this.liveHandles = []
+			this.liveActive = false
+		},
+
 		/**
 		 * Load skills + reference data. Never throws — a fetch failure degrades
 		 * to an empty / uncoloured tree (fetchCollection returns [] on error).
