@@ -1,0 +1,65 @@
+[
+  {
+    "slug": "admin-settings",
+    "title": "Admin Settings",
+    "summary": "Provides per-object-type data source configuration for LarpingApp, allowing administrators to choose whether each entity type (ability, character, condition, effect, event, item, player, setting, skill, template) is stored in the internal Nextcloud database or in an OpenRegister instance.",
+    "status": "stable",
+    "docsUrl": "openspec/specs/admin-settings/spec.md"
+  },
+  {
+    "slug": "character-management",
+    "title": "Character Management",
+    "summary": "Provides full CRUD lifecycle management for LARP characters, including player characters, NPCs, and other character types.",
+    "status": "stable",
+    "docsUrl": "openspec/specs/character-management/spec.md"
+  },
+  {
+    "slug": "dashboard",
+    "title": "Dashboard",
+    "summary": "The dashboard is the landing page of the LarpingApp, serving as the entry point when users navigate to the app.",
+    "status": "stable",
+    "docsUrl": "openspec/specs/dashboard/spec.md"
+  },
+  {
+    "slug": "events-players",
+    "title": "Events and Players",
+    "summary": "Manages LARP events (game gatherings with date ranges, locations, and participant tracking) and player profiles (real-world people who play characters).",
+    "status": "stable",
+    "docsUrl": "openspec/specs/events-players/spec.md"
+  },
+  {
+    "slug": "game-mechanics",
+    "title": "Game Mechanics",
+    "summary": "Game mechanics covers the interconnected system of Skills, Items, Conditions, Effects, and Abilities (stats) that form the LARP rule engine.",
+    "status": "stable",
+    "docsUrl": "openspec/specs/game-mechanics/spec.md"
+  },
+  {
+    "slug": "object-service",
+    "title": "Object Service",
+    "summary": "The ObjectService (lib/Service/ObjectService.php) is the central data access layer for LarpingApp.",
+    "status": "stable",
+    "docsUrl": "openspec/specs/object-service/spec.md"
+  },
+  {
+    "slug": "pdf-export",
+    "title": "PDF Character Sheet Export",
+    "summary": "Enables game masters and players to export character data as downloadable PDF files.",
+    "status": "stable",
+    "docsUrl": "openspec/specs/pdf-export/spec.md"
+  },
+  {
+    "slug": "rpg-system",
+    "title": "RPG System",
+    "summary": "Defines the core RPG mechanics of LarpingApp: Skills, Items, Conditions, Effects, and Abilities (stats).",
+    "status": "stable",
+    "docsUrl": "openspec/specs/rpg-system/spec.md"
+  },
+  {
+    "slug": "search-service",
+    "title": "Search Service",
+    "summary": "Provides federated search capabilities inherited from the OpenCatalogi codebase.",
+    "status": "stable",
+    "docsUrl": "openspec/specs/search-service/spec.md"
+  }
+]
