@@ -243,6 +243,7 @@
 			"type": "custom",
 			"title": "Skill tree",
 			"component": "SkillTree",
+			"_note": "No standard page type renders a directed prerequisite graph. The skill tree is not a list, table, kanban or detail view of `skill` objects — it is the graph induced by their `requiredSkills` edges, with per-node owned/available/locked colouring taken from CharactersController::requirementReport so the tree can never disagree with the server-side write veto (ADR-022). The 'index' type would flatten the edges away and no declarative type can express node colouring driven by a second, character-scoped API call. Built from nc-vue primitives + NcSelect rather than a graph library, per the shared-deps rule.",
 			"config": { "documentationUrl": "https://larpingapp.conduction.nl" }
 		},
 		{
