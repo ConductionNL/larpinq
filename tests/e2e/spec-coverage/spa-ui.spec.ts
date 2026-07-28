@@ -40,9 +40,12 @@ const TS = Date.now()
  */
 async function go(page: Page, route: string): Promise<void> {
 	const isExternal = route.startsWith('/apps/') || route.startsWith('/settings')
+	// `domcontentloaded`, never `networkidle` — unreachable on Nextcloud, so
+	// the wait always burns its full budget (ADR-074 rule 4).
 	if (isExternal) {
-		await page.goto(route)
-		await page.waitForLoadState('networkidle').catch(() => {})
+		await page.goto(route, { waitUntil: 'domcontentloaded' })
+		await page.locator('#app-content, .app-content, #content').first()
+			.waitFor({ state: 'visible', timeout: 30_000 }).catch(() => {})
 		return
 	}
 	// Ensure the SPA root is loaded (or reload it)
@@ -50,7 +53,10 @@ async function go(page: Page, route: string): Promise<void> {
 	const alreadyInApp = currentUrl.includes('/apps/larpingapp')
 	if (!alreadyInApp) {
 		await page.goto(`${BASE}/`)
-		await page.waitForLoadState('networkidle').catch(() => {})
+		// ADR-074 rule 4: `networkidle` is unreachable on Nextcloud (notification
+		// poll), so it burns the full budget. Wait for the rendered shell.
+		await page.locator('#app-content, .app-content, #content').first()
+			.waitFor({ state: 'visible', timeout: 30_000 }).catch(() => {})
 		// Dismiss "Support Larpingapp" modal that fires on first load
 		const supportClose = page.locator('[role="dialog"] button[aria-label="Close"], [role="dialog"] button:has-text("Close")').first()
 		if (await supportClose.isVisible({ timeout: 2000 }).catch(() => false)) {
@@ -75,7 +81,10 @@ async function go(page: Page, route: string): Promise<void> {
 		await page.evaluate((hash) => {
 			window.location.hash = hash
 		}, hashFragment)
-		await page.waitForLoadState('networkidle').catch(() => {})
+		// ADR-074 rule 4: `networkidle` is unreachable on Nextcloud (notification
+		// poll), so it burns the full budget. Wait for the rendered shell.
+		await page.locator('#app-content, .app-content, #content').first()
+			.waitFor({ state: 'visible', timeout: 30_000 }).catch(() => {})
 	}
 }
 
@@ -442,7 +451,10 @@ test.describe('admin-settings', () => {
 	// @e2e openspec/specs/admin-settings/spec.md#admin-opens-larpingapp-settings-panel
 	test('admin opens larpingapp settings panel', async ({ page }) => {
 		await page.goto('/settings/admin/larpingapp')
-		await page.waitForLoadState('networkidle').catch(() => {})
+		// ADR-074 rule 4: `networkidle` is unreachable on Nextcloud (notification
+		// poll), so it burns the full budget. Wait for the rendered shell.
+		await page.locator('#app-content, .app-content, #content').first()
+			.waitFor({ state: 'visible', timeout: 30_000 }).catch(() => {})
 		// Settings page renders without crashing
 		await expect(page.locator('body')).toBeVisible()
 		expect(page.url()).toContain('/settings/admin/larpingapp')

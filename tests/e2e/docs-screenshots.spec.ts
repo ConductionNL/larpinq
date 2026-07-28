@@ -98,7 +98,10 @@ async function go(page: Page, route: string): Promise<void> {
 		url = `${APP}/#${hashRoute}`
 	}
 	await page.goto(url).catch(() => { /* tolerate 404 — caller decides */ })
-	await page.waitForLoadState('networkidle').catch(() => { /* idle never fires on some pages */ })
+	// ADR-074 rule 4: `networkidle` never settles on Nextcloud (notification
+	// poll) — it burned the full budget on EVERY capture. Wait for the shell.
+	await page.locator('#app-content, .app-content, #content').first()
+		.waitFor({ state: 'visible', timeout: 30_000 }).catch(() => {})
 	await dismissOverlays(page)
 	await page.waitForTimeout(900)
 }

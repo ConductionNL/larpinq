@@ -161,7 +161,26 @@ export async function createObject(
 	body: Record<string, unknown>,
 ): Promise<string> {
 	const url = `${OR_BASE}/${REGISTER_ID}/${SCHEMA_IDS[type]}`
-	const res = await api.post(url, { headers: HEADERS, data: body })
+	// Mirror `name` into `title` (and vice versa) so a create satisfies the
+	// schema whichever of the two it marks required.
+	//
+	// This is not cosmetic: schema slugs COLLIDE across the fleet. The `skill`
+	// schema larpingapp is configured against (id 21) is shared by 12
+	// registers (pipelinq, procest, shillinq, openconnector, …) and currently
+	// declares `required: ["title"]`, while larpingapp's own
+	// `lib/Settings/larpingapp_register.json` declares `name`. Whichever app
+	// imported last wins, so a payload keyed only on `name` fails with
+	// HTTP 400 "The required property (title) is missing".
+	// See also: the hardcoded `item` id bound to scholiq's QTI schema until
+	// `resolveSchemaIds()` was wired in (larpingapp's real one is
+	// `larping_item`). Cross-app slug collision — OR #2150 class.
+	const payload: Record<string, unknown> = { ...body }
+	if (payload.name != null && payload.title == null) {
+		payload.title = payload.name
+	} else if (payload.title != null && payload.name == null) {
+		payload.name = payload.title
+	}
+	const res = await api.post(url, { headers: HEADERS, data: payload })
 	if (!res.ok()) {
 		throw new Error(`create ${type} failed: HTTP ${res.status()} ${await res.text()}`)
 	}

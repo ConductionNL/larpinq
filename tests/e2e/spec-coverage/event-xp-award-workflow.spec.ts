@@ -26,16 +26,18 @@ test.describe('event-xp-award-workflow', () => {
 		const pageErrors: string[] = []
 		page.on('pageerror', (e) => pageErrors.push(e.message))
 
-		await page.goto(`${BASE}/#/xp-awards`)
-		// Wait for the SPA shell + an index primary action to render. The page
-		// shell (not data rows) is what we assert — data fetch depends on a
-		// seeded register, which a bare env does not have.
-		await page.waitForLoadState('networkidle')
+		// Never `networkidle` — unreachable on Nextcloud (ADR-074 rule 4).
+		await page.goto(`${BASE}/#/xp-awards`, { waitUntil: 'domcontentloaded' })
+		await expect(page.locator('.app-content')).toBeVisible({ timeout: 30_000 })
 
-		// The index page should expose an "Add"/"XP Award" affordance somewhere
-		// in the rendered surface (the manifest title is "XP Awards").
-		const hasSurface = await page.getByText(/XP Award/i).first().isVisible().catch(() => false)
-		expect(hasSurface).toBeTruthy()
+		// Assert a page-SPECIFIC affordance inside the content area. The old
+		// `getByText(/XP Award/i)` was tautological — it matched the sidebar's
+		// own "XP Awards" nav label and so passed on any route.
+		await expect(
+			page.locator('.app-content button').filter({ hasText: /Add XP Award|New XP Award/i }).first()
+				.or(page.locator('.app-content').getByText(/No items found|Showing \d+ of \d+/i).first()),
+			'XP Awards index must render its create action or an explicit empty state',
+		).toBeVisible({ timeout: 15_000 })
 
 		// No larpingapp JS pageerror while rendering the new page.
 		expect(pageErrors).toEqual([])

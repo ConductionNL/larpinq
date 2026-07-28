@@ -200,7 +200,9 @@ test.describe('character-stat computation — correctness (real service, real da
 		test.info().annotations.push({ type: 'blocker', description: STAT_UI_BLOCKER })
 		const s = await seedStatScenario(api, ledger, { base: 10, modifier: 3, modification: 'positive' })
 		await page.goto(`/apps/larpingapp/characters/${s.characterId}`)
-		await page.waitForLoadState('networkidle').catch(() => {})
+		// ADR-074 rule 4: `networkidle` never settles on Nextcloud.
+		await page.locator('#app-content, .app-content, #content').first()
+			.waitFor({ state: 'visible', timeout: 30_000 }).catch(() => {})
 		// On a healthy instance the detail page renders the computed stats tab
 		// and the effective strength value (13). Blocked here by the slug-500
 		// detail fetch + the missing computed-stats surface.
