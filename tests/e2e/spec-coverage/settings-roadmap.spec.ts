@@ -33,8 +33,10 @@ const BASE = '/apps/larpingapp'
  * fails to re-key index pages.
  */
 async function openRoute(page: Page, route: string): Promise<void> {
-	await page.goto(`${BASE}/#${route}`)
-	await page.waitForLoadState('networkidle').catch(() => {})
+	// `domcontentloaded`, never `networkidle` — the latter is unreachable on
+	// Nextcloud (notification poll), so it just burns the budget (ADR-074
+	// rule 4). The `.app-content` assertion below is the real readiness gate.
+	await page.goto(`${BASE}/#${route}`, { waitUntil: 'domcontentloaded' })
 	await dismissSupportDialog(page)
 	await expect(page).toHaveURL(new RegExp(`#${route.replace(/\//g, '\\/')}`))
 	await expect(page.locator('.app-content')).toBeVisible({ timeout: 10_000 })

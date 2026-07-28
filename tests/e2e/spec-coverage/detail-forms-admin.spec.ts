@@ -28,6 +28,7 @@
  */
 
 import { test, expect, request, type Page, type APIRequestContext } from '@playwright/test'
+import { navTo as sharedNavTo } from '../_nav'
 
 const BASE = '/apps/larpingapp'
 const TS = Date.now()
@@ -41,10 +42,17 @@ const TS = Date.now()
 // top-level `register` key (156). Seeding into 156 produced objects the SPA
 // could never see. We seed into 8 so the fixtures live in the register the
 // detail routes resolve against.
-const REGISTER_ID = process.env.LARP_REGISTER_ID || '8'
+const NEXTCLOUD_URL = process.env.NEXTCLOUD_URL || 'http://localhost:8080'
+const REGISTER_ID = process.env.LARPING_REGISTER_ID || process.env.LARP_REGISTER_ID || '8'
 const SCHEMA_IDS: Record<string, string> = {
-	character: '18', player: '19', ability: '20', skill: '21',
-	item: '22', condition: '23', effect: '24', event: '25',
+	character: process.env.LARPING_SCHEMA_ID_CHARACTER || '18',
+	player: process.env.LARPING_SCHEMA_ID_PLAYER || '19',
+	ability: process.env.LARPING_SCHEMA_ID_ABILITY || '20',
+	skill: process.env.LARPING_SCHEMA_ID_SKILL || '21',
+	item: process.env.LARPING_SCHEMA_ID_ITEM || '22',
+	condition: process.env.LARPING_SCHEMA_ID_CONDITION || '23',
+	effect: process.env.LARPING_SCHEMA_ID_EFFECT || '24',
+	event: process.env.LARPING_SCHEMA_ID_EVENT || '25',
 }
 
 // Shared seeded fixture ids, populated in beforeAll (best-effort).
@@ -58,7 +66,9 @@ const seeded: Record<string, string> = {}
 async function openApp(page: Page): Promise<void> {
 	if (!page.url().includes('/apps/larpingapp')) {
 		await page.goto(`${BASE}/`)
-		await page.waitForLoadState('networkidle').catch(() => {})
+		// ADR-074 rule 4: `networkidle` never settles on Nextcloud.
+		await page.locator('#app-content, .app-content, #content').first()
+			.waitFor({ state: 'visible', timeout: 30_000 }).catch(() => {})
 	}
 	await expect(page.locator('.app-content')).toBeVisible({ timeout: 15_000 })
 	const supportClose = page.locator('[role="dialog"] button[aria-label="Close"]').first()
@@ -67,14 +77,16 @@ async function openApp(page: Page): Promise<void> {
 	}
 }
 
-/** Click an in-app sidebar nav entry (real <a href> SPA navigation). */
+/**
+ * Click an in-app sidebar nav entry.
+ *
+ * Delegates to the shared helper in `tests/e2e/_nav.ts`. The previous local
+ * copy used `.app-navigation a[href=…]`, which matches nothing, and never
+ * expanded the owning collapsible group — see `_nav.ts` for the verified DOM
+ * and the four traps it encodes.
+ */
 async function navTo(page: Page, slug: string): Promise<void> {
-	await openApp(page)
-	const link = page.locator(`.app-navigation a[href="${BASE}/#/${slug}"]`).first()
-	await expect(link).toBeVisible({ timeout: 10_000 })
-	await link.click()
-	await expect(page).toHaveURL(new RegExp(`${slug}(\\b|/|$|\\?)`))
-	await expect(page.locator('.app-content')).toBeVisible()
+	await sharedNavTo(page, slug)
 }
 
 /**
@@ -131,10 +143,18 @@ async function gotoDetail(page: Page, slug: string, id: string, typeHeading: str
  * `larpingapp` register rows in OpenRegister, then drop these fixmes.
  */
 const DETAIL_ACTIONS_BLOCKER =
-	'OpenRegister returns 500 on slug-addressed object fetch ' +
-	'(/objects/larpingapp/<schema>/<id>) because 11 registers share slug ' +
-	'"larpingapp" — detail object data + per-object Actions menu never render. ' +
-	'Env/OR data bug, not a larpingapp source or test defect.'
+	'Detail object data + per-object Actions menu never render on a bare env. ' +
+	'NOTE (verified 2026-07-27, fleet drift sweep): the ORIGINAL rationale here ' +
+	'— "11 registers share slug larpingapp" — is FALSE. Direct DB check: ' +
+	'oc_openregister_registers has 99 rows and EXACTLY ONE with slug ' +
+	'"larpingapp" (id=8); the only duplicated register slug on the instance is ' +
+	'"docudesk" (x3). Schema ids 18/20/21/22 (character/ability/skill/item) ' +
+	'resolve fine. So this is NOT a slug-collision bug. The remaining ' +
+	'candidate cause is simply an unseeded register (oc_openregister_objects ' +
+	'was empty at check time, during a concurrent `occ maintenance:repair`). ' +
+	'ACTION: re-verify against a seeded, healthy instance — seed a character ' +
+	'via the OR API like workflows/crud-persistence does, then unpark. Do not ' +
+	'carry the slug-collision story forward; it sent triage the wrong way.'
 
 /** Click the detail-page Actions button and assert the popup menu opens. */
 async function openActionsMenu(page: Page): Promise<void> {
@@ -169,7 +189,7 @@ async function closeDialog(page: Page): Promise<void> {
 async function seedObject(
 	api: APIRequestContext, schema: string, body: Record<string, unknown>,
 ): Promise<string | null> {
-	const url = `http://localhost:8080/index.php/apps/openregister/api/objects/${REGISTER_ID}/${SCHEMA_IDS[schema]}`
+	const url = `${NEXTCLOUD_URL}/index.php/apps/openregister/api/objects/${REGISTER_ID}/${SCHEMA_IDS[schema]}`
 	const res = await api.post(url, {
 		headers: { 'OCS-APIRequest': 'true', 'Content-Type': 'application/json' },
 		data: body,
@@ -185,7 +205,7 @@ async function seedObject(
 
 test.beforeAll(async () => {
 	const api = await request.newContext({
-		httpCredentials: { username: process.env.NC_USER || 'admin', password: process.env.NC_PASS || 'admin' },
+		httpCredentials: { username: process.env.NC_ADMIN_USER || 'admin', password: process.env.NC_ADMIN_PASS || 'admin' },
 	})
 	const n = `la-e2e-${TS}`
 	seeded.character = (await seedObject(api, 'character', { name: `${n}-hero`, ocName: `${n}-hero`, type: 'player', gold: 5, silver: 3, copper: 2, background: 'Born in Camelot' })) || 'seed-missing'
@@ -663,7 +683,9 @@ test.describe('larping-skill-widget — dashboard surface', () => {
 test.describe('admin-settings — panel UI', () => {
 	async function openAdmin(page: Page): Promise<void> {
 		await page.goto('/settings/admin/larpingapp')
-		await page.waitForLoadState('networkidle').catch(() => {})
+		// ADR-074 rule 4: `networkidle` never settles on Nextcloud.
+		await page.locator('#app-content, .app-content, #content').first()
+			.waitFor({ state: 'visible', timeout: 30_000 }).catch(() => {})
 		await expect(page.getByText(/Administration settings: LarpingApp|LarpingApp/i).first()).toBeVisible({ timeout: 15_000 })
 	}
 
@@ -724,7 +746,9 @@ test.describe('settings-management-ui — panel controls', () => {
 	// @e2e openspec/specs/settings-management-ui/spec.md#cascading-clears
 	test('settings panel renders cascading selector controls', async ({ page }) => {
 		await page.goto('/settings/admin/larpingapp')
-		await page.waitForLoadState('networkidle').catch(() => {})
+		// ADR-074 rule 4: `networkidle` never settles on Nextcloud.
+		await page.locator('#app-content, .app-content, #content').first()
+			.waitFor({ state: 'visible', timeout: 30_000 }).catch(() => {})
 		const selectors = page.locator('.vs__dropdown-toggle, .multiselect, [role="combobox"], select')
 		expect(await selectors.count()).toBeGreaterThan(0)
 	})
@@ -732,7 +756,9 @@ test.describe('settings-management-ui — panel controls', () => {
 	// @e2e openspec/specs/settings-management-ui/spec.md#re-import-reports-outcome
 	test('settings panel exposes Save All / re-import action', async ({ page }) => {
 		await page.goto('/settings/admin/larpingapp')
-		await page.waitForLoadState('networkidle').catch(() => {})
+		// ADR-074 rule 4: `networkidle` never settles on Nextcloud.
+		await page.locator('#app-content, .app-content, #content').first()
+			.waitFor({ state: 'visible', timeout: 30_000 }).catch(() => {})
 		await expect(page.getByRole('button', { name: /Save All|Re-?import|Import/i }).first()).toBeVisible({ timeout: 15_000 })
 	})
 })

@@ -62,7 +62,7 @@ import { generateUrl } from '@nextcloud/router'
  * Human-readable label + badge variant per attendance status.
  */
 const STATUS_META = {
-	'registered': { label: 'Registered', variant: 'default' },
+	registered: { label: 'Registered', variant: 'default' },
 	'checked-in': { label: 'Checked in', variant: 'success' },
 	'no-show': { label: 'No-show', variant: 'error' },
 }

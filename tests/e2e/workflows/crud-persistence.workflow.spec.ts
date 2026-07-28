@@ -52,6 +52,7 @@
  */
 
 import { test, expect, type APIRequestContext, type Page } from '@playwright/test'
+import { navTo as sharedNavTo } from '../_nav'
 import {
 	BASE,
 	RUN_ID,
@@ -63,6 +64,7 @@ import {
 	updateObject,
 	deleteObject,
 	cleanupLedger,
+	resolveSchemaIds,
 } from './fixtures'
 
 // Documented blocker reasons; each is annotated onto its test.fixme below via
@@ -70,8 +72,39 @@ import {
 let api: APIRequestContext
 const ledger = new FixtureLedger()
 
+/**
+ * A real player object id, for `character.ocName`.
+ *
+ * `ocName` is NOT a display name — the live `character` schema declares it
+ * `{"type":"string","format":"uuid","$ref":19,"x-allow-create":true}`, i.e. a
+ * RELATION to a `player` object ("The player who plays this character"). It is
+ * also `required`. Passing the character's own name string yields
+ * HTTP 400 "Property 'ocName' should match format 'uuid'".
+ * The schema grew this relation and the specs were never updated — invisible
+ * until now, because this suite could not run at all.
+ */
+let playerRef: string
+
+async function ensurePlayerRef(): Promise<string> {
+	if (!playerRef) {
+		playerRef = await createObject(api, 'player', { name: fixtureName('crud-owner-player') })
+		ledger.track('player', playerRef)
+	}
+	return playerRef
+}
+
 test.beforeAll(async () => {
 	api = await newApi()
+	// MUST resolve schema ids from the app's own settings before any create.
+	// The bootstrap literals in fixtures.ts are a fallback, not truth: schema
+	// slugs collide across the fleet, so a hardcoded numeric id silently binds
+	// to ANOTHER app's schema. Measured on this instance — id 21 ("skill")
+	// requires `title`, and id 22 ("item") requires
+	// title/interactionType/qtiBody/maxScore/tenant_id, i.e. scholiq's QTI
+	// item — so every create here failed with HTTP 400 "required property
+	// (title) is missing". `resolveSchemaIds` already existed for exactly this
+	// reason; this spec simply never called it.
+	await resolveSchemaIds(api)
 })
 
 test.afterAll(async () => {
@@ -87,7 +120,9 @@ test.afterAll(async () => {
 async function openApp(page: Page): Promise<void> {
 	if (!page.url().includes('/apps/larpingapp')) {
 		await page.goto(`${BASE}/`)
-		await page.waitForLoadState('networkidle').catch(() => {})
+		// ADR-074 rule 4: `networkidle` never settles on Nextcloud.
+		await page.locator('#app-content, .app-content, #content').first()
+			.waitFor({ state: 'visible', timeout: 30_000 }).catch(() => {})
 	}
 	await expect(page.locator('.app-content')).toBeVisible({ timeout: 15_000 })
 	const supportClose = page.locator('[role="dialog"] button[aria-label="Close"]').first()
@@ -96,13 +131,16 @@ async function openApp(page: Page): Promise<void> {
 	}
 }
 
+/**
+ * Reach `slug`'s index page through the real sidebar.
+ *
+ * Delegates to the shared helper in `tests/e2e/_nav.ts`. The previous local
+ * copy used `.app-navigation a[href=…]`, which matches nothing (entries are
+ * NcAppNavigationItem `<li>`s addressed by `data-testid`) and never expanded
+ * the collapsible group — see `_nav.ts` for the four verified traps.
+ */
 async function navTo(page: Page, slug: string): Promise<void> {
-	await openApp(page)
-	const link = page.locator(`.app-navigation a[href="${BASE}/#/${slug}"]`).first()
-	await expect(link).toBeVisible({ timeout: 10_000 })
-	await link.click()
-	await expect(page).toHaveURL(new RegExp(`#/${slug}(\\b|/|$|\\?)`))
-	await expect(page.locator('.app-content')).toBeVisible()
+	await sharedNavTo(page, slug)
 }
 
 /**
@@ -142,7 +180,7 @@ test.describe('character — CRUD persistence (store round-trip)', () => {
 		const name = fixtureName('crud-character')
 		const id = ledger.track('character', await createObject(api, 'character', {
 			name,
-			ocName: name,
+			ocName: await ensurePlayerRef(),
 			type: 'player',
 			gold: 7,
 			silver: 4,
@@ -162,11 +200,11 @@ test.describe('character — CRUD persistence (store round-trip)', () => {
 	test('edit → read-back persists the updated values', async () => {
 		const name = fixtureName('crud-character-edit')
 		const id = ledger.track('character', await createObject(api, 'character', {
-			name, ocName: name, type: 'player', gold: 1, background: 'Apprentice',
+			name, ocName: await ensurePlayerRef(), type: 'player', gold: 1, background: 'Apprentice',
 		}))
 
 		await updateObject(api, 'character', id, {
-			name, ocName: name, type: 'npc', gold: 99, background: 'Risen to power',
+			name, ocName: await ensurePlayerRef(), type: 'npc', gold: 99, background: 'Risen to power',
 		})
 
 		const read = await getObject(api, 'character', id)
@@ -178,7 +216,7 @@ test.describe('character — CRUD persistence (store round-trip)', () => {
 
 	test('delete → read-back returns gone (404/null)', async () => {
 		const name = fixtureName('crud-character-del')
-		const id = await createObject(api, 'character', { name, ocName: name, type: 'player' })
+		const id = await createObject(api, 'character', { name, ocName: await ensurePlayerRef(), type: 'player' })
 
 		// Sanity: present before delete.
 		expect(await getObject(api, 'character', id)).not.toBeNull()
@@ -198,7 +236,7 @@ test.describe('character — CRUD persistence (store round-trip)', () => {
 	// fires its object fetch and the seeded row surfaces.
 	test('UI: created character row appears in the Characters list', async ({ page }) => {
 		const name = fixtureName('ui-character')
-		ledger.track('character', await createObject(api, 'character', { name, ocName: name, type: 'player' }))
+		ledger.track('character', await createObject(api, 'character', { name, ocName: await ensurePlayerRef(), type: 'player' }))
 		await navTo(page, 'characters')
 		await expectRowInList(page, name)
 	})
@@ -210,13 +248,15 @@ test.describe('character — CRUD persistence (store round-trip)', () => {
 	test('UI: character detail renders the persisted currency values', async ({ page }) => {
 		const name = fixtureName('ui-character-detail')
 		const id = ledger.track('character', await createObject(api, 'character', {
-			name, ocName: name, type: 'player', gold: 42,
+			name, ocName: await ensurePlayerRef(), type: 'player', gold: 42,
 		}))
 		// Hash-mode deep link (src/main.js — fleet #133): the detail route is
 		// addressed via the URL hash, served from the SPA root and resolved
 		// client-side.
 		await page.goto(`${BASE}/#/characters/${id}`)
-		await page.waitForLoadState('networkidle').catch(() => {})
+		// ADR-074 rule 4: `networkidle` never settles on Nextcloud.
+		await page.locator('#app-content, .app-content, #content').first()
+			.waitFor({ state: 'visible', timeout: 30_000 }).catch(() => {})
 		await expect(page.locator('.app-content').getByText('42').first()).toBeVisible({ timeout: 10_000 })
 	})
 
