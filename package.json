@@ -53,10 +53,10 @@
     "@nextcloud/l10n": "3.4.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.29.0",
+    "@babel/core": "^7.29.6",
     "@babel/eslint-parser": "^7.28.6",
     "@babel/preset-env": "^7.29.5",
-    "@cyclonedx/cyclonedx-npm": "^4.2.1",
+    "@cyclonedx/cyclonedx-npm": "^5.0.0",
     "@eslint/config-helpers": "^0.4.2",
     "@eslint/eslintrc": "^3.3.5",
     "@eslint/js": "^9.39.4",
@@ -93,9 +93,9 @@
     "stylelint-config-recommended-scss": "^13.1.0",
     "stylelint-config-recommended-vue": "^1.6.1",
     "typescript": "^5.9.3",
-    "vitest": "^1.6.1",
+    "vitest": "^3.2.6",
     "vue-eslint-parser": "^9.4.3",
-    "vue-loader": "^15.11.1 <16.0.0",
+    "vue-loader": "^15.11.1 <18.0.0",
     "vue-template-compiler": "^2.7.16",
     "webpack": "^5.94.0",
     "webpack-cli": "^6.0.1"
