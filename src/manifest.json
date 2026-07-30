@@ -34,7 +34,7 @@
 		]
 	},
 	"menu": [
-		{ "id": "Dashboard", "label": "Dashboard", "icon": "ViewDashboard", "route": "Dashboard", "order": 10 },
+		{ "id": "Dashboard", "label": "Dashboard", "icon": "ViewDashboardOutline", "route": "Dashboard", "order": 10 },
 		{
 			"id": "CharactersGroup",
 			"label": "Characters",
@@ -52,8 +52,8 @@
 			"order": 40,
 			"children": [
 				{ "id": "Abilities",   "label": "Abilities",   "icon": "FlashOutline",        "route": "Abilities",   "order": 40 },
-				{ "id": "Skills",      "label": "Skills",      "icon": "StarOutline",          "route": "Skills",      "order": 50 },
-				{ "id": "SkillTree",   "label": "Skill tree",  "icon": "Sitemap",              "route": "SkillTree",   "order": 55 },
+				{ "id": "Skills",      "label": "Skills",      "icon": "ToolboxOutline",          "route": "Skills",      "order": 50 },
+				{ "id": "SkillTree",   "label": "Skill tree",  "icon": "ToolboxOutline",              "route": "SkillTree",   "order": 55 },
 				{ "id": "Conditions",  "label": "Conditions",  "icon": "EmoticonSickOutline",  "route": "Conditions",  "order": 70 },
 				{ "id": "Effects",     "label": "Effects",     "icon": "MagicStaff",           "route": "Effects",     "order": 80 }
 			]
@@ -69,10 +69,10 @@
 				{ "id": "XpAwards", "label": "XP Awards", "icon": "StarPlusOutline", "route": "XpAwards", "order": 95 }
 			]
 		},
-		{ "id": "Settings",          "label": "Settings (Worlds)","icon": "Earth",       "route": "Settings",     "order": 25 },
-		{ "id": "GameSettings",      "label": "Game Settings",    "icon": "Cog",         "route": "GameSettings", "order": 100, "section": "settings" },
-		{ "id": "Documentation",     "label": "Documentation",    "icon": "icon-info",   "href": "https://larpingapp.conduction.nl", "section": "footer", "order": 90 },
-		{ "id": "FeaturesRoadmapMenu","label": "Features & roadmap","icon": "icon-toggle","route": "FeaturesRoadmap", "section": "footer", "order": 91 }
+		{ "id": "Settings",          "label": "Settings (Worlds)","icon": "CogOutline",       "route": "Settings",     "order": 25 },
+		{ "id": "GameSettings",      "label": "Game Settings",    "icon": "CogOutline",         "route": "GameSettings", "order": 100, "section": "settings" },
+		{ "id": "Documentation",     "label": "Documentation",    "icon": "BookOpenVariantOutline",   "href": "https://larpingapp.conduction.nl", "section": "footer", "order": 90 },
+		{ "id": "FeaturesRoadmapMenu","label": "Features & roadmap","icon": "MapMarkerPath","route": "FeaturesRoadmap", "section": "footer", "order": 91 }
 	],
 	"pages": [
 		{
