@@ -56,7 +56,10 @@ export const useSettingsStore = defineStore('settings', {
 		},
 
 		/**
-		 * @param settingsData
+		 * Persist the data-storage configuration.
+		 *
+		 * @param {object} settingsData Flat `{ <type>_source, <type>_register, <type>_schema }` map to save.
+		 * @return {Promise<object|null>} The saved settings envelope, or null on failure.
 		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-6
 		 */
 		async saveSettings(settingsData) {

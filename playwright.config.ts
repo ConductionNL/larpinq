@@ -1,4 +1,5 @@
 import { defineConfig, devices } from '@playwright/test'
+import { resolveBaseURL } from './tests/e2e/_base-url'
 
 /**
  * Playwright config for Larping.
@@ -29,7 +30,9 @@ export default defineConfig({
 	globalSetup: require.resolve('./tests/e2e/global-setup'),
 
 	use: {
-		baseURL: process.env.NEXTCLOUD_URL || 'http://localhost:8080',
+		// Resolved centrally, and deliberately WITHOUT a `localhost:8080`
+		// fallback — that is the shared dev container. See tests/e2e/_base-url.ts.
+		baseURL: resolveBaseURL(),
 		trace: 'on-first-retry',
 		screenshot: 'only-on-failure',
 	},

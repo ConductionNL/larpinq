@@ -29,6 +29,7 @@
 
 import { test, expect, request, type Page, type APIRequestContext } from '@playwright/test'
 import { navTo as sharedNavTo } from '../_nav'
+import { BASE_URL } from '../_base-url'
 
 const BASE = '/apps/larpingapp'
 const TS = Date.now()
@@ -42,7 +43,11 @@ const TS = Date.now()
 // top-level `register` key (156). Seeding into 156 produced objects the SPA
 // could never see. We seed into 8 so the fixtures live in the register the
 // detail routes resolve against.
-const NEXTCLOUD_URL = process.env.NEXTCLOUD_URL || 'http://localhost:8080'
+// Resolved centrally in `tests/e2e/_base-url.ts` — no `localhost:8080`
+// fallback. This spec's WRITE path seeds OpenRegister objects, and the old
+// default sent them into the SHARED dev container whenever NEXTCLOUD_URL was
+// unset, even when the browser side was pointed elsewhere.
+const NEXTCLOUD_URL = BASE_URL
 const REGISTER_ID = process.env.LARPING_REGISTER_ID || process.env.LARP_REGISTER_ID || '8'
 const SCHEMA_IDS: Record<string, string> = {
 	character: process.env.LARPING_SCHEMA_ID_CHARACTER || '18',
