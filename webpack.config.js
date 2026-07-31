@@ -40,9 +40,30 @@ webpackConfig.resolve.alias = {
 	'@': path.resolve(__dirname, 'src'),
 	...(useLocalLib ? { '@conduction/nextcloud-vue': localLib } : {}),
 	vue$: path.resolve(__dirname, 'node_modules/vue'),
+	// MANDATORY, not an optimisation. `@nextcloud/vue@9` hard-depends on
+	// `vue-router ^5.1.0` while this app is on `vue-router@4`, so npm installs
+	// BOTH — `node_modules/vue-router` (4.x) and
+	// `node_modules/@nextcloud/vue/node_modules/vue-router` (5.x). Without this
+	// exact-match alias, `main.js` gets the 4.x singleton while every
+	// `@nextcloud/vue` component that calls `useRoute()` / `useRouter()`
+	// resolves the 5.x copy — a DIFFERENT injection key, so those components
+	// see no router at all. `<NcAppNavigationItem :to="…">` then renders as an
+	// inert element and nothing is logged.
+	'vue-router$': path.resolve(__dirname, 'node_modules/vue-router'),
 	pinia$: path.resolve(__dirname, 'node_modules/pinia'),
-	'@nextcloud/vue$': path.resolve(__dirname, 'node_modules/@nextcloud/vue'),
-	'@nextcloud/dialogs': path.resolve(__dirname, 'node_modules/@nextcloud/dialogs'),
+	// These two MUST point at the entry FILE, not the package directory.
+	// @nextcloud/vue@9 and @nextcloud/dialogs@7 declare no `main` and no
+	// `module` — only an `exports` map. A directory alias bypasses that map, so
+	// webpack finds no entry point and every `from '@nextcloud/vue'` in the app
+	// AND inside @conduction/nextcloud-vue's dist fails with
+	// "Can't resolve '@nextcloud/vue'" (233 errors on the first Vue 3 build).
+	//
+	// `@nextcloud/dialogs` carries the `$` exact-match suffix for the same
+	// reason `@nextcloud/vue` does: without it the alias would also rewrite the
+	// subpath `@nextcloud/dialogs/style.css`, which must keep going through the
+	// exports map.
+	'@nextcloud/vue$': path.resolve(__dirname, 'node_modules/@nextcloud/vue/dist/index.mjs'),
+	'@nextcloud/dialogs$': path.resolve(__dirname, 'node_modules/@nextcloud/dialogs/dist/index.mjs'),
 	// Force the lib's transitive @nextcloud/axios import to resolve to
 	// the app's installed copy. Without the `$` exact-match suffix,
 	// webpack would walk up to the lib's own node_modules and load a

@@ -51,29 +51,29 @@
 </template>
 
 <script>
-import Vue from 'vue'
+import { reactive } from 'vue'
 import { translate as ncT } from '@nextcloud/l10n'
 import { NcAppSettingsSection } from '@nextcloud/vue'
-import { CnAppRoot, CnObjectSidebar } from '@conduction/nextcloud-vue'
-import { useObjectStore, setObjectStoreTenantUuid } from './store/modules/object.js'
-
 // Multi-tenancy composable (multi-tenancy-context, ADR-025).
-// Imported defensively via a try/catch in setup() so that running against
-// a nc-vue version that pre-dates the export ("Pre-release fallback"
-// scenario in larpingapp-adopt-or-abstractions/spec.md) renders the app as
-// single-tenant rather than crashing.
-let _useTenantContext = null
-try {
-	// eslint-disable-next-line global-require
-	const mod = require('@conduction/nextcloud-vue')
-	if (typeof mod.useTenantContext === 'function') {
-		_useTenantContext = mod.useTenantContext
-	}
-} catch (e) {
-	// nc-vue not resolvable at module-eval — extremely unlikely; fallback
-	// keeps the app single-tenant.
-	_useTenantContext = null
-}
+//
+// This was previously pulled in with a `require('@conduction/nextcloud-vue')`
+// inside a try/catch, to tolerate a nc-vue release that pre-dated the export
+// ("Pre-release fallback" scenario in larpingapp-adopt-or-abstractions/spec.md).
+// Under Vue 3 that indirection is actively harmful: `require()` resolves the
+// package's CJS build while the line above resolves its ESM build, so the app
+// would hold TWO module instances of the library. provide/inject matches on
+// injection-key IDENTITY, and `CnAppRoot` calls `provideTenantContext()` from
+// the ESM copy — a `useTenantContext` read out of the CJS copy would look up a
+// different key object, silently return the no-op fallback, and the tenant
+// watcher would never fire. Green, and dead.
+//
+// The dependency is pinned exactly (`@conduction/nextcloud-vue@2.1.0-vue3.13`),
+// which exports the composable, so a static import is correct and a version
+// without it now fails loudly at BUILD time instead of degrading at runtime.
+// The spec's "absence MUST NOT crash" contract still holds: the composable
+// itself returns a no-op fallback when no provider is mounted.
+import { CnAppRoot, CnObjectSidebar, useTenantContext } from '@conduction/nextcloud-vue'
+import { useObjectStore, setObjectStoreTenantUuid } from './store/modules/object.js'
 
 export default {
 	name: 'App',
@@ -91,7 +91,9 @@ export default {
 	provide() {
 		return {
 			// Channel for CnDetailPage → host-rendered CnObjectSidebar.
-			// Vue.observable makes the plain object reactive for Vue 2.
+			// `reactive()` (Vue 3's replacement for `Vue.observable()`) makes
+			// the plain object reactive, so descendants that mutate it drive
+			// this component's `#sidebar` slot.
 			objectSidebarState: this.objectSidebarState,
 		}
 	},
@@ -156,19 +158,17 @@ export default {
 	 * @return {object} Setup return — none needed externally.
 	 */
 	setup() {
-		if (typeof _useTenantContext !== 'function') {
-			// Pre-release fallback (single-tenant): the spec mandates
-			// absence MUST NOT crash. Nothing to wire.
-			return {}
-		}
-		const { activeOrganisationUuid } = _useTenantContext()
+		// `useTenantContext()` returns a no-op fallback (a null-valued ref)
+		// when no provider is mounted, so this stays safe on a single-tenant
+		// deployment — the watcher simply never fires.
+		const { activeOrganisationUuid } = useTenantContext()
 
 		return { cnActiveOrganisationUuid: activeOrganisationUuid }
 	},
 
 	data() {
 		return {
-			objectSidebarState: Vue.observable({
+			objectSidebarState: reactive({
 				active: false,
 				open: true,
 				objectType: '',

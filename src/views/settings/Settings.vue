@@ -27,13 +27,22 @@
 					<h3>{{ formatTitle(objectType) }}</h3>
 
 					<div class="selection-container">
-						<!-- Source Selection -->
+						<!--
+						  `@change` is NOT an event NcSelect emits under
+						  @nextcloud/vue v9 — its emits list is open / close /
+						  update:modelValue / search* / option:*. The Vue-2
+						  spelling silently never fired, so switching a source to
+						  "Internal" would have left a stale register + schema
+						  attached. The compiler merges this listener with the
+						  v-model handler into an array and runs the v-model
+						  assignment first, so the handler sees the NEW value.
+						-->
 						<NcSelect
 							v-model="configuration[objectType].source"
 							:options="sourceOptions"
 							:input-label="t('larpingapp', 'Source')"
 							:disabled="loading"
-							@change="handleSourceChange(objectType)" />
+							@update:modelValue="handleSourceChange(objectType)" />
 
 						<!-- Register Selection (only if OpenRegister is selected) -->
 						<NcSelect
@@ -42,7 +51,7 @@
 							:options="registerOptions"
 							:input-label="t('larpingapp', 'Register')"
 							:disabled="loading"
-							@change="handleRegisterChange(objectType)" />
+							@update:modelValue="handleRegisterChange(objectType)" />
 
 						<!-- Schema Selection (only if Register is selected) -->
 						<NcSelect
@@ -56,8 +65,12 @@
 
 				<!-- Save Buttons -->
 				<div class="button-container">
+					<!--
+					  @nextcloud/vue v9 repurposed `type` as the NATIVE button
+					  type; the visual style moved to `variant`.
+					-->
 					<NcButton
-						type="primary"
+						variant="primary"
 						:disabled="loading || saving"
 						@click="saveAll">
 						<template #icon>
