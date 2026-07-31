@@ -42,7 +42,7 @@
     "@nextcloud/router": "^3.1.0",
     "@nextcloud/vue": "^8.16.0",
     "pinia": "^2.1.7",
-    "vue": "^2.7.14",
+    "vue": "^3.0.0",
     "vue-apexcharts": "^1.7.0",
     "vue-material-design-icons": "^5.3.0",
     "vue-router": "^3.6.5"
@@ -53,7 +53,7 @@
     "@nextcloud/l10n": "3.4.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.29.6",
+    "@babel/core": "^8.0.1",
     "@babel/eslint-parser": "^7.28.6",
     "@babel/preset-env": "^7.29.5",
     "@cyclonedx/cyclonedx-npm": "^5.0.0",
