@@ -48,7 +48,20 @@ const TS = Date.now()
 // default sent them into the SHARED dev container whenever NEXTCLOUD_URL was
 // unset, even when the browser side was pointed elsewhere.
 const NEXTCLOUD_URL = BASE_URL
-const REGISTER_ID = process.env.LARPING_REGISTER_ID || process.env.LARP_REGISTER_ID || '8'
+
+// Bootstrap ids only. They are OVERWRITTEN in beforeAll by `resolveIds()`,
+// which reads the app's own settings API — the same source of truth
+// `tests/e2e/workflows/fixtures.ts` already uses, and the same one the SPA
+// itself reads at runtime.
+//
+// These literals are correct on exactly one machine. On a freshly installed
+// instance LarpingApp's register imports as id 15 with a different schema-id
+// assignment, so every seed POSTed into register 8 / schema 18-25 either 404s
+// or lands in an unrelated register. `seedObject()` swallows that and stores
+// the string `'seed-missing'`, the detail routes then navigate to
+// `#/characters/seed-missing`, and the specs fail 60 s later as TIMEOUTS —
+// which reads like a rendering regression and is really a stale constant.
+let REGISTER_ID = process.env.LARPING_REGISTER_ID || process.env.LARP_REGISTER_ID || '8'
 const SCHEMA_IDS: Record<string, string> = {
 	character: process.env.LARPING_SCHEMA_ID_CHARACTER || '18',
 	player: process.env.LARPING_SCHEMA_ID_PLAYER || '19',
@@ -58,6 +71,61 @@ const SCHEMA_IDS: Record<string, string> = {
 	condition: process.env.LARPING_SCHEMA_ID_CONDITION || '23',
 	effect: process.env.LARPING_SCHEMA_ID_EFFECT || '24',
 	event: process.env.LARPING_SCHEMA_ID_EVENT || '25',
+}
+
+/**
+ * Overwrite REGISTER_ID / SCHEMA_IDS from LarpingApp's settings API.
+ *
+ * An explicit `LARPING_*` environment variable always wins, so a run can still
+ * be pinned by hand. Anything not pinned is resolved from the instance.
+ *
+ * @param {APIRequestContext} api Authenticated request context.
+ * @return {Promise<void>}
+ */
+async function resolveIds(api: APIRequestContext): Promise<void> {
+	const res = await api.get(`${NEXTCLOUD_URL}/index.php/apps/larpingapp/api/settings`, {
+		headers: { 'OCS-APIRequest': 'true' },
+	}).catch(() => null)
+	if (!res || !res.ok()) {
+		return
+	}
+	const cfg = (await res.json().catch(() => null))?.configuration
+	if (!cfg || typeof cfg !== 'object') {
+		return
+	}
+	if (!process.env.LARPING_REGISTER_ID && !process.env.LARP_REGISTER_ID
+		&& cfg.register !== undefined && String(cfg.register) !== '') {
+		REGISTER_ID = String(cfg.register)
+	}
+	for (const type of Object.keys(SCHEMA_IDS)) {
+		// The per-type register wins over the shared top-level one. Reading
+		// `configuration.register` alone is what previously made list fetches
+		// miss whenever a type's own register diverged from it.
+		const perTypeRegister = cfg[`${type}_register`]
+		if (perTypeRegister !== undefined && String(perTypeRegister) !== '') {
+			REGISTER_IDS[type] = String(perTypeRegister)
+		}
+		if (process.env[`LARPING_SCHEMA_ID_${type.toUpperCase()}`]) {
+			continue
+		}
+		const schemaId = cfg[`${type}_schema`]
+		if (schemaId !== undefined && String(schemaId) !== '') {
+			SCHEMA_IDS[type] = String(schemaId)
+		}
+	}
+}
+
+/** Register each type is actually stored in; defaults to the shared register. */
+const REGISTER_IDS: Record<string, string> = {}
+
+/**
+ * The register to seed a given type into.
+ *
+ * @param {string} type The object type slug.
+ * @return {string} The per-type register id, or the shared one.
+ */
+function registerFor(type: string): string {
+	return REGISTER_IDS[type] || REGISTER_ID
 }
 
 // Shared seeded fixture ids, populated in beforeAll (best-effort).
@@ -194,12 +262,29 @@ async function closeDialog(page: Page): Promise<void> {
 async function seedObject(
 	api: APIRequestContext, schema: string, body: Record<string, unknown>,
 ): Promise<string | null> {
-	const url = `${NEXTCLOUD_URL}/index.php/apps/openregister/api/objects/${REGISTER_ID}/${SCHEMA_IDS[schema]}`
+	const schemaId = SCHEMA_IDS[schema]
+	if (!schemaId) {
+		// eslint-disable-next-line no-console
+		console.error(`[e2e seed] ${schema}: no schema id configured on this instance — the app has no storage for it`)
+		return null
+	}
+	const url = `${NEXTCLOUD_URL}/index.php/apps/openregister/api/objects/${registerFor(schema)}/${schemaId}`
 	const res = await api.post(url, {
 		headers: { 'OCS-APIRequest': 'true', 'Content-Type': 'application/json' },
 		data: body,
 	}).catch(() => null)
-	if (!res || !res.ok()) return null
+	// Report WHY a seed failed. Swallowing it turns every dependent spec into a
+	// 60 s timeout that looks like a rendering regression.
+	if (!res) {
+		// eslint-disable-next-line no-console
+		console.error(`[e2e seed] ${schema}: POST ${url} threw`)
+		return null
+	}
+	if (!res.ok()) {
+		// eslint-disable-next-line no-console
+		console.error(`[e2e seed] ${schema}: POST ${url} -> ${res.status()} ${(await res.text().catch(() => '')).slice(0, 200)}`)
+		return null
+	}
 	const json = await res.json().catch(() => null)
 	return (json && (json.id || (json['@self'] && json['@self'].id))) || null
 }
@@ -212,6 +297,7 @@ test.beforeAll(async () => {
 	const api = await request.newContext({
 		httpCredentials: { username: process.env.NC_ADMIN_USER || 'admin', password: process.env.NC_ADMIN_PASS || 'admin' },
 	})
+	await resolveIds(api)
 	const n = `la-e2e-${TS}`
 	seeded.character = (await seedObject(api, 'character', { name: `${n}-hero`, ocName: `${n}-hero`, type: 'player', gold: 5, silver: 3, copper: 2, background: 'Born in Camelot' })) || 'seed-missing'
 	seeded.player = (await seedObject(api, 'player', { name: `${n}-player`, ocName: `${n}-player` })) || 'seed-missing'
