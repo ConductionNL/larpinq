@@ -10,6 +10,7 @@ import {
 	defaultPageTypes,
 	registerIcons,
 	registerTranslations,
+	registerBuiltinDashboardWidgets,
 } from '@conduction/nextcloud-vue'
 import pinia from './pinia.js'
 import App from './App.vue'
@@ -34,6 +35,24 @@ import 'gridstack/dist/gridstack.min.css'
 
 // Global (unscoped) app styles
 import './assets/app.css'
+
+// Populate the dashboard widget-type registry.
+//
+// This call is an intentional no-op in the library — its ONLY job is to make
+// the bundler evaluate `registerDashboardWidgets.js`, which self-registers the
+// built-in widget catalog. nc-vue's package.json declares
+// `sideEffects: ["**/*.css"]` (ADR-061 tree-shaking), which lets webpack
+// legally DROP that module's bare side-effect imports.
+//
+// The manifest's `stat` KPI tiles and `object-table` lists are registered
+// exactly that way — via `import '../CnStatWidget/index.js'` and
+// `import '../CnWidgetObjectTable/dashboardRegistration.js'` — so without this
+// call `getWidgetTypeEntry()` misses and CnDashboardPage falls through to its
+// "Widget not available" placeholder. Verified live on the isolated instance:
+// 5 of the 7 dashboard widgets rendered that placeholder, and the one that
+// worked (`chart`) is registered by an INLINE `registerDashboardWidget()` call
+// that tree-shaking cannot reach.
+registerBuiltinDashboardWidgets()
 
 // Register the MDI icons the manifest references + lib translations at bootstrap.
 registerIcons(appIcons)
