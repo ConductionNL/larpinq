@@ -535,9 +535,17 @@ export default {
 	display: inline-block;
 }
 
-.skill-tree__dot--owned { background-color: var(--color-success); }
-.skill-tree__dot--available { background-color: var(--color-primary-element); }
-.skill-tree__dot--locked { background-color: var(--color-error); }
+.skill-tree__dot--owned {
+	background-color: var(--color-success);
+}
+
+.skill-tree__dot--available {
+	background-color: var(--color-primary-element);
+}
+
+.skill-tree__dot--locked {
+	background-color: var(--color-error);
+}
 
 .skill-tree__body {
 	display: flex;
@@ -575,9 +583,18 @@ export default {
 	box-shadow: inset 3px 0 0 0 var(--color-primary-element);
 }
 
-.skill-tree__node--owned { border-color: var(--color-success); }
-.skill-tree__node--available { border-color: var(--color-primary-element); }
-.skill-tree__node--locked { border-color: var(--color-error); opacity: 0.85; }
+.skill-tree__node--owned {
+	border-color: var(--color-success);
+}
+
+.skill-tree__node--available {
+	border-color: var(--color-primary-element);
+}
+
+.skill-tree__node--locked {
+	border-color: var(--color-error);
+	opacity: 0.85;
+}
 
 .skill-tree__node-name {
 	font-weight: bold;
