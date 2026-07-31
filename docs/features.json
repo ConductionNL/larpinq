@@ -1,74 +1,169 @@
 [
   {
-    "slug": "admin-settings",
-    "title": "Admin Settings",
-    "summary": "SPA mount fixed in #202 — admin panel load scenario covered by tests/e2e/spec-coverage/spa-ui.spec.ts; backend API/migration scenarios annotated @e2e exclude below",
-    "docsUrl": "openspec/specs/admin-settings/spec.md"
+    "slug": "transparent-stat-audit-trail",
+    "title": "Transparent stat audit trail",
+    "summary": "Each ability shows exactly which skill, item or condition added every modifier.",
+    "status": "stable",
+    "docsUrl": "openspec/specs/game-mechanics/spec.md",
+    "title_nl": "Transparant overzicht van elke statwijziging",
+    "summary_nl": "Bij elke eigenschap zie je precies welke vaardigheid, voorwerp of conditie elke wijziging toevoegde."
   },
   {
-    "slug": "character-management",
-    "title": "Character Management",
-    "summary": "SPA mount fixed in #202 — UI scenarios covered by tests/e2e/spec-coverage/spa-ui.spec.ts; backend CharacterService stat-engine scenarios annotated @e2e exclude below",
-    "docsUrl": "openspec/specs/character-management/spec.md"
+    "slug": "self-recomputing-character-sheets",
+    "title": "Character sheets that recompute themselves",
+    "summary": "A skill, gear or condition changes a stat and the sheet updates instantly.",
+    "status": "stable",
+    "docsUrl": "openspec/specs/character-management/spec.md",
+    "title_nl": "Karakterbladen die zichzelf herberekenen",
+    "summary_nl": "Een vaardigheid, voorwerp of conditie verandert een stat en het blad werkt direct bij."
   },
   {
-    "slug": "dashboard",
-    "title": "Dashboard",
-    "summary": "SPA mount fixed in #202 — UI scenarios covered by tests/e2e/spec-coverage/spa-ui.spec.ts",
-    "docsUrl": "openspec/specs/dashboard/spec.md"
+    "slug": "skill-requirement-enforcement",
+    "title": "Rules the system enforces for you",
+    "summary": "Illegal builds and overspent XP are rejected at save, with a GM override.",
+    "status": "stable",
+    "docsUrl": "openspec/specs/skill-requirement-enforcement/spec.md",
+    "title_nl": "Regels die het systeem voor je afdwingt",
+    "summary_nl": "Ongeldige builds en te veel uitgegeven XP worden bij opslaan geweigerd, met een GM-override."
   },
   {
-    "slug": "dashboard-analytics-widgets",
-    "title": "Dashboard Analytics Widgets",
-    "summary": "SPA mount fixed in #202 — dashboard widget rendering scenarios covered by tests/e2e/spec-coverage/spa-ui.spec.ts; GraphQL transport scenarios annotated @e2e exclude below",
-    "docsUrl": "openspec/specs/dashboard-analytics-widgets/spec.md"
+    "slug": "event-xp-awards",
+    "title": "XP awards after every event",
+    "summary": "Hand out experience after an event and characters level up automatically.",
+    "status": "stable",
+    "docsUrl": "openspec/specs/event-xp-awards/spec.md",
+    "title_nl": "XP toekennen na elk evenement",
+    "summary_nl": "Ken na een evenement ervaring toe en karakters gaan automatisch in level omhoog."
   },
   {
-    "slug": "deep-link-registration",
-    "title": "Deep Link Registration",
-    "summary": "@e2e exclude pure-backend event-listener spec — DeepLinkRegistrationListener registers URL patterns via PHP event dispatch; no browser-navigable UI surface to drive with Playwright",
-    "docsUrl": "openspec/specs/deep-link-registration/spec.md"
+    "slug": "rpg-system",
+    "title": "Configurable rules engine",
+    "summary": "Model your own ruleset with custom abilities, skills, items and effects.",
+    "status": "stable",
+    "docsUrl": "openspec/specs/rpg-system/spec.md",
+    "title_nl": "Instelbare regelmotor",
+    "summary_nl": "Bouw je eigen regelset met eigen eigenschappen, vaardigheden, voorwerpen en effecten."
   },
   {
-    "slug": "events-players",
-    "title": "Events and Players",
-    "summary": "SPA mount fixed in #202 — list view scenarios covered by tests/e2e/spec-coverage/spa-ui.spec.ts; backend CharacterService.applyEntityEffects and mapper scenarios annotated @e2e exclude below",
-    "docsUrl": "openspec/specs/events-players/spec.md"
+    "slug": "pdf-character-sheets",
+    "title": "Printable character sheets",
+    "summary": "Players bring a clean PDF character sheet to the field.",
+    "status": "stable",
+    "docsUrl": "openspec/specs/pdf-export/spec.md",
+    "title_nl": "Printbare karakterbladen",
+    "summary_nl": "Spelers nemen een net PDF-karakterblad mee naar het veld."
   },
   {
-    "slug": "larping-skill-widget",
-    "title": "Larping Skill Widget",
-    "summary": "SPA mount fixed in #202 — skill usage empty-state scenario covered by tests/e2e/spec-coverage/spa-ui.spec.ts; GraphQL transport/facet-processing scenarios annotated @e2e exclude below; unimplemented widget scenarios annotated @e2e exclude pending implementation",
-    "docsUrl": "openspec/specs/larping-skill-widget/spec.md"
+    "slug": "gm-run-sheet",
+    "title": "GM run-sheet per event",
+    "summary": "Print one cast list with names, stats, conditions and notes per event.",
+    "status": "stable",
+    "docsUrl": "openspec/specs/pdf-export/spec.md",
+    "title_nl": "GM-draaiboek per evenement",
+    "summary_nl": "Print per evenement een castlijst met namen, stats, condities en notities."
   },
   {
-    "slug": "object-service",
-    "title": "Object Service",
-    "summary": "@e2e exclude pure-backend PHP service — mapper resolution, OpenRegister DI, and array conversion are PHPUnit concerns; no UI surface to drive via Playwright",
-    "docsUrl": "openspec/specs/object-service/spec.md"
+    "slug": "setting-management",
+    "title": "Worlds and campaigns",
+    "summary": "Scope characters and events per setting and archive a campaign without losing its history.",
+    "status": "stable",
+    "docsUrl": "openspec/specs/setting-management/spec.md",
+    "title_nl": "Werelden en campagnes",
+    "summary_nl": "Koppel karakters en evenementen aan een setting en archiveer een campagne zonder de geschiedenis te verliezen."
   },
   {
-    "slug": "preferences-api",
-    "title": "preferences-api",
-    "summary": "Provides the per-user preference read/write surface of the app. It retrieves and persists per-user key/value preferences scoped to the authenticated user within the `pref_` namespace, sanitising keys to a safe charset, returning a default when unset, and clearing a preference when an empty value is supplied. Unauthenticated requests are rejected and invalid keys yield a bad-request response.",
-    "docsUrl": "openspec/specs/preferences-api/spec.md"
+    "slug": "guided-setup-and-walkthrough",
+    "title": "Guided setup and walkthrough",
+    "summary": "A first-run wizard provisions everything and a tour shows you around.",
+    "status": "stable",
+    "docsUrl": "openspec/specs/guided-setup-and-walkthrough/spec.md",
+    "title_nl": "Begeleide installatie en rondleiding",
+    "summary_nl": "Een wizard bij de eerste start regelt alles en een rondleiding wijst je de weg."
   },
   {
-    "slug": "register-config-json",
-    "title": "Register Config JSON Auto-Import",
-    "summary": "@e2e exclude pure-backend config-import spec — JSON auto-import runs in Application::boot() via PHP; ConfigFileLoaderService/SettingsLoadService/SettingsMapBuilder logic is covered by PHPUnit; no browser-navigable UI surface",
-    "docsUrl": "openspec/specs/register-config-json/spec.md"
+    "slug": "campaign-dashboard",
+    "title": "Campaign dashboard",
+    "summary": "See character, event, item and player counts at a glance.",
+    "status": "stable",
+    "docsUrl": "openspec/specs/dashboard/spec.md",
+    "title_nl": "Campagnedashboard",
+    "summary_nl": "Zie in een oogopslag het aantal karakters, evenementen, voorwerpen en spelers."
   },
   {
-    "slug": "settings-management-ui",
-    "title": "Settings Management UI",
-    "summary": "SPA mount fixed in #202 — settings panel load scenario covered by tests/e2e/spec-coverage/spa-ui.spec.ts; Pinia store lifecycle scenarios annotated @e2e exclude below",
-    "docsUrl": "openspec/specs/settings-management-ui/spec.md"
+    "slug": "skill-usage-insights",
+    "title": "Skill usage insights",
+    "summary": "See which skills your players pick most across a campaign.",
+    "status": "beta",
+    "docsUrl": "openspec/specs/larping-skill-widget/spec.md",
+    "providedBy": "openregister",
+    "title_nl": "Inzicht in vaardigheidsgebruik",
+    "summary_nl": "Zie welke vaardigheden je spelers het vaakst kiezen in een campagne."
   },
   {
-    "slug": "user-settings",
-    "title": "User Settings",
-    "summary": "Provides a settings dialog accessible from the navigation footer, allowing users to re-import configuration. Uses `NcAppSettingsDialog` from `@nextcloud/vue`.",
-    "docsUrl": "openspec/specs/user-settings/spec.md"
+    "slug": "event-rosters-and-signup",
+    "title": "Event rosters and sign-up",
+    "summary": "Players sign up through a form and you see who is attending.",
+    "status": "beta",
+    "docsUrl": "openspec/specs/event-signup-to-forms-leaf/spec.md",
+    "providedBy": "openregister",
+    "title_nl": "Evenementrosters en aanmelding",
+    "summary_nl": "Spelers melden zich aan via een formulier en jij ziet wie er komt."
+  },
+  {
+    "slug": "player-and-contact-records",
+    "title": "Player and contact records",
+    "summary": "Link a player to their characters and reach them by email or phone.",
+    "status": "beta",
+    "docsUrl": "openspec/specs/player-to-contacts-leaf/spec.md",
+    "providedBy": "openregister",
+    "title_nl": "Speler- en contactgegevens",
+    "summary_nl": "Koppel een speler aan zijn karakters en bereik hem via e-mail of telefoon."
+  },
+  {
+    "slug": "lifecycle-notifications",
+    "title": "Lifecycle notifications",
+    "summary": "Get notified when a character is submitted or approved.",
+    "status": "beta",
+    "docsUrl": "openspec/specs/notifications/spec.md",
+    "providedBy": "openregister",
+    "title_nl": "Meldingen bij statuswijzigingen",
+    "summary_nl": "Ontvang een melding wanneer een karakter wordt ingediend of goedgekeurd."
+  },
+  {
+    "slug": "photos-maps-and-calendar",
+    "title": "Photos, maps and calendar on detail pages",
+    "summary": "Add a portrait, pin a location and put sessions in the calendar.",
+    "status": "beta",
+    "docsUrl": "openspec/specs/character-photos-leaf/spec.md",
+    "providedBy": "openregister",
+    "title_nl": "Foto's, kaarten en agenda op detailpagina's",
+    "summary_nl": "Voeg een portret toe, prik een locatie op de kaart en zet sessies in de agenda."
+  },
+  {
+    "slug": "online-event-payments",
+    "title": "Online payments for event fees",
+    "summary": "Collect ticket fees when players register for an event.",
+    "status": "soon",
+    "docsUrl": "openspec/specs/online-event-payments/spec.md",
+    "title_nl": "Online betalingen voor deelnamekosten",
+    "summary_nl": "Int deelnamekosten wanneer spelers zich aanmelden voor een evenement."
+  },
+  {
+    "slug": "onsite-check-in",
+    "title": "On-site check-in",
+    "summary": "Check players in at the door with a QR scan.",
+    "status": "soon",
+    "docsUrl": "openspec/specs/onsite-check-in/spec.md",
+    "title_nl": "Inchecken op locatie",
+    "summary_nl": "Check spelers bij de deur in met een QR-scan."
+  },
+  {
+    "slug": "faction-and-group-management",
+    "title": "Faction and group management",
+    "summary": "Organise characters into factions and guilds.",
+    "status": "soon",
+    "docsUrl": "openspec/specs/faction-and-group-management/spec.md",
+    "title_nl": "Beheer van facties en groepen",
+    "summary_nl": "Organiseer karakters in facties en gilden."
   }
 ]
