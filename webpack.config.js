@@ -28,6 +28,26 @@ webpackConfig.entry = {
 	},
 }
 
+// `@nextcloud/webpack-vue-config` hardcodes `output.publicPath` to
+// `/apps/<appName>/js/`. That is only correct when the app is installed under
+// the apps path whose URL is `/apps`. Nextcloud supports several apps paths,
+// and the standard Docker image registers a SECOND one — `/var/www/html/custom_apps`
+// served at `/custom_apps` — which is where a `docker cp`-deployed app lands.
+//
+// The entry bundle is unaffected (Nextcloud generates that script tag itself and
+// gets the path right), so the failure only shows up on LAZY-LOADED chunks: they
+// 404, Nextcloud's error page comes back as `text/html`, the browser refuses it
+// on MIME grounds, and the page dies with a `ChunkLoadError`. Nothing in the
+// build reports a problem. It bites this app hard because the manifest renderer
+// code-splits nearly every page component.
+//
+// `'auto'` makes webpack derive the public path at runtime from the URL the
+// entry script was actually loaded from, so it is correct under every apps path.
+webpackConfig.output = {
+	...(webpackConfig.output || {}),
+	publicPath: 'auto',
+}
+
 // Use local source when available (monorepo dev), otherwise fall back to npm package
 const localLib = path.resolve(__dirname, '../nextcloud-vue/src')
 const useLocalLib = process.env.USE_LOCAL_LIB !== 'false' && fs.existsSync(localLib)
