@@ -48,9 +48,56 @@ webpackConfig.output = {
 	publicPath: 'auto',
 }
 
-// Use local source when available (monorepo dev), otherwise fall back to npm package
+// Use local source when available (monorepo dev), otherwise fall back to the
+// npm package.
+//
+// ⚠️ This alias is opt-OUT, and it silently OVERRIDES the exactly-pinned
+// `@conduction/nextcloud-vue` dependency. A sibling `../nextcloud-vue` checkout
+// sitting on the Vue 2 (`1.x` / `beta.*`) line therefore builds this Vue 3 app
+// against Vue 2 library sources — the build succeeds, and the first symptom is
+// a runtime failure that looks like a migration bug.
+//
+// That is not hypothetical: the shared `apps-extra/nextcloud-vue` checkout was
+// on `wip/cnindexpage-export-action` at `1.0.0-beta.184` while this migration
+// was in progress, so any build run from `apps-extra/larpingapp` would have
+// picked it up.
+//
+// So the local lib is used only when its MAJOR matches the version this app
+// depends on. A mismatch is a hard, loud failure rather than a silent
+// downgrade; `USE_LOCAL_LIB=false` still disables the alias outright.
 const localLib = path.resolve(__dirname, '../nextcloud-vue/src')
-const useLocalLib = process.env.USE_LOCAL_LIB !== 'false' && fs.existsSync(localLib)
+
+/**
+ * Decide whether the sibling nc-vue checkout may be aliased in.
+ *
+ * @return {boolean} True when the local source should replace the npm package.
+ */
+function resolveUseLocalLib() {
+	if (process.env.USE_LOCAL_LIB === 'false' || !fs.existsSync(localLib)) {
+		return false
+	}
+	const wanted = require('./package.json').dependencies['@conduction/nextcloud-vue']
+	const wantedMajor = String(wanted).replace(/^[^0-9]*/, '').split('.')[0]
+	let localVersion = null
+	try {
+		localVersion = require(path.resolve(localLib, '..', 'package.json')).version
+	} catch (e) {
+		localVersion = null
+	}
+	const localMajor = localVersion ? String(localVersion).split('.')[0] : null
+	if (localMajor !== null && localMajor !== wantedMajor) {
+		throw new Error(
+			`[larpingapp] Refusing to build against ../nextcloud-vue@${localVersion}: this app `
+			+ `depends on @conduction/nextcloud-vue@${wanted} (major ${wantedMajor}). Aliasing a `
+			+ `major-${localMajor} checkout in would silently build Vue ${localMajor === '1' ? '2' : '?'} `
+			+ 'library sources into a Vue 3 app. Check out the matching nc-vue branch, or set '
+			+ 'USE_LOCAL_LIB=false to build against the pinned npm package.',
+		)
+	}
+	return true
+}
+
+const useLocalLib = resolveUseLocalLib()
 
 // Extend the base resolve config (preserves defaults from @nextcloud/webpack-vue-config)
 webpackConfig.resolve = webpackConfig.resolve || {}
