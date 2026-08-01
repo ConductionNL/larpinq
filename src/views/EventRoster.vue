@@ -34,15 +34,21 @@
 				<CnStatusBadge :label="statusLabel(row.status)" :variant="statusVariant(row.status)" />
 			</template>
 			<template v-if="canCheckIn" #row-actions="{ row }">
+				<!--
+				  @nextcloud/vue v9 repurposed NcButton's `type` prop as the
+				  NATIVE button type ('submit' | 'reset' | 'button'); the visual
+				  style moved to `variant`. The Vue-2 spelling would render
+				  `<button type="secondary">` with no warning and no lint error.
+				-->
 				<NcButton
-					type="secondary"
+					variant="secondary"
 					:disabled="saving === row.character || row.status === 'checked-in'"
 					data-testid="event-roster-checkin"
 					@click="setStatus(row, 'checked-in')">
 					{{ t('larpingapp', 'Check in') }}
 				</NcButton>
 				<NcButton
-					type="tertiary"
+					variant="tertiary"
 					:disabled="saving === row.character || row.status === 'no-show'"
 					data-testid="event-roster-noshow"
 					@click="setStatus(row, 'no-show')">
@@ -55,7 +61,9 @@
 
 <script>
 import { CnDataTable, CnStatusBadge } from '@conduction/nextcloud-vue'
-import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
+// @nextcloud/vue v9 ships an `exports` map; the v8 `dist/Components/*.js`
+// deep paths are no longer exported and throw ERR_PACKAGE_PATH_NOT_EXPORTED.
+import NcButton from '@nextcloud/vue/components/NcButton'
 import { generateUrl } from '@nextcloud/router'
 
 /**

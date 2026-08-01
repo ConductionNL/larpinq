@@ -8,7 +8,13 @@ on:
 
 jobs:
   quality:
-    uses: Conduction/.github/.github/workflows/quality.yml@main
+    # ConductionNL, NOT Conduction. e2faa092 ("org rename") pointed all eight
+    # reusable-workflow calls in this repo at `Conduction/.github`, which
+    # Actions cannot resolve — so from 2026-06-01 every run of this workflow
+    # produced ZERO jobs and failed instantly, taking ESLint, PHPCS, PHPMD,
+    # PHPStan, the license/security scan and the 4-way PHPUnit matrix offline
+    # without a single red test to show for it.
+    uses: ConductionNL/.github/.github/workflows/quality.yml@main
     with:
       app-name: larpingapp
       php-version: "8.3"

@@ -20,6 +20,7 @@
  */
 
 import { test, expect, type Page } from '@playwright/test'
+import { dismissSupportDialog } from '../_nav'
 
 const BASE = '/apps/larpingapp'
 
@@ -42,14 +43,8 @@ async function openRoute(page: Page, route: string): Promise<void> {
 	await expect(page.locator('.app-content')).toBeVisible({ timeout: 10_000 })
 }
 
-/** Dismiss the cn-support-dialog / first-load support modal if it blocks clicks. */
-async function dismissSupportDialog(page: Page): Promise<void> {
-	const close = page.locator('[role="dialog"] button[aria-label="Close"], .cn-support-dialog button[aria-label="Close"]').first()
-	if (await close.isVisible({ timeout: 1500 }).catch(() => false)) {
-		await close.click().catch(() => {})
-		await page.waitForTimeout(200)
-	}
-}
+// `dismissSupportDialog` now comes from `../_nav` — see the note there on the
+// onboarding tour whose "Close tour" / "Skip" controls this local copy missed.
 
 /** Collect larpingapp-origin console errors / pageerrors / 5xx during a test. */
 function trackLarpErrors(page: Page): string[] {

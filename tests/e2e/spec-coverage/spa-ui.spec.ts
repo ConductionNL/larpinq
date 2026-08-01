@@ -18,6 +18,7 @@
  */
 
 import { test, expect, type Page } from '@playwright/test'
+import { dismissSupportDialog } from '../_nav'
 
 const BASE = '/apps/larpingapp'
 const TS = Date.now()
@@ -57,11 +58,11 @@ async function go(page: Page, route: string): Promise<void> {
 		// poll), so it burns the full budget. Wait for the rendered shell.
 		await page.locator('#app-content, .app-content, #content').first()
 			.waitFor({ state: 'visible', timeout: 30_000 }).catch(() => {})
-		// Dismiss "Support Larpingapp" modal that fires on first load
-		const supportClose = page.locator('[role="dialog"] button[aria-label="Close"], [role="dialog"] button:has-text("Close")').first()
-		if (await supportClose.isVisible({ timeout: 2000 }).catch(() => false)) {
-			await supportClose.click().catch(() => {})
-		}
+		// Clear the first-load modals. Shared helper — the local copy matched
+		// only `aria-label="Close"` and so never dismissed the six-step
+		// onboarding tour ("Close tour" / "Skip"), which covers the viewport and
+		// makes every later click hang on actionability.
+		await dismissSupportDialog(page)
 	}
 	// Resolve the target path relative to the app base. The router runs in
 	// hash mode (src/main.js — fleet #133 deep-link fix), so in-app routes are

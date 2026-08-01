@@ -70,14 +70,52 @@ export function navIdForSlug(slug: string): string {
 	return NAV_ID_OF[slug] ?? slug.charAt(0).toUpperCase() + slug.slice(1)
 }
 
-/** Dismiss the first-load support modal if it is blocking clicks. */
+/**
+ * Dismiss every blocking first-load modal.
+ *
+ * READ THIS BEFORE NARROWING THE SELECTOR AGAIN.
+ *
+ * This used to match only `button[aria-label="Close"]`. The app's first load
+ * opens a SIX-STEP onboarding tour ("Welcome to LARPing"), whose controls are
+ * labelled **"Close tour"** and **"Skip"** — neither matches, so the tour stayed
+ * open over the whole viewport. Measured:
+ * `document.elementFromPoint(innerWidth/2, innerHeight/2)` returned the tour's
+ * `<video>`, and two `[role="dialog"]` nodes were live with two modal masks.
+ *
+ * That is a nasty failure shape, because the page underneath is perfectly
+ * rendered: `toBeVisible()` still passes on plenty of elements, but every
+ * `locator.click()` hangs on actionability until the test times out. It
+ * accounted for the bulk of a 58-failure run and reads exactly like a
+ * rendering regression.
+ *
+ * So: close ANY visible dialog, by any of the labels the tour and the support
+ * modal actually use, and keep going until none is left (the tour and the
+ * step-controls modal are two separate dialogs). Escape is the fallback.
+ *
+ * @param {Page} page The page to clear.
+ * @return {Promise<void>}
+ */
 export async function dismissSupportDialog(page: Page): Promise<void> {
-	const close = page
-		.locator('[role="dialog"] button[aria-label="Close"], .cn-support-dialog button[aria-label="Close"]')
-		.first()
-	if (await close.isVisible({ timeout: 1500 }).catch(() => false)) {
-		await close.click().catch(() => {})
-		await page.waitForTimeout(200)
+	const DISMISS = /^(close tour|skip|close|dismiss|got it|finish|no thanks)$/i
+	for (let pass = 0; pass < 4; pass++) {
+		const dialog = page.locator('[role="dialog"]:visible').first()
+		if (!(await dialog.isVisible({ timeout: pass === 0 ? 2500 : 800 }).catch(() => false))) {
+			return
+		}
+		const buttons = await dialog.locator('button').all().catch(() => [])
+		let clicked = false
+		for (const btn of buttons) {
+			const label = ((await btn.getAttribute('aria-label').catch(() => '')) || (await btn.innerText().catch(() => '')) || '').trim()
+			if (DISMISS.test(label)) {
+				await btn.click({ timeout: 3000 }).catch(() => {})
+				clicked = true
+				break
+			}
+		}
+		if (!clicked) {
+			await page.keyboard.press('Escape').catch(() => {})
+		}
+		await page.waitForTimeout(350)
 	}
 }
 

@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: EUPL-1.2
 // Copyright (C) 2026 Conduction B.V.
 
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import { PiniaVuePlugin } from 'pinia'
+import { createApp, h } from 'vue'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import { translate as t, translatePlural as n, loadTranslations } from '@nextcloud/l10n'
 import { generateUrl } from '@nextcloud/router'
 import {
@@ -11,6 +10,7 @@ import {
 	defaultPageTypes,
 	registerIcons,
 	registerTranslations,
+	registerBuiltinDashboardWidgets,
 } from '@conduction/nextcloud-vue'
 import pinia from './pinia.js'
 import App from './App.vue'
@@ -27,12 +27,32 @@ import appIcons from './icons.js'
 // Library CSS — must be explicit import (webpack tree-shakes side-effect imports from aliased packages)
 import '@conduction/nextcloud-vue/css/index.css'
 
+// gridstack v12 CSS. The manifest declares a `type: "dashboard"` page, whose
+// widgets nc-vue lays out with gridstack. Without this stylesheet every
+// dashboard item renders 0 px wide — v12 sizes items with
+// `width: var(--gs-column-width)` — and NOTHING is logged.
+import 'gridstack/dist/gridstack.min.css'
+
 // Global (unscoped) app styles
 import './assets/app.css'
 
-Vue.mixin({ methods: { t, n } })
-Vue.use(PiniaVuePlugin)
-Vue.use(VueRouter)
+// Populate the dashboard widget-type registry.
+//
+// This call is an intentional no-op in the library — its ONLY job is to make
+// the bundler evaluate `registerDashboardWidgets.js`, which self-registers the
+// built-in widget catalog. nc-vue's package.json declares
+// `sideEffects: ["**/*.css"]` (ADR-061 tree-shaking), which lets webpack
+// legally DROP that module's bare side-effect imports.
+//
+// The manifest's `stat` KPI tiles and `object-table` lists are registered
+// exactly that way — via `import '../CnStatWidget/index.js'` and
+// `import '../CnWidgetObjectTable/dashboardRegistration.js'` — so without this
+// call `getWidgetTypeEntry()` misses and CnDashboardPage falls through to its
+// "Widget not available" placeholder. Verified live on the isolated instance:
+// 5 of the 7 dashboard widgets rendered that placeholder, and the one that
+// worked (`chart`) is registered by an INLINE `registerDashboardWidget()` call
+// that tree-shaking cannot reach.
+registerBuiltinDashboardWidgets()
 
 // Register the MDI icons the manifest references + lib translations at bootstrap.
 registerIcons(appIcons)
@@ -251,11 +271,9 @@ function mergeManifestFragments(base) {
 const manifest = mergeManifestFragments(bundledManifest)
 
 // Shallow-clone CnPageRenderer because the lib's barrel exports are
-// non-extensible (webpack ESM module records). Vue 2's `Vue.extend()`
-// adds an internal `_Ctor` cache to the component definition; mutating
-// a non-extensible export throws "Cannot add property _Ctor, object is
-// not extensible". Cloning gives Vue Router an extensible
-// component-options object without altering the lib's internals.
+// non-extensible (webpack ESM module records) and vue-router / Vue may attach
+// internal caches to a component options object. Cloning gives the router an
+// extensible component-options object without altering the lib's internals.
 const RoutePageRenderer = { ...CnPageRenderer }
 
 /**
@@ -263,7 +281,7 @@ const RoutePageRenderer = { ...CnPageRenderer }
  * one route; routes with `:` parameters receive `props: true`.
  *
  * @param {object} manifest The bundled manifest (with `pages[]`).
- * @return {Array<object>} vue-router 3 routes config.
+ * @return {Array<object>} vue-router 4 routes config.
  */
 function routesFromManifest(manifest) {
 	const routes = manifest.pages.map((page) => ({
@@ -273,37 +291,42 @@ function routesFromManifest(manifest) {
 		props: page.route.includes(':'),
 	}))
 	// Catch-all: redirect unknown paths to the dashboard.
-	routes.push({ path: '*', redirect: '/' })
+	//
+	// vue-router 4 REMOVED the bare `path: '*'` wildcard — it no longer matches
+	// anything and no warning is emitted, so an unknown hash would render the
+	// app shell with an empty `<main>`. The parameterised form below is its
+	// replacement.
+	routes.push({ path: '/:pathMatch(.*)*', redirect: '/' })
 	return routes
 }
 
-const router = new VueRouter({
-	mode: 'hash',
-	base: generateUrl('/apps/larpingapp'),
+const router = createRouter({
+	history: createWebHashHistory(generateUrl('/apps/larpingapp')),
 	routes: routesFromManifest(manifest),
 })
 
 tryLoadTranslations()
 
 // Pass shallow copies of the registry maps to App.vue. The lib exports
-// `defaultPageTypes` (and our `registry`) as frozen module objects in
-// some bundle shapes — Vue 2's `Vue.extend()` mutates component definitions
-// to attach an internal `_Ctor` cache, which throws "Cannot add property
-// _Ctor, object is not extensible" against a frozen source map. Cloning
-// here yields extensible objects without changing the values the lib
-// resolves at render time.
+// `defaultPageTypes` (and our `registry`) FROZEN in some bundle shapes, and
+// anything that later attaches an internal cache to them throws against a
+// frozen object. Cloning here yields extensible objects without changing the
+// values the lib resolves at render time.
 const pageTypesProp = { ...defaultPageTypes }
 const registryProp = { ...registry }
 
-// eslint-disable-next-line no-new
-new Vue({
-	pinia,
-	router,
-	render: (h) => h(App, {
-		props: {
-			manifest,
-			registry: registryProp,
-			pageTypes: pageTypesProp,
-		},
+const app = createApp({
+	render: () => h(App, {
+		manifest,
+		registry: registryProp,
+		pageTypes: pageTypesProp,
 	}),
-}).$mount('#content')
+})
+
+// Vue 3: plugins and global mixins are installed on the APP INSTANCE, not on
+// the Vue constructor. `PiniaVuePlugin` is gone — `app.use(pinia)` is the only
+// installation path.
+app.mixin({ methods: { t, n } })
+app.use(pinia)
+app.use(router)
+app.mount('#content')

@@ -28,7 +28,8 @@
  */
 
 import { test, expect, request, type Page, type APIRequestContext } from '@playwright/test'
-import { navTo as sharedNavTo } from '../_nav'
+import { navTo as sharedNavTo, dismissSupportDialog } from '../_nav'
+import { BASE_URL } from '../_base-url'
 
 const BASE = '/apps/larpingapp'
 const TS = Date.now()
@@ -42,8 +43,25 @@ const TS = Date.now()
 // top-level `register` key (156). Seeding into 156 produced objects the SPA
 // could never see. We seed into 8 so the fixtures live in the register the
 // detail routes resolve against.
-const NEXTCLOUD_URL = process.env.NEXTCLOUD_URL || 'http://localhost:8080'
-const REGISTER_ID = process.env.LARPING_REGISTER_ID || process.env.LARP_REGISTER_ID || '8'
+// Resolved centrally in `tests/e2e/_base-url.ts` — no `localhost:8080`
+// fallback. This spec's WRITE path seeds OpenRegister objects, and the old
+// default sent them into the SHARED dev container whenever NEXTCLOUD_URL was
+// unset, even when the browser side was pointed elsewhere.
+const NEXTCLOUD_URL = BASE_URL
+
+// Bootstrap ids only. They are OVERWRITTEN in beforeAll by `resolveIds()`,
+// which reads the app's own settings API — the same source of truth
+// `tests/e2e/workflows/fixtures.ts` already uses, and the same one the SPA
+// itself reads at runtime.
+//
+// These literals are correct on exactly one machine. On a freshly installed
+// instance LarpingApp's register imports as id 15 with a different schema-id
+// assignment, so every seed POSTed into register 8 / schema 18-25 either 404s
+// or lands in an unrelated register. `seedObject()` swallows that and stores
+// the string `'seed-missing'`, the detail routes then navigate to
+// `#/characters/seed-missing`, and the specs fail 60 s later as TIMEOUTS —
+// which reads like a rendering regression and is really a stale constant.
+let REGISTER_ID = process.env.LARPING_REGISTER_ID || process.env.LARP_REGISTER_ID || '8'
 const SCHEMA_IDS: Record<string, string> = {
 	character: process.env.LARPING_SCHEMA_ID_CHARACTER || '18',
 	player: process.env.LARPING_SCHEMA_ID_PLAYER || '19',
@@ -53,6 +71,61 @@ const SCHEMA_IDS: Record<string, string> = {
 	condition: process.env.LARPING_SCHEMA_ID_CONDITION || '23',
 	effect: process.env.LARPING_SCHEMA_ID_EFFECT || '24',
 	event: process.env.LARPING_SCHEMA_ID_EVENT || '25',
+}
+
+/**
+ * Overwrite REGISTER_ID / SCHEMA_IDS from LarpingApp's settings API.
+ *
+ * An explicit `LARPING_*` environment variable always wins, so a run can still
+ * be pinned by hand. Anything not pinned is resolved from the instance.
+ *
+ * @param {APIRequestContext} api Authenticated request context.
+ * @return {Promise<void>}
+ */
+async function resolveIds(api: APIRequestContext): Promise<void> {
+	const res = await api.get(`${NEXTCLOUD_URL}/index.php/apps/larpingapp/api/settings`, {
+		headers: { 'OCS-APIRequest': 'true' },
+	}).catch(() => null)
+	if (!res || !res.ok()) {
+		return
+	}
+	const cfg = (await res.json().catch(() => null))?.configuration
+	if (!cfg || typeof cfg !== 'object') {
+		return
+	}
+	if (!process.env.LARPING_REGISTER_ID && !process.env.LARP_REGISTER_ID
+		&& cfg.register !== undefined && String(cfg.register) !== '') {
+		REGISTER_ID = String(cfg.register)
+	}
+	for (const type of Object.keys(SCHEMA_IDS)) {
+		// The per-type register wins over the shared top-level one. Reading
+		// `configuration.register` alone is what previously made list fetches
+		// miss whenever a type's own register diverged from it.
+		const perTypeRegister = cfg[`${type}_register`]
+		if (perTypeRegister !== undefined && String(perTypeRegister) !== '') {
+			REGISTER_IDS[type] = String(perTypeRegister)
+		}
+		if (process.env[`LARPING_SCHEMA_ID_${type.toUpperCase()}`]) {
+			continue
+		}
+		const schemaId = cfg[`${type}_schema`]
+		if (schemaId !== undefined && String(schemaId) !== '') {
+			SCHEMA_IDS[type] = String(schemaId)
+		}
+	}
+}
+
+/** Register each type is actually stored in; defaults to the shared register. */
+const REGISTER_IDS: Record<string, string> = {}
+
+/**
+ * The register to seed a given type into.
+ *
+ * @param {string} type The object type slug.
+ * @return {string} The per-type register id, or the shared one.
+ */
+function registerFor(type: string): string {
+	return REGISTER_IDS[type] || REGISTER_ID
 }
 
 // Shared seeded fixture ids, populated in beforeAll (best-effort).
@@ -71,10 +144,10 @@ async function openApp(page: Page): Promise<void> {
 			.waitFor({ state: 'visible', timeout: 30_000 }).catch(() => {})
 	}
 	await expect(page.locator('.app-content')).toBeVisible({ timeout: 15_000 })
-	const supportClose = page.locator('[role="dialog"] button[aria-label="Close"]').first()
-	if (await supportClose.isVisible({ timeout: 1500 }).catch(() => false)) {
-		await supportClose.click().catch(() => {})
-	}
+	// Shared helper — see `../_nav`. The local copy matched only
+	// `aria-label="Close"` and never dismissed the onboarding tour, whose
+	// controls are "Close tour" / "Skip".
+	await dismissSupportDialog(page)
 }
 
 /**
@@ -102,11 +175,24 @@ async function navTo(page: Page, slug: string): Promise<void> {
  */
 async function gotoDetail(page: Page, slug: string, id: string, typeHeading: string): Promise<void> {
 	await page.goto(`${BASE}/#/${slug}/${id}`)
-	await page.waitForLoadState('networkidle').catch(() => {})
-	const supportClose = page.locator('[role="dialog"] button[aria-label="Close"]').first()
-	if (await supportClose.isVisible({ timeout: 1500 }).catch(() => false)) {
-		await supportClose.click().catch(() => {})
-	}
+	// ADR-074 rule 4: `networkidle` never settles on Nextcloud — the
+	// notification poll keeps the network permanently busy. This was the LAST
+	// live `waitForLoadState('networkidle')` in the suite; every other mention
+	// is a comment warning against it.
+	//
+	// The `.catch(() => {})` looks like it makes the call safe. It does not:
+	// `waitForLoadState` takes no timeout here, so it inherits the navigation
+	// timeout (0 = unbounded) and simply never settles. The TEST times out at
+	// 60 s first, so the catch never runs — and the failure is reported as
+	// `Test timeout of 60000ms exceeded`, which reads like a slow or broken
+	// page rather than an unsatisfiable wait. It backs every character-detail
+	// spec in this file.
+	await page.locator('#app-content, .app-content, #content').first()
+		.waitFor({ state: 'visible', timeout: 30_000 }).catch(() => {})
+	// Shared helper — see `../_nav`. The local copy matched only
+	// `aria-label="Close"` and never dismissed the onboarding tour, whose
+	// controls are "Close tour" / "Skip".
+	await dismissSupportDialog(page)
 	await expect(page).toHaveURL(new RegExp(`#/${slug}/${id}`))
 	await expect(page.locator('.app-content')).toBeVisible({ timeout: 10_000 })
 	await expect(
@@ -154,7 +240,20 @@ const DETAIL_ACTIONS_BLOCKER =
 	'was empty at check time, during a concurrent `occ maintenance:repair`). ' +
 	'ACTION: re-verify against a seeded, healthy instance — seed a character ' +
 	'via the OR API like workflows/crud-persistence does, then unpark. Do not ' +
-	'carry the slug-collision story forward; it sent triage the wrong way.'
+	'carry the slug-collision story forward; it sent triage the wrong way. ' +
+	'RESOLVED (verified 2026-08-01 on a clean isolated NC 34 instance, ' +
+	'larpingapp-vue3-e2e): the cause is a MISSING `player` SCHEMA. ' +
+	'lib/Settings/larpingapp_register.json declares ten schemas including ' +
+	'`player`, but after import the register holds nine — `item`, `event` and ' +
+	'`attendance` arrive prefixed (`larping_*`) while `player` is dropped ' +
+	'entirely — and `player_register`/`player_schema` are empty in app config. ' +
+	'The `character` schema REQUIRES `ocName`, typed `format: uuid` with ' +
+	'`$ref: player`, so with no player schema no player UUID can exist and the ' +
+	'OR API rejects every character create: "Property \'ocName\' should match ' +
+	'format \'uuid\'". seedObject() swallowed that, ids became the literal ' +
+	'"seed-missing", and every character-detail spec failed 60s later as a ' +
+	'TIMEOUT. Fix path is register-import side (schema slug handling), not ' +
+	'the test layer.'
 
 /** Click the detail-page Actions button and assert the popup menu opens. */
 async function openActionsMenu(page: Page): Promise<void> {
@@ -189,12 +288,29 @@ async function closeDialog(page: Page): Promise<void> {
 async function seedObject(
 	api: APIRequestContext, schema: string, body: Record<string, unknown>,
 ): Promise<string | null> {
-	const url = `${NEXTCLOUD_URL}/index.php/apps/openregister/api/objects/${REGISTER_ID}/${SCHEMA_IDS[schema]}`
+	const schemaId = SCHEMA_IDS[schema]
+	if (!schemaId) {
+		// eslint-disable-next-line no-console
+		console.error(`[e2e seed] ${schema}: no schema id configured on this instance — the app has no storage for it`)
+		return null
+	}
+	const url = `${NEXTCLOUD_URL}/index.php/apps/openregister/api/objects/${registerFor(schema)}/${schemaId}`
 	const res = await api.post(url, {
 		headers: { 'OCS-APIRequest': 'true', 'Content-Type': 'application/json' },
 		data: body,
 	}).catch(() => null)
-	if (!res || !res.ok()) return null
+	// Report WHY a seed failed. Swallowing it turns every dependent spec into a
+	// 60 s timeout that looks like a rendering regression.
+	if (!res) {
+		// eslint-disable-next-line no-console
+		console.error(`[e2e seed] ${schema}: POST ${url} threw`)
+		return null
+	}
+	if (!res.ok()) {
+		// eslint-disable-next-line no-console
+		console.error(`[e2e seed] ${schema}: POST ${url} -> ${res.status()} ${(await res.text().catch(() => '')).slice(0, 200)}`)
+		return null
+	}
 	const json = await res.json().catch(() => null)
 	return (json && (json.id || (json['@self'] && json['@self'].id))) || null
 }
@@ -207,6 +323,7 @@ test.beforeAll(async () => {
 	const api = await request.newContext({
 		httpCredentials: { username: process.env.NC_ADMIN_USER || 'admin', password: process.env.NC_ADMIN_PASS || 'admin' },
 	})
+	await resolveIds(api)
 	const n = `la-e2e-${TS}`
 	seeded.character = (await seedObject(api, 'character', { name: `${n}-hero`, ocName: `${n}-hero`, type: 'player', gold: 5, silver: 3, copper: 2, background: 'Born in Camelot' })) || 'seed-missing'
 	seeded.player = (await seedObject(api, 'player', { name: `${n}-player`, ocName: `${n}-player` })) || 'seed-missing'

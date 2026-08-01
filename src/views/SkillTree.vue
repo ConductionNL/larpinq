@@ -31,6 +31,16 @@
 <template>
 	<div class="skill-tree" data-testid="skill-tree">
 		<div class="skill-tree__controls">
+			<!--
+			  `@input` is NOT an event NcSelect emits under @nextcloud/vue v9 —
+			  its emits list is open / close / update:modelValue / search* /
+			  option:*. The Vue-2 spelling silently never fired, so picking a
+			  character would never have fetched the requirement report and the
+			  tree would have stayed uncoloured with no error. The compiler
+			  merges this listener with the v-model handler into an array and
+			  runs the v-model assignment first, so the handler sees the NEW
+			  selection.
+			-->
 			<NcSelect
 				v-model="selectedCharacter"
 				:options="characterOptions"
@@ -38,7 +48,7 @@
 				:placeholder="t('larpingapp', 'No character (uncoloured)')"
 				label="label"
 				data-testid="skill-tree-character"
-				@input="onCharacterChange" />
+				@update:modelValue="onCharacterChange" />
 			<NcSelect
 				v-model="selectedSetting"
 				:options="settingOptions"
@@ -120,8 +130,10 @@
 
 <script>
 import { CnIcon, CnStatusBadge, useObjectStore } from '@conduction/nextcloud-vue'
-import NcSelect from '@nextcloud/vue/dist/Components/NcSelect.js'
-import NcEmptyContent from '@nextcloud/vue/dist/Components/NcEmptyContent.js'
+// @nextcloud/vue v9 ships an `exports` map; the v8 `dist/Components/*.js`
+// deep paths are no longer exported and throw ERR_PACKAGE_PATH_NOT_EXPORTED.
+import NcSelect from '@nextcloud/vue/components/NcSelect'
+import NcEmptyContent from '@nextcloud/vue/components/NcEmptyContent'
 import { generateUrl } from '@nextcloud/router'
 import { idList, indexNames, computeStateBySkill, buildNodes, computeTiers } from './skillTreeGraph.js'
 
@@ -272,10 +284,15 @@ export default {
 	/**
 	 * Lifecycle hook: release the live collection subscriptions on unmount.
 	 *
+	 * Vue 3 renamed `beforeDestroy` to `beforeUnmount` and does NOT call — or
+	 * warn about — the old name. Left as `beforeDestroy` this hook would never
+	 * run, leaking both live collection subscriptions and the `$watch` handle
+	 * for the lifetime of the page.
+	 *
 	 * @spec openspec/specs/realtime-updates/spec.md
 	 * @return {void}
 	 */
-	beforeDestroy() {
+	beforeUnmount() {
 		this.releaseLiveSubscriptions()
 	},
 
@@ -518,9 +535,17 @@ export default {
 	display: inline-block;
 }
 
-.skill-tree__dot--owned { background-color: var(--color-success); }
-.skill-tree__dot--available { background-color: var(--color-primary-element); }
-.skill-tree__dot--locked { background-color: var(--color-error); }
+.skill-tree__dot--owned {
+	background-color: var(--color-success);
+}
+
+.skill-tree__dot--available {
+	background-color: var(--color-primary-element);
+}
+
+.skill-tree__dot--locked {
+	background-color: var(--color-error);
+}
 
 .skill-tree__body {
 	display: flex;
@@ -558,9 +583,18 @@ export default {
 	box-shadow: inset 3px 0 0 0 var(--color-primary-element);
 }
 
-.skill-tree__node--owned { border-color: var(--color-success); }
-.skill-tree__node--available { border-color: var(--color-primary-element); }
-.skill-tree__node--locked { border-color: var(--color-error); opacity: 0.85; }
+.skill-tree__node--owned {
+	border-color: var(--color-success);
+}
+
+.skill-tree__node--available {
+	border-color: var(--color-primary-element);
+}
+
+.skill-tree__node--locked {
+	border-color: var(--color-error);
+	opacity: 0.85;
+}
 
 .skill-tree__node-name {
 	font-weight: bold;

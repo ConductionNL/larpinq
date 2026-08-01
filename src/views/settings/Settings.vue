@@ -27,13 +27,22 @@
 					<h3>{{ formatTitle(objectType) }}</h3>
 
 					<div class="selection-container">
-						<!-- Source Selection -->
+						<!--
+						  `@change` is NOT an event NcSelect emits under
+						  @nextcloud/vue v9 — its emits list is open / close /
+						  update:modelValue / search* / option:*. The Vue-2
+						  spelling silently never fired, so switching a source to
+						  "Internal" would have left a stale register + schema
+						  attached. The compiler merges this listener with the
+						  v-model handler into an array and runs the v-model
+						  assignment first, so the handler sees the NEW value.
+						-->
 						<NcSelect
 							v-model="configuration[objectType].source"
 							:options="sourceOptions"
 							:input-label="t('larpingapp', 'Source')"
 							:disabled="loading"
-							@change="handleSourceChange(objectType)" />
+							@update:modelValue="handleSourceChange(objectType)" />
 
 						<!-- Register Selection (only if OpenRegister is selected) -->
 						<NcSelect
@@ -42,7 +51,7 @@
 							:options="registerOptions"
 							:input-label="t('larpingapp', 'Register')"
 							:disabled="loading"
-							@change="handleRegisterChange(objectType)" />
+							@update:modelValue="handleRegisterChange(objectType)" />
 
 						<!-- Schema Selection (only if Register is selected) -->
 						<NcSelect
@@ -56,8 +65,12 @@
 
 				<!-- Save Buttons -->
 				<div class="button-container">
+					<!--
+					  @nextcloud/vue v9 repurposed `type` as the NATIVE button
+					  type; the visual style moved to `variant`.
+					-->
 					<NcButton
-						type="primary"
+						variant="primary"
 						:disabled="loading || saving"
 						@click="saveAll">
 						<template #icon>
@@ -151,7 +164,10 @@ export default defineComponent({
 		},
 
 		/**
-		 * @param error
+		 * Surface a failed configuration re-import to the user.
+		 *
+		 * @param {Error|{message?: string}} error The failure reported by the shell.
+		 * @return {void}
 		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-10
 		 */
 		onReimportError(error) {
@@ -198,7 +214,10 @@ export default defineComponent({
 		},
 
 		/**
-		 * @param registerId
+		 * Resolve a register id to its human-readable title.
+		 *
+		 * @param {string} registerId The OpenRegister register id.
+		 * @return {string} The register title, or '' when unknown.
 		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-9
 		 */
 		getRegisterLabel(registerId) {
@@ -207,8 +226,11 @@ export default defineComponent({
 		},
 
 		/**
-		 * @param registerId
-		 * @param schemaId
+		 * Resolve a (register, schema) pair to the schema's human-readable title.
+		 *
+		 * @param {string} registerId The OpenRegister register id.
+		 * @param {string} schemaId The schema id within that register.
+		 * @return {string} The schema title, or '' when unknown.
 		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-9
 		 */
 		getSchemaLabel(registerId, schemaId) {
@@ -218,7 +240,10 @@ export default defineComponent({
 		},
 
 		/**
-		 * @param objectType
+		 * Capitalise an object-type slug for its section header.
+		 *
+		 * @param {string} objectType The object-type slug (e.g. 'character').
+		 * @return {string} The slug with its first letter capitalised.
 		 * @spec exclude Trivial capitalize-first-letter formatter for the
 		 * object-type section header — display-only, no business logic.
 		 */
@@ -227,7 +252,10 @@ export default defineComponent({
 		},
 
 		/**
-		 * @param registerId
+		 * Build the NcSelect options for the schemas of one register.
+		 *
+		 * @param {string|undefined} registerId The selected register id.
+		 * @return {Array<{label: string, value: string}>} Schema options, empty when no register is selected.
 		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-9
 		 */
 		getSchemaOptions(registerId) {
@@ -240,7 +268,11 @@ export default defineComponent({
 		},
 
 		/**
-		 * @param objectType
+		 * Clear the register + schema selections when a type falls back to
+		 * internal storage.
+		 *
+		 * @param {string} objectType The object-type slug whose source changed.
+		 * @return {void}
 		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-9
 		 */
 		handleSourceChange(objectType) {
@@ -252,7 +284,11 @@ export default defineComponent({
 		},
 
 		/**
-		 * @param objectType
+		 * Drop the schema selection when its register changes, so a schema from
+		 * the previous register can never be saved against the new one.
+		 *
+		 * @param {string} objectType The object-type slug whose register changed.
+		 * @return {void}
 		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-9
 		 */
 		handleRegisterChange(objectType) {

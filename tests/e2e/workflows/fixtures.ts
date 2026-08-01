@@ -49,11 +49,17 @@
  */
 
 import { request, type APIRequestContext } from '@playwright/test'
+import { OR_OBJECTS_API, LARPINGAPP_SETTINGS_API } from '../_base-url'
 
 export const BASE = '/apps/larpingapp'
-export const OR_BASE = 'http://localhost:8080/index.php/apps/openregister/api/objects'
 
-export const SETTINGS_API = 'http://localhost:8080/index.php/apps/larpingapp/api/settings'
+// Resolved centrally in `tests/e2e/_base-url.ts`. These were hardcoded to
+// `http://localhost:8080` — the SHARED dev container — so every fixture this
+// module created and deleted landed in somebody else's environment regardless
+// of which instance the specs were navigating.
+export const OR_BASE = OR_OBJECTS_API
+
+export const SETTINGS_API = LARPINGAPP_SETTINGS_API
 
 /**
  * Register the app's data actually lives in. Resolved from LarpingApp's own
