@@ -28,7 +28,7 @@
  */
 
 import { test, expect, request, type Page, type APIRequestContext } from '@playwright/test'
-import { navTo as sharedNavTo } from '../_nav'
+import { navTo as sharedNavTo, dismissSupportDialog } from '../_nav'
 import { BASE_URL } from '../_base-url'
 
 const BASE = '/apps/larpingapp'
@@ -144,10 +144,10 @@ async function openApp(page: Page): Promise<void> {
 			.waitFor({ state: 'visible', timeout: 30_000 }).catch(() => {})
 	}
 	await expect(page.locator('.app-content')).toBeVisible({ timeout: 15_000 })
-	const supportClose = page.locator('[role="dialog"] button[aria-label="Close"]').first()
-	if (await supportClose.isVisible({ timeout: 1500 }).catch(() => false)) {
-		await supportClose.click().catch(() => {})
-	}
+	// Shared helper — see `../_nav`. The local copy matched only
+	// `aria-label="Close"` and never dismissed the onboarding tour, whose
+	// controls are "Close tour" / "Skip".
+	await dismissSupportDialog(page)
 }
 
 /**
@@ -176,10 +176,10 @@ async function navTo(page: Page, slug: string): Promise<void> {
 async function gotoDetail(page: Page, slug: string, id: string, typeHeading: string): Promise<void> {
 	await page.goto(`${BASE}/#/${slug}/${id}`)
 	await page.waitForLoadState('networkidle').catch(() => {})
-	const supportClose = page.locator('[role="dialog"] button[aria-label="Close"]').first()
-	if (await supportClose.isVisible({ timeout: 1500 }).catch(() => false)) {
-		await supportClose.click().catch(() => {})
-	}
+	// Shared helper — see `../_nav`. The local copy matched only
+	// `aria-label="Close"` and never dismissed the onboarding tour, whose
+	// controls are "Close tour" / "Skip".
+	await dismissSupportDialog(page)
 	await expect(page).toHaveURL(new RegExp(`#/${slug}/${id}`))
 	await expect(page.locator('.app-content')).toBeVisible({ timeout: 10_000 })
 	await expect(

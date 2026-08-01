@@ -25,6 +25,7 @@
  */
 
 import { test, expect, type Page } from '@playwright/test'
+import { dismissSupportDialog } from '../_nav'
 
 const BASE = '/apps/larpingapp'
 
@@ -55,14 +56,11 @@ const INDEX_PAGES: Array<{ slug: string, nav: string, entity: string }> = [
 	{ slug: 'events', nav: 'Events', entity: 'Event' },
 ]
 
-/** Dismiss the cn-support-dialog / first-load support modal if it blocks clicks. */
-async function dismissSupportDialog(page: Page): Promise<void> {
-	const close = page.locator('[role="dialog"] button[aria-label="Close"], .cn-support-dialog button[aria-label="Close"]').first()
-	if (await close.isVisible({ timeout: 1500 }).catch(() => false)) {
-		await close.click().catch(() => {})
-		await page.waitForTimeout(200)
-	}
-}
+// `dismissSupportDialog` is imported from `../_nav` rather than copied. Five
+// byte-similar copies of it existed across this suite, all matching only
+// `button[aria-label="Close"]` — which does not match the six-step onboarding
+// tour's "Close tour" / "Skip" controls, so the tour stayed open and every
+// subsequent click hung on actionability.
 
 /**
  * Expand every collapsed navigation group.

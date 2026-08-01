@@ -25,6 +25,7 @@
  * environment. See tests/e2e/visual/README in-repo wiring notes.
  */
 import { expect, type Page, type Locator } from '@playwright/test'
+import { dismissSupportDialog as sharedDismissSupportDialog } from '../_nav'
 
 /** Common screenshot options applied to every visual assertion. */
 export const SHOT_OPTIONS = {
@@ -61,15 +62,19 @@ export async function freezePage(page: Page): Promise<void> {
 }
 
 /**
- * Dismiss the "Support <App>" dialog that auto-opens over the app and would
+ * Dismiss the first-load dialogs that auto-open over the app and would
  * otherwise dominate (and randomise) the shot.
+ *
+ * Delegates to the shared implementation in `../_nav`. This copy matched only
+ * `[data-testid-modal="cn-support-dialog"]` with a `Close` button, so it never
+ * dismissed the six-step onboarding tour — which covers the whole viewport and
+ * would have been baked into every visual baseline.
+ *
+ * @param {Page} page The page to clear.
+ * @return {Promise<void>}
  */
 export async function dismissSupportDialog(page: Page): Promise<void> {
-	const dialog = page.locator('[data-testid-modal="cn-support-dialog"]')
-	if (await dialog.isVisible().catch(() => false)) {
-		await dialog.getByRole('button', { name: 'Close' }).click().catch(() => {})
-		await dialog.waitFor({ state: 'hidden', timeout: 5_000 }).catch(() => {})
-	}
+	await sharedDismissSupportDialog(page)
 }
 
 /**

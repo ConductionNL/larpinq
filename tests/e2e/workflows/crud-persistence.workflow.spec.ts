@@ -52,7 +52,7 @@
  */
 
 import { test, expect, type APIRequestContext, type Page } from '@playwright/test'
-import { navTo as sharedNavTo } from '../_nav'
+import { navTo as sharedNavTo, dismissSupportDialog } from '../_nav'
 import {
 	BASE,
 	RUN_ID,
@@ -125,10 +125,9 @@ async function openApp(page: Page): Promise<void> {
 			.waitFor({ state: 'visible', timeout: 30_000 }).catch(() => {})
 	}
 	await expect(page.locator('.app-content')).toBeVisible({ timeout: 15_000 })
-	const supportClose = page.locator('[role="dialog"] button[aria-label="Close"]').first()
-	if (await supportClose.isVisible({ timeout: 1500 }).catch(() => false)) {
-		await supportClose.click().catch(() => {})
-	}
+	// Shared helper — see `../_nav`. The local copy matched only
+	// `aria-label="Close"` and never dismissed the onboarding tour.
+	await dismissSupportDialog(page)
 }
 
 /**
