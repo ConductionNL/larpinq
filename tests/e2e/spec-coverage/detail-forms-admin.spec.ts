@@ -175,7 +175,20 @@ async function navTo(page: Page, slug: string): Promise<void> {
  */
 async function gotoDetail(page: Page, slug: string, id: string, typeHeading: string): Promise<void> {
 	await page.goto(`${BASE}/#/${slug}/${id}`)
-	await page.waitForLoadState('networkidle').catch(() => {})
+	// ADR-074 rule 4: `networkidle` never settles on Nextcloud — the
+	// notification poll keeps the network permanently busy. This was the LAST
+	// live `waitForLoadState('networkidle')` in the suite; every other mention
+	// is a comment warning against it.
+	//
+	// The `.catch(() => {})` looks like it makes the call safe. It does not:
+	// `waitForLoadState` takes no timeout here, so it inherits the navigation
+	// timeout (0 = unbounded) and simply never settles. The TEST times out at
+	// 60 s first, so the catch never runs — and the failure is reported as
+	// `Test timeout of 60000ms exceeded`, which reads like a slow or broken
+	// page rather than an unsatisfiable wait. It backs every character-detail
+	// spec in this file.
+	await page.locator('#app-content, .app-content, #content').first()
+		.waitFor({ state: 'visible', timeout: 30_000 }).catch(() => {})
 	// Shared helper — see `../_nav`. The local copy matched only
 	// `aria-label="Close"` and never dismissed the onboarding tour, whose
 	// controls are "Close tour" / "Skip".
