@@ -240,7 +240,20 @@ const DETAIL_ACTIONS_BLOCKER =
 	'was empty at check time, during a concurrent `occ maintenance:repair`). ' +
 	'ACTION: re-verify against a seeded, healthy instance — seed a character ' +
 	'via the OR API like workflows/crud-persistence does, then unpark. Do not ' +
-	'carry the slug-collision story forward; it sent triage the wrong way.'
+	'carry the slug-collision story forward; it sent triage the wrong way. ' +
+	'RESOLVED (verified 2026-08-01 on a clean isolated NC 34 instance, ' +
+	'larpingapp-vue3-e2e): the cause is a MISSING `player` SCHEMA. ' +
+	'lib/Settings/larpingapp_register.json declares ten schemas including ' +
+	'`player`, but after import the register holds nine — `item`, `event` and ' +
+	'`attendance` arrive prefixed (`larping_*`) while `player` is dropped ' +
+	'entirely — and `player_register`/`player_schema` are empty in app config. ' +
+	'The `character` schema REQUIRES `ocName`, typed `format: uuid` with ' +
+	'`$ref: player`, so with no player schema no player UUID can exist and the ' +
+	'OR API rejects every character create: "Property \'ocName\' should match ' +
+	'format \'uuid\'". seedObject() swallowed that, ids became the literal ' +
+	'"seed-missing", and every character-detail spec failed 60s later as a ' +
+	'TIMEOUT. Fix path is register-import side (schema slug handling), not ' +
+	'the test layer.'
 
 /** Click the detail-page Actions button and assert the popup menu opens. */
 async function openActionsMenu(page: Page): Promise<void> {
