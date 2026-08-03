@@ -63,6 +63,38 @@ LarpingApp SHALL delete its local DashboardController, PreferencesController, Se
 - **THEN** the register (slug `larpingapp`) and all nine schemas MUST import with `{slug}_register`/`{slug}_schema`/`{slug}_source` appconfig keys written, and the fragment edit MUST change the folded import version (`<ver>+frag.<hash>`) so the version-gated import re-runs
 - @e2e exclude install-time occ/repair-step behaviour — verified by task 3.4 fresh-install check and AppHost unit suites, no UI surface
 
+#### Scenario: Every route resolves a method that exists on the class actually bound
+
+- **GIVEN** `Bootstrap::register()` has bound `OCA\LarpingApp\Controller\{Dashboard,Preferences,Settings}Controller` to the AppHost generics
+- **WHEN** any route whose name targets one of those controllers is dispatched
+- **THEN** the named method MUST exist on the generic that is actually bound — `GenericSettingsController` provides `index`, `create`, `update`, `load` and NOT `reimport`, so the pre-adoption `settings#reimport` route MUST be re-pointed at `settings#load` while keeping the `api/settings/reimport` URL, and MUST NOT return HTTP 500
+- @e2e exclude API-only route resolution — covered by gate-14 route-reachability and task 3.5
+
+### Requirement: AppHost Displacement Never Breaks App-Owned Code
+
+`Bootstrap::register()` re-binds LarpingApp's own fully-qualified class names to the AppHost generics, unconditionally and with no `class_exists()` guard, and the binding is order-sensitive (last registration wins). LarpingApp SHALL therefore, for every displaced name it still owns, either delete the concrete and prove the generic is behaviour-identical, or re-register the concrete AFTER the `Bootstrap::register()` call; and SHALL guard the call itself so an unloadable AppHost can never abort the app's own registrations.
+
+#### Scenario: Kept code that depends on a displaced service still constructs
+
+- **GIVEN** `SetupController` (ADR-042, kept by this change) type-hints `OCA\LarpingApp\Service\SettingsService`, a name Bootstrap re-binds to the non-subclass `AppHostSettingsService`
+- **WHEN** `GET /api/setup/status`, `POST /api/setup/config` or `POST /api/setup/action/{actionId}` is dispatched after adoption
+- **THEN** the controller MUST construct without a `TypeError` and the response MUST NOT be HTTP 500 — satisfied either by re-registering a concrete `SettingsService` (and `SetupController`) after `Bootstrap::register()`, or by retyping the kept consumers against the AppHost service
+- @e2e exclude API-only endpoint — covered by task 3.5
+
+#### Scenario: info.xml-referenced stubs resolve through the container
+
+- **GIVEN** `appinfo/info.xml` names `Repair\InitializeRegister`, `Settings\LarpingAppAdmin` and `Sections\LarpingAppAdmin`, none of which matches the names Bootstrap aliases (`Repair\InitializeSettings`, `Settings\AdminSettings`, `Sections\SettingsSection`)
+- **WHEN** the container is asked to resolve each of those three classes
+- **THEN** each MUST return an instance without throwing — a bare `extends Generic… {}` stub MUST NOT be accepted, because the inherited constructors take builtin scalars (`appId`, `sectionId`, `priority`, `name`, `iconFile`) that Nextcloud's `DIContainer` does not register, so the install/post-migration repair step and the admin Settings section would throw
+- @e2e exclude install-time and settings-framework construction — covered by tasks 2b.3 and 3.4
+
+#### Scenario: An unloadable AppHost never silences the app's own listeners
+
+- **GIVEN** apps register alphabetically, so `larpingapp` registers before `openregister` and `OCA\OpenRegister\AppHost\Bootstrap` may not yet be autoloadable
+- **WHEN** `Application::register()` runs and the `Bootstrap::register()` call cannot load the AppHost
+- **THEN** the failure MUST be contained (OpenRegister's own autoloader pulled in, the call wrapped in `try`/`catch (\Throwable)`) and `CharacterRequirementListener` MUST still be registered against `ObjectCreatingEvent` and `ObjectUpdatingEvent`, so a character write that violates a skill requirement or the XP budget is still rejected server-side — an aborted `register()` produces no log line, so absence of errors MUST NOT be treated as evidence
+- @e2e exclude bootstrap-time registration — covered by task 3.6 (behavioural rejection assertion)
+
 #### Scenario: Domain code is untouched
 
 - **GIVEN** the adoption is complete
