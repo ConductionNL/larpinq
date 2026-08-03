@@ -91,6 +91,26 @@ const STAT_UI_BLOCKER
 	+ 'SPA does not compute stats and its detail page is slug-500-blocked). '
 	+ 'Not drivable via the UI on this instance — env/OR defect, not a source bug.'
 
+/**
+ * On a developer box the CharacterService harness needs a reachable Nextcloud
+ * to bootstrap (a docker `nextcloud` container, or a server root above this
+ * checkout). Where neither exists, skipping is honest — the alternative is a
+ * failure that names the arithmetic for an environment problem.
+ *
+ * ⚠️ BUT NEVER ON CI. The shared workflow always provides a server root
+ * (`$GITHUB_WORKSPACE/server`, found by fixtures.ts::findServerRoot), so a null
+ * result there means the harness genuinely broke — and a skip would turn the
+ * two highest-value correctness assertions in this repo into a green-looking
+ * no-op. `test.skip()` reports as a PASS in every summary the pipeline prints.
+ * So the escape hatch is gated off on CI: there, a null result must fail.
+ *
+ * @param {ComputedStat|null} computed Harness result.
+ * @return {boolean} True when skipping is legitimate.
+ */
+function harnessUnavailable(computed: unknown): boolean {
+	const onCI = process.env.GITHUB_ACTIONS === 'true' || (process.env.CI ?? '') !== ''
+	return computed === null && !onCI
+}
 
 let api: APIRequestContext
 const ledger = new FixtureLedger()
@@ -127,8 +147,11 @@ test.describe('character-stat computation — correctness (real service, real da
 			skillId: s.skillId,
 		})
 
-		// If the in-container harness is unavailable, skip rather than false-pass.
-		test.skip(computed === null, 'CharacterService harness not runnable (no docker exec).')
+		// Off CI only: if no Nextcloud bootstrap is reachable, skip rather than
+		// report an environment problem as an arithmetic failure. On CI a null
+		// result fails — see harnessUnavailable().
+		test.skip(harnessUnavailable(computed), 'CharacterService harness not runnable off CI (no server root, no docker).')
+		expect(computed, 'CharacterService harness must be runnable on CI').not.toBeNull()
 
 		// Real correctness: the persisted ability (base 10) plus the persisted
 		// "+3" effect carried by the persisted skill computes to exactly 13.
@@ -164,7 +187,8 @@ test.describe('character-stat computation — correctness (real service, real da
 		}))
 
 		const computed = await computeCharacterStat({ characterId, abilityId, effectId, itemId })
-		test.skip(computed === null, 'CharacterService harness not runnable (no docker exec).')
+		test.skip(harnessUnavailable(computed), 'CharacterService harness not runnable off CI (no server root, no docker).')
+		expect(computed, 'CharacterService harness must be runnable on CI').not.toBeNull()
 
 		expect(computed!.base, 'persisted ability base must load').toBe(10)
 		expect(computed!.value, 'base 10 - effect 2 (negative) must compute to 8').toBe(8)

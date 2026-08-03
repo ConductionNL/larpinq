@@ -358,9 +358,9 @@ export async function computeCharacterStat(ids: StatScenarioIds): Promise<Comput
 
 	// PHP harness: read persisted rows by UUID (working find path), inject into
 	// the real service, call the real calculateCharacter().
-	const php = [
+	const php = (bootstrap: string) => [
 		'<?php',
-		"require_once '/var/www/html/lib/base.php';",
+		`require_once '${bootstrap}';`,
 		'$server = \\OC::$server;',
 		'$fetcher = $server->get(\\OCA\\LarpingApp\\Service\\RegisterObjectFetcher::class);',
 		'$svc = $server->get(\\OCA\\LarpingApp\\Service\\CharacterService::class);',
@@ -405,9 +405,9 @@ export async function computeCharacterStatLive(characterId: string, abilityId: s
 	const os = await import('os')
 	const path = await import('path')
 
-	const php = [
+	const php = (bootstrap: string) => [
 		'<?php',
-		"require_once '/var/www/html/lib/base.php';",
+		`require_once '${bootstrap}';`,
 		'$server = \\OC::$server;',
 		'$fetcher = $server->get(\\OCA\\LarpingApp\\Service\\RegisterObjectFetcher::class);',
 		'$svc = $server->get(\\OCA\\LarpingApp\\Service\\CharacterService::class);',
@@ -421,25 +421,114 @@ export async function computeCharacterStatLive(characterId: string, abilityId: s
 }
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/**
+ * Locate the Nextcloud server root this checkout is installed INTO, by walking
+ * up from this file until `lib/base.php` and `config/config.php` are both
+ * present.
+ *
+ * WHY THIS EXISTS
+ * ---------------
+ * The harness below used to be docker-only: `docker cp` + `docker exec … nextcloud`
+ * with the bootstrap hardcoded to `/var/www/html/lib/base.php`. That is correct
+ * on a developer box and WRONG everywhere else — most importantly on the shared
+ * `E2E Tests (Playwright)` CI job, which has no docker daemon and no container
+ * called `nextcloud`. It checks the server out to `$GITHUB_WORKSPACE/server`,
+ * the app to `server/apps/larpingapp`, and serves it with `php -S`.
+ *
+ * The failure that produces is worth naming, because it is not loud: `execSync`
+ * throws, the catch returns `null`, and two of the three computation tests are
+ * guarded by `test.skip(computed === null, …)`. So on CI they would report as
+ * SKIPPED — a conclusion that looks like a pass in every summary — while the
+ * third (`live:`) asserts `expect(computed).not.toBeNull()` and fails for a
+ * reason ("harness not runnable") that has nothing to do with the stat
+ * arithmetic it claims to be testing.
+ *
+ * Both are harness faults, not product bugs, and both are fixed by running the
+ * bootstrap in-process where there is no container to exec into.
+ *
+ * @param {any} path Node's `path` module (injected — this file imports lazily).
+ * @param {any} fs   Node's `fs` module (injected).
+ * @return {string|null} Absolute server root, or null when not found.
+ */
+function findServerRoot(path: any, fs: any): string | null {
+	// Explicit override wins: a checkout served from an unusual layout can say so.
+	const override = process.env.NC_SERVER_ROOT
+	if (override && fs.existsSync(path.join(override, 'lib', 'base.php'))) {
+		return override
+	}
+	let dir = __dirname
+	for (let up = 0; up < 8; up++) {
+		if (fs.existsSync(path.join(dir, 'lib', 'base.php'))
+			&& fs.existsSync(path.join(dir, 'config', 'config.php'))) {
+			return dir
+		}
+		const parent = path.dirname(dir)
+		if (parent === dir) break
+		dir = parent
+	}
+	return null
+}
+
 function runPhpHarness(
-	php: string,
+	php: (bootstrap: string) => string,
 	args: string[],
 	deps: { fs: any; os: any; path: any; execSync: any },
 ): ComputedStat | null {
 	const { fs, os, path, execSync } = deps
+	const argStr = args.map(a => `'${a}'`).join(' ')
+
+	/**
+	 * Parse the harness stdout. The bootstrap can emit deprecation notices
+	 * before our JSON, so slice from the first `{`.
+	 *
+	 * @param {string} out Raw stdout.
+	 * @return {ComputedStat|null} Parsed result, or null when nothing usable.
+	 */
+	const parse = (out: string): ComputedStat | null => {
+		const jsonStart = out.indexOf('{')
+		if (jsonStart < 0) return null
+		try {
+			return JSON.parse(out.slice(jsonStart))
+		} catch {
+			return null
+		}
+	}
+
+	// ── Path A: this checkout IS inside a Nextcloud server root (CI runner,
+	// or any non-docker install). Run the bootstrap directly — same PHP binary
+	// and same config.php the `php -S` instance under test is using.
+	const serverRoot = findServerRoot(path, fs)
+	if (serverRoot !== null) {
+		const script = path.join(os.tmpdir(), `la-calc-${Date.now()}-${Math.floor(Math.random() * 1e6)}.php`)
+		try {
+			fs.writeFileSync(script, php(path.join(serverRoot, 'lib', 'base.php')))
+			const out: string = execSync(`php ${script} ${argStr}`, {
+				encoding: 'utf-8',
+				timeout: 120_000,
+				cwd: serverRoot,
+			})
+			return parse(out)
+		} catch (err) {
+			// eslint-disable-next-line no-console
+			console.warn(`[stat harness] in-process run failed under ${serverRoot}: ${(err as Error).message}`)
+			return null
+		} finally {
+			try { fs.unlinkSync(script) } catch { /* noop */ }
+		}
+	}
+
+	// ── Path B: developer box — the app is bind-mounted into the `nextcloud`
+	// container and its server root is not an ancestor of this file.
 	const localTmp = path.join(os.tmpdir(), `la-calc-${Date.now()}-${Math.floor(Math.random() * 1e6)}.php`)
 	const containerName = `la-calc-${path.basename(localTmp)}`
 	try {
-		fs.writeFileSync(localTmp, php)
+		fs.writeFileSync(localTmp, php('/var/www/html/lib/base.php'))
 		execSync(`docker cp ${localTmp} nextcloud:/tmp/${containerName}`, { stdio: 'pipe' })
-		const argStr = args.map(a => `'${a}'`).join(' ')
 		const out: string = execSync(
 			`docker exec -u www-data nextcloud php /tmp/${containerName} ${argStr}`,
 			{ encoding: 'utf-8', timeout: 60_000 },
 		)
-		const jsonStart = out.indexOf('{')
-		if (jsonStart < 0) return null
-		return JSON.parse(out.slice(jsonStart))
+		return parse(out)
 	} catch {
 		return null
 	} finally {
