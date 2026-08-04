@@ -117,6 +117,32 @@ export async function dismissSupportDialog(page: Page): Promise<void> {
 		}
 		await page.waitForTimeout(350)
 	}
+	// Verify the POSTCONDITION, don't just assume the clicks worked.
+	//
+	// Every `.click()` above is `.catch(() => {})`, so this function used to
+	// return "successfully" while a dialog was still on screen. The onboarding
+	// tour's dim layer (`.cn-walkthrough__dim--full`) covers the whole viewport
+	// and intercepts pointer events, so the caller's very next click then hangs
+	// on actionability for the full 60 s test timeout and is reported against
+	// whatever element it was aiming at — a sidebar link that the log shows was
+	// "visible, enabled and stable" the entire time. Measured on E2E job
+	// 91942310154.
+	//
+	// This is a diagnosis, not a wait: `ci-seed.sh` marks the walkthrough seen
+	// so it should never mount at all, and this line makes the case where that
+	// failed name itself instead of surfacing 60 s later somewhere unrelated.
+	// Scoped deliberately to the ONE overlay measured to do this, rather than to
+	// every `[role="dialog"][aria-modal="true"]` — a broader net would start
+	// failing on modals that are merely open and not blocking.
+	const blocker = page.locator('.cn-walkthrough__dim').first()
+	if (await blocker.isVisible({ timeout: 500 }).catch(() => false)) {
+		throw new Error(
+			'The first-visit walkthrough dim layer (.cn-walkthrough__dim) is still on screen after '
+			+ 'dismissSupportDialog(). It covers the viewport and intercepts pointer events, so the next '
+			+ 'click would hang on actionability for the full 60 s test timeout and be reported against an '
+			+ 'unrelated element. ci-seed.sh\'s walkthrough-suppression step did not take effect.',
+		)
+	}
 }
 
 /** Load the SPA root and wait for the navigation to actually render. */

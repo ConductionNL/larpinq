@@ -286,6 +286,71 @@ PY
 
 echo "[ci-seed] LarpingApp register + schemas provisioned."
 
+# ── 2b. Mark the first-visit walkthrough as already seen ─────────────────────
+# `src/manifest.json` declares a six-step `trigger: "first-visit"` tour
+# ("Welcome to LARPing"). It renders as `<div role="dialog" aria-modal="true"
+# class="cn-walkthrough">` with a FULL-VIEWPORT dim layer
+# (`.cn-walkthrough__dim--full`) that intercepts pointer events, so any click
+# racing its mount fails actionability until the test times out. Measured: E2E
+# job 91942310154 lost 'character list renders view toggle and add controls' to
+# exactly that — 60 s of "…subtree intercepts pointer events" on a sidebar link
+# whose element was resolved, visible, enabled and stable the whole time.
+#
+# `tests/e2e/_nav.ts::dismissSupportDialog()` closes it when it is already on
+# screen, but it cannot close a dialog that has not mounted yet, and the tour
+# mounts asynchronously after the walkthrough preference GET resolves. That is
+# a race no amount of clicking fixes from the test side.
+#
+# So turn it off at the source. `useWalkthrough` treats the per-user preference
+# named by `manifest.walkthrough.completionConfigKey` as AUTHORITATIVE for
+# "which version has this user already seen", so writing a version above every
+# step's `sinceVersion` means the tour never triggers for this user.
+#
+# This suppresses a first-run affordance, not a behaviour under test: no spec in
+# this suite asserts the walkthrough — every mention of it in tests/e2e is a
+# comment about fighting it.
+#
+# `OCS-APIRequest: true` is required (PreferencesController::setPreference has
+# no #[NoCSRFRequired] — deliberately, to close #213).
+WT_KEY="$(python3 - "${APP_DIR}/src/manifest.json" <<'PY' || true
+import json, sys
+try:
+    print(((json.load(open(sys.argv[1])) or {}).get('walkthrough') or {}).get('completionConfigKey') or '')
+except Exception:
+    print('')
+PY
+)"
+if [ -n "$WT_KEY" ]; then
+	WT_CODE="$(curl -sS -o /dev/null -w '%{http_code}' \
+		-u "${USER_NAME}:${USER_PASS}" \
+		-X PUT \
+		-H 'Content-Type: application/json' \
+		-H 'OCS-APIRequest: true' \
+		--data '{"value":"999.0.0"}' \
+		"${BASE}/index.php/apps/larpingapp/api/preferences/${WT_KEY}" || echo 000)"
+	echo "[ci-seed] walkthrough '${WT_KEY}' marked seen -> HTTP ${WT_CODE}"
+	# Read it back. A 200 alone is not proof: an app that does not serve the
+	# route answers 200 with the SPA's HTML, which useWalkthrough explicitly
+	# treats as "no opinion" and falls back to localStorage — i.e. the tour
+	# would still open and this step would have done nothing.
+	WT_READ="$(curl -sS -u "${USER_NAME}:${USER_PASS}" -H 'OCS-APIRequest: true' \
+		"${BASE}/index.php/apps/larpingapp/api/preferences/${WT_KEY}" || echo '')"
+	echo "[ci-seed] walkthrough preference reads back: $(printf '%s' "$WT_READ" | head -c 200)"
+	case "$WT_READ" in
+		*'"value":"999.0.0"'*)
+			echo "[ci-seed] walkthrough suppression verified."
+			;;
+		*)
+			echo "::error::The walkthrough preference did not read back as written."
+			echo "::error::The first-visit tour will open over the SPA and its full-viewport dim layer"
+			echo "::error::will intercept clicks, which surfaces as unrelated 60s actionability timeouts."
+			exit 1
+			;;
+	esac
+else
+	echo "[ci-seed] no walkthrough.completionConfigKey in src/manifest.json; nothing to suppress."
+fi
+
 # ── 3. Warm the SPA so the first spec doesn't pay the cold start ─────────────
 # The shared workflow serves Nextcloud with `php -S 0.0.0.0:8080`. It sets
 # PHP_CLI_SERVER_WORKERS=8, but the first hit still pays a cold opcache and the
