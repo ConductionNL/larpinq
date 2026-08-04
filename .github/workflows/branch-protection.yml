@@ -5,6 +5,19 @@ on:
     branches: [main, beta]
 
 jobs:
-  protect:
-    uses: Conduction/.github/.github/workflows/branch-protection.yml@main
+  # Two independent faults were fixed here, either of which alone kills the gate:
+  #
+  # 1. Job id. GitHub composes a reusable-workflow status context as
+  #    `<caller-job-id> / <called-job-name>`. The org rulesets "Main Branch
+  #    Protection" and "Beta Branch Protection" require
+  #    `branch-protection / check-branch`, but this job was called `protect`,
+  #    so it emitted `protect / check-branch`. The required context never
+  #    reported at all — PRs to main/beta sat permanently pending and only
+  #    `--admin` could ship them.
+  #
+  # 2. Org name. `Conduction` is the RETIRED Codeberg org. On GitHub the org is
+  #    `ConductionNL`, so from commit e2faa092 ("org rename") Actions could not
+  #    resolve this reusable workflow at all and the run produced ZERO jobs.
+  branch-protection:
+    uses: ConductionNL/.github/.github/workflows/branch-protection.yml@main
     secrets: inherit
