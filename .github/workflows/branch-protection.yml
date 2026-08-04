@@ -1,0 +1,20 @@
+name: Branch Protection
+
+on:
+  pull_request:
+    branches: [main, beta]
+
+jobs:
+  # Job id must stay `branch-protection` so the check reports as
+  # `branch-protection / check-branch`, which is the context name the org
+  # rulesets "Main Branch Protection" and "Beta Branch Protection" require.
+  # GitHub composes a reusable-workflow status context as
+  # `<caller-job-id> / <called-job-name>`, so renaming this job silently
+  # detaches the required status check and leaves PRs permanently pending —
+  # a dead gate whose absence looks exactly like its success.
+  #
+  # This file did not exist on `main` at all, so the required context had no
+  # producer on this branch whatsoever.
+  branch-protection:
+    uses: ConductionNL/.github/.github/workflows/branch-protection.yml@main
+    secrets: inherit
