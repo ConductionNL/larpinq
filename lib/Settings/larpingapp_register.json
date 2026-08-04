@@ -434,11 +434,14 @@
         "slug": "skill",
         "title": "Skill",
         "icon": "SwordCross",
-        "version": "1.1.0",
+        "version": "1.2.0",
         "summary": "A learnable ability that characters can acquire",
         "description": "Represents a skill that characters can learn, usually purchased with experience points. Skills provide effects and may have prerequisites (other skills, stats, conditions, or effects).",
         "type": "object",
         "x-schema-org": "schema:DefinedTerm",
+        "configuration": {
+          "x-openregister-shareable": true
+        },
         "required": [
           "name"
         ],
