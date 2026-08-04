@@ -131,6 +131,13 @@ function registerFor(type: string): string {
 // Shared seeded fixture ids, populated in beforeAll (best-effort).
 const seeded: Record<string, string> = {}
 
+// The display name each seeded fixture was created with, keyed by the same
+// type key as `seeded`. A detail page renders the OBJECT's name as its `<h2>`
+// (the entity type renders as a kicker paragraph above it), so the name is what
+// proves we landed on the right object's detail page rather than on a list, an
+// empty shell, or a not-found state. See `gotoDetail`.
+const seededNames: Record<string, string> = {}
+
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
@@ -173,7 +180,7 @@ async function navTo(page: Page, slug: string): Promise<void> {
  * we drive it directly rather than poking history.pushState (which addressed a
  * non-existent server sub-path and broke once routing moved to hash mode).
  */
-async function gotoDetail(page: Page, slug: string, id: string, typeHeading: string): Promise<void> {
+async function gotoDetail(page: Page, slug: string, id: string, typeLabel: string): Promise<void> {
 	await page.goto(`${BASE}/#/${slug}/${id}`)
 	// ADR-074 rule 4: `networkidle` never settles on Nextcloud — the
 	// notification poll keeps the network permanently busy. This was the LAST
@@ -195,8 +202,34 @@ async function gotoDetail(page: Page, slug: string, id: string, typeHeading: str
 	await dismissSupportDialog(page)
 	await expect(page).toHaveURL(new RegExp(`#/${slug}/${id}`))
 	await expect(page.locator('.app-content')).toBeVisible({ timeout: 10_000 })
+	// A detail page's own heading is the OBJECT's name (`<h2>`); the entity type
+	// ("Character", "Event", …) renders as a kicker paragraph above it, not as a
+	// heading. The previous assertion — "some heading in .app-content matches
+	// /<type>/i" — passed for the wrong reasons and hid real breakage:
+	//
+	//   * it matched incidental widget titles, e.g. "Skills granting this
+	//     effect" satisfies /Effect/i on the effect detail page;
+	//   * it matched the LIST page heading, e.g. "Characters" satisfies
+	//     /Character/i — so all seventeen character-detail specs stayed green
+	//     while the character seed was failing with HTTP 400 and `id` was the
+	//     literal string "seed-missing";
+	//   * and it hard-failed only on `events`, whose seeded name
+	//     ("…-summer-larp") happens to contain no occurrence of "event".
+	//
+	// Asserting the seeded object's own name proves the hash route resolved AND
+	// the right object was fetched AND it rendered — which is what every caller
+	// of this helper actually depends on.
+	const expectedName = seededNames[id]
+	if (!expectedName) {
+		throw new Error(
+			`gotoDetail(${slug}/${id}, ${typeLabel}): no seeded name recorded for this id. `
+			+ 'The beforeAll fixture seed did not run or returned an error — see the '
+			+ '"[e2e seed]" lines above for the HTTP status. Continuing would assert '
+			+ 'against a detail page for an object that does not exist.',
+		)
+	}
 	await expect(
-		page.locator('.app-content').getByRole('heading', { name: new RegExp(typeHeading, 'i') }).first(),
+		page.locator('.app-content').getByRole('heading', { name: expectedName }).first(),
 	).toBeVisible({ timeout: 10_000 })
 }
 
@@ -325,14 +358,52 @@ test.beforeAll(async () => {
 	})
 	await resolveIds(api)
 	const n = `la-e2e-${TS}`
-	seeded.character = (await seedObject(api, 'character', { name: `${n}-hero`, ocName: `${n}-hero`, type: 'player', gold: 5, silver: 3, copper: 2, background: 'Born in Camelot' })) || 'seed-missing'
-	seeded.player = (await seedObject(api, 'player', { name: `${n}-player`, ocName: `${n}-player` })) || 'seed-missing'
-	seeded.ability = (await seedObject(api, 'ability', { name: `${n}-strength`, ocName: `${n}-strength`, base: 10 })) || 'seed-missing'
-	seeded.skill = (await seedObject(api, 'skill', { name: `${n}-swordplay`, ocName: `${n}-swordplay` })) || 'seed-missing'
-	seeded.item = (await seedObject(api, 'item', { name: `${n}-excalibur`, ocName: `${n}-excalibur` })) || 'seed-missing'
-	seeded.condition = (await seedObject(api, 'condition', { name: `${n}-poisoned`, ocName: `${n}-poisoned` })) || 'seed-missing'
-	seeded.effect = (await seedObject(api, 'effect', { name: `${n}-strong-arm`, ocName: `${n}-strong-arm`, modifier: 5 })) || 'seed-missing'
-	seeded.event = (await seedObject(api, 'event', { name: `${n}-summer-larp`, ocName: `${n}-summer-larp` })) || 'seed-missing'
+
+	/**
+	 * Seed one object and remember the name it was created with, so `gotoDetail`
+	 * can assert the detail page rendered THAT object.
+	 *
+	 * @param {string} type   Fixture type key (also the `seeded` / `seededNames` key).
+	 * @param {string} name   Display name to create the object with.
+	 * @param {object} extra  Additional schema properties for the create payload.
+	 * @return {Promise<string>} The new object's UUID, or 'seed-missing' on failure.
+	 */
+	const seed = async (type: string, name: string, extra: Record<string, unknown> = {}): Promise<string> => {
+		const id = await seedObject(api, type, { name, ...extra })
+		if (id) {
+			seededNames[id] = name
+		}
+		return id || 'seed-missing'
+	}
+
+	// `player` FIRST: `character.ocName` is a RELATION to a player object, not a
+	// display name. The live character schema declares it
+	// `{"type":"string","format":"uuid","$ref":"player"}` ("The player who plays
+	// this character") and marks it `required`, so the previous payload
+	// (`ocName: "<name>-hero"`) was rejected with HTTP 400
+	// "Property 'ocName' should match format 'uuid'". The character seed
+	// therefore never existed: `seeded.character` was the literal string
+	// 'seed-missing' and every character-detail spec below navigated to
+	// `#/characters/seed-missing`.
+	//
+	// `ocName` is also NOT a property of player / ability / skill / item /
+	// condition / effect / event — it was passed to all of them and silently
+	// ignored, which is what made the character-only failure look like noise.
+	seeded.player = await seed('player', `${n}-player`)
+	seeded.character = await seed('character', `${n}-hero`, {
+		ocName: seeded.player,
+		type: 'player',
+		gold: 5,
+		silver: 3,
+		copper: 2,
+		background: 'Born in Camelot',
+	})
+	seeded.ability = await seed('ability', `${n}-strength`, { base: 10 })
+	seeded.skill = await seed('skill', `${n}-swordplay`)
+	seeded.item = await seed('item', `${n}-excalibur`)
+	seeded.condition = await seed('condition', `${n}-poisoned`)
+	seeded.effect = await seed('effect', `${n}-strong-arm`, { modifier: 5 })
+	seeded.event = await seed('event', `${n}-summer-larp`)
 	await api.dispose()
 })
 

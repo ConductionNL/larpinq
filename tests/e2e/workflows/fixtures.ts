@@ -303,9 +303,20 @@ export async function seedStatScenario(
 		description: 'carries the mighty effect',
 		effects: [effectId],
 	}))
+	// `character.ocName` is a RELATION, not a display name: the live schema
+	// declares it `{"type":"string","format":"uuid","$ref":"player"}` ("The
+	// player who plays this character") and marks it `required`. Passing the
+	// character's own name string is rejected with HTTP 400
+	// "Property 'ocName' should match format 'uuid'", which failed every test
+	// in this file. So seed a real `player` row first and reference its UUID.
+	// (`x-allow-create: true` is a picker affordance for the Vue relation
+	// widget — it does NOT make the REST API accept a bare name.)
+	const playerId = ledger.track('player', await createObject(api, 'player', {
+		name: fixtureName('hero-player'),
+	}))
 	const characterId = ledger.track('character', await createObject(api, 'character', {
 		name: fixtureName('hero'),
-		ocName: fixtureName('hero'),
+		ocName: playerId,
 		type: 'player',
 		skills: [skillId],
 	}))

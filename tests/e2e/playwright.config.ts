@@ -97,7 +97,18 @@ export default defineConfig({
 	// name; running files in parallel would interleave those writes.
 	fullyParallel: false,
 	workers: 1,
-	retries: process.env.CI ? 1 : 0,
+	// No retries, on CI or off it.
+	//
+	// A retry can only ever turn a red result green, never the other way round,
+	// so `retries: 1` silently converts an intermittent product defect into a
+	// reported PASS — the same class of dishonest green this whole config exists
+	// to remove. It also doubles the most expensive case: a spec that fails by
+	// exhausting the 60 s test timeout costs two minutes instead of one.
+	//
+	// The budget is there for it: the suite runs in ~7.5 min against a 20 min
+	// cap, so a genuine flake shows up as a red job that gets investigated
+	// rather than as a green one that does not.
+	retries: 0,
 	reporter: [
 		['html', { open: 'never', outputFolder: path.resolve(__dirname, 'playwright-report') }],
 		['list'],
