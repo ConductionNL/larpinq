@@ -430,7 +430,17 @@ test.describe('character-management — detail & forms', () => {
 	// @e2e openspec/specs/character-management/spec.md#approve-a-character
 	test('character detail renders approval-capable shell', async ({ page }) => {
 		await gotoDetail(page, 'characters', seeded.character, 'Character')
-		await expect(page.locator('.app-content').getByRole('heading', { name: /Character/i }).first()).toBeVisible()
+		// The scenario is "approve a character", so assert the approval control is
+		// actually on the page. The previous assertion here was a second copy of
+		// the old `gotoDetail` heading check ("some heading matches /Character/i")
+		// and it was satisfied by the NOT-FOUND shell: when the object fails to
+		// load, CnDetailPage falls back to the manifest page title ("Character")
+		// as its heading, so this line passed precisely while the character seed
+		// was broken and stopped passing the moment a real character loaded —
+		// exactly backwards. The `approved` property lives in the "Game state &
+		// notes" data widget with `widget: "switch"` and title "Approved".
+		await expect(page.locator('.app-content').getByText('Approved', { exact: true }).first())
+			.toBeVisible({ timeout: 10_000 })
 	})
 
 	// @e2e openspec/specs/character-management/spec.md#filter-characters-by-approval-status

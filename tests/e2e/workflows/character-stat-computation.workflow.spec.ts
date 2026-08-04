@@ -182,8 +182,15 @@ test.describe('character-stat computation — correctness (real service, real da
 			effects: [effectId],
 		}))
 		const name = fixtureName('neg-hero')
+		// `ocName` is the required RELATION to a `player` object
+		// (`format: uuid`, `$ref: player`), not a second display name. Passing
+		// `name` here is rejected with HTTP 400 "Property 'ocName' should match
+		// format 'uuid'", which is what made this test red.
+		const playerId = ledger.track('player', await createObject(api, 'player', {
+			name: fixtureName('neg-hero-player'),
+		}))
 		const characterId = ledger.track('character', await createObject(api, 'character', {
-			name, ocName: name, type: 'player', items: [itemId],
+			name, ocName: playerId, type: 'player', items: [itemId],
 		}))
 
 		const computed = await computeCharacterStat({ characterId, abilityId, effectId, itemId })

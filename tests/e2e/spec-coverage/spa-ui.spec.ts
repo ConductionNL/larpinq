@@ -195,17 +195,54 @@ test.describe('dashboard', () => {
 	})
 
 	// @e2e openspec/specs/dashboard/spec.md#empty-dashboard-with-no-data-planned
-	test('empty dashboard renders KPI 0 counts and empty-state widgets', async ({ page }) => {
+	test('dashboard KPI and recent list report the real character count (0 + empty state when empty)', async ({ page }) => {
+		// The spec scenario opens "GIVEN no entities exist in the system", and the
+		// previous version of this test encoded that GIVEN as
+		// `expect(firstKpi).toHaveText('0')` — on a shared instance that other
+		// specs in this same suite seed into, and without ever establishing the
+		// precondition.
+		//
+		// It passed only because the character seed in detail-forms-admin.spec.ts
+		// was itself broken (every create returned HTTP 400 on `ocName`), so the
+		// count genuinely was 0. The assertion was reporting a bug as a pass, and
+		// it went red the instant that bug was fixed.
+		//
+		// What the scenario is really about is that the dashboard reports the
+		// STORE rather than a placeholder: 0 plus an empty-state row when the
+		// collection is empty, the real number and real rows when it is not. So
+		// read the truth from OpenRegister and assert the widgets against it —
+		// which also covers the empty case on a genuinely fresh instance.
+		const res = await page.request.get(
+			'/index.php/apps/openregister/api/objects/larpingapp/character?_limit=1',
+			{ headers: { 'OCS-APIRequest': 'true' } },
+		)
+		// Assert the STATUS, not just the payload: a 403 or a 500 body parses to
+		// `{}` and would quietly become "total = 0" — the exact misreading this
+		// test exists to stop making.
+		expect(res.status(), 'character collection probe must be HTTP 200').toBe(200)
+		const characterTotal = (await res.json()).total
+		expect(typeof characterTotal, 'OR list envelope must carry a numeric `total`').toBe('number')
+
 		await go(page, '/')
-		const heading = page.getByRole('heading', { name: 'Dashboard', level: 2 })
-		await expect(heading).toBeVisible({ timeout: 10_000 })
-		// In a bare test-env with no entities, every KPI stat tile shows "0"
-		const firstKpi = page.locator('.cn-stat-widget__value').first()
-		await expect(firstKpi).toBeVisible({ timeout: 10_000 })
-		await expect(firstKpi).toHaveText('0')
-		// Recent-list object-tables render their empty-state row instead of items
-		const emptyState = page.locator('[data-testid="cn-object-list-empty"]').first()
-		await expect(emptyState).toBeVisible({ timeout: 10_000 })
+		await expect(page.getByRole('heading', { name: 'Dashboard', level: 2 })).toBeVisible({ timeout: 10_000 })
+
+		// CnDashboardGrid labels each grid item `role="group"` with the widget id
+		// from the manifest, so the tiles can be addressed individually instead of
+		// via `.first()` (which silently re-targets whenever the layout changes).
+		const charactersKpi = page.getByRole('group', { name: 'kpi-characters', exact: true })
+			.locator('.cn-stat-widget__value')
+		await expect(charactersKpi).toBeVisible({ timeout: 10_000 })
+		await expect(charactersKpi).toHaveText(String(characterTotal))
+
+		// The recent-characters object-table shows its empty-state row when the
+		// collection is empty, and must NOT show it when the collection is not.
+		const recentCharactersEmpty = page.getByRole('group', { name: 'recent-characters', exact: true })
+			.locator('[data-testid="cn-object-list-empty"]')
+		if (characterTotal === 0) {
+			await expect(recentCharactersEmpty).toBeVisible({ timeout: 10_000 })
+		} else {
+			await expect(recentCharactersEmpty).toBeHidden({ timeout: 10_000 })
+		}
 	})
 
 	// @e2e openspec/specs/dashboard/spec.md#quick-create-a-character-from-dashboard
