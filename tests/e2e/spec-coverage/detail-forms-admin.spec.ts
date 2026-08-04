@@ -415,14 +415,14 @@ test.beforeAll(async () => {
 test.describe('character-management — detail & forms', () => {
 	// @e2e openspec/specs/character-management/spec.md#update-an-existing-character
 	// FIXME(detail-actions-blocker): detail Actions menu never renders — DETAIL_ACTIONS_BLOCKER.
-	test.fixme('character detail exposes Actions menu for editing', async ({ page }) => {
+	test('character detail exposes Actions menu for editing', async ({ page }) => {
 		await gotoDetail(page, 'characters', seeded.character, 'Character')
 		await expect(page.locator('.app-content button').filter({ hasText: /Actions|Acties/i }).first()).toBeVisible()
 	})
 
 	// @e2e openspec/specs/character-management/spec.md#delete-a-character
 	// FIXME(detail-actions-blocker): detail Actions menu never renders — DETAIL_ACTIONS_BLOCKER.
-	test.fixme('character detail Actions menu opens (delete path)', async ({ page }) => {
+	test('character detail Actions menu opens (delete path)', async ({ page }) => {
 		await gotoDetail(page, 'characters', seeded.character, 'Character')
 		await openActionsMenu(page)
 	})
@@ -475,7 +475,7 @@ test.describe('character-management — detail & forms', () => {
 
 	// @e2e openspec/specs/character-management/spec.md#update-character-currency
 	// FIXME(detail-actions-blocker): detail Actions menu never renders — DETAIL_ACTIONS_BLOCKER.
-	test.fixme('character detail shell supports currency editing via Actions', async ({ page }) => {
+	test('character detail shell supports currency editing via Actions', async ({ page }) => {
 		await gotoDetail(page, 'characters', seeded.character, 'Character')
 		await expect(page.locator('.app-content button').filter({ hasText: /Actions|Acties/i }).first()).toBeVisible()
 	})
@@ -488,28 +488,28 @@ test.describe('character-management — detail & forms', () => {
 
 	// @e2e openspec/specs/character-management/spec.md#assign-a-skill-to-a-character
 	// FIXME(detail-actions-blocker): detail Actions menu never renders — DETAIL_ACTIONS_BLOCKER.
-	test.fixme('character detail provides Actions for skill assignment', async ({ page }) => {
+	test('character detail provides Actions for skill assignment', async ({ page }) => {
 		await gotoDetail(page, 'characters', seeded.character, 'Character')
 		await openActionsMenu(page)
 	})
 
 	// @e2e openspec/specs/character-management/spec.md#remove-an-item-from-a-character
 	// FIXME(detail-actions-blocker): detail Actions menu never renders — DETAIL_ACTIONS_BLOCKER.
-	test.fixme('character detail provides Actions for item removal', async ({ page }) => {
+	test('character detail provides Actions for item removal', async ({ page }) => {
 		await gotoDetail(page, 'characters', seeded.character, 'Character')
 		await openActionsMenu(page)
 	})
 
 	// @e2e openspec/specs/character-management/spec.md#assign-multiple-conditions
 	// FIXME(detail-actions-blocker): detail Actions menu never renders — DETAIL_ACTIONS_BLOCKER.
-	test.fixme('character detail provides Actions for condition assignment', async ({ page }) => {
+	test('character detail provides Actions for condition assignment', async ({ page }) => {
 		await gotoDetail(page, 'characters', seeded.character, 'Character')
 		await openActionsMenu(page)
 	})
 
 	// @e2e openspec/specs/character-management/spec.md#assign-an-event-to-a-character
 	// FIXME(detail-actions-blocker): detail Actions menu never renders — DETAIL_ACTIONS_BLOCKER.
-	test.fixme('character detail provides Actions for event assignment', async ({ page }) => {
+	test('character detail provides Actions for event assignment', async ({ page }) => {
 		await gotoDetail(page, 'characters', seeded.character, 'Character')
 		await openActionsMenu(page)
 	})
@@ -546,14 +546,14 @@ test.describe('character-management — detail & forms', () => {
 
 	// @e2e openspec/specs/character-management/spec.md#lock-a-character-for-editing
 	// FIXME(detail-actions-blocker): detail Actions menu never renders — DETAIL_ACTIONS_BLOCKER.
-	test.fixme('character detail Actions menu hosts lock control', async ({ page }) => {
+	test('character detail Actions menu hosts lock control', async ({ page }) => {
 		await gotoDetail(page, 'characters', seeded.character, 'Character')
 		await openActionsMenu(page)
 	})
 
 	// @e2e openspec/specs/character-management/spec.md#revert-a-character-to-previous-state
 	// FIXME(detail-actions-blocker): detail Actions menu never renders — DETAIL_ACTIONS_BLOCKER.
-	test.fixme('character detail Actions menu hosts revert control', async ({ page }) => {
+	test('character detail Actions menu hosts revert control', async ({ page }) => {
 		await gotoDetail(page, 'characters', seeded.character, 'Character')
 		await openActionsMenu(page)
 	})
@@ -573,14 +573,14 @@ test.describe('character-management — detail & forms', () => {
 test.describe('events-players — detail & forms', () => {
 	// @e2e openspec/specs/events-players/spec.md#update-an-event
 	// FIXME(detail-actions-blocker): detail Actions menu never renders — DETAIL_ACTIONS_BLOCKER.
-	test.fixme('event detail exposes Actions for editing', async ({ page }) => {
+	test('event detail exposes Actions for editing', async ({ page }) => {
 		await gotoDetail(page, 'events', seeded.event, 'Event')
 		await expect(page.locator('.app-content button').filter({ hasText: /Actions|Acties/i }).first()).toBeVisible()
 	})
 
 	// @e2e openspec/specs/events-players/spec.md#delete-an-event
 	// FIXME(detail-actions-blocker): detail Actions menu never renders — DETAIL_ACTIONS_BLOCKER.
-	test.fixme('event detail Actions menu opens (delete path)', async ({ page }) => {
+	test('event detail Actions menu opens (delete path)', async ({ page }) => {
 		await gotoDetail(page, 'events', seeded.event, 'Event')
 		await openActionsMenu(page)
 	})
@@ -593,14 +593,14 @@ test.describe('events-players — detail & forms', () => {
 
 	// @e2e openspec/specs/events-players/spec.md#update-a-player-profile
 	// FIXME(detail-actions-blocker): detail Actions menu never renders — DETAIL_ACTIONS_BLOCKER.
-	test.fixme('player detail exposes Actions for editing', async ({ page }) => {
+	test('player detail exposes Actions for editing', async ({ page }) => {
 		await gotoDetail(page, 'players', seeded.player, 'Player')
 		await expect(page.locator('.app-content button').filter({ hasText: /Actions|Acties/i }).first()).toBeVisible()
 	})
 
 	// @e2e openspec/specs/events-players/spec.md#delete-a-player-with-character-references
 	// FIXME(detail-actions-blocker): detail Actions menu never renders — DETAIL_ACTIONS_BLOCKER.
-	test.fixme('player detail Actions menu opens (delete path)', async ({ page }) => {
+	test('player detail Actions menu opens (delete path)', async ({ page }) => {
 		await gotoDetail(page, 'players', seeded.player, 'Player')
 		await openActionsMenu(page)
 	})
@@ -621,14 +621,14 @@ test.describe('events-players — detail & forms', () => {
 
 	// @e2e openspec/specs/events-players/spec.md#lock-a-player-profile
 	// FIXME(detail-actions-blocker): detail Actions menu never renders — DETAIL_ACTIONS_BLOCKER.
-	test.fixme('player detail Actions menu hosts lock control', async ({ page }) => {
+	test('player detail Actions menu hosts lock control', async ({ page }) => {
 		await gotoDetail(page, 'players', seeded.player, 'Player')
 		await openActionsMenu(page)
 	})
 
 	// @e2e openspec/specs/events-players/spec.md#revert-an-event-to-previous-state
 	// FIXME(detail-actions-blocker): detail Actions menu never renders — DETAIL_ACTIONS_BLOCKER.
-	test.fixme('event detail Actions menu hosts revert control', async ({ page }) => {
+	test('event detail Actions menu hosts revert control', async ({ page }) => {
 		await gotoDetail(page, 'events', seeded.event, 'Event')
 		await openActionsMenu(page)
 	})
@@ -642,14 +642,14 @@ test.describe('events-players — detail & forms', () => {
 test.describe('game-mechanics — detail & forms', () => {
 	// @e2e openspec/specs/game-mechanics/spec.md#update-an-ability-base-value
 	// FIXME(detail-actions-blocker): detail Actions menu never renders — DETAIL_ACTIONS_BLOCKER.
-	test.fixme('ability detail exposes Actions for editing base value', async ({ page }) => {
+	test('ability detail exposes Actions for editing base value', async ({ page }) => {
 		await gotoDetail(page, 'abilities', seeded.ability, 'Ability')
 		await expect(page.locator('.app-content button').filter({ hasText: /Actions|Acties/i }).first()).toBeVisible()
 	})
 
 	// @e2e openspec/specs/game-mechanics/spec.md#delete-an-ability-referenced-by-effects
 	// FIXME(detail-actions-blocker): detail Actions menu never renders — DETAIL_ACTIONS_BLOCKER.
-	test.fixme('ability detail Actions menu opens (delete path)', async ({ page }) => {
+	test('ability detail Actions menu opens (delete path)', async ({ page }) => {
 		await gotoDetail(page, 'abilities', seeded.ability, 'Ability')
 		await openActionsMenu(page)
 	})
@@ -678,7 +678,7 @@ test.describe('game-mechanics — detail & forms', () => {
 
 	// @e2e openspec/specs/game-mechanics/spec.md#effect-with-both-abilities-and-statid
 	// FIXME(detail-actions-blocker): detail Actions menu never renders — DETAIL_ACTIONS_BLOCKER.
-	test.fixme('effect detail exposes Actions menu', async ({ page }) => {
+	test('effect detail exposes Actions menu', async ({ page }) => {
 		await gotoDetail(page, 'effects', seeded.effect, 'Effect')
 		await expect(page.locator('.app-content button').filter({ hasText: /Actions|Acties/i }).first()).toBeVisible()
 	})
@@ -691,7 +691,7 @@ test.describe('game-mechanics — detail & forms', () => {
 
 	// @e2e openspec/specs/game-mechanics/spec.md#view-characters-using-a-skill
 	// FIXME(detail-actions-blocker): detail Actions menu never renders — DETAIL_ACTIONS_BLOCKER.
-	test.fixme('skill detail Actions menu opens (used-by path)', async ({ page }) => {
+	test('skill detail Actions menu opens (used-by path)', async ({ page }) => {
 		await gotoDetail(page, 'skills', seeded.skill, 'Skill')
 		await openActionsMenu(page)
 	})
@@ -718,7 +718,7 @@ test.describe('game-mechanics — detail & forms', () => {
 
 	// @e2e openspec/specs/game-mechanics/spec.md#track-item-holders
 	// FIXME(detail-actions-blocker): detail Actions menu never renders — DETAIL_ACTIONS_BLOCKER.
-	test.fixme('item detail Actions menu opens (holders path)', async ({ page }) => {
+	test('item detail Actions menu opens (holders path)', async ({ page }) => {
 		await gotoDetail(page, 'items', seeded.item, 'Item')
 		await openActionsMenu(page)
 	})
@@ -733,7 +733,7 @@ test.describe('game-mechanics — detail & forms', () => {
 
 	// @e2e openspec/specs/game-mechanics/spec.md#condition-removal-restores-stats
 	// FIXME(detail-actions-blocker): detail Actions menu never renders — DETAIL_ACTIONS_BLOCKER.
-	test.fixme('condition detail exposes Actions menu', async ({ page }) => {
+	test('condition detail exposes Actions menu', async ({ page }) => {
 		await gotoDetail(page, 'conditions', seeded.condition, 'Condition')
 		await expect(page.locator('.app-content button').filter({ hasText: /Actions|Acties/i }).first()).toBeVisible()
 	})
@@ -752,14 +752,14 @@ test.describe('game-mechanics — detail & forms', () => {
 
 	// @e2e openspec/specs/game-mechanics/spec.md#view-effect-relations-used-by
 	// FIXME(detail-actions-blocker): detail Actions menu never renders — DETAIL_ACTIONS_BLOCKER.
-	test.fixme('effect detail Actions menu opens (relations path)', async ({ page }) => {
+	test('effect detail Actions menu opens (relations path)', async ({ page }) => {
 		await gotoDetail(page, 'effects', seeded.effect, 'Effect')
 		await openActionsMenu(page)
 	})
 
 	// @e2e openspec/specs/game-mechanics/spec.md#lock-an-item-for-editing
 	// FIXME(detail-actions-blocker): detail Actions menu never renders — DETAIL_ACTIONS_BLOCKER.
-	test.fixme('item detail Actions menu hosts lock control', async ({ page }) => {
+	test('item detail Actions menu hosts lock control', async ({ page }) => {
 		await gotoDetail(page, 'items', seeded.item, 'Item')
 		await openActionsMenu(page)
 	})
