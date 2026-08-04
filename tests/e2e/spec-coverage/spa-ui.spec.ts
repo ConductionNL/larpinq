@@ -475,9 +475,18 @@ test.describe('settings-management-ui', () => {
 	// @e2e openspec/specs/settings-management-ui/spec.md#panel-loads-then-saves-all-types
 	test('admin settings panel loads', async ({ page }) => {
 		await go(page, '/settings/admin/larpingapp')
-		// NC admin settings section for larpingapp
-		await expect(page.locator('.app-content, #app-content, .section')).toBeVisible({ timeout: 10_000 })
 		expect(page.url()).toContain('/settings/admin/larpingapp')
+		// PROVEN DEAD, then fixed. In the bundle-truncation control (E2E job
+		// 91937... on PR #251, `js/*.js` emptied to 0 bytes) this test still
+		// PASSED — because `.app-content, #app-content, .section` is Nextcloud's
+		// own server-rendered settings chrome, present whether or not larpingapp
+		// mounts, and the URL check is a tautology after a goto. It asserted
+		// nothing about this app.
+		//
+		// "Save All" is rendered by larpingapp's Vue admin panel, so it exists
+		// only if the app's JavaScript loaded and mounted.
+		await expect(page.getByRole('button', { name: /Save All/i }).first())
+			.toBeVisible({ timeout: 15_000 })
 	})
 })
 
@@ -493,9 +502,18 @@ test.describe('admin-settings', () => {
 		// poll), so it burns the full budget. Wait for the rendered shell.
 		await page.locator('#app-content, .app-content, #content').first()
 			.waitFor({ state: 'visible', timeout: 30_000 }).catch(() => {})
-		// Settings page renders without crashing
-		await expect(page.locator('body')).toBeVisible()
 		expect(page.url()).toContain('/settings/admin/larpingapp')
+		// PROVEN DEAD, then fixed. This test passed in the bundle-truncation
+		// control (PR #251, `js/*.js` emptied to 0 bytes) because its two
+		// assertions were `expect(page.locator('body')).toBeVisible()` — true on
+		// literally any page that loads — and a URL check that a `goto` cannot
+		// fail. The scenario is "admin OPENS the larpingapp settings panel", so
+		// assert the panel: its heading and its Save control, both rendered by
+		// the app's own Vue component.
+		await expect(page.getByText(/Administration settings: LarpingApp|LarpingApp/i).first())
+			.toBeVisible({ timeout: 15_000 })
+		await expect(page.getByRole('button', { name: /Save All/i }).first())
+			.toBeVisible({ timeout: 15_000 })
 	})
 })
 
