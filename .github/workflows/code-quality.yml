@@ -31,3 +31,44 @@ jobs:
       enable-frontend: true
       enable-eslint: true
       enable-phpunit: true
+      # larpingapp is a THIN CLIENT on OpenRegister — appinfo/info.xml has no
+      # database tables of its own and every entity (character, ability, skill,
+      # effect, item, event, …) is an OpenRegister object. Without openregister
+      # installed there is nothing for the SPA to render and nothing for the e2e
+      # fixtures to create, so the E2E job needs it on the CI instance.
+      #
+      # Pinned to `development`, NOT `main`: this app tracks `development`, and
+      # pinning the foundation to `main` is what makes a CI instance behave
+      # unlike any environment the app is actually developed against.
+      additional-apps: '[{"repo":"ConductionNL/openregister","app":"openregister","ref":"development"}]'
+
+      # ── E2E browser tests ────────────────────────────────────────────────
+      # Previously OFF, which made the shared workflow report
+      # "E2E Tests (Playwright)" as `skipped` — a conclusion that reads exactly
+      # like a job with nothing to complain about. The suite itself
+      # (10 spec files under tests/e2e/) has existed and been maintained for
+      # months; only the switch was missing.
+      #
+      # The one real blocker was seeding: `occ app:enable larpingapp` runs the
+      # register import from an IRepairStep, which has NO user session, so
+      # OpenRegister's RBAC denies it — and the repair step swallows the
+      # exception as a warning so `occ app:enable` still exits 0. Addressed by
+      # not relying on it: `ci-seed.sh` performs the import explicitly over the
+      # admin HTTP API (POST /apps/larpingapp/api/settings/reimport ->
+      # loadSettings(force: true), which also merges the register.d fragments)
+      # and then VERIFIES the register + all 11 schema slugs, so a bad provision
+      # is one loud step failure instead of a dozen misleading spec failures.
+      enable-playwright: true
+      # Double duty in the shared workflow: it is both the directory the
+      # "Validate Playwright tests exist" step counts *.spec.ts in, AND the
+      # FIRST place the run step looks for a config
+      # (`${playwright-test-path}/playwright.config.ts`), falling back to the
+      # repo root only if that file is absent. We ship
+      # tests/e2e/playwright.config.ts precisely so that lookup hits it: the run
+      # step passes no `--project`, so the ROOT config would also run
+      # `docs-capture` (re-shooting every documentation screenshot on every PR)
+      # and `visual` (whose committed PNG baselines are host-font/GPU specific
+      # and cannot byte-match a CI runner — its own README says so).
+      playwright-test-path: tests/e2e
+      # cwd for this step is the Nextcloud server root.
+      playwright-seed-command: 'bash apps/larpingapp/tests/e2e/ci-seed.sh'

@@ -357,7 +357,7 @@
         "slug": "player",
         "title": "Player",
         "icon": "AccountGroupOutline",
-        "version": "1.1.0",
+        "version": "1.1.1",
         "summary": "A real-world player participating in the LARP",
         "description": "Represents a player who controls one or more characters. Tracks player identity and contact information.",
         "type": "object",
@@ -381,8 +381,7 @@
           },
           "userUid": {
             "type": "string",
-            "format": "user",
-            "description": "The Nextcloud user account this player signs in as. Used for character-ownership notifications.",
+            "description": "The Nextcloud user account this player signs in as (a Nextcloud user UID — a plain string; there is deliberately no `format`, OpenRegister has no `user` format and rejects the whole schema when it sees one). Used for character-ownership notifications.",
             "maxLength": 255,
             "title": "Nextcloud user"
           }

@@ -40,6 +40,7 @@
 			"label": "Characters",
 			"icon": "BriefcaseAccountOutline",
 			"order": 20,
+			"open": true,
 			"children": [
 				{ "id": "Characters", "label": "Characters", "icon": "BriefcaseAccountOutline", "route": "Characters", "order": 20 },
 				{ "id": "Players",    "label": "Players",    "icon": "AccountGroupOutline",     "route": "Players",    "order": 30 }
@@ -50,6 +51,7 @@
 			"label": "Mechanics",
 			"icon": "FlashOutline",
 			"order": 40,
+			"open": true,
 			"children": [
 				{ "id": "Abilities",   "label": "Abilities",   "icon": "FlashOutline",        "route": "Abilities",   "order": 40 },
 				{ "id": "Skills",      "label": "Skills",      "icon": "ToolboxOutline",          "route": "Skills",      "order": 50 },
@@ -63,6 +65,7 @@
 			"label": "World",
 			"icon": "Sword",
 			"order": 60,
+			"open": true,
 			"children": [
 				{ "id": "Items",  "label": "Items",  "icon": "Sword",              "route": "Items",  "order": 60 },
 				{ "id": "Events", "label": "Events", "icon": "CalendarMonthOutline","route": "Events", "order": 90 },
