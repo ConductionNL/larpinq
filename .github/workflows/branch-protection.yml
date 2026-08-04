@@ -5,6 +5,14 @@ on:
     branches: [main, beta]
 
 jobs:
-  protect:
+  # Job id must stay `branch-protection` so the check reports as
+  # `branch-protection / check-branch`, which is the context name the org
+  # rulesets "Main Branch Protection" and "Beta Branch Protection" require.
+  # GitHub names a reusable-workflow context `<caller-job-id> / <called-job-name>`,
+  # so while this job was called `protect` it emitted `protect / check-branch`
+  # and the REQUIRED context never reported at all: every PR to main or beta
+  # sat permanently pending and only `--admin` could ship it — a dead gate
+  # whose absence looks exactly like its success.
+  branch-protection:
     uses: ConductionNL/.github/.github/workflows/branch-protection.yml@main
     secrets: inherit
