@@ -365,4 +365,27 @@ if [ "${GITHUB_ACTIONS:-}" = "true" ] || [ "${CI:-}" = "true" ]; then
 	esac
 fi
 
+# ============================================================================
+# TEMPORARY — NEGATIVE CONTROL. DO NOT MERGE.
+# ============================================================================
+#
+# Truncate the built SPA bundle to zero bytes so the app has no JavaScript at
+# all, then let the suite run unchanged. Every spec that is genuinely driving
+# the LarpingApp SPA MUST now fail. Any spec that still passes was never
+# testing the app, and its green result on the real branch means nothing.
+#
+# TRUNCATE, do not delete: `global-setup.ts::ensureBundleBuilt()` guards on
+# `fs.existsSync(BUNDLE_PATH)` alone, so a deleted bundle is silently rebuilt
+# and the control measures nothing.
+#
+# Placed AFTER the content-type gate above on purpose — the gate reads the
+# SERVED response, and it has already passed at this point, so this run proves
+# the gate is not what the specs depend on.
+echo "[ci-seed] NEGATIVE CONTROL: truncating the built bundle to 0 bytes."
+for js in "${APP_DIR}"/js/*.js; do
+	[ -f "$js" ] || continue
+	: > "$js"
+	echo "[ci-seed]   truncated $js -> $(wc -c < "$js") bytes"
+done
+
 echo "[ci-seed] done."
