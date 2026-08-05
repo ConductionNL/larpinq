@@ -109,6 +109,8 @@ class CharactersController extends Controller
      * @NoAdminRequired
      * @NoCSRFRequired
      *
+     * @SuppressWarnings(PHPMD.ShortVariable)
+     *
      * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-80
      * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-81
      * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-82
@@ -222,6 +224,8 @@ class CharactersController extends Controller
      *
      * @NoAdminRequired
      * @NoCSRFRequired
+     *
+     * @SuppressWarnings(PHPMD.ShortVariable)
      *
      * @spec openspec/changes/skill-requirement-enforcement/specs/skill-requirement-enforcement/spec.md
      */

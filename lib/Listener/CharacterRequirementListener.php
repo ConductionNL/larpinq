@@ -16,7 +16,7 @@
  * @package   OCA\LarpingApp\Listener
  * @author    Ruben Linde <ruben@larpingapp.com>
  * @copyright 2026 Conduction B.V.
- * @license   AGPL-3.0-or-later https://www.gnu.org/licenses/agpl-3.0.en.html
+ * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link      https://larpingapp.com
  *
  * @spec openspec/changes/skill-requirement-enforcement/specs/skill-requirement-enforcement/spec.md
@@ -41,7 +41,7 @@ use Psr\Log\LoggerInterface;
  * @category Listener
  * @package  OCA\LarpingApp\Listener
  * @author   Ruben Linde <ruben@larpingapp.com>
- * @license  https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
+ * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
  *
  * @template-implements IEventListener<Event>
