@@ -214,7 +214,7 @@ class SetupController extends Controller
         }
 
         try {
-            $result        = $this->settingsService->loadSettings(force: false);
+            $result        = $this->settingsService->loadSettings();
             $registerCount = count((array) ($result['registers'] ?? []));
             $schemaCount   = count((array) ($result['schemas'] ?? []));
 

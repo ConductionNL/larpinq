@@ -40,8 +40,6 @@ use Psr\Log\LoggerInterface;
  * @license  https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
  * @link     https://larpingapp.com
  *
- * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
- *
  * @spec openspec/changes/skill-requirement-enforcement/specs/skill-requirement-enforcement/spec.md
  */
 class SkillRequirementService
@@ -49,16 +47,20 @@ class SkillRequirementService
     /**
      * Constructor for SkillRequirementService.
      *
-     * @param CharacterService      $characterService The stat engine (reused for the XP budget).
-     * @param RegisterObjectFetcher $objectFetcher    The register object fetcher.
-     * @param LoggerInterface       $logger           The logger.
+     * @param CharacterService        $characterService The stat engine (reused for the XP budget).
+     * @param RegisterObjectFetcher   $objectFetcher    The register object fetcher.
+     * @param LoggerInterface         $logger           The logger.
+     * @param SkillRequirementChecker $checker          The per-skill requirement rules.
+     * @param IdListNormaliser        $idList           Relation-shape normaliser.
      *
      * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
      */
     public function __construct(
         private readonly CharacterService $characterService,
         private readonly RegisterObjectFetcher $objectFetcher,
-        private readonly LoggerInterface $logger
+        private readonly LoggerInterface $logger,
+        private readonly SkillRequirementChecker $checker,
+        private readonly IdListNormaliser $idList
     ) {
     }//end __construct()
 
@@ -80,23 +82,16 @@ class SkillRequirementService
      *   dependents: array<int, array<string,mixed>>
      * } The structured validation result.
      *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
-     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
-     *
      * @spec openspec/changes/skill-requirement-enforcement/specs/skill-requirement-enforcement/spec.md
      */
     public function validate(array $candidate, array $oldCharacter=[]): array
     {
-        $skills    = $this->idList(value: ($candidate['skills'] ?? []));
-        $oldSkills = $this->idList(value: ($oldCharacter['skills'] ?? []));
+        $skills    = $this->idList->normalise($candidate['skills'] ?? []);
+        $oldSkills = $this->idList->normalise($oldCharacter['skills'] ?? []);
         $added     = array_values(array_diff($skills, $oldSkills));
         $removed   = array_values(array_diff($oldSkills, $skills));
 
-        $overrides     = $this->indexOverrides(character: $candidate);
-        $allSkills     = $this->fetchIndexed(objectType: 'skill');
-        $allConditions = $this->idList(value: ($candidate['conditions'] ?? []));
-        $allEffects    = $this->collectAssignedEffects(character: $candidate, allSkills: $allSkills);
+        $allSkills = $this->fetchIndexed(objectType: 'skill');
 
         // Compute the candidate stats once via the stat engine (no parallel formula).
         $calculated = $this->characterService->calculateCharacter(character: $candidate);
@@ -104,6 +99,48 @@ class SkillRequirementService
         if (is_array($calculated['stats'] ?? null) === true) {
             $stats = $calculated['stats'];
         }
+
+        $requirements = $this->evaluateAdded(
+            added: $added,
+            overrides: $this->indexOverrides(character: $candidate),
+            context: [
+                'skills'     => $skills,
+                'allSkills'  => $allSkills,
+                'stats'      => $stats,
+                'conditions' => $this->idList->normalise($candidate['conditions'] ?? []),
+                'effects'    => $this->collectAssignedEffects(character: $candidate, allSkills: $allSkills),
+            ]
+        );
+
+        $budget     = $this->evaluateBudget(stats: $stats);
+        $dependents = $this->analyseRemovals(removed: $removed, remainingSkills: $skills, allSkills: $allSkills);
+
+        return [
+            'valid'        => ($this->hasUnmet(requirements: $requirements, budget: $budget) === false),
+            'requirements' => $requirements,
+            'budget'       => $budget,
+            'dependents'   => $dependents,
+        ];
+    }//end validate()
+
+    /**
+     * Evaluate every newly-added skill against its declared requirements.
+     *
+     * A skill id that does not resolve to a skill object yields a single
+     * "unresolvable" entry rather than being silently skipped — an unknown
+     * prerequisite must never read as satisfied.
+     *
+     * @param array<int,string>                 $added     The newly-added skill ids.
+     * @param array<string,array<string,mixed>> $overrides GM overrides indexed by skill id.
+     * @param array<string,mixed>               $context   The resolved character context.
+     *
+     * @return array<int,array<string,mixed>> The requirement entries.
+     *
+     * @spec openspec/changes/skill-requirement-enforcement/specs/skill-requirement-enforcement/spec.md
+     */
+    private function evaluateAdded(array $added, array $overrides, array $context): array
+    {
+        $allSkills = $context['allSkills'] ?? [];
 
         $requirements = [];
         foreach ($added as $skillId) {
@@ -118,154 +155,44 @@ class SkillRequirementService
                 continue;
             }
 
-            $overridden = isset($overrides[$skillId]);
-
-            // Prerequisite skills: each must be present in the candidate skill list.
-            foreach ($this->idList(value: ($skill['requiredSkills'] ?? [])) as $reqSkill) {
-                $present    = in_array($reqSkill, $skills, true);
-                $resolved   = isset($allSkills[$reqSkill]);
-                $targetName = '';
-                if ($resolved === true) {
-                    $targetName = (string) ($allSkills[$reqSkill]['name'] ?? '');
-                }
-
-                $requirements[] = $this->entry(
+            $requirements = array_merge(
+                $requirements,
+                $this->checker->check(
                     skillId: $skillId,
-                    type: 'requiredSkill',
-                    target: $reqSkill,
-                    targetName: $targetName,
-                    status: $this->status(passed: $present, resolved: $resolved, overridden: $overridden)
-                );
-            }
-
-            // Required ability scores: each ability must meet requiredScore.
-            $requiredScore = (int) ($skill['requiredScore'] ?? 0);
-            foreach ($this->idList(value: ($skill['requiredStats'] ?? [])) as $reqStat) {
-                $resolved   = isset($stats[$reqStat]);
-                $current    = 0;
-                $targetName = '';
-                if ($resolved === true) {
-                    $current    = (int) ($stats[$reqStat]['value'] ?? 0);
-                    $targetName = (string) ($stats[$reqStat]['name'] ?? '');
-                }
-
-                $passed         = ($resolved === true && $current >= $requiredScore);
-                $requirements[] = $this->entry(
-                    skillId: $skillId,
-                    type: 'requiredStat',
-                    target: $reqStat,
-                    targetName: $targetName,
-                    status: $this->status(passed: $passed, resolved: $resolved, overridden: $overridden),
-                    current: $current,
-                    required: $requiredScore
-                );
-            }
-
-            // Required conditions: each must be in the candidate conditions list.
-            foreach ($this->idList(value: ($skill['requiredConditions'] ?? [])) as $reqCond) {
-                $present        = in_array($reqCond, $allConditions, true);
-                $requirements[] = $this->entry(
-                    skillId: $skillId,
-                    type: 'requiredCondition',
-                    target: $reqCond,
-                    targetName: '',
-                    status: $this->status(passed: $present, resolved: true, overridden: $overridden)
-                );
-            }
-
-            // Required effects: each must be granted by an assigned entity.
-            foreach ($this->idList(value: ($skill['requiredEffects'] ?? [])) as $reqEffect) {
-                $present        = in_array($reqEffect, $allEffects, true);
-                $requirements[] = $this->entry(
-                    skillId: $skillId,
-                    type: 'requiredEffect',
-                    target: $reqEffect,
-                    targetName: '',
-                    status: $this->status(passed: $present, resolved: true, overridden: $overridden)
-                );
-            }
+                    skill: $skill,
+                    overridden: isset($overrides[$skillId]),
+                    context: $context
+                )
+            );
         }//end foreach
 
-        $budget     = $this->evaluateBudget(stats: $stats);
-        $dependents = $this->analyseRemovals(removed: $removed, remainingSkills: $skills, allSkills: $allSkills);
+        return $requirements;
+    }//end evaluateAdded()
 
-        $hasUnmet = $budget['ok'] === false;
+    /**
+     * Whether anything blocks the write: an overspent budget or a failed entry.
+     *
+     * @param array<int,array<string,mixed>>                               $requirements The requirement entries.
+     * @param array{ability: string, value: int, shortfall: int, ok: bool} $budget       The budget block.
+     *
+     * @return bool True when the candidate must be rejected.
+     *
+     * @spec openspec/changes/skill-requirement-enforcement/specs/skill-requirement-enforcement/spec.md
+     */
+    private function hasUnmet(array $requirements, array $budget): bool
+    {
+        if ($budget['ok'] === false) {
+            return true;
+        }
+
         foreach ($requirements as $entry) {
             if ($entry['status'] === 'unmet' || $entry['status'] === 'unresolvable') {
-                $hasUnmet = true;
-                break;
+                return true;
             }
         }
 
-        return [
-            'valid'        => ($hasUnmet === false),
-            'requirements' => $requirements,
-            'budget'       => $budget,
-            'dependents'   => $dependents,
-        ];
-    }//end validate()
-
-    /**
-     * Build a single requirement-result entry.
-     *
-     * @param string $skillId    The skill being assigned.
-     * @param string $type       The requirement type.
-     * @param string $target     The required target UUID.
-     * @param string $targetName The required target's human name (may be empty).
-     * @param string $status     One of passed|unmet|overridden|unresolvable.
-     * @param int    $current    The current value (stat checks only).
-     * @param int    $required   The required value (stat checks only).
-     *
-     * @return array<string,mixed> The entry.
-     */
-    private function entry(
-        string $skillId,
-        string $type,
-        string $target,
-        string $targetName,
-        string $status,
-        int $current=0,
-        int $required=0
-    ): array {
-        return [
-            'skill'      => $skillId,
-            'type'       => $type,
-            'target'     => $target,
-            'targetName' => $targetName,
-            'status'     => $status,
-            'current'    => $current,
-            'required'   => $required,
-        ];
-    }//end entry()
-
-    /**
-     * Derive a status from passed/resolved/overridden flags.
-     *
-     * An overridden requirement is reported as "overridden" (never "passed"),
-     * an unresolvable target as "unresolvable", otherwise passed/unmet.
-     *
-     * @param bool $passed     Whether the requirement is satisfied.
-     * @param bool $resolved   Whether the required target resolves to an object.
-     * @param bool $overridden Whether a GM override covers this skill.
-     *
-     * @return string The status.
-     */
-    private function status(bool $passed, bool $resolved, bool $overridden): string
-    {
-        if ($resolved === false) {
-            return 'unresolvable';
-        }
-
-        if ($passed === true) {
-            return 'passed';
-        }
-
-        if ($overridden === true) {
-            return 'overridden';
-        }
-
-        return 'unmet';
-    }//end status()
+        return false;
+    }//end hasUnmet()
 
     /**
      * Evaluate the XP budget from the computed stats.
@@ -357,7 +284,7 @@ class SkillRequirementService
                 continue;
             }
 
-            foreach ($this->idList(value: ($skill['requiredSkills'] ?? [])) as $reqSkill) {
+            foreach ($this->idList->normalise($skill['requiredSkills'] ?? []) as $reqSkill) {
                 if (in_array($reqSkill, $removed, true) === true) {
                     $dependents[] = [
                         'skill'        => $skillId,
@@ -382,13 +309,13 @@ class SkillRequirementService
     private function collectAssignedEffects(array $character, array $allSkills): array
     {
         $effects = [];
-        foreach ($this->idList(value: ($character['skills'] ?? [])) as $skillId) {
+        foreach ($this->idList->normalise($character['skills'] ?? []) as $skillId) {
             $skill = $allSkills[$skillId] ?? null;
             if ($skill === null) {
                 continue;
             }
 
-            foreach ($this->idList(value: ($skill['effects'] ?? [])) as $effectId) {
+            foreach ($this->idList->normalise($skill['effects'] ?? []) as $effectId) {
                 $effects[] = $effectId;
             }
         }
@@ -454,41 +381,4 @@ class SkillRequirementService
 
         return $indexed;
     }//end fetchIndexed()
-
-    /**
-     * Normalise a value to a list of string ids.
-     *
-     * Tolerates arrays of strings, arrays of {id} objects, or a single value.
-     *
-     * @param mixed $value The raw value.
-     *
-     * @return array<int,string> The id list.
-     */
-    private function idList(mixed $value): array
-    {
-        if (is_array($value) === false) {
-            if ($value === null || $value === '') {
-                return [];
-            }
-
-            return [(string) $value];
-        }
-
-        $ids = [];
-        foreach ($value as $entry) {
-            if (is_array($entry) === true) {
-                if (isset($entry['id']) === true) {
-                    $ids[] = (string) $entry['id'];
-                }
-
-                continue;
-            }
-
-            if ($entry !== null && $entry !== '') {
-                $ids[] = (string) $entry;
-            }
-        }
-
-        return $ids;
-    }//end idList()
 }//end class

@@ -376,8 +376,6 @@ class RegisterObjectFetcher
      * @psalm-suppress MixedMethodCall Mapper resolved dynamically via getMapper().
      * @psalm-suppress MixedAssignment Mapper resolved dynamically.
      *
-     * @SuppressWarnings(PHPMD.ShortVariable)
-     *
      * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-54
      * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-55
      * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-56

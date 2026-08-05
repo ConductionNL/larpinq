@@ -316,7 +316,7 @@ class SettingsController extends Controller
     public function reimport(): JSONResponse
     {
         try {
-            $result = $this->settingsService->loadSettings(force: true);
+            $result = $this->settingsService->reloadSettings();
 
             return new JSONResponse(
                 [

@@ -82,7 +82,7 @@ class InitializeRegister implements IRepairStep
         $output->info('Initializing LarpingApp configuration...');
 
         try {
-            $this->settingsService->loadSettings(force: false);
+            $this->settingsService->loadSettings();
             $output->info('LarpingApp configuration imported successfully.');
         } catch (\RuntimeException $e) {
             // OpenRegister not available — skip gracefully.

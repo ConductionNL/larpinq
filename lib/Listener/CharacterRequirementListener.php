@@ -91,10 +91,6 @@ class CharacterRequirementListener implements IEventListener
      * @psalm-suppress MixedAssignment  OpenRegister event/entity classes are optional dependencies.
      * @psalm-suppress MixedArgument    OpenRegister event/entity classes are optional dependencies.
      *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
-     * @SuppressWarnings(PHPMD.ElseExpression)
-     *
      * @spec openspec/changes/skill-requirement-enforcement/specs/skill-requirement-enforcement/spec.md
      */
     public function handle(Event $event): void
@@ -111,16 +107,7 @@ class CharacterRequirementListener implements IEventListener
         // dependencies (OpenRegister may be absent).  Static analysis does not
         // know about these optional classes; see the ignore annotations below.
         try {
-            if ($event instanceof \OCA\OpenRegister\Event\ObjectCreatingEvent) {
-                // @phpstan-ignore-next-line
-                $newEntity = $event->getObject();
-                $oldEntity = null;
-            } else {
-                // @phpstan-ignore-next-line
-                $newEntity = $event->getNewObject();
-                // @phpstan-ignore-next-line
-                $oldEntity = $event->getOldObject();
-            }//end if
+            [$newEntity, $oldEntity] = $this->extractEntities(event: $event);
 
             if ($this->isCharacterSchema(entity: $newEntity) === false) {
                 return;
@@ -139,21 +126,11 @@ class CharacterRequirementListener implements IEventListener
                 return;
             }
 
-            // GM-override authorization: a non-GM that adds/alters override
-            // entries is rejected outright (auth, not game-rule).
-            $authError = $this->checkOverrideAuthorization(candidate: $candidate, old: $oldCharacter);
-            if ($authError !== null) {
+            $errors = $this->collectVeto(candidate: $candidate, oldCharacter: $oldCharacter);
+            if ($errors !== null) {
                 $event->stopPropagation();
                 // @phpstan-ignore-next-line
-                $event->setErrors(['requirementOverrides' => [$authError]]);
-                return;
-            }
-
-            $result = $this->requirementService->validate(candidate: $candidate, oldCharacter: $oldCharacter);
-            if ($result['valid'] === false) {
-                $event->stopPropagation();
-                // @phpstan-ignore-next-line
-                $event->setErrors($this->buildErrorPayload(result: $result));
+                $event->setErrors($errors);
             }
         } catch (\Throwable $e) {
             // Never fail-open on an unexpected error in the veto path is the
@@ -167,6 +144,64 @@ class CharacterRequirementListener implements IEventListener
             );
         }//end try
     }//end handle()
+
+    /**
+     * Extract the [new, old] entity pair from a vetoable pre-write event.
+     *
+     * A create carries only the new object; an update carries both. Returning
+     * the pair keeps the event-shape knowledge in one place.
+     *
+     * @param Event $event The dispatched pre-write event.
+     *
+     * @return array{0: object, 1: object|null} The [newEntity, oldEntity] pair.
+     *
+     * @psalm-suppress MixedMethodCall     OpenRegister event classes are optional dependencies.
+     * @psalm-suppress MixedReturnStatement OpenRegister event classes are optional dependencies.
+     * @psalm-suppress MixedInferredReturnType OpenRegister event classes are optional dependencies.
+     *
+     * @spec openspec/changes/skill-requirement-enforcement/specs/skill-requirement-enforcement/spec.md
+     */
+    private function extractEntities(Event $event): array
+    {
+        if ($event instanceof \OCA\OpenRegister\Event\ObjectCreatingEvent) {
+            // @phpstan-ignore-next-line
+            return [$event->getObject(), null];
+        }
+
+        // @phpstan-ignore-next-line
+        return [$event->getNewObject(), $event->getOldObject()];
+    }//end extractEntities()
+
+    /**
+     * Collect the veto payload for a candidate write, or null when it may pass.
+     *
+     * Two independent grounds, checked in order: a non-GM authoring requirement
+     * overrides (auth, not game-rule) short-circuits before any game-rule
+     * validation runs; otherwise the requirement/budget result decides.
+     *
+     * @param array<string,mixed> $candidate    The candidate character.
+     * @param array<string,mixed> $oldCharacter The persisted character.
+     *
+     * @return array<string,mixed>|null The errors payload, or null to allow.
+     *
+     * @spec openspec/changes/skill-requirement-enforcement/specs/skill-requirement-enforcement/spec.md
+     */
+    private function collectVeto(array $candidate, array $oldCharacter): ?array
+    {
+        // GM-override authorization: a non-GM that adds/alters override
+        // entries is rejected outright (auth, not game-rule).
+        $authError = $this->checkOverrideAuthorization(candidate: $candidate, old: $oldCharacter);
+        if ($authError !== null) {
+            return ['requirementOverrides' => [$authError]];
+        }
+
+        $result = $this->requirementService->validate(candidate: $candidate, oldCharacter: $oldCharacter);
+        if ($result['valid'] === false) {
+            return $this->buildErrorPayload(result: $result);
+        }
+
+        return null;
+    }//end collectVeto()
 
     /**
      * Whether the entity belongs to the character schema.

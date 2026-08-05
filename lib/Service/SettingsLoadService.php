@@ -110,18 +110,50 @@ class SettingsLoadService
     /**
      * Load settings by importing the register JSON via ConfigurationService.
      *
-     * @param bool $force Whether to force re-import.
+     * Version-gated: OpenRegister skips the import when the recorded version
+     * already matches. Use reloadSettings() to re-import unconditionally.
      *
      * @return array The import result.
-     *
-     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
      *
      * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-27
      * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-28
      * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-29
      * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-30
      */
-    public function loadSettings(bool $force=false): array
+    public function loadSettings(): array
+    {
+        return $this->importRegister(force: false);
+
+    }//end loadSettings()
+
+    /**
+     * Re-import the register JSON unconditionally, bypassing the version gate.
+     *
+     * @return array The import result.
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-27
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-28
+     */
+    public function reloadSettings(): array
+    {
+        return $this->importRegister(force: true);
+
+    }//end reloadSettings()
+
+    /**
+     * Import the register JSON via OpenRegister's ConfigurationService.
+     *
+     * Shared implementation behind loadSettings()/reloadSettings(); $force has
+     * no default, so it is always an explicit decision at the call site.
+     *
+     * @param bool $force Whether to bypass the version gate and re-import.
+     *
+     * @return array The import result.
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-29
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-30
+     */
+    private function importRegister(bool $force): array
     {
         $data = $this->fileLoader->loadConfigurationFile();
         $data = $this->fileLoader->ensureSourceType(data: $data);
@@ -150,7 +182,7 @@ class SettingsLoadService
 
         return $result;
 
-    }//end loadSettings()
+    }//end importRegister()
 
     /**
      * Update IAppConfig with imported register and schema IDs.

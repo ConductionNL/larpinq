@@ -15,7 +15,10 @@ declare(strict_types=1);
 namespace OCA\LarpingApp\Tests\Unit\Service;
 
 use OCA\LarpingApp\Service\CharacterService;
+use OCA\LarpingApp\Service\EffectApplier;
+use OCA\LarpingApp\Service\IdListNormaliser;
 use OCA\LarpingApp\Service\RegisterObjectFetcher;
+use OCA\LarpingApp\Service\SkillRequirementChecker;
 use OCA\LarpingApp\Service\SkillRequirementService;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -56,8 +59,15 @@ class SkillRequirementServiceTest extends TestCase
                 };
             });
 
-        $characterService = new CharacterService($fetcher, $this->logger);
-        return new SkillRequirementService($characterService, $fetcher, $this->logger);
+        $characterService = new CharacterService($fetcher, $this->logger, new EffectApplier());
+        $idList           = new IdListNormaliser();
+        return new SkillRequirementService(
+            $characterService,
+            $fetcher,
+            $this->logger,
+            new SkillRequirementChecker($idList),
+            $idList
+        );
     }
 
     public function testNewCharacterWithNoSkillsIsValid(): void
@@ -167,8 +177,15 @@ class SkillRequirementServiceTest extends TestCase
                 default => [],
             };
         });
-        $engine  = new CharacterService($fetcher, $this->logger);
-        $service = new SkillRequirementService($engine, $fetcher, $this->logger);
+        $engine  = new CharacterService($fetcher, $this->logger, new EffectApplier());
+        $idList  = new IdListNormaliser();
+        $service = new SkillRequirementService(
+            $engine,
+            $fetcher,
+            $this->logger,
+            new SkillRequirementChecker($idList),
+            $idList
+        );
 
         $character  = ['skills' => ['s1']];
         $calculated = $engine->calculateCharacter($character);

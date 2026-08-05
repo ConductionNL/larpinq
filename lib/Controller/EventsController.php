@@ -17,10 +17,8 @@ declare(strict_types=1);
 
 namespace OCA\LarpingApp\Controller;
 
-use DateTimeImmutable;
-use DateTimeInterface;
 use OCA\LarpingApp\Service\DocuDeskPdfRenderer;
-use OCA\LarpingApp\Service\RegisterObjectFetcher;
+use OCA\LarpingApp\Service\EventRosterService;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\Attribute\NoAdminRequired;
@@ -32,12 +30,14 @@ use OCP\IRequest;
 use OCP\IUserSession;
 
 /**
- * Controller for event-level operations — the GM run-sheet / cast-list export.
+ * Controller for event-level operations — the GM run-sheet / cast-list export
+ * and the check-in roster.
+ *
+ * A thin HTTP boundary: authentication and the GM authorization decision live
+ * here; every participation, attendance and render-context rule lives in
+ * EventRosterService, and persistence is OR-delegated (ADR-022).
  *
  * @psalm-suppress UnusedClass Instantiated by Nextcloud routing (appinfo/routes.php).
- *
- * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  *
  * @spec openspec/changes/event-runsheet-export/specs/pdf-export/spec.md
  */
@@ -65,17 +65,17 @@ class EventsController extends Controller
     /**
      * Constructor for the EventsController.
      *
-     * @param string                $appName       The app name.
-     * @param IRequest              $request       The request object.
-     * @param RegisterObjectFetcher $objectFetcher The register object fetcher.
-     * @param DocuDeskPdfRenderer   $pdfRenderer   The shared DocuDesk PDF helper.
-     * @param IUserSession          $userSession   The user session.
-     * @param IGroupManager         $groupManager  The group manager.
+     * @param string              $appName       The app name.
+     * @param IRequest            $request       The request object.
+     * @param EventRosterService  $rosterService The event participation domain service.
+     * @param DocuDeskPdfRenderer $pdfRenderer   The shared DocuDesk PDF helper.
+     * @param IUserSession        $userSession   The user session.
+     * @param IGroupManager       $groupManager  The group manager.
      */
     public function __construct(
         $appName,
         IRequest $request,
-        private readonly RegisterObjectFetcher $objectFetcher,
+        private readonly EventRosterService $rosterService,
         private readonly DocuDeskPdfRenderer $pdfRenderer,
         private readonly IUserSession $userSession,
         private readonly IGroupManager $groupManager
@@ -99,25 +99,16 @@ class EventsController extends Controller
      * @NoAdminRequired
      * @NoCSRFRequired
      *
-     * @SuppressWarnings(PHPMD.ShortVariable)
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
-     *
      * @spec openspec/changes/event-runsheet-export/specs/pdf-export/spec.md
      */
     #[NoAdminRequired]
     #[NoCSRFRequired]
     public function downloadRunsheet(string $id, string $template): DataDownloadResponse|JSONResponse
     {
-        $user = $this->userSession->getUser();
-        if ($user === null) {
-            return new JSONResponse(data: ['error' => 'Not authenticated'], statusCode: Http::STATUS_UNAUTHORIZED);
-        }
-
         // GM-only: the run-sheet exposes approval status and GM-private notes.
-        $isGm = $this->groupManager->isInGroup($user->getUID(), self::GM_GROUP);
-        if ($isGm === false && $this->groupManager->isAdmin($user->getUID()) === false) {
-            return new JSONResponse(data: ['error' => 'Access denied'], statusCode: Http::STATUS_FORBIDDEN);
+        [, $denied] = $this->resolveGameMaster();
+        if ($denied !== null) {
+            return $denied;
         }
 
         if ($this->pdfRenderer->isDocuDeskAvailable() === false) {
@@ -132,9 +123,8 @@ class EventsController extends Controller
             return new JSONResponse(data: ['error' => 'Invalid template ID: expected a UUID'], statusCode: Http::STATUS_BAD_REQUEST);
         }
 
-        try {
-            $event = $this->objectFetcher->getObject(objectType: 'event', id: $id);
-        } catch (\Exception $exception) {
+        $event = $this->rosterService->getEvent(eventId: $id);
+        if ($event === null) {
             return new JSONResponse(data: ['error' => 'Event not found'], statusCode: 404);
         }
 
@@ -143,28 +133,19 @@ class EventsController extends Controller
             return new JSONResponse(data: ['error' => 'Template not found'], statusCode: 404);
         }
 
-        $context   = $this->buildRunsheetContext(event: $event, eventId: $id);
+        $context   = $this->rosterService->buildRunsheetContext(event: $event, eventId: $id);
         $pdfString = $this->pdfRenderer->render(templateData: $templateData, context: $context);
         if ($pdfString === null) {
             return new JSONResponse(data: ['error' => 'PDF generation failed. Please contact your administrator.'], statusCode: 500);
         }
 
-        $eventName = (string) ($event['name'] ?? '');
-        if ($eventName === '') {
-            $eventName = 'event';
-        }
-
-        $fileName = $eventName.'_runsheet.pdf';
-
-        return new DataDownloadResponse($pdfString, $fileName, 'application/pdf');
+        return new DataDownloadResponse($pdfString, $this->runsheetFileName(event: $event), 'application/pdf');
     }//end downloadRunsheet()
 
     /**
      * Read the check-in roster for an event.
      *
-     * Lists every confirmed participant (a character whose `events[]` references
-     * this event) with the player name, character type and current attendance
-     * status. Read access is open to any authenticated app user — the roster is
+     * Read access is open to any authenticated app user — the roster is
      * read-only for players; the `isGm` flag tells the client whether to render
      * the check-in controls. Degrades gracefully: when the `larping_attendance`
      * schema (or OpenRegister) is unavailable the participant list is still
@@ -178,8 +159,6 @@ class EventsController extends Controller
      * @NoAdminRequired
      * @NoCSRFRequired
      *
-     * @SuppressWarnings(PHPMD.ShortVariable)
-     *
      * @spec openspec/changes/event-checkin-roster/specs/event-checkin-roster/spec.md
      */
     #[NoAdminRequired]
@@ -191,63 +170,15 @@ class EventsController extends Controller
             return new JSONResponse(data: ['error' => 'Not authenticated'], statusCode: Http::STATUS_UNAUTHORIZED);
         }
 
-        try {
-            // Fetched to enforce existence + read access; a missing event 404s.
-            $this->objectFetcher->getObject(objectType: 'event', id: $id);
-        } catch (\Exception $exception) {
+        // Fetched to enforce existence + read access; a missing event 404s.
+        if ($this->rosterService->getEvent(eventId: $id) === null) {
             return new JSONResponse(data: ['error' => 'Event not found'], statusCode: 404);
         }
 
-        $isGm = $this->isGameMaster(uid: $user->getUID());
+        $roster         = $this->rosterService->buildRoster(eventId: $id);
+        $roster['isGm'] = $this->isGameMaster(uid: $user->getUID());
 
-        [$attendance, $attendanceAvailable] = $this->loadAttendance(eventId: $id);
-        $players      = $this->indexPlayers();
-        $participants = [];
-
-        try {
-            $characters = $this->objectFetcher->getObjects('character');
-        } catch (\Exception $exception) {
-            $characters = [];
-        }
-
-        foreach ($characters as $character) {
-            if (is_array($character) === false) {
-                continue;
-            }
-
-            $events = $character['events'] ?? [];
-            if (is_array($events) === false || in_array($id, array_map('strval', $events), true) === false) {
-                continue;
-            }
-
-            $characterId = (string) ($character['id'] ?? '');
-            $record      = $attendance[$characterId] ?? [];
-
-            $participants[] = [
-                'character'   => $characterId,
-                'name'        => (string) ($character['name'] ?? ''),
-                'type'        => (string) ($character['type'] ?? ''),
-                'playerName'  => $this->resolvePlayerName(character: $character, players: $players),
-                'status'      => (string) ($record['status'] ?? 'registered'),
-                'checkedInAt' => (string) ($record['checkedInAt'] ?? ''),
-                'checkedInBy' => (string) ($record['checkedInBy'] ?? ''),
-            ];
-        }//end foreach
-
-        usort(
-            $participants,
-            static function (array $a, array $b): int {
-                return strcasecmp($a['name'], $b['name']);
-            }
-        );
-
-        return new JSONResponse(
-            data: [
-                'participants'        => $participants,
-                'attendanceAvailable' => $attendanceAvailable,
-                'isGm'                => $isGm,
-            ]
-        );
+        return new JSONResponse(data: $roster);
     }//end roster()
 
     /**
@@ -268,28 +199,100 @@ class EventsController extends Controller
      *
      * @NoAdminRequired
      *
-     * @SuppressWarnings(PHPMD.ShortVariable)
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
-     *
      * @spec openspec/changes/event-checkin-roster/specs/event-checkin-roster/spec.md
      */
     #[NoAdminRequired]
     public function recordAttendance(string $id): JSONResponse
     {
-        $user = $this->userSession->getUser();
-        if ($user === null) {
-            return new JSONResponse(data: ['error' => 'Not authenticated'], statusCode: Http::STATUS_UNAUTHORIZED);
-        }
-
         // GM-only: recording attendance is a game-master act at the door.
-        if ($this->isGameMaster(uid: $user->getUID()) === false) {
-            return new JSONResponse(data: ['error' => 'Access denied'], statusCode: Http::STATUS_FORBIDDEN);
+        [$actingUid, $denied] = $this->resolveGameMaster();
+        if ($denied !== null) {
+            return $denied;
         }
 
+        // Only the character and status are read from the body; any
+        // client-supplied checkedInAt/checkedInBy is discarded (never read).
         $characterId = (string) ($this->request->getParam('character', ''));
         $status      = (string) ($this->request->getParam('status', 'checked-in'));
 
+        $invalid = $this->validateAttendanceInput(characterId: $characterId, status: $status);
+        if ($invalid !== null) {
+            return $invalid;
+        }
+
+        $event = $this->rosterService->getEvent(eventId: $id);
+        if ($event === null) {
+            return new JSONResponse(data: ['error' => 'Event not found'], statusCode: 404);
+        }
+
+        if ($this->rosterService->isParticipant(eventId: $id, characterId: $characterId, event: $event) === false) {
+            return new JSONResponse(
+                data: ['error' => 'Character is not a confirmed participant of this event'],
+                statusCode: 422
+            );
+        }
+
+        $saved = $this->rosterService->recordAttendance(
+            eventId: $id,
+            characterId: $characterId,
+            status: $status,
+            actingUid: $actingUid
+        );
+
+        if ($saved === null) {
+            return new JSONResponse(
+                data: ['error' => 'Attendance storage is not available', 'attendanceAvailable' => false],
+                statusCode: 424
+            );
+        }
+
+        return new JSONResponse(data: $saved);
+    }//end recordAttendance()
+
+    /**
+     * Resolve the acting game master, or the refusal response to return.
+     *
+     * Collapses the authenticate-then-authorize pair into one decision so the
+     * endpoints carry a single guard branch and receive a non-empty uid.
+     *
+     * @return array{0: string, 1: JSONResponse|null} The [actingUid, refusal] pair;
+     *                                                the uid is empty when refused.
+     *
+     * @spec openspec/changes/event-checkin-roster/specs/event-checkin-roster/spec.md
+     */
+    private function resolveGameMaster(): array
+    {
+        $user = $this->userSession->getUser();
+        if ($user === null) {
+            return [
+                '',
+                new JSONResponse(data: ['error' => 'Not authenticated'], statusCode: Http::STATUS_UNAUTHORIZED),
+            ];
+        }
+
+        $uid = $user->getUID();
+        if ($this->isGameMaster(uid: $uid) === false) {
+            return [
+                '',
+                new JSONResponse(data: ['error' => 'Access denied'], statusCode: Http::STATUS_FORBIDDEN),
+            ];
+        }
+
+        return [$uid, null];
+    }//end resolveGameMaster()
+
+    /**
+     * Validate the attendance request body, or null when it is acceptable.
+     *
+     * @param string $characterId The requested character UUID.
+     * @param string $status      The requested attendance status.
+     *
+     * @return JSONResponse|null The 400 response, or null when valid.
+     *
+     * @spec openspec/changes/event-checkin-roster/specs/event-checkin-roster/spec.md
+     */
+    private function validateAttendanceInput(string $characterId, string $status): ?JSONResponse
+    {
         if ($characterId === '') {
             return new JSONResponse(data: ['error' => 'A character is required'], statusCode: Http::STATUS_BAD_REQUEST);
         }
@@ -298,175 +301,27 @@ class EventsController extends Controller
             return new JSONResponse(data: ['error' => 'Invalid attendance status'], statusCode: Http::STATUS_BAD_REQUEST);
         }
 
-        try {
-            $event = $this->objectFetcher->getObject(objectType: 'event', id: $id);
-        } catch (\Exception $exception) {
-            return new JSONResponse(data: ['error' => 'Event not found'], statusCode: 404);
-        }
-
-        if ($this->isParticipant(eventId: $id, characterId: $characterId, event: $event) === false) {
-            return new JSONResponse(
-                data: ['error' => 'Character is not a confirmed participant of this event'],
-                statusCode: 422
-            );
-        }
-
-        // Server-stamped provenance — any client-supplied checkedInAt/checkedInBy
-        // in the body is discarded here (never read).
-        $payload = [
-            'event'       => $id,
-            'character'   => $characterId,
-            'status'      => $status,
-            'checkedInAt' => (new DateTimeImmutable())->format(DateTimeInterface::ATOM),
-            'checkedInBy' => $user->getUID(),
-        ];
-
-        try {
-            [$existing, $available] = $this->loadAttendance(eventId: $id);
-            if ($available === false) {
-                return new JSONResponse(
-                    data: ['error' => 'Attendance storage is not available', 'attendanceAvailable' => false],
-                    statusCode: 424
-                );
-            }
-
-            $uuid  = null;
-            $prior = $existing[$characterId] ?? null;
-            if (is_array($prior) === true && isset($prior['id']) === true) {
-                $uuid = (string) $prior['id'];
-            }
-
-            $saved = $this->objectFetcher->saveObject(objectType: 'attendance', data: $payload, uuid: $uuid);
-        } catch (\Exception $exception) {
-            return new JSONResponse(
-                data: ['error' => 'Attendance storage is not available', 'attendanceAvailable' => false],
-                statusCode: 424
-            );
-        }//end try
-
-        return new JSONResponse(data: $saved);
-    }//end recordAttendance()
+        return null;
+    }//end validateAttendanceInput()
 
     /**
-     * Build the run-sheet render context: event header + cast list.
+     * Derive the run-sheet download filename from the event.
      *
-     * The cast is every character whose `events[]` references this event, sorted
-     * by character name. Each cast entry carries the character name, type,
-     * approval status, linked player name (when available), stored computed
-     * stats (no recalculation here), condition/item references, and GM notes.
+     * @param array<string,mixed> $event The event object.
      *
-     * @param array<string,mixed> $event   The event object.
-     * @param string              $eventId The event UUID (for the membership test).
-     *
-     * @return array<string,mixed> The render context.
-     *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @return string The download filename.
      *
      * @spec openspec/changes/event-runsheet-export/specs/pdf-export/spec.md
      */
-    private function buildRunsheetContext(array $event, string $eventId): array
+    private function runsheetFileName(array $event): string
     {
-        $characters = [];
-        try {
-            $characters = $this->objectFetcher->getObjects('character');
-        } catch (\Exception $exception) {
-            $characters = [];
+        $eventName = (string) ($event['name'] ?? '');
+        if ($eventName === '') {
+            $eventName = 'event';
         }
 
-        $players = $this->indexPlayers();
-
-        // Attendance is additive: when the schema is absent the cast list is
-        // unchanged (each entry's attendanceStatus stays empty).
-        [$attendance] = $this->loadAttendance(eventId: $eventId);
-
-        $cast        = [];
-        $uniqueItems = [];
-        foreach ($characters as $character) {
-            if (is_array($character) === false) {
-                continue;
-            }
-
-            $events = $character['events'] ?? [];
-            if (is_array($events) === false || in_array($eventId, array_map('strval', $events), true) === false) {
-                continue;
-            }
-
-            // OcName carries the player's name as fallback in this data model.
-            $playerName = (string) ($character['ocName'] ?? '');
-            $playerId   = (string) ($character['player'] ?? ($character['ocName'] ?? ''));
-            if ($playerId !== '' && isset($players[$playerId]) === true) {
-                $playerName = (string) ($players[$playerId]['name'] ?? '');
-            }
-
-            $attendanceStatus = (string) (($attendance[(string) ($character['id'] ?? '')] ?? [])['status'] ?? '');
-
-            $cast[] = [
-                'name'             => (string) ($character['name'] ?? ''),
-                'type'             => (string) ($character['type'] ?? ''),
-                'approved'         => (string) ($character['approved'] ?? ''),
-                'playerName'       => $playerName,
-                'stats'            => ($character['stats'] ?? []),
-                'conditions'       => ($character['conditions'] ?? []),
-                'items'            => ($character['items'] ?? []),
-                'attendanceStatus' => $attendanceStatus,
-                'slNotesPublic'    => (string) ($character['slNotesPublic'] ?? ''),
-                'slNotesPrivate'   => (string) ($character['slNotesPrivate'] ?? ''),
-            ];
-
-            $items = $character['items'] ?? [];
-            if (is_array($items) === true) {
-                foreach ($items as $itemId) {
-                    $uniqueItems[(string) $itemId] = true;
-                }
-            }
-        }//end foreach
-
-        usort(
-            $cast,
-            static function (array $a, array $b): int {
-                return strcasecmp($a['name'], $b['name']);
-            }
-        );
-
-        return [
-            'event'             => [
-                'name'        => (string) ($event['name'] ?? ''),
-                'description' => (string) ($event['description'] ?? ''),
-                'startDate'   => (string) ($event['startDate'] ?? ''),
-                'endDate'     => (string) ($event['endDate'] ?? ''),
-                'location'    => (string) ($event['location'] ?? ''),
-                'effects'     => ($event['effects'] ?? []),
-                'castCount'   => count($cast),
-            ],
-            'cast'              => $cast,
-            'castCount'         => count($cast),
-            'uniqueItemsInPlay' => array_keys($uniqueItems),
-            'template'          => [],
-        ];
-    }//end buildRunsheetContext()
-
-    /**
-     * Index players by their id for cast player-name resolution.
-     *
-     * @return array<string,array<string,mixed>> Players indexed by id.
-     */
-    private function indexPlayers(): array
-    {
-        $indexed = [];
-        try {
-            $players = $this->objectFetcher->getObjects('player');
-        } catch (\Exception $exception) {
-            return $indexed;
-        }
-
-        foreach ($players as $player) {
-            if (is_array($player) === true && isset($player['id']) === true) {
-                $indexed[(string) $player['id']] = $player;
-            }
-        }
-
-        return $indexed;
-    }//end indexPlayers()
+        return $eventName.'_runsheet.pdf';
+    }//end runsheetFileName()
 
     /**
      * Whether a user may act as a game master (GM group or Nextcloud admin).
@@ -482,100 +337,4 @@ class EventsController extends Controller
         return $this->groupManager->isInGroup($uid, self::GM_GROUP) === true
             || $this->groupManager->isAdmin($uid) === true;
     }//end isGameMaster()
-
-    /**
-     * Load the attendance records for an event, indexed by character id.
-     *
-     * Degrades gracefully: when the `larping_attendance` schema (or OpenRegister)
-     * is unavailable this returns an empty map and `false` availability rather
-     * than throwing, so both the roster read and the run-sheet keep working.
-     *
-     * @param string $eventId The event UUID.
-     *
-     * @return array{0: array<string,array<string,mixed>>, 1: bool} The [records-by-character, available] tuple.
-     *
-     * @spec openspec/changes/event-checkin-roster/specs/event-checkin-roster/spec.md
-     */
-    private function loadAttendance(string $eventId): array
-    {
-        try {
-            $records = $this->objectFetcher->getObjects(
-                objectType: 'attendance',
-                filters: ['event' => $eventId]
-            );
-        } catch (\Exception $exception) {
-            return [[], false];
-        }
-
-        $byCharacter = [];
-        foreach ($records as $record) {
-            if (is_array($record) === false) {
-                continue;
-            }
-
-            $characterId = (string) ($record['character'] ?? '');
-            if ($characterId !== '') {
-                $byCharacter[$characterId] = $record;
-            }
-        }
-
-        return [$byCharacter, true];
-    }//end loadAttendance()
-
-    /**
-     * Whether a character is a confirmed participant of an event.
-     *
-     * A participant is a character present in the Event `players[]` OR one whose
-     * `character.events[]` references the event. A GM cannot check in a
-     * character that is not part of the event.
-     *
-     * @param string              $eventId     The event UUID.
-     * @param string              $characterId The character UUID.
-     * @param array<string,mixed> $event       The event object.
-     *
-     * @return bool True when the character participates in the event.
-     *
-     * @spec openspec/changes/event-checkin-roster/specs/event-checkin-roster/spec.md
-     */
-    private function isParticipant(string $eventId, string $characterId, array $event): bool
-    {
-        $players = $event['players'] ?? [];
-        if (is_array($players) === true && in_array($characterId, array_map('strval', $players), true) === true) {
-            return true;
-        }
-
-        try {
-            $character = $this->objectFetcher->getObject(objectType: 'character', id: $characterId);
-        } catch (\Exception $exception) {
-            return false;
-        }
-
-        $events = $character['events'] ?? [];
-        return is_array($events) === true
-            && in_array($eventId, array_map('strval', $events), true) === true;
-    }//end isParticipant()
-
-    /**
-     * Resolve a character's player display name.
-     *
-     * Falls back to the character's `ocName` (the player's name in this data
-     * model) when the linked player object cannot be resolved.
-     *
-     * @param array<string,mixed>               $character The character object.
-     * @param array<string,array<string,mixed>> $players   Players indexed by id.
-     *
-     * @return string The player display name.
-     *
-     * @spec openspec/changes/event-checkin-roster/specs/event-checkin-roster/spec.md
-     */
-    private function resolvePlayerName(array $character, array $players): string
-    {
-        $playerName = (string) ($character['ocName'] ?? '');
-        $playerId   = (string) ($character['player'] ?? ($character['ocName'] ?? ''));
-        if ($playerId !== '' && isset($players[$playerId]) === true) {
-            $playerName = (string) ($players[$playerId]['name'] ?? '');
-        }
-
-        return $playerName;
-    }//end resolvePlayerName()
 }//end class

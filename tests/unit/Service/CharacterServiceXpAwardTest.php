@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace OCA\LarpingApp\Tests\Unit\Service;
 
 use OCA\LarpingApp\Service\CharacterService;
+use OCA\LarpingApp\Service\EffectApplier;
 use OCA\LarpingApp\Service\RegisterObjectFetcher;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -44,7 +45,7 @@ class CharacterServiceXpAwardTest extends TestCase
             }
         );
 
-        return new CharacterService($fetcher, $this->createMock(LoggerInterface::class));
+        return new CharacterService($fetcher, $this->createMock(LoggerInterface::class), new EffectApplier());
     }
 
     public function testAwardsSumOntoXpAbility(): void

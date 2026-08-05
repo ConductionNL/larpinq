@@ -1,0 +1,77 @@
+<?php
+
+/**
+ * IdListNormaliser for LarpingApp
+ *
+ * OpenRegister relation fields reach the app in three shapes depending on how
+ * they were written and whether they were expanded on read: a list of UUID
+ * strings, a list of `{id: ...}` objects, or a single bare value. Normalising
+ * that in one place keeps every consumer free of the shape check.
+ *
+ * @category  Service
+ * @package   OCA\LarpingApp\Service
+ * @author    Ruben Linde <ruben@larpingapp.com>
+ * @copyright 2026 Conduction B.V.
+ * @license   AGPL-3.0-or-later https://www.gnu.org/licenses/agpl-3.0.en.html
+ * @link      https://larpingapp.com
+ *
+ * @spec openspec/changes/skill-requirement-enforcement/specs/skill-requirement-enforcement/spec.md
+ */
+
+declare(strict_types=1);
+
+namespace OCA\LarpingApp\Service;
+
+/**
+ * Normalises a relation value to a flat list of string ids.
+ *
+ * @category Service
+ * @package  OCA\LarpingApp\Service
+ * @author   Ruben Linde <ruben@larpingapp.com>
+ * @license  https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
+ * @link     https://larpingapp.com
+ *
+ * @spec openspec/changes/skill-requirement-enforcement/specs/skill-requirement-enforcement/spec.md
+ */
+class IdListNormaliser
+{
+    /**
+     * Normalise a value to a list of string ids.
+     *
+     * Tolerates arrays of strings, arrays of {id} objects, or a single value.
+     * Null and empty-string entries are dropped rather than becoming ''.
+     *
+     * @param mixed $value The raw value.
+     *
+     * @return array<int,string> The id list.
+     *
+     * @spec openspec/changes/skill-requirement-enforcement/specs/skill-requirement-enforcement/spec.md
+     */
+    public function normalise(mixed $value): array
+    {
+        if (is_array($value) === false) {
+            if ($value === null || $value === '') {
+                return [];
+            }
+
+            return [(string) $value];
+        }
+
+        $ids = [];
+        foreach ($value as $entry) {
+            if (is_array($entry) === true) {
+                if (isset($entry['id']) === true) {
+                    $ids[] = (string) $entry['id'];
+                }
+
+                continue;
+            }
+
+            if ($entry !== null && $entry !== '') {
+                $ids[] = (string) $entry;
+            }
+        }
+
+        return $ids;
+    }//end normalise()
+}//end class

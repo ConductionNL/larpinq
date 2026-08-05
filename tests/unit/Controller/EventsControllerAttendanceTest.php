@@ -17,6 +17,7 @@ namespace OCA\LarpingApp\Tests\Unit\Controller;
 use Exception;
 use OCA\LarpingApp\Controller\EventsController;
 use OCA\LarpingApp\Service\DocuDeskPdfRenderer;
+use OCA\LarpingApp\Service\EventRosterService;
 use OCA\LarpingApp\Service\RegisterObjectFetcher;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\IGroupManager;
@@ -53,10 +54,12 @@ class EventsControllerAttendanceTest extends TestCase
 
     private function controller(): EventsController
     {
+        // The real EventRosterService over the mocked fetcher: the attendance /
+        // participation rules stay under test end-to-end through the controller.
         return new EventsController(
             'larpingapp',
             $this->request,
-            $this->objectFetcher,
+            new EventRosterService($this->objectFetcher),
             $this->pdfRenderer,
             $this->userSession,
             $this->groupManager,
