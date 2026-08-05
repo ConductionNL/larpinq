@@ -33,10 +33,11 @@ declare(strict_types=1);
 
 namespace OCA\LarpingApp\Controller;
 
+use OCA\LarpingApp\Service\DocuDeskPdfRenderer;
 use OCA\LarpingApp\Service\RegisterObjectFetcher;
 use OCA\LarpingApp\Service\SkillRequirementService;
-use OCP\App\IAppManager;
 use OCP\AppFramework\Controller;
+use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\Attribute\NoAdminRequired;
 use OCP\AppFramework\Http\Attribute\NoCSRFRequired;
@@ -45,8 +46,6 @@ use OCP\AppFramework\Http\DataDownloadResponse;
 use OCP\IGroupManager;
 use OCP\IRequest;
 use OCP\IUserSession;
-use Psr\Container\ContainerInterface;
-use Psr\Log\LoggerInterface;
 
 /**
  * Controller for handling characters related operations
@@ -68,22 +67,18 @@ class CharactersController extends Controller
      * @param string                  $appName            The name of the app
      * @param IRequest                $request            The request object
      * @param RegisterObjectFetcher   $objectFetcher      The register object fetcher
-     * @param IAppManager             $appManager         The app manager for checking installed apps
-     * @param ContainerInterface      $container          The DI container for resolving cross-app services
+     * @param DocuDeskPdfRenderer     $pdfRenderer        The shared DocuDesk PDF rendering helper
      * @param IUserSession            $userSession        The user session for authentication checks
      * @param IGroupManager           $groupManager       The group manager for permission checks
-     * @param LoggerInterface         $logger             The logger for server-side error logging
      * @param SkillRequirementService $requirementService The skill-requirement validation service
      */
     public function __construct(
         $appName,
         IRequest $request,
         private readonly RegisterObjectFetcher $objectFetcher,
-        private readonly IAppManager $appManager,
-        private readonly ContainerInterface $container,
+        private readonly DocuDeskPdfRenderer $pdfRenderer,
         private readonly IUserSession $userSession,
         private readonly IGroupManager $groupManager,
-        private readonly LoggerInterface $logger,
         private readonly SkillRequirementService $requirementService
     ) {
         parent::__construct(appName: $appName, request: $request);
@@ -97,8 +92,9 @@ class CharactersController extends Controller
      * as a follow-up. This guard prevents unauthenticated users and non-admin
      * NC users from reading GM-private notes (closes #205).
      *
-     * Delegates PDF generation to DocuDesk's PdfService and template
-     * lookup to DocuDesk's TemplateService. Returns 424 if DocuDesk
+     * DocuDesk availability, template-id validation, template lookup and the
+     * render itself are all delegated to the shared DocuDeskPdfRenderer — the
+     * same helper the event run-sheet export uses. Returns 424 if DocuDesk
      * is not installed.
      *
      * @param string $id       The ID of the character to download as PDF
@@ -147,7 +143,7 @@ class CharactersController extends Controller
             return new JSONResponse(data: ['error' => 'Access denied'], statusCode: Http::STATUS_FORBIDDEN);
         }
 
-        if ($this->appManager->isEnabledForUser(appId: 'docudesk') === false) {
+        if ($this->pdfRenderer->isDocuDeskAvailable() === false) {
             return new JSONResponse(
                 data: ['error' => 'PDF generation requires the DocuDesk app to be installed and enabled'],
                 statusCode: 424
@@ -156,46 +152,33 @@ class CharactersController extends Controller
 
         // Validate the template ID to a UUID before delegating to DocuDesk,
         // preventing path-traversal or injection via a crafted template value.
-        $templateLower = strtolower($template);
-        if (preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/', $templateLower) !== 1) {
+        $templateId = $this->pdfRenderer->normaliseTemplateId($template);
+        if ($templateId === null) {
             return new JSONResponse(data: ['error' => 'Invalid template ID: expected a UUID'], statusCode: Http::STATUS_BAD_REQUEST);
         }
 
         try {
             $character = $this->objectFetcher->getObject(objectType: 'character', id: $id);
+        } catch (DoesNotExistException $exception) {
+            // OpenRegister signals an absent/unreadable object with this exception;
+            // translate it rather than letting it surface as a 500.
+            return new JSONResponse(data: ['error' => 'Character not found'], statusCode: 404);
         } catch (\Exception $exception) {
             return new JSONResponse(data: ['error' => 'Character not found'], statusCode: 404);
         }
 
-        try {
-            // @var object $templateService
-            $templateService = $this->container->get('OCA\DocuDesk\Service\TemplateService');
-
-            // @psalm-suppress MixedMethodCall DocuDesk is an optional cross-app dependency.
-            // @var array<string,mixed> $templateData
-            $templateData = $templateService->getTemplate($templateLower);
-        } catch (\Exception $exception) {
+        $templateData = $this->pdfRenderer->getTemplate($templateId);
+        if ($templateData === null) {
             return new JSONResponse(data: ['error' => 'Template not found'], statusCode: 404);
         }
 
-        try {
-            // @var object $pdfService
-            $pdfService = $this->container->get('OCA\DocuDesk\Service\PdfService');
-
-            // @psalm-suppress MixedMethodCall DocuDesk is an optional cross-app dependency.
-            // @var string $pdfString
-            $pdfString = $pdfService->renderPdf(
-                (string) ($templateData['content'] ?? ''),
-                ['character' => $character, 'template' => $templateData],
-                [
-                    'format'      => (string) ($templateData['format'] ?? 'A4'),
-                    'orientation' => (string) ($templateData['orientation'] ?? 'P'),
-                ]
-            );
-        } catch (\Exception $exception) {
-            // Log the full exception server-side; return a generic user-facing message
-            // to avoid leaking DocuDesk internals (filesystem paths, traces) — closes #218.
-            $this->logger->error('PDF generation failed', ['exception' => $exception]);
+        // The renderer logs the full exception server-side and returns null; the
+        // generic user-facing message avoids leaking DocuDesk internals — closes #218.
+        $pdfString = $this->pdfRenderer->render(
+            templateData: $templateData,
+            context: ['character' => $character, 'template' => $templateData]
+        );
+        if ($pdfString === null) {
             return new JSONResponse(data: ['error' => 'PDF generation failed. Please contact your administrator.'], statusCode: 500);
         }
 
@@ -243,6 +226,10 @@ class CharactersController extends Controller
             // for the current user; a non-readable id yields a not-found.
             // @no-admin-idor-exempt OR-delegated read via RegisterObjectFetcher::getObject (ADR-022).
             $character = $this->objectFetcher->getObject(objectType: 'character', id: $id);
+        } catch (DoesNotExistException $exception) {
+            // OpenRegister signals an absent/unreadable object with this exception;
+            // translate it rather than letting it surface as a 500.
+            return new JSONResponse(data: ['error' => 'Character not found'], statusCode: 404);
         } catch (\Exception $exception) {
             return new JSONResponse(data: ['error' => 'Character not found'], statusCode: 404);
         }
