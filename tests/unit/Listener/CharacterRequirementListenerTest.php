@@ -106,7 +106,10 @@ namespace OCA\LarpingApp\Tests\Unit\Listener;
 
 use OCA\LarpingApp\Listener\CharacterRequirementListener;
 use OCA\LarpingApp\Service\CharacterService;
+use OCA\LarpingApp\Service\EffectApplier;
+use OCA\LarpingApp\Service\IdListNormaliser;
 use OCA\LarpingApp\Service\RegisterObjectFetcher;
+use OCA\LarpingApp\Service\SkillRequirementChecker;
 use OCA\LarpingApp\Service\SkillRequirementService;
 use OCA\OpenRegister\Event\ObjectCreatingEvent;
 use OCA\OpenRegister\Event\ObjectUpdatingEvent;
@@ -165,8 +168,15 @@ class CharacterRequirementListenerTest extends TestCase
                 default => [],
             };
         });
-        $engine            = new CharacterService($fetcher, $this->logger);
-        $requirementService = new SkillRequirementService($engine, $fetcher, $this->logger);
+        $engine             = new CharacterService($fetcher, $this->logger, new EffectApplier());
+        $idList             = new IdListNormaliser();
+        $requirementService = new SkillRequirementService(
+            $engine,
+            $fetcher,
+            $this->logger,
+            new SkillRequirementChecker($idList),
+            $idList
+        );
 
         $config = $this->createMock(IAppConfig::class);
         $config->method('getValueString')->willReturn(self::SCHEMA_ID);

@@ -33,6 +33,7 @@ declare(strict_types=1);
 namespace OCA\LarpingApp\Tests\Integration;
 
 use OCA\LarpingApp\Service\CharacterService;
+use OCA\LarpingApp\Service\EffectApplier;
 use OCA\LarpingApp\Service\RegisterObjectFetcher;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -149,7 +150,7 @@ class EffectChainIntegrationTest extends TestCase
                 }
             );
 
-        $this->service = new CharacterService($fetcher, $this->createMock(LoggerInterface::class));
+        $this->service = new CharacterService($fetcher, $this->createMock(LoggerInterface::class), new EffectApplier());
     }//end setUp()
 
     /**

@@ -7,7 +7,7 @@
  * @package   OCA\LarpingApp\AppInfo
  * @author    Ruben Linde <ruben@larpingapp.com>
  * @copyright 2024 Ruben Linde
- * @license   https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
+ * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link      https://larpingapp.com
  *
  * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-1
@@ -36,7 +36,7 @@ use OCP\AppFramework\Bootstrap\IRegistrationContext;
  * @category Application
  * @package  OCA\LarpingApp\AppInfo
  * @author   Ruben Linde <ruben@larpingapp.com>
- * @license  https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
+ * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
  *
  * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-1
@@ -66,8 +66,6 @@ class Application extends App implements IBootstrap
      * @param IRegistrationContext $context Registration context.
      *
      * @return void
-     *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      *
      * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-1
      * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-2
@@ -114,7 +112,11 @@ class Application extends App implements IBootstrap
      *
      * @return void
      *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter) $context is mandated by
+     * OCP\AppFramework\Bootstrap\IBootstrap::boot(IBootContext $context) and
+     * cannot be dropped from the signature. This app does no boot-time work —
+     * register/schema initialisation moved to the InitializeRegister repair
+     * step — so the parameter is genuinely unused. External constraint.
      *
      * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-4
      * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-5

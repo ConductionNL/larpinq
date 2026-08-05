@@ -125,23 +125,29 @@ class SettingsServiceTest extends TestCase
         $this->settingsLoadService
             ->expects($this->once())
             ->method('loadSettings')
-            ->with(false)
             ->willReturn(['status' => 'ok']);
+
+        $this->settingsLoadService
+            ->expects($this->never())
+            ->method('reloadSettings');
 
         $result = $this->service->loadSettings();
 
         $this->assertSame(['status' => 'ok'], $result);
     }
 
-    public function testLoadSettingsForce(): void
+    public function testReloadSettingsDelegatesToLoadService(): void
     {
         $this->settingsLoadService
             ->expects($this->once())
-            ->method('loadSettings')
-            ->with(true)
+            ->method('reloadSettings')
             ->willReturn(['status' => 'reimported']);
 
-        $result = $this->service->loadSettings(true);
+        $this->settingsLoadService
+            ->expects($this->never())
+            ->method('loadSettings');
+
+        $result = $this->service->reloadSettings();
 
         $this->assertSame(['status' => 'reimported'], $result);
     }

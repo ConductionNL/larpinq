@@ -150,19 +150,32 @@ class SettingsService
      * Load settings by importing the register JSON via ConfigurationService.
      * Delegates to SettingsLoadService.
      *
-     * @param bool $force Whether to force re-import.
+     * Version-gated: the import is skipped when the recorded version already
+     * matches. Use reloadSettings() to re-import unconditionally.
      *
      * @return array The import result.
      *
-     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-4
+     */
+    public function loadSettings(): array
+    {
+        return $this->settingsLoadService->loadSettings();
+
+    }//end loadSettings()
+
+    /**
+     * Re-import the register JSON unconditionally, bypassing the version gate.
+     * Delegates to SettingsLoadService.
+     *
+     * @return array The import result.
      *
      * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-4
      */
-    public function loadSettings(bool $force=false): array
+    public function reloadSettings(): array
     {
-        return $this->settingsLoadService->loadSettings(force: $force);
+        return $this->settingsLoadService->reloadSettings();
 
-    }//end loadSettings()
+    }//end reloadSettings()
 
     /**
      * Get a config value by key.
