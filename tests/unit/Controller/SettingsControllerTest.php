@@ -8,7 +8,7 @@
  *
  * @author    Ruben Linde <ruben@larpingapp.com>
  * @copyright 2024 Ruben Linde
- * @license   AGPL-3.0-or-later https://www.gnu.org/licenses/agpl-3.0.en.html
+ * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  *
  * @version GIT: <git-id>
  *

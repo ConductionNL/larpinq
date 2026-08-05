@@ -5,7 +5,7 @@
  * @category Controller
  * @package  OCA\LarpingApp\Controller
  * @author   Ruben Linde <ruben@larpingapp.com>
- * @license  https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
+ * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
  *
  * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-98
@@ -30,7 +30,7 @@ use OCP\IRequest;
  * @package   OCA\LarpingApp\Controller
  * @author    Ruben Linde <ruben@larpingapp.com>
  * @copyright 2024 Ruben Linde
- * @license   AGPL-3.0-or-later
+ * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link      https://larpingapp.com
  *
  * @psalm-suppress UnusedClass Instantiated by Nextcloud routing (appinfo/routes.php).
