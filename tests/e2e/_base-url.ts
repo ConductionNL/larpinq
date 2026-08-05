@@ -1,6 +1,6 @@
 /*
  * SPDX-FileCopyrightText: 2026 Larping Contributors
- * SPDX-License-Identifier: AGPL-3.0-or-later
+ * SPDX-License-Identifier: EUPL-1.2
  *
  * THE single source of truth for the Nextcloud instance the e2e suite targets.
  *
