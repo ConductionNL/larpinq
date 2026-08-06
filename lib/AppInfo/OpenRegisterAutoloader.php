@@ -84,10 +84,21 @@ final class OpenRegisterAutoloader
      * OpenRegister loaded and calls `Coordinator::bootApp()`, booting it before
      * its own `register()` has run.
      *
+     * @param string|null $appId App id to register the autoloader for.
+     *                           Production callers pass nothing and get
+     *                           'openregister'. It exists so the degraded
+     *                           path below — the branch that must NEVER
+     *                           rethrow — is reachable from a test with an id
+     *                           that cannot resolve; without it that branch
+     *                           is dead on any instance where OpenRegister IS
+     *                           installed, which is every instance this app
+     *                           is tested on.
+     *
      * @return void This never reports success or failure. The caller's own
-     *              `class_exists()` guard is the authoritative signal, and a
-     *              return value here would only duplicate it with a branch no
-     *              test environment can exercise both sides of.
+     *              `class_exists()` guard is the authoritative signal; a
+     *              return value here would only duplicate it, and would add a
+     *              `return true`/`return false` pair of which exactly one is
+     *              dead in any given run.
      *
      * @SuppressWarnings(PHPMD.StaticAccess) OC_App is Nextcloud's legacy
      * bootstrap class. There is no OCP interface for registering another app's
@@ -96,16 +107,16 @@ final class OpenRegisterAutoloader
      *
      * @spec openspec/specs/apphost-autoload-prelude/spec.md
      */
-    public static function register(): void
+    public static function register(?string $appId=null): void
     {
         try {
-            // Deliberately one statement, and deliberately no return value. A
-            // `return true` here plus a `return false` in the catch would give
-            // this method a branch that no environment can exercise — whichever
-            // of the two runs, the other is dead in that run — and no caller
-            // ever consumed the result. What callers depend on is the
-            // class_exists() guard that follows this call.
-            \OC_App::registerAutoloading('openregister', \OCP\Server::get(\OCP\App\IAppManager::class)->getAppPath('openregister'));
+            // The app id is written as a literal at the call site rather than
+            // defaulted in the signature, so it is visible where it is used —
+            // to a reader, and to hydra gate-64, which reads
+            // registerAutoloading()'s arguments. No return value: the caller's
+            // class_exists() guard is the authoritative signal.
+            $path = \OCP\Server::get(\OCP\App\IAppManager::class)->getAppPath($appId ?? 'openregister');
+            \OC_App::registerAutoloading($appId ?? 'openregister', $path);
         } catch (\Throwable) {
             // OpenRegister absent, disabled, or the server container is not up
             // (unit tests). The caller's class_exists() guards then skip the
