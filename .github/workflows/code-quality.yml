@@ -14,7 +14,9 @@ jobs:
     # produced ZERO jobs and failed instantly, taking ESLint, PHPCS, PHPMD,
     # PHPStan, the license/security scan and the 4-way PHPUnit matrix offline
     # without a single red test to show for it.
-    uses: ConductionNL/.github/.github/workflows/quality.yml@main
+    # TEMPORARY — validating ConductionNL/.github#181 on one repo before it is
+    # merged to main and reaches all sixteen. Reverts to @main before merge.
+    uses: ConductionNL/.github/.github/workflows/quality.yml@fix/coverage-ratchet-merge-base
     with:
       app-name: larpingapp
       php-version: "8.3"
