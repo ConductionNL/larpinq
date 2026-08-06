@@ -212,7 +212,8 @@ leave every listener unregistered.
 
 - GIVEN an instance with OpenRegister not installed
 - WHEN the prelude runs
-- THEN it MUST return `false` rather than throw, and the `class_exists()` guards
-  MUST then correctly skip the OpenRegister-dependent listeners
+- THEN it MUST return control to its caller rather than throw, and the
+  `class_exists()` guards MUST then correctly skip the OpenRegister-dependent
+  listeners
 - @e2e exclude composition-root load order — asserted by
   tests/unit/AppInfo/OpenRegisterAutoloaderTest.php

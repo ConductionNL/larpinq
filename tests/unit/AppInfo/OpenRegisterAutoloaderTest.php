@@ -47,11 +47,18 @@ class OpenRegisterAutoloaderTest extends TestCase
      */
     public function testRegisterNeverThrows(): void
     {
-        $result = OpenRegisterAutoloader::register();
+        $before = count(spl_autoload_functions());
 
-        $this->assertIsBool(
-            actual: $result,
-            message: 'The prelude must report success or failure as a bool, never throw.'
+        OpenRegisterAutoloader::register();
+
+        // Reaching this line at all IS the assertion: the contract is that the
+        // prelude returns control to its caller under every instance state. A
+        // Throwable escaping it would fail the test here, and in production
+        // would abort the whole of Application::register().
+        $this->assertGreaterThan(
+            expected: 0,
+            actual: $before,
+            message: 'The prelude must return control to its caller, never throw.'
         );
 
     }//end testRegisterNeverThrows()
@@ -68,13 +75,18 @@ class OpenRegisterAutoloaderTest extends TestCase
      */
     public function testRegisterIsIdempotent(): void
     {
-        $first  = OpenRegisterAutoloader::register();
-        $second = OpenRegisterAutoloader::register();
+        OpenRegisterAutoloader::register();
+        $afterFirst = count(spl_autoload_functions());
+
+        OpenRegisterAutoloader::register();
+        $afterSecond = count(spl_autoload_functions());
 
         $this->assertSame(
-            expected: $first,
-            actual: $second,
-            message: 'The prelude is idempotent, so repeated calls must agree.'
+            expected: $afterFirst,
+            actual: $afterSecond,
+            message: 'A second call must not stack another autoloader — '
+                .'OC_App::registerAutoloading() early-returns on an '
+                .'$alreadyRegistered key, so the prelude is free to repeat.'
         );
 
     }//end testRegisterIsIdempotent()
