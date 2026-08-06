@@ -73,6 +73,31 @@ class Application extends App implements IBootstrap
      */
     public function register(IRegistrationContext $context): void
     {
+        // ADR-040 load-order prelude — MUST come before every class_exists()
+        // probe below.
+        //
+        // Nextcloud registers apps in sorted order: OC_App::getEnabledApps()
+        // does sort($apps) and Coordinator::registerApps() walks THAT sorted
+        // list calling OC_App::registerAutoloading($appId, $path) and then
+        // $app->register() for one app at a time. `larpingapp` sorts before
+        // `openregister`, so OCA\OpenRegister\ is NOT autoloadable at this
+        // point on a perfectly healthy instance with OpenRegister enabled.
+        //
+        // Without this call every probe below answers FALSE — not "not loaded
+        // yet", just FALSE, indistinguishable from OpenRegister being absent —
+        // and LarpingApp registers NO listeners at all: no deep links, and no
+        // server-authoritative skill-requirement / XP-budget enforcement on
+        // character writes. The app stays enabled and keeps serving, and
+        // nothing reports the gap.
+        //
+        // registerAutoloading() touches only the autoloader and is idempotent.
+        // IAppManager::loadApp() would NOT be correct: it marks OpenRegister
+        // loaded and calls Coordinator::bootApp(), booting it before its own
+        // register() has run. The prelude returns false rather than throwing
+        // when OpenRegister genuinely is absent, so the guards below still do
+        // their job.
+        OpenRegisterAutoloader::register();
+
         // Register the deep link listener for OpenRegister unified search.
         // The event class is only available when OpenRegister is installed.
         if (class_exists('OCA\OpenRegister\Event\DeepLinkRegistrationEvent') === true) {
