@@ -90,4 +90,35 @@ class OpenRegisterAutoloaderTest extends TestCase
         );
 
     }//end testRegisterIsIdempotent()
+
+    /**
+     * The degraded path must be swallowed, not rethrown.
+     *
+     * In production this is `openregister` on an instance where it is not
+     * installed: `IAppManager::getAppPath()` throws `AppPathNotFoundException`.
+     * The prelude MUST absorb it — a Throwable escaping here would abort the
+     * caller's entire `register()`, which is the failure the prelude exists to
+     * prevent, and it would abort it on EVERY request.
+     *
+     * The app id is a parameter for exactly this reason. Every instance this
+     * suite runs on HAS OpenRegister installed, so without an id that cannot
+     * resolve, this branch is dead code that no test can reach — and a branch
+     * no test can reach is a branch no one has ever checked.
+     *
+     * @return void
+     */
+    public function testRegisterSwallowsAnAppThatCannotResolve(): void
+    {
+        $before = count(spl_autoload_functions());
+
+        OpenRegisterAutoloader::register('an-app-that-is-not-installed');
+
+        $this->assertSame(
+            expected: $before,
+            actual: count(spl_autoload_functions()),
+            message: 'A prelude whose app cannot be resolved must leave the '
+                .'autoloader untouched and must not rethrow.'
+        );
+
+    }//end testRegisterSwallowsAnAppThatCannotResolve()
 }//end class
