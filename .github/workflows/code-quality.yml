@@ -14,9 +14,7 @@ jobs:
     # produced ZERO jobs and failed instantly, taking ESLint, PHPCS, PHPMD,
     # PHPStan, the license/security scan and the 4-way PHPUnit matrix offline
     # without a single red test to show for it.
-    # TEMPORARY — validating ConductionNL/.github#181 on one repo before it is
-    # merged to main and reaches all sixteen. Reverts to @main before merge.
-    uses: ConductionNL/.github/.github/workflows/quality.yml@fix/coverage-ratchet-merge-base
+    uses: ConductionNL/.github/.github/workflows/quality.yml@main
     with:
       app-name: larpingapp
       php-version: "8.3"
@@ -144,4 +142,4 @@ jobs:
       # reproducible and a later gate change cannot move this repo's verdict
       # without a commit here.
       enable-hydra-gates: true
-      hydra-gates-ref: v1.3.0
+      hydra-gates-ref: v1.5.0
