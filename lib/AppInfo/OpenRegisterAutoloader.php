@@ -84,10 +84,10 @@ final class OpenRegisterAutoloader
      * OpenRegister loaded and calls `Coordinator::bootApp()`, booting it before
      * its own `register()` has run.
      *
-     * @return bool True when the prefix is registered, false when OpenRegister
-     *              is absent, disabled, or otherwise unresolvable — in which
-     *              case the caller's guards correctly skip the OR-dependent
-     *              listeners.
+     * @return void This never reports success or failure. The caller's own
+     *              `class_exists()` guard is the authoritative signal, and a
+     *              return value here would only duplicate it with a branch no
+     *              test environment can exercise both sides of.
      *
      * @SuppressWarnings(PHPMD.StaticAccess) OC_App is Nextcloud's legacy
      * bootstrap class. There is no OCP interface for registering another app's
@@ -96,20 +96,23 @@ final class OpenRegisterAutoloader
      *
      * @spec openspec/specs/skill-requirement-enforcement/spec.md
      */
-    public static function register(): bool
+    public static function register(): void
     {
         try {
-            $appManager = \OCP\Server::get(\OCP\App\IAppManager::class);
-            $path       = $appManager->getAppPath('openregister');
-            \OC_App::registerAutoloading('openregister', $path);
-            return true;
+            // Deliberately one statement, and deliberately no return value. A
+            // `return true` here plus a `return false` in the catch would give
+            // this method a branch that no environment can exercise — whichever
+            // of the two runs, the other is dead in that run — and no caller
+            // ever consumed the result. What callers depend on is the
+            // class_exists() guard that follows this call.
+            \OC_App::registerAutoloading('openregister', \OCP\Server::get(\OCP\App\IAppManager::class)->getAppPath('openregister'));
         } catch (\Throwable) {
             // OpenRegister absent, disabled, or the server container is not up
             // (unit tests). The caller's class_exists() guards then skip the
-            // OR-dependent listeners. Never rethrow: an exception escaping here
-            // would abort the caller's entire register(), which is the exact
-            // defect this prelude exists to prevent.
-            return false;
+            // OpenRegister-dependent listeners exactly as they did before.
+            // Never rethrow: an exception escaping here would abort the
+            // caller's entire register(), which is the exact defect this
+            // prelude exists to prevent.
         }
 
     }//end register()

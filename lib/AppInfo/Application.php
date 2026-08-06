@@ -67,6 +67,14 @@ class Application extends App implements IBootstrap
      *
      * @return void
      *
+     * @SuppressWarnings(PHPMD.StaticAccess) AppInfo\OpenRegisterAutoloader is
+     * the ADR-040 load-order prelude and cannot be injected: this method IS the
+     * composition root, so there is no container to resolve an adapter from
+     * yet, and the prelude must run before any OCA\OpenRegister\ name is
+     * resolved — which is the very thing an injected dependency would do too
+     * early.
+     *
+     * @spec openspec/specs/skill-requirement-enforcement/spec.md
      * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-1
      * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-2
      * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-3
@@ -93,9 +101,9 @@ class Application extends App implements IBootstrap
         // registerAutoloading() touches only the autoloader and is idempotent.
         // IAppManager::loadApp() would NOT be correct: it marks OpenRegister
         // loaded and calls Coordinator::bootApp(), booting it before its own
-        // register() has run. The prelude returns false rather than throwing
-        // when OpenRegister genuinely is absent, so the guards below still do
-        // their job.
+        // register() has run. The prelude swallows every Throwable rather than
+        // letting one escape, so when OpenRegister genuinely is absent the
+        // guards below still do their job.
         OpenRegisterAutoloader::register();
 
         // Register the deep link listener for OpenRegister unified search.
