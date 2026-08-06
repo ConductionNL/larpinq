@@ -147,7 +147,10 @@ class CharactersControllerTest extends TestCase
             ->with('docudesk')
             ->willReturn(false);
 
-        $result = $this->controller->downloadPdf('char-1', 'tpl-1');
+        // A WELL-FORMED template UUID: template validation runs before the
+        // DocuDesk probe, so a malformed value here would yield 400 and this
+        // test would pass for the wrong reason.
+        $result = $this->controller->downloadPdf('char-1', '00000000-0000-0000-0000-00000000042f');
 
         self::assertInstanceOf(JSONResponse::class, $result);
         self::assertSame(424, $result->getStatus());
@@ -274,6 +277,23 @@ class CharactersControllerTest extends TestCase
         $this->appManager->method('isEnabledForUser')->willReturn(true);
 
         $result = $this->controller->downloadPdf('char-1', '../../etc/passwd');
+
+        self::assertInstanceOf(JSONResponse::class, $result);
+        self::assertSame(400, $result->getStatus());
+        self::assertStringContainsString('UUID', $result->getData()['error']);
+    }
+
+    /**
+     * A malformed template ID is the caller's error whether or not DocuDesk is
+     * installed. Without this ordering the 400 branch is unreachable on every
+     * instance lacking DocuDesk (which is every CI runner), and a crafted
+     * template value is answered with a misleading 424.
+     */
+    public function testDownloadPdfReturns400ForNonUuidTemplateEvenWhenDocuDeskAbsent(): void
+    {
+        $this->appManager->method('isEnabledForUser')->willReturn(false);
+
+        $result = $this->controller->downloadPdf('char-1', 'not-a-uuid');
 
         self::assertInstanceOf(JSONResponse::class, $result);
         self::assertSame(400, $result->getStatus());

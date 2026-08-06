@@ -91,6 +91,9 @@ class EventsControllerTest extends TestCase
     public function testReturns424WhenDocuDeskAbsent(): void
     {
         $this->asUser('gm1', isGm: true);
+        // Template validation runs before the DocuDesk probe, so the template
+        // must normalise successfully or this would be a 400, not a 424.
+        $this->pdfRenderer->method('normaliseTemplateId')->willReturn(self::TPL);
         $this->pdfRenderer->method('isDocuDeskAvailable')->willReturn(false);
         $result = $this->controller()->downloadRunsheet(self::EVT, self::TPL);
         self::assertSame(424, $result->getStatus());
@@ -100,6 +103,20 @@ class EventsControllerTest extends TestCase
     {
         $this->asUser('gm1', isGm: true);
         $this->pdfRenderer->method('isDocuDeskAvailable')->willReturn(true);
+        $this->pdfRenderer->method('normaliseTemplateId')->willReturn(null);
+        $result = $this->controller()->downloadRunsheet(self::EVT, 'not-a-uuid');
+        self::assertSame(400, $result->getStatus());
+    }
+
+    /**
+     * Input validation precedes the dependency probe: a malformed template ID
+     * is a 400 even on an instance without DocuDesk, where the 424 branch would
+     * otherwise swallow it.
+     */
+    public function testReturns400ForNonUuidTemplateEvenWhenDocuDeskAbsent(): void
+    {
+        $this->asUser('gm1', isGm: true);
+        $this->pdfRenderer->method('isDocuDeskAvailable')->willReturn(false);
         $this->pdfRenderer->method('normaliseTemplateId')->willReturn(null);
         $result = $this->controller()->downloadRunsheet(self::EVT, 'not-a-uuid');
         self::assertSame(400, $result->getStatus());
@@ -196,6 +213,7 @@ class EventsControllerTest extends TestCase
     {
         // An NC admin (legacy GM) is allowed even without the gamemasters group.
         $this->asUser('admin', isGm: false, isAdmin: true);
+        $this->pdfRenderer->method('normaliseTemplateId')->willReturn(self::TPL);
         $this->pdfRenderer->method('isDocuDeskAvailable')->willReturn(false);
         $result = $this->controller()->downloadRunsheet(self::EVT, self::TPL);
         // Passes the GM guard, then hits the 424 (DocuDesk absent) — proves not 403.

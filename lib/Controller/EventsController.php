@@ -111,16 +111,20 @@ class EventsController extends Controller
             return $denied;
         }
 
+        // Validate the request's own input before probing an external dependency:
+        // a malformed template ID is a client error regardless of whether DocuDesk
+        // is installed. Ordering it the other way makes the 400 branch unreachable
+        // on any instance without DocuDesk.
+        $templateId = $this->pdfRenderer->normaliseTemplateId($template);
+        if ($templateId === null) {
+            return new JSONResponse(data: ['error' => 'Invalid template ID: expected a UUID'], statusCode: Http::STATUS_BAD_REQUEST);
+        }
+
         if ($this->pdfRenderer->isDocuDeskAvailable() === false) {
             return new JSONResponse(
                 data: ['error' => 'PDF generation requires the DocuDesk app to be installed and enabled'],
                 statusCode: 424
             );
-        }
-
-        $templateId = $this->pdfRenderer->normaliseTemplateId($template);
-        if ($templateId === null) {
-            return new JSONResponse(data: ['error' => 'Invalid template ID: expected a UUID'], statusCode: Http::STATUS_BAD_REQUEST);
         }
 
         $event = $this->rosterService->getEvent(eventId: $id);

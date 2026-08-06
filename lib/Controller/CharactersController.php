@@ -143,18 +143,22 @@ class CharactersController extends Controller
             return new JSONResponse(data: ['error' => 'Access denied'], statusCode: Http::STATUS_FORBIDDEN);
         }
 
+        // Validate the template ID to a UUID before anything else, preventing
+        // path-traversal or injection via a crafted template value. A malformed
+        // request is the client's error whether or not DocuDesk happens to be
+        // installed, so this MUST precede the dependency probe below — otherwise
+        // the 400 branch is unreachable on any instance without DocuDesk and a
+        // crafted value is answered with a misleading 424.
+        $templateId = $this->pdfRenderer->normaliseTemplateId($template);
+        if ($templateId === null) {
+            return new JSONResponse(data: ['error' => 'Invalid template ID: expected a UUID'], statusCode: Http::STATUS_BAD_REQUEST);
+        }
+
         if ($this->pdfRenderer->isDocuDeskAvailable() === false) {
             return new JSONResponse(
                 data: ['error' => 'PDF generation requires the DocuDesk app to be installed and enabled'],
                 statusCode: 424
             );
-        }
-
-        // Validate the template ID to a UUID before delegating to DocuDesk,
-        // preventing path-traversal or injection via a crafted template value.
-        $templateId = $this->pdfRenderer->normaliseTemplateId($template);
-        if ($templateId === null) {
-            return new JSONResponse(data: ['error' => 'Invalid template ID: expected a UUID'], statusCode: Http::STATUS_BAD_REQUEST);
         }
 
         try {

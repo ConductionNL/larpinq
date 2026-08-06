@@ -1,7 +1,7 @@
 {
 	"info": {
 		"name": "LarpingApp API Contract Suite",
-		"description": "Newman/Postman API-contract tests for the LarpingApp Nextcloud app. Locks the HTTP contract of larpingapp's surfaces: (1) the LARP domain objects (characters, items, skills, conditions, effects, events, players) exercised through the OpenRegister object API per ADR-022 — larpingapp owns no domain-CRUD controller, it is a thin OR client; (2) the larpingapp Settings controller (GET /api/settings, POST /api/settings, POST /api/settings/reimport); (3) the character PDF compute endpoint (GET /characters/{id}/download/{template}).\n\nEvery family is exercised for a happy path, an error/validation case (4xx, never 500), and an authorization case (no/invalid auth -> 401/403). The suite is self-contained and idempotent: it seeds the OpenRegister objects it needs in setup and deletes everything it creates in teardown.\n\nAUTH MODEL: collection auth is noauth; every authenticated request carries an EXPLICIT basic-auth block (admin:admin via adminUser/adminPass). The no-auth / invalid-auth requests target {{noAuthBase}} (127.0.0.1) so the host-scoped NC session cookie established on {{baseUrl}} (localhost) is never sent to them — keeping authz tests genuinely unauthenticated. Run with --ignore-redirects so NC's 401/303 is asserted directly. See run-newman.sh.\n\nNote (ADR-022): OpenRegister object READS are not auth-gated (anonymous GET returns 200 — authorization on object data is OR's responsibility), but object WRITES (POST/PUT/DELETE) DO require auth and return 401 anonymously. The folder-2 authz tests assert both honestly.",
+		"description": "Newman/Postman API-contract tests for the LarpingApp Nextcloud app. Locks the HTTP contract of larpingapp's surfaces: (1) the LARP domain objects (characters, items, skills, conditions, effects, events, players) exercised through the OpenRegister object API per ADR-022 — larpingapp owns no domain-CRUD controller, it is a thin OR client; (2) the larpingapp Settings controller (GET /api/settings, POST /api/settings, POST /api/settings/reimport); (3) the character PDF compute endpoint (GET /characters/{id}/download/{template}).\n\nEvery family is exercised for a happy path, an error/validation case (4xx, never 500), and an authorization case (no/invalid auth -> 401/403). The suite is self-contained and idempotent: it seeds the OpenRegister objects it needs in setup and deletes everything it creates in teardown.\n\nAUTH MODEL: collection auth is noauth; every authenticated request carries an EXPLICIT basic-auth block (admin:admin via adminUser/adminPass). The no-auth / invalid-auth requests target {{noAuthBase}} (127.0.0.1) so the host-scoped NC session cookie established on {{baseUrl}} (localhost) is never sent to them — keeping authz tests genuinely unauthenticated. Run with --ignore-redirects so NC's 401/303 is asserted directly. See run-newman.sh.\n\nNote (ADR-022): OpenRegister object READS are not auth-gated (anonymous GET returns 200 — authorization on object data is OR's responsibility), but object WRITES (POST/PUT/DELETE) DO require auth. OR's ObjectsController is a PublicPage enforcing its own RBAC, so it refuses an anonymous write with 403 and an explicit denial rather than the NC-middleware 401 — the authz test accepts either and then reads the store back to prove nothing was written.\n\nFIXTURE NOTE: character.ocName is `format: uuid, $ref: player` — the LINK to the owning player object, not a display name. The character section therefore seeds a player first and references its UUID; a plain string is (correctly) rejected 400 by OpenRegister.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"variable": [
@@ -18,6 +18,7 @@
 		{ "key": "eventSchema", "value": "larping_event" },
 		{ "key": "playerSchema", "value": "player" },
 		{ "key": "charId", "value": "" },
+		{ "key": "charPlayerId", "value": "" },
 		{ "key": "itemId", "value": "" },
 		{ "key": "skillId", "value": "" },
 		{ "key": "conditionId", "value": "" },
@@ -31,6 +32,36 @@
 			"name": "1. Character (OR object CRUD, ADR-022)",
 			"item": [
 				{
+					"name": "SETUP: create the player a character must reference (character.ocName is a UUID relation)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"// character.ocName is `type: string, format: uuid, $ref: player` in",
+									"// lib/Settings/larpingapp_register.json — it is the LINK to the owning",
+									"// player object, not a display name. OpenRegister rejects a non-UUID",
+									"// value with 400 'should match format uuid'. So the character fixture",
+									"// needs a real player to point at; seed it here and reference its id.",
+									"pm.test('setup player created (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 201]));",
+									"const b = pm.response.json();",
+									"const id = b.id || (b['@self'] && b['@self'].id);",
+									"pm.test('setup player id is a uuid', () => pm.expect(id).to.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i));",
+									"pm.collectionVariables.set('charPlayerId', id);"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] },
+						"method": "POST",
+						"header": [ { "key": "OCS-APIRequest", "value": "true" }, { "key": "Content-Type", "value": "application/json" }, { "key": "Accept", "value": "application/json" } ],
+						"body": { "mode": "raw", "raw": "{\n  \"name\": \"NEWMAN character owner\",\n  \"description\": \"setup fixture: the player that NEWMAN character belongs to\"\n}" },
+						"url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{playerSchema}}", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{playerSchema}}" ] }
+					}
+				},
+				{
 					"name": "Create character (201/200)",
 					"event": [
 						{
@@ -43,6 +74,9 @@
 									"const id = b.id || (b['@self'] && b['@self'].id);",
 									"pm.test('returns an id', () => pm.expect(id).to.be.a('string').and.not.empty);",
 									"pm.test('echoes the name', () => pm.expect(b.name).to.eql('NEWMAN character'));",
+									"// The player relation must round-trip: a write that silently dropped",
+									"// ocName would otherwise look identical to a correct one.",
+									"pm.test('stores the player relation', () => pm.expect(b.ocName).to.eql(pm.collectionVariables.get('charPlayerId')));",
 									"pm.collectionVariables.set('charId', id);"
 								]
 							}
@@ -52,7 +86,7 @@
 						"auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] },
 						"method": "POST",
 						"header": [ { "key": "OCS-APIRequest", "value": "true" }, { "key": "Content-Type", "value": "application/json" }, { "key": "Accept", "value": "application/json" } ],
-						"body": { "mode": "raw", "raw": "{\n  \"name\": \"NEWMAN character\",\n  \"ocName\": \"NEWMAN character\",\n  \"description\": \"api-contract probe\"\n}" },
+						"body": { "mode": "raw", "raw": "{\n  \"name\": \"NEWMAN character\",\n  \"ocName\": \"{{charPlayerId}}\",\n  \"description\": \"api-contract probe\"\n}" },
 						"url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{charSchema}}", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{charSchema}}" ] }
 					}
 				},
@@ -120,7 +154,7 @@
 						"auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] },
 						"method": "PUT",
 						"header": [ { "key": "OCS-APIRequest", "value": "true" }, { "key": "Content-Type", "value": "application/json" }, { "key": "Accept", "value": "application/json" } ],
-						"body": { "mode": "raw", "raw": "{\n  \"name\": \"NEWMAN character\",\n  \"ocName\": \"NEWMAN character\",\n  \"description\": \"updated by newman\"\n}" },
+						"body": { "mode": "raw", "raw": "{\n  \"name\": \"NEWMAN character\",\n  \"ocName\": \"{{charPlayerId}}\",\n  \"description\": \"updated by newman\"\n}" },
 						"url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{charSchema}}/{{charId}}", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{charSchema}}", "{{charId}}" ] }
 					}
 				},
@@ -173,15 +207,26 @@
 					}
 				},
 				{
-					"name": "Create character AUTHZ: anonymous write returns 401",
+					"name": "Create character AUTHZ: anonymous write is rejected (401/403)",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
 								"exec": [
-									"// OR object WRITES require authentication — an anonymous POST is rejected 401.",
-									"pm.test('anonymous OR write rejected 401', () => pm.response.to.have.status(401));"
+									"// OR object WRITES require authentication. OpenRegister's ObjectsController is a",
+									"// PublicPage that enforces its OWN RBAC, so an anonymous write is answered with 403",
+									"// and an explicit denial (\"User 'Anonymous' does not have permission to 'create'",
+									"// objects in schema 'Character'\") rather than the NC-middleware 401. Both are honest",
+									"// rejections; the contract locked here is that the write is REFUSED and nothing is",
+									"// stored — the follow-up request reads the store back to prove the second half.",
+									"pm.test('anonymous OR write rejected (401 or 403)', () => pm.expect(pm.response.code).to.be.oneOf([401, 403]));",
+									"let anonBody = null;",
+									"try { anonBody = pm.response.json(); } catch (e) { anonBody = null; }",
+									"pm.test('rejection echoes no created object id', () => {",
+									"    const id = anonBody && (anonBody.id || (anonBody['@self'] && anonBody['@self'].id));",
+									"    pm.expect(id, 'a rejected write must not echo a stored object').to.be.not.ok;",
+									"});"
 								]
 							}
 						}
@@ -189,8 +234,35 @@
 					"request": {
 						"method": "POST",
 						"header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Accept", "value": "application/json" } ],
-						"body": { "mode": "raw", "raw": "{\n  \"name\": \"anon\",\n  \"ocName\": \"anon\"\n}" },
+						"body": { "mode": "raw", "raw": "{\n  \"name\": \"NEWMAN anon write probe\",\n  \"ocName\": \"{{charPlayerId}}\"\n}" },
 						"url": { "raw": "{{noAuthBase}}/index.php/apps/openregister/api/objects/{{register}}/{{charSchema}}", "host": [ "{{noAuthBase}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{charSchema}}" ] }
+					}
+				},
+				{
+					"name": "Create character AUTHZ: the rejected anonymous write stored nothing",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"// A rejection status is only half the evidence — read the store back and prove the",
+									"// object is genuinely absent. The anonymous payload above was FULLY VALID (a real",
+									"// player UUID for ocName), so the only thing that could have stopped it was the",
+									"// authorization check; a fail-open would surface here as total >= 1.",
+									"pm.test('store queried (200)', () => pm.response.to.have.status(200));",
+									"const b = pm.response.json();",
+									"pm.test('anonymous write stored nothing', () => pm.expect(b.total).to.eql(0));",
+									"pm.test('no character matches the anonymous probe', () => pm.expect((b.results || []).length).to.eql(0));"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] },
+						"method": "GET",
+						"header": [ { "key": "OCS-APIRequest", "value": "true" }, { "key": "Accept", "value": "application/json" } ],
+						"url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{charSchema}}?name=NEWMAN anon write probe&_limit=5", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{charSchema}}" ], "query": [ { "key": "name", "value": "NEWMAN anon write probe" }, { "key": "_limit", "value": "5" } ] }
 					}
 				}
 			]
@@ -312,6 +384,11 @@
 					"name": "Delete player",
 					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('player deleted (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 204]));" ] } } ],
 					"request": { "auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] }, "method": "DELETE", "header": [ { "key": "OCS-APIRequest", "value": "true" } ], "url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{playerSchema}}/{{playerId}}", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{playerSchema}}", "{{playerId}}" ] } }
+				},
+				{
+					"name": "Delete setup player (character owner)",
+					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('setup player deleted (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 204]));" ] } } ],
+					"request": { "auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] }, "method": "DELETE", "header": [ { "key": "OCS-APIRequest", "value": "true" } ], "url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{playerSchema}}/{{charPlayerId}}", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{playerSchema}}", "{{charPlayerId}}" ] } }
 				}
 			]
 		}
