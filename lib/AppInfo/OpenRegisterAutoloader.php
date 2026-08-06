@@ -64,7 +64,7 @@ namespace OCA\LarpingApp\AppInfo;
  * degraded-path contract — "this NEVER throws, whatever the instance looks
  * like" — is directly assertable, and it is asserted.
  *
- * @spec openspec/specs/skill-requirement-enforcement/spec.md
+ * @spec openspec/specs/apphost-autoload-prelude/spec.md
  */
 final class OpenRegisterAutoloader
 {
@@ -94,7 +94,7 @@ final class OpenRegisterAutoloader
      * autoloader, and this runs at the composition root where no container is
      * available to resolve an adapter from.
      *
-     * @spec openspec/specs/skill-requirement-enforcement/spec.md
+     * @spec openspec/specs/apphost-autoload-prelude/spec.md
      */
     public static function register(): void
     {

@@ -74,7 +74,7 @@ class Application extends App implements IBootstrap
      * resolved — which is the very thing an injected dependency would do too
      * early.
      *
-     * @spec openspec/specs/skill-requirement-enforcement/spec.md
+     * @spec openspec/specs/apphost-autoload-prelude/spec.md
      * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-1
      * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-2
      * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-3
