@@ -165,3 +165,54 @@ All stat-dependent checks (XP budget, `requiredStats[]`/`requiredScore`) MUST co
 - WHEN "Relic Lore" is assigned to a character
 - THEN validation MUST NOT throw
 - AND the dangling prerequisite MUST be reported as unresolvable (GM decides via override or skill cleanup)
+
+### Requirement: The enforcement listeners MUST actually be registered, regardless of app load order
+
+`AppInfo\Application::register()` MUST put OpenRegister's PSR-4 prefix on the
+composer autoloader — via `OpenRegisterAutoloader::register()`, which calls
+`OC_App::registerAutoloading('openregister', …)` — BEFORE any
+`class_exists('OCA\OpenRegister\…')` probe that gates a listener registration.
+
+Nextcloud registers apps in sorted order: `OC_App::getEnabledApps()` does
+`sort($apps)` and `Coordinator::registerApps()` walks that list calling
+`OC_App::registerAutoloading($appId, $path)` and then `$app->register()` for one
+app at a time. `larpingapp` sorts before `openregister`, so `OCA\OpenRegister\`
+is not autoloadable inside LarpingApp's own `register()` on a healthy instance
+with OpenRegister enabled. Without the prelude every probe answers `false` — not
+"not loaded yet", just `false`, indistinguishable from OpenRegister being absent
+— and the `ObjectCreatingEvent` / `ObjectUpdatingEvent` listeners that carry this
+capability's server-side enforcement are never registered at all.
+
+A validation that is never invoked is indistinguishable from having no
+validation: the enforcement here is server-side precisely because the client
+cannot be trusted, so its silent absence is a security gap, not a missing
+feature.
+
+`OC_App::registerAutoloading()` is idempotent and touches only the autoloader.
+`IAppManager::loadApp('openregister')` MUST NOT be used instead: it marks
+OpenRegister loaded and calls `Coordinator::bootApp()`, booting OpenRegister
+before its own `register()` has run. The prelude MUST NOT throw under any
+instance state — an exception escaping it would abort the whole `register()` and
+leave every listener unregistered.
+
+#### Scenario: OpenRegister enabled, LarpingApp registering ahead of it
+
+- GIVEN an instance with OpenRegister enabled, and LarpingApp's `register()`
+  running at its sorted position ahead of `openregister`
+- WHEN `class_exists('OCA\OpenRegister\Event\ObjectCreatingEvent')` is evaluated
+- THEN it MUST answer `true`, because the prelude has already registered
+  OpenRegister's prefix
+- AND the `CharacterRequirementListener` MUST be registered for both
+  `ObjectCreatingEvent` and `ObjectUpdatingEvent`
+- @e2e exclude composition-root load order — observable only during the app
+  registration phase, before any HTTP request or browser session exists;
+  asserted by tests/unit/AppInfo/OpenRegisterAutoloaderTest.php
+
+#### Scenario: OpenRegister genuinely absent
+
+- GIVEN an instance with OpenRegister not installed
+- WHEN the prelude runs
+- THEN it MUST return `false` rather than throw, and the `class_exists()` guards
+  MUST then correctly skip the OpenRegister-dependent listeners
+- @e2e exclude composition-root load order — asserted by
+  tests/unit/AppInfo/OpenRegisterAutoloaderTest.php
