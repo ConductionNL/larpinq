@@ -18,10 +18,24 @@ jobs:
     with:
       app-name: larpingapp
       php-version: "8.3"
-      # appinfo/info.xml declares <nextcloud min-version="28" max-version="32"/>,
-      # so the PHPUnit matrix only targets the supported server branches.
       php-test-versions: '["8.3", "8.4"]'
-      nextcloud-test-refs: '["stable31", "stable32"]'
+      # appinfo/info.xml declares <nextcloud min-version="32" max-version="34"/>,
+      # so the matrix only targets server branches this app can actually run on.
+      #
+      # stable31 is REMOVED, not "dropped for coverage". `additional-apps` below
+      # installs openregister, which declares min-version="32" and therefore
+      # cannot install on NC31 — `occ app:enable openregister` fails with only a
+      # ::warning::, so the run continued WITHOUT its data layer and every
+      # /apps/openregister/... call returned Nextcloud's HTML 404 page. A stable31
+      # leg was testing an impossible configuration, so its red said nothing.
+      #
+      # Order matters as well as membership: newman, playwright and
+      # journeydoc-capture all pin `fromJSON(inputs.nextcloud-test-refs)[0]`, so
+      # stable31 sitting FIRST meant those three jobs ran entirely on the version
+      # openregister cannot load.
+      # stable33 is deliberately NOT added here: this change removes an
+      # impossible leg, it does not widen the matrix.
+      nextcloud-test-refs: '["stable32"]'
       enable-psalm: false
       # PHPStan runs clean at level 5 with an empty baseline after the legacy
       # quality cleanup (larpingapp-legacy-quality-cleanup), so it is now part

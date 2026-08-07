@@ -59,7 +59,18 @@ Maak een [featureverzoek](https://codeberg.org/Conduction/larpingapp/issues)
     <screenshot>https://codeberg.org/Conduction/larpingapp/raw/branch/main/img/screenshot-events.png</screenshot>
     <dependencies>
         <app>openregister</app>
-        <nextcloud min-version="28" max-version="34"/>
+        <!--
+        min-version is 32, NOT 28, because <app>openregister</app> above is a HARD
+        dependency and openregister declares min-version="32" (its
+        lib/ContextChat/ContentProvider.php implements OCP\ContextChat\IContentProvider,
+        an interface that does not exist in core before Nextcloud 32). On NC 28-31
+        openregister refuses to install — "cannot be installed because it is not
+        compatible with this version of the server" — and every LarpingApp entity
+        (characters, items, skills, effects) is an OpenRegister object, so the app
+        cannot function there. Declaring 28 advertised a range this app cannot
+        deliver. Same defect as openconnector#1173.
+        -->
+        <nextcloud min-version="32" max-version="34"/>
         <php min-version="8.3" min-int-size="64"/>
         <database min-version="10">pgsql</database>
         <database>sqlite</database>
