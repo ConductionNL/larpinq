@@ -59,7 +59,7 @@ Maak een [featureverzoek](https://codeberg.org/Conduction/larpingapp/issues)
     <screenshot>https://codeberg.org/Conduction/larpingapp/raw/branch/main/img/screenshot-events.png</screenshot>
     <dependencies>
         <app>openregister</app>
-        <nextcloud min-version="28" max-version="34"/>
+        <nextcloud min-version="32" max-version="34"/>
         <php min-version="8.3" min-int-size="64"/>
         <database min-version="10">pgsql</database>
         <database>sqlite</database>
