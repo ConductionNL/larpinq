@@ -70,7 +70,7 @@ Maak een [featureverzoek](https://codeberg.org/Conduction/larpingapp/issues)
         cannot function there. Declaring 28 advertised a range this app cannot
         deliver. Same defect as openconnector#1173.
         -->
-        <nextcloud min-version="32" max-version="34"/>
+        <nextcloud min-version="28" max-version="34"/>
         <php min-version="8.3" min-int-size="64"/>
         <database min-version="10">pgsql</database>
         <database>sqlite</database>
