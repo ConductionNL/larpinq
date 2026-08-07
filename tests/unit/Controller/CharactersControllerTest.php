@@ -147,11 +147,42 @@ class CharactersControllerTest extends TestCase
             ->with('docudesk')
             ->willReturn(false);
 
-        $result = $this->controller->downloadPdf('char-1', 'tpl-1');
+        // The template MUST be a well-formed UUID here. downloadPdf() validates
+        // the template id BEFORE probing for DocuDesk, so that a malformed id is
+        // a 400 regardless of which optional apps are installed. Passing a
+        // non-UUID (this test used to pass 'tpl-1') would short-circuit at the
+        // 400 and this assertion would be green without the 424 branch ever
+        // being reached — two different failure modes conflated into one.
+        $result = $this->controller->downloadPdf('char-1', '00000000-0000-4000-8000-000000000010');
 
         self::assertInstanceOf(JSONResponse::class, $result);
         self::assertSame(424, $result->getStatus());
         self::assertStringContainsString('DocuDesk', $result->getData()['error']);
+    }
+
+    /**
+     * A malformed template id is a 400 even when DocuDesk is ABSENT.
+     *
+     * This is the combination no test covered, and the gap is exactly why the
+     * bug survived: every existing case fixed one guard while leaving the other
+     * in its passing state, so either guard order satisfied all of them. On CI
+     * — where DocuDesk is not installed alongside LarpingApp — the availability
+     * probe ran first and answered 424 to every request, making the documented
+     * 400 contract unreachable and hiding the fact that a crafted template
+     * value was never rejected on its own merits. Reverting the guard order in
+     * CharactersController::downloadPdf() turns this test red (424 != 400).
+     */
+    public function testDownloadPdfReturns400ForNonUuidTemplateEvenWhenDocuDeskAbsent(): void
+    {
+        $this->appManager->method('isEnabledForUser')
+            ->with('docudesk')
+            ->willReturn(false);
+
+        $result = $this->controller->downloadPdf('char-1', 'not-a-uuid');
+
+        self::assertInstanceOf(JSONResponse::class, $result);
+        self::assertSame(400, $result->getStatus());
+        self::assertStringContainsString('UUID', $result->getData()['error']);
     }
 
     public function testDownloadPdfReturns404WhenCharacterNotFound(): void
