@@ -102,7 +102,16 @@ class CharactersController extends Controller
      *
      * @return DataDownloadResponse|JSONResponse A response containing the PDF file for download or an error response
      *
-     * @NoAdminRequired
+     * Deliberately NOT `@NoAdminRequired`. The body requires an administrator
+     * (the `isAdmin()` guard below, added by #205 to close the character-PDF
+     * IDOR), so declaring the endpoint non-admin contradicted what it actually
+     * enforces — anyone reading the attribute would conclude any logged-in user
+     * may call it. Nextcloud's middleware now rejects a non-admin before the
+     * controller runs; the in-body guard stays as defence in depth for direct
+     * invocation. Per-player self-access remains a follow-up requiring a
+     * `player` ownership field on the character schema — when that lands this
+     * becomes `@NoAdminRequired` again, paired with a real ownership check.
+     *
      * @NoCSRFRequired
      *
      * @SuppressWarnings(PHPMD.ShortVariable)
@@ -126,7 +135,6 @@ class CharactersController extends Controller
      * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-96
      * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-97
      */
-    #[NoAdminRequired]
     #[NoCSRFRequired]
     public function downloadPdf(string $id, string $template): DataDownloadResponse|JSONResponse
     {
