@@ -111,16 +111,21 @@ class EventsController extends Controller
             return $denied;
         }
 
+        // Validate the template ID to a UUID before probing for DocuDesk, for
+        // the same reason as CharactersController::downloadPdf(): input
+        // validation is a property of the REQUEST and must not depend on which
+        // optional apps are installed. A malformed template id is a 400
+        // whether or not DocuDesk is present.
+        $templateId = $this->pdfRenderer->normaliseTemplateId($template);
+        if ($templateId === null) {
+            return new JSONResponse(data: ['error' => 'Invalid template ID: expected a UUID'], statusCode: Http::STATUS_BAD_REQUEST);
+        }
+
         if ($this->pdfRenderer->isDocuDeskAvailable() === false) {
             return new JSONResponse(
                 data: ['error' => 'PDF generation requires the DocuDesk app to be installed and enabled'],
                 statusCode: 424
             );
-        }
-
-        $templateId = $this->pdfRenderer->normaliseTemplateId($template);
-        if ($templateId === null) {
-            return new JSONResponse(data: ['error' => 'Invalid template ID: expected a UUID'], statusCode: Http::STATUS_BAD_REQUEST);
         }
 
         $event = $this->rosterService->getEvent(eventId: $id);

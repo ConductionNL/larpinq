@@ -91,6 +91,12 @@ class EventsControllerTest extends TestCase
     public function testReturns424WhenDocuDeskAbsent(): void
     {
         $this->asUser('gm1', isGm: true);
+        // downloadRunsheet() validates the template id BEFORE probing for
+        // DocuDesk, so the id must normalise successfully for the 424 branch to
+        // be reachable at all. Without this stub the mock returns null and the
+        // method short-circuits at the 400 — the assertion below would then be
+        // green for the wrong reason.
+        $this->pdfRenderer->method('normaliseTemplateId')->willReturn(self::TPL);
         $this->pdfRenderer->method('isDocuDeskAvailable')->willReturn(false);
         $result = $this->controller()->downloadRunsheet(self::EVT, self::TPL);
         self::assertSame(424, $result->getStatus());
@@ -100,6 +106,27 @@ class EventsControllerTest extends TestCase
     {
         $this->asUser('gm1', isGm: true);
         $this->pdfRenderer->method('isDocuDeskAvailable')->willReturn(true);
+        $this->pdfRenderer->method('normaliseTemplateId')->willReturn(null);
+        $result = $this->controller()->downloadRunsheet(self::EVT, 'not-a-uuid');
+        self::assertSame(400, $result->getStatus());
+    }
+
+    /**
+     * A malformed template id is a 400 even when DocuDesk is ABSENT.
+     *
+     * This is the combination no test covered, and the gap is exactly why the
+     * bug survived: every existing case fixed one guard while leaving the other
+     * in its passing state, so either guard order satisfied all of them. On CI
+     * — where DocuDesk is not installed — the availability probe ran first and
+     * answered 424 to every request, making the documented 400 contract
+     * unreachable and hiding the fact that a crafted template value was never
+     * rejected on its own merits. Reverting the guard order in
+     * EventsController::downloadRunsheet() turns this test red (424 != 400).
+     */
+    public function testReturns400ForNonUuidTemplateEvenWhenDocuDeskAbsent(): void
+    {
+        $this->asUser('gm1', isGm: true);
+        $this->pdfRenderer->method('isDocuDeskAvailable')->willReturn(false);
         $this->pdfRenderer->method('normaliseTemplateId')->willReturn(null);
         $result = $this->controller()->downloadRunsheet(self::EVT, 'not-a-uuid');
         self::assertSame(400, $result->getStatus());
@@ -196,9 +223,11 @@ class EventsControllerTest extends TestCase
     {
         // An NC admin (legacy GM) is allowed even without the gamemasters group.
         $this->asUser('admin', isGm: false, isAdmin: true);
+        $this->pdfRenderer->method('normaliseTemplateId')->willReturn(self::TPL);
         $this->pdfRenderer->method('isDocuDeskAvailable')->willReturn(false);
         $result = $this->controller()->downloadRunsheet(self::EVT, self::TPL);
-        // Passes the GM guard, then hits the 424 (DocuDesk absent) — proves not 403.
+        // Passes the GM guard and template validation, then hits the 424
+        // (DocuDesk absent) — proves not 403.
         self::assertSame(424, $result->getStatus());
     }
 }
