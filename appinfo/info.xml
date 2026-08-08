@@ -33,8 +33,20 @@ Create a [feature request](https://github.com/LarpingApp/.github/issues/new/choo
     <bugs>https://github.com/ConductionNL/LarpingNextApp/issues</bugs>
     <repository type="git">https://github.com/ConductionNL/LarpingNextApp.git</repository>
     <dependencies>
-        <nextcloud min-version="28" max-version="32"/>
-        <php min-version="8.0" min-int-size="64"/>
+        <!--
+            Nextcloud floor raised from 28 to 32 so the app may require PHP 8.3.
+            Fleet wide product directive: standardise on Nextcloud 32.
+            Rationale (openconnector issue 1172): an app must never advertise a
+            Nextcloud floor lower than the highest floor of any app it depends on,
+            or the App Store offers the app on releases where the dependency
+            refuses to install. openregister on development declares a Nextcloud
+            floor of 32. This branch does not itself declare an openregister app
+            dependency; the development branch of this app does.
+            The max-version above is unchanged by this commit, so the supported
+            window on this branch is Nextcloud 32 only.
+        -->
+        <nextcloud min-version="32" max-version="32"/>
+        <php min-version="8.3" min-int-size="64"/>
         <database min-version="10">pgsql</database>
         <database>sqlite</database>
         <database min-version="8.0">mysql</database>
