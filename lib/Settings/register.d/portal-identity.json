@@ -7,8 +7,9 @@
           "ownerRef": {
             "type": "string",
             "format": "uuid",
+            "$ref": "player",
             "title": "Owner",
-            "description": "UUID reference to the player/contact object — the portal-subject scoping key; distinct from ownerUid which is the Nextcloud user id"
+            "description": "UUID reference to the player object — the portal-subject scoping key; distinct from ownerUid which is the Nextcloud user id"
           }
         }
       }
