@@ -72,7 +72,7 @@
 				{ "id": "XpAwards", "label": "XP Awards", "icon": "StarPlusOutline", "route": "XpAwards", "order": 95 }
 			]
 		},
-		{ "id": "Settings",          "label": "Settings (Worlds)","icon": "CogOutline",       "route": "Settings",     "order": 25 },
+		{ "id": "Settings",          "label": "Worlds",          "icon": "Earth",            "route": "Settings",     "order": 25 },
 		{ "id": "GameSettings",      "label": "Game Settings",    "icon": "CogOutline",         "route": "GameSettings", "order": 100, "section": "settings" },
 		{ "id": "Documentation",     "label": "Documentation",    "icon": "BookOpenVariantOutline",   "href": "https://larpingapp.conduction.nl", "section": "footer", "order": 90 },
 		{ "id": "FeaturesRoadmapMenu","label": "Features & roadmap","icon": "MapMarkerPath","route": "FeaturesRoadmap", "section": "footer", "order": 91 }
@@ -450,25 +450,26 @@
 			"id": "Settings",
 			"route": "/settings",
 			"type": "index",
-			"title": "Settings",
+			"_note": "The page id and route stay `Settings` / `/settings`: they are deep-link surface and the persisted OpenRegister property is still `setting`. Only the user-visible TITLE is renamed to `Worlds` — see the SettingDetail _note below for why.",
+			"title": "Worlds",
 			"config": { "register": "larpingapp", "schema": "setting", "documentationUrl": "https://larpingapp.conduction.nl" }
 		},
 		{
 			"id": "SettingDetail",
 			"route": "/settings/:id",
 			"type": "detail",
-			"title": "Setting",
+			"title": "World",
 			"config": {
 				"register": "larpingapp",
 				"schema": "setting",
 				"documentationUrl": "https://larpingapp.conduction.nl",
-				"_note": "Setting = a world/campaign that scopes the roster and rules (config/container archetype). Most game entities carry an optional 'setting' UUID that points here, so this page is a scoping dashboard: the definition + active/archived status (data) sits beside a stats-block (characters + events counts, folded from two loose KPIs per rule 2), then object-lists roll up everything scoped to this campaign — characters and events (each filtered where setting = @objectId). Related surfaces any other scoped mechanics. A pure configuration container: no comms, no files.",
+				"_note": "NAMING: the user-visible term for this entity is WORLD, never \"setting\". In LARP a setting is the game world; in a Nextcloud UI \"Setting\" means a preference, and every one of the 35 non-Dutch locales took the UI reading and translated it as Einstellung / Paramètre / Configuración. That is unfixable by retranslating, because one English source string cannot carry both meanings — so the ENGLISH WORD changed instead. The persisted OpenRegister property is still `setting` and the page id / route are still Settings / /settings; only labels moved. The schema's own summary already said \"A LARP world / campaign\" and its icon was already Earth. WHAT THIS PAGE IS: a world/campaign that scopes the roster and rules (config/container archetype). Most game entities carry an optional 'setting' UUID that points here, so this page is a scoping dashboard: the definition + active/archived status (data) sits beside a stats-block (characters + events counts, folded from two loose KPIs per rule 2), then object-lists roll up everything scoped to this campaign — characters and events (each filtered where setting = @objectId). Related surfaces any other scoped mechanics. A pure configuration container: no comms, no files.",
 				"widgets": [
-					{ "id": "setting-data", "type": "data", "title": "Setting", "icon": "Earth", "content": { "columns": 1 } },
+					{ "id": "setting-data", "type": "data", "title": "World", "icon": "Earth", "content": { "columns": 1 } },
 					{ "id": "setting-stats-characters", "type": "stats-block", "title": "Characters", "icon": "ChartBar", "content": { "entries": [ { "title": "Characters", "register": "larpingapp", "schema": "character", "metric": "count", "filter": { "setting": "@objectId" }, "route": { "name": "Characters", "query": { "setting": "@objectId" } } } ] } },
 					{ "id": "setting-stats-events", "type": "stats-block", "title": "Events", "icon": "ChartBar", "content": { "entries": [ { "title": "Events", "register": "larpingapp", "schema": "larping_event", "metric": "count", "filter": { "setting": "@objectId" }, "route": { "name": "Events", "query": { "setting": "@objectId" } } } ] } },
-					{ "id": "setting-characters", "type": "object-list", "title": "Characters in this setting", "icon": "AccountGroup", "content": { "register": "larpingapp", "schema": "character", "filter": { "setting": "@objectId" }, "columns": [ { "key": "name", "label": "Character" }, { "key": "type", "label": "Type" }, { "key": "approved", "label": "Approved" } ], "limit": 100, "viewAllRoute": "Characters", "viewAllQuery": { "setting": "@objectId" }, "emptyText": "No characters in this setting yet." } },
-					{ "id": "setting-events", "type": "object-list", "title": "Events in this setting", "icon": "Calendar", "content": { "register": "larpingapp", "schema": "larping_event", "filter": { "setting": "@objectId" }, "sort": { "field": "startDate", "dir": "desc" }, "columns": [ { "key": "name", "label": "Event" }, { "key": "startDate", "label": "Starts" }, { "key": "location", "label": "Location" } ], "limit": 100, "viewAllRoute": "Events", "viewAllQuery": { "setting": "@objectId" }, "emptyText": "No events in this setting yet." } },
+					{ "id": "setting-characters", "type": "object-list", "title": "Characters in this world", "icon": "AccountGroup", "content": { "register": "larpingapp", "schema": "character", "filter": { "setting": "@objectId" }, "columns": [ { "key": "name", "label": "Character" }, { "key": "type", "label": "Type" }, { "key": "approved", "label": "Approved" } ], "limit": 100, "viewAllRoute": "Characters", "viewAllQuery": { "setting": "@objectId" }, "emptyText": "No characters in this world yet." } },
+					{ "id": "setting-events", "type": "object-list", "title": "Events in this world", "icon": "Calendar", "content": { "register": "larpingapp", "schema": "larping_event", "filter": { "setting": "@objectId" }, "sort": { "field": "startDate", "dir": "desc" }, "columns": [ { "key": "name", "label": "Event" }, { "key": "startDate", "label": "Starts" }, { "key": "location", "label": "Location" } ], "limit": 100, "viewAllRoute": "Events", "viewAllQuery": { "setting": "@objectId" }, "emptyText": "No events in this world yet." } },
 					{ "id": "setting-related", "type": "related", "title": "Related", "icon": "LinkVariant" }
 				],
 				"layout": [
