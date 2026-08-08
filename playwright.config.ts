@@ -19,6 +19,17 @@ export default defineConfig({
 	fullyParallel: false,
 	retries: 1,
 	workers: 1,
+	// The shared quality.yml Playwright job is `timeout-minutes: 45`, and a job
+	// cancelled by that cap produces NO verdict: Playwright never prints its
+	// tally, the `if: failure()` trace upload never fires, and the
+	// `if: always()` report upload does not run on a cancelled job either — the
+	// run you most need to read is the one that leaves nothing behind, and it
+	// still renders as "fail" in `gh pr checks` while carrying no information.
+	// Runs cancelled at ~45m16s have been observed in this fleet. Measured
+	// overhead before `Run Playwright tests` starts is 2.0-2.4 min and the
+	// uploads after it take seconds, so 38m keeps ~7 min of margin while
+	// guaranteeing both a tally and the artifacts that explain it.
+	globalTimeout: 38 * 60_000,
 	reporter: [
 		['html', { open: 'never', outputFolder: 'tests/e2e/playwright-report' }],
 		['junit', { outputFile: 'tests/e2e/test-results/results.xml' }],
@@ -33,7 +44,14 @@ export default defineConfig({
 		// Resolved centrally, and deliberately WITHOUT a `localhost:8080`
 		// fallback — that is the shared dev container. See tests/e2e/_base-url.ts.
 		baseURL: resolveBaseURL(),
-		trace: 'on-first-retry',
+		// `on-first-retry` writes a trace only for the SECOND attempt, so a
+		// failure that does NOT reproduce on retry — precisely the one worth a
+		// trace — leaves no record of the attempt that actually failed. It also
+		// ties the trace artifact to `retries`, which several repos in this
+		// fleet set to 0, giving them zero traces ever. `retain-on-failure`
+		// traces every attempt and keeps the ones that failed: strictly more
+		// informative, and independent of the retry count.
+		trace: 'retain-on-failure',
 		screenshot: 'only-on-failure',
 	},
 
