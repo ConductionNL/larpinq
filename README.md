@@ -10,7 +10,7 @@
 
 <p align="center">
   <a href="https://codeberg.org/Conduction/larpingapp/releases"><img src="https://img.shields.io/gitea/v/release/Conduction/larpingapp?gitea_url=https%3A%2F%2Fcodeberg.org" alt="Latest release"></a>
-  <a href="https://codeberg.org/Conduction/larpingapp/src/branch/main/LICENSE"><img src="https://img.shields.io/badge/license-AGPL--3.0-blue" alt="License"></a>
+  <a href="https://github.com/ConductionNL/larpingapp/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-EUPL--1.2-blue" alt="License"></a>
   <a href="https://ci.codeberg.org/repos/Conduction/larpingapp"><img src="https://ci.codeberg.org/api/badges/Conduction/larpingapp/status.svg" alt="Code quality"></a>
   <a href="https://larpingapp.app"><img src="https://img.shields.io/badge/docs-larpingapp.app-green" alt="Documentation"></a>
 </p>
