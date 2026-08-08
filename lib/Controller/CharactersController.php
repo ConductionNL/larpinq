@@ -102,7 +102,16 @@ class CharactersController extends Controller
      *
      * @return DataDownloadResponse|JSONResponse A response containing the PDF file for download or an error response
      *
-     * @NoAdminRequired
+     * Deliberately NOT `@NoAdminRequired`. The body requires an administrator
+     * (the `isAdmin()` guard below, added by #205 to close the character-PDF
+     * IDOR), so declaring the endpoint non-admin contradicted what it actually
+     * enforces — anyone reading the attribute would conclude any logged-in user
+     * may call it. Nextcloud's middleware now rejects a non-admin before the
+     * controller runs; the in-body guard stays as defence in depth for direct
+     * invocation. Per-player self-access remains a follow-up requiring a
+     * `player` ownership field on the character schema — when that lands this
+     * becomes `@NoAdminRequired` again, paired with a real ownership check.
+     *
      * @NoCSRFRequired
      *
      * @SuppressWarnings(PHPMD.ShortVariable)
@@ -126,7 +135,6 @@ class CharactersController extends Controller
      * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-96
      * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-97
      */
-    #[NoAdminRequired]
     #[NoCSRFRequired]
     public function downloadPdf(string $id, string $template): DataDownloadResponse|JSONResponse
     {
@@ -143,18 +151,28 @@ class CharactersController extends Controller
             return new JSONResponse(data: ['error' => 'Access denied'], statusCode: Http::STATUS_FORBIDDEN);
         }
 
+        // Validate the template ID to a UUID before delegating to DocuDesk,
+        // preventing path-traversal or injection via a crafted template value.
+        //
+        // This runs BEFORE the DocuDesk availability probe on purpose. Input
+        // validation is a property of the REQUEST and must not depend on which
+        // optional apps happen to be installed: a malformed template id is a
+        // 400 whether or not DocuDesk is present. With the order reversed, an
+        // instance without DocuDesk answered 424 to every request, so a
+        // crafted template value was never rejected on its own merits and the
+        // endpoint's documented 400 contract was unreachable — which is
+        // precisely what the Newman assertion "invalid (non-UUID) template ->
+        // 400 not 500" caught on CI, where DocuDesk is not installed.
+        $templateId = $this->pdfRenderer->normaliseTemplateId($template);
+        if ($templateId === null) {
+            return new JSONResponse(data: ['error' => 'Invalid template ID: expected a UUID'], statusCode: Http::STATUS_BAD_REQUEST);
+        }
+
         if ($this->pdfRenderer->isDocuDeskAvailable() === false) {
             return new JSONResponse(
                 data: ['error' => 'PDF generation requires the DocuDesk app to be installed and enabled'],
                 statusCode: 424
             );
-        }
-
-        // Validate the template ID to a UUID before delegating to DocuDesk,
-        // preventing path-traversal or injection via a crafted template value.
-        $templateId = $this->pdfRenderer->normaliseTemplateId($template);
-        if ($templateId === null) {
-            return new JSONResponse(data: ['error' => 'Invalid template ID: expected a UUID'], statusCode: Http::STATUS_BAD_REQUEST);
         }
 
         try {
