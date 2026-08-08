@@ -60,17 +60,41 @@ Maak een [featureverzoek](https://codeberg.org/Conduction/larpingapp/issues)
     <dependencies>
         <app>openregister</app>
         <!--
-        min-version is 32, NOT 28, because <app>openregister</app> above is a HARD
-        dependency and openregister declares min-version="32" (its
-        lib/ContextChat/ContentProvider.php implements OCP\ContextChat\IContentProvider,
-        an interface that does not exist in core before Nextcloud 32). On NC 28-31
-        openregister refuses to install — "cannot be installed because it is not
-        compatible with this version of the server" — and every LarpingApp entity
-        (characters, items, skills, effects) is an OpenRegister object, so the app
-        cannot function there. Declaring 28 advertised a range this app cannot
-        deliver. Same defect as openconnector#1173.
+        min-version is 32, NOT 28. Two independent reasons, both current:
+
+        1. FLEET POLICY. The fleet floor is Nextcloud 32, which is the version
+           that guarantees the PHP 8.3 baseline this app already declares below.
+           Declaring <php min-version="8.3"/> while advertising NC 28 promises a
+           combination we do not build, test or support.
+
+        2. THE <app>openregister</app> DEPENDENCY ABOVE. An app's min-version
+           must be >= the max of every <app> dependency's own floor
+           (openconnector#1172/#1173). Every LarpingApp entity — characters,
+           items, skills, effects, events — is an OpenRegister object, so where
+           openregister cannot install this app is non-functional, not merely
+           degraded. When openregister's floor was briefly 32 (its
+           lib/ContextChat/ContentProvider.php implements
+           OCP\ContextChat\IContentProvider, absent from core before NC 32), an
+           NC 31 CI leg failed with "App 'Open Register' cannot be installed
+           because it is not compatible with this version of the server" — and
+           because the shared workflow emits that only as a ##[warning], the run
+           carried on and died ~70s later on missing tables, which reads like a
+           migration fault and sends you to entirely the wrong file.
+
+           openregister's floor is 28 again at the time of writing
+           (openregister#2380, after openregister#2372 removed the eager
+           ContextChat reference), so reason 2 is not what forces 32 TODAY —
+           reason 1 is. Do not "correct" this back down to match openregister's
+           current floor: min-version is a >= bound on dependencies, not an
+           equality, and this app has its own PHP floor to honour.
+
+        CI matches this: nextcloud-test-refs in .github/workflows/code-quality.yml
+        is ["stable32"] only, so no leg tests a version below the declared floor.
+        Check that list before changing this value — PR #282/#284 ping-ponged
+        because a 32 floor makes `occ app:enable` refuse on a stable31 leg, and
+        the e2e seed then fails with "is not installed or enabled".
         -->
-        <nextcloud min-version="28" max-version="34"/>
+        <nextcloud min-version="32" max-version="34"/>
         <php min-version="8.3" min-int-size="64"/>
         <database min-version="10">pgsql</database>
         <database>sqlite</database>
