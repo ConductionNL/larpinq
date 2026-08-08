@@ -276,6 +276,11 @@ export default {
 		},
 	},
 
+	/**
+	 * Load the tree, then attach the live-update subscriptions.
+	 *
+	 * @spec openspec/changes/skill-tree-visualization/specs/skill-tree-visualization/spec.md
+	 */
 	async mounted() {
 		await this.load()
 		this.syncLiveSubscriptions()

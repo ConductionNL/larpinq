@@ -155,6 +155,8 @@ export default {
 	 * so this code is safe even if `useTenantContext` is missing — the
 	 * watcher just never fires.
 	 *
+	 * @spec openspec/changes/larpingapp-adopt-or-abstractions/specs/larpingapp-adopt-or-abstractions/spec.md
+	 *
 	 * @return {object} Setup return — none needed externally.
 	 */
 	setup() {
@@ -244,6 +246,14 @@ export default {
 		 */
 		cnActiveOrganisationUuid: {
 			immediate: true,
+			/**
+			 * Apply one tenant switch. Carries its own @spec because gate-16
+			 * parses `handler()` as a method in its own right — the tag on the
+			 * enclosing watcher entry above does not reach it.
+			 *
+			 * @param {string|undefined} uuid The newly active organisation UUID.
+			 * @spec openspec/changes/larpingapp-adopt-or-abstractions/specs/larpingapp-adopt-or-abstractions/spec.md
+			 */
 			handler(uuid) {
 				const next = (typeof uuid === 'string' && uuid.length > 0) ? uuid : null
 				if (this.tenantSyncedUuid === next) {
