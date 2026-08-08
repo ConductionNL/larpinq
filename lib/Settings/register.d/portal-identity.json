@@ -4,10 +4,10 @@
       "character": {
         "version": "1.4.0",
         "properties": {
+          "_note": "ownerRef deliberately carries NO `$ref`, and that is a known, MEASURED exception to ADR-062 rule 7 — not an oversight. gate-54 reports it as a relation-shaped property missing its canonical $ref, and adding `\"$ref\": \"player\"` here is the remediation the gate prescribes. Doing so BREAKS the character create dialog: `character.ocName` already declares `$ref: \"player\"`, and with a second player-targeted relation on the same schema the dialog no longer renders a player selector at all. Reproduced twice on PR #289 — tests/e2e/spec-coverage/detail-forms-admin.spec.ts:570 `character create dialog exposes a player (ocName) selector` failed with `expect(locator).toBeVisible()` on `input[placeholder*=\"player\" i]`, 1 failed / 170 passed, on two independent runs, and passes on development. Re-attempt only with that e2e green. See ConductionNL/.github#231.",
           "ownerRef": {
             "type": "string",
             "format": "uuid",
-            "$ref": "player",
             "title": "Owner",
             "description": "UUID reference to the player object — the portal-subject scoping key; distinct from ownerUid which is the Nextcloud user id"
           }
