@@ -49,11 +49,19 @@
 				label="label"
 				data-testid="skill-tree-character"
 				@update:modelValue="onCharacterChange" />
+			<!--
+			  "World", not "Setting". This selector scopes the tree to a LARP
+			  game world. `Setting` reads as a UI preference to anyone who is
+			  not already a LARPer, which is exactly how all 35 non-Dutch
+			  locales translated it (Einstellung, Paramètre, Configuración).
+			  The English source string carries the domain word now; the
+			  underlying OpenRegister property is still `skill.setting`.
+			-->
 			<NcSelect
 				v-model="selectedSetting"
 				:options="settingOptions"
-				:input-label="t('larpingapp', 'Setting')"
-				:placeholder="t('larpingapp', 'All settings')"
+				:input-label="t('larpingapp', 'World')"
+				:placeholder="t('larpingapp', 'All worlds')"
 				label="label"
 				data-testid="skill-tree-setting" />
 		</div>
@@ -67,7 +75,7 @@
 		<NcEmptyContent
 			v-if="!loading && nodes.length === 0"
 			:name="t('larpingapp', 'No skills to show')"
-			:description="t('larpingapp', 'No skills exist yet for the selected setting.')"
+			:description="t('larpingapp', 'No skills exist yet for the selected world.')"
 			data-testid="skill-tree-empty">
 			<template #icon>
 				<CnIcon name="Sitemap" :size="48" />
