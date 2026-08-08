@@ -57,7 +57,7 @@
     "@nextcloud/l10n": "3.4.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.29.6",
+    "@babel/core": "^8.0.1",
     "@babel/eslint-parser": "^7.28.6",
     "@babel/preset-env": "^7.29.5",
     "@cyclonedx/cyclonedx-npm": "^5.0.0",

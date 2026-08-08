@@ -109,6 +109,18 @@ export default defineConfig({
 	// cap, so a genuine flake shows up as a red job that gets investigated
 	// rather than as a green one that does not.
 	retries: 0,
+	// The shared quality.yml Playwright job is `timeout-minutes: 45`, and a job
+	// cancelled by that cap produces NO verdict: Playwright never prints its
+	// tally, the `if: failure()` trace upload never fires, and the
+	// `if: always()` report upload does not run on a cancelled job either — the
+	// run you most need to read is the one that leaves nothing behind, and it
+	// still renders as "fail" in `gh pr checks` while carrying no information.
+	// That is the same dishonest-signal failure mode the `retries: 0` note
+	// above is about, arriving from the other direction. Measured overhead
+	// before `Run Playwright tests` starts is 2.0-2.4 min and the uploads after
+	// it take seconds, so 38m keeps ~7 min of margin — and is ~5x the ~7.5 min
+	// this suite actually takes, so it cannot mask a regression.
+	globalTimeout: 38 * 60_000,
 	reporter: [
 		['html', { open: 'never', outputFolder: path.resolve(__dirname, 'playwright-report') }],
 		['list'],
@@ -120,7 +132,20 @@ export default defineConfig({
 		baseURL: resolveBaseURL(),
 		// Written by global-setup.ts after the admin login.
 		storageState: path.resolve(__dirname, '.auth', 'admin.json'),
-		trace: 'on-first-retry',
+		// `on-first-retry` writes a trace ONLY when a retry happens — and
+		// `retries` is deliberately 0 just above, for the good reasons written
+		// out there. The two settings cancel each other out: this config, which
+		// CI actually runs (the workflow resolves
+		// `${playwright-test-path}/playwright.config.ts` before the app-root
+		// one), has written ZERO traces for its entire history, while reading as
+		// though tracing were configured. Every red run here has been debugged
+		// from a screenshot and a stack frame.
+		//
+		// `retain-on-failure` captures every test and keeps only the failures.
+		// It is strictly more informative and — the point — does not depend on
+		// the retry count, so the honest `retries: 0` above no longer costs us
+		// the evidence.
+		trace: 'retain-on-failure',
 		screenshot: 'only-on-failure',
 	},
 
