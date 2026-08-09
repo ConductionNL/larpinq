@@ -11,6 +11,11 @@ return [
 		['name' => 'characters#requirementReport', 'url' => '/api/characters/{id}/requirement-report', 'verb' => 'GET'],
 		['name' => 'settings#index', 'url' => 'api/settings', 'verb' => 'GET'],
 		['name' => 'settings#create', 'url' => 'api/settings', 'verb' => 'POST'],
+		// Canonical AppHost settings write (OpenRegister\AppHost\Routes::standard()).
+		// `settings#create` above stays as the legacy POST alias; both reach the
+		// same SettingsController::update(). URL spelled without a leading slash
+		// to match its two siblings — RouteParser ltrims it either way.
+		['name' => 'settings#update', 'url' => 'api/settings', 'verb' => 'PUT'],
 		['name' => 'settings#reimport', 'url' => 'api/settings/reimport', 'verb' => 'POST'],
 		// First-time setup wizard (ADR-042).
 		['name' => 'setup#status', 'url' => '/api/setup/status', 'verb' => 'GET'],
