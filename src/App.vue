@@ -12,7 +12,14 @@
  action: "user-settings" → opens NcAppSettingsDialog via CnAppRoot's
  cnOpenUserSettings inject.
 
- @spec openspec/changes/manifest-v2-vue-scaffold/specs/manifest-v2-vue-scaffold/spec.md
+ The previous anchor here pointed at
+ `openspec/changes/manifest-v2-vue-scaffold/...`, a change that has never
+ existed in this repository — not under `openspec/changes/`, not under
+ `openspec/changes/archive/`, and not as a canonical spec. It was the repo's
+ only dangling @spec target. The requirement this file actually satisfies is
+ "CnAppRoot SHALL be the boot entry point" in the Tier-4 graduation spec.
+
+ @spec openspec/changes/larpingapp-manifest-tier-4/specs/larpingapp-manifest-tier-4/spec.md
 -->
 <template>
 	<CnAppRoot

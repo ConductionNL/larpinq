@@ -18,12 +18,14 @@
           "event": {
             "type": "string",
             "format": "uuid",
+            "$ref": "larping_event",
             "title": "Event",
             "description": "UUID reference to the larping_event this attendance record belongs to"
           },
           "character": {
             "type": "string",
             "format": "uuid",
+            "$ref": "character",
             "title": "Character",
             "description": "UUID reference to the character whose attendance this record captures"
           },
