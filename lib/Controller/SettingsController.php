@@ -273,17 +273,36 @@ class SettingsController extends Controller
     }//end index()
 
     /**
-     * Update LarpingApp settings.
+     * Update LarpingApp settings — the canonical write.
      *
-     * CSRF protection is required — this is a state-mutating admin POST.
+     * This is the `settings#update` half of OpenRegister's canonical AppHost
+     * settings dialect ({@see \OCA\OpenRegister\AppHost\Controller\GenericSettingsControllerBase::update()}),
+     * reached over `PUT /api/settings`. LarpingApp ships its own
+     * SettingsController, so `AppHost\Bootstrap::aliasControllerUnlessLeafDefinesIt()`
+     * never aliases the generic in and this leaf owes the method itself.
      *
-     * @NoCSRFRequired removed to close the CSRF-forgery surface (closes #206).
+     * The body is the one that used to live in {@see create()}: it hands the
+     * full request parameter bag to
+     * {@see \OCA\LarpingApp\Service\SettingsService::updateSettings()}, which
+     * whitelists it against `SettingsService::CONFIG_KEYS` and writes the
+     * accepted string/int values to `IAppConfig` under the `larpingapp` app id,
+     * then returns the re-read settings map. Nothing outside that whitelist is
+     * persisted, so PUT writes exactly what POST wrote.
+     *
+     * CSRF protection is required — this is a state-mutating admin write.
+     *
+     * Auth posture: no auth attribute, deliberately identical to {@see create()}.
+     * Nextcloud's default for an attribute-free controller method is "admin
+     * session required, CSRF token required", which is the posture this
+     * instance-wide configuration write needs. `@NoCSRFRequired` was removed
+     * from the write path to close the CSRF-forgery surface (closes #206) and
+     * is not reintroduced here. Net privilege change of this commit: zero.
      *
      * @return JSONResponse The updated settings response.
      *
-     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-24
+     * @spec openspec/specs/settings-management-ui/spec.md#REQ-003
      */
-    public function create(): JSONResponse
+    public function update(): JSONResponse
     {
         try {
             $data   = $this->request->getParams();
@@ -298,6 +317,38 @@ class SettingsController extends Controller
         } catch (\Exception $e) {
             return new JSONResponse(['error' => $e->getMessage()], 500);
         }//end try
+
+    }//end update()
+
+    /**
+     * Legacy alias for {@see update()} — `POST /api/settings`.
+     *
+     * The canonical AppHost route table still ships `settings#create` for the
+     * pre-ADR-066 `index/create/load` dialect, and LarpingApp's own frontend
+     * still POSTs to it (`src/store/modules/settings.js::saveSettings()` and
+     * `src/views/settings/Settings.vue`), so this route must stay reachable and
+     * must keep writing (ADR-029).
+     *
+     * The delegation is one-way and behaviour-preserving: the response payload
+     * is byte-identical to what this method returned before `update()` existed.
+     *
+     * CSRF protection is required — this is a state-mutating admin POST.
+     *
+     * Auth posture: unchanged. This method keeps its own (absent = Nextcloud
+     * default admin + CSRF) posture rather than inheriting anything from
+     * `update()`, because SecurityMiddleware only evaluates attributes on the
+     * DISPATCHED method — delegation in the body is invisible to it.
+     *
+     * @NoCSRFRequired removed to close the CSRF-forgery surface (closes #206).
+     *
+     * @return JSONResponse The updated settings response.
+     *
+     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-24
+     * @spec openspec/specs/settings-management-ui/spec.md#REQ-003
+     */
+    public function create(): JSONResponse
+    {
+        return $this->update();
 
     }//end create()
 

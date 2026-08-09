@@ -219,15 +219,40 @@
 					}
 				},
 				{
-					"name": "Create character AUTHZ: anonymous write returns 401",
+					"name": "Create character AUTHZ: anonymous write is denied and creates nothing",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
 								"exec": [
-									"// OR object WRITES require authentication — an anonymous POST is rejected 401.",
-									"pm.test('anonymous OR write rejected 401', () => pm.response.to.have.status(401));"
+									"// An anonymous OR object write must be DENIED and must create NOTHING.",
+									"//",
+									"// The status is 403, not 401. OpenRegister's ObjectsController::create()",
+									"// is #[PublicPage] (deliberately — it is what public forms post through,",
+									"// which is why it carries #[AnonRateLimit]). So Nextcloud's auth",
+									"// middleware lets an anonymous request reach the controller, and the",
+									"// refusal comes from OpenRegister's own RBAC afterwards. That is an",
+									"// authorization failure on a request that was allowed to be anonymous,",
+									"// i.e. 403 Forbidden; 401 would mean 'authenticate and try again', which",
+									"// is not what this endpoint is saying. The old expectation of 401",
+									"// encoded a model where the endpoint was authenticated-only, and it",
+									"// never was.",
+									"//",
+									"// The status code is the weaker half of this test. The property that",
+									"// actually matters is that no object came into existence, so that is",
+									"// asserted directly: a denial that nonetheless created a character",
+									"// would satisfy any status assertion while being the exact bug this",
+									"// case exists to catch.",
+									"pm.test('anonymous OR write is denied', () => pm.expect(pm.response.code).to.be.oneOf([401, 403]));",
+									"pm.test('anonymous OR write is not a success', () => pm.expect(pm.response.code).to.be.at.least(400));",
+									"pm.test('anonymous OR write created no object', () => {",
+									"    let body = {};",
+									"    try { body = pm.response.json(); } catch (e) { body = {}; }",
+									"    const self = body['@self'] || {};",
+									"    pm.expect(body.id, 'response carries an object id').to.be.undefined;",
+									"    pm.expect(self.id, 'response carries an @self.id').to.be.undefined;",
+									"});"
 								]
 							}
 						}
