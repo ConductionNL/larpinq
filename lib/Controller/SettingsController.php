@@ -298,6 +298,12 @@ class SettingsController extends Controller
      * from the write path to close the CSRF-forgery surface (closes #206) and
      * is not reintroduced here. Net privilege change of this commit: zero.
      *
+     * @auth admin-only Writes instance-wide larpingapp configuration through
+     *       SettingsService::updateSettings(). Carries no auth attribute
+     *       deliberately: Nextcloud's default for an attribute-free controller
+     *       method is admin session + CSRF token, which is exactly this
+     *       posture. Pinned by SettingsControllerCsrfPostureTest.
+     *
      * @return JSONResponse The updated settings response.
      *
      * @spec openspec/specs/settings-management-ui/spec.md#REQ-003
@@ -339,7 +345,17 @@ class SettingsController extends Controller
      * `update()`, because SecurityMiddleware only evaluates attributes on the
      * DISPATCHED method — delegation in the body is invisible to it.
      *
-     * @NoCSRFRequired removed to close the CSRF-forgery surface (closes #206).
+     * The `NoCSRFRequired` annotation was dropped here for #206. It is spelled
+     * mid-sentence on purpose: Nextcloud's ControllerMethodReflector matches
+     * `/^\h+\*\h+@(?P<annotation>[A-Z]\w+)((?P<parameter>.*))?$/m`, so a line
+     * that BEGINS with the tag registers it as present no matter what the rest
+     * of the sentence says — which is how #206 stayed open here for months.
+     *
+     * @auth admin-only Writes instance-wide larpingapp configuration through
+     *       SettingsService::updateSettings(). Carries no auth attribute
+     *       deliberately: Nextcloud's default for an attribute-free controller
+     *       method is admin session + CSRF token, which is exactly this
+     *       posture. Pinned by SettingsControllerCsrfPostureTest.
      *
      * @return JSONResponse The updated settings response.
      *
@@ -357,7 +373,15 @@ class SettingsController extends Controller
      *
      * CSRF protection is required — this is a state-mutating admin POST.
      *
-     * @NoCSRFRequired removed to close the CSRF-forgery surface (closes #206).
+     * The `NoCSRFRequired` annotation was dropped here for #206, and is spelled
+     * mid-sentence for the reason given on {@see create()}: a docblock line
+     * that begins with the tag re-registers it.
+     *
+     * @auth admin-only Re-imports the whole larpingapp register/schema
+     *       configuration from disk. Carries no auth attribute deliberately:
+     *       Nextcloud's default for an attribute-free controller method is
+     *       admin session + CSRF token, which is exactly this posture. Pinned
+     *       by SettingsControllerCsrfPostureTest.
      *
      * @return JSONResponse The re-import result.
      *
