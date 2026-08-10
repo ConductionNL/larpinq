@@ -5,12 +5,33 @@
 // validate-manifest.js — schema-validates src/manifest.json against the
 // @conduction/nextcloud-vue app-manifest schema using Ajv.
 //
-// @spec openspec/changes/openregister-adopt-app-manifest/specs/openregister-app-manifest/spec.md#REQ-OR-MAN-007
-//   (Build gate validates the manifest — `npm run check:manifest` runs this CLI,
-//    is wired into CI via .github/workflows/spec-validation.yml → check:specs,
-//    Ajv-validates against the canonical schema, prints error paths, exits non-zero
-//    on schema violation. Cleanly skips with exit 0 when no src/manifest.json
-//    exists, since OpenRegister is the foundation app and ships no manifest yet.)
+// CANONICAL REQUIREMENT: `REQ-OR-MAN-007 Build gate validates the manifest`,
+// owned by OpenRegister at `openspec/specs/openregister-app-manifest/spec.md`
+// in the ConductionNL/openregister repository. It is deliberately NOT written
+// as an `@spec` tag here: a `@spec` target is resolved against THIS repository
+// (hydra gate-46), and this requirement has exactly one canonical home, which
+// is not larpingapp. Duplicating it into `larpingapp/openspec/specs/` to make
+// a tag resolve would create a second copy of a spec that already exists.
+//
+// This file previously carried a tag pointing into an OpenRegister CHANGE
+// directory (`openregister-adopt-app-manifest`) rather than a canonical spec —
+// a path copied wholesale from OpenRegister that has never existed in this
+// repository, and which OpenRegister itself archived on 2026-05-27 as
+// superseded. It resolved to nothing in either repo.
+//
+// The old path is deliberately NOT reproduced verbatim above. Gate-46 scans
+// this file as TEXT, so quoting a dangling target inside a comment about the
+// dangling target re-creates the finding — measured while writing this.
+//
+// What this CLI does here: `npm run check:manifest` runs it, the `check:specs`
+// aggregate (json-strict + manifest + register) chains it, and CI runs that
+// aggregate as the `Frontend Check (check:specs)` job — see
+// `frontend-checks: '["check:specs", "test:l10n"]'` in
+// .github/workflows/code-quality.yml. It Ajv-validates src/manifest.json
+// against the canonical @conduction/nextcloud-vue schema, prints error paths,
+// and exits non-zero on any schema violation. It exits 0 when no
+// src/manifest.json exists at all; larpingapp does ship one, so that branch is
+// not the path taken here.
 //
 // Usage:
 //   node tests/validate-manifest.js
