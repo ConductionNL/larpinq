@@ -5,6 +5,26 @@ on:
     branches: [main, development, feature/**, bugfix/**, hotfix/**]
   pull_request:
     branches: [main, beta, development]
+  # This repo and `softwarecatalog` were the ONLY two of the sixteen fleet apps
+  # without a manual trigger — checked on 2026-08-10 by reading
+  # `.github/workflows/code-quality.yml` on `development` in all sixteen; the
+  # other fourteen already carry it.
+  #
+  # The cost was not "slightly less convenient". Every fleet-wide gate sweep run
+  # in this programme is a `workflow_dispatch` fan-out, so this repo was not
+  # failing those sweeps and was not passing them — it was ABSENT from the
+  # results table. In a table of fourteen verdicts an unmeasured repo looks
+  # exactly like one that was never a problem, which is the same failure the
+  # dead-gate work has been chasing all along: silence read as health.
+  #
+  # A dispatch here is also worth more than a re-run of CI. The shared workflow
+  # scopes `workflow_dispatch` to the FULL repository (there is no PR target and
+  # no previous pushed tip to diff against, so ADR-020 diff-scoping has nothing
+  # to scope to and the gates scan the entire tree). A push run on `development`
+  # typically covers a single commit's files; this is the only way to ask "what
+  # is the state of the whole app?" without opening a pull request. Expect it to
+  # be redder than a PR — that is the honest answer, not a regression.
+  workflow_dispatch:
 
 jobs:
   quality:
