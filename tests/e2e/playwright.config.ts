@@ -43,9 +43,9 @@
  * visual specs. Both lists are spelled out in full below so neither one is
  * load-bearing on its own.
  *
- * WHAT RUNS HERE (10 spec files)
+ * WHAT RUNS HERE (11 spec files)
  *   tests/e2e/spec-coverage/*.spec.ts          (8)
- *   tests/e2e/workflows/*.workflow.spec.ts     (2)
+ *   tests/e2e/workflows/*.workflow.spec.ts     (3)
  *
  * WHAT IS EXCLUDED, AND WHY
  *   tests/e2e/visual/**                — see above; cannot byte-match on CI.
