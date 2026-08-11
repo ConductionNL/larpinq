@@ -121,8 +121,24 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
 /**
- * Minimal object-entity fake matching the subset of the OR ObjectEntity API
- * the listener uses (getSchema + getObject).
+ * Object-entity fake matching the REAL SHAPE of `OCA\OpenRegister\Db\ObjectEntity`.
+ *
+ * ⚠️ THE SHAPE IS THE POINT — DO NOT DECLARE `getSchema()` HERE.
+ * The real `ObjectEntity` extends `OCP\AppFramework\Db\Entity` and declares
+ * exactly ONE accessor of its own, `getObject()`. Everything else —
+ * `getSchema()` included — is resolved at runtime by `Entity::__call()`.
+ * Measured on a live instance (NC 34, openregister 0.2.17-unstable.36):
+ *
+ *     method_exists($entity, 'getSchema')  -> false      (magic)
+ *     is_callable([$entity, 'getSchema'])  -> true
+ *     method_exists($entity, 'getObject')  -> true       (declared — control)
+ *
+ * This fake previously DECLARED `getSchema()`. That single divergence made
+ * `method_exists()` answer true in the suite and false in production, so every
+ * test below passed while `isCharacterSchema()` returned false for every real
+ * character write and the app enforced nothing (larpingapp#308). A fake shaped
+ * to what the caller CALLS, rather than to what the collaborator IS, cannot
+ * fail for the reason the suite exists.
  */
 class FakeObjectEntity
 {
@@ -130,14 +146,33 @@ class FakeObjectEntity
     {
     }
 
-    public function getSchema(): string
-    {
-        return $this->schema;
-    }
-
+    /**
+     * Declared on the real ObjectEntity, so it stays declared here.
+     *
+     * @return array<string,mixed> The object payload.
+     */
     public function getObject(): array
     {
         return $this->data;
+    }
+
+    /**
+     * Magic accessor, mirroring OCP\AppFramework\Db\Entity::__call().
+     *
+     * @param string       $name Method name.
+     * @param array<mixed> $args Ignored.
+     *
+     * @return mixed The property value.
+     *
+     * @throws \BadFunctionCallException When the property does not exist.
+     */
+    public function __call(string $name, array $args): mixed
+    {
+        if ($name === 'getSchema') {
+            return $this->schema;
+        }
+
+        throw new \BadFunctionCallException($name . ' does not exist');
     }
 }
 

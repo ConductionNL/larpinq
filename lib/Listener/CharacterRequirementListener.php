@@ -158,6 +158,12 @@ class CharacterRequirementListener implements IEventListener
      * @psalm-suppress MixedMethodCall     OpenRegister event classes are optional dependencies.
      * @psalm-suppress MixedReturnStatement OpenRegister event classes are optional dependencies.
      * @psalm-suppress MixedInferredReturnType OpenRegister event classes are optional dependencies.
+     * @psalm-suppress UndefinedMethod     `getNewObject()`/`getOldObject()` are declared on
+     *                                     OCA\OpenRegister\Event\ObjectUpdatingEvent, which Psalm
+     *                                     resolves as the base OCP Event because OpenRegister is an
+     *                                     optional dependency. The `instanceof` above narrows it at
+     *                                     runtime; the two pre-existing errors this suppresses were
+     *                                     the only Psalm findings in the app.
      *
      * @spec openspec/changes/skill-requirement-enforcement/specs/skill-requirement-enforcement/spec.md
      */
@@ -210,6 +216,28 @@ class CharacterRequirementListener implements IEventListener
      *
      * @return bool True when this is a character write.
      *
+     * ⚠️ THE PROBE MUST BE `is_callable()`, NEVER `method_exists()`.
+     * `OCA\OpenRegister\Db\ObjectEntity` declares only `getObject()`; every
+     * other accessor — `getSchema()` among them — is resolved at runtime by
+     * `OCP\AppFramework\Db\Entity::__call()`. `method_exists()` inspects the
+     * DECLARED method table and therefore answers **false** for a magic getter
+     * that is perfectly callable:
+     *
+     *     method_exists($entity, 'getSchema')   -> false
+     *     is_callable([$entity, 'getSchema'])   -> true
+     *     $entity->getSchema()                  -> "17"
+     *     method_exists($entity, 'getObject')   -> true   (declared — control)
+     *
+     * With `method_exists()` this method returned false for EVERY character
+     * write, so `handle()` returned early, no veto was ever raised, and a
+     * character violating a declared `requiredSkills[]` prerequisite persisted
+     * at HTTP 201/200 with no log line — the whole
+     * `skill-requirement-enforcement` capability was inert while its listener
+     * was correctly registered and its validator correctly returned
+     * `valid: false`. Reported as larpingapp#308 (which mis-attributed it to
+     * OpenRegister not dispatching the vetoable pre-write event; OpenRegister
+     * dispatches it, and this listener is first in the chain).
+     *
      * @psalm-suppress MixedMethodCall OpenRegister entity is an optional dependency.
      */
     private function isCharacterSchema(object $entity): bool
@@ -220,7 +248,7 @@ class CharacterRequirementListener implements IEventListener
         }
 
         $schema = '';
-        if (method_exists($entity, 'getSchema') === true) {
+        if (is_callable([$entity, 'getSchema']) === true) {
             $schema = (string) $entity->getSchema();
         }
 

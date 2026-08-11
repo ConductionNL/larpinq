@@ -53,21 +53,38 @@ class DeepLinkRegistrationListener implements IEventListener
 {
 
     /**
+     * Register slug LarpingApp's schemas live in.
+     *
+     * `DeepLinkRegistrationEvent::register()` takes the register slug as its
+     * second argument; a deep link registered without it cannot be resolved.
+     *
+     * @var string
+     */
+    private const REGISTER_SLUG = 'larpingapp';
+
+    /**
      * URL templates for each object type.
      *
      * Maps schema slugs to their LarpingApp frontend routes.
      *
+     * ⚠️ The keys MUST be the real, INSTANCE-GLOBAL schema slugs, not the bare
+     * type names. `item` and `event` collide across the fleet, so LarpingApp's
+     * own schemas are namespaced `larping_item` / `larping_event` (see
+     * `lib/Settings/larpingapp_register.json` and the `manifest-namespaced-
+     * schema-slugs` change). The bare spellings previously used here matched no
+     * schema on any instance.
+     *
      * @var array<string, string>
      */
     private const DEEP_LINK_MAP = [
-        'character' => '/apps/larpingapp/#/characters/{uuid}',
-        'player'    => '/apps/larpingapp/#/players/{uuid}',
-        'ability'   => '/apps/larpingapp/#/abilities/{uuid}',
-        'skill'     => '/apps/larpingapp/#/skills/{uuid}',
-        'item'      => '/apps/larpingapp/#/items/{uuid}',
-        'condition' => '/apps/larpingapp/#/conditions/{uuid}',
-        'effect'    => '/apps/larpingapp/#/effects/{uuid}',
-        'event'     => '/apps/larpingapp/#/events/{uuid}',
+        'character'     => '/apps/larpingapp/#/characters/{uuid}',
+        'player'        => '/apps/larpingapp/#/players/{uuid}',
+        'ability'       => '/apps/larpingapp/#/abilities/{uuid}',
+        'skill'         => '/apps/larpingapp/#/skills/{uuid}',
+        'larping_item'  => '/apps/larpingapp/#/items/{uuid}',
+        'condition'     => '/apps/larpingapp/#/conditions/{uuid}',
+        'effect'        => '/apps/larpingapp/#/effects/{uuid}',
+        'larping_event' => '/apps/larpingapp/#/events/{uuid}',
     ];
 
     /**
@@ -94,12 +111,31 @@ class DeepLinkRegistrationListener implements IEventListener
     public function handle(Event $event): void
     {
         // Only handle DeepLinkRegistrationEvent from OpenRegister.
-        if (method_exists($event, 'registerDeepLink') === false) {
+        //
+        // ⚠️ THE GUARD USED TO NAME A METHOD THAT DOES NOT EXIST.
+        // It probed `registerDeepLink` — `DeepLinkRegistrationEvent` has never
+        // declared such a method; the API is `register()`. So the guard was
+        // false on every dispatch, this listener returned immediately, and
+        // LarpingApp registered ZERO deep links while its registration looked
+        // healthy. Had the guard been dropped without renaming the call, the
+        // body would have fatalled with "Call to undefined method" instead —
+        // the guard was the only thing hiding a broken call. Same family as the
+        // `method_exists()` probe in CharacterRequirementListener (#308): a
+        // defensive guard that silently disables the feature it guards.
+        //
+        // `register()` is a declared method, so `method_exists()` is a correct
+        // probe HERE (unlike a magic Entity getter).
+        if (method_exists($event, 'register') === false) {
             return;
         }
 
         foreach (self::DEEP_LINK_MAP as $schemaSlug => $urlTemplate) {
-            $event->registerDeepLink('larpingapp', $schemaSlug, $urlTemplate);
+            $event->register(
+                'larpingapp',
+                self::REGISTER_SLUG,
+                $schemaSlug,
+                $urlTemplate
+            );
         }
     }//end handle()
 }//end class
