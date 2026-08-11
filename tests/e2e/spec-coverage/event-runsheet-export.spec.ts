@@ -17,7 +17,7 @@
  * This file is the gate-19 back-reference: it confirms the run-sheet route is
  * wired and answers for an authenticated user.
  *
- * @spec openspec/changes/event-runsheet-export/specs/pdf-export/spec.md
+ * @spec openspec/specs/pdf-export/spec.md
  */
 
 import { test, expect } from '@playwright/test'

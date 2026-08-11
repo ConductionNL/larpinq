@@ -178,7 +178,7 @@ class CharacterService
      *
      * @return array<string, array<int, array<string, mixed>>> Awards keyed by character id.
      *
-     * @spec openspec/changes/event-xp-award-workflow/specs/event-xp-awards/spec.md
+     * @spec openspec/specs/event-xp-awards/spec.md
      */
     private function loadXpAwards(): array
     {
@@ -223,7 +223,7 @@ class CharacterService
      *
      * @return string|null The XP ability id, or null when none resolves.
      *
-     * @spec openspec/changes/event-xp-award-workflow/specs/event-xp-awards/spec.md
+     * @spec openspec/specs/event-xp-awards/spec.md
      */
     private function resolveXpAbilityId(): ?string
     {
@@ -423,7 +423,7 @@ class CharacterService
      *
      * @return void
      *
-     * @spec openspec/changes/event-xp-award-workflow/specs/event-xp-awards/spec.md
+     * @spec openspec/specs/event-xp-awards/spec.md
      */
     private function applyXpAwards(array &$abilityScores, array $character): void
     {

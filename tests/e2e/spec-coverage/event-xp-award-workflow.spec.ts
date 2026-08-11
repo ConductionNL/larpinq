@@ -14,7 +14,7 @@
  * nc-vue follow-up). This file proves the XP Awards index page renders its own
  * schema surface.
  *
- * @spec openspec/changes/event-xp-award-workflow/specs/event-xp-awards/spec.md
+ * @spec openspec/specs/event-xp-awards/spec.md
  */
 
 import { test, expect } from '@playwright/test'

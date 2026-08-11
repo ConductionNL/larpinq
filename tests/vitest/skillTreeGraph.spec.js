@@ -7,7 +7,7 @@
  * mapping from a requirementReport fixture (no client re-derivation) plus the
  * degraded (report-absent) path.
  *
- * @spec openspec/changes/skill-tree-visualization/specs/skill-tree-visualization/spec.md
+ * @spec openspec/specs/skill-tree-visualization/spec.md
  */
 
 import { describe, it, expect } from 'vitest'

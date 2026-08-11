@@ -15,7 +15,7 @@
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link      https://larpingapp.com
  *
- * @spec openspec/changes/skill-requirement-enforcement/specs/skill-requirement-enforcement/spec.md
+ * @spec openspec/specs/skill-requirement-enforcement/spec.md
  */
 
 declare(strict_types=1);
@@ -31,7 +31,7 @@ namespace OCA\LarpingApp\Service;
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
  *
- * @spec openspec/changes/skill-requirement-enforcement/specs/skill-requirement-enforcement/spec.md
+ * @spec openspec/specs/skill-requirement-enforcement/spec.md
  */
 class IdListNormaliser
 {
@@ -45,7 +45,7 @@ class IdListNormaliser
      *
      * @return array<int,string> The id list.
      *
-     * @spec openspec/changes/skill-requirement-enforcement/specs/skill-requirement-enforcement/spec.md
+     * @spec openspec/specs/skill-requirement-enforcement/spec.md
      */
     public function normalise(mixed $value): array
     {

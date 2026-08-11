@@ -14,7 +14,7 @@
  is absent the participant list still renders read-only with the controls
  hidden (DocuDesk / Forms-leaf degradation pattern), never throwing.
 
- @spec openspec/changes/event-checkin-roster/specs/event-checkin-roster/spec.md
+ @spec openspec/specs/event-checkin-roster/spec.md
  @visual exclude Sidebar-tab section (not a routed page); the roster GM check-in
  flow is covered by the EventsController attendance unit tests + the gate-19
  e2e-exclude scenarios on the spec, pending a live-servable frontend bundle.
@@ -93,7 +93,7 @@ export default {
 		 * The event UUID. Falls back to the injected object context or the
 		 * route param when not passed explicitly by the manifest host.
 		 *
-		 * @spec openspec/changes/event-checkin-roster/specs/event-checkin-roster/spec.md
+		 * @spec openspec/specs/event-checkin-roster/spec.md
 		 */
 		objectId: {
 			type: String,
@@ -126,7 +126,7 @@ export default {
 		 * Resolve the event id from prop → injected context → route param.
 		 *
 		 * @return {string}
-		 * @spec openspec/changes/event-checkin-roster/specs/event-checkin-roster/spec.md
+		 * @spec openspec/specs/event-checkin-roster/spec.md
 		 */
 		eventId() {
 			return this.objectId
@@ -139,7 +139,7 @@ export default {
 		 * Column definitions for the roster table.
 		 *
 		 * @return {Array<{key: string, label: string}>}
-		 * @spec openspec/changes/event-checkin-roster/specs/event-checkin-roster/spec.md
+		 * @spec openspec/specs/event-checkin-roster/spec.md
 		 */
 		columns() {
 			return [
@@ -155,7 +155,7 @@ export default {
 		 * present. Players and degraded deployments get a read-only roster.
 		 *
 		 * @return {boolean}
-		 * @spec openspec/changes/event-checkin-roster/specs/event-checkin-roster/spec.md
+		 * @spec openspec/specs/event-checkin-roster/spec.md
 		 */
 		canCheckIn() {
 			return this.isGm === true && this.attendanceAvailable === true
@@ -165,7 +165,7 @@ export default {
 		 * Whether to show the degraded notice (attendance storage absent).
 		 *
 		 * @return {boolean}
-		 * @spec openspec/changes/event-checkin-roster/specs/event-checkin-roster/spec.md
+		 * @spec openspec/specs/event-checkin-roster/spec.md
 		 */
 		degraded() {
 			return this.attendanceAvailable === false && this.loadFailed === false
@@ -182,7 +182,7 @@ export default {
 		 * failure degrades to an empty, uncoloured read-only list.
 		 *
 		 * @return {Promise<void>}
-		 * @spec openspec/changes/event-checkin-roster/specs/event-checkin-roster/spec.md
+		 * @spec openspec/specs/event-checkin-roster/spec.md
 		 */
 		async fetchRoster() {
 			if (!this.eventId) {
@@ -221,7 +221,7 @@ export default {
 		 * @param {object} row    The participant row.
 		 * @param {string} status The new status (checked-in | no-show).
 		 * @return {Promise<void>}
-		 * @spec openspec/changes/event-checkin-roster/specs/event-checkin-roster/spec.md
+		 * @spec openspec/specs/event-checkin-roster/spec.md
 		 */
 		async setStatus(row, status) {
 			this.saving = row.character
@@ -258,7 +258,7 @@ export default {
 		 *
 		 * @param {string} status The raw status.
 		 * @return {string}
-		 * @spec openspec/changes/event-checkin-roster/specs/event-checkin-roster/spec.md
+		 * @spec openspec/specs/event-checkin-roster/spec.md
 		 */
 		statusLabel(status) {
 			const meta = STATUS_META[status] || STATUS_META.registered
@@ -270,7 +270,7 @@ export default {
 		 *
 		 * @param {string} status The raw status.
 		 * @return {string}
-		 * @spec openspec/changes/event-checkin-roster/specs/event-checkin-roster/spec.md
+		 * @spec openspec/specs/event-checkin-roster/spec.md
 		 */
 		statusVariant(status) {
 			return (STATUS_META[status] || STATUS_META.registered).variant

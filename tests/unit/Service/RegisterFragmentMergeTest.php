@@ -130,7 +130,7 @@ class RegisterFragmentMergeTest extends TestCase
      *
      * @return void
      *
-     * @spec openspec/changes/event-checkin-roster/specs/event-checkin-roster/spec.md
+     * @spec openspec/specs/event-checkin-roster/spec.md
      */
     public function testEventCheckinRosterFragmentAddsAttendanceSchema(): void
     {

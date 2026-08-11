@@ -23,7 +23,7 @@
  chips (the incoming edge), so the dependency direction reads prereq → dependent
  without a bespoke layout engine.
 
- @spec openspec/changes/skill-tree-visualization/specs/skill-tree-visualization/spec.md
+ @spec openspec/specs/skill-tree-visualization/spec.md
  @visual exclude Read-only graph view; the render + owned/available/locked
  colouring is covered by the SkillTree component unit tests + the gate-19
  e2e-exclude scenarios on the spec, pending a live-servable frontend bundle.
@@ -191,7 +191,7 @@ export default {
 		 * The owned skill id set for the selected character.
 		 *
 		 * @return {Set<string>}
-		 * @spec openspec/changes/skill-tree-visualization/specs/skill-tree-visualization/spec.md
+		 * @spec openspec/specs/skill-tree-visualization/spec.md
 		 */
 		ownedSkillIds() {
 			const character = this.characters.find((c) => String(c.id) === this.selectedCharacter?.value)
@@ -206,7 +206,7 @@ export default {
 		 * No prerequisite or XP-budget logic is re-implemented here.
 		 *
 		 * @return {Record<string, string>}
-		 * @spec openspec/changes/skill-tree-visualization/specs/skill-tree-visualization/spec.md
+		 * @spec openspec/specs/skill-tree-visualization/spec.md
 		 */
 		stateBySkill() {
 			return computeStateBySkill({
@@ -221,7 +221,7 @@ export default {
 		 * When no setting is active every skill is shown.
 		 *
 		 * @return {Array<object>}
-		 * @spec openspec/changes/skill-tree-visualization/specs/skill-tree-visualization/spec.md
+		 * @spec openspec/specs/skill-tree-visualization/spec.md
 		 */
 		nodes() {
 			return buildNodes({
@@ -238,7 +238,7 @@ export default {
 		 * unbounded — remaining cyclic nodes drop into a final tier.
 		 *
 		 * @return {Array<Array<object>>}
-		 * @spec openspec/changes/skill-tree-visualization/specs/skill-tree-visualization/spec.md
+		 * @spec openspec/specs/skill-tree-visualization/spec.md
 		 */
 		tiers() {
 			return computeTiers(this.nodes)
@@ -248,7 +248,7 @@ export default {
 		 * Options for the character selector.
 		 *
 		 * @return {Array<{value: string, label: string}>}
-		 * @spec openspec/changes/skill-tree-visualization/specs/skill-tree-visualization/spec.md
+		 * @spec openspec/specs/skill-tree-visualization/spec.md
 		 */
 		characterOptions() {
 			return this.characters.map((c) => ({ value: String(c.id), label: c.name || String(c.id) }))
@@ -258,7 +258,7 @@ export default {
 		 * Options for the setting selector (distinct settings on the skills).
 		 *
 		 * @return {Array<{value: string, label: string}>}
-		 * @spec openspec/changes/skill-tree-visualization/specs/skill-tree-visualization/spec.md
+		 * @spec openspec/specs/skill-tree-visualization/spec.md
 		 */
 		settingOptions() {
 			const seen = new Set()
@@ -277,7 +277,7 @@ export default {
 		 * The currently selected node object.
 		 *
 		 * @return {object|null}
-		 * @spec openspec/changes/skill-tree-visualization/specs/skill-tree-visualization/spec.md
+		 * @spec openspec/specs/skill-tree-visualization/spec.md
 		 */
 		selectedNode() {
 			return this.nodes.find((n) => n.id === this.selectedNodeId) || null
@@ -287,7 +287,7 @@ export default {
 	/**
 	 * Load the tree, then attach the live-update subscriptions.
 	 *
-	 * @spec openspec/changes/skill-tree-visualization/specs/skill-tree-visualization/spec.md
+	 * @spec openspec/specs/skill-tree-visualization/spec.md
 	 */
 	async mounted() {
 		await this.load()
@@ -408,7 +408,7 @@ export default {
 		 * to an empty / uncoloured tree (fetchCollection returns [] on error).
 		 *
 		 * @return {Promise<void>}
-		 * @spec openspec/changes/skill-tree-visualization/specs/skill-tree-visualization/spec.md
+		 * @spec openspec/specs/skill-tree-visualization/spec.md
 		 */
 		async load() {
 			this.loading = true
@@ -440,7 +440,7 @@ export default {
 		 * than erroring (degradation).
 		 *
 		 * @return {Promise<void>}
-		 * @spec openspec/changes/skill-tree-visualization/specs/skill-tree-visualization/spec.md
+		 * @spec openspec/specs/skill-tree-visualization/spec.md
 		 */
 		async onCharacterChange() {
 			this.report = null
@@ -470,7 +470,7 @@ export default {
 		 *
 		 * @param {object} node The node to select.
 		 * @return {void}
-		 * @spec openspec/changes/skill-tree-visualization/specs/skill-tree-visualization/spec.md
+		 * @spec openspec/specs/skill-tree-visualization/spec.md
 		 */
 		selectNode(node) {
 			this.selectedNodeId = this.selectedNodeId === node.id ? null : node.id
@@ -481,7 +481,7 @@ export default {
 		 *
 		 * @param {object} node The node.
 		 * @return {boolean}
-		 * @spec openspec/changes/skill-tree-visualization/specs/skill-tree-visualization/spec.md
+		 * @spec openspec/specs/skill-tree-visualization/spec.md
 		 */
 		hasAnyRequirement(node) {
 			return node.requiredSkills.length > 0
@@ -495,7 +495,7 @@ export default {
 		 *
 		 * @param {string} state The node state.
 		 * @return {string}
-		 * @spec openspec/changes/skill-tree-visualization/specs/skill-tree-visualization/spec.md
+		 * @spec openspec/specs/skill-tree-visualization/spec.md
 		 */
 		stateLabel(state) {
 			return this.t('larpingapp', (STATE_META[state] || STATE_META.unknown).label)
@@ -506,7 +506,7 @@ export default {
 		 *
 		 * @param {string} state The node state.
 		 * @return {string}
-		 * @spec openspec/changes/skill-tree-visualization/specs/skill-tree-visualization/spec.md
+		 * @spec openspec/specs/skill-tree-visualization/spec.md
 		 */
 		stateVariant(state) {
 			return (STATE_META[state] || STATE_META.unknown).variant
