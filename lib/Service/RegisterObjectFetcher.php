@@ -424,7 +424,7 @@ class RegisterObjectFetcher
      * @psalm-suppress MixedMethodCall OpenRegister ObjectService resolved dynamically.
      * @psalm-suppress MixedAssignment  OpenRegister ObjectService resolved dynamically.
      *
-     * @spec openspec/changes/event-checkin-roster/specs/event-checkin-roster/spec.md
+     * @spec openspec/specs/event-checkin-roster/spec.md
      */
     public function saveObject(string $objectType, array $data, ?string $uuid=null): array
     {

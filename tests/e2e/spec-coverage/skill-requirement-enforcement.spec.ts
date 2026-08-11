@@ -15,7 +15,7 @@
  * back-references the change: it proves the requirement-report endpoint is wired
  * and answers for an authenticated user.
  *
- * @spec openspec/changes/skill-requirement-enforcement/specs/skill-requirement-enforcement/spec.md
+ * @spec openspec/specs/skill-requirement-enforcement/spec.md
  */
 
 import { test, expect } from '@playwright/test'

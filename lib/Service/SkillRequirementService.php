@@ -17,7 +17,7 @@
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link      https://larpingapp.com
  *
- * @spec openspec/changes/skill-requirement-enforcement/specs/skill-requirement-enforcement/spec.md
+ * @spec openspec/specs/skill-requirement-enforcement/spec.md
  */
 
 declare(strict_types=1);
@@ -40,7 +40,7 @@ use Psr\Log\LoggerInterface;
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
  *
- * @spec openspec/changes/skill-requirement-enforcement/specs/skill-requirement-enforcement/spec.md
+ * @spec openspec/specs/skill-requirement-enforcement/spec.md
  */
 class SkillRequirementService
 {
@@ -82,7 +82,7 @@ class SkillRequirementService
      *   dependents: array<int, array<string,mixed>>
      * } The structured validation result.
      *
-     * @spec openspec/changes/skill-requirement-enforcement/specs/skill-requirement-enforcement/spec.md
+     * @spec openspec/specs/skill-requirement-enforcement/spec.md
      */
     public function validate(array $candidate, array $oldCharacter=[]): array
     {
@@ -136,7 +136,7 @@ class SkillRequirementService
      *
      * @return array<int,array<string,mixed>> The requirement entries.
      *
-     * @spec openspec/changes/skill-requirement-enforcement/specs/skill-requirement-enforcement/spec.md
+     * @spec openspec/specs/skill-requirement-enforcement/spec.md
      */
     private function evaluateAdded(array $added, array $overrides, array $context): array
     {
@@ -177,7 +177,7 @@ class SkillRequirementService
      *
      * @return bool True when the candidate must be rejected.
      *
-     * @spec openspec/changes/skill-requirement-enforcement/specs/skill-requirement-enforcement/spec.md
+     * @spec openspec/specs/skill-requirement-enforcement/spec.md
      */
     private function hasUnmet(array $requirements, array $budget): bool
     {
@@ -244,7 +244,7 @@ class SkillRequirementService
      *
      * @return string|null The XP ability id, or null when none resolves.
      *
-     * @spec openspec/changes/skill-requirement-enforcement/specs/skill-requirement-enforcement/spec.md
+     * @spec openspec/specs/skill-requirement-enforcement/spec.md
      */
     public function resolveXpAbility(array $stats): ?string
     {

@@ -431,6 +431,90 @@ export async function computeCharacterStatLive(characterId: string, abilityId: s
 	return runPhpHarness(php, [characterId, abilityId], { fs, os, path, execSync })
 }
 
+/** One derived ability entry as CharacterService produces it. */
+export interface DerivedAbility {
+	name: string
+	base: number
+	value: number
+	audit: Array<Record<string, unknown>>
+}
+
+/** The full derived `stats` block, keyed by ability UUID. */
+export type DerivedStats = Record<string, DerivedAbility>
+
+/**
+ * Return the WHOLE derived `stats` block for one persisted character, via the
+ * genuine production path: `CharacterService::calculateCharacter()` with its
+ * own `loadAllEntities()`/findAll loader. No reflection injection.
+ *
+ * `computeCharacterStatLive()` above answers for a single ability, which is
+ * enough for the two arithmetic spot-checks it serves. The `game-mechanics`
+ * scenarios are about the SHAPE of the derivation — an untouched ability
+ * keeping an empty audit, four carriers composing onto one ability in order,
+ * a non-cumulative effect applying exactly once — and none of those can be
+ * asserted one ability at a time.
+ *
+ * @param {string} characterId UUID of a persisted character.
+ * @return {Promise<DerivedStats|null>} The stats block, or null if the harness cannot run.
+ */
+export async function computeStatsLive(characterId: string): Promise<DerivedStats | null> {
+	const { execSync } = await import('child_process')
+	const fs = await import('fs')
+	const os = await import('os')
+	const path = await import('path')
+
+	const php = (bootstrap: string) => [
+		'<?php',
+		`require_once '${bootstrap}';`,
+		'$server = \\OC::$server;',
+		'$fetcher = $server->get(\\OCA\\LarpingApp\\Service\\RegisterObjectFetcher::class);',
+		'$svc = $server->get(\\OCA\\LarpingApp\\Service\\CharacterService::class);',
+		'$character = $fetcher->getObject("character", $argv[1]);',
+		'$result = $svc->calculateCharacter($character);',
+		'echo json_encode($result["stats"] ?? []);',
+	].join('\n')
+
+	return runPhpHarness(php, [characterId], { fs, os, path, execSync }) as unknown as DerivedStats | null
+}
+
+/**
+ * Run the real `CharacterService::calculateAllCharacters()` and return the
+ * derived stats of the requested characters only, keyed by character UUID.
+ *
+ * The roster-independence scenario is specifically about the BATCH entry
+ * point — that one character's carriers do not bleed into another's scores —
+ * so it has to call `calculateAllCharacters()`, not `calculateCharacter()`
+ * twice. The filtering happens after the real batch call, so every character
+ * on the instance is genuinely derived in the same pass.
+ *
+ * @param {string[]} characterIds UUIDs to pick out of the roster.
+ * @return {Promise<Record<string, DerivedStats>|null>} Stats per character, or null.
+ */
+export async function computeRosterLive(
+	characterIds: string[],
+): Promise<Record<string, DerivedStats> | null> {
+	const { execSync } = await import('child_process')
+	const fs = await import('fs')
+	const os = await import('os')
+	const path = await import('path')
+
+	const php = (bootstrap: string) => [
+		'<?php',
+		`require_once '${bootstrap}';`,
+		'$server = \\OC::$server;',
+		'$svc = $server->get(\\OCA\\LarpingApp\\Service\\CharacterService::class);',
+		'$wanted = array_slice($argv, 1);',
+		'$out = [];',
+		'foreach ($svc->calculateAllCharacters() as $c) {',
+		'    $id = (string) ($c["id"] ?? "");',
+		'    if (in_array($id, $wanted, true) === true) { $out[$id] = $c["stats"] ?? []; }',
+		'}',
+		'echo json_encode($out);',
+	].join('\n')
+
+	return runPhpHarness(php, characterIds, { fs, os, path, execSync }) as unknown as Record<string, DerivedStats> | null
+}
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * Locate the Nextcloud server root this checkout is installed INTO, by walking
@@ -505,10 +589,26 @@ function runPhpHarness(
 		}
 	}
 
+	// ⚠️ EXPLICIT CONTAINER OVERRIDE, AND WHY IT HAS TO WIN OVER PATH A.
+	//
+	// On a developer box this checkout lives at `<server>/apps-extra/larpingapp`,
+	// and `<server>` has both `lib/base.php` and `config/config.php` — so
+	// findServerRoot() succeeds and Path A runs the harness against the SHARED
+	// dev container's database. Meanwhile PLAYWRIGHT_BASE_URL points the HTTP
+	// fixtures at an isolated rig. The two halves of every assertion then talk
+	// to DIFFERENT instances: the fixture is written to the rig, the derivation
+	// reads a database that has never heard of it, and the test fails with
+	// `base: null` — which reads exactly like the arithmetic being broken.
+	//
+	// `NC_CONTAINER` names the container the rig is running in and short-circuits
+	// to Path B. Unset, everything behaves exactly as before (CI included: the
+	// runner sets neither variable and still takes Path A).
+	const containerOverride = (process.env.NC_CONTAINER ?? '').trim()
+
 	// ── Path A: this checkout IS inside a Nextcloud server root (CI runner,
 	// or any non-docker install). Run the bootstrap directly — same PHP binary
 	// and same config.php the `php -S` instance under test is using.
-	const serverRoot = findServerRoot(path, fs)
+	const serverRoot = containerOverride === '' ? findServerRoot(path, fs) : null
 	if (serverRoot !== null) {
 		const script = path.join(os.tmpdir(), `la-calc-${Date.now()}-${Math.floor(Math.random() * 1e6)}.php`)
 		try {
@@ -531,12 +631,16 @@ function runPhpHarness(
 	// ── Path B: developer box — the app is bind-mounted into the `nextcloud`
 	// container and its server root is not an ancestor of this file.
 	const localTmp = path.join(os.tmpdir(), `la-calc-${Date.now()}-${Math.floor(Math.random() * 1e6)}.php`)
-	const containerName = `la-calc-${path.basename(localTmp)}`
+	const scriptName = `la-calc-${path.basename(localTmp)}`
+	// `nextcloud` is the SHARED dev container. It stays the default only because
+	// that is the historical developer-box layout; name your own rig with
+	// NC_CONTAINER so a local run cannot write into somebody else's instance.
+	const container = containerOverride === '' ? 'nextcloud' : containerOverride
 	try {
 		fs.writeFileSync(localTmp, php('/var/www/html/lib/base.php'))
-		execSync(`docker cp ${localTmp} nextcloud:/tmp/${containerName}`, { stdio: 'pipe' })
+		execSync(`docker cp ${localTmp} ${container}:/tmp/${scriptName}`, { stdio: 'pipe' })
 		const out: string = execSync(
-			`docker exec -u www-data nextcloud php /tmp/${containerName} ${argStr}`,
+			`docker exec -u www-data ${container} php /tmp/${scriptName} ${argStr}`,
 			{ encoding: 'utf-8', timeout: 60_000 },
 		)
 		return parse(out)
@@ -544,7 +648,7 @@ function runPhpHarness(
 		return null
 	} finally {
 		try { fs.unlinkSync(localTmp) } catch { /* noop */ }
-		try { execSync(`docker exec -u root nextcloud rm -f /tmp/${containerName}`, { stdio: 'pipe' }) } catch { /* noop */ }
+		try { execSync(`docker exec -u root ${container} rm -f /tmp/${scriptName}`, { stdio: 'pipe' }) } catch { /* noop */ }
 	}
 }
 /* eslint-enable @typescript-eslint/no-explicit-any */

@@ -13,7 +13,7 @@
  * deferred (custom app-nav + useObjectStore plumbing; nc-vue follow-up). This
  * file proves the Settings index page renders its own schema surface.
  *
- * @spec openspec/changes/setting-management/specs/setting-management/spec.md
+ * @spec openspec/specs/setting-management/spec.md
  */
 
 import { test, expect } from '@playwright/test'

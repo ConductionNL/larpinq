@@ -10,7 +10,7 @@
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link      https://larpingapp.com
  *
- * @spec openspec/changes/event-runsheet-export/specs/pdf-export/spec.md
+ * @spec openspec/specs/pdf-export/spec.md
  */
 
 declare(strict_types=1);
@@ -39,7 +39,7 @@ use OCP\IUserSession;
  *
  * @psalm-suppress UnusedClass Instantiated by Nextcloud routing (appinfo/routes.php).
  *
- * @spec openspec/changes/event-runsheet-export/specs/pdf-export/spec.md
+ * @spec openspec/specs/pdf-export/spec.md
  */
 class EventsController extends Controller
 {
@@ -99,7 +99,7 @@ class EventsController extends Controller
      * @NoAdminRequired
      * @NoCSRFRequired
      *
-     * @spec openspec/changes/event-runsheet-export/specs/pdf-export/spec.md
+     * @spec openspec/specs/pdf-export/spec.md
      */
     #[NoAdminRequired]
     #[NoCSRFRequired]
@@ -164,7 +164,7 @@ class EventsController extends Controller
      * @NoAdminRequired
      * @NoCSRFRequired
      *
-     * @spec openspec/changes/event-checkin-roster/specs/event-checkin-roster/spec.md
+     * @spec openspec/specs/event-checkin-roster/spec.md
      */
     #[NoAdminRequired]
     #[NoCSRFRequired]
@@ -204,7 +204,7 @@ class EventsController extends Controller
      *
      * @NoAdminRequired
      *
-     * @spec openspec/changes/event-checkin-roster/specs/event-checkin-roster/spec.md
+     * @spec openspec/specs/event-checkin-roster/spec.md
      */
     #[NoAdminRequired]
     public function recordAttendance(string $id): JSONResponse
@@ -263,7 +263,7 @@ class EventsController extends Controller
      * @return array{0: string, 1: JSONResponse|null} The [actingUid, refusal] pair;
      *                                                the uid is empty when refused.
      *
-     * @spec openspec/changes/event-checkin-roster/specs/event-checkin-roster/spec.md
+     * @spec openspec/specs/event-checkin-roster/spec.md
      */
     private function resolveGameMaster(): array
     {
@@ -294,7 +294,7 @@ class EventsController extends Controller
      *
      * @return JSONResponse|null The 400 response, or null when valid.
      *
-     * @spec openspec/changes/event-checkin-roster/specs/event-checkin-roster/spec.md
+     * @spec openspec/specs/event-checkin-roster/spec.md
      */
     private function validateAttendanceInput(string $characterId, string $status): ?JSONResponse
     {
@@ -316,7 +316,7 @@ class EventsController extends Controller
      *
      * @return string The download filename.
      *
-     * @spec openspec/changes/event-runsheet-export/specs/pdf-export/spec.md
+     * @spec openspec/specs/pdf-export/spec.md
      */
     private function runsheetFileName(array $event): string
     {
@@ -335,7 +335,7 @@ class EventsController extends Controller
      *
      * @return bool True when the user is a GM or admin.
      *
-     * @spec openspec/changes/event-checkin-roster/specs/event-checkin-roster/spec.md
+     * @spec openspec/specs/event-checkin-roster/spec.md
      */
     private function isGameMaster(string $uid): bool
     {

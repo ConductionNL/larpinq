@@ -19,7 +19,7 @@
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link      https://larpingapp.com
  *
- * @spec openspec/changes/event-checkin-roster/specs/event-checkin-roster/spec.md
+ * @spec openspec/specs/event-checkin-roster/spec.md
  */
 
 declare(strict_types=1);
@@ -38,7 +38,7 @@ use DateTimeInterface;
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
  *
- * @spec openspec/changes/event-checkin-roster/specs/event-checkin-roster/spec.md
+ * @spec openspec/specs/event-checkin-roster/spec.md
  */
 class EventRosterService
 {
@@ -64,7 +64,7 @@ class EventRosterService
      *
      * @return array<string,mixed>|null The event object, or null.
      *
-     * @spec openspec/changes/event-checkin-roster/specs/event-checkin-roster/spec.md
+     * @spec openspec/specs/event-checkin-roster/spec.md
      */
     public function getEvent(string $eventId): ?array
     {
@@ -86,7 +86,7 @@ class EventRosterService
      *
      * @return array{participants: array<int,array<string,mixed>>, attendanceAvailable: bool} The roster.
      *
-     * @spec openspec/changes/event-checkin-roster/specs/event-checkin-roster/spec.md
+     * @spec openspec/specs/event-checkin-roster/spec.md
      */
     public function buildRoster(string $eventId): array
     {
@@ -134,7 +134,7 @@ class EventRosterService
      *
      * @return array<string,mixed> The render context.
      *
-     * @spec openspec/changes/event-runsheet-export/specs/pdf-export/spec.md
+     * @spec openspec/specs/pdf-export/spec.md
      */
     public function buildRunsheetContext(array $event, string $eventId): array
     {
@@ -195,7 +195,7 @@ class EventRosterService
      * @return array<string,mixed>|null The persisted record, or null when
      *                                  attendance storage is unavailable.
      *
-     * @spec openspec/changes/event-checkin-roster/specs/event-checkin-roster/spec.md
+     * @spec openspec/specs/event-checkin-roster/spec.md
      */
     public function recordAttendance(
         string $eventId,
@@ -242,7 +242,7 @@ class EventRosterService
      *
      * @return bool True when the character participates in the event.
      *
-     * @spec openspec/changes/event-checkin-roster/specs/event-checkin-roster/spec.md
+     * @spec openspec/specs/event-checkin-roster/spec.md
      */
     public function isParticipant(string $eventId, string $characterId, array $event): bool
     {
@@ -393,7 +393,7 @@ class EventRosterService
      *
      * @return array{0: array<string,array<string,mixed>>, 1: bool} The [records-by-character, available] tuple.
      *
-     * @spec openspec/changes/event-checkin-roster/specs/event-checkin-roster/spec.md
+     * @spec openspec/specs/event-checkin-roster/spec.md
      */
     private function loadAttendance(string $eventId): array
     {
@@ -432,7 +432,7 @@ class EventRosterService
      *
      * @return string The player display name.
      *
-     * @spec openspec/changes/event-checkin-roster/specs/event-checkin-roster/spec.md
+     * @spec openspec/specs/event-checkin-roster/spec.md
      */
     private function resolvePlayerName(array $character, array $players): string
     {

@@ -16,7 +16,7 @@
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link      https://larpingapp.com
  *
- * @spec openspec/changes/event-runsheet-export/specs/pdf-export/spec.md
+ * @spec openspec/specs/pdf-export/spec.md
  */
 
 declare(strict_types=1);
@@ -38,7 +38,7 @@ use Psr\Log\LoggerInterface;
  *
  * @psalm-suppress UndefinedClass, UndefinedDocblockClass DocuDesk is optional.
  *
- * @spec openspec/changes/event-runsheet-export/specs/pdf-export/spec.md
+ * @spec openspec/specs/pdf-export/spec.md
  */
 class DocuDeskPdfRenderer
 {
@@ -63,7 +63,7 @@ class DocuDeskPdfRenderer
      *
      * @return bool True when DocuDesk is available.
      *
-     * @spec openspec/changes/event-runsheet-export/specs/pdf-export/spec.md
+     * @spec openspec/specs/pdf-export/spec.md
      */
     public function isDocuDeskAvailable(): bool
     {
@@ -77,7 +77,7 @@ class DocuDeskPdfRenderer
      *
      * @return string|null The lower-cased UUID, or null when not a UUID.
      *
-     * @spec openspec/changes/event-runsheet-export/specs/pdf-export/spec.md
+     * @spec openspec/specs/pdf-export/spec.md
      */
     public function normaliseTemplateId(string $template): ?string
     {
@@ -100,7 +100,7 @@ class DocuDeskPdfRenderer
      * @psalm-suppress MixedReturnStatement DocuDesk is an optional cross-app dependency.
      * @psalm-suppress MixedInferredReturnType DocuDesk is an optional cross-app dependency.
      *
-     * @spec openspec/changes/event-runsheet-export/specs/pdf-export/spec.md
+     * @spec openspec/specs/pdf-export/spec.md
      */
     public function getTemplate(string $templateId): ?array
     {
@@ -129,7 +129,7 @@ class DocuDeskPdfRenderer
      *
      * @psalm-suppress MixedMethodCall DocuDesk is an optional cross-app dependency.
      *
-     * @spec openspec/changes/event-runsheet-export/specs/pdf-export/spec.md
+     * @spec openspec/specs/pdf-export/spec.md
      */
     public function render(array $templateData, array $context): ?string
     {

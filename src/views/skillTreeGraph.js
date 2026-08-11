@@ -10,7 +10,7 @@
  * The availability mapping consumes the server requirementReport ONLY; it never
  * re-implements prerequisite or XP-budget evaluation (ADR-022).
  *
- * @spec openspec/changes/skill-tree-visualization/specs/skill-tree-visualization/spec.md
+ * @spec openspec/specs/skill-tree-visualization/spec.md
  */
 
 /**
