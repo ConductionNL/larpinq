@@ -567,10 +567,26 @@ test.describe('events-players — detail & forms', () => {
 	})
 
 	// @e2e openspec/specs/events-players/spec.md#player-selector-in-character-modal
+	//
+	// This asserts the ocName RELATION PICKER, by its input-id, and that is a
+	// correction rather than a tightening. It previously read
+	// `input[placeholder*="player" i]`, which cannot ever match a relation
+	// picker: CnFormDialog passes `:placeholder="field.description"` only on its
+	// text/email/url and number branches, while the NcSelect branch that renders
+	// a `$ref` property receives `input-id` + `input-label` and no placeholder at
+	// all. The only element in this dialog that locator could match was
+	// `ownerRef`'s plain text box, whose description contains "the player
+	// object" — so the assertion was green exactly while ocName was NOT a
+	// selector, and went red the moment a $ref made it one. It slid onto
+	// ownerRef silently: ocName had no $ref when this test was written
+	// (987c9ee3), ownerRef arrived with a matching description (f33fc0b8), and
+	// ocName's $ref (f434f76d) turned it into a select — losing its placeholder
+	// — with no red window in between. `cn-form-<key>` is the id CnFormDialog
+	// gives every select, so this fails if the picker stops rendering.
 	test('character create dialog exposes a player (ocName) selector', async ({ page }) => {
 		await navTo(page, 'characters')
 		const dialog = await openCreateDialog(page, /Add Character/i)
-		await expect(dialog.locator('input[placeholder*="player" i]').first()).toBeVisible()
+		await expect(dialog.locator('#cn-form-ocName')).toBeVisible()
 		await closeDialog(page)
 	})
 
