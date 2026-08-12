@@ -53,9 +53,15 @@ jobs:
       # journeydoc-capture all pin `fromJSON(inputs.nextcloud-test-refs)[0]`, so
       # stable31 sitting FIRST meant those three jobs ran entirely on the version
       # openregister cannot load.
-      # stable33 is deliberately NOT added here: this change removes an
-      # impossible leg, it does not widen the matrix.
-      nextcloud-test-refs: '["stable34"]'
+      #
+      # THE LIST IS THE WHOLE DECLARED RANGE. An earlier revision of this comment
+      # said "stable33 is deliberately NOT added: this change removes an
+      # impossible leg, it does not widen the matrix" — but the same change also
+      # dropped stable32, which was NOT impossible, it was the declared floor.
+      # appinfo/info.xml declares <nextcloud min-version="32" max-version="34"/>,
+      # so 32, 33 and 34 each get a leg; anything narrower advertises a range to
+      # the App Store that no job touches.
+      nextcloud-test-refs: '["stable34", "stable32", "stable33"]'
       # Psalm was `false` and carried no reason. The shared workflow still
       # creates a job literally named `PHP Quality (psalm)` for a disabled
       # tool: it prints "Psalm is disabled — skipping." and concludes
