@@ -38,157 +38,150 @@ use PHPUnit\Framework\TestCase;
  * Declares `register()` with the real class's exact signature (including the
  * `$registerSlug` argument the old fakes omitted) and records every call.
  */
-class RecordingDeepLinkEvent extends Event
-{
+class RecordingDeepLinkEvent extends Event {
 
-    /**
-     * Every registration this event received, in order.
-     *
-     * @var array<int, array<string, string|null>>
-     */
-    public array $links = [];
+	/**
+	 * Every registration this event received, in order.
+	 *
+	 * @var array<int, array<string, string|null>>
+	 */
+	public array $links = [];
 
-    /**
-     * Record a deep-link registration.
-     *
-     * @param string      $appId        The consuming app id.
-     * @param string      $registerSlug The register slug.
-     * @param string      $schemaSlug   The schema slug.
-     * @param string      $urlTemplate  The URL template.
-     * @param string      $icon         Optional icon identifier.
-     * @param string|null $displayName  Optional display name.
-     *
-     * @return void
-     */
-    public function register(
-        string $appId,
-        string $registerSlug,
-        string $schemaSlug,
-        string $urlTemplate,
-        string $icon='',
-        ?string $displayName=null
-    ): void {
-        $this->links[] = [
-            'appId'        => $appId,
-            'registerSlug' => $registerSlug,
-            'schemaSlug'   => $schemaSlug,
-            'urlTemplate'  => $urlTemplate,
-            'icon'         => $icon,
-            'displayName'  => $displayName,
-        ];
-    }//end register()
+	/**
+	 * Record a deep-link registration.
+	 *
+	 * @param string $appId The consuming app id.
+	 * @param string $registerSlug The register slug.
+	 * @param string $schemaSlug The schema slug.
+	 * @param string $urlTemplate The URL template.
+	 * @param string $icon Optional icon identifier.
+	 * @param string|null $displayName Optional display name.
+	 *
+	 * @return void
+	 */
+	public function register(
+		string $appId,
+		string $registerSlug,
+		string $schemaSlug,
+		string $urlTemplate,
+		string $icon = '',
+		?string $displayName = null,
+	): void {
+		$this->links[] = [
+			'appId' => $appId,
+			'registerSlug' => $registerSlug,
+			'schemaSlug' => $schemaSlug,
+			'urlTemplate' => $urlTemplate,
+			'icon' => $icon,
+			'displayName' => $displayName,
+		];
+	}//end register()
 }//end class
 
 /**
  * Tests for DeepLinkRegistrationListener.
  */
-class DeepLinkRegistrationListenerTest extends TestCase
-{
+class DeepLinkRegistrationListenerTest extends TestCase {
 
-    private DeepLinkRegistrationListener $listener;
+	private DeepLinkRegistrationListener $listener;
 
-    /**
-     * Set up the listener under test.
-     *
-     * @return void
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->listener = new DeepLinkRegistrationListener();
-    }//end setUp()
+	/**
+	 * Set up the listener under test.
+	 *
+	 * @return void
+	 */
+	protected function setUp(): void {
+		parent::setUp();
+		$this->listener = new DeepLinkRegistrationListener();
+	}//end setUp()
 
-    /**
-     * An event that does not expose `register()` is ignored, not fatal.
-     *
-     * This is the graceful-degradation contract for an OpenRegister release
-     * that predates the deep-link registry.
-     *
-     * @return void
-     */
-    public function testHandleIgnoresAnEventWithoutRegister(): void
-    {
-        $event = new class extends Event {
-        };
+	/**
+	 * An event that does not expose `register()` is ignored, not fatal.
+	 *
+	 * This is the graceful-degradation contract for an OpenRegister release
+	 * that predates the deep-link registry.
+	 *
+	 * @return void
+	 */
+	public function testHandleIgnoresAnEventWithoutRegister(): void {
+		$event = new class extends Event {
+		};
 
-        self::assertFalse(
-            method_exists($event, 'register'),
-            'control: the bare Event must not expose register()'
-        );
+		self::assertFalse(
+			method_exists($event, 'register'),
+			'control: the bare Event must not expose register()'
+		);
 
-        $this->listener->handle($event);
+		$this->listener->handle($event);
 
-        self::assertTrue(true, 'returning early must not throw');
-    }//end testHandleIgnoresAnEventWithoutRegister()
+		self::assertTrue(true, 'returning early must not throw');
+	}//end testHandleIgnoresAnEventWithoutRegister()
 
-    /**
-     * All eight object types are registered, under their REAL schema slugs.
-     *
-     * @return void
-     */
-    public function testHandleRegistersAllObjectTypes(): void
-    {
-        $event = new RecordingDeepLinkEvent();
-        $this->listener->handle($event);
+	/**
+	 * All eight object types are registered, under their REAL schema slugs.
+	 *
+	 * @return void
+	 */
+	public function testHandleRegistersAllObjectTypes(): void {
+		$event = new RecordingDeepLinkEvent();
+		$this->listener->handle($event);
 
-        self::assertCount(8, $event->links);
+		self::assertCount(8, $event->links);
 
-        $slugs = array_column($event->links, 'schemaSlug');
-        self::assertContains('character', $slugs);
-        self::assertContains('player', $slugs);
-        self::assertContains('ability', $slugs);
-        self::assertContains('skill', $slugs);
-        self::assertContains('condition', $slugs);
-        self::assertContains('effect', $slugs);
+		$slugs = array_column($event->links, 'schemaSlug');
+		self::assertContains('character', $slugs);
+		self::assertContains('player', $slugs);
+		self::assertContains('ability', $slugs);
+		self::assertContains('skill', $slugs);
+		self::assertContains('condition', $slugs);
+		self::assertContains('effect', $slugs);
 
-        // The namespaced slugs — `item` and `event` collide instance-globally,
-        // so LarpingApp's own schemas are `larping_item` / `larping_event`.
-        // Registering the bare spelling resolves to no schema at all.
-        self::assertContains('larping_item', $slugs);
-        self::assertContains('larping_event', $slugs);
-        self::assertNotContains('item', $slugs);
-        self::assertNotContains('event', $slugs);
-    }//end testHandleRegistersAllObjectTypes()
+		// The namespaced slugs — `item` and `event` collide instance-globally,
+		// so LarpingApp's own schemas are `larping_item` / `larping_event`.
+		// Registering the bare spelling resolves to no schema at all.
+		self::assertContains('larping_item', $slugs);
+		self::assertContains('larping_event', $slugs);
+		self::assertNotContains('item', $slugs);
+		self::assertNotContains('event', $slugs);
+	}//end testHandleRegistersAllObjectTypes()
 
-    /**
-     * Every registration carries the app id AND the register slug.
-     *
-     * The register slug is the argument the previous (non-existent) three-arg
-     * `registerDeepLink()` call had no room for.
-     *
-     * @return void
-     */
-    public function testHandleUsesCorrectAppIdAndRegisterSlug(): void
-    {
-        $event = new RecordingDeepLinkEvent();
-        $this->listener->handle($event);
+	/**
+	 * Every registration carries the app id AND the register slug.
+	 *
+	 * The register slug is the argument the previous (non-existent) three-arg
+	 * `registerDeepLink()` call had no room for.
+	 *
+	 * @return void
+	 */
+	public function testHandleUsesCorrectAppIdAndRegisterSlug(): void {
+		$event = new RecordingDeepLinkEvent();
+		$this->listener->handle($event);
 
-        self::assertNotEmpty($event->links, 'control: something must have been registered');
-        foreach ($event->links as $link) {
-            self::assertSame('larpingapp', $link['appId']);
-            self::assertSame('larpingapp', $link['registerSlug']);
-        }
-    }//end testHandleUsesCorrectAppIdAndRegisterSlug()
+		self::assertNotEmpty($event->links, 'control: something must have been registered');
+		foreach ($event->links as $link) {
+			self::assertSame('larpingapp', $link['appId']);
+			self::assertSame('larpingapp', $link['registerSlug']);
+		}
+	}//end testHandleUsesCorrectAppIdAndRegisterSlug()
 
-    /**
-     * Each schema slug maps to its LarpingApp frontend route.
-     *
-     * @return void
-     */
-    public function testHandleUsesCorrectUrlPatterns(): void
-    {
-        $event = new RecordingDeepLinkEvent();
-        $this->listener->handle($event);
+	/**
+	 * Each schema slug maps to its LarpingApp frontend route.
+	 *
+	 * @return void
+	 */
+	public function testHandleUsesCorrectUrlPatterns(): void {
+		$event = new RecordingDeepLinkEvent();
+		$this->listener->handle($event);
 
-        $bySlug = array_column($event->links, 'urlTemplate', 'schemaSlug');
+		$bySlug = array_column($event->links, 'urlTemplate', 'schemaSlug');
 
-        self::assertSame('/apps/larpingapp/#/characters/{uuid}', $bySlug['character']);
-        self::assertSame('/apps/larpingapp/#/players/{uuid}', $bySlug['player']);
-        self::assertSame('/apps/larpingapp/#/abilities/{uuid}', $bySlug['ability']);
-        self::assertSame('/apps/larpingapp/#/skills/{uuid}', $bySlug['skill']);
-        self::assertSame('/apps/larpingapp/#/items/{uuid}', $bySlug['larping_item']);
-        self::assertSame('/apps/larpingapp/#/conditions/{uuid}', $bySlug['condition']);
-        self::assertSame('/apps/larpingapp/#/effects/{uuid}', $bySlug['effect']);
-        self::assertSame('/apps/larpingapp/#/events/{uuid}', $bySlug['larping_event']);
-    }//end testHandleUsesCorrectUrlPatterns()
+		self::assertSame('/apps/larpingapp/#/characters/{uuid}', $bySlug['character']);
+		self::assertSame('/apps/larpingapp/#/players/{uuid}', $bySlug['player']);
+		self::assertSame('/apps/larpingapp/#/abilities/{uuid}', $bySlug['ability']);
+		self::assertSame('/apps/larpingapp/#/skills/{uuid}', $bySlug['skill']);
+		self::assertSame('/apps/larpingapp/#/items/{uuid}', $bySlug['larping_item']);
+		self::assertSame('/apps/larpingapp/#/conditions/{uuid}', $bySlug['condition']);
+		self::assertSame('/apps/larpingapp/#/effects/{uuid}', $bySlug['effect']);
+		self::assertSame('/apps/larpingapp/#/events/{uuid}', $bySlug['larping_event']);
+	}//end testHandleUsesCorrectUrlPatterns()
 }//end class

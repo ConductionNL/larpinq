@@ -55,7 +55,7 @@ jobs:
       # openregister cannot load.
       # stable33 is deliberately NOT added here: this change removes an
       # impossible leg, it does not widen the matrix.
-      nextcloud-test-refs: '["stable32"]'
+      nextcloud-test-refs: '["stable34"]'
       # Psalm was `false` and carried no reason. The shared workflow still
       # creates a job literally named `PHP Quality (psalm)` for a disabled
       # tool: it prints "Psalm is disabled — skipping." and concludes

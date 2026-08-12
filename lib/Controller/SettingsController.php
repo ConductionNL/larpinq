@@ -51,368 +51,351 @@ use RuntimeException;
  *
  * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-20
  */
-class SettingsController extends Controller
-{
+class SettingsController extends Controller {
 
-    /**
-     * The OpenRegister object service.
-     *
-     * @var object|null The OpenRegister object service.
-     */
-    private ?object $objectService = null;
+	/**
+	 * The OpenRegister object service.
+	 *
+	 * @var object|null The OpenRegister object service.
+	 */
+	private ?object $objectService = null;
 
-    /**
-     * Constructor.
-     *
-     * @param IRequest           $request         The request.
-     * @param ContainerInterface $container       The container.
-     * @param IAppManager        $appManager      The app manager.
-     * @param SettingsService    $settingsService The settings service.
-     * @param IGroupManager      $groupManager    The group manager.
-     * @param IUserSession       $userSession     The user session.
-     * @param LoggerInterface    $logger          The logger.
-     *
-     * @return void
-     */
-    public function __construct(
-        IRequest $request,
-        private readonly ContainerInterface $container,
-        private readonly IAppManager $appManager,
-        private readonly SettingsService $settingsService,
-        private readonly IGroupManager $groupManager,
-        private readonly IUserSession $userSession,
-        private readonly LoggerInterface $logger,
-    ) {
-        parent::__construct(appName: Application::APP_ID, request: $request);
+	/**
+	 * Constructor.
+	 *
+	 * @param IRequest $request The request.
+	 * @param ContainerInterface $container The container.
+	 * @param IAppManager $appManager The app manager.
+	 * @param SettingsService $settingsService The settings service.
+	 * @param IGroupManager $groupManager The group manager.
+	 * @param IUserSession $userSession The user session.
+	 * @param LoggerInterface $logger The logger.
+	 *
+	 * @return void
+	 */
+	public function __construct(
+		IRequest $request,
+		private readonly ContainerInterface $container,
+		private readonly IAppManager $appManager,
+		private readonly SettingsService $settingsService,
+		private readonly IGroupManager $groupManager,
+		private readonly IUserSession $userSession,
+		private readonly LoggerInterface $logger,
+	) {
+		parent::__construct(appName: Application::APP_ID, request: $request);
 
-    }//end __construct()
+	}//end __construct()
 
-    /**
-     * Attempts to retrieve the OpenRegister service from the container.
-     *
-     * @return object|null The OpenRegister service if available, null otherwise.
-     * @throws RuntimeException If the service is not available.
-     *
-     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-22
-     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-38
-     */
-    public function getObjectService(): ?object
-    {
-        if (in_array(needle: 'openregister', haystack: $this->appManager->getInstalledApps()) === true) {
-            // @var object $service
-            $service = $this->container->get('OCA\OpenRegister\Service\ObjectService');
-            $this->objectService = $service;
-            return $this->objectService;
-        }
+	/**
+	 * Attempts to retrieve the OpenRegister service from the container.
+	 *
+	 * @return object|null The OpenRegister service if available, null otherwise.
+	 * @throws RuntimeException If the service is not available.
+	 *
+	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-22
+	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-38
+	 */
+	public function getObjectService(): ?object {
+		if (in_array(needle: 'openregister', haystack: $this->appManager->getInstalledApps()) === true) {
+			// @var object $service
+			$service = $this->container->get('OCA\OpenRegister\Service\ObjectService');
+			$this->objectService = $service;
+			return $this->objectService;
+		}
 
-        throw new RuntimeException('OpenRegister service is not available.');
+		throw new RuntimeException('OpenRegister service is not available.');
+	}//end getObjectService()
 
-    }//end getObjectService()
+	/**
+	 * Attempts to retrieve the Configuration service from the container.
+	 *
+	 * @return object|null The Configuration service if available, null otherwise.
+	 * @throws RuntimeException If the service is not available.
+	 *
+	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-22
+	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-38
+	 */
+	public function getConfigurationService(): ?object {
+		if (in_array(needle: 'openregister', haystack: $this->appManager->getInstalledApps()) === true) {
+			// @var object $configurationService
+			$configurationService = $this->container->get('OCA\OpenRegister\Service\ConfigurationService');
+			return $configurationService;
+		}
 
-    /**
-     * Attempts to retrieve the Configuration service from the container.
-     *
-     * @return object|null The Configuration service if available, null otherwise.
-     * @throws RuntimeException If the service is not available.
-     *
-     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-22
-     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-38
-     */
-    public function getConfigurationService(): ?object
-    {
-        if (in_array(needle: 'openregister', haystack: $this->appManager->getInstalledApps()) === true) {
-            // @var object $configurationService
-            $configurationService = $this->container->get('OCA\OpenRegister\Service\ConfigurationService');
-            return $configurationService;
-        }
+		throw new RuntimeException('Configuration service is not available.');
+	}//end getConfigurationService()
 
-        throw new RuntimeException('Configuration service is not available.');
+	/**
+	 * Attempts to retrieve the OpenRegister RegisterMapper from the container.
+	 *
+	 * @return object|null The RegisterMapper if available, null otherwise.
+	 *
+	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-22
+	 */
+	private function getRegisterMapper(): ?object {
+		if (in_array(needle: 'openregister', haystack: $this->appManager->getInstalledApps()) === true) {
+			// @var object $registerMapper
+			$registerMapper = $this->container->get('OCA\OpenRegister\Db\RegisterMapper');
+			return $registerMapper;
+		}
 
-    }//end getConfigurationService()
+		return null;
+	}//end getRegisterMapper()
 
-    /**
-     * Attempts to retrieve the OpenRegister RegisterMapper from the container.
-     *
-     * @return object|null The RegisterMapper if available, null otherwise.
-     *
-     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-22
-     */
-    private function getRegisterMapper(): ?object
-    {
-        if (in_array(needle: 'openregister', haystack: $this->appManager->getInstalledApps()) === true) {
-            // @var object $registerMapper
-            $registerMapper = $this->container->get('OCA\OpenRegister\Db\RegisterMapper');
-            return $registerMapper;
-        }
+	/**
+	 * Attempts to retrieve the OpenRegister SchemaMapper from the container.
+	 *
+	 * @return object|null The SchemaMapper if available, null otherwise.
+	 *
+	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-22
+	 */
+	private function getSchemaMapper(): ?object {
+		if (in_array(needle: 'openregister', haystack: $this->appManager->getInstalledApps()) === true) {
+			// @var object $schemaMapper
+			$schemaMapper = $this->container->get('OCA\OpenRegister\Db\SchemaMapper');
+			return $schemaMapper;
+		}
 
-        return null;
+		return null;
+	}//end getSchemaMapper()
 
-    }//end getRegisterMapper()
+	/**
+	 * Enrich registers with full schema objects instead of just schema IDs.
+	 *
+	 * @param array $registers The registers to enrich.
+	 * @param object|null $schemaMapper The SchemaMapper, or null.
+	 *
+	 * @return array Registers serialized as arrays with full schema objects.
+	 */
+	private function enrichRegistersWithSchemas(array $registers, ?object $schemaMapper): array {
+		$result = [];
 
-    /**
-     * Attempts to retrieve the OpenRegister SchemaMapper from the container.
-     *
-     * @return object|null The SchemaMapper if available, null otherwise.
-     *
-     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-22
-     */
-    private function getSchemaMapper(): ?object
-    {
-        if (in_array(needle: 'openregister', haystack: $this->appManager->getInstalledApps()) === true) {
-            // @var object $schemaMapper
-            $schemaMapper = $this->container->get('OCA\OpenRegister\Db\SchemaMapper');
-            return $schemaMapper;
-        }
+		foreach ($registers as $register) {
+			// @psalm-suppress MixedMethodCall Register entity from OpenRegister.
+			$registerArray = $register->jsonSerialize();
+			$schemaIds = $registerArray['schemas'] ?? [];
+			$schemas = [];
 
-        return null;
+			if ($schemaMapper !== null && empty($schemaIds) === false) {
+				foreach ($schemaIds as $schemaId) {
+					try {
+						// @psalm-suppress MixedMethodCall SchemaMapper from OpenRegister.
+						$schema = $schemaMapper->find((int)$schemaId);
+						$schemas[] = $schema->jsonSerialize();
+					} catch (\Exception $e) {
+						$this->logger->debug(
+							'Schema not found while enriching register',
+							['schemaId' => $schemaId, 'exception' => $e->getMessage()]
+						);
+					}
+				}
+			}
 
-    }//end getSchemaMapper()
+			$registerArray['schemas'] = $schemas;
+			$result[] = $registerArray;
+		}//end foreach
 
-    /**
-     * Enrich registers with full schema objects instead of just schema IDs.
-     *
-     * @param array       $registers    The registers to enrich.
-     * @param object|null $schemaMapper The SchemaMapper, or null.
-     *
-     * @return array Registers serialized as arrays with full schema objects.
-     */
-    private function enrichRegistersWithSchemas(array $registers, ?object $schemaMapper): array
-    {
-        $result = [];
+		return $result;
+	}//end enrichRegistersWithSchemas()
 
-        foreach ($registers as $register) {
-            // @psalm-suppress MixedMethodCall Register entity from OpenRegister.
-            $registerArray = $register->jsonSerialize();
-            $schemaIds     = $registerArray['schemas'] ?? [];
-            $schemas       = [];
+	/**
+	 * Get current LarpingApp settings.
+	 *
+	 * @return JSONResponse The settings response.
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 *
+	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-20
+	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-21
+	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-22
+	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-23
+	 */
+	public function index(): JSONResponse {
+		$user = $this->userSession->getUser();
+		$isAdmin = $user !== null && $this->groupManager->isAdmin($user->getUID());
 
-            if ($schemaMapper !== null && empty($schemaIds) === false) {
-                foreach ($schemaIds as $schemaId) {
-                    try {
-                        // @psalm-suppress MixedMethodCall SchemaMapper from OpenRegister.
-                        $schema    = $schemaMapper->find((int) $schemaId);
-                        $schemas[] = $schema->jsonSerialize();
-                    } catch (\Exception $e) {
-                        $this->logger->debug(
-                            'Schema not found while enriching register',
-                            ['schemaId' => $schemaId, 'exception' => $e->getMessage()]
-                        );
-                    }
-                }
-            }
+		$openRegisters = in_array(needle: 'openregister', haystack: $this->appManager->getInstalledApps());
+		$availableRegisters = [];
 
-            $registerArray['schemas'] = $schemas;
-            $result[] = $registerArray;
-        }//end foreach
+		if ($isAdmin === true && $openRegisters === true) {
+			try {
+				$registerMapper = $this->getRegisterMapper();
+				$schemaMapper = $this->getSchemaMapper();
+				if ($registerMapper !== null) {
+					// @psalm-suppress MixedMethodCall RegisterMapper from OpenRegister.
+					$registers = $registerMapper->findAll(_rbac: false, _multitenancy: false);
+					$availableRegisters = $this->enrichRegistersWithSchemas(registers: $registers, schemaMapper: $schemaMapper);
+				}
+			} catch (\Exception $e) {
+				$this->logger->warning(
+					'Failed to load available registers for settings',
+					['exception' => $e->getMessage()]
+				);
+			}
+		}
 
-        return $result;
+		$data = [
+			'openRegisters' => $openRegisters,
+			'isAdmin' => $isAdmin,
+			'availableRegisters' => $availableRegisters,
+			'objectTypes' => [
+				'ability',
+				'character',
+				'condition',
+				'effect',
+				'event',
+				'item',
+				'player',
+				'setting',
+				'skill',
+			],
+		];
 
-    }//end enrichRegistersWithSchemas()
+		if ($isAdmin === true) {
+			$data['configuration'] = $this->settingsService->getSettings();
+		}
 
-    /**
-     * Get current LarpingApp settings.
-     *
-     * @return JSONResponse The settings response.
-     *
-     * @NoAdminRequired
-     * @NoCSRFRequired
-     *
-     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-20
-     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-21
-     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-22
-     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-23
-     */
-    public function index(): JSONResponse
-    {
-        $user    = $this->userSession->getUser();
-        $isAdmin = $user !== null && $this->groupManager->isAdmin($user->getUID());
+		return new JSONResponse($data);
+	}//end index()
 
-        $openRegisters      = in_array(needle: 'openregister', haystack: $this->appManager->getInstalledApps());
-        $availableRegisters = [];
+	/**
+	 * Update LarpingApp settings — the canonical write.
+	 *
+	 * This is the `settings#update` half of OpenRegister's canonical AppHost
+	 * settings dialect ({@see \OCA\OpenRegister\AppHost\Controller\GenericSettingsControllerBase::update()}),
+	 * reached over `PUT /api/settings`. LarpingApp ships its own
+	 * SettingsController, so `AppHost\Bootstrap::aliasControllerUnlessLeafDefinesIt()`
+	 * never aliases the generic in and this leaf owes the method itself.
+	 *
+	 * The body is the one that used to live in {@see create()}: it hands the
+	 * full request parameter bag to
+	 * {@see \OCA\LarpingApp\Service\SettingsService::updateSettings()}, which
+	 * whitelists it against `SettingsService::CONFIG_KEYS` and writes the
+	 * accepted string/int values to `IAppConfig` under the `larpingapp` app id,
+	 * then returns the re-read settings map. Nothing outside that whitelist is
+	 * persisted, so PUT writes exactly what POST wrote.
+	 *
+	 * CSRF protection is required — this is a state-mutating admin write.
+	 *
+	 * Auth posture: no auth attribute, deliberately identical to {@see create()}.
+	 * Nextcloud's default for an attribute-free controller method is "admin
+	 * session required, CSRF token required", which is the posture this
+	 * instance-wide configuration write needs. `@NoCSRFRequired` was removed
+	 * from the write path to close the CSRF-forgery surface (closes #206) and
+	 * is not reintroduced here. Net privilege change of this commit: zero.
+	 *
+	 * @auth admin-only Writes instance-wide larpingapp configuration through
+	 *       SettingsService::updateSettings(). Carries no auth attribute
+	 *       deliberately: Nextcloud's default for an attribute-free controller
+	 *       method is admin session + CSRF token, which is exactly this
+	 *       posture. Pinned by SettingsControllerCsrfPostureTest.
+	 *
+	 * @return JSONResponse The updated settings response.
+	 *
+	 * @spec openspec/specs/settings-management-ui/spec.md#REQ-003
+	 */
+	public function update(): JSONResponse {
+		try {
+			$data = $this->request->getParams();
+			$config = $this->settingsService->updateSettings(data: $data);
 
-        if ($isAdmin === true && $openRegisters === true) {
-            try {
-                $registerMapper = $this->getRegisterMapper();
-                $schemaMapper   = $this->getSchemaMapper();
-                if ($registerMapper !== null) {
-                    // @psalm-suppress MixedMethodCall RegisterMapper from OpenRegister.
-                    $registers          = $registerMapper->findAll(_rbac: false, _multitenancy: false);
-                    $availableRegisters = $this->enrichRegistersWithSchemas(registers: $registers, schemaMapper: $schemaMapper);
-                }
-            } catch (\Exception $e) {
-                $this->logger->warning(
-                    'Failed to load available registers for settings',
-                    ['exception' => $e->getMessage()]
-                );
-            }
-        }
+			return new JSONResponse(
+				[
+					'success' => true,
+					'config' => $config,
+				]
+			);
+		} catch (\Exception $e) {
+			return new JSONResponse(['error' => $e->getMessage()], 500);
+		}//end try
 
-        $data = [
-            'openRegisters'      => $openRegisters,
-            'isAdmin'            => $isAdmin,
-            'availableRegisters' => $availableRegisters,
-            'objectTypes'        => [
-                'ability',
-                'character',
-                'condition',
-                'effect',
-                'event',
-                'item',
-                'player',
-                'setting',
-                'skill',
-            ],
-        ];
+	}//end update()
 
-        if ($isAdmin === true) {
-            $data['configuration'] = $this->settingsService->getSettings();
-        }
+	/**
+	 * Legacy alias for {@see update()} — `POST /api/settings`.
+	 *
+	 * The canonical AppHost route table still ships `settings#create` for the
+	 * pre-ADR-066 `index/create/load` dialect, and LarpingApp's own frontend
+	 * still POSTs to it (`src/store/modules/settings.js::saveSettings()` and
+	 * `src/views/settings/Settings.vue`), so this route must stay reachable and
+	 * must keep writing (ADR-029).
+	 *
+	 * The delegation is one-way and behaviour-preserving: the response payload
+	 * is byte-identical to what this method returned before `update()` existed.
+	 *
+	 * CSRF protection is required — this is a state-mutating admin POST.
+	 *
+	 * Auth posture: unchanged. This method keeps its own (absent = Nextcloud
+	 * default admin + CSRF) posture rather than inheriting anything from
+	 * `update()`, because SecurityMiddleware only evaluates attributes on the
+	 * DISPATCHED method — delegation in the body is invisible to it.
+	 *
+	 * The `NoCSRFRequired` annotation was dropped here for #206. It is spelled
+	 * mid-sentence on purpose: Nextcloud's ControllerMethodReflector matches
+	 * `/^\h+\*\h+@(?P<annotation>[A-Z]\w+)((?P<parameter>.*))?$/m`, so a line
+	 * that BEGINS with the tag registers it as present no matter what the rest
+	 * of the sentence says — which is how #206 stayed open here for months.
+	 *
+	 * @auth admin-only Writes instance-wide larpingapp configuration through
+	 *       SettingsService::updateSettings(). Carries no auth attribute
+	 *       deliberately: Nextcloud's default for an attribute-free controller
+	 *       method is admin session + CSRF token, which is exactly this
+	 *       posture. Pinned by SettingsControllerCsrfPostureTest.
+	 *
+	 * @return JSONResponse The updated settings response.
+	 *
+	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-24
+	 * @spec openspec/specs/settings-management-ui/spec.md#REQ-003
+	 */
+	public function create(): JSONResponse {
+		return $this->update();
+	}//end create()
 
-        return new JSONResponse($data);
+	/**
+	 * Re-import the LarpingApp configuration from the JSON file.
+	 *
+	 * CSRF protection is required — this is a state-mutating admin POST.
+	 *
+	 * The `NoCSRFRequired` annotation was dropped here for #206, and is spelled
+	 * mid-sentence for the reason given on {@see create()}: a docblock line
+	 * that begins with the tag re-registers it.
+	 *
+	 * @auth admin-only Re-imports the whole larpingapp register/schema
+	 *       configuration from disk. Carries no auth attribute deliberately:
+	 *       Nextcloud's default for an attribute-free controller method is
+	 *       admin session + CSRF token, which is exactly this posture. Pinned
+	 *       by SettingsControllerCsrfPostureTest.
+	 *
+	 * @return JSONResponse The re-import result.
+	 *
+	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-25
+	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-26
+	 */
+	public function reimport(): JSONResponse {
+		try {
+			$result = $this->settingsService->reloadSettings();
 
-    }//end index()
+			return new JSONResponse(
+				[
+					'success' => true,
+					'message' => 'Configuration re-imported successfully',
+					'config' => $this->settingsService->getSettings(),
+					'result' => [
+						'registers' => count((array)($result['registers'] ?? [])),
+						'schemas' => count((array)($result['schemas'] ?? [])),
+					],
+				]
+			);
+		} catch (\Exception $e) {
+			return new JSONResponse(
+				[
+					'success' => false,
+					'message' => $e->getMessage(),
+				],
+				500
+			);
+		}//end try
 
-    /**
-     * Update LarpingApp settings — the canonical write.
-     *
-     * This is the `settings#update` half of OpenRegister's canonical AppHost
-     * settings dialect ({@see \OCA\OpenRegister\AppHost\Controller\GenericSettingsControllerBase::update()}),
-     * reached over `PUT /api/settings`. LarpingApp ships its own
-     * SettingsController, so `AppHost\Bootstrap::aliasControllerUnlessLeafDefinesIt()`
-     * never aliases the generic in and this leaf owes the method itself.
-     *
-     * The body is the one that used to live in {@see create()}: it hands the
-     * full request parameter bag to
-     * {@see \OCA\LarpingApp\Service\SettingsService::updateSettings()}, which
-     * whitelists it against `SettingsService::CONFIG_KEYS` and writes the
-     * accepted string/int values to `IAppConfig` under the `larpingapp` app id,
-     * then returns the re-read settings map. Nothing outside that whitelist is
-     * persisted, so PUT writes exactly what POST wrote.
-     *
-     * CSRF protection is required — this is a state-mutating admin write.
-     *
-     * Auth posture: no auth attribute, deliberately identical to {@see create()}.
-     * Nextcloud's default for an attribute-free controller method is "admin
-     * session required, CSRF token required", which is the posture this
-     * instance-wide configuration write needs. `@NoCSRFRequired` was removed
-     * from the write path to close the CSRF-forgery surface (closes #206) and
-     * is not reintroduced here. Net privilege change of this commit: zero.
-     *
-     * @auth admin-only Writes instance-wide larpingapp configuration through
-     *       SettingsService::updateSettings(). Carries no auth attribute
-     *       deliberately: Nextcloud's default for an attribute-free controller
-     *       method is admin session + CSRF token, which is exactly this
-     *       posture. Pinned by SettingsControllerCsrfPostureTest.
-     *
-     * @return JSONResponse The updated settings response.
-     *
-     * @spec openspec/specs/settings-management-ui/spec.md#REQ-003
-     */
-    public function update(): JSONResponse
-    {
-        try {
-            $data   = $this->request->getParams();
-            $config = $this->settingsService->updateSettings(data: $data);
-
-            return new JSONResponse(
-                [
-                    'success' => true,
-                    'config'  => $config,
-                ]
-            );
-        } catch (\Exception $e) {
-            return new JSONResponse(['error' => $e->getMessage()], 500);
-        }//end try
-
-    }//end update()
-
-    /**
-     * Legacy alias for {@see update()} — `POST /api/settings`.
-     *
-     * The canonical AppHost route table still ships `settings#create` for the
-     * pre-ADR-066 `index/create/load` dialect, and LarpingApp's own frontend
-     * still POSTs to it (`src/store/modules/settings.js::saveSettings()` and
-     * `src/views/settings/Settings.vue`), so this route must stay reachable and
-     * must keep writing (ADR-029).
-     *
-     * The delegation is one-way and behaviour-preserving: the response payload
-     * is byte-identical to what this method returned before `update()` existed.
-     *
-     * CSRF protection is required — this is a state-mutating admin POST.
-     *
-     * Auth posture: unchanged. This method keeps its own (absent = Nextcloud
-     * default admin + CSRF) posture rather than inheriting anything from
-     * `update()`, because SecurityMiddleware only evaluates attributes on the
-     * DISPATCHED method — delegation in the body is invisible to it.
-     *
-     * The `NoCSRFRequired` annotation was dropped here for #206. It is spelled
-     * mid-sentence on purpose: Nextcloud's ControllerMethodReflector matches
-     * `/^\h+\*\h+@(?P<annotation>[A-Z]\w+)((?P<parameter>.*))?$/m`, so a line
-     * that BEGINS with the tag registers it as present no matter what the rest
-     * of the sentence says — which is how #206 stayed open here for months.
-     *
-     * @auth admin-only Writes instance-wide larpingapp configuration through
-     *       SettingsService::updateSettings(). Carries no auth attribute
-     *       deliberately: Nextcloud's default for an attribute-free controller
-     *       method is admin session + CSRF token, which is exactly this
-     *       posture. Pinned by SettingsControllerCsrfPostureTest.
-     *
-     * @return JSONResponse The updated settings response.
-     *
-     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-24
-     * @spec openspec/specs/settings-management-ui/spec.md#REQ-003
-     */
-    public function create(): JSONResponse
-    {
-        return $this->update();
-
-    }//end create()
-
-    /**
-     * Re-import the LarpingApp configuration from the JSON file.
-     *
-     * CSRF protection is required — this is a state-mutating admin POST.
-     *
-     * The `NoCSRFRequired` annotation was dropped here for #206, and is spelled
-     * mid-sentence for the reason given on {@see create()}: a docblock line
-     * that begins with the tag re-registers it.
-     *
-     * @auth admin-only Re-imports the whole larpingapp register/schema
-     *       configuration from disk. Carries no auth attribute deliberately:
-     *       Nextcloud's default for an attribute-free controller method is
-     *       admin session + CSRF token, which is exactly this posture. Pinned
-     *       by SettingsControllerCsrfPostureTest.
-     *
-     * @return JSONResponse The re-import result.
-     *
-     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-25
-     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-26
-     */
-    public function reimport(): JSONResponse
-    {
-        try {
-            $result = $this->settingsService->reloadSettings();
-
-            return new JSONResponse(
-                [
-                    'success' => true,
-                    'message' => 'Configuration re-imported successfully',
-                    'config'  => $this->settingsService->getSettings(),
-                    'result'  => [
-                        'registers' => count((array) ($result['registers'] ?? [])),
-                        'schemas'   => count((array) ($result['schemas'] ?? [])),
-                    ],
-                ]
-            );
-        } catch (\Exception $e) {
-            return new JSONResponse(
-                [
-                    'success' => false,
-                    'message' => $e->getMessage(),
-                ],
-                500
-            );
-        }//end try
-
-    }//end reimport()
+	}//end reimport()
 }//end class
