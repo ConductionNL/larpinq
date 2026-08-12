@@ -50,315 +50,307 @@ use Psr\Log\LoggerInterface;
  *
  * @spec openspec/specs/skill-requirement-enforcement/spec.md
  */
-class CharacterRequirementListener implements IEventListener
-{
+class CharacterRequirementListener implements IEventListener {
 
-    /**
-     * The GM group whose members may author requirement overrides.
-     *
-     * @var string
-     */
-    private const GM_GROUP = 'gamemasters';
+	/**
+	 * The GM group whose members may author requirement overrides.
+	 *
+	 * @var string
+	 */
+	private const GM_GROUP = 'gamemasters';
 
-    /**
-     * Constructor for CharacterRequirementListener.
-     *
-     * @param SkillRequirementService $requirementService The validation service.
-     * @param IAppConfig              $config             Config (schema id resolution).
-     * @param IUserSession            $userSession        The current user session.
-     * @param IGroupManager           $groupManager       The group manager (GM override check).
-     * @param LoggerInterface         $logger             The logger.
-     *
-     * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
-     */
-    public function __construct(
-        private readonly SkillRequirementService $requirementService,
-        private readonly IAppConfig $config,
-        private readonly IUserSession $userSession,
-        private readonly IGroupManager $groupManager,
-        private readonly LoggerInterface $logger
-    ) {
-    }//end __construct()
+	/**
+	 * Constructor for CharacterRequirementListener.
+	 *
+	 * @param SkillRequirementService $requirementService The validation service.
+	 * @param IAppConfig $config Config (schema id resolution).
+	 * @param IUserSession $userSession The current user session.
+	 * @param IGroupManager $groupManager The group manager (GM override check).
+	 * @param LoggerInterface $logger The logger.
+	 *
+	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
+	 */
+	public function __construct(
+		private readonly SkillRequirementService $requirementService,
+		private readonly IAppConfig $config,
+		private readonly IUserSession $userSession,
+		private readonly IGroupManager $groupManager,
+		private readonly LoggerInterface $logger,
+	) {
+	}//end __construct()
 
-    /**
-     * Handle an OpenRegister pre-write event.
-     *
-     * @param Event $event The dispatched event (Creating or Updating).
-     *
-     * @return void
-     *
-     * @psalm-suppress MixedMethodCall  OpenRegister event/entity classes are optional dependencies.
-     * @psalm-suppress MixedAssignment  OpenRegister event/entity classes are optional dependencies.
-     * @psalm-suppress MixedArgument    OpenRegister event/entity classes are optional dependencies.
-     *
-     * @spec openspec/specs/skill-requirement-enforcement/spec.md
-     */
-    public function handle(Event $event): void
-    {
-        if (($event instanceof \OCA\OpenRegister\Event\ObjectCreatingEvent) === false
-            && ($event instanceof \OCA\OpenRegister\Event\ObjectUpdatingEvent) === false
-        ) {
-            return;
-        }
+	/**
+	 * Handle an OpenRegister pre-write event.
+	 *
+	 * @param Event $event The dispatched event (Creating or Updating).
+	 *
+	 * @return void
+	 *
+	 * @psalm-suppress MixedMethodCall  OpenRegister event/entity classes are optional dependencies.
+	 * @psalm-suppress MixedAssignment  OpenRegister event/entity classes are optional dependencies.
+	 * @psalm-suppress MixedArgument    OpenRegister event/entity classes are optional dependencies.
+	 *
+	 * @spec openspec/specs/skill-requirement-enforcement/spec.md
+	 */
+	public function handle(Event $event): void {
+		if (($event instanceof \OCA\OpenRegister\Event\ObjectCreatingEvent) === false
+			&& ($event instanceof \OCA\OpenRegister\Event\ObjectUpdatingEvent) === false
+		) {
+			return;
+		}
 
-        // At this point $event is a vetoable OpenRegister pre-write event.
-        // We call its methods via the generic Event reference because both
-        // ObjectCreatingEvent and ObjectUpdatingEvent are optional runtime
-        // dependencies (OpenRegister may be absent).  Static analysis does not
-        // know about these optional classes; see the ignore annotations below.
-        try {
-            [$newEntity, $oldEntity] = $this->extractEntities(event: $event);
+		// At this point $event is a vetoable OpenRegister pre-write event.
+		// We call its methods via the generic Event reference because both
+		// ObjectCreatingEvent and ObjectUpdatingEvent are optional runtime
+		// dependencies (OpenRegister may be absent).  Static analysis does not
+		// know about these optional classes; see the ignore annotations below.
+		try {
+			[$newEntity, $oldEntity] = $this->extractEntities(event: $event);
 
-            if ($this->isCharacterSchema(entity: $newEntity) === false) {
-                return;
-            }
+			if ($this->isCharacterSchema(entity: $newEntity) === false) {
+				return;
+			}
 
-            $candidate    = $newEntity->getObject();
-            $oldCharacter = [];
-            if ($oldEntity !== null) {
-                $oldCharacter = $oldEntity->getObject();
-            }
+			$candidate = $newEntity->getObject();
+			$oldCharacter = [];
+			if ($oldEntity !== null) {
+				$oldCharacter = $oldEntity->getObject();
+			}
 
-            // Diff-scoping: only validate when an association or override field
-            // actually changed. Unrelated edits must never be blocked by a
-            // pre-existing unmet state.
-            if ($this->associationsChanged(candidate: $candidate, old: $oldCharacter) === false) {
-                return;
-            }
+			// Diff-scoping: only validate when an association or override field
+			// actually changed. Unrelated edits must never be blocked by a
+			// pre-existing unmet state.
+			if ($this->associationsChanged(candidate: $candidate, old: $oldCharacter) === false) {
+				return;
+			}
 
-            $errors = $this->collectVeto(candidate: $candidate, oldCharacter: $oldCharacter);
-            if ($errors !== null) {
-                $event->stopPropagation();
-                // @phpstan-ignore-next-line
-                $event->setErrors($errors);
-            }
-        } catch (\Throwable $e) {
-            // Never fail-open on an unexpected error in the veto path is the
-            // safe default for auth, but a game-rule validator that throws must
-            // not brick all character writes. Log and allow the write to
-            // proceed (degrade to data-only) — matches the "OR predates events"
-            // graceful-degradation contract.
-            $this->logger->error(
-                'LarpingApp: skill-requirement validation errored; allowing the write (data-only fallback).',
-                ['exception' => $e]
-            );
-        }//end try
-    }//end handle()
+			$errors = $this->collectVeto(candidate: $candidate, oldCharacter: $oldCharacter);
+			if ($errors !== null) {
+				$event->stopPropagation();
+				// @phpstan-ignore-next-line
+				$event->setErrors($errors);
+			}
+		} catch (\Throwable $e) {
+			// Never fail-open on an unexpected error in the veto path is the
+			// safe default for auth, but a game-rule validator that throws must
+			// not brick all character writes. Log and allow the write to
+			// proceed (degrade to data-only) — matches the "OR predates events"
+			// graceful-degradation contract.
+			$this->logger->error(
+				'LarpingApp: skill-requirement validation errored; allowing the write (data-only fallback).',
+				['exception' => $e]
+			);
+		}//end try
+	}//end handle()
 
-    /**
-     * Extract the [new, old] entity pair from a vetoable pre-write event.
-     *
-     * A create carries only the new object; an update carries both. Returning
-     * the pair keeps the event-shape knowledge in one place.
-     *
-     * @param Event $event The dispatched pre-write event.
-     *
-     * @return array{0: object, 1: object|null} The [newEntity, oldEntity] pair.
-     *
-     * @psalm-suppress MixedMethodCall     OpenRegister event classes are optional dependencies.
-     * @psalm-suppress MixedReturnStatement OpenRegister event classes are optional dependencies.
-     * @psalm-suppress MixedInferredReturnType OpenRegister event classes are optional dependencies.
-     * @psalm-suppress UndefinedMethod     `getNewObject()`/`getOldObject()` are declared on
-     *                                     OCA\OpenRegister\Event\ObjectUpdatingEvent, which Psalm
-     *                                     resolves as the base OCP Event because OpenRegister is an
-     *                                     optional dependency. The `instanceof` above narrows it at
-     *                                     runtime; the two pre-existing errors this suppresses were
-     *                                     the only Psalm findings in the app.
-     *
-     * @spec openspec/specs/skill-requirement-enforcement/spec.md
-     */
-    private function extractEntities(Event $event): array
-    {
-        if ($event instanceof \OCA\OpenRegister\Event\ObjectCreatingEvent) {
-            // @phpstan-ignore-next-line
-            return [$event->getObject(), null];
-        }
+	/**
+	 * Extract the [new, old] entity pair from a vetoable pre-write event.
+	 *
+	 * A create carries only the new object; an update carries both. Returning
+	 * the pair keeps the event-shape knowledge in one place.
+	 *
+	 * @param Event $event The dispatched pre-write event.
+	 *
+	 * @return array{0: object, 1: object|null} The [newEntity, oldEntity] pair.
+	 *
+	 * @psalm-suppress MixedMethodCall     OpenRegister event classes are optional dependencies.
+	 * @psalm-suppress MixedReturnStatement OpenRegister event classes are optional dependencies.
+	 * @psalm-suppress MixedInferredReturnType OpenRegister event classes are optional dependencies.
+	 * @psalm-suppress UndefinedMethod     `getNewObject()`/`getOldObject()` are declared on
+	 *                                     OCA\OpenRegister\Event\ObjectUpdatingEvent, which Psalm
+	 *                                     resolves as the base OCP Event because OpenRegister is an
+	 *                                     optional dependency. The `instanceof` above narrows it at
+	 *                                     runtime; the two pre-existing errors this suppresses were
+	 *                                     the only Psalm findings in the app.
+	 *
+	 * @spec openspec/specs/skill-requirement-enforcement/spec.md
+	 */
+	private function extractEntities(Event $event): array {
+		if ($event instanceof \OCA\OpenRegister\Event\ObjectCreatingEvent) {
+			// @phpstan-ignore-next-line
+			return [$event->getObject(), null];
+		}
 
-        // @phpstan-ignore-next-line
-        return [$event->getNewObject(), $event->getOldObject()];
-    }//end extractEntities()
+		// @phpstan-ignore-next-line
+		return [$event->getNewObject(), $event->getOldObject()];
+	}//end extractEntities()
 
-    /**
-     * Collect the veto payload for a candidate write, or null when it may pass.
-     *
-     * Two independent grounds, checked in order: a non-GM authoring requirement
-     * overrides (auth, not game-rule) short-circuits before any game-rule
-     * validation runs; otherwise the requirement/budget result decides.
-     *
-     * @param array<string,mixed> $candidate    The candidate character.
-     * @param array<string,mixed> $oldCharacter The persisted character.
-     *
-     * @return array<string,mixed>|null The errors payload, or null to allow.
-     *
-     * @spec openspec/specs/skill-requirement-enforcement/spec.md
-     */
-    private function collectVeto(array $candidate, array $oldCharacter): ?array
-    {
-        // GM-override authorization: a non-GM that adds/alters override
-        // entries is rejected outright (auth, not game-rule).
-        $authError = $this->checkOverrideAuthorization(candidate: $candidate, old: $oldCharacter);
-        if ($authError !== null) {
-            return ['requirementOverrides' => [$authError]];
-        }
+	/**
+	 * Collect the veto payload for a candidate write, or null when it may pass.
+	 *
+	 * Two independent grounds, checked in order: a non-GM authoring requirement
+	 * overrides (auth, not game-rule) short-circuits before any game-rule
+	 * validation runs; otherwise the requirement/budget result decides.
+	 *
+	 * @param array<string,mixed> $candidate The candidate character.
+	 * @param array<string,mixed> $oldCharacter The persisted character.
+	 *
+	 * @return array<string,mixed>|null The errors payload, or null to allow.
+	 *
+	 * @spec openspec/specs/skill-requirement-enforcement/spec.md
+	 */
+	private function collectVeto(array $candidate, array $oldCharacter): ?array {
+		// GM-override authorization: a non-GM that adds/alters override
+		// entries is rejected outright (auth, not game-rule).
+		$authError = $this->checkOverrideAuthorization(candidate: $candidate, old: $oldCharacter);
+		if ($authError !== null) {
+			return ['requirementOverrides' => [$authError]];
+		}
 
-        $result = $this->requirementService->validate(candidate: $candidate, oldCharacter: $oldCharacter);
-        if ($result['valid'] === false) {
-            return $this->buildErrorPayload(result: $result);
-        }
+		$result = $this->requirementService->validate(candidate: $candidate, oldCharacter: $oldCharacter);
+		if ($result['valid'] === false) {
+			return $this->buildErrorPayload(result: $result);
+		}
 
-        return null;
-    }//end collectVeto()
+		return null;
+	}//end collectVeto()
 
-    /**
-     * Whether the entity belongs to the character schema.
-     *
-     * @param object $entity The OpenRegister object entity.
-     *
-     * @return bool True when this is a character write.
-     *
-     * ⚠️ THE PROBE MUST BE `is_callable()`, NEVER `method_exists()`.
-     * `OCA\OpenRegister\Db\ObjectEntity` declares only `getObject()`; every
-     * other accessor — `getSchema()` among them — is resolved at runtime by
-     * `OCP\AppFramework\Db\Entity::__call()`. `method_exists()` inspects the
-     * DECLARED method table and therefore answers **false** for a magic getter
-     * that is perfectly callable:
-     *
-     *     method_exists($entity, 'getSchema')   -> false
-     *     is_callable([$entity, 'getSchema'])   -> true
-     *     $entity->getSchema()                  -> "17"
-     *     method_exists($entity, 'getObject')   -> true   (declared — control)
-     *
-     * With `method_exists()` this method returned false for EVERY character
-     * write, so `handle()` returned early, no veto was ever raised, and a
-     * character violating a declared `requiredSkills[]` prerequisite persisted
-     * at HTTP 201/200 with no log line — the whole
-     * `skill-requirement-enforcement` capability was inert while its listener
-     * was correctly registered and its validator correctly returned
-     * `valid: false`. Reported as larpingapp#308 (which mis-attributed it to
-     * OpenRegister not dispatching the vetoable pre-write event; OpenRegister
-     * dispatches it, and this listener is first in the chain).
-     *
-     * @psalm-suppress MixedMethodCall OpenRegister entity is an optional dependency.
-     */
-    private function isCharacterSchema(object $entity): bool
-    {
-        $configured = $this->config->getValueString(Application::APP_ID, 'character_schema', '');
-        if ($configured === '') {
-            return false;
-        }
+	/**
+	 * Whether the entity belongs to the character schema.
+	 *
+	 * @param object $entity The OpenRegister object entity.
+	 *
+	 * @return bool True when this is a character write.
+	 *
+	 * ⚠️ THE PROBE MUST BE `is_callable()`, NEVER `method_exists()`.
+	 * `OCA\OpenRegister\Db\ObjectEntity` declares only `getObject()`; every
+	 * other accessor — `getSchema()` among them — is resolved at runtime by
+	 * `OCP\AppFramework\Db\Entity::__call()`. `method_exists()` inspects the
+	 * DECLARED method table and therefore answers **false** for a magic getter
+	 * that is perfectly callable:
+	 *
+	 *     method_exists($entity, 'getSchema')   -> false
+	 *     is_callable([$entity, 'getSchema'])   -> true
+	 *     $entity->getSchema()                  -> "17"
+	 *     method_exists($entity, 'getObject')   -> true   (declared — control)
+	 *
+	 * With `method_exists()` this method returned false for EVERY character
+	 * write, so `handle()` returned early, no veto was ever raised, and a
+	 * character violating a declared `requiredSkills[]` prerequisite persisted
+	 * at HTTP 201/200 with no log line — the whole
+	 * `skill-requirement-enforcement` capability was inert while its listener
+	 * was correctly registered and its validator correctly returned
+	 * `valid: false`. Reported as larpingapp#308 (which mis-attributed it to
+	 * OpenRegister not dispatching the vetoable pre-write event; OpenRegister
+	 * dispatches it, and this listener is first in the chain).
+	 *
+	 * @psalm-suppress MixedMethodCall OpenRegister entity is an optional dependency.
+	 */
+	private function isCharacterSchema(object $entity): bool {
+		$configured = $this->config->getValueString(Application::APP_ID, 'character_schema', '');
+		if ($configured === '') {
+			return false;
+		}
 
-        $schema = '';
-        if (is_callable([$entity, 'getSchema']) === true) {
-            $schema = (string) $entity->getSchema();
-        }
+		$schema = '';
+		if (is_callable([$entity, 'getSchema']) === true) {
+			$schema = (string)$entity->getSchema();
+		}
 
-        return ($schema !== '' && $schema === $configured);
-    }//end isCharacterSchema()
+		return ($schema !== '' && $schema === $configured);
+	}//end isCharacterSchema()
 
-    /**
-     * Whether the relevant association/override fields changed.
-     *
-     * @param array<string,mixed> $candidate The candidate character.
-     * @param array<string,mixed> $old       The persisted character.
-     *
-     * @return bool True when skills/items/conditions/requirementOverrides differ.
-     */
-    private function associationsChanged(array $candidate, array $old): bool
-    {
-        if (empty($old) === true) {
-            return true;
-        }
+	/**
+	 * Whether the relevant association/override fields changed.
+	 *
+	 * @param array<string,mixed> $candidate The candidate character.
+	 * @param array<string,mixed> $old The persisted character.
+	 *
+	 * @return bool True when skills/items/conditions/requirementOverrides differ.
+	 */
+	private function associationsChanged(array $candidate, array $old): bool {
+		if (empty($old) === true) {
+			return true;
+		}
 
-        foreach (['skills', 'items', 'conditions', 'requirementOverrides'] as $field) {
-            $a = $candidate[$field] ?? null;
-            $b = $old[$field] ?? null;
-            if ($a !== $b) {
-                return true;
-            }
-        }
+		foreach (['skills', 'items', 'conditions', 'requirementOverrides'] as $field) {
+			$a = $candidate[$field] ?? null;
+			$b = $old[$field] ?? null;
+			if ($a !== $b) {
+				return true;
+			}
+		}
 
-        return false;
-    }//end associationsChanged()
+		return false;
+	}//end associationsChanged()
 
-    /**
-     * Reject non-GM writes that add or modify requirementOverrides entries.
-     *
-     * @param array<string,mixed> $candidate The candidate character.
-     * @param array<string,mixed> $old       The persisted character.
-     *
-     * @return array<string,mixed>|null An error entry when unauthorized, else null.
-     */
-    private function checkOverrideAuthorization(array $candidate, array $old): ?array
-    {
-        $newOverrides = $candidate['requirementOverrides'] ?? [];
-        $oldOverrides = $old['requirementOverrides'] ?? [];
+	/**
+	 * Reject non-GM writes that add or modify requirementOverrides entries.
+	 *
+	 * @param array<string,mixed> $candidate The candidate character.
+	 * @param array<string,mixed> $old The persisted character.
+	 *
+	 * @return array<string,mixed>|null An error entry when unauthorized, else null.
+	 */
+	private function checkOverrideAuthorization(array $candidate, array $old): ?array {
+		$newOverrides = $candidate['requirementOverrides'] ?? [];
+		$oldOverrides = $old['requirementOverrides'] ?? [];
 
-        if ($newOverrides === $oldOverrides) {
-            return null;
-        }
+		if ($newOverrides === $oldOverrides) {
+			return null;
+		}
 
-        // An empty reason on any override entry is itself invalid.
-        if (is_array($newOverrides) === true) {
-            foreach ($newOverrides as $override) {
-                if (is_array($override) === true && trim((string) ($override['reason'] ?? '')) === '') {
-                    return [
-                        'code'    => 'override_reason_required',
-                        'message' => 'A requirement override must carry a non-empty reason.',
-                    ];
-                }
-            }
-        }
+		// An empty reason on any override entry is itself invalid.
+		if (is_array($newOverrides) === true) {
+			foreach ($newOverrides as $override) {
+				if (is_array($override) === true && trim((string)($override['reason'] ?? '')) === '') {
+					return [
+						'code' => 'override_reason_required',
+						'message' => 'A requirement override must carry a non-empty reason.',
+					];
+				}
+			}
+		}
 
-        $user = $this->userSession->getUser();
-        if ($user === null) {
-            return [
-                'code'    => 'override_forbidden',
-                'message' => 'Only game masters may author requirement overrides.',
-            ];
-        }
+		$user = $this->userSession->getUser();
+		if ($user === null) {
+			return [
+				'code' => 'override_forbidden',
+				'message' => 'Only game masters may author requirement overrides.',
+			];
+		}
 
-        $isGm = $this->groupManager->isInGroup($user->getUID(), self::GM_GROUP);
-        if ($isGm === false) {
-            return [
-                'code'    => 'override_forbidden',
-                'message' => 'Only game masters may author requirement overrides.',
-            ];
-        }
+		$isGm = $this->groupManager->isInGroup($user->getUID(), self::GM_GROUP);
+		if ($isGm === false) {
+			return [
+				'code' => 'override_forbidden',
+				'message' => 'Only game masters may author requirement overrides.',
+			];
+		}
 
-        return null;
-    }//end checkOverrideAuthorization()
+		return null;
+	}//end checkOverrideAuthorization()
 
-    /**
-     * Build the structured OR rejection payload from the validation result.
-     *
-     * @param array<string,mixed> $result The SkillRequirementService result.
-     *
-     * @return array<string,mixed> The errors payload.
-     */
-    private function buildErrorPayload(array $result): array
-    {
-        $unmet = [];
-        // @psalm-suppress MixedAssignment Validation result entries are typed in the service.
-        foreach (($result['requirements'] ?? []) as $entry) {
-            if (is_array($entry) === true
-                && (($entry['status'] ?? '') === 'unmet' || ($entry['status'] ?? '') === 'unresolvable')
-            ) {
-                $unmet[] = $entry;
-            }
-        }
+	/**
+	 * Build the structured OR rejection payload from the validation result.
+	 *
+	 * @param array<string,mixed> $result The SkillRequirementService result.
+	 *
+	 * @return array<string,mixed> The errors payload.
+	 */
+	private function buildErrorPayload(array $result): array {
+		$unmet = [];
+		// @psalm-suppress MixedAssignment Validation result entries are typed in the service.
+		foreach (($result['requirements'] ?? []) as $entry) {
+			if (is_array($entry) === true
+				&& (($entry['status'] ?? '') === 'unmet' || ($entry['status'] ?? '') === 'unresolvable')
+			) {
+				$unmet[] = $entry;
+			}
+		}
 
-        $payload = [
-            'code'         => 'requirements_not_met',
-            'message'      => 'One or more skill requirements are not met.',
-            'requirements' => $unmet,
-        ];
+		$payload = [
+			'code' => 'requirements_not_met',
+			'message' => 'One or more skill requirements are not met.',
+			'requirements' => $unmet,
+		];
 
-        $budget = $result['budget'] ?? [];
-        if (is_array($budget) === true && ($budget['ok'] ?? true) === false) {
-            $payload['budget']  = $budget;
-            $payload['message'] = 'Insufficient XP and/or unmet skill requirements.';
-        }
+		$budget = $result['budget'] ?? [];
+		if (is_array($budget) === true && ($budget['ok'] ?? true) === false) {
+			$payload['budget'] = $budget;
+			$payload['message'] = 'Insufficient XP and/or unmet skill requirements.';
+		}
 
-        return $payload;
-    }//end buildErrorPayload()
+		return $payload;
+	}//end buildErrorPayload()
 }//end class

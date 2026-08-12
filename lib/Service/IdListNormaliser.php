@@ -33,45 +33,43 @@ namespace OCA\LarpingApp\Service;
  *
  * @spec openspec/specs/skill-requirement-enforcement/spec.md
  */
-class IdListNormaliser
-{
-    /**
-     * Normalise a value to a list of string ids.
-     *
-     * Tolerates arrays of strings, arrays of {id} objects, or a single value.
-     * Null and empty-string entries are dropped rather than becoming ''.
-     *
-     * @param mixed $value The raw value.
-     *
-     * @return array<int,string> The id list.
-     *
-     * @spec openspec/specs/skill-requirement-enforcement/spec.md
-     */
-    public function normalise(mixed $value): array
-    {
-        if (is_array($value) === false) {
-            if ($value === null || $value === '') {
-                return [];
-            }
+class IdListNormaliser {
+	/**
+	 * Normalise a value to a list of string ids.
+	 *
+	 * Tolerates arrays of strings, arrays of {id} objects, or a single value.
+	 * Null and empty-string entries are dropped rather than becoming ''.
+	 *
+	 * @param mixed $value The raw value.
+	 *
+	 * @return array<int,string> The id list.
+	 *
+	 * @spec openspec/specs/skill-requirement-enforcement/spec.md
+	 */
+	public function normalise(mixed $value): array {
+		if (is_array($value) === false) {
+			if ($value === null || $value === '') {
+				return [];
+			}
 
-            return [(string) $value];
-        }
+			return [(string)$value];
+		}
 
-        $ids = [];
-        foreach ($value as $entry) {
-            if (is_array($entry) === true) {
-                if (isset($entry['id']) === true) {
-                    $ids[] = (string) $entry['id'];
-                }
+		$ids = [];
+		foreach ($value as $entry) {
+			if (is_array($entry) === true) {
+				if (isset($entry['id']) === true) {
+					$ids[] = (string)$entry['id'];
+				}
 
-                continue;
-            }
+				continue;
+			}
 
-            if ($entry !== null && $entry !== '') {
-                $ids[] = (string) $entry;
-            }
-        }
+			if ($entry !== null && $entry !== '') {
+				$ids[] = (string)$entry;
+			}
+		}
 
-        return $ids;
-    }//end normalise()
+		return $ids;
+	}//end normalise()
 }//end class

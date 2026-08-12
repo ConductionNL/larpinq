@@ -36,28 +36,25 @@ declare(strict_types=1);
 namespace OCA\OpenRegister\Event;
 
 if (class_exists(\OCA\OpenRegister\Event\DeepLinkRegistrationEvent::class, false) === false) {
-    /**
-     * Stand-in for OpenRegister's unified-search deep-link registration event.
-     */
-    class DeepLinkRegistrationEvent
-    {
-    }//end class
+	/**
+	 * Stand-in for OpenRegister's unified-search deep-link registration event.
+	 */
+	class DeepLinkRegistrationEvent {
+	}//end class
 }
 
 if (class_exists(\OCA\OpenRegister\Event\ObjectCreatingEvent::class, false) === false) {
-    /**
-     * Stand-in for OpenRegister's pre-create object event.
-     */
-    class ObjectCreatingEvent
-    {
-    }//end class
+	/**
+	 * Stand-in for OpenRegister's pre-create object event.
+	 */
+	class ObjectCreatingEvent {
+	}//end class
 }
 
 if (class_exists(\OCA\OpenRegister\Event\ObjectUpdatingEvent::class, false) === false) {
-    /**
-     * Stand-in for OpenRegister's pre-update object event.
-     */
-    class ObjectUpdatingEvent
-    {
-    }//end class
+	/**
+	 * Stand-in for OpenRegister's pre-update object event.
+	 */
+	class ObjectUpdatingEvent {
+	}//end class
 }
