@@ -56,7 +56,27 @@ jobs:
       # stable33 is deliberately NOT added here: this change removes an
       # impossible leg, it does not widen the matrix.
       nextcloud-test-refs: '["stable32"]'
-      enable-psalm: false
+      # Psalm was `false` and carried no reason. The shared workflow still
+      # creates a job literally named `PHP Quality (psalm)` for a disabled
+      # tool: it prints "Psalm is disabled — skipping." and concludes
+      # `success`. So the run showed a GREEN psalm cell over a tool that never
+      # executed — a check that did not run looking exactly like one that
+      # passed. (The uploaded `result-php-quality-psalm` artifact was 142 bytes.)
+      #
+      # The reason it was off was a broken config, not a broken codebase:
+      # psalm.xml pointed its stub at `vendor/nextcloud/ocp/OCP.bak/...`, a path
+      # only that one developer's container-symlinked vendor tree ever had, so
+      # Psalm aborted before analysing anything with "Cannot resolve stubfile
+      # path". Fixed in psalm.xml in this same change.
+      #
+      # Measured on a clean clone + `composer install`, php:8.3-cli (the CI
+      # PHP version): **No errors found**, 93.05% of the codebase inferred,
+      # 9.65s. Positive control, so this is not a green over an empty scope:
+      # planting one call to an undefined function in
+      # lib/AppInfo/Application.php::register() moved Psalm 0 -> 1 error,
+      # naming the plant at Application.php:84. Plant removed and re-verified
+      # clean.
+      enable-psalm: true
       # PHPStan runs clean at level 5 with an empty baseline after the legacy
       # quality cleanup (larpingapp-legacy-quality-cleanup), so it is now part
       # of the unified CI gate alongside phpcs + phpmd.
