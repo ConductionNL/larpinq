@@ -85,8 +85,8 @@ import {
 } from './fixtures'
 
 // Documented blocker reasons; each is annotated onto its test.fixme below.
-const STAT_UI_BLOCKER
-	= 'STAT_UI_BLOCKER: computed character stats are not surfaced through any '
+const STAT_UI_BLOCKER =
+	'STAT_UI_BLOCKER: computed character stats are not surfaced through any '
 	+ 'controller or the SPA (only CharactersController::downloadPdf exists; the '
 	+ 'SPA does not compute stats and its detail page is slug-500-blocked). '
 	+ 'Not drivable via the UI on this instance — env/OR defect, not a source bug.'
@@ -108,7 +108,8 @@ const STAT_UI_BLOCKER
  * @return {boolean} True when skipping is legitimate.
  */
 function harnessUnavailable(computed: unknown): boolean {
-	const onCI = process.env.GITHUB_ACTIONS === 'true' || (process.env.CI ?? '') !== ''
+	const onCI =
+		process.env.GITHUB_ACTIONS === 'true' || (process.env.CI ?? '') !== ''
 	return computed === null && !onCI
 }
 
@@ -127,7 +128,9 @@ test.afterAll(async () => {
 	await cleanupLedger(api, ledger)
 	await api.dispose()
 	// eslint-disable-next-line no-console
-	console.log(`[stat-computation] RUN_ID=${RUN_ID} — fixtures cleaned up via ledger.`)
+	console.log(
+		`[stat-computation] RUN_ID=${RUN_ID} — fixtures cleaned up via ledger.`,
+	)
 })
 
 // ===========================================================================
@@ -137,7 +140,11 @@ test.afterAll(async () => {
 
 test.describe('character-stat computation — correctness (real service, real data)', () => {
 	test('positive effect via skill: strength 10 + "+3" effect = 13', async () => {
-		const s = await seedStatScenario(api, ledger, { base: 10, modifier: 3, modification: 'positive' })
+		const s = await seedStatScenario(api, ledger, {
+			base: 10,
+			modifier: 3,
+			modification: 'positive',
+		})
 		expect(s.expected).toBe(13)
 
 		const computed = await computeCharacterStat({
@@ -150,15 +157,23 @@ test.describe('character-stat computation — correctness (real service, real da
 		// Off CI only: if no Nextcloud bootstrap is reachable, skip rather than
 		// report an environment problem as an arithmetic failure. On CI a null
 		// result fails — see harnessUnavailable().
-		test.skip(harnessUnavailable(computed), 'CharacterService harness not runnable off CI (no server root, no docker).')
-		expect(computed, 'CharacterService harness must be runnable on CI').not.toBeNull()
+		test.skip(
+			harnessUnavailable(computed),
+			'CharacterService harness not runnable off CI (no server root, no docker).',
+		)
+		expect(
+			computed,
+			'CharacterService harness must be runnable on CI',
+		).not.toBeNull()
 
 		// Real correctness: the persisted ability (base 10) plus the persisted
 		// "+3" effect carried by the persisted skill computes to exactly 13.
 		expect(computed!.base, 'persisted ability base must load').toBe(10)
 		expect(computed!.value, 'base 10 + effect +3 must compute to 13').toBe(13)
 		// Audit trail records the contributing effect and its delta.
-		expect(Array.isArray(computed!.audit) && computed!.audit.length).toBeGreaterThan(0)
+		expect(
+			Array.isArray(computed!.audit) && computed!.audit.length,
+		).toBeGreaterThan(0)
 	})
 
 	test('negative effect via item: strength 10 - "2" effect = 8', async () => {
@@ -166,39 +181,71 @@ test.describe('character-stat computation — correctness (real service, real da
 		// route the effect through an ITEM to prove non-skill carriers apply too.
 		const base = 10
 		const modifier = 2
-		const abilityId = ledger.track('ability', await createObject(api, 'ability', {
-			name: fixtureName('neg-strength'),
-			base,
-		}))
-		const effectId = ledger.track('effect', await createObject(api, 'effect', {
-			name: fixtureName('neg-weaken'),
-			modifier,
-			modification: 'negative',
-			cumulative: 'cumulative',
-			abilities: [abilityId],
-		}))
-		const itemId = ledger.track('item', await createObject(api, 'item', {
-			name: fixtureName('neg-cursed-ring'),
-			effects: [effectId],
-		}))
+		const abilityId = ledger.track(
+			'ability',
+			await createObject(api, 'ability', {
+				name: fixtureName('neg-strength'),
+				base,
+			}),
+		)
+		const effectId = ledger.track(
+			'effect',
+			await createObject(api, 'effect', {
+				name: fixtureName('neg-weaken'),
+				modifier,
+				modification: 'negative',
+				cumulative: 'cumulative',
+				abilities: [abilityId],
+			}),
+		)
+		const itemId = ledger.track(
+			'item',
+			await createObject(api, 'item', {
+				name: fixtureName('neg-cursed-ring'),
+				effects: [effectId],
+			}),
+		)
 		const name = fixtureName('neg-hero')
 		// `ocName` is the required RELATION to a `player` object
 		// (`format: uuid`, `$ref: player`), not a second display name. Passing
 		// `name` here is rejected with HTTP 400 "Property 'ocName' should match
 		// format 'uuid'", which is what made this test red.
-		const playerId = ledger.track('player', await createObject(api, 'player', {
-			name: fixtureName('neg-hero-player'),
-		}))
-		const characterId = ledger.track('character', await createObject(api, 'character', {
-			name, ocName: playerId, type: 'player', items: [itemId],
-		}))
+		const playerId = ledger.track(
+			'player',
+			await createObject(api, 'player', {
+				name: fixtureName('neg-hero-player'),
+			}),
+		)
+		const characterId = ledger.track(
+			'character',
+			await createObject(api, 'character', {
+				name,
+				ocName: playerId,
+				type: 'player',
+				items: [itemId],
+			}),
+		)
 
-		const computed = await computeCharacterStat({ characterId, abilityId, effectId, itemId })
-		test.skip(harnessUnavailable(computed), 'CharacterService harness not runnable off CI (no server root, no docker).')
-		expect(computed, 'CharacterService harness must be runnable on CI').not.toBeNull()
+		const computed = await computeCharacterStat({
+			characterId,
+			abilityId,
+			effectId,
+			itemId,
+		})
+		test.skip(
+			harnessUnavailable(computed),
+			'CharacterService harness not runnable off CI (no server root, no docker).',
+		)
+		expect(
+			computed,
+			'CharacterService harness must be runnable on CI',
+		).not.toBeNull()
 
 		expect(computed!.base, 'persisted ability base must load').toBe(10)
-		expect(computed!.value, 'base 10 - effect 2 (negative) must compute to 8').toBe(8)
+		expect(
+			computed!.value,
+			'base 10 - effect 2 (negative) must compute to 8',
+		).toBe(8)
 	})
 
 	// -----------------------------------------------------------------------
@@ -211,7 +258,11 @@ test.describe('character-stat computation — correctness (real service, real da
 	// abilities/effects and the live calculateCharacter() applies the +3
 	// (verified: base 10 -> value 13 with a non-empty audit trail).
 	test('live: calculateCharacter applies +3 onto strength through real OR findAll', async () => {
-		const s = await seedStatScenario(api, ledger, { base: 10, modifier: 3, modification: 'positive' })
+		const s = await seedStatScenario(api, ledger, {
+			base: 10,
+			modifier: 3,
+			modification: 'positive',
+		})
 		// NATIVE path: lets CharacterService::loadAllEntities() pull the
 		// collections via OR findAll (no reflection injection).
 		const computed = await computeCharacterStatLive(s.characterId, s.abilityId)
@@ -227,16 +278,30 @@ test.describe('character-stat computation — correctness (real service, real da
 	// @e2e openspec/specs/character-management/spec.md#view-computed-stats-in-eigenschappen-tab
 	// FIXME(stat-ui-blocker): computed stats are not surfaced through any
 	// controller or the SPA detail page on this instance — STAT_UI_BLOCKER.
-	test.fixme('UI: character detail "Eigenschappen" tab shows the computed effective stat', async ({ page }) => {
-		test.info().annotations.push({ type: 'blocker', description: STAT_UI_BLOCKER })
-		const s = await seedStatScenario(api, ledger, { base: 10, modifier: 3, modification: 'positive' })
+	test.fixme('UI: character detail "Eigenschappen" tab shows the computed effective stat', async ({
+		page,
+	}) => {
+		test.info().annotations.push({
+			type: 'blocker',
+			description: STAT_UI_BLOCKER,
+		})
+		const s = await seedStatScenario(api, ledger, {
+			base: 10,
+			modifier: 3,
+			modification: 'positive',
+		})
 		await page.goto(`/apps/larpingapp/characters/${s.characterId}`)
 		// ADR-074 rule 4: `networkidle` never settles on Nextcloud.
-		await page.locator('#app-content, .app-content, #content').first()
-			.waitFor({ state: 'visible', timeout: 30_000 }).catch(() => {})
+		await page
+			.locator('#app-content, .app-content, #content')
+			.first()
+			.waitFor({ state: 'visible', timeout: 30_000 })
+			.catch(() => {})
 		// On a healthy instance the detail page renders the computed stats tab
 		// and the effective strength value (13). Blocked here by the slug-500
 		// detail fetch + the missing computed-stats surface.
-		await expect(page.locator('.app-content').getByText('13').first()).toBeVisible({ timeout: 10_000 })
+		await expect(
+			page.locator('.app-content').getByText('13').first(),
+		).toBeVisible({ timeout: 10_000 })
 	})
 })

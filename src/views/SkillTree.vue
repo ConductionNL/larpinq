@@ -67,15 +67,26 @@
 		</div>
 
 		<div class="skill-tree__legend" aria-hidden="false">
-			<span class="skill-tree__legend-item"><span class="skill-tree__dot skill-tree__dot--owned" /> {{ t('larpingapp', 'Owned') }}</span>
-			<span class="skill-tree__legend-item"><span class="skill-tree__dot skill-tree__dot--available" /> {{ t('larpingapp', 'Available') }}</span>
-			<span class="skill-tree__legend-item"><span class="skill-tree__dot skill-tree__dot--locked" /> {{ t('larpingapp', 'Locked') }}</span>
+			<span class="skill-tree__legend-item"
+				><span class="skill-tree__dot skill-tree__dot--owned" />
+				{{ t('larpingapp', 'Owned') }}</span
+			>
+			<span class="skill-tree__legend-item"
+				><span class="skill-tree__dot skill-tree__dot--available" />
+				{{ t('larpingapp', 'Available') }}</span
+			>
+			<span class="skill-tree__legend-item"
+				><span class="skill-tree__dot skill-tree__dot--locked" />
+				{{ t('larpingapp', 'Locked') }}</span
+			>
 		</div>
 
 		<NcEmptyContent
 			v-if="!loading && nodes.length === 0"
 			:name="t('larpingapp', 'No skills to show')"
-			:description="t('larpingapp', 'No skills exist yet for the selected world.')"
+			:description="
+				t('larpingapp', 'No skills exist yet for the selected world.')
+			"
 			data-testid="skill-tree-empty">
 			<template #icon>
 				<CnIcon name="Sitemap" :size="48" />
@@ -84,7 +95,10 @@
 
 		<div v-else class="skill-tree__body">
 			<div class="skill-tree__graph" data-testid="skill-tree-graph">
-				<div v-for="(tier, tierIndex) in tiers" :key="tierIndex" class="skill-tree__tier">
+				<div
+					v-for="(tier, tierIndex) in tiers"
+					:key="tierIndex"
+					class="skill-tree__tier">
 					<button
 						v-for="node in tier"
 						:key="node.id"
@@ -97,38 +111,80 @@
 						@click="selectNode(node)">
 						<span class="skill-tree__node-name">{{ node.name }}</span>
 						<span class="skill-tree__node-requires">
-							{{ node.requiredSkills.length
-								? t('larpingapp', 'Requires: {list}', { list: node.requiredSkills.map(s => s.name).join(', ') })
-								: t('larpingapp', 'No prerequisites') }}
+							{{
+								node.requiredSkills.length
+									? t('larpingapp', 'Requires: {list}', {
+											list: node.requiredSkills
+												.map((s) => s.name)
+												.join(', '),
+										})
+									: t('larpingapp', 'No prerequisites')
+							}}
 						</span>
 					</button>
 				</div>
 			</div>
 
-			<div v-if="selectedNode" class="skill-tree__detail" data-testid="skill-tree-detail">
+			<div
+				v-if="selectedNode"
+				class="skill-tree__detail"
+				data-testid="skill-tree-detail">
 				<h3>{{ selectedNode.name }}</h3>
-				<CnStatusBadge :label="stateLabel(selectedNode.state)" :variant="stateVariant(selectedNode.state)" />
+				<CnStatusBadge
+					:label="stateLabel(selectedNode.state)"
+					:variant="stateVariant(selectedNode.state)" />
 
 				<dl class="skill-tree__reqs">
 					<template v-if="selectedNode.requiredSkills.length">
 						<dt>{{ t('larpingapp', 'Required skills') }}</dt>
-						<dd>{{ selectedNode.requiredSkills.map(s => s.name).join(', ') }}</dd>
+						<dd>
+							{{
+								selectedNode.requiredSkills
+									.map((s) => s.name)
+									.join(', ')
+							}}
+						</dd>
 					</template>
 					<template v-if="selectedNode.requiredStats.length">
 						<dt>{{ t('larpingapp', 'Required abilities') }}</dt>
-						<dd>{{ selectedNode.requiredStats.map(s => s.name).join(', ') }} {{ t('larpingapp', '(score ≥ {n})', { n: selectedNode.requiredScore }) }}</dd>
+						<dd>
+							{{
+								selectedNode.requiredStats
+									.map((s) => s.name)
+									.join(', ')
+							}}
+							{{
+								t('larpingapp', '(score ≥ {n})', {
+									n: selectedNode.requiredScore,
+								})
+							}}
+						</dd>
 					</template>
 					<template v-if="selectedNode.requiredConditions.length">
 						<dt>{{ t('larpingapp', 'Required conditions') }}</dt>
-						<dd>{{ selectedNode.requiredConditions.map(s => s.name).join(', ') }}</dd>
+						<dd>
+							{{
+								selectedNode.requiredConditions
+									.map((s) => s.name)
+									.join(', ')
+							}}
+						</dd>
 					</template>
 					<template v-if="selectedNode.requiredEffects.length">
 						<dt>{{ t('larpingapp', 'Required effects') }}</dt>
-						<dd>{{ selectedNode.requiredEffects.map(s => s.name).join(', ') }}</dd>
+						<dd>
+							{{
+								selectedNode.requiredEffects
+									.map((s) => s.name)
+									.join(', ')
+							}}
+						</dd>
 					</template>
 					<template v-if="!hasAnyRequirement(selectedNode)">
 						<dt>{{ t('larpingapp', 'Prerequisites') }}</dt>
-						<dd>{{ t('larpingapp', 'None — this is a root skill.') }}</dd>
+						<dd>
+							{{ t('larpingapp', 'None — this is a root skill.') }}
+						</dd>
 					</template>
 				</dl>
 			</div>
@@ -143,7 +199,13 @@ import { CnIcon, CnStatusBadge, useObjectStore } from '@conduction/nextcloud-vue
 import NcSelect from '@nextcloud/vue/components/NcSelect'
 import NcEmptyContent from '@nextcloud/vue/components/NcEmptyContent'
 import { generateUrl } from '@nextcloud/router'
-import { idList, indexNames, computeStateBySkill, buildNodes, computeTiers } from './skillTreeGraph.js'
+import {
+	idList,
+	indexNames,
+	computeStateBySkill,
+	buildNodes,
+	computeTiers,
+} from './skillTreeGraph.js'
 
 const STATE_META = {
 	owned: { label: 'Owned', variant: 'success' },
@@ -194,7 +256,9 @@ export default {
 		 * @spec openspec/specs/skill-tree-visualization/spec.md
 		 */
 		ownedSkillIds() {
-			const character = this.characters.find((c) => String(c.id) === this.selectedCharacter?.value)
+			const character = this.characters.find(
+				(c) => String(c.id) === this.selectedCharacter?.value,
+			)
 			return new Set(idList(character?.skills))
 		},
 
@@ -227,7 +291,11 @@ export default {
 			return buildNodes({
 				skills: this.skills,
 				activeSetting: this.selectedSetting?.value || null,
-				names: { ability: this.abilityNames, condition: this.conditionNames, effect: this.effectNames },
+				names: {
+					ability: this.abilityNames,
+					condition: this.conditionNames,
+					effect: this.effectNames,
+				},
 				stateMap: this.stateBySkill,
 			})
 		},
@@ -251,7 +319,10 @@ export default {
 		 * @spec openspec/specs/skill-tree-visualization/spec.md
 		 */
 		characterOptions() {
-			return this.characters.map((c) => ({ value: String(c.id), label: c.name || String(c.id) }))
+			return this.characters.map((c) => ({
+				value: String(c.id),
+				label: c.name || String(c.id),
+			}))
 		},
 
 		/**
@@ -332,7 +403,9 @@ export default {
 			// Only subscribe to types that initializeStores() registered —
 			// subscribe() throws on unregistered types (settings not loaded).
 			const types = ['skill', 'character'].filter(
-				(type) => Array.isArray(store.objectTypes) && store.objectTypes.includes(type),
+				(type) =>
+					Array.isArray(store.objectTypes)
+					&& store.objectTypes.includes(type),
 			)
 			if (types.length === 0) {
 				return
@@ -340,7 +413,9 @@ export default {
 			this.liveActive = true
 			const epoch = this.liveEpoch
 			try {
-				const handles = await Promise.all(types.map((type) => store.subscribe(type)))
+				const handles = await Promise.all(
+					types.map((type) => store.subscribe(type)),
+				)
 				if (this.liveEpoch !== epoch) {
 					// Released while awaiting (component destroyed) — drop the
 					// now-stale subscriptions instead of leaking them.
@@ -358,7 +433,10 @@ export default {
 				this.liveActive = false
 				this.liveHandles = []
 				// eslint-disable-next-line no-console
-				console.warn('[larpingapp] skill-tree live subscription failed:', e?.message ?? e)
+				console.warn(
+					'[larpingapp] skill-tree live subscription failed:',
+					e?.message ?? e,
+				)
 			}
 		},
 
@@ -414,13 +492,14 @@ export default {
 			this.loading = true
 			try {
 				const store = useObjectStore()
-				const [skills, characters, abilities, conditions, effects] = await Promise.all([
-					store.fetchCollection('skill', { _limit: 1000 }),
-					store.fetchCollection('character', { _limit: 1000 }),
-					store.fetchCollection('ability', { _limit: 1000 }),
-					store.fetchCollection('condition', { _limit: 1000 }),
-					store.fetchCollection('effect', { _limit: 1000 }),
-				])
+				const [skills, characters, abilities, conditions, effects] =
+					await Promise.all([
+						store.fetchCollection('skill', { _limit: 1000 }),
+						store.fetchCollection('character', { _limit: 1000 }),
+						store.fetchCollection('ability', { _limit: 1000 }),
+						store.fetchCollection('condition', { _limit: 1000 }),
+						store.fetchCollection('effect', { _limit: 1000 }),
+					])
 				this.skills = Array.isArray(skills) ? skills : []
 				this.characters = Array.isArray(characters) ? characters : []
 				this.abilityNames = indexNames(abilities)
@@ -450,8 +529,16 @@ export default {
 			}
 			try {
 				const response = await fetch(
-					generateUrl('/apps/larpingapp/api/characters/{id}/requirement-report', { id }),
-					{ headers: { requesttoken: OC.requestToken, 'OCS-APIREQUEST': 'true' } },
+					generateUrl(
+						'/apps/larpingapp/api/characters/{id}/requirement-report',
+						{ id },
+					),
+					{
+						headers: {
+							requesttoken: OC.requestToken,
+							'OCS-APIREQUEST': 'true',
+						},
+					},
 				)
 				if (!response.ok) {
 					throw new Error(`report failed: ${response.status}`)
@@ -484,10 +571,12 @@ export default {
 		 * @spec openspec/specs/skill-tree-visualization/spec.md
 		 */
 		hasAnyRequirement(node) {
-			return node.requiredSkills.length > 0
+			return (
+				node.requiredSkills.length > 0
 				|| node.requiredStats.length > 0
 				|| node.requiredConditions.length > 0
 				|| node.requiredEffects.length > 0
+			)
 		},
 
 		/**
@@ -498,7 +587,10 @@ export default {
 		 * @spec openspec/specs/skill-tree-visualization/spec.md
 		 */
 		stateLabel(state) {
-			return this.t('larpingapp', (STATE_META[state] || STATE_META.unknown).label)
+			return this.t(
+				'larpingapp',
+				(STATE_META[state] || STATE_META.unknown).label,
+			)
 		},
 
 		/**

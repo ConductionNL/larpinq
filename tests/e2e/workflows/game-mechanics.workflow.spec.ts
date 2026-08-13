@@ -74,7 +74,9 @@ test.afterAll(async () => {
 	await cleanupLedger(api, ledger)
 	await api.dispose()
 	// eslint-disable-next-line no-console
-	console.log(`[game-mechanics] RUN_ID=${RUN_ID} — fixtures cleaned up via ledger.`)
+	console.log(
+		`[game-mechanics] RUN_ID=${RUN_ID} — fixtures cleaned up via ledger.`,
+	)
 })
 
 /**
@@ -87,7 +89,8 @@ test.afterAll(async () => {
  * @return {boolean} True when skipping is honest.
  */
 function harnessUnavailable(computed: unknown): boolean {
-	const onCI = process.env.GITHUB_ACTIONS === 'true' || (process.env.CI ?? '') !== ''
+	const onCI =
+		process.env.GITHUB_ACTIONS === 'true' || (process.env.CI ?? '') !== ''
 	return computed === null && !onCI
 }
 
@@ -99,11 +102,14 @@ function harnessUnavailable(computed: unknown): boolean {
  * @return {Promise<string>} The ability UUID.
  */
 async function seedAbility(label: string, base: number): Promise<string> {
-	return ledger.track('ability', await createObject(api, 'ability', {
-		name: fixtureName(label),
-		description: `base ${base}`,
-		base,
-	}))
+	return ledger.track(
+		'ability',
+		await createObject(api, 'ability', {
+			name: fixtureName(label),
+			description: `base ${base}`,
+			base,
+		}),
+	)
 }
 
 /**
@@ -126,11 +132,14 @@ async function seedEffect(
 		abilities: string[]
 	},
 ): Promise<string> {
-	return ledger.track('effect', await createObject(api, 'effect', {
-		name: fixtureName(label),
-		description: `${spec.modification} ${spec.modifier}`,
-		...spec,
-	}))
+	return ledger.track(
+		'effect',
+		await createObject(api, 'effect', {
+			name: fixtureName(label),
+			description: `${spec.modification} ${spec.modifier}`,
+			...spec,
+		}),
+	)
 }
 
 /**
@@ -141,11 +150,18 @@ async function seedEffect(
  * @param {string[]} effects Effect UUIDs the carrier grants.
  * @return {Promise<string>} The carrier UUID.
  */
-async function seedCarrier(type: string, label: string, effects: string[]): Promise<string> {
-	return ledger.track(type, await createObject(api, type, {
-		name: fixtureName(label),
-		effects,
-	}))
+async function seedCarrier(
+	type: string,
+	label: string,
+	effects: string[],
+): Promise<string> {
+	return ledger.track(
+		type,
+		await createObject(api, type, {
+			name: fixtureName(label),
+			effects,
+		}),
+	)
 }
 
 /**
@@ -157,16 +173,25 @@ async function seedCarrier(type: string, label: string, effects: string[]): Prom
  * @param {Record<string, unknown>} carriers Any of skills/items/conditions/events.
  * @return {Promise<string>} The character UUID.
  */
-async function seedCharacter(label: string, carriers: Record<string, unknown> = {}): Promise<string> {
-	const playerId = ledger.track('player', await createObject(api, 'player', {
-		name: fixtureName(`${label}-player`),
-	}))
-	return ledger.track('character', await createObject(api, 'character', {
-		name: fixtureName(label),
-		ocName: playerId,
-		type: 'player',
-		...carriers,
-	}))
+async function seedCharacter(
+	label: string,
+	carriers: Record<string, unknown> = {},
+): Promise<string> {
+	const playerId = ledger.track(
+		'player',
+		await createObject(api, 'player', {
+			name: fixtureName(`${label}-player`),
+		}),
+	)
+	return ledger.track(
+		'character',
+		await createObject(api, 'character', {
+			name: fixtureName(label),
+			ocName: playerId,
+			type: 'player',
+			...carriers,
+		}),
+	)
 }
 
 /**
@@ -191,28 +216,38 @@ function requireStats(stats: DerivedStats | null, abilityId: string): DerivedSta
 // ===========================================================================
 
 test.describe('game-mechanics — each mechanic derives over the OR object model', () => {
-
 	// @e2e openspec/specs/game-mechanics/spec.md#ability-mechanic-serialises-into-derived-stats
 	test('ability mechanic serialises into derived stats', async () => {
 		// Expectation first: an ability carrying id/name/base, on a character
 		// with NO carriers at all, derives to value == base and an EMPTY audit.
 		const base = 7
 		const abilityName = fixtureName('ability-serialise')
-		const abilityId = ledger.track('ability', await createObject(api, 'ability', {
-			name: abilityName,
-			description: `base ${base}`,
-			base,
-		}))
+		const abilityId = ledger.track(
+			'ability',
+			await createObject(api, 'ability', {
+				name: abilityName,
+				description: `base ${base}`,
+				base,
+			}),
+		)
 		const characterId = await seedCharacter('ability-serialise-hero')
 
 		const stats = await computeStatsLive(characterId)
-		test.skip(harnessUnavailable(stats), 'CharacterService harness not runnable off CI (no server root, no docker).')
+		test.skip(
+			harnessUnavailable(stats),
+			'CharacterService harness not runnable off CI (no server root, no docker).',
+		)
 		const entry = requireStats(stats, abilityId)[abilityId]
 
-		expect(entry.name, 'the ability NAME must serialise through').toBe(abilityName)
+		expect(entry.name, 'the ability NAME must serialise through').toBe(
+			abilityName,
+		)
 		expect(entry.base, 'base must be the persisted base').toBe(base)
 		expect(entry.value, 'with no carriers, value must equal base').toBe(base)
-		expect(entry.audit, 'an unmodified ability must carry an EMPTY audit trail').toEqual([])
+		expect(
+			entry.audit,
+			'an unmodified ability must carry an EMPTY audit trail',
+		).toEqual([])
 	})
 
 	// @e2e openspec/specs/game-mechanics/spec.md#effect-mechanic-applies-its-modifier-and-records-an-audit-entry
@@ -224,26 +259,43 @@ test.describe('game-mechanics — each mechanic derives over the OR object model
 		const effectName = fixtureName('effect-audit')
 
 		const abilityId = await seedAbility('effect-audit-strength', base)
-		const effectId = ledger.track('effect', await createObject(api, 'effect', {
-			name: effectName,
-			modifier,
-			modification: 'positive',
-			cumulative: 'cumulative',
-			abilities: [abilityId],
-		}))
+		const effectId = ledger.track(
+			'effect',
+			await createObject(api, 'effect', {
+				name: effectName,
+				modifier,
+				modification: 'positive',
+				cumulative: 'cumulative',
+				abilities: [abilityId],
+			}),
+		)
 		const skillId = await seedCarrier('skill', 'effect-audit-skill', [effectId])
-		const characterId = await seedCharacter('effect-audit-hero', { skills: [skillId] })
+		const characterId = await seedCharacter('effect-audit-hero', {
+			skills: [skillId],
+		})
 
 		const stats = await computeStatsLive(characterId)
-		test.skip(harnessUnavailable(stats), 'CharacterService harness not runnable off CI (no server root, no docker).')
+		test.skip(
+			harnessUnavailable(stats),
+			'CharacterService harness not runnable off CI (no server root, no docker).',
+		)
 		const entry = requireStats(stats, abilityId)[abilityId]
 
-		expect(entry.value, `base ${base} + effect ${modifier} must derive to ${expected}`).toBe(expected)
-		expect(entry.audit, 'exactly one effect applied means exactly one audit entry').toHaveLength(1)
+		expect(
+			entry.value,
+			`base ${base} + effect ${modifier} must derive to ${expected}`,
+		).toBe(expected)
+		expect(
+			entry.audit,
+			'exactly one effect applied means exactly one audit entry',
+		).toHaveLength(1)
 
 		const [audit] = entry.audit
 		expect(audit.type).toBe('effect')
-		expect(audit.effectId, 'the audit must name the effect that caused the change').toBe(effectId)
+		expect(
+			audit.effectId,
+			'the audit must name the effect that caused the change',
+		).toBe(effectId)
 		expect(audit.effectName).toBe(effectName)
 		expect(audit.old, 'before/after delta must be recorded').toBe(base)
 		expect(audit.new).toBe(expected)
@@ -260,20 +312,34 @@ test.describe('game-mechanics — each mechanic derives over the OR object model
 
 		const abilityId = await seedAbility('skill-route-strength', base)
 		const effectId = await seedEffect('skill-route-effect', {
-			modifier, modification: 'positive', cumulative: 'cumulative', abilities: [abilityId],
+			modifier,
+			modification: 'positive',
+			cumulative: 'cumulative',
+			abilities: [abilityId],
 		})
-		const carryingSkill = await seedCarrier('skill', 'skill-route-carrying', [effectId])
+		const carryingSkill = await seedCarrier('skill', 'skill-route-carrying', [
+			effectId,
+		])
 		const emptySkill = await seedCarrier('skill', 'skill-route-empty', [])
 		const characterId = await seedCharacter('skill-route-hero', {
 			skills: [carryingSkill, emptySkill],
 		})
 
 		const stats = await computeStatsLive(characterId)
-		test.skip(harnessUnavailable(stats), 'CharacterService harness not runnable off CI (no server root, no docker).')
+		test.skip(
+			harnessUnavailable(stats),
+			'CharacterService harness not runnable off CI (no server root, no docker).',
+		)
 		const entry = requireStats(stats, abilityId)[abilityId]
 
-		expect(entry.value, `only the carrying skill may contribute: ${base} + ${modifier}`).toBe(expected)
-		expect(entry.audit, 'the effect-less skill must add no audit entry').toHaveLength(1)
+		expect(
+			entry.value,
+			`only the carrying skill may contribute: ${base} + ${modifier}`,
+		).toBe(expected)
+		expect(
+			entry.audit,
+			'the effect-less skill must add no audit entry',
+		).toHaveLength(1)
 	})
 
 	// @e2e openspec/specs/game-mechanics/spec.md#item-mechanic-applies-worn-effects
@@ -286,16 +352,27 @@ test.describe('game-mechanics — each mechanic derives over the OR object model
 
 		const abilityId = await seedAbility('item-worn-defense', base)
 		const effectId = await seedEffect('item-worn-effect', {
-			modifier, modification: 'positive', cumulative: 'cumulative', abilities: [abilityId],
+			modifier,
+			modification: 'positive',
+			cumulative: 'cumulative',
+			abilities: [abilityId],
 		})
 		const itemId = await seedCarrier('item', 'item-worn-ring', [effectId])
-		const characterId = await seedCharacter('item-worn-hero', { items: [itemId] })
+		const characterId = await seedCharacter('item-worn-hero', {
+			items: [itemId],
+		})
 
 		const stats = await computeStatsLive(characterId)
-		test.skip(harnessUnavailable(stats), 'CharacterService harness not runnable off CI (no server root, no docker).')
+		test.skip(
+			harnessUnavailable(stats),
+			'CharacterService harness not runnable off CI (no server root, no docker).',
+		)
 		const entry = requireStats(stats, abilityId)[abilityId]
 
-		expect(entry.value, `an item-borne effect must apply with no skill present: ${expected}`).toBe(expected)
+		expect(
+			entry.value,
+			`an item-borne effect must apply with no skill present: ${expected}`,
+		).toBe(expected)
 		expect(entry.audit).toHaveLength(1)
 		expect(entry.audit[0].effectId).toBe(effectId)
 	})
@@ -310,18 +387,35 @@ test.describe('game-mechanics — each mechanic derives over the OR object model
 
 		const abilityId = await seedAbility('condition-debuff-hp', base)
 		const effectId = await seedEffect('condition-debuff-curse', {
-			modifier, modification: 'negative', cumulative: 'cumulative', abilities: [abilityId],
+			modifier,
+			modification: 'negative',
+			cumulative: 'cumulative',
+			abilities: [abilityId],
 		})
-		const conditionId = await seedCarrier('condition', 'condition-debuff-poisoned', [effectId])
-		const characterId = await seedCharacter('condition-debuff-hero', { conditions: [conditionId] })
+		const conditionId = await seedCarrier(
+			'condition',
+			'condition-debuff-poisoned',
+			[effectId],
+		)
+		const characterId = await seedCharacter('condition-debuff-hero', {
+			conditions: [conditionId],
+		})
 
 		const stats = await computeStatsLive(characterId)
-		test.skip(harnessUnavailable(stats), 'CharacterService harness not runnable off CI (no server root, no docker).')
+		test.skip(
+			harnessUnavailable(stats),
+			'CharacterService harness not runnable off CI (no server root, no docker).',
+		)
 		const entry = requireStats(stats, abilityId)[abilityId]
 
-		expect(entry.value, `a negative modification must SUBTRACT: ${base} - ${modifier}`).toBe(expected)
+		expect(
+			entry.value,
+			`a negative modification must SUBTRACT: ${base} - ${modifier}`,
+		).toBe(expected)
 		expect(entry.audit).toHaveLength(1)
-		expect(entry.audit[0].old, 'the audit must record the debuff delta').toBe(base)
+		expect(entry.audit[0].old, 'the audit must record the debuff delta').toBe(
+			base,
+		)
 		expect(entry.audit[0].new).toBe(expected)
 	})
 })
@@ -331,7 +425,6 @@ test.describe('game-mechanics — each mechanic derives over the OR object model
 // ===========================================================================
 
 test.describe('game-mechanics — the effect chain end to end', () => {
-
 	// @e2e openspec/specs/game-mechanics/spec.md#full-chain-derives-a-loaded-character-across-all-abilities
 	test('full chain derives a loaded character across all abilities', async () => {
 		// HP: 20 + 5 (skill) + 3 (item) - 2 (condition) + 1 (event) = 27, with a
@@ -348,39 +441,68 @@ test.describe('game-mechanics — the effect chain end to end', () => {
 		const manaId = await seedAbility('chain-mana', manaBase)
 
 		const skillEffect = await seedEffect('chain-skill-effect', {
-			modifier: 5, modification: 'positive', cumulative: 'cumulative', abilities: [hpId],
+			modifier: 5,
+			modification: 'positive',
+			cumulative: 'cumulative',
+			abilities: [hpId],
 		})
 		const itemEffect = await seedEffect('chain-item-effect', {
-			modifier: 3, modification: 'positive', cumulative: 'cumulative', abilities: [hpId],
+			modifier: 3,
+			modification: 'positive',
+			cumulative: 'cumulative',
+			abilities: [hpId],
 		})
 		const conditionEffect = await seedEffect('chain-condition-effect', {
-			modifier: 2, modification: 'negative', cumulative: 'cumulative', abilities: [hpId],
+			modifier: 2,
+			modification: 'negative',
+			cumulative: 'cumulative',
+			abilities: [hpId],
 		})
 		const eventEffect = await seedEffect('chain-event-effect', {
-			modifier: 1, modification: 'positive', cumulative: 'cumulative', abilities: [hpId],
+			modifier: 1,
+			modification: 'positive',
+			cumulative: 'cumulative',
+			abilities: [hpId],
 		})
 
 		const characterId = await seedCharacter('chain-tank', {
 			skills: [await seedCarrier('skill', 'chain-skill', [skillEffect])],
 			items: [await seedCarrier('item', 'chain-item', [itemEffect])],
-			conditions: [await seedCarrier('condition', 'chain-condition', [conditionEffect])],
+			conditions: [
+				await seedCarrier('condition', 'chain-condition', [conditionEffect]),
+			],
 			events: [await seedCarrier('event', 'chain-event', [eventEffect])],
 		})
 
 		const stats = await computeStatsLive(characterId)
-		test.skip(harnessUnavailable(stats), 'CharacterService harness not runnable off CI (no server root, no docker).')
+		test.skip(
+			harnessUnavailable(stats),
+			'CharacterService harness not runnable off CI (no server root, no docker).',
+		)
 		const all = requireStats(stats, hpId)
 		const hp = all[hpId]
 
-		expect(hp.value, `${hpBase} + 5 + 3 - 2 + 1 must derive to ${expectedHp}`).toBe(expectedHp)
-		expect(hp.audit, 'all four carrier types must contribute one entry each').toHaveLength(4)
 		expect(
-			hp.audit.map(a => a.effectId),
+			hp.value,
+			`${hpBase} + 5 + 3 - 2 + 1 must derive to ${expectedHp}`,
+		).toBe(expectedHp)
+		expect(
+			hp.audit,
+			'all four carrier types must contribute one entry each',
+		).toHaveLength(4)
+		expect(
+			hp.audit.map((a) => a.effectId),
 			'application order is skills, then items, then conditions, then events',
 		).toEqual([skillEffect, itemEffect, conditionEffect, eventEffect])
 
-		expect(all[manaId].value, 'an ability no effect targets must keep its base').toBe(manaBase)
-		expect(all[manaId].audit, 'and must keep an EMPTY audit — no cross-ability bleed').toEqual([])
+		expect(
+			all[manaId].value,
+			'an ability no effect targets must keep its base',
+		).toBe(manaBase)
+		expect(
+			all[manaId].audit,
+			'and must keep an EMPTY audit — no cross-ability bleed',
+		).toEqual([])
 	})
 
 	// @e2e openspec/specs/game-mechanics/spec.md#cumulative-and-non-cumulative-effects-behave-correctly-in-the-chain
@@ -392,17 +514,23 @@ test.describe('game-mechanics — the effect chain end to end', () => {
 		const stackBase = 0
 		const onceBase = 0
 		const modifier = 2
-		const expectedStack = stackBase + (modifier * 2)
+		const expectedStack = stackBase + modifier * 2
 		const expectedOnce = onceBase + modifier
 
 		const stackId = await seedAbility('cum-stacking', stackBase)
 		const onceId = await seedAbility('cum-once', onceBase)
 
 		const cumulativeEffect = await seedEffect('cum-cumulative', {
-			modifier, modification: 'positive', cumulative: 'cumulative', abilities: [stackId],
+			modifier,
+			modification: 'positive',
+			cumulative: 'cumulative',
+			abilities: [stackId],
 		})
 		const nonCumulativeEffect = await seedEffect('cum-non-cumulative', {
-			modifier, modification: 'positive', cumulative: 'non-cumulative', abilities: [onceId],
+			modifier,
+			modification: 'positive',
+			cumulative: 'non-cumulative',
+			abilities: [onceId],
 		})
 
 		// The SAME two effects on both carriers — that is what makes them
@@ -414,20 +542,29 @@ test.describe('game-mechanics — the effect chain end to end', () => {
 		})
 
 		const stats = await computeStatsLive(characterId)
-		test.skip(harnessUnavailable(stats), 'CharacterService harness not runnable off CI (no server root, no docker).')
+		test.skip(
+			harnessUnavailable(stats),
+			'CharacterService harness not runnable off CI (no server root, no docker).',
+		)
 		const all = requireStats(stats, stackId)
 
 		expect(
 			all[stackId].value,
 			`a cumulative effect reached twice must apply twice: ${expectedStack}`,
 		).toBe(expectedStack)
-		expect(all[stackId].audit, 'two applications means two audit entries').toHaveLength(2)
+		expect(
+			all[stackId].audit,
+			'two applications means two audit entries',
+		).toHaveLength(2)
 
 		expect(
 			all[onceId].value,
 			`a non-cumulative effect reached twice must apply once: ${expectedOnce}`,
 		).toBe(expectedOnce)
-		expect(all[onceId].audit, 'one application means ONE audit entry').toHaveLength(1)
+		expect(
+			all[onceId].audit,
+			'one application means ONE audit entry',
+		).toHaveLength(1)
 	})
 
 	// @e2e openspec/specs/game-mechanics/spec.md#characters-are-computed-independently-across-the-roster
@@ -442,7 +579,10 @@ test.describe('game-mechanics — the effect chain end to end', () => {
 
 		const abilityId = await seedAbility('roster-strength', base)
 		const effectId = await seedEffect('roster-effect', {
-			modifier, modification: 'positive', cumulative: 'cumulative', abilities: [abilityId],
+			modifier,
+			modification: 'positive',
+			cumulative: 'cumulative',
+			abilities: [abilityId],
 		})
 		const skillId = await seedCarrier('skill', 'roster-skill', [effectId])
 
@@ -450,8 +590,14 @@ test.describe('game-mechanics — the effect chain end to end', () => {
 		const bareId = await seedCharacter('roster-bare')
 
 		const roster = await computeRosterLive([loadedId, bareId])
-		test.skip(harnessUnavailable(roster), 'CharacterService harness not runnable off CI (no server root, no docker).')
-		expect(roster, 'calculateAllCharacters() must be runnable on CI').not.toBeNull()
+		test.skip(
+			harnessUnavailable(roster),
+			'CharacterService harness not runnable off CI (no server root, no docker).',
+		)
+		expect(
+			roster,
+			'calculateAllCharacters() must be runnable on CI',
+		).not.toBeNull()
 
 		expect(
 			Object.keys(roster!).sort(),
@@ -461,10 +607,15 @@ test.describe('game-mechanics — the effect chain end to end', () => {
 		const loaded = roster![loadedId][abilityId]
 		const bare = roster![bareId][abilityId]
 
-		expect(loaded.value, `the loaded character derives ${base} + ${modifier}`).toBe(expectedLoaded)
+		expect(
+			loaded.value,
+			`the loaded character derives ${base} + ${modifier}`,
+		).toBe(expectedLoaded)
 		expect(loaded.audit.length, 'and carries an audit trail').toBeGreaterThan(0)
 
 		expect(bare.value, 'the bare character keeps its pure base score').toBe(base)
-		expect(bare.audit, 'and an EMPTY audit — no cross-character bleed').toEqual([])
+		expect(bare.audit, 'and an EMPTY audit — no cross-character bleed').toEqual(
+			[],
+		)
 	})
 })

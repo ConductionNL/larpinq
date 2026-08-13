@@ -25,7 +25,10 @@ import { test, expect } from '@playwright/test'
 const BASE = '/apps/larpingapp'
 
 test.describe('event-runsheet-export', () => {
-	test('run-sheet endpoint is wired and authenticated', async ({ page, request }) => {
+	test('run-sheet endpoint is wired and authenticated', async ({
+		page,
+		request,
+	}) => {
 		await page.goto(BASE)
 
 		// A valid-UUID but absent event with a valid-UUID template: depending on

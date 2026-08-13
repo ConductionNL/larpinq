@@ -34,8 +34,16 @@ test.describe('event-xp-award-workflow', () => {
 		// `getByText(/XP Award/i)` was tautological — it matched the sidebar's
 		// own "XP Awards" nav label and so passed on any route.
 		await expect(
-			page.locator('.app-content button').filter({ hasText: /Add XP Award|New XP Award/i }).first()
-				.or(page.locator('.app-content').getByText(/No items found|Showing \d+ of \d+/i).first()),
+			page
+				.locator('.app-content button')
+				.filter({ hasText: /Add XP Award|New XP Award/i })
+				.first()
+				.or(
+					page
+						.locator('.app-content')
+						.getByText(/No items found|Showing \d+ of \d+/i)
+						.first(),
+				),
 			'XP Awards index must render its create action or an explicit empty state',
 		).toBeVisible({ timeout: 15_000 })
 

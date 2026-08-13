@@ -53,7 +53,9 @@ function ensureBundleBuilt(): void {
 		return
 	}
 	// eslint-disable-next-line no-console
-	console.log(`[playwright globalSetup] bundle missing at ${BUNDLE_PATH}; running 'npm run build' once…`)
+	console.log(
+		`[playwright globalSetup] bundle missing at ${BUNDLE_PATH}; running 'npm run build' once…`,
+	)
 	execSync('npm run build', { cwd: APP_ROOT, stdio: 'inherit' })
 }
 
@@ -69,18 +71,24 @@ function ensureBundleBuilt(): void {
  * (default 10 min). Pattern mirrored from docudesk's globalSetup.
  */
 async function ensureNextcloudReachable(baseURL: string): Promise<void> {
-	const deadline = Date.now() + Number(process.env.E2E_HEALTH_TIMEOUT_MS || 600_000)
+	const deadline =
+		Date.now() + Number(process.env.E2E_HEALTH_TIMEOUT_MS || 600_000)
 	const ctx = await request.newContext()
 	let last = 'no response yet'
 	try {
 		while (Date.now() < deadline) {
 			try {
-				const res = await ctx.get(`${baseURL}/status.php`, { failOnStatusCode: false })
+				const res = await ctx.get(`${baseURL}/status.php`, {
+					failOnStatusCode: false,
+				})
 				if (res.ok()) {
 					const body = await res.json().catch(() => ({}))
-					if (body && body.installed === true
+					if (
+						body
+						&& body.installed === true
 						&& body.maintenance === false
-						&& body.needsDbUpgrade === false) {
+						&& body.needsDbUpgrade === false
+					) {
 						return
 					}
 					last = `status.php = ${JSON.stringify(body)}`
@@ -96,7 +104,7 @@ async function ensureNextcloudReachable(baseURL: string): Promise<void> {
 		}
 		throw new Error(
 			`Nextcloud at ${baseURL} did not become healthy in time — last seen: ${last}. `
-			+ 'Check for a concurrent deploy (occ upgrade), maintenance mode, or a recovering database.',
+				+ 'Check for a concurrent deploy (occ upgrade), maintenance mode, or a recovering database.',
 		)
 	} finally {
 		await ctx.dispose()
@@ -107,8 +115,8 @@ export default async function globalSetup(config: FullConfig): Promise<void> {
 	// No `?? 'http://localhost:8080'` fallback — see `_base-url.ts`. The config's
 	// own baseURL comes from the same resolver, so the browser side and the API
 	// side of the suite can never disagree about which instance they are on.
-	const baseURL = (config.projects[0]?.use?.baseURL as string | undefined)
-		?? resolveBaseURL()
+	const baseURL =
+		(config.projects[0]?.use?.baseURL as string | undefined) ?? resolveBaseURL()
 	const username = process.env.NC_ADMIN_USER ?? 'admin'
 	const password = process.env.NC_ADMIN_PASS ?? 'admin'
 
@@ -138,8 +146,14 @@ export default async function globalSetup(config: FullConfig): Promise<void> {
 	// but no `name` attribute, so a `input[name="user"]` selector never resolves
 	// and globalSetup times out. Match either shape (plus the autocomplete
 	// attributes NC 34 sets), and wait for the field to be visible first.
-	const userField = page.locator('input#user, input[name="user"], input[autocomplete="username"]').first()
-	const passwordField = page.locator('input#password, input[name="password"], input[autocomplete="current-password"]').first()
+	const userField = page
+		.locator('input#user, input[name="user"], input[autocomplete="username"]')
+		.first()
+	const passwordField = page
+		.locator(
+			'input#password, input[name="password"], input[autocomplete="current-password"]',
+		)
+		.first()
 	await userField.waitFor({ state: 'visible', timeout: 30_000 })
 	// The login form is a Vue app: the markup exists before its submit handler
 	// is attached, so clicking too early silently does nothing and the page
@@ -158,21 +172,27 @@ export default async function globalSetup(config: FullConfig): Promise<void> {
 	// Bind the navigation wait BEFORE clicking, so a fast redirect cannot be
 	// missed between the click returning and the wait starting.
 	await Promise.all([
-		page.waitForNavigation({ waitUntil: 'domcontentloaded', timeout: 60_000 }).catch(() => {}),
+		page
+			.waitForNavigation({ waitUntil: 'domcontentloaded', timeout: 60_000 })
+			.catch(() => {}),
 		submit.click(),
 	])
 	// Nextcloud bounces to /apps/dashboard/ (or another default app) on
 	// success. Wait for navigation away from the login page.
-	await page.waitForURL((url) => /\/login(\?|$|\/)/.test(url.pathname) === false, { timeout: 60_000 })
+	await page.waitForURL((url) => /\/login(\?|$|\/)/.test(url.pathname) === false, {
+		timeout: 60_000,
+	})
 	// Wait for the authenticated shell. NC 34 no longer guarantees the legacy
 	// `#header` / `header.header` markup, so accept any banner-role header.
-	await page.waitForSelector('#header, header.header, header, [role="banner"]', { timeout: 60_000 })
+	await page.waitForSelector('#header, header.header, header, [role="banner"]', {
+		timeout: 60_000,
+	})
 	// Catch wrong-credentials early so the failure message is clear.
 	const currentUrl = page.url()
 	if (/\/login(\?|$|\/)/.test(currentUrl)) {
 		throw new Error(
-			`Login appears to have failed — still on ${currentUrl}. ` +
-			`Check NC_ADMIN_USER / NC_ADMIN_PASS (defaults admin/admin).`,
+			`Login appears to have failed — still on ${currentUrl}. `
+				+ `Check NC_ADMIN_USER / NC_ADMIN_PASS (defaults admin/admin).`,
 		)
 	}
 

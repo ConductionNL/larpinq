@@ -24,7 +24,9 @@ export function idList(value) {
 		return []
 	}
 	return value
-		.map((v) => (v && typeof v === 'object' ? (v.id ?? v['@self']?.id ?? '') : v))
+		.map((v) =>
+			v && typeof v === 'object' ? (v.id ?? v['@self']?.id ?? '') : v,
+		)
 		.map(String)
 		.filter((v) => v !== '')
 }
@@ -37,7 +39,7 @@ export function idList(value) {
  */
 export function indexNames(collection) {
 	const map = {}
-	for (const item of (Array.isArray(collection) ? collection : [])) {
+	for (const item of Array.isArray(collection) ? collection : []) {
 		if (item && item.id !== undefined) {
 			map[String(item.id)] = item.name || String(item.id)
 		}
@@ -67,10 +69,10 @@ export function computeStateBySkill({ skills, ownedIds, report }) {
 	}
 	const budgetOk = report?.budget?.ok !== false
 	const bySkill = {}
-	for (const entry of (report?.requirements ?? [])) {
-		(bySkill[entry.skill] = bySkill[entry.skill] || []).push(entry.status)
+	for (const entry of report?.requirements ?? []) {
+		;(bySkill[entry.skill] = bySkill[entry.skill] || []).push(entry.status)
 	}
-	for (const skill of (Array.isArray(skills) ? skills : [])) {
+	for (const skill of Array.isArray(skills) ? skills : []) {
 		const id = String(skill.id)
 		if (ownedIds.has(id)) {
 			state[id] = 'owned'
@@ -81,7 +83,8 @@ export function computeStateBySkill({ skills, ownedIds, report }) {
 			state[id] = 'unknown'
 			continue
 		}
-		const blocked = statuses.some((s) => s === 'unmet' || s === 'unresolvable') || !budgetOk
+		const blocked =
+			statuses.some((s) => s === 'unmet' || s === 'unresolvable') || !budgetOk
 		state[id] = blocked ? 'locked' : 'available'
 	}
 	return state
@@ -113,11 +116,23 @@ export function buildNodes({ skills, activeSetting, names, stateMap }) {
 			id: String(s.id),
 			name: s.name || String(s.id),
 			setting: s.setting,
-			requiredSkills: idList(s.requiredSkills).map((id) => ({ id, name: skillName[id] || id })),
-			requiredStats: idList(s.requiredStats).map((id) => ({ id, name: ability[id] || id })),
+			requiredSkills: idList(s.requiredSkills).map((id) => ({
+				id,
+				name: skillName[id] || id,
+			})),
+			requiredStats: idList(s.requiredStats).map((id) => ({
+				id,
+				name: ability[id] || id,
+			})),
 			requiredScore: Number(s.requiredScore || 0),
-			requiredConditions: idList(s.requiredConditions).map((id) => ({ id, name: condition[id] || id })),
-			requiredEffects: idList(s.requiredEffects).map((id) => ({ id, name: effect[id] || id })),
+			requiredConditions: idList(s.requiredConditions).map((id) => ({
+				id,
+				name: condition[id] || id,
+			})),
+			requiredEffects: idList(s.requiredEffects).map((id) => ({
+				id,
+				name: effect[id] || id,
+			})),
 			state: (stateMap && stateMap[String(s.id)]) || 'unknown',
 		}))
 }
@@ -138,7 +153,9 @@ export function computeTiers(nodes) {
 	for (let pass = 0; pass < list.length && placed.size < list.length; pass++) {
 		const tier = list.filter((n) => {
 			if (placed.has(n.id)) return false
-			return n.requiredSkills.every((r) => !inScope.has(r.id) || placed.has(r.id))
+			return n.requiredSkills.every(
+				(r) => !inScope.has(r.id) || placed.has(r.id),
+			)
 		})
 		if (tier.length === 0) break
 		tier.forEach((n) => placed.add(n.id))

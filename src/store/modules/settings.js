@@ -36,7 +36,9 @@ export const useSettingsStore = defineStore('settings', {
 				})
 
 				if (!response.ok) {
-					throw new Error(`Failed to fetch settings: ${response.statusText}`)
+					throw new Error(
+						`Failed to fetch settings: ${response.statusText}`,
+					)
 				}
 
 				const data = await response.json()
@@ -78,7 +80,9 @@ export const useSettingsStore = defineStore('settings', {
 				})
 
 				if (!response.ok) {
-					throw new Error(`Failed to save settings: ${response.statusText}`)
+					throw new Error(
+						`Failed to save settings: ${response.statusText}`,
+					)
 				}
 
 				const data = await response.json()
@@ -102,14 +106,17 @@ export const useSettingsStore = defineStore('settings', {
 			this.error = null
 
 			try {
-				const response = await fetch('/apps/larpingapp/api/settings/reimport', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-						requesttoken: OC.requestToken,
-						'OCS-APIREQUEST': 'true',
+				const response = await fetch(
+					'/apps/larpingapp/api/settings/reimport',
+					{
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+							requesttoken: OC.requestToken,
+							'OCS-APIREQUEST': 'true',
+						},
 					},
-				})
+				)
 
 				if (!response.ok) {
 					throw new Error(`Failed to reimport: ${response.statusText}`)

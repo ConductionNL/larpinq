@@ -45,14 +45,23 @@ describe('larpingapp settings store', () => {
 	})
 
 	it('fetchSettings stores config, derives flags and marks initialized', async () => {
-		mockFetchOnce({ json: { openRegisters: true, isAdmin: true, configuration: { meetingSchema: 'meeting' } } })
+		mockFetchOnce({
+			json: {
+				openRegisters: true,
+				isAdmin: true,
+				configuration: { meetingSchema: 'meeting' },
+			},
+		})
 		const store = useSettingsStore()
 		const config = await store.fetchSettings()
 		expect(globalThis.fetch).toHaveBeenCalledWith(
 			'/apps/larpingapp/api/settings',
 			expect.objectContaining({
 				method: 'GET',
-				headers: expect.objectContaining({ requesttoken: 'test-token', 'OCS-APIREQUEST': 'true' }),
+				headers: expect.objectContaining({
+					requesttoken: 'test-token',
+					'OCS-APIREQUEST': 'true',
+				}),
 			}),
 		)
 		expect(config).toEqual({ meetingSchema: 'meeting' })
