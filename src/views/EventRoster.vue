@@ -21,17 +21,29 @@
 -->
 <template>
 	<div class="event-roster" data-testid="event-roster">
-		<div v-if="degraded" class="event-roster__notice" data-testid="event-roster-degraded">
-			{{ t('larpingapp', 'Attendance tracking is unavailable — showing the participant list read-only.') }}
+		<div
+			v-if="degraded"
+			class="event-roster__notice"
+			data-testid="event-roster-degraded">
+			{{
+				t(
+					'larpingapp',
+					'Attendance tracking is unavailable — showing the participant list read-only.',
+				)
+			}}
 		</div>
 		<CnDataTable
 			:columns="columns"
 			:rows="participants"
 			:loading="loading"
-			:empty-text="t('larpingapp', 'No confirmed participants for this event yet.')"
+			:empty-text="
+				t('larpingapp', 'No confirmed participants for this event yet.')
+			"
 			data-testid="event-roster-table">
 			<template #column-status="{ row }">
-				<CnStatusBadge :label="statusLabel(row.status)" :variant="statusVariant(row.status)" />
+				<CnStatusBadge
+					:label="statusLabel(row.status)"
+					:variant="statusVariant(row.status)" />
 			</template>
 			<template v-if="canCheckIn" #row-actions="{ row }">
 				<!--
@@ -42,7 +54,9 @@
 				-->
 				<NcButton
 					variant="secondary"
-					:disabled="saving === row.character || row.status === 'checked-in'"
+					:disabled="
+						saving === row.character || row.status === 'checked-in'
+					"
 					data-testid="event-roster-checkin"
 					@click="setStatus(row, 'checked-in')">
 					{{ t('larpingapp', 'Check in') }}
@@ -129,10 +143,12 @@ export default {
 		 * @spec openspec/specs/event-checkin-roster/spec.md
 		 */
 		eventId() {
-			return this.objectId
+			return (
+				this.objectId
 				|| this.cnObjectContext?.objectId
 				|| this.$route?.params?.id
 				|| ''
+			)
 		},
 
 		/**
@@ -191,14 +207,23 @@ export default {
 			this.loading = true
 			try {
 				const response = await fetch(
-					generateUrl('/apps/larpingapp/api/events/{id}/roster', { id: this.eventId }),
-					{ headers: { requesttoken: OC.requestToken, 'OCS-APIREQUEST': 'true' } },
+					generateUrl('/apps/larpingapp/api/events/{id}/roster', {
+						id: this.eventId,
+					}),
+					{
+						headers: {
+							requesttoken: OC.requestToken,
+							'OCS-APIREQUEST': 'true',
+						},
+					},
 				)
 				if (!response.ok) {
 					throw new Error(`roster fetch failed: ${response.status}`)
 				}
 				const data = await response.json()
-				this.participants = Array.isArray(data.participants) ? data.participants : []
+				this.participants = Array.isArray(data.participants)
+					? data.participants
+					: []
 				this.attendanceAvailable = data.attendanceAvailable !== false
 				this.isGm = data.isGm === true
 				this.loadFailed = false
@@ -227,7 +252,9 @@ export default {
 			this.saving = row.character
 			try {
 				const response = await fetch(
-					generateUrl('/apps/larpingapp/api/events/{id}/attendance', { id: this.eventId }),
+					generateUrl('/apps/larpingapp/api/events/{id}/attendance', {
+						id: this.eventId,
+					}),
 					{
 						method: 'POST',
 						headers: {

@@ -1,15 +1,11 @@
 // SPDX-License-Identifier: EUPL-1.2
 // SPDX-FileCopyrightText: 2026 Conduction B.V.
 
-const {
-	defineConfig,
-} = require('@eslint/config-helpers')
+const { defineConfig } = require('@eslint/config-helpers')
 
 const js = require('@eslint/js')
 
-const {
-	FlatCompat,
-} = require('@eslint/eslintrc')
+const { FlatCompat } = require('@eslint/eslintrc')
 
 // The SHARED Conduction Vue 3 fix layer, shipped inside the component library
 // so every app arms the same gate from one import instead of hand-rolling it.
@@ -35,58 +31,90 @@ const compat = new FlatCompat({
 	allConfig: js.configs.all,
 })
 
-module.exports = defineConfig([{
-	// `@nextcloud/eslint-config`'s DEFAULT entry point, not its `/vue3` one.
-	// The `/vue3` preset sets `parserOptions.parser` to a bare string, which
-	// makes `vue-eslint-parser` route template expressions through
-	// `@typescript-eslint/parser` and lose `v-for` scope — hundreds of bogus
-	// `vue/valid-v-for` errors on correct Vue 3 code. `conductionVue3Fixes`
-	// (spread below) supplies the correct object-form parser wiring plus the
-	// Vue 3 deprecation gate on top of this base.
-	extends: compat.extends('@nextcloud'),
+module.exports = defineConfig([
+	{
+		// `@nextcloud/eslint-config`'s DEFAULT entry point, not its `/vue3` one.
+		// The `/vue3` preset sets `parserOptions.parser` to a bare string, which
+		// makes `vue-eslint-parser` route template expressions through
+		// `@typescript-eslint/parser` and lose `v-for` scope — hundreds of bogus
+		// `vue/valid-v-for` errors on correct Vue 3 code. `conductionVue3Fixes`
+		// (spread below) supplies the correct object-form parser wiring plus the
+		// Vue 3 deprecation gate on top of this base.
+		extends: compat.extends('@nextcloud'),
 
-	settings: {
-		'import/resolver': {
-			alias: {
-				map: [
-					['@', './src'],
-					['@floating-ui/dom-actual', './node_modules/@floating-ui/dom'],
-					['@conduction/nextcloud-vue', '../nextcloud-vue/src'],
-				],
-				extensions: ['.js', '.ts', '.vue', '.json', '.css'],
+		settings: {
+			'import/resolver': {
+				alias: {
+					map: [
+						['@', './src'],
+						[
+							'@floating-ui/dom-actual',
+							'./node_modules/@floating-ui/dom',
+						],
+						['@conduction/nextcloud-vue', '../nextcloud-vue/src'],
+					],
+					extensions: ['.js', '.ts', '.vue', '.json', '.css'],
+				},
 			},
 		},
-	},
 
-	rules: {
-		// `@spec` (hydra gate-16 / gate-19 traceability) and `@visual` (the
-		// visual-coverage gate) are this project's own JSDoc tags. They must be
-		// passed as RULE OPTIONS, not via `settings.jsdoc.definedTags` — once an
-		// extended preset has configured the rule, the rule reads `definedTags`
-		// from its own options object and the shared setting is ignored. That is
-		// why 71 `@spec` annotations reported "Invalid JSDoc tag name".
-		'jsdoc/check-tag-names': ['warn', { definedTags: ['spec', 'visual'] }],
-		// Allow unused i18n functions (t, n) — imported for future translation wiring
-		'no-unused-vars': ['error', { varsIgnorePattern: '^(t|n)$', argsIgnorePattern: '^_', ignoreRestSiblings: true }],
-		'jsdoc/require-jsdoc': 'off',
-		'vue/first-attribute-linebreak': 'off',
-		'@typescript-eslint/no-explicit-any': 'off',
-		'n/no-missing-import': 'off',
-		'import/namespace': 'off',
-		'import/default': 'off',
-		'import/no-named-as-default': 'off',
-		'import/no-named-as-default-member': 'off',
+		rules: {
+			// `@spec` (hydra gate-16 / gate-19 traceability) and `@visual` (the
+			// visual-coverage gate) are this project's own JSDoc tags. They must be
+			// passed as RULE OPTIONS, not via `settings.jsdoc.definedTags` — once an
+			// extended preset has configured the rule, the rule reads `definedTags`
+			// from its own options object and the shared setting is ignored. That is
+			// why 71 `@spec` annotations reported "Invalid JSDoc tag name".
+			'jsdoc/check-tag-names': ['warn', { definedTags: ['spec', 'visual'] }],
+			// Allow unused i18n functions (t, n) — imported for future translation wiring
+			'no-unused-vars': [
+				'error',
+				{
+					varsIgnorePattern: '^(t|n)$',
+					argsIgnorePattern: '^_',
+					ignoreRestSiblings: true,
+				},
+			],
+			'jsdoc/require-jsdoc': 'off',
+			'vue/first-attribute-linebreak': 'off',
+			'@typescript-eslint/no-explicit-any': 'off',
+			'n/no-missing-import': 'off',
+			'import/namespace': 'off',
+			'import/default': 'off',
+			'import/no-named-as-default': 'off',
+			'import/no-named-as-default-member': 'off',
+		},
 	},
-}, {
-	// Node-side CLI tools (build / validate scripts) legitimately use
-	// console + process.exit and ship as plain JS (no shebang).
-	files: ['tests/validate-manifest.js', 'tests/validate-register.js', 'tests/validate-json-strict.js'],
-	rules: {
-		'no-console': 'off',
-		'n/no-process-exit': 'off',
-		'n/shebang': 'off',
+	{
+		// Node-side CLI tools (build / validate scripts) legitimately use
+		// console + process.exit and ship as plain JS (no shebang).
+		files: [
+			'tests/validate-manifest.js',
+			'tests/validate-register.js',
+			'tests/validate-json-strict.js',
+		],
+		rules: {
+			'no-console': 'off',
+			'n/no-process-exit': 'off',
+			'n/shebang': 'off',
+		},
 	},
-},
-// Vue 3 gate — MUST stay last so its rules win over the Vue-2 base above.
-...conductionVue3Fixes,
+	// Vue 3 gate — MUST stay last so its rules win over the Vue-2 base above.
+	...conductionVue3Fixes,
+	// eslint-config-prettier LAST OF ALL, and it has to be: it only turns rules
+	// OFF — every stylistic rule prettier now owns (indent, quotes,
+	// operator-linebreak, comma-dangle…). Anything spread after it would switch
+	// some of them back on, and eslint and prettier would then demand opposite
+	// things — the unfixable state this fleet already hit once with php-cs-fixer
+	// and PHPCS.
+	//
+	// Measured on this app: prettier WITHOUT this layer left 29 eslint errors,
+	// every one a formatting rule disagreeing with prettier's output. With it, 0.
+	//
+	// It disables no CORRECTNESS rule. Verified: all 21 `vue/no-deprecated-*`
+	// rules are still present and still ON, because prettier has no opinion
+	// about them. `indent` is now off HERE and enforced by prettier's
+	// `useTabs: true` instead — the same tab, from the tool that also covers
+	// CSS and SCSS, which @nextcloud/stylelint-config no longer does.
+	require('eslint-config-prettier'),
 ])

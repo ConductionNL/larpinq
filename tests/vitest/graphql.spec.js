@@ -43,27 +43,38 @@ describe('queryGraphQL', () => {
 		mockFetchOnce({ json: { data: {} } })
 		await queryGraphQL('query($id: ID!){ x(id:$id) }', { id: '42' })
 		const body = JSON.parse(globalThis.fetch.mock.calls[0][1].body)
-		expect(body).toEqual({ query: 'query($id: ID!){ x(id:$id) }', variables: { id: '42' } })
+		expect(body).toEqual({
+			query: 'query($id: ID!){ x(id:$id) }',
+			variables: { id: '42' },
+		})
 	})
 
 	it('maps a 401 to an authentication error', async () => {
 		mockFetchOnce({ ok: false, status: 401 })
-		await expect(queryGraphQL('{ x }')).rejects.toThrow('Authentication error — please log in again')
+		await expect(queryGraphQL('{ x }')).rejects.toThrow(
+			'Authentication error — please log in again',
+		)
 	})
 
 	it('maps a 429 to a rate-limit error including the Retry-After header', async () => {
 		mockFetchOnce({ ok: false, status: 429, headers: { 'Retry-After': '120' } })
-		await expect(queryGraphQL('{ x }')).rejects.toThrow('Rate limited — retry after 120 seconds')
+		await expect(queryGraphQL('{ x }')).rejects.toThrow(
+			'Rate limited — retry after 120 seconds',
+		)
 	})
 
 	it('defaults Retry-After to 60 seconds when the header is absent', async () => {
 		mockFetchOnce({ ok: false, status: 429 })
-		await expect(queryGraphQL('{ x }')).rejects.toThrow('Rate limited — retry after 60 seconds')
+		await expect(queryGraphQL('{ x }')).rejects.toThrow(
+			'Rate limited — retry after 60 seconds',
+		)
 	})
 
 	it('throws a generic failure for other non-ok responses', async () => {
 		mockFetchOnce({ ok: false, status: 500 })
-		await expect(queryGraphQL('{ x }')).rejects.toThrow('GraphQL request failed: 500')
+		await expect(queryGraphQL('{ x }')).rejects.toThrow(
+			'GraphQL request failed: 500',
+		)
 	})
 
 	it('rejects on GraphQL errors when no data is returned', async () => {
@@ -72,7 +83,9 @@ describe('queryGraphQL', () => {
 	})
 
 	it('resolves (does not throw) when errors accompany partial data', async () => {
-		mockFetchOnce({ json: { data: { x: 1 }, errors: [{ message: 'deprecated' }] } })
+		mockFetchOnce({
+			json: { data: { x: 1 }, errors: [{ message: 'deprecated' }] },
+		})
 		const result = await queryGraphQL('{ x }')
 		expect(result.data).toEqual({ x: 1 })
 	})

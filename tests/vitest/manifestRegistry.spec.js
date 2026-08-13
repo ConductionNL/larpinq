@@ -40,10 +40,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 const manifest = JSON.parse(
 	fs.readFileSync(path.join(ROOT, 'src/manifest.json'), 'utf8'),
 )
-const registrySource = fs.readFileSync(
-	path.join(ROOT, 'src/registry.js'),
-	'utf8',
-)
+const registrySource = fs.readFileSync(path.join(ROOT, 'src/registry.js'), 'utf8')
 const enTranslations = (() => {
 	const raw = JSON.parse(fs.readFileSync(path.join(ROOT, 'l10n/en.json'), 'utf8'))
 	return raw.translations || raw
@@ -89,7 +86,10 @@ describe('manifest ↔ registry reachability', () => {
 		const checkin = tabs.find((t) => t.component === 'EventRoster')
 
 		// Assert on the TAB, not on `tabs.length` or on the array existing.
-		expect(checkin, 'no EventDetail sidebar tab renders the EventRoster component').toBeDefined()
+		expect(
+			checkin,
+			'no EventDetail sidebar tab renders the EventRoster component',
+		).toBeDefined()
 		expect(checkin.id).toBe('checkin')
 		expect(checkin.label).toBe('Check-in')
 		expect(checkin.icon).toBe('AccountCheck')

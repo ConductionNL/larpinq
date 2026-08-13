@@ -99,13 +99,24 @@ export async function dismissSupportDialog(page: Page): Promise<void> {
 	const DISMISS = /^(close tour|skip|close|dismiss|got it|finish|no thanks)$/i
 	for (let pass = 0; pass < 4; pass++) {
 		const dialog = page.locator('[role="dialog"]:visible').first()
-		if (!(await dialog.isVisible({ timeout: pass === 0 ? 2500 : 800 }).catch(() => false))) {
+		if (
+			!(await dialog
+				.isVisible({ timeout: pass === 0 ? 2500 : 800 })
+				.catch(() => false))
+		) {
 			return
 		}
-		const buttons = await dialog.locator('button').all().catch(() => [])
+		const buttons = await dialog
+			.locator('button')
+			.all()
+			.catch(() => [])
 		let clicked = false
 		for (const btn of buttons) {
-			const label = ((await btn.getAttribute('aria-label').catch(() => '')) || (await btn.innerText().catch(() => '')) || '').trim()
+			const label = (
+				(await btn.getAttribute('aria-label').catch(() => ''))
+				|| (await btn.innerText().catch(() => ''))
+				|| ''
+			).trim()
 			if (DISMISS.test(label)) {
 				await btn.click({ timeout: 3000 }).catch(() => {})
 				clicked = true
@@ -138,9 +149,9 @@ export async function dismissSupportDialog(page: Page): Promise<void> {
 	if (await blocker.isVisible({ timeout: 500 }).catch(() => false)) {
 		throw new Error(
 			'The first-visit walkthrough dim layer (.cn-walkthrough__dim) is still on screen after '
-			+ 'dismissSupportDialog(). It covers the viewport and intercepts pointer events, so the next '
-			+ 'click would hang on actionability for the full 60 s test timeout and be reported against an '
-			+ 'unrelated element. ci-seed.sh\'s walkthrough-suppression step did not take effect.',
+				+ 'dismissSupportDialog(). It covers the viewport and intercepts pointer events, so the next '
+				+ 'click would hang on actionability for the full 60 s test timeout and be reported against an '
+				+ "unrelated element. ci-seed.sh's walkthrough-suppression step did not take effect.",
 		)
 	}
 }
@@ -152,7 +163,9 @@ export async function openApp(page: Page): Promise<void> {
 	// (ADR-074 rule 4). The nav-entry assertion is the real readiness gate:
 	// `domcontentloaded` fires before Vue mounts, so the sidebar is empty.
 	await page.goto(`${APP_BASE}/`, { waitUntil: 'domcontentloaded' })
-	await expect(page.locator(`${NAV} ${NAV_ENTRY_ANY}`).first()).toBeVisible({ timeout: 30_000 })
+	await expect(page.locator(`${NAV} ${NAV_ENTRY_ANY}`).first()).toBeVisible({
+		timeout: 30_000,
+	})
 	await dismissSupportDialog(page)
 }
 
@@ -170,7 +183,10 @@ export async function revealNavEntry(page: Page, navId: string): Promise<void> {
 	for (let attempt = 0; attempt < 4; attempt++) {
 		await anchor.click({ force: true, timeout: 10_000 }).catch(() => {})
 		if (await entry.isVisible({ timeout: 2_500 }).catch(() => false)) return
-		if ((await anchor.getAttribute('aria-expanded').catch(() => null)) === 'true') break
+		if (
+			(await anchor.getAttribute('aria-expanded').catch(() => null)) === 'true'
+		)
+			break
 		await page.waitForTimeout(750)
 	}
 	await entry.waitFor({ state: 'visible', timeout: 10_000 }).catch(() => {})
@@ -182,7 +198,9 @@ export async function navTo(page: Page, slug: string): Promise<void> {
 	const navId = navIdForSlug(slug)
 	await revealNavEntry(page, navId)
 	const link = page.locator(`${NAV} [data-testid="cn-nav-entry-${navId}"]`).first()
-	await expect(link, `sidebar entry "${navId}" must be reachable`).toBeVisible({ timeout: 10_000 })
+	await expect(link, `sidebar entry "${navId}" must be reachable`).toBeVisible({
+		timeout: 10_000,
+	})
 	await link.click()
 	await expect(page).toHaveURL(new RegExp(`#/${slug}(\\b|/|$|\\?)`))
 	await expect(page.locator('.app-content')).toBeVisible({ timeout: 10_000 })

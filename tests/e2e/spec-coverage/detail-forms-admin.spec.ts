@@ -27,7 +27,13 @@
  * playwright.config.ts wires storageState so each test starts logged in.
  */
 
-import { test, expect, request, type Page, type APIRequestContext } from '@playwright/test'
+import {
+	test,
+	expect,
+	request,
+	type Page,
+	type APIRequestContext,
+} from '@playwright/test'
 import { navTo as sharedNavTo, dismissSupportDialog } from '../_nav'
 import { BASE_URL } from '../_base-url'
 
@@ -61,7 +67,8 @@ const NEXTCLOUD_URL = BASE_URL
 // the string `'seed-missing'`, the detail routes then navigate to
 // `#/characters/seed-missing`, and the specs fail 60 s later as TIMEOUTS —
 // which reads like a rendering regression and is really a stale constant.
-let REGISTER_ID = process.env.LARPING_REGISTER_ID || process.env.LARP_REGISTER_ID || '8'
+let REGISTER_ID =
+	process.env.LARPING_REGISTER_ID || process.env.LARP_REGISTER_ID || '8'
 const SCHEMA_IDS: Record<string, string> = {
 	character: process.env.LARPING_SCHEMA_ID_CHARACTER || '18',
 	player: process.env.LARPING_SCHEMA_ID_PLAYER || '19',
@@ -83,9 +90,11 @@ const SCHEMA_IDS: Record<string, string> = {
  * @return {Promise<void>}
  */
 async function resolveIds(api: APIRequestContext): Promise<void> {
-	const res = await api.get(`${NEXTCLOUD_URL}/index.php/apps/larpingapp/api/settings`, {
-		headers: { 'OCS-APIRequest': 'true' },
-	}).catch(() => null)
+	const res = await api
+		.get(`${NEXTCLOUD_URL}/index.php/apps/larpingapp/api/settings`, {
+			headers: { 'OCS-APIRequest': 'true' },
+		})
+		.catch(() => null)
 	if (!res || !res.ok()) {
 		return
 	}
@@ -93,8 +102,12 @@ async function resolveIds(api: APIRequestContext): Promise<void> {
 	if (!cfg || typeof cfg !== 'object') {
 		return
 	}
-	if (!process.env.LARPING_REGISTER_ID && !process.env.LARP_REGISTER_ID
-		&& cfg.register !== undefined && String(cfg.register) !== '') {
+	if (
+		!process.env.LARPING_REGISTER_ID
+		&& !process.env.LARP_REGISTER_ID
+		&& cfg.register !== undefined
+		&& String(cfg.register) !== ''
+	) {
 		REGISTER_ID = String(cfg.register)
 	}
 	for (const type of Object.keys(SCHEMA_IDS)) {
@@ -147,8 +160,11 @@ async function openApp(page: Page): Promise<void> {
 	if (!page.url().includes('/apps/larpingapp')) {
 		await page.goto(`${BASE}/`)
 		// ADR-074 rule 4: `networkidle` never settles on Nextcloud.
-		await page.locator('#app-content, .app-content, #content').first()
-			.waitFor({ state: 'visible', timeout: 30_000 }).catch(() => {})
+		await page
+			.locator('#app-content, .app-content, #content')
+			.first()
+			.waitFor({ state: 'visible', timeout: 30_000 })
+			.catch(() => {})
 	}
 	await expect(page.locator('.app-content')).toBeVisible({ timeout: 15_000 })
 	// Shared helper — see `../_nav`. The local copy matched only
@@ -180,7 +196,12 @@ async function navTo(page: Page, slug: string): Promise<void> {
  * we drive it directly rather than poking history.pushState (which addressed a
  * non-existent server sub-path and broke once routing moved to hash mode).
  */
-async function gotoDetail(page: Page, slug: string, id: string, typeLabel: string): Promise<void> {
+async function gotoDetail(
+	page: Page,
+	slug: string,
+	id: string,
+	typeLabel: string,
+): Promise<void> {
 	await page.goto(`${BASE}/#/${slug}/${id}`)
 	// ADR-074 rule 4: `networkidle` never settles on Nextcloud — the
 	// notification poll keeps the network permanently busy. This was the LAST
@@ -194,8 +215,11 @@ async function gotoDetail(page: Page, slug: string, id: string, typeLabel: strin
 	// `Test timeout of 60000ms exceeded`, which reads like a slow or broken
 	// page rather than an unsatisfiable wait. It backs every character-detail
 	// spec in this file.
-	await page.locator('#app-content, .app-content, #content').first()
-		.waitFor({ state: 'visible', timeout: 30_000 }).catch(() => {})
+	await page
+		.locator('#app-content, .app-content, #content')
+		.first()
+		.waitFor({ state: 'visible', timeout: 30_000 })
+		.catch(() => {})
 	// Shared helper — see `../_nav`. The local copy matched only
 	// `aria-label="Close"` and never dismissed the onboarding tour, whose
 	// controls are "Close tour" / "Skip".
@@ -223,13 +247,16 @@ async function gotoDetail(page: Page, slug: string, id: string, typeLabel: strin
 	if (!expectedName) {
 		throw new Error(
 			`gotoDetail(${slug}/${id}, ${typeLabel}): no seeded name recorded for this id. `
-			+ 'The beforeAll fixture seed did not run or returned an error — see the '
-			+ '"[e2e seed]" lines above for the HTTP status. Continuing would assert '
-			+ 'against a detail page for an object that does not exist.',
+				+ 'The beforeAll fixture seed did not run or returned an error — see the '
+				+ '"[e2e seed]" lines above for the HTTP status. Continuing would assert '
+				+ 'against a detail page for an object that does not exist.',
 		)
 	}
 	await expect(
-		page.locator('.app-content').getByRole('heading', { name: expectedName }).first(),
+		page
+			.locator('.app-content')
+			.getByRole('heading', { name: expectedName })
+			.first(),
 	).toBeVisible({ timeout: 10_000 })
 }
 
@@ -264,15 +291,26 @@ async function gotoDetail(page: Page, slug: string, id: string, typeLabel: strin
 
 /** Click the detail-page Actions button and assert the popup menu opens. */
 async function openActionsMenu(page: Page): Promise<void> {
-	const actions = page.locator('.app-content button').filter({ hasText: /Actions|Acties/i }).first()
+	const actions = page
+		.locator('.app-content button')
+		.filter({ hasText: /Actions|Acties/i })
+		.first()
 	await expect(actions).toBeVisible({ timeout: 10_000 })
 	await actions.click()
-	await expect(page.locator('[role="menu"], .v-popper__popper').first()).toBeVisible({ timeout: 5_000 })
+	await expect(
+		page.locator('[role="menu"], .v-popper__popper').first(),
+	).toBeVisible({ timeout: 5_000 })
 }
 
 /** Open the "Add <Entity>" create dialog on the current list view. */
-async function openCreateDialog(page: Page, addLabel: RegExp): Promise<ReturnType<Page['locator']>> {
-	const btn = page.locator('.app-content button').filter({ hasText: addLabel }).first()
+async function openCreateDialog(
+	page: Page,
+	addLabel: RegExp,
+): Promise<ReturnType<Page['locator']>> {
+	const btn = page
+		.locator('.app-content button')
+		.filter({ hasText: addLabel })
+		.first()
 	await expect(btn).toBeVisible({ timeout: 10_000 })
 	await btn.click()
 	const dialog = page.locator('[role="dialog"]').first()
@@ -282,7 +320,10 @@ async function openCreateDialog(page: Page, addLabel: RegExp): Promise<ReturnTyp
 
 /** Close any open NcDialog/NcModal. */
 async function closeDialog(page: Page): Promise<void> {
-	const cancel = page.locator('[role="dialog"] button').filter({ hasText: /Cancel|Close/i }).first()
+	const cancel = page
+		.locator('[role="dialog"] button')
+		.filter({ hasText: /Cancel|Close/i })
+		.first()
 	if (await cancel.isVisible({ timeout: 1500 }).catch(() => false)) {
 		await cancel.click().catch(() => {})
 	} else {
@@ -293,19 +334,28 @@ async function closeDialog(page: Page): Promise<void> {
 
 /** Best-effort REST seed of one object so detail routes have a fixture. */
 async function seedObject(
-	api: APIRequestContext, schema: string, body: Record<string, unknown>,
+	api: APIRequestContext,
+	schema: string,
+	body: Record<string, unknown>,
 ): Promise<string | null> {
 	const schemaId = SCHEMA_IDS[schema]
 	if (!schemaId) {
 		// eslint-disable-next-line no-console
-		console.error(`[e2e seed] ${schema}: no schema id configured on this instance — the app has no storage for it`)
+		console.error(
+			`[e2e seed] ${schema}: no schema id configured on this instance — the app has no storage for it`,
+		)
 		return null
 	}
 	const url = `${NEXTCLOUD_URL}/index.php/apps/openregister/api/objects/${registerFor(schema)}/${schemaId}`
-	const res = await api.post(url, {
-		headers: { 'OCS-APIRequest': 'true', 'Content-Type': 'application/json' },
-		data: body,
-	}).catch(() => null)
+	const res = await api
+		.post(url, {
+			headers: {
+				'OCS-APIRequest': 'true',
+				'Content-Type': 'application/json',
+			},
+			data: body,
+		})
+		.catch(() => null)
 	// Report WHY a seed failed. Swallowing it turns every dependent spec into a
 	// 60 s timeout that looks like a rendering regression.
 	if (!res) {
@@ -315,7 +365,9 @@ async function seedObject(
 	}
 	if (!res.ok()) {
 		// eslint-disable-next-line no-console
-		console.error(`[e2e seed] ${schema}: POST ${url} -> ${res.status()} ${(await res.text().catch(() => '')).slice(0, 200)}`)
+		console.error(
+			`[e2e seed] ${schema}: POST ${url} -> ${res.status()} ${(await res.text().catch(() => '')).slice(0, 200)}`,
+		)
 		return null
 	}
 	const json = await res.json().catch(() => null)
@@ -328,7 +380,10 @@ async function seedObject(
 
 test.beforeAll(async () => {
 	const api = await request.newContext({
-		httpCredentials: { username: process.env.NC_ADMIN_USER || 'admin', password: process.env.NC_ADMIN_PASS || 'admin' },
+		httpCredentials: {
+			username: process.env.NC_ADMIN_USER || 'admin',
+			password: process.env.NC_ADMIN_PASS || 'admin',
+		},
 	})
 	await resolveIds(api)
 	const n = `la-e2e-${TS}`
@@ -342,7 +397,11 @@ test.beforeAll(async () => {
 	 * @param {object} extra  Additional schema properties for the create payload.
 	 * @return {Promise<string>} The new object's UUID, or 'seed-missing' on failure.
 	 */
-	const seed = async (type: string, name: string, extra: Record<string, unknown> = {}): Promise<string> => {
+	const seed = async (
+		type: string,
+		name: string,
+		extra: Record<string, unknown> = {},
+	): Promise<string> => {
 		const id = await seedObject(api, type, { name, ...extra })
 		if (id) {
 			seededNames[id] = name
@@ -390,7 +449,12 @@ test.describe('character-management — detail & forms', () => {
 	// @e2e openspec/specs/character-management/spec.md#update-an-existing-character
 	test('character detail exposes Actions menu for editing', async ({ page }) => {
 		await gotoDetail(page, 'characters', seeded.character, 'Character')
-		await expect(page.locator('.app-content button').filter({ hasText: /Actions|Acties/i }).first()).toBeVisible()
+		await expect(
+			page
+				.locator('.app-content button')
+				.filter({ hasText: /Actions|Acties/i })
+				.first(),
+		).toBeVisible()
 	})
 
 	// @e2e openspec/specs/character-management/spec.md#delete-a-character
@@ -411,19 +475,29 @@ test.describe('character-management — detail & forms', () => {
 		// was broken and stopped passing the moment a real character loaded —
 		// exactly backwards. The `approved` property lives in the "Game state &
 		// notes" data widget with `widget: "switch"` and title "Approved".
-		await expect(page.locator('.app-content').getByText('Approved', { exact: true }).first())
-			.toBeVisible({ timeout: 10_000 })
+		await expect(
+			page
+				.locator('.app-content')
+				.getByText('Approved', { exact: true })
+				.first(),
+		).toBeVisible({ timeout: 10_000 })
 	})
 
 	// @e2e openspec/specs/character-management/spec.md#filter-characters-by-approval-status
 	test('character list renders view toggle and add controls', async ({ page }) => {
 		await navTo(page, 'characters')
-		await expect(page.locator('.app-content').getByText(/Cards/i).first()).toBeVisible()
-		await expect(page.locator('.app-content').getByText(/Table/i).first()).toBeVisible()
+		await expect(
+			page.locator('.app-content').getByText(/Cards/i).first(),
+		).toBeVisible()
+		await expect(
+			page.locator('.app-content').getByText(/Table/i).first(),
+		).toBeVisible()
 	})
 
 	// @e2e openspec/specs/character-management/spec.md#create-npc-character
-	test('create dialog exposes character Type selector (player/npc/other)', async ({ page }) => {
+	test('create dialog exposes character Type selector (player/npc/other)', async ({
+		page,
+	}) => {
 		await navTo(page, 'characters')
 		const dialog = await openCreateDialog(page, /Add Character/i)
 		await expect(dialog.getByText(/Type/i).first()).toBeVisible()
@@ -431,7 +505,9 @@ test.describe('character-management — detail & forms', () => {
 	})
 
 	// @e2e openspec/specs/character-management/spec.md#view-character-type-in-list
-	test('character list view loads with type-bearing rows area', async ({ page }) => {
+	test('character list view loads with type-bearing rows area', async ({
+		page,
+	}) => {
 		await navTo(page, 'characters')
 		await expect(page.locator('.app-content')).toBeVisible()
 		expect(page.url()).toContain('/characters')
@@ -441,24 +517,41 @@ test.describe('character-management — detail & forms', () => {
 	test('create dialog exposes name field for new character', async ({ page }) => {
 		await navTo(page, 'characters')
 		const dialog = await openCreateDialog(page, /Add Character/i)
-		await expect(dialog.locator('input[placeholder*="in-game name" i], input[placeholder*="name" i]').first()).toBeVisible()
+		await expect(
+			dialog
+				.locator(
+					'input[placeholder*="in-game name" i], input[placeholder*="name" i]',
+				)
+				.first(),
+		).toBeVisible()
 		await closeDialog(page)
 	})
 
 	// @e2e openspec/specs/character-management/spec.md#update-character-currency
-	test('character detail shell supports currency editing via Actions', async ({ page }) => {
+	test('character detail shell supports currency editing via Actions', async ({
+		page,
+	}) => {
 		await gotoDetail(page, 'characters', seeded.character, 'Character')
-		await expect(page.locator('.app-content button').filter({ hasText: /Actions|Acties/i }).first()).toBeVisible()
+		await expect(
+			page
+				.locator('.app-content button')
+				.filter({ hasText: /Actions|Acties/i })
+				.first(),
+		).toBeVisible()
 	})
 
 	// @e2e openspec/specs/character-management/spec.md#view-currency-on-character-sheet
-	test('character detail page renders the character sheet shell', async ({ page }) => {
+	test('character detail page renders the character sheet shell', async ({
+		page,
+	}) => {
 		await gotoDetail(page, 'characters', seeded.character, 'Character')
 		await expect(page.locator('.app-content')).toBeVisible()
 	})
 
 	// @e2e openspec/specs/character-management/spec.md#assign-a-skill-to-a-character
-	test('character detail provides Actions for skill assignment', async ({ page }) => {
+	test('character detail provides Actions for skill assignment', async ({
+		page,
+	}) => {
 		await gotoDetail(page, 'characters', seeded.character, 'Character')
 		await openActionsMenu(page)
 	})
@@ -470,13 +563,17 @@ test.describe('character-management — detail & forms', () => {
 	})
 
 	// @e2e openspec/specs/character-management/spec.md#assign-multiple-conditions
-	test('character detail provides Actions for condition assignment', async ({ page }) => {
+	test('character detail provides Actions for condition assignment', async ({
+		page,
+	}) => {
 		await gotoDetail(page, 'characters', seeded.character, 'Character')
 		await openActionsMenu(page)
 	})
 
 	// @e2e openspec/specs/character-management/spec.md#assign-an-event-to-a-character
-	test('character detail provides Actions for event assignment', async ({ page }) => {
+	test('character detail provides Actions for event assignment', async ({
+		page,
+	}) => {
 		await gotoDetail(page, 'characters', seeded.character, 'Character')
 		await openActionsMenu(page)
 	})
@@ -500,7 +597,9 @@ test.describe('character-management — detail & forms', () => {
 	})
 
 	// @e2e openspec/specs/character-management/spec.md#view-background-tab
-	test('character detail shell hosts the background tab area', async ({ page }) => {
+	test('character detail shell hosts the background tab area', async ({
+		page,
+	}) => {
 		await gotoDetail(page, 'characters', seeded.character, 'Character')
 		await expect(page.locator('.app-content')).toBeVisible()
 	})
@@ -539,7 +638,12 @@ test.describe('events-players — detail & forms', () => {
 	// @e2e openspec/specs/events-players/spec.md#update-an-event
 	test('event detail exposes Actions for editing', async ({ page }) => {
 		await gotoDetail(page, 'events', seeded.event, 'Event')
-		await expect(page.locator('.app-content button').filter({ hasText: /Actions|Acties/i }).first()).toBeVisible()
+		await expect(
+			page
+				.locator('.app-content button')
+				.filter({ hasText: /Actions|Acties/i })
+				.first(),
+		).toBeVisible()
 	})
 
 	// @e2e openspec/specs/events-players/spec.md#delete-an-event
@@ -557,7 +661,12 @@ test.describe('events-players — detail & forms', () => {
 	// @e2e openspec/specs/events-players/spec.md#update-a-player-profile
 	test('player detail exposes Actions for editing', async ({ page }) => {
 		await gotoDetail(page, 'players', seeded.player, 'Player')
-		await expect(page.locator('.app-content button').filter({ hasText: /Actions|Acties/i }).first()).toBeVisible()
+		await expect(
+			page
+				.locator('.app-content button')
+				.filter({ hasText: /Actions|Acties/i })
+				.first(),
+		).toBeVisible()
 	})
 
 	// @e2e openspec/specs/events-players/spec.md#delete-a-player-with-character-references
@@ -583,7 +692,9 @@ test.describe('events-players — detail & forms', () => {
 	// ocName's $ref (f434f76d) turned it into a select — losing its placeholder
 	// — with no red window in between. `cn-form-<key>` is the id CnFormDialog
 	// gives every select, so this fails if the picker stops rendering.
-	test('character create dialog exposes a player (ocName) selector', async ({ page }) => {
+	test('character create dialog exposes a player (ocName) selector', async ({
+		page,
+	}) => {
 		await navTo(page, 'characters')
 		const dialog = await openCreateDialog(page, /Add Character/i)
 		await expect(dialog.locator('#cn-form-ocName')).toBeVisible()
@@ -616,9 +727,16 @@ test.describe('events-players — detail & forms', () => {
 
 test.describe('game-mechanics — detail & forms', () => {
 	// @e2e openspec/specs/game-mechanics/spec.md#update-an-ability-base-value
-	test('ability detail exposes Actions for editing base value', async ({ page }) => {
+	test('ability detail exposes Actions for editing base value', async ({
+		page,
+	}) => {
 		await gotoDetail(page, 'abilities', seeded.ability, 'Ability')
-		await expect(page.locator('.app-content button').filter({ hasText: /Actions|Acties/i }).first()).toBeVisible()
+		await expect(
+			page
+				.locator('.app-content button')
+				.filter({ hasText: /Actions|Acties/i })
+				.first(),
+		).toBeVisible()
 	})
 
 	// @e2e openspec/specs/game-mechanics/spec.md#delete-an-ability-referenced-by-effects
@@ -644,7 +762,9 @@ test.describe('game-mechanics — detail & forms', () => {
 	})
 
 	// @e2e openspec/specs/game-mechanics/spec.md#effect-with-legacy-statid
-	test('effect detail shell renders for legacy stat_id objects', async ({ page }) => {
+	test('effect detail shell renders for legacy stat_id objects', async ({
+		page,
+	}) => {
 		await gotoDetail(page, 'effects', seeded.effect, 'Effect')
 		await expect(page.locator('.app-content')).toBeVisible()
 	})
@@ -652,7 +772,12 @@ test.describe('game-mechanics — detail & forms', () => {
 	// @e2e openspec/specs/game-mechanics/spec.md#effect-with-both-abilities-and-statid
 	test('effect detail exposes Actions menu', async ({ page }) => {
 		await gotoDetail(page, 'effects', seeded.effect, 'Effect')
-		await expect(page.locator('.app-content button').filter({ hasText: /Actions|Acties/i }).first()).toBeVisible()
+		await expect(
+			page
+				.locator('.app-content button')
+				.filter({ hasText: /Actions|Acties/i })
+				.first(),
+		).toBeVisible()
 	})
 
 	// @e2e openspec/specs/game-mechanics/spec.md#view-skill-effects-in-detail
@@ -704,7 +829,12 @@ test.describe('game-mechanics — detail & forms', () => {
 	// @e2e openspec/specs/game-mechanics/spec.md#condition-removal-restores-stats
 	test('condition detail exposes Actions menu', async ({ page }) => {
 		await gotoDetail(page, 'conditions', seeded.condition, 'Condition')
-		await expect(page.locator('.app-content button').filter({ hasText: /Actions|Acties/i }).first()).toBeVisible()
+		await expect(
+			page
+				.locator('.app-content button')
+				.filter({ hasText: /Actions|Acties/i })
+				.first(),
+		).toBeVisible()
 	})
 
 	// @e2e openspec/specs/game-mechanics/spec.md#multiple-conditions-stacking
@@ -741,15 +871,23 @@ test.describe('dashboard-analytics-widgets — detail & charts', () => {
 	// @e2e openspec/specs/dashboard-analytics-widgets/spec.md#create-object-and-route-to-detail
 	test('dashboard New character action is reachable', async ({ page }) => {
 		await openApp(page)
-		await expect(page.getByRole('heading', { name: 'Dashboard', level: 2 })).toBeVisible({ timeout: 10_000 })
-		await expect(page.getByRole('button', { name: /New character/i }).first()).toBeVisible({ timeout: 10_000 })
+		await expect(
+			page.getByRole('heading', { name: 'Dashboard', level: 2 }),
+		).toBeVisible({ timeout: 10_000 })
+		await expect(
+			page.getByRole('button', { name: /New character/i }).first(),
+		).toBeVisible({ timeout: 10_000 })
 	})
 
 	// @e2e openspec/specs/dashboard-analytics-widgets/spec.md#chart-aggregates-skill-facets
 	test('dashboard renders the skill-usage chart widget area', async ({ page }) => {
 		await openApp(page)
-		await expect(page.getByRole('heading', { name: 'Dashboard', level: 2 })).toBeVisible({ timeout: 10_000 })
-		await expect(page.getByText(/Skill usage/i).first()).toBeVisible({ timeout: 10_000 })
+		await expect(
+			page.getByRole('heading', { name: 'Dashboard', level: 2 }),
+		).toBeVisible({ timeout: 10_000 })
+		await expect(page.getByText(/Skill usage/i).first()).toBeVisible({
+			timeout: 10_000,
+		})
 	})
 })
 
@@ -762,59 +900,87 @@ test.describe('larping-skill-widget — dashboard surface', () => {
 	// @e2e openspec/specs/larping-skill-widget/spec.md#skill-usage-chart-with-data
 	test('skill usage widget renders on dashboard', async ({ page }) => {
 		await openApp(page)
-		await expect(page.getByText(/Skill usage/i).first()).toBeVisible({ timeout: 10_000 })
+		await expect(page.getByText(/Skill usage/i).first()).toBeVisible({
+			timeout: 10_000,
+		})
 	})
 
 	// @e2e openspec/specs/larping-skill-widget/spec.md#skill-usage-chart-with-many-skills-shows-top-10
-	test('skill usage widget area is present (top-N limited chart)', async ({ page }) => {
+	test('skill usage widget area is present (top-N limited chart)', async ({
+		page,
+	}) => {
 		await openApp(page)
-		await expect(page.getByText(/Skill usage/i).first()).toBeVisible({ timeout: 10_000 })
+		await expect(page.getByText(/Skill usage/i).first()).toBeVisible({
+			timeout: 10_000,
+		})
 	})
 
 	// @e2e openspec/specs/larping-skill-widget/spec.md#chart-respects-nextcloud-theme
 	test('skill usage widget renders within themed dashboard', async ({ page }) => {
 		await openApp(page)
 		await expect(page.locator('.app-content')).toBeVisible()
-		await expect(page.getByText(/Skill usage/i).first()).toBeVisible({ timeout: 10_000 })
+		await expect(page.getByText(/Skill usage/i).first()).toBeVisible({
+			timeout: 10_000,
+		})
 	})
 
 	// @e2e openspec/specs/larping-skill-widget/spec.md#chart-respects-system-color-scheme-when-no-explicit-theme
-	test('skill usage widget renders under default color scheme', async ({ page }) => {
+	test('skill usage widget renders under default color scheme', async ({
+		page,
+	}) => {
 		await openApp(page)
-		await expect(page.getByText(/Skill usage/i).first()).toBeVisible({ timeout: 10_000 })
+		await expect(page.getByText(/Skill usage/i).first()).toBeVisible({
+			timeout: 10_000,
+		})
 	})
 
 	// @e2e openspec/specs/larping-skill-widget/spec.md#widget-placed-in-dashboard-grid-layout
 	test('widget is placed within the dashboard grid', async ({ page }) => {
 		await openApp(page)
-		await expect(page.getByRole('heading', { name: 'Dashboard', level: 2 })).toBeVisible({ timeout: 10_000 })
-		await expect(page.getByText(/Skill usage/i).first()).toBeVisible({ timeout: 10_000 })
+		await expect(
+			page.getByRole('heading', { name: 'Dashboard', level: 2 }),
+		).toBeVisible({ timeout: 10_000 })
+		await expect(page.getByText(/Skill usage/i).first()).toBeVisible({
+			timeout: 10_000,
+		})
 	})
 
 	// @e2e openspec/specs/larping-skill-widget/spec.md#widget-layout-is-user-customizable
 	test('dashboard hosts multiple customizable widget cards', async ({ page }) => {
 		await openApp(page)
-		await expect(page.getByText(/Skill usage/i).first()).toBeVisible({ timeout: 10_000 })
-		await expect(page.getByText(/Recent/i).first()).toBeVisible({ timeout: 10_000 })
+		await expect(page.getByText(/Skill usage/i).first()).toBeVisible({
+			timeout: 10_000,
+		})
+		await expect(page.getByText(/Recent/i).first()).toBeVisible({
+			timeout: 10_000,
+		})
 	})
 
 	// @e2e openspec/specs/larping-skill-widget/spec.md#widget-has-consistent-card-styling-with-other-dashboard-widgets
 	test('widgets share consistent dashboard card styling', async ({ page }) => {
 		await openApp(page)
-		await expect(page.getByText(/Skill usage/i).first()).toBeVisible({ timeout: 10_000 })
+		await expect(page.getByText(/Skill usage/i).first()).toBeVisible({
+			timeout: 10_000,
+		})
 		await expect(page.locator('.app-content')).toBeVisible()
 	})
 
 	// @e2e openspec/specs/larping-skill-widget/spec.md#widget-detects-openregister-configuration
 	test('widget renders given OpenRegister-configured app', async ({ page }) => {
 		await openApp(page)
-		await expect(page.getByText(/Skill usage/i).first()).toBeVisible({ timeout: 10_000 })
+		await expect(page.getByText(/Skill usage/i).first()).toBeVisible({
+			timeout: 10_000,
+		})
 	})
 
 	// @e2e openspec/specs/larping-skill-widget/spec.md#widget-shows-message-when-not-configured-for-openregister
-	test('widget renders an informative state on the dashboard', async ({ page }) => {
+	test('widget renders an informative state on the dashboard', async ({
+		page,
+	}) => {
 		await openApp(page)
-		await expect(page.getByText(/Skill usage/i).first()).toBeVisible({ timeout: 10_000 })
+		await expect(page.getByText(/Skill usage/i).first()).toBeVisible({
+			timeout: 10_000,
+		})
 	})
 
 	// @e2e openspec/specs/larping-skill-widget/spec.md#widget-on-mobile-viewport-below-768px
@@ -822,21 +988,27 @@ test.describe('larping-skill-widget — dashboard surface', () => {
 		await page.setViewportSize({ width: 480, height: 900 })
 		await openApp(page)
 		await expect(page.locator('.app-content')).toBeVisible()
-		await expect(page.getByText(/Skill usage/i).first()).toBeVisible({ timeout: 10_000 })
+		await expect(page.getByText(/Skill usage/i).first()).toBeVisible({
+			timeout: 10_000,
+		})
 	})
 
 	// @e2e openspec/specs/larping-skill-widget/spec.md#widget-on-desktop-viewport-1024px-1800px
 	test('widget renders on a desktop viewport', async ({ page }) => {
 		await page.setViewportSize({ width: 1440, height: 900 })
 		await openApp(page)
-		await expect(page.getByText(/Skill usage/i).first()).toBeVisible({ timeout: 10_000 })
+		await expect(page.getByText(/Skill usage/i).first()).toBeVisible({
+			timeout: 10_000,
+		})
 	})
 
 	// @e2e openspec/specs/larping-skill-widget/spec.md#widget-on-ultrawide-viewport-above-1800px
 	test('widget renders on an ultrawide viewport', async ({ page }) => {
 		await page.setViewportSize({ width: 2200, height: 1100 })
 		await openApp(page)
-		await expect(page.getByText(/Skill usage/i).first()).toBeVisible({ timeout: 10_000 })
+		await expect(page.getByText(/Skill usage/i).first()).toBeVisible({
+			timeout: 10_000,
+		})
 	})
 })
 
@@ -849,9 +1021,16 @@ test.describe('admin-settings — panel UI', () => {
 	async function openAdmin(page: Page): Promise<void> {
 		await page.goto('/settings/admin/larpingapp')
 		// ADR-074 rule 4: `networkidle` never settles on Nextcloud.
-		await page.locator('#app-content, .app-content, #content').first()
-			.waitFor({ state: 'visible', timeout: 30_000 }).catch(() => {})
-		await expect(page.getByText(/Administration settings: LarpingApp|LarpingApp/i).first()).toBeVisible({ timeout: 15_000 })
+		await page
+			.locator('#app-content, .app-content, #content')
+			.first()
+			.waitFor({ state: 'visible', timeout: 30_000 })
+			.catch(() => {})
+		await expect(
+			page
+				.getByText(/Administration settings: LarpingApp|LarpingApp/i)
+				.first(),
+		).toBeVisible({ timeout: 15_000 })
 	}
 
 	// @e2e openspec/specs/admin-settings/spec.md#configure-character-type-for-openregister
@@ -862,43 +1041,70 @@ test.describe('admin-settings — panel UI', () => {
 	})
 
 	// @e2e openspec/specs/admin-settings/spec.md#cascading-dropdown-behavior
-	test('admin panel renders source/register/schema selectors', async ({ page }) => {
+	test('admin panel renders source/register/schema selectors', async ({
+		page,
+	}) => {
 		await openAdmin(page)
-		const selectors = page.locator('.vs__dropdown-toggle, .multiselect, [role="combobox"], select')
+		const selectors = page.locator(
+			'.vs__dropdown-toggle, .multiselect, [role="combobox"], select',
+		)
 		expect(await selectors.count()).toBeGreaterThan(0)
 	})
 
 	// @e2e openspec/specs/admin-settings/spec.md#switch-back-to-internal-storage
 	test('admin panel offers Internal / Open Register choices', async ({ page }) => {
 		await openAdmin(page)
-		const selectors = page.locator('.vs__dropdown-toggle, .multiselect, [role="combobox"], select')
+		const selectors = page.locator(
+			'.vs__dropdown-toggle, .multiselect, [role="combobox"], select',
+		)
 		expect(await selectors.count()).toBeGreaterThan(0)
 	})
 
 	// @e2e openspec/specs/admin-settings/spec.md#save-all-configuration-at-once
 	test('admin panel exposes a Save All button', async ({ page }) => {
 		await openAdmin(page)
-		await expect(page.getByRole('button', { name: /Save All/i }).first()).toBeVisible()
+		await expect(
+			page.getByRole('button', { name: /Save All/i }).first(),
+		).toBeVisible()
 	})
 
 	// @e2e openspec/specs/admin-settings/spec.md#configure-all-10-types-for-openregister
-	test('admin panel lists all entity types for configuration', async ({ page }) => {
+	test('admin panel lists all entity types for configuration', async ({
+		page,
+	}) => {
 		await openAdmin(page)
-		for (const t of ['character', 'player', 'ability', 'skill', 'item', 'condition', 'effect', 'event']) {
+		for (const t of [
+			'character',
+			'player',
+			'ability',
+			'skill',
+			'item',
+			'condition',
+			'effect',
+			'event',
+		]) {
 			await expect(page.getByText(new RegExp(t, 'i')).first()).toBeVisible()
 		}
 	})
 
 	// @e2e openspec/specs/admin-settings/spec.md#openregister-installed-with-registers
-	test('admin panel renders without OpenRegister-missing warning when OR present', async ({ page }) => {
+	test('admin panel renders without OpenRegister-missing warning when OR present', async ({
+		page,
+	}) => {
 		await openAdmin(page)
-		await expect(page.getByRole('button', { name: /Save All/i }).first()).toBeVisible()
+		await expect(
+			page.getByRole('button', { name: /Save All/i }).first(),
+		).toBeVisible()
 	})
 
 	// @e2e openspec/specs/admin-settings/spec.md#openregister-installed-with-no-registers
-	test('admin panel allows saving even with empty register lists', async ({ page }) => {
+	test('admin panel allows saving even with empty register lists', async ({
+		page,
+	}) => {
 		await openAdmin(page)
-		await expect(page.getByRole('button', { name: /Save All/i }).first()).toBeVisible()
+		await expect(
+			page.getByRole('button', { name: /Save All/i }).first(),
+		).toBeVisible()
 	})
 })
 
@@ -912,9 +1118,14 @@ test.describe('settings-management-ui — panel controls', () => {
 	test('settings panel renders cascading selector controls', async ({ page }) => {
 		await page.goto('/settings/admin/larpingapp')
 		// ADR-074 rule 4: `networkidle` never settles on Nextcloud.
-		await page.locator('#app-content, .app-content, #content').first()
-			.waitFor({ state: 'visible', timeout: 30_000 }).catch(() => {})
-		const selectors = page.locator('.vs__dropdown-toggle, .multiselect, [role="combobox"], select')
+		await page
+			.locator('#app-content, .app-content, #content')
+			.first()
+			.waitFor({ state: 'visible', timeout: 30_000 })
+			.catch(() => {})
+		const selectors = page.locator(
+			'.vs__dropdown-toggle, .multiselect, [role="combobox"], select',
+		)
 		expect(await selectors.count()).toBeGreaterThan(0)
 	})
 
@@ -922,8 +1133,15 @@ test.describe('settings-management-ui — panel controls', () => {
 	test('settings panel exposes Save All / re-import action', async ({ page }) => {
 		await page.goto('/settings/admin/larpingapp')
 		// ADR-074 rule 4: `networkidle` never settles on Nextcloud.
-		await page.locator('#app-content, .app-content, #content').first()
-			.waitFor({ state: 'visible', timeout: 30_000 }).catch(() => {})
-		await expect(page.getByRole('button', { name: /Save All|Re-?import|Import/i }).first()).toBeVisible({ timeout: 15_000 })
+		await page
+			.locator('#app-content, .app-content, #content')
+			.first()
+			.waitFor({ state: 'visible', timeout: 30_000 })
+			.catch(() => {})
+		await expect(
+			page
+				.getByRole('button', { name: /Save All|Re-?import|Import/i })
+				.first(),
+		).toBeVisible({ timeout: 15_000 })
 	})
 })

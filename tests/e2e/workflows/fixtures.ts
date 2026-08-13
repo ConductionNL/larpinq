@@ -100,7 +100,9 @@ export const SCHEMA_IDS: Record<string, string> = {
  * a stale hardcoded id. Falls back to the bootstrap literals on any error.
  */
 export async function resolveSchemaIds(api: APIRequestContext): Promise<void> {
-	const res = await api.get(SETTINGS_API, { headers: { 'OCS-APIRequest': 'true' } })
+	const res = await api.get(SETTINGS_API, {
+		headers: { 'OCS-APIRequest': 'true' },
+	})
 	if (!res.ok()) {
 		return
 	}
@@ -146,18 +148,16 @@ export async function newApi(): Promise<APIRequestContext> {
  * then effects, then abilities).
  */
 export class FixtureLedger {
-
 	private created: Record<string, string[]> = {}
 
 	track(type: string, id: string): string {
-		(this.created[type] ??= []).push(id)
+		;(this.created[type] ??= []).push(id)
 		return id
 	}
 
 	ids(type: string): string[] {
 		return this.created[type] ?? []
 	}
-
 }
 
 /** Create one OpenRegister object; returns its UUID (real saveObject path). */
@@ -188,12 +188,16 @@ export async function createObject(
 	}
 	const res = await api.post(url, { headers: HEADERS, data: payload })
 	if (!res.ok()) {
-		throw new Error(`create ${type} failed: HTTP ${res.status()} ${await res.text()}`)
+		throw new Error(
+			`create ${type} failed: HTTP ${res.status()} ${await res.text()}`,
+		)
 	}
 	const json = await res.json()
 	const id = json?.['@self']?.id || json?.id
 	if (!id) {
-		throw new Error(`create ${type} returned no id: ${JSON.stringify(json).slice(0, 200)}`)
+		throw new Error(
+			`create ${type} returned no id: ${JSON.stringify(json).slice(0, 200)}`,
+		)
 	}
 	return id
 }
@@ -222,7 +226,9 @@ export async function updateObject(
 	const url = `${OR_BASE}/${REGISTER_ID}/${SCHEMA_IDS[type]}/${id}`
 	const res = await api.put(url, { headers: HEADERS, data: body })
 	if (!res.ok()) {
-		throw new Error(`update ${type}/${id} failed: HTTP ${res.status()} ${await res.text()}`)
+		throw new Error(
+			`update ${type}/${id} failed: HTTP ${res.status()} ${await res.text()}`,
+		)
 	}
 	return res.json()
 }
@@ -245,14 +251,28 @@ export async function deleteObject(
  * but does not fail the run (the unique RUN_ID prefix keeps leftovers
  * identifiable).
  */
-export async function cleanupLedger(api: APIRequestContext, ledger: FixtureLedger): Promise<void> {
-	const order = ['character', 'event', 'condition', 'item', 'skill', 'effect', 'ability', 'player']
+export async function cleanupLedger(
+	api: APIRequestContext,
+	ledger: FixtureLedger,
+): Promise<void> {
+	const order = [
+		'character',
+		'event',
+		'condition',
+		'item',
+		'skill',
+		'effect',
+		'ability',
+		'player',
+	]
 	for (const type of order) {
 		for (const id of ledger.ids(type)) {
 			const ok = await deleteObject(api, type, id).catch(() => false)
 			if (!ok) {
 				// eslint-disable-next-line no-console
-				console.warn(`[workflows cleanup] could not delete ${type}/${id} (RUN_ID=${RUN_ID})`)
+				console.warn(
+					`[workflows cleanup] could not delete ${type}/${id} (RUN_ID=${RUN_ID})`,
+				)
 			}
 		}
 	}
@@ -271,7 +291,11 @@ export async function cleanupLedger(api: APIRequestContext, ledger: FixtureLedge
 export async function seedStatScenario(
 	api: APIRequestContext,
 	ledger: FixtureLedger,
-	opts: { base?: number; modifier?: number; modification?: 'positive' | 'negative' } = {},
+	opts: {
+		base?: number
+		modifier?: number
+		modification?: 'positive' | 'negative'
+	} = {},
 ): Promise<{
 	abilityId: string
 	effectId: string
@@ -285,24 +309,33 @@ export async function seedStatScenario(
 	const modifier = opts.modifier ?? 3
 	const modification = opts.modification ?? 'positive'
 
-	const abilityId = ledger.track('ability', await createObject(api, 'ability', {
-		name: fixtureName('strength'),
-		description: 'base strength stat',
-		base,
-	}))
-	const effectId = ledger.track('effect', await createObject(api, 'effect', {
-		name: fixtureName('mighty'),
-		description: `${modification} ${modifier} to strength`,
-		modifier,
-		modification,
-		cumulative: 'cumulative',
-		abilities: [abilityId],
-	}))
-	const skillId = ledger.track('skill', await createObject(api, 'skill', {
-		name: fixtureName('power'),
-		description: 'carries the mighty effect',
-		effects: [effectId],
-	}))
+	const abilityId = ledger.track(
+		'ability',
+		await createObject(api, 'ability', {
+			name: fixtureName('strength'),
+			description: 'base strength stat',
+			base,
+		}),
+	)
+	const effectId = ledger.track(
+		'effect',
+		await createObject(api, 'effect', {
+			name: fixtureName('mighty'),
+			description: `${modification} ${modifier} to strength`,
+			modifier,
+			modification,
+			cumulative: 'cumulative',
+			abilities: [abilityId],
+		}),
+	)
+	const skillId = ledger.track(
+		'skill',
+		await createObject(api, 'skill', {
+			name: fixtureName('power'),
+			description: 'carries the mighty effect',
+			effects: [effectId],
+		}),
+	)
 	// `character.ocName` is a RELATION, not a display name: the live schema
 	// declares it `{"type":"string","format":"uuid","$ref":"player"}` ("The
 	// player who plays this character") and marks it `required`. Passing the
@@ -311,15 +344,21 @@ export async function seedStatScenario(
 	// in this file. So seed a real `player` row first and reference its UUID.
 	// (`x-allow-create: true` is a picker affordance for the Vue relation
 	// widget — it does NOT make the REST API accept a bare name.)
-	const playerId = ledger.track('player', await createObject(api, 'player', {
-		name: fixtureName('hero-player'),
-	}))
-	const characterId = ledger.track('character', await createObject(api, 'character', {
-		name: fixtureName('hero'),
-		ocName: playerId,
-		type: 'player',
-		skills: [skillId],
-	}))
+	const playerId = ledger.track(
+		'player',
+		await createObject(api, 'player', {
+			name: fixtureName('hero-player'),
+		}),
+	)
+	const characterId = ledger.track(
+		'character',
+		await createObject(api, 'character', {
+			name: fixtureName('hero'),
+			ocName: playerId,
+			type: 'player',
+			skills: [skillId],
+		}),
+	)
 
 	const expected = modification === 'positive' ? base + modifier : base - modifier
 	return { abilityId, effectId, skillId, characterId, base, modifier, expected }
@@ -361,7 +400,9 @@ export interface StatScenarioIds {
  * Returns { base: null, value: null } only if the persisted rows could not be
  * read — which would itself be a defect the caller asserts against.
  */
-export async function computeCharacterStat(ids: StatScenarioIds): Promise<ComputedStat | null> {
+export async function computeCharacterStat(
+	ids: StatScenarioIds,
+): Promise<ComputedStat | null> {
 	const { execSync } = await import('child_process')
 	const fs = await import('fs')
 	const os = await import('os')
@@ -369,32 +410,40 @@ export async function computeCharacterStat(ids: StatScenarioIds): Promise<Comput
 
 	// PHP harness: read persisted rows by UUID (working find path), inject into
 	// the real service, call the real calculateCharacter().
-	const php = (bootstrap: string) => [
-		'<?php',
-		`require_once '${bootstrap}';`,
-		'$server = \\OC::$server;',
-		'$fetcher = $server->get(\\OCA\\LarpingApp\\Service\\RegisterObjectFetcher::class);',
-		'$svc = $server->get(\\OCA\\LarpingApp\\Service\\CharacterService::class);',
-		'$charId=$argv[1]; $abId=$argv[2]; $efId=$argv[3];',
-		'$skId=$argv[4]??""; $itId=$argv[5]??""; $cdId=$argv[6]??"";',
-		'$g=function($t,$id) use($fetcher){ return $id!=="" ? $fetcher->getObject($t,$id) : null; };',
-		'$character=$fetcher->getObject("character",$charId);',
-		'$ro=new ReflectionObject($svc);',
-		'$set=function($n,$v) use($svc,$ro){ $p=$ro->getProperty($n); $p->setAccessible(true); $p->setValue($svc,$v); };',
-		'$idx=function($e){ return $e ? [(string)$e["id"]=>$e] : []; };',
-		'$set("allAbilities",$idx($g("ability",$abId)));',
-		'$set("allEffects",$idx($g("effect",$efId)));',
-		'$set("allSkills",$idx($g("skill",$skId)));',
-		'$set("allItems",$idx($g("item",$itId)));',
-		'$set("allConditions",$idx($g("condition",$cdId)));',
-		'$set("allEvents",[]);',
-		'$set("entitiesLoaded",true);',
-		'$result=$svc->calculateCharacter($character);',
-		'$ab=($result["stats"] ?? [])[$abId] ?? null;',
-		'echo json_encode(["base"=>$ab["base"]??null,"value"=>$ab["value"]??null,"audit"=>$ab["audit"]??[]]);',
-	].join('\n')
+	const php = (bootstrap: string) =>
+		[
+			'<?php',
+			`require_once '${bootstrap}';`,
+			'$server = \\OC::$server;',
+			'$fetcher = $server->get(\\OCA\\LarpingApp\\Service\\RegisterObjectFetcher::class);',
+			'$svc = $server->get(\\OCA\\LarpingApp\\Service\\CharacterService::class);',
+			'$charId=$argv[1]; $abId=$argv[2]; $efId=$argv[3];',
+			'$skId=$argv[4]??""; $itId=$argv[5]??""; $cdId=$argv[6]??"";',
+			'$g=function($t,$id) use($fetcher){ return $id!=="" ? $fetcher->getObject($t,$id) : null; };',
+			'$character=$fetcher->getObject("character",$charId);',
+			'$ro=new ReflectionObject($svc);',
+			'$set=function($n,$v) use($svc,$ro){ $p=$ro->getProperty($n); $p->setAccessible(true); $p->setValue($svc,$v); };',
+			'$idx=function($e){ return $e ? [(string)$e["id"]=>$e] : []; };',
+			'$set("allAbilities",$idx($g("ability",$abId)));',
+			'$set("allEffects",$idx($g("effect",$efId)));',
+			'$set("allSkills",$idx($g("skill",$skId)));',
+			'$set("allItems",$idx($g("item",$itId)));',
+			'$set("allConditions",$idx($g("condition",$cdId)));',
+			'$set("allEvents",[]);',
+			'$set("entitiesLoaded",true);',
+			'$result=$svc->calculateCharacter($character);',
+			'$ab=($result["stats"] ?? [])[$abId] ?? null;',
+			'echo json_encode(["base"=>$ab["base"]??null,"value"=>$ab["value"]??null,"audit"=>$ab["audit"]??[]]);',
+		].join('\n')
 
-	const args = [ids.characterId, ids.abilityId, ids.effectId, ids.skillId || '', ids.itemId || '', ids.conditionId || '']
+	const args = [
+		ids.characterId,
+		ids.abilityId,
+		ids.effectId,
+		ids.skillId || '',
+		ids.itemId || '',
+		ids.conditionId || '',
+	]
 	return runPhpHarness(php, args, { fs, os, path, execSync })
 }
 
@@ -410,23 +459,27 @@ export async function computeCharacterStat(ids: StatScenarioIds): Promise<Comput
  * test.fixme records. Kept separate from computeCharacterStat so the
  * correctness tests can still assert the arithmetic on real persisted rows.
  */
-export async function computeCharacterStatLive(characterId: string, abilityId: string): Promise<ComputedStat | null> {
+export async function computeCharacterStatLive(
+	characterId: string,
+	abilityId: string,
+): Promise<ComputedStat | null> {
 	const { execSync } = await import('child_process')
 	const fs = await import('fs')
 	const os = await import('os')
 	const path = await import('path')
 
-	const php = (bootstrap: string) => [
-		'<?php',
-		`require_once '${bootstrap}';`,
-		'$server = \\OC::$server;',
-		'$fetcher = $server->get(\\OCA\\LarpingApp\\Service\\RegisterObjectFetcher::class);',
-		'$svc = $server->get(\\OCA\\LarpingApp\\Service\\CharacterService::class);',
-		'$character=$fetcher->getObject("character",$argv[1]);',
-		'$result=$svc->calculateCharacter($character);',
-		'$ab=($result["stats"] ?? [])[$argv[2]] ?? null;',
-		'echo json_encode(["base"=>$ab["base"]??null,"value"=>$ab["value"]??null,"audit"=>$ab["audit"]??[]]);',
-	].join('\n')
+	const php = (bootstrap: string) =>
+		[
+			'<?php',
+			`require_once '${bootstrap}';`,
+			'$server = \\OC::$server;',
+			'$fetcher = $server->get(\\OCA\\LarpingApp\\Service\\RegisterObjectFetcher::class);',
+			'$svc = $server->get(\\OCA\\LarpingApp\\Service\\CharacterService::class);',
+			'$character=$fetcher->getObject("character",$argv[1]);',
+			'$result=$svc->calculateCharacter($character);',
+			'$ab=($result["stats"] ?? [])[$argv[2]] ?? null;',
+			'echo json_encode(["base"=>$ab["base"]??null,"value"=>$ab["value"]??null,"audit"=>$ab["audit"]??[]]);',
+		].join('\n')
 
 	return runPhpHarness(php, [characterId, abilityId], { fs, os, path, execSync })
 }
@@ -457,24 +510,32 @@ export type DerivedStats = Record<string, DerivedAbility>
  * @param {string} characterId UUID of a persisted character.
  * @return {Promise<DerivedStats|null>} The stats block, or null if the harness cannot run.
  */
-export async function computeStatsLive(characterId: string): Promise<DerivedStats | null> {
+export async function computeStatsLive(
+	characterId: string,
+): Promise<DerivedStats | null> {
 	const { execSync } = await import('child_process')
 	const fs = await import('fs')
 	const os = await import('os')
 	const path = await import('path')
 
-	const php = (bootstrap: string) => [
-		'<?php',
-		`require_once '${bootstrap}';`,
-		'$server = \\OC::$server;',
-		'$fetcher = $server->get(\\OCA\\LarpingApp\\Service\\RegisterObjectFetcher::class);',
-		'$svc = $server->get(\\OCA\\LarpingApp\\Service\\CharacterService::class);',
-		'$character = $fetcher->getObject("character", $argv[1]);',
-		'$result = $svc->calculateCharacter($character);',
-		'echo json_encode($result["stats"] ?? []);',
-	].join('\n')
+	const php = (bootstrap: string) =>
+		[
+			'<?php',
+			`require_once '${bootstrap}';`,
+			'$server = \\OC::$server;',
+			'$fetcher = $server->get(\\OCA\\LarpingApp\\Service\\RegisterObjectFetcher::class);',
+			'$svc = $server->get(\\OCA\\LarpingApp\\Service\\CharacterService::class);',
+			'$character = $fetcher->getObject("character", $argv[1]);',
+			'$result = $svc->calculateCharacter($character);',
+			'echo json_encode($result["stats"] ?? []);',
+		].join('\n')
 
-	return runPhpHarness(php, [characterId], { fs, os, path, execSync }) as unknown as DerivedStats | null
+	return runPhpHarness(php, [characterId], {
+		fs,
+		os,
+		path,
+		execSync,
+	}) as unknown as DerivedStats | null
 }
 
 /**
@@ -498,21 +559,27 @@ export async function computeRosterLive(
 	const os = await import('os')
 	const path = await import('path')
 
-	const php = (bootstrap: string) => [
-		'<?php',
-		`require_once '${bootstrap}';`,
-		'$server = \\OC::$server;',
-		'$svc = $server->get(\\OCA\\LarpingApp\\Service\\CharacterService::class);',
-		'$wanted = array_slice($argv, 1);',
-		'$out = [];',
-		'foreach ($svc->calculateAllCharacters() as $c) {',
-		'    $id = (string) ($c["id"] ?? "");',
-		'    if (in_array($id, $wanted, true) === true) { $out[$id] = $c["stats"] ?? []; }',
-		'}',
-		'echo json_encode($out);',
-	].join('\n')
+	const php = (bootstrap: string) =>
+		[
+			'<?php',
+			`require_once '${bootstrap}';`,
+			'$server = \\OC::$server;',
+			'$svc = $server->get(\\OCA\\LarpingApp\\Service\\CharacterService::class);',
+			'$wanted = array_slice($argv, 1);',
+			'$out = [];',
+			'foreach ($svc->calculateAllCharacters() as $c) {',
+			'    $id = (string) ($c["id"] ?? "");',
+			'    if (in_array($id, $wanted, true) === true) { $out[$id] = $c["stats"] ?? []; }',
+			'}',
+			'echo json_encode($out);',
+		].join('\n')
 
-	return runPhpHarness(php, characterIds, { fs, os, path, execSync }) as unknown as Record<string, DerivedStats> | null
+	return runPhpHarness(php, characterIds, {
+		fs,
+		os,
+		path,
+		execSync,
+	}) as unknown as Record<string, DerivedStats> | null
 }
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -553,8 +620,10 @@ function findServerRoot(path: any, fs: any): string | null {
 	}
 	let dir = __dirname
 	for (let up = 0; up < 8; up++) {
-		if (fs.existsSync(path.join(dir, 'lib', 'base.php'))
-			&& fs.existsSync(path.join(dir, 'config', 'config.php'))) {
+		if (
+			fs.existsSync(path.join(dir, 'lib', 'base.php'))
+			&& fs.existsSync(path.join(dir, 'config', 'config.php'))
+		) {
 			return dir
 		}
 		const parent = path.dirname(dir)
@@ -570,7 +639,7 @@ function runPhpHarness(
 	deps: { fs: any; os: any; path: any; execSync: any },
 ): ComputedStat | null {
 	const { fs, os, path, execSync } = deps
-	const argStr = args.map(a => `'${a}'`).join(' ')
+	const argStr = args.map((a) => `'${a}'`).join(' ')
 
 	/**
 	 * Parse the harness stdout. The bootstrap can emit deprecation notices
@@ -610,7 +679,10 @@ function runPhpHarness(
 	// and same config.php the `php -S` instance under test is using.
 	const serverRoot = containerOverride === '' ? findServerRoot(path, fs) : null
 	if (serverRoot !== null) {
-		const script = path.join(os.tmpdir(), `la-calc-${Date.now()}-${Math.floor(Math.random() * 1e6)}.php`)
+		const script = path.join(
+			os.tmpdir(),
+			`la-calc-${Date.now()}-${Math.floor(Math.random() * 1e6)}.php`,
+		)
 		try {
 			fs.writeFileSync(script, php(path.join(serverRoot, 'lib', 'base.php')))
 			const out: string = execSync(`php ${script} ${argStr}`, {
@@ -621,16 +693,25 @@ function runPhpHarness(
 			return parse(out)
 		} catch (err) {
 			// eslint-disable-next-line no-console
-			console.warn(`[stat harness] in-process run failed under ${serverRoot}: ${(err as Error).message}`)
+			console.warn(
+				`[stat harness] in-process run failed under ${serverRoot}: ${(err as Error).message}`,
+			)
 			return null
 		} finally {
-			try { fs.unlinkSync(script) } catch { /* noop */ }
+			try {
+				fs.unlinkSync(script)
+			} catch {
+				/* noop */
+			}
 		}
 	}
 
 	// ── Path B: developer box — the app is bind-mounted into the `nextcloud`
 	// container and its server root is not an ancestor of this file.
-	const localTmp = path.join(os.tmpdir(), `la-calc-${Date.now()}-${Math.floor(Math.random() * 1e6)}.php`)
+	const localTmp = path.join(
+		os.tmpdir(),
+		`la-calc-${Date.now()}-${Math.floor(Math.random() * 1e6)}.php`,
+	)
 	const scriptName = `la-calc-${path.basename(localTmp)}`
 	// `nextcloud` is the SHARED dev container. It stays the default only because
 	// that is the historical developer-box layout; name your own rig with
@@ -638,7 +719,9 @@ function runPhpHarness(
 	const container = containerOverride === '' ? 'nextcloud' : containerOverride
 	try {
 		fs.writeFileSync(localTmp, php('/var/www/html/lib/base.php'))
-		execSync(`docker cp ${localTmp} ${container}:/tmp/${scriptName}`, { stdio: 'pipe' })
+		execSync(`docker cp ${localTmp} ${container}:/tmp/${scriptName}`, {
+			stdio: 'pipe',
+		})
 		const out: string = execSync(
 			`docker exec -u www-data ${container} php /tmp/${scriptName} ${argStr}`,
 			{ encoding: 'utf-8', timeout: 60_000 },
@@ -647,8 +730,18 @@ function runPhpHarness(
 	} catch {
 		return null
 	} finally {
-		try { fs.unlinkSync(localTmp) } catch { /* noop */ }
-		try { execSync(`docker exec -u root ${container} rm -f /tmp/${scriptName}`, { stdio: 'pipe' }) } catch { /* noop */ }
+		try {
+			fs.unlinkSync(localTmp)
+		} catch {
+			/* noop */
+		}
+		try {
+			execSync(`docker exec -u root ${container} rm -f /tmp/${scriptName}`, {
+				stdio: 'pipe',
+			})
+		} catch {
+			/* noop */
+		}
 	}
 }
 /* eslint-enable @typescript-eslint/no-explicit-any */

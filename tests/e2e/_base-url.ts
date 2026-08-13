@@ -50,7 +50,12 @@
  */
 
 /** Environment variables consulted, in precedence order. */
-const BASE_URL_VARS = ['PLAYWRIGHT_BASE_URL', 'NEXTCLOUD_URL', 'NC_BASE_URL', 'BASE_URL'] as const
+const BASE_URL_VARS = [
+	'PLAYWRIGHT_BASE_URL',
+	'NEXTCLOUD_URL',
+	'NC_BASE_URL',
+	'BASE_URL',
+] as const
 
 /** Fallback used ONLY on a CI runner, where :8080 is the job's own throwaway NC. */
 const CI_DEFAULT_BASE_URL = 'http://localhost:8080'
@@ -81,15 +86,15 @@ export function resolveBaseURL(): string {
 		// eslint-disable-next-line no-console
 		console.warn(
 			`[larpingapp e2e] none of ${BASE_URL_VARS.join(' / ')} is set; falling back to the `
-			+ `CI-local ${CI_DEFAULT_BASE_URL} (the runner's own php -S instance).`,
+				+ `CI-local ${CI_DEFAULT_BASE_URL} (the runner's own php -S instance).`,
 		)
 		return CI_DEFAULT_BASE_URL
 	}
 	throw new Error(
 		'No Nextcloud base URL configured for the e2e suite. Set PLAYWRIGHT_BASE_URL '
-		+ `(or ${BASE_URL_VARS.slice(1).join(' / ')}) to the isolated instance, e.g. `
-		+ 'PLAYWRIGHT_BASE_URL=http://localhost:8094. There is deliberately no '
-		+ 'localhost:8080 default off CI — that is the SHARED dev container.',
+			+ `(or ${BASE_URL_VARS.slice(1).join(' / ')}) to the isolated instance, e.g. `
+			+ 'PLAYWRIGHT_BASE_URL=http://localhost:8094. There is deliberately no '
+			+ 'localhost:8080 default off CI — that is the SHARED dev container.',
 	)
 }
 

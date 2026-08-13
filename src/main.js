@@ -3,7 +3,11 @@
 
 import { createApp, h } from 'vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
-import { translate as t, translatePlural as n, loadTranslations } from '@nextcloud/l10n'
+import {
+	translate as t,
+	translatePlural as n,
+	loadTranslations,
+} from '@nextcloud/l10n'
 import { generateUrl } from '@nextcloud/router'
 import {
 	CnPageRenderer,
@@ -61,7 +65,10 @@ try {
 } catch (e) {
 	// Non-fatal — lib translations fall back to English source.
 	// eslint-disable-next-line no-console
-	console.warn('[larpingapp] registerTranslations failed; falling back to English', e)
+	console.warn(
+		'[larpingapp] registerTranslations failed; falling back to English',
+		e,
+	)
 }
 
 // Fire-and-forget translation load — wrap in try/catch because
@@ -70,7 +77,10 @@ function tryLoadTranslations() {
 	try {
 		const result = loadTranslations('larpingapp', () => {})
 		if (result && typeof result.then === 'function') {
-			result.then(() => {}, () => {})
+			result.then(
+				() => {},
+				() => {},
+			)
 		}
 	} catch {
 		// no-op
@@ -90,10 +100,23 @@ function mergeMenuItems(target, incoming) {
 	incoming.forEach((item) => {
 		const existing = target.find((t) => t.id === item.id)
 		if (!existing) {
-			target.push({ ...item, children: Array.isArray(item.children) ? [...item.children] : item.children })
+			target.push({
+				...item,
+				children: Array.isArray(item.children)
+					? [...item.children]
+					: item.children,
+			})
 			return
 		}
-		for (const key of ['label', 'icon', 'route', 'order', 'section', 'permission', 'href']) {
+		for (const key of [
+			'label',
+			'icon',
+			'route',
+			'order',
+			'section',
+			'permission',
+			'href',
+		]) {
 			if (existing[key] === undefined && item[key] !== undefined) {
 				existing[key] = item[key]
 			}
@@ -137,7 +160,8 @@ function applyMenuRelocations(menu, relocations) {
 				const child = node.children[j]
 				const childTarget = relocations[child.id]
 				if (!childTarget) continue
-				if (childTarget === node.id && !Array.isArray(child.children)) continue
+				if (childTarget === node.id && !Array.isArray(child.children))
+					continue
 				node.children.splice(j, 1)
 				moves.push({ node: child, target: childTarget })
 			}
@@ -157,8 +181,13 @@ function applyMenuRelocations(menu, relocations) {
 			}
 		})
 	}
-	return menu.filter((m) => m.route || m.href || m.action
-		|| (Array.isArray(m.children) && m.children.length > 0))
+	return menu.filter(
+		(m) =>
+			m.route
+			|| m.href
+			|| m.action
+			|| (Array.isArray(m.children) && m.children.length > 0),
+	)
 }
 
 /**
@@ -175,7 +204,9 @@ function applyMenuRemovals(menu, removals) {
 	const isLeaf = (n) => !Array.isArray(n.children) || n.children.length === 0
 	menu.forEach((node) => {
 		if (Array.isArray(node.children)) {
-			node.children = node.children.filter((c) => !(drop.has(c.id) && isLeaf(c)))
+			node.children = node.children.filter(
+				(c) => !(drop.has(c.id) && isLeaf(c)),
+			)
 		}
 	})
 	return menu.filter((node) => !(drop.has(node.id) && isLeaf(node)))
@@ -199,23 +230,30 @@ function applyMenuRemovals(menu, removals) {
 function applySettingsSection(menu, settingsIds) {
 	if (!Array.isArray(settingsIds) || settingsIds.length === 0) return menu
 	const want = new Set(settingsIds)
-	const isClickable = (n) => n.route !== undefined || n.href !== undefined || n.action !== undefined
+	const isClickable = (n) =>
+		n.route !== undefined || n.href !== undefined || n.action !== undefined
 	const lifted = []
-	const strip = (nodes) => nodes.reduce((acc, n) => {
-		if (want.has(n.id)) {
-			const { children, ...leaf } = n
-			lifted.push({ ...leaf, section: 'settings' })
+	const strip = (nodes) =>
+		nodes.reduce((acc, n) => {
+			if (want.has(n.id)) {
+				const { children, ...leaf } = n
+				lifted.push({ ...leaf, section: 'settings' })
+				return acc
+			}
+			if (Array.isArray(n.children)) {
+				const children = strip(n.children)
+				if (
+					children.length === 0
+					&& n.children.length > 0
+					&& !isClickable(n)
+				)
+					return acc
+				acc.push({ ...n, children })
+				return acc
+			}
+			acc.push(n)
 			return acc
-		}
-		if (Array.isArray(n.children)) {
-			const children = strip(n.children)
-			if (children.length === 0 && n.children.length > 0 && !isClickable(n)) return acc
-			acc.push({ ...n, children })
-			return acc
-		}
-		acc.push(n)
-		return acc
-	}, [])
+		}, [])
 	const remaining = strip(menu)
 	return [...remaining, ...lifted]
 }
@@ -244,21 +282,24 @@ function mergeManifestFragments(base) {
 	merged.pages = Array.isArray(base.pages) ? [...base.pages] : []
 	merged.menu = Array.isArray(base.menu) ? [...base.menu] : []
 
-	context.keys().sort().forEach((key) => {
-		const fragment = context(key)
-		if (!fragment || typeof fragment !== 'object') {
-			return
-		}
-		Object.keys(fragment).forEach((prop) => {
-			if (prop === 'pages' && Array.isArray(fragment.pages)) {
-				merged.pages = merged.pages.concat(fragment.pages)
-			} else if (prop === 'menu' && Array.isArray(fragment.menu)) {
-				merged.menu = merged.menu.concat(fragment.menu)
-			} else {
-				merged[prop] = fragment[prop]
+	context
+		.keys()
+		.sort()
+		.forEach((key) => {
+			const fragment = context(key)
+			if (!fragment || typeof fragment !== 'object') {
+				return
 			}
+			Object.keys(fragment).forEach((prop) => {
+				if (prop === 'pages' && Array.isArray(fragment.pages)) {
+					merged.pages = merged.pages.concat(fragment.pages)
+				} else if (prop === 'menu' && Array.isArray(fragment.menu)) {
+					merged.menu = merged.menu.concat(fragment.menu)
+				} else {
+					merged[prop] = fragment[prop]
+				}
+			})
 		})
-	})
 
 	merged.menu = applyMenuRelocations(merged.menu, menuLayout.relocations)
 	merged.menu = applyMenuRemovals(merged.menu, menuLayout.removals)
@@ -316,11 +357,12 @@ const pageTypesProp = { ...defaultPageTypes }
 const registryProp = { ...registry }
 
 const app = createApp({
-	render: () => h(App, {
-		manifest,
-		registry: registryProp,
-		pageTypes: pageTypesProp,
-	}),
+	render: () =>
+		h(App, {
+			manifest,
+			registry: registryProp,
+			pageTypes: pageTypesProp,
+		}),
 })
 
 // Vue 3: plugins and global mixins are installed on the APP INSTANCE, not on

@@ -48,7 +48,9 @@ export async function queryGraphQL(query, variables = null) {
 	}
 
 	if (!response.ok) {
-		throw new Error(`GraphQL request failed: ${response.status} ${response.statusText}`)
+		throw new Error(
+			`GraphQL request failed: ${response.status} ${response.statusText}`,
+		)
 	}
 
 	const result = await response.json()

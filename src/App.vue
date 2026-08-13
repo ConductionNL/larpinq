@@ -46,11 +46,11 @@
 				@update:open="objectSidebarState.open = $event" />
 		</template>
 		<template #user-settings>
-			<NcAppSettingsSection
-				id="general"
-				:name="t('larpingapp', 'General')">
+			<NcAppSettingsSection id="general" :name="t('larpingapp', 'General')">
 				<p class="app-root__settings-hint">
-					{{ t('larpingapp', 'Configure your Larping app settings here.') }}
+					{{
+						t('larpingapp', 'Configure your Larping app settings here.')
+					}}
 				</p>
 			</NcAppSettingsSection>
 		</template>
@@ -79,7 +79,11 @@ import { NcAppSettingsSection } from '@nextcloud/vue'
 // without it now fails loudly at BUILD time instead of degrading at runtime.
 // The spec's "absence MUST NOT crash" contract still holds: the composable
 // itself returns a no-op fallback when no provider is mounted.
-import { CnAppRoot, CnObjectSidebar, useTenantContext } from '@conduction/nextcloud-vue'
+import {
+	CnAppRoot,
+	CnObjectSidebar,
+	useTenantContext,
+} from '@conduction/nextcloud-vue'
 import { useObjectStore, setObjectStoreTenantUuid } from './store/modules/object.js'
 
 export default {
@@ -262,7 +266,8 @@ export default {
 			 * @spec openspec/changes/larpingapp-adopt-or-abstractions/specs/larpingapp-adopt-or-abstractions/spec.md
 			 */
 			handler(uuid) {
-				const next = (typeof uuid === 'string' && uuid.length > 0) ? uuid : null
+				const next =
+					typeof uuid === 'string' && uuid.length > 0 ? uuid : null
 				if (this.tenantSyncedUuid === next) {
 					return
 				}
@@ -275,7 +280,10 @@ export default {
 				// 2. Clear caches via the store action.
 				try {
 					const store = useObjectStore()
-					if (store && typeof store.setActiveTenantOrganisation === 'function') {
+					if (
+						store
+						&& typeof store.setActiveTenantOrganisation === 'function'
+					) {
 						store.setActiveTenantOrganisation(next)
 					}
 				} catch (e) {
@@ -286,10 +294,17 @@ export default {
 				// 3. Detail view → navigate back to parent index on switch.
 				// Skip the initial mount (previous === undefined) so a deep
 				// link into a detail page doesn't redirect on first paint.
-				if (previous !== undefined && this.$route && /:|\//.test(this.$route.path)) {
+				if (
+					previous !== undefined
+					&& this.$route
+					&& /:|\//.test(this.$route.path)
+				) {
 					const params = this.$route.params || {}
 					const hasIdParam = Object.keys(params).some(
-						(k) => params[k] !== undefined && params[k] !== null && params[k] !== '',
+						(k) =>
+							params[k] !== undefined
+							&& params[k] !== null
+							&& params[k] !== '',
 					)
 					if (hasIdParam) {
 						// Find the parent index route by stripping the

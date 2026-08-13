@@ -45,7 +45,7 @@ const NAV_ENTRY_ANY = '[data-testid^="cn-nav-entry-"]'
  * Each index manifest page: route slug, sidebar nav label, and the singular
  * entity word that appears in its primary "Add <Entity>" button.
  */
-const INDEX_PAGES: Array<{ slug: string, nav: string, entity: string }> = [
+const INDEX_PAGES: Array<{ slug: string; nav: string; entity: string }> = [
 	{ slug: 'characters', nav: 'Characters', entity: 'Character' },
 	{ slug: 'players', nav: 'Players', entity: 'Player' },
 	{ slug: 'abilities', nav: 'Abilities', entity: 'Ability' },
@@ -131,7 +131,10 @@ async function revealNavEntry(page: Page, navId: string): Promise<void> {
 		if (await entry.isVisible({ timeout: 2_500 }).catch(() => false)) return
 		// Only re-click while the group is still reported closed; if it opened
 		// but the child is slow, just keep waiting below.
-		if ((await anchor.getAttribute('aria-expanded').catch(() => null)) === 'true') break
+		if (
+			(await anchor.getAttribute('aria-expanded').catch(() => null)) === 'true'
+		)
+			break
 		await page.waitForTimeout(750)
 	}
 	await entry.waitFor({ state: 'visible', timeout: 10_000 }).catch(() => {})
@@ -155,7 +158,9 @@ async function freshNav(page: Page, slug: string, navId: string): Promise<void> 
 	// `networkidle` wait was doing this by accident; it is unsatisfiable on
 	// Nextcloud, so it "worked" only by burning time until the app happened to
 	// mount. This is the same readiness guarantee, stated explicitly.)
-	await expect(page.locator(`${NAV} ${NAV_ENTRY_ANY}`).first()).toBeVisible({ timeout: 30_000 })
+	await expect(page.locator(`${NAV} ${NAV_ENTRY_ANY}`).first()).toBeVisible({
+		timeout: 30_000,
+	})
 	await dismissSupportDialog(page)
 	// Reveal the entry if it lives inside a collapsed nav group.
 	await revealNavEntry(page, navId)
@@ -189,14 +194,19 @@ function trackPageErrors(page: Page): string[] {
 for (const { slug, nav, entity } of INDEX_PAGES) {
 	test.describe(`index page: ${slug}`, () => {
 		// @e2e openspec/specs/game-mechanics/spec.md#list-abilities-with-search
-		test(`${slug} index renders the "Add ${entity}" primary action`, async ({ page }) => {
+		test(`${slug} index renders the "Add ${entity}" primary action`, async ({
+			page,
+		}) => {
 			const errs = trackPageErrors(page)
 			await freshNav(page, slug, nav)
 
 			// The page-specific primary create action proves this is the right
 			// index page (not the generic/Characters shell).
 			await expect(
-				page.locator('.app-content button').filter({ hasText: new RegExp(`Add ${entity}`, 'i') }).first(),
+				page
+					.locator('.app-content button')
+					.filter({ hasText: new RegExp(`Add ${entity}`, 'i') })
+					.first(),
 			).toBeVisible({ timeout: 10_000 })
 
 			// The sidebar still exposes this entity as an accessible link. The nav
@@ -206,7 +216,9 @@ for (const { slug, nav, entity } of INDEX_PAGES) {
 			// Assert on the stable per-entry test id so we target the actual nav
 			// entry (its link carries the hash route href).
 			await expect(
-				page.getByTestId(`cn-nav-entry-${nav}`).getByRole('link', { name: nav }),
+				page
+					.getByTestId(`cn-nav-entry-${nav}`)
+					.getByRole('link', { name: nav }),
 			).toBeVisible()
 
 			// No larpingapp-origin fatal page errors (the OR data-fetch 500 is a
@@ -216,7 +228,9 @@ for (const { slug, nav, entity } of INDEX_PAGES) {
 		})
 
 		// @e2e openspec/specs/game-mechanics/spec.md#list-skills-with-search
-		test(`${slug} index renders the view-mode toggle and a list-or-empty surface`, async ({ page }) => {
+		test(`${slug} index renders the view-mode toggle and a list-or-empty surface`, async ({
+			page,
+		}) => {
 			await freshNav(page, slug, nav)
 
 			// The index toolbar exposes a view-mode toggle. nc-vue renders this as
@@ -225,8 +239,14 @@ for (const { slug, nav, entity } of INDEX_PAGES) {
 			// is why this assertion could never pass). Accept either shape so the
 			// test survives the widget being re-implemented again.
 			await expect(
-				page.getByRole('group', { name: /view mode/i })
-					.or(page.locator('.app-content button').filter({ hasText: /^(Cards|Table)$/ }).first())
+				page
+					.getByRole('group', { name: /view mode/i })
+					.or(
+						page
+							.locator('.app-content button')
+							.filter({ hasText: /^(Cards|Table)$/ })
+							.first(),
+					)
 					.or(page.locator('.app-content input[type="radio"]').first())
 					.first(),
 				'index toolbar must expose a view-mode toggle',
@@ -234,26 +254,38 @@ for (const { slug, nav, entity } of INDEX_PAGES) {
 
 			// A list container or an empty-state is rendered (data-independent:
 			// in a bare env the empty-state shows; with data the list shows).
-			const listOrEmpty = page.locator(
-				'.app-content .empty-content, .app-content [class*="empty"], .app-content table, .app-content [role="table"], .app-content ul, .app-content [class*="list"]',
-			).first()
+			const listOrEmpty = page
+				.locator(
+					'.app-content .empty-content, .app-content [class*="empty"], .app-content table, .app-content [role="table"], .app-content ul, .app-content [class*="list"]',
+				)
+				.first()
 			await expect(listOrEmpty).toBeVisible({ timeout: 10_000 })
 		})
 
 		// @e2e openspec/specs/character-management/spec.md#create-a-new-character
-		test(`${slug} index opens the "Add ${entity}" create dialog`, async ({ page }) => {
+		test(`${slug} index opens the "Add ${entity}" create dialog`, async ({
+			page,
+		}) => {
 			await freshNav(page, slug, nav)
 
-			const addBtn = page.locator('.app-content button').filter({ hasText: new RegExp(`Add ${entity}`, 'i') }).first()
+			const addBtn = page
+				.locator('.app-content button')
+				.filter({ hasText: new RegExp(`Add ${entity}`, 'i') })
+				.first()
 			await expect(addBtn).toBeVisible({ timeout: 10_000 })
 			await addBtn.click()
 
 			// The create modal/dialog appears with a name field, then we dismiss it.
 			const dialog = page.locator('[role="dialog"]').first()
 			await expect(dialog).toBeVisible({ timeout: 8_000 })
-			await expect(dialog.locator('input, textarea').first()).toBeVisible({ timeout: 5_000 })
+			await expect(dialog.locator('input, textarea').first()).toBeVisible({
+				timeout: 5_000,
+			})
 
-			const cancel = dialog.locator('button').filter({ hasText: /Cancel|Close/i }).first()
+			const cancel = dialog
+				.locator('button')
+				.filter({ hasText: /Cancel|Close/i })
+				.first()
 			if (await cancel.isVisible({ timeout: 1500 }).catch(() => false)) {
 				await cancel.click().catch(() => {})
 			} else {

@@ -23,7 +23,10 @@ import { test, expect } from '@playwright/test'
 const BASE = '/apps/larpingapp'
 
 test.describe('skill-requirement-enforcement', () => {
-	test('requirement-report endpoint is reachable for an authenticated user', async ({ page, request }) => {
+	test('requirement-report endpoint is reachable for an authenticated user', async ({
+		page,
+		request,
+	}) => {
 		// Hard-load the SPA so the storageState session cookie is active.
 		await page.goto(BASE)
 

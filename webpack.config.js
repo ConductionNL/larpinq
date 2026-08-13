@@ -76,8 +76,11 @@ function resolveUseLocalLib() {
 	if (process.env.USE_LOCAL_LIB === 'false' || !fs.existsSync(localLib)) {
 		return false
 	}
-	const wanted = require('./package.json').dependencies['@conduction/nextcloud-vue']
-	const wantedMajor = String(wanted).replace(/^[^0-9]*/, '').split('.')[0]
+	const wanted =
+		require('./package.json').dependencies['@conduction/nextcloud-vue']
+	const wantedMajor = String(wanted)
+		.replace(/^[^0-9]*/, '')
+		.split('.')[0]
 	let localVersion = null
 	try {
 		localVersion = require(path.resolve(localLib, '..', 'package.json')).version
@@ -88,10 +91,10 @@ function resolveUseLocalLib() {
 	if (localMajor !== null && localMajor !== wantedMajor) {
 		throw new Error(
 			`[larpingapp] Refusing to build against ../nextcloud-vue@${localVersion}: this app `
-			+ `depends on @conduction/nextcloud-vue@${wanted} (major ${wantedMajor}). Aliasing a `
-			+ `major-${localMajor} checkout in would silently build Vue ${localMajor === '1' ? '2' : '?'} `
-			+ 'library sources into a Vue 3 app. Check out the matching nc-vue branch, or set '
-			+ 'USE_LOCAL_LIB=false to build against the pinned npm package.',
+				+ `depends on @conduction/nextcloud-vue@${wanted} (major ${wantedMajor}). Aliasing a `
+				+ `major-${localMajor} checkout in would silently build Vue ${localMajor === '1' ? '2' : '?'} `
+				+ 'library sources into a Vue 3 app. Check out the matching nc-vue branch, or set '
+				+ 'USE_LOCAL_LIB=false to build against the pinned npm package.',
 		)
 	}
 	return true
@@ -101,7 +104,10 @@ const useLocalLib = resolveUseLocalLib()
 
 // Extend the base resolve config (preserves defaults from @nextcloud/webpack-vue-config)
 webpackConfig.resolve = webpackConfig.resolve || {}
-webpackConfig.resolve.modules = [path.resolve(__dirname, 'node_modules'), 'node_modules']
+webpackConfig.resolve.modules = [
+	path.resolve(__dirname, 'node_modules'),
+	'node_modules',
+]
 webpackConfig.resolve.alias = {
 	...(webpackConfig.resolve.alias || {}),
 	'@': path.resolve(__dirname, 'src'),
@@ -129,8 +135,14 @@ webpackConfig.resolve.alias = {
 	// reason `@nextcloud/vue` does: without it the alias would also rewrite the
 	// subpath `@nextcloud/dialogs/style.css`, which must keep going through the
 	// exports map.
-	'@nextcloud/vue$': path.resolve(__dirname, 'node_modules/@nextcloud/vue/dist/index.mjs'),
-	'@nextcloud/dialogs$': path.resolve(__dirname, 'node_modules/@nextcloud/dialogs/dist/index.mjs'),
+	'@nextcloud/vue$': path.resolve(
+		__dirname,
+		'node_modules/@nextcloud/vue/dist/index.mjs',
+	),
+	'@nextcloud/dialogs$': path.resolve(
+		__dirname,
+		'node_modules/@nextcloud/dialogs/dist/index.mjs',
+	),
 	// Force the lib's transitive @nextcloud/axios import to resolve to
 	// the app's installed copy. Without the `$` exact-match suffix,
 	// webpack would walk up to the lib's own node_modules and load a
@@ -138,7 +150,10 @@ webpackConfig.resolve.alias = {
 	// Point directly to the CJS build to avoid webpack picking the ESM
 	// `.mjs` entrypoint (which triggers "fully specified" errors in
 	// transitive deps that do `require('buffer')` without an extension).
-	'@nextcloud/axios$': path.resolve(__dirname, 'node_modules/@nextcloud/axios/dist/index.cjs'),
+	'@nextcloud/axios$': path.resolve(
+		__dirname,
+		'node_modules/@nextcloud/axios/dist/index.cjs',
+	),
 }
 
 // Allow `.js` import requests to resolve to `.cjs` files.
@@ -163,7 +178,9 @@ webpackConfig.plugins = [
 	new VueLoaderPlugin(),
 	new NodePolyfillPlugin({ additionalAliases: ['process'] }),
 	new webpack.DefinePlugin({ appName: JSON.stringify(appId) }),
-	new webpack.DefinePlugin({ appVersion: JSON.stringify(process.env.npm_package_version) }),
+	new webpack.DefinePlugin({
+		appVersion: JSON.stringify(process.env.npm_package_version),
+	}),
 ]
 
 module.exports = webpackConfig

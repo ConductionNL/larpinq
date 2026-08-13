@@ -122,7 +122,13 @@ export default defineConfig({
 	// this suite actually takes, so it cannot mask a regression.
 	globalTimeout: 38 * 60_000,
 	reporter: [
-		['html', { open: 'never', outputFolder: path.resolve(__dirname, 'playwright-report') }],
+		[
+			'html',
+			{
+				open: 'never',
+				outputFolder: path.resolve(__dirname, 'playwright-report'),
+			},
+		],
 		['list'],
 	],
 	outputDir: path.resolve(__dirname, 'test-results'),

@@ -15,15 +15,25 @@
 
 		<NcSettingsSection
 			:name="t('larpingapp', 'Data storage')"
-			:description="t('larpingapp', 'Configure where to store your LARP data')">
+			:description="
+				t('larpingapp', 'Configure where to store your LARP data')
+			">
 			<div v-if="!loading">
 				<!-- Warning if OpenRegister is not installed but selected -->
 				<NcNoteCard v-if="!settings.openRegisters" type="warning">
-					{{ t('larpingapp', 'Open Register is not installed. Some features might be unavailable.') }}
+					{{
+						t(
+							'larpingapp',
+							'Open Register is not installed. Some features might be unavailable.',
+						)
+					}}
 				</NcNoteCard>
 
 				<!-- Object Type Configuration -->
-				<div v-for="objectType in settings.objectTypes" :key="objectType" class="object-type-section">
+				<div
+					v-for="objectType in settings.objectTypes"
+					:key="objectType"
+					class="object-type-section">
 					<h3>{{ formatTitle(objectType) }}</h3>
 
 					<div class="selection-container">
@@ -46,7 +56,10 @@
 
 						<!-- Register Selection (only if OpenRegister is selected) -->
 						<NcSelect
-							v-if="configuration[objectType].source?.value === 'openregister'"
+							v-if="
+								configuration[objectType].source?.value
+								=== 'openregister'
+							"
 							v-model="configuration[objectType].register"
 							:options="registerOptions"
 							:input-label="t('larpingapp', 'Register')"
@@ -55,9 +68,17 @@
 
 						<!-- Schema Selection (only if Register is selected) -->
 						<NcSelect
-							v-if="configuration[objectType].source?.value === 'openregister' && configuration[objectType].register"
+							v-if="
+								configuration[objectType].source?.value
+									=== 'openregister'
+								&& configuration[objectType].register
+							"
 							v-model="configuration[objectType].schema"
-							:options="getSchemaOptions(configuration[objectType].register?.value)"
+							:options="
+								getSchemaOptions(
+									configuration[objectType].register?.value,
+								)
+							"
 							:input-label="t('larpingapp', 'Schema')"
 							:disabled="loading" />
 					</div>
@@ -83,7 +104,8 @@
 			</div>
 
 			<!-- Loading State -->
-			<NcLoadingIcon v-else
+			<NcLoadingIcon
+				v-else
 				class="loading-icon"
 				:size="64"
 				appearance="dark" />
@@ -140,7 +162,7 @@ export default defineComponent({
 		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-9
 		 */
 		registerOptions() {
-			return (this.settings.availableRegisters || []).map(register => ({
+			return (this.settings.availableRegisters || []).map((register) => ({
 				label: register.title,
 				value: register.id.toString(),
 			}))
@@ -180,29 +202,35 @@ export default defineComponent({
 		 */
 		async loadSettings() {
 			try {
-				const response = await fetch('/index.php/apps/larpingapp/api/settings')
+				const response = await fetch(
+					'/index.php/apps/larpingapp/api/settings',
+				)
 				const data = await response.json()
 				this.settings = data
 
 				// Initialize configuration for each object type based on existing config
-				this.settings.objectTypes.forEach(type => {
-					const source = this.settings.configuration[`${type}_source`] || 'internal'
-					const registerId = this.settings.configuration[`${type}_register`]
+				this.settings.objectTypes.forEach((type) => {
+					const source =
+						this.settings.configuration[`${type}_source`] || 'internal'
+					const registerId =
+						this.settings.configuration[`${type}_register`]
 					const schemaId = this.settings.configuration[`${type}_schema`]
 
 					this.configuration[type] = {
-						source: this.sourceOptions.find(option => option.value === source),
+						source: this.sourceOptions.find(
+							(option) => option.value === source,
+						),
 						register: registerId
 							? {
-								label: this.getRegisterLabel(registerId),
-								value: registerId,
-							}
+									label: this.getRegisterLabel(registerId),
+									value: registerId,
+								}
 							: null,
 						schema: schemaId
 							? {
-								label: this.getSchemaLabel(registerId, schemaId),
-								value: schemaId,
-							}
+									label: this.getSchemaLabel(registerId, schemaId),
+									value: schemaId,
+								}
 							: null,
 					}
 				})
@@ -221,7 +249,9 @@ export default defineComponent({
 		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-9
 		 */
 		getRegisterLabel(registerId) {
-			const register = this.settings.availableRegisters.find(r => r.id.toString() === registerId)
+			const register = this.settings.availableRegisters.find(
+				(r) => r.id.toString() === registerId,
+			)
 			return register?.title || ''
 		},
 
@@ -234,8 +264,12 @@ export default defineComponent({
 		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-9
 		 */
 		getSchemaLabel(registerId, schemaId) {
-			const register = this.settings.availableRegisters.find(r => r.id.toString() === registerId)
-			const schema = register?.schemas.find(s => s.id.toString() === schemaId)
+			const register = this.settings.availableRegisters.find(
+				(r) => r.id.toString() === registerId,
+			)
+			const schema = register?.schemas.find(
+				(s) => s.id.toString() === schemaId,
+			)
 			return schema?.title || ''
 		},
 
@@ -260,11 +294,15 @@ export default defineComponent({
 		 */
 		getSchemaOptions(registerId) {
 			if (!registerId) return []
-			const register = this.settings.availableRegisters.find(r => r.id.toString() === registerId)
-			return register?.schemas.map(schema => ({
-				label: schema.title,
-				value: schema.id.toString(),
-			})) || []
+			const register = this.settings.availableRegisters.find(
+				(r) => r.id.toString() === registerId,
+			)
+			return (
+				register?.schemas.map((schema) => ({
+					label: schema.title,
+					value: schema.id.toString(),
+				})) || []
+			)
 		},
 
 		/**
@@ -317,15 +355,18 @@ export default defineComponent({
 					}
 				})
 
-				const response = await fetch('/index.php/apps/larpingapp/api/settings', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-						requesttoken: OC.requestToken,
-						'OCS-APIREQUEST': 'true',
+				const response = await fetch(
+					'/index.php/apps/larpingapp/api/settings',
+					{
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+							requesttoken: OC.requestToken,
+							'OCS-APIREQUEST': 'true',
+						},
+						body: JSON.stringify(configToSave),
 					},
-					body: JSON.stringify(configToSave),
-				})
+				)
 
 				if (response.ok) {
 					this.message = t('larpingapp', 'Settings saved successfully')
@@ -336,7 +377,8 @@ export default defineComponent({
 				}
 			} catch (error) {
 				console.error('Failed to save settings:', error)
-				this.message = error.message || t('larpingapp', 'Failed to save settings')
+				this.message =
+					error.message || t('larpingapp', 'Failed to save settings')
 				this.messageType = 'error'
 			} finally {
 				this.saving = false

@@ -24,7 +24,12 @@
  * which clears the in-memory collection / object / pagination caches so
  * the next fetch hits the new tenant.
  */
-import { createObjectStore, filesPlugin, auditTrailsPlugin, relationsPlugin } from '@conduction/nextcloud-vue'
+import {
+	createObjectStore,
+	filesPlugin,
+	auditTrailsPlugin,
+	relationsPlugin,
+} from '@conduction/nextcloud-vue'
 
 // Module-local tenant UUID — written by `setObjectStoreTenantUuid()` from
 // the host App.vue once `useTenantContext()` resolves an active tenant.
@@ -44,11 +49,7 @@ export function setObjectStoreTenantUuid(uuid) {
 }
 
 export const useObjectStore = createObjectStore('object', {
-	plugins: [
-		filesPlugin(),
-		auditTrailsPlugin(),
-		relationsPlugin(),
-	],
+	plugins: [filesPlugin(), auditTrailsPlugin(), relationsPlugin()],
 	// Library reads this on every outgoing request → header
 	// `X-OpenRegister-Organisation`. Falls back to the store's own
 	// `activeTenantOrganisationUuid` when null (also written by us via
