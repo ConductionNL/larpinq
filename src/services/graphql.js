@@ -5,8 +5,8 @@
  * with Nextcloud CSRF token authentication.
  */
 
-import { generateUrl } from '@nextcloud/router'
 import { getRequestToken } from '@nextcloud/auth'
+import { generateUrl } from '@nextcloud/router'
 
 const GRAPHQL_ENDPOINT = '/apps/openregister/api/graphql'
 

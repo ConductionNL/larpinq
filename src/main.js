@@ -1,42 +1,39 @@
 // SPDX-License-Identifier: EUPL-1.2
 // Copyright (C) 2026 Conduction B.V.
 
-import { createApp, h } from 'vue'
-import { createRouter, createWebHashHistory } from 'vue-router'
-import {
-	translate as t,
-	translatePlural as n,
-	loadTranslations,
-} from '@nextcloud/l10n'
-import { generateUrl } from '@nextcloud/router'
 import {
 	CnPageRenderer,
 	defaultPageTypes,
+	registerBuiltinDashboardWidgets,
 	registerIcons,
 	registerTranslations,
-	registerBuiltinDashboardWidgets,
 } from '@conduction/nextcloud-vue'
-import pinia from './pinia.js'
+import {
+	loadTranslations,
+	translatePlural as n,
+	translate as t,
+} from '@nextcloud/l10n'
+import { generateUrl } from '@nextcloud/router'
+import { createApp, h } from 'vue'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import App from './App.vue'
+import appIcons from './icons.js'
 import bundledManifest from './manifest.json'
 import menuLayout from './menu-layout.json'
+import pinia from './pinia.js'
 import registry from './registry.js'
-import appIcons from './icons.js'
 
 // MDI icons referenced by the manifest (menu, KPIs, widgets). CnIcon resolves
 // names from the registry populated by registerIcons(), so every icon the
 // manifest uses must be imported + registered here — otherwise it falls back
 // to the help-circle placeholder.
-
 // Library CSS — must be explicit import (webpack tree-shakes side-effect imports from aliased packages)
 import '@conduction/nextcloud-vue/css/index.css'
-
 // gridstack v12 CSS. The manifest declares a `type: "dashboard"` page, whose
 // widgets nc-vue lays out with gridstack. Without this stylesheet every
 // dashboard item renders 0 px wide — v12 sizes items with
 // `width: var(--gs-column-width)` — and NOTHING is logged.
 import 'gridstack/dist/gridstack.min.css'
-
 // Global (unscoped) app styles
 import './assets/app.css'
 
@@ -73,6 +70,9 @@ try {
 
 // Fire-and-forget translation load — wrap in try/catch because
 // some Nextcloud installs 404 on l10n JSON requests.
+/**
+ *
+ */
 function tryLoadTranslations() {
 	try {
 		const result = loadTranslations('larpingapp', () => {})
@@ -236,7 +236,11 @@ function applySettingsSection(menu, settingsIds) {
 	const strip = (nodes) =>
 		nodes.reduce((acc, n) => {
 			if (want.has(n.id)) {
-				const { children, ...leaf } = n
+				// Drop `children` explicitly rather than by rest-destructuring:
+				// NC's config runs `no-unused-vars` with `ignoreRestSiblings: false`,
+				// so the omit-a-key idiom reports the omitted binding as unused.
+				const leaf = { ...n }
+				delete leaf.children
 				lifted.push({ ...leaf, section: 'settings' })
 				return acc
 			}
