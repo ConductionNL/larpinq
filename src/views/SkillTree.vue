@@ -44,7 +44,7 @@
 			<NcSelect
 				v-model="selectedCharacter"
 				:options="characterOptions"
-				:input-label="t('larpingapp', 'Character')"
+				:inputLabel="t('larpingapp', 'Character')"
 				:placeholder="t('larpingapp', 'No character (uncoloured)')"
 				label="label"
 				data-testid="skill-tree-character"
@@ -60,7 +60,7 @@
 			<NcSelect
 				v-model="selectedSetting"
 				:options="settingOptions"
-				:input-label="t('larpingapp', 'World')"
+				:inputLabel="t('larpingapp', 'World')"
 				:placeholder="t('larpingapp', 'All worlds')"
 				label="label"
 				data-testid="skill-tree-setting" />
@@ -194,17 +194,17 @@
 
 <script>
 import { CnIcon, CnStatusBadge, useObjectStore } from '@conduction/nextcloud-vue'
+import { generateUrl } from '@nextcloud/router'
+import NcEmptyContent from '@nextcloud/vue/components/NcEmptyContent'
 // @nextcloud/vue v9 ships an `exports` map; the v8 `dist/Components/*.js`
 // deep paths are no longer exported and throw ERR_PACKAGE_PATH_NOT_EXPORTED.
 import NcSelect from '@nextcloud/vue/components/NcSelect'
-import NcEmptyContent from '@nextcloud/vue/components/NcEmptyContent'
-import { generateUrl } from '@nextcloud/router'
 import {
+	buildNodes,
+	computeStateBySkill,
+	computeTiers,
 	idList,
 	indexNames,
-	computeStateBySkill,
-	buildNodes,
-	computeTiers,
 } from './skillTreeGraph.js'
 
 const STATE_META = {

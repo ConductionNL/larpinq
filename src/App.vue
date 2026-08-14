@@ -23,12 +23,12 @@
 -->
 <template>
 	<CnAppRoot
-		:ai-companion="true"
+		:aiCompanion="true"
 		:manifest="manifest"
 		:registry="registry"
-		:custom-components="customComponents"
-		:page-types="pageTypes"
-		app-id="larpingapp"
+		:customComponents="customComponents"
+		:pageTypes="pageTypes"
+		appId="larpingapp"
 		:translate="translateForApp"
 		:permissions="permissions">
 		<template #sidebar>
@@ -36,11 +36,11 @@
 				v-if="objectSidebarState.active"
 				:title="objectSidebarState.title"
 				:subtitle="objectSidebarState.subtitle"
-				:object-type="objectSidebarState.objectType"
-				:object-id="objectSidebarState.objectId"
+				:objectType="objectSidebarState.objectType"
+				:objectId="objectSidebarState.objectId"
 				:register="objectSidebarState.register"
 				:schema="objectSidebarState.schema"
-				:hidden-tabs="objectSidebarState.hiddenTabs"
+				:hiddenTabs="objectSidebarState.hiddenTabs"
 				:tabs="objectSidebarState.tabs"
 				:open="objectSidebarState.open"
 				@update:open="objectSidebarState.open = $event" />
@@ -58,9 +58,6 @@
 </template>
 
 <script>
-import { reactive } from 'vue'
-import { translate as ncT } from '@nextcloud/l10n'
-import { NcAppSettingsSection } from '@nextcloud/vue'
 // Multi-tenancy composable (multi-tenancy-context, ADR-025).
 //
 // This was previously pulled in with a `require('@conduction/nextcloud-vue')`
@@ -84,7 +81,10 @@ import {
 	CnObjectSidebar,
 	useTenantContext,
 } from '@conduction/nextcloud-vue'
-import { useObjectStore, setObjectStoreTenantUuid } from './store/modules/object.js'
+import { translate as ncT } from '@nextcloud/l10n'
+import { NcAppSettingsSection } from '@nextcloud/vue'
+import { reactive } from 'vue'
+import { setObjectStoreTenantUuid, useObjectStore } from './store/modules/object.js'
 
 export default {
 	name: 'App',
@@ -119,6 +119,7 @@ export default {
 			type: Object,
 			required: true,
 		},
+
 		/**
 		 * v2 kind-tagged component registry (ADR-036). Passed to CnAppRoot's
 		 * `registry` prop. Each entry: `{ kind, component, ...kindMetadata }`
@@ -132,6 +133,7 @@ export default {
 			type: Object,
 			default: () => ({}),
 		},
+
 		/**
 		 * Page-type registry — `{ index, detail, dashboard, settings, ... }`.
 		 * Wired through to descendant `CnPageRenderer` instances via
@@ -193,6 +195,7 @@ export default {
 				hiddenTabs: [],
 				tabs: undefined,
 			}),
+
 			// Tracks the last tenant UUID we wired into the object store so
 			// the watcher (which fires immediate: true) can no-op on the
 			// initial undefined→null transition.
@@ -208,6 +211,7 @@ export default {
 		permissions() {
 			return window.OC?.currentUser?.permissions ?? []
 		},
+
 		/**
 		 * Flat name→component map derived from the v2 `registry` prop.
 		 *
@@ -258,7 +262,7 @@ export default {
 		cnActiveOrganisationUuid: {
 			immediate: true,
 			/**
-			 * Apply one tenant switch. Carries its own @spec because gate-16
+			 * Apply one tenant switch. Carries its own `@spec` because gate-16
 			 * parses `handler()` as a method in its own right — the tag on the
 			 * enclosing watcher entry above does not reach it.
 			 *
@@ -286,7 +290,10 @@ export default {
 					) {
 						store.setActiveTenantOrganisation(next)
 					}
-				} catch (e) {
+				} catch {
+					// Optional catch binding: NC's config sets
+					// `caughtErrors: 'all'`, so a named-but-unused error
+					// parameter reports as an unused variable.
 					// Pinia not active yet on first immediate fire — safe
 					// to ignore; subsequent fires will reach the store.
 				}

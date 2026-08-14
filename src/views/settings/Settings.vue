@@ -1,11 +1,11 @@
 <template>
 	<CnAdminSettingsShell
-		app-id="larpingapp"
-		app-name="LarpingApp"
-		doc-url="https://conduction.gitbook.io/larpingapp-nextcloud/users"
-		reimport-url="/index.php/apps/larpingapp/api/settings/reimport"
+		appId="larpingapp"
+		appName="LarpingApp"
+		docUrl="https://conduction.gitbook.io/larpingapp-nextcloud/users"
+		reimportUrl="/index.php/apps/larpingapp/api/settings/reimport"
 		@reimported="onReimported"
-		@reimport-error="onReimportError">
+		@reimportError="onReimportError">
 		<!-- Re-import Status -->
 		<div v-if="message" class="actions-section">
 			<NcNoteCard :type="messageType">
@@ -50,7 +50,7 @@
 						<NcSelect
 							v-model="configuration[objectType].source"
 							:options="sourceOptions"
-							:input-label="t('larpingapp', 'Source')"
+							:inputLabel="t('larpingapp', 'Source')"
 							:disabled="loading"
 							@update:modelValue="handleSourceChange(objectType)" />
 
@@ -62,7 +62,7 @@
 							"
 							v-model="configuration[objectType].register"
 							:options="registerOptions"
-							:input-label="t('larpingapp', 'Register')"
+							:inputLabel="t('larpingapp', 'Register')"
 							:disabled="loading"
 							@update:modelValue="handleRegisterChange(objectType)" />
 
@@ -79,7 +79,7 @@
 									configuration[objectType].register?.value,
 								)
 							"
-							:input-label="t('larpingapp', 'Schema')"
+							:inputLabel="t('larpingapp', 'Schema')"
 							:disabled="loading" />
 					</div>
 				</div>
@@ -114,19 +114,25 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue'
 import { CnAdminSettingsShell } from '@conduction/nextcloud-vue'
 import {
-	NcSettingsSection,
-	NcNoteCard,
-	NcSelect,
 	NcButton,
 	NcLoadingIcon,
+	NcNoteCard,
+	NcSelect,
+	NcSettingsSection,
 } from '@nextcloud/vue'
+import { defineComponent } from 'vue'
 import Save from 'vue-material-design-icons/ContentSave.vue'
+import logger from '../../logger.js'
 
 export default defineComponent({
-	name: 'Settings',
+	// `vue/multi-word-component-names` (from vue/recommended, which
+	// @nextcloud/eslint-config@9 extends) rejects a single-word name because it
+	// can collide with a current or future HTML element. Nothing referenced this
+	// component by name — it is mounted through the settings entry point — so
+	// renaming it is inert at runtime and only affects devtools/warning output.
+	name: 'AdminSettings',
 	components: {
 		CnAdminSettingsShell,
 		NcSettingsSection,
@@ -149,6 +155,7 @@ export default defineComponent({
 				availableRegisters: [],
 				configuration: {},
 			},
+
 			configuration: {},
 			sourceOptions: [
 				{ label: t('larpingapp', 'Internal'), value: 'internal' },
@@ -237,7 +244,7 @@ export default defineComponent({
 
 				this.loading = false
 			} catch (error) {
-				console.error('Failed to load settings:', error)
+				logger.error('Failed to load settings', { error })
 			}
 		},
 
@@ -376,7 +383,7 @@ export default defineComponent({
 					this.messageType = 'error'
 				}
 			} catch (error) {
-				console.error('Failed to save settings:', error)
+				logger.error('Failed to save settings', { error })
 				this.message =
 					error.message || t('larpingapp', 'Failed to save settings')
 				this.messageType = 'error'

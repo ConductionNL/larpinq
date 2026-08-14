@@ -37,6 +37,17 @@ jobs:
     uses: ConductionNL/.github/.github/workflows/quality.yml@main
     with:
       app-name: larpingapp
+      # The shared workflow defaults to Node 20, which CANNOT run this app's
+      # lint stack: `@nextcloud/eslint-config@9` declares
+      # `engines.node: ^22.14 || ^24 || >=26` and imports `findPackageJSON`
+      # from `node:module`, an API that first exists in Node 22.14. On Node 20
+      # the eslint job died before linting a single file with
+      #   SyntaxError: The requested module 'node:module' does not provide an
+      #   export named 'findPackageJSON'
+      # after npm had already printed an EBADENGINE warning and continued.
+      # Overridden here rather than in the shared default so the other apps
+      # keep their current Node until they migrate too.
+      node-version: "22"
       php-version: "8.3"
       php-test-versions: '["8.3", "8.4"]'
       # appinfo/info.xml declares <nextcloud min-version="32" max-version="34"/>,

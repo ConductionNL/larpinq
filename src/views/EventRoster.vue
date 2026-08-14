@@ -36,7 +36,7 @@
 			:columns="columns"
 			:rows="participants"
 			:loading="loading"
-			:empty-text="
+			:emptyText="
 				t('larpingapp', 'No confirmed participants for this event yet.')
 			"
 			data-testid="event-roster-table">
@@ -75,10 +75,10 @@
 
 <script>
 import { CnDataTable, CnStatusBadge } from '@conduction/nextcloud-vue'
+import { generateUrl } from '@nextcloud/router'
 // @nextcloud/vue v9 ships an `exports` map; the v8 `dist/Components/*.js`
 // deep paths are no longer exported and throw ERR_PACKAGE_PATH_NOT_EXPORTED.
 import NcButton from '@nextcloud/vue/components/NcButton'
-import { generateUrl } from '@nextcloud/router'
 
 /**
  * Human-readable label + badge variant per attendance status.
@@ -113,6 +113,7 @@ export default {
 			type: String,
 			default: '',
 		},
+
 		/**
 		 * Manifest config passthrough (unused product logic).
 		 *

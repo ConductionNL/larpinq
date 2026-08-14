@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import logger from '../../logger.js'
 
 export const useSettingsStore = defineStore('settings', {
 	state: () => ({
@@ -50,7 +51,7 @@ export const useSettingsStore = defineStore('settings', {
 				return this.config
 			} catch (error) {
 				this.error = error.message
-				console.error('Error fetching LarpingApp settings:', error)
+				logger.error('Error fetching LarpingApp settings', { error })
 				return null
 			} finally {
 				this.loading = false
@@ -91,7 +92,7 @@ export const useSettingsStore = defineStore('settings', {
 				return this.config
 			} catch (error) {
 				this.error = error.message
-				console.error('Error saving LarpingApp settings:', error)
+				logger.error('Error saving LarpingApp settings', { error })
 				return null
 			} finally {
 				this.loading = false
@@ -128,7 +129,7 @@ export const useSettingsStore = defineStore('settings', {
 				return data
 			} catch (error) {
 				this.error = error.message
-				console.error('Error reimporting LarpingApp configuration:', error)
+				logger.error('Error reimporting LarpingApp configuration', { error })
 				return null
 			} finally {
 				this.loading = false

@@ -16,7 +16,10 @@
 /**
  * Normalise a reference value (array of ids or objects) to a string id list.
  *
- * @param {*} value The raw reference value.
+ * @param {Array<string | { id?: string, '@self'?: { id?: string } }> | unknown} value
+ *   The raw reference value: OpenRegister returns a relation either as a list of
+ *   id strings or as a list of expanded objects. Anything else is normalised to
+ *   an empty list, so the parameter is deliberately wider than those two shapes.
  * @return {Array<string>} The id list.
  */
 export function idList(value) {
