@@ -40,11 +40,15 @@ const pkg = read(path.join(root, 'package.json'))
 const lock = read(path.join(root, 'package-lock.json'))
 
 if (!pkg || !lock || !lock.packages) {
-	console.log('[lockfile-matches-install] no package.json/package-lock.json — skipped')
+	console.log(
+		'[lockfile-matches-install] no package.json/package-lock.json — skipped',
+	)
 	process.exit(0)
 }
 if (!fs.existsSync(path.join(root, 'node_modules'))) {
-	console.log('[lockfile-matches-install] no node_modules — skipped (nothing built yet)')
+	console.log(
+		'[lockfile-matches-install] no node_modules — skipped (nothing built yet)',
+	)
 	process.exit(0)
 }
 
@@ -60,7 +64,11 @@ for (const [entry, meta] of Object.entries(lock.packages)) {
 	if (!meta || !meta.version) continue
 	// A dep npm chose not to install here (optional, or platform-specific) is
 	// not drift.
-	if (meta.optional === true || meta.dev === true && !fs.existsSync(path.join(root, entry))) continue
+	if (
+		meta.optional === true
+		|| (meta.dev === true && !fs.existsSync(path.join(root, entry)))
+	)
+		continue
 
 	const installed = read(path.join(root, entry, 'package.json'))
 	if (!installed) {
@@ -73,25 +81,36 @@ for (const [entry, meta] of Object.entries(lock.packages)) {
 	}
 }
 
-const fmt = (r) => `  ${r.name.padEnd(38)} lock ${String(r.want).padEnd(14)} installed ${r.got || '(absent)'}`
+const fmt = (r) =>
+	`  ${r.name.padEnd(38)} lock ${String(r.want).padEnd(14)} installed ${r.got || '(absent)'}`
 
 if (drift.dev.length) {
-	console.log(`[lockfile-matches-install] ${drift.dev.length} dev-dependency drift (not fatal):`)
+	console.log(
+		`[lockfile-matches-install] ${drift.dev.length} dev-dependency drift (not fatal):`,
+	)
 	drift.dev.slice(0, 10).forEach((r) => console.log(fmt(r)))
 }
 
 if (!drift.runtime.length && !drift.missing.length) {
-	console.log('[lockfile-matches-install] OK — installed runtime tree matches the lockfile')
+	console.log(
+		'[lockfile-matches-install] OK — installed runtime tree matches the lockfile',
+	)
 	process.exit(0)
 }
 
 console.error('')
-console.error('[lockfile-matches-install] FAIL — the installed tree does not match package-lock.json.')
+console.error(
+	'[lockfile-matches-install] FAIL — the installed tree does not match package-lock.json.',
+)
 console.error('A build from this tree compiles clean and ships broken code.')
 console.error('')
 drift.runtime.forEach((r) => console.error(fmt(r)))
 drift.missing.forEach((r) => console.error(fmt(r)))
 console.error('')
-console.error('Fix: npm ci    (npm install will NOT repair this — it keeps an already-present version,')
-console.error('               and it also skips postinstall for packages that are already there.)')
+console.error(
+	'Fix: npm ci    (npm install will NOT repair this — it keeps an already-present version,',
+)
+console.error(
+	'               and it also skips postinstall for packages that are already there.)',
+)
 process.exit(1)
