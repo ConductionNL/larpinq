@@ -1,0 +1,243 @@
+{
+  "components": {
+    "schemas": {
+      "character": {
+        "configuration": {
+          "x-openregister-mcp": {
+            "enabled": true,
+            "tools": {
+              "search": {
+                "description": "Search characters by name, type (player/npc/other), approval status, campaign setting, or owning player — use this to find a specific character sheet or list who's approved for play in a setting.",
+                "scope": "read",
+                "filters": ["name", "type", "approved", "setting", "ownerUid"],
+                "readOnlyHint": true,
+                "destructiveHint": false,
+                "idempotentHint": true
+              },
+              "get": {
+                "description": "Get a single character's full sheet: stats, skills, items, conditions, and event history.",
+                "scope": "read",
+                "readOnlyHint": true,
+                "destructiveHint": false,
+                "idempotentHint": true
+              },
+              "create": {
+                "description": "Create a new draft character (defaults to type=player, approved=no) — the assistant-assisted 'help me build a character' flow. The character is not usable in play until a game master runs the existing approval transition.",
+                "scope": "create",
+                "readOnlyHint": false,
+                "destructiveHint": false,
+                "idempotentHint": false
+              }
+            }
+          }
+        }
+      },
+      "player": {
+        "configuration": {
+          "x-openregister-mcp": {
+            "enabled": true,
+            "tools": {
+              "search": {
+                "description": "Search players by name or linked Nextcloud user id — use this to find who controls a given character.",
+                "scope": "read",
+                "filters": ["name", "userUid"],
+                "readOnlyHint": true,
+                "destructiveHint": false,
+                "idempotentHint": true
+              },
+              "get": {
+                "description": "Get a single player's profile and description.",
+                "scope": "read",
+                "readOnlyHint": true,
+                "destructiveHint": false,
+                "idempotentHint": true
+              }
+            }
+          }
+        }
+      },
+      "setting": {
+        "configuration": {
+          "x-openregister-mcp": {
+            "enabled": true,
+            "tools": {
+              "search": {
+                "description": "Search LARP settings (worlds/campaigns) by name or status (active/archived) — use this to see which campaigns are currently running versus finished.",
+                "scope": "read",
+                "filters": ["name", "status"],
+                "readOnlyHint": true,
+                "destructiveHint": false,
+                "idempotentHint": true
+              },
+              "get": {
+                "description": "Get a single setting's detail — the campaign that scopes its characters, events, and rules.",
+                "scope": "read",
+                "readOnlyHint": true,
+                "destructiveHint": false,
+                "idempotentHint": true
+              }
+            }
+          }
+        }
+      },
+      "skill": {
+        "configuration": {
+          "x-openregister-mcp": {
+            "enabled": true,
+            "tools": {
+              "search": {
+                "description": "Search purchasable skills by name or campaign setting — use this to look up what a skill does or what's available to buy with experience points.",
+                "scope": "read",
+                "filters": ["name", "setting"],
+                "readOnlyHint": true,
+                "destructiveHint": false,
+                "idempotentHint": true
+              },
+              "get": {
+                "description": "Get a single skill's prerequisites (required skills, stats, conditions, effects) and the effects it grants.",
+                "scope": "read",
+                "readOnlyHint": true,
+                "destructiveHint": false,
+                "idempotentHint": true
+              }
+            }
+          }
+        }
+      },
+      "item": {
+        "configuration": {
+          "x-openregister-mcp": {
+            "enabled": true,
+            "tools": {
+              "search": {
+                "description": "Search magical/special items by name, uniqueness, or campaign setting.",
+                "scope": "read",
+                "filters": ["name", "unique", "setting"],
+                "readOnlyHint": true,
+                "destructiveHint": false,
+                "idempotentHint": true
+              },
+              "get": {
+                "description": "Get a single item's granted effects and which characters currently hold it.",
+                "scope": "read",
+                "readOnlyHint": true,
+                "destructiveHint": false,
+                "idempotentHint": true
+              }
+            }
+          }
+        }
+      },
+      "condition": {
+        "configuration": {
+          "x-openregister-mcp": {
+            "enabled": true,
+            "tools": {
+              "search": {
+                "description": "Search gameplay conditions (consequences applied to characters) by name, uniqueness, or campaign setting.",
+                "scope": "read",
+                "filters": ["name", "unique", "setting"],
+                "readOnlyHint": true,
+                "destructiveHint": false,
+                "idempotentHint": true
+              },
+              "get": {
+                "description": "Get a single condition's granted effects and which characters currently carry it.",
+                "scope": "read",
+                "readOnlyHint": true,
+                "destructiveHint": false,
+                "idempotentHint": true
+              }
+            }
+          }
+        }
+      },
+      "event": {
+        "configuration": {
+          "x-openregister-mcp": {
+            "enabled": true,
+            "tools": {
+              "search": {
+                "description": "Search LARP events by name, campaign setting, or location — use this to find upcoming or past gatherings.",
+                "scope": "read",
+                "filters": ["name", "setting", "location"],
+                "readOnlyHint": true,
+                "destructiveHint": false,
+                "idempotentHint": true
+              },
+              "get": {
+                "description": "Get a single event's schedule, location, and subscribed players.",
+                "scope": "read",
+                "readOnlyHint": true,
+                "destructiveHint": false,
+                "idempotentHint": true
+              }
+            }
+          }
+        }
+      },
+      "xpAward": {
+        "configuration": {
+          "x-openregister-mcp": {
+            "enabled": true,
+            "tools": {
+              "search": {
+                "description": "Search experience-point awards by event or character — use this to see a character's XP history or everyone awarded XP at a given event.",
+                "scope": "read",
+                "filters": ["event", "character"],
+                "readOnlyHint": true,
+                "destructiveHint": false,
+                "idempotentHint": true
+              },
+              "get": {
+                "description": "Get a single XP award's amount, reason, and awarding game master.",
+                "scope": "read",
+                "readOnlyHint": true,
+                "destructiveHint": false,
+                "idempotentHint": true
+              },
+              "create": {
+                "description": "Record a single experience-point award for one character at one event — the post-event 'award XP to each attendee' ritual this schema exists for. Purely additive audit data; OpenRegister authorization restricts this write to the gamemasters group regardless of who calls it via MCP.",
+                "scope": "create",
+                "readOnlyHint": false,
+                "destructiveHint": false,
+                "idempotentHint": false
+              }
+            }
+          }
+        }
+      },
+      "attendance": {
+        "configuration": {
+          "x-openregister-mcp": {
+            "enabled": true,
+            "tools": {
+              "search": {
+                "description": "Search event attendance/check-in records by event, character, or status (registered/checked-in/no-show).",
+                "scope": "read",
+                "filters": ["event", "character", "status"],
+                "readOnlyHint": true,
+                "destructiveHint": false,
+                "idempotentHint": true
+              },
+              "get": {
+                "description": "Get a single attendance record's status and check-in timestamp.",
+                "scope": "read",
+                "readOnlyHint": true,
+                "destructiveHint": false,
+                "idempotentHint": true
+              },
+              "update": {
+                "description": "Move a participant's day-of attendance status forward at check-in (registered to checked-in, or to no-show). The record itself is created when the character signs up for the event; this only advances its status. checkedInAt/checkedInBy are always server-stamped and cannot be set by this call. OpenRegister authorization restricts this write to the gamemasters group.",
+                "scope": "update",
+                "readOnlyHint": false,
+                "destructiveHint": false,
+                "idempotentHint": true
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
