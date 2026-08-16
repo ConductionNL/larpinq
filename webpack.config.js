@@ -73,30 +73,50 @@ const localLib = path.resolve(__dirname, '../nextcloud-vue/src')
  * @return {boolean} True when the local source should replace the npm package.
  */
 function resolveUseLocalLib() {
-	if (process.env.USE_LOCAL_LIB === 'false' || !fs.existsSync(localLib)) {
+	// Opt-IN (ADR-090). This was opt-OUT, and unset — its normal state — meant
+	// "alias whatever sibling is on disk into a build that can ship".
+	if (process.env.USE_LOCAL_LIB !== 'true' || !fs.existsSync(localLib)) {
 		return false
 	}
-	const wanted =
-		require('./package.json').dependencies['@conduction/nextcloud-vue']
-	const wantedMajor = String(wanted)
-		.replace(/^[^0-9]*/, '')
-		.split('.')[0]
-	let localVersion = null
+
+	// The MAJOR comparison this replaces could not see the skew it was written
+	// for. nc-vue's Vue 2 line and its Vue 3 line are BOTH major 2 — the sibling
+	// is 2.0.5 (Vue 2) while this app declares ^2.3.0 (Vue 3) — so the check
+	// compared 2 against 2, passed, and aliased Vue 2 sources into a Vue 3 app.
+	// Compare against the declared RANGE instead, which is the thing that is
+	// actually being violated.
+	let localVersion = 'unreadable'
+	let satisfied = false
 	try {
-		localVersion = require(path.resolve(localLib, '..', 'package.json')).version
-	} catch (e) {
-		localVersion = null
-	}
-	const localMajor = localVersion ? String(localVersion).split('.')[0] : null
-	if (localMajor !== null && localMajor !== wantedMajor) {
-		throw new Error(
-			`[larpingapp] Refusing to build against ../nextcloud-vue@${localVersion}: this app `
-				+ `depends on @conduction/nextcloud-vue@${wanted} (major ${wantedMajor}). Aliasing a `
-				+ `major-${localMajor} checkout in would silently build Vue ${localMajor === '1' ? '2' : '?'} `
-				+ 'library sources into a Vue 3 app. Check out the matching nc-vue branch, or set '
-				+ 'USE_LOCAL_LIB=false to build against the pinned npm package.',
+		// eslint-disable-next-line n/no-extraneous-require
+		const semver = require('semver')
+		const required =
+			require('./package.json').dependencies['@conduction/nextcloud-vue']
+		localVersion = String(
+			JSON.parse(
+				fs.readFileSync(path.resolve(localLib, '..', 'package.json'), 'utf8'),
+			).version || '',
 		)
+		satisfied = semver.satisfies(localVersion, required, {
+			includePrerelease: true,
+		})
+	} catch (e) {
+		// Fail CLOSED: if the check cannot run, the sibling is refused.
+		satisfied = false
 	}
+
+	if (!satisfied) {
+		// A warning rather than a throw: refusing the sibling is a complete,
+		// correct build against the pinned npm package, so there is nothing for
+		// the developer to repair before the build can proceed.
+		// eslint-disable-next-line no-console
+		console.warn(
+			`[larpingapp] IGNORING sibling @conduction/nextcloud-vue@${localVersion} — `
+				+ "it does not satisfy this app's declared range. Building against the npm dist.",
+		)
+		return false
+	}
+
 	return true
 }
 
