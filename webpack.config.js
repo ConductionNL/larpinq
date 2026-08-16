@@ -94,7 +94,10 @@ function resolveUseLocalLib() {
 			require('./package.json').dependencies['@conduction/nextcloud-vue']
 		localVersion = String(
 			JSON.parse(
-				fs.readFileSync(path.resolve(localLib, '..', 'package.json'), 'utf8'),
+				fs.readFileSync(
+					path.resolve(localLib, '..', 'package.json'),
+					'utf8',
+				),
 			).version || '',
 		)
 		satisfied = semver.satisfies(localVersion, required, {
