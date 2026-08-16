@@ -228,6 +228,14 @@ class CharactersController extends Controller {
 	 * @SuppressWarnings(PHPMD.ShortVariable)
 	 *
 	 * @spec openspec/specs/skill-requirement-enforcement/spec.md
+	 *
+	 * @no-admin-idor-exempt OR-delegated read via
+	 * RegisterObjectFetcher::getObject (ADR-022). The fetch enforces read
+	 * access for the current user, and an id the caller may not read raises
+	 * DoesNotExistException, which this method translates to 404 — so an
+	 * out-of-scope id is indistinguishable from a missing one and nothing is
+	 * exposed that the caller could not already read through the OR objects
+	 * API.
 	 */
 	#[NoAdminRequired]
 	#[NoCSRFRequired]
@@ -239,8 +247,11 @@ class CharactersController extends Controller {
 
 		try {
 			// Per-object access is OR-delegated: the fetch enforces read access
-			// for the current user; a non-readable id yields a not-found.
-			// @no-admin-idor-exempt OR-delegated read via RegisterObjectFetcher::getObject (ADR-022).
+			// for the current user; a non-readable id yields a not-found. The
+			// gate's exemption tag for this lives in the DOCBLOCK above — gate-7
+			// reads the docblock, so a tag written down here was invisible to it
+			// and the endpoint was reported as unguarded for as long as it sat
+			// in the body.
 			$character = $this->objectFetcher->getObject(objectType: 'character', id: $id);
 		} catch (DoesNotExistException $exception) {
 			// OpenRegister signals an absent/unreadable object with this exception;
