@@ -5,12 +5,33 @@
 // validate-manifest.js — schema-validates src/manifest.json against the
 // @conduction/nextcloud-vue app-manifest schema using Ajv.
 //
-// @spec openspec/changes/openregister-adopt-app-manifest/specs/openregister-app-manifest/spec.md#REQ-OR-MAN-007
-//   (Build gate validates the manifest — `npm run check:manifest` runs this CLI,
-//    is wired into CI via .github/workflows/spec-validation.yml → check:specs,
-//    Ajv-validates against the canonical schema, prints error paths, exits non-zero
-//    on schema violation. Cleanly skips with exit 0 when no src/manifest.json
-//    exists, since OpenRegister is the foundation app and ships no manifest yet.)
+// CANONICAL REQUIREMENT: `REQ-OR-MAN-007 Build gate validates the manifest`,
+// owned by OpenRegister at `openspec/specs/openregister-app-manifest/spec.md`
+// in the ConductionNL/openregister repository. It is deliberately NOT written
+// as an `@spec` tag here: a `@spec` target is resolved against THIS repository
+// (hydra gate-46), and this requirement has exactly one canonical home, which
+// is not larpingapp. Duplicating it into `larpingapp/openspec/specs/` to make
+// a tag resolve would create a second copy of a spec that already exists.
+//
+// This file previously carried a tag pointing into an OpenRegister CHANGE
+// directory (`openregister-adopt-app-manifest`) rather than a canonical spec —
+// a path copied wholesale from OpenRegister that has never existed in this
+// repository, and which OpenRegister itself archived on 2026-05-27 as
+// superseded. It resolved to nothing in either repo.
+//
+// The old path is deliberately NOT reproduced verbatim above. Gate-46 scans
+// this file as TEXT, so quoting a dangling target inside a comment about the
+// dangling target re-creates the finding — measured while writing this.
+//
+// What this CLI does here: `npm run check:manifest` runs it, the `check:specs`
+// aggregate (json-strict + manifest + register) chains it, and CI runs that
+// aggregate as the `Frontend Check (check:specs)` job — see
+// `frontend-checks: '["check:specs", "test:l10n"]'` in
+// .github/workflows/code-quality.yml. It Ajv-validates src/manifest.json
+// against the canonical @conduction/nextcloud-vue schema, prints error paths,
+// and exits non-zero on any schema violation. It exits 0 when no
+// src/manifest.json exists at all; larpingapp does ship one, so that branch is
+// not the path taken here.
 //
 // Usage:
 //   node tests/validate-manifest.js
@@ -41,7 +62,9 @@ const MANIFEST_PATH = path.join(REPO_ROOT, 'src', 'manifest.json')
 // hardcoding v1 — falling back to v1 when the manifest doesn't declare one.
 function schemaFileName() {
 	try {
-		const ref = String((JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8')) || {}).$schema || '')
+		const ref = String(
+			(JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8')) || {}).$schema || '',
+		)
 		if (ref.includes('app-manifest-v2')) {
 			return 'app-manifest-v2.schema.json'
 		}
@@ -55,7 +78,15 @@ const SCHEMA_FILE = schemaFileName()
 
 const SCHEMA_CANDIDATES = [
 	process.env.APP_MANIFEST_SCHEMA,
-	path.join(REPO_ROOT, 'node_modules', '@conduction', 'nextcloud-vue', 'src', 'schemas', SCHEMA_FILE),
+	path.join(
+		REPO_ROOT,
+		'node_modules',
+		'@conduction',
+		'nextcloud-vue',
+		'src',
+		'schemas',
+		SCHEMA_FILE,
+	),
 	path.join(REPO_ROOT, '..', 'nextcloud-vue', 'src', 'schemas', SCHEMA_FILE),
 ].filter(Boolean)
 
@@ -92,8 +123,12 @@ function loadAjv() {
 			Ajv2020 = require('ajv').default || require('ajv')
 		} catch (__) {
 			console.error('[validate-manifest] Ajv not installed in node_modules.')
-			console.error('[validate-manifest] Install with: npm i -D ajv ajv-formats')
-			console.error('[validate-manifest] Falling back to a structural lint pass.')
+			console.error(
+				'[validate-manifest] Install with: npm i -D ajv ajv-formats',
+			)
+			console.error(
+				'[validate-manifest] Falling back to a structural lint pass.',
+			)
 			return { Ajv: null, addFormats: null }
 		}
 	}
@@ -113,9 +148,20 @@ function structuralLint(manifest) {
 	if (!manifest.version || typeof manifest.version !== 'string') {
 		errors.push('top-level: version (string) is required')
 	}
-	if (!Array.isArray(manifest.menu)) errors.push('top-level: menu (array) is required')
-	if (!Array.isArray(manifest.pages)) errors.push('top-level: pages (array) is required')
-	const allowedTypes = new Set(['index', 'detail', 'dashboard', 'logs', 'settings', 'chat', 'files', 'custom'])
+	if (!Array.isArray(manifest.menu))
+		errors.push('top-level: menu (array) is required')
+	if (!Array.isArray(manifest.pages))
+		errors.push('top-level: pages (array) is required')
+	const allowedTypes = new Set([
+		'index',
+		'detail',
+		'dashboard',
+		'logs',
+		'settings',
+		'chat',
+		'files',
+		'custom',
+	])
 	const seenIds = new Set()
 	for (let i = 0; i < (manifest.pages || []).length; i++) {
 		const page = manifest.pages[i]
@@ -125,14 +171,17 @@ function structuralLint(manifest) {
 		}
 		for (const required of ['id', 'route', 'type', 'title']) {
 			if (!page[required] || typeof page[required] !== 'string') {
-				errors.push(`pages[${i}]: missing required string field "${required}"`)
+				errors.push(
+					`pages[${i}]: missing required string field "${required}"`,
+				)
 			}
 		}
 		if (page.type && !allowedTypes.has(page.type)) {
 			errors.push(`pages[${i}].type: "${page.type}" not in known enum`)
 		}
 		if (page.id) {
-			if (seenIds.has(page.id)) errors.push(`pages[${i}].id: duplicate "${page.id}"`)
+			if (seenIds.has(page.id))
+				errors.push(`pages[${i}].id: duplicate "${page.id}"`)
 			seenIds.add(page.id)
 		}
 	}
@@ -143,7 +192,9 @@ function main() {
 	if (!fs.existsSync(MANIFEST_PATH)) {
 		// openregister is the foundation app — no CnAppRoot manifest expected.
 		// Skip cleanly instead of failing CI.
-		console.log(`[validate-manifest] no src/manifest.json (foundation app) — skipping`)
+		console.log(
+			`[validate-manifest] no src/manifest.json (foundation app) — skipping`,
+		)
 		process.exit(0)
 	}
 
@@ -154,7 +205,9 @@ function main() {
 
 	const schemaPath = findSchemaPath()
 	if (!schemaPath) {
-		console.warn('[validate-manifest] no schema candidate resolved; falling back to structural lint.')
+		console.warn(
+			'[validate-manifest] no schema candidate resolved; falling back to structural lint.',
+		)
 		const errors = structuralLint(manifest)
 		if (errors.length === 0) {
 			console.log('[validate-manifest] structural lint: PASS (0 issues)')
@@ -172,7 +225,9 @@ function main() {
 	if (!Ajv) {
 		const errors = structuralLint(manifest)
 		if (errors.length === 0) {
-			console.log('[validate-manifest] structural lint (no Ajv): PASS (0 issues)')
+			console.log(
+				'[validate-manifest] structural lint (no Ajv): PASS (0 issues)',
+			)
 			process.exit(0)
 		}
 		console.error('[validate-manifest] structural lint (no Ajv): FAIL')
@@ -192,15 +247,21 @@ function main() {
 			try {
 				addFormats(ajv)
 			} catch (e) {
-				console.warn(`[validate-manifest] ajv-formats unavailable (${e.message}); continuing without format validation`)
+				console.warn(
+					`[validate-manifest] ajv-formats unavailable (${e.message}); continuing without format validation`,
+				)
 			}
 		}
 		validate = ajv.compile(schema)
 	} catch (e) {
-		console.warn(`[validate-manifest] Ajv could not compile the schema (${e.message}); falling back to structural lint`)
+		console.warn(
+			`[validate-manifest] Ajv could not compile the schema (${e.message}); falling back to structural lint`,
+		)
 		const errors = structuralLint(manifest)
 		if (errors.length === 0) {
-			console.log('[validate-manifest] structural lint (Ajv unavailable): PASS (0 issues)')
+			console.log(
+				'[validate-manifest] structural lint (Ajv unavailable): PASS (0 issues)',
+			)
 			process.exit(0)
 		}
 		console.error('[validate-manifest] structural lint (Ajv unavailable): FAIL')
@@ -214,7 +275,9 @@ function main() {
 	}
 	console.error('[validate-manifest] Ajv validation: FAIL')
 	for (const err of validate.errors || []) {
-		console.error(`  - ${err.instancePath || '(root)'} ${err.message} (keyword=${err.keyword})`)
+		console.error(
+			`  - ${err.instancePath || '(root)'} ${err.message} (keyword=${err.keyword})`,
+		)
 	}
 	process.exit(1)
 }

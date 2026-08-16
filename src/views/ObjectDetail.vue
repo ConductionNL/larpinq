@@ -80,6 +80,7 @@ export default {
 			type: String,
 			default: 'character',
 		},
+
 		/**
 		 * Manifest page config forwarded by CnPageRenderer.
 		 *

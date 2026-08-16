@@ -22,9 +22,9 @@
  * SPDX-FileCopyrightText: 2026 Conduction B.V.
  */
 
-import GameSettingsSection from './views/settings/Settings.vue'
-import ObjectDetail from './views/ObjectDetail.vue'
 import EventRoster from './views/EventRoster.vue'
+import ObjectDetail from './views/ObjectDetail.vue'
+import GameSettingsSection from './views/settings/Settings.vue'
 import SkillTree from './views/SkillTree.vue'
 
 export default {

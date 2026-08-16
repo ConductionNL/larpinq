@@ -36,7 +36,9 @@ vi.mock('@conduction/nextcloud-vue', () => {
 				setActiveTenantOrganisation: vi.fn(),
 				_resolveOrganisationUuid() {
 					try {
-						const v = options.organisationUuidGetter && options.organisationUuidGetter()
+						const v =
+							options.organisationUuidGetter
+							&& options.organisationUuidGetter()
 						return typeof v === 'string' && v.length > 0 ? v : null
 					} catch {
 						return null
@@ -54,10 +56,8 @@ vi.mock('@conduction/nextcloud-vue', () => {
 })
 
 // Import AFTER vi.mock — vitest hoists the mock above the import.
-const {
-	useObjectStore,
-	setObjectStoreTenantUuid,
-} = await import('../../src/store/modules/object.js')
+const { useObjectStore, setObjectStoreTenantUuid } =
+	await import('../../src/store/modules/object.js')
 
 describe('larpingapp object store — multi-tenancy wiring', () => {
 	beforeEach(() => {

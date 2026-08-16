@@ -15,12 +15,30 @@
         </ignoreFiles>
     </projectFiles>
     <stubs>
-        <file name="vendor/nextcloud/ocp/OCP.bak/Capabilities/ICapability.php" preloadClasses="true" />
+        <!-- `vendor/nextcloud/ocp/OCP`, NOT `OCP.bak`. f245e84 (2026-06-26)
+             repointed this at `OCP.bak` because that checkout's
+             `vendor/nextcloud/ocp/OCP` was a SYMLINK into the running Nextcloud
+             container and therefore dangling outside it. A clean
+             `composer install` of nextcloud/ocp ships a real `OCP/` directory
+             and NO `OCP.bak`, so on CI — and on any fresh clone — Psalm could
+             not start at all: "Cannot resolve stubfile path
+             .../OCP.bak/Capabilities/ICapability.php". The symlink was a
+             property of one developer's machine, not of CI, and freezing it
+             into this file is what took the Psalm cell offline.
+             The sibling apps (scholiq, zaakafhandelapp) both run Psalm green
+             against this same path. -->
+        <file name="vendor/nextcloud/ocp/OCP/Capabilities/ICapability.php" preloadClasses="true" />
     </stubs>
     <issueHandlers>
         <UndefinedDocblockClass errorLevel="suppress"/>
         <UndefinedClass>
             <errorLevel type="suppress">
+                <!-- Nextcloud's legacy bootstrap class. There is no OCP
+                     interface for registering another app's autoloader, so the
+                     ADR-040 load-order prelude in AppInfo\OpenRegisterAutoloader
+                     has to call OC_App::registerAutoloading() directly. It is
+                     server-private and therefore absent from nextcloud/ocp. -->
+                <referencedClass name="OC_App"/>
                 <!-- Nextcloud OCP Classes -->
                 <referencedClass name="OCP\AppFramework\App"/>
                 <referencedClass name="OCP\AppFramework\Bootstrap\IBootstrap"/>

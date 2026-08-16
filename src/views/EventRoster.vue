@@ -14,35 +14,55 @@
  is absent the participant list still renders read-only with the controls
  hidden (DocuDesk / Forms-leaf degradation pattern), never throwing.
 
- @spec openspec/changes/event-checkin-roster/specs/event-checkin-roster/spec.md
+ @spec openspec/specs/event-checkin-roster/spec.md
  @visual exclude Sidebar-tab section (not a routed page); the roster GM check-in
  flow is covered by the EventsController attendance unit tests + the gate-19
  e2e-exclude scenarios on the spec, pending a live-servable frontend bundle.
 -->
 <template>
 	<div class="event-roster" data-testid="event-roster">
-		<div v-if="degraded" class="event-roster__notice" data-testid="event-roster-degraded">
-			{{ t('larpingapp', 'Attendance tracking is unavailable — showing the participant list read-only.') }}
+		<div
+			v-if="degraded"
+			class="event-roster__notice"
+			data-testid="event-roster-degraded">
+			{{
+				t(
+					'larpingapp',
+					'Attendance tracking is unavailable — showing the participant list read-only.',
+				)
+			}}
 		</div>
 		<CnDataTable
 			:columns="columns"
 			:rows="participants"
 			:loading="loading"
-			:empty-text="t('larpingapp', 'No confirmed participants for this event yet.')"
+			:emptyText="
+				t('larpingapp', 'No confirmed participants for this event yet.')
+			"
 			data-testid="event-roster-table">
 			<template #column-status="{ row }">
-				<CnStatusBadge :label="statusLabel(row.status)" :variant="statusVariant(row.status)" />
+				<CnStatusBadge
+					:label="statusLabel(row.status)"
+					:variant="statusVariant(row.status)" />
 			</template>
 			<template v-if="canCheckIn" #row-actions="{ row }">
+				<!--
+				  @nextcloud/vue v9 repurposed NcButton's `type` prop as the
+				  NATIVE button type ('submit' | 'reset' | 'button'); the visual
+				  style moved to `variant`. The Vue-2 spelling would render
+				  `<button type="secondary">` with no warning and no lint error.
+				-->
 				<NcButton
-					type="secondary"
-					:disabled="saving === row.character || row.status === 'checked-in'"
+					variant="secondary"
+					:disabled="
+						saving === row.character || row.status === 'checked-in'
+					"
 					data-testid="event-roster-checkin"
 					@click="setStatus(row, 'checked-in')">
 					{{ t('larpingapp', 'Check in') }}
 				</NcButton>
 				<NcButton
-					type="tertiary"
+					variant="tertiary"
 					:disabled="saving === row.character || row.status === 'no-show'"
 					data-testid="event-roster-noshow"
 					@click="setStatus(row, 'no-show')">
@@ -55,8 +75,10 @@
 
 <script>
 import { CnDataTable, CnStatusBadge } from '@conduction/nextcloud-vue'
-import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
 import { generateUrl } from '@nextcloud/router'
+// @nextcloud/vue v9 ships an `exports` map; the v8 `dist/Components/*.js`
+// deep paths are no longer exported and throw ERR_PACKAGE_PATH_NOT_EXPORTED.
+import NcButton from '@nextcloud/vue/components/NcButton'
 
 /**
  * Human-readable label + badge variant per attendance status.
@@ -85,12 +107,13 @@ export default {
 		 * The event UUID. Falls back to the injected object context or the
 		 * route param when not passed explicitly by the manifest host.
 		 *
-		 * @spec openspec/changes/event-checkin-roster/specs/event-checkin-roster/spec.md
+		 * @spec openspec/specs/event-checkin-roster/spec.md
 		 */
 		objectId: {
 			type: String,
 			default: '',
 		},
+
 		/**
 		 * Manifest config passthrough (unused product logic).
 		 *
@@ -118,20 +141,22 @@ export default {
 		 * Resolve the event id from prop → injected context → route param.
 		 *
 		 * @return {string}
-		 * @spec openspec/changes/event-checkin-roster/specs/event-checkin-roster/spec.md
+		 * @spec openspec/specs/event-checkin-roster/spec.md
 		 */
 		eventId() {
-			return this.objectId
+			return (
+				this.objectId
 				|| this.cnObjectContext?.objectId
 				|| this.$route?.params?.id
 				|| ''
+			)
 		},
 
 		/**
 		 * Column definitions for the roster table.
 		 *
 		 * @return {Array<{key: string, label: string}>}
-		 * @spec openspec/changes/event-checkin-roster/specs/event-checkin-roster/spec.md
+		 * @spec openspec/specs/event-checkin-roster/spec.md
 		 */
 		columns() {
 			return [
@@ -147,7 +172,7 @@ export default {
 		 * present. Players and degraded deployments get a read-only roster.
 		 *
 		 * @return {boolean}
-		 * @spec openspec/changes/event-checkin-roster/specs/event-checkin-roster/spec.md
+		 * @spec openspec/specs/event-checkin-roster/spec.md
 		 */
 		canCheckIn() {
 			return this.isGm === true && this.attendanceAvailable === true
@@ -157,7 +182,7 @@ export default {
 		 * Whether to show the degraded notice (attendance storage absent).
 		 *
 		 * @return {boolean}
-		 * @spec openspec/changes/event-checkin-roster/specs/event-checkin-roster/spec.md
+		 * @spec openspec/specs/event-checkin-roster/spec.md
 		 */
 		degraded() {
 			return this.attendanceAvailable === false && this.loadFailed === false
@@ -174,7 +199,7 @@ export default {
 		 * failure degrades to an empty, uncoloured read-only list.
 		 *
 		 * @return {Promise<void>}
-		 * @spec openspec/changes/event-checkin-roster/specs/event-checkin-roster/spec.md
+		 * @spec openspec/specs/event-checkin-roster/spec.md
 		 */
 		async fetchRoster() {
 			if (!this.eventId) {
@@ -183,14 +208,23 @@ export default {
 			this.loading = true
 			try {
 				const response = await fetch(
-					generateUrl('/apps/larpingapp/api/events/{id}/roster', { id: this.eventId }),
-					{ headers: { requesttoken: OC.requestToken, 'OCS-APIREQUEST': 'true' } },
+					generateUrl('/apps/larpingapp/api/events/{id}/roster', {
+						id: this.eventId,
+					}),
+					{
+						headers: {
+							requesttoken: OC.requestToken,
+							'OCS-APIREQUEST': 'true',
+						},
+					},
 				)
 				if (!response.ok) {
 					throw new Error(`roster fetch failed: ${response.status}`)
 				}
 				const data = await response.json()
-				this.participants = Array.isArray(data.participants) ? data.participants : []
+				this.participants = Array.isArray(data.participants)
+					? data.participants
+					: []
 				this.attendanceAvailable = data.attendanceAvailable !== false
 				this.isGm = data.isGm === true
 				this.loadFailed = false
@@ -213,13 +247,15 @@ export default {
 		 * @param {object} row    The participant row.
 		 * @param {string} status The new status (checked-in | no-show).
 		 * @return {Promise<void>}
-		 * @spec openspec/changes/event-checkin-roster/specs/event-checkin-roster/spec.md
+		 * @spec openspec/specs/event-checkin-roster/spec.md
 		 */
 		async setStatus(row, status) {
 			this.saving = row.character
 			try {
 				const response = await fetch(
-					generateUrl('/apps/larpingapp/api/events/{id}/attendance', { id: this.eventId }),
+					generateUrl('/apps/larpingapp/api/events/{id}/attendance', {
+						id: this.eventId,
+					}),
 					{
 						method: 'POST',
 						headers: {
@@ -250,7 +286,7 @@ export default {
 		 *
 		 * @param {string} status The raw status.
 		 * @return {string}
-		 * @spec openspec/changes/event-checkin-roster/specs/event-checkin-roster/spec.md
+		 * @spec openspec/specs/event-checkin-roster/spec.md
 		 */
 		statusLabel(status) {
 			const meta = STATUS_META[status] || STATUS_META.registered
@@ -262,7 +298,7 @@ export default {
 		 *
 		 * @param {string} status The raw status.
 		 * @return {string}
-		 * @spec openspec/changes/event-checkin-roster/specs/event-checkin-roster/spec.md
+		 * @spec openspec/specs/event-checkin-roster/spec.md
 		 */
 		statusVariant(status) {
 			return (STATUS_META[status] || STATUS_META.registered).variant

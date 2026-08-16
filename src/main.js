@@ -1,128 +1,86 @@
 // SPDX-License-Identifier: EUPL-1.2
 // Copyright (C) 2026 Conduction B.V.
 
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import { PiniaVuePlugin } from 'pinia'
-import { translate as t, translatePlural as n, loadTranslations } from '@nextcloud/l10n'
-import { generateUrl } from '@nextcloud/router'
 import {
 	CnPageRenderer,
 	defaultPageTypes,
+	registerBuiltinDashboardWidgets,
 	registerIcons,
 	registerTranslations,
 } from '@conduction/nextcloud-vue'
-import pinia from './pinia.js'
+import {
+	loadTranslations,
+	translatePlural as n,
+	translate as t,
+} from '@nextcloud/l10n'
+import { generateUrl } from '@nextcloud/router'
+import { createApp, h } from 'vue'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import App from './App.vue'
+import appIcons from './icons.js'
 import bundledManifest from './manifest.json'
 import menuLayout from './menu-layout.json'
+import pinia from './pinia.js'
 import registry from './registry.js'
 
 // MDI icons referenced by the manifest (menu, KPIs, widgets). CnIcon resolves
 // names from the registry populated by registerIcons(), so every icon the
 // manifest uses must be imported + registered here — otherwise it falls back
 // to the help-circle placeholder.
-import Account from 'vue-material-design-icons/Account.vue'
-import AccountBoxOutline from 'vue-material-design-icons/AccountBoxOutline.vue'
-import AccountGroup from 'vue-material-design-icons/AccountGroup.vue'
-import AccountGroupOutline from 'vue-material-design-icons/AccountGroupOutline.vue'
-import AlertCircleOutline from 'vue-material-design-icons/AlertCircleOutline.vue'
-import Briefcase from 'vue-material-design-icons/Briefcase.vue'
-import BriefcaseAccountOutline from 'vue-material-design-icons/BriefcaseAccountOutline.vue'
-import Calendar from 'vue-material-design-icons/Calendar.vue'
-import CalendarMonthOutline from 'vue-material-design-icons/CalendarMonthOutline.vue'
-import ChartBar from 'vue-material-design-icons/ChartBar.vue'
-import ClipboardList from 'vue-material-design-icons/ClipboardList.vue'
-import Cog from 'vue-material-design-icons/Cog.vue'
-import Earth from 'vue-material-design-icons/Earth.vue'
-import EmoticonSickOutline from 'vue-material-design-icons/EmoticonSickOutline.vue'
-import FileDocument from 'vue-material-design-icons/FileDocument.vue'
-import FileSign from 'vue-material-design-icons/FileSign.vue'
-import FlashOutline from 'vue-material-design-icons/FlashOutline.vue'
-import FolderOutline from 'vue-material-design-icons/FolderOutline.vue'
-import Gauge from 'vue-material-design-icons/Gauge.vue'
-import History from 'vue-material-design-icons/History.vue'
-import Lightbulb from 'vue-material-design-icons/Lightbulb.vue'
-import LinkVariant from 'vue-material-design-icons/LinkVariant.vue'
-import MagicStaff from 'vue-material-design-icons/MagicStaff.vue'
-import MapMarker from 'vue-material-design-icons/MapMarker.vue'
-import Package from 'vue-material-design-icons/Package.vue'
-import Plus from 'vue-material-design-icons/Plus.vue'
-import Refresh from 'vue-material-design-icons/Refresh.vue'
-import School from 'vue-material-design-icons/School.vue'
-import Sitemap from 'vue-material-design-icons/Sitemap.vue'
-import Star from 'vue-material-design-icons/Star.vue'
-import StarOutline from 'vue-material-design-icons/StarOutline.vue'
-import StarPlusOutline from 'vue-material-design-icons/StarPlusOutline.vue'
-import Sword from 'vue-material-design-icons/Sword.vue'
-import TrendingUp from 'vue-material-design-icons/TrendingUp.vue'
-import Trophy from 'vue-material-design-icons/Trophy.vue'
-import ViewDashboard from 'vue-material-design-icons/ViewDashboard.vue'
-
 // Library CSS — must be explicit import (webpack tree-shakes side-effect imports from aliased packages)
 import '@conduction/nextcloud-vue/css/index.css'
-
+// gridstack v12 CSS. The manifest declares a `type: "dashboard"` page, whose
+// widgets nc-vue lays out with gridstack. Without this stylesheet every
+// dashboard item renders 0 px wide — v12 sizes items with
+// `width: var(--gs-column-width)` — and NOTHING is logged.
+import 'gridstack/dist/gridstack.min.css'
 // Global (unscoped) app styles
 import './assets/app.css'
 
-Vue.mixin({ methods: { t, n } })
-Vue.use(PiniaVuePlugin)
-Vue.use(VueRouter)
+// Populate the dashboard widget-type registry.
+//
+// This call is an intentional no-op in the library — its ONLY job is to make
+// the bundler evaluate `registerDashboardWidgets.js`, which self-registers the
+// built-in widget catalog. nc-vue's package.json declares
+// `sideEffects: ["**/*.css"]` (ADR-061 tree-shaking), which lets webpack
+// legally DROP that module's bare side-effect imports.
+//
+// The manifest's `stat` KPI tiles and `object-table` lists are registered
+// exactly that way — via `import '../CnStatWidget/index.js'` and
+// `import '../CnWidgetObjectTable/dashboardRegistration.js'` — so without this
+// call `getWidgetTypeEntry()` misses and CnDashboardPage falls through to its
+// "Widget not available" placeholder. Verified live on the isolated instance:
+// 5 of the 7 dashboard widgets rendered that placeholder, and the one that
+// worked (`chart`) is registered by an INLINE `registerDashboardWidget()` call
+// that tree-shaking cannot reach.
+registerBuiltinDashboardWidgets()
 
 // Register the MDI icons the manifest references + lib translations at bootstrap.
-registerIcons({
-	Account,
-	AccountBoxOutline,
-	AccountGroup,
-	AccountGroupOutline,
-	AlertCircleOutline,
-	Briefcase,
-	BriefcaseAccountOutline,
-	Calendar,
-	CalendarMonthOutline,
-	ChartBar,
-	ClipboardList,
-	Cog,
-	Earth,
-	EmoticonSickOutline,
-	FileDocument,
-	FileSign,
-	FlashOutline,
-	FolderOutline,
-	Gauge,
-	History,
-	Lightbulb,
-	LinkVariant,
-	MagicStaff,
-	MapMarker,
-	Package,
-	Plus,
-	Refresh,
-	School,
-	Sitemap,
-	Star,
-	StarOutline,
-	StarPlusOutline,
-	Sword,
-	TrendingUp,
-	Trophy,
-	ViewDashboard,
-})
+registerIcons(appIcons)
 try {
 	registerTranslations()
 } catch (e) {
 	// Non-fatal — lib translations fall back to English source.
 	// eslint-disable-next-line no-console
-	console.warn('[larpingapp] registerTranslations failed; falling back to English', e)
+	console.warn(
+		'[larpingapp] registerTranslations failed; falling back to English',
+		e,
+	)
 }
 
 // Fire-and-forget translation load — wrap in try/catch because
 // some Nextcloud installs 404 on l10n JSON requests.
+/**
+ *
+ */
 function tryLoadTranslations() {
 	try {
 		const result = loadTranslations('larpingapp', () => {})
 		if (result && typeof result.then === 'function') {
-			result.then(() => {}, () => {})
+			result.then(
+				() => {},
+				() => {},
+			)
 		}
 	} catch {
 		// no-op
@@ -142,10 +100,23 @@ function mergeMenuItems(target, incoming) {
 	incoming.forEach((item) => {
 		const existing = target.find((t) => t.id === item.id)
 		if (!existing) {
-			target.push({ ...item, children: Array.isArray(item.children) ? [...item.children] : item.children })
+			target.push({
+				...item,
+				children: Array.isArray(item.children)
+					? [...item.children]
+					: item.children,
+			})
 			return
 		}
-		for (const key of ['label', 'icon', 'route', 'order', 'section', 'permission', 'href']) {
+		for (const key of [
+			'label',
+			'icon',
+			'route',
+			'order',
+			'section',
+			'permission',
+			'href',
+		]) {
 			if (existing[key] === undefined && item[key] !== undefined) {
 				existing[key] = item[key]
 			}
@@ -189,7 +160,8 @@ function applyMenuRelocations(menu, relocations) {
 				const child = node.children[j]
 				const childTarget = relocations[child.id]
 				if (!childTarget) continue
-				if (childTarget === node.id && !Array.isArray(child.children)) continue
+				if (childTarget === node.id && !Array.isArray(child.children))
+					continue
 				node.children.splice(j, 1)
 				moves.push({ node: child, target: childTarget })
 			}
@@ -209,8 +181,13 @@ function applyMenuRelocations(menu, relocations) {
 			}
 		})
 	}
-	return menu.filter((m) => m.route || m.href || m.action
-		|| (Array.isArray(m.children) && m.children.length > 0))
+	return menu.filter(
+		(m) =>
+			m.route
+			|| m.href
+			|| m.action
+			|| (Array.isArray(m.children) && m.children.length > 0),
+	)
 }
 
 /**
@@ -227,7 +204,9 @@ function applyMenuRemovals(menu, removals) {
 	const isLeaf = (n) => !Array.isArray(n.children) || n.children.length === 0
 	menu.forEach((node) => {
 		if (Array.isArray(node.children)) {
-			node.children = node.children.filter((c) => !(drop.has(c.id) && isLeaf(c)))
+			node.children = node.children.filter(
+				(c) => !(drop.has(c.id) && isLeaf(c)),
+			)
 		}
 	})
 	return menu.filter((node) => !(drop.has(node.id) && isLeaf(node)))
@@ -251,23 +230,34 @@ function applyMenuRemovals(menu, removals) {
 function applySettingsSection(menu, settingsIds) {
 	if (!Array.isArray(settingsIds) || settingsIds.length === 0) return menu
 	const want = new Set(settingsIds)
-	const isClickable = (n) => n.route !== undefined || n.href !== undefined || n.action !== undefined
+	const isClickable = (n) =>
+		n.route !== undefined || n.href !== undefined || n.action !== undefined
 	const lifted = []
-	const strip = (nodes) => nodes.reduce((acc, n) => {
-		if (want.has(n.id)) {
-			const { children, ...leaf } = n
-			lifted.push({ ...leaf, section: 'settings' })
+	const strip = (nodes) =>
+		nodes.reduce((acc, n) => {
+			if (want.has(n.id)) {
+				// Drop `children` explicitly rather than by rest-destructuring:
+				// NC's config runs `no-unused-vars` with `ignoreRestSiblings: false`,
+				// so the omit-a-key idiom reports the omitted binding as unused.
+				const leaf = { ...n }
+				delete leaf.children
+				lifted.push({ ...leaf, section: 'settings' })
+				return acc
+			}
+			if (Array.isArray(n.children)) {
+				const children = strip(n.children)
+				if (
+					children.length === 0
+					&& n.children.length > 0
+					&& !isClickable(n)
+				)
+					return acc
+				acc.push({ ...n, children })
+				return acc
+			}
+			acc.push(n)
 			return acc
-		}
-		if (Array.isArray(n.children)) {
-			const children = strip(n.children)
-			if (children.length === 0 && n.children.length > 0 && !isClickable(n)) return acc
-			acc.push({ ...n, children })
-			return acc
-		}
-		acc.push(n)
-		return acc
-	}, [])
+		}, [])
 	const remaining = strip(menu)
 	return [...remaining, ...lifted]
 }
@@ -296,21 +286,24 @@ function mergeManifestFragments(base) {
 	merged.pages = Array.isArray(base.pages) ? [...base.pages] : []
 	merged.menu = Array.isArray(base.menu) ? [...base.menu] : []
 
-	context.keys().sort().forEach((key) => {
-		const fragment = context(key)
-		if (!fragment || typeof fragment !== 'object') {
-			return
-		}
-		Object.keys(fragment).forEach((prop) => {
-			if (prop === 'pages' && Array.isArray(fragment.pages)) {
-				merged.pages = merged.pages.concat(fragment.pages)
-			} else if (prop === 'menu' && Array.isArray(fragment.menu)) {
-				merged.menu = merged.menu.concat(fragment.menu)
-			} else {
-				merged[prop] = fragment[prop]
+	context
+		.keys()
+		.sort()
+		.forEach((key) => {
+			const fragment = context(key)
+			if (!fragment || typeof fragment !== 'object') {
+				return
 			}
+			Object.keys(fragment).forEach((prop) => {
+				if (prop === 'pages' && Array.isArray(fragment.pages)) {
+					merged.pages = merged.pages.concat(fragment.pages)
+				} else if (prop === 'menu' && Array.isArray(fragment.menu)) {
+					merged.menu = merged.menu.concat(fragment.menu)
+				} else {
+					merged[prop] = fragment[prop]
+				}
+			})
 		})
-	})
 
 	merged.menu = applyMenuRelocations(merged.menu, menuLayout.relocations)
 	merged.menu = applyMenuRemovals(merged.menu, menuLayout.removals)
@@ -323,11 +316,9 @@ function mergeManifestFragments(base) {
 const manifest = mergeManifestFragments(bundledManifest)
 
 // Shallow-clone CnPageRenderer because the lib's barrel exports are
-// non-extensible (webpack ESM module records). Vue 2's `Vue.extend()`
-// adds an internal `_Ctor` cache to the component definition; mutating
-// a non-extensible export throws "Cannot add property _Ctor, object is
-// not extensible". Cloning gives Vue Router an extensible
-// component-options object without altering the lib's internals.
+// non-extensible (webpack ESM module records) and vue-router / Vue may attach
+// internal caches to a component options object. Cloning gives the router an
+// extensible component-options object without altering the lib's internals.
 const RoutePageRenderer = { ...CnPageRenderer }
 
 /**
@@ -335,7 +326,7 @@ const RoutePageRenderer = { ...CnPageRenderer }
  * one route; routes with `:` parameters receive `props: true`.
  *
  * @param {object} manifest The bundled manifest (with `pages[]`).
- * @return {Array<object>} vue-router 3 routes config.
+ * @return {Array<object>} vue-router 4 routes config.
  */
 function routesFromManifest(manifest) {
 	const routes = manifest.pages.map((page) => ({
@@ -345,37 +336,43 @@ function routesFromManifest(manifest) {
 		props: page.route.includes(':'),
 	}))
 	// Catch-all: redirect unknown paths to the dashboard.
-	routes.push({ path: '*', redirect: '/' })
+	//
+	// vue-router 4 REMOVED the bare `path: '*'` wildcard — it no longer matches
+	// anything and no warning is emitted, so an unknown hash would render the
+	// app shell with an empty `<main>`. The parameterised form below is its
+	// replacement.
+	routes.push({ path: '/:pathMatch(.*)*', redirect: '/' })
 	return routes
 }
 
-const router = new VueRouter({
-	mode: 'hash',
-	base: generateUrl('/apps/larpingapp'),
+const router = createRouter({
+	history: createWebHashHistory(generateUrl('/apps/larpingapp')),
 	routes: routesFromManifest(manifest),
 })
 
 tryLoadTranslations()
 
 // Pass shallow copies of the registry maps to App.vue. The lib exports
-// `defaultPageTypes` (and our `registry`) as frozen module objects in
-// some bundle shapes — Vue 2's `Vue.extend()` mutates component definitions
-// to attach an internal `_Ctor` cache, which throws "Cannot add property
-// _Ctor, object is not extensible" against a frozen source map. Cloning
-// here yields extensible objects without changing the values the lib
-// resolves at render time.
+// `defaultPageTypes` (and our `registry`) FROZEN in some bundle shapes, and
+// anything that later attaches an internal cache to them throws against a
+// frozen object. Cloning here yields extensible objects without changing the
+// values the lib resolves at render time.
 const pageTypesProp = { ...defaultPageTypes }
 const registryProp = { ...registry }
 
-// eslint-disable-next-line no-new
-new Vue({
-	pinia,
-	router,
-	render: (h) => h(App, {
-		props: {
+const app = createApp({
+	render: () =>
+		h(App, {
 			manifest,
 			registry: registryProp,
 			pageTypes: pageTypesProp,
-		},
-	}),
-}).$mount('#content')
+		}),
+})
+
+// Vue 3: plugins and global mixins are installed on the APP INSTANCE, not on
+// the Vue constructor. `PiniaVuePlugin` is gone — `app.use(pinia)` is the only
+// installation path.
+app.mixin({ methods: { t, n } })
+app.use(pinia)
+app.use(router)
+app.mount('#content')

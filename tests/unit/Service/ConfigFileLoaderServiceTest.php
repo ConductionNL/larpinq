@@ -6,7 +6,7 @@
  * @category Test
  * @package  OCA\LarpingApp\Tests\Unit\Service
  * @author   Ruben Linde <ruben@larpingapp.com>
- * @license  AGPL-3.0-or-later https://www.gnu.org/licenses/agpl-3.0.en.html
+ * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
  */
 
@@ -22,78 +22,71 @@ use RuntimeException;
 /**
  * Tests for ConfigFileLoaderService.
  */
-class ConfigFileLoaderServiceTest extends TestCase
-{
+class ConfigFileLoaderServiceTest extends TestCase {
 
-    private ConfigFileLoaderService $service;
-    private IAppManager $appManager;
+	private ConfigFileLoaderService $service;
+	private IAppManager $appManager;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
+	protected function setUp(): void {
+		parent::setUp();
 
-        $this->appManager = $this->createMock(IAppManager::class);
-        $this->service = new ConfigFileLoaderService($this->appManager);
-    }
+		$this->appManager = $this->createMock(IAppManager::class);
+		$this->service = new ConfigFileLoaderService($this->appManager);
+	}
 
-    public function testLoadConfigurationFileThrowsWhenFileNotFound(): void
-    {
-        $this->appManager->method('getAppPath')
-            ->with('larpingapp')
-            ->willReturn('/nonexistent/path');
+	public function testLoadConfigurationFileThrowsWhenFileNotFound(): void {
+		$this->appManager->method('getAppPath')
+			->with('larpingapp')
+			->willReturn('/nonexistent/path');
 
-        $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('Configuration file not found');
+		$this->expectException(RuntimeException::class);
+		$this->expectExceptionMessage('Configuration file not found');
 
-        $this->service->loadConfigurationFile();
-    }
+		$this->service->loadConfigurationFile();
+	}
 
-    public function testEnsureSourceTypeSetsDefaultSourceType(): void
-    {
-        $data = [];
+	public function testEnsureSourceTypeSetsDefaultSourceType(): void {
+		$data = [];
 
-        $result = $this->service->ensureSourceType($data);
+		$result = $this->service->ensureSourceType($data);
 
-        self::assertArrayHasKey('x-openregister', $result);
-        self::assertSame('local', $result['x-openregister']['sourceType']);
-    }
+		self::assertArrayHasKey('x-openregister', $result);
+		self::assertSame('local', $result['x-openregister']['sourceType']);
+	}
 
-    public function testEnsureSourceTypePreservesExistingSourceType(): void
-    {
-        $data = [
-            'x-openregister' => [
-                'sourceType' => 'remote',
-            ],
-        ];
+	public function testEnsureSourceTypePreservesExistingSourceType(): void {
+		$data = [
+			'x-openregister' => [
+				'sourceType' => 'remote',
+			],
+		];
 
-        $result = $this->service->ensureSourceType($data);
+		$result = $this->service->ensureSourceType($data);
 
-        self::assertSame('remote', $result['x-openregister']['sourceType']);
-    }
+		self::assertSame('remote', $result['x-openregister']['sourceType']);
+	}
 
-    public function testEnsureSourceTypeHandlesNonArrayOpenregister(): void
-    {
-        $data = [
-            'x-openregister' => 'invalid',
-        ];
+	public function testEnsureSourceTypeHandlesNonArrayOpenregister(): void {
+		$data = [
+			'x-openregister' => 'invalid',
+		];
 
-        $result = $this->service->ensureSourceType($data);
+		$result = $this->service->ensureSourceType($data);
 
-        self::assertIsArray($result['x-openregister']);
-        self::assertSame('local', $result['x-openregister']['sourceType']);
-    }
+		self::assertIsArray($result['x-openregister']);
+		self::assertSame('local', $result['x-openregister']['sourceType']);
+	}
 
-    public function testEnsureSourceTypeAddsToExistingOpenregister(): void
-    {
-        $data = [
-            'x-openregister' => [
-                'otherKey' => 'value',
-            ],
-        ];
+	public function testEnsureSourceTypeAddsToExistingOpenregister(): void {
+		$data = [
+			'x-openregister' => [
+				'otherKey' => 'value',
+			],
+		];
 
-        $result = $this->service->ensureSourceType($data);
+		$result = $this->service->ensureSourceType($data);
 
-        self::assertSame('local', $result['x-openregister']['sourceType']);
-        self::assertSame('value', $result['x-openregister']['otherKey']);
-    }
+		self::assertSame('local', $result['x-openregister']['sourceType']);
+		self::assertSame('value', $result['x-openregister']['otherKey']);
+	}
 }

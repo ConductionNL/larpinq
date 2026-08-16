@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "title": "LarpingApp Register",
-    "description": "Live Action Role Playing character management register for the LarpingApp Nextcloud app. Manages characters, players, abilities, skills, items, conditions, effects, events, and settings.",
+    "description": "Live Action Role Playing character management register for the LarpingApp Nextcloud app. Manages characters, players, abilities, skills, items, conditions, effects, events, and worlds.",
     "version": "1.2.0"
   },
   "x-openregister": {
@@ -17,7 +17,7 @@
         "slug": "larpingapp",
         "title": "LarpingApp",
         "version": "1.0.0",
-        "description": "Live Action Role Playing character management register — manages characters, players, abilities, skills, items, conditions, effects, events, and game settings.",
+        "description": "Live Action Role Playing character management register — manages characters, players, abilities, skills, items, conditions, effects, events, and game worlds.",
         "published": "2026-03-01T00:00:00+00:00",
         "schemas": [
           "character",
@@ -225,9 +225,9 @@
             "type": "string",
             "format": "uuid",
             "$ref": "setting",
-            "description": "Optional setting (world/campaign) this character belongs to. Empty means shared across all settings.",
+            "description": "Optional world (campaign) thischaracter belongs to. Empty means shared across all worlds.",
             "visible": false,
-            "title": "Setting"
+            "title": "World"
           },
           "requirementOverrides": {
             "type": "array",
@@ -357,7 +357,7 @@
         "slug": "player",
         "title": "Player",
         "icon": "AccountGroupOutline",
-        "version": "1.1.0",
+        "version": "1.1.1",
         "summary": "A real-world player participating in the LARP",
         "description": "Represents a player who controls one or more characters. Tracks player identity and contact information.",
         "type": "object",
@@ -381,8 +381,7 @@
           },
           "userUid": {
             "type": "string",
-            "format": "user",
-            "description": "The Nextcloud user account this player signs in as. Used for character-ownership notifications.",
+            "description": "The Nextcloud user account this player signs in as (a Nextcloud user UID — a plain string; there is deliberately no `format`, OpenRegister has no `user` format and rejects the whole schema when it sees one). Used for character-ownership notifications.",
             "maxLength": 255,
             "title": "Nextcloud user"
           }
@@ -410,7 +409,7 @@
           },
           "description": {
             "type": "string",
-            "description": "What this ability represents within the game setting",
+            "description": "What this ability represents within the game world",
             "maxLength": 2555,
             "title": "Description"
           },
@@ -424,9 +423,9 @@
             "type": "string",
             "format": "uuid",
             "$ref": "setting",
-            "description": "Optional setting (world/campaign) this ability belongs to. Empty means shared across all settings.",
+            "description": "Optional world (campaign) thisability belongs to. Empty means shared across all worlds.",
             "visible": false,
-            "title": "Setting"
+            "title": "World"
           }
         }
       },
@@ -434,11 +433,14 @@
         "slug": "skill",
         "title": "Skill",
         "icon": "SwordCross",
-        "version": "1.1.0",
+        "version": "1.2.0",
         "summary": "A learnable ability that characters can acquire",
         "description": "Represents a skill that characters can learn, usually purchased with experience points. Skills provide effects and may have prerequisites (other skills, stats, conditions, or effects).",
         "type": "object",
         "x-schema-org": "schema:DefinedTerm",
+        "configuration": {
+          "x-openregister-shareable": true
+        },
         "required": [
           "name"
         ],
@@ -533,9 +535,9 @@
             "type": "string",
             "format": "uuid",
             "$ref": "setting",
-            "description": "Optional setting (world/campaign) this skill belongs to. Empty means shared across all settings.",
+            "description": "Optional world (campaign) thisskill belongs to. Empty means shared across all worlds.",
             "visible": false,
-            "title": "Setting"
+            "title": "World"
           }
         }
       },
@@ -606,9 +608,9 @@
             "type": "string",
             "format": "uuid",
             "$ref": "setting",
-            "description": "Optional setting (world/campaign) this item belongs to. Empty means shared across all settings.",
+            "description": "Optional world (campaign) thisitem belongs to. Empty means shared across all worlds.",
             "visible": false,
-            "title": "Setting"
+            "title": "World"
           }
         }
       },
@@ -678,9 +680,9 @@
             "type": "string",
             "format": "uuid",
             "$ref": "setting",
-            "description": "Optional setting (world/campaign) this condition belongs to. Empty means shared across all settings.",
+            "description": "Optional world (campaign) thiscondition belongs to. Empty means shared across all worlds.",
             "visible": false,
-            "title": "Setting"
+            "title": "World"
           }
         }
       },
@@ -754,9 +756,9 @@
             "type": "string",
             "format": "uuid",
             "$ref": "setting",
-            "description": "Optional setting (world/campaign) this effect belongs to. Empty means shared across all settings.",
+            "description": "Optional world (campaign) thiseffect belongs to. Empty means shared across all worlds.",
             "visible": false,
-            "title": "Setting"
+            "title": "World"
           }
         }
       },
@@ -832,9 +834,9 @@
             "type": "string",
             "format": "uuid",
             "$ref": "setting",
-            "description": "Optional setting (world/campaign) this event belongs to. Empty means shared across all settings.",
+            "description": "Optional world (campaign) thisevent belongs to. Empty means shared across all worlds.",
             "visible": false,
-            "title": "Setting"
+            "title": "World"
           }
         },
         "x-openregister-notifications": {
@@ -867,11 +869,11 @@
       },
       "setting": {
         "slug": "setting",
-        "title": "Setting",
-        "icon": "Globe",
+        "title": "World",
+        "icon": "Earth",
         "version": "2.0.0",
-        "summary": "A LARP world / campaign (setting)",
-        "description": "A first-class LARP setting: a world or campaign that organises characters, events, and mechanics. Real organisations run several campaigns (a fantasy summer world, a sci-fi winter world) with disjoint rosters and rule sets. Game entities can optionally be scoped to a setting; entities without a setting are shared across all settings. Finished campaigns are archived rather than deleted.",
+        "summary": "A LARP world (campaign)",
+        "description": "A first-class LARP world: a game world or campaign that organises characters, events, and mechanics. Real organisations run several campaigns (a fantasy summer world, a sci-fi winter world) with disjoint rosters and rule sets. Game entities can optionally be scoped to a world; entities without one are shared across all worlds. Finished campaigns are archived rather than deleted. NAMING: the slug and the property key stay `setting` because they are persisted OpenRegister data; only the human-readable title/summary/description use the domain word. The old title \"Setting\" was translated as a UI preference (Einstellung / Paramètre / Configuración) by all 35 non-Dutch locales.",
         "type": "object",
         "x-schema-org": "schema:CreativeWork",
         "required": [

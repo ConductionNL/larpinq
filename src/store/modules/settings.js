@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import logger from '../../logger.js'
 
 export const useSettingsStore = defineStore('settings', {
 	state: () => ({
@@ -36,7 +37,9 @@ export const useSettingsStore = defineStore('settings', {
 				})
 
 				if (!response.ok) {
-					throw new Error(`Failed to fetch settings: ${response.statusText}`)
+					throw new Error(
+						`Failed to fetch settings: ${response.statusText}`,
+					)
 				}
 
 				const data = await response.json()
@@ -48,7 +51,7 @@ export const useSettingsStore = defineStore('settings', {
 				return this.config
 			} catch (error) {
 				this.error = error.message
-				console.error('Error fetching LarpingApp settings:', error)
+				logger.error('Error fetching LarpingApp settings', { error })
 				return null
 			} finally {
 				this.loading = false
@@ -56,7 +59,10 @@ export const useSettingsStore = defineStore('settings', {
 		},
 
 		/**
-		 * @param settingsData
+		 * Persist the data-storage configuration.
+		 *
+		 * @param {object} settingsData Flat `{ <type>_source, <type>_register, <type>_schema }` map to save.
+		 * @return {Promise<object|null>} The saved settings envelope, or null on failure.
 		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-6
 		 */
 		async saveSettings(settingsData) {
@@ -75,7 +81,9 @@ export const useSettingsStore = defineStore('settings', {
 				})
 
 				if (!response.ok) {
-					throw new Error(`Failed to save settings: ${response.statusText}`)
+					throw new Error(
+						`Failed to save settings: ${response.statusText}`,
+					)
 				}
 
 				const data = await response.json()
@@ -84,7 +92,7 @@ export const useSettingsStore = defineStore('settings', {
 				return this.config
 			} catch (error) {
 				this.error = error.message
-				console.error('Error saving LarpingApp settings:', error)
+				logger.error('Error saving LarpingApp settings', { error })
 				return null
 			} finally {
 				this.loading = false
@@ -99,14 +107,17 @@ export const useSettingsStore = defineStore('settings', {
 			this.error = null
 
 			try {
-				const response = await fetch('/apps/larpingapp/api/settings/reimport', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-						requesttoken: OC.requestToken,
-						'OCS-APIREQUEST': 'true',
+				const response = await fetch(
+					'/apps/larpingapp/api/settings/reimport',
+					{
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+							requesttoken: OC.requestToken,
+							'OCS-APIREQUEST': 'true',
+						},
 					},
-				})
+				)
 
 				if (!response.ok) {
 					throw new Error(`Failed to reimport: ${response.statusText}`)
@@ -118,7 +129,7 @@ export const useSettingsStore = defineStore('settings', {
 				return data
 			} catch (error) {
 				this.error = error.message
-				console.error('Error reimporting LarpingApp configuration:', error)
+				logger.error('Error reimporting LarpingApp configuration', { error })
 				return null
 			} finally {
 				this.loading = false

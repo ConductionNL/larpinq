@@ -17,7 +17,7 @@
  * This file is the gate-19 back-reference: it confirms the run-sheet route is
  * wired and answers for an authenticated user.
  *
- * @spec openspec/changes/event-runsheet-export/specs/pdf-export/spec.md
+ * @spec openspec/specs/pdf-export/spec.md
  */
 
 import { test, expect } from '@playwright/test'
@@ -25,7 +25,10 @@ import { test, expect } from '@playwright/test'
 const BASE = '/apps/larpingapp'
 
 test.describe('event-runsheet-export', () => {
-	test('run-sheet endpoint is wired and authenticated', async ({ page, request }) => {
+	test('run-sheet endpoint is wired and authenticated', async ({
+		page,
+		request,
+	}) => {
 		await page.goto(BASE)
 
 		// A valid-UUID but absent event with a valid-UUID template: depending on

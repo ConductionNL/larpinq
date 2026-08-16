@@ -1,4 +1,5 @@
 <?php
+
 /**
  * LarpingApp database migration (legacy — no-op).
  *
@@ -32,23 +33,19 @@ use OCP\Migration\SimpleMigrationStep;
  *
  * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-1
  */
-class Version0Date20240826193657 extends SimpleMigrationStep
-{
-    /**
-     * No schema changes needed.
-     *
-     * @param IOutput                   $output        Migration output
-     * @param Closure(): ISchemaWrapper $schemaClosure Schema closure
-     * @param array                     $options       Migration options
-     *
-     * @return ISchemaWrapper|null
-     *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     *
-     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-1
-     */
-    public function changeSchema(IOutput $output, Closure $schemaClosure, array $options): ?ISchemaWrapper
-    {
-        return null;
-    }//end changeSchema()
+class Version0Date20240826193657 extends SimpleMigrationStep {
+	/**
+	 * No schema changes needed.
+	 *
+	 * @param IOutput $output Migration output
+	 * @param Closure(): ISchemaWrapper $schemaClosure Schema closure
+	 * @param array $options Migration options
+	 *
+	 * @return ISchemaWrapper|null
+	 *
+	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-1
+	 */
+	public function changeSchema(IOutput $output, Closure $schemaClosure, array $options): ?ISchemaWrapper {
+		return null;
+	}//end changeSchema()
 }//end class

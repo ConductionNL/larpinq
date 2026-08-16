@@ -5,8 +5,8 @@
  * with Nextcloud CSRF token authentication.
  */
 
-import { generateUrl } from '@nextcloud/router'
 import { getRequestToken } from '@nextcloud/auth'
+import { generateUrl } from '@nextcloud/router'
 
 const GRAPHQL_ENDPOINT = '/apps/openregister/api/graphql'
 
@@ -48,7 +48,9 @@ export async function queryGraphQL(query, variables = null) {
 	}
 
 	if (!response.ok) {
-		throw new Error(`GraphQL request failed: ${response.status} ${response.statusText}`)
+		throw new Error(
+			`GraphQL request failed: ${response.status} ${response.statusText}`,
+		)
 	}
 
 	const result = await response.json()
