@@ -54,6 +54,37 @@ on:
   # be redder than a PR — that is the honest answer, not a regression.
   workflow_dispatch:
 
+# Permission CEILING for the called quality pipeline, NOT a grant. Copied
+# verbatim from openconnector, where this exact block is live on `development`
+# with all ~30 quality jobs green — so it is a measured ceiling, not a guess.
+#
+# ⚠️ Most jobs in the callee declare NO permissions of their own (only
+# journeydoc-capture and features-extract do), which means they inherit THIS
+# ceiling exactly. Every entry below is load-bearing:
+#
+#   contents: write        journeydoc-capture and update-baseline `git push`
+#                          the regenerated screenshots / coverage baseline
+#   actions: write         journeydoc-capture re-dispatches downstream work
+#                          (a GITHUB_TOKEN push does not fire workflow_run)
+#   issues / pull-requests: write
+#                          the Quality Report comment — `github.rest.issues
+#                          .createComment`, which 403s under contents+packages
+#                          read alone (quality.yml notes this at its own step)
+#   packages: read         pulling org images for the Nextcloud test matrix
+#
+# ⚠️ Do NOT "tighten" any of these to `read`. GitHub statically validates the
+# called workflow's DECLARED job permissions against this grant — including for
+# jobs an `if:` will skip — so capping one makes the whole call fail to START:
+# zero jobs, no annotations, and a Code Quality run that is absent rather than
+# red. That is the same shape as the org-rename outage described below, which
+# also produced zero jobs and no red test.
+permissions:
+  contents: write
+  actions: write
+  issues: write
+  pull-requests: write
+  packages: read
+
 jobs:
   quality:
     # ConductionNL, NOT Conduction. e2faa092 ("org rename") pointed all eight
