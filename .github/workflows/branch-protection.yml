@@ -14,5 +14,11 @@ jobs:
   # sat permanently pending and only `--admin` could ship it — a dead gate
   # whose absence looks exactly like its success.
   branch-protection:
+    # The callee's `check-branch` job is a single bash comparison of
+    # `github.base_ref` against `github.head_ref` — no checkout, no network, no
+    # API call. It needs nothing, so it gets nothing. `{}` is an explicit empty
+    # grant, which is what satisfies actions/missing-workflow-permissions; an
+    # ABSENT block means "whatever the repo default is", which is the finding.
+    permissions: {}
     uses: ConductionNL/.github/.github/workflows/branch-protection.yml@main
     secrets: inherit

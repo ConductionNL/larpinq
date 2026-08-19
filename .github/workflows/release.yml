@@ -30,6 +30,19 @@ concurrency:
 jobs:
   unstable:
     if: github.ref == 'refs/heads/development'
+    # Permission CEILING for the called release workflow, not a grant. The
+    # callee's `release` job declares `contents: write` (cut the tag, publish
+    # the prerelease + .tar.gz the App Versions app installs from) and
+    # `pull-requests: write` (the version bump is routed through a PR rather
+    # than pushed at a protected branch). This restates today's effective
+    # token and changes nothing that runs.
+    #
+    # ⚠️ Do not lower these. A caller block CAPS the callee, and GitHub checks
+    # that statically — a ceiling below what the callee declares makes the call
+    # fail to START rather than run with less.
+    permissions:
+      contents: write
+      pull-requests: write
     uses: ConductionNL/.github/.github/workflows/release.yml@main
     with:
       release-type: unstable
@@ -38,6 +51,10 @@ jobs:
 
   beta:
     if: github.ref == 'refs/heads/beta'
+    # See the `unstable` job above for why this ceiling is exactly these two.
+    permissions:
+      contents: write
+      pull-requests: write
     uses: ConductionNL/.github/.github/workflows/release.yml@main
     with:
       release-type: beta
@@ -46,6 +63,10 @@ jobs:
 
   stable:
     if: github.ref == 'refs/heads/main'
+    # See the `unstable` job above for why this ceiling is exactly these two.
+    permissions:
+      contents: write
+      pull-requests: write
     uses: ConductionNL/.github/.github/workflows/release.yml@main
     with:
       release-type: stable
