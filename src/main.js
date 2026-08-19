@@ -1,42 +1,39 @@
 // SPDX-License-Identifier: EUPL-1.2
 // Copyright (C) 2026 Conduction B.V.
 
-import { createApp, h } from 'vue'
-import { createRouter, createWebHashHistory } from 'vue-router'
-import {
-	translate as t,
-	translatePlural as n,
-	loadTranslations,
-} from '@nextcloud/l10n'
-import { generateUrl } from '@nextcloud/router'
 import {
 	CnPageRenderer,
 	defaultPageTypes,
+	registerBuiltinDashboardWidgets,
 	registerIcons,
 	registerTranslations,
-	registerBuiltinDashboardWidgets,
 } from '@conduction/nextcloud-vue'
-import pinia from './pinia.js'
+import {
+	loadTranslations,
+	translatePlural as n,
+	translate as t,
+} from '@nextcloud/l10n'
+import { generateUrl } from '@nextcloud/router'
+import { createApp, h } from 'vue'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import App from './App.vue'
+import appIcons from './icons.js'
 import bundledManifest from './manifest.json'
 import menuLayout from './menu-layout.json'
+import pinia from './pinia.js'
 import registry from './registry.js'
-import appIcons from './icons.js'
 
 // MDI icons referenced by the manifest (menu, KPIs, widgets). CnIcon resolves
 // names from the registry populated by registerIcons(), so every icon the
 // manifest uses must be imported + registered here — otherwise it falls back
 // to the help-circle placeholder.
-
 // Library CSS — must be explicit import (webpack tree-shakes side-effect imports from aliased packages)
 import '@conduction/nextcloud-vue/css/index.css'
-
 // gridstack v12 CSS. The manifest declares a `type: "dashboard"` page, whose
 // widgets nc-vue lays out with gridstack. Without this stylesheet every
 // dashboard item renders 0 px wide — v12 sizes items with
 // `width: var(--gs-column-width)` — and NOTHING is logged.
 import 'gridstack/dist/gridstack.min.css'
-
 // Global (unscoped) app styles
 import './assets/app.css'
 
@@ -64,7 +61,7 @@ try {
 	registerTranslations()
 } catch (e) {
 	// Non-fatal — lib translations fall back to English source.
-	// eslint-disable-next-line no-console
+
 	console.warn(
 		'[larpingapp] registerTranslations failed; falling back to English',
 		e,

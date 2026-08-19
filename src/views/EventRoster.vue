@@ -36,7 +36,7 @@
 			:columns="columns"
 			:rows="participants"
 			:loading="loading"
-			:empty-text="
+			:emptyText="
 				t('larpingapp', 'No confirmed participants for this event yet.')
 			"
 			data-testid="event-roster-table">
@@ -75,10 +75,10 @@
 
 <script>
 import { CnDataTable, CnStatusBadge } from '@conduction/nextcloud-vue'
+import { generateUrl } from '@nextcloud/router'
 // @nextcloud/vue v9 ships an `exports` map; the v8 `dist/Components/*.js`
 // deep paths are no longer exported and throw ERR_PACKAGE_PATH_NOT_EXPORTED.
 import NcButton from '@nextcloud/vue/components/NcButton'
-import { generateUrl } from '@nextcloud/router'
 
 /**
  * Human-readable label + badge variant per attendance status.
@@ -113,11 +113,20 @@ export default {
 			type: String,
 			default: '',
 		},
+
 		/**
 		 * Manifest config passthrough (unused product logic).
 		 *
 		 * @spec exclude Config passthrough — no product logic.
 		 */
+		// Declared on purpose and deliberately not read. CnPageRenderer passes
+		// `:config` to every page component it mounts; a page that does not
+		// DECLARE the prop still receives the value, but as a fallthrough
+		// attribute, which Vue 3 then renders onto the root element as a literal
+		// `config="[object Object]"`. Declaring it is what absorbs it. The rule is
+		// right that nothing reads it — that is the point, and the `@spec exclude`
+		// above records the same fact for gate-16.
+		// eslint-disable-next-line vue/no-unused-properties -- absorbed passthrough
 		config: {
 			type: Object,
 			default: () => ({}),
@@ -232,7 +241,7 @@ export default {
 				this.participants = []
 				this.attendanceAvailable = false
 				this.loadFailed = true
-				// eslint-disable-next-line no-console
+
 				console.warn('[larpingapp] roster unavailable', error)
 			} finally {
 				this.loading = false
@@ -273,7 +282,6 @@ export default {
 				row.checkedInAt = saved.checkedInAt || ''
 				row.checkedInBy = saved.checkedInBy || ''
 			} catch (error) {
-				// eslint-disable-next-line no-console
 				console.error('[larpingapp] attendance write failed', error)
 			} finally {
 				this.saving = null

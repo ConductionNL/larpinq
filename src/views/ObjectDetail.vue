@@ -80,11 +80,20 @@ export default {
 			type: String,
 			default: 'character',
 		},
+
 		/**
 		 * Manifest page config forwarded by CnPageRenderer.
 		 *
 		 * @spec exclude Config passthrough — no product logic.
 		 */
+		// Declared on purpose and deliberately not read. CnPageRenderer passes
+		// `:config` to every page component it mounts; a page that does not
+		// DECLARE the prop still receives the value, but as a fallthrough
+		// attribute, which Vue 3 then renders onto the root element as a literal
+		// `config="[object Object]"`. Declaring it is what absorbs it. The rule is
+		// right that nothing reads it — that is the point, and the `@spec exclude`
+		// above records the same fact for gate-16.
+		// eslint-disable-next-line vue/no-unused-properties -- absorbed passthrough
 		config: {
 			type: Object,
 			default: () => ({}),

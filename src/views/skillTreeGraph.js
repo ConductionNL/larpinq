@@ -16,7 +16,10 @@
 /**
  * Normalise a reference value (array of ids or objects) to a string id list.
  *
- * @param {*} value The raw reference value.
+ * @param {unknown} value The raw reference value. Anything may arrive here —
+ * OpenRegister returns a reference field as an array of id strings OR of full
+ * objects, and as a bare `null` when unset — so the guard below is load-bearing
+ * and only arrays produce output.
  * @return {Array<string>} The id list.
  */
 export function idList(value) {

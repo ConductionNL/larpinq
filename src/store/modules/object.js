@@ -25,9 +25,9 @@
  * the next fetch hits the new tenant.
  */
 import {
+	auditTrailsPlugin,
 	createObjectStore,
 	filesPlugin,
-	auditTrailsPlugin,
 	relationsPlugin,
 } from '@conduction/nextcloud-vue'
 
