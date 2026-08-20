@@ -2,21 +2,156 @@ name: Code Quality
 
 on:
   push:
-    branches: [main, development, feature/**, bugfix/**, hotfix/**]
+    # An ALLOW-LIST of branch prefixes is a gate with a hole in it, and the
+    # hole is SILENT: a branch matching nothing gets no CI at all, and its last
+    # visible status is whatever it inherited — indistinguishable, on every
+    # dashboard, from a branch that passed.
+    #
+    # Two live examples, both found 2026-08-14: `perf/**` was uncovered in
+    # openconnector, where a merge carrying unresolved conflict markers and 84
+    # failing tests was pushed and nothing ran; and `feat/**` was uncovered in
+    # openregister — note the list said `feature/**`, so every branch anyone
+    # named `feat/...` had been running unchecked.
+    #
+    # Prefixes are added rather than replaced with `**` because this workflow is
+    # expensive (PHPUnit matrix, Newman, Playwright). The fast structural checks
+    # DO run on `**` — see merge-hygiene.yml, added in the same change.
+    #
+    # ⚠️ Adding prefixes is not the durable fix; the next invented one is
+    # uncovered again. The durable fix is branch protection requiring a PR into
+    # development, which the pull_request trigger below already gates correctly.
+    branches:
+      - main
+      - development
+      - feature/**
+      - feat/**
+      - bugfix/**
+      - hotfix/**
+      - perf/**
+      - refactor/**
+      - chore/**
+      - fix/**
   pull_request:
     branches: [main, beta, development]
+  # This repo and `softwarecatalog` were the ONLY two of the sixteen fleet apps
+  # without a manual trigger — checked on 2026-08-10 by reading
+  # `.github/workflows/code-quality.yml` on `development` in all sixteen; the
+  # other fourteen already carry it.
+  #
+  # The cost was not "slightly less convenient". Every fleet-wide gate sweep run
+  # in this programme is a `workflow_dispatch` fan-out, so this repo was not
+  # failing those sweeps and was not passing them — it was ABSENT from the
+  # results table. In a table of fourteen verdicts an unmeasured repo looks
+  # exactly like one that was never a problem, which is the same failure the
+  # dead-gate work has been chasing all along: silence read as health.
+  #
+  # A dispatch here is also worth more than a re-run of CI. The shared workflow
+  # scopes `workflow_dispatch` to the FULL repository (there is no PR target and
+  # no previous pushed tip to diff against, so ADR-020 diff-scoping has nothing
+  # to scope to and the gates scan the entire tree). A push run on `development`
+  # typically covers a single commit's files; this is the only way to ask "what
+  # is the state of the whole app?" without opening a pull request. Expect it to
+  # be redder than a PR — that is the honest answer, not a regression.
+  workflow_dispatch:
+
+# Permission CEILING for the called quality pipeline, NOT a grant. Copied
+# verbatim from openconnector, where this exact block is live on `development`
+# with all ~30 quality jobs green — so it is a measured ceiling, not a guess.
+#
+# ⚠️ Most jobs in the callee declare NO permissions of their own (only
+# journeydoc-capture and features-extract do), which means they inherit THIS
+# ceiling exactly. Every entry below is load-bearing:
+#
+#   contents: write        journeydoc-capture and update-baseline `git push`
+#                          the regenerated screenshots / coverage baseline
+#   actions: write         journeydoc-capture re-dispatches downstream work
+#                          (a GITHUB_TOKEN push does not fire workflow_run)
+#   issues / pull-requests: write
+#                          the Quality Report comment — `github.rest.issues
+#                          .createComment`, which 403s under contents+packages
+#                          read alone (quality.yml notes this at its own step)
+#   packages: read         pulling org images for the Nextcloud test matrix
+#
+# ⚠️ Do NOT "tighten" any of these to `read`. GitHub statically validates the
+# called workflow's DECLARED job permissions against this grant — including for
+# jobs an `if:` will skip — so capping one makes the whole call fail to START:
+# zero jobs, no annotations, and a Code Quality run that is absent rather than
+# red. That is the same shape as the org-rename outage described below, which
+# also produced zero jobs and no red test.
+permissions:
+  contents: write
+  actions: write
+  issues: write
+  pull-requests: write
+  packages: read
 
 jobs:
   quality:
-    uses: Conduction/.github/.github/workflows/quality.yml@main
+    # ConductionNL, NOT Conduction. e2faa092 ("org rename") pointed all eight
+    # reusable-workflow calls in this repo at `Conduction/.github`, which
+    # Actions cannot resolve — so from 2026-06-01 every run of this workflow
+    # produced ZERO jobs and failed instantly, taking ESLint, PHPCS, PHPMD,
+    # PHPStan, the license/security scan and the 4-way PHPUnit matrix offline
+    # without a single red test to show for it.
+    uses: ConductionNL/.github/.github/workflows/quality.yml@main
     with:
       app-name: larpingapp
+      # No `node-version` override. This used to pin 22 to escape a shared
+      # default of 20, which could not run `@nextcloud/eslint-config@9` (it
+      # declares `engines.node: ^22.14 || ^24 || >=26` and imports
+      # `findPackageJSON` from `node:module`, first available in 22.14).
+      #
+      # The shared default is now 24, so this override no longer raises the
+      # floor — it LOWERS it. Node 22 bundles npm 10, which cannot install from
+      # this repo's npm 11 lockfile and does not implement the .npmrc
+      # release-age cooldown at all, so keeping the pin would leave both
+      # silently broken while looking configured.
       php-version: "8.3"
-      # appinfo/info.xml declares <nextcloud min-version="28" max-version="32"/>,
-      # so the PHPUnit matrix only targets the supported server branches.
       php-test-versions: '["8.3", "8.4"]'
-      nextcloud-test-refs: '["stable31", "stable32"]'
-      enable-psalm: false
+      # appinfo/info.xml declares <nextcloud min-version="32" max-version="34"/>,
+      # so the matrix only targets server branches this app can actually run on.
+      #
+      # stable31 is REMOVED, not "dropped for coverage". `additional-apps` below
+      # installs openregister, which declares min-version="32" and therefore
+      # cannot install on NC31 — `occ app:enable openregister` fails with only a
+      # ::warning::, so the run continued WITHOUT its data layer and every
+      # /apps/openregister/... call returned Nextcloud's HTML 404 page. A stable31
+      # leg was testing an impossible configuration, so its red said nothing.
+      #
+      # Order matters as well as membership: newman, playwright and
+      # journeydoc-capture all pin `fromJSON(inputs.nextcloud-test-refs)[0]`, so
+      # stable31 sitting FIRST meant those three jobs ran entirely on the version
+      # openregister cannot load.
+      #
+      # THE LIST IS THE WHOLE DECLARED RANGE. An earlier revision of this comment
+      # said "stable33 is deliberately NOT added: this change removes an
+      # impossible leg, it does not widen the matrix" — but the same change also
+      # dropped stable32, which was NOT impossible, it was the declared floor.
+      # appinfo/info.xml declares <nextcloud min-version="32" max-version="34"/>,
+      # so 32, 33 and 34 each get a leg; anything narrower advertises a range to
+      # the App Store that no job touches.
+      nextcloud-test-refs: '["stable34", "stable32", "stable33"]'
+      # Psalm was `false` and carried no reason. The shared workflow still
+      # creates a job literally named `PHP Quality (psalm)` for a disabled
+      # tool: it prints "Psalm is disabled — skipping." and concludes
+      # `success`. So the run showed a GREEN psalm cell over a tool that never
+      # executed — a check that did not run looking exactly like one that
+      # passed. (The uploaded `result-php-quality-psalm` artifact was 142 bytes.)
+      #
+      # The reason it was off was a broken config, not a broken codebase:
+      # psalm.xml pointed its stub at `vendor/nextcloud/ocp/OCP.bak/...`, a path
+      # only that one developer's container-symlinked vendor tree ever had, so
+      # Psalm aborted before analysing anything with "Cannot resolve stubfile
+      # path". Fixed in psalm.xml in this same change.
+      #
+      # Measured on a clean clone + `composer install`, php:8.3-cli (the CI
+      # PHP version): **No errors found**, 93.05% of the codebase inferred,
+      # 9.65s. Positive control, so this is not a green over an empty scope:
+      # planting one call to an undefined function in
+      # lib/AppInfo/Application.php::register() moved Psalm 0 -> 1 error,
+      # naming the plant at Application.php:84. Plant removed and re-verified
+      # clean.
+      enable-psalm: true
       # PHPStan runs clean at level 5 with an empty baseline after the legacy
       # quality cleanup (larpingapp-legacy-quality-cleanup), so it is now part
       # of the unified CI gate alongside phpcs + phpmd.
@@ -25,3 +160,127 @@ jobs:
       enable-frontend: true
       enable-eslint: true
       enable-phpunit: true
+      # larpingapp is a THIN CLIENT on OpenRegister — appinfo/info.xml has no
+      # database tables of its own and every entity (character, ability, skill,
+      # effect, item, event, …) is an OpenRegister object. Without openregister
+      # installed there is nothing for the SPA to render and nothing for the e2e
+      # fixtures to create, so the E2E job needs it on the CI instance.
+      #
+      # Pinned to `development`, NOT `main`: this app tracks `development`, and
+      # pinning the foundation to `main` is what makes a CI instance behave
+      # unlike any environment the app is actually developed against.
+      additional-apps: '[{"repo":"ConductionNL/openregister","app":"openregister","ref":"development"}]'
+
+      # ── E2E browser tests ────────────────────────────────────────────────
+      # Previously OFF, which made the shared workflow report
+      # "E2E Tests (Playwright)" as `skipped` — a conclusion that reads exactly
+      # like a job with nothing to complain about. The suite itself
+      # (10 spec files under tests/e2e/) has existed and been maintained for
+      # months; only the switch was missing.
+      #
+      # The one real blocker was seeding: `occ app:enable larpingapp` runs the
+      # register import from an IRepairStep, which has NO user session, so
+      # OpenRegister's RBAC denies it — and the repair step swallows the
+      # exception as a warning so `occ app:enable` still exits 0. Addressed by
+      # not relying on it: `ci-seed.sh` performs the import explicitly over the
+      # admin HTTP API (POST /apps/larpingapp/api/settings/reimport ->
+      # loadSettings(force: true), which also merges the register.d fragments)
+      # and then VERIFIES the register + all 11 schema slugs, so a bad provision
+      # is one loud step failure instead of a dozen misleading spec failures.
+      enable-playwright: true
+      # Double duty in the shared workflow: it is both the directory the
+      # "Validate Playwright tests exist" step counts *.spec.ts in, AND the
+      # FIRST place the run step looks for a config
+      # (`${playwright-test-path}/playwright.config.ts`), falling back to the
+      # repo root only if that file is absent. We ship
+      # tests/e2e/playwright.config.ts precisely so that lookup hits it: the run
+      # step passes no `--project`, so the ROOT config would also run
+      # `docs-capture` (re-shooting every documentation screenshot on every PR)
+      # and `visual` (whose committed PNG baselines are host-font/GPU specific
+      # and cannot byte-match a CI runner — its own README says so).
+      playwright-test-path: tests/e2e
+      # cwd for this step is the Nextcloud server root.
+      playwright-seed-command: 'bash apps/larpingapp/tests/e2e/ci-seed.sh'
+
+      # ── Integration tests ────────────────────────────────────────────────
+      # `enable-newman` defaults to FALSE and this caller never set it, so
+      # tests/integration/larpingapp.postman_collection.json had never executed
+      # in CI. It sits at the default `newman-collection-path`
+      # (tests/integration), which is both the directory the validator counts
+      # collections in and the directory the run step globs
+      # `*.postman_collection.json` in — flat, not recursively.
+      enable-newman: true
+
+      # ── Frontend Check legs ──────────────────────────────────────────────
+      # `frontend-checks` defaults to `[]`, and an empty list means the shared
+      # workflow emits NO "Frontend Check" job at all — so this repo's
+      # validators ran nowhere while the run still looked complete.
+      # `check:specs` is the aggregate (json-strict + manifest + register),
+      # listed as ONE leg rather than three because each leg is a fresh job
+      # with its own checkout + `npm ci`.
+      # Measured on this tree before enabling: BOTH legs FAIL —
+      # `check:specs` on `pages[23].type: "roadmap" not in known enum` (the same
+      # defect reproduces in 10 other fleet repos) and `test:l10n` on 19 missing
+      # locale entries. Real pre-existing defects; the gate is what makes them
+      # visible.
+      # `test:unit` is NOT listed: "Frontend Tests (unit)" already runs it.
+      #
+      # `format` (prettier --check) is listed because the shared workflow has NO
+      # prettier job of its own — `quality.yml` runs eslint and stylelint and
+      # mentions prettier ZERO times. This repo already carries
+      # `@nextcloud/prettier-config` and a `format` script, so without this leg
+      # `npm run format` never runs outside a developer's editor and the tree
+      # drifts straight back out of format between merges — the same inert-
+      # formatter failure mode that made the old `.prettierrc` worth deleting.
+      # Centralising the config never stopped drift; the gate does.
+      # Measured on this tree before enabling: PASSES, 53 of 60 tracked frontend
+      # files in scope (docs/ excluded via .prettierignore; js/ and vendor/ via
+      # .gitignore, which prettier 3 also reads).
+      frontend-checks: '["check:specs", "test:l10n", "format"]'
+
+      # ── Coverage ratchet ─────────────────────────────────────────────────
+      # `enable-coverage-guard` defaults to FALSE, which is why both
+      # "Coverage Baseline Protection" and "Coverage Baseline Check" have only
+      # ever reported `skipped`. It needs two inputs this repo did not have,
+      # both added in this commit: `scripts/coverage-guard.php` (byte-identical
+      # to openregister's) and `.coverage-baseline` = 67.68, this repo's own
+      # measured coverage (917 of 1355 statements) read from clover.xml in the
+      # `coverage-report` artifact of run 30911642749.
+      enable-coverage-guard: true
+
+      # ── Hydra mechanical gates ───────────────────────────────────────────
+      # `enable-hydra-gates` defaults to FALSE, so this tier has never executed
+      # here — the job reported `skipped`, which the Quality Report renders
+      # identically to a pass.
+      # `enable-axe` deliberately NOT set: a vanilla Nextcloud 34 already carries
+      # serious/critical violations on core's OWN routes that DOM scoping does
+      # not remove. Enabling axe is a separate decision.
+      enable-hydra-gates: true
+      # No `hydra-gates-ref` here on purpose. The shared workflow defaults it
+      # to @main, and this workflow is itself consumed at @main, so the two
+      # sides move together and a gate fix reaches this repo without a commit
+      # in this repo. A pin is a silent expiry date: 22 repos sat on v1.0.1 and
+      # 16 gates were dead fleet-wide while every one reported PASS (.github#159),
+      # and a default flipped at @main later reached those old runners and made
+      # them red on gates they had no subject matter for (.github#173).
+      # To hold this repo still for a specific reason, set the input explicitly
+      # and say why — it is still honoured. To roll back for everyone, revert on
+      # ConductionNL/.github main.
+      #
+      # THIRD CAUSE, and the one that is failing this repo RIGHT NOW
+      # (.github#177): quality.yml@main began executing three gate helpers BY
+      # NAME — check_spec_anchors.py, check_form_labels.py and
+      # check_license_triangle.py — which exist in NO tag before v1.5.0.
+      # Verified by DIRECTORY LISTING of each tag, not by per-file lookups:
+      # those answered "present" uniformly across v1.0.0..v1.5.0, and the
+      # uniformity across independent inputs was the tell that the instrument
+      # was wrong. So the Hydra Gates job here fails at "Verify the pinned gates
+      # package satisfies this workflow", before a single gate runs, with the
+      # workflow's own words: "This is NOT a code-quality finding about your
+      # repository." Removing the pin is the repair.
+      #
+      # Unpinning also picks up v1.5.1's push scoping (.github#179): on a push to
+      # `development`, `origin/development` IS `HEAD`, so the diff was empty by
+      # construction — <= v1.4.0 passed over it (permanently green) and v1.5.0
+      # refused with exit 99 (permanently red). The scope is now
+      # `github.event.before...HEAD`, what the push actually changed.

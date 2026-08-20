@@ -25,18 +25,41 @@ module.exports = {
 		environment: 'node',
 		globals: false,
 		include: ['tests/vitest/**/*.spec.{js,ts}'],
-		exclude: ['tests/e2e/**', 'tests/integration/**', 'src/**', 'node_modules/**'],
+		exclude: [
+			'tests/e2e/**',
+			'tests/integration/**',
+			'src/**',
+			'node_modules/**',
+		],
 	},
 	resolve: {
 		alias: [
 			{ find: '@', replacement: path.resolve(__dirname, 'src') },
 			{
 				find: /^@nextcloud\/router$/,
-				replacement: path.resolve(__dirname, 'tests/vitest/stubs/nextcloud-router.js'),
+				replacement: path.resolve(
+					__dirname,
+					'tests/vitest/stubs/nextcloud-router.js',
+				),
 			},
 			{
 				find: /^@nextcloud\/auth$/,
-				replacement: path.resolve(__dirname, 'tests/vitest/stubs/nextcloud-auth.js'),
+				replacement: path.resolve(
+					__dirname,
+					'tests/vitest/stubs/nextcloud-auth.js',
+				),
+			},
+			{
+				// `src/logger.js` (added because @nextcloud/eslint-config@9 enables
+				// `no-console` with no allowances) is imported by the settings store,
+				// and the real @nextcloud/logger touches `window` at module load via
+				// @nextcloud/auth → @nextcloud/browser-storage. Stubbing it keeps this
+				// suite's `environment: 'node'` intact.
+				find: /^@nextcloud\/logger$/,
+				replacement: path.resolve(
+					__dirname,
+					'tests/vitest/stubs/nextcloud-logger.js',
+				),
 			},
 		],
 	},

@@ -1,0 +1,8 @@
+{
+  "spec_slug": "event-checkin-roster",
+  "title": "Event day-of check-in / attendance roster",
+  "app": "larpingapp",
+  "repo": "https://codeberg.org/Conduction/larpingapp",
+  "depends_on": [],
+  "issue": null
+}

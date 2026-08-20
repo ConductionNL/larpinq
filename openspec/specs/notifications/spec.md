@@ -1,4 +1,11 @@
+---
+status: in-progress
+---
+
 # notifications Specification
+
+**OpenSpec changes**:
+- `character-player-picker` (in progress) — ownerUid is now materialised via x-openregister-calculations, fulfilling the "Structured owner uid prerequisite" requirement
 
 ## Purpose
 TBD - created by archiving change larpingapp-notifications. Update Purpose after archive.

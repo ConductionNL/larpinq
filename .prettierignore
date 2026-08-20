@@ -1,0 +1,9 @@
+# Build output, vendored trees and the separate Docusaurus site.
+js/
+dist/
+build/
+node_modules/
+vendor/
+coverage/
+docs/
+*.min.*

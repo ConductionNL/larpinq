@@ -4,166 +4,163 @@ declare(strict_types=1);
 
 namespace OCA\LarpingApp\Tests\Unit\Service;
 
-use OCA\LarpingApp\Service\SettingsService;
 use OCA\LarpingApp\Service\SettingsLoadService;
+use OCA\LarpingApp\Service\SettingsService;
 use OCP\IAppConfig;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
-class SettingsServiceTest extends TestCase
-{
-    private SettingsService $service;
-    private IAppConfig $appConfig;
-    private SettingsLoadService $settingsLoadService;
-    private LoggerInterface $logger;
+class SettingsServiceTest extends TestCase {
+	private SettingsService $service;
+	private IAppConfig $appConfig;
+	private SettingsLoadService $settingsLoadService;
+	private LoggerInterface $logger;
 
-    protected function setUp(): void
-    {
-        $this->appConfig = $this->createMock(IAppConfig::class);
-        $this->settingsLoadService = $this->createMock(SettingsLoadService::class);
-        $this->logger = $this->createMock(LoggerInterface::class);
+	protected function setUp(): void {
+		$this->appConfig = $this->createMock(IAppConfig::class);
+		$this->settingsLoadService = $this->createMock(SettingsLoadService::class);
+		$this->logger = $this->createMock(LoggerInterface::class);
 
-        $this->service = new SettingsService(
-            $this->appConfig,
-            $this->settingsLoadService,
-            $this->logger,
-        );
-    }
+		$this->service = new SettingsService(
+			$this->appConfig,
+			$this->settingsLoadService,
+			$this->logger,
+		);
+	}
 
-    public function testGetSettingsReturnsAllConfigKeys(): void
-    {
-        $this->appConfig
-            ->method('getValueString')
-            ->willReturn('test-value');
+	public function testGetSettingsReturnsAllConfigKeys(): void {
+		$this->appConfig
+			->method('getValueString')
+			->willReturn('test-value');
 
-        $result = $this->service->getSettings();
+		$result = $this->service->getSettings();
 
-        $this->assertArrayHasKey('register', $result);
-        $this->assertArrayHasKey('character_schema', $result);
-        $this->assertArrayHasKey('character_register', $result);
-        $this->assertArrayHasKey('character_source', $result);
-        $this->assertArrayHasKey('player_schema', $result);
-        $this->assertArrayHasKey('player_register', $result);
-        $this->assertArrayHasKey('player_source', $result);
-        $this->assertArrayHasKey('ability_schema', $result);
-        $this->assertArrayHasKey('skill_schema', $result);
-        $this->assertArrayHasKey('item_schema', $result);
-        $this->assertArrayHasKey('condition_schema', $result);
-        $this->assertArrayHasKey('effect_schema', $result);
-        $this->assertArrayHasKey('event_schema', $result);
-        $this->assertArrayHasKey('setting_schema', $result);
-        // CONFIG_KEYS now includes {slug}_register + {slug}_source for all 9 slugs
-        // plus the global 'register' key = 1 + 9*3 = 28.
-        $this->assertCount(28, $result);
-    }
+		$this->assertArrayHasKey('register', $result);
+		$this->assertArrayHasKey('character_schema', $result);
+		$this->assertArrayHasKey('character_register', $result);
+		$this->assertArrayHasKey('character_source', $result);
+		$this->assertArrayHasKey('player_schema', $result);
+		$this->assertArrayHasKey('player_register', $result);
+		$this->assertArrayHasKey('player_source', $result);
+		$this->assertArrayHasKey('ability_schema', $result);
+		$this->assertArrayHasKey('skill_schema', $result);
+		$this->assertArrayHasKey('item_schema', $result);
+		$this->assertArrayHasKey('condition_schema', $result);
+		$this->assertArrayHasKey('effect_schema', $result);
+		$this->assertArrayHasKey('event_schema', $result);
+		$this->assertArrayHasKey('setting_schema', $result);
+		$this->assertArrayHasKey('attendance_schema', $result);
+		// CONFIG_KEYS now includes {slug}_schema + {slug}_register + {slug}_source
+		// for all 10 slugs (9 original + attendance) plus the global 'register'
+		// key = 1 + 10*3 = 31.
+		$this->assertCount(31, $result);
+	}
 
-    public function testGetSettingsReturnsEmptyStringsAsDefaults(): void
-    {
-        $this->appConfig
-            ->method('getValueString')
-            ->willReturnCallback(function (string $app, string $key, string $default) {
-                return $default;
-            });
+	public function testGetSettingsReturnsEmptyStringsAsDefaults(): void {
+		$this->appConfig
+			->method('getValueString')
+			->willReturnCallback(function (string $app, string $key, string $default) {
+				return $default;
+			});
 
-        $result = $this->service->getSettings();
+		$result = $this->service->getSettings();
 
-        foreach ($result as $value) {
-            $this->assertSame('', $value);
-        }
-    }
+		foreach ($result as $value) {
+			$this->assertSame('', $value);
+		}
+	}
 
-    public function testUpdateSettingsOnlyUpdatesKnownKeys(): void
-    {
-        $this->appConfig
-            ->expects($this->exactly(2))
-            ->method('setValueString');
+	public function testUpdateSettingsOnlyUpdatesKnownKeys(): void {
+		$this->appConfig
+			->expects($this->exactly(2))
+			->method('setValueString');
 
-        $this->appConfig
-            ->method('getValueString')
-            ->willReturn('');
+		$this->appConfig
+			->method('getValueString')
+			->willReturn('');
 
-        $this->service->updateSettings([
-            'register' => 'reg-1',
-            'character_schema' => 'schema-1',
-            'unknown_key' => 'should-be-ignored',
-        ]);
-    }
+		$this->service->updateSettings([
+			'register' => 'reg-1',
+			'character_schema' => 'schema-1',
+			'unknown_key' => 'should-be-ignored',
+		]);
+	}
 
-    public function testUpdateSettingsLogsUpdate(): void
-    {
-        $this->appConfig->method('getValueString')->willReturn('');
+	public function testUpdateSettingsLogsUpdate(): void {
+		$this->appConfig->method('getValueString')->willReturn('');
 
-        $this->logger
-            ->expects($this->once())
-            ->method('info')
-            ->with(
-                'LarpingApp settings updated',
-                $this->callback(function ($context) {
-                    return isset($context['keys']);
-                })
-            );
+		$this->logger
+			->expects($this->once())
+			->method('info')
+			->with(
+				'LarpingApp settings updated',
+				$this->callback(function ($context) {
+					return isset($context['keys']);
+				})
+			);
 
-        $this->service->updateSettings(['register' => 'reg-1']);
-    }
+		$this->service->updateSettings(['register' => 'reg-1']);
+	}
 
-    public function testUpdateSettingsReturnsUpdatedValues(): void
-    {
-        $this->appConfig
-            ->method('getValueString')
-            ->willReturn('updated-value');
+	public function testUpdateSettingsReturnsUpdatedValues(): void {
+		$this->appConfig
+			->method('getValueString')
+			->willReturn('updated-value');
 
-        $result = $this->service->updateSettings(['register' => 'reg-1']);
+		$result = $this->service->updateSettings(['register' => 'reg-1']);
 
-        $this->assertIsArray($result);
-        $this->assertCount(28, $result);
-    }
+		$this->assertIsArray($result);
+		$this->assertCount(31, $result);
+	}
 
-    public function testLoadSettingsDelegatesToLoadService(): void
-    {
-        $this->settingsLoadService
-            ->expects($this->once())
-            ->method('loadSettings')
-            ->with(false)
-            ->willReturn(['status' => 'ok']);
+	public function testLoadSettingsDelegatesToLoadService(): void {
+		$this->settingsLoadService
+			->expects($this->once())
+			->method('loadSettings')
+			->willReturn(['status' => 'ok']);
 
-        $result = $this->service->loadSettings();
+		$this->settingsLoadService
+			->expects($this->never())
+			->method('reloadSettings');
 
-        $this->assertSame(['status' => 'ok'], $result);
-    }
+		$result = $this->service->loadSettings();
 
-    public function testLoadSettingsForce(): void
-    {
-        $this->settingsLoadService
-            ->expects($this->once())
-            ->method('loadSettings')
-            ->with(true)
-            ->willReturn(['status' => 'reimported']);
+		$this->assertSame(['status' => 'ok'], $result);
+	}
 
-        $result = $this->service->loadSettings(true);
+	public function testReloadSettingsDelegatesToLoadService(): void {
+		$this->settingsLoadService
+			->expects($this->once())
+			->method('reloadSettings')
+			->willReturn(['status' => 'reimported']);
 
-        $this->assertSame(['status' => 'reimported'], $result);
-    }
+		$this->settingsLoadService
+			->expects($this->never())
+			->method('loadSettings');
 
-    public function testGetConfigValueReturnsValue(): void
-    {
-        $this->appConfig
-            ->expects($this->once())
-            ->method('getValueString')
-            ->with('larpingapp', 'register', '')
-            ->willReturn('my-register-id');
+		$result = $this->service->reloadSettings();
 
-        $result = $this->service->getConfigValue('register');
+		$this->assertSame(['status' => 'reimported'], $result);
+	}
 
-        $this->assertSame('my-register-id', $result);
-    }
+	public function testGetConfigValueReturnsValue(): void {
+		$this->appConfig
+			->expects($this->once())
+			->method('getValueString')
+			->with('larpingapp', 'register', '')
+			->willReturn('my-register-id');
 
-    public function testSetConfigValueSetsValue(): void
-    {
-        $this->appConfig
-            ->expects($this->once())
-            ->method('setValueString')
-            ->with('larpingapp', 'register', 'new-id');
+		$result = $this->service->getConfigValue('register');
 
-        $this->service->setConfigValue('register', 'new-id');
-    }
+		$this->assertSame('my-register-id', $result);
+	}
+
+	public function testSetConfigValueSetsValue(): void {
+		$this->appConfig
+			->expects($this->once())
+			->method('setValueString')
+			->with('larpingapp', 'register', 'new-id');
+
+		$this->service->setConfigValue('register', 'new-id');
+	}
 }

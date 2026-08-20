@@ -1,6 +1,6 @@
 /*
  * SPDX-FileCopyrightText: 2026 Larping Contributors
- * SPDX-License-Identifier: AGPL-3.0-or-later
+ * SPDX-License-Identifier: EUPL-1.2
  *
  * DEEP CRUD-with-persistence workflows for larpingapp — Character and Skill.
  *
@@ -52,6 +52,7 @@
  */
 
 import { test, expect, type APIRequestContext, type Page } from '@playwright/test'
+import { navTo as sharedNavTo, dismissSupportDialog } from '../_nav'
 import {
 	BASE,
 	RUN_ID,
@@ -63,6 +64,7 @@ import {
 	updateObject,
 	deleteObject,
 	cleanupLedger,
+	resolveSchemaIds,
 } from './fixtures'
 
 // Documented blocker reasons; each is annotated onto its test.fixme below via
@@ -70,8 +72,41 @@ import {
 let api: APIRequestContext
 const ledger = new FixtureLedger()
 
+/**
+ * A real player object id, for `character.ocName`.
+ *
+ * `ocName` is NOT a display name — the live `character` schema declares it
+ * `{"type":"string","format":"uuid","$ref":19,"x-allow-create":true}`, i.e. a
+ * RELATION to a `player` object ("The player who plays this character"). It is
+ * also `required`. Passing the character's own name string yields
+ * HTTP 400 "Property 'ocName' should match format 'uuid'".
+ * The schema grew this relation and the specs were never updated — invisible
+ * until now, because this suite could not run at all.
+ */
+let playerRef: string
+
+async function ensurePlayerRef(): Promise<string> {
+	if (!playerRef) {
+		playerRef = await createObject(api, 'player', {
+			name: fixtureName('crud-owner-player'),
+		})
+		ledger.track('player', playerRef)
+	}
+	return playerRef
+}
+
 test.beforeAll(async () => {
 	api = await newApi()
+	// MUST resolve schema ids from the app's own settings before any create.
+	// The bootstrap literals in fixtures.ts are a fallback, not truth: schema
+	// slugs collide across the fleet, so a hardcoded numeric id silently binds
+	// to ANOTHER app's schema. Measured on this instance — id 21 ("skill")
+	// requires `title`, and id 22 ("item") requires
+	// title/interactionType/qtiBody/maxScore/tenant_id, i.e. scholiq's QTI
+	// item — so every create here failed with HTTP 400 "required property
+	// (title) is missing". `resolveSchemaIds` already existed for exactly this
+	// reason; this spec simply never called it.
+	await resolveSchemaIds(api)
 })
 
 test.afterAll(async () => {
@@ -87,22 +122,29 @@ test.afterAll(async () => {
 async function openApp(page: Page): Promise<void> {
 	if (!page.url().includes('/apps/larpingapp')) {
 		await page.goto(`${BASE}/`)
-		await page.waitForLoadState('networkidle').catch(() => {})
+		// ADR-074 rule 4: `networkidle` never settles on Nextcloud.
+		await page
+			.locator('#app-content, .app-content, #content')
+			.first()
+			.waitFor({ state: 'visible', timeout: 30_000 })
+			.catch(() => {})
 	}
 	await expect(page.locator('.app-content')).toBeVisible({ timeout: 15_000 })
-	const supportClose = page.locator('[role="dialog"] button[aria-label="Close"]').first()
-	if (await supportClose.isVisible({ timeout: 1500 }).catch(() => false)) {
-		await supportClose.click().catch(() => {})
-	}
+	// Shared helper — see `../_nav`. The local copy matched only
+	// `aria-label="Close"` and never dismissed the onboarding tour.
+	await dismissSupportDialog(page)
 }
 
+/**
+ * Reach `slug`'s index page through the real sidebar.
+ *
+ * Delegates to the shared helper in `tests/e2e/_nav.ts`. The previous local
+ * copy used `.app-navigation a[href=…]`, which matches nothing (entries are
+ * NcAppNavigationItem `<li>`s addressed by `data-testid`) and never expanded
+ * the collapsible group — see `_nav.ts` for the four verified traps.
+ */
 async function navTo(page: Page, slug: string): Promise<void> {
-	await openApp(page)
-	const link = page.locator(`.app-navigation a[href="${BASE}/#/${slug}"]`).first()
-	await expect(link).toBeVisible({ timeout: 10_000 })
-	await link.click()
-	await expect(page).toHaveURL(new RegExp(`#/${slug}(\\b|/|$|\\?)`))
-	await expect(page.locator('.app-content')).toBeVisible()
+	await sharedNavTo(page, slug)
 }
 
 /**
@@ -116,21 +158,35 @@ async function navTo(page: Page, slug: string): Promise<void> {
  * the list UI without assuming it lands on the first page (which only held on a
  * near-empty register).
  */
-async function expectRowInList(page: Page, text: string, maxPages = 12): Promise<void> {
+async function expectRowInList(
+	page: Page,
+	text: string,
+	maxPages = 12,
+): Promise<void> {
 	const target = page.locator('.app-content').getByText(text).first()
 	for (let i = 0; i < maxPages; i++) {
-		if (await target.isVisible({ timeout: i === 0 ? 8_000 : 2_000 }).catch(() => false)) {
+		if (
+			await target
+				.isVisible({ timeout: i === 0 ? 8_000 : 2_000 })
+				.catch(() => false)
+		) {
 			await expect(target).toBeVisible()
 			return
 		}
-		const next = page.locator('.app-content').getByRole('button', { name: /^\s*Next\s*$/i }).first()
+		const next = page
+			.locator('.app-content')
+			.getByRole('button', { name: /^\s*Next\s*$/i })
+			.first()
 		const canPage = await next.isEnabled({ timeout: 1_000 }).catch(() => false)
 		if (!canPage) break
 		await next.click().catch(() => {})
 		await page.waitForTimeout(800)
 	}
 	// Final assertion surfaces a clear failure if the row never appeared.
-	await expect(target, `Created row "${text}" must surface in the list (paged ${maxPages})`).toBeVisible({ timeout: 5_000 })
+	await expect(
+		target,
+		`Created row "${text}" must surface in the list (paged ${maxPages})`,
+	).toBeVisible({ timeout: 5_000 })
 }
 
 // ===========================================================================
@@ -140,15 +196,18 @@ async function expectRowInList(page: Page, text: string, maxPages = 12): Promise
 test.describe('character — CRUD persistence (store round-trip)', () => {
 	test('create → read-back persists the exact field values', async () => {
 		const name = fixtureName('crud-character')
-		const id = ledger.track('character', await createObject(api, 'character', {
-			name,
-			ocName: name,
-			type: 'player',
-			gold: 7,
-			silver: 4,
-			copper: 1,
-			background: 'Born under a blood moon',
-		}))
+		const id = ledger.track(
+			'character',
+			await createObject(api, 'character', {
+				name,
+				ocName: await ensurePlayerRef(),
+				type: 'player',
+				gold: 7,
+				silver: 4,
+				copper: 1,
+				background: 'Born under a blood moon',
+			}),
+		)
 
 		const read = await getObject(api, 'character', id)
 		expect(read, 'created character must be readable back').not.toBeNull()
@@ -161,12 +220,23 @@ test.describe('character — CRUD persistence (store round-trip)', () => {
 
 	test('edit → read-back persists the updated values', async () => {
 		const name = fixtureName('crud-character-edit')
-		const id = ledger.track('character', await createObject(api, 'character', {
-			name, ocName: name, type: 'player', gold: 1, background: 'Apprentice',
-		}))
+		const id = ledger.track(
+			'character',
+			await createObject(api, 'character', {
+				name,
+				ocName: await ensurePlayerRef(),
+				type: 'player',
+				gold: 1,
+				background: 'Apprentice',
+			}),
+		)
 
 		await updateObject(api, 'character', id, {
-			name, ocName: name, type: 'npc', gold: 99, background: 'Risen to power',
+			name,
+			ocName: await ensurePlayerRef(),
+			type: 'npc',
+			gold: 99,
+			background: 'Risen to power',
 		})
 
 		const read = await getObject(api, 'character', id)
@@ -178,7 +248,11 @@ test.describe('character — CRUD persistence (store round-trip)', () => {
 
 	test('delete → read-back returns gone (404/null)', async () => {
 		const name = fixtureName('crud-character-del')
-		const id = await createObject(api, 'character', { name, ocName: name, type: 'player' })
+		const id = await createObject(api, 'character', {
+			name,
+			ocName: await ensurePlayerRef(),
+			type: 'player',
+		})
 
 		// Sanity: present before delete.
 		expect(await getObject(api, 'character', id)).not.toBeNull()
@@ -196,9 +270,18 @@ test.describe('character — CRUD persistence (store round-trip)', () => {
 	// FIXED (2026-06-10, wave-3): OR-core dedup + store now registers the
 	// per-type register/schema (config.<type>_register), so the Characters list
 	// fires its object fetch and the seeded row surfaces.
-	test('UI: created character row appears in the Characters list', async ({ page }) => {
+	test('UI: created character row appears in the Characters list', async ({
+		page,
+	}) => {
 		const name = fixtureName('ui-character')
-		ledger.track('character', await createObject(api, 'character', { name, ocName: name, type: 'player' }))
+		ledger.track(
+			'character',
+			await createObject(api, 'character', {
+				name,
+				ocName: await ensurePlayerRef(),
+				type: 'player',
+			}),
+		)
 		await navTo(page, 'characters')
 		await expectRowInList(page, name)
 	})
@@ -207,24 +290,42 @@ test.describe('character — CRUD persistence (store round-trip)', () => {
 	// FIXED (2026-06-10, wave-3): OR-core dedup resolves the larpingapp slug, so
 	// the slug-based detail fetch returns 200 (was 500) and the persisted object
 	// data renders on the detail page.
-	test('UI: character detail renders the persisted currency values', async ({ page }) => {
+	test('UI: character detail renders the persisted currency values', async ({
+		page,
+	}) => {
 		const name = fixtureName('ui-character-detail')
-		const id = ledger.track('character', await createObject(api, 'character', {
-			name, ocName: name, type: 'player', gold: 42,
-		}))
+		const id = ledger.track(
+			'character',
+			await createObject(api, 'character', {
+				name,
+				ocName: await ensurePlayerRef(),
+				type: 'player',
+				gold: 42,
+			}),
+		)
 		// Hash-mode deep link (src/main.js — fleet #133): the detail route is
 		// addressed via the URL hash, served from the SPA root and resolved
 		// client-side.
 		await page.goto(`${BASE}/#/characters/${id}`)
-		await page.waitForLoadState('networkidle').catch(() => {})
-		await expect(page.locator('.app-content').getByText('42').first()).toBeVisible({ timeout: 10_000 })
+		// ADR-074 rule 4: `networkidle` never settles on Nextcloud.
+		await page
+			.locator('#app-content, .app-content, #content')
+			.first()
+			.waitFor({ state: 'visible', timeout: 30_000 })
+			.catch(() => {})
+		await expect(
+			page.locator('.app-content').getByText('42').first(),
+		).toBeVisible({ timeout: 10_000 })
 	})
 
 	test('UI shell: Characters list view + Add control render', async ({ page }) => {
 		await navTo(page, 'characters')
 		await expect(page.locator('.app-content')).toBeVisible()
 		await expect(
-			page.locator('.app-content button').filter({ hasText: /Add Character/i }).first(),
+			page
+				.locator('.app-content button')
+				.filter({ hasText: /Add Character/i })
+				.first(),
 		).toBeVisible({ timeout: 10_000 })
 	})
 })
@@ -236,10 +337,13 @@ test.describe('character — CRUD persistence (store round-trip)', () => {
 test.describe('skill — CRUD persistence (store round-trip)', () => {
 	test('create → read-back persists name + description', async () => {
 		const name = fixtureName('crud-skill')
-		const id = ledger.track('skill', await createObject(api, 'skill', {
-			name,
-			description: 'Cleave through two foes',
-		}))
+		const id = ledger.track(
+			'skill',
+			await createObject(api, 'skill', {
+				name,
+				description: 'Cleave through two foes',
+			}),
+		)
 
 		const read = await getObject(api, 'skill', id)
 		expect(read, 'created skill must be readable back').not.toBeNull()
@@ -250,17 +354,26 @@ test.describe('skill — CRUD persistence (store round-trip)', () => {
 	test('edit → read-back persists the updated description and effect link', async () => {
 		const name = fixtureName('crud-skill-edit')
 		// An effect to link, so we can assert relation persistence too.
-		const effectId = ledger.track('effect', await createObject(api, 'effect', {
-			name: fixtureName('crud-skill-edit-effect'),
-			modifier: 2,
-			modification: 'positive',
-		}))
-		const id = ledger.track('skill', await createObject(api, 'skill', {
-			name, description: 'Basic strike',
-		}))
+		const effectId = ledger.track(
+			'effect',
+			await createObject(api, 'effect', {
+				name: fixtureName('crud-skill-edit-effect'),
+				modifier: 2,
+				modification: 'positive',
+			}),
+		)
+		const id = ledger.track(
+			'skill',
+			await createObject(api, 'skill', {
+				name,
+				description: 'Basic strike',
+			}),
+		)
 
 		await updateObject(api, 'skill', id, {
-			name, description: 'Master strike', effects: [effectId],
+			name,
+			description: 'Master strike',
+			effects: [effectId],
 		})
 
 		const read = await getObject(api, 'skill', id)
@@ -271,14 +384,20 @@ test.describe('skill — CRUD persistence (store round-trip)', () => {
 
 	test('delete → read-back returns gone (404/null)', async () => {
 		const name = fixtureName('crud-skill-del')
-		const id = await createObject(api, 'skill', { name, description: 'Temporary' })
+		const id = await createObject(api, 'skill', {
+			name,
+			description: 'Temporary',
+		})
 
 		expect(await getObject(api, 'skill', id)).not.toBeNull()
 
 		const deleted = await deleteObject(api, 'skill', id)
 		expect(deleted, 'delete must succeed').toBe(true)
 
-		expect(await getObject(api, 'skill', id), 'deleted skill must be gone').toBeNull()
+		expect(
+			await getObject(api, 'skill', id),
+			'deleted skill must be gone',
+		).toBeNull()
 	})
 
 	// @e2e openspec/specs/skill-management/spec.md#create-a-skill
@@ -287,7 +406,10 @@ test.describe('skill — CRUD persistence (store round-trip)', () => {
 	// surfaces.
 	test('UI: created skill row appears in the Skills list', async ({ page }) => {
 		const name = fixtureName('ui-skill')
-		ledger.track('skill', await createObject(api, 'skill', { name, description: 'UI skill' }))
+		ledger.track(
+			'skill',
+			await createObject(api, 'skill', { name, description: 'UI skill' }),
+		)
 		await navTo(page, 'skills')
 		await expectRowInList(page, name)
 	})
@@ -296,12 +418,17 @@ test.describe('skill — CRUD persistence (store round-trip)', () => {
 		await navTo(page, 'skills')
 		await expect(page.locator('.app-content')).toBeVisible()
 		await expect(
-			page.locator('.app-content button').filter({ hasText: /Add Skill/i }).first(),
+			page
+				.locator('.app-content button')
+				.filter({ hasText: /Add Skill/i })
+				.first(),
 		).toBeVisible({ timeout: 10_000 })
 	})
 })
 
 test.afterAll(() => {
 	// eslint-disable-next-line no-console
-	console.log(`[crud-persistence] RUN_ID=${RUN_ID} — fixtures cleaned up via ledger.`)
+	console.log(
+		`[crud-persistence] RUN_ID=${RUN_ID} — fixtures cleaned up via ledger.`,
+	)
 })

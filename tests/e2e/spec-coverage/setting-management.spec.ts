@@ -13,7 +13,7 @@
  * deferred (custom app-nav + useObjectStore plumbing; nc-vue follow-up). This
  * file proves the Settings index page renders its own schema surface.
  *
- * @spec openspec/changes/setting-management/specs/setting-management/spec.md
+ * @spec openspec/specs/setting-management/spec.md
  */
 
 import { test, expect } from '@playwright/test'
@@ -21,18 +21,35 @@ import { test, expect } from '@playwright/test'
 const BASE = '/apps/larpingapp'
 
 test.describe('setting-management', () => {
-	test('Settings (worlds) index page renders its own surface', async ({ page }) => {
+	test('Settings (worlds) index page renders its own surface', async ({
+		page,
+	}) => {
 		const pageErrors: string[] = []
 		page.on('pageerror', (e) => pageErrors.push(e.message))
 
-		await page.goto(`${BASE}/#/settings`)
-		await page.waitForLoadState('networkidle')
+		// Never `networkidle` — Nextcloud's notification poll means that state
+		// is never reached, so the wait always burns its full budget (ADR-074
+		// rule 4). Wait for the rendered page surface instead.
+		await page.goto(`${BASE}/#/settings`, { waitUntil: 'domcontentloaded' })
+		await expect(page.locator('.app-content')).toBeVisible({ timeout: 30_000 })
 
-		// The index page should expose a "Setting"/"Settings" affordance. We
-		// assert the page shell, not data rows (data fetch needs a seeded
-		// register a bare env does not have).
-		const hasSurface = await page.getByText(/Setting/i).first().isVisible().catch(() => false)
-		expect(hasSurface).toBeTruthy()
+		// Assert a page-SPECIFIC affordance inside the content area. The old
+		// `getByText(/Setting/i)` was tautological: it matched the sidebar's
+		// own "Settings" nav label, so it passed on every route including the
+		// dashboard fallback.
+		await expect(
+			page
+				.locator('.app-content button')
+				.filter({ hasText: /Add Setting|New Setting/i })
+				.first()
+				.or(
+					page
+						.locator('.app-content')
+						.getByText(/No items found|Showing \d+ of \d+/i)
+						.first(),
+				),
+			'Settings (worlds) index must render its create action or an explicit empty state',
+		).toBeVisible({ timeout: 15_000 })
 
 		expect(pageErrors).toEqual([])
 	})

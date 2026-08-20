@@ -12,15 +12,23 @@
  action: "user-settings" → opens NcAppSettingsDialog via CnAppRoot's
  cnOpenUserSettings inject.
 
- @spec openspec/changes/manifest-v2-vue-scaffold/specs/manifest-v2-vue-scaffold/spec.md
+ The previous anchor here pointed at
+ `openspec/changes/manifest-v2-vue-scaffold/...`, a change that has never
+ existed in this repository — not under `openspec/changes/`, not under
+ `openspec/changes/archive/`, and not as a canonical spec. It was the repo's
+ only dangling @spec target. The requirement this file actually satisfies is
+ "CnAppRoot SHALL be the boot entry point" in the Tier-4 graduation spec.
+
+ @spec openspec/changes/larpingapp-manifest-tier-4/specs/larpingapp-manifest-tier-4/spec.md
 -->
 <template>
 	<CnAppRoot
+		:aiCompanion="true"
 		:manifest="manifest"
 		:registry="registry"
-		:custom-components="customComponents"
-		:page-types="pageTypes"
-		app-id="larpingapp"
+		:customComponents="customComponents"
+		:pageTypes="pageTypes"
+		appId="larpingapp"
 		:translate="translateForApp"
 		:permissions="permissions">
 		<template #sidebar>
@@ -28,21 +36,21 @@
 				v-if="objectSidebarState.active"
 				:title="objectSidebarState.title"
 				:subtitle="objectSidebarState.subtitle"
-				:object-type="objectSidebarState.objectType"
-				:object-id="objectSidebarState.objectId"
+				:objectType="objectSidebarState.objectType"
+				:objectId="objectSidebarState.objectId"
 				:register="objectSidebarState.register"
 				:schema="objectSidebarState.schema"
-				:hidden-tabs="objectSidebarState.hiddenTabs"
+				:hiddenTabs="objectSidebarState.hiddenTabs"
 				:tabs="objectSidebarState.tabs"
 				:open="objectSidebarState.open"
 				@update:open="objectSidebarState.open = $event" />
 		</template>
 		<template #user-settings>
-			<NcAppSettingsSection
-				id="general"
-				:name="t('larpingapp', 'General')">
+			<NcAppSettingsSection id="general" :name="t('larpingapp', 'General')">
 				<p class="app-root__settings-hint">
-					{{ t('larpingapp', 'Configure your Larping app settings here.') }}
+					{{
+						t('larpingapp', 'Configure your Larping app settings here.')
+					}}
 				</p>
 			</NcAppSettingsSection>
 		</template>
@@ -50,29 +58,33 @@
 </template>
 
 <script>
-import Vue from 'vue'
+// Multi-tenancy composable (multi-tenancy-context, ADR-025).
+//
+// This was previously pulled in with a `require('@conduction/nextcloud-vue')`
+// inside a try/catch, to tolerate a nc-vue release that pre-dated the export
+// ("Pre-release fallback" scenario in larpingapp-adopt-or-abstractions/spec.md).
+// Under Vue 3 that indirection is actively harmful: `require()` resolves the
+// package's CJS build while the line above resolves its ESM build, so the app
+// would hold TWO module instances of the library. provide/inject matches on
+// injection-key IDENTITY, and `CnAppRoot` calls `provideTenantContext()` from
+// the ESM copy — a `useTenantContext` read out of the CJS copy would look up a
+// different key object, silently return the no-op fallback, and the tenant
+// watcher would never fire. Green, and dead.
+//
+// The dependency is pinned exactly (`@conduction/nextcloud-vue@2.1.0-vue3.13`),
+// which exports the composable, so a static import is correct and a version
+// without it now fails loudly at BUILD time instead of degrading at runtime.
+// The spec's "absence MUST NOT crash" contract still holds: the composable
+// itself returns a no-op fallback when no provider is mounted.
+import {
+	CnAppRoot,
+	CnObjectSidebar,
+	useTenantContext,
+} from '@conduction/nextcloud-vue'
 import { translate as ncT } from '@nextcloud/l10n'
 import { NcAppSettingsSection } from '@nextcloud/vue'
-import { CnAppRoot, CnObjectSidebar } from '@conduction/nextcloud-vue'
-import { useObjectStore, setObjectStoreTenantUuid } from './store/modules/object.js'
-
-// Multi-tenancy composable (multi-tenancy-context, ADR-025).
-// Imported defensively via a try/catch in setup() so that running against
-// a nc-vue version that pre-dates the export ("Pre-release fallback"
-// scenario in larpingapp-adopt-or-abstractions/spec.md) renders the app as
-// single-tenant rather than crashing.
-let _useTenantContext = null
-try {
-	// eslint-disable-next-line global-require
-	const mod = require('@conduction/nextcloud-vue')
-	if (typeof mod.useTenantContext === 'function') {
-		_useTenantContext = mod.useTenantContext
-	}
-} catch (e) {
-	// nc-vue not resolvable at module-eval — extremely unlikely; fallback
-	// keeps the app single-tenant.
-	_useTenantContext = null
-}
+import { reactive } from 'vue'
+import { setObjectStoreTenantUuid, useObjectStore } from './store/modules/object.js'
 
 export default {
 	name: 'App',
@@ -90,7 +102,9 @@ export default {
 	provide() {
 		return {
 			// Channel for CnDetailPage → host-rendered CnObjectSidebar.
-			// Vue.observable makes the plain object reactive for Vue 2.
+			// `reactive()` (Vue 3's replacement for `Vue.observable()`) makes
+			// the plain object reactive, so descendants that mutate it drive
+			// this component's `#sidebar` slot.
 			objectSidebarState: this.objectSidebarState,
 		}
 	},
@@ -105,6 +119,7 @@ export default {
 			type: Object,
 			required: true,
 		},
+
 		/**
 		 * v2 kind-tagged component registry (ADR-036). Passed to CnAppRoot's
 		 * `registry` prop. Each entry: `{ kind, component, ...kindMetadata }`
@@ -118,6 +133,7 @@ export default {
 			type: Object,
 			default: () => ({}),
 		},
+
 		/**
 		 * Page-type registry — `{ index, detail, dashboard, settings, ... }`.
 		 * Wired through to descendant `CnPageRenderer` instances via
@@ -152,22 +168,22 @@ export default {
 	 * so this code is safe even if `useTenantContext` is missing — the
 	 * watcher just never fires.
 	 *
+	 * @spec openspec/changes/larpingapp-adopt-or-abstractions/specs/larpingapp-adopt-or-abstractions/spec.md
+	 *
 	 * @return {object} Setup return — none needed externally.
 	 */
 	setup() {
-		if (typeof _useTenantContext !== 'function') {
-			// Pre-release fallback (single-tenant): the spec mandates
-			// absence MUST NOT crash. Nothing to wire.
-			return {}
-		}
-		const { activeOrganisationUuid } = _useTenantContext()
+		// `useTenantContext()` returns a no-op fallback (a null-valued ref)
+		// when no provider is mounted, so this stays safe on a single-tenant
+		// deployment — the watcher simply never fires.
+		const { activeOrganisationUuid } = useTenantContext()
 
 		return { cnActiveOrganisationUuid: activeOrganisationUuid }
 	},
 
 	data() {
 		return {
-			objectSidebarState: Vue.observable({
+			objectSidebarState: reactive({
 				active: false,
 				open: true,
 				objectType: '',
@@ -179,6 +195,7 @@ export default {
 				hiddenTabs: [],
 				tabs: undefined,
 			}),
+
 			// Tracks the last tenant UUID we wired into the object store so
 			// the watcher (which fires immediate: true) can no-op on the
 			// initial undefined→null transition.
@@ -194,6 +211,7 @@ export default {
 		permissions() {
 			return window.OC?.currentUser?.permissions ?? []
 		},
+
 		/**
 		 * Flat name→component map derived from the v2 `registry` prop.
 		 *
@@ -201,8 +219,9 @@ export default {
 		 * `headerComponent`, and `page.slots.*` keys against the legacy
 		 * `customComponents` inject, not against `cnRegistry`. Until the library
 		 * unifies both resolution paths, we derive a flat shim here so that
-		 * slot-override lookups (e.g. `actionsComponent: "DashboardActions"`)
-		 * continue to work when the registry uses the v2 kind-tagged format.
+		 * slot-override lookups (e.g. a detail page's `slots.photos-leaf:
+		 * "ObjectDetail"`) continue to work when the registry uses the v2
+		 * kind-tagged format.
 		 *
 		 * Entries that carry a `component` field are included; pure-metadata
 		 * entries without a `component` field are skipped.
@@ -242,8 +261,17 @@ export default {
 		 */
 		cnActiveOrganisationUuid: {
 			immediate: true,
+			/**
+			 * Apply one tenant switch. Carries its own `@spec` because gate-16
+			 * parses `handler()` as a method in its own right — the tag on the
+			 * enclosing watcher entry above does not reach it.
+			 *
+			 * @param {string|undefined} uuid The newly active organisation UUID.
+			 * @spec openspec/changes/larpingapp-adopt-or-abstractions/specs/larpingapp-adopt-or-abstractions/spec.md
+			 */
 			handler(uuid) {
-				const next = (typeof uuid === 'string' && uuid.length > 0) ? uuid : null
+				const next =
+					typeof uuid === 'string' && uuid.length > 0 ? uuid : null
 				if (this.tenantSyncedUuid === next) {
 					return
 				}
@@ -256,10 +284,16 @@ export default {
 				// 2. Clear caches via the store action.
 				try {
 					const store = useObjectStore()
-					if (store && typeof store.setActiveTenantOrganisation === 'function') {
+					if (
+						store
+						&& typeof store.setActiveTenantOrganisation === 'function'
+					) {
 						store.setActiveTenantOrganisation(next)
 					}
-				} catch (e) {
+				} catch {
+					// Optional catch binding: NC's config sets
+					// `caughtErrors: 'all'`, so a named-but-unused error
+					// parameter reports as an unused variable.
 					// Pinia not active yet on first immediate fire — safe
 					// to ignore; subsequent fires will reach the store.
 				}
@@ -267,10 +301,17 @@ export default {
 				// 3. Detail view → navigate back to parent index on switch.
 				// Skip the initial mount (previous === undefined) so a deep
 				// link into a detail page doesn't redirect on first paint.
-				if (previous !== undefined && this.$route && /:|\//.test(this.$route.path)) {
+				if (
+					previous !== undefined
+					&& this.$route
+					&& /:|\//.test(this.$route.path)
+				) {
 					const params = this.$route.params || {}
 					const hasIdParam = Object.keys(params).some(
-						(k) => params[k] !== undefined && params[k] !== null && params[k] !== '',
+						(k) =>
+							params[k] !== undefined
+							&& params[k] !== null
+							&& params[k] !== '',
 					)
 					if (hasIdParam) {
 						// Find the parent index route by stripping the

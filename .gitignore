@@ -45,3 +45,6 @@ Thumbs.db
 src/data/TempAuthKey.js
 /coverage-vitest/
 /coverage/
+
+# Build output (built on deploy; matches the rest of the fleet — not committed)
+/js/

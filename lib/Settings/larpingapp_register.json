@@ -2,8 +2,8 @@
   "openapi": "3.0.0",
   "info": {
     "title": "LarpingApp Register",
-    "description": "Live Action Role Playing character management register for the LarpingApp Nextcloud app. Manages characters, players, abilities, skills, items, conditions, effects, events, and settings.",
-    "version": "1.1.0"
+    "description": "Live Action Role Playing character management register for the LarpingApp Nextcloud app. Manages characters, players, abilities, skills, items, conditions, effects, events, and worlds.",
+    "version": "1.2.0"
   },
   "x-openregister": {
     "type": "application",
@@ -17,7 +17,7 @@
         "slug": "larpingapp",
         "title": "LarpingApp",
         "version": "1.0.0",
-        "description": "Live Action Role Playing character management register — manages characters, players, abilities, skills, items, conditions, effects, events, and game settings.",
+        "description": "Live Action Role Playing character management register — manages characters, players, abilities, skills, items, conditions, effects, events, and game worlds.",
         "published": "2026-03-01T00:00:00+00:00",
         "schemas": [
           "character",
@@ -40,10 +40,11 @@
         "slug": "character",
         "title": "Character",
         "icon": "BriefcaseAccountOutline",
-        "version": "1.3.0",
+        "version": "1.4.0",
         "summary": "A playable or non-playable character in the LARP game",
         "description": "Represents a character entity with stats, skills, items, conditions, and event participation. Characters can be player characters, NPCs, or other types. Game masters approve characters before play.",
         "type": "object",
+        "x-schema-org": "schema:Person",
         "required": [
           "name",
           "ocName"
@@ -53,28 +54,37 @@
             "type": "string",
             "description": "The chosen in-game name for this character",
             "maxLength": 255,
-            "minLength": 1
+            "minLength": 1,
+            "title": "Character Name"
           },
           "ocName": {
             "type": "string",
-            "description": "The name of the player playing this character",
-            "maxLength": 255
+            "format": "uuid",
+            "$ref": "player",
+            "x-allow-create": true,
+            "description": "The player who plays this character. Pick an existing player or type a new name to create one.",
+            "title": "Player"
           },
           "ownerUid": {
             "type": "string",
-            "description": "Nextcloud uid of the player who owns this character. Used for per-player notifications (e.g. character-approved).",
-            "maxLength": 255
+            "description": "Auto-derived Nextcloud uid of the owning player's user account (materialised from the linked player). Not user-editable.",
+            "maxLength": 255,
+            "title": "Owner UID",
+            "visible": false,
+            "readOnly": true
           },
           "description": {
             "type": "string",
             "description": "Public description visible to all players",
-            "maxLength": 2555
+            "maxLength": 2555,
+            "title": "Description"
           },
           "background": {
             "type": "string",
             "description": "Character background story (visible to GMs only)",
             "maxLength": 2555,
-            "visible": false
+            "visible": false,
+            "title": "Background Story"
           },
           "type": {
             "type": "string",
@@ -96,6 +106,7 @@
               "approved"
             ],
             "default": "no",
+            "widget": "switch",
             "title": "Approved",
             "facetable": true
           },
@@ -103,55 +114,64 @@
             "type": "integer",
             "description": "Amount of gold pieces",
             "default": 0,
-            "visible": false
+            "visible": false,
+            "title": "Gold Pieces"
           },
           "silver": {
             "type": "integer",
             "description": "Amount of silver pieces",
             "default": 0,
-            "visible": false
+            "visible": false,
+            "title": "Silver Pieces"
           },
           "copper": {
             "type": "integer",
             "description": "Amount of copper pieces",
             "default": 0,
-            "visible": false
+            "visible": false,
+            "title": "Copper Pieces"
           },
           "faith": {
             "type": "string",
             "description": "The faith or religion of the character",
             "maxLength": 2555,
-            "visible": false
+            "visible": false,
+            "title": "Faith"
           },
           "slNotesPublic": {
             "type": "string",
             "description": "Game master notes visible to players",
             "maxLength": 2555,
-            "visible": false
+            "visible": false,
+            "title": "Game Master Notes (Public)"
           },
           "slNotesPrivate": {
             "type": "string",
             "description": "Game master notes NOT visible to players",
             "maxLength": 2555,
-            "visible": false
+            "visible": false,
+            "title": "Game Master Notes (Private)"
           },
           "card": {
             "type": "string",
             "description": "Character card as markdown table",
             "maxLength": 5000,
-            "visible": false
+            "visible": false,
+            "title": "Character Card"
           },
           "itemsAndMoney": {
             "type": "string",
             "description": "Notes about items and money",
             "maxLength": 2555,
-            "visible": false
+            "visible": false,
+            "title": "Items and Money"
           },
           "notice": {
             "type": "string",
             "description": "Automatic system notices",
             "maxLength": 2555,
-            "visible": false
+            "visible": false,
+            "title": "System Notice"
           },
           "skills": {
             "type": "array",
@@ -160,7 +180,10 @@
               "type": "string",
               "format": "uuid"
             },
-            "visible": false
+            "$ref": "skill",
+            "x-relation-filter": { "setting": "@object.setting" },
+            "visible": false,
+            "title": "Skills"
           },
           "items": {
             "type": "array",
@@ -169,7 +192,10 @@
               "type": "string",
               "format": "uuid"
             },
-            "visible": false
+            "$ref": "larping_item",
+            "x-relation-filter": { "setting": "@object.setting" },
+            "visible": false,
+            "title": "Items"
           },
           "conditions": {
             "type": "array",
@@ -178,7 +204,10 @@
               "type": "string",
               "format": "uuid"
             },
-            "visible": false
+            "$ref": "condition",
+            "x-relation-filter": { "setting": "@object.setting" },
+            "visible": false,
+            "title": "Conditions"
           },
           "events": {
             "type": "array",
@@ -187,13 +216,18 @@
               "type": "string",
               "format": "uuid"
             },
-            "visible": false
+            "$ref": "larping_event",
+            "x-relation-filter": { "setting": "@object.setting" },
+            "visible": false,
+            "title": "Events"
           },
           "setting": {
             "type": "string",
             "format": "uuid",
-            "description": "Optional setting (world/campaign) this character belongs to. Empty means shared across all settings.",
-            "visible": false
+            "$ref": "setting",
+            "description": "Optional world (campaign) thischaracter belongs to. Empty means shared across all worlds.",
+            "visible": false,
+            "title": "World"
           },
           "requirementOverrides": {
             "type": "array",
@@ -204,28 +238,53 @@
                 "skill": {
                   "type": "string",
                   "format": "uuid",
-                  "description": "The assigned skill whose requirements are waived"
+                  "$ref": "skill",
+                  "x-relation-filter": { "setting": "@object.setting" },
+                  "description": "The assigned skill whose requirements are waived",
+                  "title": "Skill"
                 },
                 "reason": {
                   "type": "string",
-                  "description": "Mandatory reason for the override (audited)"
+                  "description": "Mandatory reason for the override (audited)",
+                  "title": "Override Reason"
                 },
                 "overriddenBy": {
                   "type": "string",
-                  "description": "Nextcloud uid of the GM who authored the override (server-stamped)"
+                  "description": "Nextcloud uid of the GM who authored the override (server-stamped)",
+                  "title": "Overridden By"
                 },
                 "overriddenAt": {
                   "type": "string",
                   "format": "date-time",
-                  "description": "When the override was authored (server-stamped)"
+                  "description": "When the override was authored (server-stamped)",
+                  "title": "Overridden At"
                 }
               }
             },
-            "visible": false
+            "visible": false,
+            "title": "Requirement Overrides"
+          }
+        },
+        "x-openregister-references": {
+          "player": {
+            "schema": "player",
+            "mode": "relatedObject",
+            "field": "ocName"
+          }
+        },
+        "x-openregister-calculations": {
+          "ownerUid": {
+            "type": "string",
+            "materialise": true,
+            "expression": {
+              "prop": "@ref.player.userUid"
+            }
           }
         },
         "configuration": {
-          "linkedTypes": ["photos"],
+          "linkedTypes": [
+            "photos"
+          ],
           "x-openregister-lifecycle": {
             "field": "approved",
             "initial": "no",
@@ -298,10 +357,11 @@
         "slug": "player",
         "title": "Player",
         "icon": "AccountGroupOutline",
-        "version": "1.0.0",
+        "version": "1.1.1",
         "summary": "A real-world player participating in the LARP",
         "description": "Represents a player who controls one or more characters. Tracks player identity and contact information.",
         "type": "object",
+        "x-schema-org": "schema:Person",
         "required": [
           "name"
         ],
@@ -310,12 +370,20 @@
             "type": "string",
             "description": "Full name of the player",
             "maxLength": 255,
-            "minLength": 1
+            "minLength": 1,
+            "title": "Player Name"
           },
           "description": {
             "type": "string",
             "description": "Notes about the player",
-            "maxLength": 2555
+            "maxLength": 2555,
+            "title": "Description"
+          },
+          "userUid": {
+            "type": "string",
+            "description": "The Nextcloud user account this player signs in as (a Nextcloud user UID — a plain string; there is deliberately no `format`, OpenRegister has no `user` format and rejects the whole schema when it sees one). Used for character-ownership notifications.",
+            "maxLength": 255,
+            "title": "Nextcloud user"
           }
         }
       },
@@ -327,6 +395,7 @@
         "summary": "A numeric stat tracked on characters (e.g., XP, Mana, Health)",
         "description": "Represents a numeric ability or stat that characters track. Effects modify abilities by adding or subtracting from the base value. Used for experience points, mana, health, armor, and other quantifiable attributes.",
         "type": "object",
+        "x-schema-org": "schema:PropertyValue",
         "required": [
           "name"
         ],
@@ -335,23 +404,28 @@
             "type": "string",
             "description": "Unique name of the ability (e.g., Experience Points, Mana)",
             "maxLength": 255,
-            "minLength": 1
+            "minLength": 1,
+            "title": "Ability Name"
           },
           "description": {
             "type": "string",
-            "description": "What this ability represents within the game setting",
-            "maxLength": 2555
+            "description": "What this ability represents within the game world",
+            "maxLength": 2555,
+            "title": "Description"
           },
           "base": {
             "type": "integer",
             "description": "Starting value for all characters",
-            "default": 0
+            "default": 0,
+            "title": "Base Value"
           },
           "setting": {
             "type": "string",
             "format": "uuid",
-            "description": "Optional setting (world/campaign) this ability belongs to. Empty means shared across all settings.",
-            "visible": false
+            "$ref": "setting",
+            "description": "Optional world (campaign) thisability belongs to. Empty means shared across all worlds.",
+            "visible": false,
+            "title": "World"
           }
         }
       },
@@ -359,10 +433,14 @@
         "slug": "skill",
         "title": "Skill",
         "icon": "SwordCross",
-        "version": "1.1.0",
+        "version": "1.2.0",
         "summary": "A learnable ability that characters can acquire",
         "description": "Represents a skill that characters can learn, usually purchased with experience points. Skills provide effects and may have prerequisites (other skills, stats, conditions, or effects).",
         "type": "object",
+        "x-schema-org": "schema:DefinedTerm",
+        "configuration": {
+          "x-openregister-shareable": true
+        },
         "required": [
           "name"
         ],
@@ -371,18 +449,21 @@
             "type": "string",
             "description": "Name of the skill (e.g., Healing LvL 1)",
             "maxLength": 255,
-            "minLength": 1
+            "minLength": 1,
+            "title": "Skill Name"
           },
           "description": {
             "type": "string",
             "description": "In-game flavor description of the skill",
-            "maxLength": 2555
+            "maxLength": 2555,
+            "title": "Description"
           },
           "effect": {
             "type": "string",
             "description": "Technical description of what the skill does mechanically",
             "maxLength": 2555,
-            "visible": false
+            "visible": false,
+            "title": "Mechanical Effect"
           },
           "effects": {
             "type": "array",
@@ -391,7 +472,10 @@
               "type": "string",
               "format": "uuid"
             },
-            "visible": false
+            "$ref": "effect",
+            "x-relation-filter": { "setting": "@object.setting" },
+            "visible": false,
+            "title": "Effects"
           },
           "requiredSkills": {
             "type": "array",
@@ -400,7 +484,10 @@
               "type": "string",
               "format": "uuid"
             },
-            "visible": false
+            "$ref": "skill",
+            "x-relation-filter": { "setting": "@object.setting" },
+            "visible": false,
+            "title": "Required Skills"
           },
           "requiredStats": {
             "type": "array",
@@ -409,7 +496,10 @@
               "type": "string",
               "format": "uuid"
             },
-            "visible": false
+            "$ref": "ability",
+            "x-relation-filter": { "setting": "@object.setting" },
+            "visible": false,
+            "title": "Required Stats"
           },
           "requiredConditions": {
             "type": "array",
@@ -418,7 +508,10 @@
               "type": "string",
               "format": "uuid"
             },
-            "visible": false
+            "$ref": "condition",
+            "x-relation-filter": { "setting": "@object.setting" },
+            "visible": false,
+            "title": "Required Conditions"
           },
           "requiredEffects": {
             "type": "array",
@@ -427,18 +520,24 @@
               "type": "string",
               "format": "uuid"
             },
-            "visible": false
+            "$ref": "effect",
+            "x-relation-filter": { "setting": "@object.setting" },
+            "visible": false,
+            "title": "Required Effects"
           },
           "requiredScore": {
             "type": "integer",
             "description": "Minimum ability score needed when requirements are abilities",
-            "visible": false
+            "visible": false,
+            "title": "Required Score"
           },
           "setting": {
             "type": "string",
             "format": "uuid",
-            "description": "Optional setting (world/campaign) this skill belongs to. Empty means shared across all settings.",
-            "visible": false
+            "$ref": "setting",
+            "description": "Optional world (campaign) thisskill belongs to. Empty means shared across all worlds.",
+            "visible": false,
+            "title": "World"
           }
         }
       },
@@ -450,6 +549,7 @@
         "summary": "A magical or special item that characters can own",
         "description": "Represents a special or magical item in the game. Items provide effects to their holder. Items can be unique artifacts (only one instance exists) or regular items.",
         "type": "object",
+        "x-schema-org": "schema:Product",
         "required": [
           "name"
         ],
@@ -458,18 +558,21 @@
             "type": "string",
             "description": "Item name (e.g., Hand of Vecna)",
             "maxLength": 255,
-            "minLength": 1
+            "minLength": 1,
+            "title": "Item Name"
           },
           "description": {
             "type": "string",
             "description": "Player-visible description with story pointers",
-            "maxLength": 2555
+            "maxLength": 2555,
+            "title": "Description"
           },
           "effect": {
             "type": "string",
             "description": "Technical description of item effects (GM-visible only)",
             "maxLength": 2555,
-            "visible": false
+            "visible": false,
+            "title": "Mechanical Effect"
           },
           "effects": {
             "type": "array",
@@ -478,12 +581,16 @@
               "type": "string",
               "format": "uuid"
             },
-            "visible": false
+            "$ref": "effect",
+            "x-relation-filter": { "setting": "@object.setting" },
+            "visible": false,
+            "title": "Effects"
           },
           "unique": {
             "type": "boolean",
             "description": "Whether this is a unique artifact (only one instance can exist)",
-            "default": true
+            "default": true,
+            "title": "Unique Artifact"
           },
           "characters": {
             "type": "array",
@@ -492,13 +599,18 @@
               "type": "string",
               "format": "uuid"
             },
-            "visible": false
+            "$ref": "character",
+            "x-relation-filter": { "setting": "@object.setting" },
+            "visible": false,
+            "title": "Characters"
           },
           "setting": {
             "type": "string",
             "format": "uuid",
-            "description": "Optional setting (world/campaign) this item belongs to. Empty means shared across all settings.",
-            "visible": false
+            "$ref": "setting",
+            "description": "Optional world (campaign) thisitem belongs to. Empty means shared across all worlds.",
+            "visible": false,
+            "title": "World"
           }
         }
       },
@@ -518,18 +630,21 @@
             "type": "string",
             "description": "Unique name of the condition",
             "maxLength": 255,
-            "minLength": 1
+            "minLength": 1,
+            "title": "Condition Name"
           },
           "description": {
             "type": "string",
             "description": "In-game flavor text description",
-            "maxLength": 2555
+            "maxLength": 2555,
+            "title": "Description"
           },
           "effect": {
             "type": "string",
             "description": "Mechanical description of what the condition does",
             "maxLength": 2555,
-            "visible": false
+            "visible": false,
+            "title": "Mechanical Effect"
           },
           "effects": {
             "type": "array",
@@ -538,12 +653,16 @@
               "type": "string",
               "format": "uuid"
             },
-            "visible": false
+            "$ref": "effect",
+            "x-relation-filter": { "setting": "@object.setting" },
+            "visible": false,
+            "title": "Effects"
           },
           "unique": {
             "type": "boolean",
             "description": "Whether only one character can have this condition at a time",
-            "default": false
+            "default": false,
+            "title": "Unique Condition"
           },
           "characters": {
             "type": "array",
@@ -552,13 +671,18 @@
               "type": "string",
               "format": "uuid"
             },
-            "visible": false
+            "$ref": "character",
+            "x-relation-filter": { "setting": "@object.setting" },
+            "visible": false,
+            "title": "Affected Characters"
           },
           "setting": {
             "type": "string",
             "format": "uuid",
-            "description": "Optional setting (world/campaign) this condition belongs to. Empty means shared across all settings.",
-            "visible": false
+            "$ref": "setting",
+            "description": "Optional world (campaign) thiscondition belongs to. Empty means shared across all worlds.",
+            "visible": false,
+            "title": "World"
           }
         }
       },
@@ -570,6 +694,7 @@
         "summary": "A calculated modification to a character ability",
         "description": "Represents a numeric modification to one or more abilities. Effects come from skills, items, conditions, or events and automatically adjust character stats.",
         "type": "object",
+        "x-schema-org": "schema:PropertyValue",
         "required": [
           "name"
         ],
@@ -578,17 +703,20 @@
             "type": "string",
             "description": "Descriptive name (e.g., +5 Healing Mana)",
             "maxLength": 255,
-            "minLength": 1
+            "minLength": 1,
+            "title": "Effect Name"
           },
           "description": {
             "type": "string",
             "description": "Technical description of the effect",
-            "maxLength": 2555
+            "maxLength": 2555,
+            "title": "Description"
           },
           "modifier": {
             "type": "integer",
             "description": "The numeric value applied to the ability",
-            "default": 0
+            "default": 0,
+            "title": "Modifier Value"
           },
           "modification": {
             "type": "string",
@@ -619,13 +747,18 @@
               "type": "string",
               "format": "uuid"
             },
-            "visible": false
+            "$ref": "ability",
+            "x-relation-filter": { "setting": "@object.setting" },
+            "visible": false,
+            "title": "Abilities"
           },
           "setting": {
             "type": "string",
             "format": "uuid",
-            "description": "Optional setting (world/campaign) this effect belongs to. Empty means shared across all settings.",
-            "visible": false
+            "$ref": "setting",
+            "description": "Optional world (campaign) thiseffect belongs to. Empty means shared across all worlds.",
+            "visible": false,
+            "title": "World"
           }
         }
       },
@@ -637,6 +770,7 @@
         "summary": "A LARP event or gathering where players come together",
         "description": "Represents a LARP event — a gathering where players come with their characters. Can be multi-day events or casual meetups. Characters subscribe to events and receive effects after the event.",
         "type": "object",
+        "x-schema-org": "schema:Event",
         "required": [
           "name"
         ],
@@ -645,27 +779,32 @@
             "type": "string",
             "description": "Event name",
             "maxLength": 255,
-            "minLength": 1
+            "minLength": 1,
+            "title": "Event Name"
           },
           "description": {
             "type": "string",
             "description": "Event description",
-            "maxLength": 2555
+            "maxLength": 2555,
+            "title": "Description"
           },
           "startDate": {
             "type": "string",
             "description": "Event start date and time",
-            "format": "date-time"
+            "format": "date-time",
+            "title": "Start Date"
           },
           "endDate": {
             "type": "string",
             "description": "Event end date and time",
-            "format": "date-time"
+            "format": "date-time",
+            "title": "End Date"
           },
           "location": {
             "type": "string",
             "description": "Event location",
-            "maxLength": 255
+            "maxLength": 255,
+            "title": "Location"
           },
           "players": {
             "type": "array",
@@ -674,7 +813,10 @@
               "type": "string",
               "format": "uuid"
             },
-            "visible": false
+            "$ref": "character",
+            "x-relation-filter": { "setting": "@object.setting" },
+            "visible": false,
+            "title": "Participating Characters"
           },
           "effects": {
             "type": "array",
@@ -683,13 +825,18 @@
               "type": "string",
               "format": "uuid"
             },
-            "visible": false
+            "$ref": "effect",
+            "x-relation-filter": { "setting": "@object.setting" },
+            "visible": false,
+            "title": "Post-Event Effects"
           },
           "setting": {
             "type": "string",
             "format": "uuid",
-            "description": "Optional setting (world/campaign) this event belongs to. Empty means shared across all settings.",
-            "visible": false
+            "$ref": "setting",
+            "description": "Optional world (campaign) thisevent belongs to. Empty means shared across all worlds.",
+            "visible": false,
+            "title": "World"
           }
         },
         "x-openregister-notifications": {
@@ -722,12 +869,13 @@
       },
       "setting": {
         "slug": "setting",
-        "title": "Setting",
-        "icon": "Globe",
+        "title": "World",
+        "icon": "Earth",
         "version": "2.0.0",
-        "summary": "A LARP world / campaign (setting)",
-        "description": "A first-class LARP setting: a world or campaign that organises characters, events, and mechanics. Real organisations run several campaigns (a fantasy summer world, a sci-fi winter world) with disjoint rosters and rule sets. Game entities can optionally be scoped to a setting; entities without a setting are shared across all settings. Finished campaigns are archived rather than deleted.",
+        "summary": "A LARP world (campaign)",
+        "description": "A first-class LARP world: a game world or campaign that organises characters, events, and mechanics. Real organisations run several campaigns (a fantasy summer world, a sci-fi winter world) with disjoint rosters and rule sets. Game entities can optionally be scoped to a world; entities without one are shared across all worlds. Finished campaigns are archived rather than deleted. NAMING: the slug and the property key stay `setting` because they are persisted OpenRegister data; only the human-readable title/summary/description use the domain word. The old title \"Setting\" was translated as a UI preference (Einstellung / Paramètre / Configuración) by all 35 non-Dutch locales.",
         "type": "object",
+        "x-schema-org": "schema:CreativeWork",
         "required": [
           "name"
         ],
@@ -736,12 +884,14 @@
             "type": "string",
             "description": "The name of the setting / campaign",
             "maxLength": 255,
-            "minLength": 1
+            "minLength": 1,
+            "title": "Setting Name"
           },
           "description": {
             "type": "string",
             "description": "Description of the setting / campaign",
-            "maxLength": 2555
+            "maxLength": 2555,
+            "title": "Description"
           },
           "status": {
             "type": "string",
@@ -764,6 +914,7 @@
         "summary": "A per-participant experience-point grant for an event",
         "description": "Records a single experience-point award made by a game master to one character for one event. The post-event awarding ritual produces one xpAward per grant: who earned how much, why, and who granted it. Awards feed the character's computed XP ability as a fifth stat-engine stage. Writes are restricted to game masters; reads are open to authenticated app users.",
         "type": "object",
+        "x-schema-org": "schema:Action",
         "required": [
           "event",
           "character",
@@ -773,32 +924,40 @@
           "event": {
             "type": "string",
             "format": "uuid",
-            "description": "The event this award was granted for"
+            "$ref": "larping_event",
+            "description": "The event this award was granted for",
+            "title": "Event"
           },
           "character": {
             "type": "string",
             "format": "uuid",
-            "description": "The character receiving the award"
+            "$ref": "character",
+            "description": "The character receiving the award",
+            "title": "Character"
           },
           "amount": {
             "type": "number",
             "exclusiveMinimum": 0,
-            "description": "The positive amount of experience points awarded"
+            "description": "The positive amount of experience points awarded",
+            "title": "XP Amount"
           },
           "reason": {
             "type": "string",
             "description": "Optional reason for the award (e.g. full attendance, plot bonus)",
-            "maxLength": 2555
+            "maxLength": 2555,
+            "title": "Award Reason"
           },
           "awardedBy": {
             "type": "string",
             "description": "Nextcloud uid of the game master who granted the award (server-stamped)",
-            "maxLength": 255
+            "maxLength": 255,
+            "title": "Awarded By"
           },
           "awardedAt": {
             "type": "string",
             "format": "date-time",
-            "description": "When the award was granted (server-stamped)"
+            "description": "When the award was granted (server-stamped)",
+            "title": "Awarded At"
           }
         },
         "authorization": {

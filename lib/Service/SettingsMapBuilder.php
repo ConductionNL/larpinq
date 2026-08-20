@@ -28,142 +28,134 @@ namespace OCA\LarpingApp\Service;
  * @author   Ruben Linde <ruben@larpingapp.com>
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
+ *
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-37
  */
-class SettingsMapBuilder
-{
+class SettingsMapBuilder {
 
-    /**
-     * LarpingApp register slug.
-     *
-     * @var string
-     */
-    private const REGISTER_SLUG = 'larpingapp';
+	/**
+	 * LarpingApp register slug.
+	 *
+	 * @var string
+	 */
+	private const REGISTER_SLUG = 'larpingapp';
 
-    /**
-     * Build a slug-to-ID map from imported schemas.
-     *
-     * @param array $schemas The imported schemas.
-     *
-     * @return array The slug-to-ID map.
-     *
-     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-37
-     */
-    public function buildSchemaSlugMap(array $schemas): array
-    {
-        $schemaMap = [];
-        // @psalm-suppress MixedAssignment Schema entries from import result
-        foreach ($schemas as $schema) {
-            $this->addSchemaToMap(
-                schema: $schema,
-                schemaMap: $schemaMap
-            );
-        }
+	/**
+	 * Build a slug-to-ID map from imported schemas.
+	 *
+	 * @param array $schemas The imported schemas.
+	 *
+	 * @return array The slug-to-ID map.
+	 *
+	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-37
+	 */
+	public function buildSchemaSlugMap(array $schemas): array {
+		$schemaMap = [];
+		// @psalm-suppress MixedAssignment Schema entries from import result
+		foreach ($schemas as $schema) {
+			$this->addSchemaToMap(
+				schema: $schema,
+				schemaMap: $schemaMap
+			);
+		}
 
-        return $schemaMap;
+		return $schemaMap;
+	}//end buildSchemaSlugMap()
 
-    }//end buildSchemaSlugMap()
+	/**
+	 * Find the larpingapp register ID from imported registers.
+	 *
+	 * @param array $registers The imported registers.
+	 *
+	 * @return mixed The register ID or null.
+	 *
+	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-37
+	 */
+	public function findRegisterIdBySlug(array $registers): mixed {
+		// @psalm-suppress MixedAssignment Register entries from import result
+		foreach ($registers as $register) {
+			$registerId = $this->extractRegisterIdIfMatch(register: $register);
+			if ($registerId !== null) {
+				return $registerId;
+			}
+		}
 
-    /**
-     * Find the larpingapp register ID from imported registers.
-     *
-     * @param array $registers The imported registers.
-     *
-     * @return mixed The register ID or null.
-     *
-     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-37
-     */
-    public function findRegisterIdBySlug(array $registers): mixed
-    {
-        // @psalm-suppress MixedAssignment Register entries from import result
-        foreach ($registers as $register) {
-            $registerId = $this->extractRegisterIdIfMatch(register: $register);
-            if ($registerId !== null) {
-                return $registerId;
-            }
-        }
+		return null;
+	}//end findRegisterIdBySlug()
 
-        return null;
+	/**
+	 * Add a single schema entry to the slug map.
+	 *
+	 * @param mixed $schema The schema object or array.
+	 * @param array $schemaMap The map to populate.
+	 *
+	 * @return void
+	 *
+	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-37
+	 */
+	private function addSchemaToMap(mixed $schema, array &$schemaMap): void {
+		$schemaArray = $this->normalizeToArray(value: $schema);
+		if ($schemaArray === null) {
+			return;
+		}
 
-    }//end findRegisterIdBySlug()
+		if (isset($schemaArray['slug']) === false) {
+			return;
+		}
 
-    /**
-     * Add a single schema entry to the slug map.
-     *
-     * @param mixed $schema    The schema object or array.
-     * @param array $schemaMap The map to populate.
-     *
-     * @return void
-     *
-     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-37
-     */
-    private function addSchemaToMap(mixed $schema, array &$schemaMap): void
-    {
-        $schemaArray = $this->normalizeToArray(value: $schema);
-        if ($schemaArray === null) {
-            return;
-        }
+		// @var string|int|null $schemaId
+		$schemaId = $schemaArray['id'] ?? $schemaArray['uuid'] ?? null;
+		$schemaMap[(string)$schemaArray['slug']] = $schemaId;
 
-        if (isset($schemaArray['slug']) === false) {
-            return;
-        }
+	}//end addSchemaToMap()
 
-        // @var string|int|null $schemaId
-        $schemaId = $schemaArray['id'] ?? $schemaArray['uuid'] ?? null;
-        $schemaMap[(string) $schemaArray['slug']] = $schemaId;
+	/**
+	 * Extract register ID if the register matches the larpingapp slug.
+	 *
+	 * @param mixed $register The register object or array.
+	 *
+	 * @return mixed The register ID or null.
+	 *
+	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-37
+	 */
+	private function extractRegisterIdIfMatch(mixed $register): mixed {
+		$registerArray = $this->normalizeToArray(value: $register);
+		if ($registerArray === null) {
+			return null;
+		}
 
-    }//end addSchemaToMap()
+		if (isset($registerArray['slug']) === false) {
+			return null;
+		}
 
-    /**
-     * Extract register ID if the register matches the larpingapp slug.
-     *
-     * @param mixed $register The register object or array.
-     *
-     * @return mixed The register ID or null.
-     *
-     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-37
-     */
-    private function extractRegisterIdIfMatch(mixed $register): mixed
-    {
-        $registerArray = $this->normalizeToArray(value: $register);
-        if ($registerArray === null) {
-            return null;
-        }
+		if ($registerArray['slug'] !== self::REGISTER_SLUG) {
+			return null;
+		}
 
-        if (isset($registerArray['slug']) === false) {
-            return null;
-        }
+		return $registerArray['id'] ?? $registerArray['uuid'] ?? null;
+	}//end extractRegisterIdIfMatch()
 
-        if ($registerArray['slug'] !== self::REGISTER_SLUG) {
-            return null;
-        }
+	/**
+	 * Normalize an object or array value to an array.
+	 *
+	 * @param mixed $value The value to normalize.
+	 *
+	 * @return array<array-key, mixed>|null The array or null if not normalizable.
+	 *
+	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-37
+	 */
+	private function normalizeToArray(mixed $value): ?array {
+		if (is_object($value) === true && method_exists($value, 'jsonSerialize') === true) {
+			// @var \JsonSerializable $value
+			// @var array<array-key, mixed> $result
+			$result = $value->jsonSerialize();
+			return $result;
+		}
 
-        return $registerArray['id'] ?? $registerArray['uuid'] ?? null;
+		if (is_array($value) === true) {
+			return $value;
+		}
 
-    }//end extractRegisterIdIfMatch()
-
-    /**
-     * Normalize an object or array value to an array.
-     *
-     * @param mixed $value The value to normalize.
-     *
-     * @return array<array-key, mixed>|null The array or null if not normalizable.
-     *
-     * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-37
-     */
-    private function normalizeToArray(mixed $value): ?array
-    {
-        if (is_object($value) === true && method_exists($value, 'jsonSerialize') === true) {
-            // @var \JsonSerializable $value
-            // @var array<array-key, mixed> $result
-            $result = $value->jsonSerialize();
-            return $result;
-        }
-
-        if (is_array($value) === true) {
-            return $value;
-        }
-
-        return null;
-
-    }//end normalizeToArray()
+		return null;
+	}//end normalizeToArray()
 }//end class

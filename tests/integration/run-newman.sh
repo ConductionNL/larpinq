@@ -17,7 +17,7 @@
 # `npx newman`. Runs are serialised via flock (when available) so concurrent
 # CI agents do not trip the Nextcloud brute-force protection.
 #
-# SPDX-License-Identifier: AGPL-3.0-or-later
+# SPDX-License-Identifier: EUPL-1.2
 # SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
 
 set -euo pipefail

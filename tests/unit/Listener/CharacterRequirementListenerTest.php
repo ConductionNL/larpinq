@@ -9,7 +9,7 @@
  * @category Test
  * @package  OCA\LarpingApp\Tests\Unit\Listener
  * @author   Ruben Linde <ruben@larpingapp.com>
- * @license  AGPL-3.0-or-later https://www.gnu.org/licenses/agpl-3.0.en.html
+ * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
  */
 
@@ -20,93 +20,86 @@ namespace OCA\OpenRegister\Event;
 use OCP\EventDispatcher\Event;
 
 if (class_exists('OCA\OpenRegister\Event\ObjectCreatingEvent') === false) {
-    /**
-     * Test double for OpenRegister's ObjectCreatingEvent.
-     */
-    class ObjectCreatingEvent extends Event
-    {
-        private array $errors = [];
-        private bool $stopped = false;
+	/**
+	 * Test double for OpenRegister's ObjectCreatingEvent.
+	 */
+	class ObjectCreatingEvent extends Event {
+		private array $errors = [];
+		private bool $stopped = false;
 
-        public function __construct(private object $object)
-        {
-        }
+		public function __construct(
+			private object $object,
+		) {
+		}
 
-        public function getObject(): object
-        {
-            return $this->object;
-        }
+		public function getObject(): object {
+			return $this->object;
+		}
 
-        public function stopPropagation(): void
-        {
-            $this->stopped = true;
-        }
+		public function stopPropagation(): void {
+			$this->stopped = true;
+		}
 
-        public function isPropagationStopped(): bool
-        {
-            return $this->stopped;
-        }
+		public function isPropagationStopped(): bool {
+			return $this->stopped;
+		}
 
-        public function setErrors(array $errors): void
-        {
-            $this->errors = $errors;
-        }
+		public function setErrors(array $errors): void {
+			$this->errors = $errors;
+		}
 
-        public function getErrors(): array
-        {
-            return $this->errors;
-        }
-    }
+		public function getErrors(): array {
+			return $this->errors;
+		}
+	}
 
-    /**
-     * Test double for OpenRegister's ObjectUpdatingEvent.
-     */
-    class ObjectUpdatingEvent extends Event
-    {
-        private array $errors = [];
-        private bool $stopped = false;
+	/**
+	 * Test double for OpenRegister's ObjectUpdatingEvent.
+	 */
+	class ObjectUpdatingEvent extends Event {
+		private array $errors = [];
+		private bool $stopped = false;
 
-        public function __construct(private object $newObject, private ?object $oldObject = null)
-        {
-        }
+		public function __construct(
+			private object $newObject,
+			private ?object $oldObject = null,
+		) {
+		}
 
-        public function getNewObject(): object
-        {
-            return $this->newObject;
-        }
+		public function getNewObject(): object {
+			return $this->newObject;
+		}
 
-        public function getOldObject(): ?object
-        {
-            return $this->oldObject;
-        }
+		public function getOldObject(): ?object {
+			return $this->oldObject;
+		}
 
-        public function stopPropagation(): void
-        {
-            $this->stopped = true;
-        }
+		public function stopPropagation(): void {
+			$this->stopped = true;
+		}
 
-        public function isPropagationStopped(): bool
-        {
-            return $this->stopped;
-        }
+		public function isPropagationStopped(): bool {
+			return $this->stopped;
+		}
 
-        public function setErrors(array $errors): void
-        {
-            $this->errors = $errors;
-        }
+		public function setErrors(array $errors): void {
+			$this->errors = $errors;
+		}
 
-        public function getErrors(): array
-        {
-            return $this->errors;
-        }
-    }
+		public function getErrors(): array {
+			return $this->errors;
+		}
+	}
 }//end if
 
 namespace OCA\LarpingApp\Tests\Unit\Listener;
 
 use OCA\LarpingApp\Listener\CharacterRequirementListener;
 use OCA\LarpingApp\Service\CharacterService;
+use OCA\LarpingApp\Service\EffectApplier;
+use OCA\LarpingApp\Service\IdListNormaliser;
 use OCA\LarpingApp\Service\RegisterObjectFetcher;
+use OCA\LarpingApp\Service\SkillRequirementChecker;
 use OCA\LarpingApp\Service\SkillRequirementService;
 use OCA\OpenRegister\Event\ObjectCreatingEvent;
 use OCA\OpenRegister\Event\ObjectUpdatingEvent;
@@ -118,186 +111,218 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
 /**
- * Minimal object-entity fake matching the subset of the OR ObjectEntity API
- * the listener uses (getSchema + getObject).
+ * Object-entity fake matching the REAL SHAPE of `OCA\OpenRegister\Db\ObjectEntity`.
+ *
+ * ⚠️ THE SHAPE IS THE POINT — DO NOT DECLARE `getSchema()` HERE.
+ * The real `ObjectEntity` extends `OCP\AppFramework\Db\Entity` and declares
+ * exactly ONE accessor of its own, `getObject()`. Everything else —
+ * `getSchema()` included — is resolved at runtime by `Entity::__call()`.
+ * Measured on a live instance (NC 34, openregister 0.2.17-unstable.36):
+ *
+ *     method_exists($entity, 'getSchema')  -> false      (magic)
+ *     is_callable([$entity, 'getSchema'])  -> true
+ *     method_exists($entity, 'getObject')  -> true       (declared — control)
+ *
+ * This fake previously DECLARED `getSchema()`. That single divergence made
+ * `method_exists()` answer true in the suite and false in production, so every
+ * test below passed while `isCharacterSchema()` returned false for every real
+ * character write and the app enforced nothing (larpingapp#308). A fake shaped
+ * to what the caller CALLS, rather than to what the collaborator IS, cannot
+ * fail for the reason the suite exists.
  */
-class FakeObjectEntity
-{
-    public function __construct(private string $schema, private array $data)
-    {
-    }
+class FakeObjectEntity {
+	public function __construct(
+		private string $schema,
+		private array $data,
+	) {
+	}
 
-    public function getSchema(): string
-    {
-        return $this->schema;
-    }
+	/**
+	 * Declared on the real ObjectEntity, so it stays declared here.
+	 *
+	 * @return array<string,mixed> The object payload.
+	 */
+	public function getObject(): array {
+		return $this->data;
+	}
 
-    public function getObject(): array
-    {
-        return $this->data;
-    }
+	/**
+	 * Magic accessor, mirroring OCP\AppFramework\Db\Entity::__call().
+	 *
+	 * @param string $name Method name.
+	 * @param array<mixed> $args Ignored.
+	 *
+	 * @return mixed The property value.
+	 *
+	 * @throws \BadFunctionCallException When the property does not exist.
+	 */
+	public function __call(string $name, array $args): mixed {
+		if ($name === 'getSchema') {
+			return $this->schema;
+		}
+
+		throw new \BadFunctionCallException($name . ' does not exist');
+	}
 }
 
 /**
  * Tests for the character-write veto listener.
  */
-class CharacterRequirementListenerTest extends TestCase
-{
-    private const SCHEMA_ID = 'char-schema-uuid';
+class CharacterRequirementListenerTest extends TestCase {
+	private const SCHEMA_ID = 'char-schema-uuid';
 
-    private LoggerInterface $logger;
+	private LoggerInterface $logger;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->logger = $this->createMock(LoggerInterface::class);
-    }
+	protected function setUp(): void {
+		parent::setUp();
+		$this->logger = $this->createMock(LoggerInterface::class);
+	}
 
-    private function makeListener(
-        array $skills = [],
-        bool $isGm = true,
-        ?string $uid = 'gm1'
-    ): CharacterRequirementListener {
-        $fetcher = $this->createMock(RegisterObjectFetcher::class);
-        $fetcher->method('getObjects')->willReturnCallback(function (string $type) use ($skills): array {
-            return match ($type) {
-                'skill' => $skills,
-                default => [],
-            };
-        });
-        $engine            = new CharacterService($fetcher, $this->logger);
-        $requirementService = new SkillRequirementService($engine, $fetcher, $this->logger);
+	private function makeListener(
+		array $skills = [],
+		bool $isGm = true,
+		?string $uid = 'gm1',
+	): CharacterRequirementListener {
+		$fetcher = $this->createMock(RegisterObjectFetcher::class);
+		$fetcher->method('getObjects')->willReturnCallback(function (string $type) use ($skills): array {
+			return match ($type) {
+				'skill' => $skills,
+				default => [],
+			};
+		});
+		$engine = new CharacterService($fetcher, $this->logger, new EffectApplier());
+		$idList = new IdListNormaliser();
+		$requirementService = new SkillRequirementService(
+			$engine,
+			$fetcher,
+			$this->logger,
+			new SkillRequirementChecker($idList),
+			$idList
+		);
 
-        $config = $this->createMock(IAppConfig::class);
-        $config->method('getValueString')->willReturn(self::SCHEMA_ID);
+		$config = $this->createMock(IAppConfig::class);
+		$config->method('getValueString')->willReturn(self::SCHEMA_ID);
 
-        $userSession = $this->createMock(IUserSession::class);
-        if ($uid !== null) {
-            $user = $this->createMock(IUser::class);
-            $user->method('getUID')->willReturn($uid);
-            $userSession->method('getUser')->willReturn($user);
-        } else {
-            $userSession->method('getUser')->willReturn(null);
-        }
+		$userSession = $this->createMock(IUserSession::class);
+		if ($uid !== null) {
+			$user = $this->createMock(IUser::class);
+			$user->method('getUID')->willReturn($uid);
+			$userSession->method('getUser')->willReturn($user);
+		} else {
+			$userSession->method('getUser')->willReturn(null);
+		}
 
-        $groupManager = $this->createMock(IGroupManager::class);
-        $groupManager->method('isInGroup')->willReturn($isGm);
+		$groupManager = $this->createMock(IGroupManager::class);
+		$groupManager->method('isInGroup')->willReturn($isGm);
 
-        return new CharacterRequirementListener(
-            $requirementService,
-            $config,
-            $userSession,
-            $groupManager,
-            $this->logger
-        );
-    }
+		return new CharacterRequirementListener(
+			$requirementService,
+			$config,
+			$userSession,
+			$groupManager,
+			$this->logger
+		);
+	}
 
-    public function testRejectsCreateWithUnmetPrerequisite(): void
-    {
-        $skills = [
-            ['id' => 'basic', 'name' => 'Basic'],
-            ['id' => 'adv', 'name' => 'Advanced', 'requiredSkills' => ['basic']],
-        ];
-        $listener = $this->makeListener(skills: $skills);
-        $entity   = new FakeObjectEntity(self::SCHEMA_ID, ['skills' => ['adv']]);
-        $event    = new ObjectCreatingEvent($entity);
+	public function testRejectsCreateWithUnmetPrerequisite(): void {
+		$skills = [
+			['id' => 'basic', 'name' => 'Basic'],
+			['id' => 'adv', 'name' => 'Advanced', 'requiredSkills' => ['basic']],
+		];
+		$listener = $this->makeListener(skills: $skills);
+		$entity = new FakeObjectEntity(self::SCHEMA_ID, ['skills' => ['adv']]);
+		$event = new ObjectCreatingEvent($entity);
 
-        $listener->handle($event);
+		$listener->handle($event);
 
-        $this->assertTrue($event->isPropagationStopped());
-        $this->assertSame('requirements_not_met', $event->getErrors()['code']);
-    }
+		$this->assertTrue($event->isPropagationStopped());
+		$this->assertSame('requirements_not_met', $event->getErrors()['code']);
+	}
 
-    public function testAllowsCreateWhenPrerequisiteMet(): void
-    {
-        $skills = [
-            ['id' => 'basic', 'name' => 'Basic'],
-            ['id' => 'adv', 'name' => 'Advanced', 'requiredSkills' => ['basic']],
-        ];
-        $listener = $this->makeListener(skills: $skills);
-        $entity   = new FakeObjectEntity(self::SCHEMA_ID, ['skills' => ['basic', 'adv']]);
-        $event    = new ObjectCreatingEvent($entity);
+	public function testAllowsCreateWhenPrerequisiteMet(): void {
+		$skills = [
+			['id' => 'basic', 'name' => 'Basic'],
+			['id' => 'adv', 'name' => 'Advanced', 'requiredSkills' => ['basic']],
+		];
+		$listener = $this->makeListener(skills: $skills);
+		$entity = new FakeObjectEntity(self::SCHEMA_ID, ['skills' => ['basic', 'adv']]);
+		$event = new ObjectCreatingEvent($entity);
 
-        $listener->handle($event);
+		$listener->handle($event);
 
-        $this->assertFalse($event->isPropagationStopped());
-    }
+		$this->assertFalse($event->isPropagationStopped());
+	}
 
-    public function testIgnoresNonCharacterSchema(): void
-    {
-        $listener = $this->makeListener(skills: []);
-        $entity   = new FakeObjectEntity('other-schema', ['skills' => ['adv']]);
-        $event    = new ObjectCreatingEvent($entity);
+	public function testIgnoresNonCharacterSchema(): void {
+		$listener = $this->makeListener(skills: []);
+		$entity = new FakeObjectEntity('other-schema', ['skills' => ['adv']]);
+		$event = new ObjectCreatingEvent($entity);
 
-        $listener->handle($event);
+		$listener->handle($event);
 
-        $this->assertFalse($event->isPropagationStopped());
-    }
+		$this->assertFalse($event->isPropagationStopped());
+	}
 
-    public function testDiffScopedUnrelatedEditPasses(): void
-    {
-        // Pre-existing unmet state, but the write only changes the name.
-        $skills = [
-            ['id' => 'basic', 'name' => 'Basic'],
-            ['id' => 'adv', 'name' => 'Advanced', 'requiredSkills' => ['basic']],
-        ];
-        $listener = $this->makeListener(skills: $skills);
-        $old      = new FakeObjectEntity(self::SCHEMA_ID, ['skills' => ['adv'], 'name' => 'Old']);
-        $new      = new FakeObjectEntity(self::SCHEMA_ID, ['skills' => ['adv'], 'name' => 'New']);
-        $event    = new ObjectUpdatingEvent($new, $old);
+	public function testDiffScopedUnrelatedEditPasses(): void {
+		// Pre-existing unmet state, but the write only changes the name.
+		$skills = [
+			['id' => 'basic', 'name' => 'Basic'],
+			['id' => 'adv', 'name' => 'Advanced', 'requiredSkills' => ['basic']],
+		];
+		$listener = $this->makeListener(skills: $skills);
+		$old = new FakeObjectEntity(self::SCHEMA_ID, ['skills' => ['adv'], 'name' => 'Old']);
+		$new = new FakeObjectEntity(self::SCHEMA_ID, ['skills' => ['adv'], 'name' => 'New']);
+		$event = new ObjectUpdatingEvent($new, $old);
 
-        $listener->handle($event);
+		$listener->handle($event);
 
-        $this->assertFalse($event->isPropagationStopped());
-    }
+		$this->assertFalse($event->isPropagationStopped());
+	}
 
-    public function testOverrideAcceptedFromGm(): void
-    {
-        $skills = [
-            ['id' => 'basic', 'name' => 'Basic'],
-            ['id' => 'adv', 'name' => 'Advanced', 'requiredSkills' => ['basic']],
-        ];
-        $listener = $this->makeListener(skills: $skills, isGm: true, uid: 'gm1');
-        $entity   = new FakeObjectEntity(self::SCHEMA_ID, [
-            'skills' => ['adv'],
-            'requirementOverrides' => [['skill' => 'adv', 'reason' => 'respec']],
-        ]);
-        $event = new ObjectCreatingEvent($entity);
+	public function testOverrideAcceptedFromGm(): void {
+		$skills = [
+			['id' => 'basic', 'name' => 'Basic'],
+			['id' => 'adv', 'name' => 'Advanced', 'requiredSkills' => ['basic']],
+		];
+		$listener = $this->makeListener(skills: $skills, isGm: true, uid: 'gm1');
+		$entity = new FakeObjectEntity(self::SCHEMA_ID, [
+			'skills' => ['adv'],
+			'requirementOverrides' => [['skill' => 'adv', 'reason' => 'respec']],
+		]);
+		$event = new ObjectCreatingEvent($entity);
 
-        $listener->handle($event);
+		$listener->handle($event);
 
-        $this->assertFalse($event->isPropagationStopped());
-    }
+		$this->assertFalse($event->isPropagationStopped());
+	}
 
-    public function testOverrideRejectedFromNonGm(): void
-    {
-        $skills   = [['id' => 'adv', 'name' => 'Advanced']];
-        $listener = $this->makeListener(skills: $skills, isGm: false, uid: 'player1');
-        $entity   = new FakeObjectEntity(self::SCHEMA_ID, [
-            'skills' => ['adv'],
-            'requirementOverrides' => [['skill' => 'adv', 'reason' => 'sneaky']],
-        ]);
-        $event = new ObjectCreatingEvent($entity);
+	public function testOverrideRejectedFromNonGm(): void {
+		$skills = [['id' => 'adv', 'name' => 'Advanced']];
+		$listener = $this->makeListener(skills: $skills, isGm: false, uid: 'player1');
+		$entity = new FakeObjectEntity(self::SCHEMA_ID, [
+			'skills' => ['adv'],
+			'requirementOverrides' => [['skill' => 'adv', 'reason' => 'sneaky']],
+		]);
+		$event = new ObjectCreatingEvent($entity);
 
-        $listener->handle($event);
+		$listener->handle($event);
 
-        $this->assertTrue($event->isPropagationStopped());
-        $this->assertSame('override_forbidden', $event->getErrors()['requirementOverrides'][0]['code']);
-    }
+		$this->assertTrue($event->isPropagationStopped());
+		$this->assertSame('override_forbidden', $event->getErrors()['requirementOverrides'][0]['code']);
+	}
 
-    public function testEmptyReasonOverrideRejected(): void
-    {
-        $skills   = [['id' => 'adv', 'name' => 'Advanced']];
-        $listener = $this->makeListener(skills: $skills, isGm: true, uid: 'gm1');
-        $entity   = new FakeObjectEntity(self::SCHEMA_ID, [
-            'skills' => ['adv'],
-            'requirementOverrides' => [['skill' => 'adv', 'reason' => '']],
-        ]);
-        $event = new ObjectCreatingEvent($entity);
+	public function testEmptyReasonOverrideRejected(): void {
+		$skills = [['id' => 'adv', 'name' => 'Advanced']];
+		$listener = $this->makeListener(skills: $skills, isGm: true, uid: 'gm1');
+		$entity = new FakeObjectEntity(self::SCHEMA_ID, [
+			'skills' => ['adv'],
+			'requirementOverrides' => [['skill' => 'adv', 'reason' => '']],
+		]);
+		$event = new ObjectCreatingEvent($entity);
 
-        $listener->handle($event);
+		$listener->handle($event);
 
-        $this->assertTrue($event->isPropagationStopped());
-        $this->assertSame('override_reason_required', $event->getErrors()['requirementOverrides'][0]['code']);
-    }
+		$this->assertTrue($event->isPropagationStopped());
+		$this->assertSame('override_reason_required', $event->getErrors()['requirementOverrides'][0]['code']);
+	}
 }

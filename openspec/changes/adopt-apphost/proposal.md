@@ -84,6 +84,99 @@ No `health.checks` block: the defaults (`database` + `orAvailable`) are precisel
 - `lib/Controller/CharactersController.php` + `lib/Service/CharacterService.php` — character stat computation and PDF download are LarpingApp's actual domain.
 - `lib/Service/RegisterObjectFetcher.php` — the backend data-access path for `CharacterService` (per-type mapper resolution with the resolver/legacy fallback and the #212 UUID-only IDOR guard). It is not in the AppHost class inventory and serves only domain code; flagged as a *future* generalisation candidate, out of scope here.
 
+## Binding adoption hazard: registration-name displacement (last registration wins)
+
+`Bootstrap::register()` does not add the generics *alongside* the leaf's classes — it
+`registerService()`s **the leaf's own fully-qualified class names** and points them at the
+generics. There is no `class_exists()` guard on the leaf side, so the displacement is
+unconditional; and because it happens inside `Application::register()`, **only registrations
+made AFTER the `Bootstrap::register()` call survive** (last registration wins). Doriath hit
+exactly this and now re-registers its domain-divergent concretes in an explicit override block
+directly after the call — see the override block in `doriath/lib/AppInfo/Application.php`.
+
+Names LarpingApp loses the moment it calls `Bootstrap::register($context, self::APP_ID)`
+(source: `openregister/lib/AppHost/Bootstrap.php`, methods `registerControllers()`,
+`registerServices()`, `registerRepairSteps()`, `registerAdminSettings()`,
+`registerDeepLinkListener()`):
+
+| Displaced name | Bound to |
+|---|---|
+| `OCA\LarpingApp\Controller\DashboardController` | `GenericDashboardController` |
+| `OCA\LarpingApp\Controller\PreferencesController` | `GenericPreferencesController` |
+| `OCA\LarpingApp\Controller\SettingsController` | `GenericSettingsController` |
+| `OCA\LarpingApp\Service\SettingsService` | `AppHostSettingsService` |
+| `OCA\LarpingApp\Service\ActionAuthService`, `OCA\LarpingApp\Service\RegisterConfigResolver` | AppHost generics |
+| `OCA\LarpingApp\Listener\DeepLinkRegistrationListener` | `GenericDeepLinkRegistrationListener` |
+| `OCA\LarpingApp\Controller\HealthController` / `MetricsController` | observability generics (new names, no conflict) |
+
+Four concrete defects follow, none of them covered by the plan above. All four surface as
+runtime 500s or silent regressions, never as unit-test failures — the unit suite mocks these
+classes and never resolves them through the DI container.
+
+**H1 — `SetupController` breaks: HTTP 500 on all three `/api/setup/*` routes.**
+`lib/Controller/SetupController.php` is a *kept* file (ADR-042 first-time setup wizard; it
+appears nowhere in the deletion table above) and declares
+`private readonly SettingsService $settingsService`. `AppHostSettingsService` is a standalone
+`class AppHostSettingsService` — it does **not** extend `OCA\LarpingApp\Service\SettingsService`.
+Once the name is displaced, the container hands `SetupController` an `AppHostSettingsService`
+and PHP throws a `TypeError` at construction. Identical mechanism to the doriath
+`/api/dashboard/summary` 500.
+
+**H2 — `settings#reimport` returns HTTP 500 (`ReflectionException`).**
+`GenericSettingsController` exposes `index()`, `create()`, `update()` and `load()` — there is
+**no `reimport()`**. Task 2.2 keeps the route name `settings#reimport` in `$extra`; Nextcloud
+resolves that name to a `reimport` method on the *aliased* controller, which does not exist.
+The generic force-load verb is `load()` (`loadConfiguration(force: true)`), so the extra route
+must be declared as `['name' => 'settings#load', 'url' => 'api/settings/reimport', 'verb' => 'POST']`
+to keep the URL while resolving to a method that exists.
+
+**H3 — the three "one-line stubs" are not autowirable, and are not displaced either.**
+Bootstrap registers `Repair\InitializeSettings`, `Settings\AdminSettings` and
+`Sections\SettingsSection`. LarpingApp's `appinfo/info.xml` names `Repair\InitializeRegister`,
+`Settings\LarpingAppAdmin` and `Sections\LarpingAppAdmin` — **different names, so the aliases
+never fire for them**. A bare `class InitializeRegister extends GenericInitializeSettings {}`
+inherits a constructor whose first parameter is `string $appId`; `GenericAdminSettings`
+requires `string $appId, string $sectionId, int $priority`; `GenericSettingsSection` requires
+`string $sectionId, string $name, string $appId, string $iconFile, int $priority`. Nextcloud's
+`DIContainer` registers exactly five scalar parameters (`appName`, `urlParams`, `corsMethods`,
+`corsAllowedHeaders`, `corsMaxAge`) plus the server container's `isCLI` / `serverRoot`; none of
+`appId` / `sectionId` / `priority` / `name` / `iconFile` is among them, and
+`SimpleContainer::buildClassConstructorParameters()` rethrows for a builtin-typed parameter
+with no default value. Result: the install and post-migration repair steps throw on
+`occ app:enable larpingapp`, and the admin settings section throws when Settings is opened.
+
+**H4 — `CharacterRequirementListener` silently stops registering (security regression).**
+Apps register alphabetically, so `larpingapp` registers *before* `openregister` and
+`OCA\OpenRegister\AppHost\Bootstrap` is not yet autoloadable through Nextcloud's app loader.
+An unguarded `Bootstrap::register()` throws `\Error`, which aborts the whole
+`Application::register()` — every `registerEventListener()` placed after it silently never runs.
+For LarpingApp that means the server-authoritative skill-requirement / XP-budget enforcement on
+character writes (`CharacterRequirementListener`, bound to OpenRegister's `ObjectCreatingEvent`
+and `ObjectUpdatingEvent`) is **off**, with no error logged anywhere. This is precisely the
+incident documented in the `LOAD-ORDER HAZARD` comment in `doriath/lib/AppInfo/Application.php`,
+where the audit listener recorded zero dispatched events.
+
+**Remedy (binding).** For every displaced name the app still owns, either (i) re-register the
+concrete class **after** `Bootstrap::register()` with an explicit factory closure — doriath's
+override-block pattern, last registration wins — or (ii) prove the concrete is genuinely
+deleted *and* the generic is behaviour-identical, method-for-method, for every route that
+targets it. **Autowirability is not a defence.** LarpingApp's `DashboardController`
+(`__construct($appName, IRequest $request)` — the untyped `$appName` resolves because
+`DIContainer` registers the `appName` parameter and `SimpleContainer` falls back to the
+parameter *name* for untyped parameters), `PreferencesController` and `SettingsController` are
+all autowirable today, and it changes nothing: `registerService()` short-circuits autowiring
+entirely, and `SettingsController` additionally becomes unconstructible because its own
+`SettingsService` dependency name has been displaced out from under it.
+
+**Checked and NOT applicable to LarpingApp** (recorded so nobody re-checks): the CSP half of
+the doriath failure does not apply here — LarpingApp calls `allowEvalWasm()` nowhere (a sweep
+that finds doriath's two call sites, `DashboardController.php:119` and
+`PublicShellController.php:79`, returns nothing for larpingapp), so no served CSP can lose
+`wasm-unsafe-eval`. Likewise LarpingApp's `DashboardController` has no `summary()` method and
+`appinfo/routes.php` has no `/api/dashboard/summary` route, so there is no dashboard-summary
+endpoint to break; its `page()` is a bare `TemplateResponse(APP_ID, 'index')`, which is exactly
+what `GenericDashboardController::page()` returns.
+
 ## Impact
 
 - **Deleted**: 8 files, ~1,350 lines of drifted boilerplate. **Stubbed**: 3 files to one-liners. **Rewritten**: `Application.php`, `routes.php`. **Modified**: `src/manifest.json` (observability block + deepLinks), `templates/index.php` only if the generic dashboard controller requires it (parity rule says it doesn't).

@@ -6,7 +6,7 @@
  * @category Test
  * @package  OCA\LarpingApp\Tests\Unit\Controller
  * @author   Ruben Linde <ruben@larpingapp.com>
- * @license  AGPL-3.0-or-later https://www.gnu.org/licenses/agpl-3.0.en.html
+ * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
  */
 
@@ -22,47 +22,41 @@ use PHPUnit\Framework\TestCase;
 /**
  * Tests for DashboardController.
  */
-class DashboardControllerTest extends TestCase
-{
+class DashboardControllerTest extends TestCase {
 
-    private DashboardController $controller;
+	private DashboardController $controller;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
+	protected function setUp(): void {
+		parent::setUp();
 
-        $this->controller = new DashboardController(
-            'larpingapp',
-            $this->createMock(IRequest::class),
-        );
-    }
+		$this->controller = new DashboardController(
+			'larpingapp',
+			$this->createMock(IRequest::class),
+		);
+	}
 
-    public function testPageReturnsTemplateResponse(): void
-    {
-        $result = $this->controller->page();
+	public function testPageReturnsTemplateResponse(): void {
+		$result = $this->controller->page();
 
-        self::assertInstanceOf(TemplateResponse::class, $result);
-    }
+		self::assertInstanceOf(TemplateResponse::class, $result);
+	}
 
-    public function testPageUsesIndexTemplate(): void
-    {
-        $result = $this->controller->page();
+	public function testPageUsesIndexTemplate(): void {
+		$result = $this->controller->page();
 
-        self::assertSame('index', $result->getTemplateName());
-    }
+		self::assertSame('index', $result->getTemplateName());
+	}
 
-    public function testPageUsesLarpingappApp(): void
-    {
-        $result = $this->controller->page();
+	public function testPageUsesLarpingappApp(): void {
+		$result = $this->controller->page();
 
-        // TemplateResponse stores the app name.
-        self::assertInstanceOf(TemplateResponse::class, $result);
-    }
+		// TemplateResponse stores the app name.
+		self::assertInstanceOf(TemplateResponse::class, $result);
+	}
 
-    public function testPageReturnsEmptyParams(): void
-    {
-        $result = $this->controller->page();
+	public function testPageReturnsEmptyParams(): void {
+		$result = $this->controller->page();
 
-        self::assertEmpty($result->getParams());
-    }
+		self::assertEmpty($result->getParams());
+	}
 }

@@ -48,24 +48,58 @@ const L10N_DIR = path.join(ROOT, 'l10n')
 // nl/de/fr/es/it lead (the original supported set); then the EU-24 remainder,
 // wider-Europe national languages, and micro-state / co-official nationals.
 const EUROPEAN = [
-	'nl', 'de', 'fr', 'es', 'it',
-	'bg', 'hr', 'cs', 'da', 'et', 'fi', 'el', 'hu', 'ga', 'lv', 'lt', 'mt',
-	'pl', 'pt', 'ro', 'sk', 'sl', 'sv',
-	'sq', 'is', 'nb', 'sr', 'bs', 'mk', 'uk', 'be', 'ru', 'tr',
-	'ca', 'lb', 'rm',
+	'nl',
+	'de',
+	'fr',
+	'es',
+	'it',
+	'bg',
+	'hr',
+	'cs',
+	'da',
+	'et',
+	'fi',
+	'el',
+	'hu',
+	'ga',
+	'lv',
+	'lt',
+	'mt',
+	'pl',
+	'pt',
+	'ro',
+	'sk',
+	'sl',
+	'sv',
+	'sq',
+	'is',
+	'nb',
+	'sr',
+	'bs',
+	'mk',
+	'uk',
+	'be',
+	'ru',
+	'tr',
+	'ca',
+	'lb',
+	'rm',
 ].join(',')
 
-function readJson (p) {
+function readJson(p) {
 	return JSON.parse(fs.readFileSync(p, 'utf8'))
 }
 
-const appId = process.env.L10N_APP_ID
+const appId =
+	process.env.L10N_APP_ID
 	|| (fs.existsSync(path.join(ROOT, 'package.json'))
 		? readJson(path.join(ROOT, 'package.json')).name
 		: null)
 
 const REQUIRED = (process.env.L10N_REQUIRED_LOCALES || EUROPEAN)
-	.split(',').map((s) => s.trim()).filter(Boolean)
+	.split(',')
+	.map((s) => s.trim())
+	.filter(Boolean)
 
 if (!fs.existsSync(L10N_DIR)) {
 	console.error(`l10n-parity: no l10n/ directory at ${L10N_DIR}`)
@@ -73,27 +107,37 @@ if (!fs.existsSync(L10N_DIR)) {
 }
 
 /** Load an OC.L10N.register(...) .js file into its translations object. */
-function loadJs (file) {
+function loadJs(file) {
 	const code = fs.readFileSync(file, 'utf8')
 	let captured = null
-	const sandbox = { OC: { L10N: { register: (id, obj) => { captured = obj } } } }
+	const sandbox = {
+		OC: {
+			L10N: {
+				register: (id, obj) => {
+					captured = obj
+				},
+			},
+		},
+	}
 	vm.createContext(sandbox)
 	vm.runInContext(code, sandbox, { filename: file, timeout: 5000 })
 	return captured || {}
 }
 
 /** Load an l10n .json file into its translations object. */
-function loadJsonSet (file) {
+function loadJsonSet(file) {
 	return readJson(file).translations || {}
 }
 
 /** True when a translation value is empty (string) or has an empty plural. */
-function isEmpty (v) {
+function isEmpty(v) {
 	if (v == null) {
 		return true
 	}
 	if (Array.isArray(v)) {
-		return v.length === 0 || v.some((e) => typeof e !== 'string' || e.trim() === '')
+		return (
+			v.length === 0 || v.some((e) => typeof e !== 'string' || e.trim() === '')
+		)
 	}
 	return typeof v !== 'string' || v.trim() === ''
 }
@@ -125,34 +169,63 @@ for (const set of sets) {
 	for (const loc of REQUIRED) {
 		const locFile = set.file(loc)
 		if (!fs.existsSync(locFile)) {
-			failures.push({ set: set.kind, loc, kind: 'MISSING FILE', detail: path.relative(ROOT, locFile) })
+			failures.push({
+				set: set.kind,
+				loc,
+				kind: 'MISSING FILE',
+				detail: path.relative(ROOT, locFile),
+			})
 			continue
 		}
 		let locObj
 		try {
 			locObj = set.load(locFile)
 		} catch (e) {
-			failures.push({ set: set.kind, loc, kind: 'UNPARSEABLE', detail: e.message })
+			failures.push({
+				set: set.kind,
+				loc,
+				kind: 'UNPARSEABLE',
+				detail: e.message,
+			})
 			continue
 		}
-		const missing = enKeys.filter((k) => !Object.prototype.hasOwnProperty.call(locObj, k))
-		const empty = enKeys.filter((k) => Object.prototype.hasOwnProperty.call(locObj, k) && isEmpty(locObj[k]))
+		const missing = enKeys.filter(
+			(k) => !Object.prototype.hasOwnProperty.call(locObj, k),
+		)
+		const empty = enKeys.filter(
+			(k) =>
+				Object.prototype.hasOwnProperty.call(locObj, k)
+				&& isEmpty(locObj[k]),
+		)
 		if (missing.length || empty.length) {
-			failures.push({ set: set.kind, loc, kind: 'INCOMPLETE', missing, empty, total: enKeys.length })
+			failures.push({
+				set: set.kind,
+				loc,
+				kind: 'INCOMPLETE',
+				missing,
+				empty,
+				total: enKeys.length,
+			})
 		}
 	}
 }
 
 const label = appId ? `[${appId}]` : ''
-console.log(`l10n-parity ${label}: ${REQUIRED.length} required locales; checked ${checkedSets} translation set(s)`)
+console.log(
+	`l10n-parity ${label}: ${REQUIRED.length} required locales; checked ${checkedSets} translation set(s)`,
+)
 
 if (checkedSets === 0) {
-	console.log('l10n-parity: no en.js / en.json source set found — nothing to check')
+	console.log(
+		'l10n-parity: no en.js / en.json source set found — nothing to check',
+	)
 	process.exit(0)
 }
 
 if (failures.length === 0) {
-	console.log('l10n-parity: OK — every required locale is at full parity (no missing keys, no empty values)')
+	console.log(
+		'l10n-parity: OK — every required locale is at full parity (no missing keys, no empty values)',
+	)
 	process.exit(0)
 }
 
@@ -163,8 +236,10 @@ for (const f of failures) {
 	} else if (f.kind === 'UNPARSEABLE') {
 		console.error(`  • ${f.set} ${f.loc}: cannot parse (${f.detail})`)
 	} else {
-		console.error(`  • ${f.set} ${f.loc}: ${f.missing.length} missing key(s), `
-			+ `${f.empty.length} empty value(s) of ${f.total}`)
+		console.error(
+			`  • ${f.set} ${f.loc}: ${f.missing.length} missing key(s), `
+				+ `${f.empty.length} empty value(s) of ${f.total}`,
+		)
 		for (const k of f.missing.slice(0, 8)) {
 			console.error(`      missing: ${JSON.stringify(k)}`)
 		}
@@ -176,6 +251,8 @@ for (const f of failures) {
 		}
 	}
 }
-console.error('\nEvery required locale must translate every English source key. '
-	+ 'Add the missing/empty translations to the locale file(s) above.')
+console.error(
+	'\nEvery required locale must translate every English source key. '
+		+ 'Add the missing/empty translations to the locale file(s) above.',
+)
 process.exit(1)
