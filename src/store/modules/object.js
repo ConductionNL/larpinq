@@ -24,7 +24,12 @@
  * which clears the in-memory collection / object / pagination caches so
  * the next fetch hits the new tenant.
  */
-import { createObjectStore, filesPlugin, auditTrailsPlugin, relationsPlugin } from '@conduction/nextcloud-vue'
+import {
+	auditTrailsPlugin,
+	createObjectStore,
+	filesPlugin,
+	relationsPlugin,
+} from '@conduction/nextcloud-vue'
 
 // Module-local tenant UUID — written by `setObjectStoreTenantUuid()` from
 // the host App.vue once `useTenantContext()` resolves an active tenant.
@@ -37,17 +42,14 @@ let _activeTenantUuid = null
  * fetch carries the new tenant UUID.
  *
  * @param {string|null} uuid New active tenant UUID, or null to clear.
+ * @spec openspec/changes/larpingapp-adopt-or-abstractions/specs/larpingapp-adopt-or-abstractions/spec.md
  */
 export function setObjectStoreTenantUuid(uuid) {
 	_activeTenantUuid = typeof uuid === 'string' && uuid.length > 0 ? uuid : null
 }
 
 export const useObjectStore = createObjectStore('object', {
-	plugins: [
-		filesPlugin(),
-		auditTrailsPlugin(),
-		relationsPlugin(),
-	],
+	plugins: [filesPlugin(), auditTrailsPlugin(), relationsPlugin()],
 	// Library reads this on every outgoing request → header
 	// `X-OpenRegister-Organisation`. Falls back to the store's own
 	// `activeTenantOrganisationUuid` when null (also written by us via

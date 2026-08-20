@@ -10,7 +10,7 @@
  * @category Test
  * @package  OCA\LarpingApp\Tests\Unit\Service
  * @author   Ruben Linde <ruben@larpingapp.com>
- * @license  AGPL-3.0-or-later https://www.gnu.org/licenses/agpl-3.0.en.html
+ * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
  */
 
@@ -23,74 +23,67 @@ use PHPUnit\Framework\TestCase;
 /**
  * Tests for the setting-management schema changes.
  */
-class SettingSchemaTest extends TestCase
-{
+class SettingSchemaTest extends TestCase {
 
-    /**
-     * Decoded register JSON.
-     *
-     * @var array<string, mixed>
-     */
-    private array $register;
+	/**
+	 * Decoded register JSON.
+	 *
+	 * @var array<string, mixed>
+	 */
+	private array $register;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $path = __DIR__.'/../../../lib/Settings/larpingapp_register.json';
-        $this->register = json_decode((string) file_get_contents($path), true);
-    }
+	protected function setUp(): void {
+		parent::setUp();
+		$path = __DIR__ . '/../../../lib/Settings/larpingapp_register.json';
+		$this->register = json_decode((string)file_get_contents($path), true);
+	}
 
-    public function testRegisterJsonIsWellFormed(): void
-    {
-        self::assertIsArray($this->register);
-        self::assertArrayHasKey('components', $this->register);
-        self::assertArrayHasKey('schemas', $this->register['components']);
-    }
+	public function testRegisterJsonIsWellFormed(): void {
+		self::assertIsArray($this->register);
+		self::assertArrayHasKey('components', $this->register);
+		self::assertArrayHasKey('schemas', $this->register['components']);
+	}
 
-    public function testSettingSchemaIsCampaignEntityV2(): void
-    {
-        $setting = $this->register['components']['schemas']['setting'];
-        self::assertSame('2.0.0', $setting['version']);
-        self::assertSame('setting', $setting['slug']);
+	public function testSettingSchemaIsCampaignEntityV2(): void {
+		$setting = $this->register['components']['schemas']['setting'];
+		self::assertSame('2.0.0', $setting['version']);
+		self::assertSame('setting', $setting['slug']);
 
-        $props = $setting['properties'];
-        self::assertArrayHasKey('name', $props);
-        self::assertArrayHasKey('description', $props);
-        self::assertArrayHasKey('status', $props);
+		$props = $setting['properties'];
+		self::assertArrayHasKey('name', $props);
+		self::assertArrayHasKey('description', $props);
+		self::assertArrayHasKey('status', $props);
 
-        // The vestigial key-value `value` property is gone.
-        self::assertArrayNotHasKey('value', $props);
+		// The vestigial key-value `value` property is gone.
+		self::assertArrayNotHasKey('value', $props);
 
-        // status is an enum active|archived defaulting to active.
-        self::assertSame(['active', 'archived'], $props['status']['enum']);
-        self::assertSame('active', $props['status']['default']);
+		// status is an enum active|archived defaulting to active.
+		self::assertSame(['active', 'archived'], $props['status']['enum']);
+		self::assertSame('active', $props['status']['default']);
 
-        self::assertSame(['name'], $setting['required']);
-    }
+		self::assertSame(['name'], $setting['required']);
+	}
 
-    public function testScopingPropertyAddedToGameEntities(): void
-    {
-        $schemas = $this->register['components']['schemas'];
-        foreach (['character', 'event', 'skill', 'item', 'condition', 'ability', 'effect'] as $type) {
-            self::assertArrayHasKey(
-                'setting',
-                $schemas[$type]['properties'],
-                "Schema $type must carry the optional setting scoping property"
-            );
-            self::assertSame('uuid', $schemas[$type]['properties']['setting']['format']);
-        }
-    }
+	public function testScopingPropertyAddedToGameEntities(): void {
+		$schemas = $this->register['components']['schemas'];
+		foreach (['character', 'event', 'skill', 'item', 'condition', 'ability', 'effect'] as $type) {
+			self::assertArrayHasKey(
+				'setting',
+				$schemas[$type]['properties'],
+				"Schema $type must carry the optional setting scoping property"
+			);
+			self::assertSame('uuid', $schemas[$type]['properties']['setting']['format']);
+		}
+	}
 
-    public function testPlayerIsNotScoped(): void
-    {
-        // A player is a real person who spans campaigns — never setting-scoped.
-        $player = $this->register['components']['schemas']['player'];
-        self::assertArrayNotHasKey('setting', $player['properties']);
-    }
+	public function testPlayerIsNotScoped(): void {
+		// A player is a real person who spans campaigns — never setting-scoped.
+		$player = $this->register['components']['schemas']['player'];
+		self::assertArrayNotHasKey('setting', $player['properties']);
+	}
 
-    public function testSettingRegisteredInSchemaList(): void
-    {
-        $schemas = $this->register['components']['registers']['larpingapp']['schemas'];
-        self::assertContains('setting', $schemas);
-    }
+	public function testSettingRegisteredInSchemaList(): void {
+		$schemas = $this->register['components']['registers']['larpingapp']['schemas'];
+		self::assertContains('setting', $schemas);
+	}
 }

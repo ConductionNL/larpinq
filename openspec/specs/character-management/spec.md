@@ -1,8 +1,11 @@
 ---
-status: implemented
+status: in-progress
 ---
 
 # Character Management
+
+**OpenSpec changes**:
+- `character-player-picker` (in progress) — ocName becomes a player inline select-or-create dropdown; ownerUid becomes an auto-derived calculated field; approved gains a switch widget
 
 ## Purpose
 

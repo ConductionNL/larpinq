@@ -20,6 +20,7 @@
  */
 
 import { test, expect, type Page } from '@playwright/test'
+import { dismissSupportDialog } from '../_nav'
 
 const BASE = '/apps/larpingapp'
 
@@ -33,28 +34,25 @@ const BASE = '/apps/larpingapp'
  * fails to re-key index pages.
  */
 async function openRoute(page: Page, route: string): Promise<void> {
-	await page.goto(`${BASE}/#${route}`)
-	await page.waitForLoadState('networkidle').catch(() => {})
+	// `domcontentloaded`, never `networkidle` — the latter is unreachable on
+	// Nextcloud (notification poll), so it just burns the budget (ADR-074
+	// rule 4). The `.app-content` assertion below is the real readiness gate.
+	await page.goto(`${BASE}/#${route}`, { waitUntil: 'domcontentloaded' })
 	await dismissSupportDialog(page)
 	await expect(page).toHaveURL(new RegExp(`#${route.replace(/\//g, '\\/')}`))
 	await expect(page.locator('.app-content')).toBeVisible({ timeout: 10_000 })
 }
 
-/** Dismiss the cn-support-dialog / first-load support modal if it blocks clicks. */
-async function dismissSupportDialog(page: Page): Promise<void> {
-	const close = page.locator('[role="dialog"] button[aria-label="Close"], .cn-support-dialog button[aria-label="Close"]').first()
-	if (await close.isVisible({ timeout: 1500 }).catch(() => false)) {
-		await close.click().catch(() => {})
-		await page.waitForTimeout(200)
-	}
-}
+// `dismissSupportDialog` now comes from `../_nav` — see the note there on the
+// onboarding tour whose "Close tour" / "Skip" controls this local copy missed.
 
 /** Collect larpingapp-origin console errors / pageerrors / 5xx during a test. */
 function trackLarpErrors(page: Page): string[] {
 	const errs: string[] = []
 	page.on('pageerror', (e) => errs.push(`pageerror: ${e.message}`))
 	page.on('response', (r) => {
-		if (r.status() >= 500 && /larpingapp/i.test(r.url())) errs.push(`http ${r.status()} ${r.url()}`)
+		if (r.status() >= 500 && /larpingapp/i.test(r.url()))
+			errs.push(`http ${r.status()} ${r.url()}`)
 	})
 	return errs
 }
@@ -66,21 +64,32 @@ function trackLarpErrors(page: Page): string[] {
 
 test.describe('game-settings page', () => {
 	// @e2e openspec/specs/settings-management-ui/spec.md#panel-loads-then-saves-all-types
-	test('game settings page renders the settings shell with version + storage sections', async ({ page }) => {
+	test('game settings page renders the settings shell with version + storage sections', async ({
+		page,
+	}) => {
 		const errs = trackLarpErrors(page)
 		await openRoute(page, '/game-settings')
 
 		// The in-app GameSettings page (CnSettingsPage shell) renders its heading.
 		await expect(
-			page.locator('.app-content').getByRole('heading', { name: /LarpingApp Settings/i }).first(),
+			page
+				.locator('.app-content')
+				.getByRole('heading', { name: /LarpingApp Settings/i })
+				.first(),
 		).toBeVisible({ timeout: 10_000 })
 
 		// Version Information and Data storage section headings are present.
 		await expect(
-			page.locator('.app-content').getByRole('heading', { name: /Version Information/i }).first(),
+			page
+				.locator('.app-content')
+				.getByRole('heading', { name: /Version Information/i })
+				.first(),
 		).toBeVisible()
 		await expect(
-			page.locator('.app-content').getByRole('heading', { name: /Data storage/i }).first(),
+			page
+				.locator('.app-content')
+				.getByRole('heading', { name: /Data storage/i })
+				.first(),
 		).toBeVisible()
 
 		// No larpingapp-origin fatal page errors while rendering the settings page.
@@ -88,12 +97,17 @@ test.describe('game-settings page', () => {
 	})
 
 	// @e2e openspec/specs/settings-management-ui/spec.md#panel-loads-then-saves-all-types
-	test('game settings page exposes Re-import configuration and Save controls', async ({ page }) => {
+	test('game settings page exposes Re-import configuration and Save controls', async ({
+		page,
+	}) => {
 		await openRoute(page, '/game-settings')
 
 		// Primary settings actions are present and clickable (we don't submit).
 		await expect(
-			page.locator('.app-content button').filter({ hasText: /Re-import configuration/i }).first(),
+			page
+				.locator('.app-content button')
+				.filter({ hasText: /Re-import configuration/i })
+				.first(),
 		).toBeVisible({ timeout: 10_000 })
 		await expect(
 			page.locator('.app-content button').filter({ hasText: /Save/i }).first(),
@@ -101,12 +115,17 @@ test.describe('game-settings page', () => {
 	})
 
 	// @e2e openspec/specs/settings-management-ui/spec.md#panel-loads-then-saves-all-types
-	test('game settings version block shows an up-to-date / version indicator', async ({ page }) => {
+	test('game settings version block shows an up-to-date / version indicator', async ({
+		page,
+	}) => {
 		await openRoute(page, '/game-settings')
 
 		// The version-information block renders a status control (e.g. "Up to date").
 		await expect(
-			page.locator('.app-content').getByText(/Up to date|outdated|update available/i).first(),
+			page
+				.locator('.app-content')
+				.getByText(/Up to date|outdated|update available/i)
+				.first(),
 		).toBeVisible({ timeout: 10_000 })
 	})
 })
@@ -117,13 +136,18 @@ test.describe('game-settings page', () => {
 
 test.describe('features-roadmap page', () => {
 	// @e2e openspec/specs/dashboard/spec.md#dashboard-is-minimal-but-functional
-	test('features & roadmap page renders the Features heading and shell', async ({ page }) => {
+	test('features & roadmap page renders the Features heading and shell', async ({
+		page,
+	}) => {
 		const errs = trackLarpErrors(page)
 		await openRoute(page, '/features-roadmap')
 
 		// The roadmap page (CnRoadmapPage shell) renders its Features heading.
 		await expect(
-			page.locator('.app-content').getByRole('heading', { name: /Features/i }).first(),
+			page
+				.locator('.app-content')
+				.getByRole('heading', { name: /Features/i })
+				.first(),
 		).toBeVisible({ timeout: 10_000 })
 
 		// No larpingapp-origin fatal page errors on the roadmap page.
@@ -131,27 +155,43 @@ test.describe('features-roadmap page', () => {
 	})
 
 	// @e2e openspec/specs/dashboard/spec.md#dashboard-is-minimal-but-functional
-	test('features & roadmap page exposes roadmap + suggest-feature actions', async ({ page }) => {
+	test('features & roadmap page exposes roadmap + suggest-feature actions', async ({
+		page,
+	}) => {
 		await openRoute(page, '/features-roadmap')
 
 		// Primary roadmap-page actions are present.
 		await expect(
-			page.locator('.app-content button').filter({ hasText: /Show roadmap/i }).first(),
+			page
+				.locator('.app-content button')
+				.filter({ hasText: /Show roadmap/i })
+				.first(),
 		).toBeVisible({ timeout: 10_000 })
 		await expect(
-			page.locator('.app-content button').filter({ hasText: /Suggest feature/i }).first(),
+			page
+				.locator('.app-content button')
+				.filter({ hasText: /Suggest feature/i })
+				.first(),
 		).toBeVisible()
 	})
 
 	// @e2e openspec/specs/dashboard/spec.md#dashboard-is-minimal-but-functional
-	test('features & roadmap page shows the empty-state when no features are documented', async ({ page }) => {
+	test('features & roadmap page shows the empty-state when no features are documented', async ({
+		page,
+	}) => {
 		await openRoute(page, '/features-roadmap')
 
 		// In a bare env the roadmap auto-derives nothing, so the documented
 		// empty-state is shown. Either the empty-state copy or a feature list
 		// renders — assert the shell surfaces one of them (data-independent).
-		const emptyOrList = page.locator('.app-content').getByText(/No features documented yet|Capabilities listed here/i).first()
-		const featuresHeading = page.locator('.app-content').getByRole('heading', { name: /Features/i }).first()
+		const emptyOrList = page
+			.locator('.app-content')
+			.getByText(/No features documented yet|Capabilities listed here/i)
+			.first()
+		const featuresHeading = page
+			.locator('.app-content')
+			.getByRole('heading', { name: /Features/i })
+			.first()
 		// The Features heading is always present; the empty-state is present in a bare env.
 		await expect(featuresHeading).toBeVisible({ timeout: 10_000 })
 		// Empty-state is expected in the bare CI env but is data-dependent; assert

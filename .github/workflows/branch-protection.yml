@@ -5,19 +5,20 @@ on:
     branches: [main, beta]
 
 jobs:
-  # Two independent faults were fixed here, either of which alone kills the gate:
-  #
-  # 1. Job id. GitHub composes a reusable-workflow status context as
-  #    `<caller-job-id> / <called-job-name>`. The org rulesets "Main Branch
-  #    Protection" and "Beta Branch Protection" require
-  #    `branch-protection / check-branch`, but this job was called `protect`,
-  #    so it emitted `protect / check-branch`. The required context never
-  #    reported at all — PRs to main/beta sat permanently pending and only
-  #    `--admin` could ship them.
-  #
-  # 2. Org name. `Conduction` is the RETIRED Codeberg org. On GitHub the org is
-  #    `ConductionNL`, so from commit e2faa092 ("org rename") Actions could not
-  #    resolve this reusable workflow at all and the run produced ZERO jobs.
+  # Job id must stay `branch-protection` so the check reports as
+  # `branch-protection / check-branch`, which is the context name the org
+  # rulesets "Main Branch Protection" and "Beta Branch Protection" require.
+  # GitHub names a reusable-workflow context `<caller-job-id> / <called-job-name>`,
+  # so while this job was called `protect` it emitted `protect / check-branch`
+  # and the REQUIRED context never reported at all: every PR to main or beta
+  # sat permanently pending and only `--admin` could ship it — a dead gate
+  # whose absence looks exactly like its success.
   branch-protection:
+    # The callee's `check-branch` job is a single bash comparison of
+    # `github.base_ref` against `github.head_ref` — no checkout, no network, no
+    # API call. It needs nothing, so it gets nothing. `{}` is an explicit empty
+    # grant, which is what satisfies actions/missing-workflow-permissions; an
+    # ABSENT block means "whatever the repo default is", which is the finding.
+    permissions: {}
     uses: ConductionNL/.github/.github/workflows/branch-protection.yml@main
     secrets: inherit

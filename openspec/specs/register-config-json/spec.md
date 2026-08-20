@@ -1,5 +1,5 @@
 ---
-status: implemented
+status: done
 ---
 
 # Register Config JSON Auto-Import

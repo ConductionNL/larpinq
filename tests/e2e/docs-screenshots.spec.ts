@@ -1,6 +1,6 @@
 /*
  * SPDX-FileCopyrightText: 2026 Larping Contributors
- * SPDX-License-Identifier: AGPL-3.0-or-later
+ * SPDX-License-Identifier: EUPL-1.2
  *
  * Documentation screenshot capture suite — larpingapp.
  *
@@ -12,7 +12,7 @@
  * Run manually whenever the UI changes and tutorial screenshots need
  * to be refreshed:
  *
- *     NEXTCLOUD_URL=http://localhost:8080 \
+ *     PLAYWRIGHT_BASE_URL=http://localhost:8094 \
  *       npx playwright test --project docs-capture
  *
  * Excluded from the default `npm run test:e2e` run via the
@@ -41,7 +41,15 @@ import { test, expect, type Page } from '@playwright/test'
 import * as path from 'path'
 import * as fs from 'fs'
 
-const SHOT_ROOT = path.resolve(__dirname, '..', '..', 'docs', 'static', 'screenshots', 'tutorials')
+const SHOT_ROOT = path.resolve(
+	__dirname,
+	'..',
+	'..',
+	'docs',
+	'static',
+	'screenshots',
+	'tutorials',
+)
 const APP = '/apps/larpingapp'
 
 /**
@@ -50,12 +58,20 @@ const APP = '/apps/larpingapp'
  * Lives under `static/` so Docusaurus copies the PNG into the build
  * root — markdown image refs use `/screenshots/...` (root-absolute).
  */
-async function shoot(page: Page, track: 'user' | 'admin', file: string): Promise<void> {
+async function shoot(
+	page: Page,
+	track: 'user' | 'admin',
+	file: string,
+): Promise<void> {
 	const dir = path.join(SHOT_ROOT, track)
 	if (!fs.existsSync(dir)) {
 		fs.mkdirSync(dir, { recursive: true })
 	}
-	await page.screenshot({ path: path.join(dir, file), fullPage: false, type: 'png' })
+	await page.screenshot({
+		path: path.join(dir, file),
+		fullPage: false,
+		type: 'png',
+	})
 }
 
 /**
@@ -66,7 +82,9 @@ async function shoot(page: Page, track: 'user' | 'admin', file: string): Promise
 async function dismissOverlays(page: Page): Promise<void> {
 	const wizard = page.locator('#firstrunwizard')
 	if (await wizard.isVisible().catch(() => false)) {
-		const close = wizard.getByRole('button', { name: /close|got it|finish|skip/i }).first()
+		const close = wizard
+			.getByRole('button', { name: /close|got it|finish|skip/i })
+			.first()
 		if (await close.isVisible().catch(() => false)) {
 			await close.click().catch(() => {})
 		} else {
@@ -75,7 +93,12 @@ async function dismissOverlays(page: Page): Promise<void> {
 		await wizard.waitFor({ state: 'hidden', timeout: 4000 }).catch(() => {})
 	}
 	const stray = page.locator('[role="dialog"]:not(#firstrunwizard)')
-	if (await stray.first().isVisible().catch(() => false)) {
+	if (
+		await stray
+			.first()
+			.isVisible()
+			.catch(() => false)
+	) {
 		await page.keyboard.press('Escape').catch(() => {})
 		await page.waitForTimeout(300)
 	}
@@ -97,8 +120,16 @@ async function go(page: Page, route: string): Promise<void> {
 		const hashRoute = route.startsWith('/') ? route : `/${route}`
 		url = `${APP}/#${hashRoute}`
 	}
-	await page.goto(url).catch(() => { /* tolerate 404 — caller decides */ })
-	await page.waitForLoadState('networkidle').catch(() => { /* idle never fires on some pages */ })
+	await page.goto(url).catch(() => {
+		/* tolerate 404 — caller decides */
+	})
+	// ADR-074 rule 4: `networkidle` never settles on Nextcloud (notification
+	// poll) — it burned the full budget on EVERY capture. Wait for the shell.
+	await page
+		.locator('#app-content, .app-content, #content')
+		.first()
+		.waitFor({ state: 'visible', timeout: 30_000 })
+		.catch(() => {})
 	await dismissOverlays(page)
 	await page.waitForTimeout(900)
 }
@@ -109,14 +140,20 @@ async function go(page: Page, route: string): Promise<void> {
  * appeared (it does on every list view; the dialog body is empty unless
  * the relevant schema is mapped).
  */
-async function captureCreateDialog(page: Page, track: 'user' | 'admin', file: string): Promise<boolean> {
+async function captureCreateDialog(
+	page: Page,
+	track: 'user' | 'admin',
+	file: string,
+): Promise<boolean> {
 	const addBtn = page.getByRole('button', { name: /Add Item/i }).first()
 	if (!(await addBtn.isVisible().catch(() => false))) {
 		return false
 	}
 	await addBtn.click().catch(() => {})
 	const dialog = page.locator('[role="dialog"]:not(#firstrunwizard)').first()
-	await dialog.waitFor({ state: 'visible', timeout: 5000 }).catch(() => { /* no dialog */ })
+	await dialog.waitFor({ state: 'visible', timeout: 5000 }).catch(() => {
+		/* no dialog */
+	})
 	await page.waitForTimeout(400)
 	await shoot(page, track, file)
 	const cancel = dialog.getByRole('button', { name: /Cancel/i }).first()
@@ -154,7 +191,11 @@ test.describe('docs: user track', () => {
 	test('UN create-character', async ({ page }) => {
 		// docs/tutorials/user/02-create-character.md
 		await go(page, '/characters')
-		const had = await captureCreateDialog(page, 'user', '02-create-character-01.png')
+		const had = await captureCreateDialog(
+			page,
+			'user',
+			'02-create-character-01.png',
+		)
 		if (had) {
 			await captureCreateDialog(page, 'user', '02-create-character-02.png')
 		}
@@ -209,7 +250,11 @@ test.describe('docs: user track', () => {
 		await go(page, '/events')
 		await shoot(page, 'user', '06-event-subscription-01.png')
 		await shoot(page, 'user', '06-event-subscription-02.png')
-		const had = await captureCreateDialog(page, 'user', '06-event-subscription-03.png')
+		const had = await captureCreateDialog(
+			page,
+			'user',
+			'06-event-subscription-03.png',
+		)
 		if (!had) {
 			await shoot(page, 'user', '06-event-subscription-03.png')
 		}

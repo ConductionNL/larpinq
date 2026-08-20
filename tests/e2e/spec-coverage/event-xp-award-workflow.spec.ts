@@ -14,7 +14,7 @@
  * nc-vue follow-up). This file proves the XP Awards index page renders its own
  * schema surface.
  *
- * @spec openspec/changes/event-xp-award-workflow/specs/event-xp-awards/spec.md
+ * @spec openspec/specs/event-xp-awards/spec.md
  */
 
 import { test, expect } from '@playwright/test'
@@ -26,16 +26,38 @@ test.describe('event-xp-award-workflow', () => {
 		const pageErrors: string[] = []
 		page.on('pageerror', (e) => pageErrors.push(e.message))
 
-		await page.goto(`${BASE}/#/xp-awards`)
-		// Wait for the SPA shell + an index primary action to render. The page
-		// shell (not data rows) is what we assert — data fetch depends on a
-		// seeded register, which a bare env does not have.
-		await page.waitForLoadState('networkidle')
+		// Never `networkidle` — unreachable on Nextcloud (ADR-074 rule 4).
+		await page.goto(`${BASE}/#/xp-awards`, { waitUntil: 'domcontentloaded' })
+		await expect(page.locator('.app-content')).toBeVisible({ timeout: 30_000 })
 
-		// The index page should expose an "Add"/"XP Award" affordance somewhere
-		// in the rendered surface (the manifest title is "XP Awards").
-		const hasSurface = await page.getByText(/XP Award/i).first().isVisible().catch(() => false)
-		expect(hasSurface).toBeTruthy()
+		// Assert a page-SPECIFIC affordance inside the content area. The old
+		// `getByText(/XP Award/i)` was tautological — it matched the sidebar's
+		// own "XP Awards" nav label and so passed on any route.
+		// `.first()` goes on the COMBINED locator, not on each side. Written as
+		// `A.first().or(B.first())` this asserted a UNION of two nodes, so the
+		// moment the page rendered both the create button AND "No items found" —
+		// which is precisely how a correct empty index looks — strict mode threw:
+		//
+		//   strict mode violation: … resolved to 2 elements
+		//     1) <button data-testid="cn-cta-primary" …>
+		//     2) <div class="empty-content__name">No items found</div>
+		//
+		// So the assertion was only green while exactly ONE of the two states was
+		// observable, which made it a race on render order rather than a check of
+		// the page. `A.or(B).first()` takes the first match of the union and holds
+		// whether one or both are present.
+		await expect(
+			page
+				.locator('.app-content button')
+				.filter({ hasText: /Add XP Award|New XP Award/i })
+				.or(
+					page
+						.locator('.app-content')
+						.getByText(/No items found|Showing \d+ of \d+/i),
+				)
+				.first(),
+			'XP Awards index must render its create action or an explicit empty state',
+		).toBeVisible({ timeout: 15_000 })
 
 		// No larpingapp JS pageerror while rendering the new page.
 		expect(pageErrors).toEqual([])

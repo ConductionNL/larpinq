@@ -23,10 +23,48 @@
 		{ "key": "conditionId", "value": "" },
 		{ "key": "effectId", "value": "" },
 		{ "key": "eventId", "value": "" },
-		{ "key": "playerId", "value": "" }
+		{ "key": "playerId", "value": "" },
+		{ "key": "setupPlayerId", "value": "" }
 	],
 	"auth": { "type": "noauth" },
 	"item": [
+		{
+			"name": "0. Setup",
+			"item": [
+				{
+					"name": "Seed player (capture setupPlayerId)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"// The character schema declares `ocName` as { \"$ref\": \"player\", \"format\": \"uuid\" }",
+									"// — it is the PLAYER RELATION, not a free-text out-of-character name.",
+									"// OpenRegister rejects a non-UUID there with 400 \"Property 'ocName' should",
+									"// match format 'uuid'\", which is why every character request in section 1",
+									"// used to fail. A player therefore has to exist BEFORE the first character",
+									"// is created, so this seed runs ahead of section 1 rather than relying on",
+									"// section 2's player create, which runs too late.",
+									"pm.test('setup: player created (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 201]));",
+									"const b = pm.response.json();",
+									"const id = b.id || (b['@self'] && b['@self'].id);",
+									"pm.test('setup: player id is a UUID', () => pm.expect(id).to.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i));",
+									"pm.collectionVariables.set('setupPlayerId', id);"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] },
+						"method": "POST",
+						"header": [ { "key": "OCS-APIRequest", "value": "true" }, { "key": "Content-Type", "value": "application/json" }, { "key": "Accept", "value": "application/json" } ],
+						"body": { "mode": "raw", "raw": "{\n  \"name\": \"NEWMAN setup player\",\n  \"description\": \"seeded so character.ocName has a player to reference\"\n}" },
+						"url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{playerSchema}}", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{playerSchema}}" ] }
+					}
+				}
+			]
+		},
 		{
 			"name": "1. Character (OR object CRUD, ADR-022)",
 			"item": [
@@ -52,7 +90,7 @@
 						"auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] },
 						"method": "POST",
 						"header": [ { "key": "OCS-APIRequest", "value": "true" }, { "key": "Content-Type", "value": "application/json" }, { "key": "Accept", "value": "application/json" } ],
-						"body": { "mode": "raw", "raw": "{\n  \"name\": \"NEWMAN character\",\n  \"ocName\": \"NEWMAN character\",\n  \"description\": \"api-contract probe\"\n}" },
+						"body": { "mode": "raw", "raw": "{\n  \"name\": \"NEWMAN character\",\n  \"ocName\": \"{{setupPlayerId}}\",\n  \"description\": \"api-contract probe\"\n}" },
 						"url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{charSchema}}", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{charSchema}}" ] }
 					}
 				},
@@ -120,7 +158,7 @@
 						"auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] },
 						"method": "PUT",
 						"header": [ { "key": "OCS-APIRequest", "value": "true" }, { "key": "Content-Type", "value": "application/json" }, { "key": "Accept", "value": "application/json" } ],
-						"body": { "mode": "raw", "raw": "{\n  \"name\": \"NEWMAN character\",\n  \"ocName\": \"NEWMAN character\",\n  \"description\": \"updated by newman\"\n}" },
+						"body": { "mode": "raw", "raw": "{\n  \"name\": \"NEWMAN character\",\n  \"ocName\": \"{{setupPlayerId}}\",\n  \"description\": \"updated by newman\"\n}" },
 						"url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{charSchema}}/{{charId}}", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{charSchema}}", "{{charId}}" ] }
 					}
 				},
@@ -132,8 +170,16 @@
 							"script": {
 								"type": "text/javascript",
 								"exec": [
-									"pm.test('validation rejected with 4xx not 500', () => pm.expect(pm.response.code).to.be.within(400, 499));",
-									"pm.test('not a 500', () => pm.expect(pm.response.code).to.not.eql(500));"
+									"pm.test('validation rejected with 400 not 500', () => pm.expect(pm.response.code).to.eql(400));",
+									"pm.test('not a 500', () => pm.expect(pm.response.code).to.not.eql(500));",
+									"// A bare within(400,499) here was satisfied by ANY 4xx — including the",
+									"// blanket 400 this endpoint returned to EVERY request while ocName carried",
+									"// a non-UUID value, so it passed while nothing worked. Pin it to the",
+									"// MISSING-REQUIRED branch by name: the uuid-format rejection is also a 400",
+									"// and must not be able to satisfy this test.",
+									"const body = pm.response.text();",
+									"pm.test('names the missing required properties', () => { pm.expect(body).to.include('required'); pm.expect(body).to.include('ocName'); });",
+									"pm.test('is not the uuid-format rejection', () => pm.expect(body).to.not.include('format'));"
 								]
 							}
 						}
@@ -173,15 +219,40 @@
 					}
 				},
 				{
-					"name": "Create character AUTHZ: anonymous write returns 401",
+					"name": "Create character AUTHZ: anonymous write is denied and creates nothing",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"type": "text/javascript",
 								"exec": [
-									"// OR object WRITES require authentication — an anonymous POST is rejected 401.",
-									"pm.test('anonymous OR write rejected 401', () => pm.response.to.have.status(401));"
+									"// An anonymous OR object write must be DENIED and must create NOTHING.",
+									"//",
+									"// The status is 403, not 401. OpenRegister's ObjectsController::create()",
+									"// is #[PublicPage] (deliberately — it is what public forms post through,",
+									"// which is why it carries #[AnonRateLimit]). So Nextcloud's auth",
+									"// middleware lets an anonymous request reach the controller, and the",
+									"// refusal comes from OpenRegister's own RBAC afterwards. That is an",
+									"// authorization failure on a request that was allowed to be anonymous,",
+									"// i.e. 403 Forbidden; 401 would mean 'authenticate and try again', which",
+									"// is not what this endpoint is saying. The old expectation of 401",
+									"// encoded a model where the endpoint was authenticated-only, and it",
+									"// never was.",
+									"//",
+									"// The status code is the weaker half of this test. The property that",
+									"// actually matters is that no object came into existence, so that is",
+									"// asserted directly: a denial that nonetheless created a character",
+									"// would satisfy any status assertion while being the exact bug this",
+									"// case exists to catch.",
+									"pm.test('anonymous OR write is denied', () => pm.expect(pm.response.code).to.be.oneOf([401, 403]));",
+									"pm.test('anonymous OR write is not a success', () => pm.expect(pm.response.code).to.be.at.least(400));",
+									"pm.test('anonymous OR write created no object', () => {",
+									"    let body = {};",
+									"    try { body = pm.response.json(); } catch (e) { body = {}; }",
+									"    const self = body['@self'] || {};",
+									"    pm.expect(body.id, 'response carries an object id').to.be.undefined;",
+									"    pm.expect(self.id, 'response carries an @self.id').to.be.undefined;",
+									"});"
 								]
 							}
 						}
@@ -284,7 +355,12 @@
 					"request": { "auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] }, "method": "DELETE", "header": [ { "key": "OCS-APIRequest", "value": "true" } ], "url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{charSchema}}/{{charId}}", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{charSchema}}", "{{charId}}" ] } }
 				},
 				{
-					"name": "Delete item",
+						"name": "Delete setup player",
+						"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('setup player deleted (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 204]));" ] } } ],
+						"request": { "auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] }, "method": "DELETE", "header": [ { "key": "OCS-APIRequest", "value": "true" } ], "url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{playerSchema}}/{{setupPlayerId}}", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{playerSchema}}", "{{setupPlayerId}}" ] } }
+					},
+					{
+						"name": "Delete item",
 					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('item deleted (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 204]));" ] } } ],
 					"request": { "auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] }, "method": "DELETE", "header": [ { "key": "OCS-APIRequest", "value": "true" } ], "url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{itemSchema}}/{{itemId}}", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{itemSchema}}", "{{itemId}}" ] } }
 				},
