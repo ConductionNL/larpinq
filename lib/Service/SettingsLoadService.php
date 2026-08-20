@@ -207,7 +207,9 @@ class SettingsLoadService {
 		}
 
 		foreach (self::OBJECT_TYPE_SCHEMA_SLUGS as $objectType => $schemaSlug) {
-			if (isset($schemaMap[$schemaSlug]) === true && $schemaMap[$schemaSlug] !== null) {
+			// `isset()` is already false for null — the `!== null` this
+			// replaces was unreachable.
+			if (isset($schemaMap[$schemaSlug]) === true) {
 				$this->appConfig->setValueString(Application::APP_ID, "{$objectType}_schema", (string)$schemaMap[$schemaSlug]);
 				$this->appConfig->setValueString(Application::APP_ID, "{$objectType}_source", 'openregister');
 				if ($registerId !== null) {
