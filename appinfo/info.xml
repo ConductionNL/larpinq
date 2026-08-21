@@ -21,8 +21,8 @@ Larping covers:
 - Printable PDF character sheets and per-event GM run-sheets (cast lists), rendered via DocuDesk
 - Group-restricted access: app visibility is limited to an enrolled `larpers` Nextcloud group
 
-Create a [bug report](https://codeberg.org/Conduction/larpingapp/issues)
-Create a [feature request](https://codeberg.org/Conduction/larpingapp/issues)
+Create a [bug report](https://github.com/ConductionNL/larpinq/issues)
+Create a [feature request](https://github.com/ConductionNL/larpinq/issues)
 
 **Support:** For support, contact support@conduction.nl. For a Service Level Agreement (SLA), contact sales@conduction.nl.
     ]]></description>
@@ -41,8 +41,8 @@ Larping biedt:
 - Afdrukbare PDF-karakterbladen en per-event GM-castlijsten, gerenderd via DocuDesk
 - Toegang beperkt tot een aangemelde `larpers`-Nextcloud-groep
 
-Maak een [bugmelding](https://codeberg.org/Conduction/larpingapp/issues)
-Maak een [featureverzoek](https://codeberg.org/Conduction/larpingapp/issues)
+Maak een [bugmelding](https://github.com/ConductionNL/larpinq/issues)
+Maak een [featureverzoek](https://github.com/ConductionNL/larpinq/issues)
 
 **Support:** neem voor support contact op met support@conduction.nl. Voor een Service Level Agreement (SLA), neem contact op met sales@conduction.nl.
     ]]></description>
@@ -51,12 +51,12 @@ Maak een [featureverzoek](https://codeberg.org/Conduction/larpingapp/issues)
     <author mail="info@conduction.nl" homepage="https://www.conduction.nl/">Conduction</author>
 	<namespace>LarpingApp</namespace>
 	<category>organization</category>
-    <website>https://codeberg.org/Conduction/larpingapp</website>
-    <bugs>https://codeberg.org/Conduction/larpingapp/issues</bugs>
-    <repository type="git">https://codeberg.org/Conduction/larpingapp.git</repository>
-    <screenshot>https://codeberg.org/Conduction/larpingapp/raw/branch/main/img/screenshot-dashboard.png</screenshot>
-    <screenshot>https://codeberg.org/Conduction/larpingapp/raw/branch/main/img/screenshot-characters.png</screenshot>
-    <screenshot>https://codeberg.org/Conduction/larpingapp/raw/branch/main/img/screenshot-events.png</screenshot>
+    <website>https://github.com/ConductionNL/larpinq</website>
+    <bugs>https://github.com/ConductionNL/larpinq/issues</bugs>
+    <repository type="git">https://github.com/ConductionNL/larpinq</repository>
+    <screenshot>https://raw.githubusercontent.com/ConductionNL/larpinq/development/img/screenshot-dashboard.png</screenshot>
+    <screenshot>https://raw.githubusercontent.com/ConductionNL/larpinq/development/img/screenshot-characters.png</screenshot>
+    <screenshot>https://raw.githubusercontent.com/ConductionNL/larpinq/development/img/screenshot-events.png</screenshot>
     <dependencies>
         <!--
         App dependency: openregister. Recorded as prose, not as an element. The
