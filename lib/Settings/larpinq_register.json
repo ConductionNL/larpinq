@@ -7,7 +7,7 @@
   },
   "x-openregister": {
     "type": "application",
-    "app": "larpingapp",
+    "app": "larpinq",
     "openregister": "^v0.2.10",
     "description": "LARP character management data model — thin client on OpenRegister, no own database tables"
   },
