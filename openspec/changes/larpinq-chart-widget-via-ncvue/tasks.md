@@ -1,4 +1,4 @@
-# Tasks — larpingapp-chart-widget-via-ncvue
+# Tasks — larpinq-chart-widget-via-ncvue
 
 ## 1. Preconditions
 
@@ -8,7 +8,7 @@
 ## 2. Swap the chart implementation
 
 - [ ] 2.1 In `src/views/dashboard/SkillUsageChart.vue`, replace the `VueApexCharts` import and `<VueApexCharts>` template usage with `CnChartWidget` (`type="donut"`, `:series="chartSeries"`, `:labels="skillLabels"`, `:height="280"`)
-- [ ] 2.2 Move the `Math.round(val) + '%'` dataLabel formatter and the `val + ' ' + t('larpingapp', 'characters')` tooltip formatter onto whatever override mechanism `CnChartWidget` exposes (per 1.1) — if it does not support per-instance formatter overrides, keep the minimal delta needed as a documented exception in this task and note the nc-vue follow-up
+- [ ] 2.2 Move the `Math.round(val) + '%'` dataLabel formatter and the `val + ' ' + t('larpinq', 'characters')` tooltip formatter onto whatever override mechanism `CnChartWidget` exposes (per 1.1) — if it does not support per-instance formatter overrides, keep the minimal delta needed as a documented exception in this task and note the nc-vue follow-up
 - [ ] 2.3 Delete the local `isDarkTheme` computed (`SkillUsageChart.vue:107-116`) and the `theme: { mode: ... }` key from `chartOptions` — `CnChartWidget` themes via CSS variables and needs neither
 - [ ] 2.4 Remove the direct `vue-apexcharts` import from `SkillUsageChart.vue`'s `components` map; keep `package.json`'s `vue-apexcharts`/`apexcharts` dependency only if another component in this app still uses it directly (grep first — expected: none after this change, but do not remove the dependency speculatively without confirming)
 

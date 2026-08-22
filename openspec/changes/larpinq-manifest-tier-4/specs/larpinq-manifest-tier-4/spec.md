@@ -2,11 +2,11 @@
 status: draft
 ---
 
-# LarpingApp — manifest Tier-4 graduation
+# Larpinq — manifest Tier-4 graduation
 
 ## Purpose
 
-Specify the requirements for completing LarpingApp's adoption of the
+Specify the requirements for completing Larpinq's adoption of the
 fleet-wide app-manifest contract: drop `src/customComponents.js`,
 mount `CnAppRoot` directly, and surface every slot / actions / section /
 header override through the kind-tagged `src/registry.js`.
@@ -15,7 +15,7 @@ header override through the kind-tagged `src/registry.js`.
 
 ### Requirement: `CnAppRoot` SHALL be the boot entry point
 
-LarpingApp SHALL mount `CnAppRoot` (from `@conduction/nextcloud-vue`)
+Larpinq SHALL mount `CnAppRoot` (from `@conduction/nextcloud-vue`)
 directly in `src/main.js`, passing `manifest` and `registry` as props.
 The legacy `CnPageRenderer` + `Vue.use(...)` boilerplate SHALL be
 removed.

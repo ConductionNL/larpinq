@@ -27,7 +27,7 @@ dark-mode detector (`isDarkTheme()`, `SkillUsageChart.vue:111-116`) that reads
   (`nextcloud-vue/package.json:80,90` — `apexcharts` + `vue-apexcharts`), consistent with the
   fleet rule "apexcharts from nc-vue" (feedback `shared-deps`).
 
-Because larpingapp bypasses `CnChartWidget` and drives `VueApexCharts` itself, it (a) carries and
+Because larpinq bypasses `CnChartWidget` and drives `VueApexCharts` itself, it (a) carries and
 maintains its own copy of chart-theming logic that already exists and is tested in the shared
 library, (b) has a **manual dark-mode detector that duplicates and can drift from**
 `CnChartWidget`'s CSS-variable approach (if Nextcloud ever changes how
@@ -44,7 +44,7 @@ reimplementing a component the shared library already provides.
 
 - Replace `SkillUsageChart.vue`'s direct `VueApexCharts` usage with `CnChartWidget` from
   `@conduction/nextcloud-vue`, passing `type="donut"`, `series="skillCounts"`,
-  `labels="skillLabels"`, and the `t('larpingapp', '{val}%')`/`characters` tooltip formatting via
+  `labels="skillLabels"`, and the `t('larpinq', '{val}%')`/`characters` tooltip formatting via
   `CnChartWidget`'s supported options-merge prop (or its documented override slot/prop — see
   `docs/components/cn-chart-widget.md` in nextcloud-vue for the exact contract).
 - Delete `SkillUsageChart.vue`'s local `isDarkTheme` computed and `chartOptions`' hand-rolled

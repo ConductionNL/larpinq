@@ -1,4 +1,4 @@
-# Tasks: larpingapp-manifest-tier-4
+# Tasks: larpinq-manifest-tier-4
 
 ## Phase 1 — Prerequisites (already met)
 
@@ -7,7 +7,7 @@
       any `kind` field; slot/actions/section lookups no longer require
       `kind:"page"`.
 - [x] 1.2 `useAppStatus('openregister')` verified live on the dev
-      container (W24 2026-06-12; `larpingapp-adopt-or-abstractions §1.5`).
+      container (W24 2026-06-12; `larpinq-adopt-or-abstractions §1.5`).
 - [x] 1.3 `CnPageRenderer` mount path already in `src/main.js`; manifest
       is the declarative source of truth.
 

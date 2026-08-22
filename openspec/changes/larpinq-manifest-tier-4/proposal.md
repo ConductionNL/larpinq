@@ -1,13 +1,13 @@
-# Proposal: larpingapp-manifest-tier-4
+# Proposal: larpinq-manifest-tier-4
 
 ## Why
 
-LarpingApp is in practice past Tier 2 — its nav/router are rendered FROM
+Larpinq is in practice past Tier 2 — its nav/router are rendered FROM
 `src/manifest.json` via `CnPageRenderer` in `src/main.js`, page types are
 typed primitives (`index` / `detail` / `dashboard` / `settings`), and slot
 overrides resolve through the ADR-036 `src/registry.js`. The remaining
 Tier-4 step is adopting `CnAppRoot` with `customComponents.js` fully
-retired (see `larpingapp-adopt-or-abstractions §5.2`).
+retired (see `larpinq-adopt-or-abstractions §5.2`).
 
 The prerequisites have all landed:
 
@@ -17,10 +17,10 @@ The prerequisites have all landed:
    `component` field, removing the page-only constraint that previously
    blocked dropping `customComponents.js`.
 2. **`useAppStatus('openregister')`** verified live on the dev
-   `nextcloud` container (`larpingapp-adopt-or-abstractions §1.5`, W24
+   `nextcloud` container (`larpinq-adopt-or-abstractions §1.5`, W24
    2026-06-12): `occ app:list` reports `openregister 0.2.13-unstable.90`
    enabled, OCS capabilities expose the `openregister` block, so
-   dependency-check phase in `CnAppRoot` passes for LarpingApp on the
+   dependency-check phase in `CnAppRoot` passes for Larpinq on the
    current baseline.
 3. **`CnPageRenderer` mount path** already in `src/main.js` —
    `customComponents` is the only remaining bridge.
@@ -48,7 +48,7 @@ the `registry.js` `kind:` field that ADR-036 now resolves.
 - The shared library updates themselves (`CnAppRoot`, the ADR-036
   resolver) — they ship under nextcloud-vue's own openspec changes.
 - i18n / multi-tenancy badge rendering — tracked in
-  `larpingapp-adopt-or-abstractions §3.5 / §4.5`.
+  `larpinq-adopt-or-abstractions §3.5 / §4.5`.
 
 ## Impact
 

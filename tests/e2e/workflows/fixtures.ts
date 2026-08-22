@@ -660,7 +660,11 @@ function runPhpHarness(
 
 	// ⚠️ EXPLICIT CONTAINER OVERRIDE, AND WHY IT HAS TO WIN OVER PATH A.
 	//
-	// On a developer box this checkout lives at `<server>/apps-extra/larpingapp`,
+	// On a developer box this checkout lives at `<server>/apps-extra/larpinq`
+	// — Nextcloud resolves an app by DIRECTORY NAME, so the directory has to
+	// match `<id>` in appinfo/info.xml. An existing `apps-extra/larpingapp`
+	// checkout must be renamed after this app-id rename or the server will
+	// not find the app at all,
 	// and `<server>` has both `lib/base.php` and `config/config.php` — so
 	// findServerRoot() succeeds and Path A runs the harness against the SHARED
 	// dev container's database. Meanwhile PLAYWRIGHT_BASE_URL points the HTTP

@@ -1,8 +1,8 @@
-# Design: larpingapp-manifest-tier-4
+# Design: larpinq-manifest-tier-4
 
 ## Why this change exists
 
-`larpingapp-adopt-or-abstractions §5.2` flagged Tier-4 graduation as a
+`larpinq-adopt-or-abstractions §5.2` flagged Tier-4 graduation as a
 follow-up. Two W22-W24 events unblocked it: ADR-036 (kind-agnostic slot
 resolver, `nextcloud-vue#459`) shipped, and `useAppStatus('openregister')`
 was verified live on the dev `nextcloud` container. This change exists
