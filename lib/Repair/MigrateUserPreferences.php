@@ -97,6 +97,13 @@ use Throwable;
 
 /**
  * Copy per-user preferences from the larpingapp app id to larpinq.
+ *
+ * @spec exclude One-off larpingapp->larpinq app-id rename plumbing: the class
+ *       moves oc_preferences rows between namespaces and adds no behaviour of
+ *       its own, so it has no capability spec to link back to. The preferences
+ *       it preserves are specified where they are read, in
+ *       openspec/specs/preferences-api/spec.md and
+ *       openspec/specs/user-settings/spec.md.
  */
 class MigrateUserPreferences implements IRepairStep {
 	/**
@@ -146,6 +153,10 @@ class MigrateUserPreferences implements IRepairStep {
 	 * Get the name of this repair step.
 	 *
 	 * @return string
+	 *
+	 * @spec exclude IRepairStep boilerplate: returns the label Nextcloud prints
+	 *       while running the one-off app-id rename migration. No capability
+	 *       behaviour of its own.
 	 */
 	public function getName(): string {
 		return 'Copy Larpinq per-user preferences from the larpingapp app id';

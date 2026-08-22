@@ -89,6 +89,12 @@ use Throwable;
 
 /**
  * Copy every stored IAppConfig value from the larpingapp namespace to larpinq.
+ *
+ * @spec exclude One-off larpingapp->larpinq app-id rename plumbing: the class
+ *       moves oc_appconfig rows between namespaces and adds no behaviour of
+ *       its own, so it has no capability spec to link back to. The settings it
+ *       preserves are specified where they are read, in
+ *       openspec/specs/admin-settings/spec.md.
  */
 class MigrateAppConfigKeys implements IRepairStep {
 	/**
@@ -138,6 +144,10 @@ class MigrateAppConfigKeys implements IRepairStep {
 	 * Get the name of this repair step.
 	 *
 	 * @return string
+	 *
+	 * @spec exclude IRepairStep boilerplate: returns the label Nextcloud prints
+	 *       while running the one-off app-id rename migration. No capability
+	 *       behaviour of its own.
 	 */
 	public function getName(): string {
 		return 'Copy Larpinq app configuration from the larpingapp namespace to larpinq';
