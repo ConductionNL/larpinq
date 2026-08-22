@@ -23,7 +23,7 @@ jobs:
       contents: read
     uses: ConductionNL/.github/.github/workflows/issue-triage.yml@main
     with:
-      app-name: larpingapp
+      app-name: larpinq
       backlog-existing: ${{ github.event_name == 'workflow_dispatch' && inputs.backlog-existing || false }}
     secrets:
       PROJECT_TOKEN: ${{ secrets.PROJECT_TOKEN }}

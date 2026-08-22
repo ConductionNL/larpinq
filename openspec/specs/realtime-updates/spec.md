@@ -9,7 +9,7 @@ without a manual reload. The canonical realtime-updates contract (event keys
 `or-collection-{register-slug}-{schema-slug}` and `or-object-{uuid}`, notify_push
 transport with visibility-gated polling fallback, events as refetch hints only)
 is owned by OpenRegister (`openregister/openspec/specs/realtime-updates/spec.md`);
-this spec covers only LarpingApp's frontend adoption.
+this spec covers only Larpinq's frontend adoption.
 
 ## Requirements
 

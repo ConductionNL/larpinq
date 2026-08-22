@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2026 Larping Contributors
+ * SPDX-FileCopyrightText: 2026 Larpinq Contributors
  * SPDX-License-Identifier: EUPL-1.2
  *
  * HIGH-VALUE correctness workflow: character-stat computation.

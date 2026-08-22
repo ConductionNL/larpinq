@@ -4,7 +4,7 @@
  * Unit tests for ConfigFileLoaderService.
  *
  * @category Test
- * @package  OCA\LarpingApp\Tests\Unit\Service
+ * @package  OCA\Larpinq\Tests\Unit\Service
  * @author   Ruben Linde <ruben@larpingapp.com>
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
@@ -12,9 +12,9 @@
 
 declare(strict_types=1);
 
-namespace OCA\LarpingApp\Tests\Unit\Service;
+namespace OCA\Larpinq\Tests\Unit\Service;
 
-use OCA\LarpingApp\Service\ConfigFileLoaderService;
+use OCA\Larpinq\Service\ConfigFileLoaderService;
 use OCP\App\IAppManager;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
@@ -36,7 +36,7 @@ class ConfigFileLoaderServiceTest extends TestCase {
 
 	public function testLoadConfigurationFileThrowsWhenFileNotFound(): void {
 		$this->appManager->method('getAppPath')
-			->with('larpingapp')
+			->with('larpinq')
 			->willReturn('/nonexistent/path');
 
 		$this->expectException(RuntimeException::class);

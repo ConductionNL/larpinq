@@ -1,4 +1,4 @@
-# app-tests.yml — larpingapp caller for the reusable feature-test workflow.
+# app-tests.yml — larpinq caller for the reusable feature-test workflow.
 #
 # Runs the PHASE-5 testing layers on every PR to the protected branches.
 # phpunit-unit + l10n-check HARD-GATE; e2e/newman are scaffolded and opt-in
@@ -30,6 +30,6 @@ jobs:
     uses: ./.forgejo/workflows/tests.yml
     secrets: inherit
     with:
-      app-id: larpingapp
+      app-id: larpinq
       run-e2e: ${{ github.event.inputs.run-e2e == 'true' }}
       run-newman: ${{ github.event.inputs.run-newman == 'true' }}

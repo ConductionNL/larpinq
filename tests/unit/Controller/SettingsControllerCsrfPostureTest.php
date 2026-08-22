@@ -4,7 +4,7 @@
  * Docblock-annotation posture of the SettingsController write endpoints.
  *
  * @category Test
- * @package  OCA\LarpingApp\Tests\Unit\Controller
+ * @package  OCA\Larpinq\Tests\Unit\Controller
  *
  * @author    Ruben Linde <ruben@larpingapp.com>
  * @copyright 2024 Ruben Linde
@@ -17,9 +17,9 @@
 
 declare(strict_types=1);
 
-namespace OCA\LarpingApp\Tests\Unit\Controller;
+namespace OCA\Larpinq\Tests\Unit\Controller;
 
-use OCA\LarpingApp\Controller\SettingsController;
+use OCA\Larpinq\Controller\SettingsController;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionMethod;
@@ -98,7 +98,7 @@ class SettingsControllerCsrfPostureTest extends TestCase {
 	 *
 	 * Two ways this suite could pass while proving nothing: the regex could be
 	 * wrong (then it finds no annotations anywhere and every assertion below
-	 * is vacuous), and `OCA\LarpingApp\…` could resolve to the app DEPLOYED at
+	 * is vacuous), and `OCA\Larpinq\…` could resolve to the app DEPLOYED at
 	 * /var/www/html/custom_apps rather than this working tree (then the suite
 	 * grades somebody else's file). Both are checked here first.
 	 *

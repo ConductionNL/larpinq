@@ -1,9 +1,9 @@
 <?php
 
 /**
- * LarpingApp Portal Contribution Provider
+ * Larpinq Portal Contribution Provider
  *
- * LarpingApp's contribution to the shared portaliq external portal (hydra
+ * Larpinq's contribution to the shared portaliq external portal (hydra
  * ADR-046 + contract v2.1). Portaliq — the ONE shared portal for people
  * WITHOUT Nextcloud accounts — discovers this class by convention FQCN
  * (`OCA\{Namespace}\Portal\PortalContributionProvider`) and duck-types it via
@@ -21,7 +21,7 @@
  * openspec/changes/portal-contribution/design.md.
  *
  * @category Portal
- * @package  OCA\LarpingApp\Portal
+ * @package  OCA\Larpinq\Portal
  *
  * @author    Conduction Development Team <info@conduction.nl>
  * @copyright 2026 Conduction B.V.
@@ -39,7 +39,7 @@
 
 declare(strict_types=1);
 
-namespace OCA\LarpingApp\Portal;
+namespace OCA\Larpinq\Portal;
 
 /**
  * Declares what an external portal subject may see and do in larpingapp.
@@ -63,6 +63,12 @@ class PortalContributionProvider {
 	/**
 	 * The OpenRegister register slug every collection below lives in.
 	 *
+	 * ⚠️ FROZEN ON THE OLD APP ID, DELIBERATELY. This is the OpenRegister
+	 * REGISTER SLUG, not the app id — it did not move with the
+	 * `larpingapp` -> `larpinq` rename. Renaming it here would point every
+	 * portal collection at a register that does not exist, and the portal
+	 * surface would go silently empty rather than error. Leave it.
+	 *
 	 * @var string
 	 */
 	private const REGISTER = 'larpingapp';
@@ -70,7 +76,7 @@ class PortalContributionProvider {
 	/**
 	 * The audiences this provider contributes to (contract v2, preferred).
 	 *
-	 * The registry probes for this method first. LarpingApp serves exactly one
+	 * The registry probes for this method first. Larpinq serves exactly one
 	 * external audience: `player` (a real-world LARP player without a Nextcloud
 	 * account).
 	 *
@@ -160,7 +166,7 @@ class PortalContributionProvider {
 	 */
 	private function playerContribution(): array {
 		return [
-			'label' => 'LarpingApp',
+			'label' => 'Larpinq',
 			'collections' => $this->playerCollections(),
 			'actions' => $this->playerActions(),
 			'notifications' => [],

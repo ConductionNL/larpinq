@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2026 Larping Contributors
+ * SPDX-FileCopyrightText: 2026 Larpinq Contributors
  * SPDX-License-Identifier: EUPL-1.2
  *
  * Spec-coverage Playwright tests — larpingapp detail pages, create/edit

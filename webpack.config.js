@@ -15,7 +15,7 @@ webpackConfig.stats = {
 	modules: false,
 }
 
-const appId = 'larpingapp'
+const appId = 'larpinq'
 
 webpackConfig.entry = {
 	main: {
@@ -59,7 +59,7 @@ webpackConfig.output = {
 //
 // That is not hypothetical: the shared `apps-extra/nextcloud-vue` checkout was
 // on `wip/cnindexpage-export-action` at `1.0.0-beta.184` while this migration
-// was in progress, so any build run from `apps-extra/larpingapp` would have
+// was in progress, so any build run from `apps-extra/larpinq` would have
 // picked it up.
 //
 // So the local lib is used only when its MAJOR matches the version this app
@@ -114,7 +114,7 @@ function resolveUseLocalLib() {
 		// the developer to repair before the build can proceed.
 		// eslint-disable-next-line no-console
 		console.warn(
-			`[larpingapp] IGNORING sibling @conduction/nextcloud-vue@${localVersion} — `
+			`[larpinq] IGNORING sibling @conduction/nextcloud-vue@${localVersion} — `
 				+ "it does not satisfy this app's declared range. Building against the npm dist.",
 		)
 		return false

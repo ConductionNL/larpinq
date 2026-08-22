@@ -4,7 +4,7 @@
  * Bootstrap file for PHPUnit unit tests.
  *
  * @category Test
- * @package  OCA\LarpingApp\Tests
+ * @package  OCA\Larpinq\Tests
  *
  * @author    Ruben Linde <ruben@larpingapp.com>
  * @copyright 2024 Ruben Linde

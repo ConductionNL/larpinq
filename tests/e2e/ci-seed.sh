@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# SPDX-FileCopyrightText: 2026 Larping Contributors
+# SPDX-FileCopyrightText: 2026 Larpinq Contributors
 # SPDX-License-Identifier: EUPL-1.2
 #
 # Provision LarpingApp's OpenRegister register + schemas on a freshly installed

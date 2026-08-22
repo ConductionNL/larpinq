@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "LarpingApp Register",
-    "description": "Live Action Role Playing character management register for the LarpingApp Nextcloud app. Manages characters, players, abilities, skills, items, conditions, effects, events, and worlds.",
+    "title": "Larpinq Register",
+    "description": "Live Action Role Playing character management register for the Larpinq Nextcloud app. Manages characters, players, abilities, skills, items, conditions, effects, events, and worlds.",
     "version": "1.2.0"
   },
   "x-openregister": {
@@ -15,7 +15,7 @@
     "registers": {
       "larpingapp": {
         "slug": "larpingapp",
-        "title": "LarpingApp",
+        "title": "Larpinq",
         "version": "1.0.0",
         "description": "Live Action Role Playing character management register — manages characters, players, abilities, skills, items, conditions, effects, events, and game worlds.",
         "published": "2026-03-01T00:00:00+00:00",

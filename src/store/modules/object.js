@@ -1,5 +1,5 @@
 /**
- * Object store for LarpingApp — powered by @conduction/nextcloud-vue.
+ * Object store for Larpinq — powered by @conduction/nextcloud-vue.
  *
  * Uses createObjectStore('object') to maintain the same Pinia store ID.
  * The full implementation (CRUD, pagination, caching, resolveReferences)
@@ -42,7 +42,7 @@ let _activeTenantUuid = null
  * fetch carries the new tenant UUID.
  *
  * @param {string|null} uuid New active tenant UUID, or null to clear.
- * @spec openspec/changes/larpingapp-adopt-or-abstractions/specs/larpingapp-adopt-or-abstractions/spec.md
+ * @spec openspec/changes/larpinq-adopt-or-abstractions/specs/larpinq-adopt-or-abstractions/spec.md
  */
 export function setObjectStoreTenantUuid(uuid) {
 	_activeTenantUuid = typeof uuid === 'string' && uuid.length > 0 ? uuid : null

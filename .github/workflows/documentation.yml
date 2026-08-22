@@ -29,4 +29,11 @@ jobs:
       packages: write
     uses: ConductionNL/.github/.github/workflows/documentation.yml@main
     with:
+      # ⚠️ FROZEN on the OLD name during the larpingapp -> larpinq rename.
+      # This is the LIVE docs host (HTTP 200); `larpinq.conduction.nl` does not
+      # resolve yet (HTTP 000). The subdomain moves in a separate DNS pass — it
+      # is NOT part of the code rename. "Finishing the job" here publishes the
+      # site behind a CNAME nothing points at and 404s the documentation.
+      # Move this only together with docs/static/CNAME and the `url:` in
+      # docs/docusaurus.config.js, and only after DNS answers.
       cname: larpingapp.conduction.nl

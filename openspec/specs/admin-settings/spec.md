@@ -8,7 +8,7 @@ status: done
 
 SPA mount fixed in #202 — admin panel load scenario covered by tests/e2e/spec-coverage/spa-ui.spec.ts; backend API/migration scenarios annotated @e2e exclude below
 
-Provides per-object-type data source configuration for LarpingApp, allowing administrators to choose whether each entity type (ability, character, condition, effect, event, item, player, setting, skill) is stored in the internal Nextcloud database or in an OpenRegister instance. When OpenRegister is selected, administrators configure the specific register and schema for each object type. Settings are exposed via the Nextcloud Admin Settings panel and a REST API. Additionally, provides a JSON-based configuration import mechanism via `SettingsLoadService` that bootstraps registers and schemas from a bundled configuration file.
+Provides per-object-type data source configuration for Larpinq, allowing administrators to choose whether each entity type (ability, character, condition, effect, event, item, player, setting, skill) is stored in the internal Nextcloud database or in an OpenRegister instance. When OpenRegister is selected, administrators configure the specific register and schema for each object type. Settings are exposed via the Nextcloud Admin Settings panel and a REST API. Additionally, provides a JSON-based configuration import mechanism via `SettingsLoadService` that bootstraps registers and schemas from a bundled configuration file.
 
 ## Requirements
 
@@ -16,17 +16,17 @@ Provides per-object-type data source configuration for LarpingApp, allowing admi
 
 ### Requirement: Nextcloud Admin Panel Integration
 
-The LarpingApp MUST register a dedicated section in the Nextcloud admin settings panel that renders settings via a Vue component.
+Larpinq MUST register a dedicated section in the Nextcloud admin settings panel that renders settings via a Vue component.
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
-| SET-001 | LarpingApp MUST have a dedicated admin section in the Nextcloud admin settings panel | MUST | Implemented |
-| SET-002 | The admin section MUST use the LarpingApp icon (`app-dark.svg`) | MUST | Implemented |
-| SET-003 | The admin section MUST be registered via `LarpingAppAdmin` in `lib/Settings/` (as `<admin>` in info.xml) and `LarpingAppAdmin` IIconSection in `lib/Sections/` (as `<admin-section>` in info.xml). Note: `lib/Settings/LarpingAppAdmin.php` implements `IIconSection` rather than `ISettings`; it should implement `ISettings` to properly render the admin panel content. | MUST | Bug |
+| SET-001 | Larpinq MUST have a dedicated admin section in the Nextcloud admin settings panel | MUST | Implemented |
+| SET-002 | The admin section MUST use the Larpinq icon (`app-dark.svg`) | MUST | Implemented |
+| SET-003 | The admin section MUST be registered via `LarpinqAdmin` in `lib/Settings/` (as `<admin>` in info.xml) and `LarpinqAdmin` IIconSection in `lib/Sections/` (as `<admin-section>` in info.xml). Note: `lib/Settings/LarpinqAdmin.php` implements `IIconSection` rather than `ISettings`; it should implement `ISettings` to properly render the admin panel content. | MUST | Bug |
 | SET-004 | Settings MUST be rendered using a Vue component (`Settings.vue`) via the `settings` entry point | MUST | Implemented |
 | SET-005 | The admin section MUST have priority 55 in the settings panel ordering | MUST | Implemented |
 
-#### Scenario: Admin opens LarpingApp settings panel
+#### Scenario: Admin opens Larpinq settings panel
 
 - GIVEN an administrator is logged in to Nextcloud
 - WHEN they navigate to Admin Settings
@@ -40,15 +40,15 @@ The LarpingApp MUST register a dedicated section in the Nextcloud admin settings
 
 - GIVEN a regular (non-admin) Nextcloud user
 - WHEN they navigate to Admin Settings
-- THEN the LarpingApp admin section MUST NOT be visible
+- THEN the Larpinq admin section MUST NOT be visible
 - AND direct URL access to the settings page MUST be denied
 
 #### Scenario: Settings panel rendering with IIconSection bug
 
-@e2e exclude Describes a hypothetical regression (LarpingAppAdmin implementing IIconSection instead of ISettings) that is not the current implementation; no browser-navigable UI surface for the bug condition.
+@e2e exclude Describes a hypothetical regression (LarpinqAdmin implementing IIconSection instead of ISettings) that is not the current implementation; no browser-navigable UI surface for the bug condition.
 
-- GIVEN `LarpingAppAdmin` in `lib/Settings/` implements `IIconSection` instead of `ISettings`
-- WHEN the admin navigates to the LarpingApp settings section
+- GIVEN `LarpinqAdmin` in `lib/Settings/` implements `IIconSection` instead of `ISettings`
+- WHEN the admin navigates to the Larpinq settings section
 - THEN the section tab appears in the sidebar
 - BUT the settings content panel MAY not render correctly because `IIconSection` does not provide `getForm()`
 
@@ -131,7 +131,7 @@ The settings UI MUST detect whether OpenRegister is installed and display approp
 @e2e exclude Requires the OpenRegister app to be absent; not reproducible on this OR-installed instance and uninstalling OR is outside the app's browser-navigable surface; the not-installed NcNoteCard path is covered by PHPUnit with a mocked IAppManager.
 
 - GIVEN OpenRegister is not installed on the Nextcloud instance
-- WHEN an administrator opens the LarpingApp admin settings
+- WHEN an administrator opens the Larpinq admin settings
 - THEN a warning NcNoteCard MUST be displayed with text "Open Register is not installed. Some features might be unavailable."
 - AND source selectors MUST still show "Internal" and "Open Register" options
 - BUT selecting "Open Register" MUST NOT show register/schema dropdowns
@@ -139,7 +139,7 @@ The settings UI MUST detect whether OpenRegister is installed and display approp
 #### Scenario: OpenRegister installed with registers
 
 - GIVEN OpenRegister is installed and has 2 registers with 3 schemas each
-- WHEN an administrator opens the LarpingApp admin settings
+- WHEN an administrator opens the Larpinq admin settings
 - THEN no warning card MUST be displayed
 - AND the register dropdown MUST list both registers when "Open Register" is selected
 
@@ -168,7 +168,7 @@ Settings MUST be persisted in Nextcloud's IAppConfig as key-value pairs followin
 
 #### Scenario: Default configuration on fresh install
 
-- GIVEN LarpingApp is freshly installed
+- GIVEN Larpinq is freshly installed
 - WHEN the settings API is queried via GET /api/settings
 - THEN all object types MUST have source "internal"
 - AND all register values MUST be ""
@@ -279,7 +279,7 @@ The system MUST support bootstrapping register and schema configuration from a b
 
 #### Scenario: First-time configuration import
 
-- GIVEN LarpingApp is freshly installed with OpenRegister available
+- GIVEN Larpinq is freshly installed with OpenRegister available
 - AND no register or schema configuration exists
 - WHEN `loadSettings()` is triggered (e.g., via the re-import button)
 - THEN the JSON config file MUST be read from the app bundle
@@ -354,7 +354,7 @@ Database migrations MUST create tables for all entity types used in internal sto
 
 #### Scenario: Fresh install creates all tables
 
-- GIVEN LarpingApp is being installed for the first time
+- GIVEN Larpinq is being installed for the first time
 - WHEN the migration `Version0Date20240826193657` runs
 - THEN 9 tables MUST be created with the correct columns
 - AND the abilities table MUST NOT yet have `base` or `allowed_negative` columns
@@ -385,15 +385,15 @@ The app MUST declare correct metadata in `info.xml` for Nextcloud compatibility.
 | SET-092 | Supported Nextcloud versions MUST include 28 through 30 | MUST | Implemented |
 | SET-093 | Supported databases MUST include PostgreSQL (min 10), SQLite, MySQL (min 8.0) | MUST | Implemented |
 | SET-094 | Required PHP version MUST be 8.0+ with 64-bit integer support | MUST | Implemented |
-| SET-095 | App namespace MUST be `LarpingApp` | MUST | Implemented |
-| SET-096 | Navigation entry MUST route to `larpingapp.dashboard.page` with icon `app.svg` and label "Larping" | MUST | Implemented |
+| SET-095 | App namespace MUST be `Larpinq` | MUST | Implemented |
+| SET-096 | Navigation entry MUST route to `larpinq.dashboard.page` with icon `app.svg` and label "Larpinq" | MUST | Implemented |
 
 #### Scenario: App installs on supported Nextcloud version
 
 @e2e exclude appinfo/info.xml min/max Nextcloud version gate is enforced by the Nextcloud app installer, not a browser-navigable in-app UI surface.
 
 - GIVEN a Nextcloud 29 instance
-- WHEN an administrator installs LarpingApp
+- WHEN an administrator installs Larpinq
 - THEN the app MUST install successfully
 - AND the "Larping" navigation item MUST appear in the top bar
 
@@ -402,14 +402,14 @@ The app MUST declare correct metadata in `info.xml` for Nextcloud compatibility.
 @e2e exclude appinfo/info.xml version-incompatibility rejection is enforced by the Nextcloud app installer, not a browser-navigable in-app UI surface.
 
 - GIVEN a Nextcloud 27 instance
-- WHEN an administrator attempts to install LarpingApp
+- WHEN an administrator attempts to install Larpinq
 - THEN the installation MUST be rejected due to `min-version="28"` constraint
 
 #### Scenario: App metadata displayed in app store
 
 @e2e exclude App-store listing metadata (name, description, screenshots from appinfo/info.xml) is rendered by the external Nextcloud app store, not a browser-navigable surface of this app.
 
-- GIVEN LarpingApp is listed in the Nextcloud app store
+- GIVEN Larpinq is listed in the Nextcloud app store
 - THEN the license MUST show as EUPL-1.2
 - AND the category MUST show as "organization"
 - AND supported databases MUST list PostgreSQL, SQLite, and MySQL
@@ -476,7 +476,7 @@ The app MUST declare correct metadata in `info.xml` for Nextcloud compatibility.
 
 The settings page is divided into two `NcSettingsSection` blocks:
 
-1. **LarpingApp header**: App name ("Larping App") with description and documentation link to `https://conduction.gitbook.io/larpingapp-nextcloud/users`
+1. **Larpinq header**: App name ("Larpinq") with description and documentation link to `https://conduction.gitbook.io/larpingapp-nextcloud/users`
 
 2. **Data Storage section**: Per-object-type configuration
    - Warning `NcNoteCard` when OpenRegister is not installed
@@ -501,7 +501,7 @@ Note: All endpoints are admin-only (no `@NoAdminRequired` annotation). All endpo
 ## Dependencies
 
 - **Nextcloud IAppConfig**: Key-value configuration storage for register/schema per object type
-- **Nextcloud ISettings / IIconSection**: Admin panel integration (`lib/Settings/LarpingAppAdmin.php`, `lib/Sections/LarpingAppAdmin.php`)
+- **Nextcloud ISettings / IIconSection**: Admin panel integration (`lib/Settings/LarpinqAdmin.php`, `lib/Sections/LarpinqAdmin.php`)
 - **IAppManager**: Checking if OpenRegister app is installed
 - **RegisterObjectFetcher**: Resolves register/schema from config to obtain OpenRegister mappers
 - **SettingsService**: Business logic for reading/writing CONFIG_KEYS

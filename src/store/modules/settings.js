@@ -27,7 +27,7 @@ export const useSettingsStore = defineStore('settings', {
 			this.error = null
 
 			try {
-				const response = await fetch('/apps/larpingapp/api/settings', {
+				const response = await fetch('/apps/larpinq/api/settings', {
 					method: 'GET',
 					headers: {
 						'Content-Type': 'application/json',
@@ -51,7 +51,7 @@ export const useSettingsStore = defineStore('settings', {
 				return this.config
 			} catch (error) {
 				this.error = error.message
-				logger.error('Error fetching LarpingApp settings', { error })
+				logger.error('Error fetching Larpinq settings', { error })
 				return null
 			} finally {
 				this.loading = false
@@ -70,7 +70,7 @@ export const useSettingsStore = defineStore('settings', {
 			this.error = null
 
 			try {
-				const response = await fetch('/apps/larpingapp/api/settings', {
+				const response = await fetch('/apps/larpinq/api/settings', {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
@@ -92,7 +92,7 @@ export const useSettingsStore = defineStore('settings', {
 				return this.config
 			} catch (error) {
 				this.error = error.message
-				logger.error('Error saving LarpingApp settings', { error })
+				logger.error('Error saving Larpinq settings', { error })
 				return null
 			} finally {
 				this.loading = false
@@ -108,7 +108,7 @@ export const useSettingsStore = defineStore('settings', {
 
 			try {
 				const response = await fetch(
-					'/apps/larpingapp/api/settings/reimport',
+					'/apps/larpinq/api/settings/reimport',
 					{
 						method: 'POST',
 						headers: {
@@ -129,7 +129,7 @@ export const useSettingsStore = defineStore('settings', {
 				return data
 			} catch (error) {
 				this.error = error.message
-				logger.error('Error reimporting LarpingApp configuration', { error })
+				logger.error('Error reimporting Larpinq configuration', { error })
 				return null
 			} finally {
 				this.loading = false

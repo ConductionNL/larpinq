@@ -4,7 +4,7 @@
  * Listener registration in Application::register().
  *
  * @category Test
- * @package  OCA\LarpingApp\Tests\Unit\AppInfo
+ * @package  OCA\Larpinq\Tests\Unit\AppInfo
  *
  * @author    Conduction Development Team <dev@conduction.nl>
  * @copyright 2026 Conduction B.V.
@@ -17,11 +17,11 @@
 
 declare(strict_types=1);
 
-namespace OCA\LarpingApp\Tests\Unit\AppInfo;
+namespace OCA\Larpinq\Tests\Unit\AppInfo;
 
-use OCA\LarpingApp\AppInfo\Application;
-use OCA\LarpingApp\Listener\CharacterRequirementListener;
-use OCA\LarpingApp\Listener\DeepLinkRegistrationListener;
+use OCA\Larpinq\AppInfo\Application;
+use OCA\Larpinq\Listener\CharacterRequirementListener;
+use OCA\Larpinq\Listener\DeepLinkRegistrationListener;
 use OCP\AppFramework\Bootstrap\IRegistrationContext;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
@@ -39,7 +39,7 @@ use ReflectionClass;
  * A probe that answers false is indistinguishable from OpenRegister being
  * absent, which is why the load-order defect this suite's sibling
  * (`OpenRegisterAutoloaderTest`) covers went unnoticed: Nextcloud registers
- * apps in sorted order, `larpingapp` sorts before `openregister`, and
+ * apps in sorted order, `larpinq` sorts before `openregister`, and
  * `OCA\OpenRegister\` is therefore not autoloadable inside this app's own
  * `register()` unless the ADR-040 prelude puts it there first.
  *

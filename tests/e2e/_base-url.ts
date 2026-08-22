@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2026 Larping Contributors
+ * SPDX-FileCopyrightText: 2026 Larpinq Contributors
  * SPDX-License-Identifier: EUPL-1.2
  *
  * THE single source of truth for the Nextcloud instance the e2e suite targets.

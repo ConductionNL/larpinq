@@ -12,4 +12,4 @@
  */
 import { getLoggerBuilder } from '@nextcloud/logger'
 
-export default getLoggerBuilder().setApp('larpingapp').detectUser().build()
+export default getLoggerBuilder().setApp('larpinq').detectUser().build()

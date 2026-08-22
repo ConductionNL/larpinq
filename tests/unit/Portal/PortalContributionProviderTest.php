@@ -3,13 +3,13 @@
 /**
  * Unit tests for the portaliq portal contribution provider.
  *
- * Pins larpingapp's ADR-046 contract-v2.1 contribution: the dependency-free
+ * Pins larpinq's ADR-046 contract-v2.1 contribution: the dependency-free
  * duck-typed shape (inert without portaliq), the v2 getAudiences() + v1
  * getAudience() pair, the single `player`-audience manifest (collections,
  * scoping map, field whitelists), the conservative create-character whitelist
  * and the fail-closed null for any other audience. Also pins the scoping key
  * and the projection whitelists against the register JSONs at HEAD (base
- * `larpingapp_register.json` deep-merged with the `portal-identity` fragment)
+ * `larpinq_register.json` deep-merged with the `portal-identity` fragment)
  * so a schema drift — a renamed `ownerRef`, a dropped whitelist column, or a
  * game-master-only column leaking into a whitelist — fails here instead of
  * silently scoping portal reads to nothing or exposing staff data.
@@ -18,7 +18,7 @@
  * self-evidently fake, never colliding with live data.
  *
  * @category Test
- * @package  OCA\LarpingApp\Tests\Unit\Portal
+ * @package  OCA\Larpinq\Tests\Unit\Portal
  *
  * @author    Conduction Development Team <info@conduction.nl>
  * @copyright 2026 Conduction B.V.
@@ -33,9 +33,9 @@
 
 declare(strict_types=1);
 
-namespace OCA\LarpingApp\Tests\Unit\Portal;
+namespace OCA\Larpinq\Tests\Unit\Portal;
 
-use OCA\LarpingApp\Portal\PortalContributionProvider;
+use OCA\Larpinq\Portal\PortalContributionProvider;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 
@@ -100,7 +100,7 @@ final class PortalContributionProviderTest extends TestCase {
 		$reflection = new ReflectionClass(PortalContributionProvider::class);
 
 		$this->assertSame(
-			'OCA\\LarpingApp\\Portal\\PortalContributionProvider',
+			'OCA\\Larpinq\\Portal\\PortalContributionProvider',
 			$reflection->getName(),
 			'Provider must live at the convention FQCN portaliq probes for'
 		);
@@ -236,7 +236,7 @@ final class PortalContributionProviderTest extends TestCase {
 		$this->assertSame('ownerRef', $action['scopeField'], 'The writer stamps ownerRef = subjectRef so the record is player-owned');
 		$this->assertSame(['name', 'ocName', 'background'], $action['fields'], 'No approved / slNotesPrivate / economy / lifecycle fields');
 
-		// No inbox surface (larpingapp has no per-player message collection).
+		// No inbox surface (larpinq has no per-player message collection).
 		$this->assertSame([], $manifest['notifications']);
 		foreach ($manifest['collections'] as $collection) {
 			$this->assertNotSame('inbox', ($collection['kind'] ?? null), 'No inbox collection ships in this wave');
@@ -342,7 +342,7 @@ final class PortalContributionProviderTest extends TestCase {
 	 */
 	private function registerSchemas(): array {
 		$register = (array)json_decode(
-			(string)file_get_contents(__DIR__ . '/../../../lib/Settings/larpingapp_register.json'),
+			(string)file_get_contents(__DIR__ . '/../../../lib/Settings/larpinq_register.json'),
 			true
 		);
 

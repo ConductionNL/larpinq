@@ -1,10 +1,10 @@
 /**
- * SPDX-FileCopyrightText: 2026 Conduction / LarpingApp Contributors
+ * SPDX-FileCopyrightText: 2026 Conduction / Larpinq Contributors
  * SPDX-License-Identifier: EUPL-1.2
  *
- * Vitest configuration for LarpingApp frontend unit tests.
+ * Vitest configuration for Larpinq frontend unit tests.
  *
- * LarpingApp delegates object CRUD to OpenRegister (GraphQL + the shared
+ * Larpinq delegates object CRUD to OpenRegister (GraphQL + the shared
  * object store), so the app-local OFFLINE logic worth pinning is:
  *   • src/store/modules/settings.js — fetch envelope handling, the
  *     openRegisters / isAdmin flag derivation, the loading/error lifecycle

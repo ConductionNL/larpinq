@@ -1,12 +1,12 @@
 // @ts-check
 
 /**
- * LarpingApp documentation site.
+ * Larpinq documentation site.
  *
  * Built on @conduction/docusaurus-preset for brand defaults (tokens,
  * theme swizzles for Navbar / Footer, i18n scaffolding, KvK / BTW
  * copyright). Site-specific overrides — locale (en only), sidebar
- * path, mermaid theme, custom prism themes, larpingapp-only navbar
+ * path, mermaid theme, custom prism themes, larpinq-only navbar
  * items — are passed through createConfig() opts.
  *
  * Journeydoc scaffold (ADR-030): tutorials live under

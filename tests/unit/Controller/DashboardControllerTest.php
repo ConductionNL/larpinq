@@ -4,7 +4,7 @@
  * Unit tests for DashboardController.
  *
  * @category Test
- * @package  OCA\LarpingApp\Tests\Unit\Controller
+ * @package  OCA\Larpinq\Tests\Unit\Controller
  * @author   Ruben Linde <ruben@larpingapp.com>
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
@@ -12,9 +12,9 @@
 
 declare(strict_types=1);
 
-namespace OCA\LarpingApp\Tests\Unit\Controller;
+namespace OCA\Larpinq\Tests\Unit\Controller;
 
-use OCA\LarpingApp\Controller\DashboardController;
+use OCA\Larpinq\Controller\DashboardController;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\IRequest;
 use PHPUnit\Framework\TestCase;
@@ -30,7 +30,7 @@ class DashboardControllerTest extends TestCase {
 		parent::setUp();
 
 		$this->controller = new DashboardController(
-			'larpingapp',
+			'larpinq',
 			$this->createMock(IRequest::class),
 		);
 	}

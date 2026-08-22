@@ -1,10 +1,10 @@
 /**
- * LarpingApp v2 component registry (ADR-036).
+ * Larpinq v2 component registry (ADR-036).
  *
  * Kind-tagged map passed as the `registry` prop to CnAppRoot. Replaces the
  * deprecated `customComponents` prop.
  *
- * LarpingApp's manifest pages are typed primitives
+ * Larpinq's manifest pages are typed primitives
  * (type: "index" / "detail" / "dashboard" / "settings"), so no `kind: "page"`
  * entries are needed here — the renderer resolves them directly via
  * `pageTypes`. The entries below are non-page kinds referenced from inside

@@ -408,7 +408,7 @@ All game mechanics entities MUST support a dual data model with significant diff
 
 Each game mechanic (Ability, Effect, Skill, Item, Condition) MUST be covered by
 a focused unit test that verifies its data shape is correctly consumed and
-derived by the character stat-derivation engine (`CharacterService`). LarpingApp
+derived by the character stat-derivation engine (`CharacterService`). Larpinq
 stores every game entity as an OpenRegister object — an associative array — not
 a local PHP entity class, so the tests MUST exercise the OR-object model rather
 than asserting against non-existent entity classes.

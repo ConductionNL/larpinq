@@ -8,13 +8,13 @@ status: done
 
 @e2e exclude pure-backend event-listener spec — DeepLinkRegistrationListener registers URL patterns via PHP event dispatch; no browser-navigable UI surface to drive with Playwright
 
-Registers deep link URL patterns with OpenRegister's unified search provider so that LarpingApp objects found via Nextcloud unified search link directly to LarpingApp's detail views instead of OpenRegister's generic view.
+Registers deep link URL patterns with OpenRegister's unified search provider so that Larpinq objects found via Nextcloud unified search link directly to Larpinq's detail views instead of OpenRegister's generic view.
 
 ## Requirements
 
 ### Requirement: Deep Link Listener
 
-A `DeepLinkRegistrationListener` MUST register LarpingApp deep link URL templates with OpenRegister's unified search provider when OpenRegister dispatches its registration event, and MUST degrade gracefully when OpenRegister is not installed.
+A `DeepLinkRegistrationListener` MUST register Larpinq deep link URL templates with OpenRegister's unified search provider when OpenRegister dispatches its registration event, and MUST degrade gracefully when OpenRegister is not installed.
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
@@ -34,7 +34,7 @@ A `DeepLinkRegistrationListener` MUST register LarpingApp deep link URL template
 
 ### Requirement: Object Type URL Mapping
 
-Each LarpingApp object type MUST map to its corresponding LarpingApp detail-view deep link URL so unified-search results route to the in-app view.
+Each Larpinq object type MUST map to its corresponding Larpinq detail-view deep link URL so unified-search results route to the in-app view.
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
@@ -49,7 +49,7 @@ Each LarpingApp object type MUST map to its corresponding LarpingApp detail-view
 
 #### Scenario: Object type resolves to its detail-view URL
 
-- GIVEN a unified-search result references a LarpingApp object by type and uuid
+- GIVEN a unified-search result references a Larpinq object by type and uuid
 - WHEN the deep link URL is resolved for a `character` with uuid `abc`
 - THEN the URL MUST be `/apps/larpingapp/#/characters/abc`
 - AND each of the 8 object types MUST resolve to its corresponding pluralized detail-view path

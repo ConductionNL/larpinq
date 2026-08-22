@@ -134,25 +134,53 @@ Maak een [featureverzoek](https://github.com/ConductionNL/larpinq/issues)
          the Apps admin page. (XML comments must not contain a double hyphen,
          so the flag is not written with its leading dashes here.) -->
 
+	<!-- THE TWO Migrate* STEPS CARRY THE `larpingapp` -> `larpinq` APP-ID RENAME
+	     AND MUST RUN FIRST IN BOTH BLOCKS.
+
+	     There is no in-place app-id upgrade in Nextcloud. Renaming <id> does not
+	     rename anything — it makes this app ask for its data under a name nothing
+	     answers to, because the new id is simply a different app. Nextcloud
+	     namespaces `oc_appconfig` AND `oc_preferences` by app id, so both stores
+	     are cut off by the rename, and copying one does nothing for the other.
+
+	     ORDER IS LOAD-BEARING. MigrateAppConfigKeys MUST precede
+	     InitializeRegister: InitializeRegister (via SettingsService) writes the
+	     imported register/schema bookkeeping keys itself, so if it ran first
+	     those keys would already exist under `larpinq` and the never-overwrite
+	     guard in the migration would skip them as "already present", stranding
+	     the old values under `larpingapp` forever.
+
+	     REGISTERED UNDER <install> AS WELL AS <post-migration>. <install> is the
+	     path a real deployment takes, because Nextcloud discovers `larpinq` as a
+	     brand-new app rather than as an upgrade of `larpingapp`. That is also
+	     why both steps log-and-continue instead of throwing: a repair step that
+	     throws under <install> does not merely fail an upgrade — the app never
+	     enables, and every route goes with it. -->
 	<repair-steps>
 		<post-migration>
-			<step>OCA\LarpingApp\Repair\InitializeRegister</step>
+			<!-- Copy every stored IAppConfig value from the `larpingapp` namespace. -->
+			<step>OCA\Larpinq\Repair\MigrateAppConfigKeys</step>
+			<!-- Copy every per-user preference from the `larpingapp` app id. -->
+			<step>OCA\Larpinq\Repair\MigrateUserPreferences</step>
+			<step>OCA\Larpinq\Repair\InitializeRegister</step>
 		</post-migration>
 		<install>
-			<step>OCA\LarpingApp\Repair\InitializeRegister</step>
+			<step>OCA\Larpinq\Repair\MigrateAppConfigKeys</step>
+			<step>OCA\Larpinq\Repair\MigrateUserPreferences</step>
+			<step>OCA\Larpinq\Repair\InitializeRegister</step>
 		</install>
 	</repair-steps>
 
 	<settings>
-		<admin>OCA\LarpingApp\Settings\LarpingAppAdmin</admin>
-		<admin-section>OCA\LarpingApp\Sections\LarpingAppAdmin</admin-section>
+		<admin>OCA\Larpinq\Settings\LarpinqAdmin</admin>
+		<admin-section>OCA\Larpinq\Sections\LarpinqAdmin</admin-section>
 	</settings>
 
     <navigations>
         <navigation>
-            <id>larpingapp</id>
-            <name>Larping</name>
-            <route>larpingapp.dashboard.page</route>
+            <id>larpinq</id>
+            <name>Larpinq</name>
+            <route>larpinq.dashboard.page</route>
             <icon>app.svg</icon>
         </navigation>
     </navigations>

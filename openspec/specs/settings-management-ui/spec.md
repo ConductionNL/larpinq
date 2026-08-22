@@ -9,7 +9,7 @@ retrofit: true
 
 SPA mount fixed in #202 — settings panel load scenario covered by tests/e2e/spec-coverage/spa-ui.spec.ts; Pinia store lifecycle scenarios annotated @e2e exclude below
 
-LarpingApp exposes its data-source configuration through a Vue settings surface
+Larpinq exposes its data-source configuration through a Vue settings surface
 backed by a Pinia settings store. The admin `Settings.vue` panel reads and writes
 per-object-type source/register/schema selections, the `UserSettings.vue` dialog
 offers a re-import action, and the settings store (`store/modules/settings.js`)
