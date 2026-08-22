@@ -582,9 +582,7 @@ test.describe('admin-settings', () => {
 		// assert the panel: its heading and its Save control, both rendered by
 		// the app's own Vue component.
 		await expect(
-			page
-				.getByText(/Administration settings: Larpinq|Larpinq/i)
-				.first(),
+			page.getByText(/Administration settings: Larpinq|Larpinq/i).first(),
 		).toBeVisible({ timeout: 15_000 })
 		await expect(
 			page.getByRole('button', { name: /Save All/i }).first(),

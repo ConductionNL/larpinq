@@ -1027,9 +1027,7 @@ test.describe('admin-settings — panel UI', () => {
 			.waitFor({ state: 'visible', timeout: 30_000 })
 			.catch(() => {})
 		await expect(
-			page
-				.getByText(/Administration settings: Larpinq|Larpinq/i)
-				.first(),
+			page.getByText(/Administration settings: Larpinq|Larpinq/i).first(),
 		).toBeVisible({ timeout: 15_000 })
 	}
 
