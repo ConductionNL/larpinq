@@ -24,6 +24,18 @@
 //   `npm run check:l10n` still asserts the two carry identical pairs — this
 //   script makes that assertion cheap to satisfy rather than replacing it.
 //
+// EVERY locale in l10n/ is generated, not just en/nl. larpinq ships 37 locale
+// catalogues and had .js for none of them, so 35 languages' translations were
+// unreachable on top of the two this script was first written for.
+//
+// pluralForm: taken from the catalogue when it declares one. When it does not,
+// the fallback is the two-form rule `nplurals=2; plural=(n != 1);` — which is
+// what every generated catalogue in this fleet already carries, including for
+// languages that genuinely have more forms (cs, pl, ru). That is a known
+// simplification, not a verified per-language rule: a catalogue that starts
+// using plural strings in such a language needs its real rule declared in the
+// JSON, which this script will then honour.
+//
 // Usage:
 //   node scripts/build-l10n-js.js            (npm run l10n:build)
 //   node scripts/build-l10n-js.js --check    exit 1 if any .js is stale
@@ -38,6 +50,9 @@ const fs = require('fs')
 const path = require('path')
 
 const REPO_ROOT = path.resolve(__dirname, '..')
+
+/** Fallback when a catalogue declares no pluralForm — see the header note. */
+const DEFAULT_PLURAL_FORM = 'nplurals=2; plural=(n != 1);'
 const L10N_DIR = path.join(REPO_ROOT, 'l10n')
 
 /**
@@ -69,7 +84,10 @@ function appId() {
  */
 function renderJs(id, translations, pluralForm) {
 	const body = Object.keys(translations)
-		.map((key) => `        ${JSON.stringify(key)}: ${JSON.stringify(translations[key])}`)
+		.map(
+			(key) =>
+				`        ${JSON.stringify(key)}: ${JSON.stringify(translations[key])}`,
+		)
 		.join(',\n')
 	return [
 		'OC.L10N.register(',
@@ -88,7 +106,17 @@ function main() {
 	const id = appId()
 	const stale = []
 
-	for (const locale of ['en', 'nl']) {
+	const locales = fs
+		.readdirSync(L10N_DIR)
+		.filter((f) => f.endsWith('.json'))
+		.map((f) => f.slice(0, -5))
+		.sort()
+	if (locales.length === 0) {
+		console.error('l10n/ holds no <locale>.json catalogue to generate from')
+		process.exit(1)
+	}
+
+	for (const locale of locales) {
 		const jsonFile = path.join(L10N_DIR, `${locale}.json`)
 		const jsFile = path.join(L10N_DIR, `${locale}.js`)
 
@@ -99,16 +127,24 @@ function main() {
 			console.error(`l10n/${locale}.json does not parse: ${error.message}`)
 			process.exit(1)
 		}
-		if (doc.translations === undefined || doc.pluralForm === undefined) {
-			console.error(`l10n/${locale}.json is missing "translations" or "pluralForm"`)
+		if (doc.translations === undefined) {
+			console.error(`l10n/${locale}.json is missing "translations"`)
 			process.exit(1)
 		}
 
-		const rendered = renderJs(id, doc.translations, doc.pluralForm)
-		const current = fs.existsSync(jsFile) ? fs.readFileSync(jsFile, 'utf8') : null
+		const rendered = renderJs(
+			id,
+			doc.translations,
+			doc.pluralForm || DEFAULT_PLURAL_FORM,
+		)
+		const current = fs.existsSync(jsFile)
+			? fs.readFileSync(jsFile, 'utf8')
+			: null
 
 		if (current === rendered) {
-			console.log(`  ✓ l10n/${locale}.js up to date (${Object.keys(doc.translations).length} keys)`)
+			console.log(
+				`  ✓ l10n/${locale}.js up to date (${Object.keys(doc.translations).length} keys)`,
+			)
 			continue
 		}
 		if (check) {
@@ -116,7 +152,9 @@ function main() {
 			continue
 		}
 		fs.writeFileSync(jsFile, rendered)
-		console.log(`  ✎ l10n/${locale}.js written (${Object.keys(doc.translations).length} keys)`)
+		console.log(
+			`  ✎ l10n/${locale}.js written (${Object.keys(doc.translations).length} keys)`,
+		)
 	}
 
 	if (stale.length > 0) {
