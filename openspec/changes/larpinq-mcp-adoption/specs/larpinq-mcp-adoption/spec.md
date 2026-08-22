@@ -22,7 +22,7 @@ exactly the `search` and `get` tool verbs, each with `scope: "read"` and
 `readOnlyHint: true`.
 
 #### Scenario: A read-only schema exposes derived search and get tools
-- GIVEN the larpingapp register merged with `register.d/larpingapp-mcp-adoption.json`
+- GIVEN the larpingapp register merged with `register.d/larpinq-mcp-adoption.json`
 - WHEN OpenRegister's `SchemaDerivedToolProvider` lists MCP tools for the `larpinq` app
 - THEN the tool list MUST include `larpinq.event.search` and `larpinq.event.get`
 - AND the tool list MUST NOT include `larpinq.event.create`, `.update`, or `.delete`
@@ -34,7 +34,7 @@ The `character` schema MUST declare `search` and `get` (as REQ-001) plus a
 accompanied by `update` or `delete`.
 
 #### Scenario: A drafted character is created in the unapproved lifecycle state
-- GIVEN the larpingapp register merged with `register.d/larpingapp-mcp-adoption.json`
+- GIVEN the larpingapp register merged with `register.d/larpinq-mcp-adoption.json`
 - WHEN an agent calls `larpinq.character.create` with a valid `name`
 - THEN the created character's `approved` field MUST be `"no"` (the schema's declared initial lifecycle state)
 - AND the character MUST NOT be usable in play until a game master runs the existing `approved` transition
@@ -46,7 +46,7 @@ The `xpAward` schema MUST declare `search` and `get` (as REQ-001) plus a
 be accompanied by `update` or `delete`.
 
 #### Scenario: An XP award is recorded as an additive audit record
-- GIVEN the larpingapp register merged with `register.d/larpingapp-mcp-adoption.json`
+- GIVEN the larpingapp register merged with `register.d/larpinq-mcp-adoption.json`
 - WHEN an agent calls `larpinq.xpAward.create` with `event`, `character`, and `amount`
 - THEN a new `xpAward` object MUST be created
 - AND OpenRegister's object-level `authorization.create` MUST still restrict the underlying write to the `gamemasters` group regardless of the MCP `scope` annotation
@@ -71,7 +71,7 @@ strings that name a property declared in that same schema's `properties` map
 e.g. `attendance`'s properties from `event-checkin-roster.json`).
 
 #### Scenario: Import succeeds because every filter is a real property
-- GIVEN `register.d/larpingapp-mcp-adoption.json` declares filters such as `character.search.filters = ["name", "type", "approved", "setting", "ownerUid"]`
+- GIVEN `register.d/larpinq-mcp-adoption.json` declares filters such as `character.search.filters = ["name", "type", "approved", "setting", "ownerUid"]`
 - WHEN OpenRegister's `McpAnnotationValidator` validates the merged `character` schema at import time
 - THEN validation MUST report zero `mcp-unknown-filter-property` errors for the `character` schema
 - AND this MUST hold for all 9 curated schemas' filter lists
@@ -83,7 +83,7 @@ declare any verb beyond `search`/`get`. No schema MUST declare a `delete`
 verb.
 
 #### Scenario: Excluded schemas expose no MCP tools
-- GIVEN the larpingapp register merged with `register.d/larpingapp-mcp-adoption.json`
+- GIVEN the larpingapp register merged with `register.d/larpinq-mcp-adoption.json`
 - WHEN OpenRegister's `SchemaDerivedToolProvider` lists MCP tools for the `larpinq` app
 - THEN the tool list MUST NOT include any tool for `ability` or `effect`
 - AND the tool list MUST NOT include `larpinq.event.create` (deferred — see design.md Decision 2)
@@ -91,14 +91,14 @@ verb.
 
 ### Requirement: REQ-007 — MCP dialect is declared via a register fragment, not the monolith
 The `x-openregister-mcp` blocks introduced by this change MUST live in a new
-`lib/Settings/register.d/larpingapp-mcp-adoption.json` fragment file;
+`lib/Settings/register.d/larpinq-mcp-adoption.json` fragment file;
 `lib/Settings/larpinq_register.json` MUST NOT be modified by this change,
 per this repo's own `register.d/README.md` convention.
 
 #### Scenario: The monolith is untouched
 - GIVEN a diff of this change against the base commit
 - WHEN inspecting which files changed under `lib/Settings/`
-- THEN the diff MUST include `lib/Settings/register.d/larpingapp-mcp-adoption.json`
+- THEN the diff MUST include `lib/Settings/register.d/larpinq-mcp-adoption.json`
 - AND the diff MUST NOT include `lib/Settings/larpinq_register.json`
 
 ### Requirement: REQ-008 — MCP tools are derived without app-level PHP
@@ -125,7 +125,7 @@ be expressed as `x-openregister-mcp` dialect data.
 
 ## Acceptance Criteria
 
-- [ ] `register.d/larpingapp-mcp-adoption.json` declares `configuration.x-openregister-mcp` on exactly the 9 curated schemas (REQ-001–REQ-004).
+- [ ] `register.d/larpinq-mcp-adoption.json` declares `configuration.x-openregister-mcp` on exactly the 9 curated schemas (REQ-001–REQ-004).
 - [ ] `character` has `search`/`get`/`create` only (REQ-002); `xpAward` has `search`/`get`/`create` only (REQ-003); `attendance` has `search`/`get`/`update` only (REQ-004); the remaining 6 curated schemas have `search`/`get` only (REQ-001).
 - [ ] No `delete` verb anywhere, and `event.create` is not declared (REQ-006).
 - [ ] Every `search.filters` entry is a real property of its schema (REQ-005), verified against `lib/Settings/larpinq_register.json` and the relevant `register.d/*.json` fragments at apply time.

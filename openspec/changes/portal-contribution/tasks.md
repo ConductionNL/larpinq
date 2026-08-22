@@ -2,12 +2,12 @@
 
 Tracking issue: Conduction/larpingapp#51 (Wave 3 — provider + tests only; the ownerRef backfill and any XP-award surface are later items on this issue, do not close it). Depends on: portal-identity.
 
-- [x] T1: Verify the full scoping map against the register JSONs at HEAD (`larpingapp_register.json` + `register.d/*.json`) — schemas, the `ownerRef` scoping property (uuid, from portal-identity), and the game-master-only columns to exclude.
+- [x] T1: Verify the full scoping map against the register JSONs at HEAD (`larpinq_register.json` + `register.d/*.json`) — schemas, the `ownerRef` scoping property (uuid, from portal-identity), and the game-master-only columns to exclude.
   - `character.ownerRef` (uuid, added by portal-identity) is the scope; `ownerUid` is a NC uid and is NEVER used to scope
   - GM-only / internal character columns: `approved`, `slNotesPrivate`, `notice`, `requirementOverrides`, `ownerUid`, `ownerRef`
 
 - [x] T2: Add `lib/Portal/PortalContributionProvider.php` — plain, dependency-free (no portaliq import, no implements, no constructor deps), EUPL-1.2/SPDX docblock matching the repo, `@spec` tags.
-  - Class is at the convention FQCN `OCA\LarpingApp\Portal\PortalContributionProvider`
+  - Class is at the convention FQCN `OCA\Larpinq\Portal\PortalContributionProvider`
   - No `use` of any portaliq symbol anywhere in the file
 
 - [x] T3: Implement `getAudiences(): array` returning `['player']` and the v1 fallback `getAudience(): string` returning `'player'`.

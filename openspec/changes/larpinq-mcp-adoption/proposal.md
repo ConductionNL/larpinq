@@ -47,7 +47,7 @@ few writes are defensible.
 - Honest MCP hints (`readOnlyHint`/`destructiveHint`/`idempotentHint`) and
   `scope` from the closed `read|create|update|delete` set on every verb,
   including the three writes.
-- A dedicated `register.d/larpingapp-mcp-adoption.json` fragment (ADR-037) —
+- A dedicated `register.d/larpinq-mcp-adoption.json` fragment (ADR-037) —
   this change never edits `larpinq_register.json` directly, per this
   repo's own `register.d/README.md` ("Do not edit `larpinq_register.json`
   ... in a build branch").
@@ -83,7 +83,7 @@ in design.md.
 None.
 
 ## Impact
-- `lib/Settings/register.d/larpingapp-mcp-adoption.json` (new file).
+- `lib/Settings/register.d/larpinq-mcp-adoption.json` (new file).
 - OpenRegister's MCP surface for Hermiq gains 21 derived tools (9 schemas ×
   search/get, plus 3 extra write verbs) once imported.
 - No change to existing REST controllers, Vue frontend, `CharacterService`
@@ -119,7 +119,7 @@ server-stamped and never accepted from the client, per the schema's own
 description. All three are already RBAC- or lifecycle-gated independent of MCP.
 
 ## Rollback Strategy
-Delete `lib/Settings/register.d/larpingapp-mcp-adoption.json` (or flip every
+Delete `lib/Settings/register.d/larpinq-mcp-adoption.json` (or flip every
 `enabled` to `false`) and re-run the settings import; the fragment signature
 changes so OpenRegister re-imports and the derived tools (including the three
 writes) disappear. No other file is touched, so rollback is a single-file

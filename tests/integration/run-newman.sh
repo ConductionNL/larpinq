@@ -24,8 +24,8 @@ set -euo pipefail
 
 # Re-exec under an exclusive flock so parallel agents serialise.
 LOCK_FILE="/tmp/uiaudit-larpinq.lock"
-if [ "${LARPINGAPP_NEWMAN_LOCKED:-}" != "1" ] && command -v flock >/dev/null 2>&1; then
-  export LARPINGAPP_NEWMAN_LOCKED=1
+if [ "${LARPINQ_NEWMAN_LOCKED:-}" != "1" ] && command -v flock >/dev/null 2>&1; then
+  export LARPINQ_NEWMAN_LOCKED=1
   exec flock "${LOCK_FILE}" "$0" "$@"
 fi
 

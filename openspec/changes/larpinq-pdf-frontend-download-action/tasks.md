@@ -1,4 +1,4 @@
-# Tasks — larpingapp-pdf-frontend-download-action
+# Tasks — larpinq-pdf-frontend-download-action
 
 ## 1. Preconditions (confirm the gap before building)
 
@@ -10,10 +10,10 @@
 - [ ] 2.1 Create `src/modals/CharacterPdfDownloadModal.vue` (NcModal-based, per the modal-isolation house rule — no inline modal markup in `ObjectDetail.vue` or the character view)
 - [ ] 2.2 On mount, probe DocuDesk availability (`useAppStatus('docudesk')` if available fleet-wide, else a lightweight HEAD/GET against the template endpoint) and fetch templates scoped to `namespace=larpingapp`
 - [ ] 2.3 Render a template `<NcSelect>` with `inputLabel` set (ADR-004 hard rule), disable the "Download PDF" button until a template is selected and the list has loaded (PDF-044)
-- [ ] 2.4 On confirm, open `generateUrl('/apps/larpingapp/characters/{id}/download/{template}', { id, template })` in a new tab (`window.open(url, '_blank')`) — use `@nextcloud/router generateUrl()`, never a literal path (ADR-004)
+- [ ] 2.4 On confirm, open `generateUrl('/apps/larpinq/characters/{id}/download/{template}', { id, template })` in a new tab (`window.open(url, '_blank')`) — use `@nextcloud/router generateUrl()`, never a literal path (ADR-004)
 - [ ] 2.5 Wire a "Download as PDF" `NcActionButton` (or equivalent) into the character detail page, visible only when DocuDesk is available; hide entirely when unavailable (PDF-023/PDF-040)
 - [ ] 2.6 Gate the action's visibility using the same access rule as `player-character-sheet-access`'s `canAccessCharacter` (own character, GM-group member, or admin) once that change lands — coordinate merge order or add a follow-up task if it lands first
-- [ ] 2.7 i18n: every label/button/instructional string wrapped in `t('larpingapp', ...)` with English source keys (feedback rule)
+- [ ] 2.7 i18n: every label/button/instructional string wrapped in `t('larpinq', ...)` with English source keys (feedback rule)
 
 ## 3. Tests
 
@@ -23,7 +23,7 @@
 
 ## 4. Spec correction
 
-- [ ] 4.1 Replace the stale `@e2e exclude` reason at `openspec/specs/pdf-export/spec.md:9` (which still claims "larpingapp Vue SPA fails to mount") with a reference to the new e2e coverage from Task 3.1
+- [ ] 4.1 Replace the stale `@e2e exclude` reason at `openspec/specs/pdf-export/spec.md:9` (which still claims "larpinq Vue SPA fails to mount") with a reference to the new e2e coverage from Task 3.1
 - [ ] 4.2 Re-verify each of PDF-040 through PDF-046 against the shipped implementation; any requirement that still does not hold MUST be changed from `Implemented` to `Planned` rather than left mismarked
 - [ ] 4.3 `@spec` annotations on the new component/modal methods pointing at this change (gate-16)
 

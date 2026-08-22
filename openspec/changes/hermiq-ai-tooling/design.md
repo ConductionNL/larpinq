@@ -2,7 +2,7 @@
 
 ## Architecture Overview
 The adoption change (`larpinq-mcp-adoption`) is pure dialect: 21 derived
-tools from `register.d/larpingapp-mcp-adoption.json`, zero PHP. This change
+tools from `register.d/larpinq-mcp-adoption.json`, zero PHP. This change
 adds the curated layer on the DocuDesk pattern (chain: dialect → curated
 `#[McpTool]` methods → `IMcpScannableServices` opt-in):
 

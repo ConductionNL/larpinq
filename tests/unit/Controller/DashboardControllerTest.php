@@ -47,7 +47,7 @@ class DashboardControllerTest extends TestCase {
 		self::assertSame('index', $result->getTemplateName());
 	}
 
-	public function testPageUsesLarpingappApp(): void {
+	public function testPageUsesLarpinqApp(): void {
 		$result = $this->controller->page();
 
 		// TemplateResponse stores the app name.

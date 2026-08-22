@@ -6,7 +6,7 @@ from `lib/Settings/larpinq_register.json`, recursively deep-merged (ADR-037)
 with every `*.json` fragment in `lib/Settings/register.d/` by
 `ConfigFileLoaderService::loadConfigurationFile()` /
 `mergeRegisterFragments()`. This change adds exactly one new fragment,
-`register.d/larpingapp-mcp-adoption.json`, that contributes a
+`register.d/larpinq-mcp-adoption.json`, that contributes a
 `configuration.x-openregister-mcp` block to 9 existing schema definitions —
 per `register.d/README.md`'s explicit rule, this change does **not** edit
 `larpinq_register.json` directly. OpenRegister's `SchemaDerivedToolProvider`
@@ -82,7 +82,7 @@ immediately becomes purchasable — no bounding mechanism exists to defer to.
 ## `configuration.x-openregister-mcp` — exact per-schema declaration
 
 All 9 blocks below go into
-`lib/Settings/register.d/larpingapp-mcp-adoption.json`, one entry per schema
+`lib/Settings/register.d/larpinq-mcp-adoption.json`, one entry per schema
 under `components.schemas.<name>.configuration.x-openregister-mcp`. Every
 `filters` entry was cross-checked against the schema's `properties` map at
 HEAD (base register for `character`/`player`/`setting`/`skill`/`item`/
@@ -397,13 +397,13 @@ schedule an event end-to-end via chat → Accepted: the side-effect fan-out
 across 3 leaf integrations needs its own design, not a MCP dialect tack-on.
 
 ## Migration Plan
-1. Add `register.d/larpingapp-mcp-adoption.json` with the 9 blocks above.
+1. Add `register.d/larpinq-mcp-adoption.json` with the 9 blocks above.
 2. `python3 -m json.tool` validate the new fragment.
 3. Re-run `ConfigFileLoaderService`'s configuration load (via the existing
    repair/import path) so the fragment signature changes and OpenRegister
    re-imports the merged register.
 4. Verify via OpenRegister's MCP tool listing that
-   `larpingapp.character.search`, `.get`, `.create`, etc. (21 tools total: 9
+   `larpinq.character.search`, `.get`, `.create`, etc. (21 tools total: 9
    schemas × search/get + 3 extra write verbs) appear.
 5. **Rollback:** delete the fragment file (or flip every `enabled` to
    `false`) and re-run the import — see proposal.md Rollback Strategy.

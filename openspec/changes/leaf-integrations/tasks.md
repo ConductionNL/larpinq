@@ -17,7 +17,7 @@
 - **acceptance_criteria**:
   - GIVEN the new fragment WHEN run through `python3 -m json.tool` THEN it parses with zero errors
   - GIVEN the merged register WHEN inspected THEN `event.configuration.linkedTypes` contains all of `calendar`, `maps`, `forms`, `talk`, `polls`, `deck` and `setting.configuration.linkedTypes` contains `talk` and `polls` and no `deck`
-  - GIVEN `larpingapp_register.json` and the six pre-existing fragments WHEN diffed against HEAD THEN they are byte-identical
+  - GIVEN `larpinq_register.json` and the six pre-existing fragments WHEN diffed against HEAD THEN they are byte-identical
 - [ ] Implement
 - [ ] Test
 

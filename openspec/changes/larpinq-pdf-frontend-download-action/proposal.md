@@ -29,7 +29,7 @@ None of this exists in `src/`. Verified at HEAD:
 - `src/manifest.json` has no `pdf`/`download`/`template` action entry on the character detail
   page (`grep -in "pdf\|download" src/manifest.json` is empty).
 - The spec's own header (`pdf-export/spec.md:9`) still carries the **stale** e2e-exclusion
-  reason "larpingapp Vue SPA fails to mount at localhost:8080" — the fix for that (#202) shipped
+  reason "larpinq Vue SPA fails to mount at localhost:8080" — the fix for that (#202) shipped
   months ago per every sibling spec (`character-management/spec.md:9`,
   `game-mechanics/spec.md:9`, `dashboard/spec.md`, etc. all say "SPA mount fixed in #202"), and
   `tests/e2e/spec-coverage/spa-ui.spec.ts` proves the SPA mounts and drives character/event

@@ -1,4 +1,4 @@
-# Tasks — larpingapp-runsheet-scoped-cast-query
+# Tasks — larpinq-runsheet-scoped-cast-query
 
 ## 1. Preconditions
 

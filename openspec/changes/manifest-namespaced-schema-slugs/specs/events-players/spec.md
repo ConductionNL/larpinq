@@ -4,7 +4,7 @@
 
 ### Requirement: Event CRUD Operations
 
-The system MUST support creating, reading, updating, and deleting LARP events with date ranges, location, player assignments, and effect associations. The Events index, detail, dashboard-widget, and onboarding pages in `src/manifest.json` MUST reference the event schema by its real, namespaced slug `larping_event` (not the bare, collision-prone slug `event`) so OpenRegister resolves them to larpingapp's own event schema rather than another installed app's `event` schema.
+The system MUST support creating, reading, updating, and deleting LARP events with date ranges, location, player assignments, and effect associations. The Events index, detail, dashboard-widget, and onboarding pages in `src/manifest.json` MUST reference the event schema by its real, namespaced slug `larping_event` (not the bare, collision-prone slug `event`) so OpenRegister resolves them to Larpinq's own event schema rather than another installed app's `event` schema.
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
@@ -18,8 +18,8 @@ The system MUST support creating, reading, updating, and deleting LARP events wi
 | EVT-008 | Event effects MUST be applied to associated characters during stat calculation | MUST | Implemented |
 | EVT-009 | Event name MUST be required | MUST | Implemented |
 | EVT-010 | Events MUST be accessible from the main navigation sidebar | MUST | Implemented |
-| EVT-011 | Every `"schema"` reference to the event schema in `src/manifest.json` (index page, detail page, dashboard KPI/object-list widgets, setting-detail page's event widgets, and the onboarding `advanceOn` rule) MUST use the real slug `larping_event`, matching `lib/Settings/larpingapp_register.json`'s `x-openregister-schema-slug` | MUST | Implemented |
-<!-- Previous behavior: src/manifest.json referenced the event schema by the bare slug "event" at 7 sites (onboarding advanceOn rule, dashboard KPI widget, dashboard recent-events widget, index page config, detail page, and two setting-detail page widgets). Because OpenRegister resolves schema slugs globally across all installed apps, "event" resolved to openconnector's CloudEvents "event" schema (fields: Source, Type, Spec Version, datacontenttype, dataschema…) instead of larpingapp's own event schema, so the Events create/list/detail forms rendered the wrong schema's fields. -->
+| EVT-011 | Every `"schema"` reference to the event schema in `src/manifest.json` (index page, detail page, dashboard KPI/object-list widgets, setting-detail page's event widgets, and the onboarding `advanceOn` rule) MUST use the real slug `larping_event`, matching `lib/Settings/larpinq_register.json`'s `x-openregister-schema-slug` | MUST | Implemented |
+<!-- Previous behavior: src/manifest.json referenced the event schema by the bare slug "event" at 7 sites (onboarding advanceOn rule, dashboard KPI widget, dashboard recent-events widget, index page config, detail page, and two setting-detail page widgets). Because OpenRegister resolves schema slugs globally across all installed apps, "event" resolved to openconnector's CloudEvents "event" schema (fields: Source, Type, Spec Version, datacontenttype, dataschema…) instead of Larpinq's own event schema, so the Events create/list/detail forms rendered the wrong schema's fields. -->
 
 #### Scenario: Create an event with effects
 
@@ -58,9 +58,9 @@ The system MUST support creating, reading, updating, and deleting LARP events wi
 - AND opens the "Characters" tab
 - THEN the related characters MUST be listed via the relations endpoint
 
-#### Scenario: Events page resolves larpingapp's own event schema
+#### Scenario: Events page resolves Larpinq's own event schema
 
 - GIVEN `src/manifest.json`'s Events index page declares `config.schema`
 - WHEN a user opens the Events page and clicks "New"
-- THEN the create form MUST render larpingapp's own event fields (`name`, `startDate`, `endDate`, `location`, etc.)
+- THEN the create form MUST render Larpinq's own event fields (`name`, `startDate`, `endDate`, `location`, etc.)
 - AND it MUST NOT render CloudEvents fields (`Source`, `Type`, `Spec Version`, `datacontenttype`, `dataschema`) from openconnector's colliding `event` schema
