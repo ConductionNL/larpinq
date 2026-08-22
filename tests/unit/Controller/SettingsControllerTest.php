@@ -4,7 +4,7 @@
  * Unit tests for SettingsController.
  *
  * @category Test
- * @package  OCA\LarpingApp\Tests\Unit\Controller
+ * @package  OCA\Larpinq\Tests\Unit\Controller
  *
  * @author    Ruben Linde <ruben@larpingapp.com>
  * @copyright 2024 Ruben Linde
@@ -17,10 +17,10 @@
 
 declare(strict_types=1);
 
-namespace OCA\LarpingApp\Tests\Unit\Controller;
+namespace OCA\Larpinq\Tests\Unit\Controller;
 
-use OCA\LarpingApp\Controller\SettingsController;
-use OCA\LarpingApp\Service\SettingsService;
+use OCA\Larpinq\Controller\SettingsController;
+use OCA\Larpinq\Service\SettingsService;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\IGroupManager;

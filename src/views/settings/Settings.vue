@@ -1,9 +1,9 @@
 <template>
 	<CnAdminSettingsShell
-		appId="larpingapp"
-		appName="LarpingApp"
+		appId="larpinq"
+		appName="Larpinq"
 		docUrl="https://conduction.gitbook.io/larpingapp-nextcloud/users"
-		reimportUrl="/index.php/apps/larpingapp/api/settings/reimport"
+		reimportUrl="/index.php/apps/larpinq/api/settings/reimport"
 		@reimported="onReimported"
 		@reimportError="onReimportError">
 		<!-- Re-import Status -->
@@ -14,16 +14,14 @@
 		</div>
 
 		<NcSettingsSection
-			:name="t('larpingapp', 'Data storage')"
-			:description="
-				t('larpingapp', 'Configure where to store your LARP data')
-			">
+			:name="t('larpinq', 'Data storage')"
+			:description="t('larpinq', 'Configure where to store your LARP data')">
 			<div v-if="!loading">
 				<!-- Warning if OpenRegister is not installed but selected -->
 				<NcNoteCard v-if="!settings.openRegisters" type="warning">
 					{{
 						t(
-							'larpingapp',
+							'larpinq',
 							'Open Register is not installed. Some features might be unavailable.',
 						)
 					}}
@@ -50,7 +48,7 @@
 						<NcSelect
 							v-model="configuration[objectType].source"
 							:options="sourceOptions"
-							:inputLabel="t('larpingapp', 'Source')"
+							:inputLabel="t('larpinq', 'Source')"
 							:disabled="loading"
 							@update:modelValue="handleSourceChange(objectType)" />
 
@@ -62,7 +60,7 @@
 							"
 							v-model="configuration[objectType].register"
 							:options="registerOptions"
-							:inputLabel="t('larpingapp', 'Register')"
+							:inputLabel="t('larpinq', 'Register')"
 							:disabled="loading"
 							@update:modelValue="handleRegisterChange(objectType)" />
 
@@ -79,7 +77,7 @@
 									configuration[objectType].register?.value,
 								)
 							"
-							:inputLabel="t('larpingapp', 'Schema')"
+							:inputLabel="t('larpinq', 'Schema')"
 							:disabled="loading" />
 					</div>
 				</div>
@@ -98,7 +96,7 @@
 							<NcLoadingIcon v-if="saving" :size="20" />
 							<Save v-else :size="20" />
 						</template>
-						{{ t('larpingapp', 'Save All') }}
+						{{ t('larpinq', 'Save All') }}
 					</NcButton>
 				</div>
 			</div>
@@ -158,8 +156,8 @@ export default defineComponent({
 
 			configuration: {},
 			sourceOptions: [
-				{ label: t('larpingapp', 'Internal'), value: 'internal' },
-				{ label: t('larpingapp', 'Open Register'), value: 'openregister' },
+				{ label: t('larpinq', 'Internal'), value: 'internal' },
+				{ label: t('larpinq', 'Open Register'), value: 'openregister' },
 			],
 		}
 	},
@@ -187,7 +185,7 @@ export default defineComponent({
 		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-10
 		 */
 		async onReimported() {
-			this.message = t('larpingapp', 'Configuration re-imported successfully')
+			this.message = t('larpinq', 'Configuration re-imported successfully')
 			this.messageType = 'success'
 			await this.loadSettings()
 		},
@@ -200,7 +198,7 @@ export default defineComponent({
 		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-10
 		 */
 		onReimportError(error) {
-			this.message = error?.message || t('larpingapp', 'Re-import failed')
+			this.message = error?.message || t('larpinq', 'Re-import failed')
 			this.messageType = 'error'
 		},
 
@@ -209,9 +207,7 @@ export default defineComponent({
 		 */
 		async loadSettings() {
 			try {
-				const response = await fetch(
-					'/index.php/apps/larpingapp/api/settings',
-				)
+				const response = await fetch('/index.php/apps/larpinq/api/settings')
 				const data = await response.json()
 				this.settings = data
 
@@ -363,7 +359,7 @@ export default defineComponent({
 				})
 
 				const response = await fetch(
-					'/index.php/apps/larpingapp/api/settings',
+					'/index.php/apps/larpinq/api/settings',
 					{
 						method: 'POST',
 						headers: {
@@ -376,16 +372,16 @@ export default defineComponent({
 				)
 
 				if (response.ok) {
-					this.message = t('larpingapp', 'Settings saved successfully')
+					this.message = t('larpinq', 'Settings saved successfully')
 					this.messageType = 'success'
 				} else {
-					this.message = t('larpingapp', 'Failed to save settings')
+					this.message = t('larpinq', 'Failed to save settings')
 					this.messageType = 'error'
 				}
 			} catch (error) {
 				logger.error('Failed to save settings', { error })
 				this.message =
-					error.message || t('larpingapp', 'Failed to save settings')
+					error.message || t('larpinq', 'Failed to save settings')
 				this.messageType = 'error'
 			} finally {
 				this.saving = false

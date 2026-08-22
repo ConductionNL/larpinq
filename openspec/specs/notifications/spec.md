@@ -12,7 +12,7 @@ TBD - created by archiving change larpingapp-notifications. Update Purpose after
 ## Requirements
 ### Requirement: Character submission and approval notifications
 
-The LarpingApp `character` schema SHALL declare
+The Larpinq `character` schema SHALL declare
 `x-openregister-notifications` rules that notify the `gamemasters` group
 on character submission (trigger `created`) and notify manage-ACL
 holders plus the `gamemasters` group on approval (transition action
@@ -32,7 +32,7 @@ resolve to a Nextcloud uid.
 
 ### Requirement: Structured owner uid prerequisite for per-player notifications
 
-LarpingApp SHALL add a structured `ownerUid` field to the `character`
+Larpinq SHALL add a structured `ownerUid` field to the `character`
 schema (or rely on the OpenRegister object-acl owner) before per-player
 `field` recipients can be used; until then character rules use `groups`
 or `object-acl` recipients only.
@@ -44,7 +44,7 @@ or `object-acl` recipients only.
 
 ### Requirement: Event reminder notification
 
-The LarpingApp `event` schema SHALL declare an
+The Larpinq `event` schema SHALL declare an
 `x-openregister-notifications` rule that sends the `players` group a
 scheduled reminder ahead of an event's `startDate`, with bilingual
 (nl/en) subjects.

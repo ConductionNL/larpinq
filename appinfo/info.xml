@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
 <info xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
-    <id>larpingapp</id>
-    <name lang="en">Larping</name>
-    <name lang="nl">Larping</name>
+    <id>larpinq</id>
+    <name lang="en">Larpinq</name>
+    <name lang="nl">Larpinq</name>
     <summary lang="en">Character, event and rules management for live-action role-play (LARP) groups</summary>
     <summary lang="nl">Karakter-, event- en regelbeheer voor live-action roleplay (LARP)-groepen</summary>
-    <description lang="en"><![CDATA[Larping is a management tool for LARP (live-action role-play) organisations, built on Nextcloud and OpenRegister.
+    <description lang="en"><![CDATA[Larpinq is a management tool for LARP (live-action role-play) organisations, built on Nextcloud and OpenRegister.
 
 **Requires:** [OpenRegister](https://apps.nextcloud.com/apps/openregister) (install from the Nextcloud App Store).
 
-Larping covers:
+Larpinq covers:
 
 - Settings (worlds/campaigns) that scope characters, events and rules, archived rather than deleted when a campaign ends
 - Character sheets with background stories and a game-master approval workflow
@@ -19,18 +19,18 @@ Larping covers:
 - Events with a participant roster, Nextcloud Calendar scheduling, and location/sign-up sidebar tabs
 - Post-event XP awards with a full audit trail and server-enforced prerequisite checks (with GM override)
 - Printable PDF character sheets and per-event GM run-sheets (cast lists), rendered via DocuDesk
-- Group-restricted access: app visibility is limited to an enrolled `larpers` Nextcloud group
+- Group-restricted access: app visibility is limited to an enrolled `larpers` Nextcloud group (the group id is deliberately NOT renamed — see the comment below)
 
 Create a [bug report](https://github.com/ConductionNL/larpinq/issues)
 Create a [feature request](https://github.com/ConductionNL/larpinq/issues)
 
 **Support:** For support, contact support@conduction.nl. For a Service Level Agreement (SLA), contact sales@conduction.nl.
     ]]></description>
-    <description lang="nl"><![CDATA[Larping is een beheertool voor LARP-organisaties (live-action roleplay), gebouwd op Nextcloud en OpenRegister.
+    <description lang="nl"><![CDATA[Larpinq is een beheertool voor LARP-organisaties (live-action roleplay), gebouwd op Nextcloud en OpenRegister.
 
 **Vereist:** [OpenRegister](https://apps.nextcloud.com/apps/openregister) (installeren via de Nextcloud App Store).
 
-Larping biedt:
+Larpinq biedt:
 
 - Settings (werelden/campagnes) die karakters, events en regels afbakenen, en die je archiveert in plaats van verwijdert als een campagne afloopt
 - Karakterbladen met achtergrondverhaal en een goedkeuringsworkflow voor de spelleider
@@ -49,7 +49,7 @@ Maak een [featureverzoek](https://github.com/ConductionNL/larpinq/issues)
     <version>0.1.27-unstable.20260821053342</version>
     <licence>EUPL-1.2</licence>
     <author mail="info@conduction.nl" homepage="https://www.conduction.nl/">Conduction</author>
-	<namespace>LarpingApp</namespace>
+	<namespace>Larpinq</namespace>
 	<category>organization</category>
     <website>https://github.com/ConductionNL/larpinq</website>
     <bugs>https://github.com/ConductionNL/larpinq/issues</bugs>
@@ -81,7 +81,7 @@ Maak een [featureverzoek](https://github.com/ConductionNL/larpinq/issues)
 
         2. THE openregister APP DEPENDENCY NOTED ABOVE. An app's min-version
            must be >= the max of every app dependency's own floor
-           (openconnector#1172/#1173). Every LarpingApp entity — characters,
+           (openconnector#1172/#1173). Every Larpinq entity — characters,
            items, skills, effects, events — is an OpenRegister object, so where
            openregister cannot install this app is non-functional, not merely
            degraded. When openregister's floor was briefly 32 (its
@@ -112,6 +112,13 @@ Maak een [featureverzoek](https://github.com/ConductionNL/larpinq/issues)
          players see the navigation entry and can probe endpoints. Admins may add users
          to this group via the Nextcloud admin panel. Closes #216.
 
+         THE GROUP ID 'larpers' IS FROZEN AND DID NOT MOVE WITH THE APP ID.
+         A Nextcloud group id is data this app does not own: the group row and its
+         memberships live in oc_groups / oc_group_user, provisioned per instance.
+         Renaming the id here would not rename that group — it would name a group
+         that does not exist, so the restriction would apply to an EMPTY group and
+         every enrolled player would silently lose the app. Nothing errors.
+
          DUAL-GROUP REQUIREMENT: Game Masters need to be in BOTH the built-in 'admin'
          Nextcloud group AND the 'larpers' group. The 'larpers' group controls app
          visibility; admin privileges gate GM-only endpoints (e.g. downloadPdf).
@@ -122,30 +129,58 @@ Maak een [featureverzoek](https://github.com/ConductionNL/larpinq/issues)
          read one either: OC_App::listAllApps() overwrites the parsed value with
          the app's `enabled` appconfig entry on every read, so a declaration in
          this file restricted nothing. Use the standard app-level group
-         restriction instead: `occ app:enable larpingapp` with the groups flag
+         restriction instead: `occ app:enable larpinq` with the groups flag
          (e.g. `groups larpers`), or the group selector on the app's entry in
          the Apps admin page. (XML comments must not contain a double hyphen,
          so the flag is not written with its leading dashes here.) -->
 
+	<!-- THE TWO Migrate* STEPS CARRY THE `larpingapp` -> `larpinq` APP-ID RENAME
+	     AND MUST RUN FIRST IN BOTH BLOCKS.
+
+	     There is no in-place app-id upgrade in Nextcloud. Renaming <id> does not
+	     rename anything — it makes this app ask for its data under a name nothing
+	     answers to, because the new id is simply a different app. Nextcloud
+	     namespaces `oc_appconfig` AND `oc_preferences` by app id, so both stores
+	     are cut off by the rename, and copying one does nothing for the other.
+
+	     ORDER IS LOAD-BEARING. MigrateAppConfigKeys MUST precede
+	     InitializeRegister: InitializeRegister (via SettingsService) writes the
+	     imported register/schema bookkeeping keys itself, so if it ran first
+	     those keys would already exist under `larpinq` and the never-overwrite
+	     guard in the migration would skip them as "already present", stranding
+	     the old values under `larpingapp` forever.
+
+	     REGISTERED UNDER <install> AS WELL AS <post-migration>. <install> is the
+	     path a real deployment takes, because Nextcloud discovers `larpinq` as a
+	     brand-new app rather than as an upgrade of `larpingapp`. That is also
+	     why both steps log-and-continue instead of throwing: a repair step that
+	     throws under <install> does not merely fail an upgrade — the app never
+	     enables, and every route goes with it. -->
 	<repair-steps>
 		<post-migration>
-			<step>OCA\LarpingApp\Repair\InitializeRegister</step>
+			<!-- Copy every stored IAppConfig value from the `larpingapp` namespace. -->
+			<step>OCA\Larpinq\Repair\MigrateAppConfigKeys</step>
+			<!-- Copy every per-user preference from the `larpingapp` app id. -->
+			<step>OCA\Larpinq\Repair\MigrateUserPreferences</step>
+			<step>OCA\Larpinq\Repair\InitializeRegister</step>
 		</post-migration>
 		<install>
-			<step>OCA\LarpingApp\Repair\InitializeRegister</step>
+			<step>OCA\Larpinq\Repair\MigrateAppConfigKeys</step>
+			<step>OCA\Larpinq\Repair\MigrateUserPreferences</step>
+			<step>OCA\Larpinq\Repair\InitializeRegister</step>
 		</install>
 	</repair-steps>
 
 	<settings>
-		<admin>OCA\LarpingApp\Settings\LarpingAppAdmin</admin>
-		<admin-section>OCA\LarpingApp\Sections\LarpingAppAdmin</admin-section>
+		<admin>OCA\Larpinq\Settings\LarpinqAdmin</admin>
+		<admin-section>OCA\Larpinq\Sections\LarpinqAdmin</admin-section>
 	</settings>
 
     <navigations>
         <navigation>
-            <id>larpingapp</id>
-            <name>Larping</name>
-            <route>larpingapp.dashboard.page</route>
+            <id>larpinq</id>
+            <name>Larpinq</name>
+            <route>larpinq.dashboard.page</route>
             <icon>app.svg</icon>
         </navigation>
     </navigations>

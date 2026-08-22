@@ -1,5 +1,5 @@
 {
-    "name": "conductionnl/larpingapp",
+    "name": "conductionnl/larpinq",
     "description": "Manage your live roleplaying setting",
     "license": "EUPL-1.2",
     "authors": [
@@ -21,7 +21,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "OCA\\LarpingApp\\": "lib/"
+            "OCA\\Larpinq\\": "lib/"
         }
     },
     "scripts": {

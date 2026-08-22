@@ -1,6 +1,6 @@
 # Architecture
 
-LarpingApp is a schema-driven Nextcloud app. It stores no data in its
+Larpinq is a schema-driven Nextcloud app. It stores no data in its
 own database tables: every domain object (character, player, ability,
 skill, item, condition, effect, event, setting) lives in
 [OpenRegister](https://github.com/ConductionNL/openregister) (ADR-001),
@@ -10,7 +10,7 @@ adoption patterns that follow from those decisions.
 
 ## 1. Manifest as the declarative source of truth
 
-LarpingApp's navigation and routes are NOT hand-wired. They are derived
+Larpinq's navigation and routes are NOT hand-wired. They are derived
 from a single declarative manifest:
 
 - `src/manifest.json` — the bundled base manifest (manifest-v2). It
@@ -38,7 +38,7 @@ runs as part of the `check:specs` composite gate.
 ## 2. Register / schema resolution (`RegisterResolverService`)
 
 `lib/Service/RegisterObjectFetcher.php` is the single seam between
-LarpingApp and OpenRegister's `ObjectService`. For each object type it
+Larpinq and OpenRegister's `ObjectService`. For each object type it
 must resolve a `(register, schema)` pair from the
 `{type}_register` / `{type}_schema` app-config keys.
 
@@ -83,7 +83,7 @@ cross-app dependencies ship:
   rendering a `(translated from {lang})` badge from `sourceLanguage`
   metadata. These depend on OpenRegister's object API honouring those
   signals (unmerged `i18n-api-language-negotiation` /
-  `i18n-source-of-truth`). LarpingApp fetches objects through the shared
+  `i18n-source-of-truth`). Larpinq fetches objects through the shared
   `createObjectStore` from `@conduction/nextcloud-vue`
   (`src/store/modules/object.js`), so the correct home for these
   signals is the shared store, not a per-app HTTP client.
@@ -94,5 +94,5 @@ cross-app dependencies ship:
   single-tenant; nothing imports the composable, so its absence cannot
   crash the app.
 
-See `openspec/changes/larpingapp-adopt-or-abstractions/` for the full
+See `openspec/changes/larpinq-adopt-or-abstractions/` for the full
 requirements, scenarios, and deferral rationale.

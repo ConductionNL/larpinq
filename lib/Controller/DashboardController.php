@@ -1,10 +1,10 @@
 <?php
 
 /**
- * Dashboard controller for LarpingApp
+ * Dashboard controller for Larpinq
  *
  * @category Controller
- * @package  OCA\LarpingApp\Controller
+ * @package  OCA\Larpinq\Controller
  * @author   Ruben Linde <ruben@larpingapp.com>
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
@@ -17,18 +17,18 @@
 
 declare(strict_types=1);
 
-namespace OCA\LarpingApp\Controller;
+namespace OCA\Larpinq\Controller;
 
-use OCA\LarpingApp\AppInfo\Application;
+use OCA\Larpinq\AppInfo\Application;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\IRequest;
 
 /**
- * Dashboard controller for LarpingApp main page
+ * Dashboard controller for Larpinq main page
  *
  * @category  Controller
- * @package   OCA\LarpingApp\Controller
+ * @package   OCA\Larpinq\Controller
  * @author    Ruben Linde <ruben@larpingapp.com>
  * @copyright 2024 Ruben Linde
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12

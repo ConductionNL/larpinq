@@ -5,12 +5,12 @@
 hydra ADR-046 defines portaliq as the ONE shared external portal for people
 **without** Nextcloud accounts. Contract v2.1 scopes a subject's collections by
 matching a row field to the server-derived subject reference (`subjectRef`, a
-UUID). This change prepares larpingapp's `character` schema for that model by
+UUID). This change prepares Larpinq's `character` schema for that model by
 adding a UUID **domain** owner-ref, because the existing owner field is a
 Nextcloud user id and cannot scope an account-less external subject.
 
 All facts below were verified against HEAD
-(`lib/Settings/larpingapp_register.json` + `lib/Settings/register.d/*.json`,
+(`lib/Settings/larpinq_register.json` + `lib/Settings/register.d/*.json`,
 branch point `origin/development` @ c7db0c5).
 
 ## The A4 identity rule applied
@@ -24,7 +24,7 @@ branch point `origin/development` @ c7db0c5).
 
 - Its own description: "Nextcloud uid of the player who owns this character.
   Used for per-player notifications (e.g. character-approved)."
-- `larpingapp_register.json` wires the `character-approved` notification rule to
+- `larpinq_register.json` wires the `character-approved` notification rule to
   `recipients: [{ kind: field, field: ownerUid }]` — deliver-to-the-owning-NC-user.
 
 Removing or repurposing `ownerUid` would break that notification and every
@@ -40,7 +40,7 @@ migrated or renamed in this change.
   portal to nothing.
 - **Claim name.** The portal subject's scoping claim is `ownerRef` — the same
   bare name the dependent `PortalContributionProvider` declares as
-  `scopeField`/`scopeClaim`. This is larpingapp's STABLE claim contract with
+  `scopeField`/`scopeClaim`. This is Larpinq's STABLE claim contract with
   portaliq operators (a portaliq portal account for a player carries a
   `subjectRef` equal to that player's `player` object UUID, and every character
   the player owns stores that same UUID in `ownerRef`).
@@ -55,16 +55,16 @@ migrated or renamed in this change.
 
 ## Stable domain identity: why the `player` UUID
 
-`ownerRef` points at the larpingapp **`player`** object UUID rather than the
+`ownerRef` points at the Larpinq **`player`** object UUID rather than the
 player's linked Nextcloud contact UUID:
 
-- `player` is larpingapp's own first-class domain entity ("A real-world player
+- `player` is Larpinq's own first-class domain entity ("A real-world player
   participating in the LARP"); a character conceptually belongs to a player.
 - `register.d/player-to-contacts-leaf.json` links `player` to an NC addressbook
   contact (`linkedTypes: ["contacts"]`) for real-world identity, but that link
   is an external reference that can be absent or re-pointed. The in-register
   `player` UUID is the stable anchor.
-- Anchoring on the `player` UUID keeps the scoping key inside larpingapp's own
+- Anchoring on the `player` UUID keeps the scoping key inside Larpinq's own
   register, independent of the addressbook, and mirrors the fleet pattern
   (pipelinq scopes `client`/`contact` reads by their own object UUIDs).
 

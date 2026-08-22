@@ -14,13 +14,13 @@ By the end your character will have an updated XP total, you will have spent som
 
 ## Prerequisites
 
-- A character that exists in Larping (see [Create a character](02-create-character.md)).
+- A character that exists in Larpinq (see [Create a character](02-create-character.md)).
 - An event the character participated in, *or* a direct adjustment by the game master — both are valid sources of XP.
 - The skill the character will spend the XP on already exists in the game system (see [Configure the game system](../admin/01-configure-game-system.md)).
 
 ## Steps
 
-1. Open the character. The detail page shows the character's current XP total alongside the other ability-like values. XP is just an ability in Larping — it lives in the same numeric stat model as Strength or Health.
+1. Open the character. The detail page shows the character's current XP total alongside the other ability-like values. XP is just an ability in Larpinq — it lives in the same numeric stat model as Strength or Health.
 
    ![Character detail with XP](/screenshots/tutorials/user/08-track-xp-01.png)
 

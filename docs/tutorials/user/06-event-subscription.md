@@ -6,7 +6,7 @@ description: Register a player for a LARP event — see them appear on the parti
 
 # Subscribe to an event
 
-Sign a player up for a LARP event in Larping. The event tracks its participant roster, can carry post-event effects (loot earned, XP gained, conditions inflicted) that apply to participating characters when the game master closes out the event.
+Sign a player up for a LARP event in Larpinq. The event tracks its participant roster, can carry post-event effects (loot earned, XP gained, conditions inflicted) that apply to participating characters when the game master closes out the event.
 
 ## Goal
 
@@ -15,12 +15,12 @@ By the end the player will appear on the event's participant list and — once t
 ## Prerequisites
 
 - An event exists for the LARP gathering (game master sets these up — see [Configure the game system](../admin/01-configure-game-system.md) for the event-creation flow).
-- The player exists in Larping — a **Player** record, separate from the **Character** record (one player can have multiple characters across events).
+- The player exists in Larpinq — a **Player** record, separate from the **Character** record (one player can have multiple characters across events).
 - The right to subscribe — players can typically subscribe themselves; game masters can subscribe any player. The event may be capped, in which case subscriptions over the cap go on a waiting list.
 
 ## Steps
 
-1. Open **Events** from the Larping navigation. The list shows upcoming and past events with their date range and location.
+1. Open **Events** from the Larpinq navigation. The list shows upcoming and past events with their date range and location.
 
    ![Events list](/screenshots/tutorials/user/06-event-subscription-01.png)
 

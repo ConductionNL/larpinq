@@ -2,11 +2,11 @@
 status: proposed
 ---
 
-# LarpingApp Beta Surface Alignment
+# Larpinq Beta Surface Alignment
 
 ## Purpose
 
-LarpingApp's code metadata (`appinfo/info.xml`), code features (`src/manifest.json`), product page (`conduction.nl/apps/larpingapp`), and docs (`larpingapp.conduction.nl`) SHALL describe the same, real, shipped feature set using one shared vocabulary, so a prospective user reading any of the four surfaces forms an accurate expectation of the app before installing it.
+Larpinq's code metadata (`appinfo/info.xml`), code features (`src/manifest.json`), product page (`conduction.nl/apps/larpingapp`), and docs (`larpingapp.conduction.nl`) SHALL describe the same, real, shipped feature set using one shared vocabulary, so a prospective user reading any of the four surfaces forms an accurate expectation of the app before installing it.
 
 ## Requirements
 
@@ -48,7 +48,7 @@ The product page (`conduction-website/src/pages/apps/larpingapp.mdx` and its Dut
 
 ### Requirement: Docs Reflect the Same Canonical Feature List
 
-`larpingapp/docs/` SHALL use the same feature vocabulary as `src/manifest.json` and the product page, and SHALL NOT contain placeholder or filler content in place of real documentation.
+`larpinq/docs/` SHALL use the same feature vocabulary as `src/manifest.json` and the product page, and SHALL NOT contain placeholder or filler content in place of real documentation.
 
 #### Scenario: No placeholder content in docs landing page
 

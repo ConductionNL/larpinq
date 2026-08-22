@@ -8,7 +8,7 @@
 		"completionConfigKey": "setup_completed_version",
 		"steps": [
 			{ "id": "welcome", "type": "info", "title": "Welcome to LARPing", "body": "Manage your live-action roleplay world — characters, players, items and events — all in one place. One quick step provisions your data store, then you're ready to play." },
-			{ "id": "provision", "type": "run-action", "title": "Provision your world", "required": true, "action": "provision", "body": "Create the LarpingApp register and schemas in OpenRegister — the data store for characters, players, abilities, skills, items, conditions, effects, events and settings. This normally runs automatically on install; run it here if OpenRegister was enabled after LarpingApp, or to repair a partial install. It is safe to run more than once." },
+			{ "id": "provision", "type": "run-action", "title": "Provision your world", "required": true, "action": "provision", "body": "Create the Larpinq register and schemas in OpenRegister — the data store for characters, players, abilities, skills, items, conditions, effects, events and settings. This normally runs automatically on install; run it here if OpenRegister was enabled after Larpinq, or to repair a partial install. It is safe to run more than once." },
 			{ "id": "done", "type": "summary", "title": "You're ready", "healthCheck": true, "body": "That's it — your world's data store is provisioned. Jump into the Dashboard to see it at a glance, and reopen this setup or the guided tour anytime from the app's … menu." }
 		]
 	},
@@ -18,7 +18,7 @@
 		"completionConfigKey": "walkthrough_completed_version",
 		"tours": [
 			{
-				"id": "larpingapp:getting-started",
+				"id": "larpinq:getting-started",
 				"title": "Getting started",
 				"trigger": "first-visit",
 				"minAppVersion": "0.1.27",

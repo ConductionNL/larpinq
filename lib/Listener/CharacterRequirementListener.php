@@ -1,7 +1,7 @@
 <?php
 
 /**
- * CharacterRequirementListener for LarpingApp
+ * CharacterRequirementListener for Larpinq
  *
  * Server-authoritative veto on character-assignment writes. Listens for
  * OpenRegister's vetoable pre-write events (ObjectCreatingEvent /
@@ -13,7 +13,7 @@
  * these events from its central write path.
  *
  * @category  Listener
- * @package   OCA\LarpingApp\Listener
+ * @package   OCA\Larpinq\Listener
  * @author    Ruben Linde <ruben@larpingapp.com>
  * @copyright 2026 Conduction B.V.
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
@@ -24,10 +24,10 @@
 
 declare(strict_types=1);
 
-namespace OCA\LarpingApp\Listener;
+namespace OCA\Larpinq\Listener;
 
-use OCA\LarpingApp\AppInfo\Application;
-use OCA\LarpingApp\Service\SkillRequirementService;
+use OCA\Larpinq\AppInfo\Application;
+use OCA\Larpinq\Service\SkillRequirementService;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\IAppConfig;
@@ -39,7 +39,7 @@ use Psr\Log\LoggerInterface;
  * Vetoes character writes that violate skill requirements or the XP budget.
  *
  * @category Listener
- * @package  OCA\LarpingApp\Listener
+ * @package  OCA\Larpinq\Listener
  * @author   Ruben Linde <ruben@larpingapp.com>
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
@@ -137,7 +137,7 @@ class CharacterRequirementListener implements IEventListener {
 			// proceed (degrade to data-only) — matches the "OR predates events"
 			// graceful-degradation contract.
 			$this->logger->error(
-				'LarpingApp: skill-requirement validation errored; allowing the write (data-only fallback).',
+				'Larpinq: skill-requirement validation errored; allowing the write (data-only fallback).',
 				['exception' => $e]
 			);
 		}//end try
@@ -230,7 +230,7 @@ class CharacterRequirementListener implements IEventListener {
 	 * at HTTP 201/200 with no log line — the whole
 	 * `skill-requirement-enforcement` capability was inert while its listener
 	 * was correctly registered and its validator correctly returned
-	 * `valid: false`. Reported as larpingapp#308 (which mis-attributed it to
+	 * `valid: false`. Reported as larpinq#308 (which mis-attributed it to
 	 * OpenRegister not dispatching the vetoable pre-write event; OpenRegister
 	 * dispatches it, and this listener is first in the chain).
 	 *

@@ -11,19 +11,19 @@ Day-of attendance MUST be stored as a first-class OpenRegister object of a new
 `registered` | `checked-in` | `no-show`), `checkedInAt` (date-time) and
 `checkedInBy` (Nextcloud uid). Every property MUST carry a gate-28 `title`. The
 schema MUST be introduced by an ADR-037 `register.d` fragment (never by editing
-the monolithic `larpingapp_register.json` on a build branch), and its slug MUST
+the monolithic `larpinq_register.json` on a build branch), and its slug MUST
 be namespaced (`larping_attendance`, consistent with the existing
 `larping_event` / `larping_item` slugs) to avoid the global cross-app schema-slug
-collision. LarpingApp MUST NOT persist attendance in an app-local database table.
+collision. Larpinq MUST NOT persist attendance in an app-local database table.
 
 #### Scenario: attendance schema is added via a register fragment
 
 - **GIVEN** the `larpingapp` register at HEAD has no attendance concept
-- **WHEN** the `event-checkin-roster` fragment is deep-merged into `larpingapp_register.json`
+- **WHEN** the `event-checkin-roster` fragment is deep-merged into `larpinq_register.json`
 - **THEN** the register MUST expose a `larping_attendance` schema whose properties are `event`, `character`, `status`, `checkedInAt`, `checkedInBy`, each with a non-empty `title`
 - **AND** `status` MUST be constrained to `registered`, `checked-in`, `no-show`
 - **AND** no existing schema MUST be removed, renamed, or have a property dropped by the merge
-- `@e2e exclude` schema-shape change verified by JSON deep-merge simulation; no larpingapp UI e2e surface exercises the raw register import
+- `@e2e exclude` schema-shape change verified by JSON deep-merge simulation; no larpinq UI e2e surface exercises the raw register import
 
 #### Scenario: the fragment introduces no live objects
 

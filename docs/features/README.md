@@ -1,12 +1,12 @@
-# LarpingApp — Features
+# Larpinq — Features
 
-LarpingApp is a worldbuilding and LARP (Live Action Role-Playing) campaign management application for Nextcloud. It provides a complete rule engine for managing characters, players, skills, items, conditions, and events, with a stat calculation engine that applies effects in a deterministic order. Data is stored in OpenRegister (using `_register.json` auto-import) and characters can be exported as PDF character sheets via the DocuDesk integration.
+Larpinq is a worldbuilding and LARP (Live Action Role-Playing) campaign management application for Nextcloud. It provides a complete rule engine for managing characters, players, skills, items, conditions, and events, with a stat calculation engine that applies effects in a deterministic order. Data is stored in OpenRegister (using `_register.json` auto-import) and characters can be exported as PDF character sheets via the DocuDesk integration.
 
-LarpingApp has no direct GEMMA component mapping — it is a domain-specific application for LARP organizations and worldbuilding communities.
+Larpinq has no direct GEMMA component mapping — it is a domain-specific application for LARP organizations and worldbuilding communities.
 
 ## Standards Compliance
 
-LarpingApp is a niche domain application with no applicable government or interoperability standards. It inherits platform-level compliance from Nextcloud and OpenRegister.
+Larpinq is a niche domain application with no applicable government or interoperability standards. It inherits platform-level compliance from Nextcloud and OpenRegister.
 
 | Standard | Status | Description |
 |----------|--------|-------------|
@@ -22,9 +22,9 @@ LarpingApp is a niche domain application with no applicable government or intero
 | [Character Management](./character-management.md) | Full CRUD for characters (PCs, NPCs); stat calculation engine; currency system (gold/silver/copper); approval workflow | [character-management.md](./character-management.md) |
 | [RPG System / Game Mechanics](./rpg-system.md) | Skills (with prerequisites), Items, Conditions, Effects, Abilities — interconnected rule engine | [rpg-system.md](./rpg-system.md) |
 | [Events & Players](./events-players.md) | Event management with date ranges, locations, and effect application to participating characters; player profiles | [events-players.md](./events-players.md) |
-| [PDF Export](./pdf-export.md) | Character sheet PDF export via DocuDesk integration; Twig templates scoped to LarpingApp | [pdf-export.md](./pdf-export.md) |
+| [PDF Export](./pdf-export.md) | Character sheet PDF export via DocuDesk integration; Twig templates scoped to Larpinq | [pdf-export.md](./pdf-export.md) |
 | [Admin Settings](./admin-settings.md) | Per-entity data source config: internal DB or OpenRegister register+schema per object type | [admin-settings.md](./admin-settings.md) |
-| [Register Config Auto-Import](./register-config-json.md) | `larpingapp_register.json` bootstraps all schemas and registers on install via repair step | [register-config-json.md](./register-config-json.md) |
+| [Register Config Auto-Import](./register-config-json.md) | `larpinq_register.json` bootstraps all schemas and registers on install via repair step | [register-config-json.md](./register-config-json.md) |
 | [Object Service](./object-service.md) | `RegisterObjectFetcher` resolves OpenRegister mappers per object type from IAppConfig | [object-service.md](./object-service.md) |
 | [Dashboard](./dashboard.md) | App landing page with ApexCharts infrastructure for campaign analytics | [dashboard.md](./dashboard.md) |
 | [Larping Skill Widget](./larping-skill-widget.md) | Nextcloud Dashboard Widget showing skill usage distribution as a pie chart via GraphQL faceting | [larping-skill-widget.md](./larping-skill-widget.md) |
@@ -34,7 +34,7 @@ LarpingApp is a niche domain application with no applicable government or intero
 
 ## Architecture
 
-LarpingApp uses a pure OpenRegister data model. All entity types (Character, Player, Ability, Skill, Item, Condition, Effect, Event) are stored as register objects, with schemas defined in `larpingapp_register.json` (OpenAPI 3.0 format) and auto-imported on app install.
+Larpinq uses a pure OpenRegister data model. All entity types (Character, Player, Ability, Skill, Item, Condition, Effect, Event) are stored as register objects, with schemas defined in `larpinq_register.json` (OpenAPI 3.0 format) and auto-imported on app install.
 
 **Key architectural components:**
 
@@ -44,6 +44,6 @@ LarpingApp uses a pure OpenRegister data model. All entity types (Character, Pla
 
 ## GEMMA Mapping
 
-| GEMMA Component | LarpingApp Role |
+| GEMMA Component | Larpinq Role |
 |-----------------|-----------------|
 | N.v.t. | Domain-specific LARP / worldbuilding campaign management |

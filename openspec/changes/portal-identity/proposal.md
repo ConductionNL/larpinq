@@ -31,9 +31,9 @@ row field that equals that ref. A portal scoping property MUST therefore be a
 **UUID domain ref**, never a Nextcloud user id (an external subject has no NC
 account by premise).
 
-At HEAD, larpingapp scopes character ownership by `character.ownerUid` — a
+At HEAD, Larpinq scopes character ownership by `character.ownerUid` — a
 Nextcloud `uid` string (verified: it is the `recipients[].field` of the
-`character-approved` notification rule in `larpingapp_register.json`, and its
+`character-approved` notification rule in `larpinq_register.json`, and its
 own description reads "Nextcloud uid of the player who owns this character").
 That identifier cannot scope a portal subject.
 
@@ -41,7 +41,7 @@ That identifier cannot scope a portal subject.
 
 - **Add** `character.ownerRef` (`type: string`, `format: uuid`, title `Owner`)
   via a new fragment `lib/Settings/register.d/portal-identity.json` (ADR-037 —
-  disjoint fragments never collide; the monolith `larpingapp_register.json` is
+  disjoint fragments never collide; the monolith `larpinq_register.json` is
   not edited on a build branch, per `register.d/README.md`).
 - **Keep** `character.ownerUid` exactly as-is (additive, non-destructive).
 - **Bump** the `character` schema `version` `1.3.0` → `1.4.0` inside the
@@ -50,7 +50,7 @@ That identifier cannot scope a portal subject.
 
 ## Scoping choice (documented — the stable domain identity)
 
-`ownerRef` points at the larpingapp **`player` object UUID** — larpingapp's own
+`ownerRef` points at the Larpinq **`player` object UUID** — Larpinq's own
 first-class domain entity for a real-world player. The `player` schema is
 separately linked to a Nextcloud addressbook contact via
 `register.d/player-to-contacts-leaf.json` (`linkedTypes: ["contacts"]`) for

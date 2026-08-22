@@ -1,12 +1,12 @@
 # leaf-integrations Specification
 
 **Status**: planned
-**Scope**: larpingapp
+**Scope**: larpinq
 **OpenSpec changes**:
 - _(none yet)_
 
 ## Purpose
-Completes LarpingApp's integration-leaf adoption (ADR-019 registry, ADR-022
+Completes Larpinq's integration-leaf adoption (ADR-019 registry, ADR-022
 consume-don't-build) by declaring the talk, polls, and deck leaves on the
 `event` and `setting` schemas via a `register.d` fragment, alongside the five
 leaves already shipped (calendar/maps/forms on `event`, contacts on `player`,
@@ -49,12 +49,12 @@ votes (rules revisions). The fragment MUST NOT declare `deck` on `setting`.
 ### Requirement: REQ-003 — Leaves are declared via a register fragment, not the monolith
 The talk/polls/deck declarations MUST live in a dedicated
 `lib/Settings/register.d/leaf-integrations.json` fragment (ADR-037).
-`lib/Settings/larpingapp_register.json` and the existing fragments MUST NOT
+`lib/Settings/larpinq_register.json` and the existing fragments MUST NOT
 be edited by this change.
 
 #### Scenario: Monolith and existing fragments untouched
 - GIVEN this change applied
-- WHEN `larpingapp_register.json` and the six pre-existing `register.d` files are diffed against HEAD
+- WHEN `larpinq_register.json` and the six pre-existing `register.d` files are diffed against HEAD
 - THEN they MUST be byte-identical
 - AND the new declarations MUST come only from `leaf-integrations.json`
 

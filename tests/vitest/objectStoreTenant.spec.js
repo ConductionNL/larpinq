@@ -1,10 +1,10 @@
 /**
- * SPDX-FileCopyrightText: 2026 Conduction / LarpingApp Contributors
+ * SPDX-FileCopyrightText: 2026 Conduction / Larpinq Contributors
  * SPDX-License-Identifier: EUPL-1.2
  *
  * Unit tests for the multi-tenancy wiring in src/store/modules/object.js.
  *
- * Covers (spec: larpingapp-adopt-or-abstractions, Phase 4):
+ * Covers (spec: larpinq-adopt-or-abstractions, Phase 4):
  *   • The module-local `setObjectStoreTenantUuid()` setter is exported
  *     and accepts string + null inputs without throwing.
  *   • The `organisationUuidGetter` option passed to the library's
@@ -13,7 +13,7 @@
  *     `X-OpenRegister-Organisation` with the new UUID immediately.
  *
  * `@conduction/nextcloud-vue` is mocked with a minimal stand-in for
- * `createObjectStore()` + the three plugin factories the LarpingApp
+ * `createObjectStore()` + the three plugin factories the Larpinq
  * store registers. The stand-in captures the `organisationUuidGetter`
  * option so we can assert the closure wiring without dragging the
  * library's Vue / Nextcloud transitive deps into the unit harness
@@ -59,7 +59,7 @@ vi.mock('@conduction/nextcloud-vue', () => {
 const { useObjectStore, setObjectStoreTenantUuid } =
 	await import('../../src/store/modules/object.js')
 
-describe('larpingapp object store — multi-tenancy wiring', () => {
+describe('larpinq object store — multi-tenancy wiring', () => {
 	beforeEach(() => {
 		// Reset closure state between tests so cases are order-independent.
 		setObjectStoreTenantUuid(null)

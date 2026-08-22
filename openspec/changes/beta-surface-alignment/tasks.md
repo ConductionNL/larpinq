@@ -1,4 +1,4 @@
-# Tasks: Beta Cross-Surface Alignment (LarpingApp)
+# Tasks: Beta Cross-Surface Alignment (Larpinq)
 
 ## 1. Code metadata (`appinfo/info.xml`)
 
@@ -28,7 +28,7 @@
 - [x] 4.2 Rewrite all copy to real Dutch matching the reconciled canonical feature list
 - [x] 4.3 Fix `secondaryCta` doc link from `docs.conduction.nl/larpingapp` to `larpingapp.conduction.nl`
 
-## 5. Docs (`larpingapp/docs/`)
+## 5. Docs (`larpinq/docs/`)
 
 - [x] 5.1 Verify `docs/FEATURES.md`, `docs/features/*.md`, `docs/Schema/*.json`, `docs/README.md` already match code — no edits needed (used as canonical source)
 - [x] 5.2 Replace placeholder junk in `docs/readme.md` with a real "About Larping" paragraph

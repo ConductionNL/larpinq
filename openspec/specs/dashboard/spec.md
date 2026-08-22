@@ -8,7 +8,7 @@ status: done
 
 SPA mount fixed in #202 — UI scenarios covered by tests/e2e/spec-coverage/spa-ui.spec.ts
 
-The dashboard is the landing page of the LarpingApp, serving as the entry point when users navigate to the app. Currently it provides a basic welcome view. The dashboard has infrastructure in place for future analytics features using ApexCharts (which is already a project dependency). The `DashboardController` serves the main app template (a Vue SPA entry point), while the Vue `DashboardIndex.vue` component renders the actual dashboard content. The navigation sidebar provides quick access to all entity views and a quick-create button for characters.
+The dashboard is the landing page of the Larpinq, serving as the entry point when users navigate to the app. Currently it provides a basic welcome view. The dashboard has infrastructure in place for future analytics features using ApexCharts (which is already a project dependency). The `DashboardController` serves the main app template (a Vue SPA entry point), while the Vue `DashboardIndex.vue` component renders the actual dashboard content. The navigation sidebar provides quick access to all entity views and a quick-create button for characters.
 
 **Key source files:**
 - `lib/Controller/DashboardController.php` -- Serves the main app template
@@ -27,7 +27,7 @@ The system MUST serve the main app page via the DashboardController, which loads
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
 | DASH-001 | DashboardController MUST serve a TemplateResponse for the root route `/` | MUST | Implemented |
-| DASH-002 | The template MUST render the `index` template from the `larpingapp` app | MUST | Implemented |
+| DASH-002 | The template MUST render the `index` template from the `larpinq` app | MUST | Implemented |
 | DASH-003 | The route MUST be accessible without admin rights (`@NoAdminRequired`) | MUST | Implemented |
 | DASH-004 | The route MUST not require CSRF validation (`@NoCSRFRequired`) | MUST | Implemented |
 | DASH-005 | The controller MUST inject `IAppConfig` via constructor for future configuration access | MUST | Implemented |
@@ -35,8 +35,8 @@ The system MUST serve the main app page via the DashboardController, which loads
 
 #### Scenario: User navigates to the app
 
-- GIVEN a logged-in Nextcloud user with access to LarpingApp
-- WHEN they navigate to `/apps/larpingapp/`
+- GIVEN a logged-in Nextcloud user with access to Larpinq
+- WHEN they navigate to `/apps/larpinq/`
 - THEN the DashboardController MUST return a TemplateResponse
 - AND the Vue SPA MUST load and render the dashboard view
 - AND the response MUST use the `index` template
@@ -46,7 +46,7 @@ The system MUST serve the main app page via the DashboardController, which loads
 @e2e exclude requires provisioning a separate non-admin test account; admin-account regression tests cover the same PHP route annotation (@NoAdminRequired); covered in PHPUnit DashboardControllerTest
 
 - GIVEN a regular (non-admin) Nextcloud user with the app enabled
-- WHEN they navigate to `/apps/larpingapp/`
+- WHEN they navigate to `/apps/larpinq/`
 - THEN the dashboard MUST render successfully
 - AND no admin check MUST block access
 
@@ -73,7 +73,7 @@ The dashboard MUST be accessible as the default view from the app's navigation s
 
 #### Scenario: Dashboard is default view
 
-- GIVEN a user opens LarpingApp for the first time in a session
+- GIVEN a user opens Larpinq for the first time in a session
 - THEN the navigation store MUST have `selected` set to `dashboard`
 - AND the dashboard view component MUST be rendered
 
@@ -95,7 +95,7 @@ The dashboard MUST be accessible as the default view from the app's navigation s
 
 #### Scenario: Sidebar shows all entity views
 
-- GIVEN the user is on any page within LarpingApp
+- GIVEN the user is on any page within Larpinq
 - THEN the left sidebar MUST display navigation items for:
   - Dashboard (Finance icon)
   - Characters
@@ -135,7 +135,7 @@ The dashboard MUST display a welcome message as its current content.
 
 @e2e exclude requires a clean-install Nextcloud environment; functional equivalent is covered by "user navigates to the app" with no data seeded; install-time behavior covered in PHPUnit
 
-- GIVEN LarpingApp was just installed and no data exists
+- GIVEN Larpinq was just installed and no data exists
 - WHEN the admin navigates to the app
 - THEN the dashboard MUST display the welcome message
 - AND the sidebar MUST be navigable to all entity views
@@ -242,14 +242,14 @@ The application MUST initialize correctly via Nextcloud's auto-wiring without ex
 |----|------------|----------|--------|
 | DASH-050 | The `Application` class MUST implement `IBootstrap` with empty `register()` and `boot()` methods | MUST | Implemented |
 | DASH-051 | All services MUST be resolved via Nextcloud's auto-wiring DI container | MUST | Implemented |
-| DASH-052 | `Application::APP_ID` MUST be defined as `'larpingapp'` | MUST | Implemented |
+| DASH-052 | `Application::APP_ID` MUST be defined as `'larpinq'` | MUST | Implemented |
 | DASH-053 | No explicit service registrations, event listeners, or middleware MUST be present in bootstrap | SHOULD | Implemented |
 
 #### Scenario: App bootstrap
 
 @e2e exclude PHPUnit scope — tests Application::register()/boot() DI wiring, not browser-navigable UI
 
-- GIVEN the LarpingApp is installed and enabled
+- GIVEN the Larpinq is installed and enabled
 - WHEN Nextcloud loads the app
 - THEN `Application::register()` MUST be called but perform no operations
 - AND `Application::boot()` MUST be called but perform no operations
@@ -271,7 +271,7 @@ The application MUST initialize correctly via Nextcloud's auto-wiring without ex
 - GIVEN the Application class has empty register() and boot()
 - WHEN any request is processed
 - THEN no custom middleware MUST intercept the request
-- AND no event listeners MUST fire from LarpingApp bootstrap
+- AND no event listeners MUST fire from Larpinq bootstrap
 
 ---
 

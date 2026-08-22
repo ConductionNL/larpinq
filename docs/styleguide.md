@@ -2,7 +2,7 @@
 The style guide provides a general overview on styling decisions made during the development of the application.
 
 ## Making migrations
-sudo -u www-data php occ migrations:generate larpingapp 0
+sudo -u www-data php occ migrations:generate larpinq 0
 
 ## Visual components
 We use [Nextcloud Vue](https://nextcloud-vue-components.netlify.app/) components in line with: [Nextcloud Vue Styleguide](https://docs.nextcloud.com/server/27/developer_manual/design/index.html).

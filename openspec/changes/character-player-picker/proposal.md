@@ -13,7 +13,7 @@ makes `character.ownerUid` an auto-derived (`x-openregister-calculations`,
 `materialise: true`) field sourced from `@ref.player.userUid` instead of a manually
 typed uid, and adds a `switch` widget hint to `character.approved` so its existing
 two-value lifecycle enum renders as a toggle. All five behaviours are pure
-declarative edits to `lib/Settings/larpingapp_register.json` — no PHP or Vue code
+declarative edits to `lib/Settings/larpinq_register.json` — no PHP or Vue code
 changes, and no data migration.
 
 ## Motivation
@@ -39,7 +39,7 @@ changes, and no data migration.
   the linked player's account — zero new Service classes.
 
 ## Affected Projects
-- [x] Project: `larpingapp` — `lib/Settings/larpingapp_register.json` schema edits
+- [x] Project: `larpinq` — `lib/Settings/larpinq_register.json` schema edits
       (`character.ocName`, `player.userUid`, `character.x-openregister-references`,
       `character.x-openregister-calculations`, `character.approved`)
 - [x] Project: `nextcloud-vue` (EXTERNAL, not opsx-tracked here) — three new
@@ -94,7 +94,7 @@ changes, and no data migration.
 
 ## Approach
 Five coordinated edits to the OpenAPI schemas under `.components.schemas` in
-`lib/Settings/larpingapp_register.json`, all consumed by OpenRegister's declarative
+`lib/Settings/larpinq_register.json`, all consumed by OpenRegister's declarative
 engines (object-relation `$ref` rendering, `x-openregister-references` resolution,
 `x-openregister-calculations` materialisation) and by nc-vue's schema-driven
 `CnFormDialog`. See `design.md` for the exact JSON shapes, precedent from
@@ -105,13 +105,13 @@ engines (object-relation `$ref` rendering, `x-openregister-references` resolutio
   they ship on `beta` (currently pinned `^1.0.0-beta.138`): a `format:"user"` NC-user
   picker, a `$ref` inline select-or-create resource picker, and a 2-value-enum +
   `widget:"switch"` toggle. This is a version bump of an existing dependency, not a
-  new package. These are fleet-wide auto-form primitives, not larpingapp-specific:
+  new package. These are fleet-wide auto-form primitives, not larpinq-specific:
   roughly 90 NC-user-shaped fields and 412 reference-shaped properties exist across
   the fleet, so all three widgets are reusable infrastructure that many apps will
   benefit from once they land.
 
 ## Impact
-- `lib/Settings/larpingapp_register.json` — `character` and `player` schema
+- `lib/Settings/larpinq_register.json` — `character` and `player` schema
   definitions under `.components.schemas`.
 - Character create/edit form (`CnFormDialog`, schema-driven) — `ocName` renders as an
   inline select-or-create player dropdown instead of a text input; `ownerUid`
@@ -167,7 +167,7 @@ doesn't match a known object's UUID).
 forward it is always correct-by-construction from the linked player.
 
 ## Rollback Strategy
-Revert the five JSON edits in `lib/Settings/larpingapp_register.json` (single file,
+Revert the five JSON edits in `lib/Settings/larpinq_register.json` (single file,
 single commit). `ocName` reverts to free text, `ownerUid` reverts to a manually
 editable field, `approved` reverts to a plain select box, and the
 `x-openregister-references`/`x-openregister-calculations` blocks are removed. No
@@ -177,4 +177,4 @@ opaque strings again (still valid free text).
 ## Open Questions
 None — the design, JSON shapes, and field-by-field rendering behaviour were
 verified against `procest_register.json` precedent and the current
-`larpingapp_register.json` contents before this proposal was written.
+`larpinq_register.json` contents before this proposal was written.

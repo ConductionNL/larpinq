@@ -1,7 +1,7 @@
 <?php
 
 /**
- * LarpingApp OpenRegister autoload prelude
+ * Larpinq OpenRegister autoload prelude
  *
  * Puts OpenRegister's PSR-4 prefix on the autoloader so this app can probe for
  * `OCA\OpenRegister\…` classes from its own `Application::register()`.
@@ -10,7 +10,7 @@
  * SPDX-FileCopyrightText: 2026 Conduction B.V.
  *
  * @category AppInfo
- * @package  OCA\LarpingApp\AppInfo
+ * @package  OCA\Larpinq\AppInfo
  *
  * @author    Conduction Development Team <dev@conduction.nl>
  * @copyright 2026 Conduction B.V.
@@ -23,7 +23,7 @@
 
 declare(strict_types=1);
 
-namespace OCA\LarpingApp\AppInfo;
+namespace OCA\Larpinq\AppInfo;
 
 /**
  * Registers OpenRegister's autoload prefix before any OpenRegister class is probed.
@@ -36,11 +36,11 @@ namespace OCA\LarpingApp\AppInfo;
  * one app at a time. So every app's `register()` runs BEFORE the PSR-4 prefix
  * of every alphabetically-LATER app exists.
  *
- * `larpingapp` sorts before `openregister`, so `OCA\OpenRegister\` is NOT
+ * `larpinq` sorts before `openregister`, so `OCA\OpenRegister\` is NOT
  * autoloadable inside `Application::register()` on a perfectly healthy instance
  * with OpenRegister enabled. Every `class_exists('OCA\OpenRegister\Event\…')`
  * probe in `register()` therefore answers FALSE — not "not loaded yet", just
- * FALSE, indistinguishable from OpenRegister being absent — and LarpingApp
+ * FALSE, indistinguishable from OpenRegister being absent — and Larpinq
  * registers NO event listeners at all:
  *
  *   - the `DeepLinkRegistrationEvent` listener (unified-search deep links), and

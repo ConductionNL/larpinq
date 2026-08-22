@@ -1,25 +1,25 @@
 <p align="center">
-  <img src="img/app-store.svg" alt="Larping logo" width="80" height="80">
+  <img src="img/app-store.svg" alt="Larpinq logo" width="80" height="80">
 </p>
 
-<h1 align="center">Larping</h1>
+<h1 align="center">Larpinq</h1>
 
 <p align="center">
   <strong>LARP character and event management for Nextcloud — skills, items, conditions, and dynamic stat calculation</strong>
 </p>
 
 <p align="center">
-  <a href="https://codeberg.org/Conduction/larpingapp/releases"><img src="https://img.shields.io/gitea/v/release/Conduction/larpingapp?gitea_url=https%3A%2F%2Fcodeberg.org" alt="Latest release"></a>
-  <a href="https://github.com/ConductionNL/larpingapp/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-EUPL--1.2-blue" alt="License"></a>
-  <a href="https://ci.codeberg.org/repos/Conduction/larpingapp"><img src="https://ci.codeberg.org/api/badges/Conduction/larpingapp/status.svg" alt="Code quality"></a>
+  <a href="https://github.com/ConductionNL/larpinq/releases"><img src="https://img.shields.io/github/v/release/ConductionNL/larpinq" alt="Latest release"></a>
+  <a href="https://github.com/ConductionNL/larpinq/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-EUPL--1.2-blue" alt="License"></a>
+  <a href="https://github.com/ConductionNL/larpinq/actions/workflows/code-quality.yml"><img src="https://github.com/ConductionNL/larpinq/actions/workflows/code-quality.yml/badge.svg" alt="Code quality"></a>
   <a href="https://larpingapp.app"><img src="https://img.shields.io/badge/docs-larpingapp.app-green" alt="Documentation"></a>
 </p>
 
 ---
 
-Larping brings live-action role-playing management natively into Nextcloud. Game masters define abilities, skills, items, conditions, and effects; the app automatically computes each character's stats and keeps them synchronized as game state changes. Players register for events, track XP, and print their character sheet — all without leaving Nextcloud.
+Larpinq brings live-action role-playing management natively into Nextcloud. Game masters define abilities, skills, items, conditions, and effects; the app automatically computes each character's stats and keeps them synchronized as game state changes. Players register for events, track XP, and print their character sheet — all without leaving Nextcloud.
 
-> **Optional:** [OpenRegister](https://codeberg.org/Conduction/openregister) — enables advanced features like audit trails, object locking, cross-object relations, and JSON-based data storage.
+> **Optional:** [OpenRegister](https://github.com/ConductionNL/openregister) — enables advanced features like audit trails, object locking, cross-object relations, and JSON-based data storage.
 
 ## Screenshots
 
@@ -93,7 +93,7 @@ graph TD
 ### Directory Structure
 
 ```
-larpingapp/
+larpinq/
 ├── appinfo/           # Nextcloud app manifest, routes, navigation
 ├── lib/               # PHP backend — controllers, services, DB mappers
 │   ├── Controller/    # Objects, Characters, Settings, Dashboard
@@ -118,26 +118,26 @@ larpingapp/
 | Nextcloud | 28 – 33 |
 | PHP | 8.1+ |
 | Database | PostgreSQL 10+, MySQL 8.0+, SQLite |
-| [OpenRegister](https://codeberg.org/Conduction/openregister) | optional |
+| [OpenRegister](https://github.com/ConductionNL/openregister) | optional |
 
 ## Installation
 
 ### From the Nextcloud App Store
 
 1. Go to **Apps** in your Nextcloud instance
-2. Search for **Larping**
+2. Search for **Larpinq**
 3. Click **Download and enable**
 
 ### From Source
 
 ```bash
 cd /var/www/html/custom_apps
-git clone https://codeberg.org/Conduction/larpingapp.git
-cd larpingapp
+git clone https://github.com/ConductionNL/larpinq.git
+cd larpinq
 npm install
 npm run build
 composer install
-php occ app:enable larpingapp
+php occ app:enable larpinq
 ```
 
 ## Development
@@ -151,7 +151,7 @@ docker compose -f openregister/docker-compose.yml up -d
 ### Frontend development
 
 ```bash
-cd larpingapp
+cd larpinq
 npm install
 npm run dev        # Watch mode
 npm run build      # Production build
@@ -209,9 +209,9 @@ Full documentation is available at **[larpingapp.app](https://larpingapp.app)**
 
 ## Related Apps
 
-- **[OpenRegister](https://codeberg.org/Conduction/openregister)** — Object storage layer (optional dependency for advanced features)
-- **[OpenCatalogi](https://codeberg.org/Conduction/opencatalogi)** — Publication and catalogue management
-- **[NL Design](https://codeberg.org/Conduction/nldesign)** — Design token theming for Nextcloud
+- **[OpenRegister](https://github.com/ConductionNL/openregister)** — Object storage layer (optional dependency for advanced features)
+- **[OpenCatalogi](https://github.com/ConductionNL/opencatalogi)** — Publication and catalogue management
+- **[NL Design](https://github.com/ConductionNL/nldesign)** — Design token theming for Nextcloud
 
 ## Support
 

@@ -4,7 +4,7 @@
 
 ### Requirement: Item CRUD
 
-The system MUST support creating, reading, updating, and deleting items. Items represent magical or special objects that characters can hold. The Items index, detail, and dashboard-widget pages in `src/manifest.json` MUST reference the item schema by its real, namespaced slug `larping_item` (not the bare, collision-prone slug `item`) so OpenRegister resolves them to larpingapp's own item schema rather than another installed app's `item` schema.
+The system MUST support creating, reading, updating, and deleting items. Items represent magical or special objects that characters can hold. The Items index, detail, and dashboard-widget pages in `src/manifest.json` MUST reference the item schema by its real, namespaced slug `larping_item` (not the bare, collision-prone slug `item`) so OpenRegister resolves them to Larpinq's own item schema rather than another installed app's `item` schema.
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
@@ -15,8 +15,8 @@ The system MUST support creating, reading, updating, and deleting items. Items r
 | MECH-044 | Item MUST track which characters hold it via the `characters[]` array | MUST | Implemented |
 | MECH-045 | Items MUST be accessible from the main navigation sidebar with Sword icon | MUST | Implemented |
 | MECH-046 | Item detail view MUST show relations and audit trail tabs | MUST | Implemented |
-| MECH-047 | Every `"schema"` reference to the item schema in `src/manifest.json` (index page, detail page, dashboard KPI widget, and any object-list widget) MUST use the real slug `larping_item`, matching `lib/Settings/larpingapp_register.json`'s `x-openregister-schema-slug` | MUST | Implemented |
-<!-- Previous behavior: src/manifest.json referenced the item schema by the bare slug "item" at 4 sites (dashboard KPI widget, index page config, detail page, and the effect-detail page's "items granting this effect" object-list widget). Because OpenRegister resolves schema slugs globally across all installed apps, "item" resolved to a different app's item schema instead of larpingapp's own, so the Items create/list/detail forms rendered the wrong schema's fields. -->
+| MECH-047 | Every `"schema"` reference to the item schema in `src/manifest.json` (index page, detail page, dashboard KPI widget, and any object-list widget) MUST use the real slug `larping_item`, matching `lib/Settings/larpinq_register.json`'s `x-openregister-schema-slug` | MUST | Implemented |
+<!-- Previous behavior: src/manifest.json referenced the item schema by the bare slug "item" at 4 sites (dashboard KPI widget, index page config, detail page, and the effect-detail page's "items granting this effect" object-list widget). Because OpenRegister resolves schema slugs globally across all installed apps, "item" resolved to a different app's item schema instead of Larpinq's own, so the Items create/list/detail forms rendered the wrong schema's fields. -->
 
 #### Scenario: Create a unique item
 
@@ -46,9 +46,9 @@ The system MUST support creating, reading, updating, and deleting items. Items r
 - WHEN viewing the item details
 - THEN the characters[] array MUST include Arthur's UUID
 
-#### Scenario: Items page resolves larpingapp's own item schema
+#### Scenario: Items page resolves Larpinq's own item schema
 
 - GIVEN `src/manifest.json`'s Items index page declares `config.schema`
 - WHEN a user opens the Items page and clicks "New"
-- THEN the create form MUST render larpingapp's own item fields (`name`, `effects`, `unique`, `characters`, etc.)
+- THEN the create form MUST render Larpinq's own item fields (`name`, `effects`, `unique`, `characters`, etc.)
 - AND it MUST NOT render fields from any other installed app's schema also named `item`

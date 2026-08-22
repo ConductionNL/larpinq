@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Per-mechanic unit tests for the LarpingApp game-mechanics engine.
+ * Per-mechanic unit tests for the Larpinq game-mechanics engine.
  *
- * LarpingApp stores every game entity (Ability, Effect, Skill, Item,
+ * Larpinq stores every game entity (Ability, Effect, Skill, Item,
  * Condition) as an OpenRegister object — an associative array — rather than a
  * local PHP entity class. These tests therefore exercise each mechanic at the
  * level it actually exists: the data shape each mechanic carries and how that
@@ -13,7 +13,7 @@
  * against the real OR-object model.
  *
  * @category Test
- * @package  OCA\LarpingApp\Tests\Unit\Service
+ * @package  OCA\Larpinq\Tests\Unit\Service
  * @author   Ruben Linde <ruben@larpingapp.com>
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
@@ -21,11 +21,11 @@
 
 declare(strict_types=1);
 
-namespace OCA\LarpingApp\Tests\Unit\Service;
+namespace OCA\Larpinq\Tests\Unit\Service;
 
-use OCA\LarpingApp\Service\CharacterService;
-use OCA\LarpingApp\Service\EffectApplier;
-use OCA\LarpingApp\Service\RegisterObjectFetcher;
+use OCA\Larpinq\Service\CharacterService;
+use OCA\Larpinq\Service\EffectApplier;
+use OCA\Larpinq\Service\RegisterObjectFetcher;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 

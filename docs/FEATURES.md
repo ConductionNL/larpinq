@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Features
 
-Larping is a live-action role-playing (LARP) management app for Nextcloud. It provides a complete toolset for game masters and players to manage settings, characters, events, and game mechanics.
+Larpinq is a live-action role-playing (LARP) management app for Nextcloud. It provides a complete toolset for game masters and players to manage settings, characters, events, and game mechanics.
 
 ## Core Features
 

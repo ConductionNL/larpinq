@@ -95,7 +95,7 @@ jobs:
     # without a single red test to show for it.
     uses: ConductionNL/.github/.github/workflows/quality.yml@main
     with:
-      app-name: larpingapp
+      app-name: larpinq
       # No `node-version` override. This used to pin 22 to escape a shared
       # default of 20, which could not run `@nextcloud/eslint-config@9` (it
       # declares `engines.node: ^22.14 || ^24 || >=26` and imports
@@ -160,7 +160,7 @@ jobs:
       enable-frontend: true
       enable-eslint: true
       enable-phpunit: true
-      # larpingapp is a THIN CLIENT on OpenRegister — appinfo/info.xml has no
+      # larpinq is a THIN CLIENT on OpenRegister — appinfo/info.xml has no
       # database tables of its own and every entity (character, ability, skill,
       # effect, item, event, …) is an OpenRegister object. Without openregister
       # installed there is nothing for the SPA to render and nothing for the e2e
@@ -178,12 +178,12 @@ jobs:
       # (10 spec files under tests/e2e/) has existed and been maintained for
       # months; only the switch was missing.
       #
-      # The one real blocker was seeding: `occ app:enable larpingapp` runs the
+      # The one real blocker was seeding: `occ app:enable larpinq` runs the
       # register import from an IRepairStep, which has NO user session, so
       # OpenRegister's RBAC denies it — and the repair step swallows the
       # exception as a warning so `occ app:enable` still exits 0. Addressed by
       # not relying on it: `ci-seed.sh` performs the import explicitly over the
-      # admin HTTP API (POST /apps/larpingapp/api/settings/reimport ->
+      # admin HTTP API (POST /apps/larpinq/api/settings/reimport ->
       # loadSettings(force: true), which also merges the register.d fragments)
       # and then VERIFIES the register + all 11 schema slugs, so a bad provision
       # is one loud step failure instead of a dozen misleading spec failures.
@@ -200,11 +200,11 @@ jobs:
       # and cannot byte-match a CI runner — its own README says so).
       playwright-test-path: tests/e2e
       # cwd for this step is the Nextcloud server root.
-      playwright-seed-command: 'bash apps/larpingapp/tests/e2e/ci-seed.sh'
+      playwright-seed-command: 'bash apps/larpinq/tests/e2e/ci-seed.sh'
 
       # ── Integration tests ────────────────────────────────────────────────
       # `enable-newman` defaults to FALSE and this caller never set it, so
-      # tests/integration/larpingapp.postman_collection.json had never executed
+      # tests/integration/larpinq.postman_collection.json had never executed
       # in CI. It sits at the default `newman-collection-path`
       # (tests/integration), which is both the directory the validator counts
       # collections in and the directory the run step globs

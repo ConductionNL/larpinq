@@ -2,7 +2,7 @@
 <!-- Copyright (C) 2026 Conduction B.V. -->
 
 <!--
- Larping app shell. Mounts CnAppRoot with the bundled manifest and the
+ Larpinq app shell. Mounts CnAppRoot with the bundled manifest and the
  v2 kind-tagged registry (ADR-036); provides the `objectSidebarState` channel so
  detail pages (CnDetailPage) can drive a single host-rendered CnObjectSidebar
  through the #sidebar slot.
@@ -19,7 +19,7 @@
  only dangling @spec target. The requirement this file actually satisfies is
  "CnAppRoot SHALL be the boot entry point" in the Tier-4 graduation spec.
 
- @spec openspec/changes/larpingapp-manifest-tier-4/specs/larpingapp-manifest-tier-4/spec.md
+ @spec openspec/changes/larpinq-manifest-tier-4/specs/larpinq-manifest-tier-4/spec.md
 -->
 <template>
 	<CnAppRoot
@@ -28,7 +28,7 @@
 		:registry="registry"
 		:customComponents="customComponents"
 		:pageTypes="pageTypes"
-		appId="larpingapp"
+		appId="larpinq"
 		:translate="translateForApp"
 		:permissions="permissions">
 		<template #sidebar>
@@ -46,11 +46,9 @@
 				@update:open="objectSidebarState.open = $event" />
 		</template>
 		<template #user-settings>
-			<NcAppSettingsSection id="general" :name="t('larpingapp', 'General')">
+			<NcAppSettingsSection id="general" :name="t('larpinq', 'General')">
 				<p class="app-root__settings-hint">
-					{{
-						t('larpingapp', 'Configure your Larping app settings here.')
-					}}
+					{{ t('larpinq', 'Configure your Larpinq settings here.') }}
 				</p>
 			</NcAppSettingsSection>
 		</template>
@@ -62,7 +60,7 @@
 //
 // This was previously pulled in with a `require('@conduction/nextcloud-vue')`
 // inside a try/catch, to tolerate a nc-vue release that pre-dated the export
-// ("Pre-release fallback" scenario in larpingapp-adopt-or-abstractions/spec.md).
+// ("Pre-release fallback" scenario in larpinq-adopt-or-abstractions/spec.md).
 // Under Vue 3 that indirection is actively harmful: `require()` resolves the
 // package's CJS build while the line above resolves its ESM build, so the app
 // would hold TWO module instances of the library. provide/inject matches on
@@ -168,7 +166,7 @@ export default {
 	 * so this code is safe even if `useTenantContext` is missing — the
 	 * watcher just never fires.
 	 *
-	 * @spec openspec/changes/larpingapp-adopt-or-abstractions/specs/larpingapp-adopt-or-abstractions/spec.md
+	 * @spec openspec/changes/larpinq-adopt-or-abstractions/specs/larpinq-adopt-or-abstractions/spec.md
 	 *
 	 * @return {object} Setup return — none needed externally.
 	 */
@@ -257,7 +255,7 @@ export default {
 		 *      navigate back to the parent index, since the object may
 		 *      not be visible in the new tenant.
 		 *
-		 * @spec openspec/changes/larpingapp-adopt-or-abstractions/specs/larpingapp-adopt-or-abstractions/spec.md
+		 * @spec openspec/changes/larpinq-adopt-or-abstractions/specs/larpinq-adopt-or-abstractions/spec.md
 		 */
 		cnActiveOrganisationUuid: {
 			immediate: true,
@@ -267,7 +265,7 @@ export default {
 			 * enclosing watcher entry above does not reach it.
 			 *
 			 * @param {string|undefined} uuid The newly active organisation UUID.
-			 * @spec openspec/changes/larpingapp-adopt-or-abstractions/specs/larpingapp-adopt-or-abstractions/spec.md
+			 * @spec openspec/changes/larpinq-adopt-or-abstractions/specs/larpinq-adopt-or-abstractions/spec.md
 			 */
 			handler(uuid) {
 				const next =
@@ -343,7 +341,7 @@ export default {
 		 * so the shared lib never needs to know it — framework glue.
 		 */
 		translateForApp(key) {
-			return ncT('larpingapp', key)
+			return ncT('larpinq', key)
 		},
 	},
 }

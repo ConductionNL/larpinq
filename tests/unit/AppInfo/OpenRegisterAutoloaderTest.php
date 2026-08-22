@@ -7,7 +7,7 @@
  * SPDX-FileCopyrightText: 2026 Conduction B.V.
  *
  * @category Test
- * @package  OCA\LarpingApp\Tests\Unit\AppInfo
+ * @package  OCA\Larpinq\Tests\Unit\AppInfo
  *
  * @author    Conduction Development Team <dev@conduction.nl>
  * @copyright 2026 Conduction B.V.
@@ -18,9 +18,9 @@
 
 declare(strict_types=1);
 
-namespace OCA\LarpingApp\Tests\Unit\AppInfo;
+namespace OCA\Larpinq\Tests\Unit\AppInfo;
 
-use OCA\LarpingApp\AppInfo\OpenRegisterAutoloader;
+use OCA\Larpinq\AppInfo\OpenRegisterAutoloader;
 use PHPUnit\Framework\TestCase;
 
 /**

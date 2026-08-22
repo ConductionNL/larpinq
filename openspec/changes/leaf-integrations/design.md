@@ -5,7 +5,7 @@ No new architecture. This is the third `register.d` wave: the five shipped
 leaves and the MCP adoption all travel the same path —
 `ConfigFileLoaderService::loadConfigurationFile()` deep-merges (ADR-037)
 every `lib/Settings/register.d/*.json` fragment into
-`larpingapp_register.json`, OpenRegister imports the merged register, and the
+`larpinq_register.json`, OpenRegister imports the merged register, and the
 integration registry (`IntegrationRegistry::getEnabled()`, ADR-019) renders a
 leaf tab/widget on the object detail page for each `linkedTypes` value whose
 provider's required NC app is enabled.
@@ -26,7 +26,7 @@ event detail page (ObjectDetail host, nc-vue leaf host)
   `event-signup-to-forms-leaf.json` (`["forms"]`),
   `player-to-contacts-leaf.json` (`["contacts"]` on `player`),
   `event-checkin-roster.json` (adds the `attendance` schema),
-  `larpingapp-mcp-adoption.json`, `portal-identity.json`.
+  `larpinq-mcp-adoption.json`, `portal-identity.json`.
 - Monolith: `character.configuration.linkedTypes` carries `photos`.
 - OR providers at HEAD: `TalkProvider` (`getId() = 'talk'`), `PollsProvider`
   (`'polls'`), `DeckProvider` (`'deck'`).
@@ -80,5 +80,5 @@ either mechanism is caught.
 Leaves hide when Talk/Polls/Deck are absent (provider `requiredApp`); the
 detail pages render without error — the contract the shipped leaves already
 honour, restated as REQ-004 so the new leaves cannot regress it. Any new tab
-labels come from the leaf apps through the registry host; LarpingApp adds no
+labels come from the leaf apps through the registry host; Larpinq adds no
 hard-coded label strings.

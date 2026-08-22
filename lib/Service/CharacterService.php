@@ -1,10 +1,10 @@
 <?php
 
 /**
- * CharacterService for LarpingApp
+ * CharacterService for Larpinq
  *
  * @category  Service
- * @package   OCA\LarpingApp\Service
+ * @package   OCA\Larpinq\Service
  * @author    Ruben Linde <ruben@larpingapp.com>
  * @copyright 2024 Ruben Linde
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
@@ -30,7 +30,7 @@
 
 declare(strict_types=1);
 
-namespace OCA\LarpingApp\Service;
+namespace OCA\Larpinq\Service;
 
 use Psr\Log\LoggerInterface;
 
@@ -38,7 +38,7 @@ use Psr\Log\LoggerInterface;
  * Service class for character-related operations.
  *
  * @category Service
- * @package  OCA\LarpingApp\Service
+ * @package  OCA\Larpinq\Service
  * @author   Ruben Linde <ruben@larpingapp.com>
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
@@ -183,7 +183,7 @@ class CharacterService {
 			$awards = $this->objectFetcher->getObjects('xpAward');
 		} catch (\Throwable $e) {
 			$this->logger->debug(
-				'LarpingApp: xpAward schema unavailable; stat calculation proceeds with no awards.',
+				'Larpinq: xpAward schema unavailable; stat calculation proceeds with no awards.',
 				['exception' => $e]
 			);
 			return $grouped;
@@ -268,7 +268,7 @@ class CharacterService {
 		foreach ($this->allAbilities as $ability) {
 			if (isset($ability['base']) === true && is_numeric($ability['base']) === false) {
 				$this->logger->warning(
-					'LarpingApp: ability has non-numeric base value; defaulting to 0',
+					'Larpinq: ability has non-numeric base value; defaulting to 0',
 					[
 						'abilityId' => (string)($ability['id'] ?? 'unknown'),
 						'abilityName' => (string)($ability['name'] ?? 'unknown'),

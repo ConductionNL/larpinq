@@ -4,7 +4,7 @@
 
 ### Task 1: Change character.ocName to a player object-relation dropdown
 - **spec_ref**: `openspec/changes/character-player-picker/specs/character-management/spec.md#requirement-character-crud-operations`
-- **files**: `lib/Settings/larpingapp_register.json`
+- **files**: `lib/Settings/larpinq_register.json`
 - **acceptance_criteria**:
   - GIVEN `character.properties.ocName` WHEN edited THEN it becomes `{type:"string", format:"uuid", $ref:"player", title:"Player", description:"The player who plays this character"}` and stays in `character.required`
   - GIVEN the register is re-imported WHEN the character form renders THEN `ocName` shows as an inline select-or-create player dropdown, not a text input
@@ -13,7 +13,7 @@
 
 ### Task 2: Add player.userUid Nextcloud-user field
 - **spec_ref**: `openspec/changes/character-player-picker/specs/events-players/spec.md#requirement-player-to-nextcloud-account-link`
-- **files**: `lib/Settings/larpingapp_register.json`
+- **files**: `lib/Settings/larpinq_register.json`
 - **acceptance_criteria**:
   - GIVEN `player.properties` WHEN edited THEN it gains `userUid: {type:"string", format:"user", title:"Nextcloud user", description:"The Nextcloud user account this player signs in as. Used for character-ownership notifications."}`
   - GIVEN the field is set to `"alice"` WHEN saved THEN `player.userUid` persists as `"alice"`
@@ -22,7 +22,7 @@
 
 ### Task 3: Add character.x-openregister-references.player
 - **spec_ref**: `openspec/changes/character-player-picker/specs/character-management/spec.md#requirement-player-reference-resolution-on-character-objects`
-- **files**: `lib/Settings/larpingapp_register.json`
+- **files**: `lib/Settings/larpinq_register.json`
 - **acceptance_criteria**:
   - GIVEN `character` WHEN edited THEN it gains `x-openregister-references: {"player": {"schema":"player", "mode":"relatedObject", "field":"ocName"}}`
   - GIVEN a character linked to a player with `userUid = "bob"` WHEN declarative expressions evaluate THEN `@ref.player.userUid` resolves to `"bob"`
@@ -31,7 +31,7 @@
 
 ### Task 4: Make character.ownerUid a read-only calculated field
 - **spec_ref**: `openspec/changes/character-player-picker/specs/character-management/spec.md#requirement-character-crud-operations`
-- **files**: `lib/Settings/larpingapp_register.json`
+- **files**: `lib/Settings/larpinq_register.json`
 - **acceptance_criteria**:
   - GIVEN `character.properties.ownerUid` WHEN edited THEN it becomes `{type:"string", title:"Owner UID", visible:false, readOnly:true, description:"Auto-derived Nextcloud uid of the owning player's user account (materialised from the linked player). Not user-editable."}`
   - GIVEN `character.x-openregister-calculations` WHEN edited THEN it gains `{"ownerUid": {"type":"string", "materialise":true, "expression":{"prop":"@ref.player.userUid"}}}`
@@ -41,7 +41,7 @@
 
 ### Task 5: Add "widget":"switch" to character.approved
 - **spec_ref**: `openspec/changes/character-player-picker/specs/character-management/spec.md#requirement-character-crud-operations`
-- **files**: `lib/Settings/larpingapp_register.json`
+- **files**: `lib/Settings/larpinq_register.json`
 - **acceptance_criteria**:
   - GIVEN `character.properties.approved` WHEN edited THEN it gains `"widget":"switch"` while keeping `enum:["no","approved"]`, `default:"no"`, and `facetable:true` unchanged
   - GIVEN `character.x-openregister-lifecycle` and the `character-approved` notification rule THEN neither is edited by this task
@@ -74,7 +74,7 @@
 - Feature documentation updated in `docs/features/` describing the new player picker, Nextcloud-user link, and approved toggle, with Playwright MCP screenshots of the character and player forms
 
 ## i18n (company-wide ADR-005)
-- Dutch (`nl_NL`) and English (`en_US`) strings added for the `ocName`/"Player", `userUid`/"Nextcloud user", and `approved`/"Approved" field titles and descriptions in `lib/Settings/larpingapp_register.json`
+- Dutch (`nl_NL`) and English (`en_US`) strings added for the `ocName`/"Player", `userUid`/"Nextcloud user", and `approved`/"Approved" field titles and descriptions in `lib/Settings/larpinq_register.json`
 
 ## Quality checklist
 

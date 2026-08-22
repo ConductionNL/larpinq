@@ -4,7 +4,7 @@
  * Unit tests for the SettingsController write path (update / create).
  *
  * @category Test
- * @package  OCA\LarpingApp\Tests\Unit\Controller
+ * @package  OCA\Larpinq\Tests\Unit\Controller
  *
  * @author    Ruben Linde <ruben@larpingapp.com>
  * @copyright 2024 Ruben Linde
@@ -20,10 +20,10 @@
 
 declare(strict_types=1);
 
-namespace OCA\LarpingApp\Tests\Unit\Controller;
+namespace OCA\Larpinq\Tests\Unit\Controller;
 
-use OCA\LarpingApp\Controller\SettingsController;
-use OCA\LarpingApp\Service\SettingsService;
+use OCA\Larpinq\Controller\SettingsController;
+use OCA\Larpinq\Service\SettingsService;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\IGroupManager;
@@ -37,7 +37,7 @@ use Psr\Log\LoggerInterface;
 /**
  * `PUT /api/settings` (`settings#update`) is the canonical AppHost write and
  * `POST /api/settings` (`settings#create`) is its legacy alias. Both land in
- * this controller — LarpingApp ships the class itself, so OpenRegister's
+ * this controller — Larpinq ships the class itself, so OpenRegister's
  * generic settings controller is never aliased in to cover either.
  *
  * These tests assert the ITEM: that the write actually reaches
@@ -137,7 +137,7 @@ class SettingsControllerWriteTest extends TestCase {
 	/**
 	 * create() is a pure delegation to update() and must still write.
 	 *
-	 * LarpingApp's own frontend still POSTs here
+	 * Larpinq's own frontend still POSTs here
 	 * (`src/store/modules/settings.js::saveSettings()` and
 	 * `src/views/settings/Settings.vue`), so the alias degrading into an empty
 	 * success would be invisible from the UI while silently losing every save.

@@ -7,7 +7,7 @@ Enables game masters and players to export character data as downloadable PDF fi
 ## Features
 
 - **PDF generation** via DocuDesk's PdfService
-- **Template selection** from DocuDesk templates scoped to LarpingApp
+- **Template selection** from DocuDesk templates scoped to Larpinq
 - **Character data** including computed stats included in PDF context
 - **Configurable format** (A4, Letter) and orientation (Portrait, Landscape) from template
 - **Graceful degradation** when DocuDesk is not installed (424 error, hidden button)

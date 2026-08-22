@@ -1,14 +1,14 @@
 <?php
 
 /**
- * RegisterObjectFetcher for LarpingApp
+ * RegisterObjectFetcher for Larpinq
  *
  * Thin wrapper around OpenRegister's ObjectService for fetching
  * register objects by type. Replaces the deleted generic ObjectService
  * proxy layer with direct cross-app calls.
  *
  * @category  Service
- * @package   OCA\LarpingApp\Service
+ * @package   OCA\Larpinq\Service
  * @author    Ruben Linde <ruben@larpingapp.com>
  * @copyright 2024 Ruben Linde
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
@@ -19,11 +19,11 @@
 
 declare(strict_types=1);
 
-namespace OCA\LarpingApp\Service;
+namespace OCA\Larpinq\Service;
 
 use Exception;
 use InvalidArgumentException;
-use OCA\LarpingApp\AppInfo\Application;
+use OCA\Larpinq\AppInfo\Application;
 use OCP\App\IAppManager;
 use OCP\IAppConfig;
 use Psr\Container\ContainerInterface;
@@ -35,7 +35,7 @@ use Throwable;
  * IDs from the app configuration per object type.
  *
  * @category Service
- * @package  OCA\LarpingApp\Service
+ * @package  OCA\Larpinq\Service
  * @author   Ruben Linde <ruben@larpingapp.com>
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
@@ -122,7 +122,7 @@ class RegisterObjectFetcher {
 
 		$this->fallbackLogged = true;
 		$this->logger->debug(
-			'LarpingApp: OpenRegister RegisterResolverService is unavailable; '
+			'Larpinq: OpenRegister RegisterResolverService is unavailable; '
 			. 'resolving register/schema IDs via the legacy IAppConfig path. '
 			. 'Upgrade OpenRegister to consolidate register/schema resolution.',
 			['app' => $this->appName]

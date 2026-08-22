@@ -5,7 +5,7 @@ TBD - created by archiving change character-photos-leaf. Update Purpose after ar
 ## Requirements
 ### Requirement: Character detail page MUST host the OR photos leaf
 
-The Character detail page MUST surface the OpenRegister photos integration leaf for character portraits / reference images. The leaf MUST be obtained through the OR integration registry (ADR-019) and LarpingApp MUST NOT add a bespoke image field or upload handler to the Character schema (ADR-022). The host is `src/views/ObjectDetail.vue` for the `character` object type.
+The Character detail page MUST surface the OpenRegister photos integration leaf for character portraits / reference images. The leaf MUST be obtained through the OR integration registry (ADR-019) and Larpinq MUST NOT add a bespoke image field or upload handler to the Character schema (ADR-022). The host is `src/views/ObjectDetail.vue` for the `character` object type.
 
 #### Scenario: Photos leaf renders on a character detail page
 
@@ -17,14 +17,14 @@ The Character detail page MUST surface the OpenRegister photos integration leaf 
 
 ### Requirement: Images MUST be stored via the OR files abstraction
 
-Character images MUST be stored through the OpenRegister files / object-interactions abstraction that the photos leaf is built on, and LarpingApp MUST NOT introduce an app-local image column or blob store on the Character object.
+Character images MUST be stored through the OpenRegister files / object-interactions abstraction that the photos leaf is built on, and Larpinq MUST NOT introduce an app-local image column or blob store on the Character object.
 
 #### Scenario: Attaching a portrait persists via OR files
 
 - GIVEN the photos leaf on character "Sir Lancelot"
 - WHEN a game master uploads a portrait image
 - THEN the image MUST be persisted through the OR files / object-interactions abstraction
-- AND LarpingApp MUST NOT write an image blob field on the Character object
+- AND Larpinq MUST NOT write an image blob field on the Character object
 
 ### Requirement: Photos leaf MUST degrade gracefully when unavailable
 

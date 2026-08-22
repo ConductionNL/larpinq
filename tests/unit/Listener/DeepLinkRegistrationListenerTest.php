@@ -11,14 +11,14 @@
  * `register(string $appId, string $registerSlug, string $schemaSlug, string $urlTemplate, string $icon = '', ?string $displayName = null)`.
  * The listener's own guard probed `method_exists($event, 'registerDeepLink')`,
  * which is false against the real class, so in production the listener returned
- * immediately and LarpingApp registered ZERO deep links — while this suite went
+ * immediately and Larpinq registered ZERO deep links — while this suite went
  * green against an API that existed nowhere but in this file.
  *
  * The fakes below therefore mirror the REAL signature exactly. If OpenRegister
  * changes it, these tests must fail; that is the whole point of them.
  *
  * @category Test
- * @package  OCA\LarpingApp\Tests\Unit\Listener
+ * @package  OCA\Larpinq\Tests\Unit\Listener
  * @author   Ruben Linde <ruben@larpingapp.com>
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
@@ -26,9 +26,9 @@
 
 declare(strict_types=1);
 
-namespace OCA\LarpingApp\Tests\Unit\Listener;
+namespace OCA\Larpinq\Tests\Unit\Listener;
 
-use OCA\LarpingApp\Listener\DeepLinkRegistrationListener;
+use OCA\Larpinq\Listener\DeepLinkRegistrationListener;
 use OCP\EventDispatcher\Event;
 use PHPUnit\Framework\TestCase;
 
@@ -137,7 +137,7 @@ class DeepLinkRegistrationListenerTest extends TestCase {
 		self::assertContains('effect', $slugs);
 
 		// The namespaced slugs — `item` and `event` collide instance-globally,
-		// so LarpingApp's own schemas are `larping_item` / `larping_event`.
+		// so Larpinq's own schemas are `larping_item` / `larping_event`.
 		// Registering the bare spelling resolves to no schema at all.
 		self::assertContains('larping_item', $slugs);
 		self::assertContains('larping_event', $slugs);
@@ -159,13 +159,13 @@ class DeepLinkRegistrationListenerTest extends TestCase {
 
 		self::assertNotEmpty($event->links, 'control: something must have been registered');
 		foreach ($event->links as $link) {
-			self::assertSame('larpingapp', $link['appId']);
+			self::assertSame('larpinq', $link['appId']);
 			self::assertSame('larpingapp', $link['registerSlug']);
 		}
 	}//end testHandleUsesCorrectAppIdAndRegisterSlug()
 
 	/**
-	 * Each schema slug maps to its LarpingApp frontend route.
+	 * Each schema slug maps to its Larpinq frontend route.
 	 *
 	 * @return void
 	 */
@@ -175,13 +175,13 @@ class DeepLinkRegistrationListenerTest extends TestCase {
 
 		$bySlug = array_column($event->links, 'urlTemplate', 'schemaSlug');
 
-		self::assertSame('/apps/larpingapp/#/characters/{uuid}', $bySlug['character']);
-		self::assertSame('/apps/larpingapp/#/players/{uuid}', $bySlug['player']);
-		self::assertSame('/apps/larpingapp/#/abilities/{uuid}', $bySlug['ability']);
-		self::assertSame('/apps/larpingapp/#/skills/{uuid}', $bySlug['skill']);
-		self::assertSame('/apps/larpingapp/#/items/{uuid}', $bySlug['larping_item']);
-		self::assertSame('/apps/larpingapp/#/conditions/{uuid}', $bySlug['condition']);
-		self::assertSame('/apps/larpingapp/#/effects/{uuid}', $bySlug['effect']);
-		self::assertSame('/apps/larpingapp/#/events/{uuid}', $bySlug['larping_event']);
+		self::assertSame('/apps/larpinq/#/characters/{uuid}', $bySlug['character']);
+		self::assertSame('/apps/larpinq/#/players/{uuid}', $bySlug['player']);
+		self::assertSame('/apps/larpinq/#/abilities/{uuid}', $bySlug['ability']);
+		self::assertSame('/apps/larpinq/#/skills/{uuid}', $bySlug['skill']);
+		self::assertSame('/apps/larpinq/#/items/{uuid}', $bySlug['larping_item']);
+		self::assertSame('/apps/larpinq/#/conditions/{uuid}', $bySlug['condition']);
+		self::assertSame('/apps/larpinq/#/effects/{uuid}', $bySlug['effect']);
+		self::assertSame('/apps/larpinq/#/events/{uuid}', $bySlug['larping_event']);
 	}//end testHandleUsesCorrectUrlPatterns()
 }//end class

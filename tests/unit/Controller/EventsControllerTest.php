@@ -4,7 +4,7 @@
  * Unit tests for EventsController (run-sheet export).
  *
  * @category Test
- * @package  OCA\LarpingApp\Tests\Unit\Controller
+ * @package  OCA\Larpinq\Tests\Unit\Controller
  * @author   Ruben Linde <ruben@larpingapp.com>
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
@@ -12,13 +12,13 @@
 
 declare(strict_types=1);
 
-namespace OCA\LarpingApp\Tests\Unit\Controller;
+namespace OCA\Larpinq\Tests\Unit\Controller;
 
 use Exception;
-use OCA\LarpingApp\Controller\EventsController;
-use OCA\LarpingApp\Service\DocuDeskPdfRenderer;
-use OCA\LarpingApp\Service\EventRosterService;
-use OCA\LarpingApp\Service\RegisterObjectFetcher;
+use OCA\Larpinq\Controller\EventsController;
+use OCA\Larpinq\Service\DocuDeskPdfRenderer;
+use OCA\Larpinq\Service\EventRosterService;
+use OCA\Larpinq\Service\RegisterObjectFetcher;
 use OCP\AppFramework\Http\DataDownloadResponse;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\IGroupManager;
@@ -52,7 +52,7 @@ class EventsControllerTest extends TestCase {
 		// The real EventRosterService over the mocked fetcher: the roster /
 		// run-sheet rules stay under test end-to-end through the controller.
 		return new EventsController(
-			'larpingapp',
+			'larpinq',
 			$this->createMock(IRequest::class),
 			new EventRosterService($this->objectFetcher),
 			$this->pdfRenderer,

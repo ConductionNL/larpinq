@@ -1,14 +1,14 @@
 <?php
 
 /**
- * LarpingApp database migration (legacy — no-op).
+ * Larpinq database migration (legacy — no-op).
  *
- * LarpingApp is a thin-client app that stores all data in OpenRegister.
+ * Larpinq is a thin-client app that stores all data in OpenRegister.
  * This migration previously altered local database tables that are no
  * longer needed. It is kept as a no-op to avoid migration version conflicts.
  *
  * @category  Database
- * @package   OCA\LarpingApp\Migration
+ * @package   OCA\Larpinq\Migration
  * @author    Ruben Linde <ruben@larpingapp.com>
  * @copyright 2024 Ruben Linde
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
@@ -17,7 +17,7 @@
 
 declare(strict_types=1);
 
-namespace OCA\LarpingApp\Migration;
+namespace OCA\Larpinq\Migration;
 
 use Closure;
 use OCP\DB\ISchemaWrapper;

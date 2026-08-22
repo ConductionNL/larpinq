@@ -1,16 +1,16 @@
 # hermiq-ai-tooling Specification
 
 **Status**: planned
-**Scope**: larpingapp
+**Scope**: larpinq
 **OpenSpec changes**:
 - _(none yet)_
 
 ## Purpose
-LarpingApp's curated MCP tool surface on top of the derived-CRUD adoption
-(`larpingapp-mcp-adoption`): the event-scoped XP fan-out write, the
+Larpinq's curated MCP tool surface on top of the derived-CRUD adoption
+(`larpinq-mcp-adoption`): the event-scoped XP fan-out write, the
 calculated-character-sheet read, the scannable-services opt-in, and the
 governance contract (GM approval gates, default-deny grants, audit
-attribution) that binds them — so any LarpingApp action an agent performs is
+attribution) that binds them — so any Larpinq action an agent performs is
 governed by Hermiq's scope × reach model with a game master in the loop for
 writes.
 
@@ -29,7 +29,7 @@ response MUST report per-character results so partial failures are visible.
 
 #### Scenario: "Award 5 XP to everyone who attended Saturday's event"
 - GIVEN an event with three attendance rows `checked-in` and one `no-show`
-- WHEN an agent invokes `larpingapp.awardXpToAttendees` with amount 5 and a reason, and the game master approves the gate
+- WHEN an agent invokes `larpinq.awardXpToAttendees` with amount 5 and a reason, and the game master approves the gate
 - THEN exactly three `xpAward` objects MUST be created, one per checked-in character, each with `amount` 5
 - AND the `no-show` character MUST receive no award
 - AND `awardedAt`/`awardedBy` MUST be server-stamped, never taken from the tool input
@@ -41,14 +41,14 @@ response MUST report per-character results so partial failures are visible.
 - AND no `xpAward` object MUST be created
 
 ### Requirement: REQ-002 — XP awards and sheet-affecting writes require a game-master approval gate
-Every curated LarpingApp write tool — `awardXpToAttendees` now, and any
+Every curated Larpinq write tool — `awardXpToAttendees` now, and any
 future tool that creates XP awards or changes a character sheet — MUST
 declare honest write hints so Hermiq classifies it as approval-required, and
 MUST only execute after Hermiq's human-approval gate has shown the resolved
 effect (for XP: the event, the named recipient characters, the amount, the
 reason) and received explicit approval. OpenRegister's object-level
 `authorization` block on `xpAward` (gamemasters group) MUST remain the
-enforcement point independent of grants and gates; LarpingApp MUST NOT
+enforcement point independent of grants and gates; Larpinq MUST NOT
 implement its own grant or approval mechanism.
 
 #### Scenario: The gate shows the resolved recipients before any write
@@ -73,7 +73,7 @@ not-found for a character the invoking principal cannot read.
 
 #### Scenario: "What's Alice's current sheet?"
 - GIVEN an approved character "Alice" with skills and items affecting her stats
-- WHEN an agent invokes `larpingapp.getCharacterSheet` for Alice
+- WHEN an agent invokes `larpinq.getCharacterSheet` for Alice
 - THEN the result MUST contain the calculated stat totals as the app's own sheet view computes them
 - AND the result MUST NOT contain `slNotesPrivate`
 
@@ -83,9 +83,9 @@ not-found for a character the invoking principal cannot read.
 - THEN no register object MUST have been created or modified
 
 ### Requirement: REQ-004 — Curated tools are exposed via the scannable-services opt-in
-`lib/Mcp/LarpingappScannableServices.php` MUST implement
+`lib/Mcp/LarpinqScannableServices.php` MUST implement
 `OCA\OpenRegister\Mcp\IMcpScannableServices`, MUST be registered under the
-`IMcpScannableServices::larpingapp` DI alias, and MUST list exactly the
+`IMcpScannableServices::larpinq` DI alias, and MUST list exactly the
 service classes carrying `#[McpTool]` methods (`EventRosterService`,
 `CharacterService`). No hand-written `IMcpToolProvider` MUST be added, and no
 derived verb beyond the adoption fragment's set MUST be enabled by this
@@ -93,7 +93,7 @@ change.
 
 #### Scenario: The tool surface is exactly derived-plus-two
 - GIVEN the register imported and the scannable services registered
-- WHEN Hermiq lists the `larpingapp.*` tool catalog
+- WHEN Hermiq lists the `larpinq.*` tool catalog
 - THEN it MUST contain the 21 derived tools plus `awardXpToAttendees` and `getCharacterSheet`
 - AND no other curated tool and no new derived verb MUST appear
 
@@ -104,10 +104,10 @@ MUST be attributable as agent-initiated (an `mcp` attribution with the
 invoking principal) and distinguishable from awards a game master creates in
 the UI or via derived `xpAward.create`.
 
-#### Scenario: Ungranted agent sees no LarpingApp curated tool
-- GIVEN an agent whose grants include no LarpingApp curated tool
+#### Scenario: Ungranted agent sees no Larpinq curated tool
+- GIVEN an agent whose grants include no Larpinq curated tool
 - WHEN it lists available tools
-- THEN neither `larpingapp.awardXpToAttendees` nor `larpingapp.getCharacterSheet` MUST be offered
+- THEN neither `larpinq.awardXpToAttendees` nor `larpinq.getCharacterSheet` MUST be offered
 
 #### Scenario: An audit question is answerable
 - GIVEN XP awards created by an agent fan-out and others created manually

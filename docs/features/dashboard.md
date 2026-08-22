@@ -2,7 +2,7 @@
 
 ## Overview
 
-The dashboard is the landing page of LarpingApp, serving as the entry point when users navigate to the app. It provides KPI cards, recent entity lists, and a skill usage chart.
+The dashboard is the landing page of Larpinq, serving as the entry point when users navigate to the app. It provides KPI cards, recent entity lists, and a skill usage chart.
 
 ## Features
 

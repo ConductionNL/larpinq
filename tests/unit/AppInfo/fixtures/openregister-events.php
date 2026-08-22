@@ -13,14 +13,14 @@
  * Loading this file simulates the world the ADR-040 autoload prelude creates:
  * OpenRegister's PSR-4 prefix on the autoloader, so `OCA\OpenRegister\` names
  * resolve from inside this app's own register(). Without the prelude they do
- * not, because Nextcloud registers apps in sorted order and `larpingapp` sorts
+ * not, because Nextcloud registers apps in sorted order and `larpinq` sorts
  * before `openregister`.
  *
  * SPDX-License-Identifier: EUPL-1.2
  * SPDX-FileCopyrightText: 2026 Conduction B.V.
  *
  * @category Test
- * @package  OCA\LarpingApp\Tests\Unit\AppInfo
+ * @package  OCA\Larpinq\Tests\Unit\AppInfo
  *
  * @author    Conduction Development Team <dev@conduction.nl>
  * @copyright 2026 Conduction B.V.

@@ -2,7 +2,7 @@
  SPDX-License-Identifier: EUPL-1.2
  SPDX-FileCopyrightText: 2026 Conduction B.V.
 
- Integration-leaf host for LarpingApp detail pages (ADR-019, ADR-022).
+ Integration-leaf host for Larpinq detail pages (ADR-019, ADR-022).
 
  Surfaces OpenRegister integration leaves on the per-objectType detail
  page. The available leaves vary by object type — each is sourced from
