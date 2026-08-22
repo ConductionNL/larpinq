@@ -1,11 +1,11 @@
-# Proposal: larpingapp-mcp-adoption
+# Proposal: larpinq-mcp-adoption
 
 ## Summary
-Adopt ADR-063 ("MCP as Platform Abstraction") in LarpingApp by declaring the
+Adopt ADR-063 ("MCP as Platform Abstraction") in Larpinq by declaring the
 `x-openregister-mcp` schema dialect on a curated set of 9 register schemas
 (`character`, `player`, `setting`, `skill`, `item`, `condition`, `event`,
 `xpAward`, `attendance`), so OpenRegister derives MCP tools for Hermiq without
-any hand-written provider code. LarpingApp has no existing `IMcpToolProvider`,
+any hand-written provider code. Larpinq has no existing `IMcpToolProvider`,
 so this is a pure dialect declaration (`kind: config`). Unlike the read-only
 Software Catalog sibling change, three narrow write verbs are enabled
 (`character.create`, `xpAward.create`, `attendance.update`) because a LARP
@@ -14,12 +14,12 @@ RBAC-gated, additive/lifecycle-bounded action a GM or player would plausibly
 ask an assistant to perform.
 
 ## Motivation
-LarpingApp manages LARP (live-action role-play) characters, campaigns
+Larpinq manages LARP (live-action role-play) characters, campaigns
 ("settings"), events, and the game-master workflows around them (approving
 characters, awarding XP, checking attendees in at an event). These are exactly
 the conversational, single-purpose actions a chat assistant is good at ("show
 me my character", "who's coming to the summer event", "award Alice 5 XP for
-tonight's session", "check Bob in at the door") but LarpingApp currently
+tonight's session", "check Bob in at the door") but Larpinq currently
 exposes zero MCP surface. ADR-063 (hydra #102, merged) establishes the
 declarative dialect pattern; the pipelinq leaf migration
 (`mcp-provider-declarative-migration`, PR #390) is the working read-only
@@ -29,7 +29,7 @@ change applies the same discipline to a smaller, lower-stakes domain where a
 few writes are defensible.
 
 ## Affected Projects
-- [ ] Project: `larpingapp` — declare `x-openregister-mcp` on 9 curated schemas
+- [ ] Project: `larpinq` — declare `x-openregister-mcp` on 9 curated schemas
   (6 read-only, 3 with one additional write verb each) via a new
   `lib/Settings/register.d/` fragment; no PHP changes (no provider exists to
   migrate or delete).
@@ -48,8 +48,8 @@ few writes are defensible.
   `scope` from the closed `read|create|update|delete` set on every verb,
   including the three writes.
 - A dedicated `register.d/larpingapp-mcp-adoption.json` fragment (ADR-037) —
-  this change never edits `larpingapp_register.json` directly, per this
-  repo's own `register.d/README.md` ("Do not edit `larpingapp_register.json`
+  this change never edits `larpinq_register.json` directly, per this
+  repo's own `register.d/README.md` ("Do not edit `larpinq_register.json`
   ... in a build branch").
 
 ### Out of Scope
@@ -103,7 +103,7 @@ system, per `McpAnnotationValidator`'s own docblock.
 
 ### Risk 1: A declared search filter doesn't match a real schema property
 **Severity:** Medium — **Mitigation:** Every filter in design.md was
-cross-checked against `lib/Settings/larpingapp_register.json` at HEAD (property
+cross-checked against `lib/Settings/larpinq_register.json` at HEAD (property
 dumps recorded in design.md); OpenRegister's `McpAnnotationValidator` also
 hard-rejects the whole schema import on any unknown filter property.
 

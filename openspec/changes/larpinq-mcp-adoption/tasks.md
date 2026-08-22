@@ -14,7 +14,7 @@
 
 ### Task 2: Cross-check every `search.filters` entry against real schema properties
 - **spec_ref**: `openspec/changes/larpinq-mcp-adoption/specs/larpinq-mcp-adoption/spec.md#req-005-every-declared-search-filter-names-a-real-schema-property`
-- **files**: `lib/Settings/register.d/larpingapp-mcp-adoption.json`, `lib/Settings/larpingapp_register.json` (read-only reference), `lib/Settings/register.d/event-checkin-roster.json` (read-only reference for `attendance`)
+- **files**: `lib/Settings/register.d/larpingapp-mcp-adoption.json`, `lib/Settings/larpinq_register.json` (read-only reference), `lib/Settings/register.d/event-checkin-roster.json` (read-only reference for `attendance`)
 - **acceptance_criteria**:
   - GIVEN each curated schema's `search.filters` list WHEN diffed against that schema's `properties` map (monolith, plus the `event-checkin-roster.json` fragment for `attendance`) THEN every filter name is present as a key
   - GIVEN the merged register (monolith + all fragments) WHEN validated by OpenRegister's `McpAnnotationValidator` THEN zero `mcp-unknown-filter-property` errors are reported

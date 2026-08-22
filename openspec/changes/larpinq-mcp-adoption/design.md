@@ -1,17 +1,17 @@
-# Design: larpingapp-mcp-adoption
+# Design: larpinq-mcp-adoption
 
 ## Architecture Overview
-No new architecture. LarpingApp already loads its OpenRegister configuration
-from `lib/Settings/larpingapp_register.json`, recursively deep-merged (ADR-037)
+No new architecture. Larpinq already loads its OpenRegister configuration
+from `lib/Settings/larpinq_register.json`, recursively deep-merged (ADR-037)
 with every `*.json` fragment in `lib/Settings/register.d/` by
 `ConfigFileLoaderService::loadConfigurationFile()` /
 `mergeRegisterFragments()`. This change adds exactly one new fragment,
 `register.d/larpingapp-mcp-adoption.json`, that contributes a
 `configuration.x-openregister-mcp` block to 9 existing schema definitions —
 per `register.d/README.md`'s explicit rule, this change does **not** edit
-`larpingapp_register.json` directly. OpenRegister's `SchemaDerivedToolProvider`
+`larpinq_register.json` directly. OpenRegister's `SchemaDerivedToolProvider`
 (cross-repo, already merged at openregister@origin/development) then derives
-`larpingapp.<schema>.<verb>` tools at MCP-serve time.
+`larpinq.<schema>.<verb>` tools at MCP-serve time.
 
 ```
 Hermiq (agent)
@@ -33,7 +33,7 @@ from `portal-identity.json`; this change adds a sibling
 ## Curation — schema -> verbs -> why
 
 11 schemas exist in the larpingapp register at HEAD (10 in the monolith
-`larpingapp_register.json` + `attendance`, added by the
+`larpinq_register.json` + `attendance`, added by the
 `event-checkin-roster.json` fragment — verified via property dumps of both).
 9 are curated ON, 2 are OFF. 6 of the 9 are read-only; 3 additionally carry one
 write verb each, individually argued.
@@ -58,7 +58,7 @@ write verb each, individually argued.
 | `effect` | Internal stat-modifier primitive consumed by `skill`/`item`/`condition`/`event` via their `effects` arrays; the parent schemas carry the user-meaningful name/description, so a standalone `effect.search` would duplicate that lookup path for marginal benefit. Bias to fewer. |
 
 **Why so few writes overall, and why these three specifically:** the task
-brief explicitly frames LarpingApp as lower-stakes than a government catalogue
+brief explicitly frames Larpinq as lower-stakes than a government catalogue
 ("a game"), so writes are more defensible here — but each of the three chosen
 is still individually bounded by an existing mechanism this change merely
 exposes, not a new one it invents:
@@ -347,13 +347,13 @@ fragment-merge mechanism or any existing `register.d/*.json` fragment.
 ## Decisions
 
 ### Decision 1: `register.d/` fragment, not editing the monolith
-`register.d/README.md` is explicit: "Do not edit `larpingapp_register.json`,
+`register.d/README.md` is explicit: "Do not edit `larpinq_register.json`,
 `appinfo/info.xml`, or `CHANGELOG.md` in a build branch — the single version
 bump is owned by the apply/release step." This change follows that rule
 exactly, unlike the pipelinq `client`/`lead` exemplar which edited the
 monolith directly (pipelinq's own README carries no equivalent prohibition).
 **Alternative considered:** matching pipelinq's exemplar byte-for-byte and
-editing `larpingapp_register.json` — rejected because it would violate this
+editing `larpinq_register.json` — rejected because it would violate this
 app's own documented fragment-ownership convention.
 
 ### Decision 2: `event` stays read-only despite being a strong write candidate
