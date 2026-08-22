@@ -10,7 +10,7 @@ Proposed
 
 ## Context
 
-Game-master authority is LarpingApp's only domain-specific privilege
+Game-master authority is Larpinq's only domain-specific privilege
 tier, and its group id is currently declared independently in every
 place that needs it:
 
@@ -33,7 +33,7 @@ and OR-side RBAC would disagree with app-side guards.
 
 1. The GM tier is defined by exactly one Nextcloud group, canonical id
    `gamemasters`, declared once in PHP as a public constant on
-   `OCA\LarpingApp\AppInfo\Application` (e.g. `Application::GM_GROUP`).
+   `OCA\Larpinq\AppInfo\Application` (e.g. `Application::GM_GROUP`).
    All server-side guards MUST reference that constant; per-class
    `private const GM_GROUP` duplicates are forbidden.
 2. NC administrators are always implicitly GM-privileged (admin OR
@@ -41,7 +41,7 @@ and OR-side RBAC would disagree with app-side guards.
    admin-only where the semantic requirement is "GM".
 3. Declarative surfaces that cannot reference the PHP constant (OR schema
    `authorization` blocks, `x-openregister-notifications` rules in
-   `lib/Settings/larpingapp_register.json` / `register.d/`) MUST use the
+   `lib/Settings/larpinq_register.json` / `register.d/`) MUST use the
    literal `gamemasters` and MUST be listed in this ADR's inventory when
    added, so a rename has a checklist.
 4. Renaming the GM group is a BREAKING change: it requires a coordinated
