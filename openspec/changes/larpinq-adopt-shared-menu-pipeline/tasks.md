@@ -2,7 +2,7 @@
 
 - [ ] 1.1 Read `nextcloud-vue/src/utils/buildManifest.js` in full and diff its `mergeMenuItems` /
       `applyMenuRelocations` / `applyMenuRemovals` / `applySettingsSection` behavior against
-      larpingapp's `src/main.js:63-195` line by line; confirm semantics match (merge-by-id with
+      larpinq's `src/main.js:63-195` line by line; confirm semantics match (merge-by-id with
       first-definition-wins, relocation passes until stable, leaf-only removal, settings-foldout
       flatten-and-lift).
 - [ ] 1.2 Confirm the installed `@conduction/nextcloud-vue` version in `package.json` /
@@ -35,5 +35,5 @@
 
 ## 4. Traceability
 
-- [ ] 4.1 Run `openspec validate larpingapp-adopt-shared-menu-pipeline --strict` and resolve any
+- [ ] 4.1 Run `openspec validate larpinq-adopt-shared-menu-pipeline --strict` and resolve any
       errors.

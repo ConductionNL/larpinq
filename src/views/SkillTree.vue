@@ -587,10 +587,7 @@ export default {
 		 * @spec openspec/specs/skill-tree-visualization/spec.md
 		 */
 		stateLabel(state) {
-			return this.t(
-				'larpinq',
-				(STATE_META[state] || STATE_META.unknown).label,
-			)
+			return this.t('larpinq', (STATE_META[state] || STATE_META.unknown).label)
 		},
 
 		/**

@@ -1,28 +1,28 @@
-# Design — larpingapp-adopt-or-abstractions
+# Design — larpinq-adopt-or-abstractions
 
 ## Reuse analysis
 
 | Capability | Reuse from | Why |
 |------------|-----------|-----|
 | App-manifest schema + loader | `@conduction/nextcloud-vue` (`src/schemas/app-manifest.schema.json`, `useAppManifest`) | Single source of truth per `hydra/openspec/changes/adopt-app-manifest/`. Do not fork. |
-| Index / detail page-type renderers | nc-vue `CnIndexPage`, `CnDetailPage` (already used in LarpingApp views) | LarpingApp views already wrap these; manifest just declares which schema each page consumes. |
+| Index / detail page-type renderers | nc-vue `CnIndexPage`, `CnDetailPage` (already used in Larpinq views) | Larpinq views already wrap these; manifest just declares which schema each page consumes. |
 | Register / schema ID resolution | OR `RegisterResolverService` (`openregister/openspec/changes/register-resolver-service/`) | Eliminates two duplicated `getValueString(...register/schema...)` call shapes in `RegisterObjectFetcher` + `SettingsService`. |
 | Tenant context | `useTenantContext()` from nc-vue (`nextcloud-vue/openspec/changes/multi-tenancy-context/`) | Cache invalidation + write header stamping. Reuse rather than roll local org-scope logic. |
 | i18n source-of-truth metadata | OR `sourceLanguage` metadata on translation rows (`openregister/openspec/changes/i18n-source-of-truth/`) | Read-only consumption — display "(translated from)" badge. Do not duplicate the metadata. |
 | API language negotiation | OR `?_lang=` + `X-Translation-Target-Language` (`openregister/openspec/changes/i18n-api-language-negotiation/`) | Wire into a single `orClient.js` composable so every fetch / write is consistent. |
-| Pinia stores | LarpingApp's existing entity-typed Pinia stores | Keep. Migrate fetch URL building into `orClient.js`; stores still own state shape and hydration. |
+| Pinia stores | Larpinq's existing entity-typed Pinia stores | Keep. Migrate fetch URL building into `orClient.js`; stores still own state shape and hydration. |
 | PDF export | Existing `CharacterService` + mPDF + Twig pipeline | Untouched. Manifest declares the action via `actionsComponent` slot override; the export endpoint stays where it is. |
 
 ### What we deliberately do NOT reuse
 
 - **Hydra per-app `adr-000`** — per ADR-022, apps MUST NOT carry an
-  ADR that re-asserts cross-app conventions. LarpingApp does not
+  ADR that re-asserts cross-app conventions. Larpinq does not
   have an `adr-000` and this change does NOT introduce one.
 - **OR's lifecycle annotations** — character / event status fields
   do not have a state machine that benefits from
   `x-openregister-lifecycle`. Stat calculation and PDF export are
   independent of object lifecycle.
-- **OR's notification engine** — LarpingApp does not currently send
+- **OR's notification engine** — Larpinq does not currently send
   notifications on character / event changes. Adopting
   `x-openregister-notifications` is a follow-up if a product reason
   emerges.
@@ -40,20 +40,20 @@
   "version": "0.1.0",
   "dependencies": ["openregister"],
   "menu": [
-    { "id": "characters", "label": "larpingapp.menu.characters", "icon": "icon-user", "route": "/characters", "section": "main", "order": 10 },
-    { "id": "events", "label": "larpingapp.menu.events", "icon": "icon-calendar", "route": "/events", "section": "main", "order": 20 },
-    { "id": "items", "label": "larpingapp.menu.items", "icon": "icon-package", "route": "/items", "section": "main", "order": 30 },
-    { "id": "skills", "label": "larpingapp.menu.skills", "icon": "icon-star", "route": "/skills", "section": "main", "order": 40 },
-    { "id": "abilities", "label": "larpingapp.menu.abilities", "icon": "icon-flash", "route": "/abilities", "section": "main", "order": 50 },
-    { "id": "conditions", "label": "larpingapp.menu.conditions", "icon": "icon-warning", "route": "/conditions", "section": "main", "order": 60 },
-    { "id": "effects", "label": "larpingapp.menu.effects", "icon": "icon-magic", "route": "/effects", "section": "main", "order": 70 },
-    { "id": "templates", "label": "larpingapp.menu.templates", "icon": "icon-template", "route": "/templates", "section": "main", "order": 80 },
-    { "id": "players", "label": "larpingapp.menu.players", "icon": "icon-users", "route": "/players", "section": "main", "order": 90 },
-    { "id": "settings", "label": "larpingapp.menu.settings", "icon": "icon-settings", "route": "/settings", "section": "settings", "permission": "admin" }
+    { "id": "characters", "label": "larpinq.menu.characters", "icon": "icon-user", "route": "/characters", "section": "main", "order": 10 },
+    { "id": "events", "label": "larpinq.menu.events", "icon": "icon-calendar", "route": "/events", "section": "main", "order": 20 },
+    { "id": "items", "label": "larpinq.menu.items", "icon": "icon-package", "route": "/items", "section": "main", "order": 30 },
+    { "id": "skills", "label": "larpinq.menu.skills", "icon": "icon-star", "route": "/skills", "section": "main", "order": 40 },
+    { "id": "abilities", "label": "larpinq.menu.abilities", "icon": "icon-flash", "route": "/abilities", "section": "main", "order": 50 },
+    { "id": "conditions", "label": "larpinq.menu.conditions", "icon": "icon-warning", "route": "/conditions", "section": "main", "order": 60 },
+    { "id": "effects", "label": "larpinq.menu.effects", "icon": "icon-magic", "route": "/effects", "section": "main", "order": 70 },
+    { "id": "templates", "label": "larpinq.menu.templates", "icon": "icon-template", "route": "/templates", "section": "main", "order": 80 },
+    { "id": "players", "label": "larpinq.menu.players", "icon": "icon-users", "route": "/players", "section": "main", "order": 90 },
+    { "id": "settings", "label": "larpinq.menu.settings", "icon": "icon-settings", "route": "/settings", "section": "settings", "permission": "admin" }
   ],
   "pages": [
-    { "id": "characters-index", "route": "/characters", "type": "index", "title": "larpingapp.pages.characters", "config": { "register": "@resolve:character_register", "schema": "@resolve:character_schema", "columns": ["name", "player", "status"] } },
-    { "id": "characters-detail", "route": "/characters/:id", "type": "detail", "title": "larpingapp.pages.character", "config": { "register": "@resolve:character_register", "schema": "@resolve:character_schema" }, "actionsComponent": "PdfExportAction" }
+    { "id": "characters-index", "route": "/characters", "type": "index", "title": "larpinq.pages.characters", "config": { "register": "@resolve:character_register", "schema": "@resolve:character_schema", "columns": ["name", "player", "status"] } },
+    { "id": "characters-detail", "route": "/characters/:id", "type": "detail", "title": "larpinq.pages.character", "config": { "register": "@resolve:character_register", "schema": "@resolve:character_schema" }, "actionsComponent": "PdfExportAction" }
     // ... other entity pages follow the same shape
   ]
 }
@@ -127,7 +127,7 @@ returns a typed `RegisterSchemaPair` object with `registerId` and
 
 | Risk | Mitigation |
 |------|-----------|
-| `RegisterResolverService` not yet deployed alongside LarpingApp | Phase 2 gates on a runtime version check at boot; logs a warning and falls back to direct `getValueString` if the service is absent. (Tracked as a tasks.md subtask.) |
+| `RegisterResolverService` not yet deployed alongside Larpinq | Phase 2 gates on a runtime version check at boot; logs a warning and falls back to direct `getValueString` if the service is absent. (Tracked as a tasks.md subtask.) |
 | Manifest validation fails CI on first introduction | Tier 2 keeps router hand-wired; failed validation does NOT take the app down. |
 | Tenant-switch refetch causes a UX flicker on small lists | Existing nc-vue `CnIndexPage` already shows a skeleton during refetch; flicker is the established UX. |
 | `?_lang=` on POSTs accidentally treated as the source language by OR | Explicit: writes use `X-Translation-Target-Language`, not `?_lang=`. The `?_lang=` query parameter is read-only. |
@@ -138,7 +138,7 @@ returns a typed `RegisterSchemaPair` object with `registerId` and
 
 1. **Q1 — Manifest's `@resolve:{key}` sentinel.** This convention
    does not exist in the nc-vue manifest schema today. Should
-   LarpingApp upstream the sentinel handling into the schema (via
+   Larpinq upstream the sentinel handling into the schema (via
    `hydra/openspec/changes/adopt-app-manifest/`) or implement it
    locally as a pre-processor that runs before
    `useAppManifest`? Recommend: implement locally for now, upstream
@@ -148,7 +148,7 @@ returns a typed `RegisterSchemaPair` object with `registerId` and
    nc-vue PR #113 / `multi-tenancy-context` change but the
    versioned package release is unscheduled. Should Phase 4 block
    the whole change on the release, or ship Phases 1-3 and add a
-   follow-up `larpingapp-multi-tenancy-wiring` change once nc-vue
+   follow-up `larpinq-multi-tenancy-wiring` change once nc-vue
    releases? Recommend: ship Phases 1-3 first; Phase 4 as a
    trailing follow-up if nc-vue is not released by Phase 3
    completion.
@@ -171,7 +171,7 @@ returns a typed `RegisterSchemaPair` object with `registerId` and
 5. **Q5 — `actionsComponent` slot override naming.** The manifest
    declares `actionsComponent: "PdfExportAction"` as a registry
    string. Should the component name match the file name (kebab vs
-   PascalCase) or follow the existing LarpingApp convention?
+   PascalCase) or follow the existing Larpinq convention?
    Recommend PascalCase to match `customComponents` keys per
    nc-vue convention.
 

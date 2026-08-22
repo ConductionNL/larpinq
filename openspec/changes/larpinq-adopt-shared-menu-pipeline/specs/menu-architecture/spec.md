@@ -6,9 +6,9 @@
 
 ### Requirement: Effective Menu Built via Shared buildManifest Util
 
-LarpingApp MUST compute its effective manifest (merged fragments, relocations, removals,
+Larpinq MUST compute its effective manifest (merged fragments, relocations, removals,
 settings-foldout membership) by calling `buildManifest(base, fragments, menuLayout)` from
-`@conduction/nextcloud-vue`. LarpingApp MUST NOT re-implement `mergeMenuItems`,
+`@conduction/nextcloud-vue`. Larpinq MUST NOT re-implement `mergeMenuItems`,
 `applyMenuRelocations`, `applyMenuRemovals`, or `applySettingsSection` as local functions in
 `src/main.js` or anywhere else in the app. Collecting `src/manifest.d/*.json` fragments via
 `require.context` remains the only app-local step per ADR-044 §1.

@@ -48,9 +48,7 @@
 		<template #user-settings>
 			<NcAppSettingsSection id="general" :name="t('larpinq', 'General')">
 				<p class="app-root__settings-hint">
-					{{
-						t('larpinq', 'Configure your Larpinq settings here.')
-					}}
+					{{ t('larpinq', 'Configure your Larpinq settings here.') }}
 				</p>
 			</NcAppSettingsSection>
 		</template>

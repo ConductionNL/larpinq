@@ -2,11 +2,11 @@
 status: draft
 ---
 
-# LarpingApp — adopt OR abstractions
+# Larpinq — adopt OR abstractions
 
 ## Purpose
 
-Specify the requirements for LarpingApp's adoption of:
+Specify the requirements for Larpinq's adoption of:
 
 1. The fleet-wide app-manifest contract from
    `@conduction/nextcloud-vue` (per ADR-024 and
@@ -23,17 +23,17 @@ Specify the requirements for LarpingApp's adoption of:
 
 ## ADDED Requirements
 
-### Requirement: LarpingApp MUST ship an architectural manifest at `src/manifest.json`
+### Requirement: Larpinq MUST ship an architectural manifest at `src/manifest.json`
 
-LarpingApp MUST add `src/manifest.json` conforming to the JSON
+Larpinq MUST add `src/manifest.json` conforming to the JSON
 Schema published by `@conduction/nextcloud-vue` at
 `src/schemas/app-manifest.schema.json`. The manifest MUST be loaded
-via `useAppManifest('larpingapp', bundledManifest)` in `src/main.js`.
+via `useAppManifest('larpinq', bundledManifest)` in `src/main.js`.
 
 The manifest MUST set:
 - `$schema` to the published nc-vue schema URL
 - `version` to a semver string
-- `dependencies: ["openregister"]` (LarpingApp depends on OR per
+- `dependencies: ["openregister"]` (Larpinq depends on OR per
   ADR-001)
 - a `menu` array including all 10 entity / settings entries
 - a `pages` array including index and detail pages for each entity
@@ -41,11 +41,11 @@ The manifest MUST set:
 
 #### Scenario: Manifest loads on app boot
 
-- GIVEN LarpingApp is installed and OR is enabled
-- WHEN a user navigates to `/index.php/apps/larpingapp`
-- THEN `useAppManifest('larpingapp', bundledManifest)` MUST be
+- GIVEN Larpinq is installed and OR is enabled
+- WHEN a user navigates to `/index.php/apps/larpinq`
+- THEN `useAppManifest('larpinq', bundledManifest)` MUST be
   called before vue-router mounts
-- AND on async-fetch of `/index.php/apps/larpingapp/api/manifest`
+- AND on async-fetch of `/index.php/apps/larpinq/api/manifest`
   the loader MUST silently fall back to bundled on non-200
 
 #### Scenario: Manifest validation fails build
@@ -64,7 +64,7 @@ The manifest MUST set:
 - AND `CnAppRoot` (when adopted at Tier 4) MUST render
   `CnDependencyMissing` if OR is disabled at runtime
 
-### Requirement: LarpingApp MUST consume `RegisterResolverService` for register / schema resolution
+### Requirement: Larpinq MUST consume `RegisterResolverService` for register / schema resolution
 
 `RegisterObjectFetcher::resolveRegisterAndSchema()` MUST delegate to
 `OCA\OpenRegister\Service\RegisterResolverService::resolveForObjectType()`
@@ -104,9 +104,9 @@ tunables) MUST stay on `IAppConfig`.
 - AND MUST fall back to the legacy `getValueString` path
 - AND MUST log a deprecation warning to the Nextcloud log
 
-### Requirement: LarpingApp OR fetches MUST pass `?_lang={user locale}`
+### Requirement: Larpinq OR fetches MUST pass `?_lang={user locale}`
 
-All OR object fetches (read paths) issued from LarpingApp's
+All OR object fetches (read paths) issued from Larpinq's
 frontend MUST include the `?_lang={BCP47}` query parameter set to
 the user's Nextcloud locale (region tag stripped).
 
@@ -130,7 +130,7 @@ This is a downstream consumer of
 - THEN the `_lang` parameter MUST be `en` (not `en_GB`)
 - AND MUST NOT cause OR to 4xx on an unknown region tag
 
-### Requirement: LarpingApp OR writes MUST stamp `X-Translation-Target-Language` when editing a non-default language
+### Requirement: Larpinq OR writes MUST stamp `X-Translation-Target-Language` when editing a non-default language
 
 When a user is editing a translatable property in a non-default
 language (e.g. editing the German translation of a character's
@@ -161,7 +161,7 @@ Dutch), the PATCH/PUT request MUST include the
   `X-Translation-Target-Language` header
 - AND OR MUST treat the body as the source-language update
 
-### Requirement: LarpingApp lists MUST display "(translated from {lang})" badge when served language differs from source
+### Requirement: Larpinq lists MUST display "(translated from {lang})" badge when served language differs from source
 
 When an OR-backed list view (CharacterIndex, EventIndex, ItemIndex)
 renders an object whose served language differs from its
@@ -198,10 +198,10 @@ CSS).
 - AND no badge MUST be rendered
 - AND no warning MUST be logged
 
-### Requirement: LarpingApp MUST consume `useTenantContext()` from nc-vue when surfacing tenant-scoped OR data
+### Requirement: Larpinq MUST consume `useTenantContext()` from nc-vue when surfacing tenant-scoped OR data
 
 Once `useTenantContext()` is exported from a versioned nc-vue
-release, LarpingApp views that surface OR data (CharacterIndex,
+release, Larpinq views that surface OR data (CharacterIndex,
 EventIndex, ItemIndex, plus their detail views) MUST adopt the
 composable.
 
@@ -228,13 +228,13 @@ composable.
 
 - GIVEN nc-vue's exported version does not yet include
   `useTenantContext`
-- WHEN LarpingApp imports it (try/catch guarded)
+- WHEN Larpinq imports it (try/catch guarded)
 - THEN absence MUST NOT crash the app
 - AND views MUST behave as single-tenant (no refetch on switch)
 
-### Requirement: LarpingApp PHP code MUST pass `composer check:strict`
+### Requirement: Larpinq PHP code MUST pass `composer check:strict`
 
-Per project policy, all LarpingApp PHP files MUST pass
+Per project policy, all Larpinq PHP files MUST pass
 `composer check:strict` (PHPCS, PHPMD, Psalm, PHPStan). This change
 MUST NOT introduce new warnings, and SHOULD fix any pre-existing
 warnings in the files it touches (`RegisterObjectFetcher.php`,
@@ -243,17 +243,17 @@ warnings in the files it touches (`RegisterObjectFetcher.php`,
 #### Scenario: Strict check passes
 
 - GIVEN the change is applied
-- WHEN `composer check:strict` runs in the LarpingApp container
+- WHEN `composer check:strict` runs in the Larpinq container
 - THEN the exit code MUST be 0
 - AND no new warnings or errors MUST appear in the output
 
-### Requirement: LarpingApp PHPUnit tests MUST run inside the Nextcloud container
+### Requirement: Larpinq PHPUnit tests MUST run inside the Nextcloud container
 
 Per `feedback_phpunit-must-run-in-container.md` and project
 CLAUDE.md, unit tests MUST be invoked via:
 
 ```
-docker exec -w /var/www/html/custom_apps/larpingapp nextcloud \
+docker exec -w /var/www/html/custom_apps/larpinq nextcloud \
   php vendor/bin/phpunit -c phpunit-unit.xml
 ```
 

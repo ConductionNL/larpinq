@@ -1,4 +1,4 @@
-# Tasks — larpingapp-adopt-or-abstractions
+# Tasks — larpinq-adopt-or-abstractions
 
 > Spec-only change. No PR / merge / archive tasks here.
 
@@ -17,10 +17,10 @@
 ## Implementation note (build 2026-06-04)
 
 The proposal/design/spec were authored against an earlier snapshot of
-LarpingApp. During the build the app's actual state was reconciled:
+Larpinq. During the build the app's actual state was reconciled:
 
 - **Phase 1 is already satisfied** by an even stronger pattern than the
-  spec asked for. LarpingApp already ships `src/manifest.json`
+  spec asked for. Larpinq already ships `src/manifest.json`
   (manifest-v2, `version 0.2.0`, `dependencies: ["openregister"]`), a
   full `menu` + `pages` array with `index` / `detail` pages for every
   entity, a `src/manifest.d/` fragment loader (ADR-037), an
@@ -42,7 +42,7 @@ LarpingApp. During the build the app's actual state was reconciled:
   injection is deferred until OR ships the class.
 - **Phase 3 (i18n) and Phase 4 (multi-tenancy) both depend on
   not-yet-merged cross-app capabilities** and a frontend fetch seam
-  that LarpingApp does not own (OR object fetches go through the shared
+  that Larpinq does not own (OR object fetches go through the shared
   `createObjectStore` from `@conduction/nextcloud-vue`, not a local
   client). They are deferred with reasons below.
 
@@ -57,7 +57,7 @@ LarpingApp. During the build the app's actual state was reconciled:
   per ADR-036 rather than a single `PdfExportAction` string.)
 - [x] 1.2 `npm run check:manifest` script present in `package.json`
   (`node tests/validate-manifest.js`). (Already present.)
-- [x] 1.3 The manifest is loaded at boot. LarpingApp uses the
+- [x] 1.3 The manifest is loaded at boot. Larpinq uses the
   `CnPageRenderer` + manifest-prop + `mergeManifestFragments()`
   pattern in `src/main.js` (router built from the manifest) rather than
   a `useAppManifest()` call — a stronger, fragment-aware adoption.
@@ -71,7 +71,7 @@ LarpingApp. During the build the app's actual state was reconciled:
   with `urn` + `integrations` keys — both signals
   `useAppStatus('openregister')` consumes to return
   `{ installed: true, enabled: true }`. Dependency-check phase in
-  `CnAppRoot` therefore passes for LarpingApp on this baseline.
+  `CnAppRoot` therefore passes for Larpinq on this baseline.
 
 ## Phase 2 — `RegisterResolverService` consumption
 
@@ -122,7 +122,7 @@ LarpingApp. During the build the app's actual state was reconciled:
 > does not yet honour `?_lang=`, the `X-Translation-Target-Language`
 > header, or expose `sourceLanguage` object metadata — these live only
 > in the unmerged changes `i18n-api-language-negotiation` and
-> `i18n-source-of-truth`. Independently, LarpingApp does NOT build OR
+> `i18n-source-of-truth`. Independently, Larpinq does NOT build OR
 > fetch URLs locally: all object CRUD flows through
 > `createObjectStore('object')` from `@conduction/nextcloud-vue`
 > (`src/store/modules/object.js`). There is no local `orClient.js`
@@ -130,10 +130,10 @@ LarpingApp. During the build the app's actual state was reconciled:
 > shared library. The correct home for `?_lang=` /
 > `X-Translation-Target-Language` is the shared store, not a per-app
 > composable. Tracking issue to be filed against nextcloud-vue +
-> openregister; LarpingApp adopts once both ship.
+> openregister; Larpinq adopts once both ship.
 
 - [x] 3.1 Decision recorded: `src/composables/orClient.js` is NOT
-  introduced — LarpingApp's HTTP plane is `createObjectStore('object')`
+  introduced — Larpinq's HTTP plane is `createObjectStore('object')`
   from `@conduction/nextcloud-vue` (`src/store/modules/object.js`).
   The `_lang` query parameter + `X-Translation-Target-Language`
   header therefore belong in `useObjectStore._buildHeaders()` /
@@ -154,12 +154,12 @@ LarpingApp. During the build the app's actual state was reconciled:
   `languageGetter`/`targetLanguageGetter` options to
   `createObjectStore`, threaded through `_buildUrl()` (query) +
   `_buildHeaders()` (target-language header). Once that lands,
-  LarpingApp wires the closure in
+  Larpinq wires the closure in
   `src/store/modules/object.js` next to `organisationUuidGetter`.
   - **W32 handoff-flip (2026-06-12)**: explicit nc-vue follow-up
     change `i18n-language-negotiation-getters` documented above
     (mirrors `multi-tenancy-context`'s `organisationUuidGetter`
-    pattern). LarpingApp-side wiring is a one-line Pinia closure
+    pattern). Larpinq-side wiring is a one-line Pinia closure
     passed through `createObjectStore` once the library ships. Flip
     per the W25-A/W26 documented-handoff pattern — no in-this-change
     work remains; the closure-wire site is pinned in
@@ -180,7 +180,7 @@ LarpingApp. During the build the app's actual state was reconciled:
     (`_buildHeaders()` companion `targetLanguageGetter`). Flip per
     the W25-A/W26 documented-handoff pattern — no in-this-change
     work remains.
-- [x] 3.4 N/A. There is no per-domain store to migrate — LarpingApp
+- [x] 3.4 N/A. There is no per-domain store to migrate — Larpinq
   already routes every CRUD through the single shared
   `useObjectStore('object')` instance defined in
   `src/store/modules/object.js`. When 3.2 / 3.3 ship upstream in
@@ -203,18 +203,18 @@ LarpingApp. During the build the app's actual state was reconciled:
   badge next to the property label in `CnDetailGrid`. Aligns
   scope-wise with `i18n-language-negotiation-getters` from 3.2 but
   is a separate change because it touches a different component
-  surface. LarpingApp consumes via the standard registry-driven
+  surface. Larpinq consumes via the standard registry-driven
   detail page once the badge ships in the library.
   - **W32 handoff-flip (2026-06-12)**: explicit nc-vue follow-up
     change `cn-detail-translation-aware-surfacing` documented above
     (CnDetailGrid reads `_translationMeta.<prop>.sourceLanguage` +
-    renders the per-property badge). LarpingApp consumes via the
+    renders the per-property badge). Larpinq consumes via the
     standard registry-driven detail page once the badge ships. Flip
     per the W25-A/W26 documented-handoff pattern — no in-this-change
     work remains.
 - [x] 3.6 [BLOCKED on 3.5] e2e for the badge — depends on 3.5
   rendering in the shared library. **W28 confirm (2026-06-12)**:
-  no LarpingApp-side work item changes; the spec lives in the
+  no Larpinq-side work item changes; the spec lives in the
   gate-19 honest-coverage program under
   `tests/e2e/i18n-translation-badge.spec.ts` and is bound to flip
   green automatically when `cn-detail-translation-aware-surfacing`
@@ -238,7 +238,7 @@ LarpingApp. During the build the app's actual state was reconciled:
 > own setup() and renders the `CnTenantBadge` in the top bar
 > automatically, so consuming apps only need to (a) bridge their
 > Pinia object store to the composable and (b) react to switches.
-> The published nc-vue tag bump is pending; LarpingApp's `setup()`
+> The published nc-vue tag bump is pending; Larpinq's `setup()`
 > handles the pre-release fallback path defensively via a runtime
 > `typeof useTenantContext === 'function'` guard so the existing
 > `@conduction/nextcloud-vue` constraint range continues to install
@@ -271,7 +271,7 @@ LarpingApp. During the build the app's actual state was reconciled:
   UUID. Module-level setter `setObjectStoreTenantUuid()` is the
   bridge written by `App.vue`.
 - [x] 4.5 [BLOCKED on dev-fixture seeding 2+ orgs] e2e tenant-switch
-  refetch. LarpingApp's e2e harness does not yet drive
+  refetch. Larpinq's e2e harness does not yet drive
   `CnTenantBadge` because the badge auto-hides for users with 0–1
   organisations and the dev fixture seeds none. Tracked under the
   gate-19 honest-coverage program — the follow-up will seed a
@@ -296,26 +296,26 @@ LarpingApp. During the build the app's actual state was reconciled:
     blocker remains.
 ## Phase 5 — Manifest Tier 3 graduation (follow-up tracking)
 
-- [x] 5.1 Tier 3 prerequisites (tracking only): LarpingApp is in
+- [x] 5.1 Tier 3 prerequisites (tracking only): Larpinq is in
   practice ALREADY past Tier 2 — its nav/router are rendered FROM the
   manifest via `CnPageRenderer` in `src/main.js`, page types are typed
   primitives (`index` / `detail` / `dashboard` / `settings`), and slot
   overrides (incl. the PDF/actions component) resolve through the
   ADR-036 `registry.js`. The remaining Tier-4 step is adopting
   `CnAppRoot` with `customComponents` fully retired; tracked below.
-- [x] 5.2 [FOLLOW-UP — separate change] Open `larpingapp-manifest-tier-4`
+- [x] 5.2 [FOLLOW-UP — separate change] Open `larpinq-manifest-tier-4`
   (full `CnAppRoot` adoption with `customComponents.js` retired).
   Prerequisites already met: (a) nc-vue ADR-036 kind-agnostic slot
   resolver shipped (`nextcloud-vue#459` — registry-driven
   slot/actions/section lookup accepts any `kind` with a `component`
-  field); (b) LarpingApp already mounts `CnPageRenderer` from
+  field); (b) Larpinq already mounts `CnPageRenderer` from
   `src/main.js`; (c) `useAppStatus('openregister')` verified live
   (see 1.5). Out of scope for this adoption change because dropping
   `customComponents.js` requires touching every Vue page-host file
   and is better tracked as its own proposal under the manifest-Tier-4
   cohort (alongside the other consumer apps).
   - **delivered (W28 2026-06-12)**: the follow-up change is now
-    authored at `openspec/changes/larpingapp-manifest-tier-4/` —
+    authored at `openspec/changes/larpinq-manifest-tier-4/` —
     proposal + design + tasks + spec delta. The actual implementation
     (mount swap, `customComponents.js` removal, registry `kind:` audit)
     is tracked in that change's tasks. This `[~]` flips to `[x]`
@@ -370,7 +370,7 @@ LarpingApp. During the build the app's actual state was reconciled:
     (3.5) and the dev-fixture seed (4.5) land. Flip per the
     W25-A/W26 documented-handoff pattern.
 - [x] 7.6 Smoked on the live `nextcloud` container (W24 —
-  2026-06-12). `occ app:list` confirmed both `larpingapp` (0.1.26)
+  2026-06-12). `occ app:list` confirmed both `larpinq` (0.1.26)
   and `openregister` (0.2.13-unstable.90) enabled side-by-side,
   and OCS capabilities expose the `openregister` block consumed by
   `useAppStatus('openregister')`. Tenant-switch refetch path and

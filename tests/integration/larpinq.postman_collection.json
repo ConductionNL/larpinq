@@ -201,11 +201,11 @@
 								"type": "text/javascript",
 								"exec": [
 									"// Authorization on object data is OpenRegister's responsibility (ADR-022),",
-									"// not larpingapp's. The character schema carries an `ownerUid`, so OR scopes",
+									"// not larpinq's. The character schema carries an `ownerUid`, so OR scopes",
 									"// a single-object read to the owner: an anonymous GET of an admin-owned",
 									"// character returns 404 (Not Found for the anonymous context), NOT the",
 									"// object. We assert that honestly — the data is not leaked to anon, and OR",
-									"// (not larpingapp) enforces it. (The unscoped LIST endpoint returns 200 to",
+									"// (not larpinq) enforces it. (The unscoped LIST endpoint returns 200 to",
 									"// anon but only exposes the anon-visible subset.)",
 									"pm.test('anonymous single-object read returns 404', () => pm.response.to.have.status(404));"
 								]
@@ -312,17 +312,17 @@
 				{
 					"name": "downloadPdf ERROR: invalid (non-UUID) template -> 400 not 500",
 					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "// Authenticated admin, but a non-UUID template id is rejected with 400 by", "// the controller's UUID guard (path-traversal/injection defence, #218) —", "// before DocuDesk is touched. Must not 500.", "pm.test('invalid template rejected 400', () => pm.response.to.have.status(400));", "pm.test('not a 500', () => pm.expect(pm.response.code).to.not.eql(500));" ] } } ],
-					"request": { "auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] }, "method": "GET", "header": [ { "key": "OCS-APIRequest", "value": "true" }, { "key": "Accept", "value": "application/json" } ], "url": { "raw": "{{baseUrl}}/index.php/apps/larpingapp/characters/{{charId}}/download/not-a-uuid", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "larpingapp", "characters", "{{charId}}", "download", "not-a-uuid" ] } }
+					"request": { "auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] }, "method": "GET", "header": [ { "key": "OCS-APIRequest", "value": "true" }, { "key": "Accept", "value": "application/json" } ], "url": { "raw": "{{baseUrl}}/index.php/apps/larpinq/characters/{{charId}}/download/not-a-uuid", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "larpinq", "characters", "{{charId}}", "download", "not-a-uuid" ] } }
 				},
 				{
 					"name": "downloadPdf ERROR: valid-UUID template but DocuDesk template not found -> 4xx not 500",
 					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "// A syntactically-valid UUID that does not resolve to a real template.", "// Depending on DocuDesk presence this is 404 (template not found) or 424", "// (DocuDesk not installed). Either way it must be a clean 4xx, never 500.", "pm.test('clean 4xx, not 500', () => { pm.expect(pm.response.code).to.be.within(400, 499); pm.expect(pm.response.code).to.not.eql(500); });" ] } } ],
-					"request": { "auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] }, "method": "GET", "header": [ { "key": "OCS-APIRequest", "value": "true" }, { "key": "Accept", "value": "application/json" } ], "url": { "raw": "{{baseUrl}}/index.php/apps/larpingapp/characters/{{charId}}/download/00000000-0000-4000-8000-000000000000", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "larpingapp", "characters", "{{charId}}", "download", "00000000-0000-4000-8000-000000000000" ] } }
+					"request": { "auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] }, "method": "GET", "header": [ { "key": "OCS-APIRequest", "value": "true" }, { "key": "Accept", "value": "application/json" } ], "url": { "raw": "{{baseUrl}}/index.php/apps/larpinq/characters/{{charId}}/download/00000000-0000-4000-8000-000000000000", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "larpinq", "characters", "{{charId}}", "download", "00000000-0000-4000-8000-000000000000" ] } }
 				},
 				{
 					"name": "downloadPdf AUTHZ: anonymous -> 401",
 					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "// downloadPdf is #[NoAdminRequired] (a logged-in session is still required);", "// an anonymous request is rejected by NC SecurityMiddleware with 401.", "pm.test('anonymous rejected 401', () => pm.response.to.have.status(401));" ] } } ],
-					"request": { "method": "GET", "header": [ { "key": "Accept", "value": "application/json" } ], "url": { "raw": "{{noAuthBase}}/index.php/apps/larpingapp/characters/{{charId}}/download/00000000-0000-4000-8000-000000000000", "host": [ "{{noAuthBase}}" ], "path": [ "index.php", "apps", "larpingapp", "characters", "{{charId}}", "download", "00000000-0000-4000-8000-000000000000" ] } }
+					"request": { "method": "GET", "header": [ { "key": "Accept", "value": "application/json" } ], "url": { "raw": "{{noAuthBase}}/index.php/apps/larpinq/characters/{{charId}}/download/00000000-0000-4000-8000-000000000000", "host": [ "{{noAuthBase}}" ], "path": [ "index.php", "apps", "larpinq", "characters", "{{charId}}", "download", "00000000-0000-4000-8000-000000000000" ] } }
 				}
 			]
 		},
@@ -332,17 +332,17 @@
 				{
 					"name": "GET /api/settings (200, contract shape)",
 					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('settings (200)', () => pm.response.to.have.status(200));", "const b = pm.response.json();", "pm.test('has openRegisters flag', () => pm.expect(b).to.have.property('openRegisters'));", "pm.test('has availableRegisters array', () => pm.expect(b.availableRegisters).to.be.an('array'));" ] } } ],
-					"request": { "auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] }, "method": "GET", "header": [ { "key": "OCS-APIRequest", "value": "true" }, { "key": "Accept", "value": "application/json" } ], "url": { "raw": "{{baseUrl}}/index.php/apps/larpingapp/api/settings", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "larpingapp", "api", "settings" ] } }
+					"request": { "auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] }, "method": "GET", "header": [ { "key": "OCS-APIRequest", "value": "true" }, { "key": "Accept", "value": "application/json" } ], "url": { "raw": "{{baseUrl}}/index.php/apps/larpinq/api/settings", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "larpinq", "api", "settings" ] } }
 				},
 				{
 					"name": "GET /api/settings AUTHZ: anonymous -> 401",
 					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('anonymous rejected 401', () => pm.response.to.have.status(401));" ] } } ],
-					"request": { "method": "GET", "header": [ { "key": "Accept", "value": "application/json" } ], "url": { "raw": "{{noAuthBase}}/index.php/apps/larpingapp/api/settings", "host": [ "{{noAuthBase}}" ], "path": [ "index.php", "apps", "larpingapp", "api", "settings" ] } }
+					"request": { "method": "GET", "header": [ { "key": "Accept", "value": "application/json" } ], "url": { "raw": "{{noAuthBase}}/index.php/apps/larpinq/api/settings", "host": [ "{{noAuthBase}}" ], "path": [ "index.php", "apps", "larpinq", "api", "settings" ] } }
 				},
 				{
 					"name": "POST /api/settings AUTHZ: anonymous -> 401 (admin+CSRF-gated write)",
 					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "// settings#create dropped @NoCSRFRequired (closes #206) and is admin-gated;", "// an anonymous POST is rejected before the body is processed.", "pm.test('anonymous write rejected 401', () => pm.response.to.have.status(401));" ] } } ],
-					"request": { "method": "POST", "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Accept", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{}" }, "url": { "raw": "{{noAuthBase}}/index.php/apps/larpingapp/api/settings", "host": [ "{{noAuthBase}}" ], "path": [ "index.php", "apps", "larpingapp", "api", "settings" ] } }
+					"request": { "method": "POST", "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Accept", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{}" }, "url": { "raw": "{{noAuthBase}}/index.php/apps/larpinq/api/settings", "host": [ "{{noAuthBase}}" ], "path": [ "index.php", "apps", "larpinq", "api", "settings" ] } }
 				}
 			]
 		},

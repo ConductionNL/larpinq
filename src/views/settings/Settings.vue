@@ -15,9 +15,7 @@
 
 		<NcSettingsSection
 			:name="t('larpinq', 'Data storage')"
-			:description="
-				t('larpinq', 'Configure where to store your LARP data')
-			">
+			:description="t('larpinq', 'Configure where to store your LARP data')">
 			<div v-if="!loading">
 				<!-- Warning if OpenRegister is not installed but selected -->
 				<NcNoteCard v-if="!settings.openRegisters" type="warning">
@@ -209,9 +207,7 @@ export default defineComponent({
 		 */
 		async loadSettings() {
 			try {
-				const response = await fetch(
-					'/index.php/apps/larpinq/api/settings',
-				)
+				const response = await fetch('/index.php/apps/larpinq/api/settings')
 				const data = await response.json()
 				this.settings = data
 

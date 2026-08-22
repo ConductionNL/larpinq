@@ -14,7 +14,7 @@ By the end your character will have one or more skills attached, the **Abilities
 
 ## Prerequisites
 
-- A character that exists in Larping (see [Create a character](02-create-character.md)).
+- A character that exists in Larpinq (see [Create a character](02-create-character.md)).
 - The game system has at least one skill defined with effects on abilities — set up by a game master (see [Configure the game system](../admin/01-configure-game-system.md)).
 - Enough character XP for the skill's cost — the stat engine pays the skill's `xpCost` out of the character's experience pool.
 
@@ -28,7 +28,7 @@ By the end your character will have one or more skills attached, the **Abilities
 
    ![Skill picker](/screenshots/tutorials/user/03-character-skills-02.png)
 
-3. The skill attaches to the character. The stat engine immediately recalculates: Larping walks through skills → items → conditions → events, applying each effect's modifier to the abilities it targets, and writes the result back to the character.
+3. The skill attaches to the character. The stat engine immediately recalculates: Larpinq walks through skills → items → conditions → events, applying each effect's modifier to the abilities it targets, and writes the result back to the character.
 
    ![Skill attached, stats recalculated](/screenshots/tutorials/user/03-character-skills-03.png)
 

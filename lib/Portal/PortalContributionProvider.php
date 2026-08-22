@@ -10,7 +10,7 @@
  * method_exists(), never instanceof. This class is therefore deliberately
  * PLAIN: no portaliq imports, no `implements` clause, no info.xml dependency,
  * no constructor dependencies. Without portaliq installed it is inert and
- * larpingapp behaves exactly as before.
+ * larpinq behaves exactly as before.
  *
  * It declares — for the single `player` audience — the OpenRegister
  * collections a portal subject may read and the whitelisted create-action they
@@ -42,7 +42,7 @@ declare(strict_types=1);
 namespace OCA\Larpinq\Portal;
 
 /**
- * Declares what an external portal subject may see and do in larpingapp.
+ * Declares what an external portal subject may see and do in larpinq.
  *
  * The contribution is a declarative manifest (pure data — no I/O, no
  * callbacks). All subject identity (subjectRef, audience, organisation, trust)
@@ -107,7 +107,7 @@ class PortalContributionProvider {
 	 *
 	 * The subject array is server-derived by portaliq (subjectRef UUID,
 	 * audience, organisation, trust level low|substantial|high). Returns null
-	 * for any audience larpingapp does not serve (fail-closed; the registry
+	 * for any audience larpinq does not serve (fail-closed; the registry
 	 * already filters by audience, but a provider must not rely on that). This
 	 * wave declares one create-action only — no endpoint actions (receiver-side
 	 * assertion verification does not exist yet).
@@ -158,7 +158,7 @@ class PortalContributionProvider {
 	 * XP awards are intentionally NOT exposed — see design.md (the shipped
 	 * portaliq reader is single-hop `scopeField == subjectRef`, and `xpAward`
 	 * carries no field equal to the player ref; scoping it would need a
-	 * denormalised owner ref + backfill, deferred on Conduction/larpingapp#51).
+	 * denormalised owner ref + backfill, deferred on ConductionNL/larpinq#51).
 	 *
 	 * @return array<string, mixed> The player manifest.
 	 *

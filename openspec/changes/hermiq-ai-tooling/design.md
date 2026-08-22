@@ -1,7 +1,7 @@
 # Design: hermiq-ai-tooling
 
 ## Architecture Overview
-The adoption change (`larpingapp-mcp-adoption`) is pure dialect: 21 derived
+The adoption change (`larpinq-mcp-adoption`) is pure dialect: 21 derived
 tools from `register.d/larpingapp-mcp-adoption.json`, zero PHP. This change
 adds the curated layer on the DocuDesk pattern (chain: dialect → curated
 `#[McpTool]` methods → `IMcpScannableServices` opt-in):
@@ -11,7 +11,7 @@ Hermiq (agent)                 grants: default-deny, scope × reach per agent
   -> OpenRegister /api/mcp
     -> SchemaDerivedToolProvider      -> 21 derived tools   [shipped]
     -> AttributeToolScanner
-       -> LarpingappScannableServices [THIS CHANGE]
+       -> LarpinqScannableServices [THIS CHANGE]
           -> EventRosterService::awardXpToAttendees()   #[McpTool] create, gated
           -> CharacterService  (calculated sheet)       #[McpTool] read
 ```
@@ -61,7 +61,7 @@ chat session might share — the one content-boundary this app has.
 - **App code** — roster cut, server-stamped fields, per-character result
   report, `mcp` attribution.
 
-LarpingApp adds no gate/grant code of its own; it declares honest hints and
+Larpinq adds no gate/grant code of its own; it declares honest hints and
 keeps the OR authorization block authoritative — the layering the adoption
 change's Risk 2 analysis already established.
 

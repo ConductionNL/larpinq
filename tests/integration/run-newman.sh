@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 #
-# LarpingApp API-contract test runner (Newman / Postman).
+# Larpinq API-contract test runner (Newman / Postman).
 #
-# Runs tests/integration/larpingapp.postman_collection.json against a live
-# Nextcloud instance serving the larpingapp app. The collection is
+# Runs tests/integration/larpinq.postman_collection.json against a live
+# Nextcloud instance serving the larpinq app. The collection is
 # self-contained and idempotent: it seeds the OpenRegister objects it needs
 # (characters, items, skills, conditions, effects, events, players) and deletes
 # them again in teardown.
@@ -23,14 +23,14 @@
 set -euo pipefail
 
 # Re-exec under an exclusive flock so parallel agents serialise.
-LOCK_FILE="/tmp/uiaudit-larpingapp.lock"
+LOCK_FILE="/tmp/uiaudit-larpinq.lock"
 if [ "${LARPINGAPP_NEWMAN_LOCKED:-}" != "1" ] && command -v flock >/dev/null 2>&1; then
   export LARPINGAPP_NEWMAN_LOCKED=1
   exec flock "${LOCK_FILE}" "$0" "$@"
 fi
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-COLLECTION="${SCRIPT_DIR}/larpingapp.postman_collection.json"
+COLLECTION="${SCRIPT_DIR}/larpinq.postman_collection.json"
 
 BASE_URL="${BASE_URL:-http://localhost:8080}"
 ADMIN_USER="${ADMIN_USER:-admin}"

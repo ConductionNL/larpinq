@@ -1,7 +1,7 @@
 # Design: character-player-picker
 
 ## Architecture Overview
-Pure declarative schema edit inside `lib/Settings/larpingapp_register.json`
+Pure declarative schema edit inside `lib/Settings/larpinq_register.json`
 (`.components.schemas.character`, `.components.schemas.player`). No new PHP
 classes, no new Vue components, no new routes. Four OpenRegister/nc-vue declarative
 engines already exist (or are landing on nc-vue `beta`) and do all the work:
@@ -152,7 +152,7 @@ this change.
 Not applicable — no data migration in this change. Legacy `character.ocName`
 free-text values are re-linked going forward via the new inline select-or-create
 player dropdown, not migrated in bulk. Deploy is a single JSON file edit picked up
-by the app's existing `larpingapp_register.json` auto-import
+by the app's existing `larpinq_register.json` auto-import
 (`register-config-json` capability) on the next `ConfigurationService.importFromApp()`
 run (app enable/upgrade or manual re-import). Rollback: revert the JSON edit (see
 proposal's Rollback Strategy).
@@ -187,7 +187,7 @@ colors, no bespoke markup added by this change.
 ```
 lib/
   Settings/
-    larpingapp_register.json   # only file touched
+    larpinq_register.json   # only file touched
 ```
 
 ## Seed Data
@@ -218,7 +218,7 @@ lib/
 
 @self envelope for each: `{"register": "larpingapp", "schema": "character"}` and
 `{"register": "larpingapp", "schema": "player"}` respectively — matching the
-existing register/schema slugs already declared in `larpingapp_register.json`.
+existing register/schema slugs already declared in `larpinq_register.json`.
 Use the nil UUID `00000000-0000-0000-0000-000000000000` as a placeholder in any
 example JSON that needs a syntactically valid but non-real UUID.
 

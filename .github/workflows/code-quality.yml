@@ -204,7 +204,7 @@ jobs:
 
       # ── Integration tests ────────────────────────────────────────────────
       # `enable-newman` defaults to FALSE and this caller never set it, so
-      # tests/integration/larpingapp.postman_collection.json had never executed
+      # tests/integration/larpinq.postman_collection.json had never executed
       # in CI. It sits at the default `newman-collection-path`
       # (tests/integration), which is both the directory the validator counts
       # collections in and the directory the run step globs

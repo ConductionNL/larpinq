@@ -1,14 +1,14 @@
-# LarpingApp — adopt OR abstractions (manifest, register-resolver, multi-tenancy)
+# Larpinq — adopt OR abstractions (manifest, register-resolver, multi-tenancy)
 
 ## Why
 
 The 2026-05-03 OR-abstraction audit (`.claude/audit-2026-05-03/`)
-identified three adoption gaps in LarpingApp that map cleanly onto
+identified three adoption gaps in Larpinq that map cleanly onto
 already-merged OR / nc-vue / hydra specs:
 
-1. **No architectural manifest** — LarpingApp wires its router by
+1. **No architectural manifest** — Larpinq wires its router by
    hand and has no `src/manifest.json`. Per the migration order in
-   **ADR-024** (`hydra/openspec/architecture/`), LarpingApp is in the
+   **ADR-024** (`hydra/openspec/architecture/`), Larpinq is in the
    second-wave cohort (small, schema-driven) — adopt after LaunchPad
    (the pilot), before the larger apps.
 2. **`getValueString(...register/schema...)` consolidation** —
@@ -16,13 +16,13 @@ already-merged OR / nc-vue / hydra specs:
    and schema IDs from `IAppConfig::getValueString` per-call. The new
    `RegisterResolverService` from
    `openregister/openspec/changes/register-resolver-service/` exists
-   precisely to consolidate this pattern. LarpingApp has fewer call
+   precisely to consolidate this pattern. Larpinq has fewer call
    sites than opencatalogi or pipelinq but the duplication is the
    same shape.
 3. **No multi-tenancy wiring** — characters, events, and items are
    scoped by group / event in domain logic but the frontend has no
    `useTenantContext()` wiring. When the `multi-tenancy-context`
-   change in nc-vue ships in a versioned release, LarpingApp adopts
+   change in nc-vue ships in a versioned release, Larpinq adopts
    it for cache invalidation and tenant-scoped fetches.
 
 ## What Changes
@@ -40,7 +40,7 @@ already-merged OR / nc-vue / hydra specs:
     `actionsComponent` slot override
   - Settings page as `type: "custom"` (data-source switcher between
     internal mappers and OR is not declarative yet)
-- Set `dependencies: ["openregister"]` (LarpingApp's ADR-001 already
+- Set `dependencies: ["openregister"]` (Larpinq's ADR-001 already
   requires OR — making it explicit in the manifest closes the loop).
 - Tier 2 first: bundle the manifest, validate at build time, but
   keep vue-router hand-wired. Tier 3 (nav rendered from the
@@ -80,7 +80,7 @@ already-merged OR / nc-vue / hydra specs:
 
 ## Problem
 
-LarpingApp is a smaller schema-driven app. It already follows
+Larpinq is a smaller schema-driven app. It already follows
 ADR-001 (data in OR, no custom tables) and ADR-012 (nc-vue
 components only). Yet:
 
@@ -96,12 +96,12 @@ components only). Yet:
   a Dutch UI silently overwrites the German source under the
   register's default language.
 
-The cohort solution exists in already-merged specs. LarpingApp
+The cohort solution exists in already-merged specs. Larpinq
 adopts them; no new abstractions invented here.
 
 ## Proposed Solution
 
-A single `larpingapp-adopt-or-abstractions` change with five
+A single `larpinq-adopt-or-abstractions` change with five
 phases (see `tasks.md`):
 
 1. Manifest at Tier 2.
@@ -133,20 +133,20 @@ Each phase is independently shippable. If nc-vue's
   service this change consumes. Cite as the canonical contract.
 - `openregister/openspec/changes/pluggable-integration-registry/`
   (ADR-019) — not consumed in this change but cited because future
-  LarpingApp integrations (e.g. Discord notifications, character
+  Larpinq integrations (e.g. Discord notifications, character
   sheets pushed to a tabletop simulator) MAY register as integration
   providers.
 - `openregister/openspec/changes/i18n-source-of-truth/` (ADR-025) —
-  schema-level `sourceLanguage`. LarpingApp characters / events /
+  schema-level `sourceLanguage`. Larpinq characters / events /
   items have translatable narrative properties; this change reads
   the metadata.
 - `openregister/openspec/changes/i18n-api-language-negotiation/`
   (ADR-025) — `?_lang=` and `X-Translation-Target-Language`. This
-  change wires both into LarpingApp's OR fetches and writes.
+  change wires both into Larpinq's OR fetches and writes.
 - `nextcloud-vue/openspec/changes/multi-tenancy-context/` —
   `useTenantContext()` composable. This change adopts it.
 - `hydra/openspec/changes/adopt-app-manifest/` — fleet-wide manifest
-  convention (ADR-024). LarpingApp is second-wave.
+  convention (ADR-024). Larpinq is second-wave.
 - ADR-001 — All data in OR.
 - ADR-012 — nc-vue components only.
 - ADR-022 — Apps consume OR abstractions.
