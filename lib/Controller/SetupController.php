@@ -1,9 +1,9 @@
 <?php
 
 /**
- * LarpingApp first-time setup contract (ADR-042).
+ * Larpinq first-time setup contract (ADR-042).
  *
- * Backs the abstract CnSetupWizard. LarpingApp's single REQUIRED step is that
+ * Backs the abstract CnSetupWizard. Larpinq's single REQUIRED step is that
  * its OpenRegister register and schemas are provisioned — without them the app
  * cannot read or write characters, players, items or events. The `provision`
  * run-action (re)imports the register from the bundled JSON and is idempotent.
@@ -11,7 +11,7 @@
  * server-side provisioning action.
  *
  * @category  Controller
- * @package   OCA\LarpingApp\Controller
+ * @package   OCA\Larpinq\Controller
  * @author    Ruben Linde <ruben@larpingapp.com>
  * @copyright 2026 Conduction B.V.
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
@@ -24,11 +24,11 @@
 
 declare(strict_types=1);
 
-namespace OCA\LarpingApp\Controller;
+namespace OCA\Larpinq\Controller;
 
-use OCA\LarpingApp\AppInfo\Application;
-use OCA\LarpingApp\Service\SettingsService;
-use OCA\LarpingApp\Settings\LarpingAppAdmin;
+use OCA\Larpinq\AppInfo\Application;
+use OCA\Larpinq\Service\SettingsService;
+use OCA\Larpinq\Settings\LarpinqAdmin;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
@@ -42,7 +42,7 @@ use Psr\Log\LoggerInterface;
  * First-time setup status + actions for the abstract setup wizard.
  *
  * @category Controller
- * @package  OCA\LarpingApp\Controller
+ * @package  OCA\Larpinq\Controller
  * @author   Ruben Linde <ruben@larpingapp.com>
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
@@ -63,7 +63,7 @@ class SetupController extends Controller {
 	/**
 	 * Representative schema config key proving the schemas resolved, not just
 	 * the register id. SettingsLoadService writes `<objectType>_schema` for
-	 * each provisioned schema; `character` is a core LarpingApp type.
+	 * each provisioned schema; `character` is a core Larpinq type.
 	 *
 	 * @var string
 	 */
@@ -94,7 +94,7 @@ class SetupController extends Controller {
 	/**
 	 * Report per-step setup status for the wizard.
 	 *
-	 * `provision.done` is computed from LarpingApp's ACTUAL OpenRegister state:
+	 * `provision.done` is computed from Larpinq's ACTUAL OpenRegister state:
 	 * the `register` id config is set AND a representative schema key resolves.
 	 * On a fresh install both are empty, so the required `provision` step gates
 	 * the app. `completed` is true once every required step is done; when so we
@@ -104,7 +104,7 @@ class SetupController extends Controller {
 	 *
 	 * @spec exclude First-time setup wizard backend (ADR-042); no per-app openspec change yet.
 	 */
-	#[AuthorizedAdminSetting(LarpingAppAdmin::class)]
+	#[AuthorizedAdminSetting(LarpinqAdmin::class)]
 	public function status(): DataResponse {
 		$provisionDone = $this->isProvisioned();
 
@@ -136,7 +136,7 @@ class SetupController extends Controller {
 	/**
 	 * Persist app-config values from a `choice` / `config-fields` step.
 	 *
-	 * LarpingApp's wizard has no config-only steps today, but the endpoint is
+	 * Larpinq's wizard has no config-only steps today, but the endpoint is
 	 * provided for parity with the abstract wizard contract so future steps can
 	 * write config without a new controller.
 	 *
@@ -144,7 +144,7 @@ class SetupController extends Controller {
 	 *
 	 * @spec exclude First-time setup wizard backend (ADR-042); no per-app openspec change yet.
 	 */
-	#[AuthorizedAdminSetting(LarpingAppAdmin::class)]
+	#[AuthorizedAdminSetting(LarpinqAdmin::class)]
 	public function saveConfig(): DataResponse {
 		foreach ($this->request->getParams() as $key => $value) {
 			if ($key === '_route') {
@@ -171,7 +171,7 @@ class SetupController extends Controller {
 	 *
 	 * @spec exclude First-time setup wizard backend (ADR-042); no per-app openspec change yet.
 	 */
-	#[AuthorizedAdminSetting(LarpingAppAdmin::class)]
+	#[AuthorizedAdminSetting(LarpinqAdmin::class)]
 	public function runAction(string $actionId): DataResponse {
 		if ($actionId === 'provision') {
 			return $this->provisionRegister();
@@ -185,11 +185,11 @@ class SetupController extends Controller {
 	}//end runAction()
 
 	/**
-	 * Import the LarpingApp register + schemas from the bundled JSON.
+	 * Import the Larpinq register + schemas from the bundled JSON.
 	 *
 	 * Mirrors the InitializeRegister repair step that runs on install, but is
 	 * invokable on demand from the wizard so an admin who only enabled
-	 * OpenRegister AFTER LarpingApp (when the install-time repair skipped
+	 * OpenRegister AFTER Larpinq (when the install-time repair skipped
 	 * provisioning) can complete setup without a CLI repair run. Idempotent —
 	 * loadSettings resolves existing registers/schemas by slug and is a no-op
 	 * when the data already exists.
@@ -213,14 +213,14 @@ class SetupController extends Controller {
 			$schemaCount = count((array)($result['schemas'] ?? []));
 
 			$message = sprintf(
-				'Provisioned %d register(s) and %d schema(s); LarpingApp is ready to use.',
+				'Provisioned %d register(s) and %d schema(s); Larpinq is ready to use.',
 				$registerCount,
 				$schemaCount,
 			);
 
 			return new DataResponse(['success' => true, 'message' => $message]);
 		} catch (\Throwable $e) {
-			$this->logger->error('LarpingApp setup provisioning failed', ['exception' => $e->getMessage()]);
+			$this->logger->error('Larpinq setup provisioning failed', ['exception' => $e->getMessage()]);
 			return new DataResponse(
 				['success' => false, 'message' => 'Provisioning failed: ' . $e->getMessage()],
 				Http::STATUS_INTERNAL_SERVER_ERROR,
@@ -230,7 +230,7 @@ class SetupController extends Controller {
 	}//end provisionRegister()
 
 	/**
-	 * Whether LarpingApp's OpenRegister register + schemas are provisioned.
+	 * Whether Larpinq's OpenRegister register + schemas are provisioned.
 	 *
 	 * Requires BOTH the `register` id config (written by SettingsLoadService
 	 * after a successful import) AND a representative `<type>_schema` key so a

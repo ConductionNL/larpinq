@@ -1,10 +1,10 @@
 <?php
 
 /**
- * LarpingApp admin settings implementation.
+ * Larpinq admin settings implementation.
  *
  * @category  Settings
- * @package   OCA\LarpingApp\Settings
+ * @package   OCA\Larpinq\Settings
  * @author    Ruben Linde <ruben@larpingapp.com>
  * @copyright 2024 Ruben Linde
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
@@ -17,18 +17,18 @@
 
 declare(strict_types=1);
 
-namespace OCA\LarpingApp\Settings;
+namespace OCA\Larpinq\Settings;
 
-use OCA\LarpingApp\AppInfo\Application;
+use OCA\Larpinq\AppInfo\Application;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Services\IInitialState;
 use OCP\Settings\IDelegatedSettings;
 
 /**
- * Admin settings form for the LarpingApp application.
+ * Admin settings form for the Larpinq application.
  *
- * Implements IDelegatedSettings so #[AuthorizedAdminSetting(LarpingAppAdmin::class)]
+ * Implements IDelegatedSettings so #[AuthorizedAdminSetting(LarpinqAdmin::class)]
  * on the SetupController can gate the first-time setup endpoints to admins
  * (IDelegatedSettings extends ISettings; the attribute requires the delegated
  * interface).
@@ -37,7 +37,7 @@ use OCP\Settings\IDelegatedSettings;
  *
  * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-17
  */
-class LarpingAppAdmin implements IDelegatedSettings {
+class LarpinqAdmin implements IDelegatedSettings {
 	/**
 	 * Constructor.
 	 *

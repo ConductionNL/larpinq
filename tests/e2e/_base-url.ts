@@ -85,7 +85,7 @@ export function resolveBaseURL(): string {
 	if (isCI()) {
 		// eslint-disable-next-line no-console
 		console.warn(
-			`[larpingapp e2e] none of ${BASE_URL_VARS.join(' / ')} is set; falling back to the `
+			`[larpinq e2e] none of ${BASE_URL_VARS.join(' / ')} is set; falling back to the `
 				+ `CI-local ${CI_DEFAULT_BASE_URL} (the runner's own php -S instance).`,
 		)
 		return CI_DEFAULT_BASE_URL
@@ -104,5 +104,5 @@ export const BASE_URL = resolveBaseURL()
 /** OpenRegister object API root on the target instance. */
 export const OR_OBJECTS_API = `${BASE_URL}/index.php/apps/openregister/api/objects`
 
-/** LarpingApp settings API on the target instance. */
-export const LARPINGAPP_SETTINGS_API = `${BASE_URL}/index.php/apps/larpingapp/api/settings`
+/** Larpinq settings API on the target instance. */
+export const LARPINQ_SETTINGS_API = `${BASE_URL}/index.php/apps/larpinq/api/settings`

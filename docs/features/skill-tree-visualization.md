@@ -2,7 +2,7 @@
 
 ## Overview
 
-The skill-tree page renders LarpingApp's skill prerequisite graph so a player can
+The skill-tree page renders Larpinq's skill prerequisite graph so a player can
 answer "what can I learn next, and what is blocking the skill I want?" without
 reading raw UUID arrays. Nodes are `skill` objects; directed edges are the
 `requiredSkills` prerequisites. The whole graph derives purely from OpenRegister

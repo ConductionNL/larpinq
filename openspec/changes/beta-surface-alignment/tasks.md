@@ -1,4 +1,4 @@
-# Tasks: Beta Cross-Surface Alignment (LarpingApp)
+# Tasks: Beta Cross-Surface Alignment (Larpinq)
 
 ## 1. Code metadata (`appinfo/info.xml`)
 

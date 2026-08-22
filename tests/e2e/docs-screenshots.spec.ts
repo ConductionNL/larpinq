@@ -2,7 +2,7 @@
  * SPDX-FileCopyrightText: 2026 Larpinq Contributors
  * SPDX-License-Identifier: EUPL-1.2
  *
- * Documentation screenshot capture suite — larpingapp.
+ * Documentation screenshot capture suite — larpinq.
  *
  * This spec is *not* a regression test — it drives the Larping UI
  * through every flow documented under `docs/tutorials/{user,admin}/*.md`
@@ -50,7 +50,7 @@ const SHOT_ROOT = path.resolve(
 	'screenshots',
 	'tutorials',
 )
-const APP = '/apps/larpingapp'
+const APP = '/apps/larpinq'
 
 /**
  * Save a viewport screenshot under
@@ -105,7 +105,7 @@ async function dismissOverlays(page: Page): Promise<void> {
 }
 
 /**
- * Navigate to an app route (relative paths join /apps/larpingapp) or to
+ * Navigate to an app route (relative paths join /apps/larpinq) or to
  * an absolute Nextcloud route (paths starting with `/apps/` or
  * `/settings` are passed through). Settles network + dismisses overlays.
  *
@@ -185,7 +185,7 @@ test.describe('docs: user track', () => {
 		await shoot(page, 'user', '01-first-launch-03.png')
 		await go(page, '/characters')
 		await shoot(page, 'user', '01-first-launch-04.png')
-		expect(page.url()).toContain('/apps/larpingapp')
+		expect(page.url()).toContain('/apps/larpinq')
 	})
 
 	test('UN create-character', async ({ page }) => {
@@ -323,8 +323,8 @@ test.describe('docs: admin track', () => {
 
 	test('AN admin-settings', async ({ page }) => {
 		// docs/tutorials/admin/03-admin-settings.md — settings live under
-		// /settings/admin/larpingapp in the Nextcloud administration panel.
-		await go(page, '/settings/admin/larpingapp')
+		// /settings/admin/larpinq in the Nextcloud administration panel.
+		await go(page, '/settings/admin/larpinq')
 		await shoot(page, 'admin', '03-admin-settings-01.png')
 		await page.evaluate(() => window.scrollTo(0, 0))
 		await page.waitForTimeout(300)

@@ -52,6 +52,6 @@ A PDF file lands in your browser's downloads named `<characterName>_character_sh
 
 ## Reference
 
-- PDF export reference: see `docs/features/pdf-export.md` in the [larpingapp repo](https://codeberg.org/Conduction/larpingapp) — endpoint, error codes, the DocuDesk hand-off (excluded from the rendered docs while a Twig-placeholder MDX-parsing issue is resolved).
+- PDF export reference: see `docs/features/pdf-export.md` in the [larpinq repo](https://github.com/ConductionNL/larpinq) — endpoint, error codes, the DocuDesk hand-off (excluded from the rendered docs while a Twig-placeholder MDX-parsing issue is resolved).
 - [Build a character's skills and abilities](03-character-skills.md) — make sure the character has stats worth printing.
 - [Track XP and progression](08-track-xp.md) — XP shows up on the sheet.

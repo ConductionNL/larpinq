@@ -2,7 +2,7 @@
  * SPDX-FileCopyrightText: 2026 Larpinq Contributors
  * SPDX-License-Identifier: EUPL-1.2
  *
- * Spec-coverage Playwright tests — larpingapp detail pages, create/edit
+ * Spec-coverage Playwright tests — larpinq detail pages, create/edit
  * dialogs, admin settings panel and dashboard widgets.
  *
  * Companion to spa-ui.spec.ts. Where spa-ui covers list views + dashboard
@@ -12,7 +12,7 @@
  *     the CnDetailPage shell: app-content, entity heading, Actions button).
  *   - Create / edit dialogs with field-level assertions (Type selector for
  *     NPC, name/player fields, etc.).
- *   - Admin settings panel (/settings/admin/larpingapp): per-type source
+ *   - Admin settings panel (/settings/admin/larpinq): per-type source
  *     selectors, register/schema dropdowns, Save All button, OpenRegister
  *     detection.
  *   - Dashboard skill-usage widget placement, card styling, responsive
@@ -37,7 +37,7 @@ import {
 import { navTo as sharedNavTo, dismissSupportDialog } from '../_nav'
 import { BASE_URL } from '../_base-url'
 
-const BASE = '/apps/larpingapp'
+const BASE = '/apps/larpinq'
 const TS = Date.now()
 
 // OpenRegister register + schema ids for this app's data model. The seed
@@ -61,7 +61,7 @@ const NEXTCLOUD_URL = BASE_URL
 // itself reads at runtime.
 //
 // These literals are correct on exactly one machine. On a freshly installed
-// instance LarpingApp's register imports as id 15 with a different schema-id
+// instance Larpinq's register imports as id 15 with a different schema-id
 // assignment, so every seed POSTed into register 8 / schema 18-25 either 404s
 // or lands in an unrelated register. `seedObject()` swallows that and stores
 // the string `'seed-missing'`, the detail routes then navigate to
@@ -81,7 +81,7 @@ const SCHEMA_IDS: Record<string, string> = {
 }
 
 /**
- * Overwrite REGISTER_ID / SCHEMA_IDS from LarpingApp's settings API.
+ * Overwrite REGISTER_ID / SCHEMA_IDS from Larpinq's settings API.
  *
  * An explicit `LARPING_*` environment variable always wins, so a run can still
  * be pinned by hand. Anything not pinned is resolved from the instance.
@@ -91,7 +91,7 @@ const SCHEMA_IDS: Record<string, string> = {
  */
 async function resolveIds(api: APIRequestContext): Promise<void> {
 	const res = await api
-		.get(`${NEXTCLOUD_URL}/index.php/apps/larpingapp/api/settings`, {
+		.get(`${NEXTCLOUD_URL}/index.php/apps/larpinq/api/settings`, {
 			headers: { 'OCS-APIRequest': 'true' },
 		})
 		.catch(() => null)
@@ -157,7 +157,7 @@ const seededNames: Record<string, string> = {}
 
 /** Load the SPA root and dismiss the first-load support modal. */
 async function openApp(page: Page): Promise<void> {
-	if (!page.url().includes('/apps/larpingapp')) {
+	if (!page.url().includes('/apps/larpinq')) {
 		await page.goto(`${BASE}/`)
 		// ADR-074 rule 4: `networkidle` never settles on Nextcloud.
 		await page
@@ -189,7 +189,7 @@ async function navTo(page: Page, slug: string): Promise<void> {
  * Navigate to a detail route via the app's hash router.
  *
  * The router runs in `mode: 'hash'` (src/main.js — fleet #133 deep-link fix),
- * so the canonical detail URL is `/apps/larpingapp/#/<slug>/<id>`. Loading that
+ * so the canonical detail URL is `/apps/larpinq/#/<slug>/<id>`. Loading that
  * URL serves the SPA root from the server (no 404 — the hash fragment is never
  * sent to the backend) and the client-side hash router resolves the detail
  * route. This is the deep-link path the hash-mode change exists to support, so
@@ -1013,13 +1013,13 @@ test.describe('larping-skill-widget — dashboard surface', () => {
 })
 
 // ===========================================================================
-// ADMIN SETTINGS — /settings/admin/larpingapp
+// ADMIN SETTINGS — /settings/admin/larpinq
 // openspec/specs/admin-settings/spec.md
 // ===========================================================================
 
 test.describe('admin-settings — panel UI', () => {
 	async function openAdmin(page: Page): Promise<void> {
-		await page.goto('/settings/admin/larpingapp')
+		await page.goto('/settings/admin/larpinq')
 		// ADR-074 rule 4: `networkidle` never settles on Nextcloud.
 		await page
 			.locator('#app-content, .app-content, #content')
@@ -1028,7 +1028,7 @@ test.describe('admin-settings — panel UI', () => {
 			.catch(() => {})
 		await expect(
 			page
-				.getByText(/Administration settings: LarpingApp|LarpingApp/i)
+				.getByText(/Administration settings: Larpinq|Larpinq/i)
 				.first(),
 		).toBeVisible({ timeout: 15_000 })
 	}
@@ -1116,7 +1116,7 @@ test.describe('admin-settings — panel UI', () => {
 test.describe('settings-management-ui — panel controls', () => {
 	// @e2e openspec/specs/settings-management-ui/spec.md#cascading-clears
 	test('settings panel renders cascading selector controls', async ({ page }) => {
-		await page.goto('/settings/admin/larpingapp')
+		await page.goto('/settings/admin/larpinq')
 		// ADR-074 rule 4: `networkidle` never settles on Nextcloud.
 		await page
 			.locator('#app-content, .app-content, #content')
@@ -1131,7 +1131,7 @@ test.describe('settings-management-ui — panel controls', () => {
 
 	// @e2e openspec/specs/settings-management-ui/spec.md#re-import-reports-outcome
 	test('settings panel exposes Save All / re-import action', async ({ page }) => {
-		await page.goto('/settings/admin/larpingapp')
+		await page.goto('/settings/admin/larpinq')
 		// ADR-074 rule 4: `networkidle` never settles on Nextcloud.
 		await page
 			.locator('#app-content, .app-content, #content')

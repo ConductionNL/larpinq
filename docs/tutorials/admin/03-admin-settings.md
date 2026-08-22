@@ -15,7 +15,7 @@ By the end every entity type will have a data-source set, the OpenRegister-backe
 ## Prerequisites
 
 - Admin on the Nextcloud instance.
-- The **OpenRegister** app installed and enabled, with at least one register available — Larping's installer ships a default `larpingapp_register.json` that auto-imports on install/upgrade, so a fresh install usually already has the right register and schemas.
+- The **OpenRegister** app installed and enabled, with at least one register available — Larpinq's installer ships a default `larpinq_register.json` that auto-imports on install/upgrade, so a fresh install usually already has the right register and schemas.
 - A view on which entities you actually want under OpenRegister (the default is *all of them*).
 
 ## Steps
@@ -32,7 +32,7 @@ By the end every entity type will have a data-source set, the OpenRegister-backe
 
    ![Register and schema mapping per entity](/screenshots/tutorials/admin/03-admin-settings-03.png)
 
-4. Click **Save All** to persist. The page reloads with the saved selections; the config keys (`register`, `character_schema`, `player_schema`, `ability_schema`, `skill_schema`, `item_schema`, `condition_schema`, `effect_schema`, `event_schema`, `setting_schema`) land under the `larpingapp` app in Nextcloud's `IAppConfig`.
+4. Click **Save All** to persist. The page reloads with the saved selections; the config keys (`register`, `character_schema`, `player_schema`, `ability_schema`, `skill_schema`, `item_schema`, `condition_schema`, `effect_schema`, `event_schema`, `setting_schema`) land under the `larpinq` app in Nextcloud's `IAppConfig`.
 
    ![Settings saved confirmation](/screenshots/tutorials/admin/03-admin-settings-04.png)
 
@@ -48,9 +48,9 @@ Each entity row shows its chosen data source; OpenRegister rows show the registe
 
 | Symptom | Fix |
 |---|---|
-| Schema dropdown is empty for a row | The register you picked has no matching schema — either pick a different register (the default Larping register ships every schema) or run the `larpingapp_register.json` re-import from the OpenRegister side. |
+| Schema dropdown is empty for a row | The register you picked has no matching schema — either pick a different register (the default Larpinq register ships every schema) or run the `larpinq_register.json` re-import from the OpenRegister side. |
 | Larping lists work but **Add Item** dialog is empty | The schema mapping is set but the schema is empty (no fields) — re-import the Larping register configuration. |
-| Saved settings revert on reload | The save call failed; check the Nextcloud log for a 4xx/5xx on `POST /apps/larpingapp/api/settings`. |
+| Saved settings revert on reload | The save call failed; check the Nextcloud log for a 4xx/5xx on `POST /apps/larpinq/api/settings`. |
 | Mixing Internal + Open Register breaks cross-entity relations | Relations between entities (character → skills, skills → effects) only resolve when both ends are in the same source. Pick one or the other for the whole chain. |
 | Screenshots may be missing | App not yet installed in the test environment; rerun `npm run test:e2e:docs` once it is. |
 
@@ -59,4 +59,4 @@ Each entity row shows its chosen data source; OpenRegister rows show the registe
 - [Admin settings reference](../../features/admin-settings.md) — config keys, API endpoints, the underlying services.
 - [Open Larping for the first time](../user/01-first-launch.md) — the user-facing check that the mapping works.
 - [Configure the game system](01-configure-game-system.md) — what to do once the mapping is in place.
-- [Register config JSON reference](../../features/register-config-json.md) — the `larpingapp_register.json` import.
+- [Register config JSON reference](../../features/register-config-json.md) — the `larpinq_register.json` import.

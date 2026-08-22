@@ -1,10 +1,10 @@
 <?php
 
 /**
- * LarpingApp admin section implementation
+ * Larpinq admin section implementation
  *
  * @category  Settings
- * @package   OCA\LarpingApp\Sections
+ * @package   OCA\Larpinq\Sections
  * @author    Ruben Linde <ruben@larpingapp.com>
  * @copyright 2024 Ruben Linde
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
@@ -17,18 +17,18 @@
 
 declare(strict_types=1);
 
-namespace OCA\LarpingApp\Sections;
+namespace OCA\Larpinq\Sections;
 
-use OCA\LarpingApp\AppInfo\Application;
+use OCA\Larpinq\AppInfo\Application;
 use OCP\IL10N;
 use OCP\IURLGenerator;
 use OCP\Settings\IIconSection;
 
 /**
- * Admin Section for LarpingApp
+ * Admin Section for Larpinq
  *
  * @category  Apps
- * @package   LarpingApp
+ * @package   Larpinq
  * @author    Ruben Linde <ruben@nextcloud.com>
  * @copyright 2024 Ruben Linde
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
@@ -38,7 +38,7 @@ use OCP\Settings\IIconSection;
  *
  * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-16
  */
-class LarpingAppAdmin implements IIconSection {
+class LarpinqAdmin implements IIconSection {
 
 	/**
 	 * Localization service instance
@@ -97,7 +97,7 @@ class LarpingAppAdmin implements IIconSection {
 	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-17
 	 */
 	public function getName(): string {
-		return $this->l10n->t('LarpingApp');
+		return $this->l10n->t('Larpinq');
 	}//end getName()
 
 	/**

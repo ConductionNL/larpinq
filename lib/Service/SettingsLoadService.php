@@ -1,12 +1,12 @@
 <?php
 
 /**
- * LarpingApp SettingsLoadService.
+ * Larpinq SettingsLoadService.
  *
- * Service for loading and importing LarpingApp configuration from JSON into OpenRegister.
+ * Service for loading and importing Larpinq configuration from JSON into OpenRegister.
  *
  * @category  Service
- * @package   OCA\LarpingApp\Service
+ * @package   OCA\Larpinq\Service
  * @author    Ruben Linde <ruben@larpingapp.com>
  * @copyright 2024 Ruben Linde
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
@@ -23,19 +23,19 @@
 
 declare(strict_types=1);
 
-namespace OCA\LarpingApp\Service;
+namespace OCA\Larpinq\Service;
 
-use OCA\LarpingApp\AppInfo\Application;
+use OCA\Larpinq\AppInfo\Application;
 use OCP\App\IAppManager;
 use OCP\IAppConfig;
 use Psr\Container\ContainerInterface;
 use RuntimeException;
 
 /**
- * Service for loading and importing LarpingApp configuration.
+ * Service for loading and importing Larpinq configuration.
  *
  * @category Service
- * @package  OCA\LarpingApp\Service
+ * @package  OCA\Larpinq\Service
  * @author   Ruben Linde <ruben@larpingapp.com>
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
@@ -47,9 +47,9 @@ use RuntimeException;
 class SettingsLoadService {
 
 	/**
-	 * Map of LarpingApp object type to its OpenRegister schema slug.
+	 * Map of Larpinq object type to its OpenRegister schema slug.
 	 *
-	 * The object type is LarpingApp's internal key — it drives the
+	 * The object type is Larpinq's internal key — it drives the
 	 * `{type}_schema` / `{type}_register` IAppConfig keys read at runtime by
 	 * RegisterObjectFetcher AND the frontend object-type used by the SPA. The
 	 * schema slug is what OpenRegister stores and resolves by.
@@ -59,10 +59,10 @@ class SettingsLoadService {
 	 * GLOBALLY (ImportHandler::importSchema looks up an existing schema by slug
 	 * with `_multitenancy: false` and no application scope). On a shared
 	 * instance another app's `item`/`event` schema is created first, so the
-	 * bare-slug import bound LarpingApp's `item_schema` to a foreign schema
+	 * bare-slug import bound Larpinq's `item_schema` to a foreign schema
 	 * (e.g. Scholiq's QTI "Item", which hard-fails RPG item creation with a
 	 * 400). Namespacing the slug to `larping_item` / `larping_event` makes
-	 * LarpingApp own its schema regardless of import order or instance state,
+	 * Larpinq own its schema regardless of import order or instance state,
 	 * while the `item` / `event` object-type keys (and `item_schema` /
 	 * `event_schema` config keys) stay unchanged for the runtime + frontend.
 	 * Closes the item-schema-collision bug.

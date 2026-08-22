@@ -2,11 +2,11 @@
 kind: docs
 ---
 
-# Proposal: Beta Cross-Surface Alignment (LarpingApp)
+# Proposal: Beta Cross-Surface Alignment (Larpinq)
 
 ## Problem
 
-LarpingApp's four public-facing surfaces — `appinfo/info.xml`, `src/manifest.json`, the conduction.nl product page, and `docs/` — disagreed with each other and, in the product page's case, with the shipped code:
+Larpinq's four public-facing surfaces — `appinfo/info.xml`, `src/manifest.json`, the conduction.nl product page, and `docs/` — disagreed with each other and, in the product page's case, with the shipped code:
 
 1. **info.xml** had a single unlocalized `<summary>` ("Manage your live roleplaying setting"), an unlocalized `<name>`/`<description>`, an `agpl` `<licence>` (the actual `LICENSE` file is EUPL-1.2), a stale `codeberg.org/Conduction/LarpingNextApp` website/bugs/repository (the real remote is `codeberg.org/Conduction/larpingapp`), and no `<dependency><app>openregister</app>` entry even though the app hard-requires OpenRegister (repair step `InitializeRegister`, `manifest.json` declares `"dependencies": ["openregister"]`, and the description text itself says "Requires OpenRegister").
 2. **manifest.json** nav/menu labels (Characters, Players, Abilities, Skills, Conditions, Effects, Items, Events, XP Awards, Settings) were already accurate against `lib/Controller/*` and `docs/FEATURES.md` — no code drift here, but the product page did not use this vocabulary.
@@ -51,7 +51,7 @@ LarpingApp's four public-facing surfaces — `appinfo/info.xml`, `src/manifest.j
 - Fixed `PairCard` copy under "Pairs well with" to drop NPC/faction language.
 - Brought the Dutch page up to structural and content parity with the English page (previously a stale, simpler template with the same fabricated Scene/Faction/Discord content and a dead `docs.conduction.nl/larpingapp` doc link).
 
-### Docs (`larpingapp/docs/`)
+### Docs (`larpinq/docs/`)
 - `docs/FEATURES.md`, `docs/features/*.md`, `docs/Schema/*.json`, `docs/README.md` were already accurate — used as the canonical source, no edits needed.
 - Replaced placeholder junk in `docs/readme.md` ("asdasdas / a / asdasd") with a real one-paragraph "About Larping" summary pointing to `features.md`.
 

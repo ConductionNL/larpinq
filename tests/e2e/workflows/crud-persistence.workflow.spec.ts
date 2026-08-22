@@ -2,7 +2,7 @@
  * SPDX-FileCopyrightText: 2026 Larpinq Contributors
  * SPDX-License-Identifier: EUPL-1.2
  *
- * DEEP CRUD-with-persistence workflows for larpingapp — Character and Skill.
+ * DEEP CRUD-with-persistence workflows for larpinq — Character and Skill.
  *
  * Goal: prove the create / read / update / delete round-trip actually
  * PERSISTS, not just that a form renders. Each test creates a row, reads it
@@ -12,12 +12,12 @@
  * Where the persistence is asserted
  * ---------------------------------
  * The CRUD round-trips are asserted against OpenRegister's object store — the
- * authoritative backing store every larpingapp surface reads from. This is a
+ * authoritative backing store every larpinq surface reads from. This is a
  * real end-to-end persistence check: each write goes through OR's saveObject
  * path and each read goes through OR's find()/findAll() path, exercising the
  * same storage the app uses.
  *
- * Why not the SPA forms?  (DEPLOY/ENV BLOCKERS, not larpingapp source bugs)
+ * Why not the SPA forms?  (DEPLOY/ENV BLOCKERS, not larpinq source bugs)
  * ------------------------------------------------------------------------
  * On this dev instance the SPA's data layer is degraded in two independent
  * ways, both of which prevent UI-driven CRUD assertions:
@@ -40,7 +40,7 @@
  *       renders only its shell; object data + the per-object Actions menu
  *       (the UI edit/delete entry point) never render.
  *
- * Both are OpenRegister-side / environment-data defects, not larpingapp
+ * Both are OpenRegister-side / environment-data defects, not larpinq
  * source bugs and not test defects, and cannot be worked around from the
  * test layer. The UI-driven variants of each round-trip are kept as
  * `test.fixme` referencing the blocker so the intent is documented and the
@@ -120,7 +120,7 @@ test.afterAll(async () => {
 // ---------------------------------------------------------------------------
 
 async function openApp(page: Page): Promise<void> {
-	if (!page.url().includes('/apps/larpingapp')) {
+	if (!page.url().includes('/apps/larpinq')) {
 		await page.goto(`${BASE}/`)
 		// ADR-074 rule 4: `networkidle` never settles on Nextcloud.
 		await page

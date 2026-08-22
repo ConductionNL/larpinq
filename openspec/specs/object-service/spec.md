@@ -8,7 +8,7 @@ status: done
 
 @e2e exclude pure-backend PHP service — mapper resolution, OpenRegister DI, and array conversion are PHPUnit concerns; no UI surface to drive via Playwright
 
-The data access layer for LarpingApp has been refactored from a single monolithic `ObjectService` to a thin, focused `RegisterObjectFetcher` (`lib/Service/RegisterObjectFetcher.php`). This service provides object retrieval from OpenRegister by resolving register and schema IDs from IAppConfig per object type. It replaces the previous generic CRUD dispatch pattern (internal mappers vs OpenRegister) with direct cross-app calls to OpenRegister's ObjectService. The `CharacterService` uses `RegisterObjectFetcher` to load entities for stat calculation, and the `CharactersController` uses it to fetch character data for PDF export.
+The data access layer for Larpinq has been refactored from a single monolithic `ObjectService` to a thin, focused `RegisterObjectFetcher` (`lib/Service/RegisterObjectFetcher.php`). This service provides object retrieval from OpenRegister by resolving register and schema IDs from IAppConfig per object type. It replaces the previous generic CRUD dispatch pattern (internal mappers vs OpenRegister) with direct cross-app calls to OpenRegister's ObjectService. The `CharacterService` uses `RegisterObjectFetcher` to load entities for stat calculation, and the `CharactersController` uses it to fetch character data for PDF export.
 
 **Key source files:**
 - `lib/Service/RegisterObjectFetcher.php` -- Main data access service
@@ -32,7 +32,7 @@ The `RegisterObjectFetcher` MUST resolve OpenRegister mappers for each object ty
 | OBJ-004 | `getMapper()` MUST obtain the mapper from OpenRegister's ObjectService via `$openRegister->getMapper($register, $schema)` | MUST | Implemented |
 | OBJ-005 | `getMapper()` MUST throw an Exception if register is not configured (empty string) | MUST | Implemented |
 | OBJ-006 | `getMapper()` MUST throw an Exception if schema is not configured (empty string) | MUST | Implemented |
-| OBJ-007 | The appName MUST be hardcoded to 'larpingapp' for IAppConfig lookups | MUST | Implemented |
+| OBJ-007 | The appName MUST be hardcoded to 'larpinq' for IAppConfig lookups | MUST | Implemented |
 
 #### Scenario: Resolve mapper for configured type
 
@@ -302,21 +302,21 @@ All API routes MUST be defined in `appinfo/routes.php` with appropriate HTTP ver
 
 #### Scenario: Route resolution for dashboard
 
-- GIVEN a GET request to `/apps/larpingapp/`
+- GIVEN a GET request to `/apps/larpinq/`
 - WHEN Nextcloud routes the request
 - THEN `DashboardController::page()` MUST handle it
 
 #### Scenario: Route resolution for PDF download
 
-- GIVEN a GET request to `/apps/larpingapp/characters/uuid-123/download/template-456`
+- GIVEN a GET request to `/apps/larpinq/characters/uuid-123/download/template-456`
 - WHEN Nextcloud routes the request
 - THEN `CharactersController::downloadPdf('uuid-123', 'template-456')` MUST handle it
 
 #### Scenario: No generic object routes
 
-- GIVEN a GET request to `/apps/larpingapp/api/objects/skill`
+- GIVEN a GET request to `/apps/larpinq/api/objects/skill`
 - WHEN Nextcloud routes the request
-- THEN no LarpingApp route MUST match
+- THEN no Larpinq route MUST match
 - AND the request MUST be handled by OpenRegister's routing (or return 404)
 
 ---

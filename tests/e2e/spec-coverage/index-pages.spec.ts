@@ -2,7 +2,7 @@
  * SPDX-FileCopyrightText: 2026 Larpinq Contributors
  * SPDX-License-Identifier: EUPL-1.2
  *
- * Spec-coverage Playwright tests — larpingapp index (list) pages, deepened.
+ * Spec-coverage Playwright tests — larpinq index (list) pages, deepened.
  *
  * spa-ui.spec.ts already asserts each index route is reachable, but because
  * it reuses a single in-session sidebar navigation it cannot distinguish the
@@ -18,7 +18,7 @@
  * Data-independent: the OR MagicMapper bare-UUID-slug bug makes the object
  * fetch 500/empty in a bare env, so we assert the page *shell* and primary
  * controls, never data rows. The data-fetch 500 is a known OR backend issue,
- * not a larpingapp UI regression, so we only fail on larpingapp *pageerrors*.
+ * not a larpinq UI regression, so we only fail on larpinq *pageerrors*.
  *
  * Authentication: globalSetup writes tests/e2e/.auth/admin.json;
  * playwright.config.ts wires storageState so each test starts logged in.
@@ -27,7 +27,7 @@
 import { test, expect, type Page } from '@playwright/test'
 import { dismissSupportDialog } from '../_nav'
 
-const BASE = '/apps/larpingapp'
+const BASE = '/apps/larpinq'
 
 /**
  * nc-vue `CnAppNav` render contract (see
@@ -65,7 +65,7 @@ const INDEX_PAGES: Array<{ slug: string; nav: string; entity: string }> = [
 /**
  * Expand every collapsed navigation group.
  *
- * larpingapp's manifest groups the sidebar into three collapsible groups
+ * larpinq's manifest groups the sidebar into three collapsible groups
  * (Characters / Mechanics / World), so entries such as "Abilities" or
  * "Items" render in the DOM but are hidden until their group header is
  * clicked — a bare link click then fails with "Received: hidden".
@@ -178,7 +178,7 @@ async function freshNav(page: Page, slug: string, navId: string): Promise<void> 
 	await expect(page.locator('.app-content')).toBeVisible({ timeout: 10_000 })
 }
 
-/** Collect larpingapp-origin fatal page errors during a test. */
+/** Collect larpinq-origin fatal page errors during a test. */
 function trackPageErrors(page: Page): string[] {
 	const errs: string[] = []
 	page.on('pageerror', (e) => errs.push(e.message))
@@ -221,7 +221,7 @@ for (const { slug, nav, entity } of INDEX_PAGES) {
 					.getByRole('link', { name: nav }),
 			).toBeVisible()
 
-			// No larpingapp-origin fatal page errors (the OR data-fetch 500 is a
+			// No larpinq-origin fatal page errors (the OR data-fetch 500 is a
 			// backend MagicMapper issue, not a UI crash, and surfaces as a console
 			// log not a pageerror — so pageerrors must be empty).
 			expect(errs).toHaveLength(0)

@@ -15,7 +15,7 @@
  * at closing a gate-19 cluster in this app wrote thirteen tests for
  * `skill-requirement-enforcement`, of which the three that passed asserted only
  * that a write returned 2xx — and would have kept passing with the enforcement
- * layer entirely absent (they did: it WAS absent, see larpingapp#308). An
+ * layer entirely absent (they did: it WAS absent, see larpinq#308). An
  * acceptance-shaped assertion cannot detect a missing layer.
  *
  * The derivation scenarios have no such failure mode: base 20 with +5, +3, -2

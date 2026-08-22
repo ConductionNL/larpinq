@@ -2,7 +2,7 @@
  * SPDX-FileCopyrightText: 2026 Conduction B.V.
  * SPDX-License-Identifier: EUPL-1.2
  *
- * Visual-regression baselines for LarpingApp's key surfaces (GAP-5).
+ * Visual-regression baselines for Larpinq's key surfaces (GAP-5).
  *
  * Run:    npx playwright test --project visual
  * Update: npx playwright test --project visual --update-snapshots
@@ -13,9 +13,9 @@
 import { test } from '@playwright/test'
 import { shootSurface, shootByNav } from './_visual-helpers'
 
-const APP = '/index.php/apps/larpingapp'
+const APP = '/index.php/apps/larpinq'
 
-test.describe('LarpingApp — visual baselines', () => {
+test.describe('Larpinq — visual baselines', () => {
 	test('dashboard', async ({ page }) => {
 		await shootSurface(page, `${APP}/#/`, 'dashboard.png')
 	})

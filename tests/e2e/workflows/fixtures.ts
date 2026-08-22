@@ -2,7 +2,7 @@
  * SPDX-FileCopyrightText: 2026 Larpinq Contributors
  * SPDX-License-Identifier: EUPL-1.2
  *
- * Seeded-fixture helper for the DEEP, data-dependent larpingapp e2e
+ * Seeded-fixture helper for the DEEP, data-dependent larpinq e2e
  * workflow layer (tests/e2e/workflows/).
  *
  * Why this exists
@@ -21,7 +21,7 @@
  *
  * Register / schema resolution
  * ----------------------------
- * larpingapp stores every entity type in OpenRegister register 8 on the
+ * larpinq stores every entity type in OpenRegister register 8 on the
  * dev instance (the per-type `<type>_register` config keys all resolve to
  * 8; the PHP `RegisterObjectFetcher` reads from there, and the numeric
  * `/api/objects/8/<schema>` REST route returns the rows). The legacy
@@ -49,9 +49,9 @@
  */
 
 import { request, type APIRequestContext } from '@playwright/test'
-import { OR_OBJECTS_API, LARPINGAPP_SETTINGS_API } from '../_base-url'
+import { OR_OBJECTS_API, LARPINQ_SETTINGS_API } from '../_base-url'
 
-export const BASE = '/apps/larpingapp'
+export const BASE = '/apps/larpinq'
 
 // Resolved centrally in `tests/e2e/_base-url.ts`. These were hardcoded to
 // `http://localhost:8080` — the SHARED dev container — so every fixture this
@@ -59,10 +59,10 @@ export const BASE = '/apps/larpingapp'
 // of which instance the specs were navigating.
 export const OR_BASE = OR_OBJECTS_API
 
-export const SETTINGS_API = LARPINGAPP_SETTINGS_API
+export const SETTINGS_API = LARPINQ_SETTINGS_API
 
 /**
- * Register the app's data actually lives in. Resolved from LarpingApp's own
+ * Register the app's data actually lives in. Resolved from Larpinq's own
  * settings API at runtime (resolveSchemaIds), never hardcoded — numeric
  * register/schema IDs are assigned by OpenRegister per instance and DRIFT on a
  * shared instance with many registers. The literal here is only a last-resort
@@ -71,14 +71,14 @@ export const SETTINGS_API = LARPINGAPP_SETTINGS_API
 export let REGISTER_ID = process.env.LARP_REGISTER_ID || '8'
 
 /**
- * Numeric OpenRegister schema ids per LarpingApp object type.
+ * Numeric OpenRegister schema ids per Larpinq object type.
  *
  * MUST NOT be trusted as static: a previous bug bound `item` to a foreign
  * app's QTI "Item" schema (id 22) because the bare `item` slug collided
  * globally, so item creation 400'd. The fix namespaced the slug to
  * `larping_item` / `larping_event`, which changes the numeric id. To stay
  * correct on ANY instance, resolveSchemaIds() overwrites this map from the
- * live `{type}_schema` config returned by the LarpingApp settings API before
+ * live `{type}_schema` config returned by the Larpinq settings API before
  * the workflow runs. These literals are only a bootstrap fallback.
  */
 export const SCHEMA_IDS: Record<string, string> = {
@@ -93,7 +93,7 @@ export const SCHEMA_IDS: Record<string, string> = {
 }
 
 /**
- * Resolve register + schema ids from LarpingApp's own settings API — the
+ * Resolve register + schema ids from Larpinq's own settings API — the
  * single source of truth the app itself reads at runtime — and mutate
  * REGISTER_ID / SCHEMA_IDS in place. Keeps the e2e workflow correct after a
  * schema rename or any instance-specific id reassignment instead of failing on
@@ -171,14 +171,14 @@ export async function createObject(
 	// schema whichever of the two it marks required.
 	//
 	// This is not cosmetic: schema slugs COLLIDE across the fleet. The `skill`
-	// schema larpingapp is configured against (id 21) is shared by 12
+	// schema larpinq is configured against (id 21) is shared by 12
 	// registers (pipelinq, procest, shillinq, openconnector, …) and currently
-	// declares `required: ["title"]`, while larpingapp's own
-	// `lib/Settings/larpingapp_register.json` declares `name`. Whichever app
+	// declares `required: ["title"]`, while larpinq's own
+	// `lib/Settings/larpinq_register.json` declares `name`. Whichever app
 	// imported last wins, so a payload keyed only on `name` fails with
 	// HTTP 400 "The required property (title) is missing".
 	// See also: the hardcoded `item` id bound to scholiq's QTI schema until
-	// `resolveSchemaIds()` was wired in (larpingapp's real one is
+	// `resolveSchemaIds()` was wired in (larpinq's real one is
 	// `larping_item`). Cross-app slug collision — OR #2150 class.
 	const payload: Record<string, unknown> = { ...body }
 	if (payload.name != null && payload.title == null) {
@@ -415,8 +415,8 @@ export async function computeCharacterStat(
 			'<?php',
 			`require_once '${bootstrap}';`,
 			'$server = \\OC::$server;',
-			'$fetcher = $server->get(\\OCA\\LarpingApp\\Service\\RegisterObjectFetcher::class);',
-			'$svc = $server->get(\\OCA\\LarpingApp\\Service\\CharacterService::class);',
+			'$fetcher = $server->get(\\OCA\\Larpinq\\Service\\RegisterObjectFetcher::class);',
+			'$svc = $server->get(\\OCA\\Larpinq\\Service\\CharacterService::class);',
 			'$charId=$argv[1]; $abId=$argv[2]; $efId=$argv[3];',
 			'$skId=$argv[4]??""; $itId=$argv[5]??""; $cdId=$argv[6]??"";',
 			'$g=function($t,$id) use($fetcher){ return $id!=="" ? $fetcher->getObject($t,$id) : null; };',
@@ -473,8 +473,8 @@ export async function computeCharacterStatLive(
 			'<?php',
 			`require_once '${bootstrap}';`,
 			'$server = \\OC::$server;',
-			'$fetcher = $server->get(\\OCA\\LarpingApp\\Service\\RegisterObjectFetcher::class);',
-			'$svc = $server->get(\\OCA\\LarpingApp\\Service\\CharacterService::class);',
+			'$fetcher = $server->get(\\OCA\\Larpinq\\Service\\RegisterObjectFetcher::class);',
+			'$svc = $server->get(\\OCA\\Larpinq\\Service\\CharacterService::class);',
 			'$character=$fetcher->getObject("character",$argv[1]);',
 			'$result=$svc->calculateCharacter($character);',
 			'$ab=($result["stats"] ?? [])[$argv[2]] ?? null;',
@@ -523,8 +523,8 @@ export async function computeStatsLive(
 			'<?php',
 			`require_once '${bootstrap}';`,
 			'$server = \\OC::$server;',
-			'$fetcher = $server->get(\\OCA\\LarpingApp\\Service\\RegisterObjectFetcher::class);',
-			'$svc = $server->get(\\OCA\\LarpingApp\\Service\\CharacterService::class);',
+			'$fetcher = $server->get(\\OCA\\Larpinq\\Service\\RegisterObjectFetcher::class);',
+			'$svc = $server->get(\\OCA\\Larpinq\\Service\\CharacterService::class);',
 			'$character = $fetcher->getObject("character", $argv[1]);',
 			'$result = $svc->calculateCharacter($character);',
 			'echo json_encode($result["stats"] ?? []);',
@@ -564,7 +564,7 @@ export async function computeRosterLive(
 			'<?php',
 			`require_once '${bootstrap}';`,
 			'$server = \\OC::$server;',
-			'$svc = $server->get(\\OCA\\LarpingApp\\Service\\CharacterService::class);',
+			'$svc = $server->get(\\OCA\\Larpinq\\Service\\CharacterService::class);',
 			'$wanted = array_slice($argv, 1);',
 			'$out = [];',
 			'foreach ($svc->calculateAllCharacters() as $c) {',
@@ -595,7 +595,7 @@ export async function computeRosterLive(
  * on a developer box and WRONG everywhere else — most importantly on the shared
  * `E2E Tests (Playwright)` CI job, which has no docker daemon and no container
  * called `nextcloud`. It checks the server out to `$GITHUB_WORKSPACE/server`,
- * the app to `server/apps/larpingapp`, and serves it with `php -S`.
+ * the app to `server/apps/larpinq`, and serves it with `php -S`.
  *
  * The failure that produces is worth naming, because it is not loud: `execSync`
  * throws, the catch returns `null`, and two of the three computation tests are

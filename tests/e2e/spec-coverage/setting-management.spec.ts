@@ -18,7 +18,7 @@
 
 import { test, expect } from '@playwright/test'
 
-const BASE = '/apps/larpingapp'
+const BASE = '/apps/larpinq'
 
 test.describe('setting-management', () => {
 	test('Settings (worlds) index page renders its own surface', async ({

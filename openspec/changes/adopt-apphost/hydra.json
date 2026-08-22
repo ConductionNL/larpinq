@@ -1,7 +1,7 @@
 {
   "spec_slug": "adopt-apphost",
   "title": "Adopt OpenRegister AppHost (observability + boilerplate)",
-  "app": "larpingapp",
+  "app": "larpinq",
   "repo": "https://codeberg.org/Conduction/larpingapp",
   "depends_on": [
     "apphost-observability-engine",

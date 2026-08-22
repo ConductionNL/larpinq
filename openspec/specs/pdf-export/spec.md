@@ -6,9 +6,9 @@ status: implemented
 
 ## Purpose
 
-@e2e exclude larpingapp Vue SPA fails to mount at localhost:8080; RenderPdfFromCharacter.vue modal and "Als pdf downloaden" action are inaccessible; CharactersController.downloadPdf backend and DocuDesk integration scenarios are PHPUnit/integration-test scope
+@e2e exclude larpinq Vue SPA fails to mount at localhost:8080; RenderPdfFromCharacter.vue modal and "Als pdf downloaden" action are inaccessible; CharactersController.downloadPdf backend and DocuDesk integration scenarios are PHPUnit/integration-test scope
 
-Enables game masters and players to export character data as downloadable PDF files. PDF rendering and template management are delegated to the DocuDesk app -- LarpingApp's `CharactersController` resolves DocuDesk's `PdfService` and `TemplateService` via Nextcloud's DI container. Templates are managed in DocuDesk, scoped to LarpingApp via the `namespace=larpingapp` filter. The PDF download flow gracefully degrades when DocuDesk is not installed, hiding the download button and returning a 424 error if accessed directly.
+Enables game masters and players to export character data as downloadable PDF files. PDF rendering and template management are delegated to the DocuDesk app -- Larpinq's `CharactersController` resolves DocuDesk's `PdfService` and `TemplateService` via Nextcloud's DI container. Templates are managed in DocuDesk, scoped to Larpinq via the `namespace=larpingapp` filter. The PDF download flow gracefully degrades when DocuDesk is not installed, hiding the download button and returning a 424 error if accessed directly.
 
 **Key source files:**
 - `lib/Controller/CharactersController.php` -- `downloadPdf()` method
@@ -262,7 +262,7 @@ The PDF download route MUST be properly configured with appropriate access contr
 
 #### Scenario: Non-admin user downloads PDF
 
-- GIVEN a regular user has access to LarpingApp
+- GIVEN a regular user has access to Larpinq
 - AND DocuDesk is installed
 - WHEN the user navigates to a character PDF download URL
 - THEN the PDF MUST be generated and returned
@@ -406,7 +406,7 @@ modal pattern and graceful degradation as the character sheet.
 - Template selector (`NcSelect`) populated from DocuDesk's template API (filtered by `namespace=larpingapp`)
 - Cancel, Help, and Download PDF action buttons
 - Download button disabled until a template is selected and template list is loaded
-- On download: opens `/index.php/apps/larpingapp/characters/{id}/download/{templateId}` in a new tab
+- On download: opens `/index.php/apps/larpinq/characters/{id}/download/{templateId}` in a new tab
 
 ## API Endpoints
 
@@ -414,7 +414,7 @@ modal pattern and graceful degradation as the character sheet.
 |--------|----------|-------------|
 | GET | `/characters/{id}/download/{template}` | Generate and stream character PDF via DocuDesk |
 
-Template CRUD is no longer in LarpingApp -- templates are managed via DocuDesk's API (`/apps/docudesk/api/templates`).
+Template CRUD is no longer in Larpinq -- templates are managed via DocuDesk's API (`/apps/docudesk/api/templates`).
 
 ## Dependencies
 
@@ -426,7 +426,7 @@ Template CRUD is no longer in LarpingApp -- templates are managed via DocuDesk's
 
 ## Removed (migrated to DocuDesk)
 
-The following were previously part of LarpingApp and have been migrated to DocuDesk:
+The following were previously part of Larpinq and have been migrated to DocuDesk:
 
 - `CharacterService.createCharacterPdf()` -- replaced by DocuDesk's `PdfService::renderPdf()`
 - `mpdf/mpdf` and `twig/twig` composer dependencies -- now in DocuDesk

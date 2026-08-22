@@ -1,5 +1,5 @@
 /**
- * Shared larpingapp sidebar-navigation helper.
+ * Shared larpinq sidebar-navigation helper.
  *
  * SPDX-License-Identifier: EUPL-1.2
  *
@@ -32,7 +32,7 @@
  */
 import { expect, type Page } from '@playwright/test'
 
-export const APP_BASE = '/apps/larpingapp'
+export const APP_BASE = '/apps/larpinq'
 export const NAV = '[data-testid="cn-nav"]'
 const NAV_ENTRY_ANY = '[data-testid^="cn-nav-entry-"]'
 
