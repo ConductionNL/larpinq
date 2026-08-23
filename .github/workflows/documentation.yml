@@ -36,4 +36,6 @@ jobs:
       # site behind a CNAME nothing points at and 404s the documentation.
       # Move this only together with docs/static/CNAME and the `url:` in
       # docs/docusaurus.config.js, and only after DNS answers.
-      cname: larpingapp.conduction.nl
+      cname: larpinq.conduction.nl
+
+      docs-hosts: larpingapp.conduction.nl,larpinq.conduction.nl

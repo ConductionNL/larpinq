@@ -74,7 +74,7 @@
 		},
 		{ "id": "Settings",          "label": "Worlds",          "icon": "Earth",            "route": "Settings",     "order": 25 },
 		{ "id": "GameSettings",      "label": "Game Settings",    "icon": "CogOutline",         "route": "GameSettings", "order": 100, "section": "settings" },
-		{ "id": "Documentation",     "label": "Documentation",    "icon": "BookOpenVariantOutline",   "href": "https://larpingapp.conduction.nl", "section": "footer", "order": 90 },
+		{ "id": "Documentation",     "label": "Documentation",    "icon": "BookOpenVariantOutline",   "href": "https://larpinq.conduction.nl", "section": "footer", "order": 90 },
 		{ "id": "FeaturesRoadmapMenu","label": "Features & roadmap","icon": "MapMarkerPath","route": "FeaturesRoadmap", "section": "footer", "order": 91 }
 	],
 	"pages": [
@@ -102,7 +102,7 @@
 					{ "id": 6, "widgetId": "recent-events",     "gridX": 6, "gridY": 2, "gridWidth": 6, "gridHeight": 4 },
 					{ "id": 7, "widgetId": "skill-usage",    "gridX": 0, "gridY": 6, "gridWidth": 12, "gridHeight": 5 }
 				],
-				"documentationUrl": "https://larpingapp.conduction.nl",
+				"documentationUrl": "https://larpinq.conduction.nl",
 				"headerActions": [
 					{ "id": "new-character", "label": "New character", "type": "open-form", "icon": "Plus", "variant": "primary", "register": "larpinq", "schema": "character", "onSuccessRoute": "Characters" },
 					{ "id": "new-item", "label": "New item", "type": "open-form", "icon": "Plus", "register": "larpinq", "schema": "larping_item", "onSuccessRoute": "Items" },
@@ -116,7 +116,7 @@
 			"route": "/characters",
 			"type": "index",
 			"title": "Characters",
-			"config": { "register": "larpinq", "schema": "character", "documentationUrl": "https://larpingapp.conduction.nl" }
+			"config": { "register": "larpinq", "schema": "character", "documentationUrl": "https://larpinq.conduction.nl" }
 		},
 		{
 			"id": "CharacterDetail",
@@ -126,7 +126,7 @@
 			"config": {
 				"register": "larpinq",
 				"schema": "character",
-				"documentationUrl": "https://larpingapp.conduction.nl",
+				"documentationUrl": "https://larpinq.conduction.nl",
 				"_note": "ADR-062 rollout: split the sheet into identity (name/player/setting/description/background/faith, 6 fields) vs game state & notes (type/approved/gold/silver/copper/itemsAndMoney/card/notice/GM notes, 10 fields) per rule 3. The loose XP + Gold stat cards fold into one stats-block (rule 2, same-flavor simple KPIs) top-right, aligned with the identity row. The right rail lists the linked mechanics (skills/items/conditions) and event participation as related groups so a GM can see the whole build at a glance. The character portrait/sheet lives in the photos leaf (schema declares linkedType 'photos') as a body integration widget. XP awards granted to this character are shown as an object-list (xpAward.character FK = @objectId) — GM hand-awarded per xpAward's schema description, so allowCreate stays on (default). No email/calendar on the body: the character schema declares only 'photos'. Sidebar is audit-history only — the photos leaf already lives in the body, so it is not duplicated as a sidebar tab.",
 				"widgets": [
 					{ "id": "char-identity", "type": "data", "title": "Identity", "icon": "Account", "content": { "columns": 2, "include": [ "name", "ocName", "setting", "description", "background", "faith" ] } },
@@ -160,7 +160,7 @@
 			"route": "/players",
 			"type": "index",
 			"title": "Players",
-			"config": { "register": "larpinq", "schema": "player", "documentationUrl": "https://larpingapp.conduction.nl" }
+			"config": { "register": "larpinq", "schema": "player", "documentationUrl": "https://larpinq.conduction.nl" }
 		},
 		{
 			"id": "PlayerDetail",
@@ -170,7 +170,7 @@
 			"config": {
 				"register": "larpinq",
 				"schema": "player",
-				"documentationUrl": "https://larpingapp.conduction.nl",
+				"documentationUrl": "https://larpinq.conduction.nl",
 				"_note": "Player = the real-world person behind the characters (person archetype). The player schema is deliberately thin (name + notes) and its only declared linkedType is 'contacts', so the body is person-first: identity/notes (data, 7-wide) beside the linked Nextcloud contact card (contacts integration, 5-wide) for phone/email/address. ADR-062 correction: round 1 claimed characters attach by OC name string with no reliable FK — that was stale; character.ocName carries a canonical $ref to player, so a 'characters played' object-list (character.ocName = @objectId) is now added beside Related. No email/calendar/talk widgets on the body — the schema declares only 'contacts'. Sidebar is audit-history only — the contact card already lives in the body, so it is not duplicated as a sidebar tab.",
 				"widgets": [
 					{ "id": "player-data", "type": "data", "title": "Player", "icon": "Account", "content": { "columns": 1 } },
@@ -198,7 +198,7 @@
 			"route": "/abilities",
 			"type": "index",
 			"title": "Abilities",
-			"config": { "register": "larpinq", "schema": "ability", "documentationUrl": "https://larpingapp.conduction.nl" }
+			"config": { "register": "larpinq", "schema": "ability", "documentationUrl": "https://larpinq.conduction.nl" }
 		},
 		{
 			"id": "AbilityDetail",
@@ -208,7 +208,7 @@
 			"config": {
 				"register": "larpinq",
 				"schema": "ability",
-				"documentationUrl": "https://larpingapp.conduction.nl",
+				"documentationUrl": "https://larpinq.conduction.nl",
 				"_note": "Ability = a numeric stat (XP, Mana, Health, Armor) that characters track (rules-object archetype). The body is definition-first: the stat's name/description/base value (data, 8-wide) plus a large base-value stat card (single distinct KPI — kept loose, not folded into a stats-block), then the reverse index of what touches this stat — the effects that modify it (effect.abilities FK = @objectId) and the skills that gate on it (skill.requiredStats contains @objectId). This is a pure rules object: no comms, no files, no attachments — a GM reads it to understand how a stat is wired into the ruleset.",
 				"widgets": [
 					{ "id": "ability-data", "type": "data", "title": "Ability", "icon": "Gauge", "content": { "columns": 2 } },
@@ -238,7 +238,7 @@
 			"route": "/skills",
 			"type": "index",
 			"title": "Skills",
-			"config": { "register": "larpinq", "schema": "skill", "documentationUrl": "https://larpingapp.conduction.nl" }
+			"config": { "register": "larpinq", "schema": "skill", "documentationUrl": "https://larpinq.conduction.nl" }
 		},
 		{
 			"id": "SkillTree",
@@ -247,7 +247,7 @@
 			"title": "Skill tree",
 			"component": "SkillTree",
 			"_note": "No standard page type renders a directed prerequisite graph. The skill tree is not a list, table, kanban or detail view of `skill` objects — it is the graph induced by their `requiredSkills` edges, with per-node owned/available/locked colouring taken from CharactersController::requirementReport so the tree can never disagree with the server-side write veto (ADR-022). The 'index' type would flatten the edges away and no declarative type can express node colouring driven by a second, character-scoped API call. Built from nc-vue primitives + NcSelect rather than a graph library, per the shared-deps rule.",
-			"config": { "documentationUrl": "https://larpingapp.conduction.nl" }
+			"config": { "documentationUrl": "https://larpinq.conduction.nl" }
 		},
 		{
 			"id": "SkillDetail",
@@ -257,7 +257,7 @@
 			"config": {
 				"register": "larpinq",
 				"schema": "skill",
-				"documentationUrl": "https://larpingapp.conduction.nl",
+				"documentationUrl": "https://larpinq.conduction.nl",
 				"_note": "Skill = a learnable, XP-purchased ability with prerequisites (rules-object archetype, prerequisite-heavy). The body leads with the skill's flavour + mechanical effect (data, 8-wide) beside a related rail that surfaces the four prerequisite groups the schema carries (required skills, required stats, required conditions, required effects) plus the effects it grants — the whole dependency tree in one place. Below, an object-list of characters who have learned this skill (character.skills contains @objectId) lets a GM see adoption. Pure rules object: no comms, no files.",
 				"widgets": [
 					{ "id": "skill-data", "type": "data", "title": "Skill", "icon": "School", "content": { "columns": 2 } },
@@ -283,7 +283,7 @@
 			"route": "/items",
 			"type": "index",
 			"title": "Items",
-			"config": { "register": "larpinq", "schema": "larping_item", "documentationUrl": "https://larpingapp.conduction.nl" }
+			"config": { "register": "larpinq", "schema": "larping_item", "documentationUrl": "https://larpinq.conduction.nl" }
 		},
 		{
 			"id": "ItemDetail",
@@ -293,7 +293,7 @@
 			"config": {
 				"register": "larpinq",
 				"schema": "larping_item",
-				"documentationUrl": "https://larpingapp.conduction.nl",
+				"documentationUrl": "https://larpinq.conduction.nl",
 				"_note": "Item = a magical/special object that grants effects to its holder (rules-object archetype, ownership-tracked). The body leads with the item's player-visible story description + GM mechanical effect (data, 8-wide) beside the effects it confers (related), then an object-list of the characters currently holding it (item.characters contains @objectId / character.items) — critical for unique artifacts where only one holder may exist. Files are on the body because props and physrep photos/handouts are commonly attached to items. No email/calendar: the item schema declares no comms linkedTypes.",
 				"widgets": [
 					{ "id": "item-data", "type": "data", "title": "Item", "icon": "Package", "content": { "columns": 2 } },
@@ -321,7 +321,7 @@
 			"route": "/conditions",
 			"type": "index",
 			"title": "Conditions",
-			"config": { "register": "larpinq", "schema": "condition", "documentationUrl": "https://larpingapp.conduction.nl" }
+			"config": { "register": "larpinq", "schema": "condition", "documentationUrl": "https://larpinq.conduction.nl" }
 		},
 		{
 			"id": "ConditionDetail",
@@ -331,7 +331,7 @@
 			"config": {
 				"register": "larpinq",
 				"schema": "condition",
-				"documentationUrl": "https://larpingapp.conduction.nl",
+				"documentationUrl": "https://larpinq.conduction.nl",
 				"_note": "Condition = a positive/negative status earned through gameplay (not purchased) that applies automated effects (rules-object archetype). The body leads with the flavour + mechanical description (data, 8-wide) beside the automated effects it applies (related), then an object-list of the characters currently affected (condition.characters contains @objectId / character.conditions) — the live 'who is currently poisoned/blessed' roster a GM needs during play. Pure rules object: no comms, no files.",
 				"widgets": [
 					{ "id": "condition-data", "type": "data", "title": "Condition", "icon": "AlertCircleOutline", "content": { "columns": 2 } },
@@ -357,7 +357,7 @@
 			"route": "/effects",
 			"type": "index",
 			"title": "Effects",
-			"config": { "register": "larpinq", "schema": "effect", "documentationUrl": "https://larpingapp.conduction.nl" }
+			"config": { "register": "larpinq", "schema": "effect", "documentationUrl": "https://larpinq.conduction.nl" }
 		},
 		{
 			"id": "EffectDetail",
@@ -367,7 +367,7 @@
 			"config": {
 				"register": "larpinq",
 				"schema": "effect",
-				"documentationUrl": "https://larpingapp.conduction.nl",
+				"documentationUrl": "https://larpinq.conduction.nl",
 				"_note": "Effect = the atomic stat modifier (+N / -N to an ability, cumulative or not) that the stat engine applies (rules-object archetype, leaf of the mechanics graph). The body leads with the definition (data, 8-wide) and a bold signed-modifier stat card so the magnitude reads instantly, plus the abilities it modifies (related). Below, three object-lists give the full reverse index of what carries this effect — skills, items and conditions (each schema's effects[] contains @objectId) — so a designer can trace every source before rebalancing. Pure rules object: no comms, no files.",
 				"widgets": [
 					{ "id": "effect-data", "type": "data", "title": "Effect", "icon": "Lightbulb", "content": { "columns": 2 } },
@@ -399,7 +399,7 @@
 			"route": "/events",
 			"type": "index",
 			"title": "Events",
-			"config": { "register": "larpinq", "schema": "larping_event", "documentationUrl": "https://larpingapp.conduction.nl" }
+			"config": { "register": "larpinq", "schema": "larping_event", "documentationUrl": "https://larpinq.conduction.nl" }
 		},
 		{
 			"id": "EventDetail",
@@ -409,7 +409,7 @@
 			"config": {
 				"register": "larpinq",
 				"schema": "larping_event",
-				"documentationUrl": "https://larpingapp.conduction.nl",
+				"documentationUrl": "https://larpinq.conduction.nl",
 				"_note": "Event = a LARP gathering where players bring their characters (session/meeting archetype). This is the one entity that communicates: the schema declares calendar, maps and forms linkedTypes (merged from the event-calendar-leaf / event-location-to-maps-leaf / event-signup-to-forms-leaf register fragments), so the body earns a calendar widget (scheduling the session from startDate/endDate), a location map, and the sign-up form, plus the participating characters (character.events contains @objectId) as the primary roster. The loose Attendees + XP-granted stat cards fold into one stats-block (rule 2, same-flavor simple KPIs) top-right. Post-event effects applied to attendees are shown via related. After the event, the XP awarding ritual produces one xpAward per grant (xpAward.event FK = @objectId), shown as an object-list — GM hand-awarded per xpAward's schema description, so allowCreate stays on. Files carries the event pack/handouts. All three declared leaves (calendar, maps, forms) are now body widgets — none are held back to sidebar tabs. The sidebar carries the Check-in tab (the event check-in roster, an app-registry section — see the sidebar _note) plus audit history. No email/talk: the schema declares calendar/maps/forms only.",
 				"widgets": [
 					{ "id": "event-data", "type": "data", "title": "Event", "icon": "Calendar", "content": { "columns": 2 } },
@@ -452,7 +452,7 @@
 			"type": "index",
 			"_note": "The page id and route stay `Settings` / `/settings`: they are deep-link surface and the persisted OpenRegister property is still `setting`. Only the user-visible TITLE is renamed to `Worlds` — see the SettingDetail _note below for why.",
 			"title": "Worlds",
-			"config": { "register": "larpinq", "schema": "setting", "documentationUrl": "https://larpingapp.conduction.nl" }
+			"config": { "register": "larpinq", "schema": "setting", "documentationUrl": "https://larpinq.conduction.nl" }
 		},
 		{
 			"id": "SettingDetail",
@@ -462,7 +462,7 @@
 			"config": {
 				"register": "larpinq",
 				"schema": "setting",
-				"documentationUrl": "https://larpingapp.conduction.nl",
+				"documentationUrl": "https://larpinq.conduction.nl",
 				"_note": "NAMING: the user-visible term for this entity is WORLD, never \"setting\". In LARP a setting is the game world; in a Nextcloud UI \"Setting\" means a preference, and every one of the 35 non-Dutch locales took the UI reading and translated it as Einstellung / Paramètre / Configuración. That is unfixable by retranslating, because one English source string cannot carry both meanings — so the ENGLISH WORD changed instead. The persisted OpenRegister property is still `setting` and the page id / route are still Settings / /settings; only labels moved. The schema's own summary already said \"A LARP world / campaign\" and its icon was already Earth. WHAT THIS PAGE IS: a world/campaign that scopes the roster and rules (config/container archetype). Most game entities carry an optional 'setting' UUID that points here, so this page is a scoping dashboard: the definition + active/archived status (data) sits beside a stats-block (characters + events counts, folded from two loose KPIs per rule 2), then object-lists roll up everything scoped to this campaign — characters and events (each filtered where setting = @objectId). Related surfaces any other scoped mechanics. A pure configuration container: no comms, no files.",
 				"widgets": [
 					{ "id": "setting-data", "type": "data", "title": "World", "icon": "Earth", "content": { "columns": 1 } },
@@ -494,7 +494,7 @@
 			"route": "/xp-awards",
 			"type": "index",
 			"title": "XP Awards",
-			"config": { "register": "larpinq", "schema": "xpAward", "documentationUrl": "https://larpingapp.conduction.nl" }
+			"config": { "register": "larpinq", "schema": "xpAward", "documentationUrl": "https://larpinq.conduction.nl" }
 		},
 		{
 			"id": "XpAwardDetail",
@@ -504,7 +504,7 @@
 			"config": {
 				"register": "larpinq",
 				"schema": "xpAward",
-				"documentationUrl": "https://larpingapp.conduction.nl",
+				"documentationUrl": "https://larpinq.conduction.nl",
 				"_note": "XP Award = a single audited grant of experience to one character for one event (log/ledger-record archetype). GM-write-only, effectively append-only, so the page is read-oriented: the full grant record (amount, reason, awardedBy, awardedAt — data, single column for readability) beside a bold amount stat card, with a related rail linking straight to the two FK parents (the event it was earned at and the character who received it) so a reviewer can jump up the chain. No object-lists, no comms, no files — a ledger line has no children and nothing to communicate.",
 				"widgets": [
 					{ "id": "xpaward-data", "type": "data", "title": "Award record", "icon": "ClipboardList", "content": { "columns": 1 } },
@@ -541,7 +541,7 @@
 			"route": "/features-roadmap",
 			"type": "roadmap",
 			"title": "Features & roadmap",
-			"config": { "documentationUrl": "https://larpingapp.conduction.nl" }
+			"config": { "documentationUrl": "https://larpinq.conduction.nl" }
 		}
 	]
 }

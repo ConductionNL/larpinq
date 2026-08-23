@@ -33,7 +33,7 @@ const config = createConfig({
      Docusaurus emits (canonical, sitemap, og:url) point at a host that 404s.
      Move it together with docs/static/CNAME and the `cname:` input in
      .github/workflows/documentation.yml, and only after DNS answers. */
-  url: 'https://larpingapp.conduction.nl',
+  url: 'https://larpinq.conduction.nl',
   baseUrl: '/',
 
   organizationName: 'ConductionNL',

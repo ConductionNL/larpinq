@@ -6,7 +6,7 @@ status: proposed
 
 ## Purpose
 
-Larpinq's code metadata (`appinfo/info.xml`), code features (`src/manifest.json`), product page (`conduction.nl/apps/larpingapp`), and docs (`larpingapp.conduction.nl`) SHALL describe the same, real, shipped feature set using one shared vocabulary, so a prospective user reading any of the four surfaces forms an accurate expectation of the app before installing it.
+Larpinq's code metadata (`appinfo/info.xml`), code features (`src/manifest.json`), product page (`conduction.nl/apps/larpingapp`), and docs (`larpinq.conduction.nl`) SHALL describe the same, real, shipped feature set using one shared vocabulary, so a prospective user reading any of the four surfaces forms an accurate expectation of the app before installing it.
 
 ## Requirements
 
