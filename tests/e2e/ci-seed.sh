@@ -152,7 +152,7 @@ or_import() {
 			-H 'OCS-APIRequest: true' \
 			-F "file=@${file}" \
 			-F 'force=true' \
-			-F 'appId=larpingapp' \
+			-F 'appId=larpinq' \
 			"${BASE}/index.php/apps/openregister/api/configurations/import" || echo 000
 	)"
 	echo "[ci-seed] configurations/import $(basename "$file") -> HTTP ${code}"
@@ -201,7 +201,7 @@ verify() {
 import json, sys
 path, kind, code = sys.argv[1], sys.argv[2], sys.argv[3]
 required = {
-    'registers': ['larpingapp'],
+    'registers': ['larpinq'],
     'schemas': [
         'character', 'player', 'ability', 'skill', 'larping_item',
         'condition', 'effect', 'larping_event', 'setting', 'xpAward',
@@ -254,7 +254,7 @@ OBJ_CODE="$(curl -sS -o /dev/null -w '%{http_code}' \
 	"${BASE}/index.php/apps/openregister/api/objects/larpinq/character?_limit=1" || echo 000)"
 echo "[ci-seed] objects/larpinq/character probe -> ${OBJ_CODE}"
 if [ "$OBJ_CODE" -ge 400 ] 2>/dev/null; then
-	echo "::error::The larpingapp character collection is not readable (HTTP ${OBJ_CODE})."
+	echo "::error::The larpinq character collection is not readable (HTTP ${OBJ_CODE})."
 	echo "::error::Every workflow fixture create/read would fail with a message accusing the fixtures."
 	exit 1
 fi
