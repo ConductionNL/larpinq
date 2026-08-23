@@ -1,5 +1,6 @@
-{
-    "translations": {
+OC.L10N.register(
+    "larpinq",
+    {
         "Larpinq": "Larpinq",
         "Dashboard": "Dashboard",
         "Characters": "Characters",
@@ -150,6 +151,5 @@
         "Prerequisites": "Prerequisites",
         "None — this is a root skill.": "None — this is a root skill."
     },
-    "plurals": {},
-    "pluralForm": "nplurals=2; plural=(n != 1);"
-}
+    "nplurals=2; plural=(n != 1);"
+)
