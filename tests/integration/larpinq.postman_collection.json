@@ -9,7 +9,7 @@
 		{ "key": "noAuthBase", "value": "http://127.0.0.1:8080" },
 		{ "key": "adminUser", "value": "admin" },
 		{ "key": "adminPass", "value": "admin" },
-		{ "key": "register", "value": "larpingapp" },
+		{ "key": "register", "value": "larpinq" },
 		{ "key": "charSchema", "value": "character" },
 		{ "key": "itemSchema", "value": "larping_item" },
 		{ "key": "skillSchema", "value": "skill" },
