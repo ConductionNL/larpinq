@@ -152,7 +152,7 @@ final class PortalContributionProviderTest extends TestCase {
 
 		// Owner-scoped characters: scoped EXCLUSIVELY by ownerRef, never ownerUid.
 		$characters = $collections['myCharacters'];
-		$this->assertSame('larpingapp', $characters['register']);
+		$this->assertSame('larpinq', $characters['register']);
 		$this->assertSame('character', $characters['schema']);
 		$this->assertSame('ownerRef', $characters['scopeField'], 'A4 rule: scope by the uuid domain ref, not ownerUid');
 		$this->assertSame('ownerRef', $characters['scopeClaim']);

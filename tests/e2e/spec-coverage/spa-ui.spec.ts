@@ -237,7 +237,7 @@ test.describe('dashboard', () => {
 		// read the truth from OpenRegister and assert the widgets against it —
 		// which also covers the empty case on a genuinely fresh instance.
 		const res = await page.request.get(
-			'/index.php/apps/openregister/api/objects/larpingapp/character?_limit=1',
+			'/index.php/apps/openregister/api/objects/larpinq/character?_limit=1',
 			{ headers: { 'OCS-APIRequest': 'true' } },
 		)
 		// Assert the STATUS, not just the payload: a 403 or a 500 body parses to

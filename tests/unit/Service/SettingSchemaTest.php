@@ -83,7 +83,7 @@ class SettingSchemaTest extends TestCase {
 	}
 
 	public function testSettingRegisteredInSchemaList(): void {
-		$schemas = $this->register['components']['registers']['larpingapp']['schemas'];
+		$schemas = $this->register['components']['registers']['larpinq']['schemas'];
 		self::assertContains('setting', $schemas);
 	}
 }

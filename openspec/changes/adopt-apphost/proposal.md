@@ -39,7 +39,7 @@ We additionally declare exactly **one** metric descriptor as the worked example 
 "observability": {
   "metrics": [
     { "name": "characters_total", "type": "gauge", "help": "Characters in the register",
-      "source": { "kind": "objectCount", "register": "larpingapp", "schema": "character" } }
+      "source": { "kind": "objectCount", "register": "larpinq", "schema": "character" } }
   ]
 }
 ```
