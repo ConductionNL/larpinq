@@ -12,9 +12,25 @@
  * dependency.
  *
  * This app does not ship doctrine/dbal (nothing in lib/ needs it), so the
- * placeholders live here instead. Every declaration is class_exists()-guarded,
- * so this is a no-op the moment a real Nextcloud runtime supplies the genuine
- * classes. Same approach dossiq and humaniq take, for the same reason.
+ * placeholders live here instead.
+ *
+ * ONLY THE TWO CONSTANT HOLDERS ARE STUBBED, AND THAT RESTRICTION IS
+ * LOAD-BEARING. A first version stubbed `Doctrine\DBAL\Connection` as well and
+ * killed the CI run outright:
+ *
+ *   PHP Fatal error: OC\DB\Connection::createQueryBuilder() has #[\Override]
+ *   attribute, but no matching parent method exists
+ *
+ * — because Nextcloud's own `OC\DB\Connection` EXTENDS the Doctrine one, and it
+ * inherited an empty stub instead of the real class. The class_exists() guard
+ * does not save you there: at the moment this file runs, the genuine class is
+ * not yet reachable, so the guard passes and the stub wins the name for the rest
+ * of the process.
+ *
+ * So the rule is: stub a class nothing extends, never one something inherits
+ * from. ParameterType and ArrayParameterType are only ever read as constants.
+ * The failure is also invisible locally, where no real Nextcloud is present —
+ * it only appears in a full-server CI leg.
  *
  * @category Test
  * @package  OCA\Larpinq\Tests\Stubs
@@ -51,25 +67,6 @@ namespace Doctrine\DBAL {
 		}
 	}
 
-	if (class_exists(\Doctrine\DBAL\Connection::class) === false) {
-		class Connection {
-		}
-	}
-
-	if (class_exists(\Doctrine\DBAL\Exception::class) === false) {
-		class Exception extends \RuntimeException {
-		}
-	}
 }
 
-namespace Doctrine\DBAL\Schema {
-	if (class_exists(\Doctrine\DBAL\Schema\Schema::class) === false) {
-		class Schema {
-		}
-	}
-
-	if (class_exists(\Doctrine\DBAL\Schema\Table::class) === false) {
-		class Table {
-		}
-	}
-}
+// NOTHING ELSE IS STUBBED, AND THAT IS THE POINT — see the note above.
