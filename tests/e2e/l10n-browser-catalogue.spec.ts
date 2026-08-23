@@ -69,25 +69,34 @@ const APP_ID = (() => {
 const LOCALES = ['nl', 'en']
 
 test.describe(`l10n browser catalogue (${APP_ID})`, () => {
-
 	// The literal 404 that made every translation unreachable.
 	test('the generated catalogue is served to the browser', async ({ request }) => {
 		for (const locale of LOCALES) {
 			const res = await request.get(`/custom_apps/${APP_ID}/l10n/${locale}.js`)
-			expect(res.status(), `l10n/${locale}.js must be served, not 404`).toBe(200)
+			expect(res.status(), `l10n/${locale}.js must be served, not 404`).toBe(
+				200,
+			)
 
 			const body = await res.text()
-			expect(body, 'it must be an OC.L10N.register call').toContain('OC.L10N.register')
+			expect(body, 'it must be an OC.L10N.register call').toContain(
+				'OC.L10N.register',
+			)
 			// Registered under the CURRENT app id. After a rename the old id is
 			// still a perfectly valid-looking file that `t()` never consults.
-			expect(body, `it must register under "${APP_ID}"`).toContain(`"${APP_ID}"`)
+			expect(body, `it must register under "${APP_ID}"`).toContain(
+				`"${APP_ID}"`,
+			)
 		}
 	})
 
 	// Served is not the same as reaching the running app: the bundle has to
 	// register it, which is what `t()` actually reads.
-	test('the running app has the catalogue registered, and t() resolves through it', async ({ page }) => {
-		await page.goto(`/index.php/apps/${APP_ID}/`, { waitUntil: 'domcontentloaded' })
+	test('the running app has the catalogue registered, and t() resolves through it', async ({
+		page,
+	}) => {
+		await page.goto(`/index.php/apps/${APP_ID}/`, {
+			waitUntil: 'domcontentloaded',
+		})
 		await page.waitForFunction(
 			() => typeof (window as unknown as { OC?: unknown }).OC !== 'undefined',
 			null,
@@ -96,7 +105,10 @@ test.describe(`l10n browser catalogue (${APP_ID})`, () => {
 
 		const probe = await page.evaluate((appId) => {
 			const w = window as unknown as {
-				_oc_l10n_registry_translations?: Record<string, Record<string, string>>
+				_oc_l10n_registry_translations?: Record<
+					string,
+					Record<string, string>
+				>
 				t?: (app: string, key: string) => string
 				OC?: { L10N?: { translate?: (app: string, key: string) => string } }
 			}
@@ -106,26 +118,39 @@ test.describe(`l10n browser catalogue (${APP_ID})`, () => {
 
 			// A key whose translation differs from itself — the only kind that can
 			// tell a working lookup apart from the identity fallback.
-			const translated = Object.keys(bundle).find((k) => bundle[k] !== k) || null
+			const translated =
+				Object.keys(bundle).find((k) => bundle[k] !== k) || null
 			const translate = w.OC?.L10N?.translate || w.t
 			return {
 				registered: true as const,
 				keys: Object.keys(bundle).length,
 				sampleKey: translated,
 				expected: translated ? bundle[translated] : null,
-				actual: translated && translate ? translate(appId, translated) : null,
+				actual:
+					translated && translate ? translate(appId, translated) : null,
 			}
 		}, APP_ID)
 
-		expect(probe.registered, `"${APP_ID}" must have a catalogue registered in the browser`).toBe(true)
-		expect(probe.keys, 'the registered catalogue must not be empty').toBeGreaterThan(0)
+		expect(
+			probe.registered,
+			`"${APP_ID}" must have a catalogue registered in the browser`,
+		).toBe(true)
+		expect(
+			probe.keys,
+			'the registered catalogue must not be empty',
+		).toBeGreaterThan(0)
 
 		// Skip only when this app genuinely has no translated string yet — an
 		// empty-by-nature catalogue is not a failure, but an unresolved lookup is.
 		if (probe.sampleKey !== null) {
-			expect(probe.actual, `t('${APP_ID}', '${probe.sampleKey}') must resolve through the catalogue`)
-				.toBe(probe.expected)
-			expect(probe.actual, 'and must not fall back to returning the key').not.toBe(probe.sampleKey)
+			expect(
+				probe.actual,
+				`t('${APP_ID}', '${probe.sampleKey}') must resolve through the catalogue`,
+			).toBe(probe.expected)
+			expect(
+				probe.actual,
+				'and must not fall back to returning the key',
+			).not.toBe(probe.sampleKey)
 		}
 	})
 })
