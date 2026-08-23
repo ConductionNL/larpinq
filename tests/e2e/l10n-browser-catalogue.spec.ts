@@ -70,9 +70,33 @@ const LOCALES = ['nl', 'en']
 
 test.describe(`l10n browser catalogue (${APP_ID})`, () => {
 	// The literal 404 that made every translation unreachable.
-	test('the generated catalogue is served to the browser', async ({ request }) => {
+	test('the generated catalogue is served to the browser', async ({ page }) => {
+		await page.goto(`/index.php/apps/${APP_ID}/`, {
+			waitUntil: 'domcontentloaded',
+		})
+		await page.waitForFunction(
+			() => typeof (window as unknown as { OC?: unknown }).OC !== 'undefined',
+			null,
+			{ timeout: 20_000 },
+		)
+
+		// Ask the running instance where this app is served from rather than
+		// assuming. A dev box mounts apps under /custom_apps and CI checks them
+		// out under /apps, so hardcoding either makes this pass or fail for a
+		// reason that has nothing to do with the catalogue.
+		const webroot = await page.evaluate((appId) => {
+			const w = window as unknown as {
+				OC?: { appswebroots?: Record<string, string> }
+			}
+			return w.OC?.appswebroots?.[appId] || null
+		}, APP_ID)
+		expect(
+			webroot,
+			`OC.appswebroots must know where "${APP_ID}" is served`,
+		).toBeTruthy()
+
 		for (const locale of LOCALES) {
-			const res = await request.get(`/custom_apps/${APP_ID}/l10n/${locale}.js`)
+			const res = await page.request.get(`${webroot}/l10n/${locale}.js`)
 			expect(res.status(), `l10n/${locale}.js must be served, not 404`).toBe(
 				200,
 			)
