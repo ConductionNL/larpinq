@@ -34,7 +34,7 @@
  *       pick them up. This is a registry-config / deploy-mismatch defect.
  *
  *   (2) DETAIL_SLUG_500_BLOCKER — detail pages fetch the object by the
- *       register *slug* (`/api/objects/larpingapp/<schema>/<id>`), which
+ *       register *slug* (`/api/objects/larpinq/<schema>/<id>`), which
  *       returns HTTP 500 because eleven `oc_openregister_registers` rows all
  *       share the slug "larpingapp" (env churn). The detail page therefore
  *       renders only its shell; object data + the per-object Actions menu

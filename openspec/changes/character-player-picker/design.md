@@ -216,8 +216,8 @@ lib/
 | ocName | `<player-alice UUID>` | `<player-bob UUID>` |
 | ownerUid | `alice` (materialised from `@ref.player.userUid`) | `bob` (materialised) |
 
-@self envelope for each: `{"register": "larpingapp", "schema": "character"}` and
-`{"register": "larpingapp", "schema": "player"}` respectively — matching the
+@self envelope for each: `{"register": "larpinq", "schema": "character"}` and
+`{"register": "larpinq", "schema": "player"}` respectively — matching the
 existing register/schema slugs already declared in `larpinq_register.json`.
 Use the nil UUID `00000000-0000-0000-0000-000000000000` as a placeholder in any
 example JSON that needs a syntactically valid but non-real UUID.

@@ -71,7 +71,7 @@ class PortalContributionProvider {
 	 *
 	 * @var string
 	 */
-	private const REGISTER = 'larpingapp';
+	private const REGISTER = 'larpinq';
 
 	/**
 	 * The audiences this provider contributes to (contract v2, preferred).

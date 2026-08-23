@@ -43,7 +43,7 @@ class SettingsMapBuilder {
 	 *
 	 * @var string
 	 */
-	private const REGISTER_SLUG = 'larpingapp';
+	private const REGISTER_SLUG = 'larpinq';
 
 	/**
 	 * Build a slug-to-ID map from imported schemas.

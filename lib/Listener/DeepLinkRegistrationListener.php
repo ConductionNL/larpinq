@@ -67,7 +67,7 @@ class DeepLinkRegistrationListener implements IEventListener {
 	 *
 	 * @var string
 	 */
-	private const REGISTER_SLUG = 'larpingapp';
+	private const REGISTER_SLUG = 'larpinq';
 
 	/**
 	 * URL templates for each object type.

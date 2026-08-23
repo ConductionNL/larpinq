@@ -13,8 +13,8 @@
   },
   "components": {
     "registers": {
-      "larpingapp": {
-        "slug": "larpingapp",
+      "larpinq": {
+        "slug": "larpinq",
         "title": "Larpinq",
         "version": "1.0.0",
         "description": "Live Action Role Playing character management register — manages characters, players, abilities, skills, items, conditions, effects, events, and game worlds.",

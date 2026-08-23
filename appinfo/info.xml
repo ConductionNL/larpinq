@@ -162,11 +162,33 @@ Maak een [featureverzoek](https://github.com/ConductionNL/larpinq/issues)
 			<step>OCA\Larpinq\Repair\MigrateAppConfigKeys</step>
 			<!-- Copy every per-user preference from the `larpingapp` app id. -->
 			<step>OCA\Larpinq\Repair\MigrateUserPreferences</step>
+			<!-- Third leg of the rename, on the OpenRegister register ROW. The
+			     register slug moves too (`larpingapp` -> `larpinq`), together
+			     with `x-openregister.app`, which for a `type: application`
+			     configuration IS a register slug rather than an attribution
+			     label. MUST run before InitializeRegister: OpenRegister resolves
+			     a register by slug and its not-found branch CREATES a second,
+			     empty register rather than failing, so an import that ran first
+			     would fork the register and leave every stored object behind on
+			     the old row, silently. Moves no data — an object is bound to its
+			     register by NUMERIC id. Idempotent and non-destructive. -->
+			<step>OCA\Larpinq\Repair\MigrateRegisterSlug</step>
 			<step>OCA\Larpinq\Repair\InitializeRegister</step>
 		</post-migration>
 		<install>
 			<step>OCA\Larpinq\Repair\MigrateAppConfigKeys</step>
 			<step>OCA\Larpinq\Repair\MigrateUserPreferences</step>
+			<!-- Third leg of the rename, on the OpenRegister register ROW. The
+			     register slug moves too (`larpingapp` -> `larpinq`), together
+			     with `x-openregister.app`, which for a `type: application`
+			     configuration IS a register slug rather than an attribution
+			     label. MUST run before InitializeRegister: OpenRegister resolves
+			     a register by slug and its not-found branch CREATES a second,
+			     empty register rather than failing, so an import that ran first
+			     would fork the register and leave every stored object behind on
+			     the old row, silently. Moves no data — an object is bound to its
+			     register by NUMERIC id. Idempotent and non-destructive. -->
+			<step>OCA\Larpinq\Repair\MigrateRegisterSlug</step>
 			<step>OCA\Larpinq\Repair\InitializeRegister</step>
 		</install>
 	</repair-steps>

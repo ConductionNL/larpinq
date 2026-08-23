@@ -85,7 +85,7 @@ class SettingsMapBuilderTest extends TestCase {
 	public function testFindRegisterIdBySlugMatchesLarpingapp(): void {
 		$registers = [
 			['slug' => 'other-app', 'id' => 'reg-1'],
-			['slug' => 'larpingapp', 'id' => 'reg-2'],
+			['slug' => 'larpinq', 'id' => 'reg-2'],
 		];
 
 		$result = $this->builder->findRegisterIdBySlug($registers);

@@ -160,7 +160,7 @@ class DeepLinkRegistrationListenerTest extends TestCase {
 		self::assertNotEmpty($event->links, 'control: something must have been registered');
 		foreach ($event->links as $link) {
 			self::assertSame('larpinq', $link['appId']);
-			self::assertSame('larpingapp', $link['registerSlug']);
+			self::assertSame('larpinq', $link['registerSlug']);
 		}
 	}//end testHandleUsesCorrectAppIdAndRegisterSlug()
 

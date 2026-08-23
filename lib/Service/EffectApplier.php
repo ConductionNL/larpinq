@@ -42,11 +42,11 @@ class EffectApplier {
 	 * Apply a list of effect references to abilities.
 	 *
 	 * @param array<string, array<string, mixed>> $abilities Reference to abilities.
-	 *        See calculateEffect() for why this is the loose shape and not
-	 *        `array{name?: string, base?: int, value: int, audit: array}` — the
-	 *        array is threaded by reference all the way down to
-	 *        applyModifierToAbility(), which can seed an entry with `value`
-	 *        alone.
+	 *                                                       See calculateEffect() for why this is the loose shape and not
+	 *                                                       `array{name?: string, base?: int, value: int, audit: array}` — the
+	 *                                                       array is threaded by reference all the way down to
+	 *                                                       applyModifierToAbility(), which can seed an entry with `value`
+	 *                                                       alone.
 	 * @param array|null $effects Array of effect IDs.
 	 * @param array<string, bool> $appliedEffects Tracks applied non-cumulative effects.
 	 * @param array<string, array<string, mixed>> $effectLookup All effects indexed by ID.
@@ -187,15 +187,15 @@ class EffectApplier {
 	 * calculation pass. Closes #208.
 	 *
 	 * @param array<string, array<string, mixed>> $abilities Reference to abilities.
-	 *        Deliberately NOT the tighter
-	 *        `array{name?: string, base?: int, value: int, audit: array}` this
-	 *        replaces. That shape was not true: this array is passed BY
-	 *        REFERENCE into applyModifierToAbility(), which seeds a missing
-	 *        entry with `$abilities[$id]['value'] = 0` alone — no `audit` key —
-	 *        so a caller could observe an entry the strict shape says cannot
-	 *        exist. Widening the claim to match the code is the honest
-	 *        direction; tightening the callee instead just moved the error onto
-	 *        its own assignments.
+	 *                                                       Deliberately NOT the tighter
+	 *                                                       `array{name?: string, base?: int, value: int, audit: array}` this
+	 *                                                       replaces. That shape was not true: this array is passed BY
+	 *                                                       REFERENCE into applyModifierToAbility(), which seeds a missing
+	 *                                                       entry with `$abilities[$id]['value'] = 0` alone — no `audit` key —
+	 *                                                       so a caller could observe an entry the strict shape says cannot
+	 *                                                       exist. Widening the claim to match the code is the honest
+	 *                                                       direction; tightening the callee instead just moved the error onto
+	 *                                                       its own assignments.
 	 * @param array<string, mixed> $effect Effect data.
 	 * @param array<string, bool> $appliedEffects Tracks applied non-cumulative effects.
 	 *

@@ -251,8 +251,8 @@ verify "$SCH_BODY" schemas "$SCH_CODE"
 # that shape here and give the failure a name.
 OBJ_CODE="$(curl -sS -o /dev/null -w '%{http_code}' \
 	-u "${USER_NAME}:${USER_PASS}" -H 'OCS-APIRequest: true' \
-	"${BASE}/index.php/apps/openregister/api/objects/larpingapp/character?_limit=1" || echo 000)"
-echo "[ci-seed] objects/larpingapp/character probe -> ${OBJ_CODE}"
+	"${BASE}/index.php/apps/openregister/api/objects/larpinq/character?_limit=1" || echo 000)"
+echo "[ci-seed] objects/larpinq/character probe -> ${OBJ_CODE}"
 if [ "$OBJ_CODE" -ge 400 ] 2>/dev/null; then
 	echo "::error::The larpingapp character collection is not readable (HTTP ${OBJ_CODE})."
 	echo "::error::Every workflow fixture create/read would fail with a message accusing the fixtures."
