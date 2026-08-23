@@ -108,7 +108,11 @@ function main() {
 
 	const locales = fs
 		.readdirSync(L10N_DIR)
-		.filter((f) => f.endsWith('.json'))
+		// Dotfiles are never locale catalogues. `l10n/.schema-l10n-baseline.json`
+		// sits here so prettier ignores it, and without this guard it was read as
+		// a locale named `.schema-l10n-baseline` and failed for having no
+		// `translations` key.
+		.filter((f) => f.endsWith('.json') && !f.startsWith('.'))
 		.map((f) => f.slice(0, -5))
 		.sort()
 	if (locales.length === 0) {
