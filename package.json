@@ -22,6 +22,7 @@
 		"stylelint": "stylelint \"{src,css}/**/*.{vue,scss,css}\"",
 		"stylelint-fix": "stylelint \"{src,css}/**/*.{vue,scss,css}\" --fix",
 		"l10n:build": "node scripts/build-l10n-js.js",
+		"check:schema-l10n": "node scripts/check-schema-l10n.js",
 		"check:l10n-js": "node scripts/build-l10n-js.js --check",
 		"check:manifest": "node tests/validate-manifest.js",
 		"check:register": "node tests/validate-register.js",
