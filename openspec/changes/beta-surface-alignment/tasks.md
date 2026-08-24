@@ -26,7 +26,7 @@
 
 - [x] 4.1 Bring structure up to parity with the English page (intro paragraph, FeatureList, PairRow, CtaBanner)
 - [x] 4.2 Rewrite all copy to real Dutch matching the reconciled canonical feature list
-- [x] 4.3 Fix `secondaryCta` doc link from `docs.conduction.nl/larpingapp` to `larpingapp.conduction.nl`
+- [x] 4.3 Fix `secondaryCta` doc link from `docs.conduction.nl/larpingapp` to `larpinq.conduction.nl`
 
 ## 5. Docs (`larpinq/docs/`)
 
