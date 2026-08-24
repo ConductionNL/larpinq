@@ -2,9 +2,9 @@ name: Documentation
 
 on:
   push:
-    branches: [documentation]
+    branches: [development]
   pull_request:
-    branches: [documentation]
+    branches: [development]
 
 jobs:
   deploy:
@@ -17,7 +17,7 @@ jobs:
     #
     # ⚠️ `packages: write` is load-bearing at RUNTIME, not merely statically:
     # the callee's `build-image` input DEFAULTS TO TRUE, so the `image` job
-    # really does run on a push to `documentation` and really does push to
+    # really does run on a push to `development` and really does push to
     # GHCR. Dropping it 403s that push.
     #
     # It would be required even if that job were disabled, because GitHub
@@ -29,13 +29,22 @@ jobs:
       packages: write
     uses: ConductionNL/.github/.github/workflows/documentation.yml@main
     with:
-      # ⚠️ FROZEN on the OLD name during the larpingapp -> larpinq rename.
-      # This is the LIVE docs host (HTTP 200); `larpinq.conduction.nl` does not
-      # resolve yet (HTTP 000). The subdomain moves in a separate DNS pass — it
-      # is NOT part of the code rename. "Finishing the job" here publishes the
-      # site behind a CNAME nothing points at and 404s the documentation.
-      # Move this only together with docs/static/CNAME and the `url:` in
-      # docs/docusaurus.config.js, and only after DNS answers.
+      # `larpinq.conduction.nl` resolves as of 2026-08-23 — attached as a
+      # second custom domain on the SAME `larpingapp-docs` worker that serves
+      # `larpingapp.conduction.nl`. Both hosts answer 200, so nothing goes
+      # dark either way. (The comment that used to sit here said the new host
+      # answered 000; that was true when it was written and is not any more.)
       cname: larpinq.conduction.nl
 
+      # EVERY host this site answers on, in FULL: wrangler reconciles the
+      # worker's triggers against this list, so a host omitted here is
+      # REMOVED from the worker and goes dark.
       docs-hosts: larpingapp.conduction.nl,larpinq.conduction.nl
+
+      # The worker that ALREADY holds both custom domains. Without this the
+      # callee derives the name from `cname` — `larpinq-docs` — which does not
+      # exist. Deploying that would create a SECOND worker while both custom
+      # domains keep routing to `larpingapp-docs`: every deploy green,
+      # reaching nobody. Renaming the worker is a Cloudflare-side move, not
+      # something this file can perform.
+      worker-name: larpingapp-docs
