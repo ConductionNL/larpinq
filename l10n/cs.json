@@ -148,7 +148,10 @@
         "Required conditions": "Požadované stavy",
         "Required effects": "Požadované efekty",
         "Prerequisites": "Předpoklady",
-        "None — this is a root skill.": "Žádné — toto je kořenová dovednost."
+        "None — this is a root skill.": "Žádné — toto je kořenová dovednost.",
+        "Where the automation lives": "Kde bydlí automatizace",
+        "Flows are what happens without anyone clicking: a reminder before a deadline passes, a confirmation sent on submission. This is where you read and edit them — nothing to build now.": "Flows je to, co se děje, aniž by někdo klikl: připomínka před vypršením lhůty, potvrzení při odeslání. Tady je čteš a upravuješ — teď není co stavět.",
+        "Open Flows in the menu": "Otevři Flows v nabídce"
     },
     "plurals": {}
 }

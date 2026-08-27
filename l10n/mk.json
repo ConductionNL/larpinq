@@ -148,7 +148,10 @@
         "Required conditions": "Потребни состојби",
         "Required effects": "Потребни ефекти",
         "Prerequisites": "Предуслови",
-        "None — this is a root skill.": "Нема — ова е основна вештина."
+        "None — this is a root skill.": "Нема — ова е основна вештина.",
+        "Where the automation lives": "Каде живее автоматизацијата",
+        "Flows are what happens without anyone clicking: a reminder before a deadline passes, a confirmation sent on submission. This is where you read and edit them — nothing to build now.": "Flows е тоа што се случува без некој да кликне: потсетник пред да истече рокот, потврда при поднесување. Тука ги читаш и ги уредуваш — сега нема што да се гради.",
+        "Open Flows in the menu": "Отвори Flows во менито"
     },
     "plurals": {}
 }

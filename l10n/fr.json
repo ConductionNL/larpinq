@@ -148,7 +148,10 @@
         "Required conditions": "Conditions requises",
         "Required effects": "Effets requis",
         "Prerequisites": "Prérequis",
-        "None — this is a root skill.": "Aucun — il s'agit d'une compétence racine."
+        "None — this is a root skill.": "Aucun — il s'agit d'une compétence racine.",
+        "Where the automation lives": "Où vit l'automatisation",
+        "Flows are what happens without anyone clicking: a reminder before a deadline passes, a confirmation sent on submission. This is where you read and edit them — nothing to build now.": "Les Flows sont ce qui se passe sans que personne ne clique : un rappel avant l'échéance d'un délai, une confirmation envoyée à la soumission. C'est ici que vous les lisez et les modifiez — rien à construire maintenant.",
+        "Open Flows in the menu": "Ouvrez Flows dans le menu"
     },
     "plurals": {}
 }

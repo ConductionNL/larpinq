@@ -148,7 +148,10 @@
         "Required conditions": "Nauðsynlegt ástand",
         "Required effects": "Nauðsynleg áhrif",
         "Prerequisites": "Forkröfur",
-        "None — this is a root skill.": "Engar — þetta er grunnfærni."
+        "None — this is a root skill.": "Engar — þetta er grunnfærni.",
+        "Where the automation lives": "Þar sem sjálfvirknin býr",
+        "Flows are what happens without anyone clicking: a reminder before a deadline passes, a confirmation sent on submission. This is where you read and edit them — nothing to build now.": "Flows er það sem gerist án þess að nokkur smelli: áminning áður en frestur rennur út, staðfesting við innsendingu. Hér lestu þau og breytir þeim — það er ekkert að byggja núna.",
+        "Open Flows in the menu": "Opnaðu Flows í valmyndinni"
     },
     "plurals": {}
 }
