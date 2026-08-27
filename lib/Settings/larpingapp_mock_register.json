@@ -17,10 +17,52 @@
         "slug": "larpinq",
         "title": "Larpinq (demo)",
         "version": "1.0.0",
-        "description": "Demo data for Larpinq. Generated from the register's own schemas — see hydra/scripts/generate-mock-register.py."
+        "description": "Demo data for Larpinq. Generated from the register's own schemas — see hydra-gates/scripts/lib/generate_mock_register.py."
       }
     },
     "schemas": {
+      "ability": {
+        "slug": "ability",
+        "title": "Ability",
+        "icon": "ShieldSwordOutline",
+        "version": "1.1.0",
+        "summary": "A numeric stat tracked on characters (e.g., XP, Mana, Health)",
+        "description": "Represents a numeric ability or stat that characters track. Effects modify abilities by adding or subtracting from the base value. Used for experience points, mana, health, armor, and other quantifiable attributes.",
+        "type": "object",
+        "x-schema-org": "schema:PropertyValue",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Unique name of the ability (e.g., Experience Points, Mana)",
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Ability Name"
+          },
+          "description": {
+            "type": "string",
+            "description": "What this ability represents within the game world",
+            "maxLength": 2555,
+            "title": "Description"
+          },
+          "base": {
+            "type": "integer",
+            "description": "Starting value for all characters",
+            "default": 0,
+            "title": "Base Value"
+          },
+          "setting": {
+            "type": "string",
+            "format": "uuid",
+            "$ref": "setting",
+            "description": "Optional world (campaign) thisability belongs to. Empty means shared across all worlds.",
+            "visible": false,
+            "title": "World"
+          }
+        }
+      },
       "character": {
         "slug": "character",
         "title": "Character",
@@ -348,281 +390,6 @@
           }
         }
       },
-      "player": {
-        "slug": "player",
-        "title": "Player",
-        "icon": "AccountGroupOutline",
-        "version": "1.1.1",
-        "summary": "A real-world player participating in the LARP",
-        "description": "Represents a player who controls one or more characters. Tracks player identity and contact information.",
-        "type": "object",
-        "x-schema-org": "schema:Person",
-        "required": [
-          "name"
-        ],
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "Full name of the player",
-            "maxLength": 255,
-            "minLength": 1,
-            "title": "Player Name"
-          },
-          "description": {
-            "type": "string",
-            "description": "Notes about the player",
-            "maxLength": 2555,
-            "title": "Description"
-          },
-          "userUid": {
-            "type": "string",
-            "description": "The Nextcloud user account this player signs in as (a Nextcloud user UID — a plain string; there is deliberately no `format`, OpenRegister has no `user` format and rejects the whole schema when it sees one). Used for character-ownership notifications.",
-            "maxLength": 255,
-            "title": "Nextcloud user"
-          }
-        }
-      },
-      "ability": {
-        "slug": "ability",
-        "title": "Ability",
-        "icon": "ShieldSwordOutline",
-        "version": "1.1.0",
-        "summary": "A numeric stat tracked on characters (e.g., XP, Mana, Health)",
-        "description": "Represents a numeric ability or stat that characters track. Effects modify abilities by adding or subtracting from the base value. Used for experience points, mana, health, armor, and other quantifiable attributes.",
-        "type": "object",
-        "x-schema-org": "schema:PropertyValue",
-        "required": [
-          "name"
-        ],
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "Unique name of the ability (e.g., Experience Points, Mana)",
-            "maxLength": 255,
-            "minLength": 1,
-            "title": "Ability Name"
-          },
-          "description": {
-            "type": "string",
-            "description": "What this ability represents within the game world",
-            "maxLength": 2555,
-            "title": "Description"
-          },
-          "base": {
-            "type": "integer",
-            "description": "Starting value for all characters",
-            "default": 0,
-            "title": "Base Value"
-          },
-          "setting": {
-            "type": "string",
-            "format": "uuid",
-            "$ref": "setting",
-            "description": "Optional world (campaign) thisability belongs to. Empty means shared across all worlds.",
-            "visible": false,
-            "title": "World"
-          }
-        }
-      },
-      "skill": {
-        "slug": "skill",
-        "title": "Skill",
-        "icon": "SwordCross",
-        "version": "1.2.0",
-        "summary": "A learnable ability that characters can acquire",
-        "description": "Represents a skill that characters can learn, usually purchased with experience points. Skills provide effects and may have prerequisites (other skills, stats, conditions, or effects).",
-        "type": "object",
-        "x-schema-org": "schema:DefinedTerm",
-        "configuration": {
-          "x-openregister-shareable": true
-        },
-        "required": [
-          "name"
-        ],
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "Name of the skill (e.g., Healing LvL 1)",
-            "maxLength": 255,
-            "minLength": 1,
-            "title": "Skill Name"
-          },
-          "description": {
-            "type": "string",
-            "description": "In-game flavor description of the skill",
-            "maxLength": 2555,
-            "title": "Description"
-          },
-          "effect": {
-            "type": "string",
-            "description": "Technical description of what the skill does mechanically",
-            "maxLength": 2555,
-            "visible": false,
-            "title": "Mechanical Effect"
-          },
-          "effects": {
-            "type": "array",
-            "description": "Effects applied when this skill is taken",
-            "items": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "$ref": "effect",
-            "x-relation-filter": {
-              "setting": "@object.setting"
-            },
-            "visible": false,
-            "title": "Effects"
-          },
-          "requiredSkills": {
-            "type": "array",
-            "description": "Prerequisite skills needed before learning this skill",
-            "items": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "$ref": "skill",
-            "x-relation-filter": {
-              "setting": "@object.setting"
-            },
-            "visible": false,
-            "title": "Required Skills"
-          },
-          "requiredStats": {
-            "type": "array",
-            "description": "Required ability scores",
-            "items": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "$ref": "ability",
-            "x-relation-filter": {
-              "setting": "@object.setting"
-            },
-            "visible": false,
-            "title": "Required Stats"
-          },
-          "requiredConditions": {
-            "type": "array",
-            "description": "Required conditions",
-            "items": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "$ref": "condition",
-            "x-relation-filter": {
-              "setting": "@object.setting"
-            },
-            "visible": false,
-            "title": "Required Conditions"
-          },
-          "requiredEffects": {
-            "type": "array",
-            "description": "Required effects",
-            "items": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "$ref": "effect",
-            "x-relation-filter": {
-              "setting": "@object.setting"
-            },
-            "visible": false,
-            "title": "Required Effects"
-          },
-          "requiredScore": {
-            "type": "integer",
-            "description": "Minimum ability score needed when requirements are abilities",
-            "visible": false,
-            "title": "Required Score"
-          },
-          "setting": {
-            "type": "string",
-            "format": "uuid",
-            "$ref": "setting",
-            "description": "Optional world (campaign) thisskill belongs to. Empty means shared across all worlds.",
-            "visible": false,
-            "title": "World"
-          }
-        }
-      },
-      "item": {
-        "slug": "larping_item",
-        "title": "Item",
-        "icon": "Sword",
-        "version": "2.0.0",
-        "summary": "A magical or special item that characters can own",
-        "description": "Represents a special or magical item in the game. Items provide effects to their holder. Items can be unique artifacts (only one instance exists) or regular items.",
-        "type": "object",
-        "x-schema-org": "schema:Product",
-        "required": [
-          "name"
-        ],
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "Item name (e.g., Hand of Vecna)",
-            "maxLength": 255,
-            "minLength": 1,
-            "title": "Item Name"
-          },
-          "description": {
-            "type": "string",
-            "description": "Player-visible description with story pointers",
-            "maxLength": 2555,
-            "title": "Description"
-          },
-          "effect": {
-            "type": "string",
-            "description": "Technical description of item effects (GM-visible only)",
-            "maxLength": 2555,
-            "visible": false,
-            "title": "Mechanical Effect"
-          },
-          "effects": {
-            "type": "array",
-            "description": "Predefined effects applied to the item holder",
-            "items": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "$ref": "effect",
-            "x-relation-filter": {
-              "setting": "@object.setting"
-            },
-            "visible": false,
-            "title": "Effects"
-          },
-          "unique": {
-            "type": "boolean",
-            "description": "Whether this is a unique artifact (only one instance can exist)",
-            "default": true,
-            "title": "Unique Artifact"
-          },
-          "characters": {
-            "type": "array",
-            "description": "Characters currently holding this item",
-            "items": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "$ref": "character",
-            "x-relation-filter": {
-              "setting": "@object.setting"
-            },
-            "visible": false,
-            "title": "Characters"
-          },
-          "setting": {
-            "type": "string",
-            "format": "uuid",
-            "$ref": "setting",
-            "description": "Optional world (campaign) thisitem belongs to. Empty means shared across all worlds.",
-            "visible": false,
-            "title": "World"
-          }
-        }
-      },
       "condition": {
         "slug": "condition",
         "title": "Condition",
@@ -886,6 +653,117 @@
           }
         }
       },
+      "item": {
+        "slug": "larping_item",
+        "title": "Item",
+        "icon": "Sword",
+        "version": "2.0.0",
+        "summary": "A magical or special item that characters can own",
+        "description": "Represents a special or magical item in the game. Items provide effects to their holder. Items can be unique artifacts (only one instance exists) or regular items.",
+        "type": "object",
+        "x-schema-org": "schema:Product",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Item name (e.g., Hand of Vecna)",
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Item Name"
+          },
+          "description": {
+            "type": "string",
+            "description": "Player-visible description with story pointers",
+            "maxLength": 2555,
+            "title": "Description"
+          },
+          "effect": {
+            "type": "string",
+            "description": "Technical description of item effects (GM-visible only)",
+            "maxLength": 2555,
+            "visible": false,
+            "title": "Mechanical Effect"
+          },
+          "effects": {
+            "type": "array",
+            "description": "Predefined effects applied to the item holder",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "$ref": "effect",
+            "x-relation-filter": {
+              "setting": "@object.setting"
+            },
+            "visible": false,
+            "title": "Effects"
+          },
+          "unique": {
+            "type": "boolean",
+            "description": "Whether this is a unique artifact (only one instance can exist)",
+            "default": true,
+            "title": "Unique Artifact"
+          },
+          "characters": {
+            "type": "array",
+            "description": "Characters currently holding this item",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "$ref": "character",
+            "x-relation-filter": {
+              "setting": "@object.setting"
+            },
+            "visible": false,
+            "title": "Characters"
+          },
+          "setting": {
+            "type": "string",
+            "format": "uuid",
+            "$ref": "setting",
+            "description": "Optional world (campaign) thisitem belongs to. Empty means shared across all worlds.",
+            "visible": false,
+            "title": "World"
+          }
+        }
+      },
+      "player": {
+        "slug": "player",
+        "title": "Player",
+        "icon": "AccountGroupOutline",
+        "version": "1.1.1",
+        "summary": "A real-world player participating in the LARP",
+        "description": "Represents a player who controls one or more characters. Tracks player identity and contact information.",
+        "type": "object",
+        "x-schema-org": "schema:Person",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Full name of the player",
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Player Name"
+          },
+          "description": {
+            "type": "string",
+            "description": "Notes about the player",
+            "maxLength": 2555,
+            "title": "Description"
+          },
+          "userUid": {
+            "type": "string",
+            "description": "The Nextcloud user account this player signs in as (a Nextcloud user UID — a plain string; there is deliberately no `format`, OpenRegister has no `user` format and rejects the whole schema when it sees one). Used for character-ownership notifications.",
+            "maxLength": 255,
+            "title": "Nextcloud user"
+          }
+        }
+      },
       "setting": {
         "slug": "setting",
         "title": "World",
@@ -922,6 +800,128 @@
             "default": "active",
             "title": "Status",
             "facetable": true
+          }
+        }
+      },
+      "skill": {
+        "slug": "skill",
+        "title": "Skill",
+        "icon": "SwordCross",
+        "version": "1.2.0",
+        "summary": "A learnable ability that characters can acquire",
+        "description": "Represents a skill that characters can learn, usually purchased with experience points. Skills provide effects and may have prerequisites (other skills, stats, conditions, or effects).",
+        "type": "object",
+        "x-schema-org": "schema:DefinedTerm",
+        "configuration": {
+          "x-openregister-shareable": true
+        },
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the skill (e.g., Healing LvL 1)",
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Skill Name"
+          },
+          "description": {
+            "type": "string",
+            "description": "In-game flavor description of the skill",
+            "maxLength": 2555,
+            "title": "Description"
+          },
+          "effect": {
+            "type": "string",
+            "description": "Technical description of what the skill does mechanically",
+            "maxLength": 2555,
+            "visible": false,
+            "title": "Mechanical Effect"
+          },
+          "effects": {
+            "type": "array",
+            "description": "Effects applied when this skill is taken",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "$ref": "effect",
+            "x-relation-filter": {
+              "setting": "@object.setting"
+            },
+            "visible": false,
+            "title": "Effects"
+          },
+          "requiredSkills": {
+            "type": "array",
+            "description": "Prerequisite skills needed before learning this skill",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "$ref": "skill",
+            "x-relation-filter": {
+              "setting": "@object.setting"
+            },
+            "visible": false,
+            "title": "Required Skills"
+          },
+          "requiredStats": {
+            "type": "array",
+            "description": "Required ability scores",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "$ref": "ability",
+            "x-relation-filter": {
+              "setting": "@object.setting"
+            },
+            "visible": false,
+            "title": "Required Stats"
+          },
+          "requiredConditions": {
+            "type": "array",
+            "description": "Required conditions",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "$ref": "condition",
+            "x-relation-filter": {
+              "setting": "@object.setting"
+            },
+            "visible": false,
+            "title": "Required Conditions"
+          },
+          "requiredEffects": {
+            "type": "array",
+            "description": "Required effects",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "$ref": "effect",
+            "x-relation-filter": {
+              "setting": "@object.setting"
+            },
+            "visible": false,
+            "title": "Required Effects"
+          },
+          "requiredScore": {
+            "type": "integer",
+            "description": "Minimum ability score needed when requirements are abilities",
+            "visible": false,
+            "title": "Required Score"
+          },
+          "setting": {
+            "type": "string",
+            "format": "uuid",
+            "$ref": "setting",
+            "description": "Optional world (campaign) thisskill belongs to. Empty means shared across all worlds.",
+            "visible": false,
+            "title": "World"
           }
         }
       },
@@ -993,6 +993,39 @@
       }
     },
     "objects": [
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "ability",
+          "slug": "ability-voorbeeld-name-1-1"
+        },
+        "name": "Voorbeeld Name 1",
+        "description": "Voorbeeld Description 1",
+        "base": 0,
+        "setting": "00000000-0000-4000-8000-000000000000"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "ability",
+          "slug": "ability-voorbeeld-name-2-2"
+        },
+        "name": "Voorbeeld Name 2",
+        "description": "Voorbeeld Description 2",
+        "base": 0,
+        "setting": "00000000-0000-4000-8000-000000000001"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "ability",
+          "slug": "ability-voorbeeld-name-3-3"
+        },
+        "name": "Voorbeeld Name 3",
+        "description": "Voorbeeld Description 3",
+        "base": 0,
+        "setting": "00000000-0000-4000-8000-000000000002"
+      },
       {
         "@self": {
           "register": "larpinq",
@@ -1124,204 +1157,6 @@
             "overriddenAt": "2026-03-03T09:00:00+00:00"
           }
         ]
-      },
-      {
-        "@self": {
-          "register": "larpinq",
-          "schema": "player",
-          "slug": "player-voorbeeld-name-1-1"
-        },
-        "name": "Voorbeeld Name 1",
-        "description": "Voorbeeld Description 1",
-        "userUid": "Voorbeeld Useruid 1"
-      },
-      {
-        "@self": {
-          "register": "larpinq",
-          "schema": "player",
-          "slug": "player-voorbeeld-name-2-2"
-        },
-        "name": "Voorbeeld Name 2",
-        "description": "Voorbeeld Description 2",
-        "userUid": "Voorbeeld Useruid 2"
-      },
-      {
-        "@self": {
-          "register": "larpinq",
-          "schema": "player",
-          "slug": "player-voorbeeld-name-3-3"
-        },
-        "name": "Voorbeeld Name 3",
-        "description": "Voorbeeld Description 3",
-        "userUid": "Voorbeeld Useruid 3"
-      },
-      {
-        "@self": {
-          "register": "larpinq",
-          "schema": "ability",
-          "slug": "ability-voorbeeld-name-1-1"
-        },
-        "name": "Voorbeeld Name 1",
-        "description": "Voorbeeld Description 1",
-        "base": 0,
-        "setting": "00000000-0000-4000-8000-000000000000"
-      },
-      {
-        "@self": {
-          "register": "larpinq",
-          "schema": "ability",
-          "slug": "ability-voorbeeld-name-2-2"
-        },
-        "name": "Voorbeeld Name 2",
-        "description": "Voorbeeld Description 2",
-        "base": 0,
-        "setting": "00000000-0000-4000-8000-000000000001"
-      },
-      {
-        "@self": {
-          "register": "larpinq",
-          "schema": "ability",
-          "slug": "ability-voorbeeld-name-3-3"
-        },
-        "name": "Voorbeeld Name 3",
-        "description": "Voorbeeld Description 3",
-        "base": 0,
-        "setting": "00000000-0000-4000-8000-000000000002"
-      },
-      {
-        "@self": {
-          "register": "larpinq",
-          "schema": "skill",
-          "slug": "skill-voorbeeld-name-1-1"
-        },
-        "name": "Voorbeeld Name 1",
-        "description": "Voorbeeld Description 1",
-        "effect": "Voorbeeld Effect 1",
-        "effects": [
-          "00000000-0000-4000-8000-000000000000"
-        ],
-        "requiredSkills": [
-          "00000000-0000-4000-8000-000000000000"
-        ],
-        "requiredStats": [
-          "00000000-0000-4000-8000-000000000000"
-        ],
-        "requiredConditions": [
-          "00000000-0000-4000-8000-000000000000"
-        ],
-        "requiredEffects": [
-          "00000000-0000-4000-8000-000000000000"
-        ],
-        "requiredScore": 1,
-        "setting": "00000000-0000-4000-8000-000000000000"
-      },
-      {
-        "@self": {
-          "register": "larpinq",
-          "schema": "skill",
-          "slug": "skill-voorbeeld-name-2-2"
-        },
-        "name": "Voorbeeld Name 2",
-        "description": "Voorbeeld Description 2",
-        "effect": "Voorbeeld Effect 2",
-        "effects": [
-          "00000000-0000-4000-8000-000000000001"
-        ],
-        "requiredSkills": [
-          "00000000-0000-4000-8000-000000000001"
-        ],
-        "requiredStats": [
-          "00000000-0000-4000-8000-000000000001"
-        ],
-        "requiredConditions": [
-          "00000000-0000-4000-8000-000000000001"
-        ],
-        "requiredEffects": [
-          "00000000-0000-4000-8000-000000000001"
-        ],
-        "requiredScore": 2,
-        "setting": "00000000-0000-4000-8000-000000000001"
-      },
-      {
-        "@self": {
-          "register": "larpinq",
-          "schema": "skill",
-          "slug": "skill-voorbeeld-name-3-3"
-        },
-        "name": "Voorbeeld Name 3",
-        "description": "Voorbeeld Description 3",
-        "effect": "Voorbeeld Effect 3",
-        "effects": [
-          "00000000-0000-4000-8000-000000000002"
-        ],
-        "requiredSkills": [
-          "00000000-0000-4000-8000-000000000002"
-        ],
-        "requiredStats": [
-          "00000000-0000-4000-8000-000000000002"
-        ],
-        "requiredConditions": [
-          "00000000-0000-4000-8000-000000000002"
-        ],
-        "requiredEffects": [
-          "00000000-0000-4000-8000-000000000002"
-        ],
-        "requiredScore": 3,
-        "setting": "00000000-0000-4000-8000-000000000002"
-      },
-      {
-        "@self": {
-          "register": "larpinq",
-          "schema": "item",
-          "slug": "item-voorbeeld-name-1-1"
-        },
-        "name": "Voorbeeld Name 1",
-        "description": "Voorbeeld Description 1",
-        "effect": "Voorbeeld Effect 1",
-        "effects": [
-          "00000000-0000-4000-8000-000000000000"
-        ],
-        "unique": true,
-        "characters": [
-          "00000000-0000-4000-8000-000000000000"
-        ],
-        "setting": "00000000-0000-4000-8000-000000000000"
-      },
-      {
-        "@self": {
-          "register": "larpinq",
-          "schema": "item",
-          "slug": "item-voorbeeld-name-2-2"
-        },
-        "name": "Voorbeeld Name 2",
-        "description": "Voorbeeld Description 2",
-        "effect": "Voorbeeld Effect 2",
-        "effects": [
-          "00000000-0000-4000-8000-000000000001"
-        ],
-        "unique": true,
-        "characters": [
-          "00000000-0000-4000-8000-000000000001"
-        ],
-        "setting": "00000000-0000-4000-8000-000000000001"
-      },
-      {
-        "@self": {
-          "register": "larpinq",
-          "schema": "item",
-          "slug": "item-voorbeeld-name-3-3"
-        },
-        "name": "Voorbeeld Name 3",
-        "description": "Voorbeeld Description 3",
-        "effect": "Voorbeeld Effect 3",
-        "effects": [
-          "00000000-0000-4000-8000-000000000002"
-        ],
-        "unique": true,
-        "characters": [
-          "00000000-0000-4000-8000-000000000002"
-        ],
-        "setting": "00000000-0000-4000-8000-000000000002"
       },
       {
         "@self": {
@@ -1485,6 +1320,90 @@
       {
         "@self": {
           "register": "larpinq",
+          "schema": "item",
+          "slug": "item-voorbeeld-name-1-1"
+        },
+        "name": "Voorbeeld Name 1",
+        "description": "Voorbeeld Description 1",
+        "effect": "Voorbeeld Effect 1",
+        "effects": [
+          "00000000-0000-4000-8000-000000000000"
+        ],
+        "unique": true,
+        "characters": [
+          "00000000-0000-4000-8000-000000000000"
+        ],
+        "setting": "00000000-0000-4000-8000-000000000000"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "item",
+          "slug": "item-voorbeeld-name-2-2"
+        },
+        "name": "Voorbeeld Name 2",
+        "description": "Voorbeeld Description 2",
+        "effect": "Voorbeeld Effect 2",
+        "effects": [
+          "00000000-0000-4000-8000-000000000001"
+        ],
+        "unique": true,
+        "characters": [
+          "00000000-0000-4000-8000-000000000001"
+        ],
+        "setting": "00000000-0000-4000-8000-000000000001"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "item",
+          "slug": "item-voorbeeld-name-3-3"
+        },
+        "name": "Voorbeeld Name 3",
+        "description": "Voorbeeld Description 3",
+        "effect": "Voorbeeld Effect 3",
+        "effects": [
+          "00000000-0000-4000-8000-000000000002"
+        ],
+        "unique": true,
+        "characters": [
+          "00000000-0000-4000-8000-000000000002"
+        ],
+        "setting": "00000000-0000-4000-8000-000000000002"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "player",
+          "slug": "player-voorbeeld-name-1-1"
+        },
+        "name": "Voorbeeld Name 1",
+        "description": "Voorbeeld Description 1",
+        "userUid": "Voorbeeld Useruid 1"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "player",
+          "slug": "player-voorbeeld-name-2-2"
+        },
+        "name": "Voorbeeld Name 2",
+        "description": "Voorbeeld Description 2",
+        "userUid": "Voorbeeld Useruid 2"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "player",
+          "slug": "player-voorbeeld-name-3-3"
+        },
+        "name": "Voorbeeld Name 3",
+        "description": "Voorbeeld Description 3",
+        "userUid": "Voorbeeld Useruid 3"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
           "schema": "setting",
           "slug": "setting-voorbeeld-name-1-1"
         },
@@ -1511,6 +1430,87 @@
         "name": "Voorbeeld Name 3",
         "description": "Voorbeeld Description 3",
         "status": "active"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "skill",
+          "slug": "skill-voorbeeld-name-1-1"
+        },
+        "name": "Voorbeeld Name 1",
+        "description": "Voorbeeld Description 1",
+        "effect": "Voorbeeld Effect 1",
+        "effects": [
+          "00000000-0000-4000-8000-000000000000"
+        ],
+        "requiredSkills": [
+          "00000000-0000-4000-8000-000000000000"
+        ],
+        "requiredStats": [
+          "00000000-0000-4000-8000-000000000000"
+        ],
+        "requiredConditions": [
+          "00000000-0000-4000-8000-000000000000"
+        ],
+        "requiredEffects": [
+          "00000000-0000-4000-8000-000000000000"
+        ],
+        "requiredScore": 1,
+        "setting": "00000000-0000-4000-8000-000000000000"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "skill",
+          "slug": "skill-voorbeeld-name-2-2"
+        },
+        "name": "Voorbeeld Name 2",
+        "description": "Voorbeeld Description 2",
+        "effect": "Voorbeeld Effect 2",
+        "effects": [
+          "00000000-0000-4000-8000-000000000001"
+        ],
+        "requiredSkills": [
+          "00000000-0000-4000-8000-000000000001"
+        ],
+        "requiredStats": [
+          "00000000-0000-4000-8000-000000000001"
+        ],
+        "requiredConditions": [
+          "00000000-0000-4000-8000-000000000001"
+        ],
+        "requiredEffects": [
+          "00000000-0000-4000-8000-000000000001"
+        ],
+        "requiredScore": 2,
+        "setting": "00000000-0000-4000-8000-000000000001"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "skill",
+          "slug": "skill-voorbeeld-name-3-3"
+        },
+        "name": "Voorbeeld Name 3",
+        "description": "Voorbeeld Description 3",
+        "effect": "Voorbeeld Effect 3",
+        "effects": [
+          "00000000-0000-4000-8000-000000000002"
+        ],
+        "requiredSkills": [
+          "00000000-0000-4000-8000-000000000002"
+        ],
+        "requiredStats": [
+          "00000000-0000-4000-8000-000000000002"
+        ],
+        "requiredConditions": [
+          "00000000-0000-4000-8000-000000000002"
+        ],
+        "requiredEffects": [
+          "00000000-0000-4000-8000-000000000002"
+        ],
+        "requiredScore": 3,
+        "setting": "00000000-0000-4000-8000-000000000002"
       },
       {
         "@self": {
