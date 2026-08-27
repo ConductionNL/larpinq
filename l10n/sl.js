@@ -151,7 +151,7 @@ OC.L10N.register(
         "Prerequisites": "Predpogoji",
         "None — this is a root skill.": "Brez — to je korenska veščina.",
         "Where the automation lives": "Kje živi avtomatizacija",
-        "Flows are what happens without anyone clicking: a reminder before a deadline passes, a confirmation sent on submission. This is where you read and edit them — nothing to build now.": "Flows je to, kar se zgodi, ne da bi kdo kliknil: opomnik pred iztekom roka, potrditev ob oddaji. Tukaj jih bereš in urejaš — zdaj ni treba ničesar graditi.",
+        "Flows are what happens without anyone clicking: a reminder before a deadline passes, a confirmation sent on submission. This is where you read and edit them. Nothing to build now.": "Flows je to, kar se zgodi, ne da bi kdo kliknil: opomnik pred iztekom roka, potrditev ob oddaji. Tukaj jih bereš in urejaš — zdaj ni treba ničesar graditi.",
         "Open Flows in the menu": "Odpri Flows v meniju"
     },
     "nplurals=2; plural=(n != 1);"

@@ -150,7 +150,7 @@
         "Prerequisites": "Prerekwiżiti",
         "None — this is a root skill.": "L-ebda waħda — din hija ħila bażika.",
         "Where the automation lives": "Fejn tgħix l-awtomazzjoni",
-        "Flows are what happens without anyone clicking: a reminder before a deadline passes, a confirmation sent on submission. This is where you read and edit them — nothing to build now.": "Il-Flows huma dak li jiġri mingħajr ma jikklikkja ħadd: tfakkira qabel ma jiskadi terminu, konferma mal-preżentazzjoni. Hawn taqrahom u teditjahom — m'hemm xejn x'tibni issa.",
+        "Flows are what happens without anyone clicking: a reminder before a deadline passes, a confirmation sent on submission. This is where you read and edit them. Nothing to build now.": "Il-Flows huma dak li jiġri mingħajr ma jikklikkja ħadd: tfakkira qabel ma jiskadi terminu, konferma mal-preżentazzjoni. Hawn taqrahom u teditjahom — m'hemm xejn x'tibni issa.",
         "Open Flows in the menu": "Iftaħ Flows fil-menu"
     },
     "plurals": {}

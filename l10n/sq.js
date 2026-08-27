@@ -151,7 +151,7 @@ OC.L10N.register(
         "Prerequisites": "Parakushtet",
         "None — this is a root skill.": "Asnjë — kjo është një shkathtësi bazë.",
         "Where the automation lives": "Ku jeton automatizimi",
-        "Flows are what happens without anyone clicking: a reminder before a deadline passes, a confirmation sent on submission. This is where you read and edit them — nothing to build now.": "Flows është ajo që ndodh pa klikuar askush: një kujtesë para se të skadojë një afat, një konfirmim në dorëzim. Këtu i lexoni dhe i redaktoni — nuk ka asgjë për të ndërtuar tani.",
+        "Flows are what happens without anyone clicking: a reminder before a deadline passes, a confirmation sent on submission. This is where you read and edit them. Nothing to build now.": "Flows është ajo që ndodh pa klikuar askush: një kujtesë para se të skadojë një afat, një konfirmim në dorëzim. Këtu i lexoni dhe i redaktoni — nuk ka asgjë për të ndërtuar tani.",
         "Open Flows in the menu": "Hapni Flows në meny"
     },
     "nplurals=2; plural=(n != 1);"

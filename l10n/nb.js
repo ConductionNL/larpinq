@@ -151,7 +151,7 @@ OC.L10N.register(
         "Prerequisites": "Forutsetninger",
         "None — this is a root skill.": "Ingen — dette er en grunnferdighet.",
         "Where the automation lives": "Der automatiseringen bor",
-        "Flows are what happens without anyone clicking: a reminder before a deadline passes, a confirmation sent on submission. This is where you read and edit them — nothing to build now.": "Flows er det som skjer uten at noen klikker: en påminnelse før en frist går ut, en bekreftelse ved innsending. Her leser og redigerer du dem — det er ingenting å bygge nå.",
+        "Flows are what happens without anyone clicking: a reminder before a deadline passes, a confirmation sent on submission. This is where you read and edit them. Nothing to build now.": "Flows er det som skjer uten at noen klikker: en påminnelse før en frist går ut, en bekreftelse ved innsending. Her leser og redigerer du dem — det er ingenting å bygge nå.",
         "Open Flows in the menu": "Åpne Flows i menyen"
     },
     "nplurals=2; plural=(n != 1);"

@@ -150,7 +150,7 @@
         "Prerequisites": "Forudsætninger",
         "None — this is a root skill.": "Ingen — dette er en grundfærdighed.",
         "Where the automation lives": "Hvor automatiseringen bor",
-        "Flows are what happens without anyone clicking: a reminder before a deadline passes, a confirmation sent on submission. This is where you read and edit them — nothing to build now.": "Flows er det, der sker, uden at nogen klikker: en påmindelse, før en frist udløber, en bekræftelse ved indsendelse. Her læser og redigerer du dem — der er ikke noget at bygge nu.",
+        "Flows are what happens without anyone clicking: a reminder before a deadline passes, a confirmation sent on submission. This is where you read and edit them. Nothing to build now.": "Flows er det, der sker, uden at nogen klikker: en påmindelse, før en frist udløber, en bekræftelse ved indsendelse. Her læser og redigerer du dem — der er ikke noget at bygge nu.",
         "Open Flows in the menu": "Åbn Flows i menuen"
     },
     "plurals": {}

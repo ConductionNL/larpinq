@@ -151,7 +151,7 @@ OC.L10N.register(
         "Prerequisites": "Esivaatimukset",
         "None — this is a root skill.": "Ei mitään — tämä on juuritaito.",
         "Where the automation lives": "Missä automaatio asuu",
-        "Flows are what happens without anyone clicking: a reminder before a deadline passes, a confirmation sent on submission. This is where you read and edit them — nothing to build now.": "Flows on se, mikä tapahtuu ilman että kukaan klikkaa: muistutus ennen määräajan umpeutumista, vahvistus lähetettäessä. Täällä luet ja muokkaat niitä — nyt ei tarvitse rakentaa mitään.",
+        "Flows are what happens without anyone clicking: a reminder before a deadline passes, a confirmation sent on submission. This is where you read and edit them. Nothing to build now.": "Flows on se, mikä tapahtuu ilman että kukaan klikkaa: muistutus ennen määräajan umpeutumista, vahvistus lähetettäessä. Täällä luet ja muokkaat niitä — nyt ei tarvitse rakentaa mitään.",
         "Open Flows in the menu": "Avaa Flows valikosta"
     },
     "nplurals=2; plural=(n != 1);"

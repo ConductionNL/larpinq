@@ -151,7 +151,7 @@ OC.L10N.register(
         "Prerequisites": "Prerequisiti",
         "None — this is a root skill.": "Nessuno — questa è un'abilità radice.",
         "Where the automation lives": "Dove vive l'automazione",
-        "Flows are what happens without anyone clicking: a reminder before a deadline passes, a confirmation sent on submission. This is where you read and edit them — nothing to build now.": "I Flows sono ciò che accade senza che nessuno clicchi: un promemoria prima che scada un termine, una conferma all'invio. Qui li leggi e li modifichi — non c'è nulla da costruire ora.",
+        "Flows are what happens without anyone clicking: a reminder before a deadline passes, a confirmation sent on submission. This is where you read and edit them. Nothing to build now.": "I Flows sono ciò che accade senza che nessuno clicchi: un promemoria prima che scada un termine, una conferma all'invio. Qui li leggi e li modifichi — non c'è nulla da costruire ora.",
         "Open Flows in the menu": "Apri Flows nel menu"
     },
     "nplurals=2; plural=(n != 1);"

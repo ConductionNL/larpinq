@@ -151,7 +151,7 @@ OC.L10N.register(
         "Prerequisites": "Predpoklady",
         "None — this is a root skill.": "Žiadne — toto je koreňová zručnosť.",
         "Where the automation lives": "Kde býva automatizácia",
-        "Flows are what happens without anyone clicking: a reminder before a deadline passes, a confirmation sent on submission. This is where you read and edit them — nothing to build now.": "Flows je to, čo sa deje bez toho, aby niekto klikol: pripomienka pred uplynutím lehoty, potvrdenie pri odoslaní. Tu ich čítaš a upravuješ — teraz netreba nič stavať.",
+        "Flows are what happens without anyone clicking: a reminder before a deadline passes, a confirmation sent on submission. This is where you read and edit them. Nothing to build now.": "Flows je to, čo sa deje bez toho, aby niekto klikol: pripomienka pred uplynutím lehoty, potvrdenie pri odoslaní. Tu ich čítaš a upravuješ — teraz netreba nič stavať.",
         "Open Flows in the menu": "Otvor Flows v ponuke"
     },
     "nplurals=2; plural=(n != 1);"

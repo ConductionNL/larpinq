@@ -150,7 +150,7 @@
         "Prerequisites": "Предварительные требования",
         "None — this is a root skill.": "Нет — это базовый навык.",
         "Where the automation lives": "Где живёт автоматизация",
-        "Flows are what happens without anyone clicking: a reminder before a deadline passes, a confirmation sent on submission. This is where you read and edit them — nothing to build now.": "Flows — это то, что происходит без единого клика: напоминание до истечения срока, подтверждение при отправке. Здесь вы их читаете и редактируете — сейчас ничего строить не нужно.",
+        "Flows are what happens without anyone clicking: a reminder before a deadline passes, a confirmation sent on submission. This is where you read and edit them. Nothing to build now.": "Flows — это то, что происходит без единого клика: напоминание до истечения срока, подтверждение при отправке. Здесь вы их читаете и редактируете — сейчас ничего строить не нужно.",
         "Open Flows in the menu": "Откройте Flows в меню"
     },
     "plurals": {}

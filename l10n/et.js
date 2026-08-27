@@ -151,7 +151,7 @@ OC.L10N.register(
         "Prerequisites": "Eeldused",
         "None — this is a root skill.": "Puuduvad — see on juuroskus.",
         "Where the automation lives": "Kus automaatika elab",
-        "Flows are what happens without anyone clicking: a reminder before a deadline passes, a confirmation sent on submission. This is where you read and edit them — nothing to build now.": "Flows on see, mis juhtub ilma et keegi klõpsaks: meeldetuletus enne tähtaja möödumist, kinnitus esitamisel. Siin loed ja muudad neid — praegu pole midagi ehitada.",
+        "Flows are what happens without anyone clicking: a reminder before a deadline passes, a confirmation sent on submission. This is where you read and edit them. Nothing to build now.": "Flows on see, mis juhtub ilma et keegi klõpsaks: meeldetuletus enne tähtaja möödumist, kinnitus esitamisel. Siin loed ja muudad neid — praegu pole midagi ehitada.",
         "Open Flows in the menu": "Ava menüüst Flows"
     },
     "nplurals=2; plural=(n != 1);"
