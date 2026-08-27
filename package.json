@@ -38,14 +38,14 @@
 		"extends @nextcloud/browserslist-config"
 	],
 	"dependencies": {
-		"@conduction/nextcloud-vue": "^2.3.0",
+		"@conduction/nextcloud-vue": "^2.19.0",
 		"@nextcloud/auth": "^2.5.0",
 		"@nextcloud/axios": "~2.5.2",
 		"@nextcloud/capabilities": "^1.2.1",
 		"@nextcloud/dialogs": "^7.4.1",
-		"@nextcloud/logger": "^3.0.2",
 		"@nextcloud/initial-state": "^2.2.0",
 		"@nextcloud/l10n": "3.4.1",
+		"@nextcloud/logger": "^3.0.2",
 		"@nextcloud/router": "^3.1.0",
 		"@nextcloud/vue": "^9.5.0",
 		"@vueuse/core": "^14.0.0",
