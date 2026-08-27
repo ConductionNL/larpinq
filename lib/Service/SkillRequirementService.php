@@ -1,7 +1,7 @@
 <?php
 
 /**
- * SkillRequirementService for LarpingApp
+ * SkillRequirementService for Larpinq
  *
  * Server-authoritative enforcement of skill prerequisites and the XP budget on
  * character-assignment writes. Consumes the existing stat engine
@@ -11,7 +11,7 @@
  * requiredEffects).
  *
  * @category  Service
- * @package   OCA\LarpingApp\Service
+ * @package   OCA\Larpinq\Service
  * @author    Ruben Linde <ruben@larpingapp.com>
  * @copyright 2026 Conduction B.V.
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
@@ -22,7 +22,7 @@
 
 declare(strict_types=1);
 
-namespace OCA\LarpingApp\Service;
+namespace OCA\Larpinq\Service;
 
 use Psr\Log\LoggerInterface;
 
@@ -35,7 +35,7 @@ use Psr\Log\LoggerInterface;
  * requirement report.
  *
  * @category Service
- * @package  OCA\LarpingApp\Service
+ * @package  OCA\Larpinq\Service
  * @author   Ruben Linde <ruben@larpingapp.com>
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
@@ -356,7 +356,7 @@ class SkillRequirementService {
 			$objects = $this->objectFetcher->getObjects($objectType);
 		} catch (\Throwable $e) {
 			$this->logger->debug(
-				'LarpingApp: SkillRequirementService could not load ' . $objectType . '; degrading to data-only.',
+				'Larpinq: SkillRequirementService could not load ' . $objectType . '; degrading to data-only.',
 				['exception' => $e]
 			);
 			return [];

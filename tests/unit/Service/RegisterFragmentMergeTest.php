@@ -4,7 +4,7 @@
  * Unit tests for the ADR-037 register fragment deep-merge.
  *
  * @category Test
- * @package  OCA\LarpingApp\Tests\Unit\Service
+ * @package  OCA\Larpinq\Tests\Unit\Service
  * @author   Ruben Linde <ruben@larpingapp.com>
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
@@ -12,9 +12,9 @@
 
 declare(strict_types=1);
 
-namespace OCA\LarpingApp\Tests\Unit\Service;
+namespace OCA\Larpinq\Tests\Unit\Service;
 
-use OCA\LarpingApp\Service\ConfigFileLoaderService;
+use OCA\Larpinq\Service\ConfigFileLoaderService;
 use PHPUnit\Framework\TestCase;
 use ReflectionMethod;
 
@@ -81,13 +81,13 @@ class RegisterFragmentMergeTest extends TestCase {
 	 * @return void
 	 */
 	public function testScalarOverlayOverwrites(): void {
-		$base = ['info' => ['version' => '1.0.0', 'title' => 'LarpingApp']];
+		$base = ['info' => ['version' => '1.0.0', 'title' => 'Larpinq']];
 		$overlay = ['info' => ['version' => '1.1.0']];
 
 		$merged = $this->deepMerge($base, $overlay);
 
 		$this->assertSame('1.1.0', $merged['info']['version']);
-		$this->assertSame('LarpingApp', $merged['info']['title']);
+		$this->assertSame('Larpinq', $merged['info']['title']);
 
 	}//end testScalarOverlayOverwrites()
 
@@ -127,7 +127,7 @@ class RegisterFragmentMergeTest extends TestCase {
 	 */
 	public function testEventCheckinRosterFragmentAddsAttendanceSchema(): void {
 		$baseDir = dirname(__DIR__, 3);
-		$monolith = json_decode((string)file_get_contents($baseDir . '/lib/Settings/larpingapp_register.json'), true);
+		$monolith = json_decode((string)file_get_contents($baseDir . '/lib/Settings/larpinq_register.json'), true);
 		$fragment = json_decode((string)file_get_contents($baseDir . '/lib/Settings/register.d/event-checkin-roster.json'), true);
 
 		$this->assertIsArray($monolith, 'monolith register JSON must parse');

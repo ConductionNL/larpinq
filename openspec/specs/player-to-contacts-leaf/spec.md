@@ -5,7 +5,7 @@ TBD - created by archiving change player-to-contacts-leaf. Update Purpose after 
 ## Requirements
 ### Requirement: Player detail page MUST host the OR contacts leaf
 
-The Player detail page MUST surface the OpenRegister contacts integration leaf for player person data. The leaf MUST be obtained through the OR integration registry (ADR-019) and LarpingApp MUST NOT maintain an app-local person model duplicating OR contacts (ADR-022). The host is `src/views/ObjectDetail.vue` for the `player` object type.
+The Player detail page MUST surface the OpenRegister contacts integration leaf for player person data. The leaf MUST be obtained through the OR integration registry (ADR-019) and Larpinq MUST NOT maintain an app-local person model duplicating OR contacts (ADR-022). The host is `src/views/ObjectDetail.vue` for the `player` object type.
 
 #### Scenario: Contacts leaf renders on a player detail page
 
@@ -17,18 +17,18 @@ The Player detail page MUST surface the OpenRegister contacts integration leaf f
 
 ### Requirement: Person attributes MUST be owned by the contacts leaf
 
-The person attributes (display name, email, phone, address, notes) MUST be owned by the OpenRegister contacts abstraction via the leaf, and LarpingApp MUST follow the OR contacts schema rather than store a parallel set of person fields on the Player object.
+The person attributes (display name, email, phone, address, notes) MUST be owned by the OpenRegister contacts abstraction via the leaf, and Larpinq MUST follow the OR contacts schema rather than store a parallel set of person fields on the Player object.
 
 #### Scenario: Editing person data through the contacts leaf
 
 - GIVEN a player linked to an OR contact
 - WHEN the game master edits the phone number in the contacts leaf and saves
 - THEN the phone number MUST be persisted through the contacts leaf / OR contacts abstraction
-- AND LarpingApp MUST NOT write a duplicate phone field on the Player object
+- AND Larpinq MUST NOT write a duplicate phone field on the Player object
 
-### Requirement: In-game Player linkage MUST remain in LarpingApp
+### Requirement: In-game Player linkage MUST remain in Larpinq
 
-LarpingApp MUST keep the LARP-domain linkage between a Player and their characters (the character `ocName` reference, PLR-006) and the event participation (`players[]`) in-app; only the person/contact attributes are delegated to the contacts leaf.
+Larpinq MUST keep the LARP-domain linkage between a Player and their characters (the character `ocName` reference, PLR-006) and the event participation (`players[]`) in-app; only the person/contact attributes are delegated to the contacts leaf.
 
 #### Scenario: Character ocName still resolves after contacts adoption
 

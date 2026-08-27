@@ -35,7 +35,7 @@ services:
     volumes:
       - nextcloud:/var/www/html:rw
       - ./custom-apps:/var/www/html/custom_apps
-      - .:/var/www/html/custom_apps/larpingapp
+      - .:/var/www/html/custom_apps/larpinq
       - .:/var/www/html/custom_apps/opencatalogi
     environment:
       - MYSQL_PASSWORD='!ChangeMe!'

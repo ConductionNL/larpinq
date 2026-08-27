@@ -1,7 +1,7 @@
 <?php
 
 /**
- * EventRosterService for LarpingApp
+ * EventRosterService for Larpinq
  *
  * Owns the event participation domain: who is cast in an event, what their
  * attendance status is, and the render context for the GM run-sheet. Extracted
@@ -13,7 +13,7 @@
  * with no per-row status, so the event page never breaks.
  *
  * @category  Service
- * @package   OCA\LarpingApp\Service
+ * @package   OCA\Larpinq\Service
  * @author    Ruben Linde <ruben@larpingapp.com>
  * @copyright 2026 Conduction B.V.
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
@@ -24,7 +24,7 @@
 
 declare(strict_types=1);
 
-namespace OCA\LarpingApp\Service;
+namespace OCA\Larpinq\Service;
 
 use DateTimeImmutable;
 use DateTimeInterface;
@@ -33,7 +33,7 @@ use DateTimeInterface;
  * Resolves event casts, attendance records and run-sheet context.
  *
  * @category Service
- * @package  OCA\LarpingApp\Service
+ * @package  OCA\Larpinq\Service
  * @author   Ruben Linde <ruben@larpingapp.com>
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com

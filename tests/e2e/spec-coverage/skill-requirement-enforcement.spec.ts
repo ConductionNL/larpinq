@@ -8,7 +8,7 @@
  * an OpenRegister pre-write veto listener (CharacterRequirementListener) and on
  * the read-only requirement-report endpoint, so the meaningful assertions are at
  * the API layer (covered by the Newman collection and PHPUnit), not in the SPA.
- * The larpingapp SPA renders character assignment through the generic
+ * The larpinq SPA renders character assignment through the generic
  * @conduction/nextcloud-vue object editor (manifest-v2 declarative pages); there
  * is no bespoke Add-Skill modal in this app's src/ to drive, so the UI pre-check
  * tasks are deferred (see tasks.md). This file is the e2e regression net that
@@ -20,7 +20,7 @@
 
 import { test, expect } from '@playwright/test'
 
-const BASE = '/apps/larpingapp'
+const BASE = '/apps/larpinq'
 
 test.describe('skill-requirement-enforcement', () => {
 	test('requirement-report endpoint is reachable for an authenticated user', async ({

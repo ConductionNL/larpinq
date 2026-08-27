@@ -1,10 +1,10 @@
 /*
- * SPDX-FileCopyrightText: 2026 Larping Contributors
+ * SPDX-FileCopyrightText: 2026 Larpinq Contributors
  * SPDX-License-Identifier: EUPL-1.2
  *
  * HIGH-VALUE correctness workflow: character-stat computation.
  *
- * This is the heart of larpingapp — proving that EFFECTS carried by a
+ * This is the heart of larpinq — proving that EFFECTS carried by a
  * character's skills/items/conditions actually COMPUTE onto the character's
  * ability scores, with the exact expected numeric result. base 10 + an
  * effect of "+3 strength" must yield strength 13.
@@ -48,7 +48,7 @@
  *     MagicMapper::findAll) returns EMPTY in this environment, so even if a
  *     view existed it would compute against zero abilities (see
  *     FINDALL_EMPTY_BLOCKER below).
- * These are environment/OR-data defects, not larpingapp source bugs. The
+ * These are environment/OR-data defects, not larpinq source bugs. The
  * algorithm itself is correct — proven by the active assertions here and by
  * the 20-case unit suite in tests/unit/Service/CharacterServiceTest.php.
  *
@@ -118,7 +118,7 @@ const ledger = new FixtureLedger()
 
 test.beforeAll(async () => {
 	api = await newApi()
-	// Resolve register/schema ids from LarpingApp's own settings API so the
+	// Resolve register/schema ids from Larpinq's own settings API so the
 	// workflow never trusts a stale hardcoded id (e.g. the old item=22 that
 	// pointed at a foreign QTI schema). Instance-independent.
 	await resolveSchemaIds(api)
@@ -290,7 +290,7 @@ test.describe('character-stat computation — correctness (real service, real da
 			modifier: 3,
 			modification: 'positive',
 		})
-		await page.goto(`/apps/larpingapp/characters/${s.characterId}`)
+		await page.goto(`/apps/larpinq/characters/${s.characterId}`)
 		// ADR-074 rule 4: `networkidle` never settles on Nextcloud.
 		await page
 			.locator('#app-content, .app-content, #content')

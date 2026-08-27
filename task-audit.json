@@ -5,7 +5,7 @@
       "task": "1.1",
       "file": "openspec/changes/character-photos-leaf/design.md",
       "ok": true,
-      "note": "Photos leaf is an ADR-019 integration registry integration. CnObjectSidebar with useRegistry=true (default) in App.vue surfaces it automatically when OR registers the photos integration. No LarpingApp code change needed beyond the schema configuration — ADR-019 Stage 1 is upstream in OR."
+      "note": "Photos leaf is an ADR-019 integration registry integration. CnObjectSidebar with useRegistry=true (default) in App.vue surfaces it automatically when OR registers the photos integration. No Larpinq code change needed beyond the schema configuration — ADR-019 Stage 1 is upstream in OR."
     },
     {
       "task": "1.2",
@@ -15,7 +15,7 @@
     },
     {
       "task": "2.1",
-      "file": "lib/Settings/larpingapp_register.json",
+      "file": "lib/Settings/larpinq_register.json",
       "ok": true,
       "note": "linkedTypes:[\"photos\"] enables OR photos integration leaf for character objects. No app-local image column added. ADR-022 compliant."
     },

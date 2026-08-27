@@ -2,13 +2,13 @@
 kind: code
 ---
 
-# Proposal: LarpingApp Adopts OpenRegister AppHost (Observability + Boilerplate)
+# Proposal: Larpinq Adopts OpenRegister AppHost (Observability + Boilerplate)
 
 ## Problem
 
-LarpingApp has **never been ADR-006 compliant**: it ships no `HealthController`, no `MetricsController`, and no `/api/health` or `/api/metrics` routes at all. The 2026-06-12 fleet observability inventory lists it (with softwarecatalog and zaakafhandelapp) as a **no-endpoint app** — probes and Prometheus scrapes against it 404 today. There is nothing to migrate; there is a hole to fill.
+Larpinq has **never been ADR-006 compliant**: it ships no `HealthController`, no `MetricsController`, and no `/api/health` or `/api/metrics` routes at all. The 2026-06-12 fleet observability inventory lists it (with softwarecatalog and zaakafhandelapp) as a **no-endpoint app** — probes and Prometheus scrapes against it 404 today. There is nothing to migrate; there is a hole to fill.
 
-At the same time, LarpingApp carries the full boilerplate stack that the AppHost extraction was built to delete — all drifted copies of the petstore skeleton, differing from pipelinq/procest/docudesk only in namespace tokens:
+At the same time, Larpinq carries the full boilerplate stack that the AppHost extraction was built to delete — all drifted copies of the petstore skeleton, differing from pipelinq/procest/docudesk only in namespace tokens:
 
 - `lib/Controller/DashboardController.php` (75 lines — SPA page + catch-all)
 - `lib/Controller/PreferencesController.php` (160 lines — per-user key get/set)
@@ -17,7 +17,7 @@ At the same time, LarpingApp carries the full boilerplate stack that the AppHost
 - `lib/Service/SettingsLoadService.php` (201 lines — `importFromApp` + ADR-037 fragment-signature version folding + config writeback)
 - `lib/Service/SettingsMapBuilder.php` (170 lines — slug→id maps from import results)
 - `lib/Service/ConfigFileLoaderService.php` (267 lines — register JSON load + `register.d/` deep-merge + signature, ADR-037)
-- `lib/Settings/LarpingAppAdmin.php` + `lib/Sections/LarpingAppAdmin.php` (admin settings + section)
+- `lib/Settings/LarpinqAdmin.php` + `lib/Sections/LarpinqAdmin.php` (admin settings + section)
 - `lib/Repair/InitializeRegister.php` (97 lines — repair-step register import)
 - `lib/Listener/DeepLinkRegistrationListener.php` (103 lines — hardcoded deep-link patterns)
 - `lib/AppInfo/Application.php` (~107 lines) and `appinfo/routes.php` (hand-rolled route array)
@@ -30,16 +30,16 @@ Adopt both halves of the AppHost (`apphost-observability-engine` + `apphost-boil
 
 ### Observability: from nothing to compliant with zero descriptors
 
-This is the headline. Because LarpingApp declares OpenRegister in its manifest `dependencies`, the engine's **defaults** already produce a correct ADR-006 surface — `health = database + orAvailable`, `metrics = larpingapp_info + larpingapp_up` — without declaring a single check or metric. Routing `Routes::standard()` is enough to take both endpoints from 404 to compliant.
+This is the headline. Because Larpinq declares OpenRegister in its manifest `dependencies`, the engine's **defaults** already produce a correct ADR-006 surface — `health = database + orAvailable`, `metrics = larpinq_info + larpinq_up` — without declaring a single check or metric. Routing `Routes::standard()` is enough to take both endpoints from 404 to compliant.
 
-We additionally declare exactly **one** metric descriptor as the worked example for the app's main entity (the `character` schema, slug `character` in `lib/Settings/larpingapp_register.json`, register slug `larpingapp`):
+We additionally declare exactly **one** metric descriptor as the worked example for the app's main entity (the `character` schema, slug `character` in `lib/Settings/larpinq_register.json`, register slug `larpingapp`):
 
 ```jsonc
 // src/manifest.json
 "observability": {
   "metrics": [
     { "name": "characters_total", "type": "gauge", "help": "Characters in the register",
-      "source": { "kind": "objectCount", "register": "larpingapp", "schema": "character" } }
+      "source": { "kind": "objectCount", "register": "larpinq", "schema": "character" } }
   ]
 }
 ```
@@ -64,8 +64,8 @@ No `health.checks` block: the defaults (`database` + `orAvailable`) are precisel
 **Shrink to one-line stubs** (NC demands concrete classes in the app namespace — info.xml `<repair-steps>` / `<settings>`):
 
 - `lib/Repair/InitializeRegister.php` → `extends GenericInitializeSettings {}`
-- `lib/Settings/LarpingAppAdmin.php` → `extends GenericAdminSettings {}`
-- `lib/Sections/LarpingAppAdmin.php` → `extends GenericSettingsSection {}`
+- `lib/Settings/LarpinqAdmin.php` → `extends GenericAdminSettings {}`
+- `lib/Sections/LarpinqAdmin.php` → `extends GenericSettingsSection {}`
 
 **Rewrite**:
 
@@ -81,7 +81,7 @@ No `health.checks` block: the defaults (`database` + `orAvailable`) are precisel
 
 **Kept — genuinely app-specific** (untouched by this change):
 
-- `lib/Controller/CharactersController.php` + `lib/Service/CharacterService.php` — character stat computation and PDF download are LarpingApp's actual domain.
+- `lib/Controller/CharactersController.php` + `lib/Service/CharacterService.php` — character stat computation and PDF download are Larpinq's actual domain.
 - `lib/Service/RegisterObjectFetcher.php` — the backend data-access path for `CharacterService` (per-type mapper resolution with the resolver/legacy fallback and the #212 UUID-only IDOR guard). It is not in the AppHost class inventory and serves only domain code; flagged as a *future* generalisation candidate, out of scope here.
 
 ## Binding adoption hazard: registration-name displacement (last registration wins)
@@ -94,20 +94,20 @@ made AFTER the `Bootstrap::register()` call survive** (last registration wins). 
 exactly this and now re-registers its domain-divergent concretes in an explicit override block
 directly after the call — see the override block in `doriath/lib/AppInfo/Application.php`.
 
-Names LarpingApp loses the moment it calls `Bootstrap::register($context, self::APP_ID)`
+Names Larpinq loses the moment it calls `Bootstrap::register($context, self::APP_ID)`
 (source: `openregister/lib/AppHost/Bootstrap.php`, methods `registerControllers()`,
 `registerServices()`, `registerRepairSteps()`, `registerAdminSettings()`,
 `registerDeepLinkListener()`):
 
 | Displaced name | Bound to |
 |---|---|
-| `OCA\LarpingApp\Controller\DashboardController` | `GenericDashboardController` |
-| `OCA\LarpingApp\Controller\PreferencesController` | `GenericPreferencesController` |
-| `OCA\LarpingApp\Controller\SettingsController` | `GenericSettingsController` |
-| `OCA\LarpingApp\Service\SettingsService` | `AppHostSettingsService` |
-| `OCA\LarpingApp\Service\ActionAuthService`, `OCA\LarpingApp\Service\RegisterConfigResolver` | AppHost generics |
-| `OCA\LarpingApp\Listener\DeepLinkRegistrationListener` | `GenericDeepLinkRegistrationListener` |
-| `OCA\LarpingApp\Controller\HealthController` / `MetricsController` | observability generics (new names, no conflict) |
+| `OCA\Larpinq\Controller\DashboardController` | `GenericDashboardController` |
+| `OCA\Larpinq\Controller\PreferencesController` | `GenericPreferencesController` |
+| `OCA\Larpinq\Controller\SettingsController` | `GenericSettingsController` |
+| `OCA\Larpinq\Service\SettingsService` | `AppHostSettingsService` |
+| `OCA\Larpinq\Service\ActionAuthService`, `OCA\Larpinq\Service\RegisterConfigResolver` | AppHost generics |
+| `OCA\Larpinq\Listener\DeepLinkRegistrationListener` | `GenericDeepLinkRegistrationListener` |
+| `OCA\Larpinq\Controller\HealthController` / `MetricsController` | observability generics (new names, no conflict) |
 
 Four concrete defects follow, none of them covered by the plan above. All four surface as
 runtime 500s or silent regressions, never as unit-test failures — the unit suite mocks these
@@ -117,7 +117,7 @@ classes and never resolves them through the DI container.
 `lib/Controller/SetupController.php` is a *kept* file (ADR-042 first-time setup wizard; it
 appears nowhere in the deletion table above) and declares
 `private readonly SettingsService $settingsService`. `AppHostSettingsService` is a standalone
-`class AppHostSettingsService` — it does **not** extend `OCA\LarpingApp\Service\SettingsService`.
+`class AppHostSettingsService` — it does **not** extend `OCA\Larpinq\Service\SettingsService`.
 Once the name is displaced, the container hands `SetupController` an `AppHostSettingsService`
 and PHP throws a `TypeError` at construction. Identical mechanism to the doriath
 `/api/dashboard/summary` 500.
@@ -132,8 +132,8 @@ to keep the URL while resolving to a method that exists.
 
 **H3 — the three "one-line stubs" are not autowirable, and are not displaced either.**
 Bootstrap registers `Repair\InitializeSettings`, `Settings\AdminSettings` and
-`Sections\SettingsSection`. LarpingApp's `appinfo/info.xml` names `Repair\InitializeRegister`,
-`Settings\LarpingAppAdmin` and `Sections\LarpingAppAdmin` — **different names, so the aliases
+`Sections\SettingsSection`. Larpinq's `appinfo/info.xml` names `Repair\InitializeRegister`,
+`Settings\LarpinqAdmin` and `Sections\LarpinqAdmin` — **different names, so the aliases
 never fire for them**. A bare `class InitializeRegister extends GenericInitializeSettings {}`
 inherits a constructor whose first parameter is `string $appId`; `GenericAdminSettings`
 requires `string $appId, string $sectionId, int $priority`; `GenericSettingsSection` requires
@@ -143,14 +143,14 @@ requires `string $appId, string $sectionId, int $priority`; `GenericSettingsSect
 `appId` / `sectionId` / `priority` / `name` / `iconFile` is among them, and
 `SimpleContainer::buildClassConstructorParameters()` rethrows for a builtin-typed parameter
 with no default value. Result: the install and post-migration repair steps throw on
-`occ app:enable larpingapp`, and the admin settings section throws when Settings is opened.
+`occ app:enable larpinq`, and the admin settings section throws when Settings is opened.
 
 **H4 — `CharacterRequirementListener` silently stops registering (security regression).**
-Apps register alphabetically, so `larpingapp` registers *before* `openregister` and
+Apps register alphabetically, so `larpinq` registers *before* `openregister` and
 `OCA\OpenRegister\AppHost\Bootstrap` is not yet autoloadable through Nextcloud's app loader.
 An unguarded `Bootstrap::register()` throws `\Error`, which aborts the whole
 `Application::register()` — every `registerEventListener()` placed after it silently never runs.
-For LarpingApp that means the server-authoritative skill-requirement / XP-budget enforcement on
+For Larpinq that means the server-authoritative skill-requirement / XP-budget enforcement on
 character writes (`CharacterRequirementListener`, bound to OpenRegister's `ObjectCreatingEvent`
 and `ObjectUpdatingEvent`) is **off**, with no error logged anywhere. This is precisely the
 incident documented in the `LOAD-ORDER HAZARD` comment in `doriath/lib/AppInfo/Application.php`,
@@ -160,7 +160,7 @@ where the audit listener recorded zero dispatched events.
 concrete class **after** `Bootstrap::register()` with an explicit factory closure — doriath's
 override-block pattern, last registration wins — or (ii) prove the concrete is genuinely
 deleted *and* the generic is behaviour-identical, method-for-method, for every route that
-targets it. **Autowirability is not a defence.** LarpingApp's `DashboardController`
+targets it. **Autowirability is not a defence.** Larpinq's `DashboardController`
 (`__construct($appName, IRequest $request)` — the untyped `$appName` resolves because
 `DIContainer` registers the `appName` parameter and `SimpleContainer` falls back to the
 parameter *name* for untyped parameters), `PreferencesController` and `SettingsController` are
@@ -168,11 +168,11 @@ all autowirable today, and it changes nothing: `registerService()` short-circuit
 entirely, and `SettingsController` additionally becomes unconstructible because its own
 `SettingsService` dependency name has been displaced out from under it.
 
-**Checked and NOT applicable to LarpingApp** (recorded so nobody re-checks): the CSP half of
-the doriath failure does not apply here — LarpingApp calls `allowEvalWasm()` nowhere (a sweep
+**Checked and NOT applicable to Larpinq** (recorded so nobody re-checks): the CSP half of
+the doriath failure does not apply here — Larpinq calls `allowEvalWasm()` nowhere (a sweep
 that finds doriath's two call sites, `DashboardController.php:119` and
-`PublicShellController.php:79`, returns nothing for larpingapp), so no served CSP can lose
-`wasm-unsafe-eval`. Likewise LarpingApp's `DashboardController` has no `summary()` method and
+`PublicShellController.php:79`, returns nothing for larpinq), so no served CSP can lose
+`wasm-unsafe-eval`. Likewise Larpinq's `DashboardController` has no `summary()` method and
 `appinfo/routes.php` has no `/api/dashboard/summary` route, so there is no dashboard-summary
 endpoint to break; its `page()` is a bare `TemplateResponse(APP_ID, 'index')`, which is exactly
 what `GenericDashboardController::page()` returns.
@@ -180,7 +180,7 @@ what `GenericDashboardController::page()` returns.
 ## Impact
 
 - **Deleted**: 8 files, ~1,350 lines of drifted boilerplate. **Stubbed**: 3 files to one-liners. **Rewritten**: `Application.php`, `routes.php`. **Modified**: `src/manifest.json` (observability block + deepLinks), `templates/index.php` only if the generic dashboard controller requires it (parity rule says it doesn't).
-- **Gained**: `/apps/larpingapp/api/health` (public, ADR-006) and `/apps/larpingapp/api/metrics` (admin, Prometheus text 0.0.4) — endpoints this app has never had. The OR Newman contract collection guards them from day one.
+- **Gained**: `/apps/larpinq/api/health` (public, ADR-006) and `/apps/larpinq/api/metrics` (admin, Prometheus text 0.0.4) — endpoints this app has never had. The OR Newman contract collection guards them from day one.
 - **Unit tests**: tests for the deleted services (`SettingsServiceTest`, `ConfigFileLoaderServiceTest`, `SettingsMapBuilderTest`, `RegisterFragmentMergeTest`) are deleted with their subjects; behaviour is covered by AppHost's own suites.
 - **Risk**: behavioural drift between the deleted copies and the generics — mitigated by the binding parity rules in `apphost-boilerplate-controllers` (route names, response shapes, preference keys, chunk-loading order) plus the existing 113-test behavioural e2e suite, which must stay green.
 

@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2026 Larping Contributors
+ * SPDX-FileCopyrightText: 2026 Larpinq Contributors
  * SPDX-License-Identifier: EUPL-1.2
  *
  * Playwright globalSetup — logs into Nextcloud once and persists the
@@ -29,14 +29,14 @@ import { resolveBaseURL } from './_base-url'
 const AUTH_DIR = path.resolve(__dirname, '.auth')
 const STORAGE_STATE = path.join(AUTH_DIR, 'admin.json')
 const APP_ROOT = path.resolve(__dirname, '..', '..')
-const BUNDLE_PATH = path.join(APP_ROOT, 'js', 'larpingapp-main.js')
+const BUNDLE_PATH = path.join(APP_ROOT, 'js', 'larpinq-main.js')
 
 /**
- * Ensure the webpack bundle exists before specs hit `/apps/larpingapp/`.
+ * Ensure the webpack bundle exists before specs hit `/apps/larpinq/`.
  *
  * The shared `ConductionNL/.github/quality.yml` Playwright job runs
  * `npm ci` + `npx playwright install` before the spec run, but never
- * `npm run build`. On a fresh CI VM the `js/larpingapp-main.js`
+ * `npm run build`. On a fresh CI VM the `js/larpinq-main.js`
  * artefact doesn't exist, so the rendered page loads a 404 script tag
  * and the Vue app never mounts — every selector wait then times out.
  *

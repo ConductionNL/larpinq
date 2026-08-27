@@ -1,5 +1,5 @@
 /**
- * LarpingApp landing page.
+ * Larpinq landing page.
  *
  * Composes the brand <DetailHero> + <WidgetShelf> from
  * @conduction/docusaurus-preset/components, mirroring the connext page
@@ -22,8 +22,8 @@ import {
 } from '@conduction/docusaurus-preset/components';
 
 /* Spike-chart glyph from sites/www/src/pages/apps/larpingapp.mdx —
-   line-chart with a sharp peak, the LarpingApp brand glyph. */
-const LARPINGAPP_ICON = (
+   line-chart with a sharp peak, the Larpinq brand glyph. */
+const LARPINQ_ICON = (
   <svg viewBox="0 0 24 24">
     <path d="M3 12h6l3-7 3 14 3-7h3" />
   </svg>
@@ -281,37 +281,37 @@ const WIDGETS = [
 export default function Home() {
   return (
     <Layout
-      title="LarpingApp, character and event management for LARP groups"
+      title="Larpinq, character and event management for LARP groups"
       description="Characters, rules, scenes, and NPC stats for live-action role-play. Build a setting in Nextcloud and run sessions without spreadsheets-with-six-tabs."
     >
       <main className="marketing-page">
         <DetailHero
-          appId="larpingapp"
+          appId="larpinq"
           background="cobalt"
           status={{ label: 'Beta', color: 'var(--c-orange-knvb)' }}
           version="v0.1"
           locales="NL · EN"
-          title="LarpingApp"
+          title="Larpinq"
           tagline={TAGLINE}
           primaryCta={{
             label: 'Install from app store',
-            href: 'https://apps.nextcloud.com/apps/larpingapp',
+            href: 'https://apps.nextcloud.com/apps/larpinq',
             tone: 'orange',
           }}
           secondaryCta={{ label: 'Read the docs', href: '/docs/FEATURES' }}
           tertiaryCta={{
             label: 'View on GitHub',
-            href: 'https://codeberg.org/Conduction/larpingapp',
+            href: 'https://github.com/ConductionNL/larpinq',
           }}
           iconColor="var(--c-orange-knvb)"
-          icon={LARPINGAPP_ICON}
-          illustration={<AppMock app="larpingapp" />}
+          icon={LARPINQ_ICON}
+          illustration={<AppMock app="larpinq" />}
         />
 
         <WidgetShelf
           eyebrow="Widgets we ship"
           title="Your campaign on the Nextcloud home screen."
-          lede="Install LarpingApp and these widgets show up on every player's dashboard. Character to the left, calendar to the right, scene log below."
+          lede="Install Larpinq and these widgets show up on every player's dashboard. Character to the left, calendar to the right, scene log below."
           widgets={WIDGETS}
         />
       </main>

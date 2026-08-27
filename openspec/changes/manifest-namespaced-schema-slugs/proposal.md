@@ -7,7 +7,7 @@ kind: config
 ## Summary
 Repoints every `src/manifest.json` reference from the bare schema slugs `"event"`
 and `"item"` to their real, namespaced OpenRegister slugs `"larping_event"` and
-`"larping_item"`. `lib/Settings/larpingapp_register.json` already declares these
+`"larping_item"`. `lib/Settings/larpinq_register.json` already declares these
 two schemas under the namespaced slugs (to avoid a global OpenRegister slug
 collision — see Motivation), but `src/manifest.json` was never updated to match,
 so OpenRegister resolves `"event"`/`"item"` to a *different app's* schema of the
@@ -15,10 +15,10 @@ same bare name. This is a pure manifest JSON edit — no schema, PHP, or Vue cod
 changes.
 
 ## Motivation
-- `lib/Settings/larpingapp_register.json` defines the `event` and `item` schemas
+- `lib/Settings/larpinq_register.json` defines the `event` and `item` schemas
   with real slugs `larping_event` and `larping_item` respectively (confirmed via
   `.components.schemas.event`/`.components.schemas.item`'s
-  `x-openregister-schema-slug`), while every other larpingapp schema
+  `x-openregister-schema-slug`), while every other Larpinq schema
   (`character`, `player`, `ability`, `skill`, `condition`, `effect`, `setting`,
   `xpAward`) keeps its bare key as its real slug.
 - OpenRegister resolves a manifest page/widget's `"schema"` reference by a
@@ -33,14 +33,14 @@ changes.
   detail pages, dashboard KPI/list widgets, and one onboarding `advanceOn` rule.
   Because OpenRegister resolves by bare slug, every one of these currently
   resolves to the *wrong* schema, so the Events and Items create/list/detail
-  forms render fields from an unrelated app's schema instead of larpingapp's own
+  forms render fields from an unrelated app's schema instead of Larpinq's own
   `startDate`/`endDate`/`location` (event) or item fields.
 - This is a plain configuration-drift bug: the register JSON was namespaced
   correctly, but the manifest was never updated to follow. Fixing the manifest
   references is the complete fix — no schema change is needed or wanted.
 
 ## Affected Projects
-- [x] Project: `larpingapp` — `src/manifest.json` schema-reference repoint only
+- [x] Project: `larpinq` — `src/manifest.json` schema-reference repoint only
 
 ## Capabilities
 - `game-mechanics` — MODIFIED (Item CRUD: manifest schema-slug requirement)
@@ -58,7 +58,7 @@ changes.
   `item` that also needs repointing (investigated — none found; see design.md).
 
 ### Out of Scope
-- Any change to `lib/Settings/larpingapp_register.json` — the `larping_event`/
+- Any change to `lib/Settings/larpinq_register.json` — the `larping_event`/
   `larping_item` slugs are already correct there; this change only makes the
   manifest agree with them.
 - Renaming the `event`/`item` *object types* used elsewhere in this app's own
@@ -70,13 +70,13 @@ changes.
 - Resolving the upstream slug-collision mechanism itself (OpenRegister's global,
   non-namespaced `lower(slug)` resolution) — that is a cross-app OpenRegister
   concern already tracked via `reference_or-cross-app-schema-slug-collision.md`;
-  this change only fixes larpingapp's own manifest to use its already-namespaced
+  this change only fixes Larpinq's own manifest to use its already-namespaced
   slugs.
 
 ## Approach
 Mechanical find-and-replace of the `"schema"` value at each of the 11 identified
 sites in `src/manifest.json`, from the bare `"event"`/`"item"` to the namespaced
-`"larping_event"`/`"larping_item"` that `larpingapp_register.json` already
+`"larping_event"`/`"larping_item"` that `larpinq_register.json` already
 declares. See `design.md` for the full site-by-site list and the root-cause
 mechanics of the collision.
 
@@ -87,14 +87,14 @@ None.
 - `src/manifest.json` — Events index/detail/dashboard-widget/onboarding
   `"schema"` references (7 sites) and Items index/detail/dashboard-widget
   `"schema"` references (4 sites).
-- Events and Items create/edit/detail forms — will render larpingapp's own
+- Events and Items create/edit/detail forms — will render Larpinq's own
   `event`/`item` fields instead of the colliding app's schema fields once fixed.
 - No PHP, register-schema, or Vue component changes.
 
 ## Cross-Project Dependencies
-None. This is a self-contained manifest fix within `larpingapp`; the schemas it
+None. This is a self-contained manifest fix within `larpinq`; the schemas it
 repoints to (`larping_event`, `larping_item`) already exist in this app's own
-`lib/Settings/larpingapp_register.json`.
+`lib/Settings/larpinq_register.json`.
 
 ## Risks
 
@@ -121,5 +121,5 @@ crash, and identical to current production behavior.
 
 ## Open Questions
 None — the mismatched slugs were confirmed directly against
-`lib/Settings/larpingapp_register.json` (`larping_event`, `larping_item`) and
+`lib/Settings/larpinq_register.json` (`larping_event`, `larping_item`) and
 every reference site was enumerated by grep before this proposal was written.

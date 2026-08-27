@@ -1,13 +1,13 @@
 schema: conduction
 
 context: |
-  Project: LarpingApp
-  Repo: ConductionNL/LarpingNextApp
+  Project: Larpinq
+  Repo: ConductionNL/larpinq
   Type: Nextcloud App (PHP backend + Vue 2 frontend)
   Description: LARP (live-action role-playing) management app for Nextcloud — manages characters, skills, items, conditions, effects, events, players, abilities, and templates
   Key components: Character stat calculation engine, PDF character sheet export (mPDF + Twig), generic ObjectService with dual data-source support
   Database: PostgreSQL/MySQL/SQLite (via Nextcloud Entity/Mapper) or OpenRegister (JSON object storage)
-  Mount path: /var/www/html/custom_apps/larpingapp
+  Mount path: /var/www/html/custom_apps/larpinq
 
   Architecture:
     Pattern: Generic ObjectService — single service dispatches CRUD to internal mappers or OpenRegister based on per-type configuration

@@ -10,7 +10,7 @@
 // in the ConductionNL/openregister repository. It is deliberately NOT written
 // as an `@spec` tag here: a `@spec` target is resolved against THIS repository
 // (hydra gate-46), and this requirement has exactly one canonical home, which
-// is not larpingapp. Duplicating it into `larpingapp/openspec/specs/` to make
+// is not larpinq. Duplicating it into `larpinq/openspec/specs/` to make
 // a tag resolve would create a second copy of a spec that already exists.
 //
 // This file previously carried a tag pointing into an OpenRegister CHANGE
@@ -30,7 +30,7 @@
 // .github/workflows/code-quality.yml. It Ajv-validates src/manifest.json
 // against the canonical @conduction/nextcloud-vue schema, prints error paths,
 // and exits non-zero on any schema violation. It exits 0 when no
-// src/manifest.json exists at all; larpingapp does ship one, so that branch is
+// src/manifest.json exists at all; larpinq does ship one, so that branch is
 // not the path taken here.
 //
 // Usage:

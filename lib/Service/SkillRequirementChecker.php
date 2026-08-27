@@ -1,7 +1,7 @@
 <?php
 
 /**
- * SkillRequirementChecker for LarpingApp
+ * SkillRequirementChecker for Larpinq
  *
  * Evaluates the declared prerequisites of a single newly-added skill against a
  * resolved character context, producing the per-requirement result entries.
@@ -9,7 +9,7 @@
  * (diffing, budget, dependents) and this class keeps the requirement rules.
  *
  * @category  Service
- * @package   OCA\LarpingApp\Service
+ * @package   OCA\Larpinq\Service
  * @author    Ruben Linde <ruben@larpingapp.com>
  * @copyright 2026 Conduction B.V.
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
@@ -20,7 +20,7 @@
 
 declare(strict_types=1);
 
-namespace OCA\LarpingApp\Service;
+namespace OCA\Larpinq\Service;
 
 /**
  * Produces requirement-result entries for one assigned skill.
@@ -30,7 +30,7 @@ namespace OCA\LarpingApp\Service;
  * requiredEffects. Conditions and effects share one membership check.
  *
  * @category Service
- * @package  OCA\LarpingApp\Service
+ * @package  OCA\Larpinq\Service
  * @author   Ruben Linde <ruben@larpingapp.com>
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DocuDeskPdfRenderer for LarpingApp
+ * DocuDeskPdfRenderer for Larpinq
  *
  * Shared helper around DocuDesk's optional PdfService/TemplateService. Both the
  * character-sheet export (CharactersController::downloadPdf) and the event
@@ -10,7 +10,7 @@
  * render, with graceful 424 degradation when DocuDesk is absent.
  *
  * @category  Service
- * @package   OCA\LarpingApp\Service
+ * @package   OCA\Larpinq\Service
  * @author    Ruben Linde <ruben@larpingapp.com>
  * @copyright 2026 Conduction B.V.
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
@@ -21,7 +21,7 @@
 
 declare(strict_types=1);
 
-namespace OCA\LarpingApp\Service;
+namespace OCA\Larpinq\Service;
 
 use OCP\App\IAppManager;
 use Psr\Container\ContainerInterface;
@@ -31,7 +31,7 @@ use Psr\Log\LoggerInterface;
  * Renders a PDF through DocuDesk for a given template and data context.
  *
  * @category Service
- * @package  OCA\LarpingApp\Service
+ * @package  OCA\Larpinq\Service
  * @author   Ruben Linde <ruben@larpingapp.com>
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com

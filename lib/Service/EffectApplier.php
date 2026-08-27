@@ -1,7 +1,7 @@
 <?php
 
 /**
- * EffectApplier for LarpingApp
+ * EffectApplier for Larpinq
  *
  * The effect arithmetic of the stat engine: resolving effect references,
  * enforcing the non-cumulative dedup rule, and applying signed modifiers to
@@ -13,7 +13,7 @@
  * per call, so one instance is safe to share across characters.
  *
  * @category  Service
- * @package   OCA\LarpingApp\Service
+ * @package   OCA\Larpinq\Service
  * @author    Ruben Linde <ruben@larpingapp.com>
  * @copyright 2026 Conduction B.V.
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
@@ -24,13 +24,13 @@
 
 declare(strict_types=1);
 
-namespace OCA\LarpingApp\Service;
+namespace OCA\Larpinq\Service;
 
 /**
  * Applies effects to a character's ability scores.
  *
  * @category Service
- * @package  OCA\LarpingApp\Service
+ * @package  OCA\Larpinq\Service
  * @author   Ruben Linde <ruben@larpingapp.com>
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
@@ -41,7 +41,12 @@ class EffectApplier {
 	/**
 	 * Apply a list of effect references to abilities.
 	 *
-	 * @param array<string, array{name?: string, base?: int, value: int, audit: array}> $abilities Reference to abilities.
+	 * @param array<string, array<string, mixed>> $abilities Reference to abilities.
+	 *                                                       See calculateEffect() for why this is the loose shape and not
+	 *                                                       `array{name?: string, base?: int, value: int, audit: array}` — the
+	 *                                                       array is threaded by reference all the way down to
+	 *                                                       applyModifierToAbility(), which can seed an entry with `value`
+	 *                                                       alone.
 	 * @param array|null $effects Array of effect IDs.
 	 * @param array<string, bool> $appliedEffects Tracks applied non-cumulative effects.
 	 * @param array<string, array<string, mixed>> $effectLookup All effects indexed by ID.
@@ -101,8 +106,9 @@ class EffectApplier {
 			$effectAbilities = $effect['abilities'];
 		}
 
-		// Add stat_id to affected abilities if present and not null.
-		if (isset($effect['stat_id']) === true && $effect['stat_id'] !== null) {
+		// Add stat_id to affected abilities if present. `isset()` is already
+		// false for null, so the `!== null` this replaces was unreachable.
+		if (isset($effect['stat_id']) === true) {
 			// @psalm-suppress MixedAssignment Effect array values are mixed
 			$effectAbilities[] = $effect['stat_id'];
 		}
@@ -180,7 +186,16 @@ class EffectApplier {
 	 * Skips non-cumulative effects that have already been applied in this
 	 * calculation pass. Closes #208.
 	 *
-	 * @param array<string, array{name?: string, base?: int, value: int, audit: array}> $abilities Reference to abilities.
+	 * @param array<string, array<string, mixed>> $abilities Reference to abilities.
+	 *                                                       Deliberately NOT the tighter
+	 *                                                       `array{name?: string, base?: int, value: int, audit: array}` this
+	 *                                                       replaces. That shape was not true: this array is passed BY
+	 *                                                       REFERENCE into applyModifierToAbility(), which seeds a missing
+	 *                                                       entry with `$abilities[$id]['value'] = 0` alone — no `audit` key —
+	 *                                                       so a caller could observe an entry the strict shape says cannot
+	 *                                                       exist. Widening the claim to match the code is the honest
+	 *                                                       direction; tightening the callee instead just moved the error onto
+	 *                                                       its own assignments.
 	 * @param array<string, mixed> $effect Effect data.
 	 * @param array<string, bool> $appliedEffects Tracks applied non-cumulative effects.
 	 *

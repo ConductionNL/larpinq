@@ -1,21 +1,21 @@
 #!/usr/bin/env bash
 #
-# SPDX-FileCopyrightText: 2026 Larping Contributors
+# SPDX-FileCopyrightText: 2026 Larpinq Contributors
 # SPDX-License-Identifier: EUPL-1.2
 #
-# Provision LarpingApp's OpenRegister register + schemas on a freshly installed
+# Provision Larpinq's OpenRegister register + schemas on a freshly installed
 # Nextcloud, for the shared `E2E Tests (Playwright)` CI job.
 #
 # Wired up as the workflow's `playwright-seed-command`. That step runs AFTER
 # `php -S` is up and with cwd set to the Nextcloud server root, so this is
 # invoked as:
 #
-#     playwright-seed-command: 'bash apps/larpingapp/tests/e2e/ci-seed.sh'
+#     playwright-seed-command: 'bash apps/larpinq/tests/e2e/ci-seed.sh'
 #
 # WHY THIS IS NEEDED
 # ------------------
-# `occ app:enable larpingapp` runs the post-migration repair step that is
-# supposed to import `lib/Settings/larpingapp_register.json` (plus every
+# `occ app:enable larpinq` runs the post-migration repair step that is
+# supposed to import `lib/Settings/larpinq_register.json` (plus every
 # `lib/Settings/register.d/*.json` fragment) into OpenRegister. That is not a
 # reliable fresh-install path, and it fails SILENTLY:
 #
@@ -23,7 +23,7 @@
 #      the acting user, so the import is denied outright —
 #      "User 'Anonymous' does not have permission to 'create' objects in schema
 #      '…'" — and the repair step catches \Throwable and downgrades it to a
-#      warning, so `occ app:enable larpingapp` still exits 0.
+#      warning, so `occ app:enable larpinq` still exits 0.
 #   2. The non-forced path is version-gated: it can advance the recorded
 #      configuration version WITHOUT applying the register, after which a
 #      second run sees "already current" and does nothing either.
@@ -75,7 +75,7 @@ USER_PASS="${ADMIN_PASSWORD:-${NC_ADMIN_PASS:-admin}}"
 echo "[ci-seed] target:  ${BASE}"
 echo "[ci-seed] app dir: ${APP_DIR}"
 
-# ── 1. Import the LarpingApp configuration (forced) ──────────────────────────
+# ── 1. Import the Larpinq configuration (forced) ─────────────────────────────
 # `appinfo/routes.php` registers `settings#reimport` at
 # POST /api/settings/reimport, which calls
 # SettingsService::loadSettings(force: true) -> SettingsLoadService::loadSettings
@@ -85,7 +85,7 @@ echo "[ci-seed] app dir: ${APP_DIR}"
 # fragments into the base register before importing. The OpenRegister generic
 # importer below cannot do that merge, which is why this is the primary path.
 #
-# ⚠️ larpingapp does NOT return `\OCA\OpenRegister\AppHost\Routes::standard()`
+# ⚠️ larpinq does NOT return `\OCA\OpenRegister\AppHost\Routes::standard()`
 # from appinfo/routes.php (zero references), so there is no `settings#load`
 # route here — `POST /api/settings/load` would 404. `settings/reimport` is the
 # real one; do not "fix" it to match the fleet's usual spelling.
@@ -98,7 +98,7 @@ echo "[ci-seed] app dir: ${APP_DIR}"
 # Request::passesCSRFCheck() short-circuits to true on that header (the
 # strict-cookie precondition holds because a Basic-auth request carries no
 # session cookie at all). Without the header this POST is a CSRF failure.
-IMPORT_URL="${BASE}/index.php/apps/larpingapp/api/settings/reimport"
+IMPORT_URL="${BASE}/index.php/apps/larpinq/api/settings/reimport"
 echo "[ci-seed] POST ${IMPORT_URL} (forced import, register.d fragments merged)"
 
 IMPORT_BODY="$(mktemp)"
@@ -123,13 +123,13 @@ head -c 2000 "$IMPORT_BODY"; echo
 IMPORT_OK=0
 if [ "$IMPORT_CODE" = "200" ] && grep -q '"success":[[:space:]]*true' "$IMPORT_BODY"; then
 	IMPORT_OK=1
-	echo "[ci-seed] larpingapp settings#reimport reported success."
+	echo "[ci-seed] larpinq settings#reimport reported success."
 else
-	echo "[ci-seed] larpingapp settings#reimport did not report success; falling back to the OpenRegister importer."
+	echo "[ci-seed] larpinq settings#reimport did not report success; falling back to the OpenRegister importer."
 fi
 
 # ── 1b. Fallback: OpenRegister's generic configuration importer ──────────────
-# Independent of larpingapp's own controller wiring, so it still provisions the
+# Independent of larpinq's own controller wiring, so it still provisions the
 # register if `settings#reimport` is unavailable or the SettingsService rejects
 # the file. Admin-only. It reads the upload under the literal form key `file`;
 # a raw JSON request body is NOT one of its accepted shapes. `force` is compared
@@ -152,7 +152,7 @@ or_import() {
 			-H 'OCS-APIRequest: true' \
 			-F "file=@${file}" \
 			-F 'force=true' \
-			-F 'appId=larpingapp' \
+			-F 'appId=larpinq' \
 			"${BASE}/index.php/apps/openregister/api/configurations/import" || echo 000
 	)"
 	echo "[ci-seed] configurations/import $(basename "$file") -> HTTP ${code}"
@@ -160,9 +160,9 @@ or_import() {
 }
 
 if [ "$IMPORT_OK" != "1" ]; then
-	REGISTER_JSON="${APP_DIR}/lib/Settings/larpingapp_register.json"
+	REGISTER_JSON="${APP_DIR}/lib/Settings/larpinq_register.json"
 	if [ ! -f "$REGISTER_JSON" ]; then
-		echo "::error::larpingapp_register.json not found at ${REGISTER_JSON}."
+		echo "::error::larpinq_register.json not found at ${REGISTER_JSON}."
 		exit 1
 	fi
 	or_import "$REGISTER_JSON"
@@ -178,12 +178,12 @@ fi
 # ⚠️ THE SLUGS BELOW ARE READ OUT OF THE REPO'S OWN REGISTER JSON, NOT DERIVED.
 # Three of them are NOT the entity name:
 #
-#     item       -> larping_item          (lib/Settings/larpingapp_register.json)
+#     item       -> larping_item          (lib/Settings/larpinq_register.json)
 #     event      -> larping_event         (idem)
 #     attendance -> larping_attendance    (register.d/event-checkin-roster.json)
 #
 # The prefixes are deliberate and structural, not cosmetic. The bare `item` slug
-# COLLIDES globally with another app's QTI "Item" schema, and larpingapp's
+# COLLIDES globally with another app's QTI "Item" schema, and larpinq's
 # fixtures used to bind to it and fail every create with HTTP 400. Mechanically
 # kebab-casing or un-prefixing these is how that regression comes back.
 #
@@ -201,7 +201,7 @@ verify() {
 import json, sys
 path, kind, code = sys.argv[1], sys.argv[2], sys.argv[3]
 required = {
-    'registers': ['larpingapp'],
+    'registers': ['larpinq'],
     'schemas': [
         'character', 'player', 'ability', 'skill', 'larping_item',
         'condition', 'effect', 'larping_event', 'setting', 'xpAward',
@@ -226,7 +226,7 @@ slugs = {(i.get('slug') or '').lower() for i in items if isinstance(i, dict)}
 missing = [s for s in required if s.lower() not in slugs]
 print(f'[ci-seed] {kind} present: {sorted(s for s in slugs if s)}')
 if missing:
-    print(f'::error::LarpingApp {kind} missing after import: {missing}')
+    print(f'::error::Larpinq {kind} missing after import: {missing}')
     print('::error::The e2e suite cannot seed abilities, effects, skills or characters without them.')
     sys.exit(1)
 print(f'[ci-seed] {kind} OK ({len(required)} required slugs present)')
@@ -251,10 +251,10 @@ verify "$SCH_BODY" schemas "$SCH_CODE"
 # that shape here and give the failure a name.
 OBJ_CODE="$(curl -sS -o /dev/null -w '%{http_code}' \
 	-u "${USER_NAME}:${USER_PASS}" -H 'OCS-APIRequest: true' \
-	"${BASE}/index.php/apps/openregister/api/objects/larpingapp/character?_limit=1" || echo 000)"
-echo "[ci-seed] objects/larpingapp/character probe -> ${OBJ_CODE}"
+	"${BASE}/index.php/apps/openregister/api/objects/larpinq/character?_limit=1" || echo 000)"
+echo "[ci-seed] objects/larpinq/character probe -> ${OBJ_CODE}"
 if [ "$OBJ_CODE" -ge 400 ] 2>/dev/null; then
-	echo "::error::The larpingapp character collection is not readable (HTTP ${OBJ_CODE})."
+	echo "::error::The larpinq character collection is not readable (HTTP ${OBJ_CODE})."
 	echo "::error::Every workflow fixture create/read would fail with a message accusing the fixtures."
 	exit 1
 fi
@@ -268,8 +268,8 @@ fi
 SET_BODY="$(mktemp)"
 SET_CODE="$(curl -sS -u "${USER_NAME}:${USER_PASS}" -H 'OCS-APIRequest: true' \
 	-o "$SET_BODY" -w '%{http_code}' \
-	"${BASE}/index.php/apps/larpingapp/api/settings" || echo 000)"
-echo "[ci-seed] larpingapp settings API -> HTTP ${SET_CODE}"
+	"${BASE}/index.php/apps/larpinq/api/settings" || echo 000)"
+echo "[ci-seed] larpinq settings API -> HTTP ${SET_CODE}"
 python3 - "$SET_BODY" <<'PY' || true
 import json, sys
 try:
@@ -280,11 +280,11 @@ except Exception as exc:
 ids = {k: v for k, v in cfg.items() if k == 'register' or k.endswith('_schema')}
 print('[ci-seed] resolved register/schema ids:', json.dumps(ids, sort_keys=True))
 if not ids.get('register'):
-    print('::warning::LarpingApp settings API reports no `register` id — '
+    print('::warning::Larpinq settings API reports no `register` id — '
           'workflows/fixtures.ts will fall back to its bootstrap literals.')
 PY
 
-echo "[ci-seed] LarpingApp register + schemas provisioned."
+echo "[ci-seed] Larpinq register + schemas provisioned."
 
 # ── 2b. Mark the first-visit walkthrough as already seen ─────────────────────
 # `src/manifest.json` declares a six-step `trigger: "first-visit"` tour
@@ -327,14 +327,14 @@ if [ -n "$WT_KEY" ]; then
 		-H 'Content-Type: application/json' \
 		-H 'OCS-APIRequest: true' \
 		--data '{"value":"999.0.0"}' \
-		"${BASE}/index.php/apps/larpingapp/api/preferences/${WT_KEY}" || echo 000)"
+		"${BASE}/index.php/apps/larpinq/api/preferences/${WT_KEY}" || echo 000)"
 	echo "[ci-seed] walkthrough '${WT_KEY}' marked seen -> HTTP ${WT_CODE}"
 	# Read it back. A 200 alone is not proof: an app that does not serve the
 	# route answers 200 with the SPA's HTML, which useWalkthrough explicitly
 	# treats as "no opinion" and falls back to localStorage — i.e. the tour
 	# would still open and this step would have done nothing.
 	WT_READ="$(curl -sS -u "${USER_NAME}:${USER_PASS}" -H 'OCS-APIRequest: true' \
-		"${BASE}/index.php/apps/larpingapp/api/preferences/${WT_KEY}" || echo '')"
+		"${BASE}/index.php/apps/larpinq/api/preferences/${WT_KEY}" || echo '')"
 	echo "[ci-seed] walkthrough preference reads back: $(printf '%s' "$WT_READ" | head -c 200)"
 	case "$WT_READ" in
 		*'"value":"999.0.0"'*)
@@ -362,9 +362,9 @@ fi
 # Failures are ignored on purpose: this is a warm-up, not a gate. The real
 # checks are above and below.
 for path in \
-	"/index.php/apps/larpingapp/" \
-	"/index.php/apps/larpingapp/api/settings" \
-	"/index.php/settings/admin/larpingapp" \
+	"/index.php/apps/larpinq/" \
+	"/index.php/apps/larpinq/api/settings" \
+	"/index.php/settings/admin/larpinq" \
 	"/index.php/apps/openregister/api/registers?_limit=1"
 do
 	code="$(curl -sS -o /dev/null -w '%{http_code}' -u "${USER_NAME}:${USER_PASS}" \
@@ -375,8 +375,8 @@ done
 # Pull the main webpack bundle once so it is in the page cache.
 #
 # Do NOT hardcode the URL. Nextcloud serves an app's assets from whichever apps
-# directory it was installed into — `/apps/larpingapp/js/…` on the CI runner,
-# `/custom_apps/larpingapp/js/…` in the docker dev images — and asking for the
+# directory it was installed into — `/apps/larpinq/js/…` on the CI runner,
+# `/custom_apps/larpinq/js/…` in the docker dev images — and asking for the
 # wrong one does not 404. It returns **HTTP 200 with `text/html`**: the NC error
 # page, served through index.php. A status-code check therefore reports success
 # while fetching a 40 KB HTML page instead of a multi-MB bundle, so the warm-up
@@ -386,13 +386,13 @@ done
 # response is actually JavaScript.
 APP_HTML="$(mktemp)"
 curl -sS -u "${USER_NAME}:${USER_PASS}" -H 'OCS-APIRequest: true' \
-	"${BASE}/index.php/apps/larpingapp/" -o "$APP_HTML" || true
+	"${BASE}/index.php/apps/larpinq/" -o "$APP_HTML" || true
 
 # `|| true` is load-bearing: grep exits 1 when it matches nothing, and under
 # `set -euo pipefail` that aborts the script right here — so the case the gate
 # below exists to explain (no bundle) would die with a bare non-zero exit and
 # none of the diagnosis. Let it fall through to the gate instead.
-BUNDLE_SRC="$(grep -oE 'src="[^"]*larpingapp-main[^"]*"' "$APP_HTML" \
+BUNDLE_SRC="$(grep -oE 'src="[^"]*larpinq-main[^"]*"' "$APP_HTML" \
 	| head -1 | sed 's/^src="//; s/"$//' || true)"
 
 if [ -n "$BUNDLE_SRC" ]; then
@@ -422,7 +422,7 @@ if [ "${GITHUB_ACTIONS:-}" = "true" ] || [ "${CI:-}" = "true" ]; then
 			echo "[ci-seed] bundle verified as JavaScript."
 			;;
 		*)
-			echo "::error::The LarpingApp frontend bundle did not serve as JavaScript (got: ${BUNDLE_INFO:-<not found>})."
+			echo "::error::The Larpinq frontend bundle did not serve as JavaScript (got: ${BUNDLE_INFO:-<not found>})."
 			echo "::error::The SPA cannot mount, so every UI spec would fail on a selector timeout with a misleading cause."
 			echo "::error::Check the 'Build app frontend' step — a missing bundle returns HTTP 200 text/html, not 404."
 			exit 1

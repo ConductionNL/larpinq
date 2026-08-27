@@ -2,12 +2,12 @@
 
 ## Overview
 
-LarpingApp provides a dedicated admin settings page in the Nextcloud administration panel. Administrators can configure data source settings for each of the 9 entity types (ability, character, condition, effect, event, item, player, setting, skill), choosing between internal Nextcloud database storage or OpenRegister.
+Larpinq provides a dedicated admin settings page in the Nextcloud administration panel. Administrators can configure data source settings for each of the 9 entity types (ability, character, condition, effect, event, item, player, setting, skill), choosing between internal Nextcloud database storage or OpenRegister.
 
 ## How to Use
 
 1. Log in as a Nextcloud administrator
-2. Navigate to **Settings** → **Administration** → **LarpingApp**
+2. Navigate to **Settings** → **Administration** → **Larpinq**
 3. For each entity type, select the data source:
    - **Internal** — uses Nextcloud's built-in database (Entity/Mapper pattern)
    - **Open Register** — uses OpenRegister for JSON object storage with schema validation
@@ -18,11 +18,11 @@ LarpingApp provides a dedicated admin settings page in the Nextcloud administrat
 
 ![Admin Settings Page](/screenshots/admin-settings.png)
 
-*The LarpingApp admin settings page in the Nextcloud administration panel.*
+*The Larpinq admin settings page in the Nextcloud administration panel.*
 
 ## Configuration
 
-Settings are stored via Nextcloud's `IAppConfig` under the `larpingapp` app ID. Config keys:
+Settings are stored via Nextcloud's `IAppConfig` under the `larpinq` app ID. Config keys:
 
 | Key | Description |
 |-----|-------------|
@@ -41,13 +41,13 @@ Settings are stored via Nextcloud's `IAppConfig` under the `larpingapp` app ID. 
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| GET | `/apps/larpingapp/api/settings` | Get current settings |
-| POST | `/apps/larpingapp/api/settings` | Update settings |
+| GET | `/apps/larpinq/api/settings` | Get current settings |
+| POST | `/apps/larpinq/api/settings` | Update settings |
 
 ## Technical Details
 
-- `lib/Settings/LarpingAppAdmin.php` — implements `ISettings` (renders the settings form)
-- `lib/Sections/LarpingAppAdmin.php` — implements `IIconSection` (sidebar section entry)
+- `lib/Settings/LarpinqAdmin.php` — implements `ISettings` (renders the settings form)
+- `lib/Sections/LarpinqAdmin.php` — implements `IIconSection` (sidebar section entry)
 - `lib/Controller/SettingsController.php` — REST API for settings CRUD
 - `lib/Service/SettingsService.php` — business logic for config key management
-- `lib/Service/SettingsLoadService.php` — JSON-based config import from `larpingapp_register.json`
+- `lib/Service/SettingsLoadService.php` — JSON-based config import from `larpinq_register.json`

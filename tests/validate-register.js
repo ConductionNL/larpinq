@@ -113,11 +113,11 @@ function collectRequires(node, acc) {
  *   - the dev instance already had a `player` schema from before the change, so
  *     nothing looked broken there;
  *   - the repair step catches \Throwable and downgrades it to a warning, so
- *     `occ app:enable larpingapp` still exits 0; and
+ *     `occ app:enable larpinq` still exits 0; and
  *   - `settings#reimport` returned HTTP 200 with `{"success": true}` while
  *     silently dropping the schema.
  *
- * Net effect: every FRESH install of larpingapp had no `player` schema — no
+ * Net effect: every FRESH install of larpinq had no `player` schema — no
  * Players index, no player detail, no character→player links — and every
  * signal in the pipeline said green. It was caught only when the e2e job
  * started verifying schema slugs after import on a clean instance.

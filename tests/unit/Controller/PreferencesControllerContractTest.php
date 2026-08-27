@@ -4,7 +4,7 @@
  * Wire-contract tests for the per-user preferences endpoints.
  *
  * @category Test
- * @package  OCA\LarpingApp\Tests\Unit\Controller
+ * @package  OCA\Larpinq\Tests\Unit\Controller
  *
  * @author    Conduction Development Team <info@conduction.nl>
  * @copyright 2024 Conduction B.V.
@@ -20,10 +20,10 @@
 
 declare(strict_types=1);
 
-namespace OCA\LarpingApp\Tests\Unit\Controller;
+namespace OCA\Larpinq\Tests\Unit\Controller;
 
-use OCA\LarpingApp\AppInfo\Application;
-use OCA\LarpingApp\Controller\PreferencesController;
+use OCA\Larpinq\AppInfo\Application;
+use OCA\Larpinq\Controller\PreferencesController;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\IConfig;

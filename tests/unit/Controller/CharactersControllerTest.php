@@ -4,7 +4,7 @@
  * Unit tests for CharactersController.
  *
  * @category Test
- * @package  OCA\LarpingApp\Tests\Unit\Controller
+ * @package  OCA\Larpinq\Tests\Unit\Controller
  * @author   Ruben Linde <ruben@larpingapp.com>
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
@@ -12,12 +12,12 @@
 
 declare(strict_types=1);
 
-namespace OCA\LarpingApp\Tests\Unit\Controller;
+namespace OCA\Larpinq\Tests\Unit\Controller;
 
 use Exception;
-use OCA\LarpingApp\Controller\CharactersController;
-use OCA\LarpingApp\Service\DocuDeskPdfRenderer;
-use OCA\LarpingApp\Service\RegisterObjectFetcher;
+use OCA\Larpinq\Controller\CharactersController;
+use OCA\Larpinq\Service\DocuDeskPdfRenderer;
+use OCA\Larpinq\Service\RegisterObjectFetcher;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Http\DataDownloadResponse;
@@ -43,7 +43,7 @@ class CharactersControllerTest extends TestCase {
 	private IUserSession&MockObject $userSession;
 	private IGroupManager&MockObject $groupManager;
 	private LoggerInterface&MockObject $logger;
-	private \OCA\LarpingApp\Service\SkillRequirementService&MockObject $requirementService;
+	private \OCA\Larpinq\Service\SkillRequirementService&MockObject $requirementService;
 
 	/**
 	 * A REAL renderer wired to the same IAppManager / ContainerInterface / Logger
@@ -64,7 +64,7 @@ class CharactersControllerTest extends TestCase {
 		$this->userSession = $this->createMock(IUserSession::class);
 		$this->groupManager = $this->createMock(IGroupManager::class);
 		$this->logger = $this->createMock(LoggerInterface::class);
-		$this->requirementService = $this->createMock(\OCA\LarpingApp\Service\SkillRequirementService::class);
+		$this->requirementService = $this->createMock(\OCA\Larpinq\Service\SkillRequirementService::class);
 
 		$this->pdfRenderer = new DocuDeskPdfRenderer(
 			$this->appManager,
@@ -79,7 +79,7 @@ class CharactersControllerTest extends TestCase {
 		$this->groupManager->method('isAdmin')->with('admin')->willReturn(true);
 
 		$this->controller = new CharactersController(
-			'larpingapp',
+			'larpinq',
 			$this->createMock(IRequest::class),
 			$this->objectFetcher,
 			$this->pdfRenderer,
@@ -94,7 +94,7 @@ class CharactersControllerTest extends TestCase {
 		$unauthSession->method('getUser')->willReturn(null);
 
 		$controller = new CharactersController(
-			'larpingapp',
+			'larpinq',
 			$this->createMock(IRequest::class),
 			$this->objectFetcher,
 			$this->pdfRenderer,
@@ -121,7 +121,7 @@ class CharactersControllerTest extends TestCase {
 		$nonAdminGroupManager->method('isAdmin')->with('player1')->willReturn(false);
 
 		$controller = new CharactersController(
-			'larpingapp',
+			'larpinq',
 			$this->createMock(IRequest::class),
 			$this->objectFetcher,
 			$this->pdfRenderer,
@@ -161,7 +161,7 @@ class CharactersControllerTest extends TestCase {
 	 * This is the combination no test covered, and the gap is exactly why the
 	 * bug survived: every existing case fixed one guard while leaving the other
 	 * in its passing state, so either guard order satisfied all of them. On CI
-	 * — where DocuDesk is not installed alongside LarpingApp — the availability
+	 * — where DocuDesk is not installed alongside Larpinq — the availability
 	 * probe ran first and answered 424 to every request, making the documented
 	 * 400 contract unreachable and hiding the fact that a crafted template
 	 * value was never rejected on its own merits. Reverting the guard order in
@@ -443,7 +443,7 @@ class CharactersControllerTest extends TestCase {
 		$unauthSession->method('getUser')->willReturn(null);
 
 		$controller = new CharactersController(
-			'larpingapp',
+			'larpinq',
 			$this->createMock(IRequest::class),
 			$this->objectFetcher,
 			$this->pdfRenderer,

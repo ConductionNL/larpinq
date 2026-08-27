@@ -5,11 +5,11 @@
 hydra ADR-046 defines portaliq as the ONE shared external portal for people
 without Nextcloud accounts. Contract v2.1: apps contribute via a single plain
 class at convention FQCN, duck-typed by portaliq (`method_exists()`, never
-`instanceof`). LarpingApp has no bespoke portal to retire; this change ADDS the
+`instanceof`). Larpinq has no bespoke portal to retire; this change ADDS the
 declarative contribution for the `player` audience.
 
 All register facts below were verified against HEAD
-(`lib/Settings/larpingapp_register.json` + `lib/Settings/register.d/*.json`,
+(`lib/Settings/larpinq_register.json` + `lib/Settings/register.d/*.json`,
 branch point `origin/development` @ c7db0c5) and the shipped portaliq reader
 (`apps-extra/portaliq` @ development 8aefefe).
 
@@ -29,18 +29,18 @@ consequences drive this design:
    therefore declare `scopeField: ''` EXPLICITLY — otherwise the reader filters
    on a non-existent `subjectRef` column and returns nothing.
 
-## Claim-names contract (larpingapp's claim namespace — STABLE)
+## Claim-names contract (Larpinq's claim namespace — STABLE)
 
-The `player` audience's subject ref is the larpingapp **`player` object UUID**.
+The `player` audience's subject ref is the Larpinq **`player` object UUID**.
 Every character the player owns stores that UUID in `character.ownerRef` (added
 by `portal-identity`). The provider declares `scopeClaim: 'ownerRef'` on the
-character collection — larpingapp's stable claim contract with portaliq
+character collection — Larpinq's stable claim contract with portaliq
 operators: provision a portal account whose `subjectRef` is the player's
 `player` UUID.
 
 | Claim | Value (UUID domain ref) | Used by |
 |---|---|---|
-| `ownerRef` | larpingapp `player` object UUID | player (own characters + create) |
+| `ownerRef` | Larpinq `player` object UUID | player (own characters + create) |
 
 ## Scoping map (schema → scopeField → claim), all register `larpingapp`
 

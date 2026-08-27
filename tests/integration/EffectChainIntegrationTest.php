@@ -1,10 +1,10 @@
 <?php
 
 /**
- * Effect-chain integration test for the LarpingApp game-mechanics engine.
+ * Effect-chain integration test for the Larpinq game-mechanics engine.
  *
  * Satisfies TEST-031 of the game-mechanics spec ("effect chain integrity must
- * be verified end-to-end"). Where {@see \OCA\LarpingApp\Tests\Unit\Service\GameMechanicsTest}
+ * be verified end-to-end"). Where {@see \OCA\Larpinq\Tests\Unit\Service\GameMechanicsTest}
  * exercises one mechanic at a time, this test drives the WHOLE chain in a
  * single derivation pass: a roster of characters, each carrying skills, items,
  * conditions and events, whose linked effects fan out across several abilities
@@ -17,12 +17,12 @@
  *   - the audit trail length matches the number of applications;
  *   - characters are computed independently (no cross-character bleed).
  *
- * LarpingApp has no local entity classes — every entity is an OpenRegister
+ * Larpinq has no local entity classes — every entity is an OpenRegister
  * object (associative array) — so the chain is fed through a mocked
  * RegisterObjectFetcher exactly as production resolves it from OpenRegister.
  *
  * @category Test
- * @package  OCA\LarpingApp\Tests\Integration
+ * @package  OCA\Larpinq\Tests\Integration
  * @author   Ruben Linde <ruben@larpingapp.com>
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
@@ -30,11 +30,11 @@
 
 declare(strict_types=1);
 
-namespace OCA\LarpingApp\Tests\Integration;
+namespace OCA\Larpinq\Tests\Integration;
 
-use OCA\LarpingApp\Service\CharacterService;
-use OCA\LarpingApp\Service\EffectApplier;
-use OCA\LarpingApp\Service\RegisterObjectFetcher;
+use OCA\Larpinq\Service\CharacterService;
+use OCA\Larpinq\Service\EffectApplier;
+use OCA\Larpinq\Service\RegisterObjectFetcher;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 

@@ -1,14 +1,14 @@
 /*
- * SPDX-FileCopyrightText: 2026 Larping Contributors
+ * SPDX-FileCopyrightText: 2026 Larpinq Contributors
  * SPDX-License-Identifier: EUPL-1.2
  *
- * Spec-coverage Playwright tests — larpingapp in-app Game Settings page
+ * Spec-coverage Playwright tests — larpinq in-app Game Settings page
  * (manifest page id "GameSettings", type "settings", route /game-settings)
  * and the Features & roadmap page (manifest page id "FeaturesRoadmap",
  * type "roadmap", route /features-roadmap).
  *
  * These two manifest pages were previously untested: spa-ui.spec.ts only
- * covered the NC *admin* settings panel (/settings/admin/larpingapp), not
+ * covered the NC *admin* settings panel (/settings/admin/larpinq), not
  * the in-app GameSettings page, and the roadmap page had no coverage at all.
  *
  * All assertions are data-independent and target the rendered shell so they
@@ -22,12 +22,12 @@
 import { test, expect, type Page } from '@playwright/test'
 import { dismissSupportDialog } from '../_nav'
 
-const BASE = '/apps/larpingapp'
+const BASE = '/apps/larpinq'
 
 /**
  * Hard-load the target in-app route via the app's hash router. The router runs
  * in `mode: 'hash'` (src/main.js — fleet #133 deep-link fix), so in-app routes
- * are addressed as /apps/larpingapp/#/<route>. Loading that URL serves the SPA
+ * are addressed as /apps/larpinq/#/<route>. Loading that URL serves the SPA
  * root from the server (the hash fragment is never sent to the backend, so no
  * 404) and the client-side router resolves the view. A fresh load per test
  * avoids the shared-list-state collapse where in-session sidebar navigation
@@ -46,12 +46,12 @@ async function openRoute(page: Page, route: string): Promise<void> {
 // `dismissSupportDialog` now comes from `../_nav` — see the note there on the
 // onboarding tour whose "Close tour" / "Skip" controls this local copy missed.
 
-/** Collect larpingapp-origin console errors / pageerrors / 5xx during a test. */
+/** Collect larpinq-origin console errors / pageerrors / 5xx during a test. */
 function trackLarpErrors(page: Page): string[] {
 	const errs: string[] = []
 	page.on('pageerror', (e) => errs.push(`pageerror: ${e.message}`))
 	page.on('response', (r) => {
-		if (r.status() >= 500 && /larpingapp/i.test(r.url()))
+		if (r.status() >= 500 && /larpinq/i.test(r.url()))
 			errs.push(`http ${r.status()} ${r.url()}`)
 	})
 	return errs
@@ -74,7 +74,7 @@ test.describe('game-settings page', () => {
 		await expect(
 			page
 				.locator('.app-content')
-				.getByRole('heading', { name: /LarpingApp Settings/i })
+				.getByRole('heading', { name: /Larpinq Settings/i })
 				.first(),
 		).toBeVisible({ timeout: 10_000 })
 
@@ -92,7 +92,7 @@ test.describe('game-settings page', () => {
 				.first(),
 		).toBeVisible()
 
-		// No larpingapp-origin fatal page errors while rendering the settings page.
+		// No larpinq-origin fatal page errors while rendering the settings page.
 		expect(errs.filter((e) => e.startsWith('pageerror'))).toHaveLength(0)
 	})
 
@@ -150,7 +150,7 @@ test.describe('features-roadmap page', () => {
 				.first(),
 		).toBeVisible({ timeout: 10_000 })
 
-		// No larpingapp-origin fatal page errors on the roadmap page.
+		// No larpinq-origin fatal page errors on the roadmap page.
 		expect(errs.filter((e) => e.startsWith('pageerror'))).toHaveLength(0)
 	})
 

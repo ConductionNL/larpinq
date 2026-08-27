@@ -8,7 +8,7 @@ status: done
 
 Provides a settings dialog accessible from the navigation footer, allowing users to re-import configuration. Uses `NcAppSettingsDialog` from `@nextcloud/vue`.
 
-@e2e exclude The settings dialog's re-import round-trip is covered by Jest/vitest unit tests (tests/vitest/settingsStore.spec.js — reimportConfiguration POSTs to /api/settings/reimport); the dialog wiring, loading state, and feedback are component-level concerns not exercisable in the bare test-env (re-import requires OpenRegister configured with the LarpingApp schemas).
+@e2e exclude The settings dialog's re-import round-trip is covered by Jest/vitest unit tests (tests/vitest/settingsStore.spec.js — reimportConfiguration POSTs to /api/settings/reimport); the dialog wiring, loading state, and feedback are component-level concerns not exercisable in the bare test-env (re-import requires OpenRegister configured with the Larpinq schemas).
 
 ## Requirements
 
@@ -24,7 +24,7 @@ A settings dialog MUST be openable from a gear icon in the navigation footer, bu
 
 #### Scenario: Open the settings dialog from the footer
 
-- GIVEN the user is in the LarpingApp navigation
+- GIVEN the user is in the Larpinq navigation
 - WHEN they click the settings gear icon in the navigation footer
 - THEN the `NcAppSettingsDialog` MUST open with navigation shown
 - AND it MUST present a Configuration section containing a re-import button

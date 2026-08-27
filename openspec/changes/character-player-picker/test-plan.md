@@ -69,7 +69,7 @@
 - **spec_ref**: `openspec/changes/character-player-picker/specs/character-management/spec.md#requirement-character-crud-operations`
 - **type**: regression
 - **persona**: N/A
-- **preconditions**: `lib/Settings/larpingapp_register.json` edited
+- **preconditions**: `lib/Settings/larpinq_register.json` edited
 - **steps**: re-import the register via `ConfigurationService.importFromApp()` (app enable/upgrade)
 - **expected result**: import succeeds with no schema validation errors; existing `character-submitted` and `character-approved` notification rules are unaffected
 - **test command**: `/test-regression`

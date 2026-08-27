@@ -23,9 +23,9 @@
 - [ ] Implement
 - [ ] Test
 
-### Task 3: Add `lib/Mcp/LarpingappScannableServices.php` and register the DI alias
+### Task 3: Add `lib/Mcp/LarpinqScannableServices.php` and register the DI alias
 - **spec_ref**: `openspec/changes/hermiq-ai-tooling/specs/hermiq-ai-tooling/spec.md#req-004--curated-tools-are-exposed-via-the-scannable-services-opt-in`
-- **files**: `lib/Mcp/LarpingappScannableServices.php`, `lib/AppInfo/Application.php`
+- **files**: `lib/Mcp/LarpinqScannableServices.php`, `lib/AppInfo/Application.php`
 - **acceptance_criteria**:
   - GIVEN the class WHEN scanned THEN it implements `OCA\OpenRegister\Mcp\IMcpScannableServices`, carries SPDX + `@spec` docblock tags (DocuDesk `DocudeskScannableServices` pattern), and returns exactly `EventRosterService::class` and `CharacterService::class`
   - GIVEN a dev instance WHEN the tool catalog is listed THEN it is exactly the 21 derived tools plus the 2 curated tools

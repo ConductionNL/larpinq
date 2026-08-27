@@ -4,7 +4,7 @@
  * Unit tests for the canonical settings route/method contract.
  *
  * @category Test
- * @package  OCA\LarpingApp\Tests\Unit\AppInfo
+ * @package  OCA\Larpinq\Tests\Unit\AppInfo
  *
  * @author    Ruben Linde <ruben@larpingapp.com>
  * @copyright 2024 Ruben Linde
@@ -20,14 +20,14 @@
 
 declare(strict_types=1);
 
-namespace OCA\LarpingApp\Tests\Unit\AppInfo;
+namespace OCA\Larpinq\Tests\Unit\AppInfo;
 
-use OCA\LarpingApp\Controller\SettingsController;
+use OCA\Larpinq\Controller\SettingsController;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 
 /**
- * LarpingApp does NOT call `OCA\OpenRegister\AppHost\Routes::standard()`; it
+ * Larpinq does NOT call `OCA\OpenRegister\AppHost\Routes::standard()`; it
  * declares its own short route table. That has two consequences, and this test
  * pins both:
  *
@@ -35,7 +35,7 @@ use ReflectionClass;
  *      spelled out in `appinfo/routes.php` by hand. A missing verb is not a
  *      500 here — it is a 405 Method Not Allowed, because the URL matches but
  *      the verb does not. Measured on the dev instance 2026-08-08 before this
- *      change: `GET /apps/larpingapp/api/settings` -> 200,
+ *      change: `GET /apps/larpinq/api/settings` -> 200,
  *      `POST` -> 200, `PUT` -> 405.
  *   2. Because the app ships `lib/Controller/SettingsController.php` itself,
  *      `OCA\OpenRegister\AppHost\Bootstrap::aliasControllerUnlessLeafDefinesIt()`

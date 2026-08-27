@@ -46,7 +46,7 @@ jobs:
     uses: ConductionNL/.github/.github/workflows/release.yml@main
     with:
       release-type: unstable
-      app-name: larpingapp
+      app-name: larpinq
     secrets: inherit
 
   beta:
@@ -58,7 +58,7 @@ jobs:
     uses: ConductionNL/.github/.github/workflows/release.yml@main
     with:
       release-type: beta
-      app-name: larpingapp
+      app-name: larpinq
     secrets: inherit
 
   stable:
@@ -70,5 +70,5 @@ jobs:
     uses: ConductionNL/.github/.github/workflows/release.yml@main
     with:
       release-type: stable
-      app-name: larpingapp
+      app-name: larpinq
     secrets: inherit

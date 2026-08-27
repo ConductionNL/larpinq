@@ -9,7 +9,7 @@ retrofit: true
 
 SPA mount fixed in #202 — dashboard widget rendering scenarios covered by tests/e2e/spec-coverage/spa-ui.spec.ts; GraphQL transport scenarios annotated @e2e exclude below
 
-The larpingapp dashboard renders a set of manifest-driven analytics widgets that
+The larpinq dashboard renders a set of manifest-driven analytics widgets that
 surface live counts, recent items, quick-create actions, and a skill-distribution
 chart. These widgets were previously described only as "Planned" REQs in the
 `dashboard` capability (DASH-060..066); the code now realizes them as discrete

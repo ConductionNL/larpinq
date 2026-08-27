@@ -10,7 +10,7 @@ Items are equipment and objects a character can own — a sword, a potion, an en
 
 ## Goal
 
-By the end you will have an item in the Larping catalogue, attached to a character, with its effects feeding into that character's ability scores.
+By the end you will have an item in the Larpinq catalogue, attached to a character, with its effects feeding into that character's ability scores.
 
 ## Prerequisites
 

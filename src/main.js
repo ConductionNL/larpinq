@@ -62,10 +62,7 @@ try {
 } catch (e) {
 	// Non-fatal — lib translations fall back to English source.
 	// eslint-disable-next-line no-console
-	console.warn(
-		'[larpingapp] registerTranslations failed; falling back to English',
-		e,
-	)
+	console.warn('[larpinq] registerTranslations failed; falling back to English', e)
 }
 
 // Fire-and-forget translation load — wrap in try/catch because
@@ -75,7 +72,7 @@ try {
  */
 function tryLoadTranslations() {
 	try {
-		const result = loadTranslations('larpingapp', () => {})
+		const result = loadTranslations('larpinq', () => {})
 		if (result && typeof result.then === 'function') {
 			result.then(
 				() => {},
@@ -346,7 +343,7 @@ function routesFromManifest(manifest) {
 }
 
 const router = createRouter({
-	history: createWebHashHistory(generateUrl('/apps/larpingapp')),
+	history: createWebHashHistory(generateUrl('/apps/larpinq')),
 	routes: routesFromManifest(manifest),
 })
 

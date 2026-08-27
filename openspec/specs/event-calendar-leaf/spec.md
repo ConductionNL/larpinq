@@ -5,7 +5,7 @@ TBD - created by archiving change event-calendar-leaf. Update Purpose after arch
 ## Requirements
 ### Requirement: Event detail page MUST host the OR calendar leaf
 
-The Event detail page MUST surface the OpenRegister calendar integration leaf as a widget. The leaf MUST be obtained through the OR integration registry (ADR-019) and MUST NOT be a LarpingApp-local calendar implementation (ADR-022). The host is `src/views/ObjectDetail.vue` for the `event` object type.
+The Event detail page MUST surface the OpenRegister calendar integration leaf as a widget. The leaf MUST be obtained through the OR integration registry (ADR-019) and MUST NOT be a Larpinq-local calendar implementation (ADR-022). The host is `src/views/ObjectDetail.vue` for the `event` object type.
 
 #### Scenario: Calendar leaf appears on an event with dates
 

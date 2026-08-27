@@ -5,7 +5,7 @@ TBD - created by archiving change event-signup-to-forms-leaf. Update Purpose aft
 ## Requirements
 ### Requirement: Event detail page MUST host the OR forms leaf for sign-up
 
-The Event detail page MUST surface the OpenRegister forms integration leaf to collect player sign-ups. The leaf MUST be obtained through the OR integration registry (ADR-019) and LarpingApp MUST NOT build a bespoke sign-up form or submission store (ADR-022). The host is `src/views/ObjectDetail.vue` for the `event` object type.
+The Event detail page MUST surface the OpenRegister forms integration leaf to collect player sign-ups. The leaf MUST be obtained through the OR integration registry (ADR-019) and Larpinq MUST NOT build a bespoke sign-up form or submission store (ADR-022). The host is `src/views/ObjectDetail.vue` for the `event` object type.
 
 #### Scenario: Sign-up form renders on an event
 
@@ -17,18 +17,18 @@ The Event detail page MUST surface the OpenRegister forms integration leaf to co
 
 ### Requirement: Form definition and submissions MUST be owned by the forms leaf
 
-The sign-up form definition and its submissions MUST be owned by the OpenRegister forms abstraction via the leaf, and LarpingApp MUST NOT persist a parallel submission store.
+The sign-up form definition and its submissions MUST be owned by the OpenRegister forms abstraction via the leaf, and Larpinq MUST NOT persist a parallel submission store.
 
 #### Scenario: A sign-up submission is stored by the forms leaf
 
 - GIVEN the forms leaf sign-up form for event "Summer LARP 2025"
 - WHEN a player submits the form
 - THEN the submission MUST be persisted through the forms leaf / OR forms abstraction
-- AND LarpingApp MUST NOT write the submission to an app-local table
+- AND Larpinq MUST NOT write the submission to an app-local table
 
-### Requirement: Capacity and waiting-list ordering MUST stay in LarpingApp
+### Requirement: Capacity and waiting-list ordering MUST stay in Larpinq
 
-The event-domain rules — capacity, confirmed-vs-waitlisted classification, and waiting-list ordering derived from submission order — MUST remain LarpingApp logic that consumes the leaf's submissions; confirmed sign-ups MUST feed the Event `players[]` participation.
+The event-domain rules — capacity, confirmed-vs-waitlisted classification, and waiting-list ordering derived from submission order — MUST remain Larpinq logic that consumes the leaf's submissions; confirmed sign-ups MUST feed the Event `players[]` participation.
 
 #### Scenario: Waiting list forms when capacity is reached
 

@@ -2,7 +2,7 @@
 
 ## Overview
 
-Registers deep link URL patterns with OpenRegister's unified search provider so that LarpingApp objects found via Nextcloud unified search link directly to LarpingApp's detail views.
+Registers deep link URL patterns with OpenRegister's unified search provider so that Larpinq objects found via Nextcloud unified search link directly to Larpinq's detail views.
 
 ## Features
 
@@ -14,14 +14,14 @@ Registers deep link URL patterns with OpenRegister's unified search provider so 
 
 | Object Type | URL Pattern |
 |------------|-------------|
-| Character | `/apps/larpingapp/#/characters/{uuid}` |
-| Player | `/apps/larpingapp/#/players/{uuid}` |
-| Ability | `/apps/larpingapp/#/abilities/{uuid}` |
-| Skill | `/apps/larpingapp/#/skills/{uuid}` |
-| Item | `/apps/larpingapp/#/items/{uuid}` |
-| Condition | `/apps/larpingapp/#/conditions/{uuid}` |
-| Effect | `/apps/larpingapp/#/effects/{uuid}` |
-| Event | `/apps/larpingapp/#/events/{uuid}` |
+| Character | `/apps/larpinq/#/characters/{uuid}` |
+| Player | `/apps/larpinq/#/players/{uuid}` |
+| Ability | `/apps/larpinq/#/abilities/{uuid}` |
+| Skill | `/apps/larpinq/#/skills/{uuid}` |
+| Item | `/apps/larpinq/#/items/{uuid}` |
+| Condition | `/apps/larpinq/#/conditions/{uuid}` |
+| Effect | `/apps/larpinq/#/effects/{uuid}` |
+| Event | `/apps/larpinq/#/events/{uuid}` |
 
 ## Technical Details
 

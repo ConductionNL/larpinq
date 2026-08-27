@@ -19,7 +19,7 @@
 
 import { test, expect } from '@playwright/test'
 
-const BASE = '/apps/larpingapp'
+const BASE = '/apps/larpinq'
 
 test.describe('event-xp-award-workflow', () => {
 	test('XP Awards index page renders its own surface', async ({ page }) => {
@@ -59,7 +59,7 @@ test.describe('event-xp-award-workflow', () => {
 			'XP Awards index must render its create action or an explicit empty state',
 		).toBeVisible({ timeout: 15_000 })
 
-		// No larpingapp JS pageerror while rendering the new page.
+		// No larpinq JS pageerror while rendering the new page.
 		expect(pageErrors).toEqual([])
 	})
 })

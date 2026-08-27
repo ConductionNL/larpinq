@@ -26,7 +26,7 @@ schema to gain a `player` ownership field — tracked as a follow-up"
 **That follow-up is now unblocked and the comment is stale.** The character
 schema already carries an ownership field: `ownerUid` ("Nextcloud uid of
 the player who owns this character. Used for per-player notifications") in
-`lib/Settings/larpingapp_register.json`. It was added for the
+`lib/Settings/larpinq_register.json`. It was added for the
 character-approved notification rules but is referenced by **zero** lines
 of PHP or JS in this app (`grep -rn ownerUid lib src` → no code hits). The
 data model is there; only the authorization check is missing.

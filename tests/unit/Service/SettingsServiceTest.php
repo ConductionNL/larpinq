@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace OCA\LarpingApp\Tests\Unit\Service;
+namespace OCA\Larpinq\Tests\Unit\Service;
 
-use OCA\LarpingApp\Service\SettingsLoadService;
-use OCA\LarpingApp\Service\SettingsService;
+use OCA\Larpinq\Service\SettingsLoadService;
+use OCA\Larpinq\Service\SettingsService;
 use OCP\IAppConfig;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -93,7 +93,7 @@ class SettingsServiceTest extends TestCase {
 			->expects($this->once())
 			->method('info')
 			->with(
-				'LarpingApp settings updated',
+				'Larpinq settings updated',
 				$this->callback(function ($context) {
 					return isset($context['keys']);
 				})
@@ -147,7 +147,7 @@ class SettingsServiceTest extends TestCase {
 		$this->appConfig
 			->expects($this->once())
 			->method('getValueString')
-			->with('larpingapp', 'register', '')
+			->with('larpinq', 'register', '')
 			->willReturn('my-register-id');
 
 		$result = $this->service->getConfigValue('register');
@@ -159,7 +159,7 @@ class SettingsServiceTest extends TestCase {
 		$this->appConfig
 			->expects($this->once())
 			->method('setValueString')
-			->with('larpingapp', 'register', 'new-id');
+			->with('larpinq', 'register', 'new-id');
 
 		$this->service->setConfigValue('register', 'new-id');
 	}

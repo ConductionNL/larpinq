@@ -4,7 +4,7 @@
  * Bootstrap file for PHPUnit unit tests.
  *
  * @category Test
- * @package  OCA\LarpingApp\Tests
+ * @package  OCA\Larpinq\Tests
  *
  * @author    Ruben Linde <ruben@larpingapp.com>
  * @copyright 2024 Ruben Linde
@@ -22,6 +22,15 @@ define('PHPUNIT_RUN', 1);
 
 // Include Composer's autoloader.
 require_once __DIR__ . '/../vendor/autoload.php';
+
+// Doctrine placeholders, loaded BEFORE anything can mock an OCP DB interface.
+// IQueryBuilder evaluates class constants referencing Doctrine\DBAL\ParameterType
+// at parse time, and IDBConnection::getQueryBuilder() returns IQueryBuilder — so
+// without these, createMock(IDBConnection::class) dies with
+// `Class "Doctrine\DBAL\ParameterType" not found`, raised from inside
+// createMock(), which reads as a broken test rather than a missing dependency.
+// Every declaration is class_exists()-guarded, so a real runtime still wins.
+require_once __DIR__ . '/stubs/DoctrineStubs.php';
 
 // Include the Nextcloud 3rdparty autoloader so that Symfony and other NC
 // runtime dependencies (e.g. Symfony\Component\HttpFoundation\HeaderUtils)

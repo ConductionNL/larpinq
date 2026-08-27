@@ -1,12 +1,12 @@
 <?php
 
 /**
- * LarpingApp SettingsService.
+ * Larpinq SettingsService.
  *
- * Service for managing LarpingApp application settings and configuration.
+ * Service for managing Larpinq application settings and configuration.
  *
  * @category  Service
- * @package   OCA\LarpingApp\Service
+ * @package   OCA\Larpinq\Service
  * @author    Ruben Linde <ruben@larpingapp.com>
  * @copyright 2024 Ruben Linde
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
@@ -20,17 +20,17 @@
 
 declare(strict_types=1);
 
-namespace OCA\LarpingApp\Service;
+namespace OCA\Larpinq\Service;
 
-use OCA\LarpingApp\AppInfo\Application;
+use OCA\Larpinq\AppInfo\Application;
 use OCP\IAppConfig;
 use Psr\Log\LoggerInterface;
 
 /**
- * Service for managing LarpingApp settings.
+ * Service for managing Larpinq settings.
  *
  * @category Service
- * @package  OCA\LarpingApp\Service
+ * @package  OCA\Larpinq\Service
  * @author   Ruben Linde <ruben@larpingapp.com>
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
@@ -103,7 +103,7 @@ class SettingsService {
 	}//end __construct()
 
 	/**
-	 * Get all LarpingApp settings.
+	 * Get all Larpinq settings.
 	 *
 	 * @return array The settings as key-value pairs.
 	 *
@@ -119,7 +119,7 @@ class SettingsService {
 	}//end getSettings()
 
 	/**
-	 * Update LarpingApp settings with the given data.
+	 * Update Larpinq settings with the given data.
 	 *
 	 * @param array $data The settings data to update.
 	 *
@@ -136,7 +136,7 @@ class SettingsService {
 			}
 		}
 
-		$this->logger->info('LarpingApp settings updated', ['keys' => array_keys($data)]);
+		$this->logger->info('Larpinq settings updated', ['keys' => array_keys($data)]);
 
 		return $this->getSettings();
 	}//end updateSettings()

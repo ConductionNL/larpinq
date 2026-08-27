@@ -4,7 +4,7 @@
 
 ### Requirement: Structured owner uid prerequisite for per-player notifications
 
-LarpingApp SHALL populate the structured `ownerUid` field on `character` via
+Larpinq SHALL populate the structured `ownerUid` field on `character` via
 `x-openregister-calculations` (`materialise:true`, sourced from
 `@ref.player.userUid` through `character.x-openregister-references.player`),
 rather than requiring it to be set by hand or left permanently empty. The

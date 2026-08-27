@@ -34,7 +34,7 @@ three hygiene debts behind:
    The literal path 404s on any instance served from a sub-directory or
    without `index.php` in the URL.
 
-None of this is covered by the active changes: `larpingapp-manifest-tier-4`
+None of this is covered by the active changes: `larpinq-manifest-tier-4`
 audits registry `kind:` fields (not dead entries), and `adopt-apphost` is
 backend-only.
 

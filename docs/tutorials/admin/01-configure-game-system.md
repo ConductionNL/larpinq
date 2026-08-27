@@ -6,7 +6,7 @@ description: Build the LARP rule engine — abilities, effects, skills, items, c
 
 # Configure the game system (skills, items, conditions, backgrounds)
 
-A *game system* in Larping is the rule engine: the abilities characters are scored on, the effects that modify those abilities, and the catalogue of skills, items, and conditions that carry those effects. Set this up once per LARP setting; players then pick from it when they build characters.
+A *game system* in Larpinq is the rule engine: the abilities characters are scored on, the effects that modify those abilities, and the catalogue of skills, items, and conditions that carry those effects. Set this up once per LARP setting; players then pick from it when they build characters.
 
 ## Goal
 
@@ -14,13 +14,13 @@ By the end the game system will have its abilities defined, at least one effect 
 
 ## Prerequisites
 
-- The **Larping** and **OpenRegister** apps installed and enabled with the Larping register imported (see [Manage Larping settings](03-admin-settings.md)).
-- Admin (or the game master role on this Larping instance) — defining the rule engine is an administrative act that shapes every character built afterwards.
+- The **Larpinq** and **OpenRegister** apps installed and enabled with the Larpinq register imported (see [Manage Larpinq settings](03-admin-settings.md)).
+- Admin (or the game master role on this Larpinq instance) — defining the rule engine is an administrative act that shapes every character built afterwards.
 - A clear picture of the LARP system's rules — which abilities scores exist, what skills modify them, what equipment players can carry.
 
 ## Steps
 
-1. Start with **Abilities** (under **Game settings** in the Larping navigation, or via **Abilities** directly). Add the ability scores your system uses — *Strength*, *Health*, *Mana*, *XP*, whatever the LARP rules call out. Each ability gets a name, an optional description, and a base value.
+1. Start with **Abilities** (under **Game settings** in the Larpinq navigation, or via **Abilities** directly). Add the ability scores your system uses — *Strength*, *Health*, *Mana*, *XP*, whatever the LARP rules call out. Each ability gets a name, an optional description, and a base value.
 
    ![Abilities list with rule-system entries](/screenshots/tutorials/admin/01-configure-game-system-01.png)
 
@@ -58,5 +58,5 @@ The catalogues populate: **Abilities**, **Effects**, **Skills**, **Items**, **Co
 
 - [Game mechanics reference](../../features/game-mechanics.md) — abilities, effects, skills, items, conditions.
 - [RPG system reference](../../features/rpg-system.md) — the stat-calculation pipeline.
-- [Manage Larping settings](03-admin-settings.md) — register / schema mapping the catalogues depend on.
+- [Manage Larpinq settings](03-admin-settings.md) — register / schema mapping the catalogues depend on.
 - [Subscribe to an event](../user/06-event-subscription.md) — how events feed back into character progression.
