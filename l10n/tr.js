@@ -149,7 +149,10 @@ OC.L10N.register(
         "Required conditions": "Gerekli durumlar",
         "Required effects": "Gerekli etkiler",
         "Prerequisites": "Ön koşullar",
-        "None — this is a root skill.": "Yok — bu bir kök beceridir."
+        "None — this is a root skill.": "Yok — bu bir kök beceridir.",
+        "Where the automation lives": "Otomasyonun yaşadığı yer",
+        "Flows are what happens without anyone clicking: a reminder before a deadline passes, a confirmation sent on submission. This is where you read and edit them — nothing to build now.": "Flows, kimse tıklamadan olan şeydir: bir süre dolmadan önce bir hatırlatma, gönderimde bir onay. Bunları burada okur ve düzenlersiniz — şimdi inşa edilecek bir şey yok.",
+        "Open Flows in the menu": "Menüden Flows'u açın"
     },
     "nplurals=2; plural=(n != 1);"
 )

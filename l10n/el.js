@@ -149,7 +149,10 @@ OC.L10N.register(
         "Required conditions": "Απαιτούμενες καταστάσεις",
         "Required effects": "Απαιτούμενες επιδράσεις",
         "Prerequisites": "Προϋποθέσεις",
-        "None — this is a root skill.": "Καμία — αυτή είναι ριζική δεξιότητα."
+        "None — this is a root skill.": "Καμία — αυτή είναι ριζική δεξιότητα.",
+        "Where the automation lives": "Πού ζει η αυτοματοποίηση",
+        "Flows are what happens without anyone clicking: a reminder before a deadline passes, a confirmation sent on submission. This is where you read and edit them — nothing to build now.": "Τα Flows είναι αυτό που συμβαίνει χωρίς να κάνει κανείς κλικ: μια υπενθύμιση πριν λήξει μια προθεσμία, μια επιβεβαίωση κατά την υποβολή. Εδώ τα διαβάζετε και τα επεξεργάζεστε — δεν χρειάζεται να φτιάξετε τίποτα τώρα.",
+        "Open Flows in the menu": "Ανοίξτε τα Flows στο μενού"
     },
     "nplurals=2; plural=(n != 1);"
 )

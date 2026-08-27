@@ -149,7 +149,10 @@ OC.L10N.register(
         "Required conditions": "Erforderliche Zustände",
         "Required effects": "Erforderliche Effekte",
         "Prerequisites": "Voraussetzungen",
-        "None — this is a root skill.": "Keine — dies ist eine Grundfähigkeit."
+        "None — this is a root skill.": "Keine — dies ist eine Grundfähigkeit.",
+        "Where the automation lives": "Wo die Automatisierung wohnt",
+        "Flows are what happens without anyone clicking: a reminder before a deadline passes, a confirmation sent on submission. This is where you read and edit them — nothing to build now.": "Flows sind das, was ohne Klick geschieht: eine Erinnerung, bevor eine Frist abläuft, eine Bestätigung beim Einreichen. Hier liest und bearbeitest du sie — jetzt ist nichts zu bauen.",
+        "Open Flows in the menu": "Öffne Flows im Menü"
     },
     "nplurals=2; plural=(n != 1);"
 )

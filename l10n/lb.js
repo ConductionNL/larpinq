@@ -149,7 +149,10 @@ OC.L10N.register(
         "Required conditions": "Erfuerderlech Zoustänn",
         "Required effects": "Erfuerderlech Effekter",
         "Prerequisites": "Viraussetzungen",
-        "None — this is a root skill.": "Keng — dëst ass eng Basiskompetenz."
+        "None — this is a root skill.": "Keng — dëst ass eng Basiskompetenz.",
+        "Where the automation lives": "Wou d'Automatisatioun wunnt",
+        "Flows are what happens without anyone clicking: a reminder before a deadline passes, a confirmation sent on submission. This is where you read and edit them — nothing to build now.": "Flows sinn dat, wat geschitt ouni datt een klickt: eng Erënnerung ier eng Frist ausleeft, eng Bestätegung beim Ofginn. Hei liest an änners du se — et gëtt elo näischt ze bauen.",
+        "Open Flows in the menu": "Maach Flows am Menü op"
     },
     "nplurals=2; plural=(n != 1);"
 )

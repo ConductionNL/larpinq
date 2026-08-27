@@ -149,7 +149,10 @@ OC.L10N.register(
         "Required conditions": "Szükséges állapotok",
         "Required effects": "Szükséges hatások",
         "Prerequisites": "Előfeltételek",
-        "None — this is a root skill.": "Nincs — ez egy gyökérkészség."
+        "None — this is a root skill.": "Nincs — ez egy gyökérkészség.",
+        "Where the automation lives": "Ahol az automatizálás lakik",
+        "Flows are what happens without anyone clicking: a reminder before a deadline passes, a confirmation sent on submission. This is where you read and edit them — nothing to build now.": "A Flows az, ami kattintás nélkül történik: emlékeztető a határidő lejárta előtt, visszaigazolás beküldéskor. Itt olvasod és szerkeszted őket — most nincs mit építeni.",
+        "Open Flows in the menu": "Nyisd meg a Flows menüpontot"
     },
     "nplurals=2; plural=(n != 1);"
 )

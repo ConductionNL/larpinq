@@ -149,7 +149,10 @@ OC.L10N.register(
         "Required conditions": "Stări necesare",
         "Required effects": "Efecte necesare",
         "Prerequisites": "Cerințe prealabile",
-        "None — this is a root skill.": "Niciuna — aceasta este o abilitate de bază."
+        "None — this is a root skill.": "Niciuna — aceasta este o abilitate de bază.",
+        "Where the automation lives": "Unde locuiește automatizarea",
+        "Flows are what happens without anyone clicking: a reminder before a deadline passes, a confirmation sent on submission. This is where you read and edit them — nothing to build now.": "Flows este ceea ce se întâmplă fără ca nimeni să dea clic: un memento înainte de expirarea unui termen, o confirmare la trimitere. Aici le citești și le editezi — nu e nimic de construit acum.",
+        "Open Flows in the menu": "Deschide Flows din meniu"
     },
     "nplurals=2; plural=(n != 1);"
 )

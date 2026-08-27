@@ -149,7 +149,10 @@ OC.L10N.register(
         "Required conditions": "Coinníollacha riachtanacha",
         "Required effects": "Éifeachtaí riachtanacha",
         "Prerequisites": "Réamhriachtanais",
-        "None — this is a root skill.": "Ceann ar bith — is bunscil í seo."
+        "None — this is a root skill.": "Ceann ar bith — is bunscil í seo.",
+        "Where the automation lives": "An áit a maireann an uathoibriú",
+        "Flows are what happens without anyone clicking: a reminder before a deadline passes, a confirmation sent on submission. This is where you read and edit them — nothing to build now.": "Is éard is Flows ann ná an rud a tharlaíonn gan aon duine a chliceáil: meabhrúchán sula rachaidh spriocdháta in éag, deimhniú ar aighneacht. Is anseo a léann tú agus a chuireann tú in eagar iad — níl aon rud le tógáil anois.",
+        "Open Flows in the menu": "Oscail Flows sa roghchlár"
     },
     "nplurals=2; plural=(n != 1);"
 )
