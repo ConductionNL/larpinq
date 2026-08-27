@@ -1,14 +1,14 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "larpingapp demo data",
+    "title": "larpinq demo data",
     "version": "1.0.0",
     "description": "Demo data covering every schema this app supplies, offered as the first step of the app's setup walkthrough. Generated from the schemas themselves, so every object satisfies the schema that will validate it."
   },
   "x-openregister": {
     "type": "mock",
-    "app": "larpingapp",
-    "description": "Demo data for larpingapp. NOT installed automatically — a mock register is imported on demand, from the setup walkthrough or `occ openregister:descriptors:list --app=larpingapp --import=<slug>`."
+    "app": "larpinq",
+    "description": "Demo data for larpinq. NOT installed automatically — a mock register is imported on demand, from the setup walkthrough or `occ openregister:descriptors:list --app=larpinq --import=<slug>`."
   },
   "paths": {},
   "components": {
