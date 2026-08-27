@@ -27,6 +27,12 @@ concurrency:
   group: release-${{ github.ref_name }}
   cancel-in-progress: false
 
+# `previous-app-id` is the App Store id this app shipped under before the
+# rename. The store keys everything on the id, so `larpinq` is a brand new
+# entry starting from nothing -- without this the version line restarts
+# BELOW what the app already published as `larpingapp`, and the store accepts
+# that with a 200 and then never offers it to anyone. Drop the input once
+# the `larpingapp` entry is retired.
 jobs:
   unstable:
     if: github.ref == 'refs/heads/development'
@@ -47,6 +53,7 @@ jobs:
     with:
       release-type: unstable
       app-name: larpinq
+      previous-app-id: larpingapp
     secrets: inherit
 
   beta:
@@ -59,6 +66,7 @@ jobs:
     with:
       release-type: beta
       app-name: larpinq
+      previous-app-id: larpingapp
     secrets: inherit
 
   stable:
@@ -71,4 +79,5 @@ jobs:
     with:
       release-type: stable
       app-name: larpinq
+      previous-app-id: larpingapp
     secrets: inherit
