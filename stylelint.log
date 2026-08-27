@@ -1,0 +1,13 @@
+
+> larpinq@0.1.20 stylelint
+> stylelint "{src,css}/**/*.{vue,scss,css}"
+
+
+src/views/SkillTree.vue
+  679:2  ⚠  Unexpected "left" value in "text-align" property. Use "start".  csstools/use-logical
+
+css/main.css
+  175:2  ⚠  Unexpected "margin-left" property. Use "margin-inline-start".  csstools/use-logical
+
+⚠ 2 problems (0 errors, 2 warnings)
+

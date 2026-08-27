@@ -1,0 +1,13 @@
+
+> larpinq@0.1.20 lint
+> eslint src
+
+
+/home/rubenlinde/fleet-work/fx/larpinq/src/views/EventRoster.vue
+  122:3  warning  'config' of property found, but never used  vue/no-unused-properties
+
+/home/rubenlinde/fleet-work/fx/larpinq/src/views/ObjectDetail.vue
+  89:3  warning  'config' of property found, but never used  vue/no-unused-properties
+
+✖ 2 problems (0 errors, 2 warnings)
+
