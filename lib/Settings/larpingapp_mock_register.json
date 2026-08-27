@@ -300,6 +300,15 @@
             },
             "visible": false,
             "title": "Requirement Overrides"
+          },
+          "ownerRef": {
+            "type": "string",
+            "format": "uuid",
+            "$ref": "player",
+            "visible": false,
+            "readOnly": true,
+            "title": "Owner",
+            "description": "UUID reference to the player object — the portal-subject scoping key; distinct from ownerUid which is the Nextcloud user id"
           }
         },
         "x-openregister-references": {
@@ -388,7 +397,8 @@
               "en": "Character {{name}} has been approved"
             }
           }
-        }
+        },
+        "_note": "ownerRef declares `$ref: \"player\"` together with `visible: false` + `readOnly: true`. It is stamped server-side by PortalObjectWriter and projected out of the player view, so it was never meant to be typed by a user; its direct sibling `ownerUid` has carried the same two flags all along. THE EARLIER PROHIBITION HERE WAS WITHDRAWN, and the reason is worth keeping. Two previous arms (ef7346c/PR #289, and PR #306) each added this $ref and each was reverted because `tests/e2e/spec-coverage/detail-forms-admin.spec.ts` -> `character create dialog exposes a player (ocName) selector` went red. That was read as a schema-level collision between two player-targeted relations, and an upstream nc-vue change was proposed to key relation resolution by property rather than by target schema slug. THAT DIAGNOSIS WAS WRONG IN BOTH HALVES. (1) nc-vue already keys every piece of per-field relation state by PROPERTY — the async option state, the search handler and the enum cache are all keyed `field.key`; nothing is keyed by target schema, so two properties may point at `player` at once and the proposed upstream fix would have been a no-op. (2) The test never asserted a selector. It asserted `input[placeholder*=\"player\" i]`, and CnFormDialog passes `:placeholder=\"field.description\"` ONLY on its text/email/url and number branches — the NcSelect branch that renders a $ref relation is given `input-id` and `input-label`, never a placeholder. So that locator could match exactly one element in the Add Character dialog: ownerRef's PLAIN TEXT BOX, whose description contains the words \"the player object\". The assertion was the inverse of its own name — green precisely while ownerRef was NOT a relation, red the moment it became one. Git history shows it was never measuring what it claimed: when the test was written (987c9ee3) ocName was a plain string with no $ref; ownerRef arrived later (f33fc0b8) carrying a matching description; and when ocName finally got its $ref (f434f76d) it became a select and silently LOST its placeholder, the assertion sliding onto ownerRef with no red window to notice. The assertion has now been corrected to target the ocName combobox, so the test and ADR-062 rule 7 are no longer mutually exclusive by construction."
       },
       "condition": {
         "slug": "condition",
@@ -463,6 +473,32 @@
             "description": "Optional world (campaign) thiscondition belongs to. Empty means shared across all worlds.",
             "visible": false,
             "title": "World"
+          }
+        },
+        "configuration": {
+          "x-openregister-mcp": {
+            "enabled": true,
+            "tools": {
+              "search": {
+                "description": "Search gameplay conditions (consequences applied to characters) by name, uniqueness, or campaign setting.",
+                "scope": "read",
+                "filters": [
+                  "name",
+                  "unique",
+                  "setting"
+                ],
+                "readOnlyHint": true,
+                "destructiveHint": false,
+                "idempotentHint": true
+              },
+              "get": {
+                "description": "Get a single condition's granted effects and which characters currently carry it.",
+                "scope": "read",
+                "readOnlyHint": true,
+                "destructiveHint": false,
+                "idempotentHint": true
+              }
+            }
           }
         }
       },
@@ -651,6 +687,11 @@
               "en": "Reminder: {{name}} starts soon ({{startDate}})"
             }
           }
+        },
+        "configuration": {
+          "linkedTypes": [
+            "calendar"
+          ]
         }
       },
       "item": {
@@ -728,6 +769,32 @@
             "visible": false,
             "title": "World"
           }
+        },
+        "configuration": {
+          "x-openregister-mcp": {
+            "enabled": true,
+            "tools": {
+              "search": {
+                "description": "Search magical/special items by name, uniqueness, or campaign setting.",
+                "scope": "read",
+                "filters": [
+                  "name",
+                  "unique",
+                  "setting"
+                ],
+                "readOnlyHint": true,
+                "destructiveHint": false,
+                "idempotentHint": true
+              },
+              "get": {
+                "description": "Get a single item's granted effects and which characters currently hold it.",
+                "scope": "read",
+                "readOnlyHint": true,
+                "destructiveHint": false,
+                "idempotentHint": true
+              }
+            }
+          }
         }
       },
       "player": {
@@ -761,6 +828,31 @@
             "description": "The Nextcloud user account this player signs in as (a Nextcloud user UID — a plain string; there is deliberately no `format`, OpenRegister has no `user` format and rejects the whole schema when it sees one). Used for character-ownership notifications.",
             "maxLength": 255,
             "title": "Nextcloud user"
+          }
+        },
+        "configuration": {
+          "x-openregister-mcp": {
+            "enabled": true,
+            "tools": {
+              "search": {
+                "description": "Search players by name or linked Nextcloud user id — use this to find who controls a given character.",
+                "scope": "read",
+                "filters": [
+                  "name",
+                  "userUid"
+                ],
+                "readOnlyHint": true,
+                "destructiveHint": false,
+                "idempotentHint": true
+              },
+              "get": {
+                "description": "Get a single player's profile and description.",
+                "scope": "read",
+                "readOnlyHint": true,
+                "destructiveHint": false,
+                "idempotentHint": true
+              }
+            }
           }
         }
       },
@@ -800,6 +892,31 @@
             "default": "active",
             "title": "Status",
             "facetable": true
+          }
+        },
+        "configuration": {
+          "x-openregister-mcp": {
+            "enabled": true,
+            "tools": {
+              "search": {
+                "description": "Search LARP settings (worlds/campaigns) by name or status (active/archived) — use this to see which campaigns are currently running versus finished.",
+                "scope": "read",
+                "filters": [
+                  "name",
+                  "status"
+                ],
+                "readOnlyHint": true,
+                "destructiveHint": false,
+                "idempotentHint": true
+              },
+              "get": {
+                "description": "Get a single setting's detail — the campaign that scopes its characters, events, and rules.",
+                "scope": "read",
+                "readOnlyHint": true,
+                "destructiveHint": false,
+                "idempotentHint": true
+              }
+            }
           }
         }
       },
@@ -989,6 +1106,38 @@
           "delete": [
             "gamemasters"
           ]
+        },
+        "configuration": {
+          "x-openregister-mcp": {
+            "enabled": true,
+            "tools": {
+              "search": {
+                "description": "Search experience-point awards by event or character — use this to see a character's XP history or everyone awarded XP at a given event.",
+                "scope": "read",
+                "filters": [
+                  "event",
+                  "character"
+                ],
+                "readOnlyHint": true,
+                "destructiveHint": false,
+                "idempotentHint": true
+              },
+              "get": {
+                "description": "Get a single XP award's amount, reason, and awarding game master.",
+                "scope": "read",
+                "readOnlyHint": true,
+                "destructiveHint": false,
+                "idempotentHint": true
+              },
+              "create": {
+                "description": "Record a single experience-point award for one character at one event — the post-event 'award XP to each attendee' ritual this schema exists for. Purely additive audit data; OpenRegister authorization restricts this write to the gamemasters group regardless of who calls it via MCP.",
+                "scope": "create",
+                "readOnlyHint": false,
+                "destructiveHint": false,
+                "idempotentHint": false
+              }
+            }
+          }
         }
       }
     },
@@ -1068,7 +1217,8 @@
             "overriddenBy": "Voorbeeld Overriddenby 1",
             "overriddenAt": "2026-03-01T09:00:00+00:00"
           }
-        ]
+        ],
+        "ownerRef": "00000000-0000-4000-8000-000000000000"
       },
       {
         "@self": {
@@ -1112,7 +1262,8 @@
             "overriddenBy": "Voorbeeld Overriddenby 2",
             "overriddenAt": "2026-03-02T09:00:00+00:00"
           }
-        ]
+        ],
+        "ownerRef": "00000000-0000-4000-8000-000000000001"
       },
       {
         "@self": {
@@ -1156,7 +1307,8 @@
             "overriddenBy": "Voorbeeld Overriddenby 3",
             "overriddenAt": "2026-03-03T09:00:00+00:00"
           }
-        ]
+        ],
+        "ownerRef": "00000000-0000-4000-8000-000000000002"
       },
       {
         "@self": {
