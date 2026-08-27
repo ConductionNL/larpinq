@@ -1,7 +1,7 @@
 <?php
 
 /**
- * IdListNormaliser for LarpingApp
+ * IdListNormaliser for Larpinq
  *
  * OpenRegister relation fields reach the app in three shapes depending on how
  * they were written and whether they were expanded on read: a list of UUID
@@ -9,7 +9,7 @@
  * that in one place keeps every consumer free of the shape check.
  *
  * @category  Service
- * @package   OCA\LarpingApp\Service
+ * @package   OCA\Larpinq\Service
  * @author    Ruben Linde <ruben@larpingapp.com>
  * @copyright 2026 Conduction B.V.
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
@@ -20,13 +20,13 @@
 
 declare(strict_types=1);
 
-namespace OCA\LarpingApp\Service;
+namespace OCA\Larpinq\Service;
 
 /**
  * Normalises a relation value to a flat list of string ids.
  *
  * @category Service
- * @package  OCA\LarpingApp\Service
+ * @package  OCA\Larpinq\Service
  * @author   Ruben Linde <ruben@larpingapp.com>
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com

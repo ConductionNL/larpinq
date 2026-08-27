@@ -7,3 +7,7 @@ vendor/
 coverage/
 docs/
 *.min.*
+
+# Written by the translation workflow — a formatter here would fight its own
+# generator on every run.
+l10n/

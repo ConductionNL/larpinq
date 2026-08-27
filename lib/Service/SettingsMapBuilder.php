@@ -1,12 +1,12 @@
 <?php
 
 /**
- * LarpingApp SettingsMapBuilder.
+ * Larpinq SettingsMapBuilder.
  *
  * Service for building schema and register maps from import results.
  *
  * @category  Service
- * @package   OCA\LarpingApp\Service
+ * @package   OCA\Larpinq\Service
  * @author    Ruben Linde <ruben@larpingapp.com>
  * @copyright 2024 Ruben Linde
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
@@ -18,13 +18,13 @@
 
 declare(strict_types=1);
 
-namespace OCA\LarpingApp\Service;
+namespace OCA\Larpinq\Service;
 
 /**
  * Service for building schema and register maps from import results.
  *
  * @category Service
- * @package  OCA\LarpingApp\Service
+ * @package  OCA\Larpinq\Service
  * @author   Ruben Linde <ruben@larpingapp.com>
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
@@ -34,11 +34,16 @@ namespace OCA\LarpingApp\Service;
 class SettingsMapBuilder {
 
 	/**
-	 * LarpingApp register slug.
+	 * Larpinq register slug.
+	 *
+	 * ⚠️ FROZEN ON THE OLD APP ID, DELIBERATELY. This is the OpenRegister
+	 * REGISTER SLUG, not the app id. OpenRegister matches an existing register
+	 * by slug; renaming this to `larpinq` would stop matching the register that
+	 * holds every existing object and silently resolve to nothing. Leave it.
 	 *
 	 * @var string
 	 */
-	private const REGISTER_SLUG = 'larpingapp';
+	private const REGISTER_SLUG = 'larpinq';
 
 	/**
 	 * Build a slug-to-ID map from imported schemas.

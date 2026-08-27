@@ -1,6 +1,6 @@
 {
   "generated_at": "2026-05-24T00:00:00Z",
-  "app": "larpingapp",
+  "app": "larpinq",
   "branch": "fix/l10n-and-polyfill-overrides",
   "scanner_version": "1",
   "buckets": {

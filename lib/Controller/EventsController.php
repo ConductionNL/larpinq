@@ -1,10 +1,10 @@
 <?php
 
 /**
- * Events controller for LarpingApp
+ * Events controller for Larpinq
  *
  * @category  Controller
- * @package   OCA\LarpingApp\Controller
+ * @package   OCA\Larpinq\Controller
  * @author    Ruben Linde <ruben@larpingapp.com>
  * @copyright 2026 Conduction B.V.
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
@@ -15,10 +15,10 @@
 
 declare(strict_types=1);
 
-namespace OCA\LarpingApp\Controller;
+namespace OCA\Larpinq\Controller;
 
-use OCA\LarpingApp\Service\DocuDeskPdfRenderer;
-use OCA\LarpingApp\Service\EventRosterService;
+use OCA\Larpinq\Service\DocuDeskPdfRenderer;
+use OCA\Larpinq\Service\EventRosterService;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\Attribute\NoAdminRequired;

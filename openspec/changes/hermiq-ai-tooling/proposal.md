@@ -1,13 +1,13 @@
 # Proposal: hermiq-ai-tooling
 
 ## Summary
-Add LarpingApp's first curated (non-CRUD) MCP tools on top of the derived
-surface the `larpingapp-mcp-adoption` fragment already declares: a
-`lib/Mcp/LarpingappScannableServices.php` opt-in
+Add Larpinq's first curated (non-CRUD) MCP tools on top of the derived
+surface the `larpinq-mcp-adoption` fragment already declares: a
+`lib/Mcp/LarpinqScannableServices.php` opt-in
 (`OCA\OpenRegister\Mcp\IMcpScannableServices`) exposing
-`larpingapp.awardXpToAttendees` (`#[McpTool]` write: one XP award per
+`larpinq.awardXpToAttendees` (`#[McpTool]` write: one XP award per
 checked-in attendee of an event, approval-gated in Hermiq) and
-`larpingapp.getCharacterSheet` (`#[McpTool]` read: the calculated character
+`larpinq.getCharacterSheet` (`#[McpTool]` read: the calculated character
 sheet from `CharacterService::calculateCharacter()`), plus the spec-level
 governance contract: GM approval gates on XP awards and sheet-affecting
 writes, default-deny grants, and attributable audit.
@@ -18,7 +18,7 @@ AI-automatable, governed per agent by Hermiq's scope
 (`read/create/update/delete`) × reach (`self/user/instance/external`) grant
 model with default-deny writes, human approval gates, and an audit trail —
 and that chat is a command surface for the app even before anything is
-automated. The adoption change gave LarpingApp 21 derived CRUD tools
+automated. The adoption change gave Larpinq 21 derived CRUD tools
 (9 schemas × search/get, plus `character.create`, `xpAward.create`,
 `attendance.update`), which covers single-object questions and single-row
 writes. Two real GM workflows don't reduce to single derived calls:
@@ -41,7 +41,7 @@ mechanism (derive CRUD; curate genuine non-CRUD via `#[McpTool]` +
 `IMcpScannableServices`).
 
 ## Affected Projects
-- [ ] Project: `larpingapp` — new `lib/Mcp/LarpingappScannableServices.php`,
+- [ ] Project: `larpinq` — new `lib/Mcp/LarpinqScannableServices.php`,
   `#[McpTool]` attributes on `EventRosterService` (new method
   `awardXpToAttendees()`) and `CharacterService::calculateCharacter()` (or a
   thin sheet-shaped wrapper), DI alias registration.
@@ -49,17 +49,17 @@ mechanism (derive CRUD; curate genuine non-CRUD via `#[McpTool]` +
 ## Scope
 
 ### In Scope
-- `larpingapp.awardXpToAttendees(eventId, amount, reason)`: creates one
+- `larpinq.awardXpToAttendees(eventId, amount, reason)`: creates one
   `xpAward` (`amount`, `reason`, `event`, `character`, server-stamped
   `awardedAt`/`awardedBy`) for each attendance row of the event with
   `status: "checked-in"`. `scope: 'create'`, `readOnlyHint: false`,
   `destructiveHint: false`, `idempotentHint: false`. Approval-required: the
   Hermiq gate shows the resolved recipient list (event, N characters, amount,
   reason) to a game master before any award is written.
-- `larpingapp.getCharacterSheet(characterId)`: the calculated sheet —
+- `larpinq.getCharacterSheet(characterId)`: the calculated sheet —
   base + computed stats, skills, items, conditions, XP total. `scope:
   'read'`, `readOnlyHint: true`.
-- `lib/Mcp/LarpingappScannableServices.php` implementing
+- `lib/Mcp/LarpinqScannableServices.php` implementing
   `IMcpScannableServices`, registered under the DI alias (DocuDesk pattern).
 - Spec-level governance contract: GM approval gate on XP awards and on any
   future sheet-affecting write; OR object-level `authorization` (gamemasters
@@ -96,7 +96,7 @@ None (OpenRegister's `AttributeToolScanner` / `McpTool` attribute, already a
 runtime dependency of the adoption change).
 
 ## Impact
-- New: `lib/Mcp/LarpingappScannableServices.php`; one new service method;
+- New: `lib/Mcp/LarpinqScannableServices.php`; one new service method;
   two attributes; DI registration.
 - Hermiq's tool catalog gains 2 curated tools next to the 21 derived ones.
 - No change to the register fragments, the frontend, or existing controllers.

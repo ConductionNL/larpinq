@@ -27,7 +27,7 @@
 			data-testid="event-roster-degraded">
 			{{
 				t(
-					'larpingapp',
+					'larpinq',
 					'Attendance tracking is unavailable — showing the participant list read-only.',
 				)
 			}}
@@ -37,7 +37,7 @@
 			:rows="participants"
 			:loading="loading"
 			:emptyText="
-				t('larpingapp', 'No confirmed participants for this event yet.')
+				t('larpinq', 'No confirmed participants for this event yet.')
 			"
 			data-testid="event-roster-table">
 			<template #column-status="{ row }">
@@ -59,14 +59,14 @@
 					"
 					data-testid="event-roster-checkin"
 					@click="setStatus(row, 'checked-in')">
-					{{ t('larpingapp', 'Check in') }}
+					{{ t('larpinq', 'Check in') }}
 				</NcButton>
 				<NcButton
 					variant="tertiary"
 					:disabled="saving === row.character || row.status === 'no-show'"
 					data-testid="event-roster-noshow"
 					@click="setStatus(row, 'no-show')">
-					{{ t('larpingapp', 'No-show') }}
+					{{ t('larpinq', 'No-show') }}
 				</NcButton>
 			</template>
 		</CnDataTable>
@@ -160,10 +160,10 @@ export default {
 		 */
 		columns() {
 			return [
-				{ key: 'playerName', label: this.t('larpingapp', 'Player') },
-				{ key: 'name', label: this.t('larpingapp', 'Character') },
-				{ key: 'type', label: this.t('larpingapp', 'Type') },
-				{ key: 'status', label: this.t('larpingapp', 'Attendance') },
+				{ key: 'playerName', label: this.t('larpinq', 'Player') },
+				{ key: 'name', label: this.t('larpinq', 'Character') },
+				{ key: 'type', label: this.t('larpinq', 'Type') },
+				{ key: 'status', label: this.t('larpinq', 'Attendance') },
 			]
 		},
 
@@ -208,7 +208,7 @@ export default {
 			this.loading = true
 			try {
 				const response = await fetch(
-					generateUrl('/apps/larpingapp/api/events/{id}/roster', {
+					generateUrl('/apps/larpinq/api/events/{id}/roster', {
 						id: this.eventId,
 					}),
 					{
@@ -234,7 +234,7 @@ export default {
 				this.attendanceAvailable = false
 				this.loadFailed = true
 				// eslint-disable-next-line no-console
-				console.warn('[larpingapp] roster unavailable', error)
+				console.warn('[larpinq] roster unavailable', error)
 			} finally {
 				this.loading = false
 			}
@@ -253,7 +253,7 @@ export default {
 			this.saving = row.character
 			try {
 				const response = await fetch(
-					generateUrl('/apps/larpingapp/api/events/{id}/attendance', {
+					generateUrl('/apps/larpinq/api/events/{id}/attendance', {
 						id: this.eventId,
 					}),
 					{
@@ -275,7 +275,7 @@ export default {
 				row.checkedInBy = saved.checkedInBy || ''
 			} catch (error) {
 				// eslint-disable-next-line no-console
-				console.error('[larpingapp] attendance write failed', error)
+				console.error('[larpinq] attendance write failed', error)
 			} finally {
 				this.saving = null
 			}
@@ -290,7 +290,7 @@ export default {
 		 */
 		statusLabel(status) {
 			const meta = STATUS_META[status] || STATUS_META.registered
-			return this.t('larpingapp', meta.label)
+			return this.t('larpinq', meta.label)
 		},
 
 		/**

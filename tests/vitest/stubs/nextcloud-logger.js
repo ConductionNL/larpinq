@@ -1,5 +1,5 @@
 /**
- * SPDX-FileCopyrightText: 2026 Conduction / LarpingApp Contributors
+ * SPDX-FileCopyrightText: 2026 Conduction / Larpinq Contributors
  * SPDX-License-Identifier: EUPL-1.2
  *
  * Minimal @nextcloud/logger stub for the offline Vitest suite.

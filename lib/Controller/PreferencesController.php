@@ -1,7 +1,7 @@
 <?php
 
 /**
- * LarpingApp PreferencesController.
+ * Larpinq PreferencesController.
  *
  * Generic per-user key/value preferences, backed by Nextcloud IConfig
  * user values. Used by shared @conduction/nextcloud-vue widgets (e.g.
@@ -9,7 +9,7 @@
  * UI flag cross-device without a bespoke endpoint per feature.
  *
  * @category Controller
- * @package  OCA\LarpingApp\Controller
+ * @package  OCA\Larpinq\Controller
  *
  * @author    Conduction Development Team <info@conduction.nl>
  * @copyright 2024 Conduction B.V.
@@ -17,14 +17,14 @@
  *
  * @version GIT: <git_id>
  *
- * @link https://codeberg.org/Conduction/larpingapp
+ * @link https://github.com/ConductionNL/larpinq
  */
 
 declare(strict_types=1);
 
-namespace OCA\LarpingApp\Controller;
+namespace OCA\Larpinq\Controller;
 
-use OCA\LarpingApp\AppInfo\Application;
+use OCA\Larpinq\AppInfo\Application;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\JSONResponse;

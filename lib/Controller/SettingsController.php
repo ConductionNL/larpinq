@@ -1,12 +1,12 @@
 <?php
 
 /**
- * LarpingApp SettingsController.
+ * Larpinq SettingsController.
  *
- * Controller for managing LarpingApp application settings.
+ * Controller for managing Larpinq application settings.
  *
  * @category  Controller
- * @package   OCA\LarpingApp\Controller
+ * @package   OCA\Larpinq\Controller
  * @author    Ruben Linde <ruben@larpingapp.com>
  * @copyright 2024 Ruben Linde
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
@@ -24,10 +24,10 @@
 
 declare(strict_types=1);
 
-namespace OCA\LarpingApp\Controller;
+namespace OCA\Larpinq\Controller;
 
-use OCA\LarpingApp\AppInfo\Application;
-use OCA\LarpingApp\Service\SettingsService;
+use OCA\Larpinq\AppInfo\Application;
+use OCA\Larpinq\Service\SettingsService;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\JSONResponse;
@@ -39,10 +39,10 @@ use Psr\Log\LoggerInterface;
 use RuntimeException;
 
 /**
- * Controller for LarpingApp settings.
+ * Controller for Larpinq settings.
  *
  * @category Controller
- * @package  OCA\LarpingApp\Controller
+ * @package  OCA\Larpinq\Controller
  * @author   Ruben Linde <ruben@larpingapp.com>
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
@@ -199,7 +199,7 @@ class SettingsController extends Controller {
 	}//end enrichRegistersWithSchemas()
 
 	/**
-	 * Get current LarpingApp settings.
+	 * Get current Larpinq settings.
 	 *
 	 * @return JSONResponse The settings response.
 	 *
@@ -260,19 +260,19 @@ class SettingsController extends Controller {
 	}//end index()
 
 	/**
-	 * Update LarpingApp settings — the canonical write.
+	 * Update Larpinq settings — the canonical write.
 	 *
 	 * This is the `settings#update` half of OpenRegister's canonical AppHost
 	 * settings dialect ({@see \OCA\OpenRegister\AppHost\Controller\GenericSettingsControllerBase::update()}),
-	 * reached over `PUT /api/settings`. LarpingApp ships its own
+	 * reached over `PUT /api/settings`. Larpinq ships its own
 	 * SettingsController, so `AppHost\Bootstrap::aliasControllerUnlessLeafDefinesIt()`
 	 * never aliases the generic in and this leaf owes the method itself.
 	 *
 	 * The body is the one that used to live in {@see create()}: it hands the
 	 * full request parameter bag to
-	 * {@see \OCA\LarpingApp\Service\SettingsService::updateSettings()}, which
+	 * {@see \OCA\Larpinq\Service\SettingsService::updateSettings()}, which
 	 * whitelists it against `SettingsService::CONFIG_KEYS` and writes the
-	 * accepted string/int values to `IAppConfig` under the `larpingapp` app id,
+	 * accepted string/int values to `IAppConfig` under the `larpinq` app id,
 	 * then returns the re-read settings map. Nothing outside that whitelist is
 	 * persisted, so PUT writes exactly what POST wrote.
 	 *
@@ -285,7 +285,7 @@ class SettingsController extends Controller {
 	 * from the write path to close the CSRF-forgery surface (closes #206) and
 	 * is not reintroduced here. Net privilege change of this commit: zero.
 	 *
-	 * @auth admin-only Writes instance-wide larpingapp configuration through
+	 * @auth admin-only Writes instance-wide larpinq configuration through
 	 *       SettingsService::updateSettings(). Carries no auth attribute
 	 *       deliberately: Nextcloud's default for an attribute-free controller
 	 *       method is admin session + CSRF token, which is exactly this
@@ -316,7 +316,7 @@ class SettingsController extends Controller {
 	 * Legacy alias for {@see update()} — `POST /api/settings`.
 	 *
 	 * The canonical AppHost route table still ships `settings#create` for the
-	 * pre-ADR-066 `index/create/load` dialect, and LarpingApp's own frontend
+	 * pre-ADR-066 `index/create/load` dialect, and Larpinq's own frontend
 	 * still POSTs to it (`src/store/modules/settings.js::saveSettings()` and
 	 * `src/views/settings/Settings.vue`), so this route must stay reachable and
 	 * must keep writing (ADR-029).
@@ -337,7 +337,7 @@ class SettingsController extends Controller {
 	 * that BEGINS with the tag registers it as present no matter what the rest
 	 * of the sentence says — which is how #206 stayed open here for months.
 	 *
-	 * @auth admin-only Writes instance-wide larpingapp configuration through
+	 * @auth admin-only Writes instance-wide larpinq configuration through
 	 *       SettingsService::updateSettings(). Carries no auth attribute
 	 *       deliberately: Nextcloud's default for an attribute-free controller
 	 *       method is admin session + CSRF token, which is exactly this
@@ -353,7 +353,7 @@ class SettingsController extends Controller {
 	}//end create()
 
 	/**
-	 * Re-import the LarpingApp configuration from the JSON file.
+	 * Re-import the Larpinq configuration from the JSON file.
 	 *
 	 * CSRF protection is required — this is a state-mutating admin POST.
 	 *
@@ -361,7 +361,7 @@ class SettingsController extends Controller {
 	 * mid-sentence for the reason given on {@see create()}: a docblock line
 	 * that begins with the tag re-registers it.
 	 *
-	 * @auth admin-only Re-imports the whole larpingapp register/schema
+	 * @auth admin-only Re-imports the whole larpinq register/schema
 	 *       configuration from disk. Carries no auth attribute deliberately:
 	 *       Nextcloud's default for an attribute-free controller method is
 	 *       admin session + CSRF token, which is exactly this posture. Pinned

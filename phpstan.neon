@@ -1,4 +1,4 @@
-# LarpingApp — Conduction PHPStan config.
+# Larpinq — Conduction PHPStan config.
 #
 # The shared base is the single source of truth. Everything here is either the
 # app's own tracked debt or an ignore naming a symbol that exists in no other

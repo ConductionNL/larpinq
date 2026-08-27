@@ -2,7 +2,7 @@
 
 ## Purpose
 
-LarpingApp probes for classes owned by a sibling app — OpenRegister — from its
+Larpinq probes for classes owned by a sibling app — OpenRegister — from its
 own composition root, and registers every one of its event listeners behind
 those probes. Nextcloud does not guarantee that the sibling's autoloader is in
 place at that moment, and the failure when it is not is completely silent: the
@@ -28,11 +28,11 @@ Nextcloud registers apps in sorted order: `OC_App::getEnabledApps()` does
 app at a time. Every app's `register()` therefore runs before the PSR-4 prefix of
 every alphabetically-later app exists.
 
-`larpingapp` sorts before `openregister`, so without the prelude
-`OCA\OpenRegister\` is not autoloadable inside LarpingApp's own `register()` on
+`larpinq` sorts before `openregister`, so without the prelude
+`OCA\OpenRegister\` is not autoloadable inside Larpinq's own `register()` on
 a healthy instance with OpenRegister enabled. Every probe answers `false` — not
 "not loaded yet", just `false`, indistinguishable from OpenRegister being absent
-— and LarpingApp registers no event listeners at all:
+— and Larpinq registers no event listeners at all:
 
 - the `DeepLinkRegistrationEvent` listener (unified-search deep links), and
 - the `ObjectCreatingEvent` / `ObjectUpdatingEvent` listeners carrying the
@@ -62,7 +62,7 @@ app at all. They are asserted directly in
 **Notes:** ADR-040. Same defect class as hydra gate-64
 (`apphost-autoload-prelude`), one namespace over — that gate's `class_exists`
 rule matches only `OCA\OpenRegister\AppHost\…` names, so it does not flag
-LarpingApp's `OCA\OpenRegister\Event\…` probes. The load order itself was
+Larpinq's `OCA\OpenRegister\Event\…` probes. The load order itself was
 measured on the sibling app `openbuild`, which also sorts before `openregister`
 and logged `OpenRegister AppHost\Bootstrap is not autoloadable` on every `occ`
 call in CI while OpenRegister was installed and enabled the whole time.

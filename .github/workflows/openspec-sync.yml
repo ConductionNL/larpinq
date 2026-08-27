@@ -18,6 +18,6 @@ jobs:
       contents: read
     uses: ConductionNL/.github/.github/workflows/openspec-sync.yml@main
     with:
-      app-name: larpingapp
+      app-name: larpinq
     secrets:
       PROJECT_TOKEN: ${{ secrets.PROJECT_TOKEN }}

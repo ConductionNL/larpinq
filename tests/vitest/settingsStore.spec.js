@@ -1,8 +1,8 @@
 /**
- * SPDX-FileCopyrightText: 2026 Conduction / LarpingApp Contributors
+ * SPDX-FileCopyrightText: 2026 Conduction / Larpinq Contributors
  * SPDX-License-Identifier: EUPL-1.2
  *
- * Unit tests for the LarpingApp settings Pinia store
+ * Unit tests for the Larpinq settings Pinia store
  * (src/store/modules/settings.js): fetch envelope handling, the
  * openRegisters / isAdmin flag derivation, the config-shape fallback
  * (configuration → config → raw), the error + loading lifecycle, and the
@@ -21,7 +21,7 @@ function mockFetchOnce({ ok = true, statusText = 'OK', json = {} }) {
 	})
 }
 
-describe('larpingapp settings store', () => {
+describe('larpinq settings store', () => {
 	beforeEach(() => {
 		setActivePinia(createPinia())
 		globalThis.OC = { requestToken: 'test-token' }
@@ -55,7 +55,7 @@ describe('larpingapp settings store', () => {
 		const store = useSettingsStore()
 		const config = await store.fetchSettings()
 		expect(globalThis.fetch).toHaveBeenCalledWith(
-			'/apps/larpingapp/api/settings',
+			'/apps/larpinq/api/settings',
 			expect.objectContaining({
 				method: 'GET',
 				headers: expect.objectContaining({
@@ -132,7 +132,7 @@ describe('larpingapp settings store', () => {
 		const store = useSettingsStore()
 		const result = await store.reimportConfiguration()
 		const [url, opts] = globalThis.fetch.mock.calls[0]
-		expect(url).toBe('/apps/larpingapp/api/settings/reimport')
+		expect(url).toBe('/apps/larpinq/api/settings/reimport')
 		expect(opts.method).toBe('POST')
 		expect(result).toEqual({ config: { reimported: true }, status: 'done' })
 		expect(store.config).toEqual({ reimported: true })

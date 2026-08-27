@@ -8,7 +8,7 @@ Accepted
 
 ## Context
 
-LarpingApp manages LARP domain entities (characters, skills, items, conditions,
+Larpinq manages LARP domain entities (characters, skills, items, conditions,
 effects, events, players, abilities, templates). Several of its features overlap
 with capabilities OpenRegister already provides as **integration leaves** via
 the integration registry (hydra ADR-019): calendar, maps, contacts, forms,
@@ -25,7 +25,7 @@ data models, drift, missed features, and impossible cross-app queries.
 
 ## Decision
 
-LarpingApp **consumes OpenRegister abstractions / integration leaves** rather
+Larpinq **consumes OpenRegister abstractions / integration leaves** rather
 than reinventing them in-app, adopting **hydra ADR-022** (Apps Consume
 OpenRegister Abstractions) as binding policy for this repo. Specifically:
 
@@ -48,7 +48,7 @@ The fictional in-game currency on characters (`gold` / `silver` / `copper`,
 mechanic with no bank account, payment, or accounting semantics. It MUST NOT be
 mapped to Cospend or any payments/expense leaf. This is a documented ADR-022
 non-target: there is no OR abstraction whose domain it belongs to, so it stays
-as plain LarpingApp fields handled by the stat/domain logic.
+as plain Larpinq fields handled by the stat/domain logic.
 
 ## Consequences
 

@@ -7,7 +7,7 @@
  * so the listener can be exercised without the OpenRegister app installed.
  *
  * @category Test
- * @package  OCA\LarpingApp\Tests\Unit\Listener
+ * @package  OCA\Larpinq\Tests\Unit\Listener
  * @author   Ruben Linde <ruben@larpingapp.com>
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
@@ -92,15 +92,15 @@ if (class_exists('OCA\OpenRegister\Event\ObjectCreatingEvent') === false) {
 	}
 }//end if
 
-namespace OCA\LarpingApp\Tests\Unit\Listener;
+namespace OCA\Larpinq\Tests\Unit\Listener;
 
-use OCA\LarpingApp\Listener\CharacterRequirementListener;
-use OCA\LarpingApp\Service\CharacterService;
-use OCA\LarpingApp\Service\EffectApplier;
-use OCA\LarpingApp\Service\IdListNormaliser;
-use OCA\LarpingApp\Service\RegisterObjectFetcher;
-use OCA\LarpingApp\Service\SkillRequirementChecker;
-use OCA\LarpingApp\Service\SkillRequirementService;
+use OCA\Larpinq\Listener\CharacterRequirementListener;
+use OCA\Larpinq\Service\CharacterService;
+use OCA\Larpinq\Service\EffectApplier;
+use OCA\Larpinq\Service\IdListNormaliser;
+use OCA\Larpinq\Service\RegisterObjectFetcher;
+use OCA\Larpinq\Service\SkillRequirementChecker;
+use OCA\Larpinq\Service\SkillRequirementService;
 use OCA\OpenRegister\Event\ObjectCreatingEvent;
 use OCA\OpenRegister\Event\ObjectUpdatingEvent;
 use OCP\IAppConfig;
@@ -126,7 +126,7 @@ use Psr\Log\LoggerInterface;
  * This fake previously DECLARED `getSchema()`. That single divergence made
  * `method_exists()` answer true in the suite and false in production, so every
  * test below passed while `isCharacterSchema()` returned false for every real
- * character write and the app enforced nothing (larpingapp#308). A fake shaped
+ * character write and the app enforced nothing (larpinq#308). A fake shaped
  * to what the caller CALLS, rather than to what the collaborator IS, cannot
  * fail for the reason the suite exists.
  */

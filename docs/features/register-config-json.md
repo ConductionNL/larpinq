@@ -2,7 +2,7 @@
 
 ## Overview
 
-Automatically imports all LarpingApp schemas and registers into OpenRegister on app install/enable, eliminating manual configuration.
+Automatically imports all Larpinq schemas and registers into OpenRegister on app install/enable, eliminating manual configuration.
 
 ## Features
 
@@ -13,7 +13,7 @@ Automatically imports all LarpingApp schemas and registers into OpenRegister on 
 
 ## Configuration File
 
-`lib/Settings/larpingapp_register.json` — OpenAPI 3.0.0 format defining 9 entity schemas:
+`lib/Settings/larpinq_register.json` — OpenAPI 3.0.0 format defining 9 entity schemas:
 - Character, Player, Ability, Skill, Item, Condition, Effect, Event, Setting
 
 ## Service Chain

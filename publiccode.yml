@@ -1,7 +1,7 @@
 publiccodeYmlVersion: "0.4"
 
-name: Larping
-url: "https://codeberg.org/Conduction/larpingapp"
+name: Larpinq
+url: "https://github.com/ConductionNL/larpinq"
 softwareVersion: "0.1.21"
 releaseDate: "2026-05-26"
 developmentStatus: beta
@@ -19,7 +19,7 @@ description:
     shortDescription: >
       Live action role-playing (LARP) event and character management for Nextcloud.
     longDescription: >
-      LarpingApp provides comprehensive management tools for live action role-playing
+      Larpinq provides comprehensive management tools for live action role-playing
       (LARP) communities and events. It supports character creation and management,
       event organisation, player registration, skill and item tracking, and community
       administration. Built on Nextcloud and Open Register, it offers a collaborative
@@ -34,7 +34,7 @@ description:
     shortDescription: >
       Live action role-playing (LARP) evenement- en karakterbeheer voor Nextcloud.
     longDescription: >
-      LarpingApp biedt uitgebreide beheertools voor live action role-playing (LARP)
+      Larpinq biedt uitgebreide beheertools voor live action role-playing (LARP)
       gemeenschappen en evenementen. Het ondersteunt het aanmaken en beheren van
       karakters, evenementorganisatie, spelersregistratie, vaardigheids- en
       itembeheer, en gemeenschapsadministratie. Gebouwd op Nextcloud en Open Register

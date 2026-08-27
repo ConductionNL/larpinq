@@ -1,8 +1,8 @@
-# LarpingApp — LARP Management for Nextcloud
+# Larpinq — LARP Management for Nextcloud
 
 ## Overview
 
-LarpingApp is a Nextcloud app for managing live-action role-playing (LARP) game settings. It provides game masters and players with tools to manage characters, skills, items, conditions, effects, events, players, abilities, and templates. The app features a stat calculation engine that automatically computes character ability scores based on assigned skills, items, conditions, and events, plus PDF character sheet export via customizable Twig templates.
+Larpinq is a Nextcloud app for managing live-action role-playing (LARP) game settings. It provides game masters and players with tools to manage characters, skills, items, conditions, effects, events, players, abilities, and templates. The app features a stat calculation engine that automatically computes character ability scores based on assigned skills, items, conditions, and events, plus PDF character sheet export via customizable Twig templates.
 
 ## Architecture
 
@@ -100,7 +100,7 @@ These features are provided at the OpenRegister level when OpenRegister is confi
 ## Key Directories
 
 ```
-larpingapp/
+larpinq/
 ├── appinfo/              # App manifest (info.xml) and routes
 ├── lib/                  # PHP backend
 │   ├── Controller/       # ObjectsController, CharactersController, SettingsController, DashboardController
@@ -165,7 +165,7 @@ All object CRUD goes through a generic pattern:
 
 ## Development
 
-- **Local URL**: http://localhost:8080/apps/larpingapp/
+- **Local URL**: http://localhost:8080/apps/larpinq/
 - **Requires**: Nextcloud 28-30, PHP 8.1+
 - **Optional**: OpenRegister app for advanced data storage features
 - **Docker**: Part of openregister/docker-compose.yml

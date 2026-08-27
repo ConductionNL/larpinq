@@ -1,12 +1,12 @@
 // @ts-check
 
 /**
- * LarpingApp documentation site.
+ * Larpinq documentation site.
  *
  * Built on @conduction/docusaurus-preset for brand defaults (tokens,
  * theme swizzles for Navbar / Footer, i18n scaffolding, KvK / BTW
  * copyright). Site-specific overrides — locale (en only), sidebar
- * path, mermaid theme, custom prism themes, larpingapp-only navbar
+ * path, mermaid theme, custom prism themes, larpinq-only navbar
  * items — are passed through createConfig() opts.
  *
  * Journeydoc scaffold (ADR-030): tutorials live under
@@ -24,13 +24,20 @@ const { createConfig, baseFooterLinks } = require('@conduction/docusaurus-preset
 const BRAND_THEME = require.resolve('@conduction/docusaurus-preset/theme');
 
 const config = createConfig({
-  title: 'LarpingApp',
+  title: 'Larpinq',
   tagline: 'Characters, rules, scenes, and NPC stats for live-action role-play. Build a setting in Nextcloud and run sessions without spreadsheets-with-six-tabs.',
-  url: 'https://larpingapp.conduction.nl',
+  /* ⚠️ FROZEN on the OLD name during the larpingapp -> larpinq rename.
+     This is the LIVE docs host (HTTP 200); `larpinq.conduction.nl` does not
+     resolve yet (HTTP 000). The subdomain moves in a separate DNS pass, not
+     with the code. Changing it here without DNS makes every absolute URL
+     Docusaurus emits (canonical, sitemap, og:url) point at a host that 404s.
+     Move it together with docs/static/CNAME and the `cname:` input in
+     .github/workflows/documentation.yml, and only after DNS answers. */
+  url: 'https://larpinq.conduction.nl',
   baseUrl: '/',
 
   organizationName: 'ConductionNL',
-  projectName: 'larpingapp',
+  projectName: 'larpinq',
 
   /* English-only for now (ADR-030 / journeydoc). The brand preset
      ships a multi-locale i18n block (nl/en/de/fr); enabling 'nl' here
@@ -49,10 +56,10 @@ const config = createConfig({
     },
   },
 
-  /* The larpingapp docs source lives at the repo root of `docs/`
+  /* The larpinq docs source lives at the repo root of `docs/`
      rather than under a `docs/` subfolder, so we override the preset's
      default `presets:` block to point `docs.path` at './' and disable
-     the blog plugin. customCss carries larpingapp-specific CSS only —
+     the blog plugin. customCss carries larpinq-specific CSS only —
      brand tokens and the theme swizzles are auto-loaded by the brand
      theme entry in `themes:` below. */
   presets: [
@@ -82,7 +89,7 @@ const config = createConfig({
             'features/deep-link-registration.md',
           ],
           sidebarPath: require.resolve('./sidebars.js'),
-          editUrl: 'https://codeberg.org/Conduction/larpingapp/src/branch/development/docs/',
+          editUrl: 'https://github.com/ConductionNL/larpinq/edit/development/docs/',
         },
         blog: false,
         theme: {
@@ -95,8 +102,8 @@ const config = createConfig({
   themes: [BRAND_THEME, '@docusaurus/theme-mermaid'],
 
   /* Brand navbar provides locale dropdown + GitHub by default; we
-     replace items[] with larpingapp's own (Documentation sidebar link,
-     larpingapp GitHub link, locale dropdown). */
+     replace items[] with larpinq's own (Documentation sidebar link,
+     larpinq GitHub link, locale dropdown). */
   navbar: {
     items: [
       {
@@ -106,8 +113,8 @@ const config = createConfig({
         label: 'Documentation',
       },
       {
-        href: 'https://codeberg.org/Conduction/larpingapp',
-        label: 'Codeberg',
+        href: 'https://github.com/ConductionNL/larpinq',
+        label: 'GitHub',
         position: 'right',
       },
       { type: 'localeDropdown', position: 'right' },
@@ -132,7 +139,7 @@ const config = createConfig({
   /* themeConfig is shallow-merged into the preset's defaults
      (colorMode + navbar + footer). prism + mermaid land alongside. */
   themeConfig: {
-    image: 'img/og-larpingapp.png',
+    image: 'img/og-larpinq.png',
     prism: {
       theme: require('prism-react-renderer/themes/github'),
       darkTheme: require('prism-react-renderer/themes/dracula'),

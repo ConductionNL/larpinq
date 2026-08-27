@@ -22,7 +22,7 @@
 
 import { test, expect } from '@playwright/test'
 
-const BASE = '/apps/larpingapp'
+const BASE = '/apps/larpinq'
 
 test.describe('event-runsheet-export', () => {
 	test('run-sheet endpoint is wired and authenticated', async ({

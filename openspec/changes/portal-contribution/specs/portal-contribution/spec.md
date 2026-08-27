@@ -11,21 +11,21 @@ status: in-progress
 
 ### Requirement: Dependency-Free Provider Discovery
 
-LarpingApp MUST expose exactly one portal contribution class at the convention FQCN `OCA\LarpingApp\Portal\PortalContributionProvider`. The class MUST be plain and dependency-free: no portaliq imports, no `implements` clause, no info.xml dependency, no constructor dependencies — portaliq duck-types it via `method_exists()`, and without portaliq installed the class MUST be inert (larpingapp behaves exactly as before). It MUST implement both `getAudiences(): array` (contract v2) and `getAudience(): string` (contract v1 fallback returning the primary audience).
+Larpinq MUST expose exactly one portal contribution class at the convention FQCN `OCA\Larpinq\Portal\PortalContributionProvider`. The class MUST be plain and dependency-free: no portaliq imports, no `implements` clause, no info.xml dependency, no constructor dependencies — portaliq duck-types it via `method_exists()`, and without portaliq installed the class MUST be inert (Larpinq behaves exactly as before). It MUST implement both `getAudiences(): array` (contract v2) and `getAudience(): string` (contract v1 fallback returning the primary audience).
 
 #### Scenario: Provider is discoverable and inert without portaliq
 
-- **WHEN** the class `OCA\LarpingApp\Portal\PortalContributionProvider` is constructed directly (no container, no portaliq)
+- **WHEN** the class `OCA\Larpinq\Portal\PortalContributionProvider` is constructed directly (no container, no portaliq)
 - **THEN** construction MUST succeed without any portaliq class being loadable
 - **AND** the class MUST declare no constructor parameters, extend nothing, implement nothing, and reference no portaliq symbol
-- `@e2e exclude` discovery is portaliq-side; larpingapp-side inertness is pinned by direct-construction PHPUnit tests, there is no larpingapp UI for it
+- `@e2e exclude` discovery is portaliq-side; Larpinq-side inertness is pinned by direct-construction PHPUnit tests, there is no Larpinq UI for it
 
 #### Scenario: Audiences advertised on both contract versions
 
 - **WHEN** portaliq probes the provider
 - **THEN** `getAudiences()` MUST return `['player']`
 - **AND** `getAudience()` MUST return `'player'` for v1 registries
-- `@e2e exclude` pure data contract with no UI in larpingapp; asserted by PHPUnit
+- `@e2e exclude` pure data contract with no UI in Larpinq; asserted by PHPUnit
 
 ### Requirement: Player Audience Contribution
 
@@ -37,7 +37,7 @@ For a subject with `audience = 'player'`, `getContribution()` MUST return a mani
 - **WHEN** `getContribution($subject)` is called
 - **THEN** the manifest MUST contain a `myCharacters` collection for schema `character` with `scopeField` `ownerRef`, `scopeClaim` `ownerRef`, register `larpingapp`, `listable: true`
 - **AND** no collection may scope characters by `ownerUid`
-- `@e2e exclude` portal rendering happens in portaliq, not larpingapp CI; the manifest shape + scoping key are pinned by PHPUnit against the register at HEAD
+- `@e2e exclude` portal rendering happens in portaliq, not Larpinq CI; the manifest shape + scoping key are pinned by PHPUnit against the register at HEAD
 
 #### Scenario: Character reads drop every game-master-only column
 
@@ -61,7 +61,7 @@ For a subject with `audience = 'player'`, `getContribution()` MUST return a mani
 - **WHEN** `getContribution($subject)` is called
 - **THEN** the manifest actions MUST be exactly `create character` with fields `name`, `ocName`, `background` and `scopeField: ownerRef`
 - **AND** no action field list may include `approved`, `slNotesPrivate`, `gold`, `silver`, `copper`, `ownerUid`, or any lifecycle property
-- **AND** the manifest MUST declare `notifications: []` and MUST NOT contain a `kind: inbox` collection (larpingapp has no per-player message collection; event signup is delegated to Nextcloud Forms)
+- **AND** the manifest MUST declare `notifications: []` and MUST NOT contain a `kind: inbox` collection (Larpinq has no per-player message collection; event signup is delegated to Nextcloud Forms)
 - `@e2e exclude` whitelist is declarative data enforced portaliq-side; pinned by PHPUnit
 
 ### Requirement: Fail-Closed Contribution

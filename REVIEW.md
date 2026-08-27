@@ -1,4 +1,4 @@
-# LarpingApp Final Review -- 2026-03-21
+# Larpinq Final Review -- 2026-03-21
 
 ## OpenSpec Structure
 | Item | Count | Status |
@@ -26,8 +26,8 @@
 | Skills | OK | Accessible via direct URL (#/skills), renders table view. Not in sidebar navigation |
 | Effects | OK | Accessible via direct URL (#/effects), renders table view with filters (Cumulative, Modification). Not in sidebar navigation |
 | Abilities | OK | Accessible via direct URL (#/abilities), renders table view. Not in sidebar navigation |
-| Admin Settings | OK | Renders at /settings/admin/larpingapp. Shows version 0.1.20, "Up to date" badge, "Re-import configuration" button, data storage config. Console error: "Failed to load settings" (settings data fetch issue) |
-| User Settings | EMPTY | /settings/user/larpingapp loads but shows no LarpingApp-specific content in the main area |
+| Admin Settings | OK | Renders at /settings/admin/larpinq. Shows version 0.1.20, "Up to date" badge, "Re-import configuration" button, data storage config. Console error: "Failed to load settings" (settings data fetch issue) |
+| User Settings | EMPTY | /settings/user/larpinq loads but shows no Larpinq-specific content in the main area |
 
 ### Comparison with Previous Review (2026-03-20)
 The previous review found the app **completely unusable** due to a stale JS bundle blocking all pages with "OpenRegister is required" and admin settings returning 403. All of these critical issues have been resolved. The app is now fully functional.
@@ -55,7 +55,7 @@ The previous review found the app **completely unusable** due to a stale JS bund
 ## Issues Found
 1. **docs/README.md is incomplete** -- Only links to 1 feature (admin-settings) out of 13 feature docs. The other 12 features are not referenced in the README table.
 2. **Admin settings console error** -- "Failed to load settings: TypeError" logged in browser console on the admin settings page. The page renders but settings data may not load correctly.
-3. **User settings page is empty** -- /settings/user/larpingapp renders the Nextcloud settings shell but no LarpingApp-specific user settings content appears in the main area.
+3. **User settings page is empty** -- /settings/user/larpinq renders the Nextcloud settings shell but no Larpinq-specific user settings content appears in the main area.
 4. **Skills, Effects, Abilities not in sidebar navigation** -- These routes exist and render correctly when accessed by URL, but are not listed in the app's left sidebar navigation. Users cannot discover them without knowing the URL.
 5. **6 feature docs lack screenshots** -- deep-link-registration, object-service, pdf-export, register-config-json, rpg-system, and search-service have documentation but no corresponding screenshot.
 

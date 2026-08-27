@@ -1,16 +1,16 @@
 <?php
 
 /**
- * LarpingApp Portal Contribution Provider
+ * Larpinq Portal Contribution Provider
  *
- * LarpingApp's contribution to the shared portaliq external portal (hydra
+ * Larpinq's contribution to the shared portaliq external portal (hydra
  * ADR-046 + contract v2.1). Portaliq — the ONE shared portal for people
  * WITHOUT Nextcloud accounts — discovers this class by convention FQCN
  * (`OCA\{Namespace}\Portal\PortalContributionProvider`) and duck-types it via
  * method_exists(), never instanceof. This class is therefore deliberately
  * PLAIN: no portaliq imports, no `implements` clause, no info.xml dependency,
  * no constructor dependencies. Without portaliq installed it is inert and
- * larpingapp behaves exactly as before.
+ * larpinq behaves exactly as before.
  *
  * It declares — for the single `player` audience — the OpenRegister
  * collections a portal subject may read and the whitelisted create-action they
@@ -21,7 +21,7 @@
  * openspec/changes/portal-contribution/design.md.
  *
  * @category Portal
- * @package  OCA\LarpingApp\Portal
+ * @package  OCA\Larpinq\Portal
  *
  * @author    Conduction Development Team <info@conduction.nl>
  * @copyright 2026 Conduction B.V.
@@ -39,10 +39,10 @@
 
 declare(strict_types=1);
 
-namespace OCA\LarpingApp\Portal;
+namespace OCA\Larpinq\Portal;
 
 /**
- * Declares what an external portal subject may see and do in larpingapp.
+ * Declares what an external portal subject may see and do in larpinq.
  *
  * The contribution is a declarative manifest (pure data — no I/O, no
  * callbacks). All subject identity (subjectRef, audience, organisation, trust)
@@ -63,14 +63,20 @@ class PortalContributionProvider {
 	/**
 	 * The OpenRegister register slug every collection below lives in.
 	 *
+	 * ⚠️ FROZEN ON THE OLD APP ID, DELIBERATELY. This is the OpenRegister
+	 * REGISTER SLUG, not the app id — it did not move with the
+	 * `larpingapp` -> `larpinq` rename. Renaming it here would point every
+	 * portal collection at a register that does not exist, and the portal
+	 * surface would go silently empty rather than error. Leave it.
+	 *
 	 * @var string
 	 */
-	private const REGISTER = 'larpingapp';
+	private const REGISTER = 'larpinq';
 
 	/**
 	 * The audiences this provider contributes to (contract v2, preferred).
 	 *
-	 * The registry probes for this method first. LarpingApp serves exactly one
+	 * The registry probes for this method first. Larpinq serves exactly one
 	 * external audience: `player` (a real-world LARP player without a Nextcloud
 	 * account).
 	 *
@@ -101,7 +107,7 @@ class PortalContributionProvider {
 	 *
 	 * The subject array is server-derived by portaliq (subjectRef UUID,
 	 * audience, organisation, trust level low|substantial|high). Returns null
-	 * for any audience larpingapp does not serve (fail-closed; the registry
+	 * for any audience larpinq does not serve (fail-closed; the registry
 	 * already filters by audience, but a provider must not rely on that). This
 	 * wave declares one create-action only — no endpoint actions (receiver-side
 	 * assertion verification does not exist yet).
@@ -152,7 +158,7 @@ class PortalContributionProvider {
 	 * XP awards are intentionally NOT exposed — see design.md (the shipped
 	 * portaliq reader is single-hop `scopeField == subjectRef`, and `xpAward`
 	 * carries no field equal to the player ref; scoping it would need a
-	 * denormalised owner ref + backfill, deferred on Conduction/larpingapp#51).
+	 * denormalised owner ref + backfill, deferred on ConductionNL/larpinq#51).
 	 *
 	 * @return array<string, mixed> The player manifest.
 	 *
@@ -160,7 +166,7 @@ class PortalContributionProvider {
 	 */
 	private function playerContribution(): array {
 		return [
-			'label' => 'LarpingApp',
+			'label' => 'Larpinq',
 			'collections' => $this->playerCollections(),
 			'actions' => $this->playerActions(),
 			'notifications' => [],

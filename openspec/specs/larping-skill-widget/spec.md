@@ -4,18 +4,18 @@ status: done
 
 # Larping Skill Widget
 
-**Owned by**: LarpingApp (app-specific dashboard widget)
+**Owned by**: Larpinq (app-specific dashboard widget)
 
 ## Purpose
 
 SPA mount fixed in #202 — skill usage empty-state scenario covered by tests/e2e/spec-coverage/spa-ui.spec.ts; GraphQL transport/facet-processing scenarios annotated @e2e exclude below; unimplemented widget scenarios annotated @e2e exclude pending implementation
 
-Provide a LarpingApp-specific dashboard widget that visualizes skill usage distribution across characters using data from OpenRegister's GraphQL faceting API. This widget is part of LarpingApp's dashboard experience, following the cross-app dashboard patterns defined in the `built-in-dashboards` spec and using the `CnDashboardPage` shared component from `@conduction/nextcloud-vue`.
+Provide a Larpinq-specific dashboard widget that visualizes skill usage distribution across characters using data from OpenRegister's GraphQL faceting API. This widget is part of Larpinq's dashboard experience, following the cross-app dashboard patterns defined in the `built-in-dashboards` spec and using the `CnDashboardPage` shared component from `@conduction/nextcloud-vue`.
 
 ## Requirements
 
 ### Requirement: The dashboard MUST display a skill usage pie chart
-The LarpingApp dashboard MUST include a donut chart showing the distribution of skills across all characters, powered by data from OpenRegister's GraphQL faceting API. The chart uses the `facets` capability of the GraphQL `character` query to aggregate skill counts server-side, avoiding the need for client-side data processing of raw UUID arrays.
+The Larpinq dashboard MUST include a donut chart showing the distribution of skills across all characters, powered by data from OpenRegister's GraphQL faceting API. The chart uses the `facets` capability of the GraphQL `character` query to aggregate skill counts server-side, avoiding the need for client-side data processing of raw UUID arrays.
 
 #### Scenario: Skill usage chart with data
 - **GIVEN** 5 characters exist in OpenRegister with skills assigned:
@@ -24,7 +24,7 @@ The LarpingApp dashboard MUST include a donut chart showing the distribution of 
   - "Grimm" with skills: ["Swordsmanship", "Alchemy", "Healing"]
   - "Thorne" with skills: ["Archery", "Stealth"]
   - "Lyra" with skills: ["Healing", "Alchemy"]
-- **WHEN** the user views the LarpingApp dashboard
+- **WHEN** the user views the Larpinq dashboard
 - **THEN** a donut chart MUST display with skills ranked by popularity:
   - "Swordsmanship" = 3 characters
   - "Healing" = 3 characters
@@ -69,7 +69,7 @@ The skill usage data MUST be retrieved using a single GraphQL query that leverag
 @e2e exclude GraphQL HTTP transport scenarios are JS unit-test scope (queryGraphQL mocked via Jest); rate-limit/auth-fail responses are not browser-navigable
 
 #### Scenario: Single faceted query fetches skill distribution
-- **GIVEN** the LarpingApp has characters stored in OpenRegister with a `skills` array property
+- **GIVEN** the Larpinq has characters stored in OpenRegister with a `skills` array property
 - **WHEN** the dashboard loads and the SkillUsageChart component mounts
 - **THEN** the widget MUST execute the GraphQL query:
   ```graphql
@@ -157,16 +157,16 @@ The SkillUsageChart MUST render inside the `CnDashboardPage` component from `@co
 - **AND** the chart container MUST use `height: 100%` and `box-sizing: border-box` to fill the card
 
 ### Requirement: The widget MUST check OpenRegister configuration before querying
-The widget MUST verify that LarpingApp is configured to use OpenRegister as its data source before attempting any GraphQL queries.
+The widget MUST verify that Larpinq is configured to use OpenRegister as its data source before attempting any GraphQL queries.
 
 #### Scenario: Widget detects OpenRegister configuration
-- **GIVEN** LarpingApp's settings store has `character_source` set to `'openregister'`
+- **GIVEN** Larpinq's settings store has `character_source` set to `'openregister'`
 - **AND** the settings store has a valid `register` ID and `character_schema` value
 - **WHEN** the dashboard loads
 - **THEN** the widget MUST proceed with the GraphQL faceting query
 
 #### Scenario: Widget shows message when not configured for OpenRegister
-- **GIVEN** LarpingApp's settings store has `character_source` set to a value other than `'openregister'` (e.g., `'internal'`)
+- **GIVEN** Larpinq's settings store has `character_source` set to a value other than `'openregister'` (e.g., `'internal'`)
 - **WHEN** the dashboard loads
 - **THEN** the widget MUST set `openRegisterConfigured` to `false`
 - **AND** the widget MUST display "Configure OpenRegister data source to enable this widget" in the `.chart-empty` container
@@ -262,7 +262,7 @@ The dashboard MUST allow selecting two or more characters to compare their calcu
 
 ### Requirement: The widget MUST display a skill dependency graph
 
-Skills in LarpingApp can have prerequisite skills. The widget MUST visualize these dependencies as a directed graph showing which skills require other skills.
+Skills in Larpinq can have prerequisite skills. The widget MUST visualize these dependencies as a directed graph showing which skills require other skills.
 
 @e2e exclude Skill dependency graph widget is not yet implemented per spec status note; scenarios are deferred pending implementation
 
@@ -291,7 +291,7 @@ Skills in LarpingApp can have prerequisite skills. The widget MUST visualize the
 
 ### Requirement: The widget MUST display an effect chain visualization
 
-Effects in LarpingApp flow from source entities (skills, items, conditions, events) through effects to abilities. The widget MUST visualize this chain for a selected character.
+Effects in Larpinq flow from source entities (skills, items, conditions, events) through effects to abilities. The widget MUST visualize this chain for a selected character.
 
 @e2e exclude Effect chain visualization widget is not yet implemented per spec status note; scenarios are deferred pending implementation
 
@@ -421,11 +421,11 @@ Dashboard widgets MUST adapt their layout and content to work on screens from 36
 
 All entity data displayed in widgets MUST be fetched and managed through the centralized `useObjectStore()` Pinia store, which registers object types against OpenRegister register/schema pairs from `useSettingsStore()` configuration.
 
-#### Scenario: Object store has registered all LarpingApp entity types
+#### Scenario: Object store has registered all Larpinq entity types
 
 @e2e exclude Pinia store registration is JS unit-test scope tested via Jest; `objectStore.registerObjectType()` internal state is not browser-navigable
 
-- **GIVEN** the LarpingApp `initializeStores()` function has run
+- **GIVEN** the Larpinq `initializeStores()` function has run
 - **AND** the settings store has a valid `register` and schema IDs for character, player, ability, skill, item, condition, effect, event, setting
 - **WHEN** any widget requests entity data
 - **THEN** the object store MUST have all 9 schema slugs registered via `objectStore.registerObjectType(slug, schemaId, registerId)`
@@ -495,10 +495,10 @@ The DashboardIndex component MUST allow users to show or hide individual widgets
 **Status**: Partially implemented. The `SkillUsageChart.vue` component and `DashboardIndex.vue` with `CnDashboardPage` integration exist in the codebase. The skill usage chart uses GraphQL faceting for server-side aggregation. Character stat display, effect chain visualization, multi-character comparison, skill dependency graph, interactive skill selection, and character sheet widgets are not yet implemented.
 
 **Nextcloud Core Interfaces**:
-- `IDashboardWidget` / `IAPIWidgetV2` (`OCP\Dashboard`): Implement a `SkillUsageWidget` class in LarpingApp that registers with Nextcloud's dashboard framework. Use `IAPIWidgetV2` for async data loading -- the widget fetches skill usage data via a single GraphQL faceting query and renders a donut chart. This makes the widget available on Nextcloud's main dashboard page alongside other app widgets.
-- `IBootstrap` (`OCP\AppFramework\Bootstrap\IBootstrap`): Register the widget during LarpingApp's bootstrap phase via `$context->registerDashboardWidget(SkillUsageWidget::class)`. This ensures the widget appears in Nextcloud's dashboard widget picker.
-- `IInitialState` (`OCP\IInitialState`): Pass LarpingApp's OpenRegister configuration (register, character_schema, skill_schema, ability_schema) to the frontend via initial state, so the Vue widget component knows which GraphQL queries to construct without additional API calls.
-- `IAppConfig`: Read LarpingApp's data source configuration (`character_source`, `skill_source`) to determine whether to show the widget or display a configuration message. The `RegisterObjectFetcher` already uses this to resolve register/schema pairs per entity type.
+- `IDashboardWidget` / `IAPIWidgetV2` (`OCP\Dashboard`): Implement a `SkillUsageWidget` class in Larpinq that registers with Nextcloud's dashboard framework. Use `IAPIWidgetV2` for async data loading -- the widget fetches skill usage data via a single GraphQL faceting query and renders a donut chart. This makes the widget available on Nextcloud's main dashboard page alongside other app widgets.
+- `IBootstrap` (`OCP\AppFramework\Bootstrap\IBootstrap`): Register the widget during Larpinq's bootstrap phase via `$context->registerDashboardWidget(SkillUsageWidget::class)`. This ensures the widget appears in Nextcloud's dashboard widget picker.
+- `IInitialState` (`OCP\IInitialState`): Pass Larpinq's OpenRegister configuration (register, character_schema, skill_schema, ability_schema) to the frontend via initial state, so the Vue widget component knows which GraphQL queries to construct without additional API calls.
+- `IAppConfig`: Read Larpinq's data source configuration (`character_source`, `skill_source`) to determine whether to show the widget or display a configuration message. The `RegisterObjectFetcher` already uses this to resolve register/schema pairs per entity type.
 
 **Implementation Approach**:
 - The existing `SkillUsageChart.vue` executes a single GraphQL faceting query (`character(first: 1, facets: ["skills"])`), extracts `facets.skills.data.buckets`, sorts by count, and renders via VueApexCharts donut chart. This is the primary implemented widget.
@@ -513,11 +513,11 @@ The DashboardIndex component MUST allow users to show or hide individual widgets
 **Dependencies on Existing OpenRegister Features**:
 - GraphQL API (`/api/graphql`) with faceting support -- data source for character skill distribution queries.
 - OpenRegister `ObjectService.getMapper()` -- used by `RegisterObjectFetcher` to resolve entity type to register/schema mapper.
-- LarpingApp's OpenRegister configuration -- 9 entity types each with `{type}_register` and `{type}_schema` app config values, plus a shared `register` value.
-- LarpingApp's dashboard grid infrastructure via `CnDashboardPage` -- layout container supporting drag-and-drop widget positioning.
+- Larpinq's OpenRegister configuration -- 9 entity types each with `{type}_register` and `{type}_schema` app config values, plus a shared `register` value.
+- Larpinq's dashboard grid infrastructure via `CnDashboardPage` -- layout container supporting drag-and-drop widget positioning.
 - DocuDesk integration (optional) -- PDF export for character sheets via `PdfService.renderPdf()`.
 
-**Dependencies on LarpingApp Domain Logic**:
+**Dependencies on Larpinq Domain Logic**:
 - `CharacterService` -- server-side stat calculation engine with effect application order (skills -> items -> conditions -> events) and audit trail generation.
-- `RegisterObjectFetcher` -- cross-app service bridge between LarpingApp and OpenRegister's `ObjectService`.
+- `RegisterObjectFetcher` -- cross-app service bridge between Larpinq and OpenRegister's `ObjectService`.
 - Entity model relationships: Characters have arrays of skill/item/condition/event UUIDs. Skills/items/conditions have arrays of effect UUIDs. Effects have `abilities` arrays, `stat_id`, `modifier` (int), and `modification` ("positive"/"negative").

@@ -2,7 +2,7 @@
 
 ## Overview
 
-Character management provides full CRUD lifecycle for LARP characters, including player characters, NPCs, and other character types. Characters are the central entity in LarpingApp, linking to skills, items, conditions, and events.
+Character management provides full CRUD lifecycle for LARP characters, including player characters, NPCs, and other character types. Characters are the central entity in Larpinq, linking to skills, items, conditions, and events.
 
 ## Features
 

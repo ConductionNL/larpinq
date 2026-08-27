@@ -2,16 +2,16 @@
 kind: docs
 ---
 
-# Proposal: Beta Cross-Surface Alignment (LarpingApp)
+# Proposal: Beta Cross-Surface Alignment (Larpinq)
 
 ## Problem
 
-LarpingApp's four public-facing surfaces — `appinfo/info.xml`, `src/manifest.json`, the conduction.nl product page, and `docs/` — disagreed with each other and, in the product page's case, with the shipped code:
+Larpinq's four public-facing surfaces — `appinfo/info.xml`, `src/manifest.json`, the conduction.nl product page, and `docs/` — disagreed with each other and, in the product page's case, with the shipped code:
 
 1. **info.xml** had a single unlocalized `<summary>` ("Manage your live roleplaying setting"), an unlocalized `<name>`/`<description>`, an `agpl` `<licence>` (the actual `LICENSE` file is EUPL-1.2), a stale `codeberg.org/Conduction/LarpingNextApp` website/bugs/repository (the real remote is `codeberg.org/Conduction/larpingapp`), and no `<dependency><app>openregister</app>` entry even though the app hard-requires OpenRegister (repair step `InitializeRegister`, `manifest.json` declares `"dependencies": ["openregister"]`, and the description text itself says "Requires OpenRegister").
 2. **manifest.json** nav/menu labels (Characters, Players, Abilities, Skills, Conditions, Effects, Items, Events, XP Awards, Settings) were already accurate against `lib/Controller/*` and `docs/FEATURES.md` — no code drift here, but the product page did not use this vocabulary.
-3. **Product page** (`src/pages/apps/larpingapp.mdx` + NL translation) described a different, non-existent app: "Scenes", "NPCs", "factions", an "audit log per scene", a Discord bot, "Discord and Hilma sync" via OpenConnector, and Talk-channel-per-scene chat. None of these exist in the codebase — there is no Scene, Faction, or standalone NPC entity/schema/controller, and there is no Discord/Talk/Hilma integration anywhere in `lib/` or `src/`. The English and Dutch pages had also drifted structurally: the Dutch page used the older simple template (no `RotatingCards`/`WidgetShelf`/`Showcase`) while the English page had been upgraded, and its `<DetailHero>` `secondaryCta` pointed at `docs.conduction.nl/larpingapp` instead of the real `larpingapp.conduction.nl`.
-4. **docs/** (`larpingapp.conduction.nl`) already carried the accurate canonical feature list (`docs/FEATURES.md`, `docs/features/*.md`, `docs/Schema/*.json` match the manifest and controllers 1:1), but `docs/readme.md` (the docs landing/about page) was placeholder junk ("asdasdas / a / asdasd") — never written.
+3. **Product page** (`src/pages/apps/larpingapp.mdx` + NL translation) described a different, non-existent app: "Scenes", "NPCs", "factions", an "audit log per scene", a Discord bot, "Discord and Hilma sync" via OpenConnector, and Talk-channel-per-scene chat. None of these exist in the codebase — there is no Scene, Faction, or standalone NPC entity/schema/controller, and there is no Discord/Talk/Hilma integration anywhere in `lib/` or `src/`. The English and Dutch pages had also drifted structurally: the Dutch page used the older simple template (no `RotatingCards`/`WidgetShelf`/`Showcase`) while the English page had been upgraded, and its `<DetailHero>` `secondaryCta` pointed at `docs.conduction.nl/larpingapp` instead of the real `larpinq.conduction.nl`.
+4. **docs/** (`larpinq.conduction.nl`) already carried the accurate canonical feature list (`docs/FEATURES.md`, `docs/features/*.md`, `docs/Schema/*.json` match the manifest and controllers 1:1), but `docs/readme.md` (the docs landing/about page) was placeholder junk ("asdasdas / a / asdasd") — never written.
 
 ## Canonical Feature List (verified against `lib/Controller/*`, `src/manifest.json`, `docs/FEATURES.md`, `docs/Schema/*.json` at commit `1aee7f1`)
 
@@ -51,7 +51,7 @@ LarpingApp's four public-facing surfaces — `appinfo/info.xml`, `src/manifest.j
 - Fixed `PairCard` copy under "Pairs well with" to drop NPC/faction language.
 - Brought the Dutch page up to structural and content parity with the English page (previously a stale, simpler template with the same fabricated Scene/Faction/Discord content and a dead `docs.conduction.nl/larpingapp` doc link).
 
-### Docs (`larpingapp/docs/`)
+### Docs (`larpinq/docs/`)
 - `docs/FEATURES.md`, `docs/features/*.md`, `docs/Schema/*.json`, `docs/README.md` were already accurate — used as the canonical source, no edits needed.
 - Replaced placeholder junk in `docs/readme.md` ("asdasdas / a / asdasd") with a real one-paragraph "About Larping" summary pointing to `features.md`.
 

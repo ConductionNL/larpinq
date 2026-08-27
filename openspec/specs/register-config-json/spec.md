@@ -8,23 +8,23 @@ status: done
 
 @e2e exclude pure-backend config-import spec — JSON auto-import runs in Application::boot() via PHP; ConfigFileLoaderService/SettingsLoadService/SettingsMapBuilder logic is covered by PHPUnit; no browser-navigable UI surface
 
-Automatically imports all LarpingApp schemas and registers into OpenRegister on app install/enable, eliminating manual configuration. Uses the `larpingapp_register.json` file (OpenAPI 3.0.0 format) with `ConfigurationService.importFromApp()`.
+Automatically imports all Larpinq schemas and registers into OpenRegister on app install/enable, eliminating manual configuration. Uses the `larpinq_register.json` file (OpenAPI 3.0.0 format) with `ConfigurationService.importFromApp()`.
 
 ## Requirements
 
 ### Requirement: Register JSON File
 
-A bundled `larpingapp_register.json` file MUST define the schemas for all 9 entity types in OpenAPI 3.0.0 format with x-openregister extensions.
+A bundled `larpinq_register.json` file MUST define the schemas for all 9 entity types in OpenAPI 3.0.0 format with x-openregister extensions.
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
-| REG-001 | A `larpingapp_register.json` file MUST exist at `lib/Settings/` | MUST | Implemented |
+| REG-001 | A `larpinq_register.json` file MUST exist at `lib/Settings/` | MUST | Implemented |
 | REG-002 | The file MUST define schemas for all 9 entity types | MUST | Implemented |
 | REG-003 | The file MUST use OpenAPI 3.0.0 format with x-openregister extensions | MUST | Implemented |
 
 #### Scenario: Bundled register file defines all schemas
 
-- GIVEN the app ships `lib/Settings/larpingapp_register.json`
+- GIVEN the app ships `lib/Settings/larpinq_register.json`
 - WHEN the file is parsed
 - THEN it MUST be valid OpenAPI 3.0.0 with x-openregister extensions
 - AND it MUST define schemas for all 9 entity types

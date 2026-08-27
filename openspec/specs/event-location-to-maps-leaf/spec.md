@@ -5,7 +5,7 @@ TBD - created by archiving change event-location-to-maps-leaf. Update Purpose af
 ## Requirements
 ### Requirement: Event detail page MUST host the OR maps leaf for location
 
-The Event detail page MUST surface the OpenRegister maps integration leaf for capturing and displaying the event location. The leaf MUST be obtained through the OR integration registry (ADR-019) and MUST NOT be a LarpingApp-local geo model or map embed (ADR-022). The host is `src/views/ObjectDetail.vue` for the `event` object type.
+The Event detail page MUST surface the OpenRegister maps integration leaf for capturing and displaying the event location. The leaf MUST be obtained through the OR integration registry (ADR-019) and MUST NOT be a Larpinq-local geo model or map embed (ADR-022). The host is `src/views/ObjectDetail.vue` for the `event` object type.
 
 #### Scenario: Maps leaf renders for an event with a location
 
@@ -17,14 +17,14 @@ The Event detail page MUST surface the OpenRegister maps integration leaf for ca
 
 ### Requirement: Structured location MUST be owned by the maps leaf, not duplicated
 
-The structured location data (address and/or coordinates) MUST be owned by the OpenRegister maps abstraction via the leaf, and LarpingApp MUST NOT maintain a parallel geo model for events.
+The structured location data (address and/or coordinates) MUST be owned by the OpenRegister maps abstraction via the leaf, and Larpinq MUST NOT maintain a parallel geo model for events.
 
 #### Scenario: Setting a location through the maps leaf
 
 - GIVEN an event with no confirmed location
 - WHEN the game master picks a point / enters an address in the maps leaf and saves
 - THEN the location MUST be persisted through the maps leaf / OR maps abstraction
-- AND LarpingApp MUST NOT write a duplicate coordinate model of its own
+- AND Larpinq MUST NOT write a duplicate coordinate model of its own
 
 ### Requirement: Legacy free-text location MUST be preserved and migratable
 

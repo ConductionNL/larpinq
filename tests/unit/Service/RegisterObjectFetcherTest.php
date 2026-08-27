@@ -4,7 +4,7 @@
  * Unit tests for RegisterObjectFetcher.
  *
  * @category Test
- * @package  OCA\LarpingApp\Tests\Unit\Service
+ * @package  OCA\Larpinq\Tests\Unit\Service
  * @author   Ruben Linde <ruben@larpingapp.com>
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
@@ -12,11 +12,11 @@
 
 declare(strict_types=1);
 
-namespace OCA\LarpingApp\Tests\Unit\Service;
+namespace OCA\Larpinq\Tests\Unit\Service;
 
 use Exception;
 use InvalidArgumentException;
-use OCA\LarpingApp\Service\RegisterObjectFetcher;
+use OCA\Larpinq\Service\RegisterObjectFetcher;
 use OCP\App\IAppManager;
 use OCP\IAppConfig;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -28,7 +28,7 @@ use Psr\Log\LoggerInterface;
  * Tests for RegisterObjectFetcher service.
  *
  * @category Test
- * @package  OCA\LarpingApp\Tests\Unit\Service
+ * @package  OCA\Larpinq\Tests\Unit\Service
  * @author   Ruben Linde <ruben@larpingapp.com>
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
@@ -425,7 +425,7 @@ class RegisterObjectFetcherTest extends TestCase {
 	 * and resolveRegisterAndSchema() MUST resolve register/schema IDs via
 	 * IAppConfig::getValueString rather than the resolver. This guards the
 	 * BC-safe fallback required by the resolver-absence scenario of
-	 * larpingapp-adopt-or-abstractions.
+	 * larpinq-adopt-or-abstractions.
 	 *
 	 * @return void
 	 */

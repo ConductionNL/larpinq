@@ -8,7 +8,7 @@
  * register JSON — the source of truth OpenRegister imports.
  *
  * @category Test
- * @package  OCA\LarpingApp\Tests\Unit\Service
+ * @package  OCA\Larpinq\Tests\Unit\Service
  * @author   Ruben Linde <ruben@larpingapp.com>
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
@@ -16,7 +16,7 @@
 
 declare(strict_types=1);
 
-namespace OCA\LarpingApp\Tests\Unit\Service;
+namespace OCA\Larpinq\Tests\Unit\Service;
 
 use PHPUnit\Framework\TestCase;
 
@@ -34,7 +34,7 @@ class SettingSchemaTest extends TestCase {
 
 	protected function setUp(): void {
 		parent::setUp();
-		$path = __DIR__ . '/../../../lib/Settings/larpingapp_register.json';
+		$path = __DIR__ . '/../../../lib/Settings/larpinq_register.json';
 		$this->register = json_decode((string)file_get_contents($path), true);
 	}
 
@@ -83,7 +83,7 @@ class SettingSchemaTest extends TestCase {
 	}
 
 	public function testSettingRegisteredInSchemaList(): void {
-		$schemas = $this->register['components']['registers']['larpingapp']['schemas'];
+		$schemas = $this->register['components']['registers']['larpinq']['schemas'];
 		self::assertContains('setting', $schemas);
 	}
 }

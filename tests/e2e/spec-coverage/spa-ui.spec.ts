@@ -1,11 +1,11 @@
 /*
- * SPDX-FileCopyrightText: 2026 Larping Contributors
+ * SPDX-FileCopyrightText: 2026 Larpinq Contributors
  * SPDX-License-Identifier: EUPL-1.2
  *
- * Spec-coverage Playwright tests — larpingapp SPA UI.
+ * Spec-coverage Playwright tests — larpinq SPA UI.
  *
  * Covers the UI-accessible scenarios from specs that were previously
- * excluded with "@e2e exclude larpingapp Vue SPA fails to mount"
+ * excluded with "@e2e exclude larpinq Vue SPA fails to mount"
  * (issue #202). The SPA mount is now fixed; these scenarios exercise
  * navigation, list views, create dialogs and dashboard widgets.
  *
@@ -20,7 +20,7 @@
 import { test, expect, type Page } from '@playwright/test'
 import { dismissSupportDialog } from '../_nav'
 
-const BASE = '/apps/larpingapp'
+const BASE = '/apps/larpinq'
 const TS = Date.now()
 
 // ---------------------------------------------------------------------------
@@ -30,9 +30,9 @@ const TS = Date.now()
 /**
  * Navigate to an in-app hash-mode route.
  *
- * The Vue SPA uses hash mode with base `/apps/larpingapp` (src/main.js —
+ * The Vue SPA uses hash mode with base `/apps/larpinq` (src/main.js —
  * fleet #133 deep-link fix). In-app routes (/characters, /abilities, …) are
- * addressed via the URL hash: /apps/larpingapp/#/<route>. The hash fragment is
+ * addressed via the URL hash: /apps/larpinq/#/<route>. The hash fragment is
  * never sent to the backend, so the SPA root is always served and Vue Router's
  * hashchange listener resolves the view client-side. Strategy: land on the SPA
  * root first, wait for Vue to mount, then set window.location.hash so the
@@ -54,7 +54,7 @@ async function go(page: Page, route: string): Promise<void> {
 	}
 	// Ensure the SPA root is loaded (or reload it)
 	const currentUrl = page.url()
-	const alreadyInApp = currentUrl.includes('/apps/larpingapp')
+	const alreadyInApp = currentUrl.includes('/apps/larpinq')
 	if (!alreadyInApp) {
 		await page.goto(`${BASE}/`)
 		// ADR-074 rule 4: `networkidle` is unreachable on Nextcloud (notification
@@ -72,9 +72,9 @@ async function go(page: Page, route: string): Promise<void> {
 	}
 	// Resolve the target path relative to the app base. The router runs in
 	// hash mode (src/main.js — fleet #133 deep-link fix), so in-app routes are
-	// addressed via the URL hash: /apps/larpingapp/#/<route>. Driving the hash
+	// addressed via the URL hash: /apps/larpinq/#/<route>. Driving the hash
 	// directly lets Vue Router's hashchange listener resolve the view (the old
-	// history.pushState to a bare /apps/larpingapp/<route> path no longer routes
+	// history.pushState to a bare /apps/larpinq/<route> path no longer routes
 	// under hash mode and addresses a server path that 404s on reload).
 	const targetPath = route.startsWith('/') ? route : `/${route}`
 	const hashFragment = `#${targetPath}`
@@ -157,15 +157,15 @@ test.describe('dashboard', () => {
 		await go(page, '/')
 		// App content area renders — Vue SPA is mounted
 		await expect(page.locator('.app-content')).toBeVisible()
-		expect(page.url()).toContain('/apps/larpingapp')
+		expect(page.url()).toContain('/apps/larpinq')
 	})
 
 	// @e2e openspec/specs/dashboard/spec.md#app-navigation-entry-point
 	test('app navigation entry point', async ({ page }) => {
-		// Navigate directly to larpingapp; the NC header's app entry links here
+		// Navigate directly to larpinq; the NC header's app entry links here
 		await go(page, '/')
 		await expect(page.locator('.app-content')).toBeVisible()
-		expect(page.url()).toContain('/apps/larpingapp')
+		expect(page.url()).toContain('/apps/larpinq')
 	})
 
 	// @e2e openspec/specs/dashboard/spec.md#dashboard-is-default-view
@@ -237,7 +237,7 @@ test.describe('dashboard', () => {
 		// read the truth from OpenRegister and assert the widgets against it —
 		// which also covers the empty case on a genuinely fresh instance.
 		const res = await page.request.get(
-			'/index.php/apps/openregister/api/objects/larpingapp/character?_limit=1',
+			'/index.php/apps/openregister/api/objects/larpinq/character?_limit=1',
 			{ headers: { 'OCS-APIRequest': 'true' } },
 		)
 		// Assert the STATUS, not just the payload: a 403 or a 500 body parses to
@@ -541,16 +541,16 @@ test.describe('events-players', () => {
 test.describe('settings-management-ui', () => {
 	// @e2e openspec/specs/settings-management-ui/spec.md#panel-loads-then-saves-all-types
 	test('admin settings panel loads', async ({ page }) => {
-		await go(page, '/settings/admin/larpingapp')
-		expect(page.url()).toContain('/settings/admin/larpingapp')
+		await go(page, '/settings/admin/larpinq')
+		expect(page.url()).toContain('/settings/admin/larpinq')
 		// PROVEN DEAD, then fixed. In the bundle-truncation control (E2E job
 		// 91937... on PR #251, `js/*.js` emptied to 0 bytes) this test still
 		// PASSED — because `.app-content, #app-content, .section` is Nextcloud's
-		// own server-rendered settings chrome, present whether or not larpingapp
+		// own server-rendered settings chrome, present whether or not larpinq
 		// mounts, and the URL check is a tautology after a goto. It asserted
 		// nothing about this app.
 		//
-		// "Save All" is rendered by larpingapp's Vue admin panel, so it exists
+		// "Save All" is rendered by larpinq's Vue admin panel, so it exists
 		// only if the app's JavaScript loaded and mounted.
 		await expect(
 			page.getByRole('button', { name: /Save All/i }).first(),
@@ -563,9 +563,9 @@ test.describe('settings-management-ui', () => {
 // ===========================================================================
 
 test.describe('admin-settings', () => {
-	// @e2e openspec/specs/admin-settings/spec.md#admin-opens-larpingapp-settings-panel
-	test('admin opens larpingapp settings panel', async ({ page }) => {
-		await page.goto('/settings/admin/larpingapp')
+	// @e2e openspec/specs/admin-settings/spec.md#admin-opens-larpinq-settings-panel
+	test('admin opens larpinq settings panel', async ({ page }) => {
+		await page.goto('/settings/admin/larpinq')
 		// ADR-074 rule 4: `networkidle` is unreachable on Nextcloud (notification
 		// poll), so it burns the full budget. Wait for the rendered shell.
 		await page
@@ -573,18 +573,16 @@ test.describe('admin-settings', () => {
 			.first()
 			.waitFor({ state: 'visible', timeout: 30_000 })
 			.catch(() => {})
-		expect(page.url()).toContain('/settings/admin/larpingapp')
+		expect(page.url()).toContain('/settings/admin/larpinq')
 		// PROVEN DEAD, then fixed. This test passed in the bundle-truncation
 		// control (PR #251, `js/*.js` emptied to 0 bytes) because its two
 		// assertions were `expect(page.locator('body')).toBeVisible()` — true on
 		// literally any page that loads — and a URL check that a `goto` cannot
-		// fail. The scenario is "admin OPENS the larpingapp settings panel", so
+		// fail. The scenario is "admin OPENS the larpinq settings panel", so
 		// assert the panel: its heading and its Save control, both rendered by
 		// the app's own Vue component.
 		await expect(
-			page
-				.getByText(/Administration settings: LarpingApp|LarpingApp/i)
-				.first(),
+			page.getByText(/Administration settings: Larpinq|Larpinq/i).first(),
 		).toBeVisible({ timeout: 15_000 })
 		await expect(
 			page.getByRole('button', { name: /Save All/i }).first(),

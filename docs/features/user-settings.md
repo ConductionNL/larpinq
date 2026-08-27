@@ -13,7 +13,7 @@ Provides a settings dialog accessible from the navigation footer, allowing users
 
 ## How to Access
 
-1. Open LarpingApp
+1. Open Larpinq
 2. Click the Settings gear in the navigation footer
 3. The Settings dialog opens with the Configuration section
 

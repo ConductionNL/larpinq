@@ -4,7 +4,7 @@
  * Unit tests for DocuDeskPdfRenderer.
  *
  * @category Test
- * @package  OCA\LarpingApp\Tests\Unit\Service
+ * @package  OCA\Larpinq\Tests\Unit\Service
  * @author   Ruben Linde <ruben@larpingapp.com>
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
@@ -12,10 +12,10 @@
 
 declare(strict_types=1);
 
-namespace OCA\LarpingApp\Tests\Unit\Service;
+namespace OCA\Larpinq\Tests\Unit\Service;
 
 use Exception;
-use OCA\LarpingApp\Service\DocuDeskPdfRenderer;
+use OCA\Larpinq\Service\DocuDeskPdfRenderer;
 use OCP\App\IAppManager;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;

@@ -2,7 +2,7 @@
 
 ## Overview
 
-The data access layer for LarpingApp uses `RegisterObjectFetcher` as a thin wrapper around OpenRegister's `ObjectService`. It resolves register and schema IDs from `IAppConfig` per object type.
+The data access layer for Larpinq uses `RegisterObjectFetcher` as a thin wrapper around OpenRegister's `ObjectService`. It resolves register and schema IDs from `IAppConfig` per object type.
 
 ## Features
 
@@ -22,5 +22,5 @@ The data access layer for LarpingApp uses `RegisterObjectFetcher` as a thin wrap
 
 - Service: `lib/Service/RegisterObjectFetcher.php`
 - Dependencies: `ContainerInterface`, `IAppManager`, `IAppConfig`
-- App name hardcoded to `larpingapp` for config lookups
+- App name hardcoded to `larpinq` for config lookups
 - Consumed by: `CharacterService`, `CharactersController`

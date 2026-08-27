@@ -18,10 +18,10 @@ consumer of that bare slug, regardless of which app's manifest wrote the
 reference. This is the same mechanism documented in
 `reference_or-cross-app-schema-slug-collision.md`.
 
-`lib/Settings/larpingapp_register.json` already anticipated this: its `event`
+`lib/Settings/larpinq_register.json` already anticipated this: its `event`
 and `item` schema definitions carry the namespaced real slugs `larping_event`
 and `larping_item` (confirmed via `x-openregister-schema-slug` on each), unlike
-every other larpingapp schema (`character`, `player`, `ability`, `skill`,
+every other Larpinq schema (`character`, `player`, `ability`, `skill`,
 `condition`, `effect`, `setting`, `xpAward`), which all keep their bare key as
 their real slug — those names are unique enough across the fleet not to
 collide.
@@ -33,7 +33,7 @@ OpenRegister resolves by the *global* slug index, not by which app wrote the
 reference, `"event"` resolves to **openconnector's CloudEvents `event` schema**
 (fields: Source, Type, Spec Version, datacontenttype, dataschema…) and
 `"item"` resolves to a different installed app's `item` schema — not
-larpingapp's own. The Events and Items create/list/detail forms therefore
+Larpinq's own. The Events and Items create/list/detail forms therefore
 render the wrong schema's fields.
 
 ## Reference Sites (enumerated by grep, `src/manifest.json`)
@@ -69,7 +69,7 @@ Grepped for `event`/`item` schema references outside `src/manifest.json`:
   an OpenRegister `"schema"` reference — no manifest section currently binds
   `ObjectDetail` with `object-type="event"`, so this map is inert for `event`
   today and out of scope for this fix regardless). Not repointed.
-- `lib/Settings/larpingapp_register.json` — already correct
+- `lib/Settings/larpinq_register.json` — already correct
   (`larping_event`/`larping_item`); not touched by this change.
 
 ## Nextcloud Integration
@@ -84,7 +84,7 @@ Grepped for `event`/`item` schema references outside `src/manifest.json`:
 ## Security Considerations
 No security impact. This fixes a schema-resolution bug that currently causes
 the Events/Items forms to read/write the wrong (unrelated app's) schema; after
-the fix, users can only read/write larpingapp's own `event`/`item` objects via
+the fix, users can only read/write Larpinq's own `event`/`item` objects via
 these pages, which is strictly more correct and no more permissive than today.
 
 ## NL Design System
@@ -100,7 +100,7 @@ src/
 
 ## Trade-offs
 The only alternative considered was renaming the schemas back to bare `event`/
-`item` in `lib/Settings/larpingapp_register.json` instead of fixing the
+`item` in `lib/Settings/larpinq_register.json` instead of fixing the
 manifest. Rejected — the whole reason `larping_event`/`larping_item` exist is to
 *avoid* the global slug collision (per
 `reference_or-cross-app-schema-slug-collision.md`); reverting the namespacing

@@ -1,10 +1,10 @@
 <?php
 
 /**
- * LarpingApp application class.
+ * Larpinq application class.
  *
  * @category  Application
- * @package   OCA\LarpingApp\AppInfo
+ * @package   OCA\Larpinq\AppInfo
  * @author    Ruben Linde <ruben@larpingapp.com>
  * @copyright 2024 Ruben Linde
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
@@ -21,20 +21,20 @@
 
 declare(strict_types=1);
 
-namespace OCA\LarpingApp\AppInfo;
+namespace OCA\Larpinq\AppInfo;
 
-use OCA\LarpingApp\Listener\CharacterRequirementListener;
-use OCA\LarpingApp\Listener\DeepLinkRegistrationListener;
+use OCA\Larpinq\Listener\CharacterRequirementListener;
+use OCA\Larpinq\Listener\DeepLinkRegistrationListener;
 use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
 use OCP\AppFramework\Bootstrap\IRegistrationContext;
 
 /**
- * Main application class for LarpingApp
+ * Main application class for Larpinq
  *
  * @category Application
- * @package  OCA\LarpingApp\AppInfo
+ * @package  OCA\Larpinq\AppInfo
  * @author   Ruben Linde <ruben@larpingapp.com>
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
@@ -45,7 +45,7 @@ class Application extends App implements IBootstrap {
 	/**
 	 * Application ID
 	 */
-	public const APP_ID = 'larpingapp';
+	public const APP_ID = 'larpinq';
 
 	/**
 	 * Constructor for the application
@@ -84,13 +84,13 @@ class Application extends App implements IBootstrap {
 		// Nextcloud registers apps in sorted order: OC_App::getEnabledApps()
 		// does sort($apps) and Coordinator::registerApps() walks THAT sorted
 		// list calling OC_App::registerAutoloading($appId, $path) and then
-		// $app->register() for one app at a time. `larpingapp` sorts before
+		// $app->register() for one app at a time. `larpinq` sorts before
 		// `openregister`, so OCA\OpenRegister\ is NOT autoloadable at this
 		// point on a perfectly healthy instance with OpenRegister enabled.
 		//
 		// Without this call every probe below answers FALSE — not "not loaded
 		// yet", just FALSE, indistinguishable from OpenRegister being absent —
-		// and LarpingApp registers NO listeners at all: no deep links, and no
+		// and Larpinq registers NO listeners at all: no deep links, and no
 		// server-authoritative skill-requirement / XP-budget enforcement on
 		// character writes. The app stays enabled and keeps serving, and
 		// nothing reports the gap.

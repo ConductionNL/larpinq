@@ -1,7 +1,7 @@
 # Proposal: leaf-integrations
 
 ## Summary
-Complete LarpingApp's adoption of OpenRegister's app-agnostic integration
+Complete Larpinq's adoption of OpenRegister's app-agnostic integration
 leaves by declaring the three that are still missing — **talk** (event and
 campaign chat rooms), **polls** (session scheduling and rules votes), and
 **deck** (GM prep boards) — via one new `lib/Settings/register.d/` fragment
@@ -10,7 +10,7 @@ app's five shipped leaves already use. Pure config (`kind` equivalent:
 config-only); no PHP, no bespoke widgets.
 
 ## Motivation
-LarpingApp already consumes five leaves, each through its own archived change:
+Larpinq already consumes five leaves, each through its own archived change:
 calendar on `event` (`event-calendar-leaf`), maps on `event`
 (`event-location-to-maps-leaf`), forms on `event`
 (`event-signup-to-forms-leaf`), contacts on `player`
@@ -27,7 +27,7 @@ widgets. OR ships all three providers at HEAD (`TalkProvider` id `talk`,
 `PollsProvider` id `polls`, `DeckProvider` id `deck`).
 
 ## Affected Projects
-- [ ] Project: `larpingapp` — declare `linkedTypes` additions for `event` and
+- [ ] Project: `larpinq` — declare `linkedTypes` additions for `event` and
   `setting` via a new `lib/Settings/register.d/leaf-integrations.json`
   fragment; no PHP changes.
 
@@ -41,7 +41,7 @@ widgets. OR ships all three providers at HEAD (`TalkProvider` id `talk`,
 - **deck** leaf on `event`: GM prep board (props, NPCs, plot beats) linked to
   the event record.
 - A dedicated `register.d/leaf-integrations.json` fragment (ADR-037) — this
-  change never edits `larpingapp_register.json` directly, per this repo's own
+  change never edits `larpinq_register.json` directly, per this repo's own
   `register.d/README.md`.
 - Graceful degradation when Talk / Polls / Deck are not installed.
 

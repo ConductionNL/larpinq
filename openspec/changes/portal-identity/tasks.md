@@ -4,11 +4,11 @@ Tracking issue: Conduction/larpingapp#51 (Wave 3 — schema config only; the cod
 
 - [x] T1: Verify at HEAD that `character` scopes ownership by `ownerUid` (a Nextcloud uid) and that internal flows depend on it.
   - `character.ownerUid` description: "Nextcloud uid of the player who owns this character. Used for per-player notifications"
-  - `larpingapp_register.json` `character-approved` notification uses `recipients: [{ kind: field, field: ownerUid }]`
+  - `larpinq_register.json` `character-approved` notification uses `recipients: [{ kind: field, field: ownerUid }]`
   - No `ownerRef` exists anywhere in `lib/` or `src/` at HEAD
 
 - [x] T2: Choose and document the stable domain identity the ref points at.
-  - `ownerRef` → the larpingapp `player` object UUID (first-class domain entity)
+  - `ownerRef` → the Larpinq `player` object UUID (first-class domain entity)
   - `player` is linked to a NC contact via `register.d/player-to-contacts-leaf.json`, but the in-register `player` UUID is the stable anchor (does not depend on the external addressbook link)
 
 - [x] T3: Add `lib/Settings/register.d/portal-identity.json` — an ADR-037 fragment adding `ownerRef` to the `character` schema ALONGSIDE `ownerUid` (do not edit the monolith).

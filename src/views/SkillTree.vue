@@ -44,8 +44,8 @@
 			<NcSelect
 				v-model="selectedCharacter"
 				:options="characterOptions"
-				:inputLabel="t('larpingapp', 'Character')"
-				:placeholder="t('larpingapp', 'No character (uncoloured)')"
+				:inputLabel="t('larpinq', 'Character')"
+				:placeholder="t('larpinq', 'No character (uncoloured)')"
 				label="label"
 				data-testid="skill-tree-character"
 				@update:modelValue="onCharacterChange" />
@@ -60,8 +60,8 @@
 			<NcSelect
 				v-model="selectedSetting"
 				:options="settingOptions"
-				:inputLabel="t('larpingapp', 'World')"
-				:placeholder="t('larpingapp', 'All worlds')"
+				:inputLabel="t('larpinq', 'World')"
+				:placeholder="t('larpinq', 'All worlds')"
 				label="label"
 				data-testid="skill-tree-setting" />
 		</div>
@@ -69,23 +69,23 @@
 		<div class="skill-tree__legend" aria-hidden="false">
 			<span class="skill-tree__legend-item"
 				><span class="skill-tree__dot skill-tree__dot--owned" />
-				{{ t('larpingapp', 'Owned') }}</span
+				{{ t('larpinq', 'Owned') }}</span
 			>
 			<span class="skill-tree__legend-item"
 				><span class="skill-tree__dot skill-tree__dot--available" />
-				{{ t('larpingapp', 'Available') }}</span
+				{{ t('larpinq', 'Available') }}</span
 			>
 			<span class="skill-tree__legend-item"
 				><span class="skill-tree__dot skill-tree__dot--locked" />
-				{{ t('larpingapp', 'Locked') }}</span
+				{{ t('larpinq', 'Locked') }}</span
 			>
 		</div>
 
 		<NcEmptyContent
 			v-if="!loading && nodes.length === 0"
-			:name="t('larpingapp', 'No skills to show')"
+			:name="t('larpinq', 'No skills to show')"
 			:description="
-				t('larpingapp', 'No skills exist yet for the selected world.')
+				t('larpinq', 'No skills exist yet for the selected world.')
 			"
 			data-testid="skill-tree-empty">
 			<template #icon>
@@ -113,12 +113,12 @@
 						<span class="skill-tree__node-requires">
 							{{
 								node.requiredSkills.length
-									? t('larpingapp', 'Requires: {list}', {
+									? t('larpinq', 'Requires: {list}', {
 											list: node.requiredSkills
 												.map((s) => s.name)
 												.join(', '),
 										})
-									: t('larpingapp', 'No prerequisites')
+									: t('larpinq', 'No prerequisites')
 							}}
 						</span>
 					</button>
@@ -136,7 +136,7 @@
 
 				<dl class="skill-tree__reqs">
 					<template v-if="selectedNode.requiredSkills.length">
-						<dt>{{ t('larpingapp', 'Required skills') }}</dt>
+						<dt>{{ t('larpinq', 'Required skills') }}</dt>
 						<dd>
 							{{
 								selectedNode.requiredSkills
@@ -146,7 +146,7 @@
 						</dd>
 					</template>
 					<template v-if="selectedNode.requiredStats.length">
-						<dt>{{ t('larpingapp', 'Required abilities') }}</dt>
+						<dt>{{ t('larpinq', 'Required abilities') }}</dt>
 						<dd>
 							{{
 								selectedNode.requiredStats
@@ -154,14 +154,14 @@
 									.join(', ')
 							}}
 							{{
-								t('larpingapp', '(score ≥ {n})', {
+								t('larpinq', '(score ≥ {n})', {
 									n: selectedNode.requiredScore,
 								})
 							}}
 						</dd>
 					</template>
 					<template v-if="selectedNode.requiredConditions.length">
-						<dt>{{ t('larpingapp', 'Required conditions') }}</dt>
+						<dt>{{ t('larpinq', 'Required conditions') }}</dt>
 						<dd>
 							{{
 								selectedNode.requiredConditions
@@ -171,7 +171,7 @@
 						</dd>
 					</template>
 					<template v-if="selectedNode.requiredEffects.length">
-						<dt>{{ t('larpingapp', 'Required effects') }}</dt>
+						<dt>{{ t('larpinq', 'Required effects') }}</dt>
 						<dd>
 							{{
 								selectedNode.requiredEffects
@@ -181,9 +181,9 @@
 						</dd>
 					</template>
 					<template v-if="!hasAnyRequirement(selectedNode)">
-						<dt>{{ t('larpingapp', 'Prerequisites') }}</dt>
+						<dt>{{ t('larpinq', 'Prerequisites') }}</dt>
 						<dd>
-							{{ t('larpingapp', 'None — this is a root skill.') }}
+							{{ t('larpinq', 'None — this is a root skill.') }}
 						</dd>
 					</template>
 				</dl>
@@ -434,7 +434,7 @@ export default {
 				this.liveHandles = []
 				// eslint-disable-next-line no-console
 				console.warn(
-					'[larpingapp] skill-tree live subscription failed:',
+					'[larpinq] skill-tree live subscription failed:',
 					e?.message ?? e,
 				)
 			}
@@ -507,7 +507,7 @@ export default {
 				this.effectNames = indexNames(effects)
 			} catch (error) {
 				// eslint-disable-next-line no-console
-				console.warn('[larpingapp] skill-tree data unavailable', error)
+				console.warn('[larpinq] skill-tree data unavailable', error)
 			} finally {
 				this.loading = false
 			}
@@ -530,7 +530,7 @@ export default {
 			try {
 				const response = await fetch(
 					generateUrl(
-						'/apps/larpingapp/api/characters/{id}/requirement-report',
+						'/apps/larpinq/api/characters/{id}/requirement-report',
 						{ id },
 					),
 					{
@@ -548,7 +548,7 @@ export default {
 				// Degrade to an uncoloured tree — the nodes/edges still render.
 				this.report = null
 				// eslint-disable-next-line no-console
-				console.warn('[larpingapp] requirement report unavailable', error)
+				console.warn('[larpinq] requirement report unavailable', error)
 			}
 		},
 
@@ -587,10 +587,7 @@ export default {
 		 * @spec openspec/specs/skill-tree-visualization/spec.md
 		 */
 		stateLabel(state) {
-			return this.t(
-				'larpingapp',
-				(STATE_META[state] || STATE_META.unknown).label,
-			)
+			return this.t('larpinq', (STATE_META[state] || STATE_META.unknown).label)
 		},
 
 		/**

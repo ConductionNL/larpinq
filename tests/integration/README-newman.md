@@ -1,6 +1,6 @@
-# LarpingApp API-contract tests (Newman)
+# Larpinq API-contract tests (Newman)
 
-Newman/Postman contract tests that exercise larpingapp's HTTP surface directly,
+Newman/Postman contract tests that exercise larpinq's HTTP surface directly,
 locking the API contract. Per the gate-19 split, **API/contract correctness lives
 in Newman**; Playwright drives the UI only.
 
@@ -8,7 +8,7 @@ in Newman**; Playwright drives the UI only.
 
 | Folder | Endpoints | Happy | Error | Authz |
 | --- | --- | --- | --- | --- |
-| 1. Character (OR CRUD) | OpenRegister `/api/objects/{register}/character` (ADR-022; larpingapp owns no domain-CRUD controller) | create → read → list → update | 400 missing-required (`ocName`), not 500 | anon single-read → 404 (owner-scoped), anon write → 401 |
+| 1. Character (OR CRUD) | OpenRegister `/api/objects/{register}/character` (ADR-022; larpinq owns no domain-CRUD controller) | create → read → list → update | 400 missing-required (`ocName`), not 500 | anon single-read → 404 (owner-scoped), anon write → 401 |
 | 2. Domain objects | OR objects for `item`, `skill`, `condition`, `effect`, `event`, `player` | create each + list items | — | — |
 | 3. Character PDF compute | `GET /characters/{id}/download/{template}` (`CharactersController::downloadPdf`) | — (needs a real DocuDesk template) | 400 non-UUID template, 4xx (404/424) unresolved-UUID — never 500 | 401 anonymous |
 | 4. Settings | `GET /api/settings`, `POST /api/settings` | 200 + contract shape (`openRegisters`, `availableRegisters[]`) | — | 401 no-auth (GET + POST) |
@@ -21,14 +21,14 @@ everything created. Register slug `larpingapp` (live id 8) with schema slugs
 
 Result: **27 requests / 43 assertions / 0 failures.**
 
-## ADR-022 — larpingapp is a thin OpenRegister client
+## ADR-022 — larpinq is a thin OpenRegister client
 
-larpingapp owns no domain-CRUD controller; all LARP-object CRUD goes through the
+larpinq owns no domain-CRUD controller; all LARP-object CRUD goes through the
 OpenRegister object API (`/apps/openregister/api/objects/{register}/{schema}`).
-The only larpingapp-native controllers are Settings, the character PDF compute
+The only larpinq-native controllers are Settings, the character PDF compute
 endpoint (`downloadPdf`, which delegates rendering to DocuDesk), and the generic
 preferences endpoint. The collection therefore exercises the OR object API for
-the domain objects and the larpingapp controllers for the rest.
+the domain objects and the larpinq controllers for the rest.
 
 ### OpenRegister object-read authorization (honest)
 
@@ -38,7 +38,7 @@ read to the owner: an anonymous GET of an admin-owned character returns **404**
 200 to anon but only exposes the anon-visible subset. Object **writes**
 (POST/PUT/DELETE) always require auth and return **401** anonymously. The folder-1
 authz tests assert all three honestly. This is OpenRegister's enforcement (ADR-022),
-not larpingapp's — the suite documents reality rather than asserting a flat 401
+not larpinq's — the suite documents reality rather than asserting a flat 401
 the OR read API never returns.
 
 ### Character PDF (`downloadPdf`)
@@ -63,14 +63,14 @@ error and authz contract is fully locked here.
 ./run-newman.sh
 
 # or directly:
-npx newman run larpingapp.postman_collection.json \
+npx newman run larpinq.postman_collection.json \
   --env-var baseUrl=http://localhost:8080 \
   --env-var adminUser=admin \
   --env-var adminPass=admin
 ```
 
 `run-newman.sh` prefers a globally-installed `newman`, falls back to `npx newman`,
-and serialises runs under `flock /tmp/uiaudit-larpingapp.lock` to avoid tripping
+and serialises runs under `flock /tmp/uiaudit-larpinq.lock` to avoid tripping
 the Nextcloud brute-force protection when multiple agents run in parallel.
 
 ## Auth-isolation detail (important for reuse)

@@ -14,13 +14,13 @@ By the end you will have reviewed a submitted character, flipped its `approved` 
 
 ## Prerequisites
 
-- The Larping game system is configured (see [Configure the game system](01-configure-game-system.md)).
+- The Larpinq game system is configured (see [Configure the game system](01-configure-game-system.md)).
 - One or more players have submitted characters (see [Create a character](../user/02-create-character.md)).
-- Admin or game-master role on this Larping instance.
+- Admin or game-master role on this Larpinq instance.
 
 ## Steps
 
-1. Open the **Players** list from the Larping navigation. Each entry is a real-world person who plays in the LARP — name, description, contact. Add players who aren't there yet via **Add Item**.
+1. Open the **Players** list from the Larpinq navigation. Each entry is a real-world person who plays in the LARP — name, description, contact. Add players who aren't there yet via **Add Item**.
 
    ![Players list](/screenshots/tutorials/admin/02-approve-players-01.png)
 
@@ -51,7 +51,7 @@ Approved characters carry `approved = true` and an audit-trail entry showing who
 | Approved characters still flagged as unapproved in lists | Browser cache or stale list — refresh; the dashboard's *Recent characters* widget may also need a manual refresh. |
 | Post-event effects don't reach a character | The character's player link is empty or wrong, so the event-effect application can't match the character. Fix the `ocName` (player UUID) on the character. |
 | Two characters belong to the same player | That's allowed — one **Player** can have many **Characters**. Each character carries its own approval state and stat history. |
-| Approval check disappeared from character form | The `approved` field is part of the `character` schema; if it's missing the schema import is incomplete — see [Manage Larping settings](03-admin-settings.md). |
+| Approval check disappeared from character form | The `approved` field is part of the `character` schema; if it's missing the schema import is incomplete — see [Manage Larpinq settings](03-admin-settings.md). |
 | Screenshots may be missing | App not yet installed in the test environment; rerun `npm run test:e2e:docs` once it is. |
 
 ## Reference
