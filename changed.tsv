@@ -1,7 +1,0 @@
-devDependencies	@babel/core	^8.0.1	^7.22.9
-devDependencies	@babel/preset-env	^7.29.5	^7.22.9
-devDependencies	node-polyfill-webpack-plugin	3.0.0	4.0.0
-devDependencies	postcss-html	^2.0.0	^1.0.0
-devDependencies	sass-loader	^16.0.8	^17.0.0
-devDependencies	stylelint-config-html	^2.0.0	^1.1.0
-devDependencies	stylelint-config-recommended-vue	^2.0.0	^1.6.1
