@@ -149,9 +149,7 @@ OC.L10N.register(
         "Required conditions": "Required conditions",
         "Required effects": "Required effects",
         "Prerequisites": "Prerequisites",
-        "None — this is a root skill.": "None — this is a root skill.",
-        "Demo data (optional)": "Demo data (optional)",
-        "Load an example LARP with characters, skills, items and events, so lists, character sheets and the event calendar show a working product right away. Optional, and safe to run more than once. Skip this on a production install.": "Load an example LARP with characters, skills, items and events, so lists, character sheets and the event calendar show a working product right away. Optional, and safe to run more than once. Skip this on a production install."
+        "None — this is a root skill.": "None — this is a root skill."
     },
     "nplurals=2; plural=(n != 1);"
 )
