@@ -430,4 +430,29 @@ if [ "${GITHUB_ACTIONS:-}" = "true" ] || [ "${CI:-}" = "true" ]; then
 	esac
 fi
 
+# ── Settle the demo-data decision ────────────────────────────────────────────
+# 🔴 OR THE SETUP WIZARD MASKS EVERY CLICK. ADR-111 added an OPTIONAL
+# `demo-data` step, and CnAppRoot opens the non-gating wizard as a full modal
+# mask while ANY optional step that is not info/summary is reported not-done —
+# in every fresh browser context, so once per spec.
+#
+# Measured on shillinq's development at 38931fc65: 58 specs failed, every one a
+# 60s timeout whose call log reads "locator resolved to <button ...> -
+# attempting click action". The element was found; the click never landed.
+#
+# SKIPPED, not installed: recording the decision is what closes the wizard.
+# Installing would push the app's whole demo dataset into every list the suite
+# asserts on. `demo-data-setup-step.spec.ts` exercises the install deliberately.
+#
+# Tolerant on purpose: an app whose wizard has no demo-data step answers 400
+# here, and that is not a seeding failure.
+DEMO_CODE="$(curl -sS -o /dev/null -w '%{http_code}' --max-time 300 \
+	-u "${USER_NAME}:${USER_PASS}" -X POST \
+	-H 'Content-Type: application/json' -H 'OCS-APIRequest: true' --data '{}' \
+	"${BASE}/index.php/apps/larpinq/api/setup/action/skip-demo-data" || echo 000)"
+echo "[ci-seed] POST setup/action/skip-demo-data -> HTTP ${DEMO_CODE}"
+if [ "$DEMO_CODE" != "200" ]; then
+	echo "::warning::skip-demo-data returned HTTP ${DEMO_CODE}; if this app declares a demo-data step, the setup wizard will cover the SPA in every spec."
+fi
+
 echo "[ci-seed] done."
