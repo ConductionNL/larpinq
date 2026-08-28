@@ -278,13 +278,21 @@ test.describe('character-stat computation — correctness (real service, real da
 	// @e2e openspec/specs/character-management/spec.md#view-computed-stats-in-eigenschappen-tab
 	// FIXME(stat-ui-blocker): computed stats are not surfaced through any
 	// controller or the SPA detail page on this instance — STAT_UI_BLOCKER.
-	test.fixme('UI: character detail "Eigenschappen" tab shows the computed effective stat', async ({
+	test('UI: character detail "Eigenschappen" tab shows the computed effective stat', async ({
 		page,
 	}) => {
-		test.info().annotations.push({
-			type: 'blocker',
-			description: STAT_UI_BLOCKER,
-		})
+		// The reason belongs on the fixme itself, for two reasons.
+		//
+		// `test.fixme(title, fn)` never RUNS the body, so the
+		// `test.info().annotations.push(...)` that used to sit here was
+		// unreachable — the annotation was never recorded at all.
+		//
+		// And the skip-discipline gate reads only annotations of type `skip`
+		// or `fixme` (EXCLUSION_TYPES in check_e2e_skips.py), so a `blocker`
+		// type would not have counted even if it had executed. This test was
+		// reported as a V3 "exclusion with no reason recorded" despite the
+		// author having written a careful one.
+		test.fixme(true, STAT_UI_BLOCKER)
 		const s = await seedStatScenario(api, ledger, {
 			base: 10,
 			modifier: 3,
