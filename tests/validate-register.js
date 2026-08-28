@@ -242,6 +242,25 @@ function validateRegister(file, errors, warnings) {
 		return
 	}
 	const xo = reg['x-openregister']
+
+	// 🔴 A MOCK DESCRIPTOR IS DATA, NOT DEFINITIONS. This file matches the
+	// `*_register.json` sweep, but everything below it checks SCHEMA
+	// definitions — and a `type: mock` descriptor deliberately carries none.
+	//
+	// `generate_mock_register.py` stopped emitting `components.schemas`
+	// because it duplicated the app's own definitions and broke their
+	// uniqueness tests. So the two checks became mutually unsatisfiable: the
+	// generator must not write the block, and this file demanded it. Whichever
+	// ran last was wrong, and the way out was to carry a duplicated block
+	// nothing wanted.
+	//
+	// The demo data is not unchecked — `generate_mock_register.py --check`
+	// re-validates every object against the schema that will accept it, which
+	// is a stronger statement than "the file has a schemas key".
+	if (xo && typeof xo === 'object' && xo.type === 'mock') {
+		return
+	}
+
 	if (!xo || typeof xo !== 'object' || !xo.type || !xo.app) {
 		errors.push(
 			`${label}: missing or incomplete top-level x-openregister block (needs at least { type, app })`,
