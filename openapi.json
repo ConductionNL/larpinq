@@ -2,7 +2,7 @@
     "openapi": "3.0.3",
     "info": {
         "title": "dsonextcloud",
-        "version": "0.1.27-unstable.20260827021201",
+        "version": "0.2.1-unstable.20260828075934",
         "description": "DSO Nextcloud",
         "license": {
             "name": "agpl"
