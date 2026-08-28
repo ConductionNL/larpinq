@@ -240,7 +240,9 @@ OC.L10N.register(
         "XP Award": "XP-toekenning",
         "Award record": "Toekenningsrecord",
         "Event & character": "Evenement en personage",
-        "Flow": "Flow"
+        "Flow": "Flow",
+        "Demo data (optional)": "Demodata (optioneel)",
+        "Load an example LARP with characters, skills, items and events, so lists, character sheets and the event calendar show a working product right away. Optional, and safe to run more than once. Skip this on a production install.": "Laad een voorbeeld-LARP met personages, vaardigheden, items en evenementen, zodat lijsten, personagebladen en de evenementenkalender meteen een werkend product tonen. Optioneel en veilig om vaker uit te voeren. Sla dit over bij een productie-installatie."
     },
     "nplurals=2; plural=(n != 1);"
 )
