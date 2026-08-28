@@ -7,8 +7,8 @@
 		"version": 1,
 		"completionConfigKey": "setup_completed_version",
 		"steps": [
-			{ "id": "demo-data", "type": "run-action", "action": "install-demo-data", "title": "Demo data (optional)", "required": false, "body": "Load an example LARP with characters, skills, items and events, so lists, character sheets and the event calendar show a working product right away. Optional, and safe to run more than once. Skip this on a production install." },
 			{ "id": "welcome", "type": "info", "title": "Welcome to LARPing", "body": "Manage your live-action roleplay world, with characters, players, items and events all in one place. One quick step provisions your data store, then you're ready to play." },
+			{ "id": "demo-data", "type": "run-action", "action": "install-demo-data", "title": "Demo data (optional)", "required": false, "body": "Load an example LARP with characters, skills, items and events, so lists, character sheets and the event calendar show a working product right away. Optional, and safe to run more than once. Skip this on a production install." },
 			{ "id": "provision", "type": "run-action", "title": "Provision your world", "required": true, "action": "provision", "body": "Create the Larpinq register and schemas in OpenRegister: the data store for characters, players, abilities, skills, items, conditions, effects, events and settings. This normally runs automatically on install; run it here if OpenRegister was enabled after Larpinq, or to repair a partial install. It is safe to run more than once." },
 			{ "id": "done", "type": "summary", "title": "You're ready", "healthCheck": true, "body": "That's it. Your world's data store is provisioned. Jump into the Dashboard to see it at a glance, and reopen this setup or the guided tour anytime from the app's … menu." }
 		]
@@ -556,15 +556,15 @@
 		{
 			"id": "Flows",
 			"route": "/flows",
-			"type": "flows",
+			"type": "index",
 			"title": "Flows",
-			"config": { "app": "larpinq" },
-			"_note": "ADR-110 Decision 4: a flow is app-specific, so the authoring surface lives here rather than behind a deep link to another app's list. Rendered by the shared CnFlowsPage page type over OpenRegister's one native flow store (ADR-065), scoped to this app."
+			"config": { "entitySource": "flows", "app": "larpinq" },
+			"_note": "ADR-110 Decision 4: a flow is app-specific, so the authoring surface lives here rather than behind a deep link to another app's list. An ordinary index over the named `flows` source (config.entitySource) rather than the deprecated `flows` page type, reading OpenRegister's one native flow store (ADR-065), scoped to this app by config.app."
 		},
 		{
 			"id": "FlowDetail",
 			"route": "/flows/:id",
-			"type": "flow-detail",
+			"type": "flow",
 			"title": "Flow",
 			"config": { "app": "larpinq" },
 			"_note": "The shared CnFlowDetail canvas over the same single engine. Controls render in the NC app sidebar so the canvas keeps full width."
