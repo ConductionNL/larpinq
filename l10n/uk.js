@@ -149,7 +149,10 @@ OC.L10N.register(
         "Required conditions": "Потрібні стани",
         "Required effects": "Потрібні ефекти",
         "Prerequisites": "Передумови",
-        "None — this is a root skill.": "Немає — це базова навичка."
+        "None — this is a root skill.": "Немає — це базова навичка.",
+        "Where the automation lives": "Де живе автоматизація",
+        "Flows are what happens without anyone clicking: a reminder before a deadline passes, a confirmation sent on submission. This is where you read and edit them. Nothing to build now.": "Flows — це те, що відбувається без жодного кліку: нагадування до завершення строку, підтвердження під час подання. Тут ви їх читаєте та редагуєте — зараз нічого будувати не потрібно.",
+        "Open Flows in the menu": "Відкрийте Flows у меню"
     },
     "nplurals=2; plural=(n != 1);"
 )

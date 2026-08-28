@@ -149,7 +149,10 @@ OC.L10N.register(
         "Required conditions": "Condicions requerides",
         "Required effects": "Efectes requerits",
         "Prerequisites": "Prerequisits",
-        "None — this is a root skill.": "Cap — aquesta és una aptitud arrel."
+        "None — this is a root skill.": "Cap — aquesta és una aptitud arrel.",
+        "Where the automation lives": "On viu l'automatització",
+        "Flows are what happens without anyone clicking: a reminder before a deadline passes, a confirmation sent on submission. This is where you read and edit them. Nothing to build now.": "Els Flows són el que passa sense que ningú faci clic: un recordatori abans que venci un termini, una confirmació en enviar. Aquí els llegeixes i els edites — ara no cal construir res.",
+        "Open Flows in the menu": "Obre Flows al menú"
     },
     "nplurals=2; plural=(n != 1);"
 )

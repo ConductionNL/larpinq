@@ -148,7 +148,10 @@
         "Required conditions": "Vaaditut tilat",
         "Required effects": "Vaaditut vaikutukset",
         "Prerequisites": "Esivaatimukset",
-        "None — this is a root skill.": "Ei mitään — tämä on juuritaito."
+        "None — this is a root skill.": "Ei mitään — tämä on juuritaito.",
+        "Where the automation lives": "Missä automaatio asuu",
+        "Flows are what happens without anyone clicking: a reminder before a deadline passes, a confirmation sent on submission. This is where you read and edit them. Nothing to build now.": "Flows on se, mikä tapahtuu ilman että kukaan klikkaa: muistutus ennen määräajan umpeutumista, vahvistus lähetettäessä. Täällä luet ja muokkaat niitä — nyt ei tarvitse rakentaa mitään.",
+        "Open Flows in the menu": "Avaa Flows valikosta"
     },
     "plurals": {}
 }
