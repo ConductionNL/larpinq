@@ -78,7 +78,9 @@ test.describe('ADR-111 demo data', () => {
 	}) => {
 		const res = await api(page, 'GET', `${BASE}/api/setup/status`)
 
-		expect(res.status, 'setup/status must answer an authenticated admin').toBe(200)
+		expect(res.status, 'setup/status must answer an authenticated admin').toBe(
+			200,
+		)
 
 		// A step the endpoint never MENTIONS resolves to `done: false` forever —
 		// no operator action can clear it, and CnAppRoot then covers the app with
@@ -100,9 +102,10 @@ test.describe('ADR-111 demo data', () => {
 		)
 
 		expect(res.status, 'the action must pass the admin middleware').toBe(200)
-		expect(res.json?.success, `install failed: ${JSON.stringify(res.json)}`).toBe(
-			true,
-		)
+		expect(
+			res.json?.success,
+			`install failed: ${JSON.stringify(res.json)}`,
+		).toBe(true)
 
 		// 🔴 THE COUNTS ARE THE ASSERTION. "Demo data installed" with no numbers
 		// is indistinguishable from an import that wrote nothing — the exact
