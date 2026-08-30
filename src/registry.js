@@ -23,11 +23,18 @@
  */
 
 import EventRoster from './views/EventRoster.vue'
+import FlowDetailSidebar from './views/flows/FlowDetailSidebar.vue'
 import ObjectDetail from './views/ObjectDetail.vue'
 import GameSettingsSection from './views/settings/Settings.vue'
 import SkillTree from './views/SkillTree.vue'
 
 export default {
+	// --- Flows (ADR-110 Decision 4). Only the SIDEBAR is an app component;
+	//     the list and the canvas are the shared `index` / `flow` manifest
+	//     page types. CnFlowSidebar has to mount in the NC app sidebar for
+	//     the canvas to keep full width. ---
+	FlowDetailSidebar: { kind: 'page', component: FlowDetailSidebar },
+
 	GameSettingsSection: { kind: 'section', component: GameSettingsSection },
 	ObjectDetail: { kind: 'section', component: ObjectDetail },
 	// Event check-in roster — a sidebar-tab section on the event detail page
