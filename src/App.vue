@@ -31,7 +31,7 @@
 		appId="larpinq"
 		:translate="translateForApp"
 		:permissions="permissions">
-		<template #sidebar>
+		<template #sidebar="{ pageSidebarComponent }">
 			<CnObjectSidebar
 				v-if="objectSidebarState.active"
 				:title="objectSidebarState.title"
@@ -44,6 +44,12 @@
 				:tabs="objectSidebarState.tabs"
 				:open="objectSidebarState.open"
 				@update:open="objectSidebarState.open = $event" />
+			<!-- The manifest page's own sidebar (pages[].sidebarComponent). Passed in
+			     as a slot prop because filling this slot suppresses CnAppRoot's
+			     fallback, which is what hid the flow sidebar. -->
+			<component
+				:is="pageSidebarComponent"
+				v-if="pageSidebarComponent" />
 		</template>
 		<template #user-settings>
 			<NcAppSettingsSection id="general" :name="t('larpinq', 'General')">
