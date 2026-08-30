@@ -1,0 +1,466 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Larping",
+    "description": "The Larping Register is a comprehensive data structure designed to support Live Action Role-Playing (LARP) games. It provides a framework for managing characters, players, skills, items, conditions, and events within a LARP setting. This register enables game masters and players to track character progression, manage game events, and handle complex game mechanics like skills, conditions, and effects. Perfect for both small-scale LARP events and large campaign management.",
+    "version": "1.0.7"
+  },
+  "components": {
+    "registers": {
+      "larping": {
+        "slug": "larping",
+        "title": "Larping",
+        "version": "1.0.7",
+        "description": "A comprehensive register for managing LARP game data, including character sheets, player information, game mechanics, and event management. This register provides the core data structures needed for running and managing LARP games.",
+        "schemas": [
+          "character",
+          "player",
+          "effect",
+          "stat",
+          "item",
+          "skill",
+          "event",
+          "condition"
+        ],
+        "source": "",
+        "tablePrefix": "",
+        "folder": "Open Registers/Larping Register",
+        "updated": "2025-04-01T17:47:20+00:00",
+        "created": "2025-04-01T15:37:02+00:00",
+        "owner": null,
+        "application": null,
+        "organisation": null,
+        "authorization": [],
+        "deleted": null
+      }
+    },
+    "schemas": {
+      "character": {
+        "slug": "character",
+        "title": "Character",
+        "description": "Represents a player character in the LARP game. Contains all character-specific information including stats, skills, conditions, and inventory. This schema is central to the game as it ties together all other aspects of character management.",
+        "version": "1.0.1",
+        "summary": "Core character information and attributes",
+        "required": ["name"],
+        "properties": {
+          "gold": {
+            "type": "integer",
+            "description": "Amount of gold coins the character possesses"
+          },
+          "faith": {
+            "type": "string",
+            "description": "The religious belief or faith system the character follows"
+          },
+          "OCName": {
+            "type": "string",
+            "description": "Out-of-Character name of the player controlling this character"
+          },
+          "silver": {
+            "type": "integer",
+            "description": "Amount of silver coins the character possesses"
+          },
+          "copper": {
+            "type": "integer",
+            "description": "Amount of copper coins the character possesses"
+          },
+          "approved": {
+            "type": "string",
+            "description": "Approval status of the character by game masters"
+          },
+          "background": {
+            "type": "string",
+            "description": "Character's backstory and history"
+          },
+          "itemsAndMoney": {
+            "type": "string",
+            "description": "Detailed description of character's inventory and wealth"
+          },
+          "slNotesPublic": {
+            "type": "string",
+            "description": "Public notes visible to all players"
+          },
+          "slNotesPrivate": {
+            "type": "string",
+            "description": "Private notes only visible to game masters"
+          },
+          "skills": {
+            "type": "array",
+            "description": "List of skills the character has learned"
+          },
+          "name": {
+            "type": "string",
+            "description": "In-game name of the character"
+          },
+          "type": {
+            "type": "string",
+            "description": "Character type or class"
+          },
+          "card": {
+            "type": "string",
+            "description": "Character card identifier"
+          },
+          "notice": {
+            "type": "string",
+            "description": "Important notices about the character"
+          },
+          "description": {
+            "type": "string",
+            "description": "Physical description and appearance of the character"
+          },
+          "stats": {
+            "type": "object",
+            "description": "Character's base statistics and attributes"
+          },
+          "events": {
+            "type": "array",
+            "description": "Events the character has participated in"
+          },
+          "conditions": {
+            "type": "array",
+            "description": "Active conditions affecting the character"
+          },
+          "embedded": {
+            "type": "object",
+            "description": "Additional embedded data for the character"
+          }
+        },
+        "archive": [],
+        "source": "",
+        "hardValidation": false,
+        "maxDepth": 0,
+        "owner": null,
+        "application": null,
+        "organisation": null,
+        "authorization": [],
+        "deleted": null,
+        "configuration": null
+      },
+      "player": {
+        "slug": "player",
+        "title": "Player",
+        "description": "Represents a real person participating in the LARP game. Contains player-specific information and preferences, separate from their character data.",
+        "version": "1.0.1",
+        "summary": "Player information and preferences",
+        "required": ["name"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Real name of the player"
+          },
+          "email": {
+            "type": "string",
+            "description": "Contact email address"
+          },
+          "preferences": {
+            "type": "object",
+            "description": "Player's game preferences and settings"
+          }
+        },
+        "archive": [],
+        "source": "",
+        "hardValidation": false,
+        "maxDepth": 0,
+        "owner": null,
+        "application": null,
+        "organisation": null,
+        "authorization": [],
+        "deleted": null,
+        "configuration": null
+      },
+      "effect": {
+        "slug": "effect",
+        "title": "Effect",
+        "description": "Represents a game effect that can modify character stats or behavior. Effects can be applied through items, skills, or conditions.",
+        "version": "1.0.1",
+        "summary": "Game effects and modifiers",
+        "required": ["name", "description"],
+        "properties": {
+          "cumulative": {
+            "type": "string",
+            "description": "Whether the effect can stack with similar effects"
+          },
+          "stat": {
+            "type": "string",
+            "description": "The stat this effect modifies"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the effect"
+          },
+          "description": {
+            "type": "string",
+            "description": "Detailed description of what the effect does"
+          },
+          "modification": {
+            "type": "string",
+            "description": "Type of modification (add, subtract, multiply, etc.)"
+          },
+          "modifier": {
+            "type": "integer",
+            "description": "Numerical value of the modification"
+          },
+          "embedded": {
+            "type": "object",
+            "description": "Additional embedded data for the effect"
+          }
+        },
+        "archive": [],
+        "source": "",
+        "hardValidation": false,
+        "maxDepth": 0,
+        "owner": null,
+        "application": null,
+        "organisation": null,
+        "authorization": [],
+        "deleted": null,
+        "configuration": null
+      },
+      "stat": {
+        "slug": "stat",
+        "title": "Stat",
+        "description": "Represents a base statistic or attribute that characters can have. Stats can be modified by effects and are used for skill requirements.",
+        "version": "1.0.1",
+        "summary": "Character statistics and attributes",
+        "required": ["name", "base"],
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": "Detailed description of what the stat represents"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the stat"
+          },
+          "base": {
+            "type": "integer",
+            "description": "Base value of the stat before modifications"
+          }
+        },
+        "archive": [],
+        "source": "",
+        "hardValidation": false,
+        "maxDepth": 0,
+        "owner": null,
+        "application": null,
+        "organisation": null,
+        "authorization": [],
+        "deleted": null,
+        "configuration": null
+      },
+      "item": {
+        "slug": "item",
+        "title": "Item",
+        "description": "Represents physical items that characters can possess. Items can have effects and may be unique or common.",
+        "version": "1.0.1",
+        "summary": "Game items and equipment",
+        "required": ["name"],
+        "properties": {
+          "effect": {
+            "type": "string",
+            "description": "Legacy field for simple effect description"
+          },
+          "description": {
+            "type": "string",
+            "description": "Detailed description of the item"
+          },
+          "effects": {
+            "type": "array",
+            "description": "List of effects this item provides"
+          },
+          "unique": {
+            "type": "boolean",
+            "description": "Whether this is a unique item"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the item"
+          },
+          "characters": {
+            "type": "array",
+            "description": "Characters currently possessing this item"
+          },
+          "embedded": {
+            "type": "object",
+            "description": "Additional embedded data for the item"
+          }
+        },
+        "archive": [],
+        "source": "",
+        "hardValidation": false,
+        "maxDepth": 0,
+        "owner": null,
+        "application": null,
+        "organisation": null,
+        "authorization": [],
+        "deleted": null,
+        "configuration": null
+      },
+      "skill": {
+        "slug": "skill",
+        "title": "Skill",
+        "description": "Represents abilities that characters can learn. Skills may have requirements and can provide effects when used.",
+        "version": "1.0.1",
+        "summary": "Character abilities and skills",
+        "required": ["name", "description"],
+        "properties": {
+          "requiredEffects": {
+            "type": "array",
+            "description": "Effects required to learn this skill"
+          },
+          "effect": {
+            "type": "string",
+            "description": "Legacy field for simple effect description"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the skill"
+          },
+          "effects": {
+            "type": "array",
+            "description": "Effects this skill provides when used"
+          },
+          "requiredSkills": {
+            "type": "array",
+            "description": "Other skills required to learn this skill"
+          },
+          "requiredStats": {
+            "type": "array",
+            "description": "Stats required to learn this skill"
+          },
+          "requiredConditions": {
+            "type": "array",
+            "description": "Conditions required to learn this skill"
+          },
+          "requiredScore": {
+            "type": "integer",
+            "description": "Minimum score required in specified stats"
+          },
+          "description": {
+            "type": "string",
+            "description": "Detailed description of what the skill does"
+          },
+          "embedded": {
+            "type": "object",
+            "description": "Additional embedded data for the skill"
+          }
+        },
+        "archive": [],
+        "source": "",
+        "hardValidation": false,
+        "maxDepth": 0,
+        "owner": null,
+        "application": null,
+        "organisation": null,
+        "authorization": [],
+        "deleted": null,
+        "configuration": null
+      },
+      "event": {
+        "slug": "event",
+        "title": "Event",
+        "description": "Represents LARP events or game sessions. Contains information about timing, location, and participating characters.",
+        "version": "1.0.1",
+        "summary": "Game events and sessions",
+        "required": ["name", "startDate", "endDate"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the event"
+          },
+          "description": {
+            "type": "string",
+            "description": "Detailed description of the event"
+          },
+          "location": {
+            "type": "string",
+            "description": "Physical location where the event takes place"
+          },
+          "endDate": {
+            "type": "string",
+            "description": "End date and time of the event"
+          },
+          "characters": {
+            "type": "array",
+            "description": "Characters participating in this event"
+          },
+          "startDate": {
+            "type": "string",
+            "description": "Start date and time of the event"
+          },
+          "effects": {
+            "type": "array",
+            "description": "Effects active during this event"
+          },
+          "embedded": {
+            "type": "object",
+            "description": "Additional embedded data for the event"
+          }
+        },
+        "archive": [],
+        "source": "",
+        "hardValidation": false,
+        "maxDepth": 0,
+        "owner": null,
+        "application": null,
+        "organisation": null,
+        "authorization": [],
+        "deleted": null,
+        "configuration": null
+      },
+      "condition": {
+        "slug": "condition",
+        "title": "Condition",
+        "description": "Represents temporary or permanent conditions that can affect characters. Conditions can provide effects and may be unique.",
+        "version": "1.0.1",
+        "summary": "Character conditions and status effects",
+        "required": ["name", "description"],
+        "properties": {
+          "characters": {
+            "type": "array",
+            "description": "Characters currently affected by this condition"
+          },
+          "effect": {
+            "type": "string",
+            "description": "Legacy field for simple effect description"
+          },
+          "effects": {
+            "type": "array",
+            "description": "Effects this condition applies"
+          },
+          "description": {
+            "type": "string",
+            "description": "Detailed description of the condition"
+          },
+          "unique": {
+            "type": "boolean",
+            "description": "Whether this condition can only affect a character once"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the condition"
+          },
+          "embedded": {
+            "type": "object",
+            "description": "Additional embedded data for the condition"
+          }
+        },
+        "archive": [],
+        "source": "",
+        "hardValidation": false,
+        "maxDepth": 0,
+        "owner": null,
+        "application": null,
+        "organisation": null,
+        "authorization": [],
+        "deleted": null,
+        "configuration": null
+      }
+    },
+    "endpoints": [],
+    "sources": [],
+    "mappings": [],
+    "jobs": [],
+    "synchronizations": [],
+    "rules": []
+  }
+}
