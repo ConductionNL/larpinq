@@ -1,376 +1,459 @@
 <?php
 
 /**
- * CharacterService for LarpingApp
+ * CharacterService for Larpinq
  *
  * @category  Service
- * @package   OCA\LarpingApp\Service
+ * @package   OCA\Larpinq\Service
  * @author    Ruben Linde <ruben@larpingapp.com>
  * @copyright 2024 Ruben Linde
- * @license   AGPL-3.0-or-later https://www.gnu.org/licenses/agpl-3.0.en.html
+ * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link      https://larpingapp.com
+ *
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-64
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-65
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-66
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-67
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-68
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-69
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-70
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-71
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-72
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-73
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-74
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-75
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-76
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-77
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-78
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-79
  */
 
 declare(strict_types=1);
 
-namespace OCA\LarpingApp\Service;
+namespace OCA\Larpinq\Service;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\Promise\Utils;
-use OCP\IURLGenerator;
-use Symfony\Component\Uid\Uuid;
-use OCA\LarpingApp\Db\Character;
-use OCA\LarpingApp\Db\Ability;
-use OCA\LarpingApp\Db\Skill;
-use OCA\LarpingApp\Db\Item;
-use OCA\LarpingApp\Db\Condition;
-use OCA\LarpingApp\Db\Event;
-use OCA\LarpingApp\Db\Effect;
-use OCA\LarpingApp\Db\CharacterMapper;
-use OCA\LarpingApp\Db\AbilityMapper;
-use OCA\LarpingApp\Db\SkillMapper;
-use OCA\LarpingApp\Db\ItemMapper;
-use OCA\LarpingApp\Db\ConditionMapper;
-use OCA\LarpingApp\Db\EventMapper;
-use OCA\LarpingApp\Db\EffectMapper;
-use OCA\LarpingApp\Service\ObjectService;
-
-// And in case of open registers.
-use OCA\OpenRegister\Db\ObjectEntity;
+use Psr\Log\LoggerInterface;
 
 /**
  * Service class for character-related operations.
  *
  * @category Service
- * @package  OCA\LarpingApp\Service
+ * @package  OCA\Larpinq\Service
  * @author   Ruben Linde <ruben@larpingapp.com>
- * @license  https://www.gnu.org/licenses/agpl-3.0.html GNU AGPL v3 or later
+ * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
+ *
+ * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-64
  */
-class CharacterService
-{
+class CharacterService {
 
-    /**
-     * All skills indexed by ID.
-     *
-     * @var array<Ability>
-     */
-    private $allSkills = [];
+	/**
+	 * All skills indexed by ID.
+	 *
+	 * @var array<string, array<string, mixed>>
+	 */
+	private array $allSkills = [];
 
-    /**
-     * All items indexed by ID.
-     *
-     * @var array<Item>
-     */
-    private $allItems = [];
+	/**
+	 * All items indexed by ID.
+	 *
+	 * @var array<string, array<string, mixed>>
+	 */
+	private array $allItems = [];
 
-    /**
-     * All conditions indexed by ID.
-     *
-     * @var array<Condition>
-     */
-    private $allConditions = [];
+	/**
+	 * All conditions indexed by ID.
+	 *
+	 * @var array<string, array<string, mixed>>
+	 */
+	private array $allConditions = [];
 
-    /**
-     * All events indexed by ID.
-     *
-     * @var array<Event>
-     */
-    private $allEvents = [];
+	/**
+	 * All events indexed by ID.
+	 *
+	 * @var array<string, array<string, mixed>>
+	 */
+	private array $allEvents = [];
 
-    /**
-     * All effects indexed by ID.
-     *
-     * @var array<Effect>
-     */
-    private $allEffects = [];
+	/**
+	 * All effects indexed by ID.
+	 *
+	 * @var array<string, array<string, mixed>>
+	 */
+	private array $allEffects = [];
 
-    /**
-     * All abilities indexed by ID.
-     *
-     * @var array<Ability>
-     */
-    private $allAbilities = [];
+	/**
+	 * All abilities indexed by ID.
+	 *
+	 * @var array<string, array<string, mixed>>
+	 */
+	private array $allAbilities = [];
 
-    /**
-     * Constructor for CharacterService.
-     *
-     * @param AbilityMapper   $abilityMapper   Ability mapper.
-     * @param CharacterMapper $characterMapper Character mapper.
-     * @param ConditionMapper $conditionMapper Condition mapper.
-     * @param EffectMapper    $effectMapper    Effect mapper.
-     * @param EventMapper     $eventMapper     Event mapper.
-     * @param ItemMapper      $itemMapper      Item mapper.
-     */
-    public function __construct(
-        private AbilityMapper $abilityMapper,
-        private CharacterMapper $characterMapper,
-        private ConditionMapper $conditionMapper,
-        private EffectMapper $effectMapper,
-        private EventMapper $eventMapper,
-        private ItemMapper $itemMapper
-    ) {
-        $this->loadAllEntities();
-    }//end __construct()
+	/**
+	 * All XP awards grouped by the character they were granted to.
+	 *
+	 * @var array<string, array<int, array<string, mixed>>>
+	 */
+	private array $xpAwardsByCharacter = [];
 
-    /**
-     * Load all entities into memory and index them by ID.
-     *
-     * @return void
-     */
-    private function loadAllEntities(): void
-    {
-        // Get all skills and index them by ID.
-        $skills          = $this->objectService->getObjects('skill');
-        $this->allSkills = array_reduce(
-            $skills,
-                function ($carry, $skill) {
-                    $carry[$skill['id']] = $skill;
-                    return $carry;
-                },
-                []
-        );
+	/**
+	 * Flag indicating whether entity collections have been loaded.
+	 *
+	 * @var boolean
+	 */
+	private bool $entitiesLoaded = false;
 
-        // Get all items and index them by ID.
-        $items          = $this->objectService->getObjects('item');
-        $this->allItems = array_reduce(
-            $items,
-                function ($carry, $item) {
-                    $carry[$item['id']] = $item;
-                    return $carry;
-                },
-                []
-        );
+	/**
+	 * Constructor for CharacterService.
+	 *
+	 * Entity collections are NOT loaded here. Loading is deferred until
+	 * calculateCharacter() is first called, so DI resolution of this service
+	 * does not issue 6 OR queries unless stat calculation is actually needed.
+	 * Closes #217.
+	 *
+	 * @param RegisterObjectFetcher $objectFetcher The register object fetcher.
+	 * @param LoggerInterface $logger The logger interface.
+	 * @param EffectApplier $effectApplier The per-effect modifier arithmetic.
+	 *
+	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
+	 */
+	public function __construct(
+		private readonly RegisterObjectFetcher $objectFetcher,
+		private readonly LoggerInterface $logger,
+		private readonly EffectApplier $effectApplier,
+	) {
+	}//end __construct()
 
-        // Get all conditions and index them by ID.
-        $conditions          = $this->objectService->getObjects('condition');
-        $this->allConditions = array_reduce(
-            $conditions,
-                function ($carry, $condition) {
-                    $carry[$condition['id']] = $condition;
-                    return $carry;
-                },
-                []
-        );
+	/**
+	 * Index an array of entities by their ID field.
+	 *
+	 * @param array $entities The entities to index.
+	 *
+	 * @return array<string, array<string, mixed>> Entities indexed by ID.
+	 */
+	private function indexById(array $entities): array {
+		// @var array<string, array<string, mixed>> $indexed
+		$indexed = [];
+		// @psalm-suppress MixedAssignment Entity entries from object fetcher
+		foreach ($entities as $entity) {
+			$indexed[(string)$entity['id']] = $entity;
+		}
 
-        // Get all events and index them by ID.
-        $events          = $this->objectService->getObjects('event');
-        $this->allEvents = array_reduce(
-            $events,
-                function ($carry, $event) {
-                    $carry[$event['id']] = $event;
-                    return $carry;
-                },
-                []
-        );
+		return $indexed;
+	}//end indexById()
 
-        // Get all effects and index them by ID.
-        $effects          = $this->objectService->getObjects('effect');
-        $this->allEffects = array_reduce(
-            $effects,
-                function ($carry, $effect) {
-                    $carry[$effect['id']] = $effect;
-                    return $carry;
-                },
-                []
-        );
+	/**
+	 * Load all entities into memory and index them by ID.
+	 *
+	 * Guarded by $entitiesLoaded so the 6 OR queries are only issued once per
+	 * service instance and only when a calculation is actually requested.
+	 * Closes #217.
+	 *
+	 * @return void
+	 */
+	private function loadAllEntities(): void {
+		if ($this->entitiesLoaded === true) {
+			return;
+		}
 
-        // Get all abilities and index them by ID.
-        $abilities          = $this->objectService->getObjects('ability');
-        $this->allAbilities = array_reduce(
-            $abilities,
-                function ($carry, $ability) {
-                    $carry[$ability['id']] = $ability;
-                    return $carry;
-                },
-                []
-        );
-    }//end loadAllEntities()
+		$this->allSkills = $this->indexById(entities: $this->objectFetcher->getObjects('skill'));
+		$this->allItems = $this->indexById(entities: $this->objectFetcher->getObjects('item'));
+		$this->allConditions = $this->indexById(entities: $this->objectFetcher->getObjects('condition'));
+		$this->allEvents = $this->indexById(entities: $this->objectFetcher->getObjects('event'));
+		$this->allEffects = $this->indexById(entities: $this->objectFetcher->getObjects('effect'));
+		$this->allAbilities = $this->indexById(entities: $this->objectFetcher->getObjects('ability'));
+		$this->xpAwardsByCharacter = $this->loadXpAwards();
+		$this->entitiesLoaded = true;
+	}//end loadAllEntities()
 
-    /**
-     * Calculate stats for all characters.
-     *
-     * @return array Updated array of Character objects.
-     */
-    public function calculateAllCharacters(): array
-    {
-        $characters        = $this->characterMapper->findAll();
-        $updatedCharacters = [];
-        foreach ($characters as $character) {
-            $updatedCharacters[] = $this->calculateCharacter(character: $character);
-        }
+	/**
+	 * Load XP awards and group them by the character they were granted to.
+	 *
+	 * The xpAward schema is optional: older deployments without it (or without
+	 * OpenRegister) simply yield no awards. Never throws — a missing schema
+	 * degrades to "no awards" so stat calculation keeps working (CALC-006).
+	 *
+	 * @return array<string, array<int, array<string, mixed>>> Awards keyed by character id.
+	 *
+	 * @spec openspec/specs/event-xp-awards/spec.md
+	 */
+	private function loadXpAwards(): array {
+		$grouped = [];
+		try {
+			$awards = $this->objectFetcher->getObjects('xpAward');
+		} catch (\Throwable $e) {
+			$this->logger->debug(
+				'Larpinq: xpAward schema unavailable; stat calculation proceeds with no awards.',
+				['exception' => $e]
+			);
+			return $grouped;
+		}
 
-        return $updatedCharacters;
-    }//end calculateAllCharacters()
+		// @psalm-suppress MixedAssignment Award entries from the object fetcher.
+		foreach ($awards as $award) {
+			if (is_array($award) === false) {
+				continue;
+			}
 
-    /**
-     * Calculate stats for a single character array.
-     *
-     * @param array $character Character data array.
-     *
-     * @return array Updated character data array with calculated stats.
-     */
-    public function calculateCharacter(array $character): array
-    {
-        // Create an array of abilities with their base scores.
-        $abilityScores = [];
+			$characterId = (string)($award['character'] ?? '');
+			if ($characterId === '') {
+				continue;
+			}
 
-        // Initialize ability scores from base values.
-        foreach ($this->allAbilities as $ability) {
-            $abilityScores[$ability['id']] = [
-                'name'  => $ability['name'],
-                'base'  => $ability['base'] ?? 0,
-                'value' => $ability['base'] ?? 0,
-                'audit' => [],
-            ];
-        }
+			if (isset($grouped[$characterId]) === false) {
+				$grouped[$characterId] = [];
+			}
 
-        // Apply effects from skills if character has any.
-        if (isset($character['skills']) === true
-            && is_array($character['skills']) === true
-            && empty($character['skills']) === false
-        ) {
-            foreach ($character['skills'] as $skillId) {
-                $skill = $this->allSkills[$skillId] ?? null;
-                if ($skill !== null && isset($skill['effects']) === true && empty($skill['effects']) === false) {
-                    $this->applyEffects(abilities: $abilityScores, effects: $skill['effects']);
-                }
-            }
-        }
+			$grouped[$characterId][] = $award;
+		}
 
-        // Apply effects from items if character has any.
-        if (isset($character['items']) === true
-            && is_array($character['items']) === true
-            && empty($character['items']) === false
-        ) {
-            foreach ($character['items'] as $itemId) {
-                $item = $this->allItems[$itemId] ?? null;
-                if ($item !== null && isset($item['effects']) === true && empty($item['effects']) === false) {
-                    $this->applyEffects(abilities: $abilityScores, effects: $item['effects']);
-                }
-            }
-        }
+		return $grouped;
+	}//end loadXpAwards()
 
-        // Apply effects from conditions if character has any.
-        if (isset($character['conditions']) === true
-            && is_array($character['conditions']) === true
-            && empty($character['conditions']) === false
-        ) {
-            foreach ($character['conditions'] as $conditionId) {
-                $condition = $this->allConditions[$conditionId] ?? null;
-                if ($condition !== null && isset($condition['effects']) === true && empty($condition['effects']) === false) {
-                    $this->applyEffects(abilities: $abilityScores, effects: $condition['effects']);
-                }
-            }
-        }
+	/**
+	 * Resolve the XP ability id from the loaded abilities by name.
+	 *
+	 * No hardcoded UUIDs: matches an ability whose name is "xp" or contains
+	 * "experience" (case-insensitive). Shared resolution rule with
+	 * skill-requirement-enforcement.
+	 *
+	 * @return string|null The XP ability id, or null when none resolves.
+	 *
+	 * @spec openspec/specs/event-xp-awards/spec.md
+	 */
+	private function resolveXpAbilityId(): ?string {
+		foreach ($this->allAbilities as $abilityId => $ability) {
+			$name = strtolower((string)($ability['name'] ?? ''));
+			if ($name === 'xp' || str_contains($name, 'experience') === true) {
+				return (string)$abilityId;
+			}
+		}
 
-        // Apply effects from events if character has any.
-        if (isset($character['events']) === true
-            && is_array($character['events']) === true
-            && empty($character['events']) === false
-        ) {
-            foreach ($character['events'] as $eventId) {
-                $event = $this->allEvents[$eventId] ?? null;
-                if ($event !== null && isset($event['effects']) === true && empty($event['effects']) === false) {
-                    $this->applyEffects(abilities: $abilityScores, effects: $event['effects']);
-                }
-            }
-        }
+		return null;
+	}//end resolveXpAbilityId()
 
-        // Update character array with calculated stats.
-        $character['stats'] = $abilityScores;
+	/**
+	 * Calculate stats for all characters.
+	 *
+	 * @return array Updated array of Character objects.
+	 *
+	 * @psalm-suppress PossiblyUnusedMethod Public API for batch character stat calculation.
+	 *
+	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-64
+	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-65
+	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-66
+	 */
+	public function calculateAllCharacters(): array {
+		// @var array<int, array<string, mixed>> $characters
+		$characters = $this->objectFetcher->getObjects('character');
+		$updatedCharacters = [];
+		foreach ($characters as $character) {
+			$updatedCharacters[] = $this->calculateCharacter(character: $character);
+		}
 
-        return $character;
-    }//end calculateCharacter()
+		return $updatedCharacters;
+	}//end calculateAllCharacters()
 
-    /**
-     * Apply effects to abilities.
-     *
-     * @param array      $abilities Reference to the abilities array.
-     * @param array|null $effects   Array of effect IDs.
-     *
-     * @return void
-     */
-    private function applyEffects(array &$abilities, ?array $effects): void
-    {
-        // Return early if effects is null or empty.
-        if (empty($effects) === true) {
-            return;
-        }
+	/**
+	 * Initialize ability scores from base ability values.
+	 *
+	 * @return array<string, array{name: string, base: int, value: int, audit: array}> Ability scores.
+	 *
+	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-71
+	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-72
+	 */
+	private function initializeAbilityScores(): array {
+		// @var array<string, array{name: string, base: int, value: int, audit: array}> $abilityScores
+		$abilityScores = [];
+		foreach ($this->allAbilities as $ability) {
+			if (isset($ability['base']) === true && is_numeric($ability['base']) === false) {
+				$this->logger->warning(
+					'Larpinq: ability has non-numeric base value; defaulting to 0',
+					[
+						'abilityId' => (string)($ability['id'] ?? 'unknown'),
+						'abilityName' => (string)($ability['name'] ?? 'unknown'),
+						'base' => $ability['base'],
+					]
+				);
+			}
 
-        foreach ($effects as $effectId) {
-            // Skip if effectId is null.
-            if ($effectId === null) {
-                continue;
-            }
+			$abilityScores[(string)$ability['id']] = [
+				'name' => (string)($ability['name'] ?? ''),
+				'base' => (int)($ability['base'] ?? 0),
+				'value' => (int)($ability['base'] ?? 0),
+				'audit' => [],
+			];
+		}
 
-            $effect = $this->allEffects[$effectId] ?? null;
-            if ($effect !== null) {
-                $this->calculateEffect(abilities: $abilities, effect: $effect);
-            }
-        }
-    }//end applyEffects()
+		return $abilityScores;
+	}//end initializeAbilityScores()
 
-    /**
-     * Calculate and apply a single effect.
-     *
-     * @param array $abilities Reference to the abilities array.
-     * @param array $effect    Effect array containing stat_id, modifier and modification.
-     *
-     * @return void
-     */
-    private function calculateEffect(array &$abilities, array $effect): void
-    {
-        // Initialize array to track affected abilities.
-        $effectAbilities = [];
-        if (isset($effect['abilities']) === true && is_array($effect['abilities']) === true) {
-            $effectAbilities = $effect['abilities'];
-        }
+	/**
+	 * Apply effects from a character's linked entities of a given type.
+	 *
+	 * Looks up each entity ID in the provided lookup table,
+	 * then applies any effects found on those entities.
+	 *
+	 * @param array<string, array<string, mixed>> $abilityScores Reference to ability scores.
+	 * @param array $character Character data array.
+	 * @param string $property Character property name (e.g. 'skills').
+	 * @param array<string, array<string, mixed>> $lookup Entity lookup table indexed by ID.
+	 * @param array<string, bool> $appliedEffects Tracks which non-cumulative effects have been applied.
+	 *
+	 * @return void
+	 *
+	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-69
+	 */
+	private function applyEntityEffects(
+		array &$abilityScores,
+		array $character,
+		string $property,
+		array $lookup,
+		array &$appliedEffects,
+	): void {
+		if (isset($character[$property]) === false
+			|| is_array($character[$property]) === false
+			|| empty($character[$property]) === true
+		) {
+			return;
+		}
 
-        // Add stat_id to affected abilities if present and not null.
-        if (isset($effect['stat_id']) === true && $effect['stat_id'] !== null) {
-            $effectAbilities[] = $effect['stat_id'];
-        }
+		// @psalm-suppress MixedAssignment Character array values are mixed
+		foreach ($character[$property] as $entityId) {
+			$entity = $lookup[(string)$entityId] ?? null;
+			if ($entity === null) {
+				continue;
+			}
 
-        // Skip if no abilities are affected.
-        if (empty($effectAbilities) === true) {
-            return;
-        }
+			if (isset($entity['effects']) === true && empty($entity['effects']) === false) {
+				// @var array|null $entityEffects
+				$entityEffects = $entity['effects'];
+				$this->effectApplier->applyEffects(
+					abilities: $abilityScores,
+					effects: $entityEffects,
+					appliedEffects: $appliedEffects,
+					effectLookup: $this->allEffects
+				);
+			}
+		}
+	}//end applyEntityEffects()
 
-        // Ensure each affected ability exists in abilities array.
-        foreach ($effectAbilities as $abilityId) {
-            // Skip if abilityId is null.
-            if ($abilityId === null) {
-                continue;
-            }
+	/**
+	 * Calculate stats for a single character array.
+	 *
+	 * @param array $character Character data array.
+	 *
+	 * @return array Updated character data array with calculated stats.
+	 *
+	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-67
+	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-68
+	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-69
+	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-70
+	 */
+	public function calculateCharacter(array $character): array {
+		// Load entity collections lazily on first call. Closes #217.
+		$this->loadAllEntities();
 
-            if (isset($abilities[$abilityId]['value']) === false) {
-                $abilities[$abilityId]['value'] = 0;
-            } else if (is_int($abilities[$abilityId]['value']) === false) {
-                $abilities[$abilityId]['value'] = (int) $abilities[$abilityId]['value'];
-            }
+		$abilityScores = $this->initializeAbilityScores();
 
-            // Get current value and modifiers.
-            $currentValue = $abilities[$abilityId]['value'];
-            // Get modifier value from effect, defaulting to 0 if not set.
-            $modifier = (int) ($effect['modifier'] ?? 0);
-            // Get modification type, defaulting to 'positive' if not set.
-            $modification = $effect['modification'] ?? 'positive';
+		// Track which non-cumulative effect IDs have already been applied this pass.
+		// Resets per calculateCharacter() call (not shared across characters).
+		// Closes #208.
+		$appliedEffects = [];
 
-            // Apply modification based on type.
-            if ($modification === 'positive') {
-                $abilities[$abilityId]['value'] = $currentValue + $modifier;
-            } else if ($modification === 'negative') {
-                $abilities[$abilityId]['value'] = $currentValue - $modifier;
-            }
+		// Apply effects from each entity type the character has.
+		$this->applyEntityEffects(
+			abilityScores: $abilityScores,
+			character: $character,
+			property: 'skills',
+			lookup: $this->allSkills,
+			appliedEffects: $appliedEffects
+		);
+		$this->applyEntityEffects(
+			abilityScores: $abilityScores,
+			character: $character,
+			property: 'items',
+			lookup: $this->allItems,
+			appliedEffects: $appliedEffects
+		);
+		$this->applyEntityEffects(
+			abilityScores: $abilityScores,
+			character: $character,
+			property: 'conditions',
+			lookup: $this->allConditions,
+			appliedEffects: $appliedEffects
+		);
+		$this->applyEntityEffects(
+			abilityScores: $abilityScores,
+			character: $character,
+			property: 'events',
+			lookup: $this->allEvents,
+			appliedEffects: $appliedEffects
+		);
 
-            // Add audit trail.
-            $abilities[$abilityId]['audit'][] = [
-                'type'   => 'effect',
-                'effect' => $effect,
-                'old'    => $currentValue,
-                'new'    => $abilities[$abilityId]['value'],
-            ];
-        }//end foreach
-    }//end calculateEffect()
+		// Fifth stage: per-participant XP awards (event-xp-award-workflow).
+		// Applied after the four entity-effect stages so existing CALC ordering
+		// and arithmetic stay byte-identical.
+		$this->applyXpAwards(abilityScores: $abilityScores, character: $character);
+
+		// Update character array with calculated stats.
+		$character['stats'] = $abilityScores;
+
+		return $character;
+	}//end calculateCharacter()
+
+	/**
+	 * Apply the character's XP awards onto the XP ability (fifth stage).
+	 *
+	 * Each award sums its amount onto the resolved XP ability and appends an
+	 * audit entry `{type: "xpAward", award, old, new}`. The XP ability is
+	 * resolved by name (no hardcoded UUIDs). When no XP ability resolves, or
+	 * the character has no awards, this is a no-op — never throws (CALC-006).
+	 *
+	 * @param array<string, array<string, mixed>> $abilityScores Reference to the ability scores.
+	 * @param array<string, mixed> $character The character being calculated.
+	 *
+	 * @return void
+	 *
+	 * @spec openspec/specs/event-xp-awards/spec.md
+	 */
+	private function applyXpAwards(array &$abilityScores, array $character): void {
+		$characterId = (string)($character['id'] ?? '');
+		if ($characterId === '') {
+			return;
+		}
+
+		$awards = $this->xpAwardsByCharacter[$characterId] ?? [];
+		if (empty($awards) === true) {
+			return;
+		}
+
+		$xpAbilityId = $this->resolveXpAbilityId();
+		if ($xpAbilityId === null || isset($abilityScores[$xpAbilityId]) === false) {
+			return;
+		}
+
+		foreach ($awards as $award) {
+			$amount = $award['amount'] ?? 0;
+			if (is_numeric($amount) === false) {
+				continue;
+			}
+
+			$currentValue = (int)$abilityScores[$xpAbilityId]['value'];
+			$newValue = ($currentValue + (int)$amount);
+
+			$abilityScores[$xpAbilityId]['value'] = $newValue;
+			$abilityScores[$xpAbilityId]['audit'][] = [
+				'type' => 'xpAward',
+				'award' => [
+					'id' => (string)($award['id'] ?? ''),
+					'event' => (string)($award['event'] ?? ''),
+					'amount' => (int)$amount,
+					'reason' => (string)($award['reason'] ?? ''),
+				],
+				'old' => $currentValue,
+				'new' => $newValue,
+			];
+		}//end foreach
+	}//end applyXpAwards()
 }//end class

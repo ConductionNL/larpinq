@@ -27,29 +27,12 @@ const SCHEMA_SLUGS = [
 	'effect',
 	'event',
 	'setting',
+	'xpAward',
+	'attendance',
 ]
 
 /**
- * Shared object store for all LarpingApp OpenRegister CRUD. The Pinia store id
- * `'larpingapp-objects'` is unique to this app so a future change that mounts
- * both LarpingApp and an embedded OpenRegister sidebar in the same Pinia tree
- * can't collide on the default `'conduction-objects'` id.
- *
- * @type {import('pinia').StoreDefinition}
- */
-export const useObjectStore = createObjectStore('larpingapp-objects', {
-	baseUrl: generateUrl('/apps/openregister/api/objects'),
-})
-
-/**
- * Boot hook called from App.vue. Loads LarpingApp's settings (register slug,
- * per-schema slug overrides), then registers every logical object type the
- * manifest pages reference against the shared lib store.
- *
- * Idempotent — Pinia's `defineStore` is, `fetchSettings()` is safe to re-await,
- * and `registerObjectType()` overwrites with the same payload.
- *
- * @return {Promise<{settingsStore: object, objectStore: object}>}
+ * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-7
  */
 export async function initializeStores() {
 	const settingsStore = useSettingsStore()
@@ -58,9 +41,18 @@ export async function initializeStores() {
 	const config = (await settingsStore.fetchSettings()) || {}
 	const register = config.register || 'larpingapp'
 
-	for (const slug of SCHEMA_SLUGS) {
-		const schema = config[`${slug}_schema`] || slug
-		objectStore.registerObjectType(slug, schema, register)
+	if (config) {
+		for (const slug of SCHEMA_SLUGS) {
+			const schemaKey = `${slug}_schema`
+			const registerKey = `${slug}_register`
+			// Prefer the per-type register id (config.<type>_register); fall back
+			// to the shared top-level register. Reading config.register alone
+			// broke list fetches whenever the per-type id diverged from it.
+			const register = config[registerKey] || config.register
+			if (register && config[schemaKey]) {
+				objectStore.registerObjectType(slug, config[schemaKey], register)
+			}
+		}
 	}
 
 	return { settingsStore, objectStore }

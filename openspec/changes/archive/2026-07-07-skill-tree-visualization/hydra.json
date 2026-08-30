@@ -1,0 +1,8 @@
+{
+  "spec_slug": "skill-tree-visualization",
+  "title": "Skill prerequisite tree / progression visualization",
+  "app": "larpingapp",
+  "repo": "https://github.com/ConductionNL/larpinq",
+  "depends_on": [],
+  "issue": null
+}

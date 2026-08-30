@@ -1,89 +1,127 @@
 <template>
-	<div>
-		<NcSettingsSection
-			name="Larping App"
-			description="A central place for managing your LARP events and characters"
-			doc-url="https://docs.larpingapp.com" />
+	<CnAdminSettingsShell
+		appId="larpinq"
+		appName="Larpinq"
+		docUrl="https://conduction.gitbook.io/larpingapp-nextcloud/users"
+		reimportUrl="/index.php/apps/larpinq/api/settings/reimport"
+		@reimported="onReimported"
+		@reimportError="onReimportError">
+		<!-- Re-import Status -->
+		<div v-if="message" class="actions-section">
+			<NcNoteCard :type="messageType">
+				{{ message }}
+			</NcNoteCard>
+		</div>
 
 		<NcSettingsSection
-			name="Data storage"
-			description="Configure where to store your publication data">
+			:name="t('larpinq', 'Data storage')"
+			:description="t('larpinq', 'Configure where to store your LARP data')">
 			<div v-if="!loading">
 				<!-- Warning if OpenRegister is not installed -->
 				<NcNoteCard v-if="!settings.openRegisters" type="warning">
-					Open Register is not installed. Please install it to use the Open Catalogi app with full functionality.
+					{{
+						t(
+							'larpinq',
+							'Open Register is not installed. Some features might be unavailable.',
+						)
+					}}
 				</NcNoteCard>
 
-				<!-- Register Selection -->
-				<div class="register-selection">
-					<h3>Register</h3>
-					<p>Select the register to store all your LARP data</p>
+				<!-- Object Type Configuration -->
+				<div
+					v-for="objectType in settings.objectTypes"
+					:key="objectType"
+					class="object-type-section">
+					<h3>{{ formatTitle(objectType) }}</h3>
 
-					<NcSelect
-						v-model="selectedRegister"
-						:options="registerOptions"
-						input-label="Register"
-						:disabled="loading || !settings.larpRegisters"
-						@change="handleRegisterChange" />
-				</div>
+					<div class="selection-container">
+						<!--
+						  `@change` is NOT an event NcSelect emits under
+						  @nextcloud/vue v9 — its emits list is open / close /
+						  update:modelValue / search* / option:*. The Vue-2
+						  spelling silently never fired, so switching a source to
+						  "Internal" would have left a stale register + schema
+						  attached. The compiler merges this listener with the
+						  v-model handler into an array and runs the v-model
+						  assignment first, so the handler sees the NEW value.
+						-->
+						<NcSelect
+							v-model="configuration[objectType].source"
+							:options="sourceOptions"
+							:inputLabel="t('larpinq', 'Source')"
+							:disabled="loading"
+							@update:modelValue="handleSourceChange(objectType)" />
 
-				<!-- Warning if selected register has no schemas -->
-				<NcNoteCard v-if="selectedRegister && !hasSchemas" type="warning">
-					The selected register has no schemas. Please create schemas in this register or select a different register.
-				</NcNoteCard>
-
-				<!-- Object Type Schema Configuration -->
-				<div v-if="selectedRegister && hasSchemas" class="schema-configuration">
-					<h3>Schema Configuration</h3>
-					<p>Select which schema to use for each object type</p>
-
-					<div v-for="objectType in settings.objectTypes" :key="objectType" class="object-type-section">
-						<div class="object-type-header">
-							<h4>{{ formatTitle(objectType) }}</h4>
-						</div>
+						<!-- Register Selection (only if OpenRegister is selected) -->
+						<NcSelect
+							v-if="
+								configuration[objectType].source?.value
+								=== 'openregister'
+							"
+							v-model="configuration[objectType].register"
+							:options="registerOptions"
+							:inputLabel="t('larpinq', 'Register')"
+							:disabled="loading"
+							@update:modelValue="handleRegisterChange(objectType)" />
 
 						<NcSelect
+							v-if="
+								configuration[objectType].source?.value
+									=== 'openregister'
+								&& configuration[objectType].register
+							"
 							v-model="configuration[objectType].schema"
-							:options="schemaOptions"
-							input-label="Schema"
+							:options="
+								getSchemaOptions(
+									configuration[objectType].register?.value,
+								)
+							"
+							:inputLabel="t('larpinq', 'Schema')"
 							:disabled="loading" />
 					</div>
 				</div>
 
 				<!-- Save Buttons -->
 				<div class="button-container">
+					<!--
+					  @nextcloud/vue v9 repurposed `type` as the NATIVE button
+					  type; the visual style moved to `variant`.
+					-->
 					<NcButton
-						type="primary"
-						:disabled="loading || saving || !selectedRegister || !hasSchemas"
+						variant="primary"
+						:disabled="loading || saving"
 						@click="saveAll">
 						<template #icon>
 							<NcLoadingIcon v-if="saving" :size="20" />
 							<Save v-else :size="20" />
 						</template>
-						Save Configuration
+						{{ t('larpinq', 'Save All') }}
 					</NcButton>
 				</div>
 			</div>
 
 			<!-- Loading State -->
-			<NcLoadingIcon v-else
+			<NcLoadingIcon
+				v-else
 				class="loading-icon"
 				:size="64"
 				appearance="dark" />
 		</NcSettingsSection>
-	</div>
+	</CnAdminSettingsShell>
 </template>
 
 <script>
-import { defineComponent } from 'vue'
+import { CnAdminSettingsShell } from '@conduction/nextcloud-vue'
 import {
-	NcSettingsSection,
-	NcNoteCard,
-	NcSelect,
 	NcButton,
 	NcLoadingIcon,
+	NcNoteCard,
+	NcSelect,
+	NcSettingsSection,
 } from '@nextcloud/vue'
+import { defineComponent } from 'vue'
 import Save from 'vue-material-design-icons/ContentSave.vue'
+import logger from '../../logger.js'
 
 /**
  * @class Settings
@@ -101,8 +139,14 @@ import Save from 'vue-material-design-icons/ContentSave.vue'
  * data storage options for different object types using Larp Registers.
  */
 export default defineComponent({
-	name: 'Settings',
+	// `vue/multi-word-component-names` (from vue/recommended, which
+	// @nextcloud/eslint-config@9 extends) rejects a single-word name because it
+	// can collide with a current or future HTML element. Nothing referenced this
+	// component by name — it is mounted through the settings entry point — so
+	// renaming it is inert at runtime and only affects devtools/warning output.
+	name: 'AdminSettings',
 	components: {
+		CnAdminSettingsShell,
 		NcSettingsSection,
 		NcNoteCard,
 		NcSelect,
@@ -118,6 +162,8 @@ export default defineComponent({
 	 */
 	data() {
 		return {
+			message: '',
+			messageType: 'success',
 			loading: true,
 			saving: false,
 			loadingConfiguration: false,
@@ -128,20 +174,21 @@ export default defineComponent({
 				availableRegisters: [],
 				configuration: {},
 			},
-			selectedRegister: null,
+
 			configuration: {},
-			schemaOptions: [],
+			sourceOptions: [
+				{ label: t('larpinq', 'Internal'), value: 'internal' },
+				{ label: t('larpinq', 'Open Register'), value: 'openregister' },
+			],
 		}
 	},
 
 	computed: {
 		/**
-		 * Generates options for register selection dropdown
-		 *
-		 * @return {Array<object>} Array of register options with label and value
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-9
 		 */
 		registerOptions() {
-			return this.settings.availableRegisters.map(register => ({
+			return (this.settings.availableRegisters || []).map((register) => ({
 				label: register.title,
 				value: register.id.toString(),
 			}))
@@ -172,189 +219,164 @@ export default defineComponent({
 
 	methods: {
 		/**
-		 * Loads settings from the backend API and initializes the configuration
+		 * Refresh the data-storage settings after the shell completes a re-import.
 		 *
-		 * @async
-		 * @return {Promise<void>}
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-10
+		 */
+		async onReimported() {
+			this.message = t('larpinq', 'Configuration re-imported successfully')
+			this.messageType = 'success'
+			await this.loadSettings()
+		},
+
+		/**
+		 * Surface a failed configuration re-import to the user.
+		 *
+		 * @param {Error|{message?: string}} error The failure reported by the shell.
+		 * @return {void}
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-10
+		 */
+		onReimportError(error) {
+			this.message = error?.message || t('larpinq', 'Re-import failed')
+			this.messageType = 'error'
+		},
+
+		/**
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-8
 		 */
 		async loadSettings() {
 			try {
-				const response = await fetch('/index.php/apps/larpingapp/api/settings')
+				const response = await fetch('/index.php/apps/larpinq/api/settings')
 				const data = await response.json()
 				this.settings = data
 
-				// Initialize configuration object
-				this.initializeConfiguration()
+				// Initialize configuration for each object type based on existing config
+				this.settings.objectTypes.forEach((type) => {
+					const source =
+						this.settings.configuration[`${type}_source`] || 'internal'
+					const registerId =
+						this.settings.configuration[`${type}_register`]
+					const schemaId = this.settings.configuration[`${type}_schema`]
 
-				// Find and select the LARP register if it exists
-				this.autoSelectLarpingAppRegister()
+					this.configuration[type] = {
+						source: this.sourceOptions.find(
+							(option) => option.value === source,
+						),
+						register: registerId
+							? {
+									label: this.getRegisterLabel(registerId),
+									value: registerId,
+								}
+							: null,
+						schema: schemaId
+							? {
+									label: this.getSchemaLabel(registerId, schemaId),
+									value: schemaId,
+								}
+							: null,
+					}
+				})
 
 				this.loading = false
 			} catch (error) {
-				console.error('Failed to load settings:', error)
+				logger.error('Failed to load settings', { error })
 			}
 		},
 
 		/**
-		 * Initializes the configuration object based on existing settings
+		 * Resolve a register id to its human-readable title.
+		 *
+		 * @param {string} registerId The OpenRegister register id.
+		 * @return {string} The register title, or '' when unknown.
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-9
 		 */
-		initializeConfiguration() {
-			// Create empty configuration for each object type
-			this.settings.objectTypes.forEach(type => {
-				const registerId = this.settings.configuration[`${type}_register`] || ''
-				const schemaId = this.settings.configuration[`${type}_schema`] || ''
-
-				this.configuration[type] = {
-					schema: null,
-				}
-
-				// If we have existing configuration, use it to set the selected register
-				if (registerId && !this.selectedRegister) {
-					const register = this.settings.availableRegisters.find(r => r.id.toString() === registerId)
-					if (register) {
-						this.selectedRegister = {
-							label: register.title,
-							value: register.id.toString(),
-						}
-						this.updateSchemaOptions(register.id.toString())
-					}
-				}
-
-				// If we have a schema configured, set it
-				if (schemaId && this.selectedRegister) {
-					const register = this.settings.availableRegisters.find(
-						r => r.id.toString() === this.selectedRegister.value,
-					)
-					if (register && Array.isArray(register.schemas)) {
-						const schema = register.schemas.find(s => s.id.toString() === schemaId)
-						if (schema) {
-							this.configuration[type].schema = {
-								label: schema.title,
-								value: schema.id.toString(),
-							}
-						}
-					}
-				}
-			})
-		},
-
-		/**
-		 * Automatically selects the larpingapp register if it exists
-		 */
-		autoSelectLarpingAppRegister() {
-			// Look for a register with "larpingapp" in the name
-			const larpingAppRegister = this.settings.availableRegisters.find(
-				register => register.title.toLowerCase().includes('larp'),
+		getRegisterLabel(registerId) {
+			const register = this.settings.availableRegisters.find(
+				(r) => r.id.toString() === registerId,
 			)
-
-			if (larpingAppRegister) {
-				this.selectedRegister = {
-					label: larpingAppRegister.title,
-					value: larpingAppRegister.id.toString(),
-				}
-				this.updateSchemaOptions(larpingAppRegister.id.toString())
-
-				// Only try to auto-select schemas if the register has schemas
-				if (Array.isArray(larpingAppRegister.schemas)) {
-					this.autoSelectMatchingSchemas(larpingAppRegister)
-				}
-			} else if (this.settings.availableRegisters.length > 0 && !this.selectedRegister) {
-				// If no Larping App register but we have registers, select the first one
-				const firstRegister = this.settings.availableRegisters[0]
-				this.selectedRegister = {
-					label: firstRegister.title,
-					value: firstRegister.id.toString(),
-				}
-				this.updateSchemaOptions(firstRegister.id.toString())
-
-				// Only try to auto-select schemas if the register has schemas
-				if (Array.isArray(firstRegister.schemas)) {
-					this.autoSelectMatchingSchemas(firstRegister)
-				}
-			}
+			return register?.title || ''
 		},
 
 		/**
-		 * Auto-selects schemas that match object type names
+		 * Resolve a (register, schema) pair to the schema's human-readable title.
 		 *
-		 * @param {object} register - The selected register object
+		 * @param {string} registerId The OpenRegister register id.
+		 * @param {string} schemaId The schema id within that register.
+		 * @return {string} The schema title, or '' when unknown.
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-9
 		 */
-		autoSelectMatchingSchemas(register) {
-			// Only proceed if register has schemas array
-			if (!register || !Array.isArray(register.schemas)) {
-				return
-			}
-
-			this.settings.objectTypes.forEach(type => {
-				// Look for a schema with the same name as the object type
-				const matchingSchema = register.schemas.find(
-					schema => schema.title.toLowerCase() === type.toLowerCase(),
-				)
-
-				if (matchingSchema) {
-					this.configuration[type].schema = {
-						label: matchingSchema.title,
-						value: matchingSchema.id.toString(),
-					}
-				}
-			})
+		getSchemaLabel(registerId, schemaId) {
+			const register = this.settings.availableRegisters.find(
+				(r) => r.id.toString() === registerId,
+			)
+			const schema = register?.schemas.find(
+				(s) => s.id.toString() === schemaId,
+			)
+			return schema?.title || ''
 		},
 
 		/**
-		 * Updates schema options based on the selected register
+		 * Capitalise an object-type slug for its section header.
 		 *
-		 * @param {string} registerId - The ID of the selected register
-		 */
-		updateSchemaOptions(registerId) {
-			const register = this.settings.availableRegisters.find(r => r.id.toString() === registerId)
-			if (register && Array.isArray(register.schemas)) {
-				this.schemaOptions = register.schemas.map(schema => ({
-					label: schema.title,
-					value: schema.id.toString(),
-				}))
-			} else {
-				this.schemaOptions = []
-			}
-		},
-
-		/**
-		 * Formats an object type string to title case
-		 *
-		 * @param {string} objectType - The object type to format
-		 * @return {string} The formatted title
+		 * @param {string} objectType The object-type slug (e.g. 'character').
+		 * @return {string} The slug with its first letter capitalised.
+		 * @spec exclude Trivial capitalize-first-letter formatter for the
+		 * object-type section header — display-only, no business logic.
 		 */
 		formatTitle(objectType) {
 			return objectType.charAt(0).toUpperCase() + objectType.slice(1)
 		},
 
 		/**
-		 * Handles register change event
+		 * Build the NcSelect options for the schemas of one register.
+		 *
+		 * @param {string|undefined} registerId The selected register id.
+		 * @return {Array<{label: string, value: string}>} Schema options, empty when no register is selected.
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-9
 		 */
-		handleRegisterChange() {
-			if (this.selectedRegister) {
-				// Update schema options for the new register
-				this.updateSchemaOptions(this.selectedRegister.value)
+		getSchemaOptions(registerId) {
+			if (!registerId) return []
+			const register = this.settings.availableRegisters.find(
+				(r) => r.id.toString() === registerId,
+			)
+			return (
+				register?.schemas.map((schema) => ({
+					label: schema.title,
+					value: schema.id.toString(),
+				})) || []
+			)
+		},
 
-				// Reset all schema selections
-				this.settings.objectTypes.forEach(type => {
-					this.configuration[type].schema = null
-				})
-
-				// Auto-select matching schemas
-				const register = this.settings.availableRegisters.find(
-					r => r.id.toString() === this.selectedRegister.value,
-				)
-				if (register && Array.isArray(register.schemas)) {
-					this.autoSelectMatchingSchemas(register)
-				}
+		/**
+		 * Clear the register + schema selections when a type falls back to
+		 * internal storage.
+		 *
+		 * @param {string} objectType The object-type slug whose source changed.
+		 * @return {void}
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-9
+		 */
+		handleSourceChange(objectType) {
+			const config = this.configuration[objectType]
+			if (config.source.value === 'internal') {
+				config.register = null
+				config.schema = null
 			}
 		},
 
 		/**
-		 * Saves all configuration settings to the backend
+		 * Drop the schema selection when its register changes, so a schema from
+		 * the previous register can never be saved against the new one.
 		 *
-		 * @async
-		 * @return {Promise<void>}
+		 * @param {string} objectType The object-type slug whose register changed.
+		 * @return {void}
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-9
+		 */
+		handleRegisterChange(objectType) {
+			this.configuration[objectType].schema = null
+		},
+
+		/**
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-8
 		 */
 		async saveAll() {
 			if (!this.selectedRegister || !this.hasSchemas) {
@@ -362,10 +384,11 @@ export default defineComponent({
 			}
 
 			this.saving = true
+			this.message = ''
 			try {
 				const configToSave = {}
 
-				// Set all object types to use larpregister as source
+				// Convert configuration to flat structure
 				Object.entries(this.configuration).forEach(([type, config]) => {
 					// Always use openregister as source
 					configToSave[`${type}_source`] = 'openregister'
@@ -377,16 +400,31 @@ export default defineComponent({
 					configToSave[`${type}_schema`] = config.schema ? config.schema.value : ''
 				})
 
-				// Send configuration to backend
-				await fetch('/index.php/apps/larpingapp/api/settings', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
+				const response = await fetch(
+					'/index.php/apps/larpinq/api/settings',
+					{
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+							requesttoken: OC.requestToken,
+							'OCS-APIREQUEST': 'true',
+						},
+						body: JSON.stringify(configToSave),
 					},
-					body: JSON.stringify(configToSave),
-				})
+				)
+
+				if (response.ok) {
+					this.message = t('larpinq', 'Settings saved successfully')
+					this.messageType = 'success'
+				} else {
+					this.message = t('larpinq', 'Failed to save settings')
+					this.messageType = 'error'
+				}
 			} catch (error) {
-				console.error('Failed to save settings:', error)
+				logger.error('Failed to save settings', { error })
+				this.message =
+					error.message || t('larpinq', 'Failed to save settings')
+				this.messageType = 'error'
 			} finally {
 				this.saving = false
 			}

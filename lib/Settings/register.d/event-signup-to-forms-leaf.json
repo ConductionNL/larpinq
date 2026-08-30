@@ -1,0 +1,11 @@
+{
+  "components": {
+    "schemas": {
+      "event": {
+        "configuration": {
+          "linkedTypes": ["forms"]
+        }
+      }
+    }
+  }
+}

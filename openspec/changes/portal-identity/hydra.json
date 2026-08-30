@@ -1,0 +1,8 @@
+{
+  "spec_slug": "portal-identity",
+  "title": "Character owner domain reference (portaliq scoping key)",
+  "app": "larpinq",
+  "repo": "https://github.com/ConductionNL/larpinq",
+  "depends_on": [],
+  "issue": "Conduction/larpingapp#51"
+}

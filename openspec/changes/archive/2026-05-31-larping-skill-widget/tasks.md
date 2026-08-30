@@ -1,0 +1,3 @@
+- [x] Document implemented widget features
+- [x] Document planned future widgets
+- [x] Create OpenSpec change artifacts

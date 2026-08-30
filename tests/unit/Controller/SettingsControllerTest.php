@@ -4,11 +4,11 @@
  * Unit tests for SettingsController.
  *
  * @category Test
- * @package  OCA\LarpingApp\Tests\Unit\Controller
+ * @package  OCA\Larpinq\Tests\Unit\Controller
  *
  * @author    Ruben Linde <ruben@larpingapp.com>
  * @copyright 2024 Ruben Linde
- * @license   AGPL-3.0-or-later https://www.gnu.org/licenses/agpl-3.0.en.html
+ * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  *
  * @version GIT: <git-id>
  *
@@ -17,142 +17,197 @@
 
 declare(strict_types=1);
 
-namespace OCA\LarpingApp\Tests\Unit\Controller;
+namespace OCA\Larpinq\Tests\Unit\Controller;
 
-use OCA\LarpingApp\Controller\SettingsController;
-use OCA\LarpingApp\Service\SettingsService;
+use OCA\Larpinq\Controller\SettingsController;
+use OCA\Larpinq\Service\SettingsService;
+use OCP\App\IAppManager;
 use OCP\AppFramework\Http\JSONResponse;
+use OCP\IGroupManager;
 use OCP\IRequest;
+use OCP\IUserSession;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Tests for SettingsController.
  */
-class SettingsControllerTest extends TestCase
-{
+class SettingsControllerTest extends TestCase {
 
-    /**
-     * The controller under test.
-     *
-     * @var SettingsController
-     */
-    private SettingsController $controller;
+	/**
+	 * The controller under test.
+	 *
+	 * @var SettingsController
+	 */
+	private SettingsController $controller;
 
-    /**
-     * Mock IRequest.
-     *
-     * @var IRequest&MockObject
-     */
-    private IRequest&MockObject $request;
+	/**
+	 * Mock IRequest.
+	 *
+	 * @var IRequest&MockObject
+	 */
+	private IRequest&MockObject $request;
 
-    /**
-     * Mock SettingsService.
-     *
-     * @var SettingsService&MockObject
-     */
-    private SettingsService&MockObject $settingsService;
+	/**
+	 * Mock SettingsService.
+	 *
+	 * @var SettingsService&MockObject
+	 */
+	private SettingsService&MockObject $settingsService;
 
-    /**
-     * Set up test fixtures.
-     *
-     * @return void
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
+	/**
+	 * Set up test fixtures.
+	 *
+	 * @return void
+	 */
+	protected function setUp(): void {
+		parent::setUp();
 
-        $this->request         = $this->createMock(IRequest::class);
-        $this->settingsService = $this->createMock(SettingsService::class);
+		$this->request = $this->createMock(IRequest::class);
+		$this->settingsService = $this->createMock(SettingsService::class);
 
-        $this->controller = new SettingsController(
-            request: $this->request,
-            settingsService: $this->settingsService,
-        );
+		$appManager = $this->createMock(IAppManager::class);
+		$appManager->method('getInstalledApps')->willReturn(['openregister']);
 
-    }//end setUp()
+		$userSession = $this->createMock(IUserSession::class);
+		$userSession->method('getUser')->willReturn(null);
 
-    /**
-     * Test that index() returns a JSONResponse with objectTypes and configuration keys.
-     *
-     * @return void
-     */
-    public function testIndexReturnsJsonResponseWithExpectedKeys(): void
-    {
-        $this->settingsService->expects($this->once())
-            ->method('getSettings')
-            ->willReturn(['openRegisterUrl' => 'http://localhost']);
+		$this->controller = new SettingsController(
+			request: $this->request,
+			container: $this->createMock(ContainerInterface::class),
+			appManager: $appManager,
+			settingsService: $this->settingsService,
+			groupManager: $this->createMock(IGroupManager::class),
+			userSession: $userSession,
+			logger: $this->createMock(LoggerInterface::class),
+		);
 
-        $result = $this->controller->index();
+	}//end setUp()
 
-        self::assertInstanceOf(JSONResponse::class, $result);
-        self::assertArrayHasKey('objectTypes', $result->getData());
-        self::assertArrayHasKey('configuration', $result->getData());
+	/**
+	 * Test that index() returns a JSONResponse with objectTypes and availableRegisters for a
+	 * non-admin user. The 'configuration' key must NOT be present (C2 security fix).
+	 *
+	 * @return void
+	 */
+	public function testIndexReturnsJsonResponseWithExpectedKeys(): void {
+		// setUp() creates a null user → isAdmin = false; getSettings must NOT be called.
+		$this->settingsService->expects($this->never())->method('getSettings');
 
-    }//end testIndexReturnsJsonResponseWithExpectedKeys()
+		$result = $this->controller->index();
 
-    /**
-     * Test that index() includes all expected object types.
-     *
-     * @return void
-     */
-    public function testIndexIncludesAllObjectTypes(): void
-    {
-        $this->settingsService->method('getSettings')->willReturn([]);
+		self::assertInstanceOf(JSONResponse::class, $result);
+		self::assertArrayHasKey('objectTypes', $result->getData());
+		self::assertArrayHasKey('availableRegisters', $result->getData());
+		// Non-admin must not receive the configuration block (register/schema IDs).
+		self::assertArrayNotHasKey('configuration', $result->getData());
+		// Non-admin must receive an empty availableRegisters list.
+		self::assertEmpty($result->getData()['availableRegisters']);
 
-        $result     = $this->controller->index();
-        $objectTypes = $result->getData()['objectTypes'];
+	}//end testIndexReturnsJsonResponseWithExpectedKeys()
 
-        self::assertContains('character', $objectTypes);
-        self::assertContains('skill', $objectTypes);
-        self::assertContains('item', $objectTypes);
+	/**
+	 * Test that index() returns the configuration block only for admin users.
+	 *
+	 * @return void
+	 */
+	public function testIndexReturnsConfigurationForAdmin(): void {
+		$mockUser = $this->createMock(\OCP\IUser::class);
+		$mockUser->method('getUID')->willReturn('admin');
 
-    }//end testIndexIncludesAllObjectTypes()
+		$userSession = $this->createMock(IUserSession::class);
+		$userSession->method('getUser')->willReturn($mockUser);
 
-    /**
-     * Test that create() calls updateSettings and returns a success response.
-     *
-     * @return void
-     */
-    public function testCreateCallsUpdateSettingsAndReturnsSuccess(): void
-    {
-        $params = ['openRegisterUrl' => 'http://new-url'];
+		$groupManager = $this->createMock(IGroupManager::class);
+		$groupManager->method('isAdmin')->with('admin')->willReturn(true);
 
-        $this->request->expects($this->once())
-            ->method('getParams')
-            ->willReturn($params);
+		$appManager = $this->createMock(IAppManager::class);
+		$appManager->method('getInstalledApps')->willReturn([]);
 
-        $this->settingsService->expects($this->once())
-            ->method('updateSettings')
-            ->with(data: $params)
-            ->willReturn($params);
+		$settingsService = $this->createMock(SettingsService::class);
+		$settingsService->expects($this->once())
+			->method('getSettings')
+			->willReturn(['openRegisterUrl' => 'http://localhost']);
 
-        $result = $this->controller->create();
+		$adminController = new SettingsController(
+			request: $this->request,
+			container: $this->createMock(ContainerInterface::class),
+			appManager: $appManager,
+			settingsService: $settingsService,
+			groupManager: $groupManager,
+			userSession: $userSession,
+			logger: $this->createMock(LoggerInterface::class),
+		);
 
-        self::assertInstanceOf(JSONResponse::class, $result);
-        self::assertTrue($result->getData()['success']);
-        self::assertArrayHasKey('config', $result->getData());
+		$result = $adminController->index();
 
-    }//end testCreateCallsUpdateSettingsAndReturnsSuccess()
+		self::assertInstanceOf(JSONResponse::class, $result);
+		self::assertArrayHasKey('configuration', $result->getData());
+		self::assertSame('http://localhost', $result->getData()['configuration']['openRegisterUrl']);
 
-    /**
-     * Test that create() returns a 500 response when an exception is thrown.
-     *
-     * @return void
-     */
-    public function testCreateReturns500OnException(): void
-    {
-        $this->request->method('getParams')->willReturn([]);
+	}//end testIndexReturnsConfigurationForAdmin()
 
-        $this->settingsService->method('updateSettings')
-            ->willThrowException(new \Exception('Service error'));
+	/**
+	 * Test that index() includes all expected object types.
+	 *
+	 * @return void
+	 */
+	public function testIndexIncludesAllObjectTypes(): void {
+		$this->settingsService->method('getSettings')->willReturn([]);
 
-        $result = $this->controller->create();
+		$result = $this->controller->index();
+		$objectTypes = $result->getData()['objectTypes'];
 
-        self::assertInstanceOf(JSONResponse::class, $result);
-        self::assertSame(500, $result->getStatus());
-        self::assertArrayHasKey('error', $result->getData());
+		self::assertContains('character', $objectTypes);
+		self::assertContains('skill', $objectTypes);
+		self::assertContains('item', $objectTypes);
 
-    }//end testCreateReturns500OnException()
+	}//end testIndexIncludesAllObjectTypes()
+
+	/**
+	 * Test that create() calls updateSettings and returns a success response.
+	 *
+	 * @return void
+	 */
+	public function testCreateCallsUpdateSettingsAndReturnsSuccess(): void {
+		$params = ['openRegisterUrl' => 'http://new-url'];
+
+		$this->request->expects($this->once())
+			->method('getParams')
+			->willReturn($params);
+
+		$this->settingsService->expects($this->once())
+			->method('updateSettings')
+			->with(data: $params)
+			->willReturn($params);
+
+		$result = $this->controller->create();
+
+		self::assertInstanceOf(JSONResponse::class, $result);
+		self::assertTrue($result->getData()['success']);
+		self::assertArrayHasKey('config', $result->getData());
+
+	}//end testCreateCallsUpdateSettingsAndReturnsSuccess()
+
+	/**
+	 * Test that create() returns a 500 response when an exception is thrown.
+	 *
+	 * @return void
+	 */
+	public function testCreateReturns500OnException(): void {
+		$this->request->method('getParams')->willReturn([]);
+
+		$this->settingsService->method('updateSettings')
+			->willThrowException(new \Exception('Service error'));
+
+		$result = $this->controller->create();
+
+		self::assertInstanceOf(JSONResponse::class, $result);
+		self::assertSame(500, $result->getStatus());
+		self::assertArrayHasKey('error', $result->getData());
+
+	}//end testCreateReturns500OnException()
 
 }//end class
