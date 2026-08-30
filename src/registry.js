@@ -23,10 +23,10 @@
  */
 
 import EventRoster from './views/EventRoster.vue'
+import FlowDetailSidebar from './views/flows/FlowDetailSidebar.vue'
 import ObjectDetail from './views/ObjectDetail.vue'
 import GameSettingsSection from './views/settings/Settings.vue'
 import SkillTree from './views/SkillTree.vue'
-import FlowDetailSidebar from './views/flows/FlowDetailSidebar.vue'
 
 export default {
 	// --- Flows (ADR-110 Decision 4). Only the SIDEBAR is an app component;
