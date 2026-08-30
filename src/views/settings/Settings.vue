@@ -17,7 +17,7 @@
 			:name="t('larpinq', 'Data storage')"
 			:description="t('larpinq', 'Configure where to store your LARP data')">
 			<div v-if="!loading">
-				<!-- Warning if OpenRegister is not installed but selected -->
+				<!-- Warning if OpenRegister is not installed -->
 				<NcNoteCard v-if="!settings.openRegisters" type="warning">
 					{{
 						t(
@@ -64,7 +64,6 @@
 							:disabled="loading"
 							@update:modelValue="handleRegisterChange(objectType)" />
 
-						<!-- Schema Selection (only if Register is selected) -->
 						<NcSelect
 							v-if="
 								configuration[objectType].source?.value
@@ -124,6 +123,21 @@ import { defineComponent } from 'vue'
 import Save from 'vue-material-design-icons/ContentSave.vue'
 import logger from '../../logger.js'
 
+/**
+ * @class Settings
+ * @module Components
+ * @package
+ * @category LarpingApp
+ * @package LarpingApp
+ * @version 1.0.0
+ * @license EUPL-1.2
+ * @author Claude AI
+ * @copyright 2023 Conduction
+ * @link https://github.com/LarpingApp/larpingapp
+ *
+ * Settings component for the Larping App that allows users to configure
+ * data storage options for different object types using Larp Registers.
+ */
 export default defineComponent({
 	// `vue/multi-word-component-names` (from vue/recommended, which
 	// @nextcloud/eslint-config@9 extends) rejects a single-word name because it
@@ -141,15 +155,22 @@ export default defineComponent({
 		Save,
 	},
 
+	/**
+	 * Component data
+	 *
+	 * @return {object} Component data
+	 */
 	data() {
 		return {
 			message: '',
 			messageType: 'success',
 			loading: true,
 			saving: false,
+			loadingConfiguration: false,
+			configurationResults: null,
 			settings: {
 				objectTypes: [],
-				openRegisters: false,
+				larpRegisters: false,
 				availableRegisters: [],
 				configuration: {},
 			},
@@ -172,8 +193,26 @@ export default defineComponent({
 				value: register.id.toString(),
 			}))
 		},
+
+		/**
+		 * Determines if the selected register has schemas
+		 *
+		 * @return {boolean} True if the selected register has schemas, false otherwise
+		 */
+		hasSchemas() {
+			if (!this.selectedRegister) return false
+
+			const register = this.settings.availableRegisters.find(
+				r => r.id.toString() === this.selectedRegister.value,
+			)
+
+			return register && Array.isArray(register.schemas) && register.schemas.length > 0
+		},
 	},
 
+	/**
+	 * Lifecycle hook that loads settings when component is created
+	 */
 	async created() {
 		await this.loadSettings()
 	},
@@ -340,6 +379,10 @@ export default defineComponent({
 		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-8
 		 */
 		async saveAll() {
+			if (!this.selectedRegister || !this.hasSchemas) {
+				return
+			}
+
 			this.saving = true
 			this.message = ''
 			try {
@@ -347,15 +390,14 @@ export default defineComponent({
 
 				// Convert configuration to flat structure
 				Object.entries(this.configuration).forEach(([type, config]) => {
-					configToSave[`${type}_source`] = config.source.value
-					if (config.source.value === 'openregister') {
-						if (config.register) {
-							configToSave[`${type}_register`] = config.register.value
-						}
-						if (config.schema) {
-							configToSave[`${type}_schema`] = config.schema.value
-						}
-					}
+					// Always use openregister as source
+					configToSave[`${type}_source`] = 'openregister'
+
+					// Set the register ID for all object types
+					configToSave[`${type}_register`] = this.selectedRegister.value
+
+					// Set the schema ID if selected
+					configToSave[`${type}_schema`] = config.schema ? config.schema.value : ''
 				})
 
 				const response = await fetch(
@@ -387,20 +429,65 @@ export default defineComponent({
 				this.saving = false
 			}
 		},
+
+		/**
+		 * Loads configuration from the backend API
+		 *
+		 * @async
+		 * @return {Promise<void>}
+		 */
+		async loadConfiguration() {
+			this.loadingConfiguration = true
+			this.configurationResults = null
+
+			try {
+				const response = await fetch('/index.php/apps/larpingapp/api/settings/load')
+				const data = await response.json()
+
+				if (data.error) {
+					this.configurationResults = { error: data.error }
+				} else {
+					this.configurationResults = { success: true }
+					// Reload settings to reflect any changes
+					await this.loadSettings()
+				}
+			} catch (error) {
+				this.configurationResults = { error: 'Failed to load configuration: ' + error.message }
+			} finally {
+				this.loadingConfiguration = false
+			}
+		},
 	},
 })
 </script>
 
 <style scoped>
-.object-type-section {
+.load-configuration {
 	margin-bottom: 2rem;
 }
 
-.selection-container {
+.configuration-results {
+	margin-top: 1rem;
+}
+
+.register-selection {
+	margin-bottom: 2rem;
+	max-width: 400px;
+}
+
+.schema-configuration {
+	margin-top: 2rem;
+}
+
+.object-type-section {
+	margin-bottom: 1.5rem;
 	display: flex;
+	align-items: center;
 	gap: 1rem;
-	align-items: flex-start;
-	margin-top: 0.5rem;
+}
+
+.object-type-header {
+	min-width: 150px;
 }
 
 .button-container {
