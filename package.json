@@ -63,9 +63,6 @@
     "@nextcloud/axios": "~2.5.2",
     "@nextcloud/l10n": "3.4.1"
   },
-  "overrides": {
-    "@nextcloud/axios": "~2.5.2"
-  },
   "devDependencies": {
     "@babel/core": "^7.22.9",
     "@babel/preset-env": "^7.22.9",
