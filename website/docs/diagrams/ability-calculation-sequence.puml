@@ -1,0 +1,53 @@
+@startuml Character Ability Calculation
+
+actor User
+participant "ObjectsController" as Controller
+participant "CharacterService" as CharService
+participant "ObjectService" as ObjService
+database "Database" as DB
+
+== Character Creation/Update ==
+User -> Controller: Create/Update Character
+Controller -> CharService: calculateCharacter(character)
+CharService -> CharService: Initialize ability scores
+CharService -> CharService: Apply skill effects
+CharService -> CharService: Apply item effects
+CharService -> CharService: Apply condition effects
+CharService -> CharService: Apply event effects
+CharService --> Controller: Return updated character
+Controller -> ObjService: saveObject(character)
+ObjService -> DB: Save character
+ObjService --> Controller: Return saved character
+Controller --> User: Return JSON response
+
+== Ability Update ==
+User -> Controller: Update ability
+Controller -> ObjService: saveObject(ability)
+ObjService -> DB: Save ability
+ObjService --> Controller: Return saved ability
+Controller -> CharService: calculateAllCharacters()
+CharService -> ObjService: getObjects('character')
+ObjService -> DB: Fetch all characters
+ObjService --> CharService: Return characters
+loop for each character
+    CharService -> CharService: calculateCharacter(character)
+    CharService -> ObjService: saveObject(character)
+    ObjService -> DB: Save updated character
+    ObjService --> CharService: Return saved character
+end
+CharService --> Controller: Return updated characters
+Controller --> User: Return JSON response
+
+== Effect Application Detail ==
+CharService -> CharService: applyEffects(abilities, effects, sourceType, sourceName)
+loop for each effect
+    CharService -> CharService: calculateEffect(abilities, effect, sourceType, sourceName)
+    note right
+        1. Identify affected abilities
+        2. Get current ability value
+        3. Apply modifier (positive/negative)
+        4. Record in audit trail
+    end note
+end
+
+@enduml 
