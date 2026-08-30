@@ -149,7 +149,10 @@ OC.L10N.register(
         "Required conditions": "Reikalingos būsenos",
         "Required effects": "Reikalingi efektai",
         "Prerequisites": "Būtinos sąlygos",
-        "None — this is a root skill.": "Nėra — tai pagrindinis įgūdis."
+        "None — this is a root skill.": "Nėra — tai pagrindinis įgūdis.",
+        "Where the automation lives": "Kur gyvena automatizavimas",
+        "Flows are what happens without anyone clicking: a reminder before a deadline passes, a confirmation sent on submission. This is where you read and edit them. Nothing to build now.": "Flows yra tai, kas vyksta niekam nespaudžiant: priminimas prieš pasibaigiant terminui, patvirtinimas pateikus. Čia juos skaitai ir redaguoji — dabar nieko kurti nereikia.",
+        "Open Flows in the menu": "Atverkite Flows meniu"
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -149,7 +149,10 @@ OC.L10N.register(
         "Required conditions": "Conditiuns necessarias",
         "Required effects": "Effects necessaris",
         "Prerequisites": "Premissas",
-        "None — this is a root skill.": "Nagina — quai è ina cumpetenza da basa."
+        "None — this is a root skill.": "Nagina — quai è ina cumpetenza da basa.",
+        "Where the automation lives": "Nua che l'automatisaziun viva",
+        "Flows are what happens without anyone clicking: a reminder before a deadline passes, a confirmation sent on submission. This is where you read and edit them. Nothing to build now.": "Flows èn quai che capita senza ch'insatgi cliccia: ina memoria avant ch'in termin scada, ina conferma cun l'inoltraziun. Qua las legias e las modifitgeschas — i n'è nagut da construir ussa.",
+        "Open Flows in the menu": "Avra Flows en il menu"
     },
     "nplurals=2; plural=(n != 1);"
 )

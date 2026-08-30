@@ -149,7 +149,10 @@ OC.L10N.register(
         "Required conditions": "Potrebna stanja",
         "Required effects": "Potrebni efekti",
         "Prerequisites": "Preduslovi",
-        "None — this is a root skill.": "Nema — ovo je osnovna vještina."
+        "None — this is a root skill.": "Nema — ovo je osnovna vještina.",
+        "Where the automation lives": "Gdje živi automatizacija",
+        "Flows are what happens without anyone clicking: a reminder before a deadline passes, a confirmation sent on submission. This is where you read and edit them. Nothing to build now.": "Flows je ono što se dešava bez ičijeg klika: podsjetnik prije isteka roka, potvrda pri predaji. Ovdje ih čitaš i uređuješ — sada nema šta da se gradi.",
+        "Open Flows in the menu": "Otvori Flows u meniju"
     },
     "nplurals=2; plural=(n != 1);"
 )

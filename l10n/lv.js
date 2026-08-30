@@ -149,7 +149,10 @@ OC.L10N.register(
         "Required conditions": "Nepieciešamie stāvokļi",
         "Required effects": "Nepieciešamie efekti",
         "Prerequisites": "Priekšnosacījumi",
-        "None — this is a root skill.": "Nav — šī ir pamatprasme."
+        "None — this is a root skill.": "Nav — šī ir pamatprasme.",
+        "Where the automation lives": "Kur mīt automatizācija",
+        "Flows are what happens without anyone clicking: a reminder before a deadline passes, a confirmation sent on submission. This is where you read and edit them. Nothing to build now.": "Flows ir tas, kas notiek, nevienam neklikšķinot: atgādinājums pirms termiņa beigām, apstiprinājums pēc iesniegšanas. Šeit tos lasi un rediģē — tagad nekas nav jābūvē.",
+        "Open Flows in the menu": "Atver Flows izvēlnē"
     },
     "nplurals=2; plural=(n != 1);"
 )

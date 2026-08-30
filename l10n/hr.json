@@ -148,7 +148,10 @@
         "Required conditions": "Potrebna stanja",
         "Required effects": "Potrebni učinci",
         "Prerequisites": "Preduvjeti",
-        "None — this is a root skill.": "Nema — ovo je korijenska vještina."
+        "None — this is a root skill.": "Nema — ovo je korijenska vještina.",
+        "Where the automation lives": "Gdje živi automatizacija",
+        "Flows are what happens without anyone clicking: a reminder before a deadline passes, a confirmation sent on submission. This is where you read and edit them. Nothing to build now.": "Flows je ono što se događa bez ičijeg klika: podsjetnik prije isteka roka, potvrda pri predaji. Ovdje ih čitaš i uređuješ — sada nema što graditi.",
+        "Open Flows in the menu": "Otvori Flows u izborniku"
     },
     "plurals": {}
 }
