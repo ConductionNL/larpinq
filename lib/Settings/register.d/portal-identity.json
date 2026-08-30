@@ -1,0 +1,21 @@
+{
+  "components": {
+    "schemas": {
+      "character": {
+        "_note": "ownerRef declares `$ref: \"player\"` together with `visible: false` + `readOnly: true`. It is stamped server-side by PortalObjectWriter and projected out of the player view, so it was never meant to be typed by a user; its direct sibling `ownerUid` has carried the same two flags all along. THE EARLIER PROHIBITION HERE WAS WITHDRAWN, and the reason is worth keeping. Two previous arms (ef7346c/PR #289, and PR #306) each added this $ref and each was reverted because `tests/e2e/spec-coverage/detail-forms-admin.spec.ts` -> `character create dialog exposes a player (ocName) selector` went red. That was read as a schema-level collision between two player-targeted relations, and an upstream nc-vue change was proposed to key relation resolution by property rather than by target schema slug. THAT DIAGNOSIS WAS WRONG IN BOTH HALVES. (1) nc-vue already keys every piece of per-field relation state by PROPERTY — the async option state, the search handler and the enum cache are all keyed `field.key`; nothing is keyed by target schema, so two properties may point at `player` at once and the proposed upstream fix would have been a no-op. (2) The test never asserted a selector. It asserted `input[placeholder*=\"player\" i]`, and CnFormDialog passes `:placeholder=\"field.description\"` ONLY on its text/email/url and number branches — the NcSelect branch that renders a $ref relation is given `input-id` and `input-label`, never a placeholder. So that locator could match exactly one element in the Add Character dialog: ownerRef's PLAIN TEXT BOX, whose description contains the words \"the player object\". The assertion was the inverse of its own name — green precisely while ownerRef was NOT a relation, red the moment it became one. Git history shows it was never measuring what it claimed: when the test was written (987c9ee3) ocName was a plain string with no $ref; ownerRef arrived later (f33fc0b8) carrying a matching description; and when ocName finally got its $ref (f434f76d) it became a select and silently LOST its placeholder, the assertion sliding onto ownerRef with no red window to notice. The assertion has now been corrected to target the ocName combobox, so the test and ADR-062 rule 7 are no longer mutually exclusive by construction.",
+        "version": "1.5.0",
+        "properties": {
+          "ownerRef": {
+            "type": "string",
+            "format": "uuid",
+            "$ref": "player",
+            "visible": false,
+            "readOnly": true,
+            "title": "Owner",
+            "description": "UUID reference to the player object — the portal-subject scoping key; distinct from ownerUid which is the Nextcloud user id"
+          }
+        }
+      }
+    }
+  }
+}

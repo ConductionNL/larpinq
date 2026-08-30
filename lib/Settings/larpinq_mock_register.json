@@ -1,0 +1,587 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "larpinq demo data",
+    "version": "1.0.0",
+    "description": "Demo data covering every schema this app supplies, offered as the first step of the app's setup walkthrough. Generated from the schemas themselves, so every object satisfies the schema that will validate it."
+  },
+  "x-openregister": {
+    "type": "mock",
+    "app": "larpinq",
+    "description": "Demo data for larpinq. NOT installed automatically — a mock register is imported on demand, from the setup walkthrough or `occ openregister:descriptors:list --app=larpinq --import=<slug>`."
+  },
+  "paths": {},
+  "components": {
+    "registers": {
+      "larpinq": {
+        "slug": "larpinq",
+        "title": "Larpinq (demo)",
+        "version": "1.0.0",
+        "description": "Demo data for Larpinq. Generated from the register's own schemas — see hydra-gates/scripts/lib/generate_mock_register.py."
+      }
+    },
+    "objects": [
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "ability",
+          "slug": "ability-voorbeeld-name-1-1"
+        },
+        "name": "Voorbeeld Name 1",
+        "description": "Voorbeeld Description 1",
+        "base": 0,
+        "setting": "00000000-0000-4000-8000-000000000000"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "ability",
+          "slug": "ability-voorbeeld-name-2-2"
+        },
+        "name": "Voorbeeld Name 2",
+        "description": "Voorbeeld Description 2",
+        "base": 0,
+        "setting": "00000000-0000-4000-8000-000000000001"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "ability",
+          "slug": "ability-voorbeeld-name-3-3"
+        },
+        "name": "Voorbeeld Name 3",
+        "description": "Voorbeeld Description 3",
+        "base": 0,
+        "setting": "00000000-0000-4000-8000-000000000002"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "character",
+          "slug": "character-voorbeeld-name-1-1"
+        },
+        "name": "Voorbeeld Name 1",
+        "ocName": "00000000-0000-4000-8000-000000000000",
+        "ownerUid": "Voorbeeld Owneruid 1",
+        "description": "Voorbeeld Description 1",
+        "background": "Voorbeeld Background 1",
+        "type": "player",
+        "approved": "no",
+        "gold": 0,
+        "silver": 0,
+        "copper": 0,
+        "faith": "Voorbeeld Faith 1",
+        "slNotesPublic": "Voorbeeld Slnotespublic 1",
+        "slNotesPrivate": "Voorbeeld Slnotesprivate 1",
+        "card": "Voorbeeld Card 1",
+        "itemsAndMoney": "Voorbeeld Itemsandmoney 1",
+        "notice": "Voorbeeld Notice 1",
+        "skills": [
+          "00000000-0000-4000-8000-000000000000"
+        ],
+        "items": [
+          "00000000-0000-4000-8000-000000000000"
+        ],
+        "conditions": [
+          "00000000-0000-4000-8000-000000000000"
+        ],
+        "events": [
+          "00000000-0000-4000-8000-000000000000"
+        ],
+        "setting": "00000000-0000-4000-8000-000000000000",
+        "requirementOverrides": [
+          {
+            "skill": "00000000-0000-4000-8000-000000000000",
+            "reason": "Voorbeeld Reason 1",
+            "overriddenBy": "Voorbeeld Overriddenby 1",
+            "overriddenAt": "2026-03-01T09:00:00+00:00"
+          }
+        ],
+        "ownerRef": "00000000-0000-4000-8000-000000000000"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "character",
+          "slug": "character-voorbeeld-name-2-2"
+        },
+        "name": "Voorbeeld Name 2",
+        "ocName": "00000000-0000-4000-8000-000000000001",
+        "ownerUid": "Voorbeeld Owneruid 2",
+        "description": "Voorbeeld Description 2",
+        "background": "Voorbeeld Background 2",
+        "type": "npc",
+        "approved": "approved",
+        "gold": 0,
+        "silver": 0,
+        "copper": 0,
+        "faith": "Voorbeeld Faith 2",
+        "slNotesPublic": "Voorbeeld Slnotespublic 2",
+        "slNotesPrivate": "Voorbeeld Slnotesprivate 2",
+        "card": "Voorbeeld Card 2",
+        "itemsAndMoney": "Voorbeeld Itemsandmoney 2",
+        "notice": "Voorbeeld Notice 2",
+        "skills": [
+          "00000000-0000-4000-8000-000000000001"
+        ],
+        "items": [
+          "00000000-0000-4000-8000-000000000001"
+        ],
+        "conditions": [
+          "00000000-0000-4000-8000-000000000001"
+        ],
+        "events": [
+          "00000000-0000-4000-8000-000000000001"
+        ],
+        "setting": "00000000-0000-4000-8000-000000000001",
+        "requirementOverrides": [
+          {
+            "skill": "00000000-0000-4000-8000-000000000001",
+            "reason": "Voorbeeld Reason 2",
+            "overriddenBy": "Voorbeeld Overriddenby 2",
+            "overriddenAt": "2026-03-02T09:00:00+00:00"
+          }
+        ],
+        "ownerRef": "00000000-0000-4000-8000-000000000001"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "character",
+          "slug": "character-voorbeeld-name-3-3"
+        },
+        "name": "Voorbeeld Name 3",
+        "ocName": "00000000-0000-4000-8000-000000000002",
+        "ownerUid": "Voorbeeld Owneruid 3",
+        "description": "Voorbeeld Description 3",
+        "background": "Voorbeeld Background 3",
+        "type": "other",
+        "approved": "no",
+        "gold": 0,
+        "silver": 0,
+        "copper": 0,
+        "faith": "Voorbeeld Faith 3",
+        "slNotesPublic": "Voorbeeld Slnotespublic 3",
+        "slNotesPrivate": "Voorbeeld Slnotesprivate 3",
+        "card": "Voorbeeld Card 3",
+        "itemsAndMoney": "Voorbeeld Itemsandmoney 3",
+        "notice": "Voorbeeld Notice 3",
+        "skills": [
+          "00000000-0000-4000-8000-000000000002"
+        ],
+        "items": [
+          "00000000-0000-4000-8000-000000000002"
+        ],
+        "conditions": [
+          "00000000-0000-4000-8000-000000000002"
+        ],
+        "events": [
+          "00000000-0000-4000-8000-000000000002"
+        ],
+        "setting": "00000000-0000-4000-8000-000000000002",
+        "requirementOverrides": [
+          {
+            "skill": "00000000-0000-4000-8000-000000000002",
+            "reason": "Voorbeeld Reason 3",
+            "overriddenBy": "Voorbeeld Overriddenby 3",
+            "overriddenAt": "2026-03-03T09:00:00+00:00"
+          }
+        ],
+        "ownerRef": "00000000-0000-4000-8000-000000000002"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "condition",
+          "slug": "condition-voorbeeld-name-1-1"
+        },
+        "name": "Voorbeeld Name 1",
+        "description": "Voorbeeld Description 1",
+        "effect": "Voorbeeld Effect 1",
+        "effects": [
+          "00000000-0000-4000-8000-000000000000"
+        ],
+        "unique": false,
+        "characters": [
+          "00000000-0000-4000-8000-000000000000"
+        ],
+        "setting": "00000000-0000-4000-8000-000000000000"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "condition",
+          "slug": "condition-voorbeeld-name-2-2"
+        },
+        "name": "Voorbeeld Name 2",
+        "description": "Voorbeeld Description 2",
+        "effect": "Voorbeeld Effect 2",
+        "effects": [
+          "00000000-0000-4000-8000-000000000001"
+        ],
+        "unique": false,
+        "characters": [
+          "00000000-0000-4000-8000-000000000001"
+        ],
+        "setting": "00000000-0000-4000-8000-000000000001"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "condition",
+          "slug": "condition-voorbeeld-name-3-3"
+        },
+        "name": "Voorbeeld Name 3",
+        "description": "Voorbeeld Description 3",
+        "effect": "Voorbeeld Effect 3",
+        "effects": [
+          "00000000-0000-4000-8000-000000000002"
+        ],
+        "unique": false,
+        "characters": [
+          "00000000-0000-4000-8000-000000000002"
+        ],
+        "setting": "00000000-0000-4000-8000-000000000002"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "effect",
+          "slug": "effect-voorbeeld-name-1-1"
+        },
+        "name": "Voorbeeld Name 1",
+        "description": "Voorbeeld Description 1",
+        "modifier": 0,
+        "modification": "positive",
+        "cumulative": "cumulative",
+        "abilities": [
+          "00000000-0000-4000-8000-000000000000"
+        ],
+        "setting": "00000000-0000-4000-8000-000000000000"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "effect",
+          "slug": "effect-voorbeeld-name-2-2"
+        },
+        "name": "Voorbeeld Name 2",
+        "description": "Voorbeeld Description 2",
+        "modifier": 0,
+        "modification": "negative",
+        "cumulative": "non-cumulative",
+        "abilities": [
+          "00000000-0000-4000-8000-000000000001"
+        ],
+        "setting": "00000000-0000-4000-8000-000000000001"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "effect",
+          "slug": "effect-voorbeeld-name-3-3"
+        },
+        "name": "Voorbeeld Name 3",
+        "description": "Voorbeeld Description 3",
+        "modifier": 0,
+        "modification": "positive",
+        "cumulative": "cumulative",
+        "abilities": [
+          "00000000-0000-4000-8000-000000000002"
+        ],
+        "setting": "00000000-0000-4000-8000-000000000002"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_event",
+          "slug": "larping-event-voorbeeld-name-1-1"
+        },
+        "name": "Voorbeeld Name 1",
+        "description": "Voorbeeld Description 1",
+        "startDate": "2026-03-01T09:00:00+00:00",
+        "endDate": "2026-03-01T09:00:00+00:00",
+        "location": "Voorbeeld Location 1",
+        "players": [
+          "00000000-0000-4000-8000-000000000000"
+        ],
+        "effects": [
+          "00000000-0000-4000-8000-000000000000"
+        ],
+        "setting": "00000000-0000-4000-8000-000000000000"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_event",
+          "slug": "larping-event-voorbeeld-name-2-2"
+        },
+        "name": "Voorbeeld Name 2",
+        "description": "Voorbeeld Description 2",
+        "startDate": "2026-03-02T09:00:00+00:00",
+        "endDate": "2026-03-02T09:00:00+00:00",
+        "location": "Voorbeeld Location 2",
+        "players": [
+          "00000000-0000-4000-8000-000000000001"
+        ],
+        "effects": [
+          "00000000-0000-4000-8000-000000000001"
+        ],
+        "setting": "00000000-0000-4000-8000-000000000001"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_event",
+          "slug": "larping-event-voorbeeld-name-3-3"
+        },
+        "name": "Voorbeeld Name 3",
+        "description": "Voorbeeld Description 3",
+        "startDate": "2026-03-03T09:00:00+00:00",
+        "endDate": "2026-03-03T09:00:00+00:00",
+        "location": "Voorbeeld Location 3",
+        "players": [
+          "00000000-0000-4000-8000-000000000002"
+        ],
+        "effects": [
+          "00000000-0000-4000-8000-000000000002"
+        ],
+        "setting": "00000000-0000-4000-8000-000000000002"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_item",
+          "slug": "larping-item-voorbeeld-name-1-1"
+        },
+        "name": "Voorbeeld Name 1",
+        "description": "Voorbeeld Description 1",
+        "effect": "Voorbeeld Effect 1",
+        "effects": [
+          "00000000-0000-4000-8000-000000000000"
+        ],
+        "unique": true,
+        "characters": [
+          "00000000-0000-4000-8000-000000000000"
+        ],
+        "setting": "00000000-0000-4000-8000-000000000000"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_item",
+          "slug": "larping-item-voorbeeld-name-2-2"
+        },
+        "name": "Voorbeeld Name 2",
+        "description": "Voorbeeld Description 2",
+        "effect": "Voorbeeld Effect 2",
+        "effects": [
+          "00000000-0000-4000-8000-000000000001"
+        ],
+        "unique": true,
+        "characters": [
+          "00000000-0000-4000-8000-000000000001"
+        ],
+        "setting": "00000000-0000-4000-8000-000000000001"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_item",
+          "slug": "larping-item-voorbeeld-name-3-3"
+        },
+        "name": "Voorbeeld Name 3",
+        "description": "Voorbeeld Description 3",
+        "effect": "Voorbeeld Effect 3",
+        "effects": [
+          "00000000-0000-4000-8000-000000000002"
+        ],
+        "unique": true,
+        "characters": [
+          "00000000-0000-4000-8000-000000000002"
+        ],
+        "setting": "00000000-0000-4000-8000-000000000002"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "player",
+          "slug": "player-voorbeeld-name-1-1"
+        },
+        "name": "Voorbeeld Name 1",
+        "description": "Voorbeeld Description 1",
+        "userUid": "Voorbeeld Useruid 1"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "player",
+          "slug": "player-voorbeeld-name-2-2"
+        },
+        "name": "Voorbeeld Name 2",
+        "description": "Voorbeeld Description 2",
+        "userUid": "Voorbeeld Useruid 2"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "player",
+          "slug": "player-voorbeeld-name-3-3"
+        },
+        "name": "Voorbeeld Name 3",
+        "description": "Voorbeeld Description 3",
+        "userUid": "Voorbeeld Useruid 3"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "setting",
+          "slug": "setting-voorbeeld-name-1-1"
+        },
+        "name": "Voorbeeld Name 1",
+        "description": "Voorbeeld Description 1",
+        "status": "active"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "setting",
+          "slug": "setting-voorbeeld-name-2-2"
+        },
+        "name": "Voorbeeld Name 2",
+        "description": "Voorbeeld Description 2",
+        "status": "archived"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "setting",
+          "slug": "setting-voorbeeld-name-3-3"
+        },
+        "name": "Voorbeeld Name 3",
+        "description": "Voorbeeld Description 3",
+        "status": "active"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "skill",
+          "slug": "skill-voorbeeld-name-1-1"
+        },
+        "name": "Voorbeeld Name 1",
+        "description": "Voorbeeld Description 1",
+        "effect": "Voorbeeld Effect 1",
+        "effects": [
+          "00000000-0000-4000-8000-000000000000"
+        ],
+        "requiredSkills": [
+          "00000000-0000-4000-8000-000000000000"
+        ],
+        "requiredStats": [
+          "00000000-0000-4000-8000-000000000000"
+        ],
+        "requiredConditions": [
+          "00000000-0000-4000-8000-000000000000"
+        ],
+        "requiredEffects": [
+          "00000000-0000-4000-8000-000000000000"
+        ],
+        "requiredScore": 1,
+        "setting": "00000000-0000-4000-8000-000000000000"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "skill",
+          "slug": "skill-voorbeeld-name-2-2"
+        },
+        "name": "Voorbeeld Name 2",
+        "description": "Voorbeeld Description 2",
+        "effect": "Voorbeeld Effect 2",
+        "effects": [
+          "00000000-0000-4000-8000-000000000001"
+        ],
+        "requiredSkills": [
+          "00000000-0000-4000-8000-000000000001"
+        ],
+        "requiredStats": [
+          "00000000-0000-4000-8000-000000000001"
+        ],
+        "requiredConditions": [
+          "00000000-0000-4000-8000-000000000001"
+        ],
+        "requiredEffects": [
+          "00000000-0000-4000-8000-000000000001"
+        ],
+        "requiredScore": 2,
+        "setting": "00000000-0000-4000-8000-000000000001"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "skill",
+          "slug": "skill-voorbeeld-name-3-3"
+        },
+        "name": "Voorbeeld Name 3",
+        "description": "Voorbeeld Description 3",
+        "effect": "Voorbeeld Effect 3",
+        "effects": [
+          "00000000-0000-4000-8000-000000000002"
+        ],
+        "requiredSkills": [
+          "00000000-0000-4000-8000-000000000002"
+        ],
+        "requiredStats": [
+          "00000000-0000-4000-8000-000000000002"
+        ],
+        "requiredConditions": [
+          "00000000-0000-4000-8000-000000000002"
+        ],
+        "requiredEffects": [
+          "00000000-0000-4000-8000-000000000002"
+        ],
+        "requiredScore": 3,
+        "setting": "00000000-0000-4000-8000-000000000002"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "xpAward",
+          "slug": "xpaward-xpaward-1-1"
+        },
+        "event": "00000000-0000-4000-8000-000000000000",
+        "character": "00000000-0000-4000-8000-000000000000",
+        "amount": 1.0,
+        "reason": "Voorbeeld Reason 1",
+        "awardedBy": "Voorbeeld Awardedby 1",
+        "awardedAt": "2026-03-01T09:00:00+00:00"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "xpAward",
+          "slug": "xpaward-xpaward-2-2"
+        },
+        "event": "00000000-0000-4000-8000-000000000001",
+        "character": "00000000-0000-4000-8000-000000000001",
+        "amount": 2.0,
+        "reason": "Voorbeeld Reason 2",
+        "awardedBy": "Voorbeeld Awardedby 2",
+        "awardedAt": "2026-03-02T09:00:00+00:00"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "xpAward",
+          "slug": "xpaward-xpaward-3-3"
+        },
+        "event": "00000000-0000-4000-8000-000000000002",
+        "character": "00000000-0000-4000-8000-000000000002",
+        "amount": 3.0,
+        "reason": "Voorbeeld Reason 3",
+        "awardedBy": "Voorbeeld Awardedby 3",
+        "awardedAt": "2026-03-03T09:00:00+00:00"
+      }
+    ]
+  }
+}

@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import logger from '../../logger.js'
 
 export const useSettingsStore = defineStore('settings', {
 	state: () => ({
@@ -6,20 +7,27 @@ export const useSettingsStore = defineStore('settings', {
 		loading: false,
 		error: null,
 		initialized: false,
+		openRegisters: false,
+		isAdmin: false,
 	}),
 	getters: {
 		isLoading: (state) => state.loading,
 		getError: (state) => state.error,
 		isInitialized: (state) => state.initialized,
 		getConfig: (state) => state.config,
+		hasOpenRegisters: (state) => state.openRegisters,
+		getIsAdmin: (state) => state.isAdmin,
 	},
 	actions: {
+		/**
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-6
+		 */
 		async fetchSettings() {
 			this.loading = true
 			this.error = null
 
 			try {
-				const response = await fetch('/apps/larpingapp/api/settings', {
+				const response = await fetch('/apps/larpinq/api/settings', {
 					method: 'GET',
 					headers: {
 						'Content-Type': 'application/json',
@@ -29,29 +37,40 @@ export const useSettingsStore = defineStore('settings', {
 				})
 
 				if (!response.ok) {
-					throw new Error(`Failed to fetch settings: ${response.statusText}`)
+					throw new Error(
+						`Failed to fetch settings: ${response.statusText}`,
+					)
 				}
 
 				const data = await response.json()
+				this.openRegisters = data.openRegisters ?? false
+				this.isAdmin = data.isAdmin ?? false
 				this.config = data.configuration || data.config || data
 				this.initialized = true
 
 				return this.config
 			} catch (error) {
 				this.error = error.message
-				console.error('Error fetching LarpingApp settings:', error)
+				logger.error('Error fetching Larpinq settings', { error })
 				return null
 			} finally {
 				this.loading = false
 			}
 		},
 
+		/**
+		 * Persist the data-storage configuration.
+		 *
+		 * @param {object} settingsData Flat `{ <type>_source, <type>_register, <type>_schema }` map to save.
+		 * @return {Promise<object|null>} The saved settings envelope, or null on failure.
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-6
+		 */
 		async saveSettings(settingsData) {
 			this.loading = true
 			this.error = null
 
 			try {
-				const response = await fetch('/apps/larpingapp/api/settings', {
+				const response = await fetch('/apps/larpinq/api/settings', {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
@@ -62,7 +81,9 @@ export const useSettingsStore = defineStore('settings', {
 				})
 
 				if (!response.ok) {
-					throw new Error(`Failed to save settings: ${response.statusText}`)
+					throw new Error(
+						`Failed to save settings: ${response.statusText}`,
+					)
 				}
 
 				const data = await response.json()
@@ -71,19 +92,22 @@ export const useSettingsStore = defineStore('settings', {
 				return this.config
 			} catch (error) {
 				this.error = error.message
-				console.error('Error saving LarpingApp settings:', error)
+				logger.error('Error saving Larpinq settings', { error })
 				return null
 			} finally {
 				this.loading = false
 			}
 		},
 
+		/**
+		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-6
+		 */
 		async reimportConfiguration() {
 			this.loading = true
 			this.error = null
 
 			try {
-				const response = await fetch('/apps/larpingapp/api/settings/reimport', {
+				const response = await fetch('/apps/larpinq/api/settings/reimport', {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
@@ -102,7 +126,7 @@ export const useSettingsStore = defineStore('settings', {
 				return data
 			} catch (error) {
 				this.error = error.message
-				console.error('Error reimporting LarpingApp configuration:', error)
+				logger.error('Error reimporting Larpinq configuration', { error })
 				return null
 			} finally {
 				this.loading = false

@@ -1,20 +1,91 @@
 {
-	"$schema": "https://raw.githubusercontent.com/ConductionNL/nextcloud-vue/main/src/schemas/app-manifest.schema.json",
-	"version": "1.0.0",
+	"$schema": "https://github.com/ConductionNL/nextcloud-vue/raw/main/src/schemas/app-manifest-v2.schema.json",
+	"version": "0.6.0",
 	"dependencies": ["openregister"],
+	"setup": {
+		"enabled": true,
+		"version": 1,
+		"completionConfigKey": "setup_completed_version",
+		"steps": [
+			{ "id": "welcome", "type": "info", "title": "Welcome to LARPing", "body": "Manage your live-action roleplay world, with characters, players, items and events all in one place. One quick step provisions your data store, then you're ready to play." },
+			{ "id": "demo-data", "type": "run-action", "action": "install-demo-data", "title": "Demo data (optional)", "required": false, "body": "Load an example LARP with characters, skills, items and events, so lists, character sheets and the event calendar show a working product right away. Optional, and safe to run more than once. Skip this on a production install." },
+			{ "id": "provision", "type": "run-action", "title": "Provision your world", "required": true, "action": "provision", "body": "Create the Larpinq register and schemas in OpenRegister: the data store for characters, players, abilities, skills, items, conditions, effects, events and settings. This normally runs automatically on install; run it here if OpenRegister was enabled after Larpinq, or to repair a partial install. It is safe to run more than once." },
+			{ "id": "done", "type": "summary", "title": "You're ready", "healthCheck": true, "body": "That's it. Your world's data store is provisioned. Jump into the Dashboard to see it at a glance, and reopen this setup or the guided tour anytime from the app's … menu." }
+		]
+	},
+	"walkthrough": {
+		"enabled": true,
+		"version": 1,
+		"completionConfigKey": "walkthrough_completed_version",
+		"tours": [
+			{
+				"id": "larpinq:getting-started",
+				"title": "Getting started",
+				"trigger": "first-visit",
+				"minAppVersion": "0.1.27",
+				"steps": [
+					{ "id": "welcome", "sinceVersion": "0.1.27", "placement": "center", "title": "Welcome to LARPing", "body": "Let's take a quick spin through your world. We'll create a character and an event together so you can see how the pieces fit, and you'll add each record yourself.", "target": { "kind": "page", "ref": "Dashboard" }, "advanceOn": { "type": "manual" } },
+					{ "id": "go-characters", "sinceVersion": "0.1.27", "placement": "right", "body": "Characters are the heart of your world. Open Characters from the menu to get started.", "task": "Click Characters in the menu", "target": { "kind": "nav-item", "ref": "Characters" }, "advanceOn": { "type": "route-match", "route": "Characters" } },
+					{ "id": "create-character", "sinceVersion": "0.1.27", "placement": "bottom", "allowManualNext": true, "body": "Add your first character. Give them a name and a type, and save. You can flesh out abilities, skills and items later.", "task": "Click New and save a character", "target": { "kind": "element", "ref": "index-add" }, "advanceOn": { "type": "object-created", "register": "larpinq", "schema": "character", "capture": { "characterId": ":id" } } },
+					{ "id": "go-events", "sinceVersion": "0.1.27", "placement": "right", "body": "Events are the game sessions where your world comes alive. Open Events from the menu.", "task": "Click Events in the menu", "target": { "kind": "nav-item", "ref": "Events" }, "advanceOn": { "type": "route-match", "route": "Events" } },
+					{ "id": "create-event", "sinceVersion": "0.1.27", "placement": "bottom", "allowManualNext": true, "body": "Create your first event. Name it and set a start date, then save. Your characters can join it from here.", "task": "Click New and save an event", "target": { "kind": "element", "ref": "index-add" }, "advanceOn": { "type": "object-created", "register": "larpinq", "schema": "larping_event", "capture": { "eventId": ":id" } } },
+					{ "id": "see-flows", "sinceVersion": "0.6.0", "placement": "right", "optional": true, "allowManualNext": true, "title": "Where the automation lives", "body": "Flows are what happens without anyone clicking: a reminder before a deadline passes, a confirmation sent on submission. This is where you read and edit them. Nothing to build now.", "task": "Open Flows in the menu", "target": {"kind": "nav-item", "ref": "Flows"}, "advanceOn": {"type": "route-match", "route": "Flows"}} ,
+					{ "id": "done", "sinceVersion": "0.1.27", "placement": "center", "title": "Your world has its first character", "body": "Add more characters and events from the menu, and the Dashboard tracks them as your world grows. The documentation covers the rest.", "task": "Open the documentation to keep going", "target": { "kind": "nav-item", "ref": "Documentation" }, "advanceOn": { "type": "manual" } }
+				]
+			}
+		]
+	},
 	"menu": [
-		{ "id": "Dashboard", "label": "Dashboard", "icon": "icon-category-dashboard", "route": "Dashboard", "order": 10 },
-		{ "id": "Characters", "label": "Characters", "icon": "icon-user", "route": "Characters", "order": 20 },
-		{ "id": "Players", "label": "Players", "icon": "icon-group", "route": "Players", "order": 30 },
-		{ "id": "Items", "label": "Items", "icon": "icon-category-organization", "route": "Items", "order": 40 },
-		{ "id": "Events", "label": "Events", "icon": "icon-calendar-dark", "route": "Events", "order": 50 },
-		{ "id": "Conditions", "label": "Conditions", "icon": "icon-category-monitoring", "route": "Conditions", "order": 60 },
-		{ "id": "Abilities", "label": "Abilities", "icon": "icon-category-security", "route": "Abilities", "section": "settings", "order": 70 },
-		{ "id": "Skills", "label": "Skills", "icon": "icon-category-customization", "route": "Skills", "section": "settings", "order": 75 },
-		{ "id": "Effects", "label": "Effects", "icon": "icon-category-workflow", "route": "Effects", "section": "settings", "order": 80 },
-		{ "id": "GameSettings", "label": "Game settings", "icon": "icon-category-customization", "route": "GameSettings", "section": "settings", "order": 85 },
-		{ "id": "Documentation", "label": "Documentation", "icon": "icon-info", "href": "https://larpingapp.com", "section": "settings", "order": 90 },
-		{ "id": "Settings", "label": "Settings", "icon": "icon-settings", "route": "Settings", "section": "settings", "order": 99 }
+		{ "id": "Dashboard", "label": "Dashboard", "icon": "ViewDashboardOutline", "route": "Dashboard", "order": 10 },
+		{
+			"id": "CharactersGroup",
+			"label": "Characters",
+			"icon": "BriefcaseAccountOutline",
+			"order": 20,
+			"open": true,
+			"children": [
+				{ "id": "Characters", "label": "Characters", "icon": "BriefcaseAccountOutline", "route": "Characters", "order": 20 },
+				{ "id": "Players",    "label": "Players",    "icon": "AccountGroupOutline",     "route": "Players",    "order": 30 }
+			]
+		},
+		{
+			"id": "MechanicsGroup",
+			"label": "Mechanics",
+			"icon": "FlashOutline",
+			"order": 40,
+			"open": true,
+			"children": [
+				{ "id": "Abilities",   "label": "Abilities",   "icon": "FlashOutline",        "route": "Abilities",   "order": 40 },
+				{ "id": "Skills",      "label": "Skills",      "icon": "ToolboxOutline",          "route": "Skills",      "order": 50 },
+				{ "id": "SkillTree",   "label": "Skill tree",  "icon": "ToolboxOutline",              "route": "SkillTree",   "order": 55 },
+				{ "id": "Conditions",  "label": "Conditions",  "icon": "EmoticonSickOutline",  "route": "Conditions",  "order": 70 },
+				{ "id": "Effects",     "label": "Effects",     "icon": "MagicStaff",           "route": "Effects",     "order": 80 }
+			]
+		},
+		{
+			"id": "WorldGroup",
+			"label": "World",
+			"icon": "Sword",
+			"order": 60,
+			"open": true,
+			"children": [
+				{ "id": "Items",  "label": "Items",  "icon": "Sword",              "route": "Items",  "order": 60 },
+				{ "id": "Events", "label": "Events", "icon": "CalendarMonthOutline","route": "Events", "order": 90 },
+				{ "id": "XpAwards", "label": "XP Awards", "icon": "StarPlusOutline", "route": "XpAwards", "order": 95 }
+			]
+		},
+		{ "id": "Settings",          "label": "Worlds",          "icon": "Earth",            "route": "Settings",     "order": 25 },
+		{ "id": "GameSettings",      "label": "Game Settings",    "icon": "CogOutline",         "route": "GameSettings", "order": 100, "section": "settings" },
+		{ "id": "Documentation",     "label": "Documentation",    "icon": "BookOpenVariantOutline",   "href": "https://larpinq.conduction.nl", "section": "footer", "order": 90 },
+		{ "id": "FeaturesRoadmapMenu","label": "Features & roadmap","icon": "MapMarkerPath","route": "FeaturesRoadmap", "section": "footer", "order": 91 },
+		{
+			"id": "FlowsMenu",
+			"label": "Flows",
+			"icon": "Sitemap",
+			"route": "Flows",
+			"section": "settings",
+			"order": 96
+		}
 	],
 	"pages": [
 		{
@@ -23,8 +94,31 @@
 			"type": "dashboard",
 			"title": "Dashboard",
 			"config": {
-				"widgets": [],
-				"layout": []
+				"widgets": [
+					{ "id": "kpi-characters", "title": "Characters",       "type": "stat", "content": { "label": "Characters", "route": { "name": "Characters" }, "icon": "AccountGroup", "valueColor": "#0082c9", "format": { "style": "number" }, "source": { "register": "larpinq", "schema": "character", "metric": "count", "filter": {} } } },
+					{ "id": "kpi-events",     "title": "Events",           "type": "stat", "content": { "label": "Events", "route": { "name": "Events" }, "icon": "Calendar", "valueColor": "#0082c9", "format": { "style": "number" }, "source": { "register": "larpinq", "schema": "larping_event", "metric": "count", "filter": {} } } },
+					{ "id": "kpi-items",      "title": "Items",            "type": "stat", "content": { "label": "Items", "route": { "name": "Items" }, "icon": "Star", "valueColor": "#0082c9", "format": { "style": "number" }, "source": { "register": "larpinq", "schema": "larping_item", "metric": "count", "filter": {} } } },
+					{ "id": "kpi-players",    "title": "Players",          "type": "stat", "content": { "label": "Players", "route": { "name": "Players" }, "icon": "Account", "valueColor": "#0082c9", "format": { "style": "number" }, "source": { "register": "larpinq", "schema": "player", "metric": "count", "filter": {} } } },
+					{ "id": "recent-characters", "title": "Recent characters", "type": "object-table", "content": { "register": "larpinq", "schema": "character", "filter": {}, "sort": { "field": "created", "dir": "desc" }, "limit": 6, "rowRoute": "CharacterDetail", "rowIcon": "AccountGroup", "hideHeader": true, "viewAllRoute": { "name": "Characters" }, "viewAllLabel": "View all characters", "emptyText": "No characters yet", "columns": [{ "key": "name", "label": "Name" }, { "key": "type", "label": "Type" }] } },
+					{ "id": "recent-events",     "title": "Recent events",     "type": "object-table", "content": { "register": "larpinq", "schema": "larping_event", "filter": {}, "sort": { "field": "startDate", "dir": "desc" }, "limit": 6, "rowRoute": "EventDetail", "rowIcon": "CalendarStar", "hideHeader": true, "viewAllRoute": { "name": "Events" }, "viewAllLabel": "View all events", "emptyText": "No events yet", "columns": [{ "key": "name", "label": "Event" }, { "key": "startDate", "label": "Starts" }] } },
+					{ "id": "skill-usage",    "title": "Skill usage by characters", "type": "chart", "content": { "chartKind": "donut", "legendPosition": "bottom", "emptyLabel": "No skill data available", "dataSource": { "register": "larpinq", "schema": "character", "aggregate": { "groupBy": "skills", "metric": "count", "topN": 10, "otherBucket": true, "labelResolve": { "schema": "skill", "labelField": "name" } } } } }
+				],
+				"layout": [
+					{ "id": 1, "widgetId": "kpi-characters", "gridX": 0, "gridY": 0, "gridWidth": 3, "gridHeight": 2, "showTitle": false },
+					{ "id": 2, "widgetId": "kpi-events",     "gridX": 3, "gridY": 0, "gridWidth": 3, "gridHeight": 2, "showTitle": false },
+					{ "id": 3, "widgetId": "kpi-items",      "gridX": 6, "gridY": 0, "gridWidth": 3, "gridHeight": 2, "showTitle": false },
+					{ "id": 4, "widgetId": "kpi-players",    "gridX": 9, "gridY": 0, "gridWidth": 3, "gridHeight": 2, "showTitle": false },
+					{ "id": 5, "widgetId": "recent-characters", "gridX": 0, "gridY": 2, "gridWidth": 6, "gridHeight": 4 },
+					{ "id": 6, "widgetId": "recent-events",     "gridX": 6, "gridY": 2, "gridWidth": 6, "gridHeight": 4 },
+					{ "id": 7, "widgetId": "skill-usage",    "gridX": 0, "gridY": 6, "gridWidth": 12, "gridHeight": 5 }
+				],
+				"documentationUrl": "https://larpinq.conduction.nl",
+				"headerActions": [
+					{ "id": "new-character", "label": "New character", "type": "open-form", "icon": "Plus", "variant": "primary", "register": "larpinq", "schema": "character", "onSuccessRoute": "Characters" },
+					{ "id": "new-item", "label": "New item", "type": "open-form", "icon": "Plus", "register": "larpinq", "schema": "larping_item", "onSuccessRoute": "Items" },
+					{ "id": "new-condition", "label": "New condition", "type": "open-form", "icon": "Plus", "register": "larpinq", "schema": "condition", "onSuccessRoute": "Conditions" },
+					{ "id": "refresh-dashboard", "label": "Refresh dashboard", "type": "refresh", "icon": "Refresh" }
+				]
 			}
 		},
 		{
@@ -32,12 +126,7 @@
 			"route": "/characters",
 			"type": "index",
 			"title": "Characters",
-			"config": {
-				"register": "larpingapp",
-				"schema": "character",
-				"columns": ["name", "type", "background", "approved", "gold", "silver"],
-				"sidebar": { "enabled": true, "showMetadata": true }
-			}
+			"config": { "register": "larpinq", "schema": "character", "documentationUrl": "https://larpinq.conduction.nl" }
 		},
 		{
 			"id": "CharacterDetail",
@@ -45,12 +134,35 @@
 			"type": "detail",
 			"title": "Character",
 			"config": {
-				"register": "larpingapp",
+				"register": "larpinq",
 				"schema": "character",
-				"sidebarTabs": [
-					{ "id": "overview", "label": "Overview", "icon": "icon-info", "widgets": [{ "type": "data" }, { "type": "metadata" }], "order": 10 },
-					{ "id": "audit", "label": "Audit trail", "icon": "icon-history", "widgets": [{ "type": "audit-trail" }], "order": 90 }
-				]
+				"documentationUrl": "https://larpinq.conduction.nl",
+				"_note": "ADR-062 rollout: split the sheet into identity (name/player/setting/description/background/faith, 6 fields) vs game state & notes (type/approved/gold/silver/copper/itemsAndMoney/card/notice/GM notes, 10 fields) per rule 3. The loose XP + Gold stat cards fold into one stats-block (rule 2, same-flavor simple KPIs) top-right, aligned with the identity row. The right rail lists the linked mechanics (skills/items/conditions) and event participation as related groups so a GM can see the whole build at a glance. The character portrait/sheet lives in the photos leaf (schema declares linkedType 'photos') as a body integration widget. XP awards granted to this character are shown as an object-list (xpAward.character FK = @objectId) — GM hand-awarded per xpAward's schema description, so allowCreate stays on (default). No email/calendar on the body: the character schema declares only 'photos'. Sidebar is audit-history only — the photos leaf already lives in the body, so it is not duplicated as a sidebar tab.",
+				"widgets": [
+					{ "id": "char-identity", "type": "data", "title": "Identity", "icon": "Account", "content": { "columns": 2, "include": [ "name", "ocName", "setting", "description", "background", "faith" ] } },
+					{ "id": "char-stats-xp-awarded", "type": "stats-block", "title": "XP awarded", "icon": "Trophy", "content": { "entries": [ { "title": "XP awarded", "register": "larpinq", "schema": "xpAward", "metric": "sum", "field": "amount", "filter": { "character": "@objectId" }, "route": { "name": "XpAwards", "query": { "character": "@objectId" } } } ] } },
+					{ "id": "char-stats-gold-pieces", "type": "stats-block", "title": "Gold pieces", "icon": "Trophy", "content": { "entries": [ { "title": "Gold pieces", "register": "larpinq", "schema": "character", "metric": "sum", "field": "gold", "filter": { "id": "@objectId" } } ] } },
+					{ "id": "char-progress", "type": "data", "title": "Game state & notes", "icon": "ClipboardList", "content": { "columns": 2, "include": [ "type", "approved", "gold", "silver", "copper", "itemsAndMoney", "card", "notice", "slNotesPublic", "slNotesPrivate" ] } },
+					{ "id": "char-related", "type": "related", "title": "Build & world", "icon": "LinkVariant", "content": { "groups": [ { "key": "skills", "label": "Skills" }, { "key": "items", "label": "Items" }, { "key": "conditions", "label": "Conditions" }, { "key": "events", "label": "Events" } ] } },
+					{ "id": "char-xpawards", "type": "object-list", "title": "XP award history", "icon": "Trophy", "content": { "register": "larpinq", "schema": "xpAward", "filter": { "character": "@objectId" }, "sort": { "field": "awardedAt", "dir": "desc" }, "columns": [ { "key": "event", "label": "Event" }, { "key": "amount", "label": "XP" }, { "key": "reason", "label": "Reason" }, { "key": "awardedAt", "label": "Awarded" } ], "limit": 50, "viewAllRoute": "XpAwards", "viewAllQuery": { "character": "@objectId" }, "emptyText": "No XP awarded yet." } },
+					{ "id": "char-photos", "type": "integration", "integrationId": "photos", "title": "Portrait & sheet", "icon": "FileDocument" }
+				],
+				"layout": [
+					{ "id": "1", "widgetId": "char-identity", "gridX": 0, "gridY": 0, "gridWidth": 8, "gridHeight": 4 },
+					{ "id": "2a", "widgetId": "char-stats-xp-awarded", "gridX": 8, "gridY": 0, "gridWidth": 4, "gridHeight": 2 },
+					{ "id": "2b", "widgetId": "char-stats-gold-pieces", "gridX": 8, "gridY": 2, "gridWidth": 4, "gridHeight": 2 },
+					{ "id": "3", "widgetId": "char-progress", "gridX": 0, "gridY": 4, "gridWidth": 8, "gridHeight": 6 },
+					{ "id": "4", "widgetId": "char-related", "gridX": 8, "gridY": 4, "gridWidth": 4, "gridHeight": 6 },
+					{ "id": "5", "widgetId": "char-xpawards", "gridX": 0, "gridY": 10, "gridWidth": 12, "gridHeight": 4 },
+					{ "id": "6", "widgetId": "char-photos", "gridX": 0, "gridY": 14, "gridWidth": 12, "gridHeight": 4 }
+				],
+				"sidebar": {
+					"enabled": true,
+					"showMetadata": true,
+					"tabs": [
+						{ "id": "audit", "label": "History", "icon": "History", "widgets": [ { "type": "audit" } ] }
+					]
+				}
 			}
 		},
 		{
@@ -58,12 +170,7 @@
 			"route": "/players",
 			"type": "index",
 			"title": "Players",
-			"config": {
-				"register": "larpingapp",
-				"schema": "player",
-				"columns": ["name", "description"],
-				"sidebar": { "enabled": true, "showMetadata": true }
-			}
+			"config": { "register": "larpinq", "schema": "player", "documentationUrl": "https://larpinq.conduction.nl" }
 		},
 		{
 			"id": "PlayerDetail",
@@ -71,90 +178,29 @@
 			"type": "detail",
 			"title": "Player",
 			"config": {
-				"register": "larpingapp",
+				"register": "larpinq",
 				"schema": "player",
-				"sidebarTabs": [
-					{ "id": "overview", "label": "Overview", "icon": "icon-info", "widgets": [{ "type": "data" }, { "type": "metadata" }], "order": 10 },
-					{ "id": "audit", "label": "Audit trail", "icon": "icon-history", "widgets": [{ "type": "audit-trail" }], "order": 90 }
-				]
-			}
-		},
-		{
-			"id": "Items",
-			"route": "/items",
-			"type": "index",
-			"title": "Items",
-			"config": {
-				"register": "larpingapp",
-				"schema": "item",
-				"columns": ["name", "effect", "unique", "description"],
-				"sidebar": { "enabled": true, "showMetadata": true }
-			}
-		},
-		{
-			"id": "ItemDetail",
-			"route": "/items/:id",
-			"type": "detail",
-			"title": "Item",
-			"config": {
-				"register": "larpingapp",
-				"schema": "item",
-				"sidebarTabs": [
-					{ "id": "overview", "label": "Overview", "icon": "icon-info", "widgets": [{ "type": "data" }, { "type": "metadata" }], "order": 10 },
-					{ "id": "audit", "label": "Audit trail", "icon": "icon-history", "widgets": [{ "type": "audit-trail" }], "order": 90 }
-				]
-			}
-		},
-		{
-			"id": "Events",
-			"route": "/events",
-			"type": "index",
-			"title": "Events",
-			"config": {
-				"register": "larpingapp",
-				"schema": "event",
-				"columns": ["name", "startDate", "endDate", "location"],
-				"sidebar": { "enabled": true, "showMetadata": true }
-			}
-		},
-		{
-			"id": "EventDetail",
-			"route": "/events/:id",
-			"type": "detail",
-			"title": "Event",
-			"config": {
-				"register": "larpingapp",
-				"schema": "event",
-				"sidebarTabs": [
-					{ "id": "overview", "label": "Overview", "icon": "icon-info", "widgets": [{ "type": "data" }, { "type": "metadata" }], "order": 10 },
-					{ "id": "audit", "label": "Audit trail", "icon": "icon-history", "widgets": [{ "type": "audit-trail" }], "order": 90 }
-				]
-			}
-		},
-		{
-			"id": "Conditions",
-			"route": "/conditions",
-			"type": "index",
-			"title": "Conditions",
-			"config": {
-				"register": "larpingapp",
-				"schema": "condition",
-				"columns": ["name", "effect", "unique", "description"],
-				"sidebar": { "enabled": true, "showMetadata": true }
-			}
-		},
-		{
-			"id": "ConditionDetail",
-			"route": "/conditions/:id",
-			"type": "detail",
-			"title": "Condition",
-			"config": {
-				"register": "larpingapp",
-				"schema": "condition",
-				"sidebarTabs": [
-					{ "id": "overview", "label": "Overview", "icon": "icon-info", "widgets": [{ "type": "data" }, { "type": "metadata" }], "order": 10 },
-					{ "id": "audit", "label": "Audit trail", "icon": "icon-history", "widgets": [{ "type": "audit-trail" }], "order": 90 }
-				]
+				"documentationUrl": "https://larpinq.conduction.nl",
+				"_note": "Player = the real-world person behind the characters (person archetype). The player schema is deliberately thin (name + notes) and its only declared linkedType is 'contacts', so the body is person-first: identity/notes (data, 7-wide) beside the linked Nextcloud contact card (contacts integration, 5-wide) for phone/email/address. ADR-062 correction: round 1 claimed characters attach by OC name string with no reliable FK — that was stale; character.ocName carries a canonical $ref to player, so a 'characters played' object-list (character.ocName = @objectId) is now added beside Related. No email/calendar/talk widgets on the body — the schema declares only 'contacts'. Sidebar is audit-history only — the contact card already lives in the body, so it is not duplicated as a sidebar tab.",
+				"widgets": [
+					{ "id": "player-data", "type": "data", "title": "Player", "icon": "Account", "content": { "columns": 1 } },
+					{ "id": "player-contacts", "type": "integration", "integrationId": "contacts", "title": "Contact card", "icon": "AccountBoxOutline" },
+					{ "id": "player-related", "type": "related", "title": "Related", "icon": "LinkVariant" },
+					{ "id": "player-characters", "type": "object-list", "title": "Characters played", "icon": "Briefcase", "content": { "register": "larpinq", "schema": "character", "filter": { "ocName": "@objectId" }, "columns": [ { "key": "name", "label": "Character" }, { "key": "type", "label": "Type" }, { "key": "approved", "label": "Approved" } ], "limit": 50, "viewAllRoute": "Characters", "viewAllQuery": { "ocName": "@objectId" }, "emptyText": "No characters played yet." } }
+				],
+				"layout": [
+					{ "id": "1", "widgetId": "player-data", "gridX": 0, "gridY": 0, "gridWidth": 7, "gridHeight": 4 },
+					{ "id": "2", "widgetId": "player-contacts", "gridX": 7, "gridY": 0, "gridWidth": 5, "gridHeight": 4 },
+					{ "id": "3", "widgetId": "player-related", "gridX": 0, "gridY": 4, "gridWidth": 6, "gridHeight": 4 },
+					{ "id": "4", "widgetId": "player-characters", "gridX": 6, "gridY": 4, "gridWidth": 6, "gridHeight": 4 }
+				],
+				"sidebar": {
+					"enabled": true,
+					"showMetadata": true,
+					"tabs": [
+						{ "id": "audit", "label": "History", "icon": "History", "widgets": [ { "type": "audit" } ] }
+					]
+				}
 			}
 		},
 		{
@@ -162,12 +208,7 @@
 			"route": "/abilities",
 			"type": "index",
 			"title": "Abilities",
-			"config": {
-				"register": "larpingapp",
-				"schema": "ability",
-				"columns": ["name", "base", "description"],
-				"sidebar": { "enabled": true, "showMetadata": true }
-			}
+			"config": { "register": "larpinq", "schema": "ability", "documentationUrl": "https://larpinq.conduction.nl" }
 		},
 		{
 			"id": "AbilityDetail",
@@ -175,12 +216,31 @@
 			"type": "detail",
 			"title": "Ability",
 			"config": {
-				"register": "larpingapp",
+				"register": "larpinq",
 				"schema": "ability",
-				"sidebarTabs": [
-					{ "id": "overview", "label": "Overview", "icon": "icon-info", "widgets": [{ "type": "data" }, { "type": "metadata" }], "order": 10 },
-					{ "id": "audit", "label": "Audit trail", "icon": "icon-history", "widgets": [{ "type": "audit-trail" }], "order": 90 }
-				]
+				"documentationUrl": "https://larpinq.conduction.nl",
+				"_note": "Ability = a numeric stat (XP, Mana, Health, Armor) that characters track (rules-object archetype). The body is definition-first: the stat's name/description/base value (data, 8-wide) plus a large base-value stat card (single distinct KPI — kept loose, not folded into a stats-block), then the reverse index of what touches this stat — the effects that modify it (effect.abilities FK = @objectId) and the skills that gate on it (skill.requiredStats contains @objectId). This is a pure rules object: no comms, no files, no attachments — a GM reads it to understand how a stat is wired into the ruleset.",
+				"widgets": [
+					{ "id": "ability-data", "type": "data", "title": "Ability", "icon": "Gauge", "content": { "columns": 2 } },
+					{ "id": "ability-base", "type": "stat", "title": "Base value", "icon": "Gauge", "content": { "label": "Base value", "icon": "Gauge", "format": { "style": "number" }, "source": { "register": "larpinq", "schema": "ability", "metric": "sum", "field": "base", "filter": { "id": "@objectId" } } } },
+					{ "id": "ability-effects", "type": "object-list", "title": "Effects modifying this ability", "icon": "TrendingUp", "content": { "register": "larpinq", "schema": "effect", "filter": { "abilities": "@objectId" }, "columns": [ { "key": "name", "label": "Effect" }, { "key": "modifier", "label": "Modifier" }, { "key": "modification", "label": "Direction" }, { "key": "cumulative", "label": "Stacks" } ], "limit": 50, "viewAllRoute": "Effects", "viewAllQuery": { "abilities": "@objectId" }, "emptyText": "No effects modify this stat yet." } },
+					{ "id": "ability-skills", "type": "object-list", "title": "Skills requiring this stat", "icon": "School", "content": { "register": "larpinq", "schema": "skill", "filter": { "requiredStats": "@objectId" }, "columns": [ { "key": "name", "label": "Skill" }, { "key": "requiredScore", "label": "Min score" } ], "limit": 50, "viewAllRoute": "Skills", "viewAllQuery": { "requiredStats": "@objectId" }, "emptyText": "No skills require this stat yet." } },
+					{ "id": "ability-related", "type": "related", "title": "Related", "icon": "LinkVariant" }
+				],
+				"layout": [
+					{ "id": "1", "widgetId": "ability-data", "gridX": 0, "gridY": 0, "gridWidth": 8, "gridHeight": 3 },
+					{ "id": "2", "widgetId": "ability-base", "gridX": 8, "gridY": 0, "gridWidth": 4, "gridHeight": 3, "showTitle": false },
+					{ "id": "3", "widgetId": "ability-effects", "gridX": 0, "gridY": 3, "gridWidth": 6, "gridHeight": 4 },
+					{ "id": "4", "widgetId": "ability-skills", "gridX": 6, "gridY": 3, "gridWidth": 6, "gridHeight": 4 },
+					{ "id": "5", "widgetId": "ability-related", "gridX": 0, "gridY": 7, "gridWidth": 12, "gridHeight": 3 }
+				],
+				"sidebar": {
+					"enabled": true,
+					"showMetadata": true,
+					"tabs": [
+						{ "id": "audit", "label": "History", "icon": "History", "widgets": [ { "type": "audit" } ] }
+					]
+				}
 			}
 		},
 		{
@@ -188,12 +248,16 @@
 			"route": "/skills",
 			"type": "index",
 			"title": "Skills",
-			"config": {
-				"register": "larpingapp",
-				"schema": "skill",
-				"columns": ["name", "effect", "description"],
-				"sidebar": { "enabled": true, "showMetadata": true }
-			}
+			"config": { "register": "larpinq", "schema": "skill", "documentationUrl": "https://larpinq.conduction.nl" }
+		},
+		{
+			"id": "SkillTree",
+			"route": "/skill-tree",
+			"type": "custom",
+			"title": "Skill tree",
+			"component": "SkillTree",
+			"_note": "No standard page type renders a directed prerequisite graph. The skill tree is not a list, table, kanban or detail view of `skill` objects — it is the graph induced by their `requiredSkills` edges, with per-node owned/available/locked colouring taken from CharactersController::requirementReport so the tree can never disagree with the server-side write veto (ADR-022). The 'index' type would flatten the edges away and no declarative type can express node colouring driven by a second, character-scoped API call. Built from nc-vue primitives + NcSelect rather than a graph library, per the shared-deps rule.",
+			"config": { "documentationUrl": "https://larpinq.conduction.nl" }
 		},
 		{
 			"id": "SkillDetail",
@@ -201,12 +265,101 @@
 			"type": "detail",
 			"title": "Skill",
 			"config": {
-				"register": "larpingapp",
+				"register": "larpinq",
 				"schema": "skill",
-				"sidebarTabs": [
-					{ "id": "overview", "label": "Overview", "icon": "icon-info", "widgets": [{ "type": "data" }, { "type": "metadata" }], "order": 10 },
-					{ "id": "audit", "label": "Audit trail", "icon": "icon-history", "widgets": [{ "type": "audit-trail" }], "order": 90 }
-				]
+				"documentationUrl": "https://larpinq.conduction.nl",
+				"_note": "Skill = a learnable, XP-purchased ability with prerequisites (rules-object archetype, prerequisite-heavy). The body leads with the skill's flavour + mechanical effect (data, 8-wide) beside a related rail that surfaces the four prerequisite groups the schema carries (required skills, required stats, required conditions, required effects) plus the effects it grants — the whole dependency tree in one place. Below, an object-list of characters who have learned this skill (character.skills contains @objectId) lets a GM see adoption. Pure rules object: no comms, no files.",
+				"widgets": [
+					{ "id": "skill-data", "type": "data", "title": "Skill", "icon": "School", "content": { "columns": 2 } },
+					{ "id": "skill-prereqs", "type": "related", "title": "Effects & prerequisites", "icon": "Sitemap", "content": { "groups": [ { "key": "effects", "label": "Grants effects" }, { "key": "requiredSkills", "label": "Requires skills" }, { "key": "requiredStats", "label": "Requires stats" }, { "key": "requiredConditions", "label": "Requires conditions" }, { "key": "requiredEffects", "label": "Requires effects" } ] } },
+					{ "id": "skill-characters", "type": "object-list", "title": "Characters with this skill", "icon": "AccountGroup", "content": { "register": "larpinq", "schema": "character", "filter": { "skills": "@objectId" }, "columns": [ { "key": "name", "label": "Character" }, { "key": "type", "label": "Type" }, { "key": "approved", "label": "Approved" } ], "limit": 50, "viewAllRoute": "Characters", "viewAllQuery": { "skills": "@objectId" }, "emptyText": "No characters have learned this skill yet." } }
+				],
+				"layout": [
+					{ "id": "1", "widgetId": "skill-data", "gridX": 0, "gridY": 0, "gridWidth": 8, "gridHeight": 5 },
+					{ "id": "2", "widgetId": "skill-prereqs", "gridX": 8, "gridY": 0, "gridWidth": 4, "gridHeight": 5 },
+					{ "id": "3", "widgetId": "skill-characters", "gridX": 0, "gridY": 5, "gridWidth": 12, "gridHeight": 4 }
+				],
+				"sidebar": {
+					"enabled": true,
+					"showMetadata": true,
+					"tabs": [
+						{ "id": "audit", "label": "History", "icon": "History", "widgets": [ { "type": "audit" } ] }
+					]
+				}
+			}
+		},
+		{
+			"id": "Items",
+			"route": "/items",
+			"type": "index",
+			"title": "Items",
+			"config": { "register": "larpinq", "schema": "larping_item", "documentationUrl": "https://larpinq.conduction.nl" }
+		},
+		{
+			"id": "ItemDetail",
+			"route": "/items/:id",
+			"type": "detail",
+			"title": "Item",
+			"config": {
+				"register": "larpinq",
+				"schema": "larping_item",
+				"documentationUrl": "https://larpinq.conduction.nl",
+				"_note": "Item = a magical/special object that grants effects to its holder (rules-object archetype, ownership-tracked). The body leads with the item's player-visible story description + GM mechanical effect (data, 8-wide) beside the effects it confers (related), then an object-list of the characters currently holding it (item.characters contains @objectId / character.items) — critical for unique artifacts where only one holder may exist. Files are on the body because props and physrep photos/handouts are commonly attached to items. No email/calendar: the item schema declares no comms linkedTypes.",
+				"widgets": [
+					{ "id": "item-data", "type": "data", "title": "Item", "icon": "Package", "content": { "columns": 2 } },
+					{ "id": "item-effects", "type": "related", "title": "Effects", "icon": "LinkVariant", "content": { "groups": [ { "key": "effects", "label": "Grants effects" } ] } },
+					{ "id": "item-holders", "type": "object-list", "title": "Held by", "icon": "AccountGroup", "content": { "register": "larpinq", "schema": "character", "filter": { "items": "@objectId" }, "columns": [ { "key": "name", "label": "Character" }, { "key": "type", "label": "Type" } ], "limit": 50, "viewAllRoute": "Characters", "viewAllQuery": { "items": "@objectId" }, "emptyText": "Nobody is holding this item yet." } },
+					{ "id": "item-files", "type": "integration", "integrationId": "files", "title": "Props & handouts", "icon": "FolderOutline" }
+				],
+				"layout": [
+					{ "id": "1", "widgetId": "item-data", "gridX": 0, "gridY": 0, "gridWidth": 8, "gridHeight": 4 },
+					{ "id": "2", "widgetId": "item-effects", "gridX": 8, "gridY": 0, "gridWidth": 4, "gridHeight": 4 },
+					{ "id": "3", "widgetId": "item-holders", "gridX": 0, "gridY": 4, "gridWidth": 6, "gridHeight": 4 },
+					{ "id": "4", "widgetId": "item-files", "gridX": 6, "gridY": 4, "gridWidth": 6, "gridHeight": 4 }
+				],
+				"sidebar": {
+					"enabled": true,
+					"showMetadata": true,
+					"tabs": [
+						{ "id": "audit", "label": "History", "icon": "History", "widgets": [ { "type": "audit" } ] }
+					]
+				}
+			}
+		},
+		{
+			"id": "Conditions",
+			"route": "/conditions",
+			"type": "index",
+			"title": "Conditions",
+			"config": { "register": "larpinq", "schema": "condition", "documentationUrl": "https://larpinq.conduction.nl" }
+		},
+		{
+			"id": "ConditionDetail",
+			"route": "/conditions/:id",
+			"type": "detail",
+			"title": "Condition",
+			"config": {
+				"register": "larpinq",
+				"schema": "condition",
+				"documentationUrl": "https://larpinq.conduction.nl",
+				"_note": "Condition = a positive/negative status earned through gameplay (not purchased) that applies automated effects (rules-object archetype). The body leads with the flavour + mechanical description (data, 8-wide) beside the automated effects it applies (related), then an object-list of the characters currently affected (condition.characters contains @objectId / character.conditions) — the live 'who is currently poisoned/blessed' roster a GM needs during play. Pure rules object: no comms, no files.",
+				"widgets": [
+					{ "id": "condition-data", "type": "data", "title": "Condition", "icon": "AlertCircleOutline", "content": { "columns": 2 } },
+					{ "id": "condition-effects", "type": "related", "title": "Applied effects", "icon": "LinkVariant", "content": { "groups": [ { "key": "effects", "label": "Applies effects" } ] } },
+					{ "id": "condition-characters", "type": "object-list", "title": "Currently affecting", "icon": "AccountGroup", "content": { "register": "larpinq", "schema": "character", "filter": { "conditions": "@objectId" }, "columns": [ { "key": "name", "label": "Character" }, { "key": "type", "label": "Type" } ], "limit": 50, "viewAllRoute": "Characters", "viewAllQuery": { "conditions": "@objectId" }, "emptyText": "No characters are currently affected." } }
+				],
+				"layout": [
+					{ "id": "1", "widgetId": "condition-data", "gridX": 0, "gridY": 0, "gridWidth": 8, "gridHeight": 4 },
+					{ "id": "2", "widgetId": "condition-effects", "gridX": 8, "gridY": 0, "gridWidth": 4, "gridHeight": 4 },
+					{ "id": "3", "widgetId": "condition-characters", "gridX": 0, "gridY": 4, "gridWidth": 12, "gridHeight": 4 }
+				],
+				"sidebar": {
+					"enabled": true,
+					"showMetadata": true,
+					"tabs": [
+						{ "id": "audit", "label": "History", "icon": "History", "widgets": [ { "type": "audit" } ] }
+					]
+				}
 			}
 		},
 		{
@@ -214,12 +367,7 @@
 			"route": "/effects",
 			"type": "index",
 			"title": "Effects",
-			"config": {
-				"register": "larpingapp",
-				"schema": "effect",
-				"columns": ["name", "modifier", "modification", "cumulative", "description"],
-				"sidebar": { "enabled": true, "showMetadata": true }
-			}
+			"config": { "register": "larpinq", "schema": "effect", "documentationUrl": "https://larpinq.conduction.nl" }
 		},
 		{
 			"id": "EffectDetail",
@@ -227,62 +375,200 @@
 			"type": "detail",
 			"title": "Effect",
 			"config": {
-				"register": "larpingapp",
+				"register": "larpinq",
 				"schema": "effect",
-				"sidebarTabs": [
-					{ "id": "overview", "label": "Overview", "icon": "icon-info", "widgets": [{ "type": "data" }, { "type": "metadata" }], "order": 10 },
-					{ "id": "audit", "label": "Audit trail", "icon": "icon-history", "widgets": [{ "type": "audit-trail" }], "order": 90 }
-				]
+				"documentationUrl": "https://larpinq.conduction.nl",
+				"_note": "Effect = the atomic stat modifier (+N / -N to an ability, cumulative or not) that the stat engine applies (rules-object archetype, leaf of the mechanics graph). The body leads with the definition (data, 8-wide) and a bold signed-modifier stat card so the magnitude reads instantly, plus the abilities it modifies (related). Below, three object-lists give the full reverse index of what carries this effect — skills, items and conditions (each schema's effects[] contains @objectId) — so a designer can trace every source before rebalancing. Pure rules object: no comms, no files.",
+				"widgets": [
+					{ "id": "effect-data", "type": "data", "title": "Effect", "icon": "Lightbulb", "content": { "columns": 2 } },
+					{ "id": "effect-modifier", "type": "stat", "title": "Modifier", "icon": "TrendingUp", "content": { "label": "Modifier value", "icon": "TrendingUp", "format": { "style": "number" }, "source": { "register": "larpinq", "schema": "effect", "metric": "sum", "field": "modifier", "filter": { "id": "@objectId" } } } },
+					{ "id": "effect-abilities", "type": "related", "title": "Modifies abilities", "icon": "LinkVariant", "content": { "groups": [ { "key": "abilities", "label": "Abilities" } ] } },
+					{ "id": "effect-skills", "type": "object-list", "title": "Skills granting this effect", "icon": "School", "content": { "register": "larpinq", "schema": "skill", "filter": { "effects": "@objectId" }, "columns": [ { "key": "name", "label": "Skill" } ], "limit": 50, "viewAllRoute": "Skills", "viewAllQuery": { "effects": "@objectId" }, "emptyText": "No skills grant this effect yet." } },
+					{ "id": "effect-items", "type": "object-list", "title": "Items granting this effect", "icon": "Package", "content": { "register": "larpinq", "schema": "larping_item", "filter": { "effects": "@objectId" }, "columns": [ { "key": "name", "label": "Item" } ], "limit": 50, "viewAllRoute": "Items", "viewAllQuery": { "effects": "@objectId" }, "emptyText": "No items grant this effect yet." } },
+					{ "id": "effect-conditions", "type": "object-list", "title": "Conditions granting this effect", "icon": "AlertCircleOutline", "content": { "register": "larpinq", "schema": "condition", "filter": { "effects": "@objectId" }, "columns": [ { "key": "name", "label": "Condition" } ], "limit": 50, "viewAllRoute": "Conditions", "viewAllQuery": { "effects": "@objectId" }, "emptyText": "No conditions grant this effect yet." } }
+				],
+				"layout": [
+					{ "id": "1", "widgetId": "effect-data", "gridX": 0, "gridY": 0, "gridWidth": 8, "gridHeight": 3 },
+					{ "id": "2", "widgetId": "effect-modifier", "gridX": 8, "gridY": 0, "gridWidth": 4, "gridHeight": 3, "showTitle": false },
+					{ "id": "3", "widgetId": "effect-abilities", "gridX": 8, "gridY": 3, "gridWidth": 4, "gridHeight": 4 },
+					{ "id": "4", "widgetId": "effect-skills", "gridX": 0, "gridY": 3, "gridWidth": 4, "gridHeight": 4 },
+					{ "id": "5", "widgetId": "effect-items", "gridX": 4, "gridY": 3, "gridWidth": 4, "gridHeight": 4 },
+					{ "id": "6", "widgetId": "effect-conditions", "gridX": 0, "gridY": 7, "gridWidth": 8, "gridHeight": 4 }
+				],
+				"sidebar": {
+					"enabled": true,
+					"showMetadata": true,
+					"tabs": [
+						{ "id": "audit", "label": "History", "icon": "History", "widgets": [ { "type": "audit" } ] }
+					]
+				}
 			}
 		},
 		{
-			"id": "GameSettings",
-			"route": "/game-settings",
+			"id": "Events",
+			"route": "/events",
 			"type": "index",
-			"title": "Game settings",
-			"config": {
-				"register": "larpingapp",
-				"schema": "setting",
-				"columns": ["name", "value", "description"],
-				"sidebar": { "enabled": true, "showMetadata": true }
-			}
+			"title": "Events",
+			"config": { "register": "larpinq", "schema": "larping_event", "documentationUrl": "https://larpinq.conduction.nl" }
 		},
 		{
-			"id": "SettingDetail",
-			"route": "/game-settings/:id",
+			"id": "EventDetail",
+			"route": "/events/:id",
 			"type": "detail",
-			"title": "Game setting",
+			"title": "Event",
 			"config": {
-				"register": "larpingapp",
-				"schema": "setting",
-				"sidebarTabs": [
-					{ "id": "overview", "label": "Overview", "icon": "icon-info", "widgets": [{ "type": "data" }, { "type": "metadata" }], "order": 10 },
-					{ "id": "audit", "label": "Audit trail", "icon": "icon-history", "widgets": [{ "type": "audit-trail" }], "order": 90 }
-				]
+				"register": "larpinq",
+				"schema": "larping_event",
+				"documentationUrl": "https://larpinq.conduction.nl",
+				"_note": "Event = a LARP gathering where players bring their characters (session/meeting archetype). This is the one entity that communicates: the schema declares calendar, maps and forms linkedTypes (merged from the event-calendar-leaf / event-location-to-maps-leaf / event-signup-to-forms-leaf register fragments), so the body earns a calendar widget (scheduling the session from startDate/endDate), a location map, and the sign-up form, plus the participating characters (character.events contains @objectId) as the primary roster. The loose Attendees + XP-granted stat cards fold into one stats-block (rule 2, same-flavor simple KPIs) top-right. Post-event effects applied to attendees are shown via related. After the event, the XP awarding ritual produces one xpAward per grant (xpAward.event FK = @objectId), shown as an object-list — GM hand-awarded per xpAward's schema description, so allowCreate stays on. Files carries the event pack/handouts. All three declared leaves (calendar, maps, forms) are now body widgets — none are held back to sidebar tabs. The sidebar carries the Check-in tab (the event check-in roster, an app-registry section — see the sidebar _note) plus audit history. No email/talk: the schema declares calendar/maps/forms only.",
+				"widgets": [
+					{ "id": "event-data", "type": "data", "title": "Event", "icon": "Calendar", "content": { "columns": 2 } },
+					{ "id": "event-stats-attendees", "type": "stats-block", "title": "Attendees", "icon": "AccountGroup", "content": { "entries": [ { "title": "Attendees", "register": "larpinq", "schema": "character", "metric": "count", "filter": { "events": "@objectId" } } ] } },
+					{ "id": "event-stats-xp-granted", "type": "stats-block", "title": "XP granted", "icon": "AccountGroup", "content": { "entries": [ { "title": "XP granted", "register": "larpinq", "schema": "xpAward", "metric": "sum", "field": "amount", "filter": { "event": "@objectId" } } ] } },
+					{ "id": "event-calendar", "type": "integration", "integrationId": "calendar", "title": "Schedule", "icon": "Calendar" },
+					{ "id": "event-effects", "type": "related", "title": "Post-event effects", "icon": "LinkVariant", "content": { "groups": [ { "key": "effects", "label": "Effects applied after event" } ] } },
+					{ "id": "event-maps", "type": "integration", "integrationId": "maps", "title": "Location", "icon": "MapMarker" },
+					{ "id": "event-forms", "type": "integration", "integrationId": "forms", "title": "Sign-up", "icon": "FileSign" },
+					{ "id": "event-roster", "type": "object-list", "title": "Participating characters", "icon": "AccountGroup", "content": { "register": "larpinq", "schema": "character", "filter": { "events": "@objectId" }, "columns": [ { "key": "name", "label": "Character" }, { "key": "ocName", "label": "Player" }, { "key": "type", "label": "Type" }, { "key": "approved", "label": "Approved" } ], "limit": 100, "viewAllRoute": "Characters", "viewAllQuery": { "events": "@objectId" }, "emptyText": "No characters registered yet." } },
+					{ "id": "event-xpawards", "type": "object-list", "title": "XP awards", "icon": "Trophy", "content": { "register": "larpinq", "schema": "xpAward", "filter": { "event": "@objectId" }, "sort": { "field": "awardedAt", "dir": "desc" }, "columns": [ { "key": "character", "label": "Character" }, { "key": "amount", "label": "XP" }, { "key": "reason", "label": "Reason" } ], "limit": 100, "viewAllRoute": "XpAwards", "viewAllQuery": { "event": "@objectId" }, "emptyText": "No XP granted yet." } },
+					{ "id": "event-files", "type": "integration", "integrationId": "files", "title": "Event pack", "icon": "FolderOutline" }
+				],
+				"layout": [
+					{ "id": "1", "widgetId": "event-data", "gridX": 0, "gridY": 0, "gridWidth": 8, "gridHeight": 4 },
+					{ "id": "2a", "widgetId": "event-stats-attendees", "gridX": 8, "gridY": 0, "gridWidth": 4, "gridHeight": 2 },
+					{ "id": "2b", "widgetId": "event-stats-xp-granted", "gridX": 8, "gridY": 2, "gridWidth": 4, "gridHeight": 2 },
+					{ "id": "4", "widgetId": "event-calendar", "gridX": 0, "gridY": 4, "gridWidth": 8, "gridHeight": 4 },
+					{ "id": "5", "widgetId": "event-effects", "gridX": 8, "gridY": 4, "gridWidth": 4, "gridHeight": 4 },
+					{ "id": "6", "widgetId": "event-maps", "gridX": 0, "gridY": 8, "gridWidth": 6, "gridHeight": 4 },
+					{ "id": "7", "widgetId": "event-forms", "gridX": 6, "gridY": 8, "gridWidth": 6, "gridHeight": 4 },
+					{ "id": "8", "widgetId": "event-roster", "gridX": 0, "gridY": 12, "gridWidth": 12, "gridHeight": 4 },
+					{ "id": "9", "widgetId": "event-xpawards", "gridX": 0, "gridY": 16, "gridWidth": 6, "gridHeight": 4 },
+					{ "id": "10", "widgetId": "event-files", "gridX": 6, "gridY": 16, "gridWidth": 6, "gridHeight": 4 }
+				],
+				"sidebar": {
+					"enabled": true,
+					"showMetadata": true,
+					"_note": "The Check-in tab is the ONLY entry point to the event check-in roster. `component: \"EventRoster\"` resolves through CnObjectSidebar.resolveTabComponent(), which looks the string up in the v2 registry (src/registry.js — `EventRoster: { kind: 'section', component: ... }`) before falling back to the legacy customComponents map. The tab is handed `sharedTabProps` (objectId / objectType / register / schema / apiBase), which is where EventRoster.vue's `objectId` prop comes from. Do NOT confuse this with the `event-roster` BODY widget above: that one is a read-only `object-list` of participating characters and carries no check-in / no-show controls, which is why its presence hid the fact that the check-in surface was unreachable (#286). Pinned by tests/vitest/manifestRegistry.spec.js.",
+					"tabs": [
+						{ "id": "checkin", "label": "Check-in", "icon": "AccountCheck", "component": "EventRoster" },
+						{ "id": "audit", "label": "History", "icon": "History", "widgets": [ { "type": "audit" } ] }
+					]
+				}
 			}
 		},
 		{
 			"id": "Settings",
 			"route": "/settings",
-			"type": "settings",
-			"title": "Settings",
+			"type": "index",
+			"_note": "The page id and route stay `Settings` / `/settings`: they are deep-link surface and the persisted OpenRegister property is still `setting`. Only the user-visible TITLE is renamed to `Worlds` — see the SettingDetail _note below for why.",
+			"title": "Worlds",
+			"config": { "register": "larpinq", "schema": "setting", "documentationUrl": "https://larpinq.conduction.nl" }
+		},
+		{
+			"id": "SettingDetail",
+			"route": "/settings/:id",
+			"type": "detail",
+			"title": "World",
 			"config": {
-				"saveEndpoint": "/index.php/apps/larpingapp/api/settings",
+				"register": "larpinq",
+				"schema": "setting",
+				"documentationUrl": "https://larpinq.conduction.nl",
+				"_note": "NAMING: the user-visible term for this entity is WORLD, never \"setting\". In LARP a setting is the game world; in a Nextcloud UI \"Setting\" means a preference, and every one of the 35 non-Dutch locales took the UI reading and translated it as Einstellung / Paramètre / Configuración. That is unfixable by retranslating, because one English source string cannot carry both meanings — so the ENGLISH WORD changed instead. The persisted OpenRegister property is still `setting` and the page id / route are still Settings / /settings; only labels moved. The schema's own summary already said \"A LARP world / campaign\" and its icon was already Earth. WHAT THIS PAGE IS: a world/campaign that scopes the roster and rules (config/container archetype). Most game entities carry an optional 'setting' UUID that points here, so this page is a scoping dashboard: the definition + active/archived status (data) sits beside a stats-block (characters + events counts, folded from two loose KPIs per rule 2), then object-lists roll up everything scoped to this campaign — characters and events (each filtered where setting = @objectId). Related surfaces any other scoped mechanics. A pure configuration container: no comms, no files.",
+				"widgets": [
+					{ "id": "setting-data", "type": "data", "title": "World", "icon": "Earth", "content": { "columns": 1 } },
+					{ "id": "setting-stats-characters", "type": "stats-block", "title": "Characters", "icon": "ChartBar", "content": { "entries": [ { "title": "Characters", "register": "larpinq", "schema": "character", "metric": "count", "filter": { "setting": "@objectId" }, "route": { "name": "Characters", "query": { "setting": "@objectId" } } } ] } },
+					{ "id": "setting-stats-events", "type": "stats-block", "title": "Events", "icon": "ChartBar", "content": { "entries": [ { "title": "Events", "register": "larpinq", "schema": "larping_event", "metric": "count", "filter": { "setting": "@objectId" }, "route": { "name": "Events", "query": { "setting": "@objectId" } } } ] } },
+					{ "id": "setting-characters", "type": "object-list", "title": "Characters in this world", "icon": "AccountGroup", "content": { "register": "larpinq", "schema": "character", "filter": { "setting": "@objectId" }, "columns": [ { "key": "name", "label": "Character" }, { "key": "type", "label": "Type" }, { "key": "approved", "label": "Approved" } ], "limit": 100, "viewAllRoute": "Characters", "viewAllQuery": { "setting": "@objectId" }, "emptyText": "No characters in this world yet." } },
+					{ "id": "setting-events", "type": "object-list", "title": "Events in this world", "icon": "Calendar", "content": { "register": "larpinq", "schema": "larping_event", "filter": { "setting": "@objectId" }, "sort": { "field": "startDate", "dir": "desc" }, "columns": [ { "key": "name", "label": "Event" }, { "key": "startDate", "label": "Starts" }, { "key": "location", "label": "Location" } ], "limit": 100, "viewAllRoute": "Events", "viewAllQuery": { "setting": "@objectId" }, "emptyText": "No events in this world yet." } },
+					{ "id": "setting-related", "type": "related", "title": "Related", "icon": "LinkVariant" }
+				],
+				"layout": [
+					{ "id": "1", "widgetId": "setting-data", "gridX": 0, "gridY": 0, "gridWidth": 8, "gridHeight": 4 },
+					{ "id": "2a", "widgetId": "setting-stats-characters", "gridX": 8, "gridY": 0, "gridWidth": 4, "gridHeight": 2 },
+					{ "id": "2b", "widgetId": "setting-stats-events", "gridX": 8, "gridY": 2, "gridWidth": 4, "gridHeight": 2 },
+					{ "id": "4", "widgetId": "setting-characters", "gridX": 0, "gridY": 4, "gridWidth": 6, "gridHeight": 4 },
+					{ "id": "5", "widgetId": "setting-events", "gridX": 6, "gridY": 4, "gridWidth": 6, "gridHeight": 4 },
+					{ "id": "6", "widgetId": "setting-related", "gridX": 0, "gridY": 8, "gridWidth": 12, "gridHeight": 3 }
+				],
+				"sidebar": {
+					"enabled": true,
+					"showMetadata": true,
+					"tabs": [
+						{ "id": "audit", "label": "History", "icon": "History", "widgets": [ { "type": "audit" } ] }
+					]
+				}
+			}
+		},
+		{
+			"id": "XpAwards",
+			"route": "/xp-awards",
+			"type": "index",
+			"title": "XP Awards",
+			"config": { "register": "larpinq", "schema": "xpAward", "documentationUrl": "https://larpinq.conduction.nl" }
+		},
+		{
+			"id": "XpAwardDetail",
+			"route": "/xp-awards/:id",
+			"type": "detail",
+			"title": "XP Award",
+			"config": {
+				"register": "larpinq",
+				"schema": "xpAward",
+				"documentationUrl": "https://larpinq.conduction.nl",
+				"_note": "XP Award = a single audited grant of experience to one character for one event (log/ledger-record archetype). GM-write-only, effectively append-only, so the page is read-oriented: the full grant record (amount, reason, awardedBy, awardedAt — data, single column for readability) beside a bold amount stat card, with a related rail linking straight to the two FK parents (the event it was earned at and the character who received it) so a reviewer can jump up the chain. No object-lists, no comms, no files — a ledger line has no children and nothing to communicate.",
+				"widgets": [
+					{ "id": "xpaward-data", "type": "data", "title": "Award record", "icon": "ClipboardList", "content": { "columns": 1 } },
+					{ "id": "xpaward-amount", "type": "stat", "title": "XP", "icon": "Trophy", "content": { "label": "XP awarded", "icon": "Trophy", "format": { "style": "number" }, "source": { "register": "larpinq", "schema": "xpAward", "metric": "sum", "field": "amount", "filter": { "id": "@objectId" } } } },
+					{ "id": "xpaward-related", "type": "related", "title": "Event & character", "icon": "LinkVariant", "content": { "groups": [ { "key": "event", "label": "Event" }, { "key": "character", "label": "Character" } ] } }
+				],
+				"layout": [
+					{ "id": "1", "widgetId": "xpaward-data", "gridX": 0, "gridY": 0, "gridWidth": 8, "gridHeight": 4 },
+					{ "id": "2", "widgetId": "xpaward-amount", "gridX": 8, "gridY": 0, "gridWidth": 4, "gridHeight": 2, "showTitle": false },
+					{ "id": "3", "widgetId": "xpaward-related", "gridX": 8, "gridY": 2, "gridWidth": 4, "gridHeight": 2 }
+				],
+				"sidebar": {
+					"enabled": true,
+					"showMetadata": true,
+					"tabs": [
+						{ "id": "audit", "label": "History", "icon": "History", "widgets": [ { "type": "audit" } ] }
+					]
+				}
+			}
+		},
+		{
+			"id": "GameSettings",
+			"route": "/game-settings",
+			"type": "settings",
+			"title": "Game Settings",
+			"config": {
 				"sections": [
-					{
-						"id": "version",
-						"title": "Version Information",
-						"widgets": [{ "type": "version-info" }]
-					},
-					{
-						"id": "configuration",
-						"title": "Configuration",
-						"fields": [
-							{ "key": "register", "label": "Register", "type": "string", "help": "OpenRegister register ID" }
-						]
-					}
+					{ "id": "general", "title": "General", "component": "GameSettingsSection" }
 				]
 			}
+		},
+		{
+			"id": "FeaturesRoadmap",
+			"route": "/features-roadmap",
+			"type": "roadmap",
+			"title": "Features & roadmap",
+			"config": { "documentationUrl": "https://larpinq.conduction.nl" }
+		},
+		{
+			"id": "Flows",
+			"route": "/flows",
+			"type": "index",
+			"title": "Flows",
+			"config": { "entitySource": "flows", "app": "larpinq" },
+			"_note": "ADR-110 Decision 4: a flow is app-specific, so the authoring surface lives here rather than behind a deep link to another app's list. An ordinary index over the named `flows` source (config.entitySource) rather than the deprecated `flows` page type, reading OpenRegister's one native flow store (ADR-065), scoped to this app by config.app."
+		},
+		{
+			"id": "FlowDetail",
+			"route": "/flows/:id",
+			"type": "flow",
+			"title": "Flow",
+			"config": { "app": "larpinq" },
+			"sidebarComponent": "FlowDetailSidebar",
+			"_note": "The shared CnFlowDetail canvas over the same single engine. Controls render in the NC app sidebar so the canvas keeps full width."
 		}
 	]
 }

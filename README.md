@@ -1,23 +1,23 @@
 <p align="center">
-  <img src="img/app-store.svg" alt="Larping logo" width="80" height="80">
+  <img src="img/app-store.svg" alt="Larpinq logo" width="80" height="80">
 </p>
 
-<h1 align="center">Larping</h1>
+<h1 align="center">Larpinq</h1>
 
 <p align="center">
   <strong>LARP character and event management for Nextcloud — skills, items, conditions, and dynamic stat calculation</strong>
 </p>
 
 <p align="center">
-  <a href="https://github.com/ConductionNL/larpingapp/releases"><img src="https://img.shields.io/github/v/release/ConductionNL/larpingapp" alt="Latest release"></a>
-  <a href="https://github.com/ConductionNL/larpingapp/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-AGPL--3.0-blue" alt="License"></a>
-  <a href="https://github.com/ConductionNL/larpingapp/actions"><img src="https://img.shields.io/github/actions/workflow/status/ConductionNL/larpingapp/code-quality.yml?label=quality" alt="Code quality"></a>
+  <a href="https://github.com/ConductionNL/larpinq/releases"><img src="https://img.shields.io/github/v/release/ConductionNL/larpinq" alt="Latest release"></a>
+  <a href="https://github.com/ConductionNL/larpinq/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-EUPL--1.2-blue" alt="License"></a>
+  <a href="https://github.com/ConductionNL/larpinq/actions/workflows/code-quality.yml"><img src="https://github.com/ConductionNL/larpinq/actions/workflows/code-quality.yml/badge.svg" alt="Code quality"></a>
   <a href="https://larpingapp.app"><img src="https://img.shields.io/badge/docs-larpingapp.app-green" alt="Documentation"></a>
 </p>
 
 ---
 
-Larping brings live-action role-playing management natively into Nextcloud. Game masters define abilities, skills, items, conditions, and effects; the app automatically computes each character's stats and keeps them synchronized as game state changes. Players register for events, track XP, and print their character sheet — all without leaving Nextcloud.
+Larpinq brings live-action role-playing management natively into Nextcloud. Game masters define abilities, skills, items, conditions, and effects; the app automatically computes each character's stats and keeps them synchronized as game state changes. Players register for events, track XP, and print their character sheet — all without leaving Nextcloud.
 
 > **Optional:** [OpenRegister](https://github.com/ConductionNL/openregister) — enables advanced features like audit trails, object locking, cross-object relations, and JSON-based data storage.
 
@@ -93,7 +93,7 @@ graph TD
 ### Directory Structure
 
 ```
-larpingapp/
+larpinq/
 ├── appinfo/           # Nextcloud app manifest, routes, navigation
 ├── lib/               # PHP backend — controllers, services, DB mappers
 │   ├── Controller/    # Objects, Characters, Settings, Dashboard
@@ -125,19 +125,19 @@ larpingapp/
 ### From the Nextcloud App Store
 
 1. Go to **Apps** in your Nextcloud instance
-2. Search for **Larping**
+2. Search for **Larpinq**
 3. Click **Download and enable**
 
 ### From Source
 
 ```bash
 cd /var/www/html/custom_apps
-git clone https://github.com/ConductionNL/larpingapp.git
-cd larpingapp
+git clone https://github.com/ConductionNL/larpinq.git
+cd larpinq
 npm install
 npm run build
 composer install
-php occ app:enable larpingapp
+php occ app:enable larpinq
 ```
 
 ## Development
@@ -151,7 +151,7 @@ docker compose -f openregister/docker-compose.yml up -d
 ### Frontend development
 
 ```bash
-cd larpingapp
+cd larpinq
 npm install
 npm run dev        # Watch mode
 npm run build      # Production build
@@ -164,12 +164,19 @@ npm run build      # Production build
 composer phpcs          # Check coding standards
 composer cs:fix         # Auto-fix issues
 composer phpmd          # Mess detection
+composer phpstan        # Static analysis (level 5, empty baseline)
 composer phpmetrics     # HTML metrics report
+composer check:strict   # Unified gate: lint + phpcs + phpmd + psalm + phpstan + tests
 
 # Frontend
 npm run lint            # ESLint
 npm run stylelint       # CSS linting
 ```
+
+The unified `check:strict` gate (PHPCS, PHPMD, PHPStan) runs in CI on every
+PR. All three pass clean with no file-level exclude-patterns and an empty
+PHPStan baseline — the legacy quality debt has been burned down, so the gates
+catch real regressions rather than absorbing pre-existing issues.
 
 ## Tech Stack
 
@@ -181,7 +188,7 @@ npm run stylelint       # CSS linting
 | Backend | PHP 8.1+, Nextcloud App Framework |
 | Data | Nextcloud DB (internal) or OpenRegister (optional) |
 | PDF | mPDF 8 + Twig 3 |
-| Quality | PHPCS, PHPMD, phpmetrics, Psalm, ESLint, Stylelint |
+| Quality | PHPCS, PHPMD, PHPStan, phpmetrics, Psalm, ESLint, Stylelint |
 
 ## Documentation
 
@@ -206,10 +213,26 @@ Full documentation is available at **[larpingapp.app](https://larpingapp.app)**
 - **[OpenCatalogi](https://github.com/ConductionNL/opencatalogi)** — Publication and catalogue management
 - **[NL Design](https://github.com/ConductionNL/nldesign)** — Design token theming for Nextcloud
 
+## Support
+
+For support, contact us at [support@conduction.nl](mailto:support@conduction.nl).
+
+For a Service Level Agreement (SLA), contact [sales@conduction.nl](mailto:sales@conduction.nl).
+
 ## License
 
-AGPL-3.0-or-later
+This project is licensed under the [EUPL-1.2](LICENSE).
 
+### Dependency license policy
+
+All dependencies (PHP and JavaScript) are automatically checked against an approved license allowlist during CI. The following SPDX license families are approved for use in dependencies:
+
+- **Permissive:** MIT, ISC, BSD-2-Clause, BSD-3-Clause, 0BSD, Apache-2.0, Unlicense, CC0-1.0, CC-BY-3.0, CC-BY-4.0, Zlib, BlueOak-1.0.0, Artistic-2.0, BSL-1.0
+- **Copyleft (EUPL-compatible):** LGPL-2.0/2.1/3.0, GPL-2.0/3.0, AGPL-3.0, EUPL-1.1/1.2, MPL-2.0
+- **Font licenses:** OFL-1.0, OFL-1.1
+
+Dependencies with licenses not on this list will fail CI unless explicitly approved in `.license-overrides.json` with a documented justification.
 ## Authors
 
 Built by [Conduction](https://conduction.nl) — open-source software for Dutch government and public sector organizations.
+
