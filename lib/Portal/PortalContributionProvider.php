@@ -265,7 +265,7 @@ class PortalContributionProvider {
 			[
 				'id' => 'skillCatalog',
 				'register' => self::REGISTER,
-				'schema' => 'skill',
+				'schema' => 'larping_skill',
 				'scopeField' => '',
 				'label' => 'Skills',
 				'listable' => true,
