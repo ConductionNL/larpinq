@@ -46,7 +46,7 @@ Maak een [featureverzoek](https://github.com/ConductionNL/larpinq/issues)
 
 **Support:** neem voor support contact op met support@conduction.nl. Voor een Service Level Agreement (SLA), neem contact op met sales@conduction.nl.
     ]]></description>
-    <version>0.2.6-unstable.20260831051044</version>
+    <version>0.2.7-unstable.20260831104850</version>
     <licence>EUPL-1.2</licence>
     <author mail="info@conduction.nl" homepage="https://www.conduction.nl/">Conduction</author>
 	<namespace>Larpinq</namespace>
