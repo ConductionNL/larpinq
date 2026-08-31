@@ -351,7 +351,10 @@ try {
 } catch (e) {
 	// Non-fatal — lib translations fall back to English source.
 	// eslint-disable-next-line no-console
-	console.warn('[larpingapp] registerTranslations failed; falling back to English', e)
+	console.warn(
+		'[larpingapp] registerTranslations failed; falling back to English',
+		e,
+	)
 }
 
 tryLoadTranslations()

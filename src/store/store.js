@@ -8,8 +8,7 @@
 // part of the Tier-4 manifest migration; CnIndexPage / CnDetailPage drive
 // every list/detail page from src/manifest.json against this store.
 
-import { generateUrl } from '@nextcloud/router'
-import { createObjectStore } from '@conduction/nextcloud-vue'
+import { useObjectStore } from './modules/object.js'
 import { useSettingsStore } from './modules/settings.js'
 
 /**
@@ -39,7 +38,6 @@ export async function initializeStores() {
 	const objectStore = useObjectStore()
 
 	const config = (await settingsStore.fetchSettings()) || {}
-	const register = config.register || 'larpingapp'
 
 	if (config) {
 		for (const slug of SCHEMA_SLUGS) {
