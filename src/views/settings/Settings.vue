@@ -126,14 +126,13 @@ import logger from '../../logger.js'
 /**
  * @class Settings
  * @module Components
- * @package
  * @category LarpingApp
  * @package LarpingApp
  * @version 1.0.0
  * @license EUPL-1.2
  * @author Claude AI
  * @copyright 2023 Conduction
- * @link https://github.com/LarpingApp/larpingapp
+ * @see https://github.com/LarpingApp/larpingapp
  *
  * Settings component for the Larping App that allows users to configure
  * data storage options for different object types using Larp Registers.
@@ -203,10 +202,14 @@ export default defineComponent({
 			if (!this.selectedRegister) return false
 
 			const register = this.settings.availableRegisters.find(
-				r => r.id.toString() === this.selectedRegister.value,
+				(r) => r.id.toString() === this.selectedRegister.value,
 			)
 
-			return register && Array.isArray(register.schemas) && register.schemas.length > 0
+			return (
+				register
+				&& Array.isArray(register.schemas)
+				&& register.schemas.length > 0
+			)
 		},
 	},
 
@@ -397,7 +400,9 @@ export default defineComponent({
 					configToSave[`${type}_register`] = this.selectedRegister.value
 
 					// Set the schema ID if selected
-					configToSave[`${type}_schema`] = config.schema ? config.schema.value : ''
+					configToSave[`${type}_schema`] = config.schema
+						? config.schema.value
+						: ''
 				})
 
 				const response = await fetch(
@@ -441,7 +446,9 @@ export default defineComponent({
 			this.configurationResults = null
 
 			try {
-				const response = await fetch('/index.php/apps/larpingapp/api/settings/load')
+				const response = await fetch(
+					'/index.php/apps/larpingapp/api/settings/load',
+				)
 				const data = await response.json()
 
 				if (data.error) {
@@ -452,7 +459,9 @@ export default defineComponent({
 					await this.loadSettings()
 				}
 			} catch (error) {
-				this.configurationResults = { error: 'Failed to load configuration: ' + error.message }
+				this.configurationResults = {
+					error: 'Failed to load configuration: ' + error.message,
+				}
 			} finally {
 				this.loadingConfiguration = false
 			}
