@@ -60,8 +60,8 @@
   },
   "overrides": {
     "libxmljs2": "^0.37.0",
-    "@nextcloud/axios": "~2.5.2",
-    "@nextcloud/l10n": "3.4.1"
+    "@nextcloud/axios": "$@nextcloud/axios",
+    "@nextcloud/l10n": "$@nextcloud/l10n"
   },
   "devDependencies": {
     "@babel/core": "^7.22.9",
