@@ -87,6 +87,16 @@
 			"order": 96
 		}
 	],
+	"observability": {
+		"_note": "Declarative observability via the OpenRegister AppHost engine (ADR-040 / ADR-006). This block is what makes /api/health and /api/metrics work at all: AppHost\\Bootstrap::register returns BEFORE aliasing the observability controllers when it is absent, so the health#index and metrics#index routes that Routes::standard() declares had no target and every request to them was a dispatch-time 500. With the block present, Bootstrap aliases AppHost\\Controller\\GenericHealthController and GenericMetricsController under larpinq's own controller FQCNs and serves them from these descriptors. No leaf controller is added on purpose: aliasControllerUnlessLeafDefinesIt SKIPS the alias when the app defines its own, so writing one would replace the shared engine with a hand-maintained copy. Metrics are the implicit larpinq_info and larpinq_up gauges the engine adds; health is public and metrics are admin-only, per ADR-006.",
+		"health": {
+			"statusCodePolicy": "adr006",
+			"checks": [
+				{ "id": "database", "type": "database", "severity": "critical" },
+				{ "id": "openregister", "type": "orAvailable", "severity": "degraded" }
+			]
+		}
+	},
 	"pages": [
 		{
 			"id": "Dashboard",

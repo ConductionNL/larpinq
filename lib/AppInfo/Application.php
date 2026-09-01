@@ -103,6 +103,36 @@ class Application extends App implements IBootstrap {
 		// guards below still do their job.
 		OpenRegisterAutoloader::register();
 
+		// ADR-040 AppHost plumbing. `appinfo/routes.php` is built through
+		// `AppHost\Routes::standard()`, which declares `health#index` and
+		// `metrics#index` among others. Those names resolve to
+		// `OCA\Larpinq\Controller\HealthController` / `MetricsController`,
+		// classes this app does not ship — on purpose. `Bootstrap::register()`
+		// is what binds them, aliasing OpenRegister's generic controllers under
+		// those FQCNs via `aliasControllerUnlessLeafDefinesIt`.
+		//
+		// Without this call the routes were declared and nothing answered them,
+		// so every request to /api/health or /api/metrics was a dispatch-time
+		// 500. Declaring the routes and binding their targets are two separate
+		// steps, and only the first was done here.
+		//
+		// The alias is skipped for any controller Larpinq does define, so this
+		// cannot take over SettingsController or any other leaf class.
+		//
+		// The class_exists() guard MUST stay in this method: it is also the
+		// assertion psalm relies on to accept the Bootstrap::register() call,
+		// and psalm does not carry that narrowing across a call.
+		if (class_exists('OCA\OpenRegister\AppHost\Bootstrap') === true) {
+			try {
+				\OCA\OpenRegister\AppHost\Bootstrap::register($context, self::APP_ID, ['namespace' => 'OCA\\Larpinq']);
+			} catch (\Throwable) {
+				// AppHost present but unloadable: skip the generic plumbing.
+				// Larpinq's own listeners and services MUST still register. No
+				// logger is resolvable this early, so the skip is silent, and
+				// /api/health reports the degraded AppHost state instead.
+			}
+		}
+
 		// Register the deep link listener for OpenRegister unified search.
 		// The event class is only available when OpenRegister is installed.
 		if (class_exists('OCA\OpenRegister\Event\DeepLinkRegistrationEvent') === true) {
