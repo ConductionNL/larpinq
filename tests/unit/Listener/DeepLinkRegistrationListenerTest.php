@@ -175,13 +175,13 @@ class DeepLinkRegistrationListenerTest extends TestCase {
 
 		$bySlug = array_column($event->links, 'urlTemplate', 'schemaSlug');
 
-		self::assertSame('/apps/larpinq/#/characters/{uuid}', $bySlug['character']);
-		self::assertSame('/apps/larpinq/#/players/{uuid}', $bySlug['player']);
-		self::assertSame('/apps/larpinq/#/abilities/{uuid}', $bySlug['ability']);
-		self::assertSame('/apps/larpinq/#/skills/{uuid}', $bySlug['skill']);
-		self::assertSame('/apps/larpinq/#/items/{uuid}', $bySlug['larping_item']);
-		self::assertSame('/apps/larpinq/#/conditions/{uuid}', $bySlug['condition']);
-		self::assertSame('/apps/larpinq/#/effects/{uuid}', $bySlug['effect']);
-		self::assertSame('/apps/larpinq/#/events/{uuid}', $bySlug['larping_event']);
+		self::assertSame('/apps/larpinq/characters/{uuid}', $bySlug['character']);
+		self::assertSame('/apps/larpinq/players/{uuid}', $bySlug['player']);
+		self::assertSame('/apps/larpinq/abilities/{uuid}', $bySlug['ability']);
+		self::assertSame('/apps/larpinq/skills/{uuid}', $bySlug['skill']);
+		self::assertSame('/apps/larpinq/items/{uuid}', $bySlug['larping_item']);
+		self::assertSame('/apps/larpinq/conditions/{uuid}', $bySlug['condition']);
+		self::assertSame('/apps/larpinq/effects/{uuid}', $bySlug['effect']);
+		self::assertSame('/apps/larpinq/events/{uuid}', $bySlug['larping_event']);
 	}//end testHandleUsesCorrectUrlPatterns()
 }//end class

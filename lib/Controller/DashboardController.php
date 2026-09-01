@@ -73,4 +73,24 @@ class DashboardController extends Controller {
 			[]
 		);
 	}//end page()
+
+	/**
+	 * Serve the SPA for deep links (Vue history mode). Delegates to {@see page()}.
+	 *
+	 * Without this the server has no handler for `/apps/larpinq/<route>`, so a
+	 * deep link or a RELOAD on any sub-path 404s before the SPA ever loads —
+	 * which is why this app was the one of the seven still unable to move off
+	 * hash routing. Measured before this change: /apps/larpinq/characters and
+	 * /events both returned 404, while every other hash-mode app answered 200.
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 *
+	 * @return TemplateResponse
+	 *
+	 * @spec exclude Vue history-mode fallback — delegates to page(); pure framework plumbing, no domain logic.
+	 */
+	public function catchAll(): TemplateResponse {
+		return $this->page();
+	}//end catchAll()
 }//end class

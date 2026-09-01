@@ -189,7 +189,7 @@ async function navTo(page: Page, slug: string): Promise<void> {
  * Navigate to a detail route via the app's hash router.
  *
  * The router runs in `mode: 'hash'` (src/main.js — fleet #133 deep-link fix),
- * so the canonical detail URL is `/apps/larpinq/#/<slug>/<id>`. Loading that
+ * so the canonical detail URL is `/apps/larpinq/<slug>/<id>`. Loading that
  * URL serves the SPA root from the server (no 404 — the hash fragment is never
  * sent to the backend) and the client-side hash router resolves the detail
  * route. This is the deep-link path the hash-mode change exists to support, so

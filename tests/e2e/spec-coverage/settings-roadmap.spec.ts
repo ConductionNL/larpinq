@@ -27,7 +27,7 @@ const BASE = '/apps/larpinq'
 /**
  * Hard-load the target in-app route via the app's hash router. The router runs
  * in `mode: 'hash'` (src/main.js — fleet #133 deep-link fix), so in-app routes
- * are addressed as /apps/larpinq/#/<route>. Loading that URL serves the SPA
+ * are addressed as /apps/larpinq/<route>. Loading that URL serves the SPA
  * root from the server (the hash fragment is never sent to the backend, so no
  * 404) and the client-side router resolves the view. A fresh load per test
  * avoids the shared-list-state collapse where in-session sidebar navigation

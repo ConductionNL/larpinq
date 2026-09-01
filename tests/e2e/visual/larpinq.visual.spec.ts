@@ -17,10 +17,10 @@ const APP = '/index.php/apps/larpinq'
 
 test.describe('Larpinq — visual baselines', () => {
 	test('dashboard', async ({ page }) => {
-		await shootSurface(page, `${APP}/#/`, 'dashboard.png')
+		await shootSurface(page, `${APP}/`, 'dashboard.png')
 	})
 
 	test('characters list', async ({ page }) => {
-		await shootByNav(page, `${APP}/#/`, 'Characters', 'characters.png')
+		await shootByNav(page, `${APP}/`, 'Characters', 'characters.png')
 	})
 })
