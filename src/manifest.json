@@ -101,7 +101,7 @@
 					{ "id": "kpi-players",    "title": "Players",          "type": "stat", "content": { "label": "Players", "route": { "name": "Players" }, "icon": "Account", "format": { "style": "number" }, "source": { "register": "larpinq", "schema": "player", "metric": "count", "filter": {} } } },
 					{ "id": "recent-characters", "title": "Recent characters", "type": "object-table", "content": { "register": "larpinq", "schema": "character", "filter": {}, "sort": { "field": "created", "dir": "desc" }, "limit": 6, "rowRoute": "CharacterDetail", "rowIcon": "AccountGroup", "hideHeader": true, "viewAllRoute": { "name": "Characters" }, "viewAllLabel": "View all characters", "emptyText": "No characters yet", "columns": [{ "key": "name", "label": "Name" }, { "key": "type", "label": "Type" }] } },
 					{ "id": "recent-events",     "title": "Recent events",     "type": "object-table", "content": { "register": "larpinq", "schema": "larping_event", "filter": {}, "sort": { "field": "startDate", "dir": "desc" }, "limit": 6, "rowRoute": "EventDetail", "rowIcon": "CalendarStar", "hideHeader": true, "viewAllRoute": { "name": "Events" }, "viewAllLabel": "View all events", "emptyText": "No events yet", "columns": [{ "key": "name", "label": "Event" }, { "key": "startDate", "label": "Starts" }] } },
-					{ "id": "skill-usage",    "title": "Skill usage by characters", "type": "chart", "content": { "chartKind": "donut", "legendPosition": "bottom", "emptyLabel": "No skill data available", "dataSource": { "register": "larpinq", "schema": "character", "aggregate": { "groupBy": "skills", "metric": "count", "topN": 10, "otherBucket": true, "labelResolve": { "schema": "skill", "labelField": "name" } } } } }
+					{ "id": "skill-usage",    "title": "Skill usage by characters", "type": "chart", "content": { "chartKind": "donut", "legendPosition": "bottom", "emptyLabel": "No skill data available", "dataSource": { "register": "larpinq", "schema": "character", "aggregate": { "groupBy": "skills", "metric": "count", "topN": 10, "otherBucket": true, "labelResolve": { "schema": "larping_skill", "labelField": "name" } } } } }
 				],
 				"layout": [
 					{ "id": 1, "widgetId": "kpi-characters", "gridX": 0, "gridY": 0, "gridWidth": 3, "gridHeight": 2, "showTitle": false },
@@ -224,7 +224,7 @@
 					{ "id": "ability-data", "type": "data", "title": "Ability", "icon": "Gauge", "content": { "columns": 2 } },
 					{ "id": "ability-base", "type": "stat", "title": "Base value", "icon": "Gauge", "content": { "label": "Base value", "icon": "Gauge", "format": { "style": "number" }, "source": { "register": "larpinq", "schema": "ability", "metric": "sum", "field": "base", "filter": { "id": "@objectId" } } } },
 					{ "id": "ability-effects", "type": "object-list", "title": "Effects modifying this ability", "icon": "TrendingUp", "content": { "register": "larpinq", "schema": "effect", "filter": { "abilities": "@objectId" }, "columns": [ { "key": "name", "label": "Effect" }, { "key": "modifier", "label": "Modifier" }, { "key": "modification", "label": "Direction" }, { "key": "cumulative", "label": "Stacks" } ], "limit": 50, "viewAllRoute": "Effects", "viewAllQuery": { "abilities": "@objectId" }, "emptyText": "No effects modify this stat yet." } },
-					{ "id": "ability-skills", "type": "object-list", "title": "Skills requiring this stat", "icon": "School", "content": { "register": "larpinq", "schema": "skill", "filter": { "requiredStats": "@objectId" }, "columns": [ { "key": "name", "label": "Skill" }, { "key": "requiredScore", "label": "Min score" } ], "limit": 50, "viewAllRoute": "Skills", "viewAllQuery": { "requiredStats": "@objectId" }, "emptyText": "No skills require this stat yet." } },
+					{ "id": "ability-skills", "type": "object-list", "title": "Skills requiring this stat", "icon": "School", "content": { "register": "larpinq", "schema": "larping_skill", "filter": { "requiredStats": "@objectId" }, "columns": [ { "key": "name", "label": "Skill" }, { "key": "requiredScore", "label": "Min score" } ], "limit": 50, "viewAllRoute": "Skills", "viewAllQuery": { "requiredStats": "@objectId" }, "emptyText": "No skills require this stat yet." } },
 					{ "id": "ability-related", "type": "related", "title": "Related", "icon": "LinkVariant" }
 				],
 				"layout": [
@@ -248,7 +248,7 @@
 			"route": "/skills",
 			"type": "index",
 			"title": "Skills",
-			"config": { "register": "larpinq", "schema": "skill", "documentationUrl": "https://larpinq.conduction.nl" }
+			"config": { "register": "larpinq", "schema": "larping_skill", "documentationUrl": "https://larpinq.conduction.nl" }
 		},
 		{
 			"id": "SkillTree",
@@ -266,7 +266,7 @@
 			"title": "Skill",
 			"config": {
 				"register": "larpinq",
-				"schema": "skill",
+				"schema": "larping_skill",
 				"documentationUrl": "https://larpinq.conduction.nl",
 				"_note": "Skill = a learnable, XP-purchased ability with prerequisites (rules-object archetype, prerequisite-heavy). The body leads with the skill's flavour + mechanical effect (data, 8-wide) beside a related rail that surfaces the four prerequisite groups the schema carries (required skills, required stats, required conditions, required effects) plus the effects it grants — the whole dependency tree in one place. Below, an object-list of characters who have learned this skill (character.skills contains @objectId) lets a GM see adoption. Pure rules object: no comms, no files.",
 				"widgets": [
@@ -383,7 +383,7 @@
 					{ "id": "effect-data", "type": "data", "title": "Effect", "icon": "Lightbulb", "content": { "columns": 2 } },
 					{ "id": "effect-modifier", "type": "stat", "title": "Modifier", "icon": "TrendingUp", "content": { "label": "Modifier value", "icon": "TrendingUp", "format": { "style": "number" }, "source": { "register": "larpinq", "schema": "effect", "metric": "sum", "field": "modifier", "filter": { "id": "@objectId" } } } },
 					{ "id": "effect-abilities", "type": "related", "title": "Modifies abilities", "icon": "LinkVariant", "content": { "groups": [ { "key": "abilities", "label": "Abilities" } ] } },
-					{ "id": "effect-skills", "type": "object-list", "title": "Skills granting this effect", "icon": "School", "content": { "register": "larpinq", "schema": "skill", "filter": { "effects": "@objectId" }, "columns": [ { "key": "name", "label": "Skill" } ], "limit": 50, "viewAllRoute": "Skills", "viewAllQuery": { "effects": "@objectId" }, "emptyText": "No skills grant this effect yet." } },
+					{ "id": "effect-skills", "type": "object-list", "title": "Skills granting this effect", "icon": "School", "content": { "register": "larpinq", "schema": "larping_skill", "filter": { "effects": "@objectId" }, "columns": [ { "key": "name", "label": "Skill" } ], "limit": 50, "viewAllRoute": "Skills", "viewAllQuery": { "effects": "@objectId" }, "emptyText": "No skills grant this effect yet." } },
 					{ "id": "effect-items", "type": "object-list", "title": "Items granting this effect", "icon": "Package", "content": { "register": "larpinq", "schema": "larping_item", "filter": { "effects": "@objectId" }, "columns": [ { "key": "name", "label": "Item" } ], "limit": 50, "viewAllRoute": "Items", "viewAllQuery": { "effects": "@objectId" }, "emptyText": "No items grant this effect yet." } },
 					{ "id": "effect-conditions", "type": "object-list", "title": "Conditions granting this effect", "icon": "AlertCircleOutline", "content": { "register": "larpinq", "schema": "condition", "filter": { "effects": "@objectId" }, "columns": [ { "key": "name", "label": "Condition" } ], "limit": 50, "viewAllRoute": "Conditions", "viewAllQuery": { "effects": "@objectId" }, "emptyText": "No conditions grant this effect yet." } }
 				],
