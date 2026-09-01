@@ -51,9 +51,7 @@ async function openRoute(page: Page, route: string): Promise<void> {
 	await dismissSupportDialog(page)
 	// Path, not hash. Anchored at the end so `/features-roadmap` cannot be
 	// satisfied by some longer route that merely contains it.
-	await expect(page).toHaveURL(
-		new RegExp(`${route.replace(/\//g, '\\/')}$`),
-	)
+	await expect(page).toHaveURL(new RegExp(`${route.replace(/\//g, '\\/')}$`))
 	await expect(page.locator('.app-content')).toBeVisible({ timeout: 10_000 })
 }
 

@@ -41,6 +41,33 @@ class DashboardControllerTest extends TestCase {
 		self::assertInstanceOf(TemplateResponse::class, $result);
 	}
 
+	/**
+	 * The SPA catch-all serves the same shell as page().
+	 *
+	 * `dashboard#catchAll` at GET /{path} is what makes larpinq's deep links
+	 * work: before it, /apps/larpinq/characters and /events 404'd at the
+	 * SERVER, which is why this app could not simply switch to history routing
+	 * with the others. It is a public network-facing endpoint, so gate-25
+	 * (contract-coverage) wants a test rather than an `@contract exclude`.
+	 *
+	 * Asserting equality with page() rather than merely "returns a response" is
+	 * the point: catchAll() exists only to delegate, and a delegation that
+	 * quietly rendered the wrong template would hand every deep link a blank
+	 * page while still answering HTTP 200.
+	 *
+	 * @return void
+	 */
+	public function testCatchAllServesTheSameShellAsPage(): void {
+		$result = $this->controller->catchAll();
+		$page = $this->controller->page();
+
+		self::assertInstanceOf(TemplateResponse::class, $result);
+		self::assertSame('index', $result->getTemplateName());
+		self::assertSame($page->getTemplateName(), $result->getTemplateName());
+		self::assertSame($page->getRenderAs(), $result->getRenderAs());
+		self::assertSame($page->getParams(), $result->getParams());
+	}
+
 	public function testPageUsesIndexTemplate(): void {
 		$result = $this->controller->page();
 
