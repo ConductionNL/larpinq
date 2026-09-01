@@ -51,7 +51,16 @@ async function openRoute(page: Page, route: string): Promise<void> {
 	await dismissSupportDialog(page)
 	// Path, not hash. Anchored at the end so `/features-roadmap` cannot be
 	// satisfied by some longer route that merely contains it.
-	await expect(page).toHaveURL(new RegExp(`${route.replace(/\//g, '\\/')}$`))
+	//
+	// Escape the whole regex metacharacter set, not just `/`. Escaping slashes
+	// alone leaves `.`, `?`, `+`, `(`, `\` and friends live in the pattern, which
+	// CodeQL reports as js/incomplete-sanitization. Today's routes are literals
+	// so nothing is exploitable, but a route with a `.` in it would silently
+	// match more than it names — and a regex that matches too much is the same
+	// class of quiet wrongness this helper was just fixed for.
+	await expect(page).toHaveURL(
+		new RegExp(`${route.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`),
+	)
 	await expect(page.locator('.app-content')).toBeVisible({ timeout: 10_000 })
 }
 
