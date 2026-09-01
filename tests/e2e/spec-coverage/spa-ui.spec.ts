@@ -32,7 +32,7 @@ const TS = Date.now()
  *
  * The Vue SPA uses hash mode with base `/apps/larpinq` (src/main.js —
  * fleet #133 deep-link fix). In-app routes (/characters, /abilities, …) are
- * addressed via the URL hash: /apps/larpinq/#/<route>. The hash fragment is
+ * addressed via the URL hash: /apps/larpinq/<route>. The hash fragment is
  * never sent to the backend, so the SPA root is always served and Vue Router's
  * hashchange listener resolves the view client-side. Strategy: land on the SPA
  * root first, wait for Vue to mount, then set window.location.hash so the
@@ -72,7 +72,7 @@ async function go(page: Page, route: string): Promise<void> {
 	}
 	// Resolve the target path relative to the app base. The router runs in
 	// hash mode (src/main.js — fleet #133 deep-link fix), so in-app routes are
-	// addressed via the URL hash: /apps/larpinq/#/<route>. Driving the hash
+	// addressed via the URL hash: /apps/larpinq/<route>. Driving the hash
 	// directly lets Vue Router's hashchange listener resolve the view (the old
 	// history.pushState to a bare /apps/larpinq/<route> path no longer routes
 	// under hash mode and addresses a server path that 404s on reload).

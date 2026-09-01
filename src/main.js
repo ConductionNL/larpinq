@@ -15,7 +15,7 @@ import {
 } from '@nextcloud/l10n'
 import { generateUrl } from '@nextcloud/router'
 import { createApp, h } from 'vue'
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import App from './App.vue'
 import appIcons from './icons.js'
 import bundledManifest from './manifest.json'
@@ -342,8 +342,29 @@ function routesFromManifest(manifest) {
 	return routes
 }
 
+/**
+ * The router base for THIS page load.
+ *
+ * ⚠️ `generateUrl('/apps/larpinq')` alone is not enough. Nextcloud serves the
+ * app under BOTH `/apps/larpinq/...` and `/index.php/apps/larpinq/...`, but
+ * `generateUrl()` returns only the form the instance is configured for. A
+ * visitor arriving on the other form falls outside the router base, vue-router
+ * cannot resolve the path, and the catch-all redirects to `/`: they land on the
+ * dashboard with no error and the deep link is silently swallowed.
+ *
+ * This app's own specs use BOTH spellings — `/apps/larpinq` in `_nav.ts` and
+ * the docs-screenshots spec, `/index.php/apps/larpinq` in the visual spec — so
+ * one or the other would break whichever base was hardcoded.
+ *
+ * @return {string} The base path vue-router should strip from the URL.
+ */
+function routerBase() {
+	const match = window.location.pathname.match(/^(.*\/apps\/larpinq)(?:\/|$)/)
+	return match ? match[1] : generateUrl('/apps/larpinq')
+}
+
 const router = createRouter({
-	history: createWebHashHistory(generateUrl('/apps/larpinq')),
+	history: createWebHistory(routerBase()),
 	routes: routesFromManifest(manifest),
 })
 try {

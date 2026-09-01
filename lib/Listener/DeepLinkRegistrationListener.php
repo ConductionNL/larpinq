@@ -84,14 +84,19 @@ class DeepLinkRegistrationListener implements IEventListener {
 	 * @var array<string, string>
 	 */
 	private const DEEP_LINK_MAP = [
-		'character' => '/apps/larpinq/#/characters/{uuid}',
-		'player' => '/apps/larpinq/#/players/{uuid}',
-		'ability' => '/apps/larpinq/#/abilities/{uuid}',
-		'skill' => '/apps/larpinq/#/skills/{uuid}',
-		'larping_item' => '/apps/larpinq/#/items/{uuid}',
-		'condition' => '/apps/larpinq/#/conditions/{uuid}',
-		'effect' => '/apps/larpinq/#/effects/{uuid}',
-		'larping_event' => '/apps/larpinq/#/events/{uuid}',
+		// Path URLs, not `#/` fragments: larpinq moved to vue-router history
+		// mode. These templates are handed to OTHER apps to link into larpinq, so
+		// a stale `#` here would keep sending every cross-app deep link to the
+		// dashboard — silently, because the router resolves nothing and the
+		// catch-all redirects to `/`.
+		'character' => '/apps/larpinq/characters/{uuid}',
+		'player' => '/apps/larpinq/players/{uuid}',
+		'ability' => '/apps/larpinq/abilities/{uuid}',
+		'skill' => '/apps/larpinq/skills/{uuid}',
+		'larping_item' => '/apps/larpinq/items/{uuid}',
+		'condition' => '/apps/larpinq/conditions/{uuid}',
+		'effect' => '/apps/larpinq/effects/{uuid}',
+		'larping_event' => '/apps/larpinq/events/{uuid}',
 	];
 
 	/**
