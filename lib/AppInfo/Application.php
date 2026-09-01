@@ -29,6 +29,7 @@ use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
 use OCP\AppFramework\Bootstrap\IRegistrationContext;
+use Psr\Container\ContainerInterface;
 
 /**
  * Main application class for Larpinq
@@ -102,6 +103,53 @@ class Application extends App implements IBootstrap {
 		// letting one escape, so when OpenRegister genuinely is absent the
 		// guards below still do their job.
 		OpenRegisterAutoloader::register();
+
+		// Make the AppHost generics this app RELIES ON explicit.
+		//
+		// appinfo/routes.php builds its table with
+		// \OCA\OpenRegister\AppHost\Routes::standard(), which supplies
+		// /api/health and /api/metrics — but larpinq ships no health or metrics
+		// controller of its own, so those two routes resolve only because the
+		// AppHost's generic controllers stand in under larpinq's conventional
+		// class names. Nothing in this repository said so, and gate-14
+		// (route-reachability) reported both as `controller-class-not-found`:
+		// it accepts a Routes::standard() route ONLY when the app shows, in its
+		// own code, that it adopts the generic behind it. The gate was right —
+		// the dependency was real and invisible.
+		//
+		// Registered rather than adopted wholesale via Bootstrap::register(),
+		// which would also alias dashboard, settings, preferences, repair steps
+		// and sections onto generics that do NOT match larpinq's own
+		// controllers. Same reasoning, and the same shape, as shillinq.
+		if (class_exists('OCA\OpenRegister\AppHost\Controller\GenericHealthController') === true) {
+			$context->registerService(
+				'OCA\Larpinq\Controller\HealthController',
+				static function (ContainerInterface $c): object {
+					$class = 'OCA\OpenRegister\AppHost\Controller\GenericHealthController';
+					return new $class(
+						appName: self::APP_ID,
+						request: $c->get('OCP\IRequest'),
+						manifestLoader: $c->get('OCA\OpenRegister\AppHost\Observability\ManifestLoader'),
+						executor: $c->get('OCA\OpenRegister\AppHost\Observability\HealthCheckExecutor')
+					);
+				}
+			);
+		}
+
+		if (class_exists('OCA\OpenRegister\AppHost\Controller\GenericMetricsController') === true) {
+			$context->registerService(
+				'OCA\Larpinq\Controller\MetricsController',
+				static function (ContainerInterface $c): object {
+					$class = 'OCA\OpenRegister\AppHost\Controller\GenericMetricsController';
+					return new $class(
+						appName: self::APP_ID,
+						request: $c->get('OCP\IRequest'),
+						manifestLoader: $c->get('OCA\OpenRegister\AppHost\Observability\ManifestLoader'),
+						engine: $c->get('OCA\OpenRegister\AppHost\Observability\MetricsEngine')
+					);
+				}
+			);
+		}
 
 		// Register the deep link listener for OpenRegister unified search.
 		// The event class is only available when OpenRegister is installed.

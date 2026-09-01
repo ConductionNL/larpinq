@@ -75,21 +75,23 @@ $canonicalRoutes = [
 	['name' => 'settings#load', 'url' => '/api/settings/load', 'verb' => 'POST'],
 	['name' => 'preferences#getPreference', 'url' => '/api/preferences/{key}', 'verb' => 'GET'],
 	['name' => 'preferences#setPreference', 'url' => '/api/preferences/{key}', 'verb' => 'PUT'],
-	// ⚠️ `metrics#index` and `health#index` are DELIBERATELY absent here, and
-	// their absence is the point of this comment. Routes::standard() supplies
-	// both on the branch above, where OpenRegister's AppHost aliases the
-	// generic MetricsController/HealthController onto larpinq's conventional
-	// class names — which is why /api/health and /api/metrics answer 200 on a
-	// normal instance even though this repo ships neither controller.
+	// ⚠️ The health and metrics routes are DELIBERATELY absent here, and their
+	// absence is the point of this comment. Routes::standard() supplies both on
+	// the branch above, where OpenRegister's AppHost aliases its generic
+	// health/metrics controllers onto larpinq's conventional class names —
+	// which is why /api/health and /api/metrics answer 200 on a normal instance
+	// even though this repo ships neither controller.
 	//
 	// This fallback runs ONLY when OpenRegister is absent, and then nothing
-	// aliases them: declaring the routes would advertise two endpoints whose
-	// target classes do not exist, so every request to them would fatal
-	// instead of 404ing. gate-14 (route-reachability) reported exactly that,
-	// as "2 unrouted method(s) or wrong-target route(s)" — it reads this file
-	// statically and could see the two routes but no controller behind them.
-	// The gate was right: an app with no HealthController must not route
-	// health#index.
+	// aliases them: declaring those routes would advertise two endpoints whose
+	// target classes do not exist, so a request to either would fatal rather
+	// than 404. gate-14 (route-reachability) reported exactly that.
+	//
+	// ⚠️ And do NOT write their route slugs (`<controller>` + `#` + `<method>`)
+	// into this comment. gate-14 reads this file statically and matches that
+	// shape anywhere in it, comments included — spelling them out here made the
+	// gate go on reporting both long after the routes themselves were gone,
+	// with the finding pointing at controller files that do not exist.
 ];
 
 $catchAllRoute = [
