@@ -203,7 +203,7 @@ path, kind, code = sys.argv[1], sys.argv[2], sys.argv[3]
 required = {
     'registers': ['larpinq'],
     'schemas': [
-        'character', 'player', 'ability', 'skill', 'larping_item',
+        'character', 'player', 'ability', 'larping_skill', 'larping_item',
         'condition', 'effect', 'larping_event', 'setting', 'xpAward',
         'larping_attendance',
     ],
