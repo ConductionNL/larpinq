@@ -24,8 +24,10 @@
  * playwright.config.ts wires storageState so each test starts logged in.
  */
 
-import { test, expect, type Page } from '@playwright/test'
-import { dismissSupportDialog } from '../_nav'
+import type { Page } from '@playwright/test'
+
+import { expect, test } from '@playwright/test'
+import { dismissSupportDialog } from '../_nav.ts'
 
 const BASE = '/apps/larpinq'
 

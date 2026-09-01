@@ -69,8 +69,7 @@
 
 import { defineConfig, devices } from '@playwright/test'
 import * as path from 'path'
-
-import { resolveBaseURL } from './_base-url'
+import { resolveBaseURL } from './_base-url.ts'
 
 /**
  * Helper modules and opt-in projects that must never be collected as CI specs.

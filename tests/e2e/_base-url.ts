@@ -83,7 +83,6 @@ export function resolveBaseURL(): string {
 		}
 	}
 	if (isCI()) {
-		// eslint-disable-next-line no-console
 		console.warn(
 			`[larpinq e2e] none of ${BASE_URL_VARS.join(' / ')} is set; falling back to the `
 				+ `CI-local ${CI_DEFAULT_BASE_URL} (the runner's own php -S instance).`,

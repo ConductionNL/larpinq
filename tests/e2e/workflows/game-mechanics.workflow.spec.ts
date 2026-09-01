@@ -48,19 +48,21 @@
  * its own `RUN_ID` prefix, and never on the size of the stats block.
  */
 
-import { test, expect, type APIRequestContext } from '@playwright/test'
+import type { APIRequestContext } from '@playwright/test'
+import type { DerivedStats } from './fixtures.ts'
+
+import { expect, test } from '@playwright/test'
 import {
-	RUN_ID,
+	cleanupLedger,
+	computeRosterLive,
+	computeStatsLive,
+	createObject,
+	FixtureLedger,
+	fixtureName,
 	newApi,
 	resolveSchemaIds,
-	FixtureLedger,
-	createObject,
-	computeStatsLive,
-	computeRosterLive,
-	cleanupLedger,
-	fixtureName,
-	type DerivedStats,
-} from './fixtures'
+	RUN_ID,
+} from './fixtures.ts'
 
 let api: APIRequestContext
 const ledger = new FixtureLedger()
@@ -73,7 +75,7 @@ test.beforeAll(async () => {
 test.afterAll(async () => {
 	await cleanupLedger(api, ledger)
 	await api.dispose()
-	// eslint-disable-next-line no-console
+
 	console.log(
 		`[game-mechanics] RUN_ID=${RUN_ID} — fixtures cleaned up via ledger.`,
 	)

@@ -18,7 +18,7 @@
  * @spec openspec/specs/skill-requirement-enforcement/spec.md
  */
 
-import { test, expect } from '@playwright/test'
+import { expect, test } from '@playwright/test'
 
 const BASE = '/apps/larpinq'
 

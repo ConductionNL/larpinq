@@ -51,21 +51,23 @@
  * heading renders) remain active because they render data-independently.
  */
 
-import { test, expect, type APIRequestContext, type Page } from '@playwright/test'
-import { navTo as sharedNavTo, dismissSupportDialog } from '../_nav'
+import type { APIRequestContext, Page } from '@playwright/test'
+
+import { expect, test } from '@playwright/test'
+import { navTo as sharedNavTo } from '../_nav.ts'
 import {
 	BASE,
-	RUN_ID,
-	fixtureName,
-	newApi,
-	FixtureLedger,
-	createObject,
-	getObject,
-	updateObject,
-	deleteObject,
 	cleanupLedger,
+	createObject,
+	deleteObject,
+	FixtureLedger,
+	fixtureName,
+	getObject,
+	newApi,
 	resolveSchemaIds,
-} from './fixtures'
+	RUN_ID,
+	updateObject,
+} from './fixtures.ts'
 
 // Documented blocker reasons; each is annotated onto its test.fixme below via
 // test.info().annotations so the reason travels with the parked test.
@@ -118,22 +120,6 @@ test.afterAll(async () => {
 // Small UI helpers (shell-level; data-independent so they survive the
 // LIST_EMPTY / DETAIL_500 blockers).
 // ---------------------------------------------------------------------------
-
-async function openApp(page: Page): Promise<void> {
-	if (!page.url().includes('/apps/larpinq')) {
-		await page.goto(`${BASE}/`)
-		// ADR-074 rule 4: `networkidle` never settles on Nextcloud.
-		await page
-			.locator('#app-content, .app-content, #content')
-			.first()
-			.waitFor({ state: 'visible', timeout: 30_000 })
-			.catch(() => {})
-	}
-	await expect(page.locator('.app-content')).toBeVisible({ timeout: 15_000 })
-	// Shared helper — see `../_nav`. The local copy matched only
-	// `aria-label="Close"` and never dismissed the onboarding tour.
-	await dismissSupportDialog(page)
-}
 
 /**
  * Reach `slug`'s index page through the real sidebar.
@@ -306,7 +292,7 @@ test.describe('character — CRUD persistence (store round-trip)', () => {
 		// Hash-mode deep link (src/main.js — fleet #133): the detail route is
 		// addressed via the URL hash, served from the SPA root and resolved
 		// client-side.
-		await page.goto(`${BASE}/#/characters/${id}`)
+		await page.goto(`${BASE}/characters/${id}`)
 		// ADR-074 rule 4: `networkidle` never settles on Nextcloud.
 		await page
 			.locator('#app-content, .app-content, #content')
@@ -427,7 +413,6 @@ test.describe('skill — CRUD persistence (store round-trip)', () => {
 })
 
 test.afterAll(() => {
-	// eslint-disable-next-line no-console
 	console.log(
 		`[crud-persistence] RUN_ID=${RUN_ID} — fixtures cleaned up via ledger.`,
 	)

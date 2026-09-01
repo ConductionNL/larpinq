@@ -15,7 +15,7 @@
  * error path under test logs without writing noise into the test output.
  */
 
-const noop = () => {}
+function noop() {}
 
 const logger = {
 	debug: noop,

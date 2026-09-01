@@ -19,8 +19,10 @@
  * playwright.config.ts wires storageState so each test starts logged in.
  */
 
-import { test, expect, type Page } from '@playwright/test'
-import { dismissSupportDialog } from '../_nav'
+import type { Page } from '@playwright/test'
+
+import { expect, test } from '@playwright/test'
+import { dismissSupportDialog } from '../_nav.ts'
 
 const BASE = '/apps/larpinq'
 
@@ -37,7 +39,7 @@ async function openRoute(page: Page, route: string): Promise<void> {
 	// `domcontentloaded`, never `networkidle` — the latter is unreachable on
 	// Nextcloud (notification poll), so it just burns the budget (ADR-074
 	// rule 4). The `.app-content` assertion below is the real readiness gate.
-	await page.goto(`${BASE}/#${route}`, { waitUntil: 'domcontentloaded' })
+	await page.goto(`${BASE}${route}`, { waitUntil: 'domcontentloaded' })
 	await dismissSupportDialog(page)
 	await expect(page).toHaveURL(new RegExp(`#${route.replace(/\//g, '\\/')}`))
 	await expect(page.locator('.app-content')).toBeVisible({ timeout: 10_000 })

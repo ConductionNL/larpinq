@@ -8,7 +8,7 @@
  * @nextcloud/router + @nextcloud/auth helpers are aliased to stubs.
  */
 
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { queryGraphQL } from '../../src/services/graphql.js'
 
 function mockFetchOnce({ ok = true, status = 200, json = {}, headers = {} } = {}) {

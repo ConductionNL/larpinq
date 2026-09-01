@@ -68,7 +68,7 @@ function schemaFileName() {
 		if (ref.includes('app-manifest-v2')) {
 			return 'app-manifest-v2.schema.json'
 		}
-	} catch (_) {
+	} catch {
 		// fall through to the v1 default
 	}
 	return 'app-manifest.schema.json'
@@ -96,7 +96,7 @@ function findSchemaPath() {
 			if (fs.existsSync(candidate) && fs.statSync(candidate).isFile()) {
 				return candidate
 			}
-		} catch (_) {
+		} catch {
 			// continue to next candidate
 		}
 	}
@@ -112,16 +112,16 @@ function loadAjv() {
 	// The canonical schema uses JSON Schema draft 2020-12. Standard Ajv (v7+)
 	// does not auto-load the 2020 meta-schema; we need the `ajv/dist/2020`
 	// entry point.
-	let Ajv2020 = null
-	let addFormats = null
+	let Ajv2020
+	let addFormats
 	try {
 		// Ajv 8+ ships the 2020 draft entry point.
 		Ajv2020 = require('ajv/dist/2020').default || require('ajv/dist/2020')
-	} catch (_) {
+	} catch {
 		try {
 			// Fall back to standard Ajv.
 			Ajv2020 = require('ajv').default || require('ajv')
-		} catch (__) {
+		} catch {
 			console.error('[validate-manifest] Ajv not installed in node_modules.')
 			console.error(
 				'[validate-manifest] Install with: npm i -D ajv ajv-formats',
@@ -134,7 +134,7 @@ function loadAjv() {
 	}
 	try {
 		addFormats = require('ajv-formats').default || require('ajv-formats')
-	} catch (_) {
+	} catch {
 		// ajv-formats is optional; the schema uses "uri" format on $schema
 		// which without ajv-formats is silently accepted.
 		addFormats = null

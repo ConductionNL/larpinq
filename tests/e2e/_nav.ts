@@ -1,3 +1,5 @@
+import type { Page } from '@playwright/test'
+
 /**
  * Shared larpinq sidebar-navigation helper.
  *
@@ -30,7 +32,7 @@
  *     plain click hangs on actionability) AND the click must be retried,
  *     because force cannot fire a handler Vue has not attached yet.
  */
-import { expect, type Page } from '@playwright/test'
+import { expect } from '@playwright/test'
 
 export const APP_BASE = '/apps/larpinq'
 export const NAV = '[data-testid="cn-nav"]'

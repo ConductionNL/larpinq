@@ -20,7 +20,7 @@
  * @spec openspec/specs/pdf-export/spec.md
  */
 
-import { test, expect } from '@playwright/test'
+import { expect, test } from '@playwright/test'
 
 const BASE = '/apps/larpinq'
 

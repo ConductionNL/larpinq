@@ -20,11 +20,13 @@
  * adopter).
  */
 
-import { chromium, expect, request, type FullConfig } from '@playwright/test'
+import type { FullConfig } from '@playwright/test'
+
+import { chromium, expect, request } from '@playwright/test'
 import { execSync } from 'child_process'
-import * as path from 'path'
 import * as fs from 'fs'
-import { resolveBaseURL } from './_base-url'
+import * as path from 'path'
+import { resolveBaseURL } from './_base-url.ts'
 
 const AUTH_DIR = path.resolve(__dirname, '.auth')
 const STORAGE_STATE = path.join(AUTH_DIR, 'admin.json')
@@ -52,7 +54,7 @@ function ensureBundleBuilt(): void {
 	if (fs.existsSync(BUNDLE_PATH)) {
 		return
 	}
-	// eslint-disable-next-line no-console
+
 	console.log(
 		`[playwright globalSetup] bundle missing at ${BUNDLE_PATH}; running 'npm run build' once…`,
 	)
@@ -99,7 +101,7 @@ async function ensureNextcloudReachable(baseURL: string): Promise<void> {
 			} catch (err) {
 				last = `request failed: ${(err as Error).message}`
 			}
-			// eslint-disable-next-line no-await-in-loop
+
 			await new Promise((resolve) => setTimeout(resolve, 5_000))
 		}
 		throw new Error(
@@ -223,7 +225,7 @@ export default async function globalSetup(config: FullConfig): Promise<void> {
 		await page.evaluate(() => {
 			try {
 				window.localStorage.setItem('cn-walkthrough-seen:larpinq', '999.0.0')
-			} catch (e) {
+			} catch {
 				// localStorage unavailable — specs fall back to dismissing by hand.
 			}
 		})

@@ -17,11 +17,12 @@
  * playwright.config.ts wires storageState so each test starts logged in.
  */
 
-import { test, expect, type Page } from '@playwright/test'
-import { dismissSupportDialog } from '../_nav'
+import type { Page } from '@playwright/test'
+
+import { expect, test } from '@playwright/test'
+import { dismissSupportDialog } from '../_nav.ts'
 
 const BASE = '/apps/larpinq'
-const TS = Date.now()
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -360,9 +361,10 @@ test.describe('character-management', () => {
 		if (await btn.isVisible({ timeout: 3000 }).catch(() => false)) {
 			await btn.click()
 			const dialog = page.locator('[role="dialog"]').first()
-			await dialog.waitFor({ state: 'visible', timeout: 5000 }).catch(() => {})
-			// Name field should be present in the dialog
-			const nameField = dialog
+			await dialog
+				.waitFor({ state: 'visible', timeout: 5000 })
+				.catch(() => {})
+				// Name field should be present in the dialog
 				.locator(
 					'input[placeholder*="name" i], input[name*="name" i], label:has-text("Name") ~ * input',
 				)
