@@ -398,4 +398,30 @@ class SettingsController extends Controller {
 		}//end try
 
 	}//end reimport()
+
+	/**
+	 * Canonical AppHost alias for {@see reimport()}.
+	 *
+	 * `OpenRegister\AppHost\Routes::standard()` declares `settings#load`, and the
+	 * local fallback in appinfo/routes.php reproduces it, so the route existed
+	 * here with no method behind it: every POST to /api/settings/load was a
+	 * dispatch-time 500. Pinned by CanonicalSettingsRouteContractTest, which is
+	 * what caught it.
+	 *
+	 * larpinq spells the same operation `reimport()`, so this delegates rather
+	 * than duplicating it, the way {@see create()} delegates to {@see update()}.
+	 * The four sibling apps that already carry `load()` do the same force
+	 * re-import.
+	 *
+	 * @auth admin-only Same posture as reimport(): no auth attribute, so
+	 *       Nextcloud's default of admin session + CSRF token applies. Pinned by
+	 *       SettingsControllerCsrfPostureTest.
+	 *
+	 * @return JSONResponse The re-import result.
+	 *
+	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-25
+	 */
+	public function load(): JSONResponse {
+		return $this->reimport();
+	}//end load()
 }//end class

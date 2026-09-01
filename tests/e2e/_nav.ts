@@ -204,6 +204,8 @@ export async function navTo(page: Page, slug: string): Promise<void> {
 		timeout: 10_000,
 	})
 	await link.click()
-	await expect(page).toHaveURL(new RegExp(`#/${slug}(\\b|/|$|\\?)`))
+	// larpinq moved off hash routing (#651), so the URL is /apps/larpinq/<slug>
+	// with no "#". The old pattern waited 15s on a hash that is never produced.
+	await expect(page).toHaveURL(new RegExp(`/${slug}(\\b|/|$|\\?)`))
 	await expect(page.locator('.app-content')).toBeVisible({ timeout: 10_000 })
 }
