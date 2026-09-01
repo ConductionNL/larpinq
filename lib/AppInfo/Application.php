@@ -119,12 +119,42 @@ class Application extends App implements IBootstrap {
 		// The alias is skipped for any controller Larpinq does define, so this
 		// cannot take over SettingsController or any other leaf class.
 		//
+		// Two options narrow what it takes over, and both are load-bearing.
+		//
+		// `serviceNamespace` is pointed at a namespace Larpinq does not use.
+		// `registerServices()` claims `<serviceNs>\SettingsService`
+		// UNCONDITIONALLY — unlike the controller aliases, there is no
+		// "unless the leaf defines it" guard — so with the default it replaces
+		// Larpinq's own SettingsService with the AppHost generic, and
+		// `Repair\InitializeRegister::__construct()`, which type-hints the
+		// Larpinq class, dies with a TypeError. Redirecting the namespace lands
+		// those three service ids somewhere nothing resolves. The generic
+		// health and metrics controllers do not read them: their factories take
+		// only IRequest and OpenRegister's own observability collaborators.
+		//
+		// `deepLinks` is off because Larpinq registers its own
+		// DeepLinkRegistrationListener a few lines below, and the AppHost
+		// listener binds the same event under the same class name.
+		//
+		// Everything else is already safe: `aliasControllerUnlessLeafDefinesIt`
+		// skips any controller this app ships, and Larpinq ships Dashboard,
+		// Preferences and Settings — so Health and Metrics are the only two
+		// aliases that actually take effect, which is the point of the call.
+		//
 		// The class_exists() guard MUST stay in this method: it is also the
 		// assertion psalm relies on to accept the Bootstrap::register() call,
 		// and psalm does not carry that narrowing across a call.
 		if (class_exists('OCA\OpenRegister\AppHost\Bootstrap') === true) {
 			try {
-				\OCA\OpenRegister\AppHost\Bootstrap::register($context, self::APP_ID, ['namespace' => 'OCA\\Larpinq']);
+				\OCA\OpenRegister\AppHost\Bootstrap::register(
+					$context,
+					self::APP_ID,
+					[
+						'namespace' => 'OCA\\Larpinq',
+						'serviceNamespace' => 'OCA\\Larpinq\\AppHost\\Service',
+						'deepLinks' => false,
+					]
+				);
 			} catch (\Throwable) {
 				// AppHost present but unloadable: skip the generic plumbing.
 				// Larpinq's own listeners and services MUST still register. No
