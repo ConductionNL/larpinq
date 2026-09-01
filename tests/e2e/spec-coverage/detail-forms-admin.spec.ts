@@ -221,7 +221,8 @@ async function gotoDetail(
 	// `aria-label="Close"` and never dismissed the onboarding tour, whose
 	// controls are "Close tour" / "Skip".
 	await dismissSupportDialog(page)
-	await expect(page).toHaveURL(new RegExp(`#/${slug}/${id}`))
+	// Path routing since #651: no "#" in the URL.
+	await expect(page).toHaveURL(new RegExp(`/${slug}/${id}`))
 	await expect(page.locator('.app-content')).toBeVisible({ timeout: 10_000 })
 	// A detail page's own heading is the OBJECT's name (`<h2>`); the entity type
 	// ("Character", "Event", …) renders as a kicker paragraph above it, not as a

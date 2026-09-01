@@ -361,14 +361,21 @@ test.describe('character-management', () => {
 		if (await btn.isVisible({ timeout: 3000 }).catch(() => false)) {
 			await btn.click()
 			const dialog = page.locator('[role="dialog"]').first()
-			await dialog
-				.waitFor({ state: 'visible', timeout: 5000 })
-				.catch(() => {})
-				// Name field should be present in the dialog
+			// waitFor() resolves a PROMISE, so the old form chained .locator()
+			// onto it and threw "dialog.waitFor(...).catch(...).locator is not a
+			// function" before asserting anything. The locator it built was also
+			// discarded, so even without the TypeError this test asserted nothing
+			// while carrying a name that says it checks the name field.
+			await dialog.waitFor({ state: 'visible', timeout: 5000 }).catch(() => {})
+			const nameField = dialog
 				.locator(
 					'input[placeholder*="name" i], input[name*="name" i], label:has-text("Name") ~ * input',
 				)
 				.first()
+			await expect(
+				nameField,
+				'the character form must offer a name field',
+			).toBeVisible({ timeout: 5000 })
 			await page.keyboard.press('Escape')
 		}
 		// Page is still functional after dialog interaction
