@@ -277,6 +277,20 @@
 			"order": 96
 		}
 	],
+	"observability": {
+		"_note": "Declarative health descriptors for the AppHost engine (ADR-040 / ADR-006). Application::registerAppHostGenerics() aliases OpenRegister's GenericHealthController and GenericMetricsController onto larpinq's controller names, and those read THIS block at request time. Without it HealthCheckExecutor iterates an empty descriptor list, so /api/health answers 200 with an empty `checks` object — it would report `ok` with the database down. Metrics are the implicit larpinq_info and larpinq_up gauges the engine adds; health is public and metrics admin-only, per ADR-006.",
+		"health": {
+			"statusCodePolicy": "adr006",
+			"checks": [
+				{ "id": "database", "type": "database", "severity": "critical" },
+				{
+					"id": "openregister",
+					"type": "orAvailable",
+					"severity": "degraded"
+				}
+			]
+		}
+	},
 	"pages": [
 		{
 			"id": "Dashboard",
