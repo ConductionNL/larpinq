@@ -104,6 +104,48 @@ class Application extends App implements IBootstrap {
 		// guards below still do their job.
 		OpenRegisterAutoloader::register();
 
+		$this->registerAppHostGenerics(context: $context);
+
+		// Register the deep link listener for OpenRegister unified search.
+		// The event class is only available when OpenRegister is installed.
+		if (class_exists('OCA\OpenRegister\Event\DeepLinkRegistrationEvent') === true) {
+			$context->registerEventListener(
+				'OCA\OpenRegister\Event\DeepLinkRegistrationEvent',
+				DeepLinkRegistrationListener::class
+			);
+		}
+
+		// Server-authoritative skill-requirement / XP-budget enforcement on
+		// character writes. The OR pre-write event classes only exist on
+		// newer OpenRegister releases; guard so older deployments degrade to
+		// data-only instead of fataling at boot (skill-requirement-enforcement).
+		if (class_exists('OCA\OpenRegister\Event\ObjectCreatingEvent') === true) {
+			$context->registerEventListener(
+				'OCA\OpenRegister\Event\ObjectCreatingEvent',
+				CharacterRequirementListener::class
+			);
+		}
+
+		if (class_exists('OCA\OpenRegister\Event\ObjectUpdatingEvent') === true) {
+			$context->registerEventListener(
+				'OCA\OpenRegister\Event\ObjectUpdatingEvent',
+				CharacterRequirementListener::class
+			);
+		}
+	}//end register()
+
+	/**
+	 * Register the AppHost generic controllers this app relies on.
+	 *
+	 * Extracted from register() because phpmd's ExcessiveMethodLength fires at
+	 * 100 lines and adding this inline hit it exactly — the same decomposition
+	 * pressure that moved procest's AppHost call into its own registrar.
+	 *
+	 * @param IRegistrationContext $context The registration context.
+	 *
+	 * @return void
+	 */
+	private function registerAppHostGenerics(IRegistrationContext $context): void {
 		// Make the AppHost generics this app RELIES ON explicit.
 		//
 		// appinfo/routes.php builds its table with
@@ -150,34 +192,8 @@ class Application extends App implements IBootstrap {
 				}
 			);
 		}
+	}//end registerAppHostGenerics()
 
-		// Register the deep link listener for OpenRegister unified search.
-		// The event class is only available when OpenRegister is installed.
-		if (class_exists('OCA\OpenRegister\Event\DeepLinkRegistrationEvent') === true) {
-			$context->registerEventListener(
-				'OCA\OpenRegister\Event\DeepLinkRegistrationEvent',
-				DeepLinkRegistrationListener::class
-			);
-		}
-
-		// Server-authoritative skill-requirement / XP-budget enforcement on
-		// character writes. The OR pre-write event classes only exist on
-		// newer OpenRegister releases; guard so older deployments degrade to
-		// data-only instead of fataling at boot (skill-requirement-enforcement).
-		if (class_exists('OCA\OpenRegister\Event\ObjectCreatingEvent') === true) {
-			$context->registerEventListener(
-				'OCA\OpenRegister\Event\ObjectCreatingEvent',
-				CharacterRequirementListener::class
-			);
-		}
-
-		if (class_exists('OCA\OpenRegister\Event\ObjectUpdatingEvent') === true) {
-			$context->registerEventListener(
-				'OCA\OpenRegister\Event\ObjectUpdatingEvent',
-				CharacterRequirementListener::class
-			);
-		}
-	}//end register()
 
 	/**
 	 * Boot the application.
