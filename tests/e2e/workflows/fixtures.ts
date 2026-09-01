@@ -48,8 +48,10 @@
  *                            from the character's skills/items/conditions/events.
  */
 
-import { request, type APIRequestContext } from '@playwright/test'
-import { OR_OBJECTS_API, LARPINQ_SETTINGS_API } from '../_base-url'
+import type { APIRequestContext } from '@playwright/test'
+
+import { request } from '@playwright/test'
+import { LARPINQ_SETTINGS_API, OR_OBJECTS_API } from '../_base-url.ts'
 
 export const BASE = '/apps/larpinq'
 
@@ -181,9 +183,17 @@ export async function createObject(
 	// `resolveSchemaIds()` was wired in (larpinq's real one is
 	// `larping_item`). Cross-app slug collision — OR #2150 class.
 	const payload: Record<string, unknown> = { ...body }
-	if (payload.name != null && payload.title == null) {
+	if (
+		payload.name !== null
+		&& payload.name !== undefined
+		&& (payload.title === null || payload.title === undefined)
+	) {
 		payload.title = payload.name
-	} else if (payload.title != null && payload.name == null) {
+	} else if (
+		payload.title !== null
+		&& payload.title !== undefined
+		&& (payload.name === null || payload.name === undefined)
+	) {
 		payload.name = payload.title
 	}
 	const res = await api.post(url, { headers: HEADERS, data: payload })
@@ -269,7 +279,6 @@ export async function cleanupLedger(
 		for (const id of ledger.ids(type)) {
 			const ok = await deleteObject(api, type, id).catch(() => false)
 			if (!ok) {
-				// eslint-disable-next-line no-console
 				console.warn(
 					`[workflows cleanup] could not delete ${type}/${id} (RUN_ID=${RUN_ID})`,
 				)
@@ -582,7 +591,6 @@ export async function computeRosterLive(
 	}) as unknown as Record<string, DerivedStats> | null
 }
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * Locate the Nextcloud server root this checkout is installed INTO, by walking
  * up from this file until `lib/base.php` and `config/config.php` are both
@@ -696,7 +704,6 @@ function runPhpHarness(
 			})
 			return parse(out)
 		} catch (err) {
-			// eslint-disable-next-line no-console
 			console.warn(
 				`[stat harness] in-process run failed under ${serverRoot}: ${(err as Error).message}`,
 			)
@@ -748,4 +755,3 @@ function runPhpHarness(
 		}
 	}
 }
-/* eslint-enable @typescript-eslint/no-explicit-any */

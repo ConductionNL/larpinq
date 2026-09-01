@@ -28,10 +28,14 @@ const fs = require('fs')
 const path = require('path')
 
 const root = process.cwd()
-const read = (p) => {
+/**
+ *
+ * @param p
+ */
+function read(p) {
 	try {
 		return JSON.parse(fs.readFileSync(p, 'utf8'))
-	} catch (e) {
+	} catch {
 		return null
 	}
 }
@@ -81,8 +85,13 @@ for (const [entry, meta] of Object.entries(lock.packages)) {
 	}
 }
 
-const fmt = (r) =>
-	`  ${r.name.padEnd(38)} lock ${String(r.want).padEnd(14)} installed ${r.got || '(absent)'}`
+/**
+ *
+ * @param r
+ */
+function fmt(r) {
+	return `  ${r.name.padEnd(38)} lock ${String(r.want).padEnd(14)} installed ${r.got || '(absent)'}`
+}
 
 if (drift.dev.length) {
 	console.log(

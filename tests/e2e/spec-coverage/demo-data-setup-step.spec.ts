@@ -28,7 +28,9 @@
  * (`setup-demo-data-first`) checks it statically on every change. Claiming to
  * prove it here would be asserting something this vantage point cannot see.
  */
-import { test, expect, Page } from '@playwright/test'
+import type { Page } from '@playwright/test'
+
+import { expect, test } from '@playwright/test'
 
 const BASE = '/apps/larpinq'
 
@@ -44,12 +46,12 @@ async function api(
 				method,
 				headers: {
 					'Content-Type': 'application/json',
-					// eslint-disable-next-line no-undef
+
 					requesttoken: (window as any).OC?.requestToken || '',
 					'OCS-APIREQUEST': 'true',
 				},
 			})
-			let json: any = null
+			let json: any
 			try {
 				json = await res.json()
 			} catch {

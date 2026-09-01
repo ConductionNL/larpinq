@@ -17,7 +17,7 @@
  * @spec openspec/specs/event-xp-awards/spec.md
  */
 
-import { test, expect } from '@playwright/test'
+import { expect, test } from '@playwright/test'
 
 const BASE = '/apps/larpinq'
 
@@ -27,7 +27,7 @@ test.describe('event-xp-award-workflow', () => {
 		page.on('pageerror', (e) => pageErrors.push(e.message))
 
 		// Never `networkidle` — unreachable on Nextcloud (ADR-074 rule 4).
-		await page.goto(`${BASE}/#/xp-awards`, { waitUntil: 'domcontentloaded' })
+		await page.goto(`${BASE}/xp-awards`, { waitUntil: 'domcontentloaded' })
 		await expect(page.locator('.app-content')).toBeVisible({ timeout: 30_000 })
 
 		// Assert a page-SPECIFIC affordance inside the content area. The old

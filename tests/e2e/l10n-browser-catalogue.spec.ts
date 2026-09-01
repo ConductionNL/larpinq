@@ -39,10 +39,9 @@
  * nothing about apps whose translations differ.
  */
 
+import { expect, test } from '@playwright/test'
 import { readFileSync } from 'node:fs'
 import path from 'node:path'
-
-import { expect, test } from '@playwright/test'
 
 /**
  * The app id this repo declares. Resolved from the repo root by walking up
