@@ -107,7 +107,17 @@ class AppHostRegistrar {
 	 * façade with no instance to inject, so wrapping it in a local collaborator
 	 * would have to make the very same static call.
 	 *
-	 * @param IRegistrationContext $context The leaf app's registration context.
+	 * ⚠️ `$bootstrap` is a seam, and it exists for a reason worth stating: without
+	 * it only the openregister-ABSENT branch is reachable from a unit test, since
+	 * the bare unit job has no openregister to load. The two branches that
+	 * actually run in production — the engine wiring, and the swallow when it is
+	 * present but unloadable — would be permanently uncovered, which is precisely
+	 * the shape of untested code that a silent failure hides in. Callers never
+	 * pass it.
+	 *
+	 * @param IRegistrationContext $context   The leaf app's registration context.
+	 * @param string               $bootstrap FQCN of the AppHost entry point.
+	 *                                        Overridden only by tests.
 	 *
 	 * @return bool True when the engine was registered, false when openregister
 	 *              is absent or unloadable.
@@ -116,13 +126,12 @@ class AppHostRegistrar {
 	 *
 	 * @spec openspec/specs/apphost-autoload-prelude/spec.md
 	 */
-	public function register(IRegistrationContext $context): bool {
-		if (class_exists(self::BOOTSTRAP) === false) {
+	public function register(IRegistrationContext $context, string $bootstrap = self::BOOTSTRAP): bool {
+		if (class_exists($bootstrap) === false) {
 			return false;
 		}
 
 		try {
-			$bootstrap = self::BOOTSTRAP;
 			$bootstrap::register($context, Application::APP_ID, self::OPTIONS);
 			return true;
 		} catch (\Throwable) {

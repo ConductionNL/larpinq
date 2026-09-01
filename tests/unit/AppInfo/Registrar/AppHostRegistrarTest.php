@@ -19,6 +19,51 @@ use OCP\AppFramework\Bootstrap\IRegistrationContext;
 use PHPUnit\Framework\TestCase;
 
 /**
+ * Stands in for OpenRegister's AppHost entry point when it IS loadable.
+ *
+ * Records the arguments so the test can assert Larpinq passes the scoping
+ * options it means to, not merely that it made a call.
+ */
+final class BootstrapSpy {
+
+	/** @var array<int, array<string, mixed>> */
+	public static array $calls = [];
+
+	/**
+	 * Record one registration call.
+	 *
+	 * @param mixed                $context The registration context.
+	 * @param string               $appId   The leaf app id.
+	 * @param array<string, mixed> $options The scoping options.
+	 *
+	 * @return void
+	 */
+	public static function register($context, string $appId, array $options): void {
+		self::$calls[] = ['appId' => $appId, 'options' => $options];
+	}//end register()
+}//end class
+
+/**
+ * Stands in for an AppHost that is present but throws — openregister installed
+ * yet unloadable, which is the case the try/catch exists for.
+ */
+final class BootstrapThatThrows {
+
+	/**
+	 * Always fail.
+	 *
+	 * @param mixed                $context The registration context.
+	 * @param string               $appId   The leaf app id.
+	 * @param array<string, mixed> $options The scoping options.
+	 *
+	 * @return void
+	 */
+	public static function register($context, string $appId, array $options): void {
+		throw new \RuntimeException('AppHost present but unloadable');
+	}//end register()
+}//end class
+
+/**
  * Tests for AppHostRegistrar.
  *
  * The options this class passes are not decoration: each one exists because its
@@ -145,4 +190,50 @@ class AppHostRegistrarTest extends TestCase {
 			'the declared namespace must be the one this app actually uses',
 		);
 	}//end testStatesTheNamespaceRatherThanLettingItBeGuessed()
+	/**
+	 * The engine is wired, with the options this app actually means to pass.
+	 *
+	 * Asserting only "it returned true" would pass just as happily if the
+	 * options were dropped on the way, which is the failure this whole class
+	 * exists to prevent.
+	 *
+	 * @return void
+	 */
+	public function testWiresTheEngineAndForwardsTheScopingOptions(): void {
+		BootstrapSpy::$calls = [];
+
+		$this->assertTrue(
+			$this->registrar->register(
+				context: $this->createMock(IRegistrationContext::class),
+				bootstrap: BootstrapSpy::class,
+			),
+		);
+
+		$this->assertCount(1, BootstrapSpy::$calls, 'the engine must be registered exactly once');
+		$this->assertSame('larpinq', BootstrapSpy::$calls[0]['appId']);
+		$this->assertSame(
+			AppHostRegistrar::OPTIONS,
+			BootstrapSpy::$calls[0]['options'],
+			'the scoping options must reach AppHost unchanged',
+		);
+	}//end testWiresTheEngineAndForwardsTheScopingOptions()
+
+	/**
+	 * A throwing AppHost must not take the request down with it.
+	 *
+	 * This runs inside Application::register(), on every request. An escaping
+	 * exception here fatals the whole instance-wide request, so the app must lose
+	 * its AppHost features and keep serving.
+	 *
+	 * @return void
+	 */
+	public function testSwallowsAnUnloadableAppHostRatherThanFatalingTheRequest(): void {
+		$this->assertFalse(
+			$this->registrar->register(
+				context: $this->createMock(IRegistrationContext::class),
+				bootstrap: BootstrapThatThrows::class,
+			),
+			'a throwing AppHost must be reported as "not wired", not re-thrown',
+		);
+	}//end testSwallowsAnUnloadableAppHostRatherThanFatalingTheRequest()
 }//end class
