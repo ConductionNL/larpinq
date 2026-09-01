@@ -51,7 +51,14 @@ async function openRoute(page: Page, route: string): Promise<void> {
 	await dismissSupportDialog(page)
 	// Path, not hash. Anchored at the end so `/features-roadmap` cannot be
 	// satisfied by some longer route that merely contains it.
-	await expect(page).toHaveURL(new RegExp(`${route.replace(/\//g, '\\/')}$`))
+	//
+	// Asserted with a PREDICATE rather than a built regex. The regex form
+	// escaped only `/`, which left `\` and every other metacharacter live —
+	// CodeQL js/incomplete-sanitization, and a latent false pass, since `.`
+	// matching any character would let a redirect to a similar-looking path
+	// satisfy the assertion. Reading `pathname` says the same thing with
+	// nothing to escape.
+	await expect(page).toHaveURL((u) => new URL(String(u)).pathname.endsWith(route))
 	await expect(page.locator('.app-content')).toBeVisible({ timeout: 10_000 })
 }
 
