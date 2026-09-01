@@ -27,13 +27,10 @@ import { dismissSupportDialog } from '../_nav.ts'
 const BASE = '/apps/larpinq'
 
 /**
- * Hard-load the target in-app route via the app's hash router. The router runs
- * in `mode: 'hash'` (src/main.js — fleet #133 deep-link fix), so in-app routes
- * are addressed as /apps/larpinq/<route>. Loading that URL serves the SPA
- * root from the server (the hash fragment is never sent to the backend, so no
- * 404) and the client-side router resolves the view. A fresh load per test
- * avoids the shared-list-state collapse where in-session sidebar navigation
- * fails to re-key index pages.
+ * Hard-load the target in-app route. Since #651 the router is history mode with
+ * the SPA catch-all serving the shell on any sub-path, so in-app routes are real
+ * paths: /apps/larpinq/<route>. A fresh load per test avoids the shared-list-state
+ * collapse where in-session sidebar navigation fails to re-key index pages.
  */
 async function openRoute(page: Page, route: string): Promise<void> {
 	// `domcontentloaded`, never `networkidle` — the latter is unreachable on
@@ -41,7 +38,13 @@ async function openRoute(page: Page, route: string): Promise<void> {
 	// rule 4). The `.app-content` assertion below is the real readiness gate.
 	await page.goto(`${BASE}${route}`, { waitUntil: 'domcontentloaded' })
 	await dismissSupportDialog(page)
-	await expect(page).toHaveURL(new RegExp(`#${route.replace(/\//g, '\\/')}`))
+	// Assert the PATH, not a fragment. This assertion outlived the migration to
+	// clean URLs: the navigation above always worked, but it waited 15s for a
+	// `#/game-settings` the router stopped emitting, so six specs failed on a
+	// page that had rendered correctly.
+	await expect(page).toHaveURL(
+		new RegExp(`${route.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}/?$`),
+	)
 	await expect(page.locator('.app-content')).toBeVisible({ timeout: 10_000 })
 }
 
