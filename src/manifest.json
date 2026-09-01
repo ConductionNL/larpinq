@@ -116,8 +116,7 @@
 				"headerActions": [
 					{ "id": "new-character", "label": "New character", "type": "open-form", "icon": "Plus", "variant": "primary", "register": "larpinq", "schema": "character", "onSuccessRoute": "Characters" },
 					{ "id": "new-item", "label": "New item", "type": "open-form", "icon": "Plus", "register": "larpinq", "schema": "larping_item", "onSuccessRoute": "Items" },
-					{ "id": "new-condition", "label": "New condition", "type": "open-form", "icon": "Plus", "register": "larpinq", "schema": "condition", "onSuccessRoute": "Conditions" },
-					{ "id": "refresh-dashboard", "label": "Refresh dashboard", "type": "refresh", "icon": "Refresh" }
+					{ "id": "new-condition", "label": "New condition", "type": "open-form", "icon": "Plus", "register": "larpinq", "schema": "condition", "onSuccessRoute": "Conditions" }
 				]
 			}
 		},
