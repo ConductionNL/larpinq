@@ -59,4 +59,38 @@ class DashboardControllerTest extends TestCase {
 
 		self::assertEmpty($result->getParams());
 	}
+
+	/**
+	 * The SPA catch-all serves the same shell as page().
+	 *
+	 * `dashboard#catchAll` on `/{path}` is what makes a deep link survive a
+	 * RELOAD. Before it existed, /apps/larpinq/characters and /events both
+	 * returned 404 while every other hash-mode app answered 200, and that 404
+	 * is what kept this app on hash routing. The failure is invisible from
+	 * inside the SPA, because the SPA never loads to report it.
+	 *
+	 * Serving *a* response is not the contract. Serving the app shell is: a
+	 * catch-all that answered with anything else would still route, still
+	 * return 200, and still leave every deep link broken.
+	 */
+	public function testCatchAllServesTheAppShell(): void {
+		$result = $this->controller->catchAll();
+
+		self::assertInstanceOf(TemplateResponse::class, $result);
+		self::assertSame('index', $result->getTemplateName());
+	}
+
+	/**
+	 * The two entry points agree, so a deep link is not a second-class page.
+	 *
+	 * Asserted as an observable pair rather than by reading catchAll()'s body,
+	 * so it survives the delegation being rewritten.
+	 */
+	public function testCatchAllAndPageAgreeOnTemplateAndParams(): void {
+		$page = $this->controller->page();
+		$catchAll = $this->controller->catchAll();
+
+		self::assertSame($page->getTemplateName(), $catchAll->getTemplateName());
+		self::assertSame($page->getParams(), $catchAll->getParams());
+	}
 }
