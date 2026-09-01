@@ -14,15 +14,14 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Tests\Unit\AppInfo\Registrar;
 
+use OCA\Larpinq\AppInfo\Application;
 use OCA\Larpinq\AppInfo\Registrar\AppHostRegistrar;
 use OCP\AppFramework\Bootstrap\IRegistrationContext;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Stands in for OpenRegister's AppHost entry point when it IS loadable.
- *
- * Records the arguments so the test can assert Larpinq passes the scoping
- * options it means to, not merely that it made a call.
+ * Records what the registrar hands to AppHost, so the test can assert the
+ * scoping options actually reach it rather than merely that a call was made.
  */
 final class BootstrapSpy {
 
@@ -32,35 +31,71 @@ final class BootstrapSpy {
 	/**
 	 * Record one registration call.
 	 *
-	 * @param mixed                $context The registration context.
 	 * @param string               $appId   The leaf app id.
 	 * @param array<string, mixed> $options The scoping options.
 	 *
 	 * @return void
 	 */
-	public static function register($context, string $appId, array $options): void {
+	public static function record(string $appId, array $options): void {
 		self::$calls[] = ['appId' => $appId, 'options' => $options];
-	}//end register()
+	}//end record()
 }//end class
 
 /**
- * Stands in for an AppHost that is present but throws — openregister installed
- * yet unloadable, which is the case the try/catch exists for.
+ * A registrar whose AppHost is loadable and records the call.
+ *
+ * The seams are overridden rather than the entry point being injected, because
+ * the production call site has to stay a literal `Bootstrap::register(...)` —
+ * hydra-gate-14 greps for exactly that string to know these routes are bound.
  */
-final class BootstrapThatThrows {
+final class SpyingRegistrar extends AppHostRegistrar {
 
 	/**
-	 * Always fail.
+	 * Pretend openregister is installed.
 	 *
-	 * @param mixed                $context The registration context.
-	 * @param string               $appId   The leaf app id.
-	 * @param array<string, mixed> $options The scoping options.
+	 * @return bool Always true.
+	 */
+	protected function appHostIsLoadable(): bool {
+		return true;
+	}//end appHostIsLoadable()
+
+	/**
+	 * Record instead of calling the real engine.
+	 *
+	 * @param IRegistrationContext $context The registration context.
 	 *
 	 * @return void
 	 */
-	public static function register($context, string $appId, array $options): void {
+	protected function callAppHost(IRegistrationContext $context): void {
+		BootstrapSpy::record(appId: Application::APP_ID, options: self::OPTIONS);
+	}//end callAppHost()
+}//end class
+
+/**
+ * A registrar whose AppHost is present but throws — openregister installed yet
+ * unloadable, which is the case the try/catch exists for.
+ */
+final class ThrowingRegistrar extends AppHostRegistrar {
+
+	/**
+	 * Pretend openregister is installed.
+	 *
+	 * @return bool Always true.
+	 */
+	protected function appHostIsLoadable(): bool {
+		return true;
+	}//end appHostIsLoadable()
+
+	/**
+	 * Fail the way an unloadable AppHost would.
+	 *
+	 * @param IRegistrationContext $context The registration context.
+	 *
+	 * @return void
+	 */
+	protected function callAppHost(IRegistrationContext $context): void {
 		throw new \RuntimeException('AppHost present but unloadable');
-	}//end register()
+	}//end callAppHost()
 }//end class
 
 /**
@@ -202,11 +237,10 @@ class AppHostRegistrarTest extends TestCase {
 	public function testWiresTheEngineAndForwardsTheScopingOptions(): void {
 		BootstrapSpy::$calls = [];
 
+		$registrar = new SpyingRegistrar();
+
 		$this->assertTrue(
-			$this->registrar->register(
-				context: $this->createMock(IRegistrationContext::class),
-				bootstrap: BootstrapSpy::class,
-			),
+			$registrar->register(context: $this->createMock(IRegistrationContext::class)),
 		);
 
 		$this->assertCount(1, BootstrapSpy::$calls, 'the engine must be registered exactly once');
@@ -228,11 +262,10 @@ class AppHostRegistrarTest extends TestCase {
 	 * @return void
 	 */
 	public function testSwallowsAnUnloadableAppHostRatherThanFatalingTheRequest(): void {
+		$registrar = new ThrowingRegistrar();
+
 		$this->assertFalse(
-			$this->registrar->register(
-				context: $this->createMock(IRegistrationContext::class),
-				bootstrap: BootstrapThatThrows::class,
-			),
+			$registrar->register(context: $this->createMock(IRegistrationContext::class)),
 			'a throwing AppHost must be reported as "not wired", not re-thrown',
 		);
 	}//end testSwallowsAnUnloadableAppHostRatherThanFatalingTheRequest()
