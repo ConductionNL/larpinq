@@ -56,11 +56,44 @@
 						}
 					],
 					"request": {
-						"auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] },
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{adminUser}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{adminPass}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
-						"header": [ { "key": "OCS-APIRequest", "value": "true" }, { "key": "Content-Type", "value": "application/json" }, { "key": "Accept", "value": "application/json" } ],
-						"body": { "mode": "raw", "raw": "{\n  \"name\": \"NEWMAN setup player\",\n  \"description\": \"seeded so character.ocName has a player to reference\"\n}" },
-						"url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{playerSchema}}", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{playerSchema}}" ] }
+						"header": [
+							{ "key": "OCS-APIRequest", "value": "true" },
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Accept", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"NEWMAN setup player\",\n  \"description\": \"seeded so character.ocName has a player to reference\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{playerSchema}}",
+							"host": ["{{baseUrl}}"],
+							"path": [
+								"index.php",
+								"apps",
+								"openregister",
+								"api",
+								"objects",
+								"{{register}}",
+								"{{playerSchema}}"
+							]
+						}
 					}
 				}
 			]
@@ -87,11 +120,44 @@
 						}
 					],
 					"request": {
-						"auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] },
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{adminUser}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{adminPass}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
-						"header": [ { "key": "OCS-APIRequest", "value": "true" }, { "key": "Content-Type", "value": "application/json" }, { "key": "Accept", "value": "application/json" } ],
-						"body": { "mode": "raw", "raw": "{\n  \"name\": \"NEWMAN character\",\n  \"ocName\": \"{{setupPlayerId}}\",\n  \"description\": \"api-contract probe\"\n}" },
-						"url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{charSchema}}", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{charSchema}}" ] }
+						"header": [
+							{ "key": "OCS-APIRequest", "value": "true" },
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Accept", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"NEWMAN character\",\n  \"ocName\": \"{{setupPlayerId}}\",\n  \"description\": \"api-contract probe\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{charSchema}}",
+							"host": ["{{baseUrl}}"],
+							"path": [
+								"index.php",
+								"apps",
+								"openregister",
+								"api",
+								"objects",
+								"{{register}}",
+								"{{charSchema}}"
+							]
+						}
 					}
 				},
 				{
@@ -111,10 +177,40 @@
 						}
 					],
 					"request": {
-						"auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] },
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{adminUser}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{adminPass}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
-						"header": [ { "key": "OCS-APIRequest", "value": "true" }, { "key": "Accept", "value": "application/json" } ],
-						"url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{charSchema}}/{{charId}}", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{charSchema}}", "{{charId}}" ] }
+						"header": [
+							{ "key": "OCS-APIRequest", "value": "true" },
+							{ "key": "Accept", "value": "application/json" }
+						],
+						"url": {
+							"raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{charSchema}}/{{charId}}",
+							"host": ["{{baseUrl}}"],
+							"path": [
+								"index.php",
+								"apps",
+								"openregister",
+								"api",
+								"objects",
+								"{{register}}",
+								"{{charSchema}}",
+								"{{charId}}"
+							]
+						}
 					}
 				},
 				{
@@ -133,10 +229,40 @@
 						}
 					],
 					"request": {
-						"auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] },
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{adminUser}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{adminPass}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
-						"header": [ { "key": "OCS-APIRequest", "value": "true" }, { "key": "Accept", "value": "application/json" } ],
-						"url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{charSchema}}?_limit=5", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{charSchema}}" ], "query": [ { "key": "_limit", "value": "5" } ] }
+						"header": [
+							{ "key": "OCS-APIRequest", "value": "true" },
+							{ "key": "Accept", "value": "application/json" }
+						],
+						"url": {
+							"raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{charSchema}}?_limit=5",
+							"host": ["{{baseUrl}}"],
+							"path": [
+								"index.php",
+								"apps",
+								"openregister",
+								"api",
+								"objects",
+								"{{register}}",
+								"{{charSchema}}"
+							],
+							"query": [{ "key": "_limit", "value": "5" }]
+						}
 					}
 				},
 				{
@@ -155,11 +281,45 @@
 						}
 					],
 					"request": {
-						"auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] },
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{adminUser}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{adminPass}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
-						"header": [ { "key": "OCS-APIRequest", "value": "true" }, { "key": "Content-Type", "value": "application/json" }, { "key": "Accept", "value": "application/json" } ],
-						"body": { "mode": "raw", "raw": "{\n  \"name\": \"NEWMAN character\",\n  \"ocName\": \"{{setupPlayerId}}\",\n  \"description\": \"updated by newman\"\n}" },
-						"url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{charSchema}}/{{charId}}", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{charSchema}}", "{{charId}}" ] }
+						"header": [
+							{ "key": "OCS-APIRequest", "value": "true" },
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Accept", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"NEWMAN character\",\n  \"ocName\": \"{{setupPlayerId}}\",\n  \"description\": \"updated by newman\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{charSchema}}/{{charId}}",
+							"host": ["{{baseUrl}}"],
+							"path": [
+								"index.php",
+								"apps",
+								"openregister",
+								"api",
+								"objects",
+								"{{register}}",
+								"{{charSchema}}",
+								"{{charId}}"
+							]
+						}
 					}
 				},
 				{
@@ -185,11 +345,44 @@
 						}
 					],
 					"request": {
-						"auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] },
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{adminUser}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{adminPass}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
-						"header": [ { "key": "OCS-APIRequest", "value": "true" }, { "key": "Content-Type", "value": "application/json" }, { "key": "Accept", "value": "application/json" } ],
-						"body": { "mode": "raw", "raw": "{\n  \"description\": \"no name nor ocName provided\"\n}" },
-						"url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{charSchema}}", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{charSchema}}" ] }
+						"header": [
+							{ "key": "OCS-APIRequest", "value": "true" },
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Accept", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"description\": \"no name nor ocName provided\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{charSchema}}",
+							"host": ["{{baseUrl}}"],
+							"path": [
+								"index.php",
+								"apps",
+								"openregister",
+								"api",
+								"objects",
+								"{{register}}",
+								"{{charSchema}}"
+							]
+						}
 					}
 				},
 				{
@@ -214,8 +407,21 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [ { "key": "Accept", "value": "application/json" } ],
-						"url": { "raw": "{{noAuthBase}}/index.php/apps/openregister/api/objects/{{register}}/{{charSchema}}/{{charId}}", "host": [ "{{noAuthBase}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{charSchema}}", "{{charId}}" ] }
+						"header": [{ "key": "Accept", "value": "application/json" }],
+						"url": {
+							"raw": "{{noAuthBase}}/index.php/apps/openregister/api/objects/{{register}}/{{charSchema}}/{{charId}}",
+							"host": ["{{noAuthBase}}"],
+							"path": [
+								"index.php",
+								"apps",
+								"openregister",
+								"api",
+								"objects",
+								"{{register}}",
+								"{{charSchema}}",
+								"{{charId}}"
+							]
+						}
 					}
 				},
 				{
@@ -259,9 +465,27 @@
 					],
 					"request": {
 						"method": "POST",
-						"header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Accept", "value": "application/json" } ],
-						"body": { "mode": "raw", "raw": "{\n  \"name\": \"anon\",\n  \"ocName\": \"anon\"\n}" },
-						"url": { "raw": "{{noAuthBase}}/index.php/apps/openregister/api/objects/{{register}}/{{charSchema}}", "host": [ "{{noAuthBase}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{charSchema}}" ] }
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Accept", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"anon\",\n  \"ocName\": \"anon\"\n}"
+						},
+						"url": {
+							"raw": "{{noAuthBase}}/index.php/apps/openregister/api/objects/{{register}}/{{charSchema}}",
+							"host": ["{{noAuthBase}}"],
+							"path": [
+								"index.php",
+								"apps",
+								"openregister",
+								"api",
+								"objects",
+								"{{register}}",
+								"{{charSchema}}"
+							]
+						}
 					}
 				}
 			]
@@ -271,38 +495,396 @@
 			"item": [
 				{
 					"name": "Create item (2xx)",
-					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('item created (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 201]));", "const b = pm.response.json(); const id = b.id || (b['@self'] && b['@self'].id);", "pm.test('item id', () => pm.expect(id).to.be.a('string').and.not.empty);", "pm.collectionVariables.set('itemId', id);" ] } } ],
-					"request": { "auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] }, "method": "POST", "header": [ { "key": "OCS-APIRequest", "value": "true" }, { "key": "Content-Type", "value": "application/json" }, { "key": "Accept", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"name\": \"NEWMAN item\",\n  \"description\": \"probe item\"\n}" }, "url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{itemSchema}}", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{itemSchema}}" ] } }
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('item created (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 201]));",
+									"const b = pm.response.json(); const id = b.id || (b['@self'] && b['@self'].id);",
+									"pm.test('item id', () => pm.expect(id).to.be.a('string').and.not.empty);",
+									"pm.collectionVariables.set('itemId', id);"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{adminUser}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{adminPass}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{ "key": "OCS-APIRequest", "value": "true" },
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Accept", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"NEWMAN item\",\n  \"description\": \"probe item\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{itemSchema}}",
+							"host": ["{{baseUrl}}"],
+							"path": [
+								"index.php",
+								"apps",
+								"openregister",
+								"api",
+								"objects",
+								"{{register}}",
+								"{{itemSchema}}"
+							]
+						}
+					}
 				},
 				{
 					"name": "Create skill (2xx)",
-					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('skill created (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 201]));", "const b = pm.response.json(); const id = b.id || (b['@self'] && b['@self'].id);", "pm.test('skill id', () => pm.expect(id).to.be.a('string').and.not.empty);", "pm.collectionVariables.set('skillId', id);" ] } } ],
-					"request": { "auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] }, "method": "POST", "header": [ { "key": "OCS-APIRequest", "value": "true" }, { "key": "Content-Type", "value": "application/json" }, { "key": "Accept", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"name\": \"NEWMAN skill\",\n  \"description\": \"probe skill\"\n}" }, "url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{skillSchema}}", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{skillSchema}}" ] } }
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('skill created (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 201]));",
+									"const b = pm.response.json(); const id = b.id || (b['@self'] && b['@self'].id);",
+									"pm.test('skill id', () => pm.expect(id).to.be.a('string').and.not.empty);",
+									"pm.collectionVariables.set('skillId', id);"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{adminUser}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{adminPass}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{ "key": "OCS-APIRequest", "value": "true" },
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Accept", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"NEWMAN skill\",\n  \"description\": \"probe skill\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{skillSchema}}",
+							"host": ["{{baseUrl}}"],
+							"path": [
+								"index.php",
+								"apps",
+								"openregister",
+								"api",
+								"objects",
+								"{{register}}",
+								"{{skillSchema}}"
+							]
+						}
+					}
 				},
 				{
 					"name": "Create condition (2xx)",
-					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('condition created (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 201]));", "const b = pm.response.json(); const id = b.id || (b['@self'] && b['@self'].id);", "pm.test('condition id', () => pm.expect(id).to.be.a('string').and.not.empty);", "pm.collectionVariables.set('conditionId', id);" ] } } ],
-					"request": { "auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] }, "method": "POST", "header": [ { "key": "OCS-APIRequest", "value": "true" }, { "key": "Content-Type", "value": "application/json" }, { "key": "Accept", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"name\": \"NEWMAN condition\",\n  \"description\": \"probe condition\"\n}" }, "url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{conditionSchema}}", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{conditionSchema}}" ] } }
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('condition created (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 201]));",
+									"const b = pm.response.json(); const id = b.id || (b['@self'] && b['@self'].id);",
+									"pm.test('condition id', () => pm.expect(id).to.be.a('string').and.not.empty);",
+									"pm.collectionVariables.set('conditionId', id);"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{adminUser}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{adminPass}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{ "key": "OCS-APIRequest", "value": "true" },
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Accept", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"NEWMAN condition\",\n  \"description\": \"probe condition\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{conditionSchema}}",
+							"host": ["{{baseUrl}}"],
+							"path": [
+								"index.php",
+								"apps",
+								"openregister",
+								"api",
+								"objects",
+								"{{register}}",
+								"{{conditionSchema}}"
+							]
+						}
+					}
 				},
 				{
 					"name": "Create effect (2xx)",
-					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('effect created (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 201]));", "const b = pm.response.json(); const id = b.id || (b['@self'] && b['@self'].id);", "pm.test('effect id', () => pm.expect(id).to.be.a('string').and.not.empty);", "pm.collectionVariables.set('effectId', id);" ] } } ],
-					"request": { "auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] }, "method": "POST", "header": [ { "key": "OCS-APIRequest", "value": "true" }, { "key": "Content-Type", "value": "application/json" }, { "key": "Accept", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"name\": \"NEWMAN effect\",\n  \"description\": \"probe effect\"\n}" }, "url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{effectSchema}}", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{effectSchema}}" ] } }
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('effect created (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 201]));",
+									"const b = pm.response.json(); const id = b.id || (b['@self'] && b['@self'].id);",
+									"pm.test('effect id', () => pm.expect(id).to.be.a('string').and.not.empty);",
+									"pm.collectionVariables.set('effectId', id);"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{adminUser}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{adminPass}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{ "key": "OCS-APIRequest", "value": "true" },
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Accept", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"NEWMAN effect\",\n  \"description\": \"probe effect\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{effectSchema}}",
+							"host": ["{{baseUrl}}"],
+							"path": [
+								"index.php",
+								"apps",
+								"openregister",
+								"api",
+								"objects",
+								"{{register}}",
+								"{{effectSchema}}"
+							]
+						}
+					}
 				},
 				{
 					"name": "Create event (2xx)",
-					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('event created (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 201]));", "const b = pm.response.json(); const id = b.id || (b['@self'] && b['@self'].id);", "pm.test('event id', () => pm.expect(id).to.be.a('string').and.not.empty);", "pm.collectionVariables.set('eventId', id);" ] } } ],
-					"request": { "auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] }, "method": "POST", "header": [ { "key": "OCS-APIRequest", "value": "true" }, { "key": "Content-Type", "value": "application/json" }, { "key": "Accept", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"name\": \"NEWMAN event\",\n  \"description\": \"probe event\"\n}" }, "url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{eventSchema}}", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{eventSchema}}" ] } }
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('event created (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 201]));",
+									"const b = pm.response.json(); const id = b.id || (b['@self'] && b['@self'].id);",
+									"pm.test('event id', () => pm.expect(id).to.be.a('string').and.not.empty);",
+									"pm.collectionVariables.set('eventId', id);"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{adminUser}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{adminPass}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{ "key": "OCS-APIRequest", "value": "true" },
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Accept", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"NEWMAN event\",\n  \"description\": \"probe event\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{eventSchema}}",
+							"host": ["{{baseUrl}}"],
+							"path": [
+								"index.php",
+								"apps",
+								"openregister",
+								"api",
+								"objects",
+								"{{register}}",
+								"{{eventSchema}}"
+							]
+						}
+					}
 				},
 				{
 					"name": "Create player (2xx)",
-					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('player created (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 201]));", "const b = pm.response.json(); const id = b.id || (b['@self'] && b['@self'].id);", "pm.test('player id', () => pm.expect(id).to.be.a('string').and.not.empty);", "pm.collectionVariables.set('playerId', id);" ] } } ],
-					"request": { "auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] }, "method": "POST", "header": [ { "key": "OCS-APIRequest", "value": "true" }, { "key": "Content-Type", "value": "application/json" }, { "key": "Accept", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{\n  \"name\": \"NEWMAN player\",\n  \"description\": \"probe player\"\n}" }, "url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{playerSchema}}", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{playerSchema}}" ] } }
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('player created (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 201]));",
+									"const b = pm.response.json(); const id = b.id || (b['@self'] && b['@self'].id);",
+									"pm.test('player id', () => pm.expect(id).to.be.a('string').and.not.empty);",
+									"pm.collectionVariables.set('playerId', id);"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{adminUser}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{adminPass}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{ "key": "OCS-APIRequest", "value": "true" },
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Accept", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"NEWMAN player\",\n  \"description\": \"probe player\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{playerSchema}}",
+							"host": ["{{baseUrl}}"],
+							"path": [
+								"index.php",
+								"apps",
+								"openregister",
+								"api",
+								"objects",
+								"{{register}}",
+								"{{playerSchema}}"
+							]
+						}
+					}
 				},
 				{
 					"name": "List items (200)",
-					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('item list (200)', () => pm.response.to.have.status(200));", "pm.test('has results array', () => pm.expect(pm.response.json().results).to.be.an('array'));" ] } } ],
-					"request": { "auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] }, "method": "GET", "header": [ { "key": "OCS-APIRequest", "value": "true" }, { "key": "Accept", "value": "application/json" } ], "url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{itemSchema}}?_limit=5", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{itemSchema}}" ], "query": [ { "key": "_limit", "value": "5" } ] } }
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('item list (200)', () => pm.response.to.have.status(200));",
+									"pm.test('has results array', () => pm.expect(pm.response.json().results).to.be.an('array'));"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{adminUser}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{adminPass}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{ "key": "OCS-APIRequest", "value": "true" },
+							{ "key": "Accept", "value": "application/json" }
+						],
+						"url": {
+							"raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{itemSchema}}?_limit=5",
+							"host": ["{{baseUrl}}"],
+							"path": [
+								"index.php",
+								"apps",
+								"openregister",
+								"api",
+								"objects",
+								"{{register}}",
+								"{{itemSchema}}"
+							],
+							"query": [{ "key": "_limit", "value": "5" }]
+						}
+					}
 				}
 			]
 		},
@@ -311,18 +893,141 @@
 			"item": [
 				{
 					"name": "downloadPdf ERROR: invalid (non-UUID) template -> 400 not 500",
-					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "// Authenticated admin, but a non-UUID template id is rejected with 400 by", "// the controller's UUID guard (path-traversal/injection defence, #218) —", "// before DocuDesk is touched. Must not 500.", "pm.test('invalid template rejected 400', () => pm.response.to.have.status(400));", "pm.test('not a 500', () => pm.expect(pm.response.code).to.not.eql(500));" ] } } ],
-					"request": { "auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] }, "method": "GET", "header": [ { "key": "OCS-APIRequest", "value": "true" }, { "key": "Accept", "value": "application/json" } ], "url": { "raw": "{{baseUrl}}/index.php/apps/larpinq/characters/{{charId}}/download/not-a-uuid", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "larpinq", "characters", "{{charId}}", "download", "not-a-uuid" ] } }
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"// Authenticated admin, but a non-UUID template id is rejected with 400 by",
+									"// the controller's UUID guard (path-traversal/injection defence, #218) —",
+									"// before DocuDesk is touched. Must not 500.",
+									"pm.test('invalid template rejected 400', () => pm.response.to.have.status(400));",
+									"pm.test('not a 500', () => pm.expect(pm.response.code).to.not.eql(500));"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{adminUser}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{adminPass}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{ "key": "OCS-APIRequest", "value": "true" },
+							{ "key": "Accept", "value": "application/json" }
+						],
+						"url": {
+							"raw": "{{baseUrl}}/index.php/apps/larpinq/characters/{{charId}}/download/not-a-uuid",
+							"host": ["{{baseUrl}}"],
+							"path": [
+								"index.php",
+								"apps",
+								"larpinq",
+								"characters",
+								"{{charId}}",
+								"download",
+								"not-a-uuid"
+							]
+						}
+					}
 				},
 				{
 					"name": "downloadPdf ERROR: valid-UUID template but DocuDesk template not found -> 4xx not 500",
-					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "// A syntactically-valid UUID that does not resolve to a real template.", "// Depending on DocuDesk presence this is 404 (template not found) or 424", "// (DocuDesk not installed). Either way it must be a clean 4xx, never 500.", "pm.test('clean 4xx, not 500', () => { pm.expect(pm.response.code).to.be.within(400, 499); pm.expect(pm.response.code).to.not.eql(500); });" ] } } ],
-					"request": { "auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] }, "method": "GET", "header": [ { "key": "OCS-APIRequest", "value": "true" }, { "key": "Accept", "value": "application/json" } ], "url": { "raw": "{{baseUrl}}/index.php/apps/larpinq/characters/{{charId}}/download/00000000-0000-4000-8000-000000000000", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "larpinq", "characters", "{{charId}}", "download", "00000000-0000-4000-8000-000000000000" ] } }
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"// A syntactically-valid UUID that does not resolve to a real template.",
+									"// Depending on DocuDesk presence this is 404 (template not found) or 424",
+									"// (DocuDesk not installed). Either way it must be a clean 4xx, never 500.",
+									"pm.test('clean 4xx, not 500', () => { pm.expect(pm.response.code).to.be.within(400, 499); pm.expect(pm.response.code).to.not.eql(500); });"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{adminUser}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{adminPass}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{ "key": "OCS-APIRequest", "value": "true" },
+							{ "key": "Accept", "value": "application/json" }
+						],
+						"url": {
+							"raw": "{{baseUrl}}/index.php/apps/larpinq/characters/{{charId}}/download/00000000-0000-4000-8000-000000000000",
+							"host": ["{{baseUrl}}"],
+							"path": [
+								"index.php",
+								"apps",
+								"larpinq",
+								"characters",
+								"{{charId}}",
+								"download",
+								"00000000-0000-4000-8000-000000000000"
+							]
+						}
+					}
 				},
 				{
 					"name": "downloadPdf AUTHZ: anonymous -> 401",
-					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "// downloadPdf is #[NoAdminRequired] (a logged-in session is still required);", "// an anonymous request is rejected by NC SecurityMiddleware with 401.", "pm.test('anonymous rejected 401', () => pm.response.to.have.status(401));" ] } } ],
-					"request": { "method": "GET", "header": [ { "key": "Accept", "value": "application/json" } ], "url": { "raw": "{{noAuthBase}}/index.php/apps/larpinq/characters/{{charId}}/download/00000000-0000-4000-8000-000000000000", "host": [ "{{noAuthBase}}" ], "path": [ "index.php", "apps", "larpinq", "characters", "{{charId}}", "download", "00000000-0000-4000-8000-000000000000" ] } }
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"// downloadPdf is #[NoAdminRequired] (a logged-in session is still required);",
+									"// an anonymous request is rejected by NC SecurityMiddleware with 401.",
+									"pm.test('anonymous rejected 401', () => pm.response.to.have.status(401));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [{ "key": "Accept", "value": "application/json" }],
+						"url": {
+							"raw": "{{noAuthBase}}/index.php/apps/larpinq/characters/{{charId}}/download/00000000-0000-4000-8000-000000000000",
+							"host": ["{{noAuthBase}}"],
+							"path": [
+								"index.php",
+								"apps",
+								"larpinq",
+								"characters",
+								"{{charId}}",
+								"download",
+								"00000000-0000-4000-8000-000000000000"
+							]
+						}
+					}
 				}
 			]
 		},
@@ -331,18 +1036,117 @@
 			"item": [
 				{
 					"name": "GET /api/settings (200, contract shape)",
-					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('settings (200)', () => pm.response.to.have.status(200));", "const b = pm.response.json();", "pm.test('has openRegisters flag', () => pm.expect(b).to.have.property('openRegisters'));", "pm.test('has availableRegisters array', () => pm.expect(b.availableRegisters).to.be.an('array'));" ] } } ],
-					"request": { "auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] }, "method": "GET", "header": [ { "key": "OCS-APIRequest", "value": "true" }, { "key": "Accept", "value": "application/json" } ], "url": { "raw": "{{baseUrl}}/index.php/apps/larpinq/api/settings", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "larpinq", "api", "settings" ] } }
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('settings (200)', () => pm.response.to.have.status(200));",
+									"const b = pm.response.json();",
+									"pm.test('has openRegisters flag', () => pm.expect(b).to.have.property('openRegisters'));",
+									"pm.test('has availableRegisters array', () => pm.expect(b.availableRegisters).to.be.an('array'));"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{adminUser}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{adminPass}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{ "key": "OCS-APIRequest", "value": "true" },
+							{ "key": "Accept", "value": "application/json" }
+						],
+						"url": {
+							"raw": "{{baseUrl}}/index.php/apps/larpinq/api/settings",
+							"host": ["{{baseUrl}}"],
+							"path": [
+								"index.php",
+								"apps",
+								"larpinq",
+								"api",
+								"settings"
+							]
+						}
+					}
 				},
 				{
 					"name": "GET /api/settings AUTHZ: anonymous -> 401",
-					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('anonymous rejected 401', () => pm.response.to.have.status(401));" ] } } ],
-					"request": { "method": "GET", "header": [ { "key": "Accept", "value": "application/json" } ], "url": { "raw": "{{noAuthBase}}/index.php/apps/larpinq/api/settings", "host": [ "{{noAuthBase}}" ], "path": [ "index.php", "apps", "larpinq", "api", "settings" ] } }
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('anonymous rejected 401', () => pm.response.to.have.status(401));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [{ "key": "Accept", "value": "application/json" }],
+						"url": {
+							"raw": "{{noAuthBase}}/index.php/apps/larpinq/api/settings",
+							"host": ["{{noAuthBase}}"],
+							"path": [
+								"index.php",
+								"apps",
+								"larpinq",
+								"api",
+								"settings"
+							]
+						}
+					}
 				},
 				{
 					"name": "POST /api/settings AUTHZ: anonymous -> 401 (admin+CSRF-gated write)",
-					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "// settings#create dropped @NoCSRFRequired (closes #206) and is admin-gated;", "// an anonymous POST is rejected before the body is processed.", "pm.test('anonymous write rejected 401', () => pm.response.to.have.status(401));" ] } } ],
-					"request": { "method": "POST", "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Accept", "value": "application/json" } ], "body": { "mode": "raw", "raw": "{}" }, "url": { "raw": "{{noAuthBase}}/index.php/apps/larpinq/api/settings", "host": [ "{{noAuthBase}}" ], "path": [ "index.php", "apps", "larpinq", "api", "settings" ] } }
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"// settings#create dropped @NoCSRFRequired (closes #206) and is admin-gated;",
+									"// an anonymous POST is rejected before the body is processed.",
+									"pm.test('anonymous write rejected 401', () => pm.response.to.have.status(401));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Accept", "value": "application/json" }
+						],
+						"body": { "mode": "raw", "raw": "{}" },
+						"url": {
+							"raw": "{{noAuthBase}}/index.php/apps/larpinq/api/settings",
+							"host": ["{{noAuthBase}}"],
+							"path": [
+								"index.php",
+								"apps",
+								"larpinq",
+								"api",
+								"settings"
+							]
+						}
+					}
 				}
 			]
 		},
@@ -351,43 +1155,379 @@
 			"item": [
 				{
 					"name": "Delete character",
-					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('character deleted (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 204]));" ] } } ],
-					"request": { "auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] }, "method": "DELETE", "header": [ { "key": "OCS-APIRequest", "value": "true" } ], "url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{charSchema}}/{{charId}}", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{charSchema}}", "{{charId}}" ] } }
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('character deleted (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 204]));"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{adminUser}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{adminPass}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [{ "key": "OCS-APIRequest", "value": "true" }],
+						"url": {
+							"raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{charSchema}}/{{charId}}",
+							"host": ["{{baseUrl}}"],
+							"path": [
+								"index.php",
+								"apps",
+								"openregister",
+								"api",
+								"objects",
+								"{{register}}",
+								"{{charSchema}}",
+								"{{charId}}"
+							]
+						}
+					}
 				},
 				{
-						"name": "Delete setup player",
-						"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('setup player deleted (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 204]));" ] } } ],
-						"request": { "auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] }, "method": "DELETE", "header": [ { "key": "OCS-APIRequest", "value": "true" } ], "url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{playerSchema}}/{{setupPlayerId}}", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{playerSchema}}", "{{setupPlayerId}}" ] } }
-					},
-					{
-						"name": "Delete item",
-					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('item deleted (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 204]));" ] } } ],
-					"request": { "auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] }, "method": "DELETE", "header": [ { "key": "OCS-APIRequest", "value": "true" } ], "url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{itemSchema}}/{{itemId}}", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{itemSchema}}", "{{itemId}}" ] } }
+					"name": "Delete setup player",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('setup player deleted (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 204]));"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{adminUser}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{adminPass}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [{ "key": "OCS-APIRequest", "value": "true" }],
+						"url": {
+							"raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{playerSchema}}/{{setupPlayerId}}",
+							"host": ["{{baseUrl}}"],
+							"path": [
+								"index.php",
+								"apps",
+								"openregister",
+								"api",
+								"objects",
+								"{{register}}",
+								"{{playerSchema}}",
+								"{{setupPlayerId}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete item",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('item deleted (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 204]));"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{adminUser}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{adminPass}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [{ "key": "OCS-APIRequest", "value": "true" }],
+						"url": {
+							"raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{itemSchema}}/{{itemId}}",
+							"host": ["{{baseUrl}}"],
+							"path": [
+								"index.php",
+								"apps",
+								"openregister",
+								"api",
+								"objects",
+								"{{register}}",
+								"{{itemSchema}}",
+								"{{itemId}}"
+							]
+						}
+					}
 				},
 				{
 					"name": "Delete skill",
-					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('skill deleted (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 204]));" ] } } ],
-					"request": { "auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] }, "method": "DELETE", "header": [ { "key": "OCS-APIRequest", "value": "true" } ], "url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{skillSchema}}/{{skillId}}", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{skillSchema}}", "{{skillId}}" ] } }
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('skill deleted (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 204]));"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{adminUser}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{adminPass}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [{ "key": "OCS-APIRequest", "value": "true" }],
+						"url": {
+							"raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{skillSchema}}/{{skillId}}",
+							"host": ["{{baseUrl}}"],
+							"path": [
+								"index.php",
+								"apps",
+								"openregister",
+								"api",
+								"objects",
+								"{{register}}",
+								"{{skillSchema}}",
+								"{{skillId}}"
+							]
+						}
+					}
 				},
 				{
 					"name": "Delete condition",
-					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('condition deleted (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 204]));" ] } } ],
-					"request": { "auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] }, "method": "DELETE", "header": [ { "key": "OCS-APIRequest", "value": "true" } ], "url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{conditionSchema}}/{{conditionId}}", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{conditionSchema}}", "{{conditionId}}" ] } }
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('condition deleted (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 204]));"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{adminUser}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{adminPass}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [{ "key": "OCS-APIRequest", "value": "true" }],
+						"url": {
+							"raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{conditionSchema}}/{{conditionId}}",
+							"host": ["{{baseUrl}}"],
+							"path": [
+								"index.php",
+								"apps",
+								"openregister",
+								"api",
+								"objects",
+								"{{register}}",
+								"{{conditionSchema}}",
+								"{{conditionId}}"
+							]
+						}
+					}
 				},
 				{
 					"name": "Delete effect",
-					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('effect deleted (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 204]));" ] } } ],
-					"request": { "auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] }, "method": "DELETE", "header": [ { "key": "OCS-APIRequest", "value": "true" } ], "url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{effectSchema}}/{{effectId}}", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{effectSchema}}", "{{effectId}}" ] } }
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('effect deleted (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 204]));"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{adminUser}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{adminPass}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [{ "key": "OCS-APIRequest", "value": "true" }],
+						"url": {
+							"raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{effectSchema}}/{{effectId}}",
+							"host": ["{{baseUrl}}"],
+							"path": [
+								"index.php",
+								"apps",
+								"openregister",
+								"api",
+								"objects",
+								"{{register}}",
+								"{{effectSchema}}",
+								"{{effectId}}"
+							]
+						}
+					}
 				},
 				{
 					"name": "Delete event",
-					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('event deleted (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 204]));" ] } } ],
-					"request": { "auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] }, "method": "DELETE", "header": [ { "key": "OCS-APIRequest", "value": "true" } ], "url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{eventSchema}}/{{eventId}}", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{eventSchema}}", "{{eventId}}" ] } }
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('event deleted (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 204]));"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{adminUser}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{adminPass}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [{ "key": "OCS-APIRequest", "value": "true" }],
+						"url": {
+							"raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{eventSchema}}/{{eventId}}",
+							"host": ["{{baseUrl}}"],
+							"path": [
+								"index.php",
+								"apps",
+								"openregister",
+								"api",
+								"objects",
+								"{{register}}",
+								"{{eventSchema}}",
+								"{{eventId}}"
+							]
+						}
+					}
 				},
 				{
 					"name": "Delete player",
-					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('player deleted (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 204]));" ] } } ],
-					"request": { "auth": { "type": "basic", "basic": [ { "key": "username", "value": "{{adminUser}}", "type": "string" }, { "key": "password", "value": "{{adminPass}}", "type": "string" } ] }, "method": "DELETE", "header": [ { "key": "OCS-APIRequest", "value": "true" } ], "url": { "raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{playerSchema}}/{{playerId}}", "host": [ "{{baseUrl}}" ], "path": [ "index.php", "apps", "openregister", "api", "objects", "{{register}}", "{{playerSchema}}", "{{playerId}}" ] } }
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('player deleted (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 204]));"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{adminUser}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{adminPass}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [{ "key": "OCS-APIRequest", "value": "true" }],
+						"url": {
+							"raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{playerSchema}}/{{playerId}}",
+							"host": ["{{baseUrl}}"],
+							"path": [
+								"index.php",
+								"apps",
+								"openregister",
+								"api",
+								"objects",
+								"{{register}}",
+								"{{playerSchema}}",
+								"{{playerId}}"
+							]
+						}
+					}
 				}
 			]
 		}
