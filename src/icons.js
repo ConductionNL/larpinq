@@ -24,6 +24,7 @@ import BriefcaseAccountOutline from 'vue-material-design-icons/BriefcaseAccountO
 import Calendar from 'vue-material-design-icons/Calendar.vue'
 import CalendarMonthOutline from 'vue-material-design-icons/CalendarMonthOutline.vue'
 import ChartBar from 'vue-material-design-icons/ChartBar.vue'
+import ChartBoxOutline from 'vue-material-design-icons/ChartBoxOutline.vue'
 import ClipboardList from 'vue-material-design-icons/ClipboardList.vue'
 import Cog from 'vue-material-design-icons/Cog.vue'
 import CogOutline from 'vue-material-design-icons/CogOutline.vue'
@@ -70,6 +71,7 @@ export default {
 	Calendar,
 	CalendarMonthOutline,
 	ChartBar,
+	ChartBoxOutline,
 	ClipboardList,
 	Cog,
 	CogOutline,

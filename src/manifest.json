@@ -261,12 +261,20 @@
 			"order": 90
 		},
 		{
+			"id": "ReportsMenu",
+			"label": "Reports",
+			"icon": "ChartBoxOutline",
+			"route": "Reports",
+			"section": "footer",
+			"order": 95
+		},
+		{
 			"id": "FeaturesRoadmapMenu",
 			"label": "Features & roadmap",
 			"icon": "MapMarkerPath",
 			"route": "FeaturesRoadmap",
 			"section": "footer",
-			"order": 91
+			"order": 100
 		},
 		{
 			"id": "FlowsMenu",
@@ -2068,6 +2076,609 @@
 						"id": "general",
 						"title": "General",
 						"component": "GameSettingsSection"
+					}
+				]
+			}
+		},
+		{
+			"id": "Reports",
+			"_note": "ADR-112 / ADR-114 Decision 3. All three are declarative type:dashboard pages over larpinq's own register — no bespoke component and no per-app controller. ⚠️ The SCHEMA SLUG IS NOT THE SEED KEY: `event` is registered as `larping_event` and `skill` as `larping_skill`, because slugs are global on a shared OpenRegister and pipelinq also ships a `skill`. A widget naming the key renders an empty card and says nothing.",
+			"route": "/reports",
+			"type": "reports",
+			"title": "Reports",
+			"config": {
+				"description": "Pick a report to open it.",
+				"categories": {
+					"characters": "Characters",
+					"world": "The world"
+				},
+				"cards": [
+					{
+						"id": "CharacterRosterReport",
+						"label": "Character roster",
+						"description": "Who is playing what, and what is still waiting for approval.",
+						"icon": "AccountGroup",
+						"category": "characters",
+						"route": "CharacterRosterReport"
+					},
+					{
+						"id": "ProgressionReport",
+						"label": "Progression",
+						"description": "Experience awarded, and who earned it.",
+						"icon": "Trophy",
+						"category": "characters",
+						"route": "ProgressionReport"
+					},
+					{
+						"id": "WorldContentReport",
+						"label": "World content",
+						"description": "How much the world holds, and what characters actually carry.",
+						"icon": "MagicStaff",
+						"category": "world",
+						"route": "WorldContentReport"
+					}
+				]
+			}
+		},
+		{
+			"id": "CharacterRosterReport",
+			"route": "/reports/characters",
+			"type": "dashboard",
+			"title": "Character roster",
+			"_note": "Every filter is scalar equality, the only kind OpenRegister's aggregation endpoint can evaluate. A multi-value or relative-date filter is accepted and then silently not applied.",
+			"config": {
+				"widgets": [
+					{
+						"id": "roster-total",
+						"title": "Characters",
+						"type": "stat",
+						"content": {
+							"label": "Characters",
+							"icon": "AccountGroup",
+							"route": {
+								"name": "Characters"
+							},
+							"format": {
+								"style": "decimal",
+								"decimals": 0
+							},
+							"source": {
+								"register": "larpinq",
+								"schema": "character",
+								"metric": "count"
+							}
+						}
+					},
+					{
+						"id": "roster-players",
+						"title": "Player characters",
+						"type": "stat",
+						"content": {
+							"label": "Player characters",
+							"icon": "Account",
+							"route": {
+								"name": "Characters"
+							},
+							"format": {
+								"style": "decimal",
+								"decimals": 0
+							},
+							"source": {
+								"register": "larpinq",
+								"schema": "character",
+								"metric": "count",
+								"filter": {
+									"type": "player"
+								}
+							}
+						}
+					},
+					{
+						"id": "roster-awaiting",
+						"title": "Awaiting approval",
+						"type": "stat",
+						"content": {
+							"label": "Awaiting approval",
+							"icon": "AccountCheck",
+							"route": {
+								"name": "Characters"
+							},
+							"format": {
+								"style": "decimal",
+								"decimals": 0
+							},
+							"source": {
+								"register": "larpinq",
+								"schema": "character",
+								"metric": "count",
+								"filter": {
+									"approved": "no"
+								}
+							}
+						}
+					},
+					{
+						"id": "roster-by-type",
+						"title": "By type",
+						"type": "chart",
+						"content": {
+							"chartKind": "donut",
+							"legendPosition": "bottom",
+							"emptyLabel": "No characters yet",
+							"dataSource": {
+								"register": "larpinq",
+								"schema": "character",
+								"aggregate": {
+									"groupBy": "type",
+									"metric": "count"
+								}
+							}
+						}
+					},
+					{
+						"id": "roster-by-approval",
+						"title": "By approval",
+						"type": "chart",
+						"content": {
+							"chartKind": "donut",
+							"legendPosition": "bottom",
+							"emptyLabel": "No characters yet",
+							"dataSource": {
+								"register": "larpinq",
+								"schema": "character",
+								"aggregate": {
+									"groupBy": "approved",
+									"metric": "count"
+								}
+							}
+						}
+					},
+					{
+						"id": "roster-recent",
+						"title": "Most recent",
+						"type": "object-table",
+						"content": {
+							"register": "larpinq",
+							"schema": "character",
+							"filter": {},
+							"sort": {
+								"field": "created",
+								"dir": "desc"
+							},
+							"limit": 8,
+							"hideHeader": true,
+							"emptyText": "No characters yet",
+							"viewAllRoute": {
+								"name": "Characters"
+							},
+							"viewAllLabel": "View all characters",
+							"columns": [
+								{
+									"key": "name",
+									"label": "Name"
+								},
+								{
+									"key": "type",
+									"label": "Type"
+								},
+								{
+									"key": "approved",
+									"label": "Approved"
+								}
+							],
+							"rowRoute": "CharacterDetail"
+						}
+					}
+				],
+				"layout": [
+					{
+						"id": "1",
+						"widgetId": "roster-total",
+						"gridX": 0,
+						"gridY": 0,
+						"gridWidth": 4,
+						"gridHeight": 2,
+						"showTitle": false
+					},
+					{
+						"id": "2",
+						"widgetId": "roster-players",
+						"gridX": 4,
+						"gridY": 0,
+						"gridWidth": 4,
+						"gridHeight": 2,
+						"showTitle": false
+					},
+					{
+						"id": "3",
+						"widgetId": "roster-awaiting",
+						"gridX": 8,
+						"gridY": 0,
+						"gridWidth": 4,
+						"gridHeight": 2,
+						"showTitle": false
+					},
+					{
+						"id": "4",
+						"widgetId": "roster-by-type",
+						"gridX": 0,
+						"gridY": 2,
+						"gridWidth": 6,
+						"gridHeight": 4,
+						"showTitle": true
+					},
+					{
+						"id": "5",
+						"widgetId": "roster-by-approval",
+						"gridX": 6,
+						"gridY": 2,
+						"gridWidth": 6,
+						"gridHeight": 4,
+						"showTitle": true
+					},
+					{
+						"id": "6",
+						"widgetId": "roster-recent",
+						"gridX": 0,
+						"gridY": 6,
+						"gridWidth": 12,
+						"gridHeight": 4,
+						"showTitle": true
+					}
+				]
+			}
+		},
+		{
+			"id": "ProgressionReport",
+			"route": "/reports/progression",
+			"type": "dashboard",
+			"title": "Progression",
+			"_note": "The chart aggregate names its numeric field `sumField`; the stat widget's `source` calls the same thing `field`. Two contracts one word apart, and the wrong one renders an empty chart with no error.",
+			"config": {
+				"widgets": [
+					{
+						"id": "xp-awards",
+						"title": "Awards",
+						"type": "stat",
+						"content": {
+							"label": "Awards",
+							"icon": "Star",
+							"route": {
+								"name": "XpAwards"
+							},
+							"format": {
+								"style": "decimal",
+								"decimals": 0
+							},
+							"source": {
+								"register": "larpinq",
+								"schema": "xpAward",
+								"metric": "count"
+							}
+						}
+					},
+					{
+						"id": "xp-total",
+						"title": "Experience awarded",
+						"type": "stat",
+						"content": {
+							"label": "Experience awarded",
+							"icon": "Trophy",
+							"route": {
+								"name": "XpAwards"
+							},
+							"format": {
+								"style": "decimal",
+								"decimals": 0
+							},
+							"source": {
+								"register": "larpinq",
+								"schema": "xpAward",
+								"metric": "sum",
+								"field": "amount"
+							}
+						}
+					},
+					{
+						"id": "xp-per-character",
+						"title": "Per character",
+						"type": "chart",
+						"content": {
+							"chartKind": "bar",
+							"legendPosition": "bottom",
+							"emptyLabel": "Nothing awarded yet",
+							"dataSource": {
+								"register": "larpinq",
+								"schema": "xpAward",
+								"aggregate": {
+									"groupBy": "character",
+									"metric": "sum",
+									"sumField": "amount",
+									"topN": 10,
+									"otherBucket": true,
+									"labelResolve": {
+										"schema": "character",
+										"labelField": "name"
+									}
+								}
+							}
+						}
+					},
+					{
+						"id": "xp-recent",
+						"title": "Most recent",
+						"type": "object-table",
+						"content": {
+							"register": "larpinq",
+							"schema": "xpAward",
+							"filter": {},
+							"sort": {
+								"field": "awardedAt",
+								"dir": "desc"
+							},
+							"limit": 8,
+							"hideHeader": true,
+							"emptyText": "Nothing awarded yet",
+							"viewAllRoute": {
+								"name": "XpAwards"
+							},
+							"viewAllLabel": "View all awards",
+							"columns": [
+								{
+									"key": "awardedAt",
+									"label": "Date"
+								},
+								{
+									"key": "character",
+									"label": "Character"
+								},
+								{
+									"key": "amount",
+									"label": "Experience"
+								},
+								{
+									"key": "reason",
+									"label": "Reason"
+								}
+							]
+						}
+					}
+				],
+				"layout": [
+					{
+						"id": "1",
+						"widgetId": "xp-awards",
+						"gridX": 0,
+						"gridY": 0,
+						"gridWidth": 6,
+						"gridHeight": 2,
+						"showTitle": false
+					},
+					{
+						"id": "2",
+						"widgetId": "xp-total",
+						"gridX": 6,
+						"gridY": 0,
+						"gridWidth": 6,
+						"gridHeight": 2,
+						"showTitle": false
+					},
+					{
+						"id": "3",
+						"widgetId": "xp-per-character",
+						"gridX": 0,
+						"gridY": 2,
+						"gridWidth": 12,
+						"gridHeight": 4,
+						"showTitle": true
+					},
+					{
+						"id": "4",
+						"widgetId": "xp-recent",
+						"gridX": 0,
+						"gridY": 6,
+						"gridWidth": 12,
+						"gridHeight": 4,
+						"showTitle": true
+					}
+				]
+			}
+		},
+		{
+			"id": "WorldContentReport",
+			"route": "/reports/content",
+			"type": "dashboard",
+			"title": "World content",
+			"_note": "The two donuts group by an ARRAY property on `character` and resolve the bucket labels through `labelResolve`, the same shape the Dashboard's skill-usage chart already uses. Grouping by the array is what answers 'what do characters actually carry', which counting the items themselves cannot.",
+			"config": {
+				"widgets": [
+					{
+						"id": "world-skills",
+						"title": "Skills",
+						"type": "stat",
+						"content": {
+							"label": "Skills",
+							"icon": "MagicStaff",
+							"route": {
+								"name": "Skills"
+							},
+							"format": {
+								"style": "decimal",
+								"decimals": 0
+							},
+							"source": {
+								"register": "larpinq",
+								"schema": "larping_skill",
+								"metric": "count"
+							}
+						}
+					},
+					{
+						"id": "world-items",
+						"title": "Items",
+						"type": "stat",
+						"content": {
+							"label": "Items",
+							"icon": "Package",
+							"route": {
+								"name": "Items"
+							},
+							"format": {
+								"style": "decimal",
+								"decimals": 0
+							},
+							"source": {
+								"register": "larpinq",
+								"schema": "larping_item",
+								"metric": "count"
+							}
+						}
+					},
+					{
+						"id": "world-conditions",
+						"title": "Conditions",
+						"type": "stat",
+						"content": {
+							"label": "Conditions",
+							"icon": "EmoticonSickOutline",
+							"route": {
+								"name": "Conditions"
+							},
+							"format": {
+								"style": "decimal",
+								"decimals": 0
+							},
+							"source": {
+								"register": "larpinq",
+								"schema": "condition",
+								"metric": "count"
+							}
+						}
+					},
+					{
+						"id": "world-effects",
+						"title": "Effects",
+						"type": "stat",
+						"content": {
+							"label": "Effects",
+							"icon": "FlashOutline",
+							"route": {
+								"name": "Effects"
+							},
+							"format": {
+								"style": "decimal",
+								"decimals": 0
+							},
+							"source": {
+								"register": "larpinq",
+								"schema": "effect",
+								"metric": "count"
+							}
+						}
+					},
+					{
+						"id": "world-items-carried",
+						"title": "Items carried by characters",
+						"type": "chart",
+						"content": {
+							"chartKind": "donut",
+							"legendPosition": "bottom",
+							"emptyLabel": "No items are carried yet",
+							"dataSource": {
+								"register": "larpinq",
+								"schema": "character",
+								"aggregate": {
+									"groupBy": "items",
+									"metric": "count",
+									"topN": 10,
+									"otherBucket": true,
+									"labelResolve": {
+										"schema": "larping_item",
+										"labelField": "name"
+									}
+								}
+							}
+						}
+					},
+					{
+						"id": "world-conditions-held",
+						"title": "Conditions on characters",
+						"type": "chart",
+						"content": {
+							"chartKind": "donut",
+							"legendPosition": "bottom",
+							"emptyLabel": "No conditions are held yet",
+							"dataSource": {
+								"register": "larpinq",
+								"schema": "character",
+								"aggregate": {
+									"groupBy": "conditions",
+									"metric": "count",
+									"topN": 10,
+									"otherBucket": true,
+									"labelResolve": {
+										"schema": "condition",
+										"labelField": "name"
+									}
+								}
+							}
+						}
+					}
+				],
+				"layout": [
+					{
+						"id": "1",
+						"widgetId": "world-skills",
+						"gridX": 0,
+						"gridY": 0,
+						"gridWidth": 3,
+						"gridHeight": 2,
+						"showTitle": false
+					},
+					{
+						"id": "2",
+						"widgetId": "world-items",
+						"gridX": 3,
+						"gridY": 0,
+						"gridWidth": 3,
+						"gridHeight": 2,
+						"showTitle": false
+					},
+					{
+						"id": "3",
+						"widgetId": "world-conditions",
+						"gridX": 6,
+						"gridY": 0,
+						"gridWidth": 3,
+						"gridHeight": 2,
+						"showTitle": false
+					},
+					{
+						"id": "4",
+						"widgetId": "world-effects",
+						"gridX": 9,
+						"gridY": 0,
+						"gridWidth": 3,
+						"gridHeight": 2,
+						"showTitle": false
+					},
+					{
+						"id": "5",
+						"widgetId": "world-items-carried",
+						"gridX": 0,
+						"gridY": 2,
+						"gridWidth": 6,
+						"gridHeight": 4,
+						"showTitle": true
+					},
+					{
+						"id": "6",
+						"widgetId": "world-conditions-held",
+						"gridX": 6,
+						"gridY": 2,
+						"gridWidth": 6,
+						"gridHeight": 4,
+						"showTitle": true
 					}
 				]
 			}
