@@ -42,12 +42,18 @@ test.describe('app chrome (ADR-114)', () => {
 		})
 	})
 
-	test('the footer reads Documentation, Reports, Features & roadmap, each with a glyph', async ({ page }) => {
-		const footer = page.locator('[data-testid="cn-nav"] .cn-app-nav__footer-list')
+	test('the footer reads Documentation, Reports, Features & roadmap, each with a glyph', async ({
+		page,
+	}) => {
+		const footer = page.locator(
+			'[data-testid="cn-nav"] .cn-app-nav__footer-list',
+		)
 		await expect(footer).toBeAttached({ timeout: 15_000 })
 
 		const rows = footer.locator('li')
-		const texts = (await rows.allInnerTexts()).map((t) => t.trim()).filter(Boolean)
+		const texts = (await rows.allInnerTexts())
+			.map((t) => t.trim())
+			.filter(Boolean)
 
 		// ORDER is the rule, not the numbers. This app ran Documentation at 90
 		// and Features & roadmap at 91, which left no room between them, so the
@@ -62,52 +68,88 @@ test.describe('app chrome (ADR-114)', () => {
 		// for the Reports entry; without it the row renders a blank space where
 		// the icon belongs and nothing complains.
 		for (const row of await rows.all()) {
-			await expect(row.locator('svg, .material-design-icon').first()).toBeAttached()
+			await expect(
+				row.locator('svg, .material-design-icon').first(),
+			).toBeAttached()
 		}
 	})
 
 	test('Reports lists the three reports', async ({ page }) => {
 		const nav = page.locator('[data-testid="cn-nav"]')
 		await nav.locator('[data-testid="cn-nav-entry-ReportsMenu"]').click()
-		await expect(page).toHaveURL(/\/apps\/larpinq\/reports(\?|$)/, { timeout: 15_000 })
+		await expect(page).toHaveURL(/\/apps\/larpinq\/reports(\?|$)/, {
+			timeout: 15_000,
+		})
 
 		for (const label of ['Character roster', 'Progression', 'World content']) {
-			await expect(page.getByText(label, { exact: false }).first()).toBeVisible({ timeout: 15_000 })
+			await expect(
+				page.getByText(label, { exact: false }).first(),
+			).toBeVisible({ timeout: 15_000 })
 		}
 	})
 
-	test('the roster report renders real numbers, not empty cards', async ({ page }) => {
+	test('the roster report renders real numbers, not empty cards', async ({
+		page,
+	}) => {
 		// The point of this test. Every widget is declarative over the larpinq
 		// register, so a wrong schema slug yields a card that renders its chrome
 		// and no value, silently.
 		await page.goto(`${APP_BASE}/reports/characters`)
-		await expect(page.locator('[data-testid="cn-nav"]')).toBeVisible({ timeout: 30_000 })
-		await expect(page.getByText('Awaiting approval', { exact: false }).first()).toBeVisible({ timeout: 30_000 })
-		await expect(page.locator('main, .app-content').first()).toContainText(/\d/, { timeout: 30_000 })
+		await expect(page.locator('[data-testid="cn-nav"]')).toBeVisible({
+			timeout: 30_000,
+		})
+		await expect(
+			page.getByText('Awaiting approval', { exact: false }).first(),
+		).toBeVisible({ timeout: 30_000 })
+		await expect(page.locator('main, .app-content').first()).toContainText(
+			/\d/,
+			{ timeout: 30_000 },
+		)
 	})
 
-	test('the world report reads the prefixed schema slugs, not the seed keys', async ({ page }) => {
+	test('the world report reads the prefixed schema slugs, not the seed keys', async ({
+		page,
+	}) => {
 		// larping_skill and larping_item, NOT skill and item. If a later edit
 		// "tidies" those back to the seed keys the cards go blank in place, so
 		// this asserts a number reaches the page.
 		await page.goto(`${APP_BASE}/reports/content`)
-		await expect(page.locator('[data-testid="cn-nav"]')).toBeVisible({ timeout: 30_000 })
-		await expect(page.getByText('Skills', { exact: false }).first()).toBeVisible({ timeout: 30_000 })
-		await expect(page.locator('main, .app-content').first()).toContainText(/\d/, { timeout: 30_000 })
+		await expect(page.locator('[data-testid="cn-nav"]')).toBeVisible({
+			timeout: 30_000,
+		})
+		await expect(page.getByText('Skills', { exact: false }).first()).toBeVisible(
+			{ timeout: 30_000 },
+		)
+		await expect(page.locator('main, .app-content').first()).toContainText(
+			/\d/,
+			{ timeout: 30_000 },
+		)
 	})
 
 	test('the progression report is reachable and titled', async ({ page }) => {
 		await page.goto(`${APP_BASE}/reports/progression`)
-		await expect(page).toHaveURL(/\/reports\/progression(\?|$)/, { timeout: 15_000 })
-		await expect(page.getByText('Experience awarded', { exact: false }).first()).toBeVisible({ timeout: 30_000 })
+		await expect(page).toHaveURL(/\/reports\/progression(\?|$)/, {
+			timeout: 15_000,
+		})
+		await expect(
+			page.getByText('Experience awarded', { exact: false }).first(),
+		).toBeVisible({ timeout: 30_000 })
 	})
 
-	test('the settings foldout carries Personal settings, Admin settings and Flows', async ({ page }) => {
+	test('the settings foldout carries Personal settings, Admin settings and Flows', async ({
+		page,
+	}) => {
 		const nav = page.locator('[data-testid="cn-nav"]')
 
-		await expect(nav.locator('[data-testid="cn-nav-settings"]')).toBeAttached({ timeout: 15_000 })
-		await expect(nav.locator('[data-testid="cn-nav-personal-settings"]')).toBeAttached()
-		await expect(nav.locator('[data-testid="cn-nav-entry-FlowsMenu"]')).toBeAttached()
+		await expect(nav.locator('[data-testid="cn-nav-settings"]')).toBeAttached({
+			timeout: 15_000,
+		})
+		await expect(
+			nav.locator('[data-testid="cn-nav-personal-settings"]'),
+		).toBeAttached()
+		await expect(
+			nav.locator('[data-testid="cn-nav-entry-FlowsMenu"]'),
+		).toBeAttached()
 
 		const admin = nav.locator('[data-testid="cn-nav-admin-settings"]')
 		await expect(admin).toBeAttached()
