@@ -98,6 +98,7 @@ permissions:
 
 jobs:
   quality:
+    if: (github.event_name != 'pull_request' || github.head_ref != 'development')
     # ConductionNL, NOT Conduction. e2faa092 ("org rename") pointed all eight
     # reusable-workflow calls in this repo at `Conduction/.github`, which
     # Actions cannot resolve — so from 2026-06-01 every run of this workflow
