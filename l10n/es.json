@@ -255,7 +255,9 @@
         "Nothing awarded yet": "Aún no se ha concedido nada",
         "Who is playing what, and what is still waiting for approval.": "Quién juega qué, y qué sigue pendiente de aprobación.",
         "Experience awarded, and who earned it.": "La experiencia concedida y quién la ganó.",
-        "How much the world holds, and what characters actually carry.": "Cuánto contiene el mundo, y qué llevan realmente los personajes."
+        "How much the world holds, and what characters actually carry.": "Cuánto contiene el mundo, y qué llevan realmente los personajes.",
+        "Store": "Tienda",
+        "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Instale registros, esquemas y flujos publicados por otras organizaciones."
     },
     "plurals": {}
 }

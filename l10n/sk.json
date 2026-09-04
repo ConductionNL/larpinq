@@ -255,7 +255,9 @@
         "Nothing awarded yet": "Zatiaľ nič neudelené",
         "Who is playing what, and what is still waiting for approval.": "Kto hrá čo a čo ešte čaká na schválenie.",
         "Experience awarded, and who earned it.": "Udelené skúsenosti a kto si ich zaslúžil.",
-        "How much the world holds, and what characters actually carry.": "Koľko svet obsahuje a čo postavy skutočne nesú."
+        "How much the world holds, and what characters actually carry.": "Koľko svet obsahuje a čo postavy skutočne nesú.",
+        "Store": "Obchod",
+        "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Nainštalujte registre, schémy a toky zverejnené inými organizáciami."
     },
     "plurals": {}
 }

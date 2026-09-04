@@ -256,7 +256,9 @@ OC.L10N.register(
         "Nothing awarded yet": "Zatím nic uděleno",
         "Who is playing what, and what is still waiting for approval.": "Kdo hraje co a co ještě čeká na schválení.",
         "Experience awarded, and who earned it.": "Udělené zkušenosti a kdo si je vysloužil.",
-        "How much the world holds, and what characters actually carry.": "Kolik svět obsahuje a co postavy skutečně nesou."
+        "How much the world holds, and what characters actually carry.": "Kolik svět obsahuje a co postavy skutečně nesou.",
+        "Store": "Obchod",
+        "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Nainstalujte registry, schémata a toky zveřejněné jinými organizacemi."
     },
     "nplurals=2; plural=(n != 1);"
 )

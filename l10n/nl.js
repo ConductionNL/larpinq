@@ -348,7 +348,9 @@ OC.L10N.register(
         "Nothing awarded yet": "Nog niets toegekend",
         "Who is playing what, and what is still waiting for approval.": "Wie wat speelt, en wat nog op goedkeuring wacht.",
         "Experience awarded, and who earned it.": "Toegekende ervaring, en wie die verdiend heeft.",
-        "How much the world holds, and what characters actually carry.": "Hoeveel de wereld bevat, en wat personages werkelijk dragen."
+        "How much the world holds, and what characters actually carry.": "Hoeveel de wereld bevat, en wat personages werkelijk dragen.",
+        "Store": "Store",
+        "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Installeer registers, schema's en flows die andere organisaties hebben gepubliceerd."
     },
     "nplurals=2; plural=(n != 1);"
 )

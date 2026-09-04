@@ -256,7 +256,9 @@ OC.L10N.register(
         "Nothing awarded yet": "Još ništa nije dodijeljeno",
         "Who is playing what, and what is still waiting for approval.": "Tko što igra i što još čeka odobrenje.",
         "Experience awarded, and who earned it.": "Dodijeljeno iskustvo i tko ga je zaradio.",
-        "How much the world holds, and what characters actually carry.": "Koliko svijet sadrži i što likovi zaista nose."
+        "How much the world holds, and what characters actually carry.": "Koliko svijet sadrži i što likovi zaista nose.",
+        "Store": "Trgovina",
+        "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Instalirajte registre, sheme i tokove koje su objavile druge organizacije."
     },
     "nplurals=2; plural=(n != 1);"
 )

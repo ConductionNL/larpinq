@@ -256,7 +256,9 @@ OC.L10N.register(
         "Nothing awarded yet": "Mitään ei ole vielä myönnetty",
         "Who is playing what, and what is still waiting for approval.": "Kuka pelaa mitäkin ja mikä odottaa vielä hyväksyntää.",
         "Experience awarded, and who earned it.": "Myönnetty kokemus ja kuka sen ansaitsi.",
-        "How much the world holds, and what characters actually carry.": "Kuinka paljon maailma sisältää ja mitä hahmot todella kantavat."
+        "How much the world holds, and what characters actually carry.": "Kuinka paljon maailma sisältää ja mitä hahmot todella kantavat.",
+        "Store": "Kauppa",
+        "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Asenna muiden organisaatioiden julkaisemia rekistereitä, skeemoja ja vuokaavioita."
     },
     "nplurals=2; plural=(n != 1);"
 )

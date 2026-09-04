@@ -256,7 +256,9 @@ OC.L10N.register(
         "Nothing awarded yet": "Dar nieko nesuteikta",
         "Who is playing what, and what is still waiting for approval.": "Kas ką žaidžia ir kas dar laukia patvirtinimo.",
         "Experience awarded, and who earned it.": "Suteikta patirtis ir kas ją užsidirbo.",
-        "How much the world holds, and what characters actually carry.": "Kiek pasaulis apima ir ką personažai iš tikrųjų neša."
+        "How much the world holds, and what characters actually carry.": "Kiek pasaulis apima ir ką personažai iš tikrųjų neša.",
+        "Store": "Parduotuvė",
+        "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Įdiekite registrus, schemas ir srautus, kuriuos paskelbė kitos organizacijos."
     },
     "nplurals=2; plural=(n != 1);"
 )

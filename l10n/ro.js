@@ -256,7 +256,9 @@ OC.L10N.register(
         "Nothing awarded yet": "Încă nu s-a acordat nimic",
         "Who is playing what, and what is still waiting for approval.": "Cine joacă ce și ce mai așteaptă aprobare.",
         "Experience awarded, and who earned it.": "Experiența acordată și cine a câștigat-o.",
-        "How much the world holds, and what characters actually carry.": "Cât conține lumea și ce poartă de fapt personajele."
+        "How much the world holds, and what characters actually carry.": "Cât conține lumea și ce poartă de fapt personajele.",
+        "Store": "Magazin",
+        "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Instalați registre, scheme și fluxuri publicate de alte organizații."
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -256,7 +256,9 @@ OC.L10N.register(
         "Nothing awarded yet": "Ende asgjë nuk është dhënë",
         "Who is playing what, and what is still waiting for approval.": "Kush luan çfarë, dhe çfarë pret ende miratim.",
         "Experience awarded, and who earned it.": "Përvoja e dhënë dhe kush e fitoi atë.",
-        "How much the world holds, and what characters actually carry.": "Sa mban bota dhe çfarë mbajnë vërtet personazhet."
+        "How much the world holds, and what characters actually carry.": "Sa mban bota dhe çfarë mbajnë vërtet personazhet.",
+        "Store": "Dyqani",
+        "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Instaloni regjistra, skema dhe rrjedha të publikuara nga organizata të tjera."
     },
     "nplurals=2; plural=(n != 1);"
 )
