@@ -255,7 +255,9 @@
         "Nothing awarded yet": "Пока ничего не начислено",
         "Who is playing what, and what is still waiting for approval.": "Кто что играет и что ещё ждёт одобрения.",
         "Experience awarded, and who earned it.": "Начисленный опыт и кто его заработал.",
-        "How much the world holds, and what characters actually carry.": "Сколько содержит мир и что персонажи действительно несут."
+        "How much the world holds, and what characters actually carry.": "Сколько содержит мир и что персонажи действительно несут.",
+        "Store": "Магазин",
+        "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Установите реестры, схемы и потоки, опубликованные другими организациями."
     },
     "plurals": {}
 }

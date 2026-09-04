@@ -256,7 +256,9 @@ OC.L10N.register(
         "Nothing awarded yet": "Henüz bir şey verilmedi",
         "Who is playing what, and what is still waiting for approval.": "Kimin ne oynadığı ve neyin hâlâ onay beklediği.",
         "Experience awarded, and who earned it.": "Verilen deneyim ve onu kimin kazandığı.",
-        "How much the world holds, and what characters actually carry.": "Dünyanın ne kadar barındırdığı ve karakterlerin gerçekte ne taşıdığı."
+        "How much the world holds, and what characters actually carry.": "Dünyanın ne kadar barındırdığı ve karakterlerin gerçekte ne taşıdığı.",
+        "Store": "Mağaza",
+        "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Diğer kuruluşların yayımladığı kayıtları, şemaları ve akışları yükleyin."
     },
     "nplurals=2; plural=(n != 1);"
 )

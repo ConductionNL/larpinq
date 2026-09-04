@@ -256,7 +256,9 @@ OC.L10N.register(
         "Nothing awarded yet": "Encara no s'ha concedit res",
         "Who is playing what, and what is still waiting for approval.": "Qui juga a què, i què encara espera aprovació.",
         "Experience awarded, and who earned it.": "L'experiència concedida i qui l'ha guanyada.",
-        "How much the world holds, and what characters actually carry.": "Quant conté el món, i què porten realment els personatges."
+        "How much the world holds, and what characters actually carry.": "Quant conté el món, i què porten realment els personatges.",
+        "Store": "Botiga",
+        "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Instal·leu registres, esquemes i fluxos publicats per altres organitzacions."
     },
     "nplurals=2; plural=(n != 1);"
 )

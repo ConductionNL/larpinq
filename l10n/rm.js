@@ -256,7 +256,9 @@ OC.L10N.register(
         "Nothing awarded yet": "Anc nagut attribuì",
         "Who is playing what, and what is still waiting for approval.": "Tgi che giogia tge, e tge che spetga anc l'approvaziun.",
         "Experience awarded, and who earned it.": "L'experientscha attribuida e tgi ch'i l'ha gudagnà.",
-        "How much the world holds, and what characters actually carry.": "Quant ch'il mund cuntegna e tge che las persunas portan propi."
+        "How much the world holds, and what characters actually carry.": "Quant ch'il mund cuntegna e tge che las persunas portan propi.",
+        "Store": "Butia",
+        "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Installescha registers, schemas e process ch'autras organisaziuns han publitgà."
     },
     "nplurals=2; plural=(n != 1);"
 )

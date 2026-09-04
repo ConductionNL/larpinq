@@ -256,7 +256,9 @@ OC.L10N.register(
         "Nothing awarded yet": "Xejn ma ngħata s'issa",
         "Who is playing what, and what is still waiting for approval.": "Min qed jilgħab xiex, u x'għadu jistenna approvazzjoni.",
         "Experience awarded, and who earned it.": "L-esperjenza mogħtija u min qalagħha.",
-        "How much the world holds, and what characters actually carry.": "Kemm iżomm id-dinja, u x'iġorru tabilħaqq il-karattri."
+        "How much the world holds, and what characters actually carry.": "Kemm iżomm id-dinja, u x'iġorru tabilħaqq il-karattri.",
+        "Store": "Ħanut",
+        "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Installa reġistri, skemi u flussi ppubblikati minn organizzazzjonijiet oħra."
     },
     "nplurals=2; plural=(n != 1);"
 )

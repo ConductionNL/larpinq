@@ -255,7 +255,9 @@
         "Nothing awarded yet": "Vēl nekas nav piešķirts",
         "Who is playing what, and what is still waiting for approval.": "Kurš ko spēlē un kas vēl gaida apstiprinājumu.",
         "Experience awarded, and who earned it.": "Piešķirtā pieredze un kurš to nopelnīja.",
-        "How much the world holds, and what characters actually carry.": "Cik daudz pasaule ietver un ko tēli patiešām nes."
+        "How much the world holds, and what characters actually carry.": "Cik daudz pasaule ietver un ko tēli patiešām nes.",
+        "Store": "Veikals",
+        "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Instalējiet reģistrus, shēmas un plūsmas, ko publicējušas citas organizācijas."
     },
     "plurals": {}
 }

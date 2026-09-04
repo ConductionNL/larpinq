@@ -50,6 +50,7 @@ import Sitemap from 'vue-material-design-icons/Sitemap.vue'
 import Star from 'vue-material-design-icons/Star.vue'
 import StarOutline from 'vue-material-design-icons/StarOutline.vue'
 import StarPlusOutline from 'vue-material-design-icons/StarPlusOutline.vue'
+import StoreOutline from 'vue-material-design-icons/StoreOutline.vue'
 import Sword from 'vue-material-design-icons/Sword.vue'
 import SwordCross from 'vue-material-design-icons/SwordCross.vue'
 import ToolboxOutline from 'vue-material-design-icons/ToolboxOutline.vue'
@@ -97,6 +98,7 @@ export default {
 	Star,
 	StarOutline,
 	StarPlusOutline,
+	StoreOutline,
 	Sword,
 	SwordCross,
 	ToolboxOutline,

@@ -256,7 +256,9 @@ OC.L10N.register(
         "Nothing awarded yet": "Nach näischt vergiff",
         "Who is playing what, and what is still waiting for approval.": "Wien wat spillt a wat nach op Zoustëmmung waart.",
         "Experience awarded, and who earned it.": "Vergiff Erfarung a wien se verdéngt huet.",
-        "How much the world holds, and what characters actually carry.": "Wéi vill d'Welt hält a wat Charakteren wierklech droen."
+        "How much the world holds, and what characters actually carry.": "Wéi vill d'Welt hält a wat Charakteren wierklech droen.",
+        "Store": "Buttek",
+        "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Installéiert Registeren, Schemaen a Flows déi aner Organisatiounen publizéiert hunn."
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -256,7 +256,9 @@ OC.L10N.register(
         "Nothing awarded yet": "Intet tildelt endnu",
         "Who is playing what, and what is still waiting for approval.": "Hvem spiller hvad, og hvad venter stadig på godkendelse.",
         "Experience awarded, and who earned it.": "Tildelt erfaring, og hvem der har optjent den.",
-        "How much the world holds, and what characters actually carry.": "Hvor meget verden rummer, og hvad karaktererne faktisk bærer."
+        "How much the world holds, and what characters actually carry.": "Hvor meget verden rummer, og hvad karaktererne faktisk bærer.",
+        "Store": "Butik",
+        "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Installer registre, skemaer og flows, som andre organisationer har udgivet."
     },
     "nplurals=2; plural=(n != 1);"
 )

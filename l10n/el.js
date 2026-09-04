@@ -256,7 +256,9 @@ OC.L10N.register(
         "Nothing awarded yet": "Δεν έχει απονεμηθεί τίποτα ακόμη",
         "Who is playing what, and what is still waiting for approval.": "Ποιος παίζει τι, και τι περιμένει ακόμη έγκριση.",
         "Experience awarded, and who earned it.": "Η απονεμημένη εμπειρία και ποιος την κέρδισε.",
-        "How much the world holds, and what characters actually carry.": "Πόσα περιέχει ο κόσμος και τι κουβαλούν πραγματικά οι χαρακτήρες."
+        "How much the world holds, and what characters actually carry.": "Πόσα περιέχει ο κόσμος και τι κουβαλούν πραγματικά οι χαρακτήρες.",
+        "Store": "Κατάστημα",
+        "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Εγκαταστήστε μητρώα, σχήματα και ροές που έχουν δημοσιεύσει άλλοι οργανισμοί."
     },
     "nplurals=2; plural=(n != 1);"
 )

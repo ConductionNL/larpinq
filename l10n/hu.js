@@ -256,7 +256,9 @@ OC.L10N.register(
         "Nothing awarded yet": "Még semmit sem ítéltek oda",
         "Who is playing what, and what is still waiting for approval.": "Ki mit játszik, és mi vár még jóváhagyásra.",
         "Experience awarded, and who earned it.": "Az odaítélt tapasztalat és aki kiérdemelte.",
-        "How much the world holds, and what characters actually carry.": "Mennyit tartalmaz a világ, és mit hordanak valójában a karakterek."
+        "How much the world holds, and what characters actually carry.": "Mennyit tartalmaz a világ, és mit hordanak valójában a karakterek.",
+        "Store": "Áruház",
+        "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Telepítsen más szervezetek által közzétett nyilvántartásokat, sémákat és folyamatokat."
     },
     "nplurals=2; plural=(n != 1);"
 )
