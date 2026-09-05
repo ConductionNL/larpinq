@@ -1,6 +1,14 @@
 OC.L10N.register(
     "larpinq",
     {
+        "Load example data?": "Voleu carregar dades d’exemple?",
+        "Example data fills the lists, detail pages and dashboards so you can see the app working straight away. Pick \"None\" on a production install.": "Les dades d’exemple omplen les llistes, les pàgines de detall i els taulers, perquè vegeu l’aplicació funcionant de seguida. Trieu \"Cap\" en una instal·lació de producció.",
+        "Load the example data": "Carrega les dades d’exemple",
+        "Loads what you picked. The data is obviously sample data, it is safe to run more than once, and you can delete it afterwards.": "Carrega el que heu triat. Són clarament dades d’exemple, l’operació es pot repetir sense risc i les podeu esborrar després.",
+        "None, I will set this up myself": "Cap, ja ho configuraré jo mateix",
+        "Nothing is imported. You start with an empty app and add your own data.": "No s’importa res. Comenceu amb una aplicació buida i hi afegiu les vostres dades.",
+        "Example data": "Dades d’exemple",
+        "Sample values for every schema this app supplies, generated from the schemas themselves. It shows the lists, detail pages and dashboards working rather than telling a story. Safe to run more than once, and you can delete it afterwards.": "Valors d’exemple per a cada esquema que aporta aquesta aplicació, generats a partir dels esquemes mateixos. Mostren les llistes, les pàgines de detall i els taulers funcionant en lloc d’explicar una història. Es pot repetir sense risc i esborrar després.",
         "Larpinq": "Larpinq",
         "Dashboard": "Tauler",
         "Characters": "Personatges",

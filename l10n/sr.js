@@ -1,6 +1,14 @@
 OC.L10N.register(
     "larpinq",
     {
+        "Load example data?": "Учитати примере података?",
+        "Example data fills the lists, detail pages and dashboards so you can see the app working straight away. Pick \"None\" on a production install.": "Примери података попуњавају листе, странице са детаљима и командне табле, па апликацију одмах видите како ради. Изаберите \"Ништа\" на продукцијској инсталацији.",
+        "Load the example data": "Учитај примере података",
+        "Loads what you picked. The data is obviously sample data, it is safe to run more than once, and you can delete it afterwards.": "Учитава оно што сте изабрали. То су очигледно примери података, радња се може безбедно поновити, а после их можете обрисати.",
+        "None, I will set this up myself": "Ништа, сам ћу ово подесити",
+        "Nothing is imported. You start with an empty app and add your own data.": "Ништа се не увози. Почињете са празном апликацијом и додајете сопствене податке.",
+        "Example data": "Примери података",
+        "Sample values for every schema this app supplies, generated from the schemas themselves. It shows the lists, detail pages and dashboards working rather than telling a story. Safe to run more than once, and you can delete it afterwards.": "Примери вредности за сваку шему коју ова апликација доноси, генерисани из самих шема. Показују листе, странице са детаљима и командне табле у раду уместо да причају причу. Безбедно за понављање и брисање после.",
         "Larpinq": "Larpinq",
         "Dashboard": "Контролна табла",
         "Characters": "Ликови",

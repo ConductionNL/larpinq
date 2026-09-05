@@ -1,6 +1,14 @@
 OC.L10N.register(
     "larpinq",
     {
+        "Load example data?": "Να φορτωθούν δεδομένα παραδείγματος;",
+        "Example data fills the lists, detail pages and dashboards so you can see the app working straight away. Pick \"None\" on a production install.": "Τα δεδομένα παραδείγματος γεμίζουν τις λίστες, τις σελίδες λεπτομερειών και τους πίνακες, ώστε να δείτε αμέσως την εφαρμογή να λειτουργεί. Επιλέξτε \"Κανένα\" σε εγκατάσταση παραγωγής.",
+        "Load the example data": "Φόρτωση των δεδομένων παραδείγματος",
+        "Loads what you picked. The data is obviously sample data, it is safe to run more than once, and you can delete it afterwards.": "Φορτώνει ό,τι επιλέξατε. Είναι εμφανώς δεδομένα παραδείγματος, η ενέργεια επαναλαμβάνεται με ασφάλεια και μπορείτε να τα διαγράψετε μετά.",
+        "None, I will set this up myself": "Κανένα, θα το ρυθμίσω μόνος μου",
+        "Nothing is imported. You start with an empty app and add your own data.": "Δεν εισάγεται τίποτα. Ξεκινάτε με μια κενή εφαρμογή και προσθέτετε τα δικά σας δεδομένα.",
+        "Example data": "Δεδομένα παραδείγματος",
+        "Sample values for every schema this app supplies, generated from the schemas themselves. It shows the lists, detail pages and dashboards working rather than telling a story. Safe to run more than once, and you can delete it afterwards.": "Τιμές παραδείγματος για κάθε σχήμα που παρέχει αυτή η εφαρμογή, παραγμένες από τα ίδια τα σχήματα. Δείχνουν τις λίστες, τις σελίδες λεπτομερειών και τους πίνακες σε λειτουργία αντί να αφηγούνται μια ιστορία. Ασφαλής επανάληψη και διαγραφή μετά.",
         "Larpinq": "Larpinq",
         "Dashboard": "Πίνακας ελέγχου",
         "Characters": "Χαρακτήρες",
