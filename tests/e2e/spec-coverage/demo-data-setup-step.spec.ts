@@ -39,9 +39,10 @@ async function api(
 	page: Page,
 	method: string,
 	path: string,
+	body?: unknown,
 ): Promise<{ status: number; json: any }> {
 	return await page.evaluate(
-		async ({ method, path }) => {
+		async ({ method, path, body }) => {
 			const res = await fetch(path, {
 				method,
 				headers: {
@@ -50,6 +51,7 @@ async function api(
 					requesttoken: (window as any).OC?.requestToken || '',
 					'OCS-APIREQUEST': 'true',
 				},
+				body: body === undefined ? undefined : JSON.stringify(body),
 			})
 			let json: any
 			try {
@@ -59,8 +61,39 @@ async function api(
 			}
 			return { status: res.status, json }
 		},
-		{ method, path },
+		{ method, path, body },
 	)
+}
+
+/**
+ * Choose the shipped dataset, and answer with the id that was chosen.
+ *
+ * 🔴 THE TEST HAS TO MAKE THE DECISION IT ASSERTS AGAINST. The demo-data step
+ * is a choice followed by a load step now, and the CI seed settles the optional
+ * steps by posting `skip-demo-data` — which records "none". A load that follows
+ * correctly imports nothing, so an install test that skips this arranges no
+ * precondition and measures the seed instead of the app.
+ *
+ * The id comes from `/api/setup/status` rather than a literal: the choice step
+ * reads its options from exactly that list, so a hardcoded id can pass while
+ * the list an operator sees is empty.
+ */
+async function pickShippedDataset(page: Page): Promise<string> {
+	const status = await api(page, 'GET', `${BASE}/api/setup/status`)
+	const shipped = (status.json?.datasets ?? []).find(
+		(d: any) => d?.id && d.id !== 'none',
+	)
+	expect(
+		shipped,
+		`setup/status offers no dataset to load: ${JSON.stringify(status.json?.datasets)}`,
+	).toBeTruthy()
+
+	const saved = await api(page, 'POST', `${BASE}/api/setup/config`, {
+		demo_dataset: shipped.id,
+	})
+	expect(saved.status, JSON.stringify(saved.json)).toBe(200)
+
+	return shipped.id
 }
 
 test.describe.configure({ mode: 'serial' })
@@ -103,6 +136,8 @@ test.describe('ADR-111 demo data', () => {
 		// it is the only check that the install WROTE something.
 		test.slow()
 
+		await pickShippedDataset(page)
+
 		const res = await api(
 			page,
 			'POST',
@@ -135,6 +170,8 @@ test.describe('ADR-111 demo data', () => {
 		// The step body tells the operator it is "safe to run more than once".
 		// That sentence is a contract; this asserts the server keeps it rather
 		// than erroring or reporting failure on a second pass.
+		await pickShippedDataset(page)
+
 		const again = await api(
 			page,
 			'POST',
