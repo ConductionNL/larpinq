@@ -16,7 +16,7 @@
  * @spec openspec/specs/setting-management/spec.md
  */
 
-import { test, expect } from '@playwright/test'
+import { expect, test } from '@playwright/test'
 
 const BASE = '/apps/larpinq'
 
@@ -30,7 +30,7 @@ test.describe('setting-management', () => {
 		// Never `networkidle` — Nextcloud's notification poll means that state
 		// is never reached, so the wait always burns its full budget (ADR-074
 		// rule 4). Wait for the rendered page surface instead.
-		await page.goto(`${BASE}/#/settings`, { waitUntil: 'domcontentloaded' })
+		await page.goto(`${BASE}/settings`, { waitUntil: 'domcontentloaded' })
 		await expect(page.locator('.app-content')).toBeVisible({ timeout: 30_000 })
 
 		// Assert a page-SPECIFIC affordance inside the content area. The old

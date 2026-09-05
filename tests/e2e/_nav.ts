@@ -1,3 +1,5 @@
+import type { Page } from '@playwright/test'
+
 /**
  * Shared larpinq sidebar-navigation helper.
  *
@@ -30,7 +32,7 @@
  *     plain click hangs on actionability) AND the click must be retried,
  *     because force cannot fire a handler Vue has not attached yet.
  */
-import { expect, type Page } from '@playwright/test'
+import { expect } from '@playwright/test'
 
 export const APP_BASE = '/apps/larpinq'
 export const NAV = '[data-testid="cn-nav"]'
@@ -202,6 +204,8 @@ export async function navTo(page: Page, slug: string): Promise<void> {
 		timeout: 10_000,
 	})
 	await link.click()
-	await expect(page).toHaveURL(new RegExp(`#/${slug}(\\b|/|$|\\?)`))
+	// larpinq moved off hash routing (#651), so the URL is /apps/larpinq/<slug>
+	// with no "#". The old pattern waited 15s on a hash that is never produced.
+	await expect(page).toHaveURL(new RegExp(`/${slug}(\\b|/|$|\\?)`))
 	await expect(page.locator('.app-content')).toBeVisible({ timeout: 10_000 })
 }

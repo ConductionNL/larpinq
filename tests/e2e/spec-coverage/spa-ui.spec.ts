@@ -17,26 +17,30 @@
  * playwright.config.ts wires storageState so each test starts logged in.
  */
 
-import { test, expect, type Page } from '@playwright/test'
-import { dismissSupportDialog } from '../_nav'
+import type { Page } from '@playwright/test'
+
+import { expect, test } from '@playwright/test'
+import { dismissSupportDialog } from '../_nav.ts'
 
 const BASE = '/apps/larpinq'
-const TS = Date.now()
 
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
 
 /**
- * Navigate to an in-app hash-mode route.
+ * Navigate to an in-app route.
  *
- * The Vue SPA uses hash mode with base `/apps/larpinq` (src/main.js —
- * fleet #133 deep-link fix). In-app routes (/characters, /abilities, …) are
- * addressed via the URL hash: /apps/larpinq/#/<route>. The hash fragment is
- * never sent to the backend, so the SPA root is always served and Vue Router's
- * hashchange listener resolves the view client-side. Strategy: land on the SPA
- * root first, wait for Vue to mount, then set window.location.hash so the
- * router renders the desired view without a page reload. For external paths
+ * The Vue SPA runs HISTORY mode (`createWebHistory(routerBase())` in
+ * src/main.js), so in-app routes are real paths: /apps/larpinq/<route>. This
+ * helper used to set `window.location.hash` instead, which was correct while
+ * the app was on hash routing and became a silent no-op when #651 moved it to
+ * clean path URLs. Nothing threw: the URL gained a fragment, `hashchange`
+ * fired, and the router ignored it, so every caller stayed on whatever page it
+ * was already on and asserted against that.
+ *
+ * Strategy: land on the SPA root first so Vue mounts, then push through the
+ * router, which navigates in place without a reload. For external paths
  * (settings, other NC apps) we do a regular goto.
  */
 async function go(page: Page, route: string): Promise<void> {
@@ -70,32 +74,51 @@ async function go(page: Page, route: string): Promise<void> {
 		// makes every later click hang on actionability.
 		await dismissSupportDialog(page)
 	}
-	// Resolve the target path relative to the app base. The router runs in
-	// hash mode (src/main.js — fleet #133 deep-link fix), so in-app routes are
-	// addressed via the URL hash: /apps/larpinq/#/<route>. Driving the hash
-	// directly lets Vue Router's hashchange listener resolve the view (the old
-	// history.pushState to a bare /apps/larpinq/<route> path no longer routes
-	// under hash mode and addresses a server path that 404s on reload).
+	// Navigate the ROUTER, not the URL fragment. Setting `location.hash` under
+	// `createWebHistory` changes the URL and fires `hashchange`, but the router
+	// does not listen to it, so the route never changes and nothing throws.
+	// The pushState fallback drives the `popstate` listener the history mode
+	// actually installs, deriving the base exactly as `routerBase()` does so
+	// both the `/apps/` and `/index.php/apps/` URL forms resolve.
 	const targetPath = route.startsWith('/') ? route : `/${route}`
-	const hashFragment = `#${targetPath}`
-	// Compare the *exact* current hash, not a substring: the root route's
-	// fragment "#/" is a substring of every other hash (e.g. "#/characters"),
-	// so an includes() check would wrongly treat any view as "already on root"
-	// and skip navigating back to the dashboard.
-	const currentHash = await page.evaluate(() => window.location.hash || '#/')
-	const normalisedCurrent = currentHash === '#' ? '#/' : currentHash
-	if (normalisedCurrent !== hashFragment) {
-		await page.evaluate((hash) => {
-			window.location.hash = hash
-		}, hashFragment)
-		// ADR-074 rule 4: `networkidle` is unreachable on Nextcloud (notification
-		// poll), so it burns the full budget. Wait for the rendered shell.
-		await page
-			.locator('#app-content, .app-content, #content')
-			.first()
-			.waitFor({ state: 'visible', timeout: 30_000 })
-			.catch(() => {})
-	}
+	await page.evaluate((p) => {
+		const host = document.querySelector('#content') as
+			| (HTMLElement & {
+					__vue_app__?: {
+						config?: {
+							globalProperties?: {
+								$router?: { push: (to: string) => unknown }
+							}
+						}
+					}
+			  })
+			| null
+		const router = host?.__vue_app__?.config?.globalProperties?.$router
+		if (router) {
+			router.push(p)
+			return
+		}
+		const base =
+			window.location.pathname.match(/^(.*\/apps\/larpinq)(?:\/|$)/)?.[1] ?? ''
+		window.history.pushState({}, '', `${base}${p}`)
+		window.dispatchEvent(new PopStateEvent('popstate', { state: {} }))
+	}, targetPath)
+	// ADR-074 rule 4: `networkidle` is unreachable on Nextcloud (notification
+	// poll), so it burns the full budget. Wait for the rendered shell.
+	await page
+		.locator('#app-content, .app-content, #content')
+		.first()
+		.waitFor({ state: 'visible', timeout: 30_000 })
+		.catch(() => {})
+	// The route must actually BE the one requested. vue-router's catch-all
+	// rewrites an unresolved location to `/`, and without this check every
+	// assertion below would run against the dashboard and pass there.
+	await expect(page).toHaveURL(
+		new RegExp(
+			`${`/apps/larpinq${targetPath}`.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}/?$`,
+		),
+		{ timeout: 15_000 },
+	)
 }
 
 /**
@@ -360,13 +383,21 @@ test.describe('character-management', () => {
 		if (await btn.isVisible({ timeout: 3000 }).catch(() => false)) {
 			await btn.click()
 			const dialog = page.locator('[role="dialog"]').first()
+			// waitFor() resolves a PROMISE, so the old form chained .locator()
+			// onto it and threw "dialog.waitFor(...).catch(...).locator is not a
+			// function" before asserting anything. The locator it built was also
+			// discarded, so even without the TypeError this test asserted nothing
+			// while carrying a name that says it checks the name field.
 			await dialog.waitFor({ state: 'visible', timeout: 5000 }).catch(() => {})
-			// Name field should be present in the dialog
 			const nameField = dialog
 				.locator(
 					'input[placeholder*="name" i], input[name*="name" i], label:has-text("Name") ~ * input',
 				)
 				.first()
+			await expect(
+				nameField,
+				'the character form must offer a name field',
+			).toBeVisible({ timeout: 5000 })
 			await page.keyboard.press('Escape')
 		}
 		// Page is still functional after dialog interaction

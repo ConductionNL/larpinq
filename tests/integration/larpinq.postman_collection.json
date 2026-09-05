@@ -12,7 +12,7 @@
 		{ "key": "register", "value": "larpinq" },
 		{ "key": "charSchema", "value": "character" },
 		{ "key": "itemSchema", "value": "larping_item" },
-		{ "key": "skillSchema", "value": "skill" },
+		{ "key": "skillSchema", "value": "larping_skill" },
 		{ "key": "conditionSchema", "value": "condition" },
 		{ "key": "effectSchema", "value": "effect" },
 		{ "key": "eventSchema", "value": "larping_event" },

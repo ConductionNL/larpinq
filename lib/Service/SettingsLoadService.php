@@ -73,7 +73,7 @@ class SettingsLoadService {
 		'character' => 'character',
 		'player' => 'player',
 		'ability' => 'ability',
-		'skill' => 'skill',
+		'skill' => 'larping_skill',
 		'item' => 'larping_item',
 		'condition' => 'condition',
 		'effect' => 'effect',

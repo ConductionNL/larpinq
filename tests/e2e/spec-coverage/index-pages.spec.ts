@@ -24,8 +24,10 @@
  * playwright.config.ts wires storageState so each test starts logged in.
  */
 
-import { test, expect, type Page } from '@playwright/test'
-import { dismissSupportDialog } from '../_nav'
+import type { Page } from '@playwright/test'
+
+import { expect, test } from '@playwright/test'
+import { dismissSupportDialog } from '../_nav.ts'
 
 const BASE = '/apps/larpinq'
 
@@ -174,7 +176,8 @@ async function freshNav(page: Page, slug: string, navId: string): Promise<void> 
 	const link = page.locator(`${NAV} [data-testid="cn-nav-entry-${navId}"]`).first()
 	await expect(link).toBeVisible({ timeout: 10_000 })
 	await link.click()
-	await expect(page).toHaveURL(new RegExp(`#/${slug}(\\b|/|$|\\?)`))
+	// Path routing since #651: no "#" in the URL.
+	await expect(page).toHaveURL(new RegExp(`/${slug}(\\b|/|$|\\?)`))
 	await expect(page.locator('.app-content')).toBeVisible({ timeout: 10_000 })
 }
 

@@ -108,6 +108,47 @@ class DemoDataServiceTest extends TestCase {
 		};
 	}
 
+	/**
+	 * Declining is offered even when no dataset ships.
+	 *
+	 * 🔴 "NO THANKS" HAS TO BE SAYABLE. Every app in this fleet implemented a
+	 * `skip-demo-data` action that no manifest step could reach, so the step
+	 * stayed outstanding and CnAppRoot reopened the wizard over every page
+	 * unless the operator imported data they did not want.
+	 *
+	 * @return void
+	 */
+	public function testDecliningIsOfferedEvenWhenNoDatasetShips(): void {
+		$choices = $this->service->listChoices();
+
+		$this->assertSame(['none'], array_column($choices, 'id'));
+		$this->assertNotSame('', $choices[0]['description']);
+		$this->assertNotSame('', $choices[0]['icon']);
+
+	}//end testDecliningIsOfferedEvenWhenNoDatasetShips()
+
+	/**
+	 * The shipped dataset is offered with the count it actually carries.
+	 *
+	 * The card promises a number, so the number has to come from the file that
+	 * will be imported rather than from a manifest that could disagree with it.
+	 *
+	 * @return void
+	 */
+	public function testTheShippedDatasetIsOfferedWithItsRealCount(): void {
+		$this->shipDescriptor(objects: 3);
+
+		$choices = $this->service->listChoices();
+
+		$this->assertSame(['none', 'demo'], array_column($choices, 'id'));
+		$this->assertSame(3, $choices[1]['objectCount']);
+		// 🔴 NO NUMBER IN THE SENTENCE. The wizard translates a card's
+		// description by literal lookup, so an interpolated count would leave a
+		// Dutch operator reading English.
+		$this->assertDoesNotMatchRegularExpression('/\d/', $choices[1]['description']);
+
+	}//end testTheShippedDatasetIsOfferedWithItsRealCount()
+
 	public function testItImportsTheDescriptorAndReportsTheCounts(): void {
 		$this->shipDescriptor(objects: 5);
 		$spy = $this->importerSpy();

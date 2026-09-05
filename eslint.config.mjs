@@ -44,6 +44,26 @@ export default [
 		// resolves a rule's plugin from the object the rule sits in, so an override
 		// must name files whose config already registers it.
 		files: ['**/*.js', '**/*.mjs', '**/*.ts', '**/*.tsx', '**/*.vue'],
+		// 🔴 THE `ignores` ARE PART OF THAT SCOPE, NOT AN OPINION. v9 registers
+		// the jsdoc plugin ONLY inside `nextcloud/documentation/*`, and every one
+		// of those blocks carries exactly this ignore list: Nextcloud does not
+		// require JSDoc in tests. Naming a `jsdoc/*` rule for a test file
+		// therefore points at a plugin that is not registered there, and eslint
+		// refuses to run AT ALL rather than reporting a finding.
+		//
+		// Measured here: with the list absent, `eslint tests` died with "A
+		// configuration object specifies rule 'jsdoc/check-tag-names', but could
+		// not find plugin 'jsdoc'" and linted nothing. `eslint src` was green
+		// throughout, because it never reached a test file.
+		ignores: [
+			'**/*.test.*',
+			'**/*.spec.*',
+			'**/*.cy.*',
+			'**/test/**',
+			'**/tests/**',
+			'**/__tests__/**',
+			'**/__mocks__/**',
+		],
 		rules: {
 			// `@spec` (hydra gate-16 / gate-19 traceability) and `@visual` (the
 			// visual-coverage gate) are this project's own JSDoc tags. v9 sets
@@ -110,15 +130,112 @@ export default [
 	},
 
 	{
-		// Node-side CLI tools (build / validate scripts) legitimately use console
-		// and process.exit, and ship as plain JS with no shebang.
-		files: ['tests/validate-manifest.js', 'tests/validate-register.js', 'tests/validate-json-strict.js'],
+		// Node-side CLI checkers under tests/ legitimately use console and
+		// process.exit, and ship as plain JS with no shebang.
+		//
+		// 🔴 A GLOB, NOT A FILE LIST. This block used to name three files by hand
+		// (`validate-manifest.js`, `validate-register.js`, `validate-json-strict.js`)
+		// and had silently stopped covering every checker added since. That is the
+		// failure mode a hand-maintained list always has: adding a file does not
+		// add it to the list, and the omission is invisible.
+		files: ['tests/**/*.js', 'tests/**/*.mjs', 'tests/**/*.ts'],
 		rules: {
 			'no-console': 'off',
 			'n/no-process-exit': 'off',
 			'n/hashbang': 'off',
+			// Tests import devDependencies by definition; this rule is about what
+			// ships in the published package, which tests/ never does.
+			'n/no-unpublished-import': 'off',
 		},
 	},
+
+	{
+		// 🔴 Node-side CLI tooling under `scripts/`, which is COMMONJS. Flat
+		// config defaults every `.js` to ESM with browser-ish globals, so without
+		// this block eslint reports the CommonJS wrapper itself as undefined
+		// identifiers. Measured on this app: 52 of the 233 errors under
+		// `tests/` + `scripts/` were `no-undef`, ALL of them in `scripts/`, and
+		// all five names were the environment rather than a typo — `process` 23,
+		// `require` 20, `__dirname` 6, `__filename` 2, `module` 1.
+		//
+		// This is describing the environment, not relaxing a rule, and it is the
+		// same argument the test-globals block below makes: declaring them keeps
+		// `no-undef` able to do its real job, which is catching a genuinely
+		// misspelled identifier. Suppressing the rule instead would bury that.
+		//
+		// `no-console` is off because printing its report is what a CLI checker
+		// is FOR.
+		//
+		// 🔴 NO `n/*` ENTRIES HERE, DELIBERATELY. `eslint-plugin-n` is NOT
+		// registered for these files under eslint 10 + @nextcloud/eslint-config
+		// 9, so `'n/no-process-exit': 'off'` would be dead config that reads as
+		// if it were doing something. Measured both ways on this app: 0 `n/`
+		// findings with the entries and 0 without.
+		//
+		// What DID report was the opposite — four `scripts/*.js` carried
+		// `/* eslint-disable n/no-process-exit */` and `/* eslint-disable
+		// n/shebang */` left over from the eslintrc era, and an inline disable
+		// naming an unregistered plugin is itself an error ("Definition for rule
+		// 'n/shebang' was not found"). Those 8 comments are removed; do not add
+		// `n/*` rules back to replace them.
+		//
+		// ⚠️ `.js` and `.cjs` ONLY. A `scripts/*.mjs` is genuinely ESM and must
+		// keep the default `sourceType`, or `import` stops parsing there.
+		files: ['scripts/**/*.js', 'scripts/**/*.cjs'],
+		languageOptions: {
+			sourceType: 'commonjs',
+			globals: {
+				require: 'readonly',
+				module: 'writable',
+				exports: 'writable',
+				process: 'readonly',
+				__dirname: 'readonly',
+				__filename: 'readonly',
+				console: 'readonly',
+				Buffer: 'readonly',
+				global: 'readonly',
+				URL: 'readonly',
+				TextEncoder: 'readonly',
+				TextDecoder: 'readonly',
+			},
+		},
+		rules: {
+			'no-console': 'off',
+		},
+	},
+
+	{
+		// The ESM half of the block above. A `scripts/*.mjs` is genuinely a module
+		// and must keep the default `sourceType`, so it gets Node's globals but
+		// none of the CommonJS wrapper. Measured: `process` reported undefined 2x
+		// in hermiq's generate-opengemeenten-icons.mjs and 4x in openregister's
+		// l10n/runtime-check.mjs, which the `.js`/`.cjs` block deliberately does
+		// not match.
+		files: ['scripts/**/*.mjs', 'tests/**/*.mjs'],
+		languageOptions: {
+			globals: {
+				process: 'readonly',
+				console: 'readonly',
+				Buffer: 'readonly',
+				global: 'readonly',
+				URL: 'readonly',
+				TextEncoder: 'readonly',
+				TextDecoder: 'readonly',
+			},
+		},
+		rules: {
+			'no-console': 'off',
+		},
+	},
+
+	{
+		// eslint must not try to PARSE a shell script. `tests/e2e/seed.test.sh`
+		// matches the `**/*.test.*` glob some presets use, and eslint then reads
+		// it as JavaScript and reports "Parsing error: Unexpected character" —
+		// a finding about a file it should never have opened.
+		ignores: ['**/*.sh', '**/*.bash'],
+	},
+
 
 	// eslint-config-prettier LAST OF ALL, and it has to be last: it only turns
 	// rules OFF, and what it turns off is everything prettier owns — including

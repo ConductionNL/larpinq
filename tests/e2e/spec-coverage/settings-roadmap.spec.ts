@@ -19,27 +19,46 @@
  * playwright.config.ts wires storageState so each test starts logged in.
  */
 
-import { test, expect, type Page } from '@playwright/test'
-import { dismissSupportDialog } from '../_nav'
+import type { Page } from '@playwright/test'
+
+import { expect, test } from '@playwright/test'
+import { dismissSupportDialog } from '../_nav.ts'
 
 const BASE = '/apps/larpinq'
 
 /**
- * Hard-load the target in-app route via the app's hash router. The router runs
- * in `mode: 'hash'` (src/main.js — fleet #133 deep-link fix), so in-app routes
- * are addressed as /apps/larpinq/#/<route>. Loading that URL serves the SPA
- * root from the server (the hash fragment is never sent to the backend, so no
- * 404) and the client-side router resolves the view. A fresh load per test
- * avoids the shared-list-state collapse where in-session sidebar navigation
- * fails to re-key index pages.
+ * Hard-load the target in-app route.
+ *
+ * The router runs in HISTORY mode (`createWebHistory`, src/main.js), so an
+ * in-app route is a real path: `/apps/larpinq/<route>`, with no `#`. The
+ * server's SPA catch-all serves the app shell for it and the client router
+ * resolves the view.
+ *
+ * This helper used to assert a `#` in the URL, from when the router ran in hash
+ * mode. After the move to history mode the app produced
+ * `/apps/larpinq/features-roadmap` while the assertion still demanded
+ * `#/features-roadmap`, so six of these tests failed on the URL alone — before
+ * reaching the `.app-content` gate that is the real check. The app was right.
+ *
+ * A fresh load per test avoids the shared-list-state collapse where in-session
+ * sidebar navigation fails to re-key index pages.
  */
 async function openRoute(page: Page, route: string): Promise<void> {
 	// `domcontentloaded`, never `networkidle` — the latter is unreachable on
 	// Nextcloud (notification poll), so it just burns the budget (ADR-074
 	// rule 4). The `.app-content` assertion below is the real readiness gate.
-	await page.goto(`${BASE}/#${route}`, { waitUntil: 'domcontentloaded' })
+	await page.goto(`${BASE}${route}`, { waitUntil: 'domcontentloaded' })
 	await dismissSupportDialog(page)
-	await expect(page).toHaveURL(new RegExp(`#${route.replace(/\//g, '\\/')}`))
+	// Path, not hash. Anchored at the end so `/features-roadmap` cannot be
+	// satisfied by some longer route that merely contains it.
+	// Escape the whole regex metacharacter set, not just `/`. Escaping slashes
+	// alone leaves `.`, `?`, `+`, `(` and backslash live in the pattern, which
+	// CodeQL reports as js/incomplete-sanitization (high). Today's routes are
+	// literals so nothing is exploitable, but a route containing `.` would
+	// silently match more than it names.
+	await expect(page).toHaveURL(
+		new RegExp(`${route.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`),
+	)
 	await expect(page.locator('.app-content')).toBeVisible({ timeout: 10_000 })
 }
 
@@ -167,9 +186,13 @@ test.describe('features-roadmap page', () => {
 				.filter({ hasText: /Show roadmap/i })
 				.first(),
 		).toBeVisible({ timeout: 10_000 })
+		// A LINK, not a button. nextcloud-vue 2.36.4 removed the in-product
+		// suggestion modal (team decision 2026-09-04: the forge is where the
+		// conversation happens), and the CTA is an anchor to the forge's
+		// feature-request issue form now. An `<a href>` has role `link`.
 		await expect(
 			page
-				.locator('.app-content button')
+				.locator('.app-content a')
 				.filter({ hasText: /Suggest feature/i })
 				.first(),
 		).toBeVisible()

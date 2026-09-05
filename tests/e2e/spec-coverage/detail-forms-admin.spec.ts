@@ -27,15 +27,11 @@
  * playwright.config.ts wires storageState so each test starts logged in.
  */
 
-import {
-	test,
-	expect,
-	request,
-	type Page,
-	type APIRequestContext,
-} from '@playwright/test'
-import { navTo as sharedNavTo, dismissSupportDialog } from '../_nav'
-import { BASE_URL } from '../_base-url'
+import type { APIRequestContext, Page } from '@playwright/test'
+
+import { expect, request, test } from '@playwright/test'
+import { BASE_URL } from '../_base-url.ts'
+import { dismissSupportDialog, navTo as sharedNavTo } from '../_nav.ts'
 
 const BASE = '/apps/larpinq'
 const TS = Date.now()
@@ -89,6 +85,8 @@ const SCHEMA_IDS: Record<string, string> = {
  * @param {APIRequestContext} api Authenticated request context.
  * @return {Promise<void>}
  */
+const REGISTER_IDS: Record<string, string> = {}
+
 async function resolveIds(api: APIRequestContext): Promise<void> {
 	const res = await api
 		.get(`${NEXTCLOUD_URL}/index.php/apps/larpinq/api/settings`, {
@@ -129,7 +127,6 @@ async function resolveIds(api: APIRequestContext): Promise<void> {
 }
 
 /** Register each type is actually stored in; defaults to the shared register. */
-const REGISTER_IDS: Record<string, string> = {}
 
 /**
  * The register to seed a given type into.
@@ -189,7 +186,7 @@ async function navTo(page: Page, slug: string): Promise<void> {
  * Navigate to a detail route via the app's hash router.
  *
  * The router runs in `mode: 'hash'` (src/main.js — fleet #133 deep-link fix),
- * so the canonical detail URL is `/apps/larpinq/#/<slug>/<id>`. Loading that
+ * so the canonical detail URL is `/apps/larpinq/<slug>/<id>`. Loading that
  * URL serves the SPA root from the server (no 404 — the hash fragment is never
  * sent to the backend) and the client-side hash router resolves the detail
  * route. This is the deep-link path the hash-mode change exists to support, so
@@ -202,7 +199,7 @@ async function gotoDetail(
 	id: string,
 	typeLabel: string,
 ): Promise<void> {
-	await page.goto(`${BASE}/#/${slug}/${id}`)
+	await page.goto(`${BASE}/${slug}/${id}`)
 	// ADR-074 rule 4: `networkidle` never settles on Nextcloud — the
 	// notification poll keeps the network permanently busy. This was the LAST
 	// live `waitForLoadState('networkidle')` in the suite; every other mention
@@ -224,7 +221,8 @@ async function gotoDetail(
 	// `aria-label="Close"` and never dismissed the onboarding tour, whose
 	// controls are "Close tour" / "Skip".
 	await dismissSupportDialog(page)
-	await expect(page).toHaveURL(new RegExp(`#/${slug}/${id}`))
+	// Path routing since #651: no "#" in the URL.
+	await expect(page).toHaveURL(new RegExp(`/${slug}/${id}`))
 	await expect(page.locator('.app-content')).toBeVisible({ timeout: 10_000 })
 	// A detail page's own heading is the OBJECT's name (`<h2>`); the entity type
 	// ("Character", "Event", …) renders as a kicker paragraph above it, not as a
@@ -340,7 +338,6 @@ async function seedObject(
 ): Promise<string | null> {
 	const schemaId = SCHEMA_IDS[schema]
 	if (!schemaId) {
-		// eslint-disable-next-line no-console
 		console.error(
 			`[e2e seed] ${schema}: no schema id configured on this instance — the app has no storage for it`,
 		)
@@ -359,12 +356,10 @@ async function seedObject(
 	// Report WHY a seed failed. Swallowing it turns every dependent spec into a
 	// 60 s timeout that looks like a rendering regression.
 	if (!res) {
-		// eslint-disable-next-line no-console
 		console.error(`[e2e seed] ${schema}: POST ${url} threw`)
 		return null
 	}
 	if (!res.ok()) {
-		// eslint-disable-next-line no-console
 		console.error(
 			`[e2e seed] ${schema}: POST ${url} -> ${res.status()} ${(await res.text().catch(() => '')).slice(0, 200)}`,
 		)

@@ -10,13 +10,13 @@
  * @spec openspec/specs/skill-tree-visualization/spec.md
  */
 
-import { describe, it, expect } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import {
+	buildNodes,
+	computeStateBySkill,
+	computeTiers,
 	idList,
 	indexNames,
-	computeStateBySkill,
-	buildNodes,
-	computeTiers,
 } from '../../src/views/skillTreeGraph.js'
 
 const HEAL1 = { id: 'h1', name: 'Healing Lvl 1', requiredSkills: [] }

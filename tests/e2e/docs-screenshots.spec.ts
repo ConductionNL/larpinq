@@ -37,9 +37,11 @@
  * Pattern reference: ADR-030 (hydra/openspec/architecture/).
  */
 
-import { test, expect, type Page } from '@playwright/test'
-import * as path from 'path'
+import type { Page } from '@playwright/test'
+
+import { expect, test } from '@playwright/test'
 import * as fs from 'fs'
+import * as path from 'path'
 
 const SHOT_ROOT = path.resolve(
 	__dirname,
@@ -118,7 +120,7 @@ async function go(page: Page, route: string): Promise<void> {
 		url = route
 	} else {
 		const hashRoute = route.startsWith('/') ? route : `/${route}`
-		url = `${APP}/#${hashRoute}`
+		url = `${APP}${hashRoute}`
 	}
 	await page.goto(url).catch(() => {
 		/* tolerate 404 — caller decides */

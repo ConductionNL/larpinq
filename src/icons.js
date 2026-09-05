@@ -24,6 +24,7 @@ import BriefcaseAccountOutline from 'vue-material-design-icons/BriefcaseAccountO
 import Calendar from 'vue-material-design-icons/Calendar.vue'
 import CalendarMonthOutline from 'vue-material-design-icons/CalendarMonthOutline.vue'
 import ChartBar from 'vue-material-design-icons/ChartBar.vue'
+import ChartBoxOutline from 'vue-material-design-icons/ChartBoxOutline.vue'
 import ClipboardList from 'vue-material-design-icons/ClipboardList.vue'
 import Cog from 'vue-material-design-icons/Cog.vue'
 import CogOutline from 'vue-material-design-icons/CogOutline.vue'
@@ -49,6 +50,7 @@ import Sitemap from 'vue-material-design-icons/Sitemap.vue'
 import Star from 'vue-material-design-icons/Star.vue'
 import StarOutline from 'vue-material-design-icons/StarOutline.vue'
 import StarPlusOutline from 'vue-material-design-icons/StarPlusOutline.vue'
+import StoreOutline from 'vue-material-design-icons/StoreOutline.vue'
 import Sword from 'vue-material-design-icons/Sword.vue'
 import SwordCross from 'vue-material-design-icons/SwordCross.vue'
 import ToolboxOutline from 'vue-material-design-icons/ToolboxOutline.vue'
@@ -70,6 +72,7 @@ export default {
 	Calendar,
 	CalendarMonthOutline,
 	ChartBar,
+	ChartBoxOutline,
 	ClipboardList,
 	Cog,
 	CogOutline,
@@ -95,6 +98,7 @@ export default {
 	Star,
 	StarOutline,
 	StarPlusOutline,
+	StoreOutline,
 	Sword,
 	SwordCross,
 	ToolboxOutline,

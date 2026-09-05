@@ -70,19 +70,21 @@
  * test goes green unmodified.
  */
 
-import { test, expect, type APIRequestContext } from '@playwright/test'
+import type { APIRequestContext } from '@playwright/test'
+
+import { expect, test } from '@playwright/test'
 import {
-	RUN_ID,
-	newApi,
-	resolveSchemaIds,
-	FixtureLedger,
-	createObject,
-	seedStatScenario,
+	cleanupLedger,
 	computeCharacterStat,
 	computeCharacterStatLive,
-	cleanupLedger,
+	createObject,
+	FixtureLedger,
 	fixtureName,
-} from './fixtures'
+	newApi,
+	resolveSchemaIds,
+	RUN_ID,
+	seedStatScenario,
+} from './fixtures.ts'
 
 // Documented blocker reasons; each is annotated onto its test.fixme below.
 const STAT_UI_BLOCKER =
@@ -127,7 +129,7 @@ test.beforeAll(async () => {
 test.afterAll(async () => {
 	await cleanupLedger(api, ledger)
 	await api.dispose()
-	// eslint-disable-next-line no-console
+
 	console.log(
 		`[stat-computation] RUN_ID=${RUN_ID} — fixtures cleaned up via ledger.`,
 	)

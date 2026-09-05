@@ -11,16 +11,16 @@
  * See _visual-helpers.ts for the platform-rendering caveat.
  */
 import { test } from '@playwright/test'
-import { shootSurface, shootByNav } from './_visual-helpers'
+import { shootByNav, shootSurface } from './_visual-helpers.ts'
 
 const APP = '/index.php/apps/larpinq'
 
 test.describe('Larpinq — visual baselines', () => {
 	test('dashboard', async ({ page }) => {
-		await shootSurface(page, `${APP}/#/`, 'dashboard.png')
+		await shootSurface(page, `${APP}/`, 'dashboard.png')
 	})
 
 	test('characters list', async ({ page }) => {
-		await shootByNav(page, `${APP}/#/`, 'Characters', 'characters.png')
+		await shootByNav(page, `${APP}/`, 'Characters', 'characters.png')
 	})
 })
