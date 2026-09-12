@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Service;
 
+use OCA\Larpinq\Support\FleetAppId;
 use OCP\App\IAppManager;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
@@ -65,7 +66,11 @@ class DocuDeskPdfRenderer {
 	 * @spec openspec/specs/pdf-export/spec.md
 	 */
 	public function isDocuDeskAvailable(): bool {
-		return $this->appManager->isEnabledForUser(appId: 'docudesk');
+		// Resolved across every id filinq has registered under. Probing
+		// 'docudesk' alone answered false on every instance running the renamed
+		// app, and the controllers read that false as "not installed" and
+		// returned 424 — so both PDF exports stopped working without an error.
+		return FleetAppId::isEnabledForUser($this->appManager, 'filinq');
 	}//end isDocuDeskAvailable()
 
 	/**
@@ -102,7 +107,10 @@ class DocuDeskPdfRenderer {
 	public function getTemplate(string $templateId): ?array {
 		try {
 			// @var object $templateService
-			$templateService = $this->container->get('OCA\DocuDesk\Service\TemplateService');
+			$templateService = FleetAppId::getService($this->container, 'filinq', 'Service\TemplateService');
+			if ($templateService === null) {
+				return null;
+			}
 
 			// @var array<string,mixed> $templateData
 			$templateData = $templateService->getTemplate($templateId);
@@ -130,7 +138,10 @@ class DocuDeskPdfRenderer {
 	public function render(array $templateData, array $context): ?string {
 		try {
 			// @var object $pdfService
-			$pdfService = $this->container->get('OCA\DocuDesk\Service\PdfService');
+			$pdfService = FleetAppId::getService($this->container, 'filinq', 'Service\PdfService');
+			if ($pdfService === null) {
+				return null;
+			}
 
 			// @var string $pdfString
 			$pdfString = $pdfService->renderPdf(

@@ -138,8 +138,13 @@ class CharactersControllerTest extends TestCase {
 	}
 
 	public function testDownloadPdfReturns424WhenDocuDeskNotInstalled(): void {
+		$this->appManager->method('isInstalled')->willReturnCallback(
+			// An instance running EITHER name must resolve. Pinning 'docudesk'
+			// here is what let the production regression through unnoticed.
+			static fn (string $id): bool => in_array($id, ['filinq', 'docudesk'], true)
+		);
 		$this->appManager->method('isEnabledForUser')
-			->with('docudesk')
+			->with(self::logicalOr('filinq', 'docudesk'))
 			->willReturn(false);
 
 		// The template MUST be a well-formed UUID here. downloadPdf() validates
@@ -168,8 +173,13 @@ class CharactersControllerTest extends TestCase {
 	 * CharactersController::downloadPdf() turns this test red (424 != 400).
 	 */
 	public function testDownloadPdfReturns400ForNonUuidTemplateEvenWhenDocuDeskAbsent(): void {
+		$this->appManager->method('isInstalled')->willReturnCallback(
+			// An instance running EITHER name must resolve. Pinning 'docudesk'
+			// here is what let the production regression through unnoticed.
+			static fn (string $id): bool => in_array($id, ['filinq', 'docudesk'], true)
+		);
 		$this->appManager->method('isEnabledForUser')
-			->with('docudesk')
+			->with(self::logicalOr('filinq', 'docudesk'))
 			->willReturn(false);
 
 		$result = $this->controller->downloadPdf('char-1', 'not-a-uuid');
@@ -180,6 +190,10 @@ class CharactersControllerTest extends TestCase {
 	}
 
 	public function testDownloadPdfReturns404WhenCharacterNotFound(): void {
+		// FleetAppId resolves the installed id BEFORE asking whether it is
+		// enabled, so both probes are stubbed. Stubbing only the second one
+		// leaves the resolver with no id and every PDF route answers 424.
+		$this->appManager->method('isInstalled')->willReturn(true);
 		$this->appManager->method('isEnabledForUser')->willReturn(true);
 		$this->objectFetcher->method('getObject')
 			->willThrowException(new Exception('Not found'));
@@ -192,6 +206,10 @@ class CharactersControllerTest extends TestCase {
 	}
 
 	public function testDownloadPdfReturns404WhenTemplateNotFound(): void {
+		// FleetAppId resolves the installed id BEFORE asking whether it is
+		// enabled, so both probes are stubbed. Stubbing only the second one
+		// leaves the resolver with no id and every PDF route answers 424.
+		$this->appManager->method('isInstalled')->willReturn(true);
 		$this->appManager->method('isEnabledForUser')->willReturn(true);
 		$this->objectFetcher->method('getObject')
 			->willReturn(['id' => 'char-1', 'name' => 'Fighter']);
@@ -217,6 +235,10 @@ class CharactersControllerTest extends TestCase {
 	}
 
 	public function testDownloadPdfReturnsDataDownloadResponseOnSuccess(): void {
+		// FleetAppId resolves the installed id BEFORE asking whether it is
+		// enabled, so both probes are stubbed. Stubbing only the second one
+		// leaves the resolver with no id and every PDF route answers 424.
+		$this->appManager->method('isInstalled')->willReturn(true);
 		$this->appManager->method('isEnabledForUser')->willReturn(true);
 		$this->objectFetcher->method('getObject')
 			->willReturn(['id' => 'char-1', 'name' => 'Sir Lancelot']);
@@ -254,6 +276,10 @@ class CharactersControllerTest extends TestCase {
 	}
 
 	public function testDownloadPdfReturns500OnRenderFailureWithGenericMessage(): void {
+		// FleetAppId resolves the installed id BEFORE asking whether it is
+		// enabled, so both probes are stubbed. Stubbing only the second one
+		// leaves the resolver with no id and every PDF route answers 424.
+		$this->appManager->method('isInstalled')->willReturn(true);
 		$this->appManager->method('isEnabledForUser')->willReturn(true);
 		$this->objectFetcher->method('getObject')
 			->willReturn(['id' => 'char-1', 'name' => 'Fighter']);
@@ -291,6 +317,10 @@ class CharactersControllerTest extends TestCase {
 	}
 
 	public function testDownloadPdfReturns400ForNonUuidTemplate(): void {
+		// FleetAppId resolves the installed id BEFORE asking whether it is
+		// enabled, so both probes are stubbed. Stubbing only the second one
+		// leaves the resolver with no id and every PDF route answers 424.
+		$this->appManager->method('isInstalled')->willReturn(true);
 		$this->appManager->method('isEnabledForUser')->willReturn(true);
 
 		$result = $this->controller->downloadPdf('char-1', '../../etc/passwd');
@@ -301,6 +331,10 @@ class CharactersControllerTest extends TestCase {
 	}
 
 	public function testDownloadPdfTranslatesDoesNotExistExceptionTo404(): void {
+		// FleetAppId resolves the installed id BEFORE asking whether it is
+		// enabled, so both probes are stubbed. Stubbing only the second one
+		// leaves the resolver with no id and every PDF route answers 424.
+		$this->appManager->method('isInstalled')->willReturn(true);
 		$this->appManager->method('isEnabledForUser')->willReturn(true);
 		$this->objectFetcher->method('getObject')
 			->willThrowException(new DoesNotExistException('no such character'));
@@ -321,6 +355,10 @@ class CharactersControllerTest extends TestCase {
 	 * change while every status-code assertion stayed green.
 	 */
 	public function testDownloadPdfPassesUnchangedContentContextAndOptionsToDocuDesk(): void {
+		// FleetAppId resolves the installed id BEFORE asking whether it is
+		// enabled, so both probes are stubbed. Stubbing only the second one
+		// leaves the resolver with no id and every PDF route answers 424.
+		$this->appManager->method('isInstalled')->willReturn(true);
 		$this->appManager->method('isEnabledForUser')->willReturn(true);
 
 		$character = ['id' => 'char-1', 'name' => 'Sir Lancelot'];
@@ -375,6 +413,10 @@ class CharactersControllerTest extends TestCase {
 	 * upper-case UUID resolves the same template as its lower-case form.
 	 */
 	public function testDownloadPdfLowerCasesTemplateIdBeforeLookup(): void {
+		// FleetAppId resolves the installed id BEFORE asking whether it is
+		// enabled, so both probes are stubbed. Stubbing only the second one
+		// leaves the resolver with no id and every PDF route answers 424.
+		$this->appManager->method('isInstalled')->willReturn(true);
 		$this->appManager->method('isEnabledForUser')->willReturn(true);
 		$this->objectFetcher->method('getObject')->willReturn(['id' => 'char-1', 'name' => 'Fighter']);
 

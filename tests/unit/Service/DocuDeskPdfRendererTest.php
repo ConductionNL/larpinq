@@ -50,13 +50,40 @@ class DocuDeskPdfRendererTest extends TestCase {
 		);
 	}
 
-	public function testIsDocuDeskAvailableReflectsAppManager(): void {
+	/**
+	 * The document app resolves under either of its names.
+	 *
+	 * Pinned to 'docudesk' alone, this assertion passed while the production
+	 * lookup answered false on every instance running the renamed app — both
+	 * PDF exports returned 424 and no test noticed. Both names are exercised.
+	 *
+	 * @param string $installedId The id this instance answers to.
+	 *
+	 * @return void
+	 *
+	 * @dataProvider documentAppIdProvider
+	 */
+	public function testIsDocuDeskAvailableResolvesEitherAppId(string $installedId): void {
+		$this->appManager->method('isInstalled')
+			->willReturnCallback(static fn (string $id): bool => $id === $installedId);
 		$this->appManager->expects(self::once())
 			->method('isEnabledForUser')
-			->with('docudesk')
+			->with($installedId)
 			->willReturn(true);
 
 		self::assertTrue($this->renderer->isDocuDeskAvailable());
+	}
+
+	/**
+	 * Every id the document app has registered under.
+	 *
+	 * @return array<string, array{0:string}>
+	 */
+	public static function documentAppIdProvider(): array {
+		return [
+			'current name' => ['filinq'],
+			'retired name' => ['docudesk'],
+		];
 	}
 
 	public function testIsDocuDeskAvailableFalseWhenAppDisabled(): void {

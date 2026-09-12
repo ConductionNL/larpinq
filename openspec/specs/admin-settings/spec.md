@@ -343,7 +343,7 @@ The `RegisterObjectFetcher` MUST read per-type configuration from IAppConfig to 
 
 Database migrations MUST create tables for all entity types used in internal storage mode.
 
-@e2e exclude Database migration correctness is tested via PHPUnit MigrationTest; SQL DDL execution is not a browser-navigable scenario
+@e2e exclude SQL DDL execution is not a browser-navigable scenario. The PHPUnit class this previously named has never existed in this repository, and `git log --all` finds no commit that added it: lib/Migration/Version0Date20240826193657.php and its sibling carry NO test of any kind. NOT YET VERIFIED
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
