@@ -3552,14 +3552,15 @@
 				"state": "built",
 				"evidence": "lib/Portal/PortalContributionProvider.php:82-135 (getAudiences/getContribution/playerContribution: declares myCharacters scoped by ownerRef, public events list, catalogs, and a createCharacter action, all field-projected)",
 				"owner": "ConductionNL/portaliq",
-				"reachedOn": "The portaliq portal app's page (sibling app), discovered by convention FQCN + duck-typing, not by any larpinq page"
+				"reachedOn": "The portaliq portal app's page (sibling app), discovered by convention FQCN + duck-typing, not by any larpinq page",
+				"readOn": "2026-09-26"
 			},
 			"provider": "self",
 			"providerHow": "read: larpinq authors the declarative contribution manifest in this repo; portaliq (a separate app) is the one that renders the actual portal UI and calls into this class at runtime, so the reachable page lives in portaliq, not larpinq",
 			"feature": "player-and-contact-records",
 			"featureConfidence": "medium",
 			"origin": "own-code",
-			"note": "Scoping deliberately uses character.ownerRef (the player object UUID) rather than ownerUid, since an external subject has no Nextcloud account. Rated yes on the strength of the real, wired provider class; whether portaliq is installed on a given instance is a deployment fact outside this repo.",
+			"note": "Scoping deliberately uses character.ownerRef (the player object UUID) rather than ownerUid, since an external subject has no Nextcloud account. Rated yes on the strength of the real, wired provider class; whether portaliq is installed on a given instance is a deployment fact outside this repo. Checked 2026-09-26: portaliq lib/Service/PortalObjectWriter.php:92-95 createObject() always overwrites the declared scope field with the subject reference, so character.ownerRef is stamped server-side on every portal create. The live-defect candidate in larpinq#730 that said PortalObjectWriter does not exist looked only in this repo and is withdrawn; the ownerRef scoping this rating rests on is filled.",
 			"evidence": {
 				"larpmanager": "The participant-facing side (own character sheet, registration, Chat, Help) functions as a player portal, even if not named as such. https://github.com/LoSkana/larpmanager/blob/main/docs/06-feature-descriptions.md",
 				"mylarp": "'Single login access to all joined campaigns' is a cross-campaign player portal experience. https://mylarp.com",
