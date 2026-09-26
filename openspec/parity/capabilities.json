@@ -2620,19 +2620,25 @@
 		{
 			"id": "evt-create-event",
 			"area": "events",
-			"name": "Plan an event with its dates, location and world.",
-			"larpinq": "unknown",
+			"name": "Plan an event with its name, description, dates and location.",
+			"larpinq": "yes",
 			"larpmanager": "unknown",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
 			"kanka": "unknown",
 			"pretix": "unknown",
 			"built": {
-				"state": "none",
-				"evidence": "not yet read: seed row awaiting its code reader"
+				"state": "built",
+				"evidence": "lib/Settings/larpinq_register.json:766-808 (larping_event schema properties name/description/startDate/endDate/location); src/manifest.json:1589 (EventDetail config, register larpinq, schema larping_event); manifest pages list has an Events index page (type index) which is the generic OpenRegister create/list surface for this schema",
+				"owner": "ConductionNL/larpinq",
+				"reachedOn": "Events index page (/events, generic index create action) and EventDetail (/events/:id)"
 			},
+			"provider": "self",
+			"providerHow": "read: schema and manifest are in this repository at the paths in built.evidence",
+			"feature": "event-rosters-and-signup",
+			"featureConfidence": "medium",
 			"origin": "own-code",
-			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"note": "openspec/specs/events-players/spec.md EVT-001..EVT-004 claim this as Implemented, consistent with the schema and generic index/detail page.",
 			"evidence": {
 				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
 				"mylarp": "not checked: row added from our code after the competitor documentation pass",
@@ -2644,19 +2650,25 @@
 		{
 			"id": "evt-calendar",
 			"area": "events",
-			"name": "Put an event in the Nextcloud calendar.",
-			"larpinq": "unknown",
+			"name": "Put an event on the Nextcloud calendar.",
+			"larpinq": "yes",
 			"larpmanager": "unknown",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
 			"kanka": "unknown",
 			"pretix": "unknown",
 			"built": {
-				"state": "none",
-				"evidence": "not yet read: seed row awaiting its code reader"
+				"state": "built",
+				"evidence": "lib/Settings/register.d/event-calendar-leaf.json (event.configuration.linkedTypes: [\"calendar\"]); src/views/ObjectDetail.vue:20,60 (LEAVES_BY_OBJECT_TYPE event -> calendar); src/manifest.json:1589-1660 (event-calendar widget, type integration, integrationId calendar, in EventDetail layout)",
+				"owner": "nextcloud/calendar",
+				"reachedOn": "EventDetail page (/events/:id) body, 'Schedule' widget"
 			},
+			"provider": "nextcloud",
+			"providerHow": "read: larpinq declares the linkedType and hosts an invisible marker div (ObjectDetail.vue); OpenRegister's integration registry (ADR-019) resolves it to the real Nextcloud Calendar leaf widget, which larpinq does not implement itself",
+			"feature": "photos-maps-and-calendar",
+			"featureConfidence": "high",
 			"origin": "own-code",
-			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"note": "Degrades gracefully (host div omitted) if the OR integration registry doesn't expose the calendar leaf, per ObjectDetail.vue's own docblock.",
 			"evidence": {
 				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
 				"mylarp": "not checked: row added from our code after the competitor documentation pass",
@@ -2669,18 +2681,23 @@
 			"id": "evt-location-map",
 			"area": "events",
 			"name": "Show an event's location on a map.",
-			"larpinq": "unknown",
+			"larpinq": "yes",
 			"larpmanager": "unknown",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
 			"kanka": "unknown",
 			"pretix": "unknown",
 			"built": {
-				"state": "none",
-				"evidence": "not yet read: seed row awaiting its code reader"
+				"state": "built",
+				"evidence": "lib/Settings/register.d/event-location-to-maps-leaf.json (event.configuration.linkedTypes: [\"maps\"]); src/manifest.json:1589-1660 (event-maps widget, type integration, integrationId maps)",
+				"owner": "nextcloud/maps",
+				"reachedOn": "EventDetail page (/events/:id) body, 'Location' widget"
 			},
+			"provider": "nextcloud",
+			"providerHow": "read: same OR-delegated leaf pattern as evt-calendar; larpinq only declares the linkedType and hosts the marker",
+			"feature": "photos-maps-and-calendar",
+			"featureConfidence": "high",
 			"origin": "own-code",
-			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
 			"evidence": {
 				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
 				"mylarp": "not checked: row added from our code after the competitor documentation pass",
@@ -2693,18 +2710,24 @@
 			"id": "evt-roster",
 			"area": "events",
 			"name": "See the list of characters and players taking part in an event.",
-			"larpinq": "unknown",
+			"larpinq": "yes",
 			"larpmanager": "unknown",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
 			"kanka": "unknown",
 			"pretix": "unknown",
 			"built": {
-				"state": "none",
-				"evidence": "not yet read: seed row awaiting its code reader"
+				"state": "built",
+				"evidence": "lib/Controller/EventsController.php:169 (roster()); lib/Service/EventRosterService.php:89-120 (buildRoster); src/views/EventRoster.vue:204-241 (fetchRoster calls GET /apps/larpinq/api/events/{id}/roster); src/manifest.json:1806-1809 (EventDetail sidebar 'Check-in' tab, component EventRoster); src/registry.js:25,43 (EventRoster resolved by CnObjectSidebar)",
+				"owner": "ConductionNL/larpinq",
+				"reachedOn": "EventDetail page (/events/:id), sidebar 'Check-in' tab"
 			},
+			"provider": "self",
+			"providerHow": "read: two-hop trace route -> controller -> EventRoster.vue -> manifest sidebar tab, all in this repo",
+			"feature": "event-rosters-and-signup",
+			"featureConfidence": "high",
 			"origin": "own-code",
-			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"note": "Do not confuse with the separate read-only 'event-roster' body widget (object-list of participating characters, src/manifest.json:1669) which has no check-in controls; the sidebar tab is the only writable roster surface.",
 			"evidence": {
 				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
 				"mylarp": "not checked: row added from our code after the competitor documentation pass",
@@ -2716,19 +2739,25 @@
 		{
 			"id": "evt-add-participants",
 			"area": "events",
-			"name": "Add characters to an event's participant list.",
-			"larpinq": "unknown",
+			"name": "Add a character to an event's participant list.",
+			"larpinq": "yes",
 			"larpmanager": "unknown",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
 			"kanka": "unknown",
 			"pretix": "unknown",
 			"built": {
-				"state": "none",
-				"evidence": "not yet read: seed row awaiting its code reader"
+				"state": "built",
+				"evidence": "lib/Settings/larpinq_register.json:214 (character.events array $ref larping_event, visible:false); src/manifest.json:690 (CharacterDetail 'char-related' widget, 'events' group); lib/Service/EventRosterService.php:328-333 (attendsEvent reads character['events'])",
+				"owner": "ConductionNL/larpinq",
+				"reachedOn": "CharacterDetail page (/characters/:id), 'Build & world' related widget, Events group"
 			},
+			"provider": "self",
+			"providerHow": "read: the schema field is visible:false (hidden from generic forms) but is explicitly surfaced as its own related-object group on the character detail page, which is how a GM actually adds a character to an event",
+			"feature": "event-rosters-and-signup",
+			"featureConfidence": "high",
 			"origin": "own-code",
-			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"note": "The event's own 'players[]' field (larpinq_register.json:809-820) is also visible:false and not surfaced by any widget; character.events[] is the field actually exposed and read by app code, so it is the real participation path.",
 			"evidence": {
 				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
 				"mylarp": "not checked: row added from our code after the competitor documentation pass",
@@ -2740,19 +2769,24 @@
 		{
 			"id": "evt-checkin",
 			"area": "events",
-			"name": "Check players in on arrival at the event site.",
-			"larpinq": "unknown",
+			"name": "Check a player's character in on arrival at the event.",
+			"larpinq": "yes",
 			"larpmanager": "unknown",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
 			"kanka": "unknown",
 			"pretix": "unknown",
 			"built": {
-				"state": "none",
-				"evidence": "not yet read: seed row awaiting its code reader"
+				"state": "built",
+				"evidence": "src/views/EventRoster.vue:48-71 (Check in / No-show NcButtons, canCheckIn gated on isGm); lib/Controller/EventsController.php:207-244 (recordAttendance, GM-only via resolveGameMaster); lib/Service/EventRosterService.php:196-226 (recordAttendance persists larping_attendance)",
+				"owner": "ConductionNL/larpinq",
+				"reachedOn": "EventDetail page (/events/:id), sidebar 'Check-in' tab, per-row Check in/No-show buttons (game masters only)"
 			},
+			"provider": "self",
+			"providerHow": "read: full path traced from button click to POST /apps/larpinq/api/events/{id}/attendance to EventRosterService::recordAttendance",
+			"feature": "onsite-check-in",
+			"featureConfidence": "high",
 			"origin": "own-code",
-			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
 			"evidence": {
 				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
 				"mylarp": "not checked: row added from our code after the competitor documentation pass",
@@ -2764,19 +2798,24 @@
 		{
 			"id": "evt-attendance",
 			"area": "events",
-			"name": "Record who actually attended an event.",
-			"larpinq": "unknown",
+			"name": "Record whether each participant actually attended an event (checked-in or no-show).",
+			"larpinq": "yes",
 			"larpmanager": "unknown",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
 			"kanka": "unknown",
 			"pretix": "unknown",
 			"built": {
-				"state": "none",
-				"evidence": "not yet read: seed row awaiting its code reader"
+				"state": "built",
+				"evidence": "lib/Settings/register.d/event-checkin-roster.json (larping_attendance schema: event, character, status enum registered/checked-in/no-show, server-stamped checkedInAt/checkedInBy); lib/Service/EventRosterService.php:387-410 (loadAttendance, filters by event)",
+				"owner": "ConductionNL/larpinq",
+				"reachedOn": "EventDetail page (/events/:id), sidebar 'Check-in' tab, attendance column + status badge"
 			},
+			"provider": "self",
+			"providerHow": "read: same code path as evt-checkin; status is a first-class persisted record, not derived",
+			"feature": "onsite-check-in",
+			"featureConfidence": "high",
 			"origin": "own-code",
-			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
 			"evidence": {
 				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
 				"mylarp": "not checked: row added from our code after the competitor documentation pass",
@@ -2789,7 +2828,7 @@
 			"id": "evt-attendance-drives-xp",
 			"area": "events",
 			"name": "Use recorded attendance to decide who gets XP.",
-			"larpinq": "unknown",
+			"larpinq": "no",
 			"larpmanager": "unknown",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
@@ -2797,10 +2836,15 @@
 			"pretix": "unknown",
 			"built": {
 				"state": "none",
-				"evidence": "not yet read: seed row awaiting its code reader"
+				"evidence": "grep -rn \"xpAward|XpAward\" lib --include=*.php: only hits are CharacterService.php (reads existing xpAward objects into the stat calculation) and a comment in EventsController.php; nothing reads larping_attendance.status when creating or validating an xpAward. lib/Settings/larpinq_register.json:910-969 (xpAward schema) has no reference to attendance and no calculation/trigger tying it to check-in status; xpAward creation is a plain GM-authored object-list entry (src/manifest.json event-xpawards / char-xpawards widgets, allowCreate default)",
+				"owner": "ConductionNL/larpinq"
 			},
+			"provider": "self",
+			"providerHow": "read: grepped for any code or declarative link between larping_attendance and xpAward and found none",
+			"feature": "event-xp-awards",
+			"featureConfidence": "high",
 			"origin": "own-code",
-			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"note": "The xpAward.reason field's own description mentions 'full attendance' as an example free-text reason, but nothing enforces or checks it against the actual attendance record — a GM can award XP to a no-show or skip a checked-in character freely.",
 			"evidence": {
 				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
 				"mylarp": "not checked: row added from our code after the competitor documentation pass",
@@ -2813,7 +2857,7 @@
 			"id": "evt-event-status",
 			"area": "events",
 			"name": "Mark an event as planned, running, finished or cancelled.",
-			"larpinq": "unknown",
+			"larpinq": "no",
 			"larpmanager": "unknown",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
@@ -2821,10 +2865,15 @@
 			"pretix": "unknown",
 			"built": {
 				"state": "none",
-				"evidence": "not yet read: seed row awaiting its code reader"
+				"evidence": "lib/Settings/larpinq_register.json:766-841 (larping_event properties: name, description, startDate, endDate, location, players, effects, setting — no status/state field, no configuration.x-openregister-lifecycle block, unlike the character schema which does have one at lib/Settings/larpinq_register.json:288-310)",
+				"owner": "ConductionNL/larpinq"
 			},
+			"provider": "self",
+			"providerHow": "read: enumerated every property on the larping_event schema directly",
+			"feature": "event-rosters-and-signup",
+			"featureConfidence": "low",
 			"origin": "own-code",
-			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"note": "Only startDate/endDate exist; a GM can infer status from dates but there is no explicit lifecycle field or UI control.",
 			"evidence": {
 				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
 				"mylarp": "not checked: row added from our code after the competitor documentation pass",
@@ -2837,18 +2886,24 @@
 			"id": "evt-upcoming-list",
 			"area": "events",
 			"name": "See the upcoming events at a glance.",
-			"larpinq": "unknown",
+			"larpinq": "partial",
 			"larpmanager": "unknown",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
 			"kanka": "unknown",
 			"pretix": "unknown",
 			"built": {
-				"state": "none",
-				"evidence": "not yet read: seed row awaiting its code reader"
+				"state": "built",
+				"evidence": "src/manifest.json:~1589-area Events index page (generic list/sort/search for larping_event, no default 'future only' filter); src/manifest.json Dashboard 'recent-events' widget (type object-table, sort startDate desc, limit 6, no filter on startDate >= now)",
+				"owner": "ConductionNL/larpinq",
+				"reachedOn": "Dashboard page (/), 'Recent events' widget; Events index page (/events) with manual sort"
 			},
+			"provider": "self",
+			"providerHow": "read: manifest widget/page config in this repo",
+			"feature": "campaign-dashboard",
+			"featureConfidence": "medium",
 			"origin": "own-code",
-			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"note": "Neither surface filters to future-only events; 'recent' sorts by startDate desc (which surfaces the furthest-future or most-recent event, mixing past and future), and the index page requires the user to sort/search manually to see only what's ahead.",
 			"evidence": {
 				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
 				"mylarp": "not checked: row added from our code after the competitor documentation pass",
@@ -2861,18 +2916,23 @@
 			"id": "evt-event-history",
 			"area": "events",
 			"name": "Look back at past events and who played in them.",
-			"larpinq": "unknown",
+			"larpinq": "yes",
 			"larpmanager": "unknown",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
 			"kanka": "unknown",
 			"pretix": "unknown",
 			"built": {
-				"state": "none",
-				"evidence": "not yet read: seed row awaiting its code reader"
+				"state": "built",
+				"evidence": "src/manifest.json Events index page (generic list of all larping_event objects, no time filter so past events remain listed); src/manifest.json:1669-1697 (EventDetail 'event-roster' object-list widget showing participating characters, filter events=@objectId)",
+				"owner": "ConductionNL/larpinq",
+				"reachedOn": "Events index page (/events) + EventDetail (/events/:id) roster widget"
 			},
+			"provider": "self",
+			"providerHow": "read: manifest config in this repo",
+			"feature": "event-rosters-and-signup",
+			"featureConfidence": "medium",
 			"origin": "own-code",
-			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
 			"evidence": {
 				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
 				"mylarp": "not checked: row added from our code after the competitor documentation pass",
@@ -2885,7 +2945,7 @@
 			"id": "evt-offline-checkin",
 			"area": "events",
 			"name": "Check players in on site without an internet connection.",
-			"larpinq": "unknown",
+			"larpinq": "no",
 			"larpmanager": "unknown",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
@@ -2893,10 +2953,14 @@
 			"pretix": "unknown",
 			"built": {
 				"state": "none",
-				"evidence": "not yet read: seed row awaiting its code reader"
+				"evidence": "grep -rniE \"offline\" lib src --include=*.php --include=*.vue --include=*.js: no hits related to offline mode; EventRoster.vue's fetchRoster/setStatus both require a live fetch() to the app backend with no local cache/queue",
+				"owner": "ConductionNL/larpinq"
 			},
+			"provider": "self",
+			"providerHow": "read: no offline handling code found",
+			"feature": "onsite-check-in",
+			"featureConfidence": "high",
 			"origin": "competitor",
-			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
 			"evidence": {
 				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
 				"mylarp": "not checked: row added from our code after the competitor documentation pass",
@@ -2909,7 +2973,7 @@
 			"id": "evt-qr-checkin",
 			"area": "events",
 			"name": "Check players in by scanning a QR code on their ticket.",
-			"larpinq": "unknown",
+			"larpinq": "no",
 			"larpmanager": "unknown",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
@@ -2917,10 +2981,14 @@
 			"pretix": "unknown",
 			"built": {
 				"state": "none",
-				"evidence": "not yet read: seed row awaiting its code reader"
+				"evidence": "grep -rniE \"qr.?code\" lib src --include=*.php --include=*.vue --include=*.js: no hits; there is no ticket concept at all (see reg-tickets)",
+				"owner": "ConductionNL/larpinq"
 			},
+			"provider": "self",
+			"providerHow": "read: grepped, no hits",
+			"feature": "onsite-check-in",
+			"featureConfidence": "high",
 			"origin": "competitor",
-			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
 			"evidence": {
 				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
 				"mylarp": "not checked: row added from our code after the competitor documentation pass",
@@ -2933,7 +3001,7 @@
 			"id": "evt-crew-roles",
 			"area": "events",
 			"name": "Assign crew and NPC roles to volunteers for an event.",
-			"larpinq": "unknown",
+			"larpinq": "no",
 			"larpmanager": "unknown",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
@@ -2941,10 +3009,14 @@
 			"pretix": "unknown",
 			"built": {
 				"state": "none",
-				"evidence": "not yet read: seed row awaiting its code reader"
+				"evidence": "grep -rniE \"crew|npc\" lib src --include=*.php --include=*.vue --include=*.js: no hits; character.type is a free-text field on the character schema with no crew/NPC role assignment surface tied to an event",
+				"owner": "ConductionNL/larpinq"
 			},
+			"provider": "self",
+			"providerHow": "read: grepped, no hits",
+			"feature": "faction-and-group-management",
+			"featureConfidence": "medium",
 			"origin": "competitor",
-			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
 			"evidence": {
 				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
 				"mylarp": "not checked: row added from our code after the competitor documentation pass",
@@ -2957,7 +3029,7 @@
 			"id": "evt-schedule-within-event",
 			"area": "events",
 			"name": "Plan the schedule of scenes and encounters within an event.",
-			"larpinq": "unknown",
+			"larpinq": "no",
 			"larpmanager": "unknown",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
@@ -2965,10 +3037,14 @@
 			"pretix": "unknown",
 			"built": {
 				"state": "none",
-				"evidence": "not yet read: seed row awaiting its code reader"
+				"evidence": "grep -rniE \"scene|encounter\" lib src --include=*.php --include=*.vue --include=*.js: only hit is an unrelated code comment (EffectApplier.php:241, 'on the next encounter of the same effect ID'); no scene/session sub-schedule exists",
+				"owner": "ConductionNL/larpinq"
 			},
+			"provider": "self",
+			"providerHow": "read: grepped, one false-positive comment hit only",
+			"feature": "event-rosters-and-signup",
+			"featureConfidence": "low",
 			"origin": "competitor",
-			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
 			"evidence": {
 				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
 				"mylarp": "not checked: row added from our code after the competitor documentation pass",
@@ -2981,7 +3057,7 @@
 			"id": "evt-accommodation",
 			"area": "events",
 			"name": "Assign sleeping places or tents to participants.",
-			"larpinq": "unknown",
+			"larpinq": "no",
 			"larpmanager": "unknown",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
@@ -2989,10 +3065,14 @@
 			"pretix": "unknown",
 			"built": {
 				"state": "none",
-				"evidence": "not yet read: seed row awaiting its code reader"
+				"evidence": "grep -rniE \"accommodation|tent|sleeping\" lib src --include=*.php --include=*.vue --include=*.js: no hits",
+				"owner": "ConductionNL/larpinq"
 			},
+			"provider": "self",
+			"providerHow": "read: grepped, no hits",
+			"feature": "event-rosters-and-signup",
+			"featureConfidence": "low",
 			"origin": "competitor",
-			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
 			"evidence": {
 				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
 				"mylarp": "not checked: row added from our code after the competitor documentation pass",
@@ -3005,7 +3085,7 @@
 			"id": "evt-capacity",
 			"area": "events",
 			"name": "Set a maximum number of participants for an event.",
-			"larpinq": "unknown",
+			"larpinq": "no",
 			"larpmanager": "unknown",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
@@ -3013,10 +3093,15 @@
 			"pretix": "unknown",
 			"built": {
 				"state": "none",
-				"evidence": "not yet read: seed row awaiting its code reader"
+				"evidence": "grep -rniE \"capacity\" lib --include=*.php: no hits; openspec/specs/event-signup-to-forms-leaf/spec.md 'Capacity and waiting-list ordering MUST stay in Larpinq' requirement has zero backing code",
+				"owner": "ConductionNL/larpinq"
 			},
+			"provider": "self",
+			"providerHow": "read: grepped and cross-checked against the spec's own capacity requirement, no implementation found",
+			"feature": "event-rosters-and-signup",
+			"featureConfidence": "medium",
 			"origin": "competitor",
-			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"note": "See findings.md: this is a spec-vs-code mismatch, not just a missing competitor feature.",
 			"evidence": {
 				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
 				"mylarp": "not checked: row added from our code after the competitor documentation pass",
@@ -3029,18 +3114,24 @@
 			"id": "reg-signup-form",
 			"area": "registration",
 			"name": "Let players sign up for an event through a form.",
-			"larpinq": "unknown",
+			"larpinq": "partial",
 			"larpmanager": "unknown",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
 			"kanka": "unknown",
 			"pretix": "unknown",
 			"built": {
-				"state": "none",
-				"evidence": "not yet read: seed row awaiting its code reader"
+				"state": "built",
+				"evidence": "lib/Settings/register.d/event-signup-to-forms-leaf.json (event.configuration.linkedTypes: [\"forms\"]); src/manifest.json:1589-1660 (event-forms widget, type integration, integrationId forms); src/views/ObjectDetail.vue:20,60 (event -> forms leaf)",
+				"owner": "ConductionNL/larpinq",
+				"reachedOn": "EventDetail page (/events/:id) body, 'Sign-up' widget"
 			},
+			"provider": "nextcloud",
+			"providerHow": "read: OR-delegated forms leaf (ADR-019) surfaces a real NC Forms form; larpinq builds no bespoke submission store",
+			"feature": "event-rosters-and-signup",
+			"featureConfidence": "high",
 			"origin": "own-code",
-			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"note": "The form itself renders and can collect submissions (per openspec/specs/event-signup-to-forms-leaf/spec.md Requirement 1), but see findings.md: the same spec's capacity/waitlist/confirmed-participant requirement has no code, so a submission never automatically becomes a confirmed participant in character.events[] -- a GM must add participants manually (evt-add-participants).",
 			"evidence": {
 				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
 				"mylarp": "not checked: row added from our code after the competitor documentation pass",
@@ -3053,7 +3144,7 @@
 			"id": "reg-choose-character",
 			"area": "registration",
 			"name": "Let a player pick which character they bring when signing up.",
-			"larpinq": "unknown",
+			"larpinq": "no",
 			"larpmanager": "unknown",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
@@ -3061,10 +3152,14 @@
 			"pretix": "unknown",
 			"built": {
 				"state": "none",
-				"evidence": "not yet read: seed row awaiting its code reader"
+				"evidence": "the forms leaf (reg-signup-form) is a generic NC Forms form with no larpinq-aware character field, and no code binds a form submission to a specific character record",
+				"owner": "ConductionNL/larpinq"
 			},
+			"provider": "self",
+			"providerHow": "read: inferred from the forms leaf's generic nature and absence of any binding code",
+			"feature": "event-rosters-and-signup",
+			"featureConfidence": "medium",
 			"origin": "competitor",
-			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
 			"evidence": {
 				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
 				"mylarp": "not checked: row added from our code after the competitor documentation pass",
@@ -3077,7 +3172,7 @@
 			"id": "reg-tickets",
 			"area": "registration",
 			"name": "Sell tickets with different prices, such as player, crew and NPC.",
-			"larpinq": "unknown",
+			"larpinq": "no",
 			"larpmanager": "unknown",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
@@ -3085,10 +3180,14 @@
 			"pretix": "unknown",
 			"built": {
 				"state": "none",
-				"evidence": "not yet read: seed row awaiting its code reader"
+				"evidence": "grep -rniE \"ticket|price\" lib src --include=*.php --include=*.vue --include=*.js: no hits",
+				"owner": "ConductionNL/larpinq"
 			},
+			"provider": "self",
+			"providerHow": "read: grepped, no hits",
+			"feature": "online-event-payments",
+			"featureConfidence": "high",
 			"origin": "competitor",
-			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
 			"evidence": {
 				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
 				"mylarp": "not checked: row added from our code after the competitor documentation pass",
@@ -3101,7 +3200,7 @@
 			"id": "reg-online-payment",
 			"area": "registration",
 			"name": "Take payment for an event online.",
-			"larpinq": "unknown",
+			"larpinq": "no",
 			"larpmanager": "unknown",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
@@ -3109,10 +3208,14 @@
 			"pretix": "unknown",
 			"built": {
 				"state": "none",
-				"evidence": "not yet read: seed row awaiting its code reader"
+				"evidence": "grep -rniE \"payment\" lib src --include=*.php --include=*.vue --include=*.js: no hits",
+				"owner": "ConductionNL/larpinq"
 			},
+			"provider": "self",
+			"providerHow": "read: grepped, no hits",
+			"feature": "online-event-payments",
+			"featureConfidence": "high",
 			"origin": "competitor",
-			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
 			"evidence": {
 				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
 				"mylarp": "not checked: row added from our code after the competitor documentation pass",
@@ -3125,7 +3228,7 @@
 			"id": "reg-payment-status",
 			"area": "registration",
 			"name": "See who has paid and who still owes money for an event.",
-			"larpinq": "unknown",
+			"larpinq": "no",
 			"larpmanager": "unknown",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
@@ -3133,10 +3236,14 @@
 			"pretix": "unknown",
 			"built": {
 				"state": "none",
-				"evidence": "not yet read: seed row awaiting its code reader"
+				"evidence": "grep -rniE \"payment\" lib src --include=*.php --include=*.vue --include=*.js: no hits (same grep as reg-online-payment)",
+				"owner": "ConductionNL/larpinq"
 			},
+			"provider": "self",
+			"providerHow": "read: grepped, no hits",
+			"feature": "online-event-payments",
+			"featureConfidence": "high",
 			"origin": "competitor",
-			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
 			"evidence": {
 				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
 				"mylarp": "not checked: row added from our code after the competitor documentation pass",
@@ -3149,7 +3256,7 @@
 			"id": "reg-waitlist",
 			"area": "registration",
 			"name": "Put players on a waiting list when an event is full.",
-			"larpinq": "unknown",
+			"larpinq": "no",
 			"larpmanager": "unknown",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
@@ -3157,10 +3264,15 @@
 			"pretix": "unknown",
 			"built": {
 				"state": "none",
-				"evidence": "not yet read: seed row awaiting its code reader"
+				"evidence": "grep -rniE \"waitlist|waiting.?list\" lib --include=*.php: no hits, despite openspec/specs/event-signup-to-forms-leaf/spec.md Requirement 'Capacity and waiting-list ordering MUST stay in Larpinq' and its scenario 'Waiting list forms when capacity is reached'",
+				"owner": "ConductionNL/larpinq"
 			},
+			"provider": "self",
+			"providerHow": "read: grepped and cross-checked against the spec, no implementation found",
+			"feature": "event-rosters-and-signup",
+			"featureConfidence": "high",
 			"origin": "competitor",
-			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"note": "Same spec-vs-code mismatch as evt-capacity -- see findings.md.",
 			"evidence": {
 				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
 				"mylarp": "not checked: row added from our code after the competitor documentation pass",
@@ -3173,7 +3285,7 @@
 			"id": "reg-discount-codes",
 			"area": "registration",
 			"name": "Offer discount or early-bird prices.",
-			"larpinq": "unknown",
+			"larpinq": "no",
 			"larpmanager": "unknown",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
@@ -3181,10 +3293,14 @@
 			"pretix": "unknown",
 			"built": {
 				"state": "none",
-				"evidence": "not yet read: seed row awaiting its code reader"
+				"evidence": "grep -rniE \"discount\" lib src --include=*.php --include=*.vue --include=*.js: no hits",
+				"owner": "ConductionNL/larpinq"
 			},
+			"provider": "self",
+			"providerHow": "read: grepped, no hits",
+			"feature": "online-event-payments",
+			"featureConfidence": "medium",
 			"origin": "competitor",
-			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
 			"evidence": {
 				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
 				"mylarp": "not checked: row added from our code after the competitor documentation pass",
@@ -3197,7 +3313,7 @@
 			"id": "reg-refunds",
 			"area": "registration",
 			"name": "Refund a cancelled registration.",
-			"larpinq": "unknown",
+			"larpinq": "no",
 			"larpmanager": "unknown",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
@@ -3205,10 +3321,14 @@
 			"pretix": "unknown",
 			"built": {
 				"state": "none",
-				"evidence": "not yet read: seed row awaiting its code reader"
+				"evidence": "grep -rniE \"refund\" lib src --include=*.php --include=*.vue --include=*.js: no hits",
+				"owner": "ConductionNL/larpinq"
 			},
+			"provider": "self",
+			"providerHow": "read: grepped, no hits",
+			"feature": "online-event-payments",
+			"featureConfidence": "medium",
 			"origin": "competitor",
-			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
 			"evidence": {
 				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
 				"mylarp": "not checked: row added from our code after the competitor documentation pass",
@@ -3221,7 +3341,7 @@
 			"id": "reg-invoices",
 			"area": "registration",
 			"name": "Send players an invoice or receipt for their registration.",
-			"larpinq": "unknown",
+			"larpinq": "no",
 			"larpmanager": "unknown",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
@@ -3229,10 +3349,14 @@
 			"pretix": "unknown",
 			"built": {
 				"state": "none",
-				"evidence": "not yet read: seed row awaiting its code reader"
+				"evidence": "grep -rniE \"invoice\" lib src --include=*.php --include=*.vue --include=*.js: no hits",
+				"owner": "ConductionNL/larpinq"
 			},
+			"provider": "self",
+			"providerHow": "read: grepped, no hits",
+			"feature": "online-event-payments",
+			"featureConfidence": "medium",
 			"origin": "competitor",
-			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
 			"evidence": {
 				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
 				"mylarp": "not checked: row added from our code after the competitor documentation pass",
@@ -3245,7 +3369,7 @@
 			"id": "reg-terms-consent",
 			"area": "registration",
 			"name": "Make players accept the event rules and safety policy when they sign up.",
-			"larpinq": "unknown",
+			"larpinq": "no",
 			"larpmanager": "unknown",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
@@ -3253,10 +3377,14 @@
 			"pretix": "unknown",
 			"built": {
 				"state": "none",
-				"evidence": "not yet read: seed row awaiting its code reader"
+				"evidence": "grep -rniE \"consent|terms\" lib src --include=*.php --include=*.vue --include=*.js: no hits (the generic NC Forms leaf could in principle carry a consent question, but nothing in larpinq enforces or checks one)",
+				"owner": "ConductionNL/larpinq"
 			},
+			"provider": "self",
+			"providerHow": "read: grepped, no hits",
+			"feature": "event-rosters-and-signup",
+			"featureConfidence": "low",
 			"origin": "competitor",
-			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
 			"evidence": {
 				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
 				"mylarp": "not checked: row added from our code after the competitor documentation pass",
@@ -3269,18 +3397,23 @@
 			"id": "prt-character-pdf",
 			"area": "print",
 			"name": "Print a character sheet as a PDF.",
-			"larpinq": "unknown",
+			"larpinq": "partial",
 			"larpmanager": "unknown",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
 			"kanka": "unknown",
 			"pretix": "unknown",
 			"built": {
-				"state": "none",
-				"evidence": "not yet read: seed row awaiting its code reader"
+				"state": "built",
+				"evidence": "lib/Controller/CharactersController.php:139 (downloadPdf, admin-only guard, DocuDesk-delegated render); appinfo/routes.php:30 (GET /characters/{id}/download/{template}); openspec/changes/larpinq-pdf-frontend-download-action/proposal.md confirms zero frontend caller at HEAD (grep -rli pdf src --include=*.vue --include=*.js matches only a code comment in ObjectDetail.vue:19); own grep -rn \"downloadPdf|download/\" src/: no hits",
+				"owner": "ConductionNL/larpinq"
 			},
+			"provider": "filinq",
+			"providerHow": "read: DocuDeskPdfRenderer.php delegates rendering to filinq's TemplateService via FleetAppId (lib/Service/DocuDeskPdfRenderer.php:107-120)",
+			"feature": "pdf-character-sheets",
+			"featureConfidence": "high",
 			"origin": "own-code",
-			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"note": "Backend is unit-tested and correct (per tests/unit/Controller/CharactersControllerTest.php), but there is no button, action or link anywhere in src/ that calls it -- confirmed independently and matches the open, unimplemented larpinq-pdf-frontend-download-action change (tasks.md all unchecked).",
 			"evidence": {
 				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
 				"mylarp": "not checked: row added from our code after the competitor documentation pass",
@@ -3293,18 +3426,23 @@
 			"id": "prt-runsheet",
 			"area": "print",
 			"name": "Print a game master run sheet with the cast of an event.",
-			"larpinq": "unknown",
+			"larpinq": "partial",
 			"larpmanager": "unknown",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
 			"kanka": "unknown",
 			"pretix": "unknown",
 			"built": {
-				"state": "none",
-				"evidence": "not yet read: seed row awaiting its code reader"
+				"state": "built",
+				"evidence": "lib/Controller/EventsController.php:105 (downloadRunsheet, GM-only via resolveGameMaster); appinfo/routes.php:31 (GET /events/{id}/runsheet/{template}); lib/Service/EventRosterService.php:136-176 (buildRunsheetContext); own grep -rn \"runsheet\" src/: no hits",
+				"owner": "ConductionNL/larpinq"
 			},
+			"provider": "filinq",
+			"providerHow": "read: renders through the same DocuDeskPdfRenderer as prt-character-pdf",
+			"feature": "gm-run-sheet",
+			"featureConfidence": "high",
 			"origin": "own-code",
-			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"note": "No frontend caller anywhere (no headerAction on EventDetail, no manifest entry). Also see openspec/changes/larpinq-runsheet-scoped-cast-query/proposal.md: buildRunsheetContext() loads the ENTIRE character and player registers into PHP memory (RegisterObjectFetcher::getObjects() called with no filter/limit) to build one event's cast list -- an open, unfixed perf issue on the backend half of an already-unreachable feature.",
 			"evidence": {
 				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
 				"mylarp": "not checked: row added from our code after the competitor documentation pass",
@@ -3317,7 +3455,7 @@
 			"id": "prt-templates",
 			"area": "print",
 			"name": "Choose between print templates for sheets.",
-			"larpinq": "unknown",
+			"larpinq": "no",
 			"larpmanager": "unknown",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
@@ -3325,10 +3463,14 @@
 			"pretix": "unknown",
 			"built": {
 				"state": "none",
-				"evidence": "not yet read: seed row awaiting its code reader"
+				"evidence": "lib/Service/DocuDeskPdfRenderer.php: only getTemplate(string $templateId) (single lookup by id) exists; grep -rn \"templates\" appinfo/routes.php lib/Controller/: no hits, so larpinq exposes no template-listing endpoint at all, and (per prt-character-pdf/prt-runsheet) there is no frontend to present a chooser regardless",
+				"owner": "ConductionNL/larpinq"
 			},
+			"provider": "filinq",
+			"providerHow": "read: the {template} route segment accepts an arbitrary UUID, but nothing in this app lists the available templates or lets a user pick one",
+			"feature": "pdf-character-sheets",
+			"featureConfidence": "medium",
 			"origin": "own-code",
-			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
 			"evidence": {
 				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
 				"mylarp": "not checked: row added from our code after the competitor documentation pass",
@@ -3341,7 +3483,7 @@
 			"id": "prt-item-cards",
 			"area": "print",
 			"name": "Print item cards or tags for the physical game.",
-			"larpinq": "unknown",
+			"larpinq": "no",
 			"larpmanager": "unknown",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
@@ -3349,10 +3491,14 @@
 			"pretix": "unknown",
 			"built": {
 				"state": "none",
-				"evidence": "not yet read: seed row awaiting its code reader"
+				"evidence": "grep -rniE \"item.?card\" lib src --include=*.php --include=*.vue --include=*.js: no hits",
+				"owner": "ConductionNL/larpinq"
 			},
+			"provider": "self",
+			"providerHow": "read: grepped, no hits",
+			"feature": "pdf-character-sheets",
+			"featureConfidence": "low",
 			"origin": "competitor",
-			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
 			"evidence": {
 				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
 				"mylarp": "not checked: row added from our code after the competitor documentation pass",
@@ -3365,7 +3511,7 @@
 			"id": "prt-bulk-print",
 			"area": "print",
 			"name": "Print the sheets of every character attending an event at once.",
-			"larpinq": "unknown",
+			"larpinq": "no",
 			"larpmanager": "unknown",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
@@ -3373,10 +3519,14 @@
 			"pretix": "unknown",
 			"built": {
 				"state": "none",
-				"evidence": "not yet read: seed row awaiting its code reader"
+				"evidence": "grep -rniE \"bulk.?print\" lib src --include=*.php --include=*.vue --include=*.js: no hits; the single-character downloadPdf route has no batch/list variant and, per prt-character-pdf, is itself unreachable from the frontend",
+				"owner": "ConductionNL/larpinq"
 			},
+			"provider": "self",
+			"providerHow": "read: grepped, no hits",
+			"feature": "pdf-character-sheets",
+			"featureConfidence": "medium",
 			"origin": "competitor",
-			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
 			"evidence": {
 				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
 				"mylarp": "not checked: row added from our code after the competitor documentation pass",
@@ -3389,7 +3539,7 @@
 			"id": "prt-badges",
 			"area": "print",
 			"name": "Print name badges for participants.",
-			"larpinq": "unknown",
+			"larpinq": "no",
 			"larpmanager": "unknown",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
@@ -3397,58 +3547,14 @@
 			"pretix": "unknown",
 			"built": {
 				"state": "none",
-				"evidence": "not yet read: seed row awaiting its code reader"
+				"evidence": "grep -rniE \"badge|nametag|name.?tag\" lib src --include=*.php --include=*.vue --include=*.js: only hits are the unrelated CnStatusBadge UI component in SkillTree.vue and EventRoster.vue",
+				"owner": "ConductionNL/larpinq"
 			},
+			"provider": "self",
+			"providerHow": "read: grepped, only false-positive component-name hits",
+			"feature": "pdf-character-sheets",
+			"featureConfidence": "low",
 			"origin": "competitor",
-			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
-			"evidence": {
-				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
-				"mylarp": "not checked: row added from our code after the competitor documentation pass",
-				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
-				"kanka": "not checked: row added from our code after the competitor documentation pass",
-				"pretix": "not checked: row added from our code after the competitor documentation pass"
-			}
-		},
-		{
-			"id": "com-notify-approval",
-			"area": "communication",
-			"name": "Tell a player when their character is approved or rejected.",
-			"larpinq": "unknown",
-			"larpmanager": "unknown",
-			"mylarp": "unknown",
-			"larp-portal": "unknown",
-			"kanka": "unknown",
-			"pretix": "unknown",
-			"built": {
-				"state": "none",
-				"evidence": "not yet read: seed row awaiting its code reader"
-			},
-			"origin": "own-code",
-			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
-			"evidence": {
-				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
-				"mylarp": "not checked: row added from our code after the competitor documentation pass",
-				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
-				"kanka": "not checked: row added from our code after the competitor documentation pass",
-				"pretix": "not checked: row added from our code after the competitor documentation pass"
-			}
-		},
-		{
-			"id": "com-notify-event",
-			"area": "communication",
-			"name": "Remind participants about an upcoming event.",
-			"larpinq": "unknown",
-			"larpmanager": "unknown",
-			"mylarp": "unknown",
-			"larp-portal": "unknown",
-			"kanka": "unknown",
-			"pretix": "unknown",
-			"built": {
-				"state": "none",
-				"evidence": "not yet read: seed row awaiting its code reader"
-			},
-			"origin": "own-code",
-			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
 			"evidence": {
 				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
 				"mylarp": "not checked: row added from our code after the competitor documentation pass",
@@ -3460,8 +3566,8 @@
 		{
 			"id": "com-live-updates",
 			"area": "communication",
-			"name": "See changes other game masters make without reloading the page.",
-			"larpinq": "unknown",
+			"name": "See changes other game masters make to an event or its roster without reloading the page.",
+			"larpinq": "no",
 			"larpmanager": "unknown",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
@@ -3469,10 +3575,15 @@
 			"pretix": "unknown",
 			"built": {
 				"state": "none",
-				"evidence": "not yet read: seed row awaiting its code reader"
+				"evidence": "grep -rn \"objectStore.subscribe|liveUpdatesPlugin|\\.subscribe\\(\" src/: only hit is src/views/SkillTree.vue:417 (subscribes 'skill' and 'character' collections); openspec/changes/adopt-live-updates-ui/proposal.md 'Out of Scope' section explicitly states EventRoster.vue fetches through a bespoke endpoint with no object-store cache to subscribe against, and manifest-driven pages (Events/EventDetail) have no subscription support in CnIndexPage/CnDetailPage",
+				"owner": "ConductionNL/larpinq"
 			},
+			"provider": "self",
+			"providerHow": "read: explicit scope documentation plus a direct grep for the subscription call",
+			"feature": "campaign-dashboard",
+			"featureConfidence": "medium",
 			"origin": "own-code",
-			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"note": "Live updates ARE real and built, but only for the Skill tree (a different area, not events/roster/registration/print/communication). Nothing in this lane's area has it.",
 			"evidence": {
 				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
 				"mylarp": "not checked: row added from our code after the competitor documentation pass",
@@ -3485,18 +3596,24 @@
 			"id": "com-deep-links",
 			"area": "communication",
 			"name": "Open a character or event straight from a link in Nextcloud search or another app.",
-			"larpinq": "unknown",
+			"larpinq": "yes",
 			"larpmanager": "unknown",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
 			"kanka": "unknown",
 			"pretix": "unknown",
 			"built": {
-				"state": "none",
-				"evidence": "not yet read: seed row awaiting its code reader"
+				"state": "built",
+				"evidence": "lib/Listener/DeepLinkRegistrationListener.php:82-93 (DEEP_LINK_MAP includes larping_event -> /apps/larpinq/events/{uuid}, character -> /apps/larpinq/characters/{uuid}); lib/AppInfo/Application.php:111-115 (listener registered behind class_exists('OCA\\OpenRegister\\Event\\DeepLinkRegistrationEvent'))",
+				"owner": "ConductionNL/larpinq",
+				"reachedOn": "n/a (server-side URL registration consumed by OpenRegister's unified search / other apps linking in)"
 			},
+			"provider": "openregister",
+			"providerHow": "read: larpinq registers its URL templates with OpenRegister's DeepLinkRegistrationEvent; OpenRegister's search/deep-link consumers are what actually follow the links",
+			"feature": "campaign-dashboard",
+			"featureConfidence": "medium",
 			"origin": "own-code",
-			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"note": "The listener's own docblock documents a since-fixed defect: the guard used to probe a non-existent method (registerDeepLink) and silently registered zero links; it now correctly checks method_exists($event, 'register').",
 			"evidence": {
 				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
 				"mylarp": "not checked: row added from our code after the competitor documentation pass",
@@ -3509,7 +3626,7 @@
 			"id": "com-mail-participants",
 			"area": "communication",
 			"name": "Email everyone signed up for an event from inside the tool.",
-			"larpinq": "unknown",
+			"larpinq": "no",
 			"larpmanager": "unknown",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
@@ -3517,10 +3634,14 @@
 			"pretix": "unknown",
 			"built": {
 				"state": "none",
-				"evidence": "not yet read: seed row awaiting its code reader"
+				"evidence": "grep -rniE \"mailParticipant|sendMail\" lib src --include=*.php --include=*.vue --include=*.js: no hits",
+				"owner": "ConductionNL/larpinq"
 			},
+			"provider": "self",
+			"providerHow": "read: grepped, no hits",
+			"feature": "lifecycle-notifications",
+			"featureConfidence": "medium",
 			"origin": "competitor",
-			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
 			"evidence": {
 				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
 				"mylarp": "not checked: row added from our code after the competitor documentation pass",
@@ -3533,7 +3654,7 @@
 			"id": "com-in-character-messages",
 			"area": "communication",
 			"name": "Send in-character letters or messages between characters.",
-			"larpinq": "unknown",
+			"larpinq": "no",
 			"larpmanager": "unknown",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
@@ -3541,10 +3662,14 @@
 			"pretix": "unknown",
 			"built": {
 				"state": "none",
-				"evidence": "not yet read: seed row awaiting its code reader"
+				"evidence": "grep -rniE \"in-character.*message|inCharacterMessage\" lib src --include=*.php --include=*.vue --include=*.js: no hits",
+				"owner": "ConductionNL/larpinq"
 			},
+			"provider": "self",
+			"providerHow": "read: grepped, no hits",
+			"feature": "player-and-contact-records",
+			"featureConfidence": "low",
 			"origin": "competitor",
-			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
 			"evidence": {
 				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
 				"mylarp": "not checked: row added from our code after the competitor documentation pass",
@@ -3557,7 +3682,7 @@
 			"id": "com-announcements",
 			"area": "communication",
 			"name": "Post announcements to all players of a campaign.",
-			"larpinq": "unknown",
+			"larpinq": "no",
 			"larpmanager": "unknown",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
@@ -3565,10 +3690,15 @@
 			"pretix": "unknown",
 			"built": {
 				"state": "none",
-				"evidence": "not yet read: seed row awaiting its code reader"
+				"evidence": "grep -rniE \"announce\" lib src --include=*.php --include=*.vue --include=*.js: no hits",
+				"owner": "ConductionNL/larpinq"
 			},
+			"provider": "self",
+			"providerHow": "read: grepped, no hits",
+			"feature": "lifecycle-notifications",
+			"featureConfidence": "medium",
 			"origin": "competitor",
-			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"note": "openspec/changes/leaf-integrations/proposal.md proposes a future 'talk' leaf (event/campaign chat room via OpenRegister's TalkProvider), which is adjacent but not built: lib/Settings/register.d/ has no leaf-integrations.json fragment at HEAD.",
 			"evidence": {
 				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
 				"mylarp": "not checked: row added from our code after the competitor documentation pass",
@@ -3580,19 +3710,25 @@
 		{
 			"id": "com-player-portal",
 			"area": "communication",
-			"name": "Give players a portal page where they see their own characters and events.",
-			"larpinq": "unknown",
+			"name": "Give players without a Nextcloud account a portal page where they see their own characters and events.",
+			"larpinq": "yes",
 			"larpmanager": "unknown",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
 			"kanka": "unknown",
 			"pretix": "unknown",
 			"built": {
-				"state": "none",
-				"evidence": "not yet read: seed row awaiting its code reader"
+				"state": "built",
+				"evidence": "lib/Portal/PortalContributionProvider.php:82-135 (getAudiences/getContribution/playerContribution: declares myCharacters scoped by ownerRef, public events list, catalogs, and a createCharacter action, all field-projected)",
+				"owner": "ConductionNL/portaliq",
+				"reachedOn": "The portaliq portal app's page (sibling app), discovered by convention FQCN + duck-typing, not by any larpinq page"
 			},
+			"provider": "self",
+			"providerHow": "read: larpinq authors the declarative contribution manifest in this repo; portaliq (a separate app) is the one that renders the actual portal UI and calls into this class at runtime, so the reachable page lives in portaliq, not larpinq",
+			"feature": "player-and-contact-records",
+			"featureConfidence": "medium",
 			"origin": "own-code",
-			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"note": "Scoping deliberately uses character.ownerRef (the player object UUID) rather than ownerUid, since an external subject has no Nextcloud account. Rated yes on the strength of the real, wired provider class; whether portaliq is installed on a given instance is a deployment fact outside this repo.",
 			"evidence": {
 				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
 				"mylarp": "not checked: row added from our code after the competitor documentation pass",
@@ -3605,7 +3741,7 @@
 			"id": "com-downtime-actions",
 			"area": "communication",
 			"name": "Let players submit between-event actions for the story team to resolve.",
-			"larpinq": "unknown",
+			"larpinq": "no",
 			"larpmanager": "unknown",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
@@ -3613,10 +3749,102 @@
 			"pretix": "unknown",
 			"built": {
 				"state": "none",
-				"evidence": "not yet read: seed row awaiting its code reader"
+				"evidence": "grep -rniE \"downtime\" lib src --include=*.php --include=*.vue --include=*.js: no hits",
+				"owner": "ConductionNL/larpinq"
 			},
+			"provider": "self",
+			"providerHow": "read: grepped, no hits",
+			"feature": "event-rosters-and-signup",
+			"featureConfidence": "low",
 			"origin": "competitor",
-			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "evt-post-event-effects",
+			"area": "events",
+			"name": "Apply story effects to every character who attended an event, changing their stats.",
+			"larpinq": "yes",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "built",
+				"evidence": "lib/Settings/larpinq_register.json:821-832 (event.effects array $ref effect); lib/Service/CharacterService.php:386-391 (applyEntityEffects called with property 'events', lookup allEvents -- events the character is subscribed to feed effects into stat calculation exactly like skills/items/conditions); src/manifest.json:1641 (EventDetail 'event-effects' related widget, group 'effects')",
+				"owner": "ConductionNL/larpinq",
+				"reachedOn": "EventDetail page (/events/:id) 'Post-event effects' widget; effect applied wherever character stats are (re)calculated"
+			},
+			"provider": "self",
+			"providerHow": "read: full trace from schema field to CharacterService's generic per-entity-type effect application to the display widget",
+			"feature": "rpg-system",
+			"featureConfidence": "high",
+			"origin": "own-code",
+			"note": "openspec/specs/events-players/spec.md EVT-007/EVT-008 claim this as Implemented; code confirms it for the 'events' property specifically, not just skills/items/conditions.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "evt-world-scoping",
+			"area": "events",
+			"name": "Restrict an event to one campaign world so it doesn't mix with other worlds' characters and events.",
+			"larpinq": "partial",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "built",
+				"evidence": "lib/Settings/larpinq_register.json:833-840 (event.setting: uuid $ref setting, description 'Optional world (campaign) this event belongs to', visible: false); no widget or related-group on EventDetail (src/manifest.json:1589-1820) references a 'setting'/'World' group, unlike character/ability/skill pages",
+				"owner": "ConductionNL/larpinq"
+			},
+			"provider": "self",
+			"providerHow": "read: enumerated the EventDetail widgets and found no surface for this field",
+			"feature": "setting-management",
+			"featureConfidence": "high",
+			"origin": "own-code",
+			"note": "Textbook rule-1 case: the field exists and is used by x-relation-filter to scope OTHER schemas' pickers (e.g. character.skills filtered by setting), but nothing lets a user actually set an event's own world from the UI.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "com-audit-history",
+			"area": "communication",
+			"name": "See a change history log for an event.",
+			"larpinq": "yes",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "built",
+				"evidence": "src/manifest.json:1812-1815 (EventDetail sidebar 'History' tab, widgets: [{type: audit}])",
+				"owner": "ConductionNL/larpinq",
+				"reachedOn": "EventDetail page (/events/:id), sidebar 'History' tab"
+			},
+			"provider": "openregister",
+			"providerHow": "read: the 'audit' widget type is a generic OpenRegister audit-trail renderer wired into every larpinq detail page's sidebar, not app-specific code",
+			"feature": "transparent-stat-audit-trail",
+			"featureConfidence": "high",
+			"origin": "own-code",
 			"evidence": {
 				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
 				"mylarp": "not checked: row added from our code after the competitor documentation pass",
@@ -4478,6 +4706,67 @@
 			"featureConfidence": "low",
 			"origin": "competitor",
 			"note": "Rated unknown per rule 3 (a declaration is not behaviour): whether OpenRegister's sharing mechanism actually lets a GM import a whole skill set from another campaign is outside this repo. src/manifest.json:337 documents a related but distinct 'install game configurations other organisations have published' bundle-install feature at the register/schema level, not a skill-ruleset import.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			},
+			"status": "pending"
+		},
+		{
+			"id": "com-notify-approval",
+			"area": "communication",
+			"name": "Tell a player when their character is approved.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "built",
+				"evidence": "lib/Settings/larpinq_register.json:312-353 (character x-openregister-notifications: character-submitted on created -> gamemasters group; character-approved on transition action 'approved' -> recipient kind field, field ownerUid); ownerUid is itself a materialised x-openregister-calculation (larpinq_register.json:275-283, @ref.player.userUid)",
+				"owner": "OpenRegister",
+				"reachedOn": "n/a (server-side notification dispatch, no larpinq frontend surface)"
+			},
+			"provider": "openregister",
+			"providerHow": "declaration only: the notification engine that reads x-openregister-notifications and dispatches nc-notification lives in OpenRegister, not in this repo; larpinq's own code never calls a notify method",
+			"feature": "lifecycle-notifications",
+			"featureConfidence": "high",
+			"origin": "own-code",
+			"note": "The character lifecycle only has an 'approved' transition and an 'unapprove' transition back to 'no' (larpinq_register.json:288-310); there is no distinct 'rejected' state, so the 'or rejected' half of this capability does not exist even as a declaration. openspec/specs/notifications/spec.md confirms this is the intended design (in-progress status).",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			},
+			"status": "pending"
+		},
+		{
+			"id": "com-notify-event",
+			"area": "communication",
+			"name": "Remind participants about an upcoming event.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "built",
+				"evidence": "lib/Settings/larpinq_register.json:842-868 (event x-openregister-notifications: event-reminder, trigger scheduled intervalSec 86400 on startDate, recipients group players)",
+				"owner": "OpenRegister",
+				"reachedOn": "n/a (server-side scheduled notification, no larpinq frontend surface)"
+			},
+			"provider": "openregister",
+			"providerHow": "declaration only: the scheduled-trigger notification engine is OpenRegister's, not larpinq's",
+			"feature": "lifecycle-notifications",
+			"featureConfidence": "high",
+			"origin": "own-code",
 			"evidence": {
 				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
 				"mylarp": "not checked: row added from our code after the competitor documentation pass",
