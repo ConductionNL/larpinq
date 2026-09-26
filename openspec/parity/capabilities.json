@@ -4698,7 +4698,7 @@
 			"built": {
 				"state": "built",
 				"evidence": "lib/Settings/larpinq_register.json:312-353 (character x-openregister-notifications: character-submitted on created -> gamemasters group; character-approved on transition action 'approved' -> recipient kind field, field ownerUid); ownerUid is itself a materialised x-openregister-calculation (larpinq_register.json:275-283, @ref.player.userUid)",
-				"owner": "OpenRegister",
+				"owner": "ConductionNL/openregister",
 				"reachedOn": "n/a (server-side notification dispatch, no larpinq frontend surface)"
 			},
 			"provider": "openregister",
@@ -4729,7 +4729,7 @@
 			"built": {
 				"state": "built",
 				"evidence": "lib/Settings/larpinq_register.json:842-868 (event x-openregister-notifications: event-reminder, trigger scheduled intervalSec 86400 on startDate, recipients group players)",
-				"owner": "OpenRegister",
+				"owner": "ConductionNL/openregister",
 				"reachedOn": "n/a (server-side scheduled notification, no larpinq frontend surface)"
 			},
 			"provider": "openregister",
