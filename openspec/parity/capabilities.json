@@ -4902,7 +4902,7 @@
 			"origin": "competitor",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/models/accounting.py:402-446 tokens and credits assigned to a member per run and spent on another event's fee (larpmanager/fixtures/feature.yaml:690-700); XP stays within one campaign (larpmanager/models/writing.py:51-83), no transfer of points to a character in another game",
-				"mylarp": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
+				"mylarp": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"larp-portal": "'Manage Campaign Point Exchange Between Games'; NPC points are assigned to the player's PC at another participating campaign. https://larportal.com/features.php , https://larportal.com/larp-portal-tips.php",
 				"kanka": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
 				"pretix": "source read at tag v2026.7.0: no characters or points in src/pretix/base/models/; the only cross-event value is gift card credit (src/pretix/base/models/giftcards.py:64), which is money"
@@ -4932,7 +4932,7 @@
 			"origin": "competitor",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/models/form.py:549-790 registration questions with priced, capacity-limited options usable for catering choices, plus the diet profile field (larpmanager/models/member.py:275-285)",
-				"mylarp": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
+				"mylarp": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"larp-portal": "Released February 2024: players select a meal plan (for example none, vegan or meat) during registration when the campaign configures it. https://larportal.com/new-housing-and-food-selections.php",
 				"kanka": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/items.py:1407 ItemAddOn lets a ticket offer add-on products such as meal plans at checkout (src/pretix/presale/checkoutflow.py:483 AddOnsStep), and choice questions (items.py:1570) can ask a diet option"
@@ -4993,7 +4993,7 @@
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/models/miscellanea.py:48-100 HelpQuestion with attachment and closed flag, larpmanager/urls/user.py:75 and larpmanager/urls/event.py:429 help, organisers answer and close via orga_questions_answer and orga_questions_close",
 				"mylarp": "'Every campaign has its own Help Desk players can submit problems or questions to'. https://mylarp.com",
-				"larp-portal": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
+				"larp-portal": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"kanka": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
 				"pretix": "source read at tag v2026.7.0: looked in src/pretix/presale/views/ and src/pretix/base/models/; players only get a contact address (src/pretix/base/settings.py:2277 contact_mail), there is no ticket or help desk inbox"
 			},
@@ -5022,7 +5022,7 @@
 			"origin": "competitor",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/models/member.py:305 newsletter preference and one-click unsubscribe routes in larpmanager/urls/user.py, organiser digest mode in larpmanager/forms/association.py:1132; no per-type choice and no text messages",
-				"mylarp": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
+				"mylarp": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"larp-portal": "Twelve notification preferences, each by email or text message, set once and applied to every campaign. https://larportal.com/the-player-module.php",
 				"kanka": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/notifications.py:26 NotificationSetting lets backend staff pick action types and methods; customers (src/pretix/presale/views/customer.py) have no notification choices and grep finds no SMS channel in src/pretix/base"
@@ -5053,7 +5053,7 @@
 			"originUrl": "https://app.kanka.io/roadmap/51",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/models/writing.py:206-300 one sheet per character; the mirror field (228-238) links a secret face, not an alternative build; no build or variant model in larpmanager/models",
-				"mylarp": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
+				"mylarp": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"larp-portal": "'Build more than one version of same character with same character points' and 'Build test characters'; each build is a skill set. https://larportal.com/features.php , https://larportal.com/larp-portal-tips-042025.php",
 				"kanka": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
 				"pretix": "source read at tag v2026.7.0: no character model in src/pretix/base/models/"
@@ -5084,8 +5084,8 @@
 			"originUrl": "https://app.kanka.io/roadmap/158",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/mail/base.py:499-557 only mails a player about their own character status; no follow or subscription model in larpmanager/models",
-				"mylarp": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"larp-portal": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
+				"mylarp": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
+				"larp-portal": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"kanka": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/notifications.py:26-36 staff users subscribe per event to action types (new order, order changed, check-in) by email or webhook; players cannot follow anything and there are no characters"
 			},
@@ -5115,8 +5115,8 @@
 			"originUrl": "https://app.kanka.io/roadmap/202",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/forms/event.py:1760-1795 per-event show_<element> toggles decide which fields players see, switched by hand; no date-based release of content",
-				"mylarp": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"larp-portal": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
+				"mylarp": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
+				"larp-portal": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"kanka": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
 				"pretix": "source read at tag v2026.7.0: no world or story content in src/pretix/base/models/; timed visibility exists only for products (Item available_from/until) and discounts (src/pretix/base/models/discount.py:81-86)"
 			},
@@ -5146,8 +5146,8 @@
 			"originUrl": "https://app.kanka.io/roadmap/331",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): no comment model on characters or events in larpmanager/models; Writing has only an assigned staff member and progress step (larpmanager/models/writing.py:97-111)",
-				"mylarp": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"larp-portal": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
+				"mylarp": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
+				"larp-portal": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"kanka": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
 				"pretix": "source read at tag v2026.7.0: looked in src/pretix/base/models/; an order has one internal comment field (src/pretix/base/models/orders.py:269), no discussion threads on anything"
 			},
@@ -5177,8 +5177,8 @@
 			"originUrl": "https://github.com/pretix/pretix/issues/2498",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): only platform-admin deletion of whole organisations or events (larpmanager/views/larpmanager.py:1494-1558 lm_clean, lm_events_delete); no per-event personal-data erasure with a record",
-				"mylarp": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"larp-portal": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
+				"mylarp": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
+				"larp-portal": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"kanka": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
 				"pretix": "source read at tag v2026.7.0: src/pretix/control/views/shredder.py:78-150 exports then shreds chosen personal data of an event, logged as src/pretix/base/services/shredder.py:144-167 pretix.event.shredder.started/completed with the shredder list (shown via src/pretix/control/logdisplay.py:763-764)"
 			},
@@ -5208,8 +5208,8 @@
 			"originUrl": "https://github.com/pretix/pretix/issues/1791",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): each participant holds their own Registration and can cancel alone (larpmanager/views/user/registration.py:860-904 unregister); extra tickets bought for others are just a count on the buyer's registration (larpmanager/models/registration.py:348-351)",
-				"mylarp": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"larp-portal": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
+				"mylarp": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
+				"larp-portal": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"kanka": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/services/orders.py:1587,1859 OrderChangeManager.cancel removes one position from an order, used by staff via src/pretix/control/urls.py:424 order change and by buyers via src/pretix/presale/urls.py:163 OrderPositionChange when allowed (src/pretix/base/settings.py:2055)"
 			},
@@ -5222,7 +5222,7 @@
 			"larpinq": "no",
 			"larpmanager": "yes",
 			"mylarp": "unknown",
-			"larp-portal": "unknown",
+			"larp-portal": "yes",
 			"kanka": "unknown",
 			"pretix": "yes",
 			"built": {
@@ -5239,8 +5239,8 @@
 			"originUrl": "https://github.com/LoSkana/larpmanager/commit/770544dfd2",
 			"evidence": {
 				"larpmanager": "source read at main 36f23d3: larpmanager/urls/orga.py:366-376 orga_registration_requests with approve and reject, larpmanager/tests/playwright/registration_approval_process_test.py",
-				"mylarp": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"larp-portal": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
+				"mylarp": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
+				"larp-portal": "Staff with logistics roles can 'Set up an Event, Approve Registrations, Assign Housing'. https://larportal.com/what-is-larp-portal.php",
 				"kanka": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/items.py:619 require_approval on a ticket and src/pretix/base/models/orders.py:310 on the order, approved one by one or in bulk at src/pretix/control/urls.py:426,471"
 			},
@@ -5251,7 +5251,7 @@
 			"area": "registration",
 			"name": "Remind players automatically when their registration is still unpaid before it expires.",
 			"larpinq": "no",
-			"larpmanager": "unknown",
+			"larpmanager": "yes",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
 			"kanka": "unknown",
@@ -5269,9 +5269,9 @@
 			"origin": "changelog",
 			"originUrl": "https://pretix.eu/about/en/blog/20260729-release-2026-7-0/",
 			"evidence": {
-				"larpmanager": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"mylarp": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"larp-portal": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
+				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/fixtures/feature.yaml:90 remind feature, larpmanager/mail/remind.py:105-206 remember_pay, run daily by larpmanager/management/commands/automate.py:1076-1300 before payment deadlines",
+				"mylarp": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
+				"larp-portal": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"kanka": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/settings.py:2672 mail_days_order_expire_warning sends a reminder a set number of days before an unpaid order expires; 2026.7 also mails on incomplete bank transfers"
 			},
@@ -5282,7 +5282,7 @@
 			"area": "registration",
 			"name": "Upload a bank statement and have transfers matched to the registrations they pay for.",
 			"larpinq": "no",
-			"larpmanager": "unknown",
+			"larpmanager": "yes",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
 			"kanka": "unknown",
@@ -5300,9 +5300,9 @@
 			"origin": "changelog",
 			"originUrl": "https://pretix.eu/about/en/blog/20260126-release-2026-1/",
 			"evidence": {
-				"larpmanager": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"mylarp": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"larp-portal": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
+				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/fixtures/feature.yaml:737 verification feature (upload bank statements to match and approve wire payments), larpmanager/urls/exe.py:388 exe_verification plus manual verification",
+				"mylarp": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
+				"larp-portal": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"kanka": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
 				"pretix": "source read at tag v2026.7.0: src/pretix/plugins/banktransfer/views.py:68,424 imports CSV, MT940 and SEPA CAMT statements (src/pretix/plugins/banktransfer/camtimport.py) and matches them to orders"
 			},
@@ -5313,7 +5313,7 @@
 			"area": "registration",
 			"name": "Keep a credit balance for a player that pays for a future event, such as after a cancellation.",
 			"larpinq": "no",
-			"larpmanager": "unknown",
+			"larpmanager": "yes",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
 			"kanka": "unknown",
@@ -5331,9 +5331,9 @@
 			"origin": "changelog",
 			"originUrl": "https://pretix.eu/about/en/blog/20251030-release-2025-9/",
 			"evidence": {
-				"larpmanager": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"mylarp": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"larp-portal": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
+				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/fixtures/feature.yaml:709 credits feature, credits usable for registration fees and redeemable (larpmanager/models/accounting.py:402-446 credit assignments), larpmanager/tests/playwright/credits_readonly_event_test.py",
+				"mylarp": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
+				"larp-portal": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"kanka": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/giftcards.py:64,83 GiftCard linked to a customer account and offered at checkout; refunds can go to a gift card (src/pretix/control/views/orders.py:1086)"
 			},
@@ -5344,7 +5344,7 @@
 			"area": "registration",
 			"name": "Sell a membership or season pass that lets a player sign up for several events.",
 			"larpinq": "no",
-			"larpmanager": "unknown",
+			"larpmanager": "partial",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
 			"kanka": "unknown",
@@ -5361,9 +5361,9 @@
 			"featureConfidence": "low",
 			"origin": "competitor",
 			"evidence": {
-				"larpmanager": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"mylarp": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"larp-portal": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
+				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/fixtures/feature.yaml:314 membership feature with annual fee (larpmanager/urls/exe.py:523 exe_membership_fee) required before joining events; no pass that pays for several events",
+				"mylarp": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
+				"larp-portal": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"kanka": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/memberships.py:37,117 MembershipType and Membership granted by a product (src/pretix/base/models/items.py:710 grant_membership_type) and required by others (:695 require_membership)"
 			},
@@ -5374,7 +5374,7 @@
 			"area": "events",
 			"name": "Ask a participant extra questions on arrival, such as confirming a signed waiver.",
 			"larpinq": "no",
-			"larpmanager": "unknown",
+			"larpmanager": "partial",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
 			"kanka": "unknown",
@@ -5392,9 +5392,9 @@
 			"origin": "changelog",
 			"originUrl": "https://pretix.eu/about/en/blog/20260701-release-2026-6-0/",
 			"evidence": {
-				"larpmanager": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"mylarp": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"larp-portal": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
+				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/views/orga/checkin.py:102-150 orga_checkin_detail shows the participant's registration answers on arrival; nothing asks or records new questions at check-in",
+				"mylarp": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
+				"larp-portal": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"kanka": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/items.py:1684 ask_during_checkin shows a question at check-in instead of at sign-up; 2026.6 lets optional file questions be skipped there"
 			},
@@ -5405,9 +5405,9 @@
 			"area": "events",
 			"name": "See who is on site right now, counting people who checked out again.",
 			"larpinq": "partial",
-			"larpmanager": "unknown",
+			"larpmanager": "partial",
 			"mylarp": "unknown",
-			"larp-portal": "unknown",
+			"larp-portal": "partial",
 			"kanka": "unknown",
 			"pretix": "yes",
 			"built": {
@@ -5422,9 +5422,9 @@
 			"featureConfidence": "low",
 			"origin": "competitor",
 			"evidence": {
-				"larpmanager": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"mylarp": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"larp-portal": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
+				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/models/registration.py:546-563 CheckIn records arrival time and staff member, live checked-in list on larpmanager/templates/larpmanager/orga/checkin.html; no check-out, so people who left still count",
+				"mylarp": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
+				"larp-portal": "Players complete a check-in and check-out process and staff print check-in and check-out reports; a live count of who is on site is not described. https://larportal.com/larp-portal-tips-082025.php , https://larportal.com/the-player-module.php",
 				"kanka": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/checkin.py:333-334 entry and exit check-ins, filtered as present or checked in but left in src/pretix/control/forms/filter.py:2176-2179"
 			},
@@ -5435,7 +5435,7 @@
 			"area": "events",
 			"name": "Check players in with a wristband or card instead of a printed ticket.",
 			"larpinq": "no",
-			"larpmanager": "unknown",
+			"larpmanager": "no",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
 			"kanka": "unknown",
@@ -5453,9 +5453,9 @@
 			"origin": "changelog",
 			"originUrl": "https://pretix.eu/about/en/blog/20260701-release-2026-6-0/",
 			"evidence": {
-				"larpmanager": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"mylarp": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"larp-portal": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
+				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/views/orga/checkin.py:166 scans only the per-registration QR code; no wristband, card or external identifier field in larpmanager/models/registration.py",
+				"mylarp": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
+				"larp-portal": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"kanka": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/media.py:55,102 ReusableMedium linked to one or more tickets, redeemed at check-in via src/pretix/api/views/checkin.py:75 perform_media_exchange"
 			},
@@ -5466,7 +5466,7 @@
 			"area": "communication",
 			"name": "See every email the tool sent or still has to send, and whether it was delivered.",
 			"larpinq": "no",
-			"larpmanager": "unknown",
+			"larpmanager": "partial",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
 			"kanka": "unknown",
@@ -5484,9 +5484,9 @@
 			"origin": "changelog",
 			"originUrl": "https://pretix.eu/about/en/blog/20260224-release-2026-2/",
 			"evidence": {
-				"larpmanager": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"mylarp": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"larp-portal": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
+				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/models/miscellanea.py:789-900 EmailContent and EmailRecipient with sent time or skip reason, archive at larpmanager/urls/orga.py:66 orga_read_mail, bounces become suppressions via larpmanager/mail/sns.py:182-215; no per-message delivered state",
+				"mylarp": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
+				"larp-portal": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"kanka": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
 				"pretix": "source read at tag v2026.7.0: src/pretix/control/urls.py:244-246 organizer outgoing-mail list, detail and bulk retry (src/pretix/control/views/mail.py:84-132) over src/pretix/base/models/mail.py:42 OutgoingMail"
 			},
@@ -5497,9 +5497,9 @@
 			"area": "insight",
 			"name": "See how participants answered the sign-up questions, such as how many chose each option.",
 			"larpinq": "no",
-			"larpmanager": "unknown",
+			"larpmanager": "partial",
 			"mylarp": "unknown",
-			"larp-portal": "unknown",
+			"larp-portal": "partial",
 			"kanka": "unknown",
 			"pretix": "yes",
 			"built": {
@@ -5515,9 +5515,9 @@
 			"origin": "changelog",
 			"originUrl": "https://pretix.eu/about/en/blog/20260126-release-2026-1/",
 			"evidence": {
-				"larpmanager": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"mylarp": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"larp-portal": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
+				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/views/user/event.py:1189-1215 limitations page counts taken places per registration option, larpmanager/views/orga/registration.py:665-710 answers listed per question; charts only for matchmaker likert answers (larpmanager/templates/elements/likert_charts.html)",
+				"mylarp": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
+				"larp-portal": "Staff review a 'PEL Question Summary Report' when closing an event, which summarises answers to post-event questions; statistics on sign-up answers are not described. https://larportal.com/larp-portal-tips-062023.php",
 				"kanka": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
 				"pretix": "source read at tag v2026.7.0: src/pretix/control/views/item.py:669-738 QuestionView charts answer statistics per question, filterable by time since 2026.1"
 			},
@@ -5528,7 +5528,7 @@
 			"area": "insight",
 			"name": "Get a participant list or report emailed automatically on a schedule.",
 			"larpinq": "no",
-			"larpmanager": "unknown",
+			"larpmanager": "partial",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
 			"kanka": "unknown",
@@ -5546,9 +5546,9 @@
 			"origin": "changelog",
 			"originUrl": "https://pretix.eu/about/en/blog/20260126-release-2026-1/",
 			"evidence": {
-				"larpmanager": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"mylarp": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"larp-portal": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
+				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/mail/digest.py:212-440 daily organiser summary mail of new registrations and payments; no scheduled delivery of a participant list or export file",
+				"mylarp": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
+				"larp-portal": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"kanka": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/exports.py:37,117,127 scheduled event and organizer exports, run and managed at src/pretix/control/urls.py:260-262,465-466"
 			},
@@ -5578,8 +5578,8 @@
 			"originUrl": "https://github.com/LoSkana/larpmanager/commit/40b77c05ea",
 			"evidence": {
 				"larpmanager": "source read at main 36f23d3: larpmanager/fixtures/feature.yaml:170-180 casting feature, larpmanager/urls/event.py:209 casting_preferences, larpmanager/urls/orga.py:1476-1491 orga_casting, larpmanager/models/casting.py:187",
-				"mylarp": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"larp-portal": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
+				"mylarp": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
+				"larp-portal": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"kanka": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
 				"pretix": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet"
 			},
@@ -5609,8 +5609,8 @@
 			"originUrl": "https://github.com/LoSkana/larpmanager/commit/f4717e56ae",
 			"evidence": {
 				"larpmanager": "source read at main 36f23d3: larpmanager/utils/services/bulk.py:637 handle_bulk_characters, wired for Character in larpmanager/utils/services/writing.py:379",
-				"mylarp": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"larp-portal": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
+				"mylarp": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
+				"larp-portal": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"kanka": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
 				"pretix": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet"
 			},
@@ -5623,7 +5623,7 @@
 			"larpinq": "no",
 			"larpmanager": "yes",
 			"mylarp": "unknown",
-			"larp-portal": "unknown",
+			"larp-portal": "yes",
 			"kanka": "unknown",
 			"pretix": "unknown",
 			"built": {
@@ -5640,8 +5640,8 @@
 			"originUrl": "https://github.com/LoSkana/larpmanager/commit/2258fd5292",
 			"evidence": {
 				"larpmanager": "source read at main 36f23d3: larpmanager/models/writing.py:670-770 Guild, GuildRole and GuildMembership, larpmanager/urls/event.py:254-300 guild create, invite, kick and promote, larpmanager/tests/playwright/guild_all_test.py",
-				"mylarp": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"larp-portal": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
+				"mylarp": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
+				"larp-portal": "Teams: a player creates and names a team, others ask to join, the team manager approves or declines and can invite players. https://larportal.com/larp-portal-tips-092024.php",
 				"kanka": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
 				"pretix": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet"
 			},
@@ -5671,8 +5671,8 @@
 			"originUrl": "https://github.com/LoSkana/larpmanager/commit/e409393382",
 			"evidence": {
 				"larpmanager": "source read at main 36f23d3: larpmanager/urls/orga.py:396 orga_registration_transfer with preview and confirm, larpmanager/tests/playwright/registration_transfer_test.py",
-				"mylarp": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"larp-portal": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
+				"mylarp": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
+				"larp-portal": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"kanka": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
 				"pretix": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet"
 			},
@@ -5702,8 +5702,8 @@
 			"originUrl": "https://github.com/LoSkana/larpmanager/commit/8a1a5d8563",
 			"evidence": {
 				"larpmanager": "source read at main 36f23d3: larpmanager/models/access.py:197 RoleInvite token, larpmanager/urls/orga.py:1791 orga_roles_invite, larpmanager/urls/user.py:450 role_invite_redeem",
-				"mylarp": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"larp-portal": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
+				"mylarp": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
+				"larp-portal": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"kanka": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
 				"pretix": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet"
 			},
@@ -5733,8 +5733,8 @@
 			"originUrl": "https://github.com/LoSkana/larpmanager/commit/24ef66e14f",
 			"evidence": {
 				"larpmanager": "source read at main 36f23d3: larpmanager/urls/user.py:395 otp_verify, larpmanager/utils/auth/otp.py, dashboard warning for members without it (larpmanager/cache/widget.py:381)",
-				"mylarp": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"larp-portal": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
+				"mylarp": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
+				"larp-portal": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"kanka": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
 				"pretix": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet"
 			},
@@ -5764,8 +5764,8 @@
 			"originUrl": "https://github.com/LoSkana/larpmanager/commit/69bc317a71",
 			"evidence": {
 				"larpmanager": "source read at main 36f23d3: larpmanager/models/registration.py:205-300 RegistrationQuota and RegistrationInstallment, larpmanager/urls/orga.py:326 orga_registration_installments, larpmanager/fixtures/feature.yaml:510 reg_installments",
-				"mylarp": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"larp-portal": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
+				"mylarp": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
+				"larp-portal": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"kanka": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
 				"pretix": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet"
 			},
@@ -5795,8 +5795,8 @@
 			"originUrl": "https://github.com/LoSkana/larpmanager/commit/771e21d700",
 			"evidence": {
 				"larpmanager": "source read at main 36f23d3: larpmanager/fixtures/feature.yaml:1631 ensemble feature, larpmanager/urls/event.py:52-54 ensemble page",
-				"mylarp": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"larp-portal": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
+				"mylarp": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
+				"larp-portal": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"kanka": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
 				"pretix": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet"
 			},
@@ -5826,8 +5826,8 @@
 			"originUrl": "https://github.com/LoSkana/larpmanager/commit/bfaa5087f5",
 			"evidence": {
 				"larpmanager": "source read at main 36f23d3: larpmanager/models/miscellanea.py:1204-1235 Milestone with status, description and deadline, larpmanager/urls/orga.py:1141 orga_milestones, dashboard widget larpmanager/cache/widget.py:738",
-				"mylarp": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"larp-portal": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
+				"mylarp": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
+				"larp-portal": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"kanka": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
 				"pretix": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet"
 			},
@@ -5857,8 +5857,8 @@
 			"originUrl": "https://github.com/LoSkana/larpmanager/commit/706902218a",
 			"evidence": {
 				"larpmanager": "source read at main 36f23d3: larpmanager/models/miscellanea.py:459-595 warehouse containers, items, movements and per-event area assignments, larpmanager/urls/orga.py:1931 orga_warehouse_manifest, larpmanager/tests/playwright/warehouse_test.py",
-				"mylarp": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"larp-portal": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
+				"mylarp": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
+				"larp-portal": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"kanka": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
 				"pretix": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet"
 			},
@@ -5888,8 +5888,8 @@
 			"originUrl": "https://github.com/LoSkana/larpmanager/commit/5835a17035",
 			"evidence": {
 				"larpmanager": "source read at main 36f23d3: larpmanager/models/writing.py:97-111 Writing.progress and assigned staff member, larpmanager/urls/orga.py:1161 orga_progress_steps, progress widget larpmanager/cache/widget.py:229",
-				"mylarp": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"larp-portal": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
+				"mylarp": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
+				"larp-portal": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"kanka": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
 				"pretix": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet"
 			},
