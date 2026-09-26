@@ -5563,7 +5563,7 @@
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
 			"kanka": "unknown",
-			"pretix": "unknown",
+			"pretix": "no",
 			"built": {
 				"state": "none",
 				"evidence": "no preference or casting object among the ten schemas (lib/Settings/larpinq_register.json:39-960); characters are created by or for a player, never assigned from ranked wishes",
@@ -5581,7 +5581,7 @@
 				"mylarp": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"larp-portal": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"kanka": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"pretix": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet"
+				"pretix": "source read at tag v2026.7.0: no character model in src/pretix/base/models/; no ranking or assignment solver anywhere in src/pretix/base/services/"
 			},
 			"addedOn": "2026-09-26"
 		},
@@ -5594,7 +5594,7 @@
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
 			"kanka": "unknown",
-			"pretix": "unknown",
+			"pretix": "no",
 			"built": {
 				"state": "none",
 				"evidence": "grep -n 'mass\\|bulk\\|selectable' src/manifest.json: no hits; index pages edit one object at a time",
@@ -5612,7 +5612,7 @@
 				"mylarp": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"larp-portal": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"kanka": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"pretix": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet"
+				"pretix": "source read at tag v2026.7.0: no character model in src/pretix/base/models/; bulk edit exists only for event dates, devices, quotas and vouchers (src/pretix/control/urls.py:227,319)"
 			},
 			"addedOn": "2026-09-26"
 		},
@@ -5625,7 +5625,7 @@
 			"mylarp": "unknown",
 			"larp-portal": "yes",
 			"kanka": "unknown",
-			"pretix": "unknown",
+			"pretix": "no",
 			"built": {
 				"state": "none",
 				"evidence": "no group or guild schema (lib/Settings/larpinq_register.json:39-960); factions are not modelled either (see chr-faction-membership)",
@@ -5643,7 +5643,7 @@
 				"mylarp": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"larp-portal": "Teams: a player creates and names a team, others ask to join, the team manager approves or declines and can invite players. https://larportal.com/larp-portal-tips-092024.php",
 				"kanka": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"pretix": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet"
+				"pretix": "source read at tag v2026.7.0: no character model in src/pretix/base/models/; the only grouping is one buyer's order holding several tickets (src/pretix/base/models/orders.py:139), with no leader or invite flow"
 			},
 			"addedOn": "2026-09-26"
 		},
@@ -5656,7 +5656,7 @@
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
 			"kanka": "unknown",
-			"pretix": "unknown",
+			"pretix": "yes",
 			"built": {
 				"state": "none",
 				"evidence": "there is no registration object in lib/Settings/larpinq_register.json:39-960, so there is nothing to transfer; a GM can edit event.players by hand",
@@ -5674,7 +5674,7 @@
 				"mylarp": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"larp-portal": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"kanka": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"pretix": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet"
+				"pretix": "source read at tag v2026.7.0: src/pretix/base/settings.py:1929 allow_modifications and :2042 change_allow_attendee let the buyer or the attendee change the ticket holder's name and email (src/pretix/presale/views/order.py:942 OrderPositionModify); staff can do the same in the backend order view"
 			},
 			"addedOn": "2026-09-26"
 		},
@@ -5687,7 +5687,7 @@
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
 			"kanka": "unknown",
-			"pretix": "unknown",
+			"pretix": "yes",
 			"built": {
 				"state": "none",
 				"evidence": "GM rights come from Nextcloud group membership (appinfo/info.xml:111-133, group 'larpers' plus 'admin' for GM endpoints); larpinq has no invite link",
@@ -5705,7 +5705,7 @@
 				"mylarp": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"larp-portal": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"kanka": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"pretix": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet"
+				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/organizer.py:504 TeamInvite sends a link that src/pretix/control/urls.py:52 auth.invite (src/pretix/control/views/auth.py:228) turns into team membership"
 			},
 			"addedOn": "2026-09-26"
 		},
@@ -5718,7 +5718,7 @@
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
 			"kanka": "unknown",
-			"pretix": "unknown",
+			"pretix": "yes",
 			"built": {
 				"state": "built",
 				"evidence": "appinfo/info.xml:109 (runs inside Nextcloud 32 to 34; larpinq has no login of its own and grep -rn 'PublicPage' lib/Controller has no hits), so every account signs in through Nextcloud, whose two-factor providers (TOTP, WebAuthn) apply",
@@ -5736,7 +5736,7 @@
 				"mylarp": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"larp-portal": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"kanka": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"pretix": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet"
+				"pretix": "source read at tag v2026.7.0: src/pretix/control/views/user.py:63,88 TOTP, WebAuthn and U2F devices, set up at src/pretix/control/urls.py:101 and enforced at login via :50 Login2FAView"
 			},
 			"addedOn": "2026-09-26"
 		},
@@ -5749,7 +5749,7 @@
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
 			"kanka": "unknown",
-			"pretix": "unknown",
+			"pretix": "no",
 			"built": {
 				"state": "none",
 				"evidence": "payment is not modelled; there is no registration or order object in lib/Settings/larpinq_register.json:39-960",
@@ -5767,7 +5767,7 @@
 				"mylarp": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"larp-portal": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"kanka": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"pretix": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet"
+				"pretix": "source read at tag v2026.7.0: grep for instalment over src/pretix finds only src/pretix/plugins/paypal2/payment.py:186 PayPal Pay Later, where PayPal finances the buyer and the organiser is paid in full; no organiser-defined payment schedule with due dates in src/pretix/base/models/orders.py"
 			},
 			"addedOn": "2026-09-26"
 		},
@@ -5780,7 +5780,7 @@
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
 			"kanka": "unknown",
-			"pretix": "unknown",
+			"pretix": "no",
 			"built": {
 				"state": "none",
 				"evidence": "src/manifest.json character pages are GM and owner views; a player sees their own sheet (ply-player-sees-own-sheet), and no cast book or card view of other characters exists",
@@ -5798,7 +5798,7 @@
 				"mylarp": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"larp-portal": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"kanka": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"pretix": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet"
+				"pretix": "source read at tag v2026.7.0: no character model in src/pretix/base/models/; nothing to publish as a book, cards or list"
 			},
 			"addedOn": "2026-09-26"
 		},
@@ -5811,7 +5811,7 @@
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
 			"kanka": "unknown",
-			"pretix": "unknown",
+			"pretix": "no",
 			"built": {
 				"state": "none",
 				"evidence": "the event schema holds name, description, startDate, endDate, location, players, effects, setting (lib/Settings/larpinq_register.json:765-905); no milestone or task with a deadline",
@@ -5829,7 +5829,7 @@
 				"mylarp": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"larp-portal": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"kanka": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"pretix": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet"
+				"pretix": "source read at tag v2026.7.0: looked in src/pretix/base/models/event.py and src/pretix/base/timeline.py:42; the timeline shows fixed sale and event dates, with no organiser tasks, statuses or deadlines"
 			},
 			"addedOn": "2026-09-26"
 		},
@@ -5842,7 +5842,7 @@
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
 			"kanka": "unknown",
-			"pretix": "unknown",
+			"pretix": "no",
 			"built": {
 				"state": "none",
 				"evidence": "item (lib/Settings/larpinq_register.json item schema) is an in-game object with effects and holders, not a physical prop with a storage location; no warehouse or area planning",
@@ -5860,7 +5860,7 @@
 				"mylarp": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"larp-portal": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"kanka": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"pretix": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet"
+				"pretix": "source read at tag v2026.7.0: looked in src/pretix/base/models/ and src/pretix/plugins/; no inventory of props or costumes (the external resources and scheduling plugin handles rooms and materials, not counted)"
 			},
 			"addedOn": "2026-09-26"
 		},
@@ -5873,7 +5873,7 @@
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
 			"kanka": "unknown",
-			"pretix": "unknown",
+			"pretix": "no",
 			"built": {
 				"state": "none",
 				"evidence": "character.approved is a yes/no switch (lib/Settings/larpinq_register.json:100-111); no writer assignment or writing steps",
@@ -5891,7 +5891,7 @@
 				"mylarp": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"larp-portal": "not checked: the public pages read on 2026-09-26 (see the system sources) do not mention it, and the product is closed source with no public docs",
 				"kanka": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet",
-				"pretix": "not checked: row added on 2026-09-26 (wave 5); this column has not been read for it yet"
+				"pretix": "source read at tag v2026.7.0: no character model in src/pretix/base/models/; no writing workflow or writer assignment"
 			},
 			"addedOn": "2026-09-26"
 		}
