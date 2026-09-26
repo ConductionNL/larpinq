@@ -1,0 +1,3785 @@
+{
+	"comparedOn": "2026-09-26",
+	"corpus": {
+		"repo": "ConductionNL/larpinq",
+		"file": "openspec/parity/capabilities.json"
+	},
+	"category": "LARP organisation management: the back office a live-action role-play group runs its campaign on. It keeps the game world, the character sheets and the players behind them, encodes the group's own ruleset (abilities, skills with prerequisites, items, conditions and effects) so sheets recompute and illegal builds are refused, awards and spends experience after each event, and runs the events themselves (roster, check-in, printed sheets and GM run sheets). It is not a ticket shop, not a worldbuilding wiki and not a virtual tabletop, although buyers compare it against all three for the parts that overlap. Decided from the code on 2026-09-26 (10 schemas in lib/Settings/larpinq_register.json, 31 manifest pages in src/manifest.json); correct it here if the product means to be something else.",
+	"systems": [
+		{
+			"key": "larpinq",
+			"name": "Larpinq",
+			"vendor": "Conduction",
+			"isSelf": true,
+			"readOn": "2026-09-26",
+			"columnAddedOn": "2026-09-26",
+			"note": "Rated by reading this repository at development a82e254. Every yes or partial carries a file path and line in built.evidence and the page that reaches it in built.reachedOn. The README, the app store description and openspec/features.overlay.json were treated as claims to check, not evidence."
+		},
+		{
+			"key": "larpmanager",
+			"name": "LarpManager",
+			"vendor": "LarpManager (larpmanager.com)",
+			"columnAddedOn": "2026-09-26",
+			"evidenceGrade": "docs-only",
+			"readOn": "2026-09-26",
+			"note": "The closest direct competitor: a free, AGPL open-source LARP platform, hosted or self-hosted, covering registration, payments, characters, XP, factions, plots and check-in."
+		},
+		{
+			"key": "mylarp",
+			"name": "MyLARP",
+			"vendor": "MyLARP (mylarp.com)",
+			"columnAddedOn": "2026-09-26",
+			"evidenceGrade": "docs-only",
+			"readOn": "2026-09-26",
+			"note": "A hosted LARP database for campaign games: characters, skill rules with prerequisites, items, events, NPCs and an in-game marketplace."
+		},
+		{
+			"key": "larp-portal",
+			"name": "LARP Portal",
+			"vendor": "LARP Portal (larportal.com)",
+			"columnAddedOn": "2026-09-26",
+			"evidenceGrade": "docs-only",
+			"readOn": "2026-09-26",
+			"note": "A US multi-game LARP system: player-managed characters built from a rules engine, character points across games, event registration with housing and food, NPC and staff attendance."
+		},
+		{
+			"key": "kanka",
+			"name": "Kanka",
+			"vendor": "Owlchester",
+			"columnAddedOn": "2026-09-26",
+			"evidenceGrade": "docs-only",
+			"readOn": "2026-09-26",
+			"note": "The worldbuilding and campaign manager a group reaches for to hold characters, organisations and lore. Included for the world, character and faction areas; it does not run events."
+		},
+		{
+			"key": "pretix",
+			"name": "pretix",
+			"vendor": "rami.io",
+			"columnAddedOn": "2026-09-26",
+			"evidenceGrade": "docs-only",
+			"readOn": "2026-09-26",
+			"note": "The open-source ticket shop many European LARP groups sell event places with. Included for registration, payment and check-in; it has no character or rules model."
+		}
+	],
+	"areas": [
+		{
+			"key": "worlds",
+			"name": "Worlds and campaigns",
+			"name_nl": "Werelden en campagnes"
+		},
+		{
+			"key": "characters",
+			"name": "Character sheets",
+			"name_nl": "Karakterbladen"
+		},
+		{
+			"key": "players",
+			"name": "Players and access",
+			"name_nl": "Spelers en toegang"
+		},
+		{
+			"key": "rules",
+			"name": "Rules engine",
+			"name_nl": "Regelsysteem"
+		},
+		{
+			"key": "progression",
+			"name": "Experience and progression",
+			"name_nl": "Ervaring en voortgang"
+		},
+		{
+			"key": "events",
+			"name": "Events",
+			"name_nl": "Evenementen"
+		},
+		{
+			"key": "registration",
+			"name": "Registration and payment",
+			"name_nl": "Inschrijving en betaling"
+		},
+		{
+			"key": "print",
+			"name": "Printing",
+			"name_nl": "Afdrukken"
+		},
+		{
+			"key": "communication",
+			"name": "Communication",
+			"name_nl": "Communicatie"
+		},
+		{
+			"key": "insight",
+			"name": "Dashboards and reports",
+			"name_nl": "Dashboards en rapportages"
+		},
+		{
+			"key": "admin",
+			"name": "Setup, administration and platform",
+			"name_nl": "Inrichting, beheer en platform"
+		}
+	],
+	"providers": [
+		{
+			"key": "self",
+			"name": "Larpinq",
+			"kind": "self"
+		},
+		{
+			"key": "openregister",
+			"name": "Open Register",
+			"kind": "app"
+		},
+		{
+			"key": "filinq",
+			"name": "Filinq",
+			"kind": "app"
+		},
+		{
+			"key": "hermiq",
+			"name": "Hermiq",
+			"kind": "app"
+		},
+		{
+			"key": "portaliq",
+			"name": "Portaliq",
+			"kind": "app"
+		},
+		{
+			"key": "nextcloud",
+			"name": "Nextcloud",
+			"kind": "platform"
+		},
+		{
+			"key": "external",
+			"name": "A third-party service",
+			"kind": "external"
+		}
+	],
+	"capabilities": [
+		{
+			"id": "wld-create-world",
+			"area": "worlds",
+			"name": "Create a game world or campaign that characters, events and rules belong to.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "wld-scope-characters",
+			"area": "worlds",
+			"name": "Filter characters, events and rules down to one world.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "wld-archive-campaign",
+			"area": "worlds",
+			"name": "Archive a finished campaign without deleting its history.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "wld-multiple-worlds",
+			"area": "worlds",
+			"name": "Run several worlds or campaigns side by side in one installation.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "wld-world-description",
+			"area": "worlds",
+			"name": "Describe a world's setting and tone for players.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "wld-lore-wiki",
+			"area": "worlds",
+			"name": "Write lore pages for places, factions and history that players can browse.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "wld-timeline",
+			"area": "worlds",
+			"name": "Keep a timeline of in-game history and past events.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "wld-maps",
+			"area": "worlds",
+			"name": "Upload an in-game map and pin locations on it.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "wld-share-with-players",
+			"area": "worlds",
+			"name": "Publish selected world information to players while keeping GM secrets hidden.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "wld-copy-ruleset",
+			"area": "worlds",
+			"name": "Start a new campaign from a copy of an existing ruleset.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "chr-create-sheet",
+			"area": "characters",
+			"name": "Create a character sheet for a player.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "chr-background",
+			"area": "characters",
+			"name": "Write a character's background story on its sheet.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "chr-approval",
+			"area": "characters",
+			"name": "Send a character to the game master for approval and see whether it was approved or rejected.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "chr-gm-notes",
+			"area": "characters",
+			"name": "Keep game master notes on a character that the player does not see.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "chr-photo",
+			"area": "characters",
+			"name": "Attach a portrait or photo to a character.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "chr-live-stats",
+			"area": "characters",
+			"name": "See a character's stats recalculated from its skills, items and conditions.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "chr-stat-breakdown",
+			"area": "characters",
+			"name": "See which skill, item or condition caused each change to a stat.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "chr-inventory",
+			"area": "characters",
+			"name": "Record which items a character carries.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "chr-conditions",
+			"area": "characters",
+			"name": "Record the conditions, such as wounds or curses, currently affecting a character.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "chr-status-lifecycle",
+			"area": "characters",
+			"name": "Mark a character as active, retired or dead.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "chr-search",
+			"area": "characters",
+			"name": "Search and filter the character list.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "chr-audit-history",
+			"area": "characters",
+			"name": "See who changed a character and when.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "chr-player-edits-own",
+			"area": "characters",
+			"name": "Let a player edit their own character sheet online without seeing other players' sheets.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "chr-custom-fields",
+			"area": "characters",
+			"name": "Add custom fields to character sheets for your own ruleset.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "chr-npc",
+			"area": "characters",
+			"name": "Keep non-player characters and their stats apart from player characters.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "chr-relationships",
+			"area": "characters",
+			"name": "Record relationships between characters, such as family, allies and rivals.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "chr-faction-membership",
+			"area": "characters",
+			"name": "Put characters in factions or groups and see each faction's members.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "chr-secrets-plots",
+			"area": "characters",
+			"name": "Attach secrets and personal plot threads to a character for the story team.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "chr-in-game-currency",
+			"area": "characters",
+			"name": "Track a character's in-game money.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "chr-character-history",
+			"area": "characters",
+			"name": "Keep a log of what happened to a character at each event.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "ply-register-player",
+			"area": "players",
+			"name": "Keep a record of each player, the real person behind the characters.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "ply-link-contact",
+			"area": "players",
+			"name": "Link a player to their Nextcloud contact card.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "ply-link-user",
+			"area": "players",
+			"name": "Link a player to their Nextcloud user account.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "ply-characters-per-player",
+			"area": "players",
+			"name": "See every character a player has played.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "ply-player-sees-own-sheet",
+			"area": "players",
+			"name": "Let a player open their own character sheet.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "ply-access-group",
+			"area": "players",
+			"name": "Limit the app to members of the larpers group.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "ply-gm-role",
+			"area": "players",
+			"name": "Give game masters rights that ordinary players do not have.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "ply-self-signup",
+			"area": "players",
+			"name": "Let a new player create their own account and profile.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "ply-medical-dietary",
+			"area": "players",
+			"name": "Record a player's allergies, dietary needs and emergency contact.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "ply-age-consent",
+			"area": "players",
+			"name": "Record a player's age and parental consent for minors.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "ply-player-history",
+			"area": "players",
+			"name": "See which events a player attended over the years.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "ply-privacy-export",
+			"area": "players",
+			"name": "Export or delete everything held about a player on request.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "rul-define-abilities",
+			"area": "rules",
+			"name": "Define the abilities, such as strength or mana, that every character has.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "rul-define-skills",
+			"area": "rules",
+			"name": "Define the skills characters can learn, with their XP cost.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "rul-skill-prerequisites",
+			"area": "rules",
+			"name": "Say which skills a character must have before learning another.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "rul-define-items",
+			"area": "rules",
+			"name": "Define items and what they do to a character's stats.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "rul-define-conditions",
+			"area": "rules",
+			"name": "Define conditions, such as poisoned or blessed, and their effect on stats.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "rul-define-effects",
+			"area": "rules",
+			"name": "Define effects that raise or lower an ability by a set amount.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "rul-effect-stacking",
+			"area": "rules",
+			"name": "Combine several effects on one ability in a predictable order.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "rul-deterministic-calc",
+			"area": "rules",
+			"name": "Get the same stat result every time the sheet is recalculated.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "rul-per-world-ruleset",
+			"area": "rules",
+			"name": "Give each world its own set of skills and rules.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "rul-custom-ruleset",
+			"area": "rules",
+			"name": "Model your own game system instead of a fixed one.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "rul-skill-tree-view",
+			"area": "rules",
+			"name": "See the skill tree as a graph of prerequisites.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "rul-skill-tree-per-character",
+			"area": "rules",
+			"name": "See on the skill tree which skills a character has, can learn now, or cannot learn yet.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "rul-skill-usage",
+			"area": "rules",
+			"name": "See which skills are most used across characters.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "rul-dice-roller",
+			"area": "rules",
+			"name": "Roll dice for a game system inside the tool.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "rul-import-ruleset",
+			"area": "rules",
+			"name": "Import a ruleset from a file or another campaign.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "rul-publish-rulebook",
+			"area": "rules",
+			"name": "Publish the rulebook to players as readable pages.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "rul-crafting",
+			"area": "rules",
+			"name": "Let characters craft items from resources under the game's rules.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "rul-spell-lists",
+			"area": "rules",
+			"name": "Keep spell or power lists with costs and descriptions.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "rul-item-tags",
+			"area": "rules",
+			"name": "Issue physical item tags or cards that match items in the system.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "prg-award-xp",
+			"area": "progression",
+			"name": "Award experience points to a character after an event.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "prg-award-xp-bulk",
+			"area": "progression",
+			"name": "Award experience points to everyone who attended an event in one go.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "prg-xp-audit",
+			"area": "progression",
+			"name": "See every XP award with who gave it, when and why.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "prg-xp-balance",
+			"area": "progression",
+			"name": "See how much XP a character has earned, spent and has left.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "prg-spend-xp",
+			"area": "progression",
+			"name": "Spend XP on a new skill for a character.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "prg-block-overspend",
+			"area": "progression",
+			"name": "Stop a character from spending more XP than they have.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "prg-block-illegal-build",
+			"area": "progression",
+			"name": "Stop a character from taking a skill without its prerequisites.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "prg-gm-override",
+			"area": "progression",
+			"name": "Let a game master override a rule check, with the override recorded.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "prg-requirement-report",
+			"area": "progression",
+			"name": "See why a character cannot take a skill.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "prg-level-up",
+			"area": "progression",
+			"name": "Level a character up automatically when they reach an XP threshold.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "prg-xp-correction",
+			"area": "progression",
+			"name": "Correct or reverse a wrong XP award.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "prg-player-spends-xp",
+			"area": "progression",
+			"name": "Let a player choose their own skill purchases between events for GM approval.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "prg-xp-for-non-attendance",
+			"area": "progression",
+			"name": "Award XP for between-event activity, such as writing or crew work.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "prg-xp-caps",
+			"area": "progression",
+			"name": "Cap how much XP a character can earn per event or per year.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "prg-refund-skill",
+			"area": "progression",
+			"name": "Unlearn a skill and get the XP back under the game's rules.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "prg-progression-report",
+			"area": "progression",
+			"name": "See a report of how characters progress across the campaign.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "evt-create-event",
+			"area": "events",
+			"name": "Plan an event with its dates, location and world.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "evt-calendar",
+			"area": "events",
+			"name": "Put an event in the Nextcloud calendar.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "evt-location-map",
+			"area": "events",
+			"name": "Show an event's location on a map.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "evt-roster",
+			"area": "events",
+			"name": "See the list of characters and players taking part in an event.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "evt-add-participants",
+			"area": "events",
+			"name": "Add characters to an event's participant list.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "evt-checkin",
+			"area": "events",
+			"name": "Check players in on arrival at the event site.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "evt-attendance",
+			"area": "events",
+			"name": "Record who actually attended an event.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "evt-attendance-drives-xp",
+			"area": "events",
+			"name": "Use recorded attendance to decide who gets XP.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "evt-event-status",
+			"area": "events",
+			"name": "Mark an event as planned, running, finished or cancelled.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "evt-upcoming-list",
+			"area": "events",
+			"name": "See the upcoming events at a glance.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "evt-event-history",
+			"area": "events",
+			"name": "Look back at past events and who played in them.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "evt-offline-checkin",
+			"area": "events",
+			"name": "Check players in on site without an internet connection.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "evt-qr-checkin",
+			"area": "events",
+			"name": "Check players in by scanning a QR code on their ticket.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "evt-crew-roles",
+			"area": "events",
+			"name": "Assign crew and NPC roles to volunteers for an event.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "evt-schedule-within-event",
+			"area": "events",
+			"name": "Plan the schedule of scenes and encounters within an event.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "evt-accommodation",
+			"area": "events",
+			"name": "Assign sleeping places or tents to participants.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "evt-capacity",
+			"area": "events",
+			"name": "Set a maximum number of participants for an event.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "reg-signup-form",
+			"area": "registration",
+			"name": "Let players sign up for an event through a form.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "reg-choose-character",
+			"area": "registration",
+			"name": "Let a player pick which character they bring when signing up.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "reg-tickets",
+			"area": "registration",
+			"name": "Sell tickets with different prices, such as player, crew and NPC.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "reg-online-payment",
+			"area": "registration",
+			"name": "Take payment for an event online.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "reg-payment-status",
+			"area": "registration",
+			"name": "See who has paid and who still owes money for an event.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "reg-waitlist",
+			"area": "registration",
+			"name": "Put players on a waiting list when an event is full.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "reg-discount-codes",
+			"area": "registration",
+			"name": "Offer discount or early-bird prices.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "reg-refunds",
+			"area": "registration",
+			"name": "Refund a cancelled registration.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "reg-invoices",
+			"area": "registration",
+			"name": "Send players an invoice or receipt for their registration.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "reg-terms-consent",
+			"area": "registration",
+			"name": "Make players accept the event rules and safety policy when they sign up.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "prt-character-pdf",
+			"area": "print",
+			"name": "Print a character sheet as a PDF.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "prt-runsheet",
+			"area": "print",
+			"name": "Print a game master run sheet with the cast of an event.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "prt-templates",
+			"area": "print",
+			"name": "Choose between print templates for sheets.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "prt-item-cards",
+			"area": "print",
+			"name": "Print item cards or tags for the physical game.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "prt-bulk-print",
+			"area": "print",
+			"name": "Print the sheets of every character attending an event at once.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "prt-badges",
+			"area": "print",
+			"name": "Print name badges for participants.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "com-notify-approval",
+			"area": "communication",
+			"name": "Tell a player when their character is approved or rejected.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "com-notify-event",
+			"area": "communication",
+			"name": "Remind participants about an upcoming event.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "com-live-updates",
+			"area": "communication",
+			"name": "See changes other game masters make without reloading the page.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "com-deep-links",
+			"area": "communication",
+			"name": "Open a character or event straight from a link in Nextcloud search or another app.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "com-mail-participants",
+			"area": "communication",
+			"name": "Email everyone signed up for an event from inside the tool.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "com-in-character-messages",
+			"area": "communication",
+			"name": "Send in-character letters or messages between characters.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "com-announcements",
+			"area": "communication",
+			"name": "Post announcements to all players of a campaign.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "com-player-portal",
+			"area": "communication",
+			"name": "Give players a portal page where they see their own characters and events.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "com-downtime-actions",
+			"area": "communication",
+			"name": "Let players submit between-event actions for the story team to resolve.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "ins-dashboard",
+			"area": "insight",
+			"name": "See the campaign at a glance on a dashboard when you open the app.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "ins-dashboard-counts",
+			"area": "insight",
+			"name": "See how many characters, players and events there are.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "ins-nc-dashboard-widget",
+			"area": "insight",
+			"name": "See larpinq figures on the Nextcloud home dashboard.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "ins-roster-report",
+			"area": "insight",
+			"name": "See a report of the character roster.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "ins-progression-report",
+			"area": "insight",
+			"name": "See a report of XP and character progression.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "ins-content-report",
+			"area": "insight",
+			"name": "See a report of the world content, such as skills and items.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "ins-skill-usage",
+			"area": "insight",
+			"name": "See which skills and items are most used.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "ins-export-csv",
+			"area": "insight",
+			"name": "Export any list, such as characters or participants, to a spreadsheet.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "ins-event-finance-report",
+			"area": "insight",
+			"name": "See income and costs per event.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "ins-attendance-trend",
+			"area": "insight",
+			"name": "See how attendance develops over events.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "ins-custom-report",
+			"area": "insight",
+			"name": "Build your own report or chart from the data.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "adm-setup-wizard",
+			"area": "admin",
+			"name": "Set the app up on first use with a guided wizard.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "adm-walkthrough",
+			"area": "admin",
+			"name": "Take a guided tour of the app.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "adm-demo-data",
+			"area": "admin",
+			"name": "Load example data to try the app out.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "adm-admin-settings",
+			"area": "admin",
+			"name": "Configure which register and schemas the app uses in the admin settings.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "adm-reimport-config",
+			"area": "admin",
+			"name": "Re-import the app's data configuration after an update.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "adm-user-preferences",
+			"area": "admin",
+			"name": "Keep personal preferences, such as the default world, per user.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "adm-access-group",
+			"area": "admin",
+			"name": "Restrict who can open the app to one Nextcloud group.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "adm-roles-permissions",
+			"area": "admin",
+			"name": "Give different people different rights, such as story writer, rules marshal or treasurer.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "adm-multilingual",
+			"area": "admin",
+			"name": "Use the app in Dutch as well as English.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "adm-api",
+			"area": "admin",
+			"name": "Reach the data through an API for other tools.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "adm-ai-assistant-tools",
+			"area": "admin",
+			"name": "Let an AI assistant read and act on larpinq data through MCP tools.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "adm-health-metrics",
+			"area": "admin",
+			"name": "Check the app's health and metrics from monitoring.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "adm-workflows",
+			"area": "admin",
+			"name": "Automate steps with workflows when data changes.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "adm-self-hosted",
+			"area": "admin",
+			"name": "Run the tool on your own server with your data under your control.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "adm-open-source",
+			"area": "admin",
+			"name": "Use and change the tool under an open-source licence.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "adm-import-data",
+			"area": "admin",
+			"name": "Import existing characters and players from a spreadsheet or another tool.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "adm-backup-export",
+			"area": "admin",
+			"name": "Export all campaign data for a backup or to move elsewhere.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "adm-mobile-app",
+			"area": "admin",
+			"name": "Use the tool from a mobile app or a phone-friendly site.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "adm-multi-organisation",
+			"area": "admin",
+			"name": "Host several LARP organisations with separate data in one installation.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "competitor",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "adm-app-store",
+			"area": "admin",
+			"name": "Discover related apps from inside larpinq.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		},
+		{
+			"id": "adm-roadmap",
+			"area": "admin",
+			"name": "See which features are coming next from inside the app.",
+			"larpinq": "unknown",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "none",
+				"evidence": "not yet read: seed row awaiting its code reader"
+			},
+			"origin": "own-code",
+			"note": "Seed row, not yet read. Every cell is unknown until a reader rates it.",
+			"evidence": {
+				"larpmanager": "not checked: row added from our code after the competitor documentation pass",
+				"mylarp": "not checked: row added from our code after the competitor documentation pass",
+				"larp-portal": "not checked: row added from our code after the competitor documentation pass",
+				"kanka": "not checked: row added from our code after the competitor documentation pass",
+				"pretix": "not checked: row added from our code after the competitor documentation pass"
+			}
+		}
+	],
+	"pending": []
+}
