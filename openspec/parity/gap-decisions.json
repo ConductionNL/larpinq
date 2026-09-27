@@ -1,10 +1,50 @@
 [
  {
+  "row": "adm-backup-export",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "2 competitors rated yes (LarpManager and Kanka).",
+  "change": "admin-import-export",
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "adm-import-data",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "2 competitors rated yes (LarpManager and Kanka).",
+  "change": "admin-import-export",
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "adm-mobile-app",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "2 competitors rated yes (LarpManager and pretix).",
+  "change": "admin-phone-friendly-pages",
+  "decidedOn": "2026-09-27"
+ },
+ {
   "row": "adm-roadmap",
   "matrix": "larpinq",
   "decision": "defer",
   "reason": "partial, built, no demand. One competitor rated yes (Kanka) and no demand row; the roadmap page is reachable today.",
   "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "adm-role-invite",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "3 competitors rated yes (LarpManager, Kanka and pretix).",
+  "change": "admin-staff-roles-and-invites",
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "adm-roles-permissions",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "5 competitors rated yes (LarpManager, MyLARP, LARP Portal, Kanka and pretix).",
+  "change": "admin-staff-roles-and-invites",
   "decidedOn": "2026-09-27"
  },
  {
@@ -181,6 +221,14 @@
   "decision": "defer",
   "reason": "No competitor rated yes; the Kanka feature request alone does not meet the rule, which asks for a feature request plus one competitor yes. Outside the core area.",
   "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "com-help-desk",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "2 competitors rated yes (LarpManager and MyLARP).",
+  "change": "communication-help-desk",
   "decidedOn": "2026-09-27"
  },
  {
@@ -368,6 +416,14 @@
   "decidedOn": "2026-09-27"
  },
  {
+  "row": "ins-export-csv",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "2 competitors rated yes (LarpManager and pretix).",
+  "change": "admin-import-export",
+  "decidedOn": "2026-09-27"
+ },
+ {
   "row": "ins-nc-dashboard-widget",
   "matrix": "larpinq",
   "decision": "defer",
@@ -400,6 +456,22 @@
   "decidedOn": "2026-09-27"
  },
  {
+  "row": "ply-event-data-erasure",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "One competitor rated yes (pretix). Demand: featureRequest https://github.com/pretix/pretix/issues/2498.",
+  "change": "players-care-details-and-erasure",
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "ply-medical-dietary",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "2 competitors rated yes (LarpManager and LARP Portal).",
+  "change": "players-care-details-and-erasure",
+  "decidedOn": "2026-09-27"
+ },
+ {
   "row": "ply-notification-preferences",
   "matrix": "larpinq",
   "decision": "defer",
@@ -408,11 +480,27 @@
   "decidedOn": "2026-09-27"
  },
  {
+  "row": "ply-player-history",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "Rated partial and built; 2 competitors rated yes (LarpManager and pretix), so the missing half is specified.",
+  "change": "players-attendance-history",
+  "decidedOn": "2026-09-27"
+ },
+ {
   "row": "ply-privacy-export",
   "matrix": "larpinq",
   "decision": "defer",
   "reason": "No competitor rated yes, no demand row, outside the core area. hydra ADR-047 gives the data-subject export and erasure workflow to OpenRegister; players-care-details-and-erasure declares the player schemas in its scope.",
   "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "ply-self-signup",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "5 competitors rated yes (LarpManager, MyLARP, LARP Portal, Kanka and pretix).",
+  "change": "players-self-signup",
   "decidedOn": "2026-09-27"
  },
  {
@@ -709,6 +797,22 @@
   "decision": "defer",
   "reason": "No competitor rated yes, no demand row, outside the core area.",
   "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "rul-publish-rulebook",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "2 competitors rated yes (LARP Portal and Kanka).",
+  "change": "rules-rulebook-and-spell-lists",
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "rul-spell-lists",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "2 competitors rated yes (LarpManager and Kanka).",
+  "change": "rules-rulebook-and-spell-lists",
   "decidedOn": "2026-09-27"
  },
  {

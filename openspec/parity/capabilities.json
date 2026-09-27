@@ -1500,7 +1500,7 @@
 			"kanka": "yes",
 			"pretix": "yes",
 			"built": {
-				"state": "none",
+				"state": "specified",
 				"evidence": "grep -rniE 'self.?sign.?up|self-registration|registration form' lib src openspec: no hits. Player/user provisioning is standard Nextcloud (admin-created accounts) plus larpinq's own player records created by whoever has app access; no public sign-up flow exists",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "nothing: no self-signup controller, page or form"
@@ -1516,7 +1516,8 @@
 				"larp-portal": "Free 'Registered' tier lets anyone create a LARP Portal account. https://larportal.com",
 				"kanka": "source read at tag 3.15: routes/auth.php:9,32-33 self registration (config auth.register_enabled); user profile routes/settings.php:37-39; campaign application routes/campaigns/campaign.php:51-53",
 				"pretix": "source read at tag v2026.7.0: src/pretix/presale/views/customer.py:208 RegistrationView at src/pretix/presale/urls.py:211 account/register lets a player create their own account; profiles are kept via src/pretix/base/models/customers.py:336 AttendeeProfile"
-			}
+			},
+			"note": "Specified 2026-09-27 in openspec/changes/players-self-signup (OpenSpec pass)."
 		},
 		{
 			"id": "ply-medical-dietary",
@@ -1529,7 +1530,7 @@
 			"kanka": "no",
 			"pretix": "partial",
 			"built": {
-				"state": "none",
+				"state": "specified",
 				"evidence": "lib/Settings/larpinq_register.json:362-395 (player schema properties are only name, description, userUid); grep -rniE 'allerg|dietary|emergency contact' lib src openspec: no hits in larpinq's own schema/code (the only hit is aspirational text in an archived proposal about what the Nextcloud contact card COULD carry)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "nothing: no such fields on the player schema"
@@ -1545,7 +1546,8 @@
 				"larp-portal": "features.php explicitly lists 'Medical and allergy information tracking.' https://larportal.com/features.php",
 				"kanka": "source read at tag 3.15: no such fields; app/Models/User.php:68-86 and app/Models/Application.php:32-45 hold none",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/items.py:1570-1620 custom Question types (text, choice, phone number) can ask allergies, diet and an emergency contact per attendee; there are no built-in fields for them"
-			}
+			},
+			"note": "Specified 2026-09-27 in openspec/changes/players-care-details-and-erasure (OpenSpec pass)."
 		},
 		{
 			"id": "ply-age-consent",
@@ -1587,7 +1589,7 @@
 			"kanka": "no",
 			"pretix": "yes",
 			"built": {
-				"state": "built",
+				"state": "specified",
 				"evidence": "src/manifest.json:839-857 (player-characters object-list shows the characters a player has played, columns name/type/approved, no event or date columns); character.events (lib/Settings/larpinq_register.json:212-223) would have to be opened per character to see event participation; no player-scoped event/attendance rollup exists",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "PlayerDetail page shows characters played; reaching their event history requires opening each character individually"
@@ -1597,7 +1599,7 @@
 			"feature": "player-and-contact-records",
 			"featureConfidence": "medium",
 			"origin": "competitor",
-			"note": "No dedicated player-level attendance-over-time report; the data is reachable only by hopping from player to each character to that character's events group.",
+			"note": "No dedicated player-level attendance-over-time report; the data is reachable only by hopping from player to each character to that character's events group. Specified 2026-09-27 in openspec/changes/players-attendance-history (OpenSpec pass).",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/views/exe/member.py:489 exe_member_registrations lists a member's registrations across events, larpmanager/urls/user.py registrations page",
 				"mylarp": "not checked: no player event-history feature documented",
@@ -2056,7 +2058,7 @@
 			"kanka": "yes",
 			"pretix": "no",
 			"built": {
-				"state": "none",
+				"state": "specified",
 				"evidence": "grep -rniE 'rulebook' lib src: no hits beyond the seed row; the only 'publish' hits are generic OpenRegister config-bundle install/export (src/manifest.json:337) and unrelated schema 'published' date metadata (lib/Settings/larpinq_register.json:21), neither of which renders a readable rulebook page to players",
 				"owner": "ConductionNL/larpinq"
 			},
@@ -2071,7 +2073,8 @@
 				"larp-portal": "'Character Specific Rulebook report' generates a personalised, printable mini-rulebook of a character's own skills; general rule pages are also described ('PCs use it to learn about game rules'). https://larportal.com/larp-portal-tips.php",
 				"kanka": "source read at tag 3.15: journals/notes with visibility and public campaigns (routes/campaigns/entities.php:327,335; routes/campaigns/campaign.php:215-216)",
 				"pretix": "source read at tag v2026.7.0: looked in src/pretix/base/models/ (organizer, event, items, orders, customers, checkin, vouchers, giftcards, memberships, seating) and src/pretix/base/services/: no character, ability, skill, effect or XP model or computation; no content pages exist to publish a rulebook on (no pages plugin in src/pretix/plugins/)"
-			}
+			},
+			"note": "Specified 2026-09-27 in openspec/changes/rules-rulebook-and-spell-lists (OpenSpec pass)."
 		},
 		{
 			"id": "rul-crafting",
@@ -2112,7 +2115,7 @@
 			"kanka": "yes",
 			"pretix": "no",
 			"built": {
-				"state": "none",
+				"state": "specified",
 				"evidence": "grep -rniE 'spell' lib src: no gameplay hits (only unrelated 'spelled'/'spelling' doc comments in lib/Listener/DeepLinkRegistrationListener.php:81,147 and lib/Controller/SettingsController.php:334,360); no separate spell/power schema exists, a spell would have to be modelled as an ordinary 'skill' object with no distinguishing type",
 				"owner": "ConductionNL/larpinq"
 			},
@@ -2127,7 +2130,8 @@
 				"larp-portal": "not checked: no spell/power list feature documented",
 				"kanka": "source read at tag 3.15: abilities module with types, charges and descriptions, separate from properties (app/Models/Ability.php:40-45; routes/campaigns/entities.php:279 use a charge)",
 				"pretix": "source read at tag v2026.7.0: looked in src/pretix/base/models/ (organizer, event, items, orders, customers, checkin, vouchers, giftcards, memberships, seating) and src/pretix/base/services/: no character, ability, skill, effect or XP model or computation"
-			}
+			},
+			"note": "Specified 2026-09-27 in openspec/changes/rules-rulebook-and-spell-lists (OpenSpec pass)."
 		},
 		{
 			"id": "rul-item-tags",
@@ -4148,7 +4152,7 @@
 			"kanka": "partial",
 			"pretix": "yes",
 			"built": {
-				"state": "none",
+				"state": "specified",
 				"evidence": "grep -rniE 'export|csv' src/manifest.json src/views src/store/modules: no list-export action or button found on any index/detail/report page",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "nothing: no export capability configured"
@@ -4164,7 +4168,8 @@
 				"larp-portal": "not checked: no generic list-export feature documented",
 				"kanka": "source read at tag 3.15: campaign export is JSON/zip (routes/campaigns/campaign.php:207-208), single entry JSON/Markdown (routes/campaigns/entities.php:397-398); CSV only for import (campaign.php:212)",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/exporters/orderlist.py:85,969 OrderListExporter writes orders and attendees to CSV or xlsx, with list exporters for customers, answers, waiting list, check-in lists (src/pretix/plugins/checkinlists/exporters.py:476) and more under src/pretix/base/exporters/"
-			}
+			},
+			"note": "Specified 2026-09-27 in openspec/changes/admin-import-export (OpenSpec pass)."
 		},
 		{
 			"id": "ins-event-finance-report",
@@ -4499,7 +4504,7 @@
 			"kanka": "yes",
 			"pretix": "yes",
 			"built": {
-				"state": "none",
+				"state": "specified",
 				"evidence": "grep -rniE '\\brole\\b|rbac|permission' lib/Controller lib/Service lib/Settings/larpinq_register.json: only OpenRegister's generic object/schema-level RBAC flag (_rbac, e.g. lib/Service/RegisterObjectFetcher.php:402) and the admin+larpers dual-group gate in appinfo/info.xml; no distinct in-app roles",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "nothing: only the binary larpers/admin group split exists, no named roles"
@@ -4515,7 +4520,8 @@
 				"larp-portal": "PC/NPC/Staff roles with granular staff permissions (marketing, event setup, approvals, housing, points, etc). https://larportal.com/how-it-works.php",
 				"kanka": "source read at tag 3.15: custom campaign roles with per-module and per-entry permissions (routes/campaigns/campaign.php:89-91,130; app/Enums/Permission.php)",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/organizer.py:362-394 Team with all_events/limit_events and per-permission sets for events and organizer (src/pretix/base/permissions.py:56), so a treasurer team, a check-in team and admins get different rights"
-			}
+			},
+			"note": "Specified 2026-09-27 in openspec/changes/admin-staff-roles-and-invites (OpenSpec pass)."
 		},
 		{
 			"id": "adm-multilingual",
@@ -4703,7 +4709,7 @@
 			"kanka": "yes",
 			"pretix": "partial",
 			"built": {
-				"state": "none",
+				"state": "specified",
 				"evidence": "grep -rniE 'import.*csv|csv.*import|spreadsheet|xlsx' lib/ src/: no hits; the only 'import'/'reimport' functionality in this app re-loads the app's own bundled developer configuration (registers/schemas), not user data from an external file",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "nothing: no data-import feature exists"
@@ -4719,7 +4725,8 @@
 				"larp-portal": "not checked: no data-import feature documented",
 				"kanka": "source read at tag 3.15: campaign import from Kanka export zip or CSV (routes/campaigns/campaign.php:209-212; app/Services/CsvImportService.php)",
 				"pretix": "source read at tag v2026.7.0: src/pretix/control/urls.py:462 orders/import runs src/pretix/base/modelimport_orders.py (CSV import of orders and attendees, :740 CustomerColumn links customers), and vouchers import at :388; there are no characters to import"
-			}
+			},
+			"note": "Specified 2026-09-27 in openspec/changes/admin-import-export (OpenSpec pass)."
 		},
 		{
 			"id": "adm-backup-export",
@@ -4732,7 +4739,7 @@
 			"kanka": "yes",
 			"pretix": "partial",
 			"built": {
-				"state": "none",
+				"state": "specified",
 				"evidence": "grep -rniE 'backup|full.?export' lib/ src/: no hits",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "nothing: no backup/full-export feature exists"
@@ -4748,7 +4755,8 @@
 				"larp-portal": "not checked: no full data export/backup feature documented",
 				"kanka": "source read at tag 3.15: full campaign export (routes/campaigns/campaign.php:207-208; app/Services/Campaign/ExportService.php), gallery assets export premium (app/Http/Controllers/Campaign/ExportController.php:43)",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/exporters/json.py:49 JSONExporter dumps an event's products, questions and orders, and multi-event list exporters exist; a whole-instance backup is a database dump, not an in-app export"
-			}
+			},
+			"note": "Specified 2026-09-27 in openspec/changes/admin-import-export (OpenSpec pass)."
 		},
 		{
 			"id": "adm-mobile-app",
@@ -4761,7 +4769,7 @@
 			"kanka": "partial",
 			"pretix": "yes",
 			"built": {
-				"state": "none",
+				"state": "specified",
 				"evidence": "grep -rniE 'mobile|pwa|manifest.webmanifest' lib/ src/: no hits; larpinq is a standard Nextcloud web app (nc-vue components), with no dedicated mobile app or installable PWA manifest of its own",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "nothing: no dedicated mobile delivery"
@@ -4777,7 +4785,8 @@
 				"larp-portal": "not checked: no mobile app documented; the product is a web app (ui.larportal.com)",
 				"kanka": "source read at tag 3.15: responsive Tailwind web views; no native app or PWA manifest in public/",
 				"pretix": "source read at tag v2026.7.0: src/pretix/presale/templates/pretixpresale/base.html:21 responsive viewport shop and the in-browser check-in (src/pretix/plugins/webcheckin) work on a phone; the native pretixSCAN/pretixPOS apps are separate first-party repos, noted not counted"
-			}
+			},
+			"note": "Specified 2026-09-27 in openspec/changes/admin-phone-friendly-pages (OpenSpec pass)."
 		},
 		{
 			"id": "adm-multi-organisation",
@@ -5002,7 +5011,7 @@
 			"kanka": "no",
 			"pretix": "no",
 			"built": {
-				"state": "none",
+				"state": "specified",
 				"evidence": "grep -rniE 'help ?desk|support ticket|ticket' lib src --include=*.php --include=*.vue --include=*.js --include=*.json: no player-to-organiser question flow; the only player-facing surface is the portaliq contribution provider (lib/Portal/PortalContributionProvider.php), which submits characters",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "nothing: see evidence"
@@ -5019,7 +5028,8 @@
 				"kanka": "source read at tag 3.15: only a bug report page to the Kanka team (routes/web-i18n.php:19); no player to organiser help desk",
 				"pretix": "source read at tag v2026.7.0: looked in src/pretix/presale/views/ and src/pretix/base/models/; players only get a contact address (src/pretix/base/settings.py:2277 contact_mail), there is no ticket or help desk inbox"
 			},
-			"addedOn": "2026-09-26"
+			"addedOn": "2026-09-26",
+			"note": "Specified 2026-09-27 in openspec/changes/communication-help-desk (OpenSpec pass)."
 		},
 		{
 			"id": "ply-notification-preferences",
@@ -5188,7 +5198,7 @@
 			"kanka": "no",
 			"pretix": "yes",
 			"built": {
-				"state": "none",
+				"state": "specified",
 				"evidence": "grep -rniE 'gdpr|anonymi|erase|retention' lib src: no hits; only per-record delete through OpenRegister exists, the same finding as ply-privacy-export",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "nothing: see evidence"
@@ -5206,7 +5216,8 @@
 				"kanka": "source read at tag 3.15: no event participant data exists to erase; account deletion only (routes/settings.php:65)",
 				"pretix": "source read at tag v2026.7.0: src/pretix/control/views/shredder.py:78-150 exports then shreds chosen personal data of an event, logged as src/pretix/base/services/shredder.py:144-167 pretix.event.shredder.started/completed with the shredder list (shown via src/pretix/control/logdisplay.py:763-764)"
 			},
-			"addedOn": "2026-09-26"
+			"addedOn": "2026-09-26",
+			"note": "Specified 2026-09-27 in openspec/changes/players-care-details-and-erasure (OpenSpec pass)."
 		},
 		{
 			"id": "reg-partial-cancel",
@@ -5722,7 +5733,7 @@
 			"kanka": "yes",
 			"pretix": "yes",
 			"built": {
-				"state": "none",
+				"state": "specified",
 				"evidence": "GM rights come from Nextcloud group membership (appinfo/info.xml:111-133, group 'larpers' plus 'admin' for GM endpoints); larpinq has no invite link",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "nothing: see evidence"
@@ -5740,7 +5751,8 @@
 				"kanka": "source read at tag 3.15: app/Http/Controllers/Campaign/InviteController.php:76-81 creates an invite link with a role_id and validity; joined at routes/web-i18n.php:16 campaigns.join",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/organizer.py:504 TeamInvite sends a link that src/pretix/control/urls.py:52 auth.invite (src/pretix/control/views/auth.py:228) turns into team membership"
 			},
-			"addedOn": "2026-09-26"
+			"addedOn": "2026-09-26",
+			"note": "Specified 2026-09-27 in openspec/changes/admin-staff-roles-and-invites (OpenSpec pass)."
 		},
 		{
 			"id": "adm-two-factor",
