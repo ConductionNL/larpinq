@@ -20,6 +20,10 @@ Read at development `2af18d8`.
   a registered modal with the selected ids.
 - `src/registry.js` is the ADR-036 registry; modals live in `src/modals/`
   (hydra modal-isolation rule).
+- `src/main.js:276-310` `mergeManifestFragments()` concatenates `pages` and
+  `menu` from `src/manifest.d/`; it cannot change an existing page. Edits to
+  the Characters index and CharacterDetail therefore go into `src/manifest.json`
+  itself.
 
 ## Goals / Non-Goals
 

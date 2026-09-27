@@ -77,7 +77,8 @@ None.
 
 - `lib/Settings/register.d/characters-status-and-bulk-edit.json` (new).
 - `lib/Listener/CharacterRequirementListener.php`: refuse adding an event to a retired or dead character.
-- `src/manifest.d/characters-status-and-bulk-edit.json` (new) and `src/modals/CharacterBulkEditModal.vue` (new), registered in `src/registry.js`.
+- `src/manifest.json`: the Characters index gains `selectable`, the bulk action and a status column, and CharacterDetail shows the status. These are edits of existing pages, made in place, because `mergeManifestFragments()` (`src/main.js:276-310`) only appends pages and menu entries from `src/manifest.d/`.
+- `src/modals/CharacterBulkEditModal.vue` (new), registered in `src/registry.js`.
 
 ## Cross-Project Dependencies
 
