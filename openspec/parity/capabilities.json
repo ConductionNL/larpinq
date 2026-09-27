@@ -2286,7 +2286,7 @@
 			"kanka": "no",
 			"pretix": "no",
 			"built": {
-				"state": "none",
+				"state": "specified",
 				"evidence": "grep -rniE 'bulk|mass.?award|award.*all|everyone' lib src: no hits beyond unrelated doc comments (lib/Service/DemoDataService.php:17, lib/Portal/PortalContributionProvider.php:158); each xpAward is created one at a time (event, character, amount) via the generic object-create form, no multi-select-attendees-then-award action exists anywhere in src/",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "nothing: a GM must open one create form per character to award XP for an event"
@@ -2302,7 +2302,8 @@
 				"larp-portal": "Cross-campaign point assignment is processed by staff in a batch when 'staff process point assignments', but a dedicated bulk-by-event UI isn't confirmed. https://larportal.com/larp-portal-tips.php",
 				"kanka": "source read at tag 3.15: no XP model",
 				"pretix": "source read at tag v2026.7.0: looked in src/pretix/base/models/ (organizer, event, items, orders, customers, checkin, vouchers, giftcards, memberships, seating) and src/pretix/base/services/: no character, ability, skill, effect or XP model or computation; bulk actions exist only for orders and check-ins"
-			}
+			},
+			"note": "Specified 2026-09-27 in openspec/changes/events-xp-batch-award (OpenSpec pass)."
 		},
 		{
 			"id": "prg-xp-audit",
@@ -2900,7 +2901,7 @@
 			"kanka": "no",
 			"pretix": "no",
 			"built": {
-				"state": "none",
+				"state": "specified",
 				"evidence": "grep -rn \"xpAward|XpAward\" lib --include=*.php: only hits are CharacterService.php (reads existing xpAward objects into the stat calculation) and a comment in EventsController.php; nothing reads larping_attendance.status when creating or validating an xpAward. lib/Settings/larpinq_register.json:910-969 (xpAward schema) has no reference to attendance and no calculation/trigger tying it to check-in status; xpAward creation is a plain GM-authored object-list entry (src/manifest.json event-xpawards / char-xpawards widgets, allowCreate default)",
 				"owner": "ConductionNL/larpinq"
 			},
@@ -2909,7 +2910,7 @@
 			"feature": "event-xp-awards",
 			"featureConfidence": "high",
 			"origin": "own-code",
-			"note": "The xpAward.reason field's own description mentions 'full attendance' as an example free-text reason, but nothing enforces or checks it against the actual attendance record, a GM can award XP to a no-show or skip a checked-in character freely.",
+			"note": "The xpAward.reason field's own description mentions 'full attendance' as an example free-text reason, but nothing enforces or checks it against the actual attendance record, a GM can award XP to a no-show or skip a checked-in character freely. Specified 2026-09-27 in openspec/changes/events-xp-batch-award (OpenSpec pass).",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/views/orga/experience.py:108-116 and 156-159 load an XP award for checked-in participants only",
 				"mylarp": "not checked: no attendance-to-XP link documented",
@@ -2958,7 +2959,7 @@
 			"kanka": "yes",
 			"pretix": "yes",
 			"built": {
-				"state": "built",
+				"state": "specified",
 				"evidence": "src/manifest.json:~1589-area Events index page (generic list/sort/search for larping_event, no default 'future only' filter); src/manifest.json Dashboard 'recent-events' widget (type object-table, sort startDate desc, limit 6, no filter on startDate >= now)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Dashboard page (/), 'Recent events' widget; Events index page (/events) with manual sort"
@@ -2968,7 +2969,7 @@
 			"feature": "campaign-dashboard",
 			"featureConfidence": "medium",
 			"origin": "own-code",
-			"note": "Neither surface filters to future-only events; 'recent' sorts by startDate desc (which surfaces the furthest-future or most-recent event, mixing past and future), and the index page requires the user to sort/search manually to see only what's ahead.",
+			"note": "Neither surface filters to future-only events; 'recent' sorts by startDate desc (which surfaces the furthest-future or most-recent event, mixing past and future), and the index page requires the user to sort/search manually to see only what's ahead. Specified 2026-09-27 in openspec/changes/events-world-scope-and-upcoming (OpenSpec pass).",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/views/user/event.py:92 calendar of open runs, larpmanager/cache/links.py:207 open_runs versus past_runs",
 				"mylarp": "'Schedule and configure your events so your players know when to come play'; the player-facing list itself is not shown publicly. https://mylarp.com",
@@ -3045,7 +3046,7 @@
 			"kanka": "no",
 			"pretix": "yes",
 			"built": {
-				"state": "none",
+				"state": "specified",
 				"evidence": "grep -rniE \"qr.?code\" lib src --include=*.php --include=*.vue --include=*.js: no hits; there is no ticket concept at all (see reg-tickets)",
 				"owner": "ConductionNL/larpinq"
 			},
@@ -3060,7 +3061,8 @@
 				"larp-portal": "not checked: no QR check-in feature documented",
 				"kanka": "source read at tag 3.15: no tickets or QR code handling in app/",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/pdf.py:883 renders the ticket secret as a QR code on tickets, and src/pretix/plugins/webcheckin/static/pretixplugins/webcheckin/components/app.vue:376 takes scanned codes into src/pretix/api/views/checkin.py:457 _redeem_process"
-			}
+			},
+			"note": "Specified 2026-09-27 in openspec/changes/events-qr-checkin (OpenSpec pass)."
 		},
 		{
 			"id": "evt-crew-roles",
@@ -3073,7 +3075,7 @@
 			"kanka": "no",
 			"pretix": "no",
 			"built": {
-				"state": "none",
+				"state": "specified",
 				"evidence": "grep -rniE \"crew|npc\" lib src --include=*.php --include=*.vue --include=*.js: no hits; character.type is a free-text field on the character schema with no crew/NPC role assignment surface tied to an event",
 				"owner": "ConductionNL/larpinq"
 			},
@@ -3088,7 +3090,8 @@
 				"larp-portal": "Staff can 'make NPC characters' and hold plot/logistics roles distinct from PCs. https://larportal.com/how-it-works.php",
 				"kanka": "source read at tag 3.15: no crew/volunteer model; organisation member roles are in-fiction (app/Models/OrganisationMember.php)",
 				"pretix": "source read at tag v2026.7.0: looked in src/pretix/base/models/organizer.py:362 Team (backend staff permissions only) and src/pretix/base/models/items.py; nothing assigns crew or NPC roles to volunteers for an event beyond selling a separate crew ticket"
-			}
+			},
+			"note": "Specified 2026-09-27 in openspec/changes/events-casting-and-crew-roles (OpenSpec pass)."
 		},
 		{
 			"id": "evt-schedule-within-event",
@@ -3157,7 +3160,7 @@
 			"kanka": "no",
 			"pretix": "yes",
 			"built": {
-				"state": "none",
+				"state": "specified",
 				"evidence": "grep -rniE \"capacity\" lib --include=*.php: no hits; openspec/specs/event-signup-to-forms-leaf/spec.md 'Capacity and waiting-list ordering MUST stay in Larpinq' requirement has zero backing code",
 				"owner": "ConductionNL/larpinq"
 			},
@@ -3166,7 +3169,7 @@
 			"feature": "event-rosters-and-signup",
 			"featureConfidence": "medium",
 			"origin": "competitor",
-			"note": "See findings.md: this is a spec-vs-code mismatch, not just a missing competitor feature.",
+			"note": "See findings.md: this is a spec-vs-code mismatch, not just a missing competitor feature. Specified 2026-09-27 in openspec/changes/registration-intake-and-capacity (OpenSpec pass).",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/models/event.py:170-190 max_pg, max_filler, max_waiting per event, per-ticket availability in larpmanager/models/registration.py:89",
 				"mylarp": "not checked: no event capacity cap documented",
@@ -3186,7 +3189,7 @@
 			"kanka": "partial",
 			"pretix": "yes",
 			"built": {
-				"state": "built",
+				"state": "specified",
 				"evidence": "lib/Settings/register.d/event-signup-to-forms-leaf.json (event.configuration.linkedTypes: [\"forms\"]); src/manifest.json:1589-1660 (event-forms widget, type integration, integrationId forms); src/views/ObjectDetail.vue:20,60 (event -> forms leaf)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "EventDetail page (/events/:id) body, 'Sign-up' widget"
@@ -3196,7 +3199,7 @@
 			"feature": "event-rosters-and-signup",
 			"featureConfidence": "high",
 			"origin": "own-code",
-			"note": "The form itself renders and can collect submissions (per openspec/specs/event-signup-to-forms-leaf/spec.md Requirement 1), but see findings.md: the same spec's capacity/waitlist/confirmed-participant requirement has no code, so a submission never automatically becomes a confirmed participant in character.events[], a GM must add participants manually (evt-add-participants).",
+			"note": "The form itself renders and can collect submissions (per openspec/specs/event-signup-to-forms-leaf/spec.md Requirement 1), but see findings.md: the same spec's capacity/waitlist/confirmed-participant requirement has no code, so a submission never automatically becomes a confirmed participant in character.events[], a GM must add participants manually (evt-add-participants). Specified 2026-09-27 in openspec/changes/registration-intake-and-capacity (OpenSpec pass).",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/urls/event.py register routes, larpmanager/models/form.py:549-816 RegistrationQuestion, options and answers, larpmanager/urls/orga.py orga_registration_form",
 				"mylarp": "not checked: no registration-form feature documented",
@@ -3216,7 +3219,7 @@
 			"kanka": "partial",
 			"pretix": "no",
 			"built": {
-				"state": "none",
+				"state": "specified",
 				"evidence": "the forms leaf (reg-signup-form) is a generic NC Forms form with no larpinq-aware character field, and no code binds a form submission to a specific character record",
 				"owner": "ConductionNL/larpinq"
 			},
@@ -3231,7 +3234,8 @@
 				"larp-portal": "When registering, a PC can 'Pick the character that you are playing'. https://larportal.com/new-to-larp-portal.php",
 				"kanka": "source read at tag 3.15: application form takes a character concept and an external character sheet link (lang/en/campaigns/applications.php fields character_concept, external_link; app/Models/Application.php:32-45); no picking an existing character",
 				"pretix": "source read at tag v2026.7.0: no character model in src/pretix/base/models/; src/pretix/base/models/customers.py:336 AttendeeProfile only lets a logged-in buyer reuse saved attendee details at checkout"
-			}
+			},
+			"note": "Specified 2026-09-27 in openspec/changes/registration-intake-and-capacity (OpenSpec pass)."
 		},
 		{
 			"id": "reg-tickets",
@@ -3244,7 +3248,7 @@
 			"kanka": "no",
 			"pretix": "yes",
 			"built": {
-				"state": "none",
+				"state": "specified",
 				"evidence": "grep -rniE \"ticket|price\" lib src --include=*.php --include=*.vue --include=*.js: no hits",
 				"owner": "ConductionNL/larpinq"
 			},
@@ -3259,7 +3263,8 @@
 				"larp-portal": "not checked: no ticketing/pricing feature documented for events specifically",
 				"kanka": "source read at tag 3.15: no ticket or price model for participation; subscription tiers in app/Models/Tier.php are Kanka's own billing",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/items.py:360 Item and :1106 ItemVariation carry their own prices, so player, crew and NPC tickets are separate products or variations"
-			}
+			},
+			"note": "Specified 2026-09-27 in openspec/changes/registration-ticket-types-and-options (OpenSpec pass)."
 		},
 		{
 			"id": "reg-online-payment",
@@ -3272,7 +3277,7 @@
 			"kanka": "no",
 			"pretix": "yes",
 			"built": {
-				"state": "none",
+				"state": "specified",
 				"evidence": "grep -rniE \"payment\" lib src --include=*.php --include=*.vue --include=*.js: no hits",
 				"owner": "ConductionNL/larpinq"
 			},
@@ -3287,7 +3292,8 @@
 				"larp-portal": "not checked: no online payment processing documented for event registration (LP's own Basic/Standard tiers are its own subscription fee, not per-event ticket payment)",
 				"kanka": "source read at tag 3.15: payments in routes/settings.php:93-112 are Kanka subscriptions for the user, not event fees",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/payment.py provider framework with in-tree providers src/pretix/plugins/stripe, src/pretix/plugins/paypal2 and src/pretix/plugins/banktransfer, driven by src/pretix/presale/checkoutflow.py:1274 PaymentStep"
-			}
+			},
+			"note": "Specified 2026-09-27 in openspec/changes/registration-payments-through-shillinq (OpenSpec pass)."
 		},
 		{
 			"id": "reg-payment-status",
@@ -3300,7 +3306,7 @@
 			"kanka": "no",
 			"pretix": "yes",
 			"built": {
-				"state": "none",
+				"state": "specified",
 				"evidence": "grep -rniE \"payment\" lib src --include=*.php --include=*.vue --include=*.js: no hits (same grep as reg-online-payment)",
 				"owner": "ConductionNL/larpinq"
 			},
@@ -3315,7 +3321,8 @@
 				"larp-portal": "A registration records how the player intends to pay, and staff record it when they add a registration; a paid or owed status is not described. https://larportal.com/new-to-larp-portal.php , https://larportal.com/larp-portal-tips-032024.php",
 				"kanka": "source read at tag 3.15: no participant payment records",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/orders.py:156-157 order status pending/paid and :1714 OrderPayment per payment, listed and filtered in src/pretix/control/views/orders.py:415 OrderList"
-			}
+			},
+			"note": "Specified 2026-09-27 in openspec/changes/registration-payments-through-shillinq (OpenSpec pass)."
 		},
 		{
 			"id": "reg-waitlist",
@@ -3328,7 +3335,7 @@
 			"kanka": "no",
 			"pretix": "yes",
 			"built": {
-				"state": "none",
+				"state": "specified",
 				"evidence": "grep -rniE \"waitlist|waiting.?list\" lib --include=*.php: no hits, despite openspec/specs/event-signup-to-forms-leaf/spec.md Requirement 'Capacity and waiting-list ordering MUST stay in Larpinq' and its scenario 'Waiting list forms when capacity is reached'",
 				"owner": "ConductionNL/larpinq"
 			},
@@ -3337,7 +3344,7 @@
 			"feature": "event-rosters-and-signup",
 			"featureConfidence": "high",
 			"origin": "competitor",
-			"note": "Same spec-vs-code mismatch as evt-capacity, see findings.md.",
+			"note": "Same spec-vs-code mismatch as evt-capacity, see findings.md. Specified 2026-09-27 in openspec/changes/registration-intake-and-capacity (OpenSpec pass).",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/fixtures/feature.yaml:413 waiting feature, larpmanager/models/registration.py:47 Waiting tier, larpmanager/models/event.py max_waiting",
 				"mylarp": "not checked: no waitlist feature documented",
@@ -3357,7 +3364,7 @@
 			"kanka": "no",
 			"pretix": "yes",
 			"built": {
-				"state": "none",
+				"state": "specified",
 				"evidence": "grep -rniE \"discount\" lib src --include=*.php --include=*.vue --include=*.js: no hits",
 				"owner": "ConductionNL/larpinq"
 			},
@@ -3372,7 +3379,8 @@
 				"larp-portal": "not checked: no discount-code feature documented",
 				"kanka": "source read at tag 3.15: coupons only for Kanka subscriptions (routes/web.php:21-24)",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/vouchers.py:128 Voucher codes with reduced prices, and src/pretix/base/models/discount.py:44,81-86 automatic discounts with available_from/until for early-bird windows"
-			}
+			},
+			"note": "Specified 2026-09-27 in openspec/changes/registration-ticket-types-and-options (OpenSpec pass)."
 		},
 		{
 			"id": "reg-refunds",
@@ -3385,7 +3393,7 @@
 			"kanka": "no",
 			"pretix": "yes",
 			"built": {
-				"state": "none",
+				"state": "specified",
 				"evidence": "grep -rniE \"refund\" lib src --include=*.php --include=*.vue --include=*.js: no hits",
 				"owner": "ConductionNL/larpinq"
 			},
@@ -3400,7 +3408,8 @@
 				"larp-portal": "not checked: no refund feature documented",
 				"kanka": "source read at tag 3.15: no registration payments",
 				"pretix": "source read at tag v2026.7.0: src/pretix/control/views/orders.py:1086 OrderRefundView creates refunds to the original payment method or a gift card, stored as src/pretix/base/models/orders.py:2128 OrderRefund; buyers can self-cancel via src/pretix/presale/views/order.py:1014 OrderCancel"
-			}
+			},
+			"note": "Specified 2026-09-27 in openspec/changes/registration-cancel-transfer-refund (OpenSpec pass)."
 		},
 		{
 			"id": "reg-invoices",
@@ -3413,7 +3422,7 @@
 			"kanka": "no",
 			"pretix": "yes",
 			"built": {
-				"state": "none",
+				"state": "specified",
 				"evidence": "grep -rniE \"invoice\" lib src --include=*.php --include=*.vue --include=*.js: no hits",
 				"owner": "ConductionNL/larpinq"
 			},
@@ -3428,7 +3437,8 @@
 				"larp-portal": "not checked: no invoice/receipt feature documented",
 				"kanka": "source read at tag 3.15: billing history invoices are Kanka's own subscription invoices (routes/settings.php:111-112)",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/invoices.py:68 Invoice rendered by src/pretix/base/invoicing/pdf.py and sent by email or e-invoice transmission (src/pretix/base/invoicing/email.py, peppol.py)"
-			}
+			},
+			"note": "Specified 2026-09-27 in openspec/changes/registration-payments-through-shillinq (OpenSpec pass)."
 		},
 		{
 			"id": "reg-terms-consent",
@@ -3699,7 +3709,7 @@
 			"kanka": "no",
 			"pretix": "yes",
 			"built": {
-				"state": "none",
+				"state": "specified",
 				"evidence": "grep -rniE \"mailParticipant|sendMail\" lib src --include=*.php --include=*.vue --include=*.js: no hits",
 				"owner": "ConductionNL/larpinq"
 			},
@@ -3714,7 +3724,8 @@
 				"larp-portal": "'Messaging between players/staff' is mentioned generally; mass-emailing everyone signed up for one event specifically isn't confirmed. https://larportal.com",
 				"kanka": "source read at tag 3.15: outgoing mail limited to account and subscription mails (app/Mail/*); no mail to members",
 				"pretix": "source read at tag v2026.7.0: src/pretix/plugins/sendmail/views.py:243 OrderSendView emails everyone who ordered for an event, filtered by product, status or check-in, with history at :524"
-			}
+			},
+			"note": "Specified 2026-09-27 in openspec/changes/communication-mail-participants (OpenSpec pass)."
 		},
 		{
 			"id": "com-in-character-messages",
@@ -3873,7 +3884,7 @@
 			"kanka": "yes",
 			"pretix": "no",
 			"built": {
-				"state": "built",
+				"state": "specified",
 				"evidence": "lib/Settings/larpinq_register.json:833-840 (event.setting: uuid $ref setting, description 'Optional world (campaign) this event belongs to', visible: false); no widget or related-group on EventDetail (src/manifest.json:1589-1820) references a 'setting'/'World' group, unlike character/ability/skill pages",
 				"owner": "ConductionNL/larpinq"
 			},
@@ -3882,7 +3893,7 @@
 			"feature": "setting-management",
 			"featureConfidence": "high",
 			"origin": "own-code",
-			"note": "Textbook rule-1 case: the field exists and is used by x-relation-filter to scope OTHER schemas' pickers (e.g. character.skills filtered by setting), but nothing lets a user actually set an event's own world from the UI.",
+			"note": "Textbook rule-1 case: the field exists and is used by x-relation-filter to scope OTHER schemas' pickers (e.g. character.skills filtered by setting), but nothing lets a user actually set an event's own world from the UI. Specified 2026-09-27 in openspec/changes/events-world-scope-and-upcoming (OpenSpec pass).",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/models/event.py:196-206 each event belongs to at most one campaign parent, larpmanager/models/writing.py:51-91 elements resolve only within that campaign",
 				"mylarp": "Each event lives on its own campaign subdomain, so it cannot mix with another campaign's characters/events. https://mylarp.com",
@@ -4429,7 +4440,7 @@
 			"kanka": "yes",
 			"pretix": "partial",
 			"built": {
-				"state": "built",
+				"state": "specified",
 				"evidence": "appinfo/routes.php:46-47 (preferences#getPreference GET /api/preferences/{key}, preferences#setPreference PUT, in $extra); lib/Controller/PreferencesController.php:1-9 generic per-user IConfig-backed key/value store; lib/Repair/MigrateUserPreferences.php:18-29 documents 'pref_walkthrough_completed_version', 'pref_setup_completed_version' and 'pref_support-dialog-seen' as the values actually stored through it",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "App shell composables (useWalkthrough, CnSetupWizard, CnSupportDialog) call this endpoint from inside the shared nc-vue library, not from any file in this repo's src/"
@@ -4439,7 +4450,7 @@
 			"feature": "user-settings",
 			"featureConfidence": "medium",
 			"origin": "own-code",
-			"note": "The seed's example ('a default world per user') is not implemented, grep -rniE 'default.?(world|setting|campaign)' src/ lib/ found nothing. What's actually stored are small UI markers, not a functional per-user default-world preference.",
+			"note": "The seed's example ('a default world per user') is not implemented, grep -rniE 'default.?(world|setting|campaign)' src/ lib/ found nothing. What's actually stored are small UI markers, not a functional per-user default-world preference. Specified 2026-09-27 in openspec/changes/events-world-scope-and-upcoming (OpenSpec pass).",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/models/member.py:480-508 MemberConfig key-value store, larpmanager/urls/user.py:426-429 set_member_config, larpmanager/urls/lm.py:175 demo_hint_dismiss, dismiss_sticky_message",
 				"mylarp": "not checked: no personal preference feature documented",
@@ -4869,7 +4880,7 @@
 			"kanka": "no",
 			"pretix": "no",
 			"built": {
-				"state": "none",
+				"state": "specified",
 				"evidence": "lib/Settings/larpinq_register.json:39-905 (the ten schemas are character, player, ability, skill, item, condition, effect, event, setting, xpAward; none holds a post-event letter or survey); grep -rniE 'survey|feedback|post.?event letter' lib src: no hits",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "nothing: see evidence"
@@ -4886,7 +4897,8 @@
 				"kanka": "source read at tag 3.15: no survey or feedback model; looked in app/Models and routes/campaigns/*.php",
 				"pretix": "source read at tag v2026.7.0: looked in src/pretix/base/models/ and src/pretix/plugins/; no survey or feedback model, questions (src/pretix/base/models/items.py:1570) are asked at checkout or check-in only; a post-event mail rule (src/pretix/plugins/sendmail/models.py:223) could link an outside survey"
 			},
-			"addedOn": "2026-09-26"
+			"addedOn": "2026-09-26",
+			"note": "Specified 2026-09-27 in openspec/changes/events-post-event-survey (OpenSpec pass)."
 		},
 		{
 			"id": "prg-cross-game-points",
@@ -4929,7 +4941,7 @@
 			"kanka": "no",
 			"pretix": "yes",
 			"built": {
-				"state": "none",
+				"state": "specified",
 				"evidence": "there is no registration schema in lib/Settings/larpinq_register.json; sign-up goes to the Nextcloud Forms leaf (lib/Settings/register.d/event-signup-to-forms-leaf.json), which could carry a meal question, but nothing in larpinq reads or totals one",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "nothing: see evidence"
@@ -4946,7 +4958,8 @@
 				"kanka": "source read at tag 3.15: no meal or catering option in app/Models/Application.php:32-45 or any other model",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/items.py:1407 ItemAddOn lets a ticket offer add-on products such as meal plans at checkout (src/pretix/presale/checkoutflow.py:483 AddOnsStep), and choice questions (items.py:1570) can ask a diet option"
 			},
-			"addedOn": "2026-09-26"
+			"addedOn": "2026-09-26",
+			"note": "Specified 2026-09-27 in openspec/changes/registration-ticket-types-and-options (OpenSpec pass)."
 		},
 		{
 			"id": "rul-in-game-currency",
@@ -5206,7 +5219,7 @@
 			"kanka": "no",
 			"pretix": "yes",
 			"built": {
-				"state": "none",
+				"state": "specified",
 				"evidence": "there is no registration or group-booking object (lib/Settings/larpinq_register.json:765-905: event.players is a plain list), so there is no group registration to cancel part of; removing one participant from event.players is an edit, not a cancellation",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "nothing: see evidence"
@@ -5224,7 +5237,8 @@
 				"kanka": "source read at tag 3.15: no group or event registration model",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/services/orders.py:1587,1859 OrderChangeManager.cancel removes one position from an order, used by staff via src/pretix/control/urls.py:424 order change and by buyers via src/pretix/presale/urls.py:163 OrderPositionChange when allowed (src/pretix/base/settings.py:2055)"
 			},
-			"addedOn": "2026-09-26"
+			"addedOn": "2026-09-26",
+			"note": "Specified 2026-09-27 in openspec/changes/registration-cancel-transfer-refund (OpenSpec pass)."
 		},
 		{
 			"id": "reg-approve-registrations",
@@ -5237,7 +5251,7 @@
 			"kanka": "partial",
 			"pretix": "yes",
 			"built": {
-				"state": "none",
+				"state": "specified",
 				"evidence": "there is no registration or order object in lib/Settings/larpinq_register.json (ten schemas: character, player, ability, skill, item, condition, effect, event, setting, xpAward); sign-up goes to the Nextcloud Forms leaf (lib/Settings/register.d/event-signup-to-forms-leaf.json) and payment is not modelled; character approval exists (character.approved) but a registration is not an object",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "nothing: see evidence"
@@ -5255,7 +5269,8 @@
 				"kanka": "source read at tag 3.15: join applications are reviewed and approved into a role or rejected with a reason (routes/campaigns/campaign.php:127; routes/api.v1.php:172-175; app/Services/Campaign/ApplicationService.php:65-140); campaign-level, no payment step",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/items.py:619 require_approval on a ticket and src/pretix/base/models/orders.py:310 on the order, approved one by one or in bulk at src/pretix/control/urls.py:426,471"
 			},
-			"addedOn": "2026-09-26"
+			"addedOn": "2026-09-26",
+			"note": "Specified 2026-09-27 in openspec/changes/registration-intake-and-capacity (OpenSpec pass)."
 		},
 		{
 			"id": "reg-payment-reminders",
@@ -5268,7 +5283,7 @@
 			"kanka": "no",
 			"pretix": "yes",
 			"built": {
-				"state": "none",
+				"state": "specified",
 				"evidence": "there is no registration or order object in lib/Settings/larpinq_register.json (ten schemas: character, player, ability, skill, item, condition, effect, event, setting, xpAward); sign-up goes to the Nextcloud Forms leaf (lib/Settings/register.d/event-signup-to-forms-leaf.json) and payment is not modelled",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "nothing: see evidence"
@@ -5286,7 +5301,8 @@
 				"kanka": "source read at tag 3.15: no registration payments; payment code is Kanka's own subscriptions (routes/settings.php:93-112)",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/settings.py:2672 mail_days_order_expire_warning sends a reminder a set number of days before an unpaid order expires; 2026.7 also mails on incomplete bank transfers"
 			},
-			"addedOn": "2026-09-26"
+			"addedOn": "2026-09-26",
+			"note": "Specified 2026-09-27 in openspec/changes/registration-payments-through-shillinq (OpenSpec pass)."
 		},
 		{
 			"id": "reg-bank-statement-match",
@@ -5299,7 +5315,7 @@
 			"kanka": "no",
 			"pretix": "yes",
 			"built": {
-				"state": "none",
+				"state": "specified",
 				"evidence": "there is no registration or order object in lib/Settings/larpinq_register.json (ten schemas: character, player, ability, skill, item, condition, effect, event, setting, xpAward); sign-up goes to the Nextcloud Forms leaf (lib/Settings/register.d/event-signup-to-forms-leaf.json) and payment is not modelled",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "nothing: see evidence"
@@ -5317,7 +5333,8 @@
 				"kanka": "source read at tag 3.15: no bank statement import; campaign import accepts only zip or csv of entries (app/Http/Controllers/Campaign/ImportController.php:73)",
 				"pretix": "source read at tag v2026.7.0: src/pretix/plugins/banktransfer/views.py:68,424 imports CSV, MT940 and SEPA CAMT statements (src/pretix/plugins/banktransfer/camtimport.py) and matches them to orders"
 			},
-			"addedOn": "2026-09-26"
+			"addedOn": "2026-09-26",
+			"note": "Specified 2026-09-27 in openspec/changes/registration-payments-through-shillinq (OpenSpec pass)."
 		},
 		{
 			"id": "reg-player-credit",
@@ -5330,7 +5347,7 @@
 			"kanka": "no",
 			"pretix": "yes",
 			"built": {
-				"state": "none",
+				"state": "specified",
 				"evidence": "there is no registration or order object in lib/Settings/larpinq_register.json (ten schemas: character, player, ability, skill, item, condition, effect, event, setting, xpAward); sign-up goes to the Nextcloud Forms leaf (lib/Settings/register.d/event-signup-to-forms-leaf.json) and payment is not modelled",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "nothing: see evidence"
@@ -5348,7 +5365,8 @@
 				"kanka": "source read at tag 3.15: no credit balance; subscription billing only",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/giftcards.py:64,83 GiftCard linked to a customer account and offered at checkout; refunds can go to a gift card (src/pretix/control/views/orders.py:1086)"
 			},
-			"addedOn": "2026-09-26"
+			"addedOn": "2026-09-26",
+			"note": "Specified 2026-09-27 in openspec/changes/registration-cancel-transfer-refund (OpenSpec pass)."
 		},
 		{
 			"id": "reg-season-membership",
@@ -5576,7 +5594,7 @@
 			"kanka": "no",
 			"pretix": "no",
 			"built": {
-				"state": "none",
+				"state": "specified",
 				"evidence": "no preference or casting object among the ten schemas (lib/Settings/larpinq_register.json:39-960); characters are created by or for a player, never assigned from ranked wishes",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "nothing: see evidence"
@@ -5594,7 +5612,8 @@
 				"kanka": "source read at tag 3.15: looked in app/Models, routes/campaigns/entities.php and database/migrations for character preference or ranking, none; the join application only has free-text character_concept (app/Models/Application.php:35)",
 				"pretix": "source read at tag v2026.7.0: no character model in src/pretix/base/models/; no ranking or assignment solver anywhere in src/pretix/base/services/"
 			},
-			"addedOn": "2026-09-26"
+			"addedOn": "2026-09-26",
+			"note": "Specified 2026-09-27 in openspec/changes/events-casting-and-crew-roles (OpenSpec pass)."
 		},
 		{
 			"id": "chr-bulk-edit",
@@ -5671,7 +5690,7 @@
 			"kanka": "no",
 			"pretix": "yes",
 			"built": {
-				"state": "none",
+				"state": "specified",
 				"evidence": "there is no registration object in lib/Settings/larpinq_register.json:39-960, so there is nothing to transfer; a GM can edit event.players by hand",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "nothing: see evidence"
@@ -5689,7 +5708,8 @@
 				"kanka": "source read at tag 3.15: no registrations to transfer",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/settings.py:1929 allow_modifications and :2042 change_allow_attendee let the buyer or the attendee change the ticket holder's name and email (src/pretix/presale/views/order.py:942 OrderPositionModify); staff can do the same in the backend order view"
 			},
-			"addedOn": "2026-09-26"
+			"addedOn": "2026-09-26",
+			"note": "Specified 2026-09-27 in openspec/changes/registration-cancel-transfer-refund (OpenSpec pass)."
 		},
 		{
 			"id": "adm-role-invite",
