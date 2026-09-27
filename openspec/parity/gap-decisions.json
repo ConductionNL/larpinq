@@ -1,0 +1,562 @@
+[
+ {
+  "row": "adm-roadmap",
+  "matrix": "larpinq",
+  "decision": "defer",
+  "reason": "partial, built, no demand. One competitor rated yes (Kanka) and no demand row; the roadmap page is reachable today.",
+  "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "chr-approval",
+  "matrix": "larpinq",
+  "decision": "defer",
+  "reason": "partial, built, no demand. One competitor rated yes (LarpManager) and no demand row; the approval switch exists, only an explicit rejected state is missing.",
+  "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "chr-bulk-edit",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "Core area (characters). 2 competitors rated yes (LarpManager and Kanka).",
+  "change": "characters-status-and-bulk-edit",
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "chr-character-history",
+  "matrix": "larpinq",
+  "decision": "defer",
+  "reason": "partial, built, no demand. One competitor rated yes (LARP Portal) and no demand row; XP history and the audit trail already cover most of it.",
+  "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "chr-custom-fields",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "Core area (characters). 4 competitors rated yes (LarpManager, MyLARP, LARP Portal and Kanka).",
+  "change": "characters-custom-fields",
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "chr-faction-membership",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "Core area (characters). 2 competitors rated yes (LarpManager and Kanka).",
+  "change": "characters-factions-and-relationships",
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "chr-gm-notes",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "Rated partial and built; 2 competitors rated yes (LarpManager and Kanka), so the missing half is specified.",
+  "change": "characters-player-visibility",
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "chr-learn-other-characters",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "Core area (characters). 2 competitors rated yes (LarpManager and Kanka).",
+  "change": "characters-player-visibility",
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "chr-live-stats",
+  "matrix": "larpinq",
+  "decision": "defer",
+  "reason": "partial, built, no demand. No competitor rated yes and no demand row. The readable stat values it lacks are shown by the panel of characters-stat-sheet-panel (row chr-stat-breakdown), so this row lifts when that change ships.",
+  "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "chr-multiple-builds",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "Core area (characters). One competitor rated yes (LARP Portal). Demand: featureRequest https://app.kanka.io/roadmap/51.",
+  "change": "characters-multiple-builds",
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "chr-player-edits-own",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "Rated partial and built; 4 competitors rated yes (LarpManager, MyLARP, LARP Portal and Kanka), so the missing half is specified.",
+  "change": "characters-player-visibility",
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "chr-player-groups",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "Core area (characters). 2 competitors rated yes (LarpManager and LARP Portal).",
+  "change": "characters-factions-and-relationships",
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "chr-relationships",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "Core area (characters). 3 competitors rated yes (LarpManager, LARP Portal and Kanka).",
+  "change": "characters-factions-and-relationships",
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "chr-secrets-plots",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "Rated partial and built; 2 competitors rated yes (LarpManager and Kanka), so the missing half is specified.",
+  "change": "characters-plot-threads-and-writing",
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "chr-stat-breakdown",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "Core area (characters). No competitor rated yes. The matrix had built.state built with a no rating; the engine computes the per-source audit but no response carries it. The archived larping-skill-widget change specified a stat breakdown panel that never shipped.",
+  "change": "characters-stat-sheet-panel",
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "chr-status-lifecycle",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "Core area (characters). One competitor rated yes (LARP Portal).",
+  "change": "characters-status-and-bulk-edit",
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "chr-writing-progress",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "Core area (characters). One competitor rated yes (LarpManager).",
+  "change": "characters-plot-threads-and-writing",
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "com-announcements",
+  "matrix": "larpinq",
+  "decision": "defer",
+  "reason": "One competitor rated yes (pretix), no demand row, outside the core area. The open leaf-integrations change gives each world a Talk room, which is adjacent but not an announcement to all players.",
+  "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "com-comment-threads",
+  "matrix": "larpinq",
+  "decision": "defer",
+  "reason": "No competitor rated yes; the Kanka feature request alone does not meet the rule, which asks for a feature request plus one competitor yes. Outside the core area.",
+  "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "com-downtime-actions",
+  "matrix": "larpinq",
+  "decision": "defer",
+  "reason": "One competitor rated yes (LARP Portal), no demand row, outside the core area.",
+  "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "com-follow-updates",
+  "matrix": "larpinq",
+  "decision": "defer",
+  "reason": "No competitor rated yes; the Kanka feature request alone does not meet the rule, which asks for a feature request plus one competitor yes. Outside the core area.",
+  "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "com-in-character-messages",
+  "matrix": "larpinq",
+  "decision": "defer",
+  "reason": "No competitor rated yes, no demand row, outside the core area.",
+  "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "com-live-updates",
+  "matrix": "larpinq",
+  "decision": "defer",
+  "reason": "No competitor rated yes, no demand row, outside the core area. The open adopt-live-updates-ui change covers the skill tree only and lists the event pages as out of scope.",
+  "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "com-mail-outbox",
+  "matrix": "larpinq",
+  "decision": "defer",
+  "reason": "One competitor rated yes (pretix); its only demand row is a changelog, which is competitor evidence rather than demand. Outside the core area.",
+  "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "evt-accommodation",
+  "matrix": "larpinq",
+  "decision": "defer",
+  "reason": "One competitor rated yes (LARP Portal), no demand row, outside the core area.",
+  "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "evt-checkin-questions",
+  "matrix": "larpinq",
+  "decision": "defer",
+  "reason": "One competitor rated yes (pretix); its only demand row is a changelog, which is competitor evidence rather than demand. Outside the core area.",
+  "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "evt-event-status",
+  "matrix": "larpinq",
+  "decision": "defer",
+  "reason": "One competitor rated yes (LarpManager), no demand row, outside the core area.",
+  "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "evt-milestones",
+  "matrix": "larpinq",
+  "decision": "existing",
+  "reason": "The open change leaf-integrations puts the Deck leaf on the event as the game master's preparation board; Deck cards carry a due date and move through stacks, which covers organising milestones with a status and a deadline.",
+  "change": "leaf-integrations",
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "evt-offline-checkin",
+  "matrix": "larpinq",
+  "decision": "defer",
+  "reason": "One competitor rated yes (LarpManager), no demand row, outside the core area.",
+  "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "evt-on-site-presence",
+  "matrix": "larpinq",
+  "decision": "defer",
+  "reason": "partial, built, no demand. One competitor rated yes (pretix) and no demand row; check-in exists, only check-out is missing.",
+  "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "evt-props-warehouse",
+  "matrix": "larpinq",
+  "decision": "defer",
+  "reason": "One competitor rated yes (LarpManager); its only demand row is a changelog. Outside the core area. The Deck board of leaf-integrations holds preparation tasks, not a props store with locations.",
+  "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "evt-schedule-within-event",
+  "matrix": "larpinq",
+  "decision": "defer",
+  "reason": "No competitor rated yes, no demand row, outside the core area.",
+  "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "evt-wristband-checkin",
+  "matrix": "larpinq",
+  "decision": "defer",
+  "reason": "One competitor rated yes (pretix); its only demand row is a changelog. Outside the core area.",
+  "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "ins-attendance-trend",
+  "matrix": "larpinq",
+  "decision": "defer",
+  "reason": "No competitor rated yes, no demand row, outside the core area.",
+  "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "ins-custom-report",
+  "matrix": "larpinq",
+  "decision": "defer",
+  "reason": "No competitor rated yes, no demand row, outside the core area.",
+  "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "ins-event-finance-report",
+  "matrix": "larpinq",
+  "decision": "decided-no",
+  "reason": "hydra ADR-107 decision 2: a domain app classifies money and does not sum it or report on it; shillinq is the only ledger and reporter. Income and costs per event belong in a shillinq report over the payments larpinq tags with the event (see registration-payments-through-shillinq).",
+  "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "ins-nc-dashboard-widget",
+  "matrix": "larpinq",
+  "decision": "defer",
+  "reason": "No competitor rated yes, no demand row, outside the core area. The larping-skill-widget spec names a Nextcloud dashboard widget only as an implementation note, not as a requirement.",
+  "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "ins-question-answer-stats",
+  "matrix": "larpinq",
+  "decision": "defer",
+  "reason": "One competitor rated yes (pretix); its only demand row is a changelog. Outside the core area.",
+  "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "ins-scheduled-exports",
+  "matrix": "larpinq",
+  "decision": "defer",
+  "reason": "One competitor rated yes (pretix); its only demand row is a changelog. Outside the core area.",
+  "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "ply-age-consent",
+  "matrix": "larpinq",
+  "decision": "defer",
+  "reason": "No competitor rated yes, no demand row, outside the core area.",
+  "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "ply-notification-preferences",
+  "matrix": "larpinq",
+  "decision": "defer",
+  "reason": "One competitor rated yes (LARP Portal), no demand row, outside the core area.",
+  "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "ply-privacy-export",
+  "matrix": "larpinq",
+  "decision": "defer",
+  "reason": "No competitor rated yes, no demand row, outside the core area. hydra ADR-047 gives the data-subject export and erasure workflow to OpenRegister; players-care-details-and-erasure declares the player schemas in its scope.",
+  "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "prg-cross-game-points",
+  "matrix": "larpinq",
+  "decision": "defer",
+  "reason": "One competitor rated yes (LARP Portal), no demand row, outside the core area.",
+  "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "prg-gm-override",
+  "matrix": "larpinq",
+  "decision": "defer",
+  "reason": "partial, built, no demand. No competitor rated yes and no demand row. The server half is built; the page half was deferred in the archived skill-requirement-enforcement change (tasks 4.1 to 4.5).",
+  "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "prg-level-up",
+  "matrix": "larpinq",
+  "decision": "defer",
+  "reason": "No competitor rated yes, no demand row, outside the core area.",
+  "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "prg-player-spends-xp",
+  "matrix": "larpinq",
+  "decision": "defer",
+  "reason": "No competitor rated yes, no demand row, outside the core area.",
+  "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "prg-xp-balance",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "Rated partial and built; 2 competitors rated yes (LarpManager and LARP Portal), so the missing half is specified.",
+  "change": "characters-stat-sheet-panel",
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "prg-xp-caps",
+  "matrix": "larpinq",
+  "decision": "defer",
+  "reason": "One competitor rated yes (LARP Portal), no demand row, outside the core area.",
+  "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "prg-xp-for-non-attendance",
+  "matrix": "larpinq",
+  "decision": "defer",
+  "reason": "One competitor rated yes (LarpManager), no demand row, outside the core area.",
+  "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "prt-badges",
+  "matrix": "larpinq",
+  "decision": "defer",
+  "reason": "One competitor rated yes (pretix), no demand row, outside the core area.",
+  "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "prt-bulk-print",
+  "matrix": "larpinq",
+  "decision": "defer",
+  "reason": "One competitor rated yes (LarpManager), no demand row, outside the core area.",
+  "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "prt-character-pdf",
+  "matrix": "larpinq",
+  "decision": "existing",
+  "reason": "Rated partial because the download endpoint has no caller in the frontend. The open change larpinq-pdf-frontend-download-action adds that missing half: a download action on the character detail page with a template picker (PDF-040 to PDF-046).",
+  "change": "larpinq-pdf-frontend-download-action",
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "prt-item-cards",
+  "matrix": "larpinq",
+  "decision": "defer",
+  "reason": "No competitor rated yes, no demand row, outside the core area.",
+  "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "prt-runsheet",
+  "matrix": "larpinq",
+  "decision": "defer",
+  "reason": "partial, built, no demand. No competitor rated yes and no demand row. The download action was deferred in the archived event-runsheet-export change (tasks 2.1 to 2.3), and the open larpinq-runsheet-scoped-cast-query fixes its query.",
+  "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "prt-templates",
+  "matrix": "larpinq",
+  "decision": "existing",
+  "reason": "The open change larpinq-pdf-frontend-download-action opens a modal that lists the DocuDesk templates in the larpingapp namespace and lets the user choose one before the download (PDF-041, PDF-042), which is the template choice this row asks for.",
+  "change": "larpinq-pdf-frontend-download-action",
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "reg-instalments",
+  "matrix": "larpinq",
+  "decision": "defer",
+  "reason": "One competitor rated yes (LarpManager); its only demand row is a changelog. Outside the core area.",
+  "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "reg-season-membership",
+  "matrix": "larpinq",
+  "decision": "defer",
+  "reason": "One competitor rated yes (pretix), no demand row, outside the core area.",
+  "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "reg-terms-consent",
+  "matrix": "larpinq",
+  "decision": "defer",
+  "reason": "One competitor rated yes (pretix), no demand row, outside the core area.",
+  "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "rul-crafting",
+  "matrix": "larpinq",
+  "decision": "defer",
+  "reason": "No competitor rated yes, no demand row, outside the core area.",
+  "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "rul-dice-roller",
+  "matrix": "larpinq",
+  "decision": "defer",
+  "reason": "No competitor rated yes, no demand row, outside the core area.",
+  "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "rul-in-game-currency",
+  "matrix": "larpinq",
+  "decision": "defer",
+  "reason": "partial, built, no demand. One competitor rated yes (MyLARP) and no demand row; money per character exists, spending it in a shop does not. ADR-001 keeps the currency in larpinq.",
+  "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "rul-item-tags",
+  "matrix": "larpinq",
+  "decision": "defer",
+  "reason": "No competitor rated yes, no demand row, outside the core area.",
+  "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "rul-unique-condition-not-enforced",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "Marked specified with no change directory. No open or archived change enforces the unique flag, so per the addendum this pass writes the change rather than leave the claim.",
+  "change": "rules-unique-holder-enforcement",
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "rul-unique-item-not-enforced",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "Marked specified with no change directory. No open or archived change enforces the unique flag, so per the addendum this pass writes the change rather than leave the claim.",
+  "change": "rules-unique-holder-enforcement",
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "wld-copy-ruleset",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "Core area (worlds). 2 competitors rated yes (LarpManager and Kanka).",
+  "change": "worlds-copy-ruleset",
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "wld-lore-wiki",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "Core area (worlds). 2 competitors rated yes (MyLARP and Kanka).",
+  "change": "worlds-lore-pages",
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "wld-maps",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "Core area (worlds). One competitor rated yes (Kanka).",
+  "change": "worlds-maps",
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "wld-scheduled-reveal",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "Core area (worlds). No competitor rated yes. Demand: featureRequest https://app.kanka.io/roadmap/202.",
+  "change": "worlds-lore-pages",
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "wld-share-with-players",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "Core area (worlds). 3 competitors rated yes (LarpManager, LARP Portal and Kanka).",
+  "change": "worlds-lore-pages",
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "wld-timeline",
+  "matrix": "larpinq",
+  "decision": "defer",
+  "reason": "partial, built, no demand. One competitor rated yes (Kanka) and no demand row; a date-sorted event list per world exists.",
+  "change": null,
+  "decidedOn": "2026-09-27"
+ }
+]
