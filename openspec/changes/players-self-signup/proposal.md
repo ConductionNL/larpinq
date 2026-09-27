@@ -76,8 +76,8 @@ None.
 
 ## Cross-Project Dependencies
 
-portaliq (ADR-046 contract, `openspec/specs/...` contract v2.1 on portaliq
-development): create actions with a writer-stamped `scopeField`, `scopeClaim`
+portaliq (ADR-046, spec `portal-contribution-contract` on portaliq
+development, contract v2.1): create actions with a writer-stamped `scopeField`, `scopeClaim`
 collections resolved from `portalAccount.claims`, and self-registration
 (`POST /portal/api/identity/register`, change `identity-ways-in-screens`).
 The claim write by an owning app through a typed event with a result slot is
