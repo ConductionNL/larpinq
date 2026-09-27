@@ -8,6 +8,14 @@
   "decidedOn": "2026-09-27"
  },
  {
+  "row": "adm-user-preferences",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "Rated partial and built; 3 competitors rated yes (LarpManager, LARP Portal and Kanka), so the missing half is specified. The archived setting-management change deferred the active-world switcher that would store a default world per user (tasks 3.1 to 3.4).",
+  "change": "events-world-scope-and-upcoming",
+  "decidedOn": "2026-09-27"
+ },
+ {
   "row": "chr-approval",
   "matrix": "larpinq",
   "decision": "defer",
@@ -21,6 +29,14 @@
   "decision": "build",
   "reason": "Core area (characters). 2 competitors rated yes (LarpManager and Kanka).",
   "change": "characters-status-and-bulk-edit",
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "chr-casting-preferences",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "Core area (characters). One competitor rated yes (LarpManager).",
+  "change": "events-casting-and-crew-roles",
   "decidedOn": "2026-09-27"
  },
  {
@@ -192,6 +208,14 @@
   "decidedOn": "2026-09-27"
  },
  {
+  "row": "com-mail-participants",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "2 competitors rated yes (LarpManager and pretix).",
+  "change": "communication-mail-participants",
+  "decidedOn": "2026-09-27"
+ },
+ {
   "row": "evt-accommodation",
   "matrix": "larpinq",
   "decision": "defer",
@@ -200,11 +224,35 @@
   "decidedOn": "2026-09-27"
  },
  {
+  "row": "evt-attendance-drives-xp",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "2 competitors rated yes (LarpManager and LARP Portal). The archived event-checkin-roster change deferred tying the batch award to attendance (task T7).",
+  "change": "events-xp-batch-award",
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "evt-capacity",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "2 competitors rated yes (LarpManager and pretix). The archived event-signup-to-forms-leaf change specified capacity in larpinq; no code backs it.",
+  "change": "registration-intake-and-capacity",
+  "decidedOn": "2026-09-27"
+ },
+ {
   "row": "evt-checkin-questions",
   "matrix": "larpinq",
   "decision": "defer",
   "reason": "One competitor rated yes (pretix); its only demand row is a changelog, which is competitor evidence rather than demand. Outside the core area.",
   "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "evt-crew-roles",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "3 competitors rated yes (LarpManager, MyLARP and LARP Portal).",
+  "change": "events-casting-and-crew-roles",
   "decidedOn": "2026-09-27"
  },
  {
@@ -240,6 +288,14 @@
   "decidedOn": "2026-09-27"
  },
  {
+  "row": "evt-post-event-survey",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "2 competitors rated yes (LarpManager and LARP Portal).",
+  "change": "events-post-event-survey",
+  "decidedOn": "2026-09-27"
+ },
+ {
   "row": "evt-props-warehouse",
   "matrix": "larpinq",
   "decision": "defer",
@@ -248,11 +304,35 @@
   "decidedOn": "2026-09-27"
  },
  {
+  "row": "evt-qr-checkin",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "2 competitors rated yes (LarpManager and pretix).",
+  "change": "events-qr-checkin",
+  "decidedOn": "2026-09-27"
+ },
+ {
   "row": "evt-schedule-within-event",
   "matrix": "larpinq",
   "decision": "defer",
   "reason": "No competitor rated yes, no demand row, outside the core area.",
   "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "evt-upcoming-list",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "Rated partial and built; 4 competitors rated yes (LarpManager, LARP Portal, Kanka and pretix), so the missing half is specified.",
+  "change": "events-world-scope-and-upcoming",
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "evt-world-scoping",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "Rated partial and built; 4 competitors rated yes (LarpManager, MyLARP, LARP Portal and Kanka), so the missing half is specified. The archived setting-management change added the event.setting field but no page sets it.",
+  "change": "events-world-scope-and-upcoming",
   "decidedOn": "2026-09-27"
  },
  {
@@ -333,6 +413,14 @@
   "decision": "defer",
   "reason": "No competitor rated yes, no demand row, outside the core area. hydra ADR-047 gives the data-subject export and erasure workflow to OpenRegister; players-care-details-and-erasure declares the player schemas in its scope.",
   "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "prg-award-xp-bulk",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "One competitor rated yes (LarpManager). The archived event-xp-award-workflow change specified a batch award on the event page and deferred it (tasks 3.1 to 3.4); the row is still none, so it is treated as build.",
+  "change": "events-xp-batch-award",
   "decidedOn": "2026-09-27"
  },
  {
@@ -440,11 +528,107 @@
   "decidedOn": "2026-09-27"
  },
  {
+  "row": "reg-approve-registrations",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "3 competitors rated yes (LarpManager, LARP Portal and pretix).",
+  "change": "registration-intake-and-capacity",
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "reg-bank-statement-match",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "2 competitors rated yes (LarpManager and pretix).",
+  "change": "registration-payments-through-shillinq",
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "reg-choose-character",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "2 competitors rated yes (LarpManager and LARP Portal).",
+  "change": "registration-intake-and-capacity",
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "reg-discount-codes",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "2 competitors rated yes (LarpManager and pretix).",
+  "change": "registration-ticket-types-and-options",
+  "decidedOn": "2026-09-27"
+ },
+ {
   "row": "reg-instalments",
   "matrix": "larpinq",
   "decision": "defer",
   "reason": "One competitor rated yes (LarpManager); its only demand row is a changelog. Outside the core area.",
   "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "reg-invoices",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "2 competitors rated yes (LarpManager and pretix).",
+  "change": "registration-payments-through-shillinq",
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "reg-meal-choice",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "3 competitors rated yes (LarpManager, LARP Portal and pretix).",
+  "change": "registration-ticket-types-and-options",
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "reg-online-payment",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "2 competitors rated yes (LarpManager and pretix).",
+  "change": "registration-payments-through-shillinq",
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "reg-partial-cancel",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "One competitor rated yes (pretix). Demand: featureRequest https://github.com/pretix/pretix/issues/1791.",
+  "change": "registration-cancel-transfer-refund",
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "reg-payment-reminders",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "2 competitors rated yes (LarpManager and pretix).",
+  "change": "registration-payments-through-shillinq",
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "reg-payment-status",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "2 competitors rated yes (LarpManager and pretix).",
+  "change": "registration-payments-through-shillinq",
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "reg-player-credit",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "2 competitors rated yes (LarpManager and pretix).",
+  "change": "registration-cancel-transfer-refund",
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "reg-refunds",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "2 competitors rated yes (LarpManager and pretix).",
+  "change": "registration-cancel-transfer-refund",
   "decidedOn": "2026-09-27"
  },
  {
@@ -456,11 +640,43 @@
   "decidedOn": "2026-09-27"
  },
  {
+  "row": "reg-signup-form",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "Rated partial and built; 3 competitors rated yes (LarpManager, LARP Portal and pretix), so the missing half is specified.",
+  "change": "registration-intake-and-capacity",
+  "decidedOn": "2026-09-27"
+ },
+ {
   "row": "reg-terms-consent",
   "matrix": "larpinq",
   "decision": "defer",
   "reason": "One competitor rated yes (pretix), no demand row, outside the core area.",
   "change": null,
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "reg-tickets",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "2 competitors rated yes (LarpManager and pretix).",
+  "change": "registration-ticket-types-and-options",
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "reg-transfer",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "2 competitors rated yes (LarpManager and pretix).",
+  "change": "registration-cancel-transfer-refund",
+  "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "reg-waitlist",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "2 competitors rated yes (LarpManager and pretix). The archived event-signup-to-forms-leaf change specified the waiting list in larpinq; no code backs it.",
+  "change": "registration-intake-and-capacity",
   "decidedOn": "2026-09-27"
  },
  {
