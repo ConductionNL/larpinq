@@ -266,7 +266,10 @@ OC.L10N.register(
         "Experience awarded, and who earned it.": "Experiența acordată și cine a câștigat-o.",
         "How much the world holds, and what characters actually carry.": "Cât conține lumea și ce poartă de fapt personajele.",
         "Store": "Magazin",
-        "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Instalați registre, scheme și fluxuri publicate de alte organizații."
+        "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Instalați registre, scheme și fluxuri publicate de alte organizații.",
+        "%1$s is already held by %2$s. Remove it there first.": "%1$s este deja deținut de %2$s. Elimină-l mai întâi de acolo.",
+        "%1$s is already on %2$s. Remove it there first.": "%1$s este deja pe %2$s. Elimină-l mai întâi de acolo.",
+        "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s poate avea un singur deținător, iar acum îl dețin %2$s. Elimină-l mai întâi de la toți în afară de unul."
     },
     "nplurals=2; plural=(n != 1);"
 )

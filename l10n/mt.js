@@ -266,7 +266,10 @@ OC.L10N.register(
         "Experience awarded, and who earned it.": "L-esperjenza mogħtija u min qalagħha.",
         "How much the world holds, and what characters actually carry.": "Kemm iżomm id-dinja, u x'iġorru tabilħaqq il-karattri.",
         "Store": "Ħanut",
-        "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Installa reġistri, skemi u flussi ppubblikati minn organizzazzjonijiet oħra."
+        "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Installa reġistri, skemi u flussi ppubblikati minn organizzazzjonijiet oħra.",
+        "%1$s is already held by %2$s. Remove it there first.": "%1$s diġà għandu %2$s. Neħħih minn hemm l-ewwel.",
+        "%1$s is already on %2$s. Remove it there first.": "%1$s diġà jinsab fuq %2$s. Neħħih minn hemm l-ewwel.",
+        "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s jista' jkollu detentur wieħed biss, u issa għandhom %2$s. Neħħih mingħand kulħadd ħlief wieħed l-ewwel."
     },
     "nplurals=2; plural=(n != 1);"
 )

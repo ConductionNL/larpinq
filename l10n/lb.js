@@ -266,7 +266,10 @@ OC.L10N.register(
         "Experience awarded, and who earned it.": "Vergiff Erfarung a wien se verdéngt huet.",
         "How much the world holds, and what characters actually carry.": "Wéi vill d'Welt hält a wat Charakteren wierklech droen.",
         "Store": "Buttek",
-        "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Installéiert Registeren, Schemaen a Flows déi aner Organisatiounen publizéiert hunn."
+        "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Installéiert Registeren, Schemaen a Flows déi aner Organisatiounen publizéiert hunn.",
+        "%1$s is already held by %2$s. Remove it there first.": "%1$s gehéiert schonn %2$s. Huel et do fir d'éischt ewech.",
+        "%1$s is already on %2$s. Remove it there first.": "%1$s läit schonn op %2$s. Huel et do fir d'éischt ewech.",
+        "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s kann nëmmen ee Besëtzer hunn, an elo hunn %2$s et. Huel et fir d'éischt jidderengem ewech bis op een."
     },
     "nplurals=2; plural=(n != 1);"
 )

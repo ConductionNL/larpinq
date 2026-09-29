@@ -266,7 +266,10 @@ OC.L10N.register(
         "Experience awarded, and who earned it.": "Η απονεμημένη εμπειρία και ποιος την κέρδισε.",
         "How much the world holds, and what characters actually carry.": "Πόσα περιέχει ο κόσμος και τι κουβαλούν πραγματικά οι χαρακτήρες.",
         "Store": "Κατάστημα",
-        "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Εγκαταστήστε μητρώα, σχήματα και ροές που έχουν δημοσιεύσει άλλοι οργανισμοί."
+        "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Εγκαταστήστε μητρώα, σχήματα και ροές που έχουν δημοσιεύσει άλλοι οργανισμοί.",
+        "%1$s is already held by %2$s. Remove it there first.": "Το %1$s το έχει ήδη ο/η %2$s. Αφαιρέστε το πρώτα από εκεί.",
+        "%1$s is already on %2$s. Remove it there first.": "Το %1$s βρίσκεται ήδη στον/στην %2$s. Αφαιρέστε το πρώτα από εκεί.",
+        "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "Το %1$s μπορεί να έχει μόνο έναν κάτοχο, και τώρα το έχουν οι %2$s. Αφαιρέστε το πρώτα από όλους εκτός από έναν."
     },
     "nplurals=2; plural=(n != 1);"
 )
