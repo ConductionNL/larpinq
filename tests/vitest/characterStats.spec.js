@@ -21,12 +21,10 @@ describe('fetchCharacterStats', () => {
 	})
 
 	it('reads the sheet from the stats endpoint', async () => {
-		globalThis.fetch = vi
-			.fn()
-			.mockResolvedValueOnce({
-				ok: true,
-				json: async () => ({ abilities: [{ id: 'str' }], xp: { left: 30 } }),
-			})
+		globalThis.fetch = vi.fn().mockResolvedValueOnce({
+			ok: true,
+			json: async () => ({ abilities: [{ id: 'str' }], xp: { left: 30 } }),
+		})
 		const sheet = await fetchCharacterStats('abc')
 		expect(globalThis.fetch.mock.calls[0][0]).toBe(
 			'/index.php/apps/larpinq/api/characters/abc/stats',
