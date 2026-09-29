@@ -60,10 +60,27 @@ async function patch(type: string, id: string, body: Record<string, unknown>) {
 
 test.describe('rules-unique-holder-enforcement', () => {
 	test('a held unique item cannot go to a second character, and the holder is named', async () => {
-		const crown = ledger.track('item', await createObject(api, 'item', { name: fixtureName('Crown of Aldmoor'), unique: true }))
+		const crown = ledger.track(
+			'item',
+			await createObject(api, 'item', {
+				name: fixtureName('Crown of Aldmoor'),
+				unique: true,
+			}),
+		)
 		const queenName = fixtureName('Queen Isolde')
-		ledger.track('character', await createObject(api, 'character', { name: queenName, items: [crown] }))
-		const bertram = ledger.track('character', await createObject(api, 'character', { name: fixtureName('Sir Bertram') }))
+		ledger.track(
+			'character',
+			await createObject(api, 'character', {
+				name: queenName,
+				items: [crown],
+			}),
+		)
+		const bertram = ledger.track(
+			'character',
+			await createObject(api, 'character', {
+				name: fixtureName('Sir Bertram'),
+			}),
+		)
 
 		const res = await patch('character', bertram, { items: [crown] })
 
@@ -74,9 +91,24 @@ test.describe('rules-unique-holder-enforcement', () => {
 	})
 
 	test('a non-unique item goes to many characters', async () => {
-		const potion = ledger.track('item', await createObject(api, 'item', { name: fixtureName('Healing potion'), unique: false }))
-		ledger.track('character', await createObject(api, 'character', { name: fixtureName('Queen'), items: [potion] }))
-		const bertram = ledger.track('character', await createObject(api, 'character', { name: fixtureName('Bertram') }))
+		const potion = ledger.track(
+			'item',
+			await createObject(api, 'item', {
+				name: fixtureName('Healing potion'),
+				unique: false,
+			}),
+		)
+		ledger.track(
+			'character',
+			await createObject(api, 'character', {
+				name: fixtureName('Queen'),
+				items: [potion],
+			}),
+		)
+		const bertram = ledger.track(
+			'character',
+			await createObject(api, 'character', { name: fixtureName('Bertram') }),
+		)
 
 		const res = await patch('character', bertram, { items: [potion] })
 
@@ -84,10 +116,25 @@ test.describe('rules-unique-holder-enforcement', () => {
 	})
 
 	test('a unique condition rests on one character', async () => {
-		const curse = ledger.track('condition', await createObject(api, 'condition', { name: fixtureName('Curse of the Ashen King'), unique: true }))
+		const curse = ledger.track(
+			'condition',
+			await createObject(api, 'condition', {
+				name: fixtureName('Curse of the Ashen King'),
+				unique: true,
+			}),
+		)
 		const mirelaName = fixtureName('Mirela')
-		ledger.track('character', await createObject(api, 'character', { name: mirelaName, conditions: [curse] }))
-		const tomas = ledger.track('character', await createObject(api, 'character', { name: fixtureName('Tomas') }))
+		ledger.track(
+			'character',
+			await createObject(api, 'character', {
+				name: mirelaName,
+				conditions: [curse],
+			}),
+		)
+		const tomas = ledger.track(
+			'character',
+			await createObject(api, 'character', { name: fixtureName('Tomas') }),
+		)
 
 		const res = await patch('character', tomas, { conditions: [curse] })
 
