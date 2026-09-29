@@ -192,11 +192,16 @@ class UniqueHolderListener implements IEventListener {
 					continue;
 				}
 
+				$exceptCharacter = null;
+				if ($characterId !== '') {
+					$exceptCharacter = $characterId;
+				}
+
 				$holders = $this->holders->otherHolders(
 					kind: $kind,
 					id: $objectId,
 					objectSide: $this->idNormaliser->normalise(value: $object['characters'] ?? []),
-					exceptCharacter: $characterId === '' ? null : $characterId,
+					exceptCharacter: $exceptCharacter,
 					max: 1
 				);
 				if ($holders === []) {

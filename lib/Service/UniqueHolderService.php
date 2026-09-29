@@ -214,10 +214,17 @@ class UniqueHolderService {
 		$id = $object['id'] ?? null;
 		if (is_string($id) === false || $id === '') {
 			$self = $object['@self'] ?? [];
-			$id = is_array($self) === true ? ($self['id'] ?? '') : '';
+			$id = '';
+			if (is_array($self) === true) {
+				$id = $self['id'] ?? '';
+			}
 		}
 
-		return is_scalar($id) === true ? (string)$id : '';
+		if (is_scalar($id) === false) {
+			return '';
+		}
+
+		return (string)$id;
 	}//end objectId()
 
 	/**

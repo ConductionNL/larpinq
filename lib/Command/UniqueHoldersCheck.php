@@ -62,7 +62,7 @@ class UniqueHoldersCheck extends Command {
 	 * @spec openspec/specs/rpg-system/spec.md
 	 */
 	protected function configure(): void {
-		$this->setName('larpinq:unique-holders:check')
+		$this->setName(name: 'larpinq:unique-holders:check')
 			->setDescription('List unique items and conditions that more than one character holds');
 	}//end configure()
 

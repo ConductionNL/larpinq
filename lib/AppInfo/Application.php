@@ -151,11 +151,12 @@ class Application extends App implements IBootstrap {
 	 * @spec openspec/specs/rpg-system/spec.md
 	 */
 	private function registerUniqueHolderListener(IRegistrationContext $context): void {
-		foreach (['ObjectCreatingEvent', 'ObjectUpdatingEvent'] as $eventName) {
-			$eventClass = 'OCA\\OpenRegister\\Event\\' . $eventName;
-			if (class_exists($eventClass) === true) {
-				$context->registerEventListener($eventClass, UniqueHolderListener::class);
-			}
+		if (class_exists('OCA\OpenRegister\Event\ObjectCreatingEvent') === true) {
+			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', UniqueHolderListener::class);
+		}
+
+		if (class_exists('OCA\OpenRegister\Event\ObjectUpdatingEvent') === true) {
+			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatingEvent', UniqueHolderListener::class);
 		}
 	}//end registerUniqueHolderListener()
 
