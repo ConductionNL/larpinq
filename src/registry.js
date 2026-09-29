@@ -23,6 +23,7 @@
  */
 
 import CharacterPdfDownloadDialog from './dialogs/CharacterPdfDownloadDialog.vue'
+import CharacterStatSheet from './views/CharacterStatSheet.vue'
 import EventRoster from './views/EventRoster.vue'
 import FlowDetailSidebar from './views/flows/FlowDetailSidebar.vue'
 import ObjectDetail from './views/ObjectDetail.vue'
@@ -52,6 +53,7 @@ export default {
 	// (event-checkin-roster). Not a kind:"widget" (no custom-widget-ratchet
 	// entry); it renders inside the CnObjectSidebar tab strip.
 	EventRoster: { kind: 'section', component: EventRoster },
+	CharacterStatSheet: { kind: 'section', component: CharacterStatSheet },
 	// Skill-tree visualization — a read-only type:"custom" page
 	// (skill-tree-visualization). Resolved by CnPageRenderer as the page body
 	// component for the SkillTree manifest page.
