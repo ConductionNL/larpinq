@@ -270,7 +270,13 @@ OC.L10N.register(
         "%1$s is already held by %2$s. Remove it there first.": "%1$s eies allerede av %2$s. Fjern det der først.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s hviler allerede på %2$s. Fjern det der først.",
         "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s kan bare ha én eier, og %2$s har det nå. Fjern det først fra alle unntatt én.",
-        "Cast": "Rolleliste"
+        "Cast": "Rolleliste",
+        "Download as PDF": "Last ned som PDF",
+        "Loading templates": "Laster maler",
+        "Template": "Mal",
+        "PDF export needs the document app. Ask an administrator to enable it.": "PDF-eksport krever dokumentappen. Be en administrator om å aktivere den.",
+        "Only administrators can download character sheets for now.": "Foreløpig kan bare administratorer laste ned rollearkene.",
+        "There is no character sheet template yet. Add one in the document app.": "Det finnes ingen mal for rolleark ennå. Legg til en i dokumentappen."
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -269,7 +269,13 @@
         "%1$s is already held by %2$s. Remove it there first.": "%1$s már %2$s birtokában van. Előbb vedd el onnan.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s már %2$s karakteren van. Előbb vedd el onnan.",
         "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s csak egy birtokosé lehet, de most %2$s birtokolja. Előbb egy kivételével mindenkitől vedd el.",
-        "Cast": "Szereposztás"
+        "Cast": "Szereposztás",
+        "Download as PDF": "Letöltés PDF-ként",
+        "Loading templates": "Sablonok betöltése",
+        "Template": "Sablon",
+        "PDF export needs the document app. Ask an administrator to enable it.": "A PDF-exporthoz a dokumentumalkalmazás kell. Kérd meg a rendszergazdát, hogy kapcsolja be.",
+        "Only administrators can download character sheets for now.": "Egyelőre csak rendszergazdák tölthetnek le karakterlapokat.",
+        "There is no character sheet template yet. Add one in the document app.": "Még nincs karakterlap-sablon. Adj hozzá egyet a dokumentumalkalmazásban."
     },
     "plurals": {}
 }

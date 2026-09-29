@@ -270,7 +270,13 @@ OC.L10N.register(
         "%1$s is already held by %2$s. Remove it there first.": "%1$s on jo hahmolla %2$s. Poista se sieltä ensin.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s on jo hahmolla %2$s. Poista se sieltä ensin.",
         "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s voi olla vain yhdellä hahmolla, ja nyt se on hahmoilla %2$s. Poista se ensin kaikilta paitsi yhdeltä.",
-        "Cast": "Näyttelijät"
+        "Cast": "Näyttelijät",
+        "Download as PDF": "Lataa PDF:nä",
+        "Loading templates": "Ladataan pohjia",
+        "Template": "Pohja",
+        "PDF export needs the document app. Ask an administrator to enable it.": "PDF-vienti tarvitsee asiakirjasovelluksen. Pyydä ylläpitäjää ottamaan se käyttöön.",
+        "Only administrators can download character sheets for now.": "Toistaiseksi vain ylläpitäjät voivat ladata hahmolomakkeita.",
+        "There is no character sheet template yet. Add one in the document app.": "Hahmolomakkeelle ei ole vielä pohjaa. Lisää sellainen asiakirjasovelluksessa."
     },
     "nplurals=2; plural=(n != 1);"
 )

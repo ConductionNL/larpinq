@@ -269,7 +269,13 @@
         "%1$s is already held by %2$s. Remove it there first.": "%1$s jau priklauso %2$s. Pirmiausia pašalinkite jį iš ten.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s jau uždėta %2$s. Pirmiausia pašalinkite jį iš ten.",
         "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s gali turėti tik vieną turėtoją, o dabar jį turi %2$s. Pirmiausia pašalinkite jį visiems, išskyrus vieną.",
-        "Cast": "Vaidmenys"
+        "Cast": "Vaidmenys",
+        "Download as PDF": "Atsisiųsti kaip PDF",
+        "Loading templates": "Įkeliami šablonai",
+        "Template": "Šablonas",
+        "PDF export needs the document app. Ask an administrator to enable it.": "PDF eksportui reikia dokumentų programėlės. Paprašykite administratoriaus ją įjungti.",
+        "Only administrators can download character sheets for now.": "Kol kas veikėjų lapus gali atsisiųsti tik administratoriai.",
+        "There is no character sheet template yet. Add one in the document app.": "Veikėjo lapo šablono dar nėra. Pridėkite jį dokumentų programėlėje."
     },
     "plurals": {}
 }

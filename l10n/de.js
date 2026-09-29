@@ -270,7 +270,13 @@ OC.L10N.register(
         "%1$s is already held by %2$s. Remove it there first.": "%1$s gehört bereits %2$s. Entfernen Sie es dort zuerst.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s liegt bereits auf %2$s. Entfernen Sie es dort zuerst.",
         "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s kann nur einen Besitzer haben, und %2$s besitzen es jetzt. Entfernen Sie es zuerst bei allen bis auf einen.",
-        "Cast": "Besetzung"
+        "Cast": "Besetzung",
+        "Download as PDF": "Als PDF herunterladen",
+        "Loading templates": "Vorlagen werden geladen",
+        "Template": "Vorlage",
+        "PDF export needs the document app. Ask an administrator to enable it.": "Für den PDF-Export wird die Dokumenten-App benötigt. Bitten Sie eine Administratorin oder einen Administrator, sie zu aktivieren.",
+        "Only administrators can download character sheets for now.": "Vorerst können nur Administratoren Charakterbögen herunterladen.",
+        "There is no character sheet template yet. Add one in the document app.": "Es gibt noch keine Vorlage für Charakterbögen. Fügen Sie eine in der Dokumenten-App hinzu."
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -32,6 +32,7 @@ import DramaMasks from 'vue-material-design-icons/DramaMasks.vue'
 import Earth from 'vue-material-design-icons/Earth.vue'
 import EmoticonSickOutline from 'vue-material-design-icons/EmoticonSickOutline.vue'
 import FileDocument from 'vue-material-design-icons/FileDocument.vue'
+import FilePdfBox from 'vue-material-design-icons/FilePdfBox.vue'
 import FileSign from 'vue-material-design-icons/FileSign.vue'
 import FlashOutline from 'vue-material-design-icons/FlashOutline.vue'
 import FolderOutline from 'vue-material-design-icons/FolderOutline.vue'
@@ -81,6 +82,7 @@ export default {
 	Earth,
 	EmoticonSickOutline,
 	FileDocument,
+	FilePdfBox,
 	FileSign,
 	FlashOutline,
 	FolderOutline,

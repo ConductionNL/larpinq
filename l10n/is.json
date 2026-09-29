@@ -269,7 +269,13 @@
         "%1$s is already held by %2$s. Remove it there first.": "%1$s er þegar í eigu %2$s. Fjarlægðu það þar fyrst.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s hvílir þegar á %2$s. Fjarlægðu það þar fyrst.",
         "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s getur aðeins haft einn handhafa, og %2$s hafa það núna. Fjarlægðu það fyrst af öllum nema einum.",
-        "Cast": "Leikarar"
+        "Cast": "Leikarar",
+        "Download as PDF": "Sækja sem PDF",
+        "Loading templates": "Hleð sniðmátum",
+        "Template": "Sniðmát",
+        "PDF export needs the document app. Ask an administrator to enable it.": "PDF-útflutningur þarf skjalaforritið. Biddu kerfisstjóra að virkja það.",
+        "Only administrators can download character sheets for now.": "Í bili geta aðeins kerfisstjórar sótt persónublöð.",
+        "There is no character sheet template yet. Add one in the document app.": "Ekkert sniðmát fyrir persónublöð er til enn. Bættu einu við í skjalaforritinu."
     },
     "plurals": {}
 }

@@ -270,7 +270,13 @@ OC.L10N.register(
         "%1$s is already held by %2$s. Remove it there first.": "%1$s on juba tegelasel %2$s. Eemalda see sealt kõigepealt.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s on juba tegelasel %2$s. Eemalda see sealt kõigepealt.",
         "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s saab olla ainult ühel omanikul, aga praegu on see tegelastel %2$s. Eemalda see kõigepealt kõigilt peale ühe.",
-        "Cast": "Osatäitjad"
+        "Cast": "Osatäitjad",
+        "Download as PDF": "Laadi alla PDF-ina",
+        "Loading templates": "Mallide laadimine",
+        "Template": "Mall",
+        "PDF export needs the document app. Ask an administrator to enable it.": "PDF-eksport vajab dokumendirakendust. Palu administraatoril see sisse lülitada.",
+        "Only administrators can download character sheets for now.": "Praegu saavad tegelaskaarte alla laadida ainult administraatorid.",
+        "There is no character sheet template yet. Add one in the document app.": "Tegelaskaardi malli veel pole. Lisa see dokumendirakenduses."
     },
     "nplurals=2; plural=(n != 1);"
 )

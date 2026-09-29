@@ -235,7 +235,13 @@ OC.L10N.register(
         "%1$s is already held by %2$s. Remove it there first.": "%1$s is already held by %2$s. Remove it there first.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s is already on %2$s. Remove it there first.",
         "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.",
-        "Cast": "Cast"
+        "Cast": "Cast",
+        "Download as PDF": "Download as PDF",
+        "Loading templates": "Loading templates",
+        "Template": "Template",
+        "PDF export needs the document app. Ask an administrator to enable it.": "PDF export needs the document app. Ask an administrator to enable it.",
+        "Only administrators can download character sheets for now.": "Only administrators can download character sheets for now.",
+        "There is no character sheet template yet. Add one in the document app.": "There is no character sheet template yet. Add one in the document app."
     },
     "nplurals=2; plural=(n != 1);"
 )

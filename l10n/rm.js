@@ -270,7 +270,13 @@ OC.L10N.register(
         "%1$s is already held by %2$s. Remove it there first.": "%1$s posseda gia %2$s. Allontanescha el qua l'emprim.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s è gia sin %2$s. Allontanescha el qua l'emprim.",
         "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s po avair mo in possessur, ed ussa l'han %2$s. Allontanescha el l'emprim da tuts auter ch'in.",
-        "Cast": "Distribuziun"
+        "Cast": "Distribuziun",
+        "Download as PDF": "Telechargiar sco PDF",
+        "Loading templates": "Chargiar ils models",
+        "Template": "Model",
+        "PDF export needs the document app. Ask an administrator to enable it.": "L'export da PDF dovra l'applicaziun da documents. Dumandai in administratur da l'activar.",
+        "Only administrators can download character sheets for now.": "Per ussa pon mo administraturs telechargiar fegls da persunagi.",
+        "There is no character sheet template yet. Add one in the document app.": "I na dat anc nagin model per fegls da persunagi. Agiuntai in en l'applicaziun da documents."
     },
     "nplurals=2; plural=(n != 1);"
 )

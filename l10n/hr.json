@@ -269,7 +269,13 @@
         "%1$s is already held by %2$s. Remove it there first.": "%1$s već ima %2$s. Najprije ga uklonite odande.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s je već na %2$s. Najprije ga uklonite odande.",
         "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s može imati samo jednog vlasnika, a sada ga imaju %2$s. Najprije ga uklonite svima osim jednom.",
-        "Cast": "Postava"
+        "Cast": "Postava",
+        "Download as PDF": "Preuzmi kao PDF",
+        "Loading templates": "Učitavanje predložaka",
+        "Template": "Predložak",
+        "PDF export needs the document app. Ask an administrator to enable it.": "Izvoz u PDF treba aplikaciju za dokumente. Zamolite administratora da je uključi.",
+        "Only administrators can download character sheets for now.": "Zasad samo administratori mogu preuzeti listove likova.",
+        "There is no character sheet template yet. Add one in the document app.": "Još nema predloška lista lika. Dodajte ga u aplikaciji za dokumente."
     },
     "plurals": {}
 }

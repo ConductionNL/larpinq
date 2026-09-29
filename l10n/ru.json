@@ -269,7 +269,13 @@
         "%1$s is already held by %2$s. Remove it there first.": "%1$s уже у %2$s. Сначала уберите его оттуда.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s уже наложено на %2$s. Сначала уберите его оттуда.",
         "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s может быть только у одного владельца, а сейчас оно у %2$s. Сначала уберите его у всех, кроме одного.",
-        "Cast": "Состав"
+        "Cast": "Состав",
+        "Download as PDF": "Скачать как PDF",
+        "Loading templates": "Загрузка шаблонов",
+        "Template": "Шаблон",
+        "PDF export needs the document app. Ask an administrator to enable it.": "Для экспорта в PDF нужно приложение документов. Попросите администратора включить его.",
+        "Only administrators can download character sheets for now.": "Пока скачивать листы персонажей могут только администраторы.",
+        "There is no character sheet template yet. Add one in the document app.": "Шаблона листа персонажа пока нет. Добавьте его в приложении документов."
     },
     "plurals": {}
 }

@@ -28,6 +28,7 @@ $extra = [
 	// Page routes
 	['name' => 'dashboard#page', 'url' => '/', 'verb' => 'GET'],
 	['name' => 'characters#downloadPdf', 'url' => '/characters/{id}/download/{template}', 'verb' => 'GET'],
+	['name' => 'characters#pdfTemplates', 'url' => '/api/pdf/templates', 'verb' => 'GET'],
 	['name' => 'events#downloadRunsheet', 'url' => '/events/{id}/runsheet/{template}', 'verb' => 'GET'],
 	['name' => 'events#roster', 'url' => '/api/events/{id}/roster', 'verb' => 'GET'],
 	['name' => 'events#recordAttendance', 'url' => '/api/events/{id}/attendance', 'verb' => 'POST'],

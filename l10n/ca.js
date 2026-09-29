@@ -270,7 +270,13 @@ OC.L10N.register(
         "%1$s is already held by %2$s. Remove it there first.": "%1$s ja el té %2$s. Traieu-lo primer d'allà.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s ja és sobre %2$s. Traieu-lo primer d'allà.",
         "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s només pot tenir un portador, i ara el tenen %2$s. Traieu-lo primer a tots menys a un.",
-        "Cast": "Repartiment"
+        "Cast": "Repartiment",
+        "Download as PDF": "Baixa com a PDF",
+        "Loading templates": "S'estan carregant les plantilles",
+        "Template": "Plantilla",
+        "PDF export needs the document app. Ask an administrator to enable it.": "L'exportació a PDF necessita l'aplicació de documents. Demaneu a un administrador que l'activi.",
+        "Only administrators can download character sheets for now.": "Per ara, només els administradors poden baixar fitxes de personatge.",
+        "There is no character sheet template yet. Add one in the document app.": "Encara no hi ha cap plantilla de fitxa de personatge. Afegiu-ne una a l'aplicació de documents."
     },
     "nplurals=2; plural=(n != 1);"
 )

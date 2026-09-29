@@ -269,7 +269,13 @@
         "%1$s is already held by %2$s. Remove it there first.": "%1$s gehéiert schonn %2$s. Huel et do fir d'éischt ewech.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s läit schonn op %2$s. Huel et do fir d'éischt ewech.",
         "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s kann nëmmen ee Besëtzer hunn, an elo hunn %2$s et. Huel et fir d'éischt jidderengem ewech bis op een.",
-        "Cast": "Besetzung"
+        "Cast": "Besetzung",
+        "Download as PDF": "Als PDF eroflueden",
+        "Loading templates": "Schablounen ginn gelueden",
+        "Template": "Schabloun",
+        "PDF export needs the document app. Ask an administrator to enable it.": "Fir de PDF-Export brauch et d'Dokumenter-App. Frot en Administrateur, se ze aktivéieren.",
+        "Only administrators can download character sheets for now.": "Fir de Moment kënnen nëmmen Administrateure Charakterbliederen eroflueden.",
+        "There is no character sheet template yet. Add one in the document app.": "Et gëtt nach keng Schabloun fir Charakterbliederen. Füügt eng an der Dokumenter-App derbäi."
     },
     "plurals": {}
 }

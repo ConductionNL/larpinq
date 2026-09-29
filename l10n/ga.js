@@ -270,7 +270,13 @@ OC.L10N.register(
         "%1$s is already held by %2$s. Remove it there first.": "Tá %1$s ag %2$s cheana féin. Bain as sin é ar dtús.",
         "%1$s is already on %2$s. Remove it there first.": "Tá %1$s ar %2$s cheana féin. Bain as sin é ar dtús.",
         "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "Ní féidir ach sealbhóir amháin a bheith ag %1$s, agus tá sé ag %2$s anois. Bain de gach duine é ach duine amháin ar dtús.",
-        "Cast": "Foireann"
+        "Cast": "Foireann",
+        "Download as PDF": "Íoslódáil mar PDF",
+        "Loading templates": "Teimpléid á lódáil",
+        "Template": "Teimpléad",
+        "PDF export needs the document app. Ask an administrator to enable it.": "Tá an aip doiciméad ag teastáil le haghaidh easpórtáil PDF. Iarr ar riarthóir í a chumasú.",
+        "Only administrators can download character sheets for now.": "Faoi láthair, ní féidir ach le riarthóirí bileoga carachtair a íoslódáil.",
+        "There is no character sheet template yet. Add one in the document app.": "Níl teimpléad bileog carachtair ann fós. Cuir ceann leis san aip doiciméad."
     },
     "nplurals=2; plural=(n != 1);"
 )
