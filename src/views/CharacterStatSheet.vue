@@ -60,12 +60,7 @@
 								:class="`character-stat-sheet__change--${changeTone(modifier.change)}`"
 								>{{ formatChange(modifier.change) }}</span
 							>
-							{{ sourceLabel(modifier.source) }}:
-							{{ modifier.sourceName || modifier.effectName }}
-							<template
-								v-if="modifier.effectName && modifier.sourceName"
-								>({{ modifier.effectName }})</template
-							>
+							{{ modifierText(modifier) }}
 						</li>
 					</ol>
 				</li>
@@ -100,7 +95,6 @@ export default {
 			type: String,
 			default: '',
 		},
-
 	},
 
 	data() {
@@ -173,13 +167,33 @@ export default {
 		 */
 		sourceLabel(source) {
 			const labels = {
-				skill: t('larpinq', 'Skill'),
-				item: t('larpinq', 'Item'),
-				condition: t('larpinq', 'Condition'),
-				event: t('larpinq', 'Event'),
+				skill: t('larpinq', 'skill'),
+				item: t('larpinq', 'item'),
+				condition: t('larpinq', 'condition'),
+				event: t('larpinq', 'event'),
 				xpAward: t('larpinq', 'XP award'),
 			}
 			return labels[source] ?? source
+		},
+
+		/**
+		 * One modifier as the sheet reads it: "from Swordsmanship (skill)".
+		 * The signed change is printed before it, in its own tone.
+		 *
+		 * @param {{source: string, sourceName: string, effectName: string}} modifier The modifier.
+		 * @return {string} The text.
+		 *
+		 * @spec openspec/specs/character-management/spec.md
+		 */
+		modifierText(modifier) {
+			const name = modifier.sourceName || modifier.effectName
+			if (!modifier.source) {
+				return t('larpinq', 'from {name}', { name })
+			}
+			return t('larpinq', 'from {name} ({type})', {
+				name,
+				type: this.sourceLabel(modifier.source),
+			})
 		},
 	},
 }

@@ -276,7 +276,21 @@ OC.L10N.register(
         "Template": "Veidne",
         "PDF export needs the document app. Ask an administrator to enable it.": "PDF eksportam vajadzīga dokumentu lietotne. Palūdziet administratoram to ieslēgt.",
         "Only administrators can download character sheets for now.": "Pagaidām tēlu lapas var lejupielādēt tikai administratori.",
-        "There is no character sheet template yet. Add one in the document app.": "Tēla lapas veidnes vēl nav. Pievienojiet to dokumentu lietotnē."
+        "There is no character sheet template yet. Add one in the document app.": "Tēla lapas veidnes vēl nav. Pievienojiet to dokumentu lietotnē.",
+        "Stats": "Statistika",
+        "Loading stats": "Ielādē statistiku",
+        "Could not load the stats.": "Statistiku neizdevās ielādēt.",
+        "XP earned": "Nopelnītie XP",
+        "XP spent": "Iztērētie XP",
+        "XP left": "Atlikušie XP",
+        "No modifiers": "Nav modifikatoru",
+        "skill": "prasme",
+        "item": "priekšmets",
+        "condition": "stāvoklis",
+        "event": "pasākums",
+        "XP award": "XP piešķīrums",
+        "from {name}": "no {name}",
+        "from {name} ({type})": "no {name} ({type})"
     },
     "nplurals=2; plural=(n != 1);"
 )

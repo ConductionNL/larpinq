@@ -276,7 +276,21 @@ OC.L10N.register(
         "Template": "Mall",
         "PDF export needs the document app. Ask an administrator to enable it.": "PDF-eksport vajab dokumendirakendust. Palu administraatoril see sisse lülitada.",
         "Only administrators can download character sheets for now.": "Praegu saavad tegelaskaarte alla laadida ainult administraatorid.",
-        "There is no character sheet template yet. Add one in the document app.": "Tegelaskaardi malli veel pole. Lisa see dokumendirakenduses."
+        "There is no character sheet template yet. Add one in the document app.": "Tegelaskaardi malli veel pole. Lisa see dokumendirakenduses.",
+        "Stats": "Statistika",
+        "Loading stats": "Statistika laadimine",
+        "Could not load the stats.": "Statistikat ei õnnestunud laadida.",
+        "XP earned": "Teenitud XP",
+        "XP spent": "Kulutatud XP",
+        "XP left": "Järele jäänud XP",
+        "No modifiers": "Modifikaatoreid pole",
+        "skill": "oskus",
+        "item": "ese",
+        "condition": "seisund",
+        "event": "sündmus",
+        "XP award": "XP määramine",
+        "from {name}": "allikast {name}",
+        "from {name} ({type})": "allikast {name} ({type})"
     },
     "nplurals=2; plural=(n != 1);"
 )

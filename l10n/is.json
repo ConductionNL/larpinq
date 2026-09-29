@@ -275,7 +275,21 @@
         "Template": "Sniðmát",
         "PDF export needs the document app. Ask an administrator to enable it.": "PDF-útflutningur þarf skjalaforritið. Biddu kerfisstjóra að virkja það.",
         "Only administrators can download character sheets for now.": "Í bili geta aðeins kerfisstjórar sótt persónublöð.",
-        "There is no character sheet template yet. Add one in the document app.": "Ekkert sniðmát fyrir persónublöð er til enn. Bættu einu við í skjalaforritinu."
+        "There is no character sheet template yet. Add one in the document app.": "Ekkert sniðmát fyrir persónublöð er til enn. Bættu einu við í skjalaforritinu.",
+        "Stats": "Tölfræði",
+        "Loading stats": "Hleð inn tölfræði",
+        "Could not load the stats.": "Ekki tókst að hlaða inn tölfræði.",
+        "XP earned": "XP áunnið",
+        "XP spent": "XP eytt",
+        "XP left": "XP eftir",
+        "No modifiers": "Engir breytar",
+        "skill": "færni",
+        "item": "hlutur",
+        "condition": "ástand",
+        "event": "viðburður",
+        "XP award": "XP-úthlutun",
+        "from {name}": "frá {name}",
+        "from {name} ({type})": "frá {name} ({type})"
     },
     "plurals": {}
 }

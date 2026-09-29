@@ -276,7 +276,21 @@ OC.L10N.register(
         "Template": "Shabllon",
         "PDF export needs the document app. Ask an administrator to enable it.": "Eksporti PDF kërkon aplikacionin e dokumenteve. Kërkojini një administratori ta aktivizojë.",
         "Only administrators can download character sheets for now.": "Për momentin vetëm administratorët mund të shkarkojnë fletët e personazheve.",
-        "There is no character sheet template yet. Add one in the document app.": "Ende nuk ka shabllon për fletën e personazhit. Shtoni një në aplikacionin e dokumenteve."
+        "There is no character sheet template yet. Add one in the document app.": "Ende nuk ka shabllon për fletën e personazhit. Shtoni një në aplikacionin e dokumenteve.",
+        "Stats": "Statistika",
+        "Loading stats": "Po ngarkohen statistikat",
+        "Could not load the stats.": "Statistikat nuk u ngarkuan dot.",
+        "XP earned": "XP të fituara",
+        "XP spent": "XP të shpenzuara",
+        "XP left": "XP të mbetura",
+        "No modifiers": "Pa modifikues",
+        "skill": "aftësi",
+        "item": "send",
+        "condition": "gjendje",
+        "event": "ngjarje",
+        "XP award": "dhënie XP",
+        "from {name}": "nga {name}",
+        "from {name} ({type})": "nga {name} ({type})"
     },
     "nplurals=2; plural=(n != 1);"
 )

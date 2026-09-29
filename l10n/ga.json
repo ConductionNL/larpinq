@@ -275,7 +275,21 @@
         "Template": "Teimpléad",
         "PDF export needs the document app. Ask an administrator to enable it.": "Tá an aip doiciméad ag teastáil le haghaidh easpórtáil PDF. Iarr ar riarthóir í a chumasú.",
         "Only administrators can download character sheets for now.": "Faoi láthair, ní féidir ach le riarthóirí bileoga carachtair a íoslódáil.",
-        "There is no character sheet template yet. Add one in the document app.": "Níl teimpléad bileog carachtair ann fós. Cuir ceann leis san aip doiciméad."
+        "There is no character sheet template yet. Add one in the document app.": "Níl teimpléad bileog carachtair ann fós. Cuir ceann leis san aip doiciméad.",
+        "Stats": "Staitisticí",
+        "Loading stats": "Staitisticí á lódáil",
+        "Could not load the stats.": "Níorbh fhéidir na staitisticí a lódáil.",
+        "XP earned": "XP tuillte",
+        "XP spent": "XP caite",
+        "XP left": "XP fágtha",
+        "No modifiers": "Gan mhionathraitheoirí",
+        "skill": "scil",
+        "item": "earra",
+        "condition": "riocht",
+        "event": "imeacht",
+        "XP award": "bronnadh XP",
+        "from {name}": "ó {name}",
+        "from {name} ({type})": "ó {name} ({type})"
     },
     "plurals": {}
 }

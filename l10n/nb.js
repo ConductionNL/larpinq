@@ -276,7 +276,21 @@ OC.L10N.register(
         "Template": "Mal",
         "PDF export needs the document app. Ask an administrator to enable it.": "PDF-eksport krever dokumentappen. Be en administrator om å aktivere den.",
         "Only administrators can download character sheets for now.": "Foreløpig kan bare administratorer laste ned rollearkene.",
-        "There is no character sheet template yet. Add one in the document app.": "Det finnes ingen mal for rolleark ennå. Legg til en i dokumentappen."
+        "There is no character sheet template yet. Add one in the document app.": "Det finnes ingen mal for rolleark ennå. Legg til en i dokumentappen.",
+        "Stats": "Statistikk",
+        "Loading stats": "Laster inn statistikk",
+        "Could not load the stats.": "Statistikken kunne ikke lastes inn.",
+        "XP earned": "XP opptjent",
+        "XP spent": "XP brukt",
+        "XP left": "XP igjen",
+        "No modifiers": "Ingen modifikatorer",
+        "skill": "ferdighet",
+        "item": "gjenstand",
+        "condition": "tilstand",
+        "event": "arrangement",
+        "XP award": "XP-tildeling",
+        "from {name}": "fra {name}",
+        "from {name} ({type})": "fra {name} ({type})"
     },
     "nplurals=2; plural=(n != 1);"
 )

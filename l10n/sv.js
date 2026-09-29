@@ -276,7 +276,21 @@ OC.L10N.register(
         "Template": "Mall",
         "PDF export needs the document app. Ask an administrator to enable it.": "PDF-export kräver dokumentappen. Be en administratör att aktivera den.",
         "Only administrators can download character sheets for now.": "Än så länge kan bara administratörer ladda ner rollformulär.",
-        "There is no character sheet template yet. Add one in the document app.": "Det finns ingen mall för rollformulär än. Lägg till en i dokumentappen."
+        "There is no character sheet template yet. Add one in the document app.": "Det finns ingen mall för rollformulär än. Lägg till en i dokumentappen.",
+        "Stats": "Statistik",
+        "Loading stats": "Läser in statistik",
+        "Could not load the stats.": "Statistiken kunde inte läsas in.",
+        "XP earned": "XP intjänat",
+        "XP spent": "XP spenderat",
+        "XP left": "XP kvar",
+        "No modifiers": "Inga modifierare",
+        "skill": "färdighet",
+        "item": "föremål",
+        "condition": "tillstånd",
+        "event": "evenemang",
+        "XP award": "XP-tilldelning",
+        "from {name}": "från {name}",
+        "from {name} ({type})": "från {name} ({type})"
     },
     "nplurals=2; plural=(n != 1);"
 )

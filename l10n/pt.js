@@ -276,7 +276,21 @@ OC.L10N.register(
         "Template": "Modelo",
         "PDF export needs the document app. Ask an administrator to enable it.": "A exportação para PDF precisa da aplicação de documentos. Peça a um administrador para a ativar.",
         "Only administrators can download character sheets for now.": "Por agora, só os administradores podem transferir fichas de personagem.",
-        "There is no character sheet template yet. Add one in the document app.": "Ainda não há um modelo de ficha de personagem. Adicione um na aplicação de documentos."
+        "There is no character sheet template yet. Add one in the document app.": "Ainda não há um modelo de ficha de personagem. Adicione um na aplicação de documentos.",
+        "Stats": "Estatísticas",
+        "Loading stats": "A carregar estatísticas",
+        "Could not load the stats.": "Não foi possível carregar as estatísticas.",
+        "XP earned": "XP ganho",
+        "XP spent": "XP gasto",
+        "XP left": "XP restante",
+        "No modifiers": "Sem modificadores",
+        "skill": "perícia",
+        "item": "item",
+        "condition": "condição",
+        "event": "evento",
+        "XP award": "atribuição de XP",
+        "from {name}": "de {name}",
+        "from {name} ({type})": "de {name} ({type})"
     },
     "nplurals=2; plural=(n != 1);"
 )

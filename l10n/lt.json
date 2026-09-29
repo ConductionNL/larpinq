@@ -275,7 +275,21 @@
         "Template": "Šablonas",
         "PDF export needs the document app. Ask an administrator to enable it.": "PDF eksportui reikia dokumentų programėlės. Paprašykite administratoriaus ją įjungti.",
         "Only administrators can download character sheets for now.": "Kol kas veikėjų lapus gali atsisiųsti tik administratoriai.",
-        "There is no character sheet template yet. Add one in the document app.": "Veikėjo lapo šablono dar nėra. Pridėkite jį dokumentų programėlėje."
+        "There is no character sheet template yet. Add one in the document app.": "Veikėjo lapo šablono dar nėra. Pridėkite jį dokumentų programėlėje.",
+        "Stats": "Statistika",
+        "Loading stats": "Įkeliama statistika",
+        "Could not load the stats.": "Nepavyko įkelti statistikos.",
+        "XP earned": "Uždirbta XP",
+        "XP spent": "Išleista XP",
+        "XP left": "Liko XP",
+        "No modifiers": "Modifikatorių nėra",
+        "skill": "įgūdis",
+        "item": "daiktas",
+        "condition": "būsena",
+        "event": "renginys",
+        "XP award": "XP skyrimas",
+        "from {name}": "iš {name}",
+        "from {name} ({type})": "iš {name} ({type})"
     },
     "plurals": {}
 }
