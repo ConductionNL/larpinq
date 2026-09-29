@@ -97,6 +97,18 @@ class CharacterService {
 	private array $xpAwardsByCharacter = [];
 
 	/**
+	 * The audit source name for each character relation the engine walks.
+	 *
+	 * @var array<string,string>
+	 */
+	private const STAGE_SOURCE = [
+		'skills' => 'skill',
+		'items' => 'item',
+		'conditions' => 'condition',
+		'events' => 'event',
+	];
+
+	/**
 	 * Flag indicating whether entity collections have been loaded.
 	 *
 	 * @var boolean
@@ -326,6 +338,7 @@ class CharacterService {
 			}
 
 			if (isset($entity['effects']) === true && empty($entity['effects']) === false) {
+				$auditCounts = array_map(static fn (array $score): int => count($score['audit']), $abilityScores);
 				// @var array|null $entityEffects
 				$entityEffects = $entity['effects'];
 				$this->effectApplier->applyEffects(
@@ -334,9 +347,44 @@ class CharacterService {
 					appliedEffects: $appliedEffects,
 					effectLookup: $this->allEffects
 				);
+				$this->tagNewAuditEntries(
+					abilityScores: $abilityScores,
+					auditCounts: $auditCounts,
+					source: self::STAGE_SOURCE[$property] ?? $property,
+					entity: $entity
+				);
 			}
 		}
 	}//end applyEntityEffects()
+
+	/**
+	 * Name the carrier on every audit entry an entity just added (REQ-CSP-001).
+	 *
+	 * The effect engine records which effect changed an ability; this records
+	 * which skill, item, condition or event carried that effect, so the stat
+	 * sheet can say where a modifier came from.
+	 *
+	 * @param array<string, array<string, mixed>> $abilityScores Ability scores, modified in place.
+	 * @param array<string, int> $auditCounts Audit length per ability before the entity applied.
+	 * @param string $source 'skill', 'item', 'condition' or 'event'.
+	 * @param array<string, mixed> $entity The carrying entity.
+	 *
+	 * @return void
+	 *
+	 * @spec openspec/specs/character-management/spec.md
+	 */
+	private function tagNewAuditEntries(array &$abilityScores, array $auditCounts, string $source, array $entity): void {
+		$sourceId = (string)($entity['id'] ?? '');
+		$sourceName = (string)($entity['name'] ?? '');
+		foreach ($abilityScores as $abilityId => $score) {
+			$total = count($score['audit']);
+			for ($index = ($auditCounts[$abilityId] ?? 0); $index < $total; $index++) {
+				$abilityScores[$abilityId]['audit'][$index]['source'] = $source;
+				$abilityScores[$abilityId]['audit'][$index]['sourceId'] = $sourceId;
+				$abilityScores[$abilityId]['audit'][$index]['sourceName'] = $sourceName;
+			}
+		}
+	}//end tagNewAuditEntries()
 
 	/**
 	 * Calculate stats for a single character array.

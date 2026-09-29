@@ -275,7 +275,21 @@
         "Template": "Mudell",
         "PDF export needs the document app. Ask an administrator to enable it.": "L-esportazzjoni PDF teħtieġ l-app tad-dokumenti. Staqsi amministratur biex jattivaha.",
         "Only administrators can download character sheets for now.": "Għalissa l-amministraturi biss jistgħu jniżżlu l-folji tal-karattri.",
-        "There is no character sheet template yet. Add one in the document app.": "Għad m'hemmx mudell tal-folja tal-karattru. Żid wieħed fl-app tad-dokumenti."
+        "There is no character sheet template yet. Add one in the document app.": "Għad m'hemmx mudell tal-folja tal-karattru. Żid wieħed fl-app tad-dokumenti.",
+        "Stats": "Statistika",
+        "Loading stats": "Qed titgħabba l-istatistika",
+        "Could not load the stats.": "L-istatistika ma setgħetx titgħabba.",
+        "XP earned": "XP miksuba",
+        "XP spent": "XP minfuqa",
+        "XP left": "XP li fadal",
+        "No modifiers": "L-ebda modifikatur",
+        "skill": "ħila",
+        "item": "oġġett",
+        "condition": "kundizzjoni",
+        "event": "avveniment",
+        "XP award": "għoti ta' XP",
+        "from {name}": "minn {name}",
+        "from {name} ({type})": "minn {name} ({type})"
     },
     "plurals": {}
 }

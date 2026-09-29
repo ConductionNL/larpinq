@@ -275,7 +275,21 @@
         "Template": "Schabloun",
         "PDF export needs the document app. Ask an administrator to enable it.": "Fir de PDF-Export brauch et d'Dokumenter-App. Frot en Administrateur, se ze aktivéieren.",
         "Only administrators can download character sheets for now.": "Fir de Moment kënnen nëmmen Administrateure Charakterbliederen eroflueden.",
-        "There is no character sheet template yet. Add one in the document app.": "Et gëtt nach keng Schabloun fir Charakterbliederen. Füügt eng an der Dokumenter-App derbäi."
+        "There is no character sheet template yet. Add one in the document app.": "Et gëtt nach keng Schabloun fir Charakterbliederen. Füügt eng an der Dokumenter-App derbäi.",
+        "Stats": "Statistiken",
+        "Loading stats": "Statistike gi gelueden",
+        "Could not load the stats.": "D'Statistike konnten net geluede ginn.",
+        "XP earned": "XP verdéngt",
+        "XP spent": "XP ausginn",
+        "XP left": "XP iwwreg",
+        "No modifiers": "Keng Modifikatoren",
+        "skill": "Fäegkeet",
+        "item": "Géigestand",
+        "condition": "Zoustand",
+        "event": "Evenement",
+        "XP award": "XP-Vergab",
+        "from {name}": "vun {name}",
+        "from {name} ({type})": "vun {name} ({type})"
     },
     "plurals": {}
 }

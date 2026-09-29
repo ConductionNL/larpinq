@@ -275,7 +275,21 @@
         "Template": "Шаблон",
         "PDF export needs the document app. Ask an administrator to enable it.": "Извозот во PDF бара апликација за документи. Побарајте од администратор да ја вклучи.",
         "Only administrators can download character sheets for now.": "Засега само администратори можат да преземат листови за ликови.",
-        "There is no character sheet template yet. Add one in the document app.": "Сè уште нема шаблон за лист на лик. Додајте го во апликацијата за документи."
+        "There is no character sheet template yet. Add one in the document app.": "Сè уште нема шаблон за лист на лик. Додајте го во апликацијата за документи.",
+        "Stats": "Статистика",
+        "Loading stats": "Се вчитува статистиката",
+        "Could not load the stats.": "Статистиката не може да се вчита.",
+        "XP earned": "Заработени XP",
+        "XP spent": "Потрошени XP",
+        "XP left": "Преостанати XP",
+        "No modifiers": "Нема модификатори",
+        "skill": "вештина",
+        "item": "предмет",
+        "condition": "состојба",
+        "event": "настан",
+        "XP award": "доделување XP",
+        "from {name}": "од {name}",
+        "from {name} ({type})": "од {name} ({type})"
     },
     "plurals": {}
 }

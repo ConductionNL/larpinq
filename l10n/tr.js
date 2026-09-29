@@ -276,7 +276,21 @@ OC.L10N.register(
         "Template": "Şablon",
         "PDF export needs the document app. Ask an administrator to enable it.": "PDF dışa aktarımı belge uygulamasını gerektirir. Bir yöneticiden etkinleştirmesini isteyin.",
         "Only administrators can download character sheets for now.": "Şimdilik karakter sayfalarını yalnızca yöneticiler indirebilir.",
-        "There is no character sheet template yet. Add one in the document app.": "Henüz karakter sayfası şablonu yok. Belge uygulamasından bir tane ekleyin."
+        "There is no character sheet template yet. Add one in the document app.": "Henüz karakter sayfası şablonu yok. Belge uygulamasından bir tane ekleyin.",
+        "Stats": "İstatistikler",
+        "Loading stats": "İstatistikler yükleniyor",
+        "Could not load the stats.": "İstatistikler yüklenemedi.",
+        "XP earned": "Kazanılan XP",
+        "XP spent": "Harcanan XP",
+        "XP left": "Kalan XP",
+        "No modifiers": "Değiştirici yok",
+        "skill": "yetenek",
+        "item": "eşya",
+        "condition": "durum",
+        "event": "etkinlik",
+        "XP award": "XP ödülü",
+        "from {name}": "kaynak: {name}",
+        "from {name} ({type})": "kaynak: {name} ({type})"
     },
     "nplurals=2; plural=(n != 1);"
 )

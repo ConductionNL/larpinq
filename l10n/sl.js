@@ -276,7 +276,21 @@ OC.L10N.register(
         "Template": "Predloga",
         "PDF export needs the document app. Ask an administrator to enable it.": "Izvoz PDF potrebuje aplikacijo za dokumente. Prosite skrbnika, naj jo omogoči.",
         "Only administrators can download character sheets for now.": "Zaenkrat lahko liste likov prenašajo samo skrbniki.",
-        "There is no character sheet template yet. Add one in the document app.": "Predloge za list lika še ni. Dodajte jo v aplikaciji za dokumente."
+        "There is no character sheet template yet. Add one in the document app.": "Predloge za list lika še ni. Dodajte jo v aplikaciji za dokumente.",
+        "Stats": "Statistika",
+        "Loading stats": "Nalaganje statistike",
+        "Could not load the stats.": "Statistike ni bilo mogoče naložiti.",
+        "XP earned": "Prislužene XP",
+        "XP spent": "Porabljene XP",
+        "XP left": "Preostale XP",
+        "No modifiers": "Brez modifikatorjev",
+        "skill": "veščina",
+        "item": "predmet",
+        "condition": "stanje",
+        "event": "dogodek",
+        "XP award": "podelitev XP",
+        "from {name}": "iz {name}",
+        "from {name} ({type})": "iz {name} ({type})"
     },
     "nplurals=2; plural=(n != 1);"
 )

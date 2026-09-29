@@ -98,10 +98,21 @@ anyway.
 
 ## Seed data
 
-No schema change. The demo character "Mirela the Wanderer" gets the skill
-"Swordsmanship" (+3 strength, costs 10 XP) and the item "Iron shield" (+1
-strength) and two XP awards of 20, so the panel shows strength 14 and XP 40
-earned, 10 spent, 30 left.
+No schema change. Corrected while building (2026-09-29): the register ships
+no demo characters (`larpinq_register.json` has no `objects`), so there is no
+seeded "Mirela the Wanderer" to extend. The Playwright workflow
+`tests/e2e/workflows/character-stats.workflow.spec.ts` provisions the example
+itself through the object API (strength base 10, Swordsmanship +3 strength and
+-10 XP, Iron shield +1 strength, two XP awards of 20, Cursed -2 agility on
+base 8, and an empty "Newcomer") and removes it afterwards. The PHPUnit test
+`tests/unit/Controller/CharacterStatsControllerTest.php` runs the same example
+through the real engine.
+
+The endpoint lives in its own `CharacterStatsController` (route
+`characterStats#show`) rather than in `CharactersController::stats()`, so the
+existing controller's constructor and its tests stay unchanged. The audit
+entries carry `source`, `sourceId` and `sourceName` (the carrier), next to the
+engine's `effectName`.
 
 ## Risks / Trade-offs
 

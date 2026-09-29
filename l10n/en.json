@@ -240,7 +240,21 @@
         "Template": "Template",
         "PDF export needs the document app. Ask an administrator to enable it.": "PDF export needs the document app. Ask an administrator to enable it.",
         "Only administrators can download character sheets for now.": "Only administrators can download character sheets for now.",
-        "There is no character sheet template yet. Add one in the document app.": "There is no character sheet template yet. Add one in the document app."
+        "There is no character sheet template yet. Add one in the document app.": "There is no character sheet template yet. Add one in the document app.",
+        "Stats": "Stats",
+        "Loading stats": "Loading stats",
+        "Could not load the stats.": "Could not load the stats.",
+        "XP earned": "XP earned",
+        "XP spent": "XP spent",
+        "XP left": "XP left",
+        "No modifiers": "No modifiers",
+        "skill": "skill",
+        "item": "item",
+        "condition": "condition",
+        "event": "event",
+        "XP award": "XP award",
+        "from {name}": "from {name}",
+        "from {name} ({type})": "from {name} ({type})"
     },
     "plurals": {},
     "pluralForm": "nplurals=2; plural=(n != 1);"

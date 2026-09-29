@@ -367,7 +367,21 @@
         "Template": "Sjabloon",
         "PDF export needs the document app. Ask an administrator to enable it.": "Voor pdf-export is de documenten-app nodig. Vraag een beheerder om die aan te zetten.",
         "Only administrators can download character sheets for now.": "Voorlopig kunnen alleen beheerders karakterbladen downloaden.",
-        "There is no character sheet template yet. Add one in the document app.": "Er is nog geen sjabloon voor karakterbladen. Voeg er een toe in de documenten-app."
+        "There is no character sheet template yet. Add one in the document app.": "Er is nog geen sjabloon voor karakterbladen. Voeg er een toe in de documenten-app.",
+        "Stats": "Statistieken",
+        "Loading stats": "Statistieken laden",
+        "Could not load the stats.": "De statistieken konden niet worden geladen.",
+        "XP earned": "XP verdiend",
+        "XP spent": "XP uitgegeven",
+        "XP left": "XP over",
+        "No modifiers": "Geen modificaties",
+        "skill": "vaardigheid",
+        "item": "voorwerp",
+        "condition": "conditie",
+        "event": "evenement",
+        "XP award": "XP-toekenning",
+        "from {name}": "van {name}",
+        "from {name} ({type})": "van {name} ({type})"
     },
     "plurals": {},
     "pluralForm": "nplurals=2; plural=(n != 1);"

@@ -275,7 +275,21 @@
         "Template": "Plantilla",
         "PDF export needs the document app. Ask an administrator to enable it.": "L'exportació a PDF necessita l'aplicació de documents. Demaneu a un administrador que l'activi.",
         "Only administrators can download character sheets for now.": "Per ara, només els administradors poden baixar fitxes de personatge.",
-        "There is no character sheet template yet. Add one in the document app.": "Encara no hi ha cap plantilla de fitxa de personatge. Afegiu-ne una a l'aplicació de documents."
+        "There is no character sheet template yet. Add one in the document app.": "Encara no hi ha cap plantilla de fitxa de personatge. Afegiu-ne una a l'aplicació de documents.",
+        "Stats": "Estadístiques",
+        "Loading stats": "S'estan carregant les estadístiques",
+        "Could not load the stats.": "No s'han pogut carregar les estadístiques.",
+        "XP earned": "XP guanyada",
+        "XP spent": "XP gastada",
+        "XP left": "XP restant",
+        "No modifiers": "Sense modificadors",
+        "skill": "habilitat",
+        "item": "objecte",
+        "condition": "condició",
+        "event": "esdeveniment",
+        "XP award": "concessió d'XP",
+        "from {name}": "de {name}",
+        "from {name} ({type})": "de {name} ({type})"
     },
     "plurals": {}
 }

@@ -275,7 +275,21 @@
         "Template": "Шаблон",
         "PDF export needs the document app. Ask an administrator to enable it.": "Для экспорта в PDF нужно приложение документов. Попросите администратора включить его.",
         "Only administrators can download character sheets for now.": "Пока скачивать листы персонажей могут только администраторы.",
-        "There is no character sheet template yet. Add one in the document app.": "Шаблона листа персонажа пока нет. Добавьте его в приложении документов."
+        "There is no character sheet template yet. Add one in the document app.": "Шаблона листа персонажа пока нет. Добавьте его в приложении документов.",
+        "Stats": "Характеристики",
+        "Loading stats": "Загрузка характеристик",
+        "Could not load the stats.": "Не удалось загрузить характеристики.",
+        "XP earned": "Получено XP",
+        "XP spent": "Потрачено XP",
+        "XP left": "Осталось XP",
+        "No modifiers": "Нет модификаторов",
+        "skill": "навык",
+        "item": "предмет",
+        "condition": "состояние",
+        "event": "событие",
+        "XP award": "начисление XP",
+        "from {name}": "от {name}",
+        "from {name} ({type})": "от {name} ({type})"
     },
     "plurals": {}
 }

@@ -275,7 +275,21 @@
         "Template": "Pohja",
         "PDF export needs the document app. Ask an administrator to enable it.": "PDF-vienti tarvitsee asiakirjasovelluksen. Pyydä ylläpitäjää ottamaan se käyttöön.",
         "Only administrators can download character sheets for now.": "Toistaiseksi vain ylläpitäjät voivat ladata hahmolomakkeita.",
-        "There is no character sheet template yet. Add one in the document app.": "Hahmolomakkeelle ei ole vielä pohjaa. Lisää sellainen asiakirjasovelluksessa."
+        "There is no character sheet template yet. Add one in the document app.": "Hahmolomakkeelle ei ole vielä pohjaa. Lisää sellainen asiakirjasovelluksessa.",
+        "Stats": "Tilastot",
+        "Loading stats": "Ladataan tilastoja",
+        "Could not load the stats.": "Tilastoja ei voitu ladata.",
+        "XP earned": "Ansaitut XP",
+        "XP spent": "Käytetyt XP",
+        "XP left": "Jäljellä olevat XP",
+        "No modifiers": "Ei muuntimia",
+        "skill": "taito",
+        "item": "esine",
+        "condition": "tila",
+        "event": "tapahtuma",
+        "XP award": "XP-palkinto",
+        "from {name}": "lähteestä {name}",
+        "from {name} ({type})": "lähteestä {name} ({type})"
     },
     "plurals": {}
 }
