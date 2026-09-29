@@ -18,6 +18,7 @@ namespace OCA\Larpinq\Tests\Unit\Service;
 
 use OCA\Larpinq\Service\IdListNormaliser;
 use OCA\Larpinq\Service\RegisterObjectFetcher;
+use OCA\Larpinq\Service\UniqueHolderConflictFinder;
 use OCA\Larpinq\Service\UniqueHolderService;
 use PHPUnit\Framework\TestCase;
 
@@ -203,7 +204,7 @@ class UniqueHolderServiceTest extends TestCase {
 			}
 		);
 
-		$conflicts = $service->findConflicts();
+		$conflicts = (new UniqueHolderConflictFinder($service, new IdListNormaliser()))->findConflicts();
 
 		self::assertSame(
 			[

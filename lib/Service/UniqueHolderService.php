@@ -7,8 +7,8 @@
  * holding is stored on both sides of the relation and the two sides are not
  * synced: the character carries `items[]` / `conditions[]`, the item or
  * condition carries `characters[]`. This service counts holders on both sides
- * with bounded lookups, so the pre-write listener can refuse a second holder
- * and the occ check can list the conflicts that exist today.
+ * with bounded lookups, so the pre-write listener can refuse a second holder.
+ * UniqueHolderConflictFinder lists the conflicts that exist today.
  *
  * @category  Service
  * @package   OCA\Larpinq\Service
@@ -145,63 +145,6 @@ class UniqueHolderService {
 	}//end otherHolders()
 
 	/**
-	 * Every unique item and unique condition held by more than one character.
-	 *
-	 * Used by `occ larpinq:unique-holders:check`. Pages through characters,
-	 * items and conditions in batches of BATCH.
-	 *
-	 * @return array<int,array{kind:string,id:string,name:string,holders:array<int,string>}> The conflicts.
-	 *
-	 * @spec openspec/specs/rpg-system/spec.md
-	 */
-	public function findConflicts(): array {
-		// Index the character side once: kind => objectId => [characterId => name].
-		$held = ['item' => [], 'condition' => []];
-		$names = [];
-		foreach ($this->pages(objectType: 'character') as $character) {
-			$characterId = $this->objectId(object: $character);
-			if ($characterId === '') {
-				continue;
-			}
-
-			$names[$characterId] = $this->nameOf(object: $character, fallback: $characterId);
-			foreach (self::CHARACTER_FIELD as $kind => $field) {
-				foreach ($this->idNormaliser->normalise(value: $character[$field] ?? []) as $objectId) {
-					$held[$kind][$objectId][$characterId] = $names[$characterId];
-				}
-			}
-		}
-
-		$conflicts = [];
-		foreach (array_keys(self::CHARACTER_FIELD) as $kind) {
-			foreach ($this->pages(objectType: $kind) as $object) {
-				$objectId = $this->objectId(object: $object);
-				if ($objectId === '' || $this->isUnique(kind: $kind, object: $object) === false) {
-					continue;
-				}
-
-				$holders = $held[$kind][$objectId] ?? [];
-				foreach ($this->idNormaliser->normalise(value: $object['characters'] ?? []) as $characterId) {
-					$holders[$characterId] ??= ($names[$characterId] ?? $characterId);
-				}
-
-				if (count($holders) > 1) {
-					$holders = array_values($holders);
-					sort($holders);
-					$conflicts[] = [
-						'kind' => $kind,
-						'id' => $objectId,
-						'name' => $this->nameOf(object: $object, fallback: $objectId),
-						'holders' => $holders,
-					];
-				}
-			}//end foreach
-		}//end foreach
-
-		return $conflicts;
-	}//end findConflicts()
-
-	/**
 	 * The object's id, from `id` or `@self.id`.
 	 *
 	 * @param array<string,mixed> $object The object data.
@@ -324,11 +267,14 @@ class UniqueHolderService {
 	 * @param string $objectType The larpinq object type.
 	 *
 	 * @return \Generator<int,array<string,mixed>> The objects.
+	 *
+	 * @spec openspec/specs/rpg-system/spec.md
 	 */
-	private function pages(string $objectType): \Generator {
+	public function pages(string $objectType): \Generator {
 		$offset = 0;
 		do {
 			$rows = $this->objectFetcher->getObjects(objectType: $objectType, limit: self::BATCH, offset: $offset);
+			$fetched = count($rows);
 			foreach ($rows as $row) {
 				if (is_array($row) === true) {
 					yield $row;
@@ -336,8 +282,26 @@ class UniqueHolderService {
 			}
 
 			$offset += self::BATCH;
-		} while (count($rows) === self::BATCH);
+		} while ($fetched === self::BATCH);
 	}//end pages()
+
+	/**
+	 * Read one item or condition; null when it cannot be read.
+	 *
+	 * @param string $kind 'item' or 'condition'.
+	 * @param string $id The object id.
+	 *
+	 * @return array<string,mixed>|null The object data.
+	 *
+	 * @spec openspec/specs/rpg-system/spec.md
+	 */
+	public function readObject(string $kind, string $id): ?array {
+		try {
+			return $this->objectFetcher->getObject(objectType: $kind, id: $id);
+		} catch (\Throwable $e) {
+			return null;
+		}
+	}//end readObject()
 
 	/**
 	 * A character's name, read by id; the id when it cannot be read.
@@ -361,8 +325,10 @@ class UniqueHolderService {
 	 * @param string $fallback Returned when the object has no name.
 	 *
 	 * @return string The name.
+	 *
+	 * @spec openspec/specs/rpg-system/spec.md
 	 */
-	private function nameOf(array $object, string $fallback): string {
+	public function nameOf(array $object, string $fallback): string {
 		$name = $object['name'] ?? '';
 		if (is_string($name) === true && trim($name) !== '') {
 			return $name;

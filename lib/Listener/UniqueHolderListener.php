@@ -28,7 +28,6 @@ namespace OCA\Larpinq\Listener;
 
 use OCA\Larpinq\AppInfo\Application;
 use OCA\Larpinq\Service\IdListNormaliser;
-use OCA\Larpinq\Service\RegisterObjectFetcher;
 use OCA\Larpinq\Service\UniqueHolderService;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
@@ -57,7 +56,6 @@ class UniqueHolderListener implements IEventListener {
 	 * Constructor.
 	 *
 	 * @param UniqueHolderService $holders The holder lookup.
-	 * @param RegisterObjectFetcher $objectFetcher Reads the item or condition added to a character.
 	 * @param IdListNormaliser $idNormaliser Relation value normaliser.
 	 * @param IAppConfig $config Config (schema id resolution).
 	 * @param IL10N $l10n Translations for the refusal message.
@@ -67,7 +65,6 @@ class UniqueHolderListener implements IEventListener {
 	 */
 	public function __construct(
 		private readonly UniqueHolderService $holders,
-		private readonly RegisterObjectFetcher $objectFetcher,
 		private readonly IdListNormaliser $idNormaliser,
 		private readonly IAppConfig $config,
 		private readonly IL10N $l10n,
@@ -97,17 +94,7 @@ class UniqueHolderListener implements IEventListener {
 		}
 
 		try {
-			$old = null;
-			if ($event instanceof \OCA\OpenRegister\Event\ObjectCreatingEvent) {
-				// @phpstan-ignore-next-line
-				$entity = $event->getObject();
-			} else {
-				// @phpstan-ignore-next-line
-				$entity = $event->getNewObject();
-				// @phpstan-ignore-next-line
-				$old = $event->getOldObject();
-			}
-
+			[$entity, $old] = $this->entitiesOf(event: $event);
 			$errors = $this->collectVeto(entity: $entity, old: $old);
 			if ($errors !== null) {
 				$event->stopPropagation();
@@ -124,6 +111,29 @@ class UniqueHolderListener implements IEventListener {
 			);
 		}//end try
 	}//end handle()
+
+	/**
+	 * The new entity and the stored one (null on a create) of a pre-write event.
+	 *
+	 * ObjectUpdatingEvent has no getObject(), so the accessor follows the class.
+	 *
+	 * @param Event $event The Creating or Updating event.
+	 *
+	 * @return array{0:object,1:object|null} The new and the old entity.
+	 *
+	 * @psalm-suppress MixedMethodCall  OpenRegister event classes are optional dependencies.
+	 * @psalm-suppress MixedAssignment  OpenRegister event classes are optional dependencies.
+	 * @psalm-suppress UndefinedMethod  The OpenRegister event accessors are resolved at runtime.
+	 */
+	private function entitiesOf(Event $event): array {
+		if ($event instanceof \OCA\OpenRegister\Event\ObjectUpdatingEvent) {
+			// @phpstan-ignore-next-line
+			return [$event->getNewObject(), $event->getOldObject()];
+		}
+
+		// @phpstan-ignore-next-line
+		return [$event->getObject(), null];
+	}//end entitiesOf()
 
 	/**
 	 * The veto payload for a write, or null when it may pass.
@@ -187,7 +197,7 @@ class UniqueHolderListener implements IEventListener {
 			);
 
 			foreach ($added as $objectId) {
-				$object = $this->readHeldObject(kind: $kind, id: $objectId);
+				$object = $this->holders->readObject(kind: $kind, id: $objectId);
 				if ($object === null || $this->holders->isUnique(kind: $kind, object: $object) === false) {
 					continue;
 				}
@@ -259,16 +269,7 @@ class UniqueHolderListener implements IEventListener {
 			return null;
 		}
 
-		if ($objectId === '') {
-			// A new object without an id: only its own list can hold it yet.
-			$holders = [];
-			foreach (array_values(array_unique($side)) as $characterId) {
-				$holders[] = ['id' => $characterId, 'name' => $characterId];
-			}
-		} else {
-			$holders = $this->holders->otherHolders(kind: $kind, id: $objectId, objectSide: $side, exceptCharacter: null, max: 3);
-		}
-
+		$holders = $this->currentHolders(kind: $kind, objectId: $objectId, side: $side);
 		if (count($holders) < 2) {
 			return null;
 		}
@@ -298,20 +299,27 @@ class UniqueHolderListener implements IEventListener {
 	}//end vetoHeldObject()
 
 	/**
-	 * Read an item or condition, or null when it cannot be read.
+	 * The holders of an item or condition, counted on both sides of the relation.
 	 *
 	 * @param string $kind 'item' or 'condition'.
-	 * @param string $id The object id.
+	 * @param string $objectId The object's id ('' on a create without one).
+	 * @param array<int,string> $side The object's own `characters[]`.
 	 *
-	 * @return array<string,mixed>|null The object data.
+	 * @return array<int,array{id:string,name:string}> Up to three holders.
 	 */
-	private function readHeldObject(string $kind, string $id): ?array {
-		try {
-			return $this->objectFetcher->getObject(objectType: $kind, id: $id);
-		} catch (\Throwable $e) {
-			return null;
+	private function currentHolders(string $kind, string $objectId, array $side): array {
+		if ($objectId !== '') {
+			return $this->holders->otherHolders(kind: $kind, id: $objectId, objectSide: $side, exceptCharacter: null, max: 3);
 		}
-	}//end readHeldObject()
+
+		// A new object without an id: only its own list can hold it yet.
+		$holders = [];
+		foreach (array_values(array_unique($side)) as $characterId) {
+			$holders[] = ['id' => $characterId, 'name' => $characterId];
+		}
+
+		return $holders;
+	}//end currentHolders()
 
 	/**
 	 * The schema id of an OpenRegister entity.

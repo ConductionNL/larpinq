@@ -19,6 +19,7 @@ namespace OCA\Larpinq\Tests\Unit\Command;
 use OCA\Larpinq\Command\UniqueHoldersCheck;
 use OCA\Larpinq\Service\IdListNormaliser;
 use OCA\Larpinq\Service\RegisterObjectFetcher;
+use OCA\Larpinq\Service\UniqueHolderConflictFinder;
 use OCA\Larpinq\Service\UniqueHolderService;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -46,7 +47,7 @@ class UniqueHoldersCheckTest extends TestCase {
 			}
 		);
 
-		return new CommandTester(new UniqueHoldersCheck(new UniqueHolderService($fetcher, new IdListNormaliser())));
+		return new CommandTester(new UniqueHoldersCheck(new UniqueHolderConflictFinder(new UniqueHolderService($fetcher, new IdListNormaliser()), new IdListNormaliser())));
 	}//end tester()
 
 	/**

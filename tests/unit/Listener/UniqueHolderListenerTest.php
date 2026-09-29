@@ -173,7 +173,6 @@ class UniqueHolderListenerTest extends TestCase {
 
 		return new UniqueHolderListener(
 			new UniqueHolderService($fetcher, $normaliser),
-			$fetcher,
 			$normaliser,
 			$config,
 			$l10n,

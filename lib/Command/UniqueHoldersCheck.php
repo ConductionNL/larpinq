@@ -23,7 +23,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Command;
 
-use OCA\Larpinq\Service\UniqueHolderService;
+use OCA\Larpinq\Service\UniqueHolderConflictFinder;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -44,12 +44,12 @@ class UniqueHoldersCheck extends Command {
 	/**
 	 * Constructor.
 	 *
-	 * @param UniqueHolderService $holders The holder lookup.
+	 * @param UniqueHolderConflictFinder $finder The conflict finder.
 	 *
 	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
 	 */
 	public function __construct(
-		private readonly UniqueHolderService $holders,
+		private readonly UniqueHolderConflictFinder $finder,
 	) {
 		parent::__construct();
 	}//end __construct()
@@ -74,10 +74,13 @@ class UniqueHoldersCheck extends Command {
 	 *
 	 * @return int 0 when no conflict exists, 1 otherwise.
 	 *
+	 * @SuppressWarnings(PHPMD.UnusedFormalParameter) $input is mandated by
+	 * Symfony's Command::execute() signature; this command takes no options.
+	 *
 	 * @spec openspec/specs/rpg-system/spec.md
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output): int {
-		$conflicts = $this->holders->findConflicts();
+		$conflicts = $this->finder->findConflicts();
 		if ($conflicts === []) {
 			$output->writeln('No unique item or condition has more than one holder.');
 			return 0;
