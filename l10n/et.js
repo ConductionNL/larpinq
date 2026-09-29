@@ -269,7 +269,8 @@ OC.L10N.register(
         "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Paigalda registrid, skeemid ja voog, mille teised organisatsioonid on avaldanud.",
         "%1$s is already held by %2$s. Remove it there first.": "%1$s on juba tegelasel %2$s. Eemalda see sealt kõigepealt.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s on juba tegelasel %2$s. Eemalda see sealt kõigepealt.",
-        "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s saab olla ainult ühel omanikul, aga praegu on see tegelastel %2$s. Eemalda see kõigepealt kõigilt peale ühe."
+        "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s saab olla ainult ühel omanikul, aga praegu on see tegelastel %2$s. Eemalda see kõigepealt kõigilt peale ühe.",
+        "Cast": "Osatäitjad"
     },
     "nplurals=2; plural=(n != 1);"
 )

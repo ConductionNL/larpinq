@@ -33,6 +33,8 @@ class CharacterVisibilityRulesTest extends TestCase {
 
 	private const OWNER = ['group' => 'larpers', 'match' => ['ownerUid' => '$userId']];
 
+	private const GM_WRITES = ['gold', 'silver', 'copper', 'skills', 'items', 'conditions', 'events', 'slNotesPublic', 'approved', 'ocName', 'ownerUid'];
+
 	/**
 	 * The merged character schema.
 	 *
@@ -59,6 +61,7 @@ class CharacterVisibilityRulesTest extends TestCase {
 			$auth['read']
 		);
 		$this->assertSame([['group' => self::GM], self::OWNER], $auth['update']);
+		$this->assertSame([self::GM, 'larpers'], $auth['create']);
 		$this->assertSame([self::GM], $auth['delete']);
 	}//end testRowRulesLetAPlayerReadOwnAndApprovedAndWriteOnlyOwn()
 
@@ -94,7 +97,7 @@ class CharacterVisibilityRulesTest extends TestCase {
 			$this->assertSame([self::GM, self::OWNER], $props[$field]['authorization']['update'], $field);
 		}
 
-		foreach (['gold', 'silver', 'copper', 'skills', 'items', 'conditions', 'events', 'slNotesPublic', 'approved', 'ocName', 'ownerUid'] as $field) {
+		foreach (self::GM_WRITES as $field) {
 			$this->assertSame([self::GM], $props[$field]['authorization']['update'], $field);
 		}
 	}//end testTheOwnerWritesStoryFieldsOnly()

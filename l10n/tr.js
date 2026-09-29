@@ -269,7 +269,8 @@ OC.L10N.register(
         "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Diğer kuruluşların yayımladığı kayıtları, şemaları ve akışları yükleyin.",
         "%1$s is already held by %2$s. Remove it there first.": "%1$s zaten %2$s adlı karakterde. Önce oradan kaldırın.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s zaten %2$s üzerinde. Önce oradan kaldırın.",
-        "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s yalnızca bir sahibe sahip olabilir ve şu anda %2$s tarafından tutuluyor. Önce biri dışında hepsinden kaldırın."
+        "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s yalnızca bir sahibe sahip olabilir ve şu anda %2$s tarafından tutuluyor. Önce biri dışında hepsinden kaldırın.",
+        "Cast": "Oyuncular"
     },
     "nplurals=2; plural=(n != 1);"
 )

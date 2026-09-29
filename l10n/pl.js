@@ -269,7 +269,8 @@ OC.L10N.register(
         "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Zainstaluj rejestry, schematy i przepływy opublikowane przez inne organizacje.",
         "%1$s is already held by %2$s. Remove it there first.": "%1$s należy już do %2$s. Najpierw usuń go stamtąd.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s ciąży już na %2$s. Najpierw usuń go stamtąd.",
-        "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s może mieć tylko jednego posiadacza, a teraz mają go %2$s. Najpierw zabierz go wszystkim poza jednym."
+        "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s może mieć tylko jednego posiadacza, a teraz mają go %2$s. Najpierw zabierz go wszystkim poza jednym.",
+        "Cast": "Obsada"
     },
     "nplurals=2; plural=(n != 1);"
 )

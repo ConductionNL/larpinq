@@ -136,6 +136,29 @@ logs in as Anna.
 
 None. The rules apply on the next register import.
 
+## Build notes (code at 6881f84, 2026-09-29)
+
+The design held, with five corrections found while building:
+
+- **Create includes `gamemasters`.** A game master is not necessarily in
+  `larpers`, and D1's `create: ["larpers"]` would stop them creating
+  characters. The row rule is `create: ["gamemasters", "larpers"]`.
+- **`ownerRef` exists.** `register.d/portal-identity.json` adds it to
+  `character`. It gets the owner read rule, so a cast entry does not carry it.
+  `setting` stays readable: it is the world, and the world filter needs it.
+- **Property rules on a create cannot match the owner.** OpenRegister checks a
+  create's fields against an empty stored object, so `ownerUid = $userId` never
+  matches. A player creating a character in the app can set name, type and
+  description; background and faith follow after the first save. The portal's
+  `createCharacter` writes with `_rbac: false` (portaliq `PortalObjectWriter`),
+  so it is unaffected. Game masters create characters in the app as before.
+- **D4, PDF.** `CharactersController::downloadPdf` is admin-only at HEAD
+  (`testDownloadPdfReturns403ForNonAdminUser`), so no player path exists to
+  strip. The run sheet stays game master only (`EventsControllerTest::
+  testReturns403ForNonGm`). Both read through the mapper as before.
+- **Menu.** Manifest fragments add top-level menu entries only, so Cast is a
+  top-level entry at order 25, just below Characters.
+
 ## Open Questions
 
 None.

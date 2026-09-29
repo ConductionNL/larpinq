@@ -269,7 +269,8 @@ OC.L10N.register(
         "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Installer registre, skjemaer og flyter som andre organisasjoner har publisert.",
         "%1$s is already held by %2$s. Remove it there first.": "%1$s eies allerede av %2$s. Fjern det der først.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s hviler allerede på %2$s. Fjern det der først.",
-        "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s kan bare ha én eier, og %2$s har det nå. Fjern det først fra alle unntatt én."
+        "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s kan bare ha én eier, og %2$s har det nå. Fjern det først fra alle unntatt én.",
+        "Cast": "Rolleliste"
     },
     "nplurals=2; plural=(n != 1);"
 )

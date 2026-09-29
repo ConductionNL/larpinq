@@ -269,7 +269,8 @@ OC.L10N.register(
         "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Инсталирајте регистри, шеми и текови објавени од други организации.",
         "%1$s is already held by %2$s. Remove it there first.": "%1$s веќе го има %2$s. Прво отстранете го оттаму.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s веќе е на %2$s. Прво отстранете го оттаму.",
-        "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s може да има само еден сопственик, а сега го имаат %2$s. Прво отстранете го од сите освен еден."
+        "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s може да има само еден сопственик, а сега го имаат %2$s. Прво отстранете го од сите освен еден.",
+        "Cast": "Актерска постава"
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -268,7 +268,8 @@
         "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Installera register, scheman och flöden som andra organisationer har publicerat.",
         "%1$s is already held by %2$s. Remove it there first.": "%1$s innehas redan av %2$s. Ta bort det där först.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s vilar redan på %2$s. Ta bort det där först.",
-        "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s kan bara ha en innehavare, och %2$s har det nu. Ta först bort det från alla utom en."
+        "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s kan bara ha en innehavare, och %2$s har det nu. Ta först bort det från alla utom en.",
+        "Cast": "Rollista"
     },
     "plurals": {}
 }
