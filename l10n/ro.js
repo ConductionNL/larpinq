@@ -270,7 +270,13 @@ OC.L10N.register(
         "%1$s is already held by %2$s. Remove it there first.": "%1$s este deja deținut de %2$s. Elimină-l mai întâi de acolo.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s este deja pe %2$s. Elimină-l mai întâi de acolo.",
         "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s poate avea un singur deținător, iar acum îl dețin %2$s. Elimină-l mai întâi de la toți în afară de unul.",
-        "Cast": "Distribuție"
+        "Cast": "Distribuție",
+        "Download as PDF": "Descarcă ca PDF",
+        "Loading templates": "Se încarcă șabloanele",
+        "Template": "Șablon",
+        "PDF export needs the document app. Ask an administrator to enable it.": "Exportul PDF are nevoie de aplicația de documente. Cereți unui administrator să o activeze.",
+        "Only administrators can download character sheets for now.": "Deocamdată doar administratorii pot descărca fișele personajelor.",
+        "There is no character sheet template yet. Add one in the document app.": "Nu există încă un șablon de fișă de personaj. Adăugați unul în aplicația de documente."
     },
     "nplurals=2; plural=(n != 1);"
 )

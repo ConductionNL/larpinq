@@ -270,7 +270,13 @@ OC.L10N.register(
         "%1$s is already held by %2$s. Remove it there first.": "%1$s už má %2$s. Najprv ho odtiaľ odoberte.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s už je na %2$s. Najprv ho odtiaľ odoberte.",
         "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s môže mať len jedného držiteľa a teraz ho majú %2$s. Najprv ho odoberte všetkým okrem jedného.",
-        "Cast": "Obsadenie"
+        "Cast": "Obsadenie",
+        "Download as PDF": "Stiahnuť ako PDF",
+        "Loading templates": "Načítavajú sa šablóny",
+        "Template": "Šablóna",
+        "PDF export needs the document app. Ask an administrator to enable it.": "Export do PDF vyžaduje aplikáciu na dokumenty. Požiadajte správcu o jej zapnutie.",
+        "Only administrators can download character sheets for now.": "Zatiaľ môžu hárky postáv sťahovať iba správcovia.",
+        "There is no character sheet template yet. Add one in the document app.": "Zatiaľ neexistuje šablóna hárku postavy. Pridajte ju v aplikácii na dokumenty."
     },
     "nplurals=2; plural=(n != 1);"
 )

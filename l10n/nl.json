@@ -361,7 +361,13 @@
         "%1$s is already held by %2$s. Remove it there first.": "%1$s is al in bezit van %2$s. Haal het daar eerst weg.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s rust al op %2$s. Haal het daar eerst weg.",
         "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s kan maar één houder hebben, en %2$s hebben het nu. Haal het eerst bij iedereen op één na weg.",
-        "Cast": "Cast"
+        "Cast": "Cast",
+        "Download as PDF": "Als pdf downloaden",
+        "Loading templates": "Sjablonen laden",
+        "Template": "Sjabloon",
+        "PDF export needs the document app. Ask an administrator to enable it.": "Voor pdf-export is de documenten-app nodig. Vraag een beheerder om die aan te zetten.",
+        "Only administrators can download character sheets for now.": "Voorlopig kunnen alleen beheerders karakterbladen downloaden.",
+        "There is no character sheet template yet. Add one in the document app.": "Er is nog geen sjabloon voor karakterbladen. Voeg er een toe in de documenten-app."
     },
     "plurals": {},
     "pluralForm": "nplurals=2; plural=(n != 1);"

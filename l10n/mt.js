@@ -270,7 +270,13 @@ OC.L10N.register(
         "%1$s is already held by %2$s. Remove it there first.": "%1$s diġà għandu %2$s. Neħħih minn hemm l-ewwel.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s diġà jinsab fuq %2$s. Neħħih minn hemm l-ewwel.",
         "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s jista' jkollu detentur wieħed biss, u issa għandhom %2$s. Neħħih mingħand kulħadd ħlief wieħed l-ewwel.",
-        "Cast": "Kast"
+        "Cast": "Kast",
+        "Download as PDF": "Niżżel bħala PDF",
+        "Loading templates": "Qed jitgħabbew il-mudelli",
+        "Template": "Mudell",
+        "PDF export needs the document app. Ask an administrator to enable it.": "L-esportazzjoni PDF teħtieġ l-app tad-dokumenti. Staqsi amministratur biex jattivaha.",
+        "Only administrators can download character sheets for now.": "Għalissa l-amministraturi biss jistgħu jniżżlu l-folji tal-karattri.",
+        "There is no character sheet template yet. Add one in the document app.": "Għad m'hemmx mudell tal-folja tal-karattru. Żid wieħed fl-app tad-dokumenti."
     },
     "nplurals=2; plural=(n != 1);"
 )

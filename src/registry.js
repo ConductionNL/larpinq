@@ -22,6 +22,7 @@
  * SPDX-FileCopyrightText: 2026 Conduction B.V.
  */
 
+import CharacterPdfDownloadDialog from './dialogs/CharacterPdfDownloadDialog.vue'
 import EventRoster from './views/EventRoster.vue'
 import FlowDetailSidebar from './views/flows/FlowDetailSidebar.vue'
 import ObjectDetail from './views/ObjectDetail.vue'
@@ -29,6 +30,16 @@ import GameSettingsSection from './views/settings/Settings.vue'
 import SkillTree from './views/SkillTree.vue'
 
 export default {
+	// CharacterDetail "Download as PDF" header action (open-modal): a template
+	// picker a declarative api-call cannot express, since the download opens
+	// in a new tab with the chosen template in the URL.
+	// @spec openspec/specs/pdf-export/spec.md
+	CharacterPdfDownloadDialog: {
+		kind: 'modal',
+		component: CharacterPdfDownloadDialog,
+		propsSchema: {},
+	},
+
 	// --- Flows (ADR-110 Decision 4). Only the SIDEBAR is an app component;
 	//     the list and the canvas are the shared `index` / `flow` manifest
 	//     page types. CnFlowSidebar has to mount in the NC app sidebar for

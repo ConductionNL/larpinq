@@ -269,7 +269,13 @@
         "%1$s is already held by %2$s. Remove it there first.": "Το %1$s το έχει ήδη ο/η %2$s. Αφαιρέστε το πρώτα από εκεί.",
         "%1$s is already on %2$s. Remove it there first.": "Το %1$s βρίσκεται ήδη στον/στην %2$s. Αφαιρέστε το πρώτα από εκεί.",
         "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "Το %1$s μπορεί να έχει μόνο έναν κάτοχο, και τώρα το έχουν οι %2$s. Αφαιρέστε το πρώτα από όλους εκτός από έναν.",
-        "Cast": "Διανομή"
+        "Cast": "Διανομή",
+        "Download as PDF": "Λήψη ως PDF",
+        "Loading templates": "Φόρτωση προτύπων",
+        "Template": "Πρότυπο",
+        "PDF export needs the document app. Ask an administrator to enable it.": "Η εξαγωγή PDF χρειάζεται την εφαρμογή εγγράφων. Ζητήστε από έναν διαχειριστή να την ενεργοποιήσει.",
+        "Only administrators can download character sheets for now.": "Προς το παρόν μόνο οι διαχειριστές μπορούν να κατεβάσουν φύλλα χαρακτήρων.",
+        "There is no character sheet template yet. Add one in the document app.": "Δεν υπάρχει ακόμη πρότυπο φύλλου χαρακτήρα. Προσθέστε ένα στην εφαρμογή εγγράφων."
     },
     "plurals": {}
 }

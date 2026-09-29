@@ -270,7 +270,13 @@ OC.L10N.register(
         "%1$s is already held by %2$s. Remove it there first.": "%1$s већ има %2$s. Прво га уклоните одатле.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s је већ на %2$s. Прво га уклоните одатле.",
         "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s може имати само једног власника, а сада га имају %2$s. Прво га уклоните свима осим једном.",
-        "Cast": "Подела улога"
+        "Cast": "Подела улога",
+        "Download as PDF": "Преузми као PDF",
+        "Loading templates": "Учитавање шаблона",
+        "Template": "Шаблон",
+        "PDF export needs the document app. Ask an administrator to enable it.": "Извоз у PDF захтева апликацију за документе. Замолите администратора да је укључи.",
+        "Only administrators can download character sheets for now.": "Засад само администратори могу да преузму листове ликова.",
+        "There is no character sheet template yet. Add one in the document app.": "Још нема шаблона листа лика. Додајте га у апликацији за документе."
     },
     "nplurals=2; plural=(n != 1);"
 )

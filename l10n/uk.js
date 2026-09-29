@@ -270,7 +270,13 @@ OC.L10N.register(
         "%1$s is already held by %2$s. Remove it there first.": "%1$s вже в %2$s. Спершу приберіть його звідти.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s вже накладено на %2$s. Спершу приберіть його звідти.",
         "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s може мати лише одного власника, а зараз воно в %2$s. Спершу приберіть його в усіх, крім одного.",
-        "Cast": "Склад"
+        "Cast": "Склад",
+        "Download as PDF": "Завантажити як PDF",
+        "Loading templates": "Завантаження шаблонів",
+        "Template": "Шаблон",
+        "PDF export needs the document app. Ask an administrator to enable it.": "Для експорту в PDF потрібен застосунок документів. Попросіть адміністратора увімкнути його.",
+        "Only administrators can download character sheets for now.": "Поки що завантажувати аркуші персонажів можуть лише адміністратори.",
+        "There is no character sheet template yet. Add one in the document app.": "Шаблону аркуша персонажа ще немає. Додайте його в застосунку документів."
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -269,7 +269,13 @@
         "%1$s is already held by %2$s. Remove it there first.": "%1$s už má %2$s. Nejprve ho odtud odeberte.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s už je na %2$s. Nejprve ho odtud odeberte.",
         "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s může mít jen jednoho držitele a teď ho mají %2$s. Nejprve ho odeberte všem kromě jednoho.",
-        "Cast": "Obsazení"
+        "Cast": "Obsazení",
+        "Download as PDF": "Stáhnout jako PDF",
+        "Loading templates": "Načítání šablon",
+        "Template": "Šablona",
+        "PDF export needs the document app. Ask an administrator to enable it.": "Export do PDF vyžaduje aplikaci pro dokumenty. Požádejte správce o její zapnutí.",
+        "Only administrators can download character sheets for now.": "Zatím mohou deníky postav stahovat jen správci.",
+        "There is no character sheet template yet. Add one in the document app.": "Zatím neexistuje šablona deníku postavy. Přidejte ji v aplikaci pro dokumenty."
     },
     "plurals": {}
 }

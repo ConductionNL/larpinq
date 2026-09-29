@@ -269,7 +269,13 @@
         "%1$s is already held by %2$s. Remove it there first.": "%1$s ya lo tiene %2$s. Quítalo de ahí primero.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s ya está en %2$s. Quítalo de ahí primero.",
         "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s solo puede tener un portador, y ahora lo tienen %2$s. Quítaselo primero a todos menos a uno.",
-        "Cast": "Reparto"
+        "Cast": "Reparto",
+        "Download as PDF": "Descargar como PDF",
+        "Loading templates": "Cargando plantillas",
+        "Template": "Plantilla",
+        "PDF export needs the document app. Ask an administrator to enable it.": "La exportación a PDF necesita la aplicación de documentos. Pide a un administrador que la active.",
+        "Only administrators can download character sheets for now.": "Por ahora, solo los administradores pueden descargar fichas de personaje.",
+        "There is no character sheet template yet. Add one in the document app.": "Aún no hay una plantilla de ficha de personaje. Añade una en la aplicación de documentos."
     },
     "plurals": {}
 }

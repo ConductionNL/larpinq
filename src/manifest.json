@@ -596,6 +596,16 @@
 			"config": {
 				"register": "larpinq",
 				"schema": "character",
+				"headerActions": [
+					{
+						"id": "download-pdf",
+						"type": "open-modal",
+						"target": "CharacterPdfDownloadDialog",
+						"label": "Download as PDF",
+						"icon": "FilePdfBox",
+						"visibleWhen": { "endpoint": "/apps/larpinq/api/pdf/templates", "field": "available", "op": "eq", "value": true }
+					}
+				],
 				"documentationUrl": "https://larpinq.conduction.nl",
 				"_note": "ADR-062 rollout: split the sheet into identity (name/player/setting/description/background/faith, 6 fields) vs game state & notes (type/approved/gold/silver/copper/itemsAndMoney/card/notice/GM notes, 10 fields) per rule 3. The loose XP + Gold stat cards fold into one stats-block (rule 2, same-flavor simple KPIs) top-right, aligned with the identity row. The right rail lists the linked mechanics (skills/items/conditions) and event participation as related groups so a GM can see the whole build at a glance. The character portrait/sheet lives in the photos leaf (schema declares linkedType 'photos') as a body integration widget. XP awards granted to this character are shown as an object-list (xpAward.character FK = @objectId) — GM hand-awarded per xpAward's schema description, so allowCreate stays on (default). No email/calendar on the body: the character schema declares only 'photos'. Sidebar is audit-history only — the photos leaf already lives in the body, so it is not duplicated as a sidebar tab.",
 				"widgets": [

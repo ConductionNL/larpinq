@@ -269,7 +269,13 @@
         "%1$s is already held by %2$s. Remove it there first.": "%1$s e ka tashmë %2$s. Hiqeni së pari prej andej.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s është tashmë te %2$s. Hiqeni së pari prej andej.",
         "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s mund të ketë vetëm një mbajtës, dhe tani e kanë %2$s. Hiqjani së pari të gjithëve përveç njërit.",
-        "Cast": "Kasti"
+        "Cast": "Kasti",
+        "Download as PDF": "Shkarko si PDF",
+        "Loading templates": "Po ngarkohen shabllonet",
+        "Template": "Shabllon",
+        "PDF export needs the document app. Ask an administrator to enable it.": "Eksporti PDF kërkon aplikacionin e dokumenteve. Kërkojini një administratori ta aktivizojë.",
+        "Only administrators can download character sheets for now.": "Për momentin vetëm administratorët mund të shkarkojnë fletët e personazheve.",
+        "There is no character sheet template yet. Add one in the document app.": "Ende nuk ka shabllon për fletën e personazhit. Shtoni një në aplikacionin e dokumenteve."
     },
     "plurals": {}
 }

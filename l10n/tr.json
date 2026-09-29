@@ -269,7 +269,13 @@
         "%1$s is already held by %2$s. Remove it there first.": "%1$s zaten %2$s adlı karakterde. Önce oradan kaldırın.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s zaten %2$s üzerinde. Önce oradan kaldırın.",
         "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s yalnızca bir sahibe sahip olabilir ve şu anda %2$s tarafından tutuluyor. Önce biri dışında hepsinden kaldırın.",
-        "Cast": "Oyuncular"
+        "Cast": "Oyuncular",
+        "Download as PDF": "PDF olarak indir",
+        "Loading templates": "Şablonlar yükleniyor",
+        "Template": "Şablon",
+        "PDF export needs the document app. Ask an administrator to enable it.": "PDF dışa aktarımı belge uygulamasını gerektirir. Bir yöneticiden etkinleştirmesini isteyin.",
+        "Only administrators can download character sheets for now.": "Şimdilik karakter sayfalarını yalnızca yöneticiler indirebilir.",
+        "There is no character sheet template yet. Add one in the document app.": "Henüz karakter sayfası şablonu yok. Belge uygulamasından bir tane ekleyin."
     },
     "plurals": {}
 }
