@@ -33,7 +33,7 @@ $extra = [
 	['name' => 'events#roster', 'url' => '/api/events/{id}/roster', 'verb' => 'GET'],
 	['name' => 'events#recordAttendance', 'url' => '/api/events/{id}/attendance', 'verb' => 'POST'],
 	['name' => 'characters#requirementReport', 'url' => '/api/characters/{id}/requirement-report', 'verb' => 'GET'],
-	['name' => 'character_stats#show', 'url' => '/api/characters/{id}/stats', 'verb' => 'GET'],
+	['name' => 'characterStats#show', 'url' => '/api/characters/{id}/stats', 'verb' => 'GET'],
 	['name' => 'settings#index', 'url' => 'api/settings', 'verb' => 'GET'],
 	['name' => 'settings#create', 'url' => 'api/settings', 'verb' => 'POST'],
 	// Canonical AppHost settings write (OpenRegister\AppHost\Routes::standard()).

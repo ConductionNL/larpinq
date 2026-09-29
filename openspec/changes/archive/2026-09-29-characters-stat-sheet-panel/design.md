@@ -109,7 +109,7 @@ base 8, and an empty "Newcomer") and removes it afterwards. The PHPUnit test
 through the real engine.
 
 The endpoint lives in its own `CharacterStatsController` (route
-`character_stats#show`) rather than in `CharactersController::stats()`, so the
+`characterStats#show`) rather than in `CharactersController::stats()`, so the
 existing controller's constructor and its tests stay unchanged. The audit
 entries carry `source`, `sourceId` and `sourceName` (the carrier), next to the
 engine's `effectName`.
