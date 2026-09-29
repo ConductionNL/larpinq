@@ -22,6 +22,7 @@ namespace OCA\Larpinq\Tests\Unit\AppInfo;
 use OCA\Larpinq\AppInfo\Application;
 use OCA\Larpinq\Listener\CharacterRequirementListener;
 use OCA\Larpinq\Listener\DeepLinkRegistrationListener;
+use OCA\Larpinq\Listener\UniqueHolderListener;
 use OCP\AppFramework\Bootstrap\IRegistrationContext;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
@@ -56,15 +57,18 @@ use ReflectionClass;
 class ApplicationRegisterTest extends TestCase {
 
 	/**
-	 * The three OpenRegister event classes register() probes for, mapped to the
-	 * listener each one must attach.
+	 * Every (event, listener) pair register() must attach when OpenRegister's
+	 * event classes resolve. A list of pairs, not a map, because one event
+	 * carries more than one listener.
 	 *
-	 * @var array<string, string>
+	 * @var array<int, array{0: string, 1: string}>
 	 */
-	private const EVENT_TO_LISTENER = [
-		'OCA\OpenRegister\Event\DeepLinkRegistrationEvent' => DeepLinkRegistrationListener::class,
-		'OCA\OpenRegister\Event\ObjectCreatingEvent' => CharacterRequirementListener::class,
-		'OCA\OpenRegister\Event\ObjectUpdatingEvent' => CharacterRequirementListener::class,
+	private const REGISTRATIONS = [
+		['OCA\OpenRegister\Event\DeepLinkRegistrationEvent', DeepLinkRegistrationListener::class],
+		['OCA\OpenRegister\Event\ObjectCreatingEvent', CharacterRequirementListener::class],
+		['OCA\OpenRegister\Event\ObjectUpdatingEvent', CharacterRequirementListener::class],
+		['OCA\OpenRegister\Event\ObjectCreatingEvent', UniqueHolderListener::class],
+		['OCA\OpenRegister\Event\ObjectUpdatingEvent', UniqueHolderListener::class],
 	];
 
 	/**
@@ -104,7 +108,7 @@ class ApplicationRegisterTest extends TestCase {
 	public function testEveryListenerRegistersWhenOpenRegisterIsResolvable(): void {
 		require_once __DIR__ . '/fixtures/openregister-events.php';
 
-		foreach (array_keys(self::EVENT_TO_LISTENER) as $event) {
+		foreach (array_unique(array_column(self::REGISTRATIONS, 0)) as $event) {
 			$this->assertTrue(
 				class_exists($event),
 				sprintf(
@@ -117,14 +121,14 @@ class ApplicationRegisterTest extends TestCase {
 
 		$recorded = $this->recordRegistrations();
 
-		foreach (self::EVENT_TO_LISTENER as $event => $listener) {
+		foreach (self::REGISTRATIONS as [$event, $listener]) {
 			$this->assertContains(
 				[$event, $listener],
 				$recorded,
 				sprintf(
-					'%s did not register %s. Two of these three listeners carry the '
-					. 'server-authoritative skill-requirement and XP-budget enforcement '
-					. 'on character writes — unregistered, that enforcement is simply '
+					'%s did not register %s. Four of these five registrations carry the '
+					. 'server-authoritative skill-requirement, XP-budget and unique-holder enforcement '
+					. 'on character, item and condition writes — unregistered, that enforcement is simply '
 					. 'not running, and the app reports nothing.',
 					Application::class,
 					$listener
@@ -133,7 +137,7 @@ class ApplicationRegisterTest extends TestCase {
 		}
 
 		$this->assertCount(
-			count(self::EVENT_TO_LISTENER),
+			count(self::REGISTRATIONS),
 			$recorded,
 			'register() attached a different number of listeners than this test knows about.'
 		);

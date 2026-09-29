@@ -43,7 +43,7 @@ if (class_exists(\OCA\OpenRegister\Event\DeepLinkRegistrationEvent::class, false
 	}//end class
 }
 
-if (class_exists(\OCA\OpenRegister\Event\ObjectCreatingEvent::class, false) === false) {
+if (class_exists(\OCA\OpenRegister\Event\ObjectCreatingEvent::class) === false) {
 	/**
 	 * Stand-in for OpenRegister's pre-create object event.
 	 */
@@ -51,7 +51,7 @@ if (class_exists(\OCA\OpenRegister\Event\ObjectCreatingEvent::class, false) === 
 	}//end class
 }
 
-if (class_exists(\OCA\OpenRegister\Event\ObjectUpdatingEvent::class, false) === false) {
+if (class_exists(\OCA\OpenRegister\Event\ObjectUpdatingEvent::class) === false) {
 	/**
 	 * Stand-in for OpenRegister's pre-update object event.
 	 */
