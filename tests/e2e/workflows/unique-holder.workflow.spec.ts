@@ -59,6 +59,7 @@ async function patch(type: string, id: string, body: Record<string, unknown>) {
 }
 
 test.describe('rules-unique-holder-enforcement', () => {
+	// @e2e openspec/specs/rpg-system/spec.md#a-game-master-gives-a-held-unique-item-to-a-second-character
 	test('a held unique item cannot go to a second character, and the holder is named', async () => {
 		const crown = ledger.track(
 			'item',
@@ -90,6 +91,7 @@ test.describe('rules-unique-holder-enforcement', () => {
 		expect(body.errors.items[0].code).toBe('unique_item_held')
 	})
 
+	// @e2e openspec/specs/rpg-system/spec.md#a-non-unique-item-goes-to-many-characters
 	test('a non-unique item goes to many characters', async () => {
 		const potion = ledger.track(
 			'item',
@@ -115,6 +117,7 @@ test.describe('rules-unique-holder-enforcement', () => {
 		expect(res.ok()).toBe(true)
 	})
 
+	// @e2e openspec/specs/rpg-system/spec.md#the-curse-of-the-ashen-king-can-only-rest-on-one-head
 	test('a unique condition rests on one character', async () => {
 		const curse = ledger.track(
 			'condition',
@@ -141,5 +144,36 @@ test.describe('rules-unique-holder-enforcement', () => {
 		expect(res.status()).toBe(422)
 		const body = await res.json()
 		expect(body.errors.conditions[0].heldBy).toBe(mirelaName)
+	})
+	// @e2e openspec/specs/rpg-system/spec.md#a-game-master-marks-a-shared-item-unique
+	test('a shared item cannot be switched to unique, and both holders are named', async () => {
+		const key = ledger.track(
+			'item',
+			await createObject(api, 'item', {
+				name: fixtureName('Silver key'),
+				unique: false,
+			}),
+		)
+		const queenName = fixtureName('Queen Isolde')
+		const bertramName = fixtureName('Sir Bertram')
+		ledger.track(
+			'character',
+			await createObject(api, 'character', { name: queenName, items: [key] }),
+		)
+		ledger.track(
+			'character',
+			await createObject(api, 'character', {
+				name: bertramName,
+				items: [key],
+			}),
+		)
+
+		const res = await patch('item', key, { unique: true })
+
+		expect(res.status()).toBe(422)
+		const body = await res.json()
+		expect(body.errors.unique[0].heldBy).toEqual(
+			expect.arrayContaining([queenName, bertramName]),
+		)
 	})
 })

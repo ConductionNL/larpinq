@@ -83,8 +83,6 @@ class ObjectCreatingEvent extends Event implements StoppableEventInterface {
 	 * Get the object entity being created
 	 *
 	 * @return ObjectEntity The object entity that is being created
-	 *
-	 * @spec openspec/specs/event-driven-architecture/spec.md#requirement-event-payloads-for-webhook-delivery-must-include-register-and-schema-context-for-object-events
 	 */
 	public function getObject(): ObjectEntity {
 		return $this->object;
@@ -94,8 +92,6 @@ class ObjectCreatingEvent extends Event implements StoppableEventInterface {
 	 * Check if propagation has been stopped by a hook
 	 *
 	 * @return bool True if propagation is stopped
-	 *
-	 * @spec openspec/specs/event-driven-architecture/spec.md#requirement-event-listener-isolation-must-prevent-cascading-failures
 	 */
 	public function isPropagationStopped(): bool {
 		return $this->propagationStopped;
@@ -105,8 +101,6 @@ class ObjectCreatingEvent extends Event implements StoppableEventInterface {
 	 * Stop event propagation (used by hooks to reject creation)
 	 *
 	 * @return void
-	 *
-	 * @spec openspec/specs/event-driven-architecture/spec.md#requirement-event-listener-isolation-must-prevent-cascading-failures
 	 */
 	public function stopPropagation(): void {
 		$this->propagationStopped = true;
@@ -118,8 +112,6 @@ class ObjectCreatingEvent extends Event implements StoppableEventInterface {
 	 * @param array<string, mixed> $errors The error details
 	 *
 	 * @return void
-	 *
-	 * @spec openspec/specs/event-driven-architecture/spec.md#requirement-event-listener-isolation-must-prevent-cascading-failures
 	 */
 	public function setErrors(array $errors): void {
 		$this->errors = $errors;
@@ -129,8 +121,6 @@ class ObjectCreatingEvent extends Event implements StoppableEventInterface {
 	 * Get errors from hooks
 	 *
 	 * @return array<string, mixed> The error details
-	 *
-	 * @spec openspec/specs/event-driven-architecture/spec.md#requirement-event-listener-isolation-must-prevent-cascading-failures
 	 */
 	public function getErrors(): array {
 		return $this->errors;
@@ -142,8 +132,6 @@ class ObjectCreatingEvent extends Event implements StoppableEventInterface {
 	 * @param array<string, mixed> $data The modified data
 	 *
 	 * @return void
-	 *
-	 * @spec openspec/specs/event-driven-architecture/spec.md#requirement-event-listener-isolation-must-prevent-cascading-failures
 	 */
 	public function setModifiedData(array $data): void {
 		$this->modifiedData = $data;
@@ -153,8 +141,6 @@ class ObjectCreatingEvent extends Event implements StoppableEventInterface {
 	 * Get modified data from hooks
 	 *
 	 * @return array<string, mixed> The modified data
-	 *
-	 * @spec openspec/specs/event-driven-architecture/spec.md#requirement-event-listener-isolation-must-prevent-cascading-failures
 	 */
 	public function getModifiedData(): array {
 		return $this->modifiedData;

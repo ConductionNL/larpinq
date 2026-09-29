@@ -92,8 +92,6 @@ class ObjectUpdatingEvent extends Event implements StoppableEventInterface {
 	 * Get the updated object entity
 	 *
 	 * @return ObjectEntity The object entity after update
-	 *
-	 * @spec openspec/specs/event-driven-architecture/spec.md#requirement-event-payloads-for-webhook-delivery-must-include-register-and-schema-context-for-object-events
 	 */
 	public function getNewObject(): ObjectEntity {
 		return $this->newObject;
@@ -103,8 +101,6 @@ class ObjectUpdatingEvent extends Event implements StoppableEventInterface {
 	 * Get the original object entity
 	 *
 	 * @return ObjectEntity|null The object entity before update (null if not available)
-	 *
-	 * @spec openspec/specs/event-driven-architecture/spec.md#requirement-event-payloads-for-webhook-delivery-must-include-register-and-schema-context-for-object-events
 	 */
 	public function getOldObject(): ?ObjectEntity {
 		return $this->oldObject;
@@ -114,8 +110,6 @@ class ObjectUpdatingEvent extends Event implements StoppableEventInterface {
 	 * Check if propagation has been stopped by a hook
 	 *
 	 * @return bool True if propagation is stopped
-	 *
-	 * @spec openspec/specs/event-driven-architecture/spec.md#requirement-event-listener-isolation-must-prevent-cascading-failures
 	 */
 	public function isPropagationStopped(): bool {
 		return $this->propagationStopped;
@@ -125,8 +119,6 @@ class ObjectUpdatingEvent extends Event implements StoppableEventInterface {
 	 * Stop event propagation (used by hooks to reject update)
 	 *
 	 * @return void
-	 *
-	 * @spec openspec/specs/event-driven-architecture/spec.md#requirement-event-listener-isolation-must-prevent-cascading-failures
 	 */
 	public function stopPropagation(): void {
 		$this->propagationStopped = true;
@@ -138,8 +130,6 @@ class ObjectUpdatingEvent extends Event implements StoppableEventInterface {
 	 * @param array<string, mixed> $errors The error details
 	 *
 	 * @return void
-	 *
-	 * @spec openspec/specs/event-driven-architecture/spec.md#requirement-event-listener-isolation-must-prevent-cascading-failures
 	 */
 	public function setErrors(array $errors): void {
 		$this->errors = $errors;
@@ -149,8 +139,6 @@ class ObjectUpdatingEvent extends Event implements StoppableEventInterface {
 	 * Get errors from hooks
 	 *
 	 * @return array<string, mixed> The error details
-	 *
-	 * @spec openspec/specs/event-driven-architecture/spec.md#requirement-event-listener-isolation-must-prevent-cascading-failures
 	 */
 	public function getErrors(): array {
 		return $this->errors;
@@ -162,8 +150,6 @@ class ObjectUpdatingEvent extends Event implements StoppableEventInterface {
 	 * @param array<string, mixed> $data The modified data
 	 *
 	 * @return void
-	 *
-	 * @spec openspec/specs/event-driven-architecture/spec.md#requirement-event-listener-isolation-must-prevent-cascading-failures
 	 */
 	public function setModifiedData(array $data): void {
 		$this->modifiedData = $data;
@@ -173,8 +159,6 @@ class ObjectUpdatingEvent extends Event implements StoppableEventInterface {
 	 * Get modified data from hooks
 	 *
 	 * @return array<string, mixed> The modified data
-	 *
-	 * @spec openspec/specs/event-driven-architecture/spec.md#requirement-event-listener-isolation-must-prevent-cascading-failures
 	 */
 	public function getModifiedData(): array {
 		return $this->modifiedData;
