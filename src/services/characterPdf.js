@@ -22,6 +22,8 @@ import { generateUrl } from '@nextcloud/router'
  * (administrators only until player-character-sheet-access lands).
  *
  * @return {Promise<{available: boolean, forbidden: boolean, templates: Array<{id: string, name: string}>}>} The state.
+ *
+ * @spec openspec/specs/pdf-export/spec.md
  */
 export async function fetchCharacterPdfTemplates() {
 	const response = await fetch(generateUrl('/apps/larpinq/api/pdf/templates'), {
@@ -50,6 +52,8 @@ export async function fetchCharacterPdfTemplates() {
  * @param {string} characterId The character UUID.
  * @param {string} templateId The template id.
  * @return {string} The URL.
+ *
+ * @spec openspec/specs/pdf-export/spec.md
  */
 export function characterPdfUrl(characterId, templateId) {
 	return generateUrl(
@@ -62,6 +66,8 @@ export function characterPdfUrl(characterId, templateId) {
  *
  * @param {{loading: boolean, templateId: string|null}} state The modal state.
  * @return {boolean} True when a template is chosen and the list has loaded.
+ *
+ * @spec openspec/specs/pdf-export/spec.md
  */
 export function canDownload(state) {
 	return (

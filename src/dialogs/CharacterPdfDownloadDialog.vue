@@ -134,6 +134,13 @@ export default {
 		},
 	},
 
+	/**
+	 * Load the templates, then enable the picker.
+	 *
+	 * @return {Promise<void>}
+	 *
+	 * @spec openspec/specs/pdf-export/spec.md
+	 */
 	async mounted() {
 		const state = await fetchCharacterPdfTemplates()
 		this.available = state.available

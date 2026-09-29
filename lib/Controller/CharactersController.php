@@ -216,10 +216,16 @@ class CharactersController extends Controller {
 	 * everyone who could not download anyway, and when the document app is
 	 * absent (`available: false`).
 	 *
+	 * Deliberately NOT `@NoAdminRequired`, for the same reason as
+	 * downloadPdf(): only an administrator may download a sheet today.
+	 * `#[NoCSRFRequired]` because it is a read-only GET that the header
+	 * action's visibility probe fetches, like downloadPdf's GET.
+	 *
 	 * @return JSONResponse `{available: bool, templates: [{id, name}]}`.
 	 *
 	 * @spec openspec/specs/pdf-export/spec.md
 	 */
+	#[NoCSRFRequired]
 	public function pdfTemplates(): JSONResponse {
 		if ($this->pdfRenderer->isDocuDeskAvailable() === false) {
 			return new JSONResponse(data: ['available' => false, 'templates' => []]);
