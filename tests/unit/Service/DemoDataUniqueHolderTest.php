@@ -13,7 +13,7 @@
  * SPDX-License-Identifier: EUPL-1.2
  * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
  *
- * @spec openspec/changes/rules-unique-holder-enforcement/tasks.md#task-2.3
+ * @spec openspec/specs/rpg-system/spec.md
  */
 
 declare(strict_types=1);
