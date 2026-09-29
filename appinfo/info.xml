@@ -247,6 +247,10 @@ Maak een [featureverzoek](https://github.com/ConductionNL/larpinq/issues)
 		</install>
 	</repair-steps>
 
+	<commands>
+		<command>OCA\Larpinq\Command\UniqueHoldersCheck</command>
+	</commands>
+
 	<settings>
 		<admin>OCA\Larpinq\Settings\LarpinqAdmin</admin>
 		<admin-section>OCA\Larpinq\Sections\LarpinqAdmin</admin-section>
