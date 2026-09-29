@@ -276,7 +276,21 @@ OC.L10N.register(
         "Template": "Szablon",
         "PDF export needs the document app. Ask an administrator to enable it.": "Eksport do PDF wymaga aplikacji dokumentów. Poproś administratora o jej włączenie.",
         "Only administrators can download character sheets for now.": "Na razie tylko administratorzy mogą pobierać karty postaci.",
-        "There is no character sheet template yet. Add one in the document app.": "Nie ma jeszcze szablonu karty postaci. Dodaj go w aplikacji dokumentów."
+        "There is no character sheet template yet. Add one in the document app.": "Nie ma jeszcze szablonu karty postaci. Dodaj go w aplikacji dokumentów.",
+        "Stats": "Statystyki",
+        "Loading stats": "Wczytywanie statystyk",
+        "Could not load the stats.": "Nie udało się wczytać statystyk.",
+        "XP earned": "Zdobyte XP",
+        "XP spent": "Wydane XP",
+        "XP left": "Pozostałe XP",
+        "No modifiers": "Brak modyfikatorów",
+        "skill": "umiejętność",
+        "item": "przedmiot",
+        "condition": "stan",
+        "event": "wydarzenie",
+        "XP award": "przyznanie XP",
+        "from {name}": "z {name}",
+        "from {name} ({type})": "z {name} ({type})"
     },
     "nplurals=2; plural=(n != 1);"
 )

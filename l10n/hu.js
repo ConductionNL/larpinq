@@ -276,7 +276,21 @@ OC.L10N.register(
         "Template": "Sablon",
         "PDF export needs the document app. Ask an administrator to enable it.": "A PDF-exporthoz a dokumentumalkalmazás kell. Kérd meg a rendszergazdát, hogy kapcsolja be.",
         "Only administrators can download character sheets for now.": "Egyelőre csak rendszergazdák tölthetnek le karakterlapokat.",
-        "There is no character sheet template yet. Add one in the document app.": "Még nincs karakterlap-sablon. Adj hozzá egyet a dokumentumalkalmazásban."
+        "There is no character sheet template yet. Add one in the document app.": "Még nincs karakterlap-sablon. Adj hozzá egyet a dokumentumalkalmazásban.",
+        "Stats": "Statisztika",
+        "Loading stats": "Statisztika betöltése",
+        "Could not load the stats.": "A statisztikát nem sikerült betölteni.",
+        "XP earned": "Megszerzett XP",
+        "XP spent": "Elköltött XP",
+        "XP left": "Maradék XP",
+        "No modifiers": "Nincsenek módosítók",
+        "skill": "képesség",
+        "item": "tárgy",
+        "condition": "állapot",
+        "event": "esemény",
+        "XP award": "XP-jutalom",
+        "from {name}": "forrás: {name}",
+        "from {name} ({type})": "forrás: {name} ({type})"
     },
     "nplurals=2; plural=(n != 1);"
 )

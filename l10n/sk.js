@@ -276,7 +276,21 @@ OC.L10N.register(
         "Template": "Šablóna",
         "PDF export needs the document app. Ask an administrator to enable it.": "Export do PDF vyžaduje aplikáciu na dokumenty. Požiadajte správcu o jej zapnutie.",
         "Only administrators can download character sheets for now.": "Zatiaľ môžu hárky postáv sťahovať iba správcovia.",
-        "There is no character sheet template yet. Add one in the document app.": "Zatiaľ neexistuje šablóna hárku postavy. Pridajte ju v aplikácii na dokumenty."
+        "There is no character sheet template yet. Add one in the document app.": "Zatiaľ neexistuje šablóna hárku postavy. Pridajte ju v aplikácii na dokumenty.",
+        "Stats": "Štatistiky",
+        "Loading stats": "Načítavajú sa štatistiky",
+        "Could not load the stats.": "Štatistiky sa nepodarilo načítať.",
+        "XP earned": "Získané XP",
+        "XP spent": "Minuté XP",
+        "XP left": "Zostávajúce XP",
+        "No modifiers": "Žiadne modifikátory",
+        "skill": "zručnosť",
+        "item": "predmet",
+        "condition": "stav",
+        "event": "udalosť",
+        "XP award": "udelenie XP",
+        "from {name}": "z {name}",
+        "from {name} ({type})": "z {name} ({type})"
     },
     "nplurals=2; plural=(n != 1);"
 )

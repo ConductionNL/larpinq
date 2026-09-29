@@ -275,7 +275,21 @@
         "Template": "Șablon",
         "PDF export needs the document app. Ask an administrator to enable it.": "Exportul PDF are nevoie de aplicația de documente. Cereți unui administrator să o activeze.",
         "Only administrators can download character sheets for now.": "Deocamdată doar administratorii pot descărca fișele personajelor.",
-        "There is no character sheet template yet. Add one in the document app.": "Nu există încă un șablon de fișă de personaj. Adăugați unul în aplicația de documente."
+        "There is no character sheet template yet. Add one in the document app.": "Nu există încă un șablon de fișă de personaj. Adăugați unul în aplicația de documente.",
+        "Stats": "Statistici",
+        "Loading stats": "Se încarcă statisticile",
+        "Could not load the stats.": "Statisticile nu au putut fi încărcate.",
+        "XP earned": "XP câștigat",
+        "XP spent": "XP cheltuit",
+        "XP left": "XP rămas",
+        "No modifiers": "Fără modificatori",
+        "skill": "abilitate",
+        "item": "obiect",
+        "condition": "stare",
+        "event": "eveniment",
+        "XP award": "acordare XP",
+        "from {name}": "de la {name}",
+        "from {name} ({type})": "de la {name} ({type})"
     },
     "plurals": {}
 }

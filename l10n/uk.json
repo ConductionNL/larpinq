@@ -275,7 +275,21 @@
         "Template": "Шаблон",
         "PDF export needs the document app. Ask an administrator to enable it.": "Для експорту в PDF потрібен застосунок документів. Попросіть адміністратора увімкнути його.",
         "Only administrators can download character sheets for now.": "Поки що завантажувати аркуші персонажів можуть лише адміністратори.",
-        "There is no character sheet template yet. Add one in the document app.": "Шаблону аркуша персонажа ще немає. Додайте його в застосунку документів."
+        "There is no character sheet template yet. Add one in the document app.": "Шаблону аркуша персонажа ще немає. Додайте його в застосунку документів.",
+        "Stats": "Характеристики",
+        "Loading stats": "Завантаження характеристик",
+        "Could not load the stats.": "Не вдалося завантажити характеристики.",
+        "XP earned": "Отримано XP",
+        "XP spent": "Витрачено XP",
+        "XP left": "Залишилось XP",
+        "No modifiers": "Немає модифікаторів",
+        "skill": "навичка",
+        "item": "предмет",
+        "condition": "стан",
+        "event": "подія",
+        "XP award": "нарахування XP",
+        "from {name}": "від {name}",
+        "from {name} ({type})": "від {name} ({type})"
     },
     "plurals": {}
 }

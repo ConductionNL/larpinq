@@ -275,7 +275,21 @@
         "Template": "Vorlage",
         "PDF export needs the document app. Ask an administrator to enable it.": "Für den PDF-Export wird die Dokumenten-App benötigt. Bitten Sie eine Administratorin oder einen Administrator, sie zu aktivieren.",
         "Only administrators can download character sheets for now.": "Vorerst können nur Administratoren Charakterbögen herunterladen.",
-        "There is no character sheet template yet. Add one in the document app.": "Es gibt noch keine Vorlage für Charakterbögen. Fügen Sie eine in der Dokumenten-App hinzu."
+        "There is no character sheet template yet. Add one in the document app.": "Es gibt noch keine Vorlage für Charakterbögen. Fügen Sie eine in der Dokumenten-App hinzu.",
+        "Stats": "Werte",
+        "Loading stats": "Werte werden geladen",
+        "Could not load the stats.": "Die Werte konnten nicht geladen werden.",
+        "XP earned": "XP verdient",
+        "XP spent": "XP ausgegeben",
+        "XP left": "XP übrig",
+        "No modifiers": "Keine Modifikatoren",
+        "skill": "Fertigkeit",
+        "item": "Gegenstand",
+        "condition": "Zustand",
+        "event": "Veranstaltung",
+        "XP award": "XP-Vergabe",
+        "from {name}": "von {name}",
+        "from {name} ({type})": "von {name} ({type})"
     },
     "plurals": {}
 }

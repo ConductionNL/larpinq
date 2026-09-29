@@ -522,4 +522,29 @@ class CharacterServiceTest extends TestCase {
 		self::assertArrayNotHasKey('effect', $audit);
 		self::assertArrayNotHasKey('secret_field', $audit);
 	}
+
+	/**
+	 * Each audit entry names the skill, item, condition or event that carried it (REQ-CSP-001).
+	 *
+	 * @spec openspec/specs/character-management/spec.md
+	 */
+	public function testAuditEntriesNameTheirSource(): void {
+		$abilities = [['id' => 'abil-1', 'name' => 'Strength', 'base' => 10]];
+		$effects = [
+			['id' => 'eff-1', 'name' => 'Blade training', 'modifier' => 3, 'modification' => 'positive', 'abilities' => ['abil-1']],
+			['id' => 'eff-2', 'name' => 'Shield weight', 'modifier' => 1, 'modification' => 'positive', 'abilities' => ['abil-1']],
+		];
+		$service = $this->createServiceWithData(
+			abilities: $abilities,
+			effects: $effects,
+			skills: [['id' => 'skill-1', 'name' => 'Swordsmanship', 'effects' => ['eff-1']]],
+			items: [['id' => 'item-1', 'name' => 'Iron shield', 'effects' => ['eff-2']]],
+		);
+
+		$audit = $service->calculateCharacter(['id' => 'char-1', 'skills' => ['skill-1'], 'items' => ['item-1']])['stats']['abil-1']['audit'];
+
+		self::assertSame(['skill', 'skill-1', 'Swordsmanship'], [$audit[0]['source'], $audit[0]['sourceId'], $audit[0]['sourceName']]);
+		self::assertSame(['item', 'item-1', 'Iron shield'], [$audit[1]['source'], $audit[1]['sourceId'], $audit[1]['sourceName']]);
+		self::assertSame(14, $service->calculateCharacter(['id' => 'char-1', 'skills' => ['skill-1'], 'items' => ['item-1']])['stats']['abil-1']['value']);
+	}
 }

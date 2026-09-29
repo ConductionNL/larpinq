@@ -794,6 +794,12 @@
 					"showMetadata": true,
 					"tabs": [
 						{
+							"id": "stats",
+							"label": "Stats",
+							"icon": "ChartBar",
+							"component": "CharacterStatSheet"
+						},
+						{
 							"id": "audit",
 							"label": "History",
 							"icon": "History",

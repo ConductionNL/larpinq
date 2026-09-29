@@ -275,7 +275,21 @@
         "Template": "Πρότυπο",
         "PDF export needs the document app. Ask an administrator to enable it.": "Η εξαγωγή PDF χρειάζεται την εφαρμογή εγγράφων. Ζητήστε από έναν διαχειριστή να την ενεργοποιήσει.",
         "Only administrators can download character sheets for now.": "Προς το παρόν μόνο οι διαχειριστές μπορούν να κατεβάσουν φύλλα χαρακτήρων.",
-        "There is no character sheet template yet. Add one in the document app.": "Δεν υπάρχει ακόμη πρότυπο φύλλου χαρακτήρα. Προσθέστε ένα στην εφαρμογή εγγράφων."
+        "There is no character sheet template yet. Add one in the document app.": "Δεν υπάρχει ακόμη πρότυπο φύλλου χαρακτήρα. Προσθέστε ένα στην εφαρμογή εγγράφων.",
+        "Stats": "Στατιστικά",
+        "Loading stats": "Φόρτωση στατιστικών",
+        "Could not load the stats.": "Δεν ήταν δυνατή η φόρτωση των στατιστικών.",
+        "XP earned": "XP που κερδήθηκαν",
+        "XP spent": "XP που ξοδεύτηκαν",
+        "XP left": "XP που απομένουν",
+        "No modifiers": "Χωρίς τροποποιητές",
+        "skill": "δεξιότητα",
+        "item": "αντικείμενο",
+        "condition": "κατάσταση",
+        "event": "εκδήλωση",
+        "XP award": "απονομή XP",
+        "from {name}": "από {name}",
+        "from {name} ({type})": "από {name} ({type})"
     },
     "plurals": {}
 }

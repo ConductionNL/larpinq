@@ -276,7 +276,21 @@ OC.L10N.register(
         "Template": "Шаблон",
         "PDF export needs the document app. Ask an administrator to enable it.": "Експортът в PDF изисква приложението за документи. Помолете администратор да го включи.",
         "Only administrators can download character sheets for now.": "Засега само администратори могат да изтеглят листове на персонажи.",
-        "There is no character sheet template yet. Add one in the document app.": "Все още няма шаблон за лист на персонаж. Добавете го в приложението за документи."
+        "There is no character sheet template yet. Add one in the document app.": "Все още няма шаблон за лист на персонаж. Добавете го в приложението за документи.",
+        "Stats": "Характеристики",
+        "Loading stats": "Зареждане на характеристиките",
+        "Could not load the stats.": "Характеристиките не можаха да се заредят.",
+        "XP earned": "Спечелени XP",
+        "XP spent": "Изразходвани XP",
+        "XP left": "Оставащи XP",
+        "No modifiers": "Няма модификатори",
+        "skill": "умение",
+        "item": "предмет",
+        "condition": "състояние",
+        "event": "събитие",
+        "XP award": "присъждане на XP",
+        "from {name}": "от {name}",
+        "from {name} ({type})": "от {name} ({type})"
     },
     "nplurals=2; plural=(n != 1);"
 )

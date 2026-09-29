@@ -276,7 +276,21 @@ OC.L10N.register(
         "Template": "Model",
         "PDF export needs the document app. Ask an administrator to enable it.": "L'export da PDF dovra l'applicaziun da documents. Dumandai in administratur da l'activar.",
         "Only administrators can download character sheets for now.": "Per ussa pon mo administraturs telechargiar fegls da persunagi.",
-        "There is no character sheet template yet. Add one in the document app.": "I na dat anc nagin model per fegls da persunagi. Agiuntai in en l'applicaziun da documents."
+        "There is no character sheet template yet. Add one in the document app.": "I na dat anc nagin model per fegls da persunagi. Agiuntai in en l'applicaziun da documents.",
+        "Stats": "Statisticas",
+        "Loading stats": "Chargiar las statisticas",
+        "Could not load the stats.": "Las statisticas n'han betg pudì vegnir chargiadas.",
+        "XP earned": "XP guadagnà",
+        "XP spent": "XP duvrà",
+        "XP left": "XP restant",
+        "No modifiers": "Nagins modificaturs",
+        "skill": "abilitad",
+        "item": "object",
+        "condition": "cundiziun",
+        "event": "occurrenza",
+        "XP award": "attribuziun da XP",
+        "from {name}": "da {name}",
+        "from {name} ({type})": "da {name} ({type})"
     },
     "nplurals=2; plural=(n != 1);"
 )
