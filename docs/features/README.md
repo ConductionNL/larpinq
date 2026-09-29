@@ -20,6 +20,7 @@ Larpinq is a niche domain application with no applicable government or interoper
 | Feature | Description | Docs |
 |---------|-------------|------|
 | [Character Management](./character-management.md) | Full CRUD for characters (PCs, NPCs); stat calculation engine; currency system (gold/silver/copper); approval workflow | [character-management.md](./character-management.md) |
+| [Character Stats](./character-stats.md) | The Stats tab on a character: each ability with its base, the modifiers that moved it and where they came from, and XP earned, spent and left | [character-stats.md](./character-stats.md) |
 | [RPG System / Game Mechanics](./rpg-system.md) | Skills (with prerequisites), Items, Conditions, Effects, Abilities — interconnected rule engine | [rpg-system.md](./rpg-system.md) |
 | [Events & Players](./events-players.md) | Event management with date ranges, locations, and effect application to participating characters; player profiles | [events-players.md](./events-players.md) |
 | [PDF Export](./pdf-export.md) | Character sheet PDF export via DocuDesk integration; Twig templates scoped to Larpinq | [pdf-export.md](./pdf-export.md) |
