@@ -878,5 +878,293 @@
   "reason": "partial, built, no demand. One competitor rated yes (Kanka) and no demand row; a date-sorted event list per world exists.",
   "change": null,
   "decidedOn": "2026-09-27"
+ },
+ {
+  "row": "ply-age-consent",
+  "matrix": "larpinq",
+  "decision": "decided-no",
+  "reason": "Decided no on 2026-09-28 (defer retired by the build-all programme): No competitor rated yes, no demand row, outside the core area. Reversible: a demand row or a second competitor yes reopens it.",
+  "change": null,
+  "decidedOn": "2026-09-28"
+ },
+ {
+  "row": "ply-privacy-export",
+  "matrix": "larpinq",
+  "decision": "decided-no",
+  "reason": "Decided no on 2026-09-28 (defer retired by the build-all programme): No competitor rated yes, no demand row, outside the core area. hydra ADR-047 gives the data-subject export and erasure workflow to OpenRegister; players-care-details-and-erasure declares the player schemas in its scope. Reversible: a demand row or a second competitor yes reopens it.",
+  "change": null,
+  "decidedOn": "2026-09-28"
+ },
+ {
+  "row": "rul-dice-roller",
+  "matrix": "larpinq",
+  "decision": "decided-no",
+  "reason": "Decided no on 2026-09-28 (defer retired by the build-all programme): No competitor rated yes, no demand row, outside the core area. Reversible: a demand row or a second competitor yes reopens it.",
+  "change": null,
+  "decidedOn": "2026-09-28"
+ },
+ {
+  "row": "rul-crafting",
+  "matrix": "larpinq",
+  "decision": "decided-no",
+  "reason": "Decided no on 2026-09-28 (defer retired by the build-all programme): No competitor rated yes, no demand row, outside the core area. Reversible: a demand row or a second competitor yes reopens it.",
+  "change": null,
+  "decidedOn": "2026-09-28"
+ },
+ {
+  "row": "rul-item-tags",
+  "matrix": "larpinq",
+  "decision": "decided-no",
+  "reason": "Decided no on 2026-09-28 (defer retired by the build-all programme): No competitor rated yes, no demand row, outside the core area. Reversible: a demand row or a second competitor yes reopens it.",
+  "change": null,
+  "decidedOn": "2026-09-28"
+ },
+ {
+  "row": "prg-level-up",
+  "matrix": "larpinq",
+  "decision": "decided-no",
+  "reason": "Decided no on 2026-09-28 (defer retired by the build-all programme): No competitor rated yes, no demand row, outside the core area. Reversible: a demand row or a second competitor yes reopens it.",
+  "change": null,
+  "decidedOn": "2026-09-28"
+ },
+ {
+  "row": "prg-player-spends-xp",
+  "matrix": "larpinq",
+  "decision": "decided-no",
+  "reason": "Decided no on 2026-09-28 (defer retired by the build-all programme): No competitor rated yes, no demand row, outside the core area. Reversible: a demand row or a second competitor yes reopens it.",
+  "change": null,
+  "decidedOn": "2026-09-28"
+ },
+ {
+  "row": "prg-xp-for-non-attendance",
+  "matrix": "larpinq",
+  "decision": "decided-no",
+  "reason": "Decided no on 2026-09-28 (defer retired by the build-all programme): One competitor rated yes (LarpManager), no demand row, outside the core area. Reversible: a demand row or a second competitor yes reopens it.",
+  "change": null,
+  "decidedOn": "2026-09-28"
+ },
+ {
+  "row": "prg-xp-caps",
+  "matrix": "larpinq",
+  "decision": "decided-no",
+  "reason": "Decided no on 2026-09-28 (defer retired by the build-all programme): One competitor rated yes (LARP Portal), no demand row, outside the core area. Reversible: a demand row or a second competitor yes reopens it.",
+  "change": null,
+  "decidedOn": "2026-09-28"
+ },
+ {
+  "row": "evt-event-status",
+  "matrix": "larpinq",
+  "decision": "decided-no",
+  "reason": "Decided no on 2026-09-28 (defer retired by the build-all programme): One competitor rated yes (LarpManager), no demand row, outside the core area. Reversible: a demand row or a second competitor yes reopens it.",
+  "change": null,
+  "decidedOn": "2026-09-28"
+ },
+ {
+  "row": "evt-offline-checkin",
+  "matrix": "larpinq",
+  "decision": "decided-no",
+  "reason": "Decided no on 2026-09-28 (defer retired by the build-all programme): One competitor rated yes (LarpManager), no demand row, outside the core area. Reversible: a demand row or a second competitor yes reopens it.",
+  "change": null,
+  "decidedOn": "2026-09-28"
+ },
+ {
+  "row": "evt-schedule-within-event",
+  "matrix": "larpinq",
+  "decision": "decided-no",
+  "reason": "Decided no on 2026-09-28 (defer retired by the build-all programme): No competitor rated yes, no demand row, outside the core area. Reversible: a demand row or a second competitor yes reopens it.",
+  "change": null,
+  "decidedOn": "2026-09-28"
+ },
+ {
+  "row": "evt-accommodation",
+  "matrix": "larpinq",
+  "decision": "decided-no",
+  "reason": "Decided no on 2026-09-28 (defer retired by the build-all programme): One competitor rated yes (LARP Portal), no demand row, outside the core area. Reversible: a demand row or a second competitor yes reopens it.",
+  "change": null,
+  "decidedOn": "2026-09-28"
+ },
+ {
+  "row": "reg-terms-consent",
+  "matrix": "larpinq",
+  "decision": "decided-no",
+  "reason": "Decided no on 2026-09-28 (defer retired by the build-all programme): One competitor rated yes (pretix), no demand row, outside the core area. Reversible: a demand row or a second competitor yes reopens it.",
+  "change": null,
+  "decidedOn": "2026-09-28"
+ },
+ {
+  "row": "prt-item-cards",
+  "matrix": "larpinq",
+  "decision": "decided-no",
+  "reason": "Decided no on 2026-09-28 (defer retired by the build-all programme): No competitor rated yes, no demand row, outside the core area. Reversible: a demand row or a second competitor yes reopens it.",
+  "change": null,
+  "decidedOn": "2026-09-28"
+ },
+ {
+  "row": "prt-bulk-print",
+  "matrix": "larpinq",
+  "decision": "decided-no",
+  "reason": "Decided no on 2026-09-28 (defer retired by the build-all programme): One competitor rated yes (LarpManager), no demand row, outside the core area. Reversible: a demand row or a second competitor yes reopens it.",
+  "change": null,
+  "decidedOn": "2026-09-28"
+ },
+ {
+  "row": "prt-badges",
+  "matrix": "larpinq",
+  "decision": "decided-no",
+  "reason": "Decided no on 2026-09-28 (defer retired by the build-all programme): One competitor rated yes (pretix), no demand row, outside the core area. Reversible: a demand row or a second competitor yes reopens it.",
+  "change": null,
+  "decidedOn": "2026-09-28"
+ },
+ {
+  "row": "com-live-updates",
+  "matrix": "larpinq",
+  "decision": "decided-no",
+  "reason": "Decided no on 2026-09-28 (defer retired by the build-all programme): No competitor rated yes, no demand row, outside the core area. The open adopt-live-updates-ui change covers the skill tree only and lists the event pages as out of scope. Reversible: a demand row or a second competitor yes reopens it.",
+  "change": null,
+  "decidedOn": "2026-09-28"
+ },
+ {
+  "row": "com-in-character-messages",
+  "matrix": "larpinq",
+  "decision": "decided-no",
+  "reason": "Decided no on 2026-09-28 (defer retired by the build-all programme): No competitor rated yes, no demand row, outside the core area. Reversible: a demand row or a second competitor yes reopens it.",
+  "change": null,
+  "decidedOn": "2026-09-28"
+ },
+ {
+  "row": "com-announcements",
+  "matrix": "larpinq",
+  "decision": "decided-no",
+  "reason": "Decided no on 2026-09-28 (defer retired by the build-all programme): One competitor rated yes (pretix), no demand row, outside the core area. The open leaf-integrations change gives each world a Talk room, which is adjacent but not an announcement to all players. Reversible: a demand row or a second competitor yes reopens it.",
+  "change": null,
+  "decidedOn": "2026-09-28"
+ },
+ {
+  "row": "com-downtime-actions",
+  "matrix": "larpinq",
+  "decision": "decided-no",
+  "reason": "Decided no on 2026-09-28 (defer retired by the build-all programme): One competitor rated yes (LARP Portal), no demand row, outside the core area. Reversible: a demand row or a second competitor yes reopens it.",
+  "change": null,
+  "decidedOn": "2026-09-28"
+ },
+ {
+  "row": "ins-nc-dashboard-widget",
+  "matrix": "larpinq",
+  "decision": "decided-no",
+  "reason": "Decided no on 2026-09-28 (defer retired by the build-all programme): No competitor rated yes, no demand row, outside the core area. The larping-skill-widget spec names a Nextcloud dashboard widget only as an implementation note, not as a requirement. Reversible: a demand row or a second competitor yes reopens it.",
+  "change": null,
+  "decidedOn": "2026-09-28"
+ },
+ {
+  "row": "ins-attendance-trend",
+  "matrix": "larpinq",
+  "decision": "decided-no",
+  "reason": "Decided no on 2026-09-28 (defer retired by the build-all programme): No competitor rated yes, no demand row, outside the core area. Reversible: a demand row or a second competitor yes reopens it.",
+  "change": null,
+  "decidedOn": "2026-09-28"
+ },
+ {
+  "row": "ins-custom-report",
+  "matrix": "larpinq",
+  "decision": "decided-no",
+  "reason": "Decided no on 2026-09-28 (defer retired by the build-all programme): No competitor rated yes, no demand row, outside the core area. Reversible: a demand row or a second competitor yes reopens it.",
+  "change": null,
+  "decidedOn": "2026-09-28"
+ },
+ {
+  "row": "prg-cross-game-points",
+  "matrix": "larpinq",
+  "decision": "decided-no",
+  "reason": "Decided no on 2026-09-28 (defer retired by the build-all programme): One competitor rated yes (LARP Portal), no demand row, outside the core area. Reversible: a demand row or a second competitor yes reopens it.",
+  "change": null,
+  "decidedOn": "2026-09-28"
+ },
+ {
+  "row": "ply-notification-preferences",
+  "matrix": "larpinq",
+  "decision": "decided-no",
+  "reason": "Decided no on 2026-09-28 (defer retired by the build-all programme): One competitor rated yes (LARP Portal), no demand row, outside the core area. Reversible: a demand row or a second competitor yes reopens it.",
+  "change": null,
+  "decidedOn": "2026-09-28"
+ },
+ {
+  "row": "com-follow-updates",
+  "matrix": "larpinq",
+  "decision": "decided-no",
+  "reason": "Decided no on 2026-09-28 (defer retired by the build-all programme): No competitor rated yes; the Kanka feature request alone does not meet the rule, which asks for a feature request plus one competitor yes. Outside the core area. Reversible: a demand row or a second competitor yes reopens it.",
+  "change": null,
+  "decidedOn": "2026-09-28"
+ },
+ {
+  "row": "com-comment-threads",
+  "matrix": "larpinq",
+  "decision": "decided-no",
+  "reason": "Decided no on 2026-09-28 (defer retired by the build-all programme): No competitor rated yes; the Kanka feature request alone does not meet the rule, which asks for a feature request plus one competitor yes. Outside the core area. Reversible: a demand row or a second competitor yes reopens it.",
+  "change": null,
+  "decidedOn": "2026-09-28"
+ },
+ {
+  "row": "reg-season-membership",
+  "matrix": "larpinq",
+  "decision": "decided-no",
+  "reason": "Decided no on 2026-09-28 (defer retired by the build-all programme): One competitor rated yes (pretix), no demand row, outside the core area. Reversible: a demand row or a second competitor yes reopens it.",
+  "change": null,
+  "decidedOn": "2026-09-28"
+ },
+ {
+  "row": "evt-checkin-questions",
+  "matrix": "larpinq",
+  "decision": "decided-no",
+  "reason": "Decided no on 2026-09-28 (defer retired by the build-all programme): One competitor rated yes (pretix); its only demand row is a changelog, which is competitor evidence rather than demand. Outside the core area. Reversible: a demand row or a second competitor yes reopens it.",
+  "change": null,
+  "decidedOn": "2026-09-28"
+ },
+ {
+  "row": "evt-wristband-checkin",
+  "matrix": "larpinq",
+  "decision": "decided-no",
+  "reason": "Decided no on 2026-09-28 (defer retired by the build-all programme): One competitor rated yes (pretix); its only demand row is a changelog. Outside the core area. Reversible: a demand row or a second competitor yes reopens it.",
+  "change": null,
+  "decidedOn": "2026-09-28"
+ },
+ {
+  "row": "com-mail-outbox",
+  "matrix": "larpinq",
+  "decision": "decided-no",
+  "reason": "Decided no on 2026-09-28 (defer retired by the build-all programme): One competitor rated yes (pretix); its only demand row is a changelog, which is competitor evidence rather than demand. Outside the core area. Reversible: a demand row or a second competitor yes reopens it.",
+  "change": null,
+  "decidedOn": "2026-09-28"
+ },
+ {
+  "row": "ins-question-answer-stats",
+  "matrix": "larpinq",
+  "decision": "decided-no",
+  "reason": "Decided no on 2026-09-28 (defer retired by the build-all programme): One competitor rated yes (pretix); its only demand row is a changelog. Outside the core area. Reversible: a demand row or a second competitor yes reopens it.",
+  "change": null,
+  "decidedOn": "2026-09-28"
+ },
+ {
+  "row": "ins-scheduled-exports",
+  "matrix": "larpinq",
+  "decision": "decided-no",
+  "reason": "Decided no on 2026-09-28 (defer retired by the build-all programme): One competitor rated yes (pretix); its only demand row is a changelog. Outside the core area. Reversible: a demand row or a second competitor yes reopens it.",
+  "change": null,
+  "decidedOn": "2026-09-28"
+ },
+ {
+  "row": "reg-instalments",
+  "matrix": "larpinq",
+  "decision": "decided-no",
+  "reason": "Decided no on 2026-09-28 (defer retired by the build-all programme): One competitor rated yes (LarpManager); its only demand row is a changelog. Outside the core area. Reversible: a demand row or a second competitor yes reopens it.",
+  "change": null,
+  "decidedOn": "2026-09-28"
+ },
+ {
+  "row": "evt-props-warehouse",
+  "matrix": "larpinq",
+  "decision": "decided-no",
+  "reason": "Decided no on 2026-09-28 (defer retired by the build-all programme): One competitor rated yes (LarpManager); its only demand row is a changelog. Outside the core area. The Deck board of leaf-integrations holds preparation tasks, not a props store with locations. Reversible: a demand row or a second competitor yes reopens it.",
+  "change": null,
+  "decidedOn": "2026-09-28"
  }
 ]
