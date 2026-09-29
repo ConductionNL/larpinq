@@ -266,7 +266,10 @@ OC.L10N.register(
         "Experience awarded, and who earned it.": "Додељено искуство и ко га је зарадио.",
         "How much the world holds, and what characters actually carry.": "Колико свет садржи и шта ликови заиста носе.",
         "Store": "Продавница",
-        "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Инсталирајте регистре, шеме и токове које су објавиле друге организације."
+        "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Инсталирајте регистре, шеме и токове које су објавиле друге организације.",
+        "%1$s is already held by %2$s. Remove it there first.": "%1$s већ има %2$s. Прво га уклоните одатле.",
+        "%1$s is already on %2$s. Remove it there first.": "%1$s је већ на %2$s. Прво га уклоните одатле.",
+        "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s може имати само једног власника, а сада га имају %2$s. Прво га уклоните свима осим једном."
     },
     "nplurals=2; plural=(n != 1);"
 )

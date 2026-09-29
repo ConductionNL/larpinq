@@ -266,7 +266,10 @@ OC.L10N.register(
         "Experience awarded, and who earned it.": "L'esperienza assegnata e chi l'ha guadagnata.",
         "How much the world holds, and what characters actually carry.": "Quanto contiene il mondo, e cosa portano davvero i personaggi.",
         "Store": "Store",
-        "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Installa registri, schemi e flussi pubblicati da altre organizzazioni."
+        "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Installa registri, schemi e flussi pubblicati da altre organizzazioni.",
+        "%1$s is already held by %2$s. Remove it there first.": "%1$s è già in possesso di %2$s. Rimuovilo prima da lì.",
+        "%1$s is already on %2$s. Remove it there first.": "%1$s è già su %2$s. Rimuovilo prima da lì.",
+        "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s può avere un solo possessore, e ora lo hanno %2$s. Toglilo prima a tutti tranne uno."
     },
     "nplurals=2; plural=(n != 1);"
 )

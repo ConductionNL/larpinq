@@ -25,6 +25,7 @@ namespace OCA\Larpinq\AppInfo;
 
 use OCA\Larpinq\Listener\CharacterRequirementListener;
 use OCA\Larpinq\Listener\DeepLinkRegistrationListener;
+use OCA\Larpinq\Listener\UniqueHolderListener;
 use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
@@ -132,7 +133,32 @@ class Application extends App implements IBootstrap {
 				CharacterRequirementListener::class
 			);
 		}
+
+		$this->registerUniqueHolderListener(context: $context);
 	}//end register()
+
+	/**
+	 * Register the unique-holder veto on OpenRegister's pre-write events.
+	 *
+	 * One holder per unique item and unique condition, on character, item and
+	 * condition writes. Guarded like the requirement listener, so an
+	 * OpenRegister without the pre-write events degrades to data-only.
+	 *
+	 * @param IRegistrationContext $context The registration context.
+	 *
+	 * @return void
+	 *
+	 * @spec openspec/specs/rpg-system/spec.md
+	 */
+	private function registerUniqueHolderListener(IRegistrationContext $context): void {
+		if (class_exists('OCA\OpenRegister\Event\ObjectCreatingEvent') === true) {
+			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', UniqueHolderListener::class);
+		}
+
+		if (class_exists('OCA\OpenRegister\Event\ObjectUpdatingEvent') === true) {
+			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatingEvent', UniqueHolderListener::class);
+		}
+	}//end registerUniqueHolderListener()
 
 	/**
 	 * Register the AppHost generic controllers this app relies on.

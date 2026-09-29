@@ -266,7 +266,10 @@ OC.L10N.register(
         "Experience awarded, and who earned it.": "Az odaítélt tapasztalat és aki kiérdemelte.",
         "How much the world holds, and what characters actually carry.": "Mennyit tartalmaz a világ, és mit hordanak valójában a karakterek.",
         "Store": "Áruház",
-        "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Telepítsen más szervezetek által közzétett nyilvántartásokat, sémákat és folyamatokat."
+        "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Telepítsen más szervezetek által közzétett nyilvántartásokat, sémákat és folyamatokat.",
+        "%1$s is already held by %2$s. Remove it there first.": "%1$s már %2$s birtokában van. Előbb vedd el onnan.",
+        "%1$s is already on %2$s. Remove it there first.": "%1$s már %2$s karakteren van. Előbb vedd el onnan.",
+        "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s csak egy birtokosé lehet, de most %2$s birtokolja. Előbb egy kivételével mindenkitől vedd el."
     },
     "nplurals=2; plural=(n != 1);"
 )
