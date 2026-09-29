@@ -5951,18 +5951,18 @@
 			"id": "evt-milestones",
 			"area": "events",
 			"name": "Track the organising milestones of an event with a status and a deadline.",
-			"larpinq": "no",
+			"larpinq": "yes",
 			"larpmanager": "yes",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
 			"kanka": "no",
 			"pretix": "no",
 			"built": {
-				"state": "specified",
-				"evidence": "the event schema holds name, description, startDate, endDate, location, players, effects, setting (lib/Settings/larpinq_register.json:765-905); no milestone or task with a deadline",
+				"state": "built",
+				"evidence": "lib/Settings/register.d/leaf-integrations.json (event linkedTypes talk, polls, deck; setting talk, polls): an event's organising milestones live as Deck cards with a stack for status and a due date, linked to the event through OpenRegister's DeckProvider; tests/unit/Settings/LeafIntegrationsFragmentTest.php",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "nothing: see evidence",
-				"change": "leaf-integrations"
+				"reachedOn": "/events/:id sidebar, Deck tab, when the Deck app is enabled",
+				"change": "openspec/changes/archive/2026-09-29-leaf-integrations"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
