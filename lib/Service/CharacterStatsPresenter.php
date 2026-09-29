@@ -61,7 +61,7 @@ class CharacterStatsPresenter {
 
 		return [
 			'abilities' => $abilities,
-			'xp' => $this->xp(abilities: $abilities, xpAbilityId: $xpAbilityId),
+			'xp' => $this->xpLine(abilities: $abilities, xpAbilityId: $xpAbilityId),
 		];
 	}//end present()
 
@@ -124,7 +124,7 @@ class CharacterStatsPresenter {
 	 *
 	 * @return array{ability: string, earned: int, spent: int, left: int}|null The XP line.
 	 */
-	private function xp(array $abilities, ?string $xpAbilityId): ?array {
+	private function xpLine(array $abilities, ?string $xpAbilityId): ?array {
 		foreach ($abilities as $ability) {
 			if ($xpAbilityId === null || $ability['id'] !== $xpAbilityId) {
 				continue;
@@ -146,5 +146,5 @@ class CharacterStatsPresenter {
 		}//end foreach
 
 		return null;
-	}//end xp()
+	}//end xpLine()
 }//end class
