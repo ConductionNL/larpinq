@@ -269,7 +269,8 @@ OC.L10N.register(
         "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Nainstalujte registry, schémata a toky zveřejněné jinými organizacemi.",
         "%1$s is already held by %2$s. Remove it there first.": "%1$s už má %2$s. Nejprve ho odtud odeberte.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s už je na %2$s. Nejprve ho odtud odeberte.",
-        "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s může mít jen jednoho držitele a teď ho mají %2$s. Nejprve ho odeberte všem kromě jednoho."
+        "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s může mít jen jednoho držitele a teď ho mají %2$s. Nejprve ho odeberte všem kromě jednoho.",
+        "Cast": "Obsazení"
     },
     "nplurals=2; plural=(n != 1);"
 )

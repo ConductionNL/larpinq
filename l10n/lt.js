@@ -269,7 +269,8 @@ OC.L10N.register(
         "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Įdiekite registrus, schemas ir srautus, kuriuos paskelbė kitos organizacijos.",
         "%1$s is already held by %2$s. Remove it there first.": "%1$s jau priklauso %2$s. Pirmiausia pašalinkite jį iš ten.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s jau uždėta %2$s. Pirmiausia pašalinkite jį iš ten.",
-        "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s gali turėti tik vieną turėtoją, o dabar jį turi %2$s. Pirmiausia pašalinkite jį visiems, išskyrus vieną."
+        "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s gali turėti tik vieną turėtoją, o dabar jį turi %2$s. Pirmiausia pašalinkite jį visiems, išskyrus vieną.",
+        "Cast": "Vaidmenys"
     },
     "nplurals=2; plural=(n != 1);"
 )

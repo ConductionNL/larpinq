@@ -269,7 +269,8 @@ OC.L10N.register(
         "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Asenna muiden organisaatioiden julkaisemia rekistereitä, skeemoja ja vuokaavioita.",
         "%1$s is already held by %2$s. Remove it there first.": "%1$s on jo hahmolla %2$s. Poista se sieltä ensin.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s on jo hahmolla %2$s. Poista se sieltä ensin.",
-        "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s voi olla vain yhdellä hahmolla, ja nyt se on hahmoilla %2$s. Poista se ensin kaikilta paitsi yhdeltä."
+        "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s voi olla vain yhdellä hahmolla, ja nyt se on hahmoilla %2$s. Poista se ensin kaikilta paitsi yhdeltä.",
+        "Cast": "Näyttelijät"
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -234,7 +234,8 @@ OC.L10N.register(
         "positive": "positive",
         "%1$s is already held by %2$s. Remove it there first.": "%1$s is already held by %2$s. Remove it there first.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s is already on %2$s. Remove it there first.",
-        "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s can have only one holder, and %2$s hold it now. Remove all but one first."
+        "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.",
+        "Cast": "Cast"
     },
     "nplurals=2; plural=(n != 1);"
 )

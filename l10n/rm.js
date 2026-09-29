@@ -269,7 +269,8 @@ OC.L10N.register(
         "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Installescha registers, schemas e process ch'autras organisaziuns han publitgà.",
         "%1$s is already held by %2$s. Remove it there first.": "%1$s posseda gia %2$s. Allontanescha el qua l'emprim.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s è gia sin %2$s. Allontanescha el qua l'emprim.",
-        "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s po avair mo in possessur, ed ussa l'han %2$s. Allontanescha el l'emprim da tuts auter ch'in."
+        "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s po avair mo in possessur, ed ussa l'han %2$s. Allontanescha el l'emprim da tuts auter ch'in.",
+        "Cast": "Distribuziun"
     },
     "nplurals=2; plural=(n != 1);"
 )

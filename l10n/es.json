@@ -268,7 +268,8 @@
         "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Instale registros, esquemas y flujos publicados por otras organizaciones.",
         "%1$s is already held by %2$s. Remove it there first.": "%1$s ya lo tiene %2$s. Quítalo de ahí primero.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s ya está en %2$s. Quítalo de ahí primero.",
-        "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s solo puede tener un portador, y ahora lo tienen %2$s. Quítaselo primero a todos menos a uno."
+        "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s solo puede tener un portador, y ahora lo tienen %2$s. Quítaselo primero a todos menos a uno.",
+        "Cast": "Reparto"
     },
     "plurals": {}
 }

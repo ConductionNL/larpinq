@@ -269,7 +269,8 @@ OC.L10N.register(
         "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Suiteáil cláir, scéimeanna agus sruthanna a d'fhoilsigh eagraíochtaí eile.",
         "%1$s is already held by %2$s. Remove it there first.": "Tá %1$s ag %2$s cheana féin. Bain as sin é ar dtús.",
         "%1$s is already on %2$s. Remove it there first.": "Tá %1$s ar %2$s cheana féin. Bain as sin é ar dtús.",
-        "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "Ní féidir ach sealbhóir amháin a bheith ag %1$s, agus tá sé ag %2$s anois. Bain de gach duine é ach duine amháin ar dtús."
+        "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "Ní féidir ach sealbhóir amháin a bheith ag %1$s, agus tá sé ag %2$s anois. Bain de gach duine é ach duine amháin ar dtús.",
+        "Cast": "Foireann"
     },
     "nplurals=2; plural=(n != 1);"
 )

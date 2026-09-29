@@ -269,7 +269,8 @@ OC.L10N.register(
         "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Установите реестры, схемы и потоки, опубликованные другими организациями.",
         "%1$s is already held by %2$s. Remove it there first.": "%1$s уже у %2$s. Сначала уберите его оттуда.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s уже наложено на %2$s. Сначала уберите его оттуда.",
-        "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s может быть только у одного владельца, а сейчас оно у %2$s. Сначала уберите его у всех, кроме одного."
+        "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s может быть только у одного владельца, а сейчас оно у %2$s. Сначала уберите его у всех, кроме одного.",
+        "Cast": "Состав"
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -1,0 +1,32 @@
+{
+	"pages": [
+		{
+			"id": "Cast",
+			"route": "/cast",
+			"type": "index",
+			"title": "Cast",
+			"config": {
+				"register": "larpinq",
+				"schema": "character",
+				"filter": { "approved": "approved" },
+				"readOnly": true,
+				"columns": [
+					{ "key": "name", "label": "Name" },
+					{ "key": "type", "label": "Type" },
+					{ "key": "description", "label": "Description" }
+				],
+				"defaultSort": [{ "field": "name" }],
+				"documentationUrl": "https://larpinq.conduction.nl"
+			}
+		}
+	],
+	"menu": [
+		{
+			"id": "Cast",
+			"label": "Cast",
+			"icon": "DramaMasks",
+			"route": "Cast",
+			"order": 25
+		}
+	]
+}

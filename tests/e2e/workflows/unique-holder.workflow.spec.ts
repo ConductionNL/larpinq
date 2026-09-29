@@ -32,10 +32,18 @@ import {
 
 let api: APIRequestContext
 const ledger = new FixtureLedger()
+let playerRef = ''
 
 test.beforeAll(async () => {
 	api = await newApi()
 	await resolveSchemaIds(api)
+	// `ocName` (the player) is required on every character.
+	playerRef = ledger.track(
+		'player',
+		await createObject(api, 'player', {
+			name: fixtureName('unique-holder-player'),
+		}),
+	)
 })
 
 test.afterAll(async () => {
@@ -72,6 +80,7 @@ test.describe('rules-unique-holder-enforcement', () => {
 		ledger.track(
 			'character',
 			await createObject(api, 'character', {
+				ocName: playerRef,
 				name: queenName,
 				items: [crown],
 			}),
@@ -79,6 +88,7 @@ test.describe('rules-unique-holder-enforcement', () => {
 		const bertram = ledger.track(
 			'character',
 			await createObject(api, 'character', {
+				ocName: playerRef,
 				name: fixtureName('Sir Bertram'),
 			}),
 		)
@@ -103,13 +113,17 @@ test.describe('rules-unique-holder-enforcement', () => {
 		ledger.track(
 			'character',
 			await createObject(api, 'character', {
+				ocName: playerRef,
 				name: fixtureName('Queen'),
 				items: [potion],
 			}),
 		)
 		const bertram = ledger.track(
 			'character',
-			await createObject(api, 'character', { name: fixtureName('Bertram') }),
+			await createObject(api, 'character', {
+				ocName: playerRef,
+				name: fixtureName('Bertram'),
+			}),
 		)
 
 		const res = await patch('character', bertram, { items: [potion] })
@@ -130,13 +144,17 @@ test.describe('rules-unique-holder-enforcement', () => {
 		ledger.track(
 			'character',
 			await createObject(api, 'character', {
+				ocName: playerRef,
 				name: mirelaName,
 				conditions: [curse],
 			}),
 		)
 		const tomas = ledger.track(
 			'character',
-			await createObject(api, 'character', { name: fixtureName('Tomas') }),
+			await createObject(api, 'character', {
+				ocName: playerRef,
+				name: fixtureName('Tomas'),
+			}),
 		)
 
 		const res = await patch('character', tomas, { conditions: [curse] })
@@ -158,11 +176,16 @@ test.describe('rules-unique-holder-enforcement', () => {
 		const bertramName = fixtureName('Sir Bertram')
 		ledger.track(
 			'character',
-			await createObject(api, 'character', { name: queenName, items: [key] }),
+			await createObject(api, 'character', {
+				ocName: playerRef,
+				name: queenName,
+				items: [key],
+			}),
 		)
 		ledger.track(
 			'character',
 			await createObject(api, 'character', {
+				ocName: playerRef,
 				name: bertramName,
 				items: [key],
 			}),

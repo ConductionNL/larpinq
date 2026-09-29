@@ -269,7 +269,8 @@ OC.L10N.register(
         "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Instalējiet reģistrus, shēmas un plūsmas, ko publicējušas citas organizācijas.",
         "%1$s is already held by %2$s. Remove it there first.": "%1$s jau pieder %2$s. Vispirms noņemiet to tur.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s jau ir uz %2$s. Vispirms noņemiet to tur.",
-        "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s var piederēt tikai vienam turētājam, bet tagad tas ir %2$s. Vispirms noņemiet to visiem, izņemot vienu."
+        "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s var piederēt tikai vienam turētājam, bet tagad tas ir %2$s. Vispirms noņemiet to visiem, izņemot vienu.",
+        "Cast": "Lomu sadalījums"
     },
     "nplurals=2; plural=(n != 1);"
 )

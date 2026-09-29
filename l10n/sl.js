@@ -269,7 +269,8 @@ OC.L10N.register(
         "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Namestite registre, sheme in tokove, ki so jih objavile druge organizacije.",
         "%1$s is already held by %2$s. Remove it there first.": "%1$s že ima %2$s. Najprej ga odstranite tam.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s je že na %2$s. Najprej ga odstranite tam.",
-        "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s ima lahko le enega imetnika, zdaj pa ga imajo %2$s. Najprej ga odstranite vsem razen enemu."
+        "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s ima lahko le enega imetnika, zdaj pa ga imajo %2$s. Najprej ga odstranite vsem razen enemu.",
+        "Cast": "Zasedba"
     },
     "nplurals=2; plural=(n != 1);"
 )

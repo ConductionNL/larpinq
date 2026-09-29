@@ -361,7 +361,8 @@ OC.L10N.register(
         "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Installeer registers, schema's en flows die andere organisaties hebben gepubliceerd.",
         "%1$s is already held by %2$s. Remove it there first.": "%1$s is al in bezit van %2$s. Haal het daar eerst weg.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s rust al op %2$s. Haal het daar eerst weg.",
-        "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s kan maar één houder hebben, en %2$s hebben het nu. Haal het eerst bij iedereen op één na weg."
+        "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s kan maar één houder hebben, en %2$s hebben het nu. Haal het eerst bij iedereen op één na weg.",
+        "Cast": "Cast"
     },
     "nplurals=2; plural=(n != 1);"
 )
