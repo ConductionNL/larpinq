@@ -24,6 +24,7 @@
 
 import CharacterPdfDownloadDialog from './dialogs/CharacterPdfDownloadDialog.vue'
 import CopyWorldDialog from './dialogs/CopyWorldDialog.vue'
+import CharacterCustomFields from './views/CharacterCustomFields.vue'
 import CharacterStatSheet from './views/CharacterStatSheet.vue'
 import EventRoster from './views/EventRoster.vue'
 import FlowDetailSidebar from './views/flows/FlowDetailSidebar.vue'
@@ -65,6 +66,7 @@ export default {
 	// entry); it renders inside the CnObjectSidebar tab strip.
 	EventRoster: { kind: 'section', component: EventRoster },
 	CharacterStatSheet: { kind: 'section', component: CharacterStatSheet },
+	CharacterCustomFields: { kind: 'section', component: CharacterCustomFields },
 	// Skill-tree visualization — a read-only type:"custom" page
 	// (skill-tree-visualization). Resolved by CnPageRenderer as the page body
 	// component for the SkillTree manifest page.
