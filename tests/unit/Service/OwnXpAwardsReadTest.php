@@ -231,12 +231,12 @@ class OwnXpAwardsReadTest extends TestCase {
 		$this->openRegister = $this->openRegister($this->permissionHandler($uid, ['larpers']), $uid, $blocks);
 
 		$this->openRegister->seed('ability', 'gerrit', ['id' => 'ab-xp', 'name' => 'XP', 'base' => 0]);
-		$this->openRegister->seed('character', 'anna', ['id' => 'ch-anna', 'name' => 'Brynja', 'ownerUid' => 'anna']);
-		$this->openRegister->seed('character', 'bert', ['id' => 'ch-bert', 'name' => 'Oswin', 'ownerUid' => 'bert']);
+		$this->openRegister->seed('character', 'anna', ['id' => '00000000-0000-4000-8000-00000000a001', 'name' => 'Brynja', 'ownerUid' => 'anna']);
+		$this->openRegister->seed('character', 'bert', ['id' => '00000000-0000-4000-8000-00000000b002', 'name' => 'Oswin', 'ownerUid' => 'bert']);
 		// The game master gerrit granted both awards, so he owns them.
-		$this->openRegister->seed('xpaward', 'gerrit', ['id' => 'aw-1', 'character' => 'ch-anna', 'event' => 'ev-1', 'amount' => 20, 'reason' => 'attendance']);
-		$this->openRegister->seed('xpaward', 'gerrit', ['id' => 'aw-2', 'character' => 'ch-anna', 'event' => 'ev-2', 'amount' => 5, 'reason' => 'plot']);
-		$this->openRegister->seed('xpaward', 'gerrit', ['id' => 'aw-3', 'character' => 'ch-bert', 'event' => 'ev-1', 'amount' => 30, 'reason' => 'attendance']);
+		$this->openRegister->seed('xpaward', 'gerrit', ['id' => 'aw-1', 'character' => '00000000-0000-4000-8000-00000000a001', 'event' => 'ev-1', 'amount' => 20, 'reason' => 'attendance']);
+		$this->openRegister->seed('xpaward', 'gerrit', ['id' => 'aw-2', 'character' => '00000000-0000-4000-8000-00000000a001', 'event' => 'ev-2', 'amount' => 5, 'reason' => 'plot']);
+		$this->openRegister->seed('xpaward', 'gerrit', ['id' => 'aw-3', 'character' => '00000000-0000-4000-8000-00000000b002', 'event' => 'ev-1', 'amount' => 30, 'reason' => 'attendance']);
 
 		$openRegister = $this->openRegister;
 		$container = $this->createMock(ContainerInterface::class);
@@ -269,7 +269,7 @@ class OwnXpAwardsReadTest extends TestCase {
 		$this->requireOpenRegister();
 		$this->engine('anna');
 		$this->assertFalse($this->openRegister->readable('xpaward', $this->openRegister->objects['xpaward']['aw-1'], true));
-		$this->assertTrue($this->openRegister->readable('character', $this->openRegister->objects['character']['ch-anna'], true));
+		$this->assertTrue($this->openRegister->readable('character', $this->openRegister->objects['character']['00000000-0000-4000-8000-00000000a001'], true));
 	}//end testTheEvaluatorHidesTheGameMastersAwardFromThePlayer()
 
 	/**
@@ -281,7 +281,7 @@ class OwnXpAwardsReadTest extends TestCase {
 		$this->requireOpenRegister();
 		$engine = $this->engine('anna');
 
-		$stats = $engine->calculateCharacter(['id' => 'ch-anna', 'name' => 'Brynja', 'ownerUid' => 'anna'])['stats'];
+		$stats = $engine->calculateCharacter(['id' => '00000000-0000-4000-8000-00000000a001', 'name' => 'Brynja', 'ownerUid' => 'anna'])['stats'];
 
 		$this->assertSame(25, $stats['ab-xp']['value']);
 		$this->assertSame(['aw-1', 'aw-2'], array_map(static fn (array $entry): string => $entry['award']['id'], $stats['ab-xp']['audit']));
@@ -298,7 +298,7 @@ class OwnXpAwardsReadTest extends TestCase {
 		$this->requireOpenRegister();
 		$engine = $this->engine('anna');
 
-		$stats = $engine->calculateCharacter(['id' => 'ch-bert', 'name' => 'Oswin', 'ownerUid' => 'anna'])['stats'];
+		$stats = $engine->calculateCharacter(['id' => '00000000-0000-4000-8000-00000000b002', 'name' => 'Oswin', 'ownerUid' => 'anna'])['stats'];
 
 		$this->assertSame(0, $stats['ab-xp']['value']);
 		$this->assertSame([], array_values(array_filter($this->openRegister->reads, static fn (array $read): bool => $read['rbac'] === false)));

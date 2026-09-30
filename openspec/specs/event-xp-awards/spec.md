@@ -98,7 +98,14 @@ OpenRegister objects API MUST be restricted the same way: the `xpAward` schema
 grants `read` to the GM group only, so game masters and the award's owner read
 it, and no other signed-in user and no anonymous visitor does (DECISIONS row
 30). Players see the XP of their own characters through the app's pages (the
-character stat sheet), not through the objects API. UI visibility
+character stat sheet), not through the objects API: the owner of an award is
+the game master who granted it, so read as the player OpenRegister hides every
+award. The stat engine therefore reads the awards on a character with the
+app's authority when, and only when, the signed-in user plays that character,
+judged from the STORED character read as the user (CharacterConnectionGuard),
+never from the payload. That read is scoped to the one character. Test:
+`tests/unit/Service/OwnXpAwardsReadTest.php` (OpenRegister's real evaluator).
+UI visibility
 of the awarding surface MUST be limited to GM-group members, as
 presentation only.
 
@@ -121,6 +128,14 @@ presentation only.
 - GIVEN player-user "carol" owns character "Sir Lancelot" with two awards
 - WHEN carol views the character's XP audit trail
 - THEN both awards (amount, reason, event) MUST be visible to her
+- AND her XP and the budget her skill choices are checked against MUST count both
+
+#### Scenario: A player's stat sheet of someone else's character counts no hidden awards
+
+- GIVEN player-user "carol" can read character "Oswin", which "dave" plays, and it has an award
+- WHEN carol views Oswin's stat sheet
+- THEN the award MUST NOT be counted or listed
+- AND claiming `ownerUid: carol` in a submitted character MUST NOT change that
 
 ### Requirement: The event detail MUST offer a GM batch awarding workflow
 

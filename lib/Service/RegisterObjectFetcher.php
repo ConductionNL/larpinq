@@ -350,6 +350,57 @@ class RegisterObjectFetcher {
 	}//end getObjects()
 
 	/**
+	 * Read objects of a type with the app's authority: OpenRegister's RBAC and
+	 * multitenancy are off for this read.
+	 *
+	 * Only for records a caller may see through the app's pages but not through
+	 * the object API (DECISIONS row 30: a player sees the XP awards on their own
+	 * character). The caller MUST have made larpinq's own ownership check first
+	 * and MUST pass a filter that scopes the read to what that check covered.
+	 * An empty filter is refused, so this can never become an unscoped read.
+	 *
+	 * @param string $objectType The object type (e.g. 'xpAward').
+	 * @param array<string, string> $filters Equality filters; at least one, non-empty.
+	 * @param int|null $limit Maximum number of objects to retrieve.
+	 *
+	 * @return array<int, array<string, mixed>> The objects as arrays.
+	 *
+	 * @throws InvalidArgumentException If no scoping filter is given.
+	 * @throws Exception If OpenRegister is not available or type is not configured.
+	 *
+	 * @psalm-suppress MixedMethodCall OpenRegister ObjectService resolved dynamically.
+	 * @psalm-suppress MixedAssignment OpenRegister ObjectService resolved dynamically.
+	 *
+	 * @spec openspec/specs/event-xp-awards/spec.md
+	 */
+	public function getObjectsWithAppAuthority(string $objectType, array $filters, ?int $limit = null): array {
+		if ($filters === [] || in_array('', $filters, true) === true) {
+			throw new InvalidArgumentException('A read with the app\'s authority needs a scoping filter');
+		}
+
+		$openRegister = $this->getOpenRegisterService();
+		[$register, $schema] = $this->resolveRegisterAndSchema(objectTypeLower: strtolower($objectType));
+
+		// @var array $objects
+		$objects = $openRegister->findAll(
+			config: [
+				'limit' => $limit,
+				'filters' => array_merge($filters, ['register' => $register, 'schema' => $schema]),
+			],
+			_rbac: false,
+			_multitenancy: false
+		);
+
+		// @psalm-suppress MixedArgument OpenRegister resolved dynamically.
+		return array_map(
+			function (mixed $object): array {
+				return $this->toArray(object: $object);
+			},
+			$objects
+		);
+	}//end getObjectsWithAppAuthority()
+
+	/**
 	 * Get a single object by type and ID from OpenRegister.
 	 *
 	 * The `$id` parameter must be a valid UUID. URI-format IDs (full URLs) are

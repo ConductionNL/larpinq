@@ -201,6 +201,29 @@ class CharacterConnectionGuard {
 	}//end checkBuild()
 
 	/**
+	 * Whether the user plays this character, judged from the STORED character
+	 * read as the user, never from a payload the user sent. Gates the reads
+	 * larpinq makes with its own authority for a player's own records
+	 * (DECISIONS row 30).
+	 *
+	 * @param mixed $character The character's id (a UUID, or an object carrying one).
+	 * @param string $userId The user.
+	 *
+	 * @return bool True when the stored character's owner is the user.
+	 *
+	 * @spec openspec/specs/event-xp-awards/spec.md
+	 */
+	public function ownsCharacter(mixed $character, string $userId): bool {
+		if ($userId === '') {
+			return false;
+		}
+
+		$stored = $this->read(objectType: 'character', id: $character);
+
+		return $stored !== null && ($stored['ownerUid'] ?? '') === $userId;
+	}//end ownsCharacter()
+
+	/**
 	 * A new membership: a player asks with their own character, the leader
 	 * invites, and the leader places their own character as an active member.
 	 *
