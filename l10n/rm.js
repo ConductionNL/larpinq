@@ -296,7 +296,25 @@ OC.L10N.register(
         "The campaign could not be exported, because no register is configured.": "La campagna n'ha betg pudì vegnir exportada, perquai ch'i n'è configurà nagin register.",
         "The campaign could not be imported, because no register is configured.": "La campagna n'ha betg pudì vegnir importada, perquai ch'i n'è configurà nagin register.",
         "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Campagna importada: {created} creads, {updated} actualisads, {unchanged} betg midads, {failed} betg reussids",
-        "The campaign could not be imported: {reason}": "La campagna n'ha betg pudì vegnir importada: {reason}"
+        "The campaign could not be imported: {reason}": "La campagna n'ha betg pudì vegnir importada: {reason}",
+        "Lore": "Lore",
+        "Lore page": "Pagina da lore",
+        "Lore of this world": "Lore da quest mund",
+        "Title": "Titel",
+        "Text": "Text",
+        "Category": "Categoria",
+        "Visible to": "Visibel per",
+        "Reveal moment": "Mument da la revelaziun",
+        "Parent page": "Pagina superiura",
+        "Order": "Successiun",
+        "The name of the page": "Il num da la pagina",
+        "The page text, written in markdown": "Il text da la pagina, en markdown",
+        "The world this page belongs to": "Il mund al qual la pagina appartegna",
+        "What the page is about": "Da tge che la pagina tracta",
+        "Who may read the page: game masters only, or players too": "Tgi che dastga leger la pagina: mo ils manaders dal gieu u er ils giugaders",
+        "From this moment players may read a page that is visible to players": "Da quest mument davent dastgan ils giugaders leger ina pagina visibla per els",
+        "The page this page sits under in the sidebar": "La pagina sut la quala questa pagina stat en la trav laterala",
+        "The position among pages with the same parent": "La posiziun tranter paginas cun la medema pagina superiura"
     },
     "nplurals=2; plural=(n != 1);"
 )

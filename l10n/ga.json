@@ -295,7 +295,25 @@
         "The campaign could not be exported, because no register is configured.": "Níorbh fhéidir an feachtas a easpórtáil, mar níl aon chlár socraithe.",
         "The campaign could not be imported, because no register is configured.": "Níorbh fhéidir an feachtas a iompórtáil, mar níl aon chlár socraithe.",
         "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Feachtas iompórtáilte: {created} cruthaithe, {updated} nuashonraithe, {unchanged} gan athrú, {failed} theip",
-        "The campaign could not be imported: {reason}": "Níorbh fhéidir an feachtas a iompórtáil: {reason}"
+        "The campaign could not be imported: {reason}": "Níorbh fhéidir an feachtas a iompórtáil: {reason}",
+        "Lore": "Seanchas",
+        "Lore page": "Leathanach seanchais",
+        "Lore of this world": "Seanchas an domhain seo",
+        "Title": "Teideal",
+        "Text": "Téacs",
+        "Category": "Catagóir",
+        "Visible to": "Infheicthe do",
+        "Reveal moment": "Nóiméad nochta",
+        "Parent page": "Máthairleathanach",
+        "Order": "Ord",
+        "The name of the page": "Ainm an leathanaigh",
+        "The page text, written in markdown": "Téacs an leathanaigh, i markdown",
+        "The world this page belongs to": "An domhan lena mbaineann an leathanach",
+        "What the page is about": "Cad faoi a bhfuil an leathanach",
+        "Who may read the page: game masters only, or players too": "Cé a fhéadfaidh an leathanach a léamh: máistrí cluiche amháin, nó imreoirí freisin",
+        "From this moment players may read a page that is visible to players": "Ón nóiméad seo is féidir le himreoirí leathanach atá infheicthe dóibh a léamh",
+        "The page this page sits under in the sidebar": "An leathanach a bhfuil an leathanach seo faoi sa bharra taoibh",
+        "The position among pages with the same parent": "An áit i measc leathanach leis an máthairleathanach céanna"
     },
     "plurals": {}
 }

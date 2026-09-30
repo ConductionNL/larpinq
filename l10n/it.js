@@ -296,7 +296,25 @@ OC.L10N.register(
         "The campaign could not be exported, because no register is configured.": "Impossibile esportare la campagna perché non è configurato alcun registro.",
         "The campaign could not be imported, because no register is configured.": "Impossibile importare la campagna perché non è configurato alcun registro.",
         "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Campagna importata: {created} creati, {updated} aggiornati, {unchanged} invariati, {failed} non riusciti",
-        "The campaign could not be imported: {reason}": "Impossibile importare la campagna: {reason}"
+        "The campaign could not be imported: {reason}": "Impossibile importare la campagna: {reason}",
+        "Lore": "Lore",
+        "Lore page": "Pagina di lore",
+        "Lore of this world": "Lore di questo mondo",
+        "Title": "Titolo",
+        "Text": "Testo",
+        "Category": "Categoria",
+        "Visible to": "Visibile a",
+        "Reveal moment": "Momento di rivelazione",
+        "Parent page": "Pagina superiore",
+        "Order": "Ordine",
+        "The name of the page": "Il nome della pagina",
+        "The page text, written in markdown": "Il testo della pagina, in markdown",
+        "The world this page belongs to": "Il mondo a cui appartiene questa pagina",
+        "What the page is about": "Di cosa parla la pagina",
+        "Who may read the page: game masters only, or players too": "Chi può leggere la pagina: solo i master o anche i giocatori",
+        "From this moment players may read a page that is visible to players": "Da questo momento i giocatori possono leggere una pagina visibile ai giocatori",
+        "The page this page sits under in the sidebar": "La pagina sotto cui questa pagina appare nella barra laterale",
+        "The position among pages with the same parent": "La posizione tra le pagine con la stessa pagina superiore"
     },
     "nplurals=2; plural=(n != 1);"
 )

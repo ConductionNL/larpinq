@@ -295,7 +295,25 @@
         "The campaign could not be exported, because no register is configured.": "Kampaņu neizdevās eksportēt, jo nav iestatīts reģistrs.",
         "The campaign could not be imported, because no register is configured.": "Kampaņu neizdevās importēt, jo nav iestatīts reģistrs.",
         "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Kampaņa importēta: izveidoti {created}, atjaunināti {updated}, nemainīti {unchanged}, neizdevās {failed}",
-        "The campaign could not be imported: {reason}": "Kampaņu neizdevās importēt: {reason}"
+        "The campaign could not be imported: {reason}": "Kampaņu neizdevās importēt: {reason}",
+        "Lore": "Leģendas",
+        "Lore page": "Leģendu lapa",
+        "Lore of this world": "Šīs pasaules leģendas",
+        "Title": "Nosaukums",
+        "Text": "Teksts",
+        "Category": "Kategorija",
+        "Visible to": "Redzams",
+        "Reveal moment": "Atklāšanas brīdis",
+        "Parent page": "Vecāklapa",
+        "Order": "Secība",
+        "The name of the page": "Lapas nosaukums",
+        "The page text, written in markdown": "Lapas teksts markdown formātā",
+        "The world this page belongs to": "Pasaule, kurai lapa pieder",
+        "What the page is about": "Par ko ir lapa",
+        "Who may read the page: game masters only, or players too": "Kas drīkst lasīt lapu: tikai spēles vadītāji vai arī spēlētāji",
+        "From this moment players may read a page that is visible to players": "No šī brīža spēlētāji drīkst lasīt spēlētājiem redzamu lapu",
+        "The page this page sits under in the sidebar": "Lapa, zem kuras šī lapa ir sānjoslā",
+        "The position among pages with the same parent": "Vieta starp lapām ar to pašu vecāklapu"
     },
     "plurals": {}
 }

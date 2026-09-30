@@ -295,7 +295,25 @@
         "The campaign could not be exported, because no register is configured.": "D'Kampagne konnt net exportéiert ginn, well keen Register agestallt ass.",
         "The campaign could not be imported, because no register is configured.": "D'Kampagne konnt net importéiert ginn, well keen Register agestallt ass.",
         "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Kampagne importéiert: {created} erstallt, {updated} aktualiséiert, {unchanged} onverännert, {failed} feelgeschloen",
-        "The campaign could not be imported: {reason}": "D'Kampagne konnt net importéiert ginn: {reason}"
+        "The campaign could not be imported: {reason}": "D'Kampagne konnt net importéiert ginn: {reason}",
+        "Lore": "Lore",
+        "Lore page": "Lore-Säit",
+        "Lore of this world": "Lore vun dëser Welt",
+        "Title": "Titel",
+        "Text": "Text",
+        "Category": "Kategorie",
+        "Visible to": "Siichtbar fir",
+        "Reveal moment": "Enthüllungsmoment",
+        "Parent page": "Iwwergeuerdent Säit",
+        "Order": "Reiefolleg",
+        "The name of the page": "Den Numm vun der Säit",
+        "The page text, written in markdown": "Den Text vun der Säit, am Markdown",
+        "The world this page belongs to": "D'Welt, zu där dës Säit gehéiert",
+        "What the page is about": "Wourëms et op der Säit geet",
+        "Who may read the page: game masters only, or players too": "Wien d'Säit liese dierf: nëmmen d'Spillleeder oder och d'Spiller",
+        "From this moment players may read a page that is visible to players": "Vun dësem Moment u kënnen d'Spiller eng fir si siichtbar Säit liesen",
+        "The page this page sits under in the sidebar": "D'Säit, ënner där dës Säit an der Säiteleescht steet",
+        "The position among pages with the same parent": "D'Positioun ënner Säite mat der selwechter iwwergeuerdenter Säit"
     },
     "plurals": {}
 }

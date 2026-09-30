@@ -295,7 +295,25 @@
         "The campaign could not be exported, because no register is configured.": "Кампању није могуће извести јер није подешен ниједан регистар.",
         "The campaign could not be imported, because no register is configured.": "Кампању није могуће увести јер није подешен ниједан регистар.",
         "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Кампања увезена: креирано {created}, ажурирано {updated}, непромењено {unchanged}, неуспело {failed}",
-        "The campaign could not be imported: {reason}": "Кампању није могуће увести: {reason}"
+        "The campaign could not be imported: {reason}": "Кампању није могуће увести: {reason}",
+        "Lore": "Лор",
+        "Lore page": "Страница лора",
+        "Lore of this world": "Лор овог света",
+        "Title": "Наслов",
+        "Text": "Текст",
+        "Category": "Категорија",
+        "Visible to": "Видљиво за",
+        "Reveal moment": "Тренутак откривања",
+        "Parent page": "Надређена страница",
+        "Order": "Редослед",
+        "The name of the page": "Назив странице",
+        "The page text, written in markdown": "Текст странице у markdown-у",
+        "The world this page belongs to": "Свет коме страница припада",
+        "What the page is about": "О чему је страница",
+        "Who may read the page: game masters only, or players too": "Ко сме да чита страницу: само водитељи игре или и играчи",
+        "From this moment players may read a page that is visible to players": "Од овог тренутка играчи могу да читају страницу видљиву играчима",
+        "The page this page sits under in the sidebar": "Страница испод које је ова страница у бочној траци",
+        "The position among pages with the same parent": "Положај међу страницама са истом надређеном страницом"
     },
     "plurals": {}
 }

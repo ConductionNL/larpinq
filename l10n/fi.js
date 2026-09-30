@@ -296,7 +296,25 @@ OC.L10N.register(
         "The campaign could not be exported, because no register is configured.": "Kampanjaa ei voitu viedä, koska rekisteriä ei ole määritetty.",
         "The campaign could not be imported, because no register is configured.": "Kampanjaa ei voitu tuoda, koska rekisteriä ei ole määritetty.",
         "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Kampanja tuotu: {created} luotu, {updated} päivitetty, {unchanged} ennallaan, {failed} epäonnistui",
-        "The campaign could not be imported: {reason}": "Kampanjaa ei voitu tuoda: {reason}"
+        "The campaign could not be imported: {reason}": "Kampanjaa ei voitu tuoda: {reason}",
+        "Lore": "Taustatarina",
+        "Lore page": "Taustatarinasivu",
+        "Lore of this world": "Tämän maailman taustatarina",
+        "Title": "Otsikko",
+        "Text": "Teksti",
+        "Category": "Luokka",
+        "Visible to": "Näkyy",
+        "Reveal moment": "Paljastushetki",
+        "Parent page": "Yläsivu",
+        "Order": "Järjestys",
+        "The name of the page": "Sivun nimi",
+        "The page text, written in markdown": "Sivun teksti markdown-muodossa",
+        "The world this page belongs to": "Maailma, johon sivu kuuluu",
+        "What the page is about": "Mistä sivu kertoo",
+        "Who may read the page: game masters only, or players too": "Kuka saa lukea sivun: vain pelinjohtajat vai myös pelaajat",
+        "From this moment players may read a page that is visible to players": "Tästä hetkestä pelaajat saavat lukea pelaajille näkyvän sivun",
+        "The page this page sits under in the sidebar": "Sivu, jonka alla tämä sivu on sivupalkissa",
+        "The position among pages with the same parent": "Sijainti saman yläsivun sivujen joukossa"
     },
     "nplurals=2; plural=(n != 1);"
 )

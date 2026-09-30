@@ -296,7 +296,25 @@ OC.L10N.register(
         "The campaign could not be exported, because no register is configured.": "Il-kampanja ma setgħetx tiġi esportata, għax ma hemm l-ebda reġistru kkonfigurat.",
         "The campaign could not be imported, because no register is configured.": "Il-kampanja ma setgħetx tiġi importata, għax ma hemm l-ebda reġistru kkonfigurat.",
         "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Kampanja importata: {created} maħluqa, {updated} aġġornata, {unchanged} mhux mibdula, {failed} fallew",
-        "The campaign could not be imported: {reason}": "Il-kampanja ma setgħetx tiġi importata: {reason}"
+        "The campaign could not be imported: {reason}": "Il-kampanja ma setgħetx tiġi importata: {reason}",
+        "Lore": "Lore",
+        "Lore page": "Paġna tal-lore",
+        "Lore of this world": "Il-lore ta' din id-dinja",
+        "Title": "Titlu",
+        "Text": "Test",
+        "Category": "Kategorija",
+        "Visible to": "Viżibbli għal",
+        "Reveal moment": "Mument tal-iżvelar",
+        "Parent page": "Paġna prinċipali",
+        "Order": "Ordni",
+        "The name of the page": "L-isem tal-paġna",
+        "The page text, written in markdown": "It-test tal-paġna, f'markdown",
+        "The world this page belongs to": "Id-dinja li tappartjeni għaliha l-paġna",
+        "What the page is about": "Dwar xiex hi l-paġna",
+        "Who may read the page: game masters only, or players too": "Min jista' jaqra l-paġna: il-kaptani tal-logħba biss, jew il-plejers ukoll",
+        "From this moment players may read a page that is visible to players": "Minn dan il-mument il-plejers jistgħu jaqraw paġna viżibbli għall-plejers",
+        "The page this page sits under in the sidebar": "Il-paġna li taħtha tidher din il-paġna fil-ġenb",
+        "The position among pages with the same parent": "Il-pożizzjoni fost il-paġni bl-istess paġna prinċipali"
     },
     "nplurals=2; plural=(n != 1);"
 )

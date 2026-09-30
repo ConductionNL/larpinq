@@ -296,7 +296,25 @@ OC.L10N.register(
         "The campaign could not be exported, because no register is configured.": "Ekki tókst að flytja herferðina út því engin skrá er stillt.",
         "The campaign could not be imported, because no register is configured.": "Ekki tókst að flytja herferðina inn því engin skrá er stillt.",
         "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Herferð flutt inn: {created} stofnaðar, {updated} uppfærðar, {unchanged} óbreyttar, {failed} mistókust",
-        "The campaign could not be imported: {reason}": "Ekki tókst að flytja herferðina inn: {reason}"
+        "The campaign could not be imported: {reason}": "Ekki tókst að flytja herferðina inn: {reason}",
+        "Lore": "Fræði",
+        "Lore page": "Fræðisíða",
+        "Lore of this world": "Fræði þessa heims",
+        "Title": "Titill",
+        "Text": "Texti",
+        "Category": "Flokkur",
+        "Visible to": "Sýnilegt",
+        "Reveal moment": "Birtingartími",
+        "Parent page": "Yfirsíða",
+        "Order": "Röð",
+        "The name of the page": "Heiti síðunnar",
+        "The page text, written in markdown": "Texti síðunnar, í markdown",
+        "The world this page belongs to": "Heimurinn sem síðan tilheyrir",
+        "What the page is about": "Um hvað síðan fjallar",
+        "Who may read the page: game masters only, or players too": "Hver má lesa síðuna: aðeins spilastjórar eða líka leikmenn",
+        "From this moment players may read a page that is visible to players": "Frá þessum tíma mega leikmenn lesa síðu sem er sýnileg leikmönnum",
+        "The page this page sits under in the sidebar": "Síðan sem þessi síða er undir í hliðarstikunni",
+        "The position among pages with the same parent": "Staðsetningin meðal síðna með sömu yfirsíðu"
     },
     "nplurals=2; plural=(n != 1);"
 )

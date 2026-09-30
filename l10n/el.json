@@ -295,7 +295,25 @@
         "The campaign could not be exported, because no register is configured.": "Δεν ήταν δυνατή η εξαγωγή της εκστρατείας, επειδή δεν έχει ρυθμιστεί μητρώο.",
         "The campaign could not be imported, because no register is configured.": "Δεν ήταν δυνατή η εισαγωγή της εκστρατείας, επειδή δεν έχει ρυθμιστεί μητρώο.",
         "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Η εκστρατεία εισήχθη: {created} δημιουργήθηκαν, {updated} ενημερώθηκαν, {unchanged} αμετάβλητα, {failed} απέτυχαν",
-        "The campaign could not be imported: {reason}": "Δεν ήταν δυνατή η εισαγωγή της εκστρατείας: {reason}"
+        "The campaign could not be imported: {reason}": "Δεν ήταν δυνατή η εισαγωγή της εκστρατείας: {reason}",
+        "Lore": "Ιστορικό κόσμου",
+        "Lore page": "Σελίδα ιστορικού",
+        "Lore of this world": "Το ιστορικό αυτού του κόσμου",
+        "Title": "Τίτλος",
+        "Text": "Κείμενο",
+        "Category": "Κατηγορία",
+        "Visible to": "Ορατό σε",
+        "Reveal moment": "Στιγμή αποκάλυψης",
+        "Parent page": "Γονική σελίδα",
+        "Order": "Σειρά",
+        "The name of the page": "Το όνομα της σελίδας",
+        "The page text, written in markdown": "Το κείμενο της σελίδας, σε markdown",
+        "The world this page belongs to": "Ο κόσμος στον οποίο ανήκει η σελίδα",
+        "What the page is about": "Το θέμα της σελίδας",
+        "Who may read the page: game masters only, or players too": "Ποιος μπορεί να διαβάσει τη σελίδα: μόνο οι αφηγητές ή και οι παίκτες",
+        "From this moment players may read a page that is visible to players": "Από αυτή τη στιγμή οι παίκτες μπορούν να διαβάσουν μια σελίδα ορατή στους παίκτες",
+        "The page this page sits under in the sidebar": "Η σελίδα κάτω από την οποία εμφανίζεται αυτή η σελίδα στην πλαϊνή μπάρα",
+        "The position among pages with the same parent": "Η θέση ανάμεσα σε σελίδες με την ίδια γονική σελίδα"
     },
     "plurals": {}
 }

@@ -295,7 +295,25 @@
         "The campaign could not be exported, because no register is configured.": "Kampaň se nepodařilo exportovat, protože není nastaven žádný registr.",
         "The campaign could not be imported, because no register is configured.": "Kampaň se nepodařilo importovat, protože není nastaven žádný registr.",
         "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Kampaň importována: vytvořeno {created}, aktualizováno {updated}, beze změny {unchanged}, neúspěšných {failed}",
-        "The campaign could not be imported: {reason}": "Kampaň se nepodařilo importovat: {reason}"
+        "The campaign could not be imported: {reason}": "Kampaň se nepodařilo importovat: {reason}",
+        "Lore": "Lore",
+        "Lore page": "Stránka lore",
+        "Lore of this world": "Lore tohoto světa",
+        "Title": "Název",
+        "Text": "Text",
+        "Category": "Kategorie",
+        "Visible to": "Viditelné pro",
+        "Reveal moment": "Okamžik odhalení",
+        "Parent page": "Nadřazená stránka",
+        "Order": "Pořadí",
+        "The name of the page": "Název stránky",
+        "The page text, written in markdown": "Text stránky v markdownu",
+        "The world this page belongs to": "Svět, ke kterému stránka patří",
+        "What the page is about": "O čem stránka je",
+        "Who may read the page: game masters only, or players too": "Kdo smí stránku číst: jen vypravěči, nebo i hráči",
+        "From this moment players may read a page that is visible to players": "Od tohoto okamžiku mohou hráči číst stránku viditelnou pro hráče",
+        "The page this page sits under in the sidebar": "Stránka, pod kterou je tato stránka v postranním panelu",
+        "The position among pages with the same parent": "Pozice mezi stránkami se stejnou nadřazenou stránkou"
     },
     "plurals": {}
 }

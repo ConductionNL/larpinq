@@ -296,7 +296,25 @@ OC.L10N.register(
         "The campaign could not be exported, because no register is configured.": "Yapılandırılmış bir kayıt olmadığı için kampanya dışa aktarılamadı.",
         "The campaign could not be imported, because no register is configured.": "Yapılandırılmış bir kayıt olmadığı için kampanya içe aktarılamadı.",
         "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Kampanya içe aktarıldı: {created} oluşturuldu, {updated} güncellendi, {unchanged} değişmedi, {failed} başarısız",
-        "The campaign could not be imported: {reason}": "Kampanya içe aktarılamadı: {reason}"
+        "The campaign could not be imported: {reason}": "Kampanya içe aktarılamadı: {reason}",
+        "Lore": "Evren bilgisi",
+        "Lore page": "Evren bilgisi sayfası",
+        "Lore of this world": "Bu dünyanın evren bilgisi",
+        "Title": "Başlık",
+        "Text": "Metin",
+        "Category": "Kategori",
+        "Visible to": "Kimlere görünür",
+        "Reveal moment": "Açıklanma anı",
+        "Parent page": "Üst sayfa",
+        "Order": "Sıra",
+        "The name of the page": "Sayfanın adı",
+        "The page text, written in markdown": "Sayfanın metni, markdown olarak",
+        "The world this page belongs to": "Sayfanın ait olduğu dünya",
+        "What the page is about": "Sayfanın konusu",
+        "Who may read the page: game masters only, or players too": "Sayfayı kim okuyabilir: yalnızca oyun yöneticileri mi, oyuncular da mı",
+        "From this moment players may read a page that is visible to players": "Bu andan itibaren oyuncular oyunculara görünen bir sayfayı okuyabilir",
+        "The page this page sits under in the sidebar": "Bu sayfanın kenar çubuğunda altında durduğu sayfa",
+        "The position among pages with the same parent": "Aynı üst sayfaya sahip sayfalar arasındaki sıra"
     },
     "nplurals=2; plural=(n != 1);"
 )

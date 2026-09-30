@@ -295,7 +295,25 @@
         "The campaign could not be exported, because no register is configured.": "Kampanju nije moguće izvesti jer nije postavljen nijedan registar.",
         "The campaign could not be imported, because no register is configured.": "Kampanju nije moguće uvesti jer nije postavljen nijedan registar.",
         "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Kampanja uvezena: stvoreno {created}, ažurirano {updated}, nepromijenjeno {unchanged}, neuspjelo {failed}",
-        "The campaign could not be imported: {reason}": "Kampanju nije moguće uvesti: {reason}"
+        "The campaign could not be imported: {reason}": "Kampanju nije moguće uvesti: {reason}",
+        "Lore": "Lore",
+        "Lore page": "Stranica lorea",
+        "Lore of this world": "Lore ovog svijeta",
+        "Title": "Naslov",
+        "Text": "Tekst",
+        "Category": "Kategorija",
+        "Visible to": "Vidljivo za",
+        "Reveal moment": "Trenutak otkrivanja",
+        "Parent page": "Nadređena stranica",
+        "Order": "Redoslijed",
+        "The name of the page": "Naziv stranice",
+        "The page text, written in markdown": "Tekst stranice u markdownu",
+        "The world this page belongs to": "Svijet kojem stranica pripada",
+        "What the page is about": "O čemu je stranica",
+        "Who may read the page: game masters only, or players too": "Tko smije čitati stranicu: samo voditelji igre ili i igrači",
+        "From this moment players may read a page that is visible to players": "Od ovog trenutka igrači mogu čitati stranicu vidljivu igračima",
+        "The page this page sits under in the sidebar": "Stranica ispod koje je ova stranica u bočnoj traci",
+        "The position among pages with the same parent": "Položaj među stranicama s istom nadređenom stranicom"
     },
     "plurals": {}
 }

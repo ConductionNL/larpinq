@@ -4,7 +4,9 @@
 		"spdx-copyright": "2026 Conduction B.V.",
 		"description": "Canonical navigation layout applied AFTER all manifest.d fragments merge (see buildManifest in @conduction/nextcloud-vue). relocations: sourceId -> targetGroupId. removals: leaf menu-entry ids retired as duplicate navigation — their PAGES stay routable for deep links. settingsSection: leaf ids lifted into Nextcloud's settings foldout (NcAppNavigationSettings gear) — configuration/admin setup entries, not daily-browse content."
 	},
-	"relocations": {},
+	"relocations": {
+		"Lore": "WorldGroup"
+	},
 	"removals": [],
 	"settingsSection": [
 		"GameSettings"

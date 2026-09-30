@@ -295,7 +295,25 @@
         "The campaign could not be exported, because no register is configured.": "Не вдалося експортувати кампанію, бо реєстр не налаштовано.",
         "The campaign could not be imported, because no register is configured.": "Не вдалося імпортувати кампанію, бо реєстр не налаштовано.",
         "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Кампанію імпортовано: створено {created}, оновлено {updated}, без змін {unchanged}, з помилкою {failed}",
-        "The campaign could not be imported: {reason}": "Не вдалося імпортувати кампанію: {reason}"
+        "The campaign could not be imported: {reason}": "Не вдалося імпортувати кампанію: {reason}",
+        "Lore": "Лор",
+        "Lore page": "Сторінка лору",
+        "Lore of this world": "Лор цього світу",
+        "Title": "Заголовок",
+        "Text": "Текст",
+        "Category": "Категорія",
+        "Visible to": "Видно для",
+        "Reveal moment": "Момент розкриття",
+        "Parent page": "Батьківська сторінка",
+        "Order": "Порядок",
+        "The name of the page": "Назва сторінки",
+        "The page text, written in markdown": "Текст сторінки в markdown",
+        "The world this page belongs to": "Світ, до якого належить сторінка",
+        "What the page is about": "Про що сторінка",
+        "Who may read the page: game masters only, or players too": "Хто може читати сторінку: лише майстри чи також гравці",
+        "From this moment players may read a page that is visible to players": "З цього моменту гравці можуть читати сторінку, видиму гравцям",
+        "The page this page sits under in the sidebar": "Сторінка, під якою ця сторінка стоїть на бічній панелі",
+        "The position among pages with the same parent": "Місце серед сторінок з тією самою батьківською сторінкою"
     },
     "plurals": {}
 }

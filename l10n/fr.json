@@ -295,7 +295,25 @@
         "The campaign could not be exported, because no register is configured.": "La campagne n'a pas pu être exportée, car aucun registre n'est configuré.",
         "The campaign could not be imported, because no register is configured.": "La campagne n'a pas pu être importée, car aucun registre n'est configuré.",
         "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Campagne importée : {created} créés, {updated} mis à jour, {unchanged} inchangés, {failed} en échec",
-        "The campaign could not be imported: {reason}": "La campagne n'a pas pu être importée : {reason}"
+        "The campaign could not be imported: {reason}": "La campagne n'a pas pu être importée : {reason}",
+        "Lore": "Lore",
+        "Lore page": "Page de lore",
+        "Lore of this world": "Lore de ce monde",
+        "Title": "Titre",
+        "Text": "Texte",
+        "Category": "Catégorie",
+        "Visible to": "Visible pour",
+        "Reveal moment": "Moment de révélation",
+        "Parent page": "Page parente",
+        "Order": "Ordre",
+        "The name of the page": "Le nom de la page",
+        "The page text, written in markdown": "Le texte de la page, en markdown",
+        "The world this page belongs to": "Le monde auquel appartient cette page",
+        "What the page is about": "Le sujet de la page",
+        "Who may read the page: game masters only, or players too": "Qui peut lire la page : les maîtres de jeu seulement, ou aussi les joueurs",
+        "From this moment players may read a page that is visible to players": "À partir de ce moment, les joueurs peuvent lire une page visible pour les joueurs",
+        "The page this page sits under in the sidebar": "La page sous laquelle cette page apparaît dans la barre latérale",
+        "The position among pages with the same parent": "La position parmi les pages ayant le même parent"
     },
     "plurals": {}
 }

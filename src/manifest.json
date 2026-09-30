@@ -1927,6 +1927,24 @@
 						}
 					},
 					{
+						"id": "setting-lore",
+						"type": "object-list",
+						"title": "Lore of this world",
+						"icon": "BookOpenVariantOutline",
+						"content": {
+							"register": "larpinq",
+							"schema": "larping_lore_page",
+							"filter": {
+								"setting": "@objectId"
+							},
+							"columns": [
+								{ "key": "title", "label": "Title" },
+								{ "key": "category", "label": "Category" }
+							],
+							"rowRoute": "LoreArticle"
+						}
+					},
+					{
 						"id": "setting-characters",
 						"type": "object-list",
 						"title": "Characters in this world",
@@ -2022,6 +2040,14 @@
 						"gridY": 8,
 						"gridWidth": 12,
 						"gridHeight": 3
+					},
+					{
+						"id": "7",
+						"widgetId": "setting-lore",
+						"gridX": 0,
+						"gridY": 11,
+						"gridWidth": 12,
+						"gridHeight": 4
 					}
 				],
 				"sidebar": {
