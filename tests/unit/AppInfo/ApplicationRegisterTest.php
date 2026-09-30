@@ -25,6 +25,7 @@ use OCA\Larpinq\Listener\CharacterStatusListener;
 use OCA\Larpinq\Listener\DeepLinkRegistrationListener;
 use OCA\Larpinq\Listener\FactionMembershipListener;
 use OCA\Larpinq\Listener\UniqueHolderListener;
+use OCA\Larpinq\Listener\XpAwardProvenanceListener;
 use OCP\AppFramework\Bootstrap\IRegistrationContext;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
@@ -75,6 +76,8 @@ class ApplicationRegisterTest extends TestCase {
 		['OCA\OpenRegister\Event\ObjectUpdatingEvent', FactionMembershipListener::class],
 		['OCA\OpenRegister\Event\ObjectCreatingEvent', CharacterStatusListener::class],
 		['OCA\OpenRegister\Event\ObjectUpdatingEvent', CharacterStatusListener::class],
+		['OCA\OpenRegister\Event\ObjectCreatingEvent', XpAwardProvenanceListener::class],
+		['OCA\OpenRegister\Event\ObjectUpdatingEvent', XpAwardProvenanceListener::class],
 	];
 
 	/**
