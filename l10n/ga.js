@@ -327,7 +327,24 @@ OC.L10N.register(
         "Plots of this character": "Plotaí an charachtair seo",
         "By writing step": "De réir céime scríbhneoireachta",
         "Not yet approved in writing": "Gan cheadú fós sa scríbhneoireacht",
-        "Everyone is approved in writing": "Tá gach duine ceadaithe sa scríbhneoireacht"
+        "Everyone is approved in writing": "Tá gach duine ceadaithe sa scríbhneoireacht",
+        "Copy world": "Cóipeáil an domhan",
+        "Counting what will be copied": "Ag comhaireamh a gcóipeálfar",
+        "Only game masters can copy a world.": "Ní féidir ach le máistrí cluiche domhan a chóipeáil.",
+        "This world has too many rules to copy in one go.": "Tá an iomarca rialacha sa domhan seo lena chóipeáil in aon iarracht amháin.",
+        "The world could not be loaded. Try again later.": "Níorbh fhéidir an domhan a lódáil. Bain triail eile as ar ball.",
+        "The new world {name} is ready.": "Tá an domhan nua {name} réidh.",
+        "The rules of {world} go into a new world:": "Téann rialacha {world} isteach i ndomhan nua:",
+        "Characters are not copied: items and conditions in the new world start without holders.": "Ní chóipeáiltear carachtair: tosaíonn earraí agus coinníollacha sa domhan nua gan sealbhóirí.",
+        "Name of the new world": "Ainm an domhain nua",
+        "The copy failed: {error}": "Theip ar an gcóipeáil: {error}",
+        "These objects could not be removed again: {ids}": "Níorbh fhéidir na réada seo a bhaint: {ids}",
+        "Close": "Dún",
+        "Open the new world": "Oscail an domhan nua",
+        "Copying": "Ag cóipeáil",
+        "Lore pages": "Leathanaigh seanchais",
+        "{world} (copy)": "{world} (cóip)",
+        "unknown error": "earráid anaithnid"
     },
     "nplurals=2; plural=(n != 1);"
 )

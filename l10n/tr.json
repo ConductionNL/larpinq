@@ -326,7 +326,24 @@
         "Plots of this character": "Bu karakterin olay örgüleri",
         "By writing step": "Yazım adımına göre",
         "Not yet approved in writing": "Yazımda henüz onaylanmadı",
-        "Everyone is approved in writing": "Herkes yazımda onaylandı"
+        "Everyone is approved in writing": "Herkes yazımda onaylandı",
+        "Copy world": "Dünyayı kopyala",
+        "Counting what will be copied": "Kopyalanacaklar sayılıyor",
+        "Only game masters can copy a world.": "Bir dünyayı yalnızca oyun yöneticileri kopyalayabilir.",
+        "This world has too many rules to copy in one go.": "Bu dünyada tek seferde kopyalanamayacak kadar çok kural var.",
+        "The world could not be loaded. Try again later.": "Dünya yüklenemedi. Daha sonra yeniden deneyin.",
+        "The new world {name} is ready.": "Yeni dünya {name} hazır.",
+        "The rules of {world} go into a new world:": "{world} dünyasının kuralları yeni bir dünyaya aktarılır:",
+        "Characters are not copied: items and conditions in the new world start without holders.": "Karakterler kopyalanmaz: yeni dünyadaki eşyalar ve durumlar sahipsiz başlar.",
+        "Name of the new world": "Yeni dünyanın adı",
+        "The copy failed: {error}": "Kopyalama başarısız oldu: {error}",
+        "These objects could not be removed again: {ids}": "Bu nesneler kaldırılamadı: {ids}",
+        "Close": "Kapat",
+        "Open the new world": "Yeni dünyayı aç",
+        "Copying": "Kopyalanıyor",
+        "Lore pages": "Evren bilgisi sayfaları",
+        "{world} (copy)": "{world} (kopya)",
+        "unknown error": "bilinmeyen hata"
     },
     "plurals": {}
 }

@@ -50,6 +50,14 @@ class Application extends App implements IBootstrap {
 	public const APP_ID = 'larpinq';
 
 	/**
+	 * The Nextcloud group of game masters (ADR-002 decision 1). The register's
+	 * authorization rules name the same group.
+	 *
+	 * @spec openspec/specs/setting-management/spec.md
+	 */
+	public const GM_GROUP = 'gamemasters';
+
+	/**
 	 * Constructor for the application
 	 *
 	 * @param array<string,mixed> $urlParams URL parameters

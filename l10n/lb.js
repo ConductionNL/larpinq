@@ -327,7 +327,24 @@ OC.L10N.register(
         "Plots of this character": "Plotte vun dësem Personnage",
         "By writing step": "No Schreifschrëtt",
         "Not yet approved in writing": "Nach net beim Schreiwe fräiginn",
-        "Everyone is approved in writing": "All sinn beim Schreiwe fräiginn"
+        "Everyone is approved in writing": "All sinn beim Schreiwe fräiginn",
+        "Copy world": "Welt kopéieren",
+        "Counting what will be copied": "Et gëtt gezielt, wat kopéiert gëtt",
+        "Only game masters can copy a world.": "Nëmmen d'Spillleeder kënnen eng Welt kopéieren.",
+        "This world has too many rules to copy in one go.": "Dës Welt huet ze vill Reegelen, fir se op eemol ze kopéieren.",
+        "The world could not be loaded. Try again later.": "D'Welt konnt net gelueden ginn. Probéiert méi spéit nach eng Kéier.",
+        "The new world {name} is ready.": "Déi nei Welt {name} ass prett.",
+        "The rules of {world} go into a new world:": "D'Reegele vu {world} kommen an eng nei Welt:",
+        "Characters are not copied: items and conditions in the new world start without holders.": "Personnagen ginn net kopéiert: Géigestänn a Zoustänn an der neier Welt fänken ouni Besëtzer un.",
+        "Name of the new world": "Numm vun der neier Welt",
+        "The copy failed: {error}": "D'Kopéieren ass net gelongen: {error}",
+        "These objects could not be removed again: {ids}": "Dës Objeten konnten net ewechgeholl ginn: {ids}",
+        "Close": "Zoumaachen",
+        "Open the new world": "Déi nei Welt opmaachen",
+        "Copying": "Gëtt kopéiert",
+        "Lore pages": "Lore-Säiten",
+        "{world} (copy)": "{world} (Kopie)",
+        "unknown error": "onbekannte Feeler"
     },
     "nplurals=2; plural=(n != 1);"
 )

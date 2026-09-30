@@ -435,4 +435,26 @@ class RegisterObjectFetcher {
 
 		return $this->toArray(object: $saved);
 	}//end saveObject()
+
+	/**
+	 * Delete an object of a given type from OpenRegister, with RBAC on.
+	 *
+	 * @param string $objectType The object type (e.g. 'skill').
+	 * @param string $uuid The object UUID.
+	 *
+	 * @return bool True when OpenRegister deleted it.
+	 *
+	 * @throws Exception If OpenRegister is not available, the type is not configured, or the delete is refused.
+	 *
+	 * @psalm-suppress MixedMethodCall OpenRegister ObjectService resolved dynamically.
+	 *
+	 * @spec openspec/specs/setting-management/spec.md
+	 */
+	public function deleteObject(string $objectType, string $uuid): bool {
+		$openRegister = $this->getOpenRegisterService();
+
+		[$register, $schema] = $this->resolveRegisterAndSchema(objectTypeLower: strtolower($objectType));
+
+		return (bool)$openRegister->deleteObject($uuid, $register, $schema);
+	}//end deleteObject()
 }//end class

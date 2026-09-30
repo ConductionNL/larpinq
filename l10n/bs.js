@@ -327,7 +327,24 @@ OC.L10N.register(
         "Plots of this character": "Zapleti ovog lika",
         "By writing step": "Po koraku pisanja",
         "Not yet approved in writing": "Još nije odobreno u pisanju",
-        "Everyone is approved in writing": "Svi su odobreni u pisanju"
+        "Everyone is approved in writing": "Svi su odobreni u pisanju",
+        "Copy world": "Kopiraj svijet",
+        "Counting what will be copied": "Brojanje onoga što će se kopirati",
+        "Only game masters can copy a world.": "Svijet mogu kopirati samo voditelji igre.",
+        "This world has too many rules to copy in one go.": "Ovaj svijet ima previše pravila za kopiranje odjednom.",
+        "The world could not be loaded. Try again later.": "Svijet nije moguće učitati. Pokušajte kasnije.",
+        "The new world {name} is ready.": "Novi svijet {name} je spreman.",
+        "The rules of {world} go into a new world:": "Pravila svijeta {world} idu u novi svijet:",
+        "Characters are not copied: items and conditions in the new world start without holders.": "Likovi se ne kopiraju: predmeti i stanja u novom svijetu počinju bez vlasnika.",
+        "Name of the new world": "Naziv novog svijeta",
+        "The copy failed: {error}": "Kopiranje nije uspjelo: {error}",
+        "These objects could not be removed again: {ids}": "Ove objekte nije bilo moguće ukloniti: {ids}",
+        "Close": "Zatvori",
+        "Open the new world": "Otvori novi svijet",
+        "Copying": "Kopiranje",
+        "Lore pages": "Stranice lorea",
+        "{world} (copy)": "{world} (kopija)",
+        "unknown error": "nepoznata greška"
     },
     "nplurals=2; plural=(n != 1);"
 )

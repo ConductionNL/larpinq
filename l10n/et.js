@@ -327,7 +327,24 @@ OC.L10N.register(
         "Plots of this character": "Selle tegelase süžeed",
         "By writing step": "Kirjutamise sammu järgi",
         "Not yet approved in writing": "Kirjutamises veel kinnitamata",
-        "Everyone is approved in writing": "Kõik on kirjutamises kinnitatud"
+        "Everyone is approved in writing": "Kõik on kirjutamises kinnitatud",
+        "Copy world": "Kopeeri maailm",
+        "Counting what will be copied": "Loendatakse, mida kopeeritakse",
+        "Only game masters can copy a world.": "Maailma saavad kopeerida ainult mängujuhid.",
+        "This world has too many rules to copy in one go.": "Selles maailmas on liiga palju reegleid, et seda korraga kopeerida.",
+        "The world could not be loaded. Try again later.": "Maailma ei õnnestunud laadida. Proovi hiljem uuesti.",
+        "The new world {name} is ready.": "Uus maailm {name} on valmis.",
+        "The rules of {world} go into a new world:": "Maailma {world} reeglid lähevad uude maailma:",
+        "Characters are not copied: items and conditions in the new world start without holders.": "Tegelasi ei kopeerita: uue maailma esemetel ja seisunditel pole alguses omanikke.",
+        "Name of the new world": "Uue maailma nimi",
+        "The copy failed: {error}": "Kopeerimine ebaõnnestus: {error}",
+        "These objects could not be removed again: {ids}": "Neid objekte ei õnnestunud eemaldada: {ids}",
+        "Close": "Sulge",
+        "Open the new world": "Ava uus maailm",
+        "Copying": "Kopeerimine",
+        "Lore pages": "Taustaloo lehed",
+        "{world} (copy)": "{world} (koopia)",
+        "unknown error": "tundmatu viga"
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -327,7 +327,24 @@ OC.L10N.register(
         "Plots of this character": "Plots for denne karakter",
         "By writing step": "Efter skrivetrin",
         "Not yet approved in writing": "Endnu ikke godkendt i skrivningen",
-        "Everyone is approved in writing": "Alle er godkendt i skrivningen"
+        "Everyone is approved in writing": "Alle er godkendt i skrivningen",
+        "Copy world": "Kopiér verden",
+        "Counting what will be copied": "Tæller, hvad der kopieres",
+        "Only game masters can copy a world.": "Kun spilledere kan kopiere en verden.",
+        "This world has too many rules to copy in one go.": "Denne verden har for mange regler til at blive kopieret på én gang.",
+        "The world could not be loaded. Try again later.": "Verdenen kunne ikke indlæses. Prøv igen senere.",
+        "The new world {name} is ready.": "Den nye verden {name} er klar.",
+        "The rules of {world} go into a new world:": "Reglerne fra {world} kommer i en ny verden:",
+        "Characters are not copied: items and conditions in the new world start without holders.": "Karakterer kopieres ikke: genstande og tilstande i den nye verden starter uden indehavere.",
+        "Name of the new world": "Navn på den nye verden",
+        "The copy failed: {error}": "Kopieringen mislykkedes: {error}",
+        "These objects could not be removed again: {ids}": "Disse objekter kunne ikke fjernes igen: {ids}",
+        "Close": "Luk",
+        "Open the new world": "Åbn den nye verden",
+        "Copying": "Kopierer",
+        "Lore pages": "Lore-sider",
+        "{world} (copy)": "{world} (kopi)",
+        "unknown error": "ukendt fejl"
     },
     "nplurals=2; plural=(n != 1);"
 )

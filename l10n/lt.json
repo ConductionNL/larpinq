@@ -326,7 +326,24 @@
         "Plots of this character": "Šio veikėjo siužetai",
         "By writing step": "Pagal rašymo žingsnį",
         "Not yet approved in writing": "Dar nepatvirtinti rašyme",
-        "Everyone is approved in writing": "Visi patvirtinti rašyme"
+        "Everyone is approved in writing": "Visi patvirtinti rašyme",
+        "Copy world": "Kopijuoti pasaulį",
+        "Counting what will be copied": "Skaičiuojama, kas bus nukopijuota",
+        "Only game masters can copy a world.": "Pasaulį gali kopijuoti tik žaidimo vedėjai.",
+        "This world has too many rules to copy in one go.": "Šiame pasaulyje per daug taisyklių, kad jį būtų galima nukopijuoti iš karto.",
+        "The world could not be loaded. Try again later.": "Nepavyko įkelti pasaulio. Bandykite vėliau.",
+        "The new world {name} is ready.": "Naujas pasaulis {name} paruoštas.",
+        "The rules of {world} go into a new world:": "Pasaulio {world} taisyklės pereina į naują pasaulį:",
+        "Characters are not copied: items and conditions in the new world start without holders.": "Veikėjai nekopijuojami: daiktai ir būsenos naujame pasaulyje pradedami be turėtojų.",
+        "Name of the new world": "Naujo pasaulio pavadinimas",
+        "The copy failed: {error}": "Kopijuoti nepavyko: {error}",
+        "These objects could not be removed again: {ids}": "Šių objektų nepavyko pašalinti: {ids}",
+        "Close": "Užverti",
+        "Open the new world": "Atverti naują pasaulį",
+        "Copying": "Kopijuojama",
+        "Lore pages": "Legendų puslapiai",
+        "{world} (copy)": "{world} (kopija)",
+        "unknown error": "nežinoma klaida"
     },
     "plurals": {}
 }

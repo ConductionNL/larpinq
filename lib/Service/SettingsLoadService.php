@@ -80,6 +80,7 @@ class SettingsLoadService {
 		'event' => 'larping_event',
 		'setting' => 'setting',
 		'attendance' => 'larping_attendance',
+		'lorepage' => 'larping_lore_page',
 	];
 
 	/**

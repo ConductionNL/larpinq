@@ -34,6 +34,9 @@ $extra = [
 	['name' => 'events#recordAttendance', 'url' => '/api/events/{id}/attendance', 'verb' => 'POST'],
 	['name' => 'characters#requirementReport', 'url' => '/api/characters/{id}/requirement-report', 'verb' => 'GET'],
 	['name' => 'characterStats#show', 'url' => '/api/characters/{id}/stats', 'verb' => 'GET'],
+	['name' => 'worlds#access', 'url' => '/api/worlds/copy-access', 'verb' => 'GET'],
+	['name' => 'worlds#preview', 'url' => '/api/worlds/{id}/copy', 'verb' => 'GET'],
+	['name' => 'worlds#copy', 'url' => '/api/worlds/{id}/copy', 'verb' => 'POST'],
 	['name' => 'settings#index', 'url' => 'api/settings', 'verb' => 'GET'],
 	['name' => 'settings#create', 'url' => 'api/settings', 'verb' => 'POST'],
 	// Canonical AppHost settings write (OpenRegister\AppHost\Routes::standard()).

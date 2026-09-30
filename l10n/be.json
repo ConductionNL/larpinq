@@ -326,7 +326,24 @@
         "Plots of this character": "Сюжэты гэтага персанажа",
         "By writing step": "Па этапе напісання",
         "Not yet approved in writing": "Яшчэ не ўхвалены ў напісанні",
-        "Everyone is approved in writing": "Усе ўхвалены ў напісанні"
+        "Everyone is approved in writing": "Усе ўхвалены ў напісанні",
+        "Copy world": "Капіраваць свет",
+        "Counting what will be copied": "Падлік таго, што будзе скапіравана",
+        "Only game masters can copy a world.": "Капіраваць свет могуць толькі майстры.",
+        "This world has too many rules to copy in one go.": "У гэтым свеце занадта шмат правілаў, каб скапіраваць яго за адзін раз.",
+        "The world could not be loaded. Try again later.": "Не ўдалося загрузіць свет. Паспрабуйце пазней.",
+        "The new world {name} is ready.": "Новы свет {name} гатовы.",
+        "The rules of {world} go into a new world:": "Правілы свету {world} пераходзяць у новы свет:",
+        "Characters are not copied: items and conditions in the new world start without holders.": "Персанажы не капіруюцца: прадметы і станы ў новым свеце пачынаюць без уладальнікаў.",
+        "Name of the new world": "Назва новага свету",
+        "The copy failed: {error}": "Капіраванне не ўдалося: {error}",
+        "These objects could not be removed again: {ids}": "Гэтыя аб’екты не ўдалося выдаліць: {ids}",
+        "Close": "Закрыць",
+        "Open the new world": "Адкрыць новы свет",
+        "Copying": "Капіраванне",
+        "Lore pages": "Старонкі лору",
+        "{world} (copy)": "{world} (копія)",
+        "unknown error": "невядомая памылка"
     },
     "plurals": {}
 }

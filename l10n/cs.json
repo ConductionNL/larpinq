@@ -326,7 +326,24 @@
         "Plots of this character": "Zápletky této postavy",
         "By writing step": "Podle fáze psaní",
         "Not yet approved in writing": "Zatím neschváleno v psaní",
-        "Everyone is approved in writing": "Všichni jsou v psaní schváleni"
+        "Everyone is approved in writing": "Všichni jsou v psaní schváleni",
+        "Copy world": "Kopírovat svět",
+        "Counting what will be copied": "Počítá se, co se zkopíruje",
+        "Only game masters can copy a world.": "Svět mohou kopírovat jen vypravěči.",
+        "This world has too many rules to copy in one go.": "Tento svět má příliš mnoho pravidel na zkopírování najednou.",
+        "The world could not be loaded. Try again later.": "Svět se nepodařilo načíst. Zkuste to později.",
+        "The new world {name} is ready.": "Nový svět {name} je připraven.",
+        "The rules of {world} go into a new world:": "Pravidla světa {world} přejdou do nového světa:",
+        "Characters are not copied: items and conditions in the new world start without holders.": "Postavy se nekopírují: předměty a stavy v novém světě začínají bez držitelů.",
+        "Name of the new world": "Název nového světa",
+        "The copy failed: {error}": "Kopírování selhalo: {error}",
+        "These objects could not be removed again: {ids}": "Tyto objekty se nepodařilo odstranit: {ids}",
+        "Close": "Zavřít",
+        "Open the new world": "Otevřít nový svět",
+        "Copying": "Kopíruje se",
+        "Lore pages": "Stránky lore",
+        "{world} (copy)": "{world} (kopie)",
+        "unknown error": "neznámá chyba"
     },
     "plurals": {}
 }

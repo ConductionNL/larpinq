@@ -23,6 +23,7 @@
  */
 
 import CharacterPdfDownloadDialog from './dialogs/CharacterPdfDownloadDialog.vue'
+import CopyWorldDialog from './dialogs/CopyWorldDialog.vue'
 import CharacterStatSheet from './views/CharacterStatSheet.vue'
 import EventRoster from './views/EventRoster.vue'
 import FlowDetailSidebar from './views/flows/FlowDetailSidebar.vue'
@@ -43,6 +44,11 @@ export default {
 	CharacterPdfDownloadDialog: {
 		kind: 'modal',
 		component: CharacterPdfDownloadDialog,
+		propsSchema: {},
+	},
+	CopyWorldDialog: {
+		kind: 'modal',
+		component: CopyWorldDialog,
 		propsSchema: {},
 	},
 
