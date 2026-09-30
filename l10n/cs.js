@@ -505,7 +505,13 @@ OC.L10N.register(
         "The awards could not be saved: {error}": "Udělení se nepodařilo uložit: {error}",
         "The participants could not be loaded. Try again later.": "Účastníky se nepodařilo načíst. Zkuste to později.",
         "XP for {name}": "XP pro {name}",
-        "XP for everyone ticked": "XP pro všechny zaškrtnuté"
+        "XP for everyone ticked": "XP pro všechny zaškrtnuté",
+        "Events attended": "Navštívené akce",
+        "Loading events attended": "Načítání navštívených akcí",
+        "Only game masters and the player can see which events this player attended.": "Jen vypravěči a sám hráč vidí, kterých akcí se tento hráč zúčastnil.",
+        "Could not load the events attended.": "Navštívené akce se nepodařilo načíst.",
+        "Events attended: {count}": "Navštívené akce: {count}",
+        "No check-ins recorded yet.": "Zatím nejsou zaznamenány žádné příchody."
     },
     "nplurals=2; plural=(n != 1);"
 )

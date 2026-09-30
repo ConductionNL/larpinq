@@ -505,7 +505,13 @@ OC.L10N.register(
         "The awards could not be saved: {error}": "Доделе није могуће сачувати: {error}",
         "The participants could not be loaded. Try again later.": "Учеснике није могуће учитати. Покушајте касније.",
         "XP for {name}": "XP за {name}",
-        "XP for everyone ticked": "XP за све означене"
+        "XP for everyone ticked": "XP за све означене",
+        "Events attended": "Посећени догађаји",
+        "Loading events attended": "Учитавање посећених догађаја",
+        "Only game masters and the player can see which events this player attended.": "Само водитељи игре и сам играч виде којим је догађајима овај играч присуствовао.",
+        "Could not load the events attended.": "Посећене догађаје није могуће учитати.",
+        "Events attended: {count}": "Посећени догађаји: {count}",
+        "No check-ins recorded yet.": "Још нема забележених пријава."
     },
     "nplurals=2; plural=(n != 1);"
 )

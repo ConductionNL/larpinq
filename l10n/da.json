@@ -504,7 +504,13 @@
         "The awards could not be saved: {error}": "Tildelingerne kunne ikke gemmes: {error}",
         "The participants could not be loaded. Try again later.": "Deltagerne kunne ikke indlæses. Prøv igen senere.",
         "XP for {name}": "XP til {name}",
-        "XP for everyone ticked": "XP til alle afkrydsede"
+        "XP for everyone ticked": "XP til alle afkrydsede",
+        "Events attended": "Deltagne arrangementer",
+        "Loading events attended": "Indlæser deltagne arrangementer",
+        "Only game masters and the player can see which events this player attended.": "Kun spilledere og spilleren selv kan se, hvilke arrangementer denne spiller har deltaget i.",
+        "Could not load the events attended.": "De deltagne arrangementer kunne ikke indlæses.",
+        "Events attended: {count}": "Deltagne arrangementer: {count}",
+        "No check-ins recorded yet.": "Ingen check-ins registreret endnu."
     },
     "plurals": {}
 }

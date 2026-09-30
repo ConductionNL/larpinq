@@ -23,10 +23,20 @@ newest first, and SHALL show how many events the player attended.
 ### Requirement: A player sees their own history (REQ-PAH-002)
 
 A player SHALL see the events-attended list on their own player page, and MUST
-NOT read the attendance of other players.
+NOT read the attendance of other players. Attendance stays readable through the
+OpenRegister object API by game masters and the record's owner only (DECISIONS
+row 30); the list is served by `GET /api/players/{id}/attendance`, which
+answers game masters and the player whose stored account it is, and refuses
+anyone else with 403 before reading any attendance.
+
+#### Scenario: Anna sees her own history
+
+- GIVEN Anna's account is the account of player "Anna de Vries", who was checked in at two events
+- WHEN Anna opens her own player page
+- THEN "Events attended" lists both events, newest first, and the count shows 2
 
 #### Scenario: Karel looks at Anna
 
-- GIVEN player Karel opens the API for attendance filtered on Anna's player
-- WHEN the request is answered
-- THEN it returns no records
+- GIVEN player Karel is not a game master
+- WHEN Karel asks for Anna's history, or for attendance filtered on Anna's characters through the object API
+- THEN larpinq refuses with 403 and OpenRegister returns no records

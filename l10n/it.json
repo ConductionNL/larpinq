@@ -504,7 +504,13 @@
         "The awards could not be saved: {error}": "Non è stato possibile salvare le assegnazioni: {error}",
         "The participants could not be loaded. Try again later.": "Non è stato possibile caricare i partecipanti. Riprova più tardi.",
         "XP for {name}": "XP per {name}",
-        "XP for everyone ticked": "XP per tutti i selezionati"
+        "XP for everyone ticked": "XP per tutti i selezionati",
+        "Events attended": "Eventi frequentati",
+        "Loading events attended": "Caricamento degli eventi frequentati",
+        "Only game masters and the player can see which events this player attended.": "Solo i master e il giocatore stesso possono vedere a quali eventi ha partecipato questo giocatore.",
+        "Could not load the events attended.": "Impossibile caricare gli eventi frequentati.",
+        "Events attended: {count}": "Eventi frequentati: {count}",
+        "No check-ins recorded yet.": "Nessun check-in registrato finora."
     },
     "plurals": {}
 }

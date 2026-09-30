@@ -504,7 +504,13 @@
         "The awards could not be saved: {error}": "No s'han pogut desar les concessions: {error}",
         "The participants could not be loaded. Try again later.": "No s'han pogut carregar els participants. Torna-ho a provar més tard.",
         "XP for {name}": "XP per a {name}",
-        "XP for everyone ticked": "XP per a tots els marcats"
+        "XP for everyone ticked": "XP per a tots els marcats",
+        "Events attended": "Esdeveniments assistits",
+        "Loading events attended": "S'estan carregant els esdeveniments assistits",
+        "Only game masters and the player can see which events this player attended.": "Només els directors de joc i el mateix jugador poden veure a quins esdeveniments ha assistit aquest jugador.",
+        "Could not load the events attended.": "No s'han pogut carregar els esdeveniments assistits.",
+        "Events attended: {count}": "Esdeveniments assistits: {count}",
+        "No check-ins recorded yet.": "Encara no hi ha registres d'arribada."
     },
     "plurals": {}
 }

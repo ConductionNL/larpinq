@@ -505,7 +505,13 @@ OC.L10N.register(
         "The awards could not be saved: {error}": "Níorbh fhéidir na bronntanais a shábháil: {error}",
         "The participants could not be loaded. Try again later.": "Níorbh fhéidir na rannpháirtithe a lódáil. Bain triail eile as ar ball.",
         "XP for {name}": "XP do {name}",
-        "XP for everyone ticked": "XP do gach duine atá ticeáilte"
+        "XP for everyone ticked": "XP do gach duine atá ticeáilte",
+        "Events attended": "Imeachtaí ar freastalaíodh orthu",
+        "Loading events attended": "Imeachtaí ar freastalaíodh orthu á lódáil",
+        "Only game masters and the player can see which events this player attended.": "Ní fheiceann ach na máistrí cluiche agus an t-imreoir féin cé na himeachtaí ar fhreastail an t-imreoir seo orthu.",
+        "Could not load the events attended.": "Níorbh fhéidir na himeachtaí ar freastalaíodh orthu a lódáil.",
+        "Events attended: {count}": "Imeachtaí ar freastalaíodh orthu: {count}",
+        "No check-ins recorded yet.": "Níl aon chlárú isteach taifeadta fós."
     },
     "nplurals=2; plural=(n != 1);"
 )

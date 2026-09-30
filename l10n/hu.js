@@ -505,7 +505,13 @@ OC.L10N.register(
         "The awards could not be saved: {error}": "A jóváírásokat nem sikerült menteni: {error}",
         "The participants could not be loaded. Try again later.": "A résztvevőket nem sikerült betölteni. Próbáld később.",
         "XP for {name}": "XP neki: {name}",
-        "XP for everyone ticked": "XP minden kijelöltnek"
+        "XP for everyone ticked": "XP minden kijelöltnek",
+        "Events attended": "Látogatott események",
+        "Loading events attended": "Látogatott események betöltése",
+        "Only game masters and the player can see which events this player attended.": "Csak a játékmesterek és maga a játékos látja, mely eseményeken vett részt ez a játékos.",
+        "Could not load the events attended.": "A látogatott eseményeket nem sikerült betölteni.",
+        "Events attended: {count}": "Látogatott események: {count}",
+        "No check-ins recorded yet.": "Még nincs rögzített érkezés."
     },
     "nplurals=2; plural=(n != 1);"
 )

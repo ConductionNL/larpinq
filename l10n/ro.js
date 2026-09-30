@@ -505,7 +505,13 @@ OC.L10N.register(
         "The awards could not be saved: {error}": "Acordările nu au putut fi salvate: {error}",
         "The participants could not be loaded. Try again later.": "Participanții nu au putut fi încărcați. Încearcă mai târziu.",
         "XP for {name}": "XP pentru {name}",
-        "XP for everyone ticked": "XP pentru toți cei bifați"
+        "XP for everyone ticked": "XP pentru toți cei bifați",
+        "Events attended": "Evenimente la care a participat",
+        "Loading events attended": "Se încarcă evenimentele la care a participat",
+        "Only game masters and the player can see which events this player attended.": "Doar maeștrii de joc și jucătorul însuși văd la ce evenimente a participat acest jucător.",
+        "Could not load the events attended.": "Evenimentele la care a participat nu au putut fi încărcate.",
+        "Events attended: {count}": "Evenimente la care a participat: {count}",
+        "No check-ins recorded yet.": "Încă nu există check-in-uri înregistrate."
     },
     "nplurals=2; plural=(n != 1);"
 )

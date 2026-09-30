@@ -46,6 +46,13 @@ class CharacterConnectionGuard {
 	];
 
 	/**
+	 * The field that names the owning account, per object type owns() answers for.
+	 *
+	 * @var array<string, string>
+	 */
+	private const OWNER_FIELDS = ['character' => 'ownerUid', 'player' => 'userUid'];
+
+	/**
 	 * The refusal messages, by code.
 	 *
 	 * @var array<string, string>
@@ -201,6 +208,28 @@ class CharacterConnectionGuard {
 	}//end checkBuild()
 
 	/**
+	 * Whether the user owns a stored character or player, judged from the
+	 * STORED object read as the user, never from a payload the user sent. A
+	 * character is the user's when its `ownerUid` is theirs, a player when its
+	 * `userUid` is. Gates the reads larpinq makes with its own authority for a
+	 * player's own records (DECISIONS row 30).
+	 *
+	 * @param string $objectType 'character' or 'player'.
+	 * @param mixed $id The object's id (a UUID, or an object carrying one).
+	 * @param string $userId The user.
+	 *
+	 * @return bool True when the stored object is the user's.
+	 *
+	 * @spec openspec/specs/event-xp-awards/spec.md
+	 * @spec openspec/specs/events-players/spec.md
+	 */
+	public function owns(string $objectType, mixed $id, string $userId): bool {
+		$field = (self::OWNER_FIELDS[$objectType] ?? '');
+
+		return $userId !== '' && $field !== '' && (($this->read(objectType: $objectType, id: $id)[$field] ?? '') === $userId);
+	}//end owns()
+
+	/**
 	 * A new membership: a player asks with their own character, the leader
 	 * invites, and the leader places their own character as an active member.
 	 *
@@ -289,7 +318,7 @@ class CharacterConnectionGuard {
 	/**
 	 * Read one object by a relation value, or null when it cannot be read.
 	 *
-	 * @param string $objectType The object type ('faction' or 'character').
+	 * @param string $objectType The object type ('faction', 'character' or 'player').
 	 * @param mixed $id The relation value (a UUID, or an object carrying one).
 	 *
 	 * @return array<string, mixed>|null The object.

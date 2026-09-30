@@ -505,7 +505,13 @@ OC.L10N.register(
         "The awards could not be saved: {error}": "Piešķiršanas neizdevās saglabāt: {error}",
         "The participants could not be loaded. Try again later.": "Dalībniekus neizdevās ielādēt. Mēģiniet vēlāk.",
         "XP for {name}": "XP tēlam {name}",
-        "XP for everyone ticked": "XP visiem atzīmētajiem"
+        "XP for everyone ticked": "XP visiem atzīmētajiem",
+        "Events attended": "Apmeklētie pasākumi",
+        "Loading events attended": "Ielādē apmeklētos pasākumus",
+        "Only game masters and the player can see which events this player attended.": "Tikai spēles vadītāji un pats spēlētājs redz, kurus pasākumus šis spēlētājs ir apmeklējis.",
+        "Could not load the events attended.": "Apmeklētos pasākumus neizdevās ielādēt.",
+        "Events attended: {count}": "Apmeklētie pasākumi: {count}",
+        "No check-ins recorded yet.": "Reģistrācijas vēl nav ierakstītas."
     },
     "nplurals=2; plural=(n != 1);"
 )

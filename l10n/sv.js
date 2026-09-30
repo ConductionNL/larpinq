@@ -505,7 +505,13 @@ OC.L10N.register(
         "The awards could not be saved: {error}": "Tilldelningarna kunde inte sparas: {error}",
         "The participants could not be loaded. Try again later.": "Deltagarna kunde inte läsas in. Försök igen senare.",
         "XP for {name}": "XP till {name}",
-        "XP for everyone ticked": "XP till alla som är markerade"
+        "XP for everyone ticked": "XP till alla som är markerade",
+        "Events attended": "Besökta evenemang",
+        "Loading events attended": "Läser in besökta evenemang",
+        "Only game masters and the player can see which events this player attended.": "Endast spelledare och spelaren själv kan se vilka evenemang den här spelaren har besökt.",
+        "Could not load the events attended.": "Det gick inte att läsa in de besökta evenemangen.",
+        "Events attended: {count}": "Besökta evenemang: {count}",
+        "No check-ins recorded yet.": "Inga incheckningar registrerade ännu."
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -31,6 +31,7 @@ Larpinq is a niche domain application with no applicable government or interoper
 | [Character status and bulk edit](./character-status-and-bulk-edit.md) | Characters are active, retired or dead, retired and dead ones stay out of new events, and game masters change many characters at once | [character-status-and-bulk-edit.md](./character-status-and-bulk-edit.md) |
 | [Worlds and upcoming events](./worlds-and-upcoming-events.md) | An event's world, the per-user world switcher that narrows lists, and upcoming events first | [worlds-and-upcoming-events.md](./worlds-and-upcoming-events.md) |
 | [Award XP to a whole event](./xp-batch-award.md) | Game masters award XP to everyone at an event in one save, ticked by check-in, stamped with who awarded it | [xp-batch-award.md](./xp-batch-award.md) |
+| [Events a player attended](./player-history.md) | The events a player was checked in at, across characters and years, for game masters and the player themself | [player-history.md](./player-history.md) |
 | [RPG System / Game Mechanics](./rpg-system.md) | Skills (with prerequisites), Items, Conditions, Effects, Abilities — interconnected rule engine | [rpg-system.md](./rpg-system.md) |
 | [Events & Players](./events-players.md) | Event management with date ranges, locations, and effect application to participating characters; player profiles | [events-players.md](./events-players.md) |
 | [PDF Export](./pdf-export.md) | Character sheet PDF export via DocuDesk integration; Twig templates scoped to Larpinq | [pdf-export.md](./pdf-export.md) |

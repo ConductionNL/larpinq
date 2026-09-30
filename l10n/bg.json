@@ -504,7 +504,13 @@
         "The awards could not be saved: {error}": "Присъжданията не можаха да се запазят: {error}",
         "The participants could not be loaded. Try again later.": "Участниците не можаха да се заредят. Опитайте по-късно.",
         "XP for {name}": "XP за {name}",
-        "XP for everyone ticked": "XP за всички отметнати"
+        "XP for everyone ticked": "XP за всички отметнати",
+        "Events attended": "Посетени събития",
+        "Loading events attended": "Зареждане на посетените събития",
+        "Only game masters and the player can see which events this player attended.": "Само водещите на играта и самият играч виждат кои събития е посетил този играч.",
+        "Could not load the events attended.": "Посетените събития не можаха да бъдат заредени.",
+        "Events attended: {count}": "Посетени събития: {count}",
+        "No check-ins recorded yet.": "Все още няма регистрирани пристигания."
     },
     "plurals": {}
 }

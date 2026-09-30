@@ -1597,18 +1597,18 @@
 			"id": "ply-player-history",
 			"area": "players",
 			"name": "See which events a player attended over the years.",
-			"larpinq": "partial",
+			"larpinq": "yes",
 			"larpmanager": "yes",
 			"mylarp": "unknown",
 			"larp-portal": "partial",
 			"kanka": "no",
 			"pretix": "yes",
 			"built": {
-				"state": "specified",
-				"evidence": "src/manifest.json:839-857 (player-characters object-list shows the characters a player has played, columns name/type/approved, no event or date columns); character.events (lib/Settings/larpinq_register.json:212-223) would have to be opened per character to see event participation; no player-scoped event/attendance rollup exists",
+				"state": "built",
+				"evidence": "lib/Controller/PlayerAttendanceController.php (GET /api/players/{id}/attendance: game masters, or the player whose stored account it is via CharacterConnectionGuard::owns('player', ...), else 403), lib/Service/PlayerAttendanceService.php (checked-in attendance per character read with the app's authority, newest event first, distinct event count), src/views/PlayerAttendanceHistory.vue (PlayerDetail sidebar tab Events attended); tests/unit/Controller/PlayerAttendanceControllerTest.php over OpenRegister's real evaluator, tests/vitest/playerAttendance.spec.js",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "PlayerDetail page shows characters played; reaching their event history requires opening each character individually",
-				"change": "players-attendance-history"
+				"reachedOn": "Player page (/players/<id>), sidebar tab Events attended",
+				"change": "openspec/changes/archive/2026-09-30-players-attendance-history"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
