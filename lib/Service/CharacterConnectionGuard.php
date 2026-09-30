@@ -1,8 +1,9 @@
 <?php
 
 /**
- * Decides whether a player may write a faction, a membership or a
- * relationship (characters-factions-and-relationships D3).
+ * Decides whether a player may write a faction, a membership, a
+ * relationship (characters-factions-and-relationships D3) or a build
+ * (characters-multiple-builds).
  *
  * @category Service
  * @package  OCA\Larpinq\Service
@@ -62,6 +63,8 @@ class CharacterConnectionGuard {
 		'relationship_game_masters_only' => 'Only game masters record relationships that game masters alone can see. '
 			. 'Choose who sees it: the players of both characters.',
 		'relationship_own_character_only' => 'You can only record relationships from one of your own characters.',
+		'build_own_character_only' => 'You can only make builds for your own characters.',
+		'build_moved' => 'A build stays with its character. Make a new build for the other character instead.',
 	];
 
 	/**
@@ -165,6 +168,37 @@ class CharacterConnectionGuard {
 
 		return null;
 	}//end checkRelationship()
+
+	/**
+	 * A build write by a player: only for their own character, and a stored
+	 * build stays with its character (characters-multiple-builds REQ-CMB-004).
+	 *
+	 * @param array<string, mixed> $build The build as it will be saved.
+	 * @param array<string, mixed>|null $old The stored build, or null on a create.
+	 * @param string $userId The player.
+	 *
+	 * @return array<string, string>|null The refusal, or null to allow.
+	 *
+	 * @spec openspec/specs/character-builds/spec.md
+	 */
+	public function checkBuild(array $build, ?array $old, string $userId): ?array {
+		if ($old !== null
+			&& $this->idOf(value: ($build['character'] ?? null)) !== $this->idOf(value: ($old['character'] ?? null))
+		) {
+			return $this->refuse(code: 'build_moved');
+		}
+
+		$character = $this->read(objectType: 'character', id: ($build['character'] ?? null));
+		if ($character === null) {
+			return $this->refuse(code: 'connection_unverifiable');
+		}
+
+		if (($character['ownerUid'] ?? '') !== $userId) {
+			return $this->refuse(code: 'build_own_character_only');
+		}
+
+		return null;
+	}//end checkBuild()
 
 	/**
 	 * A new membership: a player asks with their own character, the leader

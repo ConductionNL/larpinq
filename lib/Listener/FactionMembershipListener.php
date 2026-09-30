@@ -155,6 +155,10 @@ class FactionMembershipListener implements IEventListener {
 			$previous = (array)$old->getObject();
 		}
 
+		if ($kind === 'characterbuild') {
+			return $this->guard->checkBuild(build: $data, old: $previous, userId: $userId);
+		}
+
 		return $this->guard->checkMembership(membership: $data, old: $previous, userId: $userId);
 	}//end collectVeto()
 
@@ -166,7 +170,7 @@ class FactionMembershipListener implements IEventListener {
 	 *
 	 * @param object $entity The object entity.
 	 *
-	 * @return string|null 'faction', 'factionmember', 'relationship' or null.
+	 * @return string|null 'faction', 'factionmember', 'relationship', 'characterbuild' or null.
 	 *
 	 * @psalm-suppress MixedMethodCall OpenRegister entity is an optional dependency.
 	 */
@@ -180,7 +184,7 @@ class FactionMembershipListener implements IEventListener {
 			return null;
 		}
 
-		foreach (['faction', 'factionmember', 'relationship'] as $kind) {
+		foreach (['faction', 'factionmember', 'relationship', 'characterbuild'] as $kind) {
 			if ($schema === $this->config->getValueString(Application::APP_ID, $kind . '_schema', '')) {
 				return $kind;
 			}

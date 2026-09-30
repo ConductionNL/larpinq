@@ -27,6 +27,8 @@ import Calendar from 'vue-material-design-icons/Calendar.vue'
 import CalendarMonthOutline from 'vue-material-design-icons/CalendarMonthOutline.vue'
 import ChartBar from 'vue-material-design-icons/ChartBar.vue'
 import ChartBoxOutline from 'vue-material-design-icons/ChartBoxOutline.vue'
+import CheckAll from 'vue-material-design-icons/CheckAll.vue'
+import ClipboardCheckOutline from 'vue-material-design-icons/ClipboardCheckOutline.vue'
 import ClipboardList from 'vue-material-design-icons/ClipboardList.vue'
 import Cog from 'vue-material-design-icons/Cog.vue'
 import CogOutline from 'vue-material-design-icons/CogOutline.vue'
@@ -56,6 +58,7 @@ import School from 'vue-material-design-icons/School.vue'
 import ShieldAccountOutline from 'vue-material-design-icons/ShieldAccountOutline.vue'
 import ShieldSwordOutline from 'vue-material-design-icons/ShieldSwordOutline.vue'
 import Sitemap from 'vue-material-design-icons/Sitemap.vue'
+import SourceBranch from 'vue-material-design-icons/SourceBranch.vue'
 import Star from 'vue-material-design-icons/Star.vue'
 import StarOutline from 'vue-material-design-icons/StarOutline.vue'
 import StarPlusOutline from 'vue-material-design-icons/StarPlusOutline.vue'
@@ -84,6 +87,8 @@ export default {
 	CalendarMonthOutline,
 	ChartBar,
 	ChartBoxOutline,
+	CheckAll,
+	ClipboardCheckOutline,
 	ClipboardList,
 	Cog,
 	CogOutline,
@@ -113,6 +118,7 @@ export default {
 	ShieldAccountOutline,
 	ShieldSwordOutline,
 	Sitemap,
+	SourceBranch,
 	Star,
 	StarOutline,
 	StarPlusOutline,
