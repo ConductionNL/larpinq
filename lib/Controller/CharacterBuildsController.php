@@ -50,11 +50,11 @@ use OCP\IUserSession;
 class CharacterBuildsController extends Controller {
 
 	/**
-	 * The character lists a build replaces.
+	 * The character lists a build replaces, with the object type of each.
 	 *
-	 * @var array<int, string>
+	 * @var array<string, string>
 	 */
-	public const LISTS = ['skills', 'items', 'conditions'];
+	public const LISTS = ['skills' => 'skill', 'items' => 'item', 'conditions' => 'condition'];
 
 	/**
 	 * Constructor.
@@ -91,7 +91,7 @@ class CharacterBuildsController extends Controller {
 	 *
 	 * @param string $id The build UUID.
 	 *
-	 * @return JSONResponse `{build, character, report, stats}`, or 404.
+	 * @return JSONResponse `{build, character, report, stats, lists, changes}`, or 404.
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
@@ -125,6 +125,8 @@ class CharacterBuildsController extends Controller {
 				'build' => ['id' => $id, 'name' => (string)($build['name'] ?? '')],
 				'character' => ['id' => (string)($character['id'] ?? ''), 'name' => (string)($character['name'] ?? '')],
 				'report' => $this->requirementService->validate(candidate: $candidate, oldCharacter: $character),
+				'lists' => array_intersect_key($candidate, self::LISTS),
+				'changes' => $this->changes(character: $character, candidate: $candidate),
 				'stats' => $this->presenter->present(stats: $stats, xpAbilityId: $this->requirementService->resolveXpAbility(stats: $stats)),
 			]
 		);
@@ -158,6 +160,34 @@ class CharacterBuildsController extends Controller {
 	}//end access()
 
 	/**
+	 * What applying the build adds to and removes from each list, with names,
+	 * so the Apply dialog can show it before the write.
+	 *
+	 * @param array<string, mixed> $character The character.
+	 * @param array<string, mixed> $candidate The character with the build's lists.
+	 *
+	 * @return array<string, array{added: array<int, array{id: string, name: string}>, removed: array<int, array{id: string, name: string}>}> Per list.
+	 */
+	private function changes(array $character, array $candidate): array {
+		$changes = [];
+		foreach (self::LISTS as $list => $objectType) {
+			$now = array_map(fn (mixed $value): string => $this->idOf(value: $value), (array)($character[$list] ?? []));
+			$names = [];
+			foreach ($this->objectFetcher->getObjects(objectType: $objectType) as $object) {
+				$names[(string)($object['id'] ?? '')] = (string)($object['name'] ?? '');
+			}
+
+			$named = static fn (string $uuid): array => ['id' => $uuid, 'name' => ($names[$uuid] ?? $uuid)];
+			$changes[$list] = [
+				'added' => array_map($named, array_values(array_diff($candidate[$list], $now))),
+				'removed' => array_map($named, array_values(array_diff($now, $candidate[$list]))),
+			];
+		}
+
+		return $changes;
+	}//end changes()
+
+	/**
 	 * The character with the build's skills, items and conditions in place of
 	 * its own.
 	 *
@@ -167,7 +197,7 @@ class CharacterBuildsController extends Controller {
 	 * @return array<string, mixed> The candidate character.
 	 */
 	private function candidate(array $character, array $build): array {
-		foreach (self::LISTS as $list) {
+		foreach (array_keys(self::LISTS) as $list) {
 			$ids = [];
 			foreach ((array)($build[$list] ?? []) as $value) {
 				$ids[] = $this->idOf(value: $value);

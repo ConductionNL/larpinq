@@ -185,6 +185,26 @@ class CharacterBuildsControllerTest extends TestCase {
 	}//end testTheWinterCampaignIsFiveXpShort()
 
 	/**
+	 * The report names what applying the build adds and removes (REQ-CMB-003),
+	 * and the lists the Apply dialog writes.
+	 *
+	 * @return void
+	 */
+	public function testTheReportNamesWhatApplyingChanges(): void {
+		$data = $this->controller()->report(id: self::ALCHEMIST)->getData();
+
+		$this->assertSame(
+			['added' => [['id' => 'sk-herb', 'name' => 'Herbalism'], ['id' => 'sk-potion', 'name' => 'Potion brewing']], 'removed' => [['id' => 'sk-sword', 'name' => 'Swordsmanship']]],
+			$data['changes']['skills']
+		);
+		$this->assertSame(['added' => [], 'removed' => []], $data['changes']['items']);
+		$this->assertSame(['skills' => ['sk-herb', 'sk-potion'], 'items' => [], 'conditions' => []], $data['lists']);
+
+		$winter = $this->controller()->report(id: self::WINTER)->getData();
+		$this->assertSame([['id' => 'it-shield', 'name' => 'Iron shield']], $winter['changes']['items']['added']);
+	}//end testTheReportNamesWhatApplyingChanges()
+
+	/**
 	 * Scenario "Another player looks": a build the caller cannot read is 404,
 	 * and so is a build whose character the caller cannot read.
 	 *
