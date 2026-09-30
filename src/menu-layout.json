@@ -7,7 +7,8 @@
 	"relocations": {
 		"Lore": "WorldGroup",
 		"Plots": "CharactersGroup",
-		"CharacterFields": "WorldGroup"
+		"CharacterFields": "WorldGroup",
+		"Factions": "CharactersGroup"
 	},
 	"removals": [],
 	"settingsSection": [

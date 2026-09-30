@@ -13,10 +13,12 @@
 // vue-material-design-icons.
 
 import Account from 'vue-material-design-icons/Account.vue'
+import AccountArrowLeftOutline from 'vue-material-design-icons/AccountArrowLeftOutline.vue'
 import AccountBoxOutline from 'vue-material-design-icons/AccountBoxOutline.vue'
 import AccountCheck from 'vue-material-design-icons/AccountCheck.vue'
 import AccountGroup from 'vue-material-design-icons/AccountGroup.vue'
 import AccountGroupOutline from 'vue-material-design-icons/AccountGroupOutline.vue'
+import AccountHeartOutline from 'vue-material-design-icons/AccountHeartOutline.vue'
 import AlertCircleOutline from 'vue-material-design-icons/AlertCircleOutline.vue'
 import BookOpenVariantOutline from 'vue-material-design-icons/BookOpenVariantOutline.vue'
 import Briefcase from 'vue-material-design-icons/Briefcase.vue'
@@ -51,6 +53,7 @@ import Package from 'vue-material-design-icons/Package.vue'
 import Plus from 'vue-material-design-icons/Plus.vue'
 import Refresh from 'vue-material-design-icons/Refresh.vue'
 import School from 'vue-material-design-icons/School.vue'
+import ShieldAccountOutline from 'vue-material-design-icons/ShieldAccountOutline.vue'
 import ShieldSwordOutline from 'vue-material-design-icons/ShieldSwordOutline.vue'
 import Sitemap from 'vue-material-design-icons/Sitemap.vue'
 import Star from 'vue-material-design-icons/Star.vue'
@@ -67,10 +70,12 @@ import ViewDashboardOutline from 'vue-material-design-icons/ViewDashboardOutline
 
 export default {
 	Account,
+	AccountArrowLeftOutline,
 	AccountBoxOutline,
 	AccountCheck,
 	AccountGroup,
 	AccountGroupOutline,
+	AccountHeartOutline,
 	AlertCircleOutline,
 	BookOpenVariantOutline,
 	Briefcase,
@@ -105,6 +110,7 @@ export default {
 	Plus,
 	Refresh,
 	School,
+	ShieldAccountOutline,
 	ShieldSwordOutline,
 	Sitemap,
 	Star,

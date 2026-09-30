@@ -634,6 +634,95 @@
 						}
 					},
 					{
+						"id": "char-factions",
+						"type": "object-list",
+						"title": "Factions and groups",
+						"icon": "ShieldAccountOutline",
+						"content": {
+							"register": "larpinq",
+							"schema": "larping_faction_member",
+							"filter": {
+								"character": "@objectId"
+							},
+							"columns": [
+								{
+									"key": "factionName",
+									"label": "Faction or group"
+								},
+								{
+									"key": "role",
+									"label": "Role"
+								},
+								{
+									"key": "status",
+									"label": "Status"
+								}
+							]
+						}
+					},
+					{
+						"id": "char-relationships",
+						"type": "object-list",
+						"title": "Relationships",
+						"icon": "AccountHeartOutline",
+						"content": {
+							"register": "larpinq",
+							"schema": "larping_relationship",
+							"filter": {
+								"from": "@objectId"
+							},
+							"columns": [
+								{
+									"key": "to",
+									"label": "Character"
+								},
+								{
+									"key": "kind",
+									"label": "Kind"
+								},
+								{
+									"key": "description",
+									"label": "Description"
+								},
+								{
+									"key": "knownTo",
+									"label": "Known to"
+								}
+							]
+						}
+					},
+					{
+						"id": "char-named-by-others",
+						"type": "object-list",
+						"title": "Named by others",
+						"icon": "AccountArrowLeftOutline",
+						"content": {
+							"register": "larpinq",
+							"schema": "larping_relationship",
+							"filter": {
+								"to": "@objectId"
+							},
+							"columns": [
+								{
+									"key": "from",
+									"label": "Character"
+								},
+								{
+									"key": "kind",
+									"label": "Kind"
+								},
+								{
+									"key": "description",
+									"label": "Description"
+								},
+								{
+									"key": "knownTo",
+									"label": "Known to"
+								}
+							]
+						}
+					},
+					{
 						"id": "char-identity",
 						"type": "data",
 						"title": "Identity",
@@ -764,6 +853,30 @@
 						"gridX": 0,
 						"gridY": 18,
 						"gridWidth": 12,
+						"gridHeight": 4
+					},
+					{
+						"id": "8",
+						"widgetId": "char-factions",
+						"gridX": 0,
+						"gridY": 22,
+						"gridWidth": 12,
+						"gridHeight": 4
+					},
+					{
+						"id": "9",
+						"widgetId": "char-relationships",
+						"gridX": 0,
+						"gridY": 26,
+						"gridWidth": 6,
+						"gridHeight": 4
+					},
+					{
+						"id": "10",
+						"widgetId": "char-named-by-others",
+						"gridX": 6,
+						"gridY": 26,
+						"gridWidth": 6,
 						"gridHeight": 4
 					},
 					{
