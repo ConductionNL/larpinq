@@ -290,7 +290,9 @@ class WorldCopyService {
 			}
 
 			$offset += self::PAGE;
-		} while (count($page) === self::PAGE && count($rows) < $budget);
+			$pageSize = count($page);
+			$rowCount = count($rows);
+		} while ($pageSize === self::PAGE && $rowCount < $budget);
 
 		return $rows;
 	}//end readType()
@@ -309,11 +311,13 @@ class WorldCopyService {
 	private function payload(string $type, array $source, ?string $newWorld): array {
 		$payload = [];
 		foreach ($source as $key => $value) {
-			if ($value === null || $key === 'id' || $key === 'uuid' || str_starts_with((string)$key, '@') === true || str_starts_with((string)$key, '_') === true) {
+			$key = (string)$key;
+			$skip = $value === null || in_array($key, ['id', 'uuid'], true) === true || in_array(substr($key, 0, 1), ['@', '_'], true) === true;
+			if ($skip === true) {
 				continue;
 			}
 
-			$payload[(string)$key] = $value;
+			$payload[$key] = $value;
 		}
 
 		foreach (self::HOLDERS[$type] ?? [] as $field) {
@@ -341,7 +345,7 @@ class WorldCopyService {
 		$own = (int)array_search($type, $order, true);
 		$later = [];
 		foreach (self::REFERENCES[$type] ?? [] as $field => $target) {
-			$empty = ($payload[$field] ?? null) === null || $payload[$field] === [] || $payload[$field] === '';
+			$empty = in_array($payload[$field] ?? null, [null, [], ''], true);
 			if ($empty === false && (int)array_search($target, $order, true) >= $own) {
 				$later[$field] = $payload[$field];
 			}

@@ -136,7 +136,10 @@ class WorldsController extends Controller {
 		} catch (InvalidArgumentException | DoesNotExistException | LengthException $e) {
 			return $this->refusal(error: $e);
 		} catch (WorldCopyFailedException $e) {
-			$this->logger->error('Copying world {world} failed: {message}', ['world' => $id, 'message' => $e->getMessage(), 'leftovers' => $e->getLeftovers(), 'exception' => $e]);
+			$this->logger->error(
+				'Copying world {world} failed: {message}',
+				['world' => $id, 'message' => $e->getMessage(), 'leftovers' => $e->getLeftovers(), 'exception' => $e]
+			);
 			return new JSONResponse(
 				data: ['error' => $e->getMessage(), 'leftovers' => $e->getLeftovers()],
 				statusCode: Http::STATUS_INTERNAL_SERVER_ERROR

@@ -38,7 +38,7 @@ async function bodyOf(response) {
 	try {
 		const body = await response.json()
 		return body && typeof body === 'object' ? body : {}
-	} catch (e) {
+	} catch {
 		return {}
 	}
 }

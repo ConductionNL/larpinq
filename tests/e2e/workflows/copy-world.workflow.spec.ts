@@ -111,7 +111,10 @@ test.beforeAll(async () => {
 	)
 	ids.hero = ledger.track(
 		'character',
-		await createObject(admin, 'character', { name: fixtureName('Hero'), setting }),
+		await createObject(admin, 'character', {
+			name: fixtureName('Hero'),
+			setting,
+		}),
 	)
 	ids.shield = ledger.track(
 		'item',
@@ -156,7 +159,9 @@ test.describe('copy a world', () => {
 		await page.getByRole('button', { name: 'Actions' }).click()
 		await page.getByText('Copy world').click()
 		const dialog = page.getByTestId('copy-world-dialog')
-		await expect(dialog.getByTestId('copy-world-counts')).toContainText('Skills: 2')
+		await expect(dialog.getByTestId('copy-world-counts')).toContainText(
+			'Skills: 2',
+		)
 		const name = dialog.getByTestId('copy-world-name').locator('input')
 		await name.fill(`Aldmoor season 2 ${RUN_ID}`)
 		await dialog.getByTestId('copy-world-confirm').click()

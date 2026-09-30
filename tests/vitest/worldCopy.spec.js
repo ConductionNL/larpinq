@@ -23,7 +23,10 @@ import {
 // registry.js imports .vue files, which this node environment cannot load,
 // so the registration is read as source text.
 const REGISTRY = fs.readFileSync(
-	path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../src/registry.js'),
+	path.resolve(
+		path.dirname(fileURLToPath(import.meta.url)),
+		'../../src/registry.js',
+	),
 	'utf8',
 )
 
@@ -97,7 +100,10 @@ describe('copyWorld', () => {
 		mockFetch({
 			ok: false,
 			status: 500,
-			json: { error: 'Copying skill "Swordsmanship" failed', leftovers: ['x'] },
+			json: {
+				error: 'Copying skill "Swordsmanship" failed',
+				leftovers: ['x'],
+			},
 		})
 		expect(await copyWorld(WORLD, 'Broken')).toEqual({
 			ok: false,
@@ -134,8 +140,12 @@ describe('the World page action', () => {
 			target: 'CopyWorldDialog',
 			label: 'Copy world',
 		})
-		expect(REGISTRY).toMatch(/CopyWorldDialog: \{\s*kind: 'modal',\s*component: CopyWorldDialog,/)
-		expect(REGISTRY).toContain("import CopyWorldDialog from './dialogs/CopyWorldDialog.vue'")
+		expect(REGISTRY).toMatch(
+			/CopyWorldDialog: \{\s*kind: 'modal',\s*component: CopyWorldDialog,/,
+		)
+		expect(REGISTRY).toContain(
+			"import CopyWorldDialog from './dialogs/CopyWorldDialog.vue'",
+		)
 	})
 
 	it('is shown to game masters only', () => {

@@ -35,7 +35,11 @@
 		</NcNoteCard>
 		<template v-else-if="newWorldId">
 			<NcNoteCard type="success" data-testid="copy-world-done">
-				{{ t('larpinq', 'The new world {name} is ready.', { name: name.trim() }) }}
+				{{
+					t('larpinq', 'The new world {name} is ready.', {
+						name: name.trim(),
+					})
+				}}
 			</NcNoteCard>
 		</template>
 		<template v-else>
@@ -107,11 +111,7 @@ import NcButton from '@nextcloud/vue/components/NcButton'
 import NcDialog from '@nextcloud/vue/components/NcDialog'
 import NcNoteCard from '@nextcloud/vue/components/NcNoteCard'
 import NcTextField from '@nextcloud/vue/components/NcTextField'
-import {
-	canCopy,
-	copyWorld,
-	fetchCopyPreview,
-} from '../services/worldCopy.js'
+import { canCopy, copyWorld, fetchCopyPreview } from '../services/worldCopy.js'
 
 export default {
 	name: 'CopyWorldDialog',
