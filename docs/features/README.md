@@ -26,6 +26,7 @@ Larpinq is a niche domain application with no applicable government or interoper
 | [Copy a world](./copy-world.md) | Start a new world from a copy of an existing world's rules, for game masters | [copy-world.md](./copy-world.md) |
 | [Extra character fields](./character-custom-fields.md) | Game masters add their own fields to character sheets per world; players fill in the ones meant for them | [character-custom-fields.md](./character-custom-fields.md) |
 | [Plots and writing](./plots-and-writing.md) | Plots that run through several characters with private and player texts, and the writing progress of plots and characters | [plots-and-writing.md](./plots-and-writing.md) |
+| [Factions, groups and relationships](./factions-and-relationships.md) | Factions run by game masters, groups run by players with a leader who invites and removes members, and relationships between characters | [factions-and-relationships.md](./factions-and-relationships.md) |
 | [RPG System / Game Mechanics](./rpg-system.md) | Skills (with prerequisites), Items, Conditions, Effects, Abilities — interconnected rule engine | [rpg-system.md](./rpg-system.md) |
 | [Events & Players](./events-players.md) | Event management with date ranges, locations, and effect application to participating characters; player profiles | [events-players.md](./events-players.md) |
 | [PDF Export](./pdf-export.md) | Character sheet PDF export via DocuDesk integration; Twig templates scoped to Larpinq | [pdf-export.md](./pdf-export.md) |

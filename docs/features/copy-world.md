@@ -4,7 +4,7 @@ A new season often runs on the rules of the last one. A game master copies a wor
 
 ## What is copied
 
-The copy holds a copy of every ability, effect, skill, item and condition of the world, and its lore pages. Inside the copy, every reference points at the copied object: a skill that requires Swordsmanship requires the copy of Swordsmanship, and an effect on Strength works on the copy of Strength. A reference to something shared by all worlds stays as it is.
+The copy holds a copy of every ability, effect, skill, item and condition of the world, its lore pages and its extra character fields. Inside the copy, every reference points at the copied object: a skill that requires Swordsmanship requires the copy of Swordsmanship, and an effect on Strength works on the copy of Strength. A reference to something shared by all worlds stays as it is.
 
 Characters, players, events, XP awards and attendance are not copied. Items and conditions in the new world start without holders.
 

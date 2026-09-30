@@ -174,6 +174,7 @@ export default {
 				items: t('larpinq', 'Items'),
 				conditions: t('larpinq', 'Conditions'),
 				lorePages: t('larpinq', 'Lore pages'),
+				characterFields: t('larpinq', 'Character fields'),
 			}
 			return Object.keys(labels).map((key) => ({
 				key,

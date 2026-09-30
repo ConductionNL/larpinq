@@ -82,6 +82,9 @@ class SettingsLoadService {
 		'attendance' => 'larping_attendance',
 		'lorepage' => 'larping_lore_page',
 		'characterfield' => 'larping_character_field',
+		'faction' => 'larping_faction',
+		'factionmember' => 'larping_faction_member',
+		'relationship' => 'larping_relationship',
 	];
 
 	/**
