@@ -510,7 +510,22 @@
         "Only game masters and the player can see which events this player attended.": "Ní fheiceann ach na máistrí cluiche agus an t-imreoir féin cé na himeachtaí ar fhreastail an t-imreoir seo orthu.",
         "Could not load the events attended.": "Níorbh fhéidir na himeachtaí ar freastalaíodh orthu a lódáil.",
         "Events attended: {count}": "Imeachtaí ar freastalaíodh orthu: {count}",
-        "No check-ins recorded yet.": "Níl aon chlárú isteach taifeadta fós."
+        "No check-ins recorded yet.": "Níl aon chlárú isteach taifeadta fós.",
+        "New players": "Imreoirí nua",
+        "Mark reviewed": "Marcáil mar athbhreithnithe",
+        "Signed up through the portal": "Cláraithe tríd an tairseach",
+        "Players marked reviewed: {count}": "Imreoirí marcáilte mar athbhreithnithe: {count}",
+        "Players not marked reviewed: {count}. Only game masters can review players.": "Imreoirí nár marcáladh mar athbhreithnithe: {count}. Ní féidir ach le máistrí cluiche imreoirí a athbhreithniú.",
+        "Portal account": "Cuntas tairsí",
+        "The portal account this player signed up with. Set once by the portal.": "An cuntas tairsí lenar chláraigh an t-imreoir seo. Socraíonn an tairseach é uair amháin.",
+        "This player made their own profile through the portal.": "Chruthaigh an t-imreoir seo a phróifíl féin tríd an tairseach.",
+        "Awaiting review": "Ag fanacht le hathbhreithniú",
+        "A game master has not yet looked at this new player.": "Níor fhéach aon mháistir cluiche ar an imreoir nua seo fós.",
+        "Reviewed on": "Athbhreithnithe ar",
+        "When a game master reviewed this new player.": "Cathain a d'athbhreithnigh máistir cluiche an t-imreoir nua seo.",
+        "Reviewed by": "Athbhreithnithe ag",
+        "The game master who reviewed this new player.": "An máistir cluiche a d'athbhreithnigh an t-imreoir nua seo.",
+        "This portal account already has a player profile.": "Tá próifíl imreora ag an gcuntas tairsí seo cheana."
     },
     "plurals": {}
 }

@@ -511,7 +511,22 @@ OC.L10N.register(
         "Only game masters and the player can see which events this player attended.": "Len rozprávači a samotný hráč vidia, ktorých podujatí sa tento hráč zúčastnil.",
         "Could not load the events attended.": "Navštívené podujatia sa nepodarilo načítať.",
         "Events attended: {count}": "Navštívené podujatia: {count}",
-        "No check-ins recorded yet.": "Zatiaľ nie sú zaznamenané žiadne príchody."
+        "No check-ins recorded yet.": "Zatiaľ nie sú zaznamenané žiadne príchody.",
+        "New players": "Noví hráči",
+        "Mark reviewed": "Označiť ako skontrolované",
+        "Signed up through the portal": "Prihlásený cez portál",
+        "Players marked reviewed: {count}": "Hráči označení ako skontrolovaní: {count}",
+        "Players not marked reviewed: {count}. Only game masters can review players.": "Hráči neoznačení ako skontrolovaní: {count}. Hráčov môžu kontrolovať len rozprávači.",
+        "Portal account": "Účet portálu",
+        "The portal account this player signed up with. Set once by the portal.": "Účet portálu, s ktorým sa tento hráč prihlásil. Portál ho nastaví raz.",
+        "This player made their own profile through the portal.": "Tento hráč si sám vytvoril profil cez portál.",
+        "Awaiting review": "Čaká na kontrolu",
+        "A game master has not yet looked at this new player.": "Žiadny rozprávač si tohto nového hráča ešte nepozrel.",
+        "Reviewed on": "Skontrolované dňa",
+        "When a game master reviewed this new player.": "Kedy rozprávač tohto nového hráča skontroloval.",
+        "Reviewed by": "Skontroloval",
+        "The game master who reviewed this new player.": "Rozprávač, ktorý tohto nového hráča skontroloval.",
+        "This portal account already has a player profile.": "Tento účet portálu už má profil hráča."
     },
     "nplurals=2; plural=(n != 1);"
 )

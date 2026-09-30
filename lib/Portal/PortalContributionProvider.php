@@ -145,11 +145,11 @@ class PortalContributionProvider {
 	 *   character. The item/condition catalogs drop the per-object `characters`
 	 *   ownership array.
 	 *
-	 * Create surface: `createCharacter` — the player submits a new character;
-	 * the writer stamps `ownerRef` = the subject ref server-side, so the record
-	 * is owned by the player automatically. Only `name`, `ocName` and
-	 * `background` are accepted; every game-master / economy / lifecycle field
-	 * stays server-authoritative.
+	 * Create surface: `createPlayerProfile` (a new player's own profile) and
+	 * `createCharacter` (the writer stamps `ownerRef` with the player uuid from
+	 * the account's claim, so the record is owned by the player). Only intake
+	 * fields are accepted; every game-master / economy / lifecycle field stays
+	 * server-authoritative. See playerActions().
 	 *
 	 * Event signup is delegated to Nextcloud Forms today
 	 * (`register.d/event-signup-to-forms-leaf.json`, `linkedTypes: ["forms"]`)
@@ -186,8 +186,34 @@ class PortalContributionProvider {
 	 * @spec openspec/changes/portal-contribution/specs/portal-contribution/spec.md
 	 */
 	private function playerCollections(): array {
-		return array_merge([$this->characterCollection()], $this->catalogCollections());
+		return array_merge([$this->characterCollection()], $this->catalogCollections(), [$this->profileCollection()]);
 	}//end playerCollections()
+
+	/**
+	 * The subject's own player profile, scoped by the portal subject itself.
+	 *
+	 * `portalSubjectRef` is stamped by portaliq's writer on
+	 * `createPlayerProfile`, so no claim is needed to find it: the profile is
+	 * how the claim comes to exist. Projected to what the player typed.
+	 *
+	 * @return array<string, mixed> The subject-scoped profile collection.
+	 *
+	 * @spec openspec/changes/players-self-signup/specs/portal-contribution/spec.md
+	 */
+	private function profileCollection(): array {
+		return [
+			'id' => 'myProfile',
+			'register' => self::REGISTER,
+			'schema' => 'player',
+			'scopeField' => 'portalSubjectRef',
+			'label' => 'My profile',
+			'listable' => true,
+			'fields' => [
+				'name',
+				'description',
+			],
+		];
+	}//end profileCollection()
 
 	/**
 	 * The subject's own characters — scoped by `ownerRef`, field-projected.
@@ -320,15 +346,25 @@ class PortalContributionProvider {
 	/**
 	 * The whitelisted create-action the `player` audience may perform.
 	 *
-	 * The single action is `createCharacter`; the writer stamps `ownerRef` =
-	 * the subject ref server-side, so a portal-created character is owned by the
-	 * player. Only intake fields are accepted — no game-master, economy or
-	 * lifecycle property. Event signup is delegated to Nextcloud Forms and is
-	 * not duplicated here; there are no `endpoint` actions in this wave.
+	 * `createCharacter`: the writer stamps `ownerRef` with the account's
+	 * `ownerRef` claim (the player uuid larpinq records when the profile is
+	 * made), never with the subject reference, which is not a uuid and which
+	 * `character.ownerRef` refuses. Without the claim the create is refused
+	 * (fail closed). `ocName` is not accepted: PortalProfileListener sets it to
+	 * the owner, so the character is played by the player who made it.
+	 *
+	 * `createPlayerProfile`: a signed-up visitor makes their own player, stamped
+	 * with their portal subject; PortalProfileListener refuses a second one and
+	 * asks portaliq for the claim.
+	 *
+	 * Only intake fields are accepted: no game-master, economy, lifecycle or
+	 * review property. Event signup is delegated to Nextcloud Forms and is not
+	 * duplicated here; there are no `endpoint` actions in this wave.
 	 *
 	 * @return array<int, array<string, mixed>> The declarative create actions.
 	 *
 	 * @spec openspec/changes/portal-contribution/specs/portal-contribution/spec.md
+	 * @spec openspec/changes/players-self-signup/specs/portal-contribution/spec.md
 	 */
 	private function playerActions(): array {
 		return [
@@ -339,10 +375,22 @@ class PortalContributionProvider {
 				'register' => self::REGISTER,
 				'schema' => 'character',
 				'scopeField' => 'ownerRef',
+				'scopeClaim' => 'ownerRef',
 				'fields' => [
 					'name',
-					'ocName',
 					'background',
+				],
+			],
+			[
+				'id' => 'createPlayerProfile',
+				'type' => 'create',
+				'label' => 'Create your player profile',
+				'register' => self::REGISTER,
+				'schema' => 'player',
+				'scopeField' => 'portalSubjectRef',
+				'fields' => [
+					'name',
+					'description',
 				],
 			],
 		];

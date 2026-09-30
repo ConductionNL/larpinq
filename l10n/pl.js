@@ -511,7 +511,22 @@ OC.L10N.register(
         "Only game masters and the player can see which events this player attended.": "Tylko mistrzowie gry i sam gracz widzą, w których wydarzeniach ten gracz uczestniczył.",
         "Could not load the events attended.": "Nie udało się wczytać odwiedzonych wydarzeń.",
         "Events attended: {count}": "Odwiedzone wydarzenia: {count}",
-        "No check-ins recorded yet.": "Nie zarejestrowano jeszcze żadnych meldunków."
+        "No check-ins recorded yet.": "Nie zarejestrowano jeszcze żadnych meldunków.",
+        "New players": "Nowi gracze",
+        "Mark reviewed": "Oznacz jako przejrzane",
+        "Signed up through the portal": "Zapisany przez portal",
+        "Players marked reviewed: {count}": "Gracze oznaczeni jako przejrzani: {count}",
+        "Players not marked reviewed: {count}. Only game masters can review players.": "Gracze nieoznaczeni jako przejrzani: {count}. Tylko mistrzowie gry mogą przeglądać graczy.",
+        "Portal account": "Konto portalu",
+        "The portal account this player signed up with. Set once by the portal.": "Konto portalu, którym zapisał się ten gracz. Ustawiane raz przez portal.",
+        "This player made their own profile through the portal.": "Ten gracz sam utworzył swój profil przez portal.",
+        "Awaiting review": "Czeka na przejrzenie",
+        "A game master has not yet looked at this new player.": "Żaden mistrz gry nie przejrzał jeszcze tego nowego gracza.",
+        "Reviewed on": "Przejrzano",
+        "When a game master reviewed this new player.": "Kiedy mistrz gry przejrzał tego nowego gracza.",
+        "Reviewed by": "Przejrzał",
+        "The game master who reviewed this new player.": "Mistrz gry, który przejrzał tego nowego gracza.",
+        "This portal account already has a player profile.": "To konto portalu ma już profil gracza."
     },
     "nplurals=2; plural=(n != 1);"
 )

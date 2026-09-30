@@ -511,7 +511,22 @@ OC.L10N.register(
         "Only game masters and the player can see which events this player attended.": "Seuls les maîtres du jeu et le joueur lui-même voient les événements auxquels ce joueur a participé.",
         "Could not load the events attended.": "Impossible de charger les événements suivis.",
         "Events attended: {count}": "Événements suivis : {count}",
-        "No check-ins recorded yet.": "Aucun enregistrement d'arrivée pour l'instant."
+        "No check-ins recorded yet.": "Aucun enregistrement d'arrivée pour l'instant.",
+        "New players": "Nouveaux joueurs",
+        "Mark reviewed": "Marquer comme vu",
+        "Signed up through the portal": "Inscrit via le portail",
+        "Players marked reviewed: {count}": "Joueurs marqués comme vus : {count}",
+        "Players not marked reviewed: {count}. Only game masters can review players.": "Joueurs non marqués comme vus : {count}. Seuls les maîtres du jeu peuvent valider les joueurs.",
+        "Portal account": "Compte du portail",
+        "The portal account this player signed up with. Set once by the portal.": "Le compte du portail avec lequel ce joueur s'est inscrit. Défini une seule fois par le portail.",
+        "This player made their own profile through the portal.": "Ce joueur a créé son propre profil via le portail.",
+        "Awaiting review": "En attente de validation",
+        "A game master has not yet looked at this new player.": "Aucun maître du jeu n'a encore vu ce nouveau joueur.",
+        "Reviewed on": "Vu le",
+        "When a game master reviewed this new player.": "Quand un maître du jeu a vu ce nouveau joueur.",
+        "Reviewed by": "Vu par",
+        "The game master who reviewed this new player.": "Le maître du jeu qui a vu ce nouveau joueur.",
+        "This portal account already has a player profile.": "Ce compte du portail a déjà un profil de joueur."
     },
     "nplurals=2; plural=(n != 1);"
 )

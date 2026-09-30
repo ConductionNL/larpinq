@@ -602,7 +602,22 @@
         "Only game masters and the player can see which events this player attended.": "Alleen spelleiders en de speler zelf zien welke evenementen deze speler heeft bijgewoond.",
         "Could not load the events attended.": "De bijgewoonde evenementen konden niet worden geladen.",
         "Events attended: {count}": "Bijgewoonde evenementen: {count}",
-        "No check-ins recorded yet.": "Nog geen check-ins geregistreerd."
+        "No check-ins recorded yet.": "Nog geen check-ins geregistreerd.",
+        "New players": "Nieuwe spelers",
+        "Mark reviewed": "Markeren als bekeken",
+        "Signed up through the portal": "Aangemeld via het portaal",
+        "Players marked reviewed: {count}": "Spelers gemarkeerd als bekeken: {count}",
+        "Players not marked reviewed: {count}. Only game masters can review players.": "Spelers niet gemarkeerd als bekeken: {count}. Alleen spelleiders kunnen spelers bekijken.",
+        "Portal account": "Portaalaccount",
+        "The portal account this player signed up with. Set once by the portal.": "Het portaalaccount waarmee deze speler zich aanmeldde. Eenmalig ingesteld door het portaal.",
+        "This player made their own profile through the portal.": "Deze speler maakte zelf een profiel aan via het portaal.",
+        "Awaiting review": "Wacht op beoordeling",
+        "A game master has not yet looked at this new player.": "Een spelleider heeft deze nieuwe speler nog niet bekeken.",
+        "Reviewed on": "Bekeken op",
+        "When a game master reviewed this new player.": "Wanneer een spelleider deze nieuwe speler bekeek.",
+        "Reviewed by": "Bekeken door",
+        "The game master who reviewed this new player.": "De spelleider die deze nieuwe speler bekeek.",
+        "This portal account already has a player profile.": "Dit portaalaccount heeft al een spelersprofiel."
     },
     "plurals": {},
     "pluralForm": "nplurals=2; plural=(n != 1);"

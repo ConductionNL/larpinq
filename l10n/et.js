@@ -511,7 +511,22 @@ OC.L10N.register(
         "Only game masters and the player can see which events this player attended.": "Ainult mängujuhid ja mängija ise näevad, milliseid sündmusi see mängija on külastanud.",
         "Could not load the events attended.": "Külastatud sündmusi ei õnnestunud laadida.",
         "Events attended: {count}": "Külastatud sündmused: {count}",
-        "No check-ins recorded yet.": "Registreerimisi pole veel kirjas."
+        "No check-ins recorded yet.": "Registreerimisi pole veel kirjas.",
+        "New players": "Uued mängijad",
+        "Mark reviewed": "Märgi ülevaadatuks",
+        "Signed up through the portal": "Registreerunud portaali kaudu",
+        "Players marked reviewed: {count}": "Ülevaadatuks märgitud mängijad: {count}",
+        "Players not marked reviewed: {count}. Only game masters can review players.": "Ülevaadatuks märkimata mängijad: {count}. Mängijaid saavad üle vaadata ainult mängujuhid.",
+        "Portal account": "Portaali konto",
+        "The portal account this player signed up with. Set once by the portal.": "Portaali konto, millega see mängija registreerus. Portaal määrab selle ühe korra.",
+        "This player made their own profile through the portal.": "See mängija lõi oma profiili ise portaali kaudu.",
+        "Awaiting review": "Ootab ülevaatust",
+        "A game master has not yet looked at this new player.": "Ükski mängujuht pole seda uut mängijat veel vaadanud.",
+        "Reviewed on": "Üle vaadatud",
+        "When a game master reviewed this new player.": "Millal mängujuht selle uue mängija üle vaatas.",
+        "Reviewed by": "Üle vaatas",
+        "The game master who reviewed this new player.": "Mängujuht, kes selle uue mängija üle vaatas.",
+        "This portal account already has a player profile.": "Sellel portaali kontol on juba mängijaprofiil."
     },
     "nplurals=2; plural=(n != 1);"
 )

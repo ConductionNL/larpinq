@@ -511,7 +511,22 @@ OC.L10N.register(
         "Only game masters and the player can see which events this player attended.": "Aðeins leikstjórnendur og leikmaðurinn sjálfur sjá hvaða viðburði þessi leikmaður hefur sótt.",
         "Could not load the events attended.": "Ekki tókst að hlaða inn sóttum viðburðum.",
         "Events attended: {count}": "Viðburðir sóttir: {count}",
-        "No check-ins recorded yet.": "Engar innskráningar skráðar enn."
+        "No check-ins recorded yet.": "Engar innskráningar skráðar enn.",
+        "New players": "Nýir leikmenn",
+        "Mark reviewed": "Merkja sem yfirfarið",
+        "Signed up through the portal": "Skráður í gegnum gáttina",
+        "Players marked reviewed: {count}": "Leikmenn merktir sem yfirfarnir: {count}",
+        "Players not marked reviewed: {count}. Only game masters can review players.": "Leikmenn ekki merktir sem yfirfarnir: {count}. Aðeins leikstjórnendur geta farið yfir leikmenn.",
+        "Portal account": "Gáttarreikningur",
+        "The portal account this player signed up with. Set once by the portal.": "Gáttarreikningurinn sem þessi leikmaður skráði sig með. Gáttin stillir hann einu sinni.",
+        "This player made their own profile through the portal.": "Þessi leikmaður bjó sjálfur til prófíl sinn í gegnum gáttina.",
+        "Awaiting review": "Bíður yfirferðar",
+        "A game master has not yet looked at this new player.": "Enginn leikstjórnandi hefur enn skoðað þennan nýja leikmann.",
+        "Reviewed on": "Yfirfarið",
+        "When a game master reviewed this new player.": "Hvenær leikstjórnandi fór yfir þennan nýja leikmann.",
+        "Reviewed by": "Yfirfarið af",
+        "The game master who reviewed this new player.": "Leikstjórnandinn sem fór yfir þennan nýja leikmann.",
+        "This portal account already has a player profile.": "Þessi gáttarreikningur er þegar með leikmannaprófíl."
     },
     "nplurals=2; plural=(n != 1);"
 )

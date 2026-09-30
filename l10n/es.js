@@ -511,7 +511,22 @@ OC.L10N.register(
         "Only game masters and the player can see which events this player attended.": "Solo los directores de juego y el propio jugador pueden ver a qué eventos asistió este jugador.",
         "Could not load the events attended.": "No se pudieron cargar los eventos asistidos.",
         "Events attended: {count}": "Eventos asistidos: {count}",
-        "No check-ins recorded yet.": "Todavía no hay registros de llegada."
+        "No check-ins recorded yet.": "Todavía no hay registros de llegada.",
+        "New players": "Jugadores nuevos",
+        "Mark reviewed": "Marcar como revisado",
+        "Signed up through the portal": "Registrado a través del portal",
+        "Players marked reviewed: {count}": "Jugadores marcados como revisados: {count}",
+        "Players not marked reviewed: {count}. Only game masters can review players.": "Jugadores no marcados como revisados: {count}. Solo los directores de juego pueden revisar jugadores.",
+        "Portal account": "Cuenta del portal",
+        "The portal account this player signed up with. Set once by the portal.": "La cuenta del portal con la que se registró este jugador. La fija el portal una sola vez.",
+        "This player made their own profile through the portal.": "Este jugador creó su propio perfil a través del portal.",
+        "Awaiting review": "Pendiente de revisión",
+        "A game master has not yet looked at this new player.": "Ningún director de juego ha revisado aún a este jugador nuevo.",
+        "Reviewed on": "Revisado el",
+        "When a game master reviewed this new player.": "Cuándo un director de juego revisó a este jugador nuevo.",
+        "Reviewed by": "Revisado por",
+        "The game master who reviewed this new player.": "El director de juego que revisó a este jugador nuevo.",
+        "This portal account already has a player profile.": "Esta cuenta del portal ya tiene un perfil de jugador."
     },
     "nplurals=2; plural=(n != 1);"
 )

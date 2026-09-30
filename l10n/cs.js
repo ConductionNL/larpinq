@@ -511,7 +511,22 @@ OC.L10N.register(
         "Only game masters and the player can see which events this player attended.": "Jen vypravěči a sám hráč vidí, kterých akcí se tento hráč zúčastnil.",
         "Could not load the events attended.": "Navštívené akce se nepodařilo načíst.",
         "Events attended: {count}": "Navštívené akce: {count}",
-        "No check-ins recorded yet.": "Zatím nejsou zaznamenány žádné příchody."
+        "No check-ins recorded yet.": "Zatím nejsou zaznamenány žádné příchody.",
+        "New players": "Noví hráči",
+        "Mark reviewed": "Označit jako zkontrolované",
+        "Signed up through the portal": "Přihlášen přes portál",
+        "Players marked reviewed: {count}": "Hráči označení jako zkontrolovaní: {count}",
+        "Players not marked reviewed: {count}. Only game masters can review players.": "Hráči neoznačení jako zkontrolovaní: {count}. Hráče mohou kontrolovat jen vypravěči.",
+        "Portal account": "Účet portálu",
+        "The portal account this player signed up with. Set once by the portal.": "Účet portálu, se kterým se tento hráč přihlásil. Portál jej nastaví jednou.",
+        "This player made their own profile through the portal.": "Tento hráč si sám vytvořil profil přes portál.",
+        "Awaiting review": "Čeká na kontrolu",
+        "A game master has not yet looked at this new player.": "Žádný vypravěč si tohoto nového hráče ještě neprohlédl.",
+        "Reviewed on": "Zkontrolováno dne",
+        "When a game master reviewed this new player.": "Kdy vypravěč tohoto nového hráče zkontroloval.",
+        "Reviewed by": "Zkontroloval",
+        "The game master who reviewed this new player.": "Vypravěč, který tohoto nového hráče zkontroloval.",
+        "This portal account already has a player profile.": "Tento účet portálu už má profil hráče."
     },
     "nplurals=2; plural=(n != 1);"
 )

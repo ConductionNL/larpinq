@@ -8,7 +8,8 @@
 		"Lore": "WorldGroup",
 		"Plots": "CharactersGroup",
 		"CharacterFields": "WorldGroup",
-		"Factions": "CharactersGroup"
+		"Factions": "CharactersGroup",
+		"NewPlayers": "CharactersGroup"
 	},
 	"removals": [],
 	"settingsSection": [

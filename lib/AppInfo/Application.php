@@ -27,6 +27,8 @@ use OCA\Larpinq\Listener\CharacterRequirementListener;
 use OCA\Larpinq\Listener\CharacterStatusListener;
 use OCA\Larpinq\Listener\DeepLinkRegistrationListener;
 use OCA\Larpinq\Listener\FactionMembershipListener;
+use OCA\Larpinq\Listener\PlayerReviewListener;
+use OCA\Larpinq\Listener\PortalProfileListener;
 use OCA\Larpinq\Listener\UniqueHolderListener;
 use OCA\Larpinq\Listener\XpAwardProvenanceListener;
 use OCP\AppFramework\App;
@@ -167,6 +169,12 @@ class Application extends App implements IBootstrap {
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', FactionMembershipListener::class);
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', CharacterStatusListener::class);
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', XpAwardProvenanceListener::class);
+			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', PortalProfileListener::class);
+		}
+
+		// A portal profile asks portaliq for its claim once it exists (players-self-signup).
+		if (class_exists('OCA\OpenRegister\Event\ObjectCreatedEvent') === true) {
+			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatedEvent', PortalProfileListener::class);
 		}
 
 		if (class_exists('OCA\OpenRegister\Event\ObjectUpdatingEvent') === true) {
@@ -174,6 +182,7 @@ class Application extends App implements IBootstrap {
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatingEvent', FactionMembershipListener::class);
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatingEvent', CharacterStatusListener::class);
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatingEvent', XpAwardProvenanceListener::class);
+			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatingEvent', PlayerReviewListener::class);
 		}
 	}//end registerUniqueHolderListener()
 

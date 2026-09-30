@@ -510,7 +510,22 @@
         "Only game masters and the player can see which events this player attended.": "Tik žaidimo vedėjai ir pats žaidėjas mato, kuriuose renginiuose šis žaidėjas dalyvavo.",
         "Could not load the events attended.": "Nepavyko įkelti aplankytų renginių.",
         "Events attended: {count}": "Aplankyti renginiai: {count}",
-        "No check-ins recorded yet.": "Registracijų dar neužfiksuota."
+        "No check-ins recorded yet.": "Registracijų dar neužfiksuota.",
+        "New players": "Nauji žaidėjai",
+        "Mark reviewed": "Pažymėti kaip peržiūrėtą",
+        "Signed up through the portal": "Užsiregistravo per portalą",
+        "Players marked reviewed: {count}": "Pažymėta kaip peržiūrėti žaidėjai: {count}",
+        "Players not marked reviewed: {count}. Only game masters can review players.": "Nepažymėta kaip peržiūrėti žaidėjai: {count}. Žaidėjus gali peržiūrėti tik žaidimo vedėjai.",
+        "Portal account": "Portalo paskyra",
+        "The portal account this player signed up with. Set once by the portal.": "Portalo paskyra, kuria užsiregistravo šis žaidėjas. Portalas ją nustato vieną kartą.",
+        "This player made their own profile through the portal.": "Šis žaidėjas pats susikūrė profilį per portalą.",
+        "Awaiting review": "Laukia peržiūros",
+        "A game master has not yet looked at this new player.": "Nė vienas žaidimo vedėjas dar nepažiūrėjo šio naujo žaidėjo.",
+        "Reviewed on": "Peržiūrėta",
+        "When a game master reviewed this new player.": "Kada žaidimo vedėjas peržiūrėjo šį naują žaidėją.",
+        "Reviewed by": "Peržiūrėjo",
+        "The game master who reviewed this new player.": "Žaidimo vedėjas, peržiūrėjęs šį naują žaidėją.",
+        "This portal account already has a player profile.": "Ši portalo paskyra jau turi žaidėjo profilį."
     },
     "plurals": {}
 }

@@ -511,7 +511,22 @@ OC.L10N.register(
         "Only game masters and the player can see which events this player attended.": "Толькі майстры гульні і сам гулец бачаць, якія падзеі наведаў гэты гулец.",
         "Could not load the events attended.": "Не ўдалося загрузіць наведаныя падзеі.",
         "Events attended: {count}": "Наведаныя падзеі: {count}",
-        "No check-ins recorded yet.": "Рэгістрацый пакуль няма."
+        "No check-ins recorded yet.": "Рэгістрацый пакуль няма.",
+        "New players": "Новыя гульцы",
+        "Mark reviewed": "Адзначыць як прагледжанага",
+        "Signed up through the portal": "Зарэгістраваны праз партал",
+        "Players marked reviewed: {count}": "Гульцоў адзначана як прагледжаных: {count}",
+        "Players not marked reviewed: {count}. Only game masters can review players.": "Гульцоў не адзначана як прагледжаных: {count}. Правяраць гульцоў могуць толькі майстры гульні.",
+        "Portal account": "Уліковы запіс партала",
+        "The portal account this player signed up with. Set once by the portal.": "Уліковы запіс партала, з якім зарэгістраваўся гэты гулец. Партал задае яго адзін раз.",
+        "This player made their own profile through the portal.": "Гэты гулец сам стварыў свой профіль праз партал.",
+        "Awaiting review": "Чакае праверкі",
+        "A game master has not yet looked at this new player.": "Ніводзін майстар гульні яшчэ не прагледзеў гэтага новага гульца.",
+        "Reviewed on": "Прагледжана",
+        "When a game master reviewed this new player.": "Калі майстар гульні прагледзеў гэтага новага гульца.",
+        "Reviewed by": "Прагледзеў",
+        "The game master who reviewed this new player.": "Майстар гульні, які прагледзеў гэтага новага гульца.",
+        "This portal account already has a player profile.": "У гэтага ўліковага запісу партала ўжо ёсць профіль гульца."
     },
     "nplurals=2; plural=(n != 1);"
 )

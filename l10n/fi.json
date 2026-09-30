@@ -510,7 +510,22 @@
         "Only game masters and the player can see which events this player attended.": "Vain pelinjohtajat ja pelaaja itse näkevät, mihin tapahtumiin tämä pelaaja on osallistunut.",
         "Could not load the events attended.": "Osallistuttuja tapahtumia ei voitu ladata.",
         "Events attended: {count}": "Osallistutut tapahtumat: {count}",
-        "No check-ins recorded yet.": "Sisäänkirjautumisia ei ole vielä kirjattu."
+        "No check-ins recorded yet.": "Sisäänkirjautumisia ei ole vielä kirjattu.",
+        "New players": "Uudet pelaajat",
+        "Mark reviewed": "Merkitse tarkistetuksi",
+        "Signed up through the portal": "Rekisteröitynyt portaalin kautta",
+        "Players marked reviewed: {count}": "Tarkistetuiksi merkityt pelaajat: {count}",
+        "Players not marked reviewed: {count}. Only game masters can review players.": "Pelaajat, joita ei merkitty tarkistetuiksi: {count}. Vain pelinjohtajat voivat tarkistaa pelaajia.",
+        "Portal account": "Portaalitili",
+        "The portal account this player signed up with. Set once by the portal.": "Portaalitili, jolla tämä pelaaja rekisteröityi. Portaali asettaa sen kerran.",
+        "This player made their own profile through the portal.": "Tämä pelaaja loi oman profiilinsa portaalin kautta.",
+        "Awaiting review": "Odottaa tarkistusta",
+        "A game master has not yet looked at this new player.": "Kukaan pelinjohtaja ei ole vielä katsonut tätä uutta pelaajaa.",
+        "Reviewed on": "Tarkistettu",
+        "When a game master reviewed this new player.": "Milloin pelinjohtaja tarkisti tämän uuden pelaajan.",
+        "Reviewed by": "Tarkistaja",
+        "The game master who reviewed this new player.": "Pelinjohtaja, joka tarkisti tämän uuden pelaajan.",
+        "This portal account already has a player profile.": "Tällä portaalitilillä on jo pelaajaprofiili."
     },
     "plurals": {}
 }

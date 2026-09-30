@@ -510,7 +510,22 @@
         "Only game masters and the player can see which events this player attended.": "Só os mestres de jogo e o próprio jogador podem ver a que eventos este jogador assistiu.",
         "Could not load the events attended.": "Não foi possível carregar os eventos frequentados.",
         "Events attended: {count}": "Eventos frequentados: {count}",
-        "No check-ins recorded yet.": "Ainda não há check-ins registados."
+        "No check-ins recorded yet.": "Ainda não há check-ins registados.",
+        "New players": "Novos jogadores",
+        "Mark reviewed": "Marcar como revisto",
+        "Signed up through the portal": "Inscrito através do portal",
+        "Players marked reviewed: {count}": "Jogadores marcados como revistos: {count}",
+        "Players not marked reviewed: {count}. Only game masters can review players.": "Jogadores não marcados como revistos: {count}. Só os mestres de jogo podem rever jogadores.",
+        "Portal account": "Conta do portal",
+        "The portal account this player signed up with. Set once by the portal.": "A conta do portal com que este jogador se inscreveu. Definida uma única vez pelo portal.",
+        "This player made their own profile through the portal.": "Este jogador criou o seu próprio perfil através do portal.",
+        "Awaiting review": "A aguardar revisão",
+        "A game master has not yet looked at this new player.": "Nenhum mestre de jogo reviu ainda este novo jogador.",
+        "Reviewed on": "Revisto em",
+        "When a game master reviewed this new player.": "Quando um mestre de jogo reviu este novo jogador.",
+        "Reviewed by": "Revisto por",
+        "The game master who reviewed this new player.": "O mestre de jogo que reviu este novo jogador.",
+        "This portal account already has a player profile.": "Esta conta do portal já tem um perfil de jogador."
     },
     "plurals": {}
 }

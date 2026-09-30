@@ -511,7 +511,22 @@ OC.L10N.register(
         "Only game masters and the player can see which events this player attended.": "Tikai spēles vadītāji un pats spēlētājs redz, kurus pasākumus šis spēlētājs ir apmeklējis.",
         "Could not load the events attended.": "Apmeklētos pasākumus neizdevās ielādēt.",
         "Events attended: {count}": "Apmeklētie pasākumi: {count}",
-        "No check-ins recorded yet.": "Reģistrācijas vēl nav ierakstītas."
+        "No check-ins recorded yet.": "Reģistrācijas vēl nav ierakstītas.",
+        "New players": "Jaunie spēlētāji",
+        "Mark reviewed": "Atzīmēt kā pārskatītu",
+        "Signed up through the portal": "Reģistrējies portālā",
+        "Players marked reviewed: {count}": "Kā pārskatīti atzīmētie spēlētāji: {count}",
+        "Players not marked reviewed: {count}. Only game masters can review players.": "Kā pārskatīti neatzīmētie spēlētāji: {count}. Spēlētājus var pārskatīt tikai spēles vadītāji.",
+        "Portal account": "Portāla konts",
+        "The portal account this player signed up with. Set once by the portal.": "Portāla konts, ar kuru šis spēlētājs reģistrējās. Portāls to iestata vienreiz.",
+        "This player made their own profile through the portal.": "Šis spēlētājs pats izveidoja savu profilu portālā.",
+        "Awaiting review": "Gaida pārskatīšanu",
+        "A game master has not yet looked at this new player.": "Neviens spēles vadītājs vēl nav apskatījis šo jauno spēlētāju.",
+        "Reviewed on": "Pārskatīts",
+        "When a game master reviewed this new player.": "Kad spēles vadītājs pārskatīja šo jauno spēlētāju.",
+        "Reviewed by": "Pārskatīja",
+        "The game master who reviewed this new player.": "Spēles vadītājs, kurš pārskatīja šo jauno spēlētāju.",
+        "This portal account already has a player profile.": "Šim portāla kontam jau ir spēlētāja profils."
     },
     "nplurals=2; plural=(n != 1);"
 )

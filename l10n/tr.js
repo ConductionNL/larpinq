@@ -511,7 +511,22 @@ OC.L10N.register(
         "Only game masters and the player can see which events this player attended.": "Bu oyuncunun hangi etkinliklere katıldığını yalnızca oyun yöneticileri ve oyuncunun kendisi görebilir.",
         "Could not load the events attended.": "Katılınan etkinlikler yüklenemedi.",
         "Events attended: {count}": "Katılınan etkinlikler: {count}",
-        "No check-ins recorded yet.": "Henüz kayıtlı giriş yok."
+        "No check-ins recorded yet.": "Henüz kayıtlı giriş yok.",
+        "New players": "Yeni oyuncular",
+        "Mark reviewed": "İncelendi olarak işaretle",
+        "Signed up through the portal": "Portal üzerinden kaydoldu",
+        "Players marked reviewed: {count}": "İncelendi olarak işaretlenen oyuncular: {count}",
+        "Players not marked reviewed: {count}. Only game masters can review players.": "İncelendi olarak işaretlenmeyen oyuncular: {count}. Oyuncuları yalnızca oyun yöneticileri inceleyebilir.",
+        "Portal account": "Portal hesabı",
+        "The portal account this player signed up with. Set once by the portal.": "Bu oyuncunun kaydolduğu portal hesabı. Portal tarafından bir kez ayarlanır.",
+        "This player made their own profile through the portal.": "Bu oyuncu profilini portal üzerinden kendisi oluşturdu.",
+        "Awaiting review": "İnceleme bekliyor",
+        "A game master has not yet looked at this new player.": "Henüz hiçbir oyun yöneticisi bu yeni oyuncuya bakmadı.",
+        "Reviewed on": "İnceleme tarihi",
+        "When a game master reviewed this new player.": "Bir oyun yöneticisinin bu yeni oyuncuyu ne zaman incelediği.",
+        "Reviewed by": "İnceleyen",
+        "The game master who reviewed this new player.": "Bu yeni oyuncuyu inceleyen oyun yöneticisi.",
+        "This portal account already has a player profile.": "Bu portal hesabının zaten bir oyuncu profili var."
     },
     "nplurals=2; plural=(n != 1);"
 )

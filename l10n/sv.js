@@ -511,7 +511,22 @@ OC.L10N.register(
         "Only game masters and the player can see which events this player attended.": "Endast spelledare och spelaren själv kan se vilka evenemang den här spelaren har besökt.",
         "Could not load the events attended.": "Det gick inte att läsa in de besökta evenemangen.",
         "Events attended: {count}": "Besökta evenemang: {count}",
-        "No check-ins recorded yet.": "Inga incheckningar registrerade ännu."
+        "No check-ins recorded yet.": "Inga incheckningar registrerade ännu.",
+        "New players": "Nya spelare",
+        "Mark reviewed": "Markera som granskad",
+        "Signed up through the portal": "Registrerad via portalen",
+        "Players marked reviewed: {count}": "Spelare markerade som granskade: {count}",
+        "Players not marked reviewed: {count}. Only game masters can review players.": "Spelare som inte markerades som granskade: {count}. Endast spelledare kan granska spelare.",
+        "Portal account": "Portalkonto",
+        "The portal account this player signed up with. Set once by the portal.": "Portalkontot som den här spelaren registrerade sig med. Sätts en gång av portalen.",
+        "This player made their own profile through the portal.": "Den här spelaren skapade sin egen profil via portalen.",
+        "Awaiting review": "Väntar på granskning",
+        "A game master has not yet looked at this new player.": "Ingen spelledare har granskat den här nya spelaren ännu.",
+        "Reviewed on": "Granskad den",
+        "When a game master reviewed this new player.": "När en spelledare granskade den här nya spelaren.",
+        "Reviewed by": "Granskad av",
+        "The game master who reviewed this new player.": "Spelledaren som granskade den här nya spelaren.",
+        "This portal account already has a player profile.": "Det här portalkontot har redan en spelarprofil."
     },
     "nplurals=2; plural=(n != 1);"
 )

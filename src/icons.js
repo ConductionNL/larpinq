@@ -19,6 +19,7 @@ import AccountCheck from 'vue-material-design-icons/AccountCheck.vue'
 import AccountGroup from 'vue-material-design-icons/AccountGroup.vue'
 import AccountGroupOutline from 'vue-material-design-icons/AccountGroupOutline.vue'
 import AccountHeartOutline from 'vue-material-design-icons/AccountHeartOutline.vue'
+import AccountPlusOutline from 'vue-material-design-icons/AccountPlusOutline.vue'
 import AlertCircleOutline from 'vue-material-design-icons/AlertCircleOutline.vue'
 import BookOpenVariantOutline from 'vue-material-design-icons/BookOpenVariantOutline.vue'
 import Briefcase from 'vue-material-design-icons/Briefcase.vue'
@@ -81,6 +82,7 @@ export default {
 	AccountGroup,
 	AccountGroupOutline,
 	AccountHeartOutline,
+	AccountPlusOutline,
 	AlertCircleOutline,
 	BookOpenVariantOutline,
 	Briefcase,

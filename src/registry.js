@@ -43,6 +43,7 @@ import {
 	importCampaignAction,
 } from './services/campaignActions.js'
 import { bulkEditCharactersAction } from './services/characterBulkEditAction.js'
+import { markPlayersReviewedAction } from './services/playerReviewAction.js'
 
 export default {
 	// The active-world switcher (events-world-scope-and-upcoming): the header of
@@ -127,5 +128,12 @@ export default {
 	larpinqBulkEditCharacters: {
 		kind: 'handler',
 		handler: bulkEditCharactersAction,
+	},
+
+	// New players bulk action "Mark reviewed" (players-self-signup).
+	// @spec openspec/changes/players-self-signup/specs/portal-contribution/spec.md
+	larpinqMarkPlayersReviewed: {
+		kind: 'handler',
+		handler: markPlayersReviewedAction,
 	},
 }

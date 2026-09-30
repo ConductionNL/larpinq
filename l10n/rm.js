@@ -511,7 +511,22 @@ OC.L10N.register(
         "Only game masters and the player can see which events this player attended.": "Mo ils manaders dal gieu ed il giugader sez vesan tge occurrenzas che quest giugader ha visità.",
         "Could not load the events attended.": "Las occurrenzas visitadas n'han betg pudì vegnir chargiadas.",
         "Events attended: {count}": "Occurrenzas visitadas: {count}",
-        "No check-ins recorded yet.": "Anc nagins check-ins registrads."
+        "No check-ins recorded yet.": "Anc nagins check-ins registrads.",
+        "New players": "Novs giugaders",
+        "Mark reviewed": "Marcar sco controllà",
+        "Signed up through the portal": "Annunzià via il portal",
+        "Players marked reviewed: {count}": "Giugaders marcads sco controllads: {count}",
+        "Players not marked reviewed: {count}. Only game masters can review players.": "Giugaders betg marcads sco controllads: {count}. Mo manaders dal gieu pon controllar giugaders.",
+        "Portal account": "Conto dal portal",
+        "The portal account this player signed up with. Set once by the portal.": "Il conto dal portal cun il qual quest giugader è s'annunzià. Il portal al fixescha ina giada.",
+        "This player made their own profile through the portal.": "Quest giugader ha creà sez ses profil via il portal.",
+        "Awaiting review": "Spetga sin controlla",
+        "A game master has not yet looked at this new player.": "Anc nagin manader dal gieu n'ha guardà quest nov giugader.",
+        "Reviewed on": "Controllà ils",
+        "When a game master reviewed this new player.": "Cura ch'in manader dal gieu ha controllà quest nov giugader.",
+        "Reviewed by": "Controllà da",
+        "The game master who reviewed this new player.": "Il manader dal gieu che ha controllà quest nov giugader.",
+        "This portal account already has a player profile.": "Quest conto dal portal ha gia in profil da giugader."
     },
     "nplurals=2; plural=(n != 1);"
 )

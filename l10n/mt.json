@@ -510,7 +510,22 @@
         "Only game masters and the player can see which events this player attended.": "Il-kaptani tal-logħba u l-plejer innifsu biss jaraw liema avvenimenti attenda dan il-plejer.",
         "Could not load the events attended.": "L-avvenimenti attenduti ma setgħux jitgħabbew.",
         "Events attended: {count}": "Avvenimenti attenduti: {count}",
-        "No check-ins recorded yet.": "Għad m'hemm l-ebda check-in irreġistrat."
+        "No check-ins recorded yet.": "Għad m'hemm l-ebda check-in irreġistrat.",
+        "New players": "Plejers ġodda",
+        "Mark reviewed": "Immarka bħala rivedut",
+        "Signed up through the portal": "Irreġistra permezz tal-portal",
+        "Players marked reviewed: {count}": "Plejers immarkati bħala riveduti: {count}",
+        "Players not marked reviewed: {count}. Only game masters can review players.": "Plejers mhux immarkati bħala riveduti: {count}. Il-kaptani tal-logħba biss jistgħu jirrevedu l-plejers.",
+        "Portal account": "Kont tal-portal",
+        "The portal account this player signed up with. Set once by the portal.": "Il-kont tal-portal li bih irreġistra dan il-plejer. Il-portal jissettjah darba biss.",
+        "This player made their own profile through the portal.": "Dan il-plejer ħoloq il-profil tiegħu stess permezz tal-portal.",
+        "Awaiting review": "Qed jistenna reviżjoni",
+        "A game master has not yet looked at this new player.": "L-ebda kaptan tal-logħba għadu ma ħares lejn dan il-plejer ġdid.",
+        "Reviewed on": "Rivedut fi",
+        "When a game master reviewed this new player.": "Meta kaptan tal-logħba rreveda dan il-plejer ġdid.",
+        "Reviewed by": "Rivedut minn",
+        "The game master who reviewed this new player.": "Il-kaptan tal-logħba li rreveda dan il-plejer ġdid.",
+        "This portal account already has a player profile.": "Dan il-kont tal-portal diġà għandu profil ta' plejer."
     },
     "plurals": {}
 }

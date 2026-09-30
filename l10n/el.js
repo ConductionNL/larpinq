@@ -511,7 +511,22 @@ OC.L10N.register(
         "Only game masters and the player can see which events this player attended.": "Μόνο οι συντονιστές παιχνιδιού και ο ίδιος ο παίκτης βλέπουν σε ποιες εκδηλώσεις συμμετείχε αυτός ο παίκτης.",
         "Could not load the events attended.": "Δεν ήταν δυνατή η φόρτωση των εκδηλώσεων.",
         "Events attended: {count}": "Εκδηλώσεις που παρακολούθησε: {count}",
-        "No check-ins recorded yet.": "Δεν έχουν καταγραφεί ακόμη αφίξεις."
+        "No check-ins recorded yet.": "Δεν έχουν καταγραφεί ακόμη αφίξεις.",
+        "New players": "Νέοι παίκτες",
+        "Mark reviewed": "Σήμανση ως ελεγμένου",
+        "Signed up through the portal": "Εγγράφηκε μέσω της πύλης",
+        "Players marked reviewed: {count}": "Παίκτες που σημειώθηκαν ως ελεγμένοι: {count}",
+        "Players not marked reviewed: {count}. Only game masters can review players.": "Παίκτες που δεν σημειώθηκαν ως ελεγμένοι: {count}. Μόνο οι συντονιστές παιχνιδιού ελέγχουν παίκτες.",
+        "Portal account": "Λογαριασμός πύλης",
+        "The portal account this player signed up with. Set once by the portal.": "Ο λογαριασμός πύλης με τον οποίο εγγράφηκε αυτός ο παίκτης. Ορίζεται μία φορά από την πύλη.",
+        "This player made their own profile through the portal.": "Αυτός ο παίκτης δημιούργησε μόνος του το προφίλ του μέσω της πύλης.",
+        "Awaiting review": "Αναμένει έλεγχο",
+        "A game master has not yet looked at this new player.": "Κανένας συντονιστής παιχνιδιού δεν έχει δει ακόμη αυτόν τον νέο παίκτη.",
+        "Reviewed on": "Ελέγχθηκε στις",
+        "When a game master reviewed this new player.": "Πότε ένας συντονιστής παιχνιδιού έλεγξε αυτόν τον νέο παίκτη.",
+        "Reviewed by": "Ελέγχθηκε από",
+        "The game master who reviewed this new player.": "Ο συντονιστής παιχνιδιού που έλεγξε αυτόν τον νέο παίκτη.",
+        "This portal account already has a player profile.": "Αυτός ο λογαριασμός πύλης έχει ήδη προφίλ παίκτη."
     },
     "nplurals=2; plural=(n != 1);"
 )

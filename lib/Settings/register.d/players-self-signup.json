@@ -1,0 +1,48 @@
+{
+  "components": {
+    "schemas": {
+      "player": {
+        "version": "1.2.0",
+        "properties": {
+          "portalSubjectRef": {
+            "type": "string",
+            "maxLength": 255,
+            "title": "Portal account",
+            "description": "The portal account this player signed up with. Set once by the portal.",
+            "visible": false,
+            "readOnly": true,
+            "facetable": true,
+            "x-notes": "portaliq's subject reference, stamped by its writer on the createPlayerProfile action (players-self-signup). Not a uuid, so no format. readOnly: OpenRegister refuses a change on update and allows the stamp on create."
+          },
+          "selfRegistered": {
+            "type": "boolean",
+            "title": "Signed up through the portal",
+            "description": "This player made their own profile through the portal.",
+            "readOnly": true,
+            "x-notes": "Set by PortalProfileListener on a portal create, never by a client."
+          },
+          "awaitingReview": {
+            "type": "boolean",
+            "title": "Awaiting review",
+            "description": "A game master has not yet looked at this new player.",
+            "facetable": true,
+            "x-notes": "Set true on a portal create by PortalProfileListener; a game master clears it with Mark reviewed on the New players page. OpenRegister has no 'is empty' filter, so the list filters on this flag rather than on a missing reviewedAt."
+          },
+          "reviewedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Reviewed on",
+            "description": "When a game master reviewed this new player."
+          },
+          "reviewedBy": {
+            "type": "string",
+            "maxLength": 255,
+            "title": "Reviewed by",
+            "description": "The game master who reviewed this new player.",
+            "x-notes": "A Nextcloud user id, stamped by PlayerReviewListener. Plain string: OpenRegister has no user format."
+          }
+        }
+      }
+    }
+  }
+}

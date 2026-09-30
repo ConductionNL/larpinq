@@ -510,7 +510,22 @@
         "Only game masters and the player can see which events this player attended.": "Vetëm drejtuesit e lojës dhe vetë lojtari shohin në cilat ngjarje ka marrë pjesë ky lojtar.",
         "Could not load the events attended.": "Ngjarjet e ndjekura nuk mund të ngarkoheshin.",
         "Events attended: {count}": "Ngjarjet e ndjekura: {count}",
-        "No check-ins recorded yet.": "Ende nuk ka hyrje të regjistruara."
+        "No check-ins recorded yet.": "Ende nuk ka hyrje të regjistruara.",
+        "New players": "Lojtarë të rinj",
+        "Mark reviewed": "Shëno si të shqyrtuar",
+        "Signed up through the portal": "Regjistruar përmes portalit",
+        "Players marked reviewed: {count}": "Lojtarë të shënuar si të shqyrtuar: {count}",
+        "Players not marked reviewed: {count}. Only game masters can review players.": "Lojtarë të pashënuar si të shqyrtuar: {count}. Vetëm drejtuesit e lojës mund të shqyrtojnë lojtarë.",
+        "Portal account": "Llogaria e portalit",
+        "The portal account this player signed up with. Set once by the portal.": "Llogaria e portalit me të cilën u regjistrua ky lojtar. Portali e vendos një herë.",
+        "This player made their own profile through the portal.": "Ky lojtar krijoi vetë profilin e tij përmes portalit.",
+        "Awaiting review": "Në pritje të shqyrtimit",
+        "A game master has not yet looked at this new player.": "Asnjë drejtues loje nuk e ka parë ende këtë lojtar të ri.",
+        "Reviewed on": "Shqyrtuar më",
+        "When a game master reviewed this new player.": "Kur një drejtues loje e shqyrtoi këtë lojtar të ri.",
+        "Reviewed by": "Shqyrtuar nga",
+        "The game master who reviewed this new player.": "Drejtuesi i lojës që e shqyrtoi këtë lojtar të ri.",
+        "This portal account already has a player profile.": "Kjo llogari e portalit ka tashmë një profil lojtari."
     },
     "plurals": {}
 }
