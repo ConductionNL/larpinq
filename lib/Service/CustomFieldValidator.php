@@ -98,13 +98,13 @@ class CustomFieldValidator {
 	 */
 	private function typeError(array $definition, mixed $value): ?string {
 		$type = (string)($definition['fieldType'] ?? 'text');
-		$ok = match ($type) {
+		$passes = match ($type) {
 			'number' => is_int($value) === true || is_float($value) === true,
 			'yes-no' => is_bool($value) === true,
 			'choice' => is_string($value) === true && in_array($value, (array)($definition['choices'] ?? []), true) === true,
 			default => is_string($value) === true,
 		};
-		if ($ok === true) {
+		if ($passes === true) {
 			return null;
 		}
 

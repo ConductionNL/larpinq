@@ -93,8 +93,14 @@ class CustomFieldGuard {
 	 * @return array<string, mixed> The changed values, by key.
 	 */
 	private function changedValues(mixed $new, mixed $old): array {
-		$new = is_array($new) === true ? $new : [];
-		$old = is_array($old) === true ? $old : [];
+		if (is_array($new) === false) {
+			return [];
+		}
+
+		if (is_array($old) === false) {
+			$old = [];
+		}
+
 		$changed = [];
 		foreach ($new as $key => $value) {
 			if (array_key_exists($key, $old) === false || $old[$key] !== $value) {
