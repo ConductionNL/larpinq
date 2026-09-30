@@ -72,14 +72,8 @@ class CharacterStatusListener implements IEventListener {
 	 * @spec openspec/specs/character-management/spec.md
 	 */
 	public function handle(Event $event): void {
-		$old = null;
-		if ($event instanceof \OCA\OpenRegister\Event\ObjectUpdatingEvent) {
-			// @phpstan-ignore-next-line
-			[$entity, $old] = [$event->getNewObject(), $event->getOldObject()];
-		} elseif ($event instanceof \OCA\OpenRegister\Event\ObjectCreatingEvent) {
-			// @phpstan-ignore-next-line
-			$entity = $event->getObject();
-		} else {
+		[$entity, $old] = $this->entitiesOf(event: $event);
+		if ($entity === null) {
 			return;
 		}
 
@@ -100,4 +94,30 @@ class CharacterStatusListener implements IEventListener {
 			$event->setErrors($errors);
 		}
 	}//end handle()
+
+	/**
+	 * The new entity and the stored one (null on a create) of a pre-write
+	 * event, or two nulls for any other event. ObjectUpdatingEvent has no
+	 * getObject(), so the accessor follows the class.
+	 *
+	 * @param Event $event The event.
+	 *
+	 * @return array{0: object|null, 1: object|null} The new and the old entity.
+	 *
+	 * @psalm-suppress MixedAssignment OpenRegister event classes are optional dependencies.
+	 * @psalm-suppress UndefinedMethod The OpenRegister event accessors are resolved at runtime.
+	 */
+	private function entitiesOf(Event $event): array {
+		if ($event instanceof \OCA\OpenRegister\Event\ObjectUpdatingEvent) {
+			// @phpstan-ignore-next-line
+			return [$event->getNewObject(), $event->getOldObject()];
+		}
+
+		if ($event instanceof \OCA\OpenRegister\Event\ObjectCreatingEvent) {
+			// @phpstan-ignore-next-line
+			return [$event->getObject(), null];
+		}
+
+		return [null, null];
+	}//end entitiesOf()
 }//end class
