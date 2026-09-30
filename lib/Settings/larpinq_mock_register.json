@@ -60,6 +60,7 @@
           "schema": "character",
           "slug": "character-voorbeeld-name-1-1"
         },
+        "status": "active",
         "name": "Voorbeeld Name 1",
         "ocName": "00000000-0000-4000-8000-000000000000",
         "ownerUid": "Voorbeeld Owneruid 1",
@@ -113,6 +114,7 @@
           "schema": "character",
           "slug": "character-voorbeeld-name-2-2"
         },
+        "status": "retired",
         "name": "Voorbeeld Name 2",
         "ocName": "00000000-0000-4000-8000-000000000001",
         "ownerUid": "Voorbeeld Owneruid 2",
@@ -158,6 +160,7 @@
           "schema": "character",
           "slug": "character-voorbeeld-name-3-3"
         },
+        "status": "dead",
         "name": "Voorbeeld Name 3",
         "ocName": "00000000-0000-4000-8000-000000000002",
         "ownerUid": "Voorbeeld Owneruid 3",

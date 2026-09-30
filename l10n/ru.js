@@ -462,7 +462,22 @@ OC.L10N.register(
         "Why the build exists: a plan, a test, or a build for another game": "Зачем нужна сборка: план, тест или сборка для другой игры",
         "Builds": "Сборки",
         "Check": "Проверка",
-        "Skills, items and conditions": "Навыки, предметы и состояния"
+        "Skills, items and conditions": "Навыки, предметы и состояния",
+        "Edit selected characters": "Изменить выбранных персонажей",
+        "Selected characters: {count}": "Выбрано персонажей: {count}",
+        "Leave unchanged": "Не менять",
+        "Changed {done} of {total}": "Изменено {done} из {total}",
+        "Characters changed: {count}": "Изменено персонажей: {count}",
+        "These characters were not changed:": "Эти персонажи не изменены:",
+        "{name}: {reason}": "{name}: {reason}",
+        "Change the selected characters": "Изменить выбранных персонажей",
+        "Active": "Активен",
+        "Retired": "На покое",
+        "Dead": "Мёртв",
+        "Player character": "Персонаж игрока",
+        "Non-player character": "Неигровой персонаж",
+        "Edit selected": "Изменить выбранное",
+        "Whether the character still plays: active, retired or dead": "Играет ли персонаж: активен, на покое или мёртв"
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -461,7 +461,22 @@
         "Why the build exists: a plan, a test, or a build for another game": "Yapının var olma nedeni: bir plan, bir deneme veya başka bir oyun için bir yapı",
         "Builds": "Yapılar",
         "Check": "Denetim",
-        "Skills, items and conditions": "Yetenekler, eşyalar ve durumlar"
+        "Skills, items and conditions": "Yetenekler, eşyalar ve durumlar",
+        "Edit selected characters": "Seçili karakterleri düzenle",
+        "Selected characters: {count}": "Seçili karakterler: {count}",
+        "Leave unchanged": "Değiştirme",
+        "Changed {done} of {total}": "{total} karakterden {done} değişti",
+        "Characters changed: {count}": "Değişen karakterler: {count}",
+        "These characters were not changed:": "Bu karakterler değiştirilmedi:",
+        "{name}: {reason}": "{name}: {reason}",
+        "Change the selected characters": "Seçili karakterleri değiştir",
+        "Active": "Etkin",
+        "Retired": "Emekli",
+        "Dead": "Ölü",
+        "Player character": "Oyuncu karakteri",
+        "Non-player character": "Oyuncu olmayan karakter",
+        "Edit selected": "Seçileni düzenle",
+        "Whether the character still plays: active, retired or dead": "Karakterin hâlâ oynayıp oynamadığı: etkin, emekli veya ölü"
     },
     "plurals": {}
 }

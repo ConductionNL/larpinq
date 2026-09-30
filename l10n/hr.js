@@ -462,7 +462,22 @@ OC.L10N.register(
         "Why the build exists: a plan, a test, or a build for another game": "Zašto konfiguracija postoji: plan, test ili konfiguracija za drugu igru",
         "Builds": "Konfiguracije",
         "Check": "Provjera",
-        "Skills, items and conditions": "Vještine, predmeti i stanja"
+        "Skills, items and conditions": "Vještine, predmeti i stanja",
+        "Edit selected characters": "Uredi odabrane likove",
+        "Selected characters: {count}": "Odabrani likovi: {count}",
+        "Leave unchanged": "Ne mijenjaj",
+        "Changed {done} of {total}": "Promijenjeno {done} od {total}",
+        "Characters changed: {count}": "Promijenjeni likovi: {count}",
+        "These characters were not changed:": "Ovi likovi nisu promijenjeni:",
+        "{name}: {reason}": "{name}: {reason}",
+        "Change the selected characters": "Promijeni odabrane likove",
+        "Active": "Aktivan",
+        "Retired": "Povučen",
+        "Dead": "Mrtav",
+        "Player character": "Lik igrača",
+        "Non-player character": "Neigrački lik",
+        "Edit selected": "Uredi odabrano",
+        "Whether the character still plays: active, retired or dead": "Igra li lik još: aktivan, povučen ili mrtav"
     },
     "nplurals=2; plural=(n != 1);"
 )

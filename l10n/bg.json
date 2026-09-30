@@ -461,7 +461,22 @@
         "Why the build exists: a plan, a test, or a build for another game": "Защо съществува конфигурацията: план, тест или конфигурация за друга игра",
         "Builds": "Конфигурации",
         "Check": "Проверка",
-        "Skills, items and conditions": "Умения, предмети и състояния"
+        "Skills, items and conditions": "Умения, предмети и състояния",
+        "Edit selected characters": "Редактиране на избраните персонажи",
+        "Selected characters: {count}": "Избрани персонажи: {count}",
+        "Leave unchanged": "Без промяна",
+        "Changed {done} of {total}": "Променени {done} от {total}",
+        "Characters changed: {count}": "Променени персонажи: {count}",
+        "These characters were not changed:": "Тези персонажи не бяха променени:",
+        "{name}: {reason}": "{name}: {reason}",
+        "Change the selected characters": "Промяна на избраните персонажи",
+        "Active": "Активен",
+        "Retired": "Оттеглен",
+        "Dead": "Мъртъв",
+        "Player character": "Персонаж на играч",
+        "Non-player character": "Неигрален персонаж",
+        "Edit selected": "Редактиране на избраните",
+        "Whether the character still plays: active, retired or dead": "Дали персонажът още играе: активен, оттеглен или мъртъв"
     },
     "plurals": {}
 }

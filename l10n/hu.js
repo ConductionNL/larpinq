@@ -462,7 +462,22 @@ OC.L10N.register(
         "Why the build exists: a plan, a test, or a build for another game": "Miért létezik a build: terv, teszt vagy build egy másik játékhoz",
         "Builds": "Buildek",
         "Check": "Ellenőrzés",
-        "Skills, items and conditions": "Képességek, tárgyak és állapotok"
+        "Skills, items and conditions": "Képességek, tárgyak és állapotok",
+        "Edit selected characters": "Kijelölt karakterek szerkesztése",
+        "Selected characters: {count}": "Kijelölt karakterek: {count}",
+        "Leave unchanged": "Ne változzon",
+        "Changed {done} of {total}": "{done} / {total} módosítva",
+        "Characters changed: {count}": "Módosított karakterek: {count}",
+        "These characters were not changed:": "Ezek a karakterek nem változtak:",
+        "{name}: {reason}": "{name}: {reason}",
+        "Change the selected characters": "Kijelölt karakterek módosítása",
+        "Active": "Aktív",
+        "Retired": "Visszavonult",
+        "Dead": "Halott",
+        "Player character": "Játékoskarakter",
+        "Non-player character": "Nem játékos karakter",
+        "Edit selected": "Kijelöltek szerkesztése",
+        "Whether the character still plays: active, retired or dead": "Játszik-e még a karakter: aktív, visszavonult vagy halott"
     },
     "nplurals=2; plural=(n != 1);"
 )

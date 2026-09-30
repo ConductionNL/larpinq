@@ -462,7 +462,22 @@ OC.L10N.register(
         "Why the build exists: a plan, a test, or a build for another game": "Af hverju útfærslan er til: áætlun, prófun eða útfærsla fyrir annan leik",
         "Builds": "Útfærslur",
         "Check": "Athugun",
-        "Skills, items and conditions": "Hæfileikar, hlutir og ástand"
+        "Skills, items and conditions": "Hæfileikar, hlutir og ástand",
+        "Edit selected characters": "Breyta völdum persónum",
+        "Selected characters: {count}": "Valdar persónur: {count}",
+        "Leave unchanged": "Ekki breyta",
+        "Changed {done} of {total}": "{done} af {total} breytt",
+        "Characters changed: {count}": "Breyttar persónur: {count}",
+        "These characters were not changed:": "Þessum persónum var ekki breytt:",
+        "{name}: {reason}": "{name}: {reason}",
+        "Change the selected characters": "Breyta völdu persónunum",
+        "Active": "Virk",
+        "Retired": "Hætt",
+        "Dead": "Dáin",
+        "Player character": "Leikmannspersóna",
+        "Non-player character": "Persóna án leikmanns",
+        "Edit selected": "Breyta vali",
+        "Whether the character still plays: active, retired or dead": "Hvort persónan er enn í leik: virk, hætt eða dáin"
     },
     "nplurals=2; plural=(n != 1);"
 )

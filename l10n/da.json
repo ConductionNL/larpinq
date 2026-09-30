@@ -461,7 +461,22 @@
         "Why the build exists: a plan, a test, or a build for another game": "Hvorfor buildet findes: en plan, en test eller et build til et andet spil",
         "Builds": "Builds",
         "Check": "Tjek",
-        "Skills, items and conditions": "Evner, genstande og tilstande"
+        "Skills, items and conditions": "Evner, genstande og tilstande",
+        "Edit selected characters": "Rediger valgte karakterer",
+        "Selected characters: {count}": "Valgte karakterer: {count}",
+        "Leave unchanged": "Lad være uændret",
+        "Changed {done} of {total}": "{done} af {total} ændret",
+        "Characters changed: {count}": "Ændrede karakterer: {count}",
+        "These characters were not changed:": "Disse karakterer blev ikke ændret:",
+        "{name}: {reason}": "{name}: {reason}",
+        "Change the selected characters": "Ændr de valgte karakterer",
+        "Active": "Aktiv",
+        "Retired": "Trukket tilbage",
+        "Dead": "Død",
+        "Player character": "Spillerkarakter",
+        "Non-player character": "Ikke-spillerkarakter",
+        "Edit selected": "Rediger valgte",
+        "Whether the character still plays: active, retired or dead": "Om karakteren stadig spiller: aktiv, trukket tilbage eller død"
     },
     "plurals": {}
 }

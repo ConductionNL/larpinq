@@ -462,7 +462,22 @@ OC.L10N.register(
         "Why the build exists: a plan, a test, or a build for another game": "Por qué existe la build: un plan, una prueba o una build para otro juego",
         "Builds": "Builds",
         "Check": "Comprobación",
-        "Skills, items and conditions": "Habilidades, objetos y estados"
+        "Skills, items and conditions": "Habilidades, objetos y estados",
+        "Edit selected characters": "Editar los personajes seleccionados",
+        "Selected characters: {count}": "Personajes seleccionados: {count}",
+        "Leave unchanged": "No cambiar",
+        "Changed {done} of {total}": "{done} de {total} cambiados",
+        "Characters changed: {count}": "Personajes cambiados: {count}",
+        "These characters were not changed:": "Estos personajes no se cambiaron:",
+        "{name}: {reason}": "{name}: {reason}",
+        "Change the selected characters": "Cambiar los personajes seleccionados",
+        "Active": "Activo",
+        "Retired": "Retirado",
+        "Dead": "Muerto",
+        "Player character": "Personaje jugador",
+        "Non-player character": "Personaje no jugador",
+        "Edit selected": "Editar selección",
+        "Whether the character still plays: active, retired or dead": "Si el personaje sigue en juego: activo, retirado o muerto"
     },
     "nplurals=2; plural=(n != 1);"
 )

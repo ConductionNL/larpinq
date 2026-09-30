@@ -462,7 +462,22 @@ OC.L10N.register(
         "Why the build exists: a plan, a test, or a build for another game": "Pertge ch'il build exista: in plan, in test u in build per in auter gieu",
         "Builds": "Builds",
         "Check": "Controlla",
-        "Skills, items and conditions": "Abilitads, objects e cundiziuns"
+        "Skills, items and conditions": "Abilitads, objects e cundiziuns",
+        "Edit selected characters": "Modifitgar ils persunagis tschernids",
+        "Selected characters: {count}": "Persunagis tschernids: {count}",
+        "Leave unchanged": "Betg midar",
+        "Changed {done} of {total}": "{done} da {total} midads",
+        "Characters changed: {count}": "Persunagis midads: {count}",
+        "These characters were not changed:": "Quests persunagis n'èn betg vegnids midads:",
+        "{name}: {reason}": "{name}: {reason}",
+        "Change the selected characters": "Midar ils persunagis tschernids",
+        "Active": "Activ",
+        "Retired": "Retratg",
+        "Dead": "Mort",
+        "Player character": "Persunagi da giugader",
+        "Non-player character": "Persunagi betg giugader",
+        "Edit selected": "Modifitgar la selecziun",
+        "Whether the character still plays: active, retired or dead": "Sch'il persunagi gioga anc: activ, retratg u mort"
     },
     "nplurals=2; plural=(n != 1);"
 )

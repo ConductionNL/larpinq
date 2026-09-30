@@ -39,7 +39,10 @@ Recording or updating a participant's attendance MUST be restricted to the
 MUST be set to the acting user's uid — neither MUST be accepted from the client
 request body. Write authorization MUST be OR-delegated via schema-level RBAC on
 the `larping_attendance` schema (ADR-022); the app MUST NOT implement a parallel
-attendance-write auth path.
+attendance-write auth path. Reading attendance through the OpenRegister objects
+API MUST be restricted to the `gamemasters` group and the record's owner: the
+schema grants `read` to game masters only, never to every signed-in user and
+never to anonymous visitors (DECISIONS row 30).
 
 #### Scenario: a non-GM is refused check-in
 
@@ -95,8 +98,9 @@ from the confirmed participant link, not a second sign-up store.
 
 - **GIVEN** an authenticated non-GM player viewing an event detail page
 - **WHEN** the roster renders
-- **THEN** each participant's attendance status MUST be visible
+- **THEN** the confirmed participants MUST be listed
 - **AND** no check-in control MUST be offered to the player
+- **AND** attendance statuses MUST only show where OpenRegister lets the player read the record
 - `@e2e exclude` pending implementation — read-only roster e2e authored alongside the apply-phase page
 
 ### Requirement: Attendance MUST ground XP-award eligibility and MAY enrich the run-sheet

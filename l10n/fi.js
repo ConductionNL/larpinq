@@ -462,7 +462,22 @@ OC.L10N.register(
         "Why the build exists: a plan, a test, or a build for another game": "Miksi kehitys on olemassa: suunnitelma, testi tai kehitys toiseen peliin",
         "Builds": "Kehitykset",
         "Check": "Tarkistus",
-        "Skills, items and conditions": "Taidot, esineet ja tilat"
+        "Skills, items and conditions": "Taidot, esineet ja tilat",
+        "Edit selected characters": "Muokkaa valittuja hahmoja",
+        "Selected characters: {count}": "Valitut hahmot: {count}",
+        "Leave unchanged": "Älä muuta",
+        "Changed {done} of {total}": "{done}/{total} muutettu",
+        "Characters changed: {count}": "Muutetut hahmot: {count}",
+        "These characters were not changed:": "Näitä hahmoja ei muutettu:",
+        "{name}: {reason}": "{name}: {reason}",
+        "Change the selected characters": "Muuta valitut hahmot",
+        "Active": "Aktiivinen",
+        "Retired": "Eläkkeellä",
+        "Dead": "Kuollut",
+        "Player character": "Pelaajahahmo",
+        "Non-player character": "Ei-pelaajahahmo",
+        "Edit selected": "Muokkaa valittuja",
+        "Whether the character still plays: active, retired or dead": "Pelaako hahmo vielä: aktiivinen, eläkkeellä tai kuollut"
     },
     "nplurals=2; plural=(n != 1);"
 )

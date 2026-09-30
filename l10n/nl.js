@@ -554,7 +554,22 @@ OC.L10N.register(
         "Why the build exists: a plan, a test, or a build for another game": "Waarom de build bestaat: een plan, een test of een build voor een ander spel",
         "Builds": "Builds",
         "Check": "Controle",
-        "Skills, items and conditions": "Vaardigheden, voorwerpen en toestanden"
+        "Skills, items and conditions": "Vaardigheden, voorwerpen en toestanden",
+        "Edit selected characters": "Geselecteerde personages bewerken",
+        "Selected characters: {count}": "Geselecteerde personages: {count}",
+        "Leave unchanged": "Niet wijzigen",
+        "Changed {done} of {total}": "{done} van {total} gewijzigd",
+        "Characters changed: {count}": "Personages gewijzigd: {count}",
+        "These characters were not changed:": "Deze personages zijn niet gewijzigd:",
+        "{name}: {reason}": "{name}: {reason}",
+        "Change the selected characters": "Geselecteerde personages wijzigen",
+        "Active": "Actief",
+        "Retired": "Gestopt",
+        "Dead": "Dood",
+        "Player character": "Spelerspersonage",
+        "Non-player character": "Niet-spelerspersonage",
+        "Edit selected": "Selectie bewerken",
+        "Whether the character still plays: active, retired or dead": "Of het personage nog speelt: actief, gestopt of dood"
     },
     "nplurals=2; plural=(n != 1);"
 )

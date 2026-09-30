@@ -462,7 +462,22 @@ OC.L10N.register(
         "Why the build exists: a plan, a test, or a build for another game": "Miks arengutee olemas on: plaan, test või arengutee teise mängu jaoks",
         "Builds": "Arenguteed",
         "Check": "Kontroll",
-        "Skills, items and conditions": "Oskused, esemed ja seisundid"
+        "Skills, items and conditions": "Oskused, esemed ja seisundid",
+        "Edit selected characters": "Muuda valitud tegelasi",
+        "Selected characters: {count}": "Valitud tegelased: {count}",
+        "Leave unchanged": "Jäta muutmata",
+        "Changed {done} of {total}": "{done} / {total} muudetud",
+        "Characters changed: {count}": "Muudetud tegelased: {count}",
+        "These characters were not changed:": "Neid tegelasi ei muudetud:",
+        "{name}: {reason}": "{name}: {reason}",
+        "Change the selected characters": "Muuda valitud tegelasi",
+        "Active": "Aktiivne",
+        "Retired": "Taandunud",
+        "Dead": "Surnud",
+        "Player character": "Mängijategelane",
+        "Non-player character": "Mittemängija tegelane",
+        "Edit selected": "Muuda valikut",
+        "Whether the character still plays: active, retired or dead": "Kas tegelane veel mängib: aktiivne, taandunud või surnud"
     },
     "nplurals=2; plural=(n != 1);"
 )

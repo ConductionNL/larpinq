@@ -52,6 +52,7 @@ import MagicStaff from 'vue-material-design-icons/MagicStaff.vue'
 import MapMarker from 'vue-material-design-icons/MapMarker.vue'
 import MapMarkerPath from 'vue-material-design-icons/MapMarkerPath.vue'
 import Package from 'vue-material-design-icons/Package.vue'
+import PencilOutline from 'vue-material-design-icons/PencilOutline.vue'
 import Plus from 'vue-material-design-icons/Plus.vue'
 import Refresh from 'vue-material-design-icons/Refresh.vue'
 import School from 'vue-material-design-icons/School.vue'
@@ -112,6 +113,7 @@ export default {
 	MapMarker,
 	MapMarkerPath,
 	Package,
+	PencilOutline,
 	Plus,
 	Refresh,
 	School,

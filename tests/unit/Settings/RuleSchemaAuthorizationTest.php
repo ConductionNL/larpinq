@@ -69,6 +69,13 @@ class RuleSchemaAuthorizationTest extends TestCase {
 	];
 
 	/**
+	 * The two record schemas read by game masters and the record's owner only.
+	 *
+	 * @var list<string>
+	 */
+	private const RECORD_SCHEMAS = ['xpAward', 'attendance'];
+
+	/**
 	 * The player and the game master, by their Nextcloud groups.
 	 *
 	 * @var array<string, list<string>>
@@ -129,10 +136,11 @@ class RuleSchemaAuthorizationTest extends TestCase {
 	 * @param array<string, mixed>|null $registerAuthorization The register's block.
 	 * @param list<string>              $groups                The user's groups.
 	 * @param string                    $action                read, create, update or delete.
+	 * @param string|null               $owner                 The record's owner, or null for a schema-level check.
 	 *
 	 * @return bool Whether OpenRegister lets the user through.
 	 */
-	private function verdict(array $schemaAuthorization, ?array $registerAuthorization, array $groups, string $action): bool {
+	private function verdict(array $schemaAuthorization, ?array $registerAuthorization, array $groups, string $action, ?string $owner=null): bool {
 		$schema = new \OCA\OpenRegister\Db\Schema();
 		$schema->setId(7);
 		$schema->setAuthorization($schemaAuthorization);
@@ -169,7 +177,7 @@ class RuleSchemaAuthorizationTest extends TestCase {
 			container: $container,
 		);
 
-		return $handler->hasPermission(schema: $schema, action: $action, userId: 'anna');
+		return $handler->hasPermission(schema: $schema, action: $action, userId: 'anna', objectOwner: $owner);
 	}//end verdict()
 
 	/**
@@ -291,4 +299,38 @@ class RuleSchemaAuthorizationTest extends TestCase {
 			}
 		}
 	}//end testNobodyLosesRead()
+
+	/**
+	 * XP awards and attendance are read by game masters only, never by every
+	 * signed-in user and never without signing in (DECISIONS row 30).
+	 *
+	 * @return void
+	 */
+	public function testXpAwardsAndAttendanceDeclareGameMastersAsTheirReaders(): void {
+		$schemas = $this->mergedRegister()['components']['schemas'];
+		foreach (self::RECORD_SCHEMAS as $key) {
+			$this->assertSame([Application::GM_GROUP], ($schemas[$key]['authorization']['read'] ?? null), "{$key} is read by game masters");
+			$this->assertSame([Application::GM_GROUP], ($schemas[$key]['authorization']['create'] ?? null), "{$key} is written by game masters");
+		}
+	}//end testXpAwardsAndAttendanceDeclareGameMastersAsTheirReaders()
+
+	/**
+	 * A game master reads every award and attendance record, the record's owner
+	 * reads their own, and another player reads none.
+	 *
+	 * @return void
+	 */
+	public function testGameMastersAndTheOwnerReadXpAwardsAndAttendance(): void {
+		$this->requireOpenRegister();
+		$register = $this->mergedRegister()['components'];
+		$registerBlock = ($register['registers']['larpinq']['authorization'] ?? null);
+		foreach (self::RECORD_SCHEMAS as $key) {
+			$block = ($register['schemas'][$key]['authorization'] ?? []);
+			$this->assertTrue($this->verdict($block, $registerBlock, self::USERS['game master'], 'read', 'gerrit'), "a game master reads a {$key} record someone else owns");
+			$this->assertTrue($this->verdict($block, $registerBlock, self::USERS['player'], 'read', 'anna'), "the owner reads her own {$key} record");
+			$this->assertFalse($this->verdict($block, $registerBlock, self::USERS['player'], 'read', 'gerrit'), "a player does not read a {$key} record she does not own");
+			$this->assertFalse($this->verdict($block, $registerBlock, self::USERS['player'], 'read'), "a player does not read {$key} records at schema level");
+			$this->assertFalse($this->verdict($block, $registerBlock, self::USERS['player'], 'create'), "a player does not create {$key} records");
+		}
+	}//end testGameMastersAndTheOwnerReadXpAwardsAndAttendance()
 }//end class

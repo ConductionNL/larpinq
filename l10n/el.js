@@ -462,7 +462,22 @@ OC.L10N.register(
         "Why the build exists: a plan, a test, or a build for another game": "Γιατί υπάρχει η διαμόρφωση: σχέδιο, δοκιμή ή διαμόρφωση για άλλο παιχνίδι",
         "Builds": "Διαμορφώσεις",
         "Check": "Έλεγχος",
-        "Skills, items and conditions": "Δεξιότητες, αντικείμενα και καταστάσεις"
+        "Skills, items and conditions": "Δεξιότητες, αντικείμενα και καταστάσεις",
+        "Edit selected characters": "Επεξεργασία επιλεγμένων χαρακτήρων",
+        "Selected characters: {count}": "Επιλεγμένοι χαρακτήρες: {count}",
+        "Leave unchanged": "Χωρίς αλλαγή",
+        "Changed {done} of {total}": "Άλλαξαν {done} από {total}",
+        "Characters changed: {count}": "Χαρακτήρες που άλλαξαν: {count}",
+        "These characters were not changed:": "Αυτοί οι χαρακτήρες δεν άλλαξαν:",
+        "{name}: {reason}": "{name}: {reason}",
+        "Change the selected characters": "Αλλαγή των επιλεγμένων χαρακτήρων",
+        "Active": "Ενεργός",
+        "Retired": "Αποσυρμένος",
+        "Dead": "Νεκρός",
+        "Player character": "Χαρακτήρας παίκτη",
+        "Non-player character": "Χαρακτήρας μη παίκτη",
+        "Edit selected": "Επεξεργασία επιλογής",
+        "Whether the character still plays: active, retired or dead": "Αν ο χαρακτήρας παίζει ακόμη: ενεργός, αποσυρμένος ή νεκρός"
     },
     "nplurals=2; plural=(n != 1);"
 )

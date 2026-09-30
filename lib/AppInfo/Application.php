@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace OCA\Larpinq\AppInfo;
 
 use OCA\Larpinq\Listener\CharacterRequirementListener;
+use OCA\Larpinq\Listener\CharacterStatusListener;
 use OCA\Larpinq\Listener\DeepLinkRegistrationListener;
 use OCA\Larpinq\Listener\FactionMembershipListener;
 use OCA\Larpinq\Listener\UniqueHolderListener;
@@ -163,11 +164,13 @@ class Application extends App implements IBootstrap {
 		if (class_exists('OCA\OpenRegister\Event\ObjectCreatingEvent') === true) {
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', UniqueHolderListener::class);
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', FactionMembershipListener::class);
+			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', CharacterStatusListener::class);
 		}
 
 		if (class_exists('OCA\OpenRegister\Event\ObjectUpdatingEvent') === true) {
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatingEvent', UniqueHolderListener::class);
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatingEvent', FactionMembershipListener::class);
+			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatingEvent', CharacterStatusListener::class);
 		}
 	}//end registerUniqueHolderListener()
 

@@ -461,7 +461,22 @@
         "Why the build exists: a plan, a test, or a build for another game": "Varför bygget finns: en plan, ett test eller ett bygge för ett annat spel",
         "Builds": "Byggen",
         "Check": "Kontroll",
-        "Skills, items and conditions": "Färdigheter, föremål och tillstånd"
+        "Skills, items and conditions": "Färdigheter, föremål och tillstånd",
+        "Edit selected characters": "Redigera valda karaktärer",
+        "Selected characters: {count}": "Valda karaktärer: {count}",
+        "Leave unchanged": "Lämna oförändrad",
+        "Changed {done} of {total}": "{done} av {total} ändrade",
+        "Characters changed: {count}": "Ändrade karaktärer: {count}",
+        "These characters were not changed:": "Dessa karaktärer ändrades inte:",
+        "{name}: {reason}": "{name}: {reason}",
+        "Change the selected characters": "Ändra de valda karaktärerna",
+        "Active": "Aktiv",
+        "Retired": "Pensionerad",
+        "Dead": "Död",
+        "Player character": "Spelarkaraktär",
+        "Non-player character": "Icke-spelarkaraktär",
+        "Edit selected": "Redigera valda",
+        "Whether the character still plays: active, retired or dead": "Om karaktären fortfarande spelar: aktiv, pensionerad eller död"
     },
     "plurals": {}
 }

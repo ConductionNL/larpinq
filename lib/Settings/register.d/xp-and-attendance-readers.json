@@ -1,0 +1,20 @@
+{
+  "components": {
+    "schemas": {
+      "xpAward": {
+        "authorization": {
+          "read": [
+            "gamemasters"
+          ]
+        }
+      },
+      "attendance": {
+        "authorization": {
+          "read": [
+            "gamemasters"
+          ]
+        }
+      }
+    }
+  }
+}
