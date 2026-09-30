@@ -2,6 +2,7 @@
   "components": {
     "schemas": {
       "event": {
+        "slug": "larping_event",
         "properties": {
           "setting": {
             "visible": true
