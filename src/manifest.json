@@ -611,6 +611,29 @@
 				"_note": "ADR-062 rollout: split the sheet into identity (name/player/setting/description/background/faith, 6 fields) vs game state & notes (type/approved/gold/silver/copper/itemsAndMoney/card/notice/GM notes, 10 fields) per rule 3. The loose XP + Gold stat cards fold into one stats-block (rule 2, same-flavor simple KPIs) top-right, aligned with the identity row. The right rail lists the linked mechanics (skills/items/conditions) and event participation as related groups so a GM can see the whole build at a glance. The character portrait/sheet lives in the photos leaf (schema declares linkedType 'photos') as a body integration widget. XP awards granted to this character are shown as an object-list (xpAward.character FK = @objectId) — GM hand-awarded per xpAward's schema description, so allowCreate stays on (default). No email/calendar on the body: the character schema declares only 'photos'. Sidebar is audit-history only — the photos leaf already lives in the body, so it is not duplicated as a sidebar tab.",
 				"widgets": [
 					{
+						"id": "char-plots",
+						"type": "object-list",
+						"title": "Plots",
+						"icon": "BookOpenVariantOutline",
+						"content": {
+							"register": "larpinq",
+							"schema": "larping_plot_part",
+							"filter": {
+								"character": "@objectId"
+							},
+							"columns": [
+								{
+									"key": "plot",
+									"label": "Plot"
+								},
+								{
+									"key": "playerText",
+									"label": "Player text"
+								}
+							]
+						}
+					},
+					{
 						"id": "char-identity",
 						"type": "data",
 						"title": "Identity",
@@ -684,7 +707,9 @@
 								"card",
 								"notice",
 								"slNotesPublic",
-								"slNotesPrivate"
+								"slNotesPrivate",
+								"writer",
+								"writingStep"
 							]
 						}
 					},
@@ -733,6 +758,14 @@
 					}
 				],
 				"layout": [
+					{
+						"id": "7",
+						"widgetId": "char-plots",
+						"gridX": 0,
+						"gridY": 18,
+						"gridWidth": 12,
+						"gridHeight": 4
+					},
 					{
 						"id": "1",
 						"widgetId": "char-identity",
@@ -2231,6 +2264,60 @@
 			"config": {
 				"widgets": [
 					{
+						"id": "roster-by-writing-step",
+						"title": "By writing step",
+						"type": "chart",
+						"content": {
+							"chartKind": "donut",
+							"legendPosition": "bottom",
+							"emptyLabel": "No characters yet",
+							"dataSource": {
+								"register": "larpinq",
+								"schema": "character",
+								"aggregate": {
+									"groupBy": "writingStep",
+									"metric": "count"
+								}
+							}
+						}
+					},
+					{
+						"id": "roster-writing-open",
+						"title": "Not yet approved in writing",
+						"type": "object-table",
+						"content": {
+							"register": "larpinq",
+							"schema": "character",
+							"filter": {
+								"writingStep": [
+									"draft",
+									"ready"
+								]
+							},
+							"sort": {
+								"field": "writer",
+								"dir": "asc"
+							},
+							"limit": 20,
+							"emptyText": "Everyone is approved in writing",
+							"columns": [
+								{
+									"key": "name",
+									"label": "Name"
+								},
+								{
+									"key": "writer",
+									"label": "Writer"
+								},
+								{
+									"key": "writingStep",
+									"label": "Writing step"
+								}
+							],
+							"rowRoute": "CharacterDetail"
+						}
+					},
+					{
 						"id": "roster-total",
 						"title": "Characters",
 						"type": "stat",
@@ -2373,6 +2460,24 @@
 					}
 				],
 				"layout": [
+					{
+						"id": "7",
+						"widgetId": "roster-by-writing-step",
+						"gridX": 0,
+						"gridY": 10,
+						"gridWidth": 6,
+						"gridHeight": 4,
+						"showTitle": true
+					},
+					{
+						"id": "8",
+						"widgetId": "roster-writing-open",
+						"gridX": 6,
+						"gridY": 10,
+						"gridWidth": 6,
+						"gridHeight": 4,
+						"showTitle": true
+					},
 					{
 						"id": "1",
 						"widgetId": "roster-total",
