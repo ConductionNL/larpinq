@@ -59,6 +59,34 @@ delete (plain object writes), and the D1 defaults for ticks.
 `awardedBy` to the acting user and `awardedAt` to now on create, and keeps
 both unchanged on update, whatever the client sent.
 
+## Deviations found while building (30 Sep 2026, on top of events-world-scope-and-upcoming)
+
+- **D3, a dialog, not a sidebar tab.** In `@conduction/nextcloud-vue` 2.57.1 a
+  sidebar tab cannot be hidden per user (CnObjectSidebar hides tabs only by a
+  fixed list), and the requirement says a non-game-master must not be offered
+  the surface. A header action can: "Award XP" is an `open-modal` header
+  action on EventDetail with `visibleWhen` on `GET /api/xp-awards/access`,
+  opening `src/dialogs/XpAwardDialog.vue` (registry kind `modal`), as the
+  "Copy world" action does. Existing awards are listed under each character
+  and open on their own page (XpAwardDetail) for a change or removal, rather
+  than carrying inline edit and delete controls.
+- **D1/D2, a controller of their own.** The three endpoints (`access`,
+  `roster`, `award`) live in `XpAwardsController` rather than
+  `EventsController`, which already carries the run-sheet and the check-in.
+  The roster response also names the event, for the default reason
+  "Attended <event>".
+- **The config keys were missing.** `xpAward` was not in
+  `SettingsLoadService::OBJECT_TYPE_SCHEMA_SLUGS` nor in
+  `SettingsService::CONFIG_KEYS`, so the import never set `xpaward_schema`
+  and every server-side read of awards through the object fetcher failed
+  (CharacterService's XP stage logged "schema unavailable" and counted no
+  awards). Both now carry it; the batch award depends on it.
+- **D4, writes with nobody signed in.** An import or repair step has no acting
+  user, so the listener leaves its provenance as sent (the demo awards keep
+  their game master).
+- **Seed data.** No new seed objects; the e2e workflow builds its own event,
+  characters and attendance.
+
 ## Declarative-vs-imperative decision
 
 | Behaviour | Path | Rationale |

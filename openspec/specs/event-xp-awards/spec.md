@@ -15,7 +15,7 @@ income side of the XP ledger; the spend side is `skill-requirement-
 enforcement`. Ambient event effects (EVT-007/008) keep working for
 world-level modifiers and are not changed.
 
-@e2e exclude xpAward write/validation/RBAC and the fifth stat-engine application stage are server-authoritative (OpenRegister schema RBAC + CharacterService); proven by PHPUnit CharacterServiceXpAwardTest. The batch "Award XP" surface on the event detail page is deferred (no bespoke event-detail component in this app's src/ — declarative manifest UI is a nc-vue follow-up). The shipped browser surface (the type:index XP Awards page) is covered by tests/e2e/spec-coverage/event-xp-award-workflow.spec.ts.
+@e2e exclude xpAward write/validation/RBAC and the fifth stat-engine application stage are server-authoritative (OpenRegister schema RBAC + CharacterService); proven by PHPUnit CharacterServiceXpAwardTest. The batch "Award XP" surface on the event detail page is covered by tests/e2e/workflows/xp-batch-award.workflow.spec.ts (events-xp-batch-award). The shipped browser surface (the type:index XP Awards page) is covered by tests/e2e/spec-coverage/event-xp-award-workflow.spec.ts.
 
 ## Requirements
 
@@ -131,7 +131,11 @@ all checked rows with per-row amount override and optional per-row reason;
 creates one `xpAward` per checked character on save; lists existing awards
 for the event inline (character, amount, reason, awardedBy) with edit and
 delete; and pre-unchecks roster rows that already have an award for this
-event so re-opening the surface does not double-award by default.
+event so re-opening the surface does not double-award by default. Rows
+without an award MUST start checked when the character's attendance for the
+event is checked-in, and unchecked when it is no-show or when no attendance
+was recorded, with a hint that no check-in was recorded; the GM MAY change
+every tick before saving.
 
 #### Scenario: Batch award after the event
 
@@ -161,6 +165,13 @@ event so re-opening the surface does not double-award by default.
 - WHEN bob opens the event detail page
 - THEN the Award XP surface MUST NOT be offered to him
 
+#### Scenario: Attendance decides the default ticks
+
+- GIVEN at event "Summer Siege 2025" "Mirela the Wanderer" and "Sir Bertram" are checked in and "Old Captain Harrow" is a no-show
+- WHEN the GM opens Award XP on the event page
+- THEN "Mirela the Wanderer" and "Sir Bertram" are ticked
+- AND "Old Captain Harrow" is unticked
+
 ### Requirement: Award changes MUST trigger recalculation of the affected character
 
 Creating, updating, or deleting an `xpAward` MUST trigger stat
@@ -174,3 +185,29 @@ ledger immediately.
 - WHEN the GM deletes that award
 - THEN Morgana's stats MUST be recalculated
 - AND her stored XP value MUST no longer include the deleted award
+
+### Requirement: A batch award saves each row on its own (REQ-EXB-001)
+
+`POST /api/events/{id}/xp-awards` SHALL create one award per row for
+characters on the event's roster, refuse a second award for the same event and
+character unless the row is marked extra with a reason, and MUST report which
+rows were created and which were refused. Only game masters SHALL call it.
+
+#### Scenario: One duplicate in the batch
+
+- GIVEN "Sir Bertram" already has an award for "Summer Siege 2025"
+- WHEN a game master saves a batch with "Mirela the Wanderer" and "Sir Bertram"
+- THEN an award for "Mirela the Wanderer" is created
+- AND the row for "Sir Bertram" is refused as a duplicate
+
+### Requirement: Award provenance is stamped by the server (REQ-EXB-002)
+
+On every created award larpinq SHALL set `awardedBy` to the acting user and
+`awardedAt` to the time of the write, and MUST ignore values sent by the
+client; an update MUST keep the original values.
+
+#### Scenario: A client sends its own provenance
+
+- GIVEN game master Joris creates an award through the API with `awardedBy` set to "anna"
+- WHEN the award is saved
+- THEN its `awardedBy` is "joris" and `awardedAt` is the time of the save
