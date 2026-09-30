@@ -121,7 +121,7 @@ class SettingsServiceTest extends TestCase {
 		$result = $this->service->updateSettings(['register' => 'reg-1']);
 
 		$this->assertIsArray($result);
-		$this->assertCount(49, $result);
+		$this->assertCount(52, $result);
 	}
 
 	public function testLoadSettingsDelegatesToLoadService(): void {

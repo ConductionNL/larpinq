@@ -99,6 +99,9 @@ class SettingsService {
 		'characterbuild_schema',
 		'characterbuild_register',
 		'characterbuild_source',
+		'xpaward_schema',
+		'xpaward_register',
+		'xpaward_source',
 	];
 
 	/**
