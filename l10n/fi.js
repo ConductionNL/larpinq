@@ -477,7 +477,13 @@ OC.L10N.register(
         "Player character": "Pelaajahahmo",
         "Non-player character": "Ei-pelaajahahmo",
         "Edit selected": "Muokkaa valittuja",
-        "Whether the character still plays: active, retired or dead": "Pelaako hahmo vielä: aktiivinen, eläkkeellä tai kuollut"
+        "Whether the character still plays: active, retired or dead": "Pelaako hahmo vielä: aktiivinen, eläkkeellä tai kuollut",
+        "Only {world} is shown.": "Vain {world} näytetään.",
+        "Show all worlds": "Näytä kaikki maailmat",
+        "Upcoming events": "Tulevat tapahtumat",
+        "No upcoming events": "Ei tulevia tapahtumia",
+        "Upcoming": "Tulevat",
+        "Past": "Menneet"
     },
     "nplurals=2; plural=(n != 1);"
 )

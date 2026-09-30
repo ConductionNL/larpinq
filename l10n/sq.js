@@ -477,7 +477,13 @@ OC.L10N.register(
         "Player character": "Personazh lojtari",
         "Non-player character": "Personazh jo-lojtar",
         "Edit selected": "Redakto të zgjedhurit",
-        "Whether the character still plays: active, retired or dead": "Nëse personazhi ende luan: aktiv, i tërhequr ose i vdekur"
+        "Whether the character still plays: active, retired or dead": "Nëse personazhi ende luan: aktiv, i tërhequr ose i vdekur",
+        "Only {world} is shown.": "Shfaqet vetëm {world}.",
+        "Show all worlds": "Shfaq të gjitha botët",
+        "Upcoming events": "Ngjarjet e ardhshme",
+        "No upcoming events": "Nuk ka ngjarje të ardhshme",
+        "Upcoming": "Të ardhshme",
+        "Past": "Të kaluara"
     },
     "nplurals=2; plural=(n != 1);"
 )

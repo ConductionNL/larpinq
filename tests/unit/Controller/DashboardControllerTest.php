@@ -18,6 +18,7 @@ use OCA\Larpinq\Controller\DashboardController;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\IRequest;
 use OCP\AppFramework\Services\IInitialState;
+use OCP\IConfig;
 use OCP\IGroupManager;
 use OCP\IUser;
 use OCP\IUserSession;
@@ -40,6 +41,9 @@ class DashboardControllerTest extends TestCase {
 
 	private bool $signedIn = true;
 
+	/** @var array<string, string> The signed-in user's stored larpinq preferences, by IConfig key. */
+	private array $preferences = [];
+
 	protected function setUp(): void {
 		parent::setUp();
 
@@ -59,12 +63,18 @@ class DashboardControllerTest extends TestCase {
 		);
 		$groupManager->method('isAdmin')->willReturnCallback(fn (): bool => $this->admin);
 
+		$config = $this->createMock(IConfig::class);
+		$config->method('getUserValue')->willReturnCallback(
+			fn (string $uid, string $app, string $key, mixed $default = ''): mixed => ($app === 'larpinq' ? ($this->preferences[$key] ?? $default) : $default)
+		);
+
 		$this->controller = new DashboardController(
 			'larpinq',
 			$this->createMock(IRequest::class),
 			$initialState,
 			$session,
 			$groupManager,
+			$config,
 		);
 	}
 
@@ -106,6 +116,35 @@ class DashboardControllerTest extends TestCase {
 		$this->controller->page();
 
 		self::assertTrue($this->provided['isGameMaster'] ?? null);
+	}
+
+	/**
+	 * The world the user last chose reaches the first paint, so lists are
+	 * narrowed before their first fetch (setting-management, the active-world
+	 * lens; events-world-scope-and-upcoming).
+	 *
+	 * @return void
+	 */
+	public function testTheActiveWorldReachesThePage(): void {
+		$this->preferences['pref_active-world'] = '11111111-1111-4111-8111-111111111111';
+		$this->controller->page();
+
+		self::assertSame('11111111-1111-4111-8111-111111111111', $this->provided['activeWorld'] ?? null);
+	}
+
+	/**
+	 * No stored world, or nobody signed in, means all worlds: an empty string.
+	 *
+	 * @return void
+	 */
+	public function testNoActiveWorldMeansAllWorlds(): void {
+		$this->controller->page();
+		self::assertSame('', $this->provided['activeWorld'] ?? null);
+
+		$this->preferences['pref_active-world'] = '11111111-1111-4111-8111-111111111111';
+		$this->signedIn = false;
+		$this->controller->page();
+		self::assertSame('', $this->provided['activeWorld']);
 	}
 
 	public function testPageReturnsTemplateResponse(): void {

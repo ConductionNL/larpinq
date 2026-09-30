@@ -477,7 +477,13 @@ OC.L10N.register(
         "Player character": "Χαρακτήρας παίκτη",
         "Non-player character": "Χαρακτήρας μη παίκτη",
         "Edit selected": "Επεξεργασία επιλογής",
-        "Whether the character still plays: active, retired or dead": "Αν ο χαρακτήρας παίζει ακόμη: ενεργός, αποσυρμένος ή νεκρός"
+        "Whether the character still plays: active, retired or dead": "Αν ο χαρακτήρας παίζει ακόμη: ενεργός, αποσυρμένος ή νεκρός",
+        "Only {world} is shown.": "Εμφανίζεται μόνο ο κόσμος {world}.",
+        "Show all worlds": "Εμφάνιση όλων των κόσμων",
+        "Upcoming events": "Επερχόμενες εκδηλώσεις",
+        "No upcoming events": "Δεν υπάρχουν επερχόμενες εκδηλώσεις",
+        "Upcoming": "Επερχόμενες",
+        "Past": "Παλαιότερες"
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -477,7 +477,13 @@ OC.L10N.register(
         "Player character": "Spielercharakter",
         "Non-player character": "Nichtspielercharakter",
         "Edit selected": "Auswahl bearbeiten",
-        "Whether the character still plays: active, retired or dead": "Ob der Charakter noch gespielt wird: aktiv, im Ruhestand oder tot"
+        "Whether the character still plays: active, retired or dead": "Ob der Charakter noch gespielt wird: aktiv, im Ruhestand oder tot",
+        "Only {world} is shown.": "Nur {world} wird angezeigt.",
+        "Show all worlds": "Alle Spielwelten anzeigen",
+        "Upcoming events": "Kommende Veranstaltungen",
+        "No upcoming events": "Keine kommenden Veranstaltungen",
+        "Upcoming": "Kommende",
+        "Past": "Vergangene"
     },
     "nplurals=2; plural=(n != 1);"
 )

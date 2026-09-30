@@ -569,7 +569,13 @@ OC.L10N.register(
         "Player character": "Spelerspersonage",
         "Non-player character": "Niet-spelerspersonage",
         "Edit selected": "Selectie bewerken",
-        "Whether the character still plays: active, retired or dead": "Of het personage nog speelt: actief, gestopt of dood"
+        "Whether the character still plays: active, retired or dead": "Of het personage nog speelt: actief, gestopt of dood",
+        "Only {world} is shown.": "Alleen {world} wordt getoond.",
+        "Show all worlds": "Toon alle werelden",
+        "Upcoming events": "Komende evenementen",
+        "No upcoming events": "Geen komende evenementen",
+        "Upcoming": "Komend",
+        "Past": "Voorbij"
     },
     "nplurals=2; plural=(n != 1);"
 )

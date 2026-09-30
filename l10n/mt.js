@@ -477,7 +477,13 @@ OC.L10N.register(
         "Player character": "Karattru tal-plejer",
         "Non-player character": "Karattru mhux tal-plejer",
         "Edit selected": "Editja l-għażla",
-        "Whether the character still plays: active, retired or dead": "Jekk il-karattru għadux jilgħab: attiv, irtirat jew mejjet"
+        "Whether the character still plays: active, retired or dead": "Jekk il-karattru għadux jilgħab: attiv, irtirat jew mejjet",
+        "Only {world} is shown.": "Qed tintwera biss {world}.",
+        "Show all worlds": "Uri d-dinjiet kollha",
+        "Upcoming events": "Avvenimenti li ġejjin",
+        "No upcoming events": "L-ebda avveniment li ġej",
+        "Upcoming": "Li ġejjin",
+        "Past": "Li għaddew"
     },
     "nplurals=2; plural=(n != 1);"
 )

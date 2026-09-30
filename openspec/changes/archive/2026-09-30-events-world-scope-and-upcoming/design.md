@@ -55,6 +55,43 @@ The Events index gets a default filter `startDate >= today` and sort
 widget becomes "Upcoming events": same filter and sort, limit 6, and the
 view-all link opens the Events index with the upcoming filter.
 
+## Deviations found while building (30 Sep 2026, at development 825fe894)
+
+- **D2, where the switcher lives and how it narrows.** `@conduction/nextcloud-vue`
+  2.57.1 does have the `header` registry kind (and `actions`), mounted through
+  a page's `headerComponent` / `actionsComponent`; an earlier note that it did
+  not was wrong. The switcher is therefore the `header` of the seven
+  world-scoped index pages (it draws the page title it replaces) and sits in
+  the Dashboard's `actions`, not in the app navigation the setting-management
+  requirement names. It does not change the object store's default query:
+  every world-scoped index page and dashboard widget carries the optional
+  token `@workspace.activeWorld?` in its list filter, and the switcher writes
+  the world into the page workspace (`cnWorkspaceContext`). App.vue provides
+  an app-wide workspace; the Dashboard provides its own, so the switcher
+  writes the choice into both. An unset world drops the filter (the `?`).
+- **First paint.** `DashboardController::page()` hands the stored
+  `pref_active-world` to the page as the `activeWorld` initial state, so lists
+  are narrowed before their first fetch. The switcher then checks the world
+  once per session and falls back to all worlds (clearing the preference)
+  when it is archived or gone.
+- **D3, the past toggle.** The Events index uses two quick filters, Upcoming
+  (default, `startDate[gte]` `@today`) and Past (`startDate[lt]` `@today`),
+  with sort `startDate` ascending for both; past events are not re-sorted
+  newest first.
+- **D1, the facet.** The World column comes from the schema (the property is
+  now visible); no separate facet was added.
+- **D4, shared entities.** OpenRegister's list filter (MagicSearchHandler at
+  development) ANDs every operator on a property (`in`, `notIn`, `isnull`,
+  ...), so "this world or none" cannot be said in one query, and `NOT IN`
+  never matches a missing world either. The lens therefore lists the active
+  world's own objects only; world-less objects show under "All worlds". The
+  proposal's two-query fall-back was not built: it would break pagination
+  and counts, which the requirement protects. A request to OpenRegister for
+  an "or empty" filter is drafted at
+  `~/memcap-work/build-all/for-ruben/openregister-filter-value-or-empty.md`.
+- **Seed data.** No new seed objects: the e2e workflow builds its own worlds
+  and events.
+
 ## Declarative-vs-imperative decision
 
 | Behaviour | Path | Rationale |

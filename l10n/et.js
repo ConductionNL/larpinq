@@ -477,7 +477,13 @@ OC.L10N.register(
         "Player character": "Mängijategelane",
         "Non-player character": "Mittemängija tegelane",
         "Edit selected": "Muuda valikut",
-        "Whether the character still plays: active, retired or dead": "Kas tegelane veel mängib: aktiivne, taandunud või surnud"
+        "Whether the character still plays: active, retired or dead": "Kas tegelane veel mängib: aktiivne, taandunud või surnud",
+        "Only {world} is shown.": "Näidatakse ainult maailma {world}.",
+        "Show all worlds": "Näita kõiki maailmu",
+        "Upcoming events": "Tulevased sündmused",
+        "No upcoming events": "Tulevasi sündmusi pole",
+        "Upcoming": "Tulevased",
+        "Past": "Möödunud"
     },
     "nplurals=2; plural=(n != 1);"
 )

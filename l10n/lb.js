@@ -477,7 +477,13 @@ OC.L10N.register(
         "Player character": "Spillercharakter",
         "Non-player character": "Net-Spillercharakter",
         "Edit selected": "Auswiel änneren",
-        "Whether the character still plays: active, retired or dead": "Ob de Charakter nach spillt: aktiv, zréckgezunn oder dout"
+        "Whether the character still plays: active, retired or dead": "Ob de Charakter nach spillt: aktiv, zréckgezunn oder dout",
+        "Only {world} is shown.": "Nëmmen {world} gëtt gewisen.",
+        "Show all worlds": "All Welte weisen",
+        "Upcoming events": "Kommend Evenementer",
+        "No upcoming events": "Keng kommend Evenementer",
+        "Upcoming": "Kommend",
+        "Past": "Vergaangen"
     },
     "nplurals=2; plural=(n != 1);"
 )

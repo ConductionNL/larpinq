@@ -476,7 +476,13 @@
         "Player character": "Persunagi da giugader",
         "Non-player character": "Persunagi betg giugader",
         "Edit selected": "Modifitgar la selecziun",
-        "Whether the character still plays: active, retired or dead": "Sch'il persunagi gioga anc: activ, retratg u mort"
+        "Whether the character still plays: active, retired or dead": "Sch'il persunagi gioga anc: activ, retratg u mort",
+        "Only {world} is shown.": "Mo {world} vegn mussà.",
+        "Show all worlds": "Mussar tut ils munds",
+        "Upcoming events": "Eveniments proxims",
+        "No upcoming events": "Nagins eveniments proxims",
+        "Upcoming": "Proxims",
+        "Past": "Passads"
     },
     "plurals": {}
 }

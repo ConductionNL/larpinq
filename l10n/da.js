@@ -477,7 +477,13 @@ OC.L10N.register(
         "Player character": "Spillerkarakter",
         "Non-player character": "Ikke-spillerkarakter",
         "Edit selected": "Rediger valgte",
-        "Whether the character still plays: active, retired or dead": "Om karakteren stadig spiller: aktiv, trukket tilbage eller død"
+        "Whether the character still plays: active, retired or dead": "Om karakteren stadig spiller: aktiv, trukket tilbage eller død",
+        "Only {world} is shown.": "Kun {world} vises.",
+        "Show all worlds": "Vis alle verdener",
+        "Upcoming events": "Kommende begivenheder",
+        "No upcoming events": "Ingen kommende begivenheder",
+        "Upcoming": "Kommende",
+        "Past": "Tidligere"
     },
     "nplurals=2; plural=(n != 1);"
 )

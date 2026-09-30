@@ -477,7 +477,13 @@ OC.L10N.register(
         "Player character": "Játékoskarakter",
         "Non-player character": "Nem játékos karakter",
         "Edit selected": "Kijelöltek szerkesztése",
-        "Whether the character still plays: active, retired or dead": "Játszik-e még a karakter: aktív, visszavonult vagy halott"
+        "Whether the character still plays: active, retired or dead": "Játszik-e még a karakter: aktív, visszavonult vagy halott",
+        "Only {world} is shown.": "Csak {world} látható.",
+        "Show all worlds": "Minden világ mutatása",
+        "Upcoming events": "Közelgő események",
+        "No upcoming events": "Nincsenek közelgő események",
+        "Upcoming": "Közelgő",
+        "Past": "Korábbi"
     },
     "nplurals=2; plural=(n != 1);"
 )

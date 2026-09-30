@@ -477,7 +477,13 @@ OC.L10N.register(
         "Player character": "Personaj jucător",
         "Non-player character": "Personaj nejucător",
         "Edit selected": "Editează selecția",
-        "Whether the character still plays: active, retired or dead": "Dacă personajul mai joacă: activ, retras sau mort"
+        "Whether the character still plays: active, retired or dead": "Dacă personajul mai joacă: activ, retras sau mort",
+        "Only {world} is shown.": "Se afișează doar {world}.",
+        "Show all worlds": "Afișează toate universurile",
+        "Upcoming events": "Evenimente viitoare",
+        "No upcoming events": "Niciun eveniment viitor",
+        "Upcoming": "Viitoare",
+        "Past": "Trecute"
     },
     "nplurals=2; plural=(n != 1);"
 )

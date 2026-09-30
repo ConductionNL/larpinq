@@ -477,7 +477,13 @@ OC.L10N.register(
         "Player character": "Персанаж гульца",
         "Non-player character": "Негульнявы персанаж",
         "Edit selected": "Змяніць выбранае",
-        "Whether the character still plays: active, retired or dead": "Ці гуляе персанаж: актыўны, на спакоі ці мёртвы"
+        "Whether the character still plays: active, retired or dead": "Ці гуляе персанаж: актыўны, на спакоі ці мёртвы",
+        "Only {world} is shown.": "Паказваецца толькі {world}.",
+        "Show all worlds": "Паказаць усе светы",
+        "Upcoming events": "Бліжэйшыя падзеі",
+        "No upcoming events": "Няма бліжэйшых падзей",
+        "Upcoming": "Бліжэйшыя",
+        "Past": "Мінулыя"
     },
     "nplurals=2; plural=(n != 1);"
 )
