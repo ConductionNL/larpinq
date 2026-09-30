@@ -633,6 +633,38 @@
         "visibility": "players",
         "revealFrom": "2026-10-10T18:00:00+00:00",
         "order": 4
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_plot",
+          "slug": "plot-the-heir-of-aldmoor"
+        },
+        "title": "The heir of Aldmoor",
+        "summary": "The lost heir of the old queen hides among the players. The guard captain knows.",
+        "writer": "joris",
+        "writingStep": "ready"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_plot_part",
+          "slug": "plot-part-heir-mirela"
+        },
+        "plot": "00000000-0000-4000-8000-000000000000",
+        "character": "00000000-0000-4000-8000-000000000000",
+        "privateText": "She is the lost heir; the guard captain knows.",
+        "playerText": "You dream of a crown you never wore."
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_plot_part",
+          "slug": "plot-part-heir-bertram"
+        },
+        "plot": "00000000-0000-4000-8000-000000000000",
+        "character": "00000000-0000-4000-8000-000000000001",
+        "privateText": "Sworn to find the heir and bring her to the queen."
       }
     ]
   }
