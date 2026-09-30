@@ -82,3 +82,18 @@ detail pages render without error — the contract the shipped leaves already
 honour, restated as REQ-004 so the new leaves cannot regress it. Any new tab
 labels come from the leaf apps through the registry host; Larpinq adds no
 hard-coded label strings.
+
+## Measured merge semantics (task 1, 2026-09-29)
+
+`ConfigFileLoaderService::deepMergeConfig()` concatenates two list arrays
+(`array_merge`), and fragments merge in sorted file order. So a fragment that
+declares only its own values adds them next to the ones other fragments
+contribute: the fragment carries the three-value delta for `event` and the
+two-value list for `setting` (which has no `configuration` in the monolith).
+`tests/unit/Settings/LeafIntegrationsFragmentTest.php` runs the real merge over
+the real monolith and every fragment, and asserts all six event leaves, each
+once, and talk and polls without deck on the setting.
+
+CHANGELOG (task 5) is not edited: `lib/Settings/register.d/README.md` gives the
+changelog to the release step, not to build branches. The release notes pick
+the change up from its PR title.
