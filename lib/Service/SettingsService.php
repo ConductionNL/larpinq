@@ -96,6 +96,9 @@ class SettingsService {
 		'relationship_schema',
 		'relationship_register',
 		'relationship_source',
+		'characterbuild_schema',
+		'characterbuild_register',
+		'characterbuild_source',
 	];
 
 	/**

@@ -886,6 +886,57 @@
         "kind": "mentor",
         "description": "Taught him to hold a sword.",
         "knownTo": "owners"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_character_build",
+          "slug": "build-mirela-alchemist-path"
+        },
+        "character": "00000000-0000-4000-8000-000000000000",
+        "name": "Alchemist path",
+        "purpose": "plan",
+        "notes": "Herbalism now, Potion brewing next season, towards Master Alchemist.",
+        "skills": [
+          "00000000-0000-4000-8000-000000000000",
+          "00000000-0000-4000-8000-000000000001"
+        ],
+        "items": [],
+        "conditions": []
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_character_build",
+          "slug": "build-mirela-winter-campaign"
+        },
+        "character": "00000000-0000-4000-8000-000000000000",
+        "name": "Winter campaign",
+        "purpose": "other-game",
+        "notes": "Swordsmanship and Riding for the winter campaign. Costs 5 XP more than Mirela has.",
+        "skills": [
+          "00000000-0000-4000-8000-000000000001",
+          "00000000-0000-4000-8000-000000000002"
+        ],
+        "items": [
+          "00000000-0000-4000-8000-000000000000"
+        ],
+        "conditions": []
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_character_build",
+          "slug": "build-bertram-test"
+        },
+        "character": "00000000-0000-4000-8000-000000000001",
+        "name": "Shield bearer test",
+        "purpose": "test",
+        "skills": [
+          "00000000-0000-4000-8000-000000000001"
+        ],
+        "items": [],
+        "conditions": []
       }
     ]
   }

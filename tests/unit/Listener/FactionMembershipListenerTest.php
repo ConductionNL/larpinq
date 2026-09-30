@@ -124,6 +124,7 @@ class FactionMembershipListenerTest extends TestCase {
 				'faction_schema' => 'schema-faction',
 				'factionmember_schema' => 'schema-member',
 				'relationship_schema' => 'schema-relationship',
+				'characterbuild_schema' => 'schema-build',
 			][$key] ?? $default
 		);
 
@@ -419,4 +420,38 @@ class FactionMembershipListenerTest extends TestCase {
 		$this->assertNull($this->refusal(listener: $this->listener(uid: 'karel'), event: $this->create(schema: 'schema-character', data: $active)));
 		$this->assertNull($this->refusal(listener: $this->listener(uid: null), event: $this->create(schema: 'schema-member', data: $active)));
 	}//end testOtherSchemasAndSystemWritesPass()
+
+	/**
+	 * Scenario "Another player looks" (REQ-CMB-004): a player makes builds for
+	 * their own character only, a game master for any character.
+	 *
+	 * @return void
+	 */
+	public function testAPlayerMakesBuildsForTheirOwnCharacterOnly(): void {
+		$build = ['character' => self::HARROW, 'name' => 'Alchemist path', 'purpose' => 'plan'];
+		$this->assertNull($this->refusal(listener: $this->listener(uid: 'karel'), event: $this->create(schema: 'schema-build', data: $build)));
+		$this->assertSame(
+			'build_own_character_only',
+			$this->refusal(listener: $this->listener(uid: 'vera'), event: $this->create(schema: 'schema-build', data: $build))
+		);
+		$this->assertNull(
+			$this->refusal(listener: $this->listener(uid: 'gm', gameMaster: true), event: $this->create(schema: 'schema-build', data: $build))
+		);
+	}//end testAPlayerMakesBuildsForTheirOwnCharacterOnly()
+
+	/**
+	 * A stored build stays with its character.
+	 *
+	 * @return void
+	 */
+	public function testABuildCannotMoveToAnotherCharacter(): void {
+		$old = ['character' => self::HARROW, 'name' => 'Alchemist path'];
+		$moved = ['character' => self::VENN, 'name' => 'Alchemist path'];
+		$this->assertSame(
+			'build_moved',
+			$this->refusal(listener: $this->listener(uid: 'karel'), event: $this->update(schema: 'schema-build', new: $moved, old: $old))
+		);
+		$renamed = ['character' => self::HARROW, 'name' => 'Herbalist path'];
+		$this->assertNull($this->refusal(listener: $this->listener(uid: 'karel'), event: $this->update(schema: 'schema-build', new: $renamed, old: $old)));
+	}//end testABuildCannotMoveToAnotherCharacter()
 }//end class

@@ -85,6 +85,7 @@ class SettingsLoadService {
 		'faction' => 'larping_faction',
 		'factionmember' => 'larping_faction_member',
 		'relationship' => 'larping_relationship',
+		'characterbuild' => 'larping_character_build',
 	];
 
 	/**

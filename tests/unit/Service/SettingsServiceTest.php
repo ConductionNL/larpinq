@@ -56,11 +56,13 @@ class SettingsServiceTest extends TestCase {
 		$this->assertArrayHasKey('faction_schema', $result);
 		$this->assertArrayHasKey('factionmember_schema', $result);
 		$this->assertArrayHasKey('relationship_schema', $result);
+		// The build report reads a build by this key.
+		$this->assertArrayHasKey('characterbuild_schema', $result);
 		// CONFIG_KEYS now includes {slug}_schema + {slug}_register + {slug}_source
-		// for all 15 slugs (9 original + attendance + lorepage + characterfield
-		// + faction + factionmember + relationship) plus the global 'register'
-		// key = 1 + 15*3 = 46.
-		$this->assertCount(46, $result);
+		// for all 16 slugs (9 original + attendance + lorepage + characterfield
+		// + faction + factionmember + relationship + characterbuild) plus the
+		// global 'register' key = 1 + 16*3 = 49.
+		$this->assertCount(49, $result);
 	}
 
 	public function testGetSettingsReturnsEmptyStringsAsDefaults(): void {
@@ -117,7 +119,7 @@ class SettingsServiceTest extends TestCase {
 		$result = $this->service->updateSettings(['register' => 'reg-1']);
 
 		$this->assertIsArray($result);
-		$this->assertCount(46, $result);
+		$this->assertCount(49, $result);
 	}
 
 	public function testLoadSettingsDelegatesToLoadService(): void {
