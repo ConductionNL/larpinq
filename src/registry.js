@@ -26,6 +26,7 @@ import CharacterPdfDownloadDialog from './dialogs/CharacterPdfDownloadDialog.vue
 import CharacterStatSheet from './views/CharacterStatSheet.vue'
 import EventRoster from './views/EventRoster.vue'
 import FlowDetailSidebar from './views/flows/FlowDetailSidebar.vue'
+import LoreArticle from './views/LoreArticle.vue'
 import ObjectDetail from './views/ObjectDetail.vue'
 import GameSettingsSection from './views/settings/Settings.vue'
 import SkillTree from './views/SkillTree.vue'
@@ -62,6 +63,9 @@ export default {
 	// (skill-tree-visualization). Resolved by CnPageRenderer as the page body
 	// component for the SkillTree manifest page.
 	SkillTree: { kind: 'page', component: SkillTree },
+	// Lore read page (worlds-lore-pages): CnWikiPage plus the fetch it leaves
+	// to its host. @spec openspec/specs/world-lore/spec.md
+	LoreArticle: { kind: 'page', component: LoreArticle },
 
 	// Worlds page header actions (admin-import-export): the whole campaign as
 	// one workbook out of, and back into, the larpinq register.
