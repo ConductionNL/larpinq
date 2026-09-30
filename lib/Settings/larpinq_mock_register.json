@@ -665,6 +665,39 @@
         "plot": "00000000-0000-4000-8000-000000000000",
         "character": "00000000-0000-4000-8000-000000000001",
         "privateText": "Sworn to find the heir and bring her to the queen."
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_plot",
+          "slug": "plot-the-ash-circle-returns"
+        },
+        "title": "The Ash Circle returns",
+        "summary": "The old soldiers try to start the war again at the midsummer market.",
+        "writer": "sanne",
+        "writingStep": "draft"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_plot",
+          "slug": "plot-the-river-toll"
+        },
+        "title": "The river toll",
+        "summary": "A new toll on the Esk splits the merchants of Aldmoor.",
+        "writer": "joris",
+        "writingStep": "approved"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_plot_part",
+          "slug": "plot-part-ash-tomas"
+        },
+        "plot": "00000000-0000-4000-8000-000000000001",
+        "character": "00000000-0000-4000-8000-000000000002",
+        "privateText": "Tomas owes the harbour master a debt he cannot pay.",
+        "playerText": "Someone at the harbour keeps asking about you."
       }
     ]
   }

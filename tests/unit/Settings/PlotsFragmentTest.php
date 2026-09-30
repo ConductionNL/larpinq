@@ -185,7 +185,8 @@ class PlotsFragmentTest extends TestCase {
 			$result = $validator->validate(json_decode((string)json_encode($object)), $schema);
 			$this->assertTrue($result->isValid(), "seed {$slug} must validate");
 		}
-		$this->assertSame(['larping_plot' => 1, 'larping_plot_part' => 2], $seen);
+		// ADR-111 rule 1 (gate-101): at least three demo objects per schema.
+		$this->assertSame(['larping_plot' => 3, 'larping_plot_part' => 3], $seen);
 	}//end testTheSeedObjectsValidate()
 
 	/**
