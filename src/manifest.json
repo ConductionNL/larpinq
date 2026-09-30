@@ -585,6 +585,7 @@
 			"config": {
 				"register": "larpinq",
 				"schema": "character",
+				"allowExport": true,
 				"documentationUrl": "https://larpinq.conduction.nl"
 			}
 		},
@@ -817,6 +818,7 @@
 			"config": {
 				"register": "larpinq",
 				"schema": "player",
+				"allowExport": true,
 				"documentationUrl": "https://larpinq.conduction.nl"
 			}
 		},
@@ -928,6 +930,8 @@
 			"config": {
 				"register": "larpinq",
 				"schema": "ability",
+				"allowExport": true,
+				"showMassImport": false,
 				"documentationUrl": "https://larpinq.conduction.nl"
 			}
 		},
@@ -1079,6 +1083,8 @@
 			"config": {
 				"register": "larpinq",
 				"schema": "larping_skill",
+				"allowExport": true,
+				"showMassImport": false,
 				"documentationUrl": "https://larpinq.conduction.nl"
 			}
 		},
@@ -1205,6 +1211,8 @@
 			"config": {
 				"register": "larpinq",
 				"schema": "larping_item",
+				"allowExport": true,
+				"showMassImport": false,
 				"documentationUrl": "https://larpinq.conduction.nl"
 			}
 		},
@@ -1320,6 +1328,8 @@
 			"config": {
 				"register": "larpinq",
 				"schema": "condition",
+				"allowExport": true,
+				"showMassImport": false,
 				"documentationUrl": "https://larpinq.conduction.nl"
 			}
 		},
@@ -1420,6 +1430,8 @@
 			"config": {
 				"register": "larpinq",
 				"schema": "effect",
+				"allowExport": true,
+				"showMassImport": false,
 				"documentationUrl": "https://larpinq.conduction.nl"
 			}
 		},
@@ -1590,6 +1602,8 @@
 			"config": {
 				"register": "larpinq",
 				"schema": "larping_event",
+				"allowExport": true,
+				"showMassImport": false,
 				"documentationUrl": "https://larpinq.conduction.nl"
 			}
 		},
@@ -1843,6 +1857,12 @@
 			"config": {
 				"register": "larpinq",
 				"schema": "setting",
+				"allowExport": true,
+				"showMassImport": false,
+				"headerActions": [
+					{ "id": "export-campaign", "label": "Export campaign", "icon": "DatabaseExport", "handler": "larpinqExportCampaign" },
+					{ "id": "import-campaign", "label": "Import campaign", "icon": "DatabaseImport", "handler": "larpinqImportCampaign" }
+				],
 				"documentationUrl": "https://larpinq.conduction.nl"
 			}
 		},
@@ -2026,6 +2046,8 @@
 			"config": {
 				"register": "larpinq",
 				"schema": "xpAward",
+				"allowExport": true,
+				"showMassImport": false,
 				"documentationUrl": "https://larpinq.conduction.nl"
 			}
 		},

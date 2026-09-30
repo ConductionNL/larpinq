@@ -289,7 +289,13 @@
         "event": "etkinlik",
         "XP award": "XP ödülü",
         "from {name}": "kaynak: {name}",
-        "from {name} ({type})": "kaynak: {name} ({type})"
+        "from {name} ({type})": "kaynak: {name} ({type})",
+        "Export campaign": "Kampanyayı dışa aktar",
+        "Import campaign": "Kampanya içe aktar",
+        "The campaign could not be exported, because no register is configured.": "Yapılandırılmış bir kayıt olmadığı için kampanya dışa aktarılamadı.",
+        "The campaign could not be imported, because no register is configured.": "Yapılandırılmış bir kayıt olmadığı için kampanya içe aktarılamadı.",
+        "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Kampanya içe aktarıldı: {created} oluşturuldu, {updated} güncellendi, {unchanged} değişmedi, {failed} başarısız",
+        "The campaign could not be imported: {reason}": "Kampanya içe aktarılamadı: {reason}"
     },
     "plurals": {}
 }

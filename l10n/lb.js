@@ -290,7 +290,13 @@ OC.L10N.register(
         "event": "Evenement",
         "XP award": "XP-Vergab",
         "from {name}": "vun {name}",
-        "from {name} ({type})": "vun {name} ({type})"
+        "from {name} ({type})": "vun {name} ({type})",
+        "Export campaign": "Kampagne exportéieren",
+        "Import campaign": "Kampagne importéieren",
+        "The campaign could not be exported, because no register is configured.": "D'Kampagne konnt net exportéiert ginn, well keen Register agestallt ass.",
+        "The campaign could not be imported, because no register is configured.": "D'Kampagne konnt net importéiert ginn, well keen Register agestallt ass.",
+        "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Kampagne importéiert: {created} erstallt, {updated} aktualiséiert, {unchanged} onverännert, {failed} feelgeschloen",
+        "The campaign could not be imported: {reason}": "D'Kampagne konnt net importéiert ginn: {reason}"
     },
     "nplurals=2; plural=(n != 1);"
 )

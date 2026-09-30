@@ -29,6 +29,10 @@ import FlowDetailSidebar from './views/flows/FlowDetailSidebar.vue'
 import ObjectDetail from './views/ObjectDetail.vue'
 import GameSettingsSection from './views/settings/Settings.vue'
 import SkillTree from './views/SkillTree.vue'
+import {
+	exportCampaignAction,
+	importCampaignAction,
+} from './services/campaignActions.js'
 
 export default {
 	// CharacterDetail "Download as PDF" header action (open-modal): a template
@@ -58,4 +62,10 @@ export default {
 	// (skill-tree-visualization). Resolved by CnPageRenderer as the page body
 	// component for the SkillTree manifest page.
 	SkillTree: { kind: 'page', component: SkillTree },
+
+	// Worlds page header actions (admin-import-export): the whole campaign as
+	// one workbook out of, and back into, the larpinq register.
+	// @spec openspec/specs/data-portability/spec.md
+	larpinqExportCampaign: { kind: 'handler', handler: exportCampaignAction },
+	larpinqImportCampaign: { kind: 'handler', handler: importCampaignAction },
 }

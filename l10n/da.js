@@ -290,7 +290,13 @@ OC.L10N.register(
         "event": "begivenhed",
         "XP award": "XP-tildeling",
         "from {name}": "fra {name}",
-        "from {name} ({type})": "fra {name} ({type})"
+        "from {name} ({type})": "fra {name} ({type})",
+        "Export campaign": "Eksportér kampagne",
+        "Import campaign": "Importér kampagne",
+        "The campaign could not be exported, because no register is configured.": "Kampagnen kunne ikke eksporteres, fordi der ikke er konfigureret et register.",
+        "The campaign could not be imported, because no register is configured.": "Kampagnen kunne ikke importeres, fordi der ikke er konfigureret et register.",
+        "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Kampagne importeret: {created} oprettet, {updated} opdateret, {unchanged} uændret, {failed} mislykkedes",
+        "The campaign could not be imported: {reason}": "Kampagnen kunne ikke importeres: {reason}"
     },
     "nplurals=2; plural=(n != 1);"
 )

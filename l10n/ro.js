@@ -290,7 +290,13 @@ OC.L10N.register(
         "event": "eveniment",
         "XP award": "acordare XP",
         "from {name}": "de la {name}",
-        "from {name} ({type})": "de la {name} ({type})"
+        "from {name} ({type})": "de la {name} ({type})",
+        "Export campaign": "Exportă campania",
+        "Import campaign": "Importă o campanie",
+        "The campaign could not be exported, because no register is configured.": "Campania nu a putut fi exportată, deoarece nu este configurat niciun registru.",
+        "The campaign could not be imported, because no register is configured.": "Campania nu a putut fi importată, deoarece nu este configurat niciun registru.",
+        "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Campanie importată: {created} create, {updated} actualizate, {unchanged} neschimbate, {failed} eșuate",
+        "The campaign could not be imported: {reason}": "Campania nu a putut fi importată: {reason}"
     },
     "nplurals=2; plural=(n != 1);"
 )

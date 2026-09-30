@@ -290,7 +290,13 @@ OC.L10N.register(
         "event": "occurrenza",
         "XP award": "attribuziun da XP",
         "from {name}": "da {name}",
-        "from {name} ({type})": "da {name} ({type})"
+        "from {name} ({type})": "da {name} ({type})",
+        "Export campaign": "Exportar la campagna",
+        "Import campaign": "Importar ina campagna",
+        "The campaign could not be exported, because no register is configured.": "La campagna n'ha betg pudì vegnir exportada, perquai ch'i n'è configurà nagin register.",
+        "The campaign could not be imported, because no register is configured.": "La campagna n'ha betg pudì vegnir importada, perquai ch'i n'è configurà nagin register.",
+        "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Campagna importada: {created} creads, {updated} actualisads, {unchanged} betg midads, {failed} betg reussids",
+        "The campaign could not be imported: {reason}": "La campagna n'ha betg pudì vegnir importada: {reason}"
     },
     "nplurals=2; plural=(n != 1);"
 )

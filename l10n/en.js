@@ -255,7 +255,13 @@ OC.L10N.register(
         "event": "event",
         "XP award": "XP award",
         "from {name}": "from {name}",
-        "from {name} ({type})": "from {name} ({type})"
+        "from {name} ({type})": "from {name} ({type})",
+        "Export campaign": "Export campaign",
+        "Import campaign": "Import campaign",
+        "The campaign could not be exported, because no register is configured.": "The campaign could not be exported, because no register is configured.",
+        "The campaign could not be imported, because no register is configured.": "The campaign could not be imported, because no register is configured.",
+        "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed",
+        "The campaign could not be imported: {reason}": "The campaign could not be imported: {reason}"
     },
     "nplurals=2; plural=(n != 1);"
 )

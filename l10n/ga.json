@@ -289,7 +289,13 @@
         "event": "imeacht",
         "XP award": "bronnadh XP",
         "from {name}": "ó {name}",
-        "from {name} ({type})": "ó {name} ({type})"
+        "from {name} ({type})": "ó {name} ({type})",
+        "Export campaign": "Easpórtáil an feachtas",
+        "Import campaign": "Iompórtáil feachtas",
+        "The campaign could not be exported, because no register is configured.": "Níorbh fhéidir an feachtas a easpórtáil, mar níl aon chlár socraithe.",
+        "The campaign could not be imported, because no register is configured.": "Níorbh fhéidir an feachtas a iompórtáil, mar níl aon chlár socraithe.",
+        "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Feachtas iompórtáilte: {created} cruthaithe, {updated} nuashonraithe, {unchanged} gan athrú, {failed} theip",
+        "The campaign could not be imported: {reason}": "Níorbh fhéidir an feachtas a iompórtáil: {reason}"
     },
     "plurals": {}
 }

@@ -290,7 +290,13 @@ OC.L10N.register(
         "event": "εκδήλωση",
         "XP award": "απονομή XP",
         "from {name}": "από {name}",
-        "from {name} ({type})": "από {name} ({type})"
+        "from {name} ({type})": "από {name} ({type})",
+        "Export campaign": "Εξαγωγή εκστρατείας",
+        "Import campaign": "Εισαγωγή εκστρατείας",
+        "The campaign could not be exported, because no register is configured.": "Δεν ήταν δυνατή η εξαγωγή της εκστρατείας, επειδή δεν έχει ρυθμιστεί μητρώο.",
+        "The campaign could not be imported, because no register is configured.": "Δεν ήταν δυνατή η εισαγωγή της εκστρατείας, επειδή δεν έχει ρυθμιστεί μητρώο.",
+        "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Η εκστρατεία εισήχθη: {created} δημιουργήθηκαν, {updated} ενημερώθηκαν, {unchanged} αμετάβλητα, {failed} απέτυχαν",
+        "The campaign could not be imported: {reason}": "Δεν ήταν δυνατή η εισαγωγή της εκστρατείας: {reason}"
     },
     "nplurals=2; plural=(n != 1);"
 )

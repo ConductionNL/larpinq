@@ -289,7 +289,13 @@
         "event": "падзея",
         "XP award": "налічэнне XP",
         "from {name}": "ад {name}",
-        "from {name} ({type})": "ад {name} ({type})"
+        "from {name} ({type})": "ад {name} ({type})",
+        "Export campaign": "Экспартаваць кампанію",
+        "Import campaign": "Імпартаваць кампанію",
+        "The campaign could not be exported, because no register is configured.": "Не ўдалося экспартаваць кампанію, бо рэестр не наладжаны.",
+        "The campaign could not be imported, because no register is configured.": "Не ўдалося імпартаваць кампанію, бо рэестр не наладжаны.",
+        "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Кампанія імпартавана: створана {created}, абноўлена {updated}, без змен {unchanged}, з памылкай {failed}",
+        "The campaign could not be imported: {reason}": "Не ўдалося імпартаваць кампанію: {reason}"
     },
     "plurals": {}
 }

@@ -290,7 +290,13 @@ OC.L10N.register(
         "event": "renginys",
         "XP award": "XP skyrimas",
         "from {name}": "iš {name}",
-        "from {name} ({type})": "iš {name} ({type})"
+        "from {name} ({type})": "iš {name} ({type})",
+        "Export campaign": "Eksportuoti kampaniją",
+        "Import campaign": "Importuoti kampaniją",
+        "The campaign could not be exported, because no register is configured.": "Nepavyko eksportuoti kampanijos, nes nenustatytas registras.",
+        "The campaign could not be imported, because no register is configured.": "Nepavyko importuoti kampanijos, nes nenustatytas registras.",
+        "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Kampanija importuota: sukurta {created}, atnaujinta {updated}, nepakeista {unchanged}, nepavyko {failed}",
+        "The campaign could not be imported: {reason}": "Nepavyko importuoti kampanijos: {reason}"
     },
     "nplurals=2; plural=(n != 1);"
 )

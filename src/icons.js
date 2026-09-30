@@ -28,6 +28,8 @@ import ChartBoxOutline from 'vue-material-design-icons/ChartBoxOutline.vue'
 import ClipboardList from 'vue-material-design-icons/ClipboardList.vue'
 import Cog from 'vue-material-design-icons/Cog.vue'
 import CogOutline from 'vue-material-design-icons/CogOutline.vue'
+import DatabaseExport from 'vue-material-design-icons/DatabaseExport.vue'
+import DatabaseImport from 'vue-material-design-icons/DatabaseImport.vue'
 import DramaMasks from 'vue-material-design-icons/DramaMasks.vue'
 import Earth from 'vue-material-design-icons/Earth.vue'
 import EmoticonSickOutline from 'vue-material-design-icons/EmoticonSickOutline.vue'
@@ -78,6 +80,8 @@ export default {
 	ClipboardList,
 	Cog,
 	CogOutline,
+	DatabaseExport,
+	DatabaseImport,
 	DramaMasks,
 	Earth,
 	EmoticonSickOutline,

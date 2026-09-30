@@ -10,6 +10,8 @@
 				"schema": "character",
 				"filter": { "approved": "approved" },
 				"readOnly": true,
+				"allowExport": true,
+				"showMassImport": false,
 				"columns": [
 					{ "key": "name", "label": "Name" },
 					{ "key": "type", "label": "Type" },

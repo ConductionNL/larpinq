@@ -16,7 +16,9 @@ Read at development `77c85f0`.
   schema, whole-register Excel export (one sheet per schema slug), multi-sheet
   import matched by sheet title, upsert and deduplication, error reports,
   templates, property rules on export columns, RBAC on both directions.
-- The register slug is frozen as `larpingapp` (`register.d/README.md`).
+- The register slug is `larpinq` (`lib/Settings/larpinq_register.json`); the
+  register-level endpoints take its numeric id, which the larpinq settings
+  carry (`setting_register`).
 
 ## Goals / Non-Goals
 
@@ -80,3 +82,39 @@ None.
 ## Open Questions
 
 None.
+
+## Changes at build (2026-09-30, read at development `3231ec5`)
+
+The design did not fit the code at HEAD in four places. Fixed here:
+
+1. **Where the flag lives.** OpenRegister keeps the flag at
+   `configuration.exportable` (Schema::jsonSerialize mirrors it; #4131), so the
+   fragment sets it there, on all eleven schemas including the
+   fragment-added `attendance`.
+2. **Who may import.** CnIndexPage's list import and the campaign import both
+   post to `POST /api/registers/{id}/import`, which requires permission to
+   manage the register. The larpinq register has no `manage` rule, so that is
+   administrators only, not game masters. The import actions are therefore
+   removed for non-administrators (`applyImportGate` in
+   `src/services/campaignPortability.js`, applied in `src/main.js` on
+   `getCurrentUser().isAdmin`) rather than offered and refused. Widening this
+   to the `gamemasters` group means a register `authorization.manage` rule,
+   which also lets them change the register's schemas: a security default,
+   asked of Ruben, not taken here.
+3. **The import was on every list.** `showMassImport` defaults to true, so
+   every index page already offered an import. Every page but Characters and
+   Players now sets it false.
+4. **The campaign actions.** CnIndexPage header actions cannot open an
+   OpenRegister dialog and the register export takes a numeric id, so the two
+   Worlds actions are `kind: 'handler'` registry entries
+   (`src/services/campaignActions.js`): export navigates to
+   `GET /api/registers/{id}/export?format=excel`; import picks a workbook,
+   posts it with `type=excel` and shows the counts in a toast. The advice to
+   export first lives in the feature documentation, because a header action
+   has no page text. `exportFormats` is left at its default, which already
+   names CSV and Excel. Templates are not wired: the list import dialog in
+   nextcloud-vue 2.57.1 has no template link, and a CSV with the list's own
+   column names (an export) imports.
+
+So the change is not purely declarative: two small frontend modules, no
+larpinq PHP.

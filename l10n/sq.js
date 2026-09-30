@@ -290,7 +290,13 @@ OC.L10N.register(
         "event": "ngjarje",
         "XP award": "dhënie XP",
         "from {name}": "nga {name}",
-        "from {name} ({type})": "nga {name} ({type})"
+        "from {name} ({type})": "nga {name} ({type})",
+        "Export campaign": "Eksporto fushatën",
+        "Import campaign": "Importo fushatë",
+        "The campaign could not be exported, because no register is configured.": "Fushata nuk u eksportua dot, sepse nuk është konfiguruar asnjë regjistër.",
+        "The campaign could not be imported, because no register is configured.": "Fushata nuk u importua dot, sepse nuk është konfiguruar asnjë regjistër.",
+        "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Fushata u importua: {created} u krijuan, {updated} u përditësuan, {unchanged} të pandryshuara, {failed} dështuan",
+        "The campaign could not be imported: {reason}": "Fushata nuk u importua dot: {reason}"
     },
     "nplurals=2; plural=(n != 1);"
 )

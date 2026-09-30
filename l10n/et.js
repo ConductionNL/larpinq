@@ -290,7 +290,13 @@ OC.L10N.register(
         "event": "sündmus",
         "XP award": "XP määramine",
         "from {name}": "allikast {name}",
-        "from {name} ({type})": "allikast {name} ({type})"
+        "from {name} ({type})": "allikast {name} ({type})",
+        "Export campaign": "Ekspordi kampaania",
+        "Import campaign": "Impordi kampaania",
+        "The campaign could not be exported, because no register is configured.": "Kampaaniat ei õnnestunud eksportida, sest registrit pole seadistatud.",
+        "The campaign could not be imported, because no register is configured.": "Kampaaniat ei õnnestunud importida, sest registrit pole seadistatud.",
+        "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Kampaania imporditud: {created} loodud, {updated} uuendatud, {unchanged} muutmata, {failed} ebaõnnestus",
+        "The campaign could not be imported: {reason}": "Kampaaniat ei õnnestunud importida: {reason}"
     },
     "nplurals=2; plural=(n != 1);"
 )

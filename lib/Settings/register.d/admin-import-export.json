@@ -1,0 +1,61 @@
+{
+  "components": {
+    "schemas": {
+      "character": {
+        "configuration": {
+          "exportable": true
+        }
+      },
+      "player": {
+        "configuration": {
+          "exportable": true
+        }
+      },
+      "ability": {
+        "configuration": {
+          "exportable": true
+        }
+      },
+      "skill": {
+        "configuration": {
+          "exportable": true
+        }
+      },
+      "item": {
+        "configuration": {
+          "exportable": true
+        }
+      },
+      "condition": {
+        "configuration": {
+          "exportable": true
+        }
+      },
+      "effect": {
+        "configuration": {
+          "exportable": true
+        }
+      },
+      "event": {
+        "configuration": {
+          "exportable": true
+        }
+      },
+      "setting": {
+        "configuration": {
+          "exportable": true
+        }
+      },
+      "xpAward": {
+        "configuration": {
+          "exportable": true
+        }
+      },
+      "attendance": {
+        "configuration": {
+          "exportable": true
+        }
+      }
+    }
+  }
+}
