@@ -477,7 +477,13 @@ OC.L10N.register(
         "Player character": "Igralčev lik",
         "Non-player character": "Neigralski lik",
         "Edit selected": "Uredi izbrane",
-        "Whether the character still plays: active, retired or dead": "Ali lik še igra: aktiven, upokojen ali mrtev"
+        "Whether the character still plays: active, retired or dead": "Ali lik še igra: aktiven, upokojen ali mrtev",
+        "Only {world} is shown.": "Prikazan je samo {world}.",
+        "Show all worlds": "Prikaži vse svetove",
+        "Upcoming events": "Prihajajoči dogodki",
+        "No upcoming events": "Ni prihajajočih dogodkov",
+        "Upcoming": "Prihajajoči",
+        "Past": "Pretekli"
     },
     "nplurals=2; plural=(n != 1);"
 )

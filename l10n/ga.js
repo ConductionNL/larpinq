@@ -477,7 +477,13 @@ OC.L10N.register(
         "Player character": "Carachtar imreora",
         "Non-player character": "Carachtar neamh-imreora",
         "Edit selected": "Cuir an rogha in eagar",
-        "Whether the character still plays: active, retired or dead": "An bhfuil an carachtar fós ag imirt: gníomhach, ar scor nó marbh"
+        "Whether the character still plays: active, retired or dead": "An bhfuil an carachtar fós ag imirt: gníomhach, ar scor nó marbh",
+        "Only {world} is shown.": "Níl ach {world} á thaispeáint.",
+        "Show all worlds": "Taispeáin gach saol",
+        "Upcoming events": "Imeachtaí le teacht",
+        "No upcoming events": "Níl aon imeachtaí le teacht",
+        "Upcoming": "Le teacht",
+        "Past": "Caite"
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -476,7 +476,13 @@
         "Player character": "Leikmannspersóna",
         "Non-player character": "Persóna án leikmanns",
         "Edit selected": "Breyta vali",
-        "Whether the character still plays: active, retired or dead": "Hvort persónan er enn í leik: virk, hætt eða dáin"
+        "Whether the character still plays: active, retired or dead": "Hvort persónan er enn í leik: virk, hætt eða dáin",
+        "Only {world} is shown.": "Aðeins {world} er sýndur.",
+        "Show all worlds": "Sýna alla heima",
+        "Upcoming events": "Væntanlegir viðburðir",
+        "No upcoming events": "Engir væntanlegir viðburðir",
+        "Upcoming": "Væntanlegir",
+        "Past": "Liðnir"
     },
     "plurals": {}
 }

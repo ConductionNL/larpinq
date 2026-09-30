@@ -477,7 +477,13 @@ OC.L10N.register(
         "Player character": "Spelarkaraktär",
         "Non-player character": "Icke-spelarkaraktär",
         "Edit selected": "Redigera valda",
-        "Whether the character still plays: active, retired or dead": "Om karaktären fortfarande spelar: aktiv, pensionerad eller död"
+        "Whether the character still plays: active, retired or dead": "Om karaktären fortfarande spelar: aktiv, pensionerad eller död",
+        "Only {world} is shown.": "Endast {world} visas.",
+        "Show all worlds": "Visa alla världar",
+        "Upcoming events": "Kommande evenemang",
+        "No upcoming events": "Inga kommande evenemang",
+        "Upcoming": "Kommande",
+        "Past": "Tidigare"
     },
     "nplurals=2; plural=(n != 1);"
 )

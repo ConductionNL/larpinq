@@ -477,7 +477,13 @@ OC.L10N.register(
         "Player character": "Oyuncu karakteri",
         "Non-player character": "Oyuncu olmayan karakter",
         "Edit selected": "Seçileni düzenle",
-        "Whether the character still plays: active, retired or dead": "Karakterin hâlâ oynayıp oynamadığı: etkin, emekli veya ölü"
+        "Whether the character still plays: active, retired or dead": "Karakterin hâlâ oynayıp oynamadığı: etkin, emekli veya ölü",
+        "Only {world} is shown.": "Yalnızca {world} gösteriliyor.",
+        "Show all worlds": "Tüm dünyaları göster",
+        "Upcoming events": "Yaklaşan etkinlikler",
+        "No upcoming events": "Yaklaşan etkinlik yok",
+        "Upcoming": "Yaklaşan",
+        "Past": "Geçmiş"
     },
     "nplurals=2; plural=(n != 1);"
 )

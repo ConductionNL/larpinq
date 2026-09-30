@@ -477,7 +477,13 @@ OC.L10N.register(
         "Player character": "Лик играча",
         "Non-player character": "Неиграчки лик",
         "Edit selected": "Уреди изабрано",
-        "Whether the character still plays: active, retired or dead": "Да ли лик још игра: активан, повучен или мртав"
+        "Whether the character still plays: active, retired or dead": "Да ли лик још игра: активан, повучен или мртав",
+        "Only {world} is shown.": "Приказује се само {world}.",
+        "Show all worlds": "Прикажи све светове",
+        "Upcoming events": "Предстојећи догађаји",
+        "No upcoming events": "Нема предстојећих догађаја",
+        "Upcoming": "Предстојећи",
+        "Past": "Прошли"
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -476,7 +476,13 @@
         "Player character": "Spēlētāja tēls",
         "Non-player character": "Nespēlētāja tēls",
         "Edit selected": "Rediģēt atlasītos",
-        "Whether the character still plays: active, retired or dead": "Vai tēls vēl spēlē: aktīvs, aizgājis vai miris"
+        "Whether the character still plays: active, retired or dead": "Vai tēls vēl spēlē: aktīvs, aizgājis vai miris",
+        "Only {world} is shown.": "Tiek rādīta tikai {world}.",
+        "Show all worlds": "Rādīt visas pasaules",
+        "Upcoming events": "Gaidāmie notikumi",
+        "No upcoming events": "Nav gaidāmo notikumu",
+        "Upcoming": "Gaidāmie",
+        "Past": "Pagājušie"
     },
     "plurals": {}
 }

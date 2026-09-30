@@ -477,7 +477,13 @@ OC.L10N.register(
         "Player character": "Žaidėjo veikėjas",
         "Non-player character": "Nežaidėjo veikėjas",
         "Edit selected": "Redaguoti pasirinktus",
-        "Whether the character still plays: active, retired or dead": "Ar veikėjas dar žaidžia: aktyvus, pasitraukęs ar miręs"
+        "Whether the character still plays: active, retired or dead": "Ar veikėjas dar žaidžia: aktyvus, pasitraukęs ar miręs",
+        "Only {world} is shown.": "Rodomas tik {world}.",
+        "Show all worlds": "Rodyti visus pasaulius",
+        "Upcoming events": "Artėjantys renginiai",
+        "No upcoming events": "Artėjančių renginių nėra",
+        "Upcoming": "Artėjantys",
+        "Past": "Praėję"
     },
     "nplurals=2; plural=(n != 1);"
 )

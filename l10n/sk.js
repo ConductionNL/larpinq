@@ -477,7 +477,13 @@ OC.L10N.register(
         "Player character": "Hráčska postava",
         "Non-player character": "Nehráčska postava",
         "Edit selected": "Upraviť vybrané",
-        "Whether the character still plays: active, retired or dead": "Či postava ešte hrá: aktívna, na odpočinku alebo mŕtva"
+        "Whether the character still plays: active, retired or dead": "Či postava ešte hrá: aktívna, na odpočinku alebo mŕtva",
+        "Only {world} is shown.": "Zobrazuje sa iba {world}.",
+        "Show all worlds": "Zobraziť všetky svety",
+        "Upcoming events": "Nadchádzajúce podujatia",
+        "No upcoming events": "Žiadne nadchádzajúce podujatia",
+        "Upcoming": "Nadchádzajúce",
+        "Past": "Minulé"
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -477,7 +477,13 @@ OC.L10N.register(
         "Player character": "Персонаж на играч",
         "Non-player character": "Неигрален персонаж",
         "Edit selected": "Редактиране на избраните",
-        "Whether the character still plays: active, retired or dead": "Дали персонажът още играе: активен, оттеглен или мъртъв"
+        "Whether the character still plays: active, retired or dead": "Дали персонажът още играе: активен, оттеглен или мъртъв",
+        "Only {world} is shown.": "Показва се само {world}.",
+        "Show all worlds": "Покажи всички светове",
+        "Upcoming events": "Предстоящи събития",
+        "No upcoming events": "Няма предстоящи събития",
+        "Upcoming": "Предстоящи",
+        "Past": "Минали"
     },
     "nplurals=2; plural=(n != 1);"
 )
