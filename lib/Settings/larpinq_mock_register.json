@@ -769,6 +769,123 @@
         "visibility": "gamemasters",
         "order": 4,
         "setting": "00000000-0000-4000-8000-000000000000"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_faction",
+          "slug": "faction-the-crowns-guard"
+        },
+        "name": "The Crown's Guard",
+        "description": "Sworn to the queen of Aldmoor and her line.",
+        "setting": "00000000-0000-4000-8000-000000000000",
+        "kind": "faction",
+        "visibility": "open"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_faction",
+          "slug": "faction-the-ash-circle"
+        },
+        "name": "The Ash Circle",
+        "description": "A hidden circle that keeps the old rites.",
+        "setting": "00000000-0000-4000-8000-000000000000",
+        "kind": "faction",
+        "visibility": "secret"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_faction",
+          "slug": "faction-the-lantern-bearers"
+        },
+        "name": "The Lantern Bearers",
+        "description": "Travellers who light the road for each other.",
+        "setting": "00000000-0000-4000-8000-000000000000",
+        "kind": "group",
+        "visibility": "open",
+        "leader": "00000000-0000-4000-8000-000000000002"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_faction_member",
+          "slug": "member-guard-bertram"
+        },
+        "faction": "00000000-0000-4000-8000-000000000000",
+        "character": "00000000-0000-4000-8000-000000000001",
+        "role": "member",
+        "status": "active"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_faction_member",
+          "slug": "member-circle-mirela"
+        },
+        "faction": "00000000-0000-4000-8000-000000000001",
+        "character": "00000000-0000-4000-8000-000000000000",
+        "role": "member",
+        "status": "active"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_faction_member",
+          "slug": "member-lanterns-tomas"
+        },
+        "faction": "00000000-0000-4000-8000-000000000002",
+        "character": "00000000-0000-4000-8000-000000000002",
+        "role": "leader",
+        "status": "active"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_faction_member",
+          "slug": "member-lanterns-mirela"
+        },
+        "faction": "00000000-0000-4000-8000-000000000002",
+        "character": "00000000-0000-4000-8000-000000000000",
+        "role": "member",
+        "status": "invited"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_relationship",
+          "slug": "relationship-mirela-bertram"
+        },
+        "from": "00000000-0000-4000-8000-000000000000",
+        "to": "00000000-0000-4000-8000-000000000001",
+        "kind": "rival",
+        "description": "He guards the crown she was born to.",
+        "knownTo": "owners"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_relationship",
+          "slug": "relationship-tomas-mirela"
+        },
+        "from": "00000000-0000-4000-8000-000000000002",
+        "to": "00000000-0000-4000-8000-000000000000",
+        "kind": "family",
+        "description": "Her brother, though neither of them knows it.",
+        "knownTo": "gamemasters"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_relationship",
+          "slug": "relationship-bertram-tomas"
+        },
+        "from": "00000000-0000-4000-8000-000000000001",
+        "to": "00000000-0000-4000-8000-000000000002",
+        "kind": "mentor",
+        "description": "Taught him to hold a sword.",
+        "knownTo": "owners"
       }
     ]
   }
