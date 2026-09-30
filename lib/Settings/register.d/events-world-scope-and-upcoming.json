@@ -1,0 +1,13 @@
+{
+  "components": {
+    "schemas": {
+      "event": {
+        "properties": {
+          "setting": {
+            "visible": true
+          }
+        }
+      }
+    }
+  }
+}

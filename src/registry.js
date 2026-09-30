@@ -22,6 +22,8 @@
  * SPDX-FileCopyrightText: 2026 Conduction B.V.
  */
 
+import WorldSwitcher from './components/WorldSwitcher.vue'
+import WorldSwitcherActions from './components/WorldSwitcherActions.vue'
 import ApplyBuildDialog from './dialogs/ApplyBuildDialog.vue'
 import CharacterPdfDownloadDialog from './dialogs/CharacterPdfDownloadDialog.vue'
 import CopyWorldDialog from './dialogs/CopyWorldDialog.vue'
@@ -41,6 +43,19 @@ import {
 import { bulkEditCharactersAction } from './services/characterBulkEditAction.js'
 
 export default {
+	// The active-world switcher (events-world-scope-and-upcoming): the header of
+	// the world-scoped index pages (it draws the page title it replaces) and
+	// the dashboard's actions. It writes the page workspace the lists'
+	// `@workspace.activeWorld?` filter reads.
+	// @spec openspec/changes/events-world-scope-and-upcoming/specs/setting-management/spec.md
+	WorldSwitcher: {
+		kind: 'header',
+		component: WorldSwitcher,
+	},
+	WorldSwitcherActions: {
+		kind: 'actions',
+		component: WorldSwitcherActions,
+	},
 	// CharacterDetail "Download as PDF" header action (open-modal): a template
 	// picker a declarative api-call cannot express, since the download opens
 	// in a new tab with the chosen template in the URL.

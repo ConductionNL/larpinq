@@ -343,6 +343,7 @@
 			"route": "/",
 			"type": "dashboard",
 			"title": "Dashboard",
+			"actionsComponent": "WorldSwitcherActions",
 			"config": {
 				"widgets": [
 					{
@@ -358,7 +359,7 @@
 								"register": "larpinq",
 								"schema": "character",
 								"metric": "count",
-								"filter": {}
+								"filter": { "setting": "@workspace.activeWorld?" }
 							}
 						}
 					},
@@ -375,7 +376,7 @@
 								"register": "larpinq",
 								"schema": "larping_event",
 								"metric": "count",
-								"filter": {}
+								"filter": { "setting": "@workspace.activeWorld?" }
 							}
 						}
 					},
@@ -392,7 +393,7 @@
 								"register": "larpinq",
 								"schema": "larping_item",
 								"metric": "count",
-								"filter": {}
+								"filter": { "setting": "@workspace.activeWorld?" }
 							}
 						}
 					},
@@ -420,7 +421,7 @@
 						"content": {
 							"register": "larpinq",
 							"schema": "character",
-							"filter": {},
+							"filter": { "setting": "@workspace.activeWorld?" },
 							"sort": { "field": "created", "dir": "desc" },
 							"limit": 6,
 							"rowRoute": "CharacterDetail",
@@ -436,21 +437,24 @@
 						}
 					},
 					{
-						"id": "recent-events",
-						"title": "Recent events",
+						"id": "upcoming-events",
+						"title": "Upcoming events",
 						"type": "object-table",
 						"content": {
 							"register": "larpinq",
 							"schema": "larping_event",
-							"filter": {},
-							"sort": { "field": "startDate", "dir": "desc" },
+							"filter": {
+								"startDate[gte]": "@today",
+								"setting": "@workspace.activeWorld?"
+							},
+							"sort": { "field": "startDate", "dir": "asc" },
 							"limit": 6,
 							"rowRoute": "EventDetail",
 							"rowIcon": "CalendarStar",
 							"hideHeader": true,
 							"viewAllRoute": { "name": "Events" },
 							"viewAllLabel": "View all events",
-							"emptyText": "No events yet",
+							"emptyText": "No upcoming events",
 							"columns": [
 								{ "key": "name", "label": "Event" },
 								{ "key": "startDate", "label": "Starts" }
@@ -529,7 +533,7 @@
 					},
 					{
 						"id": 6,
-						"widgetId": "recent-events",
+						"widgetId": "upcoming-events",
 						"gridX": 6,
 						"gridY": 2,
 						"gridWidth": 6,
@@ -582,7 +586,9 @@
 			"route": "/characters",
 			"type": "index",
 			"title": "Characters",
+			"headerComponent": "WorldSwitcher",
 			"config": {
+				"filter": { "setting": "@workspace.activeWorld?" },
 				"register": "larpinq",
 				"schema": "character",
 				"allowExport": true,
@@ -1122,7 +1128,9 @@
 			"route": "/abilities",
 			"type": "index",
 			"title": "Abilities",
+			"headerComponent": "WorldSwitcher",
 			"config": {
+				"filter": { "setting": "@workspace.activeWorld?" },
 				"register": "larpinq",
 				"schema": "ability",
 				"allowExport": true,
@@ -1275,7 +1283,9 @@
 			"route": "/skills",
 			"type": "index",
 			"title": "Skills",
+			"headerComponent": "WorldSwitcher",
 			"config": {
+				"filter": { "setting": "@workspace.activeWorld?" },
 				"register": "larpinq",
 				"schema": "larping_skill",
 				"allowExport": true,
@@ -1403,7 +1413,9 @@
 			"route": "/items",
 			"type": "index",
 			"title": "Items",
+			"headerComponent": "WorldSwitcher",
 			"config": {
+				"filter": { "setting": "@workspace.activeWorld?" },
 				"register": "larpinq",
 				"schema": "larping_item",
 				"allowExport": true,
@@ -1520,7 +1532,9 @@
 			"route": "/conditions",
 			"type": "index",
 			"title": "Conditions",
+			"headerComponent": "WorldSwitcher",
 			"config": {
+				"filter": { "setting": "@workspace.activeWorld?" },
 				"register": "larpinq",
 				"schema": "condition",
 				"allowExport": true,
@@ -1622,7 +1636,9 @@
 			"route": "/effects",
 			"type": "index",
 			"title": "Effects",
+			"headerComponent": "WorldSwitcher",
 			"config": {
+				"filter": { "setting": "@workspace.activeWorld?" },
 				"register": "larpinq",
 				"schema": "effect",
 				"allowExport": true,
@@ -1794,7 +1810,19 @@
 			"route": "/events",
 			"type": "index",
 			"title": "Events",
+			"headerComponent": "WorldSwitcher",
 			"config": {
+				"filter": { "setting": "@workspace.activeWorld?" },
+				"sortKey": "startDate",
+				"sortOrder": "asc",
+				"quickFilters": [
+					{
+						"label": "Upcoming",
+						"filter": { "startDate[gte]": "@today" },
+						"default": true
+					},
+					{ "label": "Past", "filter": { "startDate[lt]": "@today" } }
+				],
 				"register": "larpinq",
 				"schema": "larping_event",
 				"allowExport": true,

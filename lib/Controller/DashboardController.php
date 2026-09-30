@@ -23,6 +23,7 @@ use OCA\Larpinq\AppInfo\Application;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Services\IInitialState;
+use OCP\IConfig;
 use OCP\IGroupManager;
 use OCP\IRequest;
 use OCP\IUserSession;
@@ -50,6 +51,7 @@ class DashboardController extends Controller {
 	 * @param IInitialState $initialState The initial state handed to the frontend
 	 * @param IUserSession $userSession The user session
 	 * @param IGroupManager $groupManager The group manager
+	 * @param IConfig       $config       The per-user preferences store
 	 */
 	public function __construct(
 		$appName,
@@ -57,6 +59,7 @@ class DashboardController extends Controller {
 		private readonly IInitialState $initialState,
 		private readonly IUserSession $userSession,
 		private readonly IGroupManager $groupManager,
+		private readonly IConfig $config,
 	) {
 		parent::__construct(appName: $appName, request: $request);
 	}//end __construct()
@@ -75,11 +78,15 @@ class DashboardController extends Controller {
 	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-100
 	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-101
 	 * @spec openspec/specs/data-portability/spec.md
+	 * @spec openspec/changes/events-world-scope-and-upcoming/specs/setting-management/spec.md
 	 */
 	public function page(): TemplateResponse {
 		// The frontend offers the imports to game masters too: the larpinq
 		// register grants them `manage`, which OpenRegister's import asks for.
 		$this->initialState->provideInitialState('isGameMaster', $this->isGameMaster());
+		// The world the user last chose, so lists are narrowed before their
+		// first fetch; the frontend falls back to all worlds when it is gone.
+		$this->initialState->provideInitialState('activeWorld', $this->activeWorld());
 
 		return new TemplateResponse(
 			Application::APP_ID,
@@ -107,6 +114,28 @@ class DashboardController extends Controller {
 	public function catchAll(): TemplateResponse {
 		return $this->page();
 	}//end catchAll()
+
+	/**
+	 * The signed-in user's active world, stored by the preferences API under
+	 * `active-world`; an empty string means all worlds.
+	 *
+	 * @return string The world UUID, or ''.
+	 *
+	 * @spec openspec/changes/events-world-scope-and-upcoming/specs/setting-management/spec.md
+	 */
+	private function activeWorld(): string {
+		$user = $this->userSession->getUser();
+		if ($user === null) {
+			return '';
+		}
+
+		return (string)$this->config->getUserValue(
+			userId: $user->getUID(),
+			appName: Application::APP_ID,
+			key: 'pref_active-world',
+			default: ''
+		);
+	}//end activeWorld()
 
 	/**
 	 * Whether the signed-in user is a game master (the group, or an admin).
