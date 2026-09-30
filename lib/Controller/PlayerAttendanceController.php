@@ -81,7 +81,7 @@ class PlayerAttendanceController extends Controller {
 		}
 
 		$uid = $user->getUID();
-		if ($this->isGameMaster(uid: $uid) === false && $this->guard->ownsPlayer(player: $id, userId: $uid) === false) {
+		if ($this->isGameMaster(uid: $uid) === false && $this->guard->owns(objectType: 'player', id: $id, userId: $uid) === false) {
 			return new JSONResponse(data: ['error' => 'Only game masters and the player see this history'], statusCode: Http::STATUS_FORBIDDEN);
 		}
 

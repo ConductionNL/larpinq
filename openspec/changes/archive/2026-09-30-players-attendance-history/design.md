@@ -39,7 +39,7 @@ reader left; the design below replaces D1 to D3.
 
 `GET /api/players/{id}/attendance` (`PlayerAttendanceController::index`):
 401 without a user; game masters (the group or a Nextcloud admin) pass; any
-other caller passes only when `CharacterConnectionGuard::ownsPlayer()` finds
+other caller passes only when `CharacterConnectionGuard::owns('player', ...)` finds
 the STORED player's `userUid` is theirs, else 403. `PlayerAttendanceService`
 then reads the player's characters as the caller (`character.ocName = id`)
 and, per character, the `checked-in` attendance records with the app's

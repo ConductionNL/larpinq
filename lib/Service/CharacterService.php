@@ -543,7 +543,7 @@ class CharacterService {
 
 		$userId = (string)$this->userSession?->getUser()?->getUID();
 		if ($this->connectionGuard === null
-			|| $this->connectionGuard->ownsCharacter(character: $characterId, userId: $userId) === false
+			|| $this->connectionGuard->owns(objectType: 'character', id: $characterId, userId: $userId) === false
 		) {
 			return $asUser;
 		}

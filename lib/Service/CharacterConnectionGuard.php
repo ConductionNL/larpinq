@@ -46,6 +46,13 @@ class CharacterConnectionGuard {
 	];
 
 	/**
+	 * The field that names the owning account, per object type owns() answers for.
+	 *
+	 * @var array<string, string>
+	 */
+	private const OWNER_FIELDS = ['character' => 'ownerUid', 'player' => 'userUid'];
+
+	/**
 	 * The refusal messages, by code.
 	 *
 	 * @var array<string, string>
@@ -201,49 +208,26 @@ class CharacterConnectionGuard {
 	}//end checkBuild()
 
 	/**
-	 * Whether the user plays this character, judged from the STORED character
-	 * read as the user, never from a payload the user sent. Gates the reads
-	 * larpinq makes with its own authority for a player's own records
-	 * (DECISIONS row 30).
+	 * Whether the user owns a stored character or player, judged from the
+	 * STORED object read as the user, never from a payload the user sent. A
+	 * character is the user's when its `ownerUid` is theirs, a player when its
+	 * `userUid` is. Gates the reads larpinq makes with its own authority for a
+	 * player's own records (DECISIONS row 30).
 	 *
-	 * @param mixed $character The character's id (a UUID, or an object carrying one).
+	 * @param string $objectType 'character' or 'player'.
+	 * @param mixed $id The object's id (a UUID, or an object carrying one).
 	 * @param string $userId The user.
 	 *
-	 * @return bool True when the stored character's owner is the user.
+	 * @return bool True when the stored object is the user's.
 	 *
 	 * @spec openspec/specs/event-xp-awards/spec.md
-	 */
-	public function ownsCharacter(mixed $character, string $userId): bool {
-		if ($userId === '') {
-			return false;
-		}
-
-		$stored = $this->read(objectType: 'character', id: $character);
-
-		return $stored !== null && ($stored['ownerUid'] ?? '') === $userId;
-	}//end ownsCharacter()
-
-	/**
-	 * Whether the user is this player, judged from the STORED player read as
-	 * the user. Gates the player's own attendance history, which larpinq reads
-	 * with its own authority (DECISIONS row 30).
-	 *
-	 * @param mixed $player The player's id (a UUID, or an object carrying one).
-	 * @param string $userId The user.
-	 *
-	 * @return bool True when the stored player's account is the user's.
-	 *
 	 * @spec openspec/specs/events-players/spec.md
 	 */
-	public function ownsPlayer(mixed $player, string $userId): bool {
-		if ($userId === '') {
-			return false;
-		}
+	public function owns(string $objectType, mixed $id, string $userId): bool {
+		$field = (self::OWNER_FIELDS[$objectType] ?? '');
 
-		$stored = $this->read(objectType: 'player', id: $player);
-
-		return $stored !== null && ($stored['userUid'] ?? '') === $userId;
-	}//end ownsPlayer()
+		return $userId !== '' && $field !== '' && (($this->read(objectType: $objectType, id: $id)[$field] ?? '') === $userId);
+	}//end owns()
 
 	/**
 	 * A new membership: a player asks with their own character, the leader

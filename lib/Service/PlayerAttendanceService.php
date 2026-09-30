@@ -24,7 +24,7 @@ namespace OCA\Larpinq\Service;
  * row 30), so this service reads it with the app's authority, one character
  * at a time. The caller MUST have decided first that the signed-in user may
  * see this player's history (a game master, or the player themself through
- * CharacterConnectionGuard::ownsPlayer). The characters and events are read as
+ * CharacterConnectionGuard::owns). The characters and events are read as
  * the signed-in user.
  *
  * @spec openspec/specs/events-players/spec.md
@@ -147,6 +147,10 @@ class PlayerAttendanceService {
 			$value = ($value['id'] ?? $value['uuid'] ?? '');
 		}
 
-		return is_string($value) === true ? $value : '';
+		if (is_string($value) === false) {
+			return '';
+		}
+
+		return $value;
 	}//end idOf()
 }//end class

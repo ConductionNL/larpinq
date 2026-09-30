@@ -1605,7 +1605,7 @@
 			"pretix": "yes",
 			"built": {
 				"state": "built",
-				"evidence": "lib/Controller/PlayerAttendanceController.php (GET /api/players/{id}/attendance: game masters, or the player whose stored account it is via CharacterConnectionGuard::ownsPlayer, else 403), lib/Service/PlayerAttendanceService.php (checked-in attendance per character read with the app's authority, newest event first, distinct event count), src/views/PlayerAttendanceHistory.vue (PlayerDetail sidebar tab Events attended); tests/unit/Controller/PlayerAttendanceControllerTest.php over OpenRegister's real evaluator, tests/vitest/playerAttendance.spec.js",
+				"evidence": "lib/Controller/PlayerAttendanceController.php (GET /api/players/{id}/attendance: game masters, or the player whose stored account it is via CharacterConnectionGuard::owns('player', ...), else 403), lib/Service/PlayerAttendanceService.php (checked-in attendance per character read with the app's authority, newest event first, distinct event count), src/views/PlayerAttendanceHistory.vue (PlayerDetail sidebar tab Events attended); tests/unit/Controller/PlayerAttendanceControllerTest.php over OpenRegister's real evaluator, tests/vitest/playerAttendance.spec.js",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Player page (/players/<id>), sidebar tab Events attended",
 				"change": "openspec/changes/archive/2026-09-30-players-attendance-history"

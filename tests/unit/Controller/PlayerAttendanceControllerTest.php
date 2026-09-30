@@ -39,6 +39,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Anna's two seasons, seen by Anna, by a game master and by Karel.
  */
+#[\PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses]
 class PlayerAttendanceControllerTest extends TestCase {
 	use RealEvaluatorRegister;
 

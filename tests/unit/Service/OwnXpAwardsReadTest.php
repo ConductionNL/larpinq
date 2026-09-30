@@ -51,6 +51,7 @@ use ReflectionClass;
 /**
  * The owner of a character reads that character's XP awards; nobody else does.
  */
+#[\PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses]
 class OwnXpAwardsReadTest extends TestCase {
 	use RealEvaluatorRegister;
 
