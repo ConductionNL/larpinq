@@ -38,6 +38,7 @@ import {
 	exportCampaignAction,
 	importCampaignAction,
 } from './services/campaignActions.js'
+import { bulkEditCharactersAction } from './services/characterBulkEditAction.js'
 
 export default {
 	// CharacterDetail "Download as PDF" header action (open-modal): a template
@@ -91,4 +92,13 @@ export default {
 	// @spec openspec/specs/data-portability/spec.md
 	larpinqExportCampaign: { kind: 'handler', handler: exportCampaignAction },
 	larpinqImportCampaign: { kind: 'handler', handler: importCampaignAction },
+
+	// Characters index bulk action "Edit selected" (characters-status-and-bulk-edit).
+	// A handler, not open-modal: CnIndexPage only emits a bulk open-modal to
+	// its host, which no host here listens to.
+	// @spec openspec/specs/character-management/spec.md
+	larpinqBulkEditCharacters: {
+		kind: 'handler',
+		handler: bulkEditCharactersAction,
+	},
 }

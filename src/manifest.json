@@ -586,6 +586,17 @@
 				"register": "larpinq",
 				"schema": "character",
 				"allowExport": true,
+				"columns": [
+					{ "key": "name", "label": "Name" },
+					{ "key": "type", "label": "Type" },
+					{ "key": "status", "label": "Status" },
+					{ "key": "approved", "label": "Approved" },
+					{ "key": "setting", "label": "World" }
+				],
+				"selectable": true,
+				"bulkActions": [
+					{ "id": "bulk-edit", "label": "Edit selected", "icon": "PencilOutline", "handler": "larpinqBulkEditCharacters" }
+				],
 				"documentationUrl": "https://larpinq.conduction.nl"
 			}
 		},
@@ -811,6 +822,7 @@
 							"columns": 2,
 							"include": [
 								"type",
+								"status",
 								"approved",
 								"gold",
 								"silver",
