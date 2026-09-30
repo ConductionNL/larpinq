@@ -13,7 +13,7 @@
 			"faction": {
 				"slug": "larping_faction",
 				"title": "Faction",
-				"icon": "ShieldAccount",
+				"icon": "ShieldAccountOutline",
 				"version": "1.0.0",
 				"summary": "A faction that game masters run, or a group that players form",
 				"description": "A faction of one world. Game masters run factions; players form groups with one of their characters as leader. A secret faction is read only by game masters and its leader.",
@@ -154,7 +154,7 @@
 			"factionMember": {
 				"slug": "larping_faction_member",
 				"title": "Faction membership",
-				"icon": "AccountMultiplePlus",
+				"icon": "AccountGroupOutline",
 				"version": "1.0.0",
 				"summary": "One character in one faction or group, with a role and a status",
 				"description": "A character's place in a faction or group. Joining, invitations, leaving and removal change the status, so the history stays readable for game masters.",
@@ -375,7 +375,7 @@
 			"relationship": {
 				"slug": "larping_relationship",
 				"title": "Relationship",
-				"icon": "AccountHeart",
+				"icon": "AccountHeartOutline",
 				"version": "1.0.0",
 				"summary": "How one character stands to another",
 				"description": "A relationship from one character to another, such as family, ally or rival. Known to game masters only, or also to the players of both characters.",

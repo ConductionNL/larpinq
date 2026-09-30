@@ -95,7 +95,11 @@ describe('the character page (REQ-CFR-001, REQ-CFR-005)', () => {
 	})
 
 	it('places each list once in the layout', () => {
-		for (const id of ['char-factions', 'char-relationships', 'char-named-by-others']) {
+		for (const id of [
+			'char-factions',
+			'char-relationships',
+			'char-named-by-others',
+		]) {
 			expect(cells(detail, id)).toHaveLength(1)
 		}
 	})

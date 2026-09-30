@@ -59,7 +59,8 @@ class CharacterConnectionGuard {
 		'membership_needs_invitation' => 'A character becomes an active member only when the leader accepts a request or the player accepts an invitation.',
 		'membership_status_not_allowed' => 'A membership cannot move to this status from where it stands.',
 		'membership_moved' => 'A membership stays with its faction and character. Leave and ask to join again instead.',
-		'relationship_game_masters_only' => 'Only game masters record relationships that game masters alone can see. Choose who sees it: the players of both characters.',
+		'relationship_game_masters_only' => 'Only game masters record relationships that game masters alone can see. '
+			. 'Choose who sees it: the players of both characters.',
 		'relationship_own_character_only' => 'You can only record relationships from one of your own characters.',
 	];
 
@@ -177,33 +178,23 @@ class CharacterConnectionGuard {
 	 */
 	private function checkNewMembership(array $membership, bool $isLeader, bool $isOwner): ?array {
 		$status = (string)($membership['status'] ?? 'requested');
-		$role = (string)($membership['role'] ?? 'member');
+		$isMember = (string)($membership['role'] ?? 'member') === 'member';
 
-		if ($status === 'requested') {
-			if ($isOwner === true && $role === 'member') {
-				return null;
-			}
-
-			return $this->refuse(code: 'membership_own_character_only');
+		// Who may create a membership in each status, and the refusal otherwise.
+		$allowed = [
+			'requested' => [$isOwner === true && $isMember === true, 'membership_own_character_only'],
+			'invited' => [$isLeader === true && $isMember === true, 'membership_leader_only'],
+			'active' => [$isLeader === true && $isOwner === true, 'membership_needs_invitation'],
+		];
+		if (isset($allowed[$status]) === false) {
+			return $this->refuse(code: 'membership_status_not_allowed');
 		}
 
-		if ($status === 'invited') {
-			if ($isLeader === true && $role === 'member') {
-				return null;
-			}
-
-			return $this->refuse(code: 'membership_leader_only');
+		if ($allowed[$status][0] === true) {
+			return null;
 		}
 
-		if ($status === 'active') {
-			if ($isLeader === true && $isOwner === true) {
-				return null;
-			}
-
-			return $this->refuse(code: 'membership_needs_invitation');
-		}
-
-		return $this->refuse(code: 'membership_status_not_allowed');
+		return $this->refuse(code: $allowed[$status][1]);
 	}//end checkNewMembership()
 
 	/**

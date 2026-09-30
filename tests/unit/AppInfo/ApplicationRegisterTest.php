@@ -22,6 +22,7 @@ namespace OCA\Larpinq\Tests\Unit\AppInfo;
 use OCA\Larpinq\AppInfo\Application;
 use OCA\Larpinq\Listener\CharacterRequirementListener;
 use OCA\Larpinq\Listener\DeepLinkRegistrationListener;
+use OCA\Larpinq\Listener\FactionMembershipListener;
 use OCA\Larpinq\Listener\UniqueHolderListener;
 use OCP\AppFramework\Bootstrap\IRegistrationContext;
 use PHPUnit\Framework\TestCase;
@@ -69,6 +70,8 @@ class ApplicationRegisterTest extends TestCase {
 		['OCA\OpenRegister\Event\ObjectUpdatingEvent', CharacterRequirementListener::class],
 		['OCA\OpenRegister\Event\ObjectCreatingEvent', UniqueHolderListener::class],
 		['OCA\OpenRegister\Event\ObjectUpdatingEvent', UniqueHolderListener::class],
+		['OCA\OpenRegister\Event\ObjectCreatingEvent', FactionMembershipListener::class],
+		['OCA\OpenRegister\Event\ObjectUpdatingEvent', FactionMembershipListener::class],
 	];
 
 	/**
