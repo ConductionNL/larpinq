@@ -87,6 +87,15 @@ class SettingsService {
 		'characterfield_schema',
 		'characterfield_register',
 		'characterfield_source',
+		'faction_schema',
+		'faction_register',
+		'faction_source',
+		'factionmember_schema',
+		'factionmember_register',
+		'factionmember_source',
+		'relationship_schema',
+		'relationship_register',
+		'relationship_source',
 	];
 
 	/**

@@ -218,6 +218,23 @@ class FactionsFragmentTest extends TestCase {
 	}//end testRelationshipsAreReadByTheOwnersOfBothCharactersOnly()
 
 	/**
+	 * The import writes a schema key for each of the three schemas, so the
+	 * membership guard finds them in production and the settings page keeps them.
+	 *
+	 * @return void
+	 */
+	public function testTheImportConfiguresTheConnectionSchemas(): void {
+		$slugs = (new ReflectionClass(\OCA\Larpinq\Service\SettingsLoadService::class))->getConstant('OBJECT_TYPE_SCHEMA_SLUGS');
+		$keys = (new ReflectionClass(\OCA\Larpinq\Service\SettingsService::class))->getConstant('CONFIG_KEYS');
+		$schemas = $this->mergedRegister()['components']['schemas'];
+		foreach (['faction' => 'faction', 'factionmember' => 'factionMember', 'relationship' => 'relationship'] as $type => $key) {
+			$this->assertSame($schemas[$key]['slug'], $slugs[$type] ?? null, "the import must configure {$type}_schema");
+			$this->assertContains($type . '_schema', $keys);
+			$this->assertContains($type . '_register', $keys);
+		}
+	}//end testTheImportConfiguresTheConnectionSchemas()
+
+	/**
 	 * No schema carries a `user` format: OpenRegister drops a schema that does.
 	 *
 	 * @return void

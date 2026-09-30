@@ -114,6 +114,10 @@ class CharacterConnectionGuard {
 	 * @spec openspec/changes/characters-factions-and-relationships/specs/character-connections/spec.md
 	 */
 	public function checkMembership(array $membership, ?array $old, string $userId): ?array {
+		if ($old !== null && $this->isMoved(membership: $membership, old: $old) === true) {
+			return $this->refuse(code: 'membership_moved');
+		}
+
 		$faction = $this->read(objectType: 'faction', id: ($membership['faction'] ?? null));
 		$character = $this->read(objectType: 'character', id: ($membership['character'] ?? null));
 		if ($faction === null || $character === null) {
@@ -213,12 +217,6 @@ class CharacterConnectionGuard {
 	 * @return array<string, string>|null The refusal, or null to allow.
 	 */
 	private function checkMembershipChange(array $membership, array $old, bool $isLeader, bool $isOwner): ?array {
-		foreach (['faction', 'character'] as $field) {
-			if ($this->idOf(value: ($membership[$field] ?? null)) !== $this->idOf(value: ($old[$field] ?? null))) {
-				return $this->refuse(code: 'membership_moved');
-			}
-		}
-
 		if (($membership['role'] ?? 'member') !== ($old['role'] ?? 'member') && $isLeader === false) {
 			return $this->refuse(code: 'membership_leader_only');
 		}
@@ -244,6 +242,24 @@ class CharacterConnectionGuard {
 
 		return null;
 	}//end checkMembershipChange()
+
+	/**
+	 * Whether an update points a membership at another faction or character.
+	 *
+	 * @param array<string, mixed> $membership The membership after the write.
+	 * @param array<string, mixed> $old        The stored membership.
+	 *
+	 * @return bool True when the faction or the character changed.
+	 */
+	private function isMoved(array $membership, array $old): bool {
+		foreach (['faction', 'character'] as $field) {
+			if ($this->idOf(value: ($membership[$field] ?? null)) !== $this->idOf(value: ($old[$field] ?? null))) {
+				return true;
+			}
+		}
+
+		return false;
+	}//end isMoved()
 
 	/**
 	 * Read one object by a relation value, or null when it cannot be read.
