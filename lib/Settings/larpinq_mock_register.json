@@ -581,6 +581,58 @@
         "reason": "Voorbeeld Reason 3",
         "awardedBy": "Voorbeeld Awardedby 3",
         "awardedAt": "2026-03-03T09:00:00+00:00"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_lore_page",
+          "slug": "lore-page-1"
+        },
+        "title": "The city of Aldmoor",
+        "body": "Aldmoor is a walled trade city on the river Esk. Its north gate faces the old border, its markets never close.",
+        "category": "place",
+        "visibility": "players",
+        "revealFrom": "2026-01-01T00:00:00+00:00",
+        "order": 1
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_lore_page",
+          "slug": "lore-page-2"
+        },
+        "title": "The war of the two queens",
+        "body": "Twenty years ago two sisters both claimed the crown. The war ended in a truce that nobody signed.",
+        "category": "history",
+        "visibility": "players",
+        "revealFrom": "2026-01-01T00:00:00+00:00",
+        "order": 2
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_lore_page",
+          "slug": "lore-page-3"
+        },
+        "title": "The Ash Circle",
+        "body": "A secret society of former soldiers who want the war back. Their leader is the harbour master.",
+        "category": "faction",
+        "visibility": "gamemasters",
+        "revealFrom": "2026-01-01T00:00:00+00:00",
+        "order": 3
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_lore_page",
+          "slug": "lore-page-4"
+        },
+        "title": "The fall of the north gate",
+        "body": "On the evening of the siege the north gate falls. Nobody inside the walls knows who opened it.",
+        "category": "history",
+        "visibility": "players",
+        "revealFrom": "2026-10-10T18:00:00+00:00",
+        "order": 4
       }
     ]
   }
