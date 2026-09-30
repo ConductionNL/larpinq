@@ -17,6 +17,10 @@ namespace OCA\Larpinq\Tests\Unit\Controller;
 use OCA\Larpinq\Controller\DashboardController;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\IRequest;
+use OCP\AppFramework\Services\IInitialState;
+use OCP\IGroupManager;
+use OCP\IUser;
+use OCP\IUserSession;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -26,13 +30,82 @@ class DashboardControllerTest extends TestCase {
 
 	private DashboardController $controller;
 
+	/** @var array<string, mixed> What page() handed to the initial state. */
+	private array $provided = [];
+
+	/** @var list<string> The groups of the signed-in user. */
+	private array $groups = [];
+
+	private bool $admin = false;
+
+	private bool $signedIn = true;
+
 	protected function setUp(): void {
 		parent::setUp();
+
+		$initialState = $this->createMock(IInitialState::class);
+		$initialState->method('provideInitialState')->willReturnCallback(
+			function (string $key, mixed $value): void {
+				$this->provided[$key] = $value;
+			}
+		);
+		$user = $this->createMock(IUser::class);
+		$user->method('getUID')->willReturn('anna');
+		$session = $this->createMock(IUserSession::class);
+		$session->method('getUser')->willReturnCallback(fn () => $this->signedIn ? $user : null);
+		$groupManager = $this->createMock(IGroupManager::class);
+		$groupManager->method('isInGroup')->willReturnCallback(
+			fn (string $uid, string $group): bool => in_array($group, $this->groups, true)
+		);
+		$groupManager->method('isAdmin')->willReturnCallback(fn (): bool => $this->admin);
 
 		$this->controller = new DashboardController(
 			'larpinq',
 			$this->createMock(IRequest::class),
+			$initialState,
+			$session,
+			$groupManager,
 		);
+	}
+
+	/**
+	 * A game master's page tells the frontend so, and the import is offered
+	 * (data-portability REQ-AIE-002, DECISIONS row 25).
+	 *
+	 * @return void
+	 */
+	public function testAGameMasterIsToldSo(): void {
+		$this->groups = ['gamemasters'];
+		$this->controller->page();
+
+		self::assertTrue($this->provided['isGameMaster'] ?? null);
+	}
+
+	/**
+	 * A player, or nobody signed in, is not a game master.
+	 *
+	 * @return void
+	 */
+	public function testAPlayerIsNot(): void {
+		$this->groups = ['larpers'];
+		$this->controller->page();
+		self::assertFalse($this->provided['isGameMaster'] ?? null);
+
+		$this->signedIn = false;
+		$this->controller->page();
+		self::assertFalse($this->provided['isGameMaster']);
+	}
+
+	/**
+	 * An administrator acts as a game master, as the other GM checks do.
+	 *
+	 * @return void
+	 */
+	public function testAnAdministratorCounts(): void {
+		$this->admin = true;
+		$this->controller->page();
+
+		self::assertTrue($this->provided['isGameMaster'] ?? null);
 	}
 
 	public function testPageReturnsTemplateResponse(): void {

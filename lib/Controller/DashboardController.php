@@ -22,7 +22,10 @@ namespace OCA\Larpinq\Controller;
 use OCA\Larpinq\AppInfo\Application;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\TemplateResponse;
+use OCP\AppFramework\Services\IInitialState;
+use OCP\IGroupManager;
 use OCP\IRequest;
+use OCP\IUserSession;
 
 /**
  * Dashboard controller for Larpinq main page
@@ -44,10 +47,16 @@ class DashboardController extends Controller {
 	 *
 	 * @param string $appName Application name
 	 * @param IRequest $request HTTP request object
+	 * @param IInitialState $initialState The initial state handed to the frontend
+	 * @param IUserSession $userSession The user session
+	 * @param IGroupManager $groupManager The group manager
 	 */
 	public function __construct(
 		$appName,
 		IRequest $request,
+		private readonly IInitialState $initialState,
+		private readonly IUserSession $userSession,
+		private readonly IGroupManager $groupManager,
 	) {
 		parent::__construct(appName: $appName, request: $request);
 	}//end __construct()
@@ -65,8 +74,13 @@ class DashboardController extends Controller {
 	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-99
 	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-100
 	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-101
+	 * @spec openspec/specs/data-portability/spec.md
 	 */
 	public function page(): TemplateResponse {
+		// The frontend offers the imports to game masters too: the larpinq
+		// register grants them `manage`, which OpenRegister's import asks for.
+		$this->initialState->provideInitialState('isGameMaster', $this->isGameMaster());
+
 		return new TemplateResponse(
 			Application::APP_ID,
 			'index',
@@ -93,4 +107,22 @@ class DashboardController extends Controller {
 	public function catchAll(): TemplateResponse {
 		return $this->page();
 	}//end catchAll()
+
+	/**
+	 * Whether the signed-in user is a game master (the group, or an admin).
+	 *
+	 * @return bool True for a game master or admin.
+	 *
+	 * @spec openspec/specs/data-portability/spec.md
+	 */
+	private function isGameMaster(): bool {
+		$user = $this->userSession->getUser();
+		if ($user === null) {
+			return false;
+		}
+
+		$uid = $user->getUID();
+		return $this->groupManager->isInGroup($uid, Application::GM_GROUP) === true
+			|| $this->groupManager->isAdmin($uid) === true;
+	}//end isGameMaster()
 }//end class

@@ -34,8 +34,8 @@ read. Every larpinq schema SHALL be marked `configuration.exportable: true`.
 ### Requirement: Characters and players import from a spreadsheet (REQ-AIE-002)
 
 The Characters and Players pages SHALL let the people OpenRegister allows to
-manage the larpinq register (administrators, while the register has no
-`manage` rule) import CSV or Excel files, and report created, updated,
+manage the larpinq register (administrators, and game masters through the
+register's `manage` rule) import CSV or Excel files, and report created, updated,
 unchanged and failed rows. Other users MUST NOT be offered an import, and no
 other larpinq list SHALL offer one.
 
@@ -50,7 +50,14 @@ other larpinq list SHALL offer one.
 - GIVEN any larpinq list other than Characters and Players
 - WHEN anyone opens its actions menu
 - THEN it has no Import action
-- AND a user who is not an administrator sees no Import on Characters and Players either
+- AND a user who is neither an administrator nor a game master sees no Import on Characters and Players either
+
+#### Scenario: A game master imports
+
+- GIVEN a game master who is not an administrator, with a CSV of two players
+- WHEN she imports the file on the Players page
+- THEN two players are created
+- AND a player who tries the same import through the API is refused
 
 ### Requirement: A campaign exports and imports as one workbook (REQ-AIE-003)
 
@@ -65,4 +72,26 @@ and objects upserted by id, and reports the counts.
 - GIVEN world Aldmoor with characters, skills, items and events
 - WHEN a game master chooses "Export campaign" on the Worlds page
 - THEN a workbook downloads with one sheet per larpinq schema
-- AND importing it as an administrator with "Import campaign" upserts the objects by id
+- AND importing it as a game master with "Import campaign" upserts the objects by id
+
+### Requirement: Game masters write the rules and everyone signed in reads them (REQ-AIE-004)
+
+Because the larpinq register grants `manage` to game masters, and
+OpenRegister gives a schema without rules of its own the register's rules,
+every larpinq schema SHALL declare its own authorization. The player, ability,
+skill, item, condition, effect, event and setting schemas SHALL be readable by
+every signed-in user and created, updated and deleted by game masters only.
+No user MUST lose read access to any schema through the register's rule.
+
+#### Scenario: A player reads the rules but cannot change them
+
+- GIVEN player Anna, who is not a game master
+- WHEN she reads the skills of world Aldmoor
+- THEN she gets them
+- AND when she tries to change a skill or add one, OpenRegister refuses
+
+#### Scenario: A game master changes a rule
+
+- GIVEN game master Gerrit, who is not an administrator
+- WHEN he changes the description of a skill
+- THEN the skill is saved
