@@ -54,7 +54,9 @@ export function applyImportGate(manifest, allowed) {
 		}
 		const config = { ...page.config, showMassImport: false }
 		if (Array.isArray(config.headerActions)) {
-			config.headerActions = config.headerActions.filter((action) => action?.id !== CAMPAIGN_IMPORT_ACTION)
+			config.headerActions = config.headerActions.filter(
+				(action) => action?.id !== CAMPAIGN_IMPORT_ACTION,
+			)
 		}
 		return { ...page, config }
 	})
@@ -71,8 +73,9 @@ export function applyImportGate(manifest, allowed) {
  * @spec openspec/specs/data-portability/spec.md
  */
 export function resolveRegisterId(config) {
-	const id = config?.setting_register || config?.character_register || config?.register
-	return (id === undefined || id === null || id === '') ? null : String(id)
+	const id =
+		config?.setting_register || config?.character_register || config?.register
+	return id === undefined || id === null || id === '' ? null : String(id)
 }
 
 /**
@@ -85,7 +88,11 @@ export function resolveRegisterId(config) {
  * @spec openspec/specs/data-portability/spec.md
  */
 export function campaignExportUrl(registerId) {
-	return generateUrl(`/apps/openregister/api/registers/${encodeURIComponent(registerId)}/export`) + '?format=excel'
+	return (
+		generateUrl(
+			`/apps/openregister/api/registers/${encodeURIComponent(registerId)}/export`,
+		) + '?format=excel'
+	)
 }
 
 /**
@@ -98,7 +105,8 @@ export function campaignExportUrl(registerId) {
  * @spec openspec/specs/data-portability/spec.md
  */
 export function summariseImport(summary) {
-	const count = (value) => (Array.isArray(value) ? value.length : (Number(value) || 0))
+	const count = (value) =>
+		Array.isArray(value) ? value.length : Number(value) || 0
 	const totals = { created: 0, updated: 0, unchanged: 0, failed: 0 }
 	for (const sheet of Object.values(summary || {})) {
 		totals.created += count(sheet?.created)
@@ -124,8 +132,14 @@ export async function importCampaign(file, registerId) {
 	const body = new FormData()
 	body.append('file', file)
 	const response = await fetch(
-		generateUrl(`/apps/openregister/api/registers/${encodeURIComponent(registerId)}/import`) + '?type=excel',
-		{ method: 'POST', headers: { requesttoken: getRequestToken(), Accept: 'application/json' }, body },
+		generateUrl(
+			`/apps/openregister/api/registers/${encodeURIComponent(registerId)}/import`,
+		) + '?type=excel',
+		{
+			method: 'POST',
+			headers: { requesttoken: getRequestToken(), Accept: 'application/json' },
+			body,
+		},
 	)
 	const payload = await response.json().catch(() => ({}))
 	if (!response.ok) {

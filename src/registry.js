@@ -29,7 +29,10 @@ import FlowDetailSidebar from './views/flows/FlowDetailSidebar.vue'
 import ObjectDetail from './views/ObjectDetail.vue'
 import GameSettingsSection from './views/settings/Settings.vue'
 import SkillTree from './views/SkillTree.vue'
-import { exportCampaignAction, importCampaignAction } from './services/campaignActions.js'
+import {
+	exportCampaignAction,
+	importCampaignAction,
+} from './services/campaignActions.js'
 
 export default {
 	// CharacterDetail "Download as PDF" header action (open-modal): a template

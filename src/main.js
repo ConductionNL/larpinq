@@ -313,7 +313,10 @@ function mergeManifestFragments(base) {
 // Apply ADR-037 manifest fragments before routes/app consume the manifest.
 // Then remove every import for a user OpenRegister will not let import
 // (admin-import-export: the register import is administrators only).
-const manifest = applyImportGate(mergeManifestFragments(bundledManifest), canImport())
+const manifest = applyImportGate(
+	mergeManifestFragments(bundledManifest),
+	canImport(),
+)
 
 // Shallow-clone CnPageRenderer because the lib's barrel exports are
 // non-extensible (webpack ESM module records) and vue-router / Vue may attach

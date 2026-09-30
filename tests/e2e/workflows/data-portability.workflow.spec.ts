@@ -82,19 +82,34 @@ test.describe('data portability', () => {
 				headers: { 'OCS-APIRequest': 'true' },
 				multipart: {
 					schema: 'player',
-					file: { name: 'players.csv', mimeType: 'text/csv', buffer: Buffer.from(csv) },
+					file: {
+						name: 'players.csv',
+						mimeType: 'text/csv',
+						buffer: Buffer.from(csv),
+					},
 				},
 			},
 		)
 		expect(res.status()).toBe(200)
 		const summary = (await res.json())?.summary ?? {}
 		const sheets = Object.values(summary) as Array<Record<string, unknown>>
-		const count = (key: string) => sheets.reduce((n, s) => n + (Array.isArray(s[key]) ? (s[key] as unknown[]).length : Number(s[key]) || 0), 0)
+		const count = (key: string) =>
+			sheets.reduce(
+				(n, s) =>
+					n
+					+ (Array.isArray(s[key])
+						? (s[key] as unknown[]).length
+						: Number(s[key]) || 0),
+				0,
+			)
 		expect(count('created')).toBe(2)
 		expect(count('errors')).toBe(0)
 		for (const sheet of sheets) {
-			for (const row of (sheet.created as Array<Record<string, unknown>>) ?? []) {
-				const id = (row?.['@self'] as Record<string, string>)?.id ?? (row?.id as string)
+			for (const row of (sheet.created as Array<Record<string, unknown>>)
+				?? []) {
+				const id =
+					(row?.['@self'] as Record<string, string>)?.id
+					?? (row?.id as string)
 				if (id) {
 					ledger.track('player', id)
 				}
@@ -104,17 +119,25 @@ test.describe('data portability', () => {
 
 	// @e2e openspec/specs/data-portability/spec.md#only-characters-and-players-import
 	test('only characters and players offer an import', async ({ page }) => {
-		for (const [route, offered] of [['players', true], ['skills', false], ['events', false]] as const) {
+		for (const [route, offered] of [
+			['players', true],
+			['skills', false],
+			['events', false],
+		] as const) {
 			await page.goto(`${BASE_URL}/index.php${BASE}/${route}`)
 			await page.getByRole('button', { name: 'Actions' }).first().click()
-			await expect(page.getByRole('menuitem', { name: 'Import' })).toHaveCount(offered ? 1 : 0)
+			await expect(page.getByRole('menuitem', { name: 'Import' })).toHaveCount(
+				offered ? 1 : 0,
+			)
 			await page.keyboard.press('Escape')
 		}
 	})
 
 	// @e2e openspec/specs/data-portability/spec.md#a-backup-before-the-season
 	test('the campaign exports as one workbook', async ({ page }) => {
-		const res = await api.get(`${OR_API}/registers/${REGISTER_ID}/export?format=excel`)
+		const res = await api.get(
+			`${OR_API}/registers/${REGISTER_ID}/export?format=excel`,
+		)
 		expect(res.status()).toBe(200)
 		expect(res.headers()['content-type']).toContain('spreadsheetml')
 		expect((await res.body()).subarray(0, 2).toString()).toBe('PK')

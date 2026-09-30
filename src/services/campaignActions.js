@@ -13,7 +13,11 @@
 import { showError, showSuccess } from '@nextcloud/dialogs'
 import { translate as t } from '@nextcloud/l10n'
 import { useSettingsStore } from '../store/modules/settings.js'
-import { campaignExportUrl, importCampaign, resolveRegisterId } from './campaignPortability.js'
+import {
+	campaignExportUrl,
+	importCampaign,
+	resolveRegisterId,
+} from './campaignPortability.js'
 
 /**
  * The larpinq register id, fetching the settings when they are not loaded.
@@ -39,7 +43,8 @@ function pickWorkbook() {
 	return new Promise((resolve) => {
 		const input = document.createElement('input')
 		input.type = 'file'
-		input.accept = '.xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+		input.accept =
+			'.xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
 		input.addEventListener('change', () => resolve(input.files?.[0] || null))
 		input.click()
 	})
@@ -55,7 +60,12 @@ function pickWorkbook() {
 export async function exportCampaignAction() {
 	const id = await registerId()
 	if (id === null) {
-		showError(t('larpinq', 'The campaign could not be exported, because no register is configured.'))
+		showError(
+			t(
+				'larpinq',
+				'The campaign could not be exported, because no register is configured.',
+			),
+		)
 		return
 	}
 	window.location.assign(campaignExportUrl(id))
@@ -71,7 +81,12 @@ export async function exportCampaignAction() {
 export async function importCampaignAction() {
 	const id = await registerId()
 	if (id === null) {
-		showError(t('larpinq', 'The campaign could not be imported, because no register is configured.'))
+		showError(
+			t(
+				'larpinq',
+				'The campaign could not be imported, because no register is configured.',
+			),
+		)
 		return
 	}
 	const file = await pickWorkbook()
@@ -80,8 +95,18 @@ export async function importCampaignAction() {
 	}
 	try {
 		const totals = await importCampaign(file, id)
-		showSuccess(t('larpinq', 'Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed', totals))
+		showSuccess(
+			t(
+				'larpinq',
+				'Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed',
+				totals,
+			),
+		)
 	} catch (error) {
-		showError(t('larpinq', 'The campaign could not be imported: {reason}', { reason: error.message }))
+		showError(
+			t('larpinq', 'The campaign could not be imported: {reason}', {
+				reason: error.message,
+			}),
+		)
 	}
 }
