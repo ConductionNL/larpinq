@@ -16,8 +16,8 @@ import {
 	CAMPAIGN_IMPORT_ACTION,
 	campaignExportUrl,
 	canImport,
-	isGameMaster,
 	importCampaign,
+	isGameMaster,
 	resolveRegisterId,
 	summariseImport,
 } from '../../src/services/campaignPortability.js'
