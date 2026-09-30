@@ -405,7 +405,20 @@
         "Who may read the page: game masters only, or players too": "Wie de pagina mag lezen: alleen spelleiders, of ook spelers",
         "From this moment players may read a page that is visible to players": "Vanaf dit moment mogen spelers een pagina lezen die zichtbaar is voor spelers",
         "The page this page sits under in the sidebar": "De pagina waaronder deze pagina in de zijbalk staat",
-        "The position among pages with the same parent": "De plaats tussen pagina’s met dezelfde bovenliggende pagina"
+        "The position among pages with the same parent": "De plaats tussen pagina’s met dezelfde bovenliggende pagina",
+        "Plots": "Plots",
+        "Plot": "Plot",
+        "Plot part": "Plotdeel",
+        "Characters in this plot": "Personages in dit plot",
+        "Player text": "Tekst voor de speler",
+        "Private text": "Privétekst",
+        "Writer": "Schrijver",
+        "Writing step": "Schrijfstap",
+        "Summary": "Samenvatting",
+        "Plots of this character": "Plots van dit personage",
+        "By writing step": "Per schrijfstap",
+        "Not yet approved in writing": "Nog niet goedgekeurd in het schrijven",
+        "Everyone is approved in writing": "Iedereen is goedgekeurd in het schrijven"
     },
     "plurals": {},
     "pluralForm": "nplurals=2; plural=(n != 1);"

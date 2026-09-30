@@ -314,7 +314,20 @@ OC.L10N.register(
         "Who may read the page: game masters only, or players too": "Kdo smí stránku číst: jen vypravěči, nebo i hráči",
         "From this moment players may read a page that is visible to players": "Od tohoto okamžiku mohou hráči číst stránku viditelnou pro hráče",
         "The page this page sits under in the sidebar": "Stránka, pod kterou je tato stránka v postranním panelu",
-        "The position among pages with the same parent": "Pozice mezi stránkami se stejnou nadřazenou stránkou"
+        "The position among pages with the same parent": "Pozice mezi stránkami se stejnou nadřazenou stránkou",
+        "Plots": "Zápletky",
+        "Plot": "Zápletka",
+        "Plot part": "Část zápletky",
+        "Characters in this plot": "Postavy v této zápletce",
+        "Player text": "Text pro hráče",
+        "Private text": "Soukromý text",
+        "Writer": "Autor",
+        "Writing step": "Fáze psaní",
+        "Summary": "Shrnutí",
+        "Plots of this character": "Zápletky této postavy",
+        "By writing step": "Podle fáze psaní",
+        "Not yet approved in writing": "Zatím neschváleno v psaní",
+        "Everyone is approved in writing": "Všichni jsou v psaní schváleni"
     },
     "nplurals=2; plural=(n != 1);"
 )

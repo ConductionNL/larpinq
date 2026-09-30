@@ -314,7 +314,20 @@ OC.L10N.register(
         "Who may read the page: game masters only, or players too": "Tgi che dastga leger la pagina: mo ils manaders dal gieu u er ils giugaders",
         "From this moment players may read a page that is visible to players": "Da quest mument davent dastgan ils giugaders leger ina pagina visibla per els",
         "The page this page sits under in the sidebar": "La pagina sut la quala questa pagina stat en la trav laterala",
-        "The position among pages with the same parent": "La posiziun tranter paginas cun la medema pagina superiura"
+        "The position among pages with the same parent": "La posiziun tranter paginas cun la medema pagina superiura",
+        "Plots": "Intrigas",
+        "Plot": "Intriga",
+        "Plot part": "Part da l'intriga",
+        "Characters in this plot": "Persunagis en questa intriga",
+        "Player text": "Text per il giugader",
+        "Private text": "Text privat",
+        "Writer": "Autur",
+        "Writing step": "Pass da scriver",
+        "Summary": "Resumaziun",
+        "Plots of this character": "Intrigas da quest persunagi",
+        "By writing step": "Tenor pass da scriver",
+        "Not yet approved in writing": "Anc betg approvà en la scrittira",
+        "Everyone is approved in writing": "Tuts èn approvads en la scrittira"
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -314,7 +314,20 @@ OC.L10N.register(
         "Who may read the page: game masters only, or players too": "Kas drīkst lasīt lapu: tikai spēles vadītāji vai arī spēlētāji",
         "From this moment players may read a page that is visible to players": "No šī brīža spēlētāji drīkst lasīt spēlētājiem redzamu lapu",
         "The page this page sits under in the sidebar": "Lapa, zem kuras šī lapa ir sānjoslā",
-        "The position among pages with the same parent": "Vieta starp lapām ar to pašu vecāklapu"
+        "The position among pages with the same parent": "Vieta starp lapām ar to pašu vecāklapu",
+        "Plots": "Sižeti",
+        "Plot": "Sižets",
+        "Plot part": "Sižeta daļa",
+        "Characters in this plot": "Tēli šajā sižetā",
+        "Player text": "Teksts spēlētājam",
+        "Private text": "Privāts teksts",
+        "Writer": "Autors",
+        "Writing step": "Rakstīšanas solis",
+        "Summary": "Kopsavilkums",
+        "Plots of this character": "Šī tēla sižeti",
+        "By writing step": "Pēc rakstīšanas soļa",
+        "Not yet approved in writing": "Vēl nav apstiprināti rakstīšanā",
+        "Everyone is approved in writing": "Visi ir apstiprināti rakstīšanā"
     },
     "nplurals=2; plural=(n != 1);"
 )

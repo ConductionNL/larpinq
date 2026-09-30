@@ -314,7 +314,20 @@ OC.L10N.register(
         "Who may read the page: game masters only, or players too": "Hver má lesa síðuna: aðeins spilastjórar eða líka leikmenn",
         "From this moment players may read a page that is visible to players": "Frá þessum tíma mega leikmenn lesa síðu sem er sýnileg leikmönnum",
         "The page this page sits under in the sidebar": "Síðan sem þessi síða er undir í hliðarstikunni",
-        "The position among pages with the same parent": "Staðsetningin meðal síðna með sömu yfirsíðu"
+        "The position among pages with the same parent": "Staðsetningin meðal síðna með sömu yfirsíðu",
+        "Plots": "Söguþræðir",
+        "Plot": "Söguþráður",
+        "Plot part": "Hluti söguþráðar",
+        "Characters in this plot": "Persónur í þessum söguþræði",
+        "Player text": "Texti fyrir leikmann",
+        "Private text": "Einkatexti",
+        "Writer": "Höfundur",
+        "Writing step": "Ritunarskref",
+        "Summary": "Samantekt",
+        "Plots of this character": "Söguþræðir þessarar persónu",
+        "By writing step": "Eftir ritunarskrefi",
+        "Not yet approved in writing": "Ekki enn samþykkt í ritun",
+        "Everyone is approved in writing": "Allir eru samþykktir í ritun"
     },
     "nplurals=2; plural=(n != 1);"
 )

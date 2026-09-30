@@ -313,7 +313,20 @@
         "Who may read the page: game masters only, or players too": "Kto smie stránku čítať: len rozprávači, alebo aj hráči",
         "From this moment players may read a page that is visible to players": "Od tohto okamihu môžu hráči čítať stránku viditeľnú pre hráčov",
         "The page this page sits under in the sidebar": "Stránka, pod ktorou je táto stránka v bočnom paneli",
-        "The position among pages with the same parent": "Pozícia medzi stránkami s rovnakou nadradenou stránkou"
+        "The position among pages with the same parent": "Pozícia medzi stránkami s rovnakou nadradenou stránkou",
+        "Plots": "Zápletky",
+        "Plot": "Zápletka",
+        "Plot part": "Časť zápletky",
+        "Characters in this plot": "Postavy v tejto zápletke",
+        "Player text": "Text pre hráča",
+        "Private text": "Súkromný text",
+        "Writer": "Autor",
+        "Writing step": "Fáza písania",
+        "Summary": "Zhrnutie",
+        "Plots of this character": "Zápletky tejto postavy",
+        "By writing step": "Podľa fázy písania",
+        "Not yet approved in writing": "Zatiaľ neschválené v písaní",
+        "Everyone is approved in writing": "Všetci sú v písaní schválení"
     },
     "plurals": {}
 }

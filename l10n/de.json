@@ -313,7 +313,20 @@
         "Who may read the page: game masters only, or players too": "Wer die Seite lesen darf: nur Spielleitungen oder auch Spielende",
         "From this moment players may read a page that is visible to players": "Ab diesem Zeitpunkt dürfen Spielende eine für sie sichtbare Seite lesen",
         "The page this page sits under in the sidebar": "Die Seite, unter der diese Seite in der Seitenleiste steht",
-        "The position among pages with the same parent": "Die Position unter Seiten mit derselben übergeordneten Seite"
+        "The position among pages with the same parent": "Die Position unter Seiten mit derselben übergeordneten Seite",
+        "Plots": "Plots",
+        "Plot": "Plot",
+        "Plot part": "Plotteil",
+        "Characters in this plot": "Figuren in diesem Plot",
+        "Player text": "Text für die Spielenden",
+        "Private text": "Privater Text",
+        "Writer": "Autor",
+        "Writing step": "Schreibschritt",
+        "Summary": "Zusammenfassung",
+        "Plots of this character": "Plots dieser Figur",
+        "By writing step": "Nach Schreibschritt",
+        "Not yet approved in writing": "Beim Schreiben noch nicht freigegeben",
+        "Everyone is approved in writing": "Alle sind beim Schreiben freigegeben"
     },
     "plurals": {}
 }

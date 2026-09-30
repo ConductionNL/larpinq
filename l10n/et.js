@@ -314,7 +314,20 @@ OC.L10N.register(
         "Who may read the page: game masters only, or players too": "Kes tohib lehte lugeda: ainult mängujuhid või ka mängijad",
         "From this moment players may read a page that is visible to players": "Sellest hetkest võivad mängijad lugeda mängijatele nähtavat lehte",
         "The page this page sits under in the sidebar": "Leht, mille all see leht külgribal asub",
-        "The position among pages with the same parent": "Koht sama ülemlehega lehtede seas"
+        "The position among pages with the same parent": "Koht sama ülemlehega lehtede seas",
+        "Plots": "Süžeed",
+        "Plot": "Süžee",
+        "Plot part": "Süžee osa",
+        "Characters in this plot": "Tegelased selles süžees",
+        "Player text": "Tekst mängijale",
+        "Private text": "Privaatne tekst",
+        "Writer": "Kirjutaja",
+        "Writing step": "Kirjutamise samm",
+        "Summary": "Kokkuvõte",
+        "Plots of this character": "Selle tegelase süžeed",
+        "By writing step": "Kirjutamise sammu järgi",
+        "Not yet approved in writing": "Kirjutamises veel kinnitamata",
+        "Everyone is approved in writing": "Kõik on kirjutamises kinnitatud"
     },
     "nplurals=2; plural=(n != 1);"
 )

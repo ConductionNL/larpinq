@@ -314,7 +314,20 @@ OC.L10N.register(
         "Who may read the page: game masters only, or players too": "Kas gali skaityti puslapį: tik žaidimo vedėjai ar ir žaidėjai",
         "From this moment players may read a page that is visible to players": "Nuo šio momento žaidėjai gali skaityti žaidėjams matomą puslapį",
         "The page this page sits under in the sidebar": "Puslapis, po kuriuo šis puslapis yra šoninėje juostoje",
-        "The position among pages with the same parent": "Vieta tarp puslapių su tuo pačiu tėviniu puslapiu"
+        "The position among pages with the same parent": "Vieta tarp puslapių su tuo pačiu tėviniu puslapiu",
+        "Plots": "Siužetai",
+        "Plot": "Siužetas",
+        "Plot part": "Siužeto dalis",
+        "Characters in this plot": "Veikėjai šiame siužete",
+        "Player text": "Tekstas žaidėjui",
+        "Private text": "Privatus tekstas",
+        "Writer": "Autorius",
+        "Writing step": "Rašymo žingsnis",
+        "Summary": "Santrauka",
+        "Plots of this character": "Šio veikėjo siužetai",
+        "By writing step": "Pagal rašymo žingsnį",
+        "Not yet approved in writing": "Dar nepatvirtinti rašyme",
+        "Everyone is approved in writing": "Visi patvirtinti rašyme"
     },
     "nplurals=2; plural=(n != 1);"
 )

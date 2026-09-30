@@ -314,7 +314,20 @@ OC.L10N.register(
         "Who may read the page: game masters only, or players too": "Кто может читать страницу: только мастера или также игроки",
         "From this moment players may read a page that is visible to players": "С этого момента игроки могут читать страницу, видимую игрокам",
         "The page this page sits under in the sidebar": "Страница, под которой эта страница стоит на боковой панели",
-        "The position among pages with the same parent": "Место среди страниц с той же родительской страницей"
+        "The position among pages with the same parent": "Место среди страниц с той же родительской страницей",
+        "Plots": "Сюжеты",
+        "Plot": "Сюжет",
+        "Plot part": "Часть сюжета",
+        "Characters in this plot": "Персонажи в этом сюжете",
+        "Player text": "Текст для игрока",
+        "Private text": "Закрытый текст",
+        "Writer": "Автор",
+        "Writing step": "Этап написания",
+        "Summary": "Краткое описание",
+        "Plots of this character": "Сюжеты этого персонажа",
+        "By writing step": "По этапу написания",
+        "Not yet approved in writing": "Ещё не одобрены в написании",
+        "Everyone is approved in writing": "Все одобрены в написании"
     },
     "nplurals=2; plural=(n != 1);"
 )

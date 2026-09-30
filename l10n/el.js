@@ -314,7 +314,20 @@ OC.L10N.register(
         "Who may read the page: game masters only, or players too": "Ποιος μπορεί να διαβάσει τη σελίδα: μόνο οι αφηγητές ή και οι παίκτες",
         "From this moment players may read a page that is visible to players": "Από αυτή τη στιγμή οι παίκτες μπορούν να διαβάσουν μια σελίδα ορατή στους παίκτες",
         "The page this page sits under in the sidebar": "Η σελίδα κάτω από την οποία εμφανίζεται αυτή η σελίδα στην πλαϊνή μπάρα",
-        "The position among pages with the same parent": "Η θέση ανάμεσα σε σελίδες με την ίδια γονική σελίδα"
+        "The position among pages with the same parent": "Η θέση ανάμεσα σε σελίδες με την ίδια γονική σελίδα",
+        "Plots": "Πλοκές",
+        "Plot": "Πλοκή",
+        "Plot part": "Μέρος πλοκής",
+        "Characters in this plot": "Χαρακτήρες σε αυτή την πλοκή",
+        "Player text": "Κείμενο για τον παίκτη",
+        "Private text": "Ιδιωτικό κείμενο",
+        "Writer": "Συγγραφέας",
+        "Writing step": "Στάδιο γραφής",
+        "Summary": "Περίληψη",
+        "Plots of this character": "Πλοκές αυτού του χαρακτήρα",
+        "By writing step": "Ανά στάδιο γραφής",
+        "Not yet approved in writing": "Δεν έχουν εγκριθεί ακόμη στη γραφή",
+        "Everyone is approved in writing": "Όλοι έχουν εγκριθεί στη γραφή"
     },
     "nplurals=2; plural=(n != 1);"
 )

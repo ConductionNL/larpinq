@@ -314,7 +314,20 @@ OC.L10N.register(
         "Who may read the page: game masters only, or players too": "Hvem som kan lese siden: bare spilledere eller også spillere",
         "From this moment players may read a page that is visible to players": "Fra dette tidspunktet kan spillere lese en side som er synlig for spillere",
         "The page this page sits under in the sidebar": "Siden denne siden ligger under i sidefeltet",
-        "The position among pages with the same parent": "Plasseringen blant sider med samme overordnede side"
+        "The position among pages with the same parent": "Plasseringen blant sider med samme overordnede side",
+        "Plots": "Plott",
+        "Plot": "Plott",
+        "Plot part": "Plottdel",
+        "Characters in this plot": "Karakterer i dette plottet",
+        "Player text": "Tekst til spilleren",
+        "Private text": "Privat tekst",
+        "Writer": "Forfatter",
+        "Writing step": "Skrivetrinn",
+        "Summary": "Sammendrag",
+        "Plots of this character": "Plott for denne karakteren",
+        "By writing step": "Etter skrivetrinn",
+        "Not yet approved in writing": "Ennå ikke godkjent i skrivingen",
+        "Everyone is approved in writing": "Alle er godkjent i skrivingen"
     },
     "nplurals=2; plural=(n != 1);"
 )
