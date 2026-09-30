@@ -1,0 +1,42 @@
+{
+  "components": {
+    "schemas": {
+      "character": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Whether the character still plays: active, retired or dead",
+            "enum": [
+              "active",
+              "retired",
+              "dead"
+            ],
+            "x-enum-labels": {
+              "active": "Active",
+              "retired": "Retired",
+              "dead": "Dead"
+            },
+            "default": "active",
+            "facetable": true,
+            "authorization": {
+              "update": [
+                "gamemasters"
+              ]
+            }
+          }
+        }
+      },
+      "event": {
+        "properties": {
+          "players": {
+            "x-relation-filter": {
+              "setting": "@object.setting",
+              "status": "active"
+            }
+          }
+        }
+      }
+    }
+  }
+}

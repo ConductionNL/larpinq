@@ -201,6 +201,11 @@ Maak een [featureverzoek](https://github.com/ConductionNL/larpinq/issues)
 			     the app never enables. -->
 			<step>OCA\Larpinq\Repair\MigrateSchemaApplicationId</step>
 			<step>OCA\Larpinq\Repair\InitializeRegister</step>
+			<!-- After the import, which adds character.status: characters stored
+			     before it get status active, so the event participant picker
+			     (x-relation-filter status = active) keeps offering them.
+			     Idempotent; logs and continues. -->
+			<step>OCA\Larpinq\Repair\BackfillCharacterStatus</step>
 		</post-migration>
 		<install>
 			<step>OCA\Larpinq\Repair\MigrateAppConfigKeys</step>
