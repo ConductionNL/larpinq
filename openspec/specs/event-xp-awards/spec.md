@@ -93,8 +93,12 @@ arithmetic and audit ordering MUST remain unchanged.
 Create, update, and delete on `xpAward` objects MUST be restricted
 server-side to the GM group via OpenRegister schema-level RBAC configured in
 the register configuration — authorization stays OR-delegated (ADR-022), and
-no app-local authorization code re-implements it. Authenticated app users
-MAY read awards (players see their characters' XP provenance). UI visibility
+no app-local authorization code re-implements it. Reading awards through the
+OpenRegister objects API MUST be restricted the same way: the `xpAward` schema
+grants `read` to the GM group only, so game masters and the award's owner read
+it, and no other signed-in user and no anonymous visitor does (DECISIONS row
+30). Players see the XP of their own characters through the app's pages (the
+character stat sheet), not through the objects API. UI visibility
 of the awarding surface MUST be limited to GM-group members, as
 presentation only.
 
@@ -104,6 +108,13 @@ presentation only.
 - WHEN bob POSTs an xpAward via the OpenRegister objects API
 - THEN the write MUST be rejected with an authorization error
 - AND no award MUST be stored
+
+#### Scenario: A player cannot read other awards through the objects API
+
+- GIVEN player-user "carol" is not in the GM group and owns no award
+- WHEN carol GETs an xpAward via the OpenRegister objects API
+- THEN OpenRegister MUST refuse the read
+- AND a game master reading the same award MUST get it
 
 #### Scenario: Player can read awards on their character
 
