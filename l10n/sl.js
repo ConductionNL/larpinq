@@ -314,7 +314,20 @@ OC.L10N.register(
         "Who may read the page: game masters only, or players too": "Kdo sme brati stran: samo vodje igre ali tudi igralci",
         "From this moment players may read a page that is visible to players": "Od tega trenutka lahko igralci berejo stran, vidno igralcem",
         "The page this page sits under in the sidebar": "Stran, pod katero je ta stran v stranski vrstici",
-        "The position among pages with the same parent": "Položaj med stranmi z isto nadrejeno stranjo"
+        "The position among pages with the same parent": "Položaj med stranmi z isto nadrejeno stranjo",
+        "Plots": "Zgodbe",
+        "Plot": "Zgodba",
+        "Plot part": "Del zgodbe",
+        "Characters in this plot": "Liki v tej zgodbi",
+        "Player text": "Besedilo za igralca",
+        "Private text": "Zasebno besedilo",
+        "Writer": "Avtor",
+        "Writing step": "Korak pisanja",
+        "Summary": "Povzetek",
+        "Plots of this character": "Zgodbe tega lika",
+        "By writing step": "Po koraku pisanja",
+        "Not yet approved in writing": "Še ni odobreno v pisanju",
+        "Everyone is approved in writing": "Vsi so odobreni v pisanju"
     },
     "nplurals=2; plural=(n != 1);"
 )

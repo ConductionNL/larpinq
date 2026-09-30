@@ -314,7 +314,20 @@ OC.L10N.register(
         "Who may read the page: game masters only, or players too": "Kush mund ta lexojë faqen: vetëm drejtuesit e lojës apo edhe lojtarët",
         "From this moment players may read a page that is visible to players": "Nga ky moment lojtarët mund të lexojnë një faqe të dukshme për lojtarët",
         "The page this page sits under in the sidebar": "Faqja nën të cilën qëndron kjo faqe në shiritin anësor",
-        "The position among pages with the same parent": "Vendi midis faqeve me të njëjtën faqe mëmë"
+        "The position among pages with the same parent": "Vendi midis faqeve me të njëjtën faqe mëmë",
+        "Plots": "Intrigat",
+        "Plot": "Intrigë",
+        "Plot part": "Pjesë e intrigës",
+        "Characters in this plot": "Personazhet në këtë intrigë",
+        "Player text": "Tekst për lojtarin",
+        "Private text": "Tekst privat",
+        "Writer": "Autori",
+        "Writing step": "Hapi i shkrimit",
+        "Summary": "Përmbledhje",
+        "Plots of this character": "Intrigat e këtij personazhi",
+        "By writing step": "Sipas hapit të shkrimit",
+        "Not yet approved in writing": "Ende të pamiratuar në shkrim",
+        "Everyone is approved in writing": "Të gjithë janë miratuar në shkrim"
     },
     "nplurals=2; plural=(n != 1);"
 )

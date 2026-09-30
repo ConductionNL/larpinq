@@ -278,7 +278,20 @@
         "Who may read the page: game masters only, or players too": "Who may read the page: game masters only, or players too",
         "From this moment players may read a page that is visible to players": "From this moment players may read a page that is visible to players",
         "The page this page sits under in the sidebar": "The page this page sits under in the sidebar",
-        "The position among pages with the same parent": "The position among pages with the same parent"
+        "The position among pages with the same parent": "The position among pages with the same parent",
+        "Plots": "Plots",
+        "Plot": "Plot",
+        "Plot part": "Plot part",
+        "Characters in this plot": "Characters in this plot",
+        "Player text": "Player text",
+        "Private text": "Private text",
+        "Writer": "Writer",
+        "Writing step": "Writing step",
+        "Summary": "Summary",
+        "Plots of this character": "Plots of this character",
+        "By writing step": "By writing step",
+        "Not yet approved in writing": "Not yet approved in writing",
+        "Everyone is approved in writing": "Everyone is approved in writing"
     },
     "plurals": {},
     "pluralForm": "nplurals=2; plural=(n != 1);"

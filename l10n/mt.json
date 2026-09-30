@@ -313,7 +313,20 @@
         "Who may read the page: game masters only, or players too": "Min jista' jaqra l-paġna: il-kaptani tal-logħba biss, jew il-plejers ukoll",
         "From this moment players may read a page that is visible to players": "Minn dan il-mument il-plejers jistgħu jaqraw paġna viżibbli għall-plejers",
         "The page this page sits under in the sidebar": "Il-paġna li taħtha tidher din il-paġna fil-ġenb",
-        "The position among pages with the same parent": "Il-pożizzjoni fost il-paġni bl-istess paġna prinċipali"
+        "The position among pages with the same parent": "Il-pożizzjoni fost il-paġni bl-istess paġna prinċipali",
+        "Plots": "Plottijiet",
+        "Plot": "Plott",
+        "Plot part": "Parti mill-plott",
+        "Characters in this plot": "Karattri f'dan il-plott",
+        "Player text": "Test għall-plejer",
+        "Private text": "Test privat",
+        "Writer": "Kittieb",
+        "Writing step": "Pass tal-kitba",
+        "Summary": "Sommarju",
+        "Plots of this character": "Il-plottijiet ta' dan il-karattru",
+        "By writing step": "Skont il-pass tal-kitba",
+        "Not yet approved in writing": "Għadhom mhux approvati fil-kitba",
+        "Everyone is approved in writing": "Kulħadd approvat fil-kitba"
     },
     "plurals": {}
 }

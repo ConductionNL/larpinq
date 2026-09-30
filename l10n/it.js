@@ -314,7 +314,20 @@ OC.L10N.register(
         "Who may read the page: game masters only, or players too": "Chi può leggere la pagina: solo i master o anche i giocatori",
         "From this moment players may read a page that is visible to players": "Da questo momento i giocatori possono leggere una pagina visibile ai giocatori",
         "The page this page sits under in the sidebar": "La pagina sotto cui questa pagina appare nella barra laterale",
-        "The position among pages with the same parent": "La posizione tra le pagine con la stessa pagina superiore"
+        "The position among pages with the same parent": "La posizione tra le pagine con la stessa pagina superiore",
+        "Plots": "Trame",
+        "Plot": "Trama",
+        "Plot part": "Parte di trama",
+        "Characters in this plot": "Personaggi in questa trama",
+        "Player text": "Testo per il giocatore",
+        "Private text": "Testo privato",
+        "Writer": "Autore",
+        "Writing step": "Fase di scrittura",
+        "Summary": "Riepilogo",
+        "Plots of this character": "Trame di questo personaggio",
+        "By writing step": "Per fase di scrittura",
+        "Not yet approved in writing": "Non ancora approvati nella scrittura",
+        "Everyone is approved in writing": "Tutti sono approvati nella scrittura"
     },
     "nplurals=2; plural=(n != 1);"
 )

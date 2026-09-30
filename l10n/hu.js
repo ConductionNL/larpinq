@@ -314,7 +314,20 @@ OC.L10N.register(
         "Who may read the page: game masters only, or players too": "Ki olvashatja az oldalt: csak a mesélők vagy a játékosok is",
         "From this moment players may read a page that is visible to players": "Ettől az időponttól a játékosok olvashatják a nekik látható oldalt",
         "The page this page sits under in the sidebar": "Az oldal, amely alatt ez az oldal az oldalsávban áll",
-        "The position among pages with the same parent": "A hely az azonos szülőoldalú oldalak között"
+        "The position among pages with the same parent": "A hely az azonos szülőoldalú oldalak között",
+        "Plots": "Cselekményszálak",
+        "Plot": "Cselekményszál",
+        "Plot part": "Cselekményrész",
+        "Characters in this plot": "Karakterek ebben a szálban",
+        "Player text": "Szöveg a játékosnak",
+        "Private text": "Privát szöveg",
+        "Writer": "Író",
+        "Writing step": "Írási lépés",
+        "Summary": "Összefoglaló",
+        "Plots of this character": "A karakter cselekményszálai",
+        "By writing step": "Írási lépés szerint",
+        "Not yet approved in writing": "Az írásban még nincs jóváhagyva",
+        "Everyone is approved in writing": "Az írásban mindenki jóvá van hagyva"
     },
     "nplurals=2; plural=(n != 1);"
 )

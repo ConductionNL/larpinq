@@ -313,7 +313,20 @@
         "Who may read the page: game masters only, or players too": "Хто можа чытаць старонку: толькі майстры ці таксама гульцы",
         "From this moment players may read a page that is visible to players": "З гэтага моманту гульцы могуць чытаць старонку, бачную гульцам",
         "The page this page sits under in the sidebar": "Старонка, пад якой гэтая старонка стаіць на бакавой панэлі",
-        "The position among pages with the same parent": "Месца сярод старонак з той самай бацькоўскай старонкай"
+        "The position among pages with the same parent": "Месца сярод старонак з той самай бацькоўскай старонкай",
+        "Plots": "Сюжэты",
+        "Plot": "Сюжэт",
+        "Plot part": "Частка сюжэта",
+        "Characters in this plot": "Персанажы ў гэтым сюжэце",
+        "Player text": "Тэкст для гульца",
+        "Private text": "Закрыты тэкст",
+        "Writer": "Аўтар",
+        "Writing step": "Этап напісання",
+        "Summary": "Кароткае апісанне",
+        "Plots of this character": "Сюжэты гэтага персанажа",
+        "By writing step": "Па этапе напісання",
+        "Not yet approved in writing": "Яшчэ не ўхвалены ў напісанні",
+        "Everyone is approved in writing": "Усе ўхвалены ў напісанні"
     },
     "plurals": {}
 }

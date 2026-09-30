@@ -314,7 +314,20 @@ OC.L10N.register(
         "Who may read the page: game masters only, or players too": "Ко сме да чита страницу: само водитељи игре или и играчи",
         "From this moment players may read a page that is visible to players": "Од овог тренутка играчи могу да читају страницу видљиву играчима",
         "The page this page sits under in the sidebar": "Страница испод које је ова страница у бочној траци",
-        "The position among pages with the same parent": "Положај међу страницама са истом надређеном страницом"
+        "The position among pages with the same parent": "Положај међу страницама са истом надређеном страницом",
+        "Plots": "Заплети",
+        "Plot": "Заплет",
+        "Plot part": "Део заплета",
+        "Characters in this plot": "Ликови у овом заплету",
+        "Player text": "Текст за играча",
+        "Private text": "Приватни текст",
+        "Writer": "Аутор",
+        "Writing step": "Корак писања",
+        "Summary": "Сажетак",
+        "Plots of this character": "Заплети овог лика",
+        "By writing step": "По кораку писања",
+        "Not yet approved in writing": "Још није одобрено у писању",
+        "Everyone is approved in writing": "Сви су одобрени у писању"
     },
     "nplurals=2; plural=(n != 1);"
 )

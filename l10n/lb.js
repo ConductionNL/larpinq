@@ -314,7 +314,20 @@ OC.L10N.register(
         "Who may read the page: game masters only, or players too": "Wien d'Säit liese dierf: nëmmen d'Spillleeder oder och d'Spiller",
         "From this moment players may read a page that is visible to players": "Vun dësem Moment u kënnen d'Spiller eng fir si siichtbar Säit liesen",
         "The page this page sits under in the sidebar": "D'Säit, ënner där dës Säit an der Säiteleescht steet",
-        "The position among pages with the same parent": "D'Positioun ënner Säite mat der selwechter iwwergeuerdenter Säit"
+        "The position among pages with the same parent": "D'Positioun ënner Säite mat der selwechter iwwergeuerdenter Säit",
+        "Plots": "Plotten",
+        "Plot": "Plot",
+        "Plot part": "Plotdeel",
+        "Characters in this plot": "Personnagen an dësem Plot",
+        "Player text": "Text fir de Spiller",
+        "Private text": "Privaten Text",
+        "Writer": "Auteur",
+        "Writing step": "Schreifschrëtt",
+        "Summary": "Resumé",
+        "Plots of this character": "Plotte vun dësem Personnage",
+        "By writing step": "No Schreifschrëtt",
+        "Not yet approved in writing": "Nach net beim Schreiwe fräiginn",
+        "Everyone is approved in writing": "All sinn beim Schreiwe fräiginn"
     },
     "nplurals=2; plural=(n != 1);"
 )

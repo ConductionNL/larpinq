@@ -92,3 +92,28 @@ None. Existing characters read as `draft` with no writer.
 ## Open Questions
 
 None.
+
+## Changes at build (2026-09-30, read at development `f7d633e`)
+
+1. **No `format: user`.** OpenRegister has no `user` format and drops the
+   whole schema at import when it meets one (larpinq's `check:register`
+   refuses it; `player.userUid` documents the same trap). `writer` on plot and
+   character is a plain string holding a Nextcloud user id.
+2. **The materialised owner.** `plotPart.ownerUid` is a property-level
+   `calculation` (`materialise` true) reading `@ref.character.ownerUid`
+   through `configuration.x-openregister-references.character`
+   (`relatedObject` on `character`). OpenRegister evaluates it on every save
+   of the part, so the row rule `ownerUid = $userId` can match it in the
+   query. A part saved before its character got a player, or whose character
+   changes player, keeps the old owner until it is saved again (or
+   `occ openregister:rematerialise-calculations larpinq larping_plot_part`).
+3. **Registration and export.** Both schemas are appended to the register's
+   `schemas` list and set `configuration.exportable`.
+4. **Menu.** `src/menu-layout.json` relocates `Plots` into the Characters
+   group.
+5. **Existing characters.** OpenRegister applies `default` on create only, so
+   a character made before this change has no writing step. The chart shows
+   it as a bucket of its own and the open list (an IN filter on draft and
+   ready) leaves it out until a game master sets a step.
+6. **Newman.** The read-rule proof is the Playwright workflow over the
+   OpenRegister API as a real `larpers` user, not a Newman collection.

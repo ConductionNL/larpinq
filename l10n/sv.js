@@ -314,7 +314,20 @@ OC.L10N.register(
         "Who may read the page: game masters only, or players too": "Vem som får läsa sidan: bara spelledare eller även spelare",
         "From this moment players may read a page that is visible to players": "Från denna tidpunkt får spelare läsa en sida som är synlig för spelare",
         "The page this page sits under in the sidebar": "Sidan som den här sidan ligger under i sidofältet",
-        "The position among pages with the same parent": "Placeringen bland sidor med samma överordnade sida"
+        "The position among pages with the same parent": "Placeringen bland sidor med samma överordnade sida",
+        "Plots": "Intriger",
+        "Plot": "Intrig",
+        "Plot part": "Intrigdel",
+        "Characters in this plot": "Rollfigurer i denna intrig",
+        "Player text": "Text till spelaren",
+        "Private text": "Privat text",
+        "Writer": "Författare",
+        "Writing step": "Skrivsteg",
+        "Summary": "Sammanfattning",
+        "Plots of this character": "Intriger för denna rollfigur",
+        "By writing step": "Per skrivsteg",
+        "Not yet approved in writing": "Ännu inte godkända i skrivandet",
+        "Everyone is approved in writing": "Alla är godkända i skrivandet"
     },
     "nplurals=2; plural=(n != 1);"
 )

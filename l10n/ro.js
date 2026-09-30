@@ -314,7 +314,20 @@ OC.L10N.register(
         "Who may read the page: game masters only, or players too": "Cine poate citi pagina: doar maeștrii de joc sau și jucătorii",
         "From this moment players may read a page that is visible to players": "Din acest moment jucătorii pot citi o pagină vizibilă pentru jucători",
         "The page this page sits under in the sidebar": "Pagina sub care apare această pagină în bara laterală",
-        "The position among pages with the same parent": "Poziția printre paginile cu aceeași pagină părinte"
+        "The position among pages with the same parent": "Poziția printre paginile cu aceeași pagină părinte",
+        "Plots": "Intrigi",
+        "Plot": "Intrigă",
+        "Plot part": "Parte de intrigă",
+        "Characters in this plot": "Personaje din această intrigă",
+        "Player text": "Text pentru jucător",
+        "Private text": "Text privat",
+        "Writer": "Autor",
+        "Writing step": "Etapă de scriere",
+        "Summary": "Rezumat",
+        "Plots of this character": "Intrigile acestui personaj",
+        "By writing step": "După etapa de scriere",
+        "Not yet approved in writing": "Încă neaprobate la scriere",
+        "Everyone is approved in writing": "Toți sunt aprobați la scriere"
     },
     "nplurals=2; plural=(n != 1);"
 )

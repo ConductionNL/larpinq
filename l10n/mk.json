@@ -313,7 +313,20 @@
         "Who may read the page: game masters only, or players too": "Кој смее да ја чита страницата: само водителите на играта или и играчите",
         "From this moment players may read a page that is visible to players": "Од овој момент играчите можат да читаат страница видлива за играчи",
         "The page this page sits under in the sidebar": "Страницата под која стои оваа страница во страничната лента",
-        "The position among pages with the same parent": "Позицијата меѓу страниците со иста надредена страница"
+        "The position among pages with the same parent": "Позицијата меѓу страниците со иста надредена страница",
+        "Plots": "Заплети",
+        "Plot": "Заплет",
+        "Plot part": "Дел од заплет",
+        "Characters in this plot": "Ликови во овој заплет",
+        "Player text": "Текст за играчот",
+        "Private text": "Приватен текст",
+        "Writer": "Автор",
+        "Writing step": "Чекор на пишување",
+        "Summary": "Резиме",
+        "Plots of this character": "Заплети на овој лик",
+        "By writing step": "По чекор на пишување",
+        "Not yet approved in writing": "Сè уште не се одобрени во пишувањето",
+        "Everyone is approved in writing": "Сите се одобрени во пишувањето"
     },
     "plurals": {}
 }
