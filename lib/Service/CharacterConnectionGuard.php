@@ -11,7 +11,7 @@
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
  *
- * @spec openspec/changes/characters-factions-and-relationships/specs/character-connections/spec.md
+ * @spec openspec/specs/character-connections/spec.md
  */
 
 declare(strict_types=1);
@@ -28,7 +28,7 @@ namespace OCA\Larpinq\Service;
  * character that cannot be read refuses the write: this is an authorization
  * check and does not fail open.
  *
- * @spec openspec/changes/characters-factions-and-relationships/specs/character-connections/spec.md
+ * @spec openspec/specs/character-connections/spec.md
  */
 class CharacterConnectionGuard {
 
@@ -83,7 +83,7 @@ class CharacterConnectionGuard {
 	 *
 	 * @return array<string, string>|null The refusal, or null to allow.
 	 *
-	 * @spec openspec/changes/characters-factions-and-relationships/specs/character-connections/spec.md
+	 * @spec openspec/specs/character-connections/spec.md
 	 */
 	public function checkFaction(array $faction, string $userId): ?array {
 		if (($faction['kind'] ?? 'group') !== 'group') {
@@ -111,7 +111,7 @@ class CharacterConnectionGuard {
 	 *
 	 * @return array<string, string>|null The refusal, or null to allow.
 	 *
-	 * @spec openspec/changes/characters-factions-and-relationships/specs/character-connections/spec.md
+	 * @spec openspec/specs/character-connections/spec.md
 	 */
 	public function checkMembership(array $membership, ?array $old, string $userId): ?array {
 		if ($old !== null && $this->isMoved(membership: $membership, old: $old) === true) {
@@ -146,7 +146,7 @@ class CharacterConnectionGuard {
 	 *
 	 * @return array<string, string>|null The refusal, or null to allow.
 	 *
-	 * @spec openspec/changes/characters-factions-and-relationships/specs/character-connections/spec.md
+	 * @spec openspec/specs/character-connections/spec.md
 	 */
 	public function checkRelationship(array $relationship, string $userId): ?array {
 		if (($relationship['knownTo'] ?? 'gamemasters') !== 'owners') {

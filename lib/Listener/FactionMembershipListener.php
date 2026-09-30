@@ -17,7 +17,7 @@
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link      https://larpingapp.com
  *
- * @spec openspec/changes/characters-factions-and-relationships/specs/character-connections/spec.md
+ * @spec openspec/specs/character-connections/spec.md
  */
 
 declare(strict_types=1);
@@ -46,7 +46,7 @@ use Psr\Log\LoggerInterface;
  *
  * @psalm-suppress UndefinedClass OpenRegister event classes are an optional dependency.
  *
- * @spec openspec/changes/characters-factions-and-relationships/specs/character-connections/spec.md
+ * @spec openspec/specs/character-connections/spec.md
  */
 class FactionMembershipListener implements IEventListener {
 
@@ -82,7 +82,7 @@ class FactionMembershipListener implements IEventListener {
 	 * @psalm-suppress MixedArgument    OpenRegister event/entity classes are optional dependencies.
 	 * @psalm-suppress UndefinedMethod  The OpenRegister event accessors are resolved at runtime.
 	 *
-	 * @spec openspec/changes/characters-factions-and-relationships/specs/character-connections/spec.md
+	 * @spec openspec/specs/character-connections/spec.md
 	 */
 	public function handle(Event $event): void {
 		if (($event instanceof \OCA\OpenRegister\Event\ObjectCreatingEvent) === false
