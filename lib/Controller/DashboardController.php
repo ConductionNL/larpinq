@@ -78,7 +78,7 @@ class DashboardController extends Controller {
 	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-100
 	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-101
 	 * @spec openspec/specs/data-portability/spec.md
-	 * @spec openspec/changes/events-world-scope-and-upcoming/specs/setting-management/spec.md
+	 * @spec openspec/specs/setting-management/spec.md
 	 */
 	public function page(): TemplateResponse {
 		// The frontend offers the imports to game masters too: the larpinq
@@ -121,7 +121,7 @@ class DashboardController extends Controller {
 	 *
 	 * @return string The world UUID, or ''.
 	 *
-	 * @spec openspec/changes/events-world-scope-and-upcoming/specs/setting-management/spec.md
+	 * @spec openspec/specs/setting-management/spec.md
 	 */
 	private function activeWorld(): string {
 		$user = $this->userSession->getUser();

@@ -47,7 +47,7 @@ export default {
 	// the world-scoped index pages (it draws the page title it replaces) and
 	// the dashboard's actions. It writes the page workspace the lists'
 	// `@workspace.activeWorld?` filter reads.
-	// @spec openspec/changes/events-world-scope-and-upcoming/specs/setting-management/spec.md
+	// @spec openspec/specs/setting-management/spec.md
 	WorldSwitcher: {
 		kind: 'header',
 		component: WorldSwitcher,

@@ -47,13 +47,13 @@
 
 <script>
 import { CnPageHeader } from '@conduction/nextcloud-vue'
+import { inject } from 'vue'
 import NcButton from '@nextcloud/vue/components/NcButton'
 import NcSelect from '@nextcloud/vue/components/NcSelect'
-import { inject } from 'vue'
 import {
 	activeWorld,
-	appWorkspace,
 	applyWorld,
+	appWorkspace,
 	listWorlds,
 	resolveWorld,
 	saveWorld,
@@ -74,7 +74,7 @@ export default {
 		/** The page icon, handed over by the header slot. */
 		icon: { type: [String, Object], default: '' },
 		/** Whether the page shows its title, handed over by the header slot. */
-		showTitle: { type: Boolean, default: true },
+		showTitle: { type: Boolean, default: false },
 	},
 
 	/**
@@ -83,7 +83,7 @@ export default {
 	 *
 	 * @return {{workspace: object|null}} The injected workspace.
 	 *
-	 * @spec openspec/changes/events-world-scope-and-upcoming/specs/setting-management/spec.md
+	 * @spec openspec/specs/setting-management/spec.md
 	 */
 	setup() {
 		return { workspace: inject('cnWorkspaceContext', null) }
@@ -99,10 +99,13 @@ export default {
 		 *
 		 * @return {Array<{id: string, label: string}>} The options.
 		 *
-		 * @spec openspec/changes/events-world-scope-and-upcoming/specs/setting-management/spec.md
+		 * @spec openspec/specs/setting-management/spec.md
 		 */
 		options() {
-			return [{ id: '', label: this.t('larpinq', 'All worlds') }, ...this.worlds]
+			return [
+				{ id: '', label: this.t('larpinq', 'All worlds') },
+				...this.worlds,
+			]
 		},
 
 		/**
@@ -110,10 +113,12 @@ export default {
 		 *
 		 * @return {{id: string, label: string}} The selected option.
 		 *
-		 * @spec openspec/changes/events-world-scope-and-upcoming/specs/setting-management/spec.md
+		 * @spec openspec/specs/setting-management/spec.md
 		 */
 		selectedOption() {
-			return this.options.find((o) => o.id === this.shared.id) || this.options[0]
+			return (
+				this.options.find((o) => o.id === this.shared.id) || this.options[0]
+			)
 		},
 
 		/**
@@ -121,7 +126,7 @@ export default {
 		 *
 		 * @return {string} The name.
 		 *
-		 * @spec openspec/changes/events-world-scope-and-upcoming/specs/setting-management/spec.md
+		 * @spec openspec/specs/setting-management/spec.md
 		 */
 		activeLabel() {
 			return this.shared.id ? this.selectedOption.label : ''
@@ -134,7 +139,7 @@ export default {
 	 *
 	 * @return {Promise<void>}
 	 *
-	 * @spec openspec/changes/events-world-scope-and-upcoming/specs/setting-management/spec.md
+	 * @spec openspec/specs/setting-management/spec.md
 	 */
 	async mounted() {
 		applyWorld(this.workspace, this.shared.id)
@@ -161,7 +166,7 @@ export default {
 		 * @param {{id: string}|null} option The option.
 		 * @return {void}
 		 *
-		 * @spec openspec/changes/events-world-scope-and-upcoming/specs/setting-management/spec.md
+		 * @spec openspec/specs/setting-management/spec.md
 		 */
 		onSelect(option) {
 			this.choose(option?.id || '')
@@ -173,7 +178,7 @@ export default {
 		 * @param {string} worldId The world UUID, or ''.
 		 * @return {void}
 		 *
-		 * @spec openspec/changes/events-world-scope-and-upcoming/specs/setting-management/spec.md
+		 * @spec openspec/specs/setting-management/spec.md
 		 */
 		choose(worldId) {
 			if (worldId === this.shared.id) {
@@ -189,7 +194,7 @@ export default {
 		 * @param {string} worldId The world UUID, or ''.
 		 * @return {void}
 		 *
-		 * @spec openspec/changes/events-world-scope-and-upcoming/specs/setting-management/spec.md
+		 * @spec openspec/specs/setting-management/spec.md
 		 */
 		apply(worldId) {
 			this.shared.id = worldId
@@ -207,7 +212,8 @@ export default {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: flex-end;
-	gap: calc(var(--default-grid-baseline) * 2) calc(var(--default-grid-baseline) * 4);
+	gap: calc(var(--default-grid-baseline) * 2)
+		calc(var(--default-grid-baseline) * 4);
 	margin-block-end: calc(var(--default-grid-baseline) * 2);
 }
 

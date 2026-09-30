@@ -10,7 +10,7 @@
  * carry the optional token `@workspace.activeWorld?` in their list filter, so
  * OpenRegister narrows the query itself and an unset world drops the filter.
  *
- * @spec openspec/changes/events-world-scope-and-upcoming/specs/setting-management/spec.md
+ * @spec openspec/specs/setting-management/spec.md
  */
 
 import { getRequestToken } from '@nextcloud/auth'
@@ -57,7 +57,7 @@ export const appWorkspace = ref({})
  * @param {string} worldId The world UUID, or '' for all worlds.
  * @return {void}
  *
- * @spec openspec/changes/events-world-scope-and-upcoming/specs/setting-management/spec.md
+ * @spec openspec/specs/setting-management/spec.md
  */
 export function applyWorld(bag, worldId) {
 	if (!bag || typeof bag !== 'object') {
@@ -86,7 +86,7 @@ export function applyWorld(bag, worldId) {
  * @param {string} worldId The world UUID, or '' for all worlds.
  * @return {Promise<boolean>} Whether it was stored.
  *
- * @spec openspec/changes/events-world-scope-and-upcoming/specs/setting-management/spec.md
+ * @spec openspec/specs/setting-management/spec.md
  */
 export async function saveWorld(worldId) {
 	const response = await fetch(
@@ -110,7 +110,7 @@ export async function saveWorld(worldId) {
  * @param {string} query The path and query after the schema.
  * @return {string} The URL.
  *
- * @spec openspec/changes/events-world-scope-and-upcoming/specs/setting-management/spec.md
+ * @spec openspec/specs/setting-management/spec.md
  */
 function worldsUrl(query) {
 	return generateUrl(`/apps/openregister/api/objects/larpinq/setting${query}`)
@@ -123,7 +123,7 @@ function worldsUrl(query) {
  * @param {string} worldId The stored world UUID, or ''.
  * @return {Promise<string>} The world to use, or '' for all worlds.
  *
- * @spec openspec/changes/events-world-scope-and-upcoming/specs/setting-management/spec.md
+ * @spec openspec/specs/setting-management/spec.md
  */
 export async function resolveWorld(worldId) {
 	if (!worldId) {
@@ -152,7 +152,7 @@ export async function resolveWorld(worldId) {
  *
  * @return {Promise<Array<{id: string, label: string}>>} The worlds.
  *
- * @spec openspec/changes/events-world-scope-and-upcoming/specs/setting-management/spec.md
+ * @spec openspec/specs/setting-management/spec.md
  */
 export async function listWorlds() {
 	const response = await fetch(worldsUrl('?status=active&_limit=200'), {
@@ -176,7 +176,7 @@ export async function listWorlds() {
  * @param {string} worldId The stored world UUID, or ''.
  * @return {{value: object}} The app-wide workspace, for App.vue to provide.
  *
- * @spec openspec/changes/events-world-scope-and-upcoming/specs/setting-management/spec.md
+ * @spec openspec/specs/setting-management/spec.md
  */
 export function startActiveWorld(worldId) {
 	activeWorld.id = typeof worldId === 'string' ? worldId : ''

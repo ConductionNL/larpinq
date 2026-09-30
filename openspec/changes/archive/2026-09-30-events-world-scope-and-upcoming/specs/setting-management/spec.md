@@ -6,7 +6,9 @@ An event's world is set on the event, users narrow lists to one world, and
 upcoming events come first. From larpinq matrix rows `evt-world-scoping`,
 `adm-user-preferences` and `evt-upcoming-list`. The active-world lens itself is
 the existing requirement "A per-user active setting MUST filter lists
-server-side", which this change delivers.
+server-side", which this change delivers except for listing shared (world-less)
+entities beside the active world's own: OpenRegister cannot yet filter "this
+world or none" in one query (design.md D4).
 
 ## ADDED Requirements
 
