@@ -69,6 +69,7 @@ class WorldCopyService {
 		'item' => 'items',
 		'condition' => 'conditions',
 		'lorepage' => 'lorePages',
+		'characterfield' => 'characterFields',
 	];
 
 	/**
@@ -76,7 +77,7 @@ class WorldCopyService {
 	 *
 	 * @var list<string>
 	 */
-	private const OPTIONAL_TYPES = ['lorepage'];
+	private const OPTIONAL_TYPES = ['lorepage', 'characterfield'];
 
 	/**
 	 * Reference fields per type, with the type they point at.

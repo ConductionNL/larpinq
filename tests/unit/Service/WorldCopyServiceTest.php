@@ -74,6 +74,9 @@ class WorldCopyServiceTest extends TestCase {
 		$this->store->seed('event', ['id' => 'aaaaaaaa-0000-4000-8000-000000000013', 'name' => 'Season opener', 'setting' => $w]);
 		$this->store->seed('lorepage', ['id' => 'aaaaaaaa-0000-4000-8000-000000000014', 'title' => 'The harbour', 'body' => 'Ships', 'visibility' => 'players', 'revealFrom' => '2026-10-01T00:00:00+00:00', 'category' => null, 'parent' => 'aaaaaaaa-0000-4000-8000-000000000015', 'order' => 1, 'setting' => $w]);
 		$this->store->seed('lorepage', ['id' => 'aaaaaaaa-0000-4000-8000-000000000015', 'title' => 'Aldmoor city', 'visibility' => 'gamemasters', 'revealFrom' => '2026-09-01T00:00:00+00:00', 'order' => 0, 'setting' => $w]);
+		$this->store->seed('characterfield', ['id' => 'aaaaaaaa-0000-4000-8000-000000000016', 'label' => 'Bloodline', 'key' => 'bloodline', 'fieldType' => 'choice', 'choices' => ['human', 'elven'], 'visibility' => 'owner', 'order' => 1, 'setting' => $w]);
+		$this->store->seed('characterfield', ['id' => 'aaaaaaaa-0000-4000-8000-000000000017', 'label' => 'True allegiance', 'key' => 'true-allegiance', 'fieldType' => 'text', 'visibility' => 'gamemasters', 'order' => 2, 'setting' => $w]);
+		$this->store->seed('characterfield', ['id' => 'aaaaaaaa-0000-4000-8000-000000000018', 'label' => 'Patron god', 'key' => 'patron-god', 'fieldType' => 'text', 'visibility' => 'owner']);
 
 	}//end setUp()
 
@@ -149,7 +152,7 @@ class WorldCopyServiceTest extends TestCase {
 		$this->assertSame('The old kingdom', $this->store->objects['setting'][$new]['description']);
 		$this->assertSame('active', $this->store->objects['setting'][$new]['status']);
 		$this->assertSame(
-			['abilities' => 2, 'effects' => 2, 'skills' => 2, 'items' => 1, 'conditions' => 1, 'lorePages' => 2],
+			['abilities' => 2, 'effects' => 2, 'skills' => 2, 'items' => 1, 'conditions' => 1, 'lorePages' => 2, 'characterFields' => 2],
 			$result['counts']
 		);
 
@@ -202,6 +205,12 @@ class WorldCopyServiceTest extends TestCase {
 		$child = $this->copyOf('lorepage', $new, 'title', 'The harbour');
 		$this->assertSame($root['id'], $child['parent'], 'a lore page keeps its place under the copied parent');
 
+		$bloodline = $this->copyOf('characterfield', $new, 'label', 'Bloodline');
+		$this->assertSame('bloodline', $bloodline['key'], 'a copied field keeps its key, so values keep their meaning');
+		$this->assertSame(['human', 'elven'], $bloodline['choices']);
+		$this->assertSame('gamemasters', $this->copyOf('characterfield', $new, 'label', 'True allegiance')['visibility']);
+		$this->assertCount(5, $this->store->objects['characterfield'], 'a field for every world is shared, not copied');
+
 		// The originals are untouched.
 		$this->assertSame(['aaaaaaaa-0000-4000-8000-000000000007'], $this->store->objects['skill']['aaaaaaaa-0000-4000-8000-000000000008']['requiredSkills']);
 		$this->assertSame(['aaaaaaaa-0000-4000-8000-000000000012'], $this->store->objects['item']['aaaaaaaa-0000-4000-8000-000000000010']['characters']);
@@ -218,7 +227,7 @@ class WorldCopyServiceTest extends TestCase {
 		$this->service()->copy(worldId: self::WORLD, name: 'Aldmoor season 2');
 
 		$schemas = $this->mergedSchemas();
-		$bySchema = ['setting' => 'setting', 'ability' => 'ability', 'effect' => 'effect', 'skill' => 'skill', 'item' => 'item', 'condition' => 'condition', 'lorepage' => 'lorePage'];
+		$bySchema = ['setting' => 'setting', 'ability' => 'ability', 'effect' => 'effect', 'skill' => 'skill', 'item' => 'item', 'condition' => 'condition', 'lorepage' => 'lorePage', 'characterfield' => 'characterField'];
 		$validator = new Validator();
 		$this->assertNotEmpty($this->store->saves);
 		foreach ($this->store->saves as [$schema, $payload]) {
@@ -250,6 +259,20 @@ class WorldCopyServiceTest extends TestCase {
 	}//end testAnUnconfiguredLoreSchemaCopiesTheRules()
 
 	/**
+	 * Character fields are skipped, not fatal, before the register re-import
+	 * configures their schema.
+	 *
+	 * @return void
+	 */
+	public function testAnUnconfiguredFieldSchemaCopiesTheRules(): void {
+		$result = $this->service(unconfigured: ['characterfield'])->copy(worldId: self::WORLD, name: 'Aldmoor season 2');
+
+		$this->assertSame(0, $result['counts']['characterFields']);
+		$this->assertSame(2, $result['counts']['lorePages']);
+
+	}//end testAnUnconfiguredFieldSchemaCopiesTheRules()
+
+	/**
 	 * The register import writes a lore page schema key, so the copy finds
 	 * lore pages in production and the settings page keeps the key.
 	 *
@@ -274,7 +297,7 @@ class WorldCopyServiceTest extends TestCase {
 		$counts = $this->service()->preview(worldId: self::WORLD);
 
 		$this->assertSame('Aldmoor', $counts['world']['name']);
-		$this->assertSame(['abilities' => 2, 'effects' => 2, 'skills' => 2, 'items' => 1, 'conditions' => 1, 'lorePages' => 2], $counts['counts']);
+		$this->assertSame(['abilities' => 2, 'effects' => 2, 'skills' => 2, 'items' => 1, 'conditions' => 1, 'lorePages' => 2, 'characterFields' => 2], $counts['counts']);
 		$this->assertSame([], $this->store->saves);
 
 	}//end testThePreviewCountsWithoutWriting()

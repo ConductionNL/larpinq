@@ -122,6 +122,17 @@ describe('canCopy and totalOf', () => {
 		expect(canCopy({ status: 'ready', name: 'x', busy: true })).toBe(false)
 	})
 
+	it('names every copied type in the dialog, character fields too', () => {
+		const dialog = fs.readFileSync(
+			path.resolve(
+				path.dirname(fileURLToPath(import.meta.url)),
+				'../../src/dialogs/CopyWorldDialog.vue',
+			),
+			'utf8',
+		)
+		expect(dialog).toContain("characterFields: t('larpinq', 'Character fields')")
+	})
+
 	it('adds up the counts', () => {
 		expect(totalOf({ abilities: 2, skills: 3, lorePages: 1 })).toBe(6)
 		expect(totalOf(null)).toBe(0)
