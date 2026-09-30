@@ -123,6 +123,7 @@ describe('the manifest (REQ-WLP-001)', () => {
 		expect(widget.content.schema).toBe('larping_lore_page')
 		expect(widget.content.filter).toEqual({ setting: '@objectId' })
 		expect(widget.content.rowRoute).toBe('LoreArticle')
+		expect(world.config.layout.filter((cell) => cell.widgetId === 'setting-lore')).toHaveLength(1)
 	})
 
 	it('puts Lore in the World menu group', () => {

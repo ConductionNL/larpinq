@@ -2040,6 +2040,14 @@
 						"gridY": 8,
 						"gridWidth": 12,
 						"gridHeight": 3
+					},
+					{
+						"id": "7",
+						"widgetId": "setting-lore",
+						"gridX": 0,
+						"gridY": 11,
+						"gridWidth": 12,
+						"gridHeight": 4
 					}
 				],
 				"sidebar": {
