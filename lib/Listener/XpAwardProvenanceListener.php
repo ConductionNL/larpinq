@@ -43,6 +43,8 @@ use OCP\IUserSession;
  * @template-implements IEventListener<Event>
  *
  * @psalm-suppress UndefinedClass OpenRegister event classes are an optional dependency.
+ *
+ * @spec openspec/specs/event-xp-awards/spec.md
  */
 class XpAwardProvenanceListener implements IEventListener {
 

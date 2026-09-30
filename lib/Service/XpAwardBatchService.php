@@ -32,6 +32,8 @@ use DateTimeInterface;
  * @author   Ruben Linde <ruben@larpingapp.com>
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
+ *
+ * @spec openspec/specs/event-xp-awards/spec.md
  */
 class XpAwardBatchService {
 
@@ -194,10 +196,20 @@ class XpAwardBatchService {
 			$amount = null;
 		}
 
+		$character = '';
+		if (is_string($row['character'] ?? null) === true) {
+			$character = $row['character'];
+		}
+
+		$reason = '';
+		if (is_string($row['reason'] ?? null) === true) {
+			$reason = trim($row['reason']);
+		}
+
 		return [
-			'character' => is_string($row['character'] ?? null) === true ? $row['character'] : '',
+			'character' => $character,
 			'amount' => $amount,
-			'reason' => is_string($row['reason'] ?? null) === true ? trim($row['reason']) : '',
+			'reason' => $reason,
 			'extra' => ($row['extra'] ?? false) === true,
 		];
 	}//end normaliseRow()

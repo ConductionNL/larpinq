@@ -57,10 +57,10 @@
 				<table class="xp-award__table" data-testid="xp-award-rows">
 					<thead>
 						<tr>
-							<th>{{ t('larpinq', 'Award XP') }}</th>
-							<th>{{ t('larpinq', 'Character') }}</th>
-							<th>{{ t('larpinq', 'XP Amount') }}</th>
-							<th>{{ t('larpinq', 'Award Reason') }}</th>
+							<th scope="col">{{ t('larpinq', 'Award XP') }}</th>
+							<th scope="col">{{ t('larpinq', 'Character') }}</th>
+							<th scope="col">{{ t('larpinq', 'XP Amount') }}</th>
+							<th scope="col">{{ t('larpinq', 'Award Reason') }}</th>
 						</tr>
 					</thead>
 					<tbody>

@@ -35,6 +35,8 @@ use OCP\IUserSession;
  * whose xpAward rules apply as well.
  *
  * @psalm-suppress UnusedClass Instantiated by Nextcloud routing (appinfo/routes.php).
+ *
+ * @spec openspec/specs/event-xp-awards/spec.md
  */
 class XpAwardsController extends Controller {
 
