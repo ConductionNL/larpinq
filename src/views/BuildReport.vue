@@ -24,19 +24,29 @@
 				data-testid="build-report-verdict">
 				{{
 					result.report.valid
-						? t('larpinq', 'This build fits the rules and the XP of {character}.', { character: result.character.name })
-						: t('larpinq', 'This build does not fit the rules or the XP of {character} yet.', { character: result.character.name })
+						? t(
+								'larpinq',
+								'This build fits the rules and the XP of {character}.',
+								{ character: result.character.name },
+							)
+						: t(
+								'larpinq',
+								'This build does not fit the rules or the XP of {character} yet.',
+								{ character: result.character.name },
+							)
 				}}
 			</NcNoteCard>
 			<p
 				v-if="result.report.budget.shortfall > 0"
 				class="build-report__short"
 				data-testid="build-report-short">
-				{{ t('larpinq', 'Short by {xp} XP', { xp: result.report.budget.shortfall }) }}
+				{{
+					t('larpinq', 'Short by {xp} XP', {
+						xp: result.report.budget.shortfall,
+					})
+				}}
 			</p>
-			<p
-				v-if="result.stats.xp"
-				data-testid="build-report-xp">
+			<p v-if="result.stats.xp" data-testid="build-report-xp">
 				{{ t('larpinq', 'XP earned') }}: {{ result.stats.xp.earned }} ·
 				{{ t('larpinq', 'XP spent') }}: {{ result.stats.xp.spent }} ·
 				{{ t('larpinq', 'XP left') }}: {{ result.stats.xp.left }}
@@ -106,7 +116,11 @@ export default {
 		 * @spec openspec/specs/character-builds/spec.md
 		 */
 		buildId() {
-			return firstId(this.objectId, this.cnObjectContext?.objectId, this.$route?.params?.id)
+			return firstId(
+				this.objectId,
+				this.cnObjectContext?.objectId,
+				this.$route?.params?.id,
+			)
 		},
 
 		/**
@@ -118,7 +132,8 @@ export default {
 		 */
 		unmet() {
 			return (this.result?.report?.requirements ?? []).filter(
-				(entry) => entry.status === 'unmet' || entry.status === 'unresolvable',
+				(entry) =>
+					entry.status === 'unmet' || entry.status === 'unresolvable',
 			)
 		},
 	},
@@ -160,13 +175,19 @@ export default {
 		 */
 		requirementText(entry) {
 			if (entry.type === 'requiredStat') {
-				return t('larpinq', '{name} must be {required}, the build gives {current}', {
-					name: entry.targetName,
-					required: entry.required,
-					current: entry.current,
-				})
+				return t(
+					'larpinq',
+					'{name} must be {required}, the build gives {current}',
+					{
+						name: entry.targetName,
+						required: entry.required,
+						current: entry.current,
+					},
+				)
 			}
-			return t('larpinq', 'Needs {name}', { name: entry.targetName || entry.target || entry.skill })
+			return t('larpinq', 'Needs {name}', {
+				name: entry.targetName || entry.target || entry.skill,
+			})
 		},
 	},
 }

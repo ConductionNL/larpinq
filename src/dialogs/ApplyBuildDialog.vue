@@ -26,11 +26,21 @@
 			v-else-if="status === 'applied'"
 			type="success"
 			data-testid="apply-build-done">
-			{{ t('larpinq', '{character} now has this build.', { character: result.character.name }) }}
+			{{
+				t('larpinq', '{character} now has this build.', {
+					character: result.character.name,
+				})
+			}}
 		</NcNoteCard>
 		<template v-else>
 			<p>
-				{{ t('larpinq', 'This replaces the skills, items and conditions of {character}.', { character: result.character.name }) }}
+				{{
+					t(
+						'larpinq',
+						'This replaces the skills, items and conditions of {character}.',
+						{ character: result.character.name },
+					)
+				}}
 			</p>
 			<p v-if="!changed" data-testid="apply-build-nothing">
 				{{ t('larpinq', 'The character already has this build.') }}
@@ -42,10 +52,18 @@
 					:data-testid="`apply-build-${row.list}`">
 					<h3>{{ row.label }}</h3>
 					<p v-if="row.added.length > 0">
-						{{ t('larpinq', 'Gains: {names}', { names: row.added.join(', ') }) }}
+						{{
+							t('larpinq', 'Gains: {names}', {
+								names: row.added.join(', '),
+							})
+						}}
 					</p>
 					<p v-if="row.removed.length > 0">
-						{{ t('larpinq', 'Loses: {names}', { names: row.removed.join(', ') }) }}
+						{{
+							t('larpinq', 'Loses: {names}', {
+								names: row.removed.join(', '),
+							})
+						}}
 					</p>
 				</div>
 			</template>
@@ -53,16 +71,29 @@
 				v-if="!result.report.valid"
 				type="warning"
 				data-testid="apply-build-invalid">
-				{{ t('larpinq', 'This build does not fit the rules or the XP of {character} yet.', { character: result.character.name }) }}
+				{{
+					t(
+						'larpinq',
+						'This build does not fit the rules or the XP of {character} yet.',
+						{ character: result.character.name },
+					)
+				}}
 			</NcNoteCard>
-			<NcNoteCard v-if="refusal" type="error" data-testid="apply-build-refused">
+			<NcNoteCard
+				v-if="refusal"
+				type="error"
+				data-testid="apply-build-refused">
 				{{ refusal }}
 			</NcNoteCard>
 		</template>
 
 		<template #actions>
 			<NcButton data-testid="apply-build-cancel" @click="$emit('close')">
-				{{ status === 'applied' ? t('larpinq', 'Close') : t('larpinq', 'Cancel') }}
+				{{
+					status === 'applied'
+						? t('larpinq', 'Close')
+						: t('larpinq', 'Cancel')
+				}}
 			</NcButton>
 			<NcButton
 				v-if="status === 'ready'"
@@ -70,7 +101,11 @@
 				variant="primary"
 				:disabled="busy || !changed"
 				@click="apply">
-				{{ busy ? t('larpinq', 'Applying') : t('larpinq', 'Apply to character') }}
+				{{
+					busy
+						? t('larpinq', 'Applying')
+						: t('larpinq', 'Apply to character')
+				}}
 			</NcButton>
 		</template>
 	</NcDialog>
@@ -82,8 +117,8 @@ import NcButton from '@nextcloud/vue/components/NcButton'
 import NcDialog from '@nextcloud/vue/components/NcDialog'
 import NcNoteCard from '@nextcloud/vue/components/NcNoteCard'
 import {
-	BUILD_LISTS,
 	applyBuild,
+	BUILD_LISTS,
 	fetchBuildReport,
 	firstId,
 	hasChanges,
@@ -155,8 +190,12 @@ export default {
 			return BUILD_LISTS.map((list) => ({
 				list,
 				label: labels[list],
-				added: (this.result?.changes?.[list]?.added ?? []).map((entry) => entry.name),
-				removed: (this.result?.changes?.[list]?.removed ?? []).map((entry) => entry.name),
+				added: (this.result?.changes?.[list]?.added ?? []).map(
+					(entry) => entry.name,
+				),
+				removed: (this.result?.changes?.[list]?.removed ?? []).map(
+					(entry) => entry.name,
+				),
 			}))
 		},
 	},
@@ -186,15 +225,25 @@ export default {
 		async apply() {
 			this.busy = true
 			this.refusal = ''
-			const outcome = await applyBuild(this.result.character.id, this.result.lists)
+			const outcome = await applyBuild(
+				this.result.character.id,
+				this.result.lists,
+			)
 			this.busy = false
 			if (outcome.ok) {
 				this.status = 'applied'
 				return
 			}
-			this.refusal = outcome.shortfall > 0
-				? t('larpinq', 'The character sheet was not changed: short by {xp} XP.', { xp: outcome.shortfall })
-				: t('larpinq', 'The character sheet was not changed: {reason}', { reason: outcome.message || t('larpinq', 'unknown error') })
+			this.refusal =
+				outcome.shortfall > 0
+					? t(
+							'larpinq',
+							'The character sheet was not changed: short by {xp} XP.',
+							{ xp: outcome.shortfall },
+						)
+					: t('larpinq', 'The character sheet was not changed: {reason}', {
+							reason: outcome.message || t('larpinq', 'unknown error'),
+						})
 		},
 	},
 }

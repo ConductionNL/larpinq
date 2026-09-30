@@ -68,9 +68,15 @@ describe('applyBuild (REQ-CMB-003)', () => {
 		const result = await applyBuild('c1', { skills: ['s1', 's2'], items: [] })
 		expect(result.ok).toBe(true)
 		const [url, init] = globalThis.fetch.mock.calls[0]
-		expect(url).toBe('/index.php/apps/openregister/api/objects/larpinq/character/c1')
+		expect(url).toBe(
+			'/index.php/apps/openregister/api/objects/larpinq/character/c1',
+		)
 		expect(init.method).toBe('PATCH')
-		expect(JSON.parse(init.body)).toEqual({ skills: ['s1', 's2'], items: [], conditions: [] })
+		expect(JSON.parse(init.body)).toEqual({
+			skills: ['s1', 's2'],
+			items: [],
+			conditions: [],
+		})
 	})
 
 	it('passes on the XP shortfall of a refused write', async () => {
@@ -100,9 +106,17 @@ describe('helpers', () => {
 	})
 
 	it('knows when applying changes nothing', () => {
-		const same = { skills: { added: [], removed: [] }, items: { added: [], removed: [] } }
+		const same = {
+			skills: { added: [], removed: [] },
+			items: { added: [], removed: [] },
+		}
 		expect(hasChanges(same)).toBe(false)
-		expect(hasChanges({ ...same, conditions: { added: [], removed: [{ id: 'x' }] } })).toBe(true)
+		expect(
+			hasChanges({
+				...same,
+				conditions: { added: [], removed: [{ id: 'x' }] },
+			}),
+		).toBe(true)
 	})
 })
 
@@ -114,17 +128,23 @@ describe('the build page (REQ-CMB-001 to REQ-CMB-003)', () => {
 		expect(detail.route).toBe('/builds/:id')
 		expect(detail.config.schema).toBe('larping_character_build')
 		const ids = detail.config.widgets.map((w) => w.id)
-		expect(detail.config.layout.map((cell) => cell.widgetId).sort()).toEqual([...ids].sort())
+		expect(detail.config.layout.map((cell) => cell.widgetId).sort()).toEqual(
+			[...ids].sort(),
+		)
 	})
 
 	it('shows the check in a Check tab', () => {
 		const tab = detail.config.sidebar.tabs.find((t) => t.id === 'check')
 		expect(tab.component).toBe('BuildReport')
-		expect(REGISTRY).toMatch(/BuildReport: \{ kind: 'section', component: BuildReport \}/)
+		expect(REGISTRY).toMatch(
+			/BuildReport: \{ kind: 'section', component: BuildReport \}/,
+		)
 	})
 
 	it('offers Apply to game masters only', () => {
-		const action = detail.config.headerActions.find((a) => a.id === 'apply-build')
+		const action = detail.config.headerActions.find(
+			(a) => a.id === 'apply-build',
+		)
 		expect(action.type).toBe('open-modal')
 		expect(action.target).toBe('ApplyBuildDialog')
 		expect(action.visibleWhen).toEqual({
@@ -133,7 +153,9 @@ describe('the build page (REQ-CMB-001 to REQ-CMB-003)', () => {
 			op: 'eq',
 			value: true,
 		})
-		expect(REGISTRY).toMatch(/ApplyBuildDialog: \{\s*kind: 'modal',\s*component: ApplyBuildDialog/)
+		expect(REGISTRY).toMatch(
+			/ApplyBuildDialog: \{\s*kind: 'modal',\s*component: ApplyBuildDialog/,
+		)
 	})
 
 	it('uses registered icons only', () => {
@@ -151,6 +173,10 @@ describe('the character page (REQ-CMB-001)', () => {
 		expect(builds.content.schema).toBe('larping_character_build')
 		expect(builds.content.filter).toEqual({ character: '@objectId' })
 		expect(builds.content.allowCreate).not.toBe(false)
-		expect(character.config.layout.filter((cell) => cell.widgetId === 'char-builds')).toHaveLength(1)
+		expect(
+			character.config.layout.filter(
+				(cell) => cell.widgetId === 'char-builds',
+			),
+		).toHaveLength(1)
 	})
 })

@@ -89,3 +89,25 @@ None.
 ## Open Questions
 
 None.
+
+## Changes at build (2026-09-30)
+
+1. The report lives in a new `CharacterBuildsController`, not in
+   `CharactersController`, so the latter's constructor and its tests stay as
+   they are (same reason as `CharacterStatsController`). It also answers
+   `GET /api/builds/apply-access` for the Apply action's `visibleWhen`, and the
+   report carries `lists` and `changes` (named additions and removals) so the
+   dialog shows what applying does before it writes.
+2. The Apply dialog is `src/dialogs/ApplyBuildDialog.vue` (an NcDialog, which
+   the modal-isolation gate puts under `src/dialogs/`).
+3. The build carries `setting`, materialised from the character like
+   `ownerUid`, because a relation filter can only name a field of the object
+   itself (`@object.setting`). Before the first save the filter is dropped and
+   every skill shows.
+4. A row rule on create sees the incoming data before the owner is copied, so
+   `create` admits all larpers and `CharacterConnectionGuard::checkBuild()`
+   (through `FactionMembershipListener`) refuses a player's build on someone
+   else's character, and a build moved to another character.
+5. The check is the Check tab of the build page's sidebar; it runs each time
+   the tab opens, and on "Check again".
+

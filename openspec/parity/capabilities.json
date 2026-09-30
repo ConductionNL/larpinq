@@ -5141,18 +5141,18 @@
 			"id": "chr-multiple-builds",
 			"area": "characters",
 			"name": "Keep more than one build or sheet for the same character, such as a test build or a build for another game.",
-			"larpinq": "no",
+			"larpinq": "yes",
 			"larpmanager": "no",
 			"mylarp": "unknown",
 			"larp-portal": "yes",
 			"kanka": "no",
 			"pretix": "no",
 			"built": {
-				"state": "specified",
-				"evidence": "lib/Settings/larpinq_register.json:39-230 (a character holds one skills, items and conditions list); there is no build, skill-set or version object, so a second build means a second character record",
+				"state": "built",
+				"evidence": "lib/Settings/register.d/characters-multiple-builds.json: characterBuild (skills, items, conditions; read and write by game masters and the character's player, owner materialised from the character); lib/Controller/CharacterBuildsController.php GET /api/builds/{id}/report runs SkillRequirementService::validate and the stat engine on the character with the build's lists without writing; src/dialogs/ApplyBuildDialog.vue applies it for game masters; tests/unit/Controller/CharacterBuildsControllerTest.php, tests/unit/Settings/CharacterBuildsFragmentTest.php, tests/vitest/characterBuilds.spec.js",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "nothing: see evidence",
-				"change": "characters-multiple-builds"
+				"reachedOn": "the character page's Builds list, and /builds/:id with its Check tab and Apply to character action",
+				"change": "openspec/changes/archive/2026-09-30-characters-multiple-builds"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",

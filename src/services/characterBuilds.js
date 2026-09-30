@@ -52,7 +52,9 @@ export async function fetchBuildReport(buildId) {
 		return null
 	}
 	const response = await fetch(
-		generateUrl(`/apps/larpinq/api/builds/${encodeURIComponent(buildId)}/report`),
+		generateUrl(
+			`/apps/larpinq/api/builds/${encodeURIComponent(buildId)}/report`,
+		),
 		{ headers: { requesttoken: getRequestToken(), Accept: 'application/json' } },
 	)
 	if (!response.ok) {
@@ -114,7 +116,10 @@ export async function applyBuild(characterId, lists) {
 	} catch {
 		refusal = {}
 	}
-	const errors = refusal?.errors && typeof refusal.errors === 'object' ? refusal.errors : refusal
+	const errors =
+		refusal?.errors && typeof refusal.errors === 'object'
+			? refusal.errors
+			: refusal
 	return {
 		ok: false,
 		message: String(errors?.message ?? refusal?.message ?? ''),
