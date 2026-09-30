@@ -834,6 +834,12 @@
 							"component": "CharacterStatSheet"
 						},
 						{
+							"id": "extra-fields",
+							"label": "Extra fields",
+							"icon": "FormTextbox",
+							"component": "CharacterCustomFields"
+						},
+						{
 							"id": "audit",
 							"label": "History",
 							"icon": "History",

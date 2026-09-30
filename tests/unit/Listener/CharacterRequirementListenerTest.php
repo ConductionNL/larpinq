@@ -19,6 +19,8 @@ namespace OCA\Larpinq\Tests\Unit\Listener;
 
 use OCA\Larpinq\Listener\CharacterRequirementListener;
 use OCA\Larpinq\Service\CharacterService;
+use OCA\Larpinq\Service\CustomFieldGuard;
+use OCA\Larpinq\Service\CustomFieldValidator;
 use OCA\Larpinq\Service\EffectApplier;
 use OCA\Larpinq\Service\IdListNormaliser;
 use OCA\Larpinq\Service\RegisterObjectFetcher;
@@ -75,11 +77,13 @@ class CharacterRequirementListenerTest extends TestCase {
 		array $skills = [],
 		bool $isGm = true,
 		?string $uid = 'gm1',
+		array $fields = [],
 	): CharacterRequirementListener {
 		$fetcher = $this->createMock(RegisterObjectFetcher::class);
-		$fetcher->method('getObjects')->willReturnCallback(function (string $type) use ($skills): array {
+		$fetcher->method('getObjects')->willReturnCallback(function (string $type) use ($skills, $fields): array {
 			return match ($type) {
 				'skill' => $skills,
+				'characterfield' => $fields,
 				default => [],
 			};
 		});
@@ -113,8 +117,46 @@ class CharacterRequirementListenerTest extends TestCase {
 			$config,
 			$userSession,
 			$groupManager,
-			$this->logger
+			$this->logger,
+			new CustomFieldGuard($fetcher, new CustomFieldValidator())
 		);
+	}
+
+	/**
+	 * Scenario "Text in a number field" (characters-custom-fields REQ-CCF-004):
+	 * the write is refused with an error on key `scars`.
+	 *
+	 * @return void
+	 */
+	public function testRejectsTextInANumberField(): void {
+		$fields = [['id' => 'f3', 'key' => 'scars', 'fieldType' => 'number', 'visibility' => 'owner']];
+		$listener = $this->makeListener(fields: $fields);
+		$old = new FakeObjectEntity(self::SCHEMA_ID, ['name' => 'Mirela', 'customFields' => ['scars' => 2]]);
+		$new = new FakeObjectEntity(self::SCHEMA_ID, ['name' => 'Mirela', 'customFields' => ['scars' => 'many']]);
+		$event = new ObjectUpdatingEvent($new, $old);
+
+		$listener->handle($event);
+
+		$this->assertTrue($event->isPropagationStopped());
+		$this->assertSame('custom_field_invalid', $event->getErrors()['code']);
+		$this->assertSame(['scars'], array_keys($event->getErrors()['fields']));
+	}
+
+	/**
+	 * A valid value passes, and does not trigger the skill checks.
+	 *
+	 * @return void
+	 */
+	public function testAllowsAValidCustomField(): void {
+		$fields = [['id' => 'f3', 'key' => 'scars', 'fieldType' => 'number', 'visibility' => 'owner']];
+		$listener = $this->makeListener(fields: $fields);
+		$old = new FakeObjectEntity(self::SCHEMA_ID, ['name' => 'Mirela', 'customFields' => ['scars' => 2]]);
+		$new = new FakeObjectEntity(self::SCHEMA_ID, ['name' => 'Mirela', 'customFields' => ['scars' => 3]]);
+		$event = new ObjectUpdatingEvent($new, $old);
+
+		$listener->handle($event);
+
+		$this->assertFalse($event->isPropagationStopped());
 	}
 
 	public function testRejectsCreateWithUnmetPrerequisite(): void {
