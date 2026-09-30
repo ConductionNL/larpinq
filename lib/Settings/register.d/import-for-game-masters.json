@@ -1,10 +1,142 @@
 {
   "components": {
+    "schemas": {
+      "player": {
+        "authorization": {
+          "read": [
+            "authenticated"
+          ],
+          "create": [
+            "gamemasters"
+          ],
+          "update": [
+            "gamemasters"
+          ],
+          "delete": [
+            "gamemasters"
+          ]
+        }
+      },
+      "ability": {
+        "authorization": {
+          "read": [
+            "authenticated"
+          ],
+          "create": [
+            "gamemasters"
+          ],
+          "update": [
+            "gamemasters"
+          ],
+          "delete": [
+            "gamemasters"
+          ]
+        }
+      },
+      "skill": {
+        "authorization": {
+          "read": [
+            "authenticated"
+          ],
+          "create": [
+            "gamemasters"
+          ],
+          "update": [
+            "gamemasters"
+          ],
+          "delete": [
+            "gamemasters"
+          ]
+        }
+      },
+      "item": {
+        "authorization": {
+          "read": [
+            "authenticated"
+          ],
+          "create": [
+            "gamemasters"
+          ],
+          "update": [
+            "gamemasters"
+          ],
+          "delete": [
+            "gamemasters"
+          ]
+        }
+      },
+      "condition": {
+        "authorization": {
+          "read": [
+            "authenticated"
+          ],
+          "create": [
+            "gamemasters"
+          ],
+          "update": [
+            "gamemasters"
+          ],
+          "delete": [
+            "gamemasters"
+          ]
+        }
+      },
+      "effect": {
+        "authorization": {
+          "read": [
+            "authenticated"
+          ],
+          "create": [
+            "gamemasters"
+          ],
+          "update": [
+            "gamemasters"
+          ],
+          "delete": [
+            "gamemasters"
+          ]
+        }
+      },
+      "event": {
+        "authorization": {
+          "read": [
+            "authenticated"
+          ],
+          "create": [
+            "gamemasters"
+          ],
+          "update": [
+            "gamemasters"
+          ],
+          "delete": [
+            "gamemasters"
+          ]
+        }
+      },
+      "setting": {
+        "authorization": {
+          "read": [
+            "authenticated"
+          ],
+          "create": [
+            "gamemasters"
+          ],
+          "update": [
+            "gamemasters"
+          ],
+          "delete": [
+            "gamemasters"
+          ]
+        }
+      }
+    },
     "registers": {
       "larpinq": {
         "version": "1.4.0",
         "authorization": {
-          "manage": ["gamemasters"]
+          "manage": [
+            "gamemasters"
+          ]
         }
       }
     }
