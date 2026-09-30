@@ -45,28 +45,26 @@
 			<p v-if="!changed" data-testid="apply-build-nothing">
 				{{ t('larpinq', 'The character already has this build.') }}
 			</p>
-			<template v-for="row in rows">
-				<div
-					v-if="row.added.length > 0 || row.removed.length > 0"
-					:key="row.list"
-					:data-testid="`apply-build-${row.list}`">
-					<h3>{{ row.label }}</h3>
-					<p v-if="row.added.length > 0">
-						{{
-							t('larpinq', 'Gains: {names}', {
-								names: row.added.join(', '),
-							})
-						}}
-					</p>
-					<p v-if="row.removed.length > 0">
-						{{
-							t('larpinq', 'Loses: {names}', {
-								names: row.removed.join(', '),
-							})
-						}}
-					</p>
-				</div>
-			</template>
+			<div
+				v-for="row in rows"
+				:key="row.list"
+				:data-testid="`apply-build-${row.list}`">
+				<h3>{{ row.label }}</h3>
+				<p v-if="row.added.length > 0">
+					{{
+						t('larpinq', 'Gains: {names}', {
+							names: row.added.join(', '),
+						})
+					}}
+				</p>
+				<p v-if="row.removed.length > 0">
+					{{
+						t('larpinq', 'Loses: {names}', {
+							names: row.removed.join(', '),
+						})
+					}}
+				</p>
+			</div>
 			<NcNoteCard
 				v-if="!result.report.valid"
 				type="warning"
@@ -175,7 +173,7 @@ export default {
 		},
 
 		/**
-		 * The gains and losses per list, as names.
+		 * The gains and losses per list, as names; lists that do not change are left out.
 		 *
 		 * @return {Array<{list: string, label: string, added: Array<string>, removed: Array<string>}>} The rows.
 		 *
@@ -196,7 +194,7 @@ export default {
 				removed: (this.result?.changes?.[list]?.removed ?? []).map(
 					(entry) => entry.name,
 				),
-			}))
+			})).filter((row) => row.added.length > 0 || row.removed.length > 0)
 		},
 	},
 
