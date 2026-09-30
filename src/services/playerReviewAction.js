@@ -6,7 +6,7 @@
  * `kind: 'handler'` entry in src/registry.js and named from the manifest.
  * The writes live in playerReview.js; this file reports the result.
  *
- * @spec openspec/changes/players-self-signup/specs/portal-contribution/spec.md
+ * @spec openspec/specs/portal-contribution/spec.md
  */
 
 import { showError, showSuccess } from '@nextcloud/dialogs'
@@ -19,7 +19,7 @@ import { markPlayersReviewed } from './playerReview.js'
  * @param {{selectedIds: Array<string>}} scope The bulk action scope from the index page.
  * @return {Promise<void>}
  *
- * @spec openspec/changes/players-self-signup/specs/portal-contribution/spec.md
+ * @spec openspec/specs/portal-contribution/spec.md
  */
 export async function markPlayersReviewedAction(scope) {
 	const selectedIds = Array.isArray(scope?.selectedIds) ? scope.selectedIds : []

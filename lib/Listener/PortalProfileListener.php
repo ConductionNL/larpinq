@@ -17,7 +17,7 @@
  *
  * @link https://larpingapp.com
  *
- * @spec openspec/changes/players-self-signup/specs/portal-contribution/spec.md
+ * @spec openspec/specs/portal-contribution/spec.md
  */
 
 declare(strict_types=1);
@@ -57,7 +57,7 @@ use Throwable;
  *
  * @psalm-suppress UndefinedClass OpenRegister and portaliq event classes are optional dependencies.
  *
- * @spec openspec/changes/players-self-signup/specs/portal-contribution/spec.md
+ * @spec openspec/specs/portal-contribution/spec.md
  */
 class PortalProfileListener implements IEventListener {
 
@@ -106,7 +106,7 @@ class PortalProfileListener implements IEventListener {
 	 * @psalm-suppress MixedAssignment  OpenRegister event/entity classes are optional dependencies.
 	 * @psalm-suppress MixedArgument    OpenRegister event/entity classes are optional dependencies.
 	 *
-	 * @spec openspec/changes/players-self-signup/specs/portal-contribution/spec.md
+	 * @spec openspec/specs/portal-contribution/spec.md
 	 */
 	public function handle(Event $event): void {
 		if ($event instanceof \OCA\OpenRegister\Event\ObjectCreatedEvent) {

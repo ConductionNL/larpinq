@@ -1,12 +1,31 @@
-# portal-contribution Specification (delta)
+# portal-contribution Specification
+
+**Status**: implemented (self-signup); the rest of larpinq's portal contribution is in the open change `portal-contribution`
+**Scope**: larpinq
+**OpenSpec changes**:
+- `players-self-signup` (archived 2026-09-30)
 
 ## Purpose
-
 A new player signs up in the portal and creates their own player profile,
 which larpinq links to their portal account. From larpinq matrix row
 `ply-self-signup`.
 
-## ADDED Requirements
+The action and collection are in `lib/Portal/PortalContributionProvider.php`
+(pinned by `tests/unit/Portal/PortalContributionProviderTest.php`); the fields
+in `lib/Settings/register.d/players-self-signup.json`
+(`tests/unit/Settings/PlayersSelfSignupFragmentTest.php`); the one-profile rule,
+the flags, the claim and the portal character's player in
+`lib/Listener/PortalProfileListener.php`
+(`tests/unit/Listener/PortalProfileListenerTest.php`, with the real OpenRegister
+and portaliq event classes); the review stamp in
+`lib/Listener/PlayerReviewListener.php`
+(`tests/unit/Listener/PlayerReviewListenerTest.php`); the New players page in
+`src/manifest.d/players-self-signup.json` (`tests/vitest/playerReview.spec.js`).
+The browser and API proof is
+`tests/e2e/workflows/player-self-signup.workflow.spec.ts`.
+
+## Requirements
+
 
 ### Requirement: A portal visitor creates their own player profile (REQ-PSS-001)
 
@@ -24,7 +43,7 @@ the visitor's portal subject, and a collection that shows only that profile.
 ### Requirement: The profile is linked to the portal account (REQ-PSS-002)
 
 After a profile is created through the portal, larpinq SHALL ask portaliq to
-record the profile's id as the account's `larpinq.ownerRef` claim, so the
+record the profile's id as the account's `ownerRef` claim for larpinq, so the
 player's characters and the create-character action scope to it.
 
 #### Scenario: Lotte creates her first character

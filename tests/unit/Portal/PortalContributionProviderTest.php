@@ -255,7 +255,7 @@ final class PortalContributionProviderTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/players-self-signup/specs/portal-contribution/spec.md
+	 * @spec openspec/specs/portal-contribution/spec.md
 	 */
 	public function testCreatePlayerProfileIsStampedWithThePortalSubject(): void {
 		$manifest = (array)$this->provider->getContribution(self::PLAYER_SUBJECT);
@@ -276,7 +276,7 @@ final class PortalContributionProviderTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/players-self-signup/specs/portal-contribution/spec.md
+	 * @spec openspec/specs/portal-contribution/spec.md
 	 */
 	public function testMyProfileIsScopedToTheSubject(): void {
 		$manifest = (array)$this->provider->getContribution(self::PLAYER_SUBJECT);

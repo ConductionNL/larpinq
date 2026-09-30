@@ -46,7 +46,7 @@ sign-up flow exists".
 
 - A `createPlayerProfile` action for the portal `player` audience: name, description (how others know you), and the portal subject stamped on the new player.
 - A `myProfile` read collection scoped to the subject's own player.
-- On creation, larpinq asks portaliq to record the claim `larpinq.ownerRef` = the new player's id on the subject's portal account, so the existing `myCharacters` collection and `createCharacter` action work for them.
+- On creation, larpinq asks portaliq to record the claim `ownerRef` (app `larpinq`) = the new player's id on the subject's portal account, so the existing `myCharacters` collection and `createCharacter` action work for them.
 - `player.selfRegistered` and `player.reviewedAt`: game masters see a "New players" list and mark each reviewed.
 - One player profile per portal account: a second create is refused.
 

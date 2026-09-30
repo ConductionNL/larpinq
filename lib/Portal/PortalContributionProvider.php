@@ -198,7 +198,7 @@ class PortalContributionProvider {
 	 *
 	 * @return array<string, mixed> The subject-scoped profile collection.
 	 *
-	 * @spec openspec/changes/players-self-signup/specs/portal-contribution/spec.md
+	 * @spec openspec/specs/portal-contribution/spec.md
 	 */
 	private function profileCollection(): array {
 		return [
@@ -364,7 +364,7 @@ class PortalContributionProvider {
 	 * @return array<int, array<string, mixed>> The declarative create actions.
 	 *
 	 * @spec openspec/changes/portal-contribution/specs/portal-contribution/spec.md
-	 * @spec openspec/changes/players-self-signup/specs/portal-contribution/spec.md
+	 * @spec openspec/specs/portal-contribution/spec.md
 	 */
 	private function playerActions(): array {
 		return [

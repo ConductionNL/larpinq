@@ -7,7 +7,7 @@
  * the server stamps who reviewed and when (PlayerReviewListener), and
  * OpenRegister's write rule on the player lets only game masters do it.
  *
- * @spec openspec/changes/players-self-signup/specs/portal-contribution/spec.md
+ * @spec openspec/specs/portal-contribution/spec.md
  */
 
 import { getRequestToken } from '@nextcloud/auth'
@@ -21,7 +21,7 @@ const OBJECTS = '/apps/openregister/api/objects/larpinq'
  * @param {Array<string>} ids The player ids.
  * @return {Promise<{reviewed: Array<string>, refused: Array<string>}>} What happened to each.
  *
- * @spec openspec/changes/players-self-signup/specs/portal-contribution/spec.md
+ * @spec openspec/specs/portal-contribution/spec.md
  */
 export async function markPlayersReviewed(ids) {
 	const reviewed = []

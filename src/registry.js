@@ -131,7 +131,7 @@ export default {
 	},
 
 	// New players bulk action "Mark reviewed" (players-self-signup).
-	// @spec openspec/changes/players-self-signup/specs/portal-contribution/spec.md
+	// @spec openspec/specs/portal-contribution/spec.md
 	larpinqMarkPlayersReviewed: {
 		kind: 'handler',
 		handler: markPlayersReviewedAction,

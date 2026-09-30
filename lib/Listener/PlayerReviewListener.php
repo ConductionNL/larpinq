@@ -17,7 +17,7 @@
  *
  * @link https://larpingapp.com
  *
- * @spec openspec/changes/players-self-signup/specs/portal-contribution/spec.md
+ * @spec openspec/specs/portal-contribution/spec.md
  */
 
 declare(strict_types=1);
@@ -49,7 +49,7 @@ use OCP\IUserSession;
  *
  * @psalm-suppress UndefinedClass OpenRegister event classes are an optional dependency.
  *
- * @spec openspec/changes/players-self-signup/specs/portal-contribution/spec.md
+ * @spec openspec/specs/portal-contribution/spec.md
  */
 class PlayerReviewListener implements IEventListener {
 
@@ -85,7 +85,7 @@ class PlayerReviewListener implements IEventListener {
 	 * @psalm-suppress MixedAssignment  OpenRegister event/entity classes are optional dependencies.
 	 * @psalm-suppress MixedArgument    OpenRegister event/entity classes are optional dependencies.
 	 *
-	 * @spec openspec/changes/players-self-signup/specs/portal-contribution/spec.md
+	 * @spec openspec/specs/portal-contribution/spec.md
 	 */
 	public function handle(Event $event): void {
 		if (($event instanceof \OCA\OpenRegister\Event\ObjectUpdatingEvent) === false) {
