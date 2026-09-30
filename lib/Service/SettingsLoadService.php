@@ -81,6 +81,7 @@ class SettingsLoadService {
 		'setting' => 'setting',
 		'attendance' => 'larping_attendance',
 		'lorepage' => 'larping_lore_page',
+		'characterfield' => 'larping_character_field',
 	];
 
 	/**

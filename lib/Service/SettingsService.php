@@ -84,6 +84,9 @@ class SettingsService {
 		'lorepage_schema',
 		'lorepage_register',
 		'lorepage_source',
+		'characterfield_schema',
+		'characterfield_register',
+		'characterfield_source',
 	];
 
 	/**
