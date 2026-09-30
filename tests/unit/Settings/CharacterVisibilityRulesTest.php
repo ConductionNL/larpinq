@@ -103,7 +103,7 @@ class CharacterVisibilityRulesTest extends TestCase {
 	}//end testTheOwnerWritesStoryFieldsOnly()
 
 	/**
-	 * A cast entry shows name, type and description; everything else is owner or game master.
+	 * A cast entry shows name, type, description and status; everything else is owner or game master.
 	 *
 	 * @return void
 	 */
@@ -116,7 +116,9 @@ class CharacterVisibilityRulesTest extends TestCase {
 		}
 
 		sort($open);
-		$this->assertSame(['approved', 'description', 'name', 'setting', 'type'], $open);
+		// The status (active, retired, dead) is a game fact the cast may see
+		// (characters-status-and-bulk-edit).
+		$this->assertSame(['approved', 'description', 'name', 'setting', 'status', 'type'], $open);
 	}//end testACastEntryShowsOnlyNameTypeAndDescription()
 
 	/**

@@ -107,13 +107,19 @@ None.
    `src/dialogs/CharacterBulkEditDialog.vue` with `spawnDialog` and reloads
    the list when a character changed. The dialog is an NcDialog, so it lives
    in `src/dialogs/`.
-2. The events check is `CharacterStatusGuard`, called by
-   `CharacterRequirementListener` before its requirement check, so an event
-   change does not start a full requirement validation.
+2. The events check is `CharacterStatusGuard`, run by its own
+   `CharacterStatusListener` on the character schema, so an event change does
+   not start a full requirement validation and the requirement listener keeps
+   its dependencies.
 3. Migration after all: the picker filter `status = active` leaves out every
    character without a status (SQL `NULL` matches no value), so the repair
    step `BackfillCharacterStatus` sets `active` on stored characters without
    a status after the register import. Idempotent; it logs and continues.
+   `<version>` in appinfo/info.xml moves to 0.3.4-unstable.20260930120000 so
+   `occ upgrade` runs it (gate-110).
+7. The `status: active` entry of the `event.players` filter is edited in
+   place in `larpinq_register.json`: a fragment that redeclares `event` reads
+   as a second `event` slug to the relation and cross-app slug gates.
 4. `status` carries `x-enum-labels`, and its property rule gives `update` to
    game masters only (read stays open).
 5. The Characters index gets explicit columns (name, type, status, approved,

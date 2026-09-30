@@ -64,6 +64,8 @@ class BackfillCharacterStatus implements IRepairStep {
 	 * The step's name.
 	 *
 	 * @return string The name.
+	 *
+	 * @spec openspec/specs/character-management/spec.md
 	 */
 	public function getName(): string {
 		return 'Give Larpinq characters without a status the status active';
@@ -120,7 +122,8 @@ class BackfillCharacterStatus implements IRepairStep {
 			}
 
 			$offset += self::PAGE;
-		} while (count($page) === self::PAGE);
+			$full = count($page) === self::PAGE;
+		} while ($full === true);
 
 		return $missing;
 	}//end charactersWithoutStatus()

@@ -27,7 +27,6 @@ declare(strict_types=1);
 namespace OCA\Larpinq\Listener;
 
 use OCA\Larpinq\AppInfo\Application;
-use OCA\Larpinq\Service\CharacterStatusGuard;
 use OCA\Larpinq\Service\CustomFieldGuard;
 use OCA\Larpinq\Service\SkillRequirementService;
 use OCP\EventDispatcher\Event;
@@ -70,7 +69,6 @@ class CharacterRequirementListener implements IEventListener {
 	 * @param IGroupManager $groupManager The group manager (GM override check).
 	 * @param LoggerInterface $logger The logger.
 	 * @param CustomFieldGuard $customFields Checks extra field values against their definitions.
-	 * @param CharacterStatusGuard $statusGuard Keeps retired and dead characters out of new events.
 	 *
 	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
 	 */
@@ -81,7 +79,6 @@ class CharacterRequirementListener implements IEventListener {
 		private readonly IGroupManager $groupManager,
 		private readonly LoggerInterface $logger,
 		private readonly CustomFieldGuard $customFields,
-		private readonly CharacterStatusGuard $statusGuard,
 	) {
 	}//end __construct()
 
@@ -127,12 +124,6 @@ class CharacterRequirementListener implements IEventListener {
 			// Extra field values are checked against their definitions
 			// (characters-custom-fields); the guard looks at changed keys only.
 			$errors = $this->customFields->check(candidate: $candidate, old: $oldCharacter);
-
-			// A retired or dead character joins no new events
-			// (characters-status-and-bulk-edit D2).
-			if ($errors === null) {
-				$errors = $this->statusGuard->check(candidate: $candidate, old: $oldCharacter);
-			}
 
 			// Diff-scoping: only validate when an association or override field
 			// actually changed. Unrelated edits must never be blocked by a

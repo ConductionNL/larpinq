@@ -19,7 +19,6 @@ namespace OCA\Larpinq\Tests\Unit\Listener;
 
 use OCA\Larpinq\Listener\CharacterRequirementListener;
 use OCA\Larpinq\Service\CharacterService;
-use OCA\Larpinq\Service\CharacterStatusGuard;
 use OCA\Larpinq\Service\CustomFieldGuard;
 use OCA\Larpinq\Service\CustomFieldValidator;
 use OCA\Larpinq\Service\EffectApplier;
@@ -119,8 +118,7 @@ class CharacterRequirementListenerTest extends TestCase {
 			$userSession,
 			$groupManager,
 			$this->logger,
-			new CustomFieldGuard($fetcher, new CustomFieldValidator()),
-			new CharacterStatusGuard($idList)
+			new CustomFieldGuard($fetcher, new CustomFieldValidator())
 		);
 	}
 
@@ -261,45 +259,5 @@ class CharacterRequirementListenerTest extends TestCase {
 
 		$this->assertTrue($event->isPropagationStopped());
 		$this->assertSame('override_reason_required', $event->getErrors()['requirementOverrides'][0]['code']);
-	}
-
-	/**
-	 * Scenario "The API refuses a dead character" (REQ-CSB-002): adding an
-	 * event to a dead or retired character is refused on `events`.
-	 *
-	 * @return void
-	 */
-	public function testANotActiveCharacterJoinsNoNewEvent(): void {
-		foreach (['dead', 'retired'] as $status) {
-			$old = new FakeObjectEntity(self::SCHEMA_ID, ['name' => 'Brother Aldric', 'status' => $status, 'events' => ['ev-summer']]);
-			$new = new FakeObjectEntity(self::SCHEMA_ID, ['name' => 'Brother Aldric', 'status' => $status, 'events' => ['ev-summer', 'ev-winter']]);
-			$event = new ObjectUpdatingEvent($new, $old);
-
-			$this->makeListener()->handle($event);
-
-			$this->assertTrue($event->isPropagationStopped(), "a {$status} character is refused");
-			$this->assertSame('character_not_active', $event->getErrors()['code']);
-			$this->assertArrayHasKey('events', $event->getErrors()['fields']);
-		}
-	}
-
-	/**
-	 * An active character, or one without a status, joins events; a dead
-	 * character may leave one, and other edits of it pass.
-	 *
-	 * @return void
-	 */
-	public function testActiveCharactersJoinAndDeadOnesMayLeave(): void {
-		$cases = [
-			'active joins' => [['status' => 'active', 'events' => []], ['status' => 'active', 'events' => ['ev-winter']]],
-			'no status joins' => [['events' => []], ['events' => ['ev-winter']]],
-			'dead leaves' => [['status' => 'dead', 'events' => ['ev-summer']], ['status' => 'dead', 'events' => []]],
-			'dead renamed' => [['status' => 'dead', 'name' => 'Aldric', 'events' => ['ev-summer']], ['status' => 'dead', 'name' => 'Brother Aldric', 'events' => ['ev-summer']]],
-		];
-		foreach ($cases as $label => [$before, $after]) {
-			$event = new ObjectUpdatingEvent(new FakeObjectEntity(self::SCHEMA_ID, $after), new FakeObjectEntity(self::SCHEMA_ID, $before));
-			$this->makeListener()->handle($event);
-			$this->assertFalse($event->isPropagationStopped(), $label);
-		}
 	}
 }

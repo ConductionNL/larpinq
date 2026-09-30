@@ -974,7 +974,7 @@
 			"pretix": "no",
 			"built": {
 				"state": "built",
-				"evidence": "lib/Settings/register.d/characters-status-and-bulk-edit.json: character.status active/retired/dead (default active, facetable, set by game masters) and status active in the event participant filter; lib/Service/CharacterStatusGuard.php refuses a new event for a retired or dead character (via CharacterRequirementListener); lib/Repair/BackfillCharacterStatus.php; tests/unit/Settings/CharacterStatusFragmentTest.php, tests/unit/Listener/CharacterRequirementListenerTest.php, tests/unit/Repair/BackfillCharacterStatusTest.php",
+				"evidence": "lib/Settings/register.d/characters-status-and-bulk-edit.json: character.status active/retired/dead (default active, facetable, set by game masters) and status active in the event participant filter (larpinq_register.json); lib/Service/CharacterStatusGuard.php refuses a new event for a retired or dead character (via CharacterStatusListener); lib/Repair/BackfillCharacterStatus.php; tests/unit/Settings/CharacterStatusFragmentTest.php, tests/unit/Listener/CharacterStatusListenerTest.php, tests/unit/Repair/BackfillCharacterStatusTest.php",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "the character page (Game state & notes), the Characters list Status column and filter, and the event participant picker",
 				"change": "openspec/changes/archive/2026-09-30-characters-status-and-bulk-edit"

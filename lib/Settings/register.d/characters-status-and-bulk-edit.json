@@ -26,16 +26,6 @@
             }
           }
         }
-      },
-      "event": {
-        "properties": {
-          "players": {
-            "x-relation-filter": {
-              "setting": "@object.setting",
-              "status": "active"
-            }
-          }
-        }
       }
     }
   }

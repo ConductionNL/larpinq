@@ -4,9 +4,9 @@
 
 ## 1. Status
 
-- [x] 1.1 `lib/Settings/register.d/characters-status-and-bulk-edit.json`: `character.status` with enum, labels, default and facet, update for game masters, and `status: active` in the `x-relation-filter` of `event.players` (REQ-CSB-001, REQ-CSB-002). Verified: `tests/unit/Settings/CharacterStatusFragmentTest.php` over the real merge, seeds validated with Opis; `npm run check:register`; `npm run check:schema-l10n`.
+- [x] 1.1 `lib/Settings/register.d/characters-status-and-bulk-edit.json`: `character.status` with enum, labels, default and facet, update for game masters, and `status: active` in the `x-relation-filter` of `event.players`, edited in place in `larpinq_register.json` (design change 7) (REQ-CSB-001, REQ-CSB-002). Verified: `tests/unit/Settings/CharacterStatusFragmentTest.php` over the real merge, seeds validated with Opis; `npm run check:register`; `npm run check:schema-l10n`.
 - [x] 1.2 Status on CharacterDetail (Game state & notes) and as a column on the Characters index, edited in place in `src/manifest.json`; the facet comes from `facetable` (REQ-CSB-001). Verified: `tests/vitest/characterBulkEdit.spec.js`; `npm run check:manifest`.
-- [x] 1.3 A change of `events[]` that adds an event to a retired or dead character is refused on `events`, through `CharacterStatusGuard` in `CharacterRequirementListener` (design change 2) (REQ-CSB-002). Verified: `tests/unit/Listener/CharacterRequirementListenerTest.php` with the real OpenRegister event classes, for active, no status, retired and dead. `BackfillCharacterStatus` (design change 3): `tests/unit/Repair/BackfillCharacterStatusTest.php`.
+- [x] 1.3 A change of `events[]` that adds an event to a retired or dead character is refused on `events`, through `CharacterStatusGuard` in `CharacterStatusListener` (design change 2) (REQ-CSB-002). Verified: `tests/unit/Listener/CharacterStatusListenerTest.php` with the real OpenRegister event classes, for active, no status, retired and dead. `BackfillCharacterStatus` (design change 3): `tests/unit/Repair/BackfillCharacterStatusTest.php`.
 
 ## 2. Bulk edit
 
