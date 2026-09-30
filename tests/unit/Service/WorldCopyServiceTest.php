@@ -250,6 +250,22 @@ class WorldCopyServiceTest extends TestCase {
 	}//end testAnUnconfiguredLoreSchemaCopiesTheRules()
 
 	/**
+	 * The register import writes a lore page schema key, so the copy finds
+	 * lore pages in production and the settings page keeps the key.
+	 *
+	 * @return void
+	 */
+	public function testTheImportConfiguresTheLoreSchema(): void {
+		$slugs = (new ReflectionClass(\OCA\Larpinq\Service\SettingsLoadService::class))->getConstant('OBJECT_TYPE_SCHEMA_SLUGS');
+		$this->assertSame('larping_lore_page', $slugs['lorepage'] ?? null);
+		$keys = (new ReflectionClass(\OCA\Larpinq\Service\SettingsService::class))->getConstant('CONFIG_KEYS');
+		$this->assertContains('lorepage_schema', $keys);
+		$this->assertContains('lorepage_register', $keys);
+		$this->assertSame('larping_lore_page', $this->mergedSchemas()['lorePage']['slug']);
+
+	}//end testTheImportConfiguresTheLoreSchema()
+
+	/**
 	 * The preview counts what a copy would create.
 	 *
 	 * @return void

@@ -81,6 +81,9 @@ class SettingsService {
 		'attendance_schema',
 		'attendance_register',
 		'attendance_source',
+		'lorepage_schema',
+		'lorepage_register',
+		'lorepage_source',
 	];
 
 	/**
