@@ -53,7 +53,7 @@ class Application extends App implements IBootstrap {
 	 * The Nextcloud group of game masters (ADR-002 decision 1). The register's
 	 * authorization rules name the same group.
 	 *
-	 * @spec openspec/changes/worlds-copy-ruleset/specs/setting-management/spec.md
+	 * @spec openspec/specs/setting-management/spec.md
 	 */
 	public const GM_GROUP = 'gamemasters';
 

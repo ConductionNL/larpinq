@@ -152,7 +152,7 @@ export default {
 		 *
 		 * @return {string} The id.
 		 *
-		 * @spec openspec/changes/worlds-copy-ruleset/specs/setting-management/spec.md
+		 * @spec openspec/specs/setting-management/spec.md
 		 */
 		id() {
 			const fromProp = this.worldId.startsWith('@') ? '' : this.worldId
@@ -164,7 +164,7 @@ export default {
 		 *
 		 * @return {Array<{key: string, label: string, count: number}>} The rows.
 		 *
-		 * @spec openspec/changes/worlds-copy-ruleset/specs/setting-management/spec.md
+		 * @spec openspec/specs/setting-management/spec.md
 		 */
 		rows() {
 			const labels = {
@@ -187,7 +187,7 @@ export default {
 		 *
 		 * @return {boolean} True when the preview loaded and a name is filled in.
 		 *
-		 * @spec openspec/changes/worlds-copy-ruleset/specs/setting-management/spec.md
+		 * @spec openspec/specs/setting-management/spec.md
 		 */
 		copyable() {
 			return canCopy({ status: this.status, name: this.name, busy: this.busy })
@@ -199,7 +199,7 @@ export default {
 	 *
 	 * @return {Promise<void>}
 	 *
-	 * @spec openspec/changes/worlds-copy-ruleset/specs/setting-management/spec.md
+	 * @spec openspec/specs/setting-management/spec.md
 	 */
 	async mounted() {
 		const state = await fetchCopyPreview(this.id)
@@ -220,7 +220,7 @@ export default {
 		 *
 		 * @return {Promise<void>}
 		 *
-		 * @spec openspec/changes/worlds-copy-ruleset/specs/setting-management/spec.md
+		 * @spec openspec/specs/setting-management/spec.md
 		 */
 		async copy() {
 			if (!this.copyable) {
@@ -244,7 +244,7 @@ export default {
 		 *
 		 * @return {void}
 		 *
-		 * @spec openspec/changes/worlds-copy-ruleset/specs/setting-management/spec.md
+		 * @spec openspec/specs/setting-management/spec.md
 		 */
 		openNewWorld() {
 			this.$router?.push(`/settings/${encodeURIComponent(this.newWorldId)}`)

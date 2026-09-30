@@ -326,7 +326,24 @@
         "Plots of this character": "Trames d'aquest personatge",
         "By writing step": "Per pas d'escriptura",
         "Not yet approved in writing": "Encara no aprovats en l'escriptura",
-        "Everyone is approved in writing": "Tothom està aprovat en l'escriptura"
+        "Everyone is approved in writing": "Tothom està aprovat en l'escriptura",
+        "Copy world": "Copia el món",
+        "Counting what will be copied": "S'està comptant què es copiarà",
+        "Only game masters can copy a world.": "Només els directors de joc poden copiar un món.",
+        "This world has too many rules to copy in one go.": "Aquest món té massa regles per copiar-lo d'una vegada.",
+        "The world could not be loaded. Try again later.": "No s'ha pogut carregar el món. Torneu-ho a provar més tard.",
+        "The new world {name} is ready.": "El nou món {name} ja és a punt.",
+        "The rules of {world} go into a new world:": "Les regles de {world} passen a un món nou:",
+        "Characters are not copied: items and conditions in the new world start without holders.": "Els personatges no es copien: els objectes i estats del món nou comencen sense portador.",
+        "Name of the new world": "Nom del món nou",
+        "The copy failed: {error}": "La còpia ha fallat: {error}",
+        "These objects could not be removed again: {ids}": "Aquests objectes no s'han pogut suprimir: {ids}",
+        "Close": "Tanca",
+        "Open the new world": "Obre el món nou",
+        "Copying": "S'està copiant",
+        "Lore pages": "Pàgines de lore",
+        "{world} (copy)": "{world} (còpia)",
+        "unknown error": "error desconegut"
     },
     "plurals": {}
 }

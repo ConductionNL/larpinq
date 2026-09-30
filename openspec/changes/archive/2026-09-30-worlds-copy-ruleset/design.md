@@ -59,7 +59,7 @@ Refuses above 2000 objects with 422.
 
 ### D4. The action
 
-SettingDetail gets a header action "Copy world" opening `CopyWorldModal.vue`
+SettingDetail gets a header action "Copy world" opening `src/dialogs/CopyWorldDialog.vue` (an NcDialog, so under src/dialogs; the action is shown on `GET /api/worlds/copy-access`, and `GET /api/worlds/{id}/copy` gives the counts before the copy)
 (name field, a count of what will be copied, confirm), shown to game masters.
 On success the modal links to the new world.
 

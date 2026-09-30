@@ -326,7 +326,24 @@
         "Plots of this character": "Сюжети цього персонажа",
         "By writing step": "За етапом написання",
         "Not yet approved in writing": "Ще не схвалені в написанні",
-        "Everyone is approved in writing": "Усі схвалені в написанні"
+        "Everyone is approved in writing": "Усі схвалені в написанні",
+        "Copy world": "Копіювати світ",
+        "Counting what will be copied": "Підрахунок того, що буде скопійовано",
+        "Only game masters can copy a world.": "Копіювати світ можуть лише майстри.",
+        "This world has too many rules to copy in one go.": "У цьому світі забагато правил, щоб скопіювати його за один раз.",
+        "The world could not be loaded. Try again later.": "Не вдалося завантажити світ. Спробуйте пізніше.",
+        "The new world {name} is ready.": "Новий світ {name} готовий.",
+        "The rules of {world} go into a new world:": "Правила світу {world} переходять у новий світ:",
+        "Characters are not copied: items and conditions in the new world start without holders.": "Персонажі не копіюються: предмети та стани в новому світі починають без власників.",
+        "Name of the new world": "Назва нового світу",
+        "The copy failed: {error}": "Копіювання не вдалося: {error}",
+        "These objects could not be removed again: {ids}": "Ці об’єкти не вдалося видалити: {ids}",
+        "Close": "Закрити",
+        "Open the new world": "Відкрити новий світ",
+        "Copying": "Копіювання",
+        "Lore pages": "Сторінки лору",
+        "{world} (copy)": "{world} (копія)",
+        "unknown error": "невідома помилка"
     },
     "plurals": {}
 }

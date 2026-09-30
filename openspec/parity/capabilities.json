@@ -667,18 +667,18 @@
 			"id": "wld-copy-ruleset",
 			"area": "worlds",
 			"name": "Start a new campaign from a copy of an existing ruleset.",
-			"larpinq": "no",
+			"larpinq": "yes",
 			"larpmanager": "yes",
 			"mylarp": "unknown",
 			"larp-portal": "unknown",
 			"kanka": "yes",
 			"pretix": "partial",
 			"built": {
-				"state": "specified",
-				"evidence": "grep -rniE 'duplicate|clone|copyFrom' lib src: no hits relating to copying a world/ruleset (only unrelated dedupe/clone-array/migration-duplicate hits)",
+				"state": "built",
+				"evidence": "lib/Service/WorldCopyService.php (abilities, effects, skills, items, conditions, lore pages; id remap, two-pass required skills, holders emptied, rollback) and lib/Controller/WorldsController.php (game masters via Application::GM_GROUP, 2000 cap); tests/unit/Service/WorldCopyServiceTest.php, tests/unit/Controller/WorldsControllerTest.php, tests/vitest/worldCopy.spec.js",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "nothing: no copy/duplicate action for settings or their scoped schemas",
-				"change": "worlds-copy-ruleset"
+				"reachedOn": "World page, Actions, Copy world (src/dialogs/CopyWorldDialog.vue)",
+				"change": "openspec/changes/archive/2026-09-30-worlds-copy-ruleset"
 			},
 			"provider": "self",
 			"providerHow": "read: grepped this repository, no hits",

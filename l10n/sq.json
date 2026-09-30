@@ -326,7 +326,24 @@
         "Plots of this character": "Intrigat e këtij personazhi",
         "By writing step": "Sipas hapit të shkrimit",
         "Not yet approved in writing": "Ende të pamiratuar në shkrim",
-        "Everyone is approved in writing": "Të gjithë janë miratuar në shkrim"
+        "Everyone is approved in writing": "Të gjithë janë miratuar në shkrim",
+        "Copy world": "Kopjo botën",
+        "Counting what will be copied": "Po numërohet çfarë do të kopjohet",
+        "Only game masters can copy a world.": "Vetëm drejtuesit e lojës mund të kopjojnë një botë.",
+        "This world has too many rules to copy in one go.": "Kjo botë ka shumë rregulla për t’u kopjuar njëherësh.",
+        "The world could not be loaded. Try again later.": "Bota nuk u ngarkua dot. Provoni më vonë.",
+        "The new world {name} is ready.": "Bota e re {name} është gati.",
+        "The rules of {world} go into a new world:": "Rregullat e {world} kalojnë në një botë të re:",
+        "Characters are not copied: items and conditions in the new world start without holders.": "Personazhet nuk kopjohen: sendet dhe gjendjet në botën e re nisin pa mbajtës.",
+        "Name of the new world": "Emri i botës së re",
+        "The copy failed: {error}": "Kopjimi dështoi: {error}",
+        "These objects could not be removed again: {ids}": "Këto objekte nuk u hoqën dot: {ids}",
+        "Close": "Mbyll",
+        "Open the new world": "Hap botën e re",
+        "Copying": "Po kopjohet",
+        "Lore pages": "Faqe legjende",
+        "{world} (copy)": "{world} (kopje)",
+        "unknown error": "gabim i panjohur"
     },
     "plurals": {}
 }

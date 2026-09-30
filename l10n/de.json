@@ -326,7 +326,24 @@
         "Plots of this character": "Plots dieser Figur",
         "By writing step": "Nach Schreibschritt",
         "Not yet approved in writing": "Beim Schreiben noch nicht freigegeben",
-        "Everyone is approved in writing": "Alle sind beim Schreiben freigegeben"
+        "Everyone is approved in writing": "Alle sind beim Schreiben freigegeben",
+        "Copy world": "Welt kopieren",
+        "Counting what will be copied": "Zählen, was kopiert wird",
+        "Only game masters can copy a world.": "Nur Spielleitungen können eine Welt kopieren.",
+        "This world has too many rules to copy in one go.": "Diese Welt hat zu viele Regeln, um sie auf einmal zu kopieren.",
+        "The world could not be loaded. Try again later.": "Die Welt konnte nicht geladen werden. Versuche es später erneut.",
+        "The new world {name} is ready.": "Die neue Welt {name} ist bereit.",
+        "The rules of {world} go into a new world:": "Die Regeln von {world} kommen in eine neue Welt:",
+        "Characters are not copied: items and conditions in the new world start without holders.": "Charaktere werden nicht kopiert: Gegenstände und Zustände in der neuen Welt beginnen ohne Besitzer.",
+        "Name of the new world": "Name der neuen Welt",
+        "The copy failed: {error}": "Das Kopieren ist fehlgeschlagen: {error}",
+        "These objects could not be removed again: {ids}": "Diese Objekte konnten nicht wieder entfernt werden: {ids}",
+        "Close": "Schließen",
+        "Open the new world": "Neue Welt öffnen",
+        "Copying": "Wird kopiert",
+        "Lore pages": "Lore-Seiten",
+        "{world} (copy)": "{world} (Kopie)",
+        "unknown error": "unbekannter Fehler"
     },
     "plurals": {}
 }

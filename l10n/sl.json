@@ -326,7 +326,24 @@
         "Plots of this character": "Zgodbe tega lika",
         "By writing step": "Po koraku pisanja",
         "Not yet approved in writing": "Še ni odobreno v pisanju",
-        "Everyone is approved in writing": "Vsi so odobreni v pisanju"
+        "Everyone is approved in writing": "Vsi so odobreni v pisanju",
+        "Copy world": "Kopiraj svet",
+        "Counting what will be copied": "Štetje tega, kar bo kopirano",
+        "Only game masters can copy a world.": "Svet lahko kopirajo samo vodje igre.",
+        "This world has too many rules to copy in one go.": "Ta svet ima preveč pravil za kopiranje naenkrat.",
+        "The world could not be loaded. Try again later.": "Sveta ni bilo mogoče naložiti. Poskusite pozneje.",
+        "The new world {name} is ready.": "Novi svet {name} je pripravljen.",
+        "The rules of {world} go into a new world:": "Pravila sveta {world} gredo v nov svet:",
+        "Characters are not copied: items and conditions in the new world start without holders.": "Liki se ne kopirajo: predmeti in stanja v novem svetu začnejo brez imetnikov.",
+        "Name of the new world": "Ime novega sveta",
+        "The copy failed: {error}": "Kopiranje ni uspelo: {error}",
+        "These objects could not be removed again: {ids}": "Teh predmetov ni bilo mogoče odstraniti: {ids}",
+        "Close": "Zapri",
+        "Open the new world": "Odpri novi svet",
+        "Copying": "Kopiranje",
+        "Lore pages": "Strani lore",
+        "{world} (copy)": "{world} (kopija)",
+        "unknown error": "neznana napaka"
     },
     "plurals": {}
 }

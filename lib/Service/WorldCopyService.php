@@ -10,7 +10,7 @@
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link      https://larpingapp.com
  *
- * @spec openspec/changes/worlds-copy-ruleset/specs/setting-management/spec.md
+ * @spec openspec/specs/setting-management/spec.md
  */
 
 declare(strict_types=1);
@@ -39,7 +39,7 @@ use Throwable;
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
  *
- * @spec openspec/changes/worlds-copy-ruleset/specs/setting-management/spec.md
+ * @spec openspec/specs/setting-management/spec.md
  */
 class WorldCopyService {
 
@@ -145,7 +145,7 @@ class WorldCopyService {
 	 * @throws DoesNotExistException When the world does not exist.
 	 * @throws LengthException When the world holds more than MAX_OBJECTS rule objects.
 	 *
-	 * @spec openspec/changes/worlds-copy-ruleset/specs/setting-management/spec.md
+	 * @spec openspec/specs/setting-management/spec.md
 	 */
 	public function preview(string $worldId): array {
 		$world = $this->readWorld(worldId: $worldId);
@@ -165,7 +165,7 @@ class WorldCopyService {
 	 * @throws LengthException When the world holds more than MAX_OBJECTS rule objects.
 	 * @throws WorldCopyFailedException When a write fails; the copy is rolled back.
 	 *
-	 * @spec openspec/changes/worlds-copy-ruleset/specs/setting-management/spec.md
+	 * @spec openspec/specs/setting-management/spec.md
 	 */
 	public function copy(string $worldId, string $name): array {
 		$name = trim($name);

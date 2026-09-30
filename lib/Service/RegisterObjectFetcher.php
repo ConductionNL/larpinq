@@ -448,7 +448,7 @@ class RegisterObjectFetcher {
 	 *
 	 * @psalm-suppress MixedMethodCall OpenRegister ObjectService resolved dynamically.
 	 *
-	 * @spec openspec/changes/worlds-copy-ruleset/specs/setting-management/spec.md
+	 * @spec openspec/specs/setting-management/spec.md
 	 */
 	public function deleteObject(string $objectType, string $uuid): bool {
 		$openRegister = $this->getOpenRegisterService();

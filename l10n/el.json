@@ -326,7 +326,24 @@
         "Plots of this character": "Πλοκές αυτού του χαρακτήρα",
         "By writing step": "Ανά στάδιο γραφής",
         "Not yet approved in writing": "Δεν έχουν εγκριθεί ακόμη στη γραφή",
-        "Everyone is approved in writing": "Όλοι έχουν εγκριθεί στη γραφή"
+        "Everyone is approved in writing": "Όλοι έχουν εγκριθεί στη γραφή",
+        "Copy world": "Αντιγραφή κόσμου",
+        "Counting what will be copied": "Καταμέτρηση όσων θα αντιγραφούν",
+        "Only game masters can copy a world.": "Μόνο οι αφηγητές μπορούν να αντιγράψουν έναν κόσμο.",
+        "This world has too many rules to copy in one go.": "Αυτός ο κόσμος έχει πάρα πολλούς κανόνες για αντιγραφή με μία κίνηση.",
+        "The world could not be loaded. Try again later.": "Δεν ήταν δυνατή η φόρτωση του κόσμου. Δοκιμάστε αργότερα.",
+        "The new world {name} is ready.": "Ο νέος κόσμος {name} είναι έτοιμος.",
+        "The rules of {world} go into a new world:": "Οι κανόνες του {world} μεταφέρονται σε νέο κόσμο:",
+        "Characters are not copied: items and conditions in the new world start without holders.": "Οι χαρακτήρες δεν αντιγράφονται: τα αντικείμενα και οι καταστάσεις στον νέο κόσμο ξεκινούν χωρίς κατόχους.",
+        "Name of the new world": "Όνομα του νέου κόσμου",
+        "The copy failed: {error}": "Η αντιγραφή απέτυχε: {error}",
+        "These objects could not be removed again: {ids}": "Αυτά τα αντικείμενα δεν ήταν δυνατό να αφαιρεθούν: {ids}",
+        "Close": "Κλείσιμο",
+        "Open the new world": "Άνοιγμα του νέου κόσμου",
+        "Copying": "Αντιγραφή σε εξέλιξη",
+        "Lore pages": "Σελίδες ιστορικού",
+        "{world} (copy)": "{world} (αντίγραφο)",
+        "unknown error": "άγνωστο σφάλμα"
     },
     "plurals": {}
 }

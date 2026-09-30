@@ -326,7 +326,24 @@
         "Plots of this character": "Intrigile acestui personaj",
         "By writing step": "După etapa de scriere",
         "Not yet approved in writing": "Încă neaprobate la scriere",
-        "Everyone is approved in writing": "Toți sunt aprobați la scriere"
+        "Everyone is approved in writing": "Toți sunt aprobați la scriere",
+        "Copy world": "Copiază lumea",
+        "Counting what will be copied": "Se numără ce va fi copiat",
+        "Only game masters can copy a world.": "Doar maeștrii de joc pot copia o lume.",
+        "This world has too many rules to copy in one go.": "Această lume are prea multe reguli pentru a fi copiată dintr-odată.",
+        "The world could not be loaded. Try again later.": "Lumea nu a putut fi încărcată. Încercați mai târziu.",
+        "The new world {name} is ready.": "Noua lume {name} este gata.",
+        "The rules of {world} go into a new world:": "Regulile din {world} trec într-o lume nouă:",
+        "Characters are not copied: items and conditions in the new world start without holders.": "Personajele nu se copiază: obiectele și stările din lumea nouă încep fără deținători.",
+        "Name of the new world": "Numele lumii noi",
+        "The copy failed: {error}": "Copierea a eșuat: {error}",
+        "These objects could not be removed again: {ids}": "Aceste obiecte nu au putut fi eliminate: {ids}",
+        "Close": "Închide",
+        "Open the new world": "Deschide lumea nouă",
+        "Copying": "Se copiază",
+        "Lore pages": "Pagini de lore",
+        "{world} (copy)": "{world} (copie)",
+        "unknown error": "eroare necunoscută"
     },
     "plurals": {}
 }

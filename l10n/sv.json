@@ -326,7 +326,24 @@
         "Plots of this character": "Intriger för denna rollfigur",
         "By writing step": "Per skrivsteg",
         "Not yet approved in writing": "Ännu inte godkända i skrivandet",
-        "Everyone is approved in writing": "Alla är godkända i skrivandet"
+        "Everyone is approved in writing": "Alla är godkända i skrivandet",
+        "Copy world": "Kopiera värld",
+        "Counting what will be copied": "Räknar det som ska kopieras",
+        "Only game masters can copy a world.": "Bara spelledare kan kopiera en värld.",
+        "This world has too many rules to copy in one go.": "Den här världen har för många regler för att kopieras på en gång.",
+        "The world could not be loaded. Try again later.": "Världen kunde inte läsas in. Försök igen senare.",
+        "The new world {name} is ready.": "Den nya världen {name} är klar.",
+        "The rules of {world} go into a new world:": "Reglerna från {world} hamnar i en ny värld:",
+        "Characters are not copied: items and conditions in the new world start without holders.": "Rollpersoner kopieras inte: föremål och tillstånd i den nya världen börjar utan innehavare.",
+        "Name of the new world": "Namn på den nya världen",
+        "The copy failed: {error}": "Kopieringen misslyckades: {error}",
+        "These objects could not be removed again: {ids}": "Dessa objekt kunde inte tas bort igen: {ids}",
+        "Close": "Stäng",
+        "Open the new world": "Öppna den nya världen",
+        "Copying": "Kopierar",
+        "Lore pages": "Lore-sidor",
+        "{world} (copy)": "{world} (kopia)",
+        "unknown error": "okänt fel"
     },
     "plurals": {}
 }

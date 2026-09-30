@@ -6,7 +6,7 @@
  * copy request, and the small helpers the dialog renders from. The copy runs
  * server-side in larpinq's WorldCopyService (`/api/worlds/{id}/copy`).
  *
- * @spec openspec/changes/worlds-copy-ruleset/specs/setting-management/spec.md
+ * @spec openspec/specs/setting-management/spec.md
  */
 
 import { getRequestToken } from '@nextcloud/auth'
@@ -18,7 +18,7 @@ import { generateUrl } from '@nextcloud/router'
  * @param {string} worldId The world UUID.
  * @return {string} The URL.
  *
- * @spec openspec/changes/worlds-copy-ruleset/specs/setting-management/spec.md
+ * @spec openspec/specs/setting-management/spec.md
  */
 function copyUrl(worldId) {
 	return generateUrl(
@@ -32,7 +32,7 @@ function copyUrl(worldId) {
  * @param {Response} response The fetch response.
  * @return {Promise<object>} The body.
  *
- * @spec openspec/changes/worlds-copy-ruleset/specs/setting-management/spec.md
+ * @spec openspec/specs/setting-management/spec.md
  */
 async function bodyOf(response) {
 	try {
@@ -50,7 +50,7 @@ async function bodyOf(response) {
  * @return {Promise<{status: string, worldName: string, counts: object, error: string}>}
  *   status is ready, forbidden, too-large or failed.
  *
- * @spec openspec/changes/worlds-copy-ruleset/specs/setting-management/spec.md
+ * @spec openspec/specs/setting-management/spec.md
  */
 export async function fetchCopyPreview(worldId) {
 	const response = await fetch(copyUrl(worldId), {
@@ -83,7 +83,7 @@ export async function fetchCopyPreview(worldId) {
  * @param {string} name The new world's name.
  * @return {Promise<{ok: boolean, worldId: string, error: string, leftovers: Array<string>}>} The result.
  *
- * @spec openspec/changes/worlds-copy-ruleset/specs/setting-management/spec.md
+ * @spec openspec/specs/setting-management/spec.md
  */
 export async function copyWorld(worldId, name) {
 	const response = await fetch(copyUrl(worldId), {
@@ -119,7 +119,7 @@ export async function copyWorld(worldId, name) {
  * @param {{status: string, name: string, busy: boolean}} state The dialog state.
  * @return {boolean} True when the preview loaded, a name is filled in and no copy runs.
  *
- * @spec openspec/changes/worlds-copy-ruleset/specs/setting-management/spec.md
+ * @spec openspec/specs/setting-management/spec.md
  */
 export function canCopy(state) {
 	return (
@@ -135,7 +135,7 @@ export function canCopy(state) {
  * @param {object|null} counts The counts per type.
  * @return {number} The total.
  *
- * @spec openspec/changes/worlds-copy-ruleset/specs/setting-management/spec.md
+ * @spec openspec/specs/setting-management/spec.md
  */
 export function totalOf(counts) {
 	if (!counts || typeof counts !== 'object') {

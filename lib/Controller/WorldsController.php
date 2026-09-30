@@ -10,7 +10,7 @@
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link      https://larpingapp.com
  *
- * @spec openspec/changes/worlds-copy-ruleset/specs/setting-management/spec.md
+ * @spec openspec/specs/setting-management/spec.md
  */
 
 declare(strict_types=1);
@@ -42,7 +42,7 @@ use Psr\Log\LoggerInterface;
  *
  * @psalm-suppress UnusedClass Instantiated by Nextcloud routing (appinfo/routes.php).
  *
- * @spec openspec/changes/worlds-copy-ruleset/specs/setting-management/spec.md
+ * @spec openspec/specs/setting-management/spec.md
  */
 class WorldsController extends Controller {
 
@@ -75,7 +75,7 @@ class WorldsController extends Controller {
 	 *
 	 * @NoAdminRequired
 	 *
-	 * @spec openspec/changes/worlds-copy-ruleset/specs/setting-management/spec.md
+	 * @spec openspec/specs/setting-management/spec.md
 	 */
 	#[NoAdminRequired]
 	public function access(): JSONResponse {
@@ -96,7 +96,7 @@ class WorldsController extends Controller {
 	 *
 	 * @NoAdminRequired
 	 *
-	 * @spec openspec/changes/worlds-copy-ruleset/specs/setting-management/spec.md
+	 * @spec openspec/specs/setting-management/spec.md
 	 */
 	#[NoAdminRequired]
 	public function preview(string $id): JSONResponse {
@@ -122,7 +122,7 @@ class WorldsController extends Controller {
 	 *
 	 * @NoAdminRequired
 	 *
-	 * @spec openspec/changes/worlds-copy-ruleset/specs/setting-management/spec.md
+	 * @spec openspec/specs/setting-management/spec.md
 	 */
 	#[NoAdminRequired]
 	public function copy(string $id, string $name = ''): JSONResponse {
@@ -151,7 +151,7 @@ class WorldsController extends Controller {
 	 *
 	 * @return JSONResponse|null The refusal, or null when allowed.
 	 *
-	 * @spec openspec/changes/worlds-copy-ruleset/specs/setting-management/spec.md
+	 * @spec openspec/specs/setting-management/spec.md
 	 */
 	private function refuseUnlessGameMaster(): ?JSONResponse {
 		$user = $this->userSession->getUser();
@@ -173,7 +173,7 @@ class WorldsController extends Controller {
 	 *
 	 * @return JSONResponse The response.
 	 *
-	 * @spec openspec/changes/worlds-copy-ruleset/specs/setting-management/spec.md
+	 * @spec openspec/specs/setting-management/spec.md
 	 */
 	private function refusal(InvalidArgumentException|DoesNotExistException|LengthException $error): JSONResponse {
 		$status = Http::STATUS_BAD_REQUEST;
@@ -193,7 +193,7 @@ class WorldsController extends Controller {
 	 *
 	 * @return bool True for a game master or admin.
 	 *
-	 * @spec openspec/changes/worlds-copy-ruleset/specs/setting-management/spec.md
+	 * @spec openspec/specs/setting-management/spec.md
 	 */
 	private function isGameMaster(string $uid): bool {
 		return $this->groupManager->isInGroup($uid, Application::GM_GROUP) === true

@@ -327,7 +327,24 @@ OC.L10N.register(
         "Plots of this character": "Söguþræðir þessarar persónu",
         "By writing step": "Eftir ritunarskrefi",
         "Not yet approved in writing": "Ekki enn samþykkt í ritun",
-        "Everyone is approved in writing": "Allir eru samþykktir í ritun"
+        "Everyone is approved in writing": "Allir eru samþykktir í ritun",
+        "Copy world": "Afrita heim",
+        "Counting what will be copied": "Tel það sem verður afritað",
+        "Only game masters can copy a world.": "Aðeins spilastjórar geta afritað heim.",
+        "This world has too many rules to copy in one go.": "Þessi heimur hefur of margar reglur til að afrita í einu.",
+        "The world could not be loaded. Try again later.": "Ekki tókst að hlaða heiminum. Reyndu aftur síðar.",
+        "The new world {name} is ready.": "Nýi heimurinn {name} er tilbúinn.",
+        "The rules of {world} go into a new world:": "Reglur {world} fara í nýjan heim:",
+        "Characters are not copied: items and conditions in the new world start without holders.": "Persónur eru ekki afritaðar: hlutir og ástand í nýja heiminum byrja án handhafa.",
+        "Name of the new world": "Heiti nýja heimsins",
+        "The copy failed: {error}": "Afritun mistókst: {error}",
+        "These objects could not be removed again: {ids}": "Ekki tókst að fjarlægja þessa hluti: {ids}",
+        "Close": "Loka",
+        "Open the new world": "Opna nýja heiminn",
+        "Copying": "Afrita",
+        "Lore pages": "Fræðisíður",
+        "{world} (copy)": "{world} (afrit)",
+        "unknown error": "óþekkt villa"
     },
     "nplurals=2; plural=(n != 1);"
 )

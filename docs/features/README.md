@@ -23,6 +23,7 @@ Larpinq is a niche domain application with no applicable government or interoper
 | [Character Stats](./character-stats.md) | The Stats tab on a character: each ability with its base, the modifiers that moved it and where they came from, and XP earned, spent and left | [character-stats.md](./character-stats.md) |
 | [Import and export](./import-and-export.md) | Export any list to CSV or Excel, import characters and players, and move a whole campaign as one workbook | [import-and-export.md](./import-and-export.md) |
 | [Lore pages](./lore-pages.md) | Lore per world that players read once it is revealed, with game master secrets kept hidden | [lore-pages.md](./lore-pages.md) |
+| [Copy a world](./copy-world.md) | Start a new world from a copy of an existing world's rules, for game masters | [copy-world.md](./copy-world.md) |
 | [Plots and writing](./plots-and-writing.md) | Plots that run through several characters with private and player texts, and the writing progress of plots and characters | [plots-and-writing.md](./plots-and-writing.md) |
 | [RPG System / Game Mechanics](./rpg-system.md) | Skills (with prerequisites), Items, Conditions, Effects, Abilities — interconnected rule engine | [rpg-system.md](./rpg-system.md) |
 | [Events & Players](./events-players.md) | Event management with date ranges, locations, and effect application to participating characters; player profiles | [events-players.md](./events-players.md) |

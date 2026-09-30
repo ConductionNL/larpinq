@@ -326,7 +326,24 @@
         "Plots of this character": "Šī tēla sižeti",
         "By writing step": "Pēc rakstīšanas soļa",
         "Not yet approved in writing": "Vēl nav apstiprināti rakstīšanā",
-        "Everyone is approved in writing": "Visi ir apstiprināti rakstīšanā"
+        "Everyone is approved in writing": "Visi ir apstiprināti rakstīšanā",
+        "Copy world": "Kopēt pasauli",
+        "Counting what will be copied": "Tiek skaitīts, kas tiks kopēts",
+        "Only game masters can copy a world.": "Pasauli var kopēt tikai spēles vadītāji.",
+        "This world has too many rules to copy in one go.": "Šajā pasaulē ir pārāk daudz noteikumu, lai to nokopētu vienā reizē.",
+        "The world could not be loaded. Try again later.": "Pasauli neizdevās ielādēt. Mēģiniet vēlāk.",
+        "The new world {name} is ready.": "Jaunā pasaule {name} ir gatava.",
+        "The rules of {world} go into a new world:": "Pasaules {world} noteikumi nonāk jaunā pasaulē:",
+        "Characters are not copied: items and conditions in the new world start without holders.": "Tēli netiek kopēti: priekšmeti un stāvokļi jaunajā pasaulē sākas bez turētājiem.",
+        "Name of the new world": "Jaunās pasaules nosaukums",
+        "The copy failed: {error}": "Kopēšana neizdevās: {error}",
+        "These objects could not be removed again: {ids}": "Šos objektus neizdevās noņemt: {ids}",
+        "Close": "Aizvērt",
+        "Open the new world": "Atvērt jauno pasauli",
+        "Copying": "Kopē",
+        "Lore pages": "Leģendu lapas",
+        "{world} (copy)": "{world} (kopija)",
+        "unknown error": "nezināma kļūda"
     },
     "plurals": {}
 }

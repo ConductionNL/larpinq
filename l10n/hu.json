@@ -326,7 +326,24 @@
         "Plots of this character": "A karakter cselekményszálai",
         "By writing step": "Írási lépés szerint",
         "Not yet approved in writing": "Az írásban még nincs jóváhagyva",
-        "Everyone is approved in writing": "Az írásban mindenki jóvá van hagyva"
+        "Everyone is approved in writing": "Az írásban mindenki jóvá van hagyva",
+        "Copy world": "Világ másolása",
+        "Counting what will be copied": "Annak számolása, ami másolásra kerül",
+        "Only game masters can copy a world.": "Világot csak mesélők másolhatnak.",
+        "This world has too many rules to copy in one go.": "Ennek a világnak túl sok szabálya van ahhoz, hogy egyszerre lehessen másolni.",
+        "The world could not be loaded. Try again later.": "A világot nem sikerült betölteni. Próbálja újra később.",
+        "The new world {name} is ready.": "Az új világ, {name}, elkészült.",
+        "The rules of {world} go into a new world:": "{world} szabályai egy új világba kerülnek:",
+        "Characters are not copied: items and conditions in the new world start without holders.": "A karakterek nem másolódnak: az új világ tárgyai és állapotai birtokos nélkül indulnak.",
+        "Name of the new world": "Az új világ neve",
+        "The copy failed: {error}": "A másolás nem sikerült: {error}",
+        "These objects could not be removed again: {ids}": "Ezeket az objektumokat nem sikerült eltávolítani: {ids}",
+        "Close": "Bezárás",
+        "Open the new world": "Az új világ megnyitása",
+        "Copying": "Másolás folyamatban",
+        "Lore pages": "Háttértörténet-oldalak",
+        "{world} (copy)": "{world} (másolat)",
+        "unknown error": "ismeretlen hiba"
     },
     "plurals": {}
 }

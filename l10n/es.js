@@ -327,7 +327,24 @@ OC.L10N.register(
         "Plots of this character": "Tramas de este personaje",
         "By writing step": "Por paso de escritura",
         "Not yet approved in writing": "Aún no aprobados en la escritura",
-        "Everyone is approved in writing": "Todos están aprobados en la escritura"
+        "Everyone is approved in writing": "Todos están aprobados en la escritura",
+        "Copy world": "Copiar mundo",
+        "Counting what will be copied": "Contando lo que se copiará",
+        "Only game masters can copy a world.": "Solo los directores de juego pueden copiar un mundo.",
+        "This world has too many rules to copy in one go.": "Este mundo tiene demasiadas reglas para copiarlo de una vez.",
+        "The world could not be loaded. Try again later.": "No se pudo cargar el mundo. Inténtalo más tarde.",
+        "The new world {name} is ready.": "El nuevo mundo {name} está listo.",
+        "The rules of {world} go into a new world:": "Las reglas de {world} pasan a un mundo nuevo:",
+        "Characters are not copied: items and conditions in the new world start without holders.": "Los personajes no se copian: los objetos y estados del nuevo mundo empiezan sin portador.",
+        "Name of the new world": "Nombre del nuevo mundo",
+        "The copy failed: {error}": "La copia falló: {error}",
+        "These objects could not be removed again: {ids}": "Estos objetos no se pudieron eliminar: {ids}",
+        "Close": "Cerrar",
+        "Open the new world": "Abrir el nuevo mundo",
+        "Copying": "Copiando",
+        "Lore pages": "Páginas de lore",
+        "{world} (copy)": "{world} (copia)",
+        "unknown error": "error desconocido"
     },
     "nplurals=2; plural=(n != 1);"
 )

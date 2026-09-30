@@ -10,7 +10,7 @@
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link      https://larpingapp.com
  *
- * @spec openspec/changes/worlds-copy-ruleset/specs/setting-management/spec.md
+ * @spec openspec/specs/setting-management/spec.md
  */
 
 declare(strict_types=1);
@@ -31,7 +31,7 @@ use Throwable;
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
  *
- * @spec openspec/changes/worlds-copy-ruleset/specs/setting-management/spec.md
+ * @spec openspec/specs/setting-management/spec.md
  */
 class WorldCopyFailedException extends RuntimeException {
 
@@ -42,7 +42,7 @@ class WorldCopyFailedException extends RuntimeException {
 	 * @param list<string> $leftovers The ids the rollback could not remove.
 	 * @param Throwable|null $previous The cause.
 	 *
-	 * @spec openspec/changes/worlds-copy-ruleset/specs/setting-management/spec.md
+	 * @spec openspec/specs/setting-management/spec.md
 	 */
 	public function __construct(
 		string $message,
@@ -57,7 +57,7 @@ class WorldCopyFailedException extends RuntimeException {
 	 *
 	 * @return list<string> The ids.
 	 *
-	 * @spec openspec/changes/worlds-copy-ruleset/specs/setting-management/spec.md
+	 * @spec openspec/specs/setting-management/spec.md
 	 */
 	public function getLeftovers(): array {
 		return $this->leftovers;

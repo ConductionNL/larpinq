@@ -326,7 +326,24 @@
         "Plots of this character": "Tämän hahmon juonet",
         "By writing step": "Kirjoitusvaiheittain",
         "Not yet approved in writing": "Ei vielä hyväksytty kirjoituksessa",
-        "Everyone is approved in writing": "Kaikki on hyväksytty kirjoituksessa"
+        "Everyone is approved in writing": "Kaikki on hyväksytty kirjoituksessa",
+        "Copy world": "Kopioi maailma",
+        "Counting what will be copied": "Lasketaan, mitä kopioidaan",
+        "Only game masters can copy a world.": "Vain pelinjohtajat voivat kopioida maailman.",
+        "This world has too many rules to copy in one go.": "Tässä maailmassa on liian monta sääntöä kopioitavaksi kerralla.",
+        "The world could not be loaded. Try again later.": "Maailmaa ei voitu ladata. Yritä myöhemmin uudelleen.",
+        "The new world {name} is ready.": "Uusi maailma {name} on valmis.",
+        "The rules of {world} go into a new world:": "Maailman {world} säännöt siirtyvät uuteen maailmaan:",
+        "Characters are not copied: items and conditions in the new world start without holders.": "Hahmoja ei kopioida: uuden maailman esineillä ja tiloilla ei aluksi ole haltijoita.",
+        "Name of the new world": "Uuden maailman nimi",
+        "The copy failed: {error}": "Kopiointi epäonnistui: {error}",
+        "These objects could not be removed again: {ids}": "Näitä kohteita ei voitu poistaa: {ids}",
+        "Close": "Sulje",
+        "Open the new world": "Avaa uusi maailma",
+        "Copying": "Kopioidaan",
+        "Lore pages": "Taustatarinasivut",
+        "{world} (copy)": "{world} (kopio)",
+        "unknown error": "tuntematon virhe"
     },
     "plurals": {}
 }

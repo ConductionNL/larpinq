@@ -326,7 +326,24 @@
         "Plots of this character": "Intrigas da quest persunagi",
         "By writing step": "Tenor pass da scriver",
         "Not yet approved in writing": "Anc betg approvà en la scrittira",
-        "Everyone is approved in writing": "Tuts èn approvads en la scrittira"
+        "Everyone is approved in writing": "Tuts èn approvads en la scrittira",
+        "Copy world": "Copiar il mund",
+        "Counting what will be copied": "Quintar tge che vegn copià",
+        "Only game masters can copy a world.": "Mo ils manaders dal gieu pon copiar in mund.",
+        "This world has too many rules to copy in one go.": "Quest mund ha memia bleras reglas per al copiar en ina giada.",
+        "The world could not be loaded. Try again later.": "Il mund n'ha betg pudì vegnir chargià. Emprova pli tard.",
+        "The new world {name} is ready.": "Il nov mund {name} è pront.",
+        "The rules of {world} go into a new world:": "Las reglas da {world} van en in nov mund:",
+        "Characters are not copied: items and conditions in the new world start without holders.": "Ils persunagis na vegnan betg copiads: objects e cundiziuns en il nov mund cumenzan senza possessurs.",
+        "Name of the new world": "Num dal nov mund",
+        "The copy failed: {error}": "La copia n'è betg reussida: {error}",
+        "These objects could not be removed again: {ids}": "Quests objects n'han betg pudì vegnir allontanads: {ids}",
+        "Close": "Serrar",
+        "Open the new world": "Avrir il nov mund",
+        "Copying": "Copiar",
+        "Lore pages": "Paginas da lore",
+        "{world} (copy)": "{world} (copia)",
+        "unknown error": "errur nunenconuschenta"
     },
     "plurals": {}
 }

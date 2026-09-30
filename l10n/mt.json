@@ -326,7 +326,24 @@
         "Plots of this character": "Il-plottijiet ta' dan il-karattru",
         "By writing step": "Skont il-pass tal-kitba",
         "Not yet approved in writing": "Għadhom mhux approvati fil-kitba",
-        "Everyone is approved in writing": "Kulħadd approvat fil-kitba"
+        "Everyone is approved in writing": "Kulħadd approvat fil-kitba",
+        "Copy world": "Ikkopja d-dinja",
+        "Counting what will be copied": "Qed jingħadd x'se jiġi kkupjat",
+        "Only game masters can copy a world.": "Il-kaptani tal-logħba biss jistgħu jikkupjaw dinja.",
+        "This world has too many rules to copy in one go.": "Din id-dinja għandha wisq regoli biex tiġi kkupjata f'daqqa.",
+        "The world could not be loaded. Try again later.": "Id-dinja ma setgħetx titgħabba. Erġa' pprova aktar tard.",
+        "The new world {name} is ready.": "Id-dinja l-ġdida {name} lesta.",
+        "The rules of {world} go into a new world:": "Ir-regoli ta' {world} imorru f'dinja ġdida:",
+        "Characters are not copied: items and conditions in the new world start without holders.": "Il-karattri ma jiġux ikkupjati: l-oġġetti u l-kundizzjonijiet fid-dinja l-ġdida jibdew mingħajr detenturi.",
+        "Name of the new world": "Isem id-dinja l-ġdida",
+        "The copy failed: {error}": "L-ikkupjar falla: {error}",
+        "These objects could not be removed again: {ids}": "Dawn l-oġġetti ma setgħux jitneħħew: {ids}",
+        "Close": "Agħlaq",
+        "Open the new world": "Iftaħ id-dinja l-ġdida",
+        "Copying": "Qed jikkopja",
+        "Lore pages": "Paġni tal-lore",
+        "{world} (copy)": "{world} (kopja)",
+        "unknown error": "żball mhux magħruf"
     },
     "plurals": {}
 }
