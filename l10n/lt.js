@@ -296,7 +296,25 @@ OC.L10N.register(
         "The campaign could not be exported, because no register is configured.": "Nepavyko eksportuoti kampanijos, nes nenustatytas registras.",
         "The campaign could not be imported, because no register is configured.": "Nepavyko importuoti kampanijos, nes nenustatytas registras.",
         "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Kampanija importuota: sukurta {created}, atnaujinta {updated}, nepakeista {unchanged}, nepavyko {failed}",
-        "The campaign could not be imported: {reason}": "Nepavyko importuoti kampanijos: {reason}"
+        "The campaign could not be imported: {reason}": "Nepavyko importuoti kampanijos: {reason}",
+        "Lore": "Legendos",
+        "Lore page": "Legendų puslapis",
+        "Lore of this world": "Šio pasaulio legendos",
+        "Title": "Pavadinimas",
+        "Text": "Tekstas",
+        "Category": "Kategorija",
+        "Visible to": "Matoma",
+        "Reveal moment": "Atskleidimo momentas",
+        "Parent page": "Tėvinis puslapis",
+        "Order": "Tvarka",
+        "The name of the page": "Puslapio pavadinimas",
+        "The page text, written in markdown": "Puslapio tekstas markdown formatu",
+        "The world this page belongs to": "Pasaulis, kuriam priklauso puslapis",
+        "What the page is about": "Apie ką puslapis",
+        "Who may read the page: game masters only, or players too": "Kas gali skaityti puslapį: tik žaidimo vedėjai ar ir žaidėjai",
+        "From this moment players may read a page that is visible to players": "Nuo šio momento žaidėjai gali skaityti žaidėjams matomą puslapį",
+        "The page this page sits under in the sidebar": "Puslapis, po kuriuo šis puslapis yra šoninėje juostoje",
+        "The position among pages with the same parent": "Vieta tarp puslapių su tuo pačiu tėviniu puslapiu"
     },
     "nplurals=2; plural=(n != 1);"
 )

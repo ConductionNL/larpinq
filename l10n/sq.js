@@ -296,7 +296,25 @@ OC.L10N.register(
         "The campaign could not be exported, because no register is configured.": "Fushata nuk u eksportua dot, sepse nuk është konfiguruar asnjë regjistër.",
         "The campaign could not be imported, because no register is configured.": "Fushata nuk u importua dot, sepse nuk është konfiguruar asnjë regjistër.",
         "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Fushata u importua: {created} u krijuan, {updated} u përditësuan, {unchanged} të pandryshuara, {failed} dështuan",
-        "The campaign could not be imported: {reason}": "Fushata nuk u importua dot: {reason}"
+        "The campaign could not be imported: {reason}": "Fushata nuk u importua dot: {reason}",
+        "Lore": "Legjenda",
+        "Lore page": "Faqe legjende",
+        "Lore of this world": "Legjenda e kësaj bote",
+        "Title": "Titulli",
+        "Text": "Teksti",
+        "Category": "Kategoria",
+        "Visible to": "E dukshme për",
+        "Reveal moment": "Momenti i zbulimit",
+        "Parent page": "Faqja mëmë",
+        "Order": "Renditja",
+        "The name of the page": "Emri i faqes",
+        "The page text, written in markdown": "Teksti i faqes, në markdown",
+        "The world this page belongs to": "Bota së cilës i përket faqja",
+        "What the page is about": "Për çfarë flet faqja",
+        "Who may read the page: game masters only, or players too": "Kush mund ta lexojë faqen: vetëm drejtuesit e lojës apo edhe lojtarët",
+        "From this moment players may read a page that is visible to players": "Nga ky moment lojtarët mund të lexojnë një faqe të dukshme për lojtarët",
+        "The page this page sits under in the sidebar": "Faqja nën të cilën qëndron kjo faqe në shiritin anësor",
+        "The position among pages with the same parent": "Vendi midis faqeve me të njëjtën faqe mëmë"
     },
     "nplurals=2; plural=(n != 1);"
 )

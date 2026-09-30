@@ -295,7 +295,25 @@
         "The campaign could not be exported, because no register is configured.": "Не ўдалося экспартаваць кампанію, бо рэестр не наладжаны.",
         "The campaign could not be imported, because no register is configured.": "Не ўдалося імпартаваць кампанію, бо рэестр не наладжаны.",
         "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Кампанія імпартавана: створана {created}, абноўлена {updated}, без змен {unchanged}, з памылкай {failed}",
-        "The campaign could not be imported: {reason}": "Не ўдалося імпартаваць кампанію: {reason}"
+        "The campaign could not be imported: {reason}": "Не ўдалося імпартаваць кампанію: {reason}",
+        "Lore": "Лор",
+        "Lore page": "Старонка лору",
+        "Lore of this world": "Лор гэтага свету",
+        "Title": "Загаловак",
+        "Text": "Тэкст",
+        "Category": "Катэгорыя",
+        "Visible to": "Бачна для",
+        "Reveal moment": "Момант раскрыцця",
+        "Parent page": "Бацькоўская старонка",
+        "Order": "Парадак",
+        "The name of the page": "Назва старонкі",
+        "The page text, written in markdown": "Тэкст старонкі ў markdown",
+        "The world this page belongs to": "Свет, да якога належыць старонка",
+        "What the page is about": "Пра што старонка",
+        "Who may read the page: game masters only, or players too": "Хто можа чытаць старонку: толькі майстры ці таксама гульцы",
+        "From this moment players may read a page that is visible to players": "З гэтага моманту гульцы могуць чытаць старонку, бачную гульцам",
+        "The page this page sits under in the sidebar": "Старонка, пад якой гэтая старонка стаіць на бакавой панэлі",
+        "The position among pages with the same parent": "Месца сярод старонак з той самай бацькоўскай старонкай"
     },
     "plurals": {}
 }

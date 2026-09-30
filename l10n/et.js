@@ -296,7 +296,25 @@ OC.L10N.register(
         "The campaign could not be exported, because no register is configured.": "Kampaaniat ei õnnestunud eksportida, sest registrit pole seadistatud.",
         "The campaign could not be imported, because no register is configured.": "Kampaaniat ei õnnestunud importida, sest registrit pole seadistatud.",
         "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Kampaania imporditud: {created} loodud, {updated} uuendatud, {unchanged} muutmata, {failed} ebaõnnestus",
-        "The campaign could not be imported: {reason}": "Kampaaniat ei õnnestunud importida: {reason}"
+        "The campaign could not be imported: {reason}": "Kampaaniat ei õnnestunud importida: {reason}",
+        "Lore": "Taustalugu",
+        "Lore page": "Taustaloo leht",
+        "Lore of this world": "Selle maailma taustalugu",
+        "Title": "Pealkiri",
+        "Text": "Tekst",
+        "Category": "Kategooria",
+        "Visible to": "Nähtav",
+        "Reveal moment": "Avalikustamise hetk",
+        "Parent page": "Ülemleht",
+        "Order": "Järjekord",
+        "The name of the page": "Lehe nimi",
+        "The page text, written in markdown": "Lehe tekst markdownis",
+        "The world this page belongs to": "Maailm, kuhu leht kuulub",
+        "What the page is about": "Millest leht räägib",
+        "Who may read the page: game masters only, or players too": "Kes tohib lehte lugeda: ainult mängujuhid või ka mängijad",
+        "From this moment players may read a page that is visible to players": "Sellest hetkest võivad mängijad lugeda mängijatele nähtavat lehte",
+        "The page this page sits under in the sidebar": "Leht, mille all see leht külgribal asub",
+        "The position among pages with the same parent": "Koht sama ülemlehega lehtede seas"
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -296,7 +296,25 @@ OC.L10N.register(
         "The campaign could not be exported, because no register is configured.": "Kampagnen kunne ikke eksporteres, fordi der ikke er konfigureret et register.",
         "The campaign could not be imported, because no register is configured.": "Kampagnen kunne ikke importeres, fordi der ikke er konfigureret et register.",
         "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Kampagne importeret: {created} oprettet, {updated} opdateret, {unchanged} uændret, {failed} mislykkedes",
-        "The campaign could not be imported: {reason}": "Kampagnen kunne ikke importeres: {reason}"
+        "The campaign could not be imported: {reason}": "Kampagnen kunne ikke importeres: {reason}",
+        "Lore": "Lore",
+        "Lore page": "Lore-side",
+        "Lore of this world": "Lore for denne verden",
+        "Title": "Titel",
+        "Text": "Tekst",
+        "Category": "Kategori",
+        "Visible to": "Synlig for",
+        "Reveal moment": "Afsløringstidspunkt",
+        "Parent page": "Overordnet side",
+        "Order": "Rækkefølge",
+        "The name of the page": "Sidens navn",
+        "The page text, written in markdown": "Sidens tekst, i markdown",
+        "The world this page belongs to": "Den verden, siden hører til",
+        "What the page is about": "Hvad siden handler om",
+        "Who may read the page: game masters only, or players too": "Hvem der må læse siden: kun spilledere eller også spillere",
+        "From this moment players may read a page that is visible to players": "Fra dette tidspunkt må spillere læse en side, der er synlig for spillere",
+        "The page this page sits under in the sidebar": "Den side, som denne side ligger under i sidepanelet",
+        "The position among pages with the same parent": "Placeringen blandt sider med samme overordnede side"
     },
     "nplurals=2; plural=(n != 1);"
 )

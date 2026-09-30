@@ -296,7 +296,25 @@ OC.L10N.register(
         "The campaign could not be exported, because no register is configured.": "Кампанията не можа да бъде експортирана, защото няма настроен регистър.",
         "The campaign could not be imported, because no register is configured.": "Кампанията не можа да бъде импортирана, защото няма настроен регистър.",
         "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Кампанията е импортирана: създадени {created}, обновени {updated}, без промяна {unchanged}, неуспешни {failed}",
-        "The campaign could not be imported: {reason}": "Кампанията не можа да бъде импортирана: {reason}"
+        "The campaign could not be imported: {reason}": "Кампанията не можа да бъде импортирана: {reason}",
+        "Lore": "Лор",
+        "Lore page": "Страница с лор",
+        "Lore of this world": "Лорът на този свят",
+        "Title": "Заглавие",
+        "Text": "Текст",
+        "Category": "Категория",
+        "Visible to": "Видимо за",
+        "Reveal moment": "Момент на разкриване",
+        "Parent page": "Родителска страница",
+        "Order": "Ред",
+        "The name of the page": "Името на страницата",
+        "The page text, written in markdown": "Текстът на страницата, в markdown",
+        "The world this page belongs to": "Светът, към който принадлежи страницата",
+        "What the page is about": "За какво е страницата",
+        "Who may read the page: game masters only, or players too": "Кой може да чете страницата: само водещите на играта или и играчите",
+        "From this moment players may read a page that is visible to players": "От този момент играчите могат да четат страница, видима за играчи",
+        "The page this page sits under in the sidebar": "Страницата, под която стои тази страница в страничната лента",
+        "The position among pages with the same parent": "Позицията сред страниците със същата родителска страница"
     },
     "nplurals=2; plural=(n != 1);"
 )

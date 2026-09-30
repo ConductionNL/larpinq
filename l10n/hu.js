@@ -296,7 +296,25 @@ OC.L10N.register(
         "The campaign could not be exported, because no register is configured.": "A kampányt nem sikerült exportálni, mert nincs beállítva nyilvántartás.",
         "The campaign could not be imported, because no register is configured.": "A kampányt nem sikerült importálni, mert nincs beállítva nyilvántartás.",
         "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Kampány importálva: {created} létrehozva, {updated} frissítve, {unchanged} változatlan, {failed} sikertelen",
-        "The campaign could not be imported: {reason}": "A kampányt nem sikerült importálni: {reason}"
+        "The campaign could not be imported: {reason}": "A kampányt nem sikerült importálni: {reason}",
+        "Lore": "Háttértörténet",
+        "Lore page": "Háttértörténet-oldal",
+        "Lore of this world": "A világ háttértörténete",
+        "Title": "Cím",
+        "Text": "Szöveg",
+        "Category": "Kategória",
+        "Visible to": "Kinek látható",
+        "Reveal moment": "Felfedés időpontja",
+        "Parent page": "Szülőoldal",
+        "Order": "Sorrend",
+        "The name of the page": "Az oldal neve",
+        "The page text, written in markdown": "Az oldal szövege markdownban",
+        "The world this page belongs to": "A világ, amelyhez az oldal tartozik",
+        "What the page is about": "Miről szól az oldal",
+        "Who may read the page: game masters only, or players too": "Ki olvashatja az oldalt: csak a mesélők vagy a játékosok is",
+        "From this moment players may read a page that is visible to players": "Ettől az időponttól a játékosok olvashatják a nekik látható oldalt",
+        "The page this page sits under in the sidebar": "Az oldal, amely alatt ez az oldal az oldalsávban áll",
+        "The position among pages with the same parent": "A hely az azonos szülőoldalú oldalak között"
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -295,7 +295,25 @@
         "The campaign could not be exported, because no register is configured.": "No s'ha pogut exportar la campanya perquè no hi ha cap registre configurat.",
         "The campaign could not be imported, because no register is configured.": "No s'ha pogut importar la campanya perquè no hi ha cap registre configurat.",
         "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Campanya importada: {created} creats, {updated} actualitzats, {unchanged} sense canvis, {failed} amb error",
-        "The campaign could not be imported: {reason}": "No s'ha pogut importar la campanya: {reason}"
+        "The campaign could not be imported: {reason}": "No s'ha pogut importar la campanya: {reason}",
+        "Lore": "Lore",
+        "Lore page": "Pàgina de lore",
+        "Lore of this world": "Lore d'aquest món",
+        "Title": "Títol",
+        "Text": "Text",
+        "Category": "Categoria",
+        "Visible to": "Visible per a",
+        "Reveal moment": "Moment de revelació",
+        "Parent page": "Pàgina superior",
+        "Order": "Ordre",
+        "The name of the page": "El nom de la pàgina",
+        "The page text, written in markdown": "El text de la pàgina, en markdown",
+        "The world this page belongs to": "El món al qual pertany aquesta pàgina",
+        "What the page is about": "De què tracta la pàgina",
+        "Who may read the page: game masters only, or players too": "Qui pot llegir la pàgina: només els directors de joc o també els jugadors",
+        "From this moment players may read a page that is visible to players": "A partir d'aquest moment els jugadors poden llegir una pàgina visible per als jugadors",
+        "The page this page sits under in the sidebar": "La pàgina sota la qual apareix aquesta pàgina a la barra lateral",
+        "The position among pages with the same parent": "La posició entre les pàgines amb la mateixa pàgina superior"
     },
     "plurals": {}
 }

@@ -295,7 +295,25 @@
         "The campaign could not be exported, because no register is configured.": "Не удалось экспортировать кампанию, так как реестр не настроен.",
         "The campaign could not be imported, because no register is configured.": "Не удалось импортировать кампанию, так как реестр не настроен.",
         "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Кампания импортирована: создано {created}, обновлено {updated}, без изменений {unchanged}, с ошибкой {failed}",
-        "The campaign could not be imported: {reason}": "Не удалось импортировать кампанию: {reason}"
+        "The campaign could not be imported: {reason}": "Не удалось импортировать кампанию: {reason}",
+        "Lore": "Лор",
+        "Lore page": "Страница лора",
+        "Lore of this world": "Лор этого мира",
+        "Title": "Заголовок",
+        "Text": "Текст",
+        "Category": "Категория",
+        "Visible to": "Видно для",
+        "Reveal moment": "Момент раскрытия",
+        "Parent page": "Родительская страница",
+        "Order": "Порядок",
+        "The name of the page": "Название страницы",
+        "The page text, written in markdown": "Текст страницы в markdown",
+        "The world this page belongs to": "Мир, к которому относится страница",
+        "What the page is about": "О чём страница",
+        "Who may read the page: game masters only, or players too": "Кто может читать страницу: только мастера или также игроки",
+        "From this moment players may read a page that is visible to players": "С этого момента игроки могут читать страницу, видимую игрокам",
+        "The page this page sits under in the sidebar": "Страница, под которой эта страница стоит на боковой панели",
+        "The position among pages with the same parent": "Место среди страниц с той же родительской страницей"
     },
     "plurals": {}
 }

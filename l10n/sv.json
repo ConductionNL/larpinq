@@ -295,7 +295,25 @@
         "The campaign could not be exported, because no register is configured.": "Kampanjen kunde inte exporteras eftersom inget register är konfigurerat.",
         "The campaign could not be imported, because no register is configured.": "Kampanjen kunde inte importeras eftersom inget register är konfigurerat.",
         "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Kampanj importerad: {created} skapade, {updated} uppdaterade, {unchanged} oförändrade, {failed} misslyckades",
-        "The campaign could not be imported: {reason}": "Kampanjen kunde inte importeras: {reason}"
+        "The campaign could not be imported: {reason}": "Kampanjen kunde inte importeras: {reason}",
+        "Lore": "Lore",
+        "Lore page": "Lore-sida",
+        "Lore of this world": "Lore för den här världen",
+        "Title": "Titel",
+        "Text": "Text",
+        "Category": "Kategori",
+        "Visible to": "Synlig för",
+        "Reveal moment": "Avslöjandetidpunkt",
+        "Parent page": "Överordnad sida",
+        "Order": "Ordning",
+        "The name of the page": "Sidans namn",
+        "The page text, written in markdown": "Sidans text, i markdown",
+        "The world this page belongs to": "Världen som sidan hör till",
+        "What the page is about": "Vad sidan handlar om",
+        "Who may read the page: game masters only, or players too": "Vem som får läsa sidan: bara spelledare eller även spelare",
+        "From this moment players may read a page that is visible to players": "Från denna tidpunkt får spelare läsa en sida som är synlig för spelare",
+        "The page this page sits under in the sidebar": "Sidan som den här sidan ligger under i sidofältet",
+        "The position among pages with the same parent": "Placeringen bland sidor med samma överordnade sida"
     },
     "plurals": {}
 }

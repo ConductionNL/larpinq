@@ -296,7 +296,25 @@ OC.L10N.register(
         "The campaign could not be exported, because no register is configured.": "Campania nu a putut fi exportată, deoarece nu este configurat niciun registru.",
         "The campaign could not be imported, because no register is configured.": "Campania nu a putut fi importată, deoarece nu este configurat niciun registru.",
         "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Campanie importată: {created} create, {updated} actualizate, {unchanged} neschimbate, {failed} eșuate",
-        "The campaign could not be imported: {reason}": "Campania nu a putut fi importată: {reason}"
+        "The campaign could not be imported: {reason}": "Campania nu a putut fi importată: {reason}",
+        "Lore": "Lore",
+        "Lore page": "Pagină de lore",
+        "Lore of this world": "Lore-ul acestei lumi",
+        "Title": "Titlu",
+        "Text": "Text",
+        "Category": "Categorie",
+        "Visible to": "Vizibil pentru",
+        "Reveal moment": "Momentul dezvăluirii",
+        "Parent page": "Pagină părinte",
+        "Order": "Ordine",
+        "The name of the page": "Numele paginii",
+        "The page text, written in markdown": "Textul paginii, în markdown",
+        "The world this page belongs to": "Lumea căreia îi aparține pagina",
+        "What the page is about": "Despre ce este pagina",
+        "Who may read the page: game masters only, or players too": "Cine poate citi pagina: doar maeștrii de joc sau și jucătorii",
+        "From this moment players may read a page that is visible to players": "Din acest moment jucătorii pot citi o pagină vizibilă pentru jucători",
+        "The page this page sits under in the sidebar": "Pagina sub care apare această pagină în bara laterală",
+        "The position among pages with the same parent": "Poziția printre paginile cu aceeași pagină părinte"
     },
     "nplurals=2; plural=(n != 1);"
 )

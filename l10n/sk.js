@@ -296,7 +296,25 @@ OC.L10N.register(
         "The campaign could not be exported, because no register is configured.": "Kampaň sa nepodarilo exportovať, pretože nie je nastavený žiadny register.",
         "The campaign could not be imported, because no register is configured.": "Kampaň sa nepodarilo importovať, pretože nie je nastavený žiadny register.",
         "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Kampaň importovaná: vytvorené {created}, aktualizované {updated}, bez zmeny {unchanged}, neúspešné {failed}",
-        "The campaign could not be imported: {reason}": "Kampaň sa nepodarilo importovať: {reason}"
+        "The campaign could not be imported: {reason}": "Kampaň sa nepodarilo importovať: {reason}",
+        "Lore": "Lore",
+        "Lore page": "Stránka lore",
+        "Lore of this world": "Lore tohto sveta",
+        "Title": "Názov",
+        "Text": "Text",
+        "Category": "Kategória",
+        "Visible to": "Viditeľné pre",
+        "Reveal moment": "Okamih odhalenia",
+        "Parent page": "Nadradená stránka",
+        "Order": "Poradie",
+        "The name of the page": "Názov stránky",
+        "The page text, written in markdown": "Text stránky v markdowne",
+        "The world this page belongs to": "Svet, ku ktorému stránka patrí",
+        "What the page is about": "O čom stránka je",
+        "Who may read the page: game masters only, or players too": "Kto smie stránku čítať: len rozprávači, alebo aj hráči",
+        "From this moment players may read a page that is visible to players": "Od tohto okamihu môžu hráči čítať stránku viditeľnú pre hráčov",
+        "The page this page sits under in the sidebar": "Stránka, pod ktorou je táto stránka v bočnom paneli",
+        "The position among pages with the same parent": "Pozícia medzi stránkami s rovnakou nadradenou stránkou"
     },
     "nplurals=2; plural=(n != 1);"
 )

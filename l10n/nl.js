@@ -388,7 +388,25 @@ OC.L10N.register(
         "The campaign could not be exported, because no register is configured.": "De campagne kon niet worden geëxporteerd, omdat er geen register is ingesteld.",
         "The campaign could not be imported, because no register is configured.": "De campagne kon niet worden geïmporteerd, omdat er geen register is ingesteld.",
         "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Campagne geïmporteerd: {created} aangemaakt, {updated} bijgewerkt, {unchanged} ongewijzigd, {failed} mislukt",
-        "The campaign could not be imported: {reason}": "De campagne kon niet worden geïmporteerd: {reason}"
+        "The campaign could not be imported: {reason}": "De campagne kon niet worden geïmporteerd: {reason}",
+        "Lore": "Lore",
+        "Lore page": "Lorepagina",
+        "Lore of this world": "Lore van deze wereld",
+        "Title": "Titel",
+        "Text": "Tekst",
+        "Category": "Categorie",
+        "Visible to": "Zichtbaar voor",
+        "Reveal moment": "Onthullingsmoment",
+        "Parent page": "Bovenliggende pagina",
+        "Order": "Volgorde",
+        "The name of the page": "De naam van de pagina",
+        "The page text, written in markdown": "De tekst van de pagina, in markdown",
+        "The world this page belongs to": "De wereld waar deze pagina bij hoort",
+        "What the page is about": "Waar de pagina over gaat",
+        "Who may read the page: game masters only, or players too": "Wie de pagina mag lezen: alleen spelleiders, of ook spelers",
+        "From this moment players may read a page that is visible to players": "Vanaf dit moment mogen spelers een pagina lezen die zichtbaar is voor spelers",
+        "The page this page sits under in the sidebar": "De pagina waaronder deze pagina in de zijbalk staat",
+        "The position among pages with the same parent": "De plaats tussen pagina’s met dezelfde bovenliggende pagina"
     },
     "nplurals=2; plural=(n != 1);"
 )

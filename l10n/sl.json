@@ -295,7 +295,25 @@
         "The campaign could not be exported, because no register is configured.": "Kampanje ni bilo mogoče izvoziti, ker ni nastavljen noben register.",
         "The campaign could not be imported, because no register is configured.": "Kampanje ni bilo mogoče uvoziti, ker ni nastavljen noben register.",
         "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Kampanja uvožena: ustvarjenih {created}, posodobljenih {updated}, nespremenjenih {unchanged}, neuspešnih {failed}",
-        "The campaign could not be imported: {reason}": "Kampanje ni bilo mogoče uvoziti: {reason}"
+        "The campaign could not be imported: {reason}": "Kampanje ni bilo mogoče uvoziti: {reason}",
+        "Lore": "Lore",
+        "Lore page": "Stran lore",
+        "Lore of this world": "Lore tega sveta",
+        "Title": "Naslov",
+        "Text": "Besedilo",
+        "Category": "Kategorija",
+        "Visible to": "Vidno za",
+        "Reveal moment": "Trenutek razkritja",
+        "Parent page": "Nadrejena stran",
+        "Order": "Vrstni red",
+        "The name of the page": "Ime strani",
+        "The page text, written in markdown": "Besedilo strani v markdownu",
+        "The world this page belongs to": "Svet, ki mu stran pripada",
+        "What the page is about": "O čem govori stran",
+        "Who may read the page: game masters only, or players too": "Kdo sme brati stran: samo vodje igre ali tudi igralci",
+        "From this moment players may read a page that is visible to players": "Od tega trenutka lahko igralci berejo stran, vidno igralcem",
+        "The page this page sits under in the sidebar": "Stran, pod katero je ta stran v stranski vrstici",
+        "The position among pages with the same parent": "Položaj med stranmi z isto nadrejeno stranjo"
     },
     "plurals": {}
 }
