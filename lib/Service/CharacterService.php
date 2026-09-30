@@ -521,7 +521,7 @@ class CharacterService {
 	/**
 	 * The XP awards on one character.
 	 *
-	 * xpAward is read by game masters and the award's owner only (DECISIONS
+	 * The xpAward schema is read by game masters and the award's owner only (DECISIONS
 	 * row 30), and the owner of an award is the game master who granted it.
 	 * So the awards read as the user cover game masters; for a player, the
 	 * awards on a character they play are read with the app's authority, after
