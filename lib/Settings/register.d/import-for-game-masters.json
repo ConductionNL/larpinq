@@ -1,0 +1,12 @@
+{
+  "components": {
+    "registers": {
+      "larpinq": {
+        "version": "1.4.0",
+        "authorization": {
+          "manage": ["gamemasters"]
+        }
+      }
+    }
+  }
+}

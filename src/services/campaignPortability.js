@@ -7,30 +7,50 @@
  *
  * Every import, the list import on Characters and Players and the campaign
  * import alike, goes to OpenRegister's `POST /api/registers/{id}/import`,
- * which requires permission to manage the register. With no `manage` rule on
- * the larpinq register that is administrators only, so the manifest's import
- * actions are removed for everyone else rather than offered and refused.
+ * which requires permission to manage the register. The larpinq register
+ * grants `manage` to game masters (register.d/import-for-game-masters.json),
+ * and administrators always have it, so the manifest's import actions are
+ * removed for everyone else rather than offered and refused.
  *
  * @spec openspec/specs/data-portability/spec.md
  */
 
 import { getCurrentUser, getRequestToken } from '@nextcloud/auth'
+import { loadState } from '@nextcloud/initial-state'
 import { generateUrl } from '@nextcloud/router'
 
 /** The Worlds page header action that imports a campaign workbook. */
 export const CAMPAIGN_IMPORT_ACTION = 'import-campaign'
 
 /**
- * Whether this user may import: OpenRegister's register import lets only
- * administrators through while the larpinq register has no manage rule.
+ * Whether the page says this user is a game master (DashboardController
+ * provides `isGameMaster`). False when the page provides nothing.
  *
- * @param {object|null} [user] The current user, as @nextcloud/auth returns it.
- * @return {boolean} True for an administrator.
+ * @return {boolean} True for a game master or administrator.
  *
  * @spec openspec/specs/data-portability/spec.md
  */
-export function canImport(user = getCurrentUser()) {
-	return user?.isAdmin === true
+export function isGameMaster() {
+	try {
+		return loadState('larpinq', 'isGameMaster', false) === true
+	} catch {
+		return false
+	}
+}
+
+/**
+ * Whether this user may import: OpenRegister's register import lets through
+ * administrators and the groups in the register's manage rule, which names
+ * the game masters.
+ *
+ * @param {object|null} [user] The current user, as @nextcloud/auth returns it.
+ * @param {boolean} [gameMaster] Whether the user is a game master.
+ * @return {boolean} True for an administrator or a game master.
+ *
+ * @spec openspec/specs/data-portability/spec.md
+ */
+export function canImport(user = getCurrentUser(), gameMaster = isGameMaster()) {
+	return user?.isAdmin === true || gameMaster === true
 }
 
 /**

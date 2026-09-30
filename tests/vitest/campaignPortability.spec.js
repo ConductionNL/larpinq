@@ -16,6 +16,7 @@ import {
 	CAMPAIGN_IMPORT_ACTION,
 	campaignExportUrl,
 	canImport,
+	isGameMaster,
 	importCampaign,
 	resolveRegisterId,
 	summariseImport,
@@ -83,10 +84,15 @@ describe('applyImportGate (REQ-AIE-002)', () => {
 		).not.toBe(false)
 	})
 
-	it('lets administrators import, because OpenRegister lets only them', () => {
-		expect(canImport({ uid: 'gm', isAdmin: false })).toBe(false)
-		expect(canImport({ uid: 'admin', isAdmin: true })).toBe(true)
-		expect(canImport(null)).toBe(false)
+	it('lets administrators and game masters import, as OpenRegister does', () => {
+		expect(canImport({ uid: 'gm', isAdmin: false }, true)).toBe(true)
+		expect(canImport({ uid: 'admin', isAdmin: true }, false)).toBe(true)
+		expect(canImport({ uid: 'anna', isAdmin: false }, false)).toBe(false)
+		expect(canImport(null, false)).toBe(false)
+	})
+
+	it('reads the game master flag the page provides, and is false without it', () => {
+		expect(isGameMaster()).toBe(false)
 	})
 })
 
