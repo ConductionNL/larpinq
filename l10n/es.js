@@ -505,7 +505,13 @@ OC.L10N.register(
         "The awards could not be saved: {error}": "No se pudieron guardar las concesiones: {error}",
         "The participants could not be loaded. Try again later.": "No se pudieron cargar los participantes. Inténtalo más tarde.",
         "XP for {name}": "XP para {name}",
-        "XP for everyone ticked": "XP para todos los marcados"
+        "XP for everyone ticked": "XP para todos los marcados",
+        "Events attended": "Eventos asistidos",
+        "Loading events attended": "Cargando eventos asistidos",
+        "Only game masters and the player can see which events this player attended.": "Solo los directores de juego y el propio jugador pueden ver a qué eventos asistió este jugador.",
+        "Could not load the events attended.": "No se pudieron cargar los eventos asistidos.",
+        "Events attended: {count}": "Eventos asistidos: {count}",
+        "No check-ins recorded yet.": "Todavía no hay registros de llegada."
     },
     "nplurals=2; plural=(n != 1);"
 )

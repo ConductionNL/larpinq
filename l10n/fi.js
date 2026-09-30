@@ -505,7 +505,13 @@ OC.L10N.register(
         "The awards could not be saved: {error}": "Myöntöjä ei voitu tallentaa: {error}",
         "The participants could not be loaded. Try again later.": "Osallistujia ei voitu ladata. Yritä myöhemmin uudelleen.",
         "XP for {name}": "XP hahmolle {name}",
-        "XP for everyone ticked": "XP kaikille valituille"
+        "XP for everyone ticked": "XP kaikille valituille",
+        "Events attended": "Osallistutut tapahtumat",
+        "Loading events attended": "Ladataan osallistuttuja tapahtumia",
+        "Only game masters and the player can see which events this player attended.": "Vain pelinjohtajat ja pelaaja itse näkevät, mihin tapahtumiin tämä pelaaja on osallistunut.",
+        "Could not load the events attended.": "Osallistuttuja tapahtumia ei voitu ladata.",
+        "Events attended: {count}": "Osallistutut tapahtumat: {count}",
+        "No check-ins recorded yet.": "Sisäänkirjautumisia ei ole vielä kirjattu."
     },
     "nplurals=2; plural=(n != 1);"
 )

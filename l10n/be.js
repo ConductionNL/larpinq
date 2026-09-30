@@ -505,7 +505,13 @@ OC.L10N.register(
         "The awards could not be saved: {error}": "Не ўдалося захаваць налічэнні: {error}",
         "The participants could not be loaded. Try again later.": "Не ўдалося загрузіць удзельнікаў. Паспрабуйце пазней.",
         "XP for {name}": "XP для {name}",
-        "XP for everyone ticked": "XP для ўсіх адзначаных"
+        "XP for everyone ticked": "XP для ўсіх адзначаных",
+        "Events attended": "Наведаныя падзеі",
+        "Loading events attended": "Загрузка наведаных падзей",
+        "Only game masters and the player can see which events this player attended.": "Толькі майстры гульні і сам гулец бачаць, якія падзеі наведаў гэты гулец.",
+        "Could not load the events attended.": "Не ўдалося загрузіць наведаныя падзеі.",
+        "Events attended: {count}": "Наведаныя падзеі: {count}",
+        "No check-ins recorded yet.": "Рэгістрацый пакуль няма."
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -505,7 +505,13 @@ OC.L10N.register(
         "The awards could not be saved: {error}": "D'Verginne konnten net gespäichert ginn: {error}",
         "The participants could not be loaded. Try again later.": "D'Participante konnten net geluede ginn. Prob méi spéit nach eng Kéier.",
         "XP for {name}": "XP fir {name}",
-        "XP for everyone ticked": "XP fir all Ugekräizten"
+        "XP for everyone ticked": "XP fir all Ugekräizten",
+        "Events attended": "Besichten Evenementer",
+        "Loading events attended": "Besichten Evenementer gi gelueden",
+        "Only game masters and the player can see which events this player attended.": "Nëmmen d'Spillleeder an de Spiller selwer gesinn, op wéi eng Evenementer dëse Spiller war.",
+        "Could not load the events attended.": "Déi besichten Evenementer konnten net geluede ginn.",
+        "Events attended: {count}": "Besichten Evenementer: {count}",
+        "No check-ins recorded yet.": "Nach keng Check-ins registréiert."
     },
     "nplurals=2; plural=(n != 1);"
 )

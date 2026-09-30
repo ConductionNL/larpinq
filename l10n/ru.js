@@ -505,7 +505,13 @@ OC.L10N.register(
         "The awards could not be saved: {error}": "Не удалось сохранить начисления: {error}",
         "The participants could not be loaded. Try again later.": "Не удалось загрузить участников. Попробуйте позже.",
         "XP for {name}": "XP для {name}",
-        "XP for everyone ticked": "XP для всех отмеченных"
+        "XP for everyone ticked": "XP для всех отмеченных",
+        "Events attended": "Посещённые события",
+        "Loading events attended": "Загрузка посещённых событий",
+        "Only game masters and the player can see which events this player attended.": "Только мастера игры и сам игрок видят, какие события посетил этот игрок.",
+        "Could not load the events attended.": "Не удалось загрузить посещённые события.",
+        "Events attended: {count}": "Посещённые события: {count}",
+        "No check-ins recorded yet.": "Регистраций пока нет."
     },
     "nplurals=2; plural=(n != 1);"
 )

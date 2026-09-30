@@ -504,7 +504,13 @@
         "The awards could not be saved: {error}": "Dodelitev ni bilo mogoče shraniti: {error}",
         "The participants could not be loaded. Try again later.": "Udeležencev ni bilo mogoče naložiti. Poskusite pozneje.",
         "XP for {name}": "XP za {name}",
-        "XP for everyone ticked": "XP za vse označene"
+        "XP for everyone ticked": "XP za vse označene",
+        "Events attended": "Obiskani dogodki",
+        "Loading events attended": "Nalaganje obiskanih dogodkov",
+        "Only game masters and the player can see which events this player attended.": "Samo vodje igre in igralec sam vidijo, katerih dogodkov se je ta igralec udeležil.",
+        "Could not load the events attended.": "Obiskanih dogodkov ni bilo mogoče naložiti.",
+        "Events attended: {count}": "Obiskani dogodki: {count}",
+        "No check-ins recorded yet.": "Prijav še ni zabeleženih."
     },
     "plurals": {}
 }

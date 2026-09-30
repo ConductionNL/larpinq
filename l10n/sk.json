@@ -504,7 +504,13 @@
         "The awards could not be saved: {error}": "Udelenia sa nepodarilo uložiť: {error}",
         "The participants could not be loaded. Try again later.": "Účastníkov sa nepodarilo načítať. Skúste to neskôr.",
         "XP for {name}": "XP pre {name}",
-        "XP for everyone ticked": "XP pre všetkých označených"
+        "XP for everyone ticked": "XP pre všetkých označených",
+        "Events attended": "Navštívené podujatia",
+        "Loading events attended": "Načítavajú sa navštívené podujatia",
+        "Only game masters and the player can see which events this player attended.": "Len rozprávači a samotný hráč vidia, ktorých podujatí sa tento hráč zúčastnil.",
+        "Could not load the events attended.": "Navštívené podujatia sa nepodarilo načítať.",
+        "Events attended: {count}": "Navštívené podujatia: {count}",
+        "No check-ins recorded yet.": "Zatiaľ nie sú zaznamenané žiadne príchody."
     },
     "plurals": {}
 }

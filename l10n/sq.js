@@ -505,7 +505,13 @@ OC.L10N.register(
         "The awards could not be saved: {error}": "Dhëniet nuk u ruajtën dot: {error}",
         "The participants could not be loaded. Try again later.": "Pjesëmarrësit nuk u ngarkuan dot. Provo më vonë.",
         "XP for {name}": "XP për {name}",
-        "XP for everyone ticked": "XP për të gjithë të shënuarit"
+        "XP for everyone ticked": "XP për të gjithë të shënuarit",
+        "Events attended": "Ngjarjet e ndjekura",
+        "Loading events attended": "Po ngarkohen ngjarjet e ndjekura",
+        "Only game masters and the player can see which events this player attended.": "Vetëm drejtuesit e lojës dhe vetë lojtari shohin në cilat ngjarje ka marrë pjesë ky lojtar.",
+        "Could not load the events attended.": "Ngjarjet e ndjekura nuk mund të ngarkoheshin.",
+        "Events attended: {count}": "Ngjarjet e ndjekura: {count}",
+        "No check-ins recorded yet.": "Ende nuk ka hyrje të regjistruara."
     },
     "nplurals=2; plural=(n != 1);"
 )

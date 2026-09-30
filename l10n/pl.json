@@ -504,7 +504,13 @@
         "The awards could not be saved: {error}": "Nie udało się zapisać przyznań: {error}",
         "The participants could not be loaded. Try again later.": "Nie udało się wczytać uczestników. Spróbuj później.",
         "XP for {name}": "XP dla {name}",
-        "XP for everyone ticked": "XP dla wszystkich zaznaczonych"
+        "XP for everyone ticked": "XP dla wszystkich zaznaczonych",
+        "Events attended": "Odwiedzone wydarzenia",
+        "Loading events attended": "Wczytywanie odwiedzonych wydarzeń",
+        "Only game masters and the player can see which events this player attended.": "Tylko mistrzowie gry i sam gracz widzą, w których wydarzeniach ten gracz uczestniczył.",
+        "Could not load the events attended.": "Nie udało się wczytać odwiedzonych wydarzeń.",
+        "Events attended: {count}": "Odwiedzone wydarzenia: {count}",
+        "No check-ins recorded yet.": "Nie zarejestrowano jeszcze żadnych meldunków."
     },
     "plurals": {}
 }

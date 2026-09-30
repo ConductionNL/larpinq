@@ -1114,6 +1114,12 @@
 					"showMetadata": true,
 					"tabs": [
 						{
+							"id": "events-attended",
+							"label": "Events attended",
+							"icon": "CalendarCheck",
+							"component": "PlayerAttendanceHistory"
+						},
+						{
 							"id": "audit",
 							"label": "History",
 							"icon": "History",

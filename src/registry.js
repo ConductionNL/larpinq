@@ -35,6 +35,7 @@ import EventRoster from './views/EventRoster.vue'
 import FlowDetailSidebar from './views/flows/FlowDetailSidebar.vue'
 import LoreArticle from './views/LoreArticle.vue'
 import ObjectDetail from './views/ObjectDetail.vue'
+import PlayerAttendanceHistory from './views/PlayerAttendanceHistory.vue'
 import GameSettingsSection from './views/settings/Settings.vue'
 import SkillTree from './views/SkillTree.vue'
 import {
@@ -100,6 +101,8 @@ export default {
 	// entry); it renders inside the CnObjectSidebar tab strip.
 	EventRoster: { kind: 'section', component: EventRoster },
 	CharacterStatSheet: { kind: 'section', component: CharacterStatSheet },
+	// Events attended tab on the player page. @spec openspec/specs/events-players/spec.md
+	PlayerAttendanceHistory: { kind: 'section', component: PlayerAttendanceHistory },
 	CharacterCustomFields: { kind: 'section', component: CharacterCustomFields },
 	// Check tab on the build page. @spec openspec/specs/character-builds/spec.md
 	BuildReport: { kind: 'section', component: BuildReport },

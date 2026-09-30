@@ -505,7 +505,13 @@ OC.L10N.register(
         "The awards could not be saved: {error}": "L-għotjiet ma setgħux jiġu ssejvjati: {error}",
         "The participants could not be loaded. Try again later.": "Il-parteċipanti ma setgħux jittellgħu. Erġa' pprova aktar tard.",
         "XP for {name}": "XP għal {name}",
-        "XP for everyone ticked": "XP għal kull min hu mmarkat"
+        "XP for everyone ticked": "XP għal kull min hu mmarkat",
+        "Events attended": "Avvenimenti attenduti",
+        "Loading events attended": "Qed jitgħabbew l-avvenimenti attenduti",
+        "Only game masters and the player can see which events this player attended.": "Il-kaptani tal-logħba u l-plejer innifsu biss jaraw liema avvenimenti attenda dan il-plejer.",
+        "Could not load the events attended.": "L-avvenimenti attenduti ma setgħux jitgħabbew.",
+        "Events attended: {count}": "Avvenimenti attenduti: {count}",
+        "No check-ins recorded yet.": "Għad m'hemm l-ebda check-in irreġistrat."
     },
     "nplurals=2; plural=(n != 1);"
 )

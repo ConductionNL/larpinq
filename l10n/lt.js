@@ -505,7 +505,13 @@ OC.L10N.register(
         "The awards could not be saved: {error}": "Skyrimų nepavyko išsaugoti: {error}",
         "The participants could not be loaded. Try again later.": "Dalyvių nepavyko įkelti. Bandykite vėliau.",
         "XP for {name}": "XP veikėjui {name}",
-        "XP for everyone ticked": "XP visiems pažymėtiems"
+        "XP for everyone ticked": "XP visiems pažymėtiems",
+        "Events attended": "Aplankyti renginiai",
+        "Loading events attended": "Įkeliami aplankyti renginiai",
+        "Only game masters and the player can see which events this player attended.": "Tik žaidimo vedėjai ir pats žaidėjas mato, kuriuose renginiuose šis žaidėjas dalyvavo.",
+        "Could not load the events attended.": "Nepavyko įkelti aplankytų renginių.",
+        "Events attended: {count}": "Aplankyti renginiai: {count}",
+        "No check-ins recorded yet.": "Registracijų dar neužfiksuota."
     },
     "nplurals=2; plural=(n != 1);"
 )

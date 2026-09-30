@@ -224,6 +224,28 @@ class CharacterConnectionGuard {
 	}//end ownsCharacter()
 
 	/**
+	 * Whether the user is this player, judged from the STORED player read as
+	 * the user. Gates the player's own attendance history, which larpinq reads
+	 * with its own authority (DECISIONS row 30).
+	 *
+	 * @param mixed $player The player's id (a UUID, or an object carrying one).
+	 * @param string $userId The user.
+	 *
+	 * @return bool True when the stored player's account is the user's.
+	 *
+	 * @spec openspec/specs/events-players/spec.md
+	 */
+	public function ownsPlayer(mixed $player, string $userId): bool {
+		if ($userId === '') {
+			return false;
+		}
+
+		$stored = $this->read(objectType: 'player', id: $player);
+
+		return $stored !== null && ($stored['userUid'] ?? '') === $userId;
+	}//end ownsPlayer()
+
+	/**
 	 * A new membership: a player asks with their own character, the leader
 	 * invites, and the leader places their own character as an active member.
 	 *
@@ -312,7 +334,7 @@ class CharacterConnectionGuard {
 	/**
 	 * Read one object by a relation value, or null when it cannot be read.
 	 *
-	 * @param string $objectType The object type ('faction' or 'character').
+	 * @param string $objectType The object type ('faction', 'character' or 'player').
 	 * @param mixed $id The relation value (a UUID, or an object carrying one).
 	 *
 	 * @return array<string, mixed>|null The object.

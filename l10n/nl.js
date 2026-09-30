@@ -597,7 +597,13 @@ OC.L10N.register(
         "The awards could not be saved: {error}": "De toekenningen konden niet worden opgeslagen: {error}",
         "The participants could not be loaded. Try again later.": "De deelnemers konden niet worden geladen. Probeer het later opnieuw.",
         "XP for {name}": "XP voor {name}",
-        "XP for everyone ticked": "XP voor iedereen die is aangevinkt"
+        "XP for everyone ticked": "XP voor iedereen die is aangevinkt",
+        "Events attended": "Bijgewoonde evenementen",
+        "Loading events attended": "Bijgewoonde evenementen laden",
+        "Only game masters and the player can see which events this player attended.": "Alleen spelleiders en de speler zelf zien welke evenementen deze speler heeft bijgewoond.",
+        "Could not load the events attended.": "De bijgewoonde evenementen konden niet worden geladen.",
+        "Events attended: {count}": "Bijgewoonde evenementen: {count}",
+        "No check-ins recorded yet.": "Nog geen check-ins geregistreerd."
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -504,7 +504,13 @@
         "The awards could not be saved: {error}": "Не вдалося зберегти нарахування: {error}",
         "The participants could not be loaded. Try again later.": "Не вдалося завантажити учасників. Спробуйте пізніше.",
         "XP for {name}": "XP для {name}",
-        "XP for everyone ticked": "XP для всіх позначених"
+        "XP for everyone ticked": "XP для всіх позначених",
+        "Events attended": "Відвідані події",
+        "Loading events attended": "Завантаження відвіданих подій",
+        "Only game masters and the player can see which events this player attended.": "Лише майстри гри та сам гравець бачать, які події відвідав цей гравець.",
+        "Could not load the events attended.": "Не вдалося завантажити відвідані події.",
+        "Events attended: {count}": "Відвідані події: {count}",
+        "No check-ins recorded yet.": "Реєстрацій поки немає."
     },
     "plurals": {}
 }

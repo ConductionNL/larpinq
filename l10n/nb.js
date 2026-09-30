@@ -505,7 +505,13 @@ OC.L10N.register(
         "The awards could not be saved: {error}": "Tildelingene kunne ikke lagres: {error}",
         "The participants could not be loaded. Try again later.": "Deltakerne kunne ikke lastes inn. Prøv igjen senere.",
         "XP for {name}": "XP til {name}",
-        "XP for everyone ticked": "XP til alle som er krysset av"
+        "XP for everyone ticked": "XP til alle som er krysset av",
+        "Events attended": "Deltatte arrangementer",
+        "Loading events attended": "Laster inn deltatte arrangementer",
+        "Only game masters and the player can see which events this player attended.": "Bare spilledere og spilleren selv kan se hvilke arrangementer denne spilleren har deltatt på.",
+        "Could not load the events attended.": "Kunne ikke laste inn de deltatte arrangementene.",
+        "Events attended: {count}": "Deltatte arrangementer: {count}",
+        "No check-ins recorded yet.": "Ingen innsjekkinger registrert ennå."
     },
     "nplurals=2; plural=(n != 1);"
 )

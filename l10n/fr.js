@@ -505,7 +505,13 @@ OC.L10N.register(
         "The awards could not be saved: {error}": "Les attributions n'ont pas pu être enregistrées : {error}",
         "The participants could not be loaded. Try again later.": "Les participants n'ont pas pu être chargés. Réessayez plus tard.",
         "XP for {name}": "XP pour {name}",
-        "XP for everyone ticked": "XP pour chaque personne cochée"
+        "XP for everyone ticked": "XP pour chaque personne cochée",
+        "Events attended": "Événements suivis",
+        "Loading events attended": "Chargement des événements suivis",
+        "Only game masters and the player can see which events this player attended.": "Seuls les maîtres du jeu et le joueur lui-même voient les événements auxquels ce joueur a participé.",
+        "Could not load the events attended.": "Impossible de charger les événements suivis.",
+        "Events attended: {count}": "Événements suivis : {count}",
+        "No check-ins recorded yet.": "Aucun enregistrement d'arrivée pour l'instant."
     },
     "nplurals=2; plural=(n != 1);"
 )

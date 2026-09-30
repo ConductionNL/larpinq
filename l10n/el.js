@@ -505,7 +505,13 @@ OC.L10N.register(
         "The awards could not be saved: {error}": "Δεν ήταν δυνατή η αποθήκευση των απονομών: {error}",
         "The participants could not be loaded. Try again later.": "Δεν ήταν δυνατή η φόρτωση των συμμετεχόντων. Δοκιμάστε αργότερα.",
         "XP for {name}": "XP για {name}",
-        "XP for everyone ticked": "XP για όλους τους επιλεγμένους"
+        "XP for everyone ticked": "XP για όλους τους επιλεγμένους",
+        "Events attended": "Εκδηλώσεις που παρακολούθησε",
+        "Loading events attended": "Φόρτωση εκδηλώσεων που παρακολούθησε",
+        "Only game masters and the player can see which events this player attended.": "Μόνο οι συντονιστές παιχνιδιού και ο ίδιος ο παίκτης βλέπουν σε ποιες εκδηλώσεις συμμετείχε αυτός ο παίκτης.",
+        "Could not load the events attended.": "Δεν ήταν δυνατή η φόρτωση των εκδηλώσεων.",
+        "Events attended: {count}": "Εκδηλώσεις που παρακολούθησε: {count}",
+        "No check-ins recorded yet.": "Δεν έχουν καταγραφεί ακόμη αφίξεις."
     },
     "nplurals=2; plural=(n != 1);"
 )

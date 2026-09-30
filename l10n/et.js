@@ -505,7 +505,13 @@ OC.L10N.register(
         "The awards could not be saved: {error}": "Andmisi ei õnnestunud salvestada: {error}",
         "The participants could not be loaded. Try again later.": "Osalejaid ei õnnestunud laadida. Proovi hiljem uuesti.",
         "XP for {name}": "XP tegelasele {name}",
-        "XP for everyone ticked": "XP kõigile märgitutele"
+        "XP for everyone ticked": "XP kõigile märgitutele",
+        "Events attended": "Külastatud sündmused",
+        "Loading events attended": "Külastatud sündmuste laadimine",
+        "Only game masters and the player can see which events this player attended.": "Ainult mängujuhid ja mängija ise näevad, milliseid sündmusi see mängija on külastanud.",
+        "Could not load the events attended.": "Külastatud sündmusi ei õnnestunud laadida.",
+        "Events attended: {count}": "Külastatud sündmused: {count}",
+        "No check-ins recorded yet.": "Registreerimisi pole veel kirjas."
     },
     "nplurals=2; plural=(n != 1);"
 )

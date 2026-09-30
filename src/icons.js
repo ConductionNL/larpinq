@@ -24,6 +24,7 @@ import BookOpenVariantOutline from 'vue-material-design-icons/BookOpenVariantOut
 import Briefcase from 'vue-material-design-icons/Briefcase.vue'
 import BriefcaseAccountOutline from 'vue-material-design-icons/BriefcaseAccountOutline.vue'
 import Calendar from 'vue-material-design-icons/Calendar.vue'
+import CalendarCheck from 'vue-material-design-icons/CalendarCheck.vue'
 import CalendarMonthOutline from 'vue-material-design-icons/CalendarMonthOutline.vue'
 import ChartBar from 'vue-material-design-icons/ChartBar.vue'
 import ChartBoxOutline from 'vue-material-design-icons/ChartBoxOutline.vue'
@@ -85,6 +86,7 @@ export default {
 	Briefcase,
 	BriefcaseAccountOutline,
 	Calendar,
+	CalendarCheck,
 	CalendarMonthOutline,
 	ChartBar,
 	ChartBoxOutline,

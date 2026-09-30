@@ -505,7 +505,13 @@ OC.L10N.register(
         "The awards could not be saved: {error}": "Ekki tókst að vista úthlutanirnar: {error}",
         "The participants could not be loaded. Try again later.": "Ekki tókst að hlaða inn þátttakendum. Reyndu aftur síðar.",
         "XP for {name}": "XP fyrir {name}",
-        "XP for everyone ticked": "XP fyrir alla sem hakað er við"
+        "XP for everyone ticked": "XP fyrir alla sem hakað er við",
+        "Events attended": "Viðburðir sóttir",
+        "Loading events attended": "Hleð inn sóttum viðburðum",
+        "Only game masters and the player can see which events this player attended.": "Aðeins leikstjórnendur og leikmaðurinn sjálfur sjá hvaða viðburði þessi leikmaður hefur sótt.",
+        "Could not load the events attended.": "Ekki tókst að hlaða inn sóttum viðburðum.",
+        "Events attended: {count}": "Viðburðir sóttir: {count}",
+        "No check-ins recorded yet.": "Engar innskráningar skráðar enn."
     },
     "nplurals=2; plural=(n != 1);"
 )
