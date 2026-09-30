@@ -1838,6 +1838,16 @@
 			"config": {
 				"register": "larpinq",
 				"schema": "larping_event",
+				"headerActions": [
+					{
+						"id": "award-xp",
+						"type": "open-modal",
+						"target": "XpAwardDialog",
+						"label": "Award XP",
+						"icon": "StarPlusOutline",
+						"visibleWhen": { "endpoint": "/apps/larpinq/api/xp-awards/access", "field": "allowed", "op": "eq", "value": true }
+					}
+				],
 				"documentationUrl": "https://larpinq.conduction.nl",
 				"_note": "Event = a LARP gathering where players bring their characters (session/meeting archetype). This is the one entity that communicates: the schema declares calendar, maps and forms linkedTypes (merged from the event-calendar-leaf / event-location-to-maps-leaf / event-signup-to-forms-leaf register fragments), so the body earns a calendar widget (scheduling the session from startDate/endDate), a location map, and the sign-up form, plus the participating characters (character.events contains @objectId) as the primary roster. The loose Attendees + XP-granted stat cards fold into one stats-block (rule 2, same-flavor simple KPIs) top-right. Post-event effects applied to attendees are shown via related. After the event, the XP awarding ritual produces one xpAward per grant (xpAward.event FK = @objectId), shown as an object-list — GM hand-awarded per xpAward's schema description, so allowCreate stays on. Files carries the event pack/handouts. All three declared leaves (calendar, maps, forms) are now body widgets — none are held back to sidebar tabs. The sidebar carries the Check-in tab (the event check-in roster, an app-registry section — see the sidebar _note) plus audit history. No email/talk: the schema declares calendar/maps/forms only.",
 				"widgets": [

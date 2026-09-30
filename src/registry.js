@@ -27,6 +27,7 @@ import WorldSwitcherActions from './components/WorldSwitcherActions.vue'
 import ApplyBuildDialog from './dialogs/ApplyBuildDialog.vue'
 import CharacterPdfDownloadDialog from './dialogs/CharacterPdfDownloadDialog.vue'
 import CopyWorldDialog from './dialogs/CopyWorldDialog.vue'
+import XpAwardDialog from './dialogs/XpAwardDialog.vue'
 import BuildReport from './views/BuildReport.vue'
 import CharacterCustomFields from './views/CharacterCustomFields.vue'
 import CharacterStatSheet from './views/CharacterStatSheet.vue'
@@ -68,6 +69,14 @@ export default {
 	CopyWorldDialog: {
 		kind: 'modal',
 		component: CopyWorldDialog,
+		propsSchema: {},
+	},
+	// EventDetail "Award XP" header action (events-xp-batch-award), game
+	// masters only: the whole event's awards in one save.
+	// @spec openspec/specs/event-xp-awards/spec.md
+	XpAwardDialog: {
+		kind: 'modal',
+		component: XpAwardDialog,
 		propsSchema: {},
 	},
 	// BuildDetail "Apply to character" header action (characters-multiple-builds).
