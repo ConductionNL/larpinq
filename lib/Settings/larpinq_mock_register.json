@@ -97,7 +97,15 @@
             "overriddenAt": "2026-03-01T09:00:00+00:00"
           }
         ],
-        "ownerRef": "00000000-0000-4000-8000-000000000000"
+        "ownerRef": "00000000-0000-4000-8000-000000000000",
+        "customFields": {
+          "bloodline": "elven",
+          "patron-god": "The Grey Lady",
+          "scars": 2
+        },
+        "customFieldsPrivate": {
+          "true-allegiance": "rebels"
+        }
       },
       {
         "@self": {
@@ -698,6 +706,69 @@
         "character": "00000000-0000-4000-8000-000000000002",
         "privateText": "Tomas owes the harbour master a debt he cannot pay.",
         "playerText": "Someone at the harbour keeps asking about you."
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_character_field",
+          "slug": "character-field-bloodline"
+        },
+        "label": "Bloodline",
+        "key": "bloodline",
+        "fieldType": "choice",
+        "choices": [
+          "human",
+          "elven",
+          "dwarven"
+        ],
+        "visibility": "owner",
+        "order": 1,
+        "setting": "00000000-0000-4000-8000-000000000000"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_character_field",
+          "slug": "character-field-patron-god"
+        },
+        "label": "Patron god",
+        "key": "patron-god",
+        "fieldType": "text",
+        "visibility": "owner",
+        "order": 2,
+        "setting": "00000000-0000-4000-8000-000000000000"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_character_field",
+          "slug": "character-field-scars"
+        },
+        "label": "Scars",
+        "key": "scars",
+        "fieldType": "number",
+        "visibility": "owner",
+        "order": 3,
+        "help": "Count the scars your character carries from earlier events.",
+        "setting": "00000000-0000-4000-8000-000000000000"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_character_field",
+          "slug": "character-field-true-allegiance"
+        },
+        "label": "True allegiance",
+        "key": "true-allegiance",
+        "fieldType": "choice",
+        "choices": [
+          "crown",
+          "rebels",
+          "none"
+        ],
+        "visibility": "gamemasters",
+        "order": 4,
+        "setting": "00000000-0000-4000-8000-000000000000"
       }
     ]
   }

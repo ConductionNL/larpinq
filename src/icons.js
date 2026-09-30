@@ -39,6 +39,7 @@ import FilePdfBox from 'vue-material-design-icons/FilePdfBox.vue'
 import FileSign from 'vue-material-design-icons/FileSign.vue'
 import FlashOutline from 'vue-material-design-icons/FlashOutline.vue'
 import FolderOutline from 'vue-material-design-icons/FolderOutline.vue'
+import FormTextbox from 'vue-material-design-icons/FormTextbox.vue'
 import Gauge from 'vue-material-design-icons/Gauge.vue'
 import History from 'vue-material-design-icons/History.vue'
 import Lightbulb from 'vue-material-design-icons/Lightbulb.vue'
@@ -92,6 +93,7 @@ export default {
 	FileSign,
 	FlashOutline,
 	FolderOutline,
+	FormTextbox,
 	Gauge,
 	History,
 	Lightbulb,

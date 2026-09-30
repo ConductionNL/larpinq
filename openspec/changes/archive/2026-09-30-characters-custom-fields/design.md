@@ -34,7 +34,9 @@ Schema `characterField` (slug `larping_character_field`): `setting` (uuid
 per world), `fieldType` (`text`, `number`, `choice`, `yes-no`), `choices`
 (array of strings, for `choice`), `visibility` (`gamemasters`, `owner`),
 `order` (integer), `help` (text). Authorization: create, update and delete by
-`gamemasters`; read by `larpers`.
+`gamemasters`; read by `gamemasters`, and by `larpers` only for definitions
+with visibility `owner` (so a player never learns a private field exists, and
+the tab needs no role check).
 
 Alternative: add real properties to the `character` schema from the UI through
 OpenRegister's schema API. Rejected: the next register import from larpinq's
@@ -61,8 +63,9 @@ vetoes with a field error per key.
 
 ### D4. The section
 
-`CharacterCustomFields.vue`, a body section on CharacterDetail below "Game
-state & notes", loads the definitions for the character's world through the
+`CharacterCustomFields.vue`, the "Extra fields" sidebar tab on CharacterDetail
+(changed at build time: a registered `kind: 'section'` component renders as a
+sidebar tab, as the Stats tab does; the body grid takes widget types only), loads the definitions for the character's world through the
 object store, renders one input per definition in `order` (text input, number
 input, `NcSelect` with `inputLabel`, `NcCheckboxRadioSwitch`), and saves the two
 objects with one PATCH. A user who can read only `customFields` sees only those
