@@ -24,6 +24,8 @@ use OCA\Larpinq\Listener\CharacterRequirementListener;
 use OCA\Larpinq\Listener\CharacterStatusListener;
 use OCA\Larpinq\Listener\DeepLinkRegistrationListener;
 use OCA\Larpinq\Listener\FactionMembershipListener;
+use OCA\Larpinq\Listener\PlayerReviewListener;
+use OCA\Larpinq\Listener\PortalProfileListener;
 use OCA\Larpinq\Listener\UniqueHolderListener;
 use OCA\Larpinq\Listener\XpAwardProvenanceListener;
 use OCP\AppFramework\Bootstrap\IRegistrationContext;
@@ -78,6 +80,9 @@ class ApplicationRegisterTest extends TestCase {
 		['OCA\OpenRegister\Event\ObjectUpdatingEvent', CharacterStatusListener::class],
 		['OCA\OpenRegister\Event\ObjectCreatingEvent', XpAwardProvenanceListener::class],
 		['OCA\OpenRegister\Event\ObjectUpdatingEvent', XpAwardProvenanceListener::class],
+		['OCA\OpenRegister\Event\ObjectCreatingEvent', PortalProfileListener::class],
+		['OCA\OpenRegister\Event\ObjectCreatedEvent', PortalProfileListener::class],
+		['OCA\OpenRegister\Event\ObjectUpdatingEvent', PlayerReviewListener::class],
 	];
 
 	/**

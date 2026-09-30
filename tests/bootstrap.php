@@ -86,4 +86,7 @@ spl_autoload_register(function (string $class): void {
 // real OpenRegister on the path always wins, and it is never in composer.json.
 if ($composerAutoloader instanceof \Composer\Autoload\ClassLoader) {
 	$composerAutoloader->addPsr4('OCA\\OpenRegister\\', __DIR__ . '/stubs/openregister/');
+	// portaliq's claim event, verbatim, for the self-signup claim listener
+	// (players-self-signup). Same rule: appended, so a real portaliq wins.
+	$composerAutoloader->addPsr4('OCA\\Portaliq\\', __DIR__ . '/stubs/portaliq/');
 }
