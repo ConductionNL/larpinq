@@ -461,7 +461,22 @@
         "Why the build exists: a plan, a test, or a build for another game": "Зошто постои конфигурацијата: план, тест или конфигурација за друга игра",
         "Builds": "Конфигурации",
         "Check": "Проверка",
-        "Skills, items and conditions": "Вештини, предмети и состојби"
+        "Skills, items and conditions": "Вештини, предмети и состојби",
+        "Edit selected characters": "Уреди ги избраните ликови",
+        "Selected characters: {count}": "Избрани ликови: {count}",
+        "Leave unchanged": "Не менувај",
+        "Changed {done} of {total}": "Променети {done} од {total}",
+        "Characters changed: {count}": "Променети ликови: {count}",
+        "These characters were not changed:": "Овие ликови не беа променети:",
+        "{name}: {reason}": "{name}: {reason}",
+        "Change the selected characters": "Промени ги избраните ликови",
+        "Active": "Активен",
+        "Retired": "Повлечен",
+        "Dead": "Мртов",
+        "Player character": "Лик на играч",
+        "Non-player character": "Неиграчки лик",
+        "Edit selected": "Уреди го избраното",
+        "Whether the character still plays: active, retired or dead": "Дали ликот сè уште игра: активен, повлечен или мртов"
     },
     "plurals": {}
 }

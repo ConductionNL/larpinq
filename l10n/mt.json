@@ -461,7 +461,22 @@
         "Why the build exists: a plan, a test, or a build for another game": "Għaliex jeżisti l-bini: pjan, test jew bini għal logħba oħra",
         "Builds": "Bini",
         "Check": "Kontroll",
-        "Skills, items and conditions": "Ħiliet, oġġetti u kundizzjonijiet"
+        "Skills, items and conditions": "Ħiliet, oġġetti u kundizzjonijiet",
+        "Edit selected characters": "Editja l-karattri magħżula",
+        "Selected characters: {count}": "Karattri magħżula: {count}",
+        "Leave unchanged": "Tibdilx",
+        "Changed {done} of {total}": "Inbidlu {done} minn {total}",
+        "Characters changed: {count}": "Karattri mibdula: {count}",
+        "These characters were not changed:": "Dawn il-karattri ma nbidlux:",
+        "{name}: {reason}": "{name}: {reason}",
+        "Change the selected characters": "Ibdel il-karattri magħżula",
+        "Active": "Attiv",
+        "Retired": "Irtirat",
+        "Dead": "Mejjet",
+        "Player character": "Karattru tal-plejer",
+        "Non-player character": "Karattru mhux tal-plejer",
+        "Edit selected": "Editja l-għażla",
+        "Whether the character still plays: active, retired or dead": "Jekk il-karattru għadux jilgħab: attiv, irtirat jew mejjet"
     },
     "plurals": {}
 }

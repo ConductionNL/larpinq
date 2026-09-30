@@ -461,7 +461,22 @@
         "Why the build exists: a plan, a test, or a build for another game": "Pourquoi ce build existe : un plan, un test ou un build pour un autre jeu",
         "Builds": "Builds",
         "Check": "Vérification",
-        "Skills, items and conditions": "Compétences, objets et états"
+        "Skills, items and conditions": "Compétences, objets et états",
+        "Edit selected characters": "Modifier les personnages sélectionnés",
+        "Selected characters: {count}": "Personnages sélectionnés : {count}",
+        "Leave unchanged": "Ne pas modifier",
+        "Changed {done} of {total}": "{done} sur {total} modifiés",
+        "Characters changed: {count}": "Personnages modifiés : {count}",
+        "These characters were not changed:": "Ces personnages n'ont pas été modifiés :",
+        "{name}: {reason}": "{name}: {reason}",
+        "Change the selected characters": "Modifier les personnages sélectionnés",
+        "Active": "Actif",
+        "Retired": "Retiré",
+        "Dead": "Mort",
+        "Player character": "Personnage joueur",
+        "Non-player character": "Personnage non joueur",
+        "Edit selected": "Modifier la sélection",
+        "Whether the character still plays: active, retired or dead": "Si le personnage joue encore : actif, retiré ou mort"
     },
     "plurals": {}
 }

@@ -427,7 +427,22 @@ OC.L10N.register(
         "Why the build exists: a plan, a test, or a build for another game": "Why the build exists: a plan, a test, or a build for another game",
         "Builds": "Builds",
         "Check": "Check",
-        "Skills, items and conditions": "Skills, items and conditions"
+        "Skills, items and conditions": "Skills, items and conditions",
+        "Edit selected characters": "Edit selected characters",
+        "Selected characters: {count}": "Selected characters: {count}",
+        "Leave unchanged": "Leave unchanged",
+        "Changed {done} of {total}": "Changed {done} of {total}",
+        "Characters changed: {count}": "Characters changed: {count}",
+        "These characters were not changed:": "These characters were not changed:",
+        "{name}: {reason}": "{name}: {reason}",
+        "Change the selected characters": "Change the selected characters",
+        "Active": "Active",
+        "Retired": "Retired",
+        "Dead": "Dead",
+        "Player character": "Player character",
+        "Non-player character": "Non-player character",
+        "Edit selected": "Edit selected",
+        "Whether the character still plays: active, retired or dead": "Whether the character still plays: active, retired or dead"
     },
     "nplurals=2; plural=(n != 1);"
 )

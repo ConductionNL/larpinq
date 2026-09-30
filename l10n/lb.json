@@ -461,7 +461,22 @@
         "Why the build exists: a plan, a test, or a build for another game": "Firwat et de Build gëtt: e Plang, en Test oder e Build fir en anert Spill",
         "Builds": "Builds",
         "Check": "Kontroll",
-        "Skills, items and conditions": "Fäegkeeten, Géigestänn an Zoustänn"
+        "Skills, items and conditions": "Fäegkeeten, Géigestänn an Zoustänn",
+        "Edit selected characters": "Ausgewielt Charakteren änneren",
+        "Selected characters: {count}": "Ausgewielt Charakteren: {count}",
+        "Leave unchanged": "Net änneren",
+        "Changed {done} of {total}": "{done} vun {total} geännert",
+        "Characters changed: {count}": "Geännert Charakteren: {count}",
+        "These characters were not changed:": "Dës Charakteren goufen net geännert:",
+        "{name}: {reason}": "{name}: {reason}",
+        "Change the selected characters": "Ausgewielt Charakteren änneren",
+        "Active": "Aktiv",
+        "Retired": "Zréckgezunn",
+        "Dead": "Dout",
+        "Player character": "Spillercharakter",
+        "Non-player character": "Net-Spillercharakter",
+        "Edit selected": "Auswiel änneren",
+        "Whether the character still plays: active, retired or dead": "Ob de Charakter nach spillt: aktiv, zréckgezunn oder dout"
     },
     "plurals": {}
 }

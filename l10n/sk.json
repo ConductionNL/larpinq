@@ -461,7 +461,22 @@
         "Why the build exists: a plan, a test, or a build for another game": "Prečo build existuje: plán, test alebo build pre inú hru",
         "Builds": "Buildy",
         "Check": "Kontrola",
-        "Skills, items and conditions": "Schopnosti, predmety a stavy"
+        "Skills, items and conditions": "Schopnosti, predmety a stavy",
+        "Edit selected characters": "Upraviť vybrané postavy",
+        "Selected characters: {count}": "Vybrané postavy: {count}",
+        "Leave unchanged": "Nemeniť",
+        "Changed {done} of {total}": "Zmenené {done} z {total}",
+        "Characters changed: {count}": "Zmenené postavy: {count}",
+        "These characters were not changed:": "Tieto postavy neboli zmenené:",
+        "{name}: {reason}": "{name}: {reason}",
+        "Change the selected characters": "Zmeniť vybrané postavy",
+        "Active": "Aktívna",
+        "Retired": "Na odpočinku",
+        "Dead": "Mŕtva",
+        "Player character": "Hráčska postava",
+        "Non-player character": "Nehráčska postava",
+        "Edit selected": "Upraviť vybrané",
+        "Whether the character still plays: active, retired or dead": "Či postava ešte hrá: aktívna, na odpočinku alebo mŕtva"
     },
     "plurals": {}
 }

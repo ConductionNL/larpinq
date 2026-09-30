@@ -461,7 +461,22 @@
         "Why the build exists: a plan, a test, or a build for another game": "Навошта гэтая зборка: план, тэст або зборка для іншай гульні",
         "Builds": "Зборкі",
         "Check": "Праверка",
-        "Skills, items and conditions": "Навыкі, прадметы і станы"
+        "Skills, items and conditions": "Навыкі, прадметы і станы",
+        "Edit selected characters": "Змяніць выбраных персанажаў",
+        "Selected characters: {count}": "Выбрана персанажаў: {count}",
+        "Leave unchanged": "Не мяняць",
+        "Changed {done} of {total}": "Зменена {done} з {total}",
+        "Characters changed: {count}": "Зменена персанажаў: {count}",
+        "These characters were not changed:": "Гэтыя персанажы не зменены:",
+        "{name}: {reason}": "{name}: {reason}",
+        "Change the selected characters": "Змяніць выбраных персанажаў",
+        "Active": "Актыўны",
+        "Retired": "На спакоі",
+        "Dead": "Мёртвы",
+        "Player character": "Персанаж гульца",
+        "Non-player character": "Негульнявы персанаж",
+        "Edit selected": "Змяніць выбранае",
+        "Whether the character still plays: active, retired or dead": "Ці гуляе персанаж: актыўны, на спакоі ці мёртвы"
     },
     "plurals": {}
 }

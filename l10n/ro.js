@@ -462,7 +462,22 @@ OC.L10N.register(
         "Why the build exists: a plan, a test, or a build for another game": "De ce există build-ul: un plan, un test sau un build pentru alt joc",
         "Builds": "Build-uri",
         "Check": "Verificare",
-        "Skills, items and conditions": "Abilități, obiecte și stări"
+        "Skills, items and conditions": "Abilități, obiecte și stări",
+        "Edit selected characters": "Editează personajele selectate",
+        "Selected characters: {count}": "Personaje selectate: {count}",
+        "Leave unchanged": "Nu modifica",
+        "Changed {done} of {total}": "{done} din {total} modificate",
+        "Characters changed: {count}": "Personaje modificate: {count}",
+        "These characters were not changed:": "Aceste personaje nu au fost modificate:",
+        "{name}: {reason}": "{name}: {reason}",
+        "Change the selected characters": "Modifică personajele selectate",
+        "Active": "Activ",
+        "Retired": "Retras",
+        "Dead": "Mort",
+        "Player character": "Personaj jucător",
+        "Non-player character": "Personaj nejucător",
+        "Edit selected": "Editează selecția",
+        "Whether the character still plays: active, retired or dead": "Dacă personajul mai joacă: activ, retras sau mort"
     },
     "nplurals=2; plural=(n != 1);"
 )

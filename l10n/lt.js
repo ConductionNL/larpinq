@@ -462,7 +462,22 @@ OC.L10N.register(
         "Why the build exists: a plan, a test, or a build for another game": "Kodėl variantas egzistuoja: planas, bandymas ar variantas kitam žaidimui",
         "Builds": "Variantai",
         "Check": "Patikra",
-        "Skills, items and conditions": "Įgūdžiai, daiktai ir būsenos"
+        "Skills, items and conditions": "Įgūdžiai, daiktai ir būsenos",
+        "Edit selected characters": "Redaguoti pasirinktus veikėjus",
+        "Selected characters: {count}": "Pasirinkti veikėjai: {count}",
+        "Leave unchanged": "Nekeisti",
+        "Changed {done} of {total}": "Pakeista {done} iš {total}",
+        "Characters changed: {count}": "Pakeisti veikėjai: {count}",
+        "These characters were not changed:": "Šie veikėjai nepakeisti:",
+        "{name}: {reason}": "{name}: {reason}",
+        "Change the selected characters": "Keisti pasirinktus veikėjus",
+        "Active": "Aktyvus",
+        "Retired": "Pasitraukęs",
+        "Dead": "Miręs",
+        "Player character": "Žaidėjo veikėjas",
+        "Non-player character": "Nežaidėjo veikėjas",
+        "Edit selected": "Redaguoti pasirinktus",
+        "Whether the character still plays: active, retired or dead": "Ar veikėjas dar žaidžia: aktyvus, pasitraukęs ar miręs"
     },
     "nplurals=2; plural=(n != 1);"
 )

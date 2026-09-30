@@ -14,14 +14,7 @@
 		data-testid="character-bulk-edit-dialog"
 		@closing="close">
 		<p>
-			{{
-				n(
-					'larpinq',
-					'%n character selected',
-					'%n characters selected',
-					ids.length,
-				)
-			}}
+			{{ t('larpinq', 'Selected characters: {count}', { count: ids.length }) }}
 		</p>
 		<template v-if="!done">
 			<NcSelect
@@ -63,12 +56,9 @@
 				type="success"
 				data-testid="character-bulk-edit-done">
 				{{
-					n(
-						'larpinq',
-						'%n character changed.',
-						'%n characters changed.',
-						report.changed.length,
-					)
+					t('larpinq', 'Characters changed: {count}', {
+						count: report.changed.length,
+					})
 				}}
 			</NcNoteCard>
 			<NcNoteCard
@@ -99,21 +89,14 @@
 				variant="primary"
 				:disabled="busy || !chosen"
 				@click="apply">
-				{{
-					n(
-						'larpinq',
-						'Change %n character',
-						'Change %n characters',
-						ids.length,
-					)
-				}}
+				{{ t('larpinq', 'Change the selected characters') }}
 			</NcButton>
 		</template>
 	</NcDialog>
 </template>
 
 <script>
-import { translatePlural as n, translate as t } from '@nextcloud/l10n'
+import { translate as t } from '@nextcloud/l10n'
 import NcButton from '@nextcloud/vue/components/NcButton'
 import NcDialog from '@nextcloud/vue/components/NcDialog'
 import NcNoteCard from '@nextcloud/vue/components/NcNoteCard'
@@ -237,7 +220,6 @@ export default {
 
 	methods: {
 		t,
-		n,
 
 		/**
 		 * Write every selected character and keep the report.

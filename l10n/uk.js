@@ -462,7 +462,22 @@ OC.L10N.register(
         "Why the build exists: a plan, a test, or a build for another game": "Навіщо ця збірка: план, тест або збірка для іншої гри",
         "Builds": "Збірки",
         "Check": "Перевірка",
-        "Skills, items and conditions": "Навички, предмети та стани"
+        "Skills, items and conditions": "Навички, предмети та стани",
+        "Edit selected characters": "Змінити вибраних персонажів",
+        "Selected characters: {count}": "Вибрано персонажів: {count}",
+        "Leave unchanged": "Не змінювати",
+        "Changed {done} of {total}": "Змінено {done} з {total}",
+        "Characters changed: {count}": "Змінено персонажів: {count}",
+        "These characters were not changed:": "Цих персонажів не змінено:",
+        "{name}: {reason}": "{name}: {reason}",
+        "Change the selected characters": "Змінити вибраних персонажів",
+        "Active": "Активний",
+        "Retired": "На спокої",
+        "Dead": "Мертвий",
+        "Player character": "Персонаж гравця",
+        "Non-player character": "Неігровий персонаж",
+        "Edit selected": "Змінити вибране",
+        "Whether the character still plays: active, retired or dead": "Чи грає персонаж: активний, на спокої чи мертвий"
     },
     "nplurals=2; plural=(n != 1);"
 )

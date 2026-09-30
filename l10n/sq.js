@@ -462,7 +462,22 @@ OC.L10N.register(
         "Why the build exists: a plan, a test, or a build for another game": "Pse ekziston ndërtimi: plan, provë ose ndërtim për një lojë tjetër",
         "Builds": "Ndërtime",
         "Check": "Kontroll",
-        "Skills, items and conditions": "Aftësi, sende dhe gjendje"
+        "Skills, items and conditions": "Aftësi, sende dhe gjendje",
+        "Edit selected characters": "Redakto personazhet e zgjedhur",
+        "Selected characters: {count}": "Personazhe të zgjedhur: {count}",
+        "Leave unchanged": "Mos ndrysho",
+        "Changed {done} of {total}": "U ndryshuan {done} nga {total}",
+        "Characters changed: {count}": "Personazhe të ndryshuar: {count}",
+        "These characters were not changed:": "Këta personazhe nuk u ndryshuan:",
+        "{name}: {reason}": "{name}: {reason}",
+        "Change the selected characters": "Ndrysho personazhet e zgjedhur",
+        "Active": "Aktiv",
+        "Retired": "I tërhequr",
+        "Dead": "I vdekur",
+        "Player character": "Personazh lojtari",
+        "Non-player character": "Personazh jo-lojtar",
+        "Edit selected": "Redakto të zgjedhurit",
+        "Whether the character still plays: active, retired or dead": "Nëse personazhi ende luan: aktiv, i tërhequr ose i vdekur"
     },
     "nplurals=2; plural=(n != 1);"
 )

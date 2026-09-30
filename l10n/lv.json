@@ -461,7 +461,22 @@
         "Why the build exists: a plan, a test, or a build for another game": "Kāpēc variants pastāv: plāns, tests vai variants citai spēlei",
         "Builds": "Varianti",
         "Check": "Pārbaude",
-        "Skills, items and conditions": "Prasmes, priekšmeti un stāvokļi"
+        "Skills, items and conditions": "Prasmes, priekšmeti un stāvokļi",
+        "Edit selected characters": "Rediģēt atlasītos tēlus",
+        "Selected characters: {count}": "Atlasītie tēli: {count}",
+        "Leave unchanged": "Nemainīt",
+        "Changed {done} of {total}": "Mainīti {done} no {total}",
+        "Characters changed: {count}": "Mainītie tēli: {count}",
+        "These characters were not changed:": "Šie tēli netika mainīti:",
+        "{name}: {reason}": "{name}: {reason}",
+        "Change the selected characters": "Mainīt atlasītos tēlus",
+        "Active": "Aktīvs",
+        "Retired": "Aizgājis",
+        "Dead": "Miris",
+        "Player character": "Spēlētāja tēls",
+        "Non-player character": "Nespēlētāja tēls",
+        "Edit selected": "Rediģēt atlasītos",
+        "Whether the character still plays: active, retired or dead": "Vai tēls vēl spēlē: aktīvs, aizgājis vai miris"
     },
     "plurals": {}
 }

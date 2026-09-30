@@ -462,7 +462,22 @@ OC.L10N.register(
         "Why the build exists: a plan, a test, or a build for another game": "Per què existeix la build: un pla, una prova o una build per a un altre joc",
         "Builds": "Builds",
         "Check": "Comprovació",
-        "Skills, items and conditions": "Habilitats, objectes i estats"
+        "Skills, items and conditions": "Habilitats, objectes i estats",
+        "Edit selected characters": "Edita els personatges seleccionats",
+        "Selected characters: {count}": "Personatges seleccionats: {count}",
+        "Leave unchanged": "No canviïs",
+        "Changed {done} of {total}": "{done} de {total} canviats",
+        "Characters changed: {count}": "Personatges canviats: {count}",
+        "These characters were not changed:": "Aquests personatges no s'han canviat:",
+        "{name}: {reason}": "{name}: {reason}",
+        "Change the selected characters": "Canvia els personatges seleccionats",
+        "Active": "Actiu",
+        "Retired": "Retirat",
+        "Dead": "Mort",
+        "Player character": "Personatge jugador",
+        "Non-player character": "Personatge no jugador",
+        "Edit selected": "Edita la selecció",
+        "Whether the character still plays: active, retired or dead": "Si el personatge encara juga: actiu, retirat o mort"
     },
     "nplurals=2; plural=(n != 1);"
 )

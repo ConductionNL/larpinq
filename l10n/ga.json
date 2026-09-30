@@ -461,7 +461,22 @@
         "Why the build exists: a plan, a test, or a build for another game": "Cén fáth a bhfuil an leagan ann: plean, tástáil nó leagan do chluiche eile",
         "Builds": "Leaganacha",
         "Check": "Seiceáil",
-        "Skills, items and conditions": "Scileanna, earraí agus staideanna"
+        "Skills, items and conditions": "Scileanna, earraí agus staideanna",
+        "Edit selected characters": "Cuir na carachtair roghnaithe in eagar",
+        "Selected characters: {count}": "Carachtair roghnaithe: {count}",
+        "Leave unchanged": "Ná hathraigh",
+        "Changed {done} of {total}": "Athraíodh {done} as {total}",
+        "Characters changed: {count}": "Carachtair athraithe: {count}",
+        "These characters were not changed:": "Níor athraíodh na carachtair seo:",
+        "{name}: {reason}": "{name}: {reason}",
+        "Change the selected characters": "Athraigh na carachtair roghnaithe",
+        "Active": "Gníomhach",
+        "Retired": "Ar scor",
+        "Dead": "Marbh",
+        "Player character": "Carachtar imreora",
+        "Non-player character": "Carachtar neamh-imreora",
+        "Edit selected": "Cuir an rogha in eagar",
+        "Whether the character still plays: active, retired or dead": "An bhfuil an carachtar fós ag imirt: gníomhach, ar scor nó marbh"
     },
     "plurals": {}
 }
