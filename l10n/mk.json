@@ -289,7 +289,13 @@
         "event": "настан",
         "XP award": "доделување XP",
         "from {name}": "од {name}",
-        "from {name} ({type})": "од {name} ({type})"
+        "from {name} ({type})": "од {name} ({type})",
+        "Export campaign": "Извези кампања",
+        "Import campaign": "Увези кампања",
+        "The campaign could not be exported, because no register is configured.": "Кампањата не може да се извезе бидејќи не е поставен регистар.",
+        "The campaign could not be imported, because no register is configured.": "Кампањата не може да се увезе бидејќи не е поставен регистар.",
+        "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Кампањата е увезена: создадени {created}, ажурирани {updated}, непроменети {unchanged}, неуспешни {failed}",
+        "The campaign could not be imported: {reason}": "Кампањата не може да се увезе: {reason}"
     },
     "plurals": {}
 }

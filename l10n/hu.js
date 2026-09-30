@@ -290,7 +290,13 @@ OC.L10N.register(
         "event": "esemény",
         "XP award": "XP-jutalom",
         "from {name}": "forrás: {name}",
-        "from {name} ({type})": "forrás: {name} ({type})"
+        "from {name} ({type})": "forrás: {name} ({type})",
+        "Export campaign": "Kampány exportálása",
+        "Import campaign": "Kampány importálása",
+        "The campaign could not be exported, because no register is configured.": "A kampányt nem sikerült exportálni, mert nincs beállítva nyilvántartás.",
+        "The campaign could not be imported, because no register is configured.": "A kampányt nem sikerült importálni, mert nincs beállítva nyilvántartás.",
+        "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Kampány importálva: {created} létrehozva, {updated} frissítve, {unchanged} változatlan, {failed} sikertelen",
+        "The campaign could not be imported: {reason}": "A kampányt nem sikerült importálni: {reason}"
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -289,7 +289,13 @@
         "event": "pasākums",
         "XP award": "XP piešķīrums",
         "from {name}": "no {name}",
-        "from {name} ({type})": "no {name} ({type})"
+        "from {name} ({type})": "no {name} ({type})",
+        "Export campaign": "Eksportēt kampaņu",
+        "Import campaign": "Importēt kampaņu",
+        "The campaign could not be exported, because no register is configured.": "Kampaņu neizdevās eksportēt, jo nav iestatīts reģistrs.",
+        "The campaign could not be imported, because no register is configured.": "Kampaņu neizdevās importēt, jo nav iestatīts reģistrs.",
+        "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Kampaņa importēta: izveidoti {created}, atjaunināti {updated}, nemainīti {unchanged}, neizdevās {failed}",
+        "The campaign could not be imported: {reason}": "Kampaņu neizdevās importēt: {reason}"
     },
     "plurals": {}
 }

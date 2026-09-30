@@ -290,7 +290,13 @@ OC.L10N.register(
         "event": "подія",
         "XP award": "нарахування XP",
         "from {name}": "від {name}",
-        "from {name} ({type})": "від {name} ({type})"
+        "from {name} ({type})": "від {name} ({type})",
+        "Export campaign": "Експортувати кампанію",
+        "Import campaign": "Імпортувати кампанію",
+        "The campaign could not be exported, because no register is configured.": "Не вдалося експортувати кампанію, бо реєстр не налаштовано.",
+        "The campaign could not be imported, because no register is configured.": "Не вдалося імпортувати кампанію, бо реєстр не налаштовано.",
+        "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Кампанію імпортовано: створено {created}, оновлено {updated}, без змін {unchanged}, з помилкою {failed}",
+        "The campaign could not be imported: {reason}": "Не вдалося імпортувати кампанію: {reason}"
     },
     "nplurals=2; plural=(n != 1);"
 )

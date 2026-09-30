@@ -290,7 +290,13 @@ OC.L10N.register(
         "event": "tapahtuma",
         "XP award": "XP-palkinto",
         "from {name}": "lähteestä {name}",
-        "from {name} ({type})": "lähteestä {name} ({type})"
+        "from {name} ({type})": "lähteestä {name} ({type})",
+        "Export campaign": "Vie kampanja",
+        "Import campaign": "Tuo kampanja",
+        "The campaign could not be exported, because no register is configured.": "Kampanjaa ei voitu viedä, koska rekisteriä ei ole määritetty.",
+        "The campaign could not be imported, because no register is configured.": "Kampanjaa ei voitu tuoda, koska rekisteriä ei ole määritetty.",
+        "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Kampanja tuotu: {created} luotu, {updated} päivitetty, {unchanged} ennallaan, {failed} epäonnistui",
+        "The campaign could not be imported: {reason}": "Kampanjaa ei voitu tuoda: {reason}"
     },
     "nplurals=2; plural=(n != 1);"
 )

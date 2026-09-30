@@ -289,7 +289,13 @@
         "event": "dogodek",
         "XP award": "podelitev XP",
         "from {name}": "iz {name}",
-        "from {name} ({type})": "iz {name} ({type})"
+        "from {name} ({type})": "iz {name} ({type})",
+        "Export campaign": "Izvozi kampanjo",
+        "Import campaign": "Uvozi kampanjo",
+        "The campaign could not be exported, because no register is configured.": "Kampanje ni bilo mogoče izvoziti, ker ni nastavljen noben register.",
+        "The campaign could not be imported, because no register is configured.": "Kampanje ni bilo mogoče uvoziti, ker ni nastavljen noben register.",
+        "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Kampanja uvožena: ustvarjenih {created}, posodobljenih {updated}, nespremenjenih {unchanged}, neuspešnih {failed}",
+        "The campaign could not be imported: {reason}": "Kampanje ni bilo mogoče uvoziti: {reason}"
     },
     "plurals": {}
 }

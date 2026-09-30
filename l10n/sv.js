@@ -290,7 +290,13 @@ OC.L10N.register(
         "event": "evenemang",
         "XP award": "XP-tilldelning",
         "from {name}": "från {name}",
-        "from {name} ({type})": "från {name} ({type})"
+        "from {name} ({type})": "från {name} ({type})",
+        "Export campaign": "Exportera kampanj",
+        "Import campaign": "Importera kampanj",
+        "The campaign could not be exported, because no register is configured.": "Kampanjen kunde inte exporteras eftersom inget register är konfigurerat.",
+        "The campaign could not be imported, because no register is configured.": "Kampanjen kunde inte importeras eftersom inget register är konfigurerat.",
+        "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Kampanj importerad: {created} skapade, {updated} uppdaterade, {unchanged} oförändrade, {failed} misslyckades",
+        "The campaign could not be imported: {reason}": "Kampanjen kunde inte importeras: {reason}"
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -290,7 +290,13 @@ OC.L10N.register(
         "event": "udalosť",
         "XP award": "udelenie XP",
         "from {name}": "z {name}",
-        "from {name} ({type})": "z {name} ({type})"
+        "from {name} ({type})": "z {name} ({type})",
+        "Export campaign": "Exportovať kampaň",
+        "Import campaign": "Importovať kampaň",
+        "The campaign could not be exported, because no register is configured.": "Kampaň sa nepodarilo exportovať, pretože nie je nastavený žiadny register.",
+        "The campaign could not be imported, because no register is configured.": "Kampaň sa nepodarilo importovať, pretože nie je nastavený žiadny register.",
+        "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Kampaň importovaná: vytvorené {created}, aktualizované {updated}, bez zmeny {unchanged}, neúspešné {failed}",
+        "The campaign could not be imported: {reason}": "Kampaň sa nepodarilo importovať: {reason}"
     },
     "nplurals=2; plural=(n != 1);"
 )

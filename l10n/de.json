@@ -289,7 +289,13 @@
         "event": "Veranstaltung",
         "XP award": "XP-Vergabe",
         "from {name}": "von {name}",
-        "from {name} ({type})": "von {name} ({type})"
+        "from {name} ({type})": "von {name} ({type})",
+        "Export campaign": "Kampagne exportieren",
+        "Import campaign": "Kampagne importieren",
+        "The campaign could not be exported, because no register is configured.": "Die Kampagne konnte nicht exportiert werden, weil kein Register eingerichtet ist.",
+        "The campaign could not be imported, because no register is configured.": "Die Kampagne konnte nicht importiert werden, weil kein Register eingerichtet ist.",
+        "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Kampagne importiert: {created} erstellt, {updated} aktualisiert, {unchanged} unverändert, {failed} fehlgeschlagen",
+        "The campaign could not be imported: {reason}": "Die Kampagne konnte nicht importiert werden: {reason}"
     },
     "plurals": {}
 }

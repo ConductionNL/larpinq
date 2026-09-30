@@ -289,7 +289,13 @@
         "event": "viðburður",
         "XP award": "XP-úthlutun",
         "from {name}": "frá {name}",
-        "from {name} ({type})": "frá {name} ({type})"
+        "from {name} ({type})": "frá {name} ({type})",
+        "Export campaign": "Flytja út herferð",
+        "Import campaign": "Flytja inn herferð",
+        "The campaign could not be exported, because no register is configured.": "Ekki tókst að flytja herferðina út því engin skrá er stillt.",
+        "The campaign could not be imported, because no register is configured.": "Ekki tókst að flytja herferðina inn því engin skrá er stillt.",
+        "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Herferð flutt inn: {created} stofnaðar, {updated} uppfærðar, {unchanged} óbreyttar, {failed} mistókust",
+        "The campaign could not be imported: {reason}": "Ekki tókst að flytja herferðina inn: {reason}"
     },
     "plurals": {}
 }

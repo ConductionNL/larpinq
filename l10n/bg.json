@@ -289,7 +289,13 @@
         "event": "събитие",
         "XP award": "присъждане на XP",
         "from {name}": "от {name}",
-        "from {name} ({type})": "от {name} ({type})"
+        "from {name} ({type})": "от {name} ({type})",
+        "Export campaign": "Експортиране на кампанията",
+        "Import campaign": "Импортиране на кампания",
+        "The campaign could not be exported, because no register is configured.": "Кампанията не можа да бъде експортирана, защото няма настроен регистър.",
+        "The campaign could not be imported, because no register is configured.": "Кампанията не можа да бъде импортирана, защото няма настроен регистър.",
+        "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Кампанията е импортирана: създадени {created}, обновени {updated}, без промяна {unchanged}, неуспешни {failed}",
+        "The campaign could not be imported: {reason}": "Кампанията не можа да бъде импортирана: {reason}"
     },
     "plurals": {}
 }

@@ -289,7 +289,13 @@
         "event": "avveniment",
         "XP award": "għoti ta' XP",
         "from {name}": "minn {name}",
-        "from {name} ({type})": "minn {name} ({type})"
+        "from {name} ({type})": "minn {name} ({type})",
+        "Export campaign": "Esporta l-kampanja",
+        "Import campaign": "Importa kampanja",
+        "The campaign could not be exported, because no register is configured.": "Il-kampanja ma setgħetx tiġi esportata, għax ma hemm l-ebda reġistru kkonfigurat.",
+        "The campaign could not be imported, because no register is configured.": "Il-kampanja ma setgħetx tiġi importata, għax ma hemm l-ebda reġistru kkonfigurat.",
+        "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Kampanja importata: {created} maħluqa, {updated} aġġornata, {unchanged} mhux mibdula, {failed} fallew",
+        "The campaign could not be imported: {reason}": "Il-kampanja ma setgħetx tiġi importata: {reason}"
     },
     "plurals": {}
 }

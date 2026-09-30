@@ -290,7 +290,13 @@ OC.L10N.register(
         "event": "догађај",
         "XP award": "додела XP-а",
         "from {name}": "од {name}",
-        "from {name} ({type})": "од {name} ({type})"
+        "from {name} ({type})": "од {name} ({type})",
+        "Export campaign": "Извези кампању",
+        "Import campaign": "Увези кампању",
+        "The campaign could not be exported, because no register is configured.": "Кампању није могуће извести јер није подешен ниједан регистар.",
+        "The campaign could not be imported, because no register is configured.": "Кампању није могуће увести јер није подешен ниједан регистар.",
+        "Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed": "Кампања увезена: креирано {created}, ажурирано {updated}, непромењено {unchanged}, неуспело {failed}",
+        "The campaign could not be imported: {reason}": "Кампању није могуће увести: {reason}"
     },
     "nplurals=2; plural=(n != 1);"
 )
