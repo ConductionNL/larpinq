@@ -150,7 +150,10 @@ class PlotsFragmentTest extends TestCase {
 	public function testACharacterHasAWriterAndAWritingStep(): void {
 		$character = $this->schema(key: 'character');
 
-		$this->assertSame('user', $character['properties']['writer']['format']);
+		// A Nextcloud user id as a plain string: OpenRegister has no `user`
+		// format and drops the whole schema when it meets one.
+		$this->assertArrayNotHasKey('format', $character['properties']['writer']);
+		$this->assertArrayNotHasKey('format', $this->schema(key: 'plot')['properties']['writer']);
 		$this->assertSame(['draft', 'ready', 'approved'], $character['properties']['writingStep']['enum']);
 		$this->assertSame('draft', $character['properties']['writingStep']['default']);
 		foreach (['writer', 'writingStep'] as $field) {

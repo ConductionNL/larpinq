@@ -77,9 +77,9 @@
           },
           "writer": {
             "type": "string",
-            "format": "user",
             "title": "Writer",
-            "description": "The story writer who writes this plot"
+            "description": "The story writer who writes this plot (a Nextcloud user id)",
+            "maxLength": 255
           },
           "writingStep": {
             "type": "string",
@@ -207,9 +207,8 @@
         "properties": {
           "writer": {
             "type": "string",
-            "format": "user",
             "title": "Writer",
-            "description": "The story writer who writes this character",
+            "description": "The story writer who writes this character (a Nextcloud user id)",
             "authorization": {
               "read": [
                 "gamemasters"
@@ -217,7 +216,8 @@
               "update": [
                 "gamemasters"
               ]
-            }
+            },
+            "maxLength": 255
           },
           "writingStep": {
             "type": "string",

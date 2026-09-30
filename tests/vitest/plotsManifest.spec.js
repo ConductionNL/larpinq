@@ -10,8 +10,8 @@
 
 import { describe, expect, it } from 'vitest'
 import fragment from '../../src/manifest.d/characters-plot-threads-and-writing.json'
-import layout from '../../src/menu-layout.json'
 import manifest from '../../src/manifest.json'
+import layout from '../../src/menu-layout.json'
 
 const page = (id) => manifest.pages.find((p) => p.id === id)
 const widget = (p, id) => p.config.widgets.find((w) => w.id === id)
