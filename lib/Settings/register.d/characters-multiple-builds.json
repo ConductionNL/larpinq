@@ -42,7 +42,7 @@
           "setting": {
             "type": "string",
             "title": "World",
-            "description": "The character's world (a world id), copied from the character when the build is saved, so the skills, items and conditions to choose from come from that world",
+            "description": "The character's world, copied from the character when the build is saved",
             "visible": false,
             "calculation": {
               "type": "string",
@@ -68,7 +68,12 @@
               "test",
               "other-game"
             ],
-            "default": "plan"
+            "default": "plan",
+            "x-enum-labels": {
+              "plan": "Plan",
+              "test": "Test",
+              "other-game": "Another game"
+            }
           },
           "notes": {
             "type": "string",

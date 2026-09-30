@@ -22,8 +22,10 @@
  * SPDX-FileCopyrightText: 2026 Conduction B.V.
  */
 
+import ApplyBuildDialog from './dialogs/ApplyBuildDialog.vue'
 import CharacterPdfDownloadDialog from './dialogs/CharacterPdfDownloadDialog.vue'
 import CopyWorldDialog from './dialogs/CopyWorldDialog.vue'
+import BuildReport from './views/BuildReport.vue'
 import CharacterCustomFields from './views/CharacterCustomFields.vue'
 import CharacterStatSheet from './views/CharacterStatSheet.vue'
 import EventRoster from './views/EventRoster.vue'
@@ -52,6 +54,13 @@ export default {
 		component: CopyWorldDialog,
 		propsSchema: {},
 	},
+	// BuildDetail "Apply to character" header action (characters-multiple-builds).
+	// @spec openspec/specs/character-builds/spec.md
+	ApplyBuildDialog: {
+		kind: 'modal',
+		component: ApplyBuildDialog,
+		propsSchema: {},
+	},
 
 	// --- Flows (ADR-110 Decision 4). Only the SIDEBAR is an app component;
 	//     the list and the canvas are the shared `index` / `flow` manifest
@@ -67,6 +76,8 @@ export default {
 	EventRoster: { kind: 'section', component: EventRoster },
 	CharacterStatSheet: { kind: 'section', component: CharacterStatSheet },
 	CharacterCustomFields: { kind: 'section', component: CharacterCustomFields },
+	// Check tab on the build page. @spec openspec/specs/character-builds/spec.md
+	BuildReport: { kind: 'section', component: BuildReport },
 	// Skill-tree visualization — a read-only type:"custom" page
 	// (skill-tree-visualization). Resolved by CnPageRenderer as the page body
 	// component for the SkillTree manifest page.

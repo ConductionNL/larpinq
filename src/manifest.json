@@ -634,6 +634,29 @@
 						}
 					},
 					{
+						"id": "char-builds",
+						"type": "object-list",
+						"title": "Builds",
+						"icon": "SourceBranch",
+						"content": {
+							"register": "larpinq",
+							"schema": "larping_character_build",
+							"filter": {
+								"character": "@objectId"
+							},
+							"columns": [
+								{
+									"key": "name",
+									"label": "Name"
+								},
+								{
+									"key": "purpose",
+									"label": "Purpose"
+								}
+							]
+						}
+					},
+					{
 						"id": "char-factions",
 						"type": "object-list",
 						"title": "Factions and groups",
@@ -877,6 +900,14 @@
 						"gridX": 6,
 						"gridY": 26,
 						"gridWidth": 6,
+						"gridHeight": 4
+					},
+					{
+						"id": "11",
+						"widgetId": "char-builds",
+						"gridX": 0,
+						"gridY": 30,
+						"gridWidth": 12,
 						"gridHeight": 4
 					},
 					{
