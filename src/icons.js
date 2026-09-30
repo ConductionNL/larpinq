@@ -28,6 +28,7 @@ import ChartBoxOutline from 'vue-material-design-icons/ChartBoxOutline.vue'
 import ClipboardList from 'vue-material-design-icons/ClipboardList.vue'
 import Cog from 'vue-material-design-icons/Cog.vue'
 import CogOutline from 'vue-material-design-icons/CogOutline.vue'
+import ContentCopy from 'vue-material-design-icons/ContentCopy.vue'
 import DatabaseExport from 'vue-material-design-icons/DatabaseExport.vue'
 import DatabaseImport from 'vue-material-design-icons/DatabaseImport.vue'
 import DramaMasks from 'vue-material-design-icons/DramaMasks.vue'
@@ -80,6 +81,7 @@ export default {
 	ClipboardList,
 	Cog,
 	CogOutline,
+	ContentCopy,
 	DatabaseExport,
 	DatabaseImport,
 	DramaMasks,

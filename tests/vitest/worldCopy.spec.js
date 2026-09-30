@@ -8,15 +8,24 @@
  * header action shown to game masters only.
  */
 
+import fs from 'fs'
+import path from 'path'
+import { fileURLToPath } from 'url'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import manifest from '../../src/manifest.json'
-import registry from '../../src/registry.js'
 import {
 	canCopy,
 	copyWorld,
 	fetchCopyPreview,
 	totalOf,
 } from '../../src/services/worldCopy.js'
+
+// registry.js imports .vue files, which this node environment cannot load,
+// so the registration is read as source text.
+const REGISTRY = fs.readFileSync(
+	path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../src/registry.js'),
+	'utf8',
+)
 
 const WORLD = '11111111-1111-4111-8111-111111111111'
 
@@ -125,7 +134,8 @@ describe('the World page action', () => {
 			target: 'CopyWorldDialog',
 			label: 'Copy world',
 		})
-		expect(registry.CopyWorldDialog.kind).toBe('modal')
+		expect(REGISTRY).toMatch(/CopyWorldDialog: \{\s*kind: 'modal',\s*component: CopyWorldDialog,/)
+		expect(REGISTRY).toContain("import CopyWorldDialog from './dialogs/CopyWorldDialog.vue'")
 	})
 
 	it('is shown to game masters only', () => {
