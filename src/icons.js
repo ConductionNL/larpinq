@@ -27,6 +27,7 @@ import BriefcaseAccountOutline from 'vue-material-design-icons/BriefcaseAccountO
 import Calendar from 'vue-material-design-icons/Calendar.vue'
 import CalendarCheck from 'vue-material-design-icons/CalendarCheck.vue'
 import CalendarMonthOutline from 'vue-material-design-icons/CalendarMonthOutline.vue'
+import CashCheck from 'vue-material-design-icons/CashCheck.vue'
 import ChartBar from 'vue-material-design-icons/ChartBar.vue'
 import ChartBoxOutline from 'vue-material-design-icons/ChartBoxOutline.vue'
 import CheckAll from 'vue-material-design-icons/CheckAll.vue'
@@ -93,6 +94,7 @@ export default {
 	Calendar,
 	CalendarCheck,
 	CalendarMonthOutline,
+	CashCheck,
 	ChartBar,
 	ChartBoxOutline,
 	CheckAll,

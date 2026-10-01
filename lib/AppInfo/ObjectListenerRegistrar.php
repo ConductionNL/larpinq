@@ -27,6 +27,7 @@ namespace OCA\Larpinq\AppInfo;
 use OCA\Larpinq\Listener\CharacterStatusListener;
 use OCA\Larpinq\Listener\FactionMembershipListener;
 use OCA\Larpinq\Listener\FormSubmissionListener;
+use OCA\Larpinq\Listener\PaymentRequestListener;
 use OCA\Larpinq\Listener\PlayerReviewListener;
 use OCA\Larpinq\Listener\PortalProfileListener;
 use OCA\Larpinq\Listener\RegistrationListener;
@@ -111,6 +112,10 @@ class ObjectListenerRegistrar {
 		if (class_exists('OCA\OpenRegister\Event\ObjectCreatedEvent') === true) {
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatedEvent', RegistrationListener::class);
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatedEvent', RegistrationListener::class);
+			// After the registration listener, so a registration's payment is
+			// asked for once its place is settled (registration-payments-through-shillinq).
+			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatedEvent', PaymentRequestListener::class);
+			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatedEvent', PaymentRequestListener::class);
 		}
 
 		if (class_exists(FormSubmissionListener::SUBMITTED_EVENT) === true) {

@@ -28,11 +28,20 @@
 						"label": "Status"
 					},
 					{
+						"key": "paymentState",
+						"label": "Payment"
+					},
+					{
+						"key": "paymentReference",
+						"label": "Reference"
+					},
+					{
 						"key": "submittedAt",
 						"label": "Signed up on"
 					}
 				],
-				"documentationUrl": "https://larpinq.conduction.nl"
+				"documentationUrl": "https://larpinq.conduction.nl",
+				"filterMenu": true
 			}
 		},
 		{
@@ -57,6 +66,18 @@
 					{
 						"key": "status",
 						"label": "Status"
+					},
+					{
+						"key": "paymentState",
+						"label": "Payment"
+					},
+					{
+						"key": "paymentReference",
+						"label": "Reference"
+					},
+					{
+						"key": "payBy",
+						"label": "Pay by"
 					},
 					{
 						"key": "submittedAt",
@@ -120,7 +141,33 @@
 							]
 						}
 					]
-				}
+				},
+				"headerActions": [
+					{
+						"id": "request-payment",
+						"type": "api-call",
+						"label": "Request payment",
+						"icon": "CashCheck",
+						"url": "/apps/larpinq/api/registrations/{objectId}/payment-request",
+						"method": "POST",
+						"successMessage": "Payment requested. The player sees the payment link and the reference.",
+						"visibleWhen": {
+							"all": [
+								{
+									"endpoint": "/apps/larpinq/api/payments/access",
+									"field": "allowed",
+									"op": "eq",
+									"value": true
+								},
+								{
+									"field": "paymentState",
+									"op": "eq",
+									"value": "to-request"
+								}
+							]
+						}
+					}
+				]
 			}
 		}
 	],
