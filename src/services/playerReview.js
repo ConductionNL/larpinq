@@ -27,7 +27,7 @@ export async function markPlayersReviewed(ids) {
 	const reviewed = []
 	const refused = []
 	for (const id of ids || []) {
-		let ok = false
+		let ok
 		try {
 			const response = await fetch(
 				generateUrl(`${OBJECTS}/player/${encodeURIComponent(id)}`),

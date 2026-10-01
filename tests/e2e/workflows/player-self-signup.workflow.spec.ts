@@ -30,7 +30,10 @@ import {
 	RUN_ID,
 } from './fixtures.ts'
 
-const JSON_HEADERS = { Accept: 'application/json', 'Content-Type': 'application/json' }
+const JSON_HEADERS = {
+	Accept: 'application/json',
+	'Content-Type': 'application/json',
+}
 const subject = `portal-subject-${RUN_ID}`
 
 let admin: APIRequestContext
@@ -86,7 +89,10 @@ test.describe.serial('players who sign up themselves', () => {
 			portalSubjectRef: subject,
 		})
 		expect(created.status, JSON.stringify(created.body)).toBeLessThan(300)
-		ids.lotte = ledger.track('player', String(created.body.id ?? created.body['@self']?.id))
+		ids.lotte = ledger.track(
+			'player',
+			String(created.body.id ?? created.body['@self']?.id),
+		)
 
 		const lotte = await read('player', ids.lotte)
 		expect(lotte.portalSubjectRef).toBe(subject)
@@ -111,15 +117,22 @@ test.describe.serial('players who sign up themselves', () => {
 			ownerRef: ids.lotte,
 		})
 		expect(created.status, JSON.stringify(created.body)).toBeLessThan(300)
-		ids.wren = ledger.track('character', String(created.body.id ?? created.body['@self']?.id))
+		ids.wren = ledger.track(
+			'character',
+			String(created.body.id ?? created.body['@self']?.id),
+		)
 
 		expect((await read('character', ids.wren)).ocName).toBe(ids.lotte)
 	})
 
 	// @e2e openspec/specs/portal-contribution/spec.md#a-game-master-welcomes-lotte
-	test('a game master marks Lotte reviewed on the New players page', async ({ page }) => {
+	test('a game master marks Lotte reviewed on the New players page', async ({
+		page,
+	}) => {
 		await page.goto(`${BASE_URL}/index.php/apps/larpinq/new-players`)
-		const row = page.getByRole('row', { name: new RegExp(fixtureName('Lotte Bakker')) })
+		const row = page.getByRole('row', {
+			name: new RegExp(fixtureName('Lotte Bakker')),
+		})
 		await row.getByRole('checkbox').check()
 		await page.getByRole('button', { name: 'Mark reviewed' }).click()
 		await expect(row).toHaveCount(0)

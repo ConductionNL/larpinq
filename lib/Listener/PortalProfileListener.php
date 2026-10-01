@@ -181,7 +181,11 @@ class PortalProfileListener implements IEventListener {
 		}
 
 		$subject = (string)(((array)$entity->getObject())['portalSubjectRef'] ?? '');
-		$uuid = (string)(is_callable([$entity, 'getUuid']) === true ? $entity->getUuid() : '');
+		$uuid = '';
+		if (is_callable([$entity, 'getUuid']) === true) {
+			$uuid = (string)$entity->getUuid();
+		}
+
 		if ($subject === '' || $uuid === '') {
 			return;
 		}

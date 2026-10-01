@@ -63,7 +63,9 @@ describe('markPlayersReviewed', () => {
 		expect(report).toEqual({ reviewed: ['lotte', 'sam'], refused: [] })
 		for (const [index, id] of ['lotte', 'sam'].entries()) {
 			const [url, init] = globalThis.fetch.mock.calls[index]
-			expect(url).toBe(`/index.php/apps/openregister/api/objects/larpinq/player/${id}`)
+			expect(url).toBe(
+				`/index.php/apps/openregister/api/objects/larpinq/player/${id}`,
+			)
 			expect(init.method).toBe('PATCH')
 			expect(JSON.parse(init.body)).toEqual({ awaitingReview: false })
 		}
