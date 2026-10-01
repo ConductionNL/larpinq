@@ -24,15 +24,7 @@ declare(strict_types=1);
 namespace OCA\Larpinq\AppInfo;
 
 use OCA\Larpinq\Listener\CharacterRequirementListener;
-use OCA\Larpinq\Listener\CharacterStatusListener;
 use OCA\Larpinq\Listener\DeepLinkRegistrationListener;
-use OCA\Larpinq\Listener\FactionMembershipListener;
-use OCA\Larpinq\Listener\FormSubmissionListener;
-use OCA\Larpinq\Listener\PlayerReviewListener;
-use OCA\Larpinq\Listener\PortalProfileListener;
-use OCA\Larpinq\Listener\RegistrationListener;
-use OCA\Larpinq\Listener\UniqueHolderListener;
-use OCA\Larpinq\Listener\XpAwardProvenanceListener;
 use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
@@ -149,74 +141,8 @@ class Application extends App implements IBootstrap {
 			);
 		}
 
-		$this->registerUniqueHolderListener(context: $context);
-		$this->registerRegistrationListeners(context: $context);
+		(new ObjectListenerRegistrar())->register(context: $context);
 	}//end register()
-
-	/**
-	 * Register the unique-holder veto on OpenRegister's pre-write events.
-	 *
-	 * One holder per unique item and unique condition, on character, item and
-	 * condition writes. Guarded like the requirement listener, so an
-	 * OpenRegister without the pre-write events degrades to data-only.
-	 *
-	 * @param IRegistrationContext $context The registration context.
-	 *
-	 * @return void
-	 *
-	 * @spec openspec/specs/rpg-system/spec.md
-	 */
-	private function registerUniqueHolderListener(IRegistrationContext $context): void {
-		if (class_exists('OCA\OpenRegister\Event\ObjectCreatingEvent') === true) {
-			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', UniqueHolderListener::class);
-			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', FactionMembershipListener::class);
-			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', CharacterStatusListener::class);
-			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', XpAwardProvenanceListener::class);
-			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', PortalProfileListener::class);
-		}
-
-		// A portal profile asks portaliq for its claim once it exists (players-self-signup).
-		if (class_exists('OCA\OpenRegister\Event\ObjectCreatedEvent') === true) {
-			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatedEvent', PortalProfileListener::class);
-		}
-
-		if (class_exists('OCA\OpenRegister\Event\ObjectUpdatingEvent') === true) {
-			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatingEvent', UniqueHolderListener::class);
-			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatingEvent', FactionMembershipListener::class);
-			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatingEvent', CharacterStatusListener::class);
-			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatingEvent', XpAwardProvenanceListener::class);
-			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatingEvent', PlayerReviewListener::class);
-		}
-	}//end registerUniqueHolderListener()
-
-	/**
-	 * Register the listeners that turn sign-ups into registrations and keep
-	 * capacity, the waiting list and the participants (registration-intake-and-capacity).
-	 *
-	 * Nextcloud Forms sorts before larpinq, so its classes are autoloadable
-	 * here when it is enabled; without it the sign-up listener is skipped.
-	 *
-	 * @param IRegistrationContext $context The registration context.
-	 *
-	 * @return void
-	 *
-	 * @spec openspec/changes/registration-intake-and-capacity/specs/event-registration/spec.md
-	 */
-	private function registerRegistrationListeners(IRegistrationContext $context): void {
-		if (class_exists('OCA\OpenRegister\Event\ObjectCreatingEvent') === true) {
-			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', RegistrationListener::class);
-			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatingEvent', RegistrationListener::class);
-		}
-
-		if (class_exists('OCA\OpenRegister\Event\ObjectCreatedEvent') === true) {
-			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatedEvent', RegistrationListener::class);
-			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatedEvent', RegistrationListener::class);
-		}
-
-		if (class_exists(FormSubmissionListener::SUBMITTED_EVENT) === true) {
-			$context->registerEventListener(FormSubmissionListener::SUBMITTED_EVENT, FormSubmissionListener::class);
-		}
-	}//end registerRegistrationListeners()
 
 	/**
 	 * Register the AppHost generic controllers this app relies on.
