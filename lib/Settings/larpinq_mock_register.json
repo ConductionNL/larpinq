@@ -959,6 +959,155 @@
       {
         "@self": {
           "register": "larpinq",
+          "schema": "larping_ticket_type",
+          "slug": "larping-ticket-type-player-early-bird"
+        },
+        "event": "00000000-0000-4000-8000-000000000000",
+        "name": "Player early bird",
+        "role": "player",
+        "amount": 8500,
+        "currency": "EUR",
+        "saleUntil": "2026-11-01T00:00:00+00:00",
+        "hidden": false,
+        "order": 1
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_ticket_type",
+          "slug": "larping-ticket-type-player"
+        },
+        "event": "00000000-0000-4000-8000-000000000000",
+        "name": "Player",
+        "role": "player",
+        "amount": 11000,
+        "currency": "EUR",
+        "hidden": false,
+        "order": 2
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_ticket_type",
+          "slug": "larping-ticket-type-crew"
+        },
+        "event": "00000000-0000-4000-8000-000000000000",
+        "name": "Crew",
+        "role": "crew",
+        "amount": 4500,
+        "currency": "EUR",
+        "placeLimit": 20,
+        "hidden": false,
+        "order": 3
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_ticket_type",
+          "slug": "larping-ticket-type-npc"
+        },
+        "event": "00000000-0000-4000-8000-000000000000",
+        "name": "NPC",
+        "role": "npc",
+        "amount": 0,
+        "currency": "EUR",
+        "hidden": false,
+        "order": 4
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_ticket_type",
+          "slug": "larping-ticket-type-crew-friends"
+        },
+        "event": "00000000-0000-4000-8000-000000000000",
+        "name": "Crew friends",
+        "role": "crew",
+        "amount": 3000,
+        "currency": "EUR",
+        "hidden": true,
+        "order": 5
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_registration_option",
+          "slug": "larping-registration-option-catering-meat"
+        },
+        "event": "00000000-0000-4000-8000-000000000000",
+        "name": "Full catering, meat",
+        "category": "meal",
+        "amount": 3500,
+        "currency": "EUR"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_registration_option",
+          "slug": "larping-registration-option-catering-vegan"
+        },
+        "event": "00000000-0000-4000-8000-000000000000",
+        "name": "Full catering, vegan",
+        "category": "meal",
+        "amount": 3500,
+        "currency": "EUR"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_registration_option",
+          "slug": "larping-registration-option-tent-space"
+        },
+        "event": "00000000-0000-4000-8000-000000000000",
+        "name": "Tent space",
+        "category": "other",
+        "amount": 1000,
+        "currency": "EUR",
+        "placeLimit": 30
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_access_code",
+          "slug": "larping-access-code-lantern"
+        },
+        "event": "00000000-0000-4000-8000-000000000000",
+        "code": "LANTERN",
+        "unlocks": [
+          "00000000-0000-4000-8000-000000000000"
+        ],
+        "maxUses": 5
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_access_code",
+          "slug": "larping-access-code-hearth"
+        },
+        "event": "00000000-0000-4000-8000-000000000000",
+        "code": "HEARTH",
+        "unlocks": [
+          "00000000-0000-4000-8000-000000000000"
+        ],
+        "validUntil": "2026-12-31T23:59:59+00:00",
+        "maxUses": 10
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_access_code",
+          "slug": "larping-access-code-storyteller"
+        },
+        "event": "00000000-0000-4000-8000-000000000000",
+        "code": "STORYTELLER",
+        "unlocks": [
+          "00000000-0000-4000-8000-000000000000"
+        ],
+        "maxUses": 3
+      },
+      {
+        "@self": {
+          "register": "larpinq",
           "schema": "larping_registration",
           "slug": "larping-registration-voorbeeld-1"
         },

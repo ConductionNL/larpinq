@@ -48,6 +48,7 @@ import FolderOutline from 'vue-material-design-icons/FolderOutline.vue'
 import FormTextbox from 'vue-material-design-icons/FormTextbox.vue'
 import Gauge from 'vue-material-design-icons/Gauge.vue'
 import History from 'vue-material-design-icons/History.vue'
+import KeyVariant from 'vue-material-design-icons/KeyVariant.vue'
 import Lightbulb from 'vue-material-design-icons/Lightbulb.vue'
 import LinkVariant from 'vue-material-design-icons/LinkVariant.vue'
 import MagicStaff from 'vue-material-design-icons/MagicStaff.vue'
@@ -60,6 +61,7 @@ import Refresh from 'vue-material-design-icons/Refresh.vue'
 import School from 'vue-material-design-icons/School.vue'
 import ShieldAccountOutline from 'vue-material-design-icons/ShieldAccountOutline.vue'
 import ShieldSwordOutline from 'vue-material-design-icons/ShieldSwordOutline.vue'
+import SilverwareForkKnife from 'vue-material-design-icons/SilverwareForkKnife.vue'
 import Sitemap from 'vue-material-design-icons/Sitemap.vue'
 import SourceBranch from 'vue-material-design-icons/SourceBranch.vue'
 import Star from 'vue-material-design-icons/Star.vue'
@@ -68,6 +70,7 @@ import StarPlusOutline from 'vue-material-design-icons/StarPlusOutline.vue'
 import StoreOutline from 'vue-material-design-icons/StoreOutline.vue'
 import Sword from 'vue-material-design-icons/Sword.vue'
 import SwordCross from 'vue-material-design-icons/SwordCross.vue'
+import TicketOutline from 'vue-material-design-icons/TicketOutline.vue'
 import ToolboxOutline from 'vue-material-design-icons/ToolboxOutline.vue'
 import TrendingUp from 'vue-material-design-icons/TrendingUp.vue'
 import Trophy from 'vue-material-design-icons/Trophy.vue'
@@ -111,6 +114,7 @@ export default {
 	FormTextbox,
 	Gauge,
 	History,
+	KeyVariant,
 	Lightbulb,
 	LinkVariant,
 	MagicStaff,
@@ -123,6 +127,7 @@ export default {
 	School,
 	ShieldAccountOutline,
 	ShieldSwordOutline,
+	SilverwareForkKnife,
 	Sitemap,
 	SourceBranch,
 	Star,
@@ -131,6 +136,7 @@ export default {
 	StoreOutline,
 	Sword,
 	SwordCross,
+	TicketOutline,
 	ToolboxOutline,
 	TrendingUp,
 	Trophy,

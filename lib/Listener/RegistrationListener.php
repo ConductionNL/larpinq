@@ -24,8 +24,8 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Listener;
 
-use OCA\Larpinq\Service\RegistrationCharacterCheck;
 use OCA\Larpinq\Service\RegistrationService;
+use OCA\Larpinq\Service\RegistrationWriteCheck;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\IAppConfig;
@@ -37,7 +37,8 @@ use Psr\Log\LoggerInterface;
  * Keeps registrations whole on every write.
  *
  * Before a registration is stored it gets its status from the capacity and
- * the approval setting, and a character a player picks is checked. After it
+ * the approval setting, a character a player picks is checked, and its ticket
+ * type, options and code are checked and priced. After it
  * is stored the event's participants follow it and a freed place goes to the
  * waiting list.
  *
@@ -60,7 +61,7 @@ class RegistrationListener implements IEventListener {
 	 *
 	 * @param IAppConfig $config Config (the registration schema id).
 	 * @param RegistrationService $service Capacity, waiting list and participants.
-	 * @param RegistrationCharacterCheck $characterCheck Whether a player may bring a character.
+	 * @param RegistrationWriteCheck $writeCheck The character and the ticket choices, checked and priced.
 	 * @param IUserSession $session Who is writing.
 	 * @param IL10N $l10n Translations for refusals.
 	 * @param LoggerInterface $logger The logger.
@@ -70,7 +71,7 @@ class RegistrationListener implements IEventListener {
 	public function __construct(
 		private readonly IAppConfig $config,
 		private readonly RegistrationService $service,
-		private readonly RegistrationCharacterCheck $characterCheck,
+		private readonly RegistrationWriteCheck $writeCheck,
 		private readonly IUserSession $session,
 		private readonly IL10N $l10n,
 		private readonly LoggerInterface $logger,
@@ -143,36 +144,56 @@ class RegistrationListener implements IEventListener {
 		}
 
 		$new = $this->dataOf(entity: $entity);
-		$before = [];
+		$stored = null;
 		if ($old !== null) {
-			$before = $this->dataOf(entity: $old);
+			$stored = $this->dataOf(entity: $old);
 		}
 
-		$character = (string)($new['character'] ?? '');
-		if ($character !== '' && $character !== (string)($before['character'] ?? '')) {
-			$refusal = $this->characterCheck->refusal(registration: $new);
-			if ($refusal !== null) {
-				$event->stopPropagation();
-				// @phpstan-ignore-next-line
-				$event->setErrors(['message' => $this->l10n->t($refusal)]);
-				return;
-			}
+		$checked = $this->writeCheck->check(new: $new, stored: $stored);
+		if ($checked['refusal'] !== null) {
+			$this->refuse(event: $event, reason: $checked['refusal']);
+			return;
 		}
 
-		$changes = [];
-		if ($old === null) {
-			$changes = $this->service->beforeCreate(registration: $new);
-		}
-
-		if ($old !== null) {
-			$changes = $this->service->beforeUpdate(new: $new, old: $before, actingUid: $this->actingUid());
-		}
-
+		$changes = array_merge($checked['changes'], $this->decided(new: $new, stored: $stored));
 		if ($changes !== []) {
 			// @phpstan-ignore-next-line
 			$event->setModifiedData(array_merge($event->getModifiedData(), $changes));
 		}
 	}//end beforeWrite()
+
+	/**
+	 * The status a registration gets: on create from capacity and approval, on update from the change.
+	 *
+	 * @param array<string, mixed> $new The registration as it will be.
+	 * @param array<string, mixed>|null $stored The stored registration, or null on create.
+	 *
+	 * @return array<string, mixed> The fields to set.
+	 */
+	private function decided(array $new, ?array $stored): array {
+		if ($stored === null) {
+			return $this->service->beforeCreate(registration: $new);
+		}
+
+		return $this->service->beforeUpdate(new: $new, old: $stored, actingUid: $this->actingUid());
+	}//end decided()
+
+	/**
+	 * Stop the write with a reason the player reads.
+	 *
+	 * @param object $event The Creating or Updating event.
+	 * @param string $reason The untranslated reason.
+	 *
+	 * @return void
+	 *
+	 * @psalm-suppress MixedMethodCall OpenRegister event classes are optional dependencies.
+	 */
+	private function refuse(object $event, string $reason): void {
+		// @phpstan-ignore-next-line
+		$event->stopPropagation();
+		// @phpstan-ignore-next-line
+		$event->setErrors(['message' => $this->l10n->t($reason)]);
+	}//end refuse()
 
 	/**
 	 * Whether the object is a registration.

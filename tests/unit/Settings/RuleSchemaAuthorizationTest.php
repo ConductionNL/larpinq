@@ -333,4 +333,24 @@ class RuleSchemaAuthorizationTest extends TestCase {
 			$this->assertFalse($this->verdict($block, $registerBlock, self::USERS['player'], 'create'), "a player does not create {$key} records");
 		}
 	}//end testGameMastersAndTheOwnerReadXpAwardsAndAttendance()
+
+	/**
+	 * Access codes are read by game masters only; options by players too
+	 * (registration-ticket-types-and-options REQ-RTO-003).
+	 *
+	 * @return void
+	 */
+	public function testOnlyGameMastersReadAccessCodes(): void {
+		$this->requireOpenRegister();
+		$register = $this->mergedRegister()['components'];
+		$registerBlock = ($register['registers']['larpinq']['authorization'] ?? null);
+		$codes = ($register['schemas']['accessCode']['authorization'] ?? null);
+		$this->assertNotNull($codes, 'the accessCode schema declares its rules');
+		$this->assertTrue($this->verdict($codes, $registerBlock, self::USERS['game master'], 'read'), 'a game master reads codes');
+		$this->assertFalse($this->verdict($codes, $registerBlock, self::USERS['player'], 'read'), 'a player does not read codes');
+		$this->assertFalse($this->verdict($codes, $registerBlock, self::USERS['player'], 'create'), 'a player does not make codes');
+		$options = ($register['schemas']['registrationOption']['authorization'] ?? []);
+		$this->assertTrue($this->verdict($options, $registerBlock, self::USERS['player'], 'read'), 'a player reads the options');
+		$this->assertFalse($this->verdict($options, $registerBlock, self::USERS['player'], 'update'), 'a player does not change an option');
+	}//end testOnlyGameMastersReadAccessCodes()
 }//end class

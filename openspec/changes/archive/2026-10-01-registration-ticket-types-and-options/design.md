@@ -99,3 +99,27 @@ None.
 ## Open Questions
 
 None.
+
+## Revised at build time (1 Oct 2026)
+
+Built on registration-intake-and-capacity (#815, landed as `96cc1836`).
+
+- Players cannot read hidden ticket types or codes through the object API
+  (the read rules hide them), so the registration page asks larpinq:
+  `GET /api/registrations/{id}/offer?code=` returns the ticket types and
+  options on offer for that registration (a hidden one only with a valid
+  code), and `GET /api/events/{id}/choices` returns the counts for game
+  masters. Both are guarded in `RegistrationChoicesController`.
+- `registration.code` is the plain string a player types; `accessCode` is the
+  matched code object, set by larpinq. Codes match without regard to case.
+- The event's Choices tab is a section (`EventChoiceCounts.vue`) over the
+  counts endpoint, not a stats widget: the counts are per ticket type and
+  option, a dynamic list a fixed stats block cannot express. It shows counts
+  only, never a money total.
+- The rules live in `TicketChoiceService` (lines from the chosen objects,
+  sale window, hidden types, codes, one currency) called from the existing
+  registration pre-write listener; place limits per ticket type sit in
+  `RegistrationService::decide()` under the event lock, and a full option is
+  refused there.
+- The spec delta is folded into `openspec/specs/event-registration/spec.md`
+  as REQ-RTO-001 to REQ-RTO-006.

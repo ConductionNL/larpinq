@@ -106,7 +106,7 @@ class RegistrationFragmentTest extends TestCase {
 	}//end testThePlayerAccountAndTheWorldAreMaterialised()
 
 	/**
-	 * Game masters see and decide every registration; a player sees their own and changes only the character.
+	 * Game masters see and decide every registration; a player sees their own and changes only the character and their ticket choices.
 	 *
 	 * @return void
 	 */
@@ -122,7 +122,8 @@ class RegistrationFragmentTest extends TestCase {
 		$this->assertSame([['group' => 'gamemasters'], $own], $registration['authorization']['update']);
 		$this->assertSame(['gamemasters'], $registration['authorization']['delete']);
 		foreach (array_keys($registration['properties']) as $name) {
-			if ($name === 'character') {
+			// The player's own choices (registration-ticket-types-and-options adds the ticket type, options and code).
+			if (in_array($name, ['character', 'ticketType', 'options', 'code'], true) === true) {
 				$this->assertArrayNotHasKey('authorization', $registration['properties'][$name]);
 				continue;
 			}

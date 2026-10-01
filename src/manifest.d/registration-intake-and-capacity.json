@@ -98,7 +98,29 @@
 						"gridWidth": 12,
 						"gridHeight": 5
 					}
-				]
+				],
+				"sidebar": {
+					"enabled": true,
+					"showMetadata": true,
+					"tabs": [
+						{
+							"id": "tickets",
+							"label": "Tickets",
+							"icon": "TicketOutline",
+							"component": "RegistrationChoices"
+						},
+						{
+							"id": "audit",
+							"label": "History",
+							"icon": "History",
+							"widgets": [
+								{
+									"type": "audit"
+								}
+							]
+						}
+					]
+				}
 			}
 		}
 	],
