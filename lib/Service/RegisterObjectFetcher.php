@@ -488,6 +488,45 @@ class RegisterObjectFetcher {
 	}//end saveObject()
 
 	/**
+	 * Create or update an object with the app's own authority (RBAC off).
+	 *
+	 * For writes larpinq makes on a user's behalf that the user's own rights do
+	 * not cover: a registration the sign-up form creates for a player, and the
+	 * event's participants a registration decision changes. Callers decide
+	 * first whether the write is due; this method does not check rights.
+	 *
+	 * @param string $objectType The object type (e.g. 'registration').
+	 * @param array<string,mixed> $data The object payload to persist.
+	 * @param string|null $uuid The UUID to update, or null to create.
+	 *
+	 * @return array<string,mixed> The persisted object as an array.
+	 *
+	 * @throws Exception If OpenRegister is not available or the type is not configured.
+	 *
+	 * @psalm-suppress MixedMethodCall OpenRegister ObjectService resolved dynamically.
+	 * @psalm-suppress MixedAssignment  OpenRegister ObjectService resolved dynamically.
+	 *
+	 * @spec openspec/changes/registration-intake-and-capacity/specs/event-registration/spec.md
+	 */
+	public function saveObjectWithAppAuthority(string $objectType, array $data, ?string $uuid = null): array {
+		$openRegister = $this->getOpenRegisterService();
+		[$register, $schema] = $this->resolveRegisterAndSchema(objectTypeLower: strtolower($objectType));
+
+		// @var mixed $saved
+		$saved = $openRegister->saveObject(
+			object: $data,
+			extend: [],
+			register: $register,
+			schema: $schema,
+			uuid: $uuid,
+			_rbac: false,
+			_multitenancy: false
+		);
+
+		return $this->toArray(object: $saved);
+	}//end saveObjectWithAppAuthority()
+
+	/**
 	 * Delete an object of a given type from OpenRegister, with RBAC on.
 	 *
 	 * @param string $objectType The object type (e.g. 'skill').

@@ -249,14 +249,18 @@ class RegistrationServiceTest extends TestCase {
 	 * @return array<string, mixed> The stored registration.
 	 */
 	private function signUp(string $player, string $uid, string $at = '2026-10-01T10:00:00+00:00', string $character = ''): array {
-		return $this->fetcher()->saveObjectWithAppAuthority('registration', [
+		$data = [
 			'event' => self::EVENT,
 			'player' => $player,
 			'submitterUid' => $uid,
-			'character' => $character,
 			'submissionId' => 7,
 			'submittedAt' => $at,
-		]);
+		];
+		if ($character !== '') {
+			$data['character'] = $character;
+		}
+
+		return $this->fetcher()->saveObjectWithAppAuthority('registration', $data);
 	}//end signUp()
 
 	/**

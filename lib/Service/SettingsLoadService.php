@@ -87,6 +87,7 @@ class SettingsLoadService {
 		'relationship' => 'larping_relationship',
 		'characterbuild' => 'larping_character_build',
 		'xpaward' => 'xpAward',
+		'registration' => 'larping_registration',
 	];
 
 	/**

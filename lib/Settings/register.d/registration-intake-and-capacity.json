@@ -1,0 +1,286 @@
+{
+  "components": {
+    "registers": {
+      "larpinq": {
+        "schemas": [
+          "larping_registration"
+        ]
+      }
+    },
+    "schemas": {
+      "registration": {
+        "slug": "larping_registration",
+        "title": "Registration",
+        "icon": "ClipboardAccountOutline",
+        "version": "1.0.0",
+        "summary": "A player's sign-up for an event",
+        "description": "Made from a sign-up on the event's form. It holds the player, the character they bring and whether they have a place: pending, accepted, waitlisted, declined or cancelled. The form answers stay in Nextcloud Forms.",
+        "type": "object",
+        "x-schema-org": "schema:RegisterAction",
+        "configuration": {
+          "exportable": true,
+          "x-openregister-references": {
+            "event": {
+              "mode": "relatedObject",
+              "schema": "larping_event",
+              "field": "event"
+            },
+            "player": {
+              "mode": "relatedObject",
+              "schema": "player",
+              "field": "player"
+            }
+          },
+          "x-openregister-lifecycle": {
+            "field": "status",
+            "initial": "pending",
+            "final": [
+              "cancelled"
+            ],
+            "transitions": {
+              "accept": {
+                "from": [
+                  "pending",
+                  "waitlisted",
+                  "declined"
+                ],
+                "to": "accepted",
+                "description": "A game master gives the player a place, or puts them on the waiting list when the event is full."
+              },
+              "waitlist": {
+                "from": [
+                  "pending",
+                  "declined"
+                ],
+                "to": "waitlisted",
+                "description": "The event is full: the player waits for a place."
+              },
+              "decline": {
+                "from": [
+                  "pending",
+                  "waitlisted"
+                ],
+                "to": "declined",
+                "description": "A game master turns the sign-up down."
+              },
+              "cancel": {
+                "from": [
+                  "pending",
+                  "accepted",
+                  "waitlisted"
+                ],
+                "to": "cancelled",
+                "description": "The registration is withdrawn and its place goes to the waiting list."
+              }
+            }
+          }
+        },
+        "required": [
+          "event"
+        ],
+        "properties": {
+          "event": {
+            "type": "string",
+            "format": "uuid",
+            "$ref": "larping_event",
+            "title": "Event",
+            "description": "The event this sign-up is for",
+            "authorization": {
+              "update": [
+                "gamemasters"
+              ]
+            }
+          },
+          "player": {
+            "type": "string",
+            "format": "uuid",
+            "$ref": "player",
+            "title": "Player",
+            "description": "The player who signed up. Empty when the account has no player yet.",
+            "authorization": {
+              "update": [
+                "gamemasters"
+              ]
+            }
+          },
+          "submitterUid": {
+            "type": "string",
+            "title": "Signed up by",
+            "description": "The Nextcloud account that sent the sign-up form",
+            "maxLength": 255,
+            "authorization": {
+              "update": [
+                "gamemasters"
+              ]
+            }
+          },
+          "playerUid": {
+            "type": "string",
+            "title": "Player account",
+            "description": "The Nextcloud account of the player, copied from the player when the registration is saved",
+            "maxLength": 255,
+            "calculation": {
+              "type": "string",
+              "materialise": true,
+              "expression": {
+                "prop": "@ref.player.userUid"
+              }
+            },
+            "authorization": {
+              "update": [
+                "gamemasters"
+              ]
+            }
+          },
+          "character": {
+            "type": "string",
+            "format": "uuid",
+            "$ref": "character",
+            "title": "Character",
+            "description": "The character the player brings: one of their own active characters in the event's world",
+            "x-relation-filter": {
+              "ocName": "@object.player",
+              "status": "active",
+              "setting": "@object.eventSetting"
+            }
+          },
+          "eventSetting": {
+            "type": "string",
+            "title": "World",
+            "description": "The world of the event, copied from the event when the registration is saved",
+            "calculation": {
+              "type": "string",
+              "materialise": true,
+              "expression": {
+                "prop": "@ref.event.setting"
+              }
+            },
+            "authorization": {
+              "update": [
+                "gamemasters"
+              ]
+            }
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Whether the player has a place",
+            "enum": [
+              "pending",
+              "accepted",
+              "waitlisted",
+              "declined",
+              "cancelled"
+            ],
+            "default": "pending",
+            "authorization": {
+              "update": [
+                "gamemasters"
+              ]
+            }
+          },
+          "submissionId": {
+            "type": "integer",
+            "title": "Form answer",
+            "description": "The id of the answer in Nextcloud Forms",
+            "authorization": {
+              "update": [
+                "gamemasters"
+              ]
+            }
+          },
+          "submittedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Signed up on",
+            "description": "When the sign-up arrived; the waiting list goes in this order",
+            "authorization": {
+              "update": [
+                "gamemasters"
+              ]
+            }
+          },
+          "decidedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Decided on",
+            "description": "When the status last changed",
+            "authorization": {
+              "update": [
+                "gamemasters"
+              ]
+            }
+          },
+          "decidedBy": {
+            "type": "string",
+            "title": "Decided by",
+            "description": "Who changed the status last: a game master's account, or larpinq for a decision by the capacity",
+            "maxLength": 255,
+            "authorization": {
+              "update": [
+                "gamemasters"
+              ]
+            }
+          }
+        },
+        "authorization": {
+          "read": [
+            {
+              "group": "gamemasters"
+            },
+            {
+              "group": "larpers",
+              "match": {
+                "playerUid": "$userId"
+              }
+            },
+            {
+              "group": "larpers",
+              "match": {
+                "submitterUid": "$userId"
+              }
+            }
+          ],
+          "create": [
+            "gamemasters"
+          ],
+          "update": [
+            {
+              "group": "gamemasters"
+            },
+            {
+              "group": "larpers",
+              "match": {
+                "playerUid": "$userId"
+              }
+            }
+          ],
+          "delete": [
+            "gamemasters"
+          ]
+        }
+      },
+      "event": {
+        "properties": {
+          "capacity": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Places",
+            "description": "How many participants the event takes. Empty means no limit."
+          },
+          "approvalRequired": {
+            "type": "boolean",
+            "default": false,
+            "title": "Approve sign-ups",
+            "description": "A game master accepts or declines every sign-up before the player has a place"
+          },
+          "signupForm": {
+            "type": "integer",
+            "title": "Sign-up form",
+            "description": "The Nextcloud Forms form this event takes sign-ups from"
+          }
+        }
+      }
+    }
+  }
+}

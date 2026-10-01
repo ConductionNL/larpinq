@@ -137,7 +137,7 @@ class FormSubmissionListenerTest extends TestCase {
 
 		$rows = array_values($this->store->objects['registration'] ?? []);
 		$this->assertCount(1, $rows);
-		$this->assertSame('', $rows[0]['player']);
+		$this->assertArrayNotHasKey('player', $rows[0], 'no player is linked yet');
 		$this->assertSame('nieuw', $rows[0]['submitterUid']);
 	}//end testAUserWithoutAPlayerGetsARegistrationWithoutOne()
 
