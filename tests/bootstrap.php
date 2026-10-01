@@ -89,4 +89,7 @@ if ($composerAutoloader instanceof \Composer\Autoload\ClassLoader) {
 	// portaliq's claim event, verbatim, for the self-signup claim listener
 	// (players-self-signup). Same rule: appended, so a real portaliq wins.
 	$composerAutoloader->addPsr4('OCA\\Portaliq\\', __DIR__ . '/stubs/portaliq/');
+	// Nextcloud Forms' submit event in its real shape, for the sign-up listener
+	// (registration-intake-and-capacity). Same rule: appended, so a real forms wins.
+	$composerAutoloader->addPsr4('OCA\\Forms\\', __DIR__ . '/stubs/forms/');
 }
