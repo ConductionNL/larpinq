@@ -20,10 +20,8 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/portal-identity-space/specs/portal-identity-space/spec.md
- *
  * TEST-ONLY COPY of portaliq/lib/Event/PortalAccountClaimRequestedEvent.php (development
- * 49d6be88), the real class verbatim, loaded only by tests/bootstrap.php when portaliq is
+ * 49d6be88), the real class verbatim but for its @spec tags (they name portaliq specs), loaded only by tests/bootstrap.php when portaliq is
  * not on the path, so larpinq's claim listener test dispatches the REAL event class.
  */
 
@@ -35,8 +33,6 @@ use OCP\EventDispatcher\Event;
 
 /**
  * An app asks portaliq to write its claim on a portal account.
- *
- * @spec openspec/changes/portal-identity-space/specs/portal-identity-space/spec.md
  */
 class PortalAccountClaimRequestedEvent extends Event {
 	/**

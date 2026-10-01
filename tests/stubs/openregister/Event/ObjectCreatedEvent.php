@@ -59,8 +59,6 @@ class ObjectCreatedEvent extends Event {
 	 * Get the created object entity
 	 *
 	 * @return ObjectEntity The object entity that was created
-	 *
-	 * @spec openspec/specs/event-driven-architecture/spec.md#requirement-event-payloads-for-webhook-delivery-must-include-register-and-schema-context-for-object-events
 	 */
 	public function getObject(): ObjectEntity {
 		return $this->object;
