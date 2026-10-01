@@ -132,8 +132,10 @@ from D1 to D5 above:
   accepted any other way (a free place on sign-up, a move up the waiting list,
   an acceptance by someone else) gets `paymentState: to-request` and its
   pay-by date. Game masters see a **Request payment** header action on such a
-  registration (`POST /api/registrations/{id}/payment-request`, visible through
-  `GET /api/payments/access` plus the local `paymentState` check). A refusal by
+  registration (`POST /api/registrations/{id}/payment-request`, shown to game masters
+  through `GET /api/payments/access`; the manifest's `visibleWhen` takes one
+  condition, so on a registration whose payment does not wait the server
+  answers 409 with the reason). A refusal by
   shillinq (the game master lacks `payment.request`) also leaves `to-request`;
   the acceptance itself always stands. The contract gap is with Ruben as
   `for-ruben/shillinq-payment-request-leaf-app-caller.md` (an app grant on the

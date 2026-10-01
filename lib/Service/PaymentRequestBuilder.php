@@ -133,7 +133,8 @@ class PaymentRequestBuilder {
 
 		$code = $this->code(event: $event);
 		$highest = 0;
-		$rows = $this->fetcher->getObjectsWithAppAuthority(objectType: 'registration', filters: ['event' => (string)($event['id'] ?? '')], limit: self::MAX_ROWS);
+		$filters = ['event' => (string)($event['id'] ?? '')];
+		$rows = $this->fetcher->getObjectsWithAppAuthority(objectType: 'registration', filters: $filters, limit: self::MAX_ROWS);
 		foreach ($rows as $row) {
 			if (preg_match('/^' . preg_quote($code, '/') . '-(\d+)$/', (string)($row['paymentReference'] ?? ''), $match) === 1) {
 				$highest = max($highest, (int)$match[1]);

@@ -40,7 +40,7 @@ class PaymentRequestRefusedException extends RuntimeException {
 	 * @param int $status The HTTP status (403 not allowed, 404 unknown, 409 not now, 502 shillinq refused).
 	 */
 	public function __construct(string $message, private readonly int $status) {
-		parent::__construct($message);
+		parent::__construct(message: $message);
 	}//end __construct()
 
 	/**

@@ -62,7 +62,7 @@ class RegistrationPaymentJob extends TimedJob {
 		private readonly LoggerInterface $logger,
 	) {
 		parent::__construct(time: $time);
-		$this->setInterval(self::INTERVAL);
+		$this->setInterval(seconds: self::INTERVAL);
 	}//end __construct()
 
 	/**
@@ -75,6 +75,8 @@ class RegistrationPaymentJob extends TimedJob {
 	 * @spec openspec/specs/event-registration/spec.md
 	 */
 	protected function run($argument): void {
+		// A TimedJob is scheduled without an argument.
+		unset($argument);
 		$counts = $this->followUp->daily(now: $this->time->now());
 		$this->logger->info('Larpinq: payments followed up: {paid} paid, {reminded} reminded, {expired} expired.', $counts);
 	}//end run()

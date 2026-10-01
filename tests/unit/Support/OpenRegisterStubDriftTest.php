@@ -40,6 +40,7 @@ class OpenRegisterStubDriftTest extends TestCase {
 			$cases['Event/' . basename((string)$file, '.php')] = [(string)$file, true];
 		}
 
+		$cases['Service/Integration/IntegrationProvider'] = [__DIR__ . '/../../stubs/openregister/Service/Integration/IntegrationProvider.php', true];
 		$cases['Db/ObjectEntity'] = [__DIR__ . '/../../stubs/openregister/Db/ObjectEntity.php', false];
 
 		return $cases;

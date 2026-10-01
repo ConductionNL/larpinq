@@ -152,19 +152,10 @@
 						"method": "POST",
 						"successMessage": "Payment requested. The player sees the payment link and the reference.",
 						"visibleWhen": {
-							"all": [
-								{
-									"endpoint": "/apps/larpinq/api/payments/access",
-									"field": "allowed",
-									"op": "eq",
-									"value": true
-								},
-								{
-									"field": "paymentState",
-									"op": "eq",
-									"value": "to-request"
-								}
-							]
+							"endpoint": "/apps/larpinq/api/payments/access",
+							"field": "allowed",
+							"op": "eq",
+							"value": true
 						}
 					}
 				]

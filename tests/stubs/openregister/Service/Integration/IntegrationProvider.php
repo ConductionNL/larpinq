@@ -22,7 +22,6 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/pluggable-integration-registry/tasks.md#task-1
  */
 
 declare(strict_types=1);
@@ -163,7 +162,6 @@ interface IntegrationProvider {
 	 *
 	 * @return string|null Permission string or null.
 	 *
-	 * @spec exclude Interface method declaration — pure contract shape; the behaviour lives in the implementing
 	 *              providers (annotated to their integration-* change / pluggable-integration-registry task-1).
 	 */
 	public function requiresPermission(): ?string;
@@ -179,7 +177,6 @@ interface IntegrationProvider {
 	 *
 	 * @return array<string,mixed> Auth-requirements descriptor.
 	 *
-	 * @spec exclude Interface method declaration — pure contract shape; the behaviour lives in the implementing
 	 *              providers (annotated to their integration-* change / pluggable-integration-registry task-1).
 	 */
 	public function authRequirements(): array;
@@ -213,7 +210,6 @@ interface IntegrationProvider {
 	 * @return array<int,array<string,mixed>>|array<string,mixed> Flat list
 	 *                                                            of linked things, or a `{items, total, nextCursor}` envelope.
 	 *
-	 * @spec exclude Interface method declaration — pure contract shape; the behaviour lives in the implementing
 	 *              providers (annotated to their integration-* change / pluggable-integration-registry task-1).
 	 */
 	public function list(string $register, string $schema, string $objectId, array $filters = []): array;
@@ -237,7 +233,6 @@ interface IntegrationProvider {
 	 *
 	 * @return array<string,mixed> The linked thing.
 	 *
-	 * @spec exclude Interface method declaration — pure contract shape; the behaviour lives in the implementing
 	 *              providers (annotated to their integration-* change / pluggable-integration-registry task-1).
 	 */
 	public function get(string $register, string $schema, string $objectId, string $entityId): array;
@@ -255,7 +250,6 @@ interface IntegrationProvider {
 	 *
 	 * @return array<string,mixed> The created linked thing.
 	 *
-	 * @spec exclude Interface method declaration — pure contract shape; the behaviour lives in the implementing
 	 *              providers (annotated to their integration-* change / pluggable-integration-registry task-1).
 	 */
 	public function create(string $register, string $schema, string $objectId, array $payload): array;
@@ -274,7 +268,6 @@ interface IntegrationProvider {
 	 *
 	 * @return array<string,mixed> The updated linked thing.
 	 *
-	 * @spec exclude Interface method declaration — pure contract shape; the behaviour lives in the implementing
 	 *              providers (annotated to their integration-* change / pluggable-integration-registry task-1).
 	 */
 	public function update(string $register, string $schema, string $objectId, string $entityId, array $payload): array;
@@ -292,7 +285,6 @@ interface IntegrationProvider {
 	 *
 	 * @return void
 	 *
-	 * @spec exclude Interface method declaration — pure contract shape; the behaviour lives in the implementing
 	 *              providers (annotated to their integration-* change / pluggable-integration-registry task-1).
 	 */
 	public function delete(string $register, string $schema, string $objectId, string $entityId): void;
@@ -309,7 +301,6 @@ interface IntegrationProvider {
 	 *
 	 * @return array<string,mixed> Health + auth descriptor.
 	 *
-	 * @spec exclude Interface method declaration — pure contract shape; the behaviour lives in the implementing
 	 *              providers (annotated to their integration-* change / pluggable-integration-registry task-1).
 	 */
 	public function health(): array;

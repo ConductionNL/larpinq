@@ -123,12 +123,14 @@ class PaymentFollowUp {
 	 */
 	public function daily(DateTimeImmutable $now): array {
 		$counts = ['paid' => 0, 'reminded' => 0, 'expired' => 0, 'none' => 0];
-		$open = $this->fetcher->getObjectsWithAppAuthority(objectType: 'registration', filters: ['paymentState' => RegistrationPaymentService::OPEN], limit: self::PAGE);
+		$filters = ['paymentState' => RegistrationPaymentService::OPEN];
+		$open = $this->fetcher->getObjectsWithAppAuthority(objectType: 'registration', filters: $filters, limit: self::PAGE);
 		foreach ($open as $registration) {
 			try {
 				$counts[$this->followUp(registration: $registration, now: $now)]++;
 			} catch (Throwable $e) {
-				$this->logger->error('Larpinq: the payment of registration {id} was not followed up.', ['id' => (string)($registration['id'] ?? ''), 'exception' => $e]);
+				$context = ['id' => (string)($registration['id'] ?? ''), 'exception' => $e];
+				$this->logger->error('Larpinq: the payment of registration {id} was not followed up.', $context);
 			}
 		}
 
@@ -156,7 +158,8 @@ class PaymentFollowUp {
 		}
 
 		if ($request !== null && $now >= $payBy->add(new DateInterval(self::EXPIRE_AFTER))) {
-			$this->save(registration: $registration, fields: ['status' => 'cancelled', 'cancelReason' => 'unpaid', 'paymentState' => RegistrationPaymentService::EXPIRED]);
+			$expired = ['status' => 'cancelled', 'cancelReason' => 'unpaid', 'paymentState' => RegistrationPaymentService::EXPIRED];
+			$this->save(registration: $registration, fields: $expired);
 			return 'expired';
 		}
 
