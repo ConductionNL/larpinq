@@ -105,6 +105,15 @@ class SettingsService {
 		'registration_schema',
 		'registration_register',
 		'registration_source',
+		'tickettype_schema',
+		'tickettype_register',
+		'tickettype_source',
+		'registrationoption_schema',
+		'registrationoption_register',
+		'registrationoption_source',
+		'accesscode_schema',
+		'accesscode_register',
+		'accesscode_source',
 	];
 
 	/**

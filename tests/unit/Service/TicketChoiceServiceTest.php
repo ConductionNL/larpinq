@@ -26,6 +26,7 @@ require_once __DIR__ . '/../Support/InMemoryOpenRegister.php';
 
 use DateTimeImmutable;
 use OCA\Larpinq\Listener\RegistrationListener;
+use OCA\Larpinq\Service\ConfigFileLoaderService;
 use OCA\Larpinq\Service\RegisterObjectFetcher;
 use OCA\Larpinq\Service\RegistrationCharacterCheck;
 use OCA\Larpinq\Service\RegistrationService;
@@ -37,9 +38,11 @@ use OCP\IL10N;
 use OCP\IUser;
 use OCP\IUserSession;
 use OCP\Lock\ILockingProvider;
+use Opis\JsonSchema\Validator;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Psr\Log\NullLogger;
+use ReflectionClass;
 use RuntimeException;
 
 /**
@@ -387,4 +390,32 @@ class TicketChoiceServiceTest extends TestCase {
 			$this->assertArrayNotHasKey('amount', $row, 'the counts carry no money');
 		}
 	}//end testTheKitchenPlans()
+
+	/**
+	 * The registration larpinq stores, choices and price lines included, validates against the real merged schema.
+	 *
+	 * @return void
+	 */
+	public function testTheStoredRegistrationValidatesAgainstTheRegisterSchema(): void {
+		$saved = $this->register(player: self::SANNE, choices: ['ticketType' => self::CREW_FRIENDS, 'options' => [self::VEGAN, self::MEAT], 'code' => 'LANTERN']);
+		$row = $this->store->objects['registration'][$saved['id']];
+		unset($row['id']);
+
+		$appPath = dirname(__DIR__, 3);
+		$monolith = json_decode((string)file_get_contents($appPath . '/lib/Settings/larpinq_register.json'), true);
+		$reflection = new ReflectionClass(ConfigFileLoaderService::class);
+		$merge = $reflection->getMethod('mergeRegisterFragments');
+		$merge->setAccessible(true);
+		$schema = $merge->invoke($reflection->newInstanceWithoutConstructor(), $monolith, $appPath)['components']['schemas']['registration'];
+		foreach (array_keys($schema['properties']) as $name) {
+			unset($schema['properties'][$name]['$ref'], $schema['properties'][$name]['authorization'], $schema['properties'][$name]['calculation'], $schema['properties'][$name]['x-relation-filter']);
+		}
+
+		unset($schema['authorization'], $schema['configuration']);
+		$result = (new Validator())->validate(json_decode((string)json_encode($row)), json_decode((string)json_encode($schema)));
+
+		$this->assertTrue($result->isValid(), 'the stored registration must validate: ' . json_encode($row));
+		$this->assertSame(3, count($row['lines']));
+		$this->assertSame(self::LANTERN, $row['accessCode']);
+	}//end testTheStoredRegistrationValidatesAgainstTheRegisterSchema()
 }//end class

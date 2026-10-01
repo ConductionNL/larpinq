@@ -26,6 +26,8 @@ namespace OCA\Larpinq\Listener;
 
 use OCA\Larpinq\Service\RegistrationCharacterCheck;
 use OCA\Larpinq\Service\RegistrationService;
+use OCA\Larpinq\Service\TicketChoiceRefusedException;
+use OCA\Larpinq\Service\TicketChoiceService;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\IAppConfig;
@@ -37,7 +39,8 @@ use Psr\Log\LoggerInterface;
  * Keeps registrations whole on every write.
  *
  * Before a registration is stored it gets its status from the capacity and
- * the approval setting, and a character a player picks is checked. After it
+ * the approval setting, a character a player picks is checked, and its ticket
+ * type, options and code are checked and priced. After it
  * is stored the event's participants follow it and a freed place goes to the
  * waiting list.
  *
@@ -61,6 +64,7 @@ class RegistrationListener implements IEventListener {
 	 * @param IAppConfig $config Config (the registration schema id).
 	 * @param RegistrationService $service Capacity, waiting list and participants.
 	 * @param RegistrationCharacterCheck $characterCheck Whether a player may bring a character.
+	 * @param TicketChoiceService $ticketChoices The ticket type, options and code, and their price lines.
 	 * @param IUserSession $session Who is writing.
 	 * @param IL10N $l10n Translations for refusals.
 	 * @param LoggerInterface $logger The logger.
@@ -71,6 +75,7 @@ class RegistrationListener implements IEventListener {
 		private readonly IAppConfig $config,
 		private readonly RegistrationService $service,
 		private readonly RegistrationCharacterCheck $characterCheck,
+		private readonly TicketChoiceService $ticketChoices,
 		private readonly IUserSession $session,
 		private readonly IL10N $l10n,
 		private readonly LoggerInterface $logger,
@@ -144,28 +149,35 @@ class RegistrationListener implements IEventListener {
 
 		$new = $this->dataOf(entity: $entity);
 		$before = [];
+		$stored = null;
 		if ($old !== null) {
 			$before = $this->dataOf(entity: $old);
+			$stored = $before;
 		}
 
 		$character = (string)($new['character'] ?? '');
 		if ($character !== '' && $character !== (string)($before['character'] ?? '')) {
 			$refusal = $this->characterCheck->refusal(registration: $new);
 			if ($refusal !== null) {
-				$event->stopPropagation();
-				// @phpstan-ignore-next-line
-				$event->setErrors(['message' => $this->l10n->t($refusal)]);
+				$this->refuse(event: $event, reason: $refusal);
 				return;
 			}
 		}
 
-		$changes = [];
+		try {
+			$changes = $this->ticketChoices->choose(new: $new, old: $stored);
+		} catch (TicketChoiceRefusedException $e) {
+			$this->service->release(eventId: (string)($new['event'] ?? ''));
+			$this->refuse(event: $event, reason: $e->getMessage());
+			return;
+		}
+
 		if ($old === null) {
-			$changes = $this->service->beforeCreate(registration: $new);
+			$changes = array_merge($changes, $this->service->beforeCreate(registration: $new));
 		}
 
 		if ($old !== null) {
-			$changes = $this->service->beforeUpdate(new: $new, old: $before, actingUid: $this->actingUid());
+			$changes = array_merge($changes, $this->service->beforeUpdate(new: $new, old: $before, actingUid: $this->actingUid()));
 		}
 
 		if ($changes !== []) {
@@ -173,6 +185,23 @@ class RegistrationListener implements IEventListener {
 			$event->setModifiedData(array_merge($event->getModifiedData(), $changes));
 		}
 	}//end beforeWrite()
+
+	/**
+	 * Stop the write with a reason the player reads.
+	 *
+	 * @param object $event The Creating or Updating event.
+	 * @param string $reason The untranslated reason.
+	 *
+	 * @return void
+	 *
+	 * @psalm-suppress MixedMethodCall OpenRegister event classes are optional dependencies.
+	 */
+	private function refuse(object $event, string $reason): void {
+		// @phpstan-ignore-next-line
+		$event->stopPropagation();
+		// @phpstan-ignore-next-line
+		$event->setErrors(['message' => $this->l10n->t($reason)]);
+	}//end refuse()
 
 	/**
 	 * Whether the object is a registration.

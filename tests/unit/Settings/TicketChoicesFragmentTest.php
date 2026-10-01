@@ -167,17 +167,16 @@ class TicketChoicesFragmentTest extends TestCase {
 	}//end testTheImportAndTheSettingsKnowTheThreeSchemas()
 
 	/**
-	 * The seed ticket types, options and codes validate against the real schemas, three or more each,
-	 * and a seed registration with its choices and lines validates too.
+	 * The seed ticket types, options and codes validate against the real schemas, three or more each.
+	 * (The registration larpinq writes is validated in TicketChoiceServiceTest.)
 	 *
 	 * @return void
 	 */
 	public function testTheSeedsValidate(): void {
 		$mock = json_decode((string)file_get_contents(dirname(__DIR__, 3) . '/lib/Settings/larpinq_mock_register.json'), true);
 		$validator = new Validator();
-		$bySlug = ['larping_ticket_type' => 'ticketType', 'larping_registration_option' => 'registrationOption', 'larping_access_code' => 'accessCode', 'larping_registration' => 'registration'];
+		$bySlug = ['larping_ticket_type' => 'ticketType', 'larping_registration_option' => 'registrationOption', 'larping_access_code' => 'accessCode'];
 		$seen = array_fill_keys(array_keys($bySlug), 0);
-		$withLines = 0;
 		foreach ($mock['components']['objects'] as $object) {
 			$slug = (string)($object['@self']['schema'] ?? '');
 			if (isset($bySlug[$slug]) === false) {
@@ -186,9 +185,6 @@ class TicketChoicesFragmentTest extends TestCase {
 
 			$seen[$slug]++;
 			unset($object['@self']);
-			if (isset($object['lines']) === true) {
-				$withLines++;
-			}
 
 			$schema = json_decode((string)json_encode($this->forOpis(schema: $this->schema(key: $bySlug[$slug]))));
 			$result = $validator->validate(json_decode((string)json_encode($object)), $schema);
@@ -199,8 +195,6 @@ class TicketChoicesFragmentTest extends TestCase {
 		foreach ($seen as $slug => $count) {
 			$this->assertGreaterThanOrEqual(3, $count, "three or more {$slug} seeds");
 		}
-
-		$this->assertGreaterThanOrEqual(1, $withLines, 'a seed registration carries its choices and price lines');
 	}//end testTheSeedsValidate()
 
 	/**

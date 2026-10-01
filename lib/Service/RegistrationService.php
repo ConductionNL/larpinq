@@ -137,7 +137,7 @@ class RegistrationService {
 		return array_merge(
 			$changes,
 			[
-				'status' => $this->placeOutcome(event: $event, excludeId: ''),
+				'status' => $this->placeOutcome(event: $event, registration: $registration, excludeId: ''),
 				'decidedAt' => $this->now(),
 				'decidedBy' => self::AUTOMATIC,
 			]
@@ -178,7 +178,7 @@ class RegistrationService {
 			return $stamp;
 		}
 
-		return array_merge($stamp, ['status' => $this->placeOutcome(event: $event, excludeId: (string)($new['id'] ?? ''))]);
+		return array_merge($stamp, ['status' => $this->placeOutcome(event: $event, registration: $new, excludeId: (string)($new['id'] ?? ''))]);
 	}//end beforeUpdate()
 
 	/**
@@ -227,20 +227,66 @@ class RegistrationService {
 	}//end release()
 
 	/**
+	 * Take the event's lock for this request, as a decision that counts places does.
+	 *
+	 * The lock is released by the registration's post-write handler, or by
+	 * release() when the write is refused.
+	 *
+	 * @param string $eventId The event.
+	 *
+	 * @return bool Whether this request holds the lock.
+	 *
+	 * @spec openspec/specs/event-registration/spec.md
+	 */
+	public function hold(string $eventId): bool {
+		return $this->acquire(eventId: $eventId);
+	}//end hold()
+
+	/**
+	 * Whether the registration's ticket type has no place left for it.
+	 *
+	 * @param array<string, mixed> $registration The registration as it will be.
+	 *
+	 * @return bool True when the ticket type has a place limit and every place is taken by another registration.
+	 *
+	 * @spec openspec/specs/event-registration/spec.md
+	 */
+	public function ticketTypeFull(array $registration): bool {
+		$limit = $this->ticketLimit(registration: $registration);
+		if ($limit === null) {
+			return false;
+		}
+
+		$taken = 0;
+		$ticketId = (string)($registration['ticketType'] ?? '');
+		foreach ($this->registrations(eventId: (string)($registration['event'] ?? ''), status: self::ACCEPTED) as $other) {
+			if ((string)($other['ticketType'] ?? '') === $ticketId && (string)($other['id'] ?? '') !== (string)($registration['id'] ?? '')) {
+				$taken++;
+			}
+		}
+
+		return $taken >= $limit;
+	}//end ticketTypeFull()
+
+	/**
 	 * Accepted when a place is free, else waitlisted; decided under the event's lock.
 	 *
-	 * Without a capacity every registration has a place. When the lock cannot
-	 * be had the registration is waitlisted: the event is never overbooked, and
-	 * the next freed place moves it up.
+	 * A place must be free in the event and, when the chosen ticket type has a
+	 * place limit, in that ticket type. Without either limit every
+	 * registration has a place. When the lock cannot be had the registration
+	 * is waitlisted: the event is never overbooked, and the next freed place
+	 * moves it up.
 	 *
 	 * @param array<string, mixed> $event The event.
+	 * @param array<string, mixed> $registration The registration being decided.
 	 * @param string $excludeId The registration being decided (not counted).
 	 *
 	 * @return string The status.
 	 */
-	private function placeOutcome(array $event, string $excludeId): string {
+	private function placeOutcome(array $event, array $registration, string $excludeId): string {
 		$capacity = $event['capacity'] ?? null;
-		if (is_int($capacity) === false && is_numeric($capacity) === false) {
+		$eventLimited = is_int($capacity) === true || is_numeric($capacity) === true;
+		if ($eventLimited === false && $this->ticketLimit(registration: $registration) === null) {
 			return self::ACCEPTED;
 		}
 
@@ -250,12 +296,40 @@ class RegistrationService {
 			return self::WAITLISTED;
 		}
 
-		if ($this->placesTaken(event: $event, excludeId: $excludeId) < (int)$capacity) {
-			return self::ACCEPTED;
+		if ($eventLimited === true && $this->placesTaken(event: $event, excludeId: $excludeId) >= (int)$capacity) {
+			return self::WAITLISTED;
 		}
 
-		return self::WAITLISTED;
+		if ($this->ticketTypeFull(registration: array_merge($registration, ['id' => $excludeId])) === true) {
+			return self::WAITLISTED;
+		}
+
+		return self::ACCEPTED;
 	}//end placeOutcome()
+
+	/**
+	 * The place limit of the registration's ticket type, or null when it has none.
+	 *
+	 * @param array<string, mixed> $registration The registration.
+	 *
+	 * @return int|null The limit.
+	 */
+	private function ticketLimit(array $registration): ?int {
+		$ticketId = (string)($registration['ticketType'] ?? '');
+		$eventId = (string)($registration['event'] ?? '');
+		if ($ticketId === '' || $eventId === '') {
+			return null;
+		}
+
+		$rows = $this->fetcher->getObjectsWithAppAuthority(objectType: 'tickettype', filters: ['event' => $eventId], limit: self::MAX_ROWS);
+		foreach ($rows as $ticket) {
+			if ((string)($ticket['id'] ?? '') === $ticketId && is_numeric($ticket['placeLimit'] ?? null) === true) {
+				return (int)$ticket['placeLimit'];
+			}
+		}
+
+		return null;
+	}//end ticketLimit()
 
 	/**
 	 * Accepted registrations plus characters in the event that no accepted registration brings.
@@ -346,16 +420,34 @@ class RegistrationService {
 			$waiting,
 			static fn (array $one, array $two): int => strcmp((string)($one['submittedAt'] ?? ''), (string)($two['submittedAt'] ?? ''))
 		);
-		$next = $waiting[0];
+		// The oldest registration whose ticket type still has a place gets it;
+		// one write, and the decision itself still checks the event's places.
+		foreach ($waiting as $next) {
+			if ($this->ticketTypeFull(registration: $next) === false) {
+				$this->promote(eventId: $eventId, registrationId: (string)$next['id']);
+				return;
+			}
+		}
+	}//end promoteNext()
+
+	/**
+	 * Accept one waitlisted registration through the same decision.
+	 *
+	 * @param string $eventId The event.
+	 * @param string $registrationId The registration.
+	 *
+	 * @return void
+	 */
+	private function promote(string $eventId, string $registrationId): void {
 		$this->promoting = true;
 		try {
-			$this->fetcher->saveObjectWithAppAuthority(objectType: 'registration', data: ['status' => self::ACCEPTED], uuid: (string)$next['id']);
+			$this->fetcher->saveObjectWithAppAuthority(objectType: 'registration', data: ['status' => self::ACCEPTED], uuid: $registrationId);
 		} catch (Throwable $e) {
 			$this->logger->error('Larpinq: the waiting list of event {event} did not move up.', ['event' => $eventId, 'exception' => $e]);
 		} finally {
 			$this->promoting = false;
 		}
-	}//end promoteNext()
+	}//end promote()
 
 	/**
 	 * The event's registrations with one status.

@@ -88,6 +88,9 @@ class SettingsLoadService {
 		'characterbuild' => 'larping_character_build',
 		'xpaward' => 'xpAward',
 		'registration' => 'larping_registration',
+		'tickettype' => 'larping_ticket_type',
+		'registrationoption' => 'larping_registration_option',
+		'accesscode' => 'larping_access_code',
 	];
 
 	/**
