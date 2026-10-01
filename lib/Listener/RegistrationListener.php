@@ -24,9 +24,8 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Listener;
 
-use OCA\Larpinq\Service\RegistrationCharacterCheck;
 use OCA\Larpinq\Service\RegistrationService;
-use OCA\Larpinq\Service\TicketChoiceService;
+use OCA\Larpinq\Service\RegistrationWriteCheck;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\IAppConfig;
@@ -62,8 +61,7 @@ class RegistrationListener implements IEventListener {
 	 *
 	 * @param IAppConfig $config Config (the registration schema id).
 	 * @param RegistrationService $service Capacity, waiting list and participants.
-	 * @param RegistrationCharacterCheck $characterCheck Whether a player may bring a character.
-	 * @param TicketChoiceService $ticketChoices The ticket type, options and code, and their price lines.
+	 * @param RegistrationWriteCheck $writeCheck The character and the ticket choices, checked and priced.
 	 * @param IUserSession $session Who is writing.
 	 * @param IL10N $l10n Translations for refusals.
 	 * @param LoggerInterface $logger The logger.
@@ -73,8 +71,7 @@ class RegistrationListener implements IEventListener {
 	public function __construct(
 		private readonly IAppConfig $config,
 		private readonly RegistrationService $service,
-		private readonly RegistrationCharacterCheck $characterCheck,
-		private readonly TicketChoiceService $ticketChoices,
+		private readonly RegistrationWriteCheck $writeCheck,
 		private readonly IUserSession $session,
 		private readonly IL10N $l10n,
 		private readonly LoggerInterface $logger,
@@ -152,7 +149,7 @@ class RegistrationListener implements IEventListener {
 			$stored = $this->dataOf(entity: $old);
 		}
 
-		$checked = $this->checked(new: $new, stored: $stored);
+		$checked = $this->writeCheck->check(new: $new, stored: $stored);
 		if ($checked['refusal'] !== null) {
 			$this->refuse(event: $event, reason: $checked['refusal']);
 			return;
@@ -164,26 +161,6 @@ class RegistrationListener implements IEventListener {
 			$event->setModifiedData(array_merge($event->getModifiedData(), $changes));
 		}
 	}//end beforeWrite()
-
-	/**
-	 * Check the character a player brings and the ticket choices.
-	 *
-	 * @param array<string, mixed> $new The registration as it will be.
-	 * @param array<string, mixed>|null $stored The stored registration, or null on create.
-	 *
-	 * @return array{refusal: string|null, changes: array<string, mixed>} The outcome.
-	 */
-	private function checked(array $new, ?array $stored): array {
-		$character = (string)($new['character'] ?? '');
-		if ($character !== '' && $character !== (string)($stored['character'] ?? '')) {
-			$refusal = $this->characterCheck->refusal(registration: $new);
-			if ($refusal !== null) {
-				return ['refusal' => $refusal, 'changes' => []];
-			}
-		}
-
-		return $this->ticketChoices->check(new: $new, old: $stored);
-	}//end checked()
 
 	/**
 	 * The status a registration gets: on create from capacity and approval, on update from the change.

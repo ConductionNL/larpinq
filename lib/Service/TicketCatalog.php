@@ -279,7 +279,7 @@ class TicketCatalog {
 	 *
 	 * @spec openspec/specs/event-registration/spec.md
 	 */
-	public function accepted(string $eventId): array {
+	private function accepted(string $eventId): array {
 		if ($eventId === '') {
 			return [];
 		}
@@ -309,4 +309,76 @@ class TicketCatalog {
 
 		return array_values(array_filter(array_map('strval', array_filter($value, 'is_scalar')), static fn (string $id): bool => $id !== ''));
 	}//end ids()
+
+	/**
+	 * What a player is shown of a ticket type or option.
+	 *
+	 * @param array<string, mixed> $row The ticket type or option.
+	 * @param list<string> $fields Further fields to copy.
+	 *
+	 * @return array<string, mixed> The summary.
+	 *
+	 * @spec openspec/specs/event-registration/spec.md
+	 */
+	public function summary(array $row, array $fields): array {
+		$summary = [
+			'id' => (string)($row['id'] ?? ''),
+			'name' => (string)($row['name'] ?? ''),
+			'amount' => (int)($row['amount'] ?? 0),
+			'currency' => (string)($row['currency'] ?? 'EUR'),
+			'order' => (int)($row['order'] ?? 0),
+		];
+		foreach ($fields as $field) {
+			$summary[$field] = (string)($row[$field] ?? '');
+		}
+
+		return $summary;
+	}//end summary()
+
+	/**
+	 * One counted row: id, name, its kind field and how many chose it.
+	 *
+	 * @param array<string, mixed> $row The ticket type or option.
+	 * @param string $field role or category.
+	 * @param array<string, int> $counts Counts by id.
+	 *
+	 * @return array<string, mixed> The row.
+	 */
+	private function counted(array $row, string $field, array $counts): array {
+		$id = (string)($row['id'] ?? '');
+		return ['id' => $id, 'name' => (string)($row['name'] ?? ''), $field => (string)($row[$field] ?? ''), 'count' => ($counts[$id] ?? 0)];
+	}//end counted()
+
+	/**
+	 * How many accepted registrations of an event chose each ticket type and
+	 * each option. Counts only: no money total.
+	 *
+	 * @param string $eventId The event.
+	 *
+	 * @return array<string, list<array<string, mixed>>> `{ticketTypes: [{id, name, role, count}], options: [{id, name, category, count}]}`.
+	 *
+	 * @spec openspec/specs/event-registration/spec.md
+	 */
+	public function counts(string $eventId): array {
+		$tickets = [];
+		$options = [];
+		foreach ($this->accepted(eventId: $eventId) as $registration) {
+			$ticket = (string)($registration['ticketType'] ?? '');
+			$tickets[$ticket] = (($tickets[$ticket] ?? 0) + 1);
+			foreach ($this->ids(value: $registration['options'] ?? []) as $option) {
+				$options[$option] = (($options[$option] ?? 0) + 1);
+			}
+		}
+
+		$result = ['ticketTypes' => [], 'options' => []];
+		foreach ($this->rows(objectType: 'tickettype', eventId: $eventId) as $row) {
+			$result['ticketTypes'][] = $this->counted(row: $row, field: 'role', counts: $tickets);
+		}
+
+		foreach ($this->rows(objectType: 'registrationoption', eventId: $eventId) as $row) {
+			$result['options'][] = $this->counted(row: $row, field: 'category', counts: $options);
+		}
+
+		return $result;
+	}//end counts()
 }//end class

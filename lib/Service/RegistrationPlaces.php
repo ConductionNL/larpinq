@@ -144,6 +144,33 @@ class RegistrationPlaces {
 	}//end placesTaken()
 
 	/**
+	 * Whether an option with a place limit has no place left for this registration.
+	 *
+	 * @param array<string, mixed> $option The option.
+	 * @param array<string, mixed> $registration The registration (not counted).
+	 *
+	 * @return bool True when full.
+	 *
+	 * @spec openspec/specs/event-registration/spec.md
+	 */
+	public function optionFull(array $option, array $registration): bool {
+		if (is_numeric($option['placeLimit'] ?? null) === false) {
+			return false;
+		}
+
+		$optionId = (string)($option['id'] ?? '');
+		$taken = 0;
+		foreach ($this->accepted(eventId: (string)($option['event'] ?? '')) as $other) {
+			$chose = in_array($optionId, array_map('strval', (array)($other['options'] ?? [])), true);
+			if ($chose === true && (string)($other['id'] ?? '') !== (string)($registration['id'] ?? '')) {
+				$taken++;
+			}
+		}
+
+		return $taken >= (int)$option['placeLimit'];
+	}//end optionFull()
+
+	/**
 	 * The event's accepted registrations.
 	 *
 	 * @param string $eventId The event.

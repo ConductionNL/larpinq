@@ -251,19 +251,6 @@ class RegistrationService {
 	}//end hold()
 
 	/**
-	 * Whether the registration's ticket type has no place left for it.
-	 *
-	 * @param array<string, mixed> $registration The registration as it will be.
-	 *
-	 * @return bool True when the ticket type has a place limit and every place is taken by another registration.
-	 *
-	 * @spec openspec/specs/event-registration/spec.md
-	 */
-	public function ticketTypeFull(array $registration): bool {
-		return $this->places->ticketTypeFull(registration: $registration);
-	}//end ticketTypeFull()
-
-	/**
 	 * Accepted when a place is free, else waitlisted; decided under the event's lock.
 	 *
 	 * A place must be free in the event and, when the chosen ticket type has a
@@ -295,7 +282,7 @@ class RegistrationService {
 			return self::WAITLISTED;
 		}
 
-		if ($this->ticketTypeFull(registration: array_merge($registration, ['id' => $excludeId])) === true) {
+		if ($this->places->ticketTypeFull(registration: array_merge($registration, ['id' => $excludeId])) === true) {
 			return self::WAITLISTED;
 		}
 
@@ -364,7 +351,7 @@ class RegistrationService {
 		// The oldest registration whose ticket type still has a place gets it;
 		// one write, and the decision itself still checks the event's places.
 		foreach ($waiting as $next) {
-			if ($this->ticketTypeFull(registration: $next) === false) {
+			if ($this->places->ticketTypeFull(registration: $next) === false) {
 				$this->promote(eventId: $eventId, registrationId: (string)$next['id']);
 				return;
 			}

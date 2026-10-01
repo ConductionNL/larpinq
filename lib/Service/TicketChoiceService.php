@@ -57,6 +57,13 @@ class TicketChoiceService {
 	private readonly TicketCatalog $catalog;
 
 	/**
+	 * How many places of a ticket type are taken.
+	 *
+	 * @var RegistrationPlaces
+	 */
+	private readonly RegistrationPlaces $places;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param RegisterObjectFetcher $fetcher Reads the event's ticket types, options, codes and registrations.
@@ -73,7 +80,22 @@ class TicketChoiceService {
 		?TicketCatalog $catalog = null,
 	) {
 		$this->catalog = ($catalog ?? new TicketCatalog(fetcher: $fetcher, logger: $logger));
+		$this->places = new RegistrationPlaces(fetcher: $fetcher);
 	}//end __construct()
+
+	/**
+	 * How many accepted registrations of an event chose each ticket type and
+	 * each option. Counts only: no money total.
+	 *
+	 * @param string $eventId The event.
+	 *
+	 * @return array<string, list<array<string, mixed>>> `{ticketTypes: [...], options: [...]}`.
+	 *
+	 * @spec openspec/specs/event-registration/spec.md
+	 */
+	public function counts(string $eventId): array {
+		return $this->catalog->counts(eventId: $eventId);
+	}//end counts()
 
 	/**
 	 * Check and price the choices of a registration, as the fields to set or
@@ -193,16 +215,16 @@ class TicketChoiceService {
 			}
 
 			$ticketTypes[] = array_merge(
-				$this->summary(row: $ticket, fields: ['role']),
-				['full' => $this->registrations->ticketTypeFull(registration: array_merge($registration, ['ticketType' => $id]))]
+				$this->catalog->summary(row: $ticket, fields: ['role']),
+				['full' => $this->places->ticketTypeFull(registration: array_merge($registration, ['ticketType' => $id]))]
 			);
 		}
 
 		usort($ticketTypes, static fn (array $one, array $two): int => ($one['order'] <=> $two['order']));
 		$options = [];
 		foreach ($this->catalog->rows(objectType: 'registrationoption', eventId: $eventId) as $option) {
-			$full = $this->optionFull(option: $option, registration: $registration);
-			$options[] = array_merge($this->summary(row: $option, fields: ['category']), ['full' => $full]);
+			$full = $this->places->optionFull(option: $option, registration: $registration);
+			$options[] = array_merge($this->catalog->summary(row: $option, fields: ['category']), ['full' => $full]);
 		}
 
 		return [
@@ -212,53 +234,6 @@ class TicketChoiceService {
 			'chosen' => ['ticketType' => $chosen, 'options' => $this->catalog->ids(value: $registration['options'] ?? [])],
 		];
 	}//end offer()
-
-	/**
-	 * How many accepted registrations of an event chose each ticket type and
-	 * each option. Counts only: no money total.
-	 *
-	 * @param string $eventId The event.
-	 *
-	 * @return array<string, list<array<string, mixed>>> `{ticketTypes: [{id, name, role, count}], options: [{id, name, category, count}]}`.
-	 *
-	 * @spec openspec/specs/event-registration/spec.md
-	 */
-	public function counts(string $eventId): array {
-		$tickets = [];
-		$options = [];
-		foreach ($this->catalog->accepted(eventId: $eventId) as $registration) {
-			$ticket = (string)($registration['ticketType'] ?? '');
-			$tickets[$ticket] = (($tickets[$ticket] ?? 0) + 1);
-			foreach ($this->catalog->ids(value: $registration['options'] ?? []) as $option) {
-				$options[$option] = (($options[$option] ?? 0) + 1);
-			}
-		}
-
-		$result = ['ticketTypes' => [], 'options' => []];
-		foreach ($this->catalog->rows(objectType: 'tickettype', eventId: $eventId) as $row) {
-			$result['ticketTypes'][] = $this->counted(row: $row, field: 'role', counts: $tickets);
-		}
-
-		foreach ($this->catalog->rows(objectType: 'registrationoption', eventId: $eventId) as $row) {
-			$result['options'][] = $this->counted(row: $row, field: 'category', counts: $options);
-		}
-
-		return $result;
-	}//end counts()
-
-	/**
-	 * One counted row: id, name, its kind field and how many chose it.
-	 *
-	 * @param array<string, mixed> $row The ticket type or option.
-	 * @param string $field role or category.
-	 * @param array<string, int> $counts Counts by id.
-	 *
-	 * @return array<string, mixed> The row.
-	 */
-	private function counted(array $row, string $field, array $counts): array {
-		$id = (string)($row['id'] ?? '');
-		return ['id' => $id, 'name' => (string)($row['name'] ?? ''), $field => (string)($row[$field] ?? ''), 'count' => ($counts[$id] ?? 0)];
-	}//end counted()
 
 	/**
 	 * The chosen ticket type, options (sorted) and code of a registration.
@@ -341,7 +316,7 @@ class TicketChoiceService {
 			throw new TicketChoiceRefusedException('This ticket type is not on sale now.');
 		}
 
-		if ((string)($new['status'] ?? '') === RegistrationService::ACCEPTED && $this->registrations->ticketTypeFull(registration: $new) === true) {
+		if ((string)($new['status'] ?? '') === RegistrationService::ACCEPTED && $this->places->ticketTypeFull(registration: $new) === true) {
 			throw new TicketChoiceRefusedException('This ticket type is full.');
 		}
 
@@ -373,7 +348,7 @@ class TicketChoiceService {
 				continue;
 			}
 
-			if ($this->optionFull(option: $option, registration: $new) === true) {
+			if ($this->places->optionFull(option: $option, registration: $new) === true) {
 				throw new TicketChoiceRefusedException('This option is full.');
 			}
 
@@ -382,31 +357,6 @@ class TicketChoiceService {
 
 		return $lines;
 	}//end optionLines()
-
-	/**
-	 * Whether an option with a place limit has no place left for this registration.
-	 *
-	 * @param array<string, mixed> $option The option.
-	 * @param array<string, mixed> $registration The registration (not counted).
-	 *
-	 * @return bool True when full.
-	 */
-	private function optionFull(array $option, array $registration): bool {
-		if (is_numeric($option['placeLimit'] ?? null) === false) {
-			return false;
-		}
-
-		$optionId = (string)($option['id'] ?? '');
-		$taken = 0;
-		foreach ($this->catalog->accepted(eventId: (string)($option['event'] ?? '')) as $other) {
-			$chose = in_array($optionId, $this->catalog->ids(value: $other['options'] ?? []), true);
-			if ($chose === true && (string)($other['id'] ?? '') !== (string)($registration['id'] ?? '')) {
-				$taken++;
-			}
-		}
-
-		return $taken >= (int)$option['placeLimit'];
-	}//end optionFull()
 
 
 	/**
@@ -445,28 +395,5 @@ class TicketChoiceService {
 			'currency' => (string)($row['currency'] ?? 'EUR'),
 		];
 	}//end line()
-
-	/**
-	 * What a player is shown of a ticket type or option.
-	 *
-	 * @param array<string, mixed> $row The ticket type or option.
-	 * @param list<string> $fields Further fields to copy.
-	 *
-	 * @return array<string, mixed> The summary.
-	 */
-	private function summary(array $row, array $fields): array {
-		$summary = [
-			'id' => (string)($row['id'] ?? ''),
-			'name' => (string)($row['name'] ?? ''),
-			'amount' => (int)($row['amount'] ?? 0),
-			'currency' => (string)($row['currency'] ?? 'EUR'),
-			'order' => (int)($row['order'] ?? 0),
-		];
-		foreach ($fields as $field) {
-			$summary[$field] = (string)($row[$field] ?? '');
-		}
-
-		return $summary;
-	}//end summary()
 
 }//end class

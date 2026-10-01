@@ -30,6 +30,7 @@ use OCA\Larpinq\Service\ConfigFileLoaderService;
 use OCA\Larpinq\Service\RegisterObjectFetcher;
 use OCA\Larpinq\Service\RegistrationCharacterCheck;
 use OCA\Larpinq\Service\RegistrationService;
+use OCA\Larpinq\Service\RegistrationWriteCheck;
 use OCA\Larpinq\Service\TicketChoiceService;
 use OCA\Larpinq\Tests\Unit\Support\InMemoryOpenRegister;
 use OCP\App\IAppManager;
@@ -174,8 +175,10 @@ class TicketChoiceServiceTest extends TestCase {
 		return new RegistrationListener(
 			$config,
 			$this->service,
-			new RegistrationCharacterCheck($this->fetcher()),
-			new TicketChoiceService($this->fetcher(), $this->service, new NullLogger()),
+			new RegistrationWriteCheck(
+				new RegistrationCharacterCheck($this->fetcher()),
+				new TicketChoiceService($this->fetcher(), $this->service, new NullLogger())
+			),
 			$session,
 			$l10n,
 			new NullLogger()
