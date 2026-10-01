@@ -1982,6 +1982,51 @@
 						"integrationId": "files",
 						"title": "Event pack",
 						"icon": "FolderOutline"
+					},
+					{
+						"id": "event-registrations",
+						"type": "object-list",
+						"title": "Registrations",
+						"icon": "ClipboardCheckOutline",
+						"content": {
+							"register": "larpinq",
+							"schema": "larping_registration",
+							"filter": { "event": "@objectId" },
+							"columns": [
+								{ "key": "player", "label": "Player" },
+								{ "key": "character", "label": "Character" },
+								{ "key": "status", "label": "Status" },
+								{ "key": "submittedAt", "label": "Signed up on" }
+							],
+							"limit": 100,
+							"viewAllRoute": "Registrations",
+							"viewAllQuery": { "event": "@objectId" },
+							"emptyText": "No sign-ups yet."
+						}
+					},
+					{
+						"id": "event-stats-places",
+						"type": "stats-block",
+						"title": "Places taken",
+						"icon": "ClipboardCheckOutline",
+						"content": {
+							"entries": [
+								{
+									"title": "Accepted registrations",
+									"register": "larpinq",
+									"schema": "larping_registration",
+									"metric": "count",
+									"filter": { "event": "@objectId", "status": "accepted" }
+								},
+								{
+									"title": "On the waiting list",
+									"register": "larpinq",
+									"schema": "larping_registration",
+									"metric": "count",
+									"filter": { "event": "@objectId", "status": "waitlisted" }
+								}
+							]
+						}
 					}
 				],
 				"layout": [
@@ -2063,6 +2108,22 @@
 						"gridX": 6,
 						"gridY": 16,
 						"gridWidth": 6,
+						"gridHeight": 4
+					},
+					{
+						"id": "11",
+						"widgetId": "event-registrations",
+						"gridX": 0,
+						"gridY": 20,
+						"gridWidth": 8,
+						"gridHeight": 4
+					},
+					{
+						"id": "12",
+						"widgetId": "event-stats-places",
+						"gridX": 8,
+						"gridY": 20,
+						"gridWidth": 4,
 						"gridHeight": 4
 					}
 				],

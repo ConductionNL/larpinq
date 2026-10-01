@@ -66,3 +66,8 @@ if (class_exists(\OCA\OpenRegister\Event\ObjectCreatedEvent::class) === false) {
 	class ObjectCreatedEvent {
 	}//end class
 }
+
+if (class_exists(\OCA\OpenRegister\Event\ObjectUpdatedEvent::class) === false) {
+	class ObjectUpdatedEvent {
+	}//end class
+}

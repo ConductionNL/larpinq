@@ -26,8 +26,10 @@ namespace OCA\Larpinq\AppInfo;
 
 use OCA\Larpinq\Listener\CharacterStatusListener;
 use OCA\Larpinq\Listener\FactionMembershipListener;
+use OCA\Larpinq\Listener\FormSubmissionListener;
 use OCA\Larpinq\Listener\PlayerReviewListener;
 use OCA\Larpinq\Listener\PortalProfileListener;
+use OCA\Larpinq\Listener\RegistrationListener;
 use OCA\Larpinq\Listener\UniqueHolderListener;
 use OCA\Larpinq\Listener\XpAwardProvenanceListener;
 use OCP\AppFramework\Bootstrap\IRegistrationContext;
@@ -83,5 +85,36 @@ class ObjectListenerRegistrar {
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatingEvent', XpAwardProvenanceListener::class);
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatingEvent', PlayerReviewListener::class);
 		}
+
+		$this->registerRegistrationListeners(context: $context);
 	}//end register()
+
+	/**
+	 * Register the listeners that turn sign-ups into registrations and keep
+	 * capacity, the waiting list and the participants (registration-intake-and-capacity).
+	 *
+	 * Nextcloud Forms sorts before larpinq, so its classes are autoloadable
+	 * here when it is enabled; without it the sign-up listener is skipped.
+	 *
+	 * @param IRegistrationContext $context The registration context.
+	 *
+	 * @return void
+	 *
+	 * @spec openspec/specs/event-registration/spec.md
+	 */
+	private function registerRegistrationListeners(IRegistrationContext $context): void {
+		if (class_exists('OCA\OpenRegister\Event\ObjectCreatingEvent') === true) {
+			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', RegistrationListener::class);
+			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatingEvent', RegistrationListener::class);
+		}
+
+		if (class_exists('OCA\OpenRegister\Event\ObjectCreatedEvent') === true) {
+			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatedEvent', RegistrationListener::class);
+			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatedEvent', RegistrationListener::class);
+		}
+
+		if (class_exists(FormSubmissionListener::SUBMITTED_EVENT) === true) {
+			$context->registerEventListener(FormSubmissionListener::SUBMITTED_EVENT, FormSubmissionListener::class);
+		}
+	}//end registerRegistrationListeners()
 }//end class

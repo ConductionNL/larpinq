@@ -141,3 +141,42 @@ None. Existing events have no capacity and no registrations; their
 ## Open Questions
 
 None.
+
+## Revised at build time (1 Oct 2026)
+
+Built against development `0d7680db` plus players-self-signup (#812).
+
+- **Post-write work runs inline, not deferred.** The per-event lock is taken in
+  the pre-write handler and must be released in the same request, and a freed
+  place must go to the waiting list under that same decision; two background
+  runs could otherwise both give away one place. `RegistrationListener::handle`
+  carries `@listener-placement inline correctness` with that reason (hydra
+  gate 61). larpinq has no `ActorForwardedJob` subclass to defer to.
+- **A busy lock waitlists.** The service tries the lock for about three
+  seconds; when another request still holds it, the registration is
+  waitlisted (never overbooked) and the next freed place moves it up.
+  Nextcloud also releases a request's locks when it ends.
+- **No stored waiting list position.** A stored number goes stale on every
+  promotion. The order is `submittedAt`; the event page lists waitlisted
+  registrations with their sign-up time and the Places taken stat counts them.
+- **Lifecycle.** `accept` (from pending, waitlisted, declined), `waitlist`
+  (from pending, declined; the service turns an accept without a place into
+  it), `decline` (from pending, waitlisted), `cancel` (from pending, accepted,
+  waitlisted; final). Cancelling flows themselves stay with
+  `registration-cancel-transfer-refund`.
+- **Relations are uuids or absent.** `player` and `character` carry
+  `format: uuid`; the intake leaves `player` out when the account has no
+  player yet, rather than writing an empty string.
+- **The Forms payload.** `FormSubmittedEvent` has no getter for the
+  submission, so the listener reads `getWebhookSerializable()` (`form.id`,
+  `submission.id`, `submission.userId`). Anonymous means an empty user id, an
+  `anon-user-` id, or an id that is no account.
+- **My registrations** has no current-user filter (the manifest has no such
+  placeholder): the row rules reduce it to the player's own registrations;
+  game masters see every registration there as on Registrations.
+- **App-authority writes.** `RegisterObjectFetcher::saveObjectWithAppAuthority`
+  writes the intake's registration, the event's participants and a promotion
+  with RBAC off; the decision to write is taken before.
+- **Seeds.** Four registrations on the mock register's placeholder ids
+  (accepted, declined, accepted, waitlisted) and the first seed event with
+  capacity 3, approval and sign-up form 1.

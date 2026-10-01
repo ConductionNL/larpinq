@@ -59,7 +59,7 @@ game master accepts or declines it on the registration page. Accepting MUST
 give a place when one is free and put the registration on the waiting list
 otherwise.
 
-#### Scenario: A game master declines a retired character's sign-up
+#### Scenario: A game master declines a sign-up for a retired character
 
 - GIVEN "Winter Court 2026" requires approval and Karel's registration is pending
 - WHEN a game master declines it on the registration page

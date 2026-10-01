@@ -102,6 +102,9 @@ class SettingsService {
 		'xpaward_schema',
 		'xpaward_register',
 		'xpaward_source',
+		'registration_schema',
+		'registration_register',
+		'registration_source',
 	];
 
 	/**

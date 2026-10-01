@@ -9,7 +9,9 @@
 		"Plots": "CharactersGroup",
 		"CharacterFields": "WorldGroup",
 		"Factions": "CharactersGroup",
-		"NewPlayers": "CharactersGroup"
+		"NewPlayers": "CharactersGroup",
+		"Registrations": "WorldGroup",
+		"MyRegistrations": "WorldGroup"
 	},
 	"removals": [],
 	"settingsSection": [

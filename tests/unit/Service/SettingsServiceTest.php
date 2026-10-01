@@ -60,11 +60,12 @@ class SettingsServiceTest extends TestCase {
 		$this->assertArrayHasKey('characterbuild_schema', $result);
 		// The batch award and the XP stage read awards by this key.
 		$this->assertArrayHasKey('xpaward_schema', $result);
+		$this->assertArrayHasKey('registration_schema', $result);
 		// CONFIG_KEYS now includes {slug}_schema + {slug}_register + {slug}_source
-		// for all 17 slugs (9 original + attendance + lorepage + characterfield
-		// + faction + factionmember + relationship + characterbuild + xpaward)
-		// plus the global 'register' key = 1 + 17*3 = 52.
-		$this->assertCount(52, $result);
+		// for all 18 slugs (9 original + attendance + lorepage + characterfield
+		// + faction + factionmember + relationship + characterbuild + xpaward + registration)
+		// plus the global 'register' key = 1 + 18*3 = 55.
+		$this->assertCount(55, $result);
 	}
 
 	public function testGetSettingsReturnsEmptyStringsAsDefaults(): void {
@@ -121,7 +122,7 @@ class SettingsServiceTest extends TestCase {
 		$result = $this->service->updateSettings(['register' => 'reg-1']);
 
 		$this->assertIsArray($result);
-		$this->assertCount(52, $result);
+		$this->assertCount(55, $result);
 	}
 
 	public function testLoadSettingsDelegatesToLoadService(): void {
