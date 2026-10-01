@@ -11,7 +11,7 @@
       "registration": {
         "slug": "larping_registration",
         "title": "Registration",
-        "icon": "ClipboardAccountOutline",
+        "icon": "ClipboardCheckOutline",
         "version": "1.0.0",
         "summary": "A player's sign-up for an event",
         "description": "Made from a sign-up on the event's form. It holds the player, the character they bring and whether they have a place: pending, accepted, waitlisted, declined or cancelled. The form answers stay in Nextcloud Forms.",
