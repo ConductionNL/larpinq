@@ -1,0 +1,258 @@
+{
+	"components": {
+		"schemas": {
+			"event": {
+				"slug": "larping_event",
+				"properties": {
+					"cancellationPolicy": {
+						"type": "object",
+						"title": "Cancellation policy",
+						"description": "Until when players cancel themselves, and what a paid cancellation gets",
+						"properties": {
+							"cancelBy": {
+								"type": "string",
+								"format": "date-time",
+								"title": "Cancel by",
+								"description": "Until this moment a player or the person who booked can cancel. Empty means until the event starts."
+							},
+							"paidCancellation": {
+								"type": "string",
+								"enum": [
+									"refund",
+									"credit",
+									"player-chooses",
+									"none"
+								],
+								"x-enum-labels": {
+									"refund": "Refund",
+									"credit": "Credit for a later event",
+									"player-chooses": "The player chooses",
+									"none": "Nothing back"
+								},
+								"default": "refund",
+								"title": "Paid cancellation",
+								"description": "What a cancelled, paid registration gets back"
+							}
+						}
+					}
+				}
+			},
+			"registration": {
+				"slug": "larping_registration",
+				"properties": {
+					"bookingGroup": {
+						"type": "string",
+						"format": "uuid",
+						"title": "Booking",
+						"description": "Registrations booked together share this; each one is cancelled on its own",
+						"authorization": {
+							"update": [
+								"gamemasters"
+							]
+						}
+					},
+					"bookedByUid": {
+						"type": "string",
+						"maxLength": 255,
+						"title": "Booked by",
+						"description": "The account that added this participant to their booking",
+						"authorization": {
+							"update": [
+								"gamemasters"
+							]
+						}
+					},
+					"cancelledBy": {
+						"type": "string",
+						"maxLength": 255,
+						"title": "Cancelled by",
+						"description": "The account that cancelled the registration",
+						"authorization": {
+							"update": [
+								"gamemasters"
+							]
+						}
+					},
+					"settlementChoice": {
+						"type": "string",
+						"enum": [
+							"refund",
+							"credit"
+						],
+						"x-enum-labels": {
+							"refund": "Refund",
+							"credit": "Credit for a later event"
+						},
+						"title": "Chosen on cancelling",
+						"description": "What the player chose when the event lets them choose",
+						"authorization": {
+							"update": [
+								"gamemasters"
+							]
+						}
+					},
+					"settlement": {
+						"type": "string",
+						"enum": [
+							"refund-requested",
+							"credit-requested",
+							"refunded",
+							"credited",
+							"none"
+						],
+						"x-enum-labels": {
+							"refund-requested": "Refund requested",
+							"credit-requested": "Credit requested",
+							"refunded": "Refunded",
+							"credited": "Credited",
+							"none": "Nothing back"
+						},
+						"title": "Money back",
+						"description": "What happened to the money of a cancelled, paid registration",
+						"authorization": {
+							"update": [
+								"gamemasters"
+							]
+						}
+					},
+					"settlementRequestedAt": {
+						"type": "string",
+						"format": "date-time",
+						"title": "Money back requested on",
+						"description": "When larpinq asked shillinq for the refund or the credit",
+						"authorization": {
+							"update": [
+								"gamemasters"
+							]
+						}
+					},
+					"transferTo": {
+						"type": "string",
+						"format": "uuid",
+						"$ref": "player",
+						"title": "Offered to",
+						"description": "The player this registration is offered to",
+						"authorization": {
+							"update": [
+								"gamemasters"
+							]
+						}
+					},
+					"transferToUid": {
+						"type": "string",
+						"maxLength": 255,
+						"title": "Offered to account",
+						"description": "The account of the player this registration is offered to",
+						"authorization": {
+							"update": [
+								"gamemasters"
+							]
+						}
+					},
+					"transferStatus": {
+						"type": "string",
+						"enum": [
+							"offered",
+							"accepted",
+							"withdrawn",
+							"lapsed"
+						],
+						"x-enum-labels": {
+							"offered": "Offered",
+							"accepted": "Accepted",
+							"withdrawn": "Withdrawn",
+							"lapsed": "Lapsed"
+						},
+						"title": "Transfer",
+						"description": "Where an offer to hand this registration to another player stands",
+						"authorization": {
+							"update": [
+								"gamemasters"
+							]
+						}
+					},
+					"transferOfferedAt": {
+						"type": "string",
+						"format": "date-time",
+						"title": "Offered on",
+						"description": "When the registration was offered to another player",
+						"authorization": {
+							"update": [
+								"gamemasters"
+							]
+						}
+					},
+					"transferredFrom": {
+						"type": "string",
+						"format": "uuid",
+						"$ref": "player",
+						"title": "Handed over by",
+						"description": "The player who had this registration before the transfer",
+						"authorization": {
+							"update": [
+								"gamemasters"
+							]
+						}
+					},
+					"transferredAt": {
+						"type": "string",
+						"format": "date-time",
+						"title": "Handed over on",
+						"description": "When the other player accepted the registration",
+						"authorization": {
+							"update": [
+								"gamemasters"
+							]
+						}
+					}
+				},
+				"authorization": {
+					"read": [
+						{
+							"group": "larpers",
+							"match": {
+								"bookedByUid": "$userId"
+							}
+						},
+						{
+							"group": "larpers",
+							"match": {
+								"transferToUid": "$userId"
+							}
+						}
+					]
+				},
+				"x-openregister-notifications": {
+					"transfer-offered": {
+						"trigger": {
+							"type": "updated",
+							"condition": {
+								"field": "transferOfferedAt",
+								"operator": "changed"
+							}
+						},
+						"enabled": true,
+						"channels": [
+							"nc-notification",
+							"email"
+						],
+						"recipients": [
+							{
+								"kind": "field",
+								"field": "transferToUid"
+							}
+						],
+						"subject": {
+							"nl": "Er wordt je een plek aangeboden",
+							"en": "A place is offered to you"
+						},
+						"message": {
+							"nl": "Een speler biedt je zijn inschrijving aan. Neem hem aan op Mijn inschrijvingen en kies daarna je personage. Het aanbod vervalt na 7 dagen.",
+							"en": "A player offers you their registration. Accept it on My registrations, then pick your character. The offer lapses after 7 days."
+						}
+					}
+				}
+			}
+		}
+	}
+}
