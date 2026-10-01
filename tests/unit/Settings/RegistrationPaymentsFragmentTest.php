@@ -126,4 +126,36 @@ class RegistrationPaymentsFragmentTest extends TestCase {
 		$result = (new Validator())->validate(json_decode((string)json_encode($written)), json_decode((string)json_encode($schema)));
 		$this->assertFalse($result->isValid(), 'shillinq states are not registration payment states');
 	}//end testThePaymentFieldsLarpinqWritesValidate()
+
+	/**
+	 * The demo event takes payment, and its open and paid registrations validate.
+	 *
+	 * @return void
+	 */
+	public function testThePaymentSeedsValidate(): void {
+		$mock = json_decode((string)file_get_contents(dirname(__DIR__, 3) . '/lib/Settings/larpinq_mock_register.json'), true);
+		$bySlug = ['larping_event' => 'event', 'larping_registration' => 'registration'];
+		$states = [];
+		foreach ($mock['components']['objects'] as $object) {
+			$slug = (string)($object['@self']['schema'] ?? '');
+			if (isset($bySlug[$slug]) === false) {
+				continue;
+			}
+
+			unset($object['@self']);
+			$schema = $this->schema(key: $bySlug[$slug]);
+			foreach (array_keys($schema['properties']) as $name) {
+				unset($schema['properties'][$name]['$ref'], $schema['properties'][$name]['authorization'], $schema['properties'][$name]['calculation']);
+			}
+
+			$schema = array_intersect_key($schema, array_flip(['type', 'properties']));
+			$result = (new Validator())->validate(json_decode((string)json_encode($object)), json_decode((string)json_encode($schema)));
+			$this->assertTrue($result->isValid(), "seed {$slug} must validate");
+			if (isset($object['paymentState']) === true) {
+				$states[] = $object['paymentState'] . ' ' . $object['paymentReference'];
+			}
+		}
+
+		$this->assertSame(['open WC26-0001', 'paid WC26-0002'], $states);
+	}//end testThePaymentSeedsValidate()
 }//end class
