@@ -26,6 +26,7 @@ require_once __DIR__ . '/../Support/InMemoryOpenRegister.php';
 
 use OCA\Larpinq\Listener\RegistrationListener;
 use OCA\Larpinq\Service\RegisterObjectFetcher;
+use OCA\Larpinq\Service\RegistrationCharacterCheck;
 use OCA\Larpinq\Service\RegistrationService;
 use OCA\Larpinq\Tests\Unit\Support\InMemoryObjectEntity;
 use OCA\Larpinq\Tests\Unit\Support\InMemoryOpenRegister;
@@ -235,7 +236,7 @@ class RegistrationServiceTest extends TestCase {
 		$l10n->method('t')->willReturnCallback(static fn (string $text): string => $text);
 		$service = new RegistrationService($this->fetcher(), $this->locks->forRequest($request), new NullLogger(), $lockAttempts, 0);
 
-		return new RegistrationListener($this->config(), $service, $session, $l10n, new NullLogger());
+		return new RegistrationListener($this->config(), $service, new RegistrationCharacterCheck($this->fetcher()), $session, $l10n, new NullLogger());
 	}//end listener()
 
 	/**

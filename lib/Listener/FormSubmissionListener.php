@@ -99,6 +99,7 @@ class FormSubmissionListener implements IEventListener {
 			return;
 		}
 
+		// @phpstan-ignore-next-line Nextcloud Forms is optional; is_a() and is_callable() checked it above.
 		$payload = (array)$event->getWebhookSerializable();
 		$formId = (int)(((array)($payload['form'] ?? []))['id'] ?? 0);
 		$submission = (array)($payload['submission'] ?? []);
@@ -134,7 +135,11 @@ class FormSubmissionListener implements IEventListener {
 			return;
 		}
 
-		$existing = $this->fetcher->getObjectsWithAppAuthority(objectType: 'registration', filters: ['event' => $eventId, 'submitterUid' => $uid], limit: 1);
+		$existing = $this->fetcher->getObjectsWithAppAuthority(
+			objectType: 'registration',
+			filters: ['event' => $eventId, 'submitterUid' => $uid],
+			limit: 1
+		);
 		if ($existing !== []) {
 			$this->logger->info('Larpinq: {user} signed up for event {event} again; the first registration stands.', ['user' => $uid, 'event' => $eventId]);
 			return;

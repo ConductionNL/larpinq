@@ -182,44 +182,6 @@ class RegistrationService {
 	}//end beforeUpdate()
 
 	/**
-	 * Why a player may not bring this character, or null when they may.
-	 *
-	 * The character must be the registration's player's, active, and of the
-	 * event's world.
-	 *
-	 * @param array<string, mixed> $registration The registration as it will be.
-	 *
-	 * @return string|null The reason, untranslated, or null.
-	 *
-	 * @spec openspec/specs/event-registration/spec.md
-	 */
-	public function characterRefusal(array $registration): ?string {
-		$characterId = (string)($registration['character'] ?? '');
-		try {
-			$character = $this->fetcher->getObject(objectType: 'character', id: $characterId);
-		} catch (Throwable $e) {
-			return 'This character does not exist or is not yours.';
-		}
-
-		$player = (string)($registration['player'] ?? '');
-		if ($player === '' || (string)($character['ocName'] ?? '') !== $player) {
-			return 'You can only bring one of your own characters.';
-		}
-
-		if ((string)($character['status'] ?? 'active') !== 'active') {
-			return 'A retired or dead character cannot be brought to an event.';
-		}
-
-		$event = $this->event(eventId: (string)($registration['event'] ?? ''));
-		$world = (string)($event['setting'] ?? '');
-		if ($world !== '' && (string)($character['setting'] ?? '') !== $world) {
-			return 'The character must belong to the world of the event.';
-		}
-
-		return null;
-	}//end characterRefusal()
-
-	/**
 	 * After a registration is stored: the participants follow it, the lock is
 	 * released, and a freed place goes to the oldest waitlisted registration.
 	 *

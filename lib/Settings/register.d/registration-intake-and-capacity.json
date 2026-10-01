@@ -261,6 +261,7 @@
         }
       },
       "event": {
+        "slug": "larping_event",
         "properties": {
           "capacity": {
             "type": "integer",

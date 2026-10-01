@@ -360,7 +360,7 @@ class RegisterObjectFetcher {
 	 * An empty filter is refused, so this can never become an unscoped read.
 	 *
 	 * @param string $objectType The object type (e.g. 'xpAward').
-	 * @param array<string, string> $filters Equality filters; at least one, non-empty.
+	 * @param array<string, string|int> $filters Equality filters; at least one, non-empty.
 	 * @param int|null $limit Maximum number of objects to retrieve.
 	 *
 	 * @return array<int, array<string, mixed>> The objects as arrays.

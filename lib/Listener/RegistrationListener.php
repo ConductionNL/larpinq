@@ -24,6 +24,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Listener;
 
+use OCA\Larpinq\Service\RegistrationCharacterCheck;
 use OCA\Larpinq\Service\RegistrationService;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
@@ -59,6 +60,7 @@ class RegistrationListener implements IEventListener {
 	 *
 	 * @param IAppConfig $config Config (the registration schema id).
 	 * @param RegistrationService $service Capacity, waiting list and participants.
+	 * @param RegistrationCharacterCheck $characterCheck Whether a player may bring a character.
 	 * @param IUserSession $session Who is writing.
 	 * @param IL10N $l10n Translations for refusals.
 	 * @param LoggerInterface $logger The logger.
@@ -68,6 +70,7 @@ class RegistrationListener implements IEventListener {
 	public function __construct(
 		private readonly IAppConfig $config,
 		private readonly RegistrationService $service,
+		private readonly RegistrationCharacterCheck $characterCheck,
 		private readonly IUserSession $session,
 		private readonly IL10N $l10n,
 		private readonly LoggerInterface $logger,
@@ -82,11 +85,13 @@ class RegistrationListener implements IEventListener {
 	 * move up under that same decision, or two background runs could both
 	 * give away one freed place.
 	 *
-	 * @listener-placement inline correctness: the capacity lock taken in the pre-write handler is released here, in the same request, and a freed place is given to the waiting list under the same per-event decision; deferring either would hold every sign-up of the event or double-book the place.
-	 *
 	 * @param Event $event The dispatched event.
 	 *
 	 * @return void
+	 *
+	 * @listener-placement inline correctness: the capacity lock taken in the pre-write handler is
+	 * released here, in the same request, and a freed place goes to the waiting list under the same
+	 * per-event decision; deferring either would hold every sign-up of the event or double-book a place.
 	 *
 	 * @psalm-suppress MixedMethodCall  OpenRegister event/entity classes are optional dependencies.
 	 * @psalm-suppress MixedAssignment  OpenRegister event/entity classes are optional dependencies.
@@ -145,7 +150,7 @@ class RegistrationListener implements IEventListener {
 
 		$character = (string)($new['character'] ?? '');
 		if ($character !== '' && $character !== (string)($before['character'] ?? '')) {
-			$refusal = $this->service->characterRefusal(registration: $new);
+			$refusal = $this->characterCheck->refusal(registration: $new);
 			if ($refusal !== null) {
 				$event->stopPropagation();
 				// @phpstan-ignore-next-line
@@ -154,9 +159,12 @@ class RegistrationListener implements IEventListener {
 			}
 		}
 
+		$changes = [];
 		if ($old === null) {
 			$changes = $this->service->beforeCreate(registration: $new);
-		} else {
+		}
+
+		if ($old !== null) {
 			$changes = $this->service->beforeUpdate(new: $new, old: $before, actingUid: $this->actingUid());
 		}
 
