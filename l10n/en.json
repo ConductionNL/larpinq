@@ -601,7 +601,12 @@
         "Valid from": "Valid from",
         "What a player types, such as LANTERN. Upper and lower case count the same.": "What a player types, such as LANTERN. Upper and lower case count the same.",
         "Where the ticket type is listed among the others": "Where the ticket type is listed among the others",
-        "Who this ticket is for": "Who this ticket is for"
+        "Who this ticket is for": "Who this ticket is for",
+        "Ticket or option": "Ticket or option",
+        "Chosen": "Chosen",
+        "The ticket type or option chosen": "The ticket type or option chosen",
+        "The name when it was chosen": "The name when it was chosen",
+        "The listed price in cents when it was chosen": "The listed price in cents when it was chosen"
     },
     "plurals": {},
     "pluralForm": "nplurals=2; plural=(n != 1);"

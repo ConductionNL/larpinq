@@ -24,9 +24,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Service;
 
-use DateTimeImmutable;
 use Psr\Log\LoggerInterface;
-use Throwable;
 
 /**
  * The ticket type, options and code of a registration.
@@ -52,11 +50,11 @@ use Throwable;
 class TicketChoiceService {
 
 	/**
-	 * Upper bound of the rows one event is read with.
+	 * The event's ticket types, options and codes.
 	 *
-	 * @var integer
+	 * @var TicketCatalog
 	 */
-	private const MAX_ROWS = 2000;
+	private readonly TicketCatalog $catalog;
 
 	/**
 	 * Constructor.
@@ -64,15 +62,38 @@ class TicketChoiceService {
 	 * @param RegisterObjectFetcher $fetcher Reads the event's ticket types, options, codes and registrations.
 	 * @param RegistrationService $registrations The event lock and the ticket type place limits.
 	 * @param LoggerInterface $logger The logger.
+	 * @param TicketCatalog|null $catalog The event's ticket types, options and codes; built from the fetcher when absent.
 	 *
 	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
 	 */
 	public function __construct(
-		private readonly RegisterObjectFetcher $fetcher,
+		RegisterObjectFetcher $fetcher,
 		private readonly RegistrationService $registrations,
-		private readonly LoggerInterface $logger,
+		LoggerInterface $logger,
+		?TicketCatalog $catalog = null,
 	) {
+		$this->catalog = ($catalog ?? new TicketCatalog(fetcher: $fetcher, logger: $logger));
 	}//end __construct()
+
+	/**
+	 * Check and price the choices of a registration, as the fields to set or
+	 * the reason it is refused. A refusal releases the event's lock.
+	 *
+	 * @param array<string, mixed> $new The registration as it will be.
+	 * @param array<string, mixed>|null $old The registration as stored, or null on create.
+	 *
+	 * @return array{refusal: string|null, changes: array<string, mixed>} The outcome.
+	 *
+	 * @spec openspec/specs/event-registration/spec.md
+	 */
+	public function check(array $new, ?array $old): array {
+		try {
+			return ['refusal' => null, 'changes' => $this->choose(new: $new, old: $old)];
+		} catch (TicketChoiceRefusedException $e) {
+			$this->registrations->release(eventId: (string)($new['event'] ?? ''));
+			return ['refusal' => $e->getMessage(), 'changes' => []];
+		}
+	}//end check()
 
 	/**
 	 * Check the choices of a registration and write its price lines.
@@ -102,13 +123,26 @@ class TicketChoiceService {
 			throw new TicketChoiceRefusedException('The event is busy. Try again in a moment.');
 		}
 
-		$codeRow = $this->matchCode(eventId: $eventId, code: $code, registration: $new, keptCode: (string)($before['accessCode'] ?? ''));
+		$codeRow = $this->catalog->matchCode(eventId: $eventId, code: $code, registration: $new, keptCode: (string)($before['accessCode'] ?? ''));
 		$lines = [];
 		if ($ticketId !== '') {
 			$lines[] = $this->ticketLine(new: $new, old: $before, ticketId: $ticketId, codeRow: $codeRow);
 		}
 
-		$lines = array_merge($lines, $this->optionLines(new: $new, old: $before, optionIds: $optionIds));
+		return $this->changes(lines: array_merge($lines, $this->optionLines(new: $new, old: $before, optionIds: $optionIds)), codeRow: $codeRow);
+	}//end choose()
+
+	/**
+	 * The fields to set from checked lines and the matched code.
+	 *
+	 * @param list<array<string, mixed>> $lines The price lines.
+	 * @param array<string, mixed>|null $codeRow The matched code.
+	 *
+	 * @return array<string, mixed> The fields to set.
+	 *
+	 * @throws TicketChoiceRefusedException When the lines are in more than one currency.
+	 */
+	private function changes(array $lines, ?array $codeRow): array {
 		if (count(array_unique(array_column($lines, 'currency'))) > 1) {
 			throw new TicketChoiceRefusedException('All choices of a registration must be in one currency.');
 		}
@@ -119,7 +153,7 @@ class TicketChoiceService {
 		}
 
 		return $changes;
-	}//end choose()
+	}//end changes()
 
 	/**
 	 * What a registration's player may choose now: the ticket types on sale
@@ -138,7 +172,7 @@ class TicketChoiceService {
 		$codeRow = null;
 		if (trim($code) !== '') {
 			try {
-				$codeRow = $this->matchCode(
+				$codeRow = $this->catalog->matchCode(
 					eventId: $eventId,
 					code: trim($code),
 					registration: $registration,
@@ -152,9 +186,9 @@ class TicketChoiceService {
 
 		$chosen = (string)($registration['ticketType'] ?? '');
 		$ticketTypes = [];
-		foreach ($this->rows(objectType: 'tickettype', eventId: $eventId) as $ticket) {
+		foreach ($this->catalog->rows(objectType: 'tickettype', eventId: $eventId) as $ticket) {
 			$id = (string)($ticket['id'] ?? '');
-			if ($id !== $chosen && $this->offered(ticket: $ticket, codeRow: $codeRow) === false) {
+			if ($id !== $chosen && $this->catalog->offered(ticket: $ticket, codeRow: $codeRow) === false) {
 				continue;
 			}
 
@@ -166,7 +200,7 @@ class TicketChoiceService {
 
 		usort($ticketTypes, static fn (array $one, array $two): int => ($one['order'] <=> $two['order']));
 		$options = [];
-		foreach ($this->rows(objectType: 'registrationoption', eventId: $eventId) as $option) {
+		foreach ($this->catalog->rows(objectType: 'registrationoption', eventId: $eventId) as $option) {
 			$full = $this->optionFull(option: $option, registration: $registration);
 			$options[] = array_merge($this->summary(row: $option, fields: ['category']), ['full' => $full]);
 		}
@@ -175,7 +209,7 @@ class TicketChoiceService {
 			'ticketTypes' => $ticketTypes,
 			'options' => $options,
 			'code' => $state,
-			'chosen' => ['ticketType' => $chosen, 'options' => $this->ids(value: $registration['options'] ?? [])],
+			'chosen' => ['ticketType' => $chosen, 'options' => $this->catalog->ids(value: $registration['options'] ?? [])],
 		];
 	}//end offer()
 
@@ -192,20 +226,20 @@ class TicketChoiceService {
 	public function counts(string $eventId): array {
 		$tickets = [];
 		$options = [];
-		foreach ($this->accepted(eventId: $eventId) as $registration) {
+		foreach ($this->catalog->accepted(eventId: $eventId) as $registration) {
 			$ticket = (string)($registration['ticketType'] ?? '');
 			$tickets[$ticket] = (($tickets[$ticket] ?? 0) + 1);
-			foreach ($this->ids(value: $registration['options'] ?? []) as $option) {
+			foreach ($this->catalog->ids(value: $registration['options'] ?? []) as $option) {
 				$options[$option] = (($options[$option] ?? 0) + 1);
 			}
 		}
 
 		$result = ['ticketTypes' => [], 'options' => []];
-		foreach ($this->rows(objectType: 'tickettype', eventId: $eventId) as $row) {
+		foreach ($this->catalog->rows(objectType: 'tickettype', eventId: $eventId) as $row) {
 			$result['ticketTypes'][] = $this->counted(row: $row, field: 'role', counts: $tickets);
 		}
 
-		foreach ($this->rows(objectType: 'registrationoption', eventId: $eventId) as $row) {
+		foreach ($this->catalog->rows(objectType: 'registrationoption', eventId: $eventId) as $row) {
 			$result['options'][] = $this->counted(row: $row, field: 'category', counts: $options);
 		}
 
@@ -234,7 +268,7 @@ class TicketChoiceService {
 	 * @return array{0: string, 1: list<string>, 2: string} The choices.
 	 */
 	private function choicesOf(array $registration): array {
-		$options = $this->ids(value: $registration['options'] ?? []);
+		$options = $this->catalog->ids(value: $registration['options'] ?? []);
 		sort($options);
 		return [(string)($registration['ticketType'] ?? ''), $options, trim((string)($registration['code'] ?? ''))];
 	}//end choicesOf()
@@ -275,74 +309,6 @@ class TicketChoiceService {
 		return ['lines' => []];
 	}//end noLines()
 
-	/**
-	 * The code of the event that matches what was typed, checked; null when nothing was typed.
-	 *
-	 * @param string $eventId The event.
-	 * @param string $code What was typed.
-	 * @param array<string, mixed> $registration The registration (not counted as a use).
-	 * @param string $keptCode The code the registration already uses (its window and uses are not checked again).
-	 *
-	 * @return array<string, mixed>|null The code.
-	 *
-	 * @throws TicketChoiceRefusedException When the code is unknown, outside its window or used up.
-	 */
-	private function matchCode(string $eventId, string $code, array $registration, string $keptCode): ?array {
-		if ($code === '') {
-			return null;
-		}
-
-		foreach ($this->rows(objectType: 'accesscode', eventId: $eventId) as $row) {
-			if (strcasecmp((string)($row['code'] ?? ''), $code) !== 0) {
-				continue;
-			}
-
-			if ((string)($row['id'] ?? '') !== $keptCode) {
-				$this->checkCode(row: $row, registrationId: (string)($registration['id'] ?? ''));
-			}
-
-			return $row;
-		}
-
-		throw new TicketChoiceRefusedException('This code is not known for this event.');
-	}//end matchCode()
-
-	/**
-	 * Refuse a code outside its window or past its uses.
-	 *
-	 * @param array<string, mixed> $row The code.
-	 * @param string $registrationId The registration (not counted as a use).
-	 *
-	 * @return void
-	 *
-	 * @throws TicketChoiceRefusedException When the code does not work now.
-	 */
-	private function checkCode(array $row, string $registrationId): void {
-		if ($this->before(moment: $row['validFrom'] ?? null) === true) {
-			throw new TicketChoiceRefusedException('This code is not valid yet.');
-		}
-
-		if ($this->after(moment: $row['validUntil'] ?? null) === true) {
-			throw new TicketChoiceRefusedException('This code has expired.');
-		}
-
-		if (is_numeric($row['maxUses'] ?? null) === false) {
-			return;
-		}
-
-		$uses = $this->fetcher->getObjectsWithAppAuthority(
-			objectType: 'registration',
-			filters: ['event' => (string)($row['event'] ?? ''), 'accessCode' => (string)($row['id'] ?? '')],
-			limit: self::MAX_ROWS
-		);
-		$counted = array_filter(
-			$uses,
-			static fn (array $use): bool => (string)($use['id'] ?? '') !== $registrationId && (string)($use['status'] ?? '') !== 'cancelled'
-		);
-		if (count($counted) >= (int)$row['maxUses']) {
-			throw new TicketChoiceRefusedException('This code has been used up.');
-		}
-	}//end checkCode()
 
 	/**
 	 * The price line of the chosen ticket type, checked.
@@ -357,12 +323,12 @@ class TicketChoiceService {
 	 * @throws TicketChoiceRefusedException When the ticket type may not be chosen.
 	 */
 	private function ticketLine(array $new, array $old, string $ticketId, ?array $codeRow): array {
-		$ticket = $this->find(objectType: 'tickettype', eventId: (string)($new['event'] ?? ''), id: $ticketId);
+		$ticket = $this->catalog->find(objectType: 'tickettype', eventId: (string)($new['event'] ?? ''), id: $ticketId);
 		if ($ticket === null) {
 			throw new TicketChoiceRefusedException('This ticket type is not offered for this event.');
 		}
 
-		if (($ticket['hidden'] ?? false) === true && $this->unlocks(codeRow: $codeRow, ticketId: $ticketId) === false) {
+		if (($ticket['hidden'] ?? false) === true && $this->catalog->unlocks(codeRow: $codeRow, ticketId: $ticketId) === false) {
 			throw new TicketChoiceRefusedException('This ticket type needs a code that unlocks it.');
 		}
 
@@ -371,7 +337,7 @@ class TicketChoiceService {
 			return $kept;
 		}
 
-		if ($this->onSale(ticket: $ticket) === false) {
+		if ($this->catalog->onSale(ticket: $ticket) === false) {
 			throw new TicketChoiceRefusedException('This ticket type is not on sale now.');
 		}
 
@@ -396,7 +362,7 @@ class TicketChoiceService {
 	private function optionLines(array $new, array $old, array $optionIds): array {
 		$lines = [];
 		foreach ($optionIds as $optionId) {
-			$option = $this->find(objectType: 'registrationoption', eventId: (string)($new['event'] ?? ''), id: $optionId);
+			$option = $this->catalog->find(objectType: 'registrationoption', eventId: (string)($new['event'] ?? ''), id: $optionId);
 			if ($option === null) {
 				throw new TicketChoiceRefusedException('This option is not offered for this event.');
 			}
@@ -432,8 +398,8 @@ class TicketChoiceService {
 
 		$optionId = (string)($option['id'] ?? '');
 		$taken = 0;
-		foreach ($this->accepted(eventId: (string)($option['event'] ?? '')) as $other) {
-			$chose = in_array($optionId, $this->ids(value: $other['options'] ?? []), true);
+		foreach ($this->catalog->accepted(eventId: (string)($option['event'] ?? '')) as $other) {
+			$chose = in_array($optionId, $this->catalog->ids(value: $other['options'] ?? []), true);
 			if ($chose === true && (string)($other['id'] ?? '') !== (string)($registration['id'] ?? '')) {
 				$taken++;
 			}
@@ -442,92 +408,6 @@ class TicketChoiceService {
 		return $taken >= (int)$option['placeLimit'];
 	}//end optionFull()
 
-	/**
-	 * Whether a ticket type is offered: on sale, and not hidden unless the code unlocks it.
-	 *
-	 * @param array<string, mixed> $ticket The ticket type.
-	 * @param array<string, mixed>|null $codeRow The matched code.
-	 *
-	 * @return bool True when offered.
-	 */
-	private function offered(array $ticket, ?array $codeRow): bool {
-		if (($ticket['hidden'] ?? false) === true && $this->unlocks(codeRow: $codeRow, ticketId: (string)($ticket['id'] ?? '')) === false) {
-			return false;
-		}
-
-		return $this->onSale(ticket: $ticket);
-	}//end offered()
-
-	/**
-	 * Whether the code unlocks the ticket type.
-	 *
-	 * @param array<string, mixed>|null $codeRow The matched code.
-	 * @param string $ticketId The ticket type.
-	 *
-	 * @return bool True when it does.
-	 */
-	private function unlocks(?array $codeRow, string $ticketId): bool {
-		if ($codeRow === null) {
-			return false;
-		}
-
-		return in_array($ticketId, $this->ids(value: $codeRow['unlocks'] ?? []), true);
-	}//end unlocks()
-
-	/**
-	 * Whether now is inside the ticket type's sale window.
-	 *
-	 * @param array<string, mixed> $ticket The ticket type.
-	 *
-	 * @return bool True when on sale.
-	 */
-	private function onSale(array $ticket): bool {
-		return $this->before(moment: $ticket['saleFrom'] ?? null) === false && $this->after(moment: $ticket['saleUntil'] ?? null) === false;
-	}//end onSale()
-
-	/**
-	 * Whether now is before a moment; false without a readable moment.
-	 *
-	 * @param mixed $moment The moment.
-	 *
-	 * @return bool True when the moment is still to come.
-	 */
-	private function before(mixed $moment): bool {
-		$at = $this->moment(value: $moment);
-		return $at !== null && $at > new DateTimeImmutable();
-	}//end before()
-
-	/**
-	 * Whether now is after a moment; false without a readable moment.
-	 *
-	 * @param mixed $moment The moment.
-	 *
-	 * @return bool True when the moment has passed.
-	 */
-	private function after(mixed $moment): bool {
-		$at = $this->moment(value: $moment);
-		return $at !== null && $at < new DateTimeImmutable();
-	}//end after()
-
-	/**
-	 * A stored moment, or null when empty or unreadable.
-	 *
-	 * @param mixed $value The stored value.
-	 *
-	 * @return DateTimeImmutable|null The moment.
-	 */
-	private function moment(mixed $value): ?DateTimeImmutable {
-		if (is_string($value) === false || $value === '') {
-			return null;
-		}
-
-		try {
-			return new DateTimeImmutable($value);
-		} catch (Throwable $e) {
-			$this->logger->warning('Larpinq: a ticket moment could not be read: {value}', ['value' => $value]);
-			return null;
-		}
-	}//end moment()
 
 	/**
 	 * The stored line of an unchanged choice.
@@ -589,74 +469,4 @@ class TicketChoiceService {
 		return $summary;
 	}//end summary()
 
-	/**
-	 * One object of the event, read with the app's authority.
-	 *
-	 * @param string $objectType The type.
-	 * @param string $eventId The event.
-	 * @param string $id The object.
-	 *
-	 * @return array<string, mixed>|null The object, or null when the event has no such object.
-	 */
-	private function find(string $objectType, string $eventId, string $id): ?array {
-		foreach ($this->rows(objectType: $objectType, eventId: $eventId) as $row) {
-			if ((string)($row['id'] ?? '') === $id) {
-				return $row;
-			}
-		}
-
-		return null;
-	}//end find()
-
-	/**
-	 * The objects of one type of the event, read with the app's authority.
-	 *
-	 * @param string $objectType The type.
-	 * @param string $eventId The event.
-	 *
-	 * @return list<array<string, mixed>> The objects.
-	 */
-	private function rows(string $objectType, string $eventId): array {
-		if ($eventId === '') {
-			return [];
-		}
-
-		return array_values($this->fetcher->getObjectsWithAppAuthority(objectType: $objectType, filters: ['event' => $eventId], limit: self::MAX_ROWS));
-	}//end rows()
-
-	/**
-	 * The accepted registrations of the event.
-	 *
-	 * @param string $eventId The event.
-	 *
-	 * @return list<array<string, mixed>> The registrations.
-	 */
-	private function accepted(string $eventId): array {
-		if ($eventId === '') {
-			return [];
-		}
-
-		return array_values(
-			$this->fetcher->getObjectsWithAppAuthority(
-				objectType: 'registration',
-				filters: ['event' => $eventId, 'status' => RegistrationService::ACCEPTED],
-				limit: self::MAX_ROWS
-			)
-		);
-	}//end accepted()
-
-	/**
-	 * A list of uuids from a stored value.
-	 *
-	 * @param mixed $value The stored value.
-	 *
-	 * @return list<string> The uuids.
-	 */
-	private function ids(mixed $value): array {
-		if (is_array($value) === false) {
-			return [];
-		}
-
-		return array_values(array_filter(array_map('strval', array_filter($value, 'is_scalar')), static fn (string $id): bool => $id !== ''));
-	}//end ids()
 }//end class

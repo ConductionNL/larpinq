@@ -636,7 +636,12 @@
         "Valid from": "Giltig från",
         "What a player types, such as LANTERN. Upper and lower case count the same.": "Det en spelare skriver, till exempel LANTERN. Stora och små bokstäver räknas lika.",
         "Where the ticket type is listed among the others": "Var biljettypen står bland de andra",
-        "Who this ticket is for": "Vem den här biljetten är för"
+        "Who this ticket is for": "Vem den här biljetten är för",
+        "Ticket or option": "Biljett eller tillval",
+        "Chosen": "Valt",
+        "The ticket type or option chosen": "Den valda biljettypen eller det valda tillvalet",
+        "The name when it was chosen": "Namnet när det valdes",
+        "The listed price in cents when it was chosen": "Det angivna priset i cent när det valdes"
     },
     "plurals": {}
 }

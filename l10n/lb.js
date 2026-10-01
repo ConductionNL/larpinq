@@ -637,7 +637,12 @@ OC.L10N.register(
         "Valid from": "Gëlteg vun",
         "What a player types, such as LANTERN. Upper and lower case count the same.": "Wat e Spiller tippt, wéi LANTERN. Grouss- a Klengbuschtawen zielen d'selwecht.",
         "Where the ticket type is listed among the others": "Wou d'Ticketart ënnert deenen aneren steet",
-        "Who this ticket is for": "Fir wien dësen Ticket ass"
+        "Who this ticket is for": "Fir wien dësen Ticket ass",
+        "Ticket or option": "Ticket oder Optioun",
+        "Chosen": "Gewielt",
+        "The ticket type or option chosen": "D'gewielt Ticketart oder Optioun",
+        "The name when it was chosen": "Den Numm am Moment vun der Wiel",
+        "The listed price in cents when it was chosen": "De Lëschtepräis a Cent am Moment vun der Wiel"
     },
     "nplurals=2; plural=(n != 1);"
 )

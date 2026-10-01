@@ -636,7 +636,12 @@
         "Valid from": "E vlefshme nga",
         "What a player types, such as LANTERN. Upper and lower case count the same.": "Çfarë shkruan një lojtar, p.sh. LANTERN. Shkronjat e mëdha dhe të vogla llogariten njësoj.",
         "Where the ticket type is listed among the others": "Ku renditet lloji i biletës mes të tjerëve",
-        "Who this ticket is for": "Për kë është kjo biletë"
+        "Who this ticket is for": "Për kë është kjo biletë",
+        "Ticket or option": "Biletë ose opsion",
+        "Chosen": "E zgjedhur",
+        "The ticket type or option chosen": "Lloji i biletës ose opsioni i zgjedhur",
+        "The name when it was chosen": "Emri në çastin e zgjedhjes",
+        "The listed price in cents when it was chosen": "Çmimi i shpallur në cent në çastin e zgjedhjes"
     },
     "plurals": {}
 }

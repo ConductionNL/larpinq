@@ -39,13 +39,11 @@ describe('fetchOffer', () => {
 			code: 'valid',
 			chosen: { ticketType: '', options: [] },
 		}
-		globalThis.fetch = vi
-			.fn()
-			.mockResolvedValueOnce({
-				ok: true,
-				status: 200,
-				json: async () => offer,
-			})
+		globalThis.fetch = vi.fn().mockResolvedValueOnce({
+			ok: true,
+			status: 200,
+			json: async () => offer,
+		})
 		const result = await fetchOffer(REG, ' LANTERN ')
 		expect(globalThis.fetch.mock.calls[0][0]).toBe(
 			`/index.php/apps/larpinq/api/registrations/${REG}/offer?code=LANTERN`,
@@ -118,13 +116,11 @@ describe('fetchChoiceCounts', () => {
 			ticketTypes: [{ id: 't1', name: 'Player', count: 3 }],
 			options: [],
 		}
-		globalThis.fetch = vi
-			.fn()
-			.mockResolvedValueOnce({
-				ok: true,
-				status: 200,
-				json: async () => counts,
-			})
+		globalThis.fetch = vi.fn().mockResolvedValueOnce({
+			ok: true,
+			status: 200,
+			json: async () => counts,
+		})
 		expect(await fetchChoiceCounts('ev1')).toEqual({ state: 'ok', ...counts })
 		expect(globalThis.fetch.mock.calls[0][0]).toBe(
 			'/index.php/apps/larpinq/api/events/ev1/choices',

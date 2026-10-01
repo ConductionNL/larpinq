@@ -637,7 +637,12 @@ OC.L10N.register(
         "Valid from": "Ισχύει από",
         "What a player types, such as LANTERN. Upper and lower case count the same.": "Τι πληκτρολογεί ένας παίκτης, π.χ. LANTERN. Κεφαλαία και πεζά μετράνε το ίδιο.",
         "Where the ticket type is listed among the others": "Πού εμφανίζεται ο τύπος εισιτηρίου ανάμεσα στους άλλους",
-        "Who this ticket is for": "Για ποιον είναι αυτό το εισιτήριο"
+        "Who this ticket is for": "Για ποιον είναι αυτό το εισιτήριο",
+        "Ticket or option": "Εισιτήριο ή επιλογή",
+        "Chosen": "Επιλεγμένο",
+        "The ticket type or option chosen": "Ο επιλεγμένος τύπος εισιτηρίου ή η επιλογή",
+        "The name when it was chosen": "Το όνομα τη στιγμή της επιλογής",
+        "The listed price in cents when it was chosen": "Η αναγραφόμενη τιμή σε λεπτά τη στιγμή της επιλογής"
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -636,7 +636,12 @@
         "Valid from": "Érvényes ettől",
         "What a player types, such as LANTERN. Upper and lower case count the same.": "Amit a játékos beír, például LANTERN. A kis- és nagybetűk egyformán számítanak.",
         "Where the ticket type is listed among the others": "Hol áll a jegytípus a többi között",
-        "Who this ticket is for": "Kinek szól ez a jegy"
+        "Who this ticket is for": "Kinek szól ez a jegy",
+        "Ticket or option": "Jegy vagy opció",
+        "Chosen": "Választott",
+        "The ticket type or option chosen": "A választott jegytípus vagy opció",
+        "The name when it was chosen": "A név a választás pillanatában",
+        "The listed price in cents when it was chosen": "A listaár centben a választás pillanatában"
     },
     "plurals": {}
 }

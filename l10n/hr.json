@@ -636,7 +636,12 @@
         "Valid from": "Vrijedi od",
         "What a player types, such as LANTERN. Upper and lower case count the same.": "Što igrač upiše, na primjer LANTERN. Velika i mala slova računaju se jednako.",
         "Where the ticket type is listed among the others": "Gdje se vrsta ulaznice nalazi među ostalima",
-        "Who this ticket is for": "Za koga je ova ulaznica"
+        "Who this ticket is for": "Za koga je ova ulaznica",
+        "Ticket or option": "Ulaznica ili opcija",
+        "Chosen": "Odabrano",
+        "The ticket type or option chosen": "Odabrana vrsta ulaznice ili opcija",
+        "The name when it was chosen": "Naziv u trenutku odabira",
+        "The listed price in cents when it was chosen": "Navedena cijena u centima u trenutku odabira"
     },
     "plurals": {}
 }

@@ -637,7 +637,12 @@ OC.L10N.register(
         "Valid from": "Galioja nuo",
         "What a player types, such as LANTERN. Upper and lower case count the same.": "Ką įveda žaidėjas, pavyzdžiui, LANTERN. Didžiosios ir mažosios raidės laikomos vienodomis.",
         "Where the ticket type is listed among the others": "Kur bilieto tipas stovi tarp kitų",
-        "Who this ticket is for": "Kam skirtas šis bilietas"
+        "Who this ticket is for": "Kam skirtas šis bilietas",
+        "Ticket or option": "Bilietas arba pasirinkimas",
+        "Chosen": "Pasirinkta",
+        "The ticket type or option chosen": "Pasirinktas bilieto tipas arba pasirinkimas",
+        "The name when it was chosen": "Pavadinimas pasirinkimo metu",
+        "The listed price in cents when it was chosen": "Nurodyta kaina centais pasirinkimo metu"
     },
     "nplurals=2; plural=(n != 1);"
 )

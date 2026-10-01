@@ -636,7 +636,12 @@
         "Valid from": "Valaivel a partir da",
         "What a player types, such as LANTERN. Upper and lower case count the same.": "Quai ch'in giugader tippa, sco LANTERN. Bustabs gronds e pitschens quintan tuttina.",
         "Where the ticket type is listed among the others": "Nua ch'il tip da bigliet stat tranter ils auters",
-        "Who this ticket is for": "Per tgi ch'è quest bigliet"
+        "Who this ticket is for": "Per tgi ch'è quest bigliet",
+        "Ticket or option": "Bigliet u opziun",
+        "Chosen": "Tschernì",
+        "The ticket type or option chosen": "Il tip da bigliet u l'opziun tschernida",
+        "The name when it was chosen": "Il num il mument da la tscherna",
+        "The listed price in cents when it was chosen": "Il pretsch inditgà en centims il mument da la tscherna"
     },
     "plurals": {}
 }

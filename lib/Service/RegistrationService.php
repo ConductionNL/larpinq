@@ -92,6 +92,13 @@ class RegistrationService {
 	private bool $promoting = false;
 
 	/**
+	 * How many places of the event and of a ticket type are taken.
+	 *
+	 * @var RegistrationPlaces
+	 */
+	private readonly RegistrationPlaces $places;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param RegisterObjectFetcher $fetcher Reads and writes the register.
@@ -109,6 +116,7 @@ class RegistrationService {
 		private readonly int $lockAttempts = 30,
 		private readonly int $lockWaitMicros = 100000,
 	) {
+		$this->places = new RegistrationPlaces(fetcher: $fetcher);
 	}//end __construct()
 
 	/**
@@ -252,20 +260,7 @@ class RegistrationService {
 	 * @spec openspec/specs/event-registration/spec.md
 	 */
 	public function ticketTypeFull(array $registration): bool {
-		$limit = $this->ticketLimit(registration: $registration);
-		if ($limit === null) {
-			return false;
-		}
-
-		$taken = 0;
-		$ticketId = (string)($registration['ticketType'] ?? '');
-		foreach ($this->registrations(eventId: (string)($registration['event'] ?? ''), status: self::ACCEPTED) as $other) {
-			if ((string)($other['ticketType'] ?? '') === $ticketId && (string)($other['id'] ?? '') !== (string)($registration['id'] ?? '')) {
-				$taken++;
-			}
-		}
-
-		return $taken >= $limit;
+		return $this->places->ticketTypeFull(registration: $registration);
 	}//end ticketTypeFull()
 
 	/**
@@ -286,7 +281,7 @@ class RegistrationService {
 	private function placeOutcome(array $event, array $registration, string $excludeId): string {
 		$capacity = $event['capacity'] ?? null;
 		$eventLimited = is_int($capacity) === true || is_numeric($capacity) === true;
-		if ($eventLimited === false && $this->ticketLimit(registration: $registration) === null) {
+		if ($eventLimited === false && $this->places->ticketLimit(registration: $registration) === null) {
 			return self::ACCEPTED;
 		}
 
@@ -296,7 +291,7 @@ class RegistrationService {
 			return self::WAITLISTED;
 		}
 
-		if ($eventLimited === true && $this->placesTaken(event: $event, excludeId: $excludeId) >= (int)$capacity) {
+		if ($eventLimited === true && $this->places->placesTaken(event: $event, excludeId: $excludeId) >= (int)$capacity) {
 			return self::WAITLISTED;
 		}
 
@@ -306,60 +301,6 @@ class RegistrationService {
 
 		return self::ACCEPTED;
 	}//end placeOutcome()
-
-	/**
-	 * The place limit of the registration's ticket type, or null when it has none.
-	 *
-	 * @param array<string, mixed> $registration The registration.
-	 *
-	 * @return int|null The limit.
-	 */
-	private function ticketLimit(array $registration): ?int {
-		$ticketId = (string)($registration['ticketType'] ?? '');
-		$eventId = (string)($registration['event'] ?? '');
-		if ($ticketId === '' || $eventId === '') {
-			return null;
-		}
-
-		$rows = $this->fetcher->getObjectsWithAppAuthority(objectType: 'tickettype', filters: ['event' => $eventId], limit: self::MAX_ROWS);
-		foreach ($rows as $ticket) {
-			if ((string)($ticket['id'] ?? '') === $ticketId && is_numeric($ticket['placeLimit'] ?? null) === true) {
-				return (int)$ticket['placeLimit'];
-			}
-		}
-
-		return null;
-	}//end ticketLimit()
-
-	/**
-	 * Accepted registrations plus characters in the event that no accepted registration brings.
-	 *
-	 * @param array<string, mixed> $event The event.
-	 * @param string $excludeId A registration not to count.
-	 *
-	 * @return int The places taken.
-	 */
-	private function placesTaken(array $event, string $excludeId): int {
-		$accepted = $this->registrations(eventId: (string)($event['id'] ?? ''), status: self::ACCEPTED);
-		$brought = [];
-		$count = 0;
-		foreach ($accepted as $registration) {
-			if ((string)($registration['id'] ?? '') === $excludeId) {
-				continue;
-			}
-
-			$count++;
-			$brought[(string)($registration['character'] ?? '')] = true;
-		}
-
-		foreach ((array)($event['players'] ?? []) as $character) {
-			if (isset($brought[(string)$character]) === false) {
-				$count++;
-			}
-		}
-
-		return $count;
-	}//end placesTaken()
 
 	/**
 	 * Put the character of an accepted registration in the event, and take it out when the registration leaves accepted.

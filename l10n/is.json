@@ -636,7 +636,12 @@
         "Valid from": "Gildir frá",
         "What a player types, such as LANTERN. Upper and lower case count the same.": "Það sem leikmaður slær inn, til dæmis LANTERN. Hástafir og lágstafir teljast eins.",
         "Where the ticket type is listed among the others": "Hvar miðategundin stendur meðal hinna",
-        "Who this ticket is for": "Fyrir hvern þessi miði er"
+        "Who this ticket is for": "Fyrir hvern þessi miði er",
+        "Ticket or option": "Miði eða valkostur",
+        "Chosen": "Valið",
+        "The ticket type or option chosen": "Miðategundin eða valkosturinn sem var valinn",
+        "The name when it was chosen": "Nafnið þegar valið var gert",
+        "The listed price in cents when it was chosen": "Skráð verð í sentum þegar valið var gert"
     },
     "plurals": {}
 }

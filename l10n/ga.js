@@ -637,7 +637,12 @@ OC.L10N.register(
         "Valid from": "Bailí ó",
         "What a player types, such as LANTERN. Upper and lower case count the same.": "An rud a chlóscríobhann imreoir, mar shampla LANTERN. Áirítear ceannlitreacha agus litreacha beaga mar an gcéanna.",
         "Where the ticket type is listed among the others": "Cá háit a bhfuil an cineál ticéid i measc na cinn eile",
-        "Who this ticket is for": "Cé dó an ticéad seo"
+        "Who this ticket is for": "Cé dó an ticéad seo",
+        "Ticket or option": "Ticéad nó rogha",
+        "Chosen": "Roghnaithe",
+        "The ticket type or option chosen": "An cineál ticéid nó an rogha a roghnaíodh",
+        "The name when it was chosen": "An t-ainm nuair a roghnaíodh é",
+        "The listed price in cents when it was chosen": "An praghas liostaithe i gcent nuair a roghnaíodh é"
     },
     "nplurals=2; plural=(n != 1);"
 )

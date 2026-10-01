@@ -637,7 +637,12 @@ OC.L10N.register(
         "Valid from": "Válido desde",
         "What a player types, such as LANTERN. Upper and lower case count the same.": "Lo que escribe un jugador, como LANTERN. Mayúsculas y minúsculas cuentan igual.",
         "Where the ticket type is listed among the others": "Dónde aparece el tipo de entrada entre los demás",
-        "Who this ticket is for": "Para quién es esta entrada"
+        "Who this ticket is for": "Para quién es esta entrada",
+        "Ticket or option": "Entrada u opción",
+        "Chosen": "Elegido",
+        "The ticket type or option chosen": "El tipo de entrada o la opción elegidos",
+        "The name when it was chosen": "El nombre en el momento de elegir",
+        "The listed price in cents when it was chosen": "El precio indicado en céntimos en el momento de elegir"
     },
     "nplurals=2; plural=(n != 1);"
 )

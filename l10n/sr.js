@@ -637,7 +637,12 @@ OC.L10N.register(
         "Valid from": "Важи од",
         "What a player types, such as LANTERN. Upper and lower case count the same.": "Шта играч укуца, на пример LANTERN. Велика и мала слова се рачунају исто.",
         "Where the ticket type is listed among the others": "Где се врста улазнице налази међу осталима",
-        "Who this ticket is for": "За кога је ова улазница"
+        "Who this ticket is for": "За кога је ова улазница",
+        "Ticket or option": "Улазница или опција",
+        "Chosen": "Изабрано",
+        "The ticket type or option chosen": "Изабрана врста улазнице или опција",
+        "The name when it was chosen": "Назив у тренутку избора",
+        "The listed price in cents when it was chosen": "Наведена цена у центима у тренутку избора"
     },
     "nplurals=2; plural=(n != 1);"
 )

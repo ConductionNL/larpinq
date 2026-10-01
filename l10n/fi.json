@@ -636,7 +636,12 @@
         "Valid from": "Voimassa alkaen",
         "What a player types, such as LANTERN. Upper and lower case count the same.": "Mitä pelaaja kirjoittaa, esimerkiksi LANTERN. Isot ja pienet kirjaimet lasketaan samoiksi.",
         "Where the ticket type is listed among the others": "Missä kohdassa lipputyyppi on muiden joukossa",
-        "Who this ticket is for": "Kenelle tämä lippu on"
+        "Who this ticket is for": "Kenelle tämä lippu on",
+        "Ticket or option": "Lippu tai lisävalinta",
+        "Chosen": "Valittu",
+        "The ticket type or option chosen": "Valittu lipputyyppi tai lisävalinta",
+        "The name when it was chosen": "Nimi valintahetkellä",
+        "The listed price in cents when it was chosen": "Listahinta sentteinä valintahetkellä"
     },
     "plurals": {}
 }

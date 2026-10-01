@@ -636,7 +636,12 @@
         "Valid from": "Valide à partir du",
         "What a player types, such as LANTERN. Upper and lower case count the same.": "Ce que tape un joueur, par exemple LANTERN. Majuscules et minuscules comptent pareil.",
         "Where the ticket type is listed among the others": "La place du type de billet parmi les autres",
-        "Who this ticket is for": "À qui s'adresse ce billet"
+        "Who this ticket is for": "À qui s'adresse ce billet",
+        "Ticket or option": "Billet ou option",
+        "Chosen": "Choisi",
+        "The ticket type or option chosen": "Le type de billet ou l'option choisi",
+        "The name when it was chosen": "Le nom au moment du choix",
+        "The listed price in cents when it was chosen": "Le prix affiché en centimes au moment du choix"
     },
     "plurals": {}
 }

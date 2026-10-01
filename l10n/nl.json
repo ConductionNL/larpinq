@@ -728,7 +728,12 @@
         "Valid from": "Geldig vanaf",
         "What a player types, such as LANTERN. Upper and lower case count the same.": "Wat een speler typt, zoals LANTERN. Hoofd- en kleine letters tellen hetzelfde.",
         "Where the ticket type is listed among the others": "Waar het tickettype tussen de andere staat",
-        "Who this ticket is for": "Voor wie dit ticket is"
+        "Who this ticket is for": "Voor wie dit ticket is",
+        "Ticket or option": "Ticket of optie",
+        "Chosen": "Gekozen",
+        "The ticket type or option chosen": "Het gekozen tickettype of de gekozen optie",
+        "The name when it was chosen": "De naam op het moment van kiezen",
+        "The listed price in cents when it was chosen": "De vermelde prijs in centen op het moment van kiezen"
     },
     "plurals": {},
     "pluralForm": "nplurals=2; plural=(n != 1);"

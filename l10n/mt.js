@@ -637,7 +637,12 @@ OC.L10N.register(
         "Valid from": "Validu minn",
         "What a player types, such as LANTERN. Upper and lower case count the same.": "Dak li jittajpja plejer, bħal LANTERN. Ittri kbar u żgħar jgħoddu l-istess.",
         "Where the ticket type is listed among the others": "Fejn jidher it-tip ta' biljett fost l-oħrajn",
-        "Who this ticket is for": "Għal min hu dan il-biljett"
+        "Who this ticket is for": "Għal min hu dan il-biljett",
+        "Ticket or option": "Biljett jew għażla",
+        "Chosen": "Magħżul",
+        "The ticket type or option chosen": "It-tip ta' biljett jew l-għażla magħżula",
+        "The name when it was chosen": "L-isem meta saret l-għażla",
+        "The listed price in cents when it was chosen": "Il-prezz elenkat f'ċenteżmi meta saret l-għażla"
     },
     "nplurals=2; plural=(n != 1);"
 )

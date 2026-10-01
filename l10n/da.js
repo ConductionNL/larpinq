@@ -637,7 +637,12 @@ OC.L10N.register(
         "Valid from": "Gyldig fra",
         "What a player types, such as LANTERN. Upper and lower case count the same.": "Det, en spiller skriver, fx LANTERN. Store og små bogstaver tæller ens.",
         "Where the ticket type is listed among the others": "Hvor billettypen står blandt de andre",
-        "Who this ticket is for": "Hvem denne billet er til"
+        "Who this ticket is for": "Hvem denne billet er til",
+        "Ticket or option": "Billet eller tilvalg",
+        "Chosen": "Valgt",
+        "The ticket type or option chosen": "Den valgte billettype eller det valgte tilvalg",
+        "The name when it was chosen": "Navnet, da det blev valgt",
+        "The listed price in cents when it was chosen": "Den oplyste pris i øre, da det blev valgt"
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -636,7 +636,12 @@
         "Valid from": "Діє з",
         "What a player types, such as LANTERN. Upper and lower case count the same.": "Що вводить гравець, наприклад LANTERN. Великі й малі літери вважаються однаковими.",
         "Where the ticket type is listed among the others": "Де тип квитка стоїть серед інших",
-        "Who this ticket is for": "Для кого цей квиток"
+        "Who this ticket is for": "Для кого цей квиток",
+        "Ticket or option": "Квиток або опція",
+        "Chosen": "Обрано",
+        "The ticket type or option chosen": "Обраний тип квитка або опція",
+        "The name when it was chosen": "Назва на момент вибору",
+        "The listed price in cents when it was chosen": "Вказана ціна в центах на момент вибору"
     },
     "plurals": {}
 }

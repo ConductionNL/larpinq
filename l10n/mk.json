@@ -636,7 +636,12 @@
         "Valid from": "Важи од",
         "What a player types, such as LANTERN. Upper and lower case count the same.": "Што внесува играчот, на пример LANTERN. Големите и малите букви се сметаат исто.",
         "Where the ticket type is listed among the others": "Каде стои видот билет меѓу другите",
-        "Who this ticket is for": "За кого е овој билет"
+        "Who this ticket is for": "За кого е овој билет",
+        "Ticket or option": "Билет или опција",
+        "Chosen": "Избрано",
+        "The ticket type or option chosen": "Избраниот вид билет или опција",
+        "The name when it was chosen": "Името во моментот на изборот",
+        "The listed price in cents when it was chosen": "Наведената цена во центи во моментот на изборот"
     },
     "plurals": {}
 }

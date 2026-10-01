@@ -637,7 +637,12 @@ OC.L10N.register(
         "Valid from": "Platí od",
         "What a player types, such as LANTERN. Upper and lower case count the same.": "Čo hráč zadá, napríklad LANTERN. Veľké a malé písmená sa počítajú rovnako.",
         "Where the ticket type is listed among the others": "Kde sa typ vstupenky radí medzi ostatnými",
-        "Who this ticket is for": "Pre koho je táto vstupenka"
+        "Who this ticket is for": "Pre koho je táto vstupenka",
+        "Ticket or option": "Vstupenka alebo možnosť",
+        "Chosen": "Zvolené",
+        "The ticket type or option chosen": "Zvolený typ vstupenky alebo možnosť",
+        "The name when it was chosen": "Názov v čase voľby",
+        "The listed price in cents when it was chosen": "Cenníková cena v centoch v čase voľby"
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -347,23 +347,33 @@
                   "enum": [
                     "ticket",
                     "option"
-                  ]
+                  ],
+                  "title": "Kind",
+                  "description": "Ticket or option"
                 },
                 "ref": {
                   "type": "string",
-                  "format": "uuid"
+                  "format": "uuid",
+                  "title": "Chosen",
+                  "description": "The ticket type or option chosen"
                 },
                 "name": {
                   "type": "string",
-                  "maxLength": 255
+                  "maxLength": 255,
+                  "title": "Name",
+                  "description": "The name when it was chosen"
                 },
                 "amount": {
                   "type": "integer",
-                  "minimum": 0
+                  "minimum": 0,
+                  "title": "Listed price",
+                  "description": "The listed price in cents when it was chosen"
                 },
                 "currency": {
                   "type": "string",
-                  "pattern": "^[A-Z]{3}$"
+                  "pattern": "^[A-Z]{3}$",
+                  "title": "Currency",
+                  "description": "The currency of the price, such as EUR"
                 }
               }
             },

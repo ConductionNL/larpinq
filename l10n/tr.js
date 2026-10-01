@@ -637,7 +637,12 @@ OC.L10N.register(
         "Valid from": "Şu tarihten itibaren geçerli",
         "What a player types, such as LANTERN. Upper and lower case count the same.": "Bir oyuncunun yazdığı, örneğin LANTERN. Büyük ve küçük harfler aynı sayılır.",
         "Where the ticket type is listed among the others": "Bilet türünün diğerleri arasındaki yeri",
-        "Who this ticket is for": "Bu biletin kimin için olduğu"
+        "Who this ticket is for": "Bu biletin kimin için olduğu",
+        "Ticket or option": "Bilet veya seçenek",
+        "Chosen": "Seçilen",
+        "The ticket type or option chosen": "Seçilen bilet türü veya seçenek",
+        "The name when it was chosen": "Seçim anındaki ad",
+        "The listed price in cents when it was chosen": "Seçim anındaki kuruş cinsinden liste fiyatı"
     },
     "nplurals=2; plural=(n != 1);"
 )

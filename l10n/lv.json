@@ -636,7 +636,12 @@
         "Valid from": "Derīgs no",
         "What a player types, such as LANTERN. Upper and lower case count the same.": "Ko spēlētājs ieraksta, piemēram, LANTERN. Lielie un mazie burti skaitās vienādi.",
         "Where the ticket type is listed among the others": "Kur biļetes veids atrodas starp citiem",
-        "Who this ticket is for": "Kam šī biļete ir paredzēta"
+        "Who this ticket is for": "Kam šī biļete ir paredzēta",
+        "Ticket or option": "Biļete vai iespēja",
+        "Chosen": "Izvēlēts",
+        "The ticket type or option chosen": "Izvēlētais biļetes veids vai iespēja",
+        "The name when it was chosen": "Nosaukums izvēles brīdī",
+        "The listed price in cents when it was chosen": "Norādītā cena centos izvēles brīdī"
     },
     "plurals": {}
 }

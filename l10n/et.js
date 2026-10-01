@@ -637,7 +637,12 @@ OC.L10N.register(
         "Valid from": "Kehtib alates",
         "What a player types, such as LANTERN. Upper and lower case count the same.": "Mida mängija sisestab, näiteks LANTERN. Suur- ja väiketähti loetakse samaks.",
         "Where the ticket type is listed among the others": "Kus piletitüüp teiste seas asub",
-        "Who this ticket is for": "Kellele see pilet on"
+        "Who this ticket is for": "Kellele see pilet on",
+        "Ticket or option": "Pilet või lisavalik",
+        "Chosen": "Valitud",
+        "The ticket type or option chosen": "Valitud piletitüüp või lisavalik",
+        "The name when it was chosen": "Nimi valimise hetkel",
+        "The listed price in cents when it was chosen": "Loetletud hind sentides valimise hetkel"
     },
     "nplurals=2; plural=(n != 1);"
 )

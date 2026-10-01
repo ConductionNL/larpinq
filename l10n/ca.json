@@ -636,7 +636,12 @@
         "Valid from": "Vàlid des del",
         "What a player types, such as LANTERN. Upper and lower case count the same.": "El que escriu un jugador, com ara LANTERN. Majúscules i minúscules compten igual.",
         "Where the ticket type is listed among the others": "On apareix el tipus d'entrada entre els altres",
-        "Who this ticket is for": "Per a qui és aquesta entrada"
+        "Who this ticket is for": "Per a qui és aquesta entrada",
+        "Ticket or option": "Entrada o opció",
+        "Chosen": "Triat",
+        "The ticket type or option chosen": "El tipus d'entrada o l'opció triats",
+        "The name when it was chosen": "El nom en el moment de triar",
+        "The listed price in cents when it was chosen": "El preu indicat en cèntims en el moment de triar"
     },
     "plurals": {}
 }
