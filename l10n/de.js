@@ -511,7 +511,22 @@ OC.L10N.register(
         "Only game masters and the player can see which events this player attended.": "Nur Spielleitungen und die spielende Person selbst sehen, welche Veranstaltungen sie besucht hat.",
         "Could not load the events attended.": "Die besuchten Veranstaltungen konnten nicht geladen werden.",
         "Events attended: {count}": "Besuchte Veranstaltungen: {count}",
-        "No check-ins recorded yet.": "Noch keine Check-ins erfasst."
+        "No check-ins recorded yet.": "Noch keine Check-ins erfasst.",
+        "New players": "Neue Spielende",
+        "Mark reviewed": "Als geprüft markieren",
+        "Signed up through the portal": "Über das Portal angemeldet",
+        "Players marked reviewed: {count}": "Als geprüft markierte Spielende: {count}",
+        "Players not marked reviewed: {count}. Only game masters can review players.": "Nicht als geprüft markierte Spielende: {count}. Nur Spielleitungen können Spielende prüfen.",
+        "Portal account": "Portalkonto",
+        "The portal account this player signed up with. Set once by the portal.": "Das Portalkonto, mit dem sich diese Person angemeldet hat. Einmalig vom Portal gesetzt.",
+        "This player made their own profile through the portal.": "Diese Person hat ihr Profil selbst über das Portal angelegt.",
+        "Awaiting review": "Wartet auf Prüfung",
+        "A game master has not yet looked at this new player.": "Eine Spielleitung hat sich diese neue Person noch nicht angesehen.",
+        "Reviewed on": "Geprüft am",
+        "When a game master reviewed this new player.": "Wann eine Spielleitung diese neue Person geprüft hat.",
+        "Reviewed by": "Geprüft von",
+        "The game master who reviewed this new player.": "Die Spielleitung, die diese neue Person geprüft hat.",
+        "This portal account already has a player profile.": "Dieses Portalkonto hat bereits ein Spielendenprofil."
     },
     "nplurals=2; plural=(n != 1);"
 )

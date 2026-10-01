@@ -58,3 +58,11 @@ if (class_exists(\OCA\OpenRegister\Event\ObjectUpdatingEvent::class) === false) 
 	class ObjectUpdatingEvent {
 	}//end class
 }
+
+if (class_exists(\OCA\OpenRegister\Event\ObjectCreatedEvent::class) === false) {
+	/**
+	 * Stand-in for OpenRegister's post-create object event.
+	 */
+	class ObjectCreatedEvent {
+	}//end class
+}

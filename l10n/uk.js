@@ -511,7 +511,22 @@ OC.L10N.register(
         "Only game masters and the player can see which events this player attended.": "Лише майстри гри та сам гравець бачать, які події відвідав цей гравець.",
         "Could not load the events attended.": "Не вдалося завантажити відвідані події.",
         "Events attended: {count}": "Відвідані події: {count}",
-        "No check-ins recorded yet.": "Реєстрацій поки немає."
+        "No check-ins recorded yet.": "Реєстрацій поки немає.",
+        "New players": "Нові гравці",
+        "Mark reviewed": "Позначити як переглянутого",
+        "Signed up through the portal": "Зареєстрований через портал",
+        "Players marked reviewed: {count}": "Гравців позначено як переглянутих: {count}",
+        "Players not marked reviewed: {count}. Only game masters can review players.": "Гравців не позначено як переглянутих: {count}. Перевіряти гравців можуть лише майстри гри.",
+        "Portal account": "Обліковий запис порталу",
+        "The portal account this player signed up with. Set once by the portal.": "Обліковий запис порталу, з яким зареєструвався цей гравець. Портал задає його один раз.",
+        "This player made their own profile through the portal.": "Цей гравець сам створив свій профіль через портал.",
+        "Awaiting review": "Очікує перевірки",
+        "A game master has not yet looked at this new player.": "Жоден майстер гри ще не переглянув цього нового гравця.",
+        "Reviewed on": "Переглянуто",
+        "When a game master reviewed this new player.": "Коли майстер гри переглянув цього нового гравця.",
+        "Reviewed by": "Переглянув",
+        "The game master who reviewed this new player.": "Майстер гри, який переглянув цього нового гравця.",
+        "This portal account already has a player profile.": "Цей обліковий запис порталу вже має профіль гравця."
     },
     "nplurals=2; plural=(n != 1);"
 )

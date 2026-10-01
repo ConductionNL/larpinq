@@ -510,7 +510,22 @@
         "Only game masters and the player can see which events this player attended.": "Doar maeștrii de joc și jucătorul însuși văd la ce evenimente a participat acest jucător.",
         "Could not load the events attended.": "Evenimentele la care a participat nu au putut fi încărcate.",
         "Events attended: {count}": "Evenimente la care a participat: {count}",
-        "No check-ins recorded yet.": "Încă nu există check-in-uri înregistrate."
+        "No check-ins recorded yet.": "Încă nu există check-in-uri înregistrate.",
+        "New players": "Jucători noi",
+        "Mark reviewed": "Marchează ca verificat",
+        "Signed up through the portal": "Înscris prin portal",
+        "Players marked reviewed: {count}": "Jucători marcați ca verificați: {count}",
+        "Players not marked reviewed: {count}. Only game masters can review players.": "Jucători nemarcați ca verificați: {count}. Doar maeștrii de joc pot verifica jucători.",
+        "Portal account": "Cont de portal",
+        "The portal account this player signed up with. Set once by the portal.": "Contul de portal cu care s-a înscris acest jucător. Setat o singură dată de portal.",
+        "This player made their own profile through the portal.": "Acest jucător și-a creat singur profilul prin portal.",
+        "Awaiting review": "Așteaptă verificarea",
+        "A game master has not yet looked at this new player.": "Niciun maestru de joc nu l-a văzut încă pe acest jucător nou.",
+        "Reviewed on": "Verificat la",
+        "When a game master reviewed this new player.": "Când un maestru de joc l-a verificat pe acest jucător nou.",
+        "Reviewed by": "Verificat de",
+        "The game master who reviewed this new player.": "Maestrul de joc care l-a verificat pe acest jucător nou.",
+        "This portal account already has a player profile.": "Acest cont de portal are deja un profil de jucător."
     },
     "plurals": {}
 }

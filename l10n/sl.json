@@ -510,7 +510,22 @@
         "Only game masters and the player can see which events this player attended.": "Samo vodje igre in igralec sam vidijo, katerih dogodkov se je ta igralec udeležil.",
         "Could not load the events attended.": "Obiskanih dogodkov ni bilo mogoče naložiti.",
         "Events attended: {count}": "Obiskani dogodki: {count}",
-        "No check-ins recorded yet.": "Prijav še ni zabeleženih."
+        "No check-ins recorded yet.": "Prijav še ni zabeleženih.",
+        "New players": "Novi igralci",
+        "Mark reviewed": "Označi kot pregledano",
+        "Signed up through the portal": "Prijavljen prek portala",
+        "Players marked reviewed: {count}": "Igralci, označeni kot pregledani: {count}",
+        "Players not marked reviewed: {count}. Only game masters can review players.": "Igralci, ki niso označeni kot pregledani: {count}. Igralce lahko pregledujejo samo vodje igre.",
+        "Portal account": "Račun portala",
+        "The portal account this player signed up with. Set once by the portal.": "Račun portala, s katerim se je ta igralec prijavil. Portal ga nastavi enkrat.",
+        "This player made their own profile through the portal.": "Ta igralec je sam ustvaril svoj profil prek portala.",
+        "Awaiting review": "Čaka na pregled",
+        "A game master has not yet looked at this new player.": "Noben vodja igre še ni pregledal tega novega igralca.",
+        "Reviewed on": "Pregledano dne",
+        "When a game master reviewed this new player.": "Kdaj je vodja igre pregledal tega novega igralca.",
+        "Reviewed by": "Pregledal",
+        "The game master who reviewed this new player.": "Vodja igre, ki je pregledal tega novega igralca.",
+        "This portal account already has a player profile.": "Ta račun portala že ima profil igralca."
     },
     "plurals": {}
 }

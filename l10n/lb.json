@@ -510,7 +510,22 @@
         "Only game masters and the player can see which events this player attended.": "Nëmmen d'Spillleeder an de Spiller selwer gesinn, op wéi eng Evenementer dëse Spiller war.",
         "Could not load the events attended.": "Déi besichten Evenementer konnten net geluede ginn.",
         "Events attended: {count}": "Besichten Evenementer: {count}",
-        "No check-ins recorded yet.": "Nach keng Check-ins registréiert."
+        "No check-ins recorded yet.": "Nach keng Check-ins registréiert.",
+        "New players": "Nei Spiller",
+        "Mark reviewed": "Als iwwerpréift markéieren",
+        "Signed up through the portal": "Iwwer de Portal ugemellt",
+        "Players marked reviewed: {count}": "Als iwwerpréift markéiert Spiller: {count}",
+        "Players not marked reviewed: {count}. Only game masters can review players.": "Net als iwwerpréift markéiert Spiller: {count}. Nëmmen Spillleeder kënne Spiller iwwerpréiwen.",
+        "Portal account": "Portalkonto",
+        "The portal account this player signed up with. Set once by the portal.": "De Portalkonto, mat deem dëse Spiller sech ugemellt huet. De Portal setzt en eemol.",
+        "This player made their own profile through the portal.": "Dëse Spiller huet säi Profil selwer iwwer de Portal ugeluecht.",
+        "Awaiting review": "Waart op Iwwerpréiwung",
+        "A game master has not yet looked at this new player.": "Nach kee Spillleeder huet sech dësen neie Spiller ugekuckt.",
+        "Reviewed on": "Iwwerpréift den",
+        "When a game master reviewed this new player.": "Wéini e Spillleeder dësen neie Spiller iwwerpréift huet.",
+        "Reviewed by": "Iwwerpréift vum",
+        "The game master who reviewed this new player.": "De Spillleeder, deen dësen neie Spiller iwwerpréift huet.",
+        "This portal account already has a player profile.": "Dëse Portalkonto huet schonn e Spillerprofil."
     },
     "plurals": {}
 }

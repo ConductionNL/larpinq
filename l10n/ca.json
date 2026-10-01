@@ -510,7 +510,22 @@
         "Only game masters and the player can see which events this player attended.": "Només els directors de joc i el mateix jugador poden veure a quins esdeveniments ha assistit aquest jugador.",
         "Could not load the events attended.": "No s'han pogut carregar els esdeveniments assistits.",
         "Events attended: {count}": "Esdeveniments assistits: {count}",
-        "No check-ins recorded yet.": "Encara no hi ha registres d'arribada."
+        "No check-ins recorded yet.": "Encara no hi ha registres d'arribada.",
+        "New players": "Jugadors nous",
+        "Mark reviewed": "Marca com a revisat",
+        "Signed up through the portal": "Registrat a través del portal",
+        "Players marked reviewed: {count}": "Jugadors marcats com a revisats: {count}",
+        "Players not marked reviewed: {count}. Only game masters can review players.": "Jugadors no marcats com a revisats: {count}. Només els directors de joc poden revisar jugadors.",
+        "Portal account": "Compte del portal",
+        "The portal account this player signed up with. Set once by the portal.": "El compte del portal amb què es va registrar aquest jugador. El portal el fixa una sola vegada.",
+        "This player made their own profile through the portal.": "Aquest jugador va crear el seu propi perfil a través del portal.",
+        "Awaiting review": "Pendent de revisió",
+        "A game master has not yet looked at this new player.": "Cap director de joc no ha revisat encara aquest jugador nou.",
+        "Reviewed on": "Revisat el",
+        "When a game master reviewed this new player.": "Quan un director de joc va revisar aquest jugador nou.",
+        "Reviewed by": "Revisat per",
+        "The game master who reviewed this new player.": "El director de joc que va revisar aquest jugador nou.",
+        "This portal account already has a player profile.": "Aquest compte del portal ja té un perfil de jugador."
     },
     "plurals": {}
 }

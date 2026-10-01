@@ -446,6 +446,18 @@
       {
         "@self": {
           "register": "larpinq",
+          "schema": "player",
+          "slug": "player-lotte-bakker"
+        },
+        "name": "Lotte Bakker",
+        "description": "Signed up through the portal. Wants to play a healer.",
+        "portalSubjectRef": "demo-portal-subject-lotte",
+        "selfRegistered": true,
+        "awaitingReview": true
+      },
+      {
+        "@self": {
+          "register": "larpinq",
           "schema": "setting",
           "slug": "setting-voorbeeld-name-1-1"
         },

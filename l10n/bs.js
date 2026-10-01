@@ -511,7 +511,22 @@ OC.L10N.register(
         "Only game masters and the player can see which events this player attended.": "Samo voditelji igre i sam igrač vide kojim je događajima ovaj igrač prisustvovao.",
         "Could not load the events attended.": "Posjećene događaje nije moguće učitati.",
         "Events attended: {count}": "Posjećeni događaji: {count}",
-        "No check-ins recorded yet.": "Još nema zabilježenih prijava."
+        "No check-ins recorded yet.": "Još nema zabilježenih prijava.",
+        "New players": "Novi igrači",
+        "Mark reviewed": "Označi kao pregledano",
+        "Signed up through the portal": "Prijavljen putem portala",
+        "Players marked reviewed: {count}": "Igrači označeni kao pregledani: {count}",
+        "Players not marked reviewed: {count}. Only game masters can review players.": "Igrači koji nisu označeni kao pregledani: {count}. Igrače mogu pregledati samo voditelji igre.",
+        "Portal account": "Račun portala",
+        "The portal account this player signed up with. Set once by the portal.": "Račun portala s kojim se ovaj igrač prijavio. Portal ga postavlja jednom.",
+        "This player made their own profile through the portal.": "Ovaj igrač je sam napravio svoj profil putem portala.",
+        "Awaiting review": "Čeka pregled",
+        "A game master has not yet looked at this new player.": "Nijedan voditelj igre još nije pregledao ovog novog igrača.",
+        "Reviewed on": "Pregledano",
+        "When a game master reviewed this new player.": "Kada je voditelj igre pregledao ovog novog igrača.",
+        "Reviewed by": "Pregledao",
+        "The game master who reviewed this new player.": "Voditelj igre koji je pregledao ovog novog igrača.",
+        "This portal account already has a player profile.": "Ovaj račun portala već ima profil igrača."
     },
     "nplurals=2; plural=(n != 1);"
 )

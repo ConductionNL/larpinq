@@ -510,7 +510,22 @@
         "Only game masters and the player can see which events this player attended.": "Только мастера игры и сам игрок видят, какие события посетил этот игрок.",
         "Could not load the events attended.": "Не удалось загрузить посещённые события.",
         "Events attended: {count}": "Посещённые события: {count}",
-        "No check-ins recorded yet.": "Регистраций пока нет."
+        "No check-ins recorded yet.": "Регистраций пока нет.",
+        "New players": "Новые игроки",
+        "Mark reviewed": "Отметить как просмотренного",
+        "Signed up through the portal": "Зарегистрирован через портал",
+        "Players marked reviewed: {count}": "Игроков отмечено как просмотренных: {count}",
+        "Players not marked reviewed: {count}. Only game masters can review players.": "Игроков не отмечено как просмотренных: {count}. Проверять игроков могут только мастера игры.",
+        "Portal account": "Учётная запись портала",
+        "The portal account this player signed up with. Set once by the portal.": "Учётная запись портала, с которой зарегистрировался этот игрок. Портал задаёт её один раз.",
+        "This player made their own profile through the portal.": "Этот игрок сам создал свой профиль через портал.",
+        "Awaiting review": "Ожидает проверки",
+        "A game master has not yet looked at this new player.": "Ни один мастер игры ещё не просмотрел этого нового игрока.",
+        "Reviewed on": "Просмотрен",
+        "When a game master reviewed this new player.": "Когда мастер игры просмотрел этого нового игрока.",
+        "Reviewed by": "Просмотрел",
+        "The game master who reviewed this new player.": "Мастер игры, который просмотрел этого нового игрока.",
+        "This portal account already has a player profile.": "У этой учётной записи портала уже есть профиль игрока."
     },
     "plurals": {}
 }

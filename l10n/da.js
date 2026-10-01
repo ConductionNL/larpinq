@@ -511,7 +511,22 @@ OC.L10N.register(
         "Only game masters and the player can see which events this player attended.": "Kun spilledere og spilleren selv kan se, hvilke arrangementer denne spiller har deltaget i.",
         "Could not load the events attended.": "De deltagne arrangementer kunne ikke indlæses.",
         "Events attended: {count}": "Deltagne arrangementer: {count}",
-        "No check-ins recorded yet.": "Ingen check-ins registreret endnu."
+        "No check-ins recorded yet.": "Ingen check-ins registreret endnu.",
+        "New players": "Nye spillere",
+        "Mark reviewed": "Markér som gennemset",
+        "Signed up through the portal": "Tilmeldt via portalen",
+        "Players marked reviewed: {count}": "Spillere markeret som gennemset: {count}",
+        "Players not marked reviewed: {count}. Only game masters can review players.": "Spillere ikke markeret som gennemset: {count}. Kun spilledere kan gennemse spillere.",
+        "Portal account": "Portalkonto",
+        "The portal account this player signed up with. Set once by the portal.": "Portalkontoen, som denne spiller tilmeldte sig med. Sættes én gang af portalen.",
+        "This player made their own profile through the portal.": "Denne spiller oprettede selv sin profil via portalen.",
+        "Awaiting review": "Afventer gennemsyn",
+        "A game master has not yet looked at this new player.": "En spilleder har endnu ikke set denne nye spiller.",
+        "Reviewed on": "Gennemset den",
+        "When a game master reviewed this new player.": "Hvornår en spilleder gennemså denne nye spiller.",
+        "Reviewed by": "Gennemset af",
+        "The game master who reviewed this new player.": "Spillederen, der gennemså denne nye spiller.",
+        "This portal account already has a player profile.": "Denne portalkonto har allerede en spillerprofil."
     },
     "nplurals=2; plural=(n != 1);"
 )

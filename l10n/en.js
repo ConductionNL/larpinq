@@ -476,7 +476,22 @@ OC.L10N.register(
         "Only game masters and the player can see which events this player attended.": "Only game masters and the player can see which events this player attended.",
         "Could not load the events attended.": "Could not load the events attended.",
         "Events attended: {count}": "Events attended: {count}",
-        "No check-ins recorded yet.": "No check-ins recorded yet."
+        "No check-ins recorded yet.": "No check-ins recorded yet.",
+        "New players": "New players",
+        "Mark reviewed": "Mark reviewed",
+        "Signed up through the portal": "Signed up through the portal",
+        "Players marked reviewed: {count}": "Players marked reviewed: {count}",
+        "Players not marked reviewed: {count}. Only game masters can review players.": "Players not marked reviewed: {count}. Only game masters can review players.",
+        "Portal account": "Portal account",
+        "The portal account this player signed up with. Set once by the portal.": "The portal account this player signed up with. Set once by the portal.",
+        "This player made their own profile through the portal.": "This player made their own profile through the portal.",
+        "Awaiting review": "Awaiting review",
+        "A game master has not yet looked at this new player.": "A game master has not yet looked at this new player.",
+        "Reviewed on": "Reviewed on",
+        "When a game master reviewed this new player.": "When a game master reviewed this new player.",
+        "Reviewed by": "Reviewed by",
+        "The game master who reviewed this new player.": "The game master who reviewed this new player.",
+        "This portal account already has a player profile.": "This portal account already has a player profile."
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -511,7 +511,22 @@ OC.L10N.register(
         "Only game masters and the player can see which events this player attended.": "Csak a játékmesterek és maga a játékos látja, mely eseményeken vett részt ez a játékos.",
         "Could not load the events attended.": "A látogatott eseményeket nem sikerült betölteni.",
         "Events attended: {count}": "Látogatott események: {count}",
-        "No check-ins recorded yet.": "Még nincs rögzített érkezés."
+        "No check-ins recorded yet.": "Még nincs rögzített érkezés.",
+        "New players": "Új játékosok",
+        "Mark reviewed": "Megjelölés átnézettként",
+        "Signed up through the portal": "A portálon keresztül regisztrált",
+        "Players marked reviewed: {count}": "Átnézettként megjelölt játékosok: {count}",
+        "Players not marked reviewed: {count}. Only game masters can review players.": "Nem átnézettként megjelölt játékosok: {count}. Játékosokat csak játékmesterek nézhetnek át.",
+        "Portal account": "Portálfiók",
+        "The portal account this player signed up with. Set once by the portal.": "A portálfiók, amellyel ez a játékos regisztrált. A portál egyszer állítja be.",
+        "This player made their own profile through the portal.": "Ez a játékos maga hozta létre a profilját a portálon keresztül.",
+        "Awaiting review": "Átnézésre vár",
+        "A game master has not yet looked at this new player.": "Még egy játékmester sem nézte meg ezt az új játékost.",
+        "Reviewed on": "Átnézve",
+        "When a game master reviewed this new player.": "Mikor nézte át egy játékmester ezt az új játékost.",
+        "Reviewed by": "Átnézte",
+        "The game master who reviewed this new player.": "A játékmester, aki átnézte ezt az új játékost.",
+        "This portal account already has a player profile.": "Ennek a portálfióknak már van játékosprofilja."
     },
     "nplurals=2; plural=(n != 1);"
 )

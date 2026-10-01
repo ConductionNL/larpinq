@@ -511,7 +511,22 @@ OC.L10N.register(
         "Only game masters and the player can see which events this player attended.": "Само водителите на играта и самиот играч гледаат на кои настани присуствувал овој играч.",
         "Could not load the events attended.": "Посетените настани не може да се вчитаат.",
         "Events attended: {count}": "Посетени настани: {count}",
-        "No check-ins recorded yet.": "Сè уште нема евидентирани пријави."
+        "No check-ins recorded yet.": "Сè уште нема евидентирани пријави.",
+        "New players": "Нови играчи",
+        "Mark reviewed": "Означи како прегледано",
+        "Signed up through the portal": "Пријавен преку порталот",
+        "Players marked reviewed: {count}": "Играчи означени како прегледани: {count}",
+        "Players not marked reviewed: {count}. Only game masters can review players.": "Играчи што не се означени како прегледани: {count}. Играчите можат да ги прегледуваат само водителите на играта.",
+        "Portal account": "Сметка на порталот",
+        "The portal account this player signed up with. Set once by the portal.": "Сметката на порталот со која се пријавил овој играч. Порталот ја поставува еднаш.",
+        "This player made their own profile through the portal.": "Овој играч сам го создаде својот профил преку порталот.",
+        "Awaiting review": "Чека преглед",
+        "A game master has not yet looked at this new player.": "Ниту еден водител на играта сè уште не го прегледал овој нов играч.",
+        "Reviewed on": "Прегледано на",
+        "When a game master reviewed this new player.": "Кога водител на играта го прегледал овој нов играч.",
+        "Reviewed by": "Прегледал",
+        "The game master who reviewed this new player.": "Водителот на играта што го прегледал овој нов играч.",
+        "This portal account already has a player profile.": "Оваа сметка на порталот веќе има профил на играч."
     },
     "nplurals=2; plural=(n != 1);"
 )
