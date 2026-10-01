@@ -23,6 +23,7 @@ declare(strict_types=1);
 namespace OCA\Larpinq\BackgroundJob;
 
 use OCA\Larpinq\Service\PaymentFollowUp;
+use OCA\Larpinq\Service\TransferOffers;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\BackgroundJob\TimedJob;
 use Psr\Log\LoggerInterface;
@@ -31,7 +32,8 @@ use Psr\Log\LoggerInterface;
  * Once a day: read back captures the listener missed, remind players three
  * days before their pay-by date, and release the places of registrations still
  * unpaid a day after it (registration-payments-through-shillinq REQ-RPS-002,
- * REQ-RPS-003, REQ-RPS-004).
+ * REQ-RPS-003, REQ-RPS-004); and lapse transfer offers that stood 7 days or
+ * reached the cancel-by date (registration-cancel-transfer-refund REQ-RCT-004).
  *
  * @category BackgroundJob
  * @package  OCA\Larpinq\BackgroundJob
@@ -54,11 +56,13 @@ class RegistrationPaymentJob extends TimedJob {
 	 *
 	 * @param ITimeFactory $time The clock.
 	 * @param PaymentFollowUp $followUp The daily pass.
+	 * @param TransferOffers $transfers Lapses old transfer offers.
 	 * @param LoggerInterface $logger The logger.
 	 */
 	public function __construct(
 		ITimeFactory $time,
 		private readonly PaymentFollowUp $followUp,
+		private readonly TransferOffers $transfers,
 		private readonly LoggerInterface $logger,
 	) {
 		parent::__construct(time: $time);
@@ -66,7 +70,7 @@ class RegistrationPaymentJob extends TimedJob {
 	}//end __construct()
 
 	/**
-	 * Follow up the open payments.
+	 * Follow up the open payments and the open transfer offers.
 	 *
 	 * @param mixed $argument Unused.
 	 *
@@ -78,6 +82,7 @@ class RegistrationPaymentJob extends TimedJob {
 		// A TimedJob is scheduled without an argument.
 		unset($argument);
 		$counts = $this->followUp->daily(now: $this->time->now());
-		$this->logger->info('Larpinq: payments followed up: {paid} paid, {reminded} reminded, {expired} expired.', $counts);
+		$counts['lapsed'] = $this->transfers->lapse(now: $this->time->now());
+		$this->logger->info('Larpinq: payments followed up: {paid} paid, {reminded} reminded, {expired} expired; {lapsed} transfer offers lapsed.', $counts);
 	}//end run()
 }//end class

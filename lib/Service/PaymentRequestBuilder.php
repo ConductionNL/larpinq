@@ -209,8 +209,10 @@ class PaymentRequestBuilder {
 	 * @param array<string, mixed> $registration The registration.
 	 *
 	 * @return string The currency.
+	 *
+	 * @spec openspec/specs/event-registration/spec.md
 	 */
-	private function currency(array $registration): string {
+	public function currency(array $registration): string {
 		foreach ((array)($registration['lines'] ?? []) as $line) {
 			if (is_array($line) === true && (string)($line['currency'] ?? '') !== '') {
 				return (string)$line['currency'];
@@ -226,8 +228,10 @@ class PaymentRequestBuilder {
 	 * @param array<string, mixed> $registration The registration.
 	 *
 	 * @return array{name: string, email?: string} The debtor.
+	 *
+	 * @spec openspec/specs/event-registration/spec.md
 	 */
-	private function debtor(array $registration): array {
+	public function debtor(array $registration): array {
 		$uid = (string)($registration['playerUid'] ?? '');
 		$debtor = ['name' => $uid];
 		try {

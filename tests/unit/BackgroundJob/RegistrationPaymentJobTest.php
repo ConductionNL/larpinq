@@ -148,6 +148,6 @@ class RegistrationPaymentJobTest extends TestCase {
 	 * @return RegistrationPaymentJob The job.
 	 */
 	private function job(): RegistrationPaymentJob {
-		return new RegistrationPaymentJob($this->world->clock(), $this->world->followUp(), new NullLogger());
+		return new RegistrationPaymentJob($this->world->clock(), $this->world->followUp(), $this->world->transfers(), new NullLogger());
 	}//end job()
 }//end class
