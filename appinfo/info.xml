@@ -134,6 +134,10 @@ Maak een [featureverzoek](https://github.com/ConductionNL/larpinq/issues)
          the Apps admin page. (XML comments must not contain a double hyphen,
          so the flag is not written with its leading dashes here.) -->
 
+	<background-jobs>
+		<job>OCA\Larpinq\BackgroundJob\RegistrationPaymentJob</job>
+	</background-jobs>
+
 	<!-- THE TWO Migrate* STEPS CARRY THE `larpingapp` -> `larpinq` APP-ID RENAME
 	     AND MUST RUN FIRST IN BOTH BLOCKS.
 

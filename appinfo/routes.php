@@ -40,6 +40,8 @@ $extra = [
 	['name' => 'playerAttendance#index', 'url' => '/api/players/{id}/attendance', 'verb' => 'GET'],
 	['name' => 'registrationChoices#offer', 'url' => '/api/registrations/{id}/offer', 'verb' => 'GET'],
 	['name' => 'registrationChoices#counts', 'url' => '/api/events/{id}/choices', 'verb' => 'GET'],
+	['name' => 'registrationPayments#access', 'url' => '/api/payments/access', 'verb' => 'GET'],
+	['name' => 'registrationPayments#request', 'url' => '/api/registrations/{id}/payment-request', 'verb' => 'POST'],
 	['name' => 'characterBuilds#access', 'url' => '/api/builds/apply-access', 'verb' => 'GET'],
 	['name' => 'characterBuilds#report', 'url' => '/api/builds/{id}/report', 'verb' => 'GET'],
 	['name' => 'worlds#access', 'url' => '/api/worlds/copy-access', 'verb' => 'GET'],

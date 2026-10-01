@@ -16,12 +16,15 @@ price lines are above zero, larpinq SHALL append one payment request for it
 through shillinq's payment requests leaf, with the registration's amount, the
 player as debtor, the pay-by date as due date and a transfer reference, and
 MUST show the player the payment link and the reference. Larpinq MUST NOT book
-the payment itself.
+the payment itself. Until shillinq lets an app raise a request, larpinq raises
+it when a game master accepts; a registration accepted any other way, or
+refused by shillinq, SHALL wait as "payment to request" with its pay-by date,
+and a game master MUST be able to request its payment from the registration.
 
 #### Scenario: Anna gets her payment link
 
 - GIVEN Anna's registration for "Winter Court 2026" is accepted with lines of EUR 85 and EUR 35
-- WHEN the registration is accepted
+- WHEN a game master accepts the registration
 - THEN shillinq holds one pending payment request of EUR 120 for her registration
 - AND My registrations shows Anna the payment link and reference WC26-0001
 

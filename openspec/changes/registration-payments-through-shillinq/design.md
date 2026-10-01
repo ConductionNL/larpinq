@@ -118,3 +118,60 @@ None.
 ## Open Questions
 
 None.
+
+## Revised at build time (2 October 2026, interim design)
+
+Read on shillinq development `d4d3f14f` (leaf and PaymentRequest schema
+unchanged since `6cd97a07`). What the code at HEAD does, and why it differs
+from D1 to D5 above:
+
+- **D1, who raises the request.** Shillinq's leaf `create()` first checks
+  `payment.request` on the signed-in user. A player must not carry that action
+  and the daily job has no user, so larpinq raises the request only when a
+  game master accepts (the session is the game master). A registration
+  accepted any other way (a free place on sign-up, a move up the waiting list,
+  an acceptance by someone else) gets `paymentState: to-request` and its
+  pay-by date. Game masters see a **Request payment** header action on such a
+  registration (`POST /api/registrations/{id}/payment-request`, shown to game masters
+  through `GET /api/payments/access`; the manifest's `visibleWhen` takes one
+  condition, so on a registration whose payment does not wait the server
+  answers 409 with the reason). A refusal by
+  shillinq (the game master lacks `payment.request`) also leaves `to-request`;
+  the acceptance itself always stands. The contract gap is with Ruben as
+  `for-ruben/shillinq-payment-request-leaf-app-caller.md` (an app grant on the
+  leaf, or a typed event); once shillinq has it, `afterWrite` raises the
+  request for every acceptance and the action goes.
+- **Amounts.** The leaf takes currency units, not cents: `amount` is the sum of
+  the registration's own `lines` (cents) divided by 100. `requestType: other`,
+  `subjectType: registration`, `debtor {name, email}` from the player and the
+  user's account. The subject's register and schema are larpinq's configured
+  ids (`registration_register`, `registration_schema`), the same values the
+  listener matches a request against.
+- **D2, state back.** `PaymentRequestListener` listens to OpenRegister's
+  `ObjectCreatedEvent` and `ObjectUpdatedEvent` (registered after the
+  registration listener). A registration that has just become accepted goes to
+  `RegistrationPaymentService::afterWrite`. A shillinq `PaymentRequest`
+  (`subjectKind: object`, subject = larpinq's registration) in state
+  `captured` or `captured_unapplied` marks the registration that carries its
+  id as `paymentRequestId` paid. Inline placement (`correctness`): a deferred
+  job has no session, so the request would always be refused.
+- **D3, the daily job.** `RegistrationPaymentJob` (daily `TimedJob`, listed in
+  `appinfo/info.xml`) runs `PaymentFollowUp::daily` over up to 500 open
+  registrations: the leaf `list` first (a missed capture becomes paid), then
+  expiry a day after the pay-by date (only when shillinq's request was read and
+  is not captured; without shillinq nothing expires), then the reminder three
+  days before it (`paymentReminderAt`, sent by the `payment-reminder`
+  notification rule on the registration: Nextcloud notification and email to
+  `playerUid`).
+- **Reference.** `<paymentCode>-<4 digits>`; without a code, the first four
+  letters of the event name. Counted over the event's registrations.
+- **Event fields.** `paymentRequired`, `payBy` (a date; empty means 14 days
+  after acceptance) and `paymentCode`. No "days after acceptance" number.
+- **D5, pages.** Registrations index: payment state and reference columns and
+  the filter menu on enum columns. My registrations: payment state, reference,
+  pay by. Event page: payment state and reference on its registrations list,
+  and Paid and Payment open counts in the places stats block.
+- **Stays open.** Rows `reg-invoices` and `reg-bank-statement-match` need
+  shillinq's own halves (an invoice made on request from an object payment
+  request; matching a bank line to an object request by its reference) and
+  stay specified. This change stays unarchived until shillinq's side exists.

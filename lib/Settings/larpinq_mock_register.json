@@ -322,7 +322,10 @@
         "setting": "00000000-0000-4000-8000-000000000000",
         "capacity": 3,
         "approvalRequired": true,
-        "signupForm": 1
+        "signupForm": 1,
+        "paymentRequired": true,
+        "payBy": "2026-11-20T00:00:00+00:00",
+        "paymentCode": "WC26"
       },
       {
         "@self": {
@@ -1119,7 +1122,13 @@
         "submittedAt": "2026-09-01T10:00:00+00:00",
         "character": "00000000-0000-4000-8000-000000000000",
         "decidedAt": "2026-09-05T09:00:00+00:00",
-        "decidedBy": "gm-voorbeeld"
+        "decidedBy": "gm-voorbeeld",
+        "paymentState": "open",
+        "paymentRequestId": "f0000000-0000-4000-8000-000000000001",
+        "paymentLink": "https://pay.example.org/r/f0000000-0000-4000-8000-000000000001",
+        "paymentReference": "WC26-0001",
+        "payBy": "2026-11-20T00:00:00+00:00",
+        "invoiceRequested": false
       },
       {
         "@self": {
@@ -1151,7 +1160,12 @@
         "submittedAt": "2026-09-03T10:00:00+00:00",
         "character": "00000000-0000-4000-8000-000000000000",
         "decidedAt": "2026-09-05T09:00:00+00:00",
-        "decidedBy": "gm-voorbeeld"
+        "decidedBy": "gm-voorbeeld",
+        "paymentState": "paid",
+        "paymentRequestId": "f0000000-0000-4000-8000-000000000002",
+        "paymentReference": "WC26-0002",
+        "payBy": "2026-11-20T00:00:00+00:00",
+        "invoiceRequested": true
       },
       {
         "@self": {

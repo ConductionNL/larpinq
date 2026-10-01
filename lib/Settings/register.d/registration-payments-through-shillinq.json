@@ -1,0 +1,169 @@
+{
+	"components": {
+		"schemas": {
+			"event": {
+				"slug": "larping_event",
+				"properties": {
+					"paymentRequired": {
+						"type": "boolean",
+						"default": false,
+						"title": "Payment required",
+						"description": "Accepted registrations with a price get a payment request in shillinq"
+					},
+					"payBy": {
+						"type": "string",
+						"format": "date-time",
+						"title": "Pay by",
+						"description": "The date by which an accepted registration must be paid. Empty means 14 days after acceptance."
+					},
+					"paymentCode": {
+						"type": "string",
+						"pattern": "^[A-Z0-9]{2,8}$",
+						"title": "Payment code",
+						"description": "The start of every transfer reference of this event, such as WC26"
+					}
+				}
+			},
+			"registration": {
+				"slug": "larping_registration",
+				"properties": {
+					"paymentState": {
+						"type": "string",
+						"enum": [
+							"not-needed",
+							"to-request",
+							"open",
+							"paid",
+							"expired"
+						],
+						"x-enum-labels": {
+							"not-needed": "No payment needed",
+							"to-request": "Payment to request",
+							"open": "Open",
+							"paid": "Paid",
+							"expired": "Expired"
+						},
+						"title": "Payment",
+						"description": "Whether the registration is paid, set by larpinq from shillinq",
+						"authorization": {
+							"update": [
+								"gamemasters"
+							]
+						}
+					},
+					"paymentRequestId": {
+						"type": "string",
+						"format": "uuid",
+						"title": "Payment request",
+						"description": "The payment request in shillinq, set by larpinq",
+						"authorization": {
+							"update": [
+								"gamemasters"
+							]
+						}
+					},
+					"paymentLink": {
+						"type": "string",
+						"maxLength": 2048,
+						"title": "Payment link",
+						"description": "Where the player pays, from shillinq",
+						"authorization": {
+							"update": [
+								"gamemasters"
+							]
+						}
+					},
+					"paymentReference": {
+						"type": "string",
+						"maxLength": 32,
+						"title": "Reference",
+						"description": "The reference to quote on a bank transfer, such as WC26-0042",
+						"authorization": {
+							"update": [
+								"gamemasters"
+							]
+						}
+					},
+					"payBy": {
+						"type": "string",
+						"format": "date-time",
+						"title": "Pay by",
+						"description": "When this registration must be paid, set by larpinq",
+						"authorization": {
+							"update": [
+								"gamemasters"
+							]
+						}
+					},
+					"paymentReminderAt": {
+						"type": "string",
+						"format": "date-time",
+						"title": "Reminder sent on",
+						"description": "When larpinq reminded the player, set by larpinq",
+						"authorization": {
+							"update": [
+								"gamemasters"
+							]
+						}
+					},
+					"invoiceRequested": {
+						"type": "boolean",
+						"default": false,
+						"title": "Request an invoice",
+						"description": "Shillinq makes an invoice for this registration, for example for a club that pays"
+					},
+					"cancelReason": {
+						"type": "string",
+						"enum": [
+							"unpaid",
+							"player",
+							"organiser"
+						],
+						"x-enum-labels": {
+							"unpaid": "Not paid in time",
+							"player": "By the player",
+							"organiser": "By the organisers"
+						},
+						"title": "Cancelled because",
+						"description": "Why the registration was cancelled",
+						"authorization": {
+							"update": [
+								"gamemasters"
+							]
+						}
+					}
+				},
+				"x-openregister-notifications": {
+					"payment-reminder": {
+						"trigger": {
+							"type": "updated",
+							"condition": {
+								"field": "paymentReminderAt",
+								"operator": "changed"
+							}
+						},
+						"enabled": true,
+						"channels": [
+							"nc-notification",
+							"email"
+						],
+						"recipients": [
+							{
+								"kind": "field",
+								"field": "playerUid"
+							}
+						],
+						"subject": {
+							"nl": "Betaal je inschrijving voor {{payBy}}, kenmerk {{paymentReference}}",
+							"en": "Please pay your registration by {{payBy}}, reference {{paymentReference}}"
+						},
+						"message": {
+							"nl": "Je inschrijving is nog niet betaald. Betaal via {{paymentLink}} of maak het bedrag over met kenmerk {{paymentReference}}. Na de betaaldatum gaat je plek naar de wachtlijst.",
+							"en": "Your registration is not paid yet. Pay through {{paymentLink}} or transfer the amount quoting {{paymentReference}}. After the pay-by date your place goes to the waiting list."
+						}
+					}
+				}
+			}
+		}
+	}
+}

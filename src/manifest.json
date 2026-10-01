@@ -1996,6 +1996,8 @@
 								{ "key": "player", "label": "Player" },
 								{ "key": "character", "label": "Character" },
 								{ "key": "status", "label": "Status" },
+								{ "key": "paymentState", "label": "Payment" },
+								{ "key": "paymentReference", "label": "Reference" },
 								{ "key": "submittedAt", "label": "Signed up on" }
 							],
 							"limit": 100,
@@ -2024,6 +2026,20 @@
 									"schema": "larping_registration",
 									"metric": "count",
 									"filter": { "event": "@objectId", "status": "waitlisted" }
+								},
+								{
+									"title": "Paid",
+									"register": "larpinq",
+									"schema": "larping_registration",
+									"metric": "count",
+									"filter": { "event": "@objectId", "paymentState": "paid" }
+								},
+								{
+									"title": "Payment open",
+									"register": "larpinq",
+									"schema": "larping_registration",
+									"metric": "count",
+									"filter": { "event": "@objectId", "paymentState": "open" }
 								}
 							]
 						}
