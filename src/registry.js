@@ -31,11 +31,13 @@ import XpAwardDialog from './dialogs/XpAwardDialog.vue'
 import BuildReport from './views/BuildReport.vue'
 import CharacterCustomFields from './views/CharacterCustomFields.vue'
 import CharacterStatSheet from './views/CharacterStatSheet.vue'
+import EventChoiceCounts from './views/EventChoiceCounts.vue'
 import EventRoster from './views/EventRoster.vue'
 import FlowDetailSidebar from './views/flows/FlowDetailSidebar.vue'
 import LoreArticle from './views/LoreArticle.vue'
 import ObjectDetail from './views/ObjectDetail.vue'
 import PlayerAttendanceHistory from './views/PlayerAttendanceHistory.vue'
+import RegistrationChoices from './views/RegistrationChoices.vue'
 import GameSettingsSection from './views/settings/Settings.vue'
 import SkillTree from './views/SkillTree.vue'
 import {
@@ -104,6 +106,10 @@ export default {
 	CharacterStatSheet: { kind: 'section', component: CharacterStatSheet },
 	// Events attended tab on the player page. @spec openspec/specs/events-players/spec.md
 	PlayerAttendanceHistory: { kind: 'section', component: PlayerAttendanceHistory },
+	// Tickets tab on the registration page and Choices tab on the event page
+	// (registration-ticket-types-and-options). @spec openspec/specs/event-registration/spec.md
+	RegistrationChoices: { kind: 'section', component: RegistrationChoices },
+	EventChoiceCounts: { kind: 'section', component: EventChoiceCounts },
 	CharacterCustomFields: { kind: 'section', component: CharacterCustomFields },
 	// Check tab on the build page. @spec openspec/specs/character-builds/spec.md
 	BuildReport: { kind: 'section', component: BuildReport },

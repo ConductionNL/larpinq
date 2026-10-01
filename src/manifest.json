@@ -2027,6 +2027,117 @@
 								}
 							]
 						}
+					},
+					{
+						"id": "event-ticket-types",
+						"type": "object-list",
+						"title": "Ticket types",
+						"icon": "TicketOutline",
+						"content": {
+							"register": "larpinq",
+							"schema": "larping_ticket_type",
+							"filter": {
+								"event": "@objectId"
+							},
+							"columns": [
+								{
+									"key": "name",
+									"label": "Name"
+								},
+								{
+									"key": "role",
+									"label": "Role"
+								},
+								{
+									"key": "amount",
+									"label": "Listed price"
+								},
+								{
+									"key": "saleUntil",
+									"label": "On sale until"
+								},
+								{
+									"key": "placeLimit",
+									"label": "Places"
+								}
+							],
+							"limit": 100,
+							"viewAllRoute": "TicketTypes",
+							"viewAllQuery": {
+								"event": "@objectId"
+							},
+							"emptyText": "No ticket types yet."
+						}
+					},
+					{
+						"id": "event-registration-options",
+						"type": "object-list",
+						"title": "Registration options",
+						"icon": "SilverwareForkKnife",
+						"content": {
+							"register": "larpinq",
+							"schema": "larping_registration_option",
+							"filter": {
+								"event": "@objectId"
+							},
+							"columns": [
+								{
+									"key": "name",
+									"label": "Name"
+								},
+								{
+									"key": "category",
+									"label": "Category"
+								},
+								{
+									"key": "amount",
+									"label": "Listed price"
+								},
+								{
+									"key": "placeLimit",
+									"label": "Places"
+								}
+							],
+							"limit": 100,
+							"viewAllRoute": "RegistrationOptions",
+							"viewAllQuery": {
+								"event": "@objectId"
+							},
+							"emptyText": "No options yet."
+						}
+					},
+					{
+						"id": "event-access-codes",
+						"type": "object-list",
+						"title": "Access codes",
+						"icon": "KeyVariant",
+						"content": {
+							"register": "larpinq",
+							"schema": "larping_access_code",
+							"filter": {
+								"event": "@objectId"
+							},
+							"columns": [
+								{
+									"key": "code",
+									"label": "Code"
+								},
+								{
+									"key": "validUntil",
+									"label": "Valid until"
+								},
+								{
+									"key": "maxUses",
+									"label": "Uses"
+								}
+							],
+							"limit": 100,
+							"viewAllRoute": "AccessCodes",
+							"viewAllQuery": {
+								"event": "@objectId"
+							},
+							"emptyText": "No codes yet."
+						}
 					}
 				],
 				"layout": [
@@ -2125,6 +2236,30 @@
 						"gridY": 20,
 						"gridWidth": 4,
 						"gridHeight": 4
+					},
+					{
+						"id": "13",
+						"widgetId": "event-ticket-types",
+						"gridX": 0,
+						"gridY": 24,
+						"gridWidth": 12,
+						"gridHeight": 4
+					},
+					{
+						"id": "14",
+						"widgetId": "event-registration-options",
+						"gridX": 0,
+						"gridY": 28,
+						"gridWidth": 6,
+						"gridHeight": 4
+					},
+					{
+						"id": "15",
+						"widgetId": "event-access-codes",
+						"gridX": 6,
+						"gridY": 28,
+						"gridWidth": 6,
+						"gridHeight": 4
 					}
 				],
 				"sidebar": {
@@ -2137,6 +2272,12 @@
 							"label": "Check-in",
 							"icon": "AccountCheck",
 							"component": "EventRoster"
+						},
+						{
+							"id": "choices",
+							"label": "Choices",
+							"icon": "TicketOutline",
+							"component": "EventChoiceCounts"
 						},
 						{
 							"id": "audit",
