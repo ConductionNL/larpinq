@@ -25,6 +25,7 @@ use OCA\Larpinq\Listener\CharacterStatusListener;
 use OCA\Larpinq\Listener\DeepLinkRegistrationListener;
 use OCA\Larpinq\Listener\FactionMembershipListener;
 use OCA\Larpinq\Listener\FormSubmissionListener;
+use OCA\Larpinq\Listener\PaymentRequestListener;
 use OCA\Larpinq\Listener\PlayerReviewListener;
 use OCA\Larpinq\Listener\PortalProfileListener;
 use OCA\Larpinq\Listener\RegistrationListener;
@@ -89,6 +90,8 @@ class ApplicationRegisterTest extends TestCase {
 		['OCA\OpenRegister\Event\ObjectUpdatingEvent', RegistrationListener::class],
 		['OCA\OpenRegister\Event\ObjectCreatedEvent', RegistrationListener::class],
 		['OCA\OpenRegister\Event\ObjectUpdatedEvent', RegistrationListener::class],
+		['OCA\OpenRegister\Event\ObjectCreatedEvent', PaymentRequestListener::class],
+		['OCA\OpenRegister\Event\ObjectUpdatedEvent', PaymentRequestListener::class],
 		['OCA\Forms\Events\FormSubmittedEvent', FormSubmissionListener::class],
 	];
 

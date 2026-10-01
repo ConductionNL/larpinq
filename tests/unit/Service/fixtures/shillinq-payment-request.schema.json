@@ -1,0 +1,590 @@
+{
+	"$comment": "shillinq PaymentRequest schema, copied verbatim from ConductionNL/shillinq development d4d3f14f lib/Settings/register.d/ar-invoice-payment-links.json. What larpinq hands the shillinq-payment-requests leaf is validated against it.",
+	"schema": {
+		"slug": "PaymentRequest",
+		"icon": "CreditCardOutline",
+		"version": "0.5.0",
+		"title": "Payment Request",
+		"description": "An online payment attempt against an AR invoice. One AR invoice can carry several payment requests over its life (link expired and regenerated, a failed attempt then a new link, a link voided after partial credit): each request has its own lifecycle, gateway identity and audit needs, so payment state lives here and never folds onto ARInvoice (design D1). Mirrors the proven DepositPayment shape minus booking fields, FK'd to ARInvoice. STORES NO PCI DATA: no card number, CVV, PAN, IBAN credential, or authorization token is ever persisted. OpenConnector (PCI-certified) handles all sensitive payment data and only opaque references (paymentIntentId, settlementReference) are stored here, identical to DepositPayment. V0.1.1 (portal-payment-initiation) adds confirmationSummary. A subject-safe settlement receipt written on capture and surfaced through the customer portal's read-only paymentRequests collection. V0.2.0 (case-payment-requests) lets a request stand on any object: subjectKind, subject, requestType, description, debtor, dueAt and revenueAccount, with invoiceReference optional. An object request carries its own amount and books a receipt against the revenue account mapped to its requestType; a domain app never books the money itself (ADR-107). V0.3.0 (fees-payments-and-the-contract-register) adds settlements, an append-only record of money that arrived another way, and legalBasis, the article the amount rests on. V0.4.0 (extracurricular-fee-to-shillinq) lets a request stand on a school contribution: subject.app names the app owning the chargeable, beneficiary names the child and joins the uniqueness key, requestType gains contribution, voluntary carries the Wet vrijwillige ouderbijdrage flag, raiseBatchId names the bulk raise, and settledAt with settledVia mark the moment the request first counts as settled, which is the signal an owning app listens for.",
+		"x-openregister-audit-trail": {
+			"enabled": true,
+			"description": "Payment-attempt register; every create / update / lifecycle transition (authorize / capture / markUnapplied / fail / expire / void) is recorded on the OR audit-trail-immutable channel + ADR-022. The captured PaymentRequest is the canonical payment-evidence chain linked to the settled ARInvoice."
+		},
+		"x-schema-org": "schema:Invoice",
+		"x-spec": "openspec/changes/ar-invoice-payment-links/specs/ar-invoice-payment-links/spec.md",
+		"type": "object",
+		"required": [
+			"amount",
+			"currency",
+			"paymentGateway",
+			"state"
+		],
+		"properties": {
+			"invoiceReference": {
+				"type": "string",
+				"description": "FK to the ARInvoice (UUID or slug) being paid. Required when subjectKind = invoice. An object request carries one when an invoice stands behind it, as a school contribution does, and then settles that invoice on capture instead of booking a receipt.",
+				"example": "ar-invoice-c-2026-0042",
+				"title": "Invoice Reference"
+			},
+			"subjectKind": {
+				"type": "string",
+				"enum": [
+					"invoice",
+					"object"
+				],
+				"default": "invoice",
+				"description": "What the money is asked for. `invoice` is the original shape: the request reads its amount from the linked ARInvoice and settles it on capture. `object` is a request on any object in any register (a case, a permit, a lease), which carries its own amount and books a receipt against the revenue account mapped to its requestType (REQ-SOPR-001).",
+				"example": "object",
+				"title": "Subject Kind"
+			},
+			"subject": {
+				"type": "object",
+				"description": "Semantic reference (ADR-048) to the object the money is asked for. Required when subjectKind = object. Names the app, the register, the schema and the id, so shillinq never needs the consuming app's own code (REQ-SOPR-001).",
+				"properties": {
+					"app": {
+						"type": "string",
+						"description": "The app that owns the referenced object, for example learniq. It describes the reference and never makes two references differ.",
+						"example": "learniq",
+						"title": "App"
+					},
+					"type": {
+						"type": "string",
+						"description": "The semantic type of the referenced object, for example `case`.",
+						"example": "case",
+						"title": "Type"
+					},
+					"register": {
+						"type": "string",
+						"description": "The register slug holding the object.",
+						"example": "dossiq",
+						"title": "Register"
+					},
+					"schema": {
+						"type": "string",
+						"description": "The schema slug of the object.",
+						"example": "Zaak",
+						"title": "Schema"
+					},
+					"id": {
+						"type": "string",
+						"description": "The object's identifier inside that register and schema.",
+						"example": "9f3c1b2e-0f2a-4d81-8f4c-2f3e7b8a1c55",
+						"title": "Id"
+					}
+				},
+				"title": "Subject"
+			},
+			"requestType": {
+				"type": "string",
+				"enum": [
+					"leges",
+					"dwangsom",
+					"deposit",
+					"other",
+					"contribution"
+				],
+				"description": "Why the money is asked for. Required when subjectKind = object. Drives the revenue account the receipt books against through the paymentRevenueAccounts mapping (REQ-SOPR-002).",
+				"example": "dwangsom",
+				"title": "Request Type"
+			},
+			"beneficiary": {
+				"type": "object",
+				"description": "Who the charge is for, such as the child on a school contribution. It joins the uniqueness key, so one chargeable can carry a pending request per child.",
+				"properties": {
+					"type": {
+						"type": "string",
+						"description": "The semantic type of the referenced object, for example `case`.",
+						"example": "learner",
+						"title": "Type"
+					},
+					"register": {
+						"type": "string",
+						"description": "The register slug holding the object.",
+						"example": "learniq",
+						"title": "Register"
+					},
+					"schema": {
+						"type": "string",
+						"description": "The schema slug of the object.",
+						"example": "LearnerProfile",
+						"title": "Schema"
+					},
+					"id": {
+						"type": "string",
+						"description": "The object's identifier inside that register and schema.",
+						"example": "00000000-0000-0000-0000-000000000001",
+						"title": "Id"
+					}
+				},
+				"title": "Beneficiary"
+			},
+			"voluntary": {
+				"type": "boolean",
+				"default": false,
+				"description": "True for a voluntary contribution under the Wet vrijwillige ouderbijdrage. Such a request is never dunned beyond one reminder.",
+				"example": true,
+				"title": "Voluntary"
+			},
+			"raiseBatchId": {
+				"type": "string",
+				"description": "The bulk raise that wrote this record, so one batch can be found and checked together.",
+				"example": "ctb-20261001-1a2b3c4d",
+				"title": "Raise batch"
+			},
+			"description": {
+				"type": "string",
+				"description": "Plain-language reason shown on the checkout and repeated on the receipt. Written by the app that raises the request, read by the person paying.",
+				"example": "Leges omgevingsvergunning, aanvraag 2026-0042",
+				"title": "Description"
+			},
+			"debtor": {
+				"type": "object",
+				"description": "Who owes the money. A reference to a CustomerMaster where one exists, so the portal can scope the request to its claim (REQ-SOPR-005); otherwise a name and an email, and the payment link travels by mail instead.",
+				"properties": {
+					"customerMasterId": {
+						"type": "string",
+						"description": "FK to the CustomerMaster, when the debtor is a known customer.",
+						"example": "cm-2026-0091",
+						"title": "Customer Master Id"
+					},
+					"name": {
+						"type": "string",
+						"description": "The debtor's name when no master exists.",
+						"example": "J. de Vries",
+						"title": "Name"
+					},
+					"email": {
+						"type": "string",
+						"format": "email",
+						"description": "Where the payment link is sent. NOT a PCI field.",
+						"example": "j.devries@example.nl",
+						"title": "Email"
+					}
+				},
+				"title": "Debtor"
+			},
+			"customerId": {
+				"type": "string",
+				"format": "uuid",
+				"$ref": "CustomerMaster",
+				"nullable": true,
+				"description": "The debtor's customer on a request that stands on its own, without an invoice, copied from debtor.customerMasterId when the request is raised. The customer portal lists the request by it. A request on an invoice reaches the portal through that invoice and leaves this empty.",
+				"example": "00000000-0000-0000-0000-000000000000",
+				"title": "Customer"
+			},
+			"dueAt": {
+				"type": "string",
+				"format": "date-time",
+				"description": "When the money is due. Optional: a leges request at intake is due immediately, a dwangsom carries a term.",
+				"example": "2026-10-01T00:00:00Z",
+				"title": "Due At"
+			},
+			"revenueAccount": {
+				"type": "string",
+				"description": "The Account the receipt books against, resolved from requestType through the paymentRevenueAccounts mapping at settlement and stamped here so the posting stays readable after the mapping changes (REQ-SOPR-002).",
+				"example": "8400",
+				"title": "Revenue Account"
+			},
+			"amount": {
+				"type": "number",
+				"minimum": 0,
+				"description": "The amount asked for. On an invoice request this is the invoice's outstanding amount at request creation, in the invoice currency, and the calculation maintains it; if the outstanding changes (partial credit) the pending request is voided and a new one is created for the new amount (design D5). On an object request the amount is given by the app raising it and is never recalculated (REQ-SOPR-001).",
+				"example": 1210.0,
+				"title": "Amount"
+			},
+			"currency": {
+				"type": "string",
+				"minLength": 3,
+				"maxLength": 3,
+				"default": "EUR",
+				"description": "ISO 4217 currency code, mirrors the invoice currency.",
+				"example": "EUR",
+				"title": "Currency"
+			},
+			"paymentGateway": {
+				"type": "string",
+				"enum": [
+					"mollie",
+					"stripe"
+				],
+				"description": "The gateway routing this request via the OpenConnector payment adapter. iDEAL via Mollie, cards via Stripe. The gateway set is owned by the OpenConnector adapter (no Mollie/Stripe SDK enters Shillinq).",
+				"example": "mollie",
+				"title": "Payment Gateway"
+			},
+			"paymentIntentId": {
+				"type": "string",
+				"nullable": true,
+				"description": "OPAQUE gateway/OpenConnector payment-intent reference. NOT a PCI field: no card data, no token, just the opaque correlation id the webhook + polling fallback resolve the record by. Mirrors DepositPayment.paymentIntentId.",
+				"example": "tr_WDqYK6vllg",
+				"title": "Payment Intent ID"
+			},
+			"state": {
+				"type": "string",
+				"enum": [
+					"pending",
+					"authorized",
+					"captured",
+					"captured_unapplied",
+					"failed",
+					"expired",
+					"voided"
+				],
+				"default": "pending",
+				"description": "Payment-request lifecycle state. Captured_unapplied is the exception state for a capture that could not settle its invoice: surfaced, never silently dropped.",
+				"example": "pending",
+				"title": "State"
+			},
+			"expiresAt": {
+				"type": "string",
+				"format": "date-time",
+				"nullable": true,
+				"description": "TTL boundary (per-administration config). A pending request expires at min(configured TTL, invoice settlement); the shared polling job flips pending → expired (design D7).",
+				"example": "2026-07-15T23:59:59Z",
+				"title": "Expires At"
+			},
+			"failureReason": {
+				"type": "string",
+				"nullable": true,
+				"description": "Last gateway error, operator-readable. The gateway error code/message only: never raw card data (mirrors DepositPayment). Required on the fail transition.",
+				"example": "Payment failed at gateway.",
+				"title": "Failure Reason"
+			},
+			"settlementReference": {
+				"type": "string",
+				"nullable": true,
+				"description": "Gateway payout/batch reference recorded on capture (or enriched by the polling job where the gateway exposes payout data asynchronously). Feeds bookkeeping-bank-reconciliation auto-matching so the Mollie/Stripe payout statement line matches the batch of captured requests.",
+				"example": "po_2026_0613",
+				"title": "Settlement Reference"
+			},
+			"gatewayFeeAmount": {
+				"type": "number",
+				"minimum": 0,
+				"nullable": true,
+				"description": "Gateway fee (gross − net) surfaced on the bank-reconciliation match for operator posting. Automatic fee journals are out of scope (v1 surfaces, does not auto-post).",
+				"example": 0.35,
+				"title": "Gateway Fee Amount"
+			},
+			"capturedAt": {
+				"type": "string",
+				"format": "date-time",
+				"nullable": true,
+				"description": "Capture timestamp, set on the capture transition.",
+				"example": "2026-06-13T10:22:00Z",
+				"title": "Captured At"
+			},
+			"settledAt": {
+				"type": "string",
+				"format": "date-time",
+				"nullable": true,
+				"description": "When this request first counted as settled, by the provider or by money recorded by hand. Written once and never moved. An owning app listens for this field appearing.",
+				"example": "2026-10-03T09:12:00Z",
+				"title": "Settled at"
+			},
+			"settledVia": {
+				"type": "string",
+				"nullable": true,
+				"enum": [
+					"provider",
+					"cash",
+					"pin",
+					"bank-transfer",
+					"waived",
+					"other"
+				],
+				"description": "How the request was settled: through the payment provider, or by the method of the money recorded by hand.",
+				"example": "provider",
+				"title": "Settled via"
+			},
+			"administrationId": {
+				"type": "string",
+				"description": "FK to the administration owning this payment request. Scopes the payment-requests overview per-administration.",
+				"example": "adm-1",
+				"title": "Administration ID"
+			},
+			"paymentLink": {
+				"type": "string",
+				"x-openconnector-resolved": true,
+				"description": "COMPUTED: the customer-facing payment URL embedding the payment-request id, the invoice id, and a short-lived signed token, resolving to the OpenConnector hosted payment UI. Resolved by the shared payment adapter (the pattern). The app MUST NOT construct a direct Mollie/Stripe URL anywhere. Null unless state=pending AND the invoice is unsettled (visibleWhen); following a link for a non-pending request shows a friendly already-paid/expired page from the hosted UI, never a second charge.",
+				"title": "Payment Link"
+			},
+			"confirmationSummary": {
+				"type": "string",
+				"nullable": true,
+				"description": "Subject-safe, plain-language settlement receipt written by PaymentReconciliationService on capture (portal-payment-initiation): e.g. 'Invoice INV-2026-014 paid on 2026-07-23, reference tr_xxx'. Surfaced through the customer portal's read-only paymentRequests collection so the debtor sees a receipt without a dedicated portal inbox. Never overwritten by a replayed/idempotent webhook.",
+				"example": "Invoice INV-2026-0042 paid on 2026-07-23, reference tr_WDqYK6vllg.",
+				"title": "Confirmation Summary"
+			},
+			"legalBasis": {
+				"type": "object",
+				"description": "The council decision the amount comes from, carried over from the fee schedule that raised this request. A citizen asked for money is owed the article it rests on, and so is anyone checking the books later (REQ-FPCR-001).",
+				"properties": {
+					"regulation": {
+						"type": "string",
+						"description": "The regulation the fee is published in.",
+						"example": "Legesverordening 2026",
+						"title": "Regulation"
+					},
+					"article": {
+						"type": "string",
+						"description": "The article inside that regulation.",
+						"example": "2.3.1",
+						"title": "Article"
+					},
+					"effectiveDate": {
+						"type": "string",
+						"format": "date",
+						"description": "The day that article took effect.",
+						"example": "2026-01-01",
+						"title": "Effective Date"
+					}
+				},
+				"title": "Legal Basis"
+			},
+			"settlements": {
+				"type": "array",
+				"description": "Money that arrived another way: cash or pin at the counter, a bank transfer, a waiver. An APPEND, never an overwrite of the provider state, so a provider capture landing after a manual settlement is still readable and the two together report an overpayment rather than one quietly replacing the other (REQ-FPCR-003).",
+				"items": {
+					"type": "object",
+					"properties": {
+						"method": {
+							"type": "string",
+							"enum": [
+								"cash",
+								"pin",
+								"bank-transfer",
+								"waived",
+								"other"
+							],
+							"description": "How the money arrived, or that it was waived.",
+							"example": "pin",
+							"title": "Method"
+						},
+						"amount": {
+							"type": "number",
+							"minimum": 0,
+							"description": "How much arrived. A partial settlement is allowed and leaves the request short, not paid.",
+							"example": 245.0,
+							"title": "Amount"
+						},
+						"reference": {
+							"type": "string",
+							"description": "The evidence a later bank reconciliation matches on: a terminal slip number, a transfer reference. NOT a PCI field.",
+							"example": "PIN-2026-0001",
+							"title": "Reference"
+						},
+						"actor": {
+							"type": "string",
+							"description": "The user who recorded it. A settlement nobody is named for cannot be questioned.",
+							"example": "j.jansen",
+							"title": "Actor"
+						},
+						"settledAt": {
+							"type": "string",
+							"format": "date-time",
+							"description": "When it was recorded.",
+							"example": "2026-09-18T11:04:00Z",
+							"title": "Settled At"
+						},
+						"reason": {
+							"type": "string",
+							"description": "Why, which is what a waiver needs and a cash payment does not.",
+							"example": "Betaald aan de balie",
+							"title": "Reason"
+						}
+					},
+					"required": [
+						"method",
+						"amount",
+						"actor",
+						"settledAt"
+					]
+				},
+				"title": "Settlements"
+			}
+		},
+		"x-openregister-calculations": {
+			"paymentLink": {
+				"type": "string",
+				"x-openconnector-resolved": true,
+				"description": "OpenConnector hosted payment UI URL with a short-lived signed token, resolved by the shared payment adapter following the bookings-deposits pattern. Embeds the payment-request id + invoice id + signed token; resolves to OpenConnector's hosted payment UI. NO Mollie/Stripe URL is constructed in app PHP/JS: the calculation delegates to OpenConnector. Null unless state=pending and the invoice unsettled.",
+				"visibleWhen": {
+					"all": [
+						{
+							"field": "state",
+							"operator": "equals",
+							"value": "pending"
+						}
+					]
+				}
+			}
+		},
+		"x-openregister-lifecycle": {
+			"field": "state",
+			"initialState": "pending",
+			"states": {
+				"pending": {
+					"label": "Pending",
+					"description": "Payment link issued and valid; awaiting the customer's payment. The paymentLink calculation resolves only in this state and while the invoice is unsettled."
+				},
+				"authorized": {
+					"label": "Authorized",
+					"description": "The gateway authorized the payment; funds reserved, awaiting capture. Card flows may authorize then capture; iDEAL captures directly (pending → captured)."
+				},
+				"captured": {
+					"label": "Captured",
+					"description": "Payment captured at the gateway. The linked ARInvoice is settled via its existing matchPaid lifecycle transition (AR core owns GL posting); settlementReference + gatewayFeeAmount recorded for bank-reconciliation auto-matching. Terminal happy-path state."
+				},
+				"captured_unapplied": {
+					"label": "Captured (unapplied)",
+					"description": "Capture succeeded at the gateway but the invoice could not be settled (already credited / written-off / paid by other means). EXCEPTION state: surfaced prominently on the payment-requests overview's exceptions filter, never silently dropped, and refundable via the adapter's existing refund call."
+				},
+				"failed": {
+					"label": "Failed",
+					"description": "The gateway rejected the payment. failureReason carries the operator-readable gateway error. The customer may be offered a fresh link (regeneration creates a new request, history preserved)."
+				},
+				"expired": {
+					"label": "Expired",
+					"description": "The link's TTL elapsed before payment (time-based on expiresAt). An operator can regenerate, creating a new pending request."
+				},
+				"voided": {
+					"label": "Voided",
+					"description": "The invoice was settled by other means (bank match, credit note, write-off) or its outstanding amount changed: open pending requests are voided immediately so the link stops resolving to a payable session (design D5)."
+				}
+			},
+			"transitions": {
+				"authorize": {
+					"from": "pending",
+					"to": "authorized",
+					"label": "Authorize payment",
+					"description": "The gateway authorized the payment (card flows). Reached idempotently from the shared PaymentReconciliationService on the gateway authorize event."
+				},
+				"capture": {
+					"from": [
+						"authorized",
+						"pending"
+					],
+					"to": "captured",
+					"label": "Capture payment",
+					"description": "Payment captured at the gateway. Settles the linked ARInvoice through its existing matchPaid lifecycle transition (AR core owns GL settlement posting, dunning stop, ageing: this change posts nothing) with the PaymentRequest as payment evidence; records capturedAt, settlementReference and gatewayFeeAmount for bank-reconciliation auto-matching. Idempotent: a replayed capture webhook is a no-op."
+				},
+				"markUnapplied": {
+					"from": "captured",
+					"to": "captured_unapplied",
+					"label": "Mark captured but unapplied",
+					"description": "The capture succeeded but the linked ARInvoice settlement transition was impossible (already credited / written-off / paid by other means). The request is surfaced as an exception: never silently dropped. And offers a refund via the adapter's existing refund call."
+				},
+				"fail": {
+					"from": [
+						"pending",
+						"authorized"
+					],
+					"to": "failed",
+					"label": "Fail payment",
+					"description": "The gateway rejected the payment. Requires failureReason (the gateway error code/message: never raw card data).",
+					"requires": "failureReason"
+				},
+				"expire": {
+					"from": "pending",
+					"to": "expired",
+					"label": "Expire link",
+					"description": "Time-based transition fired when now > expiresAt and no payment captured. The shared polling job already wakes for pending requests (design D7): no app-local cron."
+				},
+				"void": {
+					"from": [
+						"pending",
+						"authorized"
+					],
+					"to": "voided",
+					"label": "Void request",
+					"description": "The invoice was settled by other means (bank match, credit note, write-off) or its outstanding amount changed: open requests are voided immediately so the link stops resolving. The voiding hook rides the invoice lifecycle transitions declaratively (design D5)."
+				}
+			}
+		},
+		"x-openregister-notifications": {
+			"paymentReceived": {
+				"trigger": {
+					"type": "updated",
+					"condition": {
+						"field": "state",
+						"operator": "equals",
+						"value": "captured"
+					}
+				},
+				"enabled": true,
+				"channels": [
+					"nc-notification"
+				],
+				"recipients": [
+					{
+						"kind": "object-acl",
+						"permission": "manage"
+					},
+					{
+						"kind": "groups",
+						"groups": [
+							"shillinq-finance"
+						]
+					}
+				],
+				"subject": {
+					"nl": "Betaling ontvangen voor factuur {{invoiceReference}}",
+					"en": "Payment received for invoice {{invoiceReference}}"
+				}
+			},
+			"paymentFailed": {
+				"trigger": {
+					"type": "updated",
+					"condition": {
+						"field": "state",
+						"operator": "equals",
+						"value": "failed"
+					}
+				},
+				"enabled": true,
+				"channels": [
+					"nc-notification"
+				],
+				"recipients": [
+					{
+						"kind": "object-acl",
+						"permission": "manage"
+					},
+					{
+						"kind": "groups",
+						"groups": [
+							"shillinq-finance"
+						]
+					}
+				],
+				"subject": {
+					"nl": "Betaling mislukt voor factuur {{invoiceReference}}",
+					"en": "Payment failed for invoice {{invoiceReference}}"
+				}
+			}
+		},
+		"x-openregister-rbac": {
+			"roles": {
+				"bookkeeper": {
+					"permissions": [
+						"create",
+						"read",
+						"update"
+					]
+				},
+				"controller": {
+					"permissions": [
+						"create",
+						"read",
+						"update",
+						"delete"
+					]
+				},
+				"auditor": {
+					"permissions": [
+						"read"
+					]
+				}
+			}
+		}
+	}
+}
