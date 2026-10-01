@@ -36,6 +36,14 @@
 						"label": "Reference"
 					},
 					{
+						"key": "settlement",
+						"label": "Money back"
+					},
+					{
+						"key": "settlementRequestedAt",
+						"label": "Money back requested on"
+					},
+					{
 						"key": "submittedAt",
 						"label": "Signed up on"
 					}
@@ -78,6 +86,14 @@
 					{
 						"key": "payBy",
 						"label": "Pay by"
+					},
+					{
+						"key": "transferStatus",
+						"label": "Transfer"
+					},
+					{
+						"key": "settlement",
+						"label": "Money back"
 					},
 					{
 						"key": "submittedAt",
@@ -129,6 +145,12 @@
 							"label": "Tickets",
 							"icon": "TicketOutline",
 							"component": "RegistrationChoices"
+						},
+						{
+							"id": "changes",
+							"label": "Cancel or hand over",
+							"icon": "AccountArrowLeftOutline",
+							"component": "RegistrationChanges"
 						},
 						{
 							"id": "audit",
