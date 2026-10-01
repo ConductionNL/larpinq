@@ -17,7 +17,7 @@
  *
  * @link https://larpingapp.com
  *
- * @spec openspec/changes/registration-intake-and-capacity/specs/event-registration/spec.md
+ * @spec openspec/specs/event-registration/spec.md
  */
 
 declare(strict_types=1);
@@ -46,7 +46,7 @@ use Throwable;
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
  *
- * @spec openspec/changes/registration-intake-and-capacity/specs/event-registration/spec.md
+ * @spec openspec/specs/event-registration/spec.md
  */
 class RegistrationService {
 
@@ -121,7 +121,7 @@ class RegistrationService {
 	 *
 	 * @return array<string, mixed> The fields to set.
 	 *
-	 * @spec openspec/changes/registration-intake-and-capacity/specs/event-registration/spec.md
+	 * @spec openspec/specs/event-registration/spec.md
 	 */
 	public function beforeCreate(array $registration): array {
 		$changes = [];
@@ -156,7 +156,7 @@ class RegistrationService {
 	 *
 	 * @return array<string, mixed> The fields to set.
 	 *
-	 * @spec openspec/changes/registration-intake-and-capacity/specs/event-registration/spec.md
+	 * @spec openspec/specs/event-registration/spec.md
 	 */
 	public function beforeUpdate(array $new, array $old, string $actingUid): array {
 		$status = (string)($new['status'] ?? '');
@@ -191,7 +191,7 @@ class RegistrationService {
 	 *
 	 * @return string|null The reason, untranslated, or null.
 	 *
-	 * @spec openspec/changes/registration-intake-and-capacity/specs/event-registration/spec.md
+	 * @spec openspec/specs/event-registration/spec.md
 	 */
 	public function characterRefusal(array $registration): ?string {
 		$characterId = (string)($registration['character'] ?? '');
@@ -228,7 +228,7 @@ class RegistrationService {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/registration-intake-and-capacity/specs/event-registration/spec.md
+	 * @spec openspec/specs/event-registration/spec.md
 	 */
 	public function afterWrite(array $new, ?array $old): void {
 		$eventId = (string)($new['event'] ?? '');
@@ -253,7 +253,7 @@ class RegistrationService {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/registration-intake-and-capacity/specs/event-registration/spec.md
+	 * @spec openspec/specs/event-registration/spec.md
 	 */
 	public function release(string $eventId): void {
 		if (isset($this->held[$eventId]) === false) {

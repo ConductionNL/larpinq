@@ -506,7 +506,7 @@ class RegisterObjectFetcher {
 	 * @psalm-suppress MixedMethodCall OpenRegister ObjectService resolved dynamically.
 	 * @psalm-suppress MixedAssignment  OpenRegister ObjectService resolved dynamically.
 	 *
-	 * @spec openspec/changes/registration-intake-and-capacity/specs/event-registration/spec.md
+	 * @spec openspec/specs/event-registration/spec.md
 	 */
 	public function saveObjectWithAppAuthority(string $objectType, array $data, ?string $uuid = null): array {
 		$openRegister = $this->getOpenRegisterService();

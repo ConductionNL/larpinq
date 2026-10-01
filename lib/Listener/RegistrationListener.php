@@ -17,7 +17,7 @@
  *
  * @link https://larpingapp.com
  *
- * @spec openspec/changes/registration-intake-and-capacity/specs/event-registration/spec.md
+ * @spec openspec/specs/event-registration/spec.md
  */
 
 declare(strict_types=1);
@@ -50,7 +50,7 @@ use Psr\Log\LoggerInterface;
  *
  * @psalm-suppress UndefinedClass OpenRegister event classes are optional dependencies.
  *
- * @spec openspec/changes/registration-intake-and-capacity/specs/event-registration/spec.md
+ * @spec openspec/specs/event-registration/spec.md
  */
 class RegistrationListener implements IEventListener {
 
@@ -92,7 +92,7 @@ class RegistrationListener implements IEventListener {
 	 * @psalm-suppress MixedAssignment  OpenRegister event/entity classes are optional dependencies.
 	 * @psalm-suppress MixedArgument    OpenRegister event/entity classes are optional dependencies.
 	 *
-	 * @spec openspec/changes/registration-intake-and-capacity/specs/event-registration/spec.md
+	 * @spec openspec/specs/event-registration/spec.md
 	 */
 	public function handle(Event $event): void {
 		if ($event instanceof \OCA\OpenRegister\Event\ObjectCreatingEvent) {

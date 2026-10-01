@@ -17,7 +17,7 @@
  *
  * @link https://larpingapp.com
  *
- * @spec openspec/changes/registration-intake-and-capacity/specs/event-registration/spec.md
+ * @spec openspec/specs/event-registration/spec.md
  */
 
 declare(strict_types=1);
@@ -55,7 +55,7 @@ use Throwable;
  *
  * @psalm-suppress UndefinedClass Nextcloud Forms is an optional dependency.
  *
- * @spec openspec/changes/registration-intake-and-capacity/specs/event-registration/spec.md
+ * @spec openspec/specs/event-registration/spec.md
  */
 class FormSubmissionListener implements IEventListener {
 
@@ -92,7 +92,7 @@ class FormSubmissionListener implements IEventListener {
 	 * @psalm-suppress MixedMethodCall Nextcloud Forms classes are optional dependencies.
 	 * @psalm-suppress MixedAssignment Nextcloud Forms classes are optional dependencies.
 	 *
-	 * @spec openspec/changes/registration-intake-and-capacity/specs/event-registration/spec.md
+	 * @spec openspec/specs/event-registration/spec.md
 	 */
 	public function handle(Event $event): void {
 		if (is_a($event, self::SUBMITTED_EVENT) === false || is_callable([$event, 'getWebhookSerializable']) === false) {

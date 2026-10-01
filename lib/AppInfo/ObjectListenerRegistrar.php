@@ -100,7 +100,7 @@ class ObjectListenerRegistrar {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/registration-intake-and-capacity/specs/event-registration/spec.md
+	 * @spec openspec/specs/event-registration/spec.md
 	 */
 	private function registerRegistrationListeners(IRegistrationContext $context): void {
 		if (class_exists('OCA\OpenRegister\Event\ObjectCreatingEvent') === true) {
