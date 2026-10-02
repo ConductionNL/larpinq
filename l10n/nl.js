@@ -856,7 +856,25 @@ OC.L10N.register(
         "This registration is offered to someone else.": "Deze inschrijving is aan iemand anders aangeboden.",
         "This offer has lapsed.": "Dit aanbod is vervallen.",
         "Only the player or a game master can withdraw this offer.": "Alleen de speler of een spelleider kan dit aanbod intrekken.",
-        "Cancel or hand over": "Annuleren of overdragen"
+        "Cancel or hand over": "Annuleren of overdragen",
+        "Check-in code": "Incheckcode",
+        "The code a steward scans or types at the gate; made by the server when the registration is accepted and again when it changes hands": "De code die een steward bij de poort scant of intypt; de server maakt hem als de inschrijving wordt geaccepteerd en opnieuw als die van eigenaar wisselt",
+        "Loading your check-in code…": "Je incheckcode wordt geladen…",
+        "The check-in code could not be loaded.": "De incheckcode kon niet worden geladen.",
+        "You get a check-in code when your registration is accepted.": "Je krijgt een incheckcode zodra je inschrijving is geaccepteerd.",
+        "QR code of your check-in code": "QR-code van je incheckcode",
+        "Print": "Afdrukken",
+        "Camera preview for scanning check-in codes": "Camerabeeld voor het scannen van incheckcodes",
+        "Scan or type the code, then press Enter.": "Scan of typ de code en druk op Enter.",
+        "Checked in: {name}": "Ingecheckt: {name}",
+        "Already checked in at {at} by {by}": "Al ingecheckt om {at} door {by}",
+        "This registration is not accepted. Nobody was checked in.": "Deze inschrijving is niet geaccepteerd. Er is niemand ingecheckt.",
+        "This registration has no character yet. Nobody was checked in.": "Deze inschrijving heeft nog geen personage. Er is niemand ingecheckt.",
+        "Unknown code for this event. Nobody was checked in.": "Onbekende code voor dit evenement. Er is niemand ingecheckt.",
+        "Only game masters can check participants in.": "Alleen spelleiders kunnen deelnemers inchecken.",
+        "The check-in failed. Please try again.": "Inchecken is mislukt. Probeer het opnieuw.",
+        "Scan codes": "Codes scannen",
+        "Stop scanning": "Stoppen met scannen"
     },
     "nplurals=2; plural=(n != 1);"
 )

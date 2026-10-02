@@ -764,7 +764,25 @@ OC.L10N.register(
         "This registration is offered to someone else.": "Bu kayıt başka birine önerildi.",
         "This offer has lapsed.": "Bu teklifin süresi doldu.",
         "Only the player or a game master can withdraw this offer.": "Bu teklifi yalnızca oyuncu veya bir oyun yöneticisi geri çekebilir.",
-        "Cancel or hand over": "İptal et veya devret"
+        "Cancel or hand over": "İptal et veya devret",
+        "Check-in code": "Giriş kodu",
+        "The code a steward scans or types at the gate; made by the server when the registration is accepted and again when it changes hands": "Bir görevlinin girişte taradığı veya yazdığı kod; sunucu, kayıt kabul edildiğinde ve kayıt sahip değiştirdiğinde yeniden oluşturur",
+        "Loading your check-in code…": "Giriş kodun yükleniyor…",
+        "The check-in code could not be loaded.": "Giriş kodu yüklenemedi.",
+        "You get a check-in code when your registration is accepted.": "Kaydın kabul edildiğinde bir giriş kodu alırsın.",
+        "QR code of your check-in code": "Giriş kodunun QR kodu",
+        "Print": "Yazdır",
+        "Camera preview for scanning check-in codes": "Giriş kodlarını taramak için kamera önizlemesi",
+        "Scan or type the code, then press Enter.": "Kodu tara veya yaz, ardından Enter'a bas.",
+        "Checked in: {name}": "Giriş yapıldı: {name}",
+        "Already checked in at {at} by {by}": "Zaten {at} saatinde {by} tarafından giriş yapıldı",
+        "This registration is not accepted. Nobody was checked in.": "Bu kayıt kabul edilmedi. Kimse giriş yapmadı.",
+        "This registration has no character yet. Nobody was checked in.": "Bu kaydın henüz bir karakteri yok. Kimse giriş yapmadı.",
+        "Unknown code for this event. Nobody was checked in.": "Bu etkinlik için bilinmeyen kod. Kimse giriş yapmadı.",
+        "Only game masters can check participants in.": "Katılımcıların girişini yalnızca oyun yöneticileri yapabilir.",
+        "The check-in failed. Please try again.": "Giriş başarısız oldu. Tekrar dene.",
+        "Scan codes": "Kodları tara",
+        "Stop scanning": "Taramayı durdur"
     },
     "nplurals=2; plural=(n != 1);"
 )

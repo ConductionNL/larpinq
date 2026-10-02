@@ -763,7 +763,25 @@
         "This registration is offered to someone else.": "Ky regjistrim i është ofruar dikujt tjetër.",
         "This offer has lapsed.": "Kjo ofertë ka skaduar.",
         "Only the player or a game master can withdraw this offer.": "Vetëm lojtari ose një drejtues loje mund ta tërheqë këtë ofertë.",
-        "Cancel or hand over": "Anulo ose kaloje"
+        "Cancel or hand over": "Anulo ose kaloje",
+        "Check-in code": "Kodi i regjistrimit",
+        "The code a steward scans or types at the gate; made by the server when the registration is accepted and again when it changes hands": "Kodi që një steward e skanon ose e shtyp te hyrja; serveri e krijon kur regjistrimi pranohet dhe sërish kur ndërron mbajtës",
+        "Loading your check-in code…": "Po ngarkohet kodi yt i regjistrimit…",
+        "The check-in code could not be loaded.": "Kodi i regjistrimit nuk mund të ngarkohej.",
+        "You get a check-in code when your registration is accepted.": "Merr një kod regjistrimi kur regjistrimi yt pranohet.",
+        "QR code of your check-in code": "Kodi QR i kodit tënd të regjistrimit",
+        "Print": "Printo",
+        "Camera preview for scanning check-in codes": "Pamje paraprake e kamerës për skanimin e kodeve të regjistrimit",
+        "Scan or type the code, then press Enter.": "Skano ose shtyp kodin, pastaj shtyp Enter.",
+        "Checked in: {name}": "U regjistrua: {name}",
+        "Already checked in at {at} by {by}": "Tashmë u regjistrua në {at} nga {by}",
+        "This registration is not accepted. Nobody was checked in.": "Ky regjistrim nuk është pranuar. Askush nuk u regjistrua.",
+        "This registration has no character yet. Nobody was checked in.": "Ky regjistrim ende nuk ka personazh. Askush nuk u regjistrua.",
+        "Unknown code for this event. Nobody was checked in.": "Kod i panjohur për këtë ngjarje. Askush nuk u regjistrua.",
+        "Only game masters can check participants in.": "Vetëm drejtuesit e lojës mund të regjistrojnë pjesëmarrësit.",
+        "The check-in failed. Please try again.": "Regjistrimi dështoi. Provo sërish.",
+        "Scan codes": "Skano kodet",
+        "Stop scanning": "Ndalo skanimin"
     },
     "plurals": {}
 }

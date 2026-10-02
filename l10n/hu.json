@@ -763,7 +763,25 @@
         "This registration is offered to someone else.": "Ezt a jelentkezést valaki másnak ajánlották fel.",
         "This offer has lapsed.": "Ez az ajánlat lejárt.",
         "Only the player or a game master can withdraw this offer.": "Ezt az ajánlatot csak a játékos vagy egy mesélő vonhatja vissza.",
-        "Cancel or hand over": "Lemondás vagy átadás"
+        "Cancel or hand over": "Lemondás vagy átadás",
+        "Check-in code": "Bejelentkezési kód",
+        "The code a steward scans or types at the gate; made by the server when the registration is accepted and again when it changes hands": "A kód, amelyet a rendező a bejáratnál beolvas vagy begépel; a szerver hozza létre, amikor a jelentkezést elfogadják, és újra, amikor gazdát cserél",
+        "Loading your check-in code…": "A bejelentkezési kódod betöltése…",
+        "The check-in code could not be loaded.": "A bejelentkezési kódot nem sikerült betölteni.",
+        "You get a check-in code when your registration is accepted.": "Bejelentkezési kódot akkor kapsz, amikor a jelentkezésedet elfogadják.",
+        "QR code of your check-in code": "A bejelentkezési kódod QR-kódja",
+        "Print": "Nyomtatás",
+        "Camera preview for scanning check-in codes": "Kameraelőnézet a bejelentkezési kódok beolvasásához",
+        "Scan or type the code, then press Enter.": "Olvasd be vagy írd be a kódot, majd nyomj Entert.",
+        "Checked in: {name}": "Bejelentkezett: {name}",
+        "Already checked in at {at} by {by}": "Már bejelentkezett {at}-kor, rögzítette: {by}",
+        "This registration is not accepted. Nobody was checked in.": "Ez a jelentkezés nincs elfogadva. Senki sem jelentkezett be.",
+        "This registration has no character yet. Nobody was checked in.": "Ennek a jelentkezésnek még nincs karaktere. Senki sem jelentkezett be.",
+        "Unknown code for this event. Nobody was checked in.": "Ismeretlen kód ehhez az eseményhez. Senki sem jelentkezett be.",
+        "Only game masters can check participants in.": "Csak a mesélők jelentkeztethetik be a résztvevőket.",
+        "The check-in failed. Please try again.": "A bejelentkezés nem sikerült. Próbáld újra.",
+        "Scan codes": "Kódok beolvasása",
+        "Stop scanning": "Beolvasás leállítása"
     },
     "plurals": {}
 }

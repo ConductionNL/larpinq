@@ -764,7 +764,25 @@ OC.L10N.register(
         "This registration is offered to someone else.": "Šis pieteikums piedāvāts kādam citam.",
         "This offer has lapsed.": "Šis piedāvājums ir beidzies.",
         "Only the player or a game master can withdraw this offer.": "Šo piedāvājumu var atsaukt tikai spēlētājs vai spēles vadītājs.",
-        "Cancel or hand over": "Atcelt vai nodot"
+        "Cancel or hand over": "Atcelt vai nodot",
+        "Check-in code": "Reģistrācijas kods",
+        "The code a steward scans or types at the gate; made by the server when the registration is accepted and again when it changes hands": "Kods, ko stjuarts pie ieejas noskenē vai ieraksta; serveris to izveido, kad pieteikums tiek pieņemts, un vēlreiz, kad tas maina īpašnieku",
+        "Loading your check-in code…": "Ielādē tavu reģistrācijas kodu…",
+        "The check-in code could not be loaded.": "Reģistrācijas kodu neizdevās ielādēt.",
+        "You get a check-in code when your registration is accepted.": "Reģistrācijas kodu saņemsi, kad tavs pieteikums būs pieņemts.",
+        "QR code of your check-in code": "Tava reģistrācijas koda QR kods",
+        "Print": "Drukāt",
+        "Camera preview for scanning check-in codes": "Kameras priekšskatījums reģistrācijas kodu skenēšanai",
+        "Scan or type the code, then press Enter.": "Noskenē vai ieraksti kodu un nospied Enter.",
+        "Checked in: {name}": "Reģistrēts: {name}",
+        "Already checked in at {at} by {by}": "Jau reģistrēts plkst. {at}, reģistrēja {by}",
+        "This registration is not accepted. Nobody was checked in.": "Šis pieteikums nav pieņemts. Neviens netika reģistrēts.",
+        "This registration has no character yet. Nobody was checked in.": "Šim pieteikumam vēl nav tēla. Neviens netika reģistrēts.",
+        "Unknown code for this event. Nobody was checked in.": "Nezināms kods šim pasākumam. Neviens netika reģistrēts.",
+        "Only game masters can check participants in.": "Dalībniekus reģistrēt var tikai spēles vadītāji.",
+        "The check-in failed. Please try again.": "Reģistrācija neizdevās. Mēģini vēlreiz.",
+        "Scan codes": "Skenēt kodus",
+        "Stop scanning": "Pārtraukt skenēšanu"
     },
     "nplurals=2; plural=(n != 1);"
 )

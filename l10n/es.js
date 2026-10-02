@@ -764,7 +764,25 @@ OC.L10N.register(
         "This registration is offered to someone else.": "Esta inscripción se ha ofrecido a otra persona.",
         "This offer has lapsed.": "Esta oferta ha caducado.",
         "Only the player or a game master can withdraw this offer.": "Solo el jugador o un máster pueden retirar esta oferta.",
-        "Cancel or hand over": "Cancelar o ceder"
+        "Cancel or hand over": "Cancelar o ceder",
+        "Check-in code": "Código de registro",
+        "The code a steward scans or types at the gate; made by the server when the registration is accepted and again when it changes hands": "El código que un steward escanea o escribe en la entrada; lo crea el servidor cuando se acepta la inscripción y de nuevo cuando cambia de titular",
+        "Loading your check-in code…": "Cargando tu código de registro…",
+        "The check-in code could not be loaded.": "No se pudo cargar el código de registro.",
+        "You get a check-in code when your registration is accepted.": "Recibes un código de registro cuando se acepta tu inscripción.",
+        "QR code of your check-in code": "Código QR de tu código de registro",
+        "Print": "Imprimir",
+        "Camera preview for scanning check-in codes": "Vista previa de la cámara para escanear códigos de registro",
+        "Scan or type the code, then press Enter.": "Escanea o escribe el código y pulsa Intro.",
+        "Checked in: {name}": "Registrado: {name}",
+        "Already checked in at {at} by {by}": "Ya registrado a las {at} por {by}",
+        "This registration is not accepted. Nobody was checked in.": "Esta inscripción no está aceptada. No se ha registrado a nadie.",
+        "This registration has no character yet. Nobody was checked in.": "Esta inscripción aún no tiene personaje. No se ha registrado a nadie.",
+        "Unknown code for this event. Nobody was checked in.": "Código desconocido para este evento. No se ha registrado a nadie.",
+        "Only game masters can check participants in.": "Solo los másteres pueden registrar a los participantes.",
+        "The check-in failed. Please try again.": "El registro ha fallado. Inténtalo de nuevo.",
+        "Scan codes": "Escanear códigos",
+        "Stop scanning": "Dejar de escanear"
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -763,7 +763,25 @@
         "This registration is offered to someone else.": "Această înscriere a fost oferită altcuiva.",
         "This offer has lapsed.": "Această ofertă a expirat.",
         "Only the player or a game master can withdraw this offer.": "Doar jucătorul sau un maestru de joc poate retrage această ofertă.",
-        "Cancel or hand over": "Anulează sau predă"
+        "Cancel or hand over": "Anulează sau predă",
+        "Check-in code": "Cod de check-in",
+        "The code a steward scans or types at the gate; made by the server when the registration is accepted and again when it changes hands": "Codul pe care un steward îl scanează sau îl tastează la intrare; serverul îl creează când înscrierea este acceptată și din nou când își schimbă titularul",
+        "Loading your check-in code…": "Se încarcă codul tău de check-in…",
+        "The check-in code could not be loaded.": "Codul de check-in nu a putut fi încărcat.",
+        "You get a check-in code when your registration is accepted.": "Primești un cod de check-in când înscrierea ta este acceptată.",
+        "QR code of your check-in code": "Codul QR al codului tău de check-in",
+        "Print": "Tipărește",
+        "Camera preview for scanning check-in codes": "Previzualizare cameră pentru scanarea codurilor de check-in",
+        "Scan or type the code, then press Enter.": "Scanează sau tastează codul, apoi apasă Enter.",
+        "Checked in: {name}": "Check-in făcut: {name}",
+        "Already checked in at {at} by {by}": "Check-in deja făcut la {at} de {by}",
+        "This registration is not accepted. Nobody was checked in.": "Această înscriere nu este acceptată. Nimeni nu a făcut check-in.",
+        "This registration has no character yet. Nobody was checked in.": "Această înscriere nu are încă un personaj. Nimeni nu a făcut check-in.",
+        "Unknown code for this event. Nobody was checked in.": "Cod necunoscut pentru acest eveniment. Nimeni nu a făcut check-in.",
+        "Only game masters can check participants in.": "Doar maeștrii de joc pot face check-in participanților.",
+        "The check-in failed. Please try again.": "Check-in-ul a eșuat. Încearcă din nou.",
+        "Scan codes": "Scanează coduri",
+        "Stop scanning": "Oprește scanarea"
     },
     "plurals": {}
 }

@@ -58,6 +58,7 @@ import MapMarkerPath from 'vue-material-design-icons/MapMarkerPath.vue'
 import Package from 'vue-material-design-icons/Package.vue'
 import PencilOutline from 'vue-material-design-icons/PencilOutline.vue'
 import Plus from 'vue-material-design-icons/Plus.vue'
+import Qrcode from 'vue-material-design-icons/Qrcode.vue'
 import Refresh from 'vue-material-design-icons/Refresh.vue'
 import School from 'vue-material-design-icons/School.vue'
 import ShieldAccountOutline from 'vue-material-design-icons/ShieldAccountOutline.vue'
@@ -125,6 +126,7 @@ export default {
 	Package,
 	PencilOutline,
 	Plus,
+	Qrcode,
 	Refresh,
 	School,
 	ShieldAccountOutline,

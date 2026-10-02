@@ -147,6 +147,12 @@
 							"component": "RegistrationChoices"
 						},
 						{
+							"id": "checkin-code",
+							"label": "Check-in code",
+							"icon": "Qrcode",
+							"component": "RegistrationQrCode"
+						},
+						{
 							"id": "changes",
 							"label": "Cancel or hand over",
 							"icon": "AccountArrowLeftOutline",

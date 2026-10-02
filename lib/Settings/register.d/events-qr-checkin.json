@@ -1,0 +1,31 @@
+{
+	"components": {
+		"schemas": {
+			"registration": {
+				"slug": "larping_registration",
+				"properties": {
+					"checkinCode": {
+						"type": "string",
+						"pattern": "^([A-Z2-7]{26})?$",
+						"title": "Check-in code",
+						"description": "The code a steward scans or types at the gate; made by the server when the registration is accepted and again when it changes hands",
+						"authorization": {
+							"read": [
+								"gamemasters",
+								{
+									"group": "larpers",
+									"match": {
+										"playerUid": "$userId"
+									}
+								}
+							],
+							"update": [
+								"gamemasters"
+							]
+						}
+					}
+				}
+			}
+		}
+	}
+}

@@ -764,7 +764,25 @@ OC.L10N.register(
         "This registration is offered to someone else.": "Ši registracija pasiūlyta kitam.",
         "This offer has lapsed.": "Šis pasiūlymas baigėsi.",
         "Only the player or a game master can withdraw this offer.": "Šį pasiūlymą gali atšaukti tik žaidėjas arba žaidimo vedėjas.",
-        "Cancel or hand over": "Atšaukti arba perduoti"
+        "Cancel or hand over": "Atšaukti arba perduoti",
+        "Check-in code": "Registracijos kodas",
+        "The code a steward scans or types at the gate; made by the server when the registration is accepted and again when it changes hands": "Kodas, kurį budėtojas prie įėjimo nuskaito arba įveda; serveris jį sukuria, kai registracija priimama, ir vėl, kai pasikeičia jos turėtojas",
+        "Loading your check-in code…": "Įkeliamas tavo registracijos kodas…",
+        "The check-in code could not be loaded.": "Nepavyko įkelti registracijos kodo.",
+        "You get a check-in code when your registration is accepted.": "Registracijos kodą gausi, kai tavo registracija bus priimta.",
+        "QR code of your check-in code": "Tavo registracijos kodo QR kodas",
+        "Print": "Spausdinti",
+        "Camera preview for scanning check-in codes": "Kameros peržiūra registracijos kodams nuskaityti",
+        "Scan or type the code, then press Enter.": "Nuskaityk arba įvesk kodą ir paspausk Enter.",
+        "Checked in: {name}": "Užregistruota: {name}",
+        "Already checked in at {at} by {by}": "Jau užregistruota {at}, registravo {by}",
+        "This registration is not accepted. Nobody was checked in.": "Ši registracija nepriimta. Niekas neužregistruotas.",
+        "This registration has no character yet. Nobody was checked in.": "Ši registracija dar neturi veikėjo. Niekas neužregistruotas.",
+        "Unknown code for this event. Nobody was checked in.": "Nežinomas kodas šiam renginiui. Niekas neužregistruotas.",
+        "Only game masters can check participants in.": "Dalyvius registruoti gali tik žaidimo vedėjai.",
+        "The check-in failed. Please try again.": "Registracija nepavyko. Bandyk dar kartą.",
+        "Scan codes": "Nuskaityti kodus",
+        "Stop scanning": "Baigti nuskaitymą"
     },
     "nplurals=2; plural=(n != 1);"
 )

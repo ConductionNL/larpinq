@@ -764,7 +764,25 @@ OC.L10N.register(
         "This registration is offered to someone else.": "Αυτή η εγγραφή έχει προσφερθεί σε κάποιον άλλον.",
         "This offer has lapsed.": "Αυτή η προσφορά έχει λήξει.",
         "Only the player or a game master can withdraw this offer.": "Μόνο ο παίκτης ή ένας αφηγητής μπορεί να αποσύρει αυτή την προσφορά.",
-        "Cancel or hand over": "Ακύρωση ή παράδοση"
+        "Cancel or hand over": "Ακύρωση ή παράδοση",
+        "Check-in code": "Κωδικός check-in",
+        "The code a steward scans or types at the gate; made by the server when the registration is accepted and again when it changes hands": "Ο κωδικός που σαρώνει ή πληκτρολογεί ο υπεύθυνος στην είσοδο· τον δημιουργεί ο διακομιστής όταν η εγγραφή γίνεται δεκτή και ξανά όταν αλλάζει κάτοχο",
+        "Loading your check-in code…": "Φόρτωση του κωδικού check-in σου…",
+        "The check-in code could not be loaded.": "Δεν ήταν δυνατή η φόρτωση του κωδικού check-in.",
+        "You get a check-in code when your registration is accepted.": "Παίρνεις κωδικό check-in όταν η εγγραφή σου γίνει δεκτή.",
+        "QR code of your check-in code": "Κωδικός QR του κωδικού check-in σου",
+        "Print": "Εκτύπωση",
+        "Camera preview for scanning check-in codes": "Προεπισκόπηση κάμερας για σάρωση κωδικών check-in",
+        "Scan or type the code, then press Enter.": "Σάρωσε ή πληκτρολόγησε τον κωδικό και πάτησε Enter.",
+        "Checked in: {name}": "Έγινε check-in: {name}",
+        "Already checked in at {at} by {by}": "Έχει ήδη γίνει check-in στις {at} από {by}",
+        "This registration is not accepted. Nobody was checked in.": "Αυτή η εγγραφή δεν έχει γίνει δεκτή. Δεν έγινε check-in σε κανέναν.",
+        "This registration has no character yet. Nobody was checked in.": "Αυτή η εγγραφή δεν έχει ακόμη χαρακτήρα. Δεν έγινε check-in σε κανέναν.",
+        "Unknown code for this event. Nobody was checked in.": "Άγνωστος κωδικός για αυτή την εκδήλωση. Δεν έγινε check-in σε κανέναν.",
+        "Only game masters can check participants in.": "Μόνο οι αφηγητές μπορούν να κάνουν check-in στους συμμετέχοντες.",
+        "The check-in failed. Please try again.": "Το check-in απέτυχε. Δοκίμασε ξανά.",
+        "Scan codes": "Σάρωση κωδικών",
+        "Stop scanning": "Διακοπή σάρωσης"
     },
     "nplurals=2; plural=(n != 1);"
 )

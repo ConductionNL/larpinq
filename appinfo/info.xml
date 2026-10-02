@@ -210,6 +210,8 @@ Maak een [featureverzoek](https://github.com/ConductionNL/larpinq/issues)
 			     (x-relation-filter status = active) keeps offering them.
 			     Idempotent; logs and continues. -->
 			<step>OCA\Larpinq\Repair\BackfillCharacterStatus</step>
+			<!-- Give registrations accepted before events-qr-checkin a check-in code. -->
+			<step>OCA\Larpinq\Repair\BackfillCheckinCodes</step>
 		</post-migration>
 		<install>
 			<step>OCA\Larpinq\Repair\MigrateAppConfigKeys</step>

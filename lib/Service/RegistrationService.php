@@ -99,6 +99,13 @@ class RegistrationService {
 	private readonly RegistrationPlaces $places;
 
 	/**
+	 * The check-in codes.
+	 *
+	 * @var CheckinCodes
+	 */
+	private readonly CheckinCodes $codes;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param RegisterObjectFetcher $fetcher Reads and writes the register.
@@ -117,6 +124,7 @@ class RegistrationService {
 		private readonly int $lockWaitMicros = 100000,
 	) {
 		$this->places = new RegistrationPlaces(fetcher: $fetcher);
+		$this->codes = new CheckinCodes();
 	}//end __construct()
 
 	/**
@@ -124,6 +132,7 @@ class RegistrationService {
 	 *
 	 * With approval it waits as pending; without, it is accepted while a place
 	 * is free and waitlisted when the event is full.
+	 * An accepted one gets its check-in code.
 	 *
 	 * @param array<string, mixed> $registration The registration as submitted.
 	 *
@@ -132,6 +141,19 @@ class RegistrationService {
 	 * @spec openspec/specs/event-registration/spec.md
 	 */
 	public function beforeCreate(array $registration): array {
+		$changes = $this->createChanges(registration: $registration);
+		$status = (string)($changes['status'] ?? $registration['status'] ?? '');
+		return array_merge($changes, $this->codes->forWrite(new: $registration, old: null, status: $status));
+	}//end beforeCreate()
+
+	/**
+	 * The status and stamps of a new registration.
+	 *
+	 * @param array<string, mixed> $registration The registration as submitted.
+	 *
+	 * @return array<string, mixed> The fields to set.
+	 */
+	private function createChanges(array $registration): array {
 		$changes = [];
 		if ((string)($registration['submittedAt'] ?? '') === '') {
 			$changes['submittedAt'] = $this->now();
@@ -150,13 +172,14 @@ class RegistrationService {
 				'decidedBy' => self::AUTOMATIC,
 			]
 		);
-	}//end beforeCreate()
+	}//end createChanges()
 
 	/**
 	 * What a changed registration gets before it is stored.
 	 *
 	 * An accept gives a place when one is free and the waiting list otherwise;
-	 * every status change is stamped with who and when.
+	 * every status change is stamped with who and when, and an accepted
+	 * registration keeps (or gets) its check-in code.
 	 *
 	 * @param array<string, mixed> $new The registration as it will be.
 	 * @param array<string, mixed> $old The registration as stored.
@@ -167,6 +190,21 @@ class RegistrationService {
 	 * @spec openspec/specs/event-registration/spec.md
 	 */
 	public function beforeUpdate(array $new, array $old, string $actingUid): array {
+		$changes = $this->updateChanges(new: $new, old: $old, actingUid: $actingUid);
+		$status = (string)($changes['status'] ?? $new['status'] ?? '');
+		return array_merge($changes, $this->codes->forWrite(new: $new, old: $old, status: $status));
+	}//end beforeUpdate()
+
+	/**
+	 * The status and stamps of a changed registration.
+	 *
+	 * @param array<string, mixed> $new The registration as it will be.
+	 * @param array<string, mixed> $old The registration as stored.
+	 * @param string $actingUid Who asked for the change.
+	 *
+	 * @return array<string, mixed> The fields to set.
+	 */
+	private function updateChanges(array $new, array $old, string $actingUid): array {
 		$status = (string)($new['status'] ?? '');
 		if ($status === (string)($old['status'] ?? '')) {
 			return [];
@@ -187,7 +225,7 @@ class RegistrationService {
 		}
 
 		return array_merge($stamp, ['status' => $this->placeOutcome(event: $event, registration: $new, excludeId: (string)($new['id'] ?? ''))]);
-	}//end beforeUpdate()
+	}//end updateChanges()
 
 	/**
 	 * After a registration is stored: the participants follow it, the lock is

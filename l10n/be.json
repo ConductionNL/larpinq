@@ -763,7 +763,25 @@
         "This registration is offered to someone else.": "Гэтая рэгістрацыя прапанаваная камусьці іншаму.",
         "This offer has lapsed.": "Тэрмін гэтай прапановы скончыўся.",
         "Only the player or a game master can withdraw this offer.": "Адклікаць гэтую прапанову можа толькі гулец або майстар гульні.",
-        "Cancel or hand over": "Скасаваць або перадаць"
+        "Cancel or hand over": "Скасаваць або перадаць",
+        "Check-in code": "Код рэгістрацыі",
+        "The code a steward scans or types at the gate; made by the server when the registration is accepted and again when it changes hands": "Код, які сцюард скануе або ўводзіць на ўваходзе; сервер стварае яго, калі заяўку прымаюць, і зноў, калі ў яе мяняецца ўладальнік",
+        "Loading your check-in code…": "Загрузка твайго кода рэгістрацыі…",
+        "The check-in code could not be loaded.": "Не ўдалося загрузіць код рэгістрацыі.",
+        "You get a check-in code when your registration is accepted.": "Ты атрымаеш код рэгістрацыі, калі тваю заяўку прымуць.",
+        "QR code of your check-in code": "QR-код твайго кода рэгістрацыі",
+        "Print": "Друк",
+        "Camera preview for scanning check-in codes": "Папярэдні прагляд камеры для сканавання кодаў рэгістрацыі",
+        "Scan or type the code, then press Enter.": "Адсканіруй або ўвядзі код і націсні Enter.",
+        "Checked in: {name}": "Зарэгістравана: {name}",
+        "Already checked in at {at} by {by}": "Ужо зарэгістравана ў {at}, рэгістраваў(ла) {by}",
+        "This registration is not accepted. Nobody was checked in.": "Гэтая заяўка не прынята. Нікога не зарэгістравана.",
+        "This registration has no character yet. Nobody was checked in.": "У гэтай заяўкі яшчэ няма персанажа. Нікога не зарэгістравана.",
+        "Unknown code for this event. Nobody was checked in.": "Невядомы код для гэтага мерапрыемства. Нікога не зарэгістравана.",
+        "Only game masters can check participants in.": "Рэгістраваць удзельнікаў могуць толькі майстры.",
+        "The check-in failed. Please try again.": "Рэгістрацыя не ўдалася. Паспрабуй яшчэ раз.",
+        "Scan codes": "Сканаваць коды",
+        "Stop scanning": "Спыніць сканаванне"
     },
     "plurals": {}
 }

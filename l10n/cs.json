@@ -763,7 +763,25 @@
         "This registration is offered to someone else.": "Tato přihláška je nabídnuta někomu jinému.",
         "This offer has lapsed.": "Tato nabídka vypršela.",
         "Only the player or a game master can withdraw this offer.": "Tuto nabídku může stáhnout jen hráč nebo vypravěč.",
-        "Cancel or hand over": "Zrušit nebo předat"
+        "Cancel or hand over": "Zrušit nebo předat",
+        "Check-in code": "Odbavovací kód",
+        "The code a steward scans or types at the gate; made by the server when the registration is accepted and again when it changes hands": "Kód, který steward u vstupu naskenuje nebo zadá; server ho vytvoří při přijetí registrace a znovu, když změní držitele",
+        "Loading your check-in code…": "Načítá se tvůj odbavovací kód…",
+        "The check-in code could not be loaded.": "Odbavovací kód se nepodařilo načíst.",
+        "You get a check-in code when your registration is accepted.": "Odbavovací kód dostaneš, jakmile bude tvoje registrace přijata.",
+        "QR code of your check-in code": "QR kód tvého odbavovacího kódu",
+        "Print": "Tisk",
+        "Camera preview for scanning check-in codes": "Náhled kamery pro skenování odbavovacích kódů",
+        "Scan or type the code, then press Enter.": "Naskenuj nebo zadej kód a stiskni Enter.",
+        "Checked in: {name}": "Odbaveno: {name}",
+        "Already checked in at {at} by {by}": "Již odbaveno v {at}, odbavil(a) {by}",
+        "This registration is not accepted. Nobody was checked in.": "Tato registrace není přijata. Nikdo nebyl odbaven.",
+        "This registration has no character yet. Nobody was checked in.": "Tato registrace zatím nemá postavu. Nikdo nebyl odbaven.",
+        "Unknown code for this event. Nobody was checked in.": "Neznámý kód pro tuto akci. Nikdo nebyl odbaven.",
+        "Only game masters can check participants in.": "Účastníky mohou odbavovat jen vypravěči.",
+        "The check-in failed. Please try again.": "Odbavení se nezdařilo. Zkus to znovu.",
+        "Scan codes": "Skenovat kódy",
+        "Stop scanning": "Zastavit skenování"
     },
     "plurals": {}
 }

@@ -764,7 +764,25 @@ OC.L10N.register(
         "This registration is offered to someone else.": "Din ir-reġistrazzjoni ġiet offruta lil xi ħadd ieħor.",
         "This offer has lapsed.": "Din l-offerta skadiet.",
         "Only the player or a game master can withdraw this offer.": "Il-plejer jew game master biss jistgħu jirtiraw din l-offerta.",
-        "Cancel or hand over": "Ikkanċella jew għaddi"
+        "Cancel or hand over": "Ikkanċella jew għaddi",
+        "Check-in code": "Kodiċi tad-dħul",
+        "The code a steward scans or types at the gate; made by the server when the registration is accepted and again when it changes hands": "Il-kodiċi li steward jiskennja jew jittajpja fid-daħla; is-server joħolqu meta r-reġistrazzjoni tiġi aċċettata u għal darb'oħra meta tbiddel id-detentur",
+        "Loading your check-in code…": "Il-kodiċi tad-dħul tiegħek qed jitgħabba…",
+        "The check-in code could not be loaded.": "Il-kodiċi tad-dħul ma setax jitgħabba.",
+        "You get a check-in code when your registration is accepted.": "Tieħu kodiċi tad-dħul meta r-reġistrazzjoni tiegħek tiġi aċċettata.",
+        "QR code of your check-in code": "Kodiċi QR tal-kodiċi tad-dħul tiegħek",
+        "Print": "Ipprintja",
+        "Camera preview for scanning check-in codes": "Previżjoni tal-kamera biex tiskennja kodiċijiet tad-dħul",
+        "Scan or type the code, then press Enter.": "Skennja jew ittajpja l-kodiċi, imbagħad agħfas Enter.",
+        "Checked in: {name}": "Daħal: {name}",
+        "Already checked in at {at} by {by}": "Diġà daħal fil-{at} minn {by}",
+        "This registration is not accepted. Nobody was checked in.": "Din ir-reġistrazzjoni mhix aċċettata. Ħadd ma ddaħħal.",
+        "This registration has no character yet. Nobody was checked in.": "Din ir-reġistrazzjoni għad m'għandhiex karattru. Ħadd ma ddaħħal.",
+        "Unknown code for this event. Nobody was checked in.": "Kodiċi mhux magħruf għal dan l-avveniment. Ħadd ma ddaħħal.",
+        "Only game masters can check participants in.": "Il-kaptani tal-logħba biss jistgħu jdaħħlu l-parteċipanti.",
+        "The check-in failed. Please try again.": "Id-dħul falla. Erġa' pprova.",
+        "Scan codes": "Skennja kodiċijiet",
+        "Stop scanning": "Waqqaf l-iskennjar"
     },
     "nplurals=2; plural=(n != 1);"
 )

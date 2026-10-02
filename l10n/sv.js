@@ -764,7 +764,25 @@ OC.L10N.register(
         "This registration is offered to someone else.": "Den här anmälan är erbjuden till någon annan.",
         "This offer has lapsed.": "Erbjudandet har gått ut.",
         "Only the player or a game master can withdraw this offer.": "Bara spelaren eller en spelledare kan återkalla erbjudandet.",
-        "Cancel or hand over": "Avboka eller lämna över"
+        "Cancel or hand over": "Avboka eller lämna över",
+        "Check-in code": "Incheckningskod",
+        "The code a steward scans or types at the gate; made by the server when the registration is accepted and again when it changes hands": "Koden som en steward skannar eller skriver vid entrén; servern skapar den när anmälan godkänns och igen när den byter innehavare",
+        "Loading your check-in code…": "Laddar din incheckningskod…",
+        "The check-in code could not be loaded.": "Incheckningskoden kunde inte laddas.",
+        "You get a check-in code when your registration is accepted.": "Du får en incheckningskod när din anmälan har godkänts.",
+        "QR code of your check-in code": "QR-kod för din incheckningskod",
+        "Print": "Skriv ut",
+        "Camera preview for scanning check-in codes": "Kameraförhandsvisning för att skanna incheckningskoder",
+        "Scan or type the code, then press Enter.": "Skanna eller skriv koden och tryck på Enter.",
+        "Checked in: {name}": "Incheckad: {name}",
+        "Already checked in at {at} by {by}": "Redan incheckad kl. {at} av {by}",
+        "This registration is not accepted. Nobody was checked in.": "Den här anmälan är inte godkänd. Ingen checkades in.",
+        "This registration has no character yet. Nobody was checked in.": "Den här anmälan har ingen karaktär än. Ingen checkades in.",
+        "Unknown code for this event. Nobody was checked in.": "Okänd kod för det här evenemanget. Ingen checkades in.",
+        "Only game masters can check participants in.": "Bara spelledare kan checka in deltagare.",
+        "The check-in failed. Please try again.": "Incheckningen misslyckades. Försök igen.",
+        "Scan codes": "Skanna koder",
+        "Stop scanning": "Sluta skanna"
     },
     "nplurals=2; plural=(n != 1);"
 )

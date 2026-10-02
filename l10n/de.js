@@ -764,7 +764,25 @@ OC.L10N.register(
         "This registration is offered to someone else.": "Diese Anmeldung ist jemand anderem angeboten.",
         "This offer has lapsed.": "Dieses Angebot ist verfallen.",
         "Only the player or a game master can withdraw this offer.": "Nur die spielende Person oder eine Spielleitung kann dieses Angebot zurückziehen.",
-        "Cancel or hand over": "Stornieren oder übergeben"
+        "Cancel or hand over": "Stornieren oder übergeben",
+        "Check-in code": "Check-in-Code",
+        "The code a steward scans or types at the gate; made by the server when the registration is accepted and again when it changes hands": "Der Code, den ein Steward am Eingang scannt oder eintippt; der Server erzeugt ihn, wenn die Anmeldung angenommen wird, und erneut, wenn sie den Besitzer wechselt",
+        "Loading your check-in code…": "Dein Check-in-Code wird geladen…",
+        "The check-in code could not be loaded.": "Der Check-in-Code konnte nicht geladen werden.",
+        "You get a check-in code when your registration is accepted.": "Du erhältst einen Check-in-Code, sobald deine Anmeldung angenommen ist.",
+        "QR code of your check-in code": "QR-Code deines Check-in-Codes",
+        "Print": "Drucken",
+        "Camera preview for scanning check-in codes": "Kameravorschau zum Scannen von Check-in-Codes",
+        "Scan or type the code, then press Enter.": "Scanne oder tippe den Code ein und drücke Enter.",
+        "Checked in: {name}": "Eingecheckt: {name}",
+        "Already checked in at {at} by {by}": "Bereits eingecheckt um {at} von {by}",
+        "This registration is not accepted. Nobody was checked in.": "Diese Anmeldung ist nicht angenommen. Niemand wurde eingecheckt.",
+        "This registration has no character yet. Nobody was checked in.": "Diese Anmeldung hat noch keinen Charakter. Niemand wurde eingecheckt.",
+        "Unknown code for this event. Nobody was checked in.": "Unbekannter Code für diese Veranstaltung. Niemand wurde eingecheckt.",
+        "Only game masters can check participants in.": "Nur Spielleitungen können Teilnehmende einchecken.",
+        "The check-in failed. Please try again.": "Der Check-in ist fehlgeschlagen. Bitte versuche es erneut.",
+        "Scan codes": "Codes scannen",
+        "Stop scanning": "Scannen beenden"
     },
     "nplurals=2; plural=(n != 1);"
 )

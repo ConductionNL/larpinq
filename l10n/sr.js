@@ -764,7 +764,25 @@ OC.L10N.register(
         "This registration is offered to someone else.": "Ова пријава је понуђена неком другом.",
         "This offer has lapsed.": "Ова понуда је истекла.",
         "Only the player or a game master can withdraw this offer.": "Само играч или водитељ игре може да повуче ову понуду.",
-        "Cancel or hand over": "Откажи или предај"
+        "Cancel or hand over": "Откажи или предај",
+        "Check-in code": "Код за пријаву",
+        "The code a steward scans or types at the gate; made by the server when the registration is accepted and again when it changes hands": "Код који редар на улазу скенира или укуца; сервер га прави кад је пријава прихваћена и поново кад промени носиоца",
+        "Loading your check-in code…": "Учитавање твог кода за пријаву…",
+        "The check-in code could not be loaded.": "Код за пријаву није могуће учитати.",
+        "You get a check-in code when your registration is accepted.": "Код за пријаву добијаш кад твоја пријава буде прихваћена.",
+        "QR code of your check-in code": "QR код твог кода за пријаву",
+        "Print": "Одштампај",
+        "Camera preview for scanning check-in codes": "Преглед камере за скенирање кодова за пријаву",
+        "Scan or type the code, then press Enter.": "Скенирај или укуцај код и притисни Enter.",
+        "Checked in: {name}": "Пријављен: {name}",
+        "Already checked in at {at} by {by}": "Већ пријављен у {at}, пријавио/ла {by}",
+        "This registration is not accepted. Nobody was checked in.": "Ова пријава није прихваћена. Нико није пријављен.",
+        "This registration has no character yet. Nobody was checked in.": "Ова пријава још нема лик. Нико није пријављен.",
+        "Unknown code for this event. Nobody was checked in.": "Непознат код за овај догађај. Нико није пријављен.",
+        "Only game masters can check participants in.": "Само водитељи игре могу пријављивати учеснике.",
+        "The check-in failed. Please try again.": "Пријава није успела. Покушај поново.",
+        "Scan codes": "Скенирај кодове",
+        "Stop scanning": "Заустави скенирање"
     },
     "nplurals=2; plural=(n != 1);"
 )

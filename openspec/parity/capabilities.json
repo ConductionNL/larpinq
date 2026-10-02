@@ -3085,10 +3085,11 @@
 			"kanka": "no",
 			"pretix": "yes",
 			"built": {
-				"state": "specified",
-				"evidence": "grep -rniE \"qr.?code\" lib src --include=*.php --include=*.vue --include=*.js: no hits; there is no ticket concept at all (see reg-tickets)",
+				"state": "built",
+				"evidence": "lib/Settings/register.d/events-qr-checkin.json (registration.checkinCode, read by game masters and the registration's player), lib/Service/CheckinCodes.php (128 random bits as 26 base32 characters, set in RegistrationService::beforeCreate/beforeUpdate on acceptance, replaced on transfer), lib/Service/CodeCheckin.php + lib/Controller/EventCheckinController.php (POST /api/events/{id}/checkin-code, game masters only, UserRateLimit 120/60; checked-in, already, unknown, not-accepted, no-character), lib/Repair/BackfillCheckinCodes.php, src/components/RegistrationQrCode.vue (qrcode SVG, print style), src/components/CheckinScanPanel.vue (BarcodeDetector camera and code field); tests/unit/Service/CheckinCodeTest.php (real registration listener), tests/unit/Controller/EventCheckinControllerTest.php, tests/unit/Repair/BackfillCheckinCodesTest.php, tests/unit/Settings/QrCheckinFragmentTest.php (Opis), tests/vitest/checkinCode.spec.js",
 				"owner": "ConductionNL/larpinq",
-				"change": "events-qr-checkin"
+				"change": "openspec/changes/events-qr-checkin",
+				"reachedOn": "Registration page (/registrations/:id), Check-in code tab; event page, Check-in tab: Scan codes"
 			},
 			"provider": "self",
 			"providerHow": "read: grepped, no hits",

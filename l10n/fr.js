@@ -764,7 +764,25 @@ OC.L10N.register(
         "This registration is offered to someone else.": "Cette inscription est proposée à quelqu’un d’autre.",
         "This offer has lapsed.": "Cette offre a expiré.",
         "Only the player or a game master can withdraw this offer.": "Seuls le joueur ou un maître de jeu peuvent retirer cette offre.",
-        "Cancel or hand over": "Annuler ou céder"
+        "Cancel or hand over": "Annuler ou céder",
+        "Check-in code": "Code d'enregistrement",
+        "The code a steward scans or types at the gate; made by the server when the registration is accepted and again when it changes hands": "Le code qu'un steward scanne ou saisit à l'entrée ; créé par le serveur quand l'inscription est acceptée et de nouveau quand elle change de titulaire",
+        "Loading your check-in code…": "Chargement de ton code d'enregistrement…",
+        "The check-in code could not be loaded.": "Le code d'enregistrement n'a pas pu être chargé.",
+        "You get a check-in code when your registration is accepted.": "Tu reçois un code d'enregistrement quand ton inscription est acceptée.",
+        "QR code of your check-in code": "Code QR de ton code d'enregistrement",
+        "Print": "Imprimer",
+        "Camera preview for scanning check-in codes": "Aperçu de la caméra pour scanner les codes d'enregistrement",
+        "Scan or type the code, then press Enter.": "Scanne ou saisis le code, puis appuie sur Entrée.",
+        "Checked in: {name}": "Enregistré : {name}",
+        "Already checked in at {at} by {by}": "Déjà enregistré à {at} par {by}",
+        "This registration is not accepted. Nobody was checked in.": "Cette inscription n'est pas acceptée. Personne n'a été enregistré.",
+        "This registration has no character yet. Nobody was checked in.": "Cette inscription n'a pas encore de personnage. Personne n'a été enregistré.",
+        "Unknown code for this event. Nobody was checked in.": "Code inconnu pour cet événement. Personne n'a été enregistré.",
+        "Only game masters can check participants in.": "Seuls les maîtres de jeu peuvent enregistrer les participants.",
+        "The check-in failed. Please try again.": "L'enregistrement a échoué. Réessaie.",
+        "Scan codes": "Scanner des codes",
+        "Stop scanning": "Arrêter le scan"
     },
     "nplurals=2; plural=(n != 1);"
 )

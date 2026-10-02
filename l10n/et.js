@@ -764,7 +764,25 @@ OC.L10N.register(
         "This registration is offered to someone else.": "See registreerimine on pakutud kellelegi teisele.",
         "This offer has lapsed.": "See pakkumine on aegunud.",
         "Only the player or a game master can withdraw this offer.": "Ainult mängija või mängujuht saab selle pakkumise tagasi võtta.",
-        "Cancel or hand over": "Tühista või anna üle"
+        "Cancel or hand over": "Tühista või anna üle",
+        "Check-in code": "Registreerimiskood",
+        "The code a steward scans or types at the gate; made by the server when the registration is accepted and again when it changes hands": "Kood, mille korrapidaja väravas skannib või sisestab; server loob selle, kui registreering kinnitatakse, ja uuesti, kui see omanikku vahetab",
+        "Loading your check-in code…": "Sinu registreerimiskoodi laaditakse…",
+        "The check-in code could not be loaded.": "Registreerimiskoodi ei õnnestunud laadida.",
+        "You get a check-in code when your registration is accepted.": "Saad registreerimiskoodi, kui sinu registreering on kinnitatud.",
+        "QR code of your check-in code": "Sinu registreerimiskoodi QR-kood",
+        "Print": "Prindi",
+        "Camera preview for scanning check-in codes": "Kaamera eelvaade registreerimiskoodide skannimiseks",
+        "Scan or type the code, then press Enter.": "Skanni või sisesta kood ja vajuta Enter.",
+        "Checked in: {name}": "Registreeritud: {name}",
+        "Already checked in at {at} by {by}": "Juba registreeritud kell {at}, registreeris {by}",
+        "This registration is not accepted. Nobody was checked in.": "See registreering pole kinnitatud. Kedagi ei registreeritud.",
+        "This registration has no character yet. Nobody was checked in.": "Sellel registreeringul pole veel tegelaskuju. Kedagi ei registreeritud.",
+        "Unknown code for this event. Nobody was checked in.": "Tundmatu kood selle ürituse jaoks. Kedagi ei registreeritud.",
+        "Only game masters can check participants in.": "Ainult mängujuhid saavad osalejaid registreerida.",
+        "The check-in failed. Please try again.": "Registreerimine ebaõnnestus. Proovi uuesti.",
+        "Scan codes": "Skanni koode",
+        "Stop scanning": "Lõpeta skannimine"
     },
     "nplurals=2; plural=(n != 1);"
 )

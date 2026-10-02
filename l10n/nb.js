@@ -764,7 +764,25 @@ OC.L10N.register(
         "This registration is offered to someone else.": "Denne påmeldingen er tilbudt noen andre.",
         "This offer has lapsed.": "Dette tilbudet har utløpt.",
         "Only the player or a game master can withdraw this offer.": "Bare spilleren eller en spilleder kan trekke tilbake dette tilbudet.",
-        "Cancel or hand over": "Avbestill eller overlat"
+        "Cancel or hand over": "Avbestill eller overlat",
+        "Check-in code": "Innsjekkingskode",
+        "The code a steward scans or types at the gate; made by the server when the registration is accepted and again when it changes hands": "Koden en steward skanner eller skriver inn ved inngangen; serveren lager den når påmeldingen godtas og på nytt når den bytter innehaver",
+        "Loading your check-in code…": "Laster inn innsjekkingskoden din…",
+        "The check-in code could not be loaded.": "Innsjekkingskoden kunne ikke lastes inn.",
+        "You get a check-in code when your registration is accepted.": "Du får en innsjekkingskode når påmeldingen din er godtatt.",
+        "QR code of your check-in code": "QR-kode for innsjekkingskoden din",
+        "Print": "Skriv ut",
+        "Camera preview for scanning check-in codes": "Kameraforhåndsvisning for skanning av innsjekkingskoder",
+        "Scan or type the code, then press Enter.": "Skann eller skriv inn koden, og trykk Enter.",
+        "Checked in: {name}": "Sjekket inn: {name}",
+        "Already checked in at {at} by {by}": "Allerede sjekket inn kl. {at} av {by}",
+        "This registration is not accepted. Nobody was checked in.": "Denne påmeldingen er ikke godtatt. Ingen ble sjekket inn.",
+        "This registration has no character yet. Nobody was checked in.": "Denne påmeldingen har ingen karakter ennå. Ingen ble sjekket inn.",
+        "Unknown code for this event. Nobody was checked in.": "Ukjent kode for dette arrangementet. Ingen ble sjekket inn.",
+        "Only game masters can check participants in.": "Bare spilledere kan sjekke inn deltakere.",
+        "The check-in failed. Please try again.": "Innsjekkingen mislyktes. Prøv igjen.",
+        "Scan codes": "Skann koder",
+        "Stop scanning": "Stopp skanning"
     },
     "nplurals=2; plural=(n != 1);"
 )

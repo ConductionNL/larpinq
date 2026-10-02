@@ -22,6 +22,7 @@
  * SPDX-FileCopyrightText: 2026 Conduction B.V.
  */
 
+import RegistrationQrCode from './components/RegistrationQrCode.vue'
 import WorldSwitcher from './components/WorldSwitcher.vue'
 import WorldSwitcherActions from './components/WorldSwitcherActions.vue'
 import ApplyBuildDialog from './dialogs/ApplyBuildDialog.vue'
@@ -113,6 +114,7 @@ export default {
 	// Cancel or hand over tab on the registration page
 	// (registration-cancel-transfer-refund). @spec openspec/specs/event-registration/spec.md
 	RegistrationChanges: { kind: 'section', component: RegistrationChanges },
+	RegistrationQrCode: { kind: 'section', component: RegistrationQrCode },
 	EventChoiceCounts: { kind: 'section', component: EventChoiceCounts },
 	CharacterCustomFields: { kind: 'section', component: CharacterCustomFields },
 	// Check tab on the build page. @spec openspec/specs/character-builds/spec.md

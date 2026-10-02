@@ -764,7 +764,25 @@ OC.L10N.register(
         "This registration is offered to someone else.": "Esta inscrição foi oferecida a outra pessoa.",
         "This offer has lapsed.": "Esta oferta caducou.",
         "Only the player or a game master can withdraw this offer.": "Só o jogador ou um mestre de jogo pode retirar esta oferta.",
-        "Cancel or hand over": "Cancelar ou passar"
+        "Cancel or hand over": "Cancelar ou passar",
+        "Check-in code": "Código de check-in",
+        "The code a steward scans or types at the gate; made by the server when the registration is accepted and again when it changes hands": "O código que um steward digitaliza ou escreve à entrada; criado pelo servidor quando a inscrição é aceite e de novo quando muda de titular",
+        "Loading your check-in code…": "A carregar o seu código de check-in…",
+        "The check-in code could not be loaded.": "Não foi possível carregar o código de check-in.",
+        "You get a check-in code when your registration is accepted.": "Recebe um código de check-in quando a sua inscrição for aceite.",
+        "QR code of your check-in code": "Código QR do seu código de check-in",
+        "Print": "Imprimir",
+        "Camera preview for scanning check-in codes": "Pré-visualização da câmara para digitalizar códigos de check-in",
+        "Scan or type the code, then press Enter.": "Digitalize ou escreva o código e prima Enter.",
+        "Checked in: {name}": "Check-in feito: {name}",
+        "Already checked in at {at} by {by}": "Check-in já feito às {at} por {by}",
+        "This registration is not accepted. Nobody was checked in.": "Esta inscrição não está aceite. Ninguém fez check-in.",
+        "This registration has no character yet. Nobody was checked in.": "Esta inscrição ainda não tem personagem. Ninguém fez check-in.",
+        "Unknown code for this event. Nobody was checked in.": "Código desconhecido para este evento. Ninguém fez check-in.",
+        "Only game masters can check participants in.": "Só os mestres de jogo podem fazer o check-in dos participantes.",
+        "The check-in failed. Please try again.": "O check-in falhou. Tente novamente.",
+        "Scan codes": "Digitalizar códigos",
+        "Stop scanning": "Parar de digitalizar"
     },
     "nplurals=2; plural=(n != 1);"
 )

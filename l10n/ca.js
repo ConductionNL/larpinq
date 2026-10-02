@@ -764,7 +764,25 @@ OC.L10N.register(
         "This registration is offered to someone else.": "Aquesta inscripció s'ha ofert a una altra persona.",
         "This offer has lapsed.": "Aquesta oferta ha caducat.",
         "Only the player or a game master can withdraw this offer.": "Només el jugador o un màster poden retirar aquesta oferta.",
-        "Cancel or hand over": "Cancel·la o cedeix"
+        "Cancel or hand over": "Cancel·la o cedeix",
+        "Check-in code": "Codi d'entrada",
+        "The code a steward scans or types at the gate; made by the server when the registration is accepted and again when it changes hands": "El codi que un steward escaneja o escriu a l'entrada; el crea el servidor quan s'accepta la inscripció i de nou quan canvia de titular",
+        "Loading your check-in code…": "S'està carregant el teu codi d'entrada…",
+        "The check-in code could not be loaded.": "No s'ha pogut carregar el codi d'entrada.",
+        "You get a check-in code when your registration is accepted.": "Reps un codi d'entrada quan s'accepta la teva inscripció.",
+        "QR code of your check-in code": "Codi QR del teu codi d'entrada",
+        "Print": "Imprimeix",
+        "Camera preview for scanning check-in codes": "Previsualització de la càmera per escanejar codis d'entrada",
+        "Scan or type the code, then press Enter.": "Escaneja o escriu el codi i prem Retorn.",
+        "Checked in: {name}": "Registrat: {name}",
+        "Already checked in at {at} by {by}": "Ja registrat a les {at} per {by}",
+        "This registration is not accepted. Nobody was checked in.": "Aquesta inscripció no està acceptada. No s'ha registrat ningú.",
+        "This registration has no character yet. Nobody was checked in.": "Aquesta inscripció encara no té personatge. No s'ha registrat ningú.",
+        "Unknown code for this event. Nobody was checked in.": "Codi desconegut per a aquest esdeveniment. No s'ha registrat ningú.",
+        "Only game masters can check participants in.": "Només els màsters poden registrar els participants.",
+        "The check-in failed. Please try again.": "El registre ha fallat. Torna-ho a provar.",
+        "Scan codes": "Escaneja codis",
+        "Stop scanning": "Atura l'escaneig"
     },
     "nplurals=2; plural=(n != 1);"
 )

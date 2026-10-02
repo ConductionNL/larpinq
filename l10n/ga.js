@@ -764,7 +764,25 @@ OC.L10N.register(
         "This registration is offered to someone else.": "Tairgeadh an clárú seo do dhuine eile.",
         "This offer has lapsed.": "Chuaigh an tairiscint seo in éag.",
         "Only the player or a game master can withdraw this offer.": "Ní féidir ach leis an imreoir nó le máistir cluiche an tairiscint seo a tharraingt siar.",
-        "Cancel or hand over": "Cealaigh nó tabhair ar aghaidh"
+        "Cancel or hand over": "Cealaigh nó tabhair ar aghaidh",
+        "Check-in code": "Cód clárúcháin",
+        "The code a steward scans or types at the gate; made by the server when the registration is accepted and again when it changes hands": "An cód a scanann nó a chlóscríobhann maor ag an ngeata; cruthaíonn an freastalaí é nuair a ghlactar leis an gclárúchán agus arís nuair a athraíonn sé sealbhóir",
+        "Loading your check-in code…": "Do chód clárúcháin á lódáil…",
+        "The check-in code could not be loaded.": "Níorbh fhéidir an cód clárúcháin a lódáil.",
+        "You get a check-in code when your registration is accepted.": "Faigheann tú cód clárúcháin nuair a ghlactar le do chlárúchán.",
+        "QR code of your check-in code": "Cód QR do chóid clárúcháin",
+        "Print": "Priontáil",
+        "Camera preview for scanning check-in codes": "Réamhamharc ceamara chun cóid chlárúcháin a scanadh",
+        "Scan or type the code, then press Enter.": "Scan nó clóscríobh an cód, ansin brúigh Enter.",
+        "Checked in: {name}": "Cláraithe isteach: {name}",
+        "Already checked in at {at} by {by}": "Cláraithe isteach cheana ag {at} ag {by}",
+        "This registration is not accepted. Nobody was checked in.": "Níl glactha leis an gclárúchán seo. Níor cláraíodh aon duine isteach.",
+        "This registration has no character yet. Nobody was checked in.": "Níl carachtar ag an gclárúchán seo fós. Níor cláraíodh aon duine isteach.",
+        "Unknown code for this event. Nobody was checked in.": "Cód anaithnid don imeacht seo. Níor cláraíodh aon duine isteach.",
+        "Only game masters can check participants in.": "Ní féidir ach le máistrí cluiche rannpháirtithe a chlárú isteach.",
+        "The check-in failed. Please try again.": "Theip ar an gclárú isteach. Bain triail eile as.",
+        "Scan codes": "Scan cóid",
+        "Stop scanning": "Stop ag scanadh"
     },
     "nplurals=2; plural=(n != 1);"
 )

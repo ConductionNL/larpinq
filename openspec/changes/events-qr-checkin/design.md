@@ -58,6 +58,14 @@ then a filtered query for the registration with that code (limit 1). Results:
 event. On success it calls `EventRosterService::recordAttendance()` with the
 registration's character.
 
+## Revised at build time (lane 20, 2 Oct)
+
+- D1: the code is made by `CheckinCodes`, called from `RegistrationService::beforeCreate()` and `beforeUpdate()` (the registration listener's pre-write), so every path that accepts a registration (a game master's accept, a sign-up into a free place, a promotion from the waiting list) gets one. Only the server sets it: an update that sends another code keeps the stored one. **A transfer now replaces the code** instead of keeping it: the previous holder still has the old QR code, and it must not check anyone in. The property's pattern is `^([A-Z2-7]{26})?$` because a registration that is not accepted carries an empty code.
+- D2: My registrations is a list page, so the QR code lives on a **Check-in code** tab of the registration page (component `RegistrationQrCode`, `src/components/`), which players open from My registrations. Names come from the player, character and event objects through the objects API. The spec delta of REQ-EQC-002 says so.
+- D4: the endpoint is its own controller, `EventCheckinController::checkinByCode()`, rather than a method on `EventsController`, so EventsController's dependencies and its tests stay as they are. The service is `CodeCheckin`. One more result: `409 {status: no-character}` for an accepted registration without a character, because attendance is recorded per character. Unavailable attendance storage answers `424 {status: unavailable}`.
+- The scan panel is `src/components/CheckinScanPanel.vue`, shown in `EventRoster.vue` behind a **Scan codes** toggle for game masters.
+- Repair step `BackfillCheckinCodes` reads accepted registrations with the app's authority and writes a code to each one that has none; it is idempotent.
+
 ## Declarative-vs-imperative decision
 
 | Behaviour | Path | Rationale |

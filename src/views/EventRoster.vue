@@ -32,6 +32,23 @@
 				)
 			}}
 		</div>
+		<div v-if="canCheckIn" class="event-roster__scan">
+			<NcButton
+				variant="secondary"
+				:aria-expanded="scanning ? 'true' : 'false'"
+				data-testid="event-roster-scan-toggle"
+				@click="scanning = !scanning">
+				{{
+					scanning
+						? t('larpinq', 'Stop scanning')
+						: t('larpinq', 'Scan codes')
+				}}
+			</NcButton>
+			<CheckinScanPanel
+				v-if="scanning"
+				:eventId="eventId"
+				@checkedIn="fetchRoster" />
+		</div>
 		<CnDataTable
 			:columns="columns"
 			:rows="participants"
@@ -79,6 +96,7 @@ import { generateUrl } from '@nextcloud/router'
 // @nextcloud/vue v9 ships an `exports` map; the v8 `dist/Components/*.js`
 // deep paths are no longer exported and throw ERR_PACKAGE_PATH_NOT_EXPORTED.
 import NcButton from '@nextcloud/vue/components/NcButton'
+import CheckinScanPanel from '../components/CheckinScanPanel.vue'
 
 /**
  * Human-readable label + badge variant per attendance status.
@@ -93,6 +111,7 @@ export default {
 	name: 'EventRoster',
 
 	components: {
+		CheckinScanPanel,
 		CnDataTable,
 		CnStatusBadge,
 		NcButton,
@@ -133,6 +152,7 @@ export default {
 			loading: false,
 			saving: null,
 			loadFailed: false,
+			scanning: false,
 		}
 	},
 
@@ -308,6 +328,10 @@ export default {
 </script>
 
 <style scoped>
+.event-roster__scan {
+	margin-bottom: 12px;
+}
+
 .event-roster__notice {
 	margin-bottom: 12px;
 	padding: 8px 12px;

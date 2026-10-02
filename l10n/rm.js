@@ -764,7 +764,25 @@ OC.L10N.register(
         "This registration is offered to someone else.": "Questa annunzia è vegnida purschida ad insatgi auter.",
         "This offer has lapsed.": "Questa purschida è scadida.",
         "Only the player or a game master can withdraw this offer.": "Mo il giugader u in manader dal gieu po retrair questa purschida.",
-        "Cancel or hand over": "Annullar u surdar"
+        "Cancel or hand over": "Annullar u surdar",
+        "Check-in code": "Code da check-in",
+        "The code a steward scans or types at the gate; made by the server when the registration is accepted and again when it changes hands": "Il code che in steward scannescha u tippa a l'entrada; il server al crea cura che l'annunzia vegn acceptada e danovamain cura ch'ella mida il possessur",
+        "Loading your check-in code…": "Tes code da check-in vegn chargià…",
+        "The check-in code could not be loaded.": "Il code da check-in n'ha betg pudì vegnir chargià.",
+        "You get a check-in code when your registration is accepted.": "Ti survegns in code da check-in uschespert che tia annunzia è acceptada.",
+        "QR code of your check-in code": "Code QR da tes code da check-in",
+        "Print": "Stampar",
+        "Camera preview for scanning check-in codes": "Prevista da la camera per scannar codes da check-in",
+        "Scan or type the code, then press Enter.": "Scannescha u tippa il code e smatga Enter.",
+        "Checked in: {name}": "Annunzià: {name}",
+        "Already checked in at {at} by {by}": "Gia annunzià a las {at} da {by}",
+        "This registration is not accepted. Nobody was checked in.": "Questa annunzia n'è betg acceptada. Nagin n'è vegnì annunzià.",
+        "This registration has no character yet. Nobody was checked in.": "Questa annunzia n'ha anc nagin persunagi. Nagin n'è vegnì annunzià.",
+        "Unknown code for this event. Nobody was checked in.": "Code nunenconuschent per quest eveniment. Nagin n'è vegnì annunzià.",
+        "Only game masters can check participants in.": "Mo manaders dal gieu pon annunziar participants.",
+        "The check-in failed. Please try again.": "Il check-in n'è betg reussì. Emprova anc ina giada.",
+        "Scan codes": "Scannar codes",
+        "Stop scanning": "Finir da scannar"
     },
     "nplurals=2; plural=(n != 1);"
 )

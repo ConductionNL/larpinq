@@ -764,7 +764,25 @@ OC.L10N.register(
         "This registration is offered to someone else.": "Dës Umeldung ass engem aneren ugebuede ginn.",
         "This offer has lapsed.": "Dës Offer ass ofgelaf.",
         "Only the player or a game master can withdraw this offer.": "Nëmmen de Spiller oder e Spillleeder kann dës Offer zréckzéien.",
-        "Cancel or hand over": "Annuléieren oder iwwerginn"
+        "Cancel or hand over": "Annuléieren oder iwwerginn",
+        "Check-in code": "Check-in-Code",
+        "The code a steward scans or types at the gate; made by the server when the registration is accepted and again when it changes hands": "De Code, deen e Steward um Agank scannt oder antippt; de Server mécht en, wann d'Umeldung ugeholl gëtt, an nach eng Kéier, wann se de Besëtzer wiesselt",
+        "Loading your check-in code…": "Däin Check-in-Code gëtt gelueden…",
+        "The check-in code could not be loaded.": "De Check-in-Code konnt net geluede ginn.",
+        "You get a check-in code when your registration is accepted.": "Du kriss e Check-in-Code, soubal deng Umeldung ugeholl ass.",
+        "QR code of your check-in code": "QR-Code vun dengem Check-in-Code",
+        "Print": "Drécken",
+        "Camera preview for scanning check-in codes": "Kameraviraussiicht fir Check-in-Coden ze scannen",
+        "Scan or type the code, then press Enter.": "Scann oder tipp de Code an dréck op Enter.",
+        "Checked in: {name}": "Agecheckt: {name}",
+        "Already checked in at {at} by {by}": "Schonn agecheckt um {at} vum {by}",
+        "This registration is not accepted. Nobody was checked in.": "Dës Umeldung ass net ugeholl. Keen ass agecheckt ginn.",
+        "This registration has no character yet. Nobody was checked in.": "Dës Umeldung huet nach kee Charakter. Keen ass agecheckt ginn.",
+        "Unknown code for this event. Nobody was checked in.": "Onbekannte Code fir dëst Evenement. Keen ass agecheckt ginn.",
+        "Only game masters can check participants in.": "Nëmme Spillleeder kënnen Deelhuelend achecken.",
+        "The check-in failed. Please try again.": "Den Check-in ass feelgeschloen. Probéier nach eng Kéier.",
+        "Scan codes": "Coden scannen",
+        "Stop scanning": "Scannen ophalen"
     },
     "nplurals=2; plural=(n != 1);"
 )

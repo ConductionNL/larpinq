@@ -764,7 +764,25 @@ OC.L10N.register(
         "This registration is offered to someone else.": "Тази регистрация е предложена на някой друг.",
         "This offer has lapsed.": "Това предложение е изтекло.",
         "Only the player or a game master can withdraw this offer.": "Само играчът или водещ на играта може да оттегли това предложение.",
-        "Cancel or hand over": "Откажи или предай"
+        "Cancel or hand over": "Откажи или предай",
+        "Check-in code": "Код за регистриране",
+        "The code a steward scans or types at the gate; made by the server when the registration is accepted and again when it changes hands": "Кодът, който стюардът сканира или въвежда на входа; сървърът го създава, когато регистрацията бъде приета, и отново, когато смени притежателя си",
+        "Loading your check-in code…": "Зареждане на кода ти за регистриране…",
+        "The check-in code could not be loaded.": "Кодът за регистриране не можа да се зареди.",
+        "You get a check-in code when your registration is accepted.": "Ще получиш код за регистриране, когато регистрацията ти бъде приета.",
+        "QR code of your check-in code": "QR код на кода ти за регистриране",
+        "Print": "Печат",
+        "Camera preview for scanning check-in codes": "Преглед от камерата за сканиране на кодове за регистриране",
+        "Scan or type the code, then press Enter.": "Сканирай или въведи кода и натисни Enter.",
+        "Checked in: {name}": "Регистриран: {name}",
+        "Already checked in at {at} by {by}": "Вече регистриран в {at} от {by}",
+        "This registration is not accepted. Nobody was checked in.": "Тази регистрация не е приета. Никой не е регистриран.",
+        "This registration has no character yet. Nobody was checked in.": "Тази регистрация още няма персонаж. Никой не е регистриран.",
+        "Unknown code for this event. Nobody was checked in.": "Непознат код за това събитие. Никой не е регистриран.",
+        "Only game masters can check participants in.": "Само водещите на играта могат да регистрират участници.",
+        "The check-in failed. Please try again.": "Регистрирането не успя. Опитай отново.",
+        "Scan codes": "Сканирай кодове",
+        "Stop scanning": "Спри сканирането"
     },
     "nplurals=2; plural=(n != 1);"
 )

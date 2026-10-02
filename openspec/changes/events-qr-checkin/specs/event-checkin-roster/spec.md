@@ -11,7 +11,8 @@ registration. From larpinq matrix row `evt-qr-checkin`.
 
 When a registration is accepted, larpinq SHALL give it a random check-in code
 that cannot be guessed, readable only by game masters and the registration's
-player.
+player. When the registration changes hands, larpinq MUST replace the code, so
+the previous holder's code checks nobody in.
 
 #### Scenario: Anna's registration is accepted
 
@@ -22,13 +23,14 @@ player.
 
 ### Requirement: The player sees the code as a QR code (REQ-EQC-002)
 
-My registrations SHALL show the check-in code of each accepted registration as
-a QR code with the code as text beneath it, and MUST print cleanly.
+The registration page, opened from My registrations, SHALL show the check-in
+code of an accepted registration on a Check-in code tab as a QR code with the
+code as text beneath it, and MUST print cleanly.
 
 #### Scenario: Anna prints her code
 
 - GIVEN Anna's registration is accepted
-- WHEN Anna opens My registrations and prints the page
+- WHEN Anna opens her registration from My registrations, goes to Check-in code and prints
 - THEN the print shows the QR code, the code, her name, her character and the event
 
 ### Requirement: Stewards check in by scanning or typing a code (REQ-EQC-003)
