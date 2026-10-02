@@ -67,6 +67,8 @@ class FakePaymentLeaf implements IntegrationProvider {
 	 */
 	public bool $mayRequest = true;
 
+	public bool $failList = false;
+
 	/**
 	 * The requests shillinq would have saved, by id.
 	 *
@@ -124,6 +126,10 @@ class FakePaymentLeaf implements IntegrationProvider {
 	}
 
 	public function list(string $register, string $schema, string $objectId, array $filters = []): array {
+		if ($this->failList === true) {
+			throw new RuntimeException('shillinq is down');
+		}
+
 		$items = [];
 		foreach ($this->requests as $request) {
 			if ($request['subject']['id'] === $objectId && $request['subject']['register'] === $register && $request['subject']['schema'] === $schema) {
