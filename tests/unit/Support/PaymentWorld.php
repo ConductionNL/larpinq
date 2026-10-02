@@ -27,18 +27,24 @@ require_once __DIR__ . '/InMemoryOpenRegister.php';
 use DateTimeImmutable;
 use OCA\Larpinq\Listener\PaymentRequestListener;
 use OCA\Larpinq\Listener\RegistrationListener;
+use OCA\Larpinq\Service\CancellationPolicy;
 use OCA\Larpinq\Service\PaymentFollowUp;
 use OCA\Larpinq\Service\PaymentLeaf;
 use OCA\Larpinq\Service\PaymentRequestBuilder;
 use OCA\Larpinq\Service\RegisterObjectFetcher;
+use OCA\Larpinq\Service\RegistrationChangeService;
 use OCA\Larpinq\Service\RegistrationCharacterCheck;
 use OCA\Larpinq\Service\RegistrationPaymentService;
 use OCA\Larpinq\Service\RegistrationService;
+use OCA\Larpinq\Service\RegistrationSettlement;
 use OCA\Larpinq\Service\RegistrationWriteCheck;
 use OCA\Larpinq\Service\TicketChoiceService;
+use OCA\Larpinq\Service\TransferOffers;
 use OCA\OpenRegister\Service\Integration\IntegrationProvider;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Utility\ITimeFactory;
+use OCP\EventDispatcher\Event;
+use OCP\EventDispatcher\IEventDispatcher;
 use OCP\IAppConfig;
 use OCP\IGroupManager;
 use OCP\IL10N;
@@ -224,6 +230,13 @@ class PaymentWorld {
 
 	public DateTimeImmutable $now;
 
+	/**
+	 * The typed events larpinq dispatched, in order.
+	 *
+	 * @var array<int, Event>
+	 */
+	public array $dispatched = [];
+
 	public function __construct(private TestCase $test) {
 		$this->store = new InMemoryOpenRegister();
 		$this->leaf = new FakePaymentLeaf();
@@ -392,7 +405,32 @@ class PaymentWorld {
 	}
 
 	public function paymentListener(): PaymentRequestListener {
-		return new PaymentRequestListener($this->config(), $this->payments(), $this->followUp(), $this->paymentLeaf(), $this->session());
+		return new PaymentRequestListener($this->config(), $this->payments(), $this->followUp(), $this->paymentLeaf(), $this->session(), $this->settlement());
+	}
+
+	public function policy(): CancellationPolicy {
+		return new CancellationPolicy($this->groups());
+	}
+
+	public function dispatcher(): IEventDispatcher {
+		$dispatcher = $this->test->getMockBuilder(IEventDispatcher::class)->getMock();
+		$dispatcher->method('dispatchTyped')->willReturnCallback(function (Event $event): void {
+			$this->dispatched[] = $event;
+		});
+		return $dispatcher;
+	}
+
+	public function settlement(): RegistrationSettlement {
+		$builder = new PaymentRequestBuilder($this->fetcher(), $this->users(), $this->clock(), new NullLogger());
+		return new RegistrationSettlement($this->fetcher(), $this->policy(), $builder, $this->paymentLeaf(), $this->dispatcher(), new NullLogger());
+	}
+
+	public function changes(): RegistrationChangeService {
+		return new RegistrationChangeService($this->fetcher(), $this->policy(), $this->clock());
+	}
+
+	public function transfers(): TransferOffers {
+		return new TransferOffers($this->fetcher(), $this->policy(), $this->clock(), new NullLogger());
 	}
 
 	private function registrationListener(): RegistrationListener {

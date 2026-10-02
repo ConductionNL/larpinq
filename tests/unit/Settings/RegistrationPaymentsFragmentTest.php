@@ -156,6 +156,6 @@ class RegistrationPaymentsFragmentTest extends TestCase {
 			}
 		}
 
-		$this->assertSame(['open WC26-0001', 'paid WC26-0002'], $states);
+		$this->assertSame(['open WC26-0001', 'paid WC26-0002', 'paid WC26-0003'], $states);
 	}//end testThePaymentSeedsValidate()
 }//end class

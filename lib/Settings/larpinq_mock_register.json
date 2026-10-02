@@ -325,7 +325,11 @@
         "signupForm": 1,
         "paymentRequired": true,
         "payBy": "2026-11-20T00:00:00+00:00",
-        "paymentCode": "WC26"
+        "paymentCode": "WC26",
+        "cancellationPolicy": {
+          "cancelBy": "2026-11-25T00:00:00+00:00",
+          "paidCancellation": "player-chooses"
+        }
       },
       {
         "@self": {
@@ -1179,6 +1183,28 @@
         "status": "waitlisted",
         "submissionId": 4,
         "submittedAt": "2026-09-04T10:00:00+00:00"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_registration",
+          "slug": "larping-registration-voorbeeld-5"
+        },
+        "event": "00000000-0000-4000-8000-000000000000",
+        "player": "00000000-0000-4000-8000-000000000000",
+        "submitterUid": "joris",
+        "bookedByUid": "joris",
+        "bookingGroup": "d0000000-0000-4000-8000-000000000001",
+        "status": "cancelled",
+        "cancelReason": "player",
+        "cancelledBy": "joris",
+        "submittedAt": "2026-09-06T10:00:00+00:00",
+        "paymentState": "paid",
+        "paymentRequestId": "f0000000-0000-4000-8000-000000000003",
+        "paymentReference": "WC26-0003",
+        "settlementChoice": "credit",
+        "settlement": "credit-requested",
+        "settlementRequestedAt": "2026-11-10T10:00:00+00:00"
       }
     ]
   }

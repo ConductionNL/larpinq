@@ -155,6 +155,19 @@ class PaymentLeaf {
 	}//end isRegistrationSubject()
 
 	/**
+	 * The subject shillinq gives a payment request on a registration.
+	 *
+	 * @param string $registrationId The registration.
+	 *
+	 * @return array{register: string, schema: string, id: string} The subject.
+	 *
+	 * @spec openspec/specs/event-registration/spec.md
+	 */
+	public function subject(string $registrationId): array {
+		return ['register' => $this->register(), 'schema' => $this->schema(), 'id' => $registrationId];
+	}//end subject()
+
+	/**
 	 * The leaf, or null without OpenRegister's registry or shillinq.
 	 *
 	 * @return object|null The leaf.

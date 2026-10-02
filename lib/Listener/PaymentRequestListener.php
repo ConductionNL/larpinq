@@ -25,6 +25,7 @@ namespace OCA\Larpinq\Listener;
 use OCA\Larpinq\Service\PaymentFollowUp;
 use OCA\Larpinq\Service\PaymentLeaf;
 use OCA\Larpinq\Service\RegistrationPaymentService;
+use OCA\Larpinq\Service\RegistrationSettlement;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\IAppConfig;
@@ -36,7 +37,9 @@ use OCP\IUserSession;
  *
  * - a larpinq registration that has just become accepted asks for its payment;
  * - a shillinq `PaymentRequest` whose subject is a larpinq registration and
- *   that shillinq reports captured marks that registration paid.
+ *   that shillinq reports captured marks that registration paid;
+ * - a paid registration that has just become cancelled asks shillinq for a
+ *   refund or credit (registration-cancel-transfer-refund REQ-RCT-003).
  *
  * @category Listener
  * @package  OCA\Larpinq\Listener
@@ -55,6 +58,7 @@ class PaymentRequestListener implements IEventListener {
 	 * @param PaymentFollowUp $followUp Marks a registration paid.
 	 * @param PaymentLeaf $leaf Whether a request's subject is a registration.
 	 * @param IUserSession $session Who accepted.
+	 * @param RegistrationSettlement $settlement The money of a paid cancellation.
 	 *
 	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
 	 */
@@ -64,6 +68,7 @@ class PaymentRequestListener implements IEventListener {
 		private readonly PaymentFollowUp $followUp,
 		private readonly PaymentLeaf $leaf,
 		private readonly IUserSession $session,
+		private readonly RegistrationSettlement $settlement,
 	) {
 	}//end __construct()
 
@@ -116,6 +121,7 @@ class PaymentRequestListener implements IEventListener {
 			}
 
 			$this->payments->afterWrite(new: $data, old: $before, actingUid: $this->actingUid());
+			$this->settlement->afterWrite(new: $data, old: $before);
 			return;
 		}
 

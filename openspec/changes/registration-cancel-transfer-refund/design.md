@@ -90,3 +90,14 @@ None.
 ## Open Questions
 
 None.
+
+## Revised at build time (2 Oct 2026)
+
+The code at HEAD differed from this design in five places; the build follows the code.
+
+- **Where the checks live (D2, D4).** `status`, `cancelReason` and every new registration field are writable by game masters only on the object API (property `authorization.update`), so a player cannot cancel or hand over through it at all. The checks therefore live in `RegistrationChangeService` and `TransferOffers`, behind larpinq's endpoints (`/api/registrations/{id}/changes`, `/cancel`, `/participants`, `/transfer`, `/transfer/accept`, `/transfer/withdraw`), which write with the app's authority through the registration listeners. The pre-write listener is unchanged; the freed place still goes to the waiting list there. `CancellationPolicy` answers who may act and until when: the policy's `cancelBy`, else the event's start, else no limit.
+- **Cancel reasons (D2).** The payments change already shipped `cancelReason` with `unpaid`, `player` and `organiser`; those are reused. `transferred-none` is dropped: a transfer never cancels a registration.
+- **Settlement (D3).** It runs from `PaymentRequestListener` for every write that moves a paid registration to `cancelled` (`RegistrationSettlement`), so a game master's cancel through the lifecycle action settles too. `settlementChoice` keeps the player's choice; `player-chooses` without a choice refunds. Shillinq's `PaymentRequest.state` has no refunded or credited value (`pending`, `authorized`, `captured`, `captured_unapplied`, `failed`, `expired`, `voided`), so nothing shillinq emits today can set `refunded` or `credited`: a game master sets them by hand, and the listener half waits for shillinq (task 2.3, second half, stays open). The events carry `debtor`, `amount` and `currency` in shillinq's PaymentRequest shape plus the paid request's `subject`; the amount is the paid request's as shillinq holds it, else the registration's price lines.
+- **Transfer state (D4).** A transfer is not a lifecycle transition: the status stays `accepted`. `transferStatus` (`offered`, `accepted`, `withdrawn`, `lapsed`) tracks it, `transferToUid` gives the offered player read access and the `transfer-offered` notification, and accepting also clears `bookedByUid`. The daily lapse is `TransferOffers::lapse()`, called by `RegistrationPaymentJob`.
+- **Group bookings (D1).** The player schema has no email, so a new participant is a player with a name only, or a player the booker booked before. The booker's own registration gets the `bookingGroup` when the first participant is added.
+- **Seeds.** The demo event carries the policy (cancel by 2026-11-25, player chooses) and Mila's cancelled, paid registration with credit requested. Sanne's transfer is not seeded: a pending offer would notify a demo account.

@@ -25,6 +25,8 @@ waiting list.
 
 #### Scenario: Too late to cancel yourself
 
+@e2e exclude the refusal needs a player account that is not a game master, which the e2e instance does not seed; covered by tests/unit/Service/RegistrationChangeServiceTest.php::testTooLateToCancelYourself
+
 - GIVEN it is 2026-11-28
 - WHEN Anna tries to cancel her registration
 - THEN the cancellation is refused and she is told to contact the organisers
