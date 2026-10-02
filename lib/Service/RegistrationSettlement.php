@@ -89,7 +89,10 @@ class RegistrationSettlement {
 		try {
 			$event = $this->fetcher->getObject(objectType: 'event', id: (string)($new['event'] ?? ''));
 		} catch (Throwable $e) {
-			$this->logger->error('Larpinq: the cancelled, paid registration {id} was not settled: its event could not be read.', ['id' => $id, 'exception' => $e]);
+			$this->logger->error(
+				'Larpinq: the cancelled, paid registration {id} was not settled: its event could not be read.',
+				['id' => $id, 'exception' => $e]
+			);
 			return;
 		}
 

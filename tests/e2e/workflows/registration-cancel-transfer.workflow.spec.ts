@@ -117,7 +117,9 @@ test.describe.serial('cancel, book for others, money back and hand over', () => 
 			player: ids.me,
 			submitterUid: ME,
 		})
-		const mila = await change(ids.joris, 'participants', { name: fixtureName('Mila') })
+		const mila = await change(ids.joris, 'participants', {
+			name: fixtureName('Mila'),
+		})
 		ids.mila = ledger.track('larping_registration', String(mila.id))
 		expect(mila.bookingGroup).toBeTruthy()
 
@@ -146,10 +148,13 @@ test.describe.serial('cancel, book for others, money back and hand over', () => 
 
 	// @e2e openspec/changes/registration-cancel-transfer-refund/specs/event-registration/spec.md#milas-fee-becomes-credit
 	test('a paid cancellation records the credit requested', async () => {
-		const res = await admin.patch(`${OR_BASE}/larpinq/larping_registration/${ids.joris}`, {
-			headers: JSON_HEADERS,
-			data: { paymentState: 'paid' },
-		})
+		const res = await admin.patch(
+			`${OR_BASE}/larpinq/larping_registration/${ids.joris}`,
+			{
+				headers: JSON_HEADERS,
+				data: { paymentState: 'paid' },
+			},
+		)
 		expect(res.ok(), await res.text()).toBe(true)
 
 		await change(ids.joris, 'cancel', { settlement: 'credit' })

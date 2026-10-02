@@ -94,7 +94,8 @@ class RegistrationChangeService {
 			$fields['cancelReason'] = 'player';
 		}
 
-		if ($this->policy->choosesMoneyBack(event: $event) === true && in_array($choice, [CancellationPolicy::REFUND, CancellationPolicy::CREDIT], true) === true) {
+		$moneyBack = in_array($choice, [CancellationPolicy::REFUND, CancellationPolicy::CREDIT], true);
+		if ($this->policy->choosesMoneyBack(event: $event) === true && $moneyBack === true) {
 			$fields['settlementChoice'] = $choice;
 		}
 
@@ -120,7 +121,8 @@ class RegistrationChangeService {
 	 */
 	public function addParticipant(string $registrationId, string $actingUid, string $name, string $playerId = ''): array {
 		$registration = $this->registration(registrationId: $registrationId);
-		if ($this->policy->isParticipant(registration: $registration, uid: $actingUid) === false || (string)($registration['status'] ?? '') === 'cancelled') {
+		$participant = $this->policy->isParticipant(registration: $registration, uid: $actingUid);
+		if ($participant === false || (string)($registration['status'] ?? '') === 'cancelled') {
 			throw new RegistrationChangeRefusedException('Only the person who signed up can add participants to this booking.', 403);
 		}
 
@@ -128,7 +130,11 @@ class RegistrationChangeService {
 		$group = (string)($registration['bookingGroup'] ?? '');
 		if ($group === '') {
 			$group = $this->uuid();
-			$this->fetcher->saveObjectWithAppAuthority(objectType: 'registration', data: ['bookingGroup' => $group, 'bookedByUid' => $actingUid], uuid: $registrationId);
+			$this->fetcher->saveObjectWithAppAuthority(
+				objectType: 'registration',
+				data: ['bookingGroup' => $group, 'bookedByUid' => $actingUid],
+				uuid: $registrationId
+			);
 		}
 
 		return $this->fetcher->saveObjectWithAppAuthority(
@@ -167,7 +173,7 @@ class RegistrationChangeService {
 		$cancelBy = $this->policy->cancelBy(event: $event);
 
 		return [
-			'canCancel' => $live === true && ($gameMaster === true || ($open === true && $this->isOwn(registration: $registration, uid: $actingUid) === true)),
+			'canCancel' => $live === true && $this->mayCancel(registration: $registration, uid: $actingUid, gameMaster: $gameMaster, open: $open),
 			'cancelBy' => $cancelBy?->format(DateTimeInterface::ATOM),
 			'paid' => (string)($registration['paymentState'] ?? '') === RegistrationPaymentService::PAID,
 			'choosesMoneyBack' => $this->policy->choosesMoneyBack(event: $event),
@@ -179,6 +185,25 @@ class RegistrationChangeService {
 			'settlement' => (string)($registration['settlement'] ?? ''),
 		];
 	}//end whatMayChange()
+
+	/**
+	 * Whether this caller may cancel a live registration now: a game master
+	 * always, the participant or booker while the event is open.
+	 *
+	 * @param array<string, mixed> $registration The registration.
+	 * @param string $uid The caller.
+	 * @param bool $gameMaster Whether the caller is a game master.
+	 * @param bool $open Whether the cancel-by date has not passed.
+	 *
+	 * @return bool True when the caller may cancel.
+	 */
+	private function mayCancel(array $registration, string $uid, bool $gameMaster, bool $open): bool {
+		if ($gameMaster === true) {
+			return true;
+		}
+
+		return $open === true && $this->isOwn(registration: $registration, uid: $uid) === true;
+	}//end mayCancel()
 
 	/**
 	 * The participant's player: a player the caller booked before, or a new one.
@@ -193,7 +218,8 @@ class RegistrationChangeService {
 	 */
 	private function participant(string $actingUid, string $name, string $playerId): string {
 		if ($playerId !== '') {
-			$booked = $this->fetcher->getObjectsWithAppAuthority(objectType: 'registration', filters: ['bookedByUid' => $actingUid, 'player' => $playerId], limit: 1);
+			$filters = ['bookedByUid' => $actingUid, 'player' => $playerId];
+			$booked = $this->fetcher->getObjectsWithAppAuthority(objectType: 'registration', filters: $filters, limit: 1);
 			if ($booked === []) {
 				throw new RegistrationChangeRefusedException('You can only add players you booked before.', 403);
 			}

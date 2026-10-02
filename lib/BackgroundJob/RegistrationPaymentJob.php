@@ -83,6 +83,9 @@ class RegistrationPaymentJob extends TimedJob {
 		unset($argument);
 		$counts = $this->followUp->daily(now: $this->time->now());
 		$counts['lapsed'] = $this->transfers->lapse(now: $this->time->now());
-		$this->logger->info('Larpinq: payments followed up: {paid} paid, {reminded} reminded, {expired} expired; {lapsed} transfer offers lapsed.', $counts);
+		$this->logger->info(
+			'Larpinq: payments followed up: {paid} paid, {reminded} reminded, {expired} expired; {lapsed} transfer offers lapsed.',
+			$counts
+		);
 	}//end run()
 }//end class

@@ -95,7 +95,8 @@ class TransferOffers {
 			throw new RegistrationChangeRefusedException('Only the player can offer this registration to someone else.', 403);
 		}
 
-		if ((string)($registration['status'] ?? '') !== 'accepted' || $this->policy->isOpen(event: $this->event(registration: $registration), now: $this->time->now()) === false) {
+		$open = $this->policy->isOpen(event: $this->event(registration: $registration), now: $this->time->now());
+		if ((string)($registration['status'] ?? '') !== 'accepted' || $open === false) {
 			throw new RegistrationChangeRefusedException('Only an accepted registration can be handed over, before the cancel-by date.', 409);
 		}
 
@@ -176,7 +177,8 @@ class TransferOffers {
 	 */
 	public function withdraw(string $registrationId, string $actingUid): array {
 		$registration = $this->registration(registrationId: $registrationId);
-		if ($this->policy->isParticipant(registration: $registration, uid: $actingUid) === false && $this->policy->isGameMaster(uid: $actingUid) === false) {
+		$participant = $this->policy->isParticipant(registration: $registration, uid: $actingUid);
+		if ($participant === false && $this->policy->isGameMaster(uid: $actingUid) === false) {
 			throw new RegistrationChangeRefusedException('Only the player or a game master can withdraw this offer.', 403);
 		}
 
@@ -208,7 +210,10 @@ class TransferOffers {
 				$this->save(registrationId: (string)($registration['id'] ?? ''), fields: ['transferStatus' => 'lapsed', 'transferToUid' => '']);
 				$lapsed++;
 			} catch (Throwable $e) {
-				$this->logger->error('Larpinq: the transfer offer on registration {id} did not lapse.', ['id' => (string)($registration['id'] ?? ''), 'exception' => $e]);
+				$this->logger->error(
+					'Larpinq: the transfer offer on registration {id} did not lapse.',
+					['id' => (string)($registration['id'] ?? ''), 'exception' => $e]
+				);
 			}
 		}
 

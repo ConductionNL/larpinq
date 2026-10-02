@@ -113,7 +113,9 @@ class RegistrationChangesController extends Controller {
 	 */
 	#[NoAdminRequired]
 	public function addParticipant(string $id, string $name = '', string $player = ''): JSONResponse {
-		return $this->answer(action: fn (string $uid): array => $this->changes->addParticipant(registrationId: $id, actingUid: $uid, name: $name, playerId: $player));
+		return $this->answer(
+			action: fn (string $uid): array => $this->changes->addParticipant(registrationId: $id, actingUid: $uid, name: $name, playerId: $player)
+		);
 	}//end addParticipant()
 
 	/**

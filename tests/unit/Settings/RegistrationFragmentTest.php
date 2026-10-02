@@ -114,10 +114,10 @@ class RegistrationFragmentTest extends TestCase {
 		$registration = $this->schema(key: 'registration');
 		$own = ['group' => 'larpers', 'match' => ['playerUid' => '$userId']];
 
-		$this->assertSame(
-			[['group' => 'gamemasters'], $own, ['group' => 'larpers', 'match' => ['submitterUid' => '$userId']]],
-			$registration['authorization']['read']
-		);
+		// Later fragments add their own read rules (booker, transfer recipient); these three stay.
+		foreach ([['group' => 'gamemasters'], $own, ['group' => 'larpers', 'match' => ['submitterUid' => '$userId']]] as $rule) {
+			$this->assertContains($rule, $registration['authorization']['read']);
+		}
 		$this->assertSame(['gamemasters'], $registration['authorization']['create']);
 		$this->assertSame([['group' => 'gamemasters'], $own], $registration['authorization']['update']);
 		$this->assertSame(['gamemasters'], $registration['authorization']['delete']);

@@ -22,17 +22,39 @@
 		</p>
 		<template v-else>
 			<p v-if="nothingToDo" data-testid="registration-changes-none">
-				{{ t('larpinq', 'There is nothing you can change on this registration now.') }}
+				{{
+					t(
+						'larpinq',
+						'There is nothing you can change on this registration now.',
+					)
+				}}
 			</p>
 
-			<section v-if="allowed.canAcceptTransfer" class="registration-changes__part">
+			<section
+				v-if="allowed.canAcceptTransfer"
+				class="registration-changes__part">
 				<h3>{{ t('larpinq', 'A place is offered to you') }}</h3>
-				<p>{{ t('larpinq', 'Accept it, then pick your character on this page.') }}</p>
+				<p>
+					{{
+						t(
+							'larpinq',
+							'Accept it, then pick your character on this page.',
+						)
+					}}
+				</p>
 				<NcButton
 					variant="primary"
 					data-testid="transfer-accept"
 					:disabled="busy"
-					@click="run(() => acceptTransfer(registrationId), t('larpinq', 'The registration is yours. Pick your character.'))">
+					@click="
+						run(
+							() => acceptTransfer(registrationId),
+							t(
+								'larpinq',
+								'The registration is yours. Pick your character.',
+							),
+						)
+					">
 					{{ t('larpinq', 'Accept the place') }}
 				</NcButton>
 			</section>
@@ -40,9 +62,15 @@
 			<section v-if="allowed.canCancel" class="registration-changes__part">
 				<h3>{{ t('larpinq', 'Cancel') }}</h3>
 				<p v-if="allowed.cancelBy">
-					{{ t('larpinq', 'You can cancel until {date}.', { date: formatDate(allowed.cancelBy) }) }}
+					{{
+						t('larpinq', 'You can cancel until {date}.', {
+							date: formatDate(allowed.cancelBy),
+						})
+					}}
 				</p>
-				<fieldset v-if="allowed.paid && allowed.choosesMoneyBack" class="registration-changes__choice">
+				<fieldset
+					v-if="allowed.paid && allowed.choosesMoneyBack"
+					class="registration-changes__choice">
 					<legend>{{ t('larpinq', 'What do you want back?') }}</legend>
 					<NcCheckboxRadioSwitch
 						v-model="settlement"
@@ -69,12 +97,24 @@
 					{{ t('larpinq', 'Cancel this registration') }}
 				</NcButton>
 				<div v-else class="registration-changes__confirm">
-					<p>{{ t('larpinq', 'The place goes to the waiting list. This cannot be undone.') }}</p>
+					<p>
+						{{
+							t(
+								'larpinq',
+								'The place goes to the waiting list. This cannot be undone.',
+							)
+						}}
+					</p>
 					<NcButton
 						variant="error"
 						data-testid="registration-cancel-confirm"
 						:disabled="busy"
-						@click="run(() => cancelRegistration(registrationId, settlement), t('larpinq', 'The registration is cancelled.'))">
+						@click="
+							run(
+								() => cancelRegistration(registrationId, settlement),
+								t('larpinq', 'The registration is cancelled.'),
+							)
+						">
 						{{ t('larpinq', 'Yes, cancel it') }}
 					</NcButton>
 					<NcButton :disabled="busy" @click="confirming = false">
@@ -83,9 +123,18 @@
 				</div>
 			</section>
 
-			<section v-if="allowed.canOfferTransfer" class="registration-changes__part">
+			<section
+				v-if="allowed.canOfferTransfer"
+				class="registration-changes__part">
 				<h3>{{ t('larpinq', 'Hand over to another player') }}</h3>
-				<p>{{ t('larpinq', 'Your place, ticket and payment go to them when they accept. The offer lapses after 7 days.') }}</p>
+				<p>
+					{{
+						t(
+							'larpinq',
+							'Your place, ticket and payment go to them when they accept. The offer lapses after 7 days.',
+						)
+					}}
+				</p>
 				<NcTextField
 					v-model="account"
 					:label="t('larpinq', 'Their account name')"
@@ -93,24 +142,52 @@
 				<NcButton
 					data-testid="transfer-offer"
 					:disabled="busy || account.trim() === ''"
-					@click="run(() => offerTransfer(registrationId, account), t('larpinq', 'The offer is sent.'))">
+					@click="
+						run(
+							() => offerTransfer(registrationId, account),
+							t('larpinq', 'The offer is sent.'),
+						)
+					">
 					{{ t('larpinq', 'Offer my place') }}
 				</NcButton>
 			</section>
 
-			<section v-if="allowed.canWithdrawTransfer" class="registration-changes__part">
-				<p>{{ t('larpinq', 'This registration is offered to another player.') }}</p>
+			<section
+				v-if="allowed.canWithdrawTransfer"
+				class="registration-changes__part">
+				<p>
+					{{
+						t(
+							'larpinq',
+							'This registration is offered to another player.',
+						)
+					}}
+				</p>
 				<NcButton
 					data-testid="transfer-withdraw"
 					:disabled="busy"
-					@click="run(() => withdrawTransfer(registrationId), t('larpinq', 'The offer is withdrawn.'))">
+					@click="
+						run(
+							() => withdrawTransfer(registrationId),
+							t('larpinq', 'The offer is withdrawn.'),
+						)
+					">
 					{{ t('larpinq', 'Withdraw the offer') }}
 				</NcButton>
 			</section>
 
-			<section v-if="allowed.canAddParticipant" class="registration-changes__part">
+			<section
+				v-if="allowed.canAddParticipant"
+				class="registration-changes__part">
 				<h3>{{ t('larpinq', 'Add someone to your booking') }}</h3>
-				<p>{{ t('larpinq', 'Each participant gets a registration of their own, so each can cancel alone.') }}</p>
+				<p>
+					{{
+						t(
+							'larpinq',
+							'Each participant gets a registration of their own, so each can cancel alone.',
+						)
+					}}
+				</p>
 				<NcTextField
 					v-model="participant"
 					:label="t('larpinq', 'Their name')"
@@ -118,7 +195,12 @@
 				<NcButton
 					data-testid="participant-add"
 					:disabled="busy || participant.trim() === ''"
-					@click="run(() => addParticipant(registrationId, participant), t('larpinq', 'The participant is added.'))">
+					@click="
+						run(
+							() => addParticipant(registrationId, participant),
+							t('larpinq', 'The participant is added.'),
+						)
+					">
 					{{ t('larpinq', 'Add to my booking') }}
 				</NcButton>
 			</section>
@@ -210,7 +292,13 @@ export default {
 		 */
 		nothingToDo() {
 			const a = this.allowed
-			return !(a.canCancel || a.canOfferTransfer || a.canWithdrawTransfer || a.canAcceptTransfer || a.canAddParticipant)
+			return !(
+				a.canCancel
+				|| a.canOfferTransfer
+				|| a.canWithdrawTransfer
+				|| a.canAcceptTransfer
+				|| a.canAddParticipant
+			)
 		},
 	},
 
@@ -242,7 +330,9 @@ export default {
 		 */
 		async load() {
 			const result = await fetchChanges(this.registrationId)
-			this.allowed = result.ok ? { ...result.data, loaded: true } : { loaded: false }
+			this.allowed = result.ok
+				? { ...result.data, loaded: true }
+				: { loaded: false }
 			this.loading = false
 		},
 
@@ -261,7 +351,9 @@ export default {
 			const result = await change()
 			this.busy = false
 			this.confirming = false
-			this.message = result.ok ? '' : result.message || t('larpinq', 'That did not work.')
+			this.message = result.ok
+				? ''
+				: result.message || t('larpinq', 'That did not work.')
 			if (result.ok) {
 				this.done = success
 				this.account = ''

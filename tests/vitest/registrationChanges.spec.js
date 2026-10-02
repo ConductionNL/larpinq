@@ -72,7 +72,7 @@ describe('cancelRegistration', () => {
 		expect(JSON.parse(globalThis.fetch.mock.calls[0][1].body)).toEqual({})
 	})
 
-	it('carries larpinq\'s reason when it is too late', async () => {
+	it("carries larpinq's reason when it is too late", async () => {
 		globalThis.fetch = answering(409, {
 			error: 'The cancel-by date has passed. Please contact the organisers to cancel.',
 		})
