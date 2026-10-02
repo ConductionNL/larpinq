@@ -80,6 +80,17 @@ class SettingsLoadService {
 		'event' => 'larping_event',
 		'setting' => 'setting',
 		'attendance' => 'larping_attendance',
+		'lorepage' => 'larping_lore_page',
+		'characterfield' => 'larping_character_field',
+		'faction' => 'larping_faction',
+		'factionmember' => 'larping_faction_member',
+		'relationship' => 'larping_relationship',
+		'characterbuild' => 'larping_character_build',
+		'xpaward' => 'xpAward',
+		'registration' => 'larping_registration',
+		'tickettype' => 'larping_ticket_type',
+		'registrationoption' => 'larping_registration_option',
+		'accesscode' => 'larping_access_code',
 	];
 
 	/**

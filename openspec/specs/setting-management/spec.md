@@ -14,7 +14,7 @@ pickers, and the guarded archive/delete lifecycle. Scoping is an
 organisational lens, not a security boundary; authorization stays
 OR-delegated (ADR-022).
 
-@e2e exclude The repurposed setting schema shape, entity scoping, and the guarded archive/delete lifecycle are server-authoritative (OpenRegister schema + lifecycle); proven by PHPUnit (SettingSchemaTest). The per-user active-setting lens (index/dashboard/picker filtering, switcher, persistence, deep-link fallthrough) is deferred (custom app-nav + useObjectStore plumbing — a nc-vue follow-up). The shipped browser surface (the type:index Settings page) is covered by tests/e2e/spec-coverage/setting-management.spec.ts.
+@e2e exclude The repurposed setting schema shape, entity scoping, and the guarded archive/delete lifecycle are server-authoritative (OpenRegister schema + lifecycle); proven by PHPUnit (SettingSchemaTest). The per-user active-setting lens (switcher, persistence, index and dashboard filtering in the list query) is built by events-world-scope-and-upcoming and covered by tests/e2e/workflows/active-world.workflow.spec.ts. Two parts stay open: shared (world-less) entities are not yet listed beside the active world's own, because an OpenRegister list filter cannot say "this world or none" in one query (draft for OpenRegister in the change's design.md, D4), and the picker defaults are not built. The shipped browser surface (the type:index Settings page) is covered by tests/e2e/spec-coverage/setting-management.spec.ts.
 
 ## Requirements
 
@@ -183,3 +183,76 @@ by treating the stranded references as shared.
 - GIVEN setting "Test World" with no scoped entities
 - WHEN the GM deletes it and confirms
 - THEN the setting MUST be removed
+
+### Requirement: A game master copies a world's rules (REQ-WCR-001)
+
+A game master SHALL be able to copy a world under a new name. The copy MUST
+contain a copy of every ability, effect, skill, item and condition of that
+world, and, when those schemas exist, its character field definitions and lore
+pages. Characters, players, events, XP awards and attendance MUST NOT be copied.
+
+#### Scenario: A new season on the same rules
+
+- GIVEN world Aldmoor with 6 abilities, 40 effects, 55 skills, 30 items and 12 conditions
+- WHEN a game master chooses "Copy world" on the Aldmoor page and names it "Aldmoor season 2"
+- THEN world "Aldmoor season 2" exists with 6 abilities, 40 effects, 55 skills, 30 items and 12 conditions
+- AND it has no characters or events
+
+### Requirement: Copied rules point at each other (REQ-WCR-002)
+
+In the copy, every reference between copied objects SHALL point at the copy,
+references to objects outside the world MUST stay unchanged, and item and
+condition holders MUST be empty.
+
+#### Scenario: A prerequisite follows the copy
+
+- GIVEN skill "Master swordsman" requires skill "Swordsmanship" in Aldmoor
+- WHEN Aldmoor is copied
+- THEN the copy of "Master swordsman" requires the copy of "Swordsmanship", not the original
+
+### Requirement: Only game masters copy, and a failed copy leaves nothing half made (REQ-WCR-003)
+
+`POST /api/worlds/{id}/copy` SHALL answer only to game masters. A copy that
+fails MUST NOT leave an active half-copied world.
+
+#### Scenario: A player tries to copy
+
+- GIVEN player Anna, who is not a game master
+- WHEN Anna calls `POST /api/worlds/<uuid>/copy` for Aldmoor
+- THEN the response is 403 and no world is created
+
+### Requirement: A game master sets an event's world (REQ-EWU-001)
+
+The event form SHALL let a game master choose the event's world, and the event
+page and the Events index MUST show it.
+
+#### Scenario: Winter Court belongs to Aldmoor
+
+- GIVEN event "Winter Court 2026" has no world
+- WHEN a game master sets its world to Aldmoor on the event form
+- THEN the event page shows World: Aldmoor
+- AND the Events index shows Aldmoor in the World column
+
+### Requirement: Upcoming events come first (REQ-EWU-002)
+
+The Events index SHALL open on events starting today or later, soonest first,
+with a way to show past events, and the dashboard SHALL show the next 6
+upcoming events.
+
+#### Scenario: A player checks what is next
+
+- GIVEN "Summer Siege 2025" is past and "Winter Court 2026" is upcoming
+- WHEN a player opens the dashboard
+- THEN "Upcoming events" lists "Winter Court 2026" and not "Summer Siege 2025"
+
+### Requirement: The active world is visible wherever it narrows a list (REQ-EWU-003)
+
+Every list narrowed by the active world SHALL show which world is active and
+offer a way back to all worlds, including when the narrowed list is empty.
+
+#### Scenario: An empty list under a world
+
+- GIVEN Outer Rim is the active world and it has no items
+- WHEN a game master opens the Items index
+- THEN the page says there are no items in Outer Rim
+- AND offers to show all worlds

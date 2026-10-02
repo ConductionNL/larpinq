@@ -27,6 +27,7 @@ declare(strict_types=1);
 namespace OCA\Larpinq\Listener;
 
 use OCA\Larpinq\AppInfo\Application;
+use OCA\Larpinq\Service\CustomFieldGuard;
 use OCA\Larpinq\Service\SkillRequirementService;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
@@ -67,6 +68,7 @@ class CharacterRequirementListener implements IEventListener {
 	 * @param IUserSession $userSession The current user session.
 	 * @param IGroupManager $groupManager The group manager (GM override check).
 	 * @param LoggerInterface $logger The logger.
+	 * @param CustomFieldGuard $customFields Checks extra field values against their definitions.
 	 *
 	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
 	 */
@@ -76,6 +78,7 @@ class CharacterRequirementListener implements IEventListener {
 		private readonly IUserSession $userSession,
 		private readonly IGroupManager $groupManager,
 		private readonly LoggerInterface $logger,
+		private readonly CustomFieldGuard $customFields,
 	) {
 	}//end __construct()
 
@@ -91,6 +94,7 @@ class CharacterRequirementListener implements IEventListener {
 	 * @psalm-suppress MixedArgument    OpenRegister event/entity classes are optional dependencies.
 	 *
 	 * @spec openspec/specs/skill-requirement-enforcement/spec.md
+	 * @spec openspec/specs/character-custom-fields/spec.md
 	 */
 	public function handle(Event $event): void {
 		if (($event instanceof \OCA\OpenRegister\Event\ObjectCreatingEvent) === false
@@ -117,14 +121,17 @@ class CharacterRequirementListener implements IEventListener {
 				$oldCharacter = $oldEntity->getObject();
 			}
 
+			// Extra field values are checked against their definitions
+			// (characters-custom-fields); the guard looks at changed keys only.
+			$errors = $this->customFields->check(candidate: $candidate, old: $oldCharacter);
+
 			// Diff-scoping: only validate when an association or override field
 			// actually changed. Unrelated edits must never be blocked by a
 			// pre-existing unmet state.
-			if ($this->associationsChanged(candidate: $candidate, old: $oldCharacter) === false) {
-				return;
+			if ($errors === null && $this->associationsChanged(candidate: $candidate, old: $oldCharacter) === true) {
+				$errors = $this->collectVeto(candidate: $candidate, oldCharacter: $oldCharacter);
 			}
 
-			$errors = $this->collectVeto(candidate: $candidate, oldCharacter: $oldCharacter);
 			if ($errors !== null) {
 				$event->stopPropagation();
 				// @phpstan-ignore-next-line

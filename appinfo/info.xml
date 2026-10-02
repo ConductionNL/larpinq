@@ -46,7 +46,7 @@ Maak een [featureverzoek](https://github.com/ConductionNL/larpinq/issues)
 
 **Support:** neem voor support contact op met support@conduction.nl. Voor een Service Level Agreement (SLA), neem contact op met sales@conduction.nl.
     ]]></description>
-    <version>0.3.2-unstable.20260910105036</version>
+    <version>0.3.4-unstable.20260930120000</version>
     <licence>EUPL-1.2</licence>
     <author mail="info@conduction.nl" homepage="https://www.conduction.nl/">Conduction</author>
 	<namespace>Larpinq</namespace>
@@ -134,6 +134,10 @@ Maak een [featureverzoek](https://github.com/ConductionNL/larpinq/issues)
          the Apps admin page. (XML comments must not contain a double hyphen,
          so the flag is not written with its leading dashes here.) -->
 
+	<background-jobs>
+		<job>OCA\Larpinq\BackgroundJob\RegistrationPaymentJob</job>
+	</background-jobs>
+
 	<!-- THE TWO Migrate* STEPS CARRY THE `larpingapp` -> `larpinq` APP-ID RENAME
 	     AND MUST RUN FIRST IN BOTH BLOCKS.
 
@@ -201,6 +205,11 @@ Maak een [featureverzoek](https://github.com/ConductionNL/larpinq/issues)
 			     the app never enables. -->
 			<step>OCA\Larpinq\Repair\MigrateSchemaApplicationId</step>
 			<step>OCA\Larpinq\Repair\InitializeRegister</step>
+			<!-- After the import, which adds character.status: characters stored
+			     before it get status active, so the event participant picker
+			     (x-relation-filter status = active) keeps offering them.
+			     Idempotent; logs and continues. -->
+			<step>OCA\Larpinq\Repair\BackfillCharacterStatus</step>
 		</post-migration>
 		<install>
 			<step>OCA\Larpinq\Repair\MigrateAppConfigKeys</step>
@@ -246,6 +255,10 @@ Maak een [featureverzoek](https://github.com/ConductionNL/larpinq/issues)
 			<step>OCA\Larpinq\Repair\InitializeRegister</step>
 		</install>
 	</repair-steps>
+
+	<commands>
+		<command>OCA\Larpinq\Command\UniqueHoldersCheck</command>
+	</commands>
 
 	<settings>
 		<admin>OCA\Larpinq\Settings\LarpinqAdmin</admin>

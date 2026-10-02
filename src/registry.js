@@ -22,13 +22,76 @@
  * SPDX-FileCopyrightText: 2026 Conduction B.V.
  */
 
+import WorldSwitcher from './components/WorldSwitcher.vue'
+import WorldSwitcherActions from './components/WorldSwitcherActions.vue'
+import ApplyBuildDialog from './dialogs/ApplyBuildDialog.vue'
+import CharacterPdfDownloadDialog from './dialogs/CharacterPdfDownloadDialog.vue'
+import CopyWorldDialog from './dialogs/CopyWorldDialog.vue'
+import XpAwardDialog from './dialogs/XpAwardDialog.vue'
+import BuildReport from './views/BuildReport.vue'
+import CharacterCustomFields from './views/CharacterCustomFields.vue'
+import CharacterStatSheet from './views/CharacterStatSheet.vue'
+import EventChoiceCounts from './views/EventChoiceCounts.vue'
 import EventRoster from './views/EventRoster.vue'
 import FlowDetailSidebar from './views/flows/FlowDetailSidebar.vue'
+import LoreArticle from './views/LoreArticle.vue'
 import ObjectDetail from './views/ObjectDetail.vue'
+import PlayerAttendanceHistory from './views/PlayerAttendanceHistory.vue'
+import RegistrationChanges from './views/RegistrationChanges.vue'
+import RegistrationChoices from './views/RegistrationChoices.vue'
 import GameSettingsSection from './views/settings/Settings.vue'
 import SkillTree from './views/SkillTree.vue'
+import {
+	exportCampaignAction,
+	importCampaignAction,
+} from './services/campaignActions.js'
+import { bulkEditCharactersAction } from './services/characterBulkEditAction.js'
+import { markPlayersReviewedAction } from './services/playerReviewAction.js'
 
 export default {
+	// The active-world switcher (events-world-scope-and-upcoming): the header of
+	// the world-scoped index pages (it draws the page title it replaces) and
+	// the dashboard's actions. It writes the page workspace the lists'
+	// `@workspace.activeWorld?` filter reads.
+	// @spec openspec/specs/setting-management/spec.md
+	WorldSwitcher: {
+		kind: 'header',
+		component: WorldSwitcher,
+	},
+	WorldSwitcherActions: {
+		kind: 'actions',
+		component: WorldSwitcherActions,
+	},
+	// CharacterDetail "Download as PDF" header action (open-modal): a template
+	// picker a declarative api-call cannot express, since the download opens
+	// in a new tab with the chosen template in the URL.
+	// @spec openspec/specs/pdf-export/spec.md
+	CharacterPdfDownloadDialog: {
+		kind: 'modal',
+		component: CharacterPdfDownloadDialog,
+		propsSchema: {},
+	},
+	CopyWorldDialog: {
+		kind: 'modal',
+		component: CopyWorldDialog,
+		propsSchema: {},
+	},
+	// EventDetail "Award XP" header action (events-xp-batch-award), game
+	// masters only: the whole event's awards in one save.
+	// @spec openspec/specs/event-xp-awards/spec.md
+	XpAwardDialog: {
+		kind: 'modal',
+		component: XpAwardDialog,
+		propsSchema: {},
+	},
+	// BuildDetail "Apply to character" header action (characters-multiple-builds).
+	// @spec openspec/specs/character-builds/spec.md
+	ApplyBuildDialog: {
+		kind: 'modal',
+		component: ApplyBuildDialog,
+		propsSchema: {},
+	},
+
 	// --- Flows (ADR-110 Decision 4). Only the SIDEBAR is an app component;
 	//     the list and the canvas are the shared `index` / `flow` manifest
 	//     page types. CnFlowSidebar has to mount in the NC app sidebar for
@@ -41,8 +104,46 @@ export default {
 	// (event-checkin-roster). Not a kind:"widget" (no custom-widget-ratchet
 	// entry); it renders inside the CnObjectSidebar tab strip.
 	EventRoster: { kind: 'section', component: EventRoster },
+	CharacterStatSheet: { kind: 'section', component: CharacterStatSheet },
+	// Events attended tab on the player page. @spec openspec/specs/events-players/spec.md
+	PlayerAttendanceHistory: { kind: 'section', component: PlayerAttendanceHistory },
+	// Tickets tab on the registration page and Choices tab on the event page
+	// (registration-ticket-types-and-options). @spec openspec/specs/event-registration/spec.md
+	RegistrationChoices: { kind: 'section', component: RegistrationChoices },
+	// Cancel or hand over tab on the registration page
+	// (registration-cancel-transfer-refund). @spec openspec/specs/event-registration/spec.md
+	RegistrationChanges: { kind: 'section', component: RegistrationChanges },
+	EventChoiceCounts: { kind: 'section', component: EventChoiceCounts },
+	CharacterCustomFields: { kind: 'section', component: CharacterCustomFields },
+	// Check tab on the build page. @spec openspec/specs/character-builds/spec.md
+	BuildReport: { kind: 'section', component: BuildReport },
 	// Skill-tree visualization — a read-only type:"custom" page
 	// (skill-tree-visualization). Resolved by CnPageRenderer as the page body
 	// component for the SkillTree manifest page.
 	SkillTree: { kind: 'page', component: SkillTree },
+	// Lore read page (worlds-lore-pages): CnWikiPage plus the fetch it leaves
+	// to its host. @spec openspec/specs/world-lore/spec.md
+	LoreArticle: { kind: 'page', component: LoreArticle },
+
+	// Worlds page header actions (admin-import-export): the whole campaign as
+	// one workbook out of, and back into, the larpinq register.
+	// @spec openspec/specs/data-portability/spec.md
+	larpinqExportCampaign: { kind: 'handler', handler: exportCampaignAction },
+	larpinqImportCampaign: { kind: 'handler', handler: importCampaignAction },
+
+	// Characters index bulk action "Edit selected" (characters-status-and-bulk-edit).
+	// A handler, not open-modal: CnIndexPage only emits a bulk open-modal to
+	// its host, which no host here listens to.
+	// @spec openspec/specs/character-management/spec.md
+	larpinqBulkEditCharacters: {
+		kind: 'handler',
+		handler: bulkEditCharactersAction,
+	},
+
+	// New players bulk action "Mark reviewed" (players-self-signup).
+	// @spec openspec/specs/portal-contribution/spec.md
+	larpinqMarkPlayersReviewed: {
+		kind: 'handler',
+		handler: markPlayersReviewedAction,
+	},
 }

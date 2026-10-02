@@ -4,6 +4,12 @@
 
 Enables game masters and players to export character data as downloadable PDF files. PDF rendering is delegated to the DocuDesk app.
 
+## Download a sheet
+
+Open a character and choose **Download as PDF** in the Actions menu. Pick a template and press **Download PDF**. The sheet opens in a new tab.
+
+The action appears when the document app is installed and has a template for Larpinq. For now only administrators can download sheets; players follow in a later release.
+
 ## Features
 
 - **PDF generation** via DocuDesk's PdfService

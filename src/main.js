@@ -22,6 +22,7 @@ import bundledManifest from './manifest.json'
 import menuLayout from './menu-layout.json'
 import pinia from './pinia.js'
 import registry from './registry.js'
+import { applyImportGate, canImport } from './services/campaignPortability.js'
 
 // MDI icons referenced by the manifest (menu, KPIs, widgets). CnIcon resolves
 // names from the registry populated by registerIcons(), so every icon the
@@ -310,7 +311,12 @@ function mergeManifestFragments(base) {
 }
 
 // Apply ADR-037 manifest fragments before routes/app consume the manifest.
-const manifest = mergeManifestFragments(bundledManifest)
+// Then remove every import for a user OpenRegister will not let import
+// (admin-import-export: the register import is administrators only).
+const manifest = applyImportGate(
+	mergeManifestFragments(bundledManifest),
+	canImport(),
+)
 
 // Shallow-clone CnPageRenderer because the lib's barrel exports are
 // non-extensible (webpack ESM module records) and vue-router / Vue may attach

@@ -229,6 +229,24 @@ class RegisterObjectFetcherTest extends TestCase {
 	}//end testGetObjectRejectsUriFormatId()
 
 	/**
+	 * A read with the app's authority is never unscoped: an empty filter, or an
+	 * empty filter value, is refused before OpenRegister is asked.
+	 *
+	 * @spec openspec/specs/event-xp-awards/spec.md
+	 */
+	public function testAppAuthorityReadRefusesAnUnscopedFilter(): void {
+		$this->appManager->expects($this->never())->method('getInstalledApps');
+		foreach ([[], ['character' => '']] as $filters) {
+			try {
+				$this->service->getObjectsWithAppAuthority(objectType: 'xpAward', filters: $filters);
+				$this->fail('An unscoped read with the app\'s authority must be refused');
+			} catch (\InvalidArgumentException $e) {
+				$this->assertStringContainsString('scoping filter', $e->getMessage());
+			}
+		}
+	}
+
+	/**
 	 * Test that getObject rejects non-UUID string IDs.
 	 *
 	 * @return void
