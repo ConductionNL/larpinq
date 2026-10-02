@@ -91,7 +91,10 @@ class CodeCheckin {
 
 		$earlier = $this->attendance(eventId: $eventId, characterId: $characterId);
 		if ((string)($earlier['status'] ?? '') === self::CHECKED_IN) {
-			return ['status' => 200, 'body' => ['status' => 'already', 'at' => (string)($earlier['checkedInAt'] ?? ''), 'by' => (string)($earlier['checkedInBy'] ?? '')]];
+			return [
+				'status' => 200,
+				'body' => ['status' => 'already', 'at' => (string)($earlier['checkedInAt'] ?? ''), 'by' => (string)($earlier['checkedInBy'] ?? '')],
+			];
 		}
 
 		$saved = $this->roster->recordAttendance(eventId: $eventId, characterId: $characterId, status: self::CHECKED_IN, actingUid: $actingUid);
@@ -99,7 +102,8 @@ class CodeCheckin {
 			return ['status' => 424, 'body' => ['status' => 'unavailable']];
 		}
 
-		return ['status' => 200, 'body' => ['status' => self::CHECKED_IN, 'name' => $this->name(type: 'player', id: (string)($registration['player'] ?? '')), 'character' => $this->name(type: 'character', id: $characterId)]];
+		$name = $this->name(type: 'player', id: (string)($registration['player'] ?? ''));
+		return ['status' => 200, 'body' => ['status' => self::CHECKED_IN, 'name' => $name, 'character' => $this->name(type: 'character', id: $characterId)]];
 	}//end checkIn()
 
 	/**

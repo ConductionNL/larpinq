@@ -93,6 +93,12 @@ export default {
 		}
 	},
 
+	/**
+	 * Start the camera when this browser reads QR codes.
+	 *
+	 * @return {Promise<void>}
+	 * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md
+	 */
 	async mounted() {
 		this.camera = await cameraScanSupported(window)
 		if (this.camera) {
@@ -101,6 +107,12 @@ export default {
 		}
 	},
 
+	/**
+	 * Release the camera and the answer timer.
+	 *
+	 * @return {void}
+	 * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md
+	 */
 	beforeUnmount() {
 		this.stopCamera()
 		clearTimeout(this.clear)

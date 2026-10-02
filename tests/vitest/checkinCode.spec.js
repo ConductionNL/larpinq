@@ -107,15 +107,13 @@ describe('cameraScanSupported', () => {
 
 describe('checkInByCode', () => {
 	it('posts the code to the event and returns the answer', async () => {
-		globalThis.fetch = vi
-			.fn()
-			.mockResolvedValue(
-				json(200, {
-					status: 'checked-in',
-					name: 'Anna de Vries',
-					character: 'Mirela the Wanderer',
-				}),
-			)
+		globalThis.fetch = vi.fn().mockResolvedValue(
+			json(200, {
+				status: 'checked-in',
+				name: 'Anna de Vries',
+				character: 'Mirela the Wanderer',
+			}),
+		)
 		const answer = await checkInByCode(EVENT, CODE)
 		const [url, init] = globalThis.fetch.mock.calls[0]
 		expect(url).toBe(`/index.php/apps/larpinq/api/events/${EVENT}/checkin-code`)

@@ -20,14 +20,13 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Controller;
 
-use OCA\Larpinq\AppInfo\Application;
+use OCA\Larpinq\Service\CancellationPolicy;
 use OCA\Larpinq\Service\CodeCheckin;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\Attribute\NoAdminRequired;
 use OCP\AppFramework\Http\Attribute\UserRateLimit;
 use OCP\AppFramework\Http\JSONResponse;
-use OCP\IGroupManager;
 use OCP\IRequest;
 use OCP\IUserSession;
 
@@ -47,14 +46,14 @@ class EventCheckinController extends Controller {
 	 * @param string $appName The app name.
 	 * @param IRequest $request The request.
 	 * @param IUserSession $userSession The user session.
-	 * @param IGroupManager $groups Who is a game master.
+	 * @param CancellationPolicy $policy Who is a game master.
 	 * @param CodeCheckin $checkin The check-in by code.
 	 */
 	public function __construct(
 		string $appName,
 		IRequest $request,
 		private readonly IUserSession $userSession,
-		private readonly IGroupManager $groups,
+		private readonly CancellationPolicy $policy,
 		private readonly CodeCheckin $checkin,
 	) {
 		parent::__construct(appName: $appName, request: $request);
@@ -80,7 +79,7 @@ class EventCheckinController extends Controller {
 		}
 
 		$uid = $user->getUID();
-		if ($this->groups->isInGroup($uid, Application::GM_GROUP) === false && $this->groups->isAdmin($uid) === false) {
+		if ($this->policy->isGameMaster(uid: $uid) === false) {
 			return new JSONResponse(data: ['error' => 'Access denied'], statusCode: Http::STATUS_FORBIDDEN);
 		}
 

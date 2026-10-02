@@ -24,6 +24,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Listener;
 
+use OCA\Larpinq\Service\CheckinCodes;
 use OCA\Larpinq\Service\RegistrationService;
 use OCA\Larpinq\Service\RegistrationWriteCheck;
 use OCP\EventDispatcher\Event;
@@ -57,6 +58,13 @@ use Psr\Log\LoggerInterface;
 class RegistrationListener implements IEventListener {
 
 	/**
+	 * The check-in codes (events-qr-checkin).
+	 *
+	 * @var CheckinCodes
+	 */
+	private readonly CheckinCodes $codes;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param IAppConfig $config Config (the registration schema id).
@@ -76,6 +84,7 @@ class RegistrationListener implements IEventListener {
 		private readonly IL10N $l10n,
 		private readonly LoggerInterface $logger,
 	) {
+		$this->codes = new CheckinCodes();
 	}//end __construct()
 
 	/**
@@ -163,7 +172,8 @@ class RegistrationListener implements IEventListener {
 	}//end beforeWrite()
 
 	/**
-	 * The status a registration gets: on create from capacity and approval, on update from the change.
+	 * The status a registration gets: on create from capacity and approval, on update from the change;
+	 * and its check-in code.
 	 *
 	 * @param array<string, mixed> $new The registration as it will be.
 	 * @param array<string, mixed>|null $stored The stored registration, or null on create.
@@ -172,10 +182,14 @@ class RegistrationListener implements IEventListener {
 	 */
 	private function decided(array $new, ?array $stored): array {
 		if ($stored === null) {
-			return $this->service->beforeCreate(registration: $new);
+			$changes = $this->service->beforeCreate(registration: $new);
+		} else {
+			$changes = $this->service->beforeUpdate(new: $new, old: $stored, actingUid: $this->actingUid());
 		}
 
-		return $this->service->beforeUpdate(new: $new, old: $stored, actingUid: $this->actingUid());
+		// An accepted registration keeps, or gets, its check-in code; only the server sets it.
+		$status = (string)($changes['status'] ?? $new['status'] ?? '');
+		return array_merge($changes, $this->codes->forWrite(new: $new, old: $stored, status: $status));
 	}//end decided()
 
 	/**

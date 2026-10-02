@@ -141,9 +141,9 @@ export async function cameraScanSupported(scope) {
 export async function checkInByCode(eventId, code) {
 	try {
 		const response = await fetch(
-			generateUrl('/apps/larpinq/api/events/{id}/checkin-code', {
-				id: eventId,
-			}),
+			generateUrl(
+				`/apps/larpinq/api/events/${encodeURIComponent(eventId)}/checkin-code`,
+			),
 			{
 				method: 'POST',
 				headers: headers(),

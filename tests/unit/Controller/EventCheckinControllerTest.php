@@ -106,6 +106,6 @@ class EventCheckinControllerTest extends TestCase {
 		$request->method('getParam')->willReturnCallback(static fn (string $key, mixed $default = null): mixed => ($key === 'code' ? $code : $default));
 		$checkin = new CodeCheckin($this->world->fetcher(), new EventRosterService($this->world->fetcher()), new CheckinCodes());
 
-		return new EventCheckinController('larpinq', $request, $this->world->session(), $this->world->groups(), $checkin);
+		return new EventCheckinController('larpinq', $request, $this->world->session(), $this->world->policy(), $checkin);
 	}//end controller()
 }//end class
