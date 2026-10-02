@@ -245,7 +245,8 @@ class RegistrationPaymentService {
 	}//end hasRequest()
 
 	/**
-	 * The registration's event, or an empty array when it cannot be read.
+	 * The registration's event, or only its id when it cannot be read (the
+	 * payment reference is still numbered within that event).
 	 *
 	 * @param array<string, mixed> $registration The registration.
 	 *
@@ -257,7 +258,7 @@ class RegistrationPaymentService {
 			$event = $this->fetcher->getObject(objectType: 'event', id: $eventId);
 		} catch (Throwable $e) {
 			$this->logger->warning('Larpinq: event {event} of a registration could not be read for its payment.', ['event' => $eventId, 'exception' => $e]);
-			return [];
+			return ['id' => $eventId];
 		}
 
 		return array_merge($event, ['id' => $eventId]);
