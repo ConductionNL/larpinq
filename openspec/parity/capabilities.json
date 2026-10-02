@@ -3452,7 +3452,7 @@
 			"pretix": "yes",
 			"built": {
 				"state": "specified",
-				"evidence": "grep -rniE \"refund\" lib src --include=*.php --include=*.vue --include=*.js: no hits",
+				"evidence": "larpinq half built in openspec/changes/registration-cancel-transfer-refund: lib/Service/RegistrationSettlement.php dispatches OCA\\Larpinq\\Event\\RegistrationRefundRequested and records settlement refund-requested; nothing in shillinq listens yet and PaymentRequest has no refunded state, so the refund itself is not done (task 5.1, for-ruben shillinq-registration-refund-and-credit-events)",
 				"owner": "ConductionNL/larpinq",
 				"change": "registration-cancel-transfer-refund"
 			},
@@ -5453,9 +5453,9 @@
 			"pretix": "yes",
 			"built": {
 				"state": "specified",
-				"evidence": "there is no registration or order object in lib/Settings/larpinq_register.json (ten schemas: character, player, ability, skill, item, condition, effect, event, setting, xpAward); sign-up goes to the Nextcloud Forms leaf (lib/Settings/register.d/event-signup-to-forms-leaf.json) and payment is not modelled",
+				"evidence": "larpinq half built in openspec/changes/registration-cancel-transfer-refund: lib/Service/RegistrationSettlement.php dispatches OCA\\Larpinq\\Event\\RegistrationCreditRequested and records settlement credit-requested; the balance is shillinq's (ADR-107) and nothing in shillinq listens yet (task 5.1, for-ruben shillinq-registration-refund-and-credit-events)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "nothing: see evidence",
+				"reachedOn": "nothing yet: shillinq books the credit",
 				"change": "registration-cancel-transfer-refund"
 			},
 			"provider": "self",
