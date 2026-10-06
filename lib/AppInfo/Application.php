@@ -92,7 +92,7 @@ class Application extends App implements IBootstrap {
 		//
 		// Nextcloud registers apps in sorted order: OC_App::getEnabledApps()
 		// does sort($apps) and Coordinator::registerApps() walks THAT sorted
-		// list calling OC_App::registerAutoloading($appId, $path) and then
+		// list registering each app's autoloader and then calling
 		// $app->register() for one app at a time. `larpinq` sorts before
 		// `openregister`, so OCA\OpenRegister\ is NOT autoloadable at this
 		// point on a perfectly healthy instance with OpenRegister enabled.
@@ -104,7 +104,8 @@ class Application extends App implements IBootstrap {
 		// character writes. The app stays enabled and keeps serving, and
 		// nothing reports the gap.
 		//
-		// registerAutoloading() touches only the autoloader and is idempotent.
+		// The prelude touches only the autoloader, uses public API only
+		// (Nextcloud 35 removed OC_App::registerAutoloading()) and is idempotent.
 		// IAppManager::loadApp() would NOT be correct: it marks OpenRegister
 		// loaded and calls Coordinator::bootApp(), booting it before its own
 		// register() has run. The prelude swallows every Throwable rather than
