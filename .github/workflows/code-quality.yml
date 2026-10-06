@@ -120,29 +120,9 @@ jobs:
       # silently broken while looking configured.
       php-version: "8.3"
       php-test-versions: '["8.3", "8.4"]'
-      # appinfo/info.xml declares <nextcloud min-version="32" max-version="34"/>,
-      # so the matrix only targets server branches this app can actually run on.
-      #
-      # stable31 is REMOVED, not "dropped for coverage". `additional-apps` below
-      # installs openregister, which declares min-version="32" and therefore
-      # cannot install on NC31 — `occ app:enable openregister` fails with only a
-      # ::warning::, so the run continued WITHOUT its data layer and every
-      # /apps/openregister/... call returned Nextcloud's HTML 404 page. A stable31
-      # leg was testing an impossible configuration, so its red said nothing.
-      #
-      # Order matters as well as membership: newman, playwright and
-      # journeydoc-capture all pin `fromJSON(inputs.nextcloud-test-refs)[0]`, so
-      # stable31 sitting FIRST meant those three jobs ran entirely on the version
-      # openregister cannot load.
-      #
-      # THE LIST IS THE WHOLE DECLARED RANGE. An earlier revision of this comment
-      # said "stable33 is deliberately NOT added: this change removes an
-      # impossible leg, it does not widen the matrix" — but the same change also
-      # dropped stable32, which was NOT impossible, it was the declared floor.
-      # appinfo/info.xml declares <nextcloud min-version="32" max-version="34"/>,
-      # so 32, 33 and 34 each get a leg; anything narrower advertises a range to
-      # the App Store that no job touches.
-      nextcloud-test-refs: '["stable34", "stable32", "stable33"]'
+      # No `nextcloud-test-refs` override: the shared quality.yml derives the
+      # Nextcloud matrix from appinfo/info.xml (min-version..max-version), so the
+      # declared range — now including stable35 — is exactly what gets tested.
       # Psalm was `false` and carried no reason. The shared workflow still
       # creates a job literally named `PHP Quality (psalm)` for a disabled
       # tool: it prints "Psalm is disabled — skipping." and concludes

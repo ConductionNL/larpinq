@@ -106,7 +106,7 @@ Maak een [featureverzoek](https://github.com/ConductionNL/larpinq/issues)
         because a 32 floor makes `occ app:enable` refuse on a stable31 leg, and
         the e2e seed then fails with "is not installed or enabled".
         -->
-        <nextcloud min-version="32" max-version="34"/>
+        <nextcloud min-version="32" max-version="35"/>
     </dependencies>
     <!-- Restrict app visibility to the 'larpers' group so that only enrolled GMs and
          players see the navigation entry and can probe endpoints. Admins may add users
