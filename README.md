@@ -200,6 +200,14 @@ Full documentation is available at **[larpingapp.app](https://larpingapp.app)**
 | [Directories](docs/directories.md) | Project directory structure reference |
 | [Style Guide](docs/styleguide.md) | Frontend coding conventions |
 
+<!-- discovery:start -->
+## Standards & federation
+
+Larpinq declares no interoperability standards of its own.
+
+Other servers can read this list without logging in, from the Nextcloud capabilities endpoint (published by OpenRegister). Details, federation and admin switches: [docs/standards-and-federation.md](docs/standards-and-federation.md).
+<!-- discovery:end -->
+
 ## Standards & Compliance
 
 - **Accessibility:** WCAG AA

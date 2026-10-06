@@ -3348,5 +3348,9 @@
 			"sidebarComponent": "FlowDetailSidebar",
 			"_note": "The shared CnFlowDetail canvas over the same single engine. Controls render in the NC app sidebar so the canvas keeps full width."
 		}
-	]
+	],
+	"discovery": {
+		"public": true,
+		"standards": []
+	}
 }
