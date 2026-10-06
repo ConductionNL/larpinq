@@ -120,8 +120,8 @@ final class OpenRegisterAutoloader {
 	 *                                                   with an id that cannot
 	 *                                                   resolve.
 	 * @param \OCP\App\IAppManager|null $appManager Injected for tests;
-	 *                                                   resolved from the server
-	 *                                                   when null.
+	 *                                              resolved from the server
+	 *                                              when null.
 	 *
 	 * @return void This never reports success or failure. The caller's own
 	 *              `class_exists()` guard is the authoritative signal; a
