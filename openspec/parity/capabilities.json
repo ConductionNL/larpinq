@@ -1967,7 +1967,8 @@
 				"evidence": "lib/Settings/larpinq_register.json (entire components.schemas block: ability/skill/item/condition/effect are generic, data-only primitives); grep -rniE 'd20|d6|fate|dice.?pool' lib src: no hits, no fixed system is hardcoded",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "the whole app is built on these generic schemas; there is no fixed-system mode to opt out of",
-				"change": "openspec/changes/archive/2026-03-21-rpg-system"
+				"change": "openspec/changes/archive/2026-03-21-rpg-system",
+				"spec": "openspec/specs/game-mechanics"
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -3294,7 +3295,8 @@
 				"evidence": "lib/Settings/register.d/registration-intake-and-capacity.json (registration schema with lifecycle accept/waitlist/decline/cancel, row rules, materialised playerUid/eventSetting; event.capacity, approvalRequired, signupForm), lib/Listener/FormSubmissionListener.php (Forms FormSubmittedEvent -> one registration per account and event, written with the app's authority), lib/Service/RegistrationService.php + lib/Listener/RegistrationListener.php (status under a per-event lock, places = accepted + hand-added participants, waiting list by submittedAt, event.players follows accepted, own active character of the event's world only), src/manifest.d/registration-intake-and-capacity.json (Registrations, My registrations, registration page with accept/decline/cancel), EventDetail registrations list and places stat; tests/unit/Service/RegistrationServiceTest.php (real listener, service and fetcher over OpenRegister's own events), tests/unit/Listener/FormSubmissionListenerTest.php, tests/unit/Settings/RegistrationFragmentTest.php",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Event page Sign-up panel + event.signupForm; Registrations (/registrations)",
-				"change": "openspec/changes/archive/2026-10-01-registration-intake-and-capacity"
+				"change": "openspec/changes/archive/2026-10-01-registration-intake-and-capacity",
+				"spec": "openspec/specs/event-signup-to-forms-leaf"
 			},
 			"provider": "nextcloud",
 			"providerHow": "read: OR-delegated forms leaf (ADR-019) surfaces a real NC Forms form; larpinq builds no bespoke submission store",
@@ -4113,7 +4115,8 @@
 				"evidence": "src/manifest.json:349-417 (kpi-characters, kpi-events, kpi-items, kpi-players stat widgets, each source.metric \"count\" over the larpinq register)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Dashboard page, route \"/\", top KPI row",
-				"change": "openspec/changes/archive/2026-03-21-dashboard"
+				"change": "openspec/changes/archive/2026-03-21-dashboard",
+				"spec": "openspec/specs/dashboard-analytics-widgets"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -5168,6 +5171,25 @@
 			"addedOn": "2026-09-26"
 		},
 		{
+			"id": "rul-skill-tree-live-refresh",
+			"area": "rules",
+			"name": "See the skill tree update when someone changes a skill or character, without reloading the page.",
+			"larpinq": "yes",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "built",
+				"evidence": "src/views/SkillTree.vue:385-420 (subscribes the skill and character collections through the object store liveUpdatesPlugin, released on unmount)",
+				"owner": "ConductionNL/larpinq",
+				"reachedOn": "Skill tree page (/skill-tree)",
+				"spec": "openspec/specs/realtime-updates"
+			},
+			"source": "spec-round-2026-10-07"
+		},
+		{
 			"id": "com-help-desk",
 			"area": "communication",
 			"name": "Let players send questions or problems to the organisers through a help desk inside the tool.",
@@ -5715,6 +5737,44 @@
 				"pretix": "source read at tag v2026.7.0: src/pretix/control/urls.py:244-246 organizer outgoing-mail list, detail and bulk retry (src/pretix/control/views/mail.py:84-132) over src/pretix/base/models/mail.py:42 OutgoingMail"
 			},
 			"addedOn": "2026-09-26"
+		},
+		{
+			"id": "com-character-review-notifications",
+			"area": "communication",
+			"name": "Notify game masters when a character is submitted, and notify the owner when it is approved.",
+			"larpinq": "yes",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "built",
+				"evidence": "lib/Settings/larpinq_register.json:312-345 (character x-openregister-notifications: character-submitted on created to group gamemasters, character-approved on transition approved, nl/en subjects)",
+				"owner": "ConductionNL/larpinq",
+				"reachedOn": "Nextcloud notifications (bell), no larpinq page",
+				"change": "openspec/changes/archive/2026-06-14-larpingapp-notifications"
+			},
+			"source": "spec-round-2026-10-07"
+		},
+		{
+			"id": "com-event-reminder",
+			"area": "communication",
+			"name": "Remind players that an event starts soon.",
+			"larpinq": "yes",
+			"larpmanager": "unknown",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "unknown",
+			"pretix": "unknown",
+			"built": {
+				"state": "built",
+				"evidence": "lib/Settings/larpinq_register.json:842-866 (event x-openregister-notifications event-reminder: scheduled daily on startDate, group players, nl/en subject)",
+				"owner": "ConductionNL/larpinq",
+				"reachedOn": "Nextcloud notifications (bell), no larpinq page",
+				"change": "openspec/changes/archive/2026-06-14-larpingapp-notifications"
+			},
+			"source": "spec-round-2026-10-07"
 		},
 		{
 			"id": "ins-question-answer-stats",
