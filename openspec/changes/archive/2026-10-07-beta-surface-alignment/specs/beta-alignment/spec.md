@@ -1,18 +1,8 @@
----
-status: proposed
----
-
-# Larpinq Beta Surface Alignment
-
-## Purpose
-
-Larpinq's code metadata (`appinfo/info.xml`), code features (`src/manifest.json`), product page (`conduction.nl/apps/larpingapp`), and docs (`larpinq.conduction.nl`) SHALL describe the same, real, shipped feature set using one shared vocabulary, so a prospective user reading any of the four surfaces forms an accurate expectation of the app before installing it.
-
-## Requirements
+## ADDED Requirements
 
 ### Requirement: info.xml Metadata Is Bilingual and Accurate
 
-`appinfo/info.xml` SHALL declare `<name>` and `<summary>` in both `lang="en"` and `lang="nl"` (the Dutch text SHALL be genuinely translated, not an English copy), SHALL declare a `<licence>` matching the repository's actual `LICENSE` file, SHALL point `<website>`/`<bugs>`/`<repository>` at the app's real git remote, and SHALL declare every app the code hard-depends on via `<dependencies><app>`.
+`appinfo/info.xml` SHALL declare `<name>` and `<summary>` in both `lang="en"` and `lang="nl"` (the Dutch text SHALL be genuinely translated, not an English copy), SHALL declare a `<licence>` matching the repository's actual `LICENSE` file, SHALL point `<website>`/`<bugs>`/`<repository>` at the app's real git remote, and SHALL record every app the code hard-depends on: machine-readably in `src/manifest.json` `dependencies`, and as a comment inside `<dependencies>` in `appinfo/info.xml` (the App Store schema has no `<app>` child there, so an element would fail App Store validation).
 
 #### Scenario: Dutch summary is real Dutch
 
@@ -23,25 +13,25 @@ Larpinq's code metadata (`appinfo/info.xml`), code features (`src/manifest.json`
 
 #### Scenario: Declared OpenRegister dependency
 
-- **GIVEN** the app ships a `Repair\InitializeRegister` install/post-migration step and `src/manifest.json` declares `"dependencies": ["openregister"]`
-- **WHEN** `appinfo/info.xml` `<dependencies>` is read
-- **THEN** it MUST contain `<app>openregister</app>`
+- **GIVEN** the app ships a `Repair\InitializeRegister` install/post-migration step
+- **WHEN** `src/manifest.json` and the `<dependencies>` block of `appinfo/info.xml` are read
+- **THEN** `src/manifest.json` MUST list `openregister` under `dependencies`, and `appinfo/info.xml` MUST name the openregister dependency in a comment rather than an `<app>` element the App Store schema rejects
 - @e2e exclude static metadata file, no browser-navigable UI surface
 
 ### Requirement: Product Page Describes Only Shipped Features
 
-The product page (`conduction-website/src/pages/apps/larpingapp.mdx` and its Dutch translation) SHALL describe only features that exist in `src/manifest.json`, `lib/Controller/*`, or `docs/FEATURES.md`, and SHALL NOT reference entities, mechanics, or integrations that do not exist in the codebase.
+The product page (`conduction-website/src/pages/apps/larpinq.mdx`, formerly `larpingapp.mdx`, and its Dutch translation) SHALL describe only features that exist in `src/manifest.json`, `lib/Controller/*`, or `docs/FEATURES.md`, and SHALL NOT reference entities, mechanics, or integrations that do not exist in the codebase.
 
 #### Scenario: No fabricated entities or integrations
 
 - **GIVEN** the product page copy (en + nl)
-- **WHEN** the copy is checked against `src/manifest.json` pages/schemas and `lib/` for the terms "Scene", "Faction", standalone "NPC" entity, "Discord", "Talk", "Hilma"
+- **WHEN** the copy is checked against `src/manifest.json` pages/schemas and `lib/` for the terms "Scene", standalone "NPC" entity, "Discord", "Talk", "Hilma"
 - **THEN** none of these terms MUST appear as a described feature or integration, because none of them exist in the shipped code
 - @e2e exclude marketing copy audit, no browser-navigable UI surface distinct from the visual-coverage gate already covering the page render
 
 #### Scenario: English and Dutch product pages carry equivalent content
 
-- **GIVEN** `src/pages/apps/larpingapp.mdx` (English) and `i18n/nl/docusaurus-plugin-content-pages/apps/larpingapp.mdx` (Dutch)
+- **GIVEN** `src/pages/apps/larpinq.mdx` (English) and `i18n/nl/docusaurus-plugin-content-pages/apps/larpinq.mdx` (Dutch)
 - **WHEN** their section structure (hero, feature list, pairs-well-with, CTA) is compared
 - **THEN** both language versions MUST present the same canonical feature list and the same outbound doc/GitHub links
 - @e2e exclude marketing copy audit, no browser-navigable UI surface distinct from the visual-coverage gate already covering the page render

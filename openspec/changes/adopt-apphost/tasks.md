@@ -1,5 +1,7 @@
 # Tasks: Larpinq Adopts OpenRegister AppHost
 
+> Archive pass 2026-10-07: not archived. Delivered: /api/health and /api/metrics through the AppHost generics (`lib/AppInfo/Application.php` registerAppHostGenerics, lines 159-205; `appinfo/routes.php:88` Routes::standard; `src/manifest.json:299` observability block). Not delivered, by design: the wholesale `Bootstrap::register()` adoption and the boilerplate deletions (task 2.3; DashboardController, SettingsService and DeepLinkRegistrationListener still exist, see the comment at Application.php:172), and the `characters_total` metric (task 1.1). Open: all tasks. The requirement "Boilerplate Replaced by AppHost Generics" contradicts the code; rescope before archiving.
+
 ## 0. Baseline — verify absence
 
 - [ ] 0.1 Capture the no-endpoint baseline on a dev instance: `curl -i /apps/larpinq/api/health` and `curl -i /apps/larpinq/api/metrics` both return 404 today; record the responses as the before-fixture (this change is from-nothing-to-compliant, not a parity migration)

@@ -3932,7 +3932,7 @@
 				"owner": "ConductionNL/portaliq",
 				"reachedOn": "The portaliq portal app's page (sibling app), discovered by convention FQCN + duck-typing, not by any larpinq page",
 				"readOn": "2026-09-26",
-				"change": "openspec/changes/portal-contribution"
+				"change": "openspec/changes/archive/2026-10-07-portal-contribution"
 			},
 			"provider": "self",
 			"providerHow": "read: larpinq authors the declarative contribution manifest in this repo; portaliq (a separate app) is the one that renders the actual portal UI and calls into this class at runtime, so the reachable page lives in portaliq, not larpinq",
@@ -4450,7 +4450,7 @@
 				"evidence": "src/manifest.json:8-33 (setup block: welcome/demo-data/load-demo-data/provision/done steps); appinfo/routes.php:38-40 (/api/setup/status GET, /api/setup/config POST, /api/setup/action/{actionId} POST in $extra); lib/Controller/SetupController.php:55 backs the abstract CnSetupWizard (docblock line ~1-22)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "App shell CnSetupWizard, shown on first visit per manifest setup.enabled",
-				"change": "openspec/changes/wizard-dataset-card-load"
+				"change": "openspec/changes/archive/2026-10-07-wizard-dataset-card-load"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -4480,7 +4480,7 @@
 				"evidence": "src/manifest.json:36-153 (walkthrough block, tour 'larpinq:getting-started', 7 steps: welcome, go-characters, create-character, go-events, create-event, see-flows, done); lib/Repair/MigrateUserPreferences.php:18-22 documents 'pref_walkthrough_completed_version' as what 'useWalkthrough' treats as authoritative for tour completion",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "App shell guided tour (useWalkthrough), shown on first visit per manifest walkthrough.enabled",
-				"change": "openspec/changes/beta-surface-alignment"
+				"change": "openspec/changes/archive/2026-10-07-beta-surface-alignment"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -4510,7 +4510,7 @@
 				"evidence": "lib/Service/DemoDataService.php:54,97,132,216 (isAvailable/listChoices/install); lib/Controller/SetupController.php loadDataset()/skipDemoData() back the manifest's 'demo-data' choice step and 'load-demo-data' run-action steps (src/manifest.json:12-25)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "First-time setup wizard, 'Load example data?' step",
-				"change": "openspec/changes/wizard-dataset-card-load"
+				"change": "openspec/changes/archive/2026-10-07-wizard-dataset-card-load"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
