@@ -52,13 +52,14 @@ The `demo-data` setup step MUST be a cards choice step with `loadAction: load-de
 
 ### Requirement: Provisioning runs from the admin settings page
 
-Provisioning, repair and register-import actions MUST NOT be wizard steps. The admin settings page MUST offer each of them as an action that calls the same setup action endpoint.
+Provisioning, repair and register-import actions MUST NOT be wizard steps. The admin settings page MUST offer the register import. In Larpinq that is the existing Re-import button, which imports the register and schemas past the version gate. The `provision` setup action MUST keep working for runbooks and scripts.
 
 #### Scenario: The administrator repairs the register from the admin page
 
 - GIVEN an administrator on the Larpinq admin settings page
-- WHEN they run the provisioning action
-- THEN the page posts to the same `/api/setup/action/{action}` endpoint the wizard used
+- WHEN they press Re-import
+- THEN the page posts to `/api/settings/reimport`
+- AND the register and schemas are imported again
 - AND the result message is shown on the page
 - @e2e exclude admin settings button calling an existing setup action; the action is covered by tests/unit/Controller/SetupControllerTest.php
 
