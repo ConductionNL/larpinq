@@ -4,6 +4,16 @@ kind: code
 
 # Proposal: Larpinq Adopts OpenRegister AppHost (Observability + Boilerplate)
 
+> **Rescoped 2026-10-07 (decision 89).** This change archives as the partial adoption that shipped: `/api/health` and `/api/metrics` served through OpenRegister's `GenericHealthController` and `GenericMetricsController`, registered under Larpinq's own controller names in `Application::registerAppHostGenerics()` (#666), with the health checks declared in `src/manifest.json` (#671) and the routes from `Routes::standard()` (#651, #653).
+>
+> **Dropped from this change**, and not built:
+> - the wholesale `Bootstrap::register()` adoption. It would alias Larpinq's dashboard, settings, preferences, repair-step and section names onto generics that do not match Larpinq's own controllers (see the comment in `Application.php`), so hazards H1 to H4 below never arise;
+> - the deletion of `DashboardController`, `PreferencesController`, `SettingsController`, `SettingsService`, `SettingsLoadService`, `SettingsMapBuilder`, `ConfigFileLoaderService` and `DeepLinkRegistrationListener`, the stub rewrites of `InitializeRegister` and the two `LarpinqAdmin` classes, and the `deepLinks` manifest block. All stay app-owned;
+> - the `characters_total` metric descriptor. Metrics are only the implicit `larpinq_info` and `larpinq_up` gauges;
+> - "no `health.checks` block, rely on engine defaults". The code declares `database` and `openregister` checks explicitly, because without them the generic reports `ok` over an empty `checks` object.
+>
+> The text below is the original proposal, kept for the record.
+
 ## Problem
 
 Larpinq has **never been ADR-006 compliant**: it ships no `HealthController`, no `MetricsController`, and no `/api/health` or `/api/metrics` routes at all. The 2026-06-12 fleet observability inventory lists it (with softwarecatalog and zaakafhandelapp) as a **no-endpoint app** — probes and Prometheus scrapes against it 404 today. There is nothing to migrate; there is a hole to fill.
