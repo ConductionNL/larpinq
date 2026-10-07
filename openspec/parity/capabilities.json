@@ -4753,7 +4753,7 @@
 				"evidence": "lib/AppInfo/Application.php:148-195 registerAppHostGenerics() aliases OpenRegister's GenericHealthController/GenericMetricsController onto larpinq's own controller names, each behind a class_exists guard; src/manifest.json:316 observability.health.checks (database: critical, openregister: orAvailable/degraded) is read by HealthCheckExecutor at request time per the manifest's own note",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "GET /api/health (public) and /api/metrics (admin-only), aliased via OCA\\OpenRegister\\AppHost\\Routes::standard()",
-				"change": "openspec/changes/adopt-apphost"
+				"change": "openspec/changes/archive/2026-10-07-adopt-apphost"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
