@@ -407,7 +407,8 @@
 				"state": "built",
 				"evidence": "lib/Settings/larpinq_register.json:870-905 (setting schema, register-listed); src/manifest.json:1822-1832 (Settings index page, schema setting)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "Settings index page (/settings), standard New button"
+				"reachedOn": "Settings index page (/settings), standard New button",
+				"change": "openspec/changes/archive/setting-management"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -436,7 +437,8 @@
 				"state": "built",
 				"evidence": "lib/Settings/larpinq_register.json:224 (character.setting), 534 (skill.setting), 607 (item.setting), 679 (condition.setting), 755 (effect.setting), 833 (event.setting); src/manifest.json:1894-1932 (SettingDetail setting-characters/setting-events object-lists filtered setting=@objectId, each with viewAllRoute Characters/Events and viewAllQuery {setting: @objectId})",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "SettingDetail page (/settings/:id) object-lists, and their 'view all' links into the Characters/Events index pre-filtered to that world"
+				"reachedOn": "SettingDetail page (/settings/:id) object-lists, and their 'view all' links into the Characters/Events index pre-filtered to that world",
+				"change": "openspec/changes/archive/setting-management"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -466,7 +468,8 @@
 				"state": "built",
 				"evidence": "lib/Settings/larpinq_register.json:896-904 (setting.status enum active/archived, default active, facetable)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "SettingDetail page generic edit form (status field)"
+				"reachedOn": "SettingDetail page generic edit form (status field)",
+				"change": "openspec/changes/archive/setting-management"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -496,7 +499,8 @@
 				"state": "built",
 				"evidence": "lib/Settings/larpinq_register.json:870-905 (setting is a first-class, non-singleton register schema); src/manifest.json:1822-1832 (Settings index lists every world record)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "Settings index page (/settings) lists every world/campaign record"
+				"reachedOn": "Settings index page (/settings) lists every world/campaign record",
+				"change": "openspec/changes/archive/setting-management"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -525,7 +529,8 @@
 				"state": "built",
 				"evidence": "lib/Settings/larpinq_register.json:889-893 (setting.description, maxLength 2555); src/manifest.json:1845-1852 (setting-data widget, columns:1, no include filter so all schema fields including description render)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "SettingDetail page (/settings/:id), World data widget"
+				"reachedOn": "SettingDetail page (/settings/:id), World data widget",
+				"change": "openspec/changes/archive/setting-management"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -585,7 +590,8 @@
 				"state": "built",
 				"evidence": "src/manifest.json:1914-1932 (SettingDetail setting-events object-list, sort startDate desc); openspec/specs/dashboard/spec.md:287 (DASH-063 'Dashboard SHOULD display a timeline chart of recent events' status Planned, i.e. not built)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "SettingDetail page 'Events in this world' list, sorted by start date"
+				"reachedOn": "SettingDetail page 'Events in this world' list, sorted by start date",
+				"change": "openspec/changes/archive/setting-management"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -708,7 +714,8 @@
 				"state": "built",
 				"evidence": "lib/Settings/larpinq_register.json:44-58 (character schema, required name+ocName); src/manifest.json:581-590 (Characters index page, schema character)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "Characters index page (/characters), standard New button"
+				"reachedOn": "Characters index page (/characters), standard New button",
+				"change": "openspec/changes/archive/2026-03-21-character-management"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -737,7 +744,8 @@
 				"state": "built",
 				"evidence": "lib/Settings/larpinq_register.json:82-90 (character.background, visible:false, GM-only per description); src/manifest.json:603-619 (char-identity widget includes 'background')",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "CharacterDetail page (/characters/:id), Identity widget"
+				"reachedOn": "CharacterDetail page (/characters/:id), Identity widget",
+				"change": "openspec/changes/archive/2026-03-21-character-management"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -767,7 +775,8 @@
 				"state": "built",
 				"evidence": "lib/Settings/larpinq_register.json:101-111 (character.approved enum no/approved, widget switch); 288-311 (x-openregister-lifecycle field approved, transitions approved/unapprove); src/manifest.json:660-680 (char-progress widget includes 'approved')",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "CharacterDetail page, Game state & notes widget (approved switch)"
+				"reachedOn": "CharacterDetail page, Game state & notes widget (approved switch)",
+				"change": "openspec/changes/archive/2026-03-21-character-management"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -828,7 +837,8 @@
 				"state": "built",
 				"evidence": "lib/Settings/larpinq_register.json:284-287 (character.configuration.linkedTypes: ['photos']); src/manifest.json:717-724 (char-photos integration widget, integrationId photos)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "CharacterDetail page, Portrait & sheet widget"
+				"reachedOn": "CharacterDetail page, Portrait & sheet widget",
+				"change": "openspec/changes/archive/2026-06-14-character-photos-leaf"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -857,7 +867,8 @@
 				"state": "built",
 				"evidence": "lib/Service/CharacterService.php:353-403 (calculateCharacter, applies effects from skills/items/conditions/events); lib/Service/SkillRequirementService.php:86-99 (calls calculateCharacter, extracts 'stats' for context); lib/Controller/CharactersController.php:240-269 (requirementReport endpoint); src/views/skillTreeGraph.js:73 and src/views/SkillTree.vue:517-551 (consumes only report.budget.ok as a boolean for node colouring)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "SkillTree page (/skill-tree), used only to colour skill nodes owned/available/locked, never rendered as a readable stat sheet"
+				"reachedOn": "SkillTree page (/skill-tree), used only to colour skill nodes owned/available/locked, never rendered as a readable stat sheet",
+				"change": "openspec/changes/archive/2026-03-21-character-management"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -918,7 +929,8 @@
 				"state": "built",
 				"evidence": "lib/Settings/larpinq_register.json:188-199 (character.items array, $ref larping_item); src/manifest.json:681-694 (char-related widget, group key 'items')",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "CharacterDetail page, Build & world (related) widget"
+				"reachedOn": "CharacterDetail page, Build & world (related) widget",
+				"change": "openspec/changes/archive/2026-03-21-character-management"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -947,7 +959,8 @@
 				"state": "built",
 				"evidence": "lib/Settings/larpinq_register.json:200-211 (character.conditions array, $ref condition); src/manifest.json:681-694 (char-related widget, group key 'conditions')",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "CharacterDetail page, Build & world (related) widget"
+				"reachedOn": "CharacterDetail page, Build & world (related) widget",
+				"change": "openspec/changes/archive/2026-03-21-character-management"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -1007,7 +1020,8 @@
 				"state": "built",
 				"evidence": "lib/Settings/larpinq_register.json:90-100 (character.type facetable), 101-111 (character.approved facetable); src/manifest.json:581-590 (Characters index page type: index, generic nc-vue search/facet UI)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "Characters index page (/characters)"
+				"reachedOn": "Characters index page (/characters)",
+				"change": "openspec/changes/archive/2026-03-21-character-management"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -1036,7 +1050,8 @@
 				"state": "built",
 				"evidence": "src/manifest.json:787-796 (CharacterDetail sidebar tab id 'audit', widgets [{type: 'audit'}])",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "CharacterDetail page, History sidebar tab"
+				"reachedOn": "CharacterDetail page, History sidebar tab",
+				"change": "openspec/changes/archive/2026-03-21-character-management"
 			},
 			"provider": "openregister",
 			"providerHow": "the audit widget renders OpenRegister's own object audit trail; larpinq only declares the sidebar tab",
@@ -1127,7 +1142,8 @@
 				"state": "built",
 				"evidence": "lib/Settings/larpinq_register.json:90-100 (character.type enum player/npc/other, default player, facetable:true)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "Characters index page facet on 'type'"
+				"reachedOn": "Characters index page facet on 'type'",
+				"change": "openspec/changes/archive/2026-03-21-character-management"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -1250,7 +1266,8 @@
 				"state": "built",
 				"evidence": "lib/Settings/larpinq_register.json:113-134 (character.gold/silver/copper integers); src/manifest.json:642-659 (char-stats-gold-pieces stat card) and :660-680 (char-progress widget includes gold/silver/copper)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "CharacterDetail page, Gold pieces stat card and Game state & notes widget"
+				"reachedOn": "CharacterDetail page, Gold pieces stat card and Game state & notes widget",
+				"change": "openspec/changes/archive/2026-03-21-character-management"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -1279,7 +1296,8 @@
 				"state": "built",
 				"evidence": "src/manifest.json:695-716 (char-xpawards object-list: event, amount, reason, awardedAt, per character) and :787-796 (audit sidebar tab)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "CharacterDetail page, XP award history widget + History sidebar tab"
+				"reachedOn": "CharacterDetail page, XP award history widget + History sidebar tab",
+				"change": "openspec/changes/archive/event-xp-award-workflow"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -1309,7 +1327,8 @@
 				"state": "built",
 				"evidence": "src/manifest.json:695-716 (char-xpawards object-list, filter character=@objectId, sort awardedAt desc, columns event/amount/reason/awardedAt); lib/Settings/larpinq_register.json:909-961 (xpAward schema: event, character, amount, reason, awardedBy, awardedAt)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "CharacterDetail page, XP award history widget"
+				"reachedOn": "CharacterDetail page, XP award history widget",
+				"change": "openspec/changes/archive/event-xp-award-workflow"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -1339,7 +1358,8 @@
 				"state": "built",
 				"evidence": "lib/Settings/larpinq_register.json:362-395 (player schema: name, description, userUid); src/manifest.json:797-806 (Players index page, schema player)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "Players index page (/players)"
+				"reachedOn": "Players index page (/players)",
+				"change": "openspec/changes/archive/2026-03-21-events-players"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -1368,7 +1388,8 @@
 				"state": "built",
 				"evidence": "lib/Settings/register.d/player-to-contacts-leaf.json:1-8 (player.configuration.linkedTypes: ['contacts']); src/manifest.json:826-838 (player-contacts integration widget, integrationId contacts)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "PlayerDetail page (/players/:id), Contact card widget"
+				"reachedOn": "PlayerDetail page (/players/:id), Contact card widget",
+				"change": "openspec/changes/archive/2026-06-14-player-to-contacts-leaf"
 			},
 			"provider": "nextcloud",
 			"providerHow": "the contact card itself is Nextcloud Contacts; larpinq only declares the linkedType and renders the integration widget",
@@ -1397,7 +1418,8 @@
 				"state": "built",
 				"evidence": "lib/Settings/larpinq_register.json:382-391 (player.userUid, plain string, no 'format' deliberately, used for character-ownership notifications); src/manifest.json:819-825 (player-data widget, columns:1, no include filter so userUid renders)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "PlayerDetail page, Player data widget"
+				"reachedOn": "PlayerDetail page, Player data widget",
+				"change": "openspec/changes/archive/2026-03-21-events-players"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -1426,7 +1448,8 @@
 				"state": "built",
 				"evidence": "src/manifest.json:839-857 (player-characters object-list, filter ocName=@objectId, columns name/type/approved, viewAllRoute Characters)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "PlayerDetail page, Characters played widget"
+				"reachedOn": "PlayerDetail page, Characters played widget",
+				"change": "openspec/changes/archive/2026-03-21-events-players"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -1455,7 +1478,8 @@
 				"state": "built",
 				"evidence": "src/manifest.json:581-596 (CharacterDetail is a generic detail page reachable to any authenticated larpinq user, no ownership gate)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "CharacterDetail page (/characters/:id)"
+				"reachedOn": "CharacterDetail page (/characters/:id)",
+				"change": "openspec/changes/archive/2026-09-29-characters-player-visibility"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -1485,7 +1509,8 @@
 				"state": "built",
 				"evidence": "lib/Controller/CharactersController.php:149-151 (downloadPdf: groupManager->isAdmin() gate); lib/Controller/EventsController.php:51,189,334 (GM_GROUP='gamemasters', isInGroup check for attendance/roster writes); lib/Listener/CharacterRequirementListener.php:60,313-320 (isInGroup 'gamemasters' for requirement overrides); lib/Settings/larpinq_register.json:959-971 (xpAward authorization restricted to gamemasters)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "downloadPdf (admin only), event roster/attendance writes, requirement overrides, xpAward create/update/delete (all gamemasters-group only)"
+				"reachedOn": "downloadPdf (admin only), event roster/attendance writes, requirement overrides, xpAward create/update/delete (all gamemasters-group only)",
+				"change": "openspec/changes/archive/2026-07-07-event-checkin-roster"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -1668,7 +1693,8 @@
 				"state": "built",
 				"evidence": "lib/Settings/larpinq_register.json:390-430 (ability schema: name, description, base, optional world scoping); src/manifest.json:908-914 (Abilities index page), src/manifest.json:919-1058 (AbilityDetail page with ability-data/ability-effects/ability-skills widgets)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "/abilities index and /abilities/:id detail page"
+				"reachedOn": "/abilities index and /abilities/:id detail page",
+				"change": "openspec/changes/archive/2026-03-21-rpg-system"
 			},
 			"provider": "self",
 			"providerHow": "read: schema + pages are in this repository at the paths in built.evidence",
@@ -1697,7 +1723,8 @@
 				"state": "built",
 				"evidence": "lib/Settings/larpinq_register.json:432-542 (skill schema, slug larping_skill); src/manifest.json:1059-1068 (Skills index), src/manifest.json:1079-1183 (SkillDetail)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "/skills index and /skills/:id detail page"
+				"reachedOn": "/skills index and /skills/:id detail page",
+				"change": "openspec/changes/archive/2026-03-21-rpg-system"
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -1727,7 +1754,8 @@
 				"state": "built",
 				"evidence": "lib/Settings/larpinq_register.json:480-491 (skill.requiredSkills); lib/Service/SkillRequirementChecker.php:111-134 (checkRequiredSkills); src/manifest.json:1097-1122 (SkillDetail 'skill-prereqs' related widget, group requiredSkills)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "/skills/:id detail page (prerequisite list) and enforced server-side on every character write via CharacterRequirementListener"
+				"reachedOn": "/skills/:id detail page (prerequisite list) and enforced server-side on every character write via CharacterRequirementListener",
+				"change": "openspec/changes/archive/skill-requirement-enforcement"
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -1756,7 +1784,8 @@
 				"state": "built",
 				"evidence": "lib/Settings/larpinq_register.json:544-615 (item schema, slug larping_item, effects[] ref); src/manifest.json:1185-1194 (Items index), src/manifest.json:1196-1299 (ItemDetail with item-effects related widget)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "/items index and /items/:id detail page"
+				"reachedOn": "/items index and /items/:id detail page",
+				"change": "openspec/changes/archive/2026-03-21-rpg-system"
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -1785,7 +1814,8 @@
 				"state": "built",
 				"evidence": "lib/Settings/larpinq_register.json:617-687 (condition schema, effects[] ref, unique flag); src/manifest.json:1300-1309 (Conditions index), src/manifest.json:1311-1399 (ConditionDetail with condition-effects related widget)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "/conditions index and /conditions/:id detail page"
+				"reachedOn": "/conditions index and /conditions/:id detail page",
+				"change": "openspec/changes/archive/2026-03-21-rpg-system"
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -1814,7 +1844,8 @@
 				"state": "built",
 				"evidence": "lib/Settings/larpinq_register.json:689-763 (effect schema: modifier, modification enum, cumulative enum, abilities[] ref); src/manifest.json:1400-1409 (Effects index), src/manifest.json:1411-1499 (EffectDetail)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "/effects index and /effects/:id detail page"
+				"reachedOn": "/effects index and /effects/:id detail page",
+				"change": "openspec/changes/archive/2026-03-21-rpg-system"
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -1843,7 +1874,8 @@
 				"state": "built",
 				"evidence": "lib/Service/EffectApplier.php:145-181 (applyModifierToAbility, signed delta arithmetic), lib/Service/EffectApplier.php:206-245 (calculateEffect, non-cumulative dedup rule closing #208); lib/Service/CharacterService.php:364-397 (fixed order: skills, items, conditions, events, then xpAwards)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "internal to CharacterService::calculateCharacter(), invoked on every requirement-report call and on every character write (see rul-deterministic-calc for the reachable trigger points)"
+				"reachedOn": "internal to CharacterService::calculateCharacter(), invoked on every requirement-report call and on every character write (see rul-deterministic-calc for the reachable trigger points)",
+				"change": "openspec/changes/archive/2026-03-21-rpg-system"
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -1872,7 +1904,8 @@
 				"state": "built",
 				"evidence": "lib/Service/CharacterService.php:353-403 (calculateCharacter, stateless, always recomputed from base + all currently-linked entities, never an incremental diff); lib/Controller/CharactersController.php:242-269 (requirementReport)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "SkillTree page character selector (src/views/SkillTree.vue:524-553) -> GET /apps/larpinq/api/characters/{id}/requirement-report -> CharactersController::requirementReport -> SkillRequirementService::validate -> CharacterService::calculateCharacter; also runs on every character create/update via CharacterRequirementListener"
+				"reachedOn": "SkillTree page character selector (src/views/SkillTree.vue:524-553) -> GET /apps/larpinq/api/characters/{id}/requirement-report -> CharactersController::requirementReport -> SkillRequirementService::validate -> CharacterService::calculateCharacter; also runs on every character create/update via CharacterRequirementListener",
+				"change": "openspec/changes/archive/2026-03-21-rpg-system"
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -1902,7 +1935,8 @@
 				"state": "built",
 				"evidence": "lib/Settings/larpinq_register.json:870-907 (setting/'World' schema); optional 'setting' FK with x-relation-filter on ability (422-429), skill (534-541), item (607-614), condition (679-686), effect (755-762), event (833-840); src/manifest.json:2526-2665 (WorldContentReport dashboard: world-skills, world-items, world-conditions, world-effects)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "SkillTree World selector (src/views/SkillTree.vue:60-66, skillTreeGraph.js:117 activeSetting filter) and /reports/world"
+				"reachedOn": "SkillTree World selector (src/views/SkillTree.vue:60-66, skillTreeGraph.js:117 activeSetting filter) and /reports/world",
+				"change": "openspec/changes/archive/setting-management"
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -1932,7 +1966,8 @@
 				"state": "built",
 				"evidence": "lib/Settings/larpinq_register.json (entire components.schemas block: ability/skill/item/condition/effect are generic, data-only primitives); grep -rniE 'd20|d6|fate|dice.?pool' lib src: no hits, no fixed system is hardcoded",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "the whole app is built on these generic schemas; there is no fixed-system mode to opt out of"
+				"reachedOn": "the whole app is built on these generic schemas; there is no fixed-system mode to opt out of",
+				"change": "openspec/changes/archive/2026-03-21-rpg-system"
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -1962,7 +1997,8 @@
 				"state": "built",
 				"evidence": "src/manifest.json:1069-1077 (SkillTree custom page); src/views/SkillTree.vue (whole file); src/views/skillTreeGraph.js:107-172 (buildNodes, computeTiers)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "/skill-tree page"
+				"reachedOn": "/skill-tree page",
+				"change": "openspec/changes/archive/2026-07-07-skill-tree-visualization"
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -1991,7 +2027,8 @@
 				"state": "built",
 				"evidence": "src/views/skillTreeGraph.js:68-94 (computeStateBySkill: owned/available/locked/unknown, driven ONLY by the server requirementReport, ADR-022); src/views/SkillTree.vue:44-51,524-553 (character NcSelect + onCharacterChange fetch)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "/skill-tree page, character selector"
+				"reachedOn": "/skill-tree page, character selector",
+				"change": "openspec/changes/archive/2026-07-07-skill-tree-visualization"
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -2020,7 +2057,8 @@
 				"state": "built",
 				"evidence": "src/views/skillTreeGraph.js:151-172 (computeTiers: bounded passes, any unplaced nodes from a cycle drop into a final tier); src/views/SkillTree.vue:16-17 (doc note: 'Cycle / self-reference tolerant')",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "/skill-tree page"
+				"reachedOn": "/skill-tree page",
+				"change": "openspec/changes/archive/2026-07-07-skill-tree-visualization"
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -2259,7 +2297,8 @@
 				"state": "built",
 				"evidence": "lib/Settings/larpinq_register.json: skill.effects (468-479), item.effects (577-588), condition.effects (649-660) and event.effects (821-832) all $ref the same 'effect' schema/objects by id",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "EffectDetail's related widgets (effect-skills/effect-items/effect-conditions, src/manifest.json:1447-1497) list every entity that references a given effect"
+				"reachedOn": "EffectDetail's related widgets (effect-skills/effect-items/effect-conditions, src/manifest.json:1447-1497) list every entity that references a given effect",
+				"change": "openspec/changes/archive/2026-03-21-rpg-system"
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -2288,7 +2327,8 @@
 				"state": "built",
 				"evidence": "lib/Settings/larpinq_register.json:909-973 (xpAward schema: required event/character/amount, authorization create/update/delete restricted to 'gamemasters'); src/manifest.json:695-715 (CharacterDetail char-xpawards object-list, allowCreate) and src/manifest.json:1689-1709 (EventDetail event-xpawards object-list)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "/characters/:id and /events/:id 'add' action on the XP award history list, and /xp-awards index"
+				"reachedOn": "/characters/:id and /events/:id 'add' action on the XP award history list, and /xp-awards index",
+				"change": "openspec/changes/archive/event-xp-award-workflow"
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -2348,7 +2388,8 @@
 				"state": "built",
 				"evidence": "lib/Settings/larpinq_register.json:944-961 (reason, awardedBy server-stamped, awardedAt server-stamped); src/manifest.json:2006-2104 (XpAwards index + XpAwardDetail)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "/xp-awards index and /xp-awards/:id detail page"
+				"reachedOn": "/xp-awards index and /xp-awards/:id detail page",
+				"change": "openspec/changes/archive/2026-09-30-events-xp-batch-award"
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -2408,7 +2449,8 @@
 				"state": "built",
 				"evidence": "src/manifest.json:680-693 (CharacterDetail 'char-related' related widget, group 'skills'); lib/Listener/CharacterRequirementListener.php:95-144 (handle -> collectVeto -> SkillRequirementService::validate on every character write)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "/characters/:id 'Build & world' related widget, Skills group"
+				"reachedOn": "/characters/:id 'Build & world' related widget, Skills group",
+				"change": "openspec/changes/archive/skill-requirement-enforcement"
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -2437,7 +2479,8 @@
 				"state": "built",
 				"evidence": "lib/Service/SkillRequirementService.php:193-229 (evaluateBudget: shortfall/ok from the computed XP ability value); lib/Listener/CharacterRequirementListener.php:127-132 (event->stopPropagation() + setErrors() when result.valid is false, which includes budget.ok===false per hasUnmet at SkillRequirementService.php:179-191)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "server-side veto on every character create/update (registered in lib/AppInfo/Application.php:118-134), covering SPA, REST and GraphQL write paths"
+				"reachedOn": "server-side veto on every character create/update (registered in lib/AppInfo/Application.php:118-134), covering SPA, REST and GraphQL write paths",
+				"change": "openspec/changes/archive/skill-requirement-enforcement"
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -2466,7 +2509,8 @@
 				"state": "built",
 				"evidence": "lib/Service/SkillRequirementChecker.php:70-99 (check: requiredSkills, requiredStats, requiredConditions, requiredEffects); lib/Listener/CharacterRequirementListener.php (veto on 'unmet'/'unresolvable' status)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "server-side veto on every character write"
+				"reachedOn": "server-side veto on every character write",
+				"change": "openspec/changes/archive/skill-requirement-enforcement"
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -2496,7 +2540,8 @@
 				"state": "built",
 				"evidence": "lib/Settings/larpinq_register.json:232-266 (character.requirementOverrides: skill, reason, overriddenBy, overriddenAt, visible:false); lib/Listener/CharacterRequirementListener.php:285-322 (checkOverrideAuthorization: only 'gamemasters' group may author one, and a blank reason is rejected outright)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "nothing: no manifest widget, related group or form field on any page references 'requirementOverrides' (grep -rn 'requirementOverrides' src --include=*.vue --include=*.js returns zero hits), a GM has no in-app way to add an override entry"
+				"reachedOn": "nothing: no manifest widget, related group or form field on any page references 'requirementOverrides' (grep -rn 'requirementOverrides' src --include=*.vue --include=*.js returns zero hits), a GM has no in-app way to add an override entry",
+				"change": "openspec/changes/archive/skill-requirement-enforcement"
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -2526,7 +2571,8 @@
 				"state": "built",
 				"evidence": "lib/Controller/CharactersController.php:211-269 (requirementReport, GET /api/characters/{id}/requirement-report); src/views/SkillTree.vue:524-553 (fetch) and :556-580 (hasAnyRequirement / node detail panel)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "/skill-tree page: select a character, click a locked node to see its unmet requirements"
+				"reachedOn": "/skill-tree page: select a character, click a locked node to see its unmet requirements",
+				"change": "openspec/changes/archive/skill-requirement-enforcement"
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -2584,7 +2630,8 @@
 				"state": "built",
 				"evidence": "lib/Settings/larpinq_register.json:963-973 (xpAward authorization: update/delete restricted to 'gamemasters'); src/manifest.json:2017-2104 (XpAwardDetail carries no readOnly flag, so the standard detail-page edit/delete actions apply)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "/xp-awards/:id detail page edit/delete actions"
+				"reachedOn": "/xp-awards/:id detail page edit/delete actions",
+				"change": "openspec/changes/archive/event-xp-award-workflow"
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -2701,7 +2748,8 @@
 				"state": "built",
 				"evidence": "lib/Service/CharacterService.php:353-397 (calculateCharacter recomputes stats from scratch on every call from base + currently-linked entities only, a removed skill's cost effect simply stops being applied on the next recompute); lib/Service/SkillRequirementService.php:255-292 (analyseRemovals flags any remaining skill left dependent-now-unmet by the removal, surfaced as a warning, not a block)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "/characters/:id 'Build & world' related widget: removing a skill from the Skills group"
+				"reachedOn": "/characters/:id 'Build & world' related widget: removing a skill from the Skills group",
+				"change": "openspec/changes/archive/2026-03-21-character-management"
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -2731,7 +2779,8 @@
 				"state": "built",
 				"evidence": "lib/Settings/larpinq_register.json:766-808 (larping_event schema properties name/description/startDate/endDate/location); src/manifest.json:1589 (EventDetail config, register larpinq, schema larping_event); manifest pages list has an Events index page (type index) which is the generic OpenRegister create/list surface for this schema",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "Events index page (/events, generic index create action) and EventDetail (/events/:id)"
+				"reachedOn": "Events index page (/events, generic index create action) and EventDetail (/events/:id)",
+				"change": "openspec/changes/archive/2026-03-21-events-players"
 			},
 			"provider": "self",
 			"providerHow": "read: schema and manifest are in this repository at the paths in built.evidence",
@@ -2761,7 +2810,8 @@
 				"state": "built",
 				"evidence": "lib/Settings/register.d/event-calendar-leaf.json (event.configuration.linkedTypes: [\"calendar\"]); src/views/ObjectDetail.vue:20,60 (LEAVES_BY_OBJECT_TYPE event -> calendar); src/manifest.json:1589-1660 (event-calendar widget, type integration, integrationId calendar, in EventDetail layout)",
 				"owner": "nextcloud/calendar",
-				"reachedOn": "EventDetail page (/events/:id) body, 'Schedule' widget"
+				"reachedOn": "EventDetail page (/events/:id) body, 'Schedule' widget",
+				"change": "openspec/changes/archive/2026-06-14-event-calendar-leaf"
 			},
 			"provider": "nextcloud",
 			"providerHow": "read: larpinq declares the linkedType and hosts an invisible marker div (ObjectDetail.vue); OpenRegister's integration registry (ADR-019) resolves it to the real Nextcloud Calendar leaf widget, which larpinq does not implement itself",
@@ -2791,7 +2841,8 @@
 				"state": "built",
 				"evidence": "lib/Settings/register.d/event-location-to-maps-leaf.json (event.configuration.linkedTypes: [\"maps\"]); src/manifest.json:1589-1660 (event-maps widget, type integration, integrationId maps)",
 				"owner": "nextcloud/maps",
-				"reachedOn": "EventDetail page (/events/:id) body, 'Location' widget"
+				"reachedOn": "EventDetail page (/events/:id) body, 'Location' widget",
+				"change": "openspec/changes/archive/2026-06-14-event-location-to-maps-leaf"
 			},
 			"provider": "nextcloud",
 			"providerHow": "read: same OR-delegated leaf pattern as evt-calendar; larpinq only declares the linkedType and hosts the marker",
@@ -2820,7 +2871,8 @@
 				"state": "built",
 				"evidence": "lib/Controller/EventsController.php:169 (roster()); lib/Service/EventRosterService.php:89-120 (buildRoster); src/views/EventRoster.vue:204-241 (fetchRoster calls GET /apps/larpinq/api/events/{id}/roster); src/manifest.json:1806-1809 (EventDetail sidebar 'Check-in' tab, component EventRoster); src/registry.js:25,43 (EventRoster resolved by CnObjectSidebar)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "EventDetail page (/events/:id), sidebar 'Check-in' tab"
+				"reachedOn": "EventDetail page (/events/:id), sidebar 'Check-in' tab",
+				"change": "openspec/changes/archive/2026-07-07-event-checkin-roster"
 			},
 			"provider": "self",
 			"providerHow": "read: two-hop trace route -> controller -> EventRoster.vue -> manifest sidebar tab, all in this repo",
@@ -2850,7 +2902,8 @@
 				"state": "built",
 				"evidence": "lib/Settings/larpinq_register.json:214 (character.events array $ref larping_event, visible:false); src/manifest.json:690 (CharacterDetail 'char-related' widget, 'events' group); lib/Service/EventRosterService.php:328-333 (attendsEvent reads character['events'])",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "CharacterDetail page (/characters/:id), 'Build & world' related widget, Events group"
+				"reachedOn": "CharacterDetail page (/characters/:id), 'Build & world' related widget, Events group",
+				"change": "openspec/changes/archive/2026-03-21-events-players"
 			},
 			"provider": "self",
 			"providerHow": "read: the schema field is visible:false (hidden from generic forms) but is explicitly surfaced as its own related-object group on the character detail page, which is how a GM actually adds a character to an event",
@@ -2880,7 +2933,8 @@
 				"state": "built",
 				"evidence": "src/views/EventRoster.vue:48-71 (Check in / No-show NcButtons, canCheckIn gated on isGm); lib/Controller/EventsController.php:207-244 (recordAttendance, GM-only via resolveGameMaster); lib/Service/EventRosterService.php:196-226 (recordAttendance persists larping_attendance)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "EventDetail page (/events/:id), sidebar 'Check-in' tab, per-row Check in/No-show buttons (game masters only)"
+				"reachedOn": "EventDetail page (/events/:id), sidebar 'Check-in' tab, per-row Check in/No-show buttons (game masters only)",
+				"change": "openspec/changes/archive/2026-07-07-event-checkin-roster"
 			},
 			"provider": "self",
 			"providerHow": "read: full path traced from button click to POST /apps/larpinq/api/events/{id}/attendance to EventRosterService::recordAttendance",
@@ -2909,7 +2963,8 @@
 				"state": "built",
 				"evidence": "lib/Settings/register.d/event-checkin-roster.json (larping_attendance schema: event, character, status enum registered/checked-in/no-show, server-stamped checkedInAt/checkedInBy); lib/Service/EventRosterService.php:387-410 (loadAttendance, filters by event)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "EventDetail page (/events/:id), sidebar 'Check-in' tab, attendance column + status badge"
+				"reachedOn": "EventDetail page (/events/:id), sidebar 'Check-in' tab, attendance column + status badge",
+				"change": "openspec/changes/archive/2026-07-07-event-checkin-roster"
 			},
 			"provider": "self",
 			"providerHow": "read: same code path as evt-checkin; status is a first-class persisted record, not derived",
@@ -3030,7 +3085,8 @@
 				"state": "built",
 				"evidence": "src/manifest.json Events index page (generic list of all larping_event objects, no time filter so past events remain listed); src/manifest.json:1669-1697 (EventDetail 'event-roster' object-list widget showing participating characters, filter events=@objectId)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "Events index page (/events) + EventDetail (/events/:id) roster widget"
+				"reachedOn": "Events index page (/events) + EventDetail (/events/:id) roster widget",
+				"change": "openspec/changes/archive/2026-03-21-events-players"
 			},
 			"provider": "self",
 			"providerHow": "read: manifest config in this repo",
@@ -3573,7 +3629,8 @@
 			"built": {
 				"state": "built",
 				"evidence": "lib/Controller/EventsController.php:105 (downloadRunsheet, GM-only via resolveGameMaster); appinfo/routes.php:31 (GET /events/{id}/runsheet/{template}); lib/Service/EventRosterService.php:136-176 (buildRunsheetContext); own grep -rn \"runsheet\" src/: no hits",
-				"owner": "ConductionNL/larpinq"
+				"owner": "ConductionNL/larpinq",
+				"change": "openspec/changes/archive/2026-06-14-event-runsheet-export"
 			},
 			"provider": "filinq",
 			"providerHow": "read: renders through the same DocuDeskPdfRenderer as prt-character-pdf",
@@ -3751,7 +3808,8 @@
 				"state": "built",
 				"evidence": "lib/Listener/DeepLinkRegistrationListener.php:82-93 (DEEP_LINK_MAP includes larping_event -> /apps/larpinq/events/{uuid}, character -> /apps/larpinq/characters/{uuid}); lib/AppInfo/Application.php:111-115 (listener registered behind class_exists('OCA\\OpenRegister\\Event\\DeepLinkRegistrationEvent'))",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "n/a (server-side URL registration consumed by OpenRegister's unified search / other apps linking in)"
+				"reachedOn": "n/a (server-side URL registration consumed by OpenRegister's unified search / other apps linking in)",
+				"change": "openspec/changes/archive/2026-03-21-deep-link-registration"
 			},
 			"provider": "openregister",
 			"providerHow": "read: larpinq registers its URL templates with OpenRegister's DeepLinkRegistrationEvent; OpenRegister's search/deep-link consumers are what actually follow the links",
@@ -3871,7 +3929,8 @@
 				"evidence": "lib/Portal/PortalContributionProvider.php:82-135 (getAudiences/getContribution/playerContribution: declares myCharacters scoped by ownerRef, public events list, catalogs, and a createCharacter action, all field-projected)",
 				"owner": "ConductionNL/portaliq",
 				"reachedOn": "The portaliq portal app's page (sibling app), discovered by convention FQCN + duck-typing, not by any larpinq page",
-				"readOn": "2026-09-26"
+				"readOn": "2026-09-26",
+				"change": "openspec/changes/portal-contribution"
 			},
 			"provider": "self",
 			"providerHow": "read: larpinq authors the declarative contribution manifest in this repo; portaliq (a separate app) is the one that renders the actual portal UI and calls into this class at runtime, so the reachable page lives in portaliq, not larpinq",
@@ -3930,7 +3989,8 @@
 				"state": "built",
 				"evidence": "lib/Settings/larpinq_register.json:821-832 (event.effects array $ref effect); lib/Service/CharacterService.php:386-391 (applyEntityEffects called with property 'events', lookup allEvents, events the character is subscribed to feed effects into stat calculation exactly like skills/items/conditions); src/manifest.json:1641 (EventDetail 'event-effects' related widget, group 'effects')",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "EventDetail page (/events/:id) 'Post-event effects' widget; effect applied wherever character stats are (re)calculated"
+				"reachedOn": "EventDetail page (/events/:id) 'Post-event effects' widget; effect applied wherever character stats are (re)calculated",
+				"change": "openspec/changes/archive/2026-03-21-events-players"
 			},
 			"provider": "self",
 			"providerHow": "read: full trace from schema field to CharacterService's generic per-entity-type effect application to the display widget",
@@ -3991,7 +4051,8 @@
 				"state": "built",
 				"evidence": "src/manifest.json:1812-1815 (EventDetail sidebar 'History' tab, widgets: [{type: audit}])",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "EventDetail page (/events/:id), sidebar 'History' tab"
+				"reachedOn": "EventDetail page (/events/:id), sidebar 'History' tab",
+				"change": "openspec/changes/archive/2026-03-21-events-players"
 			},
 			"provider": "openregister",
 			"providerHow": "read: the 'audit' widget type is a generic OpenRegister audit-trail renderer wired into every larpinq detail page's sidebar, not app-specific code",
@@ -4020,7 +4081,8 @@
 				"state": "built",
 				"evidence": "src/manifest.json:155 (Dashboard page, type dashboard, route \"/\"); src/manifest.json:349,366,383,400 (kpi-characters/kpi-events/kpi-items/kpi-players stat widgets); src/main.js:56 registerBuiltinDashboardWidgets() registers the stat/object-table/chart widget renderers those widgets need",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "Dashboard page, route \"/\""
+				"reachedOn": "Dashboard page, route \"/\"",
+				"change": "openspec/changes/archive/2026-03-21-dashboard"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -4050,7 +4112,8 @@
 				"state": "built",
 				"evidence": "src/manifest.json:349-417 (kpi-characters, kpi-events, kpi-items, kpi-players stat widgets, each source.metric \"count\" over the larpinq register)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "Dashboard page, route \"/\", top KPI row"
+				"reachedOn": "Dashboard page, route \"/\", top KPI row",
+				"change": "openspec/changes/archive/2026-03-21-dashboard"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -4110,7 +4173,8 @@
 				"state": "built",
 				"evidence": "src/manifest.json:2135 (CharacterRosterReport page, type dashboard, route /reports/characters); widgets roster-total/roster-players/roster-awaiting (stat), roster-by-type/roster-by-approval (chart, donut), roster-recent (object-table)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "Reports > Character roster, route /reports/characters"
+				"reachedOn": "Reports > Character roster, route /reports/characters",
+				"spec": "none"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -4140,7 +4204,8 @@
 				"state": "built",
 				"evidence": "src/manifest.json:2143 (ProgressionReport page, /reports/progression); widgets xp-awards/xp-total (stat), xp-per-character (chart, bar, groupBy character sum amount), xp-recent (object-table)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "Reports > Progression, route /reports/progression"
+				"reachedOn": "Reports > Progression, route /reports/progression",
+				"spec": "none"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -4169,7 +4234,8 @@
 				"state": "built",
 				"evidence": "src/manifest.json:2151 (WorldContentReport page, /reports/content); widgets world-skills/items/conditions/effects (stat), world-items-carried/world-conditions-held (chart, donut groupBy items/conditions array property on character)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "Reports > World content, route /reports/content"
+				"reachedOn": "Reports > World content, route /reports/content",
+				"spec": "none"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -4198,7 +4264,8 @@
 				"state": "built",
 				"evidence": "src/manifest.json:461 (Dashboard 'skill-usage' chart widget, donut, aggregate.groupBy \"skills\", topN 10, labelResolve to larping_skill.name); src/manifest.json WorldContentReport 'world-items-carried' (groupBy items) and 'world-conditions-held' (groupBy conditions) widgets",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "Dashboard page (skill-usage widget) and Reports > World content"
+				"reachedOn": "Dashboard page (skill-usage widget) and Reports > World content",
+				"change": "openspec/changes/archive/2026-05-31-larping-skill-widget"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -4348,7 +4415,8 @@
 				"state": "built",
 				"evidence": "lib/AppInfo/Application.php:109-116 registers DeepLinkRegistrationListener against OCA\\OpenRegister\\Event\\DeepLinkRegistrationEvent (guarded by class_exists); lib/Listener/DeepLinkRegistrationListener.php registers per-schema URL templates so unified-search results deep-link into larpinq's own detail views",
 				"owner": "ConductionNL/openregister",
-				"reachedOn": "Nextcloud's global unified search, when OpenRegister's DeepLinkRegistrationEvent class is present"
+				"reachedOn": "Nextcloud's global unified search, when OpenRegister's DeepLinkRegistrationEvent class is present",
+				"change": "openspec/changes/archive/2026-03-21-deep-link-registration"
 			},
 			"provider": "openregister",
 			"providerHow": "read: larpinq registers URL templates; OpenRegister supplies the unified-search event and provider that renders results",
@@ -4378,7 +4446,8 @@
 				"state": "built",
 				"evidence": "src/manifest.json:8-33 (setup block: welcome/demo-data/load-demo-data/provision/done steps); appinfo/routes.php:38-40 (/api/setup/status GET, /api/setup/config POST, /api/setup/action/{actionId} POST in $extra); lib/Controller/SetupController.php:55 backs the abstract CnSetupWizard (docblock line ~1-22)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "App shell CnSetupWizard, shown on first visit per manifest setup.enabled"
+				"reachedOn": "App shell CnSetupWizard, shown on first visit per manifest setup.enabled",
+				"change": "openspec/changes/wizard-dataset-card-load"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -4407,7 +4476,8 @@
 				"state": "built",
 				"evidence": "src/manifest.json:36-153 (walkthrough block, tour 'larpinq:getting-started', 7 steps: welcome, go-characters, create-character, go-events, create-event, see-flows, done); lib/Repair/MigrateUserPreferences.php:18-22 documents 'pref_walkthrough_completed_version' as what 'useWalkthrough' treats as authoritative for tour completion",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "App shell guided tour (useWalkthrough), shown on first visit per manifest walkthrough.enabled"
+				"reachedOn": "App shell guided tour (useWalkthrough), shown on first visit per manifest walkthrough.enabled",
+				"change": "openspec/changes/beta-surface-alignment"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -4436,7 +4506,8 @@
 				"state": "built",
 				"evidence": "lib/Service/DemoDataService.php:54,97,132,216 (isAvailable/listChoices/install); lib/Controller/SetupController.php loadDataset()/skipDemoData() back the manifest's 'demo-data' choice step and 'load-demo-data' run-action steps (src/manifest.json:12-25)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "First-time setup wizard, 'Load example data?' step"
+				"reachedOn": "First-time setup wizard, 'Load example data?' step",
+				"change": "openspec/changes/wizard-dataset-card-load"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -4465,7 +4536,8 @@
 				"state": "built",
 				"evidence": "src/manifest.json:266-271,2107 (GameSettings page, /game-settings, section component 'GameSettingsSection'); src/registry.js:28,38 resolves GameSettingsSection to src/views/settings/Settings.vue; Settings.vue loadSettings()/saveConfiguration() call GET/POST/PUT /apps/larpinq/api/settings (routes.php:35-41, SettingsController::index/create/update)",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "Game Settings page, route /game-settings"
+				"reachedOn": "Game Settings page, route /game-settings",
+				"change": "openspec/changes/archive/2026-03-21-admin-settings"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -4494,7 +4566,8 @@
 				"state": "built",
 				"evidence": "src/views/settings/Settings.vue:6 CnAdminSettingsShell reimportUrl=\"/index.php/apps/larpinq/api/settings/reimport\"; appinfo/routes.php:42 settings#reimport POST api/settings/reimport (in $extra, correct app id); lib/Service/ConfigFileLoaderService.php:96 loadConfigurationFile() re-merges the bundled register.d fragments",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "Game Settings page, 'Re-import' action in CnAdminSettingsShell"
+				"reachedOn": "Game Settings page, 'Re-import' action in CnAdminSettingsShell",
+				"change": "openspec/changes/archive/2026-03-21-register-config-json"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -4554,7 +4627,8 @@
 				"state": "built",
 				"evidence": "appinfo/info.xml:111-133: a long comment explains the App Store schema has no <groups> element and Nextcloud does not read one from info.xml either (OC_App::listAllApps() overwrites it with the 'enabled' appconfig value); the restriction is applied per instance via the standard mechanism, 'occ app:enable larpinq' with a groups flag, or the group selector on the Apps admin page. The frozen group id is 'larpers'; Game Masters additionally need the built-in 'admin' group for GM-only endpoints.",
 				"owner": "nextcloud/server",
-				"reachedOn": "Nextcloud Apps admin page (per-app group restriction), or occ app:enable larpinq --groups larpers"
+				"reachedOn": "Nextcloud Apps admin page (per-app group restriction), or occ app:enable larpinq --groups larpers",
+				"spec": "none"
 			},
 			"provider": "nextcloud",
 			"providerHow": "read: larpinq relies entirely on Nextcloud's standard app-level group-restriction mechanism; it declares no group restriction of its own in code",
@@ -4614,7 +4688,8 @@
 				"state": "built",
 				"evidence": "l10n/ ships 37 languages as matched .js/.json pairs; l10n/nl.json carries 358 translated strings against l10n/en.json's 237-line English source; src/main.js:9,61 registerTranslations() + loadTranslations('larpinq', ...) at bootstrap",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "App shell bootstrap, per the browser/account language"
+				"reachedOn": "App shell bootstrap, per the browser/account language",
+				"spec": "none"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -4643,7 +4718,8 @@
 				"state": "built",
 				"evidence": "lib/Settings/larpinq_register.json:17 registers the 'larpinq' register and 9 schemas, which OpenRegister exposes generically over its own REST/GraphQL object API; src/services/graphql.js:11 posts to /apps/openregister/api/graphql as an example of that same generic API (queryGraphQL is not imported anywhere in src/, so this app does not itself call it)",
 				"owner": "ConductionNL/openregister",
-				"reachedOn": "OpenRegister's generic object REST/GraphQL API, for any client outside this app"
+				"reachedOn": "OpenRegister's generic object REST/GraphQL API, for any client outside this app",
+				"spec": "none"
 			},
 			"provider": "openregister",
 			"providerHow": "declare: larpinq registers its schemas; OpenRegister is what actually serves the generic API other tools would call",
@@ -4673,7 +4749,8 @@
 				"state": "built",
 				"evidence": "lib/AppInfo/Application.php:148-195 registerAppHostGenerics() aliases OpenRegister's GenericHealthController/GenericMetricsController onto larpinq's own controller names, each behind a class_exists guard; src/manifest.json:316 observability.health.checks (database: critical, openregister: orAvailable/degraded) is read by HealthCheckExecutor at request time per the manifest's own note",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "GET /api/health (public) and /api/metrics (admin-only), aliased via OCA\\OpenRegister\\AppHost\\Routes::standard()"
+				"reachedOn": "GET /api/health (public) and /api/metrics (admin-only), aliased via OCA\\OpenRegister\\AppHost\\Routes::standard()",
+				"change": "openspec/changes/adopt-apphost"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -4702,7 +4779,8 @@
 				"state": "built",
 				"evidence": "src/manifest.json:2732,2740 (Flows index page /flows, FlowDetail flow page /flows/:id); src/manifest.json:306 FlowsMenu (section 'settings'); src/registry.js:26,36 registers FlowDetailSidebar (kind 'page'), which mounts in the Nextcloud app sidebar alongside the shared flow-canvas page type; manifest.json walkthrough step 'see-flows' (route Flows) references it as 'where the automation lives'",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "Flows / FlowDetail pages, routes /flows and /flows/:id"
+				"reachedOn": "Flows / FlowDetail pages, routes /flows and /flows/:id",
+				"spec": "none"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence; the flow list/canvas page types themselves are the shared nc-vue 'index'/'flow' generics over an openregister.flows configuration",
@@ -4731,7 +4809,8 @@
 				"state": "built",
 				"evidence": "appinfo/info.xml (php min-version 8.3, nextcloud min-version 32 max-version 34, pgsql/mysql/sqlite); docker-compose.yml and larpinq-compose.yaml; publiccode.yml declares a standalone Nextcloud app",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "Any operator's own Nextcloud instance"
+				"reachedOn": "Any operator's own Nextcloud instance",
+				"spec": "none"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -4760,7 +4839,8 @@
 				"state": "built",
 				"evidence": "appinfo/info.xml:50 <licence>EUPL-1.2</licence>; publiccode.yml:49 license: EUPL-1.2; appinfo/info.xml website/repository point at the public github.com/ConductionNL/larpinq repo",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "LICENSE file and appinfo/info.xml"
+				"reachedOn": "LICENSE file and appinfo/info.xml",
+				"spec": "none"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -4882,7 +4962,8 @@
 				"state": "built",
 				"evidence": "src/App.vue:84,181-183 imports and calls useTenantContext(), exposing cnActiveOrganisationUuid; src/App.vue:248-293 watches it and calls store.setObjectStoreTenantUuid()/setActiveTenantOrganisation() on change; src/store/modules/object.js:12-54 documents the resulting X-OpenRegister-Organisation header sent on every object-store fetch, with null meaning single-tenant mode",
 				"owner": "ConductionNL/openregister",
-				"reachedOn": "App shell (App.vue), on every OpenRegister object request, whenever a tenant/organisation context is mounted"
+				"reachedOn": "App shell (App.vue), on every OpenRegister object request, whenever a tenant/organisation context is mounted",
+				"spec": "none"
 			},
 			"provider": "openregister",
 			"providerHow": "read: larpinq wires the tenant-context plumbing; the organisation-scoping itself (the X-OpenRegister-Organisation header's effect) is OpenRegister's",
@@ -4912,7 +4993,8 @@
 				"state": "built",
 				"evidence": "src/manifest.json:330 (Store page, /store, type 'store', config.app 'larpinq'); manifest _note: 'Declarative: openregister hosts the store plane, so this app writes NO store controller. With no registry configured the page renders the app's built-in items and makes NO network call.'",
 				"owner": "ConductionNL/openregister",
-				"reachedOn": "Store page, route /store"
+				"reachedOn": "Store page, route /store",
+				"spec": "none"
 			},
 			"provider": "openregister",
 			"providerHow": "declare: the store plane (fetching/installing configuration sets) is entirely OpenRegister's; larpinq only points the generic 'store' page type at itself",
@@ -4942,7 +5024,8 @@
 				"state": "built",
 				"evidence": "src/manifest.json:2725-2728 (FeaturesRoadmap page, /features-roadmap, type 'roadmap', config only supplies documentationUrl); src/manifest.json menu entry (footer section) links to it",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "Features & roadmap page, route /features-roadmap"
+				"reachedOn": "Features & roadmap page, route /features-roadmap",
+				"spec": "none"
 			},
 			"provider": "self",
 			"providerHow": "read: larpinq only wires the page and its documentation URL; the 'roadmap' page type's actual content source is a generic nc-vue library behaviour not present in this repo, so what populates the page cannot be confirmed by reading larpinq alone",
@@ -5067,7 +5150,8 @@
 				"state": "built",
 				"evidence": "lib/Settings/larpinq_register.json:113-133 (character.gold, silver, copper integers) and :162-168 (itemsAndMoney notes); src/manifest.json:642-672 (CharacterDetail 'Gold pieces' stats-block and the Game state & notes data widget). Money is tracked per character, but nothing spends it: items carry no price and there is no shop or transaction record",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "CharacterDetail page (/characters/:id), Gold pieces stats-block and Game state & notes widget"
+				"reachedOn": "CharacterDetail page (/characters/:id), Gold pieces stats-block and Game state & notes widget",
+				"change": "openspec/changes/archive/2026-03-21-character-management"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -5551,7 +5635,8 @@
 				"state": "built",
 				"evidence": "src/views/EventRoster.vue:58-89 (per-character status checked-in or no-show, with checkedInAt/By at :274-275), reached from the EventDetail sidebar Check-in tab (src/manifest.json:1806-1809); there is no check-out, so it shows who arrived, not who is on site now",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "EventDetail page (/events/:id), Check-in sidebar tab"
+				"reachedOn": "EventDetail page (/events/:id), Check-in sidebar tab",
+				"change": "openspec/changes/archive/2026-07-07-event-checkin-roster"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -5874,7 +5959,8 @@
 				"state": "built",
 				"evidence": "appinfo/info.xml:109 (runs inside Nextcloud 32 to 34; larpinq has no login of its own and grep -rn 'PublicPage' lib/Controller has no hits), so every account signs in through Nextcloud, whose two-factor providers (TOTP, WebAuthn) apply",
 				"owner": "nextcloud/server",
-				"reachedOn": "Nextcloud login, two-factor settings under Personal settings > Security"
+				"reachedOn": "Nextcloud login, two-factor settings under Personal settings > Security",
+				"spec": "none"
 			},
 			"provider": "nextcloud",
 			"providerHow": "read: larpinq has no authentication of its own; Nextcloud core and its two-factor provider apps apply",
