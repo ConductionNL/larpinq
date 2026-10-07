@@ -4177,7 +4177,7 @@
 				"evidence": "src/manifest.json:2135 (CharacterRosterReport page, type dashboard, route /reports/characters); widgets roster-total/roster-players/roster-awaiting (stat), roster-by-type/roster-by-approval (chart, donut), roster-recent (object-table)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Reports > Character roster, route /reports/characters",
-				"spec": "none"
+				"spec": "openspec/specs/reports"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -4208,7 +4208,7 @@
 				"evidence": "src/manifest.json:2143 (ProgressionReport page, /reports/progression); widgets xp-awards/xp-total (stat), xp-per-character (chart, bar, groupBy character sum amount), xp-recent (object-table)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Reports > Progression, route /reports/progression",
-				"spec": "none"
+				"spec": "openspec/specs/reports"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -4238,7 +4238,7 @@
 				"evidence": "src/manifest.json:2151 (WorldContentReport page, /reports/content); widgets world-skills/items/conditions/effects (stat), world-items-carried/world-conditions-held (chart, donut groupBy items/conditions array property on character)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Reports > World content, route /reports/content",
-				"spec": "none"
+				"spec": "openspec/specs/reports"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -4783,7 +4783,7 @@
 				"evidence": "src/manifest.json:2732,2740 (Flows index page /flows, FlowDetail flow page /flows/:id); src/manifest.json:306 FlowsMenu (section 'settings'); src/registry.js:26,36 registers FlowDetailSidebar (kind 'page'), which mounts in the Nextcloud app sidebar alongside the shared flow-canvas page type; manifest.json walkthrough step 'see-flows' (route Flows) references it as 'where the automation lives'",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Flows / FlowDetail pages, routes /flows and /flows/:id",
-				"spec": "none"
+				"spec": "openspec/specs/flows"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence; the flow list/canvas page types themselves are the shared nc-vue 'index'/'flow' generics over an openregister.flows configuration",
