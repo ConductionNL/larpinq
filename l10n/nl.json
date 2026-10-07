@@ -1,9 +1,7 @@
 {
     "translations": {
         "Load example data?": "Voorbeeldgegevens laden?",
-        "Example data fills the lists, detail pages and dashboards so you can see the app working straight away. Pick \"None\" on a production install.": "Voorbeeldgegevens vullen de lijsten, detailpagina’s en dashboards, zodat je de app meteen ziet werken. Kies \"Geen\" op een productieomgeving.",
-        "Load the example data": "Laad de voorbeeldgegevens",
-        "Loads what you picked. The data is obviously sample data, it is safe to run more than once, and you can delete it afterwards.": "Laadt wat je koos. De gegevens zijn herkenbaar voorbeeldgegevens, je kunt dit meer dan een keer uitvoeren en je kunt ze daarna verwijderen.",
+        "Example data fills the lists, detail pages and dashboards so you can see the app working straight away. Each card has its own Load button. Pick \"None\" on a production install.": "Voorbeeldgegevens vullen de lijsten, detailpagina’s en dashboards, zodat je de app meteen ziet werken. Elke kaart heeft een eigen knop Laden. Kies \"Geen\" op een productieomgeving.",
         "None, I will set this up myself": "Geen, ik richt dit zelf in",
         "Nothing is imported. You start with an empty app and add your own data.": "Er wordt niets geïmporteerd. Je begint met een lege app en voegt zelf gegevens toe.",
         "Example data": "Voorbeeldgegevens",
@@ -76,7 +74,6 @@
         "Copper": "Koper",
         "Copper Pieces": "Koperstukken",
         "Create": "Aanmaken",
-        "Create the Larpinq register and schemas in OpenRegister: the data store for characters, players, abilities, skills, items, conditions, effects, events and settings. This normally runs automatically on install; run it here if OpenRegister was enabled after Larpinq, or to repair a partial install. It is safe to run more than once.": "Maak het Larpinq-register en de schema's aan in OpenRegister: de gegevensopslag voor personages, spelers, eigenschappen, vaardigheden, voorwerpen, condities, effecten, evenementen en instellingen. Dit gebeurt normaal automatisch bij installatie; voer het hier uit als OpenRegister na Larpinq is ingeschakeld, of om een halve installatie te herstellen. Je kunt dit veilig meerdere keren uitvoeren.",
         "Create your first event. Name it and set a start date, then save. Your characters can join it from here.": "Maak je eerste evenement aan. Geef het een naam en een startdatum en sla op. Je personages kunnen zich hier aanmelden.",
         "Cumulative": "Cumulatief",
         "Currently affecting": "Momenteel van invloed op",
@@ -152,7 +149,7 @@
         "Loading...": "Laden...",
         "Location": "Locatie",
         "Locked": "Vergrendeld",
-        "Manage your live-action roleplay world, with characters, players, items and events all in one place. One quick step provisions your data store, then you're ready to play.": "Beheer je live-action roleplay-wereld, met personages, spelers, voorwerpen en evenementen op één plek. Eén snelle stap richt je gegevensopslag in, daarna kun je spelen.",
+        "Manage your live-action roleplay world, with characters, players, items and events all in one place. Load example data if you like, then you are ready to play.": "Beheer je live-action roleplay-wereld, met personages, spelers, voorwerpen en evenementen op één plek. Laad voorbeeldgegevens als je wilt, daarna kun je spelen.",
         "Mechanical Effect": "Speleffect",
         "Mechanics": "Spelmechanieken",
         "Min score": "Minimumscore",
@@ -285,7 +282,7 @@
         "Status": "Status",
         "Support": "Ondersteuning",
         "System Notice": "Systeemmelding",
-        "That's it. Your world's data store is provisioned. Jump into the Dashboard to see it at a glance, and reopen this setup or the guided tour anytime from the app's … menu.": "Dat was het. De gegevensopslag van je wereld staat klaar. Ga naar het Dashboard voor een overzicht, en open deze installatie of de rondleiding wanneer je wilt opnieuw via het …-menu van de app.",
+        "That is it. Open the Dashboard to see your world at a glance. You can reopen this setup or the guided tour from the app menu.": "Dat was het. Open het Dashboard voor een overzicht van je wereld. Je opent deze installatie of de rondleiding opnieuw via het menu van de app.",
         "Type": "Type",
         "Unique": "Uniek",
         "Unique Artifact": "Uniek artefact",
@@ -855,7 +852,10 @@
         "This registration is offered to someone else.": "Deze inschrijving is aan iemand anders aangeboden.",
         "This offer has lapsed.": "Dit aanbod is vervallen.",
         "Only the player or a game master can withdraw this offer.": "Alleen de speler of een spelleider kan dit aanbod intrekken.",
-        "Cancel or hand over": "Annuleren of overdragen"
+        "Cancel or hand over": "Annuleren of overdragen",
+        "Example data fills the lists, detail pages and dashboards so you can see the app working straight away. Pick \"None\" on a production install.": "Voorbeeldgegevens vullen de lijsten, detailpagina’s en dashboards, zodat je de app meteen ziet werken. Kies \"Geen\" op een productieomgeving.",
+        "Load the example data": "Laad de voorbeeldgegevens",
+        "Loads what you picked. The data is obviously sample data, it is safe to run more than once, and you can delete it afterwards.": "Laadt wat je koos. De gegevens zijn herkenbaar voorbeeldgegevens, je kunt dit meer dan een keer uitvoeren en je kunt ze daarna verwijderen."
     },
     "plurals": {},
     "pluralForm": "nplurals=2; plural=(n != 1);"

@@ -74,11 +74,10 @@ class SetupController extends Controller {
 	/**
 	 * App-config key holding the dataset the operator picked.
 	 *
-	 * The wizard's `choice` step writes it through `POST /api/setup/config`, and
-	 * the `run-action` step that follows reads it back. Two steps rather than
-	 * one because `CnSetupWizard::runAction()` posts to
-	 * `/api/setup/action/{action}` with no body: an action cannot carry the
-	 * answer, so the answer has to be stored before the action runs.
+	 * The wizard's `choice` step writes it through `POST /api/setup/config`.
+	 * Each card's Load button posts `{ dataset }` to the `load-demo-data`
+	 * action, which stores the same key once the load succeeds, so both routes
+	 * land in one place (`loadAction` on the step, wizard-dataset-card-load).
 	 *
 	 * @var string
 	 */
@@ -120,30 +119,26 @@ class SetupController extends Controller {
 	/**
 	 * Report per-step setup status for the wizard.
 	 *
-	 * `provision.done` is computed from Larpinq's ACTUAL OpenRegister state:
-	 * the `register` id config is set AND a representative schema key resolves.
-	 * On a fresh install both are empty, so the required `provision` step gates
-	 * the app. `completed` is true once every required step is done; when so we
-	 * persist `setup_completed_version` so the wizard does not re-trigger.
+	 * The wizard has no required step any more: provisioning moved to the
+	 * admin settings page (wizard-dataset-card-load), where the `provision`
+	 * action still runs. `provisioned` travels as information, not as a step,
+	 * so the admin page and a support check can read it.
 	 *
-	 * @return DataResponse `{ version, completed, steps: { <id>: { done } } }`.
+	 * @return DataResponse `{ version, completed, provisioned, steps: { <id>: { done } } }`.
 	 *
-	 * @spec exclude First-time setup wizard backend (ADR-042); no per-app openspec change yet.
+	 * @spec openspec/changes/wizard-dataset-card-load/specs/first-time-setup/spec.md
 	 */
 	#[AuthorizedAdminSetting(LarpinqAdmin::class)]
 	public function status(): DataResponse {
 		$provisionDone = $this->isProvisioned();
 
-		// The only required step is `provision`; completion mirrors it.
-		$completed = $provisionDone;
-
-		if ($completed === true) {
-			$this->appConfig->setValueString(
-				Application::APP_ID,
-				'setup_completed_version',
-				(string)self::SETUP_VERSION
-			);
-		}
+		// No step is required, so setup is complete by definition. A missing
+		// OpenRegister is the manifest's dependency gate, not a wizard step.
+		$this->appConfig->setValueString(
+			Application::APP_ID,
+			'setup_completed_version',
+			(string)self::SETUP_VERSION
+		);
 
 		// DEALT WITH, not "demo objects exist". An operator who declines demo
 		// data has finished the step; re-offering it every visit would make
@@ -154,21 +149,20 @@ class SetupController extends Controller {
 		return new DataResponse(
 			[
 				'version' => self::SETUP_VERSION,
-				'completed' => $completed,
+				'completed' => true,
+				'provisioned' => $provisionDone,
 				// The choice step reads its options from here: it declares
 				// `optionsSource: datasets` and no options of its own, so a
 				// dataset missing from this list is a dataset nobody can pick.
 				'datasets' => $this->demoDataService->listChoices(),
+				// Exactly the ids of `manifest.setup.steps`: a step the server
+				// never reports stays open and reopens the wizard.
 				'steps' => [
-					'demo-data' => ['done' => ($pickedDataset !== '')],
-					// "None" is an ANSWER, so the load step is finished the
-					// moment it is chosen: there is nothing left to run.
-					'load-demo-data' => [
-						'done' => ($demoDecided === true || $pickedDataset === DemoDataService::NONE_DATASET),
-					],
 					'welcome' => ['done' => true],
-					'provision' => ['done' => $provisionDone],
-					'done' => ['done' => $completed],
+					// A pick without a load still counts: a wizard that
+					// predates `loadAction` can only record the pick.
+					'demo-data' => ['done' => ($demoDecided === true || $pickedDataset !== '')],
+					'done' => ['done' => true],
 				],
 			]
 		);
@@ -257,17 +251,32 @@ class SetupController extends Controller {
 	}//end runAction()
 
 	/**
-	 * Import the dataset the operator picked in the previous step (ADR-111 rule 4).
+	 * Import the dataset a card's Load button posted as `dataset`, or the
+	 * stored pick when nothing is posted (ADR-111 rule 4).
 	 *
 	 * @param string $actionId The action that asked, which decides whether an
 	 *                         unanswered choice is refused or means the shipped set.
 	 *
 	 * @return DataResponse The outcome, carrying the counts.
 	 *
-	 * @spec exclude Demo-data install action (ADR-111 rule 4); no per-app openspec change yet.
+	 * @spec openspec/changes/wizard-dataset-card-load/specs/first-time-setup/spec.md
 	 */
 	private function loadDataset(string $actionId): DataResponse {
 		$picked = $this->appConfig->getValueString(Application::APP_ID, self::DATASET_KEY, '');
+
+		// The card's Load button names its dataset in the body. An older wizard
+		// posts nothing and relies on the pick stored a step earlier. Nothing is
+		// stored before the load succeeds: a failed load must leave the step
+		// open for an operator who asked for data and got none.
+		$posted = $this->request->getParam('dataset');
+		if ($posted !== null) {
+			$refusal = $this->refuseDataset(value: $posted);
+			if ($refusal !== null) {
+				return $refusal;
+			}
+
+			$picked = (string)$posted;
+		}
 
 		// The legacy id carries no answer, so it means the shipped dataset. A
 		// caller that posts it has said which one by posting it.
@@ -282,6 +291,7 @@ class SetupController extends Controller {
 		}
 
 		if ($picked === DemoDataService::NONE_DATASET) {
+			$this->appConfig->setValueString(Application::APP_ID, self::DATASET_KEY, DemoDataService::NONE_DATASET);
 			$this->appConfig->setValueString(Application::APP_ID, self::DEMO_DATA_DECIDED_KEY, 'skipped');
 
 			return new DataResponse(['success' => true, 'message' => 'No example data was loaded.']);
@@ -296,6 +306,8 @@ class SetupController extends Controller {
 
 		// The decision is recorded only after the import actually returned.
 		// Marking it first would let a failed install present as a finished step.
+		// Loading IS choosing the set, so the pick is recorded too.
+		$this->appConfig->setValueString(Application::APP_ID, self::DATASET_KEY, $picked);
 		$this->appConfig->setValueString(Application::APP_ID, self::DEMO_DATA_DECIDED_KEY, 'installed');
 
 		// 🔴 THE COUNTS, ALWAYS. "Demo data installed" with no numbers cannot be
@@ -314,6 +326,33 @@ class SetupController extends Controller {
 	}//end loadDataset()
 
 	/**
+	 * Refuse a posted dataset id no dataset answers to.
+	 *
+	 * @param mixed $value The posted value.
+	 *
+	 * @return DataResponse|null The refusal, or null when the dataset is known.
+	 *
+	 * @spec openspec/changes/wizard-dataset-card-load/specs/first-time-setup/spec.md
+	 */
+	private function refuseDataset(mixed $value): ?DataResponse {
+		$named = 'that';
+		if (is_scalar($value) === true) {
+			$named = (string)$value;
+		}
+
+		$known = array_column($this->demoDataService->listChoices(), 'id');
+		if (is_scalar($value) === true && in_array($named, $known, true) === true) {
+			return null;
+		}
+
+		return new DataResponse(
+			['success' => false, 'message' => 'No dataset is called "' . $named . '".'],
+			Http::STATUS_BAD_REQUEST,
+		);
+
+	}//end refuseDataset()
+
+	/**
 	 * Record that the operator declined the demo dataset.
 	 *
 	 * Its own action so "no thanks" is a decision the wizard can record. Without
@@ -325,10 +364,8 @@ class SetupController extends Controller {
 	 * @spec exclude Demo-data skip action (ADR-111 rule 4); no per-app openspec change yet.
 	 */
 	private function skipDemoData(): DataResponse {
-		// 🔴 IT ANSWERS *BOTH* STEPS. The wizard now has a choice step and a
-		// run-action step; closing only the second leaves the first
-		// outstanding, and CnAppRoot opens the wizard while ANY optional step
-		// is outstanding.
+		// Skipping IS choosing "None", so both keys are written: an older
+		// runbook may read either one.
 		$this->appConfig->setValueString(Application::APP_ID, self::DATASET_KEY, DemoDataService::NONE_DATASET);
 		$this->appConfig->setValueString(Application::APP_ID, self::DEMO_DATA_DECIDED_KEY, 'skipped');
 
@@ -344,7 +381,7 @@ class SetupController extends Controller {
 	 * Import the Larpinq register + schemas from the bundled JSON.
 	 *
 	 * Mirrors the InitializeRegister repair step that runs on install, but is
-	 * invokable on demand from the wizard so an admin who only enabled
+	 * invokable on demand from the admin settings page so an admin who only enabled
 	 * OpenRegister AFTER Larpinq (when the install-time repair skipped
 	 * provisioning) can complete setup without a CLI repair run. Idempotent —
 	 * loadSettings resolves existing registers/schemas by slug and is a no-op
