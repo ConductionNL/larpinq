@@ -734,6 +734,126 @@
 		"apphost-autoload-prelude",
 		"object-service"
 	],
+	"specScreens": {
+		"admin-settings": {
+			"board": [
+				"LrSpelinstellingen"
+			]
+		},
+		"apphost-adoption": {
+			"board": null,
+			"reason": "Health and metrics endpoints borrowed from the app host, read by monitoring, not by people."
+		},
+		"apphost-autoload-prelude": {
+			"board": null,
+			"reason": "Engineering: makes the event listeners register reliably at boot, nothing to show."
+		},
+		"beta-alignment": {
+			"board": null,
+			"reason": "Keeps app metadata, manifest, product page and documentation in step; a documentation rule, not a screen."
+		},
+		"character-photos-leaf": {
+			"board": [
+				"LrKarakter"
+			]
+		},
+		"dashboard": {
+			"board": [
+				"LrDashboard"
+			]
+		},
+		"dashboard-widget-icons": {
+			"board": [
+				"LrDashboard"
+			]
+		},
+		"deep-link-registration": {
+			"board": [
+				"LrSpeler"
+			]
+		},
+		"event-calendar-leaf": {
+			"board": [
+				"LrEvenement"
+			]
+		},
+		"event-checkin-roster": {
+			"board": [
+				"LrEvenementInchecken"
+			]
+		},
+		"event-location-to-maps-leaf": {
+			"board": [
+				"LrEvenement"
+			]
+		},
+		"events-players": {
+			"board": [
+				"LrEvenement",
+				"LrSpeler"
+			]
+		},
+		"first-time-setup": {
+			"board": [
+				"LrInstellen"
+			]
+		},
+		"larping-skill-widget": {
+			"board": [
+				"LrDashboard",
+				"LrRapportages"
+			]
+		},
+		"leaf-integrations": {
+			"board": [
+				"LrEvenement",
+				"LrWereld"
+			]
+		},
+		"notifications": {
+			"board": [
+				"LrDashboard"
+			]
+		},
+		"object-service": {
+			"board": null,
+			"reason": "Engineering: the data access layer that fetches objects from OpenRegister, no screen."
+		},
+		"pdf-export": {
+			"board": [
+				"LrKarakterbladDownloaden",
+				"LrEvenement"
+			]
+		},
+		"player-to-contacts-leaf": {
+			"board": [
+				"LrSpeler"
+			]
+		},
+		"portal-identity": {
+			"board": [
+				"LrPortaal"
+			]
+		},
+		"preferences-api": {
+			"board": null,
+			"reason": "An API: per-user preferences are read and written by the app shell, not shown on a page of their own."
+		},
+		"register-config-json": {
+			"board": null,
+			"reason": "Imports the schemas into OpenRegister on install, in the background."
+		},
+		"settings-management-ui": {
+			"board": [
+				"LrSpelinstellingen"
+			]
+		},
+		"user-settings": {
+			"board": [
+				"LrSpelinstellingen"
+			]
+		}
+	},
 	"providers": [
 		{
 			"key": "self",
