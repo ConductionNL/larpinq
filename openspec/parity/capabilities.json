@@ -442,7 +442,8 @@
 			"overlay": null,
 			"specs": [
 				"character-management",
-				"portal-contribution"
+				"portal-contribution",
+				"portal-identity"
 			]
 		},
 		{
@@ -630,7 +631,8 @@
 			"specs": [
 				"dashboard",
 				"dashboard-analytics-widgets",
-				"setting-management"
+				"setting-management",
+				"dashboard-widget-icons"
 			]
 		},
 		{
@@ -701,7 +703,10 @@
 				"register-config-json",
 				"setting-management",
 				"admin-staff-roles-and-invites",
-				"apphost-adoption"
+				"apphost-adoption",
+				"settings-management-ui",
+				"user-settings",
+				"preferences-api"
 			]
 		},
 		{
@@ -724,6 +729,10 @@
 				"data-portability"
 			]
 		}
+	],
+	"internalSpecs": [
+		"apphost-autoload-prelude",
+		"object-service"
 	],
 	"providers": [
 		{
@@ -791,6 +800,10 @@
 				"larp-portal": "'Campaign Module centralizes information about the game for players' and staff configure rules/logistics per campaign. https://larportal.com",
 				"kanka": "source read at tag 3.15: routes/web-i18n.php:12-13 new-campaign create flow (app/Services/Campaign/CreateService.php); every entity belongs to a campaign via campaign_id (app/Models/Entity.php:107-123)",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/organizer.py:70 and src/pretix/base/models/event.py:566,1551, the only containers are Organizer, Event and SubEvent (dates of a series); no campaign/world model exists in src/pretix/base/models/ and nothing characters or rules could belong to"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrWerelden"
 			}
 		},
 		{
@@ -822,6 +835,13 @@
 				"larp-portal": "PC/NPC/Staff roles and character records are held per campaign account. https://larportal.com/how-it-works.php",
 				"kanka": "source read at tag 3.15: routes/campaigns/entities.php:47 entities index is per campaign /w/{campaign}/t/{entityType}; all modules are campaign-scoped",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/ lists every model (orders, items, customers, checkin, vouchers...), none for characters or rules, so there is nothing to scope to a world"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": [
+					"LrKarakters",
+					"LrWereld"
+				]
 			}
 		},
 		{
@@ -853,6 +873,13 @@
 				"larp-portal": "not checked: no campaign archiving feature documented",
 				"kanka": "source read at tag 3.15: routes/campaigns/entities.php:408 archive toggle per entry (app/Http/Controllers/Entity/ArchiveController.php:20-35); no campaign-level archive in routes/campaigns/campaign.php, only delete (line 266-267)",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/event.py:629 live flag takes a shop off sale and src/pretix/control/forms/filter.py:1957-1967 filters the event list to past events; there is no archived state, the data just stays"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": [
+					"LrWerelden",
+					"LrWereld"
+				]
 			}
 		},
 		{
@@ -883,6 +910,10 @@
 				"larp-portal": "One LARP Portal account reaches every campaign a player joins; the home page lists 562 campaigns on one platform. https://larportal.com/how-it-works.php",
 				"kanka": "source read at tag 3.15: users hold many campaigns; routes/campaigns/*.php are all keyed /w/{campaign}; bulk copy between campaigns routes/campaigns/bulks.php:24-25",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/event.py:607 each Event hangs off an Organizer that holds many events side by side, listed in src/pretix/control/views/main.py (EventList) with src/pretix/control/forms/filter.py:1949 filters"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrWerelden"
 			}
 		},
 		{
@@ -913,6 +944,10 @@
 				"larp-portal": "'Campaign description and calendar management' is a named Campaign Module feature. https://larportal.com",
 				"kanka": "source read at tag 3.15: app/Models/Campaign.php:74-89 campaign with entry and settings; campaign_descriptions table (database/migrations/2026_04_03_215445_create_campaign_descriptions_table.php); overview page routes/campaigns/campaign.php:191",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/settings.py:3350 frontpage_text is an event's public shop text; it is sales copy per event, not a setting description of a world"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrWereld"
 			}
 		},
 		{
@@ -944,7 +979,11 @@
 				"kanka": "source read at tag 3.15: routes/campaigns/entities.php:314-342 CRUD for locations, organisations, journals, notes, races, families, timelines with rich-text entries and mentions",
 				"pretix": "source read at tag v2026.7.0: looked in src/pretix/plugins/ (no pages/wiki plugin at v2026.7.0) and src/pretix/base/models/event.py:1935 EventFooterLink, the only extra content is footer links and the frontpage text"
 			},
-			"note": "Specified 2026-09-27 in openspec/changes/worlds-lore-pages (OpenSpec pass)."
+			"note": "Specified 2026-09-27 in openspec/changes/worlds-lore-pages (OpenSpec pass).",
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrLore"
+			}
 		},
 		{
 			"id": "wld-timeline",
@@ -975,6 +1014,10 @@
 				"larp-portal": "not checked: no timeline feature documented",
 				"kanka": "source read at tag 3.15: routes/campaigns/entities.php:339-341 timelines with eras and elements; reorder at 262-264",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/timeline.py:42 timeline_for_event lists real-world sale and event dates (presale start, event start); no in-game history timeline anywhere in src/pretix/base/models/"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrWereld"
 			}
 		},
 		{
@@ -1006,7 +1049,11 @@
 				"kanka": "source read at tag 3.15: routes/campaigns/entities.php:328-331 maps with layers, groups and markers; markers link to entities (60-72 entity map markers)",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/seating.py:82 SeatingPlan is a venue seat map and src/pretix/base/models/event.py:663 geo_lat/geo_lon a real-world pin; no in-game map with pinned locations"
 			},
-			"note": "Specified 2026-09-27 in openspec/changes/worlds-maps (OpenSpec pass)."
+			"note": "Specified 2026-09-27 in openspec/changes/worlds-maps (OpenSpec pass).",
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrLore"
+			}
 		},
 		{
 			"id": "wld-share-with-players",
@@ -1037,6 +1084,10 @@
 				"larp-portal": "'Campaign Module...shares game rules, events, and information with players, while staff uses expanded features to configure rules and manage logistics' implying a staff-only tier of information. https://larportal.com",
 				"kanka": "source read at tag 3.15: app/Enums/Visibility.php (all/admin/self/members) on posts, abilities, inventory; per-entity privacy routes/campaigns/entities.php:229-230 and role permissions 414-415; public campaigns routes/campaigns/campaign.php:215-216",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/ has no world or lore content to publish; visibility controls exist only for shop items (Item.hide_without_voucher) and questions (Question.hidden, src/pretix/base/models/items.py:1570)"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrLore"
 			}
 		},
 		{
@@ -1068,7 +1119,11 @@
 				"kanka": "source read at tag 3.15: routes/campaigns/bulks.php:24-25 copy selected entries (abilities, attribute templates, items) to another campaign via app/Http/Controllers/Bulks/CopyController.php; entity templates routes/campaigns/entities.php:404",
 				"pretix": "source read at tag v2026.7.0: src/pretix/control/views/main.py:288-343 the event wizard copies an existing event via src/pretix/base/models/event.py:895 copy_data_from (products, quotas, questions, settings); there is no ruleset to copy, only the shop configuration"
 			},
-			"note": "Specified 2026-09-27 in openspec/changes/worlds-copy-ruleset (OpenSpec pass)."
+			"note": "Specified 2026-09-27 in openspec/changes/worlds-copy-ruleset (OpenSpec pass).",
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrWereld"
+			}
 		},
 		{
 			"id": "chr-create-sheet",
@@ -1098,6 +1153,10 @@
 				"larp-portal": "'PC and NPC character creation' is the core of the Character Module. https://larportal.com",
 				"kanka": "source read at tag 3.15: routes/campaigns/entities.php:317 characters CRUD; app/Models/Character.php:56-67 title, age, sex, pronouns plus properties",
 				"pretix": "source read at tag v2026.7.0: no character model in src/pretix/base/models/; the nearest is src/pretix/base/models/customers.py:336 AttendeeProfile (saved attendee answers) and custom questions, which an organiser could abuse to ask a character name"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrKarakters"
 			}
 		},
 		{
@@ -1129,6 +1188,10 @@
 				"larp-portal": "'Character profile building with biographical details'; players 'define people and places meaningful to their character.' https://larportal.com",
 				"kanka": "source read at tag 3.15: characters carry a rich-text entry (app/Models/Entity.php:119 'entry') and posts (routes/campaigns/entities.php:350)",
 				"pretix": "source read at tag v2026.7.0: no character sheet exists; a multiline question (src/pretix/base/models/items.py:1611 TYPE_TEXT) on the ticket could collect a background text as an order answer, but it is not a sheet"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrKarakter"
 			}
 		},
 		{
@@ -1160,6 +1223,10 @@
 				"larp-portal": "Staff review character 'history and addendums' and NPC submissions, but base-sheet GM approval is not explicitly documented. https://larportal.com/features.php",
 				"kanka": "source read at tag 3.15: app/Services/Campaign/ApplicationService.php:36-140 join application with character_concept text goes pending/approved/rejected with reason; app/Enums/ApplicationStatus.php. No approval state on a character sheet itself",
 				"pretix": "source read at tag v2026.7.0: no character model in src/pretix/base/models/ (orders, items, customers, checkin, vouchers, giftcards, memberships only); src/pretix/base/models/orders.py:310 require_approval lets an organiser approve or deny an ORDER, not a character"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrKarakter"
 			}
 		},
 		{
@@ -1191,6 +1258,10 @@
 				"larp-portal": "not checked: no GM-only notes field documented; staff-only visibility isn't described for a notes field specifically",
 				"kanka": "source read at tag 3.15: posts with visibility admin/self (app/Models/Post.php:77-89, app/Enums/Visibility.php); lang/en/onboarding/posts.php GM-only secrets",
 				"pretix": "source read at tag v2026.7.0: no character model in src/pretix/base/models/ (orders, items, customers, checkin, vouchers, giftcards, memberships only); src/pretix/base/models/orders.py:269 Order.comment is an internal staff note on an order, not on a character"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrKarakter"
 			}
 		},
 		{
@@ -1221,6 +1292,10 @@
 				"larp-portal": "Players 'provide a photo'; features.php lists 'Character photo uploading.' https://larportal.com/features.php",
 				"kanka": "source read at tag 3.15: routes/campaigns/entities.php:221-226 entity image focus/replace; gallery routes/campaigns/campaign.php:55-81",
 				"pretix": "source read at tag v2026.7.0: no character model in src/pretix/base/models/ (orders, items, customers, checkin, vouchers, giftcards, memberships only); src/pretix/base/models/items.py:1730 valid_file_portrait validates an attendee photo upload question, which belongs to a ticket holder, not a character"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrKarakter"
 			}
 		},
 		{
@@ -1252,6 +1327,13 @@
 				"larp-portal": "not checked: no live stat recalculation feature documented",
 				"kanka": "source read at tag 3.15: app/Services/AttributeMentionService.php:96-200 property values with math over other properties of the same entry, recomputed on render; abilities, items and tags do not feed stats",
 				"pretix": "source read at tag v2026.7.0: no character model in src/pretix/base/models/ (orders, items, customers, checkin, vouchers, giftcards, memberships only); no stat or rules computation anywhere in src/pretix/base/services/"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": [
+					"LrKarakterStatistieken",
+					"LrVaardighedenboom"
+				]
 			}
 		},
 		{
@@ -1283,6 +1365,10 @@
 				"larp-portal": "not checked: no per-source stat breakdown UI documented",
 				"kanka": "source read at tag 3.15: no modifier source tracking; looked in app/Services/AttributeMentionService.php and app/Models/EntityAbility.php, Inventory.php (no stat effects)",
 				"pretix": "source read at tag v2026.7.0: no character model in src/pretix/base/models/ (orders, items, customers, checkin, vouchers, giftcards, memberships only); no stats, so no breakdown"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrKarakterStatistieken"
 			}
 		},
 		{
@@ -1313,6 +1399,10 @@
 				"larp-portal": "'Item/possession tracking (belongings, clothing, weapons, currency)' explicit in both Player and Character modules. https://larportal.com/features.php",
 				"kanka": "source read at tag 3.15: routes/campaigns/entities.php:353,380-393 inventories with amount, equipped flag, visibility (app/Models/Inventory.php:39-51)",
 				"pretix": "source read at tag v2026.7.0: no character model in src/pretix/base/models/ (orders, items, customers, checkin, vouchers, giftcards, memberships only); items in src/pretix/base/models/items.py:360 are sellable products, not in-game items a character carries"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrKarakter"
 			}
 		},
 		{
@@ -1343,6 +1433,13 @@
 				"larp-portal": "not checked: no conditions/status-effect feature documented",
 				"kanka": "source read at tag 3.15: no condition model; statuses are alive/dead/missing only (lang/en/entities/statuses.php:4-8); tags could be misused but carry no state",
 				"pretix": "source read at tag v2026.7.0: no character model in src/pretix/base/models/ (orders, items, customers, checkin, vouchers, giftcards, memberships only); nothing models wounds, curses or other states"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": [
+					"LrKarakter",
+					"LrToestand"
+				]
 			}
 		},
 		{
@@ -1374,6 +1471,10 @@
 				"larp-portal": "features.php explicitly lists 'Character death management' as a Character Module feature. https://larportal.com/features.php",
 				"kanka": "source read at tag 3.15: lang/en/entities/statuses.php:4-8 character statuses alive, dead, missing (category_statuses, database/migrations/2026_03_26_000001); no retired status",
 				"pretix": "source read at tag v2026.7.0: no character model in src/pretix/base/models/ (orders, items, customers, checkin, vouchers, giftcards, memberships only); the only lifecycle states are order statuses (src/pretix/base/models/orders.py:139 Order pending/paid/expired/canceled)"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrKarakters"
 			}
 		},
 		{
@@ -1404,6 +1505,10 @@
 				"larp-portal": "Character histories are 'searchable and reportable for people, relationships, places, and key words'; a filterable character list is not described. https://larportal.com/how-to-update-your-character-to-help-plot.php",
 				"kanka": "source read at tag 3.15: routes/campaigns/entities.php:287 filter form; routes/campaigns/search.php:78-83 live and full-text search",
 				"pretix": "source read at tag v2026.7.0: no character model in src/pretix/base/models/ (orders, items, customers, checkin, vouchers, giftcards, memberships only); src/pretix/control/views/search.py searches orders and attendees, not characters"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrKarakters"
 			}
 		},
 		{
@@ -1434,6 +1539,10 @@
 				"larp-portal": "not checked: no edit-audit-trail feature documented (character 'history' addendums are in-fiction, not a change log)",
 				"kanka": "source read at tag 3.15: routes/campaigns/entities.php:375 entity logs (app/Http/Controllers/Entity/LogController.php, search in logs premium superboost)",
 				"pretix": "source read at tag v2026.7.0: no character model in src/pretix/base/models/ (orders, items, customers, checkin, vouchers, giftcards, memberships only); src/pretix/base/models/log.py:52 LogEntry records who changed an order or setting and when, which would carry this if characters existed"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrKarakter"
 			}
 		},
 		{
@@ -1465,6 +1574,13 @@
 				"larp-portal": "Overview explicitly lists 'Self-serve character updates.' https://larportal.com",
 				"kanka": "source read at tag 3.15: per-user entity permissions routes/campaigns/entities.php:414-415; app/Enums/Permission.php View/Update; private entries hidden from other members",
 				"pretix": "source read at tag v2026.7.0: no character model in src/pretix/base/models/ (orders, items, customers, checkin, vouchers, giftcards, memberships only); src/pretix/presale/views/order.py:808,942 OrderModify/OrderPositionModify let a buyer edit only their own order answers via a secret link"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": [
+					"LrKarakter",
+					"LrPortaal"
+				]
 			}
 		},
 		{
@@ -1496,7 +1612,11 @@
 				"kanka": "source read at tag 3.15: routes/campaigns/entities.php:195-215 properties (attributes) with types, plus attribute templates line 356 and 411",
 				"pretix": "source read at tag v2026.7.0: no character model in src/pretix/base/models/ (orders, items, customers, checkin, vouchers, giftcards, memberships only); src/pretix/base/models/items.py:1570 Question adds custom fields to orders and attendees, not to character sheets"
 			},
-			"note": "Specified 2026-09-27 in openspec/changes/characters-custom-fields (OpenSpec pass)."
+			"note": "Specified 2026-09-27 in openspec/changes/characters-custom-fields (OpenSpec pass).",
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrKarakter"
+			}
 		},
 		{
 			"id": "chr-npc",
@@ -1527,6 +1647,10 @@
 				"larp-portal": "'PC and NPC character creation' explicitly treats NPCs as a distinct character type/role. https://larportal.com/features.php",
 				"kanka": "source read at tag 3.15: characters share one module with no player/NPC flag (app/Models/Character.php:56-67); onboarding creates an 'NPCs' tag for TTRPG campaigns (app/Services/Onboarding/InitialService.php:148-160); separation is by type/tag only",
 				"pretix": "source read at tag v2026.7.0: no character model in src/pretix/base/models/ (orders, items, customers, checkin, vouchers, giftcards, memberships only); no split between player and non-player characters"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrKarakters"
 			}
 		},
 		{
@@ -1558,7 +1682,11 @@
 				"kanka": "source read at tag 3.15: routes/campaigns/entities.php:354 entity relations with attitude, mirror, visibility (app/Models/Relation.php:55-65); connection map line 237; families 125-130",
 				"pretix": "source read at tag v2026.7.0: no character model in src/pretix/base/models/ (orders, items, customers, checkin, vouchers, giftcards, memberships only); no relation model between people other than orders grouping positions"
 			},
-			"note": "Specified 2026-09-27 in openspec/changes/characters-factions-and-relationships (OpenSpec pass)."
+			"note": "Specified 2026-09-27 in openspec/changes/characters-factions-and-relationships (OpenSpec pass).",
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrKarakter"
+			}
 		},
 		{
 			"id": "chr-faction-membership",
@@ -1589,7 +1717,14 @@
 				"kanka": "source read at tag 3.15: routes/campaigns/entities.php:103,120,318,334 character organisations and organisation members with role and status (app/Models/OrganisationMember.php:47-55)",
 				"pretix": "source read at tag v2026.7.0: no character model in src/pretix/base/models/ (orders, items, customers, checkin, vouchers, giftcards, memberships only); src/pretix/base/models/memberships.py:37 MembershipType is a paid membership/season pass for customers, not an in-game faction"
 			},
-			"note": "Specified 2026-09-27 in openspec/changes/characters-factions-and-relationships (OpenSpec pass)."
+			"note": "Specified 2026-09-27 in openspec/changes/characters-factions-and-relationships (OpenSpec pass).",
+			"screen": {
+				"canvas": "design-system",
+				"board": [
+					"LrKarakter",
+					"LrFactie"
+				]
+			}
 		},
 		{
 			"id": "chr-secrets-plots",
@@ -1620,6 +1755,10 @@
 				"larp-portal": "Staff 'Character List' report tracks 'hidden skills' per character, implying some hidden content exists, but a dedicated secrets/plot feature is not documented. https://larportal.com/larp-portal-tips.php",
 				"kanka": "source read at tag 3.15: posts with admin/self visibility on a character (app/Models/Post.php:77-89); quests with elements linking characters (routes/campaigns/entities.php:336-337)",
 				"pretix": "source read at tag v2026.7.0: no character model in src/pretix/base/models/ (orders, items, customers, checkin, vouchers, giftcards, memberships only); no plot or secret content anywhere"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrKarakter"
 			}
 		},
 		{
@@ -1650,6 +1789,10 @@
 				"larp-portal": "'Item/possession tracking' explicitly includes 'currency' among the tracked possessions. https://larportal.com/features.php",
 				"kanka": "source read at tag 3.15: items have a price field (app/Models/Item.php:41-49) and inventory amounts (app/Models/Inventory.php:39-51); no money balance per character",
 				"pretix": "source read at tag v2026.7.0: no character model in src/pretix/base/models/ (orders, items, customers, checkin, vouchers, giftcards, memberships only); src/pretix/base/models/giftcards.py:64 GiftCard holds real-money credit, not in-game money"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrKarakter"
 			}
 		},
 		{
@@ -1681,6 +1824,13 @@
 				"larp-portal": "'Character history and addendums submission' is an explicit, player-submitted, staff-reviewed log of what happened to a character. https://larportal.com/features.php",
 				"kanka": "source read at tag 3.15: posts, reminders on calendars and timeline elements attach to a character (routes/campaigns/entities.php:350-351,341); no per-event attendance log",
 				"pretix": "source read at tag v2026.7.0: no character model in src/pretix/base/models/ (orders, items, customers, checkin, vouchers, giftcards, memberships only); per-event history exists only as orders and check-ins of a customer"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": [
+					"LrKarakter",
+					"LrKarakterStatistieken"
+				]
 			}
 		},
 		{
@@ -1712,6 +1862,10 @@
 				"larp-portal": "not checked: Character List report shows aggregate point/death counts, not a per-award history log",
 				"kanka": "source read at tag 3.15: no XP concept; looked in app/Models, database/migrations and lang/en for xp/experience (only campaign application 'experience' level)",
 				"pretix": "source read at tag v2026.7.0: no character model in src/pretix/base/models/; no experience points anywhere (grep for xp/experience in src/pretix/base finds nothing of the kind)"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrKarakterStatistieken"
 			}
 		},
 		{
@@ -1742,6 +1896,10 @@
 				"larp-portal": "A 'LARP Portal Account' is required to access the system. https://larportal.com/how-it-works.php",
 				"kanka": "source read at tag 3.15: campaign members are user accounts (app/Models/CampaignUser.php:34, routes/campaigns/campaign.php:126); no separate player record with personal data",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/customers.py:82 Customer per organizer with name, email and orders, managed at src/pretix/control/urls.py:183-190 (list, add, detail, edit) behind the customer_accounts setting (src/pretix/base/settings.py:162)"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrSpeler"
 			}
 		},
 		{
@@ -1772,6 +1930,10 @@
 				"larp-portal": "not applicable: this is a standalone web platform with its own accounts, not a Nextcloud app, so it has no Nextcloud contact/user/group integration",
 				"kanka": "source read at tag 3.15: no contacts/address-book integration; looked in app/Models and routes",
 				"pretix": "source read at tag v2026.7.0: grep for nextcloud, vcard and carddav over src/pretix finds nothing; customers live only in pretix's own Customer table"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrSpeler"
 			}
 		},
 		{
@@ -1802,6 +1964,10 @@
 				"larp-portal": "not applicable: this is a standalone web platform with its own accounts, not a Nextcloud app, so it has no Nextcloud contact/user/group integration",
 				"kanka": "source read at tag 3.15: members are user accounts by construction (app/Models/CampaignUser.php); character to user claim exists only as model and API field (app/Models/EntityClaim.php, app/Http/Resources/EntityResource.php:72), no UI route",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/customers.py:53-56 CustomerSSOProvider (OpenID Connect) and :88,116 Customer.provider/external_identifier link a player to an external identity; a Nextcloud acting as OIDC provider could be that identity, but there is nothing Nextcloud-specific"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrSpeler"
 			}
 		},
 		{
@@ -1832,6 +1998,10 @@
 				"larp-portal": "One account holds characters/points across campaigns (cross-game point exchange presupposes a per-player character/point record). https://larportal.com",
 				"kanka": "source read at tag 3.15: no view lists a member's characters; EntityClaim (database/migrations/2026_08_25_000002_create_entity_claims_table.php) has no controller or view; checked routes/campaigns/*.php and resources/views",
 				"pretix": "source read at tag v2026.7.0: no character model in src/pretix/base/models/; src/pretix/control/views/organizer.py:3072 CustomerDetailView shows a customer's orders, not characters"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrSpeler"
 			}
 		},
 		{
@@ -1863,6 +2033,10 @@
 				"larp-portal": "Core participant workflow; 'Self-serve character updates.' https://larportal.com",
 				"kanka": "source read at tag 3.15: per-user view permission on an entity routes/campaigns/entities.php:414-415; app/Enums/Permission.php",
 				"pretix": "source read at tag v2026.7.0: no character model in src/pretix/base/models/; src/pretix/presale/views/customer.py:394 the customer area shows own orders and tickets only"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrKarakter"
 			}
 		},
 		{
@@ -1894,6 +2068,10 @@
 				"larp-portal": "Three roles (PC/NPC/Staff) exist explicitly, with Staff having elevated rights. https://larportal.com/how-it-works.php",
 				"kanka": "source read at tag 3.15: campaign roles with is_admin (app/Models/CampaignRole.php:36-41), role permission matrix routes/campaigns/campaign.php:89-91,161",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/organizer.py:362,391-394 Team carries all/limited event and organizer permission sets (src/pretix/base/permissions.py:56 PermissionOption), so staff teams get rights that ticket buyers never have"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrSpelinstellingen"
 			}
 		},
 		{
@@ -1925,7 +2103,11 @@
 				"kanka": "source read at tag 3.15: routes/auth.php:9,32-33 self registration (config auth.register_enabled); user profile routes/settings.php:37-39; campaign application routes/campaigns/campaign.php:51-53",
 				"pretix": "source read at tag v2026.7.0: src/pretix/presale/views/customer.py:208 RegistrationView at src/pretix/presale/urls.py:211 account/register lets a player create their own account; profiles are kept via src/pretix/base/models/customers.py:336 AttendeeProfile"
 			},
-			"note": "Specified 2026-09-27 in openspec/changes/players-self-signup (OpenSpec pass)."
+			"note": "Specified 2026-09-27 in openspec/changes/players-self-signup (OpenSpec pass).",
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrPortaal"
+			}
 		},
 		{
 			"id": "ply-medical-dietary",
@@ -1956,7 +2138,11 @@
 				"kanka": "source read at tag 3.15: no such fields; app/Models/User.php:68-86 and app/Models/Application.php:32-45 hold none",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/items.py:1570-1620 custom Question types (text, choice, phone number) can ask allergies, diet and an emergency contact per attendee; there are no built-in fields for them"
 			},
-			"note": "Specified 2026-09-27 in openspec/changes/players-care-details-and-erasure (OpenSpec pass)."
+			"note": "Specified 2026-09-27 in openspec/changes/players-care-details-and-erasure (OpenSpec pass).",
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrSpeler"
+			}
 		},
 		{
 			"id": "ply-age-consent",
@@ -2017,6 +2203,10 @@
 				"larp-portal": "'View my Points' lists campaign, event date and reason for each award, which traces the events a player earned points at; no attendance history view is described. https://larportal.com/larp-portal-tips-122023.php",
 				"kanka": "source read at tag 3.15: no attendance records; looked in app/Models (no participation model)",
 				"pretix": "source read at tag v2026.7.0: src/pretix/presale/views/customer.py:394 OrderView lists a customer's orders across the organizer's events, and src/pretix/control/views/organizer.py:3072 CustomerDetailView shows the same to staff"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrSpeler"
 			}
 		},
 		{
@@ -2077,6 +2267,10 @@
 				"larp-portal": "'Character point management' implies stat-buying, but LP is explicitly framed as going 'beyond standard character skills or rules databases', i.e. a data layer around a game's own rules rather than an ability-authoring tool. https://larportal.com",
 				"kanka": "source read at tag 3.15: property kits auto-applied per entity type (app/Models/AttributeTemplate.php:29-31 entity_type_id, is_enabled); routes/campaigns/entities.php:356,411",
 				"pretix": "source read at tag v2026.7.0: looked in src/pretix/base/models/ (organizer, event, items, orders, customers, checkin, vouchers, giftcards, memberships, seating) and src/pretix/base/services/: no character, ability, skill, effect or XP model or computation"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrVaardigheid"
 			}
 		},
 		{
@@ -2108,6 +2302,10 @@
 				"larp-portal": "'Skill purchasing with point systems' is listed, implying skills exist and cost points, but authoring skills within LP itself isn't confirmed. https://larportal.com/features.php",
 				"kanka": "source read at tag 3.15: abilities module routes/campaigns/entities.php:314 with nested abilities (76) and charges (app/Models/Ability.php:40-45); attached to characters via entity_abilities (349)",
 				"pretix": "source read at tag v2026.7.0: looked in src/pretix/base/models/ (organizer, event, items, orders, customers, checkin, vouchers, giftcards, memberships, seating) and src/pretix/base/services/: no character, ability, skill, effect or XP model or computation"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrVaardigheid"
 			}
 		},
 		{
@@ -2138,6 +2336,10 @@
 				"larp-portal": "Skills sit at nodes of a skill tree with per-node cost, 'Open to All' and 'Suppress Parent Skill' settings, so tree position gates a skill; prerequisites across branches are not described. https://larportal.com/character-skill-maintenance.php",
 				"kanka": "source read at tag 3.15: abilities have a parent hierarchy (routes/campaigns/entities.php:76, app/Models/Ability.php:23) but no prerequisite rule",
 				"pretix": "source read at tag v2026.7.0: looked in src/pretix/base/models/ (organizer, event, items, orders, customers, checkin, vouchers, giftcards, memberships, seating) and src/pretix/base/services/: no character, ability, skill, effect or XP model or computation; the only dependency logic is between products (src/pretix/base/models/items.py:1407 ItemAddOn, :1493 ItemBundle) and questions (dependency_question), not skills"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrVaardigheid"
 			}
 		},
 		{
@@ -2168,6 +2370,10 @@
 				"larp-portal": "'Item/possession tracking (belongings, clothing, weapons, currency)' is inventory logging; no stat-effect authoring for items is documented. https://larportal.com/features.php",
 				"kanka": "source read at tag 3.15: items with price, size, weight, location (app/Models/Item.php:41-49); no effect on character stats",
 				"pretix": "source read at tag v2026.7.0: looked in src/pretix/base/models/ (organizer, event, items, orders, customers, checkin, vouchers, giftcards, memberships, seating) and src/pretix/base/services/: no character, ability, skill, effect or XP model or computation; src/pretix/base/models/items.py:360 Item is a sellable product with price and quota, not an in-game item with stat effects"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrVoorwerp"
 			}
 		},
 		{
@@ -2198,6 +2404,10 @@
 				"larp-portal": "not checked: no condition/status-effect feature documented",
 				"kanka": "source read at tag 3.15: no condition entity; lang/en/entities/statuses.php has only lifecycle statuses",
 				"pretix": "source read at tag v2026.7.0: looked in src/pretix/base/models/ (organizer, event, items, orders, customers, checkin, vouchers, giftcards, memberships, seating) and src/pretix/base/services/: no character, ability, skill, effect or XP model or computation"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrToestand"
 			}
 		},
 		{
@@ -2228,6 +2438,10 @@
 				"larp-portal": "not checked: no effects feature documented",
 				"kanka": "source read at tag 3.15: no modifier/effect model in app/Models; property math only references properties of the same entry",
 				"pretix": "source read at tag v2026.7.0: looked in src/pretix/base/models/ (organizer, event, items, orders, customers, checkin, vouchers, giftcards, memberships, seating) and src/pretix/base/services/: no character, ability, skill, effect or XP model or computation"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrVaardigheid"
 			}
 		},
 		{
@@ -2258,6 +2472,10 @@
 				"larp-portal": "not checked: no effect-stacking feature documented",
 				"kanka": "source read at tag 3.15: no effects to stack; see app/Services/AttributeMentionService.php (plain math substitution only)",
 				"pretix": "source read at tag v2026.7.0: looked in src/pretix/base/models/ (organizer, event, items, orders, customers, checkin, vouchers, giftcards, memberships, seating) and src/pretix/base/services/: no character, ability, skill, effect or XP model or computation"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrKarakterStatistieken"
 			}
 		},
 		{
@@ -2289,6 +2507,10 @@
 				"larp-portal": "not checked: no recalculation guarantee documented",
 				"kanka": "source read at tag 3.15: app/Services/AttributeMentionService.php:96-200 recomputes property formulas deterministically with a loop guard (isLoop 228), but only from properties of the same entry; abilities, items and events do not feed values",
 				"pretix": "source read at tag v2026.7.0: looked in src/pretix/base/models/ (organizer, event, items, orders, customers, checkin, vouchers, giftcards, memberships, seating) and src/pretix/base/services/: no character, ability, skill, effect or XP model or computation"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrKarakterStatistieken"
 			}
 		},
 		{
@@ -2320,6 +2542,10 @@
 				"larp-portal": "'Each game can be configured to use what it needs of the 100+ features.' https://larportal.com",
 				"kanka": "source read at tag 3.15: abilities, items, property kits are campaign-scoped (routes/campaigns/entities.php:314,326,356)",
 				"pretix": "source read at tag v2026.7.0: looked in src/pretix/base/models/ (organizer, event, items, orders, customers, checkin, vouchers, giftcards, memberships, seating) and src/pretix/base/services/: no character, ability, skill, effect or XP model or computation"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrVaardighedenboom"
 			}
 		},
 		{
@@ -2352,6 +2578,13 @@
 				"larp-portal": "LP explicitly positions itself as going 'beyond standard character skills or rules databases', i.e. it tracks points/skills for a game's own external ruleset rather than fully modelling a custom system itself. https://larportal.com",
 				"kanka": "source read at tag 3.15: generic properties with math (app/Services/AttributeMentionService.php), property kits (app/Models/AttributeTemplate.php), abilities; character sheet renderers app/Renderers/CharacterSheets/Custom.php",
 				"pretix": "source read at tag v2026.7.0: looked in src/pretix/base/models/ (organizer, event, items, orders, customers, checkin, vouchers, giftcards, memberships, seating) and src/pretix/base/services/: no character, ability, skill, effect or XP model or computation"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": [
+					"LrVaardighedenboom",
+					"LrVaardigheid"
+				]
 			}
 		},
 		{
@@ -2382,6 +2615,10 @@
 				"larp-portal": "Staff pick a skill 'from the list on the left that is a replica of the skill tree', and character cards default to 'the LARP Portal Treeview order'. https://larportal.com/character-skill-maintenance.php , https://larportal.com/customizing-your-character-card.php",
 				"kanka": "source read at tag 3.15: abilities nest under parent abilities (routes/campaigns/entities.php:76 abilities.abilities; resources/js/components/abilities/Parent.vue); list grouping, no prerequisite graph",
 				"pretix": "source read at tag v2026.7.0: looked in src/pretix/base/models/ (organizer, event, items, orders, customers, checkin, vouchers, giftcards, memberships, seating) and src/pretix/base/services/: no character, ability, skill, effect or XP model or computation"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrVaardighedenboom"
 			}
 		},
 		{
@@ -2412,6 +2649,10 @@
 				"larp-portal": "not checked: no per-character skill-tree view documented",
 				"kanka": "source read at tag 3.15: entity abilities list (resources/js/components/abilities/Abilities.vue) shows only assigned abilities, no learnable/locked state",
 				"pretix": "source read at tag v2026.7.0: looked in src/pretix/base/models/ (organizer, event, items, orders, customers, checkin, vouchers, giftcards, memberships, seating) and src/pretix/base/services/: no character, ability, skill, effect or XP model or computation"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrVaardighedenboom"
 			}
 		},
 		{
@@ -2443,6 +2684,10 @@
 				"larp-portal": "not checked: not covered by public docs",
 				"kanka": "source read at tag 3.15: no prerequisite chains exist; ability parent tree is a nested set (app/Models/Ability.php), not a prerequisite graph",
 				"pretix": "source read at tag v2026.7.0: looked in src/pretix/base/models/ (organizer, event, items, orders, customers, checkin, vouchers, giftcards, memberships, seating) and src/pretix/base/services/: no character, ability, skill, effect or XP model or computation"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrVaardighedenboom"
 			}
 		},
 		{
@@ -2502,7 +2747,14 @@
 				"kanka": "source read at tag 3.15: journals/notes with visibility and public campaigns (routes/campaigns/entities.php:327,335; routes/campaigns/campaign.php:215-216)",
 				"pretix": "source read at tag v2026.7.0: looked in src/pretix/base/models/ (organizer, event, items, orders, customers, checkin, vouchers, giftcards, memberships, seating) and src/pretix/base/services/: no character, ability, skill, effect or XP model or computation; no content pages exist to publish a rulebook on (no pages plugin in src/pretix/plugins/)"
 			},
-			"note": "Specified 2026-09-27 in openspec/changes/rules-rulebook-and-spell-lists (OpenSpec pass)."
+			"note": "Specified 2026-09-27 in openspec/changes/rules-rulebook-and-spell-lists (OpenSpec pass).",
+			"screen": {
+				"canvas": "design-system",
+				"board": [
+					"LrLore",
+					"LrPortaalRegelboek"
+				]
+			}
 		},
 		{
 			"id": "rul-crafting",
@@ -2561,7 +2813,11 @@
 				"kanka": "source read at tag 3.15: abilities module with types, charges and descriptions, separate from properties (app/Models/Ability.php:40-45; routes/campaigns/entities.php:279 use a charge)",
 				"pretix": "source read at tag v2026.7.0: looked in src/pretix/base/models/ (organizer, event, items, orders, customers, checkin, vouchers, giftcards, memberships, seating) and src/pretix/base/services/: no character, ability, skill, effect or XP model or computation"
 			},
-			"note": "Specified 2026-09-27 in openspec/changes/rules-rulebook-and-spell-lists (OpenSpec pass)."
+			"note": "Specified 2026-09-27 in openspec/changes/rules-rulebook-and-spell-lists (OpenSpec pass).",
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrPortaalRegelboek"
+			}
 		},
 		{
 			"id": "rul-item-tags",
@@ -2621,6 +2877,10 @@
 				"larp-portal": "not checked: item/possession tracking is documented, but no single-holder uniqueness constraint is described",
 				"kanka": "source read at tag 3.15: inventories allow the same item on any number of entities (app/Models/Inventory.php:39-51, no unique constraint)",
 				"pretix": "source read at tag v2026.7.0: looked in src/pretix/base/models/ (organizer, event, items, orders, customers, checkin, vouchers, giftcards, memberships, seating) and src/pretix/base/services/: no character, ability, skill, effect or XP model or computation; quotas (src/pretix/base/models/items.py:1967) cap sold tickets, not in-game item holders"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrVoorwerp"
 			}
 		},
 		{
@@ -2652,7 +2912,11 @@
 				"kanka": "source read at tag 3.15: no conditions module",
 				"pretix": "source read at tag v2026.7.0: looked in src/pretix/base/models/ (organizer, event, items, orders, customers, checkin, vouchers, giftcards, memberships, seating) and src/pretix/base/services/: no character, ability, skill, effect or XP model or computation"
 			},
-			"note": "Specified 2026-09-27 in openspec/changes/rules-unique-holder-enforcement (OpenSpec pass)."
+			"note": "Specified 2026-09-27 in openspec/changes/rules-unique-holder-enforcement (OpenSpec pass).",
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrToestand"
+			}
 		},
 		{
 			"id": "rul-effect-reuse-across-entities",
@@ -2682,6 +2946,10 @@
 				"larp-portal": "not checked: no reusable effect-definition feature documented",
 				"kanka": "source read at tag 3.15: one ability can be attached to many entries (routes/campaigns/entities.php:77-80 abilities.entity-add) and property kits reapply across entries (routes/campaigns/bulks.php:15-16), but neither changes stat values",
 				"pretix": "source read at tag v2026.7.0: looked in src/pretix/base/models/ (organizer, event, items, orders, customers, checkin, vouchers, giftcards, memberships, seating) and src/pretix/base/services/: no character, ability, skill, effect or XP model or computation"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrVaardigheid"
 			}
 		},
 		{
@@ -2712,6 +2980,13 @@
 				"larp-portal": "Staff duties explicitly include to 'assign points'; features.php lists 'Character points assignment and tracking.' https://larportal.com/how-it-works.php",
 				"kanka": "source read at tag 3.15: no XP model or field; searched app/Models, database/migrations, lang/en",
 				"pretix": "source read at tag v2026.7.0: looked in src/pretix/base/models/ (organizer, event, items, orders, customers, checkin, vouchers, giftcards, memberships, seating) and src/pretix/base/services/: no character, ability, skill, effect or XP model or computation"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": [
+					"LrKarakterStatistieken",
+					"LrXpToekennen"
+				]
 			}
 		},
 		{
@@ -2743,7 +3018,11 @@
 				"kanka": "source read at tag 3.15: no XP model",
 				"pretix": "source read at tag v2026.7.0: looked in src/pretix/base/models/ (organizer, event, items, orders, customers, checkin, vouchers, giftcards, memberships, seating) and src/pretix/base/services/: no character, ability, skill, effect or XP model or computation; bulk actions exist only for orders and check-ins"
 			},
-			"note": "Specified 2026-09-27 in openspec/changes/events-xp-batch-award (OpenSpec pass)."
+			"note": "Specified 2026-09-27 in openspec/changes/events-xp-batch-award (OpenSpec pass).",
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrXpToekennen"
+			}
 		},
 		{
 			"id": "prg-xp-audit",
@@ -2773,6 +3052,10 @@
 				"larp-portal": "The points log lists campaign, event date and reason for every award; who granted it is not described. https://larportal.com/larp-portal-tips-122023.php",
 				"kanka": "source read at tag 3.15: no XP model",
 				"pretix": "source read at tag v2026.7.0: looked in src/pretix/base/models/ (organizer, event, items, orders, customers, checkin, vouchers, giftcards, memberships, seating) and src/pretix/base/services/: no character, ability, skill, effect or XP model or computation"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrKarakterStatistieken"
 			}
 		},
 		{
@@ -2804,6 +3087,10 @@
 				"larp-portal": "'Personal point viewing' is explicitly listed as a PC capability. https://larportal.com/how-it-works.php",
 				"kanka": "source read at tag 3.15: no XP model",
 				"pretix": "source read at tag v2026.7.0: looked in src/pretix/base/models/ (organizer, event, items, orders, customers, checkin, vouchers, giftcards, memberships, seating) and src/pretix/base/services/: no character, ability, skill, effect or XP model or computation"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrKarakterStatistieken"
 			}
 		},
 		{
@@ -2834,6 +3121,10 @@
 				"larp-portal": "'Skill purchasing with point systems' is explicit. https://larportal.com/features.php",
 				"kanka": "source read at tag 3.15: no XP budget; abilities are assigned freely (routes/campaigns/entities.php:349)",
 				"pretix": "source read at tag v2026.7.0: looked in src/pretix/base/models/ (organizer, event, items, orders, customers, checkin, vouchers, giftcards, memberships, seating) and src/pretix/base/services/: no character, ability, skill, effect or XP model or computation"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrKarakterStatistieken"
 			}
 		},
 		{
@@ -2864,6 +3155,10 @@
 				"larp-portal": "not checked: no overspend-blocking behaviour documented",
 				"kanka": "source read at tag 3.15: no XP model",
 				"pretix": "source read at tag v2026.7.0: looked in src/pretix/base/models/ (organizer, event, items, orders, customers, checkin, vouchers, giftcards, memberships, seating) and src/pretix/base/services/: no character, ability, skill, effect or XP model or computation"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrKarakterStatistieken"
 			}
 		},
 		{
@@ -2895,6 +3190,10 @@
 				"larp-portal": "not checked: no prerequisite-enforcement feature documented for skill purchases",
 				"kanka": "source read at tag 3.15: no prerequisite validation on entity abilities (app/Http/Controllers/Entity/AbilityController.php)",
 				"pretix": "source read at tag v2026.7.0: looked in src/pretix/base/models/ (organizer, event, items, orders, customers, checkin, vouchers, giftcards, memberships, seating) and src/pretix/base/services/: no character, ability, skill, effect or XP model or computation"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrKarakterStatistieken"
 			}
 		},
 		{
@@ -2926,6 +3225,10 @@
 				"larp-portal": "not checked: no GM-override feature documented",
 				"kanka": "source read at tag 3.15: no rule checks to override",
 				"pretix": "source read at tag v2026.7.0: looked in src/pretix/base/models/ (organizer, event, items, orders, customers, checkin, vouchers, giftcards, memberships, seating) and src/pretix/base/services/: no character, ability, skill, effect or XP model or computation; nothing to override"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrKarakterStatistieken"
 			}
 		},
 		{
@@ -2956,6 +3259,10 @@
 				"larp-portal": "not checked: no requirement report documented",
 				"kanka": "source read at tag 3.15: no requirement engine",
 				"pretix": "source read at tag v2026.7.0: looked in src/pretix/base/models/ (organizer, event, items, orders, customers, checkin, vouchers, giftcards, memberships, seating) and src/pretix/base/services/: no character, ability, skill, effect or XP model or computation"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrVaardighedenboom"
 			}
 		},
 		{
@@ -3016,6 +3323,10 @@
 				"larp-portal": "not checked: no XP correction feature documented",
 				"kanka": "source read at tag 3.15: no XP model",
 				"pretix": "source read at tag v2026.7.0: looked in src/pretix/base/models/ (organizer, event, items, orders, customers, checkin, vouchers, giftcards, memberships, seating) and src/pretix/base/services/: no character, ability, skill, effect or XP model or computation; corrections exist only for orders (refunds, changes)"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrKarakterStatistieken"
 			}
 		},
 		{
@@ -3134,6 +3445,10 @@
 				"larp-portal": "Players can 'Purchase Skills - even rebuild character if campaign allows'; unlearning a single skill for a refund is not described. https://larportal.com/features.php",
 				"kanka": "source read at tag 3.15: removing an entity ability has no cost refund (no XP model)",
 				"pretix": "source read at tag v2026.7.0: looked in src/pretix/base/models/ (organizer, event, items, orders, customers, checkin, vouchers, giftcards, memberships, seating) and src/pretix/base/services/: no character, ability, skill, effect or XP model or computation; refunds (src/pretix/base/models/orders.py:2128 OrderRefund) are money, not XP"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrKarakterStatistieken"
 			}
 		},
 		{
@@ -3165,6 +3480,10 @@
 				"larp-portal": "'Event scheduling and notifications' (Campaign Module) and staff can 'set up an event.' https://larportal.com/how-it-works.php",
 				"kanka": "source read at tag 3.15: routes/campaigns/entities.php:323 events CRUD; app/Models/Event.php:31-36 name, date (free text), type, entry; locations via entity_locations (database/migrations/2026_03_05_184417_migrate_event_locations_to_entity_locations.php). In-fiction events",
 				"pretix": "source read at tag v2026.7.0: src/pretix/control/views/main.py:147 EventWizard creates an event with name, dates (src/pretix/base/models/event.py:69-72 date_from/date_to) and location (:653), with the public text in src/pretix/base/settings.py:3350 frontpage_text"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrEvenement"
 			}
 		},
 		{
@@ -3196,6 +3515,10 @@
 				"larp-portal": "'Campaign description and calendar management' is an explicit Campaign Module feature. https://larportal.com/features.php",
 				"kanka": "source read at tag 3.15: reminders place any entry on a campaign calendar (routes/campaigns/entities.php:182-189,351; app/Models/Reminder.php:54-66); calendars are fictional, no iCal or external calendar export (no ics code found)",
 				"pretix": "source read at tag v2026.7.0: src/pretix/presale/urls.py:169-198 per-event .ics download and an organizer-wide ical feed, linked from src/pretix/presale/templates/pretixpresale/event/fragment_event_info.html:60; a Nextcloud calendar can subscribe to the feed, but nothing writes to a Nextcloud calendar"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrEvenement"
 			}
 		},
 		{
@@ -3226,6 +3549,10 @@
 				"larp-portal": "not checked: no event-location map feature documented",
 				"kanka": "source read at tag 3.15: event linked to locations (entity_locations) and map markers can point at any entry (routes/campaigns/entities.php:67); no map shown on the event itself",
 				"pretix": "source read at tag v2026.7.0: src/pretix/control/views/geo.py:37 GeoCodeView and src/pretix/static/pretixcontrol/js/ui/geo.js:130-135 show a Leaflet map pin in the organiser's event settings only; grep over src/pretix/presale/templates finds no map for players, just the address and the ics geo data"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrEvenement"
 			}
 		},
 		{
@@ -3257,6 +3584,10 @@
 				"larp-portal": "Staff 'Character List' report lists characters with team/points/status, functioning as a roster, though not confirmed as scoped per single event. https://larportal.com",
 				"kanka": "source read at tag 3.15: participants only as relations/connections from the event (routes/campaigns/entities.php:237,354); no participant list model",
 				"pretix": "source read at tag v2026.7.0: src/pretix/control/views/orders.py:415 OrderList and src/pretix/control/views/checkin.py:150 CheckInListShow list every attendee of an event; players only, there are no characters on the list"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrEvenementInchecken"
 			}
 		},
 		{
@@ -3288,6 +3619,10 @@
 				"larp-portal": "'Event registration functionality' adds a player to an event. https://larportal.com",
 				"kanka": "source read at tag 3.15: add a relation between event and character (routes/campaigns/entities.php:354); no participant role or list",
 				"pretix": "source read at tag v2026.7.0: src/pretix/control/urls.py:462 orders/import and :424 OrderChange let staff add attendees or positions to an event; no character to add, and no single 'add participant' form in core beyond import and order change"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrKarakter"
 			}
 		},
 		{
@@ -3318,6 +3653,10 @@
 				"larp-portal": "Registration captures whether a player is 'coming for the entire event or for a partial event', which is attendance planning, not an on-site check-in action. https://larportal.com/how-it-works.php",
 				"kanka": "source read at tag 3.15: no check-in model; looked in app/Models and routes",
 				"pretix": "source read at tag v2026.7.0: src/pretix/plugins/webcheckin/urls.py:27 in-browser check-in (component src/pretix/plugins/webcheckin/static/pretixplugins/webcheckin/components/app.vue), recorded in src/pretix/base/models/checkin.py:329 Checkin via src/pretix/api/views/checkin.py:457 _redeem_process"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrEvenementInchecken"
 			}
 		},
 		{
@@ -3348,6 +3687,10 @@
 				"larp-portal": "Registration captures full/partial attendance intent, feeding downstream housing/points. https://larportal.com/how-it-works.php",
 				"kanka": "source read at tag 3.15: no attendance model",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/checkin.py:329-442 Checkin records entry/exit per ticket, and src/pretix/control/forms/filter.py:2176-2179 filters an event's attendees by checked in, present, left or not checked in"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrEvenementInchecken"
 			}
 		},
 		{
@@ -3379,6 +3722,10 @@
 				"larp-portal": "Staff 'assign points' after an event, and registration records which game an NPC's points should go to, tying participation to point awards. https://larportal.com/how-it-works.php",
 				"kanka": "source read at tag 3.15: no attendance or XP model",
 				"pretix": "source read at tag v2026.7.0: no XP model in src/pretix/base/models/; check-ins only feed statistics and exports"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrXpToekennen"
 			}
 		},
 		{
@@ -3440,6 +3787,10 @@
 				"larp-portal": "'Event scheduling and notifications' implies players see upcoming events. https://larportal.com",
 				"kanka": "source read at tag 3.15: dashboard calendar widget of upcoming reminders (app/Enums/Widget.php Calendar; routes/campaigns/campaign.php:186-188); calendars.events list routes/campaigns/entities.php:185",
 				"pretix": "source read at tag v2026.7.0: src/pretix/control/views/dashboards.py:664 user_index shows widgets for the user's events (:513 widgets_for_event_qs), and src/pretix/control/forms/filter.py:1966 filters the event list to running or future events"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrDashboard"
 			}
 		},
 		{
@@ -3470,6 +3821,10 @@
 				"larp-portal": "not checked: no event-history report documented",
 				"kanka": "source read at tag 3.15: events list sortable by date (app/Models/Event.php:38-42); who took part only via relations, no participation record",
 				"pretix": "source read at tag v2026.7.0: src/pretix/control/forms/filter.py:1967 filters the event list to past events; past events keep their orders and check-ins (src/pretix/control/views/checkin.py:150)"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrEvenement"
 			}
 		},
 		{
@@ -3529,7 +3884,11 @@
 				"kanka": "source read at tag 3.15: no tickets or QR code handling in app/",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/pdf.py:883 renders the ticket secret as a QR code on tickets, and src/pretix/plugins/webcheckin/static/pretixplugins/webcheckin/components/app.vue:376 takes scanned codes into src/pretix/api/views/checkin.py:457 _redeem_process"
 			},
-			"note": "Specified 2026-09-27 in openspec/changes/events-qr-checkin (OpenSpec pass)."
+			"note": "Specified 2026-09-27 in openspec/changes/events-qr-checkin (OpenSpec pass).",
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrEvenementInchecken"
+			}
 		},
 		{
 			"id": "evt-crew-roles",
@@ -3559,7 +3918,11 @@
 				"kanka": "source read at tag 3.15: no crew/volunteer model; organisation member roles are in-fiction (app/Models/OrganisationMember.php)",
 				"pretix": "source read at tag v2026.7.0: looked in src/pretix/base/models/organizer.py:362 Team (backend staff permissions only) and src/pretix/base/models/items.py; nothing assigns crew or NPC roles to volunteers for an event beyond selling a separate crew ticket"
 			},
-			"note": "Specified 2026-09-27 in openspec/changes/events-casting-and-crew-roles (OpenSpec pass)."
+			"note": "Specified 2026-09-27 in openspec/changes/events-casting-and-crew-roles (OpenSpec pass).",
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrEvenement"
+			}
 		},
 		{
 			"id": "evt-schedule-within-event",
@@ -3648,6 +4011,10 @@
 				"larp-portal": "not checked: no event capacity cap documented",
 				"kanka": "source read at tag 3.15: campaign setup has a descriptive player count for public listing (lang/en/campaigns/applications.php 'player_count'), no event capacity",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/items.py:1967 Quota caps how many tickets of the products it covers can be sold for an event or date"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrEvenement"
 			}
 		},
 		{
@@ -3680,6 +4047,13 @@
 				"larp-portal": "'Event registration functionality' is an explicit Campaign Module feature. https://larportal.com/features.php",
 				"kanka": "source read at tag 3.15: campaign join form with character concept, experience, availability, playstyle (routes/campaigns/campaign.php:51-53; app/Models/Application.php:32-45); for joining a campaign, not an event",
 				"pretix": "source read at tag v2026.7.0: src/pretix/presale/checkoutflow.py:248-1521 checkout steps (customer, add-ons, questions, payment, confirm) are the sign-up form, with custom questions from src/pretix/base/models/items.py:1570"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": [
+					"LrEvenement",
+					"LrAanmeldingen"
+				]
 			}
 		},
 		{
@@ -3711,7 +4085,14 @@
 				"kanka": "source read at tag 3.15: application form takes a character concept and an external character sheet link (lang/en/campaigns/applications.php fields character_concept, external_link; app/Models/Application.php:32-45); no picking an existing character",
 				"pretix": "source read at tag v2026.7.0: no character model in src/pretix/base/models/; src/pretix/base/models/customers.py:336 AttendeeProfile only lets a logged-in buyer reuse saved attendee details at checkout"
 			},
-			"note": "Specified 2026-09-27 in openspec/changes/registration-intake-and-capacity (OpenSpec pass)."
+			"note": "Specified 2026-09-27 in openspec/changes/registration-intake-and-capacity (OpenSpec pass).",
+			"screen": {
+				"canvas": "design-system",
+				"board": [
+					"LrAanmelding",
+					"LrPortaal"
+				]
+			}
 		},
 		{
 			"id": "reg-tickets",
@@ -3742,7 +4123,14 @@
 				"kanka": "source read at tag 3.15: no ticket or price model for participation; subscription tiers in app/Models/Tier.php are Kanka's own billing",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/items.py:360 Item and :1106 ItemVariation carry their own prices, so player, crew and NPC tickets are separate products or variations"
 			},
-			"note": "Specified 2026-09-27 in openspec/changes/registration-ticket-types-and-options (OpenSpec pass)."
+			"note": "Specified 2026-09-27 in openspec/changes/registration-ticket-types-and-options (OpenSpec pass).",
+			"screen": {
+				"canvas": "design-system",
+				"board": [
+					"LrEvenement",
+					"LrAanmelding"
+				]
+			}
 		},
 		{
 			"id": "reg-online-payment",
@@ -3773,7 +4161,11 @@
 				"kanka": "source read at tag 3.15: payments in routes/settings.php:93-112 are Kanka subscriptions for the user, not event fees",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/payment.py provider framework with in-tree providers src/pretix/plugins/stripe, src/pretix/plugins/paypal2 and src/pretix/plugins/banktransfer, driven by src/pretix/presale/checkoutflow.py:1274 PaymentStep"
 			},
-			"note": "Specified 2026-09-27 in openspec/changes/registration-payments-through-shillinq (OpenSpec pass)."
+			"note": "Specified 2026-09-27 in openspec/changes/registration-payments-through-shillinq (OpenSpec pass).",
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrAanmelding"
+			}
 		},
 		{
 			"id": "reg-payment-status",
@@ -3804,7 +4196,11 @@
 				"kanka": "source read at tag 3.15: no participant payment records",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/orders.py:156-157 order status pending/paid and :1714 OrderPayment per payment, listed and filtered in src/pretix/control/views/orders.py:415 OrderList"
 			},
-			"note": "Specified 2026-09-27 in openspec/changes/registration-payments-through-shillinq (OpenSpec pass)."
+			"note": "Specified 2026-09-27 in openspec/changes/registration-payments-through-shillinq (OpenSpec pass).",
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrAanmeldingen"
+			}
 		},
 		{
 			"id": "reg-waitlist",
@@ -3835,6 +4231,10 @@
 				"larp-portal": "not checked: no waitlist feature documented",
 				"kanka": "source read at tag 3.15: no waitlist model",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/waitinglist.py:50 WaitingListEntry, joined via src/pretix/presale/views/waiting.py and managed in src/pretix/control/views/waitinglist.py, with vouchers sent when seats free up"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrAanmeldingen"
 			}
 		},
 		{
@@ -3866,7 +4266,14 @@
 				"kanka": "source read at tag 3.15: coupons only for Kanka subscriptions (routes/web.php:21-24)",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/vouchers.py:128 Voucher codes with reduced prices, and src/pretix/base/models/discount.py:44,81-86 automatic discounts with available_from/until for early-bird windows"
 			},
-			"note": "Specified 2026-09-27 in openspec/changes/registration-ticket-types-and-options (OpenSpec pass)."
+			"note": "Specified 2026-09-27 in openspec/changes/registration-ticket-types-and-options (OpenSpec pass).",
+			"screen": {
+				"canvas": "design-system",
+				"board": [
+					"LrEvenement",
+					"LrAanmelding"
+				]
+			}
 		},
 		{
 			"id": "reg-refunds",
@@ -3896,7 +4303,11 @@
 				"kanka": "source read at tag 3.15: no registration payments",
 				"pretix": "source read at tag v2026.7.0: src/pretix/control/views/orders.py:1086 OrderRefundView creates refunds to the original payment method or a gift card, stored as src/pretix/base/models/orders.py:2128 OrderRefund; buyers can self-cancel via src/pretix/presale/views/order.py:1014 OrderCancel"
 			},
-			"note": "Specified 2026-09-27 in openspec/changes/registration-cancel-transfer-refund (OpenSpec pass)."
+			"note": "Specified 2026-09-27 in openspec/changes/registration-cancel-transfer-refund (OpenSpec pass).",
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrAanmelding"
+			}
 		},
 		{
 			"id": "reg-invoices",
@@ -3926,7 +4337,11 @@
 				"kanka": "source read at tag 3.15: billing history invoices are Kanka's own subscription invoices (routes/settings.php:111-112)",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/invoices.py:68 Invoice rendered by src/pretix/base/invoicing/pdf.py and sent by email or e-invoice transmission (src/pretix/base/invoicing/email.py, peppol.py)"
 			},
-			"note": "Specified 2026-09-27 in openspec/changes/registration-payments-through-shillinq (OpenSpec pass)."
+			"note": "Specified 2026-09-27 in openspec/changes/registration-payments-through-shillinq (OpenSpec pass).",
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrAanmelding"
+			}
 		},
 		{
 			"id": "reg-terms-consent",
@@ -3986,6 +4401,10 @@
 				"larp-portal": "'Customizable and printable character cards' is explicit. https://larportal.com/features.php",
 				"kanka": "source read at tag 3.15: print action on every entry (resources/views/entities/headers/actions.blade.php:139-141 to routes/campaigns/entities.php:396) renders a print layout with abilities, inventory, relations, properties and a window.print button (resources/views/entities/pages/print/print.blade.php:9-34); PDF via browser print",
 				"pretix": "source read at tag v2026.7.0: no character model in src/pretix/base/models/; PDF output exists only for tickets (src/pretix/plugins/ticketoutputpdf), badges and check-in lists"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrKarakterbladDownloaden"
 			}
 		},
 		{
@@ -4016,6 +4435,10 @@
 				"larp-portal": "Staff 'can run a report of PCs, NPCs and Staff registrations', and pronouns print on check-in and check-out reports; a per-event GM run sheet is not described. https://larportal.com/larp-portal-tips-062024.php , https://larportal.com/the-player-module.php",
 				"kanka": "source read at tag 3.15: no event cast sheet; print covers one entry or a bulk selection",
 				"pretix": "source read at tag v2026.7.0: src/pretix/plugins/checkinlists/exporters.py:302 PDFCheckinList prints the attendee list of an event with names and chosen question answers; a printed cast list, but of players, not a game master run sheet of characters"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrEvenement"
 			}
 		},
 		{
@@ -4047,7 +4470,11 @@
 				"kanka": "source read at tag 3.15: character sheet plugins render properties through custom templates (app/Renderers/CharacterSheets/Custom.php, Blade.php, Twig.php; app/View/Components/CharacterSheet.php), marketplace-gated; not a print template picker",
 				"pretix": "source read at tag v2026.7.0: src/pretix/plugins/ticketoutputpdf/models.py:321 TicketLayout and src/pretix/plugins/badges/models.py:41 BadgeLayout let organisers keep several layouts and pick one per product; there are no character sheets to template"
 			},
-			"note": "Specified 2026-09-27 by the existing change openspec/changes/larpinq-pdf-frontend-download-action (OpenSpec pass)."
+			"note": "Specified 2026-09-27 by the existing change openspec/changes/larpinq-pdf-frontend-download-action (OpenSpec pass).",
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrKarakterbladDownloaden"
+			}
 		},
 		{
 			"id": "prt-item-cards",
@@ -4195,6 +4622,10 @@
 				"larp-portal": "not applicable: standalone web platform, no Nextcloud search/deep-link integration",
 				"kanka": "source read at tag 3.15: every entry has a stable URL and mention tooltips (routes/campaigns/entities.php:258 tooltip; app/Services/MentionsService.php); no host-platform search integration",
 				"pretix": "source read at tag v2026.7.0: grep for nextcloud over src/pretix finds nothing; pretix has its own backend search (src/pretix/control/views/search.py) but no integration with another app's search"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrSpeler"
 			}
 		},
 		{
@@ -4225,7 +4656,11 @@
 				"kanka": "source read at tag 3.15: outgoing mail limited to account and subscription mails (app/Mail/*); no mail to members",
 				"pretix": "source read at tag v2026.7.0: src/pretix/plugins/sendmail/views.py:243 OrderSendView emails everyone who ordered for an event, filtered by product, status or check-in, with history at :524"
 			},
-			"note": "Specified 2026-09-27 in openspec/changes/communication-mail-participants (OpenSpec pass)."
+			"note": "Specified 2026-09-27 in openspec/changes/communication-mail-participants (OpenSpec pass).",
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrEvenementInchecken"
+			}
 		},
 		{
 			"id": "com-in-character-messages",
@@ -4316,6 +4751,10 @@
 				"larp-portal": "Player Module is explicitly the player's own dashboard for profile, characters and events. https://larportal.com",
 				"kanka": "source read at tag 3.15: public campaigns viewable without an account through the public role (routes/campaigns/campaign.php:162,215-216); not a per-player page",
 				"pretix": "source read at tag v2026.7.0: src/pretix/presale/views/customer.py:354-509 the customer account area lists a player's own orders, tickets, memberships and saved profiles without a backend login; there are no characters to show"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrPortaal"
 			}
 		},
 		{
@@ -4376,6 +4815,10 @@
 				"larp-portal": "Staff assign points to attendees after an event, which changes each character's standing, but there's no separate 'story effect' system documented. https://larportal.com/how-it-works.php",
 				"kanka": "source read at tag 3.15: no effects model",
 				"pretix": "source read at tag v2026.7.0: no character stats in src/pretix/base/models/; post-event actions are limited to mails and exports"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrEvenement"
 			}
 		},
 		{
@@ -4407,6 +4850,13 @@
 				"larp-portal": "Characters, points and events are held within one campaign's account, keeping games from mixing. https://larportal.com",
 				"kanka": "source read at tag 3.15: events belong to one campaign (app/Models/Event.php:31-36 campaign_id)",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/event.py:607 events belong to an Organizer; there is no campaign/world entity nor characters to keep apart"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": [
+					"LrWereld",
+					"LrEvenement"
+				]
 			}
 		},
 		{
@@ -4437,6 +4887,10 @@
 				"larp-portal": "not checked: no event change-history feature documented",
 				"kanka": "source read at tag 3.15: entity logs apply to events like any entry (routes/campaigns/entities.php:375; app/Http/Controllers/Entity/LogController.php); campaign history routes/campaigns/campaign.php:247",
 				"pretix": "source read at tag v2026.7.0: src/pretix/control/urls.py:280 event/logs routes to src/pretix/control/views/event.py:1254 EventLog, a paginated history of every change to the event, its products and orders (src/pretix/base/models/log.py:52 LogEntry), also shown on the event dashboard (src/pretix/control/views/dashboards.py:448)"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrEvenement"
 			}
 		},
 		{
@@ -4468,6 +4922,10 @@
 				"larp-portal": "'Advanced reporting and analytics' implies an overview exists, but a named at-a-glance dashboard isn't confirmed. https://larportal.com",
 				"kanka": "source read at tag 3.15: campaign dashboard with configurable widgets (routes/campaigns/campaign.php:47,135-136,182-188; app/Enums/Widget.php)",
 				"pretix": "source read at tag v2026.7.0: src/pretix/control/urls.py:55,273 the backend lands on src/pretix/control/views/dashboards.py:664 user_index and :355 event_index, both built from dashboard widgets"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrDashboard"
 			}
 		},
 		{
@@ -4499,6 +4957,10 @@
 				"larp-portal": "not checked: no count widgets documented",
 				"kanka": "source read at tag 3.15: campaign stats page counts entries per module, members, roles, followers, properties, abilities, inventories (routes/campaigns/campaign.php:272; app/Services/Campaign/StatService.php:29-107; resources/views/campaigns/stats/index.blade.php)",
 				"pretix": "source read at tag v2026.7.0: src/pretix/control/views/dashboards.py:115-149 widgets count attendees ordered, attendees paid, revenue and active products; no characters to count"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrDashboard"
 			}
 		},
 		{
@@ -4561,6 +5023,10 @@
 				"larp-portal": "'Character List report' gives a full roster with name, team, points, deaths, and confirmation flags. https://larportal.com/larp-portal-tips.php",
 				"kanka": "source read at tag 3.15: character list filterable by type and status (routes/campaigns/entities.php:47,287) and stats per module (app/Services/Campaign/StatService.php:50-67); no approval status",
 				"pretix": "source read at tag v2026.7.0: src/pretix/plugins/statistics/urls.py:27 per-event statistics and src/pretix/control/views/dashboards.py:240 quota widgets count registrants by product and status; a roster of players, not characters by type or approval"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrRapportages"
 			}
 		},
 		{
@@ -4591,6 +5057,10 @@
 				"larp-portal": "Character List report includes 'point and death counts' per character, a partial progression view rather than a campaign-wide report. https://larportal.com/larp-portal-tips.php",
 				"kanka": "source read at tag 3.15: no XP or progression data",
 				"pretix": "source read at tag v2026.7.0: no XP or character progression data in src/pretix/base/models/, so no report of it in src/pretix/plugins/reports or statistics"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrRapportages"
 			}
 		},
 		{
@@ -4621,6 +5091,10 @@
 				"larp-portal": "not checked: no world-content report documented",
 				"kanka": "source read at tag 3.15: stats count abilities attached, inventories and properties (app/Services/Campaign/StatService.php:80-107); ability page lists entries holding it (routes/campaigns/entities.php:77); no conditions or effects",
 				"pretix": "source read at tag v2026.7.0: no skills, conditions or effects in src/pretix/base/models/; product reports (src/pretix/plugins/reports/exporters.py:252 OverviewReport) cover tickets sold, not in-game content"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrRapportages"
 			}
 		},
 		{
@@ -4651,6 +5125,13 @@
 				"larp-portal": "not checked: no skill/item usage analytics documented",
 				"kanka": "source read at tag 3.15: per ability the list of entries that have it (routes/campaigns/entities.php:77 abilities.entities) and per item its holders (136 items.inventories); no ranking of most used",
 				"pretix": "source read at tag v2026.7.0: no skills, in-game items or conditions in src/pretix/base/models/ to count"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": [
+					"LrDashboard",
+					"LrRapportages"
+				]
 			}
 		},
 		{
@@ -4682,7 +5163,14 @@
 				"kanka": "source read at tag 3.15: campaign export is JSON/zip (routes/campaigns/campaign.php:207-208), single entry JSON/Markdown (routes/campaigns/entities.php:397-398); CSV only for import (campaign.php:212)",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/exporters/orderlist.py:85,969 OrderListExporter writes orders and attendees to CSV or xlsx, with list exporters for customers, answers, waiting list, check-in lists (src/pretix/plugins/checkinlists/exporters.py:476) and more under src/pretix/base/exporters/"
 			},
-			"note": "Specified 2026-09-27 in openspec/changes/admin-import-export (OpenSpec pass)."
+			"note": "Specified 2026-09-27 in openspec/changes/admin-import-export (OpenSpec pass).",
+			"screen": {
+				"canvas": "design-system",
+				"board": [
+					"LrKarakters",
+					"LrAanmeldingen"
+				]
+			}
 		},
 		{
 			"id": "ins-event-finance-report",
@@ -4803,6 +5291,10 @@
 				"larp-portal": "not applicable: this is a standalone web platform, not a Nextcloud app",
 				"kanka": "source read at tag 3.15: one search box over all entry types (routes/campaigns/search.php:78-83 live, command, fulltext; routes/api.v1.php:105,155); members are not searchable there and there is no host-platform search",
 				"pretix": "source read at tag v2026.7.0: src/pretix/control/views/search.py and src/pretix/control/urls.py:270 search orders inside pretix only; grep for nextcloud over src/pretix finds no search provider for another platform"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrSpeler"
 			}
 		},
 		{
@@ -4833,6 +5325,10 @@
 				"larp-portal": "Setup is a vendor service: 'LARP Portal staff provides templates for each module and does the initial configuration'. https://larportal.com/how-it-works.php",
 				"kanka": "source read at tag 3.15: first-use onboarding asks name and intent and configures modules (routes/campaigns/campaign.php:276-281; app/Services/Onboarding/InitialService.php:25-160)",
 				"pretix": "source read at tag v2026.7.0: src/pretix/control/views/main.py:147 EventWizard (multi-step event creation) and src/pretix/control/views/event.py:1571 QuickSetupView, offered by the welcome widget in src/pretix/control/views/dashboards.py:325-338 when an event has no products yet"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrInstellen"
 			}
 		},
 		{
@@ -4863,6 +5359,10 @@
 				"larp-portal": "'How-To Videos' are an external resource, not an in-app guided tour. https://larportal.com",
 				"kanka": "source read at tag 3.15: six-step onboarding widget with progress and dismiss (routes/campaigns/campaign.php:283-301; app/Http/Controllers/Dashboards/OnboardingWidgetController.php:42-97; resources/js/dashboards/onboarding/Onboarding.vue); tutorials dismiss/reset routes/settings.php:141-142",
 				"pretix": "source read at tag v2026.7.0: grep for tour, intro.js and shepherd over src/pretix/control/templates finds nothing; the only in-app guidance is the welcome widget (src/pretix/control/views/dashboards.py:325) pointing at the setup tool, and the tutorial lives on the docs site"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrInstellen"
 			}
 		},
 		{
@@ -4893,6 +5393,10 @@
 				"larp-portal": "not checked: no demo-data feature documented",
 				"kanka": "source read at tag 3.15: starter campaign with example kingdom, characters and more on first login (app/Services/StarterService.php:39-296 via app/Services/Auth/SessionService.php:17); campaigns:populate command app/Console/Commands/Campaigns/PopulateCommand.php",
 				"pretix": "source read at tag v2026.7.0: looked in src/pretix/base/management/commands/ (no sample-data command) and the event wizard (src/pretix/control/views/main.py:147); src/pretix/base/models/event.py:608 test mode lets you place test orders but loads no example data"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrInstellen"
 			}
 		},
 		{
@@ -4923,6 +5427,10 @@
 				"larp-portal": "'Standard' tier offers 'full module configuration with templates, staff training.' https://larportal.com",
 				"kanka": "source read at tag 3.15: no register/schema configuration concept; campaign settings are modules and defaults (routes/campaigns/campaign.php:192-194,237-238)",
 				"pretix": "source read at tag v2026.7.0: pretix has a fixed Django data model (src/pretix/base/models/) and global settings (src/pretix/control/views/global_settings.py); there is no register or schema choice to configure"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrSpelinstellingen"
 			}
 		},
 		{
@@ -4953,6 +5461,10 @@
 				"larp-portal": "not applicable: this is a standalone web platform, not a Nextcloud app",
 				"kanka": "source read at tag 3.15: no bundled data configuration to reimport",
 				"pretix": "source read at tag v2026.7.0: no bundled data configuration to re-import; schema changes ship as Django migrations (src/pretix/base/migrations/) applied by src/pretix/base/management/commands/migrate.py"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrSpelinstellingen"
 			}
 		},
 		{
@@ -4984,6 +5496,10 @@
 				"larp-portal": "Player Module lets players 'manage their passwords and opt in to receive notifications, and manage their own profile'; a general personal-preferences capability, though not confirmed for a 'default world' setting specifically. https://larportal.com/how-it-works.php",
 				"kanka": "source read at tag 3.15: per-user settings and dismissed tutorials (app/Models/UserSetting.php; routes/settings.php:83-84,141-142)",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/auth.py:290-294 User.locale and timezone, and src/pretix/base/models/notifications.py:26 per-user NotificationSetting; there is no generic per-user preferences store (settings stores attach only to Event and Organizer, src/pretix/base/models/event.py:565, organizer.py:69)"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrDashboard"
 			}
 		},
 		{
@@ -5014,6 +5530,10 @@
 				"larp-portal": "not checked: LP's Registered/Basic/Standard tiers gate features by subscription level, not by an internal user group",
 				"kanka": "source read at tag 3.15: each campaign is visible only to its members and roles unless made public (routes/campaigns/campaign.php:126-130,215-216); no instance-wide group restriction",
 				"pretix": "source read at tag v2026.7.0: backend access is granted by Team membership (src/pretix/base/models/organizer.py:362); grep for nextcloud over src/pretix finds no group integration"
+			},
+			"screen": {
+				"board": null,
+				"reason": "Set on Nextcloud's own Apps admin page (group restriction), not on a larpinq page."
 			}
 		},
 		{
@@ -5045,7 +5565,11 @@
 				"kanka": "source read at tag 3.15: custom campaign roles with per-module and per-entry permissions (routes/campaigns/campaign.php:89-91,130; app/Enums/Permission.php)",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/organizer.py:362-394 Team with all_events/limit_events and per-permission sets for events and organizer (src/pretix/base/permissions.py:56), so a treasurer team, a check-in team and admins get different rights"
 			},
-			"note": "Specified 2026-09-27 in openspec/changes/admin-staff-roles-and-invites (OpenSpec pass)."
+			"note": "Specified 2026-09-27 in openspec/changes/admin-staff-roles-and-invites (OpenSpec pass).",
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrSpelinstellingen"
+			}
 		},
 		{
 			"id": "adm-multilingual",
@@ -5075,6 +5599,13 @@
 				"larp-portal": "not checked: no multi-language support documented",
 				"kanka": "source read at tag 3.15: lang/nl and lang/en plus de, fr, es, it, pl, pt-BR, ru, sk, hr; campaign locale field app/Models/Campaign.php:77",
 				"pretix": "source read at tag v2026.7.0: src/pretix/locale/nl/LC_MESSAGES/django.po plus nl_BE and nl_Informal among about 50 locales; event languages chosen via src/pretix/base/settings.py:1510 locales"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": [
+					"LrDashboard",
+					"LrTelefoon"
+				]
 			}
 		},
 		{
@@ -5106,6 +5637,10 @@
 				"larp-portal": "not checked: no API documented",
 				"kanka": "source read at tag 3.15: REST API routes/api.v1.php:44-178 with personal tokens routes/settings.php:73-81",
 				"pretix": "source read at tag v2026.7.0: src/pretix/api/views/ covers events, items, orders, check-in, customers (organizer.py), vouchers, waiting list, webhooks and exporters, with OAuth in src/pretix/api/views/oauth.py"
+			},
+			"screen": {
+				"board": null,
+				"reason": "An API for other tools: OpenRegister serves it, there is no screen."
 			}
 		},
 		{
@@ -5136,6 +5671,10 @@
 				"larp-portal": "not documented anywhere on the public site",
 				"kanka": "source read at tag 3.15: health endpoints /up (routes/web.php:34, app/Http/Controllers/HealthController.php) and API health (routes/api.v1.php:167); no metrics endpoint",
 				"pretix": "source read at tag v2026.7.0: src/pretix/urls.py:52-58 /healthcheck/ and /metrics (Prometheus format from src/pretix/base/metrics.py)"
+			},
+			"screen": {
+				"board": null,
+				"reason": "Health and metrics endpoints read by monitoring, not by people."
 			}
 		},
 		{
@@ -5166,6 +5705,10 @@
 				"larp-portal": "not documented anywhere on the public site",
 				"kanka": "source read at tag 3.15: webhooks on entry created/edited/deleted (routes/campaigns/campaign.php:140,256-259; app/Enums/WebhookAction.php), premium only (app/Http/Controllers/Campaign/WebhookController.php:71); no in-app automation rules",
 				"pretix": "source read at tag v2026.7.0: src/pretix/api/views/webhooks.py outbound webhooks, src/pretix/plugins/sendmail/models.py:223 Rule (automatic emails on conditions and dates) and src/pretix/plugins/autocheckin/models.py:32 AutoCheckinRule automate fixed steps; there is no general workflow builder"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrFlows"
 			}
 		},
 		{
@@ -5196,6 +5739,10 @@
 				"larp-portal": "LARP Portal is a proprietary hosted SaaS (login at ui.larportal.com); no self-hosting option is documented. https://larportal.com",
 				"kanka": "source read at tag 3.15: docker-compose.yml and docs/running.md; config auth.register_enabled and marketplace toggles for self-hosting",
 				"pretix": "source read at tag v2026.7.0: Dockerfile and deployment/docker at the repo root, packaged via setup.py/pyproject.toml, configured from a pretix.cfg read in src/pretix/settings.py"
+			},
+			"screen": {
+				"board": null,
+				"reason": "Hosting: the app runs on the operator's own Nextcloud, nothing to show on a screen."
 			}
 		},
 		{
@@ -5226,6 +5773,10 @@
 				"larp-portal": "proprietary product, copyright LARP Portal LLC; no source or open-source licence is published",
 				"kanka": "source read at tag 3.15: LICENSE is a licence with the Commons Clause (no right to sell), composer.json:11 'proprietary'; README calls it source available",
 				"pretix": "source read at tag v2026.7.0: LICENSE:4-7 AGPLv3 with Section 7 additional terms"
+			},
+			"screen": {
+				"board": null,
+				"reason": "Licensing: the open-source licence lives in the repository, not in the interface."
 			}
 		},
 		{
@@ -5257,7 +5808,11 @@
 				"kanka": "source read at tag 3.15: campaign import from Kanka export zip or CSV (routes/campaigns/campaign.php:209-212; app/Services/CsvImportService.php)",
 				"pretix": "source read at tag v2026.7.0: src/pretix/control/urls.py:462 orders/import runs src/pretix/base/modelimport_orders.py (CSV import of orders and attendees, :740 CustomerColumn links customers), and vouchers import at :388; there are no characters to import"
 			},
-			"note": "Specified 2026-09-27 in openspec/changes/admin-import-export (OpenSpec pass)."
+			"note": "Specified 2026-09-27 in openspec/changes/admin-import-export (OpenSpec pass).",
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrKarakters"
+			}
 		},
 		{
 			"id": "adm-backup-export",
@@ -5288,7 +5843,11 @@
 				"kanka": "source read at tag 3.15: full campaign export (routes/campaigns/campaign.php:207-208; app/Services/Campaign/ExportService.php), gallery assets export premium (app/Http/Controllers/Campaign/ExportController.php:43)",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/exporters/json.py:49 JSONExporter dumps an event's products, questions and orders, and multi-event list exporters exist; a whole-instance backup is a database dump, not an in-app export"
 			},
-			"note": "Specified 2026-09-27 in openspec/changes/admin-import-export (OpenSpec pass)."
+			"note": "Specified 2026-09-27 in openspec/changes/admin-import-export (OpenSpec pass).",
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrWerelden"
+			}
 		},
 		{
 			"id": "adm-mobile-app",
@@ -5319,7 +5878,11 @@
 				"kanka": "source read at tag 3.15: responsive Tailwind web views; no native app or PWA manifest in public/",
 				"pretix": "source read at tag v2026.7.0: src/pretix/presale/templates/pretixpresale/base.html:21 responsive viewport shop and the in-browser check-in (src/pretix/plugins/webcheckin) work on a phone; the native pretixSCAN/pretixPOS apps are separate first-party repos, noted not counted"
 			},
-			"note": "Specified 2026-09-27 in openspec/changes/admin-phone-friendly-pages (OpenSpec pass)."
+			"note": "Specified 2026-09-27 in openspec/changes/admin-phone-friendly-pages (OpenSpec pass).",
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrTelefoon"
+			}
 		},
 		{
 			"id": "adm-multi-organisation",
@@ -5350,6 +5913,10 @@
 				"larp-portal": "Explicitly a multi-campaign network ('campaign point exchange between games'), each game configuring its own feature set. https://larportal.com",
 				"kanka": "source read at tag 3.15: many campaigns with separate members, roles and data in one install (routes/campaigns/*.php keyed /w/{campaign})",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/organizer.py:70 Organizer separates teams, customers and events, with its own domain via src/pretix/multidomain; one install hosts many"
+			},
+			"screen": {
+				"board": null,
+				"reason": "The app shell scopes every request to the active organisation in the background; there is no larpinq page for it."
 			}
 		},
 		{
@@ -5381,6 +5948,10 @@
 				"larp-portal": "not documented: no in-product marketplace for discovering related apps/integrations",
 				"kanka": "source read at tag 3.15: marketplace plugins (character sheets, themes, content packs) enable, import, update per campaign (routes/campaigns/campaign.php:166-179), active when APP_MARKETPLACE_URL is set (config/marketplace.php:11)",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/plugins.py:79 plugin registry, enabled per event at src/pretix/control/urls.py:286 settings/plugins, extends what an organiser can switch on; plugins are code the server admin installs, and configuration can only be copied between events of one organizer (src/pretix/control/views/main.py:305), not shared as bundles between organisations"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrStore"
 			}
 		},
 		{
@@ -5412,6 +5983,10 @@
 				"larp-portal": "not documented: no in-app roadmap feature found",
 				"kanka": "source read at tag 3.15: public roadmap with upvotes and idea submission (routes/web.php:37-40; app/Livewire/Roadmap.php)",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/services/update_check.py only tells the server admin a newer release exists; grep over src/pretix/control/templates finds no roadmap or upcoming-features page"
+			},
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrRoadmap"
 			}
 		},
 		{
@@ -5444,7 +6019,11 @@
 				"pretix": "source read at tag v2026.7.0: looked in src/pretix/base/models/ and src/pretix/plugins/; no survey or feedback model, questions (src/pretix/base/models/items.py:1570) are asked at checkout or check-in only; a post-event mail rule (src/pretix/plugins/sendmail/models.py:223) could link an outside survey"
 			},
 			"addedOn": "2026-09-26",
-			"note": "Specified 2026-09-27 in openspec/changes/events-post-event-survey (OpenSpec pass)."
+			"note": "Specified 2026-09-27 in openspec/changes/events-post-event-survey (OpenSpec pass).",
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrEvenement"
+			}
 		},
 		{
 			"id": "prg-cross-game-points",
@@ -5507,7 +6086,14 @@
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/items.py:1407 ItemAddOn lets a ticket offer add-on products such as meal plans at checkout (src/pretix/presale/checkoutflow.py:483 AddOnsStep), and choice questions (items.py:1570) can ask a diet option"
 			},
 			"addedOn": "2026-09-26",
-			"note": "Specified 2026-09-27 in openspec/changes/registration-ticket-types-and-options (OpenSpec pass)."
+			"note": "Specified 2026-09-27 in openspec/changes/registration-ticket-types-and-options (OpenSpec pass).",
+			"screen": {
+				"canvas": "design-system",
+				"board": [
+					"LrEvenement",
+					"LrAanmelding"
+				]
+			}
 		},
 		{
 			"id": "rul-in-game-currency",
@@ -5538,7 +6124,11 @@
 				"kanka": "source read at tag 3.15: items carry a price and inventories an amount (app/Models/Item.php:41-49, app/Models/Inventory.php:39-51); no per-character money balance or purchase flow",
 				"pretix": "source read at tag v2026.7.0: no characters or in-game money in src/pretix/base/models/; gift cards (giftcards.py:64) and reusable media (media.py:55) hold real-money value"
 			},
-			"addedOn": "2026-09-26"
+			"addedOn": "2026-09-26",
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrKarakter"
+			}
 		},
 		{
 			"id": "rul-skill-tree-live-refresh",
@@ -5558,7 +6148,11 @@
 				"spec": "openspec/specs/realtime-updates"
 			},
 			"feature": "skill-tree-visualization",
-			"source": "spec-round-2026-10-07"
+			"source": "spec-round-2026-10-07",
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrVaardighedenboom"
+			}
 		},
 		{
 			"id": "com-help-desk",
@@ -5590,7 +6184,11 @@
 				"pretix": "source read at tag v2026.7.0: looked in src/pretix/presale/views/ and src/pretix/base/models/; players only get a contact address (src/pretix/base/settings.py:2277 contact_mail), there is no ticket or help desk inbox"
 			},
 			"addedOn": "2026-09-26",
-			"note": "Specified 2026-09-27 in openspec/changes/communication-help-desk (OpenSpec pass)."
+			"note": "Specified 2026-09-27 in openspec/changes/communication-help-desk (OpenSpec pass).",
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrPortaal"
+			}
 		},
 		{
 			"id": "ply-notification-preferences",
@@ -5654,7 +6252,11 @@
 				"pretix": "source read at tag v2026.7.0: no character model in src/pretix/base/models/"
 			},
 			"addedOn": "2026-09-26",
-			"note": "Specified 2026-09-27 in openspec/changes/characters-multiple-builds (OpenSpec pass)."
+			"note": "Specified 2026-09-27 in openspec/changes/characters-multiple-builds (OpenSpec pass).",
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrKarakterStatistieken"
+			}
 		},
 		{
 			"id": "com-follow-updates",
@@ -5719,7 +6321,11 @@
 				"pretix": "source read at tag v2026.7.0: no world or story content in src/pretix/base/models/; timed visibility exists only for products (Item available_from/until) and discounts (src/pretix/base/models/discount.py:81-86)"
 			},
 			"addedOn": "2026-09-26",
-			"note": "Specified 2026-09-27 in openspec/changes/worlds-lore-pages (OpenSpec pass)."
+			"note": "Specified 2026-09-27 in openspec/changes/worlds-lore-pages (OpenSpec pass).",
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrLore"
+			}
 		},
 		{
 			"id": "com-comment-threads",
@@ -5784,7 +6390,11 @@
 				"pretix": "source read at tag v2026.7.0: src/pretix/control/views/shredder.py:78-150 exports then shreds chosen personal data of an event, logged as src/pretix/base/services/shredder.py:144-167 pretix.event.shredder.started/completed with the shredder list (shown via src/pretix/control/logdisplay.py:763-764)"
 			},
 			"addedOn": "2026-09-26",
-			"note": "Specified 2026-09-27 in openspec/changes/players-care-details-and-erasure (OpenSpec pass)."
+			"note": "Specified 2026-09-27 in openspec/changes/players-care-details-and-erasure (OpenSpec pass).",
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrEvenement"
+			}
 		},
 		{
 			"id": "reg-partial-cancel",
@@ -5817,7 +6427,11 @@
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/services/orders.py:1587,1859 OrderChangeManager.cancel removes one position from an order, used by staff via src/pretix/control/urls.py:424 order change and by buyers via src/pretix/presale/urls.py:163 OrderPositionChange when allowed (src/pretix/base/settings.py:2055)"
 			},
 			"addedOn": "2026-09-26",
-			"note": "Specified 2026-09-27 in openspec/changes/registration-cancel-transfer-refund (OpenSpec pass)."
+			"note": "Specified 2026-09-27 in openspec/changes/registration-cancel-transfer-refund (OpenSpec pass).",
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrAanmelding"
+			}
 		},
 		{
 			"id": "reg-approve-registrations",
@@ -5850,7 +6464,14 @@
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/items.py:619 require_approval on a ticket and src/pretix/base/models/orders.py:310 on the order, approved one by one or in bulk at src/pretix/control/urls.py:426,471"
 			},
 			"addedOn": "2026-09-26",
-			"note": "Specified 2026-09-27 in openspec/changes/registration-intake-and-capacity (OpenSpec pass)."
+			"note": "Specified 2026-09-27 in openspec/changes/registration-intake-and-capacity (OpenSpec pass).",
+			"screen": {
+				"canvas": "design-system",
+				"board": [
+					"LrEvenement",
+					"LrAanmeldingen"
+				]
+			}
 		},
 		{
 			"id": "reg-payment-reminders",
@@ -5883,7 +6504,14 @@
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/settings.py:2672 mail_days_order_expire_warning sends a reminder a set number of days before an unpaid order expires; 2026.7 also mails on incomplete bank transfers"
 			},
 			"addedOn": "2026-09-26",
-			"note": "Specified 2026-09-27 in openspec/changes/registration-payments-through-shillinq (OpenSpec pass)."
+			"note": "Specified 2026-09-27 in openspec/changes/registration-payments-through-shillinq (OpenSpec pass).",
+			"screen": {
+				"canvas": "design-system",
+				"board": [
+					"LrDashboard",
+					"LrAanmeldingen"
+				]
+			}
 		},
 		{
 			"id": "reg-bank-statement-match",
@@ -5916,7 +6544,11 @@
 				"pretix": "source read at tag v2026.7.0: src/pretix/plugins/banktransfer/views.py:68,424 imports CSV, MT940 and SEPA CAMT statements (src/pretix/plugins/banktransfer/camtimport.py) and matches them to orders"
 			},
 			"addedOn": "2026-09-26",
-			"note": "Specified 2026-09-27 in openspec/changes/registration-payments-through-shillinq (OpenSpec pass)."
+			"note": "Specified 2026-09-27 in openspec/changes/registration-payments-through-shillinq (OpenSpec pass).",
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrAanmeldingen"
+			}
 		},
 		{
 			"id": "reg-player-credit",
@@ -5949,7 +6581,11 @@
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/giftcards.py:64,83 GiftCard linked to a customer account and offered at checkout; refunds can go to a gift card (src/pretix/control/views/orders.py:1086)"
 			},
 			"addedOn": "2026-09-26",
-			"note": "Specified 2026-09-27 in openspec/changes/registration-cancel-transfer-refund (OpenSpec pass)."
+			"note": "Specified 2026-09-27 in openspec/changes/registration-cancel-transfer-refund (OpenSpec pass).",
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrAanmelding"
+			}
 		},
 		{
 			"id": "reg-season-membership",
@@ -6043,7 +6679,11 @@
 				"kanka": "source read at tag 3.15: no attendance or check-in/out model in app/Models; routes/campaigns/entities.php event routes cover only in-fiction entries",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/checkin.py:333-334 entry and exit check-ins, filtered as present or checked in but left in src/pretix/control/forms/filter.py:2176-2179"
 			},
-			"addedOn": "2026-09-26"
+			"addedOn": "2026-09-26",
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrEvenementInchecken"
+			}
 		},
 		{
 			"id": "evt-wristband-checkin",
@@ -6127,7 +6767,11 @@
 				"change": "openspec/changes/archive/2026-06-14-larpingapp-notifications"
 			},
 			"feature": "lifecycle-notifications",
-			"source": "spec-round-2026-10-07"
+			"source": "spec-round-2026-10-07",
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrDashboard"
+			}
 		},
 		{
 			"id": "com-event-reminder",
@@ -6147,7 +6791,11 @@
 				"change": "openspec/changes/archive/2026-06-14-larpingapp-notifications"
 			},
 			"feature": "lifecycle-notifications",
-			"source": "spec-round-2026-10-07"
+			"source": "spec-round-2026-10-07",
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrDashboard"
+			}
 		},
 		{
 			"id": "ins-question-answer-stats",
@@ -6244,7 +6892,11 @@
 				"pretix": "source read at tag v2026.7.0: no character model in src/pretix/base/models/; no ranking or assignment solver anywhere in src/pretix/base/services/"
 			},
 			"addedOn": "2026-09-26",
-			"note": "Specified 2026-09-27 in openspec/changes/events-casting-and-crew-roles (OpenSpec pass)."
+			"note": "Specified 2026-09-27 in openspec/changes/events-casting-and-crew-roles (OpenSpec pass).",
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrPortaal"
+			}
 		},
 		{
 			"id": "chr-bulk-edit",
@@ -6277,7 +6929,11 @@
 				"pretix": "source read at tag v2026.7.0: no character model in src/pretix/base/models/; bulk edit exists only for event dates, devices, quotas and vouchers (src/pretix/control/urls.py:227,319)"
 			},
 			"addedOn": "2026-09-26",
-			"note": "Specified 2026-09-27 in openspec/changes/characters-status-and-bulk-edit (OpenSpec pass)."
+			"note": "Specified 2026-09-27 in openspec/changes/characters-status-and-bulk-edit (OpenSpec pass).",
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrKarakters"
+			}
 		},
 		{
 			"id": "chr-player-groups",
@@ -6310,7 +6966,11 @@
 				"pretix": "source read at tag v2026.7.0: no character model in src/pretix/base/models/; the only grouping is one buyer's order holding several tickets (src/pretix/base/models/orders.py:139), with no leader or invite flow"
 			},
 			"addedOn": "2026-09-26",
-			"note": "Specified 2026-09-27 in openspec/changes/characters-factions-and-relationships (OpenSpec pass)."
+			"note": "Specified 2026-09-27 in openspec/changes/characters-factions-and-relationships (OpenSpec pass).",
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrFactie"
+			}
 		},
 		{
 			"id": "reg-transfer",
@@ -6343,7 +7003,11 @@
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/settings.py:1929 allow_modifications and :2042 change_allow_attendee let the buyer or the attendee change the ticket holder's name and email (src/pretix/presale/views/order.py:942 OrderPositionModify); staff can do the same in the backend order view"
 			},
 			"addedOn": "2026-09-26",
-			"note": "Specified 2026-09-27 in openspec/changes/registration-cancel-transfer-refund (OpenSpec pass)."
+			"note": "Specified 2026-09-27 in openspec/changes/registration-cancel-transfer-refund (OpenSpec pass).",
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrAanmelding"
+			}
 		},
 		{
 			"id": "adm-role-invite",
@@ -6376,7 +7040,11 @@
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/organizer.py:504 TeamInvite sends a link that src/pretix/control/urls.py:52 auth.invite (src/pretix/control/views/auth.py:228) turns into team membership"
 			},
 			"addedOn": "2026-09-26",
-			"note": "Specified 2026-09-27 in openspec/changes/admin-staff-roles-and-invites (OpenSpec pass)."
+			"note": "Specified 2026-09-27 in openspec/changes/admin-staff-roles-and-invites (OpenSpec pass).",
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrSpelinstellingen"
+			}
 		},
 		{
 			"id": "adm-two-factor",
@@ -6408,7 +7076,11 @@
 				"kanka": "source read at tag 3.15: authenticator 2FA via pragmarx/google2fa-laravel (composer.json:45): routes/settings.php:158-167 generate, verify and cancel 2FA; enforced by app/Http/Middleware/OTP.php:19 when config google2fa.enabled",
 				"pretix": "source read at tag v2026.7.0: src/pretix/control/views/user.py:63,88 TOTP, WebAuthn and U2F devices, set up at src/pretix/control/urls.py:101 and enforced at login via :50 Login2FAView"
 			},
-			"addedOn": "2026-09-26"
+			"addedOn": "2026-09-26",
+			"screen": {
+				"board": null,
+				"reason": "Provided by Nextcloud's own login and security settings, not by a larpinq page."
+			}
 		},
 		{
 			"id": "reg-instalments",
@@ -6473,7 +7145,11 @@
 				"pretix": "source read at tag v2026.7.0: no character model in src/pretix/base/models/; nothing to publish as a book, cards or list"
 			},
 			"addedOn": "2026-09-26",
-			"note": "Specified 2026-09-27 in openspec/changes/characters-player-visibility (OpenSpec pass)."
+			"note": "Specified 2026-09-27 in openspec/changes/characters-player-visibility (OpenSpec pass).",
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrCast"
+			}
 		},
 		{
 			"id": "evt-milestones",
@@ -6506,7 +7182,11 @@
 				"pretix": "source read at tag v2026.7.0: looked in src/pretix/base/models/event.py and src/pretix/base/timeline.py:42; the timeline shows fixed sale and event dates, with no organiser tasks, statuses or deadlines"
 			},
 			"addedOn": "2026-09-26",
-			"note": "Specified 2026-09-27 by the existing change openspec/changes/leaf-integrations (OpenSpec pass)."
+			"note": "Specified 2026-09-27 by the existing change openspec/changes/leaf-integrations (OpenSpec pass).",
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrEvenement"
+			}
 		},
 		{
 			"id": "evt-props-warehouse",
@@ -6571,7 +7251,11 @@
 				"pretix": "source read at tag v2026.7.0: no character model in src/pretix/base/models/; no writing workflow or writer assignment"
 			},
 			"addedOn": "2026-09-26",
-			"note": "Specified 2026-09-27 in openspec/changes/characters-plot-threads-and-writing (OpenSpec pass)."
+			"note": "Specified 2026-09-27 in openspec/changes/characters-plot-threads-and-writing (OpenSpec pass).",
+			"screen": {
+				"canvas": "design-system",
+				"board": "LrRapportages"
+			}
 		}
 	],
 	"pending": [
