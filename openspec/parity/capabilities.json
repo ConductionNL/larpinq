@@ -355,6 +355,376 @@
 			"name_nl": "Inrichting, beheer en platform"
 		}
 	],
+	"features": [
+		{
+			"slug": "setting-management",
+			"title": "Worlds and campaigns",
+			"title_nl": "Werelden en campagnes",
+			"area": "worlds",
+			"overlay": "setting-management",
+			"specs": [
+				"setting-management"
+			]
+		},
+		{
+			"slug": "world-lore",
+			"title": "World lore, maps and timeline",
+			"title_nl": "Wereldkennis, kaarten en tijdlijn",
+			"area": "worlds",
+			"overlay": null,
+			"specs": [
+				"world-lore",
+				"setting-management",
+				"worlds-maps"
+			]
+		},
+		{
+			"slug": "character-management",
+			"title": "Character records and approval",
+			"title_nl": "Karakters vastleggen en goedkeuren",
+			"area": "characters",
+			"overlay": null,
+			"specs": [
+				"character-management",
+				"character-custom-fields"
+			]
+		},
+		{
+			"slug": "self-recomputing-character-sheets",
+			"title": "Character sheets that recompute themselves",
+			"title_nl": "Karakterbladen die zichzelf herberekenen",
+			"area": "characters",
+			"overlay": "self-recomputing-character-sheets",
+			"specs": [
+				"character-management",
+				"rpg-system",
+				"character-builds"
+			]
+		},
+		{
+			"slug": "transparent-stat-audit-trail",
+			"title": "Transparent stat audit trail",
+			"title_nl": "Transparant overzicht van elke statwijziging",
+			"area": "characters",
+			"overlay": "transparent-stat-audit-trail",
+			"specs": [
+				"character-management",
+				"event-xp-awards",
+				"events-players"
+			]
+		},
+		{
+			"slug": "faction-and-group-management",
+			"title": "Faction and group management",
+			"title_nl": "Beheer van facties en groepen",
+			"area": "characters",
+			"overlay": "faction-and-group-management",
+			"specs": [
+				"character-connections"
+			]
+		},
+		{
+			"slug": "plots-and-story",
+			"title": "Plot threads and character writing",
+			"title_nl": "Plotlijnen en karakters schrijven",
+			"area": "characters",
+			"overlay": null,
+			"specs": [
+				"story-writing",
+				"character-management"
+			]
+		},
+		{
+			"slug": "player-self-service",
+			"title": "Players see and edit their own sheet",
+			"title_nl": "Spelers zien en bewerken hun eigen blad",
+			"area": "players",
+			"overlay": null,
+			"specs": [
+				"character-management",
+				"portal-contribution"
+			]
+		},
+		{
+			"slug": "player-and-contact-records",
+			"title": "Player and contact records",
+			"title_nl": "Speler- en contactgegevens",
+			"area": "players",
+			"overlay": "player-and-contact-records",
+			"specs": [
+				"events-players",
+				"player-to-contacts-leaf"
+			]
+		},
+		{
+			"slug": "player-care-and-privacy",
+			"title": "Player care details and privacy",
+			"title_nl": "Zorggegevens en privacy van spelers",
+			"area": "players",
+			"overlay": null,
+			"specs": [
+				"players-care-details-and-erasure"
+			]
+		},
+		{
+			"slug": "rpg-system",
+			"title": "Configurable rules engine",
+			"title_nl": "Instelbare regelmotor",
+			"area": "rules",
+			"overlay": "rpg-system",
+			"specs": [
+				"rpg-system",
+				"game-mechanics",
+				"events-players",
+				"rules-rulebook-and-spell-lists"
+			]
+		},
+		{
+			"slug": "skill-requirement-enforcement",
+			"title": "Rules the system enforces for you",
+			"title_nl": "Regels die het systeem voor je afdwingt",
+			"area": "progression",
+			"overlay": "skill-requirement-enforcement",
+			"specs": [
+				"rpg-system",
+				"skill-requirement-enforcement"
+			]
+		},
+		{
+			"slug": "skill-tree-visualization",
+			"title": "Skill tree view",
+			"title_nl": "Vaardighedenboom",
+			"area": "rules",
+			"overlay": null,
+			"specs": [
+				"skill-tree-visualization",
+				"realtime-updates"
+			]
+		},
+		{
+			"slug": "event-xp-awards",
+			"title": "XP awards after every event",
+			"title_nl": "XP toekennen na elk evenement",
+			"area": "progression",
+			"overlay": "event-xp-awards",
+			"specs": [
+				"event-xp-awards",
+				"rpg-system",
+				"character-management"
+			]
+		},
+		{
+			"slug": "event-planning",
+			"title": "Event planning",
+			"title_nl": "Evenementen plannen",
+			"area": "events",
+			"overlay": null,
+			"specs": [
+				"events-players",
+				"leaf-integrations",
+				"events-post-event-survey"
+			]
+		},
+		{
+			"slug": "casting-and-crew",
+			"title": "Casting and crew roles",
+			"title_nl": "Casting en crewrollen",
+			"area": "events",
+			"overlay": null,
+			"specs": [
+				"events-casting-and-crew-roles"
+			]
+		},
+		{
+			"slug": "event-rosters-and-signup",
+			"title": "Event rosters and sign-up",
+			"title_nl": "Evenementrosters en aanmelding",
+			"area": "registration",
+			"overlay": "event-rosters-and-signup",
+			"specs": [
+				"event-checkin-roster",
+				"events-players",
+				"event-registration",
+				"event-signup-to-forms-leaf"
+			]
+		},
+		{
+			"slug": "onsite-check-in",
+			"title": "On-site check-in",
+			"title_nl": "Inchecken op locatie",
+			"area": "events",
+			"overlay": "onsite-check-in",
+			"specs": [
+				"event-checkin-roster",
+				"events-qr-checkin"
+			]
+		},
+		{
+			"slug": "online-event-payments",
+			"title": "Online payments for event fees",
+			"title_nl": "Online betalingen voor deelnamekosten",
+			"area": "registration",
+			"overlay": "online-event-payments",
+			"specs": [
+				"event-registration",
+				"registration-payments-through-shillinq"
+			]
+		},
+		{
+			"slug": "cancellations-and-refunds",
+			"title": "Cancellations, transfers and refunds",
+			"title_nl": "Annuleren, overdragen en terugbetalen",
+			"area": "registration",
+			"overlay": null,
+			"specs": [
+				"registration-cancel-transfer-refund"
+			]
+		},
+		{
+			"slug": "pdf-character-sheets",
+			"title": "Printable character sheets",
+			"title_nl": "Printbare karakterbladen",
+			"area": "print",
+			"overlay": "pdf-character-sheets",
+			"specs": [
+				"pdf-export"
+			]
+		},
+		{
+			"slug": "gm-run-sheet",
+			"title": "GM run-sheet per event",
+			"title_nl": "GM-draaiboek per evenement",
+			"area": "print",
+			"overlay": "gm-run-sheet",
+			"specs": [
+				"pdf-export"
+			]
+		},
+		{
+			"slug": "lifecycle-notifications",
+			"title": "Lifecycle notifications",
+			"title_nl": "Meldingen bij statuswijzigingen",
+			"area": "communication",
+			"overlay": "lifecycle-notifications",
+			"specs": [
+				"notifications"
+			]
+		},
+		{
+			"slug": "player-communication",
+			"title": "Mail, announcements and help desk",
+			"title_nl": "Mail, aankondigingen en helpdesk",
+			"area": "communication",
+			"overlay": null,
+			"specs": [
+				"communication-mail-participants",
+				"communication-help-desk"
+			]
+		},
+		{
+			"slug": "campaign-dashboard",
+			"title": "Campaign dashboard",
+			"title_nl": "Campagnedashboard",
+			"area": "insight",
+			"overlay": "campaign-dashboard",
+			"specs": [
+				"dashboard",
+				"dashboard-analytics-widgets",
+				"setting-management"
+			]
+		},
+		{
+			"slug": "skill-usage-insights",
+			"title": "Skill usage insights",
+			"title_nl": "Inzicht in vaardigheidsgebruik",
+			"area": "insight",
+			"overlay": "skill-usage-insights",
+			"specs": [
+				"larping-skill-widget",
+				"reports"
+			]
+		},
+		{
+			"slug": "reports-and-exports",
+			"title": "Campaign reports and exports",
+			"title_nl": "Campagnerapportages en exports",
+			"area": "insight",
+			"overlay": null,
+			"specs": [
+				"reports",
+				"data-portability"
+			]
+		},
+		{
+			"slug": "photos-maps-and-calendar",
+			"title": "Photos, maps and calendar on detail pages",
+			"title_nl": "Foto's, kaarten en agenda op detailpagina's",
+			"area": "events",
+			"overlay": "photos-maps-and-calendar",
+			"specs": [
+				"character-photos-leaf",
+				"event-calendar-leaf",
+				"event-location-to-maps-leaf"
+			]
+		},
+		{
+			"slug": "nextcloud-integration",
+			"title": "Works inside Nextcloud search, links and flows",
+			"title_nl": "Werkt in Nextcloud-zoeken, links en flows",
+			"area": "communication",
+			"overlay": null,
+			"specs": [
+				"deep-link-registration",
+				"flows"
+			]
+		},
+		{
+			"slug": "guided-setup-and-walkthrough",
+			"title": "Guided setup and walkthrough",
+			"title_nl": "Begeleide installatie en rondleiding",
+			"area": "admin",
+			"overlay": "guided-setup-and-walkthrough",
+			"specs": [
+				"first-time-setup",
+				"beta-alignment"
+			]
+		},
+		{
+			"slug": "admin-and-access",
+			"title": "Admin settings, staff roles and access",
+			"title_nl": "Beheer, staffrollen en toegang",
+			"area": "admin",
+			"overlay": null,
+			"specs": [
+				"admin-settings",
+				"event-checkin-roster",
+				"register-config-json",
+				"setting-management",
+				"admin-staff-roles-and-invites",
+				"apphost-adoption"
+			]
+		},
+		{
+			"slug": "phone-and-language",
+			"title": "Phone friendly and in Dutch or English",
+			"title_nl": "Geschikt voor de telefoon, in Nederlands of Engels",
+			"area": "admin",
+			"overlay": null,
+			"specs": [
+				"admin-phone-friendly-pages"
+			]
+		},
+		{
+			"slug": "open-and-portable",
+			"title": "Open source, self-hosted and portable data",
+			"title_nl": "Open source, zelf gehost en meeneembare data",
+			"area": "admin",
+			"overlay": null,
+			"specs": [
+				"data-portability"
+			]
+		}
+	],
 	"providers": [
 		{
 			"key": "self",
@@ -474,7 +844,7 @@
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
 			"feature": "setting-management",
-			"featureConfidence": "medium",
+			"featureConfidence": "high",
 			"origin": "own-code",
 			"note": "A plain status field the GM flips in the standard edit form, not a dedicated archive action; nothing stops deleting the world outright instead, and archived worlds are not hidden from pickers/lists by default.",
 			"evidence": {
@@ -564,8 +934,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: grepped this repository, no hits beyond free-text description fields",
-			"feature": "setting-management",
-			"featureConfidence": "medium",
+			"feature": "world-lore",
+			"featureConfidence": "high",
 			"origin": "competitor",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/models/writing.py:848-880 Handout texts with public external link (larpmanager/urls/event.py:342-344), faction pages larpmanager/views/user/event.py:1036-1060; no free lore page type for places or history",
@@ -595,8 +965,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "setting-management",
-			"featureConfidence": "medium",
+			"feature": "world-lore",
+			"featureConfidence": "high",
 			"origin": "competitor",
 			"note": "A date-sorted event list per world exists, but there is no dedicated timeline view of in-game history/lore; the dashboard's own timeline widget is explicitly still Planned, not implemented.",
 			"evidence": {
@@ -626,8 +996,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: grepped this repository, no hits beyond the event-location leaf",
-			"feature": "setting-management",
-			"featureConfidence": "medium",
+			"feature": "world-lore",
+			"featureConfidence": "high",
 			"origin": "competitor",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): no map upload or location pin model in larpmanager/models/; only an outbound Google Maps link for the venue (larpmanager/models/event.py:369-381)",
@@ -657,8 +1027,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: grepped this repository, no hits",
-			"feature": "setting-management",
-			"featureConfidence": "medium",
+			"feature": "world-lore",
+			"featureConfidence": "high",
 			"origin": "competitor",
 			"note": "See also the chr-gm-notes finding: nothing actually enforces the GM-only/player-visible split at read time for characters either. Specified 2026-09-27 in openspec/changes/worlds-lore-pages (OpenSpec pass).",
 			"evidence": {
@@ -689,7 +1059,7 @@
 			"provider": "self",
 			"providerHow": "read: grepped this repository, no hits",
 			"feature": "setting-management",
-			"featureConfidence": "medium",
+			"featureConfidence": "high",
 			"origin": "competitor",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/utils/core/copy_choices.py:47-50 copy \"Character Sheet\" and \"Experience\" from another event (orga_copy), larpmanager/fixtures/feature.yaml:1047-1060 template events",
@@ -719,7 +1089,7 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "self-recomputing-character-sheets",
+			"feature": "character-management",
 			"featureConfidence": "high",
 			"origin": "own-code",
 			"evidence": {
@@ -749,7 +1119,7 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "self-recomputing-character-sheets",
+			"feature": "character-management",
 			"featureConfidence": "high",
 			"origin": "own-code",
 			"note": "Schema marks it GM-only (visible:false / description says GM-only), but it is explicitly listed in the char-identity widget that renders for anyone who opens the detail page; see the GM-notes finding for the same gap.",
@@ -780,7 +1150,7 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "self-recomputing-character-sheets",
+			"feature": "character-management",
 			"featureConfidence": "high",
 			"origin": "own-code",
 			"note": "Only two states exist (no/approved), there is no explicit 'rejected' state, only 'not yet approved', which is a softer read of the seed capability than a reject workflow.",
@@ -811,7 +1181,7 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "self-recomputing-character-sheets",
+			"feature": "character-management",
 			"featureConfidence": "high",
 			"origin": "own-code",
 			"note": "Live-defect candidate: the field is stored and its own description says players must not see it, but nothing (no property RBAC, no per-role widget) actually hides slNotesPrivate from a player who opens their own character's detail page. Specified 2026-09-27 in openspec/changes/characters-player-visibility (OpenSpec pass).",
@@ -842,7 +1212,7 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "self-recomputing-character-sheets",
+			"feature": "photos-maps-and-calendar",
 			"featureConfidence": "high",
 			"origin": "own-code",
 			"evidence": {
@@ -903,7 +1273,7 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "self-recomputing-character-sheets",
+			"feature": "transparent-stat-audit-trail",
 			"featureConfidence": "high",
 			"origin": "own-code",
 			"note": "openspec/specs/larping-skill-widget/spec.md:186 independently marks a 'character stat breakdown widget' as not yet implemented, consistent with this reading. Specified 2026-09-27 in openspec/changes/characters-stat-sheet-panel (OpenSpec pass).",
@@ -994,7 +1364,7 @@
 			},
 			"provider": "self",
 			"providerHow": "read: grepped this repository, no hits beyond the fields cited",
-			"feature": "self-recomputing-character-sheets",
+			"feature": "character-management",
 			"featureConfidence": "high",
 			"origin": "own-code",
 			"note": "openspec/parity/capabilities.json:618 carries this exact row name pending a rating, consistent with it being a genuine gap rather than a wording mismatch. Specified 2026-09-27 in openspec/changes/characters-status-and-bulk-edit (OpenSpec pass).",
@@ -1025,7 +1395,7 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "self-recomputing-character-sheets",
+			"feature": "character-management",
 			"featureConfidence": "high",
 			"origin": "own-code",
 			"evidence": {
@@ -1085,7 +1455,7 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "self-recomputing-character-sheets",
+			"feature": "player-self-service",
 			"featureConfidence": "high",
 			"origin": "competitor",
 			"note": "The isolation half of this capability (not seeing other players' sheets) is explicitly called out as an open follow-up in the codebase's own PDF-download docblock. Specified 2026-09-27 in openspec/changes/characters-player-visibility (OpenSpec pass).",
@@ -1116,7 +1486,7 @@
 			},
 			"provider": "self",
 			"providerHow": "read: grepped this repository, no hits",
-			"feature": "self-recomputing-character-sheets",
+			"feature": "character-management",
 			"featureConfidence": "high",
 			"origin": "competitor",
 			"evidence": {
@@ -1147,7 +1517,7 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "self-recomputing-character-sheets",
+			"feature": "character-management",
 			"featureConfidence": "high",
 			"origin": "competitor",
 			"note": "There is no standalone NPC entity/schema (openspec/changes/beta-surface-alignment/proposal.md:70 confirms none exists), NPCs are player-schema characters distinguished only by the 'type' value, sharing the exact same stat engine, sheet and pages as PCs.",
@@ -1178,7 +1548,7 @@
 			},
 			"provider": "self",
 			"providerHow": "read: grepped this repository, no hits",
-			"feature": "self-recomputing-character-sheets",
+			"feature": "faction-and-group-management",
 			"featureConfidence": "high",
 			"origin": "competitor",
 			"evidence": {
@@ -1209,7 +1579,7 @@
 			},
 			"provider": "self",
 			"providerHow": "read: grepped this repository, no hits; corroborated by the cited proposal's own grep record",
-			"feature": "self-recomputing-character-sheets",
+			"feature": "faction-and-group-management",
 			"featureConfidence": "high",
 			"origin": "competitor",
 			"evidence": {
@@ -1240,8 +1610,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "self-recomputing-character-sheets",
-			"featureConfidence": "medium",
+			"feature": "plots-and-story",
+			"featureConfidence": "high",
 			"origin": "competitor",
 			"note": "Overlaps chr-gm-notes and chr-background: the two free-text GM fields can carry secrets/plots, but there is no structured, trackable plot-thread list, and (per the chr-gm-notes finding) nothing actually keeps these fields hidden from the player at read time. Specified 2026-09-27 in openspec/changes/characters-plot-threads-and-writing (OpenSpec pass).",
 			"evidence": {
@@ -1302,7 +1672,7 @@
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
 			"feature": "event-xp-awards",
-			"featureConfidence": "medium",
+			"featureConfidence": "high",
 			"origin": "competitor",
 			"note": "Covers XP outcomes per event and generic field-change audit, but there is no narrative 'what happened this session' log beyond those two, merges with chr-audit-history and event-xp-awards rather than being a distinct capability.",
 			"evidence": {
@@ -1483,7 +1853,7 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "player-and-contact-records",
+			"feature": "player-self-service",
 			"featureConfidence": "high",
 			"origin": "own-code",
 			"note": "True, but trivially so: nothing scopes this to 'own', see chr-player-edits-own for the isolation gap this implies.",
@@ -1514,7 +1884,7 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "player-and-contact-records",
+			"feature": "admin-and-access",
 			"featureConfidence": "high",
 			"origin": "own-code",
 			"note": "Live-defect candidate: two different 'who is a GM' checks are used and can diverge, CharactersController::downloadPdf checks Nextcloud isAdmin(), while EventsController/CharacterRequirementListener check membership in the 'gamemasters' group. An admin outside 'gamemasters' could download PDFs but not author overrides or run check-in; a 'gamemasters' member who is not a Nextcloud admin could do the reverse.",
@@ -1545,7 +1915,7 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence; the account itself is portaliq's",
-			"feature": "player-and-contact-records",
+			"feature": "player-self-service",
 			"featureConfidence": "high",
 			"origin": "competitor",
 			"evidence": {
@@ -1576,7 +1946,7 @@
 			},
 			"provider": "self",
 			"providerHow": "read: grepped this repository, no hits in larpinq's own data model",
-			"feature": "player-and-contact-records",
+			"feature": "player-care-and-privacy",
 			"featureConfidence": "high",
 			"origin": "competitor",
 			"evidence": {
@@ -1607,7 +1977,7 @@
 			},
 			"provider": "self",
 			"providerHow": "read: grepped this repository, no hits",
-			"feature": "player-and-contact-records",
+			"feature": "player-care-and-privacy",
 			"featureConfidence": "high",
 			"origin": "competitor",
 			"evidence": {
@@ -1638,7 +2008,7 @@
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
 			"feature": "player-and-contact-records",
-			"featureConfidence": "medium",
+			"featureConfidence": "high",
 			"origin": "competitor",
 			"note": "No dedicated player-level attendance-over-time report; the data is reachable only by hopping from player to each character to that character's events group. Specified 2026-09-27 in openspec/changes/players-attendance-history (OpenSpec pass).",
 			"evidence": {
@@ -1668,7 +2038,7 @@
 			},
 			"provider": "self",
 			"providerHow": "read: grepped this repository, no hits",
-			"feature": "player-and-contact-records",
+			"feature": "player-care-and-privacy",
 			"featureConfidence": "high",
 			"origin": "competitor",
 			"evidence": {
@@ -1973,7 +2343,7 @@
 			"provider": "self",
 			"providerHow": "read",
 			"feature": "rpg-system",
-			"featureConfidence": "medium",
+			"featureConfidence": "high",
 			"origin": "own-code",
 			"note": "This is an architectural property, not a single screen, credited because every rule entity (ability/skill/item/condition/effect) is a plain, GM-authored OpenRegister object rather than code baked to one named system.",
 			"evidence": {
@@ -2064,7 +2434,7 @@
 			"provider": "self",
 			"providerHow": "read",
 			"feature": "skill-tree-visualization",
-			"featureConfidence": "medium",
+			"featureConfidence": "high",
 			"origin": "own-code",
 			"note": "Own-code row added because it is a distinct, testable resilience property (a malformed/cyclic requiredSkills graph degrades gracefully) rather than a duplicate of rul-skill-tree-view.",
 			"evidence": {
@@ -2211,8 +2581,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read",
-			"feature": "rpg-system",
-			"featureConfidence": "high",
+			"feature": "pdf-character-sheets",
+			"featureConfidence": "medium",
 			"origin": "competitor",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/views/orga/writing.py:349-358 print a handout as PDF with its HTML/CSS template (larpmanager/models/writing.py:817-845); nothing ties a printed card to an inventory or warehouse item",
@@ -2242,7 +2612,7 @@
 			"provider": "self",
 			"providerHow": "read",
 			"feature": "rpg-system",
-			"featureConfidence": "medium",
+			"featureConfidence": "high",
 			"origin": "own-code",
 			"note": "Own-code row added to make rule 3 (declaration is not behaviour) concrete: item.characters is a plain many-to-many relation with no server-side guard, so a 'unique' item can currently be added to any number of characters. Specified 2026-09-27 in openspec/changes/rules-unique-holder-enforcement (OpenSpec pass).",
 			"evidence": {
@@ -2273,7 +2643,7 @@
 			"provider": "self",
 			"providerHow": "read",
 			"feature": "rpg-system",
-			"featureConfidence": "medium",
+			"featureConfidence": "high",
 			"origin": "own-code",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): no condition entity exists in larpmanager/models/, so no uniqueness rule either",
@@ -2304,7 +2674,7 @@
 			"provider": "self",
 			"providerHow": "read",
 			"feature": "rpg-system",
-			"featureConfidence": "medium",
+			"featureConfidence": "high",
 			"origin": "own-code",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/models/experience.py:215-221 one RuleExp attaches to many abilities, larpmanager/models/experience.py:54-66 AbilityTemplateExp reuses descriptions; items, conditions and events cannot carry effects",
@@ -2606,7 +2976,7 @@
 			},
 			"provider": "self",
 			"providerHow": "read",
-			"feature": "rpg-system",
+			"feature": "event-xp-awards",
 			"featureConfidence": "high",
 			"origin": "own-code",
 			"evidence": {
@@ -2637,7 +3007,7 @@
 			"provider": "self",
 			"providerHow": "read",
 			"feature": "event-xp-awards",
-			"featureConfidence": "medium",
+			"featureConfidence": "high",
 			"origin": "own-code",
 			"note": "featureConfidence medium because edit/delete on a detail page is a generic nc-vue page-type behaviour rather than a larpinq-specific control; the schema's own description calls the record 'effectively append-only' as a design intent, not an enforced readOnly.",
 			"evidence": {
@@ -2755,7 +3125,7 @@
 			"provider": "self",
 			"providerHow": "read",
 			"feature": "self-recomputing-character-sheets",
-			"featureConfidence": "medium",
+			"featureConfidence": "high",
 			"origin": "competitor",
 			"note": "This is an implicit consequence of the stateless recompute architecture rather than a dedicated 'refund' action with its own record: removing a skill silently frees the XP it cost on the next calculation, with no distinct audit entry saying a refund happened (compare to prg-xp-correction, which IS an explicit ledger edit).",
 			"evidence": {
@@ -2785,8 +3155,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: schema and manifest are in this repository at the paths in built.evidence",
-			"feature": "event-rosters-and-signup",
-			"featureConfidence": "medium",
+			"feature": "event-planning",
+			"featureConfidence": "high",
 			"origin": "own-code",
 			"note": "openspec/specs/events-players/spec.md EVT-001..EVT-004 claim this as Implemented, consistent with the schema and generic index/detail page.",
 			"evidence": {
@@ -3029,8 +3399,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: enumerated every property on the larping_event schema directly",
-			"feature": "event-rosters-and-signup",
-			"featureConfidence": "low",
+			"feature": "event-planning",
+			"featureConfidence": "high",
 			"origin": "own-code",
 			"note": "Only startDate/endDate exist; a GM can infer status from dates but there is no explicit lifecycle field or UI control.",
 			"evidence": {
@@ -3091,8 +3461,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: manifest config in this repo",
-			"feature": "event-rosters-and-signup",
-			"featureConfidence": "medium",
+			"feature": "event-planning",
+			"featureConfidence": "high",
 			"origin": "own-code",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/views/user/event.py:547 calendar_past, per-run gallery and character list (larpmanager/urls/event.py:49-69), larpmanager/views/exe/member.py:489 per-member registrations",
@@ -3179,8 +3549,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: grepped, no hits",
-			"feature": "faction-and-group-management",
-			"featureConfidence": "medium",
+			"feature": "casting-and-crew",
+			"featureConfidence": "high",
 			"origin": "competitor",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/models/registration.py:44-54 Staff, NPC, Collaborator ticket tiers, larpmanager/models/access.py:153 EventRole for staff, larpmanager/models/miscellanea.py:549-590 warehouse areas per event",
@@ -3209,8 +3579,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: grepped, one false-positive comment hit only",
-			"feature": "event-rosters-and-signup",
-			"featureConfidence": "low",
+			"feature": "event-planning",
+			"featureConfidence": "high",
 			"origin": "competitor",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/models/writing.py:919-935 SpeedLarp scenes with slot type, station and characters (conflict checks per feature description), larpmanager/models/writing.py:787 prologues per act; no timed scene schedule",
@@ -3238,8 +3608,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: grepped, no hits",
-			"feature": "event-rosters-and-signup",
-			"featureConfidence": "low",
+			"feature": "event-planning",
+			"featureConfidence": "high",
 			"origin": "competitor",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): searched larpmanager/models, forms and views for rooms, beds or lodging: only an expense category (larpmanager/models/accounting.py:281) and publisher info fields (larpmanager/forms/event.py:2527-2535)",
@@ -3269,7 +3639,7 @@
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence; the form and its answers stay in Nextcloud Forms",
 			"feature": "event-rosters-and-signup",
-			"featureConfidence": "medium",
+			"featureConfidence": "high",
 			"origin": "competitor",
 			"note": "See findings.md: this is a spec-vs-code mismatch, not just a missing competitor feature. Specified 2026-09-27 in openspec/changes/registration-intake-and-capacity (OpenSpec pass).",
 			"evidence": {
@@ -3332,7 +3702,7 @@
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence; the form and its answers stay in Nextcloud Forms",
 			"feature": "event-rosters-and-signup",
-			"featureConfidence": "medium",
+			"featureConfidence": "high",
 			"origin": "competitor",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/views/user/character.py:890-944 participant picks and is assigned a character with locking and max checks, larpmanager/tests/playwright/character_choose_test.py",
@@ -3487,7 +3857,7 @@
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence; the amount due and the payment belong to shillinq",
 			"feature": "online-event-payments",
-			"featureConfidence": "medium",
+			"featureConfidence": "high",
 			"origin": "competitor",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/models/accounting.py:561-700 Discount and DiscountType, larpmanager/fixtures/feature.yaml:62 discount codes, reg_surcharges for late signups",
@@ -3516,8 +3886,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: grepped, no hits",
-			"feature": "online-event-payments",
-			"featureConfidence": "medium",
+			"feature": "cancellations-and-refunds",
+			"featureConfidence": "high",
 			"origin": "competitor",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/models/accounting.py:789-832 RefundRequest, larpmanager/urls/orga.py orga_cancellation_refund, larpmanager/fixtures/feature.yaml:776 refund",
@@ -3547,7 +3917,7 @@
 			"provider": "self",
 			"providerHow": "read: grepped, no hits",
 			"feature": "online-event-payments",
-			"featureConfidence": "medium",
+			"featureConfidence": "high",
 			"origin": "competitor",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/models/accounting.py:57-270 PaymentInvoice and ElectronicInvoice, larpmanager/fixtures/feature.yaml:957 receipts feature generating a PDF receipt per payment",
@@ -3577,7 +3947,7 @@
 			"provider": "self",
 			"providerHow": "read: grepped, no hits",
 			"feature": "event-rosters-and-signup",
-			"featureConfidence": "low",
+			"featureConfidence": "high",
 			"origin": "competitor",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/templates/larpmanager/event/register.html:46-52 links to event or organisation terms (larpmanager/views/user/registration.py:672-694); no built-in acceptance checkbox, only via a mandatory custom question",
@@ -3668,7 +4038,7 @@
 			"provider": "filinq",
 			"providerHow": "read: the {template} route segment accepts an arbitrary UUID, but nothing in this app lists the available templates or lets a user pick one",
 			"feature": "pdf-character-sheets",
-			"featureConfidence": "medium",
+			"featureConfidence": "high",
 			"origin": "own-code",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/urls/orga.py:466-476 full sheet and \"friendly\" sheet PDFs, larpmanager/templates/pdf/sheets/ auxiliary, faction, relationships layouts, custom page_css (larpmanager/forms/event.py:246)",
@@ -3698,7 +4068,7 @@
 			"provider": "self",
 			"providerHow": "read: grepped, no hits",
 			"feature": "pdf-character-sheets",
-			"featureConfidence": "low",
+			"featureConfidence": "high",
 			"origin": "competitor",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/views/orga/writing.py:349-358 prints any handout as a PDF with its own HTML/CSS template (larpmanager/models/writing.py:817-845), usable for cards but not generated from items",
@@ -3726,7 +4096,7 @@
 			},
 			"provider": "self",
 			"providerHow": "read: grepped, no hits",
-			"feature": "pdf-character-sheets",
+			"feature": "gm-run-sheet",
 			"featureConfidence": "medium",
 			"origin": "competitor",
 			"evidence": {
@@ -3756,7 +4126,7 @@
 			"provider": "self",
 			"providerHow": "read: grepped, only false-positive component-name hits",
 			"feature": "pdf-character-sheets",
-			"featureConfidence": "low",
+			"featureConfidence": "medium",
 			"origin": "competitor",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/templates/pdf/sheets/ has no name badge layout; the badge feature (larpmanager/fixtures/feature.yaml:469) is gamification awards, not printed name tags",
@@ -3784,8 +4154,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: explicit scope documentation plus a direct grep for the subscription call",
-			"feature": "campaign-dashboard",
-			"featureConfidence": "medium",
+			"feature": "nextcloud-integration",
+			"featureConfidence": "high",
 			"origin": "own-code",
 			"note": "Live updates ARE real and built, but only for the Skill tree (a different area, not events/roster/registration/print/communication). Nothing in this lane's area has it.",
 			"evidence": {
@@ -3815,8 +4185,8 @@
 			},
 			"provider": "openregister",
 			"providerHow": "read: larpinq registers its URL templates with OpenRegister's DeepLinkRegistrationEvent; OpenRegister's search/deep-link consumers are what actually follow the links",
-			"feature": "campaign-dashboard",
-			"featureConfidence": "medium",
+			"feature": "nextcloud-integration",
+			"featureConfidence": "high",
 			"origin": "own-code",
 			"note": "The listener's own docblock documents a since-fixed defect: the guard used to probe a non-existent method (registerDeepLink) and silently registered zero links; it now correctly checks method_exists($event, 'register').",
 			"evidence": {
@@ -3845,8 +4215,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: grepped, no hits",
-			"feature": "lifecycle-notifications",
-			"featureConfidence": "medium",
+			"feature": "player-communication",
+			"featureConfidence": "high",
 			"origin": "competitor",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/urls/orga.py:1801 orga_send_mail, larpmanager/views/orga/member.py:525-563 archive of sent event mail",
@@ -3875,8 +4245,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: grepped, no hits",
-			"feature": "player-and-contact-records",
-			"featureConfidence": "low",
+			"feature": "plots-and-story",
+			"featureConfidence": "medium",
 			"origin": "competitor",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/models/miscellanea.py:134-150 ChatMessage between members (chat feature, larpmanager/fixtures/feature.yaml:399); messages are between people, not characters",
@@ -3904,8 +4274,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: grepped, no hits",
-			"feature": "lifecycle-notifications",
-			"featureConfidence": "medium",
+			"feature": "player-communication",
+			"featureConfidence": "high",
 			"origin": "competitor",
 			"note": "openspec/changes/leaf-integrations/proposal.md proposes a future 'talk' leaf (event/campaign chat room via OpenRegister's TalkProvider), which is adjacent but not built: lib/Settings/register.d/ has no leaf-integrations.json fragment at HEAD.",
 			"evidence": {
@@ -3936,8 +4306,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: larpinq authors the declarative contribution manifest in this repo; portaliq (a separate app) is the one that renders the actual portal UI and calls into this class at runtime, so the reachable page lives in portaliq, not larpinq",
-			"feature": "player-and-contact-records",
-			"featureConfidence": "medium",
+			"feature": "player-self-service",
+			"featureConfidence": "high",
 			"origin": "own-code",
 			"note": "Scoping deliberately uses character.ownerRef (the player object UUID) rather than ownerUid, since an external subject has no Nextcloud account. Rated yes on the strength of the real, wired provider class; whether portaliq is installed on a given instance is a deployment fact outside this repo. Checked 2026-09-26: portaliq lib/Service/PortalObjectWriter.php:92-95 createObject() always overwrites the declared scope field with the subject reference, so character.ownerRef is stamped server-side on every portal create. The live-defect candidate in larpinq#730 that said PortalObjectWriter does not exist looked only in this repo and is withdrawn; the ownerRef scoping this rating rests on is filled.",
 			"evidence": {
@@ -3966,8 +4336,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: grepped, no hits",
-			"feature": "event-rosters-and-signup",
-			"featureConfidence": "low",
+			"feature": "plots-and-story",
+			"featureConfidence": "medium",
 			"origin": "competitor",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/fixtures/feature.yaml debrief feature (module event): organiser-defined questions participants fill after the event (larpmanager/urls/orga.py orga_debrief_answers); no resolve workflow for actions",
@@ -3997,7 +4367,7 @@
 			"provider": "self",
 			"providerHow": "read: full trace from schema field to CharacterService's generic per-entity-type effect application to the display widget",
 			"feature": "rpg-system",
-			"featureConfidence": "high",
+			"featureConfidence": "medium",
 			"origin": "own-code",
 			"note": "openspec/specs/events-players/spec.md EVT-007/EVT-008 claim this as Implemented; code confirms it for the 'events' property specifically, not just skills/items/conditions.",
 			"evidence": {
@@ -4181,8 +4551,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "skill-usage-insights",
-			"featureConfidence": "medium",
+			"feature": "reports-and-exports",
+			"featureConfidence": "high",
 			"origin": "own-code",
 			"note": "Manifest _note at that page warns every report filter is scalar-equality only; a multi-value or relative-date filter would be accepted and then silently not applied (none is currently configured on this page, so it doesn't bite today).",
 			"evidence": {
@@ -4212,7 +4582,7 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "skill-usage-insights",
+			"feature": "reports-and-exports",
 			"featureConfidence": "high",
 			"origin": "own-code",
 			"evidence": {
@@ -4243,7 +4613,7 @@
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
 			"feature": "skill-usage-insights",
-			"featureConfidence": "high",
+			"featureConfidence": "medium",
 			"origin": "own-code",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/templates/larpmanager/orga/experience/abilities.html:17-32 ability list with cost, type and the characters that hold each; inventory list larpmanager/urls/orga.py:1321; no combined content report",
@@ -4302,8 +4672,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: absence confirmed by grep",
-			"feature": "skill-usage-insights",
-			"featureConfidence": "medium",
+			"feature": "reports-and-exports",
+			"featureConfidence": "high",
 			"origin": "competitor",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/utils/io/download/core.py:34-73 CSV and ZIP exports used by character, registration, form and 12 experience list views, larpmanager/views/orga/writing.py:706 orga_export",
@@ -4363,8 +4733,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: absence confirmed by grep",
-			"feature": "event-rosters-and-signup",
-			"featureConfidence": "medium",
+			"feature": "reports-and-exports",
+			"featureConfidence": "high",
 			"origin": "competitor",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): charts exist only for balances (larpmanager/templates/larpmanager/exe/accounting/accounting_rec.html:28-92), casting and likert answers; no attendance-over-events chart",
@@ -4393,7 +4763,7 @@
 			},
 			"provider": "self",
 			"providerHow": "read: absence confirmed by grep",
-			"feature": "skill-usage-insights",
+			"feature": "reports-and-exports",
 			"featureConfidence": "high",
 			"origin": "competitor",
 			"evidence": {
@@ -4423,8 +4793,8 @@
 			},
 			"provider": "openregister",
 			"providerHow": "read: larpinq registers URL templates; OpenRegister supplies the unified-search event and provider that renders results",
-			"feature": "campaign-dashboard",
-			"featureConfidence": "low",
+			"feature": "nextcloud-integration",
+			"featureConfidence": "high",
 			"origin": "own-code",
 			"note": "Own-code row added because the listener does real per-schema registration work, not just a declaration; the search UI itself belongs to OpenRegister/Nextcloud.",
 			"evidence": {
@@ -4544,7 +4914,7 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "settings-management-ui",
+			"feature": "admin-and-access",
 			"featureConfidence": "high",
 			"origin": "own-code",
 			"evidence": {
@@ -4574,7 +4944,7 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "settings-management-ui",
+			"feature": "admin-and-access",
 			"featureConfidence": "high",
 			"origin": "own-code",
 			"evidence": {
@@ -4604,8 +4974,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the endpoint and its documented keys are in this repository; the calling code lives in the shared @conduction/nextcloud-vue library (not vendored here), so the call site itself is inferred from lib/Repair/MigrateUserPreferences.php's docblock rather than observed directly",
-			"feature": "user-settings",
-			"featureConfidence": "medium",
+			"feature": "admin-and-access",
+			"featureConfidence": "high",
 			"origin": "own-code",
 			"note": "The seed's example ('a default world per user') is not implemented, grep -rniE 'default.?(world|setting|campaign)' src/ lib/ found nothing. What's actually stored are small UI markers, not a functional per-user default-world preference. Specified 2026-09-27 in openspec/changes/events-world-scope-and-upcoming (OpenSpec pass).",
 			"evidence": {
@@ -4635,7 +5005,7 @@
 			},
 			"provider": "nextcloud",
 			"providerHow": "read: larpinq relies entirely on Nextcloud's standard app-level group-restriction mechanism; it declares no group restriction of its own in code",
-			"feature": "setting-management",
+			"feature": "admin-and-access",
 			"featureConfidence": "high",
 			"origin": "own-code",
 			"evidence": {
@@ -4665,7 +5035,7 @@
 			},
 			"provider": "self",
 			"providerHow": "read: absence confirmed by grep",
-			"feature": "setting-management",
+			"feature": "admin-and-access",
 			"featureConfidence": "high",
 			"origin": "competitor",
 			"evidence": {
@@ -4696,7 +5066,7 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "setting-management",
+			"feature": "phone-and-language",
 			"featureConfidence": "high",
 			"origin": "own-code",
 			"evidence": {
@@ -4726,8 +5096,8 @@
 			},
 			"provider": "openregister",
 			"providerHow": "declare: larpinq registers its schemas; OpenRegister is what actually serves the generic API other tools would call",
-			"feature": "setting-management",
-			"featureConfidence": "medium",
+			"feature": "open-and-portable",
+			"featureConfidence": "high",
 			"origin": "own-code",
 			"note": "openapi.json (120 lines) is a near-empty stub, title 'dsonextcloud', a single generic OCS path, not a real larpinq-specific API document; see findings.",
 			"evidence": {
@@ -4757,7 +5127,7 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "setting-management",
+			"feature": "admin-and-access",
 			"featureConfidence": "high",
 			"origin": "own-code",
 			"evidence": {
@@ -4787,7 +5157,7 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence; the flow list/canvas page types themselves are the shared nc-vue 'index'/'flow' generics over an openregister.flows configuration",
-			"feature": "setting-management",
+			"feature": "nextcloud-integration",
 			"featureConfidence": "medium",
 			"origin": "own-code",
 			"evidence": {
@@ -4817,7 +5187,7 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "setting-management",
+			"feature": "open-and-portable",
 			"featureConfidence": "high",
 			"origin": "own-code",
 			"evidence": {
@@ -4847,7 +5217,7 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "setting-management",
+			"feature": "open-and-portable",
 			"featureConfidence": "high",
 			"origin": "own-code",
 			"evidence": {
@@ -4877,8 +5247,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: absence confirmed by grep",
-			"feature": "player-and-contact-records",
-			"featureConfidence": "high",
+			"feature": "open-and-portable",
+			"featureConfidence": "medium",
 			"origin": "competitor",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/utils/io/upload/ (writing, registration, experience, relations, tickets CSV importers), larpmanager/urls/orga.py:1716 orga_upload, larpmanager/tests/unit/test_experience_upload_download.py",
@@ -4908,7 +5278,7 @@
 			},
 			"provider": "self",
 			"providerHow": "read: absence confirmed by grep",
-			"feature": "setting-management",
+			"feature": "open-and-portable",
 			"featureConfidence": "high",
 			"origin": "competitor",
 			"evidence": {
@@ -4939,8 +5309,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: absence confirmed by grep",
-			"feature": "setting-management",
-			"featureConfidence": "medium",
+			"feature": "phone-and-language",
+			"featureConfidence": "high",
 			"origin": "competitor",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/templates/structure.html:6 responsive viewport with about 90 media queries in larpmanager/static/larpmanager/assets/css/larpmanager/, phone QR check-in page larpmanager/templates/larpmanager/orga/checkin.html; no native app",
@@ -4970,8 +5340,8 @@
 			},
 			"provider": "openregister",
 			"providerHow": "read: larpinq wires the tenant-context plumbing; the organisation-scoping itself (the X-OpenRegister-Organisation header's effect) is OpenRegister's",
-			"feature": "setting-management",
-			"featureConfidence": "medium",
+			"feature": "admin-and-access",
+			"featureConfidence": "high",
 			"origin": "competitor",
 			"note": "Competitor row rated yes because real wiring exists (not just a declaration): App.vue reads and reacts to useTenantContext(), and object.js documents the header it produces.",
 			"evidence": {
@@ -5001,7 +5371,7 @@
 			},
 			"provider": "openregister",
 			"providerHow": "declare: the store plane (fetching/installing configuration sets) is entirely OpenRegister's; larpinq only points the generic 'store' page type at itself",
-			"feature": "setting-management",
+			"feature": "open-and-portable",
 			"featureConfidence": "medium",
 			"origin": "own-code",
 			"note": "Reworded from the seed's 'Discover related apps' framing: the manifest describes installing shared game-configuration bundles (registers/schemas/flows), not discovering other Nextcloud apps.",
@@ -5032,8 +5402,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: larpinq only wires the page and its documentation URL; the 'roadmap' page type's actual content source is a generic nc-vue library behaviour not present in this repo, so what populates the page cannot be confirmed by reading larpinq alone",
-			"feature": "setting-management",
-			"featureConfidence": "low",
+			"feature": "admin-and-access",
+			"featureConfidence": "medium",
 			"origin": "own-code",
 			"note": "Rated partial: the page is genuinely reachable, but its content source is unverifiable from this repo.",
 			"evidence": {
@@ -5063,8 +5433,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "wave5-demand-signal",
-			"featureConfidence": "low",
+			"feature": "event-planning",
+			"featureConfidence": "medium",
 			"origin": "competitor",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/fixtures/feature.yaml:195-205 debrief feature: organiser-defined questions each participant fills in after the event, larpmanager/urls/orga.py:1501 orga_debrief_answers, larpmanager/tests/playwright/debrief_matchmaker_auto_save_test.py",
@@ -5095,8 +5465,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "wave5-demand-signal",
-			"featureConfidence": "low",
+			"feature": "event-xp-awards",
+			"featureConfidence": "medium",
 			"origin": "competitor",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/models/accounting.py:402-446 tokens and credits assigned to a member per run and spent on another event's fee (larpmanager/fixtures/feature.yaml:690-700); XP stays within one campaign (larpmanager/models/writing.py:51-83), no transfer of points to a character in another game",
@@ -5126,8 +5496,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence; the amount due and the payment belong to shillinq",
-			"feature": "wave5-demand-signal",
-			"featureConfidence": "low",
+			"feature": "event-rosters-and-signup",
+			"featureConfidence": "medium",
 			"origin": "competitor",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/models/form.py:549-790 registration questions with priced, capacity-limited options usable for catering choices, plus the diet profile field (larpmanager/models/member.py:275-285)",
@@ -5158,8 +5528,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "wave5-demand-signal",
-			"featureConfidence": "low",
+			"feature": "self-recomputing-character-sheets",
+			"featureConfidence": "medium",
 			"origin": "competitor",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/models/inventory.py:162-200 per-inventory money pools and logged transfers (larpmanager/urls/orga.py:1346 orga_ci_transfer); no shop or item purchase flow to spend it on",
@@ -5187,6 +5557,7 @@
 				"reachedOn": "Skill tree page (/skill-tree)",
 				"spec": "openspec/specs/realtime-updates"
 			},
+			"feature": "skill-tree-visualization",
 			"source": "spec-round-2026-10-07"
 		},
 		{
@@ -5208,8 +5579,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "wave5-demand-signal",
-			"featureConfidence": "low",
+			"feature": "player-communication",
+			"featureConfidence": "high",
 			"origin": "competitor",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/models/miscellanea.py:48-100 HelpQuestion with attachment and closed flag, larpmanager/urls/user.py:75 and larpmanager/urls/event.py:429 help, organisers answer and close via orga_questions_answer and orga_questions_close",
@@ -5240,8 +5611,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "wave5-demand-signal",
-			"featureConfidence": "low",
+			"feature": "lifecycle-notifications",
+			"featureConfidence": "high",
 			"origin": "competitor",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/models/member.py:305 newsletter preference and one-click unsubscribe routes in larpmanager/urls/user.py, organiser digest mode in larpmanager/forms/association.py:1132; no per-type choice and no text messages",
@@ -5271,8 +5642,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "wave5-demand-signal",
-			"featureConfidence": "low",
+			"feature": "self-recomputing-character-sheets",
+			"featureConfidence": "medium",
 			"origin": "featureRequest",
 			"originUrl": "https://app.kanka.io/roadmap/51",
 			"evidence": {
@@ -5304,8 +5675,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "wave5-demand-signal",
-			"featureConfidence": "low",
+			"feature": "lifecycle-notifications",
+			"featureConfidence": "high",
 			"origin": "featureRequest",
 			"originUrl": "https://app.kanka.io/roadmap/158",
 			"evidence": {
@@ -5336,8 +5707,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "wave5-demand-signal",
-			"featureConfidence": "low",
+			"feature": "world-lore",
+			"featureConfidence": "high",
 			"origin": "featureRequest",
 			"originUrl": "https://app.kanka.io/roadmap/202",
 			"evidence": {
@@ -5369,8 +5740,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "wave5-demand-signal",
-			"featureConfidence": "low",
+			"feature": "nextcloud-integration",
+			"featureConfidence": "high",
 			"origin": "featureRequest",
 			"originUrl": "https://app.kanka.io/roadmap/331",
 			"evidence": {
@@ -5401,8 +5772,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "wave5-demand-signal",
-			"featureConfidence": "low",
+			"feature": "player-care-and-privacy",
+			"featureConfidence": "high",
 			"origin": "featureRequest",
 			"originUrl": "https://github.com/pretix/pretix/issues/2498",
 			"evidence": {
@@ -5434,8 +5805,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "wave5-demand-signal",
-			"featureConfidence": "low",
+			"feature": "cancellations-and-refunds",
+			"featureConfidence": "high",
 			"origin": "featureRequest",
 			"originUrl": "https://github.com/pretix/pretix/issues/1791",
 			"evidence": {
@@ -5467,8 +5838,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence; the form and its answers stay in Nextcloud Forms",
-			"feature": "wave5-demand-signal",
-			"featureConfidence": "low",
+			"feature": "event-rosters-and-signup",
+			"featureConfidence": "high",
 			"origin": "changelog",
 			"originUrl": "https://github.com/LoSkana/larpmanager/commit/770544dfd2",
 			"evidence": {
@@ -5500,8 +5871,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence; the money, the link and the capture are shillinq's",
-			"feature": "wave5-demand-signal",
-			"featureConfidence": "low",
+			"feature": "online-event-payments",
+			"featureConfidence": "high",
 			"origin": "changelog",
 			"originUrl": "https://pretix.eu/about/en/blog/20260729-release-2026-7-0/",
 			"evidence": {
@@ -5533,8 +5904,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "wave5-demand-signal",
-			"featureConfidence": "low",
+			"feature": "online-event-payments",
+			"featureConfidence": "high",
 			"origin": "changelog",
 			"originUrl": "https://pretix.eu/about/en/blog/20260126-release-2026-1/",
 			"evidence": {
@@ -5566,8 +5937,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "wave5-demand-signal",
-			"featureConfidence": "low",
+			"feature": "cancellations-and-refunds",
+			"featureConfidence": "high",
 			"origin": "changelog",
 			"originUrl": "https://pretix.eu/about/en/blog/20251030-release-2025-9/",
 			"evidence": {
@@ -5599,8 +5970,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "wave5-demand-signal",
-			"featureConfidence": "low",
+			"feature": "online-event-payments",
+			"featureConfidence": "high",
 			"origin": "competitor",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/fixtures/feature.yaml:314 membership feature with annual fee (larpmanager/urls/exe.py:523 exe_membership_fee) required before joining events; no pass that pays for several events",
@@ -5630,8 +6001,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "wave5-demand-signal",
-			"featureConfidence": "low",
+			"feature": "onsite-check-in",
+			"featureConfidence": "high",
 			"origin": "changelog",
 			"originUrl": "https://pretix.eu/about/en/blog/20260701-release-2026-6-0/",
 			"evidence": {
@@ -5662,8 +6033,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "wave5-demand-signal",
-			"featureConfidence": "low",
+			"feature": "onsite-check-in",
+			"featureConfidence": "high",
 			"origin": "competitor",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/models/registration.py:546-563 CheckIn records arrival time and staff member, live checked-in list on larpmanager/templates/larpmanager/orga/checkin.html; no check-out, so people who left still count",
@@ -5693,8 +6064,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "wave5-demand-signal",
-			"featureConfidence": "low",
+			"feature": "onsite-check-in",
+			"featureConfidence": "high",
 			"origin": "changelog",
 			"originUrl": "https://pretix.eu/about/en/blog/20260701-release-2026-6-0/",
 			"evidence": {
@@ -5725,8 +6096,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "wave5-demand-signal",
-			"featureConfidence": "low",
+			"feature": "player-communication",
+			"featureConfidence": "high",
 			"origin": "changelog",
 			"originUrl": "https://pretix.eu/about/en/blog/20260224-release-2026-2/",
 			"evidence": {
@@ -5755,6 +6126,7 @@
 				"reachedOn": "Nextcloud notifications (bell), no larpinq page",
 				"change": "openspec/changes/archive/2026-06-14-larpingapp-notifications"
 			},
+			"feature": "lifecycle-notifications",
 			"source": "spec-round-2026-10-07"
 		},
 		{
@@ -5774,6 +6146,7 @@
 				"reachedOn": "Nextcloud notifications (bell), no larpinq page",
 				"change": "openspec/changes/archive/2026-06-14-larpingapp-notifications"
 			},
+			"feature": "lifecycle-notifications",
 			"source": "spec-round-2026-10-07"
 		},
 		{
@@ -5795,8 +6168,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "wave5-demand-signal",
-			"featureConfidence": "low",
+			"feature": "reports-and-exports",
+			"featureConfidence": "high",
 			"origin": "changelog",
 			"originUrl": "https://pretix.eu/about/en/blog/20260126-release-2026-1/",
 			"evidence": {
@@ -5827,8 +6200,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "wave5-demand-signal",
-			"featureConfidence": "low",
+			"feature": "reports-and-exports",
+			"featureConfidence": "high",
 			"origin": "changelog",
 			"originUrl": "https://pretix.eu/about/en/blog/20260126-release-2026-1/",
 			"evidence": {
@@ -5859,8 +6232,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "wave5-demand-signal",
-			"featureConfidence": "low",
+			"feature": "casting-and-crew",
+			"featureConfidence": "high",
 			"origin": "changelog",
 			"originUrl": "https://github.com/LoSkana/larpmanager/commit/40b77c05ea",
 			"evidence": {
@@ -5892,8 +6265,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "wave5-demand-signal",
-			"featureConfidence": "low",
+			"feature": "character-management",
+			"featureConfidence": "high",
 			"origin": "changelog",
 			"originUrl": "https://github.com/LoSkana/larpmanager/commit/f4717e56ae",
 			"evidence": {
@@ -5925,8 +6298,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "wave5-demand-signal",
-			"featureConfidence": "low",
+			"feature": "faction-and-group-management",
+			"featureConfidence": "high",
 			"origin": "changelog",
 			"originUrl": "https://github.com/LoSkana/larpmanager/commit/2258fd5292",
 			"evidence": {
@@ -5958,8 +6331,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "wave5-demand-signal",
-			"featureConfidence": "low",
+			"feature": "cancellations-and-refunds",
+			"featureConfidence": "high",
 			"origin": "changelog",
 			"originUrl": "https://github.com/LoSkana/larpmanager/commit/e409393382",
 			"evidence": {
@@ -5991,8 +6364,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "wave5-demand-signal",
-			"featureConfidence": "low",
+			"feature": "admin-and-access",
+			"featureConfidence": "high",
 			"origin": "changelog",
 			"originUrl": "https://github.com/LoSkana/larpmanager/commit/8a1a5d8563",
 			"evidence": {
@@ -6024,8 +6397,8 @@
 			},
 			"provider": "nextcloud",
 			"providerHow": "read: larpinq has no authentication of its own; Nextcloud core and its two-factor provider apps apply",
-			"feature": "wave5-demand-signal",
-			"featureConfidence": "low",
+			"feature": "admin-and-access",
+			"featureConfidence": "high",
 			"origin": "changelog",
 			"originUrl": "https://github.com/LoSkana/larpmanager/commit/24ef66e14f",
 			"evidence": {
@@ -6056,8 +6429,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "wave5-demand-signal",
-			"featureConfidence": "low",
+			"feature": "online-event-payments",
+			"featureConfidence": "high",
 			"origin": "changelog",
 			"originUrl": "https://github.com/LoSkana/larpmanager/commit/69bc317a71",
 			"evidence": {
@@ -6088,8 +6461,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "wave5-demand-signal",
-			"featureConfidence": "low",
+			"feature": "plots-and-story",
+			"featureConfidence": "high",
 			"origin": "changelog",
 			"originUrl": "https://github.com/LoSkana/larpmanager/commit/771e21d700",
 			"evidence": {
@@ -6121,8 +6494,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "wave5-demand-signal",
-			"featureConfidence": "low",
+			"feature": "event-planning",
+			"featureConfidence": "high",
 			"origin": "changelog",
 			"originUrl": "https://github.com/LoSkana/larpmanager/commit/bfaa5087f5",
 			"evidence": {
@@ -6154,8 +6527,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "wave5-demand-signal",
-			"featureConfidence": "low",
+			"feature": "event-planning",
+			"featureConfidence": "high",
 			"origin": "changelog",
 			"originUrl": "https://github.com/LoSkana/larpmanager/commit/706902218a",
 			"evidence": {
@@ -6186,8 +6559,8 @@
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
-			"feature": "wave5-demand-signal",
-			"featureConfidence": "low",
+			"feature": "plots-and-story",
+			"featureConfidence": "high",
 			"origin": "changelog",
 			"originUrl": "https://github.com/LoSkana/larpmanager/commit/5835a17035",
 			"evidence": {
@@ -6221,7 +6594,7 @@
 			"provider": "openregister",
 			"providerHow": "declared via OpenRegister's x-openregister-notifications dialect; whether OpenRegister actually dispatches it was not verified from this app's code",
 			"feature": "lifecycle-notifications",
-			"featureConfidence": "medium",
+			"featureConfidence": "high",
 			"origin": "own-code",
 			"note": "Rule 3: a declaration, not proven behaviour. Added because it is a real, organiser-recognisable capability distinct from chr-approval itself.",
 			"evidence": {
@@ -6251,7 +6624,7 @@
 			"provider": "openregister",
 			"providerHow": "read: the declaration names an OpenRegister mechanism (cross-instance object sharing); larpinq has no in-app 'import ruleset from file/campaign' UI of its own",
 			"feature": "rpg-system",
-			"featureConfidence": "low",
+			"featureConfidence": "high",
 			"origin": "competitor",
 			"note": "Rated unknown per rule 3 (a declaration is not behaviour): whether OpenRegister's sharing mechanism actually lets a GM import a whole skill set from another campaign is outside this repo. src/manifest.json:337 documents a related but distinct 'install game configurations other organisations have published' bundle-install feature at the register/schema level, not a skill-ruleset import.",
 			"evidence": {
@@ -6342,7 +6715,7 @@
 			},
 			"provider": "openregister",
 			"providerHow": "declare: larpinq only declares the dialect; OpenRegister's MCP engine (unverified here) would be what runs it",
-			"feature": "setting-management",
+			"feature": "nextcloud-integration",
 			"featureConfidence": "medium",
 			"origin": "own-code",
 			"note": "Rule 3 case: a declaration, not proven to run. The curated hermiq-ai-tooling half is clearly unbuilt (no code, no checked tasks).",
