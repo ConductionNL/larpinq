@@ -11,7 +11,7 @@
 				"id": "welcome",
 				"type": "info",
 				"title": "Welcome to LARPing",
-				"body": "Manage your live-action roleplay world, with characters, players, items and events all in one place. One quick step provisions your data store, then you're ready to play."
+				"body": "Manage your live-action roleplay world, with characters, players, items and events all in one place. Load example data if you like, then you are ready to play."
 			},
 			{
 				"id": "demo-data",
@@ -19,32 +19,17 @@
 				"display": "cards",
 				"optionsSource": "datasets",
 				"configKey": "demo_dataset",
+				"loadAction": "load-demo-data",
 				"title": "Load example data?",
 				"required": false,
-				"body": "Example data fills the lists, detail pages and dashboards so you can see the app working straight away. Pick \"None\" on a production install."
-			},
-			{
-				"id": "load-demo-data",
-				"type": "run-action",
-				"action": "load-demo-data",
-				"title": "Load the example data",
-				"required": false,
-				"body": "Loads what you picked. The data is obviously sample data, it is safe to run more than once, and you can delete it afterwards."
-			},
-			{
-				"id": "provision",
-				"type": "run-action",
-				"title": "Provision your world",
-				"required": true,
-				"action": "provision",
-				"body": "Create the Larpinq register and schemas in OpenRegister: the data store for characters, players, abilities, skills, items, conditions, effects, events and settings. This normally runs automatically on install; run it here if OpenRegister was enabled after Larpinq, or to repair a partial install. It is safe to run more than once."
+				"body": "Example data fills the lists, detail pages and dashboards so you can see the app working straight away. Each card has its own Load button. Pick \"None\" on a production install."
 			},
 			{
 				"id": "done",
 				"type": "summary",
 				"title": "You're ready",
 				"healthCheck": true,
-				"body": "That's it. Your world's data store is provisioned. Jump into the Dashboard to see it at a glance, and reopen this setup or the guided tour anytime from the app's … menu."
+				"body": "That is it. Open the Dashboard to see your world at a glance. You can reopen this setup or the guided tour from the app menu."
 			}
 		]
 	},
@@ -291,7 +276,7 @@
 			"label": "Reports",
 			"icon": "ChartBoxOutline",
 			"route": "Reports",
-			"section": "footer",
+			"section": "settings",
 			"order": 95
 		},
 		{
@@ -343,6 +328,7 @@
 			"route": "/",
 			"type": "dashboard",
 			"title": "Dashboard",
+			"actionsComponent": "WorldSwitcherActions",
 			"config": {
 				"widgets": [
 					{
@@ -358,7 +344,7 @@
 								"register": "larpinq",
 								"schema": "character",
 								"metric": "count",
-								"filter": {}
+								"filter": { "setting": "@workspace.activeWorld?" }
 							}
 						}
 					},
@@ -375,7 +361,7 @@
 								"register": "larpinq",
 								"schema": "larping_event",
 								"metric": "count",
-								"filter": {}
+								"filter": { "setting": "@workspace.activeWorld?" }
 							}
 						}
 					},
@@ -392,7 +378,7 @@
 								"register": "larpinq",
 								"schema": "larping_item",
 								"metric": "count",
-								"filter": {}
+								"filter": { "setting": "@workspace.activeWorld?" }
 							}
 						}
 					},
@@ -420,7 +406,7 @@
 						"content": {
 							"register": "larpinq",
 							"schema": "character",
-							"filter": {},
+							"filter": { "setting": "@workspace.activeWorld?" },
 							"sort": { "field": "created", "dir": "desc" },
 							"limit": 6,
 							"rowRoute": "CharacterDetail",
@@ -436,21 +422,24 @@
 						}
 					},
 					{
-						"id": "recent-events",
-						"title": "Recent events",
+						"id": "upcoming-events",
+						"title": "Upcoming events",
 						"type": "object-table",
 						"content": {
 							"register": "larpinq",
 							"schema": "larping_event",
-							"filter": {},
-							"sort": { "field": "startDate", "dir": "desc" },
+							"filter": {
+								"startDate[gte]": "@today",
+								"setting": "@workspace.activeWorld?"
+							},
+							"sort": { "field": "startDate", "dir": "asc" },
 							"limit": 6,
 							"rowRoute": "EventDetail",
 							"rowIcon": "CalendarStar",
 							"hideHeader": true,
 							"viewAllRoute": { "name": "Events" },
 							"viewAllLabel": "View all events",
-							"emptyText": "No events yet",
+							"emptyText": "No upcoming events",
 							"columns": [
 								{ "key": "name", "label": "Event" },
 								{ "key": "startDate", "label": "Starts" }
@@ -529,7 +518,7 @@
 					},
 					{
 						"id": 6,
-						"widgetId": "recent-events",
+						"widgetId": "upcoming-events",
 						"gridX": 6,
 						"gridY": 2,
 						"gridWidth": 6,
@@ -582,9 +571,23 @@
 			"route": "/characters",
 			"type": "index",
 			"title": "Characters",
+			"headerComponent": "WorldSwitcher",
 			"config": {
+				"filter": { "setting": "@workspace.activeWorld?" },
 				"register": "larpinq",
 				"schema": "character",
+				"allowExport": true,
+				"columns": [
+					{ "key": "name", "label": "Name" },
+					{ "key": "type", "label": "Type" },
+					{ "key": "status", "label": "Status" },
+					{ "key": "approved", "label": "Approved" },
+					{ "key": "setting", "label": "World" }
+				],
+				"selectable": true,
+				"bulkActions": [
+					{ "id": "bulk-edit", "label": "Edit selected", "icon": "PencilOutline", "handler": "larpinqBulkEditCharacters" }
+				],
 				"documentationUrl": "https://larpinq.conduction.nl"
 			}
 		},
@@ -596,9 +599,154 @@
 			"config": {
 				"register": "larpinq",
 				"schema": "character",
+				"headerActions": [
+					{
+						"id": "download-pdf",
+						"type": "open-modal",
+						"target": "CharacterPdfDownloadDialog",
+						"label": "Download as PDF",
+						"icon": "FilePdfBox",
+						"visibleWhen": { "endpoint": "/apps/larpinq/api/pdf/templates", "field": "available", "op": "eq", "value": true }
+					}
+				],
 				"documentationUrl": "https://larpinq.conduction.nl",
 				"_note": "ADR-062 rollout: split the sheet into identity (name/player/setting/description/background/faith, 6 fields) vs game state & notes (type/approved/gold/silver/copper/itemsAndMoney/card/notice/GM notes, 10 fields) per rule 3. The loose XP + Gold stat cards fold into one stats-block (rule 2, same-flavor simple KPIs) top-right, aligned with the identity row. The right rail lists the linked mechanics (skills/items/conditions) and event participation as related groups so a GM can see the whole build at a glance. The character portrait/sheet lives in the photos leaf (schema declares linkedType 'photos') as a body integration widget. XP awards granted to this character are shown as an object-list (xpAward.character FK = @objectId) — GM hand-awarded per xpAward's schema description, so allowCreate stays on (default). No email/calendar on the body: the character schema declares only 'photos'. Sidebar is audit-history only — the photos leaf already lives in the body, so it is not duplicated as a sidebar tab.",
 				"widgets": [
+					{
+						"id": "char-plots",
+						"type": "object-list",
+						"title": "Plots",
+						"icon": "BookOpenVariantOutline",
+						"content": {
+							"register": "larpinq",
+							"schema": "larping_plot_part",
+							"filter": {
+								"character": "@objectId"
+							},
+							"columns": [
+								{
+									"key": "plot",
+									"label": "Plot"
+								},
+								{
+									"key": "playerText",
+									"label": "Player text"
+								}
+							]
+						}
+					},
+					{
+						"id": "char-builds",
+						"type": "object-list",
+						"title": "Builds",
+						"icon": "SourceBranch",
+						"content": {
+							"register": "larpinq",
+							"schema": "larping_character_build",
+							"filter": {
+								"character": "@objectId"
+							},
+							"columns": [
+								{
+									"key": "name",
+									"label": "Name"
+								},
+								{
+									"key": "purpose",
+									"label": "Purpose"
+								}
+							]
+						}
+					},
+					{
+						"id": "char-factions",
+						"type": "object-list",
+						"title": "Factions and groups",
+						"icon": "ShieldAccountOutline",
+						"content": {
+							"register": "larpinq",
+							"schema": "larping_faction_member",
+							"filter": {
+								"character": "@objectId"
+							},
+							"columns": [
+								{
+									"key": "factionName",
+									"label": "Faction or group"
+								},
+								{
+									"key": "role",
+									"label": "Role"
+								},
+								{
+									"key": "status",
+									"label": "Status"
+								}
+							]
+						}
+					},
+					{
+						"id": "char-relationships",
+						"type": "object-list",
+						"title": "Relationships",
+						"icon": "AccountHeartOutline",
+						"content": {
+							"register": "larpinq",
+							"schema": "larping_relationship",
+							"filter": {
+								"from": "@objectId"
+							},
+							"columns": [
+								{
+									"key": "to",
+									"label": "Character"
+								},
+								{
+									"key": "kind",
+									"label": "Kind"
+								},
+								{
+									"key": "description",
+									"label": "Description"
+								},
+								{
+									"key": "knownTo",
+									"label": "Known to"
+								}
+							]
+						}
+					},
+					{
+						"id": "char-named-by-others",
+						"type": "object-list",
+						"title": "Named by others",
+						"icon": "AccountArrowLeftOutline",
+						"content": {
+							"register": "larpinq",
+							"schema": "larping_relationship",
+							"filter": {
+								"to": "@objectId"
+							},
+							"columns": [
+								{
+									"key": "from",
+									"label": "Character"
+								},
+								{
+									"key": "kind",
+									"label": "Kind"
+								},
+								{
+									"key": "description",
+									"label": "Description"
+								},
+								{
+									"key": "knownTo",
+									"label": "Known to"
+								}
+							]
+						}
+					},
 					{
 						"id": "char-identity",
 						"type": "data",
@@ -665,6 +813,7 @@
 							"columns": 2,
 							"include": [
 								"type",
+								"status",
 								"approved",
 								"gold",
 								"silver",
@@ -673,7 +822,9 @@
 								"card",
 								"notice",
 								"slNotesPublic",
-								"slNotesPrivate"
+								"slNotesPrivate",
+								"writer",
+								"writingStep"
 							]
 						}
 					},
@@ -722,6 +873,46 @@
 					}
 				],
 				"layout": [
+					{
+						"id": "7",
+						"widgetId": "char-plots",
+						"gridX": 0,
+						"gridY": 18,
+						"gridWidth": 12,
+						"gridHeight": 4
+					},
+					{
+						"id": "8",
+						"widgetId": "char-factions",
+						"gridX": 0,
+						"gridY": 22,
+						"gridWidth": 12,
+						"gridHeight": 4
+					},
+					{
+						"id": "9",
+						"widgetId": "char-relationships",
+						"gridX": 0,
+						"gridY": 26,
+						"gridWidth": 6,
+						"gridHeight": 4
+					},
+					{
+						"id": "10",
+						"widgetId": "char-named-by-others",
+						"gridX": 6,
+						"gridY": 26,
+						"gridWidth": 6,
+						"gridHeight": 4
+					},
+					{
+						"id": "11",
+						"widgetId": "char-builds",
+						"gridX": 0,
+						"gridY": 30,
+						"gridWidth": 12,
+						"gridHeight": 4
+					},
 					{
 						"id": "1",
 						"widgetId": "char-identity",
@@ -784,6 +975,18 @@
 					"showMetadata": true,
 					"tabs": [
 						{
+							"id": "stats",
+							"label": "Stats",
+							"icon": "ChartBar",
+							"component": "CharacterStatSheet"
+						},
+						{
+							"id": "extra-fields",
+							"label": "Extra fields",
+							"icon": "FormTextbox",
+							"component": "CharacterCustomFields"
+						},
+						{
 							"id": "audit",
 							"label": "History",
 							"icon": "History",
@@ -801,6 +1004,7 @@
 			"config": {
 				"register": "larpinq",
 				"schema": "player",
+				"allowExport": true,
 				"documentationUrl": "https://larpinq.conduction.nl"
 			}
 		},
@@ -895,6 +1099,12 @@
 					"showMetadata": true,
 					"tabs": [
 						{
+							"id": "events-attended",
+							"label": "Events attended",
+							"icon": "CalendarCheck",
+							"component": "PlayerAttendanceHistory"
+						},
+						{
 							"id": "audit",
 							"label": "History",
 							"icon": "History",
@@ -909,9 +1119,13 @@
 			"route": "/abilities",
 			"type": "index",
 			"title": "Abilities",
+			"headerComponent": "WorldSwitcher",
 			"config": {
+				"filter": { "setting": "@workspace.activeWorld?" },
 				"register": "larpinq",
 				"schema": "ability",
+				"allowExport": true,
+				"showMassImport": false,
 				"documentationUrl": "https://larpinq.conduction.nl"
 			}
 		},
@@ -1060,9 +1274,13 @@
 			"route": "/skills",
 			"type": "index",
 			"title": "Skills",
+			"headerComponent": "WorldSwitcher",
 			"config": {
+				"filter": { "setting": "@workspace.activeWorld?" },
 				"register": "larpinq",
 				"schema": "larping_skill",
+				"allowExport": true,
+				"showMassImport": false,
 				"documentationUrl": "https://larpinq.conduction.nl"
 			}
 		},
@@ -1186,9 +1404,13 @@
 			"route": "/items",
 			"type": "index",
 			"title": "Items",
+			"headerComponent": "WorldSwitcher",
 			"config": {
+				"filter": { "setting": "@workspace.activeWorld?" },
 				"register": "larpinq",
 				"schema": "larping_item",
+				"allowExport": true,
+				"showMassImport": false,
 				"documentationUrl": "https://larpinq.conduction.nl"
 			}
 		},
@@ -1301,9 +1523,13 @@
 			"route": "/conditions",
 			"type": "index",
 			"title": "Conditions",
+			"headerComponent": "WorldSwitcher",
 			"config": {
+				"filter": { "setting": "@workspace.activeWorld?" },
 				"register": "larpinq",
 				"schema": "condition",
+				"allowExport": true,
+				"showMassImport": false,
 				"documentationUrl": "https://larpinq.conduction.nl"
 			}
 		},
@@ -1401,9 +1627,13 @@
 			"route": "/effects",
 			"type": "index",
 			"title": "Effects",
+			"headerComponent": "WorldSwitcher",
 			"config": {
+				"filter": { "setting": "@workspace.activeWorld?" },
 				"register": "larpinq",
 				"schema": "effect",
+				"allowExport": true,
+				"showMassImport": false,
 				"documentationUrl": "https://larpinq.conduction.nl"
 			}
 		},
@@ -1571,9 +1801,23 @@
 			"route": "/events",
 			"type": "index",
 			"title": "Events",
+			"headerComponent": "WorldSwitcher",
 			"config": {
+				"filter": { "setting": "@workspace.activeWorld?" },
+				"sortKey": "startDate",
+				"sortOrder": "asc",
+				"quickFilters": [
+					{
+						"label": "Upcoming",
+						"filter": { "startDate[gte]": "@today" },
+						"default": true
+					},
+					{ "label": "Past", "filter": { "startDate[lt]": "@today" } }
+				],
 				"register": "larpinq",
 				"schema": "larping_event",
+				"allowExport": true,
+				"showMassImport": false,
 				"documentationUrl": "https://larpinq.conduction.nl"
 			}
 		},
@@ -1585,6 +1829,16 @@
 			"config": {
 				"register": "larpinq",
 				"schema": "larping_event",
+				"headerActions": [
+					{
+						"id": "award-xp",
+						"type": "open-modal",
+						"target": "XpAwardDialog",
+						"label": "Award XP",
+						"icon": "StarPlusOutline",
+						"visibleWhen": { "endpoint": "/apps/larpinq/api/xp-awards/access", "field": "allowed", "op": "eq", "value": true }
+					}
+				],
 				"documentationUrl": "https://larpinq.conduction.nl",
 				"_note": "Event = a LARP gathering where players bring their characters (session/meeting archetype). This is the one entity that communicates: the schema declares calendar, maps and forms linkedTypes (merged from the event-calendar-leaf / event-location-to-maps-leaf / event-signup-to-forms-leaf register fragments), so the body earns a calendar widget (scheduling the session from startDate/endDate), a location map, and the sign-up form, plus the participating characters (character.events contains @objectId) as the primary roster. The loose Attendees + XP-granted stat cards fold into one stats-block (rule 2, same-flavor simple KPIs) top-right. Post-event effects applied to attendees are shown via related. After the event, the XP awarding ritual produces one xpAward per grant (xpAward.event FK = @objectId), shown as an object-list — GM hand-awarded per xpAward's schema description, so allowCreate stays on. Files carries the event pack/handouts. All three declared leaves (calendar, maps, forms) are now body widgets — none are held back to sidebar tabs. The sidebar carries the Check-in tab (the event check-in roster, an app-registry section — see the sidebar _note) plus audit history. No email/talk: the schema declares calendar/maps/forms only.",
 				"widgets": [
@@ -1713,6 +1967,178 @@
 						"integrationId": "files",
 						"title": "Event pack",
 						"icon": "FolderOutline"
+					},
+					{
+						"id": "event-registrations",
+						"type": "object-list",
+						"title": "Registrations",
+						"icon": "ClipboardCheckOutline",
+						"content": {
+							"register": "larpinq",
+							"schema": "larping_registration",
+							"filter": { "event": "@objectId" },
+							"columns": [
+								{ "key": "player", "label": "Player" },
+								{ "key": "character", "label": "Character" },
+								{ "key": "status", "label": "Status" },
+								{ "key": "paymentState", "label": "Payment" },
+								{ "key": "paymentReference", "label": "Reference" },
+								{ "key": "submittedAt", "label": "Signed up on" }
+							],
+							"limit": 100,
+							"viewAllRoute": "Registrations",
+							"viewAllQuery": { "event": "@objectId" },
+							"emptyText": "No sign-ups yet."
+						}
+					},
+					{
+						"id": "event-stats-places",
+						"type": "stats-block",
+						"title": "Places taken",
+						"icon": "ClipboardCheckOutline",
+						"content": {
+							"entries": [
+								{
+									"title": "Accepted registrations",
+									"register": "larpinq",
+									"schema": "larping_registration",
+									"metric": "count",
+									"filter": { "event": "@objectId", "status": "accepted" }
+								},
+								{
+									"title": "On the waiting list",
+									"register": "larpinq",
+									"schema": "larping_registration",
+									"metric": "count",
+									"filter": { "event": "@objectId", "status": "waitlisted" }
+								},
+								{
+									"title": "Paid",
+									"register": "larpinq",
+									"schema": "larping_registration",
+									"metric": "count",
+									"filter": { "event": "@objectId", "paymentState": "paid" }
+								},
+								{
+									"title": "Payment open",
+									"register": "larpinq",
+									"schema": "larping_registration",
+									"metric": "count",
+									"filter": { "event": "@objectId", "paymentState": "open" }
+								}
+							]
+						}
+					},
+					{
+						"id": "event-ticket-types",
+						"type": "object-list",
+						"title": "Ticket types",
+						"icon": "TicketOutline",
+						"content": {
+							"register": "larpinq",
+							"schema": "larping_ticket_type",
+							"filter": {
+								"event": "@objectId"
+							},
+							"columns": [
+								{
+									"key": "name",
+									"label": "Name"
+								},
+								{
+									"key": "role",
+									"label": "Role"
+								},
+								{
+									"key": "amount",
+									"label": "Listed price"
+								},
+								{
+									"key": "saleUntil",
+									"label": "On sale until"
+								},
+								{
+									"key": "placeLimit",
+									"label": "Places"
+								}
+							],
+							"limit": 100,
+							"viewAllRoute": "TicketTypes",
+							"viewAllQuery": {
+								"event": "@objectId"
+							},
+							"emptyText": "No ticket types yet."
+						}
+					},
+					{
+						"id": "event-registration-options",
+						"type": "object-list",
+						"title": "Registration options",
+						"icon": "SilverwareForkKnife",
+						"content": {
+							"register": "larpinq",
+							"schema": "larping_registration_option",
+							"filter": {
+								"event": "@objectId"
+							},
+							"columns": [
+								{
+									"key": "name",
+									"label": "Name"
+								},
+								{
+									"key": "category",
+									"label": "Category"
+								},
+								{
+									"key": "amount",
+									"label": "Listed price"
+								},
+								{
+									"key": "placeLimit",
+									"label": "Places"
+								}
+							],
+							"limit": 100,
+							"viewAllRoute": "RegistrationOptions",
+							"viewAllQuery": {
+								"event": "@objectId"
+							},
+							"emptyText": "No options yet."
+						}
+					},
+					{
+						"id": "event-access-codes",
+						"type": "object-list",
+						"title": "Access codes",
+						"icon": "KeyVariant",
+						"content": {
+							"register": "larpinq",
+							"schema": "larping_access_code",
+							"filter": {
+								"event": "@objectId"
+							},
+							"columns": [
+								{
+									"key": "code",
+									"label": "Code"
+								},
+								{
+									"key": "validUntil",
+									"label": "Valid until"
+								},
+								{
+									"key": "maxUses",
+									"label": "Uses"
+								}
+							],
+							"limit": 100,
+							"viewAllRoute": "AccessCodes",
+							"viewAllQuery": {
+								"event": "@objectId"
+							},
+							"emptyText": "No codes yet."
+						}
 					}
 				],
 				"layout": [
@@ -1795,6 +2221,46 @@
 						"gridY": 16,
 						"gridWidth": 6,
 						"gridHeight": 4
+					},
+					{
+						"id": "11",
+						"widgetId": "event-registrations",
+						"gridX": 0,
+						"gridY": 20,
+						"gridWidth": 8,
+						"gridHeight": 4
+					},
+					{
+						"id": "12",
+						"widgetId": "event-stats-places",
+						"gridX": 8,
+						"gridY": 20,
+						"gridWidth": 4,
+						"gridHeight": 4
+					},
+					{
+						"id": "13",
+						"widgetId": "event-ticket-types",
+						"gridX": 0,
+						"gridY": 24,
+						"gridWidth": 12,
+						"gridHeight": 4
+					},
+					{
+						"id": "14",
+						"widgetId": "event-registration-options",
+						"gridX": 0,
+						"gridY": 28,
+						"gridWidth": 6,
+						"gridHeight": 4
+					},
+					{
+						"id": "15",
+						"widgetId": "event-access-codes",
+						"gridX": 6,
+						"gridY": 28,
+						"gridWidth": 6,
+						"gridHeight": 4
 					}
 				],
 				"sidebar": {
@@ -1807,6 +2273,12 @@
 							"label": "Check-in",
 							"icon": "AccountCheck",
 							"component": "EventRoster"
+						},
+						{
+							"id": "choices",
+							"label": "Choices",
+							"icon": "TicketOutline",
+							"component": "EventChoiceCounts"
 						},
 						{
 							"id": "audit",
@@ -1827,6 +2299,12 @@
 			"config": {
 				"register": "larpinq",
 				"schema": "setting",
+				"allowExport": true,
+				"showMassImport": false,
+				"headerActions": [
+					{ "id": "export-campaign", "label": "Export campaign", "icon": "DatabaseExport", "handler": "larpinqExportCampaign" },
+					{ "id": "import-campaign", "label": "Import campaign", "icon": "DatabaseImport", "handler": "larpinqImportCampaign" }
+				],
 				"documentationUrl": "https://larpinq.conduction.nl"
 			}
 		},
@@ -1838,6 +2316,16 @@
 			"config": {
 				"register": "larpinq",
 				"schema": "setting",
+				"headerActions": [
+					{
+						"id": "copy-world",
+						"type": "open-modal",
+						"target": "CopyWorldDialog",
+						"label": "Copy world",
+						"icon": "ContentCopy",
+						"visibleWhen": { "endpoint": "/apps/larpinq/api/worlds/copy-access", "field": "allowed", "op": "eq", "value": true }
+					}
+				],
 				"documentationUrl": "https://larpinq.conduction.nl",
 				"_note": "NAMING: the user-visible term for this entity is WORLD, never \"setting\". In LARP a setting is the game world; in a Nextcloud UI \"Setting\" means a preference, and every one of the 35 non-Dutch locales took the UI reading and translated it as Einstellung / Paramètre / Configuración. That is unfixable by retranslating, because one English source string cannot carry both meanings — so the ENGLISH WORD changed instead. The persisted OpenRegister property is still `setting` and the page id / route are still Settings / /settings; only labels moved. The schema's own summary already said \"A LARP world / campaign\" and its icon was already Earth. WHAT THIS PAGE IS: a world/campaign that scopes the roster and rules (config/container archetype). Most game entities carry an optional 'setting' UUID that points here, so this page is a scoping dashboard: the definition + active/archived status (data) sits beside a stats-block (characters + events counts, folded from two loose KPIs per rule 2), then object-lists roll up everything scoped to this campaign — characters and events (each filtered where setting = @objectId). Related surfaces any other scoped mechanics. A pure configuration container: no comms, no files.",
 				"widgets": [
@@ -1888,6 +2376,24 @@
 									}
 								}
 							]
+						}
+					},
+					{
+						"id": "setting-lore",
+						"type": "object-list",
+						"title": "Lore of this world",
+						"icon": "BookOpenVariantOutline",
+						"content": {
+							"register": "larpinq",
+							"schema": "larping_lore_page",
+							"filter": {
+								"setting": "@objectId"
+							},
+							"columns": [
+								{ "key": "title", "label": "Title" },
+								{ "key": "category", "label": "Category" }
+							],
+							"rowRoute": "LoreArticle"
 						}
 					},
 					{
@@ -1986,6 +2492,14 @@
 						"gridY": 8,
 						"gridWidth": 12,
 						"gridHeight": 3
+					},
+					{
+						"id": "7",
+						"widgetId": "setting-lore",
+						"gridX": 0,
+						"gridY": 11,
+						"gridWidth": 12,
+						"gridHeight": 4
 					}
 				],
 				"sidebar": {
@@ -2010,6 +2524,8 @@
 			"config": {
 				"register": "larpinq",
 				"schema": "xpAward",
+				"allowExport": true,
+				"showMassImport": false,
 				"documentationUrl": "https://larpinq.conduction.nl"
 			}
 		},
@@ -2167,6 +2683,60 @@
 			"config": {
 				"widgets": [
 					{
+						"id": "roster-by-writing-step",
+						"title": "By writing step",
+						"type": "chart",
+						"content": {
+							"chartKind": "donut",
+							"legendPosition": "bottom",
+							"emptyLabel": "No characters yet",
+							"dataSource": {
+								"register": "larpinq",
+								"schema": "character",
+								"aggregate": {
+									"groupBy": "writingStep",
+									"metric": "count"
+								}
+							}
+						}
+					},
+					{
+						"id": "roster-writing-open",
+						"title": "Not yet approved in writing",
+						"type": "object-table",
+						"content": {
+							"register": "larpinq",
+							"schema": "character",
+							"filter": {
+								"writingStep": [
+									"draft",
+									"ready"
+								]
+							},
+							"sort": {
+								"field": "writer",
+								"dir": "asc"
+							},
+							"limit": 20,
+							"emptyText": "Everyone is approved in writing",
+							"columns": [
+								{
+									"key": "name",
+									"label": "Name"
+								},
+								{
+									"key": "writer",
+									"label": "Writer"
+								},
+								{
+									"key": "writingStep",
+									"label": "Writing step"
+								}
+							],
+							"rowRoute": "CharacterDetail"
+						}
+					},
+					{
 						"id": "roster-total",
 						"title": "Characters",
 						"type": "stat",
@@ -2309,6 +2879,24 @@
 					}
 				],
 				"layout": [
+					{
+						"id": "7",
+						"widgetId": "roster-by-writing-step",
+						"gridX": 0,
+						"gridY": 10,
+						"gridWidth": 6,
+						"gridHeight": 4,
+						"showTitle": true
+					},
+					{
+						"id": "8",
+						"widgetId": "roster-writing-open",
+						"gridX": 6,
+						"gridY": 10,
+						"gridWidth": 6,
+						"gridHeight": 4,
+						"showTitle": true
+					},
 					{
 						"id": "1",
 						"widgetId": "roster-total",

@@ -1,5 +1,7 @@
 # Tasks — larpinq-adopt-or-abstractions
 
+> Archive pass 2026-10-07: not archived. Phase 3 is still unbuilt in larpinq: nextcloud-vue now ships `languageGetter` (`src/store/useObjectStore.js`) and `CnTranslatedBadge`, but larpinq wires neither (`grep -rn languageGetter src/` is empty). Open: 3.2, 3.3, 3.5 (wiring).
+
 > Spec-only change. No PR / merge / archive tasks here.
 
 > Reconciliation 2026-06-14: KEPT OPEN. In-app deliverables verified PRESENT in `development`:

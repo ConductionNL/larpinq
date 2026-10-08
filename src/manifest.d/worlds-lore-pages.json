@@ -1,0 +1,46 @@
+{
+	"pages": [
+		{
+			"id": "Lore",
+			"route": "/lore",
+			"type": "index",
+			"title": "Lore",
+			"config": {
+				"register": "larpinq",
+				"schema": "larping_lore_page",
+				"rowRoute": "LoreArticle",
+				"allowExport": true,
+				"showMassImport": false,
+				"columns": [
+					{ "key": "title", "label": "Title" },
+					{ "key": "category", "label": "Category" },
+					{ "key": "setting", "label": "World" },
+					{ "key": "visibility", "label": "Visible to" },
+					{ "key": "revealFrom", "label": "Reveal moment" }
+				],
+				"defaultSort": [{ "field": "order" }],
+				"documentationUrl": "https://larpinq.conduction.nl"
+			}
+		},
+		{
+			"id": "LoreArticle",
+			"route": "/lore/:id",
+			"type": "custom",
+			"title": "Lore page",
+			"component": "LoreArticle",
+			"_note": "type \"wiki\" (CnWikiPage) renders an article and a tree it is handed but fetches neither, so a bare wiki page would always show its empty state. LoreArticle is the wrapper that loads both through OpenRegister, whose lorePage read rule decides what a player gets.",
+			"config": {
+				"documentationUrl": "https://larpinq.conduction.nl"
+			}
+		}
+	],
+	"menu": [
+		{
+			"id": "Lore",
+			"label": "Lore",
+			"icon": "BookOpenVariantOutline",
+			"route": "Lore",
+			"order": 50
+		}
+	]
+}

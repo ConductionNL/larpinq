@@ -1,0 +1,203 @@
+{
+	"pages": [
+		{
+			"id": "Registrations",
+			"route": "/registrations",
+			"type": "index",
+			"title": "Registrations",
+			"config": {
+				"register": "larpinq",
+				"schema": "larping_registration",
+				"allowExport": true,
+				"showMassImport": false,
+				"columns": [
+					{
+						"key": "event",
+						"label": "Event"
+					},
+					{
+						"key": "player",
+						"label": "Player"
+					},
+					{
+						"key": "character",
+						"label": "Character"
+					},
+					{
+						"key": "status",
+						"label": "Status"
+					},
+					{
+						"key": "paymentState",
+						"label": "Payment"
+					},
+					{
+						"key": "paymentReference",
+						"label": "Reference"
+					},
+					{
+						"key": "settlement",
+						"label": "Money back"
+					},
+					{
+						"key": "settlementRequestedAt",
+						"label": "Money back requested on"
+					},
+					{
+						"key": "submittedAt",
+						"label": "Signed up on"
+					}
+				],
+				"documentationUrl": "https://larpinq.conduction.nl",
+				"filterMenu": true
+			}
+		},
+		{
+			"id": "MyRegistrations",
+			"route": "/my-registrations",
+			"type": "index",
+			"title": "My registrations",
+			"config": {
+				"register": "larpinq",
+				"schema": "larping_registration",
+				"allowExport": false,
+				"showMassImport": false,
+				"columns": [
+					{
+						"key": "event",
+						"label": "Event"
+					},
+					{
+						"key": "character",
+						"label": "Character"
+					},
+					{
+						"key": "status",
+						"label": "Status"
+					},
+					{
+						"key": "paymentState",
+						"label": "Payment"
+					},
+					{
+						"key": "paymentReference",
+						"label": "Reference"
+					},
+					{
+						"key": "payBy",
+						"label": "Pay by"
+					},
+					{
+						"key": "transferStatus",
+						"label": "Transfer"
+					},
+					{
+						"key": "settlement",
+						"label": "Money back"
+					},
+					{
+						"key": "submittedAt",
+						"label": "Signed up on"
+					}
+				],
+				"documentationUrl": "https://larpinq.conduction.nl"
+			}
+		},
+		{
+			"id": "RegistrationDetail",
+			"route": "/registrations/:id",
+			"type": "detail",
+			"title": "Registration",
+			"config": {
+				"register": "larpinq",
+				"schema": "larping_registration",
+				"lifecycleActions": {
+					"field": "status"
+				},
+				"documentationUrl": "https://larpinq.conduction.nl",
+				"widgets": [
+					{
+						"id": "registration-data",
+						"type": "data",
+						"title": "Registration",
+						"icon": "ClipboardCheckOutline",
+						"content": {
+							"columns": 2
+						}
+					}
+				],
+				"layout": [
+					{
+						"id": "1",
+						"widgetId": "registration-data",
+						"gridX": 0,
+						"gridY": 0,
+						"gridWidth": 12,
+						"gridHeight": 5
+					}
+				],
+				"sidebar": {
+					"enabled": true,
+					"showMetadata": true,
+					"tabs": [
+						{
+							"id": "tickets",
+							"label": "Tickets",
+							"icon": "TicketOutline",
+							"component": "RegistrationChoices"
+						},
+						{
+							"id": "changes",
+							"label": "Cancel or hand over",
+							"icon": "AccountArrowLeftOutline",
+							"component": "RegistrationChanges"
+						},
+						{
+							"id": "audit",
+							"label": "History",
+							"icon": "History",
+							"widgets": [
+								{
+									"type": "audit"
+								}
+							]
+						}
+					]
+				},
+				"headerActions": [
+					{
+						"id": "request-payment",
+						"type": "api-call",
+						"label": "Request payment",
+						"icon": "CashCheck",
+						"url": "/apps/larpinq/api/registrations/{objectId}/payment-request",
+						"method": "POST",
+						"successMessage": "Payment requested. The player sees the payment link and the reference.",
+						"visibleWhen": {
+							"endpoint": "/apps/larpinq/api/payments/access",
+							"field": "allowed",
+							"op": "eq",
+							"value": true
+						}
+					}
+				]
+			}
+		}
+	],
+	"menu": [
+		{
+			"id": "Registrations",
+			"label": "Registrations",
+			"icon": "ClipboardCheckOutline",
+			"route": "Registrations",
+			"order": 92
+		},
+		{
+			"id": "MyRegistrations",
+			"label": "My registrations",
+			"icon": "ClipboardList",
+			"route": "MyRegistrations",
+			"order": 93
+		}
+	]
+}
