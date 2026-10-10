@@ -1,3 +1,3 @@
 # Screens
 
-- No board found yet (decision 150)
+- No screen: Replaces hand-rolled menu merging in main.js with the shared builder, no visible change.

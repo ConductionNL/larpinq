@@ -1,3 +1,3 @@
 # Screens
 
-- No board found yet (decision 150)
+- No screen: Declares MCP tool schemas on register schemas, configuration only.

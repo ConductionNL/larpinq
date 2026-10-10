@@ -1,3 +1,4 @@
 # Screens
 
-- No board found yet (decision 150)
+- LrKarakters https://identity.conduction.nl/screens/board?id=larpinq/LrKarakters
+- LrKarakter https://identity.conduction.nl/screens/board?id=larpinq/LrKarakter

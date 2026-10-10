@@ -1,3 +1,4 @@
 # Screens
 
-- No board found yet (decision 150)
+- LrAanmeldingen https://identity.conduction.nl/screens/board?id=larpinq/LrAanmeldingen
+- LrAanmelding https://identity.conduction.nl/screens/board?id=larpinq/LrAanmelding

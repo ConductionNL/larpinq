@@ -1,3 +1,3 @@
 # Screens
 
-- No board found yet (decision 150)
+- No screen: Swaps the app shell for CnAppRoot, no screen change.

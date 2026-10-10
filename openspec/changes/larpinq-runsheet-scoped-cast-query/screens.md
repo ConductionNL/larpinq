@@ -1,3 +1,3 @@
 # Screens
 
-- No board found yet (decision 150)
+- No screen: Query scoping for the runsheet PDF export, backend only.
