@@ -7,7 +7,7 @@
 
 ### Requirement: A Forms binding MUST be valid against the registration schema when it is made
 
-Binding a Nextcloud Forms form to an event SHALL map its questions to registration properties and run OpenRegister's form destination validator. A binding with findings SHALL NOT be saved once the validator is in refuse mode.
+Binding a Nextcloud Forms form to an event SHALL map its questions to registration properties and run OpenRegister's form destination validator. A binding with findings SHALL NOT be saved, from the first release (decision 181).
 
 #### Scenario: A form without the player's name cannot be bound
 - **GIVEN** a registration schema requiring `playerName`

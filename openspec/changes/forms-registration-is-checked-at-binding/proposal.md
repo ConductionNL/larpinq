@@ -5,7 +5,7 @@ depends_on: []
 
 # Proposal: forms-registration-is-checked-at-binding
 
-larpinq's part of decision 179 (Ruben, 10 October 2026): "when building a form we should know the destination object and the form should at least be valid against that." Cross-app change: `hydra/openspec/changes/form-submits-into-its-destination-object`, architecture in hydra ADR-117. Needs `openregister/form-destination-validator`. Built on the recommended answer to question Q6 (Nextcloud Forms stays a source through a checked binding) until Ruben answers.
+larpinq's part of decision 179 (Ruben, 10 October 2026): "when building a form we should know the destination object and the form should at least be valid against that." Cross-app change: `hydra/openspec/changes/form-submits-into-its-destination-object`, architecture in hydra ADR-117. Needs `openregister/form-destination-validator`. Ruben answered question Q6 (decision 181): Nextcloud Forms stays a source through a binding checked against the destination when it is made.
 
 ## Why
 
@@ -19,4 +19,4 @@ larpinq's part of decision 179 (Ruben, 10 October 2026): "when building a form w
 
 ## Rollback
 
-Existing bindings keep working in report mode for one release.
+The check refuses from the first release (decision 181). An existing binding with findings must be fixed before it can be saved again; it keeps working until then. Rolling back means reverting this change.
