@@ -764,7 +764,11 @@ OC.L10N.register(
         "This registration is offered to someone else.": "Ezt a jelentkezést valaki másnak ajánlották fel.",
         "This offer has lapsed.": "Ez az ajánlat lejárt.",
         "Only the player or a game master can withdraw this offer.": "Ezt az ajánlatot csak a játékos vagy egy mesélő vonhatja vissza.",
-        "Cancel or hand over": "Lemondás vagy átadás"
+        "Cancel or hand over": "Lemondás vagy átadás",
+        "Admin settings": "Admin settings",
+        "administrators only; you set the game rules and worlds in the app itself": "administrators only; you set the game rules and worlds in the app itself",
+        "About this Larpinq installation.": "About this Larpinq installation.",
+        "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema."
     },
     "nplurals=2; plural=(n != 1);"
 )

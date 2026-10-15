@@ -764,7 +764,11 @@ OC.L10N.register(
         "This registration is offered to someone else.": "Tämä ilmoittautuminen on tarjottu jollekulle toiselle.",
         "This offer has lapsed.": "Tämä tarjous on rauennut.",
         "Only the player or a game master can withdraw this offer.": "Vain pelaaja tai pelinjohtaja voi perua tämän tarjouksen.",
-        "Cancel or hand over": "Peru tai luovuta"
+        "Cancel or hand over": "Peru tai luovuta",
+        "Admin settings": "Admin settings",
+        "administrators only; you set the game rules and worlds in the app itself": "administrators only; you set the game rules and worlds in the app itself",
+        "About this Larpinq installation.": "About this Larpinq installation.",
+        "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema."
     },
     "nplurals=2; plural=(n != 1);"
 )

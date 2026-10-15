@@ -14,4 +14,8 @@ const app = createApp({
 })
 
 app.mixin({ methods: { t, n } })
+// The admin page has no CnAppRoot, which normally provides the look. Without
+// it the shell draws the board look but its version card stays in the
+// Nextcloud look.
+app.provide('cnLook', 'board')
 app.mount('#settings')

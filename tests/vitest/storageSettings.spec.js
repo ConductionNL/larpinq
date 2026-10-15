@@ -63,3 +63,16 @@ describe('storage form placement', () => {
 		expect(JSON.parse(read('src/menu-layout.json')).settingsSection).not.toContain('GameSettings')
 	})
 })
+
+describe('admin page frame (board LrBeheerinstellingen)', () => {
+	it('draws the shell in the board look with the path line', () => {
+		const settings = read('src/views/settings/Settings.vue')
+		expect(settings).toContain('look="board"')
+		expect(settings).toContain(':breadcrumbs="breadcrumbs"')
+		expect(settings).toContain('reimportUrl="/index.php/apps/larpinq/api/settings/reimport"')
+	})
+
+	it('provides the board look, so the version card follows the shell', () => {
+		expect(read('src/settings.js')).toContain("app.provide('cnLook', 'board')")
+	})
+})
