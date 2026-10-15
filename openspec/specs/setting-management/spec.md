@@ -26,8 +26,8 @@ The `setting` object type MUST represent a LARP world/campaign with schema
 value}` key-value shape (schema version 2.0.0). Settings MUST be manageable
 through the standard entity pattern: a `Settings` index manifest page with
 search and pagination, create/edit modals, and a navigation entry visually
-distinct from the "Game Settings" app-config page (Globe icon, listed with
-the content types).
+distinct from the app configuration, which lives on the admin settings page
+(Globe icon, listed with the content types).
 
 #### Scenario: Create a setting
 

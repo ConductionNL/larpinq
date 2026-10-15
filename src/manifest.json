@@ -248,14 +248,6 @@
 			"order": 25
 		},
 		{
-			"id": "GameSettings",
-			"label": "Game Settings",
-			"icon": "CogOutline",
-			"route": "GameSettings",
-			"order": 100,
-			"section": "settings"
-		},
-		{
 			"id": "Documentation",
 			"label": "Documentation",
 			"icon": "BookOpenVariantOutline",
@@ -2617,21 +2609,6 @@
 						}
 					]
 				}
-			}
-		},
-		{
-			"id": "GameSettings",
-			"route": "/game-settings",
-			"type": "settings",
-			"title": "Game Settings",
-			"config": {
-				"sections": [
-					{
-						"id": "general",
-						"title": "General",
-						"component": "GameSettingsSection"
-					}
-				]
 			}
 		},
 		{

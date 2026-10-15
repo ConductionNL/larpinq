@@ -39,7 +39,6 @@ import ObjectDetail from './views/ObjectDetail.vue'
 import PlayerAttendanceHistory from './views/PlayerAttendanceHistory.vue'
 import RegistrationChanges from './views/RegistrationChanges.vue'
 import RegistrationChoices from './views/RegistrationChoices.vue'
-import GameSettingsSection from './views/settings/Settings.vue'
 import SkillTree from './views/SkillTree.vue'
 import {
 	exportCampaignAction,
@@ -98,7 +97,6 @@ export default {
 	//     the canvas to keep full width. ---
 	FlowDetailSidebar: { kind: 'page', component: FlowDetailSidebar },
 
-	GameSettingsSection: { kind: 'section', component: GameSettingsSection },
 	ObjectDetail: { kind: 'section', component: ObjectDetail },
 	// Event check-in roster — a sidebar-tab section on the event detail page
 	// (event-checkin-roster). Not a kind:"widget" (no custom-widget-ratchet
