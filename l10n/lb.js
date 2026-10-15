@@ -764,7 +764,11 @@ OC.L10N.register(
         "This registration is offered to someone else.": "Dës Umeldung ass engem aneren ugebuede ginn.",
         "This offer has lapsed.": "Dës Offer ass ofgelaf.",
         "Only the player or a game master can withdraw this offer.": "Nëmmen de Spiller oder e Spillleeder kann dës Offer zréckzéien.",
-        "Cancel or hand over": "Annuléieren oder iwwerginn"
+        "Cancel or hand over": "Annuléieren oder iwwerginn",
+        "Admin settings": "Admin settings",
+        "administrators only; you set the game rules and worlds in the app itself": "administrators only; you set the game rules and worlds in the app itself",
+        "About this Larpinq installation.": "About this Larpinq installation.",
+        "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema."
     },
     "nplurals=2; plural=(n != 1);"
 )
