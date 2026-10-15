@@ -122,6 +122,7 @@ import {
 import { defineComponent } from 'vue'
 import Save from 'vue-material-design-icons/ContentSave.vue'
 import logger from '../../logger.js'
+import { buildStorageSettingsPayload } from '../../services/storageSettingsPayload.js'
 
 /**
  * @class Settings
@@ -191,25 +192,6 @@ export default defineComponent({
 				label: register.title,
 				value: register.id.toString(),
 			}))
-		},
-
-		/**
-		 * Determines if the selected register has schemas
-		 *
-		 * @return {boolean} True if the selected register has schemas, false otherwise
-		 */
-		hasSchemas() {
-			if (!this.selectedRegister) return false
-
-			const register = this.settings.availableRegisters.find(
-				(r) => r.id.toString() === this.selectedRegister.value,
-			)
-
-			return (
-				register
-				&& Array.isArray(register.schemas)
-				&& register.schemas.length > 0
-			)
 		},
 	},
 
@@ -382,28 +364,10 @@ export default defineComponent({
 		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-8
 		 */
 		async saveAll() {
-			if (!this.selectedRegister || !this.hasSchemas) {
-				return
-			}
-
 			this.saving = true
 			this.message = ''
 			try {
-				const configToSave = {}
-
-				// Convert configuration to flat structure
-				Object.entries(this.configuration).forEach(([type, config]) => {
-					// Always use openregister as source
-					configToSave[`${type}_source`] = 'openregister'
-
-					// Set the register ID for all object types
-					configToSave[`${type}_register`] = this.selectedRegister.value
-
-					// Set the schema ID if selected
-					configToSave[`${type}_schema`] = config.schema
-						? config.schema.value
-						: ''
-				})
+				const configToSave = buildStorageSettingsPayload(this.configuration)
 
 				const response = await fetch(
 					'/index.php/apps/larpinq/api/settings',

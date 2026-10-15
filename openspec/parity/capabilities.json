@@ -5531,9 +5531,9 @@
 			"pretix": "no",
 			"built": {
 				"state": "built",
-				"evidence": "src/manifest.json:266-271,2107 (GameSettings page, /game-settings, section component 'GameSettingsSection'); src/registry.js:28,38 resolves GameSettingsSection to src/views/settings/Settings.vue; Settings.vue loadSettings()/saveConfiguration() call GET/POST/PUT /apps/larpinq/api/settings (routes.php:35-41, SettingsController::index/create/update)",
+				"evidence": "appinfo/info.xml <settings> registers OCA\\Larpinq\\Settings\\LarpinqAdmin; templates/settings/admin.php loads larpinq-settings, whose entry src/settings.js mounts src/views/settings/Settings.vue; Settings.vue loadSettings()/saveAll() call GET/POST /apps/larpinq/api/settings (SettingsController::index/create) with the payload from src/services/storageSettingsPayload.js",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "Game Settings page, route /game-settings",
+				"reachedOn": "Admin settings, /settings/admin/larpinq",
 				"change": "openspec/changes/archive/2026-03-21-admin-settings"
 			},
 			"provider": "self",
@@ -5567,7 +5567,7 @@
 				"state": "built",
 				"evidence": "src/views/settings/Settings.vue:6 CnAdminSettingsShell reimportUrl=\"/index.php/apps/larpinq/api/settings/reimport\"; appinfo/routes.php:42 settings#reimport POST api/settings/reimport (in $extra, correct app id); lib/Service/ConfigFileLoaderService.php:96 loadConfigurationFile() re-merges the bundled register.d fragments",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "Game Settings page, 'Re-import' action in CnAdminSettingsShell",
+				"reachedOn": "Admin settings, /settings/admin/larpinq, 'Re-import' action in CnAdminSettingsShell",
 				"change": "openspec/changes/archive/2026-03-21-register-config-json"
 			},
 			"provider": "self",
