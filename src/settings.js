@@ -2,6 +2,11 @@ import { translatePlural as n, translate as t } from '@nextcloud/l10n'
 import { createApp, h } from 'vue'
 import AdminSettings from './views/settings/Settings.vue'
 
+// Library CSS. This entry is a separate bundle from main.js, so the import in
+// main.js does not reach the admin page: without this line CnAdminSettingsShell
+// renders unstyled on /settings/admin/larpinq.
+import '@conduction/nextcloud-vue/css/index.css'
+
 // Vue 3: `new Vue().$mount()` is `createApp().mount()`, and a global mixin is
 // installed on the app instance rather than on the Vue constructor.
 const app = createApp({
