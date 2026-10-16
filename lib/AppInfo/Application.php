@@ -203,6 +203,23 @@ class Application extends App implements IBootstrap {
 				}
 			);
 		}
+
+		// Routes::standard() also supplies /api/store/items. larpinq ships no
+		// store controller, so the route resolves only through OpenRegister's
+		// GenericStoreController aliased under larpinq's class name.
+		if (class_exists('OCA\OpenRegister\AppHost\Bootstrap') === true) {
+			$bootstrap = 'OCA\OpenRegister\AppHost\Bootstrap';
+			try {
+				$bootstrap::aliasStoreController(
+					context: $context,
+					appId: self::APP_ID,
+					controllerNs: 'OCA\Larpinq\Controller'
+				);
+			} catch (\Throwable) {
+				// An OpenRegister older than the helper leaves the store route
+				// unbound; every other registration still runs.
+			}
+		}
 	}//end registerAppHostGenerics()
 
 
