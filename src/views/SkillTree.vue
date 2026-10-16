@@ -199,6 +199,7 @@ import NcEmptyContent from '@nextcloud/vue/components/NcEmptyContent'
 // @nextcloud/vue v9 ships an `exports` map; the v8 `dist/Components/*.js`
 // deep paths are no longer exported and throw ERR_PACKAGE_PATH_NOT_EXPORTED.
 import NcSelect from '@nextcloud/vue/components/NcSelect'
+import { ensureObjectTypes } from '../store/store.js'
 import {
 	buildNodes,
 	computeStateBySkill,
@@ -492,6 +493,7 @@ export default {
 			this.loading = true
 			try {
 				const store = useObjectStore()
+				await ensureObjectTypes(store, ['skill', 'character', 'ability', 'condition', 'effect'])
 				const [skills, characters, abilities, conditions, effects] =
 					await Promise.all([
 						store.fetchCollection('skill', { _limit: 1000 }),
