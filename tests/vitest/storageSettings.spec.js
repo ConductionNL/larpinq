@@ -40,7 +40,9 @@ describe('storage settings payload', () => {
 	})
 
 	it('treats a type without a source as internal', () => {
-		expect(buildStorageSettingsPayload({ skill: {} })).toEqual({ skill_source: 'internal' })
+		expect(buildStorageSettingsPayload({ skill: {} })).toEqual({
+			skill_source: 'internal',
+		})
 	})
 
 	it('saves through the payload builder, not through an undefined register', () => {
@@ -52,7 +54,9 @@ describe('storage settings payload', () => {
 
 describe('storage form placement', () => {
 	it('mounts only on the admin page', () => {
-		expect(read('src/settings.js')).toContain("from './views/settings/Settings.vue'")
+		expect(read('src/settings.js')).toContain(
+			"from './views/settings/Settings.vue'",
+		)
 		expect(read('src/registry.js')).not.toContain('views/settings/Settings.vue')
 	})
 
@@ -60,7 +64,9 @@ describe('storage form placement', () => {
 		const manifest = JSON.parse(read('src/manifest.json'))
 		const ids = [...manifest.pages, ...manifest.menu].map((entry) => entry.id)
 		expect(ids).not.toContain('GameSettings')
-		expect(JSON.parse(read('src/menu-layout.json')).settingsSection).not.toContain('GameSettings')
+		expect(
+			JSON.parse(read('src/menu-layout.json')).settingsSection,
+		).not.toContain('GameSettings')
 	})
 })
 
@@ -69,10 +75,20 @@ describe('admin page frame (board LrBeheerinstellingen)', () => {
 		const settings = read('src/views/settings/Settings.vue')
 		expect(settings).toContain('look="board"')
 		expect(settings).toContain(':breadcrumbs="breadcrumbs"')
-		expect(settings).toContain('reimportUrl="/index.php/apps/larpinq/api/settings/reimport"')
+		expect(settings).toContain(
+			'reimportUrl="/index.php/apps/larpinq/api/settings/reimport"',
+		)
 	})
 
-	it('provides the board look, so the version card follows the shell', () => {
-		expect(read('src/settings.js')).toContain("app.provide('cnLook', 'board')")
+	it('leaves the look to the shell, which hands it to its version card', () => {
+		expect(read('src/settings.js')).not.toContain("provide('cnLook'")
+	})
+
+	it('registers the library catalogue, so the version card reads Dutch', () => {
+		const source = read('src/settings.js')
+		expect(source).toMatch(
+			/import\s*\{[^}]*\bregisterTranslations\b[^}]*\}\s*from\s*'@conduction\/nextcloud-vue'/,
+		)
+		expect(source).toMatch(/^registerTranslations\(\)/m)
 	})
 })
