@@ -183,7 +183,9 @@ The widget MUST verify that Larpinq is configured to use OpenRegister as its dat
 
 The dashboard MUST include a widget that shows the calculated ability scores for a selected character, displaying the base value, applied modifiers from skills/items/conditions/events, and the final computed value. This mirrors the server-side calculation performed by `CharacterService.calculateCharacter()`.
 
-@e2e exclude Character stat breakdown widget is not yet implemented per spec status note; scenarios are deferred pending implementation
+Built as the Stats tab of the character page, not as a dashboard widget, by change `characters-stat-sheet-panel` (2026-09-29). Its requirements REQ-CSP-001 and REQ-CSP-002 in `openspec/specs/character-management/spec.md` are the binding form; the scenarios below keep the original widget wording.
+
+@e2e exclude Superseded by character-management REQ-CSP-001/REQ-CSP-002; the browser proof is tests/e2e/workflows/character-stats.workflow.spec.ts (strength 14 with both sources, a negative modifier marked, a new character with no modifiers)
 
 #### Scenario: Display ability scores for a character
 - **GIVEN** a character "Aldric" exists with skills ["Swordsmanship"] and items ["Iron Shield"]
@@ -215,7 +217,9 @@ The dashboard MUST include a widget that shows the calculated ability scores for
 
 Each ability score in the character stat widget MUST have an expandable audit trail that shows every effect that was applied, in the order they were applied, matching the `audit` array produced by `CharacterService.applyModifierToAbility()`.
 
-@e2e exclude Effect audit trail widget is not yet implemented per spec status note; scenarios are deferred pending implementation
+Built as the expandable ability rows of the character page Stats tab by change `characters-stat-sheet-panel` (2026-09-29): a row expands to its modifiers in the order applied, each with its change and source. REQ-CSP-001 in `openspec/specs/character-management/spec.md` is the binding form.
+
+@e2e exclude Superseded by character-management REQ-CSP-001; the browser proof is tests/e2e/workflows/character-stats.workflow.spec.ts, test 'the Stats tab expands strength to its modifiers'
 
 #### Scenario: Expand audit trail for an ability
 - **GIVEN** a character's "Strength" ability has the following audit entries:
@@ -492,7 +496,7 @@ The DashboardIndex component MUST allow users to show or hide individual widgets
 
 ## Nextcloud Integration Analysis
 
-**Status**: Partially implemented. The `SkillUsageChart.vue` component and `DashboardIndex.vue` with `CnDashboardPage` integration exist in the codebase. The skill usage chart uses GraphQL faceting for server-side aggregation. Character stat display, effect chain visualization, multi-character comparison, skill dependency graph, interactive skill selection, and character sheet widgets are not yet implemented.
+**Status**: Partially implemented. The `SkillUsageChart.vue` component and `DashboardIndex.vue` with `CnDashboardPage` integration exist in the codebase. The skill usage chart uses GraphQL faceting for server-side aggregation. Character stat display is built as the Stats tab of the character page (`characters-stat-sheet-panel`, 2026-09-29), not as a dashboard widget. Effect chain visualization, multi-character comparison, skill dependency graph, interactive skill selection, and character sheet widgets are not yet implemented.
 
 **Nextcloud Core Interfaces**:
 - `IDashboardWidget` / `IAPIWidgetV2` (`OCP\Dashboard`): Implement a `SkillUsageWidget` class in Larpinq that registers with Nextcloud's dashboard framework. Use `IAPIWidgetV2` for async data loading -- the widget fetches skill usage data via a single GraphQL faceting query and renders a donut chart. This makes the widget available on Nextcloud's main dashboard page alongside other app widgets.

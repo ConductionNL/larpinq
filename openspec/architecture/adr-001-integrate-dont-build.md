@@ -56,6 +56,8 @@ as plain Larpinq fields handled by the stat/domain logic.
   OR-backed data (per ADR-022 consequences).
 - New leaf migrations follow this ADR; any future parallel mechanism requires an
   explicit ADR-022 exception ADR in this folder.
+- ADR-003 is such an exception: lore pages are register objects, because a
+  wiki leaf has no per-page visibility and no reveal moment.
 
 ## Related
 

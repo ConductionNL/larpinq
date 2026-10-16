@@ -1,0 +1,41 @@
+{
+	"pages": [
+		{
+			"id": "NewPlayers",
+			"route": "/new-players",
+			"type": "index",
+			"title": "New players",
+			"config": {
+				"register": "larpinq",
+				"schema": "player",
+				"filter": { "awaitingReview": true },
+				"allowExport": false,
+				"showMassImport": false,
+				"columns": [
+					{ "key": "name", "label": "Name" },
+					{ "key": "description", "label": "Description" },
+					{ "key": "selfRegistered", "label": "Signed up through the portal" }
+				],
+				"selectable": true,
+				"bulkActions": [
+					{
+						"id": "mark-reviewed",
+						"label": "Mark reviewed",
+						"icon": "AccountCheck",
+						"handler": "larpinqMarkPlayersReviewed"
+					}
+				],
+				"documentationUrl": "https://larpinq.conduction.nl"
+			}
+		}
+	],
+	"menu": [
+		{
+			"id": "NewPlayers",
+			"label": "New players",
+			"icon": "AccountPlusOutline",
+			"route": "NewPlayers",
+			"order": 35
+		}
+	]
+}

@@ -1,0 +1,16 @@
+{
+  "components": {
+    "schemas": {
+      "event": {
+        "configuration": {
+          "linkedTypes": ["talk", "polls", "deck"]
+        }
+      },
+      "setting": {
+        "configuration": {
+          "linkedTypes": ["talk", "polls"]
+        }
+      }
+    }
+  }
+}

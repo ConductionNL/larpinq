@@ -145,7 +145,7 @@ final class PortalContributionProviderTest extends TestCase {
 		$collections = $this->indexById($manifest['collections']);
 
 		$this->assertSame(
-			['myCharacters', 'events', 'skillCatalog', 'itemCatalog', 'conditionCatalog'],
+			['myCharacters', 'events', 'skillCatalog', 'itemCatalog', 'conditionCatalog', 'myProfile'],
 			array_keys($collections),
 			'Exactly the declared collections, in order'
 		);
@@ -227,14 +227,19 @@ final class PortalContributionProviderTest extends TestCase {
 		$manifest = (array)$this->provider->getContribution(self::PLAYER_SUBJECT);
 		$actions = $manifest['actions'];
 
-		$this->assertCount(1, $actions, 'Event signup is delegated to NC Forms; the only action is createCharacter');
+		$this->assertCount(2, $actions, 'Event signup is delegated to NC Forms; the actions are createCharacter and createPlayerProfile');
 
 		$action = $actions[0];
 		$this->assertSame('createCharacter', $action['id']);
 		$this->assertSame('create', $action['type']);
 		$this->assertSame('character', $action['schema']);
-		$this->assertSame('ownerRef', $action['scopeField'], 'The writer stamps ownerRef = subjectRef so the record is player-owned');
-		$this->assertSame(['name', 'ocName', 'background'], $action['fields'], 'No approved / slNotesPrivate / economy / lifecycle fields');
+		$this->assertSame('ownerRef', $action['scopeField'], 'The writer stamps ownerRef so the record is player-owned');
+		$this->assertSame(
+			'ownerRef',
+			($action['scopeClaim'] ?? null),
+			'ownerRef is a player uuid: the stamp must be the linked player (the claim), never the portal subject reference'
+		);
+		$this->assertSame(['name', 'background'], $action['fields'], 'No ocName (derived from ownerRef), no approved / slNotesPrivate / economy / lifecycle fields');
 
 		// No inbox surface (larpinq has no per-player message collection).
 		$this->assertSame([], $manifest['notifications']);
@@ -243,6 +248,45 @@ final class PortalContributionProviderTest extends TestCase {
 		}
 
 	}//end testCreateCharacterActionIsConservative()
+
+	/**
+	 * REQ-PSS-001: a portal visitor creates their own player profile, stamped
+	 * with their portal subject, with a name and a description only.
+	 *
+	 * @return void
+	 *
+	 * @spec openspec/specs/portal-contribution/spec.md
+	 */
+	public function testCreatePlayerProfileIsStampedWithThePortalSubject(): void {
+		$manifest = (array)$this->provider->getContribution(self::PLAYER_SUBJECT);
+		$actions = $this->indexById($manifest['actions']);
+
+		$this->assertArrayHasKey('createPlayerProfile', $actions);
+		$action = $actions['createPlayerProfile'];
+		$this->assertSame('create', $action['type']);
+		$this->assertSame('larpinq', $action['register']);
+		$this->assertSame('player', $action['schema']);
+		$this->assertSame('portalSubjectRef', $action['scopeField']);
+		$this->assertArrayNotHasKey('scopeClaim', $action, 'The profile is stamped with the subject itself: no claim exists before it');
+		$this->assertSame(['name', 'description'], $action['fields'], 'No userUid, no review or registration flags');
+	}//end testCreatePlayerProfileIsStampedWithThePortalSubject()
+
+	/**
+	 * REQ-PSS-001: "My profile" shows only the subject's own player.
+	 *
+	 * @return void
+	 *
+	 * @spec openspec/specs/portal-contribution/spec.md
+	 */
+	public function testMyProfileIsScopedToTheSubject(): void {
+		$manifest = (array)$this->provider->getContribution(self::PLAYER_SUBJECT);
+		$profile = $this->indexById($manifest['collections'])['myProfile'];
+
+		$this->assertSame('player', $profile['schema']);
+		$this->assertSame('portalSubjectRef', $profile['scopeField']);
+		$this->assertArrayNotHasKey('scopeClaim', $profile);
+		$this->assertSame(['name', 'description'], $profile['fields'], 'No userUid, portal reference or review stamps');
+	}//end testMyProfileIsScopedToTheSubject()
 
 	/**
 	 * Scenario: Wave declares create actions only — no endpoint actions.
@@ -303,7 +347,7 @@ final class PortalContributionProviderTest extends TestCase {
 		$schemas = $this->registerSchemas();
 		$manifest = (array)$this->provider->getContribution(self::PLAYER_SUBJECT);
 
-		foreach ($manifest['collections'] as $collection) {
+		foreach (array_merge($manifest['collections'], $manifest['actions']) as $collection) {
 			$schemaName = $collection['schema'];
 			$this->assertArrayHasKey($schemaName, $schemas, 'Collection schema "' . $schemaName . '" must exist in the register');
 
@@ -341,12 +385,14 @@ final class PortalContributionProviderTest extends TestCase {
 	 * @return array<string, array<string, mixed>> The schemas by name.
 	 */
 	private function registerSchemas(): array {
-		$register = (array)json_decode(
-			(string)file_get_contents(__DIR__ . '/../../../lib/Settings/larpinq_register.json'),
-			true
-		);
+		$appPath = dirname(__DIR__, 3);
+		$register = (array)json_decode((string)file_get_contents($appPath . '/lib/Settings/larpinq_register.json'), true);
+		$reflection = new ReflectionClass(\OCA\Larpinq\Service\ConfigFileLoaderService::class);
+		$merge = $reflection->getMethod('mergeRegisterFragments');
+		$merge->setAccessible(true);
+		$merged = (array)$merge->invoke($reflection->newInstanceWithoutConstructor(), $register, $appPath);
 
-		return (array)($register['components']['schemas'] ?? []);
+		return (array)($merged['components']['schemas'] ?? []);
 	}//end registerSchemas()
 
 	/**

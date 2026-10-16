@@ -18,13 +18,14 @@ autoloader before any `OCA\OpenRegister\…` name is resolved during
 ### Requirement: OpenRegister's autoloader is registered before its classes are probed
 
 `AppInfo\OpenRegisterAutoloader::register()` SHALL put OpenRegister's PSR-4
-prefix on the composer autoloader — via
-`OC_App::registerAutoloading('openregister', …)` — before any
+prefix on the autoloader — via a PSR-4 loader for `OCA\OpenRegister\` over OpenRegister's `lib/`, registered with
+`spl_autoload_register()` using only the public `IAppManager`
+(`isEnabledForAnyone()` + `getAppPath()`) — before any
 `class_exists('OCA\OpenRegister\…')` probe in `Application::register()`.
 
 Nextcloud registers apps in sorted order: `OC_App::getEnabledApps()` does
-`sort($apps)` and `Coordinator::registerApps()` walks that list calling
-`OC_App::registerAutoloading($appId, $path)` and then `$app->register()` for one
+`sort($apps)` and `Coordinator::registerApps()` walks that list running
+each app's autoloader registration and then `$app->register()` for one
 app at a time. Every app's `register()` therefore runs before the PSR-4 prefix of
 every alphabetically-later app exists.
 
@@ -43,7 +44,9 @@ The second is a security property, not a feature: that validation is server-side
 precisely because the client cannot be trusted, and a validation that is never
 invoked is indistinguishable from having no validation.
 
-`OC_App::registerAutoloading()` is idempotent and touches only the autoloader.
+The prelude is idempotent and touches only the autoloader. It MUST NOT call
+`OC_App::registerAutoloading()`: that is private API and Nextcloud 35 removed it.
+It MUST NOT require OpenRegister's `vendor/autoload.php`.
 `IAppManager::loadApp('openregister')` MUST NOT be used instead: it marks
 OpenRegister loaded and calls `Coordinator::bootApp()`, booting OpenRegister
 before its own `register()` has run.

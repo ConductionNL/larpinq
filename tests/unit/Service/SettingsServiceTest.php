@@ -50,10 +50,27 @@ class SettingsServiceTest extends TestCase {
 		$this->assertArrayHasKey('event_schema', $result);
 		$this->assertArrayHasKey('setting_schema', $result);
 		$this->assertArrayHasKey('attendance_schema', $result);
+		$this->assertArrayHasKey('lorepage_schema', $result);
+		$this->assertArrayHasKey('characterfield_schema', $result);
+		// The faction guard resolves its three schemas by these keys.
+		$this->assertArrayHasKey('faction_schema', $result);
+		$this->assertArrayHasKey('factionmember_schema', $result);
+		$this->assertArrayHasKey('relationship_schema', $result);
+		// The build report reads a build by this key.
+		$this->assertArrayHasKey('characterbuild_schema', $result);
+		// The batch award and the XP stage read awards by this key.
+		$this->assertArrayHasKey('xpaward_schema', $result);
+		$this->assertArrayHasKey('registration_schema', $result);
+		// The ticket choices read ticket types, options and codes by these keys.
+		$this->assertArrayHasKey('tickettype_schema', $result);
+		$this->assertArrayHasKey('registrationoption_schema', $result);
+		$this->assertArrayHasKey('accesscode_schema', $result);
 		// CONFIG_KEYS now includes {slug}_schema + {slug}_register + {slug}_source
-		// for all 10 slugs (9 original + attendance) plus the global 'register'
-		// key = 1 + 10*3 = 31.
-		$this->assertCount(31, $result);
+		// for all 21 slugs (9 original + attendance + lorepage + characterfield
+		// + faction + factionmember + relationship + characterbuild + xpaward + registration
+		// + tickettype + registrationoption + accesscode)
+		// plus the global 'register' key = 1 + 21*3 = 64.
+		$this->assertCount(64, $result);
 	}
 
 	public function testGetSettingsReturnsEmptyStringsAsDefaults(): void {
@@ -110,7 +127,7 @@ class SettingsServiceTest extends TestCase {
 		$result = $this->service->updateSettings(['register' => 'reg-1']);
 
 		$this->assertIsArray($result);
-		$this->assertCount(31, $result);
+		$this->assertCount(64, $result);
 	}
 
 	public function testLoadSettingsDelegatesToLoadService(): void {

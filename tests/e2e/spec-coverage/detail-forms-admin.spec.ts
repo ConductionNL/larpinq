@@ -756,7 +756,7 @@ test.describe('game-mechanics — detail & forms', () => {
 		await closeDialog(page)
 	})
 
-	// @e2e openspec/specs/game-mechanics/spec.md#effect-with-legacy-statid
+	// @e2e openspec/specs/game-mechanics/spec.md#effect-with-legacy-stat-id
 	test('effect detail shell renders for legacy stat_id objects', async ({
 		page,
 	}) => {
@@ -764,7 +764,7 @@ test.describe('game-mechanics — detail & forms', () => {
 		await expect(page.locator('.app-content')).toBeVisible()
 	})
 
-	// @e2e openspec/specs/game-mechanics/spec.md#effect-with-both-abilities-and-statid
+	// @e2e openspec/specs/game-mechanics/spec.md#effect-with-both-abilities-and-stat-id
 	test('effect detail exposes Actions menu', async ({ page }) => {
 		await gotoDetail(page, 'effects', seeded.effect, 'Effect')
 		await expect(

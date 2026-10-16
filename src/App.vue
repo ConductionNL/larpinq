@@ -83,9 +83,11 @@ import {
 	CnObjectSidebar,
 	useTenantContext,
 } from '@conduction/nextcloud-vue'
+import { loadState } from '@nextcloud/initial-state'
 import { translate as ncT } from '@nextcloud/l10n'
 import { NcAppSettingsSection } from '@nextcloud/vue'
-import { reactive } from 'vue'
+import { provide, reactive } from 'vue'
+import { startActiveWorld } from './services/activeWorld.js'
 import { setObjectStoreTenantUuid, useObjectStore } from './store/modules/object.js'
 
 export default {
@@ -171,6 +173,7 @@ export default {
 	 * watcher just never fires.
 	 *
 	 * @spec openspec/changes/larpinq-adopt-or-abstractions/specs/larpinq-adopt-or-abstractions/spec.md
+	 * @spec openspec/specs/setting-management/spec.md
 	 *
 	 * @return {object} Setup return — none needed externally.
 	 */
@@ -179,6 +182,14 @@ export default {
 		// when no provider is mounted, so this stays safe on a single-tenant
 		// deployment — the watcher simply never fires.
 		const { activeOrganisationUuid } = useTenantContext()
+
+		// The page workspace every index page reads its `@workspace.activeWorld?`
+		// list filter from, seeded with the world the page was served with, so
+		// lists are narrowed before their first fetch (events-world-scope-and-upcoming).
+		provide(
+			'cnWorkspaceContext',
+			startActiveWorld(loadState('larpinq', 'activeWorld', '')),
+		)
 
 		return { cnActiveOrganisationUuid: activeOrganisationUuid }
 	},
