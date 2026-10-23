@@ -21,7 +21,7 @@ declare(strict_types=1);
 define('PHPUNIT_RUN', 1);
 
 // Include Composer's autoloader.
-require_once __DIR__ . '/../vendor/autoload.php';
+$composerAutoloader = require __DIR__ . '/../vendor/autoload.php';
 
 // Doctrine placeholders, loaded BEFORE anything can mock an OCP DB interface.
 // IQueryBuilder evaluates class constants referencing Doctrine\DBAL\ParameterType
@@ -76,3 +76,20 @@ spl_autoload_register(function (string $class): void {
 		break;
 	}//end foreach
 });
+
+// OpenRegister is a sibling Nextcloud app, not a composer dependency, so its
+// classes are absent from a bare unit-test process. tests/stubs/openregister/
+// carries the pre-write events verbatim and an ObjectEntity of the real shape,
+// so listener tests construct the REAL event classes rather than hand-made
+// doubles (learniq#984: a double with a method the real event lacks hid a 500
+// on every update). The prefix is APPENDED to this process's loader only, so a
+// real OpenRegister on the path always wins, and it is never in composer.json.
+if ($composerAutoloader instanceof \Composer\Autoload\ClassLoader) {
+	$composerAutoloader->addPsr4('OCA\\OpenRegister\\', __DIR__ . '/stubs/openregister/');
+	// portaliq's claim event, verbatim, for the self-signup claim listener
+	// (players-self-signup). Same rule: appended, so a real portaliq wins.
+	$composerAutoloader->addPsr4('OCA\\Portaliq\\', __DIR__ . '/stubs/portaliq/');
+	// Nextcloud Forms' submit event in its real shape, for the sign-up listener
+	// (registration-intake-and-capacity). Same rule: appended, so a real forms wins.
+	$composerAutoloader->addPsr4('OCA\\Forms\\', __DIR__ . '/stubs/forms/');
+}

@@ -60,6 +60,7 @@
           "schema": "character",
           "slug": "character-voorbeeld-name-1-1"
         },
+        "status": "active",
         "name": "Voorbeeld Name 1",
         "ocName": "00000000-0000-4000-8000-000000000000",
         "ownerUid": "Voorbeeld Owneruid 1",
@@ -97,7 +98,15 @@
             "overriddenAt": "2026-03-01T09:00:00+00:00"
           }
         ],
-        "ownerRef": "00000000-0000-4000-8000-000000000000"
+        "ownerRef": "00000000-0000-4000-8000-000000000000",
+        "customFields": {
+          "bloodline": "elven",
+          "patron-god": "The Grey Lady",
+          "scars": 2
+        },
+        "customFieldsPrivate": {
+          "true-allegiance": "rebels"
+        }
       },
       {
         "@self": {
@@ -105,6 +114,7 @@
           "schema": "character",
           "slug": "character-voorbeeld-name-2-2"
         },
+        "status": "retired",
         "name": "Voorbeeld Name 2",
         "ocName": "00000000-0000-4000-8000-000000000001",
         "ownerUid": "Voorbeeld Owneruid 2",
@@ -150,6 +160,7 @@
           "schema": "character",
           "slug": "character-voorbeeld-name-3-3"
         },
+        "status": "dead",
         "name": "Voorbeeld Name 3",
         "ocName": "00000000-0000-4000-8000-000000000002",
         "ownerUid": "Voorbeeld Owneruid 3",
@@ -308,7 +319,17 @@
         "effects": [
           "00000000-0000-4000-8000-000000000000"
         ],
-        "setting": "00000000-0000-4000-8000-000000000000"
+        "setting": "00000000-0000-4000-8000-000000000000",
+        "capacity": 3,
+        "approvalRequired": true,
+        "signupForm": 1,
+        "paymentRequired": true,
+        "payBy": "2026-11-20T00:00:00+00:00",
+        "paymentCode": "WC26",
+        "cancellationPolicy": {
+          "cancelBy": "2026-11-25T00:00:00+00:00",
+          "paidCancellation": "player-chooses"
+        }
       },
       {
         "@self": {
@@ -431,6 +452,18 @@
         "name": "Voorbeeld Name 3",
         "description": "Voorbeeld Description 3",
         "userUid": "Voorbeeld Useruid 3"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "player",
+          "slug": "player-lotte-bakker"
+        },
+        "name": "Lotte Bakker",
+        "description": "Signed up through the portal. Wants to play a healer.",
+        "portalSubjectRef": "demo-portal-subject-lotte",
+        "selfRegistered": true,
+        "awaitingReview": true
       },
       {
         "@self": {
@@ -581,6 +614,597 @@
         "reason": "Voorbeeld Reason 3",
         "awardedBy": "Voorbeeld Awardedby 3",
         "awardedAt": "2026-03-03T09:00:00+00:00"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_lore_page",
+          "slug": "lore-page-1"
+        },
+        "title": "The city of Aldmoor",
+        "body": "Aldmoor is a walled trade city on the river Esk. Its north gate faces the old border, its markets never close.",
+        "category": "place",
+        "visibility": "players",
+        "revealFrom": "2026-01-01T00:00:00+00:00",
+        "order": 1
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_lore_page",
+          "slug": "lore-page-2"
+        },
+        "title": "The war of the two queens",
+        "body": "Twenty years ago two sisters both claimed the crown. The war ended in a truce that nobody signed.",
+        "category": "history",
+        "visibility": "players",
+        "revealFrom": "2026-01-01T00:00:00+00:00",
+        "order": 2
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_lore_page",
+          "slug": "lore-page-3"
+        },
+        "title": "The Ash Circle",
+        "body": "A secret society of former soldiers who want the war back. Their leader is the harbour master.",
+        "category": "faction",
+        "visibility": "gamemasters",
+        "revealFrom": "2026-01-01T00:00:00+00:00",
+        "order": 3
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_lore_page",
+          "slug": "lore-page-4"
+        },
+        "title": "The fall of the north gate",
+        "body": "On the evening of the siege the north gate falls. Nobody inside the walls knows who opened it.",
+        "category": "history",
+        "visibility": "players",
+        "revealFrom": "2026-10-10T18:00:00+00:00",
+        "order": 4
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_plot",
+          "slug": "plot-the-heir-of-aldmoor"
+        },
+        "title": "The heir of Aldmoor",
+        "summary": "The lost heir of the old queen hides among the players. The guard captain knows.",
+        "writer": "joris",
+        "writingStep": "ready"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_plot_part",
+          "slug": "plot-part-heir-mirela"
+        },
+        "plot": "00000000-0000-4000-8000-000000000000",
+        "character": "00000000-0000-4000-8000-000000000000",
+        "privateText": "She is the lost heir; the guard captain knows.",
+        "playerText": "You dream of a crown you never wore."
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_plot_part",
+          "slug": "plot-part-heir-bertram"
+        },
+        "plot": "00000000-0000-4000-8000-000000000000",
+        "character": "00000000-0000-4000-8000-000000000001",
+        "privateText": "Sworn to find the heir and bring her to the queen."
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_plot",
+          "slug": "plot-the-ash-circle-returns"
+        },
+        "title": "The Ash Circle returns",
+        "summary": "The old soldiers try to start the war again at the midsummer market.",
+        "writer": "sanne",
+        "writingStep": "draft"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_plot",
+          "slug": "plot-the-river-toll"
+        },
+        "title": "The river toll",
+        "summary": "A new toll on the Esk splits the merchants of Aldmoor.",
+        "writer": "joris",
+        "writingStep": "approved"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_plot_part",
+          "slug": "plot-part-ash-tomas"
+        },
+        "plot": "00000000-0000-4000-8000-000000000001",
+        "character": "00000000-0000-4000-8000-000000000002",
+        "privateText": "Tomas owes the harbour master a debt he cannot pay.",
+        "playerText": "Someone at the harbour keeps asking about you."
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_character_field",
+          "slug": "character-field-bloodline"
+        },
+        "label": "Bloodline",
+        "key": "bloodline",
+        "fieldType": "choice",
+        "choices": [
+          "human",
+          "elven",
+          "dwarven"
+        ],
+        "visibility": "owner",
+        "order": 1,
+        "setting": "00000000-0000-4000-8000-000000000000"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_character_field",
+          "slug": "character-field-patron-god"
+        },
+        "label": "Patron god",
+        "key": "patron-god",
+        "fieldType": "text",
+        "visibility": "owner",
+        "order": 2,
+        "setting": "00000000-0000-4000-8000-000000000000"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_character_field",
+          "slug": "character-field-scars"
+        },
+        "label": "Scars",
+        "key": "scars",
+        "fieldType": "number",
+        "visibility": "owner",
+        "order": 3,
+        "help": "Count the scars your character carries from earlier events.",
+        "setting": "00000000-0000-4000-8000-000000000000"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_character_field",
+          "slug": "character-field-true-allegiance"
+        },
+        "label": "True allegiance",
+        "key": "true-allegiance",
+        "fieldType": "choice",
+        "choices": [
+          "crown",
+          "rebels",
+          "none"
+        ],
+        "visibility": "gamemasters",
+        "order": 4,
+        "setting": "00000000-0000-4000-8000-000000000000"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_faction",
+          "slug": "faction-the-crowns-guard"
+        },
+        "name": "The Crown's Guard",
+        "description": "Sworn to the queen of Aldmoor and her line.",
+        "setting": "00000000-0000-4000-8000-000000000000",
+        "kind": "faction",
+        "visibility": "open"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_faction",
+          "slug": "faction-the-ash-circle"
+        },
+        "name": "The Ash Circle",
+        "description": "A hidden circle that keeps the old rites.",
+        "setting": "00000000-0000-4000-8000-000000000000",
+        "kind": "faction",
+        "visibility": "secret"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_faction",
+          "slug": "faction-the-lantern-bearers"
+        },
+        "name": "The Lantern Bearers",
+        "description": "Travellers who light the road for each other.",
+        "setting": "00000000-0000-4000-8000-000000000000",
+        "kind": "group",
+        "visibility": "open",
+        "leader": "00000000-0000-4000-8000-000000000002"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_faction_member",
+          "slug": "member-guard-bertram"
+        },
+        "faction": "00000000-0000-4000-8000-000000000000",
+        "character": "00000000-0000-4000-8000-000000000001",
+        "role": "member",
+        "status": "active"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_faction_member",
+          "slug": "member-circle-mirela"
+        },
+        "faction": "00000000-0000-4000-8000-000000000001",
+        "character": "00000000-0000-4000-8000-000000000000",
+        "role": "member",
+        "status": "active"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_faction_member",
+          "slug": "member-lanterns-tomas"
+        },
+        "faction": "00000000-0000-4000-8000-000000000002",
+        "character": "00000000-0000-4000-8000-000000000002",
+        "role": "leader",
+        "status": "active"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_faction_member",
+          "slug": "member-lanterns-mirela"
+        },
+        "faction": "00000000-0000-4000-8000-000000000002",
+        "character": "00000000-0000-4000-8000-000000000000",
+        "role": "member",
+        "status": "invited"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_relationship",
+          "slug": "relationship-mirela-bertram"
+        },
+        "from": "00000000-0000-4000-8000-000000000000",
+        "to": "00000000-0000-4000-8000-000000000001",
+        "kind": "rival",
+        "description": "He guards the crown she was born to.",
+        "knownTo": "owners"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_relationship",
+          "slug": "relationship-tomas-mirela"
+        },
+        "from": "00000000-0000-4000-8000-000000000002",
+        "to": "00000000-0000-4000-8000-000000000000",
+        "kind": "family",
+        "description": "Her brother, though neither of them knows it.",
+        "knownTo": "gamemasters"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_relationship",
+          "slug": "relationship-bertram-tomas"
+        },
+        "from": "00000000-0000-4000-8000-000000000001",
+        "to": "00000000-0000-4000-8000-000000000002",
+        "kind": "mentor",
+        "description": "Taught him to hold a sword.",
+        "knownTo": "owners"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_character_build",
+          "slug": "build-mirela-alchemist-path"
+        },
+        "character": "00000000-0000-4000-8000-000000000000",
+        "name": "Alchemist path",
+        "purpose": "plan",
+        "notes": "Herbalism now, Potion brewing next season, towards Master Alchemist.",
+        "skills": [
+          "00000000-0000-4000-8000-000000000000",
+          "00000000-0000-4000-8000-000000000001"
+        ],
+        "items": [],
+        "conditions": []
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_character_build",
+          "slug": "build-mirela-winter-campaign"
+        },
+        "character": "00000000-0000-4000-8000-000000000000",
+        "name": "Winter campaign",
+        "purpose": "other-game",
+        "notes": "Swordsmanship and Riding for the winter campaign. Costs 5 XP more than Mirela has.",
+        "skills": [
+          "00000000-0000-4000-8000-000000000001",
+          "00000000-0000-4000-8000-000000000002"
+        ],
+        "items": [
+          "00000000-0000-4000-8000-000000000000"
+        ],
+        "conditions": []
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_character_build",
+          "slug": "build-bertram-test"
+        },
+        "character": "00000000-0000-4000-8000-000000000001",
+        "name": "Shield bearer test",
+        "purpose": "test",
+        "skills": [
+          "00000000-0000-4000-8000-000000000001"
+        ],
+        "items": [],
+        "conditions": []
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_ticket_type",
+          "slug": "larping-ticket-type-player-early-bird"
+        },
+        "event": "00000000-0000-4000-8000-000000000000",
+        "name": "Player early bird",
+        "role": "player",
+        "amount": 8500,
+        "currency": "EUR",
+        "saleUntil": "2026-11-01T00:00:00+00:00",
+        "hidden": false,
+        "order": 1
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_ticket_type",
+          "slug": "larping-ticket-type-player"
+        },
+        "event": "00000000-0000-4000-8000-000000000000",
+        "name": "Player",
+        "role": "player",
+        "amount": 11000,
+        "currency": "EUR",
+        "hidden": false,
+        "order": 2
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_ticket_type",
+          "slug": "larping-ticket-type-crew"
+        },
+        "event": "00000000-0000-4000-8000-000000000000",
+        "name": "Crew",
+        "role": "crew",
+        "amount": 4500,
+        "currency": "EUR",
+        "placeLimit": 20,
+        "hidden": false,
+        "order": 3
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_ticket_type",
+          "slug": "larping-ticket-type-npc"
+        },
+        "event": "00000000-0000-4000-8000-000000000000",
+        "name": "NPC",
+        "role": "npc",
+        "amount": 0,
+        "currency": "EUR",
+        "hidden": false,
+        "order": 4
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_ticket_type",
+          "slug": "larping-ticket-type-crew-friends"
+        },
+        "event": "00000000-0000-4000-8000-000000000000",
+        "name": "Crew friends",
+        "role": "crew",
+        "amount": 3000,
+        "currency": "EUR",
+        "hidden": true,
+        "order": 5
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_registration_option",
+          "slug": "larping-registration-option-catering-meat"
+        },
+        "event": "00000000-0000-4000-8000-000000000000",
+        "name": "Full catering, meat",
+        "category": "meal",
+        "amount": 3500,
+        "currency": "EUR"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_registration_option",
+          "slug": "larping-registration-option-catering-vegan"
+        },
+        "event": "00000000-0000-4000-8000-000000000000",
+        "name": "Full catering, vegan",
+        "category": "meal",
+        "amount": 3500,
+        "currency": "EUR"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_registration_option",
+          "slug": "larping-registration-option-tent-space"
+        },
+        "event": "00000000-0000-4000-8000-000000000000",
+        "name": "Tent space",
+        "category": "other",
+        "amount": 1000,
+        "currency": "EUR",
+        "placeLimit": 30
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_access_code",
+          "slug": "larping-access-code-lantern"
+        },
+        "event": "00000000-0000-4000-8000-000000000000",
+        "code": "LANTERN",
+        "unlocks": [
+          "00000000-0000-4000-8000-000000000000"
+        ],
+        "maxUses": 5
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_access_code",
+          "slug": "larping-access-code-hearth"
+        },
+        "event": "00000000-0000-4000-8000-000000000000",
+        "code": "HEARTH",
+        "unlocks": [
+          "00000000-0000-4000-8000-000000000000"
+        ],
+        "validUntil": "2026-12-31T23:59:59+00:00",
+        "maxUses": 10
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_access_code",
+          "slug": "larping-access-code-storyteller"
+        },
+        "event": "00000000-0000-4000-8000-000000000000",
+        "code": "STORYTELLER",
+        "unlocks": [
+          "00000000-0000-4000-8000-000000000000"
+        ],
+        "maxUses": 3
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_registration",
+          "slug": "larping-registration-voorbeeld-1"
+        },
+        "event": "00000000-0000-4000-8000-000000000000",
+        "player": "00000000-0000-4000-8000-000000000000",
+        "submitterUid": "anna",
+        "status": "accepted",
+        "submissionId": 1,
+        "submittedAt": "2026-09-01T10:00:00+00:00",
+        "character": "00000000-0000-4000-8000-000000000000",
+        "decidedAt": "2026-09-05T09:00:00+00:00",
+        "decidedBy": "gm-voorbeeld",
+        "paymentState": "open",
+        "paymentRequestId": "f0000000-0000-4000-8000-000000000001",
+        "paymentLink": "https://pay.example.org/r/f0000000-0000-4000-8000-000000000001",
+        "paymentReference": "WC26-0001",
+        "payBy": "2026-11-20T00:00:00+00:00",
+        "invoiceRequested": false
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_registration",
+          "slug": "larping-registration-voorbeeld-2"
+        },
+        "event": "00000000-0000-4000-8000-000000000000",
+        "player": "00000000-0000-4000-8000-000000000000",
+        "submitterUid": "karel",
+        "status": "declined",
+        "submissionId": 2,
+        "submittedAt": "2026-09-02T10:00:00+00:00",
+        "character": "00000000-0000-4000-8000-000000000000",
+        "decidedAt": "2026-09-05T09:00:00+00:00",
+        "decidedBy": "gm-voorbeeld"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_registration",
+          "slug": "larping-registration-voorbeeld-3"
+        },
+        "event": "00000000-0000-4000-8000-000000000000",
+        "player": "00000000-0000-4000-8000-000000000000",
+        "submitterUid": "sanne",
+        "status": "accepted",
+        "submissionId": 3,
+        "submittedAt": "2026-09-03T10:00:00+00:00",
+        "character": "00000000-0000-4000-8000-000000000000",
+        "decidedAt": "2026-09-05T09:00:00+00:00",
+        "decidedBy": "gm-voorbeeld",
+        "paymentState": "paid",
+        "paymentRequestId": "f0000000-0000-4000-8000-000000000002",
+        "paymentReference": "WC26-0002",
+        "payBy": "2026-11-20T00:00:00+00:00",
+        "invoiceRequested": true
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_registration",
+          "slug": "larping-registration-voorbeeld-4"
+        },
+        "event": "00000000-0000-4000-8000-000000000000",
+        "player": "00000000-0000-4000-8000-000000000000",
+        "submitterUid": "pieter",
+        "status": "waitlisted",
+        "submissionId": 4,
+        "submittedAt": "2026-09-04T10:00:00+00:00"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_registration",
+          "slug": "larping-registration-voorbeeld-5"
+        },
+        "event": "00000000-0000-4000-8000-000000000000",
+        "player": "00000000-0000-4000-8000-000000000000",
+        "submitterUid": "joris",
+        "bookedByUid": "joris",
+        "bookingGroup": "d0000000-0000-4000-8000-000000000001",
+        "status": "cancelled",
+        "cancelReason": "player",
+        "cancelledBy": "joris",
+        "submittedAt": "2026-09-06T10:00:00+00:00",
+        "paymentState": "paid",
+        "paymentRequestId": "f0000000-0000-4000-8000-000000000003",
+        "paymentReference": "WC26-0003",
+        "settlementChoice": "credit",
+        "settlement": "credit-requested",
+        "settlementRequestedAt": "2026-11-10T10:00:00+00:00"
       }
     ]
   }

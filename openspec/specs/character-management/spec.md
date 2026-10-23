@@ -5,6 +5,7 @@ status: in-progress
 # Character Management
 
 **OpenSpec changes**:
+- `characters-status-and-bulk-edit` (archived 2026-09-30): REQ-CSB-001 to REQ-CSB-004
 - `character-player-picker` (in progress) — ocName becomes a player inline select-or-create dropdown; ownerUid becomes an auto-derived calculated field; approved gains a switch widget
 
 ## Purpose
@@ -464,6 +465,209 @@ Characters MUST support OpenRegister-specific features when backed by OpenRegist
 
 ---
 
+### Requirement: A player reads and edits only their own sheet in full (REQ-CPV-001)
+
+A member of `larpers` who is not a game master SHALL read and update a
+character in full only when its `ownerUid` is their own user id. Game masters
+(members of `gamemasters`, and Nextcloud administrators) MUST read and update
+every character. Only game masters SHALL delete a character.
+
+#### Scenario: A player edits her own background
+
+- GIVEN player Anna owns character "Mirela the Wanderer"
+- WHEN Anna changes the background on the character detail page of "Mirela the Wanderer"
+- THEN the change is saved
+
+#### Scenario: A player cannot edit someone else's sheet
+
+- GIVEN character "Sir Bertram" is owned by another player
+- WHEN Anna sends a PUT for "Sir Bertram" to the OpenRegister objects API
+- THEN the request is refused
+- AND "Sir Bertram" is unchanged
+
+### Requirement: Other characters appear to a player as cast entries only (REQ-CPV-002)
+
+A player SHALL be able to read approved characters of other players, and MUST
+receive only `name`, `type`, `description` and `approved` for them, on every
+read path including search and exports. Characters that are not approved MUST
+NOT be readable by other players.
+
+#### Scenario: A player opens another approved character
+
+- GIVEN "Sir Bertram" is approved and owned by another player
+- WHEN Anna opens "Sir Bertram"
+- THEN she sees his name, type and description
+- AND his background, notes, skills and items are not in the response
+
+#### Scenario: A draft character stays hidden
+
+- GIVEN character "Nameless Stranger" is not approved and belongs to another player
+- WHEN Anna searches the Characters index for "Stranger"
+- THEN no result is returned
+
+### Requirement: Private game master notes never reach a player (REQ-CPV-003)
+
+`slNotesPrivate` and `requirementOverrides` SHALL be readable and writable by
+game masters only, including on the player's own character and in the PDF and
+CSV output a player can trigger.
+
+#### Scenario: A secret stays secret on the player's own sheet
+
+- GIVEN "Mirela the Wanderer" has the private note "Secretly the heir of Aldmoor"
+- WHEN Anna opens "Mirela the Wanderer"
+- THEN the note is not shown and not in the API response
+
+#### Scenario: A game master still sees the note
+
+- GIVEN a game master in `gamemasters`
+- WHEN the game master opens "Mirela the Wanderer"
+- THEN the private note is shown
+
+### Requirement: A player writes only the story fields of their own sheet (REQ-CPV-004)
+
+On their own character a player SHALL be able to change `name`,
+`description`, `background` and `faith`. Changes to any other field by a
+player MUST be refused; game masters MUST be able to change every field.
+
+#### Scenario: A player tries to give herself gold
+
+- GIVEN "Mirela the Wanderer" has 3 gold pieces
+- WHEN Anna sets gold to 300 through the API
+- THEN the write is refused
+- AND the character still has 3 gold pieces
+
+### Requirement: Players can browse the cast (REQ-CPV-005)
+
+Larpinq SHALL offer a Cast page listing approved characters with name, type
+and description, sorted by name, reachable from the menu for every member of
+`larpers`.
+
+#### Scenario: A player studies the cast before an event
+
+- GIVEN approved characters "Mirela the Wanderer" and "Sir Bertram"
+- WHEN Anna opens the Cast page
+- THEN both characters are listed with their name, type and description
+
+### Requirement: Server paths keep the fields they are entitled to (REQ-CPV-006)
+
+The game master run sheet SHALL keep every character field, and a PDF that a
+player downloads of their own character MUST NOT contain `slNotesPrivate`.
+
+#### Scenario: The run sheet still has the secrets
+
+- GIVEN a game master downloads the run sheet of event "Summer Siege 2026"
+- WHEN the cast list is built
+- THEN each cast entry carries its private notes
+
+### Requirement: The character page shows each ability with its sources (REQ-CSP-001)
+
+The character detail page SHALL have a Stats tab listing every ability with
+its base value, each modifier in the order the engine applied it (source type,
+source name, change, old and new value), and the final value, as computed by
+`CharacterService::calculateCharacter()`.
+
+#### Scenario: A game master sees why strength is 14
+
+- GIVEN ability "Strength" has base 10
+- AND character "Mirela the Wanderer" has skill "Swordsmanship" (+3 strength) and item "Iron shield" (+1 strength)
+- WHEN a game master opens the Stats tab of "Mirela the Wanderer"
+- THEN "Strength" shows base 10, final 14
+- AND the modifiers read "+3 from Swordsmanship (skill)" and "+1 from Iron shield (item)"
+
+#### Scenario: A negative modifier stands out
+
+- GIVEN "Mirela the Wanderer" has condition "Cursed" with -2 agility and agility base 8
+- WHEN the Stats tab renders
+- THEN "Agility" shows final 6 and the modifier "-2 from Cursed (condition)" marked as negative
+
+### Requirement: An untouched ability says so (REQ-CSP-002)
+
+An ability that no modifier changed SHALL show its base as its final value and
+the text "No modifiers".
+
+#### Scenario: A new character
+
+- GIVEN a character with no skills, items, conditions, events or awards
+- WHEN a game master opens its Stats tab
+- THEN every ability shows its base value and "No modifiers"
+
+### Requirement: XP earned, spent and left are visible (REQ-CSP-003)
+
+The Stats tab SHALL show the character's XP earned, spent and left, where left
+MUST equal the XP budget value the skill requirement check uses.
+
+#### Scenario: A game master checks XP before a purchase
+
+- GIVEN "Mirela the Wanderer" received two XP awards of 20 and bought "Swordsmanship" for 10 XP
+- WHEN a game master opens her Stats tab
+- THEN it shows 40 earned, 10 spent and 30 left
+
+### Requirement: Stats follow the character's read access (REQ-CSP-004)
+
+`GET /api/characters/{id}/stats` MUST answer only to users who can read the
+character through OpenRegister, and SHALL answer 404 otherwise.
+
+#### Scenario: Someone without access asks for stats
+
+- GIVEN a user who cannot read character "Sir Bertram"
+- WHEN the user calls `GET /api/characters/<uuid>/stats` for "Sir Bertram"
+- THEN the response is 404 and carries no stats
+
+### Requirement: A character has a status (REQ-CSB-001)
+
+Every character SHALL have a status of `active`, `retired` or `dead`, with
+`active` as the default. The status MUST show on the character detail page
+and be available as a column and a filter on the Characters index.
+
+#### Scenario: A game master marks a fallen character dead
+
+- GIVEN character "Brother Aldric" is active
+- WHEN a game master sets his status to dead on the character detail page
+- THEN "Brother Aldric" shows status dead
+- AND filtering the Characters index on dead lists him
+
+### Requirement: Retired and dead characters stay out of new events (REQ-CSB-002)
+
+A character whose status is not `active` MUST NOT be offered in the
+participant picker of an event, and a write that adds an event to such a
+character SHALL be refused with an error on `events`.
+
+#### Scenario: A retired captain is not offered for the next event
+
+- GIVEN "Old Captain Harrow" is retired
+- WHEN a game master adds participants to event "Winter Court 2026"
+- THEN "Old Captain Harrow" is not in the list of characters to pick
+
+#### Scenario: The API refuses a dead character
+
+- GIVEN "Brother Aldric" is dead
+- WHEN a client adds event "Winter Court 2026" to his events through the objects API
+- THEN the write is refused with an error on `events`
+
+### Requirement: A game master edits many characters at once (REQ-CSB-003)
+
+On the Characters index a game master SHALL be able to select characters and
+set status, type or world on all of them in one confirmed action. Each
+character MUST be written through the same write path as a single edit.
+
+#### Scenario: End of season clean-up
+
+- GIVEN a game master selects "Old Captain Harrow", "Lady Venn" and "Tomas" on the Characters index
+- WHEN she chooses "Edit selected", sets status to retired and confirms
+- THEN all three characters show status retired
+
+### Requirement: A partial bulk edit is reported (REQ-CSB-004)
+
+When some characters in a bulk edit cannot be written, larpinq SHALL apply the
+others and list the refused characters by name with the reason.
+
+#### Scenario: One character is locked
+
+- GIVEN "Lady Venn" is locked by another user
+- WHEN a game master sets status retired on "Old Captain Harrow" and "Lady Venn"
+- THEN "Old Captain Harrow" is retired
+- AND the modal names "Lady Venn" as not changed, with the reason
+
 ## Data Model
 
 ### Character Entity (Full / OpenRegister)
@@ -569,6 +773,7 @@ The internal Nextcloud entity is skeletal:
 | GET | `/api/objects/character/{id}/relations` | Get relations |
 | GET | `/api/objects/character/{id}/uses` | Get uses |
 | GET | `/api/objects/character/{id}/files` | Get associated files |
+| GET | `/apps/larpinq/api/characters/{id}/stats` | Stat sheet: each ability with base, ordered modifiers and final value, plus XP earned, spent and left; 404 for a character the caller cannot read (REQ-CSP-004) |
 
 ## Dependencies
 
