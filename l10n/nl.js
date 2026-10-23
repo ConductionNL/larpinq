@@ -860,7 +860,9 @@ OC.L10N.register(
         "Admin settings": "Beheerinstellingen",
         "administrators only; you set the game rules and worlds in the app itself": "alleen voor beheerders; de spelregels en werelden stel je in de app zelf in",
         "About this Larpinq installation.": "Over deze Larpinq-installatie.",
-        "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Waar Larpinq de gegevens van je spel bewaart. Kies per soort een bron, en bij Open Register het register en schema."
+        "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Waar Larpinq de gegevens van je spel bewaart. Kies per soort een bron, en bij Open Register het register en schema.",
+        "My character sheet": "Mijn karakterblad",
+        "Open sheet": "Blad openen"
     },
     "nplurals=2; plural=(n != 1);"
 )

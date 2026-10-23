@@ -768,7 +768,9 @@ OC.L10N.register(
         "Admin settings": "Admin settings",
         "administrators only; you set the game rules and worlds in the app itself": "administrators only; you set the game rules and worlds in the app itself",
         "About this Larpinq installation.": "About this Larpinq installation.",
-        "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema."
+        "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
+        "My character sheet": "Mano veikėjo lapas",
+        "Open sheet": "Atidaryti lapą"
     },
     "nplurals=2; plural=(n != 1);"
 )
