@@ -369,7 +369,7 @@ final class PortalContributionProviderTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/portal-my-larp-pages/specs/portal-contribution/spec.md#requirement-the-player-has-a-my-larp-page-in-the-portal
+	 * @spec openspec/specs/portal-contribution/spec.md#requirement-the-player-has-a-mijn-larp-page-in-the-portal
 	 */
 	public function testMyLarpPageListsCharactersAndRegistrations(): void {
 		$manifest = (array)$this->provider->getContribution(self::PLAYER_SUBJECT);
@@ -399,7 +399,7 @@ final class PortalContributionProviderTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/portal-my-larp-pages/specs/portal-contribution/spec.md#requirement-the-player-reads-the-rulebook-in-the-portal
+	 * @spec openspec/specs/portal-contribution/spec.md#requirement-the-player-reads-the-rulebook-in-the-portal
 	 */
 	public function testRulebookPageShowsReadableRulesChapters(): void {
 		$manifest = (array)$this->provider->getContribution(self::PLAYER_SUBJECT);
@@ -427,7 +427,7 @@ final class PortalContributionProviderTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/portal-my-larp-pages/specs/portal-contribution/spec.md#requirement-the-player-has-a-my-larp-page-in-the-portal
+	 * @spec openspec/specs/portal-contribution/spec.md#requirement-the-player-has-a-mijn-larp-page-in-the-portal
 	 */
 	public function testPageBlocksResolveWithinTheContribution(): void {
 		$manifest    = (array)$this->provider->getContribution(self::PLAYER_SUBJECT);

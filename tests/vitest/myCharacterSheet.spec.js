@@ -4,7 +4,7 @@
  *
  * Board LrTelefoon: the player's own character sheet, first in the menu.
  *
- * @spec openspec/changes/my-character-sheet/specs/character-management/spec.md
+ * @spec openspec/specs/character-management/spec.md#requirement-a-player-opens-their-own-character-sheet-from-the-menu
  */
 
 import fs from 'fs'
