@@ -209,6 +209,32 @@ class CharactersController extends Controller {
 	}//end downloadPdf()
 
 	/**
+	 * The character-sheet templates for the Download as PDF dialog.
+	 *
+	 * Administrator only, like downloadPdf(): the header action reads this
+	 * endpoint as its visibility predicate, so the action is hidden for
+	 * everyone who could not download anyway, and when the document app is
+	 * absent (`available: false`).
+	 *
+	 * Deliberately NOT `@NoAdminRequired`, for the same reason as
+	 * downloadPdf(): only an administrator may download a sheet today.
+	 * `#[NoCSRFRequired]` because it is a read-only GET that the header
+	 * action's visibility probe fetches, like downloadPdf's GET.
+	 *
+	 * @return JSONResponse `{available: bool, templates: [{id, name}]}`.
+	 *
+	 * @spec openspec/specs/pdf-export/spec.md
+	 */
+	#[NoCSRFRequired]
+	public function pdfTemplates(): JSONResponse {
+		if ($this->pdfRenderer->isDocuDeskAvailable() === false) {
+			return new JSONResponse(data: ['available' => false, 'templates' => []]);
+		}
+
+		return new JSONResponse(data: ['available' => true, 'templates' => $this->pdfRenderer->listTemplates()]);
+	}//end pdfTemplates()
+
+	/**
 	 * Recompute the skill-requirement report for one character on demand.
 	 *
 	 * Returns the structured validation result (unmet prerequisites, overridden

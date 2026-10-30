@@ -1,127 +1,107 @@
 <template>
+	<!-- Board LrBeheerinstellingen: the shell in the board look draws the
+	     title, the path line and the Documentatie button; the version card and
+	     the storage form are its two cards. -->
 	<CnAdminSettingsShell
 		appId="larpinq"
 		appName="Larpinq"
+		look="board"
+		title="Larpinq"
 		docUrl="https://conduction.gitbook.io/larpingapp-nextcloud/users"
+		:breadcrumbs="breadcrumbs"
+		:breadcrumbNote="t('larpinq', 'administrators only; you set the game rules and worlds in the app itself')"
+		:versionDescription="t('larpinq', 'About this Larpinq installation.')"
+		:showUpdateButton="false"
 		reimportUrl="/index.php/apps/larpinq/api/settings/reimport"
 		@reimported="onReimported"
 		@reimportError="onReimportError">
-		<!-- Re-import Status -->
-		<div v-if="message" class="actions-section">
-			<NcNoteCard :type="messageType">
+		<div class="larpinq-admin">
+			<NcNoteCard v-if="message" :type="messageType">
 				{{ message }}
 			</NcNoteCard>
-		</div>
 
-		<NcSettingsSection
-			:name="t('larpinq', 'Data storage')"
-			:description="t('larpinq', 'Configure where to store your LARP data')">
-			<div v-if="!loading">
-				<!-- Warning if OpenRegister is not installed -->
-				<NcNoteCard v-if="!settings.openRegisters" type="warning">
-					{{
-						t(
-							'larpinq',
-							'Open Register is not installed. Some features might be unavailable.',
-						)
-					}}
-				</NcNoteCard>
+			<CnSettingsSection
+				:name="t('larpinq', 'Data storage')"
+				:description="t('larpinq', 'Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.')"
+				wide
+				data-testid="larpinq-admin-storage">
+				<div v-if="!loading">
+					<NcNoteCard v-if="!settings.openRegisters" type="warning">
+						{{ t('larpinq', 'Open Register is not installed. Some features might be unavailable.') }}
+					</NcNoteCard>
 
-				<!-- Object Type Configuration -->
-				<div
-					v-for="objectType in settings.objectTypes"
-					:key="objectType"
-					class="object-type-section">
-					<h3>{{ formatTitle(objectType) }}</h3>
-
-					<div class="selection-container">
+					<div
+						v-for="objectType in orderedObjectTypes"
+						:key="objectType"
+						class="larpinq-admin__row"
+						:data-type="objectType">
 						<!--
-						  `@change` is NOT an event NcSelect emits under
-						  @nextcloud/vue v9 — its emits list is open / close /
-						  update:modelValue / search* / option:*. The Vue-2
-						  spelling silently never fired, so switching a source to
-						  "Internal" would have left a stale register + schema
-						  attached. The compiler merges this listener with the
-						  v-model handler into an array and runs the v-model
-						  assignment first, so the handler sees the NEW value.
+						  `@update:modelValue` merges with the v-model handler and runs
+						  after the assignment, so the handler sees the new value.
 						-->
 						<NcSelect
 							v-model="configuration[objectType].source"
 							:options="sourceOptions"
-							:inputLabel="t('larpinq', 'Source')"
+							:inputLabel="typeLabel(objectType)"
+							:clearable="false"
 							:disabled="loading"
 							@update:modelValue="handleSourceChange(objectType)" />
-
-						<!-- Register Selection (only if OpenRegister is selected) -->
 						<NcSelect
-							v-if="
-								configuration[objectType].source?.value
-								=== 'openregister'
-							"
+							v-if="configuration[objectType].source?.value === 'openregister'"
 							v-model="configuration[objectType].register"
 							:options="registerOptions"
 							:inputLabel="t('larpinq', 'Register')"
+							:clearable="false"
 							:disabled="loading"
 							@update:modelValue="handleRegisterChange(objectType)" />
-
 						<NcSelect
-							v-if="
-								configuration[objectType].source?.value
-									=== 'openregister'
-								&& configuration[objectType].register
-							"
+							v-if="configuration[objectType].source?.value === 'openregister'"
 							v-model="configuration[objectType].schema"
-							:options="
-								getSchemaOptions(
-									configuration[objectType].register?.value,
-								)
-							"
+							:options="getSchemaOptions(configuration[objectType].register?.value)"
 							:inputLabel="t('larpinq', 'Schema')"
-							:disabled="loading" />
+							:clearable="false"
+							:disabled="loading || !configuration[objectType].register" />
+					</div>
+
+					<div class="larpinq-admin__actions">
+						<NcButton
+							variant="primary"
+							:disabled="loading || saving"
+							@click="saveAll">
+							<template #icon>
+								<NcLoadingIcon v-if="saving" :size="20" />
+								<Save v-else :size="20" />
+							</template>
+							{{ t('larpinq', 'Save All') }}
+						</NcButton>
 					</div>
 				</div>
 
-				<!-- Save Buttons -->
-				<div class="button-container">
-					<!--
-					  @nextcloud/vue v9 repurposed `type` as the NATIVE button
-					  type; the visual style moved to `variant`.
-					-->
-					<NcButton
-						variant="primary"
-						:disabled="loading || saving"
-						@click="saveAll">
-						<template #icon>
-							<NcLoadingIcon v-if="saving" :size="20" />
-							<Save v-else :size="20" />
-						</template>
-						{{ t('larpinq', 'Save All') }}
-					</NcButton>
-				</div>
-			</div>
-
-			<!-- Loading State -->
-			<NcLoadingIcon
-				v-else
-				class="loading-icon"
-				:size="64"
-				appearance="dark" />
-		</NcSettingsSection>
+				<NcLoadingIcon
+					v-else
+					class="larpinq-admin__loading"
+					:size="64"
+					appearance="dark" />
+			</CnSettingsSection>
+		</div>
 	</CnAdminSettingsShell>
 </template>
 
 <script>
-import { CnAdminSettingsShell } from '@conduction/nextcloud-vue'
+import { CnAdminSettingsShell, CnSettingsSection } from '@conduction/nextcloud-vue'
+import { generateUrl } from '@nextcloud/router'
 import {
 	NcButton,
 	NcLoadingIcon,
 	NcNoteCard,
 	NcSelect,
-	NcSettingsSection,
 } from '@nextcloud/vue'
 import { defineComponent } from 'vue'
 import Save from 'vue-material-design-icons/ContentSave.vue'
 import logger from '../../logger.js'
+import { buildStorageSettingsPayload } from '../../services/storageSettingsPayload.js'
+
+const BOARD_ORDER = ['character', 'player', 'event', 'skill', 'ability', 'item', 'condition', 'effect', 'setting']
 
 /**
  * @class Settings
@@ -146,7 +126,7 @@ export default defineComponent({
 	name: 'AdminSettings',
 	components: {
 		CnAdminSettingsShell,
-		NcSettingsSection,
+		CnSettingsSection,
 		NcNoteCard,
 		NcSelect,
 		NcButton,
@@ -184,6 +164,32 @@ export default defineComponent({
 
 	computed: {
 		/**
+		 * The path line under the title (board LrBeheerinstellingen).
+		 *
+		 * @return {Array<{label: string, href?: string}>}
+		 * @spec openspec/specs/admin-settings/spec.md
+		 */
+		breadcrumbs() {
+			return [
+				{ label: t('larpinq', 'Admin settings'), href: generateUrl('/settings/admin') },
+				{ label: 'Larpinq' },
+			]
+		},
+
+		/**
+		 * The object types in the board's order; a type the server adds later
+		 * follows at the end.
+		 *
+		 * @return {string[]}
+		 * @spec openspec/specs/settings-management-ui/spec.md#REQ-003
+		 */
+		orderedObjectTypes() {
+			const types = this.settings.objectTypes || []
+			const known = BOARD_ORDER.filter((type) => types.includes(type))
+			return [...known, ...types.filter((type) => !BOARD_ORDER.includes(type))]
+		},
+
+		/**
 		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-9
 		 */
 		registerOptions() {
@@ -191,25 +197,6 @@ export default defineComponent({
 				label: register.title,
 				value: register.id.toString(),
 			}))
-		},
-
-		/**
-		 * Determines if the selected register has schemas
-		 *
-		 * @return {boolean} True if the selected register has schemas, false otherwise
-		 */
-		hasSchemas() {
-			if (!this.selectedRegister) return false
-
-			const register = this.settings.availableRegisters.find(
-				(r) => r.id.toString() === this.selectedRegister.value,
-			)
-
-			return (
-				register
-				&& Array.isArray(register.schemas)
-				&& register.schemas.length > 0
-			)
 		},
 	},
 
@@ -319,15 +306,25 @@ export default defineComponent({
 		},
 
 		/**
-		 * Capitalise an object-type slug for its section header.
+		 * The label of an object type, as the app names it in its menu.
 		 *
 		 * @param {string} objectType The object-type slug (e.g. 'character').
-		 * @return {string} The slug with its first letter capitalised.
-		 * @spec exclude Trivial capitalize-first-letter formatter for the
-		 * object-type section header — display-only, no business logic.
+		 * @return {string} The translated label, or the slug capitalised for an unknown type.
+		 * @spec openspec/specs/settings-management-ui/spec.md#REQ-003
 		 */
-		formatTitle(objectType) {
-			return objectType.charAt(0).toUpperCase() + objectType.slice(1)
+		typeLabel(objectType) {
+			const labels = {
+				character: t('larpinq', 'Characters'),
+				player: t('larpinq', 'Players'),
+				event: t('larpinq', 'Events'),
+				skill: t('larpinq', 'Skills'),
+				ability: t('larpinq', 'Abilities'),
+				item: t('larpinq', 'Items'),
+				condition: t('larpinq', 'Conditions'),
+				effect: t('larpinq', 'Effects'),
+				setting: t('larpinq', 'Worlds'),
+			}
+			return labels[objectType] || objectType.charAt(0).toUpperCase() + objectType.slice(1)
 		},
 
 		/**
@@ -382,28 +379,10 @@ export default defineComponent({
 		 * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-8
 		 */
 		async saveAll() {
-			if (!this.selectedRegister || !this.hasSchemas) {
-				return
-			}
-
 			this.saving = true
 			this.message = ''
 			try {
-				const configToSave = {}
-
-				// Convert configuration to flat structure
-				Object.entries(this.configuration).forEach(([type, config]) => {
-					// Always use openregister as source
-					configToSave[`${type}_source`] = 'openregister'
-
-					// Set the register ID for all object types
-					configToSave[`${type}_register`] = this.selectedRegister.value
-
-					// Set the schema ID if selected
-					configToSave[`${type}_schema`] = config.schema
-						? config.schema.value
-						: ''
-				})
+				const configToSave = buildStorageSettingsPayload(this.configuration)
 
 				const response = await fetch(
 					'/index.php/apps/larpinq/api/settings',
@@ -471,41 +450,33 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.load-configuration {
-	margin-bottom: 2rem;
+.larpinq-admin__row {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 12px;
+	margin-bottom: 12px;
 }
 
-.configuration-results {
-	margin-top: 1rem;
+.larpinq-admin__row :deep(.v-select.select) {
+	width: 100%;
+	min-width: 0;
 }
 
-.register-selection {
-	margin-bottom: 2rem;
-	max-width: 400px;
-}
-
-.schema-configuration {
-	margin-top: 2rem;
-}
-
-.object-type-section {
-	margin-bottom: 1.5rem;
+.larpinq-admin__actions {
 	display: flex;
-	align-items: center;
-	gap: 1rem;
+	justify-content: flex-end;
+	margin-top: 16px;
 }
 
-.object-type-header {
-	min-width: 150px;
-}
-
-.button-container {
-	margin-top: 2rem;
-}
-
-.loading-icon {
+.larpinq-admin__loading {
 	display: flex;
 	justify-content: center;
 	margin: 2rem 0;
+}
+
+@media (max-width: 600px) {
+	.larpinq-admin__row {
+		grid-template-columns: 1fr;
+	}
 }
 </style>

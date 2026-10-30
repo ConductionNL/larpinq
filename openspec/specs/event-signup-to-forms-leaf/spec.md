@@ -30,6 +30,8 @@ The sign-up form definition and its submissions MUST be owned by the OpenRegiste
 
 The event-domain rules — capacity, confirmed-vs-waitlisted classification, and waiting-list ordering derived from submission order — MUST remain Larpinq logic that consumes the leaf's submissions; confirmed sign-ups MUST feed the Event `players[]` participation.
 
+Built by the change `registration-intake-and-capacity` (archived 2026-10-01): the registration, its statuses, capacity and the waiting list are specified in `openspec/specs/event-registration/spec.md`.
+
 #### Scenario: Waiting list forms when capacity is reached
 
 - GIVEN event "Summer LARP 2025" with capacity 2 and two confirmed sign-ups

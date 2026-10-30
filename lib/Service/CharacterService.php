@@ -32,6 +32,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Service;
 
+use OCP\IUserSession;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -97,6 +98,26 @@ class CharacterService {
 	private array $xpAwardsByCharacter = [];
 
 	/**
+	 * The awards on the signed-in player's own characters, read with the app's
+	 * authority, by character id (DECISIONS row 30).
+	 *
+	 * @var array<string, array<int, array<string, mixed>>>
+	 */
+	private array $ownXpAwards = [];
+
+	/**
+	 * The audit source name for each character relation the engine walks.
+	 *
+	 * @var array<string,string>
+	 */
+	private const STAGE_SOURCE = [
+		'skills' => 'skill',
+		'items' => 'item',
+		'conditions' => 'condition',
+		'events' => 'event',
+	];
+
+	/**
 	 * Flag indicating whether entity collections have been loaded.
 	 *
 	 * @var boolean
@@ -114,6 +135,8 @@ class CharacterService {
 	 * @param RegisterObjectFetcher $objectFetcher The register object fetcher.
 	 * @param LoggerInterface $logger The logger interface.
 	 * @param EffectApplier $effectApplier The per-effect modifier arithmetic.
+	 * @param CharacterConnectionGuard|null $connectionGuard Decides whether the signed-in user plays a character.
+	 * @param IUserSession|null $userSession The signed-in user. Without it, or the guard, awards are read as the user only.
 	 *
 	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
 	 */
@@ -121,6 +144,8 @@ class CharacterService {
 		private readonly RegisterObjectFetcher $objectFetcher,
 		private readonly LoggerInterface $logger,
 		private readonly EffectApplier $effectApplier,
+		private readonly ?CharacterConnectionGuard $connectionGuard = null,
+		private readonly ?IUserSession $userSession = null,
 	) {
 	}//end __construct()
 
@@ -326,6 +351,7 @@ class CharacterService {
 			}
 
 			if (isset($entity['effects']) === true && empty($entity['effects']) === false) {
+				$auditCounts = array_map(static fn (array $score): int => count($score['audit']), $abilityScores);
 				// @var array|null $entityEffects
 				$entityEffects = $entity['effects'];
 				$this->effectApplier->applyEffects(
@@ -334,9 +360,44 @@ class CharacterService {
 					appliedEffects: $appliedEffects,
 					effectLookup: $this->allEffects
 				);
+				$this->tagNewAuditEntries(
+					abilityScores: $abilityScores,
+					auditCounts: $auditCounts,
+					source: self::STAGE_SOURCE[$property] ?? $property,
+					entity: $entity
+				);
 			}
 		}
 	}//end applyEntityEffects()
+
+	/**
+	 * Name the carrier on every audit entry an entity just added (REQ-CSP-001).
+	 *
+	 * The effect engine records which effect changed an ability; this records
+	 * which skill, item, condition or event carried that effect, so the stat
+	 * sheet can say where a modifier came from.
+	 *
+	 * @param array<string, array<string, mixed>> $abilityScores Ability scores, modified in place.
+	 * @param array<string, int> $auditCounts Audit length per ability before the entity applied.
+	 * @param string $source 'skill', 'item', 'condition' or 'event'.
+	 * @param array<string, mixed> $entity The carrying entity.
+	 *
+	 * @return void
+	 *
+	 * @spec openspec/specs/character-management/spec.md
+	 */
+	private function tagNewAuditEntries(array &$abilityScores, array $auditCounts, string $source, array $entity): void {
+		$sourceId = (string)($entity['id'] ?? '');
+		$sourceName = (string)($entity['name'] ?? '');
+		foreach ($abilityScores as $abilityId => $score) {
+			$total = count($score['audit']);
+			for ($index = ($auditCounts[$abilityId] ?? 0); $index < $total; $index++) {
+				$abilityScores[$abilityId]['audit'][$index]['source'] = $source;
+				$abilityScores[$abilityId]['audit'][$index]['sourceId'] = $sourceId;
+				$abilityScores[$abilityId]['audit'][$index]['sourceName'] = $sourceName;
+			}
+		}
+	}//end tagNewAuditEntries()
 
 	/**
 	 * Calculate stats for a single character array.
@@ -423,7 +484,7 @@ class CharacterService {
 			return;
 		}
 
-		$awards = $this->xpAwardsByCharacter[$characterId] ?? [];
+		$awards = $this->awardsFor(characterId: $characterId);
 		if (empty($awards) === true) {
 			return;
 		}
@@ -456,4 +517,45 @@ class CharacterService {
 			];
 		}//end foreach
 	}//end applyXpAwards()
+
+	/**
+	 * The XP awards on one character.
+	 *
+	 * The xpAward schema is read by game masters and the award's owner only (DECISIONS
+	 * row 30), and the owner of an award is the game master who granted it.
+	 * So the awards read as the user cover game masters; for a player, the
+	 * awards on a character they play are read with the app's authority, after
+	 * larpinq's own check that the STORED character is theirs. Any other
+	 * character keeps what the user may read. A failed read falls back to that
+	 * too, never to more.
+	 *
+	 * @param string $characterId The character.
+	 *
+	 * @return array<int, array<string, mixed>> The awards.
+	 *
+	 * @spec openspec/specs/event-xp-awards/spec.md
+	 */
+	private function awardsFor(string $characterId): array {
+		$asUser = ($this->xpAwardsByCharacter[$characterId] ?? []);
+		if (isset($this->ownXpAwards[$characterId]) === true) {
+			return $this->ownXpAwards[$characterId];
+		}
+
+		$userId = (string)$this->userSession?->getUser()?->getUID();
+		if ($this->connectionGuard === null
+			|| $this->connectionGuard->owns(objectType: 'character', id: $characterId, userId: $userId) === false
+		) {
+			return $asUser;
+		}
+
+		try {
+			$own = $this->objectFetcher->getObjectsWithAppAuthority(objectType: 'xpAward', filters: ['character' => $characterId]);
+		} catch (\Throwable $e) {
+			$this->logger->debug('Larpinq: the awards on an own character could not be read; counting what the user may read.', ['exception' => $e]);
+			return $asUser;
+		}
+
+		$this->ownXpAwards[$characterId] = array_values(array_filter($own, static fn (mixed $award): bool => is_array($award) === true));
+		return $this->ownXpAwards[$characterId];
+	}//end awardsFor()
 }//end class

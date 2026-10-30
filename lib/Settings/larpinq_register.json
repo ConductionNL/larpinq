@@ -814,7 +814,7 @@
               "format": "uuid"
             },
             "$ref": "character",
-            "x-relation-filter": { "setting": "@object.setting" },
+            "x-relation-filter": { "setting": "@object.setting", "status": "active" },
             "visible": false,
             "title": "Participating Characters"
           },

@@ -1,0 +1,119 @@
+{
+  "components": {
+    "registers": {
+      "larpinq": {
+        "schemas": [
+          "larping_lore_page"
+        ]
+      }
+    },
+    "schemas": {
+      "lorePage": {
+        "slug": "larping_lore_page",
+        "title": "Lore page",
+        "icon": "BookOpenVariantOutline",
+        "version": "1.0.0",
+        "summary": "A page of world lore: a place, a faction, a piece of history or a rules chapter",
+        "description": "Lore written by game masters for one world. Players read a page only when it is meant for players and its reveal moment has passed; game masters read every page.",
+        "type": "object",
+        "x-schema-org": "schema:Article",
+        "configuration": {
+          "exportable": true
+        },
+        "required": [
+          "title",
+          "visibility",
+          "revealFrom"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "title": "Title",
+            "description": "The name of the page",
+            "maxLength": 255
+          },
+          "body": {
+            "type": "string",
+            "format": "markdown",
+            "title": "Text",
+            "description": "The page text, written in markdown"
+          },
+          "setting": {
+            "type": "string",
+            "format": "uuid",
+            "$ref": "setting",
+            "title": "World",
+            "description": "The world this page belongs to"
+          },
+          "category": {
+            "type": "string",
+            "title": "Category",
+            "description": "What the page is about",
+            "enum": [
+              "place",
+              "faction",
+              "history",
+              "rules",
+              "other"
+            ],
+            "default": "other"
+          },
+          "visibility": {
+            "type": "string",
+            "title": "Visible to",
+            "description": "Who may read the page: game masters only, or players too",
+            "enum": [
+              "gamemasters",
+              "players"
+            ],
+            "default": "gamemasters"
+          },
+          "revealFrom": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Reveal moment",
+            "description": "From this moment players may read a page that is visible to players"
+          },
+          "parent": {
+            "type": "string",
+            "format": "uuid",
+            "$ref": "larping_lore_page",
+            "title": "Parent page",
+            "description": "The page this page sits under in the sidebar"
+          },
+          "order": {
+            "type": "integer",
+            "title": "Order",
+            "description": "The position among pages with the same parent",
+            "default": 0
+          }
+        },
+        "authorization": {
+          "read": [
+            {
+              "group": "gamemasters"
+            },
+            {
+              "group": "larpers",
+              "match": {
+                "visibility": "players",
+                "revealFrom": {
+                  "$lte": "$now"
+                }
+              }
+            }
+          ],
+          "create": [
+            "gamemasters"
+          ],
+          "update": [
+            "gamemasters"
+          ],
+          "delete": [
+            "gamemasters"
+          ]
+        }
+      }
+    }
+  }
+}
