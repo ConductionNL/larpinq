@@ -191,7 +191,7 @@ class PortalContributionProvider {
 	 *
 	 * @return array<string, mixed> The page.
 	 *
-	 * @spec openspec/changes/portal-my-larp-pages/specs/portal-contribution/spec.md#requirement-the-player-has-a-my-larp-page-in-the-portal
+	 * @spec openspec/specs/portal-contribution/spec.md#requirement-the-player-has-a-mijn-larp-page-in-the-portal
 	 */
 	private function myLarpPage(): array {
 		return [
@@ -219,7 +219,7 @@ class PortalContributionProvider {
 	 *
 	 * @return array<string, mixed> The page.
 	 *
-	 * @spec openspec/changes/portal-my-larp-pages/specs/portal-contribution/spec.md#requirement-the-player-reads-the-rulebook-in-the-portal
+	 * @spec openspec/specs/portal-contribution/spec.md#requirement-the-player-reads-the-rulebook-in-the-portal
 	 * @spec openspec/changes/rules-rulebook-and-spell-lists/specs/rulebook/spec.md
 	 */
 	private function rulebookPage(): array {
@@ -272,7 +272,7 @@ class PortalContributionProvider {
 	 *
 	 * @return array<string, mixed> The owner-scoped registration collection.
 	 *
-	 * @spec openspec/changes/portal-my-larp-pages/specs/portal-contribution/spec.md#requirement-the-player-has-a-my-larp-page-in-the-portal
+	 * @spec openspec/specs/portal-contribution/spec.md#requirement-the-player-has-a-mijn-larp-page-in-the-portal
 	 */
 	private function registrationCollection(): array {
 		return [
