@@ -6060,7 +6060,8 @@
 				"evidence": "src/manifest.json:330 (Store page, /store, type 'store', config.app 'larpinq'); manifest _note: 'Declarative: openregister hosts the store plane, so this app writes NO store controller. With no registry configured the page renders the app's built-in items and makes NO network call.'",
 				"owner": "ConductionNL/openregister",
 				"reachedOn": "Store page, route /store",
-				"spec": "none"
+				"change": "admin-configuration-store",
+				"requirement": "REQ-ACS-001 The store lists shared game configurations; REQ-ACS-002 An administrator installs a bundle; REQ-ACS-003 A bundle goes into the world the organiser chooses (planned, tasks 1.1 to 1.3)"
 			},
 			"provider": "openregister",
 			"providerHow": "declare: the store plane (fetching/installing configuration sets) is entirely OpenRegister's; larpinq only points the generic 'store' page type at itself",
@@ -6095,7 +6096,8 @@
 				"evidence": "src/manifest.json:2725-2728 (FeaturesRoadmap page, /features-roadmap, type 'roadmap', config only supplies documentationUrl); src/manifest.json menu entry (footer section) links to it",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Features & roadmap page, route /features-roadmap",
-				"spec": "none"
+				"change": "admin-roadmap-page",
+				"requirement": "REQ-ARM-001 The roadmap lists the open feature requests by votes; REQ-ARM-002 A user votes or asks for a feature on the forge; REQ-ARM-003 The roadmap shows planned, in progress and available (planned, tasks 1.1 and 1.2)"
 			},
 			"provider": "self",
 			"providerHow": "read: larpinq only wires the page and its documentation URL; the 'roadmap' page type's actual content source is a generic nc-vue library behaviour not present in this repo, so what populates the page cannot be confirmed by reading larpinq alone",
