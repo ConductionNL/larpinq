@@ -4443,7 +4443,9 @@
 				"state": "specified",
 				"evidence": "grep -rniE \"invoice\" lib src --include=*.php --include=*.vue --include=*.js: no hits",
 				"owner": "ConductionNL/larpinq",
-				"change": "registration-payments-through-shillinq"
+				"change": "registration-payments-through-shillinq",
+				"plan": "registration-payments-through-shillinq task 6.1 (larpinq side), after shillinq changes/receivables-object-request-settlement and changes/sales-invoice-document",
+				"requirement": "REQ-RPS-006 Invoices and receipts come from shillinq"
 			},
 			"provider": "self",
 			"providerHow": "read: grepped, no hits",
@@ -6648,7 +6650,9 @@
 				"evidence": "there is no registration or order object in lib/Settings/larpinq_register.json (ten schemas: character, player, ability, skill, item, condition, effect, event, setting, xpAward); sign-up goes to the Nextcloud Forms leaf (lib/Settings/register.d/event-signup-to-forms-leaf.json) and payment is not modelled",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "nothing: see evidence",
-				"change": "registration-payments-through-shillinq"
+				"change": "registration-payments-through-shillinq",
+				"plan": "registration-payments-through-shillinq task 6.2 (larpinq side), after shillinq changes/receivables-object-request-settlement; import through shillinq specs/shillinq-bank-statement-wizard",
+				"requirement": "REQ-RPS-002 The payment state follows shillinq"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
