@@ -5637,7 +5637,8 @@
 				"evidence": "appinfo/info.xml:111-133: a long comment explains the App Store schema has no <groups> element and Nextcloud does not read one from info.xml either (OC_App::listAllApps() overwrites it with the 'enabled' appconfig value); the restriction is applied per instance via the standard mechanism, 'occ app:enable larpinq' with a groups flag, or the group selector on the Apps admin page. The frozen group id is 'larpers'; Game Masters additionally need the built-in 'admin' group for GM-only endpoints.",
 				"owner": "nextcloud/server",
 				"reachedOn": "Nextcloud Apps admin page (per-app group restriction), or occ app:enable larpinq --groups larpers",
-				"spec": "none"
+				"change": "platform-baseline-on-nextcloud",
+				"requirement": "REQ-PLB-001 An administrator limits the app to one Nextcloud group"
 			},
 			"provider": "nextcloud",
 			"providerHow": "read: larpinq relies entirely on Nextcloud's standard app-level group-restriction mechanism; it declares no group restriction of its own in code",
@@ -5706,7 +5707,8 @@
 				"evidence": "l10n/ ships 37 languages as matched .js/.json pairs; l10n/nl.json carries 358 translated strings against l10n/en.json's 237-line English source; src/main.js:9,61 registerTranslations() + loadTranslations('larpinq', ...) at bootstrap",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "App shell bootstrap, per the browser/account language",
-				"spec": "none"
+				"change": "platform-baseline-on-nextcloud",
+				"requirement": "REQ-PLB-006 The interface follows the user's Nextcloud language; REQ-PLB-007 A player switches the language on the phone pages (planned, tasks 2.1 and 2.2)"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -5743,7 +5745,8 @@
 				"evidence": "lib/Settings/larpinq_register.json:17 registers the 'larpinq' register and 9 schemas, which OpenRegister exposes generically over its own REST/GraphQL object API; src/services/graphql.js:11 posts to /apps/openregister/api/graphql as an example of that same generic API (queryGraphQL is not imported anywhere in src/, so this app does not itself call it)",
 				"owner": "ConductionNL/openregister",
 				"reachedOn": "OpenRegister's generic object REST/GraphQL API, for any client outside this app",
-				"spec": "none"
+				"change": "platform-baseline-on-nextcloud",
+				"requirement": "REQ-PLB-004 Other tools reach the data through the OpenRegister API"
 			},
 			"provider": "openregister",
 			"providerHow": "declare: larpinq registers its schemas; OpenRegister is what actually serves the generic API other tools would call",
@@ -5846,7 +5849,8 @@
 				"evidence": "appinfo/info.xml (php min-version 8.3, nextcloud min-version 32 max-version 34, pgsql/mysql/sqlite); docker-compose.yml and larpinq-compose.yaml; publiccode.yml declares a standalone Nextcloud app",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Any operator's own Nextcloud instance",
-				"spec": "none"
+				"change": "platform-baseline-on-nextcloud",
+				"requirement": "REQ-PLB-005 larpinq runs on any self-hosted Nextcloud with OpenRegister"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -5880,7 +5884,8 @@
 				"evidence": "appinfo/info.xml:50 <licence>EUPL-1.2</licence>; publiccode.yml:49 license: EUPL-1.2; appinfo/info.xml website/repository point at the public github.com/ConductionNL/larpinq repo",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "LICENSE file and appinfo/info.xml",
-				"spec": "none"
+				"spec": "openspec/specs/admin-settings",
+				"requirement": "SET-091 App license MUST be EUPL-1.2"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -6019,7 +6024,8 @@
 				"evidence": "src/App.vue:84,181-183 imports and calls useTenantContext(), exposing cnActiveOrganisationUuid; src/App.vue:248-293 watches it and calls store.setObjectStoreTenantUuid()/setActiveTenantOrganisation() on change; src/store/modules/object.js:12-54 documents the resulting X-OpenRegister-Organisation header sent on every object-store fetch, with null meaning single-tenant mode",
 				"owner": "ConductionNL/openregister",
 				"reachedOn": "App shell (App.vue), on every OpenRegister object request, whenever a tenant/organisation context is mounted",
-				"spec": "none"
+				"change": "platform-baseline-on-nextcloud",
+				"requirement": "REQ-PLB-003 Every request is scoped to the active organisation"
 			},
 			"provider": "openregister",
 			"providerHow": "read: larpinq wires the tenant-context plumbing; the organisation-scoping itself (the X-OpenRegister-Organisation header's effect) is OpenRegister's",
@@ -7181,7 +7187,8 @@
 				"evidence": "appinfo/info.xml:109 (runs inside Nextcloud 32 to 34; larpinq has no login of its own and grep -rn 'PublicPage' lib/Controller has no hits), so every account signs in through Nextcloud, whose two-factor providers (TOTP, WebAuthn) apply",
 				"owner": "nextcloud/server",
 				"reachedOn": "Nextcloud login, two-factor settings under Personal settings > Security",
-				"spec": "none"
+				"change": "platform-baseline-on-nextcloud",
+				"requirement": "REQ-PLB-002 A second sign-in factor is enforced by Nextcloud"
 			},
 			"provider": "nextcloud",
 			"providerHow": "read: larpinq has no authentication of its own; Nextcloud core and its two-factor provider apps apply",
