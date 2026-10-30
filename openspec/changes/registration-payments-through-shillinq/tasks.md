@@ -1,6 +1,6 @@
 # Tasks: registration-payments-through-shillinq
 
-<!-- HYDRA CAP: max 20 unindented `- [ ]` lines. This file uses 9. -->
+<!-- HYDRA CAP: max 20 unindented `- [ ]` lines. This file uses 11. -->
 
 ## 1. Data
 
@@ -25,6 +25,11 @@
 
 - [x] 5.1 Dutch and English strings, including the reminder message (REQ-RPS-003). Verify: `npm run test:l10n`.
 - [x] 5.2 `docs/features/event-payments.md`: what larpinq does and what shillinq does (ADR-010). Verify: the docs build renders it.
+
+## 6. Shillinq's halves: invoice and bank match
+
+- [ ] 6.1 Invoice on request (`reg-invoices`, REQ-RPS-006): `lib/Settings/register.d/registration-payments-through-shillinq.json` gains `registration.invoiceId` and `invoiceUrl`; `lib/Listener/PaymentRequestListener.php` copies the issued invoice from the shillinq `PaymentRequest` onto the registration; `src/manifest.json` shows "Factuur downloaden" on the registration and on My registrations when `invoiceUrl` is set, as LrAanmelding draws it. `PaymentRequestBuilder` already passes `invoiceRequested`. Depends on shillinq `changes/receivables-object-request-settlement` (an issued `ARInvoice` behind a request created with `invoiceRequested`, `ObjectRequestInvoiceService`) and the invoice PDF of `changes/sales-invoice-document`. Verify: `tests/unit/Listener/PaymentRequestListenerTest.php` (an issued invoice lands on the registration once); `tests/unit/Settings/RegistrationPaymentsFragmentTest.php`; `npm run check:manifest`.
+- [ ] 6.2 Bank statement match (`reg-bank-statement-match`, REQ-RPS-002): `lib/Settings/register.d/registration-payments-through-shillinq.json` gains `registration.paymentMethod`; `lib/Listener/PaymentRequestListener.php` marks the registration paid with `paymentMethod: bank-transfer` when shillinq settles its request from a bank line that quotes `paymentReference`; `src/manifest.json` adds "Bankafschrift uploaden en matchen" on the Registrations index for game masters, opening shillinq's bank statement wizard, as LrAanmeldingen draws it. `RegistrationPaymentService` already sends `paymentReference` on create. Depends on shillinq `specs/shillinq-bank-statement-wizard` (import of CAMT.053, MT940 or CSV) and `changes/receivables-object-request-settlement` (`ObjectRequestBankMatcher`, `BankLineObjectRequestListener`). Verify: `tests/unit/Listener/PaymentRequestListenerTest.php` (a bank settlement sets paid and the method); `npm run check:manifest`.
 
 Quality reminders (not tracked as tasks): `composer check:strict` once before push.
 
