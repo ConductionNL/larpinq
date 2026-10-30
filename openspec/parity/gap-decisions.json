@@ -330,10 +330,10 @@
  {
   "row": "evt-on-site-presence",
   "matrix": "larpinq",
-  "decision": "defer",
-  "reason": "partial, built, no demand. One competitor rated yes (pretix) and no demand row; check-in exists, only check-out is missing.",
-  "change": null,
-  "decidedOn": "2026-09-27"
+  "decision": "build",
+  "reason": "Check-in exists, check-out and the on-site count do not. LrEvenementInchecken draws both, and the boards are the UI canon (decision 130).",
+  "change": "events-check-out-and-on-site-count",
+  "decidedOn": "2026-10-30"
  },
  {
   "row": "evt-post-event-survey",
