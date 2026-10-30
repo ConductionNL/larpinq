@@ -7376,130 +7376,6 @@
 				"canvas": "design-system",
 				"board": "LrRapportages"
 			}
-		}
-	],
-	"pending": [
-		{
-			"id": "chr-submission-notification",
-			"area": "characters",
-			"name": "Notify game masters when a new character is submitted for approval.",
-			"larpinq": "unknown",
-			"larpmanager": "partial",
-			"mylarp": "unknown",
-			"larp-portal": "unknown",
-			"kanka": "partial",
-			"pretix": "no",
-			"built": {
-				"state": "specified",
-				"evidence": "lib/Settings/larpinq_register.json:313-333 (x-openregister-notifications 'character-submitted', trigger created, recipients groups:['gamemasters'], nc-notification channel)",
-				"owner": "ConductionNL/larpinq",
-				"reachedOn": "nothing: schema only"
-			},
-			"provider": "openregister",
-			"providerHow": "declared via OpenRegister's x-openregister-notifications dialect; whether OpenRegister actually dispatches it was not verified from this app's code",
-			"feature": "lifecycle-notifications",
-			"featureConfidence": "high",
-			"origin": "own-code",
-			"note": "Rule 3: a declaration, not proven behaviour. Added because it is a real, organiser-recognisable capability distinct from chr-approval itself.",
-			"evidence": {
-				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/cache/widget.py:683-693 organiser dashboard action counts proposed characters; larpmanager/mail/base.py:499-557 mails only the player, and NotificationType (larpmanager/models/member.py:893-911) has no character submission mail",
-				"mylarp": "not checked: no submission-notification feature documented",
-				"larp-portal": "not checked: staff review submissions, but a notification-on-submission trigger isn't documented",
-				"kanka": "source read at tag 3.15: admins get an in-app notification on each new join application, which carries the character concept (app/Services/Campaign/ApplicationService.php:46-58 NotifyAdmins application.new; lang/en/notifications.php:13); no notification for a character sheet itself",
-				"pretix": "source read at tag v2026.7.0: no character model in src/pretix/base/models/; notifications (src/pretix/base/notifications.py) fire on order events such as an order needing approval"
-			},
-			"status": "pending"
-		},
-		{
-			"id": "rul-import-ruleset",
-			"area": "rules",
-			"name": "Import a ruleset from a file or another campaign.",
-			"larpinq": "unknown",
-			"larpmanager": "yes",
-			"mylarp": "unknown",
-			"larp-portal": "unknown",
-			"kanka": "yes",
-			"pretix": "partial",
-			"built": {
-				"state": "specified",
-				"evidence": "lib/Settings/larpinq_register.json:441-443 ('configuration': {'x-openregister-shareable': true} on the skill schema), an OpenRegister platform declaration with zero consuming code in this app: grep -rn 'shareable' lib src returns no hits outside the schema file itself",
-				"owner": "ConductionNL/openregister"
-			},
-			"provider": "openregister",
-			"providerHow": "read: the declaration names an OpenRegister mechanism (cross-instance object sharing); larpinq has no in-app 'import ruleset from file/campaign' UI of its own",
-			"feature": "rpg-system",
-			"featureConfidence": "high",
-			"origin": "competitor",
-			"note": "Rated unknown per rule 3 (a declaration is not behaviour): whether OpenRegister's sharing mechanism actually lets a GM import a whole skill set from another campaign is outside this repo. src/manifest.json:337 documents a related but distinct 'install game configurations other organisations have published' bundle-install feature at the register/schema level, not a skill-ruleset import.",
-			"evidence": {
-				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/utils/core/copy_choices.py:49 copy Experience from another event, larpmanager/utils/io/upload/experience.py CSV import of abilities and awards (larpmanager/tests/unit/test_experience_upload_download.py)",
-				"mylarp": "not checked: no ruleset-import feature documented",
-				"larp-portal": "not checked: no ruleset-import feature documented",
-				"kanka": "source read at tag 3.15: abilities, items and property kits come in from a Kanka export zip or CSV (routes/campaigns/campaign.php:209-212), from another campaign by bulk copy (routes/campaigns/bulks.php:24-25), or as marketplace content packs (routes/campaigns/campaign.php:172-176)",
-				"pretix": "source read at tag v2026.7.0: src/pretix/control/views/main.py:288-343 and src/pretix/base/models/event.py:895 copy_data_from copy a whole event configuration (products, quotas, questions, settings) from another event; there is no ruleset and no file import of one"
-			},
-			"status": "pending"
-		},
-		{
-			"id": "com-notify-approval",
-			"area": "communication",
-			"name": "Tell a player when their character is approved.",
-			"larpinq": "unknown",
-			"larpmanager": "yes",
-			"mylarp": "unknown",
-			"larp-portal": "unknown",
-			"kanka": "partial",
-			"pretix": "no",
-			"built": {
-				"state": "built",
-				"evidence": "lib/Settings/larpinq_register.json:312-353 (character x-openregister-notifications: character-submitted on created -> gamemasters group; character-approved on transition action 'approved' -> recipient kind field, field ownerUid); ownerUid is itself a materialised x-openregister-calculation (larpinq_register.json:275-283, @ref.player.userUid)",
-				"owner": "ConductionNL/openregister",
-				"reachedOn": "n/a (server-side notification dispatch, no larpinq frontend surface)"
-			},
-			"provider": "openregister",
-			"providerHow": "declaration only: the notification engine that reads x-openregister-notifications and dispatches nc-notification lives in OpenRegister, not in this repo; larpinq's own code never calls a notify method",
-			"feature": "lifecycle-notifications",
-			"featureConfidence": "high",
-			"origin": "own-code",
-			"note": "The character lifecycle only has an 'approved' transition and an 'unapprove' transition back to 'no' (larpinq_register.json:288-310); there is no distinct 'rejected' state, so the 'or rejected' half of this capability does not exist even as a declaration. openspec/specs/notifications/spec.md confirms this is the intended design (in-progress status).",
-			"evidence": {
-				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/mail/base.py:499-557 send_character_status_update_email mails the player on proposed, revision and approved states",
-				"mylarp": "not checked: no notify-on-approval feature documented",
-				"larp-portal": "not checked: no notify-on-approval feature documented",
-				"kanka": "source read at tag 3.15: approving a join application notifies the applicant in-app with an optional message (app/Services/Campaign/ApplicationService.php:113-131), rejection too (70-87); no notification when a character sheet is approved, since sheets have no approval state",
-				"pretix": "source read at tag v2026.7.0: no character model in src/pretix/base/models/; the approval mails that exist (src/pretix/base/settings.py:2811-2815 mail_text_order_approved) are about orders"
-			},
-			"status": "pending"
-		},
-		{
-			"id": "com-notify-event",
-			"area": "communication",
-			"name": "Remind participants about an upcoming event.",
-			"larpinq": "unknown",
-			"larpmanager": "partial",
-			"mylarp": "unknown",
-			"larp-portal": "yes",
-			"kanka": "no",
-			"pretix": "yes",
-			"built": {
-				"state": "built",
-				"evidence": "lib/Settings/larpinq_register.json:842-868 (event x-openregister-notifications: event-reminder, trigger scheduled intervalSec 86400 on startDate, recipients group players)",
-				"owner": "ConductionNL/openregister",
-				"reachedOn": "n/a (server-side scheduled notification, no larpinq frontend surface)"
-			},
-			"provider": "openregister",
-			"providerHow": "declaration only: the scheduled-trigger notification engine is OpenRegister's, not larpinq's",
-			"feature": "lifecycle-notifications",
-			"featureConfidence": "high",
-			"origin": "own-code",
-			"evidence": {
-				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/management/commands/automate.py:1076-1300 daily reminders ahead of the event for payment, profile, membership and character creation (larpmanager/mail/remind.py); no generic upcoming-event reminder",
-				"mylarp": "not checked: no event-reminder feature documented",
-				"larp-portal": "'Event scheduling and notifications' plus players can 'opt in to receive notifications.' https://larportal.com/how-it-works.php",
-				"kanka": "source read at tag 3.15: calendar reminders are in-fiction dates shown on calendars (app/Models/Reminder.php); app/Console/Kernel.php:38-59 schedules no participant reminder and no notify call targets events (grep of notify( in app/)",
-				"pretix": "source read at tag v2026.7.0: src/pretix/base/settings.py:2931-2959 mail_days_download_reminder sends a reminder a set number of days before the event, and src/pretix/plugins/sendmail/models.py:223 Rule schedules custom mails relative to the event start"
-			},
-			"status": "pending"
 		},
 		{
 			"id": "adm-ai-assistant-tools",
@@ -7515,7 +7391,10 @@
 				"state": "specified",
 				"evidence": "lib/Settings/register.d/larpinq-mcp-adoption.json declares x-openregister-mcp search/get/create tools on 9 schemas (character, player, setting, skill, item, condition, event, xpAward, attendance); openspec/changes/larpinq-mcp-adoption/proposal.md states OpenRegister derives MCP tools from this dialect with no hand-written provider code. The curated, non-CRUD tools (awardXpToAttendees, getCharacterSheet) proposed in openspec/changes/hermiq-ai-tooling/ are NOT built: its tasks.md is entirely unchecked ([ ]) and lib/Mcp/LarpinqScannableServices.php does not exist (find lib -iname '*Mcp*': only the register.d json).",
 				"owner": "ConductionNL/openregister",
-				"reachedOn": "nothing confirmable from this repo: whether OpenRegister actually derives and exposes MCP tools from the x-openregister-mcp dialect cannot be verified by reading larpinq's own code"
+				"reachedOn": "nothing confirmable from this repo: whether OpenRegister actually derives and exposes MCP tools from the x-openregister-mcp dialect cannot be verified by reading larpinq's own code",
+				"change": "larpinq-mcp-adoption",
+				"plan": "larpinq-mcp-adoption (tasks 1 to 4: the register.d MCP fragment, filter cross-check, import and RBAC check) then hermiq-ai-tooling (curated XP award and character sheet tools with a game-master approval gate)",
+				"requirement": "larpinq-mcp-adoption REQ-001 to REQ-008 (MCP dialect on 9 schemas, bounded writes, no app-level PHP); hermiq-ai-tooling REQ-001 to REQ-005 (curated tools, approval gate, attribution)"
 			},
 			"provider": "openregister",
 			"providerHow": "declare: larpinq only declares the dialect; OpenRegister's MCP engine (unverified here) would be what runs it",
@@ -7530,7 +7409,139 @@
 				"kanka": "source read at tag 3.15: Bragi AI text generation for entries via OpenAI (app/Services/Bragi/BragiService.php:57-90; routes/campaigns/campaign.php:249); looked in composer.json, app and routes for MCP, none",
 				"pretix": "source read at tag v2026.7.0: grep for mcp and model context protocol over src/pretix finds nothing; AI tools could only go through the REST API (src/pretix/api/)"
 			},
-			"status": "pending"
+			"screen": {
+				"board": null,
+				"reason": "An AI assistant reaches the tools through OpenRegister's MCP endpoint, and approvals happen in the assistant's own app; there is no larpinq page for it."
+			},
+			"addedOn": "2026-10-30"
+		}
+	],
+	"pending": [
+		{
+			"id": "chr-submission-notification",
+			"area": "characters",
+			"name": "Notify game masters when a new character is submitted for approval.",
+			"larpinq": "unknown",
+			"larpmanager": "partial",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "partial",
+			"pretix": "no",
+			"built": {
+				"state": "decided-no",
+				"evidence": "lib/Settings/larpinq_register.json:313-333 (x-openregister-notifications 'character-submitted', trigger created, recipients groups:['gamemasters'], nc-notification channel)",
+				"owner": "ConductionNL/larpinq",
+				"reachedOn": "nothing: schema only",
+				"note": "Decided no on 2026-10-30 (coverage lane lr-cover): duplicate of the built row com-character-review-notifications, which rests on the same register notification rule and is drawn on LrDashboard."
+			},
+			"provider": "openregister",
+			"providerHow": "declared via OpenRegister's x-openregister-notifications dialect; whether OpenRegister actually dispatches it was not verified from this app's code",
+			"feature": "lifecycle-notifications",
+			"featureConfidence": "high",
+			"origin": "own-code",
+			"note": "Rule 3: a declaration, not proven behaviour. Added because it is a real, organiser-recognisable capability distinct from chr-approval itself.",
+			"evidence": {
+				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/cache/widget.py:683-693 organiser dashboard action counts proposed characters; larpmanager/mail/base.py:499-557 mails only the player, and NotificationType (larpmanager/models/member.py:893-911) has no character submission mail",
+				"mylarp": "not checked: no submission-notification feature documented",
+				"larp-portal": "not checked: staff review submissions, but a notification-on-submission trigger isn't documented",
+				"kanka": "source read at tag 3.15: admins get an in-app notification on each new join application, which carries the character concept (app/Services/Campaign/ApplicationService.php:46-58 NotifyAdmins application.new; lang/en/notifications.php:13); no notification for a character sheet itself",
+				"pretix": "source read at tag v2026.7.0: no character model in src/pretix/base/models/; notifications (src/pretix/base/notifications.py) fire on order events such as an order needing approval"
+			},
+			"status": "decided-no"
+		},
+		{
+			"id": "rul-import-ruleset",
+			"area": "rules",
+			"name": "Import a ruleset from a file or another campaign.",
+			"larpinq": "unknown",
+			"larpmanager": "yes",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "yes",
+			"pretix": "partial",
+			"built": {
+				"state": "decided-no",
+				"evidence": "lib/Settings/larpinq_register.json:441-443 ('configuration': {'x-openregister-shareable': true} on the skill schema), an OpenRegister platform declaration with zero consuming code in this app: grep -rn 'shareable' lib src returns no hits outside the schema file itself",
+				"owner": "ConductionNL/openregister",
+				"note": "Decided no on 2026-10-30 (coverage lane lr-cover): folded into adm-app-store. A ruleset from another campaign arrives as a store bundle installed into a chosen world (admin-configuration-store REQ-ACS-003); file import is specs/data-portability. No separate import screen."
+			},
+			"provider": "openregister",
+			"providerHow": "read: the declaration names an OpenRegister mechanism (cross-instance object sharing); larpinq has no in-app 'import ruleset from file/campaign' UI of its own",
+			"feature": "rpg-system",
+			"featureConfidence": "high",
+			"origin": "competitor",
+			"note": "Rated unknown per rule 3 (a declaration is not behaviour): whether OpenRegister's sharing mechanism actually lets a GM import a whole skill set from another campaign is outside this repo. src/manifest.json:337 documents a related but distinct 'install game configurations other organisations have published' bundle-install feature at the register/schema level, not a skill-ruleset import.",
+			"evidence": {
+				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/utils/core/copy_choices.py:49 copy Experience from another event, larpmanager/utils/io/upload/experience.py CSV import of abilities and awards (larpmanager/tests/unit/test_experience_upload_download.py)",
+				"mylarp": "not checked: no ruleset-import feature documented",
+				"larp-portal": "not checked: no ruleset-import feature documented",
+				"kanka": "source read at tag 3.15: abilities, items and property kits come in from a Kanka export zip or CSV (routes/campaigns/campaign.php:209-212), from another campaign by bulk copy (routes/campaigns/bulks.php:24-25), or as marketplace content packs (routes/campaigns/campaign.php:172-176)",
+				"pretix": "source read at tag v2026.7.0: src/pretix/control/views/main.py:288-343 and src/pretix/base/models/event.py:895 copy_data_from copy a whole event configuration (products, quotas, questions, settings) from another event; there is no ruleset and no file import of one"
+			},
+			"status": "decided-no"
+		},
+		{
+			"id": "com-notify-approval",
+			"area": "communication",
+			"name": "Tell a player when their character is approved.",
+			"larpinq": "unknown",
+			"larpmanager": "yes",
+			"mylarp": "unknown",
+			"larp-portal": "unknown",
+			"kanka": "partial",
+			"pretix": "no",
+			"built": {
+				"state": "decided-no",
+				"evidence": "lib/Settings/larpinq_register.json:312-353 (character x-openregister-notifications: character-submitted on created -> gamemasters group; character-approved on transition action 'approved' -> recipient kind field, field ownerUid); ownerUid is itself a materialised x-openregister-calculation (larpinq_register.json:275-283, @ref.player.userUid)",
+				"owner": "ConductionNL/openregister",
+				"reachedOn": "n/a (server-side notification dispatch, no larpinq frontend surface)",
+				"note": "Decided no on 2026-10-30 (coverage lane lr-cover): duplicate of the built row com-character-review-notifications, which rests on the same register notification rule and is drawn on LrDashboard."
+			},
+			"provider": "openregister",
+			"providerHow": "declaration only: the notification engine that reads x-openregister-notifications and dispatches nc-notification lives in OpenRegister, not in this repo; larpinq's own code never calls a notify method",
+			"feature": "lifecycle-notifications",
+			"featureConfidence": "high",
+			"origin": "own-code",
+			"note": "The character lifecycle only has an 'approved' transition and an 'unapprove' transition back to 'no' (larpinq_register.json:288-310); there is no distinct 'rejected' state, so the 'or rejected' half of this capability does not exist even as a declaration. openspec/specs/notifications/spec.md confirms this is the intended design (in-progress status).",
+			"evidence": {
+				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/mail/base.py:499-557 send_character_status_update_email mails the player on proposed, revision and approved states",
+				"mylarp": "not checked: no notify-on-approval feature documented",
+				"larp-portal": "not checked: no notify-on-approval feature documented",
+				"kanka": "source read at tag 3.15: approving a join application notifies the applicant in-app with an optional message (app/Services/Campaign/ApplicationService.php:113-131), rejection too (70-87); no notification when a character sheet is approved, since sheets have no approval state",
+				"pretix": "source read at tag v2026.7.0: no character model in src/pretix/base/models/; the approval mails that exist (src/pretix/base/settings.py:2811-2815 mail_text_order_approved) are about orders"
+			},
+			"status": "decided-no"
+		},
+		{
+			"id": "com-notify-event",
+			"area": "communication",
+			"name": "Remind participants about an upcoming event.",
+			"larpinq": "unknown",
+			"larpmanager": "partial",
+			"mylarp": "unknown",
+			"larp-portal": "yes",
+			"kanka": "no",
+			"pretix": "yes",
+			"built": {
+				"state": "decided-no",
+				"evidence": "lib/Settings/larpinq_register.json:842-868 (event x-openregister-notifications: event-reminder, trigger scheduled intervalSec 86400 on startDate, recipients group players)",
+				"owner": "ConductionNL/openregister",
+				"reachedOn": "n/a (server-side scheduled notification, no larpinq frontend surface)",
+				"note": "Decided no on 2026-10-30 (coverage lane lr-cover): duplicate of the built row com-event-reminder, which rests on the same register notification rule and is drawn on LrDashboard."
+			},
+			"provider": "openregister",
+			"providerHow": "declaration only: the scheduled-trigger notification engine is OpenRegister's, not larpinq's",
+			"feature": "lifecycle-notifications",
+			"featureConfidence": "high",
+			"origin": "own-code",
+			"evidence": {
+				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/management/commands/automate.py:1076-1300 daily reminders ahead of the event for payment, profile, membership and character creation (larpmanager/mail/remind.py); no generic upcoming-event reminder",
+				"mylarp": "not checked: no event-reminder feature documented",
+				"larp-portal": "'Event scheduling and notifications' plus players can 'opt in to receive notifications.' https://larportal.com/how-it-works.php",
+				"kanka": "source read at tag 3.15: calendar reminders are in-fiction dates shown on calendars (app/Models/Reminder.php); app/Console/Kernel.php:38-59 schedules no participant reminder and no notify call targets events (grep of notify( in app/)",
+				"pretix": "source read at tag v2026.7.0: src/pretix/base/settings.py:2931-2959 mail_days_download_reminder sends a reminder a set number of days before the event, and src/pretix/plugins/sendmail/models.py:223 Rule schedules custom mails relative to the event start"
+			},
+			"status": "decided-no"
 		}
 	]
 }
