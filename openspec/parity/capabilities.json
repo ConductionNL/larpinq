@@ -2174,7 +2174,8 @@
 				"evidence": "lib/Controller/CharactersController.php:149-151 (downloadPdf: groupManager->isAdmin() gate); lib/Controller/EventsController.php:51,189,334 (GM_GROUP='gamemasters', isInGroup check for attendance/roster writes); lib/Listener/CharacterRequirementListener.php:60,313-320 (isInGroup 'gamemasters' for requirement overrides); lib/Settings/larpinq_register.json:959-971 (xpAward authorization restricted to gamemasters)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "downloadPdf (admin only), event roster/attendance writes, requirement overrides, xpAward create/update/delete (all gamemasters-group only)",
-				"change": "openspec/changes/archive/2026-07-07-event-checkin-roster"
+				"change": "openspec/changes/archive/2026-07-07-event-checkin-roster",
+				"requirement": "event-checkin-roster: Check-in MUST be a GM-only, server-stamped act; event-xp-awards: Award writes MUST be restricted to game masters"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -2408,7 +2409,8 @@
 				"evidence": "lib/Settings/larpinq_register.json:432-542 (skill schema, slug larping_skill); src/manifest.json:1059-1068 (Skills index), src/manifest.json:1079-1183 (SkillDetail)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "/skills index and /skills/:id detail page",
-				"change": "openspec/changes/archive/2026-03-21-rpg-system"
+				"change": "openspec/changes/archive/2026-03-21-rpg-system",
+				"requirement": "rpg-system: Skill Management and Prerequisites"
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -3551,7 +3553,8 @@
 				"evidence": "lib/Service/CharacterService.php:353-397 (calculateCharacter recomputes stats from scratch on every call from base + currently-linked entities only, a removed skill's cost effect simply stops being applied on the next recompute); lib/Service/SkillRequirementService.php:255-292 (analyseRemovals flags any remaining skill left dependent-now-unmet by the removal, surfaced as a warning, not a block)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "/characters/:id 'Build & world' related widget: removing a skill from the Skills group",
-				"change": "openspec/changes/archive/2026-03-21-character-management"
+				"change": "characters-skill-refund",
+				"requirement": "REQ-CSP-005 Removing a skill returns its XP; REQ-CSP-006 The refund shows in the XP history (planned, tasks 1.1 and 1.2)"
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -4576,7 +4579,8 @@
 				"evidence": "lib/Service/DocuDeskPdfRenderer.php listTemplates() (larpingapp namespace); GET /api/pdf/templates (appinfo/routes.php); template picker in src/dialogs/CharacterPdfDownloadDialog.vue",
 				"owner": "ConductionNL/larpinq",
 				"change": "openspec/changes/archive/2026-09-29-larpinq-pdf-frontend-download-action",
-				"reachedOn": "Download as PDF dialog: template picker"
+				"reachedOn": "Download as PDF dialog: template picker",
+				"requirement": "pdf-export PDF-001: CharactersController.downloadPdf() MUST generate a PDF from a character and a selected template"
 			},
 			"provider": "filinq",
 			"providerHow": "read: the {template} route segment accepts an arbitrary UUID, but nothing in this app lists the available templates or lets a user pick one",
@@ -5466,7 +5470,8 @@
 				"evidence": "src/manifest.json:36-153 (walkthrough block, tour 'larpinq:getting-started', 7 steps: welcome, go-characters, create-character, go-events, create-event, see-flows, done); lib/Repair/MigrateUserPreferences.php:18-22 documents 'pref_walkthrough_completed_version' as what 'useWalkthrough' treats as authoritative for tour completion",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "App shell guided tour (useWalkthrough), shown on first visit per manifest walkthrough.enabled",
-				"change": "openspec/changes/archive/2026-10-07-beta-surface-alignment"
+				"change": "setup-guided-tour",
+				"requirement": "REQ-FTS-010 A new user gets a guided tour; specs/flows: The walkthrough MUST point new users at the flows"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -5812,7 +5817,8 @@
 				"evidence": "src/manifest.json:2732,2740 (Flows index page /flows, FlowDetail flow page /flows/:id); src/manifest.json:306 FlowsMenu (section 'settings'); src/registry.js:26,36 registers FlowDetailSidebar (kind 'page'), which mounts in the Nextcloud app sidebar alongside the shared flow-canvas page type; manifest.json walkthrough step 'see-flows' (route Flows) references it as 'where the automation lives'",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Flows / FlowDetail pages, routes /flows and /flows/:id",
-				"spec": "openspec/specs/flows"
+				"spec": "openspec/specs/flows",
+				"requirement": "flows: The app MUST list its own flows; A flow MUST open on a canvas with its controls in the app sidebar"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence; the flow list/canvas page types themselves are the shared nc-vue 'index'/'flow' generics over an openregister.flows configuration",
@@ -6781,11 +6787,13 @@
 			"kanka": "no",
 			"pretix": "yes",
 			"built": {
-				"state": "built",
+				"state": "specified",
 				"evidence": "src/views/EventRoster.vue:58-89 (per-character status checked-in or no-show, with checkedInAt/By at :274-275), reached from the EventDetail sidebar Check-in tab (src/manifest.json:1806-1809); there is no check-out, so it shows who arrived, not who is on site now",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "EventDetail page (/events/:id), Check-in sidebar tab",
-				"change": "openspec/changes/archive/2026-07-07-event-checkin-roster"
+				"change": "events-check-out-and-on-site-count",
+				"requirement": "REQ-ECO-001 A game master checks a participant out; REQ-ECO-002 The roster shows who is on site now",
+				"note": "Re-measured 2026-10-30: check-in is built, check-out and the on-site count are not (no checked-out status in EventsController::ATTENDANCE_STATUSES). Planned in events-check-out-and-on-site-count; LrEvenementInchecken draws it."
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
