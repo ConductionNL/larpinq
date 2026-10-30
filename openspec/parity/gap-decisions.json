@@ -1,5 +1,13 @@
 [
  {
+  "row": "adm-ai-assistant-tools",
+  "matrix": "larpinq",
+  "decision": "build",
+  "reason": "Promoted from pending on 2026-10-30: the open changes larpinq-mcp-adoption and hermiq-ai-tooling already plan it.",
+  "change": "larpinq-mcp-adoption",
+  "decidedOn": "2026-10-30"
+ },
+ {
   "row": "adm-backup-export",
   "matrix": "larpinq",
   "decision": "build",
