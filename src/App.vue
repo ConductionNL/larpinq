@@ -90,6 +90,20 @@ import { provide, reactive } from 'vue'
 import { startActiveWorld } from './services/activeWorld.js'
 import { setObjectStoreTenantUuid, useObjectStore } from './store/modules/object.js'
 
+/**
+ * Whether a route has at least one param with a value.
+ *
+ * @param {object} params The route params.
+ * @return {boolean} True when a param is neither undefined, null nor empty.
+ *
+ * @spec openspec/changes/larpinq-adopt-or-abstractions/specs/larpinq-adopt-or-abstractions/spec.md
+ */
+function hasFilledParam(params) {
+	return Object.keys(params).some(
+		(k) => params[k] !== undefined && params[k] !== null && params[k] !== '',
+	)
+}
+
 export default {
 	name: 'App',
 
@@ -295,49 +309,13 @@ export default {
 				setObjectStoreTenantUuid(next)
 
 				// 2. Clear caches via the store action.
-				try {
-					const store = useObjectStore()
-					if (
-						store
-						&& typeof store.setActiveTenantOrganisation === 'function'
-					) {
-						store.setActiveTenantOrganisation(next)
-					}
-				} catch {
-					// Optional catch binding: NC's config sets
-					// `caughtErrors: 'all'`, so a named-but-unused error
-					// parameter reports as an unused variable.
-					// Pinia not active yet on first immediate fire — safe
-					// to ignore; subsequent fires will reach the store.
-				}
+				this.resetTenantCaches(next)
 
 				// 3. Detail view → navigate back to parent index on switch.
 				// Skip the initial mount (previous === undefined) so a deep
 				// link into a detail page doesn't redirect on first paint.
-				if (
-					previous !== undefined
-					&& this.$route
-					&& /:|\//.test(this.$route.path)
-				) {
-					const params = this.$route.params || {}
-					const hasIdParam = Object.keys(params).some(
-						(k) =>
-							params[k] !== undefined
-							&& params[k] !== null
-							&& params[k] !== '',
-					)
-					if (hasIdParam) {
-						// Find the parent index route by stripping the
-						// trailing `/:id` segment from the matched path.
-						const matched = this.$route.matched && this.$route.matched[0]
-						const indexPath = matched
-							? matched.path.replace(/\/:[^/]+$/, '')
-							: this.$route.path.replace(/\/[^/]+\/?$/, '')
-						const target = indexPath || '/'
-						if (this.$router && target !== this.$route.path) {
-							this.$router.push(target).catch(() => {})
-						}
-					}
+				if (previous !== undefined) {
+					this.leaveDetailRoute()
 				}
 			},
 		},
@@ -357,6 +335,58 @@ export default {
 		 */
 		translateForApp(key) {
 			return ncT('larpinq', key)
+		},
+
+		/**
+		 * Wipe the object store's collection, object and pagination caches
+		 * for a new tenant.
+		 *
+		 * @param {string|null} uuid The newly active organisation UUID.
+		 *
+		 * @spec openspec/changes/larpinq-adopt-or-abstractions/specs/larpinq-adopt-or-abstractions/spec.md
+		 */
+		resetTenantCaches(uuid) {
+			try {
+				const store = useObjectStore()
+				if (
+					store
+					&& typeof store.setActiveTenantOrganisation === 'function'
+				) {
+					store.setActiveTenantOrganisation(uuid)
+				}
+			} catch {
+				// Optional catch binding: NC's config sets
+				// `caughtErrors: 'all'`, so a named-but-unused error
+				// parameter reports as an unused variable.
+				// Pinia not active yet on first immediate fire — safe
+				// to ignore; subsequent fires will reach the store.
+			}
+		},
+
+		/**
+		 * On a detail route (one with a non-empty route param), navigate to
+		 * its parent index, since the object may not be visible in the new
+		 * tenant.
+		 *
+		 * @spec openspec/changes/larpinq-adopt-or-abstractions/specs/larpinq-adopt-or-abstractions/spec.md
+		 */
+		leaveDetailRoute() {
+			if (!this.$route || !/:|\//.test(this.$route.path)) {
+				return
+			}
+			if (!hasFilledParam(this.$route.params || {})) {
+				return
+			}
+			// Find the parent index route by stripping the
+			// trailing `/:id` segment from the matched path.
+			const matched = this.$route.matched && this.$route.matched[0]
+			const indexPath = matched
+				? matched.path.replace(/\/:[^/]+$/, '')
+				: this.$route.path.replace(/\/[^/]+\/?$/, '')
+			const target = indexPath || '/'
+			if (this.$router && target !== this.$route.path) {
+				this.$router.push(target).catch(() => {})
+			}
 		},
 	},
 }

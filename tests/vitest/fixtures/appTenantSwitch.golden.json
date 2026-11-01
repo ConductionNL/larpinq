@@ -1,0 +1,374 @@
+{
+	"immediate": true,
+	"templateRenderSha256": "9311b3c4b8b1de1068c70f086fc70f1f0d26c5e37059aabb3c19b0dbf3881cdc",
+	"scenarios": {
+		"first fire with a uuid": {
+			"returned": "(undefined)",
+			"tenantSyncedUuid": "org-1",
+			"calls": [
+				[
+					"setObjectStoreTenantUuid",
+					"org-1"
+				],
+				[
+					"useObjectStore",
+					"ok"
+				],
+				[
+					"setActiveTenantOrganisation",
+					"org-1"
+				]
+			]
+		},
+		"same uuid again": {
+			"returned": "(undefined)",
+			"tenantSyncedUuid": "org-1",
+			"calls": []
+		},
+		"empty string becomes null": {
+			"returned": "(undefined)",
+			"tenantSyncedUuid": null,
+			"calls": [
+				[
+					"setObjectStoreTenantUuid",
+					null
+				],
+				[
+					"useObjectStore",
+					"ok"
+				],
+				[
+					"setActiveTenantOrganisation",
+					null
+				]
+			]
+		},
+		"non-string becomes null": {
+			"returned": "(undefined)",
+			"tenantSyncedUuid": null,
+			"calls": [
+				[
+					"setObjectStoreTenantUuid",
+					null
+				],
+				[
+					"useObjectStore",
+					"ok"
+				],
+				[
+					"setActiveTenantOrganisation",
+					null
+				]
+			]
+		},
+		"undefined after null is a no-op": {
+			"returned": "(undefined)",
+			"tenantSyncedUuid": null,
+			"calls": []
+		},
+		"detail route goes to its index": {
+			"returned": "(undefined)",
+			"tenantSyncedUuid": "org-2",
+			"calls": [
+				[
+					"setObjectStoreTenantUuid",
+					"org-2"
+				],
+				[
+					"useObjectStore",
+					"ok"
+				],
+				[
+					"setActiveTenantOrganisation",
+					"org-2"
+				],
+				[
+					"push",
+					"/characters"
+				]
+			]
+		},
+		"no matched record strips the last segment": {
+			"returned": "(undefined)",
+			"tenantSyncedUuid": "org-2",
+			"calls": [
+				[
+					"setObjectStoreTenantUuid",
+					"org-2"
+				],
+				[
+					"useObjectStore",
+					"ok"
+				],
+				[
+					"setActiveTenantOrganisation",
+					"org-2"
+				],
+				[
+					"push",
+					"/characters"
+				]
+			]
+		},
+		"empty matched list strips the last segment": {
+			"returned": "(undefined)",
+			"tenantSyncedUuid": "org-2",
+			"calls": [
+				[
+					"setObjectStoreTenantUuid",
+					"org-2"
+				],
+				[
+					"useObjectStore",
+					"ok"
+				],
+				[
+					"setActiveTenantOrganisation",
+					"org-2"
+				],
+				[
+					"push",
+					"/a"
+				]
+			]
+		},
+		"params all empty": {
+			"returned": "(undefined)",
+			"tenantSyncedUuid": "org-2",
+			"calls": [
+				[
+					"setObjectStoreTenantUuid",
+					"org-2"
+				],
+				[
+					"useObjectStore",
+					"ok"
+				],
+				[
+					"setActiveTenantOrganisation",
+					"org-2"
+				]
+			]
+		},
+		"no params object": {
+			"returned": "(undefined)",
+			"tenantSyncedUuid": "org-2",
+			"calls": [
+				[
+					"setObjectStoreTenantUuid",
+					"org-2"
+				],
+				[
+					"useObjectStore",
+					"ok"
+				],
+				[
+					"setActiveTenantOrganisation",
+					"org-2"
+				]
+			]
+		},
+		"index path empty becomes root": {
+			"returned": "(undefined)",
+			"tenantSyncedUuid": "org-2",
+			"calls": [
+				[
+					"setObjectStoreTenantUuid",
+					"org-2"
+				],
+				[
+					"useObjectStore",
+					"ok"
+				],
+				[
+					"setActiveTenantOrganisation",
+					"org-2"
+				],
+				[
+					"push",
+					"/"
+				]
+			]
+		},
+		"target equals current path": {
+			"returned": "(undefined)",
+			"tenantSyncedUuid": "org-2",
+			"calls": [
+				[
+					"setObjectStoreTenantUuid",
+					"org-2"
+				],
+				[
+					"useObjectStore",
+					"ok"
+				],
+				[
+					"setActiveTenantOrganisation",
+					"org-2"
+				]
+			]
+		},
+		"no router": {
+			"returned": "(undefined)",
+			"tenantSyncedUuid": "org-2",
+			"calls": [
+				[
+					"setObjectStoreTenantUuid",
+					"org-2"
+				],
+				[
+					"useObjectStore",
+					"ok"
+				],
+				[
+					"setActiveTenantOrganisation",
+					"org-2"
+				]
+			]
+		},
+		"router push rejects": {
+			"returned": "(undefined)",
+			"tenantSyncedUuid": "org-2",
+			"calls": [
+				[
+					"setObjectStoreTenantUuid",
+					"org-2"
+				],
+				[
+					"useObjectStore",
+					"ok"
+				],
+				[
+					"setActiveTenantOrganisation",
+					"org-2"
+				],
+				[
+					"push",
+					"/characters"
+				]
+			]
+		},
+		"no route": {
+			"returned": "(undefined)",
+			"tenantSyncedUuid": "org-2",
+			"calls": [
+				[
+					"setObjectStoreTenantUuid",
+					"org-2"
+				],
+				[
+					"useObjectStore",
+					"ok"
+				],
+				[
+					"setActiveTenantOrganisation",
+					"org-2"
+				]
+			]
+		},
+		"route path without separator": {
+			"returned": "(undefined)",
+			"tenantSyncedUuid": "org-2",
+			"calls": [
+				[
+					"setObjectStoreTenantUuid",
+					"org-2"
+				],
+				[
+					"useObjectStore",
+					"ok"
+				],
+				[
+					"setActiveTenantOrganisation",
+					"org-2"
+				]
+			]
+		},
+		"route path with only a colon": {
+			"returned": "(undefined)",
+			"tenantSyncedUuid": "org-2",
+			"calls": [
+				[
+					"setObjectStoreTenantUuid",
+					"org-2"
+				],
+				[
+					"useObjectStore",
+					"ok"
+				],
+				[
+					"setActiveTenantOrganisation",
+					"org-2"
+				],
+				[
+					"push",
+					"x"
+				]
+			]
+		},
+		"store throws": {
+			"returned": "(undefined)",
+			"tenantSyncedUuid": "org-2",
+			"calls": [
+				[
+					"setObjectStoreTenantUuid",
+					"org-2"
+				],
+				[
+					"useObjectStore",
+					"throws"
+				]
+			]
+		},
+		"store is null": {
+			"returned": "(undefined)",
+			"tenantSyncedUuid": "org-2",
+			"calls": [
+				[
+					"setObjectStoreTenantUuid",
+					"org-2"
+				],
+				[
+					"useObjectStore",
+					"null"
+				]
+			]
+		},
+		"store without the action": {
+			"returned": "(undefined)",
+			"tenantSyncedUuid": "org-2",
+			"calls": [
+				[
+					"setObjectStoreTenantUuid",
+					"org-2"
+				],
+				[
+					"useObjectStore",
+					"no-action"
+				]
+			]
+		},
+		"null to uuid on a detail route": {
+			"returned": "(undefined)",
+			"tenantSyncedUuid": "org-3",
+			"calls": [
+				[
+					"setObjectStoreTenantUuid",
+					"org-3"
+				],
+				[
+					"useObjectStore",
+					"ok"
+				],
+				[
+					"setActiveTenantOrganisation",
+					"org-3"
+				],
+				[
+					"push",
+					"/characters"
+				]
+			]
+		}
+	}
+}
