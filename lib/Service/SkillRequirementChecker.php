@@ -122,11 +122,13 @@ class SkillRequirementChecker {
 			}
 
 			$entries[] = $this->entry(
-				skillId: $skillId,
-				type: 'requiredSkill',
-				target: $reqSkill,
-				targetName: $targetName,
-				status: $this->status(passed: $present, resolved: $resolved, overridden: $overridden)
+				fields: [
+					'skill' => $skillId,
+					'type' => 'requiredSkill',
+					'target' => $reqSkill,
+					'targetName' => $targetName,
+					'status' => $this->status(passed: $present, resolved: $resolved, overridden: $overridden),
+				]
 			);
 		}
 
@@ -159,13 +161,15 @@ class SkillRequirementChecker {
 
 			$passed = ($resolved === true && $current >= $requiredScore);
 			$entries[] = $this->entry(
-				skillId: $skillId,
-				type: 'requiredStat',
-				target: $reqStat,
-				targetName: $targetName,
-				status: $this->status(passed: $passed, resolved: $resolved, overridden: $overridden),
-				current: $current,
-				required: $requiredScore
+				fields: [
+					'skill' => $skillId,
+					'type' => 'requiredStat',
+					'target' => $reqStat,
+					'targetName' => $targetName,
+					'status' => $this->status(passed: $passed, resolved: $resolved, overridden: $overridden),
+					'current' => $current,
+					'required' => $requiredScore,
+				]
 			);
 		}
 
@@ -198,15 +202,17 @@ class SkillRequirementChecker {
 		$entries = [];
 		foreach ($targets as $target) {
 			$entries[] = $this->entry(
-				skillId: $skillId,
-				type: $type,
-				target: $target,
-				targetName: '',
-				status: $this->status(
-					passed: in_array($target, $pool, true),
-					resolved: true,
-					overridden: $overridden
-				)
+				fields: [
+					'skill' => $skillId,
+					'type' => $type,
+					'target' => $target,
+					'targetName' => '',
+					'status' => $this->status(
+						passed: in_array($target, $pool, true),
+						resolved: true,
+						overridden: $overridden
+					),
+				]
 			);
 		}
 
@@ -214,36 +220,16 @@ class SkillRequirementChecker {
 	}//end checkMembership()
 
 	/**
-	 * Build a single requirement-result entry.
+	 * Build a single requirement-result entry. The stat values `current` and
+	 * `required` default to 0 and come last.
 	 *
-	 * @param string $skillId The skill being assigned.
-	 * @param string $type The requirement type.
-	 * @param string $target The required target UUID.
-	 * @param string $targetName The required target's human name (may be empty).
-	 * @param string $status One of passed|unmet|overridden|unresolvable.
-	 * @param int $current The current value (stat checks only).
-	 * @param int $required The required value (stat checks only).
+	 * @param array<string,string|int> $fields The entry fields in output order: skill, type, target,
+	 *                                         targetName and status, optionally current and required.
 	 *
-	 * @return array<string,mixed> The entry.
+	 * @return array<string,string|int> The entry.
 	 */
-	private function entry(
-		string $skillId,
-		string $type,
-		string $target,
-		string $targetName,
-		string $status,
-		int $current = 0,
-		int $required = 0,
-	): array {
-		return [
-			'skill' => $skillId,
-			'type' => $type,
-			'target' => $target,
-			'targetName' => $targetName,
-			'status' => $status,
-			'current' => $current,
-			'required' => $required,
-		];
+	private function entry(array $fields): array {
+		return $fields + ['current' => 0, 'required' => 0];
 	}//end entry()
 
 	/**
