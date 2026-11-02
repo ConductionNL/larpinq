@@ -42,6 +42,7 @@ trait ReadsRelationId {
 	 *
 	 * @spec openspec/specs/character-builds/spec.md
 	 * @spec openspec/specs/events-players/spec.md
+	 * @spec openspec/specs/character-connections/spec.md
 	 */
 	private function idOf(mixed $value): string {
 		if (is_array($value) === true) {

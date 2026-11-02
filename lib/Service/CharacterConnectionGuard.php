@@ -32,6 +32,7 @@ namespace OCA\Larpinq\Service;
  * @spec openspec/specs/character-connections/spec.md
  */
 class CharacterConnectionGuard {
+	use \OCA\Larpinq\Support\ReadsRelationId;
 
 	/**
 	 * Who may move a membership from one status to another: the group leader
@@ -335,26 +336,6 @@ class CharacterConnectionGuard {
 			return null;
 		}
 	}//end read()
-
-	/**
-	 * The UUID of a relation value, which OpenRegister may hand over as a
-	 * string or as an object with an id.
-	 *
-	 * @param mixed $value The relation value.
-	 *
-	 * @return string The UUID, or ''.
-	 */
-	private function idOf(mixed $value): string {
-		if (is_array($value) === true) {
-			$value = ($value['id'] ?? $value['uuid'] ?? '');
-		}
-
-		if (is_string($value) === false) {
-			return '';
-		}
-
-		return $value;
-	}//end idOf()
 
 	/**
 	 * The refusal payload for a code.
