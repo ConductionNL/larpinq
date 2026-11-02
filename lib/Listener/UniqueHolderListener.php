@@ -27,12 +27,10 @@ declare(strict_types=1);
 namespace OCA\Larpinq\Listener;
 
 use OCA\Larpinq\AppInfo\Application;
-use OCA\Larpinq\Service\IdListNormaliser;
 use OCA\Larpinq\Service\UniqueHolderService;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\IAppConfig;
-use OCP\IL10N;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -55,19 +53,17 @@ class UniqueHolderListener implements IEventListener {
 	/**
 	 * Constructor.
 	 *
-	 * @param UniqueHolderService $holders The holder lookup.
-	 * @param IdListNormaliser $idNormaliser Relation value normaliser.
+	 * @param UniqueHolderVeto $veto The unique-holder rule.
+	 * @param UniqueHolderService $holders The holder lookup (object ids).
 	 * @param IAppConfig $config Config (schema id resolution).
-	 * @param IL10N $l10n Translations for the refusal message.
 	 * @param LoggerInterface $logger The logger.
 	 *
 	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
 	 */
 	public function __construct(
+		private readonly UniqueHolderVeto $veto,
 		private readonly UniqueHolderService $holders,
-		private readonly IdListNormaliser $idNormaliser,
 		private readonly IAppConfig $config,
-		private readonly IL10N $l10n,
 		private readonly LoggerInterface $logger,
 	) {
 	}//end __construct()
@@ -142,8 +138,6 @@ class UniqueHolderListener implements IEventListener {
 	 * @param object|null $old The stored object entity on an update.
 	 *
 	 * @return array<string,mixed>|null The errors payload, or null to allow.
-	 *
-	 * @psalm-suppress MixedMethodCall OpenRegister entity is an optional dependency.
 	 */
 	private function collectVeto(object $entity, ?object $old): ?array {
 		$schema = $this->schemaOf(entity: $entity);
@@ -151,175 +145,72 @@ class UniqueHolderListener implements IEventListener {
 			return null;
 		}
 
+		$write = $this->writeOf(entity: $entity, old: $old);
+		if ($schema === $this->config->getValueString(Application::APP_ID, 'character_schema', '')) {
+			return $this->veto->vetoCharacter(write: $write);
+		}
+
+		return $this->vetoHeldKind(schema: $schema, write: $write);
+	}//end collectVeto()
+
+	/**
+	 * The veto for an item or condition write, or null for any other schema.
+	 *
+	 * @param string $schema The schema id.
+	 * @param ObjectWrite $write The write.
+	 *
+	 * @return array<string,mixed>|null The errors payload, or null to allow.
+	 */
+	private function vetoHeldKind(string $schema, ObjectWrite $write): ?array {
+		$kind = $this->heldKindOf(schema: $schema);
+		if ($kind === null) {
+			return null;
+		}
+
+		return $this->veto->vetoHeldObject(kind: $kind, write: $write);
+	}//end vetoHeldKind()
+
+	/**
+	 * The write a pre-write event carries.
+	 *
+	 * @param object $entity The new object entity.
+	 * @param object|null $old The stored object entity on an update.
+	 *
+	 * @return ObjectWrite The write.
+	 *
+	 * @psalm-suppress MixedMethodCall OpenRegister entity is an optional dependency.
+	 */
+	private function writeOf(object $entity, ?object $old): ObjectWrite {
 		$new = (array)$entity->getObject();
 		$previous = [];
 		if ($old !== null) {
 			$previous = (array)$old->getObject();
 		}
 
-		if ($schema === $this->config->getValueString(Application::APP_ID, 'character_schema', '')) {
-			return $this->vetoCharacter(
-				character: $new,
-				old: $previous,
-				characterId: $this->entityId(entity: $entity, data: $new)
-			);
-		}
+		return new ObjectWrite(
+			data: $new,
+			old: $previous,
+			id: $this->entityId(entity: $entity, data: $new),
+			isCreate: $old === null
+		);
+	}//end writeOf()
 
+	/**
+	 * The kind ('item' or 'condition') whose schema this is, or null.
+	 *
+	 * @param string $schema The schema id.
+	 *
+	 * @return string|null The kind.
+	 */
+	private function heldKindOf(string $schema): ?string {
 		foreach (array_keys(UniqueHolderService::CHARACTER_FIELD) as $kind) {
 			if ($schema === $this->config->getValueString(Application::APP_ID, $kind . '_schema', '')) {
-				return $this->vetoHeldObject(
-					kind: $kind,
-					object: $new,
-					old: $previous,
-					objectId: $this->entityId(entity: $entity, data: $new),
-					isCreate: $old === null
-				);
+				return $kind;
 			}
 		}
 
 		return null;
-	}//end collectVeto()
-
-	/**
-	 * Refuse a character write that adds a unique item or condition held elsewhere.
-	 *
-	 * @param array<string,mixed> $character The candidate character.
-	 * @param array<string,mixed> $old The stored character ([] on create).
-	 * @param string $characterId The character's id ('' on a create without one).
-	 *
-	 * @return array<string,mixed>|null The errors payload, or null to allow.
-	 */
-	private function vetoCharacter(array $character, array $old, string $characterId): ?array {
-		foreach (UniqueHolderService::CHARACTER_FIELD as $kind => $field) {
-			$added = array_diff(
-				$this->idNormaliser->normalise(value: $character[$field] ?? []),
-				$this->idNormaliser->normalise(value: $old[$field] ?? [])
-			);
-
-			foreach ($added as $objectId) {
-				$object = $this->holders->readObject(kind: $kind, id: $objectId);
-				if ($object === null || $this->holders->isUnique(kind: $kind, object: $object) === false) {
-					continue;
-				}
-
-				$exceptCharacter = null;
-				if ($characterId !== '') {
-					$exceptCharacter = $characterId;
-				}
-
-				$holders = $this->holders->otherHolders(
-					kind: $kind,
-					id: $objectId,
-					objectSide: $this->idNormaliser->normalise(value: $object['characters'] ?? []),
-					exceptCharacter: $exceptCharacter,
-					max: 1
-				);
-				if ($holders === []) {
-					continue;
-				}
-
-				$name = $this->nameOf(object: $object, fallback: $objectId);
-				$holder = $holders[0]['name'];
-				$code = 'unique_' . $kind . '_held';
-				$message = $this->l10n->t('%1$s is already held by %2$s. Remove it there first.', [$name, $holder]);
-				if ($kind === 'condition') {
-					$message = $this->l10n->t('%1$s is already on %2$s. Remove it there first.', [$name, $holder]);
-				}
-
-				return [
-					'message' => $message,
-					$field => [
-						[
-							'code' => $code,
-							$kind => $objectId,
-							'heldBy' => $holder,
-							'message' => $message,
-						],
-					],
-				];
-			}//end foreach
-		}//end foreach
-
-		return null;
-	}//end vetoCharacter()
-
-	/**
-	 * Refuse an item or condition write that leaves a unique object with two holders.
-	 *
-	 * Checked only when the write adds a holder to `characters[]` or switches
-	 * `unique` on, so an old conflict never blocks an unrelated edit.
-	 *
-	 * @param string $kind 'item' or 'condition'.
-	 * @param array<string,mixed> $object The candidate object.
-	 * @param array<string,mixed> $old The stored object ([] on create).
-	 * @param string $objectId The object's id ('' on a create without one).
-	 * @param bool $isCreate Whether this is a create.
-	 *
-	 * @return array<string,mixed>|null The errors payload, or null to allow.
-	 */
-	private function vetoHeldObject(string $kind, array $object, array $old, string $objectId, bool $isCreate): ?array {
-		if ($this->holders->isUnique(kind: $kind, object: $object) === false) {
-			return null;
-		}
-
-		$side = $this->idNormaliser->normalise(value: $object['characters'] ?? []);
-		$gained = array_diff($side, $this->idNormaliser->normalise(value: $old['characters'] ?? []));
-		$switchedOn = $isCreate === false && $this->holders->isUnique(kind: $kind, object: $old) === false;
-		if ($gained === [] && $switchedOn === false && $isCreate === false) {
-			return null;
-		}
-
-		$holders = $this->currentHolders(kind: $kind, objectId: $objectId, side: $side);
-		if (count($holders) < 2) {
-			return null;
-		}
-
-		$field = 'characters';
-		if ($gained === [] && $switchedOn === true) {
-			$field = 'unique';
-		}
-
-		$names = implode(', ', array_map(static fn (array $holder): string => $holder['name'], $holders));
-		$message = $this->l10n->t(
-			'%1$s can have only one holder, and %2$s hold it now. Remove all but one first.',
-			[$this->nameOf(object: $object, fallback: $objectId), $names]
-		);
-
-		return [
-			'message' => $message,
-			$field => [
-				[
-					'code' => 'unique_' . $kind . '_several_holders',
-					$kind => $objectId,
-					'heldBy' => array_map(static fn (array $holder): string => $holder['name'], $holders),
-					'message' => $message,
-				],
-			],
-		];
-	}//end vetoHeldObject()
-
-	/**
-	 * The holders of an item or condition, counted on both sides of the relation.
-	 *
-	 * @param string $kind 'item' or 'condition'.
-	 * @param string $objectId The object's id ('' on a create without one).
-	 * @param array<int,string> $side The object's own `characters[]`.
-	 *
-	 * @return array<int,array{id:string,name:string}> Up to three holders.
-	 */
-	private function currentHolders(string $kind, string $objectId, array $side): array {
-		if ($objectId !== '') {
-			return $this->holders->otherHolders(kind: $kind, id: $objectId, objectSide: $side, exceptCharacter: null, max: 3);
-		}
-
-		// A new object without an id: only its own list can hold it yet.
-		$holders = [];
-		foreach (array_values(array_unique($side)) as $characterId) {
-			$holders[] = ['id' => $characterId, 'name' => $characterId];
-		}
-
-		return $holders;
-	}//end currentHolders()
+	}//end heldKindOf()
 
 	/**
 	 * The schema id of an OpenRegister entity.
@@ -362,21 +253,4 @@ class UniqueHolderListener implements IEventListener {
 
 		return $this->holders->objectId(object: $data);
 	}//end entityId()
-
-	/**
-	 * The `name` of an object, or the fallback.
-	 *
-	 * @param array<string,mixed> $object The object data.
-	 * @param string $fallback Returned when the object has no name.
-	 *
-	 * @return string The name.
-	 */
-	private function nameOf(array $object, string $fallback): string {
-		$name = $object['name'] ?? '';
-		if (is_string($name) === true && trim($name) !== '') {
-			return $name;
-		}
-
-		return $fallback;
-	}//end nameOf()
 }//end class

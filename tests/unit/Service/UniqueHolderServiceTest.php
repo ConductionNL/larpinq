@@ -16,6 +16,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Tests\Unit\Service;
 
+use OCA\Larpinq\Service\HolderQuery;
 use OCA\Larpinq\Service\IdListNormaliser;
 use OCA\Larpinq\Service\RegisterObjectFetcher;
 use OCA\Larpinq\Service\UniqueHolderConflictFinder;
@@ -75,7 +76,7 @@ class UniqueHolderServiceTest extends TestCase {
 			calls: $calls
 		);
 
-		$holders = $service->otherHolders(kind: 'item', id: self::CROWN, exceptCharacter: self::BERTRAM, max: 1);
+		$holders = $service->otherHolders(query: new HolderQuery(kind: 'item', id: self::CROWN, exceptCharacter: self::BERTRAM, max: 1));
 
 		self::assertSame([['id' => self::QUEEN, 'name' => 'Queen Isolde']], $holders);
 		self::assertCount(1, $calls);
@@ -93,7 +94,7 @@ class UniqueHolderServiceTest extends TestCase {
 			objects: fn (): array => [['id' => self::QUEEN, 'name' => 'Queen Isolde', 'items' => [self::CROWN]]]
 		);
 
-		self::assertSame([], $service->otherHolders(kind: 'item', id: self::CROWN, objectSide: [self::QUEEN], exceptCharacter: self::QUEEN));
+		self::assertSame([], $service->otherHolders(query: new HolderQuery(kind: 'item', id: self::CROWN, exceptCharacter: self::QUEEN), objectSide: [self::QUEEN]));
 	}//end testTheWrittenCharacterIsNotCounted()
 
 	/**
@@ -109,7 +110,7 @@ class UniqueHolderServiceTest extends TestCase {
 			calls: $calls
 		);
 
-		$holders = $service->otherHolders(kind: 'condition', id: self::CROWN, objectSide: [self::QUEEN], exceptCharacter: self::BERTRAM);
+		$holders = $service->otherHolders(query: new HolderQuery(kind: 'condition', id: self::CROWN, exceptCharacter: self::BERTRAM), objectSide: [self::QUEEN]);
 
 		self::assertSame([['id' => self::QUEEN, 'name' => 'Mirela']], $holders);
 		self::assertSame(['conditions' => self::CROWN], $calls[0]['filters']);
@@ -152,7 +153,7 @@ class UniqueHolderServiceTest extends TestCase {
 			calls: $calls
 		);
 
-		$holders = $service->otherHolders(kind: 'item', id: self::CROWN, max: 1);
+		$holders = $service->otherHolders(query: new HolderQuery(kind: 'item', id: self::CROWN, max: 1));
 
 		self::assertSame([['id' => self::QUEEN, 'name' => 'Queen Isolde']], $holders);
 		self::assertCount(3, $calls, 'one filtered query and two pages of 100');

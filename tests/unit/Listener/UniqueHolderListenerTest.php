@@ -22,6 +22,7 @@ declare(strict_types=1);
 namespace OCA\Larpinq\Tests\Unit\Listener;
 
 use OCA\Larpinq\Listener\UniqueHolderListener;
+use OCA\Larpinq\Listener\UniqueHolderVeto;
 use OCA\Larpinq\Service\IdListNormaliser;
 use OCA\Larpinq\Service\RegisterObjectFetcher;
 use OCA\Larpinq\Service\UniqueHolderService;
@@ -171,11 +172,12 @@ class UniqueHolderListenerTest extends TestCase {
 
 		$normaliser = new IdListNormaliser();
 
+		$holders = new UniqueHolderService($fetcher, $normaliser);
+
 		return new UniqueHolderListener(
-			new UniqueHolderService($fetcher, $normaliser),
-			$normaliser,
+			new UniqueHolderVeto($holders, $normaliser, $l10n),
+			$holders,
 			$config,
-			$l10n,
 			$logger ?? $this->createMock(LoggerInterface::class)
 		);
 	}//end listener()
