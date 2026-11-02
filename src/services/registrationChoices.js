@@ -13,6 +13,7 @@
 
 import { getRequestToken } from '@nextcloud/auth'
 import { generateUrl } from '@nextcloud/router'
+import { refusalOf } from './responseBody.js'
 
 const REGISTRATION = '/apps/openregister/api/objects/larpinq/larping_registration'
 
@@ -112,20 +113,8 @@ export async function saveChoices(registrationId, choices) {
 	if (response.ok) {
 		return { ok: true, message: '' }
 	}
-	let refusal
-	try {
-		refusal = await response.json()
-	} catch {
-		refusal = {}
-	}
-	const errors =
-		refusal?.errors && typeof refusal.errors === 'object'
-			? refusal.errors
-			: refusal
-	return {
-		ok: false,
-		message: String(errors?.message ?? refusal?.message ?? ''),
-	}
+	const { message } = await refusalOf(response)
+	return { ok: false, message }
 }
 
 /**
