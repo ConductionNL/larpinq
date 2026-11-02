@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace OCA\Larpinq\Tests\Unit\Controller;
 
 use Exception;
+use OCA\Larpinq\Controller\CallerAccess;
 use OCA\Larpinq\Controller\CharactersController;
 use OCA\Larpinq\Service\DocuDeskPdfRenderer;
 use OCA\Larpinq\Service\RegisterObjectFetcher;
@@ -83,8 +84,7 @@ class CharactersControllerTest extends TestCase {
 			$this->createMock(IRequest::class),
 			$this->objectFetcher,
 			$this->pdfRenderer,
-			$this->userSession,
-			$this->groupManager,
+			new CallerAccess($this->userSession, $this->groupManager),
 			$this->requirementService,
 		);
 	}
@@ -98,8 +98,7 @@ class CharactersControllerTest extends TestCase {
 			$this->createMock(IRequest::class),
 			$this->objectFetcher,
 			$this->pdfRenderer,
-			$unauthSession,
-			$this->groupManager,
+			new CallerAccess($unauthSession, $this->groupManager),
 			$this->requirementService,
 		);
 
@@ -125,8 +124,7 @@ class CharactersControllerTest extends TestCase {
 			$this->createMock(IRequest::class),
 			$this->objectFetcher,
 			$this->pdfRenderer,
-			$nonAdminSession,
-			$nonAdminGroupManager,
+			new CallerAccess($nonAdminSession, $nonAdminGroupManager),
 			$this->requirementService,
 		);
 
@@ -489,8 +487,7 @@ class CharactersControllerTest extends TestCase {
 			$this->createMock(IRequest::class),
 			$this->objectFetcher,
 			$this->pdfRenderer,
-			$unauthSession,
-			$this->groupManager,
+			new CallerAccess($unauthSession, $this->groupManager),
 			$this->requirementService,
 		);
 

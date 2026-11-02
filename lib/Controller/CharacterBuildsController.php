@@ -22,7 +22,6 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Controller;
 
-use OCA\Larpinq\AppInfo\Application;
 use OCA\Larpinq\Service\CharacterService;
 use OCA\Larpinq\Service\CharacterStatsPresenter;
 use OCA\Larpinq\Service\RegisterObjectFetcher;
@@ -32,9 +31,7 @@ use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\Attribute\NoAdminRequired;
 use OCP\AppFramework\Http\Attribute\NoCSRFRequired;
 use OCP\AppFramework\Http\JSONResponse;
-use OCP\IGroupManager;
 use OCP\IRequest;
-use OCP\IUserSession;
 
 /**
  * GET /api/builds/{id}/report and GET /api/builds/apply-access.
@@ -65,8 +62,7 @@ class CharacterBuildsController extends Controller {
 	 * @param CharacterService $characterService The stat engine.
 	 * @param SkillRequirementService $requirementService The requirement and XP budget check.
 	 * @param CharacterStatsPresenter $presenter Shapes the stat sheet of the build.
-	 * @param IUserSession $userSession The current user session.
-	 * @param IGroupManager $groupManager The group manager (game master check).
+	 * @param CallerAccess $callerAccess The signed-in caller and the game master check.
 	 *
 	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
 	 */
@@ -77,8 +73,7 @@ class CharacterBuildsController extends Controller {
 		private readonly CharacterService $characterService,
 		private readonly SkillRequirementService $requirementService,
 		private readonly CharacterStatsPresenter $presenter,
-		private readonly IUserSession $userSession,
-		private readonly IGroupManager $groupManager,
+		private readonly CallerAccess $callerAccess,
 	) {
 		parent::__construct(appName: $appName, request: $request);
 	}//end __construct()
@@ -147,16 +142,12 @@ class CharacterBuildsController extends Controller {
 	#[NoAdminRequired]
 	#[NoCSRFRequired]
 	public function access(): JSONResponse {
-		$user = $this->userSession->getUser();
+		$user = $this->callerAccess->user();
 		if ($user === null) {
 			return new JSONResponse(data: ['allowed' => false]);
 		}
 
-		$uid = $user->getUID();
-		$allowed = $this->groupManager->isInGroup($uid, Application::GM_GROUP) === true
-			|| $this->groupManager->isAdmin($uid) === true;
-
-		return new JSONResponse(data: ['allowed' => $allowed]);
+		return new JSONResponse(data: ['allowed' => $this->callerAccess->isGameMasterOrAdmin($user->getUID())]);
 	}//end access()
 
 	/**

@@ -19,6 +19,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Tests\Unit\Controller;
 
+use OCA\Larpinq\Controller\CallerAccess;
 use OCA\Larpinq\Controller\SettingsController;
 use OCA\Larpinq\Service\SettingsService;
 use OCP\App\IAppManager;
@@ -79,8 +80,7 @@ class SettingsControllerTest extends TestCase {
 			container: $this->createMock(ContainerInterface::class),
 			appManager: $appManager,
 			settingsService: $this->settingsService,
-			groupManager: $this->createMock(IGroupManager::class),
-			userSession: $userSession,
+			callerAccess: new CallerAccess($userSession, $this->createMock(IGroupManager::class)),
 			logger: $this->createMock(LoggerInterface::class),
 		);
 
@@ -136,8 +136,7 @@ class SettingsControllerTest extends TestCase {
 			container: $this->createMock(ContainerInterface::class),
 			appManager: $appManager,
 			settingsService: $settingsService,
-			groupManager: $groupManager,
-			userSession: $userSession,
+			callerAccess: new CallerAccess($userSession, $groupManager),
 			logger: $this->createMock(LoggerInterface::class),
 		);
 
