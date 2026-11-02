@@ -23,6 +23,7 @@ namespace OCA\Larpinq\Tests\Unit\Controller;
 
 use OCA\Larpinq\Controller\CharacterStatsController;
 use OCA\Larpinq\Service\CharacterService;
+use OCA\Larpinq\Service\CharacterStatSheet;
 use OCA\Larpinq\Service\CharacterStatsPresenter;
 use OCA\Larpinq\Service\EffectApplier;
 use OCA\Larpinq\Service\IdListNormaliser;
@@ -84,7 +85,7 @@ class CharacterStatsControllerTest extends TestCase {
 		$requirements = new SkillRequirementService($engine, $fetcher, $logger, new SkillRequirementChecker(new IdListNormaliser()), new IdListNormaliser());
 		$this->services['requirements'] = $requirements;
 
-		return new CharacterStatsController('larpinq', $this->createMock(IRequest::class), $fetcher, $engine, $requirements, new CharacterStatsPresenter());
+		return new CharacterStatsController('larpinq', $this->createMock(IRequest::class), $fetcher, new CharacterStatSheet($engine, $requirements, new CharacterStatsPresenter()));
 	}//end controller()
 
 	/**
