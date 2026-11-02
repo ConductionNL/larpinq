@@ -36,58 +36,145 @@ const MAX_DEFINITIONS = 500
  * @spec openspec/specs/character-custom-fields/spec.md
  */
 export function sheetFrom(definitions, character) {
-	const world = character?.setting || ''
-	const values = objectOr(character?.customFields, {})
-	const privateValues = objectOr(character?.customFieldsPrivate, null)
+	const bags = {
+		values: objectOr(character?.customFields, {}),
+		privateValues: objectOr(character?.customFieldsPrivate, null),
+	}
+	const byKey = applicableDefinitions(definitions, character?.setting || '')
+	const rows = [...byKey.values()]
+		.sort(byOrderThenLabel)
+		.map((definition) => rowOf(definition, bags))
+
+	return {
+		rows,
+		orphans: orphansOf(byKey, bags),
+		canEditPrivate:
+			bags.privateValues !== null || rows.some((row) => row.private),
+		values: bags.values,
+		privateValues: bags.privateValues,
+	}
+}
+
+/**
+ * The definitions that apply in a world, by key: a world's own definition
+ * wins over a global one with the same key.
+ *
+ * @param {Array<object>|null} definitions The definitions the user may read.
+ * @param {string} world The character's world, or ''.
+ * @return {Map<string, object>} The definitions by key, in first-seen order.
+ *
+ * @spec openspec/specs/character-custom-fields/spec.md
+ */
+function applicableDefinitions(definitions, world) {
 	const byKey = new Map()
 	for (const definition of definitions || []) {
-		const key = definition?.key
-		const scope = definition?.setting || ''
-		if (!key || (scope !== '' && scope !== world)) {
-			continue
+		if (appliesIn(definition, world) && !shadowed(definition, byKey)) {
+			byKey.set(definition.key, definition)
 		}
-		if (scope === '' && byKey.has(key)) {
-			continue
-		}
-		byKey.set(key, definition)
 	}
+	return byKey
+}
 
-	const rows = [...byKey.values()]
-		.sort(
-			(a, b) =>
-				(a.order ?? 0) - (b.order ?? 0)
-				|| String(a.label).localeCompare(String(b.label)),
-		)
-		.map((definition) => {
-			const isPrivate = definition.visibility === 'gamemasters'
-			const source = isPrivate ? privateValues || {} : values
-			return {
-				key: definition.key,
-				label: definition.label || definition.key,
-				fieldType: definition.fieldType || 'text',
-				choices: Array.isArray(definition.choices) ? definition.choices : [],
-				help: definition.help || '',
-				private: isPrivate,
-				value: source[definition.key] ?? null,
-			}
-		})
+/**
+ * Whether a global definition comes after one with the same key.
+ *
+ * @param {object} definition The definition.
+ * @param {Map<string, object>} byKey The definitions kept so far.
+ * @return {boolean} True when it is global and the key is taken.
+ *
+ * @spec openspec/specs/character-custom-fields/spec.md
+ */
+function shadowed(definition, byKey) {
+	return !definition.setting && byKey.has(definition.key)
+}
 
+/**
+ * Whether a definition has a key and no world or this world.
+ *
+ * @param {object|null} definition The definition.
+ * @param {string} world The character's world, or ''.
+ * @return {boolean} True when it applies.
+ *
+ * @spec openspec/specs/character-custom-fields/spec.md
+ */
+function appliesIn(definition, world) {
+	const scope = definition?.setting || ''
+	return Boolean(definition?.key) && (scope === '' || scope === world)
+}
+
+/**
+ * Sort order of sheet definitions: on order, then label.
+ *
+ * @param {object} a A definition.
+ * @param {object} b Another definition.
+ * @return {number} The comparison.
+ *
+ * @spec openspec/specs/character-custom-fields/spec.md
+ */
+function byOrderThenLabel(a, b) {
+	return (
+		(a.order ?? 0) - (b.order ?? 0)
+		|| String(a.label).localeCompare(String(b.label))
+	)
+}
+
+/**
+ * One sheet row for a definition.
+ *
+ * @param {object} definition The definition.
+ * @param {{values: object, privateValues: object|null}} bags The character's values.
+ * @return {object} The row.
+ *
+ * @spec openspec/specs/character-custom-fields/spec.md
+ */
+function rowOf(definition, bags) {
+	return {
+		key: definition.key,
+		label: definition.label || definition.key,
+		fieldType: definition.fieldType || 'text',
+		choices: Array.isArray(definition.choices) ? definition.choices : [],
+		help: definition.help || '',
+		private: definition.visibility === 'gamemasters',
+		value: valueOf(definition, bags),
+	}
+}
+
+/**
+ * A definition's current value, from the bag its visibility names.
+ *
+ * @param {object} definition The definition.
+ * @param {{values: object, privateValues: object|null}} bags The character's values.
+ * @return {unknown} The value, or null.
+ *
+ * @spec openspec/specs/character-custom-fields/spec.md
+ */
+function valueOf(definition, bags) {
+	const source =
+		definition.visibility === 'gamemasters'
+			? bags.privateValues || {}
+			: bags.values
+	return source[definition.key] ?? null
+}
+
+/**
+ * The stored values that have no applicable definition.
+ *
+ * @param {Map<string, object>} byKey The applicable definitions.
+ * @param {{values: object, privateValues: object|null}} bags The character's values.
+ * @return {Array<{key: string, value: unknown}>} The orphans.
+ *
+ * @spec openspec/specs/character-custom-fields/spec.md
+ */
+function orphansOf(byKey, bags) {
 	const orphans = []
-	for (const bag of [values, privateValues || {}]) {
+	for (const bag of [bags.values, bags.privateValues || {}]) {
 		for (const [key, value] of Object.entries(bag)) {
 			if (!byKey.has(key)) {
 				orphans.push({ key, value })
 			}
 		}
 	}
-
-	return {
-		rows,
-		orphans,
-		canEditPrivate: privateValues !== null || rows.some((row) => row.private),
-		values,
-		privateValues,
-	}
+	return orphans
 }
 
 /**
@@ -107,12 +194,36 @@ export function inputValue(fieldType, raw) {
 		return raw === true
 	}
 	if (fieldType === 'number') {
-		const text = String(raw).trim()
-		const number = Number(text)
-		return text === '' || !Number.isFinite(number) ? null : number
+		return numberValue(raw)
 	}
+	return textValue(raw)
+}
+
+/**
+ * The stored value of a text or choice input.
+ *
+ * @param {unknown} raw The input.
+ * @return {string|null} The trimmed text, or null when it is empty.
+ *
+ * @spec openspec/specs/character-custom-fields/spec.md
+ */
+function textValue(raw) {
 	const text = String(raw).trim()
 	return text === '' ? null : text
+}
+
+/**
+ * The stored value of a number input.
+ *
+ * @param {unknown} raw The input.
+ * @return {number|null} The number, or null for an empty or invalid input.
+ *
+ * @spec openspec/specs/character-custom-fields/spec.md
+ */
+function numberValue(raw) {
+	const text = String(raw).trim()
+	const number = Number(text)
+	return text === '' || !Number.isFinite(number) ? null : number
 }
 
 /**
