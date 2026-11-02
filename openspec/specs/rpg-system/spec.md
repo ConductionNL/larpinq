@@ -465,13 +465,15 @@ pages SHALL show it in Dutch and English with the holder's name.
 
 ### Requirement: The check fails closed (REQ-UHE-006)
 
-When larpinq cannot read what the unique-holder check needs (the added item
-or condition cannot be read, or a holder lookup fails), it SHALL refuse a
-write that adds a holder: a character write that adds an item or condition,
-a create of a unique item or condition, an item or condition write that adds
-a holder, or one that switches `unique` on. The refusal MUST say the change
-was not saved and can be tried again. A write that adds no holder SHALL pass
-as before.
+When a lookup the unique-holder check needs fails (reading the added item or
+condition raises an error, OpenRegister is unavailable, or a holder lookup
+fails), larpinq SHALL refuse a write that adds a holder: a character write
+that adds an item or condition, a create of a unique item or condition, an
+item or condition write that adds a holder, or one that switches `unique` on.
+The refusal MUST say the change was not saved and can be tried again, and the
+failure MUST be logged. A write that adds no holder SHALL pass as before. An
+added item or condition that does not exist, or that the caller cannot read,
+is not a failed lookup: REQ-UHE-007 covers it.
 
 #### Scenario: OpenRegister cannot answer while a holder is added
 
@@ -492,6 +494,35 @@ as before.
 - WHEN a row adds a second holder of a unique item or condition
 - THEN that row is refused like a single save, because the character, item
   and condition schemas set `fireEventsOnBulkWrites`
+
+### Requirement: An unknown item or condition is refused plainly (REQ-UHE-007)
+
+When a character write adds an item or condition that does not exist, that
+the caller cannot read, or whose id is not a valid object id, larpinq SHALL
+refuse the write on `items` or `conditions` with the code
+`unique_item_unknown` or `unique_condition_unknown`. The message MUST name the
+id, say the change was not saved and MUST NOT invite a retry. An object the
+caller cannot read MUST get exactly the answer of one that does not exist, so
+the refusal never shows whether an unreadable object exists.
+
+#### Scenario: A game master adds an item that does not exist
+
+- GIVEN no item with id "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee" exists
+- WHEN a game master adds that id to the items of "Sir Bertram"
+- THEN the save is refused on `items` with code `unique_item_unknown`
+- AND the message reads "Unknown item eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee. This change was not saved."
+
+#### Scenario: An item the caller cannot read looks like a missing one
+
+- GIVEN "Crown of Aldmoor" exists but the game master may not read it
+- WHEN the game master adds it to "Sir Bertram"
+- THEN the refusal is the same, field for field, as for an item that does not exist
+
+#### Scenario: An import row names an item that comes later in the import
+
+- GIVEN a bulk import whose character row names an item created by a later row
+- WHEN that character row is saved
+- THEN the row is refused as an unknown item, and the other rows are checked on their own
 
 ### Requirement: Today's conflicts can be listed (REQ-UHE-005)
 

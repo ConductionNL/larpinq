@@ -128,17 +128,26 @@ class UniqueHolderVeto {
 	private function unchecked(HolderQuery $query, string $field): array {
 		$message = $this->l10n->t('The unique-holder check could not run, so this change was not saved. Try again.');
 
-		return [
-			'message' => $message,
-			$field => [
-				[
-					'code' => 'unique_' . $query->kind . '_unchecked',
-					$query->kind => $query->id,
-					'message' => $message,
-				],
-			],
-		];
+		return $this->refusal(query: $query, entry: ['field' => $field, 'code' => 'unchecked', 'message' => $message]);
 	}//end unchecked()
+
+	/**
+	 * The refusal for an added item or condition that does not exist or that
+	 * the caller cannot read. Both get this answer, so it never shows whether
+	 * an unreadable object exists.
+	 *
+	 * @param HolderQuery $query The added object.
+	 *
+	 * @return array<string,mixed> The errors payload.
+	 */
+	private function unknown(HolderQuery $query): array {
+		$message = $this->l10n->t('Unknown item %s. This change was not saved.', [$query->id]);
+		if ($query->kind === 'condition') {
+			$message = $this->l10n->t('Unknown condition %s. This change was not saved.', [$query->id]);
+		}
+
+		return $this->refusal(query: $query, entry: ['field' => $query->field(), 'code' => 'unknown', 'message' => $message]);
+	}//end unknown()
 
 	/**
 	 * Refuse a character write that adds a unique item or condition held elsewhere.
@@ -189,7 +198,7 @@ class UniqueHolderVeto {
 	private function vetoHeldElsewhere(HolderQuery $query): ?array {
 		$object = $this->holders->readObject(kind: $query->kind, id: $query->id);
 		if ($object === null) {
-			return $this->unchecked(query: $query, field: $query->field());
+			return $this->unknown(query: $query);
 		}
 
 		if ($this->holders->isUnique(kind: $query->kind, object: $object) === false) {
@@ -332,22 +341,19 @@ class UniqueHolderVeto {
 	 * The errors payload of a refusal.
 	 *
 	 * @param HolderQuery $query The object the refusal is about.
-	 * @param array{field:string,code:string,heldBy:string|array<int,string>,message:string} $entry Field, code suffix, holders, message.
+	 * @param array{field:string,code:string,heldBy?:string|array<int,string>,message:string} $entry Field, code suffix, holders if known, message.
 	 *
 	 * @return array<string,mixed> The payload.
 	 */
 	private function refusal(HolderQuery $query, array $entry): array {
-		return [
-			'message' => $entry['message'],
-			$entry['field'] => [
-				[
-					'code' => 'unique_' . $query->kind . '_' . $entry['code'],
-					$query->kind => $query->id,
-					'heldBy' => $entry['heldBy'],
-					'message' => $entry['message'],
-				],
-			],
-		];
+		$error = ['code' => 'unique_' . $query->kind . '_' . $entry['code'], $query->kind => $query->id];
+		if (array_key_exists('heldBy', $entry) === true) {
+			$error['heldBy'] = $entry['heldBy'];
+		}
+
+		$error['message'] = $entry['message'];
+
+		return ['message' => $entry['message'], $entry['field'] => [$error]];
 	}//end refusal()
 
 	/**

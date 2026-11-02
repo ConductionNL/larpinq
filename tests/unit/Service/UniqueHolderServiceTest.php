@@ -21,6 +21,8 @@ use OCA\Larpinq\Service\IdListNormaliser;
 use OCA\Larpinq\Service\RegisterObjectFetcher;
 use OCA\Larpinq\Service\UniqueHolderConflictFinder;
 use OCA\Larpinq\Service\UniqueHolderService;
+use OCA\OpenRegister\Exception\NotAuthorizedException;
+use OCP\AppFramework\Db\DoesNotExistException;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -215,4 +217,70 @@ class UniqueHolderServiceTest extends TestCase {
 			$conflicts
 		);
 	}//end testFindConflictsListsSharedUniqueObjects()
+
+	/**
+	 * A service whose getObject throws the given error, or returns the row.
+	 *
+	 * @param \Throwable|array<string,mixed> $answer The error to throw or the row to return.
+	 *
+	 * @return UniqueHolderService The service.
+	 */
+	private function reader(\Throwable|array $answer): UniqueHolderService {
+		$fetcher = $this->createMock(RegisterObjectFetcher::class);
+		$fetcher->method('getObject')->willReturnCallback(
+			function (string $objectType, string $id) use ($answer): array {
+				if ($answer instanceof \Throwable) {
+					throw $answer;
+				}
+
+				return $answer;
+			}
+		);
+
+		return new UniqueHolderService($fetcher, new IdListNormaliser());
+	}//end reader()
+
+	/**
+	 * REQ-UHE-007: a missing object, a malformed id and a refused read all read as unknown.
+	 *
+	 * @return void
+	 */
+	public function testReadObjectAnswersNullForAnUnknownObject(): void {
+		$answers = [
+			'missing' => new DoesNotExistException('Object not found'),
+			'malformed id' => new \InvalidArgumentException('Invalid object ID: expected a UUID'),
+			'refused' => new NotAuthorizedException(),
+		];
+
+		foreach ($answers as $name => $answer) {
+			self::assertNull($this->reader(answer: $answer)->readObject(kind: 'item', id: self::CROWN), $name);
+		}
+	}//end testReadObjectAnswersNullForAnUnknownObject()
+
+	/**
+	 * REQ-UHE-006: a lookup that fails is not mistaken for an unknown object.
+	 *
+	 * @return void
+	 */
+	public function testReadObjectRethrowsAFailingLookup(): void {
+		$failure = new \RuntimeException('register down');
+
+		try {
+			$this->reader(answer: $failure)->readObject(kind: 'item', id: self::CROWN);
+			self::fail('The failing lookup was swallowed.');
+		} catch (\RuntimeException $e) {
+			self::assertSame($failure, $e);
+		}
+	}//end testReadObjectRethrowsAFailingLookup()
+
+	/**
+	 * A readable object is returned as read.
+	 *
+	 * @return void
+	 */
+	public function testReadObjectReturnsAReadableObject(): void {
+		$crown = ['id' => self::CROWN, 'name' => 'Crown of Aldmoor', 'unique' => true];
+
+		self::assertSame($crown, $this->reader(answer: $crown)->readObject(kind: 'item', id: self::CROWN));
+	}//end testReadObjectReturnsAReadableObject()
 }//end class

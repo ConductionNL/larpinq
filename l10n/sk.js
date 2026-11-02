@@ -271,6 +271,8 @@ OC.L10N.register(
         "%1$s is already on %2$s. Remove it there first.": "%1$s už je na %2$s. Najprv ho odtiaľ odoberte.",
         "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s môže mať len jedného držiteľa a teraz ho majú %2$s. Najprv ho odoberte všetkým okrem jedného.",
         "The unique-holder check could not run, so this change was not saved. Try again.": "Kontrolu jediného držiteľa nebolo možné vykonať, preto táto zmena nebola uložená. Skúste to znova.",
+        "Unknown item %s. This change was not saved.": "Neznámy predmet %s. Táto zmena nebola uložená.",
+        "Unknown condition %s. This change was not saved.": "Neznámy stav %s. Táto zmena nebola uložená.",
         "Cast": "Obsadenie",
         "Download as PDF": "Stiahnuť ako PDF",
         "Loading templates": "Načítavajú sa šablóny",

@@ -270,6 +270,8 @@
         "%1$s is already on %2$s. Remove it there first.": "%1$s este deja pe %2$s. Elimină-l mai întâi de acolo.",
         "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s poate avea un singur deținător, iar acum îl dețin %2$s. Elimină-l mai întâi de la toți în afară de unul.",
         "The unique-holder check could not run, so this change was not saved. Try again.": "Verificarea deținătorului unic nu a putut rula, așa că această modificare nu a fost salvată. Încercați din nou.",
+        "Unknown item %s. This change was not saved.": "Obiect necunoscut %s. Această modificare nu a fost salvată.",
+        "Unknown condition %s. This change was not saved.": "Stare necunoscută %s. Această modificare nu a fost salvată.",
         "Cast": "Distribuție",
         "Download as PDF": "Descarcă ca PDF",
         "Loading templates": "Se încarcă șabloanele",

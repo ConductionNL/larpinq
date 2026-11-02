@@ -163,6 +163,27 @@ test.describe('rules-unique-holder-enforcement', () => {
 		const body = await res.json()
 		expect(body.errors.conditions[0].heldBy).toBe(mirelaName)
 	})
+
+	// @e2e openspec/specs/rpg-system/spec.md#a-game-master-adds-an-item-that-does-not-exist
+	test('an item that does not exist is refused as unknown, without a retry', async () => {
+		const nowhere = crypto.randomUUID()
+		const bertram = ledger.track(
+			'character',
+			await createObject(api, 'character', {
+				ocName: playerRef,
+				name: fixtureName('Sir Bertram'),
+			}),
+		)
+
+		const res = await patch('character', bertram, { items: [nowhere] })
+
+		expect(res.status()).toBe(422)
+		const body = await res.json()
+		expect(body.errors.items[0].code).toBe('unique_item_unknown')
+		expect(body.errors.items[0].message).toContain(nowhere)
+		expect(body.errors.items[0].message).not.toContain('Try again')
+	})
+
 	// @e2e openspec/specs/rpg-system/spec.md#a-game-master-marks-a-shared-item-unique
 	test('a shared item cannot be switched to unique, and both holders are named', async () => {
 		const key = ledger.track(

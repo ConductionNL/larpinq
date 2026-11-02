@@ -271,6 +271,8 @@ OC.L10N.register(
         "%1$s is already on %2$s. Remove it there first.": "%1$s liegt bereits auf %2$s. Entfernen Sie es dort zuerst.",
         "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s kann nur einen Besitzer haben, und %2$s besitzen es jetzt. Entfernen Sie es zuerst bei allen bis auf einen.",
         "The unique-holder check could not run, so this change was not saved. Try again.": "Die Prüfung auf einen einzigen Besitzer konnte nicht ausgeführt werden, daher wurde diese Änderung nicht gespeichert. Versuchen Sie es erneut.",
+        "Unknown item %s. This change was not saved.": "Unbekannter Gegenstand %s. Diese Änderung wurde nicht gespeichert.",
+        "Unknown condition %s. This change was not saved.": "Unbekannter Zustand %s. Diese Änderung wurde nicht gespeichert.",
         "Cast": "Besetzung",
         "Download as PDF": "Als PDF herunterladen",
         "Loading templates": "Vorlagen werden geladen",
