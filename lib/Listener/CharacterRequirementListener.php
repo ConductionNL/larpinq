@@ -26,9 +26,9 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Listener;
 
-use OCA\Larpinq\AppInfo\Application;
 use OCA\Larpinq\Service\CustomFieldGuard;
 use OCA\Larpinq\Service\SkillRequirementService;
+use OCA\Larpinq\Support\AppIdentity;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\IAppConfig;
@@ -244,7 +244,7 @@ class CharacterRequirementListener implements IEventListener {
 	 * @psalm-suppress MixedMethodCall OpenRegister entity is an optional dependency.
 	 */
 	private function isCharacterSchema(object $entity): bool {
-		$configured = $this->config->getValueString(Application::APP_ID, 'character_schema', '');
+		$configured = $this->config->getValueString(AppIdentity::APP_ID, 'character_schema', '');
 		if ($configured === '') {
 			return false;
 		}
