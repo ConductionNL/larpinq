@@ -23,7 +23,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Service;
 
-use OCA\Larpinq\AppInfo\Application;
+use OCA\Larpinq\Support\AppIdentity;
 use OCP\App\IAppManager;
 use RuntimeException;
 
@@ -94,7 +94,7 @@ class ConfigFileLoaderService {
 	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-35
 	 */
 	public function loadConfigurationFile(): array {
-		$appPath = $this->appManager->getAppPath(Application::APP_ID);
+		$appPath = $this->appManager->getAppPath(AppIdentity::APP_ID);
 		$absoluteFilePath = $appPath . self::REGISTER_FILE;
 
 		if (file_exists($absoluteFilePath) === false) {

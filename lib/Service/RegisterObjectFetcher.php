@@ -23,7 +23,7 @@ namespace OCA\Larpinq\Service;
 
 use Exception;
 use InvalidArgumentException;
-use OCA\Larpinq\AppInfo\Application;
+use OCA\Larpinq\Support\AppIdentity;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\IAppConfig;
@@ -52,7 +52,7 @@ class RegisterObjectFetcher {
 	 *
 	 * @var string
 	 */
-	private string $appName = Application::APP_ID;
+	private string $appName = AppIdentity::APP_ID;
 
 	/**
 	 * Whether the resolver-absence deprecation warning has already been logged

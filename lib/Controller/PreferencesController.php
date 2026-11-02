@@ -24,7 +24,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Controller;
 
-use OCA\Larpinq\AppInfo\Application;
+use OCA\Larpinq\Support\AppIdentity;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\JSONResponse;
@@ -50,7 +50,7 @@ class PreferencesController extends Controller {
 		private readonly IConfig $config,
 		private readonly IUserSession $userSession,
 	) {
-		parent::__construct(appName: Application::APP_ID, request: $request);
+		parent::__construct(appName: AppIdentity::APP_ID, request: $request);
 
 	}//end __construct()
 
@@ -79,7 +79,7 @@ class PreferencesController extends Controller {
 
 		$value = $this->config->getUserValue(
 			userId: $user->getUID(),
-			appName: Application::APP_ID,
+			appName: AppIdentity::APP_ID,
 			key: 'pref_' . $safeKey,
 			default: ''
 		);
@@ -122,7 +122,7 @@ class PreferencesController extends Controller {
 		if ($value === '') {
 			$this->config->deleteUserValue(
 				userId: $user->getUID(),
-				appName: Application::APP_ID,
+				appName: AppIdentity::APP_ID,
 				key: 'pref_' . $safeKey
 			);
 
@@ -131,7 +131,7 @@ class PreferencesController extends Controller {
 
 		$this->config->setUserValue(
 			userId: $user->getUID(),
-			appName: Application::APP_ID,
+			appName: AppIdentity::APP_ID,
 			key: 'pref_' . $safeKey,
 			value: $value
 		);

@@ -26,7 +26,7 @@ namespace OCA\Larpinq\Listener;
 
 use DateTimeImmutable;
 use DateTimeInterface;
-use OCA\Larpinq\AppInfo\Application;
+use OCA\Larpinq\Support\AppIdentity;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\IAppConfig;
@@ -127,7 +127,7 @@ class PlayerReviewListener implements IEventListener {
 	 * @psalm-suppress MixedMethodCall OpenRegister entity classes are optional dependencies.
 	 */
 	private function isPlayer(object $entity): bool {
-		$schema = $this->config->getValueString(Application::APP_ID, 'player_schema', '');
+		$schema = $this->config->getValueString(AppIdentity::APP_ID, 'player_schema', '');
 
 		return $schema !== ''
 			&& is_callable([$entity, 'getSchema']) === true

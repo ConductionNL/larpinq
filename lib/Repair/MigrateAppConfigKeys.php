@@ -80,7 +80,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Repair;
 
-use OCA\Larpinq\AppInfo\Application;
+use OCA\Larpinq\Support\AppIdentity;
 use OCP\IAppConfig;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
@@ -201,13 +201,13 @@ class MigrateAppConfigKeys implements IRepairStep {
 					continue;
 				}
 
-				$existing = $this->appConfig->getValueString(Application::APP_ID, $key, '');
+				$existing = $this->appConfig->getValueString(AppIdentity::APP_ID, $key, '');
 				if ($existing !== '') {
 					$alreadyPresent++;
 					continue;
 				}
 
-				$this->appConfig->setValueString(Application::APP_ID, $key, $old);
+				$this->appConfig->setValueString(AppIdentity::APP_ID, $key, $old);
 				$migrated++;
 			} catch (Throwable $e) {
 				$this->logger->warning(
