@@ -39,6 +39,17 @@ namespace OCA\Larpinq\Service;
  */
 class SkillRequirementChecker {
 	/**
+	 * Membership requirement types, in check order: the skill field holding
+	 * the required ids and the context pool they must be in.
+	 *
+	 * @var array<string,array{0:string,1:string}>
+	 */
+	private const MEMBERSHIP_RULES = [
+		'requiredCondition' => ['requiredConditions', 'conditions'],
+		'requiredEffect' => ['requiredEffects', 'effects'],
+	];
+
+	/**
 	 * Constructor for SkillRequirementChecker.
 	 *
 	 * @param IdListNormaliser $idList Relation-shape normaliser.
@@ -81,19 +92,11 @@ class SkillRequirementChecker {
 				overridden: $overridden,
 				context: $context
 			),
-			$this->checkMembership(
+			$this->checkMemberships(
 				skillId: $skillId,
-				type: 'requiredCondition',
-				targets: $this->idList->normalise($skill['requiredConditions'] ?? []),
-				pool: ($context['conditions'] ?? []),
-				overridden: $overridden
-			),
-			$this->checkMembership(
-				skillId: $skillId,
-				type: 'requiredEffect',
-				targets: $this->idList->normalise($skill['requiredEffects'] ?? []),
-				pool: ($context['effects'] ?? []),
-				overridden: $overridden
+				skill: $skill,
+				overridden: $overridden,
+				context: $context
 			)
 		);
 	}//end check()
@@ -179,45 +182,41 @@ class SkillRequirementChecker {
 	/**
 	 * Membership requirements: each target must be present in a given pool.
 	 *
-	 * Shared by requiredConditions (pool = the candidate's conditions) and
-	 * requiredEffects (pool = the effects granted by assigned entities). Both
-	 * are always "resolved" — the target is a plain reference, so the only
-	 * outcome that can differ is present/absent.
+	 * Required conditions are checked against the candidate's conditions, then
+	 * requiredEffects against the effects granted by assigned entities (see
+	 * MEMBERSHIP_RULES). Both are always "resolved": the target is a plain
+	 * reference, so the only outcome that can differ is present/absent.
 	 *
 	 * @param string $skillId The skill being assigned.
-	 * @param string $type The requirement type.
-	 * @param array<int,string> $targets The required target ids.
-	 * @param array<int,string> $pool The ids in play on the candidate.
+	 * @param array<string,mixed> $skill The skill object.
 	 * @param bool $overridden Whether a GM override covers this skill.
+	 * @param array<string,mixed> $context The resolved character context.
 	 *
 	 * @return array<int,array<string,mixed>> The requirement entries.
 	 */
-	private function checkMembership(
-		string $skillId,
-		string $type,
-		array $targets,
-		array $pool,
-		bool $overridden,
-	): array {
+	private function checkMemberships(string $skillId, array $skill, bool $overridden, array $context): array {
 		$entries = [];
-		foreach ($targets as $target) {
-			$entries[] = $this->entry(
-				fields: [
-					'skill' => $skillId,
-					'type' => $type,
-					'target' => $target,
-					'targetName' => '',
-					'status' => $this->status(
-						passed: in_array($target, $pool, true),
-						resolved: true,
-						overridden: $overridden
-					),
-				]
-			);
+		foreach (self::MEMBERSHIP_RULES as $type => [$skillField, $poolField]) {
+			$pool = ($context[$poolField] ?? []);
+			foreach ($this->idList->normalise($skill[$skillField] ?? []) as $target) {
+				$entries[] = $this->entry(
+					fields: [
+						'skill' => $skillId,
+						'type' => $type,
+						'target' => $target,
+						'targetName' => '',
+						'status' => $this->status(
+							passed: in_array($target, $pool, true),
+							resolved: true,
+							overridden: $overridden
+						),
+					]
+				);
+			}
 		}
 
 		return $entries;
-	}//end checkMembership()
+	}//end checkMemberships()
 
 	/**
 	 * Build a single requirement-result entry. The stat values `current` and
