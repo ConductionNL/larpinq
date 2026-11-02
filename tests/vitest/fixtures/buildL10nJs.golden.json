@@ -1,0 +1,190 @@
+{
+	"empty id element": {
+		"status": 1,
+		"stdout": "",
+		"stderr": "appinfo/info.xml declares no <id>\n",
+		"files": {
+			"appinfo/info.xml": "<id></id>",
+			"l10n/.schema-l10n-baseline.json": "{\n  \"uncovered\": 3\n}",
+			"l10n/de.json": "{\n  \"translations\": {\n    \"Hello\": \"Hallo\"\n  },\n  \"pluralForm\": \"\"\n}",
+			"l10n/en.json": "{\n  \"translations\": {\n    \"Hello\": \"Hello\",\n    \"Say \\\"hi\\\"\": \"Say \\\"hi\\\"\",\n    \"Ünï\\ncode\": \"é\\t\"\n  }\n}",
+			"l10n/nl.json": "{\n  \"translations\": {\n    \"Hello\": \"Hallo\"\n  },\n  \"pluralForm\": \"nplurals=2; plural=(n > 1);\"\n}",
+			"l10n/README.md": "not a catalogue"
+		}
+	},
+	"--check with only one stale": {
+		"status": 1,
+		"stdout": "",
+		"stderr": "\nStale browser catalogue: l10n/fr.js\nRun `npm run l10n:build` and commit the result.\n",
+		"files": {
+			"appinfo/info.xml": "<id>larpinq</id>",
+			"l10n/fr.json": "{\n  \"translations\": {}\n}"
+		}
+	},
+	"many locales out of order": {
+		"status": 0,
+		"stdout": "  ✎ l10n/a.js written (1 keys)\n  ✎ l10n/b.js written (1 keys)\n  ✎ l10n/c.js written (1 keys)\n  ✎ l10n/d.js written (1 keys)\n  ✎ l10n/mm.js written (1 keys)\n  ✎ l10n/v.js written (1 keys)\n  ✎ l10n/w.js written (1 keys)\n  ✎ l10n/x.js written (1 keys)\n  ✎ l10n/yy.js written (1 keys)\n  ✎ l10n/zz.js written (1 keys)\n",
+		"stderr": "",
+		"files": {
+			"appinfo/info.xml": "<id>larpinq</id>",
+			"l10n/a.js": "OC.L10N.register(\n    \"larpinq\",\n    {\n        \"a\": \"a\"\n    },\n    \"nplurals=2; plural=(n != 1);\"\n)\n",
+			"l10n/a.json": "{\n  \"translations\": {\n    \"a\": \"a\"\n  }\n}",
+			"l10n/b.js": "OC.L10N.register(\n    \"larpinq\",\n    {\n        \"b\": \"b\"\n    },\n    \"nplurals=2; plural=(n != 1);\"\n)\n",
+			"l10n/b.json": "{\n  \"translations\": {\n    \"b\": \"b\"\n  }\n}",
+			"l10n/c.js": "OC.L10N.register(\n    \"larpinq\",\n    {\n        \"c\": \"c\"\n    },\n    \"nplurals=2; plural=(n != 1);\"\n)\n",
+			"l10n/c.json": "{\n  \"translations\": {\n    \"c\": \"c\"\n  }\n}",
+			"l10n/d.js": "OC.L10N.register(\n    \"larpinq\",\n    {\n        \"d\": \"d\"\n    },\n    \"nplurals=2; plural=(n != 1);\"\n)\n",
+			"l10n/d.json": "{\n  \"translations\": {\n    \"d\": \"d\"\n  }\n}",
+			"l10n/mm.js": "OC.L10N.register(\n    \"larpinq\",\n    {\n        \"mm\": \"mm\"\n    },\n    \"nplurals=2; plural=(n != 1);\"\n)\n",
+			"l10n/mm.json": "{\n  \"translations\": {\n    \"mm\": \"mm\"\n  }\n}",
+			"l10n/v.js": "OC.L10N.register(\n    \"larpinq\",\n    {\n        \"v\": \"v\"\n    },\n    \"nplurals=2; plural=(n != 1);\"\n)\n",
+			"l10n/v.json": "{\n  \"translations\": {\n    \"v\": \"v\"\n  }\n}",
+			"l10n/w.js": "OC.L10N.register(\n    \"larpinq\",\n    {\n        \"w\": \"w\"\n    },\n    \"nplurals=2; plural=(n != 1);\"\n)\n",
+			"l10n/w.json": "{\n  \"translations\": {\n    \"w\": \"w\"\n  }\n}",
+			"l10n/x.js": "OC.L10N.register(\n    \"larpinq\",\n    {\n        \"x\": \"x\"\n    },\n    \"nplurals=2; plural=(n != 1);\"\n)\n",
+			"l10n/x.json": "{\n  \"translations\": {\n    \"x\": \"x\"\n  }\n}",
+			"l10n/yy.js": "OC.L10N.register(\n    \"larpinq\",\n    {\n        \"yy\": \"yy\"\n    },\n    \"nplurals=2; plural=(n != 1);\"\n)\n",
+			"l10n/yy.json": "{\n  \"translations\": {\n    \"yy\": \"yy\"\n  }\n}",
+			"l10n/zz.js": "OC.L10N.register(\n    \"larpinq\",\n    {\n        \"zz\": \"zz\"\n    },\n    \"nplurals=2; plural=(n != 1);\"\n)\n",
+			"l10n/zz.json": "{\n  \"translations\": {\n    \"zz\": \"zz\"\n  }\n}"
+		}
+	},
+	"writes every catalogue": {
+		"status": 0,
+		"stdout": "  ✎ l10n/de.js written (1 keys)\n  ✎ l10n/en.js written (3 keys)\n  ✎ l10n/nl.js written (1 keys)\n",
+		"stderr": "",
+		"files": {
+			"appinfo/info.xml": "<info>\n\t<id> larpinq </id>\n</info>\n",
+			"l10n/.schema-l10n-baseline.json": "{\n  \"uncovered\": 3\n}",
+			"l10n/de.js": "OC.L10N.register(\n    \"larpinq\",\n    {\n        \"Hello\": \"Hallo\"\n    },\n    \"nplurals=2; plural=(n != 1);\"\n)\n",
+			"l10n/de.json": "{\n  \"translations\": {\n    \"Hello\": \"Hallo\"\n  },\n  \"pluralForm\": \"\"\n}",
+			"l10n/en.js": "OC.L10N.register(\n    \"larpinq\",\n    {\n        \"Hello\": \"Hello\",\n        \"Say \\\"hi\\\"\": \"Say \\\"hi\\\"\",\n        \"Ünï\\ncode\": \"é\\t\"\n    },\n    \"nplurals=2; plural=(n != 1);\"\n)\n",
+			"l10n/en.json": "{\n  \"translations\": {\n    \"Hello\": \"Hello\",\n    \"Say \\\"hi\\\"\": \"Say \\\"hi\\\"\",\n    \"Ünï\\ncode\": \"é\\t\"\n  }\n}",
+			"l10n/nl.js": "OC.L10N.register(\n    \"larpinq\",\n    {\n        \"Hello\": \"Hallo\"\n    },\n    \"nplurals=2; plural=(n > 1);\"\n)\n",
+			"l10n/nl.json": "{\n  \"translations\": {\n    \"Hello\": \"Hallo\"\n  },\n  \"pluralForm\": \"nplurals=2; plural=(n > 1);\"\n}",
+			"l10n/README.md": "not a catalogue"
+		}
+	},
+	"--check when nothing is built": {
+		"status": 1,
+		"stdout": "",
+		"stderr": "\nStale browser catalogue: l10n/de.js, l10n/en.js, l10n/nl.js\nRun `npm run l10n:build` and commit the result.\n",
+		"files": {
+			"appinfo/info.xml": "<info>\n\t<id> larpinq </id>\n</info>\n",
+			"l10n/.schema-l10n-baseline.json": "{\n  \"uncovered\": 3\n}",
+			"l10n/de.json": "{\n  \"translations\": {\n    \"Hello\": \"Hallo\"\n  },\n  \"pluralForm\": \"\"\n}",
+			"l10n/en.json": "{\n  \"translations\": {\n    \"Hello\": \"Hello\",\n    \"Say \\\"hi\\\"\": \"Say \\\"hi\\\"\",\n    \"Ünï\\ncode\": \"é\\t\"\n  }\n}",
+			"l10n/nl.json": "{\n  \"translations\": {\n    \"Hello\": \"Hallo\"\n  },\n  \"pluralForm\": \"nplurals=2; plural=(n > 1);\"\n}",
+			"l10n/README.md": "not a catalogue"
+		}
+	},
+	"--check with one stale": {
+		"status": 1,
+		"stdout": "  ✓ l10n/nl.js up to date (1 keys)\n",
+		"stderr": "\nStale browser catalogue: l10n/de.js, l10n/en.js\nRun `npm run l10n:build` and commit the result.\n",
+		"files": {
+			"appinfo/info.xml": "<info>\n\t<id> larpinq </id>\n</info>\n",
+			"l10n/.schema-l10n-baseline.json": "{\n  \"uncovered\": 3\n}",
+			"l10n/de.json": "{\n  \"translations\": {\n    \"Hello\": \"Hallo\"\n  },\n  \"pluralForm\": \"\"\n}",
+			"l10n/en.js": "old\n",
+			"l10n/en.json": "{\n  \"translations\": {\n    \"Hello\": \"Hello\",\n    \"Say \\\"hi\\\"\": \"Say \\\"hi\\\"\",\n    \"Ünï\\ncode\": \"é\\t\"\n  }\n}",
+			"l10n/nl.js": "OC.L10N.register(\n    \"larpinq\",\n    {\n        \"Hello\": \"Hallo\"\n    },\n    \"nplurals=2; plural=(n > 1);\"\n)\n",
+			"l10n/nl.json": "{\n  \"translations\": {\n    \"Hello\": \"Hallo\"\n  },\n  \"pluralForm\": \"nplurals=2; plural=(n > 1);\"\n}",
+			"l10n/README.md": "not a catalogue"
+		}
+	},
+	"rewrites only the stale one": {
+		"status": 0,
+		"stdout": "  ✎ l10n/de.js written (1 keys)\n  ✎ l10n/en.js written (3 keys)\n  ✓ l10n/nl.js up to date (1 keys)\n",
+		"stderr": "",
+		"files": {
+			"appinfo/info.xml": "<info>\n\t<id> larpinq </id>\n</info>\n",
+			"l10n/.schema-l10n-baseline.json": "{\n  \"uncovered\": 3\n}",
+			"l10n/de.js": "OC.L10N.register(\n    \"larpinq\",\n    {\n        \"Hello\": \"Hallo\"\n    },\n    \"nplurals=2; plural=(n != 1);\"\n)\n",
+			"l10n/de.json": "{\n  \"translations\": {\n    \"Hello\": \"Hallo\"\n  },\n  \"pluralForm\": \"\"\n}",
+			"l10n/en.js": "OC.L10N.register(\n    \"larpinq\",\n    {\n        \"Hello\": \"Hello\",\n        \"Say \\\"hi\\\"\": \"Say \\\"hi\\\"\",\n        \"Ünï\\ncode\": \"é\\t\"\n    },\n    \"nplurals=2; plural=(n != 1);\"\n)\n",
+			"l10n/en.json": "{\n  \"translations\": {\n    \"Hello\": \"Hello\",\n    \"Say \\\"hi\\\"\": \"Say \\\"hi\\\"\",\n    \"Ünï\\ncode\": \"é\\t\"\n  }\n}",
+			"l10n/nl.js": "OC.L10N.register(\n    \"larpinq\",\n    {\n        \"Hello\": \"Hallo\"\n    },\n    \"nplurals=2; plural=(n > 1);\"\n)\n",
+			"l10n/nl.json": "{\n  \"translations\": {\n    \"Hello\": \"Hallo\"\n  },\n  \"pluralForm\": \"nplurals=2; plural=(n > 1);\"\n}",
+			"l10n/README.md": "not a catalogue"
+		}
+	},
+	"empty translations": {
+		"status": 0,
+		"stdout": "  ✎ l10n/fr.js written (0 keys)\n",
+		"stderr": "",
+		"files": {
+			"appinfo/info.xml": "<id>larpinq</id>",
+			"l10n/fr.js": "OC.L10N.register(\n    \"larpinq\",\n    {\n\n    },\n    \"nplurals=2; plural=(n != 1);\"\n)\n",
+			"l10n/fr.json": "{\n  \"translations\": {}\n}"
+		}
+	},
+	"no catalogue": {
+		"status": 1,
+		"stdout": "",
+		"stderr": "l10n/ holds no <locale>.json catalogue to generate from\n",
+		"files": {
+			"appinfo/info.xml": "<id>larpinq</id>",
+			"l10n/.schema-l10n-baseline.json": "{}"
+		}
+	},
+	"catalogue does not parse": {
+		"status": 1,
+		"stdout": "  ✎ l10n/de.js written (1 keys)\n  ✎ l10n/en.js written (3 keys)\n",
+		"stderr": "l10n/nl.json does not parse: <message>\n",
+		"files": {
+			"appinfo/info.xml": "<info>\n\t<id> larpinq </id>\n</info>\n",
+			"l10n/.schema-l10n-baseline.json": "{\n  \"uncovered\": 3\n}",
+			"l10n/de.js": "OC.L10N.register(\n    \"larpinq\",\n    {\n        \"Hello\": \"Hallo\"\n    },\n    \"nplurals=2; plural=(n != 1);\"\n)\n",
+			"l10n/de.json": "{\n  \"translations\": {\n    \"Hello\": \"Hallo\"\n  },\n  \"pluralForm\": \"\"\n}",
+			"l10n/en.js": "OC.L10N.register(\n    \"larpinq\",\n    {\n        \"Hello\": \"Hello\",\n        \"Say \\\"hi\\\"\": \"Say \\\"hi\\\"\",\n        \"Ünï\\ncode\": \"é\\t\"\n    },\n    \"nplurals=2; plural=(n != 1);\"\n)\n",
+			"l10n/en.json": "{\n  \"translations\": {\n    \"Hello\": \"Hello\",\n    \"Say \\\"hi\\\"\": \"Say \\\"hi\\\"\",\n    \"Ünï\\ncode\": \"é\\t\"\n  }\n}",
+			"l10n/nl.json": "{ nope",
+			"l10n/README.md": "not a catalogue"
+		}
+	},
+	"catalogue without translations": {
+		"status": 1,
+		"stdout": "  ✎ l10n/de.js written (1 keys)\n  ✎ l10n/en.js written (3 keys)\n",
+		"stderr": "l10n/nl.json is missing \"translations\"\n",
+		"files": {
+			"appinfo/info.xml": "<info>\n\t<id> larpinq </id>\n</info>\n",
+			"l10n/.schema-l10n-baseline.json": "{\n  \"uncovered\": 3\n}",
+			"l10n/de.js": "OC.L10N.register(\n    \"larpinq\",\n    {\n        \"Hello\": \"Hallo\"\n    },\n    \"nplurals=2; plural=(n != 1);\"\n)\n",
+			"l10n/de.json": "{\n  \"translations\": {\n    \"Hello\": \"Hallo\"\n  },\n  \"pluralForm\": \"\"\n}",
+			"l10n/en.js": "OC.L10N.register(\n    \"larpinq\",\n    {\n        \"Hello\": \"Hello\",\n        \"Say \\\"hi\\\"\": \"Say \\\"hi\\\"\",\n        \"Ünï\\ncode\": \"é\\t\"\n    },\n    \"nplurals=2; plural=(n != 1);\"\n)\n",
+			"l10n/en.json": "{\n  \"translations\": {\n    \"Hello\": \"Hello\",\n    \"Say \\\"hi\\\"\": \"Say \\\"hi\\\"\",\n    \"Ünï\\ncode\": \"é\\t\"\n  }\n}",
+			"l10n/nl.json": "{\n  \"pluralForm\": \"x\"\n}",
+			"l10n/README.md": "not a catalogue"
+		}
+	},
+	"info.xml without an id": {
+		"status": 1,
+		"stdout": "",
+		"stderr": "appinfo/info.xml declares no <id>\n",
+		"files": {
+			"appinfo/info.xml": "<info></info>",
+			"l10n/.schema-l10n-baseline.json": "{\n  \"uncovered\": 3\n}",
+			"l10n/de.json": "{\n  \"translations\": {\n    \"Hello\": \"Hallo\"\n  },\n  \"pluralForm\": \"\"\n}",
+			"l10n/en.json": "{\n  \"translations\": {\n    \"Hello\": \"Hello\",\n    \"Say \\\"hi\\\"\": \"Say \\\"hi\\\"\",\n    \"Ünï\\ncode\": \"é\\t\"\n  }\n}",
+			"l10n/nl.json": "{\n  \"translations\": {\n    \"Hello\": \"Hallo\"\n  },\n  \"pluralForm\": \"nplurals=2; plural=(n > 1);\"\n}",
+			"l10n/README.md": "not a catalogue"
+		}
+	},
+	"two ids, the first wins": {
+		"status": 0,
+		"stdout": "  ✎ l10n/de.js written (1 keys)\n  ✎ l10n/en.js written (3 keys)\n  ✎ l10n/nl.js written (1 keys)\n",
+		"stderr": "",
+		"files": {
+			"appinfo/info.xml": "<id>first</id><id>second</id>",
+			"l10n/.schema-l10n-baseline.json": "{\n  \"uncovered\": 3\n}",
+			"l10n/de.js": "OC.L10N.register(\n    \"first\",\n    {\n        \"Hello\": \"Hallo\"\n    },\n    \"nplurals=2; plural=(n != 1);\"\n)\n",
+			"l10n/de.json": "{\n  \"translations\": {\n    \"Hello\": \"Hallo\"\n  },\n  \"pluralForm\": \"\"\n}",
+			"l10n/en.js": "OC.L10N.register(\n    \"first\",\n    {\n        \"Hello\": \"Hello\",\n        \"Say \\\"hi\\\"\": \"Say \\\"hi\\\"\",\n        \"Ünï\\ncode\": \"é\\t\"\n    },\n    \"nplurals=2; plural=(n != 1);\"\n)\n",
+			"l10n/en.json": "{\n  \"translations\": {\n    \"Hello\": \"Hello\",\n    \"Say \\\"hi\\\"\": \"Say \\\"hi\\\"\",\n    \"Ünï\\ncode\": \"é\\t\"\n  }\n}",
+			"l10n/nl.js": "OC.L10N.register(\n    \"first\",\n    {\n        \"Hello\": \"Hallo\"\n    },\n    \"nplurals=2; plural=(n > 1);\"\n)\n",
+			"l10n/nl.json": "{\n  \"translations\": {\n    \"Hello\": \"Hallo\"\n  },\n  \"pluralForm\": \"nplurals=2; plural=(n > 1);\"\n}",
+			"l10n/README.md": "not a catalogue"
+		}
+	}
+}
