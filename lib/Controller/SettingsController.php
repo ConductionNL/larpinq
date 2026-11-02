@@ -27,7 +27,6 @@ declare(strict_types=1);
 namespace OCA\Larpinq\Controller;
 
 use OCA\Larpinq\AppInfo\Application;
-use OCA\Larpinq\Service\CallerAccess;
 use OCA\Larpinq\Service\SettingsService;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Controller;

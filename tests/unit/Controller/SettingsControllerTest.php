@@ -19,7 +19,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Tests\Unit\Controller;
 
-use OCA\Larpinq\Service\CallerAccess;
+use OCA\Larpinq\Controller\CallerAccess;
 use OCA\Larpinq\Controller\SettingsController;
 use OCA\Larpinq\Service\SettingsService;
 use OCP\App\IAppManager;

@@ -45,7 +45,7 @@ use PHPUnit\Framework\TestCase;
  * @covers \OCA\Larpinq\Controller\CharacterBuildsController
  * @covers \OCA\Larpinq\Controller\CharactersController
  * @covers \OCA\Larpinq\Controller\SettingsController
- * @uses   \OCA\Larpinq\Service\CallerAccess
+ * @uses   \OCA\Larpinq\Controller\CallerAccess
  * @uses   \OCA\Larpinq\Service\DocuDeskPdfRenderer
  */
 class CallerAccessGoldenTest extends TestCase {
@@ -219,7 +219,7 @@ class CallerAccessGoldenTest extends TestCase {
 				$parameter->getName() === 'appName' => 'larpinq',
 				$typeName === IUserSession::class => $session,
 				$typeName === IGroupManager::class => $groups,
-				$typeName === 'OCA\Larpinq\Service\CallerAccess' => new $typeName($session, $groups),
+				$typeName === 'OCA\Larpinq\Controller\CallerAccess' => new $typeName($session, $groups),
 				$typeName === IRequest::class => $this->recording(type: IRequest::class),
 				default => $this->recording(type: $typeName),
 			};

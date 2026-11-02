@@ -8,8 +8,8 @@
  * Controllers take their caller checks from here instead of each reading the
  * user session and the group manager.
  *
- * @category  Service
- * @package   OCA\Larpinq\Service
+ * @category  Controller
+ * @package   OCA\Larpinq\Controller
  * @author    Ruben Linde <ruben@larpingapp.com>
  * @copyright 2026 Conduction B.V.
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
@@ -20,7 +20,7 @@
 
 declare(strict_types=1);
 
-namespace OCA\Larpinq\Service;
+namespace OCA\Larpinq\Controller;
 
 use OCA\Larpinq\AppInfo\Application;
 use OCP\IGroupManager;
@@ -30,8 +30,8 @@ use OCP\IUserSession;
 /**
  * The signed-in caller and its admin and game master checks.
  *
- * @category Service
- * @package  OCA\Larpinq\Service
+ * @category Controller
+ * @package  OCA\Larpinq\Controller
  * @author   Ruben Linde <ruben@larpingapp.com>
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com

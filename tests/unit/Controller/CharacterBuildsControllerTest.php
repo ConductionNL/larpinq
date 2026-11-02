@@ -22,7 +22,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Tests\Unit\Controller;
 
-use OCA\Larpinq\Service\CallerAccess;
+use OCA\Larpinq\Controller\CallerAccess;
 use OCA\Larpinq\Controller\CharacterBuildsController;
 use OCA\Larpinq\Service\CharacterService;
 use OCA\Larpinq\Service\CharacterStatsPresenter;

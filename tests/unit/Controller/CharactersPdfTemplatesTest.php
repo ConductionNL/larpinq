@@ -22,7 +22,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Tests\Unit\Controller;
 
-use OCA\Larpinq\Service\CallerAccess;
+use OCA\Larpinq\Controller\CallerAccess;
 use OCA\Larpinq\Controller\CharactersController;
 use OCA\Larpinq\Service\DocuDeskPdfRenderer;
 use OCA\Larpinq\Service\RegisterObjectFetcher;

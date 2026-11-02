@@ -22,7 +22,6 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Controller;
 
-use OCA\Larpinq\Service\CallerAccess;
 use OCA\Larpinq\Service\CharacterService;
 use OCA\Larpinq\Service\CharacterStatsPresenter;
 use OCA\Larpinq\Service\RegisterObjectFetcher;
