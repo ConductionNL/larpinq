@@ -191,20 +191,20 @@ class UniqueHolderGoldenTest extends TestCase {
 				return array_slice($rows, $offset ?? 0, $limit);
 			}
 		);
-		$fetcher->method('getObject')->willReturnCallback(
-			function (string $objectType, string $id) use ($mode, $objects): array {
-				$this->reads[] = ['getObject' => $objectType, 'id' => $id];
-				if ($mode === 'throws') {
-					throw new \RuntimeException('register down');
-				}
-
-				if (isset($objects[$id]) === false) {
-					throw new DoesNotExistException('Object ' . $id . ' not found');
-				}
-
-				return $objects[$id];
+		$read = function (string $method, string $objectType, string $id) use ($mode, $objects): array {
+			$this->reads[] = [$method => $objectType, 'id' => $id];
+			if ($mode === 'throws') {
+				throw new \RuntimeException('register down');
 			}
-		);
+
+			if (isset($objects[$id]) === false) {
+				throw new DoesNotExistException('Object ' . $id . ' not found');
+			}
+
+			return $objects[$id];
+		};
+		$fetcher->method('getObject')->willReturnCallback(fn (string $objectType, string $id): array => $read('getObject', $objectType, $id));
+		$fetcher->method('getObjectOfType')->willReturnCallback(fn (string $objectType, string $id): array => $read('getObjectOfType', $objectType, $id));
 
 		return $fetcher;
 	}//end fetcher()

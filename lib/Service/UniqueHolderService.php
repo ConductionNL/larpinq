@@ -323,14 +323,16 @@ class UniqueHolderService {
 	/**
 	 * Read one item or condition as the caller.
 	 *
-	 * An object that does not exist and one the caller may not read give the
-	 * same answer, so the result never shows whether an unreadable id exists.
+	 * An object that does not exist, one of another type and one the caller
+	 * may not read give the same answer, so the result never shows whether an
+	 * unreadable id exists.
 	 *
 	 * @param string $kind 'item' or 'condition'.
 	 * @param string $id The object id.
 	 *
-	 * @return array<string,mixed>|null The object data, or null when it does not exist,
-	 *                                  its id is malformed or OpenRegister refuses the caller.
+	 * @return array<string,mixed>|null The object data, or null when it does not exist, is
+	 *                                  of another type, its id is malformed or OpenRegister
+	 *                                  refuses the caller.
 	 *
 	 * @throws \Throwable When the lookup itself fails.
 	 *
@@ -338,7 +340,7 @@ class UniqueHolderService {
 	 */
 	public function readObject(string $kind, string $id): ?array {
 		try {
-			return $this->objectFetcher->getObject(objectType: $kind, id: $id);
+			return $this->objectFetcher->getObjectOfType(objectType: $kind, id: $id);
 		} catch (DoesNotExistException|InvalidArgumentException|NotAuthorizedException $e) {
 			return null;
 		}

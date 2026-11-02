@@ -498,7 +498,9 @@ is not a failed lookup: REQ-UHE-007 covers it.
 ### Requirement: An unknown item or condition is refused plainly (REQ-UHE-007)
 
 When a character write adds an item or condition that does not exist, that
-the caller cannot read, or whose id is not a valid object id, larpinq SHALL
+the caller cannot read, whose id is not a valid object id, or whose id belongs
+to an object of another type (a condition's id in `items`, an item's id in
+`conditions`, or any other object), larpinq SHALL
 refuse the write on `items` or `conditions` with the code
 `unique_item_unknown` or `unique_condition_unknown`. The message MUST name the
 id, say the change was not saved and MUST NOT invite a retry. An object the
@@ -517,6 +519,12 @@ the refusal never shows whether an unreadable object exists.
 - GIVEN "Crown of Aldmoor" exists but the game master may not read it
 - WHEN the game master adds it to "Sir Bertram"
 - THEN the refusal is the same, field for field, as for an item that does not exist
+
+#### Scenario: A condition's id in the items is not an item
+
+- GIVEN condition "Curse of the Ashen King" exists
+- WHEN a game master adds its id to the items of "Sir Bertram"
+- THEN the save is refused on `items` with code `unique_item_unknown`, as for an item that does not exist
 
 #### Scenario: An import row names an item that comes later in the import
 
