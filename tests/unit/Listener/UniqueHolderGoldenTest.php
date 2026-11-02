@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace OCA\Larpinq\Tests\Unit\Listener;
 
 use OCA\Larpinq\Listener\UniqueHolderListener;
+use OCA\Larpinq\Listener\UniqueHolderVeto;
 use OCA\Larpinq\Service\IdListNormaliser;
 use OCA\Larpinq\Service\RegisterObjectFetcher;
 use OCA\Larpinq\Service\UniqueHolderService;
@@ -54,11 +55,14 @@ class GoldenHeldEntity extends ObjectEntity {
 }
 
 /**
- * Pins the vetoes and reads of UniqueHolderListener and UniqueHolderService.
+ * Pins the vetoes and reads of UniqueHolderListener, UniqueHolderVeto and UniqueHolderService.
  *
  * @covers \OCA\Larpinq\Listener\UniqueHolderListener
+ * @covers \OCA\Larpinq\Listener\UniqueHolderVeto
  * @covers \OCA\Larpinq\Service\UniqueHolderService
  * @uses   \OCA\Larpinq\Service\IdListNormaliser
+ * @uses   \OCA\Larpinq\Service\HolderQuery
+ * @uses   \OCA\Larpinq\Listener\ObjectWrite
  */
 class UniqueHolderGoldenTest extends TestCase {
 
@@ -227,11 +231,12 @@ class UniqueHolderGoldenTest extends TestCase {
 		);
 		$normaliser = new IdListNormaliser();
 
+		$holders = new UniqueHolderService($this->fetcher(mode: $mode), $normaliser);
+
 		return new UniqueHolderListener(
-			new UniqueHolderService($this->fetcher(mode: $mode), $normaliser),
-			$normaliser,
+			new UniqueHolderVeto($holders, $normaliser, $l10n),
+			$holders,
 			$config,
-			$l10n,
 			$logger
 		);
 	}//end listener()

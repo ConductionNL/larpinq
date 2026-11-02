@@ -97,52 +97,60 @@ class UniqueHolderService {
 	}//end isUnique()
 
 	/**
-	 * The characters, other than $exceptCharacter, that hold an item or condition.
+	 * The characters, other than the query's excepted one, that hold an item or condition.
 	 *
 	 * Holders are counted on both sides: every character whose `items[]` (or
 	 * `conditions[]`) contains the id, plus every id in the object's own
 	 * `characters[]`. The character-side lookup asks OpenRegister for at most
-	 * $max rows filtered on the id; when the answer shows the filter was not
+	 * max rows filtered on the id; when the answer shows the filter was not
 	 * applied (a row without the id), it pages through characters in batches of
-	 * BATCH and stops as soon as $max other holders are found.
+	 * BATCH and stops as soon as max other holders are found.
 	 *
-	 * @param string $kind 'item' or 'condition'.
-	 * @param string $id The item or condition id.
+	 * @param HolderQuery $query The kind, id, excepted character and limit.
 	 * @param array<int,string> $objectSide Ids in the object's own `characters[]`.
-	 * @param string|null $exceptCharacter The character being written, never counted.
-	 * @param int $max Stop after this many other holders.
 	 *
-	 * @return array<int,array{id:string,name:string}> At most $max holders.
+	 * @return array<int,array{id:string,name:string}> At most max holders.
 	 *
 	 * @spec openspec/specs/rpg-system/spec.md
 	 */
-	public function otherHolders(
-		string $kind,
-		string $id,
-		array $objectSide = [],
-		?string $exceptCharacter = null,
-		int $max = 2
-	): array {
+	public function otherHolders(HolderQuery $query, array $objectSide = []): array {
 		$holders = [];
-		foreach ($this->characterSideHolders(kind: $kind, id: $id, exceptCharacter: $exceptCharacter, max: $max) as $holder) {
+		foreach ($this->characterSideHolders(query: $query) as $holder) {
 			$holders[$holder['id']] = $holder;
 		}
 
-		foreach ($objectSide as $characterId) {
-			if (count($holders) >= $max) {
+		foreach ($this->objectSideIds(objectSide: $objectSide, query: $query) as $characterId) {
+			if (count($holders) >= $query->max) {
 				break;
 			}
 
-			$characterId = (string)$characterId;
-			if ($characterId === '' || $characterId === $exceptCharacter || isset($holders[$characterId]) === true) {
-				continue;
+			if (isset($holders[$characterId]) === false) {
+				$holders[$characterId] = ['id' => $characterId, 'name' => $this->characterName(id: $characterId)];
 			}
-
-			$holders[$characterId] = ['id' => $characterId, 'name' => $this->characterName(id: $characterId)];
 		}
 
-		return array_slice(array_values($holders), 0, $max);
+		return array_slice(array_values($holders), 0, $query->max);
 	}//end otherHolders()
+
+	/**
+	 * The ids of the object's own `characters[]` that can count as holders.
+	 *
+	 * @param array<int,mixed> $objectSide Ids in the object's own `characters[]`.
+	 * @param HolderQuery $query The lookup; its excepted character is left out.
+	 *
+	 * @return array<int,string> The ids, in order, without '' and the excepted character.
+	 */
+	private function objectSideIds(array $objectSide, HolderQuery $query): array {
+		$ids = [];
+		foreach ($objectSide as $characterId) {
+			$characterId = (string)$characterId;
+			if ($characterId !== '' && $characterId !== $query->exceptCharacter) {
+				$ids[] = $characterId;
+			}
+		}
+
+		return $ids;
+	}//end objectSideIds()
 
 	/**
 	 * The object's id, from `id` or `@self.id`.
@@ -173,74 +181,63 @@ class UniqueHolderService {
 	/**
 	 * Holders found on the character side of the relation.
 	 *
-	 * @param string $kind 'item' or 'condition'.
-	 * @param string $id The item or condition id.
-	 * @param string|null $exceptCharacter The character being written.
-	 * @param int $max Stop after this many holders.
+	 * @param HolderQuery $query The lookup.
 	 *
 	 * @return array<int,array{id:string,name:string}> The holders.
 	 */
-	private function characterSideHolders(string $kind, string $id, ?string $exceptCharacter, int $max): array {
-		$field = self::CHARACTER_FIELD[$kind];
-
+	private function characterSideHolders(HolderQuery $query): array {
 		// One extra row, so the character being written cannot use up the limit.
 		$rows = $this->objectFetcher->getObjects(
 			objectType: 'character',
-			limit: $max + 1,
-			filters: [$field => $id]
+			limit: $query->max + 1,
+			filters: [$query->field() => $query->id]
 		);
 
-		$filterApplied = true;
-		foreach ($rows as $row) {
-			if (is_array($row) === false || $this->holds(character: $row, field: $field, id: $id) === false) {
-				$filterApplied = false;
-				break;
-			}
-		}
-
-		if ($filterApplied === true) {
-			return $this->collect(rows: $rows, field: $field, id: $id, exceptCharacter: $exceptCharacter, max: $max);
+		if ($this->allHold(rows: $rows, query: $query) === true) {
+			return $this->collect(rows: $rows, query: $query);
 		}
 
 		// The filter did not match inside the array: bounded scan, stop early.
-		$holders = [];
-		foreach ($this->pages(objectType: 'character') as $row) {
-			foreach ($this->collect(rows: [$row], field: $field, id: $id, exceptCharacter: $exceptCharacter, max: $max) as $holder) {
-				$holders[] = $holder;
-				if (count($holders) >= $max) {
-					return $holders;
-				}
-			}
-		}
-
-		return $holders;
+		return $this->collect(rows: $this->pages(objectType: 'character'), query: $query);
 	}//end characterSideHolders()
 
 	/**
-	 * The holders among a set of character rows.
+	 * Whether every row is a character that holds the id, which shows the
+	 * register applied the filter.
 	 *
 	 * @param array<int,mixed> $rows Character rows.
-	 * @param string $field The relation field.
-	 * @param string $id The item or condition id.
-	 * @param string|null $exceptCharacter The character being written.
-	 * @param int $max Stop after this many holders.
+	 * @param HolderQuery $query The lookup.
 	 *
-	 * @return array<int,array{id:string,name:string}> The holders.
+	 * @return bool True when every row holds it.
 	 */
-	private function collect(array $rows, string $field, string $id, ?string $exceptCharacter, int $max): array {
+	private function allHold(array $rows, HolderQuery $query): bool {
+		foreach ($rows as $row) {
+			if (is_array($row) === false || $this->holds(character: $row, query: $query) === false) {
+				return false;
+			}
+		}
+
+		return true;
+	}//end allHold()
+
+	/**
+	 * The holders among character rows, read only until max are found.
+	 *
+	 * @param iterable<mixed> $rows Character rows, or a generator over pages of them.
+	 * @param HolderQuery $query The lookup.
+	 *
+	 * @return array<int,array{id:string,name:string}> At most max holders.
+	 */
+	private function collect(iterable $rows, HolderQuery $query): array {
 		$holders = [];
 		foreach ($rows as $row) {
-			if (is_array($row) === false || $this->holds(character: $row, field: $field, id: $id) === false) {
+			$holder = $this->holderOf(row: $row, query: $query);
+			if ($holder === null) {
 				continue;
 			}
 
-			$characterId = $this->objectId(object: $row);
-			if ($characterId === '' || $characterId === $exceptCharacter) {
-				continue;
-			}
-
-			$holders[] = ['id' => $characterId, 'name' => $this->nameOf(object: $row, fallback: $characterId)];
-			if (count($holders) >= $max) {
+			$holders[] = $holder;
+			if (count($holders) >= $query->max) {
 				break;
 			}
 		}
@@ -249,16 +246,50 @@ class UniqueHolderService {
 	}//end collect()
 
 	/**
-	 * Whether a character's relation field contains the id.
+	 * The holder a character row stands for, or null when it does not hold the
+	 * id, has no id or is the excepted character.
+	 *
+	 * @param mixed $row A character row.
+	 * @param HolderQuery $query The lookup.
+	 *
+	 * @return array{id:string,name:string}|null The holder.
+	 */
+	private function holderOf(mixed $row, HolderQuery $query): ?array {
+		if (is_array($row) === false || $this->holds(character: $row, query: $query) === false) {
+			return null;
+		}
+
+		return $this->namedHolder(row: $row, query: $query);
+	}//end holderOf()
+
+	/**
+	 * A holding character's id and name, or null when it has no id or is the
+	 * excepted character.
+	 *
+	 * @param array<string,mixed> $row A character row that holds the id.
+	 * @param HolderQuery $query The lookup.
+	 *
+	 * @return array{id:string,name:string}|null The holder.
+	 */
+	private function namedHolder(array $row, HolderQuery $query): ?array {
+		$characterId = $this->objectId(object: $row);
+		if ($characterId === '' || $characterId === $query->exceptCharacter) {
+			return null;
+		}
+
+		return ['id' => $characterId, 'name' => $this->nameOf(object: $row, fallback: $characterId)];
+	}//end namedHolder()
+
+	/**
+	 * Whether a character's relation field contains the query's id.
 	 *
 	 * @param array<string,mixed> $character The character data.
-	 * @param string $field The relation field.
-	 * @param string $id The item or condition id.
+	 * @param HolderQuery $query The lookup.
 	 *
 	 * @return bool True when the character holds it.
 	 */
-	private function holds(array $character, string $field, string $id): bool {
-		return in_array($id, $this->idNormaliser->normalise(value: $character[$field] ?? []), true);
+	private function holds(array $character, HolderQuery $query): bool {
+		return in_array($query->id, $this->idNormaliser->normalise(value: $character[$query->field()] ?? []), true);
 	}//end holds()
 
 	/**
