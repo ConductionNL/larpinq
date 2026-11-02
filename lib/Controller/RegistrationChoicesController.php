@@ -27,9 +27,7 @@ use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\Attribute\NoAdminRequired;
 use OCP\AppFramework\Http\JSONResponse;
-use OCP\IGroupManager;
 use OCP\IRequest;
-use OCP\IUserSession;
 use Throwable;
 
 /**
@@ -50,22 +48,18 @@ class RegistrationChoicesController extends Controller {
 	/**
 	 * Constructor.
 	 *
-	 * @param string $appName The app name.
 	 * @param IRequest $request The request.
 	 * @param TicketChoiceService $choices The offer and the counts.
 	 * @param RegisterObjectFetcher $fetcher Reads the registration as the signed-in user.
-	 * @param IUserSession $userSession The user session.
-	 * @param IGroupManager $groupManager The group manager.
+	 * @param CallerAccess $callerAccess The signed-in caller and the game master check.
 	 */
 	public function __construct(
-		string $appName,
 		IRequest $request,
 		private readonly TicketChoiceService $choices,
 		private readonly RegisterObjectFetcher $fetcher,
-		private readonly IUserSession $userSession,
-		private readonly IGroupManager $groupManager,
+		private readonly CallerAccess $callerAccess,
 	) {
-		parent::__construct(appName: $appName, request: $request);
+		parent::__construct(appName: Application::APP_ID, request: $request);
 	}//end __construct()
 
 	/**
@@ -82,7 +76,7 @@ class RegistrationChoicesController extends Controller {
 	 */
 	#[NoAdminRequired]
 	public function offer(string $id, string $code = ''): JSONResponse {
-		$user = $this->userSession->getUser();
+		$user = $this->callerAccess->user();
 		if ($user === null) {
 			return new JSONResponse(data: ['error' => 'Not authenticated'], statusCode: Http::STATUS_UNAUTHORIZED);
 		}
@@ -95,7 +89,7 @@ class RegistrationChoicesController extends Controller {
 
 		$uid = $user->getUID();
 		$own = in_array($uid, [(string)($registration['playerUid'] ?? ''), (string)($registration['submitterUid'] ?? '')], true);
-		if ($own === false && $this->isGameMaster(uid: $uid) === false) {
+		if ($own === false && $this->callerAccess->isGameMasterOrAdmin(uid: $uid) === false) {
 			return new JSONResponse(data: ['error' => 'Only game masters and the player see this offer'], statusCode: Http::STATUS_FORBIDDEN);
 		}
 
@@ -115,27 +109,15 @@ class RegistrationChoicesController extends Controller {
 	 */
 	#[NoAdminRequired]
 	public function counts(string $id): JSONResponse {
-		$user = $this->userSession->getUser();
+		$user = $this->callerAccess->user();
 		if ($user === null) {
 			return new JSONResponse(data: ['error' => 'Not authenticated'], statusCode: Http::STATUS_UNAUTHORIZED);
 		}
 
-		if ($this->isGameMaster(uid: $user->getUID()) === false) {
+		if ($this->callerAccess->isGameMasterOrAdmin(uid: $user->getUID()) === false) {
 			return new JSONResponse(data: ['error' => 'Only game masters see the choices'], statusCode: Http::STATUS_FORBIDDEN);
 		}
 
 		return new JSONResponse(data: $this->choices->counts(eventId: $id));
 	}//end counts()
-
-	/**
-	 * Whether a user is a game master (the group, or a Nextcloud admin).
-	 *
-	 * @param string $uid The user id.
-	 *
-	 * @return bool True for a game master.
-	 */
-	private function isGameMaster(string $uid): bool {
-		return $this->groupManager->isInGroup($uid, Application::GM_GROUP) === true
-			|| $this->groupManager->isAdmin($uid) === true;
-	}//end isGameMaster()
 }//end class

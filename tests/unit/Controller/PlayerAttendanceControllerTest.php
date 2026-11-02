@@ -28,6 +28,7 @@ namespace OCA\Larpinq\Tests\Unit\Controller;
 require_once dirname(__DIR__) . '/Service/RealEvaluatorRegister.php';
 
 use OCA\Larpinq\AppInfo\Application;
+use OCA\Larpinq\Controller\CallerAccess;
 use OCA\Larpinq\Controller\PlayerAttendanceController;
 use OCA\Larpinq\Service\CharacterConnectionGuard;
 use OCA\Larpinq\Service\PlayerAttendanceService;
@@ -90,12 +91,10 @@ class PlayerAttendanceControllerTest extends TestCase {
 		$groupManager->method('isAdmin')->willReturn(false);
 
 		return new PlayerAttendanceController(
-			'larpinq',
 			$this->createMock(IRequest::class),
 			new PlayerAttendanceService($fetcher),
 			new CharacterConnectionGuard($fetcher),
-			$this->sessionOf($uid),
-			$groupManager,
+			new CallerAccess($this->sessionOf($uid), $groupManager),
 		);
 	}//end controllerAs()
 
