@@ -29,6 +29,10 @@ use OCA\Larpinq\AppInfo\Application;
 use OCA\Larpinq\Controller\CharacterBuildsController;
 use OCA\Larpinq\Controller\CharactersController;
 use OCA\Larpinq\Controller\SettingsController;
+use OCA\Larpinq\Service\CharacterService;
+use OCA\Larpinq\Service\CharacterStatSheet;
+use OCA\Larpinq\Service\CharacterStatsPresenter;
+use OCA\Larpinq\Service\SkillRequirementService;
 use OCP\AppFramework\Http\Response;
 use OCP\IGroupManager;
 use OCP\IRequest;
@@ -46,6 +50,7 @@ use PHPUnit\Framework\TestCase;
  * @covers \OCA\Larpinq\Controller\CharactersController
  * @covers \OCA\Larpinq\Controller\SettingsController
  * @uses   \OCA\Larpinq\Controller\CallerAccess
+ * @uses   \OCA\Larpinq\Service\CharacterStatSheet
  * @uses   \OCA\Larpinq\Service\DocuDeskPdfRenderer
  */
 class CallerAccessGoldenTest extends TestCase {
@@ -221,6 +226,11 @@ class CallerAccessGoldenTest extends TestCase {
 				$typeName === IGroupManager::class => $groups,
 				$typeName === 'OCA\Larpinq\Controller\CallerAccess' => new $typeName($session, $groups),
 				$typeName === IRequest::class => $this->recording(type: IRequest::class),
+				$typeName === CharacterStatSheet::class => new CharacterStatSheet(
+					$this->recording(type: CharacterService::class),
+					$this->recording(type: SkillRequirementService::class),
+					$this->recording(type: CharacterStatsPresenter::class)
+				),
 				default => $this->recording(type: $typeName),
 			};
 		}
