@@ -271,6 +271,8 @@ OC.L10N.register(
         "%1$s is already on %2$s. Remove it there first.": "%1$s je već na %2$s. Najprije ga uklonite odande.",
         "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s može imati samo jednog vlasnika, a sada ga imaju %2$s. Najprije ga uklonite svima osim jednom.",
         "The unique-holder check could not run, so this change was not saved. Try again.": "Provjera jedinog vlasnika nije se mogla izvršiti, pa ova promjena nije spremljena. Pokušajte ponovno.",
+        "Unknown item %s. This change was not saved.": "Nepoznat predmet %s. Ova promjena nije spremljena.",
+        "Unknown condition %s. This change was not saved.": "Nepoznato stanje %s. Ova promjena nije spremljena.",
         "Cast": "Postava",
         "Download as PDF": "Preuzmi kao PDF",
         "Loading templates": "Učitavanje predložaka",

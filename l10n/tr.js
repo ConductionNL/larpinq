@@ -271,6 +271,8 @@ OC.L10N.register(
         "%1$s is already on %2$s. Remove it there first.": "%1$s zaten %2$s üzerinde. Önce oradan kaldırın.",
         "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s yalnızca bir sahibe sahip olabilir ve şu anda %2$s tarafından tutuluyor. Önce biri dışında hepsinden kaldırın.",
         "The unique-holder check could not run, so this change was not saved. Try again.": "Tek sahip denetimi çalıştırılamadı, bu nedenle bu değişiklik kaydedilmedi. Yeniden deneyin.",
+        "Unknown item %s. This change was not saved.": "Bilinmeyen eşya %s. Bu değişiklik kaydedilmedi.",
+        "Unknown condition %s. This change was not saved.": "Bilinmeyen durum %s. Bu değişiklik kaydedilmedi.",
         "Cast": "Oyuncular",
         "Download as PDF": "PDF olarak indir",
         "Loading templates": "Şablonlar yükleniyor",

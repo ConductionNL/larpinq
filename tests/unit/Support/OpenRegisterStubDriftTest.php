@@ -41,6 +41,7 @@ class OpenRegisterStubDriftTest extends TestCase {
 		}
 
 		$cases['Service/Integration/IntegrationProvider'] = [__DIR__ . '/../../stubs/openregister/Service/Integration/IntegrationProvider.php', true];
+		$cases['Exception/NotAuthorizedException'] = [__DIR__ . '/../../stubs/openregister/Exception/NotAuthorizedException.php', true];
 		$cases['Db/ObjectEntity'] = [__DIR__ . '/../../stubs/openregister/Db/ObjectEntity.php', false];
 
 		return $cases;

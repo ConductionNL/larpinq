@@ -271,6 +271,8 @@ OC.L10N.register(
         "%1$s is already on %2$s. Remove it there first.": "%1$s веќе е на %2$s. Прво отстранете го оттаму.",
         "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s може да има само еден сопственик, а сега го имаат %2$s. Прво отстранете го од сите освен еден.",
         "The unique-holder check could not run, so this change was not saved. Try again.": "Проверката за единствен сопственик не можеше да се изврши, па оваа промена не е зачувана. Обидете се повторно.",
+        "Unknown item %s. This change was not saved.": "Непознат предмет %s. Оваа промена не е зачувана.",
+        "Unknown condition %s. This change was not saved.": "Непозната состојба %s. Оваа промена не е зачувана.",
         "Cast": "Актерска постава",
         "Download as PDF": "Преземи како PDF",
         "Loading templates": "Се вчитуваат шаблони",

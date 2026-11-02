@@ -29,6 +29,8 @@ use OCA\Larpinq\Service\UniqueHolderService;
 use OCA\OpenRegister\Db\ObjectEntity;
 use OCA\OpenRegister\Event\ObjectCreatingEvent;
 use OCA\OpenRegister\Event\ObjectUpdatingEvent;
+use OCA\OpenRegister\Exception\NotAuthorizedException;
+use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\IAppConfig;
 use OCP\IL10N;
 use PHPUnit\Framework\TestCase;
@@ -71,6 +73,8 @@ class UniqueHolderListenerTest extends TestCase {
 
 	private const TOMAS = 'dddddddd-dddd-4ddd-8ddd-dddddddddddd';
 
+	private const NOWHERE = 'eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee';
+
 	/**
 	 * Every character in the fake register.
 	 *
@@ -84,6 +88,13 @@ class UniqueHolderListenerTest extends TestCase {
 	 * @var array<string,array<string,mixed>>
 	 */
 	private array $objects = [];
+
+	/**
+	 * Ids the caller may not read: OpenRegister refuses them.
+	 *
+	 * @var array<int,string>
+	 */
+	private array $unreadable = [];
 
 	/**
 	 * Number of fetcher calls made.
@@ -110,6 +121,7 @@ class UniqueHolderListenerTest extends TestCase {
 			self::QUEEN => ['id' => self::QUEEN, 'name' => 'Queen Isolde'],
 			self::BERTRAM => ['id' => self::BERTRAM, 'name' => 'Sir Bertram'],
 		];
+		$this->unreadable = [];
 		$this->fetches = 0;
 	}//end setUp()
 
@@ -151,8 +163,20 @@ class UniqueHolderListenerTest extends TestCase {
 		$fetcher->method('getObject')->willReturnCallback(
 			function (string $objectType, string $id) use ($fetcherThrows): array {
 				$this->fetches++;
-				if ($fetcherThrows === true || isset($this->objects[$id]) === false) {
-					throw new \RuntimeException('not found');
+				if ($fetcherThrows === true) {
+					throw new \RuntimeException('register down');
+				}
+
+				if (preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/', $id) !== 1) {
+					throw new \InvalidArgumentException('Invalid object ID: expected a UUID');
+				}
+
+				if (in_array($id, $this->unreadable, true) === true) {
+					throw new NotAuthorizedException();
+				}
+
+				if (isset($this->objects[$id]) === false) {
+					throw new DoesNotExistException('Object ' . $id . ' not found');
 				}
 
 				return $this->objects[$id];
@@ -377,19 +401,120 @@ class UniqueHolderListenerTest extends TestCase {
 	}//end testALookupErrorRefusesACreateOfAUniqueItem()
 
 	/**
-	 * REQ-UHE-006: a character that gains an item is refused when the item cannot be read.
+	 * REQ-UHE-006: a character that gains an item is refused with a try-again
+	 * message when reading the item fails, and the failure is logged.
 	 *
 	 * @return void
 	 */
-	public function testAnUnreadableAddedItemIsRefused(): void {
+	public function testAFailingItemReadRefusesWithTryAgain(): void {
+		$logger = $this->createMock(LoggerInterface::class);
+		$logger->expects(self::once())->method('error');
 		$event = $this->update(self::BERTRAM, ['items' => [self::CROWN]], ['items' => []]);
 
-		$this->listener(fetcherThrows: true)->handle($event);
+		$this->listener(logger: $logger, fetcherThrows: true)->handle($event);
 
 		self::assertTrue($event->isPropagationStopped());
-		self::assertSame('unique_item_unchecked', $event->getErrors()['items'][0]['code']);
-		self::assertSame(self::CROWN, $event->getErrors()['items'][0]['item']);
-	}//end testAnUnreadableAddedItemIsRefused()
+		$errors = $event->getErrors();
+		self::assertSame('The unique-holder check could not run, so this change was not saved. Try again.', $errors['message']);
+		self::assertSame('unique_item_unchecked', $errors['items'][0]['code']);
+		self::assertSame(self::CROWN, $errors['items'][0]['item']);
+	}//end testAFailingItemReadRefusesWithTryAgain()
+
+	/**
+	 * REQ-UHE-007: an added item that does not exist is refused as unknown,
+	 * without a try-again message and without logging an error.
+	 *
+	 * @return void
+	 */
+	public function testAnItemThatDoesNotExistIsRefusedAsUnknown(): void {
+		$logger = $this->createMock(LoggerInterface::class);
+		$logger->expects(self::never())->method('error');
+		$event = $this->update(self::BERTRAM, ['items' => [self::NOWHERE]], ['items' => []]);
+
+		$this->listener(logger: $logger)->handle($event);
+
+		self::assertTrue($event->isPropagationStopped());
+		self::assertSame(
+			[
+				'message' => 'Unknown item ' . self::NOWHERE . '. This change was not saved.',
+				'items' => [
+					[
+						'code' => 'unique_item_unknown',
+						'item' => self::NOWHERE,
+						'message' => 'Unknown item ' . self::NOWHERE . '. This change was not saved.',
+					],
+				],
+			],
+			$event->getErrors()
+		);
+	}//end testAnItemThatDoesNotExistIsRefusedAsUnknown()
+
+	/**
+	 * REQ-UHE-007: an added condition that does not exist is refused as unknown on `conditions`.
+	 *
+	 * @return void
+	 */
+	public function testAConditionThatDoesNotExistIsRefusedAsUnknown(): void {
+		$event = $this->update(self::TOMAS, ['conditions' => [self::NOWHERE]], ['conditions' => []]);
+
+		$this->listener()->handle($event);
+
+		self::assertTrue($event->isPropagationStopped());
+		$errors = $event->getErrors();
+		self::assertSame('Unknown condition ' . self::NOWHERE . '. This change was not saved.', $errors['message']);
+		self::assertSame('unique_condition_unknown', $errors['conditions'][0]['code']);
+		self::assertSame(self::NOWHERE, $errors['conditions'][0]['condition']);
+	}//end testAConditionThatDoesNotExistIsRefusedAsUnknown()
+
+	/**
+	 * REQ-UHE-007: an item the caller may not read gets exactly the answer of
+	 * an item that does not exist, so the refusal never shows that it exists.
+	 *
+	 * @return void
+	 */
+	public function testAnUnreadableItemGetsTheSameAnswerAsAMissingOne(): void {
+		$this->unreadable = [self::CROWN];
+		$unreadable = $this->update(self::BERTRAM, ['items' => [self::CROWN]], ['items' => []]);
+		$this->listener()->handle($unreadable);
+
+		$this->unreadable = [];
+		unset($this->objects[self::CROWN]);
+		$missing = $this->update(self::BERTRAM, ['items' => [self::CROWN]], ['items' => []]);
+		$this->listener()->handle($missing);
+
+		self::assertTrue($unreadable->isPropagationStopped());
+		self::assertSame('unique_item_unknown', $missing->getErrors()['items'][0]['code']);
+		self::assertSame($missing->getErrors(), $unreadable->getErrors());
+	}//end testAnUnreadableItemGetsTheSameAnswerAsAMissingOne()
+
+	/**
+	 * REQ-UHE-007: an added id that is not a valid object id is refused as unknown.
+	 *
+	 * @return void
+	 */
+	public function testAMalformedItemIdIsRefusedAsUnknown(): void {
+		$event = $this->update(self::BERTRAM, ['items' => ['crown-of-aldmoor']], ['items' => []]);
+
+		$this->listener()->handle($event);
+
+		self::assertSame('unique_item_unknown', $event->getErrors()['items'][0]['code']);
+		self::assertSame('Unknown item crown-of-aldmoor. This change was not saved.', $event->getErrors()['message']);
+	}//end testAMalformedItemIdIsRefusedAsUnknown()
+
+	/**
+	 * REQ-UHE-007: an import row that names an item created later in the same
+	 * import is refused as unknown, like any other row.
+	 *
+	 * @return void
+	 */
+	public function testAnImportRowWithAForwardReferenceIsRefusedAsUnknown(): void {
+		$event = new ObjectCreatingEvent(new HeldObjectEntity('schema-character', null, ['name' => 'Sir Bertram', 'items' => [self::NOWHERE]]));
+
+		$this->listener()->handle($event);
+
+		self::assertTrue($event->isPropagationStopped());
+		self::assertSame('unique_item_unknown', $event->getErrors()['items'][0]['code']);
+	}//end testAnImportRowWithAForwardReferenceIsRefusedAsUnknown()
 
 	/**
 	 * REQ-UHE-006: a held condition whose holder lookup fails is refused on `conditions`.
@@ -436,7 +561,7 @@ class UniqueHolderListenerTest extends TestCase {
 
 		foreach ($events as $index => $event) {
 			$this->listener(fetcherThrows: true)->handle($event);
-			self::assertFalse($event->isPropagationStopped(), 'event '.$index);
+			self::assertFalse($event->isPropagationStopped(), 'event ' . $index);
 		}
 	}//end testWritesThatAddNoHolderPassWhileTheLookupFails()
 }//end class

@@ -31,6 +31,7 @@ use OCA\Larpinq\Service\UniqueHolderService;
 use OCA\OpenRegister\Db\ObjectEntity;
 use OCA\OpenRegister\Event\ObjectCreatingEvent;
 use OCA\OpenRegister\Event\ObjectUpdatingEvent;
+use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\IAppConfig;
 use OCP\IL10N;
 use PHPUnit\Framework\TestCase;
@@ -66,7 +67,7 @@ class GoldenHeldEntity extends ObjectEntity {
  */
 class UniqueHolderGoldenTest extends TestCase {
 
-	private const FIXTURE = __DIR__.'/fixtures/unique-holder.golden.json';
+	private const FIXTURE = __DIR__ . '/fixtures/unique-holder.golden.json';
 
 	/**
 	 * The register reads of the current run.
@@ -84,7 +85,7 @@ class UniqueHolderGoldenTest extends TestCase {
 	private function characters(): array {
 		$rows = [];
 		for ($i = 0; $i < 230; $i++) {
-			$rows[] = ['id' => sprintf('filler-%03d', $i), 'name' => 'Filler '.$i, 'items' => ['potion']];
+			$rows[] = ['id' => sprintf('filler-%03d', $i), 'name' => 'Filler ' . $i, 'items' => ['potion']];
 		}
 
 		$rows[3] = ['id' => 'queen', 'name' => 'Queen Isolde', 'items' => ['crown', 'potion', ['id' => 'ring']]];
@@ -130,7 +131,7 @@ class UniqueHolderGoldenTest extends TestCase {
 			'character create with an id in the data' => ['schema-character', null, ['id' => 'queen', 'items' => ['crown']], null],
 			'holder re-adds its own item' => ['schema-character', 'queen', ['items' => ['crown']], ['items' => []]],
 			'character gains a non-unique item' => ['schema-character', 'bertram', ['items' => ['potion', 'plain']], []],
-			'character gains an unreadable item' => ['schema-character', 'bertram', ['items' => ['nowhere']], []],
+			'character gains an item that does not exist' => ['schema-character', 'bertram', ['items' => ['nowhere']], []],
 			'character gains a unique condition' => ['schema-character', 'bertram', ['conditions' => ['curse']], []],
 			'character gains a ring held on both sides' => ['schema-character', 'bertram', ['items' => [['id' => 'ring']], 'conditions' => ['blessing']], []],
 			'character gains a nameless object' => ['schema-character', 'bertram', ['items' => ['nameless']], []],
@@ -193,8 +194,12 @@ class UniqueHolderGoldenTest extends TestCase {
 		$fetcher->method('getObject')->willReturnCallback(
 			function (string $objectType, string $id) use ($mode, $objects): array {
 				$this->reads[] = ['getObject' => $objectType, 'id' => $id];
-				if ($mode === 'throws' || isset($objects[$id]) === false) {
-					throw new \RuntimeException('not found');
+				if ($mode === 'throws') {
+					throw new \RuntimeException('register down');
+				}
+
+				if (isset($objects[$id]) === false) {
+					throw new DoesNotExistException('Object ' . $id . ' not found');
 				}
 
 				return $objects[$id];
@@ -226,7 +231,7 @@ class UniqueHolderGoldenTest extends TestCase {
 		$logger = $this->createMock(LoggerInterface::class);
 		$logger->method('error')->willReturnCallback(
 			function (string $message, array $context = []) use (&$logged): void {
-				$logged[] = $message.' / '.$context['exception']->getMessage();
+				$logged[] = $message . ' / ' . $context['exception']->getMessage();
 			}
 		);
 		$normaliser = new IdListNormaliser();
@@ -277,12 +282,12 @@ class UniqueHolderGoldenTest extends TestCase {
 		$actual = [];
 		foreach ($this->scenarios() as $name => $scenario) {
 			foreach (['filtered', 'unfiltered', 'throws'] as $mode) {
-				$actual[$name.' / '.$mode] = json_encode($this->runScenario(scenario: $scenario, mode: $mode), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+				$actual[$name . ' / ' . $mode] = json_encode($this->runScenario(scenario: $scenario, mode: $mode), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
 			}
 		}
 
 		if (getenv('RECORD_GOLDEN') === '1') {
-			file_put_contents(self::FIXTURE, json_encode($actual, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)."\n");
+			file_put_contents(self::FIXTURE, json_encode($actual, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . "\n");
 		}
 
 		$expected = json_decode((string)file_get_contents(self::FIXTURE), true);

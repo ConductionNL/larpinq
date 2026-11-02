@@ -271,6 +271,8 @@ OC.L10N.register(
         "%1$s is already on %2$s. Remove it there first.": "%1$s já está em %2$s. Remova-o de lá primeiro.",
         "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s só pode ter um portador, e %2$s o têm agora. Remova-o primeiro de todos menos um.",
         "The unique-holder check could not run, so this change was not saved. Try again.": "Não foi possível executar a verificação de titular único, por isso esta alteração não foi guardada. Tente novamente.",
+        "Unknown item %s. This change was not saved.": "Item desconhecido %s. Esta alteração não foi guardada.",
+        "Unknown condition %s. This change was not saved.": "Condição desconhecida %s. Esta alteração não foi guardada.",
         "Cast": "Elenco",
         "Download as PDF": "Transferir como PDF",
         "Loading templates": "A carregar modelos",

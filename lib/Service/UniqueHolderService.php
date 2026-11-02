@@ -24,6 +24,10 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Service;
 
+use InvalidArgumentException;
+use OCA\OpenRegister\Exception\NotAuthorizedException;
+use OCP\AppFramework\Db\DoesNotExistException;
+
 /**
  * Counts the characters that hold a unique item or condition.
  *
@@ -317,19 +321,25 @@ class UniqueHolderService {
 	}//end pages()
 
 	/**
-	 * Read one item or condition; null when it cannot be read.
+	 * Read one item or condition as the caller.
+	 *
+	 * An object that does not exist and one the caller may not read give the
+	 * same answer, so the result never shows whether an unreadable id exists.
 	 *
 	 * @param string $kind 'item' or 'condition'.
 	 * @param string $id The object id.
 	 *
-	 * @return array<string,mixed>|null The object data.
+	 * @return array<string,mixed>|null The object data, or null when it does not exist,
+	 *                                  its id is malformed or OpenRegister refuses the caller.
+	 *
+	 * @throws \Throwable When the lookup itself fails.
 	 *
 	 * @spec openspec/specs/rpg-system/spec.md
 	 */
 	public function readObject(string $kind, string $id): ?array {
 		try {
 			return $this->objectFetcher->getObject(objectType: $kind, id: $id);
-		} catch (\Throwable $e) {
+		} catch (DoesNotExistException|InvalidArgumentException|NotAuthorizedException $e) {
 			return null;
 		}
 	}//end readObject()
