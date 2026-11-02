@@ -22,7 +22,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Service;
 
-use OCA\Larpinq\AppInfo\Application;
+use OCA\Larpinq\Support\AppIdentity;
 use OCP\IAppConfig;
 use Psr\Log\LoggerInterface;
 
@@ -145,7 +145,7 @@ class SettingsService {
 	public function getSettings(): array {
 		$config = [];
 		foreach (self::CONFIG_KEYS as $key) {
-			$config[$key] = $this->appConfig->getValueString(Application::APP_ID, $key, '');
+			$config[$key] = $this->appConfig->getValueString(AppIdentity::APP_ID, $key, '');
 		}
 
 		return $config;
@@ -165,7 +165,7 @@ class SettingsService {
 			if (isset($data[$key]) === true
 				&& (is_string($data[$key]) === true || is_int($data[$key]) === true)
 			) {
-				$this->appConfig->setValueString(Application::APP_ID, $key, (string)$data[$key]);
+				$this->appConfig->setValueString(AppIdentity::APP_ID, $key, (string)$data[$key]);
 			}
 		}
 
@@ -214,7 +214,7 @@ class SettingsService {
 	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-23
 	 */
 	public function getConfigValue(string $key, string $default = ''): string {
-		return $this->appConfig->getValueString(Application::APP_ID, $key, $default);
+		return $this->appConfig->getValueString(AppIdentity::APP_ID, $key, $default);
 	}//end getConfigValue()
 
 	/**
@@ -230,7 +230,7 @@ class SettingsService {
 	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-23
 	 */
 	public function setConfigValue(string $key, string $value): void {
-		$this->appConfig->setValueString(Application::APP_ID, $key, $value);
+		$this->appConfig->setValueString(AppIdentity::APP_ID, $key, $value);
 
 	}//end setConfigValue()
 }//end class
