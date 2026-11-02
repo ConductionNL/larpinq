@@ -22,6 +22,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Tests\Unit\Controller;
 
+use OCA\Larpinq\Service\CallerAccess;
 use OCA\Larpinq\Controller\CharactersController;
 use OCA\Larpinq\Service\DocuDeskPdfRenderer;
 use OCA\Larpinq\Service\RegisterObjectFetcher;
@@ -61,8 +62,7 @@ class CharactersPdfTemplatesTest extends TestCase {
 			$this->createMock(IRequest::class),
 			$this->createMock(RegisterObjectFetcher::class),
 			new DocuDeskPdfRenderer($appManager, $container, $this->createMock(LoggerInterface::class)),
-			$this->createMock(IUserSession::class),
-			$this->createMock(IGroupManager::class),
+			new CallerAccess($this->createMock(IUserSession::class), $this->createMock(IGroupManager::class)),
 			$this->createMock(SkillRequirementService::class),
 		);
 	}//end controller()

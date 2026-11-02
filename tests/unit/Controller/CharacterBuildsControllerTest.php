@@ -22,6 +22,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Tests\Unit\Controller;
 
+use OCA\Larpinq\Service\CallerAccess;
 use OCA\Larpinq\Controller\CharacterBuildsController;
 use OCA\Larpinq\Service\CharacterService;
 use OCA\Larpinq\Service\CharacterStatsPresenter;
@@ -148,7 +149,7 @@ class CharacterBuildsControllerTest extends TestCase {
 		$groups->method('isInGroup')->willReturnCallback(static fn (string $uid, string $group): bool => $gameMaster === true && $group === 'gamemasters');
 		$groups->method('isAdmin')->willReturn(false);
 
-		return new CharacterBuildsController('larpinq', $this->createMock(IRequest::class), $this->fetcher, $engine, $this->requirements, new CharacterStatsPresenter(), $session, $groups);
+		return new CharacterBuildsController('larpinq', $this->createMock(IRequest::class), $this->fetcher, $engine, $this->requirements, new CharacterStatsPresenter(), new CallerAccess($session, $groups));
 	}//end controller()
 
 	/**
