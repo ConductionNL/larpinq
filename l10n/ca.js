@@ -270,6 +270,7 @@ OC.L10N.register(
         "%1$s is already held by %2$s. Remove it there first.": "%1$s ja el té %2$s. Traieu-lo primer d'allà.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s ja és sobre %2$s. Traieu-lo primer d'allà.",
         "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s només pot tenir un portador, i ara el tenen %2$s. Traieu-lo primer a tots menys a un.",
+        "The unique-holder check could not run, so this change was not saved. Try again.": "No s’ha pogut fer la comprovació de titular únic, de manera que aquest canvi no s’ha desat. Torneu-ho a provar.",
         "Cast": "Repartiment",
         "Download as PDF": "Baixa com a PDF",
         "Loading templates": "S'estan carregant les plantilles",

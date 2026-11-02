@@ -359,6 +359,7 @@ OC.L10N.register(
         "%1$s is already held by %2$s. Remove it there first.": "%1$s is al in bezit van %2$s. Haal het daar eerst weg.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s rust al op %2$s. Haal het daar eerst weg.",
         "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s kan maar één houder hebben, en %2$s hebben het nu. Haal het eerst bij iedereen op één na weg.",
+        "The unique-holder check could not run, so this change was not saved. Try again.": "De controle op één houder kon niet worden uitgevoerd, dus deze wijziging is niet opgeslagen. Probeer het opnieuw.",
         "Cast": "Cast",
         "Download as PDF": "Als pdf downloaden",
         "Loading templates": "Sjablonen laden",

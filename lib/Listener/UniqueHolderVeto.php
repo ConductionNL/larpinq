@@ -55,6 +55,92 @@ class UniqueHolderVeto {
 	}//end __construct()
 
 	/**
+	 * The veto for a write of a subject.
+	 *
+	 * @param string $subject `character`, `item` or `condition`.
+	 * @param ObjectWrite $write The write.
+	 *
+	 * @return array<string,mixed>|null The errors payload, or null to allow.
+	 *
+	 * @spec openspec/specs/rpg-system/spec.md
+	 */
+	public function veto(string $subject, ObjectWrite $write): ?array {
+		if ($subject === 'character') {
+			return $this->vetoCharacter(write: $write);
+		}
+
+		return $this->vetoHeldObject(kind: $subject, write: $write);
+	}//end veto()
+
+	/**
+	 * The refusal for a write the check could not finish: a write that adds a
+	 * holder is refused with a try-again message, any other write passes.
+	 *
+	 * @param string $subject `character`, `item` or `condition`.
+	 * @param ObjectWrite $write The write.
+	 *
+	 * @return array<string,mixed>|null The errors payload, or null to allow.
+	 *
+	 * @spec openspec/specs/rpg-system/spec.md
+	 */
+	public function uncheckedRefusal(string $subject, ObjectWrite $write): ?array {
+		if ($subject === 'character') {
+			return $this->uncheckedCharacter(write: $write);
+		}
+
+		if ($this->holders->isUnique(kind: $subject, object: $write->data) === false) {
+			return null;
+		}
+
+		$field = $this->changedHolderField(kind: $subject, write: $write);
+		if ($field === null) {
+			return null;
+		}
+
+		return $this->unchecked(query: new HolderQuery(kind: $subject, id: $write->id), field: $field);
+	}//end uncheckedRefusal()
+
+	/**
+	 * The try-again refusal for a character write that adds an item or condition.
+	 *
+	 * @param ObjectWrite $write The character write.
+	 *
+	 * @return array<string,mixed>|null The errors payload, or null when nothing is added.
+	 */
+	private function uncheckedCharacter(ObjectWrite $write): ?array {
+		foreach (UniqueHolderService::CHARACTER_FIELD as $kind => $field) {
+			foreach ($this->addedIds(write: $write, field: $field) as $objectId) {
+				return $this->unchecked(query: new HolderQuery(kind: $kind, id: $objectId), field: $field);
+			}
+		}
+
+		return null;
+	}//end uncheckedCharacter()
+
+	/**
+	 * The try-again refusal on a field.
+	 *
+	 * @param HolderQuery $query The object the check could not finish for.
+	 * @param string $field The field the write changed.
+	 *
+	 * @return array<string,mixed> The errors payload.
+	 */
+	private function unchecked(HolderQuery $query, string $field): array {
+		$message = $this->l10n->t('The unique-holder check could not run, so this change was not saved. Try again.');
+
+		return [
+			'message' => $message,
+			$field => [
+				[
+					'code' => 'unique_' . $query->kind . '_unchecked',
+					$query->kind => $query->id,
+					'message' => $message,
+				],
+			],
+		];
+	}//end unchecked()
+
+	/**
 	 * Refuse a character write that adds a unique item or condition held elsewhere.
 	 *
 	 * @param ObjectWrite $write The character write.
@@ -102,10 +188,26 @@ class UniqueHolderVeto {
 	 */
 	private function vetoHeldElsewhere(HolderQuery $query): ?array {
 		$object = $this->holders->readObject(kind: $query->kind, id: $query->id);
-		if ($object === null || $this->holders->isUnique(kind: $query->kind, object: $object) === false) {
+		if ($object === null) {
+			return $this->unchecked(query: $query, field: $query->field());
+		}
+
+		if ($this->holders->isUnique(kind: $query->kind, object: $object) === false) {
 			return null;
 		}
 
+		return $this->vetoOtherHolder(query: $query, object: $object);
+	}//end vetoHeldElsewhere()
+
+	/**
+	 * Refuse adding a unique object when another character holds it.
+	 *
+	 * @param HolderQuery $query The added object, the character written and a limit of one.
+	 * @param array<string,mixed> $object The unique item or condition.
+	 *
+	 * @return array<string,mixed>|null The errors payload, or null when nobody else holds it.
+	 */
+	private function vetoOtherHolder(HolderQuery $query, array $object): ?array {
 		$holders = $this->holders->otherHolders(query: $query, objectSide: $this->characterSide(object: $object));
 		if ($holders === []) {
 			return null;
@@ -115,7 +217,7 @@ class UniqueHolderVeto {
 			query: $query,
 			names: ['object' => $this->holders->nameOf(object: $object, fallback: $query->id), 'holder' => $holders[0]['name']]
 		);
-	}//end vetoHeldElsewhere()
+	}//end vetoOtherHolder()
 
 	/**
 	 * The refusal for an added object another character holds.

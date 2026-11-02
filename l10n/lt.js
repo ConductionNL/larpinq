@@ -270,6 +270,7 @@ OC.L10N.register(
         "%1$s is already held by %2$s. Remove it there first.": "%1$s jau priklauso %2$s. Pirmiausia pašalinkite jį iš ten.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s jau uždėta %2$s. Pirmiausia pašalinkite jį iš ten.",
         "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s gali turėti tik vieną turėtoją, o dabar jį turi %2$s. Pirmiausia pašalinkite jį visiems, išskyrus vieną.",
+        "The unique-holder check could not run, so this change was not saved. Try again.": "Nepavyko atlikti vieno turėtojo patikros, todėl šis pakeitimas neišsaugotas. Bandykite dar kartą.",
         "Cast": "Vaidmenys",
         "Download as PDF": "Atsisiųsti kaip PDF",
         "Loading templates": "Įkeliami šablonai",

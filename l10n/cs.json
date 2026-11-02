@@ -269,6 +269,7 @@
         "%1$s is already held by %2$s. Remove it there first.": "%1$s už má %2$s. Nejprve ho odtud odeberte.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s už je na %2$s. Nejprve ho odtud odeberte.",
         "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s může mít jen jednoho držitele a teď ho mají %2$s. Nejprve ho odeberte všem kromě jednoho.",
+        "The unique-holder check could not run, so this change was not saved. Try again.": "Kontrolu jediného držitele nebylo možné provést, proto tato změna nebyla uložena. Zkuste to znovu.",
         "Cast": "Obsazení",
         "Download as PDF": "Stáhnout jako PDF",
         "Loading templates": "Načítání šablon",
