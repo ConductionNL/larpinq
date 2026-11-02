@@ -1,0 +1,1158 @@
+{
+	"BuildReport": {
+		"templateRenderSha256": "e938542f37813a0dce9ac80d56d7d095d93a37056a6438c2be9f5c2423e90492",
+		"styleSha256": "9c593688256a658a62637e4a8f2ce0d137b4a781931f03d74863b87082627879",
+		"scenarios": {
+			"prop wins": {
+				"id": "p-1",
+				"objectIdProp": "p-1",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"characterBuilds.fetchBuildReport",
+						"p-1"
+					]
+				]
+			},
+			"context next": {
+				"id": "c-1",
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"characterBuilds.fetchBuildReport",
+						"c-1"
+					]
+				]
+			},
+			"empty prop falls through": {
+				"id": "c-1",
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"characterBuilds.fetchBuildReport",
+						"c-1"
+					]
+				]
+			},
+			"route when no context is provided": {
+				"id": "r-1",
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"characterBuilds.fetchBuildReport",
+						"r-1"
+					]
+				]
+			},
+			"numeric route id": {
+				"id": "7",
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"characterBuilds.fetchBuildReport",
+						"7"
+					]
+				]
+			},
+			"literal placeholder in the context": {
+				"id": "r-2",
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"characterBuilds.fetchBuildReport",
+						"r-2"
+					]
+				]
+			},
+			"nothing at all": {
+				"id": "",
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"characterBuilds.fetchBuildReport",
+						""
+					]
+				]
+			}
+		}
+	},
+	"CharacterCustomFields": {
+		"templateRenderSha256": "f3701d069288cb3bc99253540c55923274252bd18f52f4248387ebe1ff09f504",
+		"styleSha256": "c6847ceb66ecf58fee85055104d0882f3337041fdccffef9cf441982a2e2a68e",
+		"scenarios": {
+			"prop wins": {
+				"id": "p-1",
+				"objectIdProp": "p-1",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"characterCustomFields.fetchCustomFields",
+						"p-1"
+					]
+				]
+			},
+			"context next": {
+				"id": "c-1",
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"characterCustomFields.fetchCustomFields",
+						"c-1"
+					]
+				]
+			},
+			"empty prop falls through": {
+				"id": "c-1",
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"characterCustomFields.fetchCustomFields",
+						"c-1"
+					]
+				]
+			},
+			"route when no context is provided": {
+				"id": "r-1",
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"characterCustomFields.fetchCustomFields",
+						"r-1"
+					]
+				]
+			},
+			"numeric route id": {
+				"id": "7",
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"characterCustomFields.fetchCustomFields",
+						"7"
+					]
+				]
+			},
+			"literal placeholder in the context": {
+				"id": "@objectId",
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"characterCustomFields.fetchCustomFields",
+						"@objectId"
+					]
+				]
+			},
+			"nothing at all": {
+				"id": "",
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"characterCustomFields.fetchCustomFields",
+						""
+					]
+				]
+			}
+		}
+	},
+	"CharacterStatSheet": {
+		"templateRenderSha256": "5afc6ef58f3328e9ed3d8e9474356fa75b9bb2917df1cabb25954116e6f932d3",
+		"styleSha256": "a752647f5fa7e1a50cf1dd82f0f15c6ba97467991bda8eb880777950532caadd",
+		"scenarios": {
+			"prop wins": {
+				"id": "p-1",
+				"objectIdProp": "p-1",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"characterStats.fetchCharacterStats",
+						"p-1"
+					]
+				]
+			},
+			"context next": {
+				"id": "c-1",
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"characterStats.fetchCharacterStats",
+						"c-1"
+					]
+				]
+			},
+			"empty prop falls through": {
+				"id": "c-1",
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"characterStats.fetchCharacterStats",
+						"c-1"
+					]
+				]
+			},
+			"route when no context is provided": {
+				"id": "r-1",
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"characterStats.fetchCharacterStats",
+						"r-1"
+					]
+				]
+			},
+			"numeric route id": {
+				"id": "7",
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"characterStats.fetchCharacterStats",
+						"7"
+					]
+				]
+			},
+			"literal placeholder in the context": {
+				"id": "@objectId",
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"characterStats.fetchCharacterStats",
+						"@objectId"
+					]
+				]
+			},
+			"nothing at all": {
+				"id": "",
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"characterStats.fetchCharacterStats",
+						""
+					]
+				]
+			}
+		}
+	},
+	"EventChoiceCounts": {
+		"templateRenderSha256": "946129faaa39059d5fbd136e9a42eda4292a5026339c6dcd0190a2cd4e8e439f",
+		"styleSha256": "0659f750d2c6505cb4083b1abfca5bba593572ffe5233ac7e9ed1b5c9c763c4f",
+		"scenarios": {
+			"prop wins": {
+				"id": "p-1",
+				"objectIdProp": "p-1",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"registrationChoices.fetchChoiceCounts",
+						"p-1"
+					]
+				]
+			},
+			"context next": {
+				"id": "c-1",
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"registrationChoices.fetchChoiceCounts",
+						"c-1"
+					]
+				]
+			},
+			"empty prop falls through": {
+				"id": "c-1",
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"registrationChoices.fetchChoiceCounts",
+						"c-1"
+					]
+				]
+			},
+			"route when no context is provided": {
+				"id": "r-1",
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"registrationChoices.fetchChoiceCounts",
+						"r-1"
+					]
+				]
+			},
+			"numeric route id": {
+				"id": "7",
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"registrationChoices.fetchChoiceCounts",
+						"7"
+					]
+				]
+			},
+			"literal placeholder in the context": {
+				"id": "@objectId",
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"registrationChoices.fetchChoiceCounts",
+						"@objectId"
+					]
+				]
+			},
+			"nothing at all": {
+				"id": "",
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"registrationChoices.fetchChoiceCounts",
+						""
+					]
+				]
+			}
+		}
+	},
+	"EventRoster": {
+		"templateRenderSha256": "cbc1e058401d76f50b2e8bb792b9e33df845d852fa0acfe43d2b38379812bd91",
+		"styleSha256": "8b88a1e5aa7c6d9b9d9960f45095b250e195d9e3c14e7b9ec38bde9383d735c5",
+		"scenarios": {
+			"prop wins": {
+				"id": "p-1",
+				"objectIdProp": "p-1",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					},
+					"config": {
+						"type": [
+							"Object"
+						],
+						"default": "function {}"
+					}
+				},
+				"calls": [
+					[
+						"fetch",
+						"/apps/larpinq/api/events/{id}/roster {\"id\":\"p-1\"}"
+					]
+				]
+			},
+			"context next": {
+				"id": "c-1",
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					},
+					"config": {
+						"type": [
+							"Object"
+						],
+						"default": "function {}"
+					}
+				},
+				"calls": [
+					[
+						"fetch",
+						"/apps/larpinq/api/events/{id}/roster {\"id\":\"c-1\"}"
+					]
+				]
+			},
+			"empty prop falls through": {
+				"id": "c-1",
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					},
+					"config": {
+						"type": [
+							"Object"
+						],
+						"default": "function {}"
+					}
+				},
+				"calls": [
+					[
+						"fetch",
+						"/apps/larpinq/api/events/{id}/roster {\"id\":\"c-1\"}"
+					]
+				]
+			},
+			"route when no context is provided": {
+				"id": "r-1",
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					},
+					"config": {
+						"type": [
+							"Object"
+						],
+						"default": "function {}"
+					}
+				},
+				"calls": [
+					[
+						"fetch",
+						"/apps/larpinq/api/events/{id}/roster {\"id\":\"r-1\"}"
+					]
+				]
+			},
+			"numeric route id": {
+				"id": 7,
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					},
+					"config": {
+						"type": [
+							"Object"
+						],
+						"default": "function {}"
+					}
+				},
+				"calls": [
+					[
+						"fetch",
+						"/apps/larpinq/api/events/{id}/roster {\"id\":7}"
+					]
+				]
+			},
+			"literal placeholder in the context": {
+				"id": "@objectId",
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					},
+					"config": {
+						"type": [
+							"Object"
+						],
+						"default": "function {}"
+					}
+				},
+				"calls": [
+					[
+						"fetch",
+						"/apps/larpinq/api/events/{id}/roster {\"id\":\"@objectId\"}"
+					]
+				]
+			},
+			"nothing at all": {
+				"id": "",
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					},
+					"config": {
+						"type": [
+							"Object"
+						],
+						"default": "function {}"
+					}
+				},
+				"calls": []
+			}
+		}
+	},
+	"PlayerAttendanceHistory": {
+		"templateRenderSha256": "73a99f783f39083a82c5706ef8241fa4721c133711b72944d2c8096fa0895f43",
+		"styleSha256": "5e650f4480813a1d9dc4c863b72c22a12e2acd1b9847db6e17d2e415b4e01a5c",
+		"scenarios": {
+			"prop wins": {
+				"id": "p-1",
+				"objectIdProp": "p-1",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"playerAttendance.fetchPlayerAttendance",
+						"p-1"
+					]
+				]
+			},
+			"context next": {
+				"id": "c-1",
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"playerAttendance.fetchPlayerAttendance",
+						"c-1"
+					]
+				]
+			},
+			"empty prop falls through": {
+				"id": "c-1",
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"playerAttendance.fetchPlayerAttendance",
+						"c-1"
+					]
+				]
+			},
+			"route when no context is provided": {
+				"id": "r-1",
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"playerAttendance.fetchPlayerAttendance",
+						"r-1"
+					]
+				]
+			},
+			"numeric route id": {
+				"id": "7",
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"playerAttendance.fetchPlayerAttendance",
+						"7"
+					]
+				]
+			},
+			"literal placeholder in the context": {
+				"id": "@objectId",
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"playerAttendance.fetchPlayerAttendance",
+						"@objectId"
+					]
+				]
+			},
+			"nothing at all": {
+				"id": "",
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"playerAttendance.fetchPlayerAttendance",
+						""
+					]
+				]
+			}
+		}
+	},
+	"RegistrationChanges": {
+		"templateRenderSha256": "e8566e60694168e302d49b4faac235f0d23c1449b168dbaadd4a65322d77e884",
+		"styleSha256": "ee6f773411fa21e144bdf744422b096d60b71bde78a36e594a9ff8dd5aaf9c48",
+		"scenarios": {
+			"prop wins": {
+				"id": "p-1",
+				"objectIdProp": "p-1",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"registrationChanges.fetchChanges",
+						"p-1"
+					]
+				]
+			},
+			"context next": {
+				"id": "c-1",
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"registrationChanges.fetchChanges",
+						"c-1"
+					]
+				]
+			},
+			"empty prop falls through": {
+				"id": "c-1",
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"registrationChanges.fetchChanges",
+						"c-1"
+					]
+				]
+			},
+			"route when no context is provided": {
+				"id": "r-1",
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"registrationChanges.fetchChanges",
+						"r-1"
+					]
+				]
+			},
+			"numeric route id": {
+				"id": "7",
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"registrationChanges.fetchChanges",
+						"7"
+					]
+				]
+			},
+			"literal placeholder in the context": {
+				"id": "@objectId",
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"registrationChanges.fetchChanges",
+						"@objectId"
+					]
+				]
+			},
+			"nothing at all": {
+				"id": "",
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"registrationChanges.fetchChanges",
+						""
+					]
+				]
+			}
+		}
+	},
+	"RegistrationChoices": {
+		"templateRenderSha256": "ac5e59967213c5252a7bbb389cf777c79abdac8836a3a3a99bcc9ddd789bcf09",
+		"styleSha256": "1688edaeab80420ba844cfc3d22560f4f2e598a27227bb397a506b151c5063f8",
+		"scenarios": {
+			"prop wins": {
+				"id": "p-1",
+				"objectIdProp": "p-1",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"registrationChoices.fetchOffer",
+						"p-1",
+						""
+					]
+				]
+			},
+			"context next": {
+				"id": "c-1",
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"registrationChoices.fetchOffer",
+						"c-1",
+						""
+					]
+				]
+			},
+			"empty prop falls through": {
+				"id": "c-1",
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"registrationChoices.fetchOffer",
+						"c-1",
+						""
+					]
+				]
+			},
+			"route when no context is provided": {
+				"id": "r-1",
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"registrationChoices.fetchOffer",
+						"r-1",
+						""
+					]
+				]
+			},
+			"numeric route id": {
+				"id": "7",
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"registrationChoices.fetchOffer",
+						"7",
+						""
+					]
+				]
+			},
+			"literal placeholder in the context": {
+				"id": "@objectId",
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"registrationChoices.fetchOffer",
+						"@objectId",
+						""
+					]
+				]
+			},
+			"nothing at all": {
+				"id": "",
+				"objectIdProp": "",
+				"objectIdInAttrs": false,
+				"props": {
+					"objectId": {
+						"type": [
+							"String"
+						],
+						"default": ""
+					}
+				},
+				"calls": [
+					[
+						"registrationChoices.fetchOffer",
+						"",
+						""
+					]
+				]
+			}
+		}
+	}
+}
