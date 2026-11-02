@@ -119,6 +119,22 @@ async function writeCharacter(run, id) {
 }
 
 /**
+ * A fresh bulk-edit run: the PATCH body, the names and an empty report.
+ *
+ * @param {object} choices The chosen values.
+ * @param {object} names Character names by id.
+ * @return {object} The run.
+ */
+function bulkRun(choices, names) {
+	return {
+		body: JSON.stringify(bulkBody(choices)),
+		names,
+		changed: [],
+		refused: [],
+	}
+}
+
+/**
  * Write the choices to each selected character, one PATCH each, in order
  * (REQ-CSB-003, REQ-CSB-004). A refused character does not stop the others.
  *
@@ -136,12 +152,7 @@ export async function applyBulkEdit(
 	names = {},
 	onProgress = () => {},
 ) {
-	const run = {
-		body: JSON.stringify(bulkBody(choices)),
-		names,
-		changed: [],
-		refused: [],
-	}
+	const run = bulkRun(choices, names)
 	for (const [index, id] of (ids || []).entries()) {
 		await writeCharacter(run, id)
 		onProgress(index + 1)
