@@ -22,10 +22,9 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Controller;
 
-use OCA\Larpinq\Service\CharacterService;
-use OCA\Larpinq\Service\CharacterStatsPresenter;
+use OCA\Larpinq\AppInfo\Application;
+use OCA\Larpinq\Service\CharacterStatSheet;
 use OCA\Larpinq\Service\RegisterObjectFetcher;
-use OCA\Larpinq\Service\SkillRequirementService;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\Attribute\NoAdminRequired;
@@ -56,26 +55,20 @@ class CharacterBuildsController extends Controller {
 	/**
 	 * Constructor.
 	 *
-	 * @param string $appName The app name.
 	 * @param IRequest $request The request.
 	 * @param RegisterObjectFetcher $objectFetcher Reads the build and its character as the calling user.
-	 * @param CharacterService $characterService The stat engine.
-	 * @param SkillRequirementService $requirementService The requirement and XP budget check.
-	 * @param CharacterStatsPresenter $presenter Shapes the stat sheet of the build.
+	 * @param CharacterStatSheet $statSheet The stat sheet and requirement report of the build.
 	 * @param CallerAccess $callerAccess The signed-in caller and the game master check.
 	 *
 	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
 	 */
 	public function __construct(
-		string $appName,
 		IRequest $request,
 		private readonly RegisterObjectFetcher $objectFetcher,
-		private readonly CharacterService $characterService,
-		private readonly SkillRequirementService $requirementService,
-		private readonly CharacterStatsPresenter $presenter,
+		private readonly CharacterStatSheet $statSheet,
 		private readonly CallerAccess $callerAccess,
 	) {
-		parent::__construct(appName: $appName, request: $request);
+		parent::__construct(appName: Application::APP_ID, request: $request);
 	}//end __construct()
 
 	/**
@@ -113,16 +106,16 @@ class CharacterBuildsController extends Controller {
 		}
 
 		$candidate = $this->candidate(character: $character, build: $build);
-		$stats = (array)($this->characterService->calculateCharacter(character: $candidate)['stats'] ?? []);
+		$stats = $this->statSheet->stats(character: $candidate);
 
 		return new JSONResponse(
 			data: [
 				'build' => ['id' => $id, 'name' => (string)($build['name'] ?? '')],
 				'character' => ['id' => (string)($character['id'] ?? ''), 'name' => (string)($character['name'] ?? '')],
-				'report' => $this->requirementService->validate(candidate: $candidate, oldCharacter: $character),
+				'report' => $this->statSheet->report(candidate: $candidate, character: $character),
 				'lists' => array_intersect_key($candidate, self::LISTS),
 				'changes' => $this->changes(character: $character, candidate: $candidate),
-				'stats' => $this->presenter->present(stats: $stats, xpAbilityId: $this->requirementService->resolveXpAbility(stats: $stats)),
+				'stats' => $this->statSheet->present(stats: $stats),
 			]
 		);
 	}//end report()
