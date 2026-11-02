@@ -298,6 +298,24 @@ class RegisterObjectFetcher {
 	}//end toArray()
 
 	/**
+	 * Convert a list of objects to arrays.
+	 *
+	 * @param mixed $objects The objects OpenRegister returned.
+	 *
+	 * @return array<int, array<string, mixed>> The objects as arrays.
+	 *
+	 * @psalm-suppress MixedArgument OpenRegister resolved dynamically.
+	 */
+	private function toArrays(mixed $objects): array {
+		return array_map(
+			function (mixed $object): array {
+				return $this->toArray(object: $object);
+			},
+			$objects
+		);
+	}//end toArrays()
+
+	/**
 	 * Get all objects of a given type from OpenRegister.
 	 *
 	 * @param string $objectType The object type (e.g. 'skill', 'character').
@@ -327,26 +345,9 @@ class RegisterObjectFetcher {
 		?array $sort = [],
 		?string $search = null,
 	): array {
-		$mapper = $this->getMapper(objectType: $objectType);
+		$config = ['limit' => $limit, 'offset' => $offset, 'filters' => $filters ?? [], 'sort' => $sort ?? [], 'search' => $search];
 
-		// @var array $objects
-		$objects = $mapper->findAll(
-			[
-				'limit' => $limit,
-				'offset' => $offset,
-				'filters' => $filters ?? [],
-				'sort' => $sort ?? [],
-				'search' => $search,
-			]
-		);
-
-		// @psalm-suppress MixedArgument Mapper resolved dynamically.
-		return array_map(
-			function (mixed $object): array {
-				return $this->toArray(object: $object);
-			},
-			$objects
-		);
+		return $this->toArrays(objects: $this->getMapper(objectType: $objectType)->findAll($config));
 	}//end getObjects()
 
 	/**
@@ -391,13 +392,7 @@ class RegisterObjectFetcher {
 			_multitenancy: false
 		);
 
-		// @psalm-suppress MixedArgument OpenRegister resolved dynamically.
-		return array_map(
-			function (mixed $object): array {
-				return $this->toArray(object: $object);
-			},
-			$objects
-		);
+		return $this->toArrays(objects: $objects);
 	}//end getObjectsWithAppAuthority()
 
 	/**
