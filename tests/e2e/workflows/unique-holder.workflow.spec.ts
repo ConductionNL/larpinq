@@ -184,6 +184,30 @@ test.describe('rules-unique-holder-enforcement', () => {
 		expect(body.errors.items[0].message).not.toContain('Try again')
 	})
 
+	// @e2e openspec/specs/rpg-system/spec.md#a-conditions-id-in-the-items-is-not-an-item
+	test('a condition id in the items is refused as an unknown item', async () => {
+		const curse = ledger.track(
+			'condition',
+			await createObject(api, 'condition', {
+				name: fixtureName('Curse of the Ashen King'),
+				unique: true,
+			}),
+		)
+		const bertram = ledger.track(
+			'character',
+			await createObject(api, 'character', {
+				ocName: playerRef,
+				name: fixtureName('Sir Bertram'),
+			}),
+		)
+
+		const res = await patch('character', bertram, { items: [curse] })
+
+		expect(res.status()).toBe(422)
+		const body = await res.json()
+		expect(body.errors.items[0].code).toBe('unique_item_unknown')
+	})
+
 	// @e2e openspec/specs/rpg-system/spec.md#a-game-master-marks-a-shared-item-unique
 	test('a shared item cannot be switched to unique, and both holders are named', async () => {
 		const key = ledger.track(

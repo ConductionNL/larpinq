@@ -219,7 +219,7 @@ class UniqueHolderServiceTest extends TestCase {
 	}//end testFindConflictsListsSharedUniqueObjects()
 
 	/**
-	 * A service whose getObject throws the given error, or returns the row.
+	 * A service whose getObjectOfType throws the given error, or returns the row.
 	 *
 	 * @param \Throwable|array<string,mixed> $answer The error to throw or the row to return.
 	 *
@@ -227,7 +227,7 @@ class UniqueHolderServiceTest extends TestCase {
 	 */
 	private function reader(\Throwable|array $answer): UniqueHolderService {
 		$fetcher = $this->createMock(RegisterObjectFetcher::class);
-		$fetcher->method('getObject')->willReturnCallback(
+		$fetcher->method('getObjectOfType')->willReturnCallback(
 			function (string $objectType, string $id) use ($answer): array {
 				if ($answer instanceof \Throwable) {
 					throw $answer;

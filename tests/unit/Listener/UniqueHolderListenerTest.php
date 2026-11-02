@@ -115,9 +115,9 @@ class UniqueHolderListenerTest extends TestCase {
 			['id' => self::MIRELA, 'name' => 'Mirela', 'conditions' => [self::CURSE]],
 		];
 		$this->objects = [
-			self::CROWN => ['id' => self::CROWN, 'name' => 'Crown of Aldmoor', 'unique' => true, 'characters' => [self::QUEEN]],
-			self::POTION => ['id' => self::POTION, 'name' => 'Healing potion', 'unique' => false, 'characters' => [self::QUEEN]],
-			self::CURSE => ['id' => self::CURSE, 'name' => 'Curse of the Ashen King', 'unique' => true, 'characters' => []],
+			self::CROWN => ['id' => self::CROWN, 'name' => 'Crown of Aldmoor', 'unique' => true, 'characters' => [self::QUEEN], '@self' => ['schema' => 'schema-item']],
+			self::POTION => ['id' => self::POTION, 'name' => 'Healing potion', 'unique' => false, 'characters' => [self::QUEEN], '@self' => ['schema' => 'schema-item']],
+			self::CURSE => ['id' => self::CURSE, 'name' => 'Curse of the Ashen King', 'unique' => true, 'characters' => [], '@self' => ['schema' => 'schema-condition']],
 			self::QUEEN => ['id' => self::QUEEN, 'name' => 'Queen Isolde'],
 			self::BERTRAM => ['id' => self::BERTRAM, 'name' => 'Sir Bertram'],
 		];
@@ -160,26 +160,37 @@ class UniqueHolderListenerTest extends TestCase {
 				);
 			}
 		);
-		$fetcher->method('getObject')->willReturnCallback(
-			function (string $objectType, string $id) use ($fetcherThrows): array {
-				$this->fetches++;
-				if ($fetcherThrows === true) {
-					throw new \RuntimeException('register down');
+		// Like OpenRegister's find(), which retries a UUID without the schema,
+		// getObject answers with an object of any type.
+		$read = function (string $objectType, string $id) use ($fetcherThrows): array {
+			$this->fetches++;
+			if ($fetcherThrows === true) {
+				throw new \RuntimeException('register down');
+			}
+
+			if (preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/', $id) !== 1) {
+				throw new \InvalidArgumentException('Invalid object ID: expected a UUID');
+			}
+
+			if (in_array($id, $this->unreadable, true) === true) {
+				throw new NotAuthorizedException();
+			}
+
+			if (isset($this->objects[$id]) === false) {
+				throw new DoesNotExistException('Object ' . $id . ' not found');
+			}
+
+			return $this->objects[$id];
+		};
+		$fetcher->method('getObject')->willReturnCallback($read);
+		$fetcher->method('getObjectOfType')->willReturnCallback(
+			function (string $objectType, string $id) use ($read): array {
+				$object = $read($objectType, $id);
+				if (($object['@self']['schema'] ?? '') !== 'schema-' . $objectType) {
+					throw new DoesNotExistException('Object ' . $id . ' is not in the ' . $objectType . ' schema');
 				}
 
-				if (preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/', $id) !== 1) {
-					throw new \InvalidArgumentException('Invalid object ID: expected a UUID');
-				}
-
-				if (in_array($id, $this->unreadable, true) === true) {
-					throw new NotAuthorizedException();
-				}
-
-				if (isset($this->objects[$id]) === false) {
-					throw new DoesNotExistException('Object ' . $id . ' not found');
-				}
-
-				return $this->objects[$id];
+				return $object;
 			}
 		);
 
@@ -486,6 +497,41 @@ class UniqueHolderListenerTest extends TestCase {
 		self::assertSame('unique_item_unknown', $missing->getErrors()['items'][0]['code']);
 		self::assertSame($missing->getErrors(), $unreadable->getErrors());
 	}//end testAnUnreadableItemGetsTheSameAnswerAsAMissingOne()
+
+	/**
+	 * REQ-UHE-007: a condition's id put in `items` is refused as an unknown item,
+	 * even though OpenRegister finds the condition when asked for an item.
+	 *
+	 * @return void
+	 */
+	public function testAConditionIdInItemsIsRefusedAsAnUnknownItem(): void {
+		$event = $this->update(self::BERTRAM, ['items' => [self::CURSE]], ['items' => []]);
+
+		$this->listener()->handle($event);
+
+		self::assertTrue($event->isPropagationStopped());
+		$errors = $event->getErrors();
+		self::assertSame('unique_item_unknown', $errors['items'][0]['code']);
+		self::assertSame('Unknown item ' . self::CURSE . '. This change was not saved.', $errors['message']);
+	}//end testAConditionIdInItemsIsRefusedAsAnUnknownItem()
+
+	/**
+	 * REQ-UHE-007: an item's id put in `conditions` is refused as an unknown condition,
+	 * with the answer of a condition that does not exist.
+	 *
+	 * @return void
+	 */
+	public function testAnItemIdInConditionsGetsTheAnswerOfAMissingCondition(): void {
+		$wrongType = $this->update(self::TOMAS, ['conditions' => [self::CROWN]], ['conditions' => []]);
+		$this->listener()->handle($wrongType);
+
+		unset($this->objects[self::CROWN]);
+		$missing = $this->update(self::TOMAS, ['conditions' => [self::CROWN]], ['conditions' => []]);
+		$this->listener()->handle($missing);
+
+		self::assertSame('unique_condition_unknown', $missing->getErrors()['conditions'][0]['code']);
+		self::assertSame($missing->getErrors(), $wrongType->getErrors());
+	}//end testAnItemIdInConditionsGetsTheAnswerOfAMissingCondition()
 
 	/**
 	 * REQ-UHE-007: an added id that is not a valid object id is refused as unknown.

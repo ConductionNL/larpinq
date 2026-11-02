@@ -25,6 +25,7 @@ use Exception;
 use InvalidArgumentException;
 use OCA\Larpinq\AppInfo\Application;
 use OCP\App\IAppManager;
+use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\IAppConfig;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
@@ -439,6 +440,36 @@ class RegisterObjectFetcher {
 
 		return $this->toArray(object: $object);
 	}//end getObject()
+
+	/**
+	 * Get a single object by type and ID, only when it belongs to that type's schema.
+	 *
+	 * OpenRegister's find() retries a UUID without the schema when the
+	 * requested schema does not hold it, so getObject() can answer with an
+	 * object of another type. This read treats such an object as missing.
+	 *
+	 * @param string $objectType The object type (e.g. 'item').
+	 * @param string $id The object UUID.
+	 *
+	 * @return array<string,mixed> The object as an array.
+	 *
+	 * @throws DoesNotExistException If the object belongs to another schema.
+	 * @throws Exception If OpenRegister is not available, the type is not configured,
+	 *                   or the ID is not a valid UUID.
+	 *
+	 * @spec openspec/specs/rpg-system/spec.md
+	 */
+	public function getObjectOfType(string $objectType, string $id): array {
+		$object = $this->getObject(objectType: $objectType, id: $id);
+		[, $schema] = $this->resolveRegisterAndSchema(objectTypeLower: strtolower($objectType));
+
+		$actual = $object['@self']['schema'] ?? null;
+		if (is_scalar($actual) === false || (string)$actual !== $schema) {
+			throw new DoesNotExistException('Object ' . $id . ' is not in the ' . $objectType . ' schema');
+		}
+
+		return $object;
+	}//end getObjectOfType()
 
 	/**
 	 * Create or update an object of a given type in OpenRegister.
