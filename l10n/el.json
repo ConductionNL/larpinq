@@ -269,6 +269,7 @@
         "%1$s is already held by %2$s. Remove it there first.": "Το %1$s το έχει ήδη ο/η %2$s. Αφαιρέστε το πρώτα από εκεί.",
         "%1$s is already on %2$s. Remove it there first.": "Το %1$s βρίσκεται ήδη στον/στην %2$s. Αφαιρέστε το πρώτα από εκεί.",
         "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "Το %1$s μπορεί να έχει μόνο έναν κάτοχο, και τώρα το έχουν οι %2$s. Αφαιρέστε το πρώτα από όλους εκτός από έναν.",
+        "The unique-holder check could not run, so this change was not saved. Try again.": "Ο έλεγχος μοναδικού κατόχου δεν μπόρεσε να εκτελεστεί, οπότε αυτή η αλλαγή δεν αποθηκεύτηκε. Δοκιμάστε ξανά.",
         "Cast": "Διανομή",
         "Download as PDF": "Λήψη ως PDF",
         "Loading templates": "Φόρτωση προτύπων",

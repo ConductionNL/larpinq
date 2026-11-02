@@ -270,6 +270,7 @@ OC.L10N.register(
         "%1$s is already held by %2$s. Remove it there first.": "%1$s innehas redan av %2$s. Ta bort det där först.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s vilar redan på %2$s. Ta bort det där först.",
         "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s kan bara ha en innehavare, och %2$s har det nu. Ta först bort det från alla utom en.",
+        "The unique-holder check could not run, so this change was not saved. Try again.": "Kontrollen av en enda innehavare kunde inte köras, så ändringen sparades inte. Försök igen.",
         "Cast": "Rollista",
         "Download as PDF": "Ladda ner som PDF",
         "Loading templates": "Läser in mallar",

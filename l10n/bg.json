@@ -269,6 +269,7 @@
         "%1$s is already held by %2$s. Remove it there first.": "%1$s вече е у %2$s. Първо го премахнете оттам.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s вече е върху %2$s. Първо го премахнете оттам.",
         "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s може да има само един притежател, а сега е у %2$s. Първо го премахнете от всички освен един.",
+        "The unique-holder check could not run, so this change was not saved. Try again.": "Проверката за единствен притежател не можа да се изпълни, затова тази промяна не е запазена. Опитайте отново.",
         "Cast": "Актьорски състав",
         "Download as PDF": "Изтегляне като PDF",
         "Loading templates": "Зареждане на шаблони",

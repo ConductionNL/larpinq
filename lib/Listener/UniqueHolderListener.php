@@ -89,23 +89,17 @@ class UniqueHolderListener implements IEventListener {
 			return;
 		}
 
-		try {
-			[$entity, $old] = $this->entitiesOf(event: $event);
-			$errors = $this->collectVeto(entity: $entity, old: $old);
-			if ($errors !== null) {
-				$event->stopPropagation();
-				// @phpstan-ignore-next-line
-				$event->setErrors($errors);
-			}
-		} catch (\Throwable $e) {
-			// A game-rule validator that throws must not block every write:
-			// log and let the write through (same contract as the requirement
-			// listener).
-			$this->logger->error(
-				'Larpinq: unique-holder check errored; allowing the write.',
-				['exception' => $e]
-			);
-		}//end try
+		$subject = $this->subjectOf(event: $event);
+		if ($subject === null) {
+			return;
+		}
+
+		$errors = $this->vetoOrRefuse(subject: $subject);
+		if ($errors !== null) {
+			$event->stopPropagation();
+			// @phpstan-ignore-next-line
+			$event->setErrors($errors);
+		}
 	}//end handle()
 
 	/**
@@ -132,43 +126,67 @@ class UniqueHolderListener implements IEventListener {
 	}//end entitiesOf()
 
 	/**
-	 * The veto payload for a write, or null when it may pass.
+	 * What a pre-write event writes, for the unique-holder rule: the subject
+	 * (`character`, `item` or `condition`) and the write, or null for any other
+	 * schema.
 	 *
-	 * @param object $entity The new object entity.
-	 * @param object|null $old The stored object entity on an update.
+	 * When the event cannot be read, the error is logged and the write passes:
+	 * without the event's data there is no telling whether it adds a holder.
+	 *
+	 * @param Event $event The Creating or Updating event.
+	 *
+	 * @return array{subject:string,write:ObjectWrite}|null The subject and the write.
+	 */
+	private function subjectOf(Event $event): ?array {
+		try {
+			[$entity, $old] = $this->entitiesOf(event: $event);
+			$subject = $this->subjectKind(schema: $this->schemaOf(entity: $entity));
+			if ($subject === null) {
+				return null;
+			}
+
+			return ['subject' => $subject, 'write' => $this->writeOf(entity: $entity, old: $old)];
+		} catch (\Throwable $e) {
+			$this->logger->error('Larpinq: unique-holder check could not read the write; allowing it.', ['exception' => $e]);
+			return null;
+		}
+	}//end subjectOf()
+
+	/**
+	 * The veto for a write. When the check itself fails, a write that adds a
+	 * holder is refused with a try-again message and every other write passes.
+	 *
+	 * @param array{subject:string,write:ObjectWrite} $subject The subject and the write.
 	 *
 	 * @return array<string,mixed>|null The errors payload, or null to allow.
 	 */
-	private function collectVeto(object $entity, ?object $old): ?array {
-		$schema = $this->schemaOf(entity: $entity);
+	private function vetoOrRefuse(array $subject): ?array {
+		try {
+			return $this->veto->veto(subject: $subject['subject'], write: $subject['write']);
+		} catch (\Throwable $e) {
+			$this->logger->error('Larpinq: unique-holder check errored; refusing a write that adds a holder.', ['exception' => $e]);
+			return $this->veto->uncheckedRefusal(subject: $subject['subject'], write: $subject['write']);
+		}
+	}//end vetoOrRefuse()
+
+	/**
+	 * The subject a schema holds: `character`, `item`, `condition`, or null.
+	 *
+	 * @param string $schema The schema id.
+	 *
+	 * @return string|null The subject.
+	 */
+	private function subjectKind(string $schema): ?string {
 		if ($schema === '') {
 			return null;
 		}
 
-		$write = $this->writeOf(entity: $entity, old: $old);
 		if ($schema === $this->config->getValueString(Application::APP_ID, 'character_schema', '')) {
-			return $this->veto->vetoCharacter(write: $write);
+			return 'character';
 		}
 
-		return $this->vetoHeldKind(schema: $schema, write: $write);
-	}//end collectVeto()
-
-	/**
-	 * The veto for an item or condition write, or null for any other schema.
-	 *
-	 * @param string $schema The schema id.
-	 * @param ObjectWrite $write The write.
-	 *
-	 * @return array<string,mixed>|null The errors payload, or null to allow.
-	 */
-	private function vetoHeldKind(string $schema, ObjectWrite $write): ?array {
-		$kind = $this->heldKindOf(schema: $schema);
-		if ($kind === null) {
-			return null;
-		}
-
-		return $this->veto->vetoHeldObject(kind: $kind, write: $write);
-	}//end vetoHeldKind()
+		return $this->heldKindOf(schema: $schema);
+	}//end subjectKind()
 
 	/**
 	 * The write a pre-write event carries.

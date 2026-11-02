@@ -270,6 +270,7 @@ OC.L10N.register(
         "%1$s is already held by %2$s. Remove it there first.": "%1$s è già in possesso di %2$s. Rimuovilo prima da lì.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s è già su %2$s. Rimuovilo prima da lì.",
         "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s può avere un solo possessore, e ora lo hanno %2$s. Toglilo prima a tutti tranne uno.",
+        "The unique-holder check could not run, so this change was not saved. Try again.": "Non è stato possibile eseguire il controllo del titolare unico, quindi questa modifica non è stata salvata. Riprova.",
         "Cast": "Cast",
         "Download as PDF": "Scarica come PDF",
         "Loading templates": "Caricamento modelli",

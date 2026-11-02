@@ -269,6 +269,7 @@
         "%1$s is already held by %2$s. Remove it there first.": "%1$s jau pieder %2$s. Vispirms noņemiet to tur.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s jau ir uz %2$s. Vispirms noņemiet to tur.",
         "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s var piederēt tikai vienam turētājam, bet tagad tas ir %2$s. Vispirms noņemiet to visiem, izņemot vienu.",
+        "The unique-holder check could not run, so this change was not saved. Try again.": "Viena turētāja pārbaudi nevarēja izpildīt, tāpēc šīs izmaiņas netika saglabātas. Mēģiniet vēlreiz.",
         "Cast": "Lomu sadalījums",
         "Download as PDF": "Lejupielādēt kā PDF",
         "Loading templates": "Ielādē veidnes",

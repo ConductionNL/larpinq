@@ -270,6 +270,7 @@ OC.L10N.register(
         "%1$s is already held by %2$s. Remove it there first.": "%1$s ужо ў %2$s. Спачатку прыберыце яго адтуль.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s ужо накладзена на %2$s. Спачатку прыберыце яго адтуль.",
         "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s можа мець толькі аднаго ўладальніка, а цяпер яно ў %2$s. Спачатку прыберыце яго ва ўсіх, акрамя аднаго.",
+        "The unique-holder check could not run, so this change was not saved. Try again.": "Не ўдалося выканаць праверку адзінага ўладальніка, таму гэтая змена не захавана. Паспрабуйце яшчэ раз.",
         "Cast": "Склад",
         "Download as PDF": "Спампаваць як PDF",
         "Loading templates": "Загрузка шаблонаў",

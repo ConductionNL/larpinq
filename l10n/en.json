@@ -234,6 +234,7 @@
         "%1$s is already held by %2$s. Remove it there first.": "%1$s is already held by %2$s. Remove it there first.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s is already on %2$s. Remove it there first.",
         "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.",
+        "The unique-holder check could not run, so this change was not saved. Try again.": "The unique-holder check could not run, so this change was not saved. Try again.",
         "Cast": "Cast",
         "Download as PDF": "Download as PDF",
         "Loading templates": "Loading templates",

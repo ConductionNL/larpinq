@@ -269,6 +269,7 @@
         "%1$s is already held by %2$s. Remove it there first.": "%1$s že ima %2$s. Najprej ga odstranite tam.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s je že na %2$s. Najprej ga odstranite tam.",
         "%1$s can have only one holder, and %2$s hold it now. Remove all but one first.": "%1$s ima lahko le enega imetnika, zdaj pa ga imajo %2$s. Najprej ga odstranite vsem razen enemu.",
+        "The unique-holder check could not run, so this change was not saved. Try again.": "Preverjanja edinega imetnika ni bilo mogoče izvesti, zato ta sprememba ni bila shranjena. Poskusite znova.",
         "Cast": "Zasedba",
         "Download as PDF": "Prenesi kot PDF",
         "Loading templates": "Nalaganje predlog",
