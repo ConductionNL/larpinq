@@ -22,9 +22,18 @@ const THROWS = Symbol('throws')
 
 const RESPONSES = {
 	ok: { status: 200, body: {} },
-	'nested errors': { status: 400, body: { errors: { message: 'Locked' }, message: 'outer', error: 'e' } },
-	'errors without a message': { status: 400, body: { errors: { field: 'x' }, message: 'outer', error: 'e' } },
-	'errors as a string': { status: 400, body: { errors: 'flat', message: 'Top', error: 'e' } },
+	'nested errors': {
+		status: 400,
+		body: { errors: { message: 'Locked' }, message: 'outer', error: 'e' },
+	},
+	'errors without a message': {
+		status: 400,
+		body: { errors: { field: 'x' }, message: 'outer', error: 'e' },
+	},
+	'errors as a string': {
+		status: 400,
+		body: { errors: 'flat', message: 'Top', error: 'e' },
+	},
 	'null errors': { status: 400, body: { errors: null, message: 'm' } },
 	'error only': { status: 403, body: { error: 'Not yours' } },
 	'numeric message': { status: 409, body: { message: 7 } },
@@ -45,7 +54,11 @@ const SELECTIONS = {
 		names: { venn: 'Lady Venn' },
 	},
 	'one id, no names': { ids: ['x'], choices: { type: 'npc' } },
-	'empty name falls back to the id': { ids: ['a'], choices: { setting: 'w1' }, names: { a: '' } },
+	'empty name falls back to the id': {
+		ids: ['a'],
+		choices: { setting: 'w1' },
+		names: { a: '' },
+	},
 	'null ids': { ids: null, choices: { status: 'dead' } },
 	'no ids': { ids: [], choices: {} },
 	'null choices': { ids: ['y'], choices: null },
@@ -82,7 +95,12 @@ function responseOf(spec) {
 async function run(selection, spec, alternate) {
 	const requests = []
 	globalThis.fetch = async (url, init) => {
-		requests.push({ url, method: init?.method, headers: init?.headers, body: init?.body })
+		requests.push({
+			url,
+			method: init?.method,
+			headers: init?.headers,
+			body: init?.body,
+		})
 		if (alternate && requests.length % 2 === 1) {
 			return responseOf(RESPONSES.ok)
 		}
