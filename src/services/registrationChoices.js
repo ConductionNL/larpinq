@@ -12,8 +12,8 @@
  */
 
 import { generateUrl } from '@nextcloud/router'
-import { refusalOf } from './responseBody.js'
 import { jsonHeaders } from './requestHeaders.js'
+import { refusalOf } from './responseBody.js'
 
 const REGISTRATION = '/apps/openregister/api/objects/larpinq/larping_registration'
 

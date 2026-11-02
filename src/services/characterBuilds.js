@@ -13,8 +13,8 @@
 
 import { getRequestToken } from '@nextcloud/auth'
 import { generateUrl } from '@nextcloud/router'
-import { refusalOf } from './responseBody.js'
 import { jsonHeaders } from './requestHeaders.js'
+import { refusalOf } from './responseBody.js'
 
 const OBJECTS = '/apps/openregister/api/objects/larpinq'
 
