@@ -463,6 +463,36 @@ pages SHALL show it in Dutch and English with the holder's name.
 - WHEN the save of "Sir Bertram" is refused because "Queen Isolde" holds "Crown of Aldmoor"
 - THEN the message on the character page is in Dutch and names "Queen Isolde"
 
+### Requirement: The check fails closed (REQ-UHE-006)
+
+When larpinq cannot read what the unique-holder check needs (the added item
+or condition cannot be read, or a holder lookup fails), it SHALL refuse a
+write that adds a holder: a character write that adds an item or condition,
+a create of a unique item or condition, an item or condition write that adds
+a holder, or one that switches `unique` on. The refusal MUST say the change
+was not saved and can be tried again. A write that adds no holder SHALL pass
+as before.
+
+#### Scenario: OpenRegister cannot answer while a holder is added
+
+- GIVEN the holder lookup fails because OpenRegister does not answer
+- WHEN a game master adds "Crown of Aldmoor" to character "Sir Bertram"
+- THEN the save is refused on `items`
+- AND the message says the change was not saved and to try again
+
+#### Scenario: An edit that adds no holder still saves
+
+- GIVEN the holder lookup fails because OpenRegister does not answer
+- WHEN a game master changes only the background of "Sir Bertram"
+- THEN the save succeeds
+
+#### Scenario: Bulk saves and imports run the check
+
+- GIVEN a game master imports characters, items or conditions in bulk
+- WHEN a row adds a second holder of a unique item or condition
+- THEN that row is refused like a single save, because the character, item
+  and condition schemas set `fireEventsOnBulkWrites`
+
 ### Requirement: Today's conflicts can be listed (REQ-UHE-005)
 
 An administrator MUST be able to list every unique item and unique condition

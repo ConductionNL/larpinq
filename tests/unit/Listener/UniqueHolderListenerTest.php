@@ -118,15 +118,16 @@ class UniqueHolderListenerTest extends TestCase {
 	 *
 	 * @param LoggerInterface|null $logger An optional logger.
 	 * @param bool $fetcherThrows Whether every fetch throws.
+	 * @param bool $holdersThrow Whether only the holder lookup (getObjects) throws.
 	 *
 	 * @return UniqueHolderListener The listener.
 	 */
-	private function listener(?LoggerInterface $logger = null, bool $fetcherThrows = false): UniqueHolderListener {
+	private function listener(?LoggerInterface $logger = null, bool $fetcherThrows = false, bool $holdersThrow = false): UniqueHolderListener {
 		$fetcher = $this->createMock(RegisterObjectFetcher::class);
 		$fetcher->method('getObjects')->willReturnCallback(
-			function (string $objectType, ?int $limit = null, ?int $offset = null, ?array $filters = []) use ($fetcherThrows): array {
+			function (string $objectType, ?int $limit = null, ?int $offset = null, ?array $filters = []) use ($fetcherThrows, $holdersThrow): array {
 				$this->fetches++;
-				if ($fetcherThrows === true) {
+				if ($fetcherThrows === true || $holdersThrow === true) {
 					throw new \RuntimeException('register down');
 				}
 
@@ -357,17 +358,85 @@ class UniqueHolderListenerTest extends TestCase {
 	}//end testOtherSchemasAreIgnored()
 
 	/**
-	 * A failing lookup is logged and the write goes through.
+	 * REQ-UHE-006: a create of a unique item is refused when the holders cannot be read.
 	 *
 	 * @return void
 	 */
-	public function testALookupErrorIsLoggedAndTheWritePasses(): void {
+	public function testALookupErrorRefusesACreateOfAUniqueItem(): void {
 		$logger = $this->createMock(LoggerInterface::class);
 		$event = new ObjectCreatingEvent(new HeldObjectEntity('schema-item', self::CROWN, ['unique' => true, 'characters' => [self::QUEEN]]));
 		$logger->expects(self::once())->method('error');
 
 		$this->listener(logger: $logger, fetcherThrows: true)->handle($event);
 
-		self::assertFalse($event->isPropagationStopped());
-	}//end testALookupErrorIsLoggedAndTheWritePasses()
+		self::assertTrue($event->isPropagationStopped());
+		$errors = $event->getErrors();
+		self::assertSame('The unique-holder check could not run, so this change was not saved. Try again.', $errors['message']);
+		self::assertSame('unique_item_unchecked', $errors['characters'][0]['code']);
+		self::assertSame(self::CROWN, $errors['characters'][0]['item']);
+	}//end testALookupErrorRefusesACreateOfAUniqueItem()
+
+	/**
+	 * REQ-UHE-006: a character that gains an item is refused when the item cannot be read.
+	 *
+	 * @return void
+	 */
+	public function testAnUnreadableAddedItemIsRefused(): void {
+		$event = $this->update(self::BERTRAM, ['items' => [self::CROWN]], ['items' => []]);
+
+		$this->listener(fetcherThrows: true)->handle($event);
+
+		self::assertTrue($event->isPropagationStopped());
+		self::assertSame('unique_item_unchecked', $event->getErrors()['items'][0]['code']);
+		self::assertSame(self::CROWN, $event->getErrors()['items'][0]['item']);
+	}//end testAnUnreadableAddedItemIsRefused()
+
+	/**
+	 * REQ-UHE-006: a held condition whose holder lookup fails is refused on `conditions`.
+	 *
+	 * @return void
+	 */
+	public function testAFailingHolderLookupRefusesAGainedCondition(): void {
+		$logger = $this->createMock(LoggerInterface::class);
+		$logger->expects(self::once())->method('error');
+		$event = $this->update(self::TOMAS, ['conditions' => [self::CURSE]], ['conditions' => []]);
+
+		$this->listener(logger: $logger, holdersThrow: true)->handle($event);
+
+		self::assertTrue($event->isPropagationStopped());
+		self::assertSame('unique_condition_unchecked', $event->getErrors()['conditions'][0]['code']);
+	}//end testAFailingHolderLookupRefusesAGainedCondition()
+
+	/**
+	 * REQ-UHE-006: switching unique on is refused on `unique` when the holders cannot be read.
+	 *
+	 * @return void
+	 */
+	public function testSwitchingUniqueOnIsRefusedWhenTheLookupFails(): void {
+		$event = $this->update(self::CROWN, ['unique' => true, 'characters' => [self::QUEEN]], ['unique' => false, 'characters' => [self::QUEEN]], 'schema-item');
+
+		$this->listener(fetcherThrows: true)->handle($event);
+
+		self::assertTrue($event->isPropagationStopped());
+		self::assertSame('unique_item_unchecked', $event->getErrors()['unique'][0]['code']);
+	}//end testSwitchingUniqueOnIsRefusedWhenTheLookupFails()
+
+	/**
+	 * REQ-UHE-006: writes that add no holder pass while the lookup fails.
+	 *
+	 * @return void
+	 */
+	public function testWritesThatAddNoHolderPassWhileTheLookupFails(): void {
+		$events = [
+			$this->update(self::BERTRAM, ['background' => 'New', 'items' => [self::CROWN]], ['background' => 'Old', 'items' => [self::CROWN]]),
+			$this->update(self::CROWN, ['unique' => true, 'name' => 'x', 'characters' => [self::QUEEN]], ['unique' => true, 'characters' => [self::QUEEN]], 'schema-item'),
+			$this->update(self::POTION, ['unique' => false, 'characters' => [self::QUEEN, self::BERTRAM]], ['unique' => false, 'characters' => [self::QUEEN]], 'schema-item'),
+			$this->update(self::BERTRAM, ['items' => []], ['items' => [self::CROWN]]),
+		];
+
+		foreach ($events as $index => $event) {
+			$this->listener(fetcherThrows: true)->handle($event);
+			self::assertFalse($event->isPropagationStopped(), 'event '.$index);
+		}
+	}//end testWritesThatAddNoHolderPassWhileTheLookupFails()
 }//end class
