@@ -58,12 +58,12 @@ class CharactersPdfTemplatesTest extends TestCase {
 		);
 
 		return new CharactersController(
-			'larpinq',
-			$this->createMock(originalClassName: IRequest::class),
-			$this->createMock(originalClassName: RegisterObjectFetcher::class),
-			new DocuDeskPdfRenderer($appManager, $container, $this->createMock(originalClassName: LoggerInterface::class)),
-			new CallerAccess($this->createMock(originalClassName: IUserSession::class), $this->createMock(originalClassName: IGroupManager::class)),
-			$this->createMock(originalClassName: SkillRequirementService::class),
+			appName: 'larpinq',
+			request: $this->createMock(originalClassName: IRequest::class),
+			objectFetcher: $this->createMock(originalClassName: RegisterObjectFetcher::class),
+			pdfRenderer: new DocuDeskPdfRenderer(appManager: $appManager, container: $container, logger: $this->createMock(originalClassName: LoggerInterface::class)),
+			callerAccess: new CallerAccess(userSession: $this->createMock(originalClassName: IUserSession::class), groupManager: $this->createMock(originalClassName: IGroupManager::class)),
+			requirementService: $this->createMock(originalClassName: SkillRequirementService::class),
 		);
 	}//end controller()
 

@@ -73,7 +73,7 @@ class XpAwardProvenanceListenerTest extends TestCase {
 			}
 		);
 
-		return new XpAwardProvenanceListener($session, $config);
+		return new XpAwardProvenanceListener(userSession: $session, config: $config);
 	}//end listener()
 
 	/**

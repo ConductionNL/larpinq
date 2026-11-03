@@ -48,7 +48,7 @@ class PaymentEdgeCasesTest extends TestCase {
 	private PaymentWorld $world;
 
 	protected function setUp(): void {
-		$this->world = new PaymentWorld($this);
+		$this->world = new PaymentWorld(test: $this);
 	}//end setUp()
 
 	/**
@@ -85,7 +85,7 @@ class PaymentEdgeCasesTest extends TestCase {
 		$fetcher = $this->createMock(originalClassName: RegisterObjectFetcher::class);
 		$fetcher->method('getObjectsWithAppAuthority')->willReturn([['id' => self::REG, 'paymentState' => 'open', 'payBy' => '2026-10-16T00:00:00+00:00']]);
 		$fetcher->method('saveObjectWithAppAuthority')->willThrowException(new RuntimeException('database gone'));
-		$counts = (new PaymentFollowUp($fetcher, $this->world->paymentLeaf(), new NullLogger()))->daily(now: new DateTimeImmutable('2026-10-15T10:00:00+00:00'));
+		$counts = (new PaymentFollowUp(fetcher: $fetcher, leaf: $this->world->paymentLeaf(), logger: new NullLogger()))->daily(now: new DateTimeImmutable(datetime: '2026-10-15T10:00:00+00:00'));
 		$this->assertSame(expected: 0, actual: array_sum($counts), message: 'a failed write is logged and the run goes on');
 	}//end testTheDailyPassOnIncompleteRegistrations()
 
@@ -110,12 +110,12 @@ class PaymentEdgeCasesTest extends TestCase {
 
 		$absent = $this->createMock(originalClassName: ContainerInterface::class);
 		$absent->method('has')->willReturn(false);
-		$this->assertFalse(condition: (new PaymentLeaf($absent, $this->world->config(), new NullLogger()))->available());
+		$this->assertFalse(condition: (new PaymentLeaf(container: $absent, config: $this->world->config(), logger: new NullLogger()))->available());
 
 		$broken = $this->createMock(originalClassName: ContainerInterface::class);
 		$broken->method('has')->willReturn(true);
 		$broken->method('get')->willThrowException(new RuntimeException('registry failed'));
-		$this->assertFalse(condition: (new PaymentLeaf($broken, $this->world->config(), new NullLogger()))->available());
+		$this->assertFalse(condition: (new PaymentLeaf(container: $broken, config: $this->world->config(), logger: new NullLogger()))->available());
 	}//end testTheLeafWithoutShillinq()
 
 	/**
@@ -125,7 +125,7 @@ class PaymentEdgeCasesTest extends TestCase {
 	 * @return void
 	 */
 	public function testTheBuilderFallsBack(): void {
-		$builder = new PaymentRequestBuilder($this->world->fetcher(), $this->world->users(), $this->world->clock(), new NullLogger());
+		$builder = new PaymentRequestBuilder(fetcher: $this->world->fetcher(), users: $this->world->users(), time: $this->world->clock(), logger: new NullLogger());
 
 		$this->assertSame(expected: '2026-10-29T10:00:00+00:00', actual: $builder->payBy(registration: [], event: []));
 		$this->assertSame(expected: 'WC26-0042', actual: $builder->reference(registration: ['paymentReference' => 'WC26-0042'], event: []));

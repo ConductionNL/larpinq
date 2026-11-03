@@ -201,7 +201,7 @@ class RegistrationServiceTest extends TestCase {
 		$apps = $this->createMock(originalClassName: IAppManager::class);
 		$apps->method('getInstalledApps')->willReturn(['openregister']);
 
-		return new RegisterObjectFetcher($container, $apps, $this->config(), new NullLogger());
+		return new RegisterObjectFetcher(container: $container, appManager: $apps, config: $this->config(), logger: new NullLogger());
 	}//end fetcher()
 
 	/**
@@ -236,9 +236,9 @@ class RegistrationServiceTest extends TestCase {
 		);
 		$l10n = $this->createMock(originalClassName: IL10N::class);
 		$l10n->method('t')->willReturnCallback(static fn (string $text): string => $text);
-		$service = new RegistrationService($this->fetcher(), $this->locks->forRequest($request), new NullLogger(), $lockAttempts, 0);
+		$service = new RegistrationService(fetcher: $this->fetcher(), locking: $this->locks->forRequest($request), logger: new NullLogger(), lockAttempts: $lockAttempts, lockWaitMicros: 0);
 
-		return new RegistrationListener($this->config(), $service, new RegistrationWriteCheck(new RegistrationCharacterCheck($this->fetcher()), new TicketChoiceService($this->fetcher(), $service, new NullLogger())), $session, $l10n, new NullLogger());
+		return new RegistrationListener(config: $this->config(), service: $service, writeCheck: new RegistrationWriteCheck(characterCheck: new RegistrationCharacterCheck(fetcher: $this->fetcher()), ticketChoices: new TicketChoiceService(fetcher: $this->fetcher(), registrations: $service, logger: new NullLogger())), session: $session, l10n: $l10n, logger: new NullLogger());
 	}//end listener()
 
 	/**

@@ -41,7 +41,7 @@ class CharacterServiceTest extends TestCase {
 				return [];
 			});
 
-		$this->service = new CharacterService($this->objectFetcher, $this->logger, new EffectApplier());
+		$this->service = new CharacterService(objectFetcher: $this->objectFetcher, logger: $this->logger, effectApplier: new EffectApplier());
 	}
 
 	/**
@@ -69,7 +69,7 @@ class CharacterServiceTest extends TestCase {
 				};
 			});
 
-		return new CharacterService($fetcher, $this->createMock(originalClassName: LoggerInterface::class), new EffectApplier());
+		return new CharacterService(objectFetcher: $fetcher, logger: $this->createMock(originalClassName: LoggerInterface::class), effectApplier: new EffectApplier());
 	}
 
 	public function testCalculateCharacterWithNoAbilities(): void {
@@ -305,7 +305,7 @@ class CharacterServiceTest extends TestCase {
 				return [];
 			});
 
-		$service = new CharacterService($fetcher, $this->createMock(originalClassName: LoggerInterface::class), new EffectApplier());
+		$service = new CharacterService(objectFetcher: $fetcher, logger: $this->createMock(originalClassName: LoggerInterface::class), effectApplier: new EffectApplier());
 		$results = $service->calculateAllCharacters();
 
 		self::assertCount(expectedCount: 2, haystack: $results);

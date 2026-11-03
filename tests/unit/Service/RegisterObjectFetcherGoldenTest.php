@@ -146,7 +146,7 @@ class RegisterObjectFetcherGoldenTest extends TestCase {
 			fn (string $app, string $key, string $default = ''): string => $app.'/'.$key
 		);
 
-		return new RegisterObjectFetcher($container, $appManager, $config, $this->createMock(originalClassName: LoggerInterface::class));
+		return new RegisterObjectFetcher(container: $container, appManager: $appManager, config: $config, logger: $this->createMock(originalClassName: LoggerInterface::class));
 	}//end fetcher()
 
 	/**

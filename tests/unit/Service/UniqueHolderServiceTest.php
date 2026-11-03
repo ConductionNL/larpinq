@@ -63,7 +63,7 @@ class UniqueHolderServiceTest extends TestCase {
 			}
 		);
 
-		return new UniqueHolderService($fetcher, new IdListNormaliser());
+		return new UniqueHolderService(objectFetcher: $fetcher, idNormaliser: new IdListNormaliser());
 	}//end service()
 
 	/**
@@ -207,7 +207,7 @@ class UniqueHolderServiceTest extends TestCase {
 			}
 		);
 
-		$conflicts = (new UniqueHolderConflictFinder($service, new IdListNormaliser()))->findConflicts();
+		$conflicts = (new UniqueHolderConflictFinder(holders: $service, idNormaliser: new IdListNormaliser()))->findConflicts();
 
 		self::assertSame(
 			expected: [
@@ -237,7 +237,7 @@ class UniqueHolderServiceTest extends TestCase {
 			}
 		);
 
-		return new UniqueHolderService($fetcher, new IdListNormaliser());
+		return new UniqueHolderService(objectFetcher: $fetcher, idNormaliser: new IdListNormaliser());
 	}//end reader()
 
 	/**

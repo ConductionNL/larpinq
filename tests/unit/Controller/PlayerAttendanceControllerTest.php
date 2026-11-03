@@ -91,10 +91,10 @@ class PlayerAttendanceControllerTest extends TestCase {
 		$groupManager->method('isAdmin')->willReturn(false);
 
 		return new PlayerAttendanceController(
-			$this->createMock(originalClassName: IRequest::class),
-			new PlayerAttendanceService($fetcher),
-			new CharacterConnectionGuard($fetcher),
-			new CallerAccess($this->sessionOf(uid: $uid), $groupManager),
+			request: $this->createMock(originalClassName: IRequest::class),
+			history: new PlayerAttendanceService(objectFetcher: $fetcher),
+			guard: new CharacterConnectionGuard(objectFetcher: $fetcher),
+			callerAccess: new CallerAccess(userSession: $this->sessionOf(uid: $uid), groupManager: $groupManager),
 		);
 	}//end controllerAs()
 

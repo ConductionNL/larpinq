@@ -79,7 +79,7 @@ class FormSubmissionListenerTest extends TestCase {
 		$config->method('getValueString')->willReturnCallback(
 			static fn (string $app, string $key, string $default = ''): string => (str_ends_with($key, '_register') === true ? '3' : (str_ends_with($key, '_schema') === true ? substr($key, 0, -strlen('_schema')) : $default))
 		);
-		$fetcher = new RegisterObjectFetcher($container, $apps, $config, new \Psr\Log\NullLogger());
+		$fetcher = new RegisterObjectFetcher(container: $container, appManager: $apps, config: $config, logger: new \Psr\Log\NullLogger());
 		$users = $this->createMock(originalClassName: IUserManager::class);
 		$users->method('userExists')->willReturnCallback(static fn (string $uid): bool => in_array($uid, ['anna', 'nieuw'], true));
 		$logger = $this->createMock(originalClassName: LoggerInterface::class);
@@ -91,7 +91,7 @@ class FormSubmissionListenerTest extends TestCase {
 			);
 		}
 
-		return new FormSubmissionListener($fetcher, $users, $logger);
+		return new FormSubmissionListener(fetcher: $fetcher, users: $users, logger: $logger);
 	}//end listener()
 
 	/**

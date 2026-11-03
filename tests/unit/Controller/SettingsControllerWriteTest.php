@@ -94,7 +94,7 @@ class SettingsControllerWriteTest extends TestCase {
 			container: $this->createMock(originalClassName: ContainerInterface::class),
 			appManager: $appManager,
 			settingsService: $this->settingsService,
-			callerAccess: new CallerAccess($userSession, $this->createMock(originalClassName: IGroupManager::class)),
+			callerAccess: new CallerAccess(userSession: $userSession, groupManager: $this->createMock(originalClassName: IGroupManager::class)),
 			logger: $this->createMock(originalClassName: LoggerInterface::class),
 		);
 

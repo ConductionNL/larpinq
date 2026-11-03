@@ -220,7 +220,7 @@ trait RealEvaluatorRegister {
 			static fn (string $app, string $key): string => (str_ends_with($key, '_register') === true ? '3' : substr($key, 0, -strlen('_schema')))
 		);
 
-		return new RegisterObjectFetcher($container, $apps, $config, new NullLogger());
+		return new RegisterObjectFetcher(container: $container, appManager: $apps, config: $config, logger: new NullLogger());
 	}//end fetcherOver()
 
 	/**

@@ -87,14 +87,14 @@ class CharacterRequirementListenerTest extends TestCase {
 				default => [],
 			};
 		});
-		$engine = new CharacterService($fetcher, $this->logger, new EffectApplier());
+		$engine = new CharacterService(objectFetcher: $fetcher, logger: $this->logger, effectApplier: new EffectApplier());
 		$idList = new IdListNormaliser();
 		$requirementService = new SkillRequirementService(
-			$engine,
-			$fetcher,
-			$this->logger,
-			new SkillRequirementChecker($idList),
-			$idList
+			characterService: $engine,
+			objectFetcher: $fetcher,
+			logger: $this->logger,
+			checker: new SkillRequirementChecker(idList: $idList),
+			idList: $idList
 		);
 
 		$config = $this->createMock(originalClassName: IAppConfig::class);
@@ -113,12 +113,12 @@ class CharacterRequirementListenerTest extends TestCase {
 		$groupManager->method('isInGroup')->willReturn($isGm);
 
 		return new CharacterRequirementListener(
-			$requirementService,
-			$config,
-			$userSession,
-			$groupManager,
-			$this->logger,
-			new CustomFieldGuard($fetcher, new CustomFieldValidator())
+			requirementService: $requirementService,
+			config: $config,
+			userSession: $userSession,
+			groupManager: $groupManager,
+			logger: $this->logger,
+			customFields: new CustomFieldGuard(objectFetcher: $fetcher, validator: new CustomFieldValidator())
 		);
 	}
 

@@ -78,12 +78,12 @@ class SetupControllerTest extends TestCase {
 			->willReturnCallback(static fn (string $key, $default = null) => ($params[$key] ?? $default));
 
 		return new SetupController(
-			$request,
-			$this->appConfig,
-			$this->demoData,
-			$this->settings,
-			$this->appManager,
-			$this->createMock(originalClassName: LoggerInterface::class)
+			request: $request,
+			appConfig: $this->appConfig,
+			demoDataService: $this->demoData,
+			settingsService: $this->settings,
+			appManager: $this->appManager,
+			logger: $this->createMock(originalClassName: LoggerInterface::class)
 		);
 	}
 

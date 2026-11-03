@@ -31,7 +31,7 @@ class ConfigFileLoaderServiceTest extends TestCase {
 		parent::setUp();
 
 		$this->appManager = $this->createMock(originalClassName: IAppManager::class);
-		$this->service = new ConfigFileLoaderService($this->appManager);
+		$this->service = new ConfigFileLoaderService(appManager: $this->appManager);
 	}
 
 	public function testLoadConfigurationFileThrowsWhenFileNotFound(): void {

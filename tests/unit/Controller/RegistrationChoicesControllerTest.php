@@ -81,8 +81,8 @@ class RegistrationChoicesControllerTest extends TestCase {
 		$config->method('getValueString')->willReturnCallback(
 			static fn (string $app, string $key, string $default = ''): string => (str_ends_with($key, '_register') === true ? '3' : (str_ends_with($key, '_schema') === true ? substr($key, 0, -strlen('_schema')) : $default))
 		);
-		$fetcher = new RegisterObjectFetcher($container, $apps, $config, new NullLogger());
-		$service = new RegistrationService($fetcher, $this->createMock(originalClassName: ILockingProvider::class), new NullLogger(), 1, 0);
+		$fetcher = new RegisterObjectFetcher(container: $container, appManager: $apps, config: $config, logger: new NullLogger());
+		$service = new RegistrationService(fetcher: $fetcher, locking: $this->createMock(originalClassName: ILockingProvider::class), logger: new NullLogger(), lockAttempts: 1, lockWaitMicros: 0);
 
 		$session = $this->createMock(originalClassName: IUserSession::class);
 		$user = null;
@@ -96,7 +96,7 @@ class RegistrationChoicesControllerTest extends TestCase {
 		$groups->method('isInGroup')->willReturnCallback(static fn (string $who, string $group): bool => $gameMaster === true && $group === Application::GM_GROUP);
 		$groups->method('isAdmin')->willReturn(false);
 
-		return new RegistrationChoicesController($this->createMock(originalClassName: IRequest::class), new TicketChoiceService($fetcher, $service, new NullLogger()), $fetcher, new CallerAccess($session, $groups));
+		return new RegistrationChoicesController(request: $this->createMock(originalClassName: IRequest::class), choices: new TicketChoiceService(fetcher: $fetcher, registrations: $service, logger: new NullLogger()), fetcher: $fetcher, callerAccess: new CallerAccess(userSession: $session, groupManager: $groups));
 	}//end controllerAs()
 
 	/**

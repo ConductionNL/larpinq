@@ -44,9 +44,9 @@ class DocuDeskPdfRendererTest extends TestCase {
 		$this->logger = $this->createMock(originalClassName: LoggerInterface::class);
 
 		$this->renderer = new DocuDeskPdfRenderer(
-			$this->appManager,
-			$this->container,
-			$this->logger,
+			appManager: $this->appManager,
+			container: $this->container,
+			logger: $this->logger,
 		);
 	}
 

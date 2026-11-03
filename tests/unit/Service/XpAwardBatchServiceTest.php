@@ -87,7 +87,7 @@ class XpAwardBatchServiceTest extends TestCase {
 			}
 		);
 
-		$this->service = new XpAwardBatchService(new EventRosterService($fetcher), $fetcher);
+		$this->service = new XpAwardBatchService(rosterService: new EventRosterService(objectFetcher: $fetcher), objectFetcher: $fetcher);
 	}//end setUp()
 
 	/**

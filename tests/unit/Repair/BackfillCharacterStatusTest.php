@@ -55,7 +55,7 @@ class BackfillCharacterStatusTest extends TestCase {
 			}
 		);
 
-		(new BackfillCharacterStatus($fetcher, $this->createMock(originalClassName: LoggerInterface::class)))->run($this->createMock(originalClassName: IOutput::class));
+		(new BackfillCharacterStatus(objectFetcher: $fetcher, logger: $this->createMock(originalClassName: LoggerInterface::class)))->run($this->createMock(originalClassName: IOutput::class));
 
 		$this->assertCount(expectedCount: 199, haystack: $saved);
 		$this->assertArrayNotHasKey(key: 'c5', array: $saved);
@@ -74,13 +74,13 @@ class BackfillCharacterStatusTest extends TestCase {
 		$fetcher->expects($this->exactly(count: 2))->method('saveObject')->willThrowException(new \RuntimeException('locked'));
 		$logger = $this->createMock(originalClassName: LoggerInterface::class);
 		$logger->expects($this->exactly(count: 2))->method('warning');
-		(new BackfillCharacterStatus($fetcher, $logger))->run($this->createMock(originalClassName: IOutput::class));
+		(new BackfillCharacterStatus(objectFetcher: $fetcher, logger: $logger))->run($this->createMock(originalClassName: IOutput::class));
 
 		$broken = $this->createMock(originalClassName: RegisterObjectFetcher::class);
 		$broken->method('getObjects')->willThrowException(new \RuntimeException('no register'));
 		$broken->expects($this->never())->method('saveObject');
 		$output = $this->createMock(originalClassName: IOutput::class);
 		$output->expects($this->once())->method('warning');
-		(new BackfillCharacterStatus($broken, $this->createMock(originalClassName: LoggerInterface::class)))->run($output);
+		(new BackfillCharacterStatus(objectFetcher: $broken, logger: $this->createMock(originalClassName: LoggerInterface::class)))->run($output);
 	}//end testFailuresNeverStopTheUpgrade()
 }//end class

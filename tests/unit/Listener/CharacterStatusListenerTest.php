@@ -58,7 +58,7 @@ class CharacterStatusListenerTest extends TestCase {
 		$config = $this->createMock(originalClassName: IAppConfig::class);
 		$config->method('getValueString')->willReturn(self::SCHEMA_ID);
 
-		return new CharacterStatusListener(new CharacterStatusGuard(new IdListNormaliser()), $config);
+		return new CharacterStatusListener(guard: new CharacterStatusGuard(idList: new IdListNormaliser()), config: $config);
 	}//end listener()
 
 	/**

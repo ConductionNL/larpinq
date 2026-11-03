@@ -227,9 +227,9 @@ class CallerAccessGoldenTest extends TestCase {
 				$typeName === 'OCA\Larpinq\Controller\CallerAccess' => new $typeName($session, $groups),
 				$typeName === IRequest::class => $this->recording(type: IRequest::class),
 				$typeName === CharacterStatSheet::class => new CharacterStatSheet(
-					$this->recording(type: CharacterService::class),
-					$this->recording(type: SkillRequirementService::class),
-					$this->recording(type: CharacterStatsPresenter::class)
+					characterService: $this->recording(type: CharacterService::class),
+					requirementService: $this->recording(type: SkillRequirementService::class),
+					presenter: $this->recording(type: CharacterStatsPresenter::class)
 				),
 				default => $this->recording(type: $typeName),
 			};

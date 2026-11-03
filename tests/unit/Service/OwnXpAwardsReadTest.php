@@ -84,7 +84,7 @@ class OwnXpAwardsReadTest extends TestCase {
 		$fetcher = $this->fetcherOver(openRegister: $this->openRegister);
 		$session = $this->sessionOf(uid: $uid);
 
-		return new CharacterService($fetcher, new NullLogger(), new EffectApplier(), new CharacterConnectionGuard($fetcher), $session);
+		return new CharacterService(objectFetcher: $fetcher, logger: new NullLogger(), effectApplier: new EffectApplier(), connectionGuard: new CharacterConnectionGuard(objectFetcher: $fetcher), userSession: $session);
 	}//end engine()
 
 	/**

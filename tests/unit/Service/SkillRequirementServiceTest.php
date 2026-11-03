@@ -57,14 +57,14 @@ class SkillRequirementServiceTest extends TestCase {
 				};
 			});
 
-		$characterService = new CharacterService($fetcher, $this->logger, new EffectApplier());
+		$characterService = new CharacterService(objectFetcher: $fetcher, logger: $this->logger, effectApplier: new EffectApplier());
 		$idList = new IdListNormaliser();
 		return new SkillRequirementService(
-			$characterService,
-			$fetcher,
-			$this->logger,
-			new SkillRequirementChecker($idList),
-			$idList
+			characterService: $characterService,
+			objectFetcher: $fetcher,
+			logger: $this->logger,
+			checker: new SkillRequirementChecker(idList: $idList),
+			idList: $idList
 		);
 	}
 
@@ -168,14 +168,14 @@ class SkillRequirementServiceTest extends TestCase {
 				default => [],
 			};
 		});
-		$engine = new CharacterService($fetcher, $this->logger, new EffectApplier());
+		$engine = new CharacterService(objectFetcher: $fetcher, logger: $this->logger, effectApplier: new EffectApplier());
 		$idList = new IdListNormaliser();
 		$service = new SkillRequirementService(
-			$engine,
-			$fetcher,
-			$this->logger,
-			new SkillRequirementChecker($idList),
-			$idList
+			characterService: $engine,
+			objectFetcher: $fetcher,
+			logger: $this->logger,
+			checker: new SkillRequirementChecker(idList: $idList),
+			idList: $idList
 		);
 
 		$character = ['skills' => ['s1']];

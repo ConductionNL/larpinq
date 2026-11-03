@@ -55,9 +55,9 @@ class MigrateUserPreferencesTest extends TestCase {
 		$this->output = $this->createMock(originalClassName: IOutput::class);
 
 		$this->step = new MigrateUserPreferences(
-			$this->config,
-			$this->userManager,
-			$this->logger
+			config: $this->config,
+			userManager: $this->userManager,
+			logger: $this->logger
 		);
 	}//end setUp()
 

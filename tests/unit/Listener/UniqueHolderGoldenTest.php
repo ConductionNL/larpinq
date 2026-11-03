@@ -236,13 +236,13 @@ class UniqueHolderGoldenTest extends TestCase {
 		);
 		$normaliser = new IdListNormaliser();
 
-		$holders = new UniqueHolderService($this->fetcher(mode: $mode), $normaliser);
+		$holders = new UniqueHolderService(objectFetcher: $this->fetcher(mode: $mode), idNormaliser: $normaliser);
 
 		return new UniqueHolderListener(
-			new UniqueHolderVeto($holders, $normaliser, $l10n),
-			$holders,
-			$config,
-			$logger
+			veto: new UniqueHolderVeto(holders: $holders, idNormaliser: $normaliser, l10n: $l10n),
+			holders: $holders,
+			config: $config,
+			logger: $logger
 		);
 	}//end listener()
 

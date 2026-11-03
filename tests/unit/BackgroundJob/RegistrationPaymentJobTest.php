@@ -44,7 +44,7 @@ class RegistrationPaymentJobTest extends TestCase {
 	private PaymentWorld $world;
 
 	protected function setUp(): void {
-		$this->world = new PaymentWorld($this);
+		$this->world = new PaymentWorld(test: $this);
 		$this->world->seedRegistration(id: self::ANNA_REG, player: PaymentWorld::ANNA, status: 'pending');
 		$this->world->update(id: self::ANNA_REG, data: ['status' => 'accepted']);
 		$this->world->seedRegistration(id: self::PIETER_REG, player: PaymentWorld::PIETER, status: 'waitlisted', more: ['submittedAt' => '2026-10-02T10:00:00+00:00']);
@@ -148,6 +148,6 @@ class RegistrationPaymentJobTest extends TestCase {
 	 * @return RegistrationPaymentJob The job.
 	 */
 	private function job(): RegistrationPaymentJob {
-		return new RegistrationPaymentJob($this->world->clock(), $this->world->followUp(), $this->world->transfers(), new NullLogger());
+		return new RegistrationPaymentJob(time: $this->world->clock(), followUp: $this->world->followUp(), transfers: $this->world->transfers(), logger: new NullLogger());
 	}//end job()
 }//end class

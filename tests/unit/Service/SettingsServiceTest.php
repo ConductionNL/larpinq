@@ -22,9 +22,9 @@ class SettingsServiceTest extends TestCase {
 		$this->logger = $this->createMock(originalClassName: LoggerInterface::class);
 
 		$this->service = new SettingsService(
-			$this->appConfig,
-			$this->settingsLoadService,
-			$this->logger,
+			appConfig: $this->appConfig,
+			settingsLoadService: $this->settingsLoadService,
+			logger: $this->logger,
 		);
 	}
 

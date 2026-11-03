@@ -56,7 +56,7 @@ class MigrateAppConfigKeysTest extends TestCase {
 		$this->logger = $this->createMock(originalClassName: LoggerInterface::class);
 		$this->output = $this->createMock(originalClassName: IOutput::class);
 
-		$this->step = new MigrateAppConfigKeys($this->appConfig, $this->logger);
+		$this->step = new MigrateAppConfigKeys(appConfig: $this->appConfig, logger: $this->logger);
 	}//end setUp()
 
 	public function testGetNameMentionsBothNamespaces(): void {

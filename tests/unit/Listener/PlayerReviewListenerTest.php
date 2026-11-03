@@ -73,7 +73,7 @@ class PlayerReviewListenerTest extends TestCase {
 			}
 		);
 
-		return new PlayerReviewListener($session, $config);
+		return new PlayerReviewListener(userSession: $session, config: $config);
 	}//end listener()
 
 	/**

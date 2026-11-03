@@ -85,12 +85,12 @@ class XpAwardsControllerTest extends TestCase {
 		$groups->method('isInGroup')->willReturnCallback(fn (): bool => $this->gameMaster);
 		$groups->method('isAdmin')->willReturn(false);
 
-		$roster = new EventRosterService($fetcher);
+		$roster = new EventRosterService(objectFetcher: $fetcher);
 		$this->controller = new XpAwardsController(
-			$this->createMock(originalClassName: IRequest::class),
-			new XpAwardBatchService($roster, $fetcher),
-			$roster,
-			new CallerAccess($session, $groups),
+			request: $this->createMock(originalClassName: IRequest::class),
+			batch: new XpAwardBatchService(rosterService: $roster, objectFetcher: $fetcher),
+			rosterService: $roster,
+			callerAccess: new CallerAccess(userSession: $session, groupManager: $groups),
 		);
 	}//end setUp()
 

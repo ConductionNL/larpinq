@@ -68,9 +68,9 @@ class CharactersControllerTest extends TestCase {
 		$this->requirementService = $this->createMock(originalClassName: \OCA\Larpinq\Service\SkillRequirementService::class);
 
 		$this->pdfRenderer = new DocuDeskPdfRenderer(
-			$this->appManager,
-			$this->container,
-			$this->logger,
+			appManager: $this->appManager,
+			container: $this->container,
+			logger: $this->logger,
 		);
 
 		// Default: authenticated admin user.
@@ -80,12 +80,12 @@ class CharactersControllerTest extends TestCase {
 		$this->groupManager->method('isAdmin')->with('admin')->willReturn(true);
 
 		$this->controller = new CharactersController(
-			'larpinq',
-			$this->createMock(originalClassName: IRequest::class),
-			$this->objectFetcher,
-			$this->pdfRenderer,
-			new CallerAccess($this->userSession, $this->groupManager),
-			$this->requirementService,
+			appName: 'larpinq',
+			request: $this->createMock(originalClassName: IRequest::class),
+			objectFetcher: $this->objectFetcher,
+			pdfRenderer: $this->pdfRenderer,
+			callerAccess: new CallerAccess(userSession: $this->userSession, groupManager: $this->groupManager),
+			requirementService: $this->requirementService,
 		);
 	}
 
@@ -94,12 +94,12 @@ class CharactersControllerTest extends TestCase {
 		$unauthSession->method('getUser')->willReturn(null);
 
 		$controller = new CharactersController(
-			'larpinq',
-			$this->createMock(originalClassName: IRequest::class),
-			$this->objectFetcher,
-			$this->pdfRenderer,
-			new CallerAccess($unauthSession, $this->groupManager),
-			$this->requirementService,
+			appName: 'larpinq',
+			request: $this->createMock(originalClassName: IRequest::class),
+			objectFetcher: $this->objectFetcher,
+			pdfRenderer: $this->pdfRenderer,
+			callerAccess: new CallerAccess(userSession: $unauthSession, groupManager: $this->groupManager),
+			requirementService: $this->requirementService,
 		);
 
 		$result = $controller->downloadPdf('char-1', 'tpl-1');
@@ -120,12 +120,12 @@ class CharactersControllerTest extends TestCase {
 		$nonAdminGroupManager->method('isAdmin')->with('player1')->willReturn(false);
 
 		$controller = new CharactersController(
-			'larpinq',
-			$this->createMock(originalClassName: IRequest::class),
-			$this->objectFetcher,
-			$this->pdfRenderer,
-			new CallerAccess($nonAdminSession, $nonAdminGroupManager),
-			$this->requirementService,
+			appName: 'larpinq',
+			request: $this->createMock(originalClassName: IRequest::class),
+			objectFetcher: $this->objectFetcher,
+			pdfRenderer: $this->pdfRenderer,
+			callerAccess: new CallerAccess(userSession: $nonAdminSession, groupManager: $nonAdminGroupManager),
+			requirementService: $this->requirementService,
 		);
 
 		$result = $controller->downloadPdf('char-1', 'tpl-1');
@@ -483,12 +483,12 @@ class CharactersControllerTest extends TestCase {
 		$unauthSession->method('getUser')->willReturn(null);
 
 		$controller = new CharactersController(
-			'larpinq',
-			$this->createMock(originalClassName: IRequest::class),
-			$this->objectFetcher,
-			$this->pdfRenderer,
-			new CallerAccess($unauthSession, $this->groupManager),
-			$this->requirementService,
+			appName: 'larpinq',
+			request: $this->createMock(originalClassName: IRequest::class),
+			objectFetcher: $this->objectFetcher,
+			pdfRenderer: $this->pdfRenderer,
+			callerAccess: new CallerAccess(userSession: $unauthSession, groupManager: $this->groupManager),
+			requirementService: $this->requirementService,
 		);
 
 		$result = $controller->requirementReport('00000000-0000-0000-0000-000000000005');

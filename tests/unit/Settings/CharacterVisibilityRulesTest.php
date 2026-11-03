@@ -43,7 +43,7 @@ class CharacterVisibilityRulesTest extends TestCase {
 	private function character(): array {
 		$appManager = $this->createMock(originalClassName: IAppManager::class);
 		$appManager->method('getAppPath')->willReturn(dirname(__DIR__, 3));
-		$register = (new ConfigFileLoaderService($appManager))->loadConfigurationFile();
+		$register = (new ConfigFileLoaderService(appManager: $appManager))->loadConfigurationFile();
 
 		return $register['components']['schemas']['character'];
 	}//end character()

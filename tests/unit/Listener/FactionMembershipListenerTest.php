@@ -144,11 +144,11 @@ class FactionMembershipListenerTest extends TestCase {
 		$groups->method('isAdmin')->willReturn(false);
 
 		return new FactionMembershipListener(
-			new CharacterConnectionGuard($fetcher),
-			$config,
-			$session,
-			$groups,
-			$this->createMock(originalClassName: LoggerInterface::class)
+			guard: new CharacterConnectionGuard(objectFetcher: $fetcher),
+			config: $config,
+			userSession: $session,
+			groupManager: $groups,
+			logger: $this->createMock(originalClassName: LoggerInterface::class)
 		);
 	}//end listener()
 

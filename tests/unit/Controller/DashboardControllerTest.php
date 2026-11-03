@@ -70,10 +70,10 @@ class DashboardControllerTest extends TestCase {
 		);
 
 		$this->controller = new DashboardController(
-			$this->createMock(originalClassName: IRequest::class),
-			$initialState,
-			new CallerAccess($session, $groupManager),
-			$config,
+			request: $this->createMock(originalClassName: IRequest::class),
+			initialState: $initialState,
+			callerAccess: new CallerAccess(userSession: $session, groupManager: $groupManager),
+			config: $config,
 		);
 	}
 

@@ -40,7 +40,7 @@ class RegistrationPaymentsControllerTest extends TestCase {
 	private PaymentWorld $world;
 
 	protected function setUp(): void {
-		$this->world = new PaymentWorld($this);
+		$this->world = new PaymentWorld(test: $this);
 		$this->world->seedRegistration(id: self::ANNA_REG, player: PaymentWorld::ANNA, status: 'pending');
 		$this->world->signedIn = 'anna';
 		$this->world->update(id: self::ANNA_REG, data: ['status' => 'accepted']);
@@ -105,6 +105,6 @@ class RegistrationPaymentsControllerTest extends TestCase {
 		$l10n = $this->createMock(originalClassName: IL10N::class);
 		$l10n->method('t')->willReturnCallback(static fn (string $text): string => $text);
 
-		return new RegistrationPaymentsController('larpinq', $this->createMock(originalClassName: IRequest::class), $this->world->payments(), $this->world->session(), $l10n);
+		return new RegistrationPaymentsController(appName: 'larpinq', request: $this->createMock(originalClassName: IRequest::class), payments: $this->world->payments(), userSession: $this->world->session(), l10n: $l10n);
 	}//end controller()
 }//end class

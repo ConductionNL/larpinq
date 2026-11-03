@@ -208,13 +208,13 @@ class UniqueHolderListenerTest extends TestCase {
 
 		$normaliser = new IdListNormaliser();
 
-		$holders = new UniqueHolderService($fetcher, $normaliser);
+		$holders = new UniqueHolderService(objectFetcher: $fetcher, idNormaliser: $normaliser);
 
 		return new UniqueHolderListener(
-			new UniqueHolderVeto($holders, $normaliser, $l10n),
-			$holders,
-			$config,
-			$logger ?? $this->createMock(originalClassName: LoggerInterface::class)
+			veto: new UniqueHolderVeto(holders: $holders, idNormaliser: $normaliser, l10n: $l10n),
+			holders: $holders,
+			config: $config,
+			logger: $logger ?? $this->createMock(originalClassName: LoggerInterface::class)
 		);
 	}//end listener()
 

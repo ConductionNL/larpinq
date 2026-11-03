@@ -55,10 +55,10 @@ class EventsControllerAttendanceTest extends TestCase {
 		// The real EventRosterService over the mocked fetcher: the attendance /
 		// participation rules stay under test end-to-end through the controller.
 		return new EventsController(
-			$this->request,
-			new EventRosterService($this->objectFetcher),
-			$this->pdfRenderer,
-			new CallerAccess($this->userSession, $this->groupManager),
+			request: $this->request,
+			rosterService: new EventRosterService(objectFetcher: $this->objectFetcher),
+			pdfRenderer: $this->pdfRenderer,
+			callerAccess: new CallerAccess(userSession: $this->userSession, groupManager: $this->groupManager),
 		);
 	}
 

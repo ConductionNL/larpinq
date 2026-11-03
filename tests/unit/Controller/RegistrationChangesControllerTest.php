@@ -42,7 +42,7 @@ class RegistrationChangesControllerTest extends TestCase {
 	private PaymentWorld $world;
 
 	protected function setUp(): void {
-		$this->world = new PaymentWorld($this);
+		$this->world = new PaymentWorld(test: $this);
 		$this->world->store->objects['event'][PaymentWorld::EVENT]['cancellationPolicy'] = ['cancelBy' => '2026-11-25T00:00:00+00:00'];
 		$this->world->seedRegistration(id: self::SANNE_REG, player: PaymentWorld::SANNE, status: 'accepted');
 		$this->world->now = new DateTimeImmutable('2026-11-10T10:00:00+00:00');
@@ -100,6 +100,6 @@ class RegistrationChangesControllerTest extends TestCase {
 		$l10n = $this->createMock(originalClassName: IL10N::class);
 		$l10n->method('t')->willReturnCallback(static fn (string $text): string => $text);
 
-		return new RegistrationChangesController('larpinq', $this->createMock(originalClassName: IRequest::class), $this->world->changes(), $this->world->transfers(), $this->world->session(), $l10n);
+		return new RegistrationChangesController(appName: 'larpinq', request: $this->createMock(originalClassName: IRequest::class), changes: $this->world->changes(), transfers: $this->world->transfers(), userSession: $this->world->session(), l10n: $l10n);
 	}//end controller()
 }//end class

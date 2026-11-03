@@ -48,7 +48,7 @@ class PaymentRequestListenerTest extends TestCase {
 	private array $request;
 
 	protected function setUp(): void {
-		$this->world = new PaymentWorld($this);
+		$this->world = new PaymentWorld(test: $this);
 		$this->world->seedRegistration(id: self::SANNE_REG, player: PaymentWorld::SANNE, status: 'pending');
 		$this->world->update(id: self::SANNE_REG, data: ['status' => 'accepted']);
 		$this->request = array_values($this->world->leaf->requests)[0];

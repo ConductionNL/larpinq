@@ -44,7 +44,7 @@ class CharacterServiceXpAwardTest extends TestCase {
 			}
 		);
 
-		return new CharacterService($fetcher, $this->createMock(originalClassName: LoggerInterface::class), new EffectApplier());
+		return new CharacterService(objectFetcher: $fetcher, logger: $this->createMock(originalClassName: LoggerInterface::class), effectApplier: new EffectApplier());
 	}
 
 	public function testAwardsSumOntoXpAbility(): void {

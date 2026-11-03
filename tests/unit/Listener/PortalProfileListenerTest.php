@@ -141,7 +141,7 @@ class PortalProfileListenerTest extends TestCase {
 			}
 		);
 
-		return new PortalProfileListener($config, $fetcher, $dispatcher, $l10n, $logger);
+		return new PortalProfileListener(config: $config, fetcher: $fetcher, dispatcher: $dispatcher, l10n: $l10n, logger: $logger);
 	}//end listener()
 
 	/**

@@ -146,7 +146,7 @@ class TicketChoiceServiceTest extends TestCase {
 			static fn (string $app, string $key, string $default = ''): string => (str_ends_with($key, '_register') === true ? '3' : (str_ends_with($key, '_schema') === true ? substr($key, 0, -strlen('_schema')) : $default))
 		);
 
-		return new RegisterObjectFetcher($container, $apps, $config, new NullLogger());
+		return new RegisterObjectFetcher(container: $container, appManager: $apps, config: $config, logger: new NullLogger());
 	}//end fetcher()
 
 	/**
@@ -170,18 +170,18 @@ class TicketChoiceServiceTest extends TestCase {
 		$l10n = $this->createMock(originalClassName: IL10N::class);
 		$l10n->method('t')->willReturnCallback(static fn (string $text): string => $text);
 		$locking = $this->createMock(originalClassName: ILockingProvider::class);
-		$this->service = new RegistrationService($this->fetcher(), $locking, new NullLogger(), 1, 0);
+		$this->service = new RegistrationService(fetcher: $this->fetcher(), locking: $locking, logger: new NullLogger(), lockAttempts: 1, lockWaitMicros: 0);
 
 		return new RegistrationListener(
-			$config,
-			$this->service,
-			new RegistrationWriteCheck(
-				new RegistrationCharacterCheck($this->fetcher()),
-				new TicketChoiceService($this->fetcher(), $this->service, new NullLogger())
+			config: $config,
+			service: $this->service,
+			writeCheck: new RegistrationWriteCheck(
+				characterCheck: new RegistrationCharacterCheck(fetcher: $this->fetcher()),
+				ticketChoices: new TicketChoiceService(fetcher: $this->fetcher(), registrations: $this->service, logger: new NullLogger())
 			),
-			$session,
-			$l10n,
-			new NullLogger()
+			session: $session,
+			l10n: $l10n,
+			logger: new NullLogger()
 		);
 	}//end listener()
 
@@ -284,7 +284,7 @@ class TicketChoiceServiceTest extends TestCase {
 		$this->assertRefused(save: fn () => $this->register(player: self::ANNA, choices: ['ticketType' => self::EARLY]), reason: 'This ticket type is not on sale now.');
 
 		$saved = $this->register(player: self::ANNA);
-		$offer = (new TicketChoiceService($this->fetcher(), $this->service, new NullLogger()))->offer(registration: $this->store->objects['registration'][$saved['id']], code: '');
+		$offer = (new TicketChoiceService(fetcher: $this->fetcher(), registrations: $this->service, logger: new NullLogger()))->offer(registration: $this->store->objects['registration'][$saved['id']], code: '');
 		$offered = array_column($offer['ticketTypes'], 'name');
 		$this->assertNotContains(needle: 'Player early bird', haystack: $offered);
 		$this->assertContains(needle: 'Player', haystack: $offered);
@@ -308,7 +308,7 @@ class TicketChoiceServiceTest extends TestCase {
 		$this->assertSame(expected: self::LANTERN, actual: $row['accessCode']);
 		$this->assertSame(expected: 3000, actual: $row['lines'][0]['amount']);
 
-		$offer = (new TicketChoiceService($this->fetcher(), $this->service, new NullLogger()))->offer(registration: $row, code: 'LANTERN');
+		$offer = (new TicketChoiceService(fetcher: $this->fetcher(), registrations: $this->service, logger: new NullLogger()))->offer(registration: $row, code: 'LANTERN');
 		$this->assertSame(expected: 'valid', actual: $offer['code']);
 		$this->assertContains(needle: 'Crew friends', haystack: array_column($offer['ticketTypes'], 'name'));
 	}//end testACrewFriendUsesTheCode()
@@ -380,7 +380,7 @@ class TicketChoiceServiceTest extends TestCase {
 			$this->store->seed('registration', ['id' => sprintf('e3000000-0000-4000-8000-%012d', $index), 'event' => self::EVENT, 'status' => $status, 'ticketType' => self::PLAYER, 'options' => $options]);
 		}
 
-		$counts = (new TicketChoiceService($this->fetcher(), $this->service, new NullLogger()))->counts(eventId: self::EVENT);
+		$counts = (new TicketChoiceService(fetcher: $this->fetcher(), registrations: $this->service, logger: new NullLogger()))->counts(eventId: self::EVENT);
 
 		$options = array_column($counts['options'], 'count', 'name');
 		$this->assertSame(expected: 2, actual: $options['Full catering, vegan']);
