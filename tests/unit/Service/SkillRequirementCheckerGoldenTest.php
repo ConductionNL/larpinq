@@ -27,6 +27,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @covers \OCA\Larpinq\Service\SkillRequirementChecker
  * @uses   \OCA\Larpinq\Service\IdListNormaliser
+ * @uses   \OCA\Larpinq\Service\SkillUnderCheck
  */
 class SkillRequirementCheckerGoldenTest extends TestCase {
 
