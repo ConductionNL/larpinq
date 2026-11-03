@@ -34,10 +34,15 @@ use PHPUnit\Framework\TestCase;
  * @covers \OCA\Larpinq\Service\UniqueHolderConflictFinder
  * @uses   \OCA\Larpinq\Service\UniqueHolderService
  * @uses   \OCA\Larpinq\Service\IdListNormaliser
+ * @uses   \OCA\Larpinq\Service\CharacterHoldings
  */
 class UniqueHolderConflictFinderGoldenTest extends TestCase {
 
 	private const FIXTURE = __DIR__ . '/fixtures/unique-holder-conflicts.golden.json';
+
+	private const UNIQUENESS_ITEMS = ['i-true', 'i-1', 'i-s1', 'i-strue', 'i-null', 'i-absent', 'i-false', 'i-0', 'i-yes', 'i-s0'];
+
+	private const UNIQUENESS_CONDITIONS = ['c-absent', 'c-null', 'c-true', 'c-strue'];
 
 	/**
 	 * Characters enough to need three pages, with the named holders at fixed places.
@@ -92,8 +97,8 @@ class UniqueHolderConflictFinderGoldenTest extends TestCase {
 			],
 			'uniqueness values and defaults' => [
 				'character' => [
-					['id' => 'a', 'name' => 'Ann', 'items' => ['i-true', 'i-1', 'i-s1', 'i-strue', 'i-null', 'i-absent', 'i-false', 'i-0', 'i-yes', 'i-s0'], 'conditions' => ['c-absent', 'c-null', 'c-true', 'c-strue']],
-					['id' => 'b', 'name' => 'Ben', 'items' => ['i-true', 'i-1', 'i-s1', 'i-strue', 'i-null', 'i-absent', 'i-false', 'i-0', 'i-yes', 'i-s0'], 'conditions' => ['c-absent', 'c-null', 'c-true', 'c-strue']],
+					['id' => 'a', 'name' => 'Ann', 'items' => self::UNIQUENESS_ITEMS, 'conditions' => self::UNIQUENESS_CONDITIONS],
+					['id' => 'b', 'name' => 'Ben', 'items' => self::UNIQUENESS_ITEMS, 'conditions' => self::UNIQUENESS_CONDITIONS],
 				],
 				'item' => [
 					['id' => 'i-true', 'unique' => true],
@@ -187,7 +192,8 @@ class UniqueHolderConflictFinderGoldenTest extends TestCase {
 		}
 
 		if (getenv('RECORD_GOLDEN') === '1') {
-			file_put_contents(filename: self::FIXTURE, data: json_encode(value: $actual, flags: JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR) . "\n");
+			$flags = JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR;
+			file_put_contents(filename: self::FIXTURE, data: json_encode(value: $actual, flags: $flags) . "\n");
 		}
 
 		$expected = json_decode(json: (string)file_get_contents(filename: self::FIXTURE), associative: true, flags: JSON_THROW_ON_ERROR);
