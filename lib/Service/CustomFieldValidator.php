@@ -52,19 +52,14 @@ class CustomFieldValidator {
 	public function validate(string $property, array $values, array $definitions): array {
 		$errors = [];
 		foreach ($values as $key => $value) {
-			$key = (string)$key;
-			$error = null;
 			if ($value !== null) {
-				$error = ($this->placementError(property: $property, definition: ($definitions[$key] ?? null))
-					?? $this->typeError(definition: $definitions[$key], value: $value));
-			}
-
-			if ($error !== null) {
-				$errors[$key] = $error;
+				$definition = ($definitions[(string)$key] ?? null);
+				$errors[(string)$key] = ($this->placementError(property: $property, definition: $definition)
+					?? $this->typeError(definition: (array)$definition, value: $value));
 			}
 		}
 
-		return $errors;
+		return array_filter($errors, static fn (?string $error): bool => $error !== null);
 	}//end validate()
 
 	/**
