@@ -82,6 +82,7 @@ class FactionMembershipListenerGoldenTest extends TestCase {
 			'not a pre-write event' => ['event' => 'other'],
 			'other schema' => ['schema' => 's-other'],
 			'empty schema' => ['schema' => ''],
+			'empty schema, a kind not configured' => ['schema' => '', 'unconfigured' => 'relationship'],
 			'signed out' => ['uid' => null],
 			'admin' => ['uid' => 'admin1'],
 			'game master' => ['uid' => 'gm1'],
@@ -107,6 +108,7 @@ class FactionMembershipListenerGoldenTest extends TestCase {
 				'uid' => 'player1',
 				'verdict' => ['code' => 'refused', 'message' => 'refused'],
 				'throws' => false,
+				'unconfigured' => null,
 			];
 		}
 
@@ -163,6 +165,10 @@ class FactionMembershipListenerGoldenTest extends TestCase {
 		$config = $this->createMock(originalClassName: IAppConfig::class);
 		$map = [];
 		foreach (self::SCHEMAS as $kind => $schema) {
+			if ($kind === $case['unconfigured']) {
+				$schema = '';
+			}
+
 			$map[] = ['larpinq', $kind.'_schema', '', $schema];
 		}
 

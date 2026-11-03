@@ -2,6 +2,7 @@
     "not a pre-write event": "{\n    \"guard\": [],\n    \"groupChecks\": [],\n    \"loggedErrors\": 0,\n    \"stopped\": false,\n    \"errors\": null\n}",
     "other schema": "{\n    \"guard\": [],\n    \"groupChecks\": [],\n    \"loggedErrors\": 0,\n    \"stopped\": false,\n    \"errors\": []\n}",
     "empty schema": "{\n    \"guard\": [],\n    \"groupChecks\": [],\n    \"loggedErrors\": 0,\n    \"stopped\": false,\n    \"errors\": []\n}",
+    "empty schema, a kind not configured": "{\n    \"guard\": [],\n    \"groupChecks\": [],\n    \"loggedErrors\": 0,\n    \"stopped\": false,\n    \"errors\": []\n}",
     "signed out": "{\n    \"guard\": [],\n    \"groupChecks\": [],\n    \"loggedErrors\": 0,\n    \"stopped\": false,\n    \"errors\": []\n}",
     "admin": "{\n    \"guard\": [],\n    \"groupChecks\": [\n        \"admin1@admin\"\n    ],\n    \"loggedErrors\": 0,\n    \"stopped\": false,\n    \"errors\": []\n}",
     "game master": "{\n    \"guard\": [],\n    \"groupChecks\": [\n        \"gm1@admin\",\n        \"gm1@gamemasters\"\n    ],\n    \"loggedErrors\": 0,\n    \"stopped\": false,\n    \"errors\": []\n}",
