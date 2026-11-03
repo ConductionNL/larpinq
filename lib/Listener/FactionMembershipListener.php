@@ -51,6 +51,13 @@ use Psr\Log\LoggerInterface;
 class FactionMembershipListener implements IEventListener {
 
 	/**
+	 * The schemas this listener checks, in the order their ids are compared.
+	 *
+	 * @var string[]
+	 */
+	private const KINDS = ['faction', 'factionmember', 'relationship', 'characterbuild'];
+
+	/**
 	 * The refusal when the guard could not read the write.
 	 *
 	 * @var array<string,string>
@@ -237,36 +244,33 @@ class FactionMembershipListener implements IEventListener {
 	 * @psalm-suppress MixedMethodCall OpenRegister entity is an optional dependency.
 	 */
 	private function kindOf(object $entity): ?string {
-		$schema = $this->schemaOf(entity: $entity);
+		if (is_callable([$entity, 'getSchema']) === false) {
+			return null;
+		}
+
+		return $this->kindForSchema(schema: (string)$entity->getSchema());
+	}//end kindOf()
+
+	/**
+	 * The kind whose configured schema id is this one, or null.
+	 *
+	 * @param string $schema The schema id; '' matches nothing.
+	 *
+	 * @return string|null The kind.
+	 */
+	private function kindForSchema(string $schema): ?string {
 		if ($schema === '') {
 			return null;
 		}
 
-		foreach (['faction', 'factionmember', 'relationship', 'characterbuild'] as $kind) {
-			if ($schema === $this->config->getValueString(Application::APP_ID, $kind . '_schema', '')) {
+		foreach (self::KINDS as $kind) {
+			if ($this->config->getValueString(Application::APP_ID, $kind . '_schema', '') === $schema) {
 				return $kind;
 			}
 		}
 
 		return null;
-	}//end kindOf()
-
-	/**
-	 * The schema id of an entity, or '' when it has none.
-	 *
-	 * @param object $entity The object entity.
-	 *
-	 * @return string The schema id.
-	 *
-	 * @psalm-suppress MixedMethodCall OpenRegister entity is an optional dependency.
-	 */
-	private function schemaOf(object $entity): string {
-		if (is_callable([$entity, 'getSchema']) === false) {
-			return '';
-		}
-
-		return (string)$entity->getSchema();
-	}//end schemaOf()
+	}//end kindForSchema()
 
 	/**
 	 * The new entity and the stored one (null on a create) of a pre-write event.
