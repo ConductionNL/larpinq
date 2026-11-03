@@ -155,9 +155,7 @@ class SkillRequirementService {
 			$requirements = array_merge(
 				$requirements,
 				$this->checker->check(
-					skillId: $skillId,
-					skill: $skill,
-					overridden: isset($overrides[$skillId]),
+					subject: new SkillUnderCheck(skillId: $skillId, skill: $skill, overridden: isset($overrides[$skillId])),
 					context: $context
 				)
 			);

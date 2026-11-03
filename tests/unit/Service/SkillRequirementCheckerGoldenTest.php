@@ -20,6 +20,7 @@ namespace OCA\Larpinq\Tests\Unit\Service;
 
 use OCA\Larpinq\Service\IdListNormaliser;
 use OCA\Larpinq\Service\SkillRequirementChecker;
+use OCA\Larpinq\Service\SkillUnderCheck;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -110,7 +111,10 @@ class SkillRequirementCheckerGoldenTest extends TestCase {
 		$checker = new SkillRequirementChecker(idList: new IdListNormaliser());
 		$actual = [];
 		foreach ($this->scenarios() as $name => [$skill, $overridden, $context]) {
-			$actual[$name] = $checker->check(skillId: 'skill-1', skill: $skill, overridden: $overridden, context: $context);
+			$actual[$name] = $checker->check(
+				subject: new SkillUnderCheck(skillId: 'skill-1', skill: $skill, overridden: $overridden),
+				context: $context
+			);
 		}
 
 		$json = json_encode($actual, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR)."\n";
