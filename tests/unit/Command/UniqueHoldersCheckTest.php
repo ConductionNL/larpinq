@@ -40,9 +40,10 @@ class UniqueHoldersCheckTest extends TestCase {
 	private function tester(array $characters, array $items): CommandTester {
 		$fetcher = $this->createMock(originalClassName: RegisterObjectFetcher::class);
 		$fetcher->method('getObjects')->willReturnCallback(
-			fn (string $type, ?int $limit = null, ?int $offset = null): array => ($offset ?? 0) > 0 ? [] : match ($type) {
-				'character' => $characters,
-				'item' => $items,
+			fn (string $type, ?int $limit = null, ?int $offset = null): array => match (true) {
+				($offset ?? 0) > 0 => [],
+				$type === 'character' => $characters,
+				$type === 'item' => $items,
 				default => [],
 			}
 		);

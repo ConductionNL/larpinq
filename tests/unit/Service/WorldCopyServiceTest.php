@@ -67,11 +67,25 @@ class WorldCopyServiceTest extends TestCase {
 		$this->store->seed('ability', ['id' => 'aaaaaaaa-0000-4000-8000-000000000003', 'name' => 'Luck', 'base' => 1]);
 		$this->store->seed(
 			'effect',
-			['id' => 'aaaaaaaa-0000-4000-8000-000000000004', 'name' => '+3 strength', 'modifier' => 3, 'modification' => 'positive', 'cumulative' => 'non-cumulative', 'abilities' => ['aaaaaaaa-0000-4000-8000-000000000001'], 'setting' => $w]
+			[
+				'id' => 'aaaaaaaa-0000-4000-8000-000000000004',
+				'name' => '+3 strength',
+				'modifier' => 3,
+				'modification' => 'positive',
+				'cumulative' => 'non-cumulative',
+				'abilities' => ['aaaaaaaa-0000-4000-8000-000000000001'],
+				'setting' => $w,
+			]
 		);
 		$this->store->seed(
 			'effect',
-			['id' => 'aaaaaaaa-0000-4000-8000-000000000005', 'name' => '+5 mana', 'modifier' => 5, 'abilities' => [['id' => 'aaaaaaaa-0000-4000-8000-000000000002']], 'setting' => $w]
+			[
+				'id' => 'aaaaaaaa-0000-4000-8000-000000000005',
+				'name' => '+5 mana',
+				'modifier' => 5,
+				'abilities' => [['id' => 'aaaaaaaa-0000-4000-8000-000000000002']],
+				'setting' => $w,
+			]
 		);
 		$this->store->seed(
 			'effect',
@@ -79,38 +93,100 @@ class WorldCopyServiceTest extends TestCase {
 		);
 		$this->store->seed(
 			'skill',
-			['id' => 'aaaaaaaa-0000-4000-8000-000000000007', 'name' => 'Swordsmanship', 'effects' => ['aaaaaaaa-0000-4000-8000-000000000004'], 'requiredSkills' => ['aaaaaaaa-0000-4000-8000-000000000008'], 'setting' => $w]
+			[
+				'id' => 'aaaaaaaa-0000-4000-8000-000000000007',
+				'name' => 'Swordsmanship',
+				'effects' => ['aaaaaaaa-0000-4000-8000-000000000004'],
+				'requiredSkills' => ['aaaaaaaa-0000-4000-8000-000000000008'],
+				'setting' => $w,
+			]
 		);
 		$this->store->seed(
 			'skill',
-			['id' => 'aaaaaaaa-0000-4000-8000-000000000008', 'name' => 'Master swordsman', 'effects' => ['aaaaaaaa-0000-4000-8000-000000000004', 'aaaaaaaa-0000-4000-8000-000000000006'], 'requiredSkills' => ['aaaaaaaa-0000-4000-8000-000000000007'], 'requiredStats' => ['aaaaaaaa-0000-4000-8000-000000000001'], 'requiredScore' => 12, 'setting' => $w]
+			[
+				'id' => 'aaaaaaaa-0000-4000-8000-000000000008',
+				'name' => 'Master swordsman',
+				'effects' => ['aaaaaaaa-0000-4000-8000-000000000004', 'aaaaaaaa-0000-4000-8000-000000000006'],
+				'requiredSkills' => ['aaaaaaaa-0000-4000-8000-000000000007'],
+				'requiredStats' => ['aaaaaaaa-0000-4000-8000-000000000001'],
+				'requiredScore' => 12,
+				'setting' => $w,
+			]
 		);
 		$this->store->seed(
 			'item',
-			['id' => 'aaaaaaaa-0000-4000-8000-000000000010', 'name' => 'Iron shield', 'unique' => true, 'effects' => ['aaaaaaaa-0000-4000-8000-000000000004'], 'characters' => ['aaaaaaaa-0000-4000-8000-000000000012'], 'setting' => $w]
+			[
+				'id' => 'aaaaaaaa-0000-4000-8000-000000000010',
+				'name' => 'Iron shield',
+				'unique' => true,
+				'effects' => ['aaaaaaaa-0000-4000-8000-000000000004'],
+				'characters' => ['aaaaaaaa-0000-4000-8000-000000000012'],
+				'setting' => $w,
+			]
 		);
 		$this->store->seed(
 			'condition',
-			['id' => 'aaaaaaaa-0000-4000-8000-000000000011', 'name' => 'Cursed', 'unique' => false, 'effects' => ['aaaaaaaa-0000-4000-8000-000000000005'], 'characters' => ['aaaaaaaa-0000-4000-8000-000000000012'], 'setting' => $w]
+			[
+				'id' => 'aaaaaaaa-0000-4000-8000-000000000011',
+				'name' => 'Cursed',
+				'unique' => false,
+				'effects' => ['aaaaaaaa-0000-4000-8000-000000000005'],
+				'characters' => ['aaaaaaaa-0000-4000-8000-000000000012'],
+				'setting' => $w,
+			]
 		);
 		$this->store->seed('skill', ['id' => 'aaaaaaaa-0000-4000-8000-000000000009', 'name' => 'Other world skill', 'setting' => self::OTHER]);
 		$this->store->seed('character', ['id' => 'aaaaaaaa-0000-4000-8000-000000000012', 'name' => 'Anna', 'setting' => $w]);
 		$this->store->seed('event', ['id' => 'aaaaaaaa-0000-4000-8000-000000000013', 'name' => 'Season opener', 'setting' => $w]);
 		$this->store->seed(
 			'lorepage',
-			['id' => 'aaaaaaaa-0000-4000-8000-000000000014', 'title' => 'The harbour', 'body' => 'Ships', 'visibility' => 'players', 'revealFrom' => '2026-10-01T00:00:00+00:00', 'category' => null, 'parent' => 'aaaaaaaa-0000-4000-8000-000000000015', 'order' => 1, 'setting' => $w]
+			[
+				'id' => 'aaaaaaaa-0000-4000-8000-000000000014',
+				'title' => 'The harbour',
+				'body' => 'Ships',
+				'visibility' => 'players',
+				'revealFrom' => '2026-10-01T00:00:00+00:00',
+				'category' => null,
+				'parent' => 'aaaaaaaa-0000-4000-8000-000000000015',
+				'order' => 1,
+				'setting' => $w,
+			]
 		);
 		$this->store->seed(
 			'lorepage',
-			['id' => 'aaaaaaaa-0000-4000-8000-000000000015', 'title' => 'Aldmoor city', 'visibility' => 'gamemasters', 'revealFrom' => '2026-09-01T00:00:00+00:00', 'order' => 0, 'setting' => $w]
+			[
+				'id' => 'aaaaaaaa-0000-4000-8000-000000000015',
+				'title' => 'Aldmoor city',
+				'visibility' => 'gamemasters',
+				'revealFrom' => '2026-09-01T00:00:00+00:00',
+				'order' => 0,
+				'setting' => $w,
+			]
 		);
 		$this->store->seed(
 			'characterfield',
-			['id' => 'aaaaaaaa-0000-4000-8000-000000000016', 'label' => 'Bloodline', 'key' => 'bloodline', 'fieldType' => 'choice', 'choices' => ['human', 'elven'], 'visibility' => 'owner', 'order' => 1, 'setting' => $w]
+			[
+				'id' => 'aaaaaaaa-0000-4000-8000-000000000016',
+				'label' => 'Bloodline',
+				'key' => 'bloodline',
+				'fieldType' => 'choice',
+				'choices' => ['human', 'elven'],
+				'visibility' => 'owner',
+				'order' => 1,
+				'setting' => $w,
+			]
 		);
 		$this->store->seed(
 			'characterfield',
-			['id' => 'aaaaaaaa-0000-4000-8000-000000000017', 'label' => 'True allegiance', 'key' => 'true-allegiance', 'fieldType' => 'text', 'visibility' => 'gamemasters', 'order' => 2, 'setting' => $w]
+			[
+				'id' => 'aaaaaaaa-0000-4000-8000-000000000017',
+				'label' => 'True allegiance',
+				'key' => 'true-allegiance',
+				'fieldType' => 'text',
+				'visibility' => 'gamemasters',
+				'order' => 2,
+				'setting' => $w,
+			]
 		);
 		$this->store->seed(
 			'characterfield',
@@ -279,7 +355,16 @@ class WorldCopyServiceTest extends TestCase {
 		$this->service()->copy(worldId: self::WORLD, name: 'Aldmoor season 2');
 
 		$schemas = $this->mergedSchemas();
-		$bySchema = ['setting' => 'setting', 'ability' => 'ability', 'effect' => 'effect', 'skill' => 'skill', 'item' => 'item', 'condition' => 'condition', 'lorepage' => 'lorePage', 'characterfield' => 'characterField'];
+		$bySchema = [
+			'setting' => 'setting',
+			'ability' => 'ability',
+			'effect' => 'effect',
+			'skill' => 'skill',
+			'item' => 'item',
+			'condition' => 'condition',
+			'lorepage' => 'lorePage',
+			'characterfield' => 'characterField',
+		];
 		$validator = new Validator();
 		$this->assertNotEmpty(actual: $this->store->saves);
 		foreach ($this->store->saves as [$schema, $payload]) {

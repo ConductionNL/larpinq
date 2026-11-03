@@ -21,6 +21,8 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Tests\Unit\Listener;
 
+require_once __DIR__ . '/../Support/RegisterAnswers.php';
+
 require_once __DIR__ . '/../Support/InMemoryOpenRegister.php';
 
 use OCA\Forms\Db\Form;
@@ -29,6 +31,7 @@ use OCA\Forms\Events\FormSubmittedEvent;
 use OCA\Larpinq\Listener\FormSubmissionListener;
 use OCA\Larpinq\Service\RegisterObjectFetcher;
 use OCA\Larpinq\Tests\Unit\Support\InMemoryOpenRegister;
+use OCA\Larpinq\Tests\Unit\Support\RegisterAnswers;
 use OCP\App\IAppManager;
 use OCP\IAppConfig;
 use OCP\IUserManager;
@@ -72,20 +75,13 @@ class FormSubmissionListenerTest extends TestCase {
 		$store = $this->store;
 		$container = $this->createMock(originalClassName: ContainerInterface::class);
 		$container->method('get')->willReturnCallback(
-			static fn (string $id): object => ($id === 'OCA\OpenRegister\Service\ObjectService' ? $store : throw new \RuntimeException('not bound: ' . $id))
+			static fn (string $id): object => RegisterAnswers::onlyService(id: $id, bound: 'OCA\OpenRegister\Service\ObjectService', service: $store)
 		);
 		$apps = $this->createMock(originalClassName: IAppManager::class);
 		$apps->method('getInstalledApps')->willReturn(['openregister']);
 		$config = $this->createMock(originalClassName: IAppConfig::class);
 		$config->method('getValueString')->willReturnCallback(
-			static fn (string $app, string $key, string $default = ''): string => (str_ends_with(
-				$key,
-				'_register'
-			) === true ? '3' : (str_ends_with($key, '_schema') === true ? substr(
-				$key,
-				0,
-				-strlen('_schema')
-			) : $default))
+			static fn (string $app, string $key, string $default = ''): string => RegisterAnswers::registerConfig(key: $key, default: $default)
 		);
 		$fetcher = new RegisterObjectFetcher(container: $container, appManager: $apps, config: $config, logger: new \Psr\Log\NullLogger());
 		$users = $this->createMock(originalClassName: IUserManager::class);
@@ -106,7 +102,7 @@ class FormSubmissionListenerTest extends TestCase {
 	 * A submission event.
 	 *
 	 * @param int $form The form id.
-	 * @param string $uid The submitting user.
+	 * @param string $uid The user id.
 	 * @param int $submission The submission id.
 	 *
 	 * @return FormSubmittedEvent The event.

@@ -188,34 +188,69 @@ class SetupController extends Controller {
 		// the load step reads it back and hands it to the importer, so an
 		// unknown value would surface a step later as a failed import with no
 		// clue why.
-		$dataset = $this->request->getParam(self::DATASET_KEY);
-		if ($dataset !== null) {
-			$named = 'that';
-			if (is_scalar($dataset) === true) {
-				$named = (string)$dataset;
-			}
-
-			$known = array_column($this->demoDataService->listChoices(), 'id');
-			if (in_array($named, $known, true) === false) {
-				return new DataResponse(['success' => false, 'message' => 'No dataset is called "' . $named . '".']);
-			}
+		$refusal = $this->refuseStoredDataset(value: $this->request->getParam(self::DATASET_KEY));
+		if ($refusal !== null) {
+			return $refusal;
 		}
 
 		foreach ($this->request->getParams() as $key => $value) {
-			if ($key === '_route') {
-				continue;
+			if ($key !== '_route') {
+				$this->appConfig->setValueString(AppIdentity::APP_ID, (string)$key, $this->storedText(value: $value));
 			}
-
-			$stored = (string)json_encode($value);
-			if (is_scalar($value) === true) {
-				$stored = (string)$value;
-			}
-
-			$this->appConfig->setValueString(AppIdentity::APP_ID, (string)$key, $stored);
 		}
 
 		return new DataResponse(['success' => true]);
 	}//end saveConfig()
+
+	/**
+	 * Refuse a dataset id posted to saveConfig() that no dataset answers to; null when absent or known.
+	 *
+	 * @param mixed $value The posted dataset, or null when none was posted.
+	 *
+	 * @return DataResponse|null The refusal.
+	 */
+	private function refuseStoredDataset(mixed $value): ?DataResponse {
+		if ($value === null) {
+			return null;
+		}
+
+		$named = $this->datasetName(value: $value);
+		if (in_array($named, array_column($this->demoDataService->listChoices(), 'id'), true) === true) {
+			return null;
+		}
+
+		return new DataResponse(['success' => false, 'message' => 'No dataset is called "' . $named . '".']);
+	}//end refuseStoredDataset()
+
+	/**
+	 * The name a posted dataset value is quoted by: the value itself when scalar, else "that".
+	 *
+	 * @param mixed $value The posted value.
+	 *
+	 * @return string The name.
+	 */
+	private function datasetName(mixed $value): string {
+		if (is_scalar($value) === true) {
+			return (string)$value;
+		}
+
+		return 'that';
+	}//end datasetName()
+
+	/**
+	 * A posted config value as stored: scalars as text, anything else as JSON.
+	 *
+	 * @param mixed $value The posted value.
+	 *
+	 * @return string The stored text.
+	 */
+	private function storedText(mixed $value): string {
+		if (is_scalar($value) === true) {
+			return (string)$value;
+		}
+
+		return (string)json_encode($value);
+	}//end storedText()
 
 	/**
 	 * Run a privileged server-side setup action.
@@ -262,26 +297,9 @@ class SetupController extends Controller {
 	 * @spec openspec/changes/wizard-dataset-card-load/specs/first-time-setup/spec.md
 	 */
 	private function loadDataset(string $actionId): DataResponse {
-		$picked = $this->appConfig->getValueString(AppIdentity::APP_ID, self::DATASET_KEY, '');
-
-		// The card's Load button names its dataset in the body. An older wizard
-		// posts nothing and relies on the pick stored a step earlier. Nothing is
-		// stored before the load succeeds: a failed load must leave the step
-		// open for an operator who asked for data and got none.
-		$posted = $this->request->getParam('dataset');
-		if ($posted !== null) {
-			$refusal = $this->refuseDataset(value: $posted);
-			if ($refusal !== null) {
-				return $refusal;
-			}
-
-			$picked = (string)$posted;
-		}
-
-		// The legacy id carries no answer, so it means the shipped dataset. A
-		// caller that posts it has said which one by posting it.
-		if ($actionId === 'install-demo-data' && $picked === '') {
-			$picked = DemoDataService::DEMO_DATASET;
+		$picked = $this->pickedDataset(actionId: $actionId);
+		if ($picked instanceof DataResponse) {
+			return $picked;
 		}
 
 		// 🔴 NO SILENT DEFAULT. Importing here because the operator clicked Run
@@ -291,12 +309,49 @@ class SetupController extends Controller {
 		}
 
 		if ($picked === DemoDataService::NONE_DATASET) {
-			$this->appConfig->setValueString(AppIdentity::APP_ID, self::DATASET_KEY, DemoDataService::NONE_DATASET);
-			$this->appConfig->setValueString(AppIdentity::APP_ID, self::DEMO_DATA_DECIDED_KEY, 'skipped');
-
+			$this->recordDataset(dataset: DemoDataService::NONE_DATASET, decided: 'skipped');
 			return new DataResponse(['success' => true, 'message' => 'No example data was loaded.']);
 		}
 
+		return $this->installDataset(picked: $picked);
+	}//end loadDataset()
+
+	/**
+	 * The dataset a load asks for: the posted one, else the stored pick; '' when none.
+	 *
+	 * The card's Load button names its dataset in the body. An older wizard
+	 * posts nothing and relies on the pick stored a step earlier. Nothing is
+	 * stored before the load succeeds: a failed load must leave the step
+	 * open for an operator who asked for data and got none.
+	 *
+	 * @param string $actionId The action that asked.
+	 *
+	 * @return string|DataResponse The dataset id, or the refusal of a posted unknown one.
+	 */
+	private function pickedDataset(string $actionId): string|DataResponse {
+		$picked = $this->appConfig->getValueString(AppIdentity::APP_ID, self::DATASET_KEY, '');
+		$posted = $this->request->getParam('dataset');
+		if ($posted !== null) {
+			$picked = ($this->refuseDataset(value: $posted) ?? (string)$posted);
+		}
+
+		// The legacy id carries no answer, so it means the shipped dataset. A
+		// caller that posts it has said which one by posting it.
+		if ($actionId === 'install-demo-data' && $picked === '') {
+			return DemoDataService::DEMO_DATASET;
+		}
+
+		return $picked;
+	}//end pickedDataset()
+
+	/**
+	 * Import the shipped dataset and report its counts; on failure nothing is recorded.
+	 *
+	 * @param string $picked The dataset id, recorded as the pick once the import returned.
+	 *
+	 * @return DataResponse The outcome, carrying the counts.
+	 */
+	private function installDataset(string $picked): DataResponse {
 		try {
 			$imported = $this->demoDataService->install();
 		} catch (\Throwable $e) {
@@ -307,23 +362,27 @@ class SetupController extends Controller {
 		// The decision is recorded only after the import actually returned.
 		// Marking it first would let a failed install present as a finished step.
 		// Loading IS choosing the set, so the pick is recorded too.
-		$this->appConfig->setValueString(AppIdentity::APP_ID, self::DATASET_KEY, $picked);
-		$this->appConfig->setValueString(AppIdentity::APP_ID, self::DEMO_DATA_DECIDED_KEY, 'installed');
+		$this->recordDataset(dataset: $picked, decided: 'installed');
 
 		// 🔴 THE COUNTS, ALWAYS. "Demo data installed" with no numbers cannot be
 		// told apart from an import that wrote nothing.
-		return new DataResponse(
-			[
-				'success' => true,
-				'message' => sprintf(
-					'Demo data installed: %d objects across %d schemas.',
-					$imported['objects'],
-					$imported['schemas']
-				),
-				'detail'  => $imported,
-			]
-		);
-	}//end loadDataset()
+		$message = sprintf('Demo data installed: %d objects across %d schemas.', $imported['objects'], $imported['schemas']);
+
+		return new DataResponse(['success' => true, 'message' => $message, 'detail' => $imported]);
+	}//end installDataset()
+
+	/**
+	 * Record the dataset pick and the demo data decision.
+	 *
+	 * @param string $dataset The dataset id.
+	 * @param string $decided 'installed' or 'skipped'.
+	 *
+	 * @return void
+	 */
+	private function recordDataset(string $dataset, string $decided): void {
+		$this->appConfig->setValueString(AppIdentity::APP_ID, self::DATASET_KEY, $dataset);
+		$this->appConfig->setValueString(AppIdentity::APP_ID, self::DEMO_DATA_DECIDED_KEY, $decided);
+	}//end recordDataset()
 
 	/**
 	 * Refuse a posted dataset id no dataset answers to.
@@ -335,10 +394,7 @@ class SetupController extends Controller {
 	 * @spec openspec/changes/wizard-dataset-card-load/specs/first-time-setup/spec.md
 	 */
 	private function refuseDataset(mixed $value): ?DataResponse {
-		$named = 'that';
-		if (is_scalar($value) === true) {
-			$named = (string)$value;
-		}
+		$named = $this->datasetName(value: $value);
 
 		$known = array_column($this->demoDataService->listChoices(), 'id');
 		if (is_scalar($value) === true && in_array($named, $known, true) === true) {
@@ -366,8 +422,7 @@ class SetupController extends Controller {
 	private function skipDemoData(): DataResponse {
 		// Skipping IS choosing "None", so both keys are written: an older
 		// runbook may read either one.
-		$this->appConfig->setValueString(AppIdentity::APP_ID, self::DATASET_KEY, DemoDataService::NONE_DATASET);
-		$this->appConfig->setValueString(AppIdentity::APP_ID, self::DEMO_DATA_DECIDED_KEY, 'skipped');
+		$this->recordDataset(dataset: DemoDataService::NONE_DATASET, decided: 'skipped');
 
 		return new DataResponse(
 			[

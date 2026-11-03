@@ -205,7 +205,11 @@ class RegistrationChangeServiceTest extends TestCase {
 		$milaId = (string)$mila['id'];
 		$this->world->store->objects['registration'][$milaId] = array_merge(
 			$this->world->registration(id: $milaId),
-			['paymentState' => 'paid', 'paymentRequestId' => 'f0000000-0000-4000-8000-000000000009', 'lines' => [['kind' => 'ticket', 'amount' => 8500, 'currency' => 'EUR']]]
+			[
+				'paymentState' => 'paid',
+				'paymentRequestId' => 'f0000000-0000-4000-8000-000000000009',
+				'lines' => [['kind' => 'ticket', 'amount' => 8500, 'currency' => 'EUR']],
+			]
 		);
 
 		$this->world->changes()->cancel(registrationId: $milaId, actingUid: 'joris', choice: 'credit');

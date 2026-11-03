@@ -31,9 +31,12 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Tests\Unit\Settings;
 
+require_once __DIR__ . '/../Support/RegisterAnswers.php';
+
 use Composer\Autoload\ClassLoader;
 use OCA\Larpinq\AppInfo\Application;
 use OCA\Larpinq\Service\ConfigFileLoaderService;
+use OCA\Larpinq\Tests\Unit\Support\RegisterAnswers;
 use OCP\IAppConfig;
 use OCP\IGroupManager;
 use OCP\IUser;
@@ -153,9 +156,7 @@ class RuleSchemaAuthorizationTest extends TestCase {
 		$registers->method('find')->willReturn($register);
 		$container = $this->createMock(originalClassName: ContainerInterface::class);
 		$container->method('get')->willReturnCallback(
-			static fn (string $id): object => ($id === \OCA\OpenRegister\Db\RegisterMapper::class ? $registers : throw new \RuntimeException(
-				'not in this test: ' . $id
-			))
+			static fn (string $id): object => RegisterAnswers::onlyService(id: $id, bound: \OCA\OpenRegister\Db\RegisterMapper::class, service: $registers)
 		);
 
 		$user = $this->createMock(originalClassName: IUser::class);

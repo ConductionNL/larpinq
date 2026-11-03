@@ -85,6 +85,21 @@ class MigrateSchemaApplicationId implements IRepairStep {
 	public const NEW_APP_ID = 'larpinq';
 
 	/**
+	 * The summary line: moved, the new application id, refused.
+	 *
+	 * @var string
+	 */
+	private const SUMMARY = 'MigrateSchemaApplicationId: %d schema(s) moved to %s, %d refused as duplicates.';
+
+	/**
+	 * The warning for a slug that already exists under the new application id.
+	 *
+	 * @var string
+	 */
+	private const DUPLICATE_REFUSED = 'MigrateSchemaApplicationId: schema slug already exists under the new application id; '
+		. 'refusing to create a duplicate (application, slug) pair. Merge them by hand.';
+
+	/**
 	 * Constructor.
 	 *
 	 * @param IDBConnection $db Database connection.
@@ -137,33 +152,32 @@ class MigrateSchemaApplicationId implements IRepairStep {
 			return;
 		}
 
+		[$moved, $refused] = $this->moveAll(candidates: $candidates, taken: $taken);
+		$output->info(sprintf(self::SUMMARY, $moved, self::NEW_APP_ID, $refused));
+	}//end run()
+
+	/**
+	 * Re-point every candidate that has no twin under the new id; refuse the others.
+	 *
+	 * @param array<int, string> $candidates Slugs on the old application id.
+	 * @param array<int, string> $taken      Lower-cased slugs on the new application id.
+	 *
+	 * @return array{0: int, 1: int} The number moved and the number refused.
+	 */
+	private function moveAll(array $candidates, array $taken): array {
 		$moved = 0;
 		$refused = 0;
 		foreach ($candidates as $slug) {
 			if (in_array(strtolower($slug), $taken, true) === true) {
 				$refused++;
-				$this->logger->warning(
-					'MigrateSchemaApplicationId: schema slug already exists under the new application id; '
-					. 'refusing to create a duplicate (application, slug) pair. Merge them by hand.',
-					['slug' => $slug, 'old' => self::OLD_APP_ID, 'new' => self::NEW_APP_ID]
-				);
-				continue;
-			}
-
-			if ($this->repoint(slug: $slug) === true) {
+				$this->logger->warning(self::DUPLICATE_REFUSED, ['slug' => $slug, 'old' => self::OLD_APP_ID, 'new' => self::NEW_APP_ID]);
+			} else if ($this->repoint(slug: $slug) === true) {
 				$moved++;
 			}
 		}
 
-		$output->info(
-			sprintf(
-				'MigrateSchemaApplicationId: %d schema(s) moved to %s, %d refused as duplicates.',
-				$moved,
-				self::NEW_APP_ID,
-				$refused
-			)
-		);
-	}//end run()
+		return [$moved, $refused];
+	}//end moveAll()
 
 	/**
 	 * Slugs already claimed under the NEW application id.

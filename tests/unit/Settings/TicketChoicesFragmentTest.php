@@ -67,7 +67,11 @@ class TicketChoicesFragmentTest extends TestCase {
 	 */
 	public function testTheThreeSchemasAreInTheRegister(): void {
 		$listed = $this->mergedRegister()['components']['registers']['larpinq']['schemas'];
-		foreach (['ticketType' => 'larping_ticket_type', 'registrationOption' => 'larping_registration_option', 'accessCode' => 'larping_access_code'] as $key => $slug) {
+		foreach ([
+			'ticketType' => 'larping_ticket_type',
+			'registrationOption' => 'larping_registration_option',
+			'accessCode' => 'larping_access_code',
+		] as $key => $slug) {
 			$this->assertContains(needle: $slug, haystack: $listed);
 			$this->assertSame(expected: $slug, actual: $this->schema(key: $key)['slug']);
 			$this->assertSame(expected: 'larping_event', actual: $this->schema(key: $key)['properties']['event']['$ref']);
@@ -162,7 +166,11 @@ class TicketChoicesFragmentTest extends TestCase {
 	public function testTheImportAndTheSettingsKnowTheThreeSchemas(): void {
 		$slugs = (new ReflectionClass(SettingsLoadService::class))->getConstant('OBJECT_TYPE_SCHEMA_SLUGS');
 		$keys = (new ReflectionClass(SettingsService::class))->getConstant('CONFIG_KEYS');
-		foreach (['tickettype' => 'larping_ticket_type', 'registrationoption' => 'larping_registration_option', 'accesscode' => 'larping_access_code'] as $type => $slug) {
+		foreach ([
+			'tickettype' => 'larping_ticket_type',
+			'registrationoption' => 'larping_registration_option',
+			'accesscode' => 'larping_access_code',
+		] as $type => $slug) {
 			$this->assertSame(expected: $slug, actual: $slugs[$type] ?? null);
 			foreach (['_schema', '_register', '_source'] as $suffix) {
 				$this->assertContains(needle: $type . $suffix, haystack: $keys);
@@ -210,7 +218,12 @@ class TicketChoicesFragmentTest extends TestCase {
 	 */
 	private function forOpis(array $schema): array {
 		foreach (array_keys($schema['properties']) as $name) {
-			unset($schema['properties'][$name]['$ref'], $schema['properties'][$name]['authorization'], $schema['properties'][$name]['calculation'], $schema['properties'][$name]['x-relation-filter']);
+			unset(
+				$schema['properties'][$name]['$ref'],
+				$schema['properties'][$name]['authorization'],
+				$schema['properties'][$name]['calculation'],
+				$schema['properties'][$name]['x-relation-filter']
+			);
 		}
 
 		unset($schema['authorization'], $schema['configuration']);

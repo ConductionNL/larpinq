@@ -219,7 +219,12 @@ class RegistrationFragmentTest extends TestCase {
 	 */
 	private function forOpis(array $schema): array {
 		foreach (array_keys($schema['properties']) as $name) {
-			unset($schema['properties'][$name]['$ref'], $schema['properties'][$name]['authorization'], $schema['properties'][$name]['calculation'], $schema['properties'][$name]['x-relation-filter']);
+			unset(
+				$schema['properties'][$name]['$ref'],
+				$schema['properties'][$name]['authorization'],
+				$schema['properties'][$name]['calculation'],
+				$schema['properties'][$name]['x-relation-filter']
+			);
 		}
 
 		unset($schema['authorization'], $schema['configuration']);

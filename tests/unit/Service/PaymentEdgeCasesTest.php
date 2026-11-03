@@ -65,7 +65,15 @@ class PaymentEdgeCasesTest extends TestCase {
 	public function testACreatedAcceptedRegistrationAsksForPayment(): void {
 		$this->world->store->seed(
 			'tickettype',
-			['id' => PaymentWorld::TICKET, 'event' => PaymentWorld::EVENT, 'name' => 'Player', 'role' => 'player', 'amount' => 8500, 'currency' => 'EUR', 'hidden' => false]
+			[
+				'id' => PaymentWorld::TICKET,
+				'event' => PaymentWorld::EVENT,
+				'name' => 'Player',
+				'role' => 'player',
+				'amount' => 8500,
+				'currency' => 'EUR',
+				'hidden' => false,
+			]
 		);
 		$created = $this->world->fetcher()->saveObjectWithAppAuthority(
 			'registration',
@@ -96,7 +104,16 @@ class PaymentEdgeCasesTest extends TestCase {
 		);
 
 		$this->world->update(id: 'e0000000-0000-4000-8000-000000000003', data: []);
-		$this->world->leaf->requests['f1'] = ['id' => 'f1', 'subject' => ['register' => '3', 'schema' => 'registration', 'id' => self::REG], 'state' => 'captured', 'amount' => 120, 'currency' => 'EUR', 'requestType' => 'other', 'description' => '', 'paymentLink' => 'https://pay.example.org/r/f1'];
+		$this->world->leaf->requests['f1'] = [
+			'id' => 'f1',
+			'subject' => ['register' => '3', 'schema' => 'registration', 'id' => self::REG],
+			'state' => 'captured',
+			'amount' => 120,
+			'currency' => 'EUR',
+			'requestType' => 'other',
+			'description' => '',
+			'paymentLink' => 'https://pay.example.org/r/f1',
+		];
 		$this->world->store->objects['registration'][self::REG]['paymentRequestId'] = 'f1';
 		$this->world->followUp()->daily(now: $this->world->now);
 		$this->assertSame(expected: 'paid', actual: $this->world->registration(id: self::REG)['paymentState']);

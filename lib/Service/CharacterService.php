@@ -203,7 +203,6 @@ class CharacterService {
 	 * @spec openspec/specs/event-xp-awards/spec.md
 	 */
 	private function loadXpAwards(): array {
-		$grouped = [];
 		try {
 			$awards = $this->objectFetcher->getObjects('xpAward');
 		} catch (\Throwable $e) {
@@ -211,9 +210,23 @@ class CharacterService {
 				'Larpinq: xpAward schema unavailable; stat calculation proceeds with no awards.',
 				['exception' => $e]
 			);
-			return $grouped;
+			return [];
 		}
 
+		return $this->groupByCharacter(awards: $awards);
+	}//end loadXpAwards()
+
+	/**
+	 * Group awards by the character they were granted to, skipping entries without one.
+	 *
+	 * @param array<int|string, mixed> $awards The awards as read.
+	 *
+	 * @return array<string, array<int, array<string, mixed>>> Awards keyed by character id.
+	 *
+	 * @spec openspec/specs/event-xp-awards/spec.md
+	 */
+	private function groupByCharacter(array $awards): array {
+		$grouped = [];
 		// @psalm-suppress MixedAssignment Award entries from the object fetcher.
 		foreach ($awards as $award) {
 			if (is_array($award) === false) {
@@ -221,19 +234,13 @@ class CharacterService {
 			}
 
 			$characterId = (string)($award['character'] ?? '');
-			if ($characterId === '') {
-				continue;
+			if ($characterId !== '') {
+				$grouped[$characterId][] = $award;
 			}
-
-			if (isset($grouped[$characterId]) === false) {
-				$grouped[$characterId] = [];
-			}
-
-			$grouped[$characterId][] = $award;
 		}
 
 		return $grouped;
-	}//end loadXpAwards()
+	}//end groupByCharacter()
 
 	/**
 	 * Resolve the XP ability id from the loaded abilities by name.
@@ -291,17 +298,7 @@ class CharacterService {
 		// @var array<string, array{name: string, base: int, value: int, audit: array}> $abilityScores
 		$abilityScores = [];
 		foreach ($this->allAbilities as $ability) {
-			if (isset($ability['base']) === true && is_numeric($ability['base']) === false) {
-				$this->logger->warning(
-					'Larpinq: ability has non-numeric base value; defaulting to 0',
-					[
-						'abilityId' => (string)($ability['id'] ?? 'unknown'),
-						'abilityName' => (string)($ability['name'] ?? 'unknown'),
-						'base' => $ability['base'],
-					]
-				);
-			}
-
+			$this->warnOnNonNumericBase(ability: $ability);
 			$abilityScores[(string)$ability['id']] = [
 				'name' => (string)($ability['name'] ?? ''),
 				'base' => (int)($ability['base'] ?? 0),
@@ -314,60 +311,80 @@ class CharacterService {
 	}//end initializeAbilityScores()
 
 	/**
-	 * Apply effects from a character's linked entities of a given type.
+	 * Log a warning for an ability whose base is set but not numeric; it counts as 0.
 	 *
-	 * Looks up each entity ID in the provided lookup table,
-	 * then applies any effects found on those entities.
-	 *
-	 * @param array<string, array<string, mixed>> $abilityScores Reference to ability scores.
-	 * @param array $character Character data array.
-	 * @param string $property Character property name (e.g. 'skills').
-	 * @param array<string, bool> $appliedEffects Tracks which non-cumulative effects have been applied.
+	 * @param array<string, mixed> $ability The ability.
 	 *
 	 * @return void
-	 *
-	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-69
 	 */
-	private function applyEntityEffects(
-		array &$abilityScores,
-		array $character,
-		string $property,
-		array &$appliedEffects,
-	): void {
-		if (isset($character[$property]) === false
-			|| is_array($character[$property]) === false
-			|| empty($character[$property]) === true
-		) {
+	private function warnOnNonNumericBase(array $ability): void {
+		if (isset($ability['base']) === false || is_numeric($ability['base']) === true) {
 			return;
 		}
 
-		$lookup = $this->stageLookup(property: $property);
-		// @psalm-suppress MixedAssignment Character array values are mixed
-		foreach ($character[$property] as $entityId) {
-			$entity = $lookup[(string)$entityId] ?? null;
-			if ($entity === null) {
-				continue;
-			}
+		$this->logger->warning(
+			'Larpinq: ability has non-numeric base value; defaulting to 0',
+			[
+				'abilityId' => (string)($ability['id'] ?? 'unknown'),
+				'abilityName' => (string)($ability['name'] ?? 'unknown'),
+				'base' => $ability['base'],
+			]
+		);
+	}//end warnOnNonNumericBase()
 
-			if (isset($entity['effects']) === true && empty($entity['effects']) === false) {
-				$auditCounts = array_map(static fn (array $score): int => count($score['audit']), $abilityScores);
-				// @var array|null $entityEffects
-				$entityEffects = $entity['effects'];
-				$this->effectApplier->applyEffects(
-					abilities: $abilityScores,
-					effects: $entityEffects,
-					appliedEffects: $appliedEffects,
-					effectLookup: $this->allEffects
-				);
-				$this->tagNewAuditEntries(
-					abilityScores: $abilityScores,
-					auditCounts: $auditCounts,
-					source: self::STAGE_SOURCE[$property] ?? $property,
-					entity: $entity
-				);
+	/**
+	 * The entities a character links under one stage property that carry effects, in link order.
+	 *
+	 * @param array  $character Character data array.
+	 * @param string $property  Character property name (e.g. 'skills').
+	 *
+	 * @return array<int, array<string, mixed>> The entities; a link to an unknown id is skipped.
+	 *
+	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-69
+	 */
+	private function stageEntities(array $character, string $property): array {
+		$lookup = $this->stageLookup(property: $property);
+		$entities = [];
+		// @psalm-suppress MixedAssignment Character array values are mixed
+		foreach ($this->linkedIds(character: $character, property: $property) as $entityId) {
+			$effects = ($lookup[(string)$entityId]['effects'] ?? null);
+			if (empty($effects) === false) {
+				$entities[] = $lookup[(string)$entityId];
 			}
 		}
-	}//end applyEntityEffects()
+
+		return $entities;
+	}//end stageEntities()
+
+	/**
+	 * The ids a character links under a property, or none when the value is not a non-empty list.
+	 *
+	 * @param array  $character Character data array.
+	 * @param string $property  Character property name.
+	 *
+	 * @return array<int|string, mixed> The linked ids.
+	 */
+	private function linkedIds(array $character, string $property): array {
+		if (isset($character[$property]) === false || is_array($character[$property]) === false) {
+			return [];
+		}
+
+		return $character[$property];
+	}//end linkedIds()
+
+	/**
+	 * The audit tag that names the entity which carried an effect (REQ-CSP-001).
+	 *
+	 * @param string               $source 'skill', 'item', 'condition' or 'event'.
+	 * @param array<string, mixed> $entity The carrying entity.
+	 *
+	 * @return array<string, string> The source, sourceId and sourceName.
+	 *
+	 * @spec openspec/specs/character-management/spec.md
+	 */
+	private function auditTag(string $source, array $entity): array {
+		return ['source' => $source, 'sourceId' => (string)($entity['id'] ?? ''), 'sourceName' => (string)($entity['name'] ?? '')];
+	}//end auditTag()
 
 	/**
 	 * The loaded entities of one effect stage, indexed by ID.
@@ -389,35 +406,6 @@ class CharacterService {
 	}//end stageLookup()
 
 	/**
-	 * Name the carrier on every audit entry an entity just added (REQ-CSP-001).
-	 *
-	 * The effect engine records which effect changed an ability; this records
-	 * which skill, item, condition or event carried that effect, so the stat
-	 * sheet can say where a modifier came from.
-	 *
-	 * @param array<string, array<string, mixed>> $abilityScores Ability scores, modified in place.
-	 * @param array<string, int> $auditCounts Audit length per ability before the entity applied.
-	 * @param string $source 'skill', 'item', 'condition' or 'event'.
-	 * @param array<string, mixed> $entity The carrying entity.
-	 *
-	 * @return void
-	 *
-	 * @spec openspec/specs/character-management/spec.md
-	 */
-	private function tagNewAuditEntries(array &$abilityScores, array $auditCounts, string $source, array $entity): void {
-		$sourceId = (string)($entity['id'] ?? '');
-		$sourceName = (string)($entity['name'] ?? '');
-		foreach ($abilityScores as $abilityId => $score) {
-			$total = count($score['audit']);
-			for ($index = ($auditCounts[$abilityId] ?? 0); $index < $total; $index++) {
-				$abilityScores[$abilityId]['audit'][$index]['source'] = $source;
-				$abilityScores[$abilityId]['audit'][$index]['sourceId'] = $sourceId;
-				$abilityScores[$abilityId]['audit'][$index]['sourceName'] = $sourceName;
-			}
-		}
-	}//end tagNewAuditEntries()
-
-	/**
 	 * Calculate stats for a single character array.
 	 *
 	 * @param array $character Character data array.
@@ -433,31 +421,28 @@ class CharacterService {
 		// Load entity collections lazily on first call. Closes #217.
 		$this->loadAllEntities();
 
-		$abilityScores = $this->initializeAbilityScores();
-
 		// Track which non-cumulative effect IDs have already been applied this pass.
 		// Resets per calculateCharacter() call (not shared across characters).
 		// Closes #208.
-		$appliedEffects = [];
+		$run = new EffectRun(abilities: $this->initializeAbilityScores(), effects: $this->allEffects);
 
 		// Apply effects from each entity type the character has: skills,
 		// items, conditions, then events.
-		foreach (array_keys(self::STAGE_SOURCE) as $property) {
-			$this->applyEntityEffects(
-				abilityScores: $abilityScores,
-				character: $character,
-				property: $property,
-				appliedEffects: $appliedEffects
-			);
+		foreach (self::STAGE_SOURCE as $property => $source) {
+			foreach ($this->stageEntities(character: $character, property: $property) as $entity) {
+				$auditCounts = $run->auditCounts();
+				$this->effectApplier->applyEffects(run: $run, effectIds: $entity['effects']);
+				$run->tagSince(auditCounts: $auditCounts, tag: $this->auditTag(source: $source, entity: $entity));
+			}
 		}
 
 		// Fifth stage: per-participant XP awards (event-xp-award-workflow).
 		// Applied after the four entity-effect stages so existing CALC ordering
 		// and arithmetic stay byte-identical.
-		$this->applyXpAwards(abilityScores: $abilityScores, character: $character);
+		$this->applyXpAwards(run: $run, character: $character);
 
 		// Update character array with calculated stats.
-		$character['stats'] = $abilityScores;
+		$character['stats'] = $run->abilities;
 
 		return $character;
 	}//end calculateCharacter()
@@ -470,52 +455,55 @@ class CharacterService {
 	 * resolved by name (no hardcoded UUIDs). When no XP ability resolves, or
 	 * the character has no awards, this is a no-op — never throws (CALC-006).
 	 *
-	 * @param array<string, array<string, mixed>> $abilityScores Reference to the ability scores.
+	 * @param EffectRun $run The pass, whose XP ability the awards add to.
 	 * @param array<string, mixed> $character The character being calculated.
 	 *
 	 * @return void
 	 *
 	 * @spec openspec/specs/event-xp-awards/spec.md
 	 */
-	private function applyXpAwards(array &$abilityScores, array $character): void {
-		$characterId = (string)($character['id'] ?? '');
-		if ($characterId === '') {
+	private function applyXpAwards(EffectRun $run, array $character): void {
+		$target = $this->xpTarget(abilities: $run->abilities, character: $character);
+		if ($target === null) {
 			return;
 		}
 
-		$awards = $this->awardsFor(characterId: $characterId);
-		if (empty($awards) === true) {
-			return;
-		}
-
-		$xpAbilityId = $this->resolveXpAbilityId();
-		if ($xpAbilityId === null || isset($abilityScores[$xpAbilityId]) === false) {
-			return;
-		}
-
+		[$xpAbilityId, $awards] = $target;
 		foreach ($awards as $award) {
 			$amount = $award['amount'] ?? 0;
-			if (is_numeric($amount) === false) {
-				continue;
+			if (is_numeric($amount) === true) {
+				$run->addXpAward(abilityId: $xpAbilityId, award: $award);
 			}
-
-			$currentValue = (int)$abilityScores[$xpAbilityId]['value'];
-			$newValue = ($currentValue + (int)$amount);
-
-			$abilityScores[$xpAbilityId]['value'] = $newValue;
-			$abilityScores[$xpAbilityId]['audit'][] = [
-				'type' => 'xpAward',
-				'award' => [
-					'id' => (string)($award['id'] ?? ''),
-					'event' => (string)($award['event'] ?? ''),
-					'amount' => (int)$amount,
-					'reason' => (string)($award['reason'] ?? ''),
-				],
-				'old' => $currentValue,
-				'new' => $newValue,
-			];
-		}//end foreach
+		}
 	}//end applyXpAwards()
+
+	/**
+	 * The XP ability and the awards of a character, or null when there is nothing to apply.
+	 *
+	 * @param array<string, array<string, mixed>> $abilities The ability scores.
+	 * @param array<string, mixed>                $character The character being calculated.
+	 *
+	 * @return array{0: string, 1: array<int, array<string, mixed>>}|null The [xpAbilityId, awards] pair.
+	 *
+	 * @spec openspec/specs/event-xp-awards/spec.md
+	 */
+	private function xpTarget(array $abilities, array $character): ?array {
+		$characterId = (string)($character['id'] ?? '');
+		if ($characterId === '') {
+			return null;
+		}
+
+		// Without awards the stage changes nothing, so the XP ability is looked up either way.
+		$awards = $this->awardsFor(characterId: $characterId);
+		$xpAbilityId = $this->resolveXpAbilityId();
+		if ($xpAbilityId === null || isset($abilities[$xpAbilityId]) === false) {
+			return null;
+		}
+
+		return [$xpAbilityId, $awards];
+	}//end xpTarget()
+
+
 
 	/**
 	 * The XP awards on one character.

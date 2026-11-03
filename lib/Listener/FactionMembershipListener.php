@@ -24,7 +24,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Listener;
 
-use OCA\Larpinq\AppInfo\Application;
+use OCA\Larpinq\Support\AppIdentity;
 use OCA\Larpinq\Service\CharacterConnectionGuard;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
@@ -143,7 +143,7 @@ class FactionMembershipListener implements IEventListener {
 			return null;
 		}
 
-		return $this->verdict(kind: $kind, write: [(array)$entity->getObject(), $this->storedData(old: $old), $userId]);
+		return $this->verdict(kind: $kind, write: [(array)$entity->getObject(), $old, $userId]);
 	}//end collectVeto()
 
 	/**
@@ -178,7 +178,7 @@ class FactionMembershipListener implements IEventListener {
 
 		$userId = $user->getUID();
 		if ($this->groupManager->isAdmin($userId) === true
-			|| $this->groupManager->isInGroup($userId, Application::GM_GROUP) === true
+			|| $this->groupManager->isInGroup($userId, AppIdentity::GM_GROUP) === true
 		) {
 			return null;
 		}
@@ -207,15 +207,15 @@ class FactionMembershipListener implements IEventListener {
 	 * The guard verdict for one write of a kind.
 	 *
 	 * Factions and relationships are judged on the new data alone; memberships
-	 * and builds compare it with the stored object.
+	 * and builds compare it with the stored object, which is read only for them.
 	 *
-	 * @param string                                                         $kind  The kind kindOf() named.
-	 * @param array{0:array<string,mixed>,1:array<string,mixed>|null,2:string} $write The new data, the stored data (null on a create) and the user id.
+	 * @param string                                     $kind  The kind kindOf() named.
+	 * @param array{0:array<string,mixed>,1:object|null,2:string} $write The new data, the stored entity (null on a create) and the user id.
 	 *
 	 * @return array<string, string>|null The errors payload, or null to allow.
 	 */
 	private function verdict(string $kind, array $write): ?array {
-		[$data, $previous, $userId] = $write;
+		[$data, $old, $userId] = $write;
 		if ($kind === 'faction') {
 			return $this->guard->checkFaction(faction: $data, userId: $userId);
 		}
@@ -225,10 +225,10 @@ class FactionMembershipListener implements IEventListener {
 		}
 
 		if ($kind === 'characterbuild') {
-			return $this->guard->checkBuild(build: $data, old: $previous, userId: $userId);
+			return $this->guard->checkBuild(build: $data, old: $this->storedData(old: $old), userId: $userId);
 		}
 
-		return $this->guard->checkMembership(membership: $data, old: $previous, userId: $userId);
+		return $this->guard->checkMembership(membership: $data, old: $this->storedData(old: $old), userId: $userId);
 	}//end verdict()
 
 	/**
@@ -264,7 +264,7 @@ class FactionMembershipListener implements IEventListener {
 		}
 
 		foreach (self::KINDS as $kind) {
-			if ($this->config->getValueString(Application::APP_ID, $kind . '_schema', '') === $schema) {
+			if ($this->config->getValueString(AppIdentity::APP_ID, $kind . '_schema', '') === $schema) {
 				return $kind;
 			}
 		}

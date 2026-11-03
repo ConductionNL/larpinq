@@ -69,7 +69,10 @@ class XpAwardsControllerTest extends TestCase {
 			}
 		);
 		$fetcher->method('getObjects')->willReturnCallback(
-			static fn (string $objectType): array => ($objectType === 'character' ? [['id' => self::MIRELA, 'name' => 'Mirela', 'events' => [self::EVENT]]] : [])
+			static fn (string $objectType): array => match ($objectType) {
+				'character' => [['id' => self::MIRELA, 'name' => 'Mirela', 'events' => [self::EVENT]]],
+				default => [],
+			}
 		);
 		$fetcher->method('saveObject')->willReturnCallback(
 			function (string $objectType, array $data): array {

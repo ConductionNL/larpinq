@@ -89,7 +89,14 @@ class FactionMembershipListenerTest extends TestCase {
 		parent::setUp();
 		$this->objects = [
 			self::GUARD => ['id' => self::GUARD, 'name' => "The Crown's Guard", 'kind' => 'faction', 'visibility' => 'open'],
-			self::LANTERNS => ['id' => self::LANTERNS, 'name' => 'The Lantern Bearers', 'kind' => 'group', 'visibility' => 'open', 'leader' => self::TOMAS, 'leaderOwnerUid' => 'tom'],
+			self::LANTERNS => [
+				'id' => self::LANTERNS,
+				'name' => 'The Lantern Bearers',
+				'kind' => 'group',
+				'visibility' => 'open',
+				'leader' => self::TOMAS,
+				'leaderOwnerUid' => 'tom',
+			],
 			self::CIRCLE => ['id' => self::CIRCLE, 'name' => 'The Ash Circle', 'kind' => 'faction', 'visibility' => 'secret'],
 			self::TOMAS => ['id' => self::TOMAS, 'name' => 'Tomas', 'ownerUid' => 'tom'],
 			self::VENN => ['id' => self::VENN, 'name' => 'Lady Venn', 'ownerUid' => 'vera'],

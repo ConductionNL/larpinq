@@ -31,6 +31,7 @@ use OCP\IAppConfig;
 use OCP\IGroupManager;
 use OCP\IUser;
 use OCP\IUserSession;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
@@ -51,14 +52,47 @@ class OverrideCharacterEntity extends ObjectEntity {
 }//end class
 
 /**
+ * A character entity whose payload cannot be read.
+ */
+class UnreadableCharacterEntity extends ObjectEntity {
+	/**
+	 * Build an entity of a schema.
+	 *
+	 * @param string $schema The schema id.
+	 */
+	public function __construct(string $schema) {
+		$this->schema = $schema;
+	}//end __construct()
+
+	/**
+	 * The payload; it cannot be read.
+	 *
+	 * @return array<string,mixed> Never returns.
+	 *
+	 * @throws \RuntimeException Always.
+	 */
+	public function getObject(): array {
+		throw new \RuntimeException('payload unreadable');
+	}//end getObject()
+}//end class
+
+/**
  * Overrides stay game-master-only when a check throws.
  *
  * @covers \OCA\Larpinq\Listener\CharacterRequirementListener
  * @uses   \OCA\Larpinq\Tests\Unit\Listener\OverrideCharacterEntity
+ * @uses   \OCA\Larpinq\Tests\Unit\Listener\UnreadableCharacterEntity
  */
 class CharacterOverrideFailsClosedTest extends TestCase {
 
 	private const BASE = ['name' => 'Mirela', 'skills' => ['s1']];
+
+	/**
+	 * The error lines the listener logged.
+	 *
+	 * @var string[]
+	 */
+	private array $logged = [];
 
 	private const WITH_OVERRIDE = [
 		'name' => 'Mirela',
@@ -155,6 +189,200 @@ class CharacterOverrideFailsClosedTest extends TestCase {
 		self::assertFalse(condition: $event->isPropagationStopped());
 		self::assertSame(expected: [], actual: $event->getErrors());
 	}//end testAWriteOnAnotherSchemaIsNotChecked()
+
+	/**
+	 * A throwing config refuses a write that changes overrides, and the refusal is logged.
+	 *
+	 * @return void
+	 */
+	public function testAThrowingConfigRefusesAnOverrideWrite(): void {
+		$event = $this->sendWithThrowingConfig(new: self::WITH_OVERRIDE);
+
+		self::assertTrue(condition: $event->isPropagationStopped());
+		self::assertSame(expected: 'override_unverifiable', actual: $event->getErrors()['requirementOverrides'][0]['code'] ?? null);
+		self::assertSame(expected: ['Larpinq: requirement override check errored; refusing the write.'], actual: $this->logged);
+	}//end testAThrowingConfigRefusesAnOverrideWrite()
+
+	/**
+	 * A throwing config lets a write that leaves the overrides alone through, as for any other schema.
+	 *
+	 * @return void
+	 */
+	public function testAThrowingConfigLetsAWriteWithoutOverridesThrough(): void {
+		$event = $this->sendWithThrowingConfig(new: self::BASE + ['items' => ['i1']]);
+
+		self::assertFalse(condition: $event->isPropagationStopped());
+		self::assertSame(expected: [], actual: $event->getErrors());
+	}//end testAThrowingConfigLetsAWriteWithoutOverridesThrough()
+
+	/**
+	 * A throwing config lets a write through that keeps the stored overrides unchanged.
+	 *
+	 * @return void
+	 */
+	public function testAThrowingConfigLetsUnchangedOverridesThrough(): void {
+		$event = $this->sendWithThrowingConfig(new: self::WITH_OVERRIDE + ['items' => ['i1']], old: self::WITH_OVERRIDE);
+
+		self::assertFalse(condition: $event->isPropagationStopped());
+		self::assertSame(expected: [], actual: $event->getErrors());
+	}//end testAThrowingConfigLetsUnchangedOverridesThrough()
+
+	/**
+	 * Schema ids that only look like the configured one are not character writes.
+	 *
+	 * @return array<string,array{0: string, 1: string}> The configured id and the written id.
+	 */
+	public static function lookalikeSchemas(): array {
+		return [
+			'upper case' => ['char-schema', 'CHAR-SCHEMA'],
+			'mixed case' => ['char-schema', 'Char-Schema'],
+			'trailing space' => ['char-schema', 'char-schema '],
+			'leading space' => ['char-schema', ' char-schema'],
+			'configured id as prefix' => ['char-schema', 'char-schema-2'],
+			'written id as prefix' => ['char-schema', 'char'],
+			'numeric with leading zero' => ['17', '017'],
+			'numeric as float' => ['17', '17.0'],
+			'no schema configured, empty id' => ['', ''],
+		];
+	}//end lookalikeSchemas()
+
+	/**
+	 * A player's override on a lookalike schema id is not checked as a character write.
+	 *
+	 * @param string $configured The configured character schema id.
+	 * @param string $written    The schema id of the written object.
+	 *
+	 * @return void
+	 */
+	#[DataProvider('lookalikeSchemas')]
+	public function testALookalikeSchemaIdIsNotACharacter(string $configured, string $written): void {
+		$config = $this->createMock(originalClassName: IAppConfig::class);
+		$config->method('getValueString')->willReturnMap([['larpinq', 'character_schema', '', $configured]]);
+		$event = new ObjectUpdatingEvent(
+			new OverrideCharacterEntity($written, self::WITH_OVERRIDE),
+			new OverrideCharacterEntity($written, self::BASE)
+		);
+		$this->listener(config: $config, groups: $this->createMock(originalClassName: IGroupManager::class))->handle(event: $event);
+
+		self::assertFalse(condition: $event->isPropagationStopped());
+		self::assertSame(expected: [], actual: $event->getErrors());
+	}//end testALookalikeSchemaIdIsNotACharacter()
+
+	/**
+	 * The exact configured schema id is a character write, so a player's override is refused.
+	 *
+	 * @return void
+	 */
+	public function testTheExactNumericSchemaIdIsACharacter(): void {
+		$config = $this->createMock(originalClassName: IAppConfig::class);
+		$config->method('getValueString')->willReturnMap([['larpinq', 'character_schema', '', '17']]);
+		$event = new ObjectUpdatingEvent(
+			new OverrideCharacterEntity('17', self::WITH_OVERRIDE),
+			new OverrideCharacterEntity('17', self::BASE)
+		);
+		$this->listener(config: $config, groups: $this->createMock(originalClassName: IGroupManager::class))->handle(event: $event);
+
+		self::assertTrue(condition: $event->isPropagationStopped());
+		self::assertSame(expected: 'override_forbidden', actual: $event->getErrors()['requirementOverrides'][0]['code'] ?? null);
+	}//end testTheExactNumericSchemaIdIsACharacter()
+
+	/**
+	 * A character whose payload cannot be read is refused, and the refusal is logged.
+	 *
+	 * @return void
+	 */
+	public function testAnUnreadableCharacterIsRefusedAndLogged(): void {
+		$event = new ObjectUpdatingEvent(new UnreadableCharacterEntity('char-schema'), new OverrideCharacterEntity('char-schema', self::BASE));
+		$this->listener(config: $this->characterConfig(), groups: $this->createMock(originalClassName: IGroupManager::class))->handle(event: $event);
+
+		self::assertTrue(condition: $event->isPropagationStopped());
+		self::assertSame(expected: 'override_unverifiable', actual: $event->getErrors()['requirementOverrides'][0]['code'] ?? null);
+		self::assertSame(expected: ['Larpinq: requirement override check errored; refusing the write.'], actual: $this->logged);
+	}//end testAnUnreadableCharacterIsRefusedAndLogged()
+
+	/**
+	 * A game master check that fails with an \Error refuses the override, and the refusal is logged.
+	 *
+	 * @return void
+	 */
+	public function testAnErrorInTheGameMasterCheckRefusesAndIsLogged(): void {
+		$session = $this->createMock(originalClassName: IUserSession::class);
+		$user = $this->createMock(originalClassName: IUser::class);
+		$user->method('getUID')->willReturn('gm1');
+		$session->method('getUser')->willReturn($user);
+		$groups = $this->createMock(originalClassName: IGroupManager::class);
+		$groups->method('isInGroup')->willThrowException(new \TypeError('group backend returned garbage'));
+		$event = new ObjectUpdatingEvent(
+			new OverrideCharacterEntity('char-schema', self::WITH_OVERRIDE),
+			new OverrideCharacterEntity('char-schema', self::BASE)
+		);
+		$this->listener(config: $this->characterConfig(), groups: $groups, session: $session)->handle(event: $event);
+
+		self::assertTrue(condition: $event->isPropagationStopped());
+		self::assertSame(expected: 'override_unverifiable', actual: $event->getErrors()['requirementOverrides'][0]['code'] ?? null);
+		self::assertSame(expected: ['Larpinq: requirement override check errored; refusing the write.'], actual: $this->logged);
+	}//end testAnErrorInTheGameMasterCheckRefusesAndIsLogged()
+
+	/**
+	 * Send one player update of a character through a listener whose config throws.
+	 *
+	 * @param array<string, mixed> $new The candidate character.
+	 * @param array<string, mixed> $old The stored character.
+	 *
+	 * @return ObjectUpdatingEvent The event after the listener ran.
+	 */
+	private function sendWithThrowingConfig(array $new, array $old = self::BASE): ObjectUpdatingEvent {
+		$config = $this->createMock(originalClassName: IAppConfig::class);
+		$config->method('getValueString')->willThrowException(new \RuntimeException('config store down'));
+		$event = new ObjectUpdatingEvent(
+			new OverrideCharacterEntity('char-schema', $new),
+			new OverrideCharacterEntity('char-schema', $old)
+		);
+		$this->listener(config: $config, groups: $this->createMock(originalClassName: IGroupManager::class))->handle(event: $event);
+
+		return $event;
+	}//end sendWithThrowingConfig()
+
+	/**
+	 * A config that names the character schema.
+	 *
+	 * @return IAppConfig The config.
+	 */
+	private function characterConfig(): IAppConfig {
+		$config = $this->createMock(originalClassName: IAppConfig::class);
+		$config->method('getValueString')->willReturnMap([['larpinq', 'character_schema', '', 'char-schema']]);
+
+		return $config;
+	}//end characterConfig()
+
+	/**
+	 * The listener over these doubles; its error log lines land in $this->logged.
+	 *
+	 * @param IAppConfig        $config  The config.
+	 * @param IGroupManager     $groups  The group manager.
+	 * @param IUserSession|null $session The session, or a signed-out one.
+	 *
+	 * @return CharacterRequirementListener The listener.
+	 */
+	private function listener(IAppConfig $config, IGroupManager $groups, ?IUserSession $session = null): CharacterRequirementListener {
+		$logger = $this->createMock(originalClassName: LoggerInterface::class);
+		$logger->method('error')->willReturnCallback(
+			function (string $message): void {
+				$this->logged[] = $message;
+			}
+		);
+		$requirements = $this->createMock(originalClassName: SkillRequirementService::class);
+		$requirements->method('validate')->willReturn(['valid' => true]);
+
+		return new CharacterRequirementListener(
+			requirementService: $requirements,
+			config: $config,
+			userSession: ($session ?? $this->createMock(originalClassName: IUserSession::class)),
+			groupManager: $groups,
+			logger: $logger,
+			customFields: $this->createMock(originalClassName: CustomFieldGuard::class)
+		);
+	}//end listener()
 
 	/**
 	 * Send one update of a character through the listener.

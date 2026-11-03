@@ -81,6 +81,13 @@ class DemoDataServiceTest extends TestCase {
 		@rmdir($this->appDir);
 	}
 
+	/**
+	 * Write a descriptor with this many objects into the throwaway app.
+	 *
+	 * @param int $objects The objects.
+	 *
+	 * @return void
+	 */
 	private function shipDescriptor(int $objects = 2): void {
 		file_put_contents(
 			$this->appDir . '/lib/Settings/larpinq_mock_register.json',
@@ -185,6 +192,8 @@ class DemoDataServiceTest extends TestCase {
 	 * and SKIPS silently when the version has not moved. An operator who asks
 	 * for demo data and is told it worked, on an instance where nothing was
 	 * written, has been lied to by a version compare.
+	 *
+	 * @return void
 	 */
 	public function testTheImportIsForcedSoAVersionGateCannotSilentlySkipIt(): void {
 		$this->shipDescriptor();
@@ -199,6 +208,8 @@ class DemoDataServiceTest extends TestCase {
 	/**
 	 * Its own configuration identity, so the demo import and the real
 	 * configuration import cannot mask one another's version gate.
+	 *
+	 * @return void
 	 */
 	public function testItImportsUnderItsOwnConfigurationIdentity(): void {
 		$this->shipDescriptor();
@@ -239,6 +250,8 @@ class DemoDataServiceTest extends TestCase {
 	 * 🔴 NAMES THE MISSING APP. "Something went wrong" on a cross-app lookup
 	 * leaves an operator with nothing to act on; a cross-app class is a runtime
 	 * lookup that finds nobody rather than erroring usefully.
+	 *
+	 * @return void
 	 */
 	public function testWithoutOpenRegisterItRefusesAndSaysWhichAppIsMissing(): void {
 		$this->shipDescriptor();

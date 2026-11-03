@@ -219,7 +219,11 @@ class CallerAccessGoldenTest extends TestCase {
 		$args = [];
 		foreach ((new \ReflectionMethod($class, '__construct'))->getParameters() as $parameter) {
 			$type = $parameter->getType();
-			$typeName = $type instanceof \ReflectionNamedType ? $type->getName() : '';
+			$typeName = '';
+			if ($type instanceof \ReflectionNamedType) {
+				$typeName = $type->getName();
+			}
+
 			$args[] = match (true) {
 				$parameter->getName() === 'appName' => 'larpinq',
 				$typeName === IUserSession::class => $session,
@@ -250,11 +254,14 @@ class CallerAccessGoldenTest extends TestCase {
 				$this->log = [];
 				try {
 					$response = $call($this->controller(class: $class, caller: $caller));
-					$outcome = [
-						'class' => get_class($response),
-						'status' => $response instanceof Response ? $response->getStatus() : null,
-						'data' => method_exists($response, 'getData') === true ? $response->getData() : null,
-					];
+					$outcome = ['class' => get_class($response), 'status' => null, 'data' => null];
+					if ($response instanceof Response) {
+						$outcome['status'] = $response->getStatus();
+					}
+
+					if (method_exists($response, 'getData') === true) {
+						$outcome['data'] = $response->getData();
+					}
 				} catch (\Throwable $e) {
 					$outcome = ['threw' => get_class($e).': '.$e->getMessage()];
 				}

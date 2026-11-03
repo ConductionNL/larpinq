@@ -122,7 +122,14 @@ class DocuDeskPdfRendererTest extends TestCase {
 	}
 
 	/**
+	 * A template id is normalised to a UUID, or refused.
+	 *
+	 * @param string $input The template id as requested.
+	 * @param ?string $expected The normalised id, or null when it is refused.
+	 *
 	 * @dataProvider templateIdProvider
+	 *
+	 * @return void
 	 */
 	public function testNormaliseTemplateId(string $input, ?string $expected): void {
 		self::assertSame(expected: $expected, actual: $this->renderer->normaliseTemplateId($input));
@@ -212,6 +219,8 @@ class DocuDeskPdfRendererTest extends TestCase {
 	/**
 	 * A template that omits format/orientation must still render, on the A4/portrait
 	 * defaults — the shape DocuDesk templates most commonly ship with.
+	 *
+	 * @return void
 	 */
 	public function testRenderAppliesA4PortraitDefaults(): void {
 		$pdfService = $this->getMockBuilder(className: \stdClass::class)

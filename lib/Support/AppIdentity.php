@@ -38,4 +38,9 @@ final class AppIdentity {
 	 * Application ID
 	 */
 	public const APP_ID = 'larpinq';
+
+	/**
+	 * The group whose members are the game masters.
+	 */
+	public const GM_GROUP = 'gamemasters';
 }//end class

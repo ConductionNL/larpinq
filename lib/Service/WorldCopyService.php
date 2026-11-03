@@ -285,7 +285,7 @@ class WorldCopyService {
 		$objects = [];
 		$total = 0;
 		foreach (array_keys(self::TYPES) as $type) {
-			$objects[$type] = $this->readType(type: $type, worldId: $worldId, budget: self::MAX_OBJECTS - $total + 1);
+			$objects[$type] = $this->readType(type: $type, query: ['filters' => ['setting' => $worldId], 'budget' => self::MAX_OBJECTS - $total + 1]);
 			$total += count($objects[$type]);
 			if ($total > self::MAX_OBJECTS) {
 				throw new LengthException('A world with more than ' . self::MAX_OBJECTS . ' rule objects cannot be copied in one go');
@@ -298,39 +298,50 @@ class WorldCopyService {
 	/**
 	 * Read one type's objects of the world, paged, up to a budget.
 	 *
-	 * @param string $type The type.
-	 * @param string $worldId The world UUID.
-	 * @param int $budget The most rows to read.
+	 * @param string                                              $type  The type.
+	 * @param array{filters: array<string, string>, budget: int} $query The world filter and the most rows to read.
 	 *
 	 * @return list<array<string, mixed>> The objects.
 	 */
-	private function readType(string $type, string $worldId, int $budget): array {
+	private function readType(string $type, array $query): array {
 		$rows = [];
 		$offset = 0;
 		do {
-			try {
-				$page = $this->objectFetcher->getObjects(objectType: $type, limit: self::PAGE, offset: $offset, filters: ['setting' => $worldId]);
-			} catch (Exception $e) {
-				if (in_array($type, self::OPTIONAL_TYPES, true) === true && str_contains($e->getMessage(), 'not configured') === true) {
-					return [];
-				}
-
-				throw $e;
+			$page = $this->readPage(type: $type, query: $query + ['offset' => $offset]);
+			if ($page === null) {
+				return [];
 			}
 
-			foreach ($page as $row) {
-				if (isset($row['id']) === true) {
-					$rows[] = $row;
-				}
-			}
-
+			$rows = array_merge($rows, array_values(array_filter($page, static fn (mixed $row): bool => isset($row['id']))));
 			$offset += self::PAGE;
 			$pageSize = count($page);
 			$rowCount = count($rows);
-		} while ($pageSize === self::PAGE && $rowCount < $budget);
+		} while ($pageSize === self::PAGE && $rowCount < $query['budget']);
 
 		return $rows;
 	}//end readType()
+
+	/**
+	 * One page of a type's objects; null when an optional type has no schema configured.
+	 *
+	 * @param string                                                          $type  The type.
+	 * @param array{filters: array<string, string>, budget: int, offset: int} $query The world filter and the page offset.
+	 *
+	 * @return array<int, array<string, mixed>>|null The page, or null for an unconfigured optional type.
+	 *
+	 * @throws Exception When the read fails for another reason.
+	 */
+	private function readPage(string $type, array $query): ?array {
+		try {
+			return $this->objectFetcher->getObjects(objectType: $type, limit: self::PAGE, offset: $query['offset'], filters: $query['filters']);
+		} catch (Exception $e) {
+			if (in_array($type, self::OPTIONAL_TYPES, true) === true && str_contains($e->getMessage(), 'not configured') === true) {
+				return null;
+			}
+
+			throw $e;
+		}
+	}//end readPage()
 
 	/**
 	 * The object's data as a payload for its copy: no id, no metadata, no

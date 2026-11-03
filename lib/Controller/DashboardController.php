@@ -19,7 +19,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Controller;
 
-use OCA\Larpinq\AppInfo\Application;
+use OCA\Larpinq\Support\AppIdentity;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Services\IInitialState;
@@ -55,7 +55,7 @@ class DashboardController extends Controller {
 		private readonly CallerAccess $callerAccess,
 		private readonly IConfig $config,
 	) {
-		parent::__construct(appName: Application::APP_ID, request: $request);
+		parent::__construct(appName: AppIdentity::APP_ID, request: $request);
 	}//end __construct()
 
 	/**
@@ -83,7 +83,7 @@ class DashboardController extends Controller {
 		$this->initialState->provideInitialState('activeWorld', $this->activeWorld());
 
 		return new TemplateResponse(
-			Application::APP_ID,
+			AppIdentity::APP_ID,
 			'index',
 			[]
 		);
@@ -125,7 +125,7 @@ class DashboardController extends Controller {
 
 		return (string)$this->config->getUserValue(
 			userId: $user->getUID(),
-			appName: Application::APP_ID,
+			appName: AppIdentity::APP_ID,
 			key: 'pref_active-world',
 			default: ''
 		);

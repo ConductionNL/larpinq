@@ -59,6 +59,23 @@ class SettingsController extends Controller {
 	private ?object $objectService = null;
 
 	/**
+	 * The object types the settings page configures a register and schema for.
+	 *
+	 * @var string[]
+	 */
+	private const OBJECT_TYPES = [
+		'ability',
+		'character',
+		'condition',
+		'effect',
+		'event',
+		'item',
+		'player',
+		'setting',
+		'skill',
+	];
+
+	/**
 	 * Constructor.
 	 *
 	 * @param IRequest $request The request.
@@ -165,34 +182,41 @@ class SettingsController extends Controller {
 	 */
 	private function enrichRegistersWithSchemas(array $registers, ?object $schemaMapper): array {
 		$result = [];
-
 		foreach ($registers as $register) {
 			// @psalm-suppress MixedMethodCall Register entity from OpenRegister.
 			$registerArray = $register->jsonSerialize();
-			$schemaIds = $registerArray['schemas'] ?? [];
-			$schemas = [];
-
-			if ($schemaMapper !== null && empty($schemaIds) === false) {
-				foreach ($schemaIds as $schemaId) {
-					try {
-						// @psalm-suppress MixedMethodCall SchemaMapper from OpenRegister.
-						$schema = $schemaMapper->find((int)$schemaId);
-						$schemas[] = $schema->jsonSerialize();
-					} catch (\Exception $e) {
-						$this->logger->debug(
-							'Schema not found while enriching register',
-							['schemaId' => $schemaId, 'exception' => $e->getMessage()]
-						);
-					}
-				}
-			}
-
-			$registerArray['schemas'] = $schemas;
+			$registerArray['schemas'] = $this->schemasOf(schemaIds: ($registerArray['schemas'] ?? []), schemaMapper: $schemaMapper);
 			$result[] = $registerArray;
-		}//end foreach
+		}
 
 		return $result;
 	}//end enrichRegistersWithSchemas()
+
+	/**
+	 * The serialised schemas of a register; an id the mapper cannot find is left out.
+	 *
+	 * @param mixed       $schemaIds    The register's schema ids.
+	 * @param object|null $schemaMapper OpenRegister's SchemaMapper, or null.
+	 *
+	 * @return array<int, array<string, mixed>> The schemas.
+	 */
+	private function schemasOf(mixed $schemaIds, object|null $schemaMapper): array {
+		if ($schemaMapper === null || empty($schemaIds) === true) {
+			return [];
+		}
+
+		$schemas = [];
+		foreach ($schemaIds as $schemaId) {
+			try {
+				// @psalm-suppress MixedMethodCall SchemaMapper from OpenRegister.
+				$schemas[] = $schemaMapper->find((int)$schemaId)->jsonSerialize();
+			} catch (\Exception $e) {
+				$this->logger->debug('Schema not found while enriching register', ['schemaId' => $schemaId, 'exception' => $e->getMessage()]);
+			}
+		}
+
+		return $schemas;
+	}//end schemasOf()
 
 	/**
 	 * Get current Larpinq settings.
@@ -209,42 +233,13 @@ class SettingsController extends Controller {
 	 */
 	public function index(): JSONResponse {
 		$isAdmin = $this->callerAccess->currentUserIsAdmin();
-
 		$openRegisters = in_array(needle: 'openregister', haystack: $this->appManager->getInstalledApps());
-		$availableRegisters = [];
-
-		if ($isAdmin === true && $openRegisters === true) {
-			try {
-				$registerMapper = $this->getRegisterMapper();
-				$schemaMapper = $this->getSchemaMapper();
-				if ($registerMapper !== null) {
-					// @psalm-suppress MixedMethodCall RegisterMapper from OpenRegister.
-					$registers = $registerMapper->findAll(_rbac: false, _multitenancy: false);
-					$availableRegisters = $this->enrichRegistersWithSchemas(registers: $registers, schemaMapper: $schemaMapper);
-				}
-			} catch (\Exception $e) {
-				$this->logger->warning(
-					'Failed to load available registers for settings',
-					['exception' => $e->getMessage()]
-				);
-			}
-		}
 
 		$data = [
 			'openRegisters' => $openRegisters,
 			'isAdmin' => $isAdmin,
-			'availableRegisters' => $availableRegisters,
-			'objectTypes' => [
-				'ability',
-				'character',
-				'condition',
-				'effect',
-				'event',
-				'item',
-				'player',
-				'setting',
-				'skill',
-			],
+			'availableRegisters' => $this->availableRegistersFor(isAdmin: $isAdmin, openRegisters: $openRegisters),
+			'objectTypes' => self::OBJECT_TYPES,
 		];
 
 		if ($isAdmin === true) {
@@ -253,6 +248,44 @@ class SettingsController extends Controller {
 
 		return new JSONResponse($data);
 	}//end index()
+
+	/**
+	 * The registers an administrator may pick from; none for anyone else or without OpenRegister.
+	 *
+	 * @param bool $isAdmin       Whether the caller is an administrator.
+	 * @param bool $openRegisters Whether OpenRegister is installed.
+	 *
+	 * @return array<int, array<string, mixed>> The registers with their schemas.
+	 */
+	private function availableRegistersFor(bool $isAdmin, bool $openRegisters): array {
+		if ($isAdmin === false || $openRegisters === false) {
+			return [];
+		}
+
+		return $this->loadRegisters();
+	}//end availableRegistersFor()
+
+	/**
+	 * Every register with its schemas, read past RBAC and multitenancy; none when the read fails.
+	 *
+	 * @return array<int, array<string, mixed>> The registers with their schemas.
+	 */
+	private function loadRegisters(): array {
+		try {
+			$registerMapper = $this->getRegisterMapper();
+			$schemaMapper = $this->getSchemaMapper();
+			if ($registerMapper === null) {
+				return [];
+			}
+
+			// @psalm-suppress MixedMethodCall RegisterMapper from OpenRegister.
+			$registers = $registerMapper->findAll(_rbac: false, _multitenancy: false);
+			return $this->enrichRegistersWithSchemas(registers: $registers, schemaMapper: $schemaMapper);
+		} catch (\Exception $e) {
+			$this->logger->warning('Failed to load available registers for settings', ['exception' => $e->getMessage()]);
+			return [];
+		}
+	}//end loadRegisters()
 
 	/**
 	 * Update Larpinq settings — the canonical write.

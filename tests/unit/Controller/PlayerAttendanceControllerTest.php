@@ -5,7 +5,7 @@
  * newest first, for game masters and for the player themself
  * (players-attendance-history REQ-PAH-001, REQ-PAH-002).
  *
- * attendance is read by game masters and the record's owner only (DECISIONS
+ * Attendance is read by game masters and the record's owner only (DECISIONS
  * row 30), and the owner is the game master who checked the character in. So
  * the player's own list comes from this endpoint, which reads with the app's
  * authority after larpinq's own check that the stored player is the caller's.
@@ -62,14 +62,17 @@ class PlayerAttendanceControllerTest extends TestCase {
 	/**
 	 * The controller as the signed-in user.
 	 *
-	 * @param string $uid The user.
+	 * @param string $uid The user id.
 	 * @param bool $gameMaster Whether the user is in the game masters group.
 	 *
 	 * @return PlayerAttendanceController The controller.
 	 */
 	private function controllerAs(string $uid, bool $gameMaster = false): PlayerAttendanceController {
 		$this->requireOpenRegister();
-		$groups = ($gameMaster === true ? [Application::GM_GROUP, 'larpers'] : ['larpers']);
+		$groups = ['larpers'];
+		if ($gameMaster === true) {
+			$groups = [Application::GM_GROUP, 'larpers'];
+		}
 		$this->store = $this->openRegister(handler: $this->permissionHandler(uid: $uid, groups: $groups), uid: $uid, blocks: $this->authorizationBlocks());
 
 		$this->store->seed('player', 'admin', ['id' => self::ANNA, 'name' => 'Anna de Vries', 'userUid' => 'anna']);
@@ -83,12 +86,24 @@ class PlayerAttendanceControllerTest extends TestCase {
 		$this->store->seed(
 			'attendance',
 			'gerrit',
-			['id' => '00000000-0000-4000-8000-0000000d0001', 'event' => self::SPRING, 'character' => self::HARROW, 'status' => 'checked-in', 'checkedInAt' => '2025-04-12T09:40:00+00:00']
+			[
+				'id' => '00000000-0000-4000-8000-0000000d0001',
+				'event' => self::SPRING,
+				'character' => self::HARROW,
+				'status' => 'checked-in',
+				'checkedInAt' => '2025-04-12T09:40:00+00:00',
+			]
 		);
 		$this->store->seed(
 			'attendance',
 			'gerrit',
-			['id' => '00000000-0000-4000-8000-0000000d0002', 'event' => self::SUMMER, 'character' => self::MIRELA, 'status' => 'checked-in', 'checkedInAt' => '2025-07-20T09:30:00+00:00']
+			[
+				'id' => '00000000-0000-4000-8000-0000000d0002',
+				'event' => self::SUMMER,
+				'character' => self::MIRELA,
+				'status' => 'checked-in',
+				'checkedInAt' => '2025-07-20T09:30:00+00:00',
+			]
 		);
 		$this->store->seed(
 			'attendance',

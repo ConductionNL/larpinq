@@ -21,9 +21,12 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Tests\Unit\Service;
 
+require_once __DIR__ . '/../Support/RegisterAnswers.php';
+
 use Composer\Autoload\ClassLoader;
 use OCA\Larpinq\Service\ConfigFileLoaderService;
 use OCA\Larpinq\Service\RegisterObjectFetcher;
+use OCA\Larpinq\Tests\Unit\Support\RegisterAnswers;
 use OCP\App\IAppManager;
 use OCP\IAppConfig;
 use OCP\IGroupManager;
@@ -96,9 +99,7 @@ trait RealEvaluatorRegister {
 		$registers->method('find')->willReturn($register);
 		$container = $this->createMock(originalClassName: ContainerInterface::class);
 		$container->method('get')->willReturnCallback(
-			static fn (string $id): object => ($id === \OCA\OpenRegister\Db\RegisterMapper::class ? $registers : throw new \RuntimeException(
-				'not in this test: ' . $id
-			))
+			static fn (string $id): object => RegisterAnswers::onlyService(id: $id, bound: \OCA\OpenRegister\Db\RegisterMapper::class, service: $registers)
 		);
 
 		$user = $this->createMock(originalClassName: IUser::class);
@@ -141,14 +142,39 @@ trait RealEvaluatorRegister {
 			/** @var list<array{schema: string, rbac: bool}> */
 			public array $reads = [];
 
+			/**
+			 * A register over the real evaluator, for one user.
+			 *
+			 * @param object $handler The handler.
+			 * @param string $uid The user id.
+			 * @param array $blocks The blocks.
+			 */
 			public function __construct(private object $handler, private string $uid, private array $blocks) {
 			}
 
+			/**
+			 * Store an object of a schema with its owner.
+			 *
+			 * @param string $schema The schema.
+			 * @param string $owner The owner.
+			 * @param array $data The data.
+			 *
+			 * @return void
+			 */
 			public function seed(string $schema, string $owner, array $data): void {
 				$data['@self'] = ['id' => $data['id'], 'owner' => $owner, 'schema' => $schema];
 				$this->objects[$schema][$data['id']] = $data;
 			}
 
+			/**
+			 * Whether OpenRegister lets the user read a row.
+			 *
+			 * @param string $schema The schema.
+			 * @param array $row The row.
+			 * @param bool $rbac Whether RBAC applies.
+			 *
+			 * @return bool True when OpenRegister lets the user read a row.
+			 */
 			public function readable(string $schema, array $row, bool $rbac): bool {
 				$entity = new \OCA\OpenRegister\Db\Schema();
 				// A distinct id per schema: the evaluator caches its verdicts by schema id.
@@ -157,6 +183,15 @@ trait RealEvaluatorRegister {
 				return $this->handler->hasPermission(schema: $entity, action: 'read', userId: $this->uid, objectOwner: $row['@self']['owner'], _rbac: $rbac);
 			}
 
+			/**
+			 * The rows of a schema that match the filters and that the user may read.
+			 *
+			 * @param string $schema The schema.
+			 * @param array $filters The filters.
+			 * @param bool $rbac Whether RBAC applies.
+			 *
+			 * @return array The rows of a schema that match the filters and that the user may read.
+			 */
 			public function rows(string $schema, array $filters, bool $rbac): array {
 				$this->reads[] = ['schema' => $schema, 'rbac' => $rbac];
 				$rows = [];
@@ -167,7 +202,7 @@ trait RealEvaluatorRegister {
 						}
 					}
 
-					if ($this->readable($schema, $row, $rbac) === true) {
+					if ($this->readable(schema: $schema, row: $row, rbac: $rbac) === true) {
 						$rows[] = $row;
 					}
 				}
@@ -175,16 +210,44 @@ trait RealEvaluatorRegister {
 				return $rows;
 			}
 
+			/**
+			 * The mapper of a schema.
+			 *
+			 * @param mixed $register The register.
+			 * @param mixed $schema The schema.
+			 *
+			 * @return object The mapper of a schema.
+			 */
 			public function getMapper($register, $schema): object {
 				$store = $this;
 				return new class($store, (string)$schema) {
+					/**
+					 * A mapper over the store for one schema.
+					 *
+					 * @param object $store The store.
+					 * @param string $schema The schema.
+					 */
 					public function __construct(private object $store, private string $schema) {
 					}
 
+					/**
+					 * Every row of the schema the user may read.
+					 *
+					 * @param array $config The config.
+					 *
+					 * @return array Every row of the schema the user may read.
+					 */
 					public function findAll(array $config = []): array {
 						return $this->store->rows($this->schema, ($config['filters'] ?? []), true);
 					}
 
+					/**
+					 * One row by id.
+					 *
+					 * @param string $id The id.
+					 *
+					 * @return array One row by id.
+					 */
 					public function find(string $id): array {
 						$row = $this->store->objects[$this->schema][$id] ?? null;
 						if ($row === null || $this->store->readable($this->schema, $row, true) === false) {
@@ -196,8 +259,17 @@ trait RealEvaluatorRegister {
 				};
 			}
 
+			/**
+			 * Every row of the schema the user may read.
+			 *
+			 * @param array $config The config.
+			 * @param bool $_rbac Whether RBAC applies.
+			 * @param bool $_multitenancy Whether multitenancy applies.
+			 *
+			 * @return array Every row of the schema the user may read.
+			 */
 			public function findAll(array $config = [], bool $_rbac = true, bool $_multitenancy = true): array {
-				return $this->rows((string)($config['filters']['schema'] ?? ''), ($config['filters'] ?? []), $_rbac);
+				return $this->rows(schema: (string)($config['filters']['schema'] ?? ''), filters: ($config['filters'] ?? []), rbac: $_rbac);
 			}
 		};
 	}//end openRegister()
@@ -213,15 +285,13 @@ trait RealEvaluatorRegister {
 	private function fetcherOver(object $openRegister): RegisterObjectFetcher {
 		$container = $this->createMock(originalClassName: ContainerInterface::class);
 		$container->method('get')->willReturnCallback(
-			static fn (string $id): object => ($id === 'OCA\OpenRegister\Service\ObjectService' ? $openRegister : throw new \RuntimeException(
-				'not bound: ' . $id
-			))
+			static fn (string $id): object => RegisterAnswers::onlyService(id: $id, bound: 'OCA\OpenRegister\Service\ObjectService', service: $openRegister)
 		);
 		$apps = $this->createMock(originalClassName: IAppManager::class);
 		$apps->method('getInstalledApps')->willReturn(['openregister']);
 		$config = $this->createMock(originalClassName: IAppConfig::class);
 		$config->method('getValueString')->willReturnCallback(
-			static fn (string $app, string $key): string => (str_ends_with($key, '_register') === true ? '3' : substr($key, 0, -strlen('_schema')))
+			static fn (string $app, string $key): string => RegisterAnswers::registerConfig(key: $key, default: '')
 		);
 
 		return new RegisterObjectFetcher(container: $container, appManager: $apps, config: $config, logger: new NullLogger());
@@ -230,7 +300,7 @@ trait RealEvaluatorRegister {
 	/**
 	 * A session signed in as the user.
 	 *
-	 * @param string $uid The user.
+	 * @param string $uid The user id.
 	 *
 	 * @return IUserSession The session.
 	 */

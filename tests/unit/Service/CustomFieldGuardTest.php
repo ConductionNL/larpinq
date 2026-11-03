@@ -55,7 +55,15 @@ class CustomFieldGuardTest extends TestCase {
 		$a = self::ALDMOOR;
 		$this->store->seed(
 			'characterfield',
-			['id' => 'f1', 'label' => 'Bloodline', 'key' => 'bloodline', 'fieldType' => 'choice', 'choices' => ['human', 'elven', 'dwarven'], 'visibility' => 'owner', 'setting' => $a]
+			[
+				'id' => 'f1',
+				'label' => 'Bloodline',
+				'key' => 'bloodline',
+				'fieldType' => 'choice',
+				'choices' => ['human', 'elven', 'dwarven'],
+				'visibility' => 'owner',
+				'setting' => $a,
+			]
 		);
 		$this->store->seed(
 			'characterfield',
@@ -67,7 +75,15 @@ class CustomFieldGuardTest extends TestCase {
 		);
 		$this->store->seed(
 			'characterfield',
-			['id' => 'f4', 'label' => 'True allegiance', 'key' => 'true-allegiance', 'fieldType' => 'choice', 'choices' => ['crown', 'rebels', 'none'], 'visibility' => 'gamemasters', 'setting' => $a]
+			[
+				'id' => 'f4',
+				'label' => 'True allegiance',
+				'key' => 'true-allegiance',
+				'fieldType' => 'choice',
+				'choices' => ['crown', 'rebels', 'none'],
+				'visibility' => 'gamemasters',
+				'setting' => $a,
+			]
 		);
 		$this->store->seed(
 			'characterfield',

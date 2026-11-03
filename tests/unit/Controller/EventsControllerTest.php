@@ -58,6 +58,11 @@ class EventsControllerTest extends TestCase {
 		$this->groupManager = $this->createMock(originalClassName: IGroupManager::class);
 	}
 
+	/**
+	 * The controller over the doubles.
+	 *
+	 * @return EventsController The controller over the doubles.
+	 */
 	private function controller(): EventsController {
 		// The real EventRosterService over the mocked fetcher: the roster /
 		// run-sheet rules stay under test end-to-end through the controller.
@@ -69,6 +74,15 @@ class EventsControllerTest extends TestCase {
 		);
 	}
 
+	/**
+	 * Sign in a user, as a game master and or administrator or not.
+	 *
+	 * @param string $uid The user id.
+	 * @param bool $isGm Whether the user is a game master.
+	 * @param bool $isAdmin Whether the user is an administrator.
+	 *
+	 * @return void
+	 */
 	private function asUser(string $uid, bool $isGm, bool $isAdmin = false): void {
 		$user = $this->createMock(originalClassName: IUser::class);
 		$user->method('getUID')->willReturn($uid);
@@ -107,7 +121,7 @@ class EventsControllerTest extends TestCase {
 	 */
 	public function testReturns424WhenDocuDeskAbsent(): void {
 		$this->asUser(uid: 'gm1', isGm: true);
-		// downloadRunsheet() validates the template id BEFORE probing for
+		// The run-sheet download validates the template id BEFORE probing for
 		// DocuDesk, so the id must normalise successfully for the 424 branch to
 		// be reachable at all. Without this stub the mock returns null and the
 		// method short-circuits at the 400 — the assertion below would then be
@@ -142,6 +156,8 @@ class EventsControllerTest extends TestCase {
 	 * unreachable and hiding the fact that a crafted template value was never
 	 * rejected on its own merits. Reverting the guard order in
 	 * EventsController::downloadRunsheet() turns this test red (424 != 400).
+	 *
+	 * @return void
 	 */
 	public function testReturns400ForNonUuidTemplateEvenWhenDocuDeskAbsent(): void {
 		$this->asUser(uid: 'gm1', isGm: true);

@@ -80,6 +80,8 @@ class MigrateAppConfigKeysTest extends TestCase {
 
 	/**
 	 * The happy path: a stored value under the old id lands under the new one.
+	 *
+	 * @return void
 	 */
 	public function testCopiesStoredValuesToTheNewNamespace(): void {
 		$this->appConfig->method('getKeys')
@@ -116,12 +118,17 @@ class MigrateAppConfigKeysTest extends TestCase {
 	/**
 	 * Never clobber an admin edit made after the rename. Also what makes a
 	 * second run a no-op.
+	 *
+	 * @return void
 	 */
 	public function testDoesNotOverwriteAValueAlreadySetUnderTheNewAppId(): void {
 		$this->appConfig->method('getKeys')->willReturn(['register']);
 
 		$this->appConfig->method('getValueString')->willReturnCallback(
-			static fn (string $app): string => $app === self::OLD_APP_ID ? '7' : '42'
+			static fn (string $app): string => match ($app) {
+				self::OLD_APP_ID => '7',
+				default => '42',
+			}
 		);
 
 		$this->appConfig->expects(self::never())->method('setValueString');
@@ -142,6 +149,8 @@ class MigrateAppConfigKeysTest extends TestCase {
 	 *
 	 * Here the new namespace is EMPTY, so the only thing that can stop the
 	 * write is the reserved list.
+	 *
+	 * @return void
 	 */
 	public function testSkipsNextcloudReservedKeys(): void {
 		$this->appConfig->method('getKeys')
@@ -188,6 +197,8 @@ class MigrateAppConfigKeysTest extends TestCase {
 	 * The assertion is deliberately two-part: no exception escapes, AND the
 	 * loop carries on to migrate the following key. A `try` wrapped around the
 	 * whole foreach would satisfy the first half and fail the second.
+	 *
+	 * @return void
 	 */
 	public function testAReadThatThrowsIsLoggedAndTheLoopContinues(): void {
 		$this->appConfig->method('getKeys')->willReturn(['poisoned', 'register']);
@@ -198,7 +209,11 @@ class MigrateAppConfigKeysTest extends TestCase {
 					throw new RuntimeException('unreadable value');
 				}
 
-				return $app === self::OLD_APP_ID ? '7' : '';
+				if ($app === self::OLD_APP_ID) {
+					return '7';
+				}
+
+				return '';
 			}
 		);
 
@@ -219,6 +234,8 @@ class MigrateAppConfigKeysTest extends TestCase {
 
 	/**
 	 * An unreadable key list must not abort the install either.
+	 *
+	 * @return void
 	 */
 	public function testAnUnreadableKeyListIsSurvivable(): void {
 		$this->appConfig->method('getKeys')
