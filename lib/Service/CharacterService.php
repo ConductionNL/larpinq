@@ -322,7 +322,6 @@ class CharacterService {
 	 * @param array<string, array<string, mixed>> $abilityScores Reference to ability scores.
 	 * @param array $character Character data array.
 	 * @param string $property Character property name (e.g. 'skills').
-	 * @param array<string, array<string, mixed>> $lookup Entity lookup table indexed by ID.
 	 * @param array<string, bool> $appliedEffects Tracks which non-cumulative effects have been applied.
 	 *
 	 * @return void
@@ -333,7 +332,6 @@ class CharacterService {
 		array &$abilityScores,
 		array $character,
 		string $property,
-		array $lookup,
 		array &$appliedEffects,
 	): void {
 		if (isset($character[$property]) === false
@@ -343,6 +341,7 @@ class CharacterService {
 			return;
 		}
 
+		$lookup = $this->stageLookup(property: $property);
 		// @psalm-suppress MixedAssignment Character array values are mixed
 		foreach ($character[$property] as $entityId) {
 			$entity = $lookup[(string)$entityId] ?? null;
@@ -369,6 +368,25 @@ class CharacterService {
 			}
 		}
 	}//end applyEntityEffects()
+
+	/**
+	 * The loaded entities of one effect stage, indexed by ID.
+	 *
+	 * @param string $property Character property name: a key of STAGE_SOURCE.
+	 *
+	 * @return array<string, array<string, mixed>> The entity lookup table; empty for any other name.
+	 *
+	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-69
+	 */
+	private function stageLookup(string $property): array {
+		return match ($property) {
+			'skills' => $this->allSkills,
+			'items' => $this->allItems,
+			'conditions' => $this->allConditions,
+			'events' => $this->allEvents,
+			default => [],
+		};
+	}//end stageLookup()
 
 	/**
 	 * Name the carrier on every audit entry an entity just added (REQ-CSP-001).
@@ -422,35 +440,16 @@ class CharacterService {
 		// Closes #208.
 		$appliedEffects = [];
 
-		// Apply effects from each entity type the character has.
-		$this->applyEntityEffects(
-			abilityScores: $abilityScores,
-			character: $character,
-			property: 'skills',
-			lookup: $this->allSkills,
-			appliedEffects: $appliedEffects
-		);
-		$this->applyEntityEffects(
-			abilityScores: $abilityScores,
-			character: $character,
-			property: 'items',
-			lookup: $this->allItems,
-			appliedEffects: $appliedEffects
-		);
-		$this->applyEntityEffects(
-			abilityScores: $abilityScores,
-			character: $character,
-			property: 'conditions',
-			lookup: $this->allConditions,
-			appliedEffects: $appliedEffects
-		);
-		$this->applyEntityEffects(
-			abilityScores: $abilityScores,
-			character: $character,
-			property: 'events',
-			lookup: $this->allEvents,
-			appliedEffects: $appliedEffects
-		);
+		// Apply effects from each entity type the character has: skills,
+		// items, conditions, then events.
+		foreach (array_keys(self::STAGE_SOURCE) as $property) {
+			$this->applyEntityEffects(
+				abilityScores: $abilityScores,
+				character: $character,
+				property: $property,
+				appliedEffects: $appliedEffects
+			);
+		}
 
 		// Fifth stage: per-participant XP awards (event-xp-award-workflow).
 		// Applied after the four entity-effect stages so existing CALC ordering
