@@ -145,6 +145,18 @@ class CharacterOverrideFailsClosedTest extends TestCase {
 	}//end testAPlayerWriteWithoutOverrideChangesStillPassesWhenTheFieldGuardThrows()
 
 	/**
+	 * A write on another schema is not checked for overrides.
+	 *
+	 * @return void
+	 */
+	public function testAWriteOnAnotherSchemaIsNotChecked(): void {
+		$event = $this->send(uid: 'player1', fieldsThrow: false, validatorThrows: false, groupsThrow: false, schema: 'other-schema');
+
+		self::assertFalse(condition: $event->isPropagationStopped());
+		self::assertSame(expected: [], actual: $event->getErrors());
+	}//end testAWriteOnAnotherSchemaIsNotChecked()
+
+	/**
 	 * Send one update of a character through the listener.
 	 *
 	 * @param string|null          $uid             The signed-in user, or null.
@@ -152,6 +164,7 @@ class CharacterOverrideFailsClosedTest extends TestCase {
 	 * @param bool                 $validatorThrows Whether the requirement validator throws.
 	 * @param bool                 $groupsThrow     Whether the group manager throws.
 	 * @param array<string, mixed> $new             The candidate character.
+	 * @param string               $schema          The schema id of the written object.
 	 *
 	 * @return ObjectUpdatingEvent The event after the listener ran.
 	 */
@@ -161,6 +174,7 @@ class CharacterOverrideFailsClosedTest extends TestCase {
 		bool $validatorThrows,
 		bool $groupsThrow,
 		array $new = self::WITH_OVERRIDE,
+		string $schema = 'char-schema',
 	): ObjectUpdatingEvent {
 		$fields = $this->createMock(originalClassName: CustomFieldGuard::class);
 		if ($fieldsThrow === true) {
@@ -205,8 +219,8 @@ class CharacterOverrideFailsClosedTest extends TestCase {
 		);
 
 		$event = new ObjectUpdatingEvent(
-			new OverrideCharacterEntity('char-schema', $new),
-			new OverrideCharacterEntity('char-schema', self::BASE)
+			new OverrideCharacterEntity($schema, $new),
+			new OverrideCharacterEntity($schema, self::BASE)
 		);
 		$listener->handle(event: $event);
 
