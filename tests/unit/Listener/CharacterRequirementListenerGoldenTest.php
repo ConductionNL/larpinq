@@ -124,6 +124,16 @@ class CharacterRequirementListenerGoldenTest extends TestCase {
 			'create with override, game master' => ['old' => null, 'new' => $withReason, 'result' => $overBudget],
 			'validator throws' => ['new' => $moreSkills, 'throws' => true],
 			'empty old object counts as changed' => ['old' => [], 'new' => $base, 'result' => $unmet],
+			'forged isGm flag, player' => ['new' => $withReason + ['isGm' => true, 'gameMaster' => true], 'uid' => 'player1'],
+			'override reason string to int, player' => [
+				'old' => $base + ['requirementOverrides' => [['skill' => 's2', 'reason' => '1']]],
+				'new' => $base + ['requirementOverrides' => [['skill' => 's2', 'reason' => 1]]],
+				'uid' => 'player1',
+			],
+			'override reason string to int, game master' => [
+				'old' => $base + ['requirementOverrides' => [['skill' => 's2', 'reason' => '1']]],
+				'new' => $base + ['requirementOverrides' => [['skill' => 's2', 'reason' => 1]]],
+			],
 		];
 
 		foreach ($cases as $name => $case) {
