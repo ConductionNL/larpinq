@@ -54,13 +54,6 @@ use Psr\Log\LoggerInterface;
 class CharacterRequirementListener implements IEventListener {
 
 	/**
-	 * The GM group whose members may author requirement overrides.
-	 *
-	 * @var string
-	 */
-	private const GM_GROUP = 'gamemasters';
-
-	/**
 	 * The log line for a validator that threw; the write goes through.
 	 *
 	 * @var string
@@ -492,7 +485,7 @@ class CharacterRequirementListener implements IEventListener {
 			return false;
 		}
 
-		return $this->groupManager->isInGroup($user->getUID(), self::GM_GROUP);
+		return $this->groupManager->isInGroup($user->getUID(), AppIdentity::GM_GROUP);
 	}//end callerIsGameMaster()
 
 	/**
