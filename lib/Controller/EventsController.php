@@ -43,6 +43,13 @@ use OCP\IRequest;
 class EventsController extends Controller {
 
 	/**
+	 * The error when DocuDesk, which renders the PDF, is not installed.
+	 *
+	 * @var string
+	 */
+	private const DOCUDESK_MISSING = 'PDF generation requires the DocuDesk app to be installed and enabled';
+
+	/**
 	 * The valid attendance status values (mirrors the larping_attendance enum).
 	 *
 	 * @var string[]
@@ -108,12 +115,23 @@ class EventsController extends Controller {
 		}
 
 		if ($this->pdfRenderer->isDocuDeskAvailable() === false) {
-			return new JSONResponse(
-				data: ['error' => 'PDF generation requires the DocuDesk app to be installed and enabled'],
-				statusCode: 424
-			);
+			return new JSONResponse(data: ['error' => self::DOCUDESK_MISSING], statusCode: 424);
 		}
 
+		return $this->renderRunsheet(id: $id, templateId: $templateId);
+	}//end downloadRunsheet()
+
+	/**
+	 * Render the run-sheet of an event with a validated template, once DocuDesk is known to be there.
+	 *
+	 * @param string $id         The event UUID.
+	 * @param string $templateId The normalised template UUID.
+	 *
+	 * @return DataDownloadResponse|JSONResponse The PDF download or an error.
+	 *
+	 * @spec openspec/specs/pdf-export/spec.md
+	 */
+	private function renderRunsheet(string $id, string $templateId): DataDownloadResponse|JSONResponse {
 		$event = $this->rosterService->getEvent(eventId: $id);
 		if ($event === null) {
 			return new JSONResponse(data: ['error' => 'Event not found'], statusCode: 404);
@@ -126,12 +144,27 @@ class EventsController extends Controller {
 
 		$context = $this->rosterService->buildRunsheetContext(event: $event, eventId: $id);
 		$pdfString = $this->pdfRenderer->render(templateData: $templateData, context: $context);
+
+		return $this->runsheetFile(pdfString: $pdfString, event: $event);
+	}//end renderRunsheet()
+
+	/**
+	 * The run-sheet download, or the 500 when rendering failed.
+	 *
+	 * @param string|null         $pdfString The rendered PDF, or null.
+	 * @param array<string,mixed> $event     The event object.
+	 *
+	 * @return DataDownloadResponse|JSONResponse The PDF download or the 500.
+	 *
+	 * @spec openspec/specs/pdf-export/spec.md
+	 */
+	private function runsheetFile(?string $pdfString, array $event): DataDownloadResponse|JSONResponse {
 		if ($pdfString === null) {
 			return new JSONResponse(data: ['error' => 'PDF generation failed. Please contact your administrator.'], statusCode: 500);
 		}
 
 		return new DataDownloadResponse($pdfString, $this->runsheetFileName(event: $event), 'application/pdf');
-	}//end downloadRunsheet()
+	}//end runsheetFile()
 
 	/**
 	 * Read the check-in roster for an event.
@@ -201,9 +234,43 @@ class EventsController extends Controller {
 
 		// Only the character and status are read from the body; any
 		// client-supplied checkedInAt/checkedInBy is discarded (never read).
-		$characterId = (string)($this->request->getParam('character', ''));
-		$status = (string)($this->request->getParam('status', 'checked-in'));
+		[$characterId, $status] = $this->attendanceRequest();
+		$refused = $this->attendanceRefusal(id: $id, request: [$characterId, $status]);
+		if ($refused !== null) {
+			return $refused;
+		}
 
+		$saved = $this->rosterService->recordAttendance(eventId: $id, characterId: $characterId, status: $status, actingUid: $actingUid);
+
+		return $this->attendanceResponse(saved: $saved);
+	}//end recordAttendance()
+
+	/**
+	 * The character and status of an attendance request; nothing else is read from the body.
+	 *
+	 * @return array{0: string, 1: string} The [characterId, status] pair.
+	 *
+	 * @spec openspec/specs/event-checkin-roster/spec.md
+	 */
+	private function attendanceRequest(): array {
+		return [
+			(string)($this->request->getParam('character', '')),
+			(string)($this->request->getParam('status', 'checked-in')),
+		];
+	}//end attendanceRequest()
+
+	/**
+	 * The refusal of an attendance request, or null when it may be recorded.
+	 *
+	 * @param string                      $id      The event UUID.
+	 * @param array{0: string, 1: string} $request The [characterId, status] pair.
+	 *
+	 * @return JSONResponse|null The 400, 404 or 422 response, or null.
+	 *
+	 * @spec openspec/specs/event-checkin-roster/spec.md
+	 */
+	private function attendanceRefusal(string $id, array $request): ?JSONResponse {
+		[$characterId, $status] = $request;
 		$invalid = $this->validateAttendanceInput(characterId: $characterId, status: $status);
 		if ($invalid !== null) {
 			return $invalid;
@@ -215,28 +282,28 @@ class EventsController extends Controller {
 		}
 
 		if ($this->rosterService->isParticipant(eventId: $id, characterId: $characterId, event: $event) === false) {
-			return new JSONResponse(
-				data: ['error' => 'Character is not a confirmed participant of this event'],
-				statusCode: 422
-			);
+			return new JSONResponse(data: ['error' => 'Character is not a confirmed participant of this event'], statusCode: 422);
 		}
 
-		$saved = $this->rosterService->recordAttendance(
-			eventId: $id,
-			characterId: $characterId,
-			status: $status,
-			actingUid: $actingUid
-		);
+		return null;
+	}//end attendanceRefusal()
 
+	/**
+	 * The response for a recorded attendance, or the 424 when attendance storage is missing.
+	 *
+	 * @param array<string,mixed>|null $saved The persisted record, or null.
+	 *
+	 * @return JSONResponse The record or the 424.
+	 *
+	 * @spec openspec/specs/event-checkin-roster/spec.md
+	 */
+	private function attendanceResponse(?array $saved): JSONResponse {
 		if ($saved === null) {
-			return new JSONResponse(
-				data: ['error' => 'Attendance storage is not available', 'attendanceAvailable' => false],
-				statusCode: 424
-			);
+			return new JSONResponse(data: ['error' => 'Attendance storage is not available', 'attendanceAvailable' => false], statusCode: 424);
 		}
 
 		return new JSONResponse(data: $saved);
-	}//end recordAttendance()
+	}//end attendanceResponse()
 
 	/**
 	 * Resolve the acting game master, or the refusal response to return.
@@ -252,18 +319,12 @@ class EventsController extends Controller {
 	private function resolveGameMaster(): array {
 		$user = $this->callerAccess->user();
 		if ($user === null) {
-			return [
-				'',
-				new JSONResponse(data: ['error' => 'Not authenticated'], statusCode: Http::STATUS_UNAUTHORIZED),
-			];
+			return ['', new JSONResponse(data: ['error' => 'Not authenticated'], statusCode: Http::STATUS_UNAUTHORIZED)];
 		}
 
 		$uid = $user->getUID();
 		if ($this->callerAccess->isGameMasterOrAdmin(uid: $uid) === false) {
-			return [
-				'',
-				new JSONResponse(data: ['error' => 'Access denied'], statusCode: Http::STATUS_FORBIDDEN),
-			];
+			return ['', new JSONResponse(data: ['error' => 'Access denied'], statusCode: Http::STATUS_FORBIDDEN)];
 		}
 
 		return [$uid, null];
