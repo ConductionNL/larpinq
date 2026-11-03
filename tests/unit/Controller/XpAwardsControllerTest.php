@@ -16,6 +16,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Tests\Unit\Controller;
 
+use OCA\Larpinq\Controller\CallerAccess;
 use OCA\Larpinq\Controller\XpAwardsController;
 use OCA\Larpinq\Service\EventRosterService;
 use OCA\Larpinq\Service\RegisterObjectFetcher;
@@ -86,12 +87,10 @@ class XpAwardsControllerTest extends TestCase {
 
 		$roster = new EventRosterService($fetcher);
 		$this->controller = new XpAwardsController(
-			'larpinq',
 			$this->createMock(IRequest::class),
 			new XpAwardBatchService($roster, $fetcher),
 			$roster,
-			$session,
-			$groups,
+			new CallerAccess($session, $groups),
 		);
 	}//end setUp()
 

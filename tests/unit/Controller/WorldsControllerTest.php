@@ -19,6 +19,7 @@ namespace OCA\Larpinq\Tests\Unit\Controller;
 require_once dirname(__DIR__) . '/Service/InMemoryObjectService.php';
 
 use OCA\Larpinq\AppInfo\Application;
+use OCA\Larpinq\Controller\CallerAccess;
 use OCA\Larpinq\Controller\WorldsController;
 use OCA\Larpinq\Service\IdListNormaliser;
 use OCA\Larpinq\Service\RegisterObjectFetcher;
@@ -102,11 +103,9 @@ class WorldsControllerTest extends TestCase {
 		$groups->method('isAdmin')->willReturn($admin);
 
 		return new WorldsController(
-			appName: 'larpinq',
 			request: $this->createMock(IRequest::class),
 			worldCopy: new WorldCopyService(objectFetcher: $fetcher, idList: new IdListNormaliser()),
-			userSession: $session,
-			groupManager: $groups,
+			callerAccess: new CallerAccess(userSession: $session, groupManager: $groups),
 			logger: $this->createMock(LoggerInterface::class),
 		);
 	}//end controller()

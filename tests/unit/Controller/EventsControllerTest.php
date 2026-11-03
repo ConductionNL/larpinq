@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace OCA\Larpinq\Tests\Unit\Controller;
 
 use Exception;
+use OCA\Larpinq\Controller\CallerAccess;
 use OCA\Larpinq\Controller\EventsController;
 use OCA\Larpinq\Service\DocuDeskPdfRenderer;
 use OCA\Larpinq\Service\EventRosterService;
@@ -52,12 +53,10 @@ class EventsControllerTest extends TestCase {
 		// The real EventRosterService over the mocked fetcher: the roster /
 		// run-sheet rules stay under test end-to-end through the controller.
 		return new EventsController(
-			'larpinq',
 			$this->createMock(IRequest::class),
 			new EventRosterService($this->objectFetcher),
 			$this->pdfRenderer,
-			$this->userSession,
-			$this->groupManager,
+			new CallerAccess($this->userSession, $this->groupManager),
 		);
 	}
 
