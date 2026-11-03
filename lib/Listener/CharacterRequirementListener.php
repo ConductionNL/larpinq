@@ -163,8 +163,8 @@ class CharacterRequirementListener implements IEventListener {
 	/**
 	 * The override refusal for a character write, or null when its overrides may pass.
 	 *
-	 * Runs outside the game-rule fallback: when the check cannot decide, the
-	 * write is refused.
+	 * Runs outside the game-rule fallback: when the check cannot decide on a
+	 * character write, the write is refused.
 	 *
 	 * @param Event $event The dispatched pre-write event.
 	 *
@@ -178,17 +178,54 @@ class CharacterRequirementListener implements IEventListener {
 	 */
 	private function overrideVeto(Event $event): ?array {
 		try {
-			[$newEntity, $oldEntity] = $this->extractEntities(event: $event);
-			if ($this->isCharacterSchema(entity: $newEntity) === false) {
+			$entities = $this->characterEntities(event: $event);
+			if ($entities === null) {
 				return null;
 			}
 
+			[$newEntity, $oldEntity] = $entities;
 			return $this->checkOverrideAuthorization(candidate: $newEntity->getObject(), old: ($oldEntity?->getObject() ?? []));
 		} catch (\Throwable $e) {
 			$this->logger->error(self::OVERRIDE_CHECK_ERRORED, ['exception' => $e]);
 			return ['requirementOverrides' => [self::OVERRIDE_UNVERIFIABLE]];
 		}
 	}//end overrideVeto()
+
+	/**
+	 * The new and stored entity of a character write, or null for any other write.
+	 *
+	 * When the schema cannot be read, a write that changes requirement
+	 * overrides may be a character write, so the failure is rethrown and the
+	 * write refused. Any other write is let through to the game-rule step,
+	 * which meets the same failure, logs it and allows it, as for any schema.
+	 *
+	 * @param Event $event The dispatched pre-write event.
+	 *
+	 * @return array{0: object, 1: object|null}|null The [newEntity, oldEntity] pair.
+	 *
+	 * @throws \Throwable When the schema cannot be read and the write changes overrides.
+	 *
+	 * @psalm-suppress MixedMethodCall OpenRegister entity classes are optional dependencies.
+	 * @psalm-suppress MixedArgument   OpenRegister entity classes are optional dependencies.
+	 */
+	private function characterEntities(Event $event): ?array {
+		[$newEntity, $oldEntity] = $this->extractEntities(event: $event);
+		try {
+			$isCharacter = $this->isCharacterSchema(entity: $newEntity);
+		} catch (\Throwable $e) {
+			if ($this->overridesChanged(candidate: $newEntity->getObject(), old: ($oldEntity?->getObject() ?? [])) === true) {
+				throw $e;
+			}
+
+			return null;
+		}
+
+		if ($isCharacter === false) {
+			return null;
+		}
+
+		return [$newEntity, $oldEntity];
+	}//end characterEntities()
 
 	/**
 	 * The game-rule errors for a write, or null; a rule that throws allows the write.
@@ -354,16 +391,11 @@ class CharacterRequirementListener implements IEventListener {
 	 */
 	private function isCharacterSchema(object $entity): bool {
 		$configured = $this->config->getValueString(AppIdentity::APP_ID, 'character_schema', '');
-		if ($configured === '') {
+		if ($configured === '' || is_callable([$entity, 'getSchema']) === false) {
 			return false;
 		}
 
-		$schema = '';
-		if (is_callable([$entity, 'getSchema']) === true) {
-			$schema = (string)$entity->getSchema();
-		}
-
-		return ($schema !== '' && $schema === $configured);
+		return (string)$entity->getSchema() === $configured;
 	}//end isCharacterSchema()
 
 	/**
