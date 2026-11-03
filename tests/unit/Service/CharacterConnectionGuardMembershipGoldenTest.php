@@ -32,6 +32,7 @@ use PHPUnit\Framework\TestCase;
  * Pins every refusal checkMembership() gives.
  *
  * @covers \OCA\Larpinq\Service\CharacterConnectionGuard
+ * @uses   \OCA\Larpinq\Service\MembershipCaller
  */
 class CharacterConnectionGuardMembershipGoldenTest extends TestCase {
 
@@ -126,6 +127,20 @@ class CharacterConnectionGuardMembershipGoldenTest extends TestCase {
 				['faction:f1' => ['id' => 'f1', 'kind' => 'faction', 'leaderOwnerUid' => $leaderUid]] + $objects,
 				'me',
 			];
+			foreach (['member', 'officer', null] as $role) {
+				$written = ['faction' => 'f1', 'character' => 'c1', 'status' => 'active'];
+				if ($role !== null) {
+					$written['role'] = $role;
+				}
+
+				$cases[sprintf('%s stored without a role, written %s', $caller, ($role ?? 'without one'))] = [
+					$written,
+					['faction' => 'f1', 'character' => 'c1', 'status' => 'active'],
+					$objects,
+					'me',
+				];
+			}
+
 			$cases[$caller . ' empty user'] = [['faction' => 'f1', 'character' => 'c1', 'status' => 'requested'], null, $objects, ''];
 		}
 
