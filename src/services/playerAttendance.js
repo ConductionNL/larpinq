@@ -37,7 +37,18 @@ export async function fetchPlayerAttendance(playerId) {
 		return { state: 'failed' }
 	}
 
-	const body = await response.json()
+	return attendanceFrom(await response.json())
+}
+
+/**
+ * The history in larpinq's answer.
+ *
+ * @param {object|null} body The parsed answer.
+ * @return {{state: 'ok', count: number, events: Array<object>}} The history.
+ *
+ * @spec openspec/specs/events-players/spec.md
+ */
+function attendanceFrom(body) {
 	return {
 		state: 'ok',
 		count: Number(body?.count) || 0,

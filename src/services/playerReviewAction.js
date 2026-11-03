@@ -26,7 +26,22 @@ export async function markPlayersReviewedAction(scope) {
 	if (selectedIds.length === 0) {
 		return
 	}
-	const { reviewed, refused } = await markPlayersReviewed(selectedIds)
+	const outcome = await markPlayersReviewed(selectedIds)
+	reportReview(outcome)
+	if (outcome.reviewed.length > 0) {
+		window.location.reload()
+	}
+}
+
+/**
+ * Tell the user how many players were marked reviewed and how many were refused.
+ *
+ * @param {{reviewed: Array<string>, refused: Array<string>}} outcome What happened to each player.
+ * @return {void}
+ *
+ * @spec openspec/specs/portal-contribution/spec.md
+ */
+function reportReview({ reviewed, refused }) {
 	if (reviewed.length > 0) {
 		showSuccess(
 			t('larpinq', 'Players marked reviewed: {count}', {
@@ -42,8 +57,5 @@ export async function markPlayersReviewedAction(scope) {
 				{ count: refused.length },
 			),
 		)
-	}
-	if (reviewed.length > 0) {
-		window.location.reload()
 	}
 }
