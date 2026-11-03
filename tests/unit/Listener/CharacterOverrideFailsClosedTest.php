@@ -216,6 +216,18 @@ class CharacterOverrideFailsClosedTest extends TestCase {
 	}//end testAThrowingConfigLetsAWriteWithoutOverridesThrough()
 
 	/**
+	 * A throwing config lets a write through that keeps the stored overrides unchanged.
+	 *
+	 * @return void
+	 */
+	public function testAThrowingConfigLetsUnchangedOverridesThrough(): void {
+		$event = $this->sendWithThrowingConfig(new: self::WITH_OVERRIDE + ['items' => ['i1']], old: self::WITH_OVERRIDE);
+
+		self::assertFalse(condition: $event->isPropagationStopped());
+		self::assertSame(expected: [], actual: $event->getErrors());
+	}//end testAThrowingConfigLetsUnchangedOverridesThrough()
+
+	/**
 	 * Schema ids that only look like the configured one are not character writes.
 	 *
 	 * @return array<string,array{0: string, 1: string}> The configured id and the written id.
@@ -230,6 +242,7 @@ class CharacterOverrideFailsClosedTest extends TestCase {
 			'written id as prefix' => ['char-schema', 'char'],
 			'numeric with leading zero' => ['17', '017'],
 			'numeric as float' => ['17', '17.0'],
+			'no schema configured, empty id' => ['', ''],
 		];
 	}//end lookalikeSchemas()
 
@@ -314,15 +327,16 @@ class CharacterOverrideFailsClosedTest extends TestCase {
 	 * Send one player update of a character through a listener whose config throws.
 	 *
 	 * @param array<string, mixed> $new The candidate character.
+	 * @param array<string, mixed> $old The stored character.
 	 *
 	 * @return ObjectUpdatingEvent The event after the listener ran.
 	 */
-	private function sendWithThrowingConfig(array $new): ObjectUpdatingEvent {
+	private function sendWithThrowingConfig(array $new, array $old = self::BASE): ObjectUpdatingEvent {
 		$config = $this->createMock(originalClassName: IAppConfig::class);
 		$config->method('getValueString')->willThrowException(new \RuntimeException('config store down'));
 		$event = new ObjectUpdatingEvent(
 			new OverrideCharacterEntity('char-schema', $new),
-			new OverrideCharacterEntity('char-schema', self::BASE)
+			new OverrideCharacterEntity('char-schema', $old)
 		);
 		$this->listener(config: $config, groups: $this->createMock(originalClassName: IGroupManager::class))->handle(event: $event);
 
