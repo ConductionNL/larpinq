@@ -53,7 +53,9 @@ export async function initializeStores() {
  * @spec openspec/specs/skill-tree-visualization/spec.md
  */
 export async function ensureObjectTypes(objectStore, types) {
-	const known = Array.isArray(objectStore.objectTypes) ? objectStore.objectTypes : []
+	const known = Array.isArray(objectStore.objectTypes)
+		? objectStore.objectTypes
+		: []
 	if (types.every((type) => known.includes(type))) {
 		return
 	}

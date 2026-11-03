@@ -20,7 +20,7 @@ const nl = read('l10n/nl.json').translations
 describe('my character sheet', () => {
 	const page = fragment.pages.find((entry) => entry.id === 'MyCharacters')
 
-	it('lists only the signed-in player\'s characters, as cards', () => {
+	it("lists only the signed-in player's characters, as cards", () => {
 		expect(page.config.schema).toBe('character')
 		expect(page.config.filter).toEqual({ ownerUid: '@me' })
 		expect(page.config.viewMode).toBe('cards')
