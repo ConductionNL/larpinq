@@ -44,6 +44,7 @@ use OCP\IRequest;
  * @spec openspec/specs/character-builds/spec.md
  */
 class CharacterBuildsController extends Controller {
+	use \OCA\Larpinq\Support\ReadsRelationId;
 
 	/**
 	 * The character lists a build replaces, with the object type of each.
@@ -192,24 +193,4 @@ class CharacterBuildsController extends Controller {
 
 		return $character;
 	}//end candidate()
-
-	/**
-	 * The UUID of a relation value, which OpenRegister may hand over as a
-	 * string or as an object with an id.
-	 *
-	 * @param mixed $value The relation value.
-	 *
-	 * @return string The UUID, or ''.
-	 */
-	private function idOf(mixed $value): string {
-		if (is_array($value) === true) {
-			$value = ($value['id'] ?? $value['uuid'] ?? '');
-		}
-
-		if (is_string($value) === false) {
-			return '';
-		}
-
-		return $value;
-	}//end idOf()
 }//end class
