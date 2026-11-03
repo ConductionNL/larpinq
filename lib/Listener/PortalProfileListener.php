@@ -24,8 +24,8 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Listener;
 
-use OCA\Larpinq\AppInfo\Application;
 use OCA\Larpinq\Service\RegisterObjectFetcher;
+use OCA\Larpinq\Support\AppIdentity;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventDispatcher;
 use OCP\EventDispatcher\IEventListener;
@@ -196,7 +196,7 @@ class PortalProfileListener implements IEventListener {
 		}
 
 		$class = self::CLAIM_EVENT;
-		$claim = new $class(Application::APP_ID, $subject, self::CLAIM, $uuid);
+		$claim = new $class(AppIdentity::APP_ID, $subject, self::CLAIM, $uuid);
 		$this->dispatcher->dispatchTyped($claim);
 		// @phpstan-ignore-next-line
 		$result = (string)$claim->getResult();
@@ -216,7 +216,7 @@ class PortalProfileListener implements IEventListener {
 	 * @psalm-suppress MixedMethodCall OpenRegister entity classes are optional dependencies.
 	 */
 	private function isSchema(object $entity, string $key): bool {
-		$schema = $this->config->getValueString(Application::APP_ID, $key, '');
+		$schema = $this->config->getValueString(AppIdentity::APP_ID, $key, '');
 
 		return $schema !== ''
 			&& is_callable([$entity, 'getSchema']) === true

@@ -26,8 +26,8 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Controller;
 
-use OCA\Larpinq\AppInfo\Application;
 use OCA\Larpinq\Service\SettingsService;
+use OCA\Larpinq\Support\AppIdentity;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\JSONResponse;
@@ -78,7 +78,7 @@ class SettingsController extends Controller {
 		private readonly CallerAccess $callerAccess,
 		private readonly LoggerInterface $logger,
 	) {
-		parent::__construct(appName: Application::APP_ID, request: $request);
+		parent::__construct(appName: AppIdentity::APP_ID, request: $request);
 
 	}//end __construct()
 

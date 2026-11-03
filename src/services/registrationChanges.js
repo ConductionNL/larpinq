@@ -10,21 +10,8 @@
  * @spec openspec/specs/event-registration/spec.md
  */
 
-import { getRequestToken } from '@nextcloud/auth'
 import { generateUrl } from '@nextcloud/router'
-
-/**
- * The request headers.
- *
- * @return {object} The headers.
- */
-function headers() {
-	return {
-		requesttoken: getRequestToken(),
-		Accept: 'application/json',
-		'Content-Type': 'application/json',
-	}
-}
+import { jsonHeaders } from './requestHeaders.js'
 
 /**
  * The URL of a registration endpoint.
@@ -72,7 +59,7 @@ async function post(registrationId, path, body) {
 	}
 	const response = await fetch(url(registrationId, path), {
 		method: 'POST',
-		headers: headers(),
+		headers: jsonHeaders(),
 		body: JSON.stringify(body),
 	})
 	return answer(response)
@@ -91,7 +78,7 @@ export async function fetchChanges(registrationId) {
 		return { ok: false, data: {}, message: '' }
 	}
 	const response = await fetch(url(registrationId, 'changes'), {
-		headers: headers(),
+		headers: jsonHeaders(),
 	})
 	return answer(response)
 }

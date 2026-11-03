@@ -27,9 +27,7 @@ use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\Attribute\NoAdminRequired;
 use OCP\AppFramework\Http\JSONResponse;
-use OCP\IGroupManager;
 use OCP\IRequest;
-use OCP\IUserSession;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -49,22 +47,18 @@ class WorldsController extends Controller {
 	/**
 	 * Constructor.
 	 *
-	 * @param string $appName The app name.
 	 * @param IRequest $request The request.
 	 * @param WorldCopyService $worldCopy The copy service.
-	 * @param IUserSession $userSession The user session.
-	 * @param IGroupManager $groupManager The group manager.
+	 * @param CallerAccess $callerAccess The signed-in caller and the game master check.
 	 * @param LoggerInterface $logger The logger.
 	 */
 	public function __construct(
-		string $appName,
 		IRequest $request,
 		private readonly WorldCopyService $worldCopy,
-		private readonly IUserSession $userSession,
-		private readonly IGroupManager $groupManager,
+		private readonly CallerAccess $callerAccess,
 		private readonly LoggerInterface $logger,
 	) {
-		parent::__construct(appName: $appName, request: $request);
+		parent::__construct(appName: Application::APP_ID, request: $request);
 	}//end __construct()
 
 	/**
@@ -79,12 +73,12 @@ class WorldsController extends Controller {
 	 */
 	#[NoAdminRequired]
 	public function access(): JSONResponse {
-		$user = $this->userSession->getUser();
+		$user = $this->callerAccess->user();
 		if ($user === null) {
 			return new JSONResponse(data: ['error' => 'Not authenticated'], statusCode: Http::STATUS_UNAUTHORIZED);
 		}
 
-		return new JSONResponse(data: ['allowed' => $this->isGameMaster(uid: $user->getUID())]);
+		return new JSONResponse(data: ['allowed' => $this->callerAccess->isGameMasterOrAdmin(uid: $user->getUID())]);
 	}//end access()
 
 	/**
@@ -157,12 +151,12 @@ class WorldsController extends Controller {
 	 * @spec openspec/specs/setting-management/spec.md
 	 */
 	private function refuseUnlessGameMaster(): ?JSONResponse {
-		$user = $this->userSession->getUser();
+		$user = $this->callerAccess->user();
 		if ($user === null) {
 			return new JSONResponse(data: ['error' => 'Not authenticated'], statusCode: Http::STATUS_UNAUTHORIZED);
 		}
 
-		if ($this->isGameMaster(uid: $user->getUID()) === false) {
+		if ($this->callerAccess->isGameMasterOrAdmin(uid: $user->getUID()) === false) {
 			return new JSONResponse(data: ['error' => 'Only game masters can copy a world'], statusCode: Http::STATUS_FORBIDDEN);
 		}
 
@@ -188,18 +182,4 @@ class WorldsController extends Controller {
 
 		return new JSONResponse(data: ['error' => $error->getMessage()], statusCode: $status);
 	}//end refusal()
-
-	/**
-	 * Whether a user may act as a game master (the group, or a Nextcloud admin).
-	 *
-	 * @param string $uid The user id.
-	 *
-	 * @return bool True for a game master or admin.
-	 *
-	 * @spec openspec/specs/setting-management/spec.md
-	 */
-	private function isGameMaster(string $uid): bool {
-		return $this->groupManager->isInGroup($uid, Application::GM_GROUP) === true
-			|| $this->groupManager->isAdmin($uid) === true;
-	}//end isGameMaster()
 }//end class

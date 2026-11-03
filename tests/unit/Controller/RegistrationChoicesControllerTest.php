@@ -21,6 +21,7 @@ namespace OCA\Larpinq\Tests\Unit\Controller;
 require_once __DIR__ . '/../Support/InMemoryOpenRegister.php';
 
 use OCA\Larpinq\AppInfo\Application;
+use OCA\Larpinq\Controller\CallerAccess;
 use OCA\Larpinq\Controller\RegistrationChoicesController;
 use OCA\Larpinq\Service\RegisterObjectFetcher;
 use OCA\Larpinq\Service\RegistrationService;
@@ -95,7 +96,7 @@ class RegistrationChoicesControllerTest extends TestCase {
 		$groups->method('isInGroup')->willReturnCallback(static fn (string $who, string $group): bool => $gameMaster === true && $group === Application::GM_GROUP);
 		$groups->method('isAdmin')->willReturn(false);
 
-		return new RegistrationChoicesController('larpinq', $this->createMock(IRequest::class), new TicketChoiceService($fetcher, $service, new NullLogger()), $fetcher, $session, $groups);
+		return new RegistrationChoicesController($this->createMock(IRequest::class), new TicketChoiceService($fetcher, $service, new NullLogger()), $fetcher, new CallerAccess($session, $groups));
 	}//end controllerAs()
 
 	/**

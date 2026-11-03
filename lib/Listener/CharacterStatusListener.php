@@ -21,8 +21,8 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Listener;
 
-use OCA\Larpinq\AppInfo\Application;
 use OCA\Larpinq\Service\CharacterStatusGuard;
+use OCA\Larpinq\Support\AppIdentity;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\IAppConfig;
@@ -77,7 +77,7 @@ class CharacterStatusListener implements IEventListener {
 			return;
 		}
 
-		$schema = $this->config->getValueString(Application::APP_ID, 'character_schema', '');
+		$schema = $this->config->getValueString(AppIdentity::APP_ID, 'character_schema', '');
 		if ($schema === '' || is_callable([$entity, 'getSchema']) === false || (string)$entity->getSchema() !== $schema) {
 			return;
 		}
