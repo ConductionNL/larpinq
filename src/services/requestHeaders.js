@@ -25,3 +25,35 @@ export function jsonHeaders() {
 		'Content-Type': 'application/json',
 	}
 }
+
+/**
+ * The headers of a request to larpinq's OCS-style API: the CSRF token from
+ * the page and the OCS request marker.
+ *
+ * @return {object} The headers.
+ *
+ * @spec openspec/specs/event-checkin-roster/spec.md
+ * @spec openspec/specs/rpg-system/spec.md
+ * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-6
+ */
+export function ocsHeaders() {
+	return {
+		requesttoken: OC.requestToken,
+		'OCS-APIREQUEST': 'true',
+	}
+}
+
+/**
+ * The OCS-style headers of a request that sends JSON.
+ *
+ * @return {object} The headers.
+ *
+ * @spec openspec/specs/event-checkin-roster/spec.md
+ * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-6
+ */
+export function ocsJsonHeaders() {
+	return {
+		'Content-Type': 'application/json',
+		...ocsHeaders(),
+	}
+}

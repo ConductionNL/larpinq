@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import logger from '../../logger.js'
+import { ocsJsonHeaders } from '../../services/requestHeaders.js'
 
 /**
  * Call a larpinq settings endpoint with the app's JSON request headers.
@@ -13,11 +14,7 @@ import logger from '../../logger.js'
 function settingsRequest(path, init) {
 	return fetch(`/apps/larpinq/api/settings${path}`, {
 		...init,
-		headers: {
-			'Content-Type': 'application/json',
-			requesttoken: OC.requestToken,
-			'OCS-APIREQUEST': 'true',
-		},
+		headers: ocsJsonHeaders(),
 	})
 }
 

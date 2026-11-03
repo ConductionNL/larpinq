@@ -80,6 +80,7 @@ import { generateUrl } from '@nextcloud/router'
 // deep paths are no longer exported and throw ERR_PACKAGE_PATH_NOT_EXPORTED.
 import NcButton from '@nextcloud/vue/components/NcButton'
 import { objectTabSource } from '../mixins/objectTab.js'
+import { ocsHeaders, ocsJsonHeaders } from '../services/requestHeaders.js'
 
 /**
  * Human-readable label + badge variant per attendance status.
@@ -199,12 +200,7 @@ export default {
 					generateUrl('/apps/larpinq/api/events/{id}/roster', {
 						id: this.eventId,
 					}),
-					{
-						headers: {
-							requesttoken: OC.requestToken,
-							'OCS-APIREQUEST': 'true',
-						},
-					},
+					{ headers: ocsHeaders() },
 				)
 				if (!response.ok) {
 					throw new Error(`roster fetch failed: ${response.status}`)
@@ -246,11 +242,7 @@ export default {
 					}),
 					{
 						method: 'POST',
-						headers: {
-							'Content-Type': 'application/json',
-							requesttoken: OC.requestToken,
-							'OCS-APIREQUEST': 'true',
-						},
+						headers: ocsJsonHeaders(),
 						body: JSON.stringify({ character: row.character, status }),
 					},
 				)
