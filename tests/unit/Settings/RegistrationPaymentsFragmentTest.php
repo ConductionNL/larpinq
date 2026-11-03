@@ -46,7 +46,7 @@ class RegistrationPaymentsFragmentTest extends TestCase {
 		$merge = $reflection->getMethod('mergeRegisterFragments');
 		$merge->setAccessible(true);
 
-		/** @var array<string, mixed> $merged */
+		// @var array<string, mixed> $merged
 		$merged = $merge->invoke($loader, $monolith, $appPath);
 		return $merged;
 	}//end mergedRegister()

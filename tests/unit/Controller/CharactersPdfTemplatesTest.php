@@ -54,7 +54,10 @@ class CharactersPdfTemplatesTest extends TestCase {
 		$appManager->method('isEnabledForUser')->willReturn($installed);
 		$container = $this->createMock(originalClassName: ContainerInterface::class);
 		$container->method('get')->willReturnCallback(
-			static fn (string $class): ?object => str_ends_with($class, '\\Service\\TemplateService') ? $templateService : null
+			static fn (string $class): ?object => match (str_ends_with($class, '\\Service\\TemplateService')) {
+				true => $templateService,
+				default => null,
+			}
 		);
 
 		return new CharactersController(

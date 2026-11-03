@@ -93,7 +93,7 @@ class SettingsControllerTest extends TestCase {
 	 * @return void
 	 */
 	public function testIndexReturnsJsonResponseWithExpectedKeys(): void {
-		// setUp() creates a null user → isAdmin = false; getSettings must NOT be called.
+		// The setUp() creates a null user → isAdmin = false; getSettings must NOT be called.
 		$this->settingsService->expects($this->never())->method('getSettings');
 
 		$result = $this->controller->index();

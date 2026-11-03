@@ -34,11 +34,23 @@ require_once __DIR__ . '/stubs/DoctrineStubs.php';
 
 // Include the Nextcloud 3rdparty autoloader so that Symfony and other NC
 // runtime dependencies (e.g. Symfony\Component\HttpFoundation\HeaderUtils)
-// are available during unit tests executed inside the container.
-// This file only exists in a full Nextcloud deployment; it is silently skipped
-// in the bare php:8.3-cli CI environment.
-$nc3rdpartyAutoload = __DIR__ . '/../../../3rdparty/autoload.php';
-if (file_exists($nc3rdpartyAutoload) === true) {
+// are available during unit tests. NEXTCLOUD_3RDPARTY names it explicitly;
+// otherwise the first `3rdparty/autoload.php` in a parent directory of the
+// app is used, which finds server/3rdparty from apps/, apps-extra/ and a
+// container mount alike. Without one (the bare php:8.3-cli CI image) it is
+// skipped.
+$nc3rdpartyAutoload = (string)getenv('NEXTCLOUD_3RDPARTY');
+if ($nc3rdpartyAutoload !== '') {
+	$nc3rdpartyAutoload = rtrim($nc3rdpartyAutoload, '/') . '/autoload.php';
+}
+
+for ($dir = dirname(__DIR__); $nc3rdpartyAutoload === '' && dirname($dir) !== $dir; $dir = dirname($dir)) {
+	if (is_file(dirname($dir) . '/3rdparty/autoload.php') === true) {
+		$nc3rdpartyAutoload = dirname($dir) . '/3rdparty/autoload.php';
+	}
+}
+
+if ($nc3rdpartyAutoload !== '' && is_file($nc3rdpartyAutoload) === true) {
 	require_once $nc3rdpartyAutoload;
 }
 
@@ -54,7 +66,10 @@ spl_autoload_register(function (string $class): void {
 
 	// Prefer the real symlink target when Nextcloud is mounted; fall back to the
 	// bundled OCP.bak stubs when the symlink is broken (bare CI container).
-	$ocpDir = is_dir($ocpBase . '/OCP') ? $ocpBase . '/OCP' : $ocpBase . '/OCP.bak';
+	$ocpDir = $ocpBase . '/OCP.bak';
+	if (is_dir($ocpBase . '/OCP') === true) {
+		$ocpDir = $ocpBase . '/OCP';
+	}
 	$ncuDir = $ocpBase . '/NCU';
 
 	$prefixMap = [
@@ -86,7 +101,7 @@ spl_autoload_register(function (string $class): void {
 // real OpenRegister on the path always wins, and it is never in composer.json.
 if ($composerAutoloader instanceof \Composer\Autoload\ClassLoader) {
 	$composerAutoloader->addPsr4('OCA\\OpenRegister\\', __DIR__ . '/stubs/openregister/');
-	// portaliq's claim event, verbatim, for the self-signup claim listener
+	// Portaliq's claim event, verbatim, for the self-signup claim listener
 	// (players-self-signup). Same rule: appended, so a real portaliq wins.
 	$composerAutoloader->addPsr4('OCA\\Portaliq\\', __DIR__ . '/stubs/portaliq/');
 	// Nextcloud Forms' submit event in its real shape, for the sign-up listener

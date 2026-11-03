@@ -54,6 +54,15 @@ class CharacterServiceTest extends TestCase {
 
 	/**
 	 * Helper to create a CharacterService with specific entity data.
+	 *
+	 * @param array $abilities The abilities.
+	 * @param array $effects The effects.
+	 * @param array $skills The skills.
+	 * @param array $items The items.
+	 * @param array $conditions The conditions.
+	 * @param array $events The events.
+	 *
+	 * @return CharacterService The create service with data.
 	 */
 	private function createServiceWithData(
 		array $abilities = [],
@@ -398,6 +407,11 @@ class CharacterServiceTest extends TestCase {
 	// #208 — non-cumulative dedup + stat_id double-apply fix
 	// -----------------------------------------------------------------------
 
+	/**
+	 * An effect without a cumulative field applies once, as a non-cumulative one.
+	 *
+	 * @return void
+	 */
 	public function testEffectWithMissingCumulativeFieldDefaultsToNonCumulative(): void {
 		// When the 'cumulative' field is entirely absent from the effect array the
 		// schema default is 'non-cumulative'. The same effect attached to both a skill
@@ -503,7 +517,7 @@ class CharacterServiceTest extends TestCase {
 	 * @return void
 	 */
 	public function testStatIdAndAbilitiesDeduplication(): void {
-		// stat_id = 'abil-1' AND abilities = ['abil-1']: must apply only once. Closes #208.
+		// With stat_id = 'abil-1' AND abilities = ['abil-1']: must apply only once. Closes #208.
 		$abilities = [
 			['id' => 'abil-1', 'name' => 'Strength', 'base' => 10],
 		];
@@ -531,6 +545,11 @@ class CharacterServiceTest extends TestCase {
 	// #209 — sign-direction confusion fix
 	// -----------------------------------------------------------------------
 
+	/**
+	 * A negative modifier with a negative modification subtracts its absolute value.
+	 *
+	 * @return void
+	 */
 	public function testNegativeModifierWithNegativeModificationSubtracts(): void {
 		// {modifier: -3, modification: 'negative'} must subtract 3, NOT add 3.
 		// Before the fix this would have computed value - (-3) = value + 3.
@@ -552,7 +571,7 @@ class CharacterServiceTest extends TestCase {
 		$character = ['id' => 'char-1', 'skills' => ['skill-1']];
 		$result = $service->calculateCharacter($character);
 
-		// abs(-3) = 3; modification='negative' → 20 - 3 = 17.
+		// Here abs(-3) = 3; modification='negative' → 20 - 3 = 17.
 		self::assertSame(expected: 17, actual: $result['stats']['abil-1']['value']);
 	}
 
@@ -580,7 +599,7 @@ class CharacterServiceTest extends TestCase {
 		$character = ['id' => 'char-1', 'skills' => ['skill-1']];
 		$result = $service->calculateCharacter($character);
 
-		// abs(-5) = 5; modification='positive' → 10 + 5 = 15.
+		// Here abs(-5) = 5; modification='positive' → 10 + 5 = 15.
 		self::assertSame(expected: 15, actual: $result['stats']['abil-1']['value']);
 	}
 
@@ -588,6 +607,11 @@ class CharacterServiceTest extends TestCase {
 	// #219 — lean audit trail
 	// -----------------------------------------------------------------------
 
+	/**
+	 * An audit entry carries only the minimal fields.
+	 *
+	 * @return void
+	 */
 	public function testAuditTrailContainsOnlyMinimalFields(): void {
 		$abilities = [
 			['id' => 'abil-1', 'name' => 'Strength', 'base' => 10],
@@ -628,6 +652,8 @@ class CharacterServiceTest extends TestCase {
 	 * Each audit entry names the skill, item, condition or event that carried it (REQ-CSP-001).
 	 *
 	 * @spec openspec/specs/character-management/spec.md
+	 *
+	 * @return void
 	 */
 	public function testAuditEntriesNameTheirSource(): void {
 		$abilities = [['id' => 'abil-1', 'name' => 'Strength', 'base' => 10]];

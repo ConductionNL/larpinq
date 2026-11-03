@@ -52,30 +52,25 @@ class CustomFieldValidator {
 	public function validate(string $property, array $values, array $definitions): array {
 		$errors = [];
 		foreach ($values as $key => $value) {
-			$key = (string)$key;
-			$error = $this->errorFor(property: $property, definition: ($definitions[$key] ?? null), value: $value);
-			if ($error !== null) {
-				$errors[$key] = $error;
+			if ($value !== null) {
+				$definition = ($definitions[(string)$key] ?? null);
+				$errors[(string)$key] = ($this->placementError(property: $property, definition: $definition)
+					?? $this->typeError(definition: (array)$definition, value: $value));
 			}
 		}
 
-		return $errors;
+		return array_filter($errors, static fn (?string $error): bool => $error !== null);
 	}//end validate()
 
 	/**
-	 * The error for one value, or null.
+	 * The error when a value has no field, or sits in the wrong property for its field; null otherwise.
 	 *
-	 * @param string $property The property the value sits in.
+	 * @param string                    $property   The property the value sits in.
 	 * @param array<string, mixed>|null $definition The definition, or null when there is none.
-	 * @param mixed $value The value.
 	 *
-	 * @return string|null The message, or null when the value passes.
+	 * @return string|null The message, or null when the field exists and the property is right.
 	 */
-	private function errorFor(string $property, ?array $definition, mixed $value): ?string {
-		if ($value === null) {
-			return null;
-		}
-
+	private function placementError(string $property, ?array $definition): ?string {
 		if ($definition === null) {
 			return 'There is no such field for characters of this world.';
 		}
@@ -85,8 +80,8 @@ class CustomFieldValidator {
 			return 'This field belongs in ' . (self::PROPERTY_OF[$visibility] ?? 'customFields') . '.';
 		}
 
-		return $this->typeError(definition: $definition, value: $value);
-	}//end errorFor()
+		return null;
+	}//end placementError()
 
 	/**
 	 * The error when the value does not match the field type, or null.

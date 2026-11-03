@@ -49,7 +49,7 @@ class RegistrationChangesFragmentTest extends TestCase {
 		$merge = $reflection->getMethod('mergeRegisterFragments');
 		$merge->setAccessible(true);
 
-		/** @var array<string, mixed> $merged */
+		// @var array<string, mixed> $merged
 		$merged = $merge->invoke($loader, $monolith, $appPath);
 		return $merged;
 	}//end mergedRegister()
@@ -138,12 +138,27 @@ class RegistrationChangesFragmentTest extends TestCase {
 		$writes = [
 			['status' => 'cancelled', 'cancelReason' => 'player', 'cancelledBy' => 'joris', 'settlementChoice' => 'credit'],
 			['settlement' => 'credit-requested', 'settlementRequestedAt' => '2026-11-10T10:00:00+00:00'],
-			['transferTo' => 'c0000000-0000-4000-8000-000000000004', 'transferToUid' => 'pieter', 'transferStatus' => 'offered', 'transferOfferedAt' => '2026-11-10T10:00:00+00:00'],
 			[
-				'player' => 'c0000000-0000-4000-8000-000000000004', 'playerUid' => 'pieter', 'character' => '', 'transferStatus' => 'accepted', 'transferToUid' => '',
+				'transferTo' => 'c0000000-0000-4000-8000-000000000004',
+				'transferToUid' => 'pieter',
+				'transferStatus' => 'offered',
+				'transferOfferedAt' => '2026-11-10T10:00:00+00:00',
+			],
+			[
+				'player' => 'c0000000-0000-4000-8000-000000000004',
+				'playerUid' => 'pieter',
+				'character' => '',
+				'transferStatus' => 'accepted',
+				'transferToUid' => '',
 				'transferredFrom' => 'c0000000-0000-4000-8000-000000000003', 'transferredAt' => '2026-11-10T10:00:00+00:00', 'bookedByUid' => '',
 			],
-			['event' => 'a0000000-0000-4000-8000-000000000001', 'player' => 'c0000000-0000-4000-8000-000000000009', 'bookingGroup' => 'd0000000-0000-4000-8000-000000000001', 'bookedByUid' => 'joris', 'submitterUid' => 'joris'],
+			[
+				'event' => 'a0000000-0000-4000-8000-000000000001',
+				'player' => 'c0000000-0000-4000-8000-000000000009',
+				'bookingGroup' => 'd0000000-0000-4000-8000-000000000001',
+				'bookedByUid' => 'joris',
+				'submitterUid' => 'joris',
+			],
 		];
 		foreach ($writes as $index => $written) {
 			$this->assertTrue(condition: $this->valid(data: $written, schema: $schema), message: "write {$index} must validate");

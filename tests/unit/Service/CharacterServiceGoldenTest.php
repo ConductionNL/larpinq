@@ -100,12 +100,16 @@ class CharacterServiceGoldenTest extends TestCase {
 	 * @return CharacterService
 	 */
 	private function serviceFor(array $data): CharacterService {
-		$fetcher = $this->createMock(RegisterObjectFetcher::class);
+		$fetcher = $this->createMock(originalClassName: RegisterObjectFetcher::class);
 		$fetcher->method('getObjects')->willReturnCallback(
 			static fn (string $type): array => $data[$type] ?? []
 		);
 
-		return new CharacterService($fetcher, $this->createMock(LoggerInterface::class), new EffectApplier());
+		return new CharacterService(
+			objectFetcher: $fetcher,
+			logger: $this->createMock(originalClassName: LoggerInterface::class),
+			effectApplier: new EffectApplier()
+		);
 	}//end serviceFor()
 
 	/**
@@ -116,8 +120,8 @@ class CharacterServiceGoldenTest extends TestCase {
 	public function testMatchesRecordedStats(): void {
 		$actual = [];
 		for ($seed = 1; $seed <= 160; $seed++) {
-			[$data, $character] = $this->caseFor($seed);
-			$actual['case '.$seed] = $this->serviceFor($data)->calculateCharacter($character);
+			[$data, $character] = $this->caseFor(seed: $seed);
+			$actual['case '.$seed] = $this->serviceFor(data: $data)->calculateCharacter(character: $character);
 		}
 
 		if (getenv('RECORD_GOLDEN') === '1') {
@@ -125,9 +129,9 @@ class CharacterServiceGoldenTest extends TestCase {
 		}
 
 		$expected = json_decode((string)file_get_contents(self::FIXTURE), true);
-		self::assertSame(array_keys($expected), array_keys($actual));
+		self::assertSame(expected: array_keys($expected), actual: array_keys($actual));
 		foreach ($expected as $name => $result) {
-			self::assertSame(json_encode($result), json_encode($actual[$name]), $name);
+			self::assertSame(expected: json_encode($result), actual: json_encode($actual[$name]), message: $name);
 		}
 	}//end testMatchesRecordedStats()
 }//end class

@@ -110,7 +110,11 @@ class CharacterStatusListenerTest extends TestCase {
 			'active joins' => [['status' => 'active', 'events' => []], ['status' => 'active', 'events' => ['ev-winter']], self::SCHEMA_ID],
 			'no status joins' => [['events' => []], ['events' => ['ev-winter']], self::SCHEMA_ID],
 			'dead leaves' => [['status' => 'dead', 'events' => ['ev-summer']], ['status' => 'dead', 'events' => []], self::SCHEMA_ID],
-			'dead renamed' => [['status' => 'dead', 'name' => 'Aldric', 'events' => ['ev-summer']], ['status' => 'dead', 'name' => 'Brother Aldric', 'events' => ['ev-summer']], self::SCHEMA_ID],
+			'dead renamed' => [
+				['status' => 'dead', 'name' => 'Aldric', 'events' => ['ev-summer']],
+				['status' => 'dead', 'name' => 'Brother Aldric', 'events' => ['ev-summer']],
+				self::SCHEMA_ID,
+			],
 			'other schema' => [['status' => 'dead', 'events' => []], ['status' => 'dead', 'events' => ['ev-winter']], 'other-schema'],
 		];
 		foreach ($cases as $label => [$before, $after, $schema]) {

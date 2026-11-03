@@ -61,6 +61,8 @@ class CharactersControllerTest extends TestCase {
 	 * identical end-to-end pipeline — appManager -> container -> TemplateService
 	 * -> PdfService — so these tests remain a behaviour-preservation check across
 	 * the consolidation, not an assertion about the new internal shape.
+	 *
+	 * @var DocuDeskPdfRenderer
 	 */
 	private DocuDeskPdfRenderer $pdfRenderer;
 
@@ -170,7 +172,7 @@ class CharactersControllerTest extends TestCase {
 			static fn (string $id): bool => in_array($id, ['filinq', 'docudesk'], true)
 		);
 		$this->appManager->method('isEnabledForUser')
-			->with(self::logicalOr('filinq', 'docudesk'))
+			->with(self::callback(callback: static fn (string $app): bool => in_array($app, ['filinq', 'docudesk'], true)))
 			->willReturn(false);
 
 		// The template MUST be a well-formed UUID here. downloadPdf() validates
@@ -197,6 +199,8 @@ class CharactersControllerTest extends TestCase {
 	 * 400 contract unreachable and hiding the fact that a crafted template
 	 * value was never rejected on its own merits. Reverting the guard order in
 	 * CharactersController::downloadPdf() turns this test red (424 != 400).
+	 *
+	 * @return void
 	 */
 	public function testDownloadPdfReturns400ForNonUuidTemplateEvenWhenDocuDeskAbsent(): void {
 		$this->appManager->method('isInstalled')->willReturnCallback(
@@ -205,7 +209,7 @@ class CharactersControllerTest extends TestCase {
 			static fn (string $id): bool => in_array($id, ['filinq', 'docudesk'], true)
 		);
 		$this->appManager->method('isEnabledForUser')
-			->with(self::logicalOr('filinq', 'docudesk'))
+			->with(self::callback(callback: static fn (string $app): bool => in_array($app, ['filinq', 'docudesk'], true)))
 			->willReturn(false);
 
 		$result = $this->controller->downloadPdf('char-1', 'not-a-uuid');
@@ -409,6 +413,8 @@ class CharactersControllerTest extends TestCase {
 	 * template body, the render context and the page options passed to renderPdf,
 	 * plus the derived download filename — the details a refactor could silently
 	 * change while every status-code assertion stayed green.
+	 *
+	 * @return void
 	 */
 	public function testDownloadPdfPassesUnchangedContentContextAndOptionsToDocuDesk(): void {
 		// FleetAppId resolves the installed id BEFORE asking whether it is
@@ -467,6 +473,8 @@ class CharactersControllerTest extends TestCase {
 	/**
 	 * The template id is lower-cased before it reaches DocuDesk, so an
 	 * upper-case UUID resolves the same template as its lower-case form.
+	 *
+	 * @return void
 	 */
 	public function testDownloadPdfLowerCasesTemplateIdBeforeLookup(): void {
 		// FleetAppId resolves the installed id BEFORE asking whether it is
@@ -510,6 +518,10 @@ class CharactersControllerTest extends TestCase {
 	 * which reaches into the \OC runtime container and is unavailable in a pure
 	 * unit test. The protected `headers` array is populated by addHeader() in the
 	 * DownloadResponse constructor, so reflection sees the real value.
+	 *
+	 * @param DataDownloadResponse $response The response.
+	 *
+	 * @return string The filename from response.
 	 */
 	private function filenameFromResponse(DataDownloadResponse $response): string {
 		$property = new \ReflectionProperty(\OCP\AppFramework\Http\Response::class, 'headers');

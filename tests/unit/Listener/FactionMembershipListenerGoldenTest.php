@@ -88,6 +88,10 @@ class FactionMembershipListenerGoldenTest extends TestCase {
 			'game master' => ['uid' => 'gm1'],
 			'guard throws' => ['throws' => true],
 			'guard throws on a build update' => ['schema' => 's-build', 'throws' => true],
+			'lookalike game master uid' => ['uid' => 'GM1'],
+			'lookalike admin uid' => ['uid' => 'Admin1'],
+			'forged owner and isGm in the body' => ['data' => ['owner' => 'player1', 'isGm' => true, 'gameMaster' => true, 'userId' => 'gm1']],
+			'forged owner and isGm in a faction body' => ['schema' => 's-faction', 'data' => ['owner' => 'player1', 'isGm' => true, 'userId' => 'gm1']],
 		];
 		foreach (self::SCHEMAS as $kind => $schema) {
 			foreach (['create', 'update'] as $mode) {
@@ -109,6 +113,7 @@ class FactionMembershipListenerGoldenTest extends TestCase {
 				'verdict' => ['code' => 'refused', 'message' => 'refused'],
 				'throws' => false,
 				'unconfigured' => null,
+				'data' => [],
 			];
 		}
 
@@ -237,7 +242,7 @@ class FactionMembershipListenerGoldenTest extends TestCase {
 			return new Event();
 		}
 
-		$new = new GoldenConnectionEntity($case['schema'], ['id' => 'new', 'faction' => 'f1', 'character' => 'c1']);
+		$new = new GoldenConnectionEntity($case['schema'], ['id' => 'new', 'faction' => 'f1', 'character' => 'c1'] + $case['data']);
 		if ($case['mode'] === 'create') {
 			return new ObjectCreatingEvent($new);
 		}

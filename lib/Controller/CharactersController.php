@@ -146,6 +146,20 @@ class CharactersController extends Controller {
 			return new JSONResponse(data: ['error' => 'Access denied'], statusCode: Http::STATUS_FORBIDDEN);
 		}
 
+		return $this->renderCharacterSheet(id: $id, template: $template);
+	}//end downloadPdf()
+
+	/**
+	 * Render the sheet of a character for an administrator: check the template id, then DocuDesk.
+	 *
+	 * @param string $id       The character UUID.
+	 * @param string $template The template id as requested.
+	 *
+	 * @return DataDownloadResponse|JSONResponse The PDF download or an error.
+	 *
+	 * @spec openspec/specs/pdf-export/spec.md
+	 */
+	private function renderCharacterSheet(string $id, string $template): DataDownloadResponse|JSONResponse {
 		// Validate the template ID to a UUID before delegating to DocuDesk,
 		// preventing path-traversal or injection via a crafted template value.
 		//
@@ -164,19 +178,25 @@ class CharactersController extends Controller {
 		}
 
 		if ($this->pdfRenderer->isDocuDeskAvailable() === false) {
-			return new JSONResponse(
-				data: ['error' => 'PDF generation requires the DocuDesk app to be installed and enabled'],
-				statusCode: 424
-			);
+			return new JSONResponse(data: ['error' => 'PDF generation requires the DocuDesk app to be installed and enabled'], statusCode: 424);
 		}
 
-		try {
-			$character = $this->objectFetcher->getObject(objectType: 'character', id: $id);
-		} catch (DoesNotExistException $exception) {
-			// OpenRegister signals an absent/unreadable object with this exception;
-			// translate it rather than letting it surface as a 500.
-			return new JSONResponse(data: ['error' => 'Character not found'], statusCode: 404);
-		} catch (\Exception $exception) {
+		return $this->sheetFor(id: $id, templateId: $templateId);
+	}//end renderCharacterSheet()
+
+	/**
+	 * Render the sheet of a character with a validated template, once DocuDesk is known to be there.
+	 *
+	 * @param string $id         The character UUID.
+	 * @param string $templateId The normalised template UUID.
+	 *
+	 * @return DataDownloadResponse|JSONResponse The PDF download or an error.
+	 *
+	 * @spec openspec/specs/pdf-export/spec.md
+	 */
+	private function sheetFor(string $id, string $templateId): DataDownloadResponse|JSONResponse {
+		$character = $this->readCharacter(id: $id);
+		if ($character === null) {
 			return new JSONResponse(data: ['error' => 'Character not found'], statusCode: 404);
 		}
 
@@ -187,22 +207,46 @@ class CharactersController extends Controller {
 
 		// The renderer logs the full exception server-side and returns null; the
 		// generic user-facing message avoids leaking DocuDesk internals — closes #218.
-		$pdfString = $this->pdfRenderer->render(
-			templateData: $templateData,
-			context: ['character' => $character, 'template' => $templateData]
-		);
+		$pdfString = $this->pdfRenderer->render(templateData: $templateData, context: ['character' => $character, 'template' => $templateData]);
+
+		return $this->characterSheetFile(pdfString: $pdfString, character: $character);
+	}//end sheetFor()
+
+	/**
+	 * The character, or null when OpenRegister cannot give it.
+	 *
+	 * OpenRegister signals an absent or unreadable object with an exception
+	 * (DoesNotExistException among them); either way it is a 404, never a 500.
+	 *
+	 * @param string $id The character UUID.
+	 *
+	 * @return array<string,mixed>|null The character.
+	 */
+	private function readCharacter(string $id): ?array {
+		try {
+			return $this->objectFetcher->getObject(objectType: 'character', id: $id);
+		} catch (\Exception $exception) {
+			return null;
+		}
+	}//end readCharacter()
+
+	/**
+	 * The sheet download, or the 500 when rendering failed.
+	 *
+	 * @param string|null         $pdfString The rendered PDF, or null.
+	 * @param array<string,mixed> $character The character.
+	 *
+	 * @return DataDownloadResponse|JSONResponse The PDF download or the 500.
+	 */
+	private function characterSheetFile(?string $pdfString, array $character): DataDownloadResponse|JSONResponse {
 		if ($pdfString === null) {
 			return new JSONResponse(data: ['error' => 'PDF generation failed. Please contact your administrator.'], statusCode: 500);
 		}
 
 		$fileName = ((string)($character['name'] ?? 'character')) . '_character_sheet.pdf';
 
-		return new DataDownloadResponse(
-			$pdfString,
-			$fileName,
-			'application/pdf'
-		);
-	}//end downloadPdf()
+		return new DataDownloadResponse($pdfString, $fileName, 'application/pdf');
+	}//end characterSheetFile()
 
 	/**
 	 * The character-sheet templates for the Download as PDF dialog.

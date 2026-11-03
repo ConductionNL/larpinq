@@ -90,6 +90,8 @@ class PortalProfileListenerTest extends TestCase {
 
 	/**
 	 * What portaliq answers to a claim.
+	 *
+	 * @var string
 	 */
 	private string $answer = 'ok';
 

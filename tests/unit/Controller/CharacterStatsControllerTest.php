@@ -65,7 +65,11 @@ class CharacterStatsControllerTest extends TestCase {
 		);
 		$fetcher->method('getObjects')->willReturnCallback(
 			static fn (string $type): array => match ($type) {
-				'ability' => [['id' => 'str', 'name' => 'Strength', 'base' => 10], ['id' => 'xp', 'name' => 'XP', 'base' => 0], ['id' => 'dex', 'name' => 'Dexterity', 'base' => 8]],
+				'ability' => [
+					['id' => 'str', 'name' => 'Strength', 'base' => 10],
+					['id' => 'xp', 'name' => 'XP', 'base' => 0],
+					['id' => 'dex', 'name' => 'Dexterity', 'base' => 8],
+				],
 				'effect' => [
 					['id' => 'e-blade', 'name' => 'Blade training', 'modifier' => 3, 'modification' => 'positive', 'abilities' => ['str']],
 					['id' => 'e-cost', 'name' => 'Skill cost', 'modifier' => 10, 'modification' => 'negative', 'abilities' => ['xp']],

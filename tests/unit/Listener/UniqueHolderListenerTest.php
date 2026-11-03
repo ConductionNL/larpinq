@@ -115,9 +115,27 @@ class UniqueHolderListenerTest extends TestCase {
 			['id' => self::MIRELA, 'name' => 'Mirela', 'conditions' => [self::CURSE]],
 		];
 		$this->objects = [
-			self::CROWN => ['id' => self::CROWN, 'name' => 'Crown of Aldmoor', 'unique' => true, 'characters' => [self::QUEEN], '@self' => ['schema' => 'schema-item']],
-			self::POTION => ['id' => self::POTION, 'name' => 'Healing potion', 'unique' => false, 'characters' => [self::QUEEN], '@self' => ['schema' => 'schema-item']],
-			self::CURSE => ['id' => self::CURSE, 'name' => 'Curse of the Ashen King', 'unique' => true, 'characters' => [], '@self' => ['schema' => 'schema-condition']],
+			self::CROWN => [
+				'id' => self::CROWN,
+				'name' => 'Crown of Aldmoor',
+				'unique' => true,
+				'characters' => [self::QUEEN],
+				'@self' => ['schema' => 'schema-item'],
+			],
+			self::POTION => [
+				'id' => self::POTION,
+				'name' => 'Healing potion',
+				'unique' => false,
+				'characters' => [self::QUEEN],
+				'@self' => ['schema' => 'schema-item'],
+			],
+			self::CURSE => [
+				'id' => self::CURSE,
+				'name' => 'Curse of the Ashen King',
+				'unique' => true,
+				'characters' => [],
+				'@self' => ['schema' => 'schema-condition'],
+			],
 			self::QUEEN => ['id' => self::QUEEN, 'name' => 'Queen Isolde'],
 			self::BERTRAM => ['id' => self::BERTRAM, 'name' => 'Sir Bertram'],
 		];

@@ -4,7 +4,7 @@
  * Minimal stand-ins for the OpenRegister event classes Application::register()
  * probes for with class_exists().
  *
- * register() only ever passes these class NAMES to
+ * The register() method only ever passes these class NAMES to
  * IRegistrationContext::registerEventListener() — it never constructs one, and
  * never touches a member. So a name is the entire contract this file has to
  * satisfy, and declaring anything more would be inventing an API that

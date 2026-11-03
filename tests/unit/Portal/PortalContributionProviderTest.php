@@ -347,7 +347,7 @@ final class PortalContributionProviderTest extends TestCase {
 		$this->assertSame(expected: 'string', actual: $characterProps['ownerRef']['type']);
 		$this->assertSame(expected: 'uuid', actual: $characterProps['ownerRef']['format']);
 
-		// ownerUid is kept (internal notifications depend on it).
+		// The ownerUid is kept (internal notifications depend on it).
 		$this->assertArrayHasKey(key: 'ownerUid', array: $characterProps, message: 'ownerUid must be retained alongside ownerRef');
 
 		// Every forbidden column is a REAL character property — so excluding it
@@ -367,7 +367,10 @@ final class PortalContributionProviderTest extends TestCase {
 				message: 'Collection schema "' . $collection['schema'] . '" must exist in the register'
 			);
 
-			$schemaProps = ($schemaName === 'character') ? $characterProps : ($schemas[$schemaName]['properties'] ?? []);
+			$schemaProps = ($schemas[$schemaName]['properties'] ?? []);
+			if ($schemaName === 'character') {
+				$schemaProps = $characterProps;
+			}
 			foreach (($collection['fields'] ?? []) as $field) {
 				$this->assertArrayHasKey(
 					key: $field,
@@ -395,7 +398,14 @@ final class PortalContributionProviderTest extends TestCase {
 		$this->assertSame(expected: 'Mijn larp', actual: $pages['myLarp']['label']);
 		$this->assertSame(expected: 'Verenigingen', actual: $pages['myLarp']['group']);
 		$this->assertSame(
-			expected: ['richText', 'collection:myCharacters', 'detail:myCharacters', 'action:createCharacter', 'collection:myRegistrations', 'detail:myRegistrations'],
+			expected: [
+				'richText',
+				'collection:myCharacters',
+				'detail:myCharacters',
+				'action:createCharacter',
+				'collection:myRegistrations',
+				'detail:myRegistrations',
+			],
 			actual: $this->blockNames(blocks: $pages['myLarp']['blocks'])
 		);
 
@@ -475,7 +485,12 @@ final class PortalContributionProviderTest extends TestCase {
 		$names = [];
 		foreach ($blocks as $block) {
 			$target  = ($block['collection'] ?? ($block['action'] ?? ''));
-			$names[] = ($target === '') ? $block['type'] : $block['type'] . ':' . $target;
+			$name = $block['type'];
+			if ($target !== '') {
+				$name .= ':' . $target;
+			}
+
+			$names[] = $name;
 		}
 
 		return $names;

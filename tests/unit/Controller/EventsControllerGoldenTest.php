@@ -82,6 +82,18 @@ class EventsControllerGoldenTest extends TestCase {
 			'attendance, no event' => ['call' => 'attendance', 'event' => null],
 			'attendance, not a participant' => ['call' => 'attendance', 'participant' => false],
 			'attendance, storage missing' => ['call' => 'attendance', 'saved' => null],
+			'runsheet, lookalike game master' => ['call' => 'runsheet', 'uid' => 'GM1'],
+			'attendance, lookalike game master' => ['call' => 'attendance', 'uid' => 'GM1'],
+			'attendance, lookalike admin' => ['call' => 'attendance', 'uid' => 'Admin1'],
+			'attendance, forged uid and id' => [
+				'call' => 'attendance',
+				'params' => ['character' => 'c1', 'status' => 'checked-in', 'uid' => 'forged', 'id' => 'other-event'],
+			],
+			'attendance, player with forged uid' => [
+				'call' => 'attendance',
+				'uid' => 'player1',
+				'params' => ['character' => 'c1', 'uid' => 'gm1', 'userId' => 'gm1'],
+			],
 		];
 
 		foreach ($cases as $name => $case) {

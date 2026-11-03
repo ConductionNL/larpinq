@@ -64,9 +64,7 @@ class SkillRequirementChecker {
 	/**
 	 * Check every declared requirement of one assigned skill.
 	 *
-	 * @param string $skillId The skill being assigned.
-	 * @param array<string,mixed> $skill The skill object.
-	 * @param bool $overridden Whether a GM override covers this skill.
+	 * @param SkillUnderCheck $subject The skill being assigned, and whether a GM override covers it.
 	 * @param array<string,mixed> $context The resolved character context: keys
 	 *                                     `skills` (array<int,string>),
 	 *                                     `allSkills` (array<string,array<string,mixed>>),
@@ -78,9 +76,7 @@ class SkillRequirementChecker {
 	 *
 	 * @spec openspec/specs/skill-requirement-enforcement/spec.md
 	 */
-	public function check(string $skillId, array $skill, bool $overridden, array $context): array {
-		$subject = new SkillUnderCheck(skillId: $skillId, skill: $skill, overridden: $overridden);
-
+	public function check(SkillUnderCheck $subject, array $context): array {
 		return array_merge(
 			$this->checkRequiredSkills(subject: $subject, context: $context),
 			$this->checkRequiredStats(subject: $subject, context: $context),

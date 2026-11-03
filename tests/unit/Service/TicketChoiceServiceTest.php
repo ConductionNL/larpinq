@@ -22,6 +22,8 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Tests\Unit\Service;
 
+require_once __DIR__ . '/../Support/RegisterAnswers.php';
+
 require_once __DIR__ . '/../Support/InMemoryOpenRegister.php';
 
 use DateTimeImmutable;
@@ -33,6 +35,7 @@ use OCA\Larpinq\Service\RegistrationService;
 use OCA\Larpinq\Service\RegistrationWriteCheck;
 use OCA\Larpinq\Service\TicketChoiceService;
 use OCA\Larpinq\Tests\Unit\Support\InMemoryOpenRegister;
+use OCA\Larpinq\Tests\Unit\Support\RegisterAnswers;
 use OCP\App\IAppManager;
 use OCP\IAppConfig;
 use OCP\IL10N;
@@ -101,7 +104,15 @@ class TicketChoiceServiceTest extends TestCase {
 		);
 		$this->store->seed(
 			'registrationoption',
-			['id' => self::VEGAN, 'event' => self::EVENT, 'name' => 'Full catering, vegan', 'category' => 'meal', 'amount' => 3500, 'currency' => 'EUR', 'placeLimit' => 12]
+			[
+				'id' => self::VEGAN,
+				'event' => self::EVENT,
+				'name' => 'Full catering, vegan',
+				'category' => 'meal',
+				'amount' => 3500,
+				'currency' => 'EUR',
+				'placeLimit' => 12,
+			]
 		);
 		$this->store->seed(
 			'accesscode',
@@ -157,21 +168,14 @@ class TicketChoiceServiceTest extends TestCase {
 		$store = $this->store;
 		$container = $this->createMock(originalClassName: ContainerInterface::class);
 		$container->method('get')->willReturnCallback(
-			static fn (string $id): object => ($id === 'OCA\OpenRegister\Service\ObjectService' ? $store : throw new RuntimeException('not bound: ' . $id))
+			static fn (string $id): object => RegisterAnswers::onlyService(id: $id, bound: 'OCA\OpenRegister\Service\ObjectService', service: $store)
 		);
 		$apps = $this->createMock(originalClassName: IAppManager::class);
 		$apps->method('getInstalledApps')->willReturn(['openregister']);
 
 		$config = $this->createMock(originalClassName: IAppConfig::class);
 		$config->method('getValueString')->willReturnCallback(
-			static fn (string $app, string $key, string $default = ''): string => (str_ends_with(
-				$key,
-				'_register'
-			) === true ? '3' : (str_ends_with($key, '_schema') === true ? substr(
-				$key,
-				0,
-				-strlen('_schema')
-			) : $default))
+			static fn (string $app, string $key, string $default = ''): string => RegisterAnswers::registerConfig(key: $key, default: $default)
 		);
 
 		return new RegisterObjectFetcher(container: $container, appManager: $apps, config: $config, logger: new NullLogger());
@@ -185,7 +189,10 @@ class TicketChoiceServiceTest extends TestCase {
 	private function listener(): RegistrationListener {
 		$config = $this->createMock(originalClassName: IAppConfig::class);
 		$config->method('getValueString')->willReturnCallback(
-			static fn (string $app, string $key, string $default = ''): string => ($key === 'registration_schema' ? 'registration' : $default)
+			static fn (string $app, string $key, string $default = ''): string => match ($key) {
+				'registration_schema' => 'registration',
+				default => $default,
+			}
 		);
 		$session = $this->createMock(originalClassName: IUserSession::class);
 		$session->method('getUser')->willReturnCallback(
@@ -498,7 +505,12 @@ class TicketChoiceServiceTest extends TestCase {
 		$merge->setAccessible(true);
 		$schema = $merge->invoke($reflection->newInstanceWithoutConstructor(), $monolith, $appPath)['components']['schemas']['registration'];
 		foreach (array_keys($schema['properties']) as $name) {
-			unset($schema['properties'][$name]['$ref'], $schema['properties'][$name]['authorization'], $schema['properties'][$name]['calculation'], $schema['properties'][$name]['x-relation-filter']);
+			unset(
+				$schema['properties'][$name]['$ref'],
+				$schema['properties'][$name]['authorization'],
+				$schema['properties'][$name]['calculation'],
+				$schema['properties'][$name]['x-relation-filter']
+			);
 		}
 
 		unset($schema['authorization'], $schema['configuration']);

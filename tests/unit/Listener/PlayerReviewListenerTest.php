@@ -59,7 +59,10 @@ class PlayerReviewListenerTest extends TestCase {
 	private function listener(): PlayerReviewListener {
 		$config = $this->createMock(originalClassName: IAppConfig::class);
 		$config->method('getValueString')->willReturnCallback(
-			static fn (string $app, string $key, string $default = ''): string => ($key === 'player_schema' ? self::PLAYER_SCHEMA : $default)
+			static fn (string $app, string $key, string $default = ''): string => match ($key) {
+				'player_schema' => self::PLAYER_SCHEMA,
+				default => $default,
+			}
 		);
 		$session = $this->createMock(originalClassName: IUserSession::class);
 		$session->method('getUser')->willReturnCallback(

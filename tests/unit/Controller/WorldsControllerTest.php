@@ -61,7 +61,12 @@ class WorldsControllerTest extends TestCase {
 		$this->store->seed('ability', ['id' => 'aaaaaaaa-0000-4000-8000-000000000001', 'name' => 'Strength', 'setting' => self::WORLD]);
 		$this->store->seed(
 			'skill',
-			['id' => 'aaaaaaaa-0000-4000-8000-000000000002', 'name' => 'Swordsmanship', 'requiredStats' => ['aaaaaaaa-0000-4000-8000-000000000001'], 'setting' => self::WORLD]
+			[
+				'id' => 'aaaaaaaa-0000-4000-8000-000000000002',
+				'name' => 'Swordsmanship',
+				'requiredStats' => ['aaaaaaaa-0000-4000-8000-000000000001'],
+				'setting' => self::WORLD,
+			]
 		);
 
 	}//end setUp()

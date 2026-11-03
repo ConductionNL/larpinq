@@ -68,7 +68,10 @@ class DashboardControllerTest extends TestCase {
 		$user = $this->createMock(originalClassName: IUser::class);
 		$user->method('getUID')->willReturn('anna');
 		$session = $this->createMock(originalClassName: IUserSession::class);
-		$session->method('getUser')->willReturnCallback(fn () => $this->signedIn ? $user : null);
+		$session->method('getUser')->willReturnCallback(fn () => match ($this->signedIn) {
+			true => $user,
+			default => null,
+		});
 		$groupManager = $this->createMock(originalClassName: IGroupManager::class);
 		$groupManager->method('isInGroup')->willReturnCallback(
 			fn (string $uid, string $group): bool => $uid === 'anna' && in_array($group, $this->groups, true)
@@ -79,7 +82,11 @@ class DashboardControllerTest extends TestCase {
 		$config->method('getUserValue')->willReturnCallback(
 			function (string $uid, string $app, string $key, mixed $default = ''): mixed {
 				$this->preferenceReads++;
-				return ($uid === 'anna' && $app === 'larpinq' ? ($this->preferences[$key] ?? $default) : $default);
+				if ($uid !== 'anna' || $app !== 'larpinq') {
+					return $default;
+				}
+
+				return ($this->preferences[$key] ?? $default);
 			}
 		);
 
