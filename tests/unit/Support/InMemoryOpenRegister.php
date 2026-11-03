@@ -130,7 +130,11 @@ class InMemoryOpenRegister {
 			$rows[] = $row;
 		}
 
-		return ($limit === null) ? $rows : array_slice($rows, 0, $limit);
+		if ($limit === null) {
+			return $rows;
+		}
+
+		return array_slice($rows, 0, $limit);
 	}
 
 	/**
@@ -184,18 +188,39 @@ class InMemoryOpenRegister {
 	 *
 	 * @return array<string, mixed> The stored row.
 	 */
-	public function saveObject(array $object, ?array $extend = [], $register = null, $schema = null, ?string $uuid = null, bool $_rbac = true, bool $_multitenancy = true): array {
+	public function saveObject(
+		array $object,
+		?array $extend = [],
+		$register = null,
+		$schema = null,
+		?string $uuid = null,
+		bool $_rbac = true,
+		bool $_multitenancy = true,
+	): array {
 		$schema = (string)$schema;
 		unset($object['@self']);
-		$old = ($uuid !== null) ? ($this->objects[$schema][$uuid] ?? null) : null;
+		$old = null;
+		if ($uuid !== null) {
+			$old = ($this->objects[$schema][$uuid] ?? null);
+		}
+
 		$uuid = $uuid ?? sprintf('00000000-0000-4000-8000-%012d', $this->next++);
 		$this->saves[] = ['schema' => $schema, 'uuid' => $uuid, 'rbac' => $_rbac];
-		$data = ($old === null) ? $object : array_merge($old, $object);
+		$data = $object;
+		if ($old !== null) {
+			$data = array_merge($old, $object);
+		}
+
 		$data['id'] = $uuid;
 
 		$newEntity = new InMemoryObjectEntity(schema: $schema, data: $data, uuid: $uuid);
-		$oldEntity = ($old === null) ? null : new InMemoryObjectEntity(schema: $schema, data: $old, uuid: $uuid);
-		$pre = ($old === null) ? new ObjectCreatingEvent($newEntity) : new ObjectUpdatingEvent($newEntity, $oldEntity);
+		$oldEntity = null;
+		$pre = new ObjectCreatingEvent($newEntity);
+		if ($old !== null) {
+			$oldEntity = new InMemoryObjectEntity(schema: $schema, data: $old, uuid: $uuid);
+			$pre = new ObjectUpdatingEvent($newEntity, $oldEntity);
+		}
+
 		foreach ($this->listeners as $listener) {
 			$listener->handle($pre);
 		}
@@ -207,7 +232,11 @@ class InMemoryOpenRegister {
 		$data = array_merge($data, $pre->getModifiedData());
 		$this->objects[$schema][$uuid] = $data;
 		$stored = new InMemoryObjectEntity(schema: $schema, data: $data, uuid: $uuid);
-		$post = ($old === null) ? new ObjectCreatedEvent($stored) : new ObjectUpdatedEvent($stored, $oldEntity);
+		$post = new ObjectCreatedEvent($stored);
+		if ($oldEntity !== null) {
+			$post = new ObjectUpdatedEvent($stored, $oldEntity);
+		}
+
 		foreach ($this->listeners as $listener) {
 			$listener->handle($post);
 		}

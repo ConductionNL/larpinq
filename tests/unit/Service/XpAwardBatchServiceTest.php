@@ -135,7 +135,14 @@ class XpAwardBatchServiceTest extends TestCase {
 	 * @return void
 	 */
 	public function testReopeningDoesNotDoubleAward(): void {
-		$this->objects['xpAward'][] = ['id' => 'x1', 'event' => self::EVENT, 'character' => self::BERTRAM, 'amount' => 5, 'reason' => 'Attended', 'awardedBy' => 'joris'];
+		$this->objects['xpAward'][] = [
+			'id' => 'x1',
+			'event' => self::EVENT,
+			'character' => self::BERTRAM,
+			'amount' => 5,
+			'reason' => 'Attended',
+			'awardedBy' => 'joris',
+		];
 		$this->objects['xpAward'][] = ['id' => 'x2', 'event' => 'another-event', 'character' => self::MIRELA, 'amount' => 3];
 
 		$rows = $this->rosterByName();

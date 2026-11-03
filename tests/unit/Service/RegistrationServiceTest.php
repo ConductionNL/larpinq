@@ -22,6 +22,8 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Tests\Unit\Service;
 
+require_once __DIR__ . '/../Support/RegisterAnswers.php';
+
 require_once __DIR__ . '/../Support/InMemoryOpenRegister.php';
 
 use OCA\Larpinq\Listener\RegistrationListener;
@@ -32,6 +34,7 @@ use OCA\Larpinq\Service\RegistrationWriteCheck;
 use OCA\Larpinq\Service\TicketChoiceService;
 use OCA\Larpinq\Tests\Unit\Support\InMemoryObjectEntity;
 use OCA\Larpinq\Tests\Unit\Support\InMemoryOpenRegister;
+use OCA\Larpinq\Tests\Unit\Support\RegisterAnswers;
 use OCA\OpenRegister\Event\ObjectCreatedEvent;
 use OCA\OpenRegister\Event\ObjectCreatingEvent;
 use OCP\App\IAppManager;
@@ -80,10 +83,27 @@ class SharedLocks {
 			public function __construct(private SharedLocks $shared, private string $request) {
 			}
 
+			/**
+			 * Whether the path is locked.
+			 *
+			 * @param string $path The path.
+			 * @param int $type The type.
+			 *
+			 * @return bool True when the path is locked.
+			 */
 			public function isLocked(string $path, int $type): bool {
 				return isset($this->shared->held[$path]);
 			}
 
+			/**
+			 * Take a lock on the path.
+			 *
+			 * @param string $path The path.
+			 * @param int $type The type.
+			 * @param ?string $readablePath The readable path.
+			 *
+			 * @return void
+			 */
 			public function acquireLock(string $path, int $type, ?string $readablePath = null): void {
 				if (isset($this->shared->held[$path]) === true) {
 					throw new LockedException($path);
@@ -93,15 +113,36 @@ class SharedLocks {
 				$this->shared->acquired[] = $path;
 			}
 
+			/**
+			 * Give a lock on the path back.
+			 *
+			 * @param string $path The path.
+			 * @param int $type The type.
+			 *
+			 * @return void
+			 */
 			public function releaseLock(string $path, int $type): void {
 				if (($this->shared->held[$path] ?? null) === $this->request) {
 					unset($this->shared->held[$path]);
 				}
 			}
 
+			/**
+			 * Change the type of a lock; nothing to do here.
+			 *
+			 * @param string $path The path.
+			 * @param int $targetType The target type.
+			 *
+			 * @return void
+			 */
 			public function changeLock(string $path, int $targetType): void {
 			}
 
+			/**
+			 * Give every lock this request holds back.
+			 *
+			 * @return void
+			 */
 			public function releaseAll(): void {
 				foreach ($this->shared->held as $path => $owner) {
 					if ($owner === $this->request) {
@@ -199,7 +240,7 @@ class RegistrationServiceTest extends TestCase {
 		$store = $this->store;
 		$container = $this->createMock(originalClassName: ContainerInterface::class);
 		$container->method('get')->willReturnCallback(
-			static fn (string $id): object => ($id === 'OCA\OpenRegister\Service\ObjectService' ? $store : throw new \RuntimeException('not bound: ' . $id))
+			static fn (string $id): object => RegisterAnswers::onlyService(id: $id, bound: 'OCA\OpenRegister\Service\ObjectService', service: $store)
 		);
 		$apps = $this->createMock(originalClassName: IAppManager::class);
 		$apps->method('getInstalledApps')->willReturn(['openregister']);
@@ -215,14 +256,7 @@ class RegistrationServiceTest extends TestCase {
 	private function config(): IAppConfig {
 		$config = $this->createMock(originalClassName: IAppConfig::class);
 		$config->method('getValueString')->willReturnCallback(
-			static fn (string $app, string $key, string $default = ''): string => (str_ends_with(
-				$key,
-				'_register'
-			) === true ? '3' : (str_ends_with($key, '_schema') === true ? substr(
-				$key,
-				0,
-				-strlen('_schema')
-			) : $default))
+			static fn (string $app, string $key, string $default = ''): string => RegisterAnswers::registerConfig(key: $key, default: $default)
 		);
 		return $config;
 	}//end config()
@@ -271,7 +305,7 @@ class RegistrationServiceTest extends TestCase {
 	 * A sign-up as the Forms listener writes it.
 	 *
 	 * @param string $player The player.
-	 * @param string $uid The submitter.
+	 * @param string $uid The user id.
 	 * @param string $at Submitted at.
 	 * @param string $character The character, or empty.
 	 *

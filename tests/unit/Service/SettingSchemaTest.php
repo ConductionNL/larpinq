@@ -72,7 +72,7 @@ class SettingSchemaTest extends TestCase {
 		// The vestigial key-value `value` property is gone.
 		self::assertArrayNotHasKey(key: 'value', array: $props);
 
-		// status is an enum active|archived defaulting to active.
+		// The status is an enum active|archived defaulting to active.
 		self::assertSame(expected: ['active', 'archived'], actual: $props['status']['enum']);
 		self::assertSame(expected: 'active', actual: $props['status']['default']);
 

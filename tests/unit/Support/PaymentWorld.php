@@ -22,6 +22,8 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Tests\Unit\Support;
 
+require_once __DIR__ . '/RegisterAnswers.php';
+
 require_once __DIR__ . '/InMemoryOpenRegister.php';
 
 use DateTimeImmutable;
@@ -93,46 +95,106 @@ class FakePaymentLeaf implements IntegrationProvider {
 	/** @var int The next. */
 	private int $next = 1;
 
+	/**
+	 * The provider id.
+	 *
+	 * @return string The provider id.
+	 */
 	public function getId(): string {
 		return 'shillinq-payment-requests';
 	}
 
+	/**
+	 * The provider label.
+	 *
+	 * @return string The provider label.
+	 */
 	public function getLabel(): string {
 		return 'Payment requests';
 	}
 
+	/**
+	 * The provider icon.
+	 *
+	 * @return string The provider icon.
+	 */
 	public function getIcon(): string {
 		return 'CreditCardOutline';
 	}
 
+	/**
+	 * The provider group.
+	 *
+	 * @return ?string The provider group.
+	 */
 	public function getGroup(): ?string {
 		return 'Finance';
 	}
 
+	/**
+	 * The app the provider needs.
+	 *
+	 * @return ?string The app the provider needs.
+	 */
 	public function getRequiredApp(): ?string {
 		return 'shillinq';
 	}
 
+	/**
+	 * Where the provider keeps its rows.
+	 *
+	 * @return string Where the provider keeps its rows.
+	 */
 	public function getStorageStrategy(): string {
 		return 'app-local';
 	}
 
+	/**
+	 * The OpenConnector source; none.
+	 *
+	 * @return ?string The OpenConnector source; none.
+	 */
 	public function getOpenConnectorSource(): ?string {
 		return null;
 	}
 
+	/**
+	 * Whether the provider is enabled.
+	 *
+	 * @return bool True when the provider is enabled.
+	 */
 	public function isEnabled(): bool {
 		return true;
 	}
 
+	/**
+	 * The permission the provider needs.
+	 *
+	 * @return ?string The permission the provider needs.
+	 */
 	public function requiresPermission(): ?string {
 		return 'payment.request';
 	}
 
+	/**
+	 * The authentication the provider needs; none.
+	 *
+	 * @return array The authentication the provider needs; none.
+	 */
 	public function authRequirements(): array {
 		return [];
 	}
 
+	/**
+	 * The payments of an object.
+	 *
+	 * @param string $register The register.
+	 * @param string $schema The schema.
+	 * @param string $objectId The object id.
+	 * @param array $filters The filters.
+	 *
+	 * @return array The payments of an object.
+	 */
 	public function list(string $register, string $schema, string $objectId, array $filters = []): array {
 		if ($this->failList === true) {
 			throw new RuntimeException('shillinq is down');
@@ -157,10 +219,30 @@ class FakePaymentLeaf implements IntegrationProvider {
 		return ['items' => $items, 'total' => count($items), 'nextCursor' => null, 'fee' => null];
 	}
 
+	/**
+	 * One payment of an object.
+	 *
+	 * @param string $register The register.
+	 * @param string $schema The schema.
+	 * @param string $objectId The object id.
+	 * @param string $entityId The entity id.
+	 *
+	 * @return array One payment of an object.
+	 */
 	public function get(string $register, string $schema, string $objectId, string $entityId): array {
 		throw new RuntimeException('not used');
 	}
 
+	/**
+	 * Record a payment request for an object.
+	 *
+	 * @param string $register The register.
+	 * @param string $schema The schema.
+	 * @param string $objectId The object id.
+	 * @param array $payload The payload.
+	 *
+	 * @return array Record a payment request for an object.
+	 */
 	public function create(string $register, string $schema, string $objectId, array $payload): array {
 		if ($this->mayRequest === false) {
 			throw new RuntimeException('403 Raising a payment request needs the payment.request action.');
@@ -191,14 +273,40 @@ class FakePaymentLeaf implements IntegrationProvider {
 		return $this->requests[$id];
 	}
 
+	/**
+	 * Update a payment; not used here.
+	 *
+	 * @param string $register The register.
+	 * @param string $schema The schema.
+	 * @param string $objectId The object id.
+	 * @param string $entityId The entity id.
+	 * @param array $payload The payload.
+	 *
+	 * @return array Update a payment; not used here.
+	 */
 	public function update(string $register, string $schema, string $objectId, string $entityId, array $payload): array {
 		throw new RuntimeException('not used');
 	}
 
+	/**
+	 * Delete a payment; not used here.
+	 *
+	 * @param string $register The register.
+	 * @param string $schema The schema.
+	 * @param string $objectId The object id.
+	 * @param string $entityId The entity id.
+	 *
+	 * @return void
+	 */
 	public function delete(string $register, string $schema, string $objectId, string $entityId): void {
 		throw new RuntimeException('not used');
 	}
 
+	/**
+	 * The provider health.
+	 *
+	 * @return array The provider health.
+	 */
 	public function health(): array {
 		return ['status' => 'ok'];
 	}
@@ -243,6 +351,11 @@ class PaymentWorld {
 	 */
 	public array $dispatched = [];
 
+	/**
+	 * The world for one test.
+	 *
+	 * @param TestCase $test The test.
+	 */
 	public function __construct(private TestCase $test) {
 		$this->store = new InMemoryOpenRegister();
 		$this->leaf = new FakePaymentLeaf();
@@ -310,11 +423,16 @@ class PaymentWorld {
 		return $this->fetcher()->saveObjectWithAppAuthority('registration', $data, $id);
 	}
 
+	/**
+	 * The object fetcher over the in-memory register.
+	 *
+	 * @return RegisterObjectFetcher The object fetcher over the in-memory register.
+	 */
 	public function fetcher(): RegisterObjectFetcher {
 		$store = $this->store;
 		$container = $this->test->getMockBuilder(ContainerInterface::class)->getMock();
 		$container->method('get')->willReturnCallback(
-			static fn (string $id): object => ($id === 'OCA\OpenRegister\Service\ObjectService' ? $store : throw new RuntimeException('not bound: ' . $id))
+			static fn (string $id): object => RegisterAnswers::onlyService(id: $id, bound: 'OCA\OpenRegister\Service\ObjectService', service: $store)
 		);
 		$apps = $this->test->getMockBuilder(IAppManager::class)->getMock();
 		$apps->method('getInstalledApps')->willReturn(['openregister']);
@@ -322,17 +440,15 @@ class PaymentWorld {
 		return new RegisterObjectFetcher(container: $container, appManager: $apps, config: $this->config(), logger: new NullLogger());
 	}
 
+	/**
+	 * The app config: register 3 and one schema per object type.
+	 *
+	 * @return IAppConfig The app config: register 3 and one schema per object type.
+	 */
 	public function config(): IAppConfig {
 		$config = $this->test->getMockBuilder(IAppConfig::class)->getMock();
 		$config->method('getValueString')->willReturnCallback(
-			static fn (string $app, string $key, string $default = ''): string => (str_ends_with(
-				$key,
-				'_register'
-			) === true ? '3' : (str_ends_with($key, '_schema') === true ? substr(
-				$key,
-				0,
-				-strlen('_schema')
-			) : $default))
+			static fn (string $app, string $key, string $default = ''): string => RegisterAnswers::registerConfig(key: $key, default: $default)
 		);
 		return $config;
 	}
@@ -346,9 +462,21 @@ class PaymentWorld {
 	public function paymentLeaf(): PaymentLeaf {
 		$world = $this;
 		$registry = new class($world) {
+			/**
+			 * The registry over the world.
+			 *
+			 * @param PaymentWorld $world The world.
+			 */
 			public function __construct(private PaymentWorld $world) {
 			}
 
+			/**
+			 * The integration provider for an id.
+			 *
+			 * @param string $id The id.
+			 *
+			 * @return ?IntegrationProvider The integration provider for an id.
+			 */
 			public function get(string $id): ?IntegrationProvider {
 				if ($this->world->shillinq === false || $id !== 'shillinq-payment-requests') {
 					return null;
@@ -360,12 +488,17 @@ class PaymentWorld {
 		$container = $this->test->getMockBuilder(ContainerInterface::class)->getMock();
 		$container->method('has')->willReturnCallback(static fn (string $id): bool => $id === PaymentLeaf::REGISTRY);
 		$container->method('get')->willReturnCallback(
-			static fn (string $id): object => ($id === PaymentLeaf::REGISTRY ? $registry : throw new RuntimeException('not bound: ' . $id))
+			static fn (string $id): object => RegisterAnswers::onlyService(id: $id, bound: PaymentLeaf::REGISTRY, service: $registry)
 		);
 
 		return new PaymentLeaf(container: $container, config: $this->config(), logger: new NullLogger());
 	}
 
+	/**
+	 * The group manager.
+	 *
+	 * @return IGroupManager The group manager.
+	 */
 	public function groups(): IGroupManager {
 		$groups = $this->test->getMockBuilder(IGroupManager::class)->getMock();
 		$groups->method('isInGroup')->willReturnCallback(static fn (string $uid, string $group): bool => $uid === 'gm' && $group === 'gamemasters');
@@ -373,6 +506,11 @@ class PaymentWorld {
 		return $groups;
 	}
 
+	/**
+	 * The clock.
+	 *
+	 * @return ITimeFactory The clock.
+	 */
 	public function clock(): ITimeFactory {
 		$clock = $this->test->getMockBuilder(ITimeFactory::class)->getMock();
 		$clock->method('now')->willReturnCallback(fn (): DateTimeImmutable => $this->now);
@@ -380,6 +518,11 @@ class PaymentWorld {
 		return $clock;
 	}
 
+	/**
+	 * The user manager.
+	 *
+	 * @return IUserManager The user manager.
+	 */
 	public function users(): IUserManager {
 		$users = $this->test->getMockBuilder(IUserManager::class)->getMock();
 		$users->method('get')->willReturnCallback(
@@ -392,6 +535,11 @@ class PaymentWorld {
 		return $users;
 	}
 
+	/**
+	 * The user session.
+	 *
+	 * @return IUserSession The user session.
+	 */
 	public function session(): IUserSession {
 		$session = $this->test->getMockBuilder(IUserSession::class)->getMock();
 		$session->method('getUser')->willReturnCallback(
@@ -408,6 +556,11 @@ class PaymentWorld {
 		return $session;
 	}
 
+	/**
+	 * The payment service.
+	 *
+	 * @return RegistrationPaymentService The payment service.
+	 */
 	public function payments(): RegistrationPaymentService {
 		$builder = new PaymentRequestBuilder(fetcher: $this->fetcher(), users: $this->users(), time: $this->clock(), logger: new NullLogger());
 		return new RegistrationPaymentService(
@@ -419,10 +572,20 @@ class PaymentWorld {
 		);
 	}
 
+	/**
+	 * The payment follow-up.
+	 *
+	 * @return PaymentFollowUp The payment follow-up.
+	 */
 	public function followUp(): PaymentFollowUp {
 		return new PaymentFollowUp(fetcher: $this->fetcher(), leaf: $this->paymentLeaf(), logger: new NullLogger());
 	}
 
+	/**
+	 * The payment request listener.
+	 *
+	 * @return PaymentRequestListener The payment request listener.
+	 */
 	public function paymentListener(): PaymentRequestListener {
 		return new PaymentRequestListener(
 			config: $this->config(),
@@ -434,10 +597,20 @@ class PaymentWorld {
 		);
 	}
 
+	/**
+	 * The cancellation policy.
+	 *
+	 * @return CancellationPolicy The cancellation policy.
+	 */
 	public function policy(): CancellationPolicy {
 		return new CancellationPolicy(groups: $this->groups());
 	}
 
+	/**
+	 * The event dispatcher.
+	 *
+	 * @return IEventDispatcher The event dispatcher.
+	 */
 	public function dispatcher(): IEventDispatcher {
 		$dispatcher = $this->test->getMockBuilder(IEventDispatcher::class)->getMock();
 		$dispatcher->method('dispatchTyped')->willReturnCallback(function (Event $event): void {
@@ -446,6 +619,11 @@ class PaymentWorld {
 		return $dispatcher;
 	}
 
+	/**
+	 * The registration settlement.
+	 *
+	 * @return RegistrationSettlement The registration settlement.
+	 */
 	public function settlement(): RegistrationSettlement {
 		$builder = new PaymentRequestBuilder(fetcher: $this->fetcher(), users: $this->users(), time: $this->clock(), logger: new NullLogger());
 		return new RegistrationSettlement(
@@ -458,14 +636,29 @@ class PaymentWorld {
 		);
 	}
 
+	/**
+	 * The registration change service.
+	 *
+	 * @return RegistrationChangeService The registration change service.
+	 */
 	public function changes(): RegistrationChangeService {
 		return new RegistrationChangeService(fetcher: $this->fetcher(), policy: $this->policy(), time: $this->clock());
 	}
 
+	/**
+	 * The transfer offers.
+	 *
+	 * @return TransferOffers The transfer offers.
+	 */
 	public function transfers(): TransferOffers {
 		return new TransferOffers(fetcher: $this->fetcher(), policy: $this->policy(), time: $this->clock(), logger: new NullLogger());
 	}
 
+	/**
+	 * The registration listener.
+	 *
+	 * @return RegistrationListener The registration listener.
+	 */
 	private function registrationListener(): RegistrationListener {
 		$l10n = $this->test->getMockBuilder(IL10N::class)->getMock();
 		$l10n->method('t')->willReturnCallback(static fn (string $text): string => $text);

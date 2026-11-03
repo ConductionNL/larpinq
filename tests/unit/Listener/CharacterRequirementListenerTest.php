@@ -79,6 +79,16 @@ class CharacterRequirementListenerTest extends TestCase {
 		$this->logger = $this->createMock(originalClassName: LoggerInterface::class);
 	}
 
+	/**
+	 * The listener over the real requirement engine, with these skills, field definitions and caller.
+	 *
+	 * @param array $skills The skills.
+	 * @param bool $isGm Whether the user is a game master.
+	 * @param ?string $uid The user id.
+	 * @param array $fields The fields.
+	 *
+	 * @return CharacterRequirementListener The listener over the real requirement engine, with these skills, field definitions and caller.
+	 */
 	private function makeListener(
 		array $skills = [],
 		bool $isGm = true,

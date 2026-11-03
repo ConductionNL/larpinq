@@ -18,16 +18,31 @@ use OCA\Forms\Db\Form;
 use OCP\EventDispatcher\Event;
 
 abstract class AbstractFormEvent extends Event {
+	/**
+	 * An event about one form.
+	 *
+	 * @param Form $form The form.
+	 */
 	public function __construct(
 		protected Form $form,
 	) {
 		parent::__construct();
 	}
 
+	/**
+	 * The form the event is about.
+	 *
+	 * @return Form The form the event is about.
+	 */
 	public function getForm(): Form {
 		return $this->form;
 	}
 
+	/**
+	 * The event as a webhook payload.
+	 *
+	 * @return array The event as a webhook payload.
+	 */
 	public function getWebhookSerializable(): array {
 		return $this->form->read();
 	}

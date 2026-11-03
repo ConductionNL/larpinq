@@ -3,7 +3,7 @@
 /**
  * Golden test for the list reads of RegisterObjectFetcher.
  *
- * getObjects() and getObjectsWithAppAuthority() are called with each argument
+ * Both getObjects() and getObjectsWithAppAuthority() are called with each argument
  * combination against a fake OpenRegister whose findAll() returns rows in
  * every shape (arrays, JSON-serialisable entities, plain objects). The call
  * OpenRegister received and the rows returned are compared, as JSON text so

@@ -101,14 +101,17 @@ class MigrateUserPreferencesTest extends TestCase {
 
 	/**
 	 * The happy path, across more than one user.
+	 *
+	 * @return void
 	 */
 	public function testCopiesEverySeenUsersStoredPreferences(): void {
 		$this->seedSeenUsers(userIds: ['alice', 'bob']);
 
 		$this->config->method('getUserKeys')->willReturnCallback(
-			static fn (string $uid, string $app): array => $app === self::OLD_APP_ID
-				? ['pref_walkthrough_completed_version', 'pref_support-dialog-seen']
-				: []
+			static fn (string $uid, string $app): array => match ($app) {
+				self::OLD_APP_ID => ['pref_walkthrough_completed_version', 'pref_support-dialog-seen'],
+				default => [],
+			}
 		);
 
 		$this->config->method('getUserValue')->willReturnCallback(
@@ -117,7 +120,11 @@ class MigrateUserPreferencesTest extends TestCase {
 					return '';
 				}
 
-				return $key === 'pref_walkthrough_completed_version' ? '0.1.27' : '1';
+				if ($key === 'pref_walkthrough_completed_version') {
+					return '0.1.27';
+				}
+
+				return '1';
 			}
 		);
 
@@ -154,6 +161,8 @@ class MigrateUserPreferencesTest extends TestCase {
 	 * A regression to that strategy would still pass every other test in this
 	 * file, because they seed users through callForSeenUsers(). This assertion
 	 * is the only thing that catches it.
+	 *
+	 * @return void
 	 */
 	public function testNeverEnumeratesByValue(): void {
 		$this->seedSeenUsers(userIds: ['alice']);
@@ -173,15 +182,19 @@ class MigrateUserPreferencesTest extends TestCase {
 		$this->seedSeenUsers(userIds: ['alice']);
 
 		$this->config->method('getUserKeys')->willReturnCallback(
-			static fn (string $uid, string $app): array => $app === self::OLD_APP_ID
-				? ['pref_walkthrough_completed_version']
-				: []
+			static fn (string $uid, string $app): array => match ($app) {
+				self::OLD_APP_ID => ['pref_walkthrough_completed_version'],
+				default => [],
+			}
 		);
 
 		// Something is already stored under the new app id — a preference the
 		// user changed after the rename. It must survive.
 		$this->config->method('getUserValue')->willReturnCallback(
-			static fn (string $uid, string $app): string => $app === self::OLD_APP_ID ? '0.1.27' : '999.0.0'
+			static fn (string $uid, string $app): string => match ($app) {
+				self::OLD_APP_ID => '0.1.27',
+				default => '999.0.0',
+			}
 		);
 
 		$this->config->expects(self::never())->method('setUserValue');
@@ -192,14 +205,17 @@ class MigrateUserPreferencesTest extends TestCase {
 	/**
 	 * A read that throws must not escape run() — this step runs under
 	 * <install>, so a throw means the app never enables.
+	 *
+	 * @return void
 	 */
 	public function testAReadThatThrowsIsLoggedAndTheWalkContinues(): void {
 		$this->seedSeenUsers(userIds: ['alice']);
 
 		$this->config->method('getUserKeys')->willReturnCallback(
-			static fn (string $uid, string $app): array => $app === self::OLD_APP_ID
-				? ['pref_poisoned', 'pref_walkthrough_completed_version']
-				: []
+			static fn (string $uid, string $app): array => match ($app) {
+				self::OLD_APP_ID => ['pref_poisoned', 'pref_walkthrough_completed_version'],
+				default => [],
+			}
 		);
 
 		$this->config->method('getUserValue')->willReturnCallback(
@@ -208,7 +224,11 @@ class MigrateUserPreferencesTest extends TestCase {
 					throw new RuntimeException('unreadable preference');
 				}
 
-				return $app === self::OLD_APP_ID ? '0.1.27' : '';
+				if ($app === self::OLD_APP_ID) {
+					return '0.1.27';
+				}
+
+				return '';
 			}
 		);
 
@@ -232,6 +252,8 @@ class MigrateUserPreferencesTest extends TestCase {
 
 	/**
 	 * An unreadable key list for one user skips that user, not the install.
+	 *
+	 * @return void
 	 */
 	public function testAnUnreadableKeyListForOneUserIsSurvivable(): void {
 		$this->seedSeenUsers(userIds: ['alice']);
@@ -247,6 +269,8 @@ class MigrateUserPreferencesTest extends TestCase {
 
 	/**
 	 * If the user backend itself is down, warn and return — never throw.
+	 *
+	 * @return void
 	 */
 	public function testUserEnumerationFailureIsSurvivable(): void {
 		$this->userManager->method('callForSeenUsers')

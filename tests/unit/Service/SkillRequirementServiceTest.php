@@ -44,6 +44,13 @@ class SkillRequirementServiceTest extends TestCase {
 	/**
 	 * Build a service backed by a CharacterService whose fetcher returns the
 	 * given world data. The SkillRequirementService uses the same fetcher.
+	 *
+	 * @param array $abilities The abilities.
+	 * @param array $effects The effects.
+	 * @param array $skills The skills.
+	 * @param array $conditions The conditions.
+	 *
+	 * @return SkillRequirementService The make service.
 	 */
 	private function makeService(
 		array $abilities = [],

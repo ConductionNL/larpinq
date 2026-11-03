@@ -25,6 +25,16 @@ use Psr\Log\LoggerInterface;
  */
 class CharacterServiceXpAwardTest extends TestCase {
 
+	/**
+	 * The service over a world with these abilities, effects, skills and awards.
+	 *
+	 * @param array $abilities The abilities.
+	 * @param array $effects The effects.
+	 * @param array $skills The skills.
+	 * @param array $xpAwards The XP awards.
+	 *
+	 * @return CharacterService The service over a world with these abilities, effects, skills and awards.
+	 */
 	private function makeService(
 		array $abilities = [],
 		array $effects = [],

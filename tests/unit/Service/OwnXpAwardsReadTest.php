@@ -4,7 +4,7 @@
  * A player's own stat sheet counts the XP awards a game master granted to
  * their character (DECISIONS row 30, event-xp-awards).
  *
- * xpAward is read by game masters and the record's owner only, and the owner
+ * The xpAward schema is read by game masters and the record's owner only, and the owner
  * of an award is the game master who granted it. Read as the player, OpenRegister
  * hides every award, so the player's own XP, and the XP budget their skill
  * choices are checked against, would count nothing. Players see their own

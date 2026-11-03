@@ -234,6 +234,8 @@ class RegisterObjectFetcherTest extends TestCase {
 	 * empty filter value, is refused before OpenRegister is asked.
 	 *
 	 * @spec openspec/specs/event-xp-awards/spec.md
+	 *
+	 * @return void
 	 */
 	public function testAppAuthorityReadRefusesAnUnscopedFilter(): void {
 		$this->appManager->expects($this->never())->method('getInstalledApps');

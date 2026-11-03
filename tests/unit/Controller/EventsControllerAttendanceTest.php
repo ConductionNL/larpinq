@@ -61,6 +61,11 @@ class EventsControllerAttendanceTest extends TestCase {
 		$this->request = $this->createMock(originalClassName: IRequest::class);
 	}
 
+	/**
+	 * The controller over the real roster service and the doubles.
+	 *
+	 * @return EventsController The controller over the real roster service and the doubles.
+	 */
 	private function controller(): EventsController {
 		// The real EventRosterService over the mocked fetcher: the attendance /
 		// participation rules stay under test end-to-end through the controller.
@@ -72,6 +77,15 @@ class EventsControllerAttendanceTest extends TestCase {
 		);
 	}
 
+	/**
+	 * Sign in a user, as a game master and or administrator or not.
+	 *
+	 * @param string $uid The user id.
+	 * @param bool $isGm Whether the user is a game master.
+	 * @param bool $isAdmin Whether the user is an administrator.
+	 *
+	 * @return void
+	 */
 	private function asUser(string $uid, bool $isGm, bool $isAdmin = false): void {
 		$user = $this->createMock(originalClassName: IUser::class);
 		$user->method('getUID')->willReturn($uid);
@@ -82,6 +96,8 @@ class EventsControllerAttendanceTest extends TestCase {
 
 	/**
 	 * @param array<string,string> $params Request params (character/status).
+	 *
+	 * @return void
 	 */
 	private function withParams(array $params): void {
 		$this->request->method('getParam')->willReturnCallback(
@@ -93,6 +109,11 @@ class EventsControllerAttendanceTest extends TestCase {
 
 	// ---- recordAttendance -------------------------------------------------
 
+	/**
+	 * Recording attendance without a signed-in user answers 401.
+	 *
+	 * @return void
+	 */
 	public function testRecordUnauthenticatedReturns401(): void {
 		$this->userSession->method('getUser')->willReturn(null);
 		$result = $this->controller()->recordAttendance(self::EVT);
@@ -212,7 +233,7 @@ class EventsControllerAttendanceTest extends TestCase {
 		// Server-stamped: uid is the acting GM, NOT the spoofed 'attacker'.
 		self::assertSame(expected: 'gm-real', actual: $captured['data']['checkedInBy']);
 		self::assertNotSame(expected: 'attacker', actual: $captured['data']['checkedInBy']);
-		// checkedInAt is a server ISO-8601 timestamp, NOT the spoofed 1999 value.
+		// The checkedInAt value is a server ISO-8601 timestamp, NOT the spoofed 1999 value.
 		self::assertNotSame(expected: '1999-01-01T00:00:00+00:00', actual: $captured['data']['checkedInAt']);
 		self::assertMatchesRegularExpression(pattern: '/^\d{4}-\d{2}-\d{2}T/', string: $captured['data']['checkedInAt']);
 	}
@@ -267,6 +288,11 @@ class EventsControllerAttendanceTest extends TestCase {
 
 	// ---- roster -----------------------------------------------------------
 
+	/**
+	 * Reading the roster without a signed-in user answers 401.
+	 *
+	 * @return void
+	 */
 	public function testRosterUnauthenticatedReturns401(): void {
 		$this->userSession->method('getUser')->willReturn(null);
 		$result = $this->controller()->roster(self::EVT);

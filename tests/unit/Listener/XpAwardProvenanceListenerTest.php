@@ -59,7 +59,10 @@ class XpAwardProvenanceListenerTest extends TestCase {
 	private function listener(): XpAwardProvenanceListener {
 		$config = $this->createMock(originalClassName: IAppConfig::class);
 		$config->method('getValueString')->willReturnCallback(
-			static fn (string $app, string $key, string $default = ''): string => ($key === 'xpaward_schema' ? self::SCHEMA_ID : $default)
+			static fn (string $app, string $key, string $default = ''): string => match ($key) {
+				'xpaward_schema' => self::SCHEMA_ID,
+				default => $default,
+			}
 		);
 		$session = $this->createMock(originalClassName: IUserSession::class);
 		$session->method('getUser')->willReturnCallback(

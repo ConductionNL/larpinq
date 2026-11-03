@@ -79,8 +79,23 @@ class CharacterBuildsControllerTest extends TestCase {
 		parent::setUp();
 		$this->readable = [
 			self::MIRELA => $this->mirela(),
-			self::ALCHEMIST => ['id' => self::ALCHEMIST, 'character' => self::MIRELA, 'name' => 'Alchemist path', 'purpose' => 'plan', 'skills' => ['sk-herb', 'sk-potion'], 'items' => [], 'conditions' => []],
-			self::WINTER => ['id' => self::WINTER, 'character' => ['id' => self::MIRELA], 'name' => 'Winter campaign', 'purpose' => 'other-game', 'skills' => ['sk-sword', 'sk-ride'], 'items' => ['it-shield']],
+			self::ALCHEMIST => [
+				'id' => self::ALCHEMIST,
+				'character' => self::MIRELA,
+				'name' => 'Alchemist path',
+				'purpose' => 'plan',
+				'skills' => ['sk-herb', 'sk-potion'],
+				'items' => [],
+				'conditions' => [],
+			],
+			self::WINTER => [
+				'id' => self::WINTER,
+				'character' => ['id' => self::MIRELA],
+				'name' => 'Winter campaign',
+				'purpose' => 'other-game',
+				'skills' => ['sk-sword', 'sk-ride'],
+				'items' => ['it-shield'],
+			],
 		];
 	}//end setUp()
 
@@ -207,7 +222,10 @@ class CharacterBuildsControllerTest extends TestCase {
 		$data = $this->controller()->report(id: self::ALCHEMIST)->getData();
 
 		$this->assertSame(
-			expected: ['added' => [['id' => 'sk-herb', 'name' => 'Herbalism'], ['id' => 'sk-potion', 'name' => 'Potion brewing']], 'removed' => [['id' => 'sk-sword', 'name' => 'Swordsmanship']]],
+			expected: [
+				'added' => [['id' => 'sk-herb', 'name' => 'Herbalism'], ['id' => 'sk-potion', 'name' => 'Potion brewing']],
+				'removed' => [['id' => 'sk-sword', 'name' => 'Swordsmanship']],
+			],
 			actual: $data['changes']['skills']
 		);
 		$this->assertSame(expected: ['added' => [], 'removed' => []], actual: $data['changes']['items']);

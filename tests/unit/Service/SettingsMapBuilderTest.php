@@ -92,6 +92,11 @@ class SettingsMapBuilderTest extends TestCase {
 	public function testBuildSchemaSlugMapFromJsonSerializable(): void {
 		$mockSchema = new class implements \JsonSerializable {
 
+			/**
+			 * The entity as an array.
+			 *
+			 * @return array The entity as an array.
+			 */
 			public function jsonSerialize(): array {
 				return ['slug' => 'event', 'id' => 'schema-evt'];
 			}

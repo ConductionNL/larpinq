@@ -3,7 +3,7 @@
 /**
  * Drift check for the OpenRegister test stubs.
  *
- * tests/stubs/openregister/ carries verbatim copies of OpenRegister's pre-write
+ * The directory tests/stubs/openregister/ carries verbatim copies of OpenRegister's pre-write
  * events and an ObjectEntity of the real shape. A stub that drifts from the
  * real class lets a listener test pass over code that fails on an instance
  * (learniq#984), so this test compares each stub with the real file whenever
