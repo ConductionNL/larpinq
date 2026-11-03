@@ -228,6 +228,41 @@ class CharacterOverrideFailsClosedTest extends TestCase {
 	}//end testAThrowingConfigLetsUnchangedOverridesThrough()
 
 	/**
+	 * Stored and candidate overrides that differ only in a way a loose compare misses, or where the candidate drops them.
+	 *
+	 * @return array<string,array{0:mixed,1:mixed}>
+	 */
+	public static function changedOverrides(): array {
+		$story = [['skill' => 's2', 'reason' => 'story']];
+
+		return [
+			'keys of an override reordered' => [$story, [['reason' => 'story', 'skill' => 's2']]],
+			'reason changed from string to int' => [[['skill' => 's2', 'reason' => '1']], [['skill' => 's2', 'reason' => 1]]],
+			'override removed' => [$story, []],
+			'overrides set to null' => [$story, null],
+		];
+	}//end changedOverrides()
+
+	/**
+	 * Every change of the stored overrides counts as a change, so a config failure refuses it.
+	 *
+	 * @param mixed $stored    The stored requirementOverrides.
+	 * @param mixed $candidate The candidate requirementOverrides.
+	 *
+	 * @return void
+	 */
+	#[DataProvider('changedOverrides')]
+	public function testEveryOverrideChangeIsRefusedOnAConfigFailure(mixed $stored, mixed $candidate): void {
+		$event = $this->sendWithThrowingConfig(
+			new: self::BASE + ['requirementOverrides' => $candidate],
+			old: self::BASE + ['requirementOverrides' => $stored]
+		);
+
+		self::assertTrue(condition: $event->isPropagationStopped());
+		self::assertSame(expected: 'override_unverifiable', actual: $event->getErrors()['requirementOverrides'][0]['code'] ?? null);
+	}//end testEveryOverrideChangeIsRefusedOnAConfigFailure()
+
+	/**
 	 * Schema ids that only look like the configured one are not character writes.
 	 *
 	 * @return array<string,array{0: string, 1: string}> The configured id and the written id.
