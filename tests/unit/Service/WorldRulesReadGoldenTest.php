@@ -49,6 +49,7 @@ class WorldRulesReadGoldenTest extends TestCase {
 			'exactly the cap' => ['ability' => 1000, 'effect' => 1000],
 			'one over the cap' => ['ability' => 1000, 'effect' => 1001],
 			'over the cap in one type' => ['item' => 2600],
+			'a later type stops at its budget' => ['ability' => 1501, 'effect' => 1000],
 			'rows without an id' => ['condition' => 'gaps'],
 			'optional type not configured' => ['lorepage' => 'unconfigured', 'ability' => 1],
 			'optional type fails on its second page' => ['characterfield' => 'unconfigured-later'],
