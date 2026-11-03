@@ -198,9 +198,7 @@ class CharacterRequirementListenerGoldenTest extends TestCase {
 		);
 
 		$config = $this->createMock(originalClassName: IAppConfig::class);
-		$config->method('getValueString')->willReturnCallback(
-			fn (string $app, string $key): string => ($app === 'larpinq' && $key === 'character_schema') ? $case['schema'] : 'unexpected-key'
-		);
+		$config->method('getValueString')->willReturnMap([['larpinq', 'character_schema', '', $case['schema']]]);
 
 		$session = $this->createMock(originalClassName: IUserSession::class);
 		$user = null;
