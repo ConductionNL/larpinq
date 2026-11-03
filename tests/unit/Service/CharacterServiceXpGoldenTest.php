@@ -77,7 +77,11 @@ class CharacterServiceXpGoldenTest extends TestCase {
 			'first xp ability wins' => ['abilities' => [['id' => 'x1', 'name' => 'xp', 'base' => 1], ['id' => 'x2', 'name' => 'XP', 'base' => 2]]],
 			'xp ability without base' => ['abilities' => [['id' => 'x1', 'name' => 'XP']]],
 			'non-numeric bases' => [
-				'abilities' => [['id' => 'a1', 'name' => 'Strength', 'base' => 'high'], ['id' => 'x1', 'base' => 'x'], ['id' => 'a3', 'name' => 'Luck', 'base' => '4']],
+				'abilities' => [
+					['id' => 'a1', 'name' => 'Strength', 'base' => 'high'],
+					['id' => 'x1', 'base' => 'x'],
+					['id' => 'a3', 'name' => 'Luck', 'base' => '4'],
+				],
 			],
 			'null base' => ['abilities' => [['id' => 'a1', 'name' => 'Strength', 'base' => null], ['id' => 'x1', 'name' => 'XP', 'base' => 1]]],
 			'player owns the character' => ['owns' => true, 'own' => $own],
@@ -85,6 +89,8 @@ class CharacterServiceXpGoldenTest extends TestCase {
 			'player owns, no own awards' => ['owns' => true, 'own' => []],
 			'player does not own' => ['owns' => false, 'own' => $own],
 			'signed out with a guard' => ['owns' => true, 'own' => $own, 'uid' => null],
+			'empty id with a guard' => ['owns' => true, 'own' => $own, 'character' => ['id' => '']],
+			'empty-id awards with a guard' => ['owns' => true, 'own' => $own, 'character' => ['id' => ''], 'awards' => [['id' => 'w9', 'character' => '', 'amount' => 4]]],
 		];
 
 		foreach ($cases as $name => $case) {
