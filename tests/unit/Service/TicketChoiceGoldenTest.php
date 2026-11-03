@@ -37,6 +37,7 @@ use Psr\Log\NullLogger;
  * @uses   \OCA\Larpinq\Service\TicketCatalog
  * @uses   \OCA\Larpinq\Service\RegistrationPlaces
  * @uses   \OCA\Larpinq\Service\TicketChoiceRefusedException
+ * @uses   \OCA\Larpinq\Service\TicketChoice
  */
 class TicketChoiceGoldenTest extends TestCase {
 
@@ -140,6 +141,12 @@ class TicketChoiceGoldenTest extends TestCase {
 				true,
 			],
 			'choices cleared' => [$base, $stored, true],
+			'stored option line with a ticket id is not kept for the ticket' => [
+				array_merge($base, ['ticketType' => 't-early']),
+				$base + ['ticketType' => 't-x', 'lines' => [['kind' => 'option', 'ref' => 't-early', 'amount' => 1]]],
+				true,
+			],
+			'own bed place is not counted' => [array_merge($base, ['id' => 'r-other', 'ticketType' => 't-player', 'options' => ['o-bed']]), null, true],
 			'option id that is not a string' => [$base + ['options' => [7]], null, true],
 			'stored hidden ticket without a code' => [
 				$base + ['ticketType' => 't-secret'],
