@@ -312,7 +312,9 @@ class CharacterRequirementListener implements IEventListener {
 	 */
 	private function collectVeto(array $candidate, array $oldCharacter): ?array {
 		$result = $this->requirementService->validate(candidate: $candidate, oldCharacter: $oldCharacter);
-		if ($result['valid'] === false) {
+		// Only an explicit pass allows: a result without `valid`, or with any
+		// other value, is refused rather than read as an allow.
+		if (($result['valid'] ?? null) !== true) {
 			return $this->buildErrorPayload(result: $result);
 		}
 
