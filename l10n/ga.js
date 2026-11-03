@@ -265,7 +265,7 @@ OC.L10N.register(
         "Who is playing what, and what is still waiting for approval.": "Cé atá ag imirt cad, agus cad atá fós ag fanacht le faomhadh.",
         "Experience awarded, and who earned it.": "An taithí a bronnadh, agus cé a thuill í.",
         "How much the world holds, and what characters actually carry.": "Cé mhéad atá sa domhan, agus cad a iompraíonn carachtair i ndáiríre.",
-        "Store": "Siopa",
+        "Marketplace": "Siopa",
         "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Suiteáil cláir, scéimeanna agus sruthanna a d'fhoilsigh eagraíochtaí eile.",
         "%1$s is already held by %2$s. Remove it there first.": "Tá %1$s ag %2$s cheana féin. Bain as sin é ar dtús.",
         "%1$s is already on %2$s. Remove it there first.": "Tá %1$s ar %2$s cheana féin. Bain as sin é ar dtús.",
