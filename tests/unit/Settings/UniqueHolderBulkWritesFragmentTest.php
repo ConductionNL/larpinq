@@ -69,7 +69,7 @@ class UniqueHolderBulkWritesFragmentTest extends TestCase {
 		$schemas = $this->mergedRegister()['components']['schemas'];
 
 		foreach (['character', 'item', 'condition'] as $schema) {
-			$this->assertTrue($schemas[$schema]['configuration']['fireEventsOnBulkWrites'] ?? null, $schema);
+			$this->assertTrue(condition: $schemas[$schema]['configuration']['fireEventsOnBulkWrites'] ?? null, message: $schema);
 		}
 	}//end testTheGuardedSchemasFireEventsOnBulkWrites()
 
@@ -81,8 +81,8 @@ class UniqueHolderBulkWritesFragmentTest extends TestCase {
 	public function testTheCharacterConfigurationIsKept(): void {
 		$configuration = $this->mergedRegister()['components']['schemas']['character']['configuration'];
 
-		$this->assertSame(['photos'], $configuration['linkedTypes']);
-		$this->assertSame('approved', $configuration['x-openregister-lifecycle']['field']);
+		$this->assertSame(expected: ['photos'], actual: $configuration['linkedTypes']);
+		$this->assertSame(expected: 'approved', actual: $configuration['x-openregister-lifecycle']['field']);
 	}//end testTheCharacterConfigurationIsKept()
 
 	/**
@@ -100,7 +100,7 @@ class UniqueHolderBulkWritesFragmentTest extends TestCase {
 		];
 
 		foreach (self::EARLIER as $name => $before) {
-			$this->assertTrue(version_compare($after[$name], $before, '>'), "{$name} version {$after[$name]} must be above {$before}");
+			$this->assertTrue(condition: version_compare($after[$name], $before, '>'), message: "{$name} version {$after[$name]} must be above {$before}");
 		}
 	}//end testTheVersionsMoveUp()
 }//end class

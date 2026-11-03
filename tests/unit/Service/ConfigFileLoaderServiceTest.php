@@ -24,36 +24,58 @@ use RuntimeException;
  */
 class ConfigFileLoaderServiceTest extends TestCase {
 
+	/** @var ConfigFileLoaderService The service. */
 	private ConfigFileLoaderService $service;
+	/** @var IAppManager The app manager. */
 	private IAppManager $appManager;
 
+	/**
+	 * Build the doubles and the subject every test starts from.
+	 *
+	 * @return void
+	 */
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->appManager = $this->createMock(IAppManager::class);
-		$this->service = new ConfigFileLoaderService($this->appManager);
+		$this->appManager = $this->createMock(originalClassName: IAppManager::class);
+		$this->service = new ConfigFileLoaderService(appManager: $this->appManager);
 	}
 
+	/**
+	 * Load configuration file throws when file not found.
+	 *
+	 * @return void
+	 */
 	public function testLoadConfigurationFileThrowsWhenFileNotFound(): void {
 		$this->appManager->method('getAppPath')
 			->with('larpinq')
 			->willReturn('/nonexistent/path');
 
-		$this->expectException(RuntimeException::class);
-		$this->expectExceptionMessage('Configuration file not found');
+		$this->expectException(exception: RuntimeException::class);
+		$this->expectExceptionMessage(message: 'Configuration file not found');
 
 		$this->service->loadConfigurationFile();
 	}
 
+	/**
+	 * Ensure source type sets default source type.
+	 *
+	 * @return void
+	 */
 	public function testEnsureSourceTypeSetsDefaultSourceType(): void {
 		$data = [];
 
 		$result = $this->service->ensureSourceType($data);
 
-		self::assertArrayHasKey('x-openregister', $result);
-		self::assertSame('local', $result['x-openregister']['sourceType']);
+		self::assertArrayHasKey(key: 'x-openregister', array: $result);
+		self::assertSame(expected: 'local', actual: $result['x-openregister']['sourceType']);
 	}
 
+	/**
+	 * Ensure source type preserves existing source type.
+	 *
+	 * @return void
+	 */
 	public function testEnsureSourceTypePreservesExistingSourceType(): void {
 		$data = [
 			'x-openregister' => [
@@ -63,9 +85,14 @@ class ConfigFileLoaderServiceTest extends TestCase {
 
 		$result = $this->service->ensureSourceType($data);
 
-		self::assertSame('remote', $result['x-openregister']['sourceType']);
+		self::assertSame(expected: 'remote', actual: $result['x-openregister']['sourceType']);
 	}
 
+	/**
+	 * Ensure source type handles non array openregister.
+	 *
+	 * @return void
+	 */
 	public function testEnsureSourceTypeHandlesNonArrayOpenregister(): void {
 		$data = [
 			'x-openregister' => 'invalid',
@@ -73,10 +100,15 @@ class ConfigFileLoaderServiceTest extends TestCase {
 
 		$result = $this->service->ensureSourceType($data);
 
-		self::assertIsArray($result['x-openregister']);
-		self::assertSame('local', $result['x-openregister']['sourceType']);
+		self::assertIsArray(actual: $result['x-openregister']);
+		self::assertSame(expected: 'local', actual: $result['x-openregister']['sourceType']);
 	}
 
+	/**
+	 * Ensure source type adds to existing openregister.
+	 *
+	 * @return void
+	 */
 	public function testEnsureSourceTypeAddsToExistingOpenregister(): void {
 		$data = [
 			'x-openregister' => [
@@ -86,7 +118,7 @@ class ConfigFileLoaderServiceTest extends TestCase {
 
 		$result = $this->service->ensureSourceType($data);
 
-		self::assertSame('local', $result['x-openregister']['sourceType']);
-		self::assertSame('value', $result['x-openregister']['otherKey']);
+		self::assertSame(expected: 'local', actual: $result['x-openregister']['sourceType']);
+		self::assertSame(expected: 'value', actual: $result['x-openregister']['otherKey']);
 	}
 }

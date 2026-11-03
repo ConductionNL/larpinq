@@ -167,7 +167,7 @@ class OpenRegisterAutoloaderTest extends TestCase {
 	public function testSourceUsesNoPrivateOcAppApi(): void {
 		$source = (string) file_get_contents(__DIR__.'/../../../lib/AppInfo/OpenRegisterAutoloader.php');
 		$code   = (string) preg_replace('#/\*.*?\*/|//[^\n]*#s', '', $source);
-		$this->assertStringNotContainsString('OC_App', $code);
+		$this->assertStringNotContainsString(needle: 'OC_App', haystack: $code);
 
 	}//end testSourceUsesNoPrivateOcAppApi()
 
@@ -177,7 +177,7 @@ class OpenRegisterAutoloaderTest extends TestCase {
 	 * @return void
 	 */
 	public function testRegistersPsr4PrefixWhenEnabled(): void {
-		$appManager = $this->createMock(IAppManager::class);
+		$appManager = $this->createMock(originalClassName: IAppManager::class);
 		$appManager->method('isEnabledForAnyone')->with('openregister')->willReturn(true);
 		$appManager->method('getAppPath')->with('openregister')->willReturn($this->appPath.'/');
 
@@ -185,8 +185,8 @@ class OpenRegisterAutoloaderTest extends TestCase {
 		$afterFirst = count(spl_autoload_functions());
 		OpenRegisterAutoloader::register(appManager: $appManager);
 
-		$this->assertSame($afterFirst, count(spl_autoload_functions()));
-		$this->assertTrue(class_exists('OCA\\OpenRegister\\Fake\\Probe'));
+		$this->assertSame(expected: $afterFirst, actual: count(spl_autoload_functions()));
+		$this->assertTrue(condition: class_exists('OCA\\OpenRegister\\Fake\\Probe'));
 
 	}//end testRegistersPsr4PrefixWhenEnabled()
 
@@ -196,14 +196,14 @@ class OpenRegisterAutoloaderTest extends TestCase {
 	 * @return void
 	 */
 	public function testDoesNothingWhenDisabled(): void {
-		$appManager = $this->createMock(IAppManager::class);
+		$appManager = $this->createMock(originalClassName: IAppManager::class);
 		$appManager->method('isEnabledForAnyone')->willReturn(false);
 		$appManager->expects($this->never())->method('getAppPath');
 
 		$before = count(spl_autoload_functions());
 		OpenRegisterAutoloader::register(appManager: $appManager);
 
-		$this->assertSame($before, count(spl_autoload_functions()));
+		$this->assertSame(expected: $before, actual: count(spl_autoload_functions()));
 
 	}//end testDoesNothingWhenDisabled()
 
@@ -213,13 +213,13 @@ class OpenRegisterAutoloaderTest extends TestCase {
 	 * @return void
 	 */
 	public function testNeverThrowsWhenAppManagerThrows(): void {
-		$appManager = $this->createMock(IAppManager::class);
+		$appManager = $this->createMock(originalClassName: IAppManager::class);
 		$appManager->method('isEnabledForAnyone')->willThrowException(new \RuntimeException('boom'));
 
 		$before = count(spl_autoload_functions());
 		OpenRegisterAutoloader::register(appManager: $appManager);
 
-		$this->assertSame($before, count(spl_autoload_functions()));
+		$this->assertSame(expected: $before, actual: count(spl_autoload_functions()));
 
 	}//end testNeverThrowsWhenAppManagerThrows()
 
@@ -230,11 +230,11 @@ class OpenRegisterAutoloaderTest extends TestCase {
 	 */
 	public function testClassFileOnlyAnswersForOpenRegister(): void {
 		$this->assertSame(
-			'/x/lib/Db/Schema.php',
-			OpenRegisterAutoloader::classFile(appPath: '/x', class: 'OCA\\OpenRegister\\Db\\Schema')
+			expected: '/x/lib/Db/Schema.php',
+			actual: OpenRegisterAutoloader::classFile(appPath: '/x', class: 'OCA\\OpenRegister\\Db\\Schema')
 		);
-		$this->assertNull(OpenRegisterAutoloader::classFile(appPath: '/x', class: 'OCA\\Larpinq\\Foo'));
-		$this->assertNull(OpenRegisterAutoloader::classFile(appPath: '/x', class: 'OCA\\OpenRegister\\'));
+		$this->assertNull(actual: OpenRegisterAutoloader::classFile(appPath: '/x', class: 'OCA\\Larpinq\\Foo'));
+		$this->assertNull(actual: OpenRegisterAutoloader::classFile(appPath: '/x', class: 'OCA\\OpenRegister\\'));
 
 	}//end testClassFileOnlyAnswersForOpenRegister()
 }//end class

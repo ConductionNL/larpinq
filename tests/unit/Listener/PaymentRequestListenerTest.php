@@ -38,6 +38,7 @@ class PaymentRequestListenerTest extends TestCase {
 
 	private const SANNE_REG = 'e0000000-0000-4000-8000-000000000002';
 
+	/** @var PaymentWorld The world. */
 	private PaymentWorld $world;
 
 	/**
@@ -47,8 +48,13 @@ class PaymentRequestListenerTest extends TestCase {
 	 */
 	private array $request;
 
+	/**
+	 * Build the doubles and the subject every test starts from.
+	 *
+	 * @return void
+	 */
 	protected function setUp(): void {
-		$this->world = new PaymentWorld($this);
+		$this->world = new PaymentWorld(test: $this);
 		$this->world->seedRegistration(id: self::SANNE_REG, player: PaymentWorld::SANNE, status: 'pending');
 		$this->world->update(id: self::SANNE_REG, data: ['status' => 'accepted']);
 		$this->request = array_values($this->world->leaf->requests)[0];
@@ -62,7 +68,7 @@ class PaymentRequestListenerTest extends TestCase {
 	public function testACapturedRequestMarksTheRegistrationPaid(): void {
 		$this->shillinqUpdates(state: 'captured');
 
-		$this->assertSame('paid', $this->world->registration(self::SANNE_REG)['paymentState']);
+		$this->assertSame(expected: 'paid', actual: $this->world->registration(self::SANNE_REG)['paymentState']);
 	}//end testACapturedRequestMarksTheRegistrationPaid()
 
 	/**
@@ -73,7 +79,7 @@ class PaymentRequestListenerTest extends TestCase {
 	public function testACaptureNotAppliedIsPaidToo(): void {
 		$this->shillinqUpdates(state: 'captured_unapplied');
 
-		$this->assertSame('paid', $this->world->registration(self::SANNE_REG)['paymentState']);
+		$this->assertSame(expected: 'paid', actual: $this->world->registration(self::SANNE_REG)['paymentState']);
 	}//end testACaptureNotAppliedIsPaidToo()
 
 	/**
@@ -84,7 +90,7 @@ class PaymentRequestListenerTest extends TestCase {
 	public function testAFailedPaymentStaysOpen(): void {
 		$this->shillinqUpdates(state: 'failed');
 
-		$this->assertSame('open', $this->world->registration(self::SANNE_REG)['paymentState']);
+		$this->assertSame(expected: 'open', actual: $this->world->registration(self::SANNE_REG)['paymentState']);
 	}//end testAFailedPaymentStaysOpen()
 
 	/**
@@ -96,12 +102,12 @@ class PaymentRequestListenerTest extends TestCase {
 	public function testAnotherObjectsRequestIsIgnored(): void {
 		$this->request['subject'] = ['type' => 'case', 'register' => 'dossiq', 'schema' => 'Zaak', 'id' => self::SANNE_REG];
 		$this->shillinqUpdates(state: 'captured');
-		$this->assertSame('open', $this->world->registration(self::SANNE_REG)['paymentState']);
+		$this->assertSame(expected: 'open', actual: $this->world->registration(self::SANNE_REG)['paymentState']);
 
 		$this->request['subject'] = ['type' => 'registration', 'register' => '3', 'schema' => 'registration', 'id' => self::SANNE_REG];
 		$this->request['id'] = 'f0000000-0000-4000-8000-000000000099';
 		$this->shillinqUpdates(state: 'captured');
-		$this->assertSame('open', $this->world->registration(self::SANNE_REG)['paymentState']);
+		$this->assertSame(expected: 'open', actual: $this->world->registration(self::SANNE_REG)['paymentState']);
 	}//end testAnotherObjectsRequestIsIgnored()
 
 	/**

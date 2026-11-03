@@ -56,7 +56,7 @@ trait RealEvaluatorRegister {
 			}
 		}
 
-		$this->markTestSkipped('OpenRegister is not on the path; set OPENREGISTER_LIB to its lib/ to run the real evaluator.');
+		$this->markTestSkipped(message: 'OpenRegister is not on the path; set OPENREGISTER_LIB to its lib/ to run the real evaluator.');
 	}//end requireOpenRegister()
 
 	/**
@@ -91,31 +91,33 @@ trait RealEvaluatorRegister {
 	private function permissionHandler(string $uid, array $groups): object {
 		$register = new \OCA\OpenRegister\Db\Register();
 		$register->setId(3);
-		$registers = $this->createMock(\OCA\OpenRegister\Db\RegisterMapper::class);
+		$registers = $this->createMock(originalClassName: \OCA\OpenRegister\Db\RegisterMapper::class);
 		$registers->method('getFirstRegisterWithSchema')->willReturn(3);
 		$registers->method('find')->willReturn($register);
-		$container = $this->createMock(ContainerInterface::class);
+		$container = $this->createMock(originalClassName: ContainerInterface::class);
 		$container->method('get')->willReturnCallback(
-			static fn (string $id): object => ($id === \OCA\OpenRegister\Db\RegisterMapper::class ? $registers : throw new \RuntimeException('not in this test: ' . $id))
+			static fn (string $id): object => ($id === \OCA\OpenRegister\Db\RegisterMapper::class ? $registers : throw new \RuntimeException(
+				'not in this test: ' . $id
+			))
 		);
 
-		$user = $this->createMock(IUser::class);
+		$user = $this->createMock(originalClassName: IUser::class);
 		$user->method('getUID')->willReturn($uid);
-		$session = $this->createMock(IUserSession::class);
+		$session = $this->createMock(originalClassName: IUserSession::class);
 		$session->method('getUser')->willReturn($user);
-		$users = $this->createMock(IUserManager::class);
+		$users = $this->createMock(originalClassName: IUserManager::class);
 		$users->method('get')->willReturn($user);
-		$groupManager = $this->createMock(IGroupManager::class);
+		$groupManager = $this->createMock(originalClassName: IGroupManager::class);
 		$groupManager->method('getUserGroupIds')->willReturn($groups);
 
 		return new \OCA\OpenRegister\Service\Object\PermissionHandler(
 			userSession: $session,
 			userManager: $users,
 			groupManager: $groupManager,
-			schemaMapper: $this->createMock(\OCA\OpenRegister\Db\SchemaMapper::class),
-			objectEntityMapper: $this->createMock(\OCA\OpenRegister\Db\MagicMapper::class),
-			conditionMatcher: $this->createMock(\OCA\OpenRegister\Service\ConditionMatcher::class),
-			appConfig: $this->createMock(IAppConfig::class),
+			schemaMapper: $this->createMock(originalClassName: \OCA\OpenRegister\Db\SchemaMapper::class),
+			objectEntityMapper: $this->createMock(originalClassName: \OCA\OpenRegister\Db\MagicMapper::class),
+			conditionMatcher: $this->createMock(originalClassName: \OCA\OpenRegister\Service\ConditionMatcher::class),
+			appConfig: $this->createMock(originalClassName: IAppConfig::class),
 			logger: new NullLogger(),
 			container: $container,
 		);
@@ -209,18 +211,20 @@ trait RealEvaluatorRegister {
 	 * @return RegisterObjectFetcher The fetcher.
 	 */
 	private function fetcherOver(object $openRegister): RegisterObjectFetcher {
-		$container = $this->createMock(ContainerInterface::class);
+		$container = $this->createMock(originalClassName: ContainerInterface::class);
 		$container->method('get')->willReturnCallback(
-			static fn (string $id): object => ($id === 'OCA\OpenRegister\Service\ObjectService' ? $openRegister : throw new \RuntimeException('not bound: ' . $id))
+			static fn (string $id): object => ($id === 'OCA\OpenRegister\Service\ObjectService' ? $openRegister : throw new \RuntimeException(
+				'not bound: ' . $id
+			))
 		);
-		$apps = $this->createMock(IAppManager::class);
+		$apps = $this->createMock(originalClassName: IAppManager::class);
 		$apps->method('getInstalledApps')->willReturn(['openregister']);
-		$config = $this->createMock(IAppConfig::class);
+		$config = $this->createMock(originalClassName: IAppConfig::class);
 		$config->method('getValueString')->willReturnCallback(
 			static fn (string $app, string $key): string => (str_ends_with($key, '_register') === true ? '3' : substr($key, 0, -strlen('_schema')))
 		);
 
-		return new RegisterObjectFetcher($container, $apps, $config, new NullLogger());
+		return new RegisterObjectFetcher(container: $container, appManager: $apps, config: $config, logger: new NullLogger());
 	}//end fetcherOver()
 
 	/**
@@ -231,9 +235,9 @@ trait RealEvaluatorRegister {
 	 * @return IUserSession The session.
 	 */
 	private function sessionOf(string $uid): IUserSession {
-		$user = $this->createMock(IUser::class);
+		$user = $this->createMock(originalClassName: IUser::class);
 		$user->method('getUID')->willReturn($uid);
-		$session = $this->createMock(IUserSession::class);
+		$session = $this->createMock(originalClassName: IUserSession::class);
 		$session->method('getUser')->willReturn($user);
 		return $session;
 	}//end sessionOf()

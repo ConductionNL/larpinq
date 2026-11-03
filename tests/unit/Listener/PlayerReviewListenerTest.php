@@ -48,6 +48,7 @@ class PlayerReviewListenerTest extends TestCase {
 
 	private const PLAYER_SCHEMA = 'player-schema-id';
 
+	/** @var ?string The signed in. */
 	private ?string $signedIn = 'joris';
 
 	/**
@@ -56,24 +57,24 @@ class PlayerReviewListenerTest extends TestCase {
 	 * @return PlayerReviewListener The listener.
 	 */
 	private function listener(): PlayerReviewListener {
-		$config = $this->createMock(IAppConfig::class);
+		$config = $this->createMock(originalClassName: IAppConfig::class);
 		$config->method('getValueString')->willReturnCallback(
 			static fn (string $app, string $key, string $default = ''): string => ($key === 'player_schema' ? self::PLAYER_SCHEMA : $default)
 		);
-		$session = $this->createMock(IUserSession::class);
+		$session = $this->createMock(originalClassName: IUserSession::class);
 		$session->method('getUser')->willReturnCallback(
 			function (): ?IUser {
 				if ($this->signedIn === null) {
 					return null;
 				}
 
-				$user = $this->createMock(IUser::class);
+				$user = $this->createMock(originalClassName: IUser::class);
 				$user->method('getUID')->willReturn($this->signedIn);
 				return $user;
 			}
 		);
 
-		return new PlayerReviewListener($session, $config);
+		return new PlayerReviewListener(userSession: $session, config: $config);
 	}//end listener()
 
 	/**
@@ -92,9 +93,9 @@ class PlayerReviewListenerTest extends TestCase {
 		$this->listener()->handle($event);
 
 		$modified = $event->getModifiedData();
-		$this->assertSame(1, $modified['kept'], 'What other listeners changed is kept');
-		$this->assertSame('joris', $modified['reviewedBy']);
-		$this->assertGreaterThanOrEqual($before, strtotime($modified['reviewedAt']));
+		$this->assertSame(expected: 1, actual: $modified['kept'], message: 'What other listeners changed is kept');
+		$this->assertSame(expected: 'joris', actual: $modified['reviewedBy']);
+		$this->assertGreaterThanOrEqual(expected: $before, actual: strtotime($modified['reviewedAt']));
 	}//end testMarkingReviewedStampsWhoAndWhen()
 
 	/**
@@ -103,13 +104,19 @@ class PlayerReviewListenerTest extends TestCase {
 	 * @return void
 	 */
 	public function testAnotherUpdateKeepsTheStoredStamp(): void {
-		$old = new ReviewObjectEntity(self::PLAYER_SCHEMA, ['awaitingReview' => false, 'reviewedBy' => 'joris', 'reviewedAt' => '2026-09-30T10:00:00+00:00']);
-		$new = new ReviewObjectEntity(self::PLAYER_SCHEMA, ['awaitingReview' => false, 'description' => 'Plays healers', 'reviewedBy' => 'anna', 'reviewedAt' => '2020-01-01T00:00:00+00:00']);
+		$old = new ReviewObjectEntity(
+			self::PLAYER_SCHEMA,
+			['awaitingReview' => false, 'reviewedBy' => 'joris', 'reviewedAt' => '2026-09-30T10:00:00+00:00']
+		);
+		$new = new ReviewObjectEntity(
+			self::PLAYER_SCHEMA,
+			['awaitingReview' => false, 'description' => 'Plays healers', 'reviewedBy' => 'anna', 'reviewedAt' => '2020-01-01T00:00:00+00:00']
+		);
 		$event = new ObjectUpdatingEvent($new, $old);
 
 		$this->listener()->handle($event);
 
-		$this->assertSame(['reviewedBy' => 'joris', 'reviewedAt' => '2026-09-30T10:00:00+00:00'], $event->getModifiedData());
+		$this->assertSame(expected: ['reviewedBy' => 'joris', 'reviewedAt' => '2026-09-30T10:00:00+00:00'], actual: $event->getModifiedData());
 	}//end testAnotherUpdateKeepsTheStoredStamp()
 
 	/**
@@ -123,7 +130,7 @@ class PlayerReviewListenerTest extends TestCase {
 			new ReviewObjectEntity('character-schema', ['awaitingReview' => true])
 		);
 		$this->listener()->handle($other);
-		$this->assertSame([], $other->getModifiedData());
+		$this->assertSame(expected: [], actual: $other->getModifiedData());
 
 		$this->signedIn = null;
 		$system = new ObjectUpdatingEvent(
@@ -131,6 +138,6 @@ class PlayerReviewListenerTest extends TestCase {
 			new ReviewObjectEntity(self::PLAYER_SCHEMA, ['awaitingReview' => true])
 		);
 		$this->listener()->handle($system);
-		$this->assertSame([], $system->getModifiedData());
+		$this->assertSame(expected: [], actual: $system->getModifiedData());
 	}//end testSystemWritesAndOtherObjectsAreLeftAlone()
 }//end class

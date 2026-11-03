@@ -49,21 +49,28 @@ class CharactersPdfTemplatesTest extends TestCase {
 	 * @return CharactersController The controller.
 	 */
 	private function controller(bool $installed, ?object $templateService = null): CharactersController {
-		$appManager = $this->createMock(IAppManager::class);
+		$appManager = $this->createMock(originalClassName: IAppManager::class);
 		$appManager->method('isInstalled')->willReturn($installed);
 		$appManager->method('isEnabledForUser')->willReturn($installed);
-		$container = $this->createMock(ContainerInterface::class);
+		$container = $this->createMock(originalClassName: ContainerInterface::class);
 		$container->method('get')->willReturnCallback(
 			static fn (string $class): ?object => str_ends_with($class, '\\Service\\TemplateService') ? $templateService : null
 		);
 
 		return new CharactersController(
-			'larpinq',
-			$this->createMock(IRequest::class),
-			$this->createMock(RegisterObjectFetcher::class),
-			new DocuDeskPdfRenderer($appManager, $container, $this->createMock(LoggerInterface::class)),
-			new CallerAccess($this->createMock(IUserSession::class), $this->createMock(IGroupManager::class)),
-			$this->createMock(SkillRequirementService::class),
+			appName: 'larpinq',
+			request: $this->createMock(originalClassName: IRequest::class),
+			objectFetcher: $this->createMock(originalClassName: RegisterObjectFetcher::class),
+			pdfRenderer: new DocuDeskPdfRenderer(
+				appManager: $appManager,
+				container: $container,
+				logger: $this->createMock(originalClassName: LoggerInterface::class)
+			),
+			callerAccess: new CallerAccess(
+				userSession: $this->createMock(originalClassName: IUserSession::class),
+				groupManager: $this->createMock(originalClassName: IGroupManager::class)
+			),
+			requirementService: $this->createMock(originalClassName: SkillRequirementService::class),
 		);
 	}//end controller()
 
@@ -75,7 +82,7 @@ class CharactersPdfTemplatesTest extends TestCase {
 	public function testWithoutTheDocumentAppTheActionIsUnavailable(): void {
 		$data = $this->controller(installed: false)->pdfTemplates()->getData();
 
-		$this->assertSame(['available' => false, 'templates' => []], $data);
+		$this->assertSame(expected: ['available' => false, 'templates' => []], actual: $data);
 	}//end testWithoutTheDocumentAppTheActionIsUnavailable()
 
 	/**
@@ -107,10 +114,10 @@ class CharactersPdfTemplatesTest extends TestCase {
 
 		$data = $this->controller(installed: true, templateService: $service)->pdfTemplates()->getData();
 
-		$this->assertSame(['larpingapp'], $service->asked);
+		$this->assertSame(expected: ['larpingapp'], actual: $service->asked);
 		$this->assertSame(
-			['available' => true, 'templates' => [['id' => 'tpl-1', 'name' => 'Character sheet'], ['id' => 'tpl-2', 'name' => 'Card']]],
-			$data
+			expected: ['available' => true, 'templates' => [['id' => 'tpl-1', 'name' => 'Character sheet'], ['id' => 'tpl-2', 'name' => 'Card']]],
+			actual: $data
 		);
 	}//end testTemplatesAreListedByIdAndName()
 
@@ -135,6 +142,6 @@ class CharactersPdfTemplatesTest extends TestCase {
 
 		$data = $this->controller(installed: true, templateService: $service)->pdfTemplates()->getData();
 
-		$this->assertSame(['available' => true, 'templates' => []], $data);
+		$this->assertSame(expected: ['available' => true, 'templates' => []], actual: $data);
 	}//end testAFailingDocumentAppListsNothing()
 }//end class

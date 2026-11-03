@@ -53,7 +53,7 @@ class CharacterStatsControllerTest extends TestCase {
 	 * @return CharacterStatsController The controller.
 	 */
 	private function controller(?array $character): CharacterStatsController {
-		$fetcher = $this->createMock(RegisterObjectFetcher::class);
+		$fetcher = $this->createMock(originalClassName: RegisterObjectFetcher::class);
 		$fetcher->method('getObject')->willReturnCallback(
 			static function () use ($character): array {
 				if ($character === null) {
@@ -80,12 +80,23 @@ class CharacterStatsControllerTest extends TestCase {
 				default => [],
 			}
 		);
-		$logger = $this->createMock(LoggerInterface::class);
-		$engine = new CharacterService($fetcher, $logger, new EffectApplier());
-		$requirements = new SkillRequirementService($engine, $fetcher, $logger, new SkillRequirementChecker(new IdListNormaliser()), new IdListNormaliser());
+		$logger = $this->createMock(originalClassName: LoggerInterface::class);
+		$engine = new CharacterService(objectFetcher: $fetcher, logger: $logger, effectApplier: new EffectApplier());
+		$requirements = new SkillRequirementService(
+			characterService: $engine,
+			objectFetcher: $fetcher,
+			logger: $logger,
+			checker: new SkillRequirementChecker(idList: new IdListNormaliser()),
+			idList: new IdListNormaliser()
+		);
 		$this->services['requirements'] = $requirements;
 
-		return new CharacterStatsController('larpinq', $this->createMock(IRequest::class), $fetcher, new CharacterStatSheet($engine, $requirements, new CharacterStatsPresenter()));
+		return new CharacterStatsController(
+			appName: 'larpinq',
+			request: $this->createMock(originalClassName: IRequest::class),
+			objectFetcher: $fetcher,
+			statSheet: new CharacterStatSheet(characterService: $engine, requirementService: $requirements, presenter: new CharacterStatsPresenter())
+		);
 	}//end controller()
 
 	/**
@@ -106,10 +117,10 @@ class CharacterStatsControllerTest extends TestCase {
 		$sheet = $this->controller(character: $this->mirela())->show(id: self::MIRELA)->getData();
 		$strength = $sheet['abilities'][0];
 
-		$this->assertSame(['Strength', 10, 14], [$strength['name'], $strength['base'], $strength['final']]);
+		$this->assertSame(expected: ['Strength', 10, 14], actual: [$strength['name'], $strength['base'], $strength['final']]);
 		$this->assertSame(
-			[['skill', 'Swordsmanship', 'Blade training', 3], ['item', 'Iron shield', 'Shield weight', 1]],
-			array_map(static fn (array $m): array => [$m['source'], $m['sourceName'], $m['effectName'], $m['change']], $strength['modifiers'])
+			expected: [['skill', 'Swordsmanship', 'Blade training', 3], ['item', 'Iron shield', 'Shield weight', 1]],
+			actual: array_map(static fn (array $m): array => [$m['source'], $m['sourceName'], $m['effectName'], $m['change']], $strength['modifiers'])
 		);
 	}//end testStrengthIsFourteenWithBothSources()
 
@@ -121,7 +132,7 @@ class CharacterStatsControllerTest extends TestCase {
 	public function testAnUntouchedAbilityHasNoModifiers(): void {
 		$dex = $this->controller(character: $this->mirela())->show(id: self::MIRELA)->getData()['abilities'][2];
 
-		$this->assertSame(['Dexterity', 8, 8, []], [$dex['name'], $dex['base'], $dex['final'], $dex['modifiers']]);
+		$this->assertSame(expected: ['Dexterity', 8, 8, []], actual: [$dex['name'], $dex['base'], $dex['final'], $dex['modifiers']]);
 	}//end testAnUntouchedAbilityHasNoModifiers()
 
 	/**
@@ -134,9 +145,9 @@ class CharacterStatsControllerTest extends TestCase {
 		$xp = $controller->show(id: self::MIRELA)->getData()['xp'];
 		$budget = $this->services['requirements']->validate(candidate: $this->mirela(), oldCharacter: $this->mirela())['budget'];
 
-		$this->assertSame(['ability' => 'xp', 'earned' => 40, 'spent' => 10, 'left' => 30], $xp);
-		$this->assertSame($budget['value'], $xp['left']);
-		$this->assertSame($budget['ability'], $xp['ability']);
+		$this->assertSame(expected: ['ability' => 'xp', 'earned' => 40, 'spent' => 10, 'left' => 30], actual: $xp);
+		$this->assertSame(expected: $budget['value'], actual: $xp['left']);
+		$this->assertSame(expected: $budget['ability'], actual: $xp['ability']);
 	}//end testXpMatchesTheBudgetCheck()
 
 	/**
@@ -147,7 +158,7 @@ class CharacterStatsControllerTest extends TestCase {
 	public function testAnUnreadableCharacterIsNotFound(): void {
 		$response = $this->controller(character: null)->show(id: self::MIRELA);
 
-		$this->assertSame(404, $response->getStatus());
-		$this->assertArrayNotHasKey('abilities', $response->getData());
+		$this->assertSame(expected: 404, actual: $response->getStatus());
+		$this->assertArrayNotHasKey(key: 'abilities', array: $response->getData());
 	}//end testAnUnreadableCharacterIsNotFound()
 }//end class

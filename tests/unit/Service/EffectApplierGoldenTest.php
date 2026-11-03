@@ -114,9 +114,9 @@ class EffectApplierGoldenTest extends TestCase {
 
 		$expected = json_decode((string)file_get_contents(self::FIXTURE), true);
 		foreach ($expected as $name => $outcome) {
-			self::assertSame($outcome, $actual[$name] ?? null, $name);
+			self::assertSame(expected: $outcome, actual: $actual[$name] ?? null, message: $name);
 		}
 
-		self::assertSame(array_keys($expected), array_keys($actual));
+		self::assertSame(expected: array_keys($expected), actual: array_keys($actual));
 	}//end testMatchesTheRecordedOutcomes()
 }//end class

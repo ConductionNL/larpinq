@@ -88,8 +88,8 @@ class CanonicalSettingsRouteContractTest extends TestCase {
 
 		$table = include __DIR__ . '/../../../appinfo/routes.php';
 
-		self::assertIsArray($table, 'appinfo/routes.php must return an array');
-		self::assertArrayHasKey('routes', $table, "appinfo/routes.php must return a 'routes' key");
+		self::assertIsArray(actual: $table, message: 'appinfo/routes.php must return an array');
+		self::assertArrayHasKey(key: 'routes', array: $table, message: "appinfo/routes.php must return a 'routes' key");
 
 		$this->routes = $table['routes'];
 
@@ -139,16 +139,16 @@ class CanonicalSettingsRouteContractTest extends TestCase {
 		// above actually evaluated something. Zero inspections would mean the
 		// constant was emptied and every assertion below passed vacuously.
 		self::assertGreaterThan(
-			0,
-			$inspected,
-			'No canonical settings route was inspected — the expectation table is empty, '
+			expected: 0,
+			actual: $inspected,
+			message: 'No canonical settings route was inspected — the expectation table is empty, '
 			. 'so an empty findings list means nothing.'
 		);
 
 		self::assertSame(
-			[],
-			$missing,
-			sprintf(
+			expected: [],
+			actual: $missing,
+			message: sprintf(
 				'appinfo/routes.php is missing canonical settings route(s). A URL that '
 				. "matches with an unregistered verb answers 405 Method Not Allowed:\n  - %s",
 				implode("\n  - ", $missing)
@@ -180,9 +180,9 @@ class CanonicalSettingsRouteContractTest extends TestCase {
 		}
 
 		self::assertSame(
-			['settings#update'],
-			$puts,
-			'Exactly one route must answer PUT /api/settings, and it must be settings#update. '
+			expected: ['settings#update'],
+			actual: $puts,
+			message: 'Exactly one route must answer PUT /api/settings, and it must be settings#update. '
 			. 'Found: ' . var_export($puts, true)
 		);
 
@@ -218,8 +218,8 @@ class CanonicalSettingsRouteContractTest extends TestCase {
 			}
 
 			self::assertTrue(
-				$reflection->getMethod($method)->isPublic(),
-				sprintf('%s::%s() must be public to be dispatchable', SettingsController::class, $method)
+				condition: $reflection->getMethod($method)->isPublic(),
+				message: sprintf('%s::%s() must be public to be dispatchable', SettingsController::class, $method)
 			);
 		}//end foreach
 
@@ -227,16 +227,16 @@ class CanonicalSettingsRouteContractTest extends TestCase {
 		// empty $missing list would be manufactured by a broken scan, not by a
 		// healthy controller.
 		self::assertGreaterThan(
-			0,
-			$inspected,
-			'No settings# route was inspected — the route-name probe matched nothing, '
+			expected: 0,
+			actual: $inspected,
+			message: 'No settings# route was inspected — the route-name probe matched nothing, '
 			. 'so the empty findings list is not evidence.'
 		);
 
 		self::assertSame(
-			[],
-			$missing,
-			sprintf(
+			expected: [],
+			actual: $missing,
+			message: sprintf(
 				'appinfo/routes.php routes to method(s) SettingsController does not define. '
 				. "Each is a dispatch-time 500:\n  - %s",
 				implode("\n  - ", $missing)
@@ -270,9 +270,9 @@ class CanonicalSettingsRouteContractTest extends TestCase {
 		};
 
 		self::assertSame(
-			$attributeNames('create'),
-			$attributeNames('update'),
-			'create() and update() must declare identical auth attributes — the write path '
+			expected: $attributeNames('create'),
+			actual: $attributeNames('update'),
+			message: 'create() and update() must declare identical auth attributes — the write path '
 			. 'must not change privilege when the canonical PUT verb is added.'
 		);
 
@@ -280,14 +280,14 @@ class CanonicalSettingsRouteContractTest extends TestCase {
 		// and no #[PublicPage] on either write.
 		foreach (['create', 'update'] as $method) {
 			self::assertNotContains(
-				'OCP\AppFramework\Http\Attribute\NoAdminRequired',
-				$attributeNames($method),
-				sprintf('%s() writes instance-wide config and must not be #[NoAdminRequired]', $method)
+				needle: 'OCP\AppFramework\Http\Attribute\NoAdminRequired',
+				haystack: $attributeNames($method),
+				message: sprintf('%s() writes instance-wide config and must not be #[NoAdminRequired]', $method)
 			);
 			self::assertNotContains(
-				'OCP\AppFramework\Http\Attribute\PublicPage',
-				$attributeNames($method),
-				sprintf('%s() writes instance-wide config and must not be #[PublicPage]', $method)
+				needle: 'OCP\AppFramework\Http\Attribute\PublicPage',
+				haystack: $attributeNames($method),
+				message: sprintf('%s() writes instance-wide config and must not be #[PublicPage]', $method)
 			);
 		}
 
