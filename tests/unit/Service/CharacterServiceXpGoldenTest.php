@@ -90,7 +90,12 @@ class CharacterServiceXpGoldenTest extends TestCase {
 			'player does not own' => ['owns' => false, 'own' => $own],
 			'signed out with a guard' => ['owns' => true, 'own' => $own, 'uid' => null],
 			'empty id with a guard' => ['owns' => true, 'own' => $own, 'character' => ['id' => '']],
-			'empty-id awards with a guard' => ['owns' => true, 'own' => $own, 'character' => ['id' => ''], 'awards' => [['id' => 'w9', 'character' => '', 'amount' => 4]]],
+			'empty-id awards with a guard' => [
+				'owns' => true,
+				'own' => $own,
+				'character' => ['id' => ''],
+				'awards' => [['id' => 'w9', 'character' => '', 'amount' => 4]],
+			],
 		];
 
 		foreach ($cases as $name => $case) {
