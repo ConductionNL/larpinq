@@ -21,6 +21,23 @@ function settingsRequest(path, init) {
 	})
 }
 
+/**
+ * The store state a settings envelope carries: the OpenRegister and admin
+ * flags, and the configuration under whichever key the endpoint used.
+ *
+ * @param {object} data The settings envelope.
+ * @return {{openRegisters: boolean, isAdmin: boolean, config: object}} The state.
+ *
+ * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-6
+ */
+function settingsState(data) {
+	return {
+		openRegisters: data.openRegisters ?? false,
+		isAdmin: data.isAdmin ?? false,
+		config: data.configuration || data.config || data,
+	}
+}
+
 export const useSettingsStore = defineStore('settings', {
 	state: () => ({
 		config: null,
@@ -55,10 +72,7 @@ export const useSettingsStore = defineStore('settings', {
 					)
 				}
 
-				const data = await response.json()
-				this.openRegisters = data.openRegisters ?? false
-				this.isAdmin = data.isAdmin ?? false
-				this.config = data.configuration || data.config || data
+				Object.assign(this, settingsState(await response.json()))
 				this.initialized = true
 
 				return this.config
