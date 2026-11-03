@@ -68,6 +68,23 @@ class CharacterRequirementListener implements IEventListener {
 	private const VALIDATION_ERRORED = 'Larpinq: skill-requirement validation errored; allowing the write (data-only fallback).';
 
 	/**
+	 * The log line for an override check that threw; the write is refused.
+	 *
+	 * @var string
+	 */
+	private const OVERRIDE_CHECK_ERRORED = 'Larpinq: requirement override check errored; refusing the write.';
+
+	/**
+	 * The error when the override check could not decide.
+	 *
+	 * @var array<string,string>
+	 */
+	private const OVERRIDE_UNVERIFIABLE = [
+		'code' => 'override_unverifiable',
+		'message' => 'The requirement overrides of this write could not be checked, so the write is refused.',
+	];
+
+	/**
 	 * The error for an override entry without a reason.
 	 *
 	 * @var array<string,string>
@@ -133,22 +150,67 @@ class CharacterRequirementListener implements IEventListener {
 		// ObjectCreatingEvent and ObjectUpdatingEvent are optional runtime
 		// dependencies (OpenRegister may be absent).  Static analysis does not
 		// know about these optional classes; see the ignore annotations below.
-		try {
-			$errors = $this->vetoFor(event: $event);
-			if ($errors !== null) {
-				$event->stopPropagation();
-				// @phpstan-ignore-next-line
-				$event->setErrors($errors);
-			}
-		} catch (\Throwable $e) {
-			// Never fail-open on an unexpected error in the veto path is the
-			// safe default for auth, but a game-rule validator that throws must
-			// not brick all character writes. Log and allow the write to
-			// proceed (degrade to data-only) — matches the "OR predates events"
-			// graceful-degradation contract.
-			$this->logger->error(self::VALIDATION_ERRORED, ['exception' => $e]);
-		}//end try
+		// Who may author overrides is decided first and fails closed; only the
+		// game rules after it degrade to allowing the write.
+		$errors = ($this->overrideVeto(event: $event) ?? $this->gameRuleVeto(event: $event));
+		if ($errors !== null) {
+			$event->stopPropagation();
+			// @phpstan-ignore-next-line
+			$event->setErrors($errors);
+		}
 	}//end handle()
+
+	/**
+	 * The override refusal for a character write, or null when its overrides may pass.
+	 *
+	 * Runs outside the game-rule fallback: when the check cannot decide, the
+	 * write is refused.
+	 *
+	 * @param Event $event The dispatched pre-write event.
+	 *
+	 * @return array<string,mixed>|null The errors payload, or null.
+	 *
+	 * @psalm-suppress MixedMethodCall  OpenRegister event/entity classes are optional dependencies.
+	 * @psalm-suppress MixedAssignment  OpenRegister event/entity classes are optional dependencies.
+	 * @psalm-suppress MixedArgument    OpenRegister event/entity classes are optional dependencies.
+	 *
+	 * @spec openspec/specs/skill-requirement-enforcement/spec.md
+	 */
+	private function overrideVeto(Event $event): ?array {
+		try {
+			[$newEntity, $oldEntity] = $this->extractEntities(event: $event);
+			if ($this->isCharacterSchema(entity: $newEntity) === false) {
+				return null;
+			}
+
+			return $this->checkOverrideAuthorization(candidate: $newEntity->getObject(), old: ($oldEntity?->getObject() ?? []));
+		} catch (\Throwable $e) {
+			$this->logger->error(self::OVERRIDE_CHECK_ERRORED, ['exception' => $e]);
+			return ['requirementOverrides' => [self::OVERRIDE_UNVERIFIABLE]];
+		}
+	}//end overrideVeto()
+
+	/**
+	 * The game-rule errors for a write, or null; a rule that throws allows the write.
+	 *
+	 * @param Event $event The dispatched pre-write event.
+	 *
+	 * @return array<string,mixed>|null The errors payload, or null.
+	 *
+	 * @spec openspec/specs/skill-requirement-enforcement/spec.md
+	 */
+	private function gameRuleVeto(Event $event): ?array {
+		try {
+			return $this->vetoFor(event: $event);
+		} catch (\Throwable $e) {
+			// A game-rule validator that throws must not brick all character
+			// writes. Log and allow the write to proceed (degrade to
+			// data-only), the "OR predates events" graceful-degradation
+			// contract. Override authorization already ran in overrideVeto().
+			$this->logger->error(self::VALIDATION_ERRORED, ['exception' => $e]);
+			return null;
+		}
+	}//end gameRuleVeto()
 
 	/**
 	 * Whether the event is one of OpenRegister's vetoable pre-write events.
@@ -249,15 +311,10 @@ class CharacterRequirementListener implements IEventListener {
 	 * @spec openspec/specs/skill-requirement-enforcement/spec.md
 	 */
 	private function collectVeto(array $candidate, array $oldCharacter): ?array {
-		// GM-override authorization: a non-GM that adds/alters override
-		// entries is rejected outright (auth, not game-rule).
-		$authError = $this->checkOverrideAuthorization(candidate: $candidate, old: $oldCharacter);
-		if ($authError !== null) {
-			return ['requirementOverrides' => [$authError]];
-		}
-
 		$result = $this->requirementService->validate(candidate: $candidate, oldCharacter: $oldCharacter);
-		if ($result['valid'] === false) {
+		// Only an explicit pass allows: a result without `valid`, or with any
+		// other value, is refused rather than read as an allow.
+		if (($result['valid'] ?? null) !== true) {
 			return $this->buildErrorPayload(result: $result);
 		}
 
@@ -339,7 +396,7 @@ class CharacterRequirementListener implements IEventListener {
 	 * @param array<string,mixed> $candidate The candidate character.
 	 * @param array<string,mixed> $old The persisted character.
 	 *
-	 * @return array<string,mixed>|null An error entry when unauthorized, else null.
+	 * @return array<string,mixed>|null The requirementOverrides errors payload when refused, else null.
 	 */
 	private function checkOverrideAuthorization(array $candidate, array $old): ?array {
 		if ($this->overridesChanged(candidate: $candidate, old: $old) === false) {
@@ -348,11 +405,11 @@ class CharacterRequirementListener implements IEventListener {
 
 		// An empty reason on any override entry is itself invalid.
 		if ($this->hasOverrideWithoutReason(candidate: $candidate) === true) {
-			return self::OVERRIDE_REASON_REQUIRED;
+			return ['requirementOverrides' => [self::OVERRIDE_REASON_REQUIRED]];
 		}
 
 		if ($this->callerIsGameMaster() === false) {
-			return self::OVERRIDE_FORBIDDEN;
+			return ['requirementOverrides' => [self::OVERRIDE_FORBIDDEN]];
 		}
 
 		return null;
