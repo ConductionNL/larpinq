@@ -1,0 +1,461 @@
+{
+	"keys": [
+		"$schema",
+		"dependencies",
+		"menu",
+		"observability",
+		"pages",
+		"setup",
+		"store",
+		"version",
+		"walkthrough"
+	],
+	"menu": [
+		{
+			"id": "Dashboard",
+			"label": "Dashboard",
+			"icon": "ViewDashboardOutline",
+			"route": "Dashboard",
+			"order": 10
+		},
+		{
+			"id": "CharactersGroup",
+			"label": "Characters",
+			"icon": "BriefcaseAccountOutline",
+			"order": 20,
+			"open": true,
+			"children": [
+				{
+					"id": "Characters",
+					"label": "Characters",
+					"icon": "BriefcaseAccountOutline",
+					"route": "Characters",
+					"order": 20
+				},
+				{
+					"id": "Players",
+					"label": "Players",
+					"icon": "AccountGroupOutline",
+					"route": "Players",
+					"order": 30
+				},
+				{
+					"id": "NewPlayers",
+					"label": "New players",
+					"icon": "AccountPlusOutline",
+					"route": "NewPlayers",
+					"order": 35
+				},
+				{
+					"id": "Plots",
+					"label": "Plots",
+					"icon": "BookOpenVariantOutline",
+					"route": "Plots",
+					"order": 30
+				},
+				{
+					"id": "Factions",
+					"label": "Factions",
+					"icon": "ShieldAccountOutline",
+					"route": "Factions",
+					"order": 31
+				}
+			]
+		},
+		{
+			"id": "MechanicsGroup",
+			"label": "Mechanics",
+			"icon": "FlashOutline",
+			"order": 40,
+			"open": true,
+			"children": [
+				{
+					"id": "Abilities",
+					"label": "Abilities",
+					"icon": "FlashOutline",
+					"route": "Abilities",
+					"order": 40
+				},
+				{
+					"id": "Skills",
+					"label": "Skills",
+					"icon": "ToolboxOutline",
+					"route": "Skills",
+					"order": 50
+				},
+				{
+					"id": "SkillTree",
+					"label": "Skill tree",
+					"icon": "ToolboxOutline",
+					"route": "SkillTree",
+					"order": 55
+				},
+				{
+					"id": "Conditions",
+					"label": "Conditions",
+					"icon": "EmoticonSickOutline",
+					"route": "Conditions",
+					"order": 70
+				},
+				{
+					"id": "Effects",
+					"label": "Effects",
+					"icon": "MagicStaff",
+					"route": "Effects",
+					"order": 80
+				}
+			]
+		},
+		{
+			"id": "WorldGroup",
+			"label": "World",
+			"icon": "Sword",
+			"order": 60,
+			"open": true,
+			"children": [
+				{
+					"id": "Items",
+					"label": "Items",
+					"icon": "Sword",
+					"route": "Items",
+					"order": 60
+				},
+				{
+					"id": "Events",
+					"label": "Events",
+					"icon": "CalendarMonthOutline",
+					"route": "Events",
+					"order": 90
+				},
+				{
+					"id": "XpAwards",
+					"label": "XP Awards",
+					"icon": "StarPlusOutline",
+					"route": "XpAwards",
+					"order": 95
+				},
+				{
+					"id": "Lore",
+					"label": "Lore",
+					"icon": "BookOpenVariantOutline",
+					"route": "Lore",
+					"order": 50
+				},
+				{
+					"id": "MyRegistrations",
+					"label": "My registrations",
+					"icon": "ClipboardList",
+					"route": "MyRegistrations",
+					"order": 93
+				},
+				{
+					"id": "Registrations",
+					"label": "Registrations",
+					"icon": "ClipboardCheckOutline",
+					"route": "Registrations",
+					"order": 92
+				},
+				{
+					"id": "CharacterFields",
+					"label": "Character fields",
+					"icon": "FormTextbox",
+					"route": "CharacterFields",
+					"order": 31
+				}
+			]
+		},
+		{
+			"id": "Settings",
+			"label": "Worlds",
+			"icon": "Earth",
+			"route": "Settings",
+			"order": 25
+		},
+		{
+			"id": "Documentation",
+			"label": "Documentation",
+			"icon": "BookOpenVariantOutline",
+			"href": "https://larpinq.conduction.nl",
+			"section": "footer",
+			"order": 90
+		},
+		{
+			"id": "StoreMenu",
+			"label": "Store",
+			"icon": "StoreOutline",
+			"route": "Store",
+			"section": "footer",
+			"order": 92
+		},
+		{
+			"id": "ReportsMenu",
+			"label": "Reports",
+			"icon": "ChartBoxOutline",
+			"route": "Reports",
+			"section": "settings",
+			"order": 95
+		},
+		{
+			"id": "FeaturesRoadmapMenu",
+			"label": "Features & roadmap",
+			"icon": "MapMarkerPath",
+			"route": "FeaturesRoadmap",
+			"section": "footer",
+			"order": 100
+		},
+		{
+			"id": "FlowsMenu",
+			"label": "Flows",
+			"icon": "Sitemap",
+			"route": "Flows",
+			"section": "settings",
+			"order": 96
+		},
+		{
+			"id": "MyCharacters",
+			"label": "My character sheet",
+			"icon": "CardAccountDetailsOutline",
+			"route": "MyCharacters",
+			"order": 15
+		},
+		{
+			"id": "Cast",
+			"label": "Cast",
+			"icon": "DramaMasks",
+			"route": "Cast",
+			"order": 25
+		},
+		{
+			"id": "TicketTypes",
+			"label": "Ticket types",
+			"icon": "TicketOutline",
+			"route": "TicketTypes",
+			"order": 94
+		},
+		{
+			"id": "RegistrationOptions",
+			"label": "Registration options",
+			"icon": "SilverwareForkKnife",
+			"route": "RegistrationOptions",
+			"order": 95
+		},
+		{
+			"id": "AccessCodes",
+			"label": "Access codes",
+			"icon": "KeyVariant",
+			"route": "AccessCodes",
+			"order": 96
+		}
+	],
+	"pages": [
+		[
+			"Store",
+			"1f6623676b566a96f8cccc6b992eaa5224bbfdd84bee2f67e57c3234aaf2f4c5"
+		],
+		[
+			"Dashboard",
+			"32d02e34462e6613325815711716b78a1056cb214a9869b050008c46cf191f3c"
+		],
+		[
+			"Characters",
+			"293623a82d2787d0206bbab2586751bc4ae4861717bf75bf052f87302361bdf1"
+		],
+		[
+			"CharacterDetail",
+			"6b8a2131702274c0cc78d014cafd1b252a8bb6ef59c9a12b0d16a7a569d76140"
+		],
+		[
+			"Players",
+			"71b31d063d03941bf31b4b14d509fe9536bc01af73c2af67c59b64197d6eae0b"
+		],
+		[
+			"PlayerDetail",
+			"a1fa025ea7e73c268fb901ab077ce8e5b6b38c803b03272f3a6e358657cb058f"
+		],
+		[
+			"Abilities",
+			"c334049bb10334f549d07c4846cb827ea46c0d3879acf47d641bb7fd4ceec392"
+		],
+		[
+			"AbilityDetail",
+			"dff8c64f42bb69d24844b9ae61aa76ffef96e80770a0151c7c5994a732c34d4a"
+		],
+		[
+			"Skills",
+			"406c9aaede1e622900f770ee452d823865dc4ff327336ad8816e03a70c88b81d"
+		],
+		[
+			"SkillTree",
+			"5a663a2c14518b31abc7d4b5cdc278b69e4c39febb49cb4d0070e8a6180e504b"
+		],
+		[
+			"SkillDetail",
+			"6ef9cf77ada58d5f19037e8f5559503282447000c7e0c09d5aef930febc03381"
+		],
+		[
+			"Items",
+			"b59d60bb65ec944b116e372abc55adb48d3ce5568116d496d2c03ef37e6573c8"
+		],
+		[
+			"ItemDetail",
+			"02f1199c09a1b601549e3bc7860436b5fe0e5f96297adb02951bb78f67cad5c7"
+		],
+		[
+			"Conditions",
+			"cc9236318d325a73963186a64f0a69680dd044afebe9d4207569c03c99179ca1"
+		],
+		[
+			"ConditionDetail",
+			"afbb7bbeb310c89fd24a2ff74e5736a467a4f092d17c5aaff77ad3c6590a75f1"
+		],
+		[
+			"Effects",
+			"7c3d43c09cc49cbad6e20422ca54249d9502ebb0cf961f47342e4f2dd217e193"
+		],
+		[
+			"EffectDetail",
+			"de17863f593e37cae43e26fc8abb1d730859d751e3884b8c4946eb814963f771"
+		],
+		[
+			"Events",
+			"31076f408e47da19ffcb18ce6580f59c5e0600d3356c1c028a0e84fd2889bc63"
+		],
+		[
+			"EventDetail",
+			"c20532fadae30453125018aa6fdb7eb5fb5c19f433d8c97192b0477ebb9f6727"
+		],
+		[
+			"Settings",
+			"cbccf2956ac015b1c6b4ffb5f8a7763807ec32fe91eabec8aabdd8cf7069e330"
+		],
+		[
+			"SettingDetail",
+			"2a1c640cafc12291a3f8e74ddac0c6124c18daa976df771f958616d2903e9d47"
+		],
+		[
+			"XpAwards",
+			"fdef0100cd1261e5dbc38cfa14109c51e36a12d41b2d4e65afde762b9f38d2c5"
+		],
+		[
+			"XpAwardDetail",
+			"9f6f97ba543ef9cb04d9a7671f2403c441be377bb63c24894256ea558db32279"
+		],
+		[
+			"Reports",
+			"9f417aa405a05d7517cb4dee7f4349ef3fbdb0e83568eabc550a386a065be46d"
+		],
+		[
+			"CharacterRosterReport",
+			"50318095e86a61db9b6dd51df7850c5a186e784b24e641d0b4ef66ce6b9ae250"
+		],
+		[
+			"ProgressionReport",
+			"2190633f00c0bfeb1b78a0ae4a16d876cf0819b89dcb5bdf8412d14cba35a80c"
+		],
+		[
+			"WorldContentReport",
+			"a8969b4b0b3683aded19d01282c020c4c58e93a1da390697208bdf7dcbb107cb"
+		],
+		[
+			"FeaturesRoadmap",
+			"876032bd5ad7254ed8e247bcb1d4c358872967ff8987a7a7f909ea196ec6321b"
+		],
+		[
+			"Flows",
+			"6f3266879f0fdb16c24671b48f26ca69ab27525200a96b62e8ddaef8e6f245cc"
+		],
+		[
+			"FlowDetail",
+			"bb3dc4a080270f99df2c5d33a8d33a82478723f31a807d2a5bfa83fb8092ecaf"
+		],
+		[
+			"CharacterFields",
+			"16204efedd0ad714bdf89ef8d68a33d8ca08848c2430047148642030e84f0955"
+		],
+		[
+			"CharacterFieldDetail",
+			"145bb7072581e24da7a854b92f0936b9b91f37f4f1fcb5e471a172adb17df49b"
+		],
+		[
+			"Factions",
+			"68f87d121d5f9ecb1eeeddeac0e09716e4e25968d0a1a3b6899e4e1fc37a5f64"
+		],
+		[
+			"FactionDetail",
+			"7cb99156cda0ae3c386841f7e3df41dea8d706490f53c5ebe0c07dc4231c0cf6"
+		],
+		[
+			"FactionMemberDetail",
+			"2be8fccb02c46b2d93183ec02aa7ddc66fcc74bbedd58dfafa7d78ea34f24b35"
+		],
+		[
+			"BuildDetail",
+			"f35bd93e3175fc64d261b0ec466bbbdf81fdbdf7f6d935b37bdce5c5cd903f61"
+		],
+		[
+			"MyCharacters",
+			"7bfa268a30c86bf15b92e97475149a834fadc2e21ccc4b9cd19b6198bc8e035c"
+		],
+		[
+			"Cast",
+			"6745bf532039bb93dbd5db713037c8bb2cbfbfe5f392abdb3dc5f61c0a324e13"
+		],
+		[
+			"Plots",
+			"85123fe586ba8f113c7e609e973b285e52888d5a00b6393cd50876b06023a9a5"
+		],
+		[
+			"PlotDetail",
+			"b2eca87cf2914db942cf7ba87670358cf9b30b5b1b017b8c5111c4869d31643a"
+		],
+		[
+			"NewPlayers",
+			"6db432de346558630b0c1bd02075cdfb4a7c46e377ed89f2f9d1d9faf111da0f"
+		],
+		[
+			"Registrations",
+			"ff4505d9c070fc003ea766df9d0f13aa578edfa6b393a56125ad452501249c49"
+		],
+		[
+			"MyRegistrations",
+			"f326769feaabf627a97c2d783155e908ed9d170f2a1dee5f1f90e1a93015077e"
+		],
+		[
+			"RegistrationDetail",
+			"6b770665d5f3a08c9f71a54b25f7477339a7351aaae4095da352671c29994917"
+		],
+		[
+			"TicketTypes",
+			"100d7a13f7a61fbb6b2e47def167ce6e1deccd7b5a90714475c993ee5e7a84e4"
+		],
+		[
+			"TicketTypeDetail",
+			"d0101cf913e39dda5e9c357d483d621e903ffc952d7f0f5a7a8057f39c5928a7"
+		],
+		[
+			"RegistrationOptions",
+			"d31a47330c68ee228fd824515042950d40e00398929b0a146a72ea5333404e36"
+		],
+		[
+			"RegistrationOptionDetail",
+			"a6728ac126ababa4b0d70ed10e726c8686a1f4ad3ad41b4e268ca9afc947e519"
+		],
+		[
+			"AccessCodes",
+			"5b9f0bb26d3a6829cedf84b997b3165f44cfbfc3372973d9ee1f2a62eb00f44c"
+		],
+		[
+			"AccessCodeDetail",
+			"e8c4b0fe1df0b1d886df0e903d5fdb6397003ad5988513b63465b0f1a8dab555"
+		],
+		[
+			"Lore",
+			"70dafdb469f97e3beb3eec8d572994b49c5820775657a7ac2116821920a6c000"
+		],
+		[
+			"LoreArticle",
+			"b3cec2de3c472afbe1e6a6c04a67724ff15906a037b80785bfeb66b264f2222d"
+		]
+	],
+	"rest": "d6f6fd2641f3c3d968dc87fe7c7dfd4906e1082aa84843cb7396441c41f38b11"
+}
