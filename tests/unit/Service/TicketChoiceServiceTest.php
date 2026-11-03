@@ -67,10 +67,13 @@ class TicketChoiceServiceTest extends TestCase {
 	private const LANTERN = 'f2000000-0000-4000-8000-000000000001';
 	private const OLD_CODE = 'f2000000-0000-4000-8000-000000000002';
 
+	/** @var InMemoryOpenRegister The store. */
 	private InMemoryOpenRegister $store;
 
+	/** @var string The signed in. */
 	private string $signedIn = 'anna';
 
+	/** @var ?RegistrationService The service. */
 	private ?RegistrationService $service = null;
 
 	/**

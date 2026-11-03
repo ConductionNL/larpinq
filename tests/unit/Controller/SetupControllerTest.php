@@ -32,9 +32,13 @@ use Psr\Log\LoggerInterface;
 use RuntimeException;
 
 class SetupControllerTest extends TestCase {
+	/** @var IAppConfig The app config. */
 	private IAppConfig $appConfig;
+	/** @var DemoDataService The demo data. */
 	private DemoDataService $demoData;
+	/** @var SettingsService The settings. */
 	private SettingsService $settings;
+	/** @var IAppManager The app manager. */
 	private IAppManager $appManager;
 
 	/** @var array<string, string> What the controller wrote, by key. */

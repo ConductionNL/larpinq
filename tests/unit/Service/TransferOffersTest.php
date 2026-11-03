@@ -40,6 +40,7 @@ class TransferOffersTest extends TestCase {
 
 	private const SANNES_CHARACTER = 'd0000000-0000-4000-8000-000000000003';
 
+	/** @var PaymentWorld The world. */
 	private PaymentWorld $world;
 
 	/**

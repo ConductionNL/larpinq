@@ -36,14 +36,19 @@ use RuntimeException;
 class MigrateUserPreferencesTest extends TestCase {
 	private const OLD_APP_ID = 'larpingapp';
 
+	/** @var IConfig&MockObject The config. */
 	private IConfig&MockObject $config;
 
+	/** @var IUserManager&MockObject The user manager. */
 	private IUserManager&MockObject $userManager;
 
+	/** @var LoggerInterface&MockObject The logger. */
 	private LoggerInterface&MockObject $logger;
 
+	/** @var IOutput&MockObject The output. */
 	private IOutput&MockObject $output;
 
+	/** @var MigrateUserPreferences The step. */
 	private MigrateUserPreferences $step;
 
 	/**

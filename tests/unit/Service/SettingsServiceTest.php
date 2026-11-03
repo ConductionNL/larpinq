@@ -11,9 +11,13 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
 class SettingsServiceTest extends TestCase {
+	/** @var SettingsService The service. */
 	private SettingsService $service;
+	/** @var IAppConfig The app config. */
 	private IAppConfig $appConfig;
+	/** @var SettingsLoadService The settings load service. */
 	private SettingsLoadService $settingsLoadService;
+	/** @var LoggerInterface The logger. */
 	private LoggerInterface $logger;
 
 	/**

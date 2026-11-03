@@ -39,6 +39,7 @@ class RegistrationChangesControllerTest extends TestCase {
 
 	private const SANNE_REG = 'e0000000-0000-4000-8000-000000000003';
 
+	/** @var PaymentWorld The world. */
 	private PaymentWorld $world;
 
 	/**

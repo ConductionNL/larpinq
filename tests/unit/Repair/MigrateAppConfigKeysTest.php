@@ -41,12 +41,16 @@ use RuntimeException;
 class MigrateAppConfigKeysTest extends TestCase {
 	private const OLD_APP_ID = 'larpingapp';
 
+	/** @var IAppConfig&MockObject The app config. */
 	private IAppConfig&MockObject $appConfig;
 
+	/** @var LoggerInterface&MockObject The logger. */
 	private LoggerInterface&MockObject $logger;
 
+	/** @var IOutput&MockObject The output. */
 	private IOutput&MockObject $output;
 
+	/** @var MigrateAppConfigKeys The step. */
 	private MigrateAppConfigKeys $step;
 
 	/**

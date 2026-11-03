@@ -36,9 +36,13 @@ class EventsControllerTest extends TestCase {
 	private const TPL = '00000000-0000-0000-0000-000000000010';
 	private const EVT = '00000000-0000-0000-0000-0000000000ev';
 
+	/** @var RegisterObjectFetcher&MockObject The object fetcher. */
 	private RegisterObjectFetcher&MockObject $objectFetcher;
+	/** @var DocuDeskPdfRenderer&MockObject The pdf renderer. */
 	private DocuDeskPdfRenderer&MockObject $pdfRenderer;
+	/** @var IUserSession&MockObject The user session. */
 	private IUserSession&MockObject $userSession;
+	/** @var IGroupManager&MockObject The group manager. */
 	private IGroupManager&MockObject $groupManager;
 
 	/**

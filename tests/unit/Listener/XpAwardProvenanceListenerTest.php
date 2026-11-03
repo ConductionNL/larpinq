@@ -48,6 +48,7 @@ class XpAwardProvenanceListenerTest extends TestCase {
 
 	private const SCHEMA_ID = 'xp-award-schema-id';
 
+	/** @var ?string The signed in. */
 	private ?string $signedIn = 'joris';
 
 	/**

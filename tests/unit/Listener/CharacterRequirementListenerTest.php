@@ -66,6 +66,7 @@ class FakeObjectEntity extends ObjectEntity {
 class CharacterRequirementListenerTest extends TestCase {
 	private const SCHEMA_ID = 'char-schema-uuid';
 
+	/** @var LoggerInterface The logger. */
 	private LoggerInterface $logger;
 
 	/**

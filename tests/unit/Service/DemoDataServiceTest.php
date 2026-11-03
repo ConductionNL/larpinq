@@ -31,12 +31,16 @@ use RuntimeException;
  * Covers the demo import's decision table.
  */
 class DemoDataServiceTest extends TestCase {
+	/** @var IAppManager&MockObject The app manager. */
 	private IAppManager&MockObject $appManager;
 
+	/** @var ContainerInterface&MockObject The container. */
 	private ContainerInterface&MockObject $container;
 
+	/** @var DemoDataService The service. */
 	private DemoDataService $service;
 
+	/** @var string The app dir. */
 	private string $appDir;
 
 	/**

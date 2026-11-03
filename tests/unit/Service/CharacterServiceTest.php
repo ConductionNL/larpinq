@@ -25,8 +25,11 @@ use Psr\Log\LoggerInterface;
  */
 class CharacterServiceTest extends TestCase {
 
+	/** @var CharacterService The service. */
 	private CharacterService $service;
+	/** @var RegisterObjectFetcher The object fetcher. */
 	private RegisterObjectFetcher $objectFetcher;
+	/** @var LoggerInterface The logger. */
 	private LoggerInterface $logger;
 
 	/**

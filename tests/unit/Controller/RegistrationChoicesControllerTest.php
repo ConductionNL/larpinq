@@ -47,6 +47,7 @@ class RegistrationChoicesControllerTest extends TestCase {
 	private const EVENT = 'a0000000-0000-4000-8000-000000000001';
 	private const ANNAS = 'e0000000-0000-4000-8000-000000000001';
 
+	/** @var InMemoryOpenRegister The store. */
 	private InMemoryOpenRegister $store;
 
 	/**

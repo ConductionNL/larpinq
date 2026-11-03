@@ -35,15 +35,19 @@ class XpAwardsControllerTest extends TestCase {
 	private const EVENT = '5a5a5a5a-0000-4000-8000-000000000001';
 	private const MIRELA = 'c1c1c1c1-0000-4000-8000-000000000001';
 
+	/** @var bool Whether game master. */
 	private bool $gameMaster = true;
 
+	/** @var bool Whether signed in. */
 	private bool $signedIn = true;
 
+	/** @var bool Whether event exists. */
 	private bool $eventExists = true;
 
 	/** @var array<int, array<string, mixed>> Every save. */
 	private array $saved = [];
 
+	/** @var XpAwardsController The controller. */
 	private XpAwardsController $controller;
 
 	/**

@@ -41,6 +41,7 @@ class RegistrationPaymentJobTest extends TestCase {
 
 	private const PIETER_REG = 'e0000000-0000-4000-8000-000000000004';
 
+	/** @var PaymentWorld The world. */
 	private PaymentWorld $world;
 
 	/**

@@ -22,6 +22,7 @@ use PHPUnit\Framework\TestCase;
  */
 class SettingsMapBuilderTest extends TestCase {
 
+	/** @var SettingsMapBuilder The builder. */
 	private SettingsMapBuilder $builder;
 
 	/**

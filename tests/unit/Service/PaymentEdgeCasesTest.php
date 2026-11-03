@@ -45,6 +45,7 @@ class PaymentEdgeCasesTest extends TestCase {
 
 	private const REG = 'e0000000-0000-4000-8000-000000000001';
 
+	/** @var PaymentWorld The world. */
 	private PaymentWorld $world;
 
 	/**

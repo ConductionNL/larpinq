@@ -133,10 +133,13 @@ class RegistrationServiceTest extends TestCase {
 	private const HAND_1 = 'd0000000-0000-4000-8000-000000000006';
 	private const HAND_2 = 'd0000000-0000-4000-8000-000000000007';
 
+	/** @var InMemoryOpenRegister The store. */
 	private InMemoryOpenRegister $store;
 
+	/** @var SharedLocks The locks. */
 	private SharedLocks $locks;
 
+	/** @var string The signed in. */
 	private string $signedIn = 'gm';
 
 	/**

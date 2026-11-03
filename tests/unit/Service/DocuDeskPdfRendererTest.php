@@ -31,9 +31,13 @@ use Psr\Log\LoggerInterface;
  */
 class DocuDeskPdfRendererTest extends TestCase {
 
+	/** @var IAppManager&MockObject The app manager. */
 	private IAppManager&MockObject $appManager;
+	/** @var ContainerInterface&MockObject The container. */
 	private ContainerInterface&MockObject $container;
+	/** @var LoggerInterface&MockObject The logger. */
 	private LoggerInterface&MockObject $logger;
+	/** @var DocuDeskPdfRenderer The renderer. */
 	private DocuDeskPdfRenderer $renderer;
 
 	/**

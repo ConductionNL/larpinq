@@ -24,7 +24,9 @@ use RuntimeException;
  */
 class ConfigFileLoaderServiceTest extends TestCase {
 
+	/** @var ConfigFileLoaderService The service. */
 	private ConfigFileLoaderService $service;
+	/** @var IAppManager The app manager. */
 	private IAppManager $appManager;
 
 	/**

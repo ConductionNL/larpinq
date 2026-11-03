@@ -30,6 +30,7 @@ use PHPUnit\Framework\TestCase;
  */
 class DashboardControllerTest extends TestCase {
 
+	/** @var DashboardController The controller. */
 	private DashboardController $controller;
 
 	/** @var array<string, mixed> What page() handed to the initial state. */
@@ -38,8 +39,10 @@ class DashboardControllerTest extends TestCase {
 	/** @var list<string> The groups of the signed-in user. */
 	private array $groups = [];
 
+	/** @var bool Whether admin. */
 	private bool $admin = false;
 
+	/** @var bool Whether signed in. */
 	private bool $signedIn = true;
 
 	/** @var array<string, string> The signed-in user's stored larpinq preferences, by IConfig key. */

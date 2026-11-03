@@ -40,6 +40,7 @@ class CustomFieldGuardTest extends TestCase {
 
 	private const ELSEWHERE = '22222222-2222-4222-8222-222222222222';
 
+	/** @var InMemoryObjectService The store. */
 	private InMemoryObjectService $store;
 
 	/**

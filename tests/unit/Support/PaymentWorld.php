@@ -73,6 +73,7 @@ class FakePaymentLeaf implements IntegrationProvider {
 	 */
 	public bool $mayRequest = true;
 
+	/** @var bool Whether fail list. */
 	public bool $failList = false;
 
 	/**
@@ -89,6 +90,7 @@ class FakePaymentLeaf implements IntegrationProvider {
 	 */
 	public array $creates = [];
 
+	/** @var int The next. */
 	private int $next = 1;
 
 	public function getId(): string {
@@ -215,8 +217,10 @@ class PaymentWorld {
 	public const TICKET = 'b1000000-0000-4000-8000-000000000001';
 	public const MEALS = 'b2000000-0000-4000-8000-000000000001';
 
+	/** @var InMemoryOpenRegister The store. */
 	public InMemoryOpenRegister $store;
 
+	/** @var FakePaymentLeaf The leaf. */
 	public FakePaymentLeaf $leaf;
 
 	/**
@@ -226,8 +230,10 @@ class PaymentWorld {
 	 */
 	public bool $shillinq = true;
 
+	/** @var string The signed in. */
 	public string $signedIn = 'gm';
 
+	/** @var DateTimeImmutable The now. */
 	public DateTimeImmutable $now;
 
 	/**

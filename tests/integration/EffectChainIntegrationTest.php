@@ -45,6 +45,7 @@ use Psr\Log\LoggerInterface;
  */
 class EffectChainIntegrationTest extends TestCase {
 
+	/** @var CharacterService The service. */
 	private CharacterService $service;
 
 	/**

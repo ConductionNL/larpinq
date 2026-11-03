@@ -37,13 +37,21 @@ use Psr\Log\LoggerInterface;
  */
 class CharactersControllerTest extends TestCase {
 
+	/** @var CharactersController The controller. */
 	private CharactersController $controller;
+	/** @var RegisterObjectFetcher&MockObject The object fetcher. */
 	private RegisterObjectFetcher&MockObject $objectFetcher;
+	/** @var IAppManager&MockObject The app manager. */
 	private IAppManager&MockObject $appManager;
+	/** @var ContainerInterface&MockObject The container. */
 	private ContainerInterface&MockObject $container;
+	/** @var IUserSession&MockObject The user session. */
 	private IUserSession&MockObject $userSession;
+	/** @var IGroupManager&MockObject The group manager. */
 	private IGroupManager&MockObject $groupManager;
+	/** @var LoggerInterface&MockObject The logger. */
 	private LoggerInterface&MockObject $logger;
+	/** @var \OCA\Larpinq\Service\SkillRequirementService&MockObject The requirement service. */
 	private \OCA\Larpinq\Service\SkillRequirementService&MockObject $requirementService;
 
 	/**

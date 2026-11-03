@@ -28,6 +28,7 @@ use Psr\Log\LoggerInterface;
  */
 class SkillRequirementServiceTest extends TestCase {
 
+	/** @var LoggerInterface The logger. */
 	private LoggerInterface $logger;
 
 	/**

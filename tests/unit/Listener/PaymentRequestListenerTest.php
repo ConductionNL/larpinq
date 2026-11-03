@@ -38,6 +38,7 @@ class PaymentRequestListenerTest extends TestCase {
 
 	private const SANNE_REG = 'e0000000-0000-4000-8000-000000000002';
 
+	/** @var PaymentWorld The world. */
 	private PaymentWorld $world;
 
 	/**

@@ -48,6 +48,7 @@ class PlayerReviewListenerTest extends TestCase {
 
 	private const PLAYER_SCHEMA = 'player-schema-id';
 
+	/** @var ?string The signed in. */
 	private ?string $signedIn = 'joris';
 
 	/**

@@ -83,6 +83,7 @@ class RecordingDeepLinkEvent extends Event {
  */
 class DeepLinkRegistrationListenerTest extends TestCase {
 
+	/** @var DeepLinkRegistrationListener The listener. */
 	private DeepLinkRegistrationListener $listener;
 
 	/**

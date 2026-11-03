@@ -36,10 +36,15 @@ class EventsControllerAttendanceTest extends TestCase {
 	private const EVT = '00000000-0000-0000-0000-0000000000ev';
 	private const CHAR = '00000000-0000-0000-0000-00000000char';
 
+	/** @var RegisterObjectFetcher&MockObject The object fetcher. */
 	private RegisterObjectFetcher&MockObject $objectFetcher;
+	/** @var DocuDeskPdfRenderer&MockObject The pdf renderer. */
 	private DocuDeskPdfRenderer&MockObject $pdfRenderer;
+	/** @var IUserSession&MockObject The user session. */
 	private IUserSession&MockObject $userSession;
+	/** @var IGroupManager&MockObject The group manager. */
 	private IGroupManager&MockObject $groupManager;
+	/** @var IRequest&MockObject The request. */
 	private IRequest&MockObject $request;
 
 	/**

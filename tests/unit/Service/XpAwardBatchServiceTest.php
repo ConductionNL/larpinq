@@ -45,6 +45,7 @@ class XpAwardBatchServiceTest extends TestCase {
 	/** @var array<int, array{type: string, data: array<string, mixed>}> Every save. */
 	private array $saved = [];
 
+	/** @var XpAwardBatchService The service. */
 	private XpAwardBatchService $service;
 
 	/**
