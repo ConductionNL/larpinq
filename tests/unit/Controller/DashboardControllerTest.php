@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Tests\Unit\Controller;
 
+use OCA\Larpinq\Controller\CallerAccess;
 use OCA\Larpinq\Controller\DashboardController;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\IRequest;
@@ -59,21 +60,19 @@ class DashboardControllerTest extends TestCase {
 		$session->method('getUser')->willReturnCallback(fn () => $this->signedIn ? $user : null);
 		$groupManager = $this->createMock(IGroupManager::class);
 		$groupManager->method('isInGroup')->willReturnCallback(
-			fn (string $uid, string $group): bool => in_array($group, $this->groups, true)
+			fn (string $uid, string $group): bool => $uid === 'anna' && in_array($group, $this->groups, true)
 		);
-		$groupManager->method('isAdmin')->willReturnCallback(fn (): bool => $this->admin);
+		$groupManager->method('isAdmin')->willReturnCallback(fn (string $uid): bool => $uid === 'anna' && $this->admin);
 
 		$config = $this->createMock(IConfig::class);
 		$config->method('getUserValue')->willReturnCallback(
-			fn (string $uid, string $app, string $key, mixed $default = ''): mixed => ($app === 'larpinq' ? ($this->preferences[$key] ?? $default) : $default)
+			fn (string $uid, string $app, string $key, mixed $default = ''): mixed => ($uid === 'anna' && $app === 'larpinq' ? ($this->preferences[$key] ?? $default) : $default)
 		);
 
 		$this->controller = new DashboardController(
-			'larpinq',
 			$this->createMock(IRequest::class),
 			$initialState,
-			$session,
-			$groupManager,
+			new CallerAccess($session, $groupManager),
 			$config,
 		);
 	}
