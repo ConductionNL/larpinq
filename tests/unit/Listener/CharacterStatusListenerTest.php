@@ -55,7 +55,7 @@ class CharacterStatusListenerTest extends TestCase {
 	 * @return CharacterStatusListener The listener.
 	 */
 	private function listener(): CharacterStatusListener {
-		$config = $this->createMock(IAppConfig::class);
+		$config = $this->createMock(originalClassName: IAppConfig::class);
 		$config->method('getValueString')->willReturn(self::SCHEMA_ID);
 
 		return new CharacterStatusListener(new CharacterStatusGuard(new IdListNormaliser()), $config);
@@ -88,14 +88,14 @@ class CharacterStatusListenerTest extends TestCase {
 			);
 			$this->listener()->handle($event);
 
-			$this->assertTrue($event->isPropagationStopped(), "a {$status} character is refused");
-			$this->assertSame('character_not_active', $event->getErrors()['code']);
-			$this->assertArrayHasKey('events', $event->getErrors()['fields']);
+			$this->assertTrue(condition: $event->isPropagationStopped(), message: "a {$status} character is refused");
+			$this->assertSame(expected: 'character_not_active', actual: $event->getErrors()['code']);
+			$this->assertArrayHasKey(key: 'events', array: $event->getErrors()['fields']);
 		}
 
 		$create = new ObjectCreatingEvent(new StatusObjectEntity(self::SCHEMA_ID, ['status' => 'dead', 'events' => ['ev-winter']]));
 		$this->listener()->handle($create);
-		$this->assertTrue($create->isPropagationStopped());
+		$this->assertTrue(condition: $create->isPropagationStopped());
 	}//end testANotActiveCharacterJoinsNoNewEvent()
 
 	/**
@@ -116,7 +116,7 @@ class CharacterStatusListenerTest extends TestCase {
 		foreach ($cases as $label => [$before, $after, $schema]) {
 			$event = $this->update(before: $before, after: $after, schema: $schema);
 			$this->listener()->handle($event);
-			$this->assertFalse($event->isPropagationStopped(), $label);
+			$this->assertFalse(condition: $event->isPropagationStopped(), message: $label);
 		}
 	}//end testEverythingElsePasses()
 }//end class

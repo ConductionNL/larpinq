@@ -40,7 +40,7 @@ class PlotsFragmentTest extends TestCase {
 	private function mergedRegister(): array {
 		$appPath = dirname(__DIR__, 3);
 		$monolith = json_decode((string)file_get_contents($appPath . '/lib/Settings/larpinq_register.json'), true);
-		$this->assertIsArray($monolith);
+		$this->assertIsArray(actual: $monolith);
 
 		$reflection = new ReflectionClass(ConfigFileLoaderService::class);
 		$loader = $reflection->newInstanceWithoutConstructor();
@@ -61,7 +61,7 @@ class PlotsFragmentTest extends TestCase {
 	 */
 	private function schema(string $key): array {
 		$schemas = $this->mergedRegister()['components']['schemas'];
-		$this->assertArrayHasKey($key, $schemas, "the {$key} schema must be in the merged register");
+		$this->assertArrayHasKey(key: $key, array: $schemas, message: "the {$key} schema must be in the merged register");
 		return $schemas[$key];
 	}//end schema()
 
@@ -73,18 +73,18 @@ class PlotsFragmentTest extends TestCase {
 	 */
 	public function testThePlotSchemasAreInTheRegister(): void {
 		$register = $this->mergedRegister()['components']['registers']['larpinq'];
-		$this->assertContains('larping_plot', $register['schemas']);
-		$this->assertContains('larping_plot_part', $register['schemas']);
+		$this->assertContains(needle: 'larping_plot', haystack: $register['schemas']);
+		$this->assertContains(needle: 'larping_plot_part', haystack: $register['schemas']);
 
 		$plot = $this->schema(key: 'plot');
-		$this->assertSame('larping_plot', $plot['slug']);
-		$this->assertTrue($plot['configuration']['exportable']);
+		$this->assertSame(expected: 'larping_plot', actual: $plot['slug']);
+		$this->assertTrue(condition: $plot['configuration']['exportable']);
 		foreach (['read', 'create', 'update', 'delete'] as $action) {
-			$this->assertSame(['gamemasters'], $plot['authorization'][$action], "only game masters may {$action} a plot");
+			$this->assertSame(expected: ['gamemasters'], actual: $plot['authorization'][$action], message: "only game masters may {$action} a plot");
 		}
 
-		$this->assertSame('larping_plot_part', $this->schema(key: 'plotPart')['slug']);
-		$this->assertTrue($this->schema(key: 'plotPart')['configuration']['exportable']);
+		$this->assertSame(expected: 'larping_plot_part', actual: $this->schema(key: 'plotPart')['slug']);
+		$this->assertTrue(condition: $this->schema(key: 'plotPart')['configuration']['exportable']);
 	}//end testThePlotSchemasAreInTheRegister()
 
 	/**
@@ -95,12 +95,12 @@ class PlotsFragmentTest extends TestCase {
 	public function testThePlotStepHasItsTransitions(): void {
 		$lifecycle = $this->schema(key: 'plot')['configuration']['x-openregister-lifecycle'];
 
-		$this->assertSame('writingStep', $lifecycle['field']);
-		$this->assertSame('draft', $lifecycle['initial']);
-		$this->assertSame(['draft'], $lifecycle['transitions']['ready']['from']);
-		$this->assertSame('ready', $lifecycle['transitions']['ready']['to']);
-		$this->assertSame('approved', $lifecycle['transitions']['approve']['to']);
-		$this->assertSame('draft', $lifecycle['transitions']['reopen']['to']);
+		$this->assertSame(expected: 'writingStep', actual: $lifecycle['field']);
+		$this->assertSame(expected: 'draft', actual: $lifecycle['initial']);
+		$this->assertSame(expected: ['draft'], actual: $lifecycle['transitions']['ready']['from']);
+		$this->assertSame(expected: 'ready', actual: $lifecycle['transitions']['ready']['to']);
+		$this->assertSame(expected: 'approved', actual: $lifecycle['transitions']['approve']['to']);
+		$this->assertSame(expected: 'draft', actual: $lifecycle['transitions']['reopen']['to']);
 	}//end testThePlotStepHasItsTransitions()
 
 	/**
@@ -112,13 +112,13 @@ class PlotsFragmentTest extends TestCase {
 		$part = $this->schema(key: 'plotPart');
 
 		$this->assertSame(
-			[['group' => 'gamemasters'], ['group' => 'larpers', 'match' => ['ownerUid' => '$userId']]],
-			$part['authorization']['read']
+			expected: [['group' => 'gamemasters'], ['group' => 'larpers', 'match' => ['ownerUid' => '$userId']]],
+			actual: $part['authorization']['read']
 		);
-		$this->assertSame(['gamemasters'], $part['properties']['privateText']['authorization']['read']);
-		$this->assertArrayNotHasKey('authorization', $part['properties']['playerText']);
+		$this->assertSame(expected: ['gamemasters'], actual: $part['properties']['privateText']['authorization']['read']);
+		$this->assertArrayNotHasKey(key: 'authorization', array: $part['properties']['playerText']);
 		foreach (['create', 'update', 'delete'] as $action) {
-			$this->assertSame(['gamemasters'], $part['authorization'][$action]);
+			$this->assertSame(expected: ['gamemasters'], actual: $part['authorization'][$action]);
 		}
 	}//end testAPlayerReadsOnlyTheirOwnPartWithoutThePrivateText()
 
@@ -132,12 +132,12 @@ class PlotsFragmentTest extends TestCase {
 		$part = $this->schema(key: 'plotPart');
 
 		$this->assertSame(
-			['mode' => 'relatedObject', 'schema' => 'character', 'field' => 'character'],
-			$part['configuration']['x-openregister-references']['character']
+			expected: ['mode' => 'relatedObject', 'schema' => 'character', 'field' => 'character'],
+			actual: $part['configuration']['x-openregister-references']['character']
 		);
 		$this->assertSame(
-			['type' => 'string', 'materialise' => true, 'expression' => ['prop' => '@ref.character.ownerUid']],
-			$part['properties']['ownerUid']['calculation']
+			expected: ['type' => 'string', 'materialise' => true, 'expression' => ['prop' => '@ref.character.ownerUid']],
+			actual: $part['properties']['ownerUid']['calculation']
 		);
 	}//end testTheOwnerIsCopiedFromTheCharacter()
 
@@ -152,15 +152,15 @@ class PlotsFragmentTest extends TestCase {
 
 		// A Nextcloud user id as a plain string: OpenRegister has no `user`
 		// format and drops the whole schema when it meets one.
-		$this->assertArrayNotHasKey('format', $character['properties']['writer']);
-		$this->assertArrayNotHasKey('format', $this->schema(key: 'plot')['properties']['writer']);
-		$this->assertSame(['draft', 'ready', 'approved'], $character['properties']['writingStep']['enum']);
-		$this->assertSame('draft', $character['properties']['writingStep']['default']);
+		$this->assertArrayNotHasKey(key: 'format', array: $character['properties']['writer']);
+		$this->assertArrayNotHasKey(key: 'format', array: $this->schema(key: 'plot')['properties']['writer']);
+		$this->assertSame(expected: ['draft', 'ready', 'approved'], actual: $character['properties']['writingStep']['enum']);
+		$this->assertSame(expected: 'draft', actual: $character['properties']['writingStep']['default']);
 		foreach (['writer', 'writingStep'] as $field) {
-			$this->assertSame(['gamemasters'], $character['properties'][$field]['authorization']['read']);
-			$this->assertSame(['gamemasters'], $character['properties'][$field]['authorization']['update']);
+			$this->assertSame(expected: ['gamemasters'], actual: $character['properties'][$field]['authorization']['read']);
+			$this->assertSame(expected: ['gamemasters'], actual: $character['properties'][$field]['authorization']['update']);
 		}
-		$this->assertSame('approved', $character['configuration']['x-openregister-lifecycle']['field']);
+		$this->assertSame(expected: 'approved', actual: $character['configuration']['x-openregister-lifecycle']['field']);
 	}//end testACharacterHasAWriterAndAWritingStep()
 
 	/**
@@ -183,10 +183,10 @@ class PlotsFragmentTest extends TestCase {
 			$schema = json_decode((string)json_encode($this->forOpis(schema: $this->schema(key: $bySlug[$slug]))));
 			unset($object['@self']);
 			$result = $validator->validate(json_decode((string)json_encode($object)), $schema);
-			$this->assertTrue($result->isValid(), "seed {$slug} must validate");
+			$this->assertTrue(condition: $result->isValid(), message: "seed {$slug} must validate");
 		}
 		// ADR-111 rule 1 (gate-101): at least three demo objects per schema.
-		$this->assertSame(['larping_plot' => 3, 'larping_plot_part' => 3], $seen);
+		$this->assertSame(expected: ['larping_plot' => 3, 'larping_plot_part' => 3], actual: $seen);
 	}//end testTheSeedObjectsValidate()
 
 	/**

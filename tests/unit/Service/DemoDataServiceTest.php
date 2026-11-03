@@ -43,8 +43,8 @@ class DemoDataServiceTest extends TestCase {
 		$this->appDir = sys_get_temp_dir() . '/larpinq-demo-' . uniqid();
 		mkdir($this->appDir . '/lib/Settings', 0777, true);
 
-		$this->appManager = $this->createMock(IAppManager::class);
-		$this->container  = $this->createMock(ContainerInterface::class);
+		$this->appManager = $this->createMock(originalClassName: IAppManager::class);
+		$this->container  = $this->createMock(originalClassName: ContainerInterface::class);
 
 		$this->appManager->method('getAppPath')->willReturn($this->appDir);
 		$this->appManager->method('getAppVersion')->willReturn('1.2.3');
@@ -53,7 +53,7 @@ class DemoDataServiceTest extends TestCase {
 		$this->service = new DemoDataService(
 			$this->appManager,
 			$this->container,
-			$this->createMock(LoggerInterface::class)
+			$this->createMock(originalClassName: LoggerInterface::class)
 		);
 	}
 
@@ -121,9 +121,9 @@ class DemoDataServiceTest extends TestCase {
 	public function testDecliningIsOfferedEvenWhenNoDatasetShips(): void {
 		$choices = $this->service->listChoices();
 
-		$this->assertSame(['none'], array_column($choices, 'id'));
-		$this->assertNotSame('', $choices[0]['description']);
-		$this->assertNotSame('', $choices[0]['icon']);
+		$this->assertSame(expected: ['none'], actual: array_column($choices, 'id'));
+		$this->assertNotSame(expected: '', actual: $choices[0]['description']);
+		$this->assertNotSame(expected: '', actual: $choices[0]['icon']);
 
 	}//end testDecliningIsOfferedEvenWhenNoDatasetShips()
 
@@ -140,12 +140,12 @@ class DemoDataServiceTest extends TestCase {
 
 		$choices = $this->service->listChoices();
 
-		$this->assertSame(['none', 'demo'], array_column($choices, 'id'));
-		$this->assertSame(3, $choices[1]['objectCount']);
+		$this->assertSame(expected: ['none', 'demo'], actual: array_column($choices, 'id'));
+		$this->assertSame(expected: 3, actual: $choices[1]['objectCount']);
 		// 🔴 NO NUMBER IN THE SENTENCE. The wizard translates a card's
 		// description by literal lookup, so an interpolated count would leave a
 		// Dutch operator reading English.
-		$this->assertDoesNotMatchRegularExpression('/\d/', $choices[1]['description']);
+		$this->assertDoesNotMatchRegularExpression(pattern: '/\d/', string: $choices[1]['description']);
 
 	}//end testTheShippedDatasetIsOfferedWithItsRealCount()
 
@@ -156,9 +156,9 @@ class DemoDataServiceTest extends TestCase {
 
 		$result = $this->service->install();
 
-		$this->assertSame(5, $result['objects']);
-		$this->assertSame(1, $result['registers']);
-		$this->assertSame(1, $result['schemas']);
+		$this->assertSame(expected: 5, actual: $result['objects']);
+		$this->assertSame(expected: 1, actual: $result['registers']);
+		$this->assertSame(expected: 1, actual: $result['schemas']);
 	}
 
 	/**
@@ -174,7 +174,7 @@ class DemoDataServiceTest extends TestCase {
 
 		$this->service->install();
 
-		$this->assertTrue($spy->seen['force'], 'a version gate must not be able to skip an explicit request');
+		$this->assertTrue(condition: $spy->seen['force'], message: 'a version gate must not be able to skip an explicit request');
 	}
 
 	/**
@@ -188,13 +188,13 @@ class DemoDataServiceTest extends TestCase {
 
 		$this->service->install();
 
-		$this->assertSame('larpinq.demo', $spy->seen['appId']);
+		$this->assertSame(expected: 'larpinq.demo', actual: $spy->seen['appId']);
 	}
 
 	public function testAMissingDescriptorThrowsRatherThanReportingSuccess(): void {
 		$this->container->expects($this->never())->method('get');
 
-		$this->expectException(RuntimeException::class);
+		$this->expectException(exception: RuntimeException::class);
 		$this->service->install();
 	}
 
@@ -202,7 +202,7 @@ class DemoDataServiceTest extends TestCase {
 		file_put_contents($this->appDir . '/lib/Settings/larpinq_mock_register.json', 'not json');
 		$this->container->expects($this->never())->method('get');
 
-		$this->expectException(RuntimeException::class);
+		$this->expectException(exception: RuntimeException::class);
 		$this->service->install();
 	}
 
@@ -213,21 +213,21 @@ class DemoDataServiceTest extends TestCase {
 	 */
 	public function testWithoutOpenRegisterItRefusesAndSaysWhichAppIsMissing(): void {
 		$this->shipDescriptor();
-		$appManager = $this->createMock(IAppManager::class);
+		$appManager = $this->createMock(originalClassName: IAppManager::class);
 		$appManager->method('getAppPath')->willReturn($this->appDir);
 		$appManager->method('getAppVersion')->willReturn('1.2.3');
 		$appManager->method('getInstalledApps')->willReturn(['larpinq']);
 
-		$service = new DemoDataService($appManager, $this->container, $this->createMock(LoggerInterface::class));
+		$service = new DemoDataService($appManager, $this->container, $this->createMock(originalClassName: LoggerInterface::class));
 
-		$this->expectException(RuntimeException::class);
-		$this->expectExceptionMessageMatches('/OpenRegister/');
+		$this->expectException(exception: RuntimeException::class);
+		$this->expectExceptionMessageMatches(regularExpression: '/OpenRegister/');
 		$service->install();
 	}
 
 	public function testIsAvailableReflectsWhetherTheDescriptorShips(): void {
-		$this->assertFalse($this->service->isAvailable(), 'no descriptor on disk');
+		$this->assertFalse(condition: $this->service->isAvailable(), message: 'no descriptor on disk');
 		$this->shipDescriptor();
-		$this->assertTrue($this->service->isAvailable());
+		$this->assertTrue(condition: $this->service->isAvailable());
 	}
 }

@@ -165,7 +165,7 @@ class UniqueHolderGoldenTest extends TestCase {
 	private function fetcher(string $mode): RegisterObjectFetcher {
 		$characters = $this->characters();
 		$objects = $this->objects();
-		$fetcher = $this->createMock(RegisterObjectFetcher::class);
+		$fetcher = $this->createMock(originalClassName: RegisterObjectFetcher::class);
 		$fetcher->method('getObjects')->willReturnCallback(
 			function (string $objectType, ?int $limit = null, ?int $offset = null, ?array $filters = []) use ($mode, $characters): array {
 				$this->reads[] = ['getObjects' => $objectType, 'limit' => $limit, 'offset' => $offset, 'filters' => $filters];
@@ -218,7 +218,7 @@ class UniqueHolderGoldenTest extends TestCase {
 	 * @return UniqueHolderListener The listener.
 	 */
 	private function listener(string $mode, array &$logged): UniqueHolderListener {
-		$config = $this->createMock(IAppConfig::class);
+		$config = $this->createMock(originalClassName: IAppConfig::class);
 		$config->method('getValueString')->willReturnCallback(
 			fn (string $app, string $key, string $default = ''): string => [
 				'character_schema' => 'schema-character',
@@ -226,9 +226,9 @@ class UniqueHolderGoldenTest extends TestCase {
 				'condition_schema' => 'schema-condition',
 			][$key] ?? $default
 		);
-		$l10n = $this->createMock(IL10N::class);
+		$l10n = $this->createMock(originalClassName: IL10N::class);
 		$l10n->method('t')->willReturnCallback(fn (string $text, $params = []): string => vsprintf($text, (array)$params));
-		$logger = $this->createMock(LoggerInterface::class);
+		$logger = $this->createMock(originalClassName: LoggerInterface::class);
 		$logger->method('error')->willReturnCallback(
 			function (string $message, array $context = []) use (&$logged): void {
 				$logged[] = $message . ' / ' . $context['exception']->getMessage();
@@ -292,9 +292,9 @@ class UniqueHolderGoldenTest extends TestCase {
 
 		$expected = json_decode((string)file_get_contents(self::FIXTURE), true);
 		foreach ($expected as $name => $outcome) {
-			self::assertSame($outcome, $actual[$name] ?? null, $name);
+			self::assertSame(expected: $outcome, actual: $actual[$name] ?? null, message: $name);
 		}
 
-		self::assertSame(array_keys($expected), array_keys($actual));
+		self::assertSame(expected: array_keys($expected), actual: array_keys($actual));
 	}//end testMatchesTheRecordedOutcomes()
 }//end class

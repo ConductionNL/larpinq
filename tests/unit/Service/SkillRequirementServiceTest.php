@@ -32,7 +32,7 @@ class SkillRequirementServiceTest extends TestCase {
 
 	protected function setUp(): void {
 		parent::setUp();
-		$this->logger = $this->createMock(LoggerInterface::class);
+		$this->logger = $this->createMock(originalClassName: LoggerInterface::class);
 	}
 
 	/**
@@ -45,7 +45,7 @@ class SkillRequirementServiceTest extends TestCase {
 		array $skills = [],
 		array $conditions = [],
 	): SkillRequirementService {
-		$fetcher = $this->createMock(RegisterObjectFetcher::class);
+		$fetcher = $this->createMock(originalClassName: RegisterObjectFetcher::class);
 		$fetcher->method('getObjects')
 			->willReturnCallback(function (string $type) use ($abilities, $effects, $skills, $conditions): array {
 				return match ($type) {
@@ -71,8 +71,8 @@ class SkillRequirementServiceTest extends TestCase {
 	public function testNewCharacterWithNoSkillsIsValid(): void {
 		$service = $this->makeService();
 		$result = $service->validate(['skills' => []], []);
-		$this->assertTrue($result['valid']);
-		$this->assertSame([], $result['requirements']);
+		$this->assertTrue(condition: $result['valid']);
+		$this->assertSame(expected: [], actual: $result['requirements']);
 	}
 
 	public function testMissingPrerequisiteSkillIsUnmet(): void {
@@ -84,12 +84,12 @@ class SkillRequirementServiceTest extends TestCase {
 
 		// Adding only the advanced skill, without basic.
 		$result = $service->validate(['skills' => ['adv']], ['skills' => []]);
-		$this->assertFalse($result['valid']);
+		$this->assertFalse(condition: $result['valid']);
 		$unmet = array_filter($result['requirements'], fn ($r) => $r['status'] === 'unmet');
-		$this->assertCount(1, $unmet);
+		$this->assertCount(expectedCount: 1, haystack: $unmet);
 		$entry = array_values($unmet)[0];
-		$this->assertSame('requiredSkill', $entry['type']);
-		$this->assertSame('basic', $entry['target']);
+		$this->assertSame(expected: 'requiredSkill', actual: $entry['type']);
+		$this->assertSame(expected: 'basic', actual: $entry['target']);
 	}
 
 	public function testSamePrerequisiteSatisfiedInOneWrite(): void {
@@ -101,7 +101,7 @@ class SkillRequirementServiceTest extends TestCase {
 
 		// Adding both basic and advanced together is valid.
 		$result = $service->validate(['skills' => ['basic', 'adv']], ['skills' => []]);
-		$this->assertTrue($result['valid']);
+		$this->assertTrue(condition: $result['valid']);
 	}
 
 	public function testRequiredStatScoreEnforced(): void {
@@ -112,11 +112,11 @@ class SkillRequirementServiceTest extends TestCase {
 		$service = $this->makeService(abilities: $abilities, skills: $skills);
 
 		$result = $service->validate(['skills' => ['heavy']], ['skills' => []]);
-		$this->assertFalse($result['valid']);
+		$this->assertFalse(condition: $result['valid']);
 		$entry = array_values(array_filter($result['requirements'], fn ($r) => $r['type'] === 'requiredStat'))[0];
-		$this->assertSame('unmet', $entry['status']);
-		$this->assertSame(2, $entry['current']);
-		$this->assertSame(5, $entry['required']);
+		$this->assertSame(expected: 'unmet', actual: $entry['status']);
+		$this->assertSame(expected: 2, actual: $entry['current']);
+		$this->assertSame(expected: 5, actual: $entry['required']);
 	}
 
 	public function testXpBudgetRejectsOverspend(): void {
@@ -131,10 +131,10 @@ class SkillRequirementServiceTest extends TestCase {
 		$service = $this->makeService(abilities: $abilities, effects: $effects, skills: $skills);
 
 		$result = $service->validate(['skills' => ['expensive']], ['skills' => []]);
-		$this->assertFalse($result['valid']);
-		$this->assertFalse($result['budget']['ok']);
-		$this->assertSame(-3, $result['budget']['value']);
-		$this->assertSame(3, $result['budget']['shortfall']);
+		$this->assertFalse(condition: $result['valid']);
+		$this->assertFalse(condition: $result['budget']['ok']);
+		$this->assertSame(expected: -3, actual: $result['budget']['value']);
+		$this->assertSame(expected: 3, actual: $result['budget']['shortfall']);
 	}
 
 	public function testXpBudgetAcceptsAffordable(): void {
@@ -148,8 +148,8 @@ class SkillRequirementServiceTest extends TestCase {
 		$service = $this->makeService(abilities: $abilities, effects: $effects, skills: $skills);
 
 		$result = $service->validate(['skills' => ['cheap']], ['skills' => []]);
-		$this->assertTrue($result['valid']);
-		$this->assertSame(6, $result['budget']['value']);
+		$this->assertTrue(condition: $result['valid']);
+		$this->assertSame(expected: 6, actual: $result['budget']['value']);
 	}
 
 	public function testValidatorXpAgreesWithEngine(): void {
@@ -159,7 +159,7 @@ class SkillRequirementServiceTest extends TestCase {
 		];
 		$skills = [['id' => 's1', 'name' => 'S1', 'effects' => ['cost']]];
 
-		$fetcher = $this->createMock(RegisterObjectFetcher::class);
+		$fetcher = $this->createMock(originalClassName: RegisterObjectFetcher::class);
 		$fetcher->method('getObjects')->willReturnCallback(function (string $type) use ($abilities, $effects, $skills): array {
 			return match ($type) {
 				'ability' => $abilities,
@@ -183,7 +183,7 @@ class SkillRequirementServiceTest extends TestCase {
 		$engineXp = (int)$calculated['stats']['xpid']['value'];
 
 		$result = $service->validate($character, []);
-		$this->assertSame($engineXp, $result['budget']['value']);
+		$this->assertSame(expected: $engineXp, actual: $result['budget']['value']);
 	}
 
 	public function testDanglingPrerequisiteIsUnresolvable(): void {
@@ -193,9 +193,9 @@ class SkillRequirementServiceTest extends TestCase {
 		$service = $this->makeService(skills: $skills);
 
 		$result = $service->validate(['skills' => ['adv']], ['skills' => []]);
-		$this->assertFalse($result['valid']);
+		$this->assertFalse(condition: $result['valid']);
 		$entry = array_values(array_filter($result['requirements'], fn ($r) => $r['type'] === 'requiredSkill'))[0];
-		$this->assertSame('unresolvable', $entry['status']);
+		$this->assertSame(expected: 'unresolvable', actual: $entry['status']);
 	}
 
 	public function testOverrideMarksAsOverriddenAndValid(): void {
@@ -212,9 +212,9 @@ class SkillRequirementServiceTest extends TestCase {
 			],
 		];
 		$result = $service->validate($candidate, ['skills' => []]);
-		$this->assertTrue($result['valid']);
+		$this->assertTrue(condition: $result['valid']);
 		$entry = array_values(array_filter($result['requirements'], fn ($r) => $r['type'] === 'requiredSkill'))[0];
-		$this->assertSame('overridden', $entry['status']);
+		$this->assertSame(expected: 'overridden', actual: $entry['status']);
 	}
 
 	public function testEmptyReasonOverrideDoesNotApply(): void {
@@ -229,7 +229,7 @@ class SkillRequirementServiceTest extends TestCase {
 			'requirementOverrides' => [['skill' => 'adv', 'reason' => '   ']],
 		];
 		$result = $service->validate($candidate, ['skills' => []]);
-		$this->assertFalse($result['valid']);
+		$this->assertFalse(condition: $result['valid']);
 	}
 
 	public function testRemovalFlagsDependent(): void {
@@ -241,9 +241,9 @@ class SkillRequirementServiceTest extends TestCase {
 
 		// Old: both. New: basic removed, adv kept.
 		$result = $service->validate(['skills' => ['adv']], ['skills' => ['basic', 'adv']]);
-		$this->assertCount(1, $result['dependents']);
-		$this->assertSame('adv', $result['dependents'][0]['skill']);
-		$this->assertSame('basic', $result['dependents'][0]['missingSkill']);
+		$this->assertCount(expectedCount: 1, haystack: $result['dependents']);
+		$this->assertSame(expected: 'adv', actual: $result['dependents'][0]['skill']);
+		$this->assertSame(expected: 'basic', actual: $result['dependents'][0]['missingSkill']);
 	}
 
 	public function testNoXpAbilityDegradesBudgetOpen(): void {
@@ -252,7 +252,7 @@ class SkillRequirementServiceTest extends TestCase {
 		$service = $this->makeService(abilities: $abilities);
 
 		$result = $service->validate(['skills' => []], []);
-		$this->assertTrue($result['budget']['ok']);
-		$this->assertSame('', $result['budget']['ability']);
+		$this->assertTrue(condition: $result['budget']['ok']);
+		$this->assertSame(expected: '', actual: $result['budget']['ability']);
 	}
 }

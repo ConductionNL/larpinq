@@ -62,7 +62,7 @@ class PaymentRequestListenerTest extends TestCase {
 	public function testACapturedRequestMarksTheRegistrationPaid(): void {
 		$this->shillinqUpdates(state: 'captured');
 
-		$this->assertSame('paid', $this->world->registration(self::SANNE_REG)['paymentState']);
+		$this->assertSame(expected: 'paid', actual: $this->world->registration(self::SANNE_REG)['paymentState']);
 	}//end testACapturedRequestMarksTheRegistrationPaid()
 
 	/**
@@ -73,7 +73,7 @@ class PaymentRequestListenerTest extends TestCase {
 	public function testACaptureNotAppliedIsPaidToo(): void {
 		$this->shillinqUpdates(state: 'captured_unapplied');
 
-		$this->assertSame('paid', $this->world->registration(self::SANNE_REG)['paymentState']);
+		$this->assertSame(expected: 'paid', actual: $this->world->registration(self::SANNE_REG)['paymentState']);
 	}//end testACaptureNotAppliedIsPaidToo()
 
 	/**
@@ -84,7 +84,7 @@ class PaymentRequestListenerTest extends TestCase {
 	public function testAFailedPaymentStaysOpen(): void {
 		$this->shillinqUpdates(state: 'failed');
 
-		$this->assertSame('open', $this->world->registration(self::SANNE_REG)['paymentState']);
+		$this->assertSame(expected: 'open', actual: $this->world->registration(self::SANNE_REG)['paymentState']);
 	}//end testAFailedPaymentStaysOpen()
 
 	/**
@@ -96,12 +96,12 @@ class PaymentRequestListenerTest extends TestCase {
 	public function testAnotherObjectsRequestIsIgnored(): void {
 		$this->request['subject'] = ['type' => 'case', 'register' => 'dossiq', 'schema' => 'Zaak', 'id' => self::SANNE_REG];
 		$this->shillinqUpdates(state: 'captured');
-		$this->assertSame('open', $this->world->registration(self::SANNE_REG)['paymentState']);
+		$this->assertSame(expected: 'open', actual: $this->world->registration(self::SANNE_REG)['paymentState']);
 
 		$this->request['subject'] = ['type' => 'registration', 'register' => '3', 'schema' => 'registration', 'id' => self::SANNE_REG];
 		$this->request['id'] = 'f0000000-0000-4000-8000-000000000099';
 		$this->shillinqUpdates(state: 'captured');
-		$this->assertSame('open', $this->world->registration(self::SANNE_REG)['paymentState']);
+		$this->assertSame(expected: 'open', actual: $this->world->registration(self::SANNE_REG)['paymentState']);
 	}//end testAnotherObjectsRequestIsIgnored()
 
 	/**

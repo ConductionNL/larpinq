@@ -41,7 +41,7 @@ class CharacterVisibilityRulesTest extends TestCase {
 	 * @return array<string,mixed> The schema.
 	 */
 	private function character(): array {
-		$appManager = $this->createMock(IAppManager::class);
+		$appManager = $this->createMock(originalClassName: IAppManager::class);
 		$appManager->method('getAppPath')->willReturn(dirname(__DIR__, 3));
 		$register = (new ConfigFileLoaderService($appManager))->loadConfigurationFile();
 
@@ -57,12 +57,12 @@ class CharacterVisibilityRulesTest extends TestCase {
 		$auth = $this->character()['authorization'];
 
 		$this->assertSame(
-			[['group' => self::GM], self::OWNER, ['group' => 'larpers', 'match' => ['approved' => 'approved']]],
-			$auth['read']
+			expected: [['group' => self::GM], self::OWNER, ['group' => 'larpers', 'match' => ['approved' => 'approved']]],
+			actual: $auth['read']
 		);
-		$this->assertSame([['group' => self::GM], self::OWNER], $auth['update']);
-		$this->assertSame([self::GM, 'larpers'], $auth['create']);
-		$this->assertSame([self::GM], $auth['delete']);
+		$this->assertSame(expected: [['group' => self::GM], self::OWNER], actual: $auth['update']);
+		$this->assertSame(expected: [self::GM, 'larpers'], actual: $auth['create']);
+		$this->assertSame(expected: [self::GM], actual: $auth['delete']);
 	}//end testRowRulesLetAPlayerReadOwnAndApprovedAndWriteOnlyOwn()
 
 	/**
@@ -71,7 +71,7 @@ class CharacterVisibilityRulesTest extends TestCase {
 	 * @return void
 	 */
 	public function testTheCastMatchIsAValidApprovedValue(): void {
-		$this->assertContains('approved', $this->character()['properties']['approved']['enum']);
+		$this->assertContains(needle: 'approved', haystack: $this->character()['properties']['approved']['enum']);
 	}//end testTheCastMatchIsAValidApprovedValue()
 
 	/**
@@ -82,7 +82,7 @@ class CharacterVisibilityRulesTest extends TestCase {
 	public function testPrivateNotesAreGameMasterOnly(): void {
 		$props = $this->character()['properties'];
 		foreach (['slNotesPrivate', 'requirementOverrides'] as $field) {
-			$this->assertSame(['read' => [self::GM], 'update' => [self::GM]], $props[$field]['authorization'], $field);
+			$this->assertSame(expected: ['read' => [self::GM], 'update' => [self::GM]], actual: $props[$field]['authorization'], message: $field);
 		}
 	}//end testPrivateNotesAreGameMasterOnly()
 
@@ -94,11 +94,11 @@ class CharacterVisibilityRulesTest extends TestCase {
 	public function testTheOwnerWritesStoryFieldsOnly(): void {
 		$props = $this->character()['properties'];
 		foreach (['background', 'faith'] as $field) {
-			$this->assertSame([self::GM, self::OWNER], $props[$field]['authorization']['update'], $field);
+			$this->assertSame(expected: [self::GM, self::OWNER], actual: $props[$field]['authorization']['update'], message: $field);
 		}
 
 		foreach (self::GM_WRITES as $field) {
-			$this->assertSame([self::GM], $props[$field]['authorization']['update'], $field);
+			$this->assertSame(expected: [self::GM], actual: $props[$field]['authorization']['update'], message: $field);
 		}
 	}//end testTheOwnerWritesStoryFieldsOnly()
 
@@ -118,7 +118,7 @@ class CharacterVisibilityRulesTest extends TestCase {
 		sort($open);
 		// The status (active, retired, dead) is a game fact the cast may see
 		// (characters-status-and-bulk-edit).
-		$this->assertSame(['approved', 'description', 'name', 'setting', 'status', 'type'], $open);
+		$this->assertSame(expected: ['approved', 'description', 'name', 'setting', 'status', 'type'], actual: $open);
 	}//end testACastEntryShowsOnlyNameTypeAndDescription()
 
 	/**
@@ -130,7 +130,7 @@ class CharacterVisibilityRulesTest extends TestCase {
 		$base = json_decode((string) file_get_contents(dirname(__DIR__, 3) . '/lib/Settings/larpinq_register.json'), true);
 		$merged = $this->character()['properties'];
 		foreach ($base['components']['schemas']['character']['properties'] as $name => $property) {
-			$this->assertSame($property['type'] ?? null, $merged[$name]['type'] ?? null, $name);
+			$this->assertSame(expected: $property['type'] ?? null, actual: $merged[$name]['type'] ?? null, message: $name);
 		}
 	}//end testTheMergeKeepsEveryBaseProperty()
 }//end class

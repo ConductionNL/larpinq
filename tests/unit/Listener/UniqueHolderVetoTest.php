@@ -41,9 +41,9 @@ class UniqueHolderVetoTest extends TestCase {
 	 * @return UniqueHolderVeto The veto.
 	 */
 	private function veto(): UniqueHolderVeto {
-		$fetcher = $this->createMock(RegisterObjectFetcher::class);
+		$fetcher = $this->createMock(originalClassName: RegisterObjectFetcher::class);
 		$fetcher->expects(self::never())->method(self::anything());
-		$l10n = $this->createMock(IL10N::class);
+		$l10n = $this->createMock(originalClassName: IL10N::class);
 		$l10n->method('t')->willReturnArgument(0);
 		$normaliser = new IdListNormaliser();
 
@@ -64,7 +64,7 @@ class UniqueHolderVetoTest extends TestCase {
 		];
 
 		foreach ($writes as $name => [$subject, $write]) {
-			self::assertNull($this->veto()->uncheckedRefusal(subject: $subject, write: $write), $name);
+			self::assertNull(actual: $this->veto()->uncheckedRefusal(subject: $subject, write: $write), message: $name);
 		}
 	}//end testWritesThatAddNoHolderAreNotRefused()
 
@@ -82,8 +82,8 @@ class UniqueHolderVetoTest extends TestCase {
 
 		foreach ($writes as $field => [$subject, $write]) {
 			$errors = $this->veto()->uncheckedRefusal(subject: $subject, write: $write);
-			self::assertIsArray($errors, $field);
-			self::assertStringEndsWith('_unchecked', $errors[$field][0]['code'], $field);
+			self::assertIsArray(actual: $errors, message: $field);
+			self::assertStringEndsWith(suffix: '_unchecked', string: $errors[$field][0]['code'], message: $field);
 		}
 	}//end testWritesThatAddAHolderAreRefusedOnTheChangedField()
 }//end class

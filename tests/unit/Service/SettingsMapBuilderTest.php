@@ -37,8 +37,8 @@ class SettingsMapBuilderTest extends TestCase {
 
 		$result = $this->builder->buildSchemaSlugMap($schemas);
 
-		self::assertSame('schema-1', $result['character']);
-		self::assertSame('schema-2', $result['skill']);
+		self::assertSame(expected: 'schema-1', actual: $result['character']);
+		self::assertSame(expected: 'schema-2', actual: $result['skill']);
 	}
 
 	public function testBuildSchemaSlugMapSkipsEntriesWithoutSlug(): void {
@@ -49,8 +49,8 @@ class SettingsMapBuilderTest extends TestCase {
 
 		$result = $this->builder->buildSchemaSlugMap($schemas);
 
-		self::assertCount(1, $result);
-		self::assertSame('schema-2', $result['skill']);
+		self::assertCount(expectedCount: 1, haystack: $result);
+		self::assertSame(expected: 'schema-2', actual: $result['skill']);
 	}
 
 	public function testBuildSchemaSlugMapUsesUuidAsFallback(): void {
@@ -60,7 +60,7 @@ class SettingsMapBuilderTest extends TestCase {
 
 		$result = $this->builder->buildSchemaSlugMap($schemas);
 
-		self::assertSame('uuid-1', $result['character']);
+		self::assertSame(expected: 'uuid-1', actual: $result['character']);
 	}
 
 	public function testBuildSchemaSlugMapFromJsonSerializable(): void {
@@ -73,13 +73,13 @@ class SettingsMapBuilderTest extends TestCase {
 
 		$result = $this->builder->buildSchemaSlugMap([$mockSchema]);
 
-		self::assertSame('schema-evt', $result['event']);
+		self::assertSame(expected: 'schema-evt', actual: $result['event']);
 	}
 
 	public function testBuildSchemaSlugMapReturnsEmptyForEmptyInput(): void {
 		$result = $this->builder->buildSchemaSlugMap([]);
 
-		self::assertEmpty($result);
+		self::assertEmpty(actual: $result);
 	}
 
 	public function testFindRegisterIdBySlugMatchesLarpingapp(): void {
@@ -90,7 +90,7 @@ class SettingsMapBuilderTest extends TestCase {
 
 		$result = $this->builder->findRegisterIdBySlug($registers);
 
-		self::assertSame('reg-2', $result);
+		self::assertSame(expected: 'reg-2', actual: $result);
 	}
 
 	public function testFindRegisterIdBySlugReturnsNullWhenNotFound(): void {
@@ -100,13 +100,13 @@ class SettingsMapBuilderTest extends TestCase {
 
 		$result = $this->builder->findRegisterIdBySlug($registers);
 
-		self::assertNull($result);
+		self::assertNull(actual: $result);
 	}
 
 	public function testFindRegisterIdBySlugReturnsNullForEmptyInput(): void {
 		$result = $this->builder->findRegisterIdBySlug([]);
 
-		self::assertNull($result);
+		self::assertNull(actual: $result);
 	}
 
 	public function testFindRegisterIdBySlugSkipsEntriesWithoutSlug(): void {
@@ -116,6 +116,6 @@ class SettingsMapBuilderTest extends TestCase {
 
 		$result = $this->builder->findRegisterIdBySlug($registers);
 
-		self::assertNull($result);
+		self::assertNull(actual: $result);
 	}
 }

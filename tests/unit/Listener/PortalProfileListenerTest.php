@@ -106,7 +106,7 @@ class PortalProfileListenerTest extends TestCase {
 	 * @return PortalProfileListener The listener.
 	 */
 	private function listener(): PortalProfileListener {
-		$config = $this->createMock(IAppConfig::class);
+		$config = $this->createMock(originalClassName: IAppConfig::class);
 		$config->method('getValueString')->willReturnCallback(
 			static fn (string $app, string $key, string $default = ''): string => match ($key) {
 				'player_schema' => self::PLAYER_SCHEMA,
@@ -114,16 +114,16 @@ class PortalProfileListenerTest extends TestCase {
 				default => $default,
 			}
 		);
-		$fetcher = $this->createMock(RegisterObjectFetcher::class);
+		$fetcher = $this->createMock(originalClassName: RegisterObjectFetcher::class);
 		$fetcher->method('getObjectsWithAppAuthority')->willReturnCallback(
 			function (string $type, array $filters, ?int $limit = null): array {
-				$this->assertSame('player', $type);
-				$this->assertSame(1, $limit, 'A bounded query');
+				$this->assertSame(expected: 'player', actual: $type);
+				$this->assertSame(expected: 1, actual: $limit, message: 'A bounded query');
 				$this->asked[] = $filters;
 				return $this->existing;
 			}
 		);
-		$dispatcher = $this->createMock(IEventDispatcher::class);
+		$dispatcher = $this->createMock(originalClassName: IEventDispatcher::class);
 		$dispatcher->method('dispatchTyped')->willReturnCallback(
 			function (Event $event): void {
 				$this->dispatched[] = $event;
@@ -132,9 +132,9 @@ class PortalProfileListenerTest extends TestCase {
 				}
 			}
 		);
-		$l10n = $this->createMock(IL10N::class);
+		$l10n = $this->createMock(originalClassName: IL10N::class);
 		$l10n->method('t')->willReturnCallback(static fn (string $text): string => $text);
-		$logger = $this->createMock(LoggerInterface::class);
+		$logger = $this->createMock(originalClassName: LoggerInterface::class);
 		$logger->method('warning')->willReturnCallback(
 			function (string $message): void {
 				$this->warnings[] = $message;
@@ -156,9 +156,9 @@ class PortalProfileListenerTest extends TestCase {
 
 		$this->listener()->handle($event);
 
-		$this->assertFalse($event->isPropagationStopped());
-		$this->assertSame(['portalSubjectRef' => self::SUBJECT], $this->asked[0]);
-		$this->assertSame(['description' => 'kept', 'selfRegistered' => true, 'awaitingReview' => true], $event->getModifiedData());
+		$this->assertFalse(condition: $event->isPropagationStopped());
+		$this->assertSame(expected: ['portalSubjectRef' => self::SUBJECT], actual: $this->asked[0]);
+		$this->assertSame(expected: ['description' => 'kept', 'selfRegistered' => true, 'awaitingReview' => true], actual: $event->getModifiedData());
 	}//end testAPortalProfileIsMarkedSelfRegisteredAndAwaitingReview()
 
 	/**
@@ -173,9 +173,9 @@ class PortalProfileListenerTest extends TestCase {
 
 		$this->listener()->handle($event);
 
-		$this->assertTrue($event->isPropagationStopped());
-		$this->assertSame('This portal account already has a player profile.', $event->getErrors()['message']);
-		$this->assertSame([], $event->getModifiedData());
+		$this->assertTrue(condition: $event->isPropagationStopped());
+		$this->assertSame(expected: 'This portal account already has a player profile.', actual: $event->getErrors()['message']);
+		$this->assertSame(expected: [], actual: $event->getModifiedData());
 	}//end testASecondProfileForTheSameAccountIsRefused()
 
 	/**
@@ -188,9 +188,9 @@ class PortalProfileListenerTest extends TestCase {
 
 		$this->listener()->handle($event);
 
-		$this->assertSame([], $this->asked);
-		$this->assertSame([], $event->getModifiedData());
-		$this->assertFalse($event->isPropagationStopped());
+		$this->assertSame(expected: [], actual: $this->asked);
+		$this->assertSame(expected: [], actual: $event->getModifiedData());
+		$this->assertFalse(condition: $event->isPropagationStopped());
 	}//end testAPlayerWithoutAPortalSubjectIsLeftAlone()
 
 	/**
@@ -204,7 +204,7 @@ class PortalProfileListenerTest extends TestCase {
 
 		$this->listener()->handle($event);
 
-		$this->assertSame(['ocName' => self::PLAYER_UUID], $event->getModifiedData());
+		$this->assertSame(expected: ['ocName' => self::PLAYER_UUID], actual: $event->getModifiedData());
 	}//end testAPortalCharacterIsPlayedByItsOwner()
 
 	/**
@@ -219,8 +219,8 @@ class PortalProfileListenerTest extends TestCase {
 		$this->listener()->handle($chosen);
 		$this->listener()->handle($plain);
 
-		$this->assertSame([], $chosen->getModifiedData());
-		$this->assertSame([], $plain->getModifiedData());
+		$this->assertSame(expected: [], actual: $chosen->getModifiedData());
+		$this->assertSame(expected: [], actual: $plain->getModifiedData());
 	}//end testACharacterWithAPlayerOrWithoutOwnerIsLeftAlone()
 
 	/**
@@ -232,14 +232,14 @@ class PortalProfileListenerTest extends TestCase {
 	public function testACreatedProfileAsksPortaliqForTheClaim(): void {
 		$this->listener()->handle(new ObjectCreatedEvent(new PortalObjectEntity(self::PLAYER_SCHEMA, ['name' => 'Lotte Bakker', 'portalSubjectRef' => self::SUBJECT], self::PLAYER_UUID)));
 
-		$this->assertCount(1, $this->dispatched);
+		$this->assertCount(expectedCount: 1, haystack: $this->dispatched);
 		$claim = $this->dispatched[0];
-		$this->assertInstanceOf(PortalAccountClaimRequestedEvent::class, $claim);
-		$this->assertSame('larpinq', $claim->getAppId());
-		$this->assertSame(self::SUBJECT, $claim->getSubjectRef());
-		$this->assertSame('ownerRef', $claim->getClaimName(), 'The claim the createCharacter action and myCharacters read');
-		$this->assertSame(self::PLAYER_UUID, $claim->getValue());
-		$this->assertSame([], $this->warnings);
+		$this->assertInstanceOf(expected: PortalAccountClaimRequestedEvent::class, actual: $claim);
+		$this->assertSame(expected: 'larpinq', actual: $claim->getAppId());
+		$this->assertSame(expected: self::SUBJECT, actual: $claim->getSubjectRef());
+		$this->assertSame(expected: 'ownerRef', actual: $claim->getClaimName(), message: 'The claim the createCharacter action and myCharacters read');
+		$this->assertSame(expected: self::PLAYER_UUID, actual: $claim->getValue());
+		$this->assertSame(expected: [], actual: $this->warnings);
 	}//end testACreatedProfileAsksPortaliqForTheClaim()
 
 	/**
@@ -251,7 +251,7 @@ class PortalProfileListenerTest extends TestCase {
 		$this->answer = 'refused';
 		$this->listener()->handle(new ObjectCreatedEvent(new PortalObjectEntity(self::PLAYER_SCHEMA, ['portalSubjectRef' => self::SUBJECT], self::PLAYER_UUID)));
 
-		$this->assertCount(1, $this->warnings);
+		$this->assertCount(expectedCount: 1, haystack: $this->warnings);
 	}//end testARefusedClaimIsLogged()
 
 	/**
@@ -263,7 +263,7 @@ class PortalProfileListenerTest extends TestCase {
 		$this->listener()->handle(new ObjectCreatedEvent(new PortalObjectEntity(self::PLAYER_SCHEMA, ['name' => 'Joris'], self::PLAYER_UUID)));
 		$this->listener()->handle(new ObjectCreatedEvent(new PortalObjectEntity(self::CHARACTER_SCHEMA, ['portalSubjectRef' => self::SUBJECT], self::PLAYER_UUID)));
 
-		$this->assertSame([], $this->dispatched);
+		$this->assertSame(expected: [], actual: $this->dispatched);
 	}//end testOtherCreatedObjectsSendNoClaim()
 
 	/**
@@ -286,7 +286,7 @@ class PortalProfileListenerTest extends TestCase {
 				json_decode((string)json_encode($payload)),
 				json_decode((string)json_encode($this->forOpis(node: $schemas[$key])))
 			);
-			$this->assertTrue($result->isValid(), $key . ' payload must validate: ' . json_encode($result->error()?->args()));
+			$this->assertTrue(condition: $result->isValid(), message: $key . ' payload must validate: ' . json_encode($result->error()?->args()));
 		}
 	}//end testThePortalPayloadsValidateAgainstTheRealSchemas()
 
@@ -303,7 +303,7 @@ class PortalProfileListenerTest extends TestCase {
 			json_decode((string)json_encode($this->forOpis(node: $this->schemas()['character'])))
 		);
 
-		$this->assertFalse($result->isValid());
+		$this->assertFalse(condition: $result->isValid());
 	}//end testASubjectReferenceIsNotAValidOwner()
 
 	/**

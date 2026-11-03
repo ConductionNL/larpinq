@@ -57,7 +57,7 @@ class GameMechanicsTest extends TestCase {
 		array $conditions = [],
 		array $events = [],
 	): CharacterService {
-		$fetcher = $this->createMock(RegisterObjectFetcher::class);
+		$fetcher = $this->createMock(originalClassName: RegisterObjectFetcher::class);
 		$fetcher->method('getObjects')
 			->willReturnCallback(
 				static function (string $type) use ($abilities, $effects, $skills, $items, $conditions, $events): array {
@@ -73,7 +73,7 @@ class GameMechanicsTest extends TestCase {
 				}
 			);
 
-		return new CharacterService($fetcher, $this->createMock(LoggerInterface::class), new EffectApplier());
+		return new CharacterService($fetcher, $this->createMock(originalClassName: LoggerInterface::class), new EffectApplier());
 	}//end serviceWith()
 
 	/**
@@ -94,12 +94,12 @@ class GameMechanicsTest extends TestCase {
 		$service = $this->serviceWith(abilities: [$ability]);
 		$result = $service->calculateCharacter(['id' => 'char-1']);
 
-		self::assertArrayHasKey('abil-str', $result['stats']);
+		self::assertArrayHasKey(key: 'abil-str', array: $result['stats']);
 		$stat = $result['stats']['abil-str'];
-		self::assertSame('Strength', $stat['name']);
-		self::assertSame(12, $stat['base']);
-		self::assertSame(12, $stat['value']);
-		self::assertSame([], $stat['audit']);
+		self::assertSame(expected: 'Strength', actual: $stat['name']);
+		self::assertSame(expected: 12, actual: $stat['base']);
+		self::assertSame(expected: 12, actual: $stat['value']);
+		self::assertSame(expected: [], actual: $stat['audit']);
 	}//end testAbilityMechanicSerialisesIntoStats()
 
 	/**
@@ -124,13 +124,13 @@ class GameMechanicsTest extends TestCase {
 		$service = $this->serviceWith(abilities: [$ability], effects: [$effect], skills: [$skill]);
 		$result = $service->calculateCharacter(['id' => 'char-1', 'skills' => ['skill-1']]);
 
-		self::assertSame(10, $result['stats']['abil-1']['value']);
+		self::assertSame(expected: 10, actual: $result['stats']['abil-1']['value']);
 		$audit = $result['stats']['abil-1']['audit'][0];
-		self::assertSame('effect', $audit['type']);
-		self::assertSame('eff-1', $audit['effectId']);
-		self::assertSame('Empower', $audit['effectName']);
-		self::assertSame(4, $audit['old']);
-		self::assertSame(10, $audit['new']);
+		self::assertSame(expected: 'effect', actual: $audit['type']);
+		self::assertSame(expected: 'eff-1', actual: $audit['effectId']);
+		self::assertSame(expected: 'Empower', actual: $audit['effectName']);
+		self::assertSame(expected: 4, actual: $audit['old']);
+		self::assertSame(expected: 10, actual: $audit['new']);
 	}//end testEffectMechanicAppliesModifierAndAudits()
 
 	/**
@@ -158,11 +158,11 @@ class GameMechanicsTest extends TestCase {
 
 		// Active skill applies; inert skill contributes nothing.
 		$withSkill = $service->calculateCharacter(['id' => 'c', 'skills' => ['skill-active']]);
-		self::assertSame(8, $withSkill['stats']['abil-1']['value']);
+		self::assertSame(expected: 8, actual: $withSkill['stats']['abil-1']['value']);
 
 		$inertOnly = $this->serviceWith(abilities: [$ability], effects: [$effect], skills: $skills)
 			->calculateCharacter(['id' => 'c', 'skills' => ['skill-inert']]);
-		self::assertSame(5, $inertOnly['stats']['abil-1']['value']);
+		self::assertSame(expected: 5, actual: $inertOnly['stats']['abil-1']['value']);
 	}//end testSkillMechanicRoutesItsEffects()
 
 	/**
@@ -185,8 +185,8 @@ class GameMechanicsTest extends TestCase {
 		$service = $this->serviceWith(abilities: [$ability], effects: [$effect], items: [$item]);
 		$result = $service->calculateCharacter(['id' => 'char-1', 'items' => ['item-plate']]);
 
-		self::assertSame(8, $result['stats']['abil-def']['value']);
-		self::assertSame('eff-armour', $result['stats']['abil-def']['audit'][0]['effectId']);
+		self::assertSame(expected: 8, actual: $result['stats']['abil-def']['value']);
+		self::assertSame(expected: 'eff-armour', actual: $result['stats']['abil-def']['audit'][0]['effectId']);
 	}//end testItemMechanicAppliesWornEffects()
 
 	/**
@@ -209,8 +209,8 @@ class GameMechanicsTest extends TestCase {
 		$service = $this->serviceWith(abilities: [$ability], effects: [$effect], conditions: [$condition]);
 		$result = $service->calculateCharacter(['id' => 'char-1', 'conditions' => ['cond-wound']]);
 
-		self::assertSame(23, $result['stats']['abil-hp']['value']);
-		self::assertSame(30, $result['stats']['abil-hp']['audit'][0]['old']);
-		self::assertSame(23, $result['stats']['abil-hp']['audit'][0]['new']);
+		self::assertSame(expected: 23, actual: $result['stats']['abil-hp']['value']);
+		self::assertSame(expected: 30, actual: $result['stats']['abil-hp']['audit'][0]['old']);
+		self::assertSame(expected: 23, actual: $result['stats']['abil-hp']['audit'][0]['new']);
 	}//end testConditionMechanicAppliesNegativeModifier()
 }//end class

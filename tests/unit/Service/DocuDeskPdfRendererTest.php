@@ -39,9 +39,9 @@ class DocuDeskPdfRendererTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->appManager = $this->createMock(IAppManager::class);
-		$this->container = $this->createMock(ContainerInterface::class);
-		$this->logger = $this->createMock(LoggerInterface::class);
+		$this->appManager = $this->createMock(originalClassName: IAppManager::class);
+		$this->container = $this->createMock(originalClassName: ContainerInterface::class);
+		$this->logger = $this->createMock(originalClassName: LoggerInterface::class);
 
 		$this->renderer = new DocuDeskPdfRenderer(
 			$this->appManager,
@@ -71,7 +71,7 @@ class DocuDeskPdfRendererTest extends TestCase {
 			->with($installedId)
 			->willReturn(true);
 
-		self::assertTrue($this->renderer->isDocuDeskAvailable());
+		self::assertTrue(condition: $this->renderer->isDocuDeskAvailable());
 	}
 
 	/**
@@ -89,7 +89,7 @@ class DocuDeskPdfRendererTest extends TestCase {
 	public function testIsDocuDeskAvailableFalseWhenAppDisabled(): void {
 		$this->appManager->method('isEnabledForUser')->willReturn(false);
 
-		self::assertFalse($this->renderer->isDocuDeskAvailable());
+		self::assertFalse(condition: $this->renderer->isDocuDeskAvailable());
 	}
 
 	/**
@@ -111,13 +111,13 @@ class DocuDeskPdfRendererTest extends TestCase {
 	 * @dataProvider templateIdProvider
 	 */
 	public function testNormaliseTemplateId(string $input, ?string $expected): void {
-		self::assertSame($expected, $this->renderer->normaliseTemplateId($input));
+		self::assertSame(expected: $expected, actual: $this->renderer->normaliseTemplateId($input));
 	}
 
 	public function testGetTemplateReturnsTemplateData(): void {
 		$templateData = ['content' => '<p>hi</p>', 'format' => 'A4', 'orientation' => 'P'];
 
-		$templateService = $this->getMockBuilder(\stdClass::class)
+		$templateService = $this->getMockBuilder(className: \stdClass::class)
 			->addMethods(['getTemplate'])
 			->getMock();
 		$templateService->expects(self::once())
@@ -127,11 +127,11 @@ class DocuDeskPdfRendererTest extends TestCase {
 
 		$this->container->method('get')->willReturn($templateService);
 
-		self::assertSame($templateData, $this->renderer->getTemplate('3f2504e0-4f89-11d3-9a0c-0305e82c3301'));
+		self::assertSame(expected: $templateData, actual: $this->renderer->getTemplate('3f2504e0-4f89-11d3-9a0c-0305e82c3301'));
 	}
 
 	public function testGetTemplateReturnsNullWhenLookupThrows(): void {
-		$templateService = $this->getMockBuilder(\stdClass::class)
+		$templateService = $this->getMockBuilder(className: \stdClass::class)
 			->addMethods(['getTemplate'])
 			->getMock();
 		$templateService->method('getTemplate')
@@ -139,7 +139,7 @@ class DocuDeskPdfRendererTest extends TestCase {
 
 		$this->container->method('get')->willReturn($templateService);
 
-		self::assertNull($this->renderer->getTemplate('3f2504e0-4f89-11d3-9a0c-0305e82c3301'));
+		self::assertNull(actual: $this->renderer->getTemplate('3f2504e0-4f89-11d3-9a0c-0305e82c3301'));
 	}
 
 	public function testGetTemplateReturnsNullWhenDocuDeskServiceIsAbsent(): void {
@@ -147,7 +147,7 @@ class DocuDeskPdfRendererTest extends TestCase {
 			->willThrowException(new class('missing') extends Exception implements \Psr\Container\NotFoundExceptionInterface {
 			});
 
-		self::assertNull($this->renderer->getTemplate('3f2504e0-4f89-11d3-9a0c-0305e82c3301'));
+		self::assertNull(actual: $this->renderer->getTemplate('3f2504e0-4f89-11d3-9a0c-0305e82c3301'));
 	}
 
 	public function testRenderPassesContentContextAndOptionsThrough(): void {
@@ -158,7 +158,7 @@ class DocuDeskPdfRendererTest extends TestCase {
 		];
 		$context = ['character' => ['name' => 'Sir Lancelot']];
 
-		$pdfService = $this->getMockBuilder(\stdClass::class)
+		$pdfService = $this->getMockBuilder(className: \stdClass::class)
 			->addMethods(['renderPdf'])
 			->getMock();
 		$pdfService->expects(self::once())
@@ -172,7 +172,7 @@ class DocuDeskPdfRendererTest extends TestCase {
 
 		$this->container->method('get')->willReturn($pdfService);
 
-		self::assertSame('%PDF-1.4 bytes', $this->renderer->render($templateData, $context));
+		self::assertSame(expected: '%PDF-1.4 bytes', actual: $this->renderer->render($templateData, $context));
 	}
 
 	/**
@@ -180,7 +180,7 @@ class DocuDeskPdfRendererTest extends TestCase {
 	 * defaults — the shape DocuDesk templates most commonly ship with.
 	 */
 	public function testRenderAppliesA4PortraitDefaults(): void {
-		$pdfService = $this->getMockBuilder(\stdClass::class)
+		$pdfService = $this->getMockBuilder(className: \stdClass::class)
 			->addMethods(['renderPdf'])
 			->getMock();
 		$pdfService->expects(self::once())
@@ -190,11 +190,11 @@ class DocuDeskPdfRendererTest extends TestCase {
 
 		$this->container->method('get')->willReturn($pdfService);
 
-		self::assertSame('%PDF-1.4', $this->renderer->render([], []));
+		self::assertSame(expected: '%PDF-1.4', actual: $this->renderer->render([], []));
 	}
 
 	public function testRenderReturnsNullAndLogsWhenRenderThrows(): void {
-		$pdfService = $this->getMockBuilder(\stdClass::class)
+		$pdfService = $this->getMockBuilder(className: \stdClass::class)
 			->addMethods(['renderPdf'])
 			->getMock();
 		$pdfService->method('renderPdf')
@@ -208,6 +208,6 @@ class DocuDeskPdfRendererTest extends TestCase {
 			->method('error')
 			->with('PDF generation failed', self::anything());
 
-		self::assertNull($this->renderer->render(['content' => ''], []));
+		self::assertNull(actual: $this->renderer->render(['content' => ''], []));
 	}
 }

@@ -49,10 +49,10 @@ class MigrateUserPreferencesTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->config = $this->createMock(IConfig::class);
-		$this->userManager = $this->createMock(IUserManager::class);
-		$this->logger = $this->createMock(LoggerInterface::class);
-		$this->output = $this->createMock(IOutput::class);
+		$this->config = $this->createMock(originalClassName: IConfig::class);
+		$this->userManager = $this->createMock(originalClassName: IUserManager::class);
+		$this->logger = $this->createMock(originalClassName: LoggerInterface::class);
+		$this->output = $this->createMock(originalClassName: IOutput::class);
 
 		$this->step = new MigrateUserPreferences(
 			$this->config,
@@ -72,7 +72,7 @@ class MigrateUserPreferencesTest extends TestCase {
 		$this->userManager->method('callForSeenUsers')->willReturnCallback(
 			function (Closure $callback) use ($userIds): void {
 				foreach ($userIds as $uid) {
-					$user = $this->createMock(IUser::class);
+					$user = $this->createMock(originalClassName: IUser::class);
 					$user->method('getUID')->willReturn($uid);
 					$callback($user);
 				}
@@ -81,14 +81,14 @@ class MigrateUserPreferencesTest extends TestCase {
 	}//end seedSeenUsers()
 
 	public function testGetNameMentionsTheOldAppId(): void {
-		self::assertStringContainsString(self::OLD_APP_ID, $this->step->getName());
+		self::assertStringContainsString(needle: self::OLD_APP_ID, haystack: $this->step->getName());
 	}//end testGetNameMentionsTheOldAppId()
 
 	/**
 	 * The happy path, across more than one user.
 	 */
 	public function testCopiesEverySeenUsersStoredPreferences(): void {
-		$this->seedSeenUsers(['alice', 'bob']);
+		$this->seedSeenUsers(userIds: ['alice', 'bob']);
 
 		$this->config->method('getUserKeys')->willReturnCallback(
 			static fn (string $uid, string $app): array => $app === self::OLD_APP_ID
@@ -117,12 +117,12 @@ class MigrateUserPreferencesTest extends TestCase {
 
 		foreach (['alice', 'bob'] as $uid) {
 			self::assertSame(
-				[
+				expected: [
 					'pref_walkthrough_completed_version' => '0.1.27',
 					'pref_support-dialog-seen' => '1',
 				],
-				$written[$uid][Application::APP_ID] ?? [],
-				"preferences for {$uid} were not carried across"
+				actual: $written[$uid][Application::APP_ID] ?? [],
+				message: "preferences for {$uid} were not carried across"
 			);
 		}
 	}//end testCopiesEverySeenUsersStoredPreferences()
@@ -141,7 +141,7 @@ class MigrateUserPreferencesTest extends TestCase {
 	 * is the only thing that catches it.
 	 */
 	public function testNeverEnumeratesByValue(): void {
-		$this->seedSeenUsers(['alice']);
+		$this->seedSeenUsers(userIds: ['alice']);
 		$this->config->method('getUserKeys')->willReturn([]);
 
 		$this->config->expects(self::never())->method('getUsersForUserValue');
@@ -150,7 +150,7 @@ class MigrateUserPreferencesTest extends TestCase {
 	}//end testNeverEnumeratesByValue()
 
 	public function testDoesNotOverwriteAPreferenceAlreadySetUnderTheNewAppId(): void {
-		$this->seedSeenUsers(['alice']);
+		$this->seedSeenUsers(userIds: ['alice']);
 
 		$this->config->method('getUserKeys')->willReturnCallback(
 			static fn (string $uid, string $app): array => $app === self::OLD_APP_ID
@@ -174,7 +174,7 @@ class MigrateUserPreferencesTest extends TestCase {
 	 * <install>, so a throw means the app never enables.
 	 */
 	public function testAReadThatThrowsIsLoggedAndTheWalkContinues(): void {
-		$this->seedSeenUsers(['alice']);
+		$this->seedSeenUsers(userIds: ['alice']);
 
 		$this->config->method('getUserKeys')->willReturnCallback(
 			static fn (string $uid, string $app): array => $app === self::OLD_APP_ID
@@ -204,9 +204,9 @@ class MigrateUserPreferencesTest extends TestCase {
 		$this->step->run($this->output);
 
 		self::assertSame(
-			['pref_walkthrough_completed_version' => '0.1.27'],
-			$written,
-			'the walk must continue past an unreadable preference'
+			expected: ['pref_walkthrough_completed_version' => '0.1.27'],
+			actual: $written,
+			message: 'the walk must continue past an unreadable preference'
 		);
 	}//end testAReadThatThrowsIsLoggedAndTheWalkContinues()
 
@@ -214,7 +214,7 @@ class MigrateUserPreferencesTest extends TestCase {
 	 * An unreadable key list for one user skips that user, not the install.
 	 */
 	public function testAnUnreadableKeyListForOneUserIsSurvivable(): void {
-		$this->seedSeenUsers(['alice']);
+		$this->seedSeenUsers(userIds: ['alice']);
 
 		$this->config->method('getUserKeys')
 			->willThrowException(new RuntimeException('preferences unavailable'));

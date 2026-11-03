@@ -49,7 +49,7 @@ class XpAwardsControllerTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$fetcher = $this->createMock(RegisterObjectFetcher::class);
+		$fetcher = $this->createMock(originalClassName: RegisterObjectFetcher::class);
 		$fetcher->method('getObject')->willReturnCallback(
 			function (string $objectType, string $id): array {
 				if ($this->eventExists === false) {
@@ -69,25 +69,25 @@ class XpAwardsControllerTest extends TestCase {
 			}
 		);
 
-		$session = $this->createMock(IUserSession::class);
+		$session = $this->createMock(originalClassName: IUserSession::class);
 		$session->method('getUser')->willReturnCallback(
 			function (): ?IUser {
 				if ($this->signedIn === false) {
 					return null;
 				}
 
-				$user = $this->createMock(IUser::class);
+				$user = $this->createMock(originalClassName: IUser::class);
 				$user->method('getUID')->willReturn('joris');
 				return $user;
 			}
 		);
-		$groups = $this->createMock(IGroupManager::class);
+		$groups = $this->createMock(originalClassName: IGroupManager::class);
 		$groups->method('isInGroup')->willReturnCallback(fn (): bool => $this->gameMaster);
 		$groups->method('isAdmin')->willReturn(false);
 
 		$roster = new EventRosterService($fetcher);
 		$this->controller = new XpAwardsController(
-			$this->createMock(IRequest::class),
+			$this->createMock(originalClassName: IRequest::class),
 			new XpAwardBatchService($roster, $fetcher),
 			$roster,
 			new CallerAccess($session, $groups),
@@ -100,13 +100,13 @@ class XpAwardsControllerTest extends TestCase {
 	 * @return void
 	 */
 	public function testAGameMasterAwards(): void {
-		$this->assertTrue($this->controller->access()->getData()['allowed']);
-		$this->assertSame(self::MIRELA, $this->controller->roster(self::EVENT)->getData()['rows'][0]['character']);
+		$this->assertTrue(condition: $this->controller->access()->getData()['allowed']);
+		$this->assertSame(expected: self::MIRELA, actual: $this->controller->roster(self::EVENT)->getData()['rows'][0]['character']);
 
 		$response = $this->controller->award(self::EVENT, [['character' => self::MIRELA, 'amount' => 5]]);
-		$this->assertSame(200, $response->getStatus());
-		$this->assertCount(1, $response->getData()['created']);
-		$this->assertSame('joris', $this->saved[0]['awardedBy']);
+		$this->assertSame(expected: 200, actual: $response->getStatus());
+		$this->assertCount(expectedCount: 1, haystack: $response->getData()['created']);
+		$this->assertSame(expected: 'joris', actual: $this->saved[0]['awardedBy']);
 	}//end testAGameMasterAwards()
 
 	/**
@@ -117,14 +117,14 @@ class XpAwardsControllerTest extends TestCase {
 	public function testAPlayerIsRefused(): void {
 		$this->gameMaster = false;
 
-		$this->assertFalse($this->controller->access()->getData()['allowed']);
-		$this->assertSame(403, $this->controller->roster(self::EVENT)->getStatus());
-		$this->assertSame(403, $this->controller->award(self::EVENT, [['character' => self::MIRELA, 'amount' => 5]])->getStatus());
-		$this->assertSame([], $this->saved);
+		$this->assertFalse(condition: $this->controller->access()->getData()['allowed']);
+		$this->assertSame(expected: 403, actual: $this->controller->roster(self::EVENT)->getStatus());
+		$this->assertSame(expected: 403, actual: $this->controller->award(self::EVENT, [['character' => self::MIRELA, 'amount' => 5]])->getStatus());
+		$this->assertSame(expected: [], actual: $this->saved);
 
 		$this->signedIn = false;
-		$this->assertSame(401, $this->controller->access()->getStatus());
-		$this->assertSame(401, $this->controller->award(self::EVENT, [['character' => self::MIRELA, 'amount' => 5]])->getStatus());
+		$this->assertSame(expected: 401, actual: $this->controller->access()->getStatus());
+		$this->assertSame(expected: 401, actual: $this->controller->award(self::EVENT, [['character' => self::MIRELA, 'amount' => 5]])->getStatus());
 	}//end testAPlayerIsRefused()
 
 	/**
@@ -133,11 +133,11 @@ class XpAwardsControllerTest extends TestCase {
 	 * @return void
 	 */
 	public function testUnknownEventAndEmptyBatch(): void {
-		$this->assertSame(400, $this->controller->award(self::EVENT, [])->getStatus());
+		$this->assertSame(expected: 400, actual: $this->controller->award(self::EVENT, [])->getStatus());
 
 		$this->eventExists = false;
-		$this->assertSame(404, $this->controller->roster(self::EVENT)->getStatus());
-		$this->assertSame(404, $this->controller->award(self::EVENT, [['character' => self::MIRELA, 'amount' => 5]])->getStatus());
-		$this->assertSame([], $this->saved);
+		$this->assertSame(expected: 404, actual: $this->controller->roster(self::EVENT)->getStatus());
+		$this->assertSame(expected: 404, actual: $this->controller->award(self::EVENT, [['character' => self::MIRELA, 'amount' => 5]])->getStatus());
+		$this->assertSame(expected: [], actual: $this->saved);
 	}//end testUnknownEventAndEmptyBatch()
 }//end class

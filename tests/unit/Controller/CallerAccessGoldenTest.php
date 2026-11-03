@@ -156,7 +156,7 @@ class CallerAccessGoldenTest extends TestCase {
 	 * @return MockObject The stub.
 	 */
 	private function recording(string $type): MockObject {
-		$mock = $this->createMock($type);
+		$mock = $this->createMock(originalClassName: $type);
 		$short = substr((string)strrchr('\\'.$type, '\\'), 1);
 		$mock->method($this->anything())->will($this->recorder(name: $short));
 		return $mock;
@@ -173,7 +173,7 @@ class CallerAccessGoldenTest extends TestCase {
 		[$uid, $isGm, $isAdmin] = $caller;
 		$user = null;
 		if ($uid !== null) {
-			$user = $this->createMock(IUser::class);
+			$user = $this->createMock(originalClassName: IUser::class);
 			$user->method('getUID')->willReturnCallback(
 				function () use ($uid): string {
 					$this->log[] = 'IUser::getUID()';
@@ -182,14 +182,14 @@ class CallerAccessGoldenTest extends TestCase {
 			);
 		}
 
-		$session = $this->createMock(IUserSession::class);
+		$session = $this->createMock(originalClassName: IUserSession::class);
 		$session->method('getUser')->willReturnCallback(
 			function () use ($user): ?IUser {
 				$this->log[] = 'IUserSession::getUser()';
 				return $user;
 			}
 		);
-		$groups = $this->createMock(IGroupManager::class);
+		$groups = $this->createMock(originalClassName: IGroupManager::class);
 		$groups->method('isAdmin')->willReturnCallback(
 			function (string $who) use ($isAdmin): bool {
 				$this->log[] = 'IGroupManager::isAdmin('.$who.')';
@@ -270,9 +270,9 @@ class CallerAccessGoldenTest extends TestCase {
 
 		$expected = json_decode((string)file_get_contents(self::FIXTURE), true);
 		foreach ($expected as $name => $outcome) {
-			self::assertSame($outcome, $actual[$name] ?? null, $name);
+			self::assertSame(expected: $outcome, actual: $actual[$name] ?? null, message: $name);
 		}
 
-		self::assertSame(array_keys($expected), array_keys($actual));
+		self::assertSame(expected: array_keys($expected), actual: array_keys($actual));
 	}//end testMatchesTheRecordedOutcomes()
 }//end class

@@ -38,7 +38,7 @@ class UniqueHoldersCheckTest extends TestCase {
 	 * @return CommandTester The tester.
 	 */
 	private function tester(array $characters, array $items): CommandTester {
-		$fetcher = $this->createMock(RegisterObjectFetcher::class);
+		$fetcher = $this->createMock(originalClassName: RegisterObjectFetcher::class);
 		$fetcher->method('getObjects')->willReturnCallback(
 			fn (string $type, ?int $limit = null, ?int $offset = null): array => ($offset ?? 0) > 0 ? [] : match ($type) {
 				'character' => $characters,
@@ -66,8 +66,8 @@ class UniqueHoldersCheckTest extends TestCase {
 
 		$code = $tester->execute([]);
 
-		self::assertSame(1, $code);
-		self::assertStringContainsString('item "Crown of Aldmoor" (crown) is held by: Queen Isolde, Sir Bertram', $tester->getDisplay());
+		self::assertSame(expected: 1, actual: $code);
+		self::assertStringContainsString(needle: 'item "Crown of Aldmoor" (crown) is held by: Queen Isolde, Sir Bertram', haystack: $tester->getDisplay());
 	}//end testAConflictIsListedAndExitsNonZero()
 
 	/**
@@ -81,7 +81,7 @@ class UniqueHoldersCheckTest extends TestCase {
 			items: [['id' => 'crown', 'name' => 'Crown of Aldmoor', 'unique' => true]]
 		);
 
-		self::assertSame(0, $tester->execute([]));
-		self::assertStringContainsString('No unique item or condition has more than one holder.', $tester->getDisplay());
+		self::assertSame(expected: 0, actual: $tester->execute([]));
+		self::assertStringContainsString(needle: 'No unique item or condition has more than one holder.', haystack: $tester->getDisplay());
 	}//end testNoConflictExitsZero()
 }//end class

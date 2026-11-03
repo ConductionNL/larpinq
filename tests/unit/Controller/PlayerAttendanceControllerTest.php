@@ -70,7 +70,7 @@ class PlayerAttendanceControllerTest extends TestCase {
 	private function controllerAs(string $uid, bool $gameMaster = false): PlayerAttendanceController {
 		$this->requireOpenRegister();
 		$groups = ($gameMaster === true ? [Application::GM_GROUP, 'larpers'] : ['larpers']);
-		$this->store = $this->openRegister($this->permissionHandler($uid, $groups), $uid, $this->authorizationBlocks());
+		$this->store = $this->openRegister(handler: $this->permissionHandler(uid: $uid, groups: $groups), uid: $uid, blocks: $this->authorizationBlocks());
 
 		$this->store->seed('player', 'admin', ['id' => self::ANNA, 'name' => 'Anna de Vries', 'userUid' => 'anna']);
 		$this->store->seed('player', 'admin', ['id' => self::KAREL, 'name' => 'Karel Jansen', 'userUid' => 'karel']);
@@ -85,16 +85,16 @@ class PlayerAttendanceControllerTest extends TestCase {
 		$this->store->seed('attendance', 'gerrit', ['id' => '00000000-0000-4000-8000-0000000d0003', 'event' => self::SPRING, 'character' => self::MIRELA, 'status' => 'no-show']);
 		$this->store->seed('attendance', 'gerrit', ['id' => '00000000-0000-4000-8000-0000000d0004', 'event' => self::SUMMER, 'character' => self::OSWIN, 'status' => 'checked-in']);
 
-		$fetcher = $this->fetcherOver($this->store);
-		$groupManager = $this->createMock(IGroupManager::class);
+		$fetcher = $this->fetcherOver(openRegister: $this->store);
+		$groupManager = $this->createMock(originalClassName: IGroupManager::class);
 		$groupManager->method('isInGroup')->willReturn($gameMaster);
 		$groupManager->method('isAdmin')->willReturn(false);
 
 		return new PlayerAttendanceController(
-			$this->createMock(IRequest::class),
+			$this->createMock(originalClassName: IRequest::class),
 			new PlayerAttendanceService($fetcher),
 			new CharacterConnectionGuard($fetcher),
-			new CallerAccess($this->sessionOf($uid), $groupManager),
+			new CallerAccess($this->sessionOf(uid: $uid), $groupManager),
 		);
 	}//end controllerAs()
 
@@ -116,8 +116,8 @@ class PlayerAttendanceControllerTest extends TestCase {
 	 * @return void
 	 */
 	public function testTheEvaluatorHidesAttendanceFromThePlayer(): void {
-		$this->controllerAs('anna');
-		$this->assertFalse($this->store->readable('attendance', $this->store->objects['attendance']['00000000-0000-4000-8000-0000000d0002'], true));
+		$this->controllerAs(uid: 'anna');
+		$this->assertFalse(condition: $this->store->readable('attendance', $this->store->objects['attendance']['00000000-0000-4000-8000-0000000d0002'], true));
 	}//end testTheEvaluatorHidesAttendanceFromThePlayer()
 
 	/**
@@ -126,14 +126,14 @@ class PlayerAttendanceControllerTest extends TestCase {
 	 * @return void
 	 */
 	public function testAPlayerSeesHerOwnHistoryNewestFirst(): void {
-		$response = $this->controllerAs('anna')->index(self::ANNA);
+		$response = $this->controllerAs(uid: 'anna')->index(self::ANNA);
 
-		$this->assertSame(200, $response->getStatus());
+		$this->assertSame(expected: 200, actual: $response->getStatus());
 		$data = $response->getData();
-		$this->assertSame(['Summer Siege 2025', 'Spring Moot 2025'], $this->eventNames($data));
-		$this->assertSame(['Mirela the Wanderer', 'Old Captain Harrow'], array_map(static fn (array $row): string => $row['character']['name'], $data['events']));
-		$this->assertSame('2025-07-20T10:00:00+00:00', $data['events'][0]['eventStartDate']);
-		$this->assertSame(2, $data['count']);
+		$this->assertSame(expected: ['Summer Siege 2025', 'Spring Moot 2025'], actual: $this->eventNames(data: $data));
+		$this->assertSame(expected: ['Mirela the Wanderer', 'Old Captain Harrow'], actual: array_map(static fn (array $row): string => $row['character']['name'], $data['events']));
+		$this->assertSame(expected: '2025-07-20T10:00:00+00:00', actual: $data['events'][0]['eventStartDate']);
+		$this->assertSame(expected: 2, actual: $data['count']);
 	}//end testAPlayerSeesHerOwnHistoryNewestFirst()
 
 	/**
@@ -142,10 +142,10 @@ class PlayerAttendanceControllerTest extends TestCase {
 	 * @return void
 	 */
 	public function testAGameMasterSeesAPlayersHistory(): void {
-		$data = $this->controllerAs('gerrit', gameMaster: true)->index(self::ANNA)->getData();
+		$data = $this->controllerAs(uid: 'gerrit', gameMaster: true)->index(self::ANNA)->getData();
 
-		$this->assertSame(['Summer Siege 2025', 'Spring Moot 2025'], $this->eventNames($data));
-		$this->assertSame(2, $data['count']);
+		$this->assertSame(expected: ['Summer Siege 2025', 'Spring Moot 2025'], actual: $this->eventNames(data: $data));
+		$this->assertSame(expected: 2, actual: $data['count']);
 	}//end testAGameMasterSeesAPlayersHistory()
 
 	/**
@@ -155,11 +155,11 @@ class PlayerAttendanceControllerTest extends TestCase {
 	 * @return void
 	 */
 	public function testAnotherPlayerIsRefused(): void {
-		$response = $this->controllerAs('karel')->index(self::ANNA);
+		$response = $this->controllerAs(uid: 'karel')->index(self::ANNA);
 
-		$this->assertSame(403, $response->getStatus());
-		$this->assertArrayNotHasKey('events', $response->getData());
-		$this->assertSame([], array_values(array_filter($this->store->reads, static fn (array $read): bool => $read['rbac'] === false)));
+		$this->assertSame(expected: 403, actual: $response->getStatus());
+		$this->assertArrayNotHasKey(key: 'events', array: $response->getData());
+		$this->assertSame(expected: [], actual: array_values(array_filter($this->store->reads, static fn (array $read): bool => $read['rbac'] === false)));
 	}//end testAnotherPlayerIsRefused()
 
 	/**
@@ -168,10 +168,10 @@ class PlayerAttendanceControllerTest extends TestCase {
 	 * @return void
 	 */
 	public function testKarelSeesOnlyHisOwn(): void {
-		$data = $this->controllerAs('karel')->index(self::KAREL)->getData();
+		$data = $this->controllerAs(uid: 'karel')->index(self::KAREL)->getData();
 
-		$this->assertSame(['Summer Siege 2025'], $this->eventNames($data));
-		$this->assertSame(['Oswin'], array_map(static fn (array $row): string => $row['character']['name'], $data['events']));
-		$this->assertSame(1, $data['count']);
+		$this->assertSame(expected: ['Summer Siege 2025'], actual: $this->eventNames(data: $data));
+		$this->assertSame(expected: ['Oswin'], actual: array_map(static fn (array $row): string => $row['character']['name'], $data['events']));
+		$this->assertSame(expected: 1, actual: $data['count']);
 	}//end testKarelSeesOnlyHisOwn()
 }//end class

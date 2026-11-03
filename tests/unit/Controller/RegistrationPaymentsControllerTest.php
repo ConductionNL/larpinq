@@ -53,10 +53,10 @@ class RegistrationPaymentsControllerTest extends TestCase {
 	 */
 	public function testOnlyGameMastersSeeTheAction(): void {
 		$this->world->signedIn = 'gm';
-		$this->assertSame(['allowed' => true], $this->controller()->access()->getData());
+		$this->assertSame(expected: ['allowed' => true], actual: $this->controller()->access()->getData());
 
 		$this->world->signedIn = 'anna';
-		$this->assertSame(['allowed' => false], $this->controller()->access()->getData());
+		$this->assertSame(expected: ['allowed' => false], actual: $this->controller()->access()->getData());
 	}//end testOnlyGameMastersSeeTheAction()
 
 	/**
@@ -69,8 +69,8 @@ class RegistrationPaymentsControllerTest extends TestCase {
 
 		$response = $this->controller()->request(id: self::ANNA_REG);
 
-		$this->assertSame(200, $response->getStatus());
-		$this->assertSame('open', $response->getData()['paymentState']);
+		$this->assertSame(expected: 200, actual: $response->getStatus());
+		$this->assertSame(expected: 'open', actual: $response->getData()['paymentState']);
 	}//end testAGameMasterRequestsThePayment()
 
 	/**
@@ -81,8 +81,8 @@ class RegistrationPaymentsControllerTest extends TestCase {
 	public function testAPlayersRequestIsRefused(): void {
 		$response = $this->controller()->request(id: self::ANNA_REG);
 
-		$this->assertSame(403, $response->getStatus());
-		$this->assertSame([], $this->world->leaf->creates);
+		$this->assertSame(expected: 403, actual: $response->getStatus());
+		$this->assertSame(expected: [], actual: $this->world->leaf->creates);
 	}//end testAPlayersRequestIsRefused()
 
 	/**
@@ -93,7 +93,7 @@ class RegistrationPaymentsControllerTest extends TestCase {
 	public function testSignedOutIsRefused(): void {
 		$this->world->signedIn = '';
 
-		$this->assertSame(401, $this->controller()->request(id: self::ANNA_REG)->getStatus());
+		$this->assertSame(expected: 401, actual: $this->controller()->request(id: self::ANNA_REG)->getStatus());
 	}//end testSignedOutIsRefused()
 
 	/**
@@ -102,9 +102,9 @@ class RegistrationPaymentsControllerTest extends TestCase {
 	 * @return RegistrationPaymentsController The controller.
 	 */
 	private function controller(): RegistrationPaymentsController {
-		$l10n = $this->createMock(IL10N::class);
+		$l10n = $this->createMock(originalClassName: IL10N::class);
 		$l10n->method('t')->willReturnCallback(static fn (string $text): string => $text);
 
-		return new RegistrationPaymentsController('larpinq', $this->createMock(IRequest::class), $this->world->payments(), $this->world->session(), $l10n);
+		return new RegistrationPaymentsController('larpinq', $this->createMock(originalClassName: IRequest::class), $this->world->payments(), $this->world->session(), $l10n);
 	}//end controller()
 }//end class

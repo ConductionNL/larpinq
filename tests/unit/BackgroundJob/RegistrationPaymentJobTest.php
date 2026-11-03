@@ -58,7 +58,7 @@ class RegistrationPaymentJobTest extends TestCase {
 	public function testTheJobRunsDaily(): void {
 		$job = $this->job();
 
-		$this->assertSame(86400, $job->getInterval());
+		$this->assertSame(expected: 86400, actual: $job->getInterval());
 	}//end testTheJobRunsDaily()
 
 	/**
@@ -69,13 +69,13 @@ class RegistrationPaymentJobTest extends TestCase {
 	 */
 	public function testThreeDaysBeforeThePlayerIsReminded(): void {
 		$this->runOn(moment: '2026-11-16T09:00:00+00:00');
-		$this->assertArrayNotHasKey('paymentReminderAt', $this->world->registration(self::ANNA_REG), 'four days before: no reminder yet');
+		$this->assertArrayNotHasKey(key: 'paymentReminderAt', array: $this->world->registration(self::ANNA_REG), message: 'four days before: no reminder yet');
 
 		$this->runOn(moment: '2026-11-17T09:00:00+00:00');
-		$this->assertSame('2026-11-17T09:00:00+00:00', $this->world->registration(self::ANNA_REG)['paymentReminderAt']);
+		$this->assertSame(expected: '2026-11-17T09:00:00+00:00', actual: $this->world->registration(self::ANNA_REG)['paymentReminderAt']);
 
 		$this->runOn(moment: '2026-11-18T09:00:00+00:00');
-		$this->assertSame('2026-11-17T09:00:00+00:00', $this->world->registration(self::ANNA_REG)['paymentReminderAt'], 'one reminder');
+		$this->assertSame(expected: '2026-11-17T09:00:00+00:00', actual: $this->world->registration(self::ANNA_REG)['paymentReminderAt'], message: 'one reminder');
 	}//end testThreeDaysBeforeThePlayerIsReminded()
 
 	/**
@@ -86,15 +86,15 @@ class RegistrationPaymentJobTest extends TestCase {
 	 */
 	public function testADayAfterThePayByDateTheUnpaidPlaceGoesToTheWaitingList(): void {
 		$this->runOn(moment: '2026-11-20T09:00:00+00:00');
-		$this->assertSame('accepted', $this->world->registration(self::ANNA_REG)['status'], 'on the day itself the place stands');
+		$this->assertSame(expected: 'accepted', actual: $this->world->registration(self::ANNA_REG)['status'], message: 'on the day itself the place stands');
 
 		$this->runOn(moment: '2026-11-21T09:00:00+00:00');
 
 		$anna = $this->world->registration(self::ANNA_REG);
-		$this->assertSame('cancelled', $anna['status']);
-		$this->assertSame('unpaid', $anna['cancelReason']);
-		$this->assertSame('expired', $anna['paymentState']);
-		$this->assertSame('accepted', $this->world->registration(self::PIETER_REG)['status']);
+		$this->assertSame(expected: 'cancelled', actual: $anna['status']);
+		$this->assertSame(expected: 'unpaid', actual: $anna['cancelReason']);
+		$this->assertSame(expected: 'expired', actual: $anna['paymentState']);
+		$this->assertSame(expected: 'accepted', actual: $this->world->registration(self::PIETER_REG)['status']);
 	}//end testADayAfterThePayByDateTheUnpaidPlaceGoesToTheWaitingList()
 
 	/**
@@ -110,8 +110,8 @@ class RegistrationPaymentJobTest extends TestCase {
 		$this->runOn(moment: '2026-11-21T09:00:00+00:00');
 
 		$anna = $this->world->registration(self::ANNA_REG);
-		$this->assertSame('paid', $anna['paymentState']);
-		$this->assertSame('accepted', $anna['status']);
+		$this->assertSame(expected: 'paid', actual: $anna['paymentState']);
+		$this->assertSame(expected: 'accepted', actual: $anna['status']);
 	}//end testAMissedCaptureIsReconciledBeforeExpiry()
 
 	/**
@@ -124,7 +124,7 @@ class RegistrationPaymentJobTest extends TestCase {
 
 		$this->runOn(moment: '2026-11-21T09:00:00+00:00');
 
-		$this->assertSame('accepted', $this->world->registration(self::ANNA_REG)['status']);
+		$this->assertSame(expected: 'accepted', actual: $this->world->registration(self::ANNA_REG)['status']);
 	}//end testWithoutShillinqNothingExpires()
 
 	/**

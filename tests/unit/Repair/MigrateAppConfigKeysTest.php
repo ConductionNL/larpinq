@@ -52,16 +52,16 @@ class MigrateAppConfigKeysTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->appConfig = $this->createMock(IAppConfig::class);
-		$this->logger = $this->createMock(LoggerInterface::class);
-		$this->output = $this->createMock(IOutput::class);
+		$this->appConfig = $this->createMock(originalClassName: IAppConfig::class);
+		$this->logger = $this->createMock(originalClassName: LoggerInterface::class);
+		$this->output = $this->createMock(originalClassName: IOutput::class);
 
 		$this->step = new MigrateAppConfigKeys($this->appConfig, $this->logger);
 	}//end setUp()
 
 	public function testGetNameMentionsBothNamespaces(): void {
-		self::assertStringContainsString(self::OLD_APP_ID, $this->step->getName());
-		self::assertStringContainsString(Application::APP_ID, $this->step->getName());
+		self::assertStringContainsString(needle: self::OLD_APP_ID, haystack: $this->step->getName());
+		self::assertStringContainsString(needle: Application::APP_ID, haystack: $this->step->getName());
 	}//end testGetNameMentionsBothNamespaces()
 
 	/**
@@ -94,8 +94,8 @@ class MigrateAppConfigKeysTest extends TestCase {
 		$this->step->run($this->output);
 
 		self::assertSame(
-			['register' => '7', 'character_schema' => '19'],
-			$written[Application::APP_ID] ?? []
+			expected: ['register' => '7', 'character_schema' => '19'],
+			actual: $written[Application::APP_ID] ?? []
 		);
 	}//end testCopiesStoredValuesToTheNewNamespace()
 
@@ -160,7 +160,7 @@ class MigrateAppConfigKeysTest extends TestCase {
 
 		$this->step->run($this->output);
 
-		self::assertSame(['register' => '7'], $written);
+		self::assertSame(expected: ['register' => '7'], actual: $written);
 	}//end testSkipsNextcloudReservedKeys()
 
 	/**
@@ -200,7 +200,7 @@ class MigrateAppConfigKeysTest extends TestCase {
 
 		$this->step->run($this->output);
 
-		self::assertSame(['register' => '7'], $written, 'the loop must continue past a bad key');
+		self::assertSame(expected: ['register' => '7'], actual: $written, message: 'the loop must continue past a bad key');
 	}//end testAReadThatThrowsIsLoggedAndTheLoopContinues()
 
 	/**

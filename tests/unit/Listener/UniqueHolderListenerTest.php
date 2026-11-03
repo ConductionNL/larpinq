@@ -135,7 +135,7 @@ class UniqueHolderListenerTest extends TestCase {
 	 * @return UniqueHolderListener The listener.
 	 */
 	private function listener(?LoggerInterface $logger = null, bool $fetcherThrows = false, bool $holdersThrow = false): UniqueHolderListener {
-		$fetcher = $this->createMock(RegisterObjectFetcher::class);
+		$fetcher = $this->createMock(originalClassName: RegisterObjectFetcher::class);
 		$fetcher->method('getObjects')->willReturnCallback(
 			function (string $objectType, ?int $limit = null, ?int $offset = null, ?array $filters = []) use ($fetcherThrows, $holdersThrow): array {
 				$this->fetches++;
@@ -194,7 +194,7 @@ class UniqueHolderListenerTest extends TestCase {
 			}
 		);
 
-		$config = $this->createMock(IAppConfig::class);
+		$config = $this->createMock(originalClassName: IAppConfig::class);
 		$config->method('getValueString')->willReturnCallback(
 			fn (string $app, string $key, string $default = ''): string => [
 				'character_schema' => 'schema-character',
@@ -203,7 +203,7 @@ class UniqueHolderListenerTest extends TestCase {
 			][$key] ?? $default
 		);
 
-		$l10n = $this->createMock(IL10N::class);
+		$l10n = $this->createMock(originalClassName: IL10N::class);
 		$l10n->method('t')->willReturnCallback(fn (string $text, $params = []): string => vsprintf($text, (array)$params));
 
 		$normaliser = new IdListNormaliser();
@@ -214,7 +214,7 @@ class UniqueHolderListenerTest extends TestCase {
 			new UniqueHolderVeto($holders, $normaliser, $l10n),
 			$holders,
 			$config,
-			$logger ?? $this->createMock(LoggerInterface::class)
+			$logger ?? $this->createMock(originalClassName: LoggerInterface::class)
 		);
 	}//end listener()
 
@@ -241,16 +241,16 @@ class UniqueHolderListenerTest extends TestCase {
 	 * @return void
 	 */
 	public function testAHeldUniqueItemIsRefusedAndTheHolderNamed(): void {
-		$event = $this->update(self::BERTRAM, ['name' => 'Sir Bertram', 'items' => [self::CROWN]], ['name' => 'Sir Bertram', 'items' => []]);
+		$event = $this->update(uuid: self::BERTRAM, new: ['name' => 'Sir Bertram', 'items' => [self::CROWN]], old: ['name' => 'Sir Bertram', 'items' => []]);
 
 		$this->listener()->handle($event);
 
-		self::assertTrue($event->isPropagationStopped());
+		self::assertTrue(condition: $event->isPropagationStopped());
 		$errors = $event->getErrors();
-		self::assertSame('Crown of Aldmoor is already held by Queen Isolde. Remove it there first.', $errors['message']);
-		self::assertSame('unique_item_held', $errors['items'][0]['code']);
-		self::assertSame(self::CROWN, $errors['items'][0]['item']);
-		self::assertSame('Queen Isolde', $errors['items'][0]['heldBy']);
+		self::assertSame(expected: 'Crown of Aldmoor is already held by Queen Isolde. Remove it there first.', actual: $errors['message']);
+		self::assertSame(expected: 'unique_item_held', actual: $errors['items'][0]['code']);
+		self::assertSame(expected: self::CROWN, actual: $errors['items'][0]['item']);
+		self::assertSame(expected: 'Queen Isolde', actual: $errors['items'][0]['heldBy']);
 	}//end testAHeldUniqueItemIsRefusedAndTheHolderNamed()
 
 	/**
@@ -263,8 +263,8 @@ class UniqueHolderListenerTest extends TestCase {
 
 		$this->listener()->handle($event);
 
-		self::assertTrue($event->isPropagationStopped());
-		self::assertSame('Queen Isolde', $event->getErrors()['items'][0]['heldBy']);
+		self::assertTrue(condition: $event->isPropagationStopped());
+		self::assertSame(expected: 'Queen Isolde', actual: $event->getErrors()['items'][0]['heldBy']);
 	}//end testACreateWithAHeldUniqueItemIsRefused()
 
 	/**
@@ -273,11 +273,11 @@ class UniqueHolderListenerTest extends TestCase {
 	 * @return void
 	 */
 	public function testANonUniqueItemIsAllowed(): void {
-		$event = $this->update(self::BERTRAM, ['items' => [self::POTION]], ['items' => []]);
+		$event = $this->update(uuid: self::BERTRAM, new: ['items' => [self::POTION]], old: ['items' => []]);
 
 		$this->listener()->handle($event);
 
-		self::assertFalse($event->isPropagationStopped());
+		self::assertFalse(condition: $event->isPropagationStopped());
 	}//end testANonUniqueItemIsAllowed()
 
 	/**
@@ -287,15 +287,15 @@ class UniqueHolderListenerTest extends TestCase {
 	 */
 	public function testAnUnrelatedEditIsNotBlockedByAnOldConflict(): void {
 		$event = $this->update(
-			self::BERTRAM,
-			['background' => 'A new past', 'items' => [self::CROWN]],
-			['background' => 'Old', 'items' => [self::CROWN]]
+			uuid: self::BERTRAM,
+			new: ['background' => 'A new past', 'items' => [self::CROWN]],
+			old: ['background' => 'Old', 'items' => [self::CROWN]]
 		);
 
 		$this->listener()->handle($event);
 
-		self::assertFalse($event->isPropagationStopped());
-		self::assertSame(0, $this->fetches);
+		self::assertFalse(condition: $event->isPropagationStopped());
+		self::assertSame(expected: 0, actual: $this->fetches);
 	}//end testAnUnrelatedEditIsNotBlockedByAnOldConflict()
 
 	/**
@@ -305,12 +305,12 @@ class UniqueHolderListenerTest extends TestCase {
 	 */
 	public function testAHolderOnTheItemSideAloneIsCounted(): void {
 		$this->characters = [];
-		$event = $this->update(self::BERTRAM, ['items' => [self::CROWN]], ['items' => []]);
+		$event = $this->update(uuid: self::BERTRAM, new: ['items' => [self::CROWN]], old: ['items' => []]);
 
 		$this->listener()->handle($event);
 
-		self::assertTrue($event->isPropagationStopped());
-		self::assertSame('Queen Isolde', $event->getErrors()['items'][0]['heldBy']);
+		self::assertTrue(condition: $event->isPropagationStopped());
+		self::assertSame(expected: 'Queen Isolde', actual: $event->getErrors()['items'][0]['heldBy']);
 	}//end testAHolderOnTheItemSideAloneIsCounted()
 
 	/**
@@ -319,15 +319,15 @@ class UniqueHolderListenerTest extends TestCase {
 	 * @return void
 	 */
 	public function testAUniqueConditionIsRefusedOnASecondCharacter(): void {
-		$event = $this->update(self::TOMAS, ['conditions' => [self::CURSE]], ['conditions' => []]);
+		$event = $this->update(uuid: self::TOMAS, new: ['conditions' => [self::CURSE]], old: ['conditions' => []]);
 
 		$this->listener()->handle($event);
 
-		self::assertTrue($event->isPropagationStopped());
+		self::assertTrue(condition: $event->isPropagationStopped());
 		$errors = $event->getErrors();
-		self::assertSame('unique_condition_held', $errors['conditions'][0]['code']);
-		self::assertSame('Mirela', $errors['conditions'][0]['heldBy']);
-		self::assertSame('Curse of the Ashen King is already on Mirela. Remove it there first.', $errors['message']);
+		self::assertSame(expected: 'unique_condition_held', actual: $errors['conditions'][0]['code']);
+		self::assertSame(expected: 'Mirela', actual: $errors['conditions'][0]['heldBy']);
+		self::assertSame(expected: 'Curse of the Ashen King is already on Mirela. Remove it there first.', actual: $errors['message']);
 	}//end testAUniqueConditionIsRefusedOnASecondCharacter()
 
 	/**
@@ -337,16 +337,16 @@ class UniqueHolderListenerTest extends TestCase {
 	 */
 	public function testSwitchingUniqueOnWhileTwoHoldItIsRefused(): void {
 		$old = ['name' => 'Silver key', 'unique' => false, 'characters' => [self::QUEEN, self::BERTRAM]];
-		$event = $this->update(self::POTION, ['unique' => true] + $old, $old, 'schema-item');
+		$event = $this->update(uuid: self::POTION, new: ['unique' => true] + $old, old: $old, schema: 'schema-item');
 
 		$this->listener()->handle($event);
 
-		self::assertTrue($event->isPropagationStopped());
+		self::assertTrue(condition: $event->isPropagationStopped());
 		$errors = $event->getErrors();
-		self::assertArrayHasKey('unique', $errors);
-		self::assertEqualsCanonicalizing(['Queen Isolde', 'Sir Bertram'], $errors['unique'][0]['heldBy']);
-		self::assertStringContainsString('Queen Isolde', $errors['message']);
-		self::assertStringContainsString('Sir Bertram', $errors['message']);
+		self::assertArrayHasKey(key: 'unique', array: $errors);
+		self::assertEqualsCanonicalizing(expected: ['Queen Isolde', 'Sir Bertram'], actual: $errors['unique'][0]['heldBy']);
+		self::assertStringContainsString(needle: 'Queen Isolde', haystack: $errors['message']);
+		self::assertStringContainsString(needle: 'Sir Bertram', haystack: $errors['message']);
 	}//end testSwitchingUniqueOnWhileTwoHoldItIsRefused()
 
 	/**
@@ -356,12 +356,12 @@ class UniqueHolderListenerTest extends TestCase {
 	 */
 	public function testAddingASecondHolderOnTheItemIsRefused(): void {
 		$old = $this->objects[self::CROWN];
-		$event = $this->update(self::CROWN, ['characters' => [self::QUEEN, self::BERTRAM]] + $old, $old, 'schema-item');
+		$event = $this->update(uuid: self::CROWN, new: ['characters' => [self::QUEEN, self::BERTRAM]] + $old, old: $old, schema: 'schema-item');
 
 		$this->listener()->handle($event);
 
-		self::assertTrue($event->isPropagationStopped());
-		self::assertSame('unique_item_several_holders', $event->getErrors()['characters'][0]['code']);
+		self::assertTrue(condition: $event->isPropagationStopped());
+		self::assertSame(expected: 'unique_item_several_holders', actual: $event->getErrors()['characters'][0]['code']);
 	}//end testAddingASecondHolderOnTheItemIsRefused()
 
 	/**
@@ -371,11 +371,11 @@ class UniqueHolderListenerTest extends TestCase {
 	 */
 	public function testAnItemEditWithoutANewHolderPasses(): void {
 		$old = ['name' => 'Crown', 'unique' => true, 'characters' => [self::QUEEN, self::BERTRAM]];
-		$event = $this->update(self::CROWN, ['name' => 'Crown of Aldmoor'] + $old, $old, 'schema-item');
+		$event = $this->update(uuid: self::CROWN, new: ['name' => 'Crown of Aldmoor'] + $old, old: $old, schema: 'schema-item');
 
 		$this->listener()->handle($event);
 
-		self::assertFalse($event->isPropagationStopped());
+		self::assertFalse(condition: $event->isPropagationStopped());
 	}//end testAnItemEditWithoutANewHolderPasses()
 
 	/**
@@ -384,12 +384,12 @@ class UniqueHolderListenerTest extends TestCase {
 	 * @return void
 	 */
 	public function testOtherSchemasAreIgnored(): void {
-		$event = $this->update(self::BERTRAM, ['items' => [self::CROWN]], [], 'schema-event');
+		$event = $this->update(uuid: self::BERTRAM, new: ['items' => [self::CROWN]], old: [], schema: 'schema-event');
 
 		$this->listener()->handle($event);
 
-		self::assertFalse($event->isPropagationStopped());
-		self::assertSame(0, $this->fetches);
+		self::assertFalse(condition: $event->isPropagationStopped());
+		self::assertSame(expected: 0, actual: $this->fetches);
 	}//end testOtherSchemasAreIgnored()
 
 	/**
@@ -398,17 +398,17 @@ class UniqueHolderListenerTest extends TestCase {
 	 * @return void
 	 */
 	public function testALookupErrorRefusesACreateOfAUniqueItem(): void {
-		$logger = $this->createMock(LoggerInterface::class);
+		$logger = $this->createMock(originalClassName: LoggerInterface::class);
 		$event = new ObjectCreatingEvent(new HeldObjectEntity('schema-item', self::CROWN, ['unique' => true, 'characters' => [self::QUEEN]]));
 		$logger->expects(self::once())->method('error');
 
 		$this->listener(logger: $logger, fetcherThrows: true)->handle($event);
 
-		self::assertTrue($event->isPropagationStopped());
+		self::assertTrue(condition: $event->isPropagationStopped());
 		$errors = $event->getErrors();
-		self::assertSame('The unique-holder check could not run, so this change was not saved. Try again.', $errors['message']);
-		self::assertSame('unique_item_unchecked', $errors['characters'][0]['code']);
-		self::assertSame(self::CROWN, $errors['characters'][0]['item']);
+		self::assertSame(expected: 'The unique-holder check could not run, so this change was not saved. Try again.', actual: $errors['message']);
+		self::assertSame(expected: 'unique_item_unchecked', actual: $errors['characters'][0]['code']);
+		self::assertSame(expected: self::CROWN, actual: $errors['characters'][0]['item']);
 	}//end testALookupErrorRefusesACreateOfAUniqueItem()
 
 	/**
@@ -418,17 +418,17 @@ class UniqueHolderListenerTest extends TestCase {
 	 * @return void
 	 */
 	public function testAFailingItemReadRefusesWithTryAgain(): void {
-		$logger = $this->createMock(LoggerInterface::class);
+		$logger = $this->createMock(originalClassName: LoggerInterface::class);
 		$logger->expects(self::once())->method('error');
-		$event = $this->update(self::BERTRAM, ['items' => [self::CROWN]], ['items' => []]);
+		$event = $this->update(uuid: self::BERTRAM, new: ['items' => [self::CROWN]], old: ['items' => []]);
 
 		$this->listener(logger: $logger, fetcherThrows: true)->handle($event);
 
-		self::assertTrue($event->isPropagationStopped());
+		self::assertTrue(condition: $event->isPropagationStopped());
 		$errors = $event->getErrors();
-		self::assertSame('The unique-holder check could not run, so this change was not saved. Try again.', $errors['message']);
-		self::assertSame('unique_item_unchecked', $errors['items'][0]['code']);
-		self::assertSame(self::CROWN, $errors['items'][0]['item']);
+		self::assertSame(expected: 'The unique-holder check could not run, so this change was not saved. Try again.', actual: $errors['message']);
+		self::assertSame(expected: 'unique_item_unchecked', actual: $errors['items'][0]['code']);
+		self::assertSame(expected: self::CROWN, actual: $errors['items'][0]['item']);
 	}//end testAFailingItemReadRefusesWithTryAgain()
 
 	/**
@@ -438,15 +438,15 @@ class UniqueHolderListenerTest extends TestCase {
 	 * @return void
 	 */
 	public function testAnItemThatDoesNotExistIsRefusedAsUnknown(): void {
-		$logger = $this->createMock(LoggerInterface::class);
+		$logger = $this->createMock(originalClassName: LoggerInterface::class);
 		$logger->expects(self::never())->method('error');
-		$event = $this->update(self::BERTRAM, ['items' => [self::NOWHERE]], ['items' => []]);
+		$event = $this->update(uuid: self::BERTRAM, new: ['items' => [self::NOWHERE]], old: ['items' => []]);
 
 		$this->listener(logger: $logger)->handle($event);
 
-		self::assertTrue($event->isPropagationStopped());
+		self::assertTrue(condition: $event->isPropagationStopped());
 		self::assertSame(
-			[
+			expected: [
 				'message' => 'Unknown item ' . self::NOWHERE . '. This change was not saved.',
 				'items' => [
 					[
@@ -456,7 +456,7 @@ class UniqueHolderListenerTest extends TestCase {
 					],
 				],
 			],
-			$event->getErrors()
+			actual: $event->getErrors()
 		);
 	}//end testAnItemThatDoesNotExistIsRefusedAsUnknown()
 
@@ -466,15 +466,15 @@ class UniqueHolderListenerTest extends TestCase {
 	 * @return void
 	 */
 	public function testAConditionThatDoesNotExistIsRefusedAsUnknown(): void {
-		$event = $this->update(self::TOMAS, ['conditions' => [self::NOWHERE]], ['conditions' => []]);
+		$event = $this->update(uuid: self::TOMAS, new: ['conditions' => [self::NOWHERE]], old: ['conditions' => []]);
 
 		$this->listener()->handle($event);
 
-		self::assertTrue($event->isPropagationStopped());
+		self::assertTrue(condition: $event->isPropagationStopped());
 		$errors = $event->getErrors();
-		self::assertSame('Unknown condition ' . self::NOWHERE . '. This change was not saved.', $errors['message']);
-		self::assertSame('unique_condition_unknown', $errors['conditions'][0]['code']);
-		self::assertSame(self::NOWHERE, $errors['conditions'][0]['condition']);
+		self::assertSame(expected: 'Unknown condition ' . self::NOWHERE . '. This change was not saved.', actual: $errors['message']);
+		self::assertSame(expected: 'unique_condition_unknown', actual: $errors['conditions'][0]['code']);
+		self::assertSame(expected: self::NOWHERE, actual: $errors['conditions'][0]['condition']);
 	}//end testAConditionThatDoesNotExistIsRefusedAsUnknown()
 
 	/**
@@ -485,17 +485,17 @@ class UniqueHolderListenerTest extends TestCase {
 	 */
 	public function testAnUnreadableItemGetsTheSameAnswerAsAMissingOne(): void {
 		$this->unreadable = [self::CROWN];
-		$unreadable = $this->update(self::BERTRAM, ['items' => [self::CROWN]], ['items' => []]);
+		$unreadable = $this->update(uuid: self::BERTRAM, new: ['items' => [self::CROWN]], old: ['items' => []]);
 		$this->listener()->handle($unreadable);
 
 		$this->unreadable = [];
 		unset($this->objects[self::CROWN]);
-		$missing = $this->update(self::BERTRAM, ['items' => [self::CROWN]], ['items' => []]);
+		$missing = $this->update(uuid: self::BERTRAM, new: ['items' => [self::CROWN]], old: ['items' => []]);
 		$this->listener()->handle($missing);
 
-		self::assertTrue($unreadable->isPropagationStopped());
-		self::assertSame('unique_item_unknown', $missing->getErrors()['items'][0]['code']);
-		self::assertSame($missing->getErrors(), $unreadable->getErrors());
+		self::assertTrue(condition: $unreadable->isPropagationStopped());
+		self::assertSame(expected: 'unique_item_unknown', actual: $missing->getErrors()['items'][0]['code']);
+		self::assertSame(expected: $missing->getErrors(), actual: $unreadable->getErrors());
 	}//end testAnUnreadableItemGetsTheSameAnswerAsAMissingOne()
 
 	/**
@@ -505,14 +505,14 @@ class UniqueHolderListenerTest extends TestCase {
 	 * @return void
 	 */
 	public function testAConditionIdInItemsIsRefusedAsAnUnknownItem(): void {
-		$event = $this->update(self::BERTRAM, ['items' => [self::CURSE]], ['items' => []]);
+		$event = $this->update(uuid: self::BERTRAM, new: ['items' => [self::CURSE]], old: ['items' => []]);
 
 		$this->listener()->handle($event);
 
-		self::assertTrue($event->isPropagationStopped());
+		self::assertTrue(condition: $event->isPropagationStopped());
 		$errors = $event->getErrors();
-		self::assertSame('unique_item_unknown', $errors['items'][0]['code']);
-		self::assertSame('Unknown item ' . self::CURSE . '. This change was not saved.', $errors['message']);
+		self::assertSame(expected: 'unique_item_unknown', actual: $errors['items'][0]['code']);
+		self::assertSame(expected: 'Unknown item ' . self::CURSE . '. This change was not saved.', actual: $errors['message']);
 	}//end testAConditionIdInItemsIsRefusedAsAnUnknownItem()
 
 	/**
@@ -522,15 +522,15 @@ class UniqueHolderListenerTest extends TestCase {
 	 * @return void
 	 */
 	public function testAnItemIdInConditionsGetsTheAnswerOfAMissingCondition(): void {
-		$wrongType = $this->update(self::TOMAS, ['conditions' => [self::CROWN]], ['conditions' => []]);
+		$wrongType = $this->update(uuid: self::TOMAS, new: ['conditions' => [self::CROWN]], old: ['conditions' => []]);
 		$this->listener()->handle($wrongType);
 
 		unset($this->objects[self::CROWN]);
-		$missing = $this->update(self::TOMAS, ['conditions' => [self::CROWN]], ['conditions' => []]);
+		$missing = $this->update(uuid: self::TOMAS, new: ['conditions' => [self::CROWN]], old: ['conditions' => []]);
 		$this->listener()->handle($missing);
 
-		self::assertSame('unique_condition_unknown', $missing->getErrors()['conditions'][0]['code']);
-		self::assertSame($missing->getErrors(), $wrongType->getErrors());
+		self::assertSame(expected: 'unique_condition_unknown', actual: $missing->getErrors()['conditions'][0]['code']);
+		self::assertSame(expected: $missing->getErrors(), actual: $wrongType->getErrors());
 	}//end testAnItemIdInConditionsGetsTheAnswerOfAMissingCondition()
 
 	/**
@@ -539,12 +539,12 @@ class UniqueHolderListenerTest extends TestCase {
 	 * @return void
 	 */
 	public function testAMalformedItemIdIsRefusedAsUnknown(): void {
-		$event = $this->update(self::BERTRAM, ['items' => ['crown-of-aldmoor']], ['items' => []]);
+		$event = $this->update(uuid: self::BERTRAM, new: ['items' => ['crown-of-aldmoor']], old: ['items' => []]);
 
 		$this->listener()->handle($event);
 
-		self::assertSame('unique_item_unknown', $event->getErrors()['items'][0]['code']);
-		self::assertSame('Unknown item crown-of-aldmoor. This change was not saved.', $event->getErrors()['message']);
+		self::assertSame(expected: 'unique_item_unknown', actual: $event->getErrors()['items'][0]['code']);
+		self::assertSame(expected: 'Unknown item crown-of-aldmoor. This change was not saved.', actual: $event->getErrors()['message']);
 	}//end testAMalformedItemIdIsRefusedAsUnknown()
 
 	/**
@@ -558,8 +558,8 @@ class UniqueHolderListenerTest extends TestCase {
 
 		$this->listener()->handle($event);
 
-		self::assertTrue($event->isPropagationStopped());
-		self::assertSame('unique_item_unknown', $event->getErrors()['items'][0]['code']);
+		self::assertTrue(condition: $event->isPropagationStopped());
+		self::assertSame(expected: 'unique_item_unknown', actual: $event->getErrors()['items'][0]['code']);
 	}//end testAnImportRowWithAForwardReferenceIsRefusedAsUnknown()
 
 	/**
@@ -568,14 +568,14 @@ class UniqueHolderListenerTest extends TestCase {
 	 * @return void
 	 */
 	public function testAFailingHolderLookupRefusesAGainedCondition(): void {
-		$logger = $this->createMock(LoggerInterface::class);
+		$logger = $this->createMock(originalClassName: LoggerInterface::class);
 		$logger->expects(self::once())->method('error');
-		$event = $this->update(self::TOMAS, ['conditions' => [self::CURSE]], ['conditions' => []]);
+		$event = $this->update(uuid: self::TOMAS, new: ['conditions' => [self::CURSE]], old: ['conditions' => []]);
 
 		$this->listener(logger: $logger, holdersThrow: true)->handle($event);
 
-		self::assertTrue($event->isPropagationStopped());
-		self::assertSame('unique_condition_unchecked', $event->getErrors()['conditions'][0]['code']);
+		self::assertTrue(condition: $event->isPropagationStopped());
+		self::assertSame(expected: 'unique_condition_unchecked', actual: $event->getErrors()['conditions'][0]['code']);
 	}//end testAFailingHolderLookupRefusesAGainedCondition()
 
 	/**
@@ -584,12 +584,12 @@ class UniqueHolderListenerTest extends TestCase {
 	 * @return void
 	 */
 	public function testSwitchingUniqueOnIsRefusedWhenTheLookupFails(): void {
-		$event = $this->update(self::CROWN, ['unique' => true, 'characters' => [self::QUEEN]], ['unique' => false, 'characters' => [self::QUEEN]], 'schema-item');
+		$event = $this->update(uuid: self::CROWN, new: ['unique' => true, 'characters' => [self::QUEEN]], old: ['unique' => false, 'characters' => [self::QUEEN]], schema: 'schema-item');
 
 		$this->listener(fetcherThrows: true)->handle($event);
 
-		self::assertTrue($event->isPropagationStopped());
-		self::assertSame('unique_item_unchecked', $event->getErrors()['unique'][0]['code']);
+		self::assertTrue(condition: $event->isPropagationStopped());
+		self::assertSame(expected: 'unique_item_unchecked', actual: $event->getErrors()['unique'][0]['code']);
 	}//end testSwitchingUniqueOnIsRefusedWhenTheLookupFails()
 
 	/**
@@ -599,15 +599,15 @@ class UniqueHolderListenerTest extends TestCase {
 	 */
 	public function testWritesThatAddNoHolderPassWhileTheLookupFails(): void {
 		$events = [
-			$this->update(self::BERTRAM, ['background' => 'New', 'items' => [self::CROWN]], ['background' => 'Old', 'items' => [self::CROWN]]),
-			$this->update(self::CROWN, ['unique' => true, 'name' => 'x', 'characters' => [self::QUEEN]], ['unique' => true, 'characters' => [self::QUEEN]], 'schema-item'),
-			$this->update(self::POTION, ['unique' => false, 'characters' => [self::QUEEN, self::BERTRAM]], ['unique' => false, 'characters' => [self::QUEEN]], 'schema-item'),
-			$this->update(self::BERTRAM, ['items' => []], ['items' => [self::CROWN]]),
+			$this->update(uuid: self::BERTRAM, new: ['background' => 'New', 'items' => [self::CROWN]], old: ['background' => 'Old', 'items' => [self::CROWN]]),
+			$this->update(uuid: self::CROWN, new: ['unique' => true, 'name' => 'x', 'characters' => [self::QUEEN]], old: ['unique' => true, 'characters' => [self::QUEEN]], schema: 'schema-item'),
+			$this->update(uuid: self::POTION, new: ['unique' => false, 'characters' => [self::QUEEN, self::BERTRAM]], old: ['unique' => false, 'characters' => [self::QUEEN]], schema: 'schema-item'),
+			$this->update(uuid: self::BERTRAM, new: ['items' => []], old: ['items' => [self::CROWN]]),
 		];
 
 		foreach ($events as $index => $event) {
 			$this->listener(fetcherThrows: true)->handle($event);
-			self::assertFalse($event->isPropagationStopped(), 'event ' . $index);
+			self::assertFalse(condition: $event->isPropagationStopped(), message: 'event ' . $index);
 		}
 	}//end testWritesThatAddNoHolderPassWhileTheLookupFails()
 }//end class

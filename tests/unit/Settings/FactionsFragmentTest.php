@@ -42,7 +42,7 @@ class FactionsFragmentTest extends TestCase {
 	private function mergedRegister(): array {
 		$appPath = dirname(__DIR__, 3);
 		$monolith = json_decode((string)file_get_contents($appPath . '/lib/Settings/larpinq_register.json'), true);
-		$this->assertIsArray($monolith);
+		$this->assertIsArray(actual: $monolith);
 
 		$reflection = new ReflectionClass(ConfigFileLoaderService::class);
 		$loader = $reflection->newInstanceWithoutConstructor();
@@ -63,7 +63,7 @@ class FactionsFragmentTest extends TestCase {
 	 */
 	private function schema(string $key): array {
 		$schemas = $this->mergedRegister()['components']['schemas'];
-		$this->assertArrayHasKey($key, $schemas, "the {$key} schema must be in the merged register");
+		$this->assertArrayHasKey(key: $key, array: $schemas, message: "the {$key} schema must be in the merged register");
 		return $schemas[$key];
 	}//end schema()
 
@@ -86,9 +86,9 @@ class FactionsFragmentTest extends TestCase {
 	public function testTheConnectionSchemasAreInTheRegister(): void {
 		$register = $this->mergedRegister()['components']['registers']['larpinq'];
 		foreach (['faction' => 'larping_faction', 'factionMember' => 'larping_faction_member', 'relationship' => 'larping_relationship'] as $key => $slug) {
-			$this->assertContains($slug, $register['schemas']);
-			$this->assertSame($slug, $this->schema(key: $key)['slug']);
-			$this->assertTrue($this->schema(key: $key)['configuration']['exportable']);
+			$this->assertContains(needle: $slug, haystack: $register['schemas']);
+			$this->assertSame(expected: $slug, actual: $this->schema(key: $key)['slug']);
+			$this->assertTrue(condition: $this->schema(key: $key)['configuration']['exportable']);
 		}
 	}//end testTheConnectionSchemasAreInTheRegister()
 
@@ -101,19 +101,19 @@ class FactionsFragmentTest extends TestCase {
 	public function testSecretFactionsStaySecretAndPlayersRunOnlyGroups(): void {
 		$faction = $this->schema(key: 'faction');
 
-		$this->assertSame(['faction', 'group'], $faction['properties']['kind']['enum']);
-		$this->assertSame(['open', 'secret'], $faction['properties']['visibility']['enum']);
+		$this->assertSame(expected: ['faction', 'group'], actual: $faction['properties']['kind']['enum']);
+		$this->assertSame(expected: ['open', 'secret'], actual: $faction['properties']['visibility']['enum']);
 		$this->assertSame(
-			[self::GM, $this->larpers(match: ['visibility' => 'open']), $this->larpers(match: ['leaderOwnerUid' => '$userId'])],
-			$faction['authorization']['read']
+			expected: [self::GM, $this->larpers(match: ['visibility' => 'open']), $this->larpers(match: ['leaderOwnerUid' => '$userId'])],
+			actual: $faction['authorization']['read']
 		);
-		$this->assertSame([self::GM, $this->larpers(match: ['kind' => 'group'])], $faction['authorization']['create']);
+		$this->assertSame(expected: [self::GM, $this->larpers(match: ['kind' => 'group'])], actual: $faction['authorization']['create']);
 		$mine = $this->larpers(match: ['kind' => 'group', 'leaderOwnerUid' => '$userId']);
-		$this->assertSame([self::GM, $mine], $faction['authorization']['update']);
-		$this->assertSame([self::GM, $mine], $faction['authorization']['delete']);
+		$this->assertSame(expected: [self::GM, $mine], actual: $faction['authorization']['update']);
+		$this->assertSame(expected: [self::GM, $mine], actual: $faction['authorization']['delete']);
 		$this->assertSame(
-			['type' => 'string', 'materialise' => true, 'expression' => ['prop' => '@ref.leader.ownerUid']],
-			$faction['properties']['leaderOwnerUid']['calculation']
+			expected: ['type' => 'string', 'materialise' => true, 'expression' => ['prop' => '@ref.leader.ownerUid']],
+			actual: $faction['properties']['leaderOwnerUid']['calculation']
 		);
 	}//end testSecretFactionsStaySecretAndPlayersRunOnlyGroups()
 
@@ -128,25 +128,25 @@ class FactionsFragmentTest extends TestCase {
 		$member = $this->schema(key: 'factionMember');
 
 		$this->assertSame(
-			[
+			expected: [
 				self::GM,
 				$this->larpers(match: ['factionVisibility' => 'open']),
 				$this->larpers(match: ['ownerUid' => '$userId']),
 				$this->larpers(match: ['groupLeaderUid' => '$userId']),
 			],
-			$member['authorization']['read']
+			actual: $member['authorization']['read']
 		);
-		$this->assertSame([self::GM, 'larpers'], $member['authorization']['create']);
+		$this->assertSame(expected: [self::GM, 'larpers'], actual: $member['authorization']['create']);
 		$this->assertSame(
-			[self::GM, $this->larpers(match: ['ownerUid' => '$userId']), $this->larpers(match: ['groupLeaderUid' => '$userId'])],
-			$member['authorization']['update']
+			expected: [self::GM, $this->larpers(match: ['ownerUid' => '$userId']), $this->larpers(match: ['groupLeaderUid' => '$userId'])],
+			actual: $member['authorization']['update']
 		);
-		$this->assertSame(['gamemasters'], $member['authorization']['delete']);
+		$this->assertSame(expected: ['gamemasters'], actual: $member['authorization']['delete']);
 		$this->assertSame(
-			['requested', 'invited', 'active', 'declined', 'left', 'removed'],
-			$member['properties']['status']['enum']
+			expected: ['requested', 'invited', 'active', 'declined', 'left', 'removed'],
+			actual: $member['properties']['status']['enum']
 		);
-		$this->assertSame(['leader', 'member'], $member['properties']['role']['enum']);
+		$this->assertSame(expected: ['leader', 'member'], actual: $member['properties']['role']['enum']);
 
 		$expected = [
 			'ownerUid' => '@ref.character.ownerUid',
@@ -156,15 +156,15 @@ class FactionsFragmentTest extends TestCase {
 		];
 		foreach ($expected as $field => $prop) {
 			$this->assertSame(
-				['type' => 'string', 'materialise' => true, 'expression' => ['prop' => $prop]],
-				$member['properties'][$field]['calculation'],
-				"{$field} is copied from {$prop}"
+				expected: ['type' => 'string', 'materialise' => true, 'expression' => ['prop' => $prop]],
+				actual: $member['properties'][$field]['calculation'],
+				message: "{$field} is copied from {$prop}"
 			);
 		}
 
 		$references = $member['configuration']['x-openregister-references'];
-		$this->assertSame('character', $references['character']['schema']);
-		$this->assertSame('larping_faction', $references['faction']['schema']);
+		$this->assertSame(expected: 'character', actual: $references['character']['schema']);
+		$this->assertSame(expected: 'larping_faction', actual: $references['faction']['schema']);
 	}//end testMembershipsKeepTheirHistoryAndHideSecretOnes()
 
 	/**
@@ -175,14 +175,14 @@ class FactionsFragmentTest extends TestCase {
 	public function testTheMembershipLifecycle(): void {
 		$lifecycle = $this->schema(key: 'factionMember')['configuration']['x-openregister-lifecycle'];
 
-		$this->assertSame('status', $lifecycle['field']);
-		$this->assertSame('requested', $lifecycle['initial']);
-		$this->assertSame(['requested', 'invited'], $lifecycle['transitions']['accept']['from']);
-		$this->assertSame('active', $lifecycle['transitions']['accept']['to']);
-		$this->assertSame('declined', $lifecycle['transitions']['decline']['to']);
-		$this->assertSame(['active'], $lifecycle['transitions']['leave']['from']);
-		$this->assertSame('left', $lifecycle['transitions']['leave']['to']);
-		$this->assertSame('removed', $lifecycle['transitions']['remove']['to']);
+		$this->assertSame(expected: 'status', actual: $lifecycle['field']);
+		$this->assertSame(expected: 'requested', actual: $lifecycle['initial']);
+		$this->assertSame(expected: ['requested', 'invited'], actual: $lifecycle['transitions']['accept']['from']);
+		$this->assertSame(expected: 'active', actual: $lifecycle['transitions']['accept']['to']);
+		$this->assertSame(expected: 'declined', actual: $lifecycle['transitions']['decline']['to']);
+		$this->assertSame(expected: ['active'], actual: $lifecycle['transitions']['leave']['from']);
+		$this->assertSame(expected: 'left', actual: $lifecycle['transitions']['leave']['to']);
+		$this->assertSame(expected: 'removed', actual: $lifecycle['transitions']['remove']['to']);
 	}//end testTheMembershipLifecycle()
 
 	/**
@@ -195,26 +195,26 @@ class FactionsFragmentTest extends TestCase {
 		$relationship = $this->schema(key: 'relationship');
 
 		$this->assertSame(
-			['family', 'ally', 'rival', 'romance', 'enemy', 'mentor', 'other'],
-			$relationship['properties']['kind']['enum']
+			expected: ['family', 'ally', 'rival', 'romance', 'enemy', 'mentor', 'other'],
+			actual: $relationship['properties']['kind']['enum']
 		);
-		$this->assertSame(['gamemasters', 'owners'], $relationship['properties']['knownTo']['enum']);
-		$this->assertSame('gamemasters', $relationship['properties']['knownTo']['default']);
+		$this->assertSame(expected: ['gamemasters', 'owners'], actual: $relationship['properties']['knownTo']['enum']);
+		$this->assertSame(expected: 'gamemasters', actual: $relationship['properties']['knownTo']['default']);
 		$this->assertSame(
-			[
+			expected: [
 				self::GM,
 				$this->larpers(match: ['knownTo' => 'owners', 'fromOwnerUid' => '$userId']),
 				$this->larpers(match: ['knownTo' => 'owners', 'toOwnerUid' => '$userId']),
 			],
-			$relationship['authorization']['read']
+			actual: $relationship['authorization']['read']
 		);
-		$this->assertSame([self::GM, $this->larpers(match: ['knownTo' => 'owners'])], $relationship['authorization']['create']);
+		$this->assertSame(expected: [self::GM, $this->larpers(match: ['knownTo' => 'owners'])], actual: $relationship['authorization']['create']);
 		$this->assertSame(
-			[self::GM, $this->larpers(match: ['knownTo' => 'owners', 'fromOwnerUid' => '$userId'])],
-			$relationship['authorization']['update']
+			expected: [self::GM, $this->larpers(match: ['knownTo' => 'owners', 'fromOwnerUid' => '$userId'])],
+			actual: $relationship['authorization']['update']
 		);
-		$this->assertSame('@ref.from.ownerUid', $relationship['properties']['fromOwnerUid']['calculation']['expression']['prop']);
-		$this->assertSame('@ref.to.ownerUid', $relationship['properties']['toOwnerUid']['calculation']['expression']['prop']);
+		$this->assertSame(expected: '@ref.from.ownerUid', actual: $relationship['properties']['fromOwnerUid']['calculation']['expression']['prop']);
+		$this->assertSame(expected: '@ref.to.ownerUid', actual: $relationship['properties']['toOwnerUid']['calculation']['expression']['prop']);
 	}//end testRelationshipsAreReadByTheOwnersOfBothCharactersOnly()
 
 	/**
@@ -228,9 +228,9 @@ class FactionsFragmentTest extends TestCase {
 		$keys = (new ReflectionClass(\OCA\Larpinq\Service\SettingsService::class))->getConstant('CONFIG_KEYS');
 		$schemas = $this->mergedRegister()['components']['schemas'];
 		foreach (['faction' => 'faction', 'factionmember' => 'factionMember', 'relationship' => 'relationship'] as $type => $key) {
-			$this->assertSame($schemas[$key]['slug'], $slugs[$type] ?? null, "the import must configure {$type}_schema");
-			$this->assertContains($type . '_schema', $keys);
-			$this->assertContains($type . '_register', $keys);
+			$this->assertSame(expected: $schemas[$key]['slug'], actual: $slugs[$type] ?? null, message: "the import must configure {$type}_schema");
+			$this->assertContains(needle: $type . '_schema', haystack: $keys);
+			$this->assertContains(needle: $type . '_register', haystack: $keys);
 		}
 	}//end testTheImportConfiguresTheConnectionSchemas()
 
@@ -242,7 +242,7 @@ class FactionsFragmentTest extends TestCase {
 	public function testNoUserFormat(): void {
 		foreach (['faction', 'factionMember', 'relationship'] as $key) {
 			foreach ($this->schema(key: $key)['properties'] as $name => $property) {
-				$this->assertNotSame('user', ($property['format'] ?? null), "{$key}.{$name}");
+				$this->assertNotSame(expected: 'user', actual: ($property['format'] ?? null), message: "{$key}.{$name}");
 			}
 		}
 	}//end testNoUserFormat()
@@ -269,11 +269,11 @@ class FactionsFragmentTest extends TestCase {
 			$schema = json_decode((string)json_encode($this->forOpis(schema: $this->schema(key: $bySlug[$slug]))));
 			unset($object['@self']);
 			$result = $validator->validate(json_decode((string)json_encode($object)), $schema);
-			$this->assertTrue($result->isValid(), "seed {$slug} must validate");
+			$this->assertTrue(condition: $result->isValid(), message: "seed {$slug} must validate");
 		}
 
 		ksort($seen);
-		$this->assertSame(['larping_faction' => 3, 'larping_faction_member' => 4, 'larping_relationship' => 3], $seen);
+		$this->assertSame(expected: ['larping_faction' => 3, 'larping_faction_member' => 4, 'larping_relationship' => 3], actual: $seen);
 	}//end testTheSeedObjectsValidate()
 
 	/**

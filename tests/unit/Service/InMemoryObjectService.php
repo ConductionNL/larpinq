@@ -144,7 +144,7 @@ class InMemoryObjectService {
 		}
 
 		$data['id'] = $uuid;
-		$this->seed((string)$schema, $data);
+		$this->seed(schema: (string)$schema, data: $data);
 		return $this->objects[(string)$schema][$uuid];
 	}//end saveObject()
 

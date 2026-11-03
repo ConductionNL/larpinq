@@ -46,7 +46,7 @@ class SetupControllerTest extends TestCase {
 	protected function setUp(): void {
 		$this->written = [];
 		$this->config = [];
-		$this->appConfig = $this->createMock(IAppConfig::class);
+		$this->appConfig = $this->createMock(originalClassName: IAppConfig::class);
 		$this->appConfig->method('getValueString')
 			->willReturnCallback(fn (string $app, string $key, string $default = ''): string => ($this->config[$key] ?? $default));
 		$this->appConfig->method('setValueString')
@@ -55,13 +55,13 @@ class SetupControllerTest extends TestCase {
 
 				return true;
 			});
-		$this->demoData = $this->createMock(DemoDataService::class);
+		$this->demoData = $this->createMock(originalClassName: DemoDataService::class);
 		$this->demoData->method('listChoices')->willReturn([
 			['id' => 'none', 'label' => 'None', 'description' => '', 'objectCount' => 0, 'icon' => ''],
 			['id' => 'demo', 'label' => 'Example data', 'description' => '', 'objectCount' => 40, 'icon' => ''],
 		]);
-		$this->settings = $this->createMock(SettingsService::class);
-		$this->appManager = $this->createMock(IAppManager::class);
+		$this->settings = $this->createMock(originalClassName: SettingsService::class);
+		$this->appManager = $this->createMock(originalClassName: IAppManager::class);
 	}
 
 	/**
@@ -72,7 +72,7 @@ class SetupControllerTest extends TestCase {
 	 * @return SetupController
 	 */
 	private function controller(array $params = []): SetupController {
-		$request = $this->createMock(IRequest::class);
+		$request = $this->createMock(originalClassName: IRequest::class);
 		$request->method('getParams')->willReturn($params);
 		$request->method('getParam')
 			->willReturnCallback(static fn (string $key, $default = null) => ($params[$key] ?? $default));
@@ -83,7 +83,7 @@ class SetupControllerTest extends TestCase {
 			$this->demoData,
 			$this->settings,
 			$this->appManager,
-			$this->createMock(LoggerInterface::class)
+			$this->createMock(originalClassName: LoggerInterface::class)
 		);
 	}
 
@@ -105,24 +105,24 @@ class SetupControllerTest extends TestCase {
 		$reported = array_keys($steps);
 		sort($declared);
 		sort($reported);
-		$this->assertSame($declared, $reported);
-		$this->assertFalse($steps['demo-data']['done']);
+		$this->assertSame(expected: $declared, actual: $reported);
+		$this->assertFalse(condition: $steps['demo-data']['done']);
 	}
 
 	public function testTheDatasetStepLoadsFromItsCardsAndProvisioningLeftTheWizard(): void {
 		$steps = array_column($this->manifest()['setup']['steps'], null, 'id');
 
-		$this->assertSame('load-demo-data', $steps['demo-data']['loadAction'] ?? null);
-		$this->assertArrayNotHasKey('load-demo-data', $steps);
-		$this->assertArrayNotHasKey('provision', $steps);
+		$this->assertSame(expected: 'load-demo-data', actual: $steps['demo-data']['loadAction'] ?? null);
+		$this->assertArrayNotHasKey(key: 'load-demo-data', array: $steps);
+		$this->assertArrayNotHasKey(key: 'provision', array: $steps);
 	}
 
 	public function testSetupIsCompleteWithoutProvisioningButSaysWhetherItRan(): void {
 		// Provisioning is an admin action now, so it no longer gates the app.
 		$data = $this->controller()->status()->getData();
 
-		$this->assertTrue($data['completed']);
-		$this->assertFalse($data['provisioned']);
+		$this->assertTrue(condition: $data['completed']);
+		$this->assertFalse(condition: $data['provisioned']);
 	}
 
 	public function testChoosingNoneClosesTheStep(): void {
@@ -130,38 +130,38 @@ class SetupControllerTest extends TestCase {
 
 		$steps = $this->controller()->status()->getData()['steps'];
 
-		$this->assertTrue($steps['demo-data']['done']);
+		$this->assertTrue(condition: $steps['demo-data']['done']);
 	}
 
 	public function testTheCardPostsItsDatasetAndTheLoadRecordsTheChoice(): void {
 		$this->demoData->expects($this->once())->method('install')
 			->willReturn(['objects' => 40, 'registers' => 1, 'schemas' => 9]);
 
-		$data = $this->controller(['dataset' => 'demo'])->runAction('load-demo-data')->getData();
+		$data = $this->controller(params: ['dataset' => 'demo'])->runAction('load-demo-data')->getData();
 
-		$this->assertTrue($data['success']);
-		$this->assertStringContainsString('40', $data['message']);
-		$this->assertSame(['demo_dataset' => 'demo', 'demo_data_decided' => 'installed'], $this->written);
+		$this->assertTrue(condition: $data['success']);
+		$this->assertStringContainsString(needle: '40', haystack: $data['message']);
+		$this->assertSame(expected: ['demo_dataset' => 'demo', 'demo_data_decided' => 'installed'], actual: $this->written);
 	}
 
 	public function testAnUnknownPostedDatasetIsRefusedAndNothingLoads(): void {
 		$this->config['demo_dataset'] = 'demo';
 		$this->demoData->expects($this->never())->method('install');
 
-		$response = $this->controller(['dataset' => 'atlantis'])->runAction('load-demo-data');
+		$response = $this->controller(params: ['dataset' => 'atlantis'])->runAction('load-demo-data');
 
-		$this->assertSame(400, $response->getStatus());
-		$this->assertFalse($response->getData()['success']);
-		$this->assertSame([], $this->written);
+		$this->assertSame(expected: 400, actual: $response->getStatus());
+		$this->assertFalse(condition: $response->getData()['success']);
+		$this->assertSame(expected: [], actual: $this->written);
 	}
 
 	public function testAFailedCardLoadStoresNothing(): void {
 		$this->demoData->method('install')->willThrowException(new RuntimeException('OpenRegister is not installed.'));
 
-		$data = $this->controller(['dataset' => 'demo'])->runAction('load-demo-data')->getData();
+		$data = $this->controller(params: ['dataset' => 'demo'])->runAction('load-demo-data')->getData();
 
-		$this->assertFalse($data['success']);
-		$this->assertSame([], $this->written);
+		$this->assertFalse(condition: $data['success']);
+		$this->assertSame(expected: [], actual: $this->written);
 	}
 
 	public function testACallWithoutABodyLoadsTheStoredPick(): void {
@@ -171,7 +171,7 @@ class SetupControllerTest extends TestCase {
 
 		$data = $this->controller()->runAction('load-demo-data')->getData();
 
-		$this->assertTrue($data['success']);
+		$this->assertTrue(condition: $data['success']);
 	}
 
 	public function testLoadingWithoutAnyPickRefusesRatherThanGuessing(): void {
@@ -179,7 +179,7 @@ class SetupControllerTest extends TestCase {
 
 		$data = $this->controller()->runAction('load-demo-data')->getData();
 
-		$this->assertFalse($data['success']);
+		$this->assertFalse(condition: $data['success']);
 	}
 
 	public function testTheProvisionActionStillRunsForTheAdminPage(): void {
@@ -189,7 +189,7 @@ class SetupControllerTest extends TestCase {
 
 		$data = $this->controller()->runAction('provision')->getData();
 
-		$this->assertTrue($data['success']);
-		$this->assertStringContainsString('3 schema', $data['message']);
+		$this->assertTrue(condition: $data['success']);
+		$this->assertStringContainsString(needle: '3 schema', haystack: $data['message']);
 	}
 }

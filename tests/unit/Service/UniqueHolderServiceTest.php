@@ -46,7 +46,7 @@ class UniqueHolderServiceTest extends TestCase {
 	 * @return UniqueHolderService The service.
 	 */
 	private function service(callable $objects, array $byId = [], array &$calls = []): UniqueHolderService {
-		$fetcher = $this->createMock(RegisterObjectFetcher::class);
+		$fetcher = $this->createMock(originalClassName: RegisterObjectFetcher::class);
 		$fetcher->method('getObjects')->willReturnCallback(
 			function (string $objectType, ?int $limit = null, ?int $offset = null, ?array $filters = []) use ($objects, &$calls): array {
 				$calls[] = ['type' => $objectType, 'limit' => $limit, 'offset' => $offset, 'filters' => $filters];
@@ -80,10 +80,10 @@ class UniqueHolderServiceTest extends TestCase {
 
 		$holders = $service->otherHolders(query: new HolderQuery(kind: 'item', id: self::CROWN, exceptCharacter: self::BERTRAM, max: 1));
 
-		self::assertSame([['id' => self::QUEEN, 'name' => 'Queen Isolde']], $holders);
-		self::assertCount(1, $calls);
-		self::assertSame(['items' => self::CROWN], $calls[0]['filters']);
-		self::assertSame(2, $calls[0]['limit']);
+		self::assertSame(expected: [['id' => self::QUEEN, 'name' => 'Queen Isolde']], actual: $holders);
+		self::assertCount(expectedCount: 1, haystack: $calls);
+		self::assertSame(expected: ['items' => self::CROWN], actual: $calls[0]['filters']);
+		self::assertSame(expected: 2, actual: $calls[0]['limit']);
 	}//end testFilteredLookupIsBoundedAndNamesTheHolder()
 
 	/**
@@ -96,7 +96,7 @@ class UniqueHolderServiceTest extends TestCase {
 			objects: fn (): array => [['id' => self::QUEEN, 'name' => 'Queen Isolde', 'items' => [self::CROWN]]]
 		);
 
-		self::assertSame([], $service->otherHolders(query: new HolderQuery(kind: 'item', id: self::CROWN, exceptCharacter: self::QUEEN), objectSide: [self::QUEEN]));
+		self::assertSame(expected: [], actual: $service->otherHolders(query: new HolderQuery(kind: 'item', id: self::CROWN, exceptCharacter: self::QUEEN), objectSide: [self::QUEEN]));
 	}//end testTheWrittenCharacterIsNotCounted()
 
 	/**
@@ -114,8 +114,8 @@ class UniqueHolderServiceTest extends TestCase {
 
 		$holders = $service->otherHolders(query: new HolderQuery(kind: 'condition', id: self::CROWN, exceptCharacter: self::BERTRAM), objectSide: [self::QUEEN]);
 
-		self::assertSame([['id' => self::QUEEN, 'name' => 'Mirela']], $holders);
-		self::assertSame(['conditions' => self::CROWN], $calls[0]['filters']);
+		self::assertSame(expected: [['id' => self::QUEEN, 'name' => 'Mirela']], actual: $holders);
+		self::assertSame(expected: ['conditions' => self::CROWN], actual: $calls[0]['filters']);
 	}//end testObjectSideHoldersAreCountedAndNamed()
 
 	/**
@@ -150,17 +150,17 @@ class UniqueHolderServiceTest extends TestCase {
 					return $rows;
 				}
 
-				self::fail('The scan read past the page that held the first holder.');
+				self::fail(message: 'The scan read past the page that held the first holder.');
 			},
 			calls: $calls
 		);
 
 		$holders = $service->otherHolders(query: new HolderQuery(kind: 'item', id: self::CROWN, max: 1));
 
-		self::assertSame([['id' => self::QUEEN, 'name' => 'Queen Isolde']], $holders);
-		self::assertCount(3, $calls, 'one filtered query and two pages of 100');
-		self::assertSame(UniqueHolderService::BATCH, $calls[1]['limit']);
-		self::assertSame(UniqueHolderService::BATCH, $calls[2]['offset']);
+		self::assertSame(expected: [['id' => self::QUEEN, 'name' => 'Queen Isolde']], actual: $holders);
+		self::assertCount(expectedCount: 3, haystack: $calls, message: 'one filtered query and two pages of 100');
+		self::assertSame(expected: UniqueHolderService::BATCH, actual: $calls[1]['limit']);
+		self::assertSame(expected: UniqueHolderService::BATCH, actual: $calls[2]['offset']);
 	}//end testUnfilteredAnswerFallsBackToABoundedScanThatStopsEarly()
 
 	/**
@@ -171,10 +171,10 @@ class UniqueHolderServiceTest extends TestCase {
 	public function testUniqueFollowsTheSchemaDefault(): void {
 		$service = $this->service(objects: fn (): array => []);
 
-		self::assertTrue($service->isUnique(kind: 'item', object: []));
-		self::assertFalse($service->isUnique(kind: 'condition', object: []));
-		self::assertFalse($service->isUnique(kind: 'item', object: ['unique' => false]));
-		self::assertTrue($service->isUnique(kind: 'condition', object: ['unique' => true]));
+		self::assertTrue(condition: $service->isUnique(kind: 'item', object: []));
+		self::assertFalse(condition: $service->isUnique(kind: 'condition', object: []));
+		self::assertFalse(condition: $service->isUnique(kind: 'item', object: ['unique' => false]));
+		self::assertTrue(condition: $service->isUnique(kind: 'condition', object: ['unique' => true]));
 	}//end testUniqueFollowsTheSchemaDefault()
 
 	/**
@@ -210,11 +210,11 @@ class UniqueHolderServiceTest extends TestCase {
 		$conflicts = (new UniqueHolderConflictFinder($service, new IdListNormaliser()))->findConflicts();
 
 		self::assertSame(
-			[
+			expected: [
 				['kind' => 'item', 'id' => self::CROWN, 'name' => 'Crown of Aldmoor', 'holders' => ['Queen Isolde', 'Sir Bertram']],
 				['kind' => 'condition', 'id' => 'curse', 'name' => 'Curse of the Ashen King', 'holders' => ['Queen Isolde', 'tomas']],
 			],
-			$conflicts
+			actual: $conflicts
 		);
 	}//end testFindConflictsListsSharedUniqueObjects()
 
@@ -226,7 +226,7 @@ class UniqueHolderServiceTest extends TestCase {
 	 * @return UniqueHolderService The service.
 	 */
 	private function reader(\Throwable|array $answer): UniqueHolderService {
-		$fetcher = $this->createMock(RegisterObjectFetcher::class);
+		$fetcher = $this->createMock(originalClassName: RegisterObjectFetcher::class);
 		$fetcher->method('getObjectOfType')->willReturnCallback(
 			function (string $objectType, string $id) use ($answer): array {
 				if ($answer instanceof \Throwable) {
@@ -253,7 +253,7 @@ class UniqueHolderServiceTest extends TestCase {
 		];
 
 		foreach ($answers as $name => $answer) {
-			self::assertNull($this->reader(answer: $answer)->readObject(kind: 'item', id: self::CROWN), $name);
+			self::assertNull(actual: $this->reader(answer: $answer)->readObject(kind: 'item', id: self::CROWN), message: $name);
 		}
 	}//end testReadObjectAnswersNullForAnUnknownObject()
 
@@ -267,9 +267,9 @@ class UniqueHolderServiceTest extends TestCase {
 
 		try {
 			$this->reader(answer: $failure)->readObject(kind: 'item', id: self::CROWN);
-			self::fail('The failing lookup was swallowed.');
+			self::fail(message: 'The failing lookup was swallowed.');
 		} catch (\RuntimeException $e) {
-			self::assertSame($failure, $e);
+			self::assertSame(expected: $failure, actual: $e);
 		}
 	}//end testReadObjectRethrowsAFailingLookup()
 
@@ -281,6 +281,6 @@ class UniqueHolderServiceTest extends TestCase {
 	public function testReadObjectReturnsAReadableObject(): void {
 		$crown = ['id' => self::CROWN, 'name' => 'Crown of Aldmoor', 'unique' => true];
 
-		self::assertSame($crown, $this->reader(answer: $crown)->readObject(kind: 'item', id: self::CROWN));
+		self::assertSame(expected: $crown, actual: $this->reader(answer: $crown)->readObject(kind: 'item', id: self::CROWN));
 	}//end testReadObjectReturnsAReadableObject()
 }//end class

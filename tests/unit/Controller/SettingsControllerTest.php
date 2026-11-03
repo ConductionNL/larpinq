@@ -66,22 +66,22 @@ class SettingsControllerTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->request = $this->createMock(IRequest::class);
-		$this->settingsService = $this->createMock(SettingsService::class);
+		$this->request = $this->createMock(originalClassName: IRequest::class);
+		$this->settingsService = $this->createMock(originalClassName: SettingsService::class);
 
-		$appManager = $this->createMock(IAppManager::class);
+		$appManager = $this->createMock(originalClassName: IAppManager::class);
 		$appManager->method('getInstalledApps')->willReturn(['openregister']);
 
-		$userSession = $this->createMock(IUserSession::class);
+		$userSession = $this->createMock(originalClassName: IUserSession::class);
 		$userSession->method('getUser')->willReturn(null);
 
 		$this->controller = new SettingsController(
 			request: $this->request,
-			container: $this->createMock(ContainerInterface::class),
+			container: $this->createMock(originalClassName: ContainerInterface::class),
 			appManager: $appManager,
 			settingsService: $this->settingsService,
-			callerAccess: new CallerAccess($userSession, $this->createMock(IGroupManager::class)),
-			logger: $this->createMock(LoggerInterface::class),
+			callerAccess: new CallerAccess($userSession, $this->createMock(originalClassName: IGroupManager::class)),
+			logger: $this->createMock(originalClassName: LoggerInterface::class),
 		);
 
 	}//end setUp()
@@ -98,13 +98,13 @@ class SettingsControllerTest extends TestCase {
 
 		$result = $this->controller->index();
 
-		self::assertInstanceOf(JSONResponse::class, $result);
-		self::assertArrayHasKey('objectTypes', $result->getData());
-		self::assertArrayHasKey('availableRegisters', $result->getData());
+		self::assertInstanceOf(expected: JSONResponse::class, actual: $result);
+		self::assertArrayHasKey(key: 'objectTypes', array: $result->getData());
+		self::assertArrayHasKey(key: 'availableRegisters', array: $result->getData());
 		// Non-admin must not receive the configuration block (register/schema IDs).
-		self::assertArrayNotHasKey('configuration', $result->getData());
+		self::assertArrayNotHasKey(key: 'configuration', array: $result->getData());
 		// Non-admin must receive an empty availableRegisters list.
-		self::assertEmpty($result->getData()['availableRegisters']);
+		self::assertEmpty(actual: $result->getData()['availableRegisters']);
 
 	}//end testIndexReturnsJsonResponseWithExpectedKeys()
 
@@ -114,37 +114,37 @@ class SettingsControllerTest extends TestCase {
 	 * @return void
 	 */
 	public function testIndexReturnsConfigurationForAdmin(): void {
-		$mockUser = $this->createMock(\OCP\IUser::class);
+		$mockUser = $this->createMock(originalClassName: \OCP\IUser::class);
 		$mockUser->method('getUID')->willReturn('admin');
 
-		$userSession = $this->createMock(IUserSession::class);
+		$userSession = $this->createMock(originalClassName: IUserSession::class);
 		$userSession->method('getUser')->willReturn($mockUser);
 
-		$groupManager = $this->createMock(IGroupManager::class);
+		$groupManager = $this->createMock(originalClassName: IGroupManager::class);
 		$groupManager->method('isAdmin')->with('admin')->willReturn(true);
 
-		$appManager = $this->createMock(IAppManager::class);
+		$appManager = $this->createMock(originalClassName: IAppManager::class);
 		$appManager->method('getInstalledApps')->willReturn([]);
 
-		$settingsService = $this->createMock(SettingsService::class);
+		$settingsService = $this->createMock(originalClassName: SettingsService::class);
 		$settingsService->expects($this->once())
 			->method('getSettings')
 			->willReturn(['openRegisterUrl' => 'http://localhost']);
 
 		$adminController = new SettingsController(
 			request: $this->request,
-			container: $this->createMock(ContainerInterface::class),
+			container: $this->createMock(originalClassName: ContainerInterface::class),
 			appManager: $appManager,
 			settingsService: $settingsService,
 			callerAccess: new CallerAccess($userSession, $groupManager),
-			logger: $this->createMock(LoggerInterface::class),
+			logger: $this->createMock(originalClassName: LoggerInterface::class),
 		);
 
 		$result = $adminController->index();
 
-		self::assertInstanceOf(JSONResponse::class, $result);
-		self::assertArrayHasKey('configuration', $result->getData());
-		self::assertSame('http://localhost', $result->getData()['configuration']['openRegisterUrl']);
+		self::assertInstanceOf(expected: JSONResponse::class, actual: $result);
+		self::assertArrayHasKey(key: 'configuration', array: $result->getData());
+		self::assertSame(expected: 'http://localhost', actual: $result->getData()['configuration']['openRegisterUrl']);
 
 	}//end testIndexReturnsConfigurationForAdmin()
 
@@ -159,9 +159,9 @@ class SettingsControllerTest extends TestCase {
 		$result = $this->controller->index();
 		$objectTypes = $result->getData()['objectTypes'];
 
-		self::assertContains('character', $objectTypes);
-		self::assertContains('skill', $objectTypes);
-		self::assertContains('item', $objectTypes);
+		self::assertContains(needle: 'character', haystack: $objectTypes);
+		self::assertContains(needle: 'skill', haystack: $objectTypes);
+		self::assertContains(needle: 'item', haystack: $objectTypes);
 
 	}//end testIndexIncludesAllObjectTypes()
 
@@ -184,9 +184,9 @@ class SettingsControllerTest extends TestCase {
 
 		$result = $this->controller->create();
 
-		self::assertInstanceOf(JSONResponse::class, $result);
-		self::assertTrue($result->getData()['success']);
-		self::assertArrayHasKey('config', $result->getData());
+		self::assertInstanceOf(expected: JSONResponse::class, actual: $result);
+		self::assertTrue(condition: $result->getData()['success']);
+		self::assertArrayHasKey(key: 'config', array: $result->getData());
 
 	}//end testCreateCallsUpdateSettingsAndReturnsSuccess()
 
@@ -203,9 +203,9 @@ class SettingsControllerTest extends TestCase {
 
 		$result = $this->controller->create();
 
-		self::assertInstanceOf(JSONResponse::class, $result);
-		self::assertSame(500, $result->getStatus());
-		self::assertArrayHasKey('error', $result->getData());
+		self::assertInstanceOf(expected: JSONResponse::class, actual: $result);
+		self::assertSame(expected: 500, actual: $result->getStatus());
+		self::assertArrayHasKey(key: 'error', array: $result->getData());
 
 	}//end testCreateReturns500OnException()
 

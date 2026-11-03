@@ -129,7 +129,7 @@ class RegisterObjectFetcherGoldenTest extends TestCase {
 			}
 		};
 
-		$container = $this->createMock(ContainerInterface::class);
+		$container = $this->createMock(originalClassName: ContainerInterface::class);
 		$container->method('get')->willReturnCallback(
 			function (string $id) use ($service): object {
 				if ($id === 'OCA\OpenRegister\Service\ObjectService') {
@@ -139,14 +139,14 @@ class RegisterObjectFetcherGoldenTest extends TestCase {
 				throw new \RuntimeException('not bound');
 			}
 		);
-		$appManager = $this->createMock(IAppManager::class);
+		$appManager = $this->createMock(originalClassName: IAppManager::class);
 		$appManager->method('getInstalledApps')->willReturn(['openregister']);
-		$config = $this->createMock(IAppConfig::class);
+		$config = $this->createMock(originalClassName: IAppConfig::class);
 		$config->method('getValueString')->willReturnCallback(
 			fn (string $app, string $key, string $default = ''): string => $app.'/'.$key
 		);
 
-		return new RegisterObjectFetcher($container, $appManager, $config, $this->createMock(LoggerInterface::class));
+		return new RegisterObjectFetcher($container, $appManager, $config, $this->createMock(originalClassName: LoggerInterface::class));
 	}//end fetcher()
 
 	/**
@@ -193,9 +193,9 @@ class RegisterObjectFetcherGoldenTest extends TestCase {
 
 		$expected = json_decode((string)file_get_contents(self::FIXTURE), true);
 		foreach ($expected as $name => $outcome) {
-			self::assertSame($outcome, $actual[$name] ?? null, $name);
+			self::assertSame(expected: $outcome, actual: $actual[$name] ?? null, message: $name);
 		}
 
-		self::assertSame(array_keys($expected), array_keys($actual));
+		self::assertSame(expected: array_keys($expected), actual: array_keys($actual));
 	}//end testMatchesTheRecordedOutcomes()
 }//end class

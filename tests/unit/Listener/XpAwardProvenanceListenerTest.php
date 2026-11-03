@@ -56,18 +56,18 @@ class XpAwardProvenanceListenerTest extends TestCase {
 	 * @return XpAwardProvenanceListener The listener.
 	 */
 	private function listener(): XpAwardProvenanceListener {
-		$config = $this->createMock(IAppConfig::class);
+		$config = $this->createMock(originalClassName: IAppConfig::class);
 		$config->method('getValueString')->willReturnCallback(
 			static fn (string $app, string $key, string $default = ''): string => ($key === 'xpaward_schema' ? self::SCHEMA_ID : $default)
 		);
-		$session = $this->createMock(IUserSession::class);
+		$session = $this->createMock(originalClassName: IUserSession::class);
 		$session->method('getUser')->willReturnCallback(
 			function (): ?IUser {
 				if ($this->signedIn === null) {
 					return null;
 				}
 
-				$user = $this->createMock(IUser::class);
+				$user = $this->createMock(originalClassName: IUser::class);
 				$user->method('getUID')->willReturn($this->signedIn);
 				return $user;
 			}
@@ -87,9 +87,9 @@ class XpAwardProvenanceListenerTest extends TestCase {
 		$this->listener()->handle($event);
 
 		$modified = $event->getModifiedData();
-		$this->assertSame('joris', $modified['awardedBy']);
-		$this->assertGreaterThanOrEqual($before, strtotime($modified['awardedAt']));
-		$this->assertFalse($event->isPropagationStopped());
+		$this->assertSame(expected: 'joris', actual: $modified['awardedBy']);
+		$this->assertGreaterThanOrEqual(expected: $before, actual: strtotime($modified['awardedAt']));
+		$this->assertFalse(condition: $event->isPropagationStopped());
 	}//end testACreatedAwardGetsTheActingUserAndTheTime()
 
 	/**
@@ -103,7 +103,7 @@ class XpAwardProvenanceListenerTest extends TestCase {
 		$event = new ObjectUpdatingEvent($new, $old);
 		$this->listener()->handle($event);
 
-		$this->assertSame(['awardedBy' => 'joris', 'awardedAt' => '2026-09-01T10:00:00+00:00'], $event->getModifiedData());
+		$this->assertSame(expected: ['awardedBy' => 'joris', 'awardedAt' => '2026-09-01T10:00:00+00:00'], actual: $event->getModifiedData());
 	}//end testAnUpdateKeepsTheOriginalProvenance()
 
 	/**
@@ -114,11 +114,11 @@ class XpAwardProvenanceListenerTest extends TestCase {
 	public function testOtherObjectsAndSystemWritesAreLeftAlone(): void {
 		$other = new ObjectCreatingEvent(new AwardObjectEntity('character-schema', ['awardedBy' => 'anna']));
 		$this->listener()->handle($other);
-		$this->assertSame([], $other->getModifiedData());
+		$this->assertSame(expected: [], actual: $other->getModifiedData());
 
 		$this->signedIn = null;
 		$seed = new ObjectCreatingEvent(new AwardObjectEntity(self::SCHEMA_ID, ['awardedBy' => 'joris']));
 		$this->listener()->handle($seed);
-		$this->assertSame([], $seed->getModifiedData());
+		$this->assertSame(expected: [], actual: $seed->getModifiedData());
 	}//end testOtherObjectsAndSystemWritesAreLeftAlone()
 }//end class

@@ -93,7 +93,7 @@ class RuleSchemaAuthorizationTest extends TestCase {
 	private function mergedRegister(): array {
 		$appPath = dirname(__DIR__, 3);
 		$monolith = json_decode((string)file_get_contents($appPath . '/lib/Settings/larpinq_register.json'), true);
-		$this->assertIsArray($monolith);
+		$this->assertIsArray(actual: $monolith);
 
 		$reflection = new ReflectionClass(ConfigFileLoaderService::class);
 		$loader = $reflection->newInstanceWithoutConstructor();
@@ -126,7 +126,7 @@ class RuleSchemaAuthorizationTest extends TestCase {
 			}
 		}
 
-		$this->markTestSkipped('OpenRegister is not on the path; set OPENREGISTER_LIB to its lib/ to run the real evaluator.');
+		$this->markTestSkipped(message: 'OpenRegister is not on the path; set OPENREGISTER_LIB to its lib/ to run the real evaluator.');
 	}//end requireOpenRegister()
 
 	/**
@@ -148,31 +148,31 @@ class RuleSchemaAuthorizationTest extends TestCase {
 		$register->setId(3);
 		$register->setAuthorization($registerAuthorization);
 
-		$registers = $this->createMock(\OCA\OpenRegister\Db\RegisterMapper::class);
+		$registers = $this->createMock(originalClassName: \OCA\OpenRegister\Db\RegisterMapper::class);
 		$registers->method('getFirstRegisterWithSchema')->willReturn(3);
 		$registers->method('find')->willReturn($register);
-		$container = $this->createMock(ContainerInterface::class);
+		$container = $this->createMock(originalClassName: ContainerInterface::class);
 		$container->method('get')->willReturnCallback(
 			static fn (string $id): object => ($id === \OCA\OpenRegister\Db\RegisterMapper::class ? $registers : throw new \RuntimeException('not in this test: ' . $id))
 		);
 
-		$user = $this->createMock(IUser::class);
+		$user = $this->createMock(originalClassName: IUser::class);
 		$user->method('getUID')->willReturn('anna');
-		$session = $this->createMock(IUserSession::class);
+		$session = $this->createMock(originalClassName: IUserSession::class);
 		$session->method('getUser')->willReturn($user);
-		$users = $this->createMock(IUserManager::class);
+		$users = $this->createMock(originalClassName: IUserManager::class);
 		$users->method('get')->willReturn($user);
-		$groupManager = $this->createMock(IGroupManager::class);
+		$groupManager = $this->createMock(originalClassName: IGroupManager::class);
 		$groupManager->method('getUserGroupIds')->willReturn($groups);
 
 		$handler = new \OCA\OpenRegister\Service\Object\PermissionHandler(
 			userSession: $session,
 			userManager: $users,
 			groupManager: $groupManager,
-			schemaMapper: $this->createMock(\OCA\OpenRegister\Db\SchemaMapper::class),
-			objectEntityMapper: $this->createMock(\OCA\OpenRegister\Db\MagicMapper::class),
-			conditionMatcher: $this->createMock(\OCA\OpenRegister\Service\ConditionMatcher::class),
-			appConfig: $this->createMock(IAppConfig::class),
+			schemaMapper: $this->createMock(originalClassName: \OCA\OpenRegister\Db\SchemaMapper::class),
+			objectEntityMapper: $this->createMock(originalClassName: \OCA\OpenRegister\Db\MagicMapper::class),
+			conditionMatcher: $this->createMock(originalClassName: \OCA\OpenRegister\Service\ConditionMatcher::class),
+			appConfig: $this->createMock(originalClassName: IAppConfig::class),
 			logger: new NullLogger(),
 			container: $container,
 		);
@@ -192,13 +192,13 @@ class RuleSchemaAuthorizationTest extends TestCase {
 		$register = new \OCA\OpenRegister\Db\Register();
 		$register->setAuthorization($registerAuthorization);
 
-		$user = $this->createMock(IUser::class);
+		$user = $this->createMock(originalClassName: IUser::class);
 		$user->method('getUID')->willReturn('anna');
-		$session = $this->createMock(IUserSession::class);
+		$session = $this->createMock(originalClassName: IUserSession::class);
 		$session->method('getUser')->willReturn($user);
-		$groupManager = $this->createMock(IGroupManager::class);
+		$groupManager = $this->createMock(originalClassName: IGroupManager::class);
 		$groupManager->method('getUserGroupIds')->willReturn($groups);
-		$container = $this->createMock(ContainerInterface::class);
+		$container = $this->createMock(originalClassName: ContainerInterface::class);
 		$container->method('get')->willReturn($groupManager);
 
 		$class = \OCA\OpenRegister\Controller\RegistersController::class;
@@ -226,7 +226,7 @@ class RuleSchemaAuthorizationTest extends TestCase {
 	public function testEveryRuleSchemaDeclaresItsOwnRules(): void {
 		$schemas = $this->mergedRegister()['components']['schemas'];
 		foreach (self::RULE_SCHEMAS as $key) {
-			$this->assertSame(self::RULE_BLOCK, $schemas[$key]['authorization'] ?? null, "{$key} must declare its own rules");
+			$this->assertSame(expected: self::RULE_BLOCK, actual: $schemas[$key]['authorization'] ?? null, message: "{$key} must declare its own rules");
 		}
 	}//end testEveryRuleSchemaDeclaresItsOwnRules()
 
@@ -237,7 +237,7 @@ class RuleSchemaAuthorizationTest extends TestCase {
 	 */
 	public function testNoSchemaFallsBackToTheRegisterBlock(): void {
 		foreach ($this->mergedRegister()['components']['schemas'] as $key => $schema) {
-			$this->assertNotEmpty($schema['authorization'] ?? null, "{$key} has no rules, so the register's manage-only block would become its rules");
+			$this->assertNotEmpty(actual: $schema['authorization'] ?? null, message: "{$key} has no rules, so the register's manage-only block would become its rules");
 		}
 	}//end testNoSchemaFallsBackToTheRegisterBlock()
 
@@ -252,9 +252,9 @@ class RuleSchemaAuthorizationTest extends TestCase {
 		foreach (self::RULE_SCHEMAS as $key) {
 			$block = ($register['schemas'][$key]['authorization'] ?? []);
 			$registerBlock = ($register['registers']['larpinq']['authorization'] ?? null);
-			$this->assertTrue($this->verdict($block, $registerBlock, self::USERS['player'], 'read'), "a player reads {$key}");
+			$this->assertTrue(condition: $this->verdict(schemaAuthorization: $block, registerAuthorization: $registerBlock, groups: self::USERS['player'], action: 'read'), message: "a player reads {$key}");
 			foreach (['create', 'update', 'delete'] as $action) {
-				$this->assertFalse($this->verdict($block, $registerBlock, self::USERS['player'], $action), "a player cannot {$action} {$key}");
+				$this->assertFalse(condition: $this->verdict(schemaAuthorization: $block, registerAuthorization: $registerBlock, groups: self::USERS['player'], action: $action), message: "a player cannot {$action} {$key}");
 			}
 		}
 	}//end testAPlayerReadsButCannotWriteTheRuleSchemas()
@@ -271,14 +271,14 @@ class RuleSchemaAuthorizationTest extends TestCase {
 		foreach (self::RULE_SCHEMAS as $key) {
 			foreach (['read', 'create', 'update', 'delete'] as $action) {
 				$this->assertTrue(
-					$this->verdict(($register['schemas'][$key]['authorization'] ?? []), $registerBlock, self::USERS['game master'], $action),
-					"a game master may {$action} {$key}"
+					condition: $this->verdict(schemaAuthorization: ($register['schemas'][$key]['authorization'] ?? []), registerAuthorization: $registerBlock, groups: self::USERS['game master'], action: $action),
+					message: "a game master may {$action} {$key}"
 				);
 			}
 		}
 
-		$this->assertTrue($this->mayImport($registerBlock, self::USERS['game master']), 'a game master imports');
-		$this->assertFalse($this->mayImport($registerBlock, self::USERS['player']), 'a player does not import');
+		$this->assertTrue(condition: $this->mayImport(registerAuthorization: $registerBlock, groups: self::USERS['game master']), message: 'a game master imports');
+		$this->assertFalse(condition: $this->mayImport(registerAuthorization: $registerBlock, groups: self::USERS['player']), message: 'a player does not import');
 	}//end testAGameMasterWritesAndImports()
 
 	/**
@@ -293,9 +293,9 @@ class RuleSchemaAuthorizationTest extends TestCase {
 		$registerBlock = ($register['registers']['larpinq']['authorization'] ?? null);
 		foreach ($register['schemas'] as $key => $schema) {
 			foreach (self::USERS as $who => $groups) {
-				$without = $this->verdict(($schema['authorization'] ?? []), null, $groups, 'read');
-				$with = $this->verdict(($schema['authorization'] ?? []), $registerBlock, $groups, 'read');
-				$this->assertSame($without, $with, "the {$who} read verdict on {$key} must not change with the register's rule");
+				$without = $this->verdict(schemaAuthorization: ($schema['authorization'] ?? []), registerAuthorization: null, groups: $groups, action: 'read');
+				$with = $this->verdict(schemaAuthorization: ($schema['authorization'] ?? []), registerAuthorization: $registerBlock, groups: $groups, action: 'read');
+				$this->assertSame(expected: $without, actual: $with, message: "the {$who} read verdict on {$key} must not change with the register's rule");
 			}
 		}
 	}//end testNobodyLosesRead()
@@ -309,8 +309,8 @@ class RuleSchemaAuthorizationTest extends TestCase {
 	public function testXpAwardsAndAttendanceDeclareGameMastersAsTheirReaders(): void {
 		$schemas = $this->mergedRegister()['components']['schemas'];
 		foreach (self::RECORD_SCHEMAS as $key) {
-			$this->assertSame([Application::GM_GROUP], ($schemas[$key]['authorization']['read'] ?? null), "{$key} is read by game masters");
-			$this->assertSame([Application::GM_GROUP], ($schemas[$key]['authorization']['create'] ?? null), "{$key} is written by game masters");
+			$this->assertSame(expected: [Application::GM_GROUP], actual: ($schemas[$key]['authorization']['read'] ?? null), message: "{$key} is read by game masters");
+			$this->assertSame(expected: [Application::GM_GROUP], actual: ($schemas[$key]['authorization']['create'] ?? null), message: "{$key} is written by game masters");
 		}
 	}//end testXpAwardsAndAttendanceDeclareGameMastersAsTheirReaders()
 
@@ -326,11 +326,11 @@ class RuleSchemaAuthorizationTest extends TestCase {
 		$registerBlock = ($register['registers']['larpinq']['authorization'] ?? null);
 		foreach (self::RECORD_SCHEMAS as $key) {
 			$block = ($register['schemas'][$key]['authorization'] ?? []);
-			$this->assertTrue($this->verdict($block, $registerBlock, self::USERS['game master'], 'read', 'gerrit'), "a game master reads a {$key} record someone else owns");
-			$this->assertTrue($this->verdict($block, $registerBlock, self::USERS['player'], 'read', 'anna'), "the owner reads her own {$key} record");
-			$this->assertFalse($this->verdict($block, $registerBlock, self::USERS['player'], 'read', 'gerrit'), "a player does not read a {$key} record she does not own");
-			$this->assertFalse($this->verdict($block, $registerBlock, self::USERS['player'], 'read'), "a player does not read {$key} records at schema level");
-			$this->assertFalse($this->verdict($block, $registerBlock, self::USERS['player'], 'create'), "a player does not create {$key} records");
+			$this->assertTrue(condition: $this->verdict(schemaAuthorization: $block, registerAuthorization: $registerBlock, groups: self::USERS['game master'], action: 'read', owner: 'gerrit'), message: "a game master reads a {$key} record someone else owns");
+			$this->assertTrue(condition: $this->verdict(schemaAuthorization: $block, registerAuthorization: $registerBlock, groups: self::USERS['player'], action: 'read', owner: 'anna'), message: "the owner reads her own {$key} record");
+			$this->assertFalse(condition: $this->verdict(schemaAuthorization: $block, registerAuthorization: $registerBlock, groups: self::USERS['player'], action: 'read', owner: 'gerrit'), message: "a player does not read a {$key} record she does not own");
+			$this->assertFalse(condition: $this->verdict(schemaAuthorization: $block, registerAuthorization: $registerBlock, groups: self::USERS['player'], action: 'read'), message: "a player does not read {$key} records at schema level");
+			$this->assertFalse(condition: $this->verdict(schemaAuthorization: $block, registerAuthorization: $registerBlock, groups: self::USERS['player'], action: 'create'), message: "a player does not create {$key} records");
 		}
 	}//end testGameMastersAndTheOwnerReadXpAwardsAndAttendance()
 
@@ -345,12 +345,12 @@ class RuleSchemaAuthorizationTest extends TestCase {
 		$register = $this->mergedRegister()['components'];
 		$registerBlock = ($register['registers']['larpinq']['authorization'] ?? null);
 		$codes = ($register['schemas']['accessCode']['authorization'] ?? null);
-		$this->assertNotNull($codes, 'the accessCode schema declares its rules');
-		$this->assertTrue($this->verdict($codes, $registerBlock, self::USERS['game master'], 'read'), 'a game master reads codes');
-		$this->assertFalse($this->verdict($codes, $registerBlock, self::USERS['player'], 'read'), 'a player does not read codes');
-		$this->assertFalse($this->verdict($codes, $registerBlock, self::USERS['player'], 'create'), 'a player does not make codes');
+		$this->assertNotNull(actual: $codes, message: 'the accessCode schema declares its rules');
+		$this->assertTrue(condition: $this->verdict(schemaAuthorization: $codes, registerAuthorization: $registerBlock, groups: self::USERS['game master'], action: 'read'), message: 'a game master reads codes');
+		$this->assertFalse(condition: $this->verdict(schemaAuthorization: $codes, registerAuthorization: $registerBlock, groups: self::USERS['player'], action: 'read'), message: 'a player does not read codes');
+		$this->assertFalse(condition: $this->verdict(schemaAuthorization: $codes, registerAuthorization: $registerBlock, groups: self::USERS['player'], action: 'create'), message: 'a player does not make codes');
 		$options = ($register['schemas']['registrationOption']['authorization'] ?? []);
-		$this->assertTrue($this->verdict($options, $registerBlock, self::USERS['player'], 'read'), 'a player reads the options');
-		$this->assertFalse($this->verdict($options, $registerBlock, self::USERS['player'], 'update'), 'a player does not change an option');
+		$this->assertTrue(condition: $this->verdict(schemaAuthorization: $options, registerAuthorization: $registerBlock, groups: self::USERS['player'], action: 'read'), message: 'a player reads the options');
+		$this->assertFalse(condition: $this->verdict(schemaAuthorization: $options, registerAuthorization: $registerBlock, groups: self::USERS['player'], action: 'update'), message: 'a player does not change an option');
 	}//end testOnlyGameMastersReadAccessCodes()
 }//end class

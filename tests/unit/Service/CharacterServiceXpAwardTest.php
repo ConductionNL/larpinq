@@ -31,7 +31,7 @@ class CharacterServiceXpAwardTest extends TestCase {
 		array $skills = [],
 		array $xpAwards = [],
 	): CharacterService {
-		$fetcher = $this->createMock(RegisterObjectFetcher::class);
+		$fetcher = $this->createMock(originalClassName: RegisterObjectFetcher::class);
 		$fetcher->method('getObjects')->willReturnCallback(
 			function (string $type) use ($abilities, $effects, $skills, $xpAwards): array {
 				return match ($type) {
@@ -44,7 +44,7 @@ class CharacterServiceXpAwardTest extends TestCase {
 			}
 		);
 
-		return new CharacterService($fetcher, $this->createMock(LoggerInterface::class), new EffectApplier());
+		return new CharacterService($fetcher, $this->createMock(originalClassName: LoggerInterface::class), new EffectApplier());
 	}
 
 	public function testAwardsSumOntoXpAbility(): void {
@@ -56,7 +56,7 @@ class CharacterServiceXpAwardTest extends TestCase {
 		$service = $this->makeService(abilities: $abilities, xpAwards: $xpAwards);
 
 		$result = $service->calculateCharacter(['id' => 'char-1', 'name' => 'Hero']);
-		self::assertSame(8, $result['stats']['xpid']['value']);
+		self::assertSame(expected: 8, actual: $result['stats']['xpid']['value']);
 	}
 
 	public function testAuditEntriesRecordedInOrder(): void {
@@ -68,12 +68,12 @@ class CharacterServiceXpAwardTest extends TestCase {
 
 		$result = $service->calculateCharacter(['id' => 'char-1', 'name' => 'Hero']);
 		$audit = $result['stats']['xpid']['audit'];
-		self::assertCount(1, $audit);
-		self::assertSame('xpAward', $audit[0]['type']);
-		self::assertSame(10, $audit[0]['old']);
-		self::assertSame(14, $audit[0]['new']);
-		self::assertSame('a1', $audit[0]['award']['id']);
-		self::assertSame(4, $audit[0]['award']['amount']);
+		self::assertCount(expectedCount: 1, haystack: $audit);
+		self::assertSame(expected: 'xpAward', actual: $audit[0]['type']);
+		self::assertSame(expected: 10, actual: $audit[0]['old']);
+		self::assertSame(expected: 14, actual: $audit[0]['new']);
+		self::assertSame(expected: 'a1', actual: $audit[0]['award']['id']);
+		self::assertSame(expected: 4, actual: $audit[0]['award']['amount']);
 	}
 
 	public function testAwardsAppliedAfterEffects(): void {
@@ -85,11 +85,11 @@ class CharacterServiceXpAwardTest extends TestCase {
 		$service = $this->makeService(abilities: $abilities, effects: $effects, skills: $skills, xpAwards: $xpAwards);
 
 		$result = $service->calculateCharacter(['id' => 'char-1', 'skills' => ['s1']]);
-		self::assertSame(7, $result['stats']['xpid']['value']);
+		self::assertSame(expected: 7, actual: $result['stats']['xpid']['value']);
 		// Audit: effect first, then award.
 		$audit = $result['stats']['xpid']['audit'];
-		self::assertSame('effect', $audit[0]['type']);
-		self::assertSame('xpAward', $audit[1]['type']);
+		self::assertSame(expected: 'effect', actual: $audit[0]['type']);
+		self::assertSame(expected: 'xpAward', actual: $audit[1]['type']);
 	}
 
 	public function testFourStageRegressionUnchangedWhenNoAwards(): void {
@@ -100,9 +100,9 @@ class CharacterServiceXpAwardTest extends TestCase {
 		$service = $this->makeService(abilities: $abilities, effects: $effects, skills: $skills, xpAwards: []);
 
 		$result = $service->calculateCharacter(['id' => 'char-1', 'skills' => ['s1']]);
-		self::assertSame(13, $result['stats']['str']['value']);
-		self::assertCount(1, $result['stats']['str']['audit']);
-		self::assertSame('effect', $result['stats']['str']['audit'][0]['type']);
+		self::assertSame(expected: 13, actual: $result['stats']['str']['value']);
+		self::assertCount(expectedCount: 1, haystack: $result['stats']['str']['audit']);
+		self::assertSame(expected: 'effect', actual: $result['stats']['str']['audit'][0]['type']);
 	}
 
 	public function testAwardForOtherCharacterIgnored(): void {
@@ -111,7 +111,7 @@ class CharacterServiceXpAwardTest extends TestCase {
 		$service = $this->makeService(abilities: $abilities, xpAwards: $xpAwards);
 
 		$result = $service->calculateCharacter(['id' => 'char-1', 'name' => 'Hero']);
-		self::assertSame(0, $result['stats']['xpid']['value']);
+		self::assertSame(expected: 0, actual: $result['stats']['xpid']['value']);
 	}
 
 	public function testNoXpAbilityMeansNoCrash(): void {
@@ -121,7 +121,7 @@ class CharacterServiceXpAwardTest extends TestCase {
 		$service = $this->makeService(abilities: $abilities, xpAwards: $xpAwards);
 
 		$result = $service->calculateCharacter(['id' => 'char-1', 'name' => 'Hero']);
-		self::assertSame(5, $result['stats']['str']['value']);
+		self::assertSame(expected: 5, actual: $result['stats']['str']['value']);
 	}
 
 	public function testNonNumericAmountSkipped(): void {
@@ -133,7 +133,7 @@ class CharacterServiceXpAwardTest extends TestCase {
 		$service = $this->makeService(abilities: $abilities, xpAwards: $xpAwards);
 
 		$result = $service->calculateCharacter(['id' => 'char-1', 'name' => 'Hero']);
-		self::assertSame(5, $result['stats']['xpid']['value']);
+		self::assertSame(expected: 5, actual: $result['stats']['xpid']['value']);
 	}
 
 	public function testCharacterWithoutIdGetsNoAwards(): void {
@@ -142,6 +142,6 @@ class CharacterServiceXpAwardTest extends TestCase {
 		$service = $this->makeService(abilities: $abilities, xpAwards: $xpAwards);
 
 		$result = $service->calculateCharacter(['name' => 'No Id']);
-		self::assertSame(0, $result['stats']['xpid']['value']);
+		self::assertSame(expected: 0, actual: $result['stats']['xpid']['value']);
 	}
 }

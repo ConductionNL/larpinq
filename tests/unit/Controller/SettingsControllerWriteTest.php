@@ -80,22 +80,22 @@ class SettingsControllerWriteTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->request = $this->createMock(IRequest::class);
-		$this->settingsService = $this->createMock(SettingsService::class);
+		$this->request = $this->createMock(originalClassName: IRequest::class);
+		$this->settingsService = $this->createMock(originalClassName: SettingsService::class);
 
-		$appManager = $this->createMock(IAppManager::class);
+		$appManager = $this->createMock(originalClassName: IAppManager::class);
 		$appManager->method('getInstalledApps')->willReturn(['openregister']);
 
-		$userSession = $this->createMock(IUserSession::class);
+		$userSession = $this->createMock(originalClassName: IUserSession::class);
 		$userSession->method('getUser')->willReturn(null);
 
 		$this->controller = new SettingsController(
 			request: $this->request,
-			container: $this->createMock(ContainerInterface::class),
+			container: $this->createMock(originalClassName: ContainerInterface::class),
 			appManager: $appManager,
 			settingsService: $this->settingsService,
-			callerAccess: new CallerAccess($userSession, $this->createMock(IGroupManager::class)),
-			logger: $this->createMock(LoggerInterface::class),
+			callerAccess: new CallerAccess($userSession, $this->createMock(originalClassName: IGroupManager::class)),
+			logger: $this->createMock(originalClassName: LoggerInterface::class),
 		);
 
 	}//end setUp()
@@ -125,11 +125,11 @@ class SettingsControllerWriteTest extends TestCase {
 
 		$response = $this->controller->update();
 
-		self::assertInstanceOf(JSONResponse::class, $response);
+		self::assertInstanceOf(expected: JSONResponse::class, actual: $response);
 		self::assertSame(
-			['success' => true, 'config' => $stored],
-			$response->getData(),
-			'update() must return the config the service stored, not the submission'
+			expected: ['success' => true, 'config' => $stored],
+			actual: $response->getData(),
+			message: 'update() must return the config the service stored, not the submission'
 		);
 
 	}//end testUpdatePersistsRequestParametersAndReturnsStoredConfig()
@@ -159,11 +159,11 @@ class SettingsControllerWriteTest extends TestCase {
 
 		$response = $this->controller->create();
 
-		self::assertInstanceOf(JSONResponse::class, $response);
+		self::assertInstanceOf(expected: JSONResponse::class, actual: $response);
 		self::assertSame(
-			['success' => true, 'config' => $stored],
-			$response->getData(),
-			'create() must produce exactly the result update() produces'
+			expected: ['success' => true, 'config' => $stored],
+			actual: $response->getData(),
+			message: 'create() must produce exactly the result update() produces'
 		);
 
 	}//end testCreateDelegatesToUpdateAndStillWrites()
@@ -187,8 +187,8 @@ class SettingsControllerWriteTest extends TestCase {
 		$response = $this->controller->update();
 
 		self::assertSame(
-			['success' => true, 'config' => ['unchanged' => true]],
-			$response->getData()
+			expected: ['success' => true, 'config' => ['unchanged' => true]],
+			actual: $response->getData()
 		);
 
 	}//end testEmptySubmissionStillReachesTheService()
@@ -207,9 +207,9 @@ class SettingsControllerWriteTest extends TestCase {
 
 		$response = $this->controller->update();
 
-		self::assertInstanceOf(JSONResponse::class, $response);
-		self::assertSame(500, $response->getStatus());
-		self::assertSame('Service error', $response->getData()['error']);
+		self::assertInstanceOf(expected: JSONResponse::class, actual: $response);
+		self::assertSame(expected: 500, actual: $response->getStatus());
+		self::assertSame(expected: 'Service error', actual: $response->getData()['error']);
 
 	}//end testUpdateReturns500OnServiceException()
 

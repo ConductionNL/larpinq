@@ -194,11 +194,11 @@ class RegistrationServiceTest extends TestCase {
 	 */
 	private function fetcher(): RegisterObjectFetcher {
 		$store = $this->store;
-		$container = $this->createMock(ContainerInterface::class);
+		$container = $this->createMock(originalClassName: ContainerInterface::class);
 		$container->method('get')->willReturnCallback(
 			static fn (string $id): object => ($id === 'OCA\OpenRegister\Service\ObjectService' ? $store : throw new \RuntimeException('not bound: ' . $id))
 		);
-		$apps = $this->createMock(IAppManager::class);
+		$apps = $this->createMock(originalClassName: IAppManager::class);
 		$apps->method('getInstalledApps')->willReturn(['openregister']);
 
 		return new RegisterObjectFetcher($container, $apps, $this->config(), new NullLogger());
@@ -210,7 +210,7 @@ class RegistrationServiceTest extends TestCase {
 	 * @return IAppConfig The config.
 	 */
 	private function config(): IAppConfig {
-		$config = $this->createMock(IAppConfig::class);
+		$config = $this->createMock(originalClassName: IAppConfig::class);
 		$config->method('getValueString')->willReturnCallback(
 			static fn (string $app, string $key, string $default = ''): string => (str_ends_with($key, '_register') === true ? '3' : (str_ends_with($key, '_schema') === true ? substr($key, 0, -strlen('_schema')) : $default))
 		);
@@ -226,15 +226,15 @@ class RegistrationServiceTest extends TestCase {
 	 * @return RegistrationListener The listener.
 	 */
 	private function listener(string $request, int $lockAttempts = 30): RegistrationListener {
-		$session = $this->createMock(IUserSession::class);
+		$session = $this->createMock(originalClassName: IUserSession::class);
 		$session->method('getUser')->willReturnCallback(
 			function (): IUser {
-				$user = $this->createMock(IUser::class);
+				$user = $this->createMock(originalClassName: IUser::class);
 				$user->method('getUID')->willReturn($this->signedIn);
 				return $user;
 			}
 		);
-		$l10n = $this->createMock(IL10N::class);
+		$l10n = $this->createMock(originalClassName: IL10N::class);
 		$l10n->method('t')->willReturnCallback(static fn (string $text): string => $text);
 		$service = new RegistrationService($this->fetcher(), $this->locks->forRequest($request), new NullLogger(), $lockAttempts, 0);
 
@@ -299,12 +299,12 @@ class RegistrationServiceTest extends TestCase {
 	public function testWithoutApprovalAFreePlaceIsAccepted(): void {
 		$saved = $this->signUp(player: self::ANNA, uid: 'anna');
 
-		$row = $this->registration($saved['id']);
-		$this->assertSame('accepted', $row['status']);
-		$this->assertSame('larpinq', $row['decidedBy']);
-		$this->assertNotEmpty($row['decidedAt']);
-		$this->assertSame(['larpinq/event-capacity/' . self::EVENT], $this->locks->acquired);
-		$this->assertSame([], $this->locks->held, 'the post-write handler releases the lock');
+		$row = $this->registration(id: $saved['id']);
+		$this->assertSame(expected: 'accepted', actual: $row['status']);
+		$this->assertSame(expected: 'larpinq', actual: $row['decidedBy']);
+		$this->assertNotEmpty(actual: $row['decidedAt']);
+		$this->assertSame(expected: ['larpinq/event-capacity/' . self::EVENT], actual: $this->locks->acquired);
+		$this->assertSame(expected: [], actual: $this->locks->held, message: 'the post-write handler releases the lock');
 	}//end testWithoutApprovalAFreePlaceIsAccepted()
 
 	/**
@@ -318,7 +318,7 @@ class RegistrationServiceTest extends TestCase {
 
 		$saved = $this->signUp(player: self::PIETER, uid: 'pieter');
 
-		$this->assertSame('waitlisted', $this->registration($saved['id'])['status']);
+		$this->assertSame(expected: 'waitlisted', actual: $this->registration(id: $saved['id'])['status']);
 	}//end testAFullEventWaitlistsAndCountsHandAddedParticipants()
 
 	/**
@@ -331,8 +331,8 @@ class RegistrationServiceTest extends TestCase {
 
 		$saved = $this->signUp(player: self::KAREL, uid: 'karel');
 
-		$this->assertSame('pending', $this->registration($saved['id'])['status']);
-		$this->assertSame([], $this->locks->acquired);
+		$this->assertSame(expected: 'pending', actual: $this->registration(id: $saved['id'])['status']);
+		$this->assertSame(expected: [], actual: $this->locks->acquired);
 	}//end testWithApprovalANewRegistrationIsPending()
 
 	/**
@@ -349,10 +349,10 @@ class RegistrationServiceTest extends TestCase {
 		$this->fetcher()->saveObject('registration', ['status' => 'accepted'], $first['id']);
 		$this->fetcher()->saveObject('registration', ['status' => 'accepted'], $second['id']);
 
-		$this->assertSame('accepted', $this->registration($first['id'])['status']);
-		$this->assertSame('gm', $this->registration($first['id'])['decidedBy']);
-		$this->assertSame('waitlisted', $this->registration($second['id'])['status']);
-		$this->assertSame([], $this->locks->held);
+		$this->assertSame(expected: 'accepted', actual: $this->registration(id: $first['id'])['status']);
+		$this->assertSame(expected: 'gm', actual: $this->registration(id: $first['id'])['decidedBy']);
+		$this->assertSame(expected: 'waitlisted', actual: $this->registration(id: $second['id'])['status']);
+		$this->assertSame(expected: [], actual: $this->locks->held);
 	}//end testAGameMasterAcceptsWhenAPlaceIsFreeAndWaitlistsWhenNot()
 
 	/**
@@ -368,9 +368,9 @@ class RegistrationServiceTest extends TestCase {
 		$anna = $this->signUp(player: self::ANNA, uid: 'anna');
 		$this->fetcher()->saveObject('registration', ['status' => 'accepted'], $anna['id']);
 
-		$this->assertSame('declined', $this->registration($karel['id'])['status']);
-		$this->assertSame('gm', $this->registration($karel['id'])['decidedBy']);
-		$this->assertSame('accepted', $this->registration($anna['id'])['status']);
+		$this->assertSame(expected: 'declined', actual: $this->registration(id: $karel['id'])['status']);
+		$this->assertSame(expected: 'gm', actual: $this->registration(id: $karel['id'])['decidedBy']);
+		$this->assertSame(expected: 'accepted', actual: $this->registration(id: $anna['id'])['status']);
 	}//end testADeclinedRegistrationIsStampedAndTakesNoPlace()
 
 	/**
@@ -392,11 +392,11 @@ class RegistrationServiceTest extends TestCase {
 		$sanneRequest->handle($sanneWrite);
 		$pieterRequest->handle($pieterWrite);
 		$this->store->seed('registration', array_merge($sanne->getObject(), $sanneWrite->getModifiedData(), ['id' => $sanne->getUuid()]));
-		$sanneRequest->handle(new ObjectCreatedEvent(new InMemoryObjectEntity(schema: 'registration', data: $this->registration((string)$sanne->getUuid()), uuid: $sanne->getUuid())));
+		$sanneRequest->handle(new ObjectCreatedEvent(new InMemoryObjectEntity(schema: 'registration', data: $this->registration(id: (string)$sanne->getUuid()), uuid: $sanne->getUuid())));
 
-		$this->assertSame('accepted', $sanneWrite->getModifiedData()['status']);
-		$this->assertSame('waitlisted', $pieterWrite->getModifiedData()['status']);
-		$this->assertSame([], $this->locks->held);
+		$this->assertSame(expected: 'accepted', actual: $sanneWrite->getModifiedData()['status']);
+		$this->assertSame(expected: 'waitlisted', actual: $pieterWrite->getModifiedData()['status']);
+		$this->assertSame(expected: [], actual: $this->locks->held);
 	}//end testTheLastPlaceGoesToOneOfTwoSimultaneousSignUps()
 
 	/**
@@ -408,7 +408,7 @@ class RegistrationServiceTest extends TestCase {
 		$this->signedIn = 'anna';
 		$this->signUp(player: self::ANNA, uid: 'anna', character: self::MIRELA);
 
-		$this->assertSame([self::MIRELA], $this->store->objects['event'][self::EVENT]['players']);
+		$this->assertSame(expected: [self::MIRELA], actual: $this->store->objects['event'][self::EVENT]['players']);
 	}//end testAnAcceptedRegistrationPutsItsCharacterInTheEvent()
 
 	/**
@@ -424,11 +424,11 @@ class RegistrationServiceTest extends TestCase {
 
 		$this->fetcher()->saveObject('registration', ['status' => 'cancelled'], 'e0000000-0000-4000-8000-000000000021');
 
-		$this->assertSame('accepted', $this->registration('e0000000-0000-4000-8000-000000000023')['status'], 'the oldest waitlisted gets the place');
-		$this->assertSame('larpinq', $this->registration('e0000000-0000-4000-8000-000000000023')['decidedBy']);
-		$this->assertSame('waitlisted', $this->registration('e0000000-0000-4000-8000-000000000022')['status']);
-		$this->assertSame([self::TOMAS], array_values($this->store->objects['event'][self::EVENT]['players']));
-		$this->assertSame([], $this->locks->held);
+		$this->assertSame(expected: 'accepted', actual: $this->registration(id: 'e0000000-0000-4000-8000-000000000023')['status'], message: 'the oldest waitlisted gets the place');
+		$this->assertSame(expected: 'larpinq', actual: $this->registration(id: 'e0000000-0000-4000-8000-000000000023')['decidedBy']);
+		$this->assertSame(expected: 'waitlisted', actual: $this->registration(id: 'e0000000-0000-4000-8000-000000000022')['status']);
+		$this->assertSame(expected: [self::TOMAS], actual: array_values($this->store->objects['event'][self::EVENT]['players']));
+		$this->assertSame(expected: [], actual: $this->locks->held);
 	}//end testLeavingAcceptedRemovesTheCharacterAndPromotesTheOldestWaitlisted()
 
 	/**
@@ -444,13 +444,13 @@ class RegistrationServiceTest extends TestCase {
 		foreach ([self::HARROW => 'not hers and retired', self::VENN => 'not hers', self::FAR_AWAY => 'another world'] as $character => $why) {
 			try {
 				$this->fetcher()->saveObject('registration', ['character' => $character], $anna['id']);
-				$this->fail('Anna may not bring a character that is ' . $why);
+				$this->fail(message: 'Anna may not bring a character that is ' . $why);
 			} catch (\RuntimeException $e) {
-				$this->assertStringContainsString('Refused', $e->getMessage());
+				$this->assertStringContainsString(needle: 'Refused', haystack: $e->getMessage());
 			}
 		}
 
 		$this->fetcher()->saveObject('registration', ['character' => self::MIRELA], $anna['id']);
-		$this->assertSame(self::MIRELA, $this->registration($anna['id'])['character']);
+		$this->assertSame(expected: self::MIRELA, actual: $this->registration(id: $anna['id'])['character']);
 	}//end testAPlayerChoosesOnlyTheirOwnActiveCharacterOfTheWorld()
 }//end class

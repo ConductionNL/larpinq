@@ -74,12 +74,12 @@ class RegistrationChangeServiceTest extends TestCase {
 		$this->world->changes()->cancel(registrationId: self::ANNA_REG, actingUid: 'anna');
 
 		$anna = $this->world->registration(id: self::ANNA_REG);
-		$this->assertSame('cancelled', $anna['status']);
-		$this->assertSame('player', $anna['cancelReason']);
-		$this->assertSame('anna', $anna['cancelledBy']);
-		$this->assertArrayNotHasKey('settlement', $anna, 'an unpaid registration has no money to give back');
-		$this->assertSame('accepted', $this->world->registration(id: self::PIETER_REG)['status']);
-		$this->assertSame([], $this->world->dispatched);
+		$this->assertSame(expected: 'cancelled', actual: $anna['status']);
+		$this->assertSame(expected: 'player', actual: $anna['cancelReason']);
+		$this->assertSame(expected: 'anna', actual: $anna['cancelledBy']);
+		$this->assertArrayNotHasKey(key: 'settlement', array: $anna, message: 'an unpaid registration has no money to give back');
+		$this->assertSame(expected: 'accepted', actual: $this->world->registration(id: self::PIETER_REG)['status']);
+		$this->assertSame(expected: [], actual: $this->world->dispatched);
 	}//end testAnnaCancelsInTimeAndTheWaitingListMovesUp()
 
 	/**
@@ -93,13 +93,13 @@ class RegistrationChangeServiceTest extends TestCase {
 
 		try {
 			$this->world->changes()->cancel(registrationId: self::ANNA_REG, actingUid: 'anna');
-			$this->fail('a cancellation after the cancel-by date must be refused');
+			$this->fail(message: 'a cancellation after the cancel-by date must be refused');
 		} catch (RegistrationChangeRefusedException $e) {
-			$this->assertSame(409, $e->getStatus());
-			$this->assertStringContainsString('contact the organisers', $e->getMessage());
+			$this->assertSame(expected: 409, actual: $e->getStatus());
+			$this->assertStringContainsString(needle: 'contact the organisers', haystack: $e->getMessage());
 		}
 
-		$this->assertSame('accepted', $this->world->registration(id: self::ANNA_REG)['status']);
+		$this->assertSame(expected: 'accepted', actual: $this->world->registration(id: self::ANNA_REG)['status']);
 	}//end testTooLateToCancelYourself()
 
 	/**
@@ -114,8 +114,8 @@ class RegistrationChangeServiceTest extends TestCase {
 		$this->world->changes()->cancel(registrationId: self::ANNA_REG, actingUid: 'gm');
 
 		$anna = $this->world->registration(id: self::ANNA_REG);
-		$this->assertSame('cancelled', $anna['status']);
-		$this->assertSame('organiser', $anna['cancelReason']);
+		$this->assertSame(expected: 'cancelled', actual: $anna['status']);
+		$this->assertSame(expected: 'organiser', actual: $anna['cancelReason']);
 	}//end testAGameMasterCancelsAfterTheDate()
 
 	/**
@@ -128,17 +128,17 @@ class RegistrationChangeServiceTest extends TestCase {
 
 		try {
 			$this->world->changes()->cancel(registrationId: self::ANNA_REG, actingUid: 'sanne');
-			$this->fail('another player must not cancel');
+			$this->fail(message: 'another player must not cancel');
 		} catch (RegistrationChangeRefusedException $e) {
-			$this->assertSame(403, $e->getStatus());
+			$this->assertSame(expected: 403, actual: $e->getStatus());
 		}
 
 		$this->world->changes()->cancel(registrationId: self::ANNA_REG, actingUid: 'anna');
 		try {
 			$this->world->changes()->cancel(registrationId: self::ANNA_REG, actingUid: 'anna');
-			$this->fail('a cancelled registration cannot be cancelled again');
+			$this->fail(message: 'a cancelled registration cannot be cancelled again');
 		} catch (RegistrationChangeRefusedException $e) {
-			$this->assertSame(409, $e->getStatus());
+			$this->assertSame(expected: 409, actual: $e->getStatus());
 		}
 	}//end testOnlyTheParticipantTheBookerOrAGameMasterCancels()
 
@@ -155,17 +155,17 @@ class RegistrationChangeServiceTest extends TestCase {
 		$mila = $this->world->changes()->addParticipant(registrationId: self::JORIS_REG, actingUid: 'joris', name: 'Mila');
 
 		$joris = $this->world->registration(id: self::JORIS_REG);
-		$this->assertNotSame('', (string)($joris['bookingGroup'] ?? ''), 'the booker gets a booking group');
-		$this->assertSame($joris['bookingGroup'], $mila['bookingGroup']);
-		$this->assertSame('joris', $mila['bookedByUid']);
-		$this->assertSame(PaymentWorld::EVENT, $mila['event']);
-		$this->assertSame('accepted', $mila['status'], 'a participant is decided like any other sign-up');
-		$this->assertSame('Mila', $this->world->store->objects['player'][$mila['player']]['name']);
+		$this->assertNotSame(expected: '', actual: (string)($joris['bookingGroup'] ?? ''), message: 'the booker gets a booking group');
+		$this->assertSame(expected: $joris['bookingGroup'], actual: $mila['bookingGroup']);
+		$this->assertSame(expected: 'joris', actual: $mila['bookedByUid']);
+		$this->assertSame(expected: PaymentWorld::EVENT, actual: $mila['event']);
+		$this->assertSame(expected: 'accepted', actual: $mila['status'], message: 'a participant is decided like any other sign-up');
+		$this->assertSame(expected: 'Mila', actual: $this->world->store->objects['player'][$mila['player']]['name']);
 
 		$this->world->changes()->cancel(registrationId: (string)$mila['id'], actingUid: 'joris');
 
-		$this->assertSame('cancelled', $this->world->registration(id: (string)$mila['id'])['status']);
-		$this->assertSame('accepted', $this->world->registration(id: self::JORIS_REG)['status']);
+		$this->assertSame(expected: 'cancelled', actual: $this->world->registration(id: (string)$mila['id'])['status']);
+		$this->assertSame(expected: 'accepted', actual: $this->world->registration(id: self::JORIS_REG)['status']);
 	}//end testMilaDropsOutOfJorisBooking()
 
 	/**
@@ -180,9 +180,9 @@ class RegistrationChangeServiceTest extends TestCase {
 		foreach ([['anna', 'Mila', '', 403], ['joris', ' ', '', 422], ['joris', '', PaymentWorld::ANNA, 403]] as [$uid, $name, $player, $status]) {
 			try {
 				$this->world->changes()->addParticipant(registrationId: self::JORIS_REG, actingUid: $uid, name: $name, playerId: $player);
-				$this->fail("adding {$name}{$player} as {$uid} must be refused");
+				$this->fail(message: "adding {$name}{$player} as {$uid} must be refused");
 			} catch (RegistrationChangeRefusedException $e) {
-				$this->assertSame($status, $e->getStatus());
+				$this->assertSame(expected: $status, actual: $e->getStatus());
 			}
 		}
 	}//end testOnlyTheBookerAddsParticipants()
@@ -204,20 +204,20 @@ class RegistrationChangeServiceTest extends TestCase {
 
 		$this->world->changes()->cancel(registrationId: $milaId, actingUid: 'joris', choice: 'credit');
 
-		$this->assertCount(1, $this->world->dispatched);
+		$this->assertCount(expectedCount: 1, haystack: $this->world->dispatched);
 		$event = $this->world->dispatched[0];
-		$this->assertInstanceOf(RegistrationCreditRequested::class, $event);
-		$this->assertSame($milaId, $event->getRegistrationId());
-		$this->assertSame('f0000000-0000-4000-8000-000000000009', $event->getPaymentRequestId());
-		$this->assertSame($mila['player'], $event->getPlayerId());
-		$this->assertSame(85.0, $event->getAmount());
-		$this->assertSame('EUR', $event->getCurrency());
-		$this->assertSame('Mila', $event->getDebtor()['name']);
+		$this->assertInstanceOf(expected: RegistrationCreditRequested::class, actual: $event);
+		$this->assertSame(expected: $milaId, actual: $event->getRegistrationId());
+		$this->assertSame(expected: 'f0000000-0000-4000-8000-000000000009', actual: $event->getPaymentRequestId());
+		$this->assertSame(expected: $mila['player'], actual: $event->getPlayerId());
+		$this->assertSame(expected: 85.0, actual: $event->getAmount());
+		$this->assertSame(expected: 'EUR', actual: $event->getCurrency());
+		$this->assertSame(expected: 'Mila', actual: $event->getDebtor()['name']);
 
 		$stored = $this->world->registration(id: $milaId);
-		$this->assertSame('credit-requested', $stored['settlement']);
-		$this->assertSame('credit', $stored['settlementChoice']);
-		$this->assertSame('2026-11-10T10:00:00+00:00', $stored['settlementRequestedAt']);
+		$this->assertSame(expected: 'credit-requested', actual: $stored['settlement']);
+		$this->assertSame(expected: 'credit', actual: $stored['settlementChoice']);
+		$this->assertSame(expected: '2026-11-10T10:00:00+00:00', actual: $stored['settlementRequestedAt']);
 	}//end testMilasPaidFeeBecomesCredit()
 
 	/**
@@ -231,20 +231,20 @@ class RegistrationChangeServiceTest extends TestCase {
 		$this->world->store->objects['event'][PaymentWorld::EVENT]['cancellationPolicy']['paidCancellation'] = 'refund';
 		$this->world->seedRegistration(id: self::ANNA_REG, player: PaymentWorld::ANNA, status: 'accepted', more: $paid);
 		$this->world->changes()->cancel(registrationId: self::ANNA_REG, actingUid: 'anna', choice: 'credit');
-		$this->assertInstanceOf(RegistrationRefundRequested::class, $this->world->dispatched[0], 'the policy refunds; a choice is only read when the player may choose');
-		$this->assertSame(120.0, $this->world->dispatched[0]->getAmount());
-		$this->assertSame('refund-requested', $this->world->registration(id: self::ANNA_REG)['settlement']);
+		$this->assertInstanceOf(expected: RegistrationRefundRequested::class, actual: $this->world->dispatched[0], message: 'the policy refunds; a choice is only read when the player may choose');
+		$this->assertSame(expected: 120.0, actual: $this->world->dispatched[0]->getAmount());
+		$this->assertSame(expected: 'refund-requested', actual: $this->world->registration(id: self::ANNA_REG)['settlement']);
 
 		$this->world->store->objects['event'][PaymentWorld::EVENT]['cancellationPolicy']['paidCancellation'] = 'none';
 		$this->world->seedRegistration(id: self::PIETER_REG, player: PaymentWorld::PIETER, status: 'accepted', more: $paid);
 		$this->world->update(id: self::PIETER_REG, data: ['status' => 'cancelled']);
-		$this->assertCount(1, $this->world->dispatched, 'nothing back: no request to shillinq');
-		$this->assertSame('none', $this->world->registration(id: self::PIETER_REG)['settlement']);
+		$this->assertCount(expectedCount: 1, haystack: $this->world->dispatched, message: 'nothing back: no request to shillinq');
+		$this->assertSame(expected: 'none', actual: $this->world->registration(id: self::PIETER_REG)['settlement']);
 
 		$this->world->store->objects['event'][PaymentWorld::EVENT]['cancellationPolicy']['paidCancellation'] = 'player-chooses';
 		$this->world->seedRegistration(id: self::JORIS_REG, player: self::JORIS, status: 'accepted', more: $paid);
 		$this->world->update(id: self::JORIS_REG, data: ['status' => 'cancelled']);
-		$this->assertInstanceOf(RegistrationRefundRequested::class, $this->world->dispatched[1], 'a game master cancelling on the object page without a choice: a refund');
+		$this->assertInstanceOf(expected: RegistrationRefundRequested::class, actual: $this->world->dispatched[1], message: 'a game master cancelling on the object page without a choice: a refund');
 	}//end testThePolicyDecidesTheMoneyBack()
 
 	/**
@@ -256,21 +256,21 @@ class RegistrationChangeServiceTest extends TestCase {
 		$this->world->seedRegistration(id: self::ANNA_REG, player: PaymentWorld::ANNA, status: 'accepted', more: ['paymentState' => 'paid']);
 
 		$anna = $this->world->changes()->whatMayChange(registrationId: self::ANNA_REG, actingUid: 'anna');
-		$this->assertTrue($anna['canCancel']);
-		$this->assertTrue($anna['choosesMoneyBack']);
-		$this->assertTrue($anna['canOfferTransfer']);
-		$this->assertFalse($anna['canAcceptTransfer']);
-		$this->assertTrue($anna['canAddParticipant']);
-		$this->assertSame('2026-11-25T00:00:00+00:00', $anna['cancelBy']);
+		$this->assertTrue(condition: $anna['canCancel']);
+		$this->assertTrue(condition: $anna['choosesMoneyBack']);
+		$this->assertTrue(condition: $anna['canOfferTransfer']);
+		$this->assertFalse(condition: $anna['canAcceptTransfer']);
+		$this->assertTrue(condition: $anna['canAddParticipant']);
+		$this->assertSame(expected: '2026-11-25T00:00:00+00:00', actual: $anna['cancelBy']);
 
 		$sanne = $this->world->changes()->whatMayChange(registrationId: self::ANNA_REG, actingUid: 'sanne');
-		$this->assertFalse($sanne['canCancel']);
-		$this->assertFalse($sanne['canOfferTransfer']);
-		$this->assertFalse($sanne['canAddParticipant']);
+		$this->assertFalse(condition: $sanne['canCancel']);
+		$this->assertFalse(condition: $sanne['canOfferTransfer']);
+		$this->assertFalse(condition: $sanne['canAddParticipant']);
 
 		$this->world->now = new DateTimeImmutable('2026-11-28T10:00:00+00:00');
 		$late = $this->world->changes()->whatMayChange(registrationId: self::ANNA_REG, actingUid: 'anna');
-		$this->assertFalse($late['canCancel']);
-		$this->assertTrue($this->world->changes()->whatMayChange(registrationId: self::ANNA_REG, actingUid: 'gm')['canCancel']);
+		$this->assertFalse(condition: $late['canCancel']);
+		$this->assertTrue(condition: $this->world->changes()->whatMayChange(registrationId: self::ANNA_REG, actingUid: 'gm')['canCancel']);
 	}//end testWhatMayChangeFollowsTheCaller()
 }//end class
