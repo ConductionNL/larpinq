@@ -115,7 +115,7 @@ class DemoDataGoldenTest extends TestCase {
 		try {
 			$service = $this->service(case: $case, app: $app, log: $log);
 			$trace['available'] = $service->isAvailable();
-			$trace['choices'] = array_map(fn (array $c): array => [$c['id'], $c['objectCount']], $service->listChoices());
+			$trace['choices'] = $service->listChoices();
 			try {
 				$trace['installed'] = $service->install();
 			} catch (\RuntimeException $e) {
