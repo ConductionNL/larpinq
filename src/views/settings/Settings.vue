@@ -9,7 +9,12 @@
 		title="Larpinq"
 		docUrl="https://conduction.gitbook.io/larpingapp-nextcloud/users"
 		:breadcrumbs="breadcrumbs"
-		:breadcrumbNote="t('larpinq', 'administrators only; you set the game rules and worlds in the app itself')"
+		:breadcrumbNote="
+			t(
+				'larpinq',
+				'administrators only; you set the game rules and worlds in the app itself',
+			)
+		"
 		:versionDescription="t('larpinq', 'About this Larpinq installation.')"
 		:showUpdateButton="false"
 		reimportUrl="/index.php/apps/larpinq/api/settings/reimport"
@@ -22,12 +27,22 @@
 
 			<CnSettingsSection
 				:name="t('larpinq', 'Data storage')"
-				:description="t('larpinq', 'Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.')"
+				:description="
+					t(
+						'larpinq',
+						'Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.',
+					)
+				"
 				wide
 				data-testid="larpinq-admin-storage">
 				<div v-if="!loading">
 					<NcNoteCard v-if="!settings.openRegisters" type="warning">
-						{{ t('larpinq', 'Open Register is not installed. Some features might be unavailable.') }}
+						{{
+							t(
+								'larpinq',
+								'Open Register is not installed. Some features might be unavailable.',
+							)
+						}}
 					</NcNoteCard>
 
 					<div
@@ -47,7 +62,10 @@
 							:disabled="loading"
 							@update:modelValue="handleSourceChange(objectType)" />
 						<NcSelect
-							v-if="configuration[objectType].source?.value === 'openregister'"
+							v-if="
+								configuration[objectType].source?.value
+								=== 'openregister'
+							"
 							v-model="configuration[objectType].register"
 							:options="registerOptions"
 							:inputLabel="t('larpinq', 'Register')"
@@ -55,12 +73,21 @@
 							:disabled="loading"
 							@update:modelValue="handleRegisterChange(objectType)" />
 						<NcSelect
-							v-if="configuration[objectType].source?.value === 'openregister'"
+							v-if="
+								configuration[objectType].source?.value
+								=== 'openregister'
+							"
 							v-model="configuration[objectType].schema"
-							:options="getSchemaOptions(configuration[objectType].register?.value)"
+							:options="
+								getSchemaOptions(
+									configuration[objectType].register?.value,
+								)
+							"
 							:inputLabel="t('larpinq', 'Schema')"
 							:clearable="false"
-							:disabled="loading || !configuration[objectType].register" />
+							:disabled="
+								loading || !configuration[objectType].register
+							" />
 					</div>
 
 					<div class="larpinq-admin__actions">
@@ -90,18 +117,24 @@
 <script>
 import { CnAdminSettingsShell, CnSettingsSection } from '@conduction/nextcloud-vue'
 import { generateUrl } from '@nextcloud/router'
-import {
-	NcButton,
-	NcLoadingIcon,
-	NcNoteCard,
-	NcSelect,
-} from '@nextcloud/vue'
+import { NcButton, NcLoadingIcon, NcNoteCard, NcSelect } from '@nextcloud/vue'
 import { defineComponent } from 'vue'
 import Save from 'vue-material-design-icons/ContentSave.vue'
 import logger from '../../logger.js'
+import { ocsJsonHeaders } from '../../services/requestHeaders.js'
 import { buildStorageSettingsPayload } from '../../services/storageSettingsPayload.js'
 
-const BOARD_ORDER = ['character', 'player', 'event', 'skill', 'ability', 'item', 'condition', 'effect', 'setting']
+const BOARD_ORDER = [
+	'character',
+	'player',
+	'event',
+	'skill',
+	'ability',
+	'item',
+	'condition',
+	'effect',
+	'setting',
+]
 
 /**
  * @class Settings
@@ -171,7 +204,10 @@ export default defineComponent({
 		 */
 		breadcrumbs() {
 			return [
-				{ label: t('larpinq', 'Admin settings'), href: generateUrl('/settings/admin') },
+				{
+					label: t('larpinq', 'Admin settings'),
+					href: generateUrl('/settings/admin'),
+				},
 				{ label: 'Larpinq' },
 			]
 		},
@@ -324,7 +360,10 @@ export default defineComponent({
 				effect: t('larpinq', 'Effects'),
 				setting: t('larpinq', 'Worlds'),
 			}
-			return labels[objectType] || objectType.charAt(0).toUpperCase() + objectType.slice(1)
+			return (
+				labels[objectType]
+				|| objectType.charAt(0).toUpperCase() + objectType.slice(1)
+			)
 		},
 
 		/**
@@ -388,11 +427,7 @@ export default defineComponent({
 					'/index.php/apps/larpinq/api/settings',
 					{
 						method: 'POST',
-						headers: {
-							'Content-Type': 'application/json',
-							requesttoken: OC.requestToken,
-							'OCS-APIREQUEST': 'true',
-						},
+						headers: ocsJsonHeaders(),
 						body: JSON.stringify(configToSave),
 					},
 				)

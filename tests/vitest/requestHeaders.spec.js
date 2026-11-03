@@ -6,8 +6,12 @@
  * headers every JSON request sends.
  */
 
-import { describe, expect, it } from 'vitest'
-import { jsonHeaders } from '../../src/services/requestHeaders.js'
+import { afterEach, describe, expect, it } from 'vitest'
+import {
+	jsonHeaders,
+	ocsHeaders,
+	ocsJsonHeaders,
+} from '../../src/services/requestHeaders.js'
 
 describe('jsonHeaders', () => {
 	it('sends the CSRF token and JSON both ways', () => {
@@ -22,5 +26,32 @@ describe('jsonHeaders', () => {
 		const first = jsonHeaders()
 		first.requesttoken = 'changed'
 		expect(jsonHeaders().requesttoken).toBe('test-token')
+	})
+})
+
+describe('ocsHeaders', () => {
+	afterEach(() => {
+		delete globalThis.OC
+	})
+
+	it('sends the page token and the OCS marker, read on each call', () => {
+		globalThis.OC = { requestToken: 'first' }
+		expect(ocsHeaders()).toStrictEqual({
+			requesttoken: 'first',
+			'OCS-APIREQUEST': 'true',
+		})
+		globalThis.OC.requestToken = 'second'
+		expect(ocsHeaders().requesttoken).toBe('second')
+	})
+
+	it('adds the JSON content type first for a JSON body', () => {
+		globalThis.OC = { requestToken: 'first' }
+		expect(JSON.stringify(ocsJsonHeaders())).toBe(
+			JSON.stringify({
+				'Content-Type': 'application/json',
+				requesttoken: 'first',
+				'OCS-APIREQUEST': 'true',
+			}),
+		)
 	})
 })
