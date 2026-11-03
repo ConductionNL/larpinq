@@ -47,6 +47,11 @@ class PaymentRequestListenerTest extends TestCase {
 	 */
 	private array $request;
 
+	/**
+	 * Build the doubles and the subject every test starts from.
+	 *
+	 * @return void
+	 */
 	protected function setUp(): void {
 		$this->world = new PaymentWorld(test: $this);
 		$this->world->seedRegistration(id: self::SANNE_REG, player: PaymentWorld::SANNE, status: 'pending');

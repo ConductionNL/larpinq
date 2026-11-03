@@ -32,18 +32,33 @@ class SettingSchemaTest extends TestCase {
 	 */
 	private array $register;
 
+	/**
+	 * Build the doubles and the subject every test starts from.
+	 *
+	 * @return void
+	 */
 	protected function setUp(): void {
 		parent::setUp();
 		$path = __DIR__ . '/../../../lib/Settings/larpinq_register.json';
 		$this->register = json_decode((string)file_get_contents($path), true);
 	}
 
+	/**
+	 * Register JSON is well formed.
+	 *
+	 * @return void
+	 */
 	public function testRegisterJsonIsWellFormed(): void {
 		self::assertIsArray(actual: $this->register);
 		self::assertArrayHasKey(key: 'components', array: $this->register);
 		self::assertArrayHasKey(key: 'schemas', array: $this->register['components']);
 	}
 
+	/**
+	 * Setting schema is campaign entity v 2.
+	 *
+	 * @return void
+	 */
 	public function testSettingSchemaIsCampaignEntityV2(): void {
 		$setting = $this->register['components']['schemas']['setting'];
 		self::assertSame(expected: '2.0.0', actual: $setting['version']);
@@ -64,6 +79,11 @@ class SettingSchemaTest extends TestCase {
 		self::assertSame(expected: ['name'], actual: $setting['required']);
 	}
 
+	/**
+	 * Scoping property added to game entities.
+	 *
+	 * @return void
+	 */
 	public function testScopingPropertyAddedToGameEntities(): void {
 		$schemas = $this->register['components']['schemas'];
 		foreach (['character', 'event', 'skill', 'item', 'condition', 'ability', 'effect'] as $type) {
@@ -76,12 +96,22 @@ class SettingSchemaTest extends TestCase {
 		}
 	}
 
+	/**
+	 * Player is not scoped.
+	 *
+	 * @return void
+	 */
 	public function testPlayerIsNotScoped(): void {
 		// A player is a real person who spans campaigns — never setting-scoped.
 		$player = $this->register['components']['schemas']['player'];
 		self::assertArrayNotHasKey(key: 'setting', array: $player['properties']);
 	}
 
+	/**
+	 * Setting registered in schema list.
+	 *
+	 * @return void
+	 */
 	public function testSettingRegisteredInSchemaList(): void {
 		$schemas = $this->register['components']['registers']['larpinq']['schemas'];
 		self::assertContains(needle: 'setting', haystack: $schemas);

@@ -43,6 +43,11 @@ class RegistrationPaymentJobTest extends TestCase {
 
 	private PaymentWorld $world;
 
+	/**
+	 * Build the doubles and the subject every test starts from.
+	 *
+	 * @return void
+	 */
 	protected function setUp(): void {
 		$this->world = new PaymentWorld(test: $this);
 		$this->world->seedRegistration(id: self::ANNA_REG, player: PaymentWorld::ANNA, status: 'pending');

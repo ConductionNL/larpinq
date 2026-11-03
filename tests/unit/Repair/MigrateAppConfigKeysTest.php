@@ -49,6 +49,11 @@ class MigrateAppConfigKeysTest extends TestCase {
 
 	private MigrateAppConfigKeys $step;
 
+	/**
+	 * Build the doubles and the subject every test starts from.
+	 *
+	 * @return void
+	 */
 	protected function setUp(): void {
 		parent::setUp();
 
@@ -59,6 +64,11 @@ class MigrateAppConfigKeysTest extends TestCase {
 		$this->step = new MigrateAppConfigKeys(appConfig: $this->appConfig, logger: $this->logger);
 	}//end setUp()
 
+	/**
+	 * Get name mentions both namespaces.
+	 *
+	 * @return void
+	 */
 	public function testGetNameMentionsBothNamespaces(): void {
 		self::assertStringContainsString(needle: self::OLD_APP_ID, haystack: $this->step->getName());
 		self::assertStringContainsString(needle: Application::APP_ID, haystack: $this->step->getName());
@@ -216,6 +226,11 @@ class MigrateAppConfigKeysTest extends TestCase {
 		$this->step->run($this->output);
 	}//end testAnUnreadableKeyListIsSurvivable()
 
+	/**
+	 * An empty old value is not copied.
+	 *
+	 * @return void
+	 */
 	public function testAnEmptyOldValueIsNotCopied(): void {
 		$this->appConfig->method('getKeys')->willReturn(['register']);
 		$this->appConfig->method('getValueString')->willReturn('');
@@ -225,6 +240,11 @@ class MigrateAppConfigKeysTest extends TestCase {
 		$this->step->run($this->output);
 	}//end testAnEmptyOldValueIsNotCopied()
 
+	/**
+	 * Nothing stored under the old id is a no op.
+	 *
+	 * @return void
+	 */
 	public function testNothingStoredUnderTheOldIdIsANoOp(): void {
 		$this->appConfig->method('getKeys')->willReturn([]);
 

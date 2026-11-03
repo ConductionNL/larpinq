@@ -43,6 +43,11 @@ class SetupControllerTest extends TestCase {
 	/** @var array<string, string> What the app config answers, by key. */
 	private array $config = [];
 
+	/**
+	 * Build the doubles and the subject every test starts from.
+	 *
+	 * @return void
+	 */
 	protected function setUp(): void {
 		$this->written = [];
 		$this->config = [];
@@ -96,6 +101,11 @@ class SetupControllerTest extends TestCase {
 		return json_decode((string)file_get_contents(__DIR__ . '/../../../src/manifest.json'), true);
 	}
 
+	/**
+	 * Status reports every manifest step id.
+	 *
+	 * @return void
+	 */
 	public function testStatusReportsEveryManifestStepId(): void {
 		// A step the server never reports stays open, and an open step
 		// reopens the wizard on every page.
@@ -109,6 +119,11 @@ class SetupControllerTest extends TestCase {
 		$this->assertFalse(condition: $steps['demo-data']['done']);
 	}
 
+	/**
+	 * The dataset step loads from its cards and provisioning left the wizard.
+	 *
+	 * @return void
+	 */
 	public function testTheDatasetStepLoadsFromItsCardsAndProvisioningLeftTheWizard(): void {
 		$steps = array_column($this->manifest()['setup']['steps'], null, 'id');
 
@@ -117,6 +132,11 @@ class SetupControllerTest extends TestCase {
 		$this->assertArrayNotHasKey(key: 'provision', array: $steps);
 	}
 
+	/**
+	 * Setup is complete without provisioning but says whether it ran.
+	 *
+	 * @return void
+	 */
 	public function testSetupIsCompleteWithoutProvisioningButSaysWhetherItRan(): void {
 		// Provisioning is an admin action now, so it no longer gates the app.
 		$data = $this->controller()->status()->getData();
@@ -125,6 +145,11 @@ class SetupControllerTest extends TestCase {
 		$this->assertFalse(condition: $data['provisioned']);
 	}
 
+	/**
+	 * Choosing none closes the step.
+	 *
+	 * @return void
+	 */
 	public function testChoosingNoneClosesTheStep(): void {
 		$this->config['demo_dataset'] = 'none';
 
@@ -133,6 +158,11 @@ class SetupControllerTest extends TestCase {
 		$this->assertTrue(condition: $steps['demo-data']['done']);
 	}
 
+	/**
+	 * The card posts its dataset and the load records the choice.
+	 *
+	 * @return void
+	 */
 	public function testTheCardPostsItsDatasetAndTheLoadRecordsTheChoice(): void {
 		$this->demoData->expects($this->once())->method('install')
 			->willReturn(['objects' => 40, 'registers' => 1, 'schemas' => 9]);
@@ -144,6 +174,11 @@ class SetupControllerTest extends TestCase {
 		$this->assertSame(expected: ['demo_dataset' => 'demo', 'demo_data_decided' => 'installed'], actual: $this->written);
 	}
 
+	/**
+	 * An unknown posted dataset is refused and nothing loads.
+	 *
+	 * @return void
+	 */
 	public function testAnUnknownPostedDatasetIsRefusedAndNothingLoads(): void {
 		$this->config['demo_dataset'] = 'demo';
 		$this->demoData->expects($this->never())->method('install');
@@ -155,6 +190,11 @@ class SetupControllerTest extends TestCase {
 		$this->assertSame(expected: [], actual: $this->written);
 	}
 
+	/**
+	 * A failed card load stores nothing.
+	 *
+	 * @return void
+	 */
 	public function testAFailedCardLoadStoresNothing(): void {
 		$this->demoData->method('install')->willThrowException(new RuntimeException('OpenRegister is not installed.'));
 
@@ -164,6 +204,11 @@ class SetupControllerTest extends TestCase {
 		$this->assertSame(expected: [], actual: $this->written);
 	}
 
+	/**
+	 * A call without a body loads the stored pick.
+	 *
+	 * @return void
+	 */
 	public function testACallWithoutABodyLoadsTheStoredPick(): void {
 		$this->config['demo_dataset'] = 'demo';
 		$this->demoData->expects($this->once())->method('install')
@@ -174,6 +219,11 @@ class SetupControllerTest extends TestCase {
 		$this->assertTrue(condition: $data['success']);
 	}
 
+	/**
+	 * Loading without any pick refuses rather than guessing.
+	 *
+	 * @return void
+	 */
 	public function testLoadingWithoutAnyPickRefusesRatherThanGuessing(): void {
 		$this->demoData->expects($this->never())->method('install');
 
@@ -182,6 +232,11 @@ class SetupControllerTest extends TestCase {
 		$this->assertFalse(condition: $data['success']);
 	}
 
+	/**
+	 * The provision action still runs for the admin page.
+	 *
+	 * @return void
+	 */
 	public function testTheProvisionActionStillRunsForTheAdminPage(): void {
 		$this->appManager->method('isInstalled')->willReturn(true);
 		$this->settings->expects($this->once())->method('loadSettings')

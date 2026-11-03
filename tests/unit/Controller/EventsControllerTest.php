@@ -41,6 +41,11 @@ class EventsControllerTest extends TestCase {
 	private IUserSession&MockObject $userSession;
 	private IGroupManager&MockObject $groupManager;
 
+	/**
+	 * Build the doubles and the subject every test starts from.
+	 *
+	 * @return void
+	 */
 	protected function setUp(): void {
 		parent::setUp();
 		$this->objectFetcher = $this->createMock(originalClassName: RegisterObjectFetcher::class);
@@ -68,12 +73,22 @@ class EventsControllerTest extends TestCase {
 		$this->groupManager->method('isAdmin')->willReturn($isAdmin);
 	}
 
+	/**
+	 * Returns401 when not authenticated.
+	 *
+	 * @return void
+	 */
 	public function testReturns401WhenNotAuthenticated(): void {
 		$this->userSession->method('getUser')->willReturn(null);
 		$result = $this->controller()->downloadRunsheet(self::EVT, self::TPL);
 		self::assertSame(expected: 401, actual: $result->getStatus());
 	}
 
+	/**
+	 * Returns403 for non GM.
+	 *
+	 * @return void
+	 */
 	public function testReturns403ForNonGm(): void {
 		$this->asUser(uid: 'player1', isGm: false, isAdmin: false);
 		$result = $this->controller()->downloadRunsheet(self::EVT, self::TPL);
@@ -81,6 +96,11 @@ class EventsControllerTest extends TestCase {
 		self::assertSame(expected: 403, actual: $result->getStatus());
 	}
 
+	/**
+	 * Returns424 when docu desk absent.
+	 *
+	 * @return void
+	 */
 	public function testReturns424WhenDocuDeskAbsent(): void {
 		$this->asUser(uid: 'gm1', isGm: true);
 		// downloadRunsheet() validates the template id BEFORE probing for
@@ -94,6 +114,11 @@ class EventsControllerTest extends TestCase {
 		self::assertSame(expected: 424, actual: $result->getStatus());
 	}
 
+	/**
+	 * Returns400 for non UUID template.
+	 *
+	 * @return void
+	 */
 	public function testReturns400ForNonUuidTemplate(): void {
 		$this->asUser(uid: 'gm1', isGm: true);
 		$this->pdfRenderer->method('isDocuDeskAvailable')->willReturn(true);
@@ -122,6 +147,11 @@ class EventsControllerTest extends TestCase {
 		self::assertSame(expected: 400, actual: $result->getStatus());
 	}
 
+	/**
+	 * Returns404 when event not found.
+	 *
+	 * @return void
+	 */
 	public function testReturns404WhenEventNotFound(): void {
 		$this->asUser(uid: 'gm1', isGm: true);
 		$this->pdfRenderer->method('isDocuDeskAvailable')->willReturn(true);
@@ -131,6 +161,11 @@ class EventsControllerTest extends TestCase {
 		self::assertSame(expected: 404, actual: $result->getStatus());
 	}
 
+	/**
+	 * Returns404 when template not found.
+	 *
+	 * @return void
+	 */
 	public function testReturns404WhenTemplateNotFound(): void {
 		$this->asUser(uid: 'gm1', isGm: true);
 		$this->pdfRenderer->method('isDocuDeskAvailable')->willReturn(true);
@@ -141,6 +176,11 @@ class EventsControllerTest extends TestCase {
 		self::assertSame(expected: 404, actual: $result->getStatus());
 	}
 
+	/**
+	 * Success returns PDF named after event.
+	 *
+	 * @return void
+	 */
 	public function testSuccessReturnsPdfNamedAfterEvent(): void {
 		$this->asUser(uid: 'gm1', isGm: true);
 		$this->pdfRenderer->method('isDocuDeskAvailable')->willReturn(true);
@@ -178,6 +218,11 @@ class EventsControllerTest extends TestCase {
 		self::assertSame(expected: 'Alice', actual: $captured['cast'][1]['playerName']);
 	}
 
+	/**
+	 * Filename fallback when event unnamed.
+	 *
+	 * @return void
+	 */
 	public function testFilenameFallbackWhenEventUnnamed(): void {
 		$this->asUser(uid: 'gm1', isGm: true);
 		$this->pdfRenderer->method('isDocuDeskAvailable')->willReturn(true);
@@ -191,6 +236,11 @@ class EventsControllerTest extends TestCase {
 		self::assertInstanceOf(expected: DataDownloadResponse::class, actual: $result);
 	}
 
+	/**
+	 * Returns500 when render fails.
+	 *
+	 * @return void
+	 */
 	public function testReturns500WhenRenderFails(): void {
 		$this->asUser(uid: 'gm1', isGm: true);
 		$this->pdfRenderer->method('isDocuDeskAvailable')->willReturn(true);
@@ -204,6 +254,11 @@ class EventsControllerTest extends TestCase {
 		self::assertSame(expected: 500, actual: $result->getStatus());
 	}
 
+	/**
+	 * Admin without GM group allowed.
+	 *
+	 * @return void
+	 */
 	public function testAdminWithoutGmGroupAllowed(): void {
 		// An NC admin (legacy GM) is allowed even without the gamemasters group.
 		$this->asUser(uid: 'admin', isGm: false, isAdmin: true);

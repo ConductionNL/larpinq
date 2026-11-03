@@ -46,6 +46,11 @@ class MigrateUserPreferencesTest extends TestCase {
 
 	private MigrateUserPreferences $step;
 
+	/**
+	 * Build the doubles and the subject every test starts from.
+	 *
+	 * @return void
+	 */
 	protected function setUp(): void {
 		parent::setUp();
 
@@ -80,6 +85,11 @@ class MigrateUserPreferencesTest extends TestCase {
 		);
 	}//end seedSeenUsers()
 
+	/**
+	 * Get name mentions the old app id.
+	 *
+	 * @return void
+	 */
 	public function testGetNameMentionsTheOldAppId(): void {
 		self::assertStringContainsString(needle: self::OLD_APP_ID, haystack: $this->step->getName());
 	}//end testGetNameMentionsTheOldAppId()
@@ -149,6 +159,11 @@ class MigrateUserPreferencesTest extends TestCase {
 		$this->step->run($this->output);
 	}//end testNeverEnumeratesByValue()
 
+	/**
+	 * Does not overwrite a preference already set under the new app id.
+	 *
+	 * @return void
+	 */
 	public function testDoesNotOverwriteAPreferenceAlreadySetUnderTheNewAppId(): void {
 		$this->seedSeenUsers(userIds: ['alice']);
 

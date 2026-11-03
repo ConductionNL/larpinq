@@ -39,6 +39,11 @@ class DemoDataServiceTest extends TestCase {
 
 	private string $appDir;
 
+	/**
+	 * Build the doubles and the subject every test starts from.
+	 *
+	 * @return void
+	 */
 	protected function setUp(): void {
 		$this->appDir = sys_get_temp_dir() . '/larpinq-demo-' . uniqid();
 		mkdir($this->appDir . '/lib/Settings', 0777, true);
@@ -57,6 +62,11 @@ class DemoDataServiceTest extends TestCase {
 		);
 	}
 
+	/**
+	 * Undo the global state a test changed.
+	 *
+	 * @return void
+	 */
 	protected function tearDown(): void {
 		$file = $this->appDir . '/lib/Settings/larpinq_mock_register.json';
 		if (is_file($file) === true) {
@@ -149,6 +159,11 @@ class DemoDataServiceTest extends TestCase {
 
 	}//end testTheShippedDatasetIsOfferedWithItsRealCount()
 
+	/**
+	 * It imports the descriptor and reports the counts.
+	 *
+	 * @return void
+	 */
 	public function testItImportsTheDescriptorAndReportsTheCounts(): void {
 		$this->shipDescriptor(objects: 5);
 		$spy = $this->importerSpy();
@@ -191,6 +206,11 @@ class DemoDataServiceTest extends TestCase {
 		$this->assertSame(expected: 'larpinq.demo', actual: $spy->seen['appId']);
 	}
 
+	/**
+	 * A missing descriptor throws rather than reporting success.
+	 *
+	 * @return void
+	 */
 	public function testAMissingDescriptorThrowsRatherThanReportingSuccess(): void {
 		$this->container->expects($this->never())->method('get');
 
@@ -198,6 +218,11 @@ class DemoDataServiceTest extends TestCase {
 		$this->service->install();
 	}
 
+	/**
+	 * Unparsable JSON throws rather than importing nothing.
+	 *
+	 * @return void
+	 */
 	public function testUnparsableJsonThrowsRatherThanImportingNothing(): void {
 		file_put_contents($this->appDir . '/lib/Settings/larpinq_mock_register.json', 'not json');
 		$this->container->expects($this->never())->method('get');
@@ -229,6 +254,11 @@ class DemoDataServiceTest extends TestCase {
 		$service->install();
 	}
 
+	/**
+	 * Is available reflects whether the descriptor ships.
+	 *
+	 * @return void
+	 */
 	public function testIsAvailableReflectsWhetherTheDescriptorShips(): void {
 		$this->assertFalse(condition: $this->service->isAvailable(), message: 'no descriptor on disk');
 		$this->shipDescriptor();

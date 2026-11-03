@@ -16,6 +16,11 @@ class SettingsServiceTest extends TestCase {
 	private SettingsLoadService $settingsLoadService;
 	private LoggerInterface $logger;
 
+	/**
+	 * Build the doubles and the subject every test starts from.
+	 *
+	 * @return void
+	 */
 	protected function setUp(): void {
 		$this->appConfig = $this->createMock(originalClassName: IAppConfig::class);
 		$this->settingsLoadService = $this->createMock(originalClassName: SettingsLoadService::class);
@@ -28,6 +33,11 @@ class SettingsServiceTest extends TestCase {
 		);
 	}
 
+	/**
+	 * Get settings returns all config keys.
+	 *
+	 * @return void
+	 */
 	public function testGetSettingsReturnsAllConfigKeys(): void {
 		$this->appConfig
 			->method('getValueString')
@@ -73,6 +83,11 @@ class SettingsServiceTest extends TestCase {
 		$this->assertCount(expectedCount: 64, haystack: $result);
 	}
 
+	/**
+	 * Get settings returns empty strings as defaults.
+	 *
+	 * @return void
+	 */
 	public function testGetSettingsReturnsEmptyStringsAsDefaults(): void {
 		$this->appConfig
 			->method('getValueString')
@@ -87,6 +102,11 @@ class SettingsServiceTest extends TestCase {
 		}
 	}
 
+	/**
+	 * Update settings only updates known keys.
+	 *
+	 * @return void
+	 */
 	public function testUpdateSettingsOnlyUpdatesKnownKeys(): void {
 		$this->appConfig
 			->expects($this->exactly(count: 2))
@@ -103,6 +123,11 @@ class SettingsServiceTest extends TestCase {
 		]);
 	}
 
+	/**
+	 * Update settings logs update.
+	 *
+	 * @return void
+	 */
 	public function testUpdateSettingsLogsUpdate(): void {
 		$this->appConfig->method('getValueString')->willReturn('');
 
@@ -119,6 +144,11 @@ class SettingsServiceTest extends TestCase {
 		$this->service->updateSettings(['register' => 'reg-1']);
 	}
 
+	/**
+	 * Update settings returns updated values.
+	 *
+	 * @return void
+	 */
 	public function testUpdateSettingsReturnsUpdatedValues(): void {
 		$this->appConfig
 			->method('getValueString')
@@ -130,6 +160,11 @@ class SettingsServiceTest extends TestCase {
 		$this->assertCount(expectedCount: 64, haystack: $result);
 	}
 
+	/**
+	 * Load settings delegates to load service.
+	 *
+	 * @return void
+	 */
 	public function testLoadSettingsDelegatesToLoadService(): void {
 		$this->settingsLoadService
 			->expects($this->once())
@@ -145,6 +180,11 @@ class SettingsServiceTest extends TestCase {
 		$this->assertSame(expected: ['status' => 'ok'], actual: $result);
 	}
 
+	/**
+	 * Reload settings delegates to load service.
+	 *
+	 * @return void
+	 */
 	public function testReloadSettingsDelegatesToLoadService(): void {
 		$this->settingsLoadService
 			->expects($this->once())
@@ -160,6 +200,11 @@ class SettingsServiceTest extends TestCase {
 		$this->assertSame(expected: ['status' => 'reimported'], actual: $result);
 	}
 
+	/**
+	 * Get config value returns value.
+	 *
+	 * @return void
+	 */
 	public function testGetConfigValueReturnsValue(): void {
 		$this->appConfig
 			->expects($this->once())
@@ -172,6 +217,11 @@ class SettingsServiceTest extends TestCase {
 		$this->assertSame(expected: 'my-register-id', actual: $result);
 	}
 
+	/**
+	 * Set config value sets value.
+	 *
+	 * @return void
+	 */
 	public function testSetConfigValueSetsValue(): void {
 		$this->appConfig
 			->expects($this->once())

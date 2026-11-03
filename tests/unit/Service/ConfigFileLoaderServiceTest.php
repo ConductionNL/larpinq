@@ -27,6 +27,11 @@ class ConfigFileLoaderServiceTest extends TestCase {
 	private ConfigFileLoaderService $service;
 	private IAppManager $appManager;
 
+	/**
+	 * Build the doubles and the subject every test starts from.
+	 *
+	 * @return void
+	 */
 	protected function setUp(): void {
 		parent::setUp();
 
@@ -34,6 +39,11 @@ class ConfigFileLoaderServiceTest extends TestCase {
 		$this->service = new ConfigFileLoaderService(appManager: $this->appManager);
 	}
 
+	/**
+	 * Load configuration file throws when file not found.
+	 *
+	 * @return void
+	 */
 	public function testLoadConfigurationFileThrowsWhenFileNotFound(): void {
 		$this->appManager->method('getAppPath')
 			->with('larpinq')
@@ -45,6 +55,11 @@ class ConfigFileLoaderServiceTest extends TestCase {
 		$this->service->loadConfigurationFile();
 	}
 
+	/**
+	 * Ensure source type sets default source type.
+	 *
+	 * @return void
+	 */
 	public function testEnsureSourceTypeSetsDefaultSourceType(): void {
 		$data = [];
 
@@ -54,6 +69,11 @@ class ConfigFileLoaderServiceTest extends TestCase {
 		self::assertSame(expected: 'local', actual: $result['x-openregister']['sourceType']);
 	}
 
+	/**
+	 * Ensure source type preserves existing source type.
+	 *
+	 * @return void
+	 */
 	public function testEnsureSourceTypePreservesExistingSourceType(): void {
 		$data = [
 			'x-openregister' => [
@@ -66,6 +86,11 @@ class ConfigFileLoaderServiceTest extends TestCase {
 		self::assertSame(expected: 'remote', actual: $result['x-openregister']['sourceType']);
 	}
 
+	/**
+	 * Ensure source type handles non array openregister.
+	 *
+	 * @return void
+	 */
 	public function testEnsureSourceTypeHandlesNonArrayOpenregister(): void {
 		$data = [
 			'x-openregister' => 'invalid',
@@ -77,6 +102,11 @@ class ConfigFileLoaderServiceTest extends TestCase {
 		self::assertSame(expected: 'local', actual: $result['x-openregister']['sourceType']);
 	}
 
+	/**
+	 * Ensure source type adds to existing openregister.
+	 *
+	 * @return void
+	 */
 	public function testEnsureSourceTypeAddsToExistingOpenregister(): void {
 		$data = [
 			'x-openregister' => [

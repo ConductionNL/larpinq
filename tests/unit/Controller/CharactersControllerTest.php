@@ -56,6 +56,11 @@ class CharactersControllerTest extends TestCase {
 	 */
 	private DocuDeskPdfRenderer $pdfRenderer;
 
+	/**
+	 * Build the doubles and the subject every test starts from.
+	 *
+	 * @return void
+	 */
 	protected function setUp(): void {
 		parent::setUp();
 
@@ -89,6 +94,11 @@ class CharactersControllerTest extends TestCase {
 		);
 	}
 
+	/**
+	 * Download PDF returns401 when not authenticated.
+	 *
+	 * @return void
+	 */
 	public function testDownloadPdfReturns401WhenNotAuthenticated(): void {
 		$unauthSession = $this->createMock(originalClassName: IUserSession::class);
 		$unauthSession->method('getUser')->willReturn(null);
@@ -109,6 +119,11 @@ class CharactersControllerTest extends TestCase {
 		self::assertArrayHasKey(key: 'error', array: $result->getData());
 	}
 
+	/**
+	 * Download PDF returns403 for non admin user.
+	 *
+	 * @return void
+	 */
 	public function testDownloadPdfReturns403ForNonAdminUser(): void {
 		$nonAdminUser = $this->createMock(originalClassName: IUser::class);
 		$nonAdminUser->method('getUID')->willReturn('player1');
@@ -135,6 +150,11 @@ class CharactersControllerTest extends TestCase {
 		self::assertArrayHasKey(key: 'error', array: $result->getData());
 	}
 
+	/**
+	 * Download PDF returns424 when docu desk not installed.
+	 *
+	 * @return void
+	 */
 	public function testDownloadPdfReturns424WhenDocuDeskNotInstalled(): void {
 		$this->appManager->method('isInstalled')->willReturnCallback(
 			// An instance running EITHER name must resolve. Pinning 'docudesk'
@@ -187,6 +207,11 @@ class CharactersControllerTest extends TestCase {
 		self::assertStringContainsString(needle: 'UUID', haystack: $result->getData()['error']);
 	}
 
+	/**
+	 * Download PDF returns404 when character not found.
+	 *
+	 * @return void
+	 */
 	public function testDownloadPdfReturns404WhenCharacterNotFound(): void {
 		// FleetAppId resolves the installed id BEFORE asking whether it is
 		// enabled, so both probes are stubbed. Stubbing only the second one
@@ -203,6 +228,11 @@ class CharactersControllerTest extends TestCase {
 		self::assertSame(expected: 'Character not found', actual: $result->getData()['error']);
 	}
 
+	/**
+	 * Download PDF returns404 when template not found.
+	 *
+	 * @return void
+	 */
 	public function testDownloadPdfReturns404WhenTemplateNotFound(): void {
 		// FleetAppId resolves the installed id BEFORE asking whether it is
 		// enabled, so both probes are stubbed. Stubbing only the second one
@@ -232,6 +262,11 @@ class CharactersControllerTest extends TestCase {
 		self::assertSame(expected: 404, actual: $result->getStatus());
 	}
 
+	/**
+	 * Download PDF returns data download response on success.
+	 *
+	 * @return void
+	 */
 	public function testDownloadPdfReturnsDataDownloadResponseOnSuccess(): void {
 		// FleetAppId resolves the installed id BEFORE asking whether it is
 		// enabled, so both probes are stubbed. Stubbing only the second one
@@ -273,6 +308,11 @@ class CharactersControllerTest extends TestCase {
 		self::assertInstanceOf(expected: DataDownloadResponse::class, actual: $result);
 	}
 
+	/**
+	 * Download PDF returns500 on render failure with generic message.
+	 *
+	 * @return void
+	 */
 	public function testDownloadPdfReturns500OnRenderFailureWithGenericMessage(): void {
 		// FleetAppId resolves the installed id BEFORE asking whether it is
 		// enabled, so both probes are stubbed. Stubbing only the second one
@@ -314,6 +354,11 @@ class CharactersControllerTest extends TestCase {
 		self::assertStringNotContainsString(needle: '/internal/path/file.php', haystack: $result->getData()['error']);
 	}
 
+	/**
+	 * Download PDF returns400 for non UUID template.
+	 *
+	 * @return void
+	 */
 	public function testDownloadPdfReturns400ForNonUuidTemplate(): void {
 		// FleetAppId resolves the installed id BEFORE asking whether it is
 		// enabled, so both probes are stubbed. Stubbing only the second one
@@ -328,6 +373,11 @@ class CharactersControllerTest extends TestCase {
 		self::assertStringContainsString(needle: 'UUID', haystack: $result->getData()['error']);
 	}
 
+	/**
+	 * Download PDF translates does not exist exception to404.
+	 *
+	 * @return void
+	 */
 	public function testDownloadPdfTranslatesDoesNotExistExceptionTo404(): void {
 		// FleetAppId resolves the installed id BEFORE asking whether it is
 		// enabled, so both probes are stubbed. Stubbing only the second one
@@ -467,6 +517,11 @@ class CharactersControllerTest extends TestCase {
 		return '';
 	}
 
+	/**
+	 * Requirement report translates does not exist exception to404.
+	 *
+	 * @return void
+	 */
 	public function testRequirementReportTranslatesDoesNotExistExceptionTo404(): void {
 		$this->objectFetcher->method('getObject')
 			->willThrowException(new DoesNotExistException('no such character'));
@@ -478,6 +533,11 @@ class CharactersControllerTest extends TestCase {
 		self::assertSame(expected: 'Character not found', actual: $result->getData()['error']);
 	}
 
+	/**
+	 * Requirement report returns401 when not authenticated.
+	 *
+	 * @return void
+	 */
 	public function testRequirementReportReturns401WhenNotAuthenticated(): void {
 		$unauthSession = $this->createMock(originalClassName: IUserSession::class);
 		$unauthSession->method('getUser')->willReturn(null);
@@ -497,6 +557,11 @@ class CharactersControllerTest extends TestCase {
 		self::assertSame(expected: 401, actual: $result->getStatus());
 	}
 
+	/**
+	 * Requirement report returns404 when character not found.
+	 *
+	 * @return void
+	 */
 	public function testRequirementReportReturns404WhenCharacterNotFound(): void {
 		$this->objectFetcher->method('getObject')
 			->willThrowException(new Exception('Not found'));
@@ -507,6 +572,11 @@ class CharactersControllerTest extends TestCase {
 		self::assertSame(expected: 404, actual: $result->getStatus());
 	}
 
+	/**
+	 * Requirement report returns report.
+	 *
+	 * @return void
+	 */
 	public function testRequirementReportReturnsReport(): void {
 		$this->objectFetcher->method('getObject')
 			->willReturn(['id' => 'char-1', 'name' => 'Fighter', 'skills' => []]);

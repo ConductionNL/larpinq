@@ -45,6 +45,11 @@ class DashboardControllerTest extends TestCase {
 	/** @var array<string, string> The signed-in user's stored larpinq preferences, by IConfig key. */
 	private array $preferences = [];
 
+	/**
+	 * Build the doubles and the subject every test starts from.
+	 *
+	 * @return void
+	 */
 	protected function setUp(): void {
 		parent::setUp();
 
@@ -146,6 +151,11 @@ class DashboardControllerTest extends TestCase {
 		self::assertSame(expected: '', actual: $this->provided['activeWorld']);
 	}
 
+	/**
+	 * Page returns template response.
+	 *
+	 * @return void
+	 */
 	public function testPageReturnsTemplateResponse(): void {
 		$result = $this->controller->page();
 
@@ -179,12 +189,22 @@ class DashboardControllerTest extends TestCase {
 		self::assertSame(expected: $page->getParams(), actual: $result->getParams());
 	}
 
+	/**
+	 * Page uses index template.
+	 *
+	 * @return void
+	 */
 	public function testPageUsesIndexTemplate(): void {
 		$result = $this->controller->page();
 
 		self::assertSame(expected: 'index', actual: $result->getTemplateName());
 	}
 
+	/**
+	 * Page uses larpinq app.
+	 *
+	 * @return void
+	 */
 	public function testPageUsesLarpinqApp(): void {
 		$result = $this->controller->page();
 
@@ -192,6 +212,11 @@ class DashboardControllerTest extends TestCase {
 		self::assertInstanceOf(expected: TemplateResponse::class, actual: $result);
 	}
 
+	/**
+	 * Page returns empty params.
+	 *
+	 * @return void
+	 */
 	public function testPageReturnsEmptyParams(): void {
 		$result = $this->controller->page();
 

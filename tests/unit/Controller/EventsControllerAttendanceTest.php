@@ -42,6 +42,11 @@ class EventsControllerAttendanceTest extends TestCase {
 	private IGroupManager&MockObject $groupManager;
 	private IRequest&MockObject $request;
 
+	/**
+	 * Build the doubles and the subject every test starts from.
+	 *
+	 * @return void
+	 */
 	protected function setUp(): void {
 		parent::setUp();
 		$this->objectFetcher = $this->createMock(originalClassName: RegisterObjectFetcher::class);
@@ -89,6 +94,11 @@ class EventsControllerAttendanceTest extends TestCase {
 		self::assertSame(expected: 401, actual: $result->getStatus());
 	}
 
+	/**
+	 * Record non GM refused.
+	 *
+	 * @return void
+	 */
 	public function testRecordNonGmRefused(): void {
 		$this->asUser(uid: 'player1', isGm: false, isAdmin: false);
 		// A non-GM must never reach the write path.
@@ -97,6 +107,11 @@ class EventsControllerAttendanceTest extends TestCase {
 		self::assertSame(expected: 403, actual: $result->getStatus());
 	}
 
+	/**
+	 * Record missing character returns400.
+	 *
+	 * @return void
+	 */
 	public function testRecordMissingCharacterReturns400(): void {
 		$this->asUser(uid: 'gm1', isGm: true);
 		$this->withParams(params: ['status' => 'checked-in']);
@@ -104,6 +119,11 @@ class EventsControllerAttendanceTest extends TestCase {
 		self::assertSame(expected: 400, actual: $result->getStatus());
 	}
 
+	/**
+	 * Record invalid status returns400.
+	 *
+	 * @return void
+	 */
 	public function testRecordInvalidStatusReturns400(): void {
 		$this->asUser(uid: 'gm1', isGm: true);
 		$this->withParams(params: ['character' => self::CHAR, 'status' => 'teleported']);
@@ -111,6 +131,11 @@ class EventsControllerAttendanceTest extends TestCase {
 		self::assertSame(expected: 400, actual: $result->getStatus());
 	}
 
+	/**
+	 * Record event not found returns404.
+	 *
+	 * @return void
+	 */
 	public function testRecordEventNotFoundReturns404(): void {
 		$this->asUser(uid: 'gm1', isGm: true);
 		$this->withParams(params: ['character' => self::CHAR, 'status' => 'checked-in']);
@@ -119,6 +144,11 @@ class EventsControllerAttendanceTest extends TestCase {
 		self::assertSame(expected: 404, actual: $result->getStatus());
 	}
 
+	/**
+	 * Record non participant refused.
+	 *
+	 * @return void
+	 */
 	public function testRecordNonParticipantRefused(): void {
 		$this->asUser(uid: 'gm1', isGm: true);
 		$this->withParams(params: ['character' => self::CHAR, 'status' => 'checked-in']);
@@ -136,6 +166,11 @@ class EventsControllerAttendanceTest extends TestCase {
 		self::assertSame(expected: 422, actual: $result->getStatus());
 	}
 
+	/**
+	 * Record stamps server provenance ignoring body.
+	 *
+	 * @return void
+	 */
 	public function testRecordStampsServerProvenanceIgnoringBody(): void {
 		$this->asUser(uid: 'gm-real', isGm: true);
 		// Spoofed provenance in the body MUST be ignored.
@@ -177,6 +212,11 @@ class EventsControllerAttendanceTest extends TestCase {
 		self::assertMatchesRegularExpression(pattern: '/^\d{4}-\d{2}-\d{2}T/', string: $captured['data']['checkedInAt']);
 	}
 
+	/**
+	 * Record updates existing record in place.
+	 *
+	 * @return void
+	 */
 	public function testRecordUpdatesExistingRecordInPlace(): void {
 		$this->asUser(uid: 'gm1', isGm: true);
 		$this->withParams(params: ['character' => self::CHAR, 'status' => 'no-show']);
@@ -201,6 +241,11 @@ class EventsControllerAttendanceTest extends TestCase {
 		self::assertSame(expected: 'att-1', actual: $capturedUuid);
 	}
 
+	/**
+	 * Record degrades to424 when schema absent.
+	 *
+	 * @return void
+	 */
 	public function testRecordDegradesTo424WhenSchemaAbsent(): void {
 		$this->asUser(uid: 'gm1', isGm: true);
 		$this->withParams(params: ['character' => self::CHAR, 'status' => 'checked-in']);
@@ -223,6 +268,11 @@ class EventsControllerAttendanceTest extends TestCase {
 		self::assertSame(expected: 401, actual: $result->getStatus());
 	}
 
+	/**
+	 * Roster event not found returns404.
+	 *
+	 * @return void
+	 */
 	public function testRosterEventNotFoundReturns404(): void {
 		$this->asUser(uid: 'gm1', isGm: true);
 		$this->objectFetcher->method('getObject')->willThrowException(new Exception('nope'));
@@ -230,6 +280,11 @@ class EventsControllerAttendanceTest extends TestCase {
 		self::assertSame(expected: 404, actual: $result->getStatus());
 	}
 
+	/**
+	 * Roster lists participants with status.
+	 *
+	 * @return void
+	 */
 	public function testRosterListsParticipantsWithStatus(): void {
 		$this->asUser(uid: 'gm1', isGm: true);
 		$this->objectFetcher->method('getObject')->willReturn(['id' => self::EVT, 'players' => []]);
@@ -261,6 +316,11 @@ class EventsControllerAttendanceTest extends TestCase {
 		self::assertSame(expected: 'Alice', actual: $data['participants'][0]['playerName']);
 	}
 
+	/**
+	 * Roster degrades when attendance unavailable.
+	 *
+	 * @return void
+	 */
 	public function testRosterDegradesWhenAttendanceUnavailable(): void {
 		// A player (non-GM) viewing an event whose attendance schema is absent.
 		$this->asUser(uid: 'player1', isGm: false);

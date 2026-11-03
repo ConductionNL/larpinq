@@ -42,6 +42,11 @@ class TransferOffersTest extends TestCase {
 
 	private PaymentWorld $world;
 
+	/**
+	 * Build the doubles and the subject every test starts from.
+	 *
+	 * @return void
+	 */
 	protected function setUp(): void {
 		$this->world = new PaymentWorld(test: $this);
 		$this->world->store->objects['event'][PaymentWorld::EVENT]['cancellationPolicy'] = ['cancelBy' => '2026-11-25T00:00:00+00:00'];

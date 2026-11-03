@@ -46,6 +46,11 @@ class XpAwardsControllerTest extends TestCase {
 
 	private XpAwardsController $controller;
 
+	/**
+	 * Build the doubles and the subject every test starts from.
+	 *
+	 * @return void
+	 */
 	protected function setUp(): void {
 		parent::setUp();
 

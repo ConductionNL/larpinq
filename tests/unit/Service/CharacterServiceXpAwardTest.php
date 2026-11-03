@@ -51,6 +51,11 @@ class CharacterServiceXpAwardTest extends TestCase {
 		);
 	}
 
+	/**
+	 * Awards sum onto XP ability.
+	 *
+	 * @return void
+	 */
 	public function testAwardsSumOntoXpAbility(): void {
 		$abilities = [['id' => 'xpid', 'name' => 'XP', 'base' => 0]];
 		$xpAwards = [
@@ -63,6 +68,11 @@ class CharacterServiceXpAwardTest extends TestCase {
 		self::assertSame(expected: 8, actual: $result['stats']['xpid']['value']);
 	}
 
+	/**
+	 * Audit entries recorded in order.
+	 *
+	 * @return void
+	 */
 	public function testAuditEntriesRecordedInOrder(): void {
 		$abilities = [['id' => 'xpid', 'name' => 'Experience', 'base' => 10]];
 		$xpAwards = [
@@ -80,6 +90,11 @@ class CharacterServiceXpAwardTest extends TestCase {
 		self::assertSame(expected: 4, actual: $audit[0]['award']['amount']);
 	}
 
+	/**
+	 * Awards applied after effects.
+	 *
+	 * @return void
+	 */
 	public function testAwardsAppliedAfterEffects(): void {
 		// XP base 0, a skill grants +2 XP via effect, then award +5 → 7.
 		$abilities = [['id' => 'xpid', 'name' => 'XP', 'base' => 0]];
@@ -96,6 +111,11 @@ class CharacterServiceXpAwardTest extends TestCase {
 		self::assertSame(expected: 'xpAward', actual: $audit[1]['type']);
 	}
 
+	/**
+	 * Four stage regression unchanged when no awards.
+	 *
+	 * @return void
+	 */
 	public function testFourStageRegressionUnchangedWhenNoAwards(): void {
 		// No awards → arithmetic and audit identical to pre-feature behaviour.
 		$abilities = [['id' => 'str', 'name' => 'Strength', 'base' => 10]];
@@ -109,6 +129,11 @@ class CharacterServiceXpAwardTest extends TestCase {
 		self::assertSame(expected: 'effect', actual: $result['stats']['str']['audit'][0]['type']);
 	}
 
+	/**
+	 * Award for other character ignored.
+	 *
+	 * @return void
+	 */
 	public function testAwardForOtherCharacterIgnored(): void {
 		$abilities = [['id' => 'xpid', 'name' => 'XP', 'base' => 0]];
 		$xpAwards = [['id' => 'a1', 'character' => 'other-char', 'event' => 'ev-1', 'amount' => 5]];
@@ -118,6 +143,11 @@ class CharacterServiceXpAwardTest extends TestCase {
 		self::assertSame(expected: 0, actual: $result['stats']['xpid']['value']);
 	}
 
+	/**
+	 * No XP ability means no crash.
+	 *
+	 * @return void
+	 */
 	public function testNoXpAbilityMeansNoCrash(): void {
 		// Award present but no XP ability → graceful no-op.
 		$abilities = [['id' => 'str', 'name' => 'Strength', 'base' => 5]];
@@ -128,6 +158,11 @@ class CharacterServiceXpAwardTest extends TestCase {
 		self::assertSame(expected: 5, actual: $result['stats']['str']['value']);
 	}
 
+	/**
+	 * Non numeric amount skipped.
+	 *
+	 * @return void
+	 */
 	public function testNonNumericAmountSkipped(): void {
 		$abilities = [['id' => 'xpid', 'name' => 'XP', 'base' => 2]];
 		$xpAwards = [
@@ -140,6 +175,11 @@ class CharacterServiceXpAwardTest extends TestCase {
 		self::assertSame(expected: 5, actual: $result['stats']['xpid']['value']);
 	}
 
+	/**
+	 * Character without id gets no awards.
+	 *
+	 * @return void
+	 */
 	public function testCharacterWithoutIdGetsNoAwards(): void {
 		$abilities = [['id' => 'xpid', 'name' => 'XP', 'base' => 0]];
 		$xpAwards = [['id' => 'a1', 'character' => 'char-1', 'event' => 'ev-1', 'amount' => 5]];

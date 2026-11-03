@@ -30,6 +30,11 @@ class SkillRequirementServiceTest extends TestCase {
 
 	private LoggerInterface $logger;
 
+	/**
+	 * Build the doubles and the subject every test starts from.
+	 *
+	 * @return void
+	 */
 	protected function setUp(): void {
 		parent::setUp();
 		$this->logger = $this->createMock(originalClassName: LoggerInterface::class);
@@ -68,6 +73,11 @@ class SkillRequirementServiceTest extends TestCase {
 		);
 	}
 
+	/**
+	 * New character with no skills is valid.
+	 *
+	 * @return void
+	 */
 	public function testNewCharacterWithNoSkillsIsValid(): void {
 		$service = $this->makeService();
 		$result = $service->validate(['skills' => []], []);
@@ -75,6 +85,11 @@ class SkillRequirementServiceTest extends TestCase {
 		$this->assertSame(expected: [], actual: $result['requirements']);
 	}
 
+	/**
+	 * Missing prerequisite skill is unmet.
+	 *
+	 * @return void
+	 */
 	public function testMissingPrerequisiteSkillIsUnmet(): void {
 		$skills = [
 			['id' => 'basic', 'name' => 'Basic Swordplay'],
@@ -92,6 +107,11 @@ class SkillRequirementServiceTest extends TestCase {
 		$this->assertSame(expected: 'basic', actual: $entry['target']);
 	}
 
+	/**
+	 * Same prerequisite satisfied in one write.
+	 *
+	 * @return void
+	 */
 	public function testSamePrerequisiteSatisfiedInOneWrite(): void {
 		$skills = [
 			['id' => 'basic', 'name' => 'Basic Swordplay'],
@@ -104,6 +124,11 @@ class SkillRequirementServiceTest extends TestCase {
 		$this->assertTrue(condition: $result['valid']);
 	}
 
+	/**
+	 * Required stat score enforced.
+	 *
+	 * @return void
+	 */
 	public function testRequiredStatScoreEnforced(): void {
 		$abilities = [['id' => 'str', 'name' => 'Strength', 'base' => 2]];
 		$skills = [
@@ -119,6 +144,11 @@ class SkillRequirementServiceTest extends TestCase {
 		$this->assertSame(expected: 5, actual: $entry['required']);
 	}
 
+	/**
+	 * XP budget rejects overspend.
+	 *
+	 * @return void
+	 */
 	public function testXpBudgetRejectsOverspend(): void {
 		// XP ability base 5; skill costs 8 via a negative effect → -3.
 		$abilities = [['id' => 'xpid', 'name' => 'XP', 'base' => 5]];
@@ -137,6 +167,11 @@ class SkillRequirementServiceTest extends TestCase {
 		$this->assertSame(expected: 3, actual: $result['budget']['shortfall']);
 	}
 
+	/**
+	 * XP budget accepts affordable.
+	 *
+	 * @return void
+	 */
 	public function testXpBudgetAcceptsAffordable(): void {
 		$abilities = [['id' => 'xpid', 'name' => 'Experience Points', 'base' => 10]];
 		$effects = [
@@ -152,6 +187,11 @@ class SkillRequirementServiceTest extends TestCase {
 		$this->assertSame(expected: 6, actual: $result['budget']['value']);
 	}
 
+	/**
+	 * Validator XP agrees with engine.
+	 *
+	 * @return void
+	 */
 	public function testValidatorXpAgreesWithEngine(): void {
 		$abilities = [['id' => 'xpid', 'name' => 'XP', 'base' => 20]];
 		$effects = [
@@ -186,6 +226,11 @@ class SkillRequirementServiceTest extends TestCase {
 		$this->assertSame(expected: $engineXp, actual: $result['budget']['value']);
 	}
 
+	/**
+	 * Dangling prerequisite is unresolvable.
+	 *
+	 * @return void
+	 */
 	public function testDanglingPrerequisiteIsUnresolvable(): void {
 		$skills = [
 			['id' => 'adv', 'name' => 'Advanced', 'requiredSkills' => ['ghost-uuid']],
@@ -198,6 +243,11 @@ class SkillRequirementServiceTest extends TestCase {
 		$this->assertSame(expected: 'unresolvable', actual: $entry['status']);
 	}
 
+	/**
+	 * Override marks as overridden and valid.
+	 *
+	 * @return void
+	 */
 	public function testOverrideMarksAsOverriddenAndValid(): void {
 		$skills = [
 			['id' => 'basic', 'name' => 'Basic'],
@@ -217,6 +267,11 @@ class SkillRequirementServiceTest extends TestCase {
 		$this->assertSame(expected: 'overridden', actual: $entry['status']);
 	}
 
+	/**
+	 * Empty reason override does not apply.
+	 *
+	 * @return void
+	 */
 	public function testEmptyReasonOverrideDoesNotApply(): void {
 		$skills = [
 			['id' => 'basic', 'name' => 'Basic'],
@@ -232,6 +287,11 @@ class SkillRequirementServiceTest extends TestCase {
 		$this->assertFalse(condition: $result['valid']);
 	}
 
+	/**
+	 * Removal flags dependent.
+	 *
+	 * @return void
+	 */
 	public function testRemovalFlagsDependent(): void {
 		$skills = [
 			['id' => 'basic', 'name' => 'Basic Swordplay'],
@@ -246,6 +306,11 @@ class SkillRequirementServiceTest extends TestCase {
 		$this->assertSame(expected: 'basic', actual: $result['dependents'][0]['missingSkill']);
 	}
 
+	/**
+	 * No XP ability degrades budget open.
+	 *
+	 * @return void
+	 */
 	public function testNoXpAbilityDegradesBudgetOpen(): void {
 		// No ability named XP — budget cannot be enforced, never blocks.
 		$abilities = [['id' => 'str', 'name' => 'Strength', 'base' => 1]];

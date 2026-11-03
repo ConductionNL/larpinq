@@ -29,6 +29,11 @@ class CharacterServiceTest extends TestCase {
 	private RegisterObjectFetcher $objectFetcher;
 	private LoggerInterface $logger;
 
+	/**
+	 * Build the doubles and the subject every test starts from.
+	 *
+	 * @return void
+	 */
 	protected function setUp(): void {
 		parent::setUp();
 
@@ -76,6 +81,11 @@ class CharacterServiceTest extends TestCase {
 		);
 	}
 
+	/**
+	 * Calculate character with no abilities.
+	 *
+	 * @return void
+	 */
 	public function testCalculateCharacterWithNoAbilities(): void {
 		$character = ['id' => 'char-1', 'name' => 'Test'];
 		$result = $this->service->calculateCharacter($character);
@@ -84,6 +94,11 @@ class CharacterServiceTest extends TestCase {
 		self::assertEmpty(actual: $result['stats']);
 	}
 
+	/**
+	 * Calculate character initializes ability scores.
+	 *
+	 * @return void
+	 */
 	public function testCalculateCharacterInitializesAbilityScores(): void {
 		$abilities = [
 			['id' => 'abil-1', 'name' => 'Strength', 'base' => 10],
@@ -105,6 +120,11 @@ class CharacterServiceTest extends TestCase {
 		self::assertSame(expected: 5, actual: $result['stats']['abil-2']['value']);
 	}
 
+	/**
+	 * Calculate character applies positive skill effect.
+	 *
+	 * @return void
+	 */
 	public function testCalculateCharacterAppliesPositiveSkillEffect(): void {
 		$abilities = [
 			['id' => 'abil-1', 'name' => 'Strength', 'base' => 10],
@@ -130,6 +150,11 @@ class CharacterServiceTest extends TestCase {
 		self::assertArrayNotHasKey(key: 'effect', array: $result['stats']['abil-1']['audit'][0]);
 	}
 
+	/**
+	 * Calculate character applies negative effect.
+	 *
+	 * @return void
+	 */
 	public function testCalculateCharacterAppliesNegativeEffect(): void {
 		$abilities = [
 			['id' => 'abil-1', 'name' => 'HP', 'base' => 20],
@@ -148,6 +173,11 @@ class CharacterServiceTest extends TestCase {
 		self::assertSame(expected: 17, actual: $result['stats']['abil-1']['value']);
 	}
 
+	/**
+	 * Calculate character applies effects from multiple entity types.
+	 *
+	 * @return void
+	 */
 	public function testCalculateCharacterAppliesEffectsFromMultipleEntityTypes(): void {
 		$abilities = [
 			['id' => 'abil-1', 'name' => 'Strength', 'base' => 10],
@@ -182,6 +212,11 @@ class CharacterServiceTest extends TestCase {
 		self::assertCount(expectedCount: 3, haystack: $result['stats']['abil-1']['audit']);
 	}
 
+	/**
+	 * Calculate character skips orphaned entity references.
+	 *
+	 * @return void
+	 */
 	public function testCalculateCharacterSkipsOrphanedEntityReferences(): void {
 		$abilities = [
 			['id' => 'abil-1', 'name' => 'Strength', 'base' => 10],
@@ -198,6 +233,11 @@ class CharacterServiceTest extends TestCase {
 		self::assertSame(expected: 10, actual: $result['stats']['abil-1']['value']);
 	}
 
+	/**
+	 * Calculate character skips orphaned effect references.
+	 *
+	 * @return void
+	 */
 	public function testCalculateCharacterSkipsOrphanedEffectReferences(): void {
 		$abilities = [
 			['id' => 'abil-1', 'name' => 'Strength', 'base' => 10],
@@ -213,6 +253,11 @@ class CharacterServiceTest extends TestCase {
 		self::assertSame(expected: 10, actual: $result['stats']['abil-1']['value']);
 	}
 
+	/**
+	 * Calculate character handles empty skills array.
+	 *
+	 * @return void
+	 */
 	public function testCalculateCharacterHandlesEmptySkillsArray(): void {
 		$abilities = [
 			['id' => 'abil-1', 'name' => 'Strength', 'base' => 10],
@@ -225,6 +270,11 @@ class CharacterServiceTest extends TestCase {
 		self::assertSame(expected: 10, actual: $result['stats']['abil-1']['value']);
 	}
 
+	/**
+	 * Calculate character handles null effects on entity.
+	 *
+	 * @return void
+	 */
 	public function testCalculateCharacterHandlesNullEffectsOnEntity(): void {
 		$abilities = [
 			['id' => 'abil-1', 'name' => 'Strength', 'base' => 10],
@@ -240,6 +290,11 @@ class CharacterServiceTest extends TestCase {
 		self::assertSame(expected: 10, actual: $result['stats']['abil-1']['value']);
 	}
 
+	/**
+	 * Calculate character uses stat id as fallback.
+	 *
+	 * @return void
+	 */
 	public function testCalculateCharacterUsesStatIdAsFallback(): void {
 		$abilities = [
 			['id' => 'abil-1', 'name' => 'Strength', 'base' => 10],
@@ -258,6 +313,11 @@ class CharacterServiceTest extends TestCase {
 		self::assertSame(expected: 17, actual: $result['stats']['abil-1']['value']);
 	}
 
+	/**
+	 * Calculate character default base is zero.
+	 *
+	 * @return void
+	 */
 	public function testCalculateCharacterDefaultBaseIsZero(): void {
 		$abilities = [
 			['id' => 'abil-1', 'name' => 'Luck'],
@@ -271,6 +331,11 @@ class CharacterServiceTest extends TestCase {
 		self::assertSame(expected: 0, actual: $result['stats']['abil-1']['value']);
 	}
 
+	/**
+	 * Calculate character applies event effects.
+	 *
+	 * @return void
+	 */
 	public function testCalculateCharacterAppliesEventEffects(): void {
 		$abilities = [
 			['id' => 'abil-1', 'name' => 'XP', 'base' => 0],
@@ -289,6 +354,11 @@ class CharacterServiceTest extends TestCase {
 		self::assertSame(expected: 100, actual: $result['stats']['abil-1']['value']);
 	}
 
+	/**
+	 * Calculate all characters.
+	 *
+	 * @return void
+	 */
 	public function testCalculateAllCharacters(): void {
 		$abilities = [
 			['id' => 'abil-1', 'name' => 'Strength', 'base' => 10],
@@ -357,6 +427,11 @@ class CharacterServiceTest extends TestCase {
 		self::assertCount(expectedCount: 1, haystack: $result['stats']['abil-1']['audit']);
 	}
 
+	/**
+	 * Non cumulative effect applied only once.
+	 *
+	 * @return void
+	 */
 	public function testNonCumulativeEffectAppliedOnlyOnce(): void {
 		// The same non-cumulative effect is attached to BOTH a skill and an item.
 		// It should only be applied once regardless.
@@ -389,6 +464,11 @@ class CharacterServiceTest extends TestCase {
 		self::assertCount(expectedCount: 1, haystack: $result['stats']['abil-1']['audit']);
 	}
 
+	/**
+	 * Cumulative effect applied multiple times.
+	 *
+	 * @return void
+	 */
 	public function testCumulativeEffectAppliedMultipleTimes(): void {
 		// A cumulative effect on skill + item must stack.
 		$abilities = [
@@ -414,6 +494,11 @@ class CharacterServiceTest extends TestCase {
 		self::assertSame(expected: 20, actual: $result['stats']['abil-1']['value']);
 	}
 
+	/**
+	 * Stat id and abilities deduplication.
+	 *
+	 * @return void
+	 */
 	public function testStatIdAndAbilitiesDeduplication(): void {
 		// stat_id = 'abil-1' AND abilities = ['abil-1']: must apply only once. Closes #208.
 		$abilities = [
@@ -468,6 +553,11 @@ class CharacterServiceTest extends TestCase {
 		self::assertSame(expected: 17, actual: $result['stats']['abil-1']['value']);
 	}
 
+	/**
+	 * Negative modifier with positive modification adds.
+	 *
+	 * @return void
+	 */
 	public function testNegativeModifierWithPositiveModificationAdds(): void {
 		// {modifier: -5, modification: 'positive'} must add 5 (abs coercion).
 		$abilities = [

@@ -68,6 +68,11 @@ class CharacterRequirementListenerTest extends TestCase {
 
 	private LoggerInterface $logger;
 
+	/**
+	 * Build the doubles and the subject every test starts from.
+	 *
+	 * @return void
+	 */
 	protected function setUp(): void {
 		parent::setUp();
 		$this->logger = $this->createMock(originalClassName: LoggerInterface::class);
@@ -159,6 +164,11 @@ class CharacterRequirementListenerTest extends TestCase {
 		$this->assertFalse(condition: $event->isPropagationStopped());
 	}
 
+	/**
+	 * Rejects create with unmet prerequisite.
+	 *
+	 * @return void
+	 */
 	public function testRejectsCreateWithUnmetPrerequisite(): void {
 		$skills = [
 			['id' => 'basic', 'name' => 'Basic'],
@@ -174,6 +184,11 @@ class CharacterRequirementListenerTest extends TestCase {
 		$this->assertSame(expected: 'requirements_not_met', actual: $event->getErrors()['code']);
 	}
 
+	/**
+	 * Allows create when prerequisite met.
+	 *
+	 * @return void
+	 */
 	public function testAllowsCreateWhenPrerequisiteMet(): void {
 		$skills = [
 			['id' => 'basic', 'name' => 'Basic'],
@@ -188,6 +203,11 @@ class CharacterRequirementListenerTest extends TestCase {
 		$this->assertFalse(condition: $event->isPropagationStopped());
 	}
 
+	/**
+	 * Ignores non character schema.
+	 *
+	 * @return void
+	 */
 	public function testIgnoresNonCharacterSchema(): void {
 		$listener = $this->makeListener(skills: []);
 		$entity = new FakeObjectEntity('other-schema', ['skills' => ['adv']]);
@@ -198,6 +218,11 @@ class CharacterRequirementListenerTest extends TestCase {
 		$this->assertFalse(condition: $event->isPropagationStopped());
 	}
 
+	/**
+	 * Diff scoped unrelated edit passes.
+	 *
+	 * @return void
+	 */
 	public function testDiffScopedUnrelatedEditPasses(): void {
 		// Pre-existing unmet state, but the write only changes the name.
 		$skills = [
@@ -214,6 +239,11 @@ class CharacterRequirementListenerTest extends TestCase {
 		$this->assertFalse(condition: $event->isPropagationStopped());
 	}
 
+	/**
+	 * Override accepted from GM.
+	 *
+	 * @return void
+	 */
 	public function testOverrideAcceptedFromGm(): void {
 		$skills = [
 			['id' => 'basic', 'name' => 'Basic'],
@@ -231,6 +261,11 @@ class CharacterRequirementListenerTest extends TestCase {
 		$this->assertFalse(condition: $event->isPropagationStopped());
 	}
 
+	/**
+	 * Override rejected from non GM.
+	 *
+	 * @return void
+	 */
 	public function testOverrideRejectedFromNonGm(): void {
 		$skills = [['id' => 'adv', 'name' => 'Advanced']];
 		$listener = $this->makeListener(skills: $skills, isGm: false, uid: 'player1');
@@ -246,6 +281,11 @@ class CharacterRequirementListenerTest extends TestCase {
 		$this->assertSame(expected: 'override_forbidden', actual: $event->getErrors()['requirementOverrides'][0]['code']);
 	}
 
+	/**
+	 * Empty reason override rejected.
+	 *
+	 * @return void
+	 */
 	public function testEmptyReasonOverrideRejected(): void {
 		$skills = [['id' => 'adv', 'name' => 'Advanced']];
 		$listener = $this->makeListener(skills: $skills, isGm: true, uid: 'gm1');

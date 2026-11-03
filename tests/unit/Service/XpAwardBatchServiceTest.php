@@ -47,6 +47,11 @@ class XpAwardBatchServiceTest extends TestCase {
 
 	private XpAwardBatchService $service;
 
+	/**
+	 * Build the doubles and the subject every test starts from.
+	 *
+	 * @return void
+	 */
 	protected function setUp(): void {
 		parent::setUp();
 
