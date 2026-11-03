@@ -373,29 +373,18 @@ class CharacterService {
 	}//end linkedIds()
 
 	/**
-	 * Apply one entity's effects to the run and name it on the audit entries they added.
+	 * The audit tag that names the entity which carried an effect (REQ-CSP-001).
 	 *
-	 * @param EffectRun            $run    The pass: the abilities as they change and the effects applied so far.
-	 * @param array<string, mixed> $entity The carrying entity, with non-empty effects.
 	 * @param string               $source 'skill', 'item', 'condition' or 'event'.
+	 * @param array<string, mixed> $entity The carrying entity.
 	 *
-	 * @return void
+	 * @return array<string, string> The source, sourceId and sourceName.
 	 *
-	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-69
+	 * @spec openspec/specs/character-management/spec.md
 	 */
-	private function applyEntity(EffectRun $run, array $entity, string $source): void {
-		$auditCounts = $run->auditCounts();
-		// @var array|null $entityEffects
-		$entityEffects = $entity['effects'];
-		$this->effectApplier->applyEffects(
-			abilities: $run->abilities,
-			effects: $entityEffects,
-			appliedEffects: $run->applied,
-			effectLookup: $this->allEffects
-		);
-		$tag = ['source' => $source, 'sourceId' => (string)($entity['id'] ?? ''), 'sourceName' => (string)($entity['name'] ?? '')];
-		$run->tagSince(auditCounts: $auditCounts, tag: $tag);
-	}//end applyEntity()
+	private function auditTag(string $source, array $entity): array {
+		return ['source' => $source, 'sourceId' => (string)($entity['id'] ?? ''), 'sourceName' => (string)($entity['name'] ?? '')];
+	}//end auditTag()
 
 	/**
 	 * The loaded entities of one effect stage, indexed by ID.
@@ -435,13 +424,15 @@ class CharacterService {
 		// Track which non-cumulative effect IDs have already been applied this pass.
 		// Resets per calculateCharacter() call (not shared across characters).
 		// Closes #208.
-		$run = new EffectRun(abilities: $this->initializeAbilityScores(), applied: []);
+		$run = new EffectRun(abilities: $this->initializeAbilityScores(), effects: $this->allEffects);
 
 		// Apply effects from each entity type the character has: skills,
 		// items, conditions, then events.
 		foreach (self::STAGE_SOURCE as $property => $source) {
 			foreach ($this->stageEntities(character: $character, property: $property) as $entity) {
-				$this->applyEntity(run: $run, entity: $entity, source: $source);
+				$auditCounts = $run->auditCounts();
+				$this->effectApplier->applyEffects(run: $run, effectIds: $entity['effects']);
+				$run->tagSince(auditCounts: $auditCounts, tag: $this->auditTag(source: $source, entity: $entity));
 			}
 		}
 

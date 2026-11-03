@@ -33,14 +33,21 @@ namespace OCA\Larpinq\Service;
  */
 final class EffectRun {
 	/**
+	 * The effect ids already applied in this pass.
+	 *
+	 * @var array<string, bool>
+	 */
+	public array $applied = [];
+
+	/**
 	 * Constructor.
 	 *
 	 * @param array<string, array<string, mixed>> $abilities The abilities, by id.
-	 * @param array<string, bool> $applied The effect ids already applied in this pass.
+	 * @param array<string, array<string, mixed>> $effects   Every effect of the world, by id.
 	 */
 	public function __construct(
 		public array $abilities,
-		public array $applied,
+		public readonly array $effects,
 	) {
 	}//end __construct()
 

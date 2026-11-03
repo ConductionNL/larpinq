@@ -22,6 +22,7 @@ declare(strict_types=1);
 namespace OCA\Larpinq\Tests\Unit\Service;
 
 use OCA\Larpinq\Service\EffectApplier;
+use OCA\Larpinq\Service\EffectRun;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -102,6 +103,20 @@ class EffectApplierGoldenTest extends TestCase {
 	}//end abilities()
 
 	/**
+	 * A null effect id is skipped, even when an effect has the empty id it would cast to.
+	 *
+	 * @return void
+	 */
+	public function testANullEffectIdIsSkipped(): void {
+		$lookup = ['' => ['id' => '', 'name' => 'Empty id', 'modifier' => 5, 'modification' => 'positive', 'abilities' => ['str']]];
+		$run = new EffectRun(abilities: self::abilities(), effects: $lookup);
+		(new EffectApplier())->applyEffects(run: $run, effectIds: [null]);
+
+		self::assertSame(expected: self::abilities(), actual: $run->abilities);
+		self::assertSame(expected: [], actual: $run->applied);
+	}//end testANullEffectIdIsSkipped()
+
+	/**
 	 * Every case matches the recorded outcome.
 	 *
 	 * @return void
@@ -110,9 +125,10 @@ class EffectApplierGoldenTest extends TestCase {
 		$lookup = self::lookup() + ['7' => ['id' => '7', 'name' => 'Seven', 'modifier' => 7, 'modification' => 'positive', 'abilities' => ['dex']]];
 		$actual = [];
 		foreach (self::cases() as $name => [$effects, $applied]) {
-			$abilities = self::abilities();
-			(new EffectApplier())->applyEffects(abilities: $abilities, effects: $effects, appliedEffects: $applied, effectLookup: $lookup);
-			$actual[$name] = json_encode(['abilities' => $abilities, 'applied' => $applied], JSON_PRETTY_PRINT);
+			$run = new EffectRun(abilities: self::abilities(), effects: $lookup);
+			$run->applied = $applied;
+			(new EffectApplier())->applyEffects(run: $run, effectIds: $effects);
+			$actual[$name] = json_encode(['abilities' => $run->abilities, 'applied' => $run->applied], JSON_PRETTY_PRINT);
 		}
 
 		if (getenv('RECORD_GOLDEN') === '1') {
