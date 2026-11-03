@@ -13,6 +13,8 @@
 
 import { getRequestToken } from '@nextcloud/auth'
 import { generateUrl } from '@nextcloud/router'
+import { jsonHeaders } from './requestHeaders.js'
+import { refusalOf } from './responseBody.js'
 
 const OBJECTS = '/apps/openregister/api/objects/larpinq'
 
@@ -99,30 +101,17 @@ export async function applyBuild(characterId, lists) {
 		generateUrl(`${OBJECTS}/character/${encodeURIComponent(characterId)}`),
 		{
 			method: 'PATCH',
-			headers: {
-				requesttoken: getRequestToken(),
-				Accept: 'application/json',
-				'Content-Type': 'application/json',
-			},
+			headers: jsonHeaders(),
 			body: JSON.stringify(body),
 		},
 	)
 	if (response.ok) {
 		return { ok: true, message: '', shortfall: 0 }
 	}
-	let refusal
-	try {
-		refusal = await response.json()
-	} catch {
-		refusal = {}
-	}
-	const errors =
-		refusal?.errors && typeof refusal.errors === 'object'
-			? refusal.errors
-			: refusal
+	const { errors, message } = await refusalOf(response)
 	return {
 		ok: false,
-		message: String(errors?.message ?? refusal?.message ?? ''),
+		message,
 		shortfall: Number(errors?.budget?.shortfall ?? 0),
 	}
 }

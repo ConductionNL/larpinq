@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace OCA\Larpinq\Tests\Unit\Controller;
 
 use Exception;
+use OCA\Larpinq\Controller\CallerAccess;
 use OCA\Larpinq\Controller\EventsController;
 use OCA\Larpinq\Service\DocuDeskPdfRenderer;
 use OCA\Larpinq\Service\EventRosterService;
@@ -35,55 +36,77 @@ class EventsControllerTest extends TestCase {
 	private const TPL = '00000000-0000-0000-0000-000000000010';
 	private const EVT = '00000000-0000-0000-0000-0000000000ev';
 
+	/** @var RegisterObjectFetcher&MockObject The object fetcher. */
 	private RegisterObjectFetcher&MockObject $objectFetcher;
+	/** @var DocuDeskPdfRenderer&MockObject The pdf renderer. */
 	private DocuDeskPdfRenderer&MockObject $pdfRenderer;
+	/** @var IUserSession&MockObject The user session. */
 	private IUserSession&MockObject $userSession;
+	/** @var IGroupManager&MockObject The group manager. */
 	private IGroupManager&MockObject $groupManager;
 
+	/**
+	 * Build the doubles and the subject every test starts from.
+	 *
+	 * @return void
+	 */
 	protected function setUp(): void {
 		parent::setUp();
-		$this->objectFetcher = $this->createMock(RegisterObjectFetcher::class);
-		$this->pdfRenderer = $this->createMock(DocuDeskPdfRenderer::class);
-		$this->userSession = $this->createMock(IUserSession::class);
-		$this->groupManager = $this->createMock(IGroupManager::class);
+		$this->objectFetcher = $this->createMock(originalClassName: RegisterObjectFetcher::class);
+		$this->pdfRenderer = $this->createMock(originalClassName: DocuDeskPdfRenderer::class);
+		$this->userSession = $this->createMock(originalClassName: IUserSession::class);
+		$this->groupManager = $this->createMock(originalClassName: IGroupManager::class);
 	}
 
 	private function controller(): EventsController {
 		// The real EventRosterService over the mocked fetcher: the roster /
 		// run-sheet rules stay under test end-to-end through the controller.
 		return new EventsController(
-			'larpinq',
-			$this->createMock(IRequest::class),
-			new EventRosterService($this->objectFetcher),
-			$this->pdfRenderer,
-			$this->userSession,
-			$this->groupManager,
+			request: $this->createMock(originalClassName: IRequest::class),
+			rosterService: new EventRosterService(objectFetcher: $this->objectFetcher),
+			pdfRenderer: $this->pdfRenderer,
+			callerAccess: new CallerAccess(userSession: $this->userSession, groupManager: $this->groupManager),
 		);
 	}
 
 	private function asUser(string $uid, bool $isGm, bool $isAdmin = false): void {
-		$user = $this->createMock(IUser::class);
+		$user = $this->createMock(originalClassName: IUser::class);
 		$user->method('getUID')->willReturn($uid);
 		$this->userSession->method('getUser')->willReturn($user);
 		$this->groupManager->method('isInGroup')->willReturn($isGm);
 		$this->groupManager->method('isAdmin')->willReturn($isAdmin);
 	}
 
+	/**
+	 * Returns401 when not authenticated.
+	 *
+	 * @return void
+	 */
 	public function testReturns401WhenNotAuthenticated(): void {
 		$this->userSession->method('getUser')->willReturn(null);
 		$result = $this->controller()->downloadRunsheet(self::EVT, self::TPL);
-		self::assertSame(401, $result->getStatus());
+		self::assertSame(expected: 401, actual: $result->getStatus());
 	}
 
+	/**
+	 * Returns403 for non GM.
+	 *
+	 * @return void
+	 */
 	public function testReturns403ForNonGm(): void {
-		$this->asUser('player1', isGm: false, isAdmin: false);
+		$this->asUser(uid: 'player1', isGm: false, isAdmin: false);
 		$result = $this->controller()->downloadRunsheet(self::EVT, self::TPL);
-		self::assertInstanceOf(JSONResponse::class, $result);
-		self::assertSame(403, $result->getStatus());
+		self::assertInstanceOf(expected: JSONResponse::class, actual: $result);
+		self::assertSame(expected: 403, actual: $result->getStatus());
 	}
 
+	/**
+	 * Returns424 when docu desk absent.
+	 *
+	 * @return void
+	 */
 	public function testReturns424WhenDocuDeskAbsent(): void {
-		$this->asUser('gm1', isGm: true);
+		$this->asUser(uid: 'gm1', isGm: true);
 		// downloadRunsheet() validates the template id BEFORE probing for
 		// DocuDesk, so the id must normalise successfully for the 424 branch to
 		// be reachable at all. Without this stub the mock returns null and the
@@ -92,15 +115,20 @@ class EventsControllerTest extends TestCase {
 		$this->pdfRenderer->method('normaliseTemplateId')->willReturn(self::TPL);
 		$this->pdfRenderer->method('isDocuDeskAvailable')->willReturn(false);
 		$result = $this->controller()->downloadRunsheet(self::EVT, self::TPL);
-		self::assertSame(424, $result->getStatus());
+		self::assertSame(expected: 424, actual: $result->getStatus());
 	}
 
+	/**
+	 * Returns400 for non UUID template.
+	 *
+	 * @return void
+	 */
 	public function testReturns400ForNonUuidTemplate(): void {
-		$this->asUser('gm1', isGm: true);
+		$this->asUser(uid: 'gm1', isGm: true);
 		$this->pdfRenderer->method('isDocuDeskAvailable')->willReturn(true);
 		$this->pdfRenderer->method('normaliseTemplateId')->willReturn(null);
 		$result = $this->controller()->downloadRunsheet(self::EVT, 'not-a-uuid');
-		self::assertSame(400, $result->getStatus());
+		self::assertSame(expected: 400, actual: $result->getStatus());
 	}
 
 	/**
@@ -116,34 +144,49 @@ class EventsControllerTest extends TestCase {
 	 * EventsController::downloadRunsheet() turns this test red (424 != 400).
 	 */
 	public function testReturns400ForNonUuidTemplateEvenWhenDocuDeskAbsent(): void {
-		$this->asUser('gm1', isGm: true);
+		$this->asUser(uid: 'gm1', isGm: true);
 		$this->pdfRenderer->method('isDocuDeskAvailable')->willReturn(false);
 		$this->pdfRenderer->method('normaliseTemplateId')->willReturn(null);
 		$result = $this->controller()->downloadRunsheet(self::EVT, 'not-a-uuid');
-		self::assertSame(400, $result->getStatus());
+		self::assertSame(expected: 400, actual: $result->getStatus());
 	}
 
+	/**
+	 * Returns404 when event not found.
+	 *
+	 * @return void
+	 */
 	public function testReturns404WhenEventNotFound(): void {
-		$this->asUser('gm1', isGm: true);
+		$this->asUser(uid: 'gm1', isGm: true);
 		$this->pdfRenderer->method('isDocuDeskAvailable')->willReturn(true);
 		$this->pdfRenderer->method('normaliseTemplateId')->willReturn(self::TPL);
 		$this->objectFetcher->method('getObject')->willThrowException(new Exception('nope'));
 		$result = $this->controller()->downloadRunsheet(self::EVT, self::TPL);
-		self::assertSame(404, $result->getStatus());
+		self::assertSame(expected: 404, actual: $result->getStatus());
 	}
 
+	/**
+	 * Returns404 when template not found.
+	 *
+	 * @return void
+	 */
 	public function testReturns404WhenTemplateNotFound(): void {
-		$this->asUser('gm1', isGm: true);
+		$this->asUser(uid: 'gm1', isGm: true);
 		$this->pdfRenderer->method('isDocuDeskAvailable')->willReturn(true);
 		$this->pdfRenderer->method('normaliseTemplateId')->willReturn(self::TPL);
 		$this->objectFetcher->method('getObject')->willReturn(['id' => self::EVT, 'name' => 'Summer LARP']);
 		$this->pdfRenderer->method('getTemplate')->willReturn(null);
 		$result = $this->controller()->downloadRunsheet(self::EVT, self::TPL);
-		self::assertSame(404, $result->getStatus());
+		self::assertSame(expected: 404, actual: $result->getStatus());
 	}
 
+	/**
+	 * Success returns PDF named after event.
+	 *
+	 * @return void
+	 */
 	public function testSuccessReturnsPdfNamedAfterEvent(): void {
-		$this->asUser('gm1', isGm: true);
+		$this->asUser(uid: 'gm1', isGm: true);
 		$this->pdfRenderer->method('isDocuDeskAvailable')->willReturn(true);
 		$this->pdfRenderer->method('normaliseTemplateId')->willReturn(self::TPL);
 		$this->objectFetcher->method('getObject')->willReturn(['id' => self::EVT, 'name' => 'Summer LARP']);
@@ -167,20 +210,25 @@ class EventsControllerTest extends TestCase {
 		});
 
 		$result = $this->controller()->downloadRunsheet(self::EVT, self::TPL);
-		self::assertInstanceOf(DataDownloadResponse::class, $result);
+		self::assertInstanceOf(expected: DataDownloadResponse::class, actual: $result);
 
 		// Cast contains the two participants, sorted by name (Borin before Zara).
-		self::assertSame(2, $captured['castCount']);
-		self::assertSame('Borin', $captured['cast'][0]['name']);
-		self::assertSame('Zara', $captured['cast'][1]['name']);
+		self::assertSame(expected: 2, actual: $captured['castCount']);
+		self::assertSame(expected: 'Borin', actual: $captured['cast'][0]['name']);
+		self::assertSame(expected: 'Zara', actual: $captured['cast'][1]['name']);
 		// Unique items rollup deduplicates i1 across both characters.
-		self::assertEqualsCanonicalizing(['i1', 'i2'], $captured['uniqueItemsInPlay']);
+		self::assertEqualsCanonicalizing(expected: ['i1', 'i2'], actual: $captured['uniqueItemsInPlay']);
 		// Player name falls back to ocName.
-		self::assertSame('Alice', $captured['cast'][1]['playerName']);
+		self::assertSame(expected: 'Alice', actual: $captured['cast'][1]['playerName']);
 	}
 
+	/**
+	 * Filename fallback when event unnamed.
+	 *
+	 * @return void
+	 */
 	public function testFilenameFallbackWhenEventUnnamed(): void {
-		$this->asUser('gm1', isGm: true);
+		$this->asUser(uid: 'gm1', isGm: true);
 		$this->pdfRenderer->method('isDocuDeskAvailable')->willReturn(true);
 		$this->pdfRenderer->method('normaliseTemplateId')->willReturn(self::TPL);
 		$this->objectFetcher->method('getObject')->willReturn(['id' => self::EVT]);
@@ -189,11 +237,16 @@ class EventsControllerTest extends TestCase {
 		$this->pdfRenderer->method('render')->willReturn('%PDF mock');
 
 		$result = $this->controller()->downloadRunsheet(self::EVT, self::TPL);
-		self::assertInstanceOf(DataDownloadResponse::class, $result);
+		self::assertInstanceOf(expected: DataDownloadResponse::class, actual: $result);
 	}
 
+	/**
+	 * Returns500 when render fails.
+	 *
+	 * @return void
+	 */
 	public function testReturns500WhenRenderFails(): void {
-		$this->asUser('gm1', isGm: true);
+		$this->asUser(uid: 'gm1', isGm: true);
 		$this->pdfRenderer->method('isDocuDeskAvailable')->willReturn(true);
 		$this->pdfRenderer->method('normaliseTemplateId')->willReturn(self::TPL);
 		$this->objectFetcher->method('getObject')->willReturn(['id' => self::EVT, 'name' => 'Summer LARP']);
@@ -202,17 +255,22 @@ class EventsControllerTest extends TestCase {
 		$this->pdfRenderer->method('render')->willReturn(null);
 
 		$result = $this->controller()->downloadRunsheet(self::EVT, self::TPL);
-		self::assertSame(500, $result->getStatus());
+		self::assertSame(expected: 500, actual: $result->getStatus());
 	}
 
+	/**
+	 * Admin without GM group allowed.
+	 *
+	 * @return void
+	 */
 	public function testAdminWithoutGmGroupAllowed(): void {
 		// An NC admin (legacy GM) is allowed even without the gamemasters group.
-		$this->asUser('admin', isGm: false, isAdmin: true);
+		$this->asUser(uid: 'admin', isGm: false, isAdmin: true);
 		$this->pdfRenderer->method('normaliseTemplateId')->willReturn(self::TPL);
 		$this->pdfRenderer->method('isDocuDeskAvailable')->willReturn(false);
 		$result = $this->controller()->downloadRunsheet(self::EVT, self::TPL);
 		// Passes the GM guard and template validation, then hits the 424
 		// (DocuDesk absent) — proves not 403.
-		self::assertSame(424, $result->getStatus());
+		self::assertSame(expected: 424, actual: $result->getStatus());
 	}
 }

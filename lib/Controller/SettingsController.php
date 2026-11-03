@@ -26,14 +26,12 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Controller;
 
-use OCA\Larpinq\AppInfo\Application;
 use OCA\Larpinq\Service\SettingsService;
+use OCA\Larpinq\Support\AppIdentity;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\JSONResponse;
-use OCP\IGroupManager;
 use OCP\IRequest;
-use OCP\IUserSession;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
@@ -67,8 +65,7 @@ class SettingsController extends Controller {
 	 * @param ContainerInterface $container The container.
 	 * @param IAppManager $appManager The app manager.
 	 * @param SettingsService $settingsService The settings service.
-	 * @param IGroupManager $groupManager The group manager.
-	 * @param IUserSession $userSession The user session.
+	 * @param CallerAccess $callerAccess The signed-in caller and the admin check.
 	 * @param LoggerInterface $logger The logger.
 	 *
 	 * @return void
@@ -78,11 +75,10 @@ class SettingsController extends Controller {
 		private readonly ContainerInterface $container,
 		private readonly IAppManager $appManager,
 		private readonly SettingsService $settingsService,
-		private readonly IGroupManager $groupManager,
-		private readonly IUserSession $userSession,
+		private readonly CallerAccess $callerAccess,
 		private readonly LoggerInterface $logger,
 	) {
-		parent::__construct(appName: Application::APP_ID, request: $request);
+		parent::__construct(appName: AppIdentity::APP_ID, request: $request);
 
 	}//end __construct()
 
@@ -212,8 +208,7 @@ class SettingsController extends Controller {
 	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-23
 	 */
 	public function index(): JSONResponse {
-		$user = $this->userSession->getUser();
-		$isAdmin = $user !== null && $this->groupManager->isAdmin($user->getUID());
+		$isAdmin = $this->callerAccess->currentUserIsAdmin();
 
 		$openRegisters = in_array(needle: 'openregister', haystack: $this->appManager->getInstalledApps());
 		$availableRegisters = [];

@@ -27,6 +27,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @covers \OCA\Larpinq\Service\SkillRequirementChecker
  * @uses   \OCA\Larpinq\Service\IdListNormaliser
+ * @uses   \OCA\Larpinq\Service\SkillUnderCheck
  */
 class SkillRequirementCheckerGoldenTest extends TestCase {
 
@@ -76,6 +77,11 @@ class SkillRequirementCheckerGoldenTest extends TestCase {
 			'stats without score' => [['requiredStats' => ['st-raw', 'st-x']], false, $context],
 			'stats overridden' => [['requiredStats' => ['st-int', 'st-x'], 'requiredScore' => 9], true, $context],
 			'conditions and effects' => [['requiredConditions' => ['c-1', 'c-2'], 'requiredEffects' => ['e-2', 'e-9']], false, $context],
+			'conditions and effects against numeric ids' => [
+				['requiredConditions' => ['1'], 'requiredEffects' => ['0']],
+				false,
+				['conditions' => [1], 'effects' => [0, 'e-0']],
+			],
 			'conditions and effects overridden' => [
 				['requiredConditions' => ['c-2'], 'requiredEffects' => [['id' => 'e-9'], ['id' => 'e-1']]],
 				true,

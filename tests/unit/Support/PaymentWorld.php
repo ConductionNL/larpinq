@@ -73,6 +73,7 @@ class FakePaymentLeaf implements IntegrationProvider {
 	 */
 	public bool $mayRequest = true;
 
+	/** @var bool Whether fail list. */
 	public bool $failList = false;
 
 	/**
@@ -89,6 +90,7 @@ class FakePaymentLeaf implements IntegrationProvider {
 	 */
 	public array $creates = [];
 
+	/** @var int The next. */
 	private int $next = 1;
 
 	public function getId(): string {
@@ -215,8 +217,10 @@ class PaymentWorld {
 	public const TICKET = 'b1000000-0000-4000-8000-000000000001';
 	public const MEALS = 'b2000000-0000-4000-8000-000000000001';
 
+	/** @var InMemoryOpenRegister The store. */
 	public InMemoryOpenRegister $store;
 
+	/** @var FakePaymentLeaf The leaf. */
 	public FakePaymentLeaf $leaf;
 
 	/**
@@ -226,8 +230,10 @@ class PaymentWorld {
 	 */
 	public bool $shillinq = true;
 
+	/** @var string The signed in. */
 	public string $signedIn = 'gm';
 
+	/** @var DateTimeImmutable The now. */
 	public DateTimeImmutable $now;
 
 	/**
@@ -313,13 +319,20 @@ class PaymentWorld {
 		$apps = $this->test->getMockBuilder(IAppManager::class)->getMock();
 		$apps->method('getInstalledApps')->willReturn(['openregister']);
 
-		return new RegisterObjectFetcher($container, $apps, $this->config(), new NullLogger());
+		return new RegisterObjectFetcher(container: $container, appManager: $apps, config: $this->config(), logger: new NullLogger());
 	}
 
 	public function config(): IAppConfig {
 		$config = $this->test->getMockBuilder(IAppConfig::class)->getMock();
 		$config->method('getValueString')->willReturnCallback(
-			static fn (string $app, string $key, string $default = ''): string => (str_ends_with($key, '_register') === true ? '3' : (str_ends_with($key, '_schema') === true ? substr($key, 0, -strlen('_schema')) : $default))
+			static fn (string $app, string $key, string $default = ''): string => (str_ends_with(
+				$key,
+				'_register'
+			) === true ? '3' : (str_ends_with($key, '_schema') === true ? substr(
+				$key,
+				0,
+				-strlen('_schema')
+			) : $default))
 		);
 		return $config;
 	}
@@ -350,7 +363,7 @@ class PaymentWorld {
 			static fn (string $id): object => ($id === PaymentLeaf::REGISTRY ? $registry : throw new RuntimeException('not bound: ' . $id))
 		);
 
-		return new PaymentLeaf($container, $this->config(), new NullLogger());
+		return new PaymentLeaf(container: $container, config: $this->config(), logger: new NullLogger());
 	}
 
 	public function groups(): IGroupManager {
@@ -396,20 +409,33 @@ class PaymentWorld {
 	}
 
 	public function payments(): RegistrationPaymentService {
-		$builder = new PaymentRequestBuilder($this->fetcher(), $this->users(), $this->clock(), new NullLogger());
-		return new RegistrationPaymentService($this->fetcher(), $this->paymentLeaf(), $builder, $this->groups(), new NullLogger());
+		$builder = new PaymentRequestBuilder(fetcher: $this->fetcher(), users: $this->users(), time: $this->clock(), logger: new NullLogger());
+		return new RegistrationPaymentService(
+			fetcher: $this->fetcher(),
+			leaf: $this->paymentLeaf(),
+			builder: $builder,
+			groups: $this->groups(),
+			logger: new NullLogger()
+		);
 	}
 
 	public function followUp(): PaymentFollowUp {
-		return new PaymentFollowUp($this->fetcher(), $this->paymentLeaf(), new NullLogger());
+		return new PaymentFollowUp(fetcher: $this->fetcher(), leaf: $this->paymentLeaf(), logger: new NullLogger());
 	}
 
 	public function paymentListener(): PaymentRequestListener {
-		return new PaymentRequestListener($this->config(), $this->payments(), $this->followUp(), $this->paymentLeaf(), $this->session(), $this->settlement());
+		return new PaymentRequestListener(
+			config: $this->config(),
+			payments: $this->payments(),
+			followUp: $this->followUp(),
+			leaf: $this->paymentLeaf(),
+			session: $this->session(),
+			settlement: $this->settlement()
+		);
 	}
 
 	public function policy(): CancellationPolicy {
-		return new CancellationPolicy($this->groups());
+		return new CancellationPolicy(groups: $this->groups());
 	}
 
 	public function dispatcher(): IEventDispatcher {
@@ -421,25 +447,42 @@ class PaymentWorld {
 	}
 
 	public function settlement(): RegistrationSettlement {
-		$builder = new PaymentRequestBuilder($this->fetcher(), $this->users(), $this->clock(), new NullLogger());
-		return new RegistrationSettlement($this->fetcher(), $this->policy(), $builder, $this->paymentLeaf(), $this->dispatcher(), new NullLogger());
+		$builder = new PaymentRequestBuilder(fetcher: $this->fetcher(), users: $this->users(), time: $this->clock(), logger: new NullLogger());
+		return new RegistrationSettlement(
+			fetcher: $this->fetcher(),
+			policy: $this->policy(),
+			builder: $builder,
+			leaf: $this->paymentLeaf(),
+			dispatcher: $this->dispatcher(),
+			logger: new NullLogger()
+		);
 	}
 
 	public function changes(): RegistrationChangeService {
-		return new RegistrationChangeService($this->fetcher(), $this->policy(), $this->clock());
+		return new RegistrationChangeService(fetcher: $this->fetcher(), policy: $this->policy(), time: $this->clock());
 	}
 
 	public function transfers(): TransferOffers {
-		return new TransferOffers($this->fetcher(), $this->policy(), $this->clock(), new NullLogger());
+		return new TransferOffers(fetcher: $this->fetcher(), policy: $this->policy(), time: $this->clock(), logger: new NullLogger());
 	}
 
 	private function registrationListener(): RegistrationListener {
 		$l10n = $this->test->getMockBuilder(IL10N::class)->getMock();
 		$l10n->method('t')->willReturnCallback(static fn (string $text): string => $text);
 		$locks = $this->test->getMockBuilder(ILockingProvider::class)->getMock();
-		$service = new RegistrationService($this->fetcher(), $locks, new NullLogger(), 1, 0);
-		$check = new RegistrationWriteCheck(new RegistrationCharacterCheck($this->fetcher()), new TicketChoiceService($this->fetcher(), $service, new NullLogger()));
+		$service = new RegistrationService(fetcher: $this->fetcher(), locking: $locks, logger: new NullLogger(), lockAttempts: 1, lockWaitMicros: 0);
+		$check = new RegistrationWriteCheck(
+			characterCheck: new RegistrationCharacterCheck(fetcher: $this->fetcher()),
+			ticketChoices: new TicketChoiceService(fetcher: $this->fetcher(), registrations: $service, logger: new NullLogger())
+		);
 
-		return new RegistrationListener($this->config(), $service, $check, $this->session(), $l10n, new NullLogger());
+		return new RegistrationListener(
+			config: $this->config(),
+			service: $service,
+			writeCheck: $check,
+			session: $this->session(),
+			l10n: $l10n,
+			logger: new NullLogger()
+		);
 	}
 }

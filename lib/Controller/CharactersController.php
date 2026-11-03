@@ -44,9 +44,7 @@ use OCP\AppFramework\Http\Attribute\NoAdminRequired;
 use OCP\AppFramework\Http\Attribute\NoCSRFRequired;
 use OCP\AppFramework\Http\DataDownloadResponse;
 use OCP\AppFramework\Http\JSONResponse;
-use OCP\IGroupManager;
 use OCP\IRequest;
-use OCP\IUserSession;
 
 /**
  * Controller for handling characters related operations
@@ -68,8 +66,7 @@ class CharactersController extends Controller {
 	 * @param IRequest $request The request object
 	 * @param RegisterObjectFetcher $objectFetcher The register object fetcher
 	 * @param DocuDeskPdfRenderer $pdfRenderer The shared DocuDesk PDF rendering helper
-	 * @param IUserSession $userSession The user session for authentication checks
-	 * @param IGroupManager $groupManager The group manager for permission checks
+	 * @param CallerAccess $callerAccess The signed-in caller and the admin check
 	 * @param SkillRequirementService $requirementService The skill-requirement validation service
 	 */
 	public function __construct(
@@ -77,8 +74,7 @@ class CharactersController extends Controller {
 		IRequest $request,
 		private readonly RegisterObjectFetcher $objectFetcher,
 		private readonly DocuDeskPdfRenderer $pdfRenderer,
-		private readonly IUserSession $userSession,
-		private readonly IGroupManager $groupManager,
+		private readonly CallerAccess $callerAccess,
 		private readonly SkillRequirementService $requirementService,
 	) {
 		parent::__construct(appName: $appName, request: $request);
@@ -137,7 +133,7 @@ class CharactersController extends Controller {
 	 */
 	#[NoCSRFRequired]
 	public function downloadPdf(string $id, string $template): DataDownloadResponse|JSONResponse {
-		$user = $this->userSession->getUser();
+		$user = $this->callerAccess->user();
 		if ($user === null) {
 			return new JSONResponse(data: ['error' => 'Not authenticated'], statusCode: Http::STATUS_UNAUTHORIZED);
 		}
@@ -146,7 +142,7 @@ class CharactersController extends Controller {
 		// Per-player self-access requires the character schema to include a `player` ownership
 		// field so the controller can verify ownership — that is a follow-up schema change.
 		// Closes #205 (Character PDF IDOR).
-		if ($this->groupManager->isAdmin($user->getUID()) === false) {
+		if ($this->callerAccess->isAdmin($user->getUID()) === false) {
 			return new JSONResponse(data: ['error' => 'Access denied'], statusCode: Http::STATUS_FORBIDDEN);
 		}
 
@@ -266,7 +262,7 @@ class CharactersController extends Controller {
 	#[NoAdminRequired]
 	#[NoCSRFRequired]
 	public function requirementReport(string $id): JSONResponse {
-		$user = $this->userSession->getUser();
+		$user = $this->callerAccess->user();
 		if ($user === null) {
 			return new JSONResponse(data: ['error' => 'Not authenticated'], statusCode: Http::STATUS_UNAUTHORIZED);
 		}

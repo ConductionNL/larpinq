@@ -13,6 +13,7 @@
 import { getRequestToken } from '@nextcloud/auth'
 import { translate as t } from '@nextcloud/l10n'
 import { generateUrl } from '@nextcloud/router'
+import { bodyOf } from './responseBody.js'
 
 /**
  * A larpinq URL for an event's awards.
@@ -27,23 +28,6 @@ function eventUrl(eventId, tail) {
 	return generateUrl(
 		`/apps/larpinq/api/events/${encodeURIComponent(eventId)}/${tail}`,
 	)
-}
-
-/**
- * The JSON body of a response, or an empty object.
- *
- * @param {Response} response The response.
- * @return {Promise<object>} The body.
- *
- * @spec openspec/specs/event-xp-awards/spec.md
- */
-async function bodyOf(response) {
-	try {
-		const body = await response.json()
-		return body && typeof body === 'object' ? body : {}
-	} catch {
-		return {}
-	}
 }
 
 /**
@@ -71,7 +55,18 @@ export async function fetchAwardRoster(eventId) {
 	if (!response.ok) {
 		return { status: 'failed', ...empty }
 	}
-	const body = await bodyOf(response)
+	return rosterOf(await bodyOf(response))
+}
+
+/**
+ * The loaded award roster.
+ *
+ * @param {object} body The response body.
+ * @return {{status: string, eventName: string, rows: Array<object>, attendanceAvailable: boolean}} The roster.
+ *
+ * @spec openspec/specs/event-xp-awards/spec.md
+ */
+function rosterOf(body) {
 	return {
 		status: 'ready',
 		eventName: String(body.eventName || ''),
@@ -155,28 +150,42 @@ export async function saveAwards(eventId, rows) {
 			body: JSON.stringify({ rows }),
 		})
 	} catch (error) {
-		return {
-			ok: false,
-			created: 0,
-			refused: [],
-			error: String(error?.message || error),
-		}
+		return awardFailure(error?.message || error)
 	}
 	const body = await bodyOf(response)
 	if (!response.ok) {
-		return {
-			ok: false,
-			created: 0,
-			refused: [],
-			error: String(body.error || response.status),
-		}
+		return awardFailure(body.error || response.status)
 	}
+	return awardsSaved(body)
+}
+
+/**
+ * The result of a save the server accepted.
+ *
+ * @param {object} body The response body.
+ * @return {{ok: boolean, created: number, refused: Array<{character: string, reason: string}>, error: string}} The result.
+ *
+ * @spec openspec/specs/event-xp-awards/spec.md
+ */
+function awardsSaved(body) {
 	return {
 		ok: true,
 		created: Array.isArray(body.created) ? body.created.length : 0,
 		refused: Array.isArray(body.refused) ? body.refused : [],
 		error: '',
 	}
+}
+
+/**
+ * The result of a save that did not reach the server or was refused.
+ *
+ * @param {unknown} reason The error or the server's reason.
+ * @return {{ok: boolean, created: number, refused: Array, error: string}} The result.
+ *
+ * @spec openspec/specs/event-xp-awards/spec.md
+ */
+function awardFailure(reason) {
+	return { ok: false, created: 0, refused: [], error: String(reason) }
 }
 
 /**

@@ -62,6 +62,7 @@
 
 <script>
 import { translate as t } from '@nextcloud/l10n'
+import { objectTab } from '../mixins/objectTab.js'
 import {
 	fetchPlayerAttendance,
 	formatEventDate,
@@ -70,44 +71,13 @@ import {
 export default {
 	name: 'PlayerAttendanceHistory',
 
-	inject: {
-		cnObjectContext: { default: () => ({}) },
-	},
-
-	props: {
-		/**
-		 * The player UUID. Falls back to the injected object context or the route.
-		 *
-		 * @spec openspec/specs/events-players/spec.md
-		 */
-		objectId: {
-			type: String,
-			default: '',
-		},
-	},
+	mixins: [objectTab('playerId')],
 
 	data() {
 		return {
 			loading: true,
 			history: { state: 'ok', count: 0, events: [] },
 		}
-	},
-
-	computed: {
-		/**
-		 * The player id from prop, injected context or route.
-		 *
-		 * @return {string} The id.
-		 *
-		 * @spec openspec/specs/events-players/spec.md
-		 */
-		playerId() {
-			return (
-				this.objectId
-				|| this.cnObjectContext?.objectId
-				|| String(this.$route?.params?.id ?? '')
-			)
-		},
 	},
 
 	/**

@@ -65,7 +65,7 @@ class DemoDataUniqueHolderTest extends TestCase {
 			ARRAY_FILTER_USE_BOTH
 		);
 
-		$this->assertNotEmpty($itemsWithOneHolder);
+		$this->assertNotEmpty(actual: $itemsWithOneHolder);
 	}//end testTheDemoSeedsAUniqueItemWithOneHolder()
 
 	/**
@@ -76,6 +76,6 @@ class DemoDataUniqueHolderTest extends TestCase {
 	public function testNoUniqueObjectInTheDemoHasTwoHolders(): void {
 		$shared = array_filter($this->uniqueHolderCounts(), static fn (int $n): bool => $n > 1);
 
-		$this->assertSame([], $shared);
+		$this->assertSame(expected: [], actual: $shared);
 	}//end testNoUniqueObjectInTheDemoHasTwoHolders()
 }//end class

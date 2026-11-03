@@ -68,6 +68,7 @@ class EffectApplier {
 			return;
 		}
 
+		$run = new EffectRun(abilities: $abilities, applied: $appliedEffects);
 		// @psalm-suppress MixedAssignment Effect IDs from entity arrays
 		foreach ($effects as $effectId) {
 			// Skip if effectId is null.
@@ -77,13 +78,12 @@ class EffectApplier {
 
 			$effect = $effectLookup[(string)$effectId] ?? null;
 			if ($effect !== null) {
-				$this->calculateEffect(
-					abilities: $abilities,
-					effect: $effect,
-					appliedEffects: $appliedEffects
-				);
+				$this->calculateEffect(run: $run, effect: $effect);
 			}
 		}
+
+		$abilities = $run->abilities;
+		$appliedEffects = $run->applied;
 	}//end applyEffects()
 
 	/**
@@ -132,8 +132,7 @@ class EffectApplier {
 	 * This avoids denormalisation bloat if derived stats are ever persisted.
 	 * Closes #219.
 	 *
-	 * @param array<string, array<string, mixed>> $abilities Reference to abilities.
-	 * @param string $abilityId The ability ID.
+	 * @param array<string, mixed> $ability Reference to the ability; a missing `value` starts at 0.
 	 * @param array<string, mixed> $effect Effect data.
 	 *
 	 * @return void
@@ -142,13 +141,13 @@ class EffectApplier {
 	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-78
 	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-79
 	 */
-	private function applyModifierToAbility(array &$abilities, string $abilityId, array $effect): void {
-		if (isset($abilities[$abilityId]['value']) === false) {
-			$abilities[$abilityId]['value'] = 0;
+	private function applyModifierToAbility(array &$ability, array $effect): void {
+		if (isset($ability['value']) === false) {
+			$ability['value'] = 0;
 		}
 
 		// Get current value and modifiers.
-		$currentValue = (int)$abilities[$abilityId]['value'];
+		$currentValue = (int)$ability['value'];
 
 		// Coerce modifier to a non-negative integer. The `modification` enum (positive/negative)
 		// controls the sign. This prevents sign-direction confusion where a GM authors
@@ -161,17 +160,17 @@ class EffectApplier {
 
 		// Apply modification based on type.
 		if ($modification === 'positive') {
-			$abilities[$abilityId]['value'] = $currentValue + $modifier;
+			$ability['value'] = $currentValue + $modifier;
 		} elseif ($modification === 'negative') {
-			$abilities[$abilityId]['value'] = $currentValue - $modifier;
+			$ability['value'] = $currentValue - $modifier;
 		}
 
-		$newValue = $abilities[$abilityId]['value'];
+		$newValue = $ability['value'];
 
 		// Store a lean audit entry — effect ID + label + delta only.
 		// Storing the full $effect object risks denormalisation bloat when stats
 		// are ever persisted back to OR. Closes #219.
-		$abilities[$abilityId]['audit'][] = [
+		$ability['audit'][] = [
 			'type' => 'effect',
 			'effectId' => (string)($effect['id'] ?? ''),
 			'effectName' => (string)($effect['name'] ?? ''),
@@ -186,29 +185,19 @@ class EffectApplier {
 	 * Skips non-cumulative effects that have already been applied in this
 	 * calculation pass. Closes #208.
 	 *
-	 * @param array<string, array<string, mixed>> $abilities Reference to abilities.
-	 *                                                       Deliberately NOT the tighter
-	 *                                                       `array{name?: string, base?: int, value: int, audit: array}` this
-	 *                                                       replaces. That shape was not true: this array is passed BY
-	 *                                                       REFERENCE into applyModifierToAbility(), which seeds a missing
-	 *                                                       entry with `$abilities[$id]['value'] = 0` alone — no `audit` key —
-	 *                                                       so a caller could observe an entry the strict shape says cannot
-	 *                                                       exist. Widening the claim to match the code is the honest
-	 *                                                       direction; tightening the callee instead just moved the error onto
-	 *                                                       its own assignments.
+	 * @param EffectRun $run The pass: the abilities as they change and the effects applied so far.
 	 * @param array<string, mixed> $effect Effect data.
-	 * @param array<string, bool> $appliedEffects Tracks applied non-cumulative effects.
 	 *
 	 * @return void
 	 *
 	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-76
 	 */
-	private function calculateEffect(array &$abilities, array $effect, array &$appliedEffects): void {
+	private function calculateEffect(EffectRun $run, array $effect): void {
 		$effectId = (string)($effect['id'] ?? '');
 
 		// Enforce the non-cumulative dedup rule. If this effect has been applied
 		// already and is marked non-cumulative, skip it. Closes #208.
-		if ($effectId !== '' && isset($appliedEffects[$effectId]) === true) {
+		if ($effectId !== '' && isset($run->applied[$effectId]) === true) {
 			$cumulative = (string)($effect['cumulative'] ?? 'non-cumulative');
 			if ($cumulative === 'non-cumulative') {
 				return;
@@ -230,17 +219,15 @@ class EffectApplier {
 				continue;
 			}
 
-			$this->applyModifierToAbility(
-				abilities: $abilities,
-				abilityId: (string)$rawAbilityId,
-				effect: $effect
-			);
+			$abilityId = (string)$rawAbilityId;
+			$run->abilities[$abilityId] ??= [];
+			$this->applyModifierToAbility(ability: $run->abilities[$abilityId], effect: $effect);
 		}
 
 		// Record that this effect was applied so non-cumulative dedupe works
 		// on the next encounter of the same effect ID within this pass.
 		if ($effectId !== '') {
-			$appliedEffects[$effectId] = true;
+			$run->applied[$effectId] = true;
 		}
 	}//end calculateEffect()
 }//end class

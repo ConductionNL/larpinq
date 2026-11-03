@@ -25,6 +25,7 @@ namespace OCA\Larpinq\AppInfo;
 
 use OCA\Larpinq\Listener\CharacterRequirementListener;
 use OCA\Larpinq\Listener\DeepLinkRegistrationListener;
+use OCA\Larpinq\Support\AppIdentity;
 use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
@@ -46,7 +47,7 @@ class Application extends App implements IBootstrap {
 	/**
 	 * Application ID
 	 */
-	public const APP_ID = 'larpinq';
+	public const APP_ID = AppIdentity::APP_ID;
 
 	/**
 	 * The Nextcloud group of game masters (ADR-002 decision 1). The register's

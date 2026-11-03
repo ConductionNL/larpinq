@@ -40,10 +40,16 @@ class TransferOffersTest extends TestCase {
 
 	private const SANNES_CHARACTER = 'd0000000-0000-4000-8000-000000000003';
 
+	/** @var PaymentWorld The world. */
 	private PaymentWorld $world;
 
+	/**
+	 * Build the doubles and the subject every test starts from.
+	 *
+	 * @return void
+	 */
 	protected function setUp(): void {
-		$this->world = new PaymentWorld($this);
+		$this->world = new PaymentWorld(test: $this);
 		$this->world->store->objects['event'][PaymentWorld::EVENT]['cancellationPolicy'] = ['cancelBy' => '2026-11-25T00:00:00+00:00'];
 		$this->world->store->objects['event'][PaymentWorld::EVENT]['players'] = [self::SANNES_CHARACTER];
 		$this->world->seedRegistration(
@@ -66,27 +72,31 @@ class TransferOffersTest extends TestCase {
 		$this->world->transfers()->offer(registrationId: self::SANNE_REG, actingUid: 'sanne', recipientUid: 'pieter');
 
 		$offered = $this->world->registration(id: self::SANNE_REG);
-		$this->assertSame('offered', $offered['transferStatus']);
-		$this->assertSame(PaymentWorld::PIETER, $offered['transferTo']);
-		$this->assertSame('pieter', $offered['transferToUid']);
-		$this->assertSame('2026-11-10T10:00:00+00:00', $offered['transferOfferedAt']);
-		$this->assertSame(PaymentWorld::SANNE, $offered['player'], 'an offer alone changes nothing');
+		$this->assertSame(expected: 'offered', actual: $offered['transferStatus']);
+		$this->assertSame(expected: PaymentWorld::PIETER, actual: $offered['transferTo']);
+		$this->assertSame(expected: 'pieter', actual: $offered['transferToUid']);
+		$this->assertSame(expected: '2026-11-10T10:00:00+00:00', actual: $offered['transferOfferedAt']);
+		$this->assertSame(expected: PaymentWorld::SANNE, actual: $offered['player'], message: 'an offer alone changes nothing');
 
 		$this->world->signedIn = 'pieter';
 		$this->world->transfers()->accept(registrationId: self::SANNE_REG, actingUid: 'pieter');
 
 		$taken = $this->world->registration(id: self::SANNE_REG);
-		$this->assertSame(PaymentWorld::PIETER, $taken['player']);
-		$this->assertSame('pieter', $taken['playerUid']);
-		$this->assertSame('', $taken['character'], 'Pieter picks his own character');
-		$this->assertSame('accepted', $taken['status']);
-		$this->assertSame('paid', $taken['paymentState']);
-		$this->assertSame('f0000000-0000-4000-8000-000000000002', $taken['paymentRequestId']);
-		$this->assertSame('accepted', $taken['transferStatus']);
-		$this->assertSame(PaymentWorld::SANNE, $taken['transferredFrom']);
-		$this->assertSame('2026-11-10T10:00:00+00:00', $taken['transferredAt']);
-		$this->assertSame('', $taken['transferToUid']);
-		$this->assertNotContains(self::SANNES_CHARACTER, $this->world->store->objects['event'][PaymentWorld::EVENT]['players'], "Sanne's character leaves the event");
+		$this->assertSame(expected: PaymentWorld::PIETER, actual: $taken['player']);
+		$this->assertSame(expected: 'pieter', actual: $taken['playerUid']);
+		$this->assertSame(expected: '', actual: $taken['character'], message: 'Pieter picks his own character');
+		$this->assertSame(expected: 'accepted', actual: $taken['status']);
+		$this->assertSame(expected: 'paid', actual: $taken['paymentState']);
+		$this->assertSame(expected: 'f0000000-0000-4000-8000-000000000002', actual: $taken['paymentRequestId']);
+		$this->assertSame(expected: 'accepted', actual: $taken['transferStatus']);
+		$this->assertSame(expected: PaymentWorld::SANNE, actual: $taken['transferredFrom']);
+		$this->assertSame(expected: '2026-11-10T10:00:00+00:00', actual: $taken['transferredAt']);
+		$this->assertSame(expected: '', actual: $taken['transferToUid']);
+		$this->assertNotContains(
+			needle: self::SANNES_CHARACTER,
+			haystack: $this->world->store->objects['event'][PaymentWorld::EVENT]['players'],
+			message: "Sanne's character leaves the event"
+		);
 	}//end testSanneHandsHerPlaceToPieter()
 
 	/**
@@ -105,25 +115,25 @@ class TransferOffersTest extends TestCase {
 		foreach ($refusals as $index => $refused) {
 			try {
 				$refused();
-				$this->fail("step {$index} must be refused");
+				$this->fail(message: "step {$index} must be refused");
 			} catch (RegistrationChangeRefusedException $e) {
-				$this->assertContains($e->getStatus(), [403, 404, 409, 422], "step {$index}");
+				$this->assertContains(needle: $e->getStatus(), haystack: [403, 404, 409, 422], message: "step {$index}");
 			}
 		}
 
 		$this->world->transfers()->offer(registrationId: self::SANNE_REG, actingUid: 'sanne', recipientUid: 'pieter');
 		try {
 			$this->world->transfers()->accept(registrationId: self::SANNE_REG, actingUid: 'anna');
-			$this->fail('only Pieter accepts');
+			$this->fail(message: 'only Pieter accepts');
 		} catch (RegistrationChangeRefusedException $e) {
-			$this->assertSame(403, $e->getStatus());
+			$this->assertSame(expected: 403, actual: $e->getStatus());
 		}
 
 		$this->world->transfers()->withdraw(registrationId: self::SANNE_REG, actingUid: 'sanne');
 		$withdrawn = $this->world->registration(id: self::SANNE_REG);
-		$this->assertSame('withdrawn', $withdrawn['transferStatus']);
-		$this->assertSame('', $withdrawn['transferToUid'], 'Pieter no longer reads it');
-		$this->assertSame(PaymentWorld::SANNE, $withdrawn['player']);
+		$this->assertSame(expected: 'withdrawn', actual: $withdrawn['transferStatus']);
+		$this->assertSame(expected: '', actual: $withdrawn['transferToUid'], message: 'Pieter no longer reads it');
+		$this->assertSame(expected: PaymentWorld::SANNE, actual: $withdrawn['player']);
 	}//end testOnlyTheRightPeopleOfferAndAccept()
 
 	/**
@@ -138,21 +148,25 @@ class TransferOffersTest extends TestCase {
 
 		try {
 			$this->world->transfers()->accept(registrationId: self::SANNE_REG, actingUid: 'pieter');
-			$this->fail('a lapsed offer cannot be accepted');
+			$this->fail(message: 'a lapsed offer cannot be accepted');
 		} catch (RegistrationChangeRefusedException $e) {
-			$this->assertSame(409, $e->getStatus());
+			$this->assertSame(expected: 409, actual: $e->getStatus());
 		}
 
-		$this->assertSame(1, $this->world->transfers()->lapse(now: $this->world->now));
+		$this->assertSame(expected: 1, actual: $this->world->transfers()->lapse(now: $this->world->now));
 		$lapsed = $this->world->registration(id: self::SANNE_REG);
-		$this->assertSame('lapsed', $lapsed['transferStatus']);
-		$this->assertSame(PaymentWorld::SANNE, $lapsed['player']);
-		$this->assertSame('', $lapsed['transferToUid']);
-		$this->assertSame(0, $this->world->transfers()->lapse(now: $this->world->now), 'a lapsed offer is not read again');
+		$this->assertSame(expected: 'lapsed', actual: $lapsed['transferStatus']);
+		$this->assertSame(expected: PaymentWorld::SANNE, actual: $lapsed['player']);
+		$this->assertSame(expected: '', actual: $lapsed['transferToUid']);
+		$this->assertSame(expected: 0, actual: $this->world->transfers()->lapse(now: $this->world->now), message: 'a lapsed offer is not read again');
 
 		$this->world->now = new DateTimeImmutable('2026-11-22T10:00:00+00:00');
 		$this->world->transfers()->offer(registrationId: self::SANNE_REG, actingUid: 'sanne', recipientUid: 'pieter');
-		$this->assertSame(0, $this->world->transfers()->lapse(now: new DateTimeImmutable('2026-11-24T10:00:00+00:00')));
-		$this->assertSame(1, $this->world->transfers()->lapse(now: new DateTimeImmutable('2026-11-25T00:00:00+00:00')), 'the cancel-by date comes first');
+		$this->assertSame(expected: 0, actual: $this->world->transfers()->lapse(now: new DateTimeImmutable('2026-11-24T10:00:00+00:00')));
+		$this->assertSame(
+			expected: 1,
+			actual: $this->world->transfers()->lapse(now: new DateTimeImmutable('2026-11-25T00:00:00+00:00')),
+			message: 'the cancel-by date comes first'
+		);
 	}//end testAnOfferLapses()
 }//end class

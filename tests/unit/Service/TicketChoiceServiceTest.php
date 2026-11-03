@@ -67,10 +67,13 @@ class TicketChoiceServiceTest extends TestCase {
 	private const LANTERN = 'f2000000-0000-4000-8000-000000000001';
 	private const OLD_CODE = 'f2000000-0000-4000-8000-000000000002';
 
+	/** @var InMemoryOpenRegister The store. */
 	private InMemoryOpenRegister $store;
 
+	/** @var string The signed in. */
 	private string $signedIn = 'anna';
 
+	/** @var ?RegistrationService The service. */
 	private ?RegistrationService $service = null;
 
 	/**
@@ -92,10 +95,22 @@ class TicketChoiceServiceTest extends TestCase {
 		$this->ticket(id: self::CREW_FRIENDS, name: 'Crew friends', role: 'crew', amount: 3000, extra: ['hidden' => true]);
 		$this->ticket(id: self::ELSEWHERE_TICKET, name: 'Spring player', role: 'player', amount: 2000, event: self::OTHER_EVENT);
 		$this->ticket(id: self::DOLLAR_TICKET, name: 'Visitor', role: 'other', amount: 1000, extra: ['currency' => 'USD']);
-		$this->store->seed('registrationoption', ['id' => self::MEAT, 'event' => self::EVENT, 'name' => 'Full catering, meat', 'category' => 'meal', 'amount' => 3500, 'currency' => 'EUR']);
-		$this->store->seed('registrationoption', ['id' => self::VEGAN, 'event' => self::EVENT, 'name' => 'Full catering, vegan', 'category' => 'meal', 'amount' => 3500, 'currency' => 'EUR', 'placeLimit' => 12]);
-		$this->store->seed('accesscode', ['id' => self::LANTERN, 'event' => self::EVENT, 'code' => 'LANTERN', 'unlocks' => [self::CREW_FRIENDS], 'maxUses' => 5]);
-		$this->store->seed('accesscode', ['id' => self::OLD_CODE, 'event' => self::EVENT, 'code' => 'BYGONE', 'unlocks' => [self::CREW_FRIENDS], 'validUntil' => $this->moment(days: -1)]);
+		$this->store->seed(
+			'registrationoption',
+			['id' => self::MEAT, 'event' => self::EVENT, 'name' => 'Full catering, meat', 'category' => 'meal', 'amount' => 3500, 'currency' => 'EUR']
+		);
+		$this->store->seed(
+			'registrationoption',
+			['id' => self::VEGAN, 'event' => self::EVENT, 'name' => 'Full catering, vegan', 'category' => 'meal', 'amount' => 3500, 'currency' => 'EUR', 'placeLimit' => 12]
+		);
+		$this->store->seed(
+			'accesscode',
+			['id' => self::LANTERN, 'event' => self::EVENT, 'code' => 'LANTERN', 'unlocks' => [self::CREW_FRIENDS], 'maxUses' => 5]
+		);
+		$this->store->seed(
+			'accesscode',
+			['id' => self::OLD_CODE, 'event' => self::EVENT, 'code' => 'BYGONE', 'unlocks' => [self::CREW_FRIENDS], 'validUntil' => $this->moment(days: -1)]
+		);
 
 		$this->store->listeners = [$this->listener()];
 	}//end setUp()
@@ -113,7 +128,13 @@ class TicketChoiceServiceTest extends TestCase {
 	 * @return void
 	 */
 	private function ticket(string $id, string $name, string $role, int $amount, array $extra = [], string $event = self::EVENT): void {
-		$this->store->seed('tickettype', array_merge(['id' => $id, 'event' => $event, 'name' => $name, 'role' => $role, 'amount' => $amount, 'currency' => 'EUR', 'hidden' => false], $extra));
+		$this->store->seed(
+			'tickettype',
+			array_merge(
+				['id' => $id, 'event' => $event, 'name' => $name, 'role' => $role, 'amount' => $amount, 'currency' => 'EUR', 'hidden' => false],
+				$extra
+			)
+		);
 	}//end ticket()
 
 	/**
@@ -134,19 +155,26 @@ class TicketChoiceServiceTest extends TestCase {
 	 */
 	private function fetcher(): RegisterObjectFetcher {
 		$store = $this->store;
-		$container = $this->createMock(ContainerInterface::class);
+		$container = $this->createMock(originalClassName: ContainerInterface::class);
 		$container->method('get')->willReturnCallback(
 			static fn (string $id): object => ($id === 'OCA\OpenRegister\Service\ObjectService' ? $store : throw new RuntimeException('not bound: ' . $id))
 		);
-		$apps = $this->createMock(IAppManager::class);
+		$apps = $this->createMock(originalClassName: IAppManager::class);
 		$apps->method('getInstalledApps')->willReturn(['openregister']);
 
-		$config = $this->createMock(IAppConfig::class);
+		$config = $this->createMock(originalClassName: IAppConfig::class);
 		$config->method('getValueString')->willReturnCallback(
-			static fn (string $app, string $key, string $default = ''): string => (str_ends_with($key, '_register') === true ? '3' : (str_ends_with($key, '_schema') === true ? substr($key, 0, -strlen('_schema')) : $default))
+			static fn (string $app, string $key, string $default = ''): string => (str_ends_with(
+				$key,
+				'_register'
+			) === true ? '3' : (str_ends_with($key, '_schema') === true ? substr(
+				$key,
+				0,
+				-strlen('_schema')
+			) : $default))
 		);
 
-		return new RegisterObjectFetcher($container, $apps, $config, new NullLogger());
+		return new RegisterObjectFetcher(container: $container, appManager: $apps, config: $config, logger: new NullLogger());
 	}//end fetcher()
 
 	/**
@@ -155,33 +183,39 @@ class TicketChoiceServiceTest extends TestCase {
 	 * @return RegistrationListener The listener.
 	 */
 	private function listener(): RegistrationListener {
-		$config = $this->createMock(IAppConfig::class);
+		$config = $this->createMock(originalClassName: IAppConfig::class);
 		$config->method('getValueString')->willReturnCallback(
 			static fn (string $app, string $key, string $default = ''): string => ($key === 'registration_schema' ? 'registration' : $default)
 		);
-		$session = $this->createMock(IUserSession::class);
+		$session = $this->createMock(originalClassName: IUserSession::class);
 		$session->method('getUser')->willReturnCallback(
 			function (): IUser {
-				$user = $this->createMock(IUser::class);
+				$user = $this->createMock(originalClassName: IUser::class);
 				$user->method('getUID')->willReturn($this->signedIn);
 				return $user;
 			}
 		);
-		$l10n = $this->createMock(IL10N::class);
+		$l10n = $this->createMock(originalClassName: IL10N::class);
 		$l10n->method('t')->willReturnCallback(static fn (string $text): string => $text);
-		$locking = $this->createMock(ILockingProvider::class);
-		$this->service = new RegistrationService($this->fetcher(), $locking, new NullLogger(), 1, 0);
+		$locking = $this->createMock(originalClassName: ILockingProvider::class);
+		$this->service = new RegistrationService(
+			fetcher: $this->fetcher(),
+			locking: $locking,
+			logger: new NullLogger(),
+			lockAttempts: 1,
+			lockWaitMicros: 0
+		);
 
 		return new RegistrationListener(
-			$config,
-			$this->service,
-			new RegistrationWriteCheck(
-				new RegistrationCharacterCheck($this->fetcher()),
-				new TicketChoiceService($this->fetcher(), $this->service, new NullLogger())
+			config: $config,
+			service: $this->service,
+			writeCheck: new RegistrationWriteCheck(
+				characterCheck: new RegistrationCharacterCheck(fetcher: $this->fetcher()),
+				ticketChoices: new TicketChoiceService(fetcher: $this->fetcher(), registrations: $this->service, logger: new NullLogger())
 			),
-			$session,
-			$l10n,
-			new NullLogger()
+			session: $session,
+			l10n: $l10n,
+			logger: new NullLogger()
 		);
 	}//end listener()
 
@@ -194,7 +228,10 @@ class TicketChoiceServiceTest extends TestCase {
 	 * @return array<string, mixed> The stored registration.
 	 */
 	private function register(string $player, array $choices = []): array {
-		return $this->fetcher()->saveObjectWithAppAuthority('registration', array_merge(['event' => self::EVENT, 'player' => $player, 'submittedAt' => '2026-10-01T10:00:00+00:00'], $choices));
+		return $this->fetcher()->saveObjectWithAppAuthority(
+			'registration',
+			array_merge(['event' => self::EVENT, 'player' => $player, 'submittedAt' => '2026-10-01T10:00:00+00:00'], $choices)
+		);
 	}//end register()
 
 	/**
@@ -209,11 +246,11 @@ class TicketChoiceServiceTest extends TestCase {
 		try {
 			$save();
 		} catch (RuntimeException $e) {
-			$this->assertStringContainsString($reason, $e->getMessage());
+			$this->assertStringContainsString(needle: $reason, haystack: $e->getMessage());
 			return;
 		}
 
-		$this->fail('the save must be refused: ' . $reason);
+		$this->fail(message: 'the save must be refused: ' . $reason);
 	}//end assertRefused()
 
 	/**
@@ -225,8 +262,8 @@ class TicketChoiceServiceTest extends TestCase {
 		$saved = $this->register(player: self::ANNA, choices: ['ticketType' => self::PLAYER]);
 
 		$this->assertSame(
-			[['kind' => 'ticket', 'ref' => self::PLAYER, 'name' => 'Player', 'amount' => 11000, 'currency' => 'EUR']],
-			$this->store->objects['registration'][$saved['id']]['lines']
+			expected: [['kind' => 'ticket', 'ref' => self::PLAYER, 'name' => 'Player', 'amount' => 11000, 'currency' => 'EUR']],
+			actual: $this->store->objects['registration'][$saved['id']]['lines']
 		);
 	}//end testAnnaPicksAPlayerTicketAndItsListedPriceIsRecorded()
 
@@ -239,9 +276,9 @@ class TicketChoiceServiceTest extends TestCase {
 		$saved = $this->register(player: self::ANNA, choices: ['ticketType' => self::EARLY, 'options' => [self::VEGAN]]);
 
 		$lines = $this->store->objects['registration'][$saved['id']]['lines'];
-		$this->assertSame(['ticket', 'option'], array_column($lines, 'kind'));
-		$this->assertSame([8500, 3500], array_column($lines, 'amount'));
-		$this->assertSame('Full catering, vegan', $lines[1]['name']);
+		$this->assertSame(expected: ['ticket', 'option'], actual: array_column($lines, 'kind'));
+		$this->assertSame(expected: [8500, 3500], actual: array_column($lines, 'amount'));
+		$this->assertSame(expected: 'Full catering, vegan', actual: $lines[1]['name']);
 	}//end testOptionsAddALineEach()
 
 	/**
@@ -252,10 +289,10 @@ class TicketChoiceServiceTest extends TestCase {
 	public function testAClientsOwnPriceIsIgnored(): void {
 		$cheat = [['kind' => 'ticket', 'ref' => self::PLAYER, 'name' => 'Player', 'amount' => 100, 'currency' => 'EUR']];
 		$saved = $this->register(player: self::ANNA, choices: ['ticketType' => self::PLAYER, 'lines' => $cheat]);
-		$this->assertSame(11000, $this->store->objects['registration'][$saved['id']]['lines'][0]['amount']);
+		$this->assertSame(expected: 11000, actual: $this->store->objects['registration'][$saved['id']]['lines'][0]['amount']);
 
 		$this->fetcher()->saveObject('registration', ['lines' => $cheat], $saved['id']);
-		$this->assertSame(11000, $this->store->objects['registration'][$saved['id']]['lines'][0]['amount']);
+		$this->assertSame(expected: 11000, actual: $this->store->objects['registration'][$saved['id']]['lines'][0]['amount']);
 	}//end testAClientsOwnPriceIsIgnored()
 
 	/**
@@ -270,7 +307,7 @@ class TicketChoiceServiceTest extends TestCase {
 		$this->fetcher()->saveObject('registration', ['options' => [self::MEAT]], $saved['id']);
 
 		$lines = $this->store->objects['registration'][$saved['id']]['lines'];
-		$this->assertSame([11000, 3500], array_column($lines, 'amount'));
+		$this->assertSame(expected: [11000, 3500], actual: array_column($lines, 'amount'));
 	}//end testALaterPriceChangeKeepsTheChosenPrice()
 
 	/**
@@ -281,15 +318,21 @@ class TicketChoiceServiceTest extends TestCase {
 	public function testTooLateForTheEarlyBird(): void {
 		$this->store->objects['tickettype'][self::EARLY]['saleUntil'] = $this->moment(days: -1);
 
-		$this->assertRefused(fn () => $this->register(player: self::ANNA, choices: ['ticketType' => self::EARLY]), 'This ticket type is not on sale now.');
+		$this->assertRefused(
+			save: fn () => $this->register(player: self::ANNA, choices: ['ticketType' => self::EARLY]),
+			reason: 'This ticket type is not on sale now.'
+		);
 
 		$saved = $this->register(player: self::ANNA);
-		$offer = (new TicketChoiceService($this->fetcher(), $this->service, new NullLogger()))->offer(registration: $this->store->objects['registration'][$saved['id']], code: '');
+		$offer = (new TicketChoiceService(fetcher: $this->fetcher(), registrations: $this->service, logger: new NullLogger()))->offer(
+			registration: $this->store->objects['registration'][$saved['id']],
+			code: ''
+		);
 		$offered = array_column($offer['ticketTypes'], 'name');
-		$this->assertNotContains('Player early bird', $offered);
-		$this->assertContains('Player', $offered);
-		$this->assertNotContains('Crew friends', $offered, 'a hidden ticket type is not offered without a code');
-		$this->assertNotContains('Spring player', $offered, 'another event\'s ticket type is not offered');
+		$this->assertNotContains(needle: 'Player early bird', haystack: $offered);
+		$this->assertContains(needle: 'Player', haystack: $offered);
+		$this->assertNotContains(needle: 'Crew friends', haystack: $offered, message: 'a hidden ticket type is not offered without a code');
+		$this->assertNotContains(needle: 'Spring player', haystack: $offered, message: 'another event\'s ticket type is not offered');
 	}//end testTooLateForTheEarlyBird()
 
 	/**
@@ -298,19 +341,31 @@ class TicketChoiceServiceTest extends TestCase {
 	 * @return void
 	 */
 	public function testACrewFriendUsesTheCode(): void {
-		$this->assertRefused(fn () => $this->register(player: self::SANNE, choices: ['ticketType' => self::CREW_FRIENDS]), 'This ticket type needs a code that unlocks it.');
-		$this->assertRefused(fn () => $this->register(player: self::SANNE, choices: ['ticketType' => self::CREW_FRIENDS, 'code' => 'BYGONE']), 'This code has expired.');
-		$this->assertRefused(fn () => $this->register(player: self::SANNE, choices: ['code' => 'NOPE']), 'This code is not known for this event.');
+		$this->assertRefused(
+			save: fn () => $this->register(player: self::SANNE, choices: ['ticketType' => self::CREW_FRIENDS]),
+			reason: 'This ticket type needs a code that unlocks it.'
+		);
+		$this->assertRefused(
+			save: fn () => $this->register(player: self::SANNE, choices: ['ticketType' => self::CREW_FRIENDS, 'code' => 'BYGONE']),
+			reason: 'This code has expired.'
+		);
+		$this->assertRefused(
+			save: fn () => $this->register(player: self::SANNE, choices: ['code' => 'NOPE']),
+			reason: 'This code is not known for this event.'
+		);
 
 		$saved = $this->register(player: self::SANNE, choices: ['ticketType' => self::CREW_FRIENDS, 'code' => 'lantern']);
 
 		$row = $this->store->objects['registration'][$saved['id']];
-		$this->assertSame(self::LANTERN, $row['accessCode']);
-		$this->assertSame(3000, $row['lines'][0]['amount']);
+		$this->assertSame(expected: self::LANTERN, actual: $row['accessCode']);
+		$this->assertSame(expected: 3000, actual: $row['lines'][0]['amount']);
 
-		$offer = (new TicketChoiceService($this->fetcher(), $this->service, new NullLogger()))->offer(registration: $row, code: 'LANTERN');
-		$this->assertSame('valid', $offer['code']);
-		$this->assertContains('Crew friends', array_column($offer['ticketTypes'], 'name'));
+		$offer = (new TicketChoiceService(fetcher: $this->fetcher(), registrations: $this->service, logger: new NullLogger()))->offer(
+			registration: $row,
+			code: 'LANTERN'
+		);
+		$this->assertSame(expected: 'valid', actual: $offer['code']);
+		$this->assertContains(needle: 'Crew friends', haystack: array_column($offer['ticketTypes'], 'name'));
 	}//end testACrewFriendUsesTheCode()
 
 	/**
@@ -320,10 +375,16 @@ class TicketChoiceServiceTest extends TestCase {
 	 */
 	public function testACodeIsUsedUp(): void {
 		for ($use = 1; $use <= 5; $use++) {
-			$this->store->seed('registration', ['id' => sprintf('e0000000-0000-4000-8000-%012d', $use), 'event' => self::EVENT, 'status' => 'accepted', 'accessCode' => self::LANTERN]);
+			$this->store->seed(
+				'registration',
+				['id' => sprintf('e0000000-0000-4000-8000-%012d', $use), 'event' => self::EVENT, 'status' => 'accepted', 'accessCode' => self::LANTERN]
+			);
 		}
 
-		$this->assertRefused(fn () => $this->register(player: self::SANNE, choices: ['ticketType' => self::CREW_FRIENDS, 'code' => 'LANTERN']), 'This code has been used up.');
+		$this->assertRefused(
+			save: fn () => $this->register(player: self::SANNE, choices: ['ticketType' => self::CREW_FRIENDS, 'code' => 'LANTERN']),
+			reason: 'This code has been used up.'
+		);
 	}//end testACodeIsUsedUp()
 
 	/**
@@ -332,9 +393,18 @@ class TicketChoiceServiceTest extends TestCase {
 	 * @return void
 	 */
 	public function testChoicesFromAnotherEventOrInTwoCurrenciesAreRefused(): void {
-		$this->assertRefused(fn () => $this->register(player: self::ANNA, choices: ['ticketType' => self::ELSEWHERE_TICKET]), 'This ticket type is not offered for this event.');
-		$this->assertRefused(fn () => $this->register(player: self::ANNA, choices: ['options' => ['f1000000-0000-4000-8000-000000000099']]), 'This option is not offered for this event.');
-		$this->assertRefused(fn () => $this->register(player: self::ANNA, choices: ['ticketType' => self::DOLLAR_TICKET, 'options' => [self::MEAT]]), 'All choices of a registration must be in one currency.');
+		$this->assertRefused(
+			save: fn () => $this->register(player: self::ANNA, choices: ['ticketType' => self::ELSEWHERE_TICKET]),
+			reason: 'This ticket type is not offered for this event.'
+		);
+		$this->assertRefused(
+			save: fn () => $this->register(player: self::ANNA, choices: ['options' => ['f1000000-0000-4000-8000-000000000099']]),
+			reason: 'This option is not offered for this event.'
+		);
+		$this->assertRefused(
+			save: fn () => $this->register(player: self::ANNA, choices: ['ticketType' => self::DOLLAR_TICKET, 'options' => [self::MEAT]]),
+			reason: 'All choices of a registration must be in one currency.'
+		);
 	}//end testChoicesFromAnotherEventOrInTwoCurrenciesAreRefused()
 
 	/**
@@ -344,14 +414,17 @@ class TicketChoiceServiceTest extends TestCase {
 	 */
 	public function testCrewIsFull(): void {
 		for ($place = 1; $place <= 20; $place++) {
-			$this->store->seed('registration', ['id' => sprintf('e1000000-0000-4000-8000-%012d', $place), 'event' => self::EVENT, 'status' => 'accepted', 'ticketType' => self::CREW]);
+			$this->store->seed(
+				'registration',
+				['id' => sprintf('e1000000-0000-4000-8000-%012d', $place), 'event' => self::EVENT, 'status' => 'accepted', 'ticketType' => self::CREW]
+			);
 		}
 
 		$joris = $this->register(player: self::JORIS, choices: ['ticketType' => self::CREW]);
 		$anna = $this->register(player: self::ANNA, choices: ['ticketType' => self::PLAYER]);
 
-		$this->assertSame('waitlisted', $this->store->objects['registration'][$joris['id']]['status']);
-		$this->assertSame('accepted', $this->store->objects['registration'][$anna['id']]['status']);
+		$this->assertSame(expected: 'waitlisted', actual: $this->store->objects['registration'][$joris['id']]['status']);
+		$this->assertSame(expected: 'accepted', actual: $this->store->objects['registration'][$anna['id']]['status']);
 	}//end testCrewIsFull()
 
 	/**
@@ -361,12 +434,15 @@ class TicketChoiceServiceTest extends TestCase {
 	 */
 	public function testAFullOptionIsRefused(): void {
 		for ($place = 1; $place <= 12; $place++) {
-			$this->store->seed('registration', ['id' => sprintf('e2000000-0000-4000-8000-%012d', $place), 'event' => self::EVENT, 'status' => 'accepted', 'options' => [self::VEGAN]]);
+			$this->store->seed(
+				'registration',
+				['id' => sprintf('e2000000-0000-4000-8000-%012d', $place), 'event' => self::EVENT, 'status' => 'accepted', 'options' => [self::VEGAN]]
+			);
 		}
 
-		$this->assertRefused(fn () => $this->register(player: self::ANNA, choices: ['options' => [self::VEGAN]]), 'This option is full.');
+		$this->assertRefused(save: fn () => $this->register(player: self::ANNA, choices: ['options' => [self::VEGAN]]), reason: 'This option is full.');
 		$saved = $this->register(player: self::ANNA, choices: ['options' => [self::MEAT]]);
-		$this->assertSame(self::MEAT, $this->store->objects['registration'][$saved['id']]['lines'][0]['ref']);
+		$this->assertSame(expected: self::MEAT, actual: $this->store->objects['registration'][$saved['id']]['lines'][0]['ref']);
 	}//end testAFullOptionIsRefused()
 
 	/**
@@ -377,20 +453,28 @@ class TicketChoiceServiceTest extends TestCase {
 	public function testTheKitchenPlans(): void {
 		$rows = [['accepted', [self::VEGAN]], ['accepted', [self::VEGAN]], ['accepted', [self::MEAT]], ['waitlisted', [self::VEGAN]]];
 		foreach ($rows as $index => [$status, $options]) {
-			$this->store->seed('registration', ['id' => sprintf('e3000000-0000-4000-8000-%012d', $index), 'event' => self::EVENT, 'status' => $status, 'ticketType' => self::PLAYER, 'options' => $options]);
+			$this->store->seed(
+				'registration',
+				['id' => sprintf(
+					'e3000000-0000-4000-8000-%012d',
+					$index
+				), 'event' => self::EVENT, 'status' => $status, 'ticketType' => self::PLAYER, 'options' => $options]
+			);
 		}
 
-		$counts = (new TicketChoiceService($this->fetcher(), $this->service, new NullLogger()))->counts(eventId: self::EVENT);
+		$counts = (new TicketChoiceService(fetcher: $this->fetcher(), registrations: $this->service, logger: new NullLogger()))->counts(
+			eventId: self::EVENT
+		);
 
 		$options = array_column($counts['options'], 'count', 'name');
-		$this->assertSame(2, $options['Full catering, vegan']);
-		$this->assertSame(1, $options['Full catering, meat']);
+		$this->assertSame(expected: 2, actual: $options['Full catering, vegan']);
+		$this->assertSame(expected: 1, actual: $options['Full catering, meat']);
 		$tickets = array_column($counts['ticketTypes'], 'count', 'name');
-		$this->assertSame(3, $tickets['Player']);
-		$this->assertSame(0, $tickets['Crew']);
-		$this->assertArrayNotHasKey('total', $counts);
+		$this->assertSame(expected: 3, actual: $tickets['Player']);
+		$this->assertSame(expected: 0, actual: $tickets['Crew']);
+		$this->assertArrayNotHasKey(key: 'total', array: $counts);
 		foreach (array_merge($counts['ticketTypes'], $counts['options']) as $row) {
-			$this->assertArrayNotHasKey('amount', $row, 'the counts carry no money');
+			$this->assertArrayNotHasKey(key: 'amount', array: $row, message: 'the counts carry no money');
 		}
 	}//end testTheKitchenPlans()
 
@@ -400,7 +484,10 @@ class TicketChoiceServiceTest extends TestCase {
 	 * @return void
 	 */
 	public function testTheStoredRegistrationValidatesAgainstTheRegisterSchema(): void {
-		$saved = $this->register(player: self::SANNE, choices: ['ticketType' => self::CREW_FRIENDS, 'options' => [self::VEGAN, self::MEAT], 'code' => 'LANTERN']);
+		$saved = $this->register(
+			player: self::SANNE,
+			choices: ['ticketType' => self::CREW_FRIENDS, 'options' => [self::VEGAN, self::MEAT], 'code' => 'LANTERN']
+		);
 		$row = $this->store->objects['registration'][$saved['id']];
 		unset($row['id']);
 
@@ -417,8 +504,8 @@ class TicketChoiceServiceTest extends TestCase {
 		unset($schema['authorization'], $schema['configuration']);
 		$result = (new Validator())->validate(json_decode((string)json_encode($row)), json_decode((string)json_encode($schema)));
 
-		$this->assertTrue($result->isValid(), 'the stored registration must validate: ' . json_encode($row));
-		$this->assertSame(3, count($row['lines']));
-		$this->assertSame(self::LANTERN, $row['accessCode']);
+		$this->assertTrue(condition: $result->isValid(), message: 'the stored registration must validate: ' . json_encode($row));
+		$this->assertSame(expected: 3, actual: count($row['lines']));
+		$this->assertSame(expected: self::LANTERN, actual: $row['accessCode']);
 	}//end testTheStoredRegistrationValidatesAgainstTheRegisterSchema()
 }//end class

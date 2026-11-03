@@ -19,6 +19,7 @@ namespace OCA\Larpinq\Tests\Unit\Controller;
 require_once dirname(__DIR__) . '/Service/InMemoryObjectService.php';
 
 use OCA\Larpinq\AppInfo\Application;
+use OCA\Larpinq\Controller\CallerAccess;
 use OCA\Larpinq\Controller\WorldsController;
 use OCA\Larpinq\Service\IdListNormaliser;
 use OCA\Larpinq\Service\RegisterObjectFetcher;
@@ -58,7 +59,10 @@ class WorldsControllerTest extends TestCase {
 		$this->store = new InMemoryObjectService();
 		$this->store->seed('setting', ['id' => self::WORLD, 'name' => 'Aldmoor', 'status' => 'active']);
 		$this->store->seed('ability', ['id' => 'aaaaaaaa-0000-4000-8000-000000000001', 'name' => 'Strength', 'setting' => self::WORLD]);
-		$this->store->seed('skill', ['id' => 'aaaaaaaa-0000-4000-8000-000000000002', 'name' => 'Swordsmanship', 'requiredStats' => ['aaaaaaaa-0000-4000-8000-000000000001'], 'setting' => self::WORLD]);
+		$this->store->seed(
+			'skill',
+			['id' => 'aaaaaaaa-0000-4000-8000-000000000002', 'name' => 'Swordsmanship', 'requiredStats' => ['aaaaaaaa-0000-4000-8000-000000000001'], 'setting' => self::WORLD]
+		);
 
 	}//end setUp()
 
@@ -72,11 +76,11 @@ class WorldsControllerTest extends TestCase {
 	 * @return WorldsController The controller.
 	 */
 	private function controller(?string $uid, bool $gm = false, bool $admin = false): WorldsController {
-		$container = $this->createMock(ContainerInterface::class);
+		$container = $this->createMock(originalClassName: ContainerInterface::class);
 		$container->method('get')->willReturn($this->store);
-		$apps = $this->createMock(IAppManager::class);
+		$apps = $this->createMock(originalClassName: IAppManager::class);
 		$apps->method('getInstalledApps')->willReturn(['openregister']);
-		$config = $this->createMock(IAppConfig::class);
+		$config = $this->createMock(originalClassName: IAppConfig::class);
 		$config->method('getValueString')->willReturnCallback(
 			static function (string $app, string $key, string $default = ''): string {
 				[$type, $kind] = explode('_', $key, 2) + [1 => ''];
@@ -87,27 +91,30 @@ class WorldsControllerTest extends TestCase {
 				};
 			}
 		);
-		$fetcher = new RegisterObjectFetcher(container: $container, appManager: $apps, config: $config, logger: $this->createMock(LoggerInterface::class));
+		$fetcher = new RegisterObjectFetcher(
+			container: $container,
+			appManager: $apps,
+			config: $config,
+			logger: $this->createMock(originalClassName: LoggerInterface::class)
+		);
 
-		$session = $this->createMock(IUserSession::class);
+		$session = $this->createMock(originalClassName: IUserSession::class);
 		$user = null;
 		if ($uid !== null) {
-			$user = $this->createMock(IUser::class);
+			$user = $this->createMock(originalClassName: IUser::class);
 			$user->method('getUID')->willReturn($uid);
 		}
 
 		$session->method('getUser')->willReturn($user);
-		$groups = $this->createMock(IGroupManager::class);
+		$groups = $this->createMock(originalClassName: IGroupManager::class);
 		$groups->method('isInGroup')->willReturnCallback(static fn (string $u, string $group): bool => $gm === true && $group === Application::GM_GROUP);
 		$groups->method('isAdmin')->willReturn($admin);
 
 		return new WorldsController(
-			appName: 'larpinq',
-			request: $this->createMock(IRequest::class),
+			request: $this->createMock(originalClassName: IRequest::class),
 			worldCopy: new WorldCopyService(objectFetcher: $fetcher, idList: new IdListNormaliser()),
-			userSession: $session,
-			groupManager: $groups,
-			logger: $this->createMock(LoggerInterface::class),
+			callerAccess: new CallerAccess(userSession: $session, groupManager: $groups),
+			logger: $this->createMock(originalClassName: LoggerInterface::class),
 		);
 	}//end controller()
 
@@ -117,7 +124,7 @@ class WorldsControllerTest extends TestCase {
 	 * @return void
 	 */
 	public function testTheGameMasterGroupIsOneConstant(): void {
-		$this->assertSame('gamemasters', Application::GM_GROUP);
+		$this->assertSame(expected: 'gamemasters', actual: Application::GM_GROUP);
 
 	}//end testTheGameMasterGroupIsOneConstant()
 
@@ -129,12 +136,12 @@ class WorldsControllerTest extends TestCase {
 	public function testAGameMasterCopies(): void {
 		$response = $this->controller(uid: 'gm', gm: true)->copy(id: self::WORLD, name: 'Aldmoor season 2');
 
-		$this->assertSame(201, $response->getStatus());
+		$this->assertSame(expected: 201, actual: $response->getStatus());
 		$data = $response->getData();
-		$this->assertSame('Aldmoor season 2', $data['world']['name']);
-		$this->assertSame('active', $data['world']['status']);
-		$this->assertSame(1, $data['counts']['abilities']);
-		$this->assertSame(1, $data['counts']['skills']);
+		$this->assertSame(expected: 'Aldmoor season 2', actual: $data['world']['name']);
+		$this->assertSame(expected: 'active', actual: $data['world']['status']);
+		$this->assertSame(expected: 1, actual: $data['counts']['abilities']);
+		$this->assertSame(expected: 1, actual: $data['counts']['skills']);
 
 	}//end testAGameMasterCopies()
 
@@ -146,7 +153,7 @@ class WorldsControllerTest extends TestCase {
 	public function testAnAdminCopies(): void {
 		$response = $this->controller(uid: 'admin', admin: true)->copy(id: self::WORLD, name: 'Admin copy');
 
-		$this->assertSame(201, $response->getStatus());
+		$this->assertSame(expected: 201, actual: $response->getStatus());
 
 	}//end testAnAdminCopies()
 
@@ -158,9 +165,9 @@ class WorldsControllerTest extends TestCase {
 	public function testAPlayerTriesToCopy(): void {
 		$response = $this->controller(uid: 'anna')->copy(id: self::WORLD, name: 'Anna world');
 
-		$this->assertSame(403, $response->getStatus());
-		$this->assertCount(1, $this->store->objects['setting']);
-		$this->assertSame([], $this->store->saves);
+		$this->assertSame(expected: 403, actual: $response->getStatus());
+		$this->assertCount(expectedCount: 1, haystack: $this->store->objects['setting']);
+		$this->assertSame(expected: [], actual: $this->store->saves);
 
 	}//end testAPlayerTriesToCopy()
 
@@ -170,8 +177,8 @@ class WorldsControllerTest extends TestCase {
 	 * @return void
 	 */
 	public function testNobodySignedInIsRefused(): void {
-		$this->assertSame(401, $this->controller(uid: null)->copy(id: self::WORLD, name: 'x')->getStatus());
-		$this->assertSame(401, $this->controller(uid: null)->access()->getStatus());
+		$this->assertSame(expected: 401, actual: $this->controller(uid: null)->copy(id: self::WORLD, name: 'x')->getStatus());
+		$this->assertSame(expected: 401, actual: $this->controller(uid: null)->access()->getStatus());
 
 	}//end testNobodySignedInIsRefused()
 
@@ -187,8 +194,8 @@ class WorldsControllerTest extends TestCase {
 
 		$response = $this->controller(uid: 'gm', gm: true)->copy(id: self::WORLD, name: 'Too big');
 
-		$this->assertSame(422, $response->getStatus());
-		$this->assertSame([], $this->store->saves);
+		$this->assertSame(expected: 422, actual: $response->getStatus());
+		$this->assertSame(expected: [], actual: $this->store->saves);
 
 	}//end testAboveTheCapIs422()
 
@@ -200,10 +207,10 @@ class WorldsControllerTest extends TestCase {
 	public function testBadInputIsRefused(): void {
 		$gm = $this->controller(uid: 'gm', gm: true);
 
-		$this->assertSame(400, $gm->copy(id: self::WORLD, name: '  ')->getStatus());
-		$this->assertSame(404, $gm->copy(id: '99999999-9999-4999-8999-999999999999', name: 'x')->getStatus());
-		$this->assertSame(400, $gm->copy(id: 'not-a-uuid', name: 'x')->getStatus());
-		$this->assertSame([], $this->store->saves);
+		$this->assertSame(expected: 400, actual: $gm->copy(id: self::WORLD, name: '  ')->getStatus());
+		$this->assertSame(expected: 404, actual: $gm->copy(id: '99999999-9999-4999-8999-999999999999', name: 'x')->getStatus());
+		$this->assertSame(expected: 400, actual: $gm->copy(id: 'not-a-uuid', name: 'x')->getStatus());
+		$this->assertSame(expected: [], actual: $this->store->saves);
 
 	}//end testBadInputIsRefused()
 
@@ -217,9 +224,9 @@ class WorldsControllerTest extends TestCase {
 
 		$response = $this->controller(uid: 'gm', gm: true)->copy(id: self::WORLD, name: 'Broken');
 
-		$this->assertSame(500, $response->getStatus());
-		$this->assertSame([], $response->getData()['leftovers']);
-		$this->assertCount(1, $this->store->objects['setting']);
+		$this->assertSame(expected: 500, actual: $response->getStatus());
+		$this->assertSame(expected: [], actual: $response->getData()['leftovers']);
+		$this->assertCount(expectedCount: 1, haystack: $this->store->objects['setting']);
 
 	}//end testAFailedCopyAnswers500()
 
@@ -230,10 +237,10 @@ class WorldsControllerTest extends TestCase {
 	 */
 	public function testThePreviewIsForGameMasters(): void {
 		$preview = $this->controller(uid: 'gm', gm: true)->preview(id: self::WORLD);
-		$this->assertSame(200, $preview->getStatus());
-		$this->assertSame(1, $preview->getData()['counts']['skills']);
+		$this->assertSame(expected: 200, actual: $preview->getStatus());
+		$this->assertSame(expected: 1, actual: $preview->getData()['counts']['skills']);
 
-		$this->assertSame(403, $this->controller(uid: 'anna')->preview(id: self::WORLD)->getStatus());
+		$this->assertSame(expected: 403, actual: $this->controller(uid: 'anna')->preview(id: self::WORLD)->getStatus());
 
 	}//end testThePreviewIsForGameMasters()
 
@@ -243,8 +250,8 @@ class WorldsControllerTest extends TestCase {
 	 * @return void
 	 */
 	public function testAccessSaysWhoMayCopy(): void {
-		$this->assertSame(['allowed' => true], $this->controller(uid: 'gm', gm: true)->access()->getData());
-		$this->assertSame(['allowed' => false], $this->controller(uid: 'anna')->access()->getData());
+		$this->assertSame(expected: ['allowed' => true], actual: $this->controller(uid: 'gm', gm: true)->access()->getData());
+		$this->assertSame(expected: ['allowed' => false], actual: $this->controller(uid: 'anna')->access()->getData());
 
 	}//end testAccessSaysWhoMayCopy()
 }//end class

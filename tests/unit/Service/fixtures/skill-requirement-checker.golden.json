@@ -234,6 +234,26 @@
             "required": 0
         }
     ],
+    "conditions and effects against numeric ids": [
+        {
+            "skill": "skill-1",
+            "type": "requiredCondition",
+            "target": "1",
+            "targetName": "",
+            "status": "unmet",
+            "current": 0,
+            "required": 0
+        },
+        {
+            "skill": "skill-1",
+            "type": "requiredEffect",
+            "target": "0",
+            "targetName": "",
+            "status": "unmet",
+            "current": 0,
+            "required": 0
+        }
+    ],
     "conditions and effects overridden": [
         {
             "skill": "skill-1",

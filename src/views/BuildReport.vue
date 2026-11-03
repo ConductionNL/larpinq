@@ -77,6 +77,7 @@
 import { translate as t } from '@nextcloud/l10n'
 import NcButton from '@nextcloud/vue/components/NcButton'
 import NcNoteCard from '@nextcloud/vue/components/NcNoteCard'
+import { objectTabSource } from '../mixins/objectTab.js'
 import { fetchBuildReport, firstId } from '../services/characterBuilds.js'
 
 export default {
@@ -84,21 +85,7 @@ export default {
 
 	components: { NcButton, NcNoteCard },
 
-	inject: {
-		cnObjectContext: { default: () => ({}) },
-	},
-
-	props: {
-		/**
-		 * The build UUID. Falls back to the injected object context or the route.
-		 *
-		 * @spec openspec/specs/character-builds/spec.md
-		 */
-		objectId: {
-			type: String,
-			default: '',
-		},
-	},
+	mixins: [objectTabSource],
 
 	data() {
 		return {

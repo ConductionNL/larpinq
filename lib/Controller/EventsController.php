@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Controller;
 
+use OCA\Larpinq\AppInfo\Application;
 use OCA\Larpinq\Service\DocuDeskPdfRenderer;
 use OCA\Larpinq\Service\EventRosterService;
 use OCP\AppFramework\Controller;
@@ -25,9 +26,7 @@ use OCP\AppFramework\Http\Attribute\NoAdminRequired;
 use OCP\AppFramework\Http\Attribute\NoCSRFRequired;
 use OCP\AppFramework\Http\DataDownloadResponse;
 use OCP\AppFramework\Http\JSONResponse;
-use OCP\IGroupManager;
 use OCP\IRequest;
-use OCP\IUserSession;
 
 /**
  * Controller for event-level operations — the GM run-sheet / cast-list export
@@ -44,13 +43,6 @@ use OCP\IUserSession;
 class EventsController extends Controller {
 
 	/**
-	 * The GM group allowed to download run-sheets (GM-facing material).
-	 *
-	 * @var string
-	 */
-	private const GM_GROUP = 'gamemasters';
-
-	/**
 	 * The valid attendance status values (mirrors the larping_attendance enum).
 	 *
 	 * @var string[]
@@ -64,22 +56,18 @@ class EventsController extends Controller {
 	/**
 	 * Constructor for the EventsController.
 	 *
-	 * @param string $appName The app name.
 	 * @param IRequest $request The request object.
 	 * @param EventRosterService $rosterService The event participation domain service.
 	 * @param DocuDeskPdfRenderer $pdfRenderer The shared DocuDesk PDF helper.
-	 * @param IUserSession $userSession The user session.
-	 * @param IGroupManager $groupManager The group manager.
+	 * @param CallerAccess $callerAccess The signed-in caller and the game master check.
 	 */
 	public function __construct(
-		$appName,
 		IRequest $request,
 		private readonly EventRosterService $rosterService,
 		private readonly DocuDeskPdfRenderer $pdfRenderer,
-		private readonly IUserSession $userSession,
-		private readonly IGroupManager $groupManager,
+		private readonly CallerAccess $callerAccess,
 	) {
-		parent::__construct(appName: $appName, request: $request);
+		parent::__construct(appName: Application::APP_ID, request: $request);
 	}//end __construct()
 
 	/**
@@ -167,7 +155,7 @@ class EventsController extends Controller {
 	#[NoAdminRequired]
 	#[NoCSRFRequired]
 	public function roster(string $id): JSONResponse {
-		$user = $this->userSession->getUser();
+		$user = $this->callerAccess->user();
 		if ($user === null) {
 			return new JSONResponse(data: ['error' => 'Not authenticated'], statusCode: Http::STATUS_UNAUTHORIZED);
 		}
@@ -178,7 +166,7 @@ class EventsController extends Controller {
 		}
 
 		$roster = $this->rosterService->buildRoster(eventId: $id);
-		$roster['isGm'] = $this->isGameMaster(uid: $user->getUID());
+		$roster['isGm'] = $this->callerAccess->isGameMasterOrAdmin(uid: $user->getUID());
 
 		return new JSONResponse(data: $roster);
 	}//end roster()
@@ -262,7 +250,7 @@ class EventsController extends Controller {
 	 * @spec openspec/specs/event-checkin-roster/spec.md
 	 */
 	private function resolveGameMaster(): array {
-		$user = $this->userSession->getUser();
+		$user = $this->callerAccess->user();
 		if ($user === null) {
 			return [
 				'',
@@ -271,7 +259,7 @@ class EventsController extends Controller {
 		}
 
 		$uid = $user->getUID();
-		if ($this->isGameMaster(uid: $uid) === false) {
+		if ($this->callerAccess->isGameMasterOrAdmin(uid: $uid) === false) {
 			return [
 				'',
 				new JSONResponse(data: ['error' => 'Access denied'], statusCode: Http::STATUS_FORBIDDEN),
@@ -320,18 +308,4 @@ class EventsController extends Controller {
 
 		return $eventName . '_runsheet.pdf';
 	}//end runsheetFileName()
-
-	/**
-	 * Whether a user may act as a game master (GM group or Nextcloud admin).
-	 *
-	 * @param string $uid The acting user's uid.
-	 *
-	 * @return bool True when the user is a GM or admin.
-	 *
-	 * @spec openspec/specs/event-checkin-roster/spec.md
-	 */
-	private function isGameMaster(string $uid): bool {
-		return $this->groupManager->isInGroup($uid, self::GM_GROUP) === true
-			|| $this->groupManager->isAdmin($uid) === true;
-	}//end isGameMaster()
 }//end class

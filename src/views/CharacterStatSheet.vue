@@ -71,6 +71,7 @@
 
 <script>
 import { translate as t } from '@nextcloud/l10n'
+import { objectTab } from '../mixins/objectTab.js'
 import {
 	changeTone,
 	fetchCharacterStats,
@@ -81,21 +82,7 @@ import {
 export default {
 	name: 'CharacterStatSheet',
 
-	inject: {
-		cnObjectContext: { default: () => ({}) },
-	},
-
-	props: {
-		/**
-		 * The character UUID. Falls back to the injected object context or the route.
-		 *
-		 * @spec openspec/specs/character-management/spec.md
-		 */
-		objectId: {
-			type: String,
-			default: '',
-		},
-	},
+	mixins: [objectTab('characterId')],
 
 	data() {
 		return {
@@ -104,23 +91,6 @@ export default {
 			sheet: { abilities: [], xp: null },
 			open: '',
 		}
-	},
-
-	computed: {
-		/**
-		 * The character id from prop, injected context or route.
-		 *
-		 * @return {string} The id.
-		 *
-		 * @spec openspec/specs/character-management/spec.md
-		 */
-		characterId() {
-			return (
-				this.objectId
-				|| this.cnObjectContext?.objectId
-				|| String(this.$route?.params?.id ?? '')
-			)
-		},
 	},
 
 	/**

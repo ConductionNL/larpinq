@@ -23,8 +23,9 @@ namespace OCA\Larpinq\Service;
 
 use Exception;
 use InvalidArgumentException;
-use OCA\Larpinq\AppInfo\Application;
+use OCA\Larpinq\Support\AppIdentity;
 use OCP\App\IAppManager;
+use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\IAppConfig;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
@@ -51,7 +52,7 @@ class RegisterObjectFetcher {
 	 *
 	 * @var string
 	 */
-	private string $appName = Application::APP_ID;
+	private string $appName = AppIdentity::APP_ID;
 
 	/**
 	 * Whether the resolver-absence deprecation warning has already been logged
@@ -298,6 +299,24 @@ class RegisterObjectFetcher {
 	}//end toArray()
 
 	/**
+	 * Convert a list of objects to arrays.
+	 *
+	 * @param mixed $objects The objects OpenRegister returned.
+	 *
+	 * @return array<int, array<string, mixed>> The objects as arrays.
+	 *
+	 * @psalm-suppress MixedArgument OpenRegister resolved dynamically.
+	 */
+	private function toArrays(mixed $objects): array {
+		return array_map(
+			function (mixed $object): array {
+				return $this->toArray(object: $object);
+			},
+			$objects
+		);
+	}//end toArrays()
+
+	/**
 	 * Get all objects of a given type from OpenRegister.
 	 *
 	 * @param string $objectType The object type (e.g. 'skill', 'character').
@@ -327,26 +346,9 @@ class RegisterObjectFetcher {
 		?array $sort = [],
 		?string $search = null,
 	): array {
-		$mapper = $this->getMapper(objectType: $objectType);
+		$config = ['limit' => $limit, 'offset' => $offset, 'filters' => $filters ?? [], 'sort' => $sort ?? [], 'search' => $search];
 
-		// @var array $objects
-		$objects = $mapper->findAll(
-			[
-				'limit' => $limit,
-				'offset' => $offset,
-				'filters' => $filters ?? [],
-				'sort' => $sort ?? [],
-				'search' => $search,
-			]
-		);
-
-		// @psalm-suppress MixedArgument Mapper resolved dynamically.
-		return array_map(
-			function (mixed $object): array {
-				return $this->toArray(object: $object);
-			},
-			$objects
-		);
+		return $this->toArrays(objects: $this->getMapper(objectType: $objectType)->findAll($config));
 	}//end getObjects()
 
 	/**
@@ -391,13 +393,7 @@ class RegisterObjectFetcher {
 			_multitenancy: false
 		);
 
-		// @psalm-suppress MixedArgument OpenRegister resolved dynamically.
-		return array_map(
-			function (mixed $object): array {
-				return $this->toArray(object: $object);
-			},
-			$objects
-		);
+		return $this->toArrays(objects: $objects);
 	}//end getObjectsWithAppAuthority()
 
 	/**
@@ -444,6 +440,36 @@ class RegisterObjectFetcher {
 
 		return $this->toArray(object: $object);
 	}//end getObject()
+
+	/**
+	 * Get a single object by type and ID, only when it belongs to that type's schema.
+	 *
+	 * OpenRegister's find() retries a UUID without the schema when the
+	 * requested schema does not hold it, so getObject() can answer with an
+	 * object of another type. This read treats such an object as missing.
+	 *
+	 * @param string $objectType The object type (e.g. 'item').
+	 * @param string $id The object UUID.
+	 *
+	 * @return array<string,mixed> The object as an array.
+	 *
+	 * @throws DoesNotExistException If the object belongs to another schema.
+	 * @throws Exception If OpenRegister is not available, the type is not configured,
+	 *                   or the ID is not a valid UUID.
+	 *
+	 * @spec openspec/specs/rpg-system/spec.md
+	 */
+	public function getObjectOfType(string $objectType, string $id): array {
+		$object = $this->getObject(objectType: $objectType, id: $id);
+		[, $schema] = $this->resolveRegisterAndSchema(objectTypeLower: strtolower($objectType));
+
+		$actual = $object['@self']['schema'] ?? null;
+		if (is_scalar($actual) === false || (string)$actual !== $schema) {
+			throw new DoesNotExistException('Object ' . $id . ' is not in the ' . $objectType . ' schema');
+		}
+
+		return $object;
+	}//end getObjectOfType()
 
 	/**
 	 * Create or update an object of a given type in OpenRegister.

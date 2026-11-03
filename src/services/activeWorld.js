@@ -132,19 +132,31 @@ export async function resolveWorld(worldId) {
 	const response = await fetch(worldsUrl(`/${encodeURIComponent(worldId)}`), {
 		headers: { requesttoken: getRequestToken(), Accept: 'application/json' },
 	})
-	let world = null
-	if (response.ok) {
-		try {
-			world = await response.json()
-		} catch {
-			world = null
-		}
-	}
+	const world = await worldFrom(response)
 	if (world && world.status !== 'archived') {
 		return worldId
 	}
 	await saveWorld('')
 	return ''
+}
+
+/**
+ * The world in an answer, or null when the answer failed or does not parse.
+ *
+ * @param {Response} response The answer.
+ * @return {Promise<object|null>} The world.
+ *
+ * @spec openspec/specs/setting-management/spec.md
+ */
+async function worldFrom(response) {
+	if (!response.ok) {
+		return null
+	}
+	try {
+		return await response.json()
+	} catch {
+		return null
+	}
 }
 
 /**

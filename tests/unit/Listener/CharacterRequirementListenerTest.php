@@ -66,11 +66,17 @@ class FakeObjectEntity extends ObjectEntity {
 class CharacterRequirementListenerTest extends TestCase {
 	private const SCHEMA_ID = 'char-schema-uuid';
 
+	/** @var LoggerInterface The logger. */
 	private LoggerInterface $logger;
 
+	/**
+	 * Build the doubles and the subject every test starts from.
+	 *
+	 * @return void
+	 */
 	protected function setUp(): void {
 		parent::setUp();
-		$this->logger = $this->createMock(LoggerInterface::class);
+		$this->logger = $this->createMock(originalClassName: LoggerInterface::class);
 	}
 
 	private function makeListener(
@@ -79,7 +85,7 @@ class CharacterRequirementListenerTest extends TestCase {
 		?string $uid = 'gm1',
 		array $fields = [],
 	): CharacterRequirementListener {
-		$fetcher = $this->createMock(RegisterObjectFetcher::class);
+		$fetcher = $this->createMock(originalClassName: RegisterObjectFetcher::class);
 		$fetcher->method('getObjects')->willReturnCallback(function (string $type) use ($skills, $fields): array {
 			return match ($type) {
 				'skill' => $skills,
@@ -87,38 +93,38 @@ class CharacterRequirementListenerTest extends TestCase {
 				default => [],
 			};
 		});
-		$engine = new CharacterService($fetcher, $this->logger, new EffectApplier());
+		$engine = new CharacterService(objectFetcher: $fetcher, logger: $this->logger, effectApplier: new EffectApplier());
 		$idList = new IdListNormaliser();
 		$requirementService = new SkillRequirementService(
-			$engine,
-			$fetcher,
-			$this->logger,
-			new SkillRequirementChecker($idList),
-			$idList
+			characterService: $engine,
+			objectFetcher: $fetcher,
+			logger: $this->logger,
+			checker: new SkillRequirementChecker(idList: $idList),
+			idList: $idList
 		);
 
-		$config = $this->createMock(IAppConfig::class);
+		$config = $this->createMock(originalClassName: IAppConfig::class);
 		$config->method('getValueString')->willReturn(self::SCHEMA_ID);
 
-		$userSession = $this->createMock(IUserSession::class);
+		$userSession = $this->createMock(originalClassName: IUserSession::class);
 		if ($uid !== null) {
-			$user = $this->createMock(IUser::class);
+			$user = $this->createMock(originalClassName: IUser::class);
 			$user->method('getUID')->willReturn($uid);
 			$userSession->method('getUser')->willReturn($user);
 		} else {
 			$userSession->method('getUser')->willReturn(null);
 		}
 
-		$groupManager = $this->createMock(IGroupManager::class);
+		$groupManager = $this->createMock(originalClassName: IGroupManager::class);
 		$groupManager->method('isInGroup')->willReturn($isGm);
 
 		return new CharacterRequirementListener(
-			$requirementService,
-			$config,
-			$userSession,
-			$groupManager,
-			$this->logger,
-			new CustomFieldGuard($fetcher, new CustomFieldValidator())
+			requirementService: $requirementService,
+			config: $config,
+			userSession: $userSession,
+			groupManager: $groupManager,
+			logger: $this->logger,
+			customFields: new CustomFieldGuard(objectFetcher: $fetcher, validator: new CustomFieldValidator())
 		);
 	}
 
@@ -137,9 +143,9 @@ class CharacterRequirementListenerTest extends TestCase {
 
 		$listener->handle($event);
 
-		$this->assertTrue($event->isPropagationStopped());
-		$this->assertSame('custom_field_invalid', $event->getErrors()['code']);
-		$this->assertSame(['scars'], array_keys($event->getErrors()['fields']));
+		$this->assertTrue(condition: $event->isPropagationStopped());
+		$this->assertSame(expected: 'custom_field_invalid', actual: $event->getErrors()['code']);
+		$this->assertSame(expected: ['scars'], actual: array_keys($event->getErrors()['fields']));
 	}
 
 	/**
@@ -156,9 +162,14 @@ class CharacterRequirementListenerTest extends TestCase {
 
 		$listener->handle($event);
 
-		$this->assertFalse($event->isPropagationStopped());
+		$this->assertFalse(condition: $event->isPropagationStopped());
 	}
 
+	/**
+	 * Rejects create with unmet prerequisite.
+	 *
+	 * @return void
+	 */
 	public function testRejectsCreateWithUnmetPrerequisite(): void {
 		$skills = [
 			['id' => 'basic', 'name' => 'Basic'],
@@ -170,10 +181,15 @@ class CharacterRequirementListenerTest extends TestCase {
 
 		$listener->handle($event);
 
-		$this->assertTrue($event->isPropagationStopped());
-		$this->assertSame('requirements_not_met', $event->getErrors()['code']);
+		$this->assertTrue(condition: $event->isPropagationStopped());
+		$this->assertSame(expected: 'requirements_not_met', actual: $event->getErrors()['code']);
 	}
 
+	/**
+	 * Allows create when prerequisite met.
+	 *
+	 * @return void
+	 */
 	public function testAllowsCreateWhenPrerequisiteMet(): void {
 		$skills = [
 			['id' => 'basic', 'name' => 'Basic'],
@@ -185,9 +201,14 @@ class CharacterRequirementListenerTest extends TestCase {
 
 		$listener->handle($event);
 
-		$this->assertFalse($event->isPropagationStopped());
+		$this->assertFalse(condition: $event->isPropagationStopped());
 	}
 
+	/**
+	 * Ignores non character schema.
+	 *
+	 * @return void
+	 */
 	public function testIgnoresNonCharacterSchema(): void {
 		$listener = $this->makeListener(skills: []);
 		$entity = new FakeObjectEntity('other-schema', ['skills' => ['adv']]);
@@ -195,9 +216,14 @@ class CharacterRequirementListenerTest extends TestCase {
 
 		$listener->handle($event);
 
-		$this->assertFalse($event->isPropagationStopped());
+		$this->assertFalse(condition: $event->isPropagationStopped());
 	}
 
+	/**
+	 * Diff scoped unrelated edit passes.
+	 *
+	 * @return void
+	 */
 	public function testDiffScopedUnrelatedEditPasses(): void {
 		// Pre-existing unmet state, but the write only changes the name.
 		$skills = [
@@ -211,9 +237,14 @@ class CharacterRequirementListenerTest extends TestCase {
 
 		$listener->handle($event);
 
-		$this->assertFalse($event->isPropagationStopped());
+		$this->assertFalse(condition: $event->isPropagationStopped());
 	}
 
+	/**
+	 * Override accepted from GM.
+	 *
+	 * @return void
+	 */
 	public function testOverrideAcceptedFromGm(): void {
 		$skills = [
 			['id' => 'basic', 'name' => 'Basic'],
@@ -228,9 +259,14 @@ class CharacterRequirementListenerTest extends TestCase {
 
 		$listener->handle($event);
 
-		$this->assertFalse($event->isPropagationStopped());
+		$this->assertFalse(condition: $event->isPropagationStopped());
 	}
 
+	/**
+	 * Override rejected from non GM.
+	 *
+	 * @return void
+	 */
 	public function testOverrideRejectedFromNonGm(): void {
 		$skills = [['id' => 'adv', 'name' => 'Advanced']];
 		$listener = $this->makeListener(skills: $skills, isGm: false, uid: 'player1');
@@ -242,10 +278,15 @@ class CharacterRequirementListenerTest extends TestCase {
 
 		$listener->handle($event);
 
-		$this->assertTrue($event->isPropagationStopped());
-		$this->assertSame('override_forbidden', $event->getErrors()['requirementOverrides'][0]['code']);
+		$this->assertTrue(condition: $event->isPropagationStopped());
+		$this->assertSame(expected: 'override_forbidden', actual: $event->getErrors()['requirementOverrides'][0]['code']);
 	}
 
+	/**
+	 * Empty reason override rejected.
+	 *
+	 * @return void
+	 */
 	public function testEmptyReasonOverrideRejected(): void {
 		$skills = [['id' => 'adv', 'name' => 'Advanced']];
 		$listener = $this->makeListener(skills: $skills, isGm: true, uid: 'gm1');
@@ -257,7 +298,7 @@ class CharacterRequirementListenerTest extends TestCase {
 
 		$listener->handle($event);
 
-		$this->assertTrue($event->isPropagationStopped());
-		$this->assertSame('override_reason_required', $event->getErrors()['requirementOverrides'][0]['code']);
+		$this->assertTrue(condition: $event->isPropagationStopped());
+		$this->assertSame(expected: 'override_reason_required', actual: $event->getErrors()['requirementOverrides'][0]['code']);
 	}
 }
