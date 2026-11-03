@@ -13,6 +13,7 @@
 
 import { getRequestToken } from '@nextcloud/auth'
 import { generateUrl } from '@nextcloud/router'
+import { jsonHeaders } from './requestHeaders.js'
 import { refusalOf } from './responseBody.js'
 
 const OBJECTS = '/apps/openregister/api/objects/larpinq'
@@ -100,11 +101,7 @@ export async function applyBuild(characterId, lists) {
 		generateUrl(`${OBJECTS}/character/${encodeURIComponent(characterId)}`),
 		{
 			method: 'PATCH',
-			headers: {
-				requesttoken: getRequestToken(),
-				Accept: 'application/json',
-				'Content-Type': 'application/json',
-			},
+			headers: jsonHeaders(),
 			body: JSON.stringify(body),
 		},
 	)

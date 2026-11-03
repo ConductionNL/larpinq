@@ -11,8 +11,8 @@
  * @spec openspec/specs/character-management/spec.md
  */
 
-import { getRequestToken } from '@nextcloud/auth'
 import { generateUrl } from '@nextcloud/router'
+import { jsonHeaders } from './requestHeaders.js'
 
 const OBJECTS = '/apps/openregister/api/objects/larpinq'
 
@@ -36,19 +36,6 @@ export function bulkBody(choices) {
 		}
 	}
 	return body
-}
-
-/**
- * The headers of every request.
- *
- * @return {object} The headers.
- */
-function headers() {
-	return {
-		requesttoken: getRequestToken(),
-		Accept: 'application/json',
-		'Content-Type': 'application/json',
-	}
 }
 
 /**
@@ -94,7 +81,7 @@ async function patchCharacter(id, body) {
 	try {
 		response = await fetch(
 			generateUrl(`${OBJECTS}/character/${encodeURIComponent(id)}`),
-			{ method: 'PATCH', headers: headers(), body },
+			{ method: 'PATCH', headers: jsonHeaders(), body },
 		)
 	} catch (error) {
 		return String(error)
@@ -173,7 +160,7 @@ export async function fetchCharacterNames(ids) {
 	for (const id of ids || []) {
 		const response = await fetch(
 			generateUrl(`${OBJECTS}/character/${encodeURIComponent(id)}`),
-			{ headers: headers() },
+			{ headers: jsonHeaders() },
 		)
 		if (response.ok) {
 			const character = await response.json()
@@ -192,7 +179,7 @@ export async function fetchCharacterNames(ids) {
  */
 export async function fetchWorlds() {
 	const response = await fetch(generateUrl(`${OBJECTS}/setting?_limit=500`), {
-		headers: headers(),
+		headers: jsonHeaders(),
 	})
 	if (!response.ok) {
 		return []

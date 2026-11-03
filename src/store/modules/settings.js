@@ -1,6 +1,26 @@
 import { defineStore } from 'pinia'
 import logger from '../../logger.js'
 
+/**
+ * Call a larpinq settings endpoint with the app's JSON request headers.
+ *
+ * @param {string} path The path after `/apps/larpinq/api/settings`.
+ * @param {object} init The method and, for a write, the body.
+ * @return {Promise<Response>} The response.
+ *
+ * @spec openspec/changes/retrofit-2026-05-25-larpingapp-frontend/tasks.md#task-6
+ */
+function settingsRequest(path, init) {
+	return fetch(`/apps/larpinq/api/settings${path}`, {
+		...init,
+		headers: {
+			'Content-Type': 'application/json',
+			requesttoken: OC.requestToken,
+			'OCS-APIREQUEST': 'true',
+		},
+	})
+}
+
 export const useSettingsStore = defineStore('settings', {
 	state: () => ({
 		config: null,
@@ -27,14 +47,7 @@ export const useSettingsStore = defineStore('settings', {
 			this.error = null
 
 			try {
-				const response = await fetch('/apps/larpinq/api/settings', {
-					method: 'GET',
-					headers: {
-						'Content-Type': 'application/json',
-						requesttoken: OC.requestToken,
-						'OCS-APIREQUEST': 'true',
-					},
-				})
+				const response = await settingsRequest('', { method: 'GET' })
 
 				if (!response.ok) {
 					throw new Error(
@@ -70,13 +83,8 @@ export const useSettingsStore = defineStore('settings', {
 			this.error = null
 
 			try {
-				const response = await fetch('/apps/larpinq/api/settings', {
+				const response = await settingsRequest('', {
 					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-						requesttoken: OC.requestToken,
-						'OCS-APIREQUEST': 'true',
-					},
 					body: JSON.stringify(settingsData),
 				})
 
@@ -107,13 +115,8 @@ export const useSettingsStore = defineStore('settings', {
 			this.error = null
 
 			try {
-				const response = await fetch('/apps/larpinq/api/settings/reimport', {
+				const response = await settingsRequest('/reimport', {
 					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-						requesttoken: OC.requestToken,
-						'OCS-APIREQUEST': 'true',
-					},
 				})
 
 				if (!response.ok) {
