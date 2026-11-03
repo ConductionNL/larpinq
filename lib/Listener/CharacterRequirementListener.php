@@ -61,6 +61,33 @@ class CharacterRequirementListener implements IEventListener {
 	private const GM_GROUP = 'gamemasters';
 
 	/**
+	 * The log line for a validator that threw; the write goes through.
+	 *
+	 * @var string
+	 */
+	private const VALIDATION_ERRORED = 'Larpinq: skill-requirement validation errored; allowing the write (data-only fallback).';
+
+	/**
+	 * The error for an override entry without a reason.
+	 *
+	 * @var array<string,string>
+	 */
+	private const OVERRIDE_REASON_REQUIRED = [
+		'code' => 'override_reason_required',
+		'message' => 'A requirement override must carry a non-empty reason.',
+	];
+
+	/**
+	 * The error for an override authored by someone who is not a game master.
+	 *
+	 * @var array<string,string>
+	 */
+	private const OVERRIDE_FORBIDDEN = [
+		'code' => 'override_forbidden',
+		'message' => 'Only game masters may author requirement overrides.',
+	];
+
+	/**
 	 * Constructor for CharacterRequirementListener.
 	 *
 	 * @param SkillRequirementService $requirementService The validation service.
@@ -97,9 +124,7 @@ class CharacterRequirementListener implements IEventListener {
 	 * @spec openspec/specs/character-custom-fields/spec.md
 	 */
 	public function handle(Event $event): void {
-		if (($event instanceof \OCA\OpenRegister\Event\ObjectCreatingEvent) === false
-			&& ($event instanceof \OCA\OpenRegister\Event\ObjectUpdatingEvent) === false
-		) {
+		if ($this->isPreWrite(event: $event) === false) {
 			return;
 		}
 
@@ -109,29 +134,7 @@ class CharacterRequirementListener implements IEventListener {
 		// dependencies (OpenRegister may be absent).  Static analysis does not
 		// know about these optional classes; see the ignore annotations below.
 		try {
-			[$newEntity, $oldEntity] = $this->extractEntities(event: $event);
-
-			if ($this->isCharacterSchema(entity: $newEntity) === false) {
-				return;
-			}
-
-			$candidate = $newEntity->getObject();
-			$oldCharacter = [];
-			if ($oldEntity !== null) {
-				$oldCharacter = $oldEntity->getObject();
-			}
-
-			// Extra field values are checked against their definitions
-			// (characters-custom-fields); the guard looks at changed keys only.
-			$errors = $this->customFields->check(candidate: $candidate, old: $oldCharacter);
-
-			// Diff-scoping: only validate when an association or override field
-			// actually changed. Unrelated edits must never be blocked by a
-			// pre-existing unmet state.
-			if ($errors === null && $this->associationsChanged(candidate: $candidate, old: $oldCharacter) === true) {
-				$errors = $this->collectVeto(candidate: $candidate, oldCharacter: $oldCharacter);
-			}
-
+			$errors = $this->vetoFor(event: $event);
 			if ($errors !== null) {
 				$event->stopPropagation();
 				// @phpstan-ignore-next-line
@@ -143,12 +146,61 @@ class CharacterRequirementListener implements IEventListener {
 			// not brick all character writes. Log and allow the write to
 			// proceed (degrade to data-only) — matches the "OR predates events"
 			// graceful-degradation contract.
-			$this->logger->error(
-				'Larpinq: skill-requirement validation errored; allowing the write (data-only fallback).',
-				['exception' => $e]
-			);
+			$this->logger->error(self::VALIDATION_ERRORED, ['exception' => $e]);
 		}//end try
 	}//end handle()
+
+	/**
+	 * Whether the event is one of OpenRegister's vetoable pre-write events.
+	 *
+	 * @param Event $event The dispatched event.
+	 *
+	 * @return bool True for ObjectCreatingEvent and ObjectUpdatingEvent.
+	 *
+	 * @psalm-assert-if-true \OCA\OpenRegister\Event\ObjectCreatingEvent|\OCA\OpenRegister\Event\ObjectUpdatingEvent $event
+	 */
+	private function isPreWrite(Event $event): bool {
+		return $event instanceof \OCA\OpenRegister\Event\ObjectCreatingEvent
+			|| $event instanceof \OCA\OpenRegister\Event\ObjectUpdatingEvent;
+	}//end isPreWrite()
+
+	/**
+	 * The errors that veto a pre-write event, or null when the write may pass.
+	 *
+	 * @param Event $event The dispatched pre-write event.
+	 *
+	 * @return array<string,mixed>|null The errors payload, or null to allow.
+	 *
+	 * @psalm-suppress MixedMethodCall  OpenRegister event/entity classes are optional dependencies.
+	 * @psalm-suppress MixedAssignment  OpenRegister event/entity classes are optional dependencies.
+	 * @psalm-suppress MixedArgument    OpenRegister event/entity classes are optional dependencies.
+	 *
+	 * @spec openspec/specs/skill-requirement-enforcement/spec.md
+	 * @spec openspec/specs/character-custom-fields/spec.md
+	 */
+	private function vetoFor(Event $event): ?array {
+		[$newEntity, $oldEntity] = $this->extractEntities(event: $event);
+
+		if ($this->isCharacterSchema(entity: $newEntity) === false) {
+			return null;
+		}
+
+		$candidate = $newEntity->getObject();
+		$oldCharacter = ($oldEntity?->getObject() ?? []);
+
+		// Extra field values are checked against their definitions
+		// (characters-custom-fields); the guard looks at changed keys only.
+		$errors = $this->customFields->check(candidate: $candidate, old: $oldCharacter);
+
+		// Diff-scoping: only validate when an association or override field
+		// actually changed. Unrelated edits must never be blocked by a
+		// pre-existing unmet state.
+		if ($errors === null && $this->associationsChanged(candidate: $candidate, old: $oldCharacter) === true) {
+			$errors = $this->collectVeto(candidate: $candidate, oldCharacter: $oldCharacter);
+		}
+
+		return $errors;
+	}//end vetoFor()
 
 	/**
 	 * Extract the [new, old] entity pair from a vetoable pre-write event.
@@ -290,43 +342,69 @@ class CharacterRequirementListener implements IEventListener {
 	 * @return array<string,mixed>|null An error entry when unauthorized, else null.
 	 */
 	private function checkOverrideAuthorization(array $candidate, array $old): ?array {
-		$newOverrides = $candidate['requirementOverrides'] ?? [];
-		$oldOverrides = $old['requirementOverrides'] ?? [];
-
-		if ($newOverrides === $oldOverrides) {
+		if ($this->overridesChanged(candidate: $candidate, old: $old) === false) {
 			return null;
 		}
 
 		// An empty reason on any override entry is itself invalid.
-		if (is_array($newOverrides) === true) {
-			foreach ($newOverrides as $override) {
-				if (is_array($override) === true && trim((string)($override['reason'] ?? '')) === '') {
-					return [
-						'code' => 'override_reason_required',
-						'message' => 'A requirement override must carry a non-empty reason.',
-					];
-				}
-			}
+		if ($this->hasOverrideWithoutReason(candidate: $candidate) === true) {
+			return self::OVERRIDE_REASON_REQUIRED;
 		}
 
-		$user = $this->userSession->getUser();
-		if ($user === null) {
-			return [
-				'code' => 'override_forbidden',
-				'message' => 'Only game masters may author requirement overrides.',
-			];
-		}
-
-		$isGm = $this->groupManager->isInGroup($user->getUID(), self::GM_GROUP);
-		if ($isGm === false) {
-			return [
-				'code' => 'override_forbidden',
-				'message' => 'Only game masters may author requirement overrides.',
-			];
+		if ($this->callerIsGameMaster() === false) {
+			return self::OVERRIDE_FORBIDDEN;
 		}
 
 		return null;
 	}//end checkOverrideAuthorization()
+
+	/**
+	 * Whether the requirementOverrides of the candidate differ from the stored ones.
+	 *
+	 * @param array<string,mixed> $candidate The candidate character.
+	 * @param array<string,mixed> $old       The persisted character.
+	 *
+	 * @return bool True when the overrides changed, were added or were removed.
+	 */
+	private function overridesChanged(array $candidate, array $old): bool {
+		return ($candidate['requirementOverrides'] ?? []) !== ($old['requirementOverrides'] ?? []);
+	}//end overridesChanged()
+
+	/**
+	 * Whether any override entry of the candidate carries an empty or missing reason.
+	 *
+	 * @param array<string,mixed> $candidate The candidate character.
+	 *
+	 * @return bool True when an entry has no reason.
+	 */
+	private function hasOverrideWithoutReason(array $candidate): bool {
+		$overrides = ($candidate['requirementOverrides'] ?? []);
+		if (is_array($overrides) === false) {
+			return false;
+		}
+
+		foreach ($overrides as $override) {
+			if (is_array($override) === true && trim((string)($override['reason'] ?? '')) === '') {
+				return true;
+			}
+		}
+
+		return false;
+	}//end hasOverrideWithoutReason()
+
+	/**
+	 * Whether the signed-in user is in the game master group.
+	 *
+	 * @return bool False when nobody is signed in or the user is not a game master.
+	 */
+	private function callerIsGameMaster(): bool {
+		$user = $this->userSession->getUser();
+		if ($user === null) {
+			return false;
+		}
+
+		return $this->groupManager->isInGroup($user->getUID(), self::GM_GROUP);
+	}//end callerIsGameMaster()
 
 	/**
 	 * Build the structured OR rejection payload from the validation result.
@@ -336,20 +414,10 @@ class CharacterRequirementListener implements IEventListener {
 	 * @return array<string,mixed> The errors payload.
 	 */
 	private function buildErrorPayload(array $result): array {
-		$unmet = [];
-		// @psalm-suppress MixedAssignment Validation result entries are typed in the service.
-		foreach (($result['requirements'] ?? []) as $entry) {
-			if (is_array($entry) === true
-				&& (($entry['status'] ?? '') === 'unmet' || ($entry['status'] ?? '') === 'unresolvable')
-			) {
-				$unmet[] = $entry;
-			}
-		}
-
 		$payload = [
 			'code' => 'requirements_not_met',
 			'message' => 'One or more skill requirements are not met.',
-			'requirements' => $unmet,
+			'requirements' => $this->unmetRequirements(result: $result),
 		];
 
 		$budget = $result['budget'] ?? [];
@@ -360,4 +428,23 @@ class CharacterRequirementListener implements IEventListener {
 
 		return $payload;
 	}//end buildErrorPayload()
+
+	/**
+	 * The requirement entries of a validation result that are unmet or unresolvable.
+	 *
+	 * @param array<string,mixed> $result The SkillRequirementService result.
+	 *
+	 * @return array<int,array<string,mixed>> The failing entries, in order.
+	 */
+	private function unmetRequirements(array $result): array {
+		$unmet = [];
+		// @psalm-suppress MixedAssignment Validation result entries are typed in the service.
+		foreach (($result['requirements'] ?? []) as $entry) {
+			if (is_array($entry) === true && in_array(($entry['status'] ?? ''), ['unmet', 'unresolvable'], true) === true) {
+				$unmet[] = $entry;
+			}
+		}
+
+		return $unmet;
+	}//end unmetRequirements()
 }//end class
