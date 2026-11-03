@@ -123,6 +123,13 @@ class WorldCopyService {
 	private array $created = [];
 
 	/**
+	 * What the copy in progress is writing, for the failure message.
+	 *
+	 * @var string
+	 */
+	private string $current = 'the world';
+
+	/**
 	 * Constructor.
 	 *
 	 * @param RegisterObjectFetcher $objectFetcher OpenRegister reads and writes.
@@ -179,39 +186,22 @@ class WorldCopyService {
 
 		$this->idMap = [];
 		$this->created = [];
-		$label = 'the world';
+		$this->current = 'the world';
 		try {
-			$payload = $this->payload(type: 'setting', source: $world, newWorld: null);
+			$payload = $this->payload(type: 'setting', source: $world);
 			$payload['name'] = $name;
 			$payload['status'] = 'archived';
 			$newWorld = $this->create(type: 'setting', payload: $payload);
 			$newId = (string)$newWorld['id'];
 
-			$deferred = [];
-			foreach ($objects as $type => $rows) {
-				foreach ($rows as $row) {
-					$label = $type . ' "' . $this->nameOf(row: $row) . '"';
-					$full = $this->payload(type: $type, source: $row, newWorld: $newId);
-					$later = $this->laterReferences(type: $type, payload: $full);
-					$saved = $this->create(type: $type, payload: array_diff_key($full, $later));
-					$this->idMap[$type][(string)$row['id']] = (string)$saved['id'];
-					if ($later !== []) {
-						$deferred[] = [$type, (string)$saved['id'], $row, $full];
-					}
-				}
-			}
+			$this->writeDeferred(deferred: $this->copyRules(objects: $objects, newId: $newId));
 
-			foreach ($deferred as [$type, $uuid, $row, $full]) {
-				$label = $type . ' "' . $this->nameOf(row: $row) . '"';
-				$this->objectFetcher->saveObject(objectType: $type, data: $this->remapAll(type: $type, payload: $full), uuid: $uuid);
-			}
-
-			$label = 'the world';
+			$this->current = 'the world';
 			$payload['status'] = 'active';
 			$newWorld = $this->objectFetcher->saveObject(objectType: 'setting', data: $payload, uuid: $newId);
 		} catch (Throwable $e) {
 			throw new WorldCopyFailedException(
-				message: 'Copying ' . $label . ' failed: ' . $e->getMessage(),
+				message: 'Copying ' . $this->current . ' failed: ' . $e->getMessage(),
 				leftovers: $this->rollback(),
 				previous: $e
 			);
@@ -219,6 +209,50 @@ class WorldCopyService {
 
 		return ['world' => $newWorld, 'counts' => $this->counts(objects: $objects)];
 	}//end copy()
+
+	/**
+	 * Create the copy of every rule object, without the references to objects
+	 * that are not copied yet.
+	 *
+	 * @param array<string, list<array<string, mixed>>> $objects The world's rule objects per type.
+	 * @param string $newId The new world's UUID.
+	 *
+	 * @return list<array{0: string, 1: string, 2: array<string, mixed>, 3: array<string, mixed>}> The copies
+	 *         still to complete: type, new UUID, original and full payload.
+	 */
+	private function copyRules(array $objects, string $newId): array {
+		$deferred = [];
+		foreach ($objects as $type => $rows) {
+			foreach ($rows as $row) {
+				$this->current = $type . ' "' . $this->nameOf(row: $row) . '"';
+				$full = $this->payload(type: $type, source: $row);
+				$full['setting'] = $newId;
+				$later = $this->laterReferences(type: $type, payload: $full);
+				$saved = $this->create(type: $type, payload: array_diff_key($full, $later));
+				$this->idMap[$type][(string)$row['id']] = (string)$saved['id'];
+				if ($later !== []) {
+					$deferred[] = [$type, (string)$saved['id'], $row, $full];
+				}
+			}
+		}
+
+		return $deferred;
+	}//end copyRules()
+
+	/**
+	 * Complete the copies that refer to objects copied after them.
+	 *
+	 * @param list<array{0: string, 1: string, 2: array<string, mixed>, 3: array<string, mixed>}> $deferred The copies
+	 *        to complete: type, new UUID, original and full payload.
+	 *
+	 * @return void
+	 */
+	private function writeDeferred(array $deferred): void {
+		foreach ($deferred as [$type, $uuid, $row, $full]) {
+			$this->current = $type . ' "' . $this->nameOf(row: $row) . '"';
+			$this->objectFetcher->saveObject(objectType: $type, data: $this->remapAll(type: $type, payload: $full), uuid: $uuid);
+		}
+	}//end writeDeferred()
 
 	/**
 	 * Read the world, or fail when it does not exist.
@@ -300,16 +334,15 @@ class WorldCopyService {
 
 	/**
 	 * The object's data as a payload for its copy: no id, no metadata, no
-	 * nulls, empty holders, the new world, and references remapped as far
-	 * as the id map reaches.
+	 * nulls, empty holders, and references remapped as far as the id map
+	 * reaches. The caller sets the new world on a rule object.
 	 *
 	 * @param string $type The type.
 	 * @param array<string, mixed> $source The original object.
-	 * @param string|null $newWorld The new world's UUID, or null for the world itself.
 	 *
 	 * @return array<string, mixed> The payload.
 	 */
-	private function payload(string $type, array $source, ?string $newWorld): array {
+	private function payload(string $type, array $source): array {
 		$payload = [];
 		foreach ($source as $key => $value) {
 			$key = (string)$key;
@@ -323,10 +356,6 @@ class WorldCopyService {
 
 		foreach (self::HOLDERS[$type] ?? [] as $field) {
 			$payload[$field] = [];
-		}
-
-		if ($newWorld !== null) {
-			$payload['setting'] = $newWorld;
 		}
 
 		return $this->remapAll(type: $type, payload: $payload);
