@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Controller;
 
-use OCA\Larpinq\AppInfo\Application;
+use OCA\Larpinq\Support\AppIdentity;
 use OCA\Larpinq\Service\EventRosterService;
 use OCA\Larpinq\Service\XpAwardBatchService;
 use OCP\AppFramework\Controller;
@@ -28,7 +28,7 @@ use OCP\IRequest;
 
 /**
  * Award XP to a whole event in one save (events-xp-batch-award). Every
- * method is for game masters (the `Application::GM_GROUP` group, or a
+ * method is for game masters (the `AppIdentity::GM_GROUP` group, or a
  * Nextcloud admin); the awards themselves are written through OpenRegister,
  * whose xpAward rules apply as well.
  *
@@ -52,7 +52,7 @@ class XpAwardsController extends Controller {
 		private readonly EventRosterService $rosterService,
 		private readonly CallerAccess $callerAccess,
 	) {
-		parent::__construct(appName: Application::APP_ID, request: $request);
+		parent::__construct(appName: AppIdentity::APP_ID, request: $request);
 	}//end __construct()
 
 	/**

@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Controller;
 
-use OCA\Larpinq\AppInfo\Application;
+use OCA\Larpinq\Support\AppIdentity;
 use OCA\Larpinq\Service\RegisterObjectFetcher;
 use OCA\Larpinq\Service\TicketChoiceService;
 use OCP\AppFramework\Controller;
@@ -59,7 +59,7 @@ class RegistrationChoicesController extends Controller {
 		private readonly RegisterObjectFetcher $fetcher,
 		private readonly CallerAccess $callerAccess,
 	) {
-		parent::__construct(appName: Application::APP_ID, request: $request);
+		parent::__construct(appName: AppIdentity::APP_ID, request: $request);
 	}//end __construct()
 
 	/**

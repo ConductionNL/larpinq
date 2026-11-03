@@ -26,7 +26,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Listener;
 
-use OCA\Larpinq\AppInfo\Application;
+use OCA\Larpinq\Support\AppIdentity;
 use OCA\Larpinq\Service\UniqueHolderService;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
@@ -181,7 +181,7 @@ class UniqueHolderListener implements IEventListener {
 			return null;
 		}
 
-		if ($schema === $this->config->getValueString(Application::APP_ID, 'character_schema', '')) {
+		if ($schema === $this->config->getValueString(AppIdentity::APP_ID, 'character_schema', '')) {
 			return 'character';
 		}
 
@@ -222,7 +222,7 @@ class UniqueHolderListener implements IEventListener {
 	 */
 	private function heldKindOf(string $schema): ?string {
 		foreach (array_keys(UniqueHolderService::CHARACTER_FIELD) as $kind) {
-			if ($schema === $this->config->getValueString(Application::APP_ID, $kind . '_schema', '')) {
+			if ($schema === $this->config->getValueString(AppIdentity::APP_ID, $kind . '_schema', '')) {
 				return $kind;
 			}
 		}

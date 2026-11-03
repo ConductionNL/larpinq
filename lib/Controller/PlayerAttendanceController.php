@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Controller;
 
-use OCA\Larpinq\AppInfo\Application;
+use OCA\Larpinq\Support\AppIdentity;
 use OCA\Larpinq\Service\CharacterConnectionGuard;
 use OCA\Larpinq\Service\PlayerAttendanceService;
 use OCP\AppFramework\Controller;
@@ -52,7 +52,7 @@ class PlayerAttendanceController extends Controller {
 		private readonly CharacterConnectionGuard $guard,
 		private readonly CallerAccess $callerAccess,
 	) {
-		parent::__construct(appName: Application::APP_ID, request: $request);
+		parent::__construct(appName: AppIdentity::APP_ID, request: $request);
 	}//end __construct()
 
 	/**
