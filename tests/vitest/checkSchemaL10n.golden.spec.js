@@ -14,7 +14,7 @@ import { spawnSync } from 'node:child_process'
 import fs from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
-import { describe, expect, it } from 'vitest'
+import { afterAll, describe, expect, it } from 'vitest'
 
 const SCRIPT = path.resolve(__dirname, '../../scripts/check-schema-l10n.js')
 const GOLDEN = path.resolve(__dirname, 'fixtures/checkSchemaL10n.golden.json')
@@ -178,14 +178,31 @@ function runCase(spec) {
 	}
 }
 
+// One test per case: each case starts its own node process, so a single test
+// holding all of them took 14 process starts and ran over the 5 s test timeout
+// on a loaded machine.
 describe('scripts/check-schema-l10n.js (golden)', () => {
-	it('matches the recorded runs byte for byte', () => {
-		const actual = Object.fromEntries(
-			Object.entries(CASES).map(([name, spec]) => [name, runCase(spec)]),
-		)
+	const recorded = JSON.parse(fs.readFileSync(GOLDEN, 'utf8'))
+	const actual = {}
+
+	it('records the same cases', () => {
+		expect(Object.keys(recorded)).toEqual(Object.keys(CASES))
+	})
+
+	it.each(Object.keys(CASES))(
+		'%s matches the recorded run byte for byte',
+		(name) => {
+			actual[name] = runCase(CASES[name])
+			if (process.env.RECORD_GOLDEN === '1') {
+				return
+			}
+			expect(actual[name]).toEqual(recorded[name])
+		},
+	)
+
+	afterAll(() => {
 		if (process.env.RECORD_GOLDEN === '1') {
 			fs.writeFileSync(GOLDEN, JSON.stringify(actual, null, '\t') + '\n')
 		}
-		expect(actual).toEqual(JSON.parse(fs.readFileSync(GOLDEN, 'utf8')))
 	})
 })

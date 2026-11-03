@@ -48,6 +48,9 @@ class DashboardControllerTest extends TestCase {
 	/** @var array<string, string> The signed-in user's stored larpinq preferences, by IConfig key. */
 	private array $preferences = [];
 
+	/** @var int How often the page read a stored preference. */
+	private int $preferenceReads = 0;
+
 	/**
 	 * Build the doubles and the subject every test starts from.
 	 *
@@ -74,7 +77,10 @@ class DashboardControllerTest extends TestCase {
 
 		$config = $this->createMock(originalClassName: IConfig::class);
 		$config->method('getUserValue')->willReturnCallback(
-			fn (string $uid, string $app, string $key, mixed $default = ''): mixed => ($uid === 'anna' && $app === 'larpinq' ? ($this->preferences[$key] ?? $default) : $default)
+			function (string $uid, string $app, string $key, mixed $default = ''): mixed {
+				$this->preferenceReads++;
+				return ($uid === 'anna' && $app === 'larpinq' ? ($this->preferences[$key] ?? $default) : $default);
+			}
 		);
 
 		$this->controller = new DashboardController(
@@ -152,6 +158,18 @@ class DashboardControllerTest extends TestCase {
 		$this->signedIn = false;
 		$this->controller->page();
 		self::assertSame(expected: '', actual: $this->provided['activeWorld']);
+	}
+
+	/**
+	 * A signed-out caller's page reads no stored preference at all.
+	 *
+	 * @return void
+	 */
+	public function testSignedOutReadsNoPreference(): void {
+		$this->signedIn = false;
+		$this->controller->page();
+
+		self::assertSame(expected: 0, actual: $this->preferenceReads);
 	}
 
 	/**

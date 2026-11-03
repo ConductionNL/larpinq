@@ -79,44 +79,29 @@ class SkillRequirementChecker {
 	 * @spec openspec/specs/skill-requirement-enforcement/spec.md
 	 */
 	public function check(string $skillId, array $skill, bool $overridden, array $context): array {
+		$subject = new SkillUnderCheck(skillId: $skillId, skill: $skill, overridden: $overridden);
+
 		return array_merge(
-			$this->checkRequiredSkills(
-				skillId: $skillId,
-				skill: $skill,
-				overridden: $overridden,
-				context: $context
-			),
-			$this->checkRequiredStats(
-				skillId: $skillId,
-				skill: $skill,
-				overridden: $overridden,
-				context: $context
-			),
-			$this->checkMemberships(
-				skillId: $skillId,
-				skill: $skill,
-				overridden: $overridden,
-				context: $context
-			)
+			$this->checkRequiredSkills(subject: $subject, context: $context),
+			$this->checkRequiredStats(subject: $subject, context: $context),
+			$this->checkMemberships(subject: $subject, context: $context)
 		);
 	}//end check()
 
 	/**
 	 * Prerequisite skills: each must be present in the candidate skill list.
 	 *
-	 * @param string $skillId The skill being assigned.
-	 * @param array<string,mixed> $skill The skill object.
-	 * @param bool $overridden Whether a GM override covers this skill.
+	 * @param SkillUnderCheck $subject The skill being assigned.
 	 * @param array<string,mixed> $context The resolved character context.
 	 *
 	 * @return array<int,array<string,mixed>> The requirement entries.
 	 */
-	private function checkRequiredSkills(string $skillId, array $skill, bool $overridden, array $context): array {
+	private function checkRequiredSkills(SkillUnderCheck $subject, array $context): array {
 		$skills = $context['skills'] ?? [];
 		$allSkills = $context['allSkills'] ?? [];
 
 		$entries = [];
-		foreach ($this->idList->normalise($skill['requiredSkills'] ?? []) as $reqSkill) {
+		foreach ($this->idList->normalise($subject->skill['requiredSkills'] ?? []) as $reqSkill) {
 			$present = in_array($reqSkill, $skills, true);
 			$resolved = isset($allSkills[$reqSkill]);
 			$targetName = '';
@@ -126,11 +111,11 @@ class SkillRequirementChecker {
 
 			$entries[] = $this->entry(
 				fields: [
-					'skill' => $skillId,
+					'skill' => $subject->skillId,
 					'type' => 'requiredSkill',
 					'target' => $reqSkill,
 					'targetName' => $targetName,
-					'status' => $this->status(passed: $present, resolved: $resolved, overridden: $overridden),
+					'status' => $subject->status(passed: $present, resolved: $resolved),
 				]
 			);
 		}
@@ -141,19 +126,17 @@ class SkillRequirementChecker {
 	/**
 	 * Required ability scores: each named ability must meet requiredScore.
 	 *
-	 * @param string $skillId The skill being assigned.
-	 * @param array<string,mixed> $skill The skill object.
-	 * @param bool $overridden Whether a GM override covers this skill.
+	 * @param SkillUnderCheck $subject The skill being assigned.
 	 * @param array<string,mixed> $context The resolved character context.
 	 *
 	 * @return array<int,array<string,mixed>> The requirement entries.
 	 */
-	private function checkRequiredStats(string $skillId, array $skill, bool $overridden, array $context): array {
+	private function checkRequiredStats(SkillUnderCheck $subject, array $context): array {
 		$stats = $context['stats'] ?? [];
-		$requiredScore = (int)($skill['requiredScore'] ?? 0);
+		$requiredScore = (int)($subject->skill['requiredScore'] ?? 0);
 
 		$entries = [];
-		foreach ($this->idList->normalise($skill['requiredStats'] ?? []) as $reqStat) {
+		foreach ($this->idList->normalise($subject->skill['requiredStats'] ?? []) as $reqStat) {
 			$resolved = isset($stats[$reqStat]);
 			$current = 0;
 			$targetName = '';
@@ -165,11 +148,11 @@ class SkillRequirementChecker {
 			$passed = ($resolved === true && $current >= $requiredScore);
 			$entries[] = $this->entry(
 				fields: [
-					'skill' => $skillId,
+					'skill' => $subject->skillId,
 					'type' => 'requiredStat',
 					'target' => $reqStat,
 					'targetName' => $targetName,
-					'status' => $this->status(passed: $passed, resolved: $resolved, overridden: $overridden),
+					'status' => $subject->status(passed: $passed, resolved: $resolved),
 					'current' => $current,
 					'required' => $requiredScore,
 				]
@@ -187,28 +170,25 @@ class SkillRequirementChecker {
 	 * MEMBERSHIP_RULES). Both are always "resolved": the target is a plain
 	 * reference, so the only outcome that can differ is present/absent.
 	 *
-	 * @param string $skillId The skill being assigned.
-	 * @param array<string,mixed> $skill The skill object.
-	 * @param bool $overridden Whether a GM override covers this skill.
+	 * @param SkillUnderCheck $subject The skill being assigned.
 	 * @param array<string,mixed> $context The resolved character context.
 	 *
 	 * @return array<int,array<string,mixed>> The requirement entries.
 	 */
-	private function checkMemberships(string $skillId, array $skill, bool $overridden, array $context): array {
+	private function checkMemberships(SkillUnderCheck $subject, array $context): array {
 		$entries = [];
 		foreach (self::MEMBERSHIP_RULES as $type => [$skillField, $poolField]) {
 			$pool = ($context[$poolField] ?? []);
-			foreach ($this->idList->normalise($skill[$skillField] ?? []) as $target) {
+			foreach ($this->idList->normalise($subject->skill[$skillField] ?? []) as $target) {
 				$entries[] = $this->entry(
 					fields: [
-						'skill' => $skillId,
+						'skill' => $subject->skillId,
 						'type' => $type,
 						'target' => $target,
 						'targetName' => '',
-						'status' => $this->status(
+						'status' => $subject->status(
 							passed: in_array($target, $pool, true),
-							resolved: true,
-							overridden: $overridden
+							resolved: true
 						),
 					]
 				);
@@ -230,32 +210,4 @@ class SkillRequirementChecker {
 	private function entry(array $fields): array {
 		return $fields + ['current' => 0, 'required' => 0];
 	}//end entry()
-
-	/**
-	 * Derive a status from passed/resolved/overridden flags.
-	 *
-	 * An overridden requirement is reported as "overridden" (never "passed"),
-	 * an unresolvable target as "unresolvable", otherwise passed/unmet.
-	 *
-	 * @param bool $passed Whether the requirement is satisfied.
-	 * @param bool $resolved Whether the required target resolves to an object.
-	 * @param bool $overridden Whether a GM override covers this skill.
-	 *
-	 * @return string The status.
-	 */
-	private function status(bool $passed, bool $resolved, bool $overridden): string {
-		if ($resolved === false) {
-			return 'unresolvable';
-		}
-
-		if ($passed === true) {
-			return 'passed';
-		}
-
-		if ($overridden === true) {
-			return 'overridden';
-		}
-
-		return 'unmet';
-	}//end status()
 }//end class
