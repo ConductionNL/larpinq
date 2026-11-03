@@ -78,10 +78,17 @@ class RegistrationChangesControllerTest extends TestCase {
 		$this->world->signedIn = 'anna';
 		$refused = $this->controller()->cancel(id: self::SANNE_REG);
 		$this->assertSame(expected: 403, actual: $refused->getStatus());
-		$this->assertSame(expected: 'Only the player, the person who booked or a game master can cancel this registration.', actual: $refused->getData()['error']);
+		$this->assertSame(
+			expected: 'Only the player, the person who booked or a game master can cancel this registration.',
+			actual: $refused->getData()['error']
+		);
 
 		$this->assertSame(expected: 404, actual: $this->controller()->withdrawTransfer(id: 'e0000000-0000-4000-8000-00000000ffff')->getStatus());
-		$this->assertSame(expected: 403, actual: $this->controller()->addParticipant(id: self::SANNE_REG, name: 'Mila')->getStatus(), message: 'Anna adds nobody to Sanne\'s booking');
+		$this->assertSame(
+			expected: 403,
+			actual: $this->controller()->addParticipant(id: self::SANNE_REG, name: 'Mila')->getStatus(),
+			message: 'Anna adds nobody to Sanne\'s booking'
+		);
 
 		$this->world->signedIn = 'sanne';
 		$this->assertSame(expected: 422, actual: $this->controller()->addParticipant(id: self::SANNE_REG)->getStatus());
@@ -100,6 +107,13 @@ class RegistrationChangesControllerTest extends TestCase {
 		$l10n = $this->createMock(originalClassName: IL10N::class);
 		$l10n->method('t')->willReturnCallback(static fn (string $text): string => $text);
 
-		return new RegistrationChangesController(appName: 'larpinq', request: $this->createMock(originalClassName: IRequest::class), changes: $this->world->changes(), transfers: $this->world->transfers(), userSession: $this->world->session(), l10n: $l10n);
+		return new RegistrationChangesController(
+			appName: 'larpinq',
+			request: $this->createMock(originalClassName: IRequest::class),
+			changes: $this->world->changes(),
+			transfers: $this->world->transfers(),
+			userSession: $this->world->session(),
+			l10n: $l10n
+		);
 	}//end controller()
 }//end class

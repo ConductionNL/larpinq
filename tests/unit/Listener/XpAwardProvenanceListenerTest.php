@@ -82,7 +82,9 @@ class XpAwardProvenanceListenerTest extends TestCase {
 	 * @return void
 	 */
 	public function testACreatedAwardGetsTheActingUserAndTheTime(): void {
-		$event = new ObjectCreatingEvent(new AwardObjectEntity(self::SCHEMA_ID, ['amount' => 5, 'awardedBy' => 'anna', 'awardedAt' => '2020-01-01T00:00:00+00:00']));
+		$event = new ObjectCreatingEvent(
+			new AwardObjectEntity(self::SCHEMA_ID, ['amount' => 5, 'awardedBy' => 'anna', 'awardedAt' => '2020-01-01T00:00:00+00:00'])
+		);
 		$before = time();
 		$this->listener()->handle($event);
 
@@ -99,7 +101,10 @@ class XpAwardProvenanceListenerTest extends TestCase {
 	 */
 	public function testAnUpdateKeepsTheOriginalProvenance(): void {
 		$old = new AwardObjectEntity(self::SCHEMA_ID, ['amount' => 3, 'awardedBy' => 'joris', 'awardedAt' => '2026-09-01T10:00:00+00:00']);
-		$new = new AwardObjectEntity(self::SCHEMA_ID, ['amount' => 1, 'reason' => 'Day guest', 'awardedBy' => 'anna', 'awardedAt' => '2026-09-30T10:00:00+00:00']);
+		$new = new AwardObjectEntity(
+			self::SCHEMA_ID,
+			['amount' => 1, 'reason' => 'Day guest', 'awardedBy' => 'anna', 'awardedAt' => '2026-09-30T10:00:00+00:00']
+		);
 		$event = new ObjectUpdatingEvent($new, $old);
 		$this->listener()->handle($event);
 

@@ -119,7 +119,11 @@ class TicketChoicesFragmentTest extends TestCase {
 		$this->assertSame(expected: ['gamemasters'], actual: $this->schema(key: 'accessCode')['authorization']['read']);
 		foreach (['ticketType', 'registrationOption', 'accessCode'] as $key) {
 			foreach (['create', 'update', 'delete'] as $action) {
-				$this->assertSame(expected: ['gamemasters'], actual: $this->schema(key: $key)['authorization'][$action], message: "only game masters {$action} a {$key}");
+				$this->assertSame(
+					expected: ['gamemasters'],
+					actual: $this->schema(key: $key)['authorization'][$action],
+					message: "only game masters {$action} a {$key}"
+				);
 			}
 		}
 	}//end testPlayersCannotReadHiddenTicketTypesOrCodes()

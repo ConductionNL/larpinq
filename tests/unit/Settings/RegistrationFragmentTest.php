@@ -129,7 +129,11 @@ class RegistrationFragmentTest extends TestCase {
 				continue;
 			}
 
-			$this->assertSame(expected: ['gamemasters'], actual: $registration['properties'][$name]['authorization']['update'] ?? null, message: "only game masters change {$name}");
+			$this->assertSame(
+				expected: ['gamemasters'],
+				actual: $registration['properties'][$name]['authorization']['update'] ?? null,
+				message: "only game masters change {$name}"
+			);
 		}
 	}//end testThePlayerSeesTheirOwnAndChangesOnlyTheCharacter()
 

@@ -47,7 +47,12 @@ class RegistrationPaymentJobTest extends TestCase {
 		$this->world = new PaymentWorld(test: $this);
 		$this->world->seedRegistration(id: self::ANNA_REG, player: PaymentWorld::ANNA, status: 'pending');
 		$this->world->update(id: self::ANNA_REG, data: ['status' => 'accepted']);
-		$this->world->seedRegistration(id: self::PIETER_REG, player: PaymentWorld::PIETER, status: 'waitlisted', more: ['submittedAt' => '2026-10-02T10:00:00+00:00']);
+		$this->world->seedRegistration(
+			id: self::PIETER_REG,
+			player: PaymentWorld::PIETER,
+			status: 'waitlisted',
+			more: ['submittedAt' => '2026-10-02T10:00:00+00:00']
+		);
 	}//end setUp()
 
 	/**
@@ -69,13 +74,21 @@ class RegistrationPaymentJobTest extends TestCase {
 	 */
 	public function testThreeDaysBeforeThePlayerIsReminded(): void {
 		$this->runOn(moment: '2026-11-16T09:00:00+00:00');
-		$this->assertArrayNotHasKey(key: 'paymentReminderAt', array: $this->world->registration(self::ANNA_REG), message: 'four days before: no reminder yet');
+		$this->assertArrayNotHasKey(
+			key: 'paymentReminderAt',
+			array: $this->world->registration(self::ANNA_REG),
+			message: 'four days before: no reminder yet'
+		);
 
 		$this->runOn(moment: '2026-11-17T09:00:00+00:00');
 		$this->assertSame(expected: '2026-11-17T09:00:00+00:00', actual: $this->world->registration(self::ANNA_REG)['paymentReminderAt']);
 
 		$this->runOn(moment: '2026-11-18T09:00:00+00:00');
-		$this->assertSame(expected: '2026-11-17T09:00:00+00:00', actual: $this->world->registration(self::ANNA_REG)['paymentReminderAt'], message: 'one reminder');
+		$this->assertSame(
+			expected: '2026-11-17T09:00:00+00:00',
+			actual: $this->world->registration(self::ANNA_REG)['paymentReminderAt'],
+			message: 'one reminder'
+		);
 	}//end testThreeDaysBeforeThePlayerIsReminded()
 
 	/**
@@ -86,7 +99,11 @@ class RegistrationPaymentJobTest extends TestCase {
 	 */
 	public function testADayAfterThePayByDateTheUnpaidPlaceGoesToTheWaitingList(): void {
 		$this->runOn(moment: '2026-11-20T09:00:00+00:00');
-		$this->assertSame(expected: 'accepted', actual: $this->world->registration(self::ANNA_REG)['status'], message: 'on the day itself the place stands');
+		$this->assertSame(
+			expected: 'accepted',
+			actual: $this->world->registration(self::ANNA_REG)['status'],
+			message: 'on the day itself the place stands'
+		);
 
 		$this->runOn(moment: '2026-11-21T09:00:00+00:00');
 
@@ -148,6 +165,11 @@ class RegistrationPaymentJobTest extends TestCase {
 	 * @return RegistrationPaymentJob The job.
 	 */
 	private function job(): RegistrationPaymentJob {
-		return new RegistrationPaymentJob(time: $this->world->clock(), followUp: $this->world->followUp(), transfers: $this->world->transfers(), logger: new NullLogger());
+		return new RegistrationPaymentJob(
+			time: $this->world->clock(),
+			followUp: $this->world->followUp(),
+			transfers: $this->world->transfers(),
+			logger: new NullLogger()
+		);
 	}//end job()
 }//end class

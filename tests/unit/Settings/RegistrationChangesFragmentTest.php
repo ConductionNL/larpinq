@@ -109,11 +109,19 @@ class RegistrationChangesFragmentTest extends TestCase {
 			'transferTo', 'transferToUid', 'transferStatus', 'transferOfferedAt', 'transferredFrom', 'transferredAt',
 		];
 		foreach ($fields as $field) {
-			$this->assertSame(expected: ['gamemasters'], actual: $registration['properties'][$field]['authorization']['update'], message: "{$field} is written by larpinq");
+			$this->assertSame(
+				expected: ['gamemasters'],
+				actual: $registration['properties'][$field]['authorization']['update'],
+				message: "{$field} is written by larpinq"
+			);
 		}
 
 		$read = $registration['authorization']['read'];
-		$this->assertContains(needle: ['group' => 'larpers', 'match' => ['playerUid' => '$userId']], haystack: $read, message: 'the player still reads their own');
+		$this->assertContains(
+			needle: ['group' => 'larpers', 'match' => ['playerUid' => '$userId']],
+			haystack: $read,
+			message: 'the player still reads their own'
+		);
 		$this->assertContains(needle: ['group' => 'larpers', 'match' => ['bookedByUid' => '$userId']], haystack: $read);
 		$this->assertContains(needle: ['group' => 'larpers', 'match' => ['transferToUid' => '$userId']], haystack: $read);
 		$this->assertSame(expected: ['pending', 'accepted', 'waitlisted', 'declined', 'cancelled'], actual: $registration['properties']['status']['enum']);
@@ -142,8 +150,15 @@ class RegistrationChangesFragmentTest extends TestCase {
 		}
 
 		$this->assertFalse(condition: $this->valid(data: ['settlement' => 'refund'], schema: $schema), message: 'a policy value is not a settlement');
-		$this->assertTrue(condition: $this->valid(data: ['cancellationPolicy' => ['cancelBy' => '2026-11-25T00:00:00+00:00', 'paidCancellation' => 'player-chooses']], schema: $this->validatable(key: 'event')));
-		$this->assertFalse(condition: $this->valid(data: ['cancellationPolicy' => ['paidCancellation' => 'half']], schema: $this->validatable(key: 'event')));
+		$this->assertTrue(
+			condition: $this->valid(
+				data: ['cancellationPolicy' => ['cancelBy' => '2026-11-25T00:00:00+00:00', 'paidCancellation' => 'player-chooses']],
+				schema: $this->validatable(key: 'event')
+			)
+		);
+		$this->assertFalse(
+			condition: $this->valid(data: ['cancellationPolicy' => ['paidCancellation' => 'half']], schema: $this->validatable(key: 'event'))
+		);
 	}//end testTheFieldsLarpinqWritesValidate()
 
 	/**
@@ -172,9 +187,16 @@ class RegistrationChangesFragmentTest extends TestCase {
 		];
 		foreach ([new RegistrationCreditRequested(...$args), new RegistrationRefundRequested(...$args)] as $event) {
 			$payload = $event->toArray();
-			$this->assertTrue(condition: $this->valid(data: array_intersect_key($payload, $shape['properties']), schema: $shape), message: get_class($event) . ' must speak shillinq\'s shape');
+			$this->assertTrue(
+				condition: $this->valid(data: array_intersect_key($payload, $shape['properties']), schema: $shape),
+				message: get_class($event) . ' must speak shillinq\'s shape'
+			);
 			$this->assertSame(expected: 'e0000000-0000-4000-8000-000000000005', actual: $payload['registrationId']);
-			$this->assertSame(expected: ['register' => '3', 'schema' => '12', 'id' => 'e0000000-0000-4000-8000-000000000005'], actual: $payload['subject'], message: 'the subject of the paid request');
+			$this->assertSame(
+				expected: ['register' => '3', 'schema' => '12', 'id' => 'e0000000-0000-4000-8000-000000000005'],
+				actual: $payload['subject'],
+				message: 'the subject of the paid request'
+			);
 		}
 
 		$this->assertSame(expected: 'credit', actual: (new RegistrationCreditRequested(...$args))->toArray()['kind']);

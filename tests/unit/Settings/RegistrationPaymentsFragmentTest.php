@@ -88,7 +88,11 @@ class RegistrationPaymentsFragmentTest extends TestCase {
 		$this->assertSame(expected: ['not-needed', 'to-request', 'open', 'paid', 'expired'], actual: $properties['paymentState']['enum']);
 		$this->assertSame(expected: 'uuid', actual: $properties['paymentRequestId']['format']);
 		foreach (['paymentState', 'paymentRequestId', 'paymentLink', 'paymentReference', 'payBy', 'paymentReminderAt', 'cancelReason'] as $field) {
-			$this->assertSame(expected: ['gamemasters'], actual: $properties[$field]['authorization']['update'], message: "{$field} is set by larpinq and game masters only");
+			$this->assertSame(
+				expected: ['gamemasters'],
+				actual: $properties[$field]['authorization']['update'],
+				message: "{$field} is set by larpinq and game masters only"
+			);
 		}
 
 		$this->assertSame(expected: 'boolean', actual: $properties['invoiceRequested']['type']);

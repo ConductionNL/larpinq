@@ -94,7 +94,10 @@ class RegistrationPaymentServiceTest extends TestCase {
 		$this->world->update(id: $sanne, data: ['status' => 'accepted']);
 
 		$this->assertSame(expected: 'WC26-0002', actual: $this->world->registration($sanne)['paymentReference']);
-		$this->assertTrue(condition: $this->world->leaf->creates[1]['payload']['invoiceRequested'], message: 'Joris\'s invoice request travels on the payment request');
+		$this->assertTrue(
+			condition: $this->world->leaf->creates[1]['payload']['invoiceRequested'],
+			message: 'Joris\'s invoice request travels on the payment request'
+		);
 	}//end testTheReferenceCountsUpPerEvent()
 
 	/**
@@ -103,7 +106,12 @@ class RegistrationPaymentServiceTest extends TestCase {
 	 * @return void
 	 */
 	public function testZeroLinesNeedNoPayment(): void {
-		$this->world->seedRegistration(id: self::ANNA_REG, player: PaymentWorld::ANNA, status: 'pending', more: ['lines' => [['kind' => 'ticket', 'ref' => PaymentWorld::TICKET, 'name' => 'NPC', 'amount' => 0, 'currency' => 'EUR']]]);
+		$this->world->seedRegistration(
+			id: self::ANNA_REG,
+			player: PaymentWorld::ANNA,
+			status: 'pending',
+			more: ['lines' => [['kind' => 'ticket', 'ref' => PaymentWorld::TICKET, 'name' => 'NPC', 'amount' => 0, 'currency' => 'EUR']]]
+		);
 
 		$this->world->update(id: self::ANNA_REG, data: ['status' => 'accepted']);
 

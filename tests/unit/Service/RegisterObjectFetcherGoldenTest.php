@@ -146,7 +146,12 @@ class RegisterObjectFetcherGoldenTest extends TestCase {
 			fn (string $app, string $key, string $default = ''): string => $app.'/'.$key
 		);
 
-		return new RegisterObjectFetcher(container: $container, appManager: $appManager, config: $config, logger: $this->createMock(originalClassName: LoggerInterface::class));
+		return new RegisterObjectFetcher(
+			container: $container,
+			appManager: $appManager,
+			config: $config,
+			logger: $this->createMock(originalClassName: LoggerInterface::class)
+		);
 	}//end fetcher()
 
 	/**
@@ -157,13 +162,30 @@ class RegisterObjectFetcherGoldenTest extends TestCase {
 	private function cases(): array {
 		return [
 			'getObjects type only' => fn (RegisterObjectFetcher $f) => $f->getObjects('Character'),
-			'getObjects every argument' => fn (RegisterObjectFetcher $f) => $f->getObjects(objectType: 'skill', limit: 5, offset: 10, filters: ['a' => 'b'], sort: ['name' => 'asc'], search: 'q'),
+			'getObjects every argument' => fn (RegisterObjectFetcher $f) => $f->getObjects(
+				objectType: 'skill',
+				limit: 5,
+				offset: 10,
+				filters: ['a' => 'b'],
+				sort: ['name' => 'asc'],
+				search: 'q'
+			),
 			'getObjects null filters and sort' => fn (RegisterObjectFetcher $f) => $f->getObjects(objectType: 'item', filters: null, sort: null),
 			'getObjects empty search' => fn (RegisterObjectFetcher $f) => $f->getObjects(objectType: 'item', limit: 0, search: ''),
-			'app authority with limit' => fn (RegisterObjectFetcher $f) => $f->getObjectsWithAppAuthority(objectType: 'xpAward', filters: ['character' => 'c1', 'n' => 3], limit: 7),
-			'app authority filter overriding register' => fn (RegisterObjectFetcher $f) => $f->getObjectsWithAppAuthority(objectType: 'xpAward', filters: ['register' => 'x']),
+			'app authority with limit' => fn (RegisterObjectFetcher $f) => $f->getObjectsWithAppAuthority(
+				objectType: 'xpAward',
+				filters: ['character' => 'c1', 'n' => 3],
+				limit: 7
+			),
+			'app authority filter overriding register' => fn (RegisterObjectFetcher $f) => $f->getObjectsWithAppAuthority(
+				objectType: 'xpAward',
+				filters: ['register' => 'x']
+			),
 			'app authority empty filter' => fn (RegisterObjectFetcher $f) => $f->getObjectsWithAppAuthority(objectType: 'xpAward', filters: []),
-			'app authority empty value' => fn (RegisterObjectFetcher $f) => $f->getObjectsWithAppAuthority(objectType: 'xpAward', filters: ['a' => 'b', 'c' => '']),
+			'app authority empty value' => fn (RegisterObjectFetcher $f) => $f->getObjectsWithAppAuthority(
+				objectType: 'xpAward',
+				filters: ['a' => 'b', 'c' => '']
+			),
 		];
 	}//end cases()
 

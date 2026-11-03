@@ -227,7 +227,11 @@ final class PortalContributionProviderTest extends TestCase {
 		$manifest = (array)$this->provider->getContribution(self::PLAYER_SUBJECT);
 		$actions = $manifest['actions'];
 
-		$this->assertCount(expectedCount: 2, haystack: $actions, message: 'Event signup is delegated to NC Forms; the actions are createCharacter and createPlayerProfile');
+		$this->assertCount(
+			expectedCount: 2,
+			haystack: $actions,
+			message: 'Event signup is delegated to NC Forms; the actions are createCharacter and createPlayerProfile'
+		);
 
 		$action = $actions[0];
 		$this->assertSame(expected: 'createCharacter', actual: $action['id']);
@@ -239,7 +243,11 @@ final class PortalContributionProviderTest extends TestCase {
 			actual: ($action['scopeClaim'] ?? null),
 			message: 'ownerRef is a player uuid: the stamp must be the linked player (the claim), never the portal subject reference'
 		);
-		$this->assertSame(expected: ['name', 'background'], actual: $action['fields'], message: 'No ocName (derived from ownerRef), no approved / slNotesPrivate / economy / lifecycle fields');
+		$this->assertSame(
+			expected: ['name', 'background'],
+			actual: $action['fields'],
+			message: 'No ocName (derived from ownerRef), no approved / slNotesPrivate / economy / lifecycle fields'
+		);
 
 		// No inbox surface (larpinq has no per-player message collection).
 		$this->assertSame(expected: [], actual: $manifest['notifications']);
@@ -267,7 +275,11 @@ final class PortalContributionProviderTest extends TestCase {
 		$this->assertSame(expected: 'larpinq', actual: $action['register']);
 		$this->assertSame(expected: 'player', actual: $action['schema']);
 		$this->assertSame(expected: 'portalSubjectRef', actual: $action['scopeField']);
-		$this->assertArrayNotHasKey(key: 'scopeClaim', array: $action, message: 'The profile is stamped with the subject itself: no claim exists before it');
+		$this->assertArrayNotHasKey(
+			key: 'scopeClaim',
+			array: $action,
+			message: 'The profile is stamped with the subject itself: no claim exists before it'
+		);
 		$this->assertSame(expected: ['name', 'description'], actual: $action['fields'], message: 'No userUid, no review or registration flags');
 	}//end testCreatePlayerProfileIsStampedWithThePortalSubject()
 
@@ -349,7 +361,11 @@ final class PortalContributionProviderTest extends TestCase {
 
 		foreach (array_merge($manifest['collections'], $manifest['actions']) as $collection) {
 			$schemaName = $this->schemaKeyOf(schemas: $schemas, name: $collection['schema']);
-			$this->assertArrayHasKey(key: $schemaName, array: $schemas, message: 'Collection schema "' . $collection['schema'] . '" must exist in the register');
+			$this->assertArrayHasKey(
+				key: $schemaName,
+				array: $schemas,
+				message: 'Collection schema "' . $collection['schema'] . '" must exist in the register'
+			);
 
 			$schemaProps = ($schemaName === 'character') ? $characterProps : ($schemas[$schemaName]['properties'] ?? []);
 			foreach (($collection['fields'] ?? []) as $field) {

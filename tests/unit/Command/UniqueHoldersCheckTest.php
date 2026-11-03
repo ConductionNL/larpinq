@@ -47,7 +47,14 @@ class UniqueHoldersCheckTest extends TestCase {
 			}
 		);
 
-		return new CommandTester(command: new UniqueHoldersCheck(finder: new UniqueHolderConflictFinder(holders: new UniqueHolderService(objectFetcher: $fetcher, idNormaliser: new IdListNormaliser()), idNormaliser: new IdListNormaliser())));
+		return new CommandTester(
+			command: new UniqueHoldersCheck(
+				finder: new UniqueHolderConflictFinder(
+					holders: new UniqueHolderService(objectFetcher: $fetcher, idNormaliser: new IdListNormaliser()),
+					idNormaliser: new IdListNormaliser()
+				)
+			)
+		);
 	}//end tester()
 
 	/**

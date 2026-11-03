@@ -83,7 +83,11 @@ class CharacterBuildsFragmentTest extends TestCase {
 		$this->assertSame(expected: 'larping_item', actual: $build['properties']['items']['$ref']);
 		$this->assertSame(expected: 'condition', actual: $build['properties']['conditions']['$ref']);
 		foreach (['skills', 'items', 'conditions'] as $list) {
-			$this->assertSame(expected: ['setting' => '@object.setting'], actual: $build['properties'][$list]['x-relation-filter'], message: "{$list} come from the character's world");
+			$this->assertSame(
+				expected: ['setting' => '@object.setting'],
+				actual: $build['properties'][$list]['x-relation-filter'],
+				message: "{$list} come from the character's world"
+			);
 		}
 	}//end testABuildHasItsFields()
 

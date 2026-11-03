@@ -218,7 +218,11 @@ class DemoDataServiceTest extends TestCase {
 		$appManager->method('getAppVersion')->willReturn('1.2.3');
 		$appManager->method('getInstalledApps')->willReturn(['larpinq']);
 
-		$service = new DemoDataService(appManager: $appManager, container: $this->container, logger: $this->createMock(originalClassName: LoggerInterface::class));
+		$service = new DemoDataService(
+			appManager: $appManager,
+			container: $this->container,
+			logger: $this->createMock(originalClassName: LoggerInterface::class)
+		);
 
 		$this->expectException(exception: RuntimeException::class);
 		$this->expectExceptionMessageMatches(regularExpression: '/OpenRegister/');

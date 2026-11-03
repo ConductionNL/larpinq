@@ -59,7 +59,9 @@ class OpenRegisterStubDriftTest extends TestCase {
 	public function testStubMatchesTheRealClass(string $stubFile, bool $exact): void {
 		$root = $this->openRegisterRoot();
 		if ($root === null) {
-			$this->markTestSkipped(message: 'openregister source not found beside larpinq and OPENREGISTER_SOURCE is unset: stub drift is UNVERIFIED by this run.');
+			$this->markTestSkipped(
+				message: 'openregister source not found beside larpinq and OPENREGISTER_SOURCE is unset: stub drift is UNVERIFIED by this run.'
+			);
 		}
 
 		$relative = substr($stubFile, strpos($stubFile, '/stubs/openregister/') + strlen('/stubs/openregister/'));

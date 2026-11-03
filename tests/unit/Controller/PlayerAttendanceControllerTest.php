@@ -80,10 +80,26 @@ class PlayerAttendanceControllerTest extends TestCase {
 		$this->store->seed('event', 'gerrit', ['id' => self::SPRING, 'name' => 'Spring Moot 2025', 'startDate' => '2025-04-12T10:00:00+00:00']);
 		$this->store->seed('event', 'gerrit', ['id' => self::SUMMER, 'name' => 'Summer Siege 2025', 'startDate' => '2025-07-20T10:00:00+00:00']);
 		// The game master gerrit checked everyone in, so he owns every record.
-		$this->store->seed('attendance', 'gerrit', ['id' => '00000000-0000-4000-8000-0000000d0001', 'event' => self::SPRING, 'character' => self::HARROW, 'status' => 'checked-in', 'checkedInAt' => '2025-04-12T09:40:00+00:00']);
-		$this->store->seed('attendance', 'gerrit', ['id' => '00000000-0000-4000-8000-0000000d0002', 'event' => self::SUMMER, 'character' => self::MIRELA, 'status' => 'checked-in', 'checkedInAt' => '2025-07-20T09:30:00+00:00']);
-		$this->store->seed('attendance', 'gerrit', ['id' => '00000000-0000-4000-8000-0000000d0003', 'event' => self::SPRING, 'character' => self::MIRELA, 'status' => 'no-show']);
-		$this->store->seed('attendance', 'gerrit', ['id' => '00000000-0000-4000-8000-0000000d0004', 'event' => self::SUMMER, 'character' => self::OSWIN, 'status' => 'checked-in']);
+		$this->store->seed(
+			'attendance',
+			'gerrit',
+			['id' => '00000000-0000-4000-8000-0000000d0001', 'event' => self::SPRING, 'character' => self::HARROW, 'status' => 'checked-in', 'checkedInAt' => '2025-04-12T09:40:00+00:00']
+		);
+		$this->store->seed(
+			'attendance',
+			'gerrit',
+			['id' => '00000000-0000-4000-8000-0000000d0002', 'event' => self::SUMMER, 'character' => self::MIRELA, 'status' => 'checked-in', 'checkedInAt' => '2025-07-20T09:30:00+00:00']
+		);
+		$this->store->seed(
+			'attendance',
+			'gerrit',
+			['id' => '00000000-0000-4000-8000-0000000d0003', 'event' => self::SPRING, 'character' => self::MIRELA, 'status' => 'no-show']
+		);
+		$this->store->seed(
+			'attendance',
+			'gerrit',
+			['id' => '00000000-0000-4000-8000-0000000d0004', 'event' => self::SUMMER, 'character' => self::OSWIN, 'status' => 'checked-in']
+		);
 
 		$fetcher = $this->fetcherOver(openRegister: $this->store);
 		$groupManager = $this->createMock(originalClassName: IGroupManager::class);
@@ -117,7 +133,9 @@ class PlayerAttendanceControllerTest extends TestCase {
 	 */
 	public function testTheEvaluatorHidesAttendanceFromThePlayer(): void {
 		$this->controllerAs(uid: 'anna');
-		$this->assertFalse(condition: $this->store->readable('attendance', $this->store->objects['attendance']['00000000-0000-4000-8000-0000000d0002'], true));
+		$this->assertFalse(
+			condition: $this->store->readable('attendance', $this->store->objects['attendance']['00000000-0000-4000-8000-0000000d0002'], true)
+		);
 	}//end testTheEvaluatorHidesAttendanceFromThePlayer()
 
 	/**
@@ -131,7 +149,10 @@ class PlayerAttendanceControllerTest extends TestCase {
 		$this->assertSame(expected: 200, actual: $response->getStatus());
 		$data = $response->getData();
 		$this->assertSame(expected: ['Summer Siege 2025', 'Spring Moot 2025'], actual: $this->eventNames(data: $data));
-		$this->assertSame(expected: ['Mirela the Wanderer', 'Old Captain Harrow'], actual: array_map(static fn (array $row): string => $row['character']['name'], $data['events']));
+		$this->assertSame(
+			expected: ['Mirela the Wanderer', 'Old Captain Harrow'],
+			actual: array_map(static fn (array $row): string => $row['character']['name'], $data['events'])
+		);
 		$this->assertSame(expected: '2025-07-20T10:00:00+00:00', actual: $data['events'][0]['eventStartDate']);
 		$this->assertSame(expected: 2, actual: $data['count']);
 	}//end testAPlayerSeesHerOwnHistoryNewestFirst()

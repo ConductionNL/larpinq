@@ -231,7 +231,11 @@ class RegistrationChangeServiceTest extends TestCase {
 		$this->world->store->objects['event'][PaymentWorld::EVENT]['cancellationPolicy']['paidCancellation'] = 'refund';
 		$this->world->seedRegistration(id: self::ANNA_REG, player: PaymentWorld::ANNA, status: 'accepted', more: $paid);
 		$this->world->changes()->cancel(registrationId: self::ANNA_REG, actingUid: 'anna', choice: 'credit');
-		$this->assertInstanceOf(expected: RegistrationRefundRequested::class, actual: $this->world->dispatched[0], message: 'the policy refunds; a choice is only read when the player may choose');
+		$this->assertInstanceOf(
+			expected: RegistrationRefundRequested::class,
+			actual: $this->world->dispatched[0],
+			message: 'the policy refunds; a choice is only read when the player may choose'
+		);
 		$this->assertSame(expected: 120.0, actual: $this->world->dispatched[0]->getAmount());
 		$this->assertSame(expected: 'refund-requested', actual: $this->world->registration(id: self::ANNA_REG)['settlement']);
 
@@ -244,7 +248,11 @@ class RegistrationChangeServiceTest extends TestCase {
 		$this->world->store->objects['event'][PaymentWorld::EVENT]['cancellationPolicy']['paidCancellation'] = 'player-chooses';
 		$this->world->seedRegistration(id: self::JORIS_REG, player: self::JORIS, status: 'accepted', more: $paid);
 		$this->world->update(id: self::JORIS_REG, data: ['status' => 'cancelled']);
-		$this->assertInstanceOf(expected: RegistrationRefundRequested::class, actual: $this->world->dispatched[1], message: 'a game master cancelling on the object page without a choice: a refund');
+		$this->assertInstanceOf(
+			expected: RegistrationRefundRequested::class,
+			actual: $this->world->dispatched[1],
+			message: 'a game master cancelling on the object page without a choice: a refund'
+		);
 	}//end testThePolicyDecidesTheMoneyBack()
 
 	/**

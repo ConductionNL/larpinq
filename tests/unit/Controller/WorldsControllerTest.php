@@ -59,7 +59,10 @@ class WorldsControllerTest extends TestCase {
 		$this->store = new InMemoryObjectService();
 		$this->store->seed('setting', ['id' => self::WORLD, 'name' => 'Aldmoor', 'status' => 'active']);
 		$this->store->seed('ability', ['id' => 'aaaaaaaa-0000-4000-8000-000000000001', 'name' => 'Strength', 'setting' => self::WORLD]);
-		$this->store->seed('skill', ['id' => 'aaaaaaaa-0000-4000-8000-000000000002', 'name' => 'Swordsmanship', 'requiredStats' => ['aaaaaaaa-0000-4000-8000-000000000001'], 'setting' => self::WORLD]);
+		$this->store->seed(
+			'skill',
+			['id' => 'aaaaaaaa-0000-4000-8000-000000000002', 'name' => 'Swordsmanship', 'requiredStats' => ['aaaaaaaa-0000-4000-8000-000000000001'], 'setting' => self::WORLD]
+		);
 
 	}//end setUp()
 
@@ -88,7 +91,12 @@ class WorldsControllerTest extends TestCase {
 				};
 			}
 		);
-		$fetcher = new RegisterObjectFetcher(container: $container, appManager: $apps, config: $config, logger: $this->createMock(originalClassName: LoggerInterface::class));
+		$fetcher = new RegisterObjectFetcher(
+			container: $container,
+			appManager: $apps,
+			config: $config,
+			logger: $this->createMock(originalClassName: LoggerInterface::class)
+		);
 
 		$session = $this->createMock(originalClassName: IUserSession::class);
 		$user = null;

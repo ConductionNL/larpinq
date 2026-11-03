@@ -319,7 +319,14 @@ class PaymentWorld {
 	public function config(): IAppConfig {
 		$config = $this->test->getMockBuilder(IAppConfig::class)->getMock();
 		$config->method('getValueString')->willReturnCallback(
-			static fn (string $app, string $key, string $default = ''): string => (str_ends_with($key, '_register') === true ? '3' : (str_ends_with($key, '_schema') === true ? substr($key, 0, -strlen('_schema')) : $default))
+			static fn (string $app, string $key, string $default = ''): string => (str_ends_with(
+				$key,
+				'_register'
+			) === true ? '3' : (str_ends_with($key, '_schema') === true ? substr(
+				$key,
+				0,
+				-strlen('_schema')
+			) : $default))
 		);
 		return $config;
 	}
@@ -397,7 +404,13 @@ class PaymentWorld {
 
 	public function payments(): RegistrationPaymentService {
 		$builder = new PaymentRequestBuilder(fetcher: $this->fetcher(), users: $this->users(), time: $this->clock(), logger: new NullLogger());
-		return new RegistrationPaymentService(fetcher: $this->fetcher(), leaf: $this->paymentLeaf(), builder: $builder, groups: $this->groups(), logger: new NullLogger());
+		return new RegistrationPaymentService(
+			fetcher: $this->fetcher(),
+			leaf: $this->paymentLeaf(),
+			builder: $builder,
+			groups: $this->groups(),
+			logger: new NullLogger()
+		);
 	}
 
 	public function followUp(): PaymentFollowUp {
@@ -405,7 +418,14 @@ class PaymentWorld {
 	}
 
 	public function paymentListener(): PaymentRequestListener {
-		return new PaymentRequestListener(config: $this->config(), payments: $this->payments(), followUp: $this->followUp(), leaf: $this->paymentLeaf(), session: $this->session(), settlement: $this->settlement());
+		return new PaymentRequestListener(
+			config: $this->config(),
+			payments: $this->payments(),
+			followUp: $this->followUp(),
+			leaf: $this->paymentLeaf(),
+			session: $this->session(),
+			settlement: $this->settlement()
+		);
 	}
 
 	public function policy(): CancellationPolicy {
@@ -422,7 +442,14 @@ class PaymentWorld {
 
 	public function settlement(): RegistrationSettlement {
 		$builder = new PaymentRequestBuilder(fetcher: $this->fetcher(), users: $this->users(), time: $this->clock(), logger: new NullLogger());
-		return new RegistrationSettlement(fetcher: $this->fetcher(), policy: $this->policy(), builder: $builder, leaf: $this->paymentLeaf(), dispatcher: $this->dispatcher(), logger: new NullLogger());
+		return new RegistrationSettlement(
+			fetcher: $this->fetcher(),
+			policy: $this->policy(),
+			builder: $builder,
+			leaf: $this->paymentLeaf(),
+			dispatcher: $this->dispatcher(),
+			logger: new NullLogger()
+		);
 	}
 
 	public function changes(): RegistrationChangeService {
@@ -438,8 +465,18 @@ class PaymentWorld {
 		$l10n->method('t')->willReturnCallback(static fn (string $text): string => $text);
 		$locks = $this->test->getMockBuilder(ILockingProvider::class)->getMock();
 		$service = new RegistrationService(fetcher: $this->fetcher(), locking: $locks, logger: new NullLogger(), lockAttempts: 1, lockWaitMicros: 0);
-		$check = new RegistrationWriteCheck(characterCheck: new RegistrationCharacterCheck(fetcher: $this->fetcher()), ticketChoices: new TicketChoiceService(fetcher: $this->fetcher(), registrations: $service, logger: new NullLogger()));
+		$check = new RegistrationWriteCheck(
+			characterCheck: new RegistrationCharacterCheck(fetcher: $this->fetcher()),
+			ticketChoices: new TicketChoiceService(fetcher: $this->fetcher(), registrations: $service, logger: new NullLogger())
+		);
 
-		return new RegistrationListener(config: $this->config(), service: $service, writeCheck: $check, session: $this->session(), l10n: $l10n, logger: new NullLogger());
+		return new RegistrationListener(
+			config: $this->config(),
+			service: $service,
+			writeCheck: $check,
+			session: $this->session(),
+			l10n: $l10n,
+			logger: new NullLogger()
+		);
 	}
 }

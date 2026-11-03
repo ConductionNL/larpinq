@@ -148,7 +148,11 @@ class EffectChainIntegrationTest extends TestCase {
 				}
 			);
 
-		$this->service = new CharacterService(objectFetcher: $fetcher, logger: $this->createMock(originalClassName: LoggerInterface::class), effectApplier: new EffectApplier());
+		$this->service = new CharacterService(
+			objectFetcher: $fetcher,
+			logger: $this->createMock(originalClassName: LoggerInterface::class),
+			effectApplier: new EffectApplier()
+		);
 	}//end setUp()
 
 	/**

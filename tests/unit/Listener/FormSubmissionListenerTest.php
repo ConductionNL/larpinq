@@ -77,7 +77,14 @@ class FormSubmissionListenerTest extends TestCase {
 		$apps->method('getInstalledApps')->willReturn(['openregister']);
 		$config = $this->createMock(originalClassName: IAppConfig::class);
 		$config->method('getValueString')->willReturnCallback(
-			static fn (string $app, string $key, string $default = ''): string => (str_ends_with($key, '_register') === true ? '3' : (str_ends_with($key, '_schema') === true ? substr($key, 0, -strlen('_schema')) : $default))
+			static fn (string $app, string $key, string $default = ''): string => (str_ends_with(
+				$key,
+				'_register'
+			) === true ? '3' : (str_ends_with($key, '_schema') === true ? substr(
+				$key,
+				0,
+				-strlen('_schema')
+			) : $default))
 		);
 		$fetcher = new RegisterObjectFetcher(container: $container, appManager: $apps, config: $config, logger: new \Psr\Log\NullLogger());
 		$users = $this->createMock(originalClassName: IUserManager::class);

@@ -60,23 +60,62 @@ class WorldCopyServiceTest extends TestCase {
 		$this->store->seed('setting', ['id' => $w, 'name' => 'Aldmoor', 'description' => 'The old kingdom', 'status' => 'active']);
 		$this->store->seed('setting', ['id' => self::OTHER, 'name' => 'Elsewhere', 'status' => 'active']);
 		$this->store->seed('ability', ['id' => 'aaaaaaaa-0000-4000-8000-000000000001', 'name' => 'Strength', 'base' => 10, 'setting' => $w]);
-		$this->store->seed('ability', ['id' => 'aaaaaaaa-0000-4000-8000-000000000002', 'name' => 'Mana', 'base' => 0, 'setting' => $w, 'description' => null]);
+		$this->store->seed(
+			'ability',
+			['id' => 'aaaaaaaa-0000-4000-8000-000000000002', 'name' => 'Mana', 'base' => 0, 'setting' => $w, 'description' => null]
+		);
 		$this->store->seed('ability', ['id' => 'aaaaaaaa-0000-4000-8000-000000000003', 'name' => 'Luck', 'base' => 1]);
-		$this->store->seed('effect', ['id' => 'aaaaaaaa-0000-4000-8000-000000000004', 'name' => '+3 strength', 'modifier' => 3, 'modification' => 'positive', 'cumulative' => 'non-cumulative', 'abilities' => ['aaaaaaaa-0000-4000-8000-000000000001'], 'setting' => $w]);
-		$this->store->seed('effect', ['id' => 'aaaaaaaa-0000-4000-8000-000000000005', 'name' => '+5 mana', 'modifier' => 5, 'abilities' => [['id' => 'aaaaaaaa-0000-4000-8000-000000000002']], 'setting' => $w]);
-		$this->store->seed('effect', ['id' => 'aaaaaaaa-0000-4000-8000-000000000006', 'name' => '+1 luck', 'modifier' => 1, 'abilities' => ['aaaaaaaa-0000-4000-8000-000000000003']]);
-		$this->store->seed('skill', ['id' => 'aaaaaaaa-0000-4000-8000-000000000007', 'name' => 'Swordsmanship', 'effects' => ['aaaaaaaa-0000-4000-8000-000000000004'], 'requiredSkills' => ['aaaaaaaa-0000-4000-8000-000000000008'], 'setting' => $w]);
-		$this->store->seed('skill', ['id' => 'aaaaaaaa-0000-4000-8000-000000000008', 'name' => 'Master swordsman', 'effects' => ['aaaaaaaa-0000-4000-8000-000000000004', 'aaaaaaaa-0000-4000-8000-000000000006'], 'requiredSkills' => ['aaaaaaaa-0000-4000-8000-000000000007'], 'requiredStats' => ['aaaaaaaa-0000-4000-8000-000000000001'], 'requiredScore' => 12, 'setting' => $w]);
-		$this->store->seed('item', ['id' => 'aaaaaaaa-0000-4000-8000-000000000010', 'name' => 'Iron shield', 'unique' => true, 'effects' => ['aaaaaaaa-0000-4000-8000-000000000004'], 'characters' => ['aaaaaaaa-0000-4000-8000-000000000012'], 'setting' => $w]);
-		$this->store->seed('condition', ['id' => 'aaaaaaaa-0000-4000-8000-000000000011', 'name' => 'Cursed', 'unique' => false, 'effects' => ['aaaaaaaa-0000-4000-8000-000000000005'], 'characters' => ['aaaaaaaa-0000-4000-8000-000000000012'], 'setting' => $w]);
+		$this->store->seed(
+			'effect',
+			['id' => 'aaaaaaaa-0000-4000-8000-000000000004', 'name' => '+3 strength', 'modifier' => 3, 'modification' => 'positive', 'cumulative' => 'non-cumulative', 'abilities' => ['aaaaaaaa-0000-4000-8000-000000000001'], 'setting' => $w]
+		);
+		$this->store->seed(
+			'effect',
+			['id' => 'aaaaaaaa-0000-4000-8000-000000000005', 'name' => '+5 mana', 'modifier' => 5, 'abilities' => [['id' => 'aaaaaaaa-0000-4000-8000-000000000002']], 'setting' => $w]
+		);
+		$this->store->seed(
+			'effect',
+			['id' => 'aaaaaaaa-0000-4000-8000-000000000006', 'name' => '+1 luck', 'modifier' => 1, 'abilities' => ['aaaaaaaa-0000-4000-8000-000000000003']]
+		);
+		$this->store->seed(
+			'skill',
+			['id' => 'aaaaaaaa-0000-4000-8000-000000000007', 'name' => 'Swordsmanship', 'effects' => ['aaaaaaaa-0000-4000-8000-000000000004'], 'requiredSkills' => ['aaaaaaaa-0000-4000-8000-000000000008'], 'setting' => $w]
+		);
+		$this->store->seed(
+			'skill',
+			['id' => 'aaaaaaaa-0000-4000-8000-000000000008', 'name' => 'Master swordsman', 'effects' => ['aaaaaaaa-0000-4000-8000-000000000004', 'aaaaaaaa-0000-4000-8000-000000000006'], 'requiredSkills' => ['aaaaaaaa-0000-4000-8000-000000000007'], 'requiredStats' => ['aaaaaaaa-0000-4000-8000-000000000001'], 'requiredScore' => 12, 'setting' => $w]
+		);
+		$this->store->seed(
+			'item',
+			['id' => 'aaaaaaaa-0000-4000-8000-000000000010', 'name' => 'Iron shield', 'unique' => true, 'effects' => ['aaaaaaaa-0000-4000-8000-000000000004'], 'characters' => ['aaaaaaaa-0000-4000-8000-000000000012'], 'setting' => $w]
+		);
+		$this->store->seed(
+			'condition',
+			['id' => 'aaaaaaaa-0000-4000-8000-000000000011', 'name' => 'Cursed', 'unique' => false, 'effects' => ['aaaaaaaa-0000-4000-8000-000000000005'], 'characters' => ['aaaaaaaa-0000-4000-8000-000000000012'], 'setting' => $w]
+		);
 		$this->store->seed('skill', ['id' => 'aaaaaaaa-0000-4000-8000-000000000009', 'name' => 'Other world skill', 'setting' => self::OTHER]);
 		$this->store->seed('character', ['id' => 'aaaaaaaa-0000-4000-8000-000000000012', 'name' => 'Anna', 'setting' => $w]);
 		$this->store->seed('event', ['id' => 'aaaaaaaa-0000-4000-8000-000000000013', 'name' => 'Season opener', 'setting' => $w]);
-		$this->store->seed('lorepage', ['id' => 'aaaaaaaa-0000-4000-8000-000000000014', 'title' => 'The harbour', 'body' => 'Ships', 'visibility' => 'players', 'revealFrom' => '2026-10-01T00:00:00+00:00', 'category' => null, 'parent' => 'aaaaaaaa-0000-4000-8000-000000000015', 'order' => 1, 'setting' => $w]);
-		$this->store->seed('lorepage', ['id' => 'aaaaaaaa-0000-4000-8000-000000000015', 'title' => 'Aldmoor city', 'visibility' => 'gamemasters', 'revealFrom' => '2026-09-01T00:00:00+00:00', 'order' => 0, 'setting' => $w]);
-		$this->store->seed('characterfield', ['id' => 'aaaaaaaa-0000-4000-8000-000000000016', 'label' => 'Bloodline', 'key' => 'bloodline', 'fieldType' => 'choice', 'choices' => ['human', 'elven'], 'visibility' => 'owner', 'order' => 1, 'setting' => $w]);
-		$this->store->seed('characterfield', ['id' => 'aaaaaaaa-0000-4000-8000-000000000017', 'label' => 'True allegiance', 'key' => 'true-allegiance', 'fieldType' => 'text', 'visibility' => 'gamemasters', 'order' => 2, 'setting' => $w]);
-		$this->store->seed('characterfield', ['id' => 'aaaaaaaa-0000-4000-8000-000000000018', 'label' => 'Patron god', 'key' => 'patron-god', 'fieldType' => 'text', 'visibility' => 'owner']);
+		$this->store->seed(
+			'lorepage',
+			['id' => 'aaaaaaaa-0000-4000-8000-000000000014', 'title' => 'The harbour', 'body' => 'Ships', 'visibility' => 'players', 'revealFrom' => '2026-10-01T00:00:00+00:00', 'category' => null, 'parent' => 'aaaaaaaa-0000-4000-8000-000000000015', 'order' => 1, 'setting' => $w]
+		);
+		$this->store->seed(
+			'lorepage',
+			['id' => 'aaaaaaaa-0000-4000-8000-000000000015', 'title' => 'Aldmoor city', 'visibility' => 'gamemasters', 'revealFrom' => '2026-09-01T00:00:00+00:00', 'order' => 0, 'setting' => $w]
+		);
+		$this->store->seed(
+			'characterfield',
+			['id' => 'aaaaaaaa-0000-4000-8000-000000000016', 'label' => 'Bloodline', 'key' => 'bloodline', 'fieldType' => 'choice', 'choices' => ['human', 'elven'], 'visibility' => 'owner', 'order' => 1, 'setting' => $w]
+		);
+		$this->store->seed(
+			'characterfield',
+			['id' => 'aaaaaaaa-0000-4000-8000-000000000017', 'label' => 'True allegiance', 'key' => 'true-allegiance', 'fieldType' => 'text', 'visibility' => 'gamemasters', 'order' => 2, 'setting' => $w]
+		);
+		$this->store->seed(
+			'characterfield',
+			['id' => 'aaaaaaaa-0000-4000-8000-000000000018', 'label' => 'Patron god', 'key' => 'patron-god', 'fieldType' => 'text', 'visibility' => 'owner']
+		);
 
 	}//end setUp()
 
@@ -192,7 +231,11 @@ class WorldCopyServiceTest extends TestCase {
 		$this->assertSame(expected: [$mana['id']], actual: $effMana['abilities']);
 		$this->assertSame(expected: [$sword['id']], actual: $master['requiredSkills'], message: 'the prerequisite points at the copy');
 		$this->assertSame(expected: [$master['id']], actual: $sword['requiredSkills'], message: 'a cycle in the old data copies too');
-		$this->assertSame(expected: [$effStr['id'], 'aaaaaaaa-0000-4000-8000-000000000006'], actual: $master['effects'], message: 'a shared effect stays as it is');
+		$this->assertSame(
+			expected: [$effStr['id'], 'aaaaaaaa-0000-4000-8000-000000000006'],
+			actual: $master['effects'],
+			message: 'a shared effect stays as it is'
+		);
 		$this->assertSame(expected: [$str['id']], actual: $master['requiredStats']);
 		$this->assertSame(expected: 12, actual: $master['requiredScore']);
 		$this->assertSame(expected: [$effStr['id']], actual: $shield['effects']);
@@ -208,12 +251,21 @@ class WorldCopyServiceTest extends TestCase {
 		$bloodline = $this->copyOf(type: 'characterfield', world: $new, field: 'label', name: 'Bloodline');
 		$this->assertSame(expected: 'bloodline', actual: $bloodline['key'], message: 'a copied field keeps its key, so values keep their meaning');
 		$this->assertSame(expected: ['human', 'elven'], actual: $bloodline['choices']);
-		$this->assertSame(expected: 'gamemasters', actual: $this->copyOf(type: 'characterfield', world: $new, field: 'label', name: 'True allegiance')['visibility']);
+		$this->assertSame(
+			expected: 'gamemasters',
+			actual: $this->copyOf(type: 'characterfield', world: $new, field: 'label', name: 'True allegiance')['visibility']
+		);
 		$this->assertCount(expectedCount: 5, haystack: $this->store->objects['characterfield'], message: 'a field for every world is shared, not copied');
 
 		// The originals are untouched.
-		$this->assertSame(expected: ['aaaaaaaa-0000-4000-8000-000000000007'], actual: $this->store->objects['skill']['aaaaaaaa-0000-4000-8000-000000000008']['requiredSkills']);
-		$this->assertSame(expected: ['aaaaaaaa-0000-4000-8000-000000000012'], actual: $this->store->objects['item']['aaaaaaaa-0000-4000-8000-000000000010']['characters']);
+		$this->assertSame(
+			expected: ['aaaaaaaa-0000-4000-8000-000000000007'],
+			actual: $this->store->objects['skill']['aaaaaaaa-0000-4000-8000-000000000008']['requiredSkills']
+		);
+		$this->assertSame(
+			expected: ['aaaaaaaa-0000-4000-8000-000000000012'],
+			actual: $this->store->objects['item']['aaaaaaaa-0000-4000-8000-000000000010']['characters']
+		);
 
 	}//end testCopiedRulesPointAtEachOther()
 
@@ -297,7 +349,10 @@ class WorldCopyServiceTest extends TestCase {
 		$counts = $this->service()->preview(worldId: self::WORLD);
 
 		$this->assertSame(expected: 'Aldmoor', actual: $counts['world']['name']);
-		$this->assertSame(expected: ['abilities' => 2, 'effects' => 2, 'skills' => 2, 'items' => 1, 'conditions' => 1, 'lorePages' => 2, 'characterFields' => 2], actual: $counts['counts']);
+		$this->assertSame(
+			expected: ['abilities' => 2, 'effects' => 2, 'skills' => 2, 'items' => 1, 'conditions' => 1, 'lorePages' => 2, 'characterFields' => 2],
+			actual: $counts['counts']
+		);
 		$this->assertSame(expected: [], actual: $this->store->saves);
 
 	}//end testThePreviewCountsWithoutWriting()

@@ -55,7 +55,9 @@ class BackfillCharacterStatusTest extends TestCase {
 			}
 		);
 
-		(new BackfillCharacterStatus(objectFetcher: $fetcher, logger: $this->createMock(originalClassName: LoggerInterface::class)))->run($this->createMock(originalClassName: IOutput::class));
+		(new BackfillCharacterStatus(objectFetcher: $fetcher, logger: $this->createMock(originalClassName: LoggerInterface::class)))->run(
+			$this->createMock(originalClassName: IOutput::class)
+		);
 
 		$this->assertCount(expectedCount: 199, haystack: $saved);
 		$this->assertArrayNotHasKey(key: 'c5', array: $saved);

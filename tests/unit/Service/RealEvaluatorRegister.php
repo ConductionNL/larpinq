@@ -96,7 +96,9 @@ trait RealEvaluatorRegister {
 		$registers->method('find')->willReturn($register);
 		$container = $this->createMock(originalClassName: ContainerInterface::class);
 		$container->method('get')->willReturnCallback(
-			static fn (string $id): object => ($id === \OCA\OpenRegister\Db\RegisterMapper::class ? $registers : throw new \RuntimeException('not in this test: ' . $id))
+			static fn (string $id): object => ($id === \OCA\OpenRegister\Db\RegisterMapper::class ? $registers : throw new \RuntimeException(
+				'not in this test: ' . $id
+			))
 		);
 
 		$user = $this->createMock(originalClassName: IUser::class);
@@ -211,7 +213,9 @@ trait RealEvaluatorRegister {
 	private function fetcherOver(object $openRegister): RegisterObjectFetcher {
 		$container = $this->createMock(originalClassName: ContainerInterface::class);
 		$container->method('get')->willReturnCallback(
-			static fn (string $id): object => ($id === 'OCA\OpenRegister\Service\ObjectService' ? $openRegister : throw new \RuntimeException('not bound: ' . $id))
+			static fn (string $id): object => ($id === 'OCA\OpenRegister\Service\ObjectService' ? $openRegister : throw new \RuntimeException(
+				'not bound: ' . $id
+			))
 		);
 		$apps = $this->createMock(originalClassName: IAppManager::class);
 		$apps->method('getInstalledApps')->willReturn(['openregister']);

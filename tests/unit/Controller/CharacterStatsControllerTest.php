@@ -82,10 +82,21 @@ class CharacterStatsControllerTest extends TestCase {
 		);
 		$logger = $this->createMock(originalClassName: LoggerInterface::class);
 		$engine = new CharacterService(objectFetcher: $fetcher, logger: $logger, effectApplier: new EffectApplier());
-		$requirements = new SkillRequirementService(characterService: $engine, objectFetcher: $fetcher, logger: $logger, checker: new SkillRequirementChecker(idList: new IdListNormaliser()), idList: new IdListNormaliser());
+		$requirements = new SkillRequirementService(
+			characterService: $engine,
+			objectFetcher: $fetcher,
+			logger: $logger,
+			checker: new SkillRequirementChecker(idList: new IdListNormaliser()),
+			idList: new IdListNormaliser()
+		);
 		$this->services['requirements'] = $requirements;
 
-		return new CharacterStatsController(appName: 'larpinq', request: $this->createMock(originalClassName: IRequest::class), objectFetcher: $fetcher, statSheet: new CharacterStatSheet(characterService: $engine, requirementService: $requirements, presenter: new CharacterStatsPresenter()));
+		return new CharacterStatsController(
+			appName: 'larpinq',
+			request: $this->createMock(originalClassName: IRequest::class),
+			objectFetcher: $fetcher,
+			statSheet: new CharacterStatSheet(characterService: $engine, requirementService: $requirements, presenter: new CharacterStatsPresenter())
+		);
 	}//end controller()
 
 	/**

@@ -57,8 +57,14 @@ class RegistrationChoicesControllerTest extends TestCase {
 	protected function setUp(): void {
 		$this->store = new InMemoryOpenRegister();
 		$this->store->seed('event', ['id' => self::EVENT, 'name' => 'Winter Court 2026']);
-		$this->store->seed('tickettype', ['id' => 'f0000000-0000-4000-8000-000000000002', 'event' => self::EVENT, 'name' => 'Player', 'role' => 'player', 'amount' => 11000, 'currency' => 'EUR', 'hidden' => false]);
-		$this->store->seed('registration', ['id' => self::ANNAS, 'event' => self::EVENT, 'playerUid' => 'anna', 'submitterUid' => 'anna', 'status' => 'accepted', 'ticketType' => 'f0000000-0000-4000-8000-000000000002']);
+		$this->store->seed(
+			'tickettype',
+			['id' => 'f0000000-0000-4000-8000-000000000002', 'event' => self::EVENT, 'name' => 'Player', 'role' => 'player', 'amount' => 11000, 'currency' => 'EUR', 'hidden' => false]
+		);
+		$this->store->seed(
+			'registration',
+			['id' => self::ANNAS, 'event' => self::EVENT, 'playerUid' => 'anna', 'submitterUid' => 'anna', 'status' => 'accepted', 'ticketType' => 'f0000000-0000-4000-8000-000000000002']
+		);
 	}//end setUp()
 
 	/**
@@ -79,10 +85,23 @@ class RegistrationChoicesControllerTest extends TestCase {
 		$apps->method('getInstalledApps')->willReturn(['openregister']);
 		$config = $this->createMock(originalClassName: IAppConfig::class);
 		$config->method('getValueString')->willReturnCallback(
-			static fn (string $app, string $key, string $default = ''): string => (str_ends_with($key, '_register') === true ? '3' : (str_ends_with($key, '_schema') === true ? substr($key, 0, -strlen('_schema')) : $default))
+			static fn (string $app, string $key, string $default = ''): string => (str_ends_with(
+				$key,
+				'_register'
+			) === true ? '3' : (str_ends_with($key, '_schema') === true ? substr(
+				$key,
+				0,
+				-strlen('_schema')
+			) : $default))
 		);
 		$fetcher = new RegisterObjectFetcher(container: $container, appManager: $apps, config: $config, logger: new NullLogger());
-		$service = new RegistrationService(fetcher: $fetcher, locking: $this->createMock(originalClassName: ILockingProvider::class), logger: new NullLogger(), lockAttempts: 1, lockWaitMicros: 0);
+		$service = new RegistrationService(
+			fetcher: $fetcher,
+			locking: $this->createMock(originalClassName: ILockingProvider::class),
+			logger: new NullLogger(),
+			lockAttempts: 1,
+			lockWaitMicros: 0
+		);
 
 		$session = $this->createMock(originalClassName: IUserSession::class);
 		$user = null;
@@ -93,10 +112,17 @@ class RegistrationChoicesControllerTest extends TestCase {
 
 		$session->method('getUser')->willReturn($user);
 		$groups = $this->createMock(originalClassName: IGroupManager::class);
-		$groups->method('isInGroup')->willReturnCallback(static fn (string $who, string $group): bool => $gameMaster === true && $group === Application::GM_GROUP);
+		$groups->method('isInGroup')->willReturnCallback(
+			static fn (string $who, string $group): bool => $gameMaster === true && $group === Application::GM_GROUP
+		);
 		$groups->method('isAdmin')->willReturn(false);
 
-		return new RegistrationChoicesController(request: $this->createMock(originalClassName: IRequest::class), choices: new TicketChoiceService(fetcher: $fetcher, registrations: $service, logger: new NullLogger()), fetcher: $fetcher, callerAccess: new CallerAccess(userSession: $session, groupManager: $groups));
+		return new RegistrationChoicesController(
+			request: $this->createMock(originalClassName: IRequest::class),
+			choices: new TicketChoiceService(fetcher: $fetcher, registrations: $service, logger: new NullLogger()),
+			fetcher: $fetcher,
+			callerAccess: new CallerAccess(userSession: $session, groupManager: $groups)
+		);
 	}//end controllerAs()
 
 	/**
@@ -113,7 +139,10 @@ class RegistrationChoicesControllerTest extends TestCase {
 		$this->assertSame(expected: 200, actual: $this->controllerAs(uid: 'gerrit', gameMaster: true)->offer(id: self::ANNAS, code: '')->getStatus());
 		$this->assertSame(expected: 403, actual: $this->controllerAs(uid: 'pieter')->offer(id: self::ANNAS, code: '')->getStatus());
 		$this->assertSame(expected: 401, actual: $this->controllerAs(uid: null)->offer(id: self::ANNAS, code: '')->getStatus());
-		$this->assertSame(expected: 404, actual: $this->controllerAs(uid: 'anna')->offer(id: 'e0000000-0000-4000-8000-000000000099', code: '')->getStatus());
+		$this->assertSame(
+			expected: 404,
+			actual: $this->controllerAs(uid: 'anna')->offer(id: 'e0000000-0000-4000-8000-000000000099', code: '')->getStatus()
+		);
 	}//end testTheOfferIsForThePlayerAndGameMasters()
 
 	/**

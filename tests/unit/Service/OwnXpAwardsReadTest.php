@@ -77,14 +77,32 @@ class OwnXpAwardsReadTest extends TestCase {
 		$this->openRegister->seed('character', 'anna', ['id' => '00000000-0000-4000-8000-00000000a001', 'name' => 'Brynja', 'ownerUid' => 'anna']);
 		$this->openRegister->seed('character', 'bert', ['id' => '00000000-0000-4000-8000-00000000b002', 'name' => 'Oswin', 'ownerUid' => 'bert']);
 		// The game master gerrit granted both awards, so he owns them.
-		$this->openRegister->seed('xpaward', 'gerrit', ['id' => 'aw-1', 'character' => '00000000-0000-4000-8000-00000000a001', 'event' => 'ev-1', 'amount' => 20, 'reason' => 'attendance']);
-		$this->openRegister->seed('xpaward', 'gerrit', ['id' => 'aw-2', 'character' => '00000000-0000-4000-8000-00000000a001', 'event' => 'ev-2', 'amount' => 5, 'reason' => 'plot']);
-		$this->openRegister->seed('xpaward', 'gerrit', ['id' => 'aw-3', 'character' => '00000000-0000-4000-8000-00000000b002', 'event' => 'ev-1', 'amount' => 30, 'reason' => 'attendance']);
+		$this->openRegister->seed(
+			'xpaward',
+			'gerrit',
+			['id' => 'aw-1', 'character' => '00000000-0000-4000-8000-00000000a001', 'event' => 'ev-1', 'amount' => 20, 'reason' => 'attendance']
+		);
+		$this->openRegister->seed(
+			'xpaward',
+			'gerrit',
+			['id' => 'aw-2', 'character' => '00000000-0000-4000-8000-00000000a001', 'event' => 'ev-2', 'amount' => 5, 'reason' => 'plot']
+		);
+		$this->openRegister->seed(
+			'xpaward',
+			'gerrit',
+			['id' => 'aw-3', 'character' => '00000000-0000-4000-8000-00000000b002', 'event' => 'ev-1', 'amount' => 30, 'reason' => 'attendance']
+		);
 
 		$fetcher = $this->fetcherOver(openRegister: $this->openRegister);
 		$session = $this->sessionOf(uid: $uid);
 
-		return new CharacterService(objectFetcher: $fetcher, logger: new NullLogger(), effectApplier: new EffectApplier(), connectionGuard: new CharacterConnectionGuard(objectFetcher: $fetcher), userSession: $session);
+		return new CharacterService(
+			objectFetcher: $fetcher,
+			logger: new NullLogger(),
+			effectApplier: new EffectApplier(),
+			connectionGuard: new CharacterConnectionGuard(objectFetcher: $fetcher),
+			userSession: $session
+		);
 	}//end engine()
 
 	/**
@@ -97,7 +115,9 @@ class OwnXpAwardsReadTest extends TestCase {
 		$this->requireOpenRegister();
 		$this->engine(uid: 'anna');
 		$this->assertFalse(condition: $this->openRegister->readable('xpaward', $this->openRegister->objects['xpaward']['aw-1'], true));
-		$this->assertTrue(condition: $this->openRegister->readable('character', $this->openRegister->objects['character']['00000000-0000-4000-8000-00000000a001'], true));
+		$this->assertTrue(
+			condition: $this->openRegister->readable('character', $this->openRegister->objects['character']['00000000-0000-4000-8000-00000000a001'], true)
+		);
 	}//end testTheEvaluatorHidesTheGameMastersAwardFromThePlayer()
 
 	/**
@@ -112,7 +132,10 @@ class OwnXpAwardsReadTest extends TestCase {
 		$stats = $engine->calculateCharacter(['id' => '00000000-0000-4000-8000-00000000a001', 'name' => 'Brynja', 'ownerUid' => 'anna'])['stats'];
 
 		$this->assertSame(expected: 25, actual: $stats['ab-xp']['value']);
-		$this->assertSame(expected: ['aw-1', 'aw-2'], actual: array_map(static fn (array $entry): string => $entry['award']['id'], $stats['ab-xp']['audit']));
+		$this->assertSame(
+			expected: ['aw-1', 'aw-2'],
+			actual: array_map(static fn (array $entry): string => $entry['award']['id'], $stats['ab-xp']['audit'])
+		);
 	}//end testThePlayerCountsTheAwardsOnHerOwnCharacter()
 
 	/**
@@ -129,6 +152,9 @@ class OwnXpAwardsReadTest extends TestCase {
 		$stats = $engine->calculateCharacter(['id' => '00000000-0000-4000-8000-00000000b002', 'name' => 'Oswin', 'ownerUid' => 'anna'])['stats'];
 
 		$this->assertSame(expected: 0, actual: $stats['ab-xp']['value']);
-		$this->assertSame(expected: [], actual: array_values(array_filter($this->openRegister->reads, static fn (array $read): bool => $read['rbac'] === false)));
+		$this->assertSame(
+			expected: [],
+			actual: array_values(array_filter($this->openRegister->reads, static fn (array $read): bool => $read['rbac'] === false))
+		);
 	}//end testAnotherPlayersAwardsStayHidden()
 }//end class

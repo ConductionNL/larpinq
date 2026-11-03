@@ -105,6 +105,12 @@ class RegistrationPaymentsControllerTest extends TestCase {
 		$l10n = $this->createMock(originalClassName: IL10N::class);
 		$l10n->method('t')->willReturnCallback(static fn (string $text): string => $text);
 
-		return new RegistrationPaymentsController(appName: 'larpinq', request: $this->createMock(originalClassName: IRequest::class), payments: $this->world->payments(), userSession: $this->world->session(), l10n: $l10n);
+		return new RegistrationPaymentsController(
+			appName: 'larpinq',
+			request: $this->createMock(originalClassName: IRequest::class),
+			payments: $this->world->payments(),
+			userSession: $this->world->session(),
+			l10n: $l10n
+		);
 	}//end controller()
 }//end class

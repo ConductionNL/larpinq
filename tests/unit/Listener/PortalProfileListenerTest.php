@@ -213,7 +213,9 @@ class PortalProfileListenerTest extends TestCase {
 	 * @return void
 	 */
 	public function testACharacterWithAPlayerOrWithoutOwnerIsLeftAlone(): void {
-		$chosen = new ObjectCreatingEvent(new PortalObjectEntity(self::CHARACTER_SCHEMA, ['name' => 'Wren', 'ownerRef' => self::PLAYER_UUID, 'ocName' => 'another-player']));
+		$chosen = new ObjectCreatingEvent(
+			new PortalObjectEntity(self::CHARACTER_SCHEMA, ['name' => 'Wren', 'ownerRef' => self::PLAYER_UUID, 'ocName' => 'another-player'])
+		);
 		$plain = new ObjectCreatingEvent(new PortalObjectEntity(self::CHARACTER_SCHEMA, ['name' => 'Ash']));
 
 		$this->listener()->handle($chosen);
@@ -230,7 +232,11 @@ class PortalProfileListenerTest extends TestCase {
 	 * @return void
 	 */
 	public function testACreatedProfileAsksPortaliqForTheClaim(): void {
-		$this->listener()->handle(new ObjectCreatedEvent(new PortalObjectEntity(self::PLAYER_SCHEMA, ['name' => 'Lotte Bakker', 'portalSubjectRef' => self::SUBJECT], self::PLAYER_UUID)));
+		$this->listener()->handle(
+			new ObjectCreatedEvent(
+				new PortalObjectEntity(self::PLAYER_SCHEMA, ['name' => 'Lotte Bakker', 'portalSubjectRef' => self::SUBJECT], self::PLAYER_UUID)
+			)
+		);
 
 		$this->assertCount(expectedCount: 1, haystack: $this->dispatched);
 		$claim = $this->dispatched[0];
@@ -249,7 +255,9 @@ class PortalProfileListenerTest extends TestCase {
 	 */
 	public function testARefusedClaimIsLogged(): void {
 		$this->answer = 'refused';
-		$this->listener()->handle(new ObjectCreatedEvent(new PortalObjectEntity(self::PLAYER_SCHEMA, ['portalSubjectRef' => self::SUBJECT], self::PLAYER_UUID)));
+		$this->listener()->handle(
+			new ObjectCreatedEvent(new PortalObjectEntity(self::PLAYER_SCHEMA, ['portalSubjectRef' => self::SUBJECT], self::PLAYER_UUID))
+		);
 
 		$this->assertCount(expectedCount: 1, haystack: $this->warnings);
 	}//end testARefusedClaimIsLogged()
@@ -261,7 +269,9 @@ class PortalProfileListenerTest extends TestCase {
 	 */
 	public function testOtherCreatedObjectsSendNoClaim(): void {
 		$this->listener()->handle(new ObjectCreatedEvent(new PortalObjectEntity(self::PLAYER_SCHEMA, ['name' => 'Joris'], self::PLAYER_UUID)));
-		$this->listener()->handle(new ObjectCreatedEvent(new PortalObjectEntity(self::CHARACTER_SCHEMA, ['portalSubjectRef' => self::SUBJECT], self::PLAYER_UUID)));
+		$this->listener()->handle(
+			new ObjectCreatedEvent(new PortalObjectEntity(self::CHARACTER_SCHEMA, ['portalSubjectRef' => self::SUBJECT], self::PLAYER_UUID))
+		);
 
 		$this->assertSame(expected: [], actual: $this->dispatched);
 	}//end testOtherCreatedObjectsSendNoClaim()
@@ -274,8 +284,12 @@ class PortalProfileListenerTest extends TestCase {
 	 * @return void
 	 */
 	public function testThePortalPayloadsValidateAgainstTheRealSchemas(): void {
-		$profile = new ObjectCreatingEvent(new PortalObjectEntity(self::PLAYER_SCHEMA, ['name' => 'Lotte Bakker', 'description' => 'Plays healers', 'portalSubjectRef' => self::SUBJECT]));
-		$character = new ObjectCreatingEvent(new PortalObjectEntity(self::CHARACTER_SCHEMA, ['name' => 'Wren', 'background' => 'A ferry hand', 'ownerRef' => self::PLAYER_UUID]));
+		$profile = new ObjectCreatingEvent(
+			new PortalObjectEntity(self::PLAYER_SCHEMA, ['name' => 'Lotte Bakker', 'description' => 'Plays healers', 'portalSubjectRef' => self::SUBJECT])
+		);
+		$character = new ObjectCreatingEvent(
+			new PortalObjectEntity(self::CHARACTER_SCHEMA, ['name' => 'Wren', 'background' => 'A ferry hand', 'ownerRef' => self::PLAYER_UUID])
+		);
 		$this->listener()->handle($profile);
 		$this->listener()->handle($character);
 

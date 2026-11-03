@@ -103,8 +103,14 @@ class PlayerReviewListenerTest extends TestCase {
 	 * @return void
 	 */
 	public function testAnotherUpdateKeepsTheStoredStamp(): void {
-		$old = new ReviewObjectEntity(self::PLAYER_SCHEMA, ['awaitingReview' => false, 'reviewedBy' => 'joris', 'reviewedAt' => '2026-09-30T10:00:00+00:00']);
-		$new = new ReviewObjectEntity(self::PLAYER_SCHEMA, ['awaitingReview' => false, 'description' => 'Plays healers', 'reviewedBy' => 'anna', 'reviewedAt' => '2020-01-01T00:00:00+00:00']);
+		$old = new ReviewObjectEntity(
+			self::PLAYER_SCHEMA,
+			['awaitingReview' => false, 'reviewedBy' => 'joris', 'reviewedAt' => '2026-09-30T10:00:00+00:00']
+		);
+		$new = new ReviewObjectEntity(
+			self::PLAYER_SCHEMA,
+			['awaitingReview' => false, 'description' => 'Plays healers', 'reviewedBy' => 'anna', 'reviewedAt' => '2020-01-01T00:00:00+00:00']
+		);
 		$event = new ObjectUpdatingEvent($new, $old);
 
 		$this->listener()->handle($event);

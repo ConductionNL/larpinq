@@ -57,8 +57,14 @@ class PaymentEdgeCasesTest extends TestCase {
 	 * @return void
 	 */
 	public function testACreatedAcceptedRegistrationAsksForPayment(): void {
-		$this->world->store->seed('tickettype', ['id' => PaymentWorld::TICKET, 'event' => PaymentWorld::EVENT, 'name' => 'Player', 'role' => 'player', 'amount' => 8500, 'currency' => 'EUR', 'hidden' => false]);
-		$created = $this->world->fetcher()->saveObjectWithAppAuthority('registration', ['event' => PaymentWorld::EVENT, 'player' => PaymentWorld::ANNA, 'playerUid' => 'anna', 'ticketType' => PaymentWorld::TICKET]);
+		$this->world->store->seed(
+			'tickettype',
+			['id' => PaymentWorld::TICKET, 'event' => PaymentWorld::EVENT, 'name' => 'Player', 'role' => 'player', 'amount' => 8500, 'currency' => 'EUR', 'hidden' => false]
+		);
+		$created = $this->world->fetcher()->saveObjectWithAppAuthority(
+			'registration',
+			['event' => PaymentWorld::EVENT, 'player' => PaymentWorld::ANNA, 'playerUid' => 'anna', 'ticketType' => PaymentWorld::TICKET]
+		);
 
 		$this->assertSame(expected: 'accepted', actual: $created['status']);
 		$this->assertSame(expected: 'open', actual: $this->world->registration(id: (string)$created['id'])['paymentState']);
@@ -72,8 +78,16 @@ class PaymentEdgeCasesTest extends TestCase {
 	 */
 	public function testTheDailyPassOnIncompleteRegistrations(): void {
 		$this->world->seedRegistration(id: self::REG, player: PaymentWorld::ANNA, status: 'accepted', more: ['paymentState' => 'open']);
-		$this->world->seedRegistration(id: 'e0000000-0000-4000-8000-000000000002', player: PaymentWorld::SANNE, status: 'accepted', more: ['paymentState' => 'open', 'payBy' => 'not a date']);
-		$this->assertSame(expected: ['paid' => 0, 'reminded' => 0, 'expired' => 0, 'none' => 2], actual: $this->world->followUp()->daily(now: $this->world->now));
+		$this->world->seedRegistration(
+			id: 'e0000000-0000-4000-8000-000000000002',
+			player: PaymentWorld::SANNE,
+			status: 'accepted',
+			more: ['paymentState' => 'open', 'payBy' => 'not a date']
+		);
+		$this->assertSame(
+			expected: ['paid' => 0, 'reminded' => 0, 'expired' => 0, 'none' => 2],
+			actual: $this->world->followUp()->daily(now: $this->world->now)
+		);
 
 		$this->world->update(id: 'e0000000-0000-4000-8000-000000000003', data: []);
 		$this->world->leaf->requests['f1'] = ['id' => 'f1', 'subject' => ['register' => '3', 'schema' => 'registration', 'id' => self::REG], 'state' => 'captured', 'amount' => 120, 'currency' => 'EUR', 'requestType' => 'other', 'description' => '', 'paymentLink' => 'https://pay.example.org/r/f1'];
@@ -85,7 +99,9 @@ class PaymentEdgeCasesTest extends TestCase {
 		$fetcher = $this->createMock(originalClassName: RegisterObjectFetcher::class);
 		$fetcher->method('getObjectsWithAppAuthority')->willReturn([['id' => self::REG, 'paymentState' => 'open', 'payBy' => '2026-10-16T00:00:00+00:00']]);
 		$fetcher->method('saveObjectWithAppAuthority')->willThrowException(new RuntimeException('database gone'));
-		$counts = (new PaymentFollowUp(fetcher: $fetcher, leaf: $this->world->paymentLeaf(), logger: new NullLogger()))->daily(now: new DateTimeImmutable(datetime: '2026-10-15T10:00:00+00:00'));
+		$counts = (new PaymentFollowUp(fetcher: $fetcher, leaf: $this->world->paymentLeaf(), logger: new NullLogger()))->daily(
+			now: new DateTimeImmutable(datetime: '2026-10-15T10:00:00+00:00')
+		);
 		$this->assertSame(expected: 0, actual: array_sum($counts), message: 'a failed write is logged and the run goes on');
 	}//end testTheDailyPassOnIncompleteRegistrations()
 
@@ -125,15 +141,28 @@ class PaymentEdgeCasesTest extends TestCase {
 	 * @return void
 	 */
 	public function testTheBuilderFallsBack(): void {
-		$builder = new PaymentRequestBuilder(fetcher: $this->world->fetcher(), users: $this->world->users(), time: $this->world->clock(), logger: new NullLogger());
+		$builder = new PaymentRequestBuilder(
+			fetcher: $this->world->fetcher(),
+			users: $this->world->users(),
+			time: $this->world->clock(),
+			logger: new NullLogger()
+		);
 
 		$this->assertSame(expected: '2026-10-29T10:00:00+00:00', actual: $builder->payBy(registration: [], event: []));
 		$this->assertSame(expected: 'WC26-0042', actual: $builder->reference(registration: ['paymentReference' => 'WC26-0042'], event: []));
-		$this->assertStringStartsWith(prefix: 'WINT-', string: $builder->reference(registration: [], event: ['id' => PaymentWorld::EVENT, 'name' => 'Winter Court']));
+		$this->assertStringStartsWith(
+			prefix: 'WINT-',
+			string: $builder->reference(registration: [], event: ['id' => PaymentWorld::EVENT, 'name' => 'Winter Court'])
+		);
 		$this->assertStringStartsWith(prefix: 'LARP-', string: $builder->reference(registration: [], event: ['id' => PaymentWorld::EVENT, 'name' => '!']));
 		$this->assertSame(expected: $this->world->now, actual: $builder->now());
 
-		$payload = $builder->payload(registration: ['lines' => [['amount' => 1000]]], event: ['name' => 'Moot'], reference: 'M-1', payBy: '2026-11-01T00:00:00+00:00');
+		$payload = $builder->payload(
+			registration: ['lines' => [['amount' => 1000]]],
+			event: ['name' => 'Moot'],
+			reference: 'M-1',
+			payBy: '2026-11-01T00:00:00+00:00'
+		);
 		$this->assertSame(expected: 'EUR', actual: $payload['currency']);
 		$this->assertSame(expected: ['name' => ''], actual: $payload['debtor']);
 	}//end testTheBuilderFallsBack()
@@ -157,7 +186,12 @@ class PaymentEdgeCasesTest extends TestCase {
 			}
 		}
 
-		$this->world->seedRegistration(id: 'e0000000-0000-4000-8000-000000000004', player: PaymentWorld::PIETER, status: 'accepted', more: ['event' => 'a0000000-0000-4000-8000-00000000ffff']);
+		$this->world->seedRegistration(
+			id: 'e0000000-0000-4000-8000-000000000004',
+			player: PaymentWorld::PIETER,
+			status: 'accepted',
+			more: ['event' => 'a0000000-0000-4000-8000-00000000ffff']
+		);
 		$raised = $this->world->payments()->request(registrationId: 'e0000000-0000-4000-8000-000000000004', actingUid: 'gm');
 		$this->assertSame(expected: 'open', actual: $raised['paymentState'], message: 'the request goes out with the registration\'s own date or 14 days');
 	}//end testAGameMastersRequestIsRefusedWhenItCannotBePaid()

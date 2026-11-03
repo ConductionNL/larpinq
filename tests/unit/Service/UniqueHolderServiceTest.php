@@ -96,7 +96,10 @@ class UniqueHolderServiceTest extends TestCase {
 			objects: fn (): array => [['id' => self::QUEEN, 'name' => 'Queen Isolde', 'items' => [self::CROWN]]]
 		);
 
-		self::assertSame(expected: [], actual: $service->otherHolders(query: new HolderQuery(kind: 'item', id: self::CROWN, exceptCharacter: self::QUEEN), objectSide: [self::QUEEN]));
+		self::assertSame(
+			expected: [],
+			actual: $service->otherHolders(query: new HolderQuery(kind: 'item', id: self::CROWN, exceptCharacter: self::QUEEN), objectSide: [self::QUEEN])
+		);
 	}//end testTheWrittenCharacterIsNotCounted()
 
 	/**
@@ -112,7 +115,10 @@ class UniqueHolderServiceTest extends TestCase {
 			calls: $calls
 		);
 
-		$holders = $service->otherHolders(query: new HolderQuery(kind: 'condition', id: self::CROWN, exceptCharacter: self::BERTRAM), objectSide: [self::QUEEN]);
+		$holders = $service->otherHolders(
+			query: new HolderQuery(kind: 'condition', id: self::CROWN, exceptCharacter: self::BERTRAM),
+			objectSide: [self::QUEEN]
+		);
 
 		self::assertSame(expected: [['id' => self::QUEEN, 'name' => 'Mirela']], actual: $holders);
 		self::assertSame(expected: ['conditions' => self::CROWN], actual: $calls[0]['filters']);

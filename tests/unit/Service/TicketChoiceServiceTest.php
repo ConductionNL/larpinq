@@ -92,10 +92,22 @@ class TicketChoiceServiceTest extends TestCase {
 		$this->ticket(id: self::CREW_FRIENDS, name: 'Crew friends', role: 'crew', amount: 3000, extra: ['hidden' => true]);
 		$this->ticket(id: self::ELSEWHERE_TICKET, name: 'Spring player', role: 'player', amount: 2000, event: self::OTHER_EVENT);
 		$this->ticket(id: self::DOLLAR_TICKET, name: 'Visitor', role: 'other', amount: 1000, extra: ['currency' => 'USD']);
-		$this->store->seed('registrationoption', ['id' => self::MEAT, 'event' => self::EVENT, 'name' => 'Full catering, meat', 'category' => 'meal', 'amount' => 3500, 'currency' => 'EUR']);
-		$this->store->seed('registrationoption', ['id' => self::VEGAN, 'event' => self::EVENT, 'name' => 'Full catering, vegan', 'category' => 'meal', 'amount' => 3500, 'currency' => 'EUR', 'placeLimit' => 12]);
-		$this->store->seed('accesscode', ['id' => self::LANTERN, 'event' => self::EVENT, 'code' => 'LANTERN', 'unlocks' => [self::CREW_FRIENDS], 'maxUses' => 5]);
-		$this->store->seed('accesscode', ['id' => self::OLD_CODE, 'event' => self::EVENT, 'code' => 'BYGONE', 'unlocks' => [self::CREW_FRIENDS], 'validUntil' => $this->moment(days: -1)]);
+		$this->store->seed(
+			'registrationoption',
+			['id' => self::MEAT, 'event' => self::EVENT, 'name' => 'Full catering, meat', 'category' => 'meal', 'amount' => 3500, 'currency' => 'EUR']
+		);
+		$this->store->seed(
+			'registrationoption',
+			['id' => self::VEGAN, 'event' => self::EVENT, 'name' => 'Full catering, vegan', 'category' => 'meal', 'amount' => 3500, 'currency' => 'EUR', 'placeLimit' => 12]
+		);
+		$this->store->seed(
+			'accesscode',
+			['id' => self::LANTERN, 'event' => self::EVENT, 'code' => 'LANTERN', 'unlocks' => [self::CREW_FRIENDS], 'maxUses' => 5]
+		);
+		$this->store->seed(
+			'accesscode',
+			['id' => self::OLD_CODE, 'event' => self::EVENT, 'code' => 'BYGONE', 'unlocks' => [self::CREW_FRIENDS], 'validUntil' => $this->moment(days: -1)]
+		);
 
 		$this->store->listeners = [$this->listener()];
 	}//end setUp()
@@ -113,7 +125,13 @@ class TicketChoiceServiceTest extends TestCase {
 	 * @return void
 	 */
 	private function ticket(string $id, string $name, string $role, int $amount, array $extra = [], string $event = self::EVENT): void {
-		$this->store->seed('tickettype', array_merge(['id' => $id, 'event' => $event, 'name' => $name, 'role' => $role, 'amount' => $amount, 'currency' => 'EUR', 'hidden' => false], $extra));
+		$this->store->seed(
+			'tickettype',
+			array_merge(
+				['id' => $id, 'event' => $event, 'name' => $name, 'role' => $role, 'amount' => $amount, 'currency' => 'EUR', 'hidden' => false],
+				$extra
+			)
+		);
 	}//end ticket()
 
 	/**
@@ -143,7 +161,14 @@ class TicketChoiceServiceTest extends TestCase {
 
 		$config = $this->createMock(originalClassName: IAppConfig::class);
 		$config->method('getValueString')->willReturnCallback(
-			static fn (string $app, string $key, string $default = ''): string => (str_ends_with($key, '_register') === true ? '3' : (str_ends_with($key, '_schema') === true ? substr($key, 0, -strlen('_schema')) : $default))
+			static fn (string $app, string $key, string $default = ''): string => (str_ends_with(
+				$key,
+				'_register'
+			) === true ? '3' : (str_ends_with($key, '_schema') === true ? substr(
+				$key,
+				0,
+				-strlen('_schema')
+			) : $default))
 		);
 
 		return new RegisterObjectFetcher(container: $container, appManager: $apps, config: $config, logger: new NullLogger());
@@ -170,7 +195,13 @@ class TicketChoiceServiceTest extends TestCase {
 		$l10n = $this->createMock(originalClassName: IL10N::class);
 		$l10n->method('t')->willReturnCallback(static fn (string $text): string => $text);
 		$locking = $this->createMock(originalClassName: ILockingProvider::class);
-		$this->service = new RegistrationService(fetcher: $this->fetcher(), locking: $locking, logger: new NullLogger(), lockAttempts: 1, lockWaitMicros: 0);
+		$this->service = new RegistrationService(
+			fetcher: $this->fetcher(),
+			locking: $locking,
+			logger: new NullLogger(),
+			lockAttempts: 1,
+			lockWaitMicros: 0
+		);
 
 		return new RegistrationListener(
 			config: $config,
@@ -194,7 +225,10 @@ class TicketChoiceServiceTest extends TestCase {
 	 * @return array<string, mixed> The stored registration.
 	 */
 	private function register(string $player, array $choices = []): array {
-		return $this->fetcher()->saveObjectWithAppAuthority('registration', array_merge(['event' => self::EVENT, 'player' => $player, 'submittedAt' => '2026-10-01T10:00:00+00:00'], $choices));
+		return $this->fetcher()->saveObjectWithAppAuthority(
+			'registration',
+			array_merge(['event' => self::EVENT, 'player' => $player, 'submittedAt' => '2026-10-01T10:00:00+00:00'], $choices)
+		);
 	}//end register()
 
 	/**
@@ -281,10 +315,16 @@ class TicketChoiceServiceTest extends TestCase {
 	public function testTooLateForTheEarlyBird(): void {
 		$this->store->objects['tickettype'][self::EARLY]['saleUntil'] = $this->moment(days: -1);
 
-		$this->assertRefused(save: fn () => $this->register(player: self::ANNA, choices: ['ticketType' => self::EARLY]), reason: 'This ticket type is not on sale now.');
+		$this->assertRefused(
+			save: fn () => $this->register(player: self::ANNA, choices: ['ticketType' => self::EARLY]),
+			reason: 'This ticket type is not on sale now.'
+		);
 
 		$saved = $this->register(player: self::ANNA);
-		$offer = (new TicketChoiceService(fetcher: $this->fetcher(), registrations: $this->service, logger: new NullLogger()))->offer(registration: $this->store->objects['registration'][$saved['id']], code: '');
+		$offer = (new TicketChoiceService(fetcher: $this->fetcher(), registrations: $this->service, logger: new NullLogger()))->offer(
+			registration: $this->store->objects['registration'][$saved['id']],
+			code: ''
+		);
 		$offered = array_column($offer['ticketTypes'], 'name');
 		$this->assertNotContains(needle: 'Player early bird', haystack: $offered);
 		$this->assertContains(needle: 'Player', haystack: $offered);
@@ -298,9 +338,18 @@ class TicketChoiceServiceTest extends TestCase {
 	 * @return void
 	 */
 	public function testACrewFriendUsesTheCode(): void {
-		$this->assertRefused(save: fn () => $this->register(player: self::SANNE, choices: ['ticketType' => self::CREW_FRIENDS]), reason: 'This ticket type needs a code that unlocks it.');
-		$this->assertRefused(save: fn () => $this->register(player: self::SANNE, choices: ['ticketType' => self::CREW_FRIENDS, 'code' => 'BYGONE']), reason: 'This code has expired.');
-		$this->assertRefused(save: fn () => $this->register(player: self::SANNE, choices: ['code' => 'NOPE']), reason: 'This code is not known for this event.');
+		$this->assertRefused(
+			save: fn () => $this->register(player: self::SANNE, choices: ['ticketType' => self::CREW_FRIENDS]),
+			reason: 'This ticket type needs a code that unlocks it.'
+		);
+		$this->assertRefused(
+			save: fn () => $this->register(player: self::SANNE, choices: ['ticketType' => self::CREW_FRIENDS, 'code' => 'BYGONE']),
+			reason: 'This code has expired.'
+		);
+		$this->assertRefused(
+			save: fn () => $this->register(player: self::SANNE, choices: ['code' => 'NOPE']),
+			reason: 'This code is not known for this event.'
+		);
 
 		$saved = $this->register(player: self::SANNE, choices: ['ticketType' => self::CREW_FRIENDS, 'code' => 'lantern']);
 
@@ -308,7 +357,10 @@ class TicketChoiceServiceTest extends TestCase {
 		$this->assertSame(expected: self::LANTERN, actual: $row['accessCode']);
 		$this->assertSame(expected: 3000, actual: $row['lines'][0]['amount']);
 
-		$offer = (new TicketChoiceService(fetcher: $this->fetcher(), registrations: $this->service, logger: new NullLogger()))->offer(registration: $row, code: 'LANTERN');
+		$offer = (new TicketChoiceService(fetcher: $this->fetcher(), registrations: $this->service, logger: new NullLogger()))->offer(
+			registration: $row,
+			code: 'LANTERN'
+		);
 		$this->assertSame(expected: 'valid', actual: $offer['code']);
 		$this->assertContains(needle: 'Crew friends', haystack: array_column($offer['ticketTypes'], 'name'));
 	}//end testACrewFriendUsesTheCode()
@@ -320,10 +372,16 @@ class TicketChoiceServiceTest extends TestCase {
 	 */
 	public function testACodeIsUsedUp(): void {
 		for ($use = 1; $use <= 5; $use++) {
-			$this->store->seed('registration', ['id' => sprintf('e0000000-0000-4000-8000-%012d', $use), 'event' => self::EVENT, 'status' => 'accepted', 'accessCode' => self::LANTERN]);
+			$this->store->seed(
+				'registration',
+				['id' => sprintf('e0000000-0000-4000-8000-%012d', $use), 'event' => self::EVENT, 'status' => 'accepted', 'accessCode' => self::LANTERN]
+			);
 		}
 
-		$this->assertRefused(save: fn () => $this->register(player: self::SANNE, choices: ['ticketType' => self::CREW_FRIENDS, 'code' => 'LANTERN']), reason: 'This code has been used up.');
+		$this->assertRefused(
+			save: fn () => $this->register(player: self::SANNE, choices: ['ticketType' => self::CREW_FRIENDS, 'code' => 'LANTERN']),
+			reason: 'This code has been used up.'
+		);
 	}//end testACodeIsUsedUp()
 
 	/**
@@ -332,9 +390,18 @@ class TicketChoiceServiceTest extends TestCase {
 	 * @return void
 	 */
 	public function testChoicesFromAnotherEventOrInTwoCurrenciesAreRefused(): void {
-		$this->assertRefused(save: fn () => $this->register(player: self::ANNA, choices: ['ticketType' => self::ELSEWHERE_TICKET]), reason: 'This ticket type is not offered for this event.');
-		$this->assertRefused(save: fn () => $this->register(player: self::ANNA, choices: ['options' => ['f1000000-0000-4000-8000-000000000099']]), reason: 'This option is not offered for this event.');
-		$this->assertRefused(save: fn () => $this->register(player: self::ANNA, choices: ['ticketType' => self::DOLLAR_TICKET, 'options' => [self::MEAT]]), reason: 'All choices of a registration must be in one currency.');
+		$this->assertRefused(
+			save: fn () => $this->register(player: self::ANNA, choices: ['ticketType' => self::ELSEWHERE_TICKET]),
+			reason: 'This ticket type is not offered for this event.'
+		);
+		$this->assertRefused(
+			save: fn () => $this->register(player: self::ANNA, choices: ['options' => ['f1000000-0000-4000-8000-000000000099']]),
+			reason: 'This option is not offered for this event.'
+		);
+		$this->assertRefused(
+			save: fn () => $this->register(player: self::ANNA, choices: ['ticketType' => self::DOLLAR_TICKET, 'options' => [self::MEAT]]),
+			reason: 'All choices of a registration must be in one currency.'
+		);
 	}//end testChoicesFromAnotherEventOrInTwoCurrenciesAreRefused()
 
 	/**
@@ -344,7 +411,10 @@ class TicketChoiceServiceTest extends TestCase {
 	 */
 	public function testCrewIsFull(): void {
 		for ($place = 1; $place <= 20; $place++) {
-			$this->store->seed('registration', ['id' => sprintf('e1000000-0000-4000-8000-%012d', $place), 'event' => self::EVENT, 'status' => 'accepted', 'ticketType' => self::CREW]);
+			$this->store->seed(
+				'registration',
+				['id' => sprintf('e1000000-0000-4000-8000-%012d', $place), 'event' => self::EVENT, 'status' => 'accepted', 'ticketType' => self::CREW]
+			);
 		}
 
 		$joris = $this->register(player: self::JORIS, choices: ['ticketType' => self::CREW]);
@@ -361,7 +431,10 @@ class TicketChoiceServiceTest extends TestCase {
 	 */
 	public function testAFullOptionIsRefused(): void {
 		for ($place = 1; $place <= 12; $place++) {
-			$this->store->seed('registration', ['id' => sprintf('e2000000-0000-4000-8000-%012d', $place), 'event' => self::EVENT, 'status' => 'accepted', 'options' => [self::VEGAN]]);
+			$this->store->seed(
+				'registration',
+				['id' => sprintf('e2000000-0000-4000-8000-%012d', $place), 'event' => self::EVENT, 'status' => 'accepted', 'options' => [self::VEGAN]]
+			);
 		}
 
 		$this->assertRefused(save: fn () => $this->register(player: self::ANNA, choices: ['options' => [self::VEGAN]]), reason: 'This option is full.');
@@ -377,10 +450,18 @@ class TicketChoiceServiceTest extends TestCase {
 	public function testTheKitchenPlans(): void {
 		$rows = [['accepted', [self::VEGAN]], ['accepted', [self::VEGAN]], ['accepted', [self::MEAT]], ['waitlisted', [self::VEGAN]]];
 		foreach ($rows as $index => [$status, $options]) {
-			$this->store->seed('registration', ['id' => sprintf('e3000000-0000-4000-8000-%012d', $index), 'event' => self::EVENT, 'status' => $status, 'ticketType' => self::PLAYER, 'options' => $options]);
+			$this->store->seed(
+				'registration',
+				['id' => sprintf(
+					'e3000000-0000-4000-8000-%012d',
+					$index
+				), 'event' => self::EVENT, 'status' => $status, 'ticketType' => self::PLAYER, 'options' => $options]
+			);
 		}
 
-		$counts = (new TicketChoiceService(fetcher: $this->fetcher(), registrations: $this->service, logger: new NullLogger()))->counts(eventId: self::EVENT);
+		$counts = (new TicketChoiceService(fetcher: $this->fetcher(), registrations: $this->service, logger: new NullLogger()))->counts(
+			eventId: self::EVENT
+		);
 
 		$options = array_column($counts['options'], 'count', 'name');
 		$this->assertSame(expected: 2, actual: $options['Full catering, vegan']);
@@ -400,7 +481,10 @@ class TicketChoiceServiceTest extends TestCase {
 	 * @return void
 	 */
 	public function testTheStoredRegistrationValidatesAgainstTheRegisterSchema(): void {
-		$saved = $this->register(player: self::SANNE, choices: ['ticketType' => self::CREW_FRIENDS, 'options' => [self::VEGAN, self::MEAT], 'code' => 'LANTERN']);
+		$saved = $this->register(
+			player: self::SANNE,
+			choices: ['ticketType' => self::CREW_FRIENDS, 'options' => [self::VEGAN, self::MEAT], 'code' => 'LANTERN']
+		);
 		$row = $this->store->objects['registration'][$saved['id']];
 		unset($row['id']);
 

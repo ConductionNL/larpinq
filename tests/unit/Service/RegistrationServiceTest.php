@@ -212,7 +212,14 @@ class RegistrationServiceTest extends TestCase {
 	private function config(): IAppConfig {
 		$config = $this->createMock(originalClassName: IAppConfig::class);
 		$config->method('getValueString')->willReturnCallback(
-			static fn (string $app, string $key, string $default = ''): string => (str_ends_with($key, '_register') === true ? '3' : (str_ends_with($key, '_schema') === true ? substr($key, 0, -strlen('_schema')) : $default))
+			static fn (string $app, string $key, string $default = ''): string => (str_ends_with(
+				$key,
+				'_register'
+			) === true ? '3' : (str_ends_with($key, '_schema') === true ? substr(
+				$key,
+				0,
+				-strlen('_schema')
+			) : $default))
 		);
 		return $config;
 	}//end config()
@@ -236,9 +243,25 @@ class RegistrationServiceTest extends TestCase {
 		);
 		$l10n = $this->createMock(originalClassName: IL10N::class);
 		$l10n->method('t')->willReturnCallback(static fn (string $text): string => $text);
-		$service = new RegistrationService(fetcher: $this->fetcher(), locking: $this->locks->forRequest($request), logger: new NullLogger(), lockAttempts: $lockAttempts, lockWaitMicros: 0);
+		$service = new RegistrationService(
+			fetcher: $this->fetcher(),
+			locking: $this->locks->forRequest($request),
+			logger: new NullLogger(),
+			lockAttempts: $lockAttempts,
+			lockWaitMicros: 0
+		);
 
-		return new RegistrationListener(config: $this->config(), service: $service, writeCheck: new RegistrationWriteCheck(characterCheck: new RegistrationCharacterCheck(fetcher: $this->fetcher()), ticketChoices: new TicketChoiceService(fetcher: $this->fetcher(), registrations: $service, logger: new NullLogger())), session: $session, l10n: $l10n, logger: new NullLogger());
+		return new RegistrationListener(
+			config: $this->config(),
+			service: $service,
+			writeCheck: new RegistrationWriteCheck(
+				characterCheck: new RegistrationCharacterCheck(fetcher: $this->fetcher()),
+				ticketChoices: new TicketChoiceService(fetcher: $this->fetcher(), registrations: $service, logger: new NullLogger())
+			),
+			session: $session,
+			l10n: $l10n,
+			logger: new NullLogger()
+		);
 	}//end listener()
 
 	/**
@@ -383,8 +406,16 @@ class RegistrationServiceTest extends TestCase {
 		$sanneRequest = $this->listener(request: 'sanne');
 		$pieterRequest = $this->listener(request: 'pieter', lockAttempts: 2);
 
-		$sanne = new InMemoryObjectEntity(schema: 'registration', data: ['event' => self::EVENT, 'player' => self::SANNE, 'submittedAt' => '2026-10-01T10:00:00+00:00'], uuid: 'e0000000-0000-4000-8000-000000000011');
-		$pieter = new InMemoryObjectEntity(schema: 'registration', data: ['event' => self::EVENT, 'player' => self::PIETER, 'submittedAt' => '2026-10-01T10:00:00+00:00'], uuid: 'e0000000-0000-4000-8000-000000000012');
+		$sanne = new InMemoryObjectEntity(
+			schema: 'registration',
+			data: ['event' => self::EVENT, 'player' => self::SANNE, 'submittedAt' => '2026-10-01T10:00:00+00:00'],
+			uuid: 'e0000000-0000-4000-8000-000000000011'
+		);
+		$pieter = new InMemoryObjectEntity(
+			schema: 'registration',
+			data: ['event' => self::EVENT, 'player' => self::PIETER, 'submittedAt' => '2026-10-01T10:00:00+00:00'],
+			uuid: 'e0000000-0000-4000-8000-000000000012'
+		);
 		$sanneWrite = new ObjectCreatingEvent($sanne);
 		$pieterWrite = new ObjectCreatingEvent($pieter);
 
@@ -392,7 +423,11 @@ class RegistrationServiceTest extends TestCase {
 		$sanneRequest->handle($sanneWrite);
 		$pieterRequest->handle($pieterWrite);
 		$this->store->seed('registration', array_merge($sanne->getObject(), $sanneWrite->getModifiedData(), ['id' => $sanne->getUuid()]));
-		$sanneRequest->handle(new ObjectCreatedEvent(new InMemoryObjectEntity(schema: 'registration', data: $this->registration(id: (string)$sanne->getUuid()), uuid: $sanne->getUuid())));
+		$sanneRequest->handle(
+			new ObjectCreatedEvent(
+				new InMemoryObjectEntity(schema: 'registration', data: $this->registration(id: (string)$sanne->getUuid()), uuid: $sanne->getUuid())
+			)
+		);
 
 		$this->assertSame(expected: 'accepted', actual: $sanneWrite->getModifiedData()['status']);
 		$this->assertSame(expected: 'waitlisted', actual: $pieterWrite->getModifiedData()['status']);
@@ -424,7 +459,11 @@ class RegistrationServiceTest extends TestCase {
 
 		$this->fetcher()->saveObject('registration', ['status' => 'cancelled'], 'e0000000-0000-4000-8000-000000000021');
 
-		$this->assertSame(expected: 'accepted', actual: $this->registration(id: 'e0000000-0000-4000-8000-000000000023')['status'], message: 'the oldest waitlisted gets the place');
+		$this->assertSame(
+			expected: 'accepted',
+			actual: $this->registration(id: 'e0000000-0000-4000-8000-000000000023')['status'],
+			message: 'the oldest waitlisted gets the place'
+		);
 		$this->assertSame(expected: 'larpinq', actual: $this->registration(id: 'e0000000-0000-4000-8000-000000000023')['decidedBy']);
 		$this->assertSame(expected: 'waitlisted', actual: $this->registration(id: 'e0000000-0000-4000-8000-000000000022')['status']);
 		$this->assertSame(expected: [self::TOMAS], actual: array_values($this->store->objects['event'][self::EVENT]['players']));

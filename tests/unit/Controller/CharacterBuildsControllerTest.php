@@ -140,7 +140,13 @@ class CharacterBuildsControllerTest extends TestCase {
 
 		$logger = $this->createMock(originalClassName: LoggerInterface::class);
 		$engine = new CharacterService(objectFetcher: $this->fetcher, logger: $logger, effectApplier: new EffectApplier());
-		$this->requirements = new SkillRequirementService(characterService: $engine, objectFetcher: $this->fetcher, logger: $logger, checker: new SkillRequirementChecker(idList: new IdListNormaliser()), idList: new IdListNormaliser());
+		$this->requirements = new SkillRequirementService(
+			characterService: $engine,
+			objectFetcher: $this->fetcher,
+			logger: $logger,
+			checker: new SkillRequirementChecker(idList: new IdListNormaliser()),
+			idList: new IdListNormaliser()
+		);
 
 		$user = $this->createMock(originalClassName: IUser::class);
 		$user->method('getUID')->willReturn('anna');
@@ -150,7 +156,12 @@ class CharacterBuildsControllerTest extends TestCase {
 		$groups->method('isInGroup')->willReturnCallback(static fn (string $uid, string $group): bool => $gameMaster === true && $group === 'gamemasters');
 		$groups->method('isAdmin')->willReturn(false);
 
-		return new CharacterBuildsController(request: $this->createMock(originalClassName: IRequest::class), objectFetcher: $this->fetcher, statSheet: new CharacterStatSheet(characterService: $engine, requirementService: $this->requirements, presenter: new CharacterStatsPresenter()), callerAccess: new CallerAccess(userSession: $session, groupManager: $groups));
+		return new CharacterBuildsController(
+			request: $this->createMock(originalClassName: IRequest::class),
+			objectFetcher: $this->fetcher,
+			statSheet: new CharacterStatSheet(characterService: $engine, requirementService: $this->requirements, presenter: new CharacterStatsPresenter()),
+			callerAccess: new CallerAccess(userSession: $session, groupManager: $groups)
+		);
 	}//end controller()
 
 	/**

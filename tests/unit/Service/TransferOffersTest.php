@@ -86,7 +86,11 @@ class TransferOffersTest extends TestCase {
 		$this->assertSame(expected: PaymentWorld::SANNE, actual: $taken['transferredFrom']);
 		$this->assertSame(expected: '2026-11-10T10:00:00+00:00', actual: $taken['transferredAt']);
 		$this->assertSame(expected: '', actual: $taken['transferToUid']);
-		$this->assertNotContains(needle: self::SANNES_CHARACTER, haystack: $this->world->store->objects['event'][PaymentWorld::EVENT]['players'], message: "Sanne's character leaves the event");
+		$this->assertNotContains(
+			needle: self::SANNES_CHARACTER,
+			haystack: $this->world->store->objects['event'][PaymentWorld::EVENT]['players'],
+			message: "Sanne's character leaves the event"
+		);
 	}//end testSanneHandsHerPlaceToPieter()
 
 	/**
@@ -153,6 +157,10 @@ class TransferOffersTest extends TestCase {
 		$this->world->now = new DateTimeImmutable('2026-11-22T10:00:00+00:00');
 		$this->world->transfers()->offer(registrationId: self::SANNE_REG, actingUid: 'sanne', recipientUid: 'pieter');
 		$this->assertSame(expected: 0, actual: $this->world->transfers()->lapse(now: new DateTimeImmutable('2026-11-24T10:00:00+00:00')));
-		$this->assertSame(expected: 1, actual: $this->world->transfers()->lapse(now: new DateTimeImmutable('2026-11-25T00:00:00+00:00')), message: 'the cancel-by date comes first');
+		$this->assertSame(
+			expected: 1,
+			actual: $this->world->transfers()->lapse(now: new DateTimeImmutable('2026-11-25T00:00:00+00:00')),
+			message: 'the cancel-by date comes first'
+		);
 	}//end testAnOfferLapses()
 }//end class

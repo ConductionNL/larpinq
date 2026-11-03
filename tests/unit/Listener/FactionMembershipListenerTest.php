@@ -264,7 +264,10 @@ class FactionMembershipListenerTest extends TestCase {
 	 * @return void
 	 */
 	public function testTheLeaderJoinsTheirOwnGroup(): void {
-		$event = $this->create(schema: 'schema-member', data: $this->member(faction: self::LANTERNS, character: self::TOMAS, status: 'active', role: 'leader'));
+		$event = $this->create(
+			schema: 'schema-member',
+			data: $this->member(faction: self::LANTERNS, character: self::TOMAS, status: 'active', role: 'leader')
+		);
 		$this->assertNull(actual: $this->refusal(listener: $this->listener(uid: 'tom'), event: $event));
 	}//end testTheLeaderJoinsTheirOwnGroup()
 
@@ -281,7 +284,9 @@ class FactionMembershipListenerTest extends TestCase {
 		);
 
 		$active = $this->member(faction: self::GUARD, character: self::HARROW, status: 'active');
-		$this->assertNull(actual: $this->refusal(listener: $this->listener(uid: 'gm', gameMaster: true), event: $this->create(schema: 'schema-member', data: $active)));
+		$this->assertNull(
+			actual: $this->refusal(listener: $this->listener(uid: 'gm', gameMaster: true), event: $this->create(schema: 'schema-member', data: $active))
+		);
 	}//end testOnlyGameMastersPlaceCharactersInFactions()
 
 	/**
@@ -293,7 +298,9 @@ class FactionMembershipListenerTest extends TestCase {
 		$old = $this->member(faction: self::LANTERNS, character: self::VENN, status: 'invited');
 		$new = $this->member(faction: self::LANTERNS, character: self::VENN, status: 'active');
 
-		$this->assertNull(actual: $this->refusal(listener: $this->listener(uid: 'vera'), event: $this->update(schema: 'schema-member', new: $new, old: $old)));
+		$this->assertNull(
+			actual: $this->refusal(listener: $this->listener(uid: 'vera'), event: $this->update(schema: 'schema-member', new: $new, old: $old))
+		);
 		$this->assertSame(
 			expected: 'membership_member_only',
 			actual: $this->refusal(listener: $this->listener(uid: 'tom'), event: $this->update(schema: 'schema-member', new: $new, old: $old))
@@ -309,7 +316,9 @@ class FactionMembershipListenerTest extends TestCase {
 		$old = $this->member(faction: self::LANTERNS, character: self::HARROW, status: 'requested');
 		$new = $this->member(faction: self::LANTERNS, character: self::HARROW, status: 'active');
 
-		$this->assertNull(actual: $this->refusal(listener: $this->listener(uid: 'tom'), event: $this->update(schema: 'schema-member', new: $new, old: $old)));
+		$this->assertNull(
+			actual: $this->refusal(listener: $this->listener(uid: 'tom'), event: $this->update(schema: 'schema-member', new: $new, old: $old))
+		);
 		$this->assertSame(
 			expected: 'membership_leader_only',
 			actual: $this->refusal(listener: $this->listener(uid: 'karel'), event: $this->update(schema: 'schema-member', new: $new, old: $old))
@@ -327,8 +336,12 @@ class FactionMembershipListenerTest extends TestCase {
 		$left = $this->member(faction: self::LANTERNS, character: self::VENN, status: 'left');
 		$removed = $this->member(faction: self::LANTERNS, character: self::VENN, status: 'removed');
 
-		$this->assertNull(actual: $this->refusal(listener: $this->listener(uid: 'vera'), event: $this->update(schema: 'schema-member', new: $left, old: $active)));
-		$this->assertNull(actual: $this->refusal(listener: $this->listener(uid: 'tom'), event: $this->update(schema: 'schema-member', new: $removed, old: $active)));
+		$this->assertNull(
+			actual: $this->refusal(listener: $this->listener(uid: 'vera'), event: $this->update(schema: 'schema-member', new: $left, old: $active))
+		);
+		$this->assertNull(
+			actual: $this->refusal(listener: $this->listener(uid: 'tom'), event: $this->update(schema: 'schema-member', new: $removed, old: $active))
+		);
 		$this->assertSame(
 			expected: 'membership_status_not_allowed',
 			actual: $this->refusal(listener: $this->listener(uid: 'vera'), event: $this->update(schema: 'schema-member', new: $active, old: $left))
@@ -380,7 +393,9 @@ class FactionMembershipListenerTest extends TestCase {
 	 */
 	public function testAPlayerNamesRelationshipsFromTheirOwnCharacter(): void {
 		$rival = ['from' => self::HARROW, 'to' => self::TOMAS, 'kind' => 'rival', 'knownTo' => 'owners'];
-		$this->assertNull(actual: $this->refusal(listener: $this->listener(uid: 'karel'), event: $this->create(schema: 'schema-relationship', data: $rival)));
+		$this->assertNull(
+			actual: $this->refusal(listener: $this->listener(uid: 'karel'), event: $this->create(schema: 'schema-relationship', data: $rival))
+		);
 
 		$this->assertSame(
 			expected: 'relationship_own_character_only',
@@ -392,7 +407,9 @@ class FactionMembershipListenerTest extends TestCase {
 			expected: 'relationship_game_masters_only',
 			actual: $this->refusal(listener: $this->listener(uid: 'karel'), event: $this->create(schema: 'schema-relationship', data: $hidden))
 		);
-		$this->assertNull(actual: $this->refusal(listener: $this->listener(uid: 'gm', gameMaster: true), event: $this->create(schema: 'schema-relationship', data: $hidden)));
+		$this->assertNull(
+			actual: $this->refusal(listener: $this->listener(uid: 'gm', gameMaster: true), event: $this->create(schema: 'schema-relationship', data: $hidden))
+		);
 	}//end testAPlayerNamesRelationshipsFromTheirOwnCharacter()
 
 	/**
@@ -452,6 +469,8 @@ class FactionMembershipListenerTest extends TestCase {
 			actual: $this->refusal(listener: $this->listener(uid: 'karel'), event: $this->update(schema: 'schema-build', new: $moved, old: $old))
 		);
 		$renamed = ['character' => self::HARROW, 'name' => 'Herbalist path'];
-		$this->assertNull(actual: $this->refusal(listener: $this->listener(uid: 'karel'), event: $this->update(schema: 'schema-build', new: $renamed, old: $old)));
+		$this->assertNull(
+			actual: $this->refusal(listener: $this->listener(uid: 'karel'), event: $this->update(schema: 'schema-build', new: $renamed, old: $old))
+		);
 	}//end testABuildCannotMoveToAnotherCharacter()
 }//end class

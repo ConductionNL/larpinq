@@ -241,7 +241,11 @@ class UniqueHolderListenerTest extends TestCase {
 	 * @return void
 	 */
 	public function testAHeldUniqueItemIsRefusedAndTheHolderNamed(): void {
-		$event = $this->update(uuid: self::BERTRAM, new: ['name' => 'Sir Bertram', 'items' => [self::CROWN]], old: ['name' => 'Sir Bertram', 'items' => []]);
+		$event = $this->update(
+			uuid: self::BERTRAM,
+			new: ['name' => 'Sir Bertram', 'items' => [self::CROWN]],
+			old: ['name' => 'Sir Bertram', 'items' => []]
+		);
 
 		$this->listener()->handle($event);
 
@@ -584,7 +588,12 @@ class UniqueHolderListenerTest extends TestCase {
 	 * @return void
 	 */
 	public function testSwitchingUniqueOnIsRefusedWhenTheLookupFails(): void {
-		$event = $this->update(uuid: self::CROWN, new: ['unique' => true, 'characters' => [self::QUEEN]], old: ['unique' => false, 'characters' => [self::QUEEN]], schema: 'schema-item');
+		$event = $this->update(
+			uuid: self::CROWN,
+			new: ['unique' => true, 'characters' => [self::QUEEN]],
+			old: ['unique' => false, 'characters' => [self::QUEEN]],
+			schema: 'schema-item'
+		);
 
 		$this->listener(fetcherThrows: true)->handle($event);
 
@@ -600,8 +609,18 @@ class UniqueHolderListenerTest extends TestCase {
 	public function testWritesThatAddNoHolderPassWhileTheLookupFails(): void {
 		$events = [
 			$this->update(uuid: self::BERTRAM, new: ['background' => 'New', 'items' => [self::CROWN]], old: ['background' => 'Old', 'items' => [self::CROWN]]),
-			$this->update(uuid: self::CROWN, new: ['unique' => true, 'name' => 'x', 'characters' => [self::QUEEN]], old: ['unique' => true, 'characters' => [self::QUEEN]], schema: 'schema-item'),
-			$this->update(uuid: self::POTION, new: ['unique' => false, 'characters' => [self::QUEEN, self::BERTRAM]], old: ['unique' => false, 'characters' => [self::QUEEN]], schema: 'schema-item'),
+			$this->update(
+				uuid: self::CROWN,
+				new: ['unique' => true, 'name' => 'x', 'characters' => [self::QUEEN]],
+				old: ['unique' => true, 'characters' => [self::QUEEN]],
+				schema: 'schema-item'
+			),
+			$this->update(
+				uuid: self::POTION,
+				new: ['unique' => false, 'characters' => [self::QUEEN, self::BERTRAM]],
+				old: ['unique' => false, 'characters' => [self::QUEEN]],
+				schema: 'schema-item'
+			),
 			$this->update(uuid: self::BERTRAM, new: ['items' => []], old: ['items' => [self::CROWN]]),
 		];
 

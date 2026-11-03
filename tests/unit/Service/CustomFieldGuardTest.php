@@ -52,12 +52,30 @@ class CustomFieldGuardTest extends TestCase {
 		parent::setUp();
 		$this->store = new InMemoryObjectService();
 		$a = self::ALDMOOR;
-		$this->store->seed('characterfield', ['id' => 'f1', 'label' => 'Bloodline', 'key' => 'bloodline', 'fieldType' => 'choice', 'choices' => ['human', 'elven', 'dwarven'], 'visibility' => 'owner', 'setting' => $a]);
-		$this->store->seed('characterfield', ['id' => 'f2', 'label' => 'Patron god', 'key' => 'patron-god', 'fieldType' => 'text', 'visibility' => 'owner', 'setting' => $a]);
-		$this->store->seed('characterfield', ['id' => 'f3', 'label' => 'Scars', 'key' => 'scars', 'fieldType' => 'number', 'visibility' => 'owner', 'setting' => $a]);
-		$this->store->seed('characterfield', ['id' => 'f4', 'label' => 'True allegiance', 'key' => 'true-allegiance', 'fieldType' => 'choice', 'choices' => ['crown', 'rebels', 'none'], 'visibility' => 'gamemasters', 'setting' => $a]);
-		$this->store->seed('characterfield', ['id' => 'f5', 'label' => 'Vegetarian', 'key' => 'vegetarian', 'fieldType' => 'yes-no', 'visibility' => 'owner']);
-		$this->store->seed('characterfield', ['id' => 'f6', 'label' => 'Clan', 'key' => 'clan', 'fieldType' => 'text', 'visibility' => 'owner', 'setting' => self::ELSEWHERE]);
+		$this->store->seed(
+			'characterfield',
+			['id' => 'f1', 'label' => 'Bloodline', 'key' => 'bloodline', 'fieldType' => 'choice', 'choices' => ['human', 'elven', 'dwarven'], 'visibility' => 'owner', 'setting' => $a]
+		);
+		$this->store->seed(
+			'characterfield',
+			['id' => 'f2', 'label' => 'Patron god', 'key' => 'patron-god', 'fieldType' => 'text', 'visibility' => 'owner', 'setting' => $a]
+		);
+		$this->store->seed(
+			'characterfield',
+			['id' => 'f3', 'label' => 'Scars', 'key' => 'scars', 'fieldType' => 'number', 'visibility' => 'owner', 'setting' => $a]
+		);
+		$this->store->seed(
+			'characterfield',
+			['id' => 'f4', 'label' => 'True allegiance', 'key' => 'true-allegiance', 'fieldType' => 'choice', 'choices' => ['crown', 'rebels', 'none'], 'visibility' => 'gamemasters', 'setting' => $a]
+		);
+		$this->store->seed(
+			'characterfield',
+			['id' => 'f5', 'label' => 'Vegetarian', 'key' => 'vegetarian', 'fieldType' => 'yes-no', 'visibility' => 'owner']
+		);
+		$this->store->seed(
+			'characterfield',
+			['id' => 'f6', 'label' => 'Clan', 'key' => 'clan', 'fieldType' => 'text', 'visibility' => 'owner', 'setting' => self::ELSEWHERE]
+		);
 	}//end setUp()
 
 	/**

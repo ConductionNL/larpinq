@@ -69,7 +69,11 @@ class CharacterServiceTest extends TestCase {
 				};
 			});
 
-		return new CharacterService(objectFetcher: $fetcher, logger: $this->createMock(originalClassName: LoggerInterface::class), effectApplier: new EffectApplier());
+		return new CharacterService(
+			objectFetcher: $fetcher,
+			logger: $this->createMock(originalClassName: LoggerInterface::class),
+			effectApplier: new EffectApplier()
+		);
 	}
 
 	public function testCalculateCharacterWithNoAbilities(): void {
@@ -305,7 +309,11 @@ class CharacterServiceTest extends TestCase {
 				return [];
 			});
 
-		$service = new CharacterService(objectFetcher: $fetcher, logger: $this->createMock(originalClassName: LoggerInterface::class), effectApplier: new EffectApplier());
+		$service = new CharacterService(
+			objectFetcher: $fetcher,
+			logger: $this->createMock(originalClassName: LoggerInterface::class),
+			effectApplier: new EffectApplier()
+		);
 		$results = $service->calculateAllCharacters();
 
 		self::assertCount(expectedCount: 2, haystack: $results);
@@ -545,6 +553,9 @@ class CharacterServiceTest extends TestCase {
 
 		self::assertSame(expected: ['skill', 'skill-1', 'Swordsmanship'], actual: [$audit[0]['source'], $audit[0]['sourceId'], $audit[0]['sourceName']]);
 		self::assertSame(expected: ['item', 'item-1', 'Iron shield'], actual: [$audit[1]['source'], $audit[1]['sourceId'], $audit[1]['sourceName']]);
-		self::assertSame(expected: 14, actual: $service->calculateCharacter(['id' => 'char-1', 'skills' => ['skill-1'], 'items' => ['item-1']])['stats']['abil-1']['value']);
+		self::assertSame(
+			expected: 14,
+			actual: $service->calculateCharacter(['id' => 'char-1', 'skills' => ['skill-1'], 'items' => ['item-1']])['stats']['abil-1']['value']
+		);
 	}
 }
