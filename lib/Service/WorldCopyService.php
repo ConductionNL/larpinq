@@ -188,7 +188,7 @@ class WorldCopyService {
 		$this->created = [];
 		$this->current = 'the world';
 		try {
-			$payload = $this->payload(type: 'setting', source: $world, newWorld: null);
+			$payload = $this->payload(type: 'setting', source: $world);
 			$payload['name'] = $name;
 			$payload['status'] = 'archived';
 			$newWorld = $this->create(type: 'setting', payload: $payload);
@@ -225,7 +225,8 @@ class WorldCopyService {
 		foreach ($objects as $type => $rows) {
 			foreach ($rows as $row) {
 				$this->current = $type . ' "' . $this->nameOf(row: $row) . '"';
-				$full = $this->payload(type: $type, source: $row, newWorld: $newId);
+				$full = $this->payload(type: $type, source: $row);
+				$full['setting'] = $newId;
 				$later = $this->laterReferences(type: $type, payload: $full);
 				$saved = $this->create(type: $type, payload: array_diff_key($full, $later));
 				$this->idMap[$type][(string)$row['id']] = (string)$saved['id'];
@@ -333,16 +334,15 @@ class WorldCopyService {
 
 	/**
 	 * The object's data as a payload for its copy: no id, no metadata, no
-	 * nulls, empty holders, the new world, and references remapped as far
-	 * as the id map reaches.
+	 * nulls, empty holders, and references remapped as far as the id map
+	 * reaches. The caller sets the new world on a rule object.
 	 *
 	 * @param string $type The type.
 	 * @param array<string, mixed> $source The original object.
-	 * @param string|null $newWorld The new world's UUID, or null for the world itself.
 	 *
 	 * @return array<string, mixed> The payload.
 	 */
-	private function payload(string $type, array $source, ?string $newWorld): array {
+	private function payload(string $type, array $source): array {
 		$payload = [];
 		foreach ($source as $key => $value) {
 			$key = (string)$key;
@@ -356,10 +356,6 @@ class WorldCopyService {
 
 		foreach (self::HOLDERS[$type] ?? [] as $field) {
 			$payload[$field] = [];
-		}
-
-		if ($newWorld !== null) {
-			$payload['setting'] = $newWorld;
 		}
 
 		return $this->remapAll(type: $type, payload: $payload);
