@@ -107,7 +107,7 @@ const BOARD_ORDER = ['character', 'player', 'event', 'skill', 'ability', 'item',
  * @class Settings
  * @module Components
  * @category LarpingApp
- * @package LarpingApp
+ * @package
  * @version 1.0.0
  * @license EUPL-1.2
  * @author Claude AI

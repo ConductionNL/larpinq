@@ -311,7 +311,7 @@ export default {
 		/**
 		 * Run one change, show larpinq's answer, and read what may change next.
 		 *
-		 * @param {Function} change The change, returning `{ok, message}`.
+		 * @param {() => Promise<{ok: boolean, message: string}>} change The change, returning `{ok, message}`.
 		 * @param {string} success What to say when it worked.
 		 * @return {Promise<void>}
 		 *
