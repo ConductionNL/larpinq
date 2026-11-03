@@ -163,8 +163,8 @@ class CharacterRequirementListener implements IEventListener {
 	/**
 	 * The override refusal for a character write, or null when its overrides may pass.
 	 *
-	 * Runs outside the game-rule fallback: when the check cannot decide, the
-	 * write is refused.
+	 * Runs outside the game-rule fallback: when the check cannot decide on a
+	 * character write, the write is refused.
 	 *
 	 * @param Event $event The dispatched pre-write event.
 	 *
@@ -177,18 +177,43 @@ class CharacterRequirementListener implements IEventListener {
 	 * @spec openspec/specs/skill-requirement-enforcement/spec.md
 	 */
 	private function overrideVeto(Event $event): ?array {
-		try {
-			[$newEntity, $oldEntity] = $this->extractEntities(event: $event);
-			if ($this->isCharacterSchema(entity: $newEntity) === false) {
-				return null;
-			}
+		$entities = $this->characterEntities(event: $event);
+		if ($entities === null) {
+			return null;
+		}
 
+		[$newEntity, $oldEntity] = $entities;
+		try {
 			return $this->checkOverrideAuthorization(candidate: $newEntity->getObject(), old: ($oldEntity?->getObject() ?? []));
 		} catch (\Throwable $e) {
 			$this->logger->error(self::OVERRIDE_CHECK_ERRORED, ['exception' => $e]);
 			return ['requirementOverrides' => [self::OVERRIDE_UNVERIFIABLE]];
 		}
 	}//end overrideVeto()
+
+	/**
+	 * The new and stored entity of a character write, or null for any other write.
+	 *
+	 * When the schema cannot be read the write is not treated as a character
+	 * write here; the game-rule step meets the same failure, logs it and
+	 * lets the write through, as for any other schema.
+	 *
+	 * @param Event $event The dispatched pre-write event.
+	 *
+	 * @return array{0: object, 1: object|null}|null The [newEntity, oldEntity] pair.
+	 */
+	private function characterEntities(Event $event): ?array {
+		try {
+			$entities = $this->extractEntities(event: $event);
+			if ($this->isCharacterSchema(entity: $entities[0]) === false) {
+				return null;
+			}
+
+			return $entities;
+		} catch (\Throwable $e) {
+			return null;
+		}
+	}//end characterEntities()
 
 	/**
 	 * The game-rule errors for a write, or null; a rule that throws allows the write.
