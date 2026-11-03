@@ -83,6 +83,7 @@ class RecordingDeepLinkEvent extends Event {
  */
 class DeepLinkRegistrationListenerTest extends TestCase {
 
+	/** @var DeepLinkRegistrationListener The listener. */
 	private DeepLinkRegistrationListener $listener;
 
 	/**
@@ -108,13 +109,13 @@ class DeepLinkRegistrationListenerTest extends TestCase {
 		};
 
 		self::assertFalse(
-			method_exists($event, 'register'),
-			'control: the bare Event must not expose register()'
+			condition: method_exists($event, 'register'),
+			message: 'control: the bare Event must not expose register()'
 		);
 
 		$this->listener->handle($event);
 
-		self::assertTrue(true, 'returning early must not throw');
+		self::assertTrue(condition: true, message: 'returning early must not throw');
 	}//end testHandleIgnoresAnEventWithoutRegister()
 
 	/**
@@ -126,23 +127,23 @@ class DeepLinkRegistrationListenerTest extends TestCase {
 		$event = new RecordingDeepLinkEvent();
 		$this->listener->handle($event);
 
-		self::assertCount(8, $event->links);
+		self::assertCount(expectedCount: 8, haystack: $event->links);
 
 		$slugs = array_column($event->links, 'schemaSlug');
-		self::assertContains('character', $slugs);
-		self::assertContains('player', $slugs);
-		self::assertContains('ability', $slugs);
-		self::assertContains('skill', $slugs);
-		self::assertContains('condition', $slugs);
-		self::assertContains('effect', $slugs);
+		self::assertContains(needle: 'character', haystack: $slugs);
+		self::assertContains(needle: 'player', haystack: $slugs);
+		self::assertContains(needle: 'ability', haystack: $slugs);
+		self::assertContains(needle: 'skill', haystack: $slugs);
+		self::assertContains(needle: 'condition', haystack: $slugs);
+		self::assertContains(needle: 'effect', haystack: $slugs);
 
 		// The namespaced slugs — `item` and `event` collide instance-globally,
 		// so Larpinq's own schemas are `larping_item` / `larping_event`.
 		// Registering the bare spelling resolves to no schema at all.
-		self::assertContains('larping_item', $slugs);
-		self::assertContains('larping_event', $slugs);
-		self::assertNotContains('item', $slugs);
-		self::assertNotContains('event', $slugs);
+		self::assertContains(needle: 'larping_item', haystack: $slugs);
+		self::assertContains(needle: 'larping_event', haystack: $slugs);
+		self::assertNotContains(needle: 'item', haystack: $slugs);
+		self::assertNotContains(needle: 'event', haystack: $slugs);
 	}//end testHandleRegistersAllObjectTypes()
 
 	/**
@@ -157,10 +158,10 @@ class DeepLinkRegistrationListenerTest extends TestCase {
 		$event = new RecordingDeepLinkEvent();
 		$this->listener->handle($event);
 
-		self::assertNotEmpty($event->links, 'control: something must have been registered');
+		self::assertNotEmpty(actual: $event->links, message: 'control: something must have been registered');
 		foreach ($event->links as $link) {
-			self::assertSame('larpinq', $link['appId']);
-			self::assertSame('larpinq', $link['registerSlug']);
+			self::assertSame(expected: 'larpinq', actual: $link['appId']);
+			self::assertSame(expected: 'larpinq', actual: $link['registerSlug']);
 		}
 	}//end testHandleUsesCorrectAppIdAndRegisterSlug()
 
@@ -175,13 +176,13 @@ class DeepLinkRegistrationListenerTest extends TestCase {
 
 		$bySlug = array_column($event->links, 'urlTemplate', 'schemaSlug');
 
-		self::assertSame('/apps/larpinq/characters/{uuid}', $bySlug['character']);
-		self::assertSame('/apps/larpinq/players/{uuid}', $bySlug['player']);
-		self::assertSame('/apps/larpinq/abilities/{uuid}', $bySlug['ability']);
-		self::assertSame('/apps/larpinq/skills/{uuid}', $bySlug['skill']);
-		self::assertSame('/apps/larpinq/items/{uuid}', $bySlug['larping_item']);
-		self::assertSame('/apps/larpinq/conditions/{uuid}', $bySlug['condition']);
-		self::assertSame('/apps/larpinq/effects/{uuid}', $bySlug['effect']);
-		self::assertSame('/apps/larpinq/events/{uuid}', $bySlug['larping_event']);
+		self::assertSame(expected: '/apps/larpinq/characters/{uuid}', actual: $bySlug['character']);
+		self::assertSame(expected: '/apps/larpinq/players/{uuid}', actual: $bySlug['player']);
+		self::assertSame(expected: '/apps/larpinq/abilities/{uuid}', actual: $bySlug['ability']);
+		self::assertSame(expected: '/apps/larpinq/skills/{uuid}', actual: $bySlug['skill']);
+		self::assertSame(expected: '/apps/larpinq/items/{uuid}', actual: $bySlug['larping_item']);
+		self::assertSame(expected: '/apps/larpinq/conditions/{uuid}', actual: $bySlug['condition']);
+		self::assertSame(expected: '/apps/larpinq/effects/{uuid}', actual: $bySlug['effect']);
+		self::assertSame(expected: '/apps/larpinq/events/{uuid}', actual: $bySlug['larping_event']);
 	}//end testHandleUsesCorrectUrlPatterns()
 }//end class

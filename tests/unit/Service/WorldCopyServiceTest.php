@@ -60,23 +60,62 @@ class WorldCopyServiceTest extends TestCase {
 		$this->store->seed('setting', ['id' => $w, 'name' => 'Aldmoor', 'description' => 'The old kingdom', 'status' => 'active']);
 		$this->store->seed('setting', ['id' => self::OTHER, 'name' => 'Elsewhere', 'status' => 'active']);
 		$this->store->seed('ability', ['id' => 'aaaaaaaa-0000-4000-8000-000000000001', 'name' => 'Strength', 'base' => 10, 'setting' => $w]);
-		$this->store->seed('ability', ['id' => 'aaaaaaaa-0000-4000-8000-000000000002', 'name' => 'Mana', 'base' => 0, 'setting' => $w, 'description' => null]);
+		$this->store->seed(
+			'ability',
+			['id' => 'aaaaaaaa-0000-4000-8000-000000000002', 'name' => 'Mana', 'base' => 0, 'setting' => $w, 'description' => null]
+		);
 		$this->store->seed('ability', ['id' => 'aaaaaaaa-0000-4000-8000-000000000003', 'name' => 'Luck', 'base' => 1]);
-		$this->store->seed('effect', ['id' => 'aaaaaaaa-0000-4000-8000-000000000004', 'name' => '+3 strength', 'modifier' => 3, 'modification' => 'positive', 'cumulative' => 'non-cumulative', 'abilities' => ['aaaaaaaa-0000-4000-8000-000000000001'], 'setting' => $w]);
-		$this->store->seed('effect', ['id' => 'aaaaaaaa-0000-4000-8000-000000000005', 'name' => '+5 mana', 'modifier' => 5, 'abilities' => [['id' => 'aaaaaaaa-0000-4000-8000-000000000002']], 'setting' => $w]);
-		$this->store->seed('effect', ['id' => 'aaaaaaaa-0000-4000-8000-000000000006', 'name' => '+1 luck', 'modifier' => 1, 'abilities' => ['aaaaaaaa-0000-4000-8000-000000000003']]);
-		$this->store->seed('skill', ['id' => 'aaaaaaaa-0000-4000-8000-000000000007', 'name' => 'Swordsmanship', 'effects' => ['aaaaaaaa-0000-4000-8000-000000000004'], 'requiredSkills' => ['aaaaaaaa-0000-4000-8000-000000000008'], 'setting' => $w]);
-		$this->store->seed('skill', ['id' => 'aaaaaaaa-0000-4000-8000-000000000008', 'name' => 'Master swordsman', 'effects' => ['aaaaaaaa-0000-4000-8000-000000000004', 'aaaaaaaa-0000-4000-8000-000000000006'], 'requiredSkills' => ['aaaaaaaa-0000-4000-8000-000000000007'], 'requiredStats' => ['aaaaaaaa-0000-4000-8000-000000000001'], 'requiredScore' => 12, 'setting' => $w]);
-		$this->store->seed('item', ['id' => 'aaaaaaaa-0000-4000-8000-000000000010', 'name' => 'Iron shield', 'unique' => true, 'effects' => ['aaaaaaaa-0000-4000-8000-000000000004'], 'characters' => ['aaaaaaaa-0000-4000-8000-000000000012'], 'setting' => $w]);
-		$this->store->seed('condition', ['id' => 'aaaaaaaa-0000-4000-8000-000000000011', 'name' => 'Cursed', 'unique' => false, 'effects' => ['aaaaaaaa-0000-4000-8000-000000000005'], 'characters' => ['aaaaaaaa-0000-4000-8000-000000000012'], 'setting' => $w]);
+		$this->store->seed(
+			'effect',
+			['id' => 'aaaaaaaa-0000-4000-8000-000000000004', 'name' => '+3 strength', 'modifier' => 3, 'modification' => 'positive', 'cumulative' => 'non-cumulative', 'abilities' => ['aaaaaaaa-0000-4000-8000-000000000001'], 'setting' => $w]
+		);
+		$this->store->seed(
+			'effect',
+			['id' => 'aaaaaaaa-0000-4000-8000-000000000005', 'name' => '+5 mana', 'modifier' => 5, 'abilities' => [['id' => 'aaaaaaaa-0000-4000-8000-000000000002']], 'setting' => $w]
+		);
+		$this->store->seed(
+			'effect',
+			['id' => 'aaaaaaaa-0000-4000-8000-000000000006', 'name' => '+1 luck', 'modifier' => 1, 'abilities' => ['aaaaaaaa-0000-4000-8000-000000000003']]
+		);
+		$this->store->seed(
+			'skill',
+			['id' => 'aaaaaaaa-0000-4000-8000-000000000007', 'name' => 'Swordsmanship', 'effects' => ['aaaaaaaa-0000-4000-8000-000000000004'], 'requiredSkills' => ['aaaaaaaa-0000-4000-8000-000000000008'], 'setting' => $w]
+		);
+		$this->store->seed(
+			'skill',
+			['id' => 'aaaaaaaa-0000-4000-8000-000000000008', 'name' => 'Master swordsman', 'effects' => ['aaaaaaaa-0000-4000-8000-000000000004', 'aaaaaaaa-0000-4000-8000-000000000006'], 'requiredSkills' => ['aaaaaaaa-0000-4000-8000-000000000007'], 'requiredStats' => ['aaaaaaaa-0000-4000-8000-000000000001'], 'requiredScore' => 12, 'setting' => $w]
+		);
+		$this->store->seed(
+			'item',
+			['id' => 'aaaaaaaa-0000-4000-8000-000000000010', 'name' => 'Iron shield', 'unique' => true, 'effects' => ['aaaaaaaa-0000-4000-8000-000000000004'], 'characters' => ['aaaaaaaa-0000-4000-8000-000000000012'], 'setting' => $w]
+		);
+		$this->store->seed(
+			'condition',
+			['id' => 'aaaaaaaa-0000-4000-8000-000000000011', 'name' => 'Cursed', 'unique' => false, 'effects' => ['aaaaaaaa-0000-4000-8000-000000000005'], 'characters' => ['aaaaaaaa-0000-4000-8000-000000000012'], 'setting' => $w]
+		);
 		$this->store->seed('skill', ['id' => 'aaaaaaaa-0000-4000-8000-000000000009', 'name' => 'Other world skill', 'setting' => self::OTHER]);
 		$this->store->seed('character', ['id' => 'aaaaaaaa-0000-4000-8000-000000000012', 'name' => 'Anna', 'setting' => $w]);
 		$this->store->seed('event', ['id' => 'aaaaaaaa-0000-4000-8000-000000000013', 'name' => 'Season opener', 'setting' => $w]);
-		$this->store->seed('lorepage', ['id' => 'aaaaaaaa-0000-4000-8000-000000000014', 'title' => 'The harbour', 'body' => 'Ships', 'visibility' => 'players', 'revealFrom' => '2026-10-01T00:00:00+00:00', 'category' => null, 'parent' => 'aaaaaaaa-0000-4000-8000-000000000015', 'order' => 1, 'setting' => $w]);
-		$this->store->seed('lorepage', ['id' => 'aaaaaaaa-0000-4000-8000-000000000015', 'title' => 'Aldmoor city', 'visibility' => 'gamemasters', 'revealFrom' => '2026-09-01T00:00:00+00:00', 'order' => 0, 'setting' => $w]);
-		$this->store->seed('characterfield', ['id' => 'aaaaaaaa-0000-4000-8000-000000000016', 'label' => 'Bloodline', 'key' => 'bloodline', 'fieldType' => 'choice', 'choices' => ['human', 'elven'], 'visibility' => 'owner', 'order' => 1, 'setting' => $w]);
-		$this->store->seed('characterfield', ['id' => 'aaaaaaaa-0000-4000-8000-000000000017', 'label' => 'True allegiance', 'key' => 'true-allegiance', 'fieldType' => 'text', 'visibility' => 'gamemasters', 'order' => 2, 'setting' => $w]);
-		$this->store->seed('characterfield', ['id' => 'aaaaaaaa-0000-4000-8000-000000000018', 'label' => 'Patron god', 'key' => 'patron-god', 'fieldType' => 'text', 'visibility' => 'owner']);
+		$this->store->seed(
+			'lorepage',
+			['id' => 'aaaaaaaa-0000-4000-8000-000000000014', 'title' => 'The harbour', 'body' => 'Ships', 'visibility' => 'players', 'revealFrom' => '2026-10-01T00:00:00+00:00', 'category' => null, 'parent' => 'aaaaaaaa-0000-4000-8000-000000000015', 'order' => 1, 'setting' => $w]
+		);
+		$this->store->seed(
+			'lorepage',
+			['id' => 'aaaaaaaa-0000-4000-8000-000000000015', 'title' => 'Aldmoor city', 'visibility' => 'gamemasters', 'revealFrom' => '2026-09-01T00:00:00+00:00', 'order' => 0, 'setting' => $w]
+		);
+		$this->store->seed(
+			'characterfield',
+			['id' => 'aaaaaaaa-0000-4000-8000-000000000016', 'label' => 'Bloodline', 'key' => 'bloodline', 'fieldType' => 'choice', 'choices' => ['human', 'elven'], 'visibility' => 'owner', 'order' => 1, 'setting' => $w]
+		);
+		$this->store->seed(
+			'characterfield',
+			['id' => 'aaaaaaaa-0000-4000-8000-000000000017', 'label' => 'True allegiance', 'key' => 'true-allegiance', 'fieldType' => 'text', 'visibility' => 'gamemasters', 'order' => 2, 'setting' => $w]
+		);
+		$this->store->seed(
+			'characterfield',
+			['id' => 'aaaaaaaa-0000-4000-8000-000000000018', 'label' => 'Patron god', 'key' => 'patron-god', 'fieldType' => 'text', 'visibility' => 'owner']
+		);
 
 	}//end setUp()
 
@@ -88,11 +127,11 @@ class WorldCopyServiceTest extends TestCase {
 	 * @return WorldCopyService The service.
 	 */
 	private function service(array $unconfigured = []): WorldCopyService {
-		$container = $this->createMock(ContainerInterface::class);
+		$container = $this->createMock(originalClassName: ContainerInterface::class);
 		$container->method('get')->willReturn($this->store);
-		$apps = $this->createMock(IAppManager::class);
+		$apps = $this->createMock(originalClassName: IAppManager::class);
 		$apps->method('getInstalledApps')->willReturn(['openregister']);
-		$config = $this->createMock(IAppConfig::class);
+		$config = $this->createMock(originalClassName: IAppConfig::class);
 		$config->method('getValueString')->willReturnCallback(
 			static function (string $app, string $key, string $default = '') use ($unconfigured): string {
 				[$type, $kind] = explode('_', $key, 2) + [1 => ''];
@@ -111,7 +150,7 @@ class WorldCopyServiceTest extends TestCase {
 			container: $container,
 			appManager: $apps,
 			config: $config,
-			logger: $this->createMock(LoggerInterface::class),
+			logger: $this->createMock(originalClassName: LoggerInterface::class),
 		);
 
 		return new WorldCopyService(objectFetcher: $fetcher, idList: new IdListNormaliser());
@@ -134,7 +173,7 @@ class WorldCopyServiceTest extends TestCase {
 			}
 		}
 
-		$this->fail("no copy of {$type} {$name} in world {$world}");
+		$this->fail(message: "no copy of {$type} {$name} in world {$world}");
 	}//end copyOf()
 
 	/**
@@ -147,25 +186,25 @@ class WorldCopyServiceTest extends TestCase {
 		$result = $this->service()->copy(worldId: self::WORLD, name: 'Aldmoor season 2');
 
 		$new = (string)$result['world']['id'];
-		$this->assertNotSame(self::WORLD, $new);
-		$this->assertSame('Aldmoor season 2', $this->store->objects['setting'][$new]['name']);
-		$this->assertSame('The old kingdom', $this->store->objects['setting'][$new]['description']);
-		$this->assertSame('active', $this->store->objects['setting'][$new]['status']);
+		$this->assertNotSame(expected: self::WORLD, actual: $new);
+		$this->assertSame(expected: 'Aldmoor season 2', actual: $this->store->objects['setting'][$new]['name']);
+		$this->assertSame(expected: 'The old kingdom', actual: $this->store->objects['setting'][$new]['description']);
+		$this->assertSame(expected: 'active', actual: $this->store->objects['setting'][$new]['status']);
 		$this->assertSame(
-			['abilities' => 2, 'effects' => 2, 'skills' => 2, 'items' => 1, 'conditions' => 1, 'lorePages' => 2, 'characterFields' => 2],
-			$result['counts']
+			expected: ['abilities' => 2, 'effects' => 2, 'skills' => 2, 'items' => 1, 'conditions' => 1, 'lorePages' => 2, 'characterFields' => 2],
+			actual: $result['counts']
 		);
 
 		$inNew = static fn (array $rows): int => count(array_filter($rows, static fn (array $row): bool => ($row['setting'] ?? '') === $new));
-		$this->assertSame(0, $inNew($this->store->objects['character']));
-		$this->assertSame(0, $inNew($this->store->objects['event']));
+		$this->assertSame(expected: 0, actual: $inNew($this->store->objects['character']));
+		$this->assertSame(expected: 0, actual: $inNew($this->store->objects['event']));
 		// The shared ability and effect, and the other world's skill, are not copied.
-		$this->assertCount(5, $this->store->objects['ability']);
-		$this->assertCount(5, $this->store->objects['effect']);
-		$this->assertCount(5, $this->store->objects['skill']);
+		$this->assertCount(expectedCount: 5, haystack: $this->store->objects['ability']);
+		$this->assertCount(expectedCount: 5, haystack: $this->store->objects['effect']);
+		$this->assertCount(expectedCount: 5, haystack: $this->store->objects['skill']);
 
 		// The world is created archived first, so a half copy is never active.
-		$this->assertSame('archived', $this->store->saves[0][1]['status']);
+		$this->assertSame(expected: 'archived', actual: $this->store->saves[0][1]['status']);
 
 	}//end testANewSeasonOnTheSameRules()
 
@@ -179,41 +218,54 @@ class WorldCopyServiceTest extends TestCase {
 		$result = $this->service()->copy(worldId: self::WORLD, name: 'Aldmoor season 2');
 		$new = (string)$result['world']['id'];
 
-		$str = $this->copyOf('ability', $new, 'name', 'Strength');
-		$mana = $this->copyOf('ability', $new, 'name', 'Mana');
-		$effStr = $this->copyOf('effect', $new, 'name', '+3 strength');
-		$effMana = $this->copyOf('effect', $new, 'name', '+5 mana');
-		$sword = $this->copyOf('skill', $new, 'name', 'Swordsmanship');
-		$master = $this->copyOf('skill', $new, 'name', 'Master swordsman');
-		$shield = $this->copyOf('item', $new, 'name', 'Iron shield');
-		$cursed = $this->copyOf('condition', $new, 'name', 'Cursed');
+		$str = $this->copyOf(type: 'ability', world: $new, field: 'name', name: 'Strength');
+		$mana = $this->copyOf(type: 'ability', world: $new, field: 'name', name: 'Mana');
+		$effStr = $this->copyOf(type: 'effect', world: $new, field: 'name', name: '+3 strength');
+		$effMana = $this->copyOf(type: 'effect', world: $new, field: 'name', name: '+5 mana');
+		$sword = $this->copyOf(type: 'skill', world: $new, field: 'name', name: 'Swordsmanship');
+		$master = $this->copyOf(type: 'skill', world: $new, field: 'name', name: 'Master swordsman');
+		$shield = $this->copyOf(type: 'item', world: $new, field: 'name', name: 'Iron shield');
+		$cursed = $this->copyOf(type: 'condition', world: $new, field: 'name', name: 'Cursed');
 
-		$this->assertSame([$str['id']], $effStr['abilities']);
-		$this->assertSame([$mana['id']], $effMana['abilities']);
-		$this->assertSame([$sword['id']], $master['requiredSkills'], 'the prerequisite points at the copy');
-		$this->assertSame([$master['id']], $sword['requiredSkills'], 'a cycle in the old data copies too');
-		$this->assertSame([$effStr['id'], 'aaaaaaaa-0000-4000-8000-000000000006'], $master['effects'], 'a shared effect stays as it is');
-		$this->assertSame([$str['id']], $master['requiredStats']);
-		$this->assertSame(12, $master['requiredScore']);
-		$this->assertSame([$effStr['id']], $shield['effects']);
-		$this->assertSame([], $shield['characters']);
-		$this->assertTrue($shield['unique']);
-		$this->assertSame([$effMana['id']], $cursed['effects']);
-		$this->assertSame([], $cursed['characters']);
+		$this->assertSame(expected: [$str['id']], actual: $effStr['abilities']);
+		$this->assertSame(expected: [$mana['id']], actual: $effMana['abilities']);
+		$this->assertSame(expected: [$sword['id']], actual: $master['requiredSkills'], message: 'the prerequisite points at the copy');
+		$this->assertSame(expected: [$master['id']], actual: $sword['requiredSkills'], message: 'a cycle in the old data copies too');
+		$this->assertSame(
+			expected: [$effStr['id'], 'aaaaaaaa-0000-4000-8000-000000000006'],
+			actual: $master['effects'],
+			message: 'a shared effect stays as it is'
+		);
+		$this->assertSame(expected: [$str['id']], actual: $master['requiredStats']);
+		$this->assertSame(expected: 12, actual: $master['requiredScore']);
+		$this->assertSame(expected: [$effStr['id']], actual: $shield['effects']);
+		$this->assertSame(expected: [], actual: $shield['characters']);
+		$this->assertTrue(condition: $shield['unique']);
+		$this->assertSame(expected: [$effMana['id']], actual: $cursed['effects']);
+		$this->assertSame(expected: [], actual: $cursed['characters']);
 
-		$root = $this->copyOf('lorepage', $new, 'title', 'Aldmoor city');
-		$child = $this->copyOf('lorepage', $new, 'title', 'The harbour');
-		$this->assertSame($root['id'], $child['parent'], 'a lore page keeps its place under the copied parent');
+		$root = $this->copyOf(type: 'lorepage', world: $new, field: 'title', name: 'Aldmoor city');
+		$child = $this->copyOf(type: 'lorepage', world: $new, field: 'title', name: 'The harbour');
+		$this->assertSame(expected: $root['id'], actual: $child['parent'], message: 'a lore page keeps its place under the copied parent');
 
-		$bloodline = $this->copyOf('characterfield', $new, 'label', 'Bloodline');
-		$this->assertSame('bloodline', $bloodline['key'], 'a copied field keeps its key, so values keep their meaning');
-		$this->assertSame(['human', 'elven'], $bloodline['choices']);
-		$this->assertSame('gamemasters', $this->copyOf('characterfield', $new, 'label', 'True allegiance')['visibility']);
-		$this->assertCount(5, $this->store->objects['characterfield'], 'a field for every world is shared, not copied');
+		$bloodline = $this->copyOf(type: 'characterfield', world: $new, field: 'label', name: 'Bloodline');
+		$this->assertSame(expected: 'bloodline', actual: $bloodline['key'], message: 'a copied field keeps its key, so values keep their meaning');
+		$this->assertSame(expected: ['human', 'elven'], actual: $bloodline['choices']);
+		$this->assertSame(
+			expected: 'gamemasters',
+			actual: $this->copyOf(type: 'characterfield', world: $new, field: 'label', name: 'True allegiance')['visibility']
+		);
+		$this->assertCount(expectedCount: 5, haystack: $this->store->objects['characterfield'], message: 'a field for every world is shared, not copied');
 
 		// The originals are untouched.
-		$this->assertSame(['aaaaaaaa-0000-4000-8000-000000000007'], $this->store->objects['skill']['aaaaaaaa-0000-4000-8000-000000000008']['requiredSkills']);
-		$this->assertSame(['aaaaaaaa-0000-4000-8000-000000000012'], $this->store->objects['item']['aaaaaaaa-0000-4000-8000-000000000010']['characters']);
+		$this->assertSame(
+			expected: ['aaaaaaaa-0000-4000-8000-000000000007'],
+			actual: $this->store->objects['skill']['aaaaaaaa-0000-4000-8000-000000000008']['requiredSkills']
+		);
+		$this->assertSame(
+			expected: ['aaaaaaaa-0000-4000-8000-000000000012'],
+			actual: $this->store->objects['item']['aaaaaaaa-0000-4000-8000-000000000010']['characters']
+		);
 
 	}//end testCopiedRulesPointAtEachOther()
 
@@ -229,16 +281,16 @@ class WorldCopyServiceTest extends TestCase {
 		$schemas = $this->mergedSchemas();
 		$bySchema = ['setting' => 'setting', 'ability' => 'ability', 'effect' => 'effect', 'skill' => 'skill', 'item' => 'item', 'condition' => 'condition', 'lorepage' => 'lorePage', 'characterfield' => 'characterField'];
 		$validator = new Validator();
-		$this->assertNotEmpty($this->store->saves);
+		$this->assertNotEmpty(actual: $this->store->saves);
 		foreach ($this->store->saves as [$schema, $payload]) {
-			$this->assertArrayHasKey($schema, $bySchema, "unexpected write to {$schema}");
-			$this->assertArrayNotHasKey('id', $payload);
-			$this->assertArrayNotHasKey('@self', $payload);
+			$this->assertArrayHasKey(key: $schema, array: $bySchema, message: "unexpected write to {$schema}");
+			$this->assertArrayNotHasKey(key: 'id', array: $payload);
+			$this->assertArrayNotHasKey(key: '@self', array: $payload);
 			$json = json_decode((string)json_encode($this->forOpis(schema: $schemas[$bySchema[$schema]])));
 			$result = $validator->validate(json_decode((string)json_encode($payload)), $json);
-			$this->assertTrue($result->isValid(), "{$schema} payload must validate: " . json_encode($payload));
+			$this->assertTrue(condition: $result->isValid(), message: "{$schema} payload must validate: " . json_encode($payload));
 			foreach (array_keys($payload) as $key) {
-				$this->assertArrayHasKey($key, $schemas[$bySchema[$schema]]['properties'], "{$schema}.{$key} is not a schema property");
+				$this->assertArrayHasKey(key: $key, array: $schemas[$bySchema[$schema]]['properties'], message: "{$schema}.{$key} is not a schema property");
 			}
 		}
 
@@ -253,8 +305,8 @@ class WorldCopyServiceTest extends TestCase {
 	public function testAnUnconfiguredLoreSchemaCopiesTheRules(): void {
 		$result = $this->service(unconfigured: ['lorepage'])->copy(worldId: self::WORLD, name: 'Aldmoor season 2');
 
-		$this->assertSame(0, $result['counts']['lorePages']);
-		$this->assertSame(2, $result['counts']['skills']);
+		$this->assertSame(expected: 0, actual: $result['counts']['lorePages']);
+		$this->assertSame(expected: 2, actual: $result['counts']['skills']);
 
 	}//end testAnUnconfiguredLoreSchemaCopiesTheRules()
 
@@ -267,8 +319,8 @@ class WorldCopyServiceTest extends TestCase {
 	public function testAnUnconfiguredFieldSchemaCopiesTheRules(): void {
 		$result = $this->service(unconfigured: ['characterfield'])->copy(worldId: self::WORLD, name: 'Aldmoor season 2');
 
-		$this->assertSame(0, $result['counts']['characterFields']);
-		$this->assertSame(2, $result['counts']['lorePages']);
+		$this->assertSame(expected: 0, actual: $result['counts']['characterFields']);
+		$this->assertSame(expected: 2, actual: $result['counts']['lorePages']);
 
 	}//end testAnUnconfiguredFieldSchemaCopiesTheRules()
 
@@ -280,11 +332,11 @@ class WorldCopyServiceTest extends TestCase {
 	 */
 	public function testTheImportConfiguresTheLoreSchema(): void {
 		$slugs = (new ReflectionClass(\OCA\Larpinq\Service\SettingsLoadService::class))->getConstant('OBJECT_TYPE_SCHEMA_SLUGS');
-		$this->assertSame('larping_lore_page', $slugs['lorepage'] ?? null);
+		$this->assertSame(expected: 'larping_lore_page', actual: $slugs['lorepage'] ?? null);
 		$keys = (new ReflectionClass(\OCA\Larpinq\Service\SettingsService::class))->getConstant('CONFIG_KEYS');
-		$this->assertContains('lorepage_schema', $keys);
-		$this->assertContains('lorepage_register', $keys);
-		$this->assertSame('larping_lore_page', $this->mergedSchemas()['lorePage']['slug']);
+		$this->assertContains(needle: 'lorepage_schema', haystack: $keys);
+		$this->assertContains(needle: 'lorepage_register', haystack: $keys);
+		$this->assertSame(expected: 'larping_lore_page', actual: $this->mergedSchemas()['lorePage']['slug']);
 
 	}//end testTheImportConfiguresTheLoreSchema()
 
@@ -296,9 +348,12 @@ class WorldCopyServiceTest extends TestCase {
 	public function testThePreviewCountsWithoutWriting(): void {
 		$counts = $this->service()->preview(worldId: self::WORLD);
 
-		$this->assertSame('Aldmoor', $counts['world']['name']);
-		$this->assertSame(['abilities' => 2, 'effects' => 2, 'skills' => 2, 'items' => 1, 'conditions' => 1, 'lorePages' => 2, 'characterFields' => 2], $counts['counts']);
-		$this->assertSame([], $this->store->saves);
+		$this->assertSame(expected: 'Aldmoor', actual: $counts['world']['name']);
+		$this->assertSame(
+			expected: ['abilities' => 2, 'effects' => 2, 'skills' => 2, 'items' => 1, 'conditions' => 1, 'lorePages' => 2, 'characterFields' => 2],
+			actual: $counts['counts']
+		);
+		$this->assertSame(expected: [], actual: $this->store->saves);
 
 	}//end testThePreviewCountsWithoutWriting()
 
@@ -314,12 +369,12 @@ class WorldCopyServiceTest extends TestCase {
 
 		try {
 			$this->service()->copy(worldId: self::WORLD, name: 'Too big');
-			$this->fail('a copy above the cap must be refused');
+			$this->fail(message: 'a copy above the cap must be refused');
 		} catch (LengthException $e) {
-			$this->assertStringContainsString((string)WorldCopyService::MAX_OBJECTS, $e->getMessage());
+			$this->assertStringContainsString(needle: (string)WorldCopyService::MAX_OBJECTS, haystack: $e->getMessage());
 		}
 
-		$this->assertSame([], $this->store->saves);
+		$this->assertSame(expected: [], actual: $this->store->saves);
 
 	}//end testAWorldAboveTheCapIsRefusedBeforeAnyWrite()
 
@@ -336,16 +391,16 @@ class WorldCopyServiceTest extends TestCase {
 
 		try {
 			$this->service()->copy(worldId: self::WORLD, name: 'Broken');
-			$this->fail('the copy must fail');
+			$this->fail(message: 'the copy must fail');
 		} catch (WorldCopyFailedException $e) {
-			$this->assertSame([], $e->getLeftovers());
-			$this->assertStringContainsString('Swordsmanship', $e->getMessage());
+			$this->assertSame(expected: [], actual: $e->getLeftovers());
+			$this->assertStringContainsString(needle: 'Swordsmanship', haystack: $e->getMessage());
 		}
 
-		$this->assertCount($settingsBefore, $this->store->objects['setting']);
-		$this->assertCount(3, $this->store->objects['ability']);
-		$this->assertCount(3, $this->store->objects['effect']);
-		$this->assertCount(5, $this->store->deletes);
+		$this->assertCount(expectedCount: $settingsBefore, haystack: $this->store->objects['setting']);
+		$this->assertCount(expectedCount: 3, haystack: $this->store->objects['ability']);
+		$this->assertCount(expectedCount: 3, haystack: $this->store->objects['effect']);
+		$this->assertCount(expectedCount: 5, haystack: $this->store->deletes);
 
 	}//end testAFailedCopyLeavesNothingHalfMade()
 
@@ -360,12 +415,12 @@ class WorldCopyServiceTest extends TestCase {
 
 		try {
 			$this->service()->copy(worldId: self::WORLD, name: 'Broken');
-			$this->fail('the copy must fail');
+			$this->fail(message: 'the copy must fail');
 		} catch (WorldCopyFailedException $e) {
-			$this->assertSame(['00000000-0000-4000-8000-000000000001'], $e->getLeftovers());
+			$this->assertSame(expected: ['00000000-0000-4000-8000-000000000001'], actual: $e->getLeftovers());
 		}
 
-		$this->assertSame('archived', $this->store->objects['setting']['00000000-0000-4000-8000-000000000001']['status']);
+		$this->assertSame(expected: 'archived', actual: $this->store->objects['setting']['00000000-0000-4000-8000-000000000001']['status']);
 
 	}//end testARollbackThatCannotDeleteReportsTheLeftovers()
 

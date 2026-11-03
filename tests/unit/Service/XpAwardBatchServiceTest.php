@@ -45,8 +45,14 @@ class XpAwardBatchServiceTest extends TestCase {
 	/** @var array<int, array{type: string, data: array<string, mixed>}> Every save. */
 	private array $saved = [];
 
+	/** @var XpAwardBatchService The service. */
 	private XpAwardBatchService $service;
 
+	/**
+	 * Build the doubles and the subject every test starts from.
+	 *
+	 * @return void
+	 */
 	protected function setUp(): void {
 		parent::setUp();
 
@@ -67,7 +73,7 @@ class XpAwardBatchServiceTest extends TestCase {
 			'xpAward' => [],
 		];
 
-		$fetcher = $this->createMock(RegisterObjectFetcher::class);
+		$fetcher = $this->createMock(originalClassName: RegisterObjectFetcher::class);
 		$fetcher->method('getObjects')->willReturnCallback(
 			function (string $objectType, ?int $limit = null, ?int $offset = null, ?array $filters = []): array {
 				$rows = $this->objects[$objectType] ?? [];
@@ -87,7 +93,7 @@ class XpAwardBatchServiceTest extends TestCase {
 			}
 		);
 
-		$this->service = new XpAwardBatchService(new EventRosterService($fetcher), $fetcher);
+		$this->service = new XpAwardBatchService(rosterService: new EventRosterService(objectFetcher: $fetcher), objectFetcher: $fetcher);
 	}//end setUp()
 
 	/**
@@ -113,13 +119,13 @@ class XpAwardBatchServiceTest extends TestCase {
 	public function testAttendanceDecidesTheDefaultTicks(): void {
 		$rows = $this->rosterByName();
 
-		$this->assertSame(['Mirela the Wanderer', 'Old Captain Harrow', 'Quiet Nell', 'Sir Bertram'], array_keys($rows));
-		$this->assertTrue($rows['Mirela the Wanderer']['ticked']);
-		$this->assertTrue($rows['Sir Bertram']['ticked']);
-		$this->assertFalse($rows['Old Captain Harrow']['ticked']);
-		$this->assertSame('no-show', $rows['Old Captain Harrow']['attendance']);
-		$this->assertFalse($rows['Quiet Nell']['ticked']);
-		$this->assertSame('', $rows['Quiet Nell']['attendance'], 'no check-in recorded');
+		$this->assertSame(expected: ['Mirela the Wanderer', 'Old Captain Harrow', 'Quiet Nell', 'Sir Bertram'], actual: array_keys($rows));
+		$this->assertTrue(condition: $rows['Mirela the Wanderer']['ticked']);
+		$this->assertTrue(condition: $rows['Sir Bertram']['ticked']);
+		$this->assertFalse(condition: $rows['Old Captain Harrow']['ticked']);
+		$this->assertSame(expected: 'no-show', actual: $rows['Old Captain Harrow']['attendance']);
+		$this->assertFalse(condition: $rows['Quiet Nell']['ticked']);
+		$this->assertSame(expected: '', actual: $rows['Quiet Nell']['attendance'], message: 'no check-in recorded');
 	}//end testAttendanceDecidesTheDefaultTicks()
 
 	/**
@@ -134,11 +140,11 @@ class XpAwardBatchServiceTest extends TestCase {
 
 		$rows = $this->rosterByName();
 
-		$this->assertFalse($rows['Sir Bertram']['ticked']);
-		$this->assertSame('x1', $rows['Sir Bertram']['awards'][0]['id']);
-		$this->assertSame('joris', $rows['Sir Bertram']['awards'][0]['awardedBy']);
-		$this->assertTrue($rows['Mirela the Wanderer']['ticked'], 'an award for another event does not count');
-		$this->assertSame([], $rows['Mirela the Wanderer']['awards']);
+		$this->assertFalse(condition: $rows['Sir Bertram']['ticked']);
+		$this->assertSame(expected: 'x1', actual: $rows['Sir Bertram']['awards'][0]['id']);
+		$this->assertSame(expected: 'joris', actual: $rows['Sir Bertram']['awards'][0]['awardedBy']);
+		$this->assertTrue(condition: $rows['Mirela the Wanderer']['ticked'], message: 'an award for another event does not count');
+		$this->assertSame(expected: [], actual: $rows['Mirela the Wanderer']['awards']);
 	}//end testReopeningDoesNotDoubleAward()
 
 	/**
@@ -157,15 +163,15 @@ class XpAwardBatchServiceTest extends TestCase {
 			actingUid: 'joris'
 		);
 
-		$this->assertCount(3, $result['created']);
-		$this->assertSame([], $result['refused']);
-		$this->assertSame(['xpAward', 'xpAward', 'xpAward'], array_column($this->saved, 'type'));
+		$this->assertCount(expectedCount: 3, haystack: $result['created']);
+		$this->assertSame(expected: [], actual: $result['refused']);
+		$this->assertSame(expected: ['xpAward', 'xpAward', 'xpAward'], actual: array_column($this->saved, 'type'));
 		$harrow = $this->saved[2]['data'];
-		$this->assertSame(self::EVENT, $harrow['event']);
-		$this->assertSame(2, $harrow['amount']);
-		$this->assertSame('Saturday only', $harrow['reason']);
-		$this->assertSame('joris', $harrow['awardedBy']);
-		$this->assertArrayNotHasKey('reason', $this->saved[0]['data']);
+		$this->assertSame(expected: self::EVENT, actual: $harrow['event']);
+		$this->assertSame(expected: 2, actual: $harrow['amount']);
+		$this->assertSame(expected: 'Saturday only', actual: $harrow['reason']);
+		$this->assertSame(expected: 'joris', actual: $harrow['awardedBy']);
+		$this->assertArrayNotHasKey(key: 'reason', array: $this->saved[0]['data']);
 	}//end testABatchCreatesOneAwardPerRow()
 
 	/**
@@ -186,13 +192,13 @@ class XpAwardBatchServiceTest extends TestCase {
 			actingUid: 'joris'
 		);
 
-		$this->assertCount(1, $result['created']);
+		$this->assertCount(expectedCount: 1, haystack: $result['created']);
 		$this->assertSame(
-			[
+			expected: [
 				['character' => self::BERTRAM, 'reason' => 'duplicate'],
 				['character' => self::MIRELA, 'reason' => 'duplicate'],
 			],
-			$result['refused']
+			actual: $result['refused']
 		);
 	}//end testADuplicateIsRefusedAndTheRestIsCreated()
 
@@ -213,9 +219,9 @@ class XpAwardBatchServiceTest extends TestCase {
 			actingUid: 'joris'
 		);
 
-		$this->assertSame([['character' => self::BERTRAM, 'reason' => 'extra-needs-reason']], $result['refused']);
-		$this->assertCount(1, $result['created']);
-		$this->assertSame('Plot bonus', $this->saved[0]['data']['reason']);
+		$this->assertSame(expected: [['character' => self::BERTRAM, 'reason' => 'extra-needs-reason']], actual: $result['refused']);
+		$this->assertCount(expectedCount: 1, haystack: $result['created']);
+		$this->assertSame(expected: 'Plot bonus', actual: $this->saved[0]['data']['reason']);
 	}//end testAnExtraAwardNeedsAReason()
 
 	/**
@@ -235,12 +241,12 @@ class XpAwardBatchServiceTest extends TestCase {
 			actingUid: 'joris'
 		);
 
-		$this->assertSame([], $result['created']);
+		$this->assertSame(expected: [], actual: $result['created']);
 		$this->assertSame(
-			['not-on-roster', 'invalid-amount', 'invalid-amount', 'not-on-roster'],
-			array_column($result['refused'], 'reason')
+			expected: ['not-on-roster', 'invalid-amount', 'invalid-amount', 'not-on-roster'],
+			actual: array_column($result['refused'], 'reason')
 		);
-		$this->assertSame([], $this->saved);
+		$this->assertSame(expected: [], actual: $this->saved);
 	}//end testOffRosterAndBadAmountsAreRefused()
 
 	/**
@@ -270,7 +276,7 @@ class XpAwardBatchServiceTest extends TestCase {
 				actingUid: 'joris'
 			);
 			$result = $validator->validate(json_decode((string)json_encode($payload)), json_decode((string)json_encode($schema)));
-			$this->assertTrue($result->isValid(), (string)json_encode($payload));
+			$this->assertTrue(condition: $result->isValid(), message: (string)json_encode($payload));
 		}
 	}//end testThePayloadValidatesAgainstTheRealSchema()
 	/**
@@ -284,9 +290,9 @@ class XpAwardBatchServiceTest extends TestCase {
 		$slugs = (new ReflectionClass(SettingsLoadService::class))->getConstant('OBJECT_TYPE_SCHEMA_SLUGS');
 		$keys = (new ReflectionClass(SettingsService::class))->getConstant('CONFIG_KEYS');
 
-		$this->assertSame('xpAward', $slugs[strtolower(XpAwardBatchService::OBJECT_TYPE)] ?? null);
-		$this->assertContains('xpaward_schema', $keys);
-		$this->assertContains('xpaward_register', $keys);
-		$this->assertContains('xpaward_source', $keys);
+		$this->assertSame(expected: 'xpAward', actual: $slugs[strtolower(XpAwardBatchService::OBJECT_TYPE)] ?? null);
+		$this->assertContains(needle: 'xpaward_schema', haystack: $keys);
+		$this->assertContains(needle: 'xpaward_register', haystack: $keys);
+		$this->assertContains(needle: 'xpaward_source', haystack: $keys);
 	}//end testTheImportConfiguresTheAwardSchema()
 }//end class

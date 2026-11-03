@@ -30,6 +30,7 @@ use PHPUnit\Framework\TestCase;
  */
 class DashboardControllerTest extends TestCase {
 
+	/** @var DashboardController The controller. */
 	private DashboardController $controller;
 
 	/** @var array<string, mixed> What page() handed to the initial state. */
@@ -38,8 +39,10 @@ class DashboardControllerTest extends TestCase {
 	/** @var list<string> The groups of the signed-in user. */
 	private array $groups = [];
 
+	/** @var bool Whether admin. */
 	private bool $admin = false;
 
+	/** @var bool Whether signed in. */
 	private bool $signedIn = true;
 
 	/** @var array<string, string> The signed-in user's stored larpinq preferences, by IConfig key. */
@@ -48,26 +51,31 @@ class DashboardControllerTest extends TestCase {
 	/** @var int How often the page read a stored preference. */
 	private int $preferenceReads = 0;
 
+	/**
+	 * Build the doubles and the subject every test starts from.
+	 *
+	 * @return void
+	 */
 	protected function setUp(): void {
 		parent::setUp();
 
-		$initialState = $this->createMock(IInitialState::class);
+		$initialState = $this->createMock(originalClassName: IInitialState::class);
 		$initialState->method('provideInitialState')->willReturnCallback(
 			function (string $key, mixed $value): void {
 				$this->provided[$key] = $value;
 			}
 		);
-		$user = $this->createMock(IUser::class);
+		$user = $this->createMock(originalClassName: IUser::class);
 		$user->method('getUID')->willReturn('anna');
-		$session = $this->createMock(IUserSession::class);
+		$session = $this->createMock(originalClassName: IUserSession::class);
 		$session->method('getUser')->willReturnCallback(fn () => $this->signedIn ? $user : null);
-		$groupManager = $this->createMock(IGroupManager::class);
+		$groupManager = $this->createMock(originalClassName: IGroupManager::class);
 		$groupManager->method('isInGroup')->willReturnCallback(
 			fn (string $uid, string $group): bool => $uid === 'anna' && in_array($group, $this->groups, true)
 		);
 		$groupManager->method('isAdmin')->willReturnCallback(fn (string $uid): bool => $uid === 'anna' && $this->admin);
 
-		$config = $this->createMock(IConfig::class);
+		$config = $this->createMock(originalClassName: IConfig::class);
 		$config->method('getUserValue')->willReturnCallback(
 			function (string $uid, string $app, string $key, mixed $default = ''): mixed {
 				$this->preferenceReads++;
@@ -76,10 +84,10 @@ class DashboardControllerTest extends TestCase {
 		);
 
 		$this->controller = new DashboardController(
-			$this->createMock(IRequest::class),
-			$initialState,
-			new CallerAccess($session, $groupManager),
-			$config,
+			request: $this->createMock(originalClassName: IRequest::class),
+			initialState: $initialState,
+			callerAccess: new CallerAccess(userSession: $session, groupManager: $groupManager),
+			config: $config,
 		);
 	}
 
@@ -93,7 +101,7 @@ class DashboardControllerTest extends TestCase {
 		$this->groups = ['gamemasters'];
 		$this->controller->page();
 
-		self::assertTrue($this->provided['isGameMaster'] ?? null);
+		self::assertTrue(condition: $this->provided['isGameMaster'] ?? null);
 	}
 
 	/**
@@ -104,11 +112,11 @@ class DashboardControllerTest extends TestCase {
 	public function testAPlayerIsNot(): void {
 		$this->groups = ['larpers'];
 		$this->controller->page();
-		self::assertFalse($this->provided['isGameMaster'] ?? null);
+		self::assertFalse(condition: $this->provided['isGameMaster'] ?? null);
 
 		$this->signedIn = false;
 		$this->controller->page();
-		self::assertFalse($this->provided['isGameMaster']);
+		self::assertFalse(condition: $this->provided['isGameMaster']);
 	}
 
 	/**
@@ -120,7 +128,7 @@ class DashboardControllerTest extends TestCase {
 		$this->admin = true;
 		$this->controller->page();
 
-		self::assertTrue($this->provided['isGameMaster'] ?? null);
+		self::assertTrue(condition: $this->provided['isGameMaster'] ?? null);
 	}
 
 	/**
@@ -134,7 +142,7 @@ class DashboardControllerTest extends TestCase {
 		$this->preferences['pref_active-world'] = '11111111-1111-4111-8111-111111111111';
 		$this->controller->page();
 
-		self::assertSame('11111111-1111-4111-8111-111111111111', $this->provided['activeWorld'] ?? null);
+		self::assertSame(expected: '11111111-1111-4111-8111-111111111111', actual: $this->provided['activeWorld'] ?? null);
 	}
 
 	/**
@@ -144,12 +152,12 @@ class DashboardControllerTest extends TestCase {
 	 */
 	public function testNoActiveWorldMeansAllWorlds(): void {
 		$this->controller->page();
-		self::assertSame('', $this->provided['activeWorld'] ?? null);
+		self::assertSame(expected: '', actual: $this->provided['activeWorld'] ?? null);
 
 		$this->preferences['pref_active-world'] = '11111111-1111-4111-8111-111111111111';
 		$this->signedIn = false;
 		$this->controller->page();
-		self::assertSame('', $this->provided['activeWorld']);
+		self::assertSame(expected: '', actual: $this->provided['activeWorld']);
 	}
 
 	/**
@@ -161,13 +169,18 @@ class DashboardControllerTest extends TestCase {
 		$this->signedIn = false;
 		$this->controller->page();
 
-		self::assertSame(0, $this->preferenceReads);
+		self::assertSame(expected: 0, actual: $this->preferenceReads);
 	}
 
+	/**
+	 * Page returns template response.
+	 *
+	 * @return void
+	 */
 	public function testPageReturnsTemplateResponse(): void {
 		$result = $this->controller->page();
 
-		self::assertInstanceOf(TemplateResponse::class, $result);
+		self::assertInstanceOf(expected: TemplateResponse::class, actual: $result);
 	}
 
 	/**
@@ -190,29 +203,44 @@ class DashboardControllerTest extends TestCase {
 		$result = $this->controller->catchAll();
 		$page = $this->controller->page();
 
-		self::assertInstanceOf(TemplateResponse::class, $result);
-		self::assertSame('index', $result->getTemplateName());
-		self::assertSame($page->getTemplateName(), $result->getTemplateName());
-		self::assertSame($page->getRenderAs(), $result->getRenderAs());
-		self::assertSame($page->getParams(), $result->getParams());
+		self::assertInstanceOf(expected: TemplateResponse::class, actual: $result);
+		self::assertSame(expected: 'index', actual: $result->getTemplateName());
+		self::assertSame(expected: $page->getTemplateName(), actual: $result->getTemplateName());
+		self::assertSame(expected: $page->getRenderAs(), actual: $result->getRenderAs());
+		self::assertSame(expected: $page->getParams(), actual: $result->getParams());
 	}
 
+	/**
+	 * Page uses index template.
+	 *
+	 * @return void
+	 */
 	public function testPageUsesIndexTemplate(): void {
 		$result = $this->controller->page();
 
-		self::assertSame('index', $result->getTemplateName());
+		self::assertSame(expected: 'index', actual: $result->getTemplateName());
 	}
 
+	/**
+	 * Page uses larpinq app.
+	 *
+	 * @return void
+	 */
 	public function testPageUsesLarpinqApp(): void {
 		$result = $this->controller->page();
 
 		// TemplateResponse stores the app name.
-		self::assertInstanceOf(TemplateResponse::class, $result);
+		self::assertInstanceOf(expected: TemplateResponse::class, actual: $result);
 	}
 
+	/**
+	 * Page returns empty params.
+	 *
+	 * @return void
+	 */
 	public function testPageReturnsEmptyParams(): void {
 		$result = $this->controller->page();
 
-		self::assertEmpty($result->getParams());
+		self::assertEmpty(actual: $result->getParams());
 	}
 }

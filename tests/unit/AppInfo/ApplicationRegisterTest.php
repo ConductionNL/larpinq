@@ -134,8 +134,8 @@ class ApplicationRegisterTest extends TestCase {
 
 		foreach (array_unique(array_column(self::REGISTRATIONS, 0)) as $event) {
 			$this->assertTrue(
-				class_exists($event),
-				sprintf(
+				condition: class_exists($event),
+				message: sprintf(
 					'The fixture did not make %s resolvable, so this test would pass '
 					. 'over a register() that attaches nothing.',
 					$event
@@ -147,9 +147,9 @@ class ApplicationRegisterTest extends TestCase {
 
 		foreach (self::REGISTRATIONS as [$event, $listener]) {
 			$this->assertContains(
-				[$event, $listener],
-				$recorded,
-				sprintf(
+				needle: [$event, $listener],
+				haystack: $recorded,
+				message: sprintf(
 					'%s did not register %s. Four of these five registrations carry the '
 					. 'server-authoritative skill-requirement, XP-budget and unique-holder enforcement '
 					. 'on character, item and condition writes — unregistered, that enforcement is simply '
@@ -161,9 +161,9 @@ class ApplicationRegisterTest extends TestCase {
 		}
 
 		$this->assertCount(
-			count(self::REGISTRATIONS),
-			$recorded,
-			'register() attached a different number of listeners than this test knows about.'
+			expectedCount: count(self::REGISTRATIONS),
+			haystack: $recorded,
+			message: 'register() attached a different number of listeners than this test knows about.'
 		);
 
 	}//end testEveryListenerRegistersWhenOpenRegisterIsResolvable()
@@ -180,7 +180,7 @@ class ApplicationRegisterTest extends TestCase {
 	public function testRegisterNeverThrows(): void {
 		$this->recordRegistrations();
 
-		$this->addToAssertionCount(1);
+		$this->addToAssertionCount(count: 1);
 
 	}//end testRegisterNeverThrows()
 

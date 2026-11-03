@@ -54,11 +54,11 @@ class CharacterStatusFragmentTest extends TestCase {
 	public function testACharacterHasAStatus(): void {
 		$status = $this->schemas()['character']['properties']['status'];
 
-		$this->assertSame(['active', 'retired', 'dead'], $status['enum']);
-		$this->assertSame('active', $status['default']);
-		$this->assertTrue($status['facetable']);
-		$this->assertSame(['active' => 'Active', 'retired' => 'Retired', 'dead' => 'Dead'], $status['x-enum-labels']);
-		$this->assertSame(['update' => ['gamemasters']], $status['authorization']);
+		$this->assertSame(expected: ['active', 'retired', 'dead'], actual: $status['enum']);
+		$this->assertSame(expected: 'active', actual: $status['default']);
+		$this->assertTrue(condition: $status['facetable']);
+		$this->assertSame(expected: ['active' => 'Active', 'retired' => 'Retired', 'dead' => 'Dead'], actual: $status['x-enum-labels']);
+		$this->assertSame(expected: ['update' => ['gamemasters']], actual: $status['authorization']);
 	}//end testACharacterHasAStatus()
 
 	/**
@@ -69,8 +69,8 @@ class CharacterStatusFragmentTest extends TestCase {
 	 */
 	public function testThePickerOffersActiveCharactersOnly(): void {
 		$this->assertSame(
-			['setting' => '@object.setting', 'status' => 'active'],
-			$this->schemas()['event']['properties']['players']['x-relation-filter']
+			expected: ['setting' => '@object.setting', 'status' => 'active'],
+			actual: $this->schemas()['event']['properties']['players']['x-relation-filter']
 		);
 	}//end testThePickerOffersActiveCharactersOnly()
 
@@ -94,10 +94,10 @@ class CharacterStatusFragmentTest extends TestCase {
 			unset($object['@self']);
 			$statuses[] = $object['status'] ?? null;
 			$result = (new Validator())->validate(json_decode((string)json_encode($object)), $opis);
-			$this->assertTrue($result->isValid(), "seed character {$object['name']} must validate");
+			$this->assertTrue(condition: $result->isValid(), message: "seed character {$object['name']} must validate");
 		}
 
-		$this->assertSame(['active', 'retired', 'dead'], $statuses);
+		$this->assertSame(expected: ['active', 'retired', 'dead'], actual: $statuses);
 	}//end testTheSeedCharactersValidate()
 
 	/**

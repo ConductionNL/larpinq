@@ -40,6 +40,7 @@ class CustomFieldGuardTest extends TestCase {
 
 	private const ELSEWHERE = '22222222-2222-4222-8222-222222222222';
 
+	/** @var InMemoryObjectService The store. */
 	private InMemoryObjectService $store;
 
 	/**
@@ -52,12 +53,30 @@ class CustomFieldGuardTest extends TestCase {
 		parent::setUp();
 		$this->store = new InMemoryObjectService();
 		$a = self::ALDMOOR;
-		$this->store->seed('characterfield', ['id' => 'f1', 'label' => 'Bloodline', 'key' => 'bloodline', 'fieldType' => 'choice', 'choices' => ['human', 'elven', 'dwarven'], 'visibility' => 'owner', 'setting' => $a]);
-		$this->store->seed('characterfield', ['id' => 'f2', 'label' => 'Patron god', 'key' => 'patron-god', 'fieldType' => 'text', 'visibility' => 'owner', 'setting' => $a]);
-		$this->store->seed('characterfield', ['id' => 'f3', 'label' => 'Scars', 'key' => 'scars', 'fieldType' => 'number', 'visibility' => 'owner', 'setting' => $a]);
-		$this->store->seed('characterfield', ['id' => 'f4', 'label' => 'True allegiance', 'key' => 'true-allegiance', 'fieldType' => 'choice', 'choices' => ['crown', 'rebels', 'none'], 'visibility' => 'gamemasters', 'setting' => $a]);
-		$this->store->seed('characterfield', ['id' => 'f5', 'label' => 'Vegetarian', 'key' => 'vegetarian', 'fieldType' => 'yes-no', 'visibility' => 'owner']);
-		$this->store->seed('characterfield', ['id' => 'f6', 'label' => 'Clan', 'key' => 'clan', 'fieldType' => 'text', 'visibility' => 'owner', 'setting' => self::ELSEWHERE]);
+		$this->store->seed(
+			'characterfield',
+			['id' => 'f1', 'label' => 'Bloodline', 'key' => 'bloodline', 'fieldType' => 'choice', 'choices' => ['human', 'elven', 'dwarven'], 'visibility' => 'owner', 'setting' => $a]
+		);
+		$this->store->seed(
+			'characterfield',
+			['id' => 'f2', 'label' => 'Patron god', 'key' => 'patron-god', 'fieldType' => 'text', 'visibility' => 'owner', 'setting' => $a]
+		);
+		$this->store->seed(
+			'characterfield',
+			['id' => 'f3', 'label' => 'Scars', 'key' => 'scars', 'fieldType' => 'number', 'visibility' => 'owner', 'setting' => $a]
+		);
+		$this->store->seed(
+			'characterfield',
+			['id' => 'f4', 'label' => 'True allegiance', 'key' => 'true-allegiance', 'fieldType' => 'choice', 'choices' => ['crown', 'rebels', 'none'], 'visibility' => 'gamemasters', 'setting' => $a]
+		);
+		$this->store->seed(
+			'characterfield',
+			['id' => 'f5', 'label' => 'Vegetarian', 'key' => 'vegetarian', 'fieldType' => 'yes-no', 'visibility' => 'owner']
+		);
+		$this->store->seed(
+			'characterfield',
+			['id' => 'f6', 'label' => 'Clan', 'key' => 'clan', 'fieldType' => 'text', 'visibility' => 'owner', 'setting' => self::ELSEWHERE]
+		);
 	}//end setUp()
 
 	/**
@@ -66,11 +85,11 @@ class CustomFieldGuardTest extends TestCase {
 	 * @return CustomFieldGuard The guard.
 	 */
 	private function guard(): CustomFieldGuard {
-		$container = $this->createMock(ContainerInterface::class);
+		$container = $this->createMock(originalClassName: ContainerInterface::class);
 		$container->method('get')->willReturn($this->store);
-		$apps = $this->createMock(IAppManager::class);
+		$apps = $this->createMock(originalClassName: IAppManager::class);
 		$apps->method('getInstalledApps')->willReturn(['openregister']);
-		$config = $this->createMock(IAppConfig::class);
+		$config = $this->createMock(originalClassName: IAppConfig::class);
 		$config->method('getValueString')->willReturnCallback(
 			static function (string $app, string $key, string $default = ''): string {
 				[$type, $kind] = explode('_', $key, 2) + [1 => ''];
@@ -85,7 +104,7 @@ class CustomFieldGuardTest extends TestCase {
 			container: $container,
 			appManager: $apps,
 			config: $config,
-			logger: $this->createMock(LoggerInterface::class),
+			logger: $this->createMock(originalClassName: LoggerInterface::class),
 		);
 
 		return new CustomFieldGuard(objectFetcher: $fetcher, validator: new CustomFieldValidator());
@@ -114,7 +133,7 @@ class CustomFieldGuardTest extends TestCase {
 			private: ['true-allegiance' => 'rebels']
 		);
 
-		$this->assertNull($this->guard()->check(candidate: $candidate, old: []));
+		$this->assertNull(actual: $this->guard()->check(candidate: $candidate, old: []));
 	}//end testValidValuesPass()
 
 	/**
@@ -125,9 +144,9 @@ class CustomFieldGuardTest extends TestCase {
 	public function testTextInANumberFieldIsRefused(): void {
 		$errors = $this->guard()->check(candidate: $this->mirela(public: ['scars' => 'many']), old: $this->mirela());
 
-		$this->assertNotNull($errors);
-		$this->assertSame('custom_field_invalid', $errors['code']);
-		$this->assertSame(['scars'], array_keys($errors['fields']));
+		$this->assertNotNull(actual: $errors);
+		$this->assertSame(expected: 'custom_field_invalid', actual: $errors['code']);
+		$this->assertSame(expected: ['scars'], actual: array_keys($errors['fields']));
 	}//end testTextInANumberFieldIsRefused()
 
 	/**
@@ -142,7 +161,7 @@ class CustomFieldGuardTest extends TestCase {
 			old: []
 		);
 
-		$this->assertSame(['bloodline', 'clan', 'nothing', 'vegetarian'], $this->sortedKeys(errors: $errors));
+		$this->assertSame(expected: ['bloodline', 'clan', 'nothing', 'vegetarian'], actual: $this->sortedKeys(errors: $errors));
 	}//end testEachWrongValueIsNamed()
 
 	/**
@@ -156,7 +175,7 @@ class CustomFieldGuardTest extends TestCase {
 			old: []
 		);
 
-		$this->assertSame(['scars', 'true-allegiance'], $this->sortedKeys(errors: $errors));
+		$this->assertSame(expected: ['scars', 'true-allegiance'], actual: $this->sortedKeys(errors: $errors));
 	}//end testAValueSitsInThePropertyOfItsVisibility()
 
 	/**
@@ -169,12 +188,12 @@ class CustomFieldGuardTest extends TestCase {
 	public function testOnlyChangedValuesAreChecked(): void {
 		$old = $this->mirela(public: ['retired-field' => 'kept', 'scars' => 1]);
 		$candidate = $this->mirela(public: ['retired-field' => 'kept', 'scars' => 3]);
-		$this->assertNull($this->guard()->check(candidate: $candidate, old: $old));
+		$this->assertNull(actual: $this->guard()->check(candidate: $candidate, old: $old));
 
 		$unchanged = $old;
 		$unchanged['name'] = 'Mirela';
 		$this->store->objects = [];
-		$this->assertNull($this->guard()->check(candidate: $unchanged, old: $old));
+		$this->assertNull(actual: $this->guard()->check(candidate: $unchanged, old: $old));
 	}//end testOnlyChangedValuesAreChecked()
 
 	/**
@@ -184,7 +203,7 @@ class CustomFieldGuardTest extends TestCase {
 	 */
 	public function testClearingAValueIsAllowed(): void {
 		$this->assertNull(
-			$this->guard()->check(candidate: $this->mirela(public: ['scars' => null]), old: $this->mirela(public: ['scars' => 2]))
+			actual: $this->guard()->check(candidate: $this->mirela(public: ['scars' => null]), old: $this->mirela(public: ['scars' => 2]))
 		);
 	}//end testClearingAValueIsAllowed()
 
@@ -196,7 +215,7 @@ class CustomFieldGuardTest extends TestCase {
 	 * @return list<string> The keys.
 	 */
 	private function sortedKeys(?array $errors): array {
-		$this->assertNotNull($errors);
+		$this->assertNotNull(actual: $errors);
 		$keys = array_keys($errors['fields']);
 		sort($keys);
 		return $keys;

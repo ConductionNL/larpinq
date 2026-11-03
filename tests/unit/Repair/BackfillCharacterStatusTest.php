@@ -43,7 +43,7 @@ class BackfillCharacterStatusTest extends TestCase {
 		$stored[5]['status'] = 'dead';
 		$stored[200]['status'] = 'retired';
 
-		$fetcher = $this->createMock(RegisterObjectFetcher::class);
+		$fetcher = $this->createMock(originalClassName: RegisterObjectFetcher::class);
 		$fetcher->method('getObjects')->willReturnCallback(
 			static fn (string $objectType, ?int $limit = null, ?int $offset = null): array => array_slice($stored, (int)$offset, (int)$limit)
 		);
@@ -55,12 +55,14 @@ class BackfillCharacterStatusTest extends TestCase {
 			}
 		);
 
-		(new BackfillCharacterStatus($fetcher, $this->createMock(LoggerInterface::class)))->run($this->createMock(IOutput::class));
+		(new BackfillCharacterStatus(objectFetcher: $fetcher, logger: $this->createMock(originalClassName: LoggerInterface::class)))->run(
+			$this->createMock(originalClassName: IOutput::class)
+		);
 
-		$this->assertCount(199, $saved);
-		$this->assertArrayNotHasKey('c5', $saved);
-		$this->assertArrayNotHasKey('c200', $saved);
-		$this->assertSame(['id' => 'c7', 'name' => 'Character 7', 'status' => 'active'], $saved['c7']);
+		$this->assertCount(expectedCount: 199, haystack: $saved);
+		$this->assertArrayNotHasKey(key: 'c5', array: $saved);
+		$this->assertArrayNotHasKey(key: 'c200', array: $saved);
+		$this->assertSame(expected: ['id' => 'c7', 'name' => 'Character 7', 'status' => 'active'], actual: $saved['c7']);
 	}//end testCharactersWithoutAStatusBecomeActive()
 
 	/**
@@ -69,18 +71,18 @@ class BackfillCharacterStatusTest extends TestCase {
 	 * @return void
 	 */
 	public function testFailuresNeverStopTheUpgrade(): void {
-		$fetcher = $this->createMock(RegisterObjectFetcher::class);
+		$fetcher = $this->createMock(originalClassName: RegisterObjectFetcher::class);
 		$fetcher->method('getObjects')->willReturn([['id' => 'a'], ['id' => 'b']]);
-		$fetcher->expects($this->exactly(2))->method('saveObject')->willThrowException(new \RuntimeException('locked'));
-		$logger = $this->createMock(LoggerInterface::class);
-		$logger->expects($this->exactly(2))->method('warning');
-		(new BackfillCharacterStatus($fetcher, $logger))->run($this->createMock(IOutput::class));
+		$fetcher->expects($this->exactly(count: 2))->method('saveObject')->willThrowException(new \RuntimeException('locked'));
+		$logger = $this->createMock(originalClassName: LoggerInterface::class);
+		$logger->expects($this->exactly(count: 2))->method('warning');
+		(new BackfillCharacterStatus(objectFetcher: $fetcher, logger: $logger))->run($this->createMock(originalClassName: IOutput::class));
 
-		$broken = $this->createMock(RegisterObjectFetcher::class);
+		$broken = $this->createMock(originalClassName: RegisterObjectFetcher::class);
 		$broken->method('getObjects')->willThrowException(new \RuntimeException('no register'));
 		$broken->expects($this->never())->method('saveObject');
-		$output = $this->createMock(IOutput::class);
+		$output = $this->createMock(originalClassName: IOutput::class);
 		$output->expects($this->once())->method('warning');
-		(new BackfillCharacterStatus($broken, $this->createMock(LoggerInterface::class)))->run($output);
+		(new BackfillCharacterStatus(objectFetcher: $broken, logger: $this->createMock(originalClassName: LoggerInterface::class)))->run($output);
 	}//end testFailuresNeverStopTheUpgrade()
 }//end class

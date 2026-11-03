@@ -240,9 +240,9 @@ class RegisterObjectFetcherTest extends TestCase {
 		foreach ([[], ['character' => '']] as $filters) {
 			try {
 				$this->service->getObjectsWithAppAuthority(objectType: 'xpAward', filters: $filters);
-				$this->fail('An unscoped read with the app\'s authority must be refused');
+				$this->fail(message: 'An unscoped read with the app\'s authority must be refused');
 			} catch (\InvalidArgumentException $e) {
-				$this->assertStringContainsString('scoping filter', $e->getMessage());
+				$this->assertStringContainsString(needle: 'scoping filter', haystack: $e->getMessage());
 			}
 		}
 	}
