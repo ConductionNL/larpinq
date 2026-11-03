@@ -51,14 +51,47 @@ class OverrideCharacterEntity extends ObjectEntity {
 }//end class
 
 /**
+ * A character entity whose payload cannot be read.
+ */
+class UnreadableCharacterEntity extends ObjectEntity {
+	/**
+	 * Build an entity of a schema.
+	 *
+	 * @param string $schema The schema id.
+	 */
+	public function __construct(string $schema) {
+		$this->schema = $schema;
+	}//end __construct()
+
+	/**
+	 * The payload; it cannot be read.
+	 *
+	 * @return array<string,mixed> Never returns.
+	 *
+	 * @throws \RuntimeException Always.
+	 */
+	public function getObject(): array {
+		throw new \RuntimeException('payload unreadable');
+	}//end getObject()
+}//end class
+
+/**
  * Overrides stay game-master-only when a check throws.
  *
  * @covers \OCA\Larpinq\Listener\CharacterRequirementListener
  * @uses   \OCA\Larpinq\Tests\Unit\Listener\OverrideCharacterEntity
+ * @uses   \OCA\Larpinq\Tests\Unit\Listener\UnreadableCharacterEntity
  */
 class CharacterOverrideFailsClosedTest extends TestCase {
 
 	private const BASE = ['name' => 'Mirela', 'skills' => ['s1']];
+
+	/**
+	 * The error lines the listener logged.
+	 *
+	 * @var string[]
+	 */
+	private array $logged = [];
 
 	private const WITH_OVERRIDE = [
 		'name' => 'Mirela',
@@ -155,6 +188,102 @@ class CharacterOverrideFailsClosedTest extends TestCase {
 		self::assertFalse(condition: $event->isPropagationStopped());
 		self::assertSame(expected: [], actual: $event->getErrors());
 	}//end testAWriteOnAnotherSchemaIsNotChecked()
+
+	/**
+	 * A config that throws does not refuse writes: the fail-closed check covers characters only.
+	 *
+	 * @return void
+	 */
+	public function testAThrowingConfigDoesNotRefuseTheWrite(): void {
+		$config = $this->createMock(originalClassName: IAppConfig::class);
+		$config->method('getValueString')->willThrowException(new \RuntimeException('config store down'));
+		$event = new ObjectUpdatingEvent(
+			new OverrideCharacterEntity('other-app-schema', self::WITH_OVERRIDE),
+			new OverrideCharacterEntity('other-app-schema', self::BASE)
+		);
+		$this->listener(config: $config, groups: $this->createMock(originalClassName: IGroupManager::class))->handle(event: $event);
+
+		self::assertFalse(condition: $event->isPropagationStopped());
+		self::assertSame(expected: [], actual: $event->getErrors());
+	}//end testAThrowingConfigDoesNotRefuseTheWrite()
+
+	/**
+	 * A character whose payload cannot be read is refused, and the refusal is logged.
+	 *
+	 * @return void
+	 */
+	public function testAnUnreadableCharacterIsRefusedAndLogged(): void {
+		$event = new ObjectUpdatingEvent(new UnreadableCharacterEntity('char-schema'), new OverrideCharacterEntity('char-schema', self::BASE));
+		$this->listener(config: $this->characterConfig(), groups: $this->createMock(originalClassName: IGroupManager::class))->handle(event: $event);
+
+		self::assertTrue(condition: $event->isPropagationStopped());
+		self::assertSame(expected: 'override_unverifiable', actual: $event->getErrors()['requirementOverrides'][0]['code'] ?? null);
+		self::assertSame(expected: ['Larpinq: requirement override check errored; refusing the write.'], actual: $this->logged);
+	}//end testAnUnreadableCharacterIsRefusedAndLogged()
+
+	/**
+	 * A game master check that fails with an \Error refuses the override, and the refusal is logged.
+	 *
+	 * @return void
+	 */
+	public function testAnErrorInTheGameMasterCheckRefusesAndIsLogged(): void {
+		$session = $this->createMock(originalClassName: IUserSession::class);
+		$user = $this->createMock(originalClassName: IUser::class);
+		$user->method('getUID')->willReturn('gm1');
+		$session->method('getUser')->willReturn($user);
+		$groups = $this->createMock(originalClassName: IGroupManager::class);
+		$groups->method('isInGroup')->willThrowException(new \TypeError('group backend returned garbage'));
+		$event = new ObjectUpdatingEvent(
+			new OverrideCharacterEntity('char-schema', self::WITH_OVERRIDE),
+			new OverrideCharacterEntity('char-schema', self::BASE)
+		);
+		$this->listener(config: $this->characterConfig(), groups: $groups, session: $session)->handle(event: $event);
+
+		self::assertTrue(condition: $event->isPropagationStopped());
+		self::assertSame(expected: 'override_unverifiable', actual: $event->getErrors()['requirementOverrides'][0]['code'] ?? null);
+		self::assertSame(expected: ['Larpinq: requirement override check errored; refusing the write.'], actual: $this->logged);
+	}//end testAnErrorInTheGameMasterCheckRefusesAndIsLogged()
+
+	/**
+	 * A config that names the character schema.
+	 *
+	 * @return IAppConfig The config.
+	 */
+	private function characterConfig(): IAppConfig {
+		$config = $this->createMock(originalClassName: IAppConfig::class);
+		$config->method('getValueString')->willReturnMap([['larpinq', 'character_schema', '', 'char-schema']]);
+
+		return $config;
+	}//end characterConfig()
+
+	/**
+	 * The listener over these doubles; its error log lines land in $this->logged.
+	 *
+	 * @param IAppConfig        $config  The config.
+	 * @param IGroupManager     $groups  The group manager.
+	 * @param IUserSession|null $session The session, or a signed-out one.
+	 *
+	 * @return CharacterRequirementListener The listener.
+	 */
+	private function listener(IAppConfig $config, IGroupManager $groups, ?IUserSession $session = null): CharacterRequirementListener {
+		$logger = $this->createMock(originalClassName: LoggerInterface::class);
+		$logger->method('error')->willReturnCallback(
+			function (string $message): void {
+				$this->logged[] = $message;
+			}
+		);
+		$requirements = $this->createMock(originalClassName: SkillRequirementService::class);
+		$requirements->method('validate')->willReturn(['valid' => true]);
+
+		return new CharacterRequirementListener(
+			requirementService: $requirements,
+			config: $config,
+			userSession: ($session ?? $this->createMock(originalClassName: IUserSession::class)),
+			groupManager: $groups,
+			logger: $logger,
+			customFields: $this->createMock(originalClassName: CustomFieldGuard::class)
+		);
+	}//end listener()
 
 	/**
 	 * Send one update of a character through the listener.
