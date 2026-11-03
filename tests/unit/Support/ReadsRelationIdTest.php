@@ -41,6 +41,11 @@ class ReadsRelationIdTest extends TestCase {
 			'numeric id' => [['id' => 7], ''],
 			'integer' => [7, ''],
 			'null' => [null, ''],
+			'empty id does not fall through to uuid' => [['id' => '', 'uuid' => 'c-6'], ''],
+			'zero string' => ['0', '0'],
+			'nested id object' => [['id' => ['id' => 'x']], ''],
+			'padded string kept as is' => [' c ', ' c '],
+			'empty string' => ['', ''],
 		];
 	}//end values()
 
