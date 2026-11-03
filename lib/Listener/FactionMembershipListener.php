@@ -51,6 +51,16 @@ use Psr\Log\LoggerInterface;
 class FactionMembershipListener implements IEventListener {
 
 	/**
+	 * The refusal when the guard could not read the write.
+	 *
+	 * @var array<string,string>
+	 */
+	private const UNVERIFIABLE = [
+		'code' => 'connection_unverifiable',
+		'message' => 'The faction or character of this write could not be read, so the write is refused.',
+	];
+
+	/**
 	 * Constructor.
 	 *
 	 * @param CharacterConnectionGuard $guard The rules.
@@ -85,9 +95,7 @@ class FactionMembershipListener implements IEventListener {
 	 * @spec openspec/specs/character-connections/spec.md
 	 */
 	public function handle(Event $event): void {
-		if (($event instanceof \OCA\OpenRegister\Event\ObjectCreatingEvent) === false
-			&& ($event instanceof \OCA\OpenRegister\Event\ObjectUpdatingEvent) === false
-		) {
+		if ($this->isPreWrite(event: $event) === false) {
 			return;
 		}
 
@@ -97,10 +105,7 @@ class FactionMembershipListener implements IEventListener {
 			// An authorization check does not fail open: a guard that throws
 			// refuses the write and says why in the log.
 			$this->logger->error('Larpinq: faction and relationship check errored; refusing the write.', ['exception' => $e]);
-			$errors = [
-				'code' => 'connection_unverifiable',
-				'message' => 'The faction or character of this write could not be read, so the write is refused.',
-			];
+			$errors = self::UNVERIFIABLE;
 		}
 
 		if ($errors !== null) {
@@ -126,9 +131,39 @@ class FactionMembershipListener implements IEventListener {
 			return null;
 		}
 
-		// A write without a signed-in user is the app itself (seeding, import
-		// from the command line); OpenRegister's schema rules already decide
-		// who may write through the API.
+		$userId = $this->restrictedUserId();
+		if ($userId === null) {
+			return null;
+		}
+
+		return $this->verdict(kind: $kind, write: [(array)$entity->getObject(), $this->storedData(old: $old), $userId]);
+	}//end collectVeto()
+
+	/**
+	 * Whether the event is one of OpenRegister's vetoable pre-write events.
+	 *
+	 * @param Event $event The dispatched event.
+	 *
+	 * @return bool True for ObjectCreatingEvent and ObjectUpdatingEvent.
+	 *
+	 * @psalm-assert-if-true \OCA\OpenRegister\Event\ObjectCreatingEvent|\OCA\OpenRegister\Event\ObjectUpdatingEvent $event
+	 */
+	private function isPreWrite(Event $event): bool {
+		return $event instanceof \OCA\OpenRegister\Event\ObjectCreatingEvent
+			|| $event instanceof \OCA\OpenRegister\Event\ObjectUpdatingEvent;
+	}//end isPreWrite()
+
+	/**
+	 * The signed-in user whose writes the guard checks, or null when none is checked.
+	 *
+	 * A write without a signed-in user is the app itself (seeding, import
+	 * from the command line); OpenRegister's schema rules already decide
+	 * who may write through the API. Administrators and game masters are
+	 * not checked either.
+	 *
+	 * @return string|null The user id, or null.
+	 */
+	private function restrictedUserId(): ?string {
 		$user = $this->userSession->getUser();
 		if ($user === null) {
 			return null;
@@ -141,7 +176,39 @@ class FactionMembershipListener implements IEventListener {
 			return null;
 		}
 
-		$data = (array)$entity->getObject();
+		return $userId;
+	}//end restrictedUserId()
+
+	/**
+	 * The stored object of an update, or null on a create.
+	 *
+	 * @param object|null $old The stored entity.
+	 *
+	 * @return array<string,mixed>|null The stored data.
+	 *
+	 * @psalm-suppress MixedMethodCall OpenRegister entity is an optional dependency.
+	 */
+	private function storedData(?object $old): ?array {
+		if ($old === null) {
+			return null;
+		}
+
+		return (array)$old->getObject();
+	}//end storedData()
+
+	/**
+	 * The guard verdict for one write of a kind.
+	 *
+	 * Factions and relationships are judged on the new data alone; memberships
+	 * and builds compare it with the stored object.
+	 *
+	 * @param string                                                         $kind  The kind kindOf() named.
+	 * @param array{0:array<string,mixed>,1:array<string,mixed>|null,2:string} $write The new data, the stored data (null on a create) and the user id.
+	 *
+	 * @return array<string, string>|null The errors payload, or null to allow.
+	 */
+	private function verdict(string $kind, array $write): ?array {
+		[$data, $previous, $userId] = $write;
 		if ($kind === 'faction') {
 			return $this->guard->checkFaction(faction: $data, userId: $userId);
 		}
@@ -150,17 +217,12 @@ class FactionMembershipListener implements IEventListener {
 			return $this->guard->checkRelationship(relationship: $data, userId: $userId);
 		}
 
-		$previous = null;
-		if ($old !== null) {
-			$previous = (array)$old->getObject();
-		}
-
 		if ($kind === 'characterbuild') {
 			return $this->guard->checkBuild(build: $data, old: $previous, userId: $userId);
 		}
 
 		return $this->guard->checkMembership(membership: $data, old: $previous, userId: $userId);
-	}//end collectVeto()
+	}//end verdict()
 
 	/**
 	 * Which of the three schemas the entity belongs to, or null for any other.
@@ -175,11 +237,7 @@ class FactionMembershipListener implements IEventListener {
 	 * @psalm-suppress MixedMethodCall OpenRegister entity is an optional dependency.
 	 */
 	private function kindOf(object $entity): ?string {
-		if (is_callable([$entity, 'getSchema']) === false) {
-			return null;
-		}
-
-		$schema = (string)$entity->getSchema();
+		$schema = $this->schemaOf(entity: $entity);
 		if ($schema === '') {
 			return null;
 		}
@@ -192,6 +250,23 @@ class FactionMembershipListener implements IEventListener {
 
 		return null;
 	}//end kindOf()
+
+	/**
+	 * The schema id of an entity, or '' when it has none.
+	 *
+	 * @param object $entity The object entity.
+	 *
+	 * @return string The schema id.
+	 *
+	 * @psalm-suppress MixedMethodCall OpenRegister entity is an optional dependency.
+	 */
+	private function schemaOf(object $entity): string {
+		if (is_callable([$entity, 'getSchema']) === false) {
+			return '';
+		}
+
+		return (string)$entity->getSchema();
+	}//end schemaOf()
 
 	/**
 	 * The new entity and the stored one (null on a create) of a pre-write event.
