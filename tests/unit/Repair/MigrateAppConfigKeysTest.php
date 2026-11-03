@@ -271,11 +271,8 @@ class MigrateAppConfigKeysTest extends TestCase {
 					throw new \RuntimeException('unreadable');
 				}
 
-				if ($app === 'larpinq') {
-					return $key === 'kept' ? 'new' : '';
-				}
-
-				return $key === 'blank' ? '' : 'old';
+				$stored = ['larpinq' => ['kept' => 'new'], 'larpingapp' => ['enabled' => 'old', 'kept' => 'old', 'register' => 'old']];
+				return $stored[$app][$key] ?? '';
 			}
 		);
 		$this->appConfig->method('setValueString')->willReturn(true);
