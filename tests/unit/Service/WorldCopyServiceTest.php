@@ -405,6 +405,27 @@ class WorldCopyServiceTest extends TestCase {
 	}//end testAFailedCopyLeavesNothingHalfMade()
 
 	/**
+	 * A failure on the last write, the one that makes the new world active,
+	 * names the world itself rather than the last rule object copied.
+	 *
+	 * @return void
+	 */
+	public function testAFailedActivationNamesTheWorld(): void {
+		$this->service()->copy(worldId: self::WORLD, name: 'Counted');
+		$saves = count($this->store->saves);
+		$this->setUp();
+		$this->store->failOnSave = $saves;
+
+		try {
+			$this->service()->copy(worldId: self::WORLD, name: 'Broken');
+			$this->fail(message: 'the copy must fail');
+		} catch (WorldCopyFailedException $e) {
+			$this->assertStringStartsWith(prefix: 'Copying the world failed', string: $e->getMessage());
+		}
+
+	}//end testAFailedActivationNamesTheWorld()
+
+	/**
 	 * What a rollback cannot remove is reported, and the world stays archived.
 	 *
 	 * @return void

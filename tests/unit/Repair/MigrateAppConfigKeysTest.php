@@ -256,4 +256,31 @@ class MigrateAppConfigKeysTest extends TestCase {
 
 		$this->step->run($this->output);
 	}//end testNothingStoredUnderTheOldIdIsANoOp()
+
+	/**
+	 * The summary counts each outcome once: migrated, already present, empty,
+	 * reserved and a read that failed.
+	 *
+	 * @return void
+	 */
+	public function testTheSummaryCountsEachOutcome(): void {
+		$this->appConfig->method('getKeys')->willReturn(['enabled', 'blank', 'kept', 'register', 'poisoned']);
+		$this->appConfig->method('getValueString')->willReturnCallback(
+			static function (string $app, string $key): string {
+				if ($key === 'poisoned') {
+					throw new \RuntimeException('unreadable');
+				}
+
+				$stored = ['larpinq' => ['kept' => 'new'], 'larpingapp' => ['enabled' => 'old', 'kept' => 'old', 'register' => 'old']];
+				return $stored[$app][$key] ?? '';
+			}
+		);
+		$this->appConfig->method('setValueString')->willReturn(true);
+		$this->output->expects($this->once())->method('info')->with(
+			'MigrateAppConfigKeys: 1 key(s) migrated, 1 already present, 1 had no value to migrate, 1 skipped as Nextcloud-reserved.'
+		);
+
+		$this->step->run($this->output);
+
+	}//end testTheSummaryCountsEachOutcome()
 }//end class
