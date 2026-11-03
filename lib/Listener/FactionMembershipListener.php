@@ -24,7 +24,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Listener;
 
-use OCA\Larpinq\AppInfo\Application;
+use OCA\Larpinq\Support\AppIdentity;
 use OCA\Larpinq\Service\CharacterConnectionGuard;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
@@ -178,7 +178,7 @@ class FactionMembershipListener implements IEventListener {
 
 		$userId = $user->getUID();
 		if ($this->groupManager->isAdmin($userId) === true
-			|| $this->groupManager->isInGroup($userId, Application::GM_GROUP) === true
+			|| $this->groupManager->isInGroup($userId, AppIdentity::GM_GROUP) === true
 		) {
 			return null;
 		}
@@ -264,7 +264,7 @@ class FactionMembershipListener implements IEventListener {
 		}
 
 		foreach (self::KINDS as $kind) {
-			if ($this->config->getValueString(Application::APP_ID, $kind . '_schema', '') === $schema) {
+			if ($this->config->getValueString(AppIdentity::APP_ID, $kind . '_schema', '') === $schema) {
 				return $kind;
 			}
 		}

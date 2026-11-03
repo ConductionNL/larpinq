@@ -19,7 +19,7 @@ namespace OCA\Larpinq\Controller;
 
 use InvalidArgumentException;
 use LengthException;
-use OCA\Larpinq\AppInfo\Application;
+use OCA\Larpinq\Support\AppIdentity;
 use OCA\Larpinq\Service\WorldCopyFailedException;
 use OCA\Larpinq\Service\WorldCopyService;
 use OCP\AppFramework\Controller;
@@ -35,7 +35,7 @@ use Psr\Log\LoggerInterface;
  *
  * The world endpoints live under `/api/worlds` because `/api/settings` is the
  * app configuration. Every method is for game masters (the
- * `Application::GM_GROUP` group, or a Nextcloud admin); the copy itself runs
+ * `AppIdentity::GM_GROUP` group, or a Nextcloud admin); the copy itself runs
  * in WorldCopyService with OpenRegister's RBAC on every write.
  *
  * @psalm-suppress UnusedClass Instantiated by Nextcloud routing (appinfo/routes.php).
@@ -58,7 +58,7 @@ class WorldsController extends Controller {
 		private readonly CallerAccess $callerAccess,
 		private readonly LoggerInterface $logger,
 	) {
-		parent::__construct(appName: Application::APP_ID, request: $request);
+		parent::__construct(appName: AppIdentity::APP_ID, request: $request);
 	}//end __construct()
 
 	/**

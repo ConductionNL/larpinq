@@ -55,7 +55,7 @@ class Application extends App implements IBootstrap {
 	 *
 	 * @spec openspec/specs/setting-management/spec.md
 	 */
-	public const GM_GROUP = 'gamemasters';
+	public const GM_GROUP = AppIdentity::GM_GROUP;
 
 	/**
 	 * Constructor for the application

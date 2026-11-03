@@ -22,7 +22,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Controller;
 
-use OCA\Larpinq\AppInfo\Application;
+use OCA\Larpinq\Support\AppIdentity;
 use OCP\IGroupManager;
 use OCP\IUser;
 use OCP\IUserSession;
@@ -86,7 +86,7 @@ class CallerAccess {
 	 * @spec openspec/specs/character-builds/spec.md
 	 */
 	public function isGameMasterOrAdmin(string $uid): bool {
-		return $this->groupManager->isInGroup($uid, Application::GM_GROUP) === true
+		return $this->groupManager->isInGroup($uid, AppIdentity::GM_GROUP) === true
 			|| $this->groupManager->isAdmin($uid) === true;
 	}//end isGameMasterOrAdmin()
 
