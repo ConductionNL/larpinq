@@ -1,6 +1,7 @@
 OC.L10N.register(
     "larpinq",
     {
+        "Marketplace": "Marketplace",
         "Load example data?": "Load example data?",
         "Example data fills the lists, detail pages and dashboards so you can see the app working straight away. Pick \"None\" on a production install.": "Example data fills the lists, detail pages and dashboards so you can see the app working straight away. Pick \"None\" on a production install.",
         "Load the example data": "Load the example data",
