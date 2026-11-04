@@ -1,0 +1,5815 @@
+{
+	"applyBuild / 401": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [
+						"s"
+					],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": "",
+			"shortfall": 0
+		}
+	},
+	"applyBuild / 403": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [
+						"s"
+					],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": "",
+			"shortfall": 0
+		}
+	},
+	"applyBuild / 404": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [
+						"s"
+					],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": "",
+			"shortfall": 0
+		}
+	},
+	"applyBuild / 422": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [
+						"s"
+					],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": "",
+			"shortfall": 0
+		}
+	},
+	"applyBuild / 500": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [
+						"s"
+					],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": "",
+			"shortfall": 0
+		}
+	},
+	"applyBuild / 200 empty object": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [
+						"s"
+					],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"message": "",
+			"shortfall": 0
+		}
+	},
+	"applyBuild / 200 full body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [
+						"s"
+					],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"message": "",
+			"shortfall": 0
+		}
+	},
+	"applyBuild / 200 wrong shapes": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [
+						"s"
+					],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"message": "",
+			"shortfall": 0
+		}
+	},
+	"applyBuild / 200 graphql errors without data": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [
+						"s"
+					],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"message": "",
+			"shortfall": 0
+		}
+	},
+	"applyBuild / 200 graphql error without message": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [
+						"s"
+					],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"message": "",
+			"shortfall": 0
+		}
+	},
+	"applyBuild / 200 graphql errors with data": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [
+						"s"
+					],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"message": "",
+			"shortfall": 0
+		}
+	},
+	"applyBuild / 200 graphql empty errors": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [
+						"s"
+					],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"message": "",
+			"shortfall": 0
+		}
+	},
+	"applyBuild / 200 null body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [
+						"s"
+					],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"message": "",
+			"shortfall": 0
+		}
+	},
+	"applyBuild / 200 body does not parse": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [
+						"s"
+					],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"message": "",
+			"shortfall": 0
+		}
+	},
+	"applyBuild / 400 nested errors": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [
+						"s"
+					],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": "Not enough XP",
+			"shortfall": 12
+		}
+	},
+	"applyBuild / 400 errors as a string": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [
+						"s"
+					],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": "Top message",
+			"shortfall": 0
+		}
+	},
+	"applyBuild / 400 top-level message": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [
+						"s"
+					],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": "Closed",
+			"shortfall": 4
+		}
+	},
+	"applyBuild / 400 errors as a string with a budget": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [
+						"s"
+					],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": "m",
+			"shortfall": 3
+		}
+	},
+	"applyBuild / 400 errors without a message": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [
+						"s"
+					],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": "outer only",
+			"shortfall": 2
+		}
+	},
+	"applyBuild / 400 string body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [
+						"s"
+					],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": "",
+			"shortfall": 0
+		}
+	},
+	"applyBuild / 200 string body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [
+						"s"
+					],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"message": "",
+			"shortfall": 0
+		}
+	},
+	"applyBuild / 400 null errors": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [
+						"s"
+					],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": "m",
+			"shortfall": 0
+		}
+	},
+	"applyBuild / 400 no body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [
+						"s"
+					],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": "",
+			"shortfall": 0
+		}
+	},
+	"applyBuild / 400 array body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [
+						"s"
+					],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": "",
+			"shortfall": 0
+		}
+	},
+	"applyBuild / 429 with retry": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [
+						"s"
+					],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": "",
+			"shortfall": 0
+		}
+	},
+	"applyBuild / 429 without retry": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [
+						"s"
+					],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": "",
+			"shortfall": 0
+		}
+	},
+	"applyBuild / network error": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [
+						"s"
+					],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"threw": "offline",
+		"type": "Error"
+	},
+	"applyBuild / network string": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [
+						"s"
+					],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"threw": "down",
+		"type": "String"
+	},
+	"applyBuildNoLists / 401": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c-2",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": "",
+			"shortfall": 0
+		}
+	},
+	"applyBuildNoLists / 403": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c-2",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": "",
+			"shortfall": 0
+		}
+	},
+	"applyBuildNoLists / 404": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c-2",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": "",
+			"shortfall": 0
+		}
+	},
+	"applyBuildNoLists / 422": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c-2",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": "",
+			"shortfall": 0
+		}
+	},
+	"applyBuildNoLists / 500": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c-2",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": "",
+			"shortfall": 0
+		}
+	},
+	"applyBuildNoLists / 200 empty object": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c-2",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"message": "",
+			"shortfall": 0
+		}
+	},
+	"applyBuildNoLists / 200 full body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c-2",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"message": "",
+			"shortfall": 0
+		}
+	},
+	"applyBuildNoLists / 200 wrong shapes": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c-2",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"message": "",
+			"shortfall": 0
+		}
+	},
+	"applyBuildNoLists / 200 graphql errors without data": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c-2",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"message": "",
+			"shortfall": 0
+		}
+	},
+	"applyBuildNoLists / 200 graphql error without message": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c-2",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"message": "",
+			"shortfall": 0
+		}
+	},
+	"applyBuildNoLists / 200 graphql errors with data": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c-2",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"message": "",
+			"shortfall": 0
+		}
+	},
+	"applyBuildNoLists / 200 graphql empty errors": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c-2",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"message": "",
+			"shortfall": 0
+		}
+	},
+	"applyBuildNoLists / 200 null body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c-2",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"message": "",
+			"shortfall": 0
+		}
+	},
+	"applyBuildNoLists / 200 body does not parse": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c-2",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"message": "",
+			"shortfall": 0
+		}
+	},
+	"applyBuildNoLists / 400 nested errors": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c-2",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": "Not enough XP",
+			"shortfall": 12
+		}
+	},
+	"applyBuildNoLists / 400 errors as a string": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c-2",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": "Top message",
+			"shortfall": 0
+		}
+	},
+	"applyBuildNoLists / 400 top-level message": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c-2",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": "Closed",
+			"shortfall": 4
+		}
+	},
+	"applyBuildNoLists / 400 errors as a string with a budget": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c-2",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": "m",
+			"shortfall": 3
+		}
+	},
+	"applyBuildNoLists / 400 errors without a message": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c-2",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": "outer only",
+			"shortfall": 2
+		}
+	},
+	"applyBuildNoLists / 400 string body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c-2",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": "",
+			"shortfall": 0
+		}
+	},
+	"applyBuildNoLists / 200 string body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c-2",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"message": "",
+			"shortfall": 0
+		}
+	},
+	"applyBuildNoLists / 400 null errors": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c-2",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": "m",
+			"shortfall": 0
+		}
+	},
+	"applyBuildNoLists / 400 no body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c-2",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": "",
+			"shortfall": 0
+		}
+	},
+	"applyBuildNoLists / 400 array body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c-2",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": "",
+			"shortfall": 0
+		}
+	},
+	"applyBuildNoLists / 429 with retry": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c-2",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": "",
+			"shortfall": 0
+		}
+	},
+	"applyBuildNoLists / 429 without retry": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c-2",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": "",
+			"shortfall": 0
+		}
+	},
+	"applyBuildNoLists / network error": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c-2",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"threw": "offline",
+		"type": "Error"
+	},
+	"applyBuildNoLists / network string": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/c-2",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"skills": [],
+					"items": [],
+					"conditions": []
+				}
+			}
+		],
+		"threw": "down",
+		"type": "String"
+	},
+	"saveChoices / 401": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/larping_registration/r%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"options": [
+						"o"
+					],
+					"ticketType": "t",
+					"code": "C"
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": ""
+		}
+	},
+	"saveChoices / 403": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/larping_registration/r%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"options": [
+						"o"
+					],
+					"ticketType": "t",
+					"code": "C"
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": ""
+		}
+	},
+	"saveChoices / 404": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/larping_registration/r%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"options": [
+						"o"
+					],
+					"ticketType": "t",
+					"code": "C"
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": ""
+		}
+	},
+	"saveChoices / 422": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/larping_registration/r%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"options": [
+						"o"
+					],
+					"ticketType": "t",
+					"code": "C"
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": ""
+		}
+	},
+	"saveChoices / 500": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/larping_registration/r%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"options": [
+						"o"
+					],
+					"ticketType": "t",
+					"code": "C"
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": ""
+		}
+	},
+	"saveChoices / 200 empty object": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/larping_registration/r%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"options": [
+						"o"
+					],
+					"ticketType": "t",
+					"code": "C"
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"message": ""
+		}
+	},
+	"saveChoices / 200 full body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/larping_registration/r%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"options": [
+						"o"
+					],
+					"ticketType": "t",
+					"code": "C"
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"message": ""
+		}
+	},
+	"saveChoices / 200 wrong shapes": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/larping_registration/r%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"options": [
+						"o"
+					],
+					"ticketType": "t",
+					"code": "C"
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"message": ""
+		}
+	},
+	"saveChoices / 200 graphql errors without data": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/larping_registration/r%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"options": [
+						"o"
+					],
+					"ticketType": "t",
+					"code": "C"
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"message": ""
+		}
+	},
+	"saveChoices / 200 graphql error without message": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/larping_registration/r%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"options": [
+						"o"
+					],
+					"ticketType": "t",
+					"code": "C"
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"message": ""
+		}
+	},
+	"saveChoices / 200 graphql errors with data": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/larping_registration/r%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"options": [
+						"o"
+					],
+					"ticketType": "t",
+					"code": "C"
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"message": ""
+		}
+	},
+	"saveChoices / 200 graphql empty errors": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/larping_registration/r%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"options": [
+						"o"
+					],
+					"ticketType": "t",
+					"code": "C"
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"message": ""
+		}
+	},
+	"saveChoices / 200 null body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/larping_registration/r%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"options": [
+						"o"
+					],
+					"ticketType": "t",
+					"code": "C"
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"message": ""
+		}
+	},
+	"saveChoices / 200 body does not parse": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/larping_registration/r%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"options": [
+						"o"
+					],
+					"ticketType": "t",
+					"code": "C"
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"message": ""
+		}
+	},
+	"saveChoices / 400 nested errors": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/larping_registration/r%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"options": [
+						"o"
+					],
+					"ticketType": "t",
+					"code": "C"
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": "Not enough XP"
+		}
+	},
+	"saveChoices / 400 errors as a string": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/larping_registration/r%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"options": [
+						"o"
+					],
+					"ticketType": "t",
+					"code": "C"
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": "Top message"
+		}
+	},
+	"saveChoices / 400 top-level message": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/larping_registration/r%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"options": [
+						"o"
+					],
+					"ticketType": "t",
+					"code": "C"
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": "Closed"
+		}
+	},
+	"saveChoices / 400 errors as a string with a budget": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/larping_registration/r%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"options": [
+						"o"
+					],
+					"ticketType": "t",
+					"code": "C"
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": "m"
+		}
+	},
+	"saveChoices / 400 errors without a message": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/larping_registration/r%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"options": [
+						"o"
+					],
+					"ticketType": "t",
+					"code": "C"
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": "outer only"
+		}
+	},
+	"saveChoices / 400 string body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/larping_registration/r%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"options": [
+						"o"
+					],
+					"ticketType": "t",
+					"code": "C"
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": ""
+		}
+	},
+	"saveChoices / 200 string body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/larping_registration/r%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"options": [
+						"o"
+					],
+					"ticketType": "t",
+					"code": "C"
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"message": ""
+		}
+	},
+	"saveChoices / 400 null errors": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/larping_registration/r%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"options": [
+						"o"
+					],
+					"ticketType": "t",
+					"code": "C"
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": "m"
+		}
+	},
+	"saveChoices / 400 no body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/larping_registration/r%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"options": [
+						"o"
+					],
+					"ticketType": "t",
+					"code": "C"
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": ""
+		}
+	},
+	"saveChoices / 400 array body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/larping_registration/r%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"options": [
+						"o"
+					],
+					"ticketType": "t",
+					"code": "C"
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": ""
+		}
+	},
+	"saveChoices / 429 with retry": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/larping_registration/r%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"options": [
+						"o"
+					],
+					"ticketType": "t",
+					"code": "C"
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": ""
+		}
+	},
+	"saveChoices / 429 without retry": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/larping_registration/r%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"options": [
+						"o"
+					],
+					"ticketType": "t",
+					"code": "C"
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"message": ""
+		}
+	},
+	"saveChoices / network error": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/larping_registration/r%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"options": [
+						"o"
+					],
+					"ticketType": "t",
+					"code": "C"
+				}
+			}
+		],
+		"threw": "offline",
+		"type": "Error"
+	},
+	"saveChoices / network string": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/larping_registration/r%201",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"options": [
+						"o"
+					],
+					"ticketType": "t",
+					"code": "C"
+				}
+			}
+		],
+		"threw": "down",
+		"type": "String"
+	},
+	"saveAwards / 401": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%201/xp-awards",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Content-Type": "application/json",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"rows": [
+						{
+							"character": "c",
+							"amount": 2
+						}
+					]
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"created": 0,
+			"refused": [],
+			"error": "login"
+		}
+	},
+	"saveAwards / 403": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%201/xp-awards",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Content-Type": "application/json",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"rows": [
+						{
+							"character": "c",
+							"amount": 2
+						}
+					]
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"created": 0,
+			"refused": [],
+			"error": "Not yours"
+		}
+	},
+	"saveAwards / 404": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%201/xp-awards",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Content-Type": "application/json",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"rows": [
+						{
+							"character": "c",
+							"amount": 2
+						}
+					]
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"created": 0,
+			"refused": [],
+			"error": "404"
+		}
+	},
+	"saveAwards / 422": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%201/xp-awards",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Content-Type": "application/json",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"rows": [
+						{
+							"character": "c",
+							"amount": 2
+						}
+					]
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"created": 0,
+			"refused": [],
+			"error": "Too big"
+		}
+	},
+	"saveAwards / 500": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%201/xp-awards",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Content-Type": "application/json",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"rows": [
+						{
+							"character": "c",
+							"amount": 2
+						}
+					]
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"created": 0,
+			"refused": [],
+			"error": "500"
+		}
+	},
+	"saveAwards / 200 empty object": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%201/xp-awards",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Content-Type": "application/json",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"rows": [
+						{
+							"character": "c",
+							"amount": 2
+						}
+					]
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"created": 0,
+			"refused": [],
+			"error": ""
+		}
+	},
+	"saveAwards / 200 full body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%201/xp-awards",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Content-Type": "application/json",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"rows": [
+						{
+							"character": "c",
+							"amount": 2
+						}
+					]
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"created": 2,
+			"refused": [
+				{
+					"character": "c",
+					"reason": "r"
+				}
+			],
+			"error": ""
+		}
+	},
+	"saveAwards / 200 wrong shapes": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%201/xp-awards",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Content-Type": "application/json",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"rows": [
+						{
+							"character": "c",
+							"amount": 2
+						}
+					]
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"created": 0,
+			"refused": [],
+			"error": ""
+		}
+	},
+	"saveAwards / 200 graphql errors without data": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%201/xp-awards",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Content-Type": "application/json",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"rows": [
+						{
+							"character": "c",
+							"amount": 2
+						}
+					]
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"created": 0,
+			"refused": [],
+			"error": ""
+		}
+	},
+	"saveAwards / 200 graphql error without message": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%201/xp-awards",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Content-Type": "application/json",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"rows": [
+						{
+							"character": "c",
+							"amount": 2
+						}
+					]
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"created": 0,
+			"refused": [],
+			"error": ""
+		}
+	},
+	"saveAwards / 200 graphql errors with data": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%201/xp-awards",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Content-Type": "application/json",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"rows": [
+						{
+							"character": "c",
+							"amount": 2
+						}
+					]
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"created": 0,
+			"refused": [],
+			"error": ""
+		}
+	},
+	"saveAwards / 200 graphql empty errors": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%201/xp-awards",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Content-Type": "application/json",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"rows": [
+						{
+							"character": "c",
+							"amount": 2
+						}
+					]
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"created": 0,
+			"refused": [],
+			"error": ""
+		}
+	},
+	"saveAwards / 200 null body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%201/xp-awards",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Content-Type": "application/json",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"rows": [
+						{
+							"character": "c",
+							"amount": 2
+						}
+					]
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"created": 0,
+			"refused": [],
+			"error": ""
+		}
+	},
+	"saveAwards / 200 body does not parse": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%201/xp-awards",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Content-Type": "application/json",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"rows": [
+						{
+							"character": "c",
+							"amount": 2
+						}
+					]
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"created": 0,
+			"refused": [],
+			"error": ""
+		}
+	},
+	"saveAwards / 400 nested errors": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%201/xp-awards",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Content-Type": "application/json",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"rows": [
+						{
+							"character": "c",
+							"amount": 2
+						}
+					]
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"created": 0,
+			"refused": [],
+			"error": "refused"
+		}
+	},
+	"saveAwards / 400 errors as a string": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%201/xp-awards",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Content-Type": "application/json",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"rows": [
+						{
+							"character": "c",
+							"amount": 2
+						}
+					]
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"created": 0,
+			"refused": [],
+			"error": "5"
+		}
+	},
+	"saveAwards / 400 top-level message": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%201/xp-awards",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Content-Type": "application/json",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"rows": [
+						{
+							"character": "c",
+							"amount": 2
+						}
+					]
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"created": 0,
+			"refused": [],
+			"error": "400"
+		}
+	},
+	"saveAwards / 400 errors as a string with a budget": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%201/xp-awards",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Content-Type": "application/json",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"rows": [
+						{
+							"character": "c",
+							"amount": 2
+						}
+					]
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"created": 0,
+			"refused": [],
+			"error": "400"
+		}
+	},
+	"saveAwards / 400 errors without a message": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%201/xp-awards",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Content-Type": "application/json",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"rows": [
+						{
+							"character": "c",
+							"amount": 2
+						}
+					]
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"created": 0,
+			"refused": [],
+			"error": "400"
+		}
+	},
+	"saveAwards / 400 string body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%201/xp-awards",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Content-Type": "application/json",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"rows": [
+						{
+							"character": "c",
+							"amount": 2
+						}
+					]
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"created": 0,
+			"refused": [],
+			"error": "400"
+		}
+	},
+	"saveAwards / 200 string body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%201/xp-awards",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Content-Type": "application/json",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"rows": [
+						{
+							"character": "c",
+							"amount": 2
+						}
+					]
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"created": 0,
+			"refused": [],
+			"error": ""
+		}
+	},
+	"saveAwards / 400 null errors": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%201/xp-awards",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Content-Type": "application/json",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"rows": [
+						{
+							"character": "c",
+							"amount": 2
+						}
+					]
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"created": 0,
+			"refused": [],
+			"error": "400"
+		}
+	},
+	"saveAwards / 400 no body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%201/xp-awards",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Content-Type": "application/json",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"rows": [
+						{
+							"character": "c",
+							"amount": 2
+						}
+					]
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"created": 0,
+			"refused": [],
+			"error": "400"
+		}
+	},
+	"saveAwards / 400 array body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%201/xp-awards",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Content-Type": "application/json",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"rows": [
+						{
+							"character": "c",
+							"amount": 2
+						}
+					]
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"created": 0,
+			"refused": [],
+			"error": "400"
+		}
+	},
+	"saveAwards / 429 with retry": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%201/xp-awards",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Content-Type": "application/json",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"rows": [
+						{
+							"character": "c",
+							"amount": 2
+						}
+					]
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"created": 0,
+			"refused": [],
+			"error": "429"
+		}
+	},
+	"saveAwards / 429 without retry": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%201/xp-awards",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Content-Type": "application/json",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"rows": [
+						{
+							"character": "c",
+							"amount": 2
+						}
+					]
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"created": 0,
+			"refused": [],
+			"error": "429"
+		}
+	},
+	"saveAwards / network error": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%201/xp-awards",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Content-Type": "application/json",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"rows": [
+						{
+							"character": "c",
+							"amount": 2
+						}
+					]
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"created": 0,
+			"refused": [],
+			"error": "offline"
+		}
+	},
+	"saveAwards / network string": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%201/xp-awards",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Content-Type": "application/json",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"rows": [
+						{
+							"character": "c",
+							"amount": 2
+						}
+					]
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"created": 0,
+			"refused": [],
+			"error": "down"
+		}
+	},
+	"fetchAwardRoster / 401": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%202/xp-award-roster",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "forbidden",
+			"eventName": "",
+			"rows": [],
+			"attendanceAvailable": false
+		}
+	},
+	"fetchAwardRoster / 403": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%202/xp-award-roster",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "forbidden",
+			"eventName": "",
+			"rows": [],
+			"attendanceAvailable": false
+		}
+	},
+	"fetchAwardRoster / 404": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%202/xp-award-roster",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "failed",
+			"eventName": "",
+			"rows": [],
+			"attendanceAvailable": false
+		}
+	},
+	"fetchAwardRoster / 422": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%202/xp-award-roster",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "failed",
+			"eventName": "",
+			"rows": [],
+			"attendanceAvailable": false
+		}
+	},
+	"fetchAwardRoster / 500": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%202/xp-award-roster",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "failed",
+			"eventName": "",
+			"rows": [],
+			"attendanceAvailable": false
+		}
+	},
+	"fetchAwardRoster / 200 empty object": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%202/xp-award-roster",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "ready",
+			"eventName": "",
+			"rows": [],
+			"attendanceAvailable": false
+		}
+	},
+	"fetchAwardRoster / 200 full body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%202/xp-award-roster",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "ready",
+			"eventName": "Feast",
+			"rows": [
+				{
+					"id": 1
+				}
+			],
+			"attendanceAvailable": true
+		}
+	},
+	"fetchAwardRoster / 200 wrong shapes": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%202/xp-award-roster",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "ready",
+			"eventName": "",
+			"rows": [],
+			"attendanceAvailable": false
+		}
+	},
+	"fetchAwardRoster / 200 graphql errors without data": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%202/xp-award-roster",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "ready",
+			"eventName": "",
+			"rows": [],
+			"attendanceAvailable": false
+		}
+	},
+	"fetchAwardRoster / 200 graphql error without message": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%202/xp-award-roster",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "ready",
+			"eventName": "",
+			"rows": [],
+			"attendanceAvailable": false
+		}
+	},
+	"fetchAwardRoster / 200 graphql errors with data": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%202/xp-award-roster",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "ready",
+			"eventName": "",
+			"rows": [],
+			"attendanceAvailable": false
+		}
+	},
+	"fetchAwardRoster / 200 graphql empty errors": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%202/xp-award-roster",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "ready",
+			"eventName": "",
+			"rows": [],
+			"attendanceAvailable": false
+		}
+	},
+	"fetchAwardRoster / 200 null body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%202/xp-award-roster",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "ready",
+			"eventName": "",
+			"rows": [],
+			"attendanceAvailable": false
+		}
+	},
+	"fetchAwardRoster / 200 body does not parse": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%202/xp-award-roster",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "ready",
+			"eventName": "",
+			"rows": [],
+			"attendanceAvailable": false
+		}
+	},
+	"fetchAwardRoster / 400 nested errors": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%202/xp-award-roster",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "failed",
+			"eventName": "",
+			"rows": [],
+			"attendanceAvailable": false
+		}
+	},
+	"fetchAwardRoster / 400 errors as a string": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%202/xp-award-roster",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "failed",
+			"eventName": "",
+			"rows": [],
+			"attendanceAvailable": false
+		}
+	},
+	"fetchAwardRoster / 400 top-level message": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%202/xp-award-roster",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "failed",
+			"eventName": "",
+			"rows": [],
+			"attendanceAvailable": false
+		}
+	},
+	"fetchAwardRoster / 400 errors as a string with a budget": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%202/xp-award-roster",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "failed",
+			"eventName": "",
+			"rows": [],
+			"attendanceAvailable": false
+		}
+	},
+	"fetchAwardRoster / 400 errors without a message": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%202/xp-award-roster",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "failed",
+			"eventName": "",
+			"rows": [],
+			"attendanceAvailable": false
+		}
+	},
+	"fetchAwardRoster / 400 string body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%202/xp-award-roster",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "failed",
+			"eventName": "",
+			"rows": [],
+			"attendanceAvailable": false
+		}
+	},
+	"fetchAwardRoster / 200 string body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%202/xp-award-roster",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "ready",
+			"eventName": "",
+			"rows": [],
+			"attendanceAvailable": false
+		}
+	},
+	"fetchAwardRoster / 400 null errors": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%202/xp-award-roster",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "failed",
+			"eventName": "",
+			"rows": [],
+			"attendanceAvailable": false
+		}
+	},
+	"fetchAwardRoster / 400 no body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%202/xp-award-roster",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "failed",
+			"eventName": "",
+			"rows": [],
+			"attendanceAvailable": false
+		}
+	},
+	"fetchAwardRoster / 400 array body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%202/xp-award-roster",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "failed",
+			"eventName": "",
+			"rows": [],
+			"attendanceAvailable": false
+		}
+	},
+	"fetchAwardRoster / 429 with retry": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%202/xp-award-roster",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "failed",
+			"eventName": "",
+			"rows": [],
+			"attendanceAvailable": false
+		}
+	},
+	"fetchAwardRoster / 429 without retry": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%202/xp-award-roster",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "failed",
+			"eventName": "",
+			"rows": [],
+			"attendanceAvailable": false
+		}
+	},
+	"fetchAwardRoster / network error": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%202/xp-award-roster",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "failed",
+			"eventName": "",
+			"rows": [],
+			"attendanceAvailable": false
+		}
+	},
+	"fetchAwardRoster / network string": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/events/e%202/xp-award-roster",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "failed",
+			"eventName": "",
+			"rows": [],
+			"attendanceAvailable": false
+		}
+	},
+	"fetchCopyPreview / 401": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%201/copy",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "failed",
+			"worldName": "",
+			"counts": {},
+			"error": "login"
+		}
+	},
+	"fetchCopyPreview / 403": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%201/copy",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "forbidden",
+			"worldName": "",
+			"counts": {},
+			"error": "Not yours"
+		}
+	},
+	"fetchCopyPreview / 404": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%201/copy",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "failed",
+			"worldName": "",
+			"counts": {},
+			"error": ""
+		}
+	},
+	"fetchCopyPreview / 422": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%201/copy",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "too-large",
+			"worldName": "",
+			"counts": {},
+			"error": "Too big"
+		}
+	},
+	"fetchCopyPreview / 500": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%201/copy",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "failed",
+			"worldName": "",
+			"counts": {},
+			"error": ""
+		}
+	},
+	"fetchCopyPreview / 200 empty object": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%201/copy",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "ready",
+			"worldName": "",
+			"counts": {},
+			"error": ""
+		}
+	},
+	"fetchCopyPreview / 200 full body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%201/copy",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "ready",
+			"worldName": "Aldmoor",
+			"counts": {
+				"characters": 3
+			},
+			"error": ""
+		}
+	},
+	"fetchCopyPreview / 200 wrong shapes": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%201/copy",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "ready",
+			"worldName": "",
+			"counts": {},
+			"error": ""
+		}
+	},
+	"fetchCopyPreview / 200 graphql errors without data": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%201/copy",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "ready",
+			"worldName": "",
+			"counts": {},
+			"error": ""
+		}
+	},
+	"fetchCopyPreview / 200 graphql error without message": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%201/copy",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "ready",
+			"worldName": "",
+			"counts": {},
+			"error": ""
+		}
+	},
+	"fetchCopyPreview / 200 graphql errors with data": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%201/copy",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "ready",
+			"worldName": "",
+			"counts": {},
+			"error": ""
+		}
+	},
+	"fetchCopyPreview / 200 graphql empty errors": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%201/copy",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "ready",
+			"worldName": "",
+			"counts": {},
+			"error": ""
+		}
+	},
+	"fetchCopyPreview / 200 null body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%201/copy",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "ready",
+			"worldName": "",
+			"counts": {},
+			"error": ""
+		}
+	},
+	"fetchCopyPreview / 200 body does not parse": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%201/copy",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "ready",
+			"worldName": "",
+			"counts": {},
+			"error": ""
+		}
+	},
+	"fetchCopyPreview / 400 nested errors": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%201/copy",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "failed",
+			"worldName": "",
+			"counts": {},
+			"error": "refused"
+		}
+	},
+	"fetchCopyPreview / 400 errors as a string": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%201/copy",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "failed",
+			"worldName": "",
+			"counts": {},
+			"error": ""
+		}
+	},
+	"fetchCopyPreview / 400 top-level message": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%201/copy",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "failed",
+			"worldName": "",
+			"counts": {},
+			"error": ""
+		}
+	},
+	"fetchCopyPreview / 400 errors as a string with a budget": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%201/copy",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "failed",
+			"worldName": "",
+			"counts": {},
+			"error": ""
+		}
+	},
+	"fetchCopyPreview / 400 errors without a message": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%201/copy",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "failed",
+			"worldName": "",
+			"counts": {},
+			"error": ""
+		}
+	},
+	"fetchCopyPreview / 400 string body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%201/copy",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "failed",
+			"worldName": "",
+			"counts": {},
+			"error": ""
+		}
+	},
+	"fetchCopyPreview / 200 string body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%201/copy",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "ready",
+			"worldName": "",
+			"counts": {},
+			"error": ""
+		}
+	},
+	"fetchCopyPreview / 400 null errors": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%201/copy",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "failed",
+			"worldName": "",
+			"counts": {},
+			"error": ""
+		}
+	},
+	"fetchCopyPreview / 400 no body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%201/copy",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "failed",
+			"worldName": "",
+			"counts": {},
+			"error": ""
+		}
+	},
+	"fetchCopyPreview / 400 array body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%201/copy",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "failed",
+			"worldName": "",
+			"counts": {},
+			"error": ""
+		}
+	},
+	"fetchCopyPreview / 429 with retry": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%201/copy",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "failed",
+			"worldName": "",
+			"counts": {},
+			"error": ""
+		}
+	},
+	"fetchCopyPreview / 429 without retry": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%201/copy",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"returned": {
+			"status": "failed",
+			"worldName": "",
+			"counts": {},
+			"error": ""
+		}
+	},
+	"fetchCopyPreview / network error": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%201/copy",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"threw": "offline",
+		"type": "Error"
+	},
+	"fetchCopyPreview / network string": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%201/copy",
+				"method": "(none)",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json"
+				},
+				"credentials": "(none)",
+				"body": "(none)"
+			}
+		],
+		"threw": "down",
+		"type": "String"
+	},
+	"copyWorld / 401": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%202/copy",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"name": "New world"
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"worldId": "",
+			"error": "login",
+			"leftovers": []
+		}
+	},
+	"copyWorld / 403": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%202/copy",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"name": "New world"
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"worldId": "",
+			"error": "Not yours",
+			"leftovers": []
+		}
+	},
+	"copyWorld / 404": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%202/copy",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"name": "New world"
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"worldId": "",
+			"error": "",
+			"leftovers": []
+		}
+	},
+	"copyWorld / 422": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%202/copy",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"name": "New world"
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"worldId": "",
+			"error": "Too big",
+			"leftovers": []
+		}
+	},
+	"copyWorld / 500": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%202/copy",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"name": "New world"
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"worldId": "",
+			"error": "",
+			"leftovers": []
+		}
+	},
+	"copyWorld / 200 empty object": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%202/copy",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"name": "New world"
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"worldId": "",
+			"error": "",
+			"leftovers": []
+		}
+	},
+	"copyWorld / 200 full body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%202/copy",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"name": "New world"
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"worldId": "w-9",
+			"error": "",
+			"leftovers": []
+		}
+	},
+	"copyWorld / 200 wrong shapes": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%202/copy",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"name": "New world"
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"worldId": "7",
+			"error": "",
+			"leftovers": []
+		}
+	},
+	"copyWorld / 200 graphql errors without data": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%202/copy",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"name": "New world"
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"worldId": "",
+			"error": "",
+			"leftovers": []
+		}
+	},
+	"copyWorld / 200 graphql error without message": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%202/copy",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"name": "New world"
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"worldId": "",
+			"error": "",
+			"leftovers": []
+		}
+	},
+	"copyWorld / 200 graphql errors with data": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%202/copy",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"name": "New world"
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"worldId": "",
+			"error": "",
+			"leftovers": []
+		}
+	},
+	"copyWorld / 200 graphql empty errors": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%202/copy",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"name": "New world"
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"worldId": "",
+			"error": "",
+			"leftovers": []
+		}
+	},
+	"copyWorld / 200 null body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%202/copy",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"name": "New world"
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"worldId": "",
+			"error": "",
+			"leftovers": []
+		}
+	},
+	"copyWorld / 200 body does not parse": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%202/copy",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"name": "New world"
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"worldId": "",
+			"error": "",
+			"leftovers": []
+		}
+	},
+	"copyWorld / 400 nested errors": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%202/copy",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"name": "New world"
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"worldId": "",
+			"error": "refused",
+			"leftovers": [
+				"a"
+			]
+		}
+	},
+	"copyWorld / 400 errors as a string": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%202/copy",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"name": "New world"
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"worldId": "",
+			"error": "",
+			"leftovers": []
+		}
+	},
+	"copyWorld / 400 top-level message": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%202/copy",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"name": "New world"
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"worldId": "",
+			"error": "",
+			"leftovers": []
+		}
+	},
+	"copyWorld / 400 errors as a string with a budget": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%202/copy",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"name": "New world"
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"worldId": "",
+			"error": "",
+			"leftovers": []
+		}
+	},
+	"copyWorld / 400 errors without a message": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%202/copy",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"name": "New world"
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"worldId": "",
+			"error": "",
+			"leftovers": []
+		}
+	},
+	"copyWorld / 400 string body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%202/copy",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"name": "New world"
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"worldId": "",
+			"error": "",
+			"leftovers": []
+		}
+	},
+	"copyWorld / 200 string body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%202/copy",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"name": "New world"
+				}
+			}
+		],
+		"returned": {
+			"ok": true,
+			"worldId": "",
+			"error": "",
+			"leftovers": []
+		}
+	},
+	"copyWorld / 400 null errors": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%202/copy",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"name": "New world"
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"worldId": "",
+			"error": "",
+			"leftovers": []
+		}
+	},
+	"copyWorld / 400 no body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%202/copy",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"name": "New world"
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"worldId": "",
+			"error": "",
+			"leftovers": []
+		}
+	},
+	"copyWorld / 400 array body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%202/copy",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"name": "New world"
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"worldId": "",
+			"error": "",
+			"leftovers": []
+		}
+	},
+	"copyWorld / 429 with retry": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%202/copy",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"name": "New world"
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"worldId": "",
+			"error": "",
+			"leftovers": []
+		}
+	},
+	"copyWorld / 429 without retry": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%202/copy",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"name": "New world"
+				}
+			}
+		],
+		"returned": {
+			"ok": false,
+			"worldId": "",
+			"error": "",
+			"leftovers": []
+		}
+	},
+	"copyWorld / network error": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%202/copy",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"name": "New world"
+				}
+			}
+		],
+		"threw": "offline",
+		"type": "Error"
+	},
+	"copyWorld / network string": {
+		"requests": [
+			{
+				"url": "/index.php/apps/larpinq/api/worlds/w%202/copy",
+				"method": "POST",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"credentials": "(none)",
+				"body": {
+					"name": "New world"
+				}
+			}
+		],
+		"threw": "down",
+		"type": "String"
+	},
+	"queryGraphQL / 401": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ worlds }"
+				}
+			}
+		],
+		"threw": "Authentication error — please log in again",
+		"type": "Error"
+	},
+	"queryGraphQL / 403": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ worlds }"
+				}
+			}
+		],
+		"threw": "GraphQL request failed: 403 ",
+		"type": "Error"
+	},
+	"queryGraphQL / 404": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ worlds }"
+				}
+			}
+		],
+		"threw": "GraphQL request failed: 404 Not Found",
+		"type": "Error"
+	},
+	"queryGraphQL / 422": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ worlds }"
+				}
+			}
+		],
+		"threw": "GraphQL request failed: 422 ",
+		"type": "Error"
+	},
+	"queryGraphQL / 500": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ worlds }"
+				}
+			}
+		],
+		"threw": "GraphQL request failed: 500 Server Error",
+		"type": "Error"
+	},
+	"queryGraphQL / 200 empty object": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ worlds }"
+				}
+			}
+		],
+		"returned": {}
+	},
+	"queryGraphQL / 200 full body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ worlds }"
+				}
+			}
+		],
+		"returned": {
+			"data": {
+				"worlds": [
+					1
+				]
+			},
+			"world": {
+				"id": "w-9",
+				"name": "Aldmoor"
+			},
+			"counts": {
+				"characters": 3
+			},
+			"created": [
+				{},
+				{}
+			],
+			"refused": [
+				{
+					"character": "c",
+					"reason": "r"
+				}
+			],
+			"eventName": "Feast",
+			"rows": [
+				{
+					"id": 1
+				}
+			],
+			"attendanceAvailable": true
+		}
+	},
+	"queryGraphQL / 200 wrong shapes": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ worlds }"
+				}
+			}
+		],
+		"returned": {
+			"world": {
+				"id": 7,
+				"name": null
+			},
+			"counts": "many",
+			"created": "two",
+			"refused": {},
+			"eventName": 0,
+			"rows": "x",
+			"attendanceAvailable": "yes"
+		}
+	},
+	"queryGraphQL / 200 graphql errors without data": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ worlds }"
+				}
+			}
+		],
+		"threw": "bad field",
+		"type": "Error"
+	},
+	"queryGraphQL / 200 graphql error without message": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ worlds }"
+				}
+			}
+		],
+		"threw": "GraphQL query error",
+		"type": "Error"
+	},
+	"queryGraphQL / 200 graphql errors with data": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ worlds }"
+				}
+			}
+		],
+		"returned": {
+			"errors": [
+				{
+					"message": "partial"
+				}
+			],
+			"data": {
+				"a": 1
+			}
+		}
+	},
+	"queryGraphQL / 200 graphql empty errors": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ worlds }"
+				}
+			}
+		],
+		"returned": {
+			"errors": []
+		}
+	},
+	"queryGraphQL / 200 null body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ worlds }"
+				}
+			}
+		],
+		"threw": "Cannot read properties of null (reading 'errors')",
+		"type": "TypeError"
+	},
+	"queryGraphQL / 200 body does not parse": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ worlds }"
+				}
+			}
+		],
+		"threw": "Unexpected end of JSON input",
+		"type": "SyntaxError"
+	},
+	"queryGraphQL / 400 nested errors": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ worlds }"
+				}
+			}
+		],
+		"threw": "GraphQL request failed: 400 ",
+		"type": "Error"
+	},
+	"queryGraphQL / 400 errors as a string": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ worlds }"
+				}
+			}
+		],
+		"threw": "GraphQL request failed: 400 ",
+		"type": "Error"
+	},
+	"queryGraphQL / 400 top-level message": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ worlds }"
+				}
+			}
+		],
+		"threw": "GraphQL request failed: 400 ",
+		"type": "Error"
+	},
+	"queryGraphQL / 400 errors as a string with a budget": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ worlds }"
+				}
+			}
+		],
+		"threw": "GraphQL request failed: 400 ",
+		"type": "Error"
+	},
+	"queryGraphQL / 400 errors without a message": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ worlds }"
+				}
+			}
+		],
+		"threw": "GraphQL request failed: 400 ",
+		"type": "Error"
+	},
+	"queryGraphQL / 400 string body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ worlds }"
+				}
+			}
+		],
+		"threw": "GraphQL request failed: 400 ",
+		"type": "Error"
+	},
+	"queryGraphQL / 200 string body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ worlds }"
+				}
+			}
+		],
+		"returned": "text"
+	},
+	"queryGraphQL / 400 null errors": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ worlds }"
+				}
+			}
+		],
+		"threw": "GraphQL request failed: 400 ",
+		"type": "Error"
+	},
+	"queryGraphQL / 400 no body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ worlds }"
+				}
+			}
+		],
+		"threw": "GraphQL request failed: 400 ",
+		"type": "Error"
+	},
+	"queryGraphQL / 400 array body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ worlds }"
+				}
+			}
+		],
+		"threw": "GraphQL request failed: 400 ",
+		"type": "Error"
+	},
+	"queryGraphQL / 429 with retry": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ worlds }"
+				}
+			}
+		],
+		"threw": "Rate limited — retry after 5 seconds",
+		"type": "Error"
+	},
+	"queryGraphQL / 429 without retry": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ worlds }"
+				}
+			}
+		],
+		"threw": "Rate limited — retry after 60 seconds",
+		"type": "Error"
+	},
+	"queryGraphQL / network error": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ worlds }"
+				}
+			}
+		],
+		"threw": "offline",
+		"type": "Error"
+	},
+	"queryGraphQL / network string": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ worlds }"
+				}
+			}
+		],
+		"threw": "down",
+		"type": "String"
+	},
+	"queryGraphQLVariables / 401": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ w }",
+					"variables": {
+						"id": 1
+					}
+				}
+			}
+		],
+		"threw": "Authentication error — please log in again",
+		"type": "Error"
+	},
+	"queryGraphQLVariables / 403": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ w }",
+					"variables": {
+						"id": 1
+					}
+				}
+			}
+		],
+		"threw": "GraphQL request failed: 403 ",
+		"type": "Error"
+	},
+	"queryGraphQLVariables / 404": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ w }",
+					"variables": {
+						"id": 1
+					}
+				}
+			}
+		],
+		"threw": "GraphQL request failed: 404 Not Found",
+		"type": "Error"
+	},
+	"queryGraphQLVariables / 422": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ w }",
+					"variables": {
+						"id": 1
+					}
+				}
+			}
+		],
+		"threw": "GraphQL request failed: 422 ",
+		"type": "Error"
+	},
+	"queryGraphQLVariables / 500": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ w }",
+					"variables": {
+						"id": 1
+					}
+				}
+			}
+		],
+		"threw": "GraphQL request failed: 500 Server Error",
+		"type": "Error"
+	},
+	"queryGraphQLVariables / 200 empty object": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ w }",
+					"variables": {
+						"id": 1
+					}
+				}
+			}
+		],
+		"returned": {}
+	},
+	"queryGraphQLVariables / 200 full body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ w }",
+					"variables": {
+						"id": 1
+					}
+				}
+			}
+		],
+		"returned": {
+			"data": {
+				"worlds": [
+					1
+				]
+			},
+			"world": {
+				"id": "w-9",
+				"name": "Aldmoor"
+			},
+			"counts": {
+				"characters": 3
+			},
+			"created": [
+				{},
+				{}
+			],
+			"refused": [
+				{
+					"character": "c",
+					"reason": "r"
+				}
+			],
+			"eventName": "Feast",
+			"rows": [
+				{
+					"id": 1
+				}
+			],
+			"attendanceAvailable": true
+		}
+	},
+	"queryGraphQLVariables / 200 wrong shapes": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ w }",
+					"variables": {
+						"id": 1
+					}
+				}
+			}
+		],
+		"returned": {
+			"world": {
+				"id": 7,
+				"name": null
+			},
+			"counts": "many",
+			"created": "two",
+			"refused": {},
+			"eventName": 0,
+			"rows": "x",
+			"attendanceAvailable": "yes"
+		}
+	},
+	"queryGraphQLVariables / 200 graphql errors without data": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ w }",
+					"variables": {
+						"id": 1
+					}
+				}
+			}
+		],
+		"threw": "bad field",
+		"type": "Error"
+	},
+	"queryGraphQLVariables / 200 graphql error without message": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ w }",
+					"variables": {
+						"id": 1
+					}
+				}
+			}
+		],
+		"threw": "GraphQL query error",
+		"type": "Error"
+	},
+	"queryGraphQLVariables / 200 graphql errors with data": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ w }",
+					"variables": {
+						"id": 1
+					}
+				}
+			}
+		],
+		"returned": {
+			"errors": [
+				{
+					"message": "partial"
+				}
+			],
+			"data": {
+				"a": 1
+			}
+		}
+	},
+	"queryGraphQLVariables / 200 graphql empty errors": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ w }",
+					"variables": {
+						"id": 1
+					}
+				}
+			}
+		],
+		"returned": {
+			"errors": []
+		}
+	},
+	"queryGraphQLVariables / 200 null body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ w }",
+					"variables": {
+						"id": 1
+					}
+				}
+			}
+		],
+		"threw": "Cannot read properties of null (reading 'errors')",
+		"type": "TypeError"
+	},
+	"queryGraphQLVariables / 200 body does not parse": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ w }",
+					"variables": {
+						"id": 1
+					}
+				}
+			}
+		],
+		"threw": "Unexpected end of JSON input",
+		"type": "SyntaxError"
+	},
+	"queryGraphQLVariables / 400 nested errors": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ w }",
+					"variables": {
+						"id": 1
+					}
+				}
+			}
+		],
+		"threw": "GraphQL request failed: 400 ",
+		"type": "Error"
+	},
+	"queryGraphQLVariables / 400 errors as a string": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ w }",
+					"variables": {
+						"id": 1
+					}
+				}
+			}
+		],
+		"threw": "GraphQL request failed: 400 ",
+		"type": "Error"
+	},
+	"queryGraphQLVariables / 400 top-level message": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ w }",
+					"variables": {
+						"id": 1
+					}
+				}
+			}
+		],
+		"threw": "GraphQL request failed: 400 ",
+		"type": "Error"
+	},
+	"queryGraphQLVariables / 400 errors as a string with a budget": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ w }",
+					"variables": {
+						"id": 1
+					}
+				}
+			}
+		],
+		"threw": "GraphQL request failed: 400 ",
+		"type": "Error"
+	},
+	"queryGraphQLVariables / 400 errors without a message": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ w }",
+					"variables": {
+						"id": 1
+					}
+				}
+			}
+		],
+		"threw": "GraphQL request failed: 400 ",
+		"type": "Error"
+	},
+	"queryGraphQLVariables / 400 string body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ w }",
+					"variables": {
+						"id": 1
+					}
+				}
+			}
+		],
+		"threw": "GraphQL request failed: 400 ",
+		"type": "Error"
+	},
+	"queryGraphQLVariables / 200 string body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ w }",
+					"variables": {
+						"id": 1
+					}
+				}
+			}
+		],
+		"returned": "text"
+	},
+	"queryGraphQLVariables / 400 null errors": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ w }",
+					"variables": {
+						"id": 1
+					}
+				}
+			}
+		],
+		"threw": "GraphQL request failed: 400 ",
+		"type": "Error"
+	},
+	"queryGraphQLVariables / 400 no body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ w }",
+					"variables": {
+						"id": 1
+					}
+				}
+			}
+		],
+		"threw": "GraphQL request failed: 400 ",
+		"type": "Error"
+	},
+	"queryGraphQLVariables / 400 array body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ w }",
+					"variables": {
+						"id": 1
+					}
+				}
+			}
+		],
+		"threw": "GraphQL request failed: 400 ",
+		"type": "Error"
+	},
+	"queryGraphQLVariables / 429 with retry": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ w }",
+					"variables": {
+						"id": 1
+					}
+				}
+			}
+		],
+		"threw": "Rate limited — retry after 5 seconds",
+		"type": "Error"
+	},
+	"queryGraphQLVariables / 429 without retry": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ w }",
+					"variables": {
+						"id": 1
+					}
+				}
+			}
+		],
+		"threw": "Rate limited — retry after 60 seconds",
+		"type": "Error"
+	},
+	"queryGraphQLVariables / network error": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ w }",
+					"variables": {
+						"id": 1
+					}
+				}
+			}
+		],
+		"threw": "offline",
+		"type": "Error"
+	},
+	"queryGraphQLVariables / network string": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/graphql",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/json",
+					"requesttoken": "test-token"
+				},
+				"credentials": "same-origin",
+				"body": {
+					"query": "{ w }",
+					"variables": {
+						"id": 1
+					}
+				}
+			}
+		],
+		"threw": "down",
+		"type": "String"
+	}
+}

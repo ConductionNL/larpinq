@@ -25,15 +25,23 @@ use Psr\Log\LoggerInterface;
  */
 class CharacterServiceTest extends TestCase {
 
+	/** @var CharacterService The service. */
 	private CharacterService $service;
+	/** @var RegisterObjectFetcher The object fetcher. */
 	private RegisterObjectFetcher $objectFetcher;
+	/** @var LoggerInterface The logger. */
 	private LoggerInterface $logger;
 
+	/**
+	 * Build the doubles and the subject every test starts from.
+	 *
+	 * @return void
+	 */
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->objectFetcher = $this->createMock(RegisterObjectFetcher::class);
-		$this->logger = $this->createMock(LoggerInterface::class);
+		$this->objectFetcher = $this->createMock(originalClassName: RegisterObjectFetcher::class);
+		$this->logger = $this->createMock(originalClassName: LoggerInterface::class);
 
 		// Return empty arrays for all entity types by default.
 		$this->objectFetcher->method('getObjects')
@@ -41,11 +49,20 @@ class CharacterServiceTest extends TestCase {
 				return [];
 			});
 
-		$this->service = new CharacterService($this->objectFetcher, $this->logger, new EffectApplier());
+		$this->service = new CharacterService(objectFetcher: $this->objectFetcher, logger: $this->logger, effectApplier: new EffectApplier());
 	}
 
 	/**
 	 * Helper to create a CharacterService with specific entity data.
+	 *
+	 * @param array $abilities The abilities.
+	 * @param array $effects The effects.
+	 * @param array $skills The skills.
+	 * @param array $items The items.
+	 * @param array $conditions The conditions.
+	 * @param array $events The events.
+	 *
+	 * @return CharacterService The create service with data.
 	 */
 	private function createServiceWithData(
 		array $abilities = [],
@@ -55,7 +72,7 @@ class CharacterServiceTest extends TestCase {
 		array $conditions = [],
 		array $events = [],
 	): CharacterService {
-		$fetcher = $this->createMock(RegisterObjectFetcher::class);
+		$fetcher = $this->createMock(originalClassName: RegisterObjectFetcher::class);
 		$fetcher->method('getObjects')
 			->willReturnCallback(function (string $type) use ($abilities, $effects, $skills, $items, $conditions, $events): array {
 				return match ($type) {
@@ -69,17 +86,31 @@ class CharacterServiceTest extends TestCase {
 				};
 			});
 
-		return new CharacterService($fetcher, $this->createMock(LoggerInterface::class), new EffectApplier());
+		return new CharacterService(
+			objectFetcher: $fetcher,
+			logger: $this->createMock(originalClassName: LoggerInterface::class),
+			effectApplier: new EffectApplier()
+		);
 	}
 
+	/**
+	 * Calculate character with no abilities.
+	 *
+	 * @return void
+	 */
 	public function testCalculateCharacterWithNoAbilities(): void {
 		$character = ['id' => 'char-1', 'name' => 'Test'];
 		$result = $this->service->calculateCharacter($character);
 
-		self::assertArrayHasKey('stats', $result);
-		self::assertEmpty($result['stats']);
+		self::assertArrayHasKey(key: 'stats', array: $result);
+		self::assertEmpty(actual: $result['stats']);
 	}
 
+	/**
+	 * Calculate character initializes ability scores.
+	 *
+	 * @return void
+	 */
 	public function testCalculateCharacterInitializesAbilityScores(): void {
 		$abilities = [
 			['id' => 'abil-1', 'name' => 'Strength', 'base' => 10],
@@ -90,17 +121,22 @@ class CharacterServiceTest extends TestCase {
 		$character = ['id' => 'char-1', 'name' => 'Fighter'];
 		$result = $service->calculateCharacter($character);
 
-		self::assertArrayHasKey('abil-1', $result['stats']);
-		self::assertSame('Strength', $result['stats']['abil-1']['name']);
-		self::assertSame(10, $result['stats']['abil-1']['base']);
-		self::assertSame(10, $result['stats']['abil-1']['value']);
-		self::assertEmpty($result['stats']['abil-1']['audit']);
+		self::assertArrayHasKey(key: 'abil-1', array: $result['stats']);
+		self::assertSame(expected: 'Strength', actual: $result['stats']['abil-1']['name']);
+		self::assertSame(expected: 10, actual: $result['stats']['abil-1']['base']);
+		self::assertSame(expected: 10, actual: $result['stats']['abil-1']['value']);
+		self::assertEmpty(actual: $result['stats']['abil-1']['audit']);
 
-		self::assertArrayHasKey('abil-2', $result['stats']);
-		self::assertSame(5, $result['stats']['abil-2']['base']);
-		self::assertSame(5, $result['stats']['abil-2']['value']);
+		self::assertArrayHasKey(key: 'abil-2', array: $result['stats']);
+		self::assertSame(expected: 5, actual: $result['stats']['abil-2']['base']);
+		self::assertSame(expected: 5, actual: $result['stats']['abil-2']['value']);
 	}
 
+	/**
+	 * Calculate character applies positive skill effect.
+	 *
+	 * @return void
+	 */
 	public function testCalculateCharacterAppliesPositiveSkillEffect(): void {
 		$abilities = [
 			['id' => 'abil-1', 'name' => 'Strength', 'base' => 10],
@@ -116,16 +152,21 @@ class CharacterServiceTest extends TestCase {
 		$character = ['id' => 'char-1', 'name' => 'Fighter', 'skills' => ['skill-1']];
 		$result = $service->calculateCharacter($character);
 
-		self::assertSame(15, $result['stats']['abil-1']['value']);
-		self::assertCount(1, $result['stats']['abil-1']['audit']);
-		self::assertSame(10, $result['stats']['abil-1']['audit'][0]['old']);
-		self::assertSame(15, $result['stats']['abil-1']['audit'][0]['new']);
+		self::assertSame(expected: 15, actual: $result['stats']['abil-1']['value']);
+		self::assertCount(expectedCount: 1, haystack: $result['stats']['abil-1']['audit']);
+		self::assertSame(expected: 10, actual: $result['stats']['abil-1']['audit'][0]['old']);
+		self::assertSame(expected: 15, actual: $result['stats']['abil-1']['audit'][0]['new']);
 		// Audit stores id/name, not the full effect object.
-		self::assertSame('eff-1', $result['stats']['abil-1']['audit'][0]['effectId']);
-		self::assertSame('Str Bonus', $result['stats']['abil-1']['audit'][0]['effectName']);
-		self::assertArrayNotHasKey('effect', $result['stats']['abil-1']['audit'][0]);
+		self::assertSame(expected: 'eff-1', actual: $result['stats']['abil-1']['audit'][0]['effectId']);
+		self::assertSame(expected: 'Str Bonus', actual: $result['stats']['abil-1']['audit'][0]['effectName']);
+		self::assertArrayNotHasKey(key: 'effect', array: $result['stats']['abil-1']['audit'][0]);
 	}
 
+	/**
+	 * Calculate character applies negative effect.
+	 *
+	 * @return void
+	 */
 	public function testCalculateCharacterAppliesNegativeEffect(): void {
 		$abilities = [
 			['id' => 'abil-1', 'name' => 'HP', 'base' => 20],
@@ -141,9 +182,14 @@ class CharacterServiceTest extends TestCase {
 		$character = ['id' => 'char-1', 'name' => 'Victim', 'conditions' => ['cond-1']];
 		$result = $service->calculateCharacter($character);
 
-		self::assertSame(17, $result['stats']['abil-1']['value']);
+		self::assertSame(expected: 17, actual: $result['stats']['abil-1']['value']);
 	}
 
+	/**
+	 * Calculate character applies effects from multiple entity types.
+	 *
+	 * @return void
+	 */
 	public function testCalculateCharacterAppliesEffectsFromMultipleEntityTypes(): void {
 		$abilities = [
 			['id' => 'abil-1', 'name' => 'Strength', 'base' => 10],
@@ -174,10 +220,15 @@ class CharacterServiceTest extends TestCase {
 		$result = $service->calculateCharacter($character);
 
 		// 10 + 2 (skill) + 3 (item) - 1 (condition) = 14
-		self::assertSame(14, $result['stats']['abil-1']['value']);
-		self::assertCount(3, $result['stats']['abil-1']['audit']);
+		self::assertSame(expected: 14, actual: $result['stats']['abil-1']['value']);
+		self::assertCount(expectedCount: 3, haystack: $result['stats']['abil-1']['audit']);
 	}
 
+	/**
+	 * Calculate character skips orphaned entity references.
+	 *
+	 * @return void
+	 */
 	public function testCalculateCharacterSkipsOrphanedEntityReferences(): void {
 		$abilities = [
 			['id' => 'abil-1', 'name' => 'Strength', 'base' => 10],
@@ -191,9 +242,14 @@ class CharacterServiceTest extends TestCase {
 		];
 		$result = $service->calculateCharacter($character);
 
-		self::assertSame(10, $result['stats']['abil-1']['value']);
+		self::assertSame(expected: 10, actual: $result['stats']['abil-1']['value']);
 	}
 
+	/**
+	 * Calculate character skips orphaned effect references.
+	 *
+	 * @return void
+	 */
 	public function testCalculateCharacterSkipsOrphanedEffectReferences(): void {
 		$abilities = [
 			['id' => 'abil-1', 'name' => 'Strength', 'base' => 10],
@@ -206,9 +262,14 @@ class CharacterServiceTest extends TestCase {
 		$character = ['id' => 'char-1', 'skills' => ['skill-1']];
 		$result = $service->calculateCharacter($character);
 
-		self::assertSame(10, $result['stats']['abil-1']['value']);
+		self::assertSame(expected: 10, actual: $result['stats']['abil-1']['value']);
 	}
 
+	/**
+	 * Calculate character handles empty skills array.
+	 *
+	 * @return void
+	 */
 	public function testCalculateCharacterHandlesEmptySkillsArray(): void {
 		$abilities = [
 			['id' => 'abil-1', 'name' => 'Strength', 'base' => 10],
@@ -218,9 +279,14 @@ class CharacterServiceTest extends TestCase {
 		$character = ['id' => 'char-1', 'skills' => []];
 		$result = $service->calculateCharacter($character);
 
-		self::assertSame(10, $result['stats']['abil-1']['value']);
+		self::assertSame(expected: 10, actual: $result['stats']['abil-1']['value']);
 	}
 
+	/**
+	 * Calculate character handles null effects on entity.
+	 *
+	 * @return void
+	 */
 	public function testCalculateCharacterHandlesNullEffectsOnEntity(): void {
 		$abilities = [
 			['id' => 'abil-1', 'name' => 'Strength', 'base' => 10],
@@ -233,9 +299,14 @@ class CharacterServiceTest extends TestCase {
 		$character = ['id' => 'char-1', 'skills' => ['skill-1']];
 		$result = $service->calculateCharacter($character);
 
-		self::assertSame(10, $result['stats']['abil-1']['value']);
+		self::assertSame(expected: 10, actual: $result['stats']['abil-1']['value']);
 	}
 
+	/**
+	 * Calculate character uses stat id as fallback.
+	 *
+	 * @return void
+	 */
 	public function testCalculateCharacterUsesStatIdAsFallback(): void {
 		$abilities = [
 			['id' => 'abil-1', 'name' => 'Strength', 'base' => 10],
@@ -251,9 +322,14 @@ class CharacterServiceTest extends TestCase {
 		$character = ['id' => 'char-1', 'skills' => ['skill-1']];
 		$result = $service->calculateCharacter($character);
 
-		self::assertSame(17, $result['stats']['abil-1']['value']);
+		self::assertSame(expected: 17, actual: $result['stats']['abil-1']['value']);
 	}
 
+	/**
+	 * Calculate character default base is zero.
+	 *
+	 * @return void
+	 */
 	public function testCalculateCharacterDefaultBaseIsZero(): void {
 		$abilities = [
 			['id' => 'abil-1', 'name' => 'Luck'],
@@ -263,10 +339,15 @@ class CharacterServiceTest extends TestCase {
 		$character = ['id' => 'char-1'];
 		$result = $service->calculateCharacter($character);
 
-		self::assertSame(0, $result['stats']['abil-1']['base']);
-		self::assertSame(0, $result['stats']['abil-1']['value']);
+		self::assertSame(expected: 0, actual: $result['stats']['abil-1']['base']);
+		self::assertSame(expected: 0, actual: $result['stats']['abil-1']['value']);
 	}
 
+	/**
+	 * Calculate character applies event effects.
+	 *
+	 * @return void
+	 */
 	public function testCalculateCharacterAppliesEventEffects(): void {
 		$abilities = [
 			['id' => 'abil-1', 'name' => 'XP', 'base' => 0],
@@ -282,15 +363,20 @@ class CharacterServiceTest extends TestCase {
 		$character = ['id' => 'char-1', 'events' => ['evt-1']];
 		$result = $service->calculateCharacter($character);
 
-		self::assertSame(100, $result['stats']['abil-1']['value']);
+		self::assertSame(expected: 100, actual: $result['stats']['abil-1']['value']);
 	}
 
+	/**
+	 * Calculate all characters.
+	 *
+	 * @return void
+	 */
 	public function testCalculateAllCharacters(): void {
 		$abilities = [
 			['id' => 'abil-1', 'name' => 'Strength', 'base' => 10],
 		];
 
-		$fetcher = $this->createMock(RegisterObjectFetcher::class);
+		$fetcher = $this->createMock(originalClassName: RegisterObjectFetcher::class);
 		$fetcher->method('getObjects')
 			->willReturnCallback(function (string $type) use ($abilities): array {
 				if ($type === 'ability') {
@@ -305,18 +391,27 @@ class CharacterServiceTest extends TestCase {
 				return [];
 			});
 
-		$service = new CharacterService($fetcher, $this->createMock(LoggerInterface::class), new EffectApplier());
+		$service = new CharacterService(
+			objectFetcher: $fetcher,
+			logger: $this->createMock(originalClassName: LoggerInterface::class),
+			effectApplier: new EffectApplier()
+		);
 		$results = $service->calculateAllCharacters();
 
-		self::assertCount(2, $results);
-		self::assertArrayHasKey('stats', $results[0]);
-		self::assertArrayHasKey('stats', $results[1]);
+		self::assertCount(expectedCount: 2, haystack: $results);
+		self::assertArrayHasKey(key: 'stats', array: $results[0]);
+		self::assertArrayHasKey(key: 'stats', array: $results[1]);
 	}
 
 	// -----------------------------------------------------------------------
 	// #208 — non-cumulative dedup + stat_id double-apply fix
 	// -----------------------------------------------------------------------
 
+	/**
+	 * An effect without a cumulative field applies once, as a non-cumulative one.
+	 *
+	 * @return void
+	 */
 	public function testEffectWithMissingCumulativeFieldDefaultsToNonCumulative(): void {
 		// When the 'cumulative' field is entirely absent from the effect array the
 		// schema default is 'non-cumulative'. The same effect attached to both a skill
@@ -345,10 +440,15 @@ class CharacterServiceTest extends TestCase {
 		$result = $service->calculateCharacter($character);
 
 		// 10 + 5 = 15 (applied once). Were the default 'cumulative' it would be 20.
-		self::assertSame(15, $result['stats']['abil-1']['value']);
-		self::assertCount(1, $result['stats']['abil-1']['audit']);
+		self::assertSame(expected: 15, actual: $result['stats']['abil-1']['value']);
+		self::assertCount(expectedCount: 1, haystack: $result['stats']['abil-1']['audit']);
 	}
 
+	/**
+	 * Non cumulative effect applied only once.
+	 *
+	 * @return void
+	 */
 	public function testNonCumulativeEffectAppliedOnlyOnce(): void {
 		// The same non-cumulative effect is attached to BOTH a skill and an item.
 		// It should only be applied once regardless.
@@ -377,10 +477,15 @@ class CharacterServiceTest extends TestCase {
 		$result = $service->calculateCharacter($character);
 
 		// 10 + 5 (once, not 10). Closes #208.
-		self::assertSame(15, $result['stats']['abil-1']['value']);
-		self::assertCount(1, $result['stats']['abil-1']['audit']);
+		self::assertSame(expected: 15, actual: $result['stats']['abil-1']['value']);
+		self::assertCount(expectedCount: 1, haystack: $result['stats']['abil-1']['audit']);
 	}
 
+	/**
+	 * Cumulative effect applied multiple times.
+	 *
+	 * @return void
+	 */
 	public function testCumulativeEffectAppliedMultipleTimes(): void {
 		// A cumulative effect on skill + item must stack.
 		$abilities = [
@@ -403,11 +508,16 @@ class CharacterServiceTest extends TestCase {
 		$result = $service->calculateCharacter($character);
 
 		// 10 + 5 + 5 = 20 (cumulative stacks).
-		self::assertSame(20, $result['stats']['abil-1']['value']);
+		self::assertSame(expected: 20, actual: $result['stats']['abil-1']['value']);
 	}
 
+	/**
+	 * Stat id and abilities deduplication.
+	 *
+	 * @return void
+	 */
 	public function testStatIdAndAbilitiesDeduplication(): void {
-		// stat_id = 'abil-1' AND abilities = ['abil-1']: must apply only once. Closes #208.
+		// With stat_id = 'abil-1' AND abilities = ['abil-1']: must apply only once. Closes #208.
 		$abilities = [
 			['id' => 'abil-1', 'name' => 'Strength', 'base' => 10],
 		];
@@ -427,14 +537,19 @@ class CharacterServiceTest extends TestCase {
 		$result = $service->calculateCharacter($character);
 
 		// 10 + 4 = 14 (not 18, because stat_id dedup removes the duplicate ability). Closes #208.
-		self::assertSame(14, $result['stats']['abil-1']['value']);
-		self::assertCount(1, $result['stats']['abil-1']['audit']);
+		self::assertSame(expected: 14, actual: $result['stats']['abil-1']['value']);
+		self::assertCount(expectedCount: 1, haystack: $result['stats']['abil-1']['audit']);
 	}
 
 	// -----------------------------------------------------------------------
 	// #209 — sign-direction confusion fix
 	// -----------------------------------------------------------------------
 
+	/**
+	 * A negative modifier with a negative modification subtracts its absolute value.
+	 *
+	 * @return void
+	 */
 	public function testNegativeModifierWithNegativeModificationSubtracts(): void {
 		// {modifier: -3, modification: 'negative'} must subtract 3, NOT add 3.
 		// Before the fix this would have computed value - (-3) = value + 3.
@@ -456,10 +571,15 @@ class CharacterServiceTest extends TestCase {
 		$character = ['id' => 'char-1', 'skills' => ['skill-1']];
 		$result = $service->calculateCharacter($character);
 
-		// abs(-3) = 3; modification='negative' → 20 - 3 = 17.
-		self::assertSame(17, $result['stats']['abil-1']['value']);
+		// Here abs(-3) = 3; modification='negative' → 20 - 3 = 17.
+		self::assertSame(expected: 17, actual: $result['stats']['abil-1']['value']);
 	}
 
+	/**
+	 * Negative modifier with positive modification adds.
+	 *
+	 * @return void
+	 */
 	public function testNegativeModifierWithPositiveModificationAdds(): void {
 		// {modifier: -5, modification: 'positive'} must add 5 (abs coercion).
 		$abilities = [
@@ -479,14 +599,19 @@ class CharacterServiceTest extends TestCase {
 		$character = ['id' => 'char-1', 'skills' => ['skill-1']];
 		$result = $service->calculateCharacter($character);
 
-		// abs(-5) = 5; modification='positive' → 10 + 5 = 15.
-		self::assertSame(15, $result['stats']['abil-1']['value']);
+		// Here abs(-5) = 5; modification='positive' → 10 + 5 = 15.
+		self::assertSame(expected: 15, actual: $result['stats']['abil-1']['value']);
 	}
 
 	// -----------------------------------------------------------------------
 	// #219 — lean audit trail
 	// -----------------------------------------------------------------------
 
+	/**
+	 * An audit entry carries only the minimal fields.
+	 *
+	 * @return void
+	 */
 	public function testAuditTrailContainsOnlyMinimalFields(): void {
 		$abilities = [
 			['id' => 'abil-1', 'name' => 'Strength', 'base' => 10],
@@ -510,23 +635,25 @@ class CharacterServiceTest extends TestCase {
 		$audit = $result['stats']['abil-1']['audit'][0];
 
 		// Required fields must be present.
-		self::assertArrayHasKey('type', $audit);
-		self::assertArrayHasKey('effectId', $audit);
-		self::assertArrayHasKey('effectName', $audit);
-		self::assertArrayHasKey('old', $audit);
-		self::assertArrayHasKey('new', $audit);
-		self::assertSame('eff-42', $audit['effectId']);
-		self::assertSame('Battle Fury', $audit['effectName']);
+		self::assertArrayHasKey(key: 'type', array: $audit);
+		self::assertArrayHasKey(key: 'effectId', array: $audit);
+		self::assertArrayHasKey(key: 'effectName', array: $audit);
+		self::assertArrayHasKey(key: 'old', array: $audit);
+		self::assertArrayHasKey(key: 'new', array: $audit);
+		self::assertSame(expected: 'eff-42', actual: $audit['effectId']);
+		self::assertSame(expected: 'Battle Fury', actual: $audit['effectName']);
 
 		// The full effect object must NOT be stored. Closes #219.
-		self::assertArrayNotHasKey('effect', $audit);
-		self::assertArrayNotHasKey('secret_field', $audit);
+		self::assertArrayNotHasKey(key: 'effect', array: $audit);
+		self::assertArrayNotHasKey(key: 'secret_field', array: $audit);
 	}
 
 	/**
 	 * Each audit entry names the skill, item, condition or event that carried it (REQ-CSP-001).
 	 *
 	 * @spec openspec/specs/character-management/spec.md
+	 *
+	 * @return void
 	 */
 	public function testAuditEntriesNameTheirSource(): void {
 		$abilities = [['id' => 'abil-1', 'name' => 'Strength', 'base' => 10]];
@@ -543,8 +670,11 @@ class CharacterServiceTest extends TestCase {
 
 		$audit = $service->calculateCharacter(['id' => 'char-1', 'skills' => ['skill-1'], 'items' => ['item-1']])['stats']['abil-1']['audit'];
 
-		self::assertSame(['skill', 'skill-1', 'Swordsmanship'], [$audit[0]['source'], $audit[0]['sourceId'], $audit[0]['sourceName']]);
-		self::assertSame(['item', 'item-1', 'Iron shield'], [$audit[1]['source'], $audit[1]['sourceId'], $audit[1]['sourceName']]);
-		self::assertSame(14, $service->calculateCharacter(['id' => 'char-1', 'skills' => ['skill-1'], 'items' => ['item-1']])['stats']['abil-1']['value']);
+		self::assertSame(expected: ['skill', 'skill-1', 'Swordsmanship'], actual: [$audit[0]['source'], $audit[0]['sourceId'], $audit[0]['sourceName']]);
+		self::assertSame(expected: ['item', 'item-1', 'Iron shield'], actual: [$audit[1]['source'], $audit[1]['sourceId'], $audit[1]['sourceName']]);
+		self::assertSame(
+			expected: 14,
+			actual: $service->calculateCharacter(['id' => 'char-1', 'skills' => ['skill-1'], 'items' => ['item-1']])['stats']['abil-1']['value']
+		);
 	}
 }

@@ -24,7 +24,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Listener;
 
-use OCA\Larpinq\AppInfo\Application;
+use OCA\Larpinq\Support\AppIdentity;
 use OCA\Larpinq\Service\CharacterConnectionGuard;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
@@ -49,6 +49,23 @@ use Psr\Log\LoggerInterface;
  * @spec openspec/specs/character-connections/spec.md
  */
 class FactionMembershipListener implements IEventListener {
+
+	/**
+	 * The schemas this listener checks, in the order their ids are compared.
+	 *
+	 * @var string[]
+	 */
+	private const KINDS = ['faction', 'factionmember', 'relationship', 'characterbuild'];
+
+	/**
+	 * The refusal when the guard could not read the write.
+	 *
+	 * @var array<string,string>
+	 */
+	private const UNVERIFIABLE = [
+		'code' => 'connection_unverifiable',
+		'message' => 'The faction or character of this write could not be read, so the write is refused.',
+	];
 
 	/**
 	 * Constructor.
@@ -85,9 +102,7 @@ class FactionMembershipListener implements IEventListener {
 	 * @spec openspec/specs/character-connections/spec.md
 	 */
 	public function handle(Event $event): void {
-		if (($event instanceof \OCA\OpenRegister\Event\ObjectCreatingEvent) === false
-			&& ($event instanceof \OCA\OpenRegister\Event\ObjectUpdatingEvent) === false
-		) {
+		if ($this->isPreWrite(event: $event) === false) {
 			return;
 		}
 
@@ -97,10 +112,7 @@ class FactionMembershipListener implements IEventListener {
 			// An authorization check does not fail open: a guard that throws
 			// refuses the write and says why in the log.
 			$this->logger->error('Larpinq: faction and relationship check errored; refusing the write.', ['exception' => $e]);
-			$errors = [
-				'code' => 'connection_unverifiable',
-				'message' => 'The faction or character of this write could not be read, so the write is refused.',
-			];
+			$errors = self::UNVERIFIABLE;
 		}
 
 		if ($errors !== null) {
@@ -126,9 +138,39 @@ class FactionMembershipListener implements IEventListener {
 			return null;
 		}
 
-		// A write without a signed-in user is the app itself (seeding, import
-		// from the command line); OpenRegister's schema rules already decide
-		// who may write through the API.
+		$userId = $this->restrictedUserId();
+		if ($userId === null) {
+			return null;
+		}
+
+		return $this->verdict(kind: $kind, write: [(array)$entity->getObject(), $old, $userId]);
+	}//end collectVeto()
+
+	/**
+	 * Whether the event is one of OpenRegister's vetoable pre-write events.
+	 *
+	 * @param Event $event The dispatched event.
+	 *
+	 * @return bool True for ObjectCreatingEvent and ObjectUpdatingEvent.
+	 *
+	 * @psalm-assert-if-true \OCA\OpenRegister\Event\ObjectCreatingEvent|\OCA\OpenRegister\Event\ObjectUpdatingEvent $event
+	 */
+	private function isPreWrite(Event $event): bool {
+		return $event instanceof \OCA\OpenRegister\Event\ObjectCreatingEvent
+			|| $event instanceof \OCA\OpenRegister\Event\ObjectUpdatingEvent;
+	}//end isPreWrite()
+
+	/**
+	 * The signed-in user whose writes the guard checks, or null when none is checked.
+	 *
+	 * A write without a signed-in user is the app itself (seeding, import
+	 * from the command line); OpenRegister's schema rules already decide
+	 * who may write through the API. Administrators and game masters are
+	 * not checked either.
+	 *
+	 * @return string|null The user id, or null.
+	 */
+	private function restrictedUserId(): ?string {
 		$user = $this->userSession->getUser();
 		if ($user === null) {
 			return null;
@@ -136,12 +178,44 @@ class FactionMembershipListener implements IEventListener {
 
 		$userId = $user->getUID();
 		if ($this->groupManager->isAdmin($userId) === true
-			|| $this->groupManager->isInGroup($userId, Application::GM_GROUP) === true
+			|| $this->groupManager->isInGroup($userId, AppIdentity::GM_GROUP) === true
 		) {
 			return null;
 		}
 
-		$data = (array)$entity->getObject();
+		return $userId;
+	}//end restrictedUserId()
+
+	/**
+	 * The stored object of an update, or null on a create.
+	 *
+	 * @param object|null $old The stored entity.
+	 *
+	 * @return array<string,mixed>|null The stored data.
+	 *
+	 * @psalm-suppress MixedMethodCall OpenRegister entity is an optional dependency.
+	 */
+	private function storedData(?object $old): ?array {
+		if ($old === null) {
+			return null;
+		}
+
+		return (array)$old->getObject();
+	}//end storedData()
+
+	/**
+	 * The guard verdict for one write of a kind.
+	 *
+	 * Factions and relationships are judged on the new data alone; memberships
+	 * and builds compare it with the stored object, which is read only for them.
+	 *
+	 * @param string                                     $kind  The kind kindOf() named.
+	 * @param array{0:array<string,mixed>,1:object|null,2:string} $write The new data, the stored entity (null on a create) and the user id.
+	 *
+	 * @return array<string, string>|null The errors payload, or null to allow.
+	 */
+	private function verdict(string $kind, array $write): ?array {
+		[$data, $old, $userId] = $write;
 		if ($kind === 'faction') {
 			return $this->guard->checkFaction(faction: $data, userId: $userId);
 		}
@@ -150,17 +224,12 @@ class FactionMembershipListener implements IEventListener {
 			return $this->guard->checkRelationship(relationship: $data, userId: $userId);
 		}
 
-		$previous = null;
-		if ($old !== null) {
-			$previous = (array)$old->getObject();
-		}
-
 		if ($kind === 'characterbuild') {
-			return $this->guard->checkBuild(build: $data, old: $previous, userId: $userId);
+			return $this->guard->checkBuild(build: $data, old: $this->storedData(old: $old), userId: $userId);
 		}
 
-		return $this->guard->checkMembership(membership: $data, old: $previous, userId: $userId);
-	}//end collectVeto()
+		return $this->guard->checkMembership(membership: $data, old: $this->storedData(old: $old), userId: $userId);
+	}//end verdict()
 
 	/**
 	 * Which of the three schemas the entity belongs to, or null for any other.
@@ -179,19 +248,29 @@ class FactionMembershipListener implements IEventListener {
 			return null;
 		}
 
-		$schema = (string)$entity->getSchema();
+		return $this->kindForSchema(schema: (string)$entity->getSchema());
+	}//end kindOf()
+
+	/**
+	 * The kind whose configured schema id is this one, or null.
+	 *
+	 * @param string $schema The schema id; '' matches nothing.
+	 *
+	 * @return string|null The kind.
+	 */
+	private function kindForSchema(string $schema): ?string {
 		if ($schema === '') {
 			return null;
 		}
 
-		foreach (['faction', 'factionmember', 'relationship', 'characterbuild'] as $kind) {
-			if ($schema === $this->config->getValueString(Application::APP_ID, $kind . '_schema', '')) {
+		foreach (self::KINDS as $kind) {
+			if ($this->config->getValueString(AppIdentity::APP_ID, $kind . '_schema', '') === $schema) {
 				return $kind;
 			}
 		}
 
 		return null;
-	}//end kindOf()
+	}//end kindForSchema()
 
 	/**
 	 * The new entity and the stored one (null on a create) of a pre-write event.

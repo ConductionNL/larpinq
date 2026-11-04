@@ -32,58 +32,88 @@ class SettingSchemaTest extends TestCase {
 	 */
 	private array $register;
 
+	/**
+	 * Build the doubles and the subject every test starts from.
+	 *
+	 * @return void
+	 */
 	protected function setUp(): void {
 		parent::setUp();
 		$path = __DIR__ . '/../../../lib/Settings/larpinq_register.json';
 		$this->register = json_decode((string)file_get_contents($path), true);
 	}
 
+	/**
+	 * Register JSON is well formed.
+	 *
+	 * @return void
+	 */
 	public function testRegisterJsonIsWellFormed(): void {
-		self::assertIsArray($this->register);
-		self::assertArrayHasKey('components', $this->register);
-		self::assertArrayHasKey('schemas', $this->register['components']);
+		self::assertIsArray(actual: $this->register);
+		self::assertArrayHasKey(key: 'components', array: $this->register);
+		self::assertArrayHasKey(key: 'schemas', array: $this->register['components']);
 	}
 
+	/**
+	 * Setting schema is campaign entity v 2.
+	 *
+	 * @return void
+	 */
 	public function testSettingSchemaIsCampaignEntityV2(): void {
 		$setting = $this->register['components']['schemas']['setting'];
-		self::assertSame('2.0.0', $setting['version']);
-		self::assertSame('setting', $setting['slug']);
+		self::assertSame(expected: '2.0.0', actual: $setting['version']);
+		self::assertSame(expected: 'setting', actual: $setting['slug']);
 
 		$props = $setting['properties'];
-		self::assertArrayHasKey('name', $props);
-		self::assertArrayHasKey('description', $props);
-		self::assertArrayHasKey('status', $props);
+		self::assertArrayHasKey(key: 'name', array: $props);
+		self::assertArrayHasKey(key: 'description', array: $props);
+		self::assertArrayHasKey(key: 'status', array: $props);
 
 		// The vestigial key-value `value` property is gone.
-		self::assertArrayNotHasKey('value', $props);
+		self::assertArrayNotHasKey(key: 'value', array: $props);
 
-		// status is an enum active|archived defaulting to active.
-		self::assertSame(['active', 'archived'], $props['status']['enum']);
-		self::assertSame('active', $props['status']['default']);
+		// The status is an enum active|archived defaulting to active.
+		self::assertSame(expected: ['active', 'archived'], actual: $props['status']['enum']);
+		self::assertSame(expected: 'active', actual: $props['status']['default']);
 
-		self::assertSame(['name'], $setting['required']);
+		self::assertSame(expected: ['name'], actual: $setting['required']);
 	}
 
+	/**
+	 * Scoping property added to game entities.
+	 *
+	 * @return void
+	 */
 	public function testScopingPropertyAddedToGameEntities(): void {
 		$schemas = $this->register['components']['schemas'];
 		foreach (['character', 'event', 'skill', 'item', 'condition', 'ability', 'effect'] as $type) {
 			self::assertArrayHasKey(
-				'setting',
-				$schemas[$type]['properties'],
-				"Schema $type must carry the optional setting scoping property"
+				key: 'setting',
+				array: $schemas[$type]['properties'],
+				message: "Schema $type must carry the optional setting scoping property"
 			);
-			self::assertSame('uuid', $schemas[$type]['properties']['setting']['format']);
+			self::assertSame(expected: 'uuid', actual: $schemas[$type]['properties']['setting']['format']);
 		}
 	}
 
+	/**
+	 * Player is not scoped.
+	 *
+	 * @return void
+	 */
 	public function testPlayerIsNotScoped(): void {
 		// A player is a real person who spans campaigns — never setting-scoped.
 		$player = $this->register['components']['schemas']['player'];
-		self::assertArrayNotHasKey('setting', $player['properties']);
+		self::assertArrayNotHasKey(key: 'setting', array: $player['properties']);
 	}
 
+	/**
+	 * Setting registered in schema list.
+	 *
+	 * @return void
+	 */
 	public function testSettingRegisteredInSchemaList(): void {
 		$schemas = $this->register['components']['registers']['larpinq']['schemas'];
-		self::assertContains('setting', $schemas);
+		self::assertContains(needle: 'setting', haystack: $schemas);
 	}
 }

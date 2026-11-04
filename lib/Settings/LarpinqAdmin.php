@@ -19,7 +19,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Settings;
 
-use OCA\Larpinq\AppInfo\Application;
+use OCA\Larpinq\Support\AppIdentity;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Services\IInitialState;
@@ -58,12 +58,12 @@ class LarpinqAdmin implements IDelegatedSettings {
 	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-19
 	 */
 	public function getForm(): TemplateResponse {
-		$version = $this->appManager->getAppVersion(appId: Application::APP_ID);
+		$version = $this->appManager->getAppVersion(appId: AppIdentity::APP_ID);
 
 		$this->initialState->provideInitialState('version', $version);
 
 		return new TemplateResponse(
-			Application::APP_ID,
+			AppIdentity::APP_ID,
 			'settings/admin',
 			[]
 		);
@@ -77,7 +77,7 @@ class LarpinqAdmin implements IDelegatedSettings {
 	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-17
 	 */
 	public function getSection(): string {
-		return Application::APP_ID;
+		return AppIdentity::APP_ID;
 	}//end getSection()
 
 	/**

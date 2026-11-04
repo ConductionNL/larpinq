@@ -57,12 +57,13 @@ class UniqueHolderConflictFinder {
 	 * @spec openspec/specs/rpg-system/spec.md
 	 */
 	public function findConflicts(): array {
-		[$held, $names] = $this->indexCharacterSide();
+		$holdings = $this->indexCharacterSide();
 
 		$conflicts = [];
 		foreach (array_keys(UniqueHolderService::CHARACTER_FIELD) as $kind) {
+			$ofKind = $holdings->forKind(kind: $kind);
 			foreach ($this->holders->pages(objectType: $kind) as $object) {
-				$conflict = $this->conflictOf(kind: $kind, object: $object, held: $held[$kind], names: $names);
+				$conflict = $this->conflictOf(object: $object, holdings: $ofKind);
 				if ($conflict !== null) {
 					$conflicts[] = $conflict;
 				}
@@ -75,11 +76,9 @@ class UniqueHolderConflictFinder {
 	/**
 	 * Index the character side once.
 	 *
-	 * Returns kind => objectId => [characterId => name], and characterId => name.
-	 *
-	 * @return array{0:array<string,array<string,array<string,string>>>,1:array<string,string>} The index and the names.
+	 * @return CharacterHoldings Who holds what, and every character's name.
 	 */
-	private function indexCharacterSide(): array {
+	private function indexCharacterSide(): CharacterHoldings {
 		$held = ['item' => [], 'condition' => []];
 		$names = [];
 		foreach ($this->holders->pages(objectType: 'character') as $character) {
@@ -96,39 +95,33 @@ class UniqueHolderConflictFinder {
 			}
 		}
 
-		return [$held, $names];
+		return new CharacterHoldings(held: $held, names: $names);
 	}//end indexCharacterSide()
 
 	/**
 	 * The conflict for one item or condition, or null when it has at most one holder.
 	 *
-	 * @param string $kind 'item' or 'condition'.
 	 * @param array<string,mixed> $object The item or condition data.
-	 * @param array<string,array<string,string>> $held objectId => [characterId => name] from the character side.
-	 * @param array<string,string> $names characterId => name.
+	 * @param CharacterHoldings $holdings The character side, read for the object's kind.
 	 *
 	 * @return array{kind:string,id:string,name:string,holders:array<int,string>}|null The conflict.
 	 */
-	private function conflictOf(string $kind, array $object, array $held, array $names): ?array {
+	private function conflictOf(array $object, CharacterHoldings $holdings): ?array {
 		$objectId = $this->holders->objectId(object: $object);
-		if ($objectId === '' || $this->holders->isUnique(kind: $kind, object: $object) === false) {
+		if ($objectId === '' || $this->holders->isUnique(kind: $holdings->kind(), object: $object) === false) {
 			return null;
 		}
 
-		$holders = $held[$objectId] ?? [];
-		foreach ($this->idNormaliser->normalise(value: $object['characters'] ?? []) as $characterId) {
-			$holders[$characterId] ??= ($names[$characterId] ?? $characterId);
-		}
-
+		$holders = $holdings->holderNames(
+			objectId: $objectId,
+			objectSide: $this->idNormaliser->normalise(value: $object['characters'] ?? [])
+		);
 		if (count($holders) < 2) {
 			return null;
 		}
 
-		$holders = array_values($holders);
-		sort($holders);
-
 		return [
-			'kind' => $kind,
+			'kind' => $holdings->kind(),
 			'id' => $objectId,
 			'name' => $this->holders->nameOf(object: $object, fallback: $objectId),
 			'holders' => $holders,

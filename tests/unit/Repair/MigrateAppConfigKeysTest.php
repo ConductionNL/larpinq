@@ -41,31 +41,47 @@ use RuntimeException;
 class MigrateAppConfigKeysTest extends TestCase {
 	private const OLD_APP_ID = 'larpingapp';
 
+	/** @var IAppConfig&MockObject The app config. */
 	private IAppConfig&MockObject $appConfig;
 
+	/** @var LoggerInterface&MockObject The logger. */
 	private LoggerInterface&MockObject $logger;
 
+	/** @var IOutput&MockObject The output. */
 	private IOutput&MockObject $output;
 
+	/** @var MigrateAppConfigKeys The step. */
 	private MigrateAppConfigKeys $step;
 
+	/**
+	 * Build the doubles and the subject every test starts from.
+	 *
+	 * @return void
+	 */
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->appConfig = $this->createMock(IAppConfig::class);
-		$this->logger = $this->createMock(LoggerInterface::class);
-		$this->output = $this->createMock(IOutput::class);
+		$this->appConfig = $this->createMock(originalClassName: IAppConfig::class);
+		$this->logger = $this->createMock(originalClassName: LoggerInterface::class);
+		$this->output = $this->createMock(originalClassName: IOutput::class);
 
-		$this->step = new MigrateAppConfigKeys($this->appConfig, $this->logger);
+		$this->step = new MigrateAppConfigKeys(appConfig: $this->appConfig, logger: $this->logger);
 	}//end setUp()
 
+	/**
+	 * Get name mentions both namespaces.
+	 *
+	 * @return void
+	 */
 	public function testGetNameMentionsBothNamespaces(): void {
-		self::assertStringContainsString(self::OLD_APP_ID, $this->step->getName());
-		self::assertStringContainsString(Application::APP_ID, $this->step->getName());
+		self::assertStringContainsString(needle: self::OLD_APP_ID, haystack: $this->step->getName());
+		self::assertStringContainsString(needle: Application::APP_ID, haystack: $this->step->getName());
 	}//end testGetNameMentionsBothNamespaces()
 
 	/**
 	 * The happy path: a stored value under the old id lands under the new one.
+	 *
+	 * @return void
 	 */
 	public function testCopiesStoredValuesToTheNewNamespace(): void {
 		$this->appConfig->method('getKeys')
@@ -94,20 +110,25 @@ class MigrateAppConfigKeysTest extends TestCase {
 		$this->step->run($this->output);
 
 		self::assertSame(
-			['register' => '7', 'character_schema' => '19'],
-			$written[Application::APP_ID] ?? []
+			expected: ['register' => '7', 'character_schema' => '19'],
+			actual: $written[Application::APP_ID] ?? []
 		);
 	}//end testCopiesStoredValuesToTheNewNamespace()
 
 	/**
 	 * Never clobber an admin edit made after the rename. Also what makes a
 	 * second run a no-op.
+	 *
+	 * @return void
 	 */
 	public function testDoesNotOverwriteAValueAlreadySetUnderTheNewAppId(): void {
 		$this->appConfig->method('getKeys')->willReturn(['register']);
 
 		$this->appConfig->method('getValueString')->willReturnCallback(
-			static fn (string $app): string => $app === self::OLD_APP_ID ? '7' : '42'
+			static fn (string $app): string => match ($app) {
+				self::OLD_APP_ID => '7',
+				default => '42',
+			}
 		);
 
 		$this->appConfig->expects(self::never())->method('setValueString');
@@ -128,6 +149,8 @@ class MigrateAppConfigKeysTest extends TestCase {
 	 *
 	 * Here the new namespace is EMPTY, so the only thing that can stop the
 	 * write is the reserved list.
+	 *
+	 * @return void
 	 */
 	public function testSkipsNextcloudReservedKeys(): void {
 		$this->appConfig->method('getKeys')
@@ -160,7 +183,7 @@ class MigrateAppConfigKeysTest extends TestCase {
 
 		$this->step->run($this->output);
 
-		self::assertSame(['register' => '7'], $written);
+		self::assertSame(expected: ['register' => '7'], actual: $written);
 	}//end testSkipsNextcloudReservedKeys()
 
 	/**
@@ -174,6 +197,8 @@ class MigrateAppConfigKeysTest extends TestCase {
 	 * The assertion is deliberately two-part: no exception escapes, AND the
 	 * loop carries on to migrate the following key. A `try` wrapped around the
 	 * whole foreach would satisfy the first half and fail the second.
+	 *
+	 * @return void
 	 */
 	public function testAReadThatThrowsIsLoggedAndTheLoopContinues(): void {
 		$this->appConfig->method('getKeys')->willReturn(['poisoned', 'register']);
@@ -184,7 +209,11 @@ class MigrateAppConfigKeysTest extends TestCase {
 					throw new RuntimeException('unreadable value');
 				}
 
-				return $app === self::OLD_APP_ID ? '7' : '';
+				if ($app === self::OLD_APP_ID) {
+					return '7';
+				}
+
+				return '';
 			}
 		);
 
@@ -200,11 +229,13 @@ class MigrateAppConfigKeysTest extends TestCase {
 
 		$this->step->run($this->output);
 
-		self::assertSame(['register' => '7'], $written, 'the loop must continue past a bad key');
+		self::assertSame(expected: ['register' => '7'], actual: $written, message: 'the loop must continue past a bad key');
 	}//end testAReadThatThrowsIsLoggedAndTheLoopContinues()
 
 	/**
 	 * An unreadable key list must not abort the install either.
+	 *
+	 * @return void
 	 */
 	public function testAnUnreadableKeyListIsSurvivable(): void {
 		$this->appConfig->method('getKeys')
@@ -216,6 +247,11 @@ class MigrateAppConfigKeysTest extends TestCase {
 		$this->step->run($this->output);
 	}//end testAnUnreadableKeyListIsSurvivable()
 
+	/**
+	 * An empty old value is not copied.
+	 *
+	 * @return void
+	 */
 	public function testAnEmptyOldValueIsNotCopied(): void {
 		$this->appConfig->method('getKeys')->willReturn(['register']);
 		$this->appConfig->method('getValueString')->willReturn('');
@@ -225,6 +261,11 @@ class MigrateAppConfigKeysTest extends TestCase {
 		$this->step->run($this->output);
 	}//end testAnEmptyOldValueIsNotCopied()
 
+	/**
+	 * Nothing stored under the old id is a no op.
+	 *
+	 * @return void
+	 */
 	public function testNothingStoredUnderTheOldIdIsANoOp(): void {
 		$this->appConfig->method('getKeys')->willReturn([]);
 
@@ -232,4 +273,31 @@ class MigrateAppConfigKeysTest extends TestCase {
 
 		$this->step->run($this->output);
 	}//end testNothingStoredUnderTheOldIdIsANoOp()
+
+	/**
+	 * The summary counts each outcome once: migrated, already present, empty,
+	 * reserved and a read that failed.
+	 *
+	 * @return void
+	 */
+	public function testTheSummaryCountsEachOutcome(): void {
+		$this->appConfig->method('getKeys')->willReturn(['enabled', 'blank', 'kept', 'register', 'poisoned']);
+		$this->appConfig->method('getValueString')->willReturnCallback(
+			static function (string $app, string $key): string {
+				if ($key === 'poisoned') {
+					throw new \RuntimeException('unreadable');
+				}
+
+				$stored = ['larpinq' => ['kept' => 'new'], 'larpingapp' => ['enabled' => 'old', 'kept' => 'old', 'register' => 'old']];
+				return $stored[$app][$key] ?? '';
+			}
+		);
+		$this->appConfig->method('setValueString')->willReturn(true);
+		$this->output->expects($this->once())->method('info')->with(
+			'MigrateAppConfigKeys: 1 key(s) migrated, 1 already present, 1 had no value to migrate, 1 skipped as Nextcloud-reserved.'
+		);
+
+		$this->step->run($this->output);
+
+	}//end testTheSummaryCountsEachOutcome()
 }//end class

@@ -3,7 +3,7 @@
 /**
  * Drift check for the OpenRegister test stubs.
  *
- * tests/stubs/openregister/ carries verbatim copies of OpenRegister's pre-write
+ * The directory tests/stubs/openregister/ carries verbatim copies of OpenRegister's pre-write
  * events and an ObjectEntity of the real shape. A stub that drifts from the
  * real class lets a listener test pass over code that fails on an instance
  * (learniq#984), so this test compares each stub with the real file whenever
@@ -41,6 +41,7 @@ class OpenRegisterStubDriftTest extends TestCase {
 		}
 
 		$cases['Service/Integration/IntegrationProvider'] = [__DIR__ . '/../../stubs/openregister/Service/Integration/IntegrationProvider.php', true];
+		$cases['Exception/NotAuthorizedException'] = [__DIR__ . '/../../stubs/openregister/Exception/NotAuthorizedException.php', true];
 		$cases['Db/ObjectEntity'] = [__DIR__ . '/../../stubs/openregister/Db/ObjectEntity.php', false];
 
 		return $cases;
@@ -58,21 +59,23 @@ class OpenRegisterStubDriftTest extends TestCase {
 	public function testStubMatchesTheRealClass(string $stubFile, bool $exact): void {
 		$root = $this->openRegisterRoot();
 		if ($root === null) {
-			$this->markTestSkipped('openregister source not found beside larpinq and OPENREGISTER_SOURCE is unset: stub drift is UNVERIFIED by this run.');
+			$this->markTestSkipped(
+				message: 'openregister source not found beside larpinq and OPENREGISTER_SOURCE is unset: stub drift is UNVERIFIED by this run.'
+			);
 		}
 
 		$relative = substr($stubFile, strpos($stubFile, '/stubs/openregister/') + strlen('/stubs/openregister/'));
 		$realFile = $root . '/lib/' . $relative;
-		self::assertFileExists($realFile, 'The stub mirrors a class OpenRegister no longer ships: ' . $relative);
+		self::assertFileExists(filename: $realFile, message: 'The stub mirrors a class OpenRegister no longer ships: ' . $relative);
 
 		$real = $this->publicMethods(file: $realFile);
 		$stub = $this->publicMethods(file: $stubFile);
 		if ($exact === true) {
-			self::assertSame($real, $stub, $relative . ' drifted from ' . $realFile);
+			self::assertSame(expected: $real, actual: $stub, message: $relative . ' drifted from ' . $realFile);
 			return;
 		}
 
-		self::assertSame([], array_values(array_diff($stub, $real)), $relative . ' declares methods the real class lacks');
+		self::assertSame(expected: [], actual: array_values(array_diff($stub, $real)), message: $relative . ' declares methods the real class lacks');
 	}//end testStubMatchesTheRealClass()
 
 	/**

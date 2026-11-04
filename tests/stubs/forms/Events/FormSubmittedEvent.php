@@ -18,13 +18,24 @@ use OCA\Forms\Db\Form;
 use OCA\Forms\Db\Submission;
 
 class FormSubmittedEvent extends AbstractFormEvent {
+	/**
+	 * The event Forms dispatches when a form is submitted.
+	 *
+	 * @param Form $form The form.
+	 * @param Submission $submission The submission.
+	 */
 	public function __construct(
 		Form $form,
 		private readonly Submission $submission,
 	) {
-		parent::__construct($form);
+		parent::__construct(form: $form);
 	}
 
+	/**
+	 * The form and the submission as a webhook payload.
+	 *
+	 * @return array The form and the submission as a webhook payload.
+	 */
 	public function getWebhookSerializable(): array {
 		return [
 			'form' => $this->form->read(),

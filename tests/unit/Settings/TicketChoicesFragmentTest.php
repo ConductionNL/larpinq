@@ -56,7 +56,7 @@ class TicketChoicesFragmentTest extends TestCase {
 	 */
 	private function schema(string $key): array {
 		$schemas = $this->mergedRegister()['components']['schemas'];
-		$this->assertArrayHasKey($key, $schemas, "the {$key} schema must be in the merged register");
+		$this->assertArrayHasKey(key: $key, array: $schemas, message: "the {$key} schema must be in the merged register");
 		return $schemas[$key];
 	}//end schema()
 
@@ -67,10 +67,14 @@ class TicketChoicesFragmentTest extends TestCase {
 	 */
 	public function testTheThreeSchemasAreInTheRegister(): void {
 		$listed = $this->mergedRegister()['components']['registers']['larpinq']['schemas'];
-		foreach (['ticketType' => 'larping_ticket_type', 'registrationOption' => 'larping_registration_option', 'accessCode' => 'larping_access_code'] as $key => $slug) {
-			$this->assertContains($slug, $listed);
-			$this->assertSame($slug, $this->schema(key: $key)['slug']);
-			$this->assertSame('larping_event', $this->schema(key: $key)['properties']['event']['$ref']);
+		foreach ([
+			'ticketType' => 'larping_ticket_type',
+			'registrationOption' => 'larping_registration_option',
+			'accessCode' => 'larping_access_code',
+		] as $key => $slug) {
+			$this->assertContains(needle: $slug, haystack: $listed);
+			$this->assertSame(expected: $slug, actual: $this->schema(key: $key)['slug']);
+			$this->assertSame(expected: 'larping_event', actual: $this->schema(key: $key)['properties']['event']['$ref']);
 		}
 	}//end testTheThreeSchemasAreInTheRegister()
 
@@ -83,26 +87,26 @@ class TicketChoicesFragmentTest extends TestCase {
 		$ticket = $this->schema(key: 'ticketType');
 		$properties = $ticket['properties'];
 
-		$this->assertSame(['event', 'name', 'role', 'amount'], $ticket['required']);
-		$this->assertSame(['player', 'crew', 'npc', 'other'], $properties['role']['enum']);
-		$this->assertSame('integer', $properties['amount']['type']);
-		$this->assertSame(0, $properties['amount']['minimum']);
-		$this->assertSame('EUR', $properties['currency']['default']);
-		$this->assertSame('date-time', $properties['saleFrom']['format']);
-		$this->assertSame('date-time', $properties['saleUntil']['format']);
-		$this->assertSame('integer', $properties['placeLimit']['type']);
-		$this->assertSame('boolean', $properties['hidden']['type']);
-		$this->assertFalse($properties['hidden']['default']);
+		$this->assertSame(expected: ['event', 'name', 'role', 'amount'], actual: $ticket['required']);
+		$this->assertSame(expected: ['player', 'crew', 'npc', 'other'], actual: $properties['role']['enum']);
+		$this->assertSame(expected: 'integer', actual: $properties['amount']['type']);
+		$this->assertSame(expected: 0, actual: $properties['amount']['minimum']);
+		$this->assertSame(expected: 'EUR', actual: $properties['currency']['default']);
+		$this->assertSame(expected: 'date-time', actual: $properties['saleFrom']['format']);
+		$this->assertSame(expected: 'date-time', actual: $properties['saleUntil']['format']);
+		$this->assertSame(expected: 'integer', actual: $properties['placeLimit']['type']);
+		$this->assertSame(expected: 'boolean', actual: $properties['hidden']['type']);
+		$this->assertFalse(condition: $properties['hidden']['default']);
 
 		$option = $this->schema(key: 'registrationOption')['properties'];
-		$this->assertSame(['meal', 'other'], $option['category']['enum']);
-		$this->assertSame('integer', $option['amount']['type']);
-		$this->assertSame('integer', $option['placeLimit']['type']);
+		$this->assertSame(expected: ['meal', 'other'], actual: $option['category']['enum']);
+		$this->assertSame(expected: 'integer', actual: $option['amount']['type']);
+		$this->assertSame(expected: 'integer', actual: $option['placeLimit']['type']);
 
 		$code = $this->schema(key: 'accessCode')['properties'];
-		$this->assertSame('uuid', $code['unlocks']['items']['format']);
-		$this->assertSame('date-time', $code['validUntil']['format']);
-		$this->assertSame(1, $code['maxUses']['minimum']);
+		$this->assertSame(expected: 'uuid', actual: $code['unlocks']['items']['format']);
+		$this->assertSame(expected: 'date-time', actual: $code['validUntil']['format']);
+		$this->assertSame(expected: 1, actual: $code['maxUses']['minimum']);
 	}//end testATicketTypeHasRolePriceWindowLimitAndHidden()
 
 	/**
@@ -112,14 +116,18 @@ class TicketChoicesFragmentTest extends TestCase {
 	 */
 	public function testPlayersCannotReadHiddenTicketTypesOrCodes(): void {
 		$this->assertSame(
-			[['group' => 'gamemasters'], ['group' => 'larpers', 'match' => ['hidden' => false]]],
-			$this->schema(key: 'ticketType')['authorization']['read']
+			expected: [['group' => 'gamemasters'], ['group' => 'larpers', 'match' => ['hidden' => false]]],
+			actual: $this->schema(key: 'ticketType')['authorization']['read']
 		);
-		$this->assertSame(['gamemasters', 'larpers'], $this->schema(key: 'registrationOption')['authorization']['read']);
-		$this->assertSame(['gamemasters'], $this->schema(key: 'accessCode')['authorization']['read']);
+		$this->assertSame(expected: ['gamemasters', 'larpers'], actual: $this->schema(key: 'registrationOption')['authorization']['read']);
+		$this->assertSame(expected: ['gamemasters'], actual: $this->schema(key: 'accessCode')['authorization']['read']);
 		foreach (['ticketType', 'registrationOption', 'accessCode'] as $key) {
 			foreach (['create', 'update', 'delete'] as $action) {
-				$this->assertSame(['gamemasters'], $this->schema(key: $key)['authorization'][$action], "only game masters {$action} a {$key}");
+				$this->assertSame(
+					expected: ['gamemasters'],
+					actual: $this->schema(key: $key)['authorization'][$action],
+					message: "only game masters {$action} a {$key}"
+				);
 			}
 		}
 	}//end testPlayersCannotReadHiddenTicketTypesOrCodes()
@@ -132,22 +140,22 @@ class TicketChoicesFragmentTest extends TestCase {
 	public function testTheRegistrationHoldsTheChoicesAndLarpinqWritesThePrices(): void {
 		$properties = $this->schema(key: 'registration')['properties'];
 
-		$this->assertSame('larping_ticket_type', $properties['ticketType']['$ref']);
-		$this->assertSame('uuid', $properties['options']['items']['format']);
-		$this->assertSame('string', $properties['code']['type']);
+		$this->assertSame(expected: 'larping_ticket_type', actual: $properties['ticketType']['$ref']);
+		$this->assertSame(expected: 'uuid', actual: $properties['options']['items']['format']);
+		$this->assertSame(expected: 'string', actual: $properties['code']['type']);
 		foreach (['ticketType', 'options', 'code'] as $choice) {
-			$this->assertArrayNotHasKey('authorization', $properties[$choice], "a player chooses {$choice} on their own registration");
+			$this->assertArrayNotHasKey(key: 'authorization', array: $properties[$choice], message: "a player chooses {$choice} on their own registration");
 		}
 
 		foreach (['lines', 'accessCode'] as $written) {
-			$this->assertSame(['gamemasters'], $properties[$written]['authorization']['update'], "a player cannot set {$written}");
+			$this->assertSame(expected: ['gamemasters'], actual: $properties[$written]['authorization']['update'], message: "a player cannot set {$written}");
 		}
 
 		$line = $properties['lines']['items'];
-		$this->assertSame(['kind', 'ref', 'name', 'amount', 'currency'], $line['required']);
-		$this->assertSame(['ticket', 'option'], $line['properties']['kind']['enum']);
-		$this->assertSame('integer', $line['properties']['amount']['type']);
-		$this->assertSame(['event'], $this->schema(key: 'registration')['required'], 'no choice is required');
+		$this->assertSame(expected: ['kind', 'ref', 'name', 'amount', 'currency'], actual: $line['required']);
+		$this->assertSame(expected: ['ticket', 'option'], actual: $line['properties']['kind']['enum']);
+		$this->assertSame(expected: 'integer', actual: $line['properties']['amount']['type']);
+		$this->assertSame(expected: ['event'], actual: $this->schema(key: 'registration')['required'], message: 'no choice is required');
 	}//end testTheRegistrationHoldsTheChoicesAndLarpinqWritesThePrices()
 
 	/**
@@ -158,10 +166,14 @@ class TicketChoicesFragmentTest extends TestCase {
 	public function testTheImportAndTheSettingsKnowTheThreeSchemas(): void {
 		$slugs = (new ReflectionClass(SettingsLoadService::class))->getConstant('OBJECT_TYPE_SCHEMA_SLUGS');
 		$keys = (new ReflectionClass(SettingsService::class))->getConstant('CONFIG_KEYS');
-		foreach (['tickettype' => 'larping_ticket_type', 'registrationoption' => 'larping_registration_option', 'accesscode' => 'larping_access_code'] as $type => $slug) {
-			$this->assertSame($slug, $slugs[$type] ?? null);
+		foreach ([
+			'tickettype' => 'larping_ticket_type',
+			'registrationoption' => 'larping_registration_option',
+			'accesscode' => 'larping_access_code',
+		] as $type => $slug) {
+			$this->assertSame(expected: $slug, actual: $slugs[$type] ?? null);
 			foreach (['_schema', '_register', '_source'] as $suffix) {
-				$this->assertContains($type . $suffix, $keys);
+				$this->assertContains(needle: $type . $suffix, haystack: $keys);
 			}
 		}
 	}//end testTheImportAndTheSettingsKnowTheThreeSchemas()
@@ -188,12 +200,12 @@ class TicketChoicesFragmentTest extends TestCase {
 
 			$schema = json_decode((string)json_encode($this->forOpis(schema: $this->schema(key: $bySlug[$slug]))));
 			$result = $validator->validate(json_decode((string)json_encode($object)), $schema);
-			$this->assertTrue($result->isValid(), "seed {$slug} must validate");
+			$this->assertTrue(condition: $result->isValid(), message: "seed {$slug} must validate");
 		}
 
 		// ADR-111 rule 1 (gate-101): at least three demo objects per schema.
 		foreach ($seen as $slug => $count) {
-			$this->assertGreaterThanOrEqual(3, $count, "three or more {$slug} seeds");
+			$this->assertGreaterThanOrEqual(expected: 3, actual: $count, message: "three or more {$slug} seeds");
 		}
 	}//end testTheSeedsValidate()
 
@@ -206,7 +218,12 @@ class TicketChoicesFragmentTest extends TestCase {
 	 */
 	private function forOpis(array $schema): array {
 		foreach (array_keys($schema['properties']) as $name) {
-			unset($schema['properties'][$name]['$ref'], $schema['properties'][$name]['authorization'], $schema['properties'][$name]['calculation'], $schema['properties'][$name]['x-relation-filter']);
+			unset(
+				$schema['properties'][$name]['$ref'],
+				$schema['properties'][$name]['authorization'],
+				$schema['properties'][$name]['calculation'],
+				$schema['properties'][$name]['x-relation-filter']
+			);
 		}
 
 		unset($schema['authorization'], $schema['configuration']);

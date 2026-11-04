@@ -30,6 +30,7 @@ namespace OCA\Larpinq\Service;
  * @spec openspec/specs/events-players/spec.md
  */
 class PlayerAttendanceService {
+	use \OCA\Larpinq\Support\ReadsRelationId;
 
 	/**
 	 * The most characters of one player, and check-ins of one character, read.
@@ -133,24 +134,4 @@ class PlayerAttendanceService {
 
 		return $this->events[$eventId];
 	}//end event()
-
-	/**
-	 * The UUID of a relation value, which OpenRegister may hand over as a
-	 * string or as an object with an id.
-	 *
-	 * @param mixed $value The relation value.
-	 *
-	 * @return string The UUID, or ''.
-	 */
-	private function idOf(mixed $value): string {
-		if (is_array($value) === true) {
-			$value = ($value['id'] ?? $value['uuid'] ?? '');
-		}
-
-		if (is_string($value) === false) {
-			return '';
-		}
-
-		return $value;
-	}//end idOf()
 }//end class

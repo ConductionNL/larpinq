@@ -98,20 +98,19 @@ class SkillRequirementService {
 			$stats = $calculated['stats'];
 		}
 
-		$requirements = $this->evaluateAdded(
-			added: $added,
-			overrides: $this->indexOverrides(character: $candidate),
-			context: [
-				'skills' => $skills,
-				'allSkills' => $allSkills,
-				'stats' => $stats,
-				'conditions' => $this->idList->normalise($candidate['conditions'] ?? []),
-				'effects' => $this->collectAssignedEffects(character: $candidate, allSkills: $allSkills),
-			]
-		);
+		$overrides = $this->indexOverrides(character: $candidate);
+		$context = [
+			'skills' => $skills,
+			'allSkills' => $allSkills,
+			'stats' => $stats,
+			'conditions' => $this->idList->normalise($candidate['conditions'] ?? []),
+			'effects' => $this->collectAssignedEffects(character: $candidate, allSkills: $allSkills),
+			'overrides' => $overrides,
+		];
+		$requirements = $this->evaluateAdded(added: $added, context: $context);
 
 		$budget = $this->evaluateBudget(stats: $stats);
-		$dependents = $this->analyseRemovals(removed: $removed, remainingSkills: $skills, allSkills: $allSkills);
+		$dependents = $this->analyseRemovals(removed: $removed, context: $context);
 
 		return [
 			'valid' => ($this->hasUnmet(requirements: $requirements, budget: $budget) === false),
@@ -129,15 +128,16 @@ class SkillRequirementService {
 	 * prerequisite must never read as satisfied.
 	 *
 	 * @param array<int,string> $added The newly-added skill ids.
-	 * @param array<string,array<string,mixed>> $overrides GM overrides indexed by skill id.
-	 * @param array<string,mixed> $context The resolved character context.
+	 * @param array<string,mixed> $context The resolved character context, with the GM overrides
+	 *                                     indexed by skill id under `overrides`.
 	 *
 	 * @return array<int,array<string,mixed>> The requirement entries.
 	 *
 	 * @spec openspec/specs/skill-requirement-enforcement/spec.md
 	 */
-	private function evaluateAdded(array $added, array $overrides, array $context): array {
+	private function evaluateAdded(array $added, array $context): array {
 		$allSkills = $context['allSkills'] ?? [];
+		$overrides = $context['overrides'] ?? [];
 
 		$requirements = [];
 		foreach ($added as $skillId) {
@@ -155,9 +155,7 @@ class SkillRequirementService {
 			$requirements = array_merge(
 				$requirements,
 				$this->checker->check(
-					skillId: $skillId,
-					skill: $skill,
-					overridden: isset($overrides[$skillId]),
+					subject: new SkillUnderCheck(skillId: $skillId, skill: $skill, overridden: isset($overrides[$skillId])),
 					context: $context
 				)
 			);
@@ -260,18 +258,20 @@ class SkillRequirementService {
 	 * this is a report, surfaced as a warning.
 	 *
 	 * @param array<int,string> $removed The removed skill ids.
-	 * @param array<int,string> $remainingSkills The remaining (candidate) skill ids.
-	 * @param array<string,array<string,mixed>> $allSkills All skills indexed by id.
+	 * @param array<string,mixed> $context The resolved character context: the remaining
+	 *                                     (candidate) skill ids under `skills`, all skills
+	 *                                     indexed by id under `allSkills`.
 	 *
 	 * @return array<int,array<string,mixed>> The dependent flags.
 	 */
-	private function analyseRemovals(array $removed, array $remainingSkills, array $allSkills): array {
+	private function analyseRemovals(array $removed, array $context): array {
 		if (empty($removed) === true) {
 			return [];
 		}
 
+		$allSkills = $context['allSkills'];
 		$dependents = [];
-		foreach ($remainingSkills as $skillId) {
+		foreach ($context['skills'] as $skillId) {
 			$skill = $allSkills[$skillId] ?? null;
 			if ($skill === null) {
 				continue;

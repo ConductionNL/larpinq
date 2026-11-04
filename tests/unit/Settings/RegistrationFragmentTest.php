@@ -56,7 +56,7 @@ class RegistrationFragmentTest extends TestCase {
 	 */
 	private function schema(string $key): array {
 		$schemas = $this->mergedRegister()['components']['schemas'];
-		$this->assertArrayHasKey($key, $schemas, "the {$key} schema must be in the merged register");
+		$this->assertArrayHasKey(key: $key, array: $schemas, message: "the {$key} schema must be in the merged register");
 		return $schemas[$key];
 	}//end schema()
 
@@ -66,24 +66,24 @@ class RegistrationFragmentTest extends TestCase {
 	 * @return void
 	 */
 	public function testTheRegistrationSchemaIsInTheRegister(): void {
-		$this->assertContains('larping_registration', $this->mergedRegister()['components']['registers']['larpinq']['schemas']);
+		$this->assertContains(needle: 'larping_registration', haystack: $this->mergedRegister()['components']['registers']['larpinq']['schemas']);
 		$registration = $this->schema(key: 'registration');
 
-		$this->assertSame('larping_registration', $registration['slug']);
-		$this->assertSame(['event'], $registration['required']);
-		$this->assertSame('larping_event', $registration['properties']['event']['$ref']);
-		$this->assertSame('player', $registration['properties']['player']['$ref']);
-		$this->assertSame('character', $registration['properties']['character']['$ref']);
-		$this->assertSame(['pending', 'accepted', 'waitlisted', 'declined', 'cancelled'], $registration['properties']['status']['enum']);
-		$this->assertSame('pending', $registration['properties']['status']['default']);
-		$this->assertSame('integer', $registration['properties']['submissionId']['type']);
+		$this->assertSame(expected: 'larping_registration', actual: $registration['slug']);
+		$this->assertSame(expected: ['event'], actual: $registration['required']);
+		$this->assertSame(expected: 'larping_event', actual: $registration['properties']['event']['$ref']);
+		$this->assertSame(expected: 'player', actual: $registration['properties']['player']['$ref']);
+		$this->assertSame(expected: 'character', actual: $registration['properties']['character']['$ref']);
+		$this->assertSame(expected: ['pending', 'accepted', 'waitlisted', 'declined', 'cancelled'], actual: $registration['properties']['status']['enum']);
+		$this->assertSame(expected: 'pending', actual: $registration['properties']['status']['default']);
+		$this->assertSame(expected: 'integer', actual: $registration['properties']['submissionId']['type']);
 		foreach (['submittedAt', 'decidedAt'] as $moment) {
-			$this->assertSame('date-time', $registration['properties'][$moment]['format']);
+			$this->assertSame(expected: 'date-time', actual: $registration['properties'][$moment]['format']);
 		}
 
 		// Nextcloud user ids are plain strings: OpenRegister has no `user` format.
 		foreach (['submitterUid', 'playerUid', 'decidedBy'] as $uid) {
-			$this->assertArrayNotHasKey('format', $registration['properties'][$uid]);
+			$this->assertArrayNotHasKey(key: 'format', array: $registration['properties'][$uid]);
 		}
 	}//end testTheRegistrationSchemaIsInTheRegister()
 
@@ -95,13 +95,13 @@ class RegistrationFragmentTest extends TestCase {
 	public function testThePlayerAccountAndTheWorldAreMaterialised(): void {
 		$registration = $this->schema(key: 'registration');
 
-		$this->assertSame(['prop' => '@ref.player.userUid'], $registration['properties']['playerUid']['calculation']['expression']);
-		$this->assertSame(['prop' => '@ref.event.setting'], $registration['properties']['eventSetting']['calculation']['expression']);
-		$this->assertSame('player', $registration['configuration']['x-openregister-references']['player']['schema']);
-		$this->assertSame('larping_event', $registration['configuration']['x-openregister-references']['event']['schema']);
+		$this->assertSame(expected: ['prop' => '@ref.player.userUid'], actual: $registration['properties']['playerUid']['calculation']['expression']);
+		$this->assertSame(expected: ['prop' => '@ref.event.setting'], actual: $registration['properties']['eventSetting']['calculation']['expression']);
+		$this->assertSame(expected: 'player', actual: $registration['configuration']['x-openregister-references']['player']['schema']);
+		$this->assertSame(expected: 'larping_event', actual: $registration['configuration']['x-openregister-references']['event']['schema']);
 		$this->assertSame(
-			['ocName' => '@object.player', 'status' => 'active', 'setting' => '@object.eventSetting'],
-			$registration['properties']['character']['x-relation-filter']
+			expected: ['ocName' => '@object.player', 'status' => 'active', 'setting' => '@object.eventSetting'],
+			actual: $registration['properties']['character']['x-relation-filter']
 		);
 	}//end testThePlayerAccountAndTheWorldAreMaterialised()
 
@@ -116,20 +116,24 @@ class RegistrationFragmentTest extends TestCase {
 
 		// Later fragments add their own read rules (booker, transfer recipient); these three stay.
 		foreach ([['group' => 'gamemasters'], $own, ['group' => 'larpers', 'match' => ['submitterUid' => '$userId']]] as $rule) {
-			$this->assertContains($rule, $registration['authorization']['read']);
+			$this->assertContains(needle: $rule, haystack: $registration['authorization']['read']);
 		}
-		$this->assertSame(['gamemasters'], $registration['authorization']['create']);
-		$this->assertSame([['group' => 'gamemasters'], $own], $registration['authorization']['update']);
-		$this->assertSame(['gamemasters'], $registration['authorization']['delete']);
+		$this->assertSame(expected: ['gamemasters'], actual: $registration['authorization']['create']);
+		$this->assertSame(expected: [['group' => 'gamemasters'], $own], actual: $registration['authorization']['update']);
+		$this->assertSame(expected: ['gamemasters'], actual: $registration['authorization']['delete']);
 		foreach (array_keys($registration['properties']) as $name) {
 			// The player's own choices (registration-ticket-types-and-options adds the ticket type, options and code;
 			// registration-payments-through-shillinq adds the invoice request).
 			if (in_array($name, ['character', 'ticketType', 'options', 'code', 'invoiceRequested'], true) === true) {
-				$this->assertArrayNotHasKey('authorization', $registration['properties'][$name]);
+				$this->assertArrayNotHasKey(key: 'authorization', array: $registration['properties'][$name]);
 				continue;
 			}
 
-			$this->assertSame(['gamemasters'], $registration['properties'][$name]['authorization']['update'] ?? null, "only game masters change {$name}");
+			$this->assertSame(
+				expected: ['gamemasters'],
+				actual: $registration['properties'][$name]['authorization']['update'] ?? null,
+				message: "only game masters change {$name}"
+			);
 		}
 	}//end testThePlayerSeesTheirOwnAndChangesOnlyTheCharacter()
 
@@ -141,14 +145,14 @@ class RegistrationFragmentTest extends TestCase {
 	public function testTheStatusHasItsTransitions(): void {
 		$lifecycle = $this->schema(key: 'registration')['configuration']['x-openregister-lifecycle'];
 
-		$this->assertSame('status', $lifecycle['field']);
-		$this->assertSame('pending', $lifecycle['initial']);
-		$this->assertSame('accepted', $lifecycle['transitions']['accept']['to']);
-		$this->assertSame(['pending', 'waitlisted', 'declined'], $lifecycle['transitions']['accept']['from']);
-		$this->assertSame('declined', $lifecycle['transitions']['decline']['to']);
-		$this->assertSame('cancelled', $lifecycle['transitions']['cancel']['to']);
+		$this->assertSame(expected: 'status', actual: $lifecycle['field']);
+		$this->assertSame(expected: 'pending', actual: $lifecycle['initial']);
+		$this->assertSame(expected: 'accepted', actual: $lifecycle['transitions']['accept']['to']);
+		$this->assertSame(expected: ['pending', 'waitlisted', 'declined'], actual: $lifecycle['transitions']['accept']['from']);
+		$this->assertSame(expected: 'declined', actual: $lifecycle['transitions']['decline']['to']);
+		$this->assertSame(expected: 'cancelled', actual: $lifecycle['transitions']['cancel']['to']);
 		// The service turns an accept without a place into the waiting list.
-		$this->assertSame('waitlisted', $lifecycle['transitions']['waitlist']['to']);
+		$this->assertSame(expected: 'waitlisted', actual: $lifecycle['transitions']['waitlist']['to']);
 	}//end testTheStatusHasItsTransitions()
 
 	/**
@@ -159,11 +163,11 @@ class RegistrationFragmentTest extends TestCase {
 	public function testAnEventHasItsSignUpSettings(): void {
 		$event = $this->schema(key: 'event')['properties'];
 
-		$this->assertSame('integer', $event['capacity']['type']);
-		$this->assertSame(0, $event['capacity']['minimum']);
-		$this->assertSame('boolean', $event['approvalRequired']['type']);
-		$this->assertFalse($event['approvalRequired']['default']);
-		$this->assertSame('integer', $event['signupForm']['type']);
+		$this->assertSame(expected: 'integer', actual: $event['capacity']['type']);
+		$this->assertSame(expected: 0, actual: $event['capacity']['minimum']);
+		$this->assertSame(expected: 'boolean', actual: $event['approvalRequired']['type']);
+		$this->assertFalse(condition: $event['approvalRequired']['default']);
+		$this->assertSame(expected: 'integer', actual: $event['signupForm']['type']);
 	}//end testAnEventHasItsSignUpSettings()
 
 	/**
@@ -173,11 +177,11 @@ class RegistrationFragmentTest extends TestCase {
 	 */
 	public function testTheImportAndTheSettingsKnowTheRegistration(): void {
 		$slugs = (new ReflectionClass(SettingsLoadService::class))->getConstant('OBJECT_TYPE_SCHEMA_SLUGS');
-		$this->assertSame('larping_registration', $slugs['registration'] ?? null);
+		$this->assertSame(expected: 'larping_registration', actual: $slugs['registration'] ?? null);
 
 		$keys = (new ReflectionClass(SettingsService::class))->getConstant('CONFIG_KEYS');
 		foreach (['registration_schema', 'registration_register', 'registration_source'] as $key) {
-			$this->assertContains($key, $keys);
+			$this->assertContains(needle: $key, haystack: $keys);
 		}
 	}//end testTheImportAndTheSettingsKnowTheRegistration()
 
@@ -199,11 +203,11 @@ class RegistrationFragmentTest extends TestCase {
 			$seen++;
 			unset($object['@self']);
 			$result = $validator->validate(json_decode((string)json_encode($object)), $schema);
-			$this->assertTrue($result->isValid(), 'seed registration must validate');
+			$this->assertTrue(condition: $result->isValid(), message: 'seed registration must validate');
 		}
 
 		// ADR-111 rule 1 (gate-101): at least three demo objects per schema.
-		$this->assertGreaterThanOrEqual(3, $seen);
+		$this->assertGreaterThanOrEqual(expected: 3, actual: $seen);
 	}//end testTheSeedRegistrationsValidate()
 
 	/**
@@ -215,7 +219,12 @@ class RegistrationFragmentTest extends TestCase {
 	 */
 	private function forOpis(array $schema): array {
 		foreach (array_keys($schema['properties']) as $name) {
-			unset($schema['properties'][$name]['$ref'], $schema['properties'][$name]['authorization'], $schema['properties'][$name]['calculation'], $schema['properties'][$name]['x-relation-filter']);
+			unset(
+				$schema['properties'][$name]['$ref'],
+				$schema['properties'][$name]['authorization'],
+				$schema['properties'][$name]['calculation'],
+				$schema['properties'][$name]['x-relation-filter']
+			);
 		}
 
 		unset($schema['authorization'], $schema['configuration']);

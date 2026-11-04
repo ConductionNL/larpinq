@@ -51,18 +51,18 @@ class PlayersSelfSignupFragmentTest extends TestCase {
 	public function testAPlayerCarriesThePortalReferenceAndTheReviewFields(): void {
 		$properties = $this->schemas()['player']['properties'];
 
-		$this->assertSame('string', $properties['portalSubjectRef']['type']);
-		$this->assertArrayNotHasKey('format', $properties['portalSubjectRef'], 'A portal subject reference is not a uuid');
-		$this->assertFalse($properties['portalSubjectRef']['visible']);
-		$this->assertTrue($properties['portalSubjectRef']['readOnly']);
-		$this->assertTrue($properties['portalSubjectRef']['facetable'], 'The one-profile check filters on it');
+		$this->assertSame(expected: 'string', actual: $properties['portalSubjectRef']['type']);
+		$this->assertArrayNotHasKey(key: 'format', array: $properties['portalSubjectRef'], message: 'A portal subject reference is not a uuid');
+		$this->assertFalse(condition: $properties['portalSubjectRef']['visible']);
+		$this->assertTrue(condition: $properties['portalSubjectRef']['readOnly']);
+		$this->assertTrue(condition: $properties['portalSubjectRef']['facetable'], message: 'The one-profile check filters on it');
 
-		$this->assertSame('boolean', $properties['selfRegistered']['type']);
-		$this->assertSame('boolean', $properties['awaitingReview']['type']);
-		$this->assertTrue($properties['awaitingReview']['facetable'], 'The New players list filters on it');
-		$this->assertSame('date-time', $properties['reviewedAt']['format']);
-		$this->assertSame('string', $properties['reviewedBy']['type']);
-		$this->assertArrayNotHasKey('format', $properties['reviewedBy'], 'OpenRegister has no user format');
+		$this->assertSame(expected: 'boolean', actual: $properties['selfRegistered']['type']);
+		$this->assertSame(expected: 'boolean', actual: $properties['awaitingReview']['type']);
+		$this->assertTrue(condition: $properties['awaitingReview']['facetable'], message: 'The New players list filters on it');
+		$this->assertSame(expected: 'date-time', actual: $properties['reviewedAt']['format']);
+		$this->assertSame(expected: 'string', actual: $properties['reviewedBy']['type']);
+		$this->assertArrayNotHasKey(key: 'format', array: $properties['reviewedBy'], message: 'OpenRegister has no user format');
 	}//end testAPlayerCarriesThePortalReferenceAndTheReviewFields()
 
 	/**
@@ -82,11 +82,11 @@ class PlayersSelfSignupFragmentTest extends TestCase {
 			}
 		}
 
-		$this->assertNotNull($found, 'A self-registered demo player ships');
-		$this->assertSame('Lotte Bakker', $found['name']);
-		$this->assertTrue($found['awaitingReview']);
+		$this->assertNotNull(actual: $found, message: 'A self-registered demo player ships');
+		$this->assertSame(expected: 'Lotte Bakker', actual: $found['name']);
+		$this->assertTrue(condition: $found['awaitingReview']);
 		unset($found['@self']);
 		$result = (new Validator())->validate(json_decode((string)json_encode($found)), json_decode((string)json_encode($schema)));
-		$this->assertTrue($result->isValid(), 'The seed must validate');
+		$this->assertTrue(condition: $result->isValid(), message: 'The seed must validate');
 	}//end testTheSeedSelfRegisteredPlayerValidates()
 }//end class

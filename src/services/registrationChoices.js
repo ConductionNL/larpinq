@@ -11,23 +11,11 @@
  * @spec openspec/specs/event-registration/spec.md
  */
 
-import { getRequestToken } from '@nextcloud/auth'
 import { generateUrl } from '@nextcloud/router'
+import { jsonHeaders } from './requestHeaders.js'
+import { refusalOf } from './responseBody.js'
 
 const REGISTRATION = '/apps/openregister/api/objects/larpinq/larping_registration'
-
-/**
- * The request headers.
- *
- * @return {object} The headers.
- */
-function headers() {
-	return {
-		requesttoken: getRequestToken(),
-		Accept: 'application/json',
-		'Content-Type': 'application/json',
-	}
-}
 
 /**
  * Read a JSON answer of larpinq: ok, refused (403) or failed.
@@ -64,7 +52,7 @@ export async function fetchOffer(registrationId, code) {
 		generateUrl(
 			`/apps/larpinq/api/registrations/${encodeURIComponent(registrationId)}/offer`,
 		) + query,
-		{ headers: headers() },
+		{ headers: jsonHeaders() },
 	)
 	return answer(response)
 }
@@ -105,27 +93,15 @@ export async function saveChoices(registrationId, choices) {
 		generateUrl(`${REGISTRATION}/${encodeURIComponent(registrationId)}`),
 		{
 			method: 'PATCH',
-			headers: headers(),
+			headers: jsonHeaders(),
 			body: JSON.stringify(choiceBody(choices)),
 		},
 	)
 	if (response.ok) {
 		return { ok: true, message: '' }
 	}
-	let refusal
-	try {
-		refusal = await response.json()
-	} catch {
-		refusal = {}
-	}
-	const errors =
-		refusal?.errors && typeof refusal.errors === 'object'
-			? refusal.errors
-			: refusal
-	return {
-		ok: false,
-		message: String(errors?.message ?? refusal?.message ?? ''),
-	}
+	const { message } = await refusalOf(response)
+	return { ok: false, message }
 }
 
 /**
@@ -144,7 +120,7 @@ export async function fetchChoiceCounts(eventId) {
 		generateUrl(
 			`/apps/larpinq/api/events/${encodeURIComponent(eventId)}/choices`,
 		),
-		{ headers: headers() },
+		{ headers: jsonHeaders() },
 	)
 	return answer(response)
 }

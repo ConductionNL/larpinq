@@ -19,14 +19,12 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Controller;
 
-use OCA\Larpinq\AppInfo\Application;
+use OCA\Larpinq\Support\AppIdentity;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Services\IInitialState;
 use OCP\IConfig;
-use OCP\IGroupManager;
 use OCP\IRequest;
-use OCP\IUserSession;
 
 /**
  * Dashboard controller for Larpinq main page
@@ -46,22 +44,18 @@ class DashboardController extends Controller {
 	/**
 	 * Constructor for DashboardController
 	 *
-	 * @param string $appName Application name
 	 * @param IRequest $request HTTP request object
 	 * @param IInitialState $initialState The initial state handed to the frontend
-	 * @param IUserSession $userSession The user session
-	 * @param IGroupManager $groupManager The group manager
+	 * @param CallerAccess $callerAccess The signed-in caller and the game master check
 	 * @param IConfig       $config       The per-user preferences store
 	 */
 	public function __construct(
-		$appName,
 		IRequest $request,
 		private readonly IInitialState $initialState,
-		private readonly IUserSession $userSession,
-		private readonly IGroupManager $groupManager,
+		private readonly CallerAccess $callerAccess,
 		private readonly IConfig $config,
 	) {
-		parent::__construct(appName: $appName, request: $request);
+		parent::__construct(appName: AppIdentity::APP_ID, request: $request);
 	}//end __construct()
 
 	/**
@@ -89,7 +83,7 @@ class DashboardController extends Controller {
 		$this->initialState->provideInitialState('activeWorld', $this->activeWorld());
 
 		return new TemplateResponse(
-			Application::APP_ID,
+			AppIdentity::APP_ID,
 			'index',
 			[]
 		);
@@ -124,14 +118,14 @@ class DashboardController extends Controller {
 	 * @spec openspec/specs/setting-management/spec.md
 	 */
 	private function activeWorld(): string {
-		$user = $this->userSession->getUser();
+		$user = $this->callerAccess->user();
 		if ($user === null) {
 			return '';
 		}
 
 		return (string)$this->config->getUserValue(
 			userId: $user->getUID(),
-			appName: Application::APP_ID,
+			appName: AppIdentity::APP_ID,
 			key: 'pref_active-world',
 			default: ''
 		);
@@ -145,13 +139,11 @@ class DashboardController extends Controller {
 	 * @spec openspec/specs/data-portability/spec.md
 	 */
 	private function isGameMaster(): bool {
-		$user = $this->userSession->getUser();
+		$user = $this->callerAccess->user();
 		if ($user === null) {
 			return false;
 		}
 
-		$uid = $user->getUID();
-		return $this->groupManager->isInGroup($uid, Application::GM_GROUP) === true
-			|| $this->groupManager->isAdmin($uid) === true;
+		return $this->callerAccess->isGameMasterOrAdmin(uid: $user->getUID());
 	}//end isGameMaster()
 }//end class

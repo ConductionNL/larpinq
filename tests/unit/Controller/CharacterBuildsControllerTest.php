@@ -22,8 +22,10 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Tests\Unit\Controller;
 
+use OCA\Larpinq\Controller\CallerAccess;
 use OCA\Larpinq\Controller\CharacterBuildsController;
 use OCA\Larpinq\Service\CharacterService;
+use OCA\Larpinq\Service\CharacterStatSheet;
 use OCA\Larpinq\Service\CharacterStatsPresenter;
 use OCA\Larpinq\Service\EffectApplier;
 use OCA\Larpinq\Service\IdListNormaliser;
@@ -77,8 +79,23 @@ class CharacterBuildsControllerTest extends TestCase {
 		parent::setUp();
 		$this->readable = [
 			self::MIRELA => $this->mirela(),
-			self::ALCHEMIST => ['id' => self::ALCHEMIST, 'character' => self::MIRELA, 'name' => 'Alchemist path', 'purpose' => 'plan', 'skills' => ['sk-herb', 'sk-potion'], 'items' => [], 'conditions' => []],
-			self::WINTER => ['id' => self::WINTER, 'character' => ['id' => self::MIRELA], 'name' => 'Winter campaign', 'purpose' => 'other-game', 'skills' => ['sk-sword', 'sk-ride'], 'items' => ['it-shield']],
+			self::ALCHEMIST => [
+				'id' => self::ALCHEMIST,
+				'character' => self::MIRELA,
+				'name' => 'Alchemist path',
+				'purpose' => 'plan',
+				'skills' => ['sk-herb', 'sk-potion'],
+				'items' => [],
+				'conditions' => [],
+			],
+			self::WINTER => [
+				'id' => self::WINTER,
+				'character' => ['id' => self::MIRELA],
+				'name' => 'Winter campaign',
+				'purpose' => 'other-game',
+				'skills' => ['sk-sword', 'sk-ride'],
+				'items' => ['it-shield'],
+			],
 		];
 	}//end setUp()
 
@@ -99,7 +116,7 @@ class CharacterBuildsControllerTest extends TestCase {
 	 * @return CharacterBuildsController The controller.
 	 */
 	private function controller(bool $gameMaster = false): CharacterBuildsController {
-		$this->fetcher = $this->createMock(RegisterObjectFetcher::class);
+		$this->fetcher = $this->createMock(originalClassName: RegisterObjectFetcher::class);
 		$this->fetcher->method('getObject')->willReturnCallback(
 			function (string $type, string $id): array {
 				if (isset($this->readable[$id]) === false) {
@@ -136,19 +153,30 @@ class CharacterBuildsControllerTest extends TestCase {
 		$this->fetcher->expects($this->never())->method('saveObject');
 		$this->fetcher->expects($this->never())->method('deleteObject');
 
-		$logger = $this->createMock(LoggerInterface::class);
-		$engine = new CharacterService($this->fetcher, $logger, new EffectApplier());
-		$this->requirements = new SkillRequirementService($engine, $this->fetcher, $logger, new SkillRequirementChecker(new IdListNormaliser()), new IdListNormaliser());
+		$logger = $this->createMock(originalClassName: LoggerInterface::class);
+		$engine = new CharacterService(objectFetcher: $this->fetcher, logger: $logger, effectApplier: new EffectApplier());
+		$this->requirements = new SkillRequirementService(
+			characterService: $engine,
+			objectFetcher: $this->fetcher,
+			logger: $logger,
+			checker: new SkillRequirementChecker(idList: new IdListNormaliser()),
+			idList: new IdListNormaliser()
+		);
 
-		$user = $this->createMock(IUser::class);
+		$user = $this->createMock(originalClassName: IUser::class);
 		$user->method('getUID')->willReturn('anna');
-		$session = $this->createMock(IUserSession::class);
+		$session = $this->createMock(originalClassName: IUserSession::class);
 		$session->method('getUser')->willReturn($user);
-		$groups = $this->createMock(IGroupManager::class);
+		$groups = $this->createMock(originalClassName: IGroupManager::class);
 		$groups->method('isInGroup')->willReturnCallback(static fn (string $uid, string $group): bool => $gameMaster === true && $group === 'gamemasters');
 		$groups->method('isAdmin')->willReturn(false);
 
-		return new CharacterBuildsController('larpinq', $this->createMock(IRequest::class), $this->fetcher, $engine, $this->requirements, new CharacterStatsPresenter(), $session, $groups);
+		return new CharacterBuildsController(
+			request: $this->createMock(originalClassName: IRequest::class),
+			objectFetcher: $this->fetcher,
+			statSheet: new CharacterStatSheet(characterService: $engine, requirementService: $this->requirements, presenter: new CharacterStatsPresenter()),
+			callerAccess: new CallerAccess(userSession: $session, groupManager: $groups)
+		);
 	}//end controller()
 
 	/**
@@ -161,11 +189,11 @@ class CharacterBuildsControllerTest extends TestCase {
 		$data = $this->controller()->report(id: self::ALCHEMIST)->getData();
 
 		$candidate = array_merge($this->mirela(), ['skills' => ['sk-herb', 'sk-potion'], 'items' => [], 'conditions' => []]);
-		$this->assertSame($this->requirements->validate(candidate: $candidate, oldCharacter: $this->mirela()), $data['report']);
-		$this->assertTrue($data['report']['valid']);
-		$this->assertSame(['ability' => 'xp', 'earned' => 40, 'spent' => 20, 'left' => 20], $data['stats']['xp']);
-		$this->assertSame(['id' => self::ALCHEMIST, 'name' => 'Alchemist path'], $data['build']);
-		$this->assertSame(['id' => self::MIRELA, 'name' => 'Mirela the Wanderer'], $data['character']);
+		$this->assertSame(expected: $this->requirements->validate(candidate: $candidate, oldCharacter: $this->mirela()), actual: $data['report']);
+		$this->assertTrue(condition: $data['report']['valid']);
+		$this->assertSame(expected: ['ability' => 'xp', 'earned' => 40, 'spent' => 20, 'left' => 20], actual: $data['stats']['xp']);
+		$this->assertSame(expected: ['id' => self::ALCHEMIST, 'name' => 'Alchemist path'], actual: $data['build']);
+		$this->assertSame(expected: ['id' => self::MIRELA, 'name' => 'Mirela the Wanderer'], actual: $data['character']);
 	}//end testTheAlchemistPathPasses()
 
 	/**
@@ -177,11 +205,11 @@ class CharacterBuildsControllerTest extends TestCase {
 	public function testTheWinterCampaignIsFiveXpShort(): void {
 		$data = $this->controller()->report(id: self::WINTER)->getData();
 
-		$this->assertFalse($data['report']['valid']);
-		$this->assertSame(['ability' => 'xp', 'value' => -5, 'shortfall' => 5, 'ok' => false], $data['report']['budget']);
+		$this->assertFalse(condition: $data['report']['valid']);
+		$this->assertSame(expected: ['ability' => 'xp', 'value' => -5, 'shortfall' => 5, 'ok' => false], actual: $data['report']['budget']);
 		// The build's item counts on the sheet: strength 10 + 1.
-		$this->assertSame(11, $data['stats']['abilities'][0]['final']);
-		$this->assertSame($this->mirela(), $this->readable[self::MIRELA]);
+		$this->assertSame(expected: 11, actual: $data['stats']['abilities'][0]['final']);
+		$this->assertSame(expected: $this->mirela(), actual: $this->readable[self::MIRELA]);
 	}//end testTheWinterCampaignIsFiveXpShort()
 
 	/**
@@ -194,14 +222,17 @@ class CharacterBuildsControllerTest extends TestCase {
 		$data = $this->controller()->report(id: self::ALCHEMIST)->getData();
 
 		$this->assertSame(
-			['added' => [['id' => 'sk-herb', 'name' => 'Herbalism'], ['id' => 'sk-potion', 'name' => 'Potion brewing']], 'removed' => [['id' => 'sk-sword', 'name' => 'Swordsmanship']]],
-			$data['changes']['skills']
+			expected: [
+				'added' => [['id' => 'sk-herb', 'name' => 'Herbalism'], ['id' => 'sk-potion', 'name' => 'Potion brewing']],
+				'removed' => [['id' => 'sk-sword', 'name' => 'Swordsmanship']],
+			],
+			actual: $data['changes']['skills']
 		);
-		$this->assertSame(['added' => [], 'removed' => []], $data['changes']['items']);
-		$this->assertSame(['skills' => ['sk-herb', 'sk-potion'], 'items' => [], 'conditions' => []], $data['lists']);
+		$this->assertSame(expected: ['added' => [], 'removed' => []], actual: $data['changes']['items']);
+		$this->assertSame(expected: ['skills' => ['sk-herb', 'sk-potion'], 'items' => [], 'conditions' => []], actual: $data['lists']);
 
 		$winter = $this->controller()->report(id: self::WINTER)->getData();
-		$this->assertSame([['id' => 'it-shield', 'name' => 'Iron shield']], $winter['changes']['items']['added']);
+		$this->assertSame(expected: [['id' => 'it-shield', 'name' => 'Iron shield']], actual: $winter['changes']['items']['added']);
 	}//end testTheReportNamesWhatApplyingChanges()
 
 	/**
@@ -213,11 +244,11 @@ class CharacterBuildsControllerTest extends TestCase {
 	public function testAnUnreadableBuildIsNotFound(): void {
 		unset($this->readable[self::ALCHEMIST]);
 		$response = $this->controller()->report(id: self::ALCHEMIST);
-		$this->assertSame(404, $response->getStatus());
-		$this->assertArrayNotHasKey('report', $response->getData());
+		$this->assertSame(expected: 404, actual: $response->getStatus());
+		$this->assertArrayNotHasKey(key: 'report', array: $response->getData());
 
 		unset($this->readable[self::MIRELA]);
-		$this->assertSame(404, $this->controller()->report(id: self::WINTER)->getStatus());
+		$this->assertSame(expected: 404, actual: $this->controller()->report(id: self::WINTER)->getStatus());
 	}//end testAnUnreadableBuildIsNotFound()
 
 	/**
@@ -226,7 +257,7 @@ class CharacterBuildsControllerTest extends TestCase {
 	 * @return void
 	 */
 	public function testOnlyGameMastersApply(): void {
-		$this->assertSame(['allowed' => true], $this->controller(gameMaster: true)->access()->getData());
-		$this->assertSame(['allowed' => false], $this->controller()->access()->getData());
+		$this->assertSame(expected: ['allowed' => true], actual: $this->controller(gameMaster: true)->access()->getData());
+		$this->assertSame(expected: ['allowed' => false], actual: $this->controller()->access()->getData());
 	}//end testOnlyGameMastersApply()
 }//end class

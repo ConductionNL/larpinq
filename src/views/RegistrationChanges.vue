@@ -223,6 +223,7 @@ import { translate as t } from '@nextcloud/l10n'
 import NcButton from '@nextcloud/vue/components/NcButton'
 import NcCheckboxRadioSwitch from '@nextcloud/vue/components/NcCheckboxRadioSwitch'
 import NcTextField from '@nextcloud/vue/components/NcTextField'
+import { objectTab } from '../mixins/objectTab.js'
 import {
 	acceptTransfer,
 	addParticipant,
@@ -237,21 +238,7 @@ export default {
 
 	components: { NcButton, NcCheckboxRadioSwitch, NcTextField },
 
-	inject: {
-		cnObjectContext: { default: () => ({}) },
-	},
-
-	props: {
-		/**
-		 * The registration UUID. Falls back to the injected object context or the route.
-		 *
-		 * @spec openspec/specs/event-registration/spec.md
-		 */
-		objectId: {
-			type: String,
-			default: '',
-		},
-	},
+	mixins: [objectTab('registrationId')],
 
 	data() {
 		return {
@@ -268,21 +255,6 @@ export default {
 	},
 
 	computed: {
-		/**
-		 * The registration id from prop, injected context or route.
-		 *
-		 * @return {string} The id.
-		 *
-		 * @spec openspec/specs/event-registration/spec.md
-		 */
-		registrationId() {
-			return (
-				this.objectId
-				|| this.cnObjectContext?.objectId
-				|| String(this.$route?.params?.id ?? '')
-			)
-		},
-
 		/**
 		 * Whether the signed-in user can change nothing now.
 		 *
@@ -339,7 +311,7 @@ export default {
 		/**
 		 * Run one change, show larpinq's answer, and read what may change next.
 		 *
-		 * @param {Function} change The change, returning `{ok, message}`.
+		 * @param {() => Promise<{ok: boolean, message: string}>} change The change, returning `{ok, message}`.
 		 * @param {string} success What to say when it worked.
 		 * @return {Promise<void>}
 		 *

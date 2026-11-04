@@ -100,20 +100,20 @@ final class PortalContributionProviderTest extends TestCase {
 		$reflection = new ReflectionClass(PortalContributionProvider::class);
 
 		$this->assertSame(
-			'OCA\\Larpinq\\Portal\\PortalContributionProvider',
-			$reflection->getName(),
-			'Provider must live at the convention FQCN portaliq probes for'
+			expected: 'OCA\\Larpinq\\Portal\\PortalContributionProvider',
+			actual: $reflection->getName(),
+			message: 'Provider must live at the convention FQCN portaliq probes for'
 		);
-		$this->assertSame([], $reflection->getInterfaceNames(), 'Duck-typed: no implements clause allowed');
-		$this->assertFalse($reflection->getParentClass(), 'Provider must not extend anything');
-		$this->assertNull($reflection->getConstructor(), 'Provider must have no constructor dependencies');
+		$this->assertSame(expected: [], actual: $reflection->getInterfaceNames(), message: 'Duck-typed: no implements clause allowed');
+		$this->assertFalse(condition: $reflection->getParentClass(), message: 'Provider must not extend anything');
+		$this->assertNull(actual: $reflection->getConstructor(), message: 'Provider must have no constructor dependencies');
 
 		$source = (string)file_get_contents((string)$reflection->getFileName());
 		$stripped = (string)preg_replace('/\/\*.*?\*\/|\/\/[^\n]*/s', '', $source);
 		$this->assertStringNotContainsStringIgnoringCase(
-			'portaliq',
-			$stripped,
-			'Provider code must reference no portaliq symbol (comments excluded)'
+			needle: 'portaliq',
+			haystack: $stripped,
+			message: 'Provider code must reference no portaliq symbol (comments excluded)'
 		);
 
 	}//end testProviderIsPlainAndDependencyFree()
@@ -126,8 +126,8 @@ final class PortalContributionProviderTest extends TestCase {
 	 * @spec openspec/changes/portal-contribution/specs/portal-contribution/spec.md
 	 */
 	public function testAudiencesAdvertisedOnBothContractVersions(): void {
-		$this->assertSame(['player'], $this->provider->getAudiences());
-		$this->assertSame('player', $this->provider->getAudience());
+		$this->assertSame(expected: ['player'], actual: $this->provider->getAudiences());
+		$this->assertSame(expected: 'player', actual: $this->provider->getAudience());
 
 	}//end testAudiencesAdvertisedOnBothContractVersions()
 
@@ -141,28 +141,28 @@ final class PortalContributionProviderTest extends TestCase {
 	public function testPlayerContributionCollectionShape(): void {
 		$manifest = $this->provider->getContribution(self::PLAYER_SUBJECT);
 
-		$this->assertIsArray($manifest);
-		$collections = $this->indexById($manifest['collections']);
+		$this->assertIsArray(actual: $manifest);
+		$collections = $this->indexById(entries: $manifest['collections']);
 
 		$this->assertSame(
-			['myCharacters', 'events', 'skillCatalog', 'itemCatalog', 'conditionCatalog', 'myProfile', 'myRegistrations', 'rulebookChapters'],
-			array_keys($collections),
-			'Exactly the declared collections, in order'
+			expected: ['myCharacters', 'events', 'skillCatalog', 'itemCatalog', 'conditionCatalog', 'myProfile', 'myRegistrations', 'rulebookChapters'],
+			actual: array_keys($collections),
+			message: 'Exactly the declared collections, in order'
 		);
 
 		// Owner-scoped characters: scoped EXCLUSIVELY by ownerRef, never ownerUid.
 		$characters = $collections['myCharacters'];
-		$this->assertSame('larpinq', $characters['register']);
-		$this->assertSame('character', $characters['schema']);
-		$this->assertSame('ownerRef', $characters['scopeField'], 'A4 rule: scope by the uuid domain ref, not ownerUid');
-		$this->assertSame('ownerRef', $characters['scopeClaim']);
-		$this->assertTrue($characters['listable']);
+		$this->assertSame(expected: 'larpinq', actual: $characters['register']);
+		$this->assertSame(expected: 'character', actual: $characters['schema']);
+		$this->assertSame(expected: 'ownerRef', actual: $characters['scopeField'], message: 'A4 rule: scope by the uuid domain ref, not ownerUid');
+		$this->assertSame(expected: 'ownerRef', actual: $characters['scopeClaim']);
+		$this->assertTrue(condition: $characters['listable']);
 
 		// Public lists carry an explicit empty scopeField (the controller
 		// otherwise defaults to subjectRef and would match nothing).
 		foreach (['events', 'skillCatalog', 'itemCatalog', 'conditionCatalog'] as $publicId) {
-			$this->assertSame('', $collections[$publicId]['scopeField'], $publicId . ' must be an unscoped public list');
-			$this->assertArrayNotHasKey('scopeClaim', $collections[$publicId], $publicId . ' is not subject-scoped');
+			$this->assertSame(expected: '', actual: $collections[$publicId]['scopeField'], message: $publicId . ' must be an unscoped public list');
+			$this->assertArrayNotHasKey(key: 'scopeClaim', array: $collections[$publicId], message: $publicId . ' is not subject-scoped');
 		}
 
 	}//end testPlayerContributionCollectionShape()
@@ -176,22 +176,22 @@ final class PortalContributionProviderTest extends TestCase {
 	 */
 	public function testCharacterProjectionExcludesStaffOnlyFields(): void {
 		$manifest = (array)$this->provider->getContribution(self::PLAYER_SUBJECT);
-		$characters = $this->indexById($manifest['collections'])['myCharacters'];
+		$characters = $this->indexById(entries: $manifest['collections'])['myCharacters'];
 		$fields = $characters['fields'];
 
-		$this->assertNotEmpty($fields, 'The character collection must be field-projected (default-deny)');
+		$this->assertNotEmpty(actual: $fields, message: 'The character collection must be field-projected (default-deny)');
 
 		foreach (self::FORBIDDEN_CHARACTER_FIELDS as $forbidden) {
 			$this->assertNotContains(
-				$forbidden,
-				$fields,
-				'Game-master-only / internal column "' . $forbidden . '" must never be projected to a player'
+				needle: $forbidden,
+				haystack: $fields,
+				message: 'Game-master-only / internal column "' . $forbidden . '" must never be projected to a player'
 			);
 		}
 
 		// The player still sees their own game-relevant, non-secret columns.
 		foreach (['name', 'ocName', 'description', 'slNotesPublic'] as $expected) {
-			$this->assertContains($expected, $fields);
+			$this->assertContains(needle: $expected, haystack: $fields);
 		}
 
 	}//end testCharacterProjectionExcludesStaffOnlyFields()
@@ -204,13 +204,13 @@ final class PortalContributionProviderTest extends TestCase {
 	 * @spec openspec/changes/portal-contribution/specs/portal-contribution/spec.md
 	 */
 	public function testPublicCatalogsDropOwnershipArray(): void {
-		$collections = $this->indexById(((array)$this->provider->getContribution(self::PLAYER_SUBJECT))['collections']);
+		$collections = $this->indexById(entries: ((array)$this->provider->getContribution(self::PLAYER_SUBJECT))['collections']);
 
 		foreach (['itemCatalog', 'conditionCatalog'] as $catalogId) {
 			$this->assertNotContains(
-				'characters',
-				$collections[$catalogId]['fields'],
-				$catalogId . ' must not leak which characters own the object'
+				needle: 'characters',
+				haystack: $collections[$catalogId]['fields'],
+				message: $catalogId . ' must not leak which characters own the object'
 			);
 		}
 
@@ -227,24 +227,32 @@ final class PortalContributionProviderTest extends TestCase {
 		$manifest = (array)$this->provider->getContribution(self::PLAYER_SUBJECT);
 		$actions = $manifest['actions'];
 
-		$this->assertCount(2, $actions, 'Event signup is delegated to NC Forms; the actions are createCharacter and createPlayerProfile');
+		$this->assertCount(
+			expectedCount: 2,
+			haystack: $actions,
+			message: 'Event signup is delegated to NC Forms; the actions are createCharacter and createPlayerProfile'
+		);
 
 		$action = $actions[0];
-		$this->assertSame('createCharacter', $action['id']);
-		$this->assertSame('create', $action['type']);
-		$this->assertSame('character', $action['schema']);
-		$this->assertSame('ownerRef', $action['scopeField'], 'The writer stamps ownerRef so the record is player-owned');
+		$this->assertSame(expected: 'createCharacter', actual: $action['id']);
+		$this->assertSame(expected: 'create', actual: $action['type']);
+		$this->assertSame(expected: 'character', actual: $action['schema']);
+		$this->assertSame(expected: 'ownerRef', actual: $action['scopeField'], message: 'The writer stamps ownerRef so the record is player-owned');
 		$this->assertSame(
-			'ownerRef',
-			($action['scopeClaim'] ?? null),
-			'ownerRef is a player uuid: the stamp must be the linked player (the claim), never the portal subject reference'
+			expected: 'ownerRef',
+			actual: ($action['scopeClaim'] ?? null),
+			message: 'ownerRef is a player uuid: the stamp must be the linked player (the claim), never the portal subject reference'
 		);
-		$this->assertSame(['name', 'background'], $action['fields'], 'No ocName (derived from ownerRef), no approved / slNotesPrivate / economy / lifecycle fields');
+		$this->assertSame(
+			expected: ['name', 'background'],
+			actual: $action['fields'],
+			message: 'No ocName (derived from ownerRef), no approved / slNotesPrivate / economy / lifecycle fields'
+		);
 
 		// No inbox surface (larpinq has no per-player message collection).
-		$this->assertSame([], $manifest['notifications']);
+		$this->assertSame(expected: [], actual: $manifest['notifications']);
 		foreach ($manifest['collections'] as $collection) {
-			$this->assertNotSame('inbox', ($collection['kind'] ?? null), 'No inbox collection ships in this wave');
+			$this->assertNotSame(expected: 'inbox', actual: ($collection['kind'] ?? null), message: 'No inbox collection ships in this wave');
 		}
 
 	}//end testCreateCharacterActionIsConservative()
@@ -259,16 +267,20 @@ final class PortalContributionProviderTest extends TestCase {
 	 */
 	public function testCreatePlayerProfileIsStampedWithThePortalSubject(): void {
 		$manifest = (array)$this->provider->getContribution(self::PLAYER_SUBJECT);
-		$actions = $this->indexById($manifest['actions']);
+		$actions = $this->indexById(entries: $manifest['actions']);
 
-		$this->assertArrayHasKey('createPlayerProfile', $actions);
+		$this->assertArrayHasKey(key: 'createPlayerProfile', array: $actions);
 		$action = $actions['createPlayerProfile'];
-		$this->assertSame('create', $action['type']);
-		$this->assertSame('larpinq', $action['register']);
-		$this->assertSame('player', $action['schema']);
-		$this->assertSame('portalSubjectRef', $action['scopeField']);
-		$this->assertArrayNotHasKey('scopeClaim', $action, 'The profile is stamped with the subject itself: no claim exists before it');
-		$this->assertSame(['name', 'description'], $action['fields'], 'No userUid, no review or registration flags');
+		$this->assertSame(expected: 'create', actual: $action['type']);
+		$this->assertSame(expected: 'larpinq', actual: $action['register']);
+		$this->assertSame(expected: 'player', actual: $action['schema']);
+		$this->assertSame(expected: 'portalSubjectRef', actual: $action['scopeField']);
+		$this->assertArrayNotHasKey(
+			key: 'scopeClaim',
+			array: $action,
+			message: 'The profile is stamped with the subject itself: no claim exists before it'
+		);
+		$this->assertSame(expected: ['name', 'description'], actual: $action['fields'], message: 'No userUid, no review or registration flags');
 	}//end testCreatePlayerProfileIsStampedWithThePortalSubject()
 
 	/**
@@ -280,12 +292,12 @@ final class PortalContributionProviderTest extends TestCase {
 	 */
 	public function testMyProfileIsScopedToTheSubject(): void {
 		$manifest = (array)$this->provider->getContribution(self::PLAYER_SUBJECT);
-		$profile = $this->indexById($manifest['collections'])['myProfile'];
+		$profile = $this->indexById(entries: $manifest['collections'])['myProfile'];
 
-		$this->assertSame('player', $profile['schema']);
-		$this->assertSame('portalSubjectRef', $profile['scopeField']);
-		$this->assertArrayNotHasKey('scopeClaim', $profile);
-		$this->assertSame(['name', 'description'], $profile['fields'], 'No userUid, portal reference or review stamps');
+		$this->assertSame(expected: 'player', actual: $profile['schema']);
+		$this->assertSame(expected: 'portalSubjectRef', actual: $profile['scopeField']);
+		$this->assertArrayNotHasKey(key: 'scopeClaim', array: $profile);
+		$this->assertSame(expected: ['name', 'description'], actual: $profile['fields'], message: 'No userUid, portal reference or review stamps');
 	}//end testMyProfileIsScopedToTheSubject()
 
 	/**
@@ -299,7 +311,7 @@ final class PortalContributionProviderTest extends TestCase {
 		$manifest = (array)$this->provider->getContribution(self::PLAYER_SUBJECT);
 
 		foreach ($manifest['actions'] as $action) {
-			$this->assertSame('create', $action['type'], 'Receiver-side assertion verification does not exist yet');
+			$this->assertSame(expected: 'create', actual: $action['type'], message: 'Receiver-side assertion verification does not exist yet');
 		}
 
 	}//end testNoEndpointActions()
@@ -312,10 +324,10 @@ final class PortalContributionProviderTest extends TestCase {
 	 * @spec openspec/changes/portal-contribution/specs/portal-contribution/spec.md
 	 */
 	public function testFailsClosedForUnknownAudience(): void {
-		$this->assertNull($this->provider->getContribution(['audience' => 'client']));
-		$this->assertNull($this->provider->getContribution(['audience' => 'supplier']));
-		$this->assertNull($this->provider->getContribution(['audience' => '']));
-		$this->assertNull($this->provider->getContribution([]));
+		$this->assertNull(actual: $this->provider->getContribution(['audience' => 'client']));
+		$this->assertNull(actual: $this->provider->getContribution(['audience' => 'supplier']));
+		$this->assertNull(actual: $this->provider->getContribution(['audience' => '']));
+		$this->assertNull(actual: $this->provider->getContribution([]));
 
 	}//end testFailsClosedForUnknownAudience()
 
@@ -331,17 +343,17 @@ final class PortalContributionProviderTest extends TestCase {
 		$characterProps = $this->mergedCharacterProperties();
 
 		// The sibling portal-identity config change added ownerRef as a uuid.
-		$this->assertArrayHasKey('ownerRef', $characterProps, 'portal-identity must add character.ownerRef');
-		$this->assertSame('string', $characterProps['ownerRef']['type']);
-		$this->assertSame('uuid', $characterProps['ownerRef']['format']);
+		$this->assertArrayHasKey(key: 'ownerRef', array: $characterProps, message: 'portal-identity must add character.ownerRef');
+		$this->assertSame(expected: 'string', actual: $characterProps['ownerRef']['type']);
+		$this->assertSame(expected: 'uuid', actual: $characterProps['ownerRef']['format']);
 
-		// ownerUid is kept (internal notifications depend on it).
-		$this->assertArrayHasKey('ownerUid', $characterProps, 'ownerUid must be retained alongside ownerRef');
+		// The ownerUid is kept (internal notifications depend on it).
+		$this->assertArrayHasKey(key: 'ownerUid', array: $characterProps, message: 'ownerUid must be retained alongside ownerRef');
 
 		// Every forbidden column is a REAL character property — so excluding it
 		// from the whitelist is meaningful, not a typo that silently no-ops.
 		foreach (['approved', 'slNotesPrivate', 'notice', 'requirementOverrides'] as $realStaffField) {
-			$this->assertArrayHasKey($realStaffField, $characterProps, $realStaffField . ' should still exist to be excluded');
+			$this->assertArrayHasKey(key: $realStaffField, array: $characterProps, message: $realStaffField . ' should still exist to be excluded');
 		}
 
 		$schemas = $this->registerSchemas();
@@ -349,14 +361,21 @@ final class PortalContributionProviderTest extends TestCase {
 
 		foreach (array_merge($manifest['collections'], $manifest['actions']) as $collection) {
 			$schemaName = $this->schemaKeyOf(schemas: $schemas, name: $collection['schema']);
-			$this->assertArrayHasKey($schemaName, $schemas, 'Collection schema "' . $collection['schema'] . '" must exist in the register');
+			$this->assertArrayHasKey(
+				key: $schemaName,
+				array: $schemas,
+				message: 'Collection schema "' . $collection['schema'] . '" must exist in the register'
+			);
 
-			$schemaProps = ($schemaName === 'character') ? $characterProps : ($schemas[$schemaName]['properties'] ?? []);
+			$schemaProps = ($schemas[$schemaName]['properties'] ?? []);
+			if ($schemaName === 'character') {
+				$schemaProps = $characterProps;
+			}
 			foreach (($collection['fields'] ?? []) as $field) {
 				$this->assertArrayHasKey(
-					$field,
-					$schemaProps,
-					'Whitelisted field "' . $field . '" is not a property of schema "' . $schemaName . '" (drift)'
+					key: $field,
+					array: $schemaProps,
+					message: 'Whitelisted field "' . $field . '" is not a property of schema "' . $schemaName . '" (drift)'
 				);
 			}
 		}
@@ -373,22 +392,29 @@ final class PortalContributionProviderTest extends TestCase {
 	 */
 	public function testMyLarpPageListsCharactersAndRegistrations(): void {
 		$manifest = (array)$this->provider->getContribution(self::PLAYER_SUBJECT);
-		$pages    = $this->indexById($manifest['pages']);
+		$pages    = $this->indexById(entries: $manifest['pages']);
 
-		$this->assertSame(['myLarp', 'rulebook'], array_keys($pages));
-		$this->assertSame('Mijn larp', $pages['myLarp']['label']);
-		$this->assertSame('Verenigingen', $pages['myLarp']['group']);
+		$this->assertSame(expected: ['myLarp', 'rulebook'], actual: array_keys($pages));
+		$this->assertSame(expected: 'Mijn larp', actual: $pages['myLarp']['label']);
+		$this->assertSame(expected: 'Verenigingen', actual: $pages['myLarp']['group']);
 		$this->assertSame(
-			['richText', 'collection:myCharacters', 'detail:myCharacters', 'action:createCharacter', 'collection:myRegistrations', 'detail:myRegistrations'],
-			$this->blockNames($pages['myLarp']['blocks'])
+			expected: [
+				'richText',
+				'collection:myCharacters',
+				'detail:myCharacters',
+				'action:createCharacter',
+				'collection:myRegistrations',
+				'detail:myRegistrations',
+			],
+			actual: $this->blockNames(blocks: $pages['myLarp']['blocks'])
 		);
 
-		$registrations = $this->indexById($manifest['collections'])['myRegistrations'];
-		$this->assertSame('larping_registration', $registrations['schema']);
-		$this->assertSame('player', $registrations['scopeField'], 'A registration is the player\'s by its player reference');
-		$this->assertSame('ownerRef', $registrations['scopeClaim'], 'The same claim that scopes the characters');
+		$registrations = $this->indexById(entries: $manifest['collections'])['myRegistrations'];
+		$this->assertSame(expected: 'larping_registration', actual: $registrations['schema']);
+		$this->assertSame(expected: 'player', actual: $registrations['scopeField'], message: 'A registration is the player\'s by its player reference');
+		$this->assertSame(expected: 'ownerRef', actual: $registrations['scopeClaim'], message: 'The same claim that scopes the characters');
 		foreach (['decidedBy', 'decidedAt', 'playerUid', 'submitterUid', 'bookedByUid', 'settlement'] as $staffField) {
-			$this->assertNotContains($staffField, $registrations['fields'], $staffField . ' is game-master bookkeeping');
+			$this->assertNotContains(needle: $staffField, haystack: $registrations['fields'], message: $staffField . ' is game-master bookkeeping');
 		}
 
 	}//end testMyLarpPageListsCharactersAndRegistrations()
@@ -403,22 +429,22 @@ final class PortalContributionProviderTest extends TestCase {
 	 */
 	public function testRulebookPageShowsReadableRulesChapters(): void {
 		$manifest = (array)$this->provider->getContribution(self::PLAYER_SUBJECT);
-		$pages    = $this->indexById($manifest['pages']);
+		$pages    = $this->indexById(entries: $manifest['pages']);
 
 		$this->assertSame(
-			['richText', 'collection:rulebookChapters', 'detail:rulebookChapters', 'collection:skillCatalog'],
-			$this->blockNames($pages['rulebook']['blocks'])
+			expected: ['richText', 'collection:rulebookChapters', 'detail:rulebookChapters', 'collection:skillCatalog'],
+			actual: $this->blockNames(blocks: $pages['rulebook']['blocks'])
 		);
 
-		$chapters = $this->indexById($manifest['collections'])['rulebookChapters'];
-		$this->assertSame('larping_lore_page', $chapters['schema']);
-		$this->assertSame('', $chapters['scopeField'], 'The rulebook is the same for every player');
+		$chapters = $this->indexById(entries: $manifest['collections'])['rulebookChapters'];
+		$this->assertSame(expected: 'larping_lore_page', actual: $chapters['schema']);
+		$this->assertSame(expected: '', actual: $chapters['scopeField'], message: 'The rulebook is the same for every player');
 		$this->assertSame(
-			['category' => 'rules', 'visibility' => 'players', 'revealFrom' => 'IS NULL'],
-			$chapters['filter'],
-			'Only rules chapters players may read, and none held back until a reveal moment'
+			expected: ['category' => 'rules', 'visibility' => 'players', 'revealFrom' => 'IS NULL'],
+			actual: $chapters['filter'],
+			message: 'Only rules chapters players may read, and none held back until a reveal moment'
 		);
-		$this->assertSame(['field' => 'order', 'direction' => 'asc'], $chapters['defaultSort']);
+		$this->assertSame(expected: ['field' => 'order', 'direction' => 'asc'], actual: $chapters['defaultSort']);
 
 	}//end testRulebookPageShowsReadableRulesChapters()
 
@@ -431,17 +457,17 @@ final class PortalContributionProviderTest extends TestCase {
 	 */
 	public function testPageBlocksResolveWithinTheContribution(): void {
 		$manifest    = (array)$this->provider->getContribution(self::PLAYER_SUBJECT);
-		$collections = array_keys($this->indexById($manifest['collections']));
-		$actions     = array_keys($this->indexById($manifest['actions']));
+		$collections = array_keys($this->indexById(entries: $manifest['collections']));
+		$actions     = array_keys($this->indexById(entries: $manifest['actions']));
 
 		foreach ($manifest['pages'] as $page) {
 			foreach ($page['blocks'] as $block) {
 				if (isset($block['collection']) === true) {
-					$this->assertContains($block['collection'], $collections, $page['id'] . ' names an unknown collection');
+					$this->assertContains(needle: $block['collection'], haystack: $collections, message: $page['id'] . ' names an unknown collection');
 				}
 
 				if (isset($block['action']) === true) {
-					$this->assertContains($block['action'], $actions, $page['id'] . ' names an unknown action');
+					$this->assertContains(needle: $block['action'], haystack: $actions, message: $page['id'] . ' names an unknown action');
 				}
 			}
 		}
@@ -459,7 +485,12 @@ final class PortalContributionProviderTest extends TestCase {
 		$names = [];
 		foreach ($blocks as $block) {
 			$target  = ($block['collection'] ?? ($block['action'] ?? ''));
-			$names[] = ($target === '') ? $block['type'] : $block['type'] . ':' . $target;
+			$name = $block['type'];
+			if ($target !== '') {
+				$name .= ':' . $target;
+			}
+
+			$names[] = $name;
 		}
 
 		return $names;

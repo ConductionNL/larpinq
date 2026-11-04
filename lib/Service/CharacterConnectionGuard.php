@@ -32,6 +32,7 @@ namespace OCA\Larpinq\Service;
  * @spec openspec/specs/character-connections/spec.md
  */
 class CharacterConnectionGuard {
+	use \OCA\Larpinq\Support\ReadsRelationId;
 
 	/**
 	 * Who may move a membership from one status to another: the group leader
@@ -139,14 +140,15 @@ class CharacterConnectionGuard {
 			return $this->refuse(code: 'faction_game_masters_only');
 		}
 
-		$isLeader = ($faction['leaderOwnerUid'] ?? '') === $userId;
-		$isOwner = ($character['ownerUid'] ?? '') === $userId;
-
+		$caller = new MembershipCaller(
+			isLeader: ($faction['leaderOwnerUid'] ?? '') === $userId,
+			isOwner: ($character['ownerUid'] ?? '') === $userId
+		);
 		if ($old === null) {
-			return $this->checkNewMembership(membership: $membership, isLeader: $isLeader, isOwner: $isOwner);
+			return $this->checkNewMembership(membership: $membership, caller: $caller);
 		}
 
-		return $this->checkMembershipChange(membership: $membership, old: $old, isLeader: $isLeader, isOwner: $isOwner);
+		return $this->checkMembershipChange(change: $this->changeOf(membership: $membership, old: $old), caller: $caller);
 	}//end checkMembership()
 
 	/**
@@ -234,20 +236,19 @@ class CharacterConnectionGuard {
 	 * invites, and the leader places their own character as an active member.
 	 *
 	 * @param array<string, mixed> $membership The new membership.
-	 * @param bool $isLeader Whether the caller leads the group.
-	 * @param bool $isOwner Whether the caller owns the member character.
+	 * @param MembershipCaller $caller How the caller stands to the group and the character.
 	 *
 	 * @return array<string, string>|null The refusal, or null to allow.
 	 */
-	private function checkNewMembership(array $membership, bool $isLeader, bool $isOwner): ?array {
+	private function checkNewMembership(array $membership, MembershipCaller $caller): ?array {
 		$status = (string)($membership['status'] ?? 'requested');
 		$isMember = (string)($membership['role'] ?? 'member') === 'member';
 
 		// Who may create a membership in each status, and the refusal otherwise.
 		$allowed = [
-			'requested' => [$isOwner === true && $isMember === true, 'membership_own_character_only'],
-			'invited' => [$isLeader === true && $isMember === true, 'membership_leader_only'],
-			'active' => [$isLeader === true && $isOwner === true, 'membership_needs_invitation'],
+			'requested' => [$caller->isOwner === true && $isMember === true, 'membership_own_character_only'],
+			'invited' => [$caller->isLeader === true && $isMember === true, 'membership_leader_only'],
+			'active' => [$caller->isLeader === true && $caller->isOwner === true, 'membership_needs_invitation'],
 		];
 		if (isset($allowed[$status]) === false) {
 			return $this->refuse(code: 'membership_status_not_allowed');
@@ -261,36 +262,50 @@ class CharacterConnectionGuard {
 	}//end checkNewMembership()
 
 	/**
-	 * A change to a stored membership.
+	 * What an update changes in a stored membership: the role, and the status from and to.
 	 *
 	 * @param array<string, mixed> $membership The membership as it will be saved.
 	 * @param array<string, mixed> $old The stored membership.
-	 * @param bool $isLeader Whether the caller leads the group.
-	 * @param bool $isOwner Whether the caller owns the member character.
+	 *
+	 * @return array{roleChanged: bool, from: string, target: string} The change.
+	 */
+	private function changeOf(array $membership, array $old): array {
+		$from = (string)($old['status'] ?? 'requested');
+
+		return [
+			'roleChanged' => ($membership['role'] ?? 'member') !== ($old['role'] ?? 'member'),
+			'from' => $from,
+			'target' => (string)($membership['status'] ?? $from),
+		];
+	}//end changeOf()
+
+	/**
+	 * A change to a stored membership.
+	 *
+	 * @param array{roleChanged: bool, from: string, target: string} $change What the update changes.
+	 * @param MembershipCaller $caller How the caller stands to the group and the character.
 	 *
 	 * @return array<string, string>|null The refusal, or null to allow.
 	 */
-	private function checkMembershipChange(array $membership, array $old, bool $isLeader, bool $isOwner): ?array {
-		if (($membership['role'] ?? 'member') !== ($old['role'] ?? 'member') && $isLeader === false) {
+	private function checkMembershipChange(array $change, MembershipCaller $caller): ?array {
+		if ($change['roleChanged'] === true && $caller->isLeader === false) {
 			return $this->refuse(code: 'membership_leader_only');
 		}
 
-		$from = (string)($old['status'] ?? 'requested');
-		$target = (string)($membership['status'] ?? $from);
-		if ($from === $target) {
+		if ($change['from'] === $change['target']) {
 			return null;
 		}
 
-		$who = (self::TRANSITIONS[$from][$target] ?? null);
+		$who = (self::TRANSITIONS[$change['from']][$change['target']] ?? null);
 		if ($who === null) {
 			return $this->refuse(code: 'membership_status_not_allowed');
 		}
 
-		if ($who === 'leader' && $isLeader === false) {
+		if ($who === 'leader' && $caller->isLeader === false) {
 			return $this->refuse(code: 'membership_leader_only');
 		}
 
-		if ($who === 'owner' && $isOwner === false) {
+		if ($who === 'owner' && $caller->isOwner === false) {
 			return $this->refuse(code: 'membership_member_only');
 		}
 
@@ -335,26 +350,6 @@ class CharacterConnectionGuard {
 			return null;
 		}
 	}//end read()
-
-	/**
-	 * The UUID of a relation value, which OpenRegister may hand over as a
-	 * string or as an object with an id.
-	 *
-	 * @param mixed $value The relation value.
-	 *
-	 * @return string The UUID, or ''.
-	 */
-	private function idOf(mixed $value): string {
-		if (is_array($value) === true) {
-			$value = ($value['id'] ?? $value['uuid'] ?? '');
-		}
-
-		if (is_string($value) === false) {
-			return '';
-		}
-
-		return $value;
-	}//end idOf()
 
 	/**
 	 * The refusal payload for a code.

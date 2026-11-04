@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace OCA\Larpinq\Service;
 
 use DateTimeImmutable;
-use OCA\Larpinq\AppInfo\Application;
+use OCA\Larpinq\Support\AppIdentity;
 use OCP\IGroupManager;
 use Throwable;
 
@@ -72,7 +72,7 @@ class CancellationPolicy {
 			return false;
 		}
 
-		return $this->groups->isInGroup($uid, Application::GM_GROUP) === true || $this->groups->isAdmin($uid) === true;
+		return $this->groups->isInGroup($uid, AppIdentity::GM_GROUP) === true || $this->groups->isAdmin($uid) === true;
 	}//end isGameMaster()
 
 	/**

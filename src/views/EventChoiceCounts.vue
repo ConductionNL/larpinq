@@ -60,26 +60,13 @@
 
 <script>
 import { translate as t } from '@nextcloud/l10n'
+import { objectTab } from '../mixins/objectTab.js'
 import { fetchChoiceCounts } from '../services/registrationChoices.js'
 
 export default {
 	name: 'EventChoiceCounts',
 
-	inject: {
-		cnObjectContext: { default: () => ({}) },
-	},
-
-	props: {
-		/**
-		 * The event UUID. Falls back to the injected object context or the route.
-		 *
-		 * @spec openspec/specs/event-registration/spec.md
-		 */
-		objectId: {
-			type: String,
-			default: '',
-		},
-	},
+	mixins: [objectTab('eventId')],
 
 	data() {
 		return {
@@ -89,21 +76,6 @@ export default {
 	},
 
 	computed: {
-		/**
-		 * The event id from prop, injected context or route.
-		 *
-		 * @return {string} The id.
-		 *
-		 * @spec openspec/specs/event-registration/spec.md
-		 */
-		eventId() {
-			return (
-				this.objectId
-				|| this.cnObjectContext?.objectId
-				|| String(this.$route?.params?.id ?? '')
-			)
-		},
-
 		/**
 		 * Ticket types first, then options.
 		 *

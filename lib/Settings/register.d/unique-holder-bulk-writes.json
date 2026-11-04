@@ -1,0 +1,29 @@
+{
+  "components": {
+    "registers": {
+      "larpinq": {
+        "version": "1.5.0"
+      }
+    },
+    "schemas": {
+      "character": {
+        "version": "1.6.0",
+        "configuration": {
+          "fireEventsOnBulkWrites": true
+        }
+      },
+      "item": {
+        "version": "2.1.0",
+        "configuration": {
+          "fireEventsOnBulkWrites": true
+        }
+      },
+      "condition": {
+        "version": "1.2.0",
+        "configuration": {
+          "fireEventsOnBulkWrites": true
+        }
+      }
+    }
+  }
+}
