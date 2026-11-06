@@ -19,7 +19,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Sections;
 
-use OCA\Larpinq\AppInfo\Application;
+use OCA\Larpinq\Support\AppIdentity;
 use OCP\IL10N;
 use OCP\IURLGenerator;
 use OCP\Settings\IIconSection;
@@ -75,7 +75,7 @@ class LarpinqAdmin implements IIconSection {
 	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-16
 	 */
 	public function getIcon(): string {
-		return $this->urlGenerator->imagePath(appName: Application::APP_ID, file: 'app-dark.svg');
+		return $this->urlGenerator->imagePath(appName: AppIdentity::APP_ID, file: 'app-dark.svg');
 	}//end getIcon()
 
 	/**
@@ -86,7 +86,7 @@ class LarpinqAdmin implements IIconSection {
 	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-17
 	 */
 	public function getID(): string {
-		return Application::APP_ID;
+		return AppIdentity::APP_ID;
 	}//end getID()
 
 	/**

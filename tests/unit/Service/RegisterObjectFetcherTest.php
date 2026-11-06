@@ -18,6 +18,7 @@ use Exception;
 use InvalidArgumentException;
 use OCA\Larpinq\Service\RegisterObjectFetcher;
 use OCP\App\IAppManager;
+use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\IAppConfig;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -227,6 +228,26 @@ class RegisterObjectFetcherTest extends TestCase {
 		$this->service->getObject('character', 'https://example.com/api/objects/abc-123');
 
 	}//end testGetObjectRejectsUriFormatId()
+
+	/**
+	 * A read with the app's authority is never unscoped: an empty filter, or an
+	 * empty filter value, is refused before OpenRegister is asked.
+	 *
+	 * @spec openspec/specs/event-xp-awards/spec.md
+	 *
+	 * @return void
+	 */
+	public function testAppAuthorityReadRefusesAnUnscopedFilter(): void {
+		$this->appManager->expects($this->never())->method('getInstalledApps');
+		foreach ([[], ['character' => '']] as $filters) {
+			try {
+				$this->service->getObjectsWithAppAuthority(objectType: 'xpAward', filters: $filters);
+				$this->fail(message: 'An unscoped read with the app\'s authority must be refused');
+			} catch (\InvalidArgumentException $e) {
+				$this->assertStringContainsString(needle: 'scoping filter', haystack: $e->getMessage());
+			}
+		}
+	}
 
 	/**
 	 * Test that getObject rejects non-UUID string IDs.
@@ -474,4 +495,88 @@ class RegisterObjectFetcherTest extends TestCase {
 		self::assertContains(needle: 'character_schema', haystack: $seenKeys);
 
 	}//end testFallsBackToAppConfigWhenResolverAbsent()
+
+	/**
+	 * Wire OpenRegister so find() answers with the given row, and configure
+	 * the item schema.
+	 *
+	 * @param array<string,mixed> $row What the mapper's find() returns.
+	 * @param string $itemSchema The configured item schema id.
+	 *
+	 * @return void
+	 */
+	private function findAnswers(array $row, string $itemSchema = 'schema-item'): void {
+		$this->appManager->method('getInstalledApps')->willReturn(['openregister']);
+
+		$mapper = $this->getMockBuilder(className: \stdClass::class)
+			->addMethods(['find'])
+			->getMock();
+		$mapper->method('find')->willReturn($row);
+
+		$objectService = $this->getMockBuilder(className: \stdClass::class)
+			->addMethods(['getMapper'])
+			->getMock();
+		$objectService->method('getMapper')->willReturn($mapper);
+
+		$this->container->method('get')->willReturn($objectService);
+		$this->config->method('getValueString')->willReturnCallback(
+			fn (string $app, string $key, string $default): string => [
+				'item_register' => 'register-1',
+				'item_schema' => $itemSchema,
+			][$key] ?? $default
+		);
+	}//end findAnswers()
+
+	/**
+	 * REQ-UHE-007: an object of the type's own schema is returned as read.
+	 *
+	 * @return void
+	 */
+	public function testGetObjectOfTypeReturnsAnObjectOfThatSchema(): void {
+		$row = ['id' => '00000000-0000-4000-8000-000000000001', 'name' => 'Crown', '@self' => ['schema' => 'schema-item']];
+		$this->findAnswers(row: $row);
+
+		self::assertSame(expected: $row, actual: $this->service->getObjectOfType(objectType: 'item', id: $row['id']));
+	}//end testGetObjectOfTypeReturnsAnObjectOfThatSchema()
+
+	/**
+	 * A numeric schema id matches the configured id by its text.
+	 *
+	 * @return void
+	 */
+	public function testGetObjectOfTypeMatchesANumericSchemaId(): void {
+		$row = ['id' => '00000000-0000-4000-8000-000000000003', '@self' => ['schema' => 7]];
+		$this->findAnswers(row: $row, itemSchema: '7');
+
+		self::assertSame(expected: $row, actual: $this->service->getObjectOfType(objectType: 'item', id: $row['id']));
+	}//end testGetObjectOfTypeMatchesANumericSchemaId()
+
+	/**
+	 * REQ-UHE-007: OpenRegister's schema-less retry can answer with an object of
+	 * another schema (a condition asked for as an item); that reads as missing.
+	 *
+	 * @return void
+	 */
+	public function testGetObjectOfTypeRefusesAnObjectOfAnotherSchema(): void {
+		$answers = [
+			'another schema' => ['@self' => ['schema' => 'schema-condition']],
+			'schema as a number' => ['@self' => ['schema' => 7]],
+			'no schema' => ['@self' => []],
+			'no @self' => [],
+			'@self not an array' => ['@self' => 'schema-item'],
+			'schema not scalar' => ['@self' => ['schema' => ['id' => 'schema-item']]],
+		];
+
+		foreach ($answers as $name => $row) {
+			$this->setUp();
+			$this->findAnswers(row: ['id' => '00000000-0000-4000-8000-000000000002'] + $row);
+
+			try {
+				$this->service->getObjectOfType(objectType: 'item', id: '00000000-0000-4000-8000-000000000002');
+				self::fail(message: $name . ': an object of another schema was returned');
+			} catch (DoesNotExistException $e) {
+				self::assertStringContainsString(needle: 'is not in the item schema', haystack: $e->getMessage(), message: $name);
+			}
+		}
+	}//end testGetObjectOfTypeRefusesAnObjectOfAnotherSchema()
 }//end class

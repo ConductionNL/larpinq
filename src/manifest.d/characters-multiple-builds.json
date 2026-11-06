@@ -1,0 +1,72 @@
+{
+	"pages": [
+		{
+			"id": "BuildDetail",
+			"route": "/builds/:id",
+			"type": "detail",
+			"title": "Build",
+			"config": {
+				"register": "larpinq",
+				"schema": "larping_character_build",
+				"headerActions": [
+					{
+						"id": "apply-build",
+						"type": "open-modal",
+						"target": "ApplyBuildDialog",
+						"label": "Apply to character",
+						"icon": "CheckAll",
+						"visibleWhen": { "endpoint": "/apps/larpinq/api/builds/apply-access", "field": "allowed", "op": "eq", "value": true }
+					}
+				],
+				"documentationUrl": "https://larpinq.conduction.nl",
+				"widgets": [
+					{
+						"id": "build-data",
+						"type": "data",
+						"title": "Build",
+						"icon": "SourceBranch",
+						"content": {
+							"columns": 2,
+							"include": ["name", "character", "purpose", "notes"]
+						}
+					},
+					{
+						"id": "build-lists",
+						"type": "related",
+						"title": "Skills, items and conditions",
+						"icon": "LinkVariant",
+						"content": {
+							"groups": [
+								{ "key": "skills", "label": "Skills" },
+								{ "key": "items", "label": "Items" },
+								{ "key": "conditions", "label": "Conditions" }
+							]
+						}
+					}
+				],
+				"layout": [
+					{ "id": "1", "widgetId": "build-data", "gridX": 0, "gridY": 0, "gridWidth": 7, "gridHeight": 5 },
+					{ "id": "2", "widgetId": "build-lists", "gridX": 7, "gridY": 0, "gridWidth": 5, "gridHeight": 5 }
+				],
+				"sidebar": {
+					"enabled": true,
+					"showMetadata": true,
+					"tabs": [
+						{
+							"id": "check",
+							"label": "Check",
+							"icon": "ClipboardCheckOutline",
+							"component": "BuildReport"
+						},
+						{
+							"id": "audit",
+							"label": "History",
+							"icon": "History",
+							"widgets": [{ "type": "audit" }]
+						}
+					]
+				}
+			}
+		}
+	]
+}

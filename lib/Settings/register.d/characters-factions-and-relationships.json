@@ -1,0 +1,538 @@
+{
+	"components": {
+		"registers": {
+			"larpinq": {
+				"schemas": [
+					"larping_faction",
+					"larping_faction_member",
+					"larping_relationship"
+				]
+			}
+		},
+		"schemas": {
+			"faction": {
+				"slug": "larping_faction",
+				"title": "Faction",
+				"icon": "ShieldAccountOutline",
+				"version": "1.0.0",
+				"summary": "A faction that game masters run, or a group that players form",
+				"description": "A faction of one world. Game masters run factions; players form groups with one of their characters as leader. A secret faction is read only by game masters and its leader.",
+				"type": "object",
+				"x-schema-org": "schema:Organization",
+				"configuration": {
+					"exportable": true,
+					"x-openregister-references": {
+						"leader": {
+							"mode": "relatedObject",
+							"schema": "character",
+							"field": "leader"
+						}
+					}
+				},
+				"required": [
+					"name",
+					"kind"
+				],
+				"properties": {
+					"name": {
+						"type": "string",
+						"title": "Name",
+						"description": "The name of the faction or group",
+						"maxLength": 255
+					},
+					"description": {
+						"type": "string",
+						"format": "markdown",
+						"title": "Description",
+						"description": "What the faction stands for"
+					},
+					"setting": {
+						"type": "string",
+						"format": "uuid",
+						"$ref": "setting",
+						"title": "World",
+						"description": "The world this faction belongs to"
+					},
+					"kind": {
+						"type": "string",
+						"title": "Kind",
+						"description": "A faction is run by game masters, a group by the players in it",
+						"enum": [
+							"faction",
+							"group"
+						],
+						"default": "group"
+					},
+					"visibility": {
+						"type": "string",
+						"title": "Visibility",
+						"description": "Who can find it: everyone who plays, or only game masters and its leader",
+						"enum": [
+							"open",
+							"secret"
+						],
+						"default": "open"
+					},
+					"leader": {
+						"type": "string",
+						"format": "uuid",
+						"$ref": "character",
+						"title": "Leader",
+						"description": "The character who leads the group and invites and removes members"
+					},
+					"leaderOwnerUid": {
+						"type": "string",
+						"title": "Leader's player account",
+						"description": "The Nextcloud account of the leader's player, copied from the leader when the faction is saved",
+						"maxLength": 255,
+						"visible": false,
+						"readOnly": true,
+						"calculation": {
+							"type": "string",
+							"materialise": true,
+							"expression": {
+								"prop": "@ref.leader.ownerUid"
+							}
+						}
+					}
+				},
+				"authorization": {
+					"read": [
+						{
+							"group": "gamemasters"
+						},
+						{
+							"group": "larpers",
+							"match": {
+								"visibility": "open"
+							}
+						},
+						{
+							"group": "larpers",
+							"match": {
+								"leaderOwnerUid": "$userId"
+							}
+						}
+					],
+					"create": [
+						{
+							"group": "gamemasters"
+						},
+						{
+							"group": "larpers",
+							"match": {
+								"kind": "group"
+							}
+						}
+					],
+					"update": [
+						{
+							"group": "gamemasters"
+						},
+						{
+							"group": "larpers",
+							"match": {
+								"kind": "group",
+								"leaderOwnerUid": "$userId"
+							}
+						}
+					],
+					"delete": [
+						{
+							"group": "gamemasters"
+						},
+						{
+							"group": "larpers",
+							"match": {
+								"kind": "group",
+								"leaderOwnerUid": "$userId"
+							}
+						}
+					]
+				}
+			},
+			"factionMember": {
+				"slug": "larping_faction_member",
+				"title": "Faction membership",
+				"icon": "AccountGroupOutline",
+				"version": "1.0.0",
+				"summary": "One character in one faction or group, with a role and a status",
+				"description": "A character's place in a faction or group. Joining, invitations, leaving and removal change the status, so the history stays readable for game masters.",
+				"type": "object",
+				"x-schema-org": "schema:OrganizationRole",
+				"configuration": {
+					"exportable": true,
+					"x-openregister-references": {
+						"character": {
+							"mode": "relatedObject",
+							"schema": "character",
+							"field": "character"
+						},
+						"faction": {
+							"mode": "relatedObject",
+							"schema": "larping_faction",
+							"field": "faction"
+						}
+					},
+					"x-openregister-lifecycle": {
+						"field": "status",
+						"initial": "requested",
+						"final": [
+							"declined",
+							"left",
+							"removed"
+						],
+						"transitions": {
+							"accept": {
+								"from": [
+									"requested",
+									"invited"
+								],
+								"to": "active",
+								"description": "The leader accepts a request, or the invited player accepts the invitation."
+							},
+							"decline": {
+								"from": [
+									"requested",
+									"invited"
+								],
+								"to": "declined",
+								"description": "The leader declines a request, or the invited player declines the invitation."
+							},
+							"leave": {
+								"from": [
+									"active"
+								],
+								"to": "left",
+								"description": "The player leaves the group."
+							},
+							"remove": {
+								"from": [
+									"active",
+									"invited"
+								],
+								"to": "removed",
+								"description": "The leader removes a member or withdraws an invitation."
+							}
+						}
+					}
+				},
+				"required": [
+					"faction",
+					"character"
+				],
+				"properties": {
+					"faction": {
+						"type": "string",
+						"format": "uuid",
+						"$ref": "larping_faction",
+						"title": "Faction",
+						"description": "The faction or group"
+					},
+					"character": {
+						"type": "string",
+						"format": "uuid",
+						"$ref": "character",
+						"title": "Character",
+						"description": "The character who is a member"
+					},
+					"role": {
+						"type": "string",
+						"title": "Role",
+						"description": "Leader or member",
+						"enum": [
+							"leader",
+							"member"
+						],
+						"default": "member"
+					},
+					"status": {
+						"type": "string",
+						"title": "Status",
+						"description": "Where the membership stands",
+						"enum": [
+							"requested",
+							"invited",
+							"active",
+							"declined",
+							"left",
+							"removed"
+						],
+						"default": "requested"
+					},
+					"factionName": {
+						"type": "string",
+						"title": "Faction name",
+						"description": "The name of the faction, copied when the membership is saved, so a member of a secret faction sees its name",
+						"maxLength": 255,
+						"readOnly": true,
+						"calculation": {
+							"type": "string",
+							"materialise": true,
+							"expression": {
+								"prop": "@ref.faction.name"
+							}
+						}
+					},
+					"ownerUid": {
+						"type": "string",
+						"title": "Player account",
+						"description": "The Nextcloud account of the member's player, copied from the character when the membership is saved",
+						"maxLength": 255,
+						"visible": false,
+						"readOnly": true,
+						"calculation": {
+							"type": "string",
+							"materialise": true,
+							"expression": {
+								"prop": "@ref.character.ownerUid"
+							}
+						}
+					},
+					"groupLeaderUid": {
+						"type": "string",
+						"title": "Group leader's account",
+						"description": "The Nextcloud account of the group leader's player, copied from the faction when the membership is saved",
+						"maxLength": 255,
+						"visible": false,
+						"readOnly": true,
+						"calculation": {
+							"type": "string",
+							"materialise": true,
+							"expression": {
+								"prop": "@ref.faction.leaderOwnerUid"
+							}
+						}
+					},
+					"factionVisibility": {
+						"type": "string",
+						"title": "Faction visibility",
+						"description": "The visibility of the faction, copied when the membership is saved",
+						"maxLength": 16,
+						"visible": false,
+						"readOnly": true,
+						"calculation": {
+							"type": "string",
+							"materialise": true,
+							"expression": {
+								"prop": "@ref.faction.visibility"
+							}
+						}
+					}
+				},
+				"authorization": {
+					"read": [
+						{
+							"group": "gamemasters"
+						},
+						{
+							"group": "larpers",
+							"match": {
+								"factionVisibility": "open"
+							}
+						},
+						{
+							"group": "larpers",
+							"match": {
+								"ownerUid": "$userId"
+							}
+						},
+						{
+							"group": "larpers",
+							"match": {
+								"groupLeaderUid": "$userId"
+							}
+						}
+					],
+					"create": [
+						{
+							"group": "gamemasters"
+						},
+						"larpers"
+					],
+					"update": [
+						{
+							"group": "gamemasters"
+						},
+						{
+							"group": "larpers",
+							"match": {
+								"ownerUid": "$userId"
+							}
+						},
+						{
+							"group": "larpers",
+							"match": {
+								"groupLeaderUid": "$userId"
+							}
+						}
+					],
+					"delete": [
+						"gamemasters"
+					]
+				}
+			},
+			"relationship": {
+				"slug": "larping_relationship",
+				"title": "Relationship",
+				"icon": "AccountHeartOutline",
+				"version": "1.0.0",
+				"summary": "How one character stands to another",
+				"description": "A relationship from one character to another, such as family, ally or rival. Known to game masters only, or also to the players of both characters.",
+				"type": "object",
+				"x-schema-org": "schema:Role",
+				"configuration": {
+					"exportable": true,
+					"x-openregister-references": {
+						"from": {
+							"mode": "relatedObject",
+							"schema": "character",
+							"field": "from"
+						},
+						"to": {
+							"mode": "relatedObject",
+							"schema": "character",
+							"field": "to"
+						}
+					}
+				},
+				"required": [
+					"from",
+					"to",
+					"kind"
+				],
+				"properties": {
+					"from": {
+						"type": "string",
+						"format": "uuid",
+						"$ref": "character",
+						"title": "From",
+						"description": "The character this relationship belongs to"
+					},
+					"to": {
+						"type": "string",
+						"format": "uuid",
+						"$ref": "character",
+						"title": "To",
+						"description": "The other character"
+					},
+					"kind": {
+						"type": "string",
+						"title": "Kind",
+						"description": "What the relationship is",
+						"enum": [
+							"family",
+							"ally",
+							"rival",
+							"romance",
+							"enemy",
+							"mentor",
+							"other"
+						]
+					},
+					"description": {
+						"type": "string",
+						"format": "markdown",
+						"title": "Description",
+						"description": "More about the relationship, for example sister or old debt"
+					},
+					"knownTo": {
+						"type": "string",
+						"title": "Who sees it",
+						"description": "Game masters only, or also the players of both characters",
+						"enum": [
+							"gamemasters",
+							"owners"
+						],
+						"default": "gamemasters"
+					},
+					"fromOwnerUid": {
+						"type": "string",
+						"title": "First player's account",
+						"description": "The Nextcloud account of the first character's player, copied when the relationship is saved",
+						"maxLength": 255,
+						"visible": false,
+						"readOnly": true,
+						"calculation": {
+							"type": "string",
+							"materialise": true,
+							"expression": {
+								"prop": "@ref.from.ownerUid"
+							}
+						}
+					},
+					"toOwnerUid": {
+						"type": "string",
+						"title": "Second player's account",
+						"description": "The Nextcloud account of the other character's player, copied when the relationship is saved",
+						"maxLength": 255,
+						"visible": false,
+						"readOnly": true,
+						"calculation": {
+							"type": "string",
+							"materialise": true,
+							"expression": {
+								"prop": "@ref.to.ownerUid"
+							}
+						}
+					}
+				},
+				"authorization": {
+					"read": [
+						{
+							"group": "gamemasters"
+						},
+						{
+							"group": "larpers",
+							"match": {
+								"knownTo": "owners",
+								"fromOwnerUid": "$userId"
+							}
+						},
+						{
+							"group": "larpers",
+							"match": {
+								"knownTo": "owners",
+								"toOwnerUid": "$userId"
+							}
+						}
+					],
+					"create": [
+						{
+							"group": "gamemasters"
+						},
+						{
+							"group": "larpers",
+							"match": {
+								"knownTo": "owners"
+							}
+						}
+					],
+					"update": [
+						{
+							"group": "gamemasters"
+						},
+						{
+							"group": "larpers",
+							"match": {
+								"knownTo": "owners",
+								"fromOwnerUid": "$userId"
+							}
+						}
+					],
+					"delete": [
+						{
+							"group": "gamemasters"
+						},
+						{
+							"group": "larpers",
+							"match": {
+								"fromOwnerUid": "$userId"
+							}
+						}
+					]
+				}
+			}
+		}
+	}
+}

@@ -6,7 +6,7 @@ status: implemented
 
 ## Purpose
 
-@e2e exclude larpinq Vue SPA fails to mount at localhost:8080; RenderPdfFromCharacter.vue modal and "Als pdf downloaden" action are inaccessible; CharactersController.downloadPdf backend and DocuDesk integration scenarios are PHPUnit/integration-test scope
+@e2e exclude CharactersController.downloadPdf backend, run-sheet and DocuDesk integration scenarios are PHPUnit and Newman scope; the frontend download flow is covered by tests/e2e/workflows/character-pdf.workflow.spec.ts
 
 Enables game masters and players to export character data as downloadable PDF files. PDF rendering and template management are delegated to the DocuDesk app -- Larpinq's `CharactersController` resolves DocuDesk's `PdfService` and `TemplateService` via Nextcloud's DI container. Templates are managed in DocuDesk, scoped to Larpinq via the `namespace=larpingapp` filter. The PDF download flow gracefully degrades when DocuDesk is not installed, hiding the download button and returning a 424 error if accessed directly.
 
@@ -168,51 +168,64 @@ The controller MUST handle all error cases with appropriate HTTP status codes.
 
 ### Requirement: PDF Download Flow (Frontend)
 
-The frontend MUST provide a user-friendly flow for selecting templates and downloading PDFs.
+The character detail page MUST expose a working "Download as PDF" action. The action MUST be an
+isolated dialog component (`src/dialogs/CharacterPdfDownloadDialog.vue`, NcDialog, opened by an
+`open-modal` header action), MUST be hidden when DocuDesk (filinq) is not installed or enabled,
+MUST list the templates of the `larpingapp` namespace, MUST disable the "Download PDF" button
+until a template is selected, and MUST open the character's download URL
+(`/characters/{id}/download/{template}`) via `generateUrl()` in a new browser tab on confirm.
+The requirement is not satisfied by backend endpoint existence alone.
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
-| PDF-040 | Character detail page MUST have "Als pdf downloaden" action button (visible only when DocuDesk available) | MUST | Implemented |
-| PDF-041 | Clicking the button MUST open a modal to select a template | MUST | Implemented |
-| PDF-042 | Template selector MUST fetch from DocuDesk API: `GET /apps/docudesk/api/templates?namespace=larpingapp` | MUST | Implemented |
+| PDF-040 | Character detail page MUST have a "Download as PDF" action, visible only when DocuDesk is available and the user may download | MUST | Implemented |
+| PDF-041 | Clicking the action MUST open a dialog to select a template | MUST | Implemented |
+| PDF-042 | The template list MUST come from DocuDesk's `larpingapp` namespace, read server-side through `GET /apps/larpinq/api/pdf/templates` so the frontend never names the document app's id | MUST | Implemented |
 | PDF-043 | Clicking "Download PDF" MUST open the PDF URL in a new browser tab | MUST | Implemented |
-| PDF-044 | Download button MUST be disabled until a template is selected and template list is loaded | MUST | Implemented |
-| PDF-045 | The modal MUST include instructional text explaining the download flow | MUST | Implemented |
-| PDF-046 | The modal MUST have Cancel, Help, and Download PDF action buttons | MUST | Implemented |
+| PDF-044 | Download button MUST be disabled until a template is selected and the template list is loaded | MUST | Implemented |
+| PDF-045 | The dialog MUST include instructional text explaining the download flow | MUST | Planned (the dialog explains only the no-template and unavailable states) |
+| PDF-046 | The dialog MUST have Cancel, Help, and Download PDF action buttons | MUST | Planned (Cancel and Download PDF ship; Help does not) |
 
-#### Scenario: Complete PDF download flow
+The download endpoint is administrator only until `player-character-sheet-access` lands, and the
+action follows it: the template endpoint shares that restriction, so the action is hidden for
+everyone who could not download.
 
-- GIVEN character "Sir Lancelot" is being viewed
-- AND DocuDesk has 2 templates with namespace=larpingapp
-- WHEN the user clicks "Als pdf downloaden" in the actions menu
-- THEN a modal MUST open with instructional text
-- AND a template selector MUST show the 2 available templates
-- WHEN the user selects "Standard Sheet"
+**Feature tier**: MVP
+
+#### Scenario: Player downloads their own character sheet from the UI
+
+- GIVEN a logged-in player who owns a character, and DocuDesk is installed and enabled
+- WHEN they open the character's detail page
+- THEN a "Download as PDF" action MUST be visible
+- WHEN they click it and select a template
 - THEN the "Download PDF" button MUST become enabled
 - WHEN they click "Download PDF"
-- THEN a new browser tab MUST open with the PDF download URL
-- AND the browser MUST download the PDF file
+- THEN the character's PDF download URL MUST open in a new browser tab
 
-#### Scenario: No templates available
+#### Scenario: DocuDesk not installed hides the action entirely
 
-- GIVEN DocuDesk is installed but has no templates with namespace=larpingapp
-- WHEN the user opens the PDF download modal
-- THEN the template selector MUST be empty
-- AND the "Download PDF" button MUST remain disabled
+- GIVEN DocuDesk is not installed or not enabled
+- WHEN a user opens any character's detail page
+- THEN no "Download as PDF" action MUST be rendered anywhere on the page
 
-#### Scenario: Template selection required
+#### Scenario: Download disabled until a template is chosen
 
-- GIVEN the PDF modal is open
-- WHEN no template has been selected
-- THEN the "Download PDF" button MUST be disabled
-- AND the user MUST select a template before downloading
+- GIVEN the "Download as PDF" dialog is open and templates have loaded
+- WHEN no template is yet selected
+- THEN the "Download PDF" confirm button MUST be disabled
 
-#### Scenario: Cancel PDF download
+### Requirement: E2E Traceability for the PDF Download Flow
 
-- GIVEN the PDF modal is open with a template selected
-- WHEN the user clicks "Cancel"
-- THEN the modal MUST close
-- AND no PDF request MUST be made
+The frontend PDF download flow MUST be covered by an executable Playwright spec that drives the
+action, template selection, and download trigger. The `pdf-export/spec.md` header MUST NOT carry
+a stale "SPA fails to mount" exclusion reason.
+
+#### Scenario: The PDF download flow has a real Playwright test, not an exclusion
+
+- GIVEN the frontend download action described above is implemented
+- WHEN the e2e suite runs
+- THEN a test MUST exercise the action, the dialog and the download (`tests/e2e/workflows/character-pdf.workflow.spec.ts`)
+- AND the `pdf-export/spec.md` header MUST NOT carry a stale "SPA fails to mount" exclusion reason
 
 ---
 

@@ -3,8 +3,8 @@
 /**
  * Unit tests for CharacterRequirementListener.
  *
- * Defines lightweight fakes for the optional OpenRegister event/entity classes
- * so the listener can be exercised without the OpenRegister app installed.
+ * Uses the real OpenRegister pre-write event classes (tests/stubs/openregister)
+ * so the listener is exercised without the OpenRegister app installed.
  *
  * @category Test
  * @package  OCA\Larpinq\Tests\Unit\Listener
@@ -15,92 +15,18 @@
 
 declare(strict_types=1);
 
-namespace OCA\OpenRegister\Event;
-
-use OCP\EventDispatcher\Event;
-
-if (class_exists('OCA\OpenRegister\Event\ObjectCreatingEvent') === false) {
-	/**
-	 * Test double for OpenRegister's ObjectCreatingEvent.
-	 */
-	class ObjectCreatingEvent extends Event {
-		private array $errors = [];
-		private bool $stopped = false;
-
-		public function __construct(
-			private object $object,
-		) {
-		}
-
-		public function getObject(): object {
-			return $this->object;
-		}
-
-		public function stopPropagation(): void {
-			$this->stopped = true;
-		}
-
-		public function isPropagationStopped(): bool {
-			return $this->stopped;
-		}
-
-		public function setErrors(array $errors): void {
-			$this->errors = $errors;
-		}
-
-		public function getErrors(): array {
-			return $this->errors;
-		}
-	}
-
-	/**
-	 * Test double for OpenRegister's ObjectUpdatingEvent.
-	 */
-	class ObjectUpdatingEvent extends Event {
-		private array $errors = [];
-		private bool $stopped = false;
-
-		public function __construct(
-			private object $newObject,
-			private ?object $oldObject = null,
-		) {
-		}
-
-		public function getNewObject(): object {
-			return $this->newObject;
-		}
-
-		public function getOldObject(): ?object {
-			return $this->oldObject;
-		}
-
-		public function stopPropagation(): void {
-			$this->stopped = true;
-		}
-
-		public function isPropagationStopped(): bool {
-			return $this->stopped;
-		}
-
-		public function setErrors(array $errors): void {
-			$this->errors = $errors;
-		}
-
-		public function getErrors(): array {
-			return $this->errors;
-		}
-	}
-}//end if
-
 namespace OCA\Larpinq\Tests\Unit\Listener;
 
 use OCA\Larpinq\Listener\CharacterRequirementListener;
 use OCA\Larpinq\Service\CharacterService;
+use OCA\Larpinq\Service\CustomFieldGuard;
+use OCA\Larpinq\Service\CustomFieldValidator;
 use OCA\Larpinq\Service\EffectApplier;
 use OCA\Larpinq\Service\IdListNormaliser;
 use OCA\Larpinq\Service\RegisterObjectFetcher;
 use OCA\Larpinq\Service\SkillRequirementChecker;
 use OCA\Larpinq\Service\SkillRequirementService;
+use OCA\OpenRegister\Db\ObjectEntity;
 use OCA\OpenRegister\Event\ObjectCreatingEvent;
 use OCA\OpenRegister\Event\ObjectUpdatingEvent;
 use OCP\IAppConfig;
@@ -111,57 +37,26 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
 /**
- * Object-entity fake matching the REAL SHAPE of `OCA\OpenRegister\Db\ObjectEntity`.
+ * An OpenRegister object entity with a schema and a payload.
  *
- * ⚠️ THE SHAPE IS THE POINT — DO NOT DECLARE `getSchema()` HERE.
- * The real `ObjectEntity` extends `OCP\AppFramework\Db\Entity` and declares
- * exactly ONE accessor of its own, `getObject()`. Everything else —
- * `getSchema()` included — is resolved at runtime by `Entity::__call()`.
- * Measured on a live instance (NC 34, openregister 0.2.17-unstable.36):
- *
- *     method_exists($entity, 'getSchema')  -> false      (magic)
- *     is_callable([$entity, 'getSchema'])  -> true
- *     method_exists($entity, 'getObject')  -> true       (declared — control)
- *
- * This fake previously DECLARED `getSchema()`. That single divergence made
- * `method_exists()` answer true in the suite and false in production, so every
- * test below passed while `isCharacterSchema()` returned false for every real
- * character write and the app enforced nothing (larpinq#308). A fake shaped
- * to what the caller CALLS, rather than to what the collaborator IS, cannot
- * fail for the reason the suite exists.
+ * Extends the ObjectEntity stub (tests/stubs/openregister/Db/ObjectEntity.php),
+ * which carries the real class's properties and accessors, so the listener
+ * meets the same `getSchema()` / `getObject()` it meets in production and the
+ * events it receives are the real OpenRegister event classes. The earlier
+ * hand-made fake declared its own event classes and entity shape; a fake shaped
+ * to what the caller calls, rather than to what the collaborator is, cannot fail
+ * for the reason the suite exists (larpinq#308).
  */
-class FakeObjectEntity {
-	public function __construct(
-		private string $schema,
-		private array $data,
-	) {
-	}
-
+class FakeObjectEntity extends ObjectEntity {
 	/**
-	 * Declared on the real ObjectEntity, so it stays declared here.
+	 * Build an entity for a schema id and payload.
 	 *
-	 * @return array<string,mixed> The object payload.
+	 * @param string $schema The schema id.
+	 * @param array<string,mixed> $data The object payload.
 	 */
-	public function getObject(): array {
-		return $this->data;
-	}
-
-	/**
-	 * Magic accessor, mirroring OCP\AppFramework\Db\Entity::__call().
-	 *
-	 * @param string $name Method name.
-	 * @param array<mixed> $args Ignored.
-	 *
-	 * @return mixed The property value.
-	 *
-	 * @throws \BadFunctionCallException When the property does not exist.
-	 */
-	public function __call(string $name, array $args): mixed {
-		if ($name === 'getSchema') {
-			return $this->schema;
-		}
-
-		throw new \BadFunctionCallException($name . ' does not exist');
+	public function __construct(string $schema, array $data) {
+		$this->schema = $schema;
+		$this->object = $data;
 	}
 }
 
@@ -171,59 +66,120 @@ class FakeObjectEntity {
 class CharacterRequirementListenerTest extends TestCase {
 	private const SCHEMA_ID = 'char-schema-uuid';
 
+	/** @var LoggerInterface The logger. */
 	private LoggerInterface $logger;
 
+	/**
+	 * Build the doubles and the subject every test starts from.
+	 *
+	 * @return void
+	 */
 	protected function setUp(): void {
 		parent::setUp();
-		$this->logger = $this->createMock(LoggerInterface::class);
+		$this->logger = $this->createMock(originalClassName: LoggerInterface::class);
 	}
 
+	/**
+	 * The listener over the real requirement engine, with these skills, field definitions and caller.
+	 *
+	 * @param array $skills The skills.
+	 * @param bool $isGm Whether the user is a game master.
+	 * @param ?string $uid The user id.
+	 * @param array $fields The fields.
+	 *
+	 * @return CharacterRequirementListener The listener over the real requirement engine, with these skills, field definitions and caller.
+	 */
 	private function makeListener(
 		array $skills = [],
 		bool $isGm = true,
 		?string $uid = 'gm1',
+		array $fields = [],
 	): CharacterRequirementListener {
-		$fetcher = $this->createMock(RegisterObjectFetcher::class);
-		$fetcher->method('getObjects')->willReturnCallback(function (string $type) use ($skills): array {
+		$fetcher = $this->createMock(originalClassName: RegisterObjectFetcher::class);
+		$fetcher->method('getObjects')->willReturnCallback(function (string $type) use ($skills, $fields): array {
 			return match ($type) {
 				'skill' => $skills,
+				'characterfield' => $fields,
 				default => [],
 			};
 		});
-		$engine = new CharacterService($fetcher, $this->logger, new EffectApplier());
+		$engine = new CharacterService(objectFetcher: $fetcher, logger: $this->logger, effectApplier: new EffectApplier());
 		$idList = new IdListNormaliser();
 		$requirementService = new SkillRequirementService(
-			$engine,
-			$fetcher,
-			$this->logger,
-			new SkillRequirementChecker($idList),
-			$idList
+			characterService: $engine,
+			objectFetcher: $fetcher,
+			logger: $this->logger,
+			checker: new SkillRequirementChecker(idList: $idList),
+			idList: $idList
 		);
 
-		$config = $this->createMock(IAppConfig::class);
+		$config = $this->createMock(originalClassName: IAppConfig::class);
 		$config->method('getValueString')->willReturn(self::SCHEMA_ID);
 
-		$userSession = $this->createMock(IUserSession::class);
+		$userSession = $this->createMock(originalClassName: IUserSession::class);
 		if ($uid !== null) {
-			$user = $this->createMock(IUser::class);
+			$user = $this->createMock(originalClassName: IUser::class);
 			$user->method('getUID')->willReturn($uid);
 			$userSession->method('getUser')->willReturn($user);
 		} else {
 			$userSession->method('getUser')->willReturn(null);
 		}
 
-		$groupManager = $this->createMock(IGroupManager::class);
+		$groupManager = $this->createMock(originalClassName: IGroupManager::class);
 		$groupManager->method('isInGroup')->willReturn($isGm);
 
 		return new CharacterRequirementListener(
-			$requirementService,
-			$config,
-			$userSession,
-			$groupManager,
-			$this->logger
+			requirementService: $requirementService,
+			config: $config,
+			userSession: $userSession,
+			groupManager: $groupManager,
+			logger: $this->logger,
+			customFields: new CustomFieldGuard(objectFetcher: $fetcher, validator: new CustomFieldValidator())
 		);
 	}
 
+	/**
+	 * Scenario "Text in a number field" (characters-custom-fields REQ-CCF-004):
+	 * the write is refused with an error on key `scars`.
+	 *
+	 * @return void
+	 */
+	public function testRejectsTextInANumberField(): void {
+		$fields = [['id' => 'f3', 'key' => 'scars', 'fieldType' => 'number', 'visibility' => 'owner']];
+		$listener = $this->makeListener(fields: $fields);
+		$old = new FakeObjectEntity(self::SCHEMA_ID, ['name' => 'Mirela', 'customFields' => ['scars' => 2]]);
+		$new = new FakeObjectEntity(self::SCHEMA_ID, ['name' => 'Mirela', 'customFields' => ['scars' => 'many']]);
+		$event = new ObjectUpdatingEvent($new, $old);
+
+		$listener->handle($event);
+
+		$this->assertTrue(condition: $event->isPropagationStopped());
+		$this->assertSame(expected: 'custom_field_invalid', actual: $event->getErrors()['code']);
+		$this->assertSame(expected: ['scars'], actual: array_keys($event->getErrors()['fields']));
+	}
+
+	/**
+	 * A valid value passes, and does not trigger the skill checks.
+	 *
+	 * @return void
+	 */
+	public function testAllowsAValidCustomField(): void {
+		$fields = [['id' => 'f3', 'key' => 'scars', 'fieldType' => 'number', 'visibility' => 'owner']];
+		$listener = $this->makeListener(fields: $fields);
+		$old = new FakeObjectEntity(self::SCHEMA_ID, ['name' => 'Mirela', 'customFields' => ['scars' => 2]]);
+		$new = new FakeObjectEntity(self::SCHEMA_ID, ['name' => 'Mirela', 'customFields' => ['scars' => 3]]);
+		$event = new ObjectUpdatingEvent($new, $old);
+
+		$listener->handle($event);
+
+		$this->assertFalse(condition: $event->isPropagationStopped());
+	}
+
+	/**
+	 * Rejects create with unmet prerequisite.
+	 *
+	 * @return void
+	 */
 	public function testRejectsCreateWithUnmetPrerequisite(): void {
 		$skills = [
 			['id' => 'basic', 'name' => 'Basic'],
@@ -235,10 +191,15 @@ class CharacterRequirementListenerTest extends TestCase {
 
 		$listener->handle($event);
 
-		$this->assertTrue($event->isPropagationStopped());
-		$this->assertSame('requirements_not_met', $event->getErrors()['code']);
+		$this->assertTrue(condition: $event->isPropagationStopped());
+		$this->assertSame(expected: 'requirements_not_met', actual: $event->getErrors()['code']);
 	}
 
+	/**
+	 * Allows create when prerequisite met.
+	 *
+	 * @return void
+	 */
 	public function testAllowsCreateWhenPrerequisiteMet(): void {
 		$skills = [
 			['id' => 'basic', 'name' => 'Basic'],
@@ -250,9 +211,14 @@ class CharacterRequirementListenerTest extends TestCase {
 
 		$listener->handle($event);
 
-		$this->assertFalse($event->isPropagationStopped());
+		$this->assertFalse(condition: $event->isPropagationStopped());
 	}
 
+	/**
+	 * Ignores non character schema.
+	 *
+	 * @return void
+	 */
 	public function testIgnoresNonCharacterSchema(): void {
 		$listener = $this->makeListener(skills: []);
 		$entity = new FakeObjectEntity('other-schema', ['skills' => ['adv']]);
@@ -260,9 +226,14 @@ class CharacterRequirementListenerTest extends TestCase {
 
 		$listener->handle($event);
 
-		$this->assertFalse($event->isPropagationStopped());
+		$this->assertFalse(condition: $event->isPropagationStopped());
 	}
 
+	/**
+	 * Diff scoped unrelated edit passes.
+	 *
+	 * @return void
+	 */
 	public function testDiffScopedUnrelatedEditPasses(): void {
 		// Pre-existing unmet state, but the write only changes the name.
 		$skills = [
@@ -276,9 +247,14 @@ class CharacterRequirementListenerTest extends TestCase {
 
 		$listener->handle($event);
 
-		$this->assertFalse($event->isPropagationStopped());
+		$this->assertFalse(condition: $event->isPropagationStopped());
 	}
 
+	/**
+	 * Override accepted from GM.
+	 *
+	 * @return void
+	 */
 	public function testOverrideAcceptedFromGm(): void {
 		$skills = [
 			['id' => 'basic', 'name' => 'Basic'],
@@ -293,9 +269,14 @@ class CharacterRequirementListenerTest extends TestCase {
 
 		$listener->handle($event);
 
-		$this->assertFalse($event->isPropagationStopped());
+		$this->assertFalse(condition: $event->isPropagationStopped());
 	}
 
+	/**
+	 * Override rejected from non GM.
+	 *
+	 * @return void
+	 */
 	public function testOverrideRejectedFromNonGm(): void {
 		$skills = [['id' => 'adv', 'name' => 'Advanced']];
 		$listener = $this->makeListener(skills: $skills, isGm: false, uid: 'player1');
@@ -307,10 +288,15 @@ class CharacterRequirementListenerTest extends TestCase {
 
 		$listener->handle($event);
 
-		$this->assertTrue($event->isPropagationStopped());
-		$this->assertSame('override_forbidden', $event->getErrors()['requirementOverrides'][0]['code']);
+		$this->assertTrue(condition: $event->isPropagationStopped());
+		$this->assertSame(expected: 'override_forbidden', actual: $event->getErrors()['requirementOverrides'][0]['code']);
 	}
 
+	/**
+	 * Empty reason override rejected.
+	 *
+	 * @return void
+	 */
 	public function testEmptyReasonOverrideRejected(): void {
 		$skills = [['id' => 'adv', 'name' => 'Advanced']];
 		$listener = $this->makeListener(skills: $skills, isGm: true, uid: 'gm1');
@@ -322,7 +308,7 @@ class CharacterRequirementListenerTest extends TestCase {
 
 		$listener->handle($event);
 
-		$this->assertTrue($event->isPropagationStopped());
-		$this->assertSame('override_reason_required', $event->getErrors()['requirementOverrides'][0]['code']);
+		$this->assertTrue(condition: $event->isPropagationStopped());
+		$this->assertSame(expected: 'override_reason_required', actual: $event->getErrors()['requirementOverrides'][0]['code']);
 	}
 }

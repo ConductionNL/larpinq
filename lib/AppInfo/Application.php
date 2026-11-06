@@ -25,6 +25,7 @@ namespace OCA\Larpinq\AppInfo;
 
 use OCA\Larpinq\Listener\CharacterRequirementListener;
 use OCA\Larpinq\Listener\DeepLinkRegistrationListener;
+use OCA\Larpinq\Support\AppIdentity;
 use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
@@ -46,7 +47,15 @@ class Application extends App implements IBootstrap {
 	/**
 	 * Application ID
 	 */
-	public const APP_ID = 'larpinq';
+	public const APP_ID = AppIdentity::APP_ID;
+
+	/**
+	 * The Nextcloud group of game masters (ADR-002 decision 1). The register's
+	 * authorization rules name the same group.
+	 *
+	 * @spec openspec/specs/setting-management/spec.md
+	 */
+	public const GM_GROUP = AppIdentity::GM_GROUP;
 
 	/**
 	 * Constructor for the application
@@ -84,7 +93,7 @@ class Application extends App implements IBootstrap {
 		//
 		// Nextcloud registers apps in sorted order: OC_App::getEnabledApps()
 		// does sort($apps) and Coordinator::registerApps() walks THAT sorted
-		// list calling OC_App::registerAutoloading($appId, $path) and then
+		// list registering each app's autoloader and then calling
 		// $app->register() for one app at a time. `larpinq` sorts before
 		// `openregister`, so OCA\OpenRegister\ is NOT autoloadable at this
 		// point on a perfectly healthy instance with OpenRegister enabled.
@@ -96,7 +105,8 @@ class Application extends App implements IBootstrap {
 		// character writes. The app stays enabled and keeps serving, and
 		// nothing reports the gap.
 		//
-		// registerAutoloading() touches only the autoloader and is idempotent.
+		// The prelude touches only the autoloader, uses public API only
+		// (Nextcloud 35 removed OC_App::registerAutoloading()) and is idempotent.
 		// IAppManager::loadApp() would NOT be correct: it marks OpenRegister
 		// loaded and calls Coordinator::bootApp(), booting it before its own
 		// register() has run. The prelude swallows every Throwable rather than
@@ -132,6 +142,8 @@ class Application extends App implements IBootstrap {
 				CharacterRequirementListener::class
 			);
 		}
+
+		(new ObjectListenerRegistrar())->register(context: $context);
 	}//end register()
 
 	/**
@@ -191,6 +203,23 @@ class Application extends App implements IBootstrap {
 					);
 				}
 			);
+		}
+
+		// Routes::standard() also supplies /api/store/items. larpinq ships no
+		// store controller, so the route resolves only through OpenRegister's
+		// GenericStoreController aliased under larpinq's class name.
+		if (class_exists('OCA\OpenRegister\AppHost\Bootstrap') === true) {
+			$bootstrap = 'OCA\OpenRegister\AppHost\Bootstrap';
+			try {
+				$bootstrap::aliasStoreController(
+					context: $context,
+					appId: self::APP_ID,
+					controllerNs: 'OCA\Larpinq\Controller'
+				);
+			} catch (\Throwable) {
+				// An OpenRegister older than the helper leaves the store route
+				// unbound; every other registration still runs.
+			}
 		}
 	}//end registerAppHostGenerics()
 

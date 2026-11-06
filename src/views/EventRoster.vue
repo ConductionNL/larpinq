@@ -79,6 +79,8 @@ import { generateUrl } from '@nextcloud/router'
 // @nextcloud/vue v9 ships an `exports` map; the v8 `dist/Components/*.js`
 // deep paths are no longer exported and throw ERR_PACKAGE_PATH_NOT_EXPORTED.
 import NcButton from '@nextcloud/vue/components/NcButton'
+import { objectTabSource } from '../mixins/objectTab.js'
+import { ocsHeaders, ocsJsonHeaders } from '../services/requestHeaders.js'
 
 /**
  * Human-readable label + badge variant per attendance status.
@@ -98,22 +100,9 @@ export default {
 		NcButton,
 	},
 
-	inject: {
-		cnObjectContext: { default: () => ({}) },
-	},
+	mixins: [objectTabSource],
 
 	props: {
-		/**
-		 * The event UUID. Falls back to the injected object context or the
-		 * route param when not passed explicitly by the manifest host.
-		 *
-		 * @spec openspec/specs/event-checkin-roster/spec.md
-		 */
-		objectId: {
-			type: String,
-			default: '',
-		},
-
 		/**
 		 * Manifest config passthrough (unused product logic).
 		 *
@@ -211,12 +200,7 @@ export default {
 					generateUrl('/apps/larpinq/api/events/{id}/roster', {
 						id: this.eventId,
 					}),
-					{
-						headers: {
-							requesttoken: OC.requestToken,
-							'OCS-APIREQUEST': 'true',
-						},
-					},
+					{ headers: ocsHeaders() },
 				)
 				if (!response.ok) {
 					throw new Error(`roster fetch failed: ${response.status}`)
@@ -258,11 +242,7 @@ export default {
 					}),
 					{
 						method: 'POST',
-						headers: {
-							'Content-Type': 'application/json',
-							requesttoken: OC.requestToken,
-							'OCS-APIREQUEST': 'true',
-						},
+						headers: ocsJsonHeaders(),
 						body: JSON.stringify({ character: row.character, status }),
 					},
 				)

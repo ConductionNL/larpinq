@@ -1,0 +1,488 @@
+<?php
+
+/**
+ * Copies a world's rules into a new world.
+ *
+ * @category  Service
+ * @package   OCA\Larpinq\Service
+ * @author    Ruben Linde <ruben@larpingapp.com>
+ * @copyright 2026 Conduction B.V.
+ * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ * @link      https://larpingapp.com
+ *
+ * @spec openspec/specs/setting-management/spec.md
+ */
+
+declare(strict_types=1);
+
+namespace OCA\Larpinq\Service;
+
+use Exception;
+use InvalidArgumentException;
+use LengthException;
+use OCP\AppFramework\Db\DoesNotExistException;
+use Throwable;
+
+/**
+ * A new world with a copy of every ability, effect, skill, item, condition
+ * and lore page of an existing world, every reference between them pointing
+ * at the copies (design D1, D2).
+ *
+ * The copy goes through RegisterObjectFetcher, so OpenRegister's RBAC and
+ * validation apply to every write. The new world is saved `archived` first
+ * and set `active` only when every object is copied; a failure deletes what
+ * was made and names what it could not remove.
+ *
+ * @category Service
+ * @package  OCA\Larpinq\Service
+ * @author   Ruben Linde <ruben@larpingapp.com>
+ * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ * @link     https://larpingapp.com
+ *
+ * @spec openspec/specs/setting-management/spec.md
+ */
+class WorldCopyService {
+
+	/**
+	 * The most rule objects one copy writes (design D3).
+	 *
+	 * @var integer
+	 */
+	public const MAX_OBJECTS = 2000;
+
+	/**
+	 * Rows per read.
+	 *
+	 * @var integer
+	 */
+	private const PAGE = 500;
+
+	/**
+	 * The copied types in dependency order, with their key in the counts.
+	 *
+	 * @var array<string, string>
+	 */
+	private const TYPES = [
+		'ability' => 'abilities',
+		'effect' => 'effects',
+		'skill' => 'skills',
+		'item' => 'items',
+		'condition' => 'conditions',
+		'lorepage' => 'lorePages',
+		'characterfield' => 'characterFields',
+	];
+
+	/**
+	 * Types whose schema may not be configured yet (before a register re-import).
+	 *
+	 * @var list<string>
+	 */
+	private const OPTIONAL_TYPES = ['lorepage', 'characterfield'];
+
+	/**
+	 * Reference fields per type, with the type they point at.
+	 *
+	 * @var array<string, array<string, string>>
+	 */
+	private const REFERENCES = [
+		'effect' => ['abilities' => 'ability'],
+		'skill' => [
+			'effects' => 'effect',
+			'requiredSkills' => 'skill',
+			'requiredStats' => 'ability',
+			'requiredConditions' => 'condition',
+			'requiredEffects' => 'effect',
+		],
+		'item' => ['effects' => 'effect'],
+		'condition' => ['effects' => 'effect'],
+		'lorepage' => ['parent' => 'lorepage'],
+	];
+
+	/**
+	 * Holder lists that start empty in the copy.
+	 *
+	 * @var array<string, list<string>>
+	 */
+	private const HOLDERS = [
+		'item' => ['characters'],
+		'condition' => ['characters'],
+	];
+
+	/**
+	 * Old-to-new ids per type for the copy in progress.
+	 *
+	 * @var array<string, array<string, string>>
+	 */
+	private array $idMap = [];
+
+	/**
+	 * Every object the copy in progress created: [type, uuid], in order.
+	 *
+	 * @var list<array{0: string, 1: string}>
+	 */
+	private array $created = [];
+
+	/**
+	 * What the copy in progress is writing, for the failure message.
+	 *
+	 * @var string
+	 */
+	private string $current = 'the world';
+
+	/**
+	 * Constructor.
+	 *
+	 * @param RegisterObjectFetcher $objectFetcher OpenRegister reads and writes.
+	 * @param IdListNormaliser $idList Reads a reference list in either shape.
+	 *
+	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
+	 */
+	public function __construct(
+		private readonly RegisterObjectFetcher $objectFetcher,
+		private readonly IdListNormaliser $idList,
+	) {
+	}//end __construct()
+
+	/**
+	 * What a copy of the world would create, without writing anything.
+	 *
+	 * @param string $worldId The world UUID.
+	 *
+	 * @return array{world: array<string, mixed>, counts: array<string, int>} The world and counts.
+	 *
+	 * @throws DoesNotExistException When the world does not exist.
+	 * @throws LengthException When the world holds more than MAX_OBJECTS rule objects.
+	 *
+	 * @spec openspec/specs/setting-management/spec.md
+	 */
+	public function preview(string $worldId): array {
+		$world = $this->readWorld(worldId: $worldId);
+		return ['world' => $world, 'counts' => $this->counts(objects: $this->readRules(worldId: $worldId))];
+	}//end preview()
+
+	/**
+	 * Copy the world under a new name.
+	 *
+	 * @param string $worldId The world UUID.
+	 * @param string $name The new world's name.
+	 *
+	 * @return array{world: array<string, mixed>, counts: array<string, int>} The new world and counts.
+	 *
+	 * @throws InvalidArgumentException When the name is empty or too long.
+	 * @throws DoesNotExistException When the world does not exist.
+	 * @throws LengthException When the world holds more than MAX_OBJECTS rule objects.
+	 * @throws WorldCopyFailedException When a write fails; the copy is rolled back.
+	 *
+	 * @spec openspec/specs/setting-management/spec.md
+	 */
+	public function copy(string $worldId, string $name): array {
+		$name = trim($name);
+		if ($name === '' || mb_strlen($name) > 255) {
+			throw new InvalidArgumentException('A world needs a name of 1 to 255 characters');
+		}
+
+		$world = $this->readWorld(worldId: $worldId);
+		$objects = $this->readRules(worldId: $worldId);
+
+		$this->idMap = [];
+		$this->created = [];
+		$this->current = 'the world';
+		try {
+			$payload = $this->payload(type: 'setting', source: $world);
+			$payload['name'] = $name;
+			$payload['status'] = 'archived';
+			$newWorld = $this->create(type: 'setting', payload: $payload);
+			$newId = (string)$newWorld['id'];
+
+			$this->writeDeferred(deferred: $this->copyRules(objects: $objects, newId: $newId));
+
+			$this->current = 'the world';
+			$payload['status'] = 'active';
+			$newWorld = $this->objectFetcher->saveObject(objectType: 'setting', data: $payload, uuid: $newId);
+		} catch (Throwable $e) {
+			throw new WorldCopyFailedException(
+				message: 'Copying ' . $this->current . ' failed: ' . $e->getMessage(),
+				leftovers: $this->rollback(),
+				previous: $e
+			);
+		}//end try
+
+		return ['world' => $newWorld, 'counts' => $this->counts(objects: $objects)];
+	}//end copy()
+
+	/**
+	 * Create the copy of every rule object, without the references to objects
+	 * that are not copied yet.
+	 *
+	 * @param array<string, list<array<string, mixed>>> $objects The world's rule objects per type.
+	 * @param string $newId The new world's UUID.
+	 *
+	 * @return list<array{0: string, 1: string, 2: array<string, mixed>, 3: array<string, mixed>}> The copies
+	 *         still to complete: type, new UUID, original and full payload.
+	 */
+	private function copyRules(array $objects, string $newId): array {
+		$deferred = [];
+		foreach ($objects as $type => $rows) {
+			foreach ($rows as $row) {
+				$this->current = $type . ' "' . $this->nameOf(row: $row) . '"';
+				$full = $this->payload(type: $type, source: $row);
+				$full['setting'] = $newId;
+				$later = $this->laterReferences(type: $type, payload: $full);
+				$saved = $this->create(type: $type, payload: array_diff_key($full, $later));
+				$this->idMap[$type][(string)$row['id']] = (string)$saved['id'];
+				if ($later !== []) {
+					$deferred[] = [$type, (string)$saved['id'], $row, $full];
+				}
+			}
+		}
+
+		return $deferred;
+	}//end copyRules()
+
+	/**
+	 * Complete the copies that refer to objects copied after them.
+	 *
+	 * @param list<array{0: string, 1: string, 2: array<string, mixed>, 3: array<string, mixed>}> $deferred The copies
+	 *        to complete: type, new UUID, original and full payload.
+	 *
+	 * @return void
+	 */
+	private function writeDeferred(array $deferred): void {
+		foreach ($deferred as [$type, $uuid, $row, $full]) {
+			$this->current = $type . ' "' . $this->nameOf(row: $row) . '"';
+			$this->objectFetcher->saveObject(objectType: $type, data: $this->remapAll(type: $type, payload: $full), uuid: $uuid);
+		}
+	}//end writeDeferred()
+
+	/**
+	 * Read the world, or fail when it does not exist.
+	 *
+	 * @param string $worldId The world UUID.
+	 *
+	 * @return array<string, mixed> The world.
+	 *
+	 * @throws DoesNotExistException When the world does not exist.
+	 */
+	private function readWorld(string $worldId): array {
+		$world = $this->objectFetcher->getObject(objectType: 'setting', id: $worldId);
+		if (isset($world['id']) === false) {
+			throw new DoesNotExistException('World not found');
+		}
+
+		return $world;
+	}//end readWorld()
+
+	/**
+	 * Read every rule object of the world, per type, within the cap.
+	 *
+	 * @param string $worldId The world UUID.
+	 *
+	 * @return array<string, list<array<string, mixed>>> The objects per type.
+	 *
+	 * @throws LengthException When the world holds more than MAX_OBJECTS rule objects.
+	 */
+	private function readRules(string $worldId): array {
+		$objects = [];
+		$total = 0;
+		foreach (array_keys(self::TYPES) as $type) {
+			$objects[$type] = $this->readType(type: $type, query: ['filters' => ['setting' => $worldId], 'budget' => self::MAX_OBJECTS - $total + 1]);
+			$total += count($objects[$type]);
+			if ($total > self::MAX_OBJECTS) {
+				throw new LengthException('A world with more than ' . self::MAX_OBJECTS . ' rule objects cannot be copied in one go');
+			}
+		}
+
+		return $objects;
+	}//end readRules()
+
+	/**
+	 * Read one type's objects of the world, paged, up to a budget.
+	 *
+	 * @param string                                              $type  The type.
+	 * @param array{filters: array<string, string>, budget: int} $query The world filter and the most rows to read.
+	 *
+	 * @return list<array<string, mixed>> The objects.
+	 */
+	private function readType(string $type, array $query): array {
+		$rows = [];
+		$offset = 0;
+		do {
+			$page = $this->readPage(type: $type, query: $query + ['offset' => $offset]);
+			if ($page === null) {
+				return [];
+			}
+
+			$rows = array_merge($rows, array_values(array_filter($page, static fn (mixed $row): bool => isset($row['id']))));
+			$offset += self::PAGE;
+			$pageSize = count($page);
+			$rowCount = count($rows);
+		} while ($pageSize === self::PAGE && $rowCount < $query['budget']);
+
+		return $rows;
+	}//end readType()
+
+	/**
+	 * One page of a type's objects; null when an optional type has no schema configured.
+	 *
+	 * @param string                                                          $type  The type.
+	 * @param array{filters: array<string, string>, budget: int, offset: int} $query The world filter and the page offset.
+	 *
+	 * @return array<int, array<string, mixed>>|null The page, or null for an unconfigured optional type.
+	 *
+	 * @throws Exception When the read fails for another reason.
+	 */
+	private function readPage(string $type, array $query): ?array {
+		try {
+			return $this->objectFetcher->getObjects(objectType: $type, limit: self::PAGE, offset: $query['offset'], filters: $query['filters']);
+		} catch (Exception $e) {
+			if (in_array($type, self::OPTIONAL_TYPES, true) === true && str_contains($e->getMessage(), 'not configured') === true) {
+				return null;
+			}
+
+			throw $e;
+		}
+	}//end readPage()
+
+	/**
+	 * The object's data as a payload for its copy: no id, no metadata, no
+	 * nulls, empty holders, and references remapped as far as the id map
+	 * reaches. The caller sets the new world on a rule object.
+	 *
+	 * @param string $type The type.
+	 * @param array<string, mixed> $source The original object.
+	 *
+	 * @return array<string, mixed> The payload.
+	 */
+	private function payload(string $type, array $source): array {
+		$payload = [];
+		foreach ($source as $key => $value) {
+			$key = (string)$key;
+			$skip = $value === null || in_array($key, ['id', 'uuid'], true) === true || in_array(substr($key, 0, 1), ['@', '_'], true) === true;
+			if ($skip === true) {
+				continue;
+			}
+
+			$payload[$key] = $value;
+		}
+
+		foreach (self::HOLDERS[$type] ?? [] as $field) {
+			$payload[$field] = [];
+		}
+
+		return $this->remapAll(type: $type, payload: $payload);
+	}//end payload()
+
+	/**
+	 * The reference fields that point at objects not all copied yet (the same
+	 * type or a later one), which the first save leaves out.
+	 *
+	 * @param string $type The type.
+	 * @param array<string, mixed> $payload The full payload.
+	 *
+	 * @return array<string, mixed> The deferred fields and their values.
+	 */
+	private function laterReferences(string $type, array $payload): array {
+		$order = array_keys(self::TYPES);
+		$own = (int)array_search($type, $order, true);
+		$later = [];
+		foreach (self::REFERENCES[$type] ?? [] as $field => $target) {
+			$empty = in_array($payload[$field] ?? null, [null, [], ''], true);
+			if ($empty === false && (int)array_search($target, $order, true) >= $own) {
+				$later[$field] = $payload[$field];
+			}
+		}
+
+		return $later;
+	}//end laterReferences()
+
+	/**
+	 * Point every reference at the copy where one exists; a reference outside
+	 * the world stays as it is.
+	 *
+	 * @param string $type The type.
+	 * @param array<string, mixed> $payload The payload.
+	 *
+	 * @return array<string, mixed> The remapped payload.
+	 */
+	private function remapAll(string $type, array $payload): array {
+		foreach (self::REFERENCES[$type] ?? [] as $field => $target) {
+			if (isset($payload[$field]) === false) {
+				continue;
+			}
+
+			$map = $this->idMap[$target] ?? [];
+			$scalar = is_array($payload[$field]) === false;
+			$ids = array_map(static fn (string $id): string => $map[$id] ?? $id, $this->idList->normalise(value: $payload[$field]));
+			$payload[$field] = $ids;
+			if ($scalar === true) {
+				// A single reference (a lore page's parent) stays a single id.
+				$payload[$field] = $ids[0] ?? null;
+				if ($payload[$field] === null) {
+					unset($payload[$field]);
+				}
+			}
+		}
+
+		return $payload;
+	}//end remapAll()
+
+	/**
+	 * Save a new object and remember it for a rollback.
+	 *
+	 * @param string $type The type.
+	 * @param array<string, mixed> $payload The payload.
+	 *
+	 * @return array<string, mixed> The saved object.
+	 */
+	private function create(string $type, array $payload): array {
+		$saved = $this->objectFetcher->saveObject(objectType: $type, data: $payload);
+		$this->created[] = [$type, (string)($saved['id'] ?? '')];
+		return $saved;
+	}//end create()
+
+	/**
+	 * Delete what the failed copy created, newest first.
+	 *
+	 * @return list<string> The ids that could not be removed.
+	 */
+	private function rollback(): array {
+		$leftovers = [];
+		foreach (array_reverse($this->created) as [$type, $uuid]) {
+			try {
+				$this->objectFetcher->deleteObject(objectType: $type, uuid: $uuid);
+			} catch (Throwable $e) {
+				$leftovers[] = $uuid;
+			}
+		}
+
+		$this->created = [];
+		return array_reverse($leftovers);
+	}//end rollback()
+
+	/**
+	 * The counts per type.
+	 *
+	 * @param array<string, list<array<string, mixed>>> $objects The objects per type.
+	 *
+	 * @return array<string, int> The counts.
+	 */
+	private function counts(array $objects): array {
+		$counts = [];
+		foreach (self::TYPES as $type => $key) {
+			$counts[$key] = count($objects[$type] ?? []);
+		}
+
+		return $counts;
+	}//end counts()
+
+	/**
+	 * A readable name for an error message.
+	 *
+	 * @param array<string, mixed> $row The object.
+	 *
+	 * @return string The name.
+	 */
+	private function nameOf(array $row): string {
+		return (string)($row['name'] ?? $row['title'] ?? $row['id'] ?? '');
+	}//end nameOf()
+}//end class

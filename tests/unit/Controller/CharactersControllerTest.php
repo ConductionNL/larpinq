@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace OCA\Larpinq\Tests\Unit\Controller;
 
 use Exception;
+use OCA\Larpinq\Controller\CallerAccess;
 use OCA\Larpinq\Controller\CharactersController;
 use OCA\Larpinq\Service\DocuDeskPdfRenderer;
 use OCA\Larpinq\Service\RegisterObjectFetcher;
@@ -36,13 +37,21 @@ use Psr\Log\LoggerInterface;
  */
 class CharactersControllerTest extends TestCase {
 
+	/** @var CharactersController The controller. */
 	private CharactersController $controller;
+	/** @var RegisterObjectFetcher&MockObject The object fetcher. */
 	private RegisterObjectFetcher&MockObject $objectFetcher;
+	/** @var IAppManager&MockObject The app manager. */
 	private IAppManager&MockObject $appManager;
+	/** @var ContainerInterface&MockObject The container. */
 	private ContainerInterface&MockObject $container;
+	/** @var IUserSession&MockObject The user session. */
 	private IUserSession&MockObject $userSession;
+	/** @var IGroupManager&MockObject The group manager. */
 	private IGroupManager&MockObject $groupManager;
+	/** @var LoggerInterface&MockObject The logger. */
 	private LoggerInterface&MockObject $logger;
+	/** @var \OCA\Larpinq\Service\SkillRequirementService&MockObject The requirement service. */
 	private \OCA\Larpinq\Service\SkillRequirementService&MockObject $requirementService;
 
 	/**
@@ -52,91 +61,110 @@ class CharactersControllerTest extends TestCase {
 	 * identical end-to-end pipeline — appManager -> container -> TemplateService
 	 * -> PdfService — so these tests remain a behaviour-preservation check across
 	 * the consolidation, not an assertion about the new internal shape.
+	 *
+	 * @var DocuDeskPdfRenderer
 	 */
 	private DocuDeskPdfRenderer $pdfRenderer;
 
+	/**
+	 * Build the doubles and the subject every test starts from.
+	 *
+	 * @return void
+	 */
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->objectFetcher = $this->createMock(RegisterObjectFetcher::class);
-		$this->appManager = $this->createMock(IAppManager::class);
-		$this->container = $this->createMock(ContainerInterface::class);
-		$this->userSession = $this->createMock(IUserSession::class);
-		$this->groupManager = $this->createMock(IGroupManager::class);
-		$this->logger = $this->createMock(LoggerInterface::class);
-		$this->requirementService = $this->createMock(\OCA\Larpinq\Service\SkillRequirementService::class);
+		$this->objectFetcher = $this->createMock(originalClassName: RegisterObjectFetcher::class);
+		$this->appManager = $this->createMock(originalClassName: IAppManager::class);
+		$this->container = $this->createMock(originalClassName: ContainerInterface::class);
+		$this->userSession = $this->createMock(originalClassName: IUserSession::class);
+		$this->groupManager = $this->createMock(originalClassName: IGroupManager::class);
+		$this->logger = $this->createMock(originalClassName: LoggerInterface::class);
+		$this->requirementService = $this->createMock(originalClassName: \OCA\Larpinq\Service\SkillRequirementService::class);
 
 		$this->pdfRenderer = new DocuDeskPdfRenderer(
-			$this->appManager,
-			$this->container,
-			$this->logger,
+			appManager: $this->appManager,
+			container: $this->container,
+			logger: $this->logger,
 		);
 
 		// Default: authenticated admin user.
-		$mockUser = $this->createMock(IUser::class);
+		$mockUser = $this->createMock(originalClassName: IUser::class);
 		$mockUser->method('getUID')->willReturn('admin');
 		$this->userSession->method('getUser')->willReturn($mockUser);
 		$this->groupManager->method('isAdmin')->with('admin')->willReturn(true);
 
 		$this->controller = new CharactersController(
-			'larpinq',
-			$this->createMock(IRequest::class),
-			$this->objectFetcher,
-			$this->pdfRenderer,
-			$this->userSession,
-			$this->groupManager,
-			$this->requirementService,
+			appName: 'larpinq',
+			request: $this->createMock(originalClassName: IRequest::class),
+			objectFetcher: $this->objectFetcher,
+			pdfRenderer: $this->pdfRenderer,
+			callerAccess: new CallerAccess(userSession: $this->userSession, groupManager: $this->groupManager),
+			requirementService: $this->requirementService,
 		);
 	}
 
+	/**
+	 * Download PDF returns401 when not authenticated.
+	 *
+	 * @return void
+	 */
 	public function testDownloadPdfReturns401WhenNotAuthenticated(): void {
-		$unauthSession = $this->createMock(IUserSession::class);
+		$unauthSession = $this->createMock(originalClassName: IUserSession::class);
 		$unauthSession->method('getUser')->willReturn(null);
 
 		$controller = new CharactersController(
-			'larpinq',
-			$this->createMock(IRequest::class),
-			$this->objectFetcher,
-			$this->pdfRenderer,
-			$unauthSession,
-			$this->groupManager,
-			$this->requirementService,
+			appName: 'larpinq',
+			request: $this->createMock(originalClassName: IRequest::class),
+			objectFetcher: $this->objectFetcher,
+			pdfRenderer: $this->pdfRenderer,
+			callerAccess: new CallerAccess(userSession: $unauthSession, groupManager: $this->groupManager),
+			requirementService: $this->requirementService,
 		);
 
 		$result = $controller->downloadPdf('char-1', 'tpl-1');
 
-		self::assertInstanceOf(JSONResponse::class, $result);
-		self::assertSame(401, $result->getStatus());
-		self::assertArrayHasKey('error', $result->getData());
+		self::assertInstanceOf(expected: JSONResponse::class, actual: $result);
+		self::assertSame(expected: 401, actual: $result->getStatus());
+		self::assertArrayHasKey(key: 'error', array: $result->getData());
 	}
 
+	/**
+	 * Download PDF returns403 for non admin user.
+	 *
+	 * @return void
+	 */
 	public function testDownloadPdfReturns403ForNonAdminUser(): void {
-		$nonAdminUser = $this->createMock(IUser::class);
+		$nonAdminUser = $this->createMock(originalClassName: IUser::class);
 		$nonAdminUser->method('getUID')->willReturn('player1');
 
-		$nonAdminSession = $this->createMock(IUserSession::class);
+		$nonAdminSession = $this->createMock(originalClassName: IUserSession::class);
 		$nonAdminSession->method('getUser')->willReturn($nonAdminUser);
 
-		$nonAdminGroupManager = $this->createMock(IGroupManager::class);
+		$nonAdminGroupManager = $this->createMock(originalClassName: IGroupManager::class);
 		$nonAdminGroupManager->method('isAdmin')->with('player1')->willReturn(false);
 
 		$controller = new CharactersController(
-			'larpinq',
-			$this->createMock(IRequest::class),
-			$this->objectFetcher,
-			$this->pdfRenderer,
-			$nonAdminSession,
-			$nonAdminGroupManager,
-			$this->requirementService,
+			appName: 'larpinq',
+			request: $this->createMock(originalClassName: IRequest::class),
+			objectFetcher: $this->objectFetcher,
+			pdfRenderer: $this->pdfRenderer,
+			callerAccess: new CallerAccess(userSession: $nonAdminSession, groupManager: $nonAdminGroupManager),
+			requirementService: $this->requirementService,
 		);
 
 		$result = $controller->downloadPdf('char-1', 'tpl-1');
 
-		self::assertInstanceOf(JSONResponse::class, $result);
-		self::assertSame(403, $result->getStatus());
-		self::assertArrayHasKey('error', $result->getData());
+		self::assertInstanceOf(expected: JSONResponse::class, actual: $result);
+		self::assertSame(expected: 403, actual: $result->getStatus());
+		self::assertArrayHasKey(key: 'error', array: $result->getData());
 	}
 
+	/**
+	 * Download PDF returns424 when docu desk not installed.
+	 *
+	 * @return void
+	 */
 	public function testDownloadPdfReturns424WhenDocuDeskNotInstalled(): void {
 		$this->appManager->method('isInstalled')->willReturnCallback(
 			// An instance running EITHER name must resolve. Pinning 'docudesk'
@@ -144,7 +172,7 @@ class CharactersControllerTest extends TestCase {
 			static fn (string $id): bool => in_array($id, ['filinq', 'docudesk'], true)
 		);
 		$this->appManager->method('isEnabledForUser')
-			->with(self::logicalOr('filinq', 'docudesk'))
+			->with(self::callback(callback: static fn (string $app): bool => in_array($app, ['filinq', 'docudesk'], true)))
 			->willReturn(false);
 
 		// The template MUST be a well-formed UUID here. downloadPdf() validates
@@ -155,9 +183,9 @@ class CharactersControllerTest extends TestCase {
 		// being reached — two different failure modes conflated into one.
 		$result = $this->controller->downloadPdf('char-1', '00000000-0000-4000-8000-000000000010');
 
-		self::assertInstanceOf(JSONResponse::class, $result);
-		self::assertSame(424, $result->getStatus());
-		self::assertStringContainsString('DocuDesk', $result->getData()['error']);
+		self::assertInstanceOf(expected: JSONResponse::class, actual: $result);
+		self::assertSame(expected: 424, actual: $result->getStatus());
+		self::assertStringContainsString(needle: 'DocuDesk', haystack: $result->getData()['error']);
 	}
 
 	/**
@@ -171,6 +199,8 @@ class CharactersControllerTest extends TestCase {
 	 * 400 contract unreachable and hiding the fact that a crafted template
 	 * value was never rejected on its own merits. Reverting the guard order in
 	 * CharactersController::downloadPdf() turns this test red (424 != 400).
+	 *
+	 * @return void
 	 */
 	public function testDownloadPdfReturns400ForNonUuidTemplateEvenWhenDocuDeskAbsent(): void {
 		$this->appManager->method('isInstalled')->willReturnCallback(
@@ -179,16 +209,21 @@ class CharactersControllerTest extends TestCase {
 			static fn (string $id): bool => in_array($id, ['filinq', 'docudesk'], true)
 		);
 		$this->appManager->method('isEnabledForUser')
-			->with(self::logicalOr('filinq', 'docudesk'))
+			->with(self::callback(callback: static fn (string $app): bool => in_array($app, ['filinq', 'docudesk'], true)))
 			->willReturn(false);
 
 		$result = $this->controller->downloadPdf('char-1', 'not-a-uuid');
 
-		self::assertInstanceOf(JSONResponse::class, $result);
-		self::assertSame(400, $result->getStatus());
-		self::assertStringContainsString('UUID', $result->getData()['error']);
+		self::assertInstanceOf(expected: JSONResponse::class, actual: $result);
+		self::assertSame(expected: 400, actual: $result->getStatus());
+		self::assertStringContainsString(needle: 'UUID', haystack: $result->getData()['error']);
 	}
 
+	/**
+	 * Download PDF returns404 when character not found.
+	 *
+	 * @return void
+	 */
 	public function testDownloadPdfReturns404WhenCharacterNotFound(): void {
 		// FleetAppId resolves the installed id BEFORE asking whether it is
 		// enabled, so both probes are stubbed. Stubbing only the second one
@@ -200,11 +235,16 @@ class CharactersControllerTest extends TestCase {
 
 		$result = $this->controller->downloadPdf('nonexistent', '00000000-0000-0000-0000-000000000001');
 
-		self::assertInstanceOf(JSONResponse::class, $result);
-		self::assertSame(404, $result->getStatus());
-		self::assertSame('Character not found', $result->getData()['error']);
+		self::assertInstanceOf(expected: JSONResponse::class, actual: $result);
+		self::assertSame(expected: 404, actual: $result->getStatus());
+		self::assertSame(expected: 'Character not found', actual: $result->getData()['error']);
 	}
 
+	/**
+	 * Download PDF returns404 when template not found.
+	 *
+	 * @return void
+	 */
 	public function testDownloadPdfReturns404WhenTemplateNotFound(): void {
 		// FleetAppId resolves the installed id BEFORE asking whether it is
 		// enabled, so both probes are stubbed. Stubbing only the second one
@@ -214,7 +254,7 @@ class CharactersControllerTest extends TestCase {
 		$this->objectFetcher->method('getObject')
 			->willReturn(['id' => 'char-1', 'name' => 'Fighter']);
 
-		$mockTemplateService = $this->getMockBuilder(\stdClass::class)
+		$mockTemplateService = $this->getMockBuilder(className: \stdClass::class)
 			->addMethods(['getTemplate'])
 			->getMock();
 		$mockTemplateService->method('getTemplate')
@@ -230,10 +270,15 @@ class CharactersControllerTest extends TestCase {
 
 		$result = $this->controller->downloadPdf('char-1', '00000000-0000-0000-0000-000000000002');
 
-		self::assertInstanceOf(JSONResponse::class, $result);
-		self::assertSame(404, $result->getStatus());
+		self::assertInstanceOf(expected: JSONResponse::class, actual: $result);
+		self::assertSame(expected: 404, actual: $result->getStatus());
 	}
 
+	/**
+	 * Download PDF returns data download response on success.
+	 *
+	 * @return void
+	 */
 	public function testDownloadPdfReturnsDataDownloadResponseOnSuccess(): void {
 		// FleetAppId resolves the installed id BEFORE asking whether it is
 		// enabled, so both probes are stubbed. Stubbing only the second one
@@ -243,7 +288,7 @@ class CharactersControllerTest extends TestCase {
 		$this->objectFetcher->method('getObject')
 			->willReturn(['id' => 'char-1', 'name' => 'Sir Lancelot']);
 
-		$mockTemplateService = $this->getMockBuilder(\stdClass::class)
+		$mockTemplateService = $this->getMockBuilder(className: \stdClass::class)
 			->addMethods(['getTemplate'])
 			->getMock();
 		$mockTemplateService->method('getTemplate')
@@ -253,7 +298,7 @@ class CharactersControllerTest extends TestCase {
 				'orientation' => 'P',
 			]);
 
-		$mockPdfService = $this->getMockBuilder(\stdClass::class)
+		$mockPdfService = $this->getMockBuilder(className: \stdClass::class)
 			->addMethods(['renderPdf'])
 			->getMock();
 		$mockPdfService->method('renderPdf')
@@ -272,9 +317,14 @@ class CharactersControllerTest extends TestCase {
 
 		$result = $this->controller->downloadPdf('char-1', '00000000-0000-0000-0000-000000000003');
 
-		self::assertInstanceOf(DataDownloadResponse::class, $result);
+		self::assertInstanceOf(expected: DataDownloadResponse::class, actual: $result);
 	}
 
+	/**
+	 * Download PDF returns500 on render failure with generic message.
+	 *
+	 * @return void
+	 */
 	public function testDownloadPdfReturns500OnRenderFailureWithGenericMessage(): void {
 		// FleetAppId resolves the installed id BEFORE asking whether it is
 		// enabled, so both probes are stubbed. Stubbing only the second one
@@ -284,13 +334,13 @@ class CharactersControllerTest extends TestCase {
 		$this->objectFetcher->method('getObject')
 			->willReturn(['id' => 'char-1', 'name' => 'Fighter']);
 
-		$mockTemplateService = $this->getMockBuilder(\stdClass::class)
+		$mockTemplateService = $this->getMockBuilder(className: \stdClass::class)
 			->addMethods(['getTemplate'])
 			->getMock();
 		$mockTemplateService->method('getTemplate')
 			->willReturn(['content' => '', 'format' => 'A4', 'orientation' => 'P']);
 
-		$mockPdfService = $this->getMockBuilder(\stdClass::class)
+		$mockPdfService = $this->getMockBuilder(className: \stdClass::class)
 			->addMethods(['renderPdf'])
 			->getMock();
 		$mockPdfService->method('renderPdf')
@@ -309,13 +359,18 @@ class CharactersControllerTest extends TestCase {
 
 		$result = $this->controller->downloadPdf('char-1', '00000000-0000-0000-0000-000000000004');
 
-		self::assertInstanceOf(JSONResponse::class, $result);
-		self::assertSame(500, $result->getStatus());
-		self::assertStringContainsString('PDF generation failed', $result->getData()['error']);
+		self::assertInstanceOf(expected: JSONResponse::class, actual: $result);
+		self::assertSame(expected: 500, actual: $result->getStatus());
+		self::assertStringContainsString(needle: 'PDF generation failed', haystack: $result->getData()['error']);
 		// The raw exception message (including internal paths) must NOT be leaked.
-		self::assertStringNotContainsString('/internal/path/file.php', $result->getData()['error']);
+		self::assertStringNotContainsString(needle: '/internal/path/file.php', haystack: $result->getData()['error']);
 	}
 
+	/**
+	 * Download PDF returns400 for non UUID template.
+	 *
+	 * @return void
+	 */
 	public function testDownloadPdfReturns400ForNonUuidTemplate(): void {
 		// FleetAppId resolves the installed id BEFORE asking whether it is
 		// enabled, so both probes are stubbed. Stubbing only the second one
@@ -325,11 +380,16 @@ class CharactersControllerTest extends TestCase {
 
 		$result = $this->controller->downloadPdf('char-1', '../../etc/passwd');
 
-		self::assertInstanceOf(JSONResponse::class, $result);
-		self::assertSame(400, $result->getStatus());
-		self::assertStringContainsString('UUID', $result->getData()['error']);
+		self::assertInstanceOf(expected: JSONResponse::class, actual: $result);
+		self::assertSame(expected: 400, actual: $result->getStatus());
+		self::assertStringContainsString(needle: 'UUID', haystack: $result->getData()['error']);
 	}
 
+	/**
+	 * Download PDF translates does not exist exception to404.
+	 *
+	 * @return void
+	 */
 	public function testDownloadPdfTranslatesDoesNotExistExceptionTo404(): void {
 		// FleetAppId resolves the installed id BEFORE asking whether it is
 		// enabled, so both probes are stubbed. Stubbing only the second one
@@ -341,11 +401,11 @@ class CharactersControllerTest extends TestCase {
 
 		$result = $this->controller->downloadPdf('char-1', '00000000-0000-0000-0000-00000000000a');
 
-		self::assertInstanceOf(JSONResponse::class, $result);
-		self::assertSame(404, $result->getStatus());
-		self::assertSame('Character not found', $result->getData()['error']);
+		self::assertInstanceOf(expected: JSONResponse::class, actual: $result);
+		self::assertSame(expected: 404, actual: $result->getStatus());
+		self::assertSame(expected: 'Character not found', actual: $result->getData()['error']);
 		// The OR exception message must not leak to the client.
-		self::assertStringNotContainsString('no such character', $result->getData()['error']);
+		self::assertStringNotContainsString(needle: 'no such character', haystack: $result->getData()['error']);
 	}
 
 	/**
@@ -353,6 +413,8 @@ class CharactersControllerTest extends TestCase {
 	 * template body, the render context and the page options passed to renderPdf,
 	 * plus the derived download filename — the details a refactor could silently
 	 * change while every status-code assertion stayed green.
+	 *
+	 * @return void
 	 */
 	public function testDownloadPdfPassesUnchangedContentContextAndOptionsToDocuDesk(): void {
 		// FleetAppId resolves the installed id BEFORE asking whether it is
@@ -370,12 +432,12 @@ class CharactersControllerTest extends TestCase {
 			'orientation' => 'L',
 		];
 
-		$mockTemplateService = $this->getMockBuilder(\stdClass::class)
+		$mockTemplateService = $this->getMockBuilder(className: \stdClass::class)
 			->addMethods(['getTemplate'])
 			->getMock();
 		$mockTemplateService->method('getTemplate')->willReturn($templateData);
 
-		$mockPdfService = $this->getMockBuilder(\stdClass::class)
+		$mockPdfService = $this->getMockBuilder(className: \stdClass::class)
 			->addMethods(['renderPdf'])
 			->getMock();
 		$mockPdfService->expects(self::once())
@@ -400,17 +462,19 @@ class CharactersControllerTest extends TestCase {
 
 		$result = $this->controller->downloadPdf('char-1', '00000000-0000-0000-0000-00000000000b');
 
-		self::assertInstanceOf(DataDownloadResponse::class, $result);
-		self::assertSame('%PDF-1.4 mock content', $result->render());
+		self::assertInstanceOf(expected: DataDownloadResponse::class, actual: $result);
+		self::assertSame(expected: '%PDF-1.4 mock content', actual: $result->render());
 		self::assertStringContainsString(
-			'Sir Lancelot_character_sheet.pdf',
-			$this->filenameFromResponse($result),
+			needle: 'Sir Lancelot_character_sheet.pdf',
+			haystack: $this->filenameFromResponse(response: $result),
 		);
 	}
 
 	/**
 	 * The template id is lower-cased before it reaches DocuDesk, so an
 	 * upper-case UUID resolves the same template as its lower-case form.
+	 *
+	 * @return void
 	 */
 	public function testDownloadPdfLowerCasesTemplateIdBeforeLookup(): void {
 		// FleetAppId resolves the installed id BEFORE asking whether it is
@@ -420,7 +484,7 @@ class CharactersControllerTest extends TestCase {
 		$this->appManager->method('isEnabledForUser')->willReturn(true);
 		$this->objectFetcher->method('getObject')->willReturn(['id' => 'char-1', 'name' => 'Fighter']);
 
-		$mockTemplateService = $this->getMockBuilder(\stdClass::class)
+		$mockTemplateService = $this->getMockBuilder(className: \stdClass::class)
 			->addMethods(['getTemplate'])
 			->getMock();
 		$mockTemplateService->expects(self::once())
@@ -428,7 +492,7 @@ class CharactersControllerTest extends TestCase {
 			->with('0000000a-0000-0000-0000-00000000000c')
 			->willReturn(['content' => '', 'format' => 'A4', 'orientation' => 'P']);
 
-		$mockPdfService = $this->getMockBuilder(\stdClass::class)
+		$mockPdfService = $this->getMockBuilder(className: \stdClass::class)
 			->addMethods(['renderPdf'])
 			->getMock();
 		$mockPdfService->method('renderPdf')->willReturn('%PDF-1.4');
@@ -446,7 +510,7 @@ class CharactersControllerTest extends TestCase {
 
 		$result = $this->controller->downloadPdf('char-1', '0000000A-0000-0000-0000-00000000000C');
 
-		self::assertInstanceOf(DataDownloadResponse::class, $result);
+		self::assertInstanceOf(expected: DataDownloadResponse::class, actual: $result);
 	}
 
 	/**
@@ -454,6 +518,10 @@ class CharactersControllerTest extends TestCase {
 	 * which reaches into the \OC runtime container and is unavailable in a pure
 	 * unit test. The protected `headers` array is populated by addHeader() in the
 	 * DownloadResponse constructor, so reflection sees the real value.
+	 *
+	 * @param DataDownloadResponse $response The response.
+	 *
+	 * @return string The filename from response.
 	 */
 	private function filenameFromResponse(DataDownloadResponse $response): string {
 		$property = new \ReflectionProperty(\OCP\AppFramework\Http\Response::class, 'headers');
@@ -469,47 +537,66 @@ class CharactersControllerTest extends TestCase {
 		return '';
 	}
 
+	/**
+	 * Requirement report translates does not exist exception to404.
+	 *
+	 * @return void
+	 */
 	public function testRequirementReportTranslatesDoesNotExistExceptionTo404(): void {
 		$this->objectFetcher->method('getObject')
 			->willThrowException(new DoesNotExistException('no such character'));
 
 		$result = $this->controller->requirementReport('00000000-0000-0000-0000-00000000000d');
 
-		self::assertInstanceOf(JSONResponse::class, $result);
-		self::assertSame(404, $result->getStatus());
-		self::assertSame('Character not found', $result->getData()['error']);
+		self::assertInstanceOf(expected: JSONResponse::class, actual: $result);
+		self::assertSame(expected: 404, actual: $result->getStatus());
+		self::assertSame(expected: 'Character not found', actual: $result->getData()['error']);
 	}
 
+	/**
+	 * Requirement report returns401 when not authenticated.
+	 *
+	 * @return void
+	 */
 	public function testRequirementReportReturns401WhenNotAuthenticated(): void {
-		$unauthSession = $this->createMock(IUserSession::class);
+		$unauthSession = $this->createMock(originalClassName: IUserSession::class);
 		$unauthSession->method('getUser')->willReturn(null);
 
 		$controller = new CharactersController(
-			'larpinq',
-			$this->createMock(IRequest::class),
-			$this->objectFetcher,
-			$this->pdfRenderer,
-			$unauthSession,
-			$this->groupManager,
-			$this->requirementService,
+			appName: 'larpinq',
+			request: $this->createMock(originalClassName: IRequest::class),
+			objectFetcher: $this->objectFetcher,
+			pdfRenderer: $this->pdfRenderer,
+			callerAccess: new CallerAccess(userSession: $unauthSession, groupManager: $this->groupManager),
+			requirementService: $this->requirementService,
 		);
 
 		$result = $controller->requirementReport('00000000-0000-0000-0000-000000000005');
 
-		self::assertInstanceOf(JSONResponse::class, $result);
-		self::assertSame(401, $result->getStatus());
+		self::assertInstanceOf(expected: JSONResponse::class, actual: $result);
+		self::assertSame(expected: 401, actual: $result->getStatus());
 	}
 
+	/**
+	 * Requirement report returns404 when character not found.
+	 *
+	 * @return void
+	 */
 	public function testRequirementReportReturns404WhenCharacterNotFound(): void {
 		$this->objectFetcher->method('getObject')
 			->willThrowException(new Exception('Not found'));
 
 		$result = $this->controller->requirementReport('00000000-0000-0000-0000-000000000006');
 
-		self::assertInstanceOf(JSONResponse::class, $result);
-		self::assertSame(404, $result->getStatus());
+		self::assertInstanceOf(expected: JSONResponse::class, actual: $result);
+		self::assertSame(expected: 404, actual: $result->getStatus());
 	}
 
+	/**
+	 * Requirement report returns report.
+	 *
+	 * @return void
+	 */
 	public function testRequirementReportReturnsReport(): void {
 		$this->objectFetcher->method('getObject')
 			->willReturn(['id' => 'char-1', 'name' => 'Fighter', 'skills' => []]);
@@ -519,8 +606,8 @@ class CharactersControllerTest extends TestCase {
 
 		$result = $this->controller->requirementReport('00000000-0000-0000-0000-000000000007');
 
-		self::assertInstanceOf(JSONResponse::class, $result);
-		self::assertSame(200, $result->getStatus());
-		self::assertSame($report, $result->getData());
+		self::assertInstanceOf(expected: JSONResponse::class, actual: $result);
+		self::assertSame(expected: 200, actual: $result->getStatus());
+		self::assertSame(expected: $report, actual: $result->getData());
 	}
 }

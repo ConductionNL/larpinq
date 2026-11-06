@@ -1,0 +1,146 @@
+{
+	"pages": [
+		{
+			"id": "Factions",
+			"route": "/factions",
+			"type": "index",
+			"title": "Factions",
+			"config": {
+				"register": "larpinq",
+				"schema": "larping_faction",
+				"allowExport": true,
+				"showMassImport": false,
+				"columns": [
+					{
+						"key": "name",
+						"label": "Name"
+					},
+					{
+						"key": "kind",
+						"label": "Kind"
+					},
+					{
+						"key": "visibility",
+						"label": "Visibility"
+					},
+					{
+						"key": "setting",
+						"label": "World"
+					}
+				],
+				"documentationUrl": "https://larpinq.conduction.nl"
+			}
+		},
+		{
+			"id": "FactionDetail",
+			"route": "/factions/:id",
+			"type": "detail",
+			"title": "Faction",
+			"config": {
+				"register": "larpinq",
+				"schema": "larping_faction",
+				"documentationUrl": "https://larpinq.conduction.nl",
+				"widgets": [
+					{
+						"id": "faction-data",
+						"type": "data",
+						"title": "Faction",
+						"icon": "ShieldAccountOutline",
+						"content": {
+							"columns": 2
+						}
+					},
+					{
+						"id": "faction-members",
+						"type": "object-list",
+						"title": "Members",
+						"icon": "AccountGroup",
+						"content": {
+							"register": "larpinq",
+							"schema": "larping_faction_member",
+							"filter": {
+								"faction": "@objectId"
+							},
+							"columns": [
+								{
+									"key": "character",
+									"label": "Character"
+								},
+								{
+									"key": "role",
+									"label": "Role"
+								},
+								{
+									"key": "status",
+									"label": "Status"
+								}
+							]
+						}
+					}
+				],
+				"layout": [
+					{
+						"id": "1",
+						"widgetId": "faction-data",
+						"gridX": 0,
+						"gridY": 0,
+						"gridWidth": 12,
+						"gridHeight": 4
+					},
+					{
+						"id": "2",
+						"widgetId": "faction-members",
+						"gridX": 0,
+						"gridY": 4,
+						"gridWidth": 12,
+						"gridHeight": 6
+					}
+				]
+			}
+		},
+		{
+			"id": "FactionMemberDetail",
+			"route": "/faction-members/:id",
+			"type": "detail",
+			"title": "Membership",
+			"config": {
+				"register": "larpinq",
+				"schema": "larping_faction_member",
+				"lifecycleActions": {
+					"field": "status"
+				},
+				"documentationUrl": "https://larpinq.conduction.nl",
+				"widgets": [
+					{
+						"id": "membership-data",
+						"type": "data",
+						"title": "Membership",
+						"icon": "AccountGroupOutline",
+						"content": {
+							"columns": 2
+						}
+					}
+				],
+				"layout": [
+					{
+						"id": "1",
+						"widgetId": "membership-data",
+						"gridX": 0,
+						"gridY": 0,
+						"gridWidth": 12,
+						"gridHeight": 4
+					}
+				]
+			}
+		}
+	],
+	"menu": [
+		{
+			"id": "Factions",
+			"label": "Factions",
+			"icon": "ShieldAccountOutline",
+			"route": "Factions",
+			"order": 31
+		}
+	]
+}

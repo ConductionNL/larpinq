@@ -23,8 +23,9 @@ namespace OCA\Larpinq\Service;
 
 use Exception;
 use InvalidArgumentException;
-use OCA\Larpinq\AppInfo\Application;
+use OCA\Larpinq\Support\AppIdentity;
 use OCP\App\IAppManager;
+use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\IAppConfig;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
@@ -51,7 +52,7 @@ class RegisterObjectFetcher {
 	 *
 	 * @var string
 	 */
-	private string $appName = Application::APP_ID;
+	private string $appName = AppIdentity::APP_ID;
 
 	/**
 	 * Whether the resolver-absence deprecation warning has already been logged
@@ -298,6 +299,24 @@ class RegisterObjectFetcher {
 	}//end toArray()
 
 	/**
+	 * Convert a list of objects to arrays.
+	 *
+	 * @param mixed $objects The objects OpenRegister returned.
+	 *
+	 * @return array<int, array<string, mixed>> The objects as arrays.
+	 *
+	 * @psalm-suppress MixedArgument OpenRegister resolved dynamically.
+	 */
+	private function toArrays(mixed $objects): array {
+		return array_map(
+			function (mixed $object): array {
+				return $this->toArray(object: $object);
+			},
+			$objects
+		);
+	}//end toArrays()
+
+	/**
 	 * Get all objects of a given type from OpenRegister.
 	 *
 	 * @param string $objectType The object type (e.g. 'skill', 'character').
@@ -327,27 +346,55 @@ class RegisterObjectFetcher {
 		?array $sort = [],
 		?string $search = null,
 	): array {
-		$mapper = $this->getMapper(objectType: $objectType);
+		$config = ['limit' => $limit, 'offset' => $offset, 'filters' => $filters ?? [], 'sort' => $sort ?? [], 'search' => $search];
+
+		return $this->toArrays(objects: $this->getMapper(objectType: $objectType)->findAll($config));
+	}//end getObjects()
+
+	/**
+	 * Read objects of a type with the app's authority: OpenRegister's RBAC and
+	 * multitenancy are off for this read.
+	 *
+	 * Only for records a caller may see through the app's pages but not through
+	 * the object API (DECISIONS row 30: a player sees the XP awards on their own
+	 * character). The caller MUST have made larpinq's own ownership check first
+	 * and MUST pass a filter that scopes the read to what that check covered.
+	 * An empty filter is refused, so this can never become an unscoped read.
+	 *
+	 * @param string $objectType The object type (e.g. 'xpAward').
+	 * @param array<string, string|int> $filters Equality filters; at least one, non-empty.
+	 * @param int|null $limit Maximum number of objects to retrieve.
+	 *
+	 * @return array<int, array<string, mixed>> The objects as arrays.
+	 *
+	 * @throws InvalidArgumentException If no scoping filter is given.
+	 * @throws Exception If OpenRegister is not available or type is not configured.
+	 *
+	 * @psalm-suppress MixedMethodCall OpenRegister ObjectService resolved dynamically.
+	 * @psalm-suppress MixedAssignment OpenRegister ObjectService resolved dynamically.
+	 *
+	 * @spec openspec/specs/event-xp-awards/spec.md
+	 */
+	public function getObjectsWithAppAuthority(string $objectType, array $filters, ?int $limit = null): array {
+		if ($filters === [] || in_array('', $filters, true) === true) {
+			throw new InvalidArgumentException('A read with the app\'s authority needs a scoping filter');
+		}
+
+		$openRegister = $this->getOpenRegisterService();
+		[$register, $schema] = $this->resolveRegisterAndSchema(objectTypeLower: strtolower($objectType));
 
 		// @var array $objects
-		$objects = $mapper->findAll(
-			[
+		$objects = $openRegister->findAll(
+			config: [
 				'limit' => $limit,
-				'offset' => $offset,
-				'filters' => $filters ?? [],
-				'sort' => $sort ?? [],
-				'search' => $search,
-			]
+				'filters' => array_merge($filters, ['register' => $register, 'schema' => $schema]),
+			],
+			_rbac: false,
+			_multitenancy: false
 		);
 
-		// @psalm-suppress MixedArgument Mapper resolved dynamically.
-		return array_map(
-			function (mixed $object): array {
-				return $this->toArray(object: $object);
-			},
-			$objects
-		);
-	}//end getObjects()
+		return $this->toArrays(objects: $objects);
+	}//end getObjectsWithAppAuthority()
 
 	/**
 	 * Get a single object by type and ID from OpenRegister.
@@ -395,6 +442,36 @@ class RegisterObjectFetcher {
 	}//end getObject()
 
 	/**
+	 * Get a single object by type and ID, only when it belongs to that type's schema.
+	 *
+	 * OpenRegister's find() retries a UUID without the schema when the
+	 * requested schema does not hold it, so getObject() can answer with an
+	 * object of another type. This read treats such an object as missing.
+	 *
+	 * @param string $objectType The object type (e.g. 'item').
+	 * @param string $id The object UUID.
+	 *
+	 * @return array<string,mixed> The object as an array.
+	 *
+	 * @throws DoesNotExistException If the object belongs to another schema.
+	 * @throws Exception If OpenRegister is not available, the type is not configured,
+	 *                   or the ID is not a valid UUID.
+	 *
+	 * @spec openspec/specs/rpg-system/spec.md
+	 */
+	public function getObjectOfType(string $objectType, string $id): array {
+		$object = $this->getObject(objectType: $objectType, id: $id);
+		[, $schema] = $this->resolveRegisterAndSchema(objectTypeLower: strtolower($objectType));
+
+		$actual = $object['@self']['schema'] ?? null;
+		if (is_scalar($actual) === false || (string)$actual !== $schema) {
+			throw new DoesNotExistException('Object ' . $id . ' is not in the ' . $objectType . ' schema');
+		}
+
+		return $object;
+	}//end getObjectOfType()
+
+	/**
 	 * Create or update an object of a given type in OpenRegister.
 	 *
 	 * Writes through OpenRegister's ObjectService::saveObject so storage,
@@ -435,4 +512,65 @@ class RegisterObjectFetcher {
 
 		return $this->toArray(object: $saved);
 	}//end saveObject()
+
+	/**
+	 * Create or update an object with the app's own authority (RBAC off).
+	 *
+	 * For writes larpinq makes on a user's behalf that the user's own rights do
+	 * not cover: a registration the sign-up form creates for a player, and the
+	 * event's participants a registration decision changes. Callers decide
+	 * first whether the write is due; this method does not check rights.
+	 *
+	 * @param string $objectType The object type (e.g. 'registration').
+	 * @param array<string,mixed> $data The object payload to persist.
+	 * @param string|null $uuid The UUID to update, or null to create.
+	 *
+	 * @return array<string,mixed> The persisted object as an array.
+	 *
+	 * @throws Exception If OpenRegister is not available or the type is not configured.
+	 *
+	 * @psalm-suppress MixedMethodCall OpenRegister ObjectService resolved dynamically.
+	 * @psalm-suppress MixedAssignment  OpenRegister ObjectService resolved dynamically.
+	 *
+	 * @spec openspec/specs/event-registration/spec.md
+	 */
+	public function saveObjectWithAppAuthority(string $objectType, array $data, ?string $uuid = null): array {
+		$openRegister = $this->getOpenRegisterService();
+		[$register, $schema] = $this->resolveRegisterAndSchema(objectTypeLower: strtolower($objectType));
+
+		// @var mixed $saved
+		$saved = $openRegister->saveObject(
+			object: $data,
+			extend: [],
+			register: $register,
+			schema: $schema,
+			uuid: $uuid,
+			_rbac: false,
+			_multitenancy: false
+		);
+
+		return $this->toArray(object: $saved);
+	}//end saveObjectWithAppAuthority()
+
+	/**
+	 * Delete an object of a given type from OpenRegister, with RBAC on.
+	 *
+	 * @param string $objectType The object type (e.g. 'skill').
+	 * @param string $uuid The object UUID.
+	 *
+	 * @return bool True when OpenRegister deleted it.
+	 *
+	 * @throws Exception If OpenRegister is not available, the type is not configured, or the delete is refused.
+	 *
+	 * @psalm-suppress MixedMethodCall OpenRegister ObjectService resolved dynamically.
+	 *
+	 * @spec openspec/specs/setting-management/spec.md
+	 */
+	public function deleteObject(string $objectType, string $uuid): bool {
+		$openRegister = $this->getOpenRegisterService();
+
+		[$register, $schema] = $this->resolveRegisterAndSchema(objectTypeLower: strtolower($objectType));
+
+		return (bool)$openRegister->deleteObject($uuid, $register, $schema);
+	}//end deleteObject()
 }//end class

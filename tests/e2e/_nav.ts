@@ -65,7 +65,6 @@ const NAV_ID_OF: Record<string, string> = {
 	events: 'Events',
 	'xp-awards': 'XpAwards',
 	settings: 'Settings',
-	'game-settings': 'GameSettings',
 }
 
 export function navIdForSlug(slug: string): string {

@@ -18,6 +18,7 @@ place that needs it:
 - `lib/Listener/CharacterRequirementListener.php:61` — `private const GM_GROUP = 'gamemasters';` (requirement-override authoring guard)
 - OpenRegister schema-level RBAC on `xpAward` (create/update/delete restricted to `gamemasters`, per `openspec/changes/archive/event-xp-award-workflow/tasks.md` 1.2)
 - OpenRegister notification rules targeting the `gamemasters` group (`openspec/specs/notifications/spec.md`)
+- OpenRegister schema and property RBAC on `character` (`lib/Settings/register.d/characters-player-visibility.json`): `gamemasters` in the row read/create/update/delete rules and in every property rule; the owner rule uses the app-access group `larpers` with `ownerUid = $userId`
 
 Separately, `CharactersController::downloadPdf` treats "NC admin" as the
 GM tier (`lib/Controller/CharactersController.php:146`), so the codebase

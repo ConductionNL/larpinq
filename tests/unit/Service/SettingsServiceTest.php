@@ -11,23 +11,37 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
 class SettingsServiceTest extends TestCase {
+	/** @var SettingsService The service. */
 	private SettingsService $service;
+	/** @var IAppConfig The app config. */
 	private IAppConfig $appConfig;
+	/** @var SettingsLoadService The settings load service. */
 	private SettingsLoadService $settingsLoadService;
+	/** @var LoggerInterface The logger. */
 	private LoggerInterface $logger;
 
+	/**
+	 * Build the doubles and the subject every test starts from.
+	 *
+	 * @return void
+	 */
 	protected function setUp(): void {
-		$this->appConfig = $this->createMock(IAppConfig::class);
-		$this->settingsLoadService = $this->createMock(SettingsLoadService::class);
-		$this->logger = $this->createMock(LoggerInterface::class);
+		$this->appConfig = $this->createMock(originalClassName: IAppConfig::class);
+		$this->settingsLoadService = $this->createMock(originalClassName: SettingsLoadService::class);
+		$this->logger = $this->createMock(originalClassName: LoggerInterface::class);
 
 		$this->service = new SettingsService(
-			$this->appConfig,
-			$this->settingsLoadService,
-			$this->logger,
+			appConfig: $this->appConfig,
+			settingsLoadService: $this->settingsLoadService,
+			logger: $this->logger,
 		);
 	}
 
+	/**
+	 * Get settings returns all config keys.
+	 *
+	 * @return void
+	 */
 	public function testGetSettingsReturnsAllConfigKeys(): void {
 		$this->appConfig
 			->method('getValueString')
@@ -35,27 +49,49 @@ class SettingsServiceTest extends TestCase {
 
 		$result = $this->service->getSettings();
 
-		$this->assertArrayHasKey('register', $result);
-		$this->assertArrayHasKey('character_schema', $result);
-		$this->assertArrayHasKey('character_register', $result);
-		$this->assertArrayHasKey('character_source', $result);
-		$this->assertArrayHasKey('player_schema', $result);
-		$this->assertArrayHasKey('player_register', $result);
-		$this->assertArrayHasKey('player_source', $result);
-		$this->assertArrayHasKey('ability_schema', $result);
-		$this->assertArrayHasKey('skill_schema', $result);
-		$this->assertArrayHasKey('item_schema', $result);
-		$this->assertArrayHasKey('condition_schema', $result);
-		$this->assertArrayHasKey('effect_schema', $result);
-		$this->assertArrayHasKey('event_schema', $result);
-		$this->assertArrayHasKey('setting_schema', $result);
-		$this->assertArrayHasKey('attendance_schema', $result);
+		$this->assertArrayHasKey(key: 'register', array: $result);
+		$this->assertArrayHasKey(key: 'character_schema', array: $result);
+		$this->assertArrayHasKey(key: 'character_register', array: $result);
+		$this->assertArrayHasKey(key: 'character_source', array: $result);
+		$this->assertArrayHasKey(key: 'player_schema', array: $result);
+		$this->assertArrayHasKey(key: 'player_register', array: $result);
+		$this->assertArrayHasKey(key: 'player_source', array: $result);
+		$this->assertArrayHasKey(key: 'ability_schema', array: $result);
+		$this->assertArrayHasKey(key: 'skill_schema', array: $result);
+		$this->assertArrayHasKey(key: 'item_schema', array: $result);
+		$this->assertArrayHasKey(key: 'condition_schema', array: $result);
+		$this->assertArrayHasKey(key: 'effect_schema', array: $result);
+		$this->assertArrayHasKey(key: 'event_schema', array: $result);
+		$this->assertArrayHasKey(key: 'setting_schema', array: $result);
+		$this->assertArrayHasKey(key: 'attendance_schema', array: $result);
+		$this->assertArrayHasKey(key: 'lorepage_schema', array: $result);
+		$this->assertArrayHasKey(key: 'characterfield_schema', array: $result);
+		// The faction guard resolves its three schemas by these keys.
+		$this->assertArrayHasKey(key: 'faction_schema', array: $result);
+		$this->assertArrayHasKey(key: 'factionmember_schema', array: $result);
+		$this->assertArrayHasKey(key: 'relationship_schema', array: $result);
+		// The build report reads a build by this key.
+		$this->assertArrayHasKey(key: 'characterbuild_schema', array: $result);
+		// The batch award and the XP stage read awards by this key.
+		$this->assertArrayHasKey(key: 'xpaward_schema', array: $result);
+		$this->assertArrayHasKey(key: 'registration_schema', array: $result);
+		// The ticket choices read ticket types, options and codes by these keys.
+		$this->assertArrayHasKey(key: 'tickettype_schema', array: $result);
+		$this->assertArrayHasKey(key: 'registrationoption_schema', array: $result);
+		$this->assertArrayHasKey(key: 'accesscode_schema', array: $result);
 		// CONFIG_KEYS now includes {slug}_schema + {slug}_register + {slug}_source
-		// for all 10 slugs (9 original + attendance) plus the global 'register'
-		// key = 1 + 10*3 = 31.
-		$this->assertCount(31, $result);
+		// for all 21 slugs (9 original + attendance + lorepage + characterfield
+		// + faction + factionmember + relationship + characterbuild + xpaward + registration
+		// + tickettype + registrationoption + accesscode)
+		// plus the global 'register' key = 1 + 21*3 = 64.
+		$this->assertCount(expectedCount: 64, haystack: $result);
 	}
 
+	/**
+	 * Get settings returns empty strings as defaults.
+	 *
+	 * @return void
+	 */
 	public function testGetSettingsReturnsEmptyStringsAsDefaults(): void {
 		$this->appConfig
 			->method('getValueString')
@@ -66,13 +102,18 @@ class SettingsServiceTest extends TestCase {
 		$result = $this->service->getSettings();
 
 		foreach ($result as $value) {
-			$this->assertSame('', $value);
+			$this->assertSame(expected: '', actual: $value);
 		}
 	}
 
+	/**
+	 * Update settings only updates known keys.
+	 *
+	 * @return void
+	 */
 	public function testUpdateSettingsOnlyUpdatesKnownKeys(): void {
 		$this->appConfig
-			->expects($this->exactly(2))
+			->expects($this->exactly(count: 2))
 			->method('setValueString');
 
 		$this->appConfig
@@ -86,6 +127,11 @@ class SettingsServiceTest extends TestCase {
 		]);
 	}
 
+	/**
+	 * Update settings logs update.
+	 *
+	 * @return void
+	 */
 	public function testUpdateSettingsLogsUpdate(): void {
 		$this->appConfig->method('getValueString')->willReturn('');
 
@@ -94,7 +140,7 @@ class SettingsServiceTest extends TestCase {
 			->method('info')
 			->with(
 				'Larpinq settings updated',
-				$this->callback(function ($context) {
+				$this->callback(callback: function ($context) {
 					return isset($context['keys']);
 				})
 			);
@@ -102,6 +148,11 @@ class SettingsServiceTest extends TestCase {
 		$this->service->updateSettings(['register' => 'reg-1']);
 	}
 
+	/**
+	 * Update settings returns updated values.
+	 *
+	 * @return void
+	 */
 	public function testUpdateSettingsReturnsUpdatedValues(): void {
 		$this->appConfig
 			->method('getValueString')
@@ -109,10 +160,15 @@ class SettingsServiceTest extends TestCase {
 
 		$result = $this->service->updateSettings(['register' => 'reg-1']);
 
-		$this->assertIsArray($result);
-		$this->assertCount(31, $result);
+		$this->assertIsArray(actual: $result);
+		$this->assertCount(expectedCount: 64, haystack: $result);
 	}
 
+	/**
+	 * Load settings delegates to load service.
+	 *
+	 * @return void
+	 */
 	public function testLoadSettingsDelegatesToLoadService(): void {
 		$this->settingsLoadService
 			->expects($this->once())
@@ -125,9 +181,14 @@ class SettingsServiceTest extends TestCase {
 
 		$result = $this->service->loadSettings();
 
-		$this->assertSame(['status' => 'ok'], $result);
+		$this->assertSame(expected: ['status' => 'ok'], actual: $result);
 	}
 
+	/**
+	 * Reload settings delegates to load service.
+	 *
+	 * @return void
+	 */
 	public function testReloadSettingsDelegatesToLoadService(): void {
 		$this->settingsLoadService
 			->expects($this->once())
@@ -140,9 +201,14 @@ class SettingsServiceTest extends TestCase {
 
 		$result = $this->service->reloadSettings();
 
-		$this->assertSame(['status' => 'reimported'], $result);
+		$this->assertSame(expected: ['status' => 'reimported'], actual: $result);
 	}
 
+	/**
+	 * Get config value returns value.
+	 *
+	 * @return void
+	 */
 	public function testGetConfigValueReturnsValue(): void {
 		$this->appConfig
 			->expects($this->once())
@@ -152,9 +218,14 @@ class SettingsServiceTest extends TestCase {
 
 		$result = $this->service->getConfigValue('register');
 
-		$this->assertSame('my-register-id', $result);
+		$this->assertSame(expected: 'my-register-id', actual: $result);
 	}
 
+	/**
+	 * Set config value sets value.
+	 *
+	 * @return void
+	 */
 	public function testSetConfigValueSetsValue(): void {
 		$this->appConfig
 			->expects($this->once())

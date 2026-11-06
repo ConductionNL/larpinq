@@ -74,6 +74,13 @@ class PortalContributionProvider {
 	private const REGISTER = 'larpinq';
 
 	/**
+	 * The portal menu group the larpinq pages sit in (board LrPortaal).
+	 *
+	 * @var string
+	 */
+	private const GROUP_CLUB = 'Verenigingen';
+
+	/**
 	 * The audiences this provider contributes to (contract v2, preferred).
 	 *
 	 * The registry probes for this method first. Larpinq serves exactly one
@@ -145,11 +152,11 @@ class PortalContributionProvider {
 	 *   character. The item/condition catalogs drop the per-object `characters`
 	 *   ownership array.
 	 *
-	 * Create surface: `createCharacter` — the player submits a new character;
-	 * the writer stamps `ownerRef` = the subject ref server-side, so the record
-	 * is owned by the player automatically. Only `name`, `ocName` and
-	 * `background` are accepted; every game-master / economy / lifecycle field
-	 * stays server-authoritative.
+	 * Create surface: `createPlayerProfile` (a new player's own profile) and
+	 * `createCharacter` (the writer stamps `ownerRef` with the player uuid from
+	 * the account's claim, so the record is owned by the player). Only intake
+	 * fields are accepted; every game-master / economy / lifecycle field stays
+	 * server-authoritative. See playerActions().
 	 *
 	 * Event signup is delegated to Nextcloud Forms today
 	 * (`register.d/event-signup-to-forms-leaf.json`, `linkedTypes: ["forms"]`)
@@ -169,9 +176,69 @@ class PortalContributionProvider {
 			'label' => 'Larpinq',
 			'collections' => $this->playerCollections(),
 			'actions' => $this->playerActions(),
+			'pages' => [$this->myLarpPage(), $this->rulebookPage()],
 			'notifications' => [],
 		];
 	}//end playerContribution()
+
+	/**
+	 * The player's own page in the portal (board LrPortaal): their
+	 * characters, a new character, and their registrations with the payment
+	 * state.
+	 *
+	 * Contribution-manifest-v3 page composition: every block names a
+	 * collection or an action of this contribution.
+	 *
+	 * @return array<string, mixed> The page.
+	 *
+	 * @spec openspec/specs/portal-contribution/spec.md#requirement-the-player-has-a-mijn-larp-page-in-the-portal
+	 */
+	private function myLarpPage(): array {
+		return [
+			'id' => 'myLarp',
+			'label' => 'Mijn larp',
+			'group' => self::GROUP_CLUB,
+			'icon' => 'Sword',
+			'blocks' => [
+				[
+					'type' => 'richText',
+					'markdown' => 'Hier staan uw karakters en uw aanmeldingen voor evenementen.',
+				],
+				['type' => 'collection', 'collection' => 'myCharacters'],
+				['type' => 'detail', 'collection' => 'myCharacters'],
+				['type' => 'action', 'action' => 'createCharacter'],
+				['type' => 'collection', 'collection' => 'myRegistrations'],
+				['type' => 'detail', 'collection' => 'myRegistrations'],
+			],
+		];
+	}//end myLarpPage()
+
+	/**
+	 * The rulebook in the portal (board LrPortaalRegelboek): the rules
+	 * chapters, then the skills with their costs and requirements.
+	 *
+	 * @return array<string, mixed> The page.
+	 *
+	 * @spec openspec/specs/portal-contribution/spec.md#requirement-the-player-reads-the-rulebook-in-the-portal
+	 * @spec openspec/changes/rules-rulebook-and-spell-lists/specs/rulebook/spec.md
+	 */
+	private function rulebookPage(): array {
+		return [
+			'id' => 'rulebook',
+			'label' => 'Regelboek',
+			'group' => self::GROUP_CLUB,
+			'icon' => 'BookOpenVariant',
+			'blocks' => [
+				[
+					'type' => 'richText',
+					'markdown' => 'De spelregels, gepubliceerd door de spelleiding. Wat hier staat, geldt op elk evenement.',
+				],
+				['type' => 'collection', 'collection' => 'rulebookChapters'],
+				['type' => 'detail', 'collection' => 'rulebookChapters'],
+				['type' => 'collection', 'collection' => 'skillCatalog'],
+			],
+		];
+	}//end rulebookPage()
 
 	/**
 	 * The read collections the `player` audience may list.
@@ -186,8 +253,128 @@ class PortalContributionProvider {
 	 * @spec openspec/changes/portal-contribution/specs/portal-contribution/spec.md
 	 */
 	private function playerCollections(): array {
-		return array_merge([$this->characterCollection()], $this->catalogCollections());
+		return array_merge(
+			[$this->characterCollection()],
+			$this->catalogCollections(),
+			[$this->profileCollection(), $this->registrationCollection(), $this->rulebookCollection()]
+		);
 	}//end playerCollections()
+
+	/**
+	 * The player's own registrations, scoped by the `player` reference.
+	 *
+	 * `registration.player` holds the player object uuid, the same value the
+	 * account's `ownerRef` claim carries, so the scoping matches
+	 * `myCharacters`. Projected to what the player needs to see and pay: the
+	 * event, the character they bring, the status and the payment fields.
+	 * The game master's decision stamps and the transfer bookkeeping stay
+	 * behind.
+	 *
+	 * @return array<string, mixed> The owner-scoped registration collection.
+	 *
+	 * @spec openspec/specs/portal-contribution/spec.md#requirement-the-player-has-a-mijn-larp-page-in-the-portal
+	 */
+	private function registrationCollection(): array {
+		return [
+			'id' => 'myRegistrations',
+			'register' => self::REGISTER,
+			'schema' => 'larping_registration',
+			'scopeField' => 'player',
+			'scopeClaim' => 'ownerRef',
+			'label' => 'Mijn aanmeldingen',
+			'listable' => true,
+			'fields' => [
+				'event',
+				'character',
+				'status',
+				'ticketType',
+				'paymentState',
+				'payBy',
+				'paymentReference',
+				'paymentLink',
+				'submittedAt',
+			],
+			'columns' => [
+				['field' => 'event', 'label' => 'Evenement'],
+				['field' => 'status', 'label' => 'Status', 'render' => 'badge'],
+				['field' => 'paymentState', 'label' => 'Betaling', 'render' => 'badge'],
+				['field' => 'payBy', 'label' => 'Betalen voor', 'render' => 'date'],
+			],
+			'detail' => [
+				'layout' => 'card',
+				'fields' => ['event', 'character', 'status', 'ticketType', 'paymentState', 'payBy', 'paymentReference', 'paymentLink'],
+			],
+			'defaultSort' => ['field' => 'submittedAt', 'direction' => 'desc'],
+		];
+	}//end registrationCollection()
+
+	/**
+	 * The rules chapters: lore pages of category `rules` that players may
+	 * read.
+	 *
+	 * A public list (`scopeField: ''`), narrowed to `visibility: players`.
+	 * A page with a reveal moment is left out (`revealFrom` must be empty):
+	 * the portal filter cannot compare it with the current time, so a chapter
+	 * the game masters hold back until a date stays out of the portal rather
+	 * than appearing early.
+	 *
+	 * @return array<string, mixed> The rulebook chapter collection.
+	 *
+	 * @spec openspec/changes/rules-rulebook-and-spell-lists/specs/rulebook/spec.md
+	 */
+	private function rulebookCollection(): array {
+		return [
+			'id' => 'rulebookChapters',
+			'register' => self::REGISTER,
+			'schema' => 'larping_lore_page',
+			'scopeField' => '',
+			'filter' => [
+				'category' => 'rules',
+				'visibility' => 'players',
+				'revealFrom' => 'IS NULL',
+			],
+			'label' => 'Regelboek',
+			'listable' => true,
+			'fields' => [
+				'title',
+				'body',
+				'setting',
+				'parent',
+				'order',
+			],
+			'columns' => [
+				['field' => 'title', 'label' => 'Hoofdstuk'],
+			],
+			'detail' => ['layout' => 'card', 'fields' => ['title', 'body']],
+			'defaultSort' => ['field' => 'order', 'direction' => 'asc'],
+		];
+	}//end rulebookCollection()
+
+	/**
+	 * The subject's own player profile, scoped by the portal subject itself.
+	 *
+	 * `portalSubjectRef` is stamped by portaliq's writer on
+	 * `createPlayerProfile`, so no claim is needed to find it: the profile is
+	 * how the claim comes to exist. Projected to what the player typed.
+	 *
+	 * @return array<string, mixed> The subject-scoped profile collection.
+	 *
+	 * @spec openspec/specs/portal-contribution/spec.md
+	 */
+	private function profileCollection(): array {
+		return [
+			'id' => 'myProfile',
+			'register' => self::REGISTER,
+			'schema' => 'player',
+			'scopeField' => 'portalSubjectRef',
+			'label' => 'My profile',
+			'listable' => true,
+			'fields' => [
+				'name',
+				'description',
+			],
+		];
+	}//end profileCollection()
 
 	/**
 	 * The subject's own characters — scoped by `ownerRef`, field-projected.
@@ -320,15 +507,25 @@ class PortalContributionProvider {
 	/**
 	 * The whitelisted create-action the `player` audience may perform.
 	 *
-	 * The single action is `createCharacter`; the writer stamps `ownerRef` =
-	 * the subject ref server-side, so a portal-created character is owned by the
-	 * player. Only intake fields are accepted — no game-master, economy or
-	 * lifecycle property. Event signup is delegated to Nextcloud Forms and is
-	 * not duplicated here; there are no `endpoint` actions in this wave.
+	 * `createCharacter`: the writer stamps `ownerRef` with the account's
+	 * `ownerRef` claim (the player uuid larpinq records when the profile is
+	 * made), never with the subject reference, which is not a uuid and which
+	 * `character.ownerRef` refuses. Without the claim the create is refused
+	 * (fail closed). `ocName` is not accepted: PortalProfileListener sets it to
+	 * the owner, so the character is played by the player who made it.
+	 *
+	 * `createPlayerProfile`: a signed-up visitor makes their own player, stamped
+	 * with their portal subject; PortalProfileListener refuses a second one and
+	 * asks portaliq for the claim.
+	 *
+	 * Only intake fields are accepted: no game-master, economy, lifecycle or
+	 * review property. Event signup is delegated to Nextcloud Forms and is not
+	 * duplicated here; there are no `endpoint` actions in this wave.
 	 *
 	 * @return array<int, array<string, mixed>> The declarative create actions.
 	 *
 	 * @spec openspec/changes/portal-contribution/specs/portal-contribution/spec.md
+	 * @spec openspec/specs/portal-contribution/spec.md
 	 */
 	private function playerActions(): array {
 		return [
@@ -339,10 +536,22 @@ class PortalContributionProvider {
 				'register' => self::REGISTER,
 				'schema' => 'character',
 				'scopeField' => 'ownerRef',
+				'scopeClaim' => 'ownerRef',
 				'fields' => [
 					'name',
-					'ocName',
 					'background',
+				],
+			],
+			[
+				'id' => 'createPlayerProfile',
+				'type' => 'create',
+				'label' => 'Create your player profile',
+				'register' => self::REGISTER,
+				'schema' => 'player',
+				'scopeField' => 'portalSubjectRef',
+				'fields' => [
+					'name',
+					'description',
 				],
 			],
 		];

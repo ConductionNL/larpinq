@@ -1,0 +1,196 @@
+<?php
+
+/**
+ * Character builds controller for Larpinq
+ *
+ * Checks a build of a character against the skill requirements and the XP
+ * budget without writing anything, and tells the build page whether the
+ * caller may apply builds. A separate controller keeps CharactersController's
+ * constructor (and every test that builds it) unchanged.
+ *
+ * @category  Controller
+ * @package   OCA\Larpinq\Controller
+ * @author    Ruben Linde <ruben@larpingapp.com>
+ * @copyright 2026 Conduction B.V.
+ * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ * @link      https://larpingapp.com
+ *
+ * @spec openspec/specs/character-builds/spec.md
+ */
+
+declare(strict_types=1);
+
+namespace OCA\Larpinq\Controller;
+
+use OCA\Larpinq\Support\AppIdentity;
+use OCA\Larpinq\Service\CharacterStatSheet;
+use OCA\Larpinq\Service\RegisterObjectFetcher;
+use OCP\AppFramework\Controller;
+use OCP\AppFramework\Http;
+use OCP\AppFramework\Http\Attribute\NoAdminRequired;
+use OCP\AppFramework\Http\Attribute\NoCSRFRequired;
+use OCP\AppFramework\Http\JSONResponse;
+use OCP\IRequest;
+
+/**
+ * GET /api/builds/{id}/report and GET /api/builds/apply-access.
+ *
+ * @category Controller
+ * @package  OCA\Larpinq\Controller
+ * @author   Ruben Linde <ruben@larpingapp.com>
+ * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ * @link     https://larpingapp.com
+ *
+ * @spec openspec/specs/character-builds/spec.md
+ */
+class CharacterBuildsController extends Controller {
+	use \OCA\Larpinq\Support\ReadsRelationId;
+
+	/**
+	 * The character lists a build replaces, with the object type of each.
+	 *
+	 * @var array<string, string>
+	 */
+	public const LISTS = ['skills' => 'skill', 'items' => 'item', 'conditions' => 'condition'];
+
+	/**
+	 * Constructor.
+	 *
+	 * @param IRequest $request The request.
+	 * @param RegisterObjectFetcher $objectFetcher Reads the build and its character as the calling user.
+	 * @param CharacterStatSheet $statSheet The stat sheet and requirement report of the build.
+	 * @param CallerAccess $callerAccess The signed-in caller and the game master check.
+	 *
+	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
+	 */
+	public function __construct(
+		IRequest $request,
+		private readonly RegisterObjectFetcher $objectFetcher,
+		private readonly CharacterStatSheet $statSheet,
+		private readonly CallerAccess $callerAccess,
+	) {
+		parent::__construct(appName: AppIdentity::APP_ID, request: $request);
+	}//end __construct()
+
+	/**
+	 * The check of one build: the requirement report and the stat sheet of the
+	 * character as it would be with the build's skills, items and conditions.
+	 * The character's own XP awards count, so the budget is real. Nothing is
+	 * written.
+	 *
+	 * @param string $id The build UUID.
+	 *
+	 * @return JSONResponse `{build, character, report, stats, lists, changes}`, or 404.
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 *
+	 * @SuppressWarnings(PHPMD.ShortVariable)
+	 *
+	 * @spec openspec/specs/character-builds/spec.md
+	 *
+	 * @no-admin-idor-exempt OR-delegated reads via
+	 * RegisterObjectFetcher::getObject (ADR-022), which reads with RBAC on as
+	 * the calling user. A build the caller may not read (the build's rules
+	 * admit game masters and the character's player only), or whose character
+	 * the caller may not read, raises an exception this method answers with
+	 * 404, so an out-of-scope id is indistinguishable from a missing one.
+	 */
+	#[NoAdminRequired]
+	#[NoCSRFRequired]
+	public function report(string $id): JSONResponse {
+		try {
+			$build = $this->objectFetcher->getObject(objectType: 'characterbuild', id: $id);
+			$character = $this->objectFetcher->getObject(objectType: 'character', id: $this->idOf(value: ($build['character'] ?? null)));
+		} catch (\Exception $exception) {
+			return new JSONResponse(data: ['error' => 'Build not found'], statusCode: Http::STATUS_NOT_FOUND);
+		}
+
+		$candidate = $this->candidate(character: $character, build: $build);
+		$stats = $this->statSheet->stats(character: $candidate);
+
+		return new JSONResponse(
+			data: [
+				'build' => ['id' => $id, 'name' => (string)($build['name'] ?? '')],
+				'character' => ['id' => (string)($character['id'] ?? ''), 'name' => (string)($character['name'] ?? '')],
+				'report' => $this->statSheet->report(candidate: $candidate, character: $character),
+				'lists' => array_intersect_key($candidate, self::LISTS),
+				'changes' => $this->changes(character: $character, candidate: $candidate),
+				'stats' => $this->statSheet->present(stats: $stats),
+			]
+		);
+	}//end report()
+
+	/**
+	 * Whether the caller may apply builds to character sheets: game masters
+	 * and admins. The build page shows its Apply action on this answer; the
+	 * write itself is checked by OpenRegister and the requirement listener.
+	 *
+	 * @return JSONResponse `{allowed: bool}`.
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 *
+	 * @spec openspec/specs/character-builds/spec.md
+	 */
+	#[NoAdminRequired]
+	#[NoCSRFRequired]
+	public function access(): JSONResponse {
+		$user = $this->callerAccess->user();
+		if ($user === null) {
+			return new JSONResponse(data: ['allowed' => false]);
+		}
+
+		return new JSONResponse(data: ['allowed' => $this->callerAccess->isGameMasterOrAdmin($user->getUID())]);
+	}//end access()
+
+	/**
+	 * What applying the build adds to and removes from each list, with names,
+	 * so the Apply dialog can show it before the write.
+	 *
+	 * @param array<string, mixed> $character The character.
+	 * @param array<string, mixed> $candidate The character with the build's lists.
+	 *
+	 * @return array<string, array{added: array<int, array{id: string, name: string}>, removed: array<int, array{id: string, name: string}>}> Per list.
+	 */
+	private function changes(array $character, array $candidate): array {
+		$changes = [];
+		foreach (self::LISTS as $list => $objectType) {
+			$now = array_map(fn (mixed $value): string => $this->idOf(value: $value), (array)($character[$list] ?? []));
+			$names = [];
+			foreach ($this->objectFetcher->getObjects(objectType: $objectType) as $object) {
+				$names[(string)($object['id'] ?? '')] = (string)($object['name'] ?? '');
+			}
+
+			$named = static fn (string $uuid): array => ['id' => $uuid, 'name' => ($names[$uuid] ?? $uuid)];
+			$changes[$list] = [
+				'added' => array_map($named, array_values(array_diff($candidate[$list], $now))),
+				'removed' => array_map($named, array_values(array_diff($now, $candidate[$list]))),
+			];
+		}
+
+		return $changes;
+	}//end changes()
+
+	/**
+	 * The character with the build's skills, items and conditions in place of
+	 * its own.
+	 *
+	 * @param array<string, mixed> $character The character.
+	 * @param array<string, mixed> $build The build.
+	 *
+	 * @return array<string, mixed> The candidate character.
+	 */
+	private function candidate(array $character, array $build): array {
+		foreach (array_keys(self::LISTS) as $list) {
+			$ids = [];
+			foreach ((array)($build[$list] ?? []) as $value) {
+				$ids[] = $this->idOf(value: $value);
+			}
+
+			$character[$list] = array_values(array_filter($ids, static fn (string $uuid): bool => $uuid !== ''));
+		}
+
+		return $character;
+	}//end candidate()
+}//end class

@@ -42,6 +42,12 @@ use Psr\Log\LoggerInterface;
  * @spec openspec/specs/pdf-export/spec.md
  */
 class DocuDeskPdfRenderer {
+
+	/**
+	 * The document-app namespace larpinq's templates live under. Frozen on the
+	 * old app id: it is a literal already written into stored templates.
+	 */
+	public const TEMPLATE_NAMESPACE = 'larpingapp';
 	/**
 	 * Constructor for DocuDeskPdfRenderer.
 	 *
@@ -119,6 +125,77 @@ class DocuDeskPdfRenderer {
 			return null;
 		}
 	}//end getTemplate()
+
+	/**
+	 * The character-sheet templates, as id and name, for the download dialog.
+	 *
+	 * Asked server-side so the frontend never names the document app's id,
+	 * which moved from docudesk to filinq. Templates live under the frozen
+	 * namespace `larpingapp` (pdf-export spec).
+	 *
+	 * @return array<int,array{id:string,name:string}> The templates; [] when none can be read.
+	 *
+	 * @psalm-suppress MixedMethodCall DocuDesk is an optional cross-app dependency.
+	 * @psalm-suppress MixedAssignment DocuDesk is an optional cross-app dependency.
+	 *
+	 * @spec openspec/specs/pdf-export/spec.md
+	 */
+	public function listTemplates(): array {
+		try {
+			$templateService = FleetAppId::getService($this->container, 'filinq', 'Service\TemplateService');
+			if ($templateService === null) {
+				return [];
+			}
+
+			$rows = $templateService->getTemplatesByNamespace(self::TEMPLATE_NAMESPACE);
+		} catch (\Exception $exception) {
+			return [];
+		}
+
+		if (is_array($rows) === false) {
+			return [];
+		}
+
+		$templates = [];
+		foreach ($rows as $row) {
+			$template = $this->templateSummary(row: $row);
+			if ($template !== null) {
+				$templates[] = $template;
+			}
+		}
+
+		return $templates;
+	}//end listTemplates()
+
+	/**
+	 * One template row reduced to id and name, or null without an id.
+	 *
+	 * @param mixed $row A template as the document app returns it.
+	 *
+	 * @return array{id:string,name:string}|null The summary.
+	 */
+	private function templateSummary(mixed $row): ?array {
+		if (is_array($row) === false) {
+			return null;
+		}
+
+		$self = $row['@self'] ?? [];
+		if (is_array($self) === false) {
+			$self = [];
+		}
+
+		$id = $row['id'] ?? ($row['uuid'] ?? ($self['id'] ?? ''));
+		if (is_string($id) === false || $id === '') {
+			return null;
+		}
+
+		$name = $row['name'] ?? ($row['title'] ?? '');
+		if (is_string($name) === false || $name === '') {
+			$name = $id;
+		}
+
+		return ['id' => $id, 'name' => $name];
+	}//end templateSummary()
 
 	/**
 	 * Render a PDF for a template and data context via DocuDesk's PdfService.
