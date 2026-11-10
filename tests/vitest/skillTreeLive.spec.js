@@ -61,13 +61,14 @@ function recordingStore({ objectTypes, subscribe = true, fail = false, onSubscri
 }
 
 /**
- * A fake component with the method under test.
+ * A fake component with the view's methods.
  *
  * @param {object} state The starting state.
  * @return {object} The fake component.
  */
 function view(state = {}) {
 	const self = {
+		...SkillTree.methods,
 		liveActive: false,
 		liveEpoch: 0,
 		liveHandles: [],
@@ -150,5 +151,52 @@ describe('SkillTree live subscriptions', () => {
 		expect(await run(view({ liveHandles: ['old'] }))).toEqual({ liveActive: false, liveHandles: [], liveUnwatch: null })
 		expect(calls).toEqual([['subscribe', 'skill']])
 		expect(warn.mock.calls).toEqual([['[larpinq] skill-tree live subscription failed:', 'no push']])
+	})
+})
+
+describe('SkillTree load', () => {
+	it('loads every collection, and degrades a failure to an empty tree', async () => {
+		const fetched = []
+		const answers = {
+			skill: [{ id: 's1' }],
+			character: 'not a list',
+			ability: [{ id: 'a1', name: 'Bash' }],
+			condition: [],
+			effect: [{ id: 'e1', name: 'Glow' }],
+		}
+		store = {
+			fetchCollection: async (type, params) => {
+				fetched.push([type, params])
+				return answers[type]
+			},
+		}
+		const self = view({ loading: null, skills: ['old'], characters: ['old'] })
+		const loading = []
+		const done = SkillTree.methods.load.call(self)
+		loading.push(self.loading)
+		await done
+		loading.push(self.loading)
+		expect(loading).toEqual([true, false])
+		expect(fetched.map(([type, params]) => [type, params._limit])).toEqual([
+			['skill', 1000],
+			['character', 1000],
+			['ability', 1000],
+			['condition', 1000],
+			['effect', 1000],
+		])
+		expect([self.skills, self.characters, self.abilityNames, self.conditionNames, self.effectNames]).toEqual([
+			[{ id: 's1' }],
+			[],
+			{ a1: 'Bash' },
+			{},
+			{ e1: 'Glow' },
+		])
+
+		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+		store = { fetchCollection: async () => { throw new Error('down') } }
+		const failed = view({ loading: null, skills: ['kept'] })
+		await SkillTree.methods.load.call(failed)
+		expect([failed.loading, failed.skills]).toEqual([false, ['kept']])
+		expect(warn.mock.calls.map(([message]) => message)).toEqual(['[larpinq] skill-tree data unavailable'])
 	})
 })
