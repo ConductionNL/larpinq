@@ -81,6 +81,115 @@ class PortalContributionProvider {
 	private const GROUP_CLUB = 'Verenigingen';
 
 	/**
+	 * The columns of the player's own character rows the portal may show:
+	 * default-deny, so every game-master-only and identity column stays out.
+	 *
+	 * @var array<int, string>
+	 */
+	private const CHARACTER_FIELDS = [
+		'name',
+		'ocName',
+		'description',
+		'type',
+		'faith',
+		'gold',
+		'silver',
+		'copper',
+		'card',
+		'itemsAndMoney',
+		'slNotesPublic',
+		'background',
+		'skills',
+		'items',
+		'conditions',
+		'events',
+		'setting',
+	];
+
+	/**
+	 * The columns of the player's own registrations the portal may show:
+	 * what the player needs to see and pay.
+	 *
+	 * @var array<int, string>
+	 */
+	private const REGISTRATION_FIELDS = [
+		'event',
+		'character',
+		'status',
+		'ticketType',
+		'paymentState',
+		'payBy',
+		'paymentReference',
+		'paymentLink',
+		'submittedAt',
+	];
+
+	/**
+	 * The public read lists: events plus the skill, item and condition
+	 * catalogs, each projected to its non-sensitive reference columns.
+	 *
+	 * @var array<int, array{id: string, schema: string, label: string, fields: array<int, string>}>
+	 */
+	private const PUBLIC_CATALOGS = [
+		[
+			'id' => 'events',
+			'schema' => 'event',
+			'label' => 'Events',
+			'fields' => [
+				'name',
+				'description',
+				'startDate',
+				'endDate',
+				'location',
+				'setting',
+			],
+		],
+		[
+			'id' => 'skillCatalog',
+			'schema' => 'skill',
+			'label' => 'Skills',
+			'fields' => [
+				'name',
+				'description',
+				'effect',
+				'effects',
+				'requiredSkills',
+				'requiredStats',
+				'requiredConditions',
+				'requiredEffects',
+				'requiredScore',
+				'setting',
+			],
+		],
+		[
+			'id' => 'itemCatalog',
+			'schema' => 'item',
+			'label' => 'Items',
+			'fields' => [
+				'name',
+				'description',
+				'effect',
+				'effects',
+				'unique',
+				'setting',
+			],
+		],
+		[
+			'id' => 'conditionCatalog',
+			'schema' => 'condition',
+			'label' => 'Conditions',
+			'fields' => [
+				'name',
+				'description',
+				'effect',
+				'effects',
+				'unique',
+				'setting',
+			],
+		],
+	];
+
+	/**
 	 * The audiences this provider contributes to (contract v2, preferred).
 	 *
 	 * The registry probes for this method first. Larpinq serves exactly one
@@ -283,17 +392,7 @@ class PortalContributionProvider {
 			'scopeClaim' => 'ownerRef',
 			'label' => 'Mijn aanmeldingen',
 			'listable' => true,
-			'fields' => [
-				'event',
-				'character',
-				'status',
-				'ticketType',
-				'paymentState',
-				'payBy',
-				'paymentReference',
-				'paymentLink',
-				'submittedAt',
-			],
+			'fields' => self::REGISTRATION_FIELDS,
 			'columns' => [
 				['field' => 'event', 'label' => 'Evenement'],
 				['field' => 'status', 'label' => 'Status', 'render' => 'badge'],
@@ -397,25 +496,7 @@ class PortalContributionProvider {
 			'scopeClaim' => 'ownerRef',
 			'label' => 'My characters',
 			'listable' => true,
-			'fields' => [
-				'name',
-				'ocName',
-				'description',
-				'type',
-				'faith',
-				'gold',
-				'silver',
-				'copper',
-				'card',
-				'itemsAndMoney',
-				'slNotesPublic',
-				'background',
-				'skills',
-				'items',
-				'conditions',
-				'events',
-				'setting',
-			],
+			'fields' => self::CHARACTER_FIELDS,
 		];
 	}//end characterCollection()
 
@@ -432,77 +513,27 @@ class PortalContributionProvider {
 	 * @spec openspec/changes/portal-contribution/specs/portal-contribution/spec.md
 	 */
 	private function catalogCollections(): array {
-		return [
-			[
-				'id' => 'events',
-				'register' => self::REGISTER,
-				'schema' => 'event',
-				'scopeField' => '',
-				'label' => 'Events',
-				'listable' => true,
-				'fields' => [
-					'name',
-					'description',
-					'startDate',
-					'endDate',
-					'location',
-					'setting',
-				],
-			],
-			[
-				'id' => 'skillCatalog',
-				'register' => self::REGISTER,
-				'schema' => 'skill',
-				'scopeField' => '',
-				'label' => 'Skills',
-				'listable' => true,
-				'fields' => [
-					'name',
-					'description',
-					'effect',
-					'effects',
-					'requiredSkills',
-					'requiredStats',
-					'requiredConditions',
-					'requiredEffects',
-					'requiredScore',
-					'setting',
-				],
-			],
-			[
-				'id' => 'itemCatalog',
-				'register' => self::REGISTER,
-				'schema' => 'item',
-				'scopeField' => '',
-				'label' => 'Items',
-				'listable' => true,
-				'fields' => [
-					'name',
-					'description',
-					'effect',
-					'effects',
-					'unique',
-					'setting',
-				],
-			],
-			[
-				'id' => 'conditionCatalog',
-				'register' => self::REGISTER,
-				'schema' => 'condition',
-				'scopeField' => '',
-				'label' => 'Conditions',
-				'listable' => true,
-				'fields' => [
-					'name',
-					'description',
-					'effect',
-					'effects',
-					'unique',
-					'setting',
-				],
-			],
-		];
+		return array_map([$this, 'publicList'], self::PUBLIC_CATALOGS);
 	}//end catalogCollections()
+
+	/**
+	 * One public, unscoped read list in this register.
+	 *
+	 * @param array{id: string, schema: string, label: string, fields: array<int, string>} $catalog One PUBLIC_CATALOGS entry.
+	 *
+	 * @return array<string, mixed> The declarative collection.
+	 */
+	private function publicList(array $catalog): array {
+		return [
+			'id' => $catalog['id'],
+			'register' => self::REGISTER,
+			'schema' => $catalog['schema'],
+			'scopeField' => '',
+			'label' => $catalog['label'],
+			'listable' => true,
+			'fields' => $catalog['fields'],
+		];
+	}//end publicList()
 
 	/**
 	 * The whitelisted create-action the `player` audience may perform.
