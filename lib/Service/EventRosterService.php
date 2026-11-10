@@ -217,26 +217,34 @@ class EventRosterService {
 	 * request body. An existing record for the same (event, character) pair is
 	 * updated in place rather than duplicated.
 	 *
-	 * @param AttendanceCheckIn $checkIn The event, character, status and acting game master.
+	 * @param string $eventId The event UUID.
+	 * @param string $characterId The character UUID.
+	 * @param string $status The attendance status (already validated).
+	 * @param string $actingUid The acting game master's uid.
 	 *
 	 * @return array<string,mixed>|null The persisted record, or null when
 	 *                                  attendance storage is unavailable.
 	 *
 	 * @spec openspec/specs/event-checkin-roster/spec.md
 	 */
-	public function recordAttendance(AttendanceCheckIn $checkIn): ?array {
+	public function recordAttendance(
+		string $eventId,
+		string $characterId,
+		string $status,
+		string $actingUid,
+	): ?array {
 		// Server-stamped provenance — any client-supplied checkedInAt/checkedInBy
 		// is discarded by the caller (never read) and re-derived here.
 		$payload = [
-			'event' => $checkIn->eventId,
-			'character' => $checkIn->characterId,
-			'status' => $checkIn->status,
+			'event' => $eventId,
+			'character' => $characterId,
+			'status' => $status,
 			'checkedInAt' => (new DateTimeImmutable())->format(DateTimeInterface::ATOM),
-			'checkedInBy' => $checkIn->actingUid,
+			'checkedInBy' => $actingUid,
 		];
 
 		try {
-			[$existing, $available] = $this->loadAttendance(eventId: $checkIn->eventId);
+			[$existing, $available] = $this->loadAttendance(eventId: $eventId);
 			if ($available === false) {
 				return null;
 			}
@@ -244,7 +252,7 @@ class EventRosterService {
 			return $this->objectFetcher->saveObject(
 				objectType: 'attendance',
 				data: $payload,
-				uuid: $this->existingRecordId(existing: $existing, characterId: $checkIn->characterId)
+				uuid: $this->existingRecordId(existing: $existing, characterId: $characterId)
 			);
 		} catch (\Exception $exception) {
 			return null;
