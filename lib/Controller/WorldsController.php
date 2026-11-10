@@ -73,12 +73,7 @@ class WorldsController extends Controller {
 	 */
 	#[NoAdminRequired]
 	public function access(): JSONResponse {
-		$user = $this->callerAccess->user();
-		if ($user === null) {
-			return new JSONResponse(data: ['error' => 'Not authenticated'], statusCode: Http::STATUS_UNAUTHORIZED);
-		}
-
-		return new JSONResponse(data: ['allowed' => $this->callerAccess->isGameMasterOrAdmin(uid: $user->getUID())]);
+		return $this->callerAccess->gameMasterAnswer();
 	}//end access()
 
 	/**
