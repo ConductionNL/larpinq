@@ -564,4 +564,16 @@ final class PortalContributionProviderTest extends TestCase {
 
 		return array_merge($base, $fragmentProps);
 	}//end mergedCharacterProperties()
+
+	/**
+	 * The whole player manifest, key order included, equals the recorded
+	 * golden in fixtures/player-contribution.golden.json.
+	 *
+	 * @return void
+	 */
+	public function testPlayerManifestMatchesGolden(): void {
+		$golden = json_decode((string)file_get_contents(__DIR__ . '/fixtures/player-contribution.golden.json'), true);
+
+		$this->assertSame(expected: $golden, actual: $this->provider->getContribution(self::PLAYER_SUBJECT));
+	}//end testPlayerManifestMatchesGolden()
 }//end class
