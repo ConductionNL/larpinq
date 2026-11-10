@@ -120,11 +120,7 @@ class EventRosterService {
 	public function buildRunsheetContext(array $event, string $eventId): array {
 		$lookup = $this->runsheetLookup(eventId: $eventId);
 		$characters = $this->castCharacters(eventId: $eventId);
-		$cast = [];
-		foreach ($characters as $character) {
-			$cast[] = $this->buildCastEntry(character: $character, lookup: $lookup);
-		}
-
+		$cast = array_map(fn (array $character): array => $this->buildCastEntry(character: $character, lookup: $lookup), $characters);
 		$this->sortByName(rows: $cast);
 
 		return [
