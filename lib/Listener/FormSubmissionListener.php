@@ -130,21 +130,60 @@ class FormSubmissionListener implements IEventListener {
 
 		$eventId = (string)($events[0]['id'] ?? '');
 		$uid = (string)($submission['userId'] ?? '');
-		if ($uid === '' || str_starts_with($uid, 'anon-user-') === true || $this->users->userExists($uid) === false) {
+		if ($this->isAccount(uid: $uid) === false) {
 			$this->logger->info('Larpinq: an anonymous sign-up for event {event} is not a registration.', ['event' => $eventId]);
 			return;
 		}
 
+		if ($this->hasRegistration(eventId: $eventId, uid: $uid) === true) {
+			$this->logger->info('Larpinq: {user} signed up for event {event} again; the first registration stands.', ['user' => $uid, 'event' => $eventId]);
+			return;
+		}
+
+		$this->fetcher->saveObjectWithAppAuthority(objectType: 'registration', data: $this->newRegistration(submission: $submission, eventId: $eventId));
+	}//end intake()
+
+	/**
+	 * Whether a submitter uid is a real account here (not empty, not a Forms
+	 * anonymous id, and known to Nextcloud).
+	 *
+	 * @param string $uid The submitter uid.
+	 *
+	 * @return bool True for a real account.
+	 */
+	private function isAccount(string $uid): bool {
+		return $uid !== '' && str_starts_with($uid, 'anon-user-') === false && $this->users->userExists($uid) === true;
+	}//end isAccount()
+
+	/**
+	 * Whether this account already has a registration for the event.
+	 *
+	 * @param string $eventId The event.
+	 * @param string $uid The submitter uid.
+	 *
+	 * @return bool True when one exists.
+	 */
+	private function hasRegistration(string $eventId, string $uid): bool {
 		$existing = $this->fetcher->getObjectsWithAppAuthority(
 			objectType: 'registration',
 			filters: ['event' => $eventId, 'submitterUid' => $uid],
 			limit: 1
 		);
-		if ($existing !== []) {
-			$this->logger->info('Larpinq: {user} signed up for event {event} again; the first registration stands.', ['user' => $uid, 'event' => $eventId]);
-			return;
-		}
 
+		return $existing !== [];
+	}//end hasRegistration()
+
+	/**
+	 * The pending registration a submission becomes, linked to the
+	 * submitter's player when there is one.
+	 *
+	 * @param array<string, mixed> $submission The submission as Forms serialises it.
+	 * @param string $eventId The event.
+	 *
+	 * @return array<string, mixed> The registration to save.
+	 */
+	private function newRegistration(array $submission, string $eventId): array {
+		$uid = (string)($submission['userId'] ?? '');
 		$registration = [
 			'event' => $eventId,
 			'submitterUid' => $uid,
@@ -157,6 +196,6 @@ class FormSubmissionListener implements IEventListener {
 			$registration['player'] = (string)($players[0]['id'] ?? '');
 		}
 
-		$this->fetcher->saveObjectWithAppAuthority(objectType: 'registration', data: $registration);
-	}//end intake()
+		return $registration;
+	}//end newRegistration()
 }//end class
