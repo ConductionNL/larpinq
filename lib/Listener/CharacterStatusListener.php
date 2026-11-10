@@ -88,11 +88,7 @@ class CharacterStatusListener implements IEventListener {
 		}
 
 		$errors = $this->guard->check(candidate: (array)$entity->getObject(), old: $previous);
-		if ($errors !== null) {
-			$event->stopPropagation();
-			// @phpstan-ignore-next-line
-			$event->setErrors($errors);
-		}
+		PreWriteEvent::refuseOnErrors(event: $event, errors: $errors);
 	}//end handle()
 
 	/**

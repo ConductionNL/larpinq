@@ -115,11 +115,7 @@ class FactionMembershipListener implements IEventListener {
 			$errors = self::UNVERIFIABLE;
 		}
 
-		if ($errors !== null) {
-			$event->stopPropagation();
-			// @phpstan-ignore-next-line
-			$event->setErrors($errors);
-		}
+		PreWriteEvent::refuseOnErrors(event: $event, errors: $errors);
 	}//end handle()
 
 	/**
@@ -132,7 +128,7 @@ class FactionMembershipListener implements IEventListener {
 	 * @psalm-suppress MixedMethodCall OpenRegister entity is an optional dependency.
 	 */
 	private function collectVeto(Event $event): ?array {
-		[$entity, $old] = $this->entitiesOf(event: $event);
+		[$entity, $old] = PreWriteEvent::entitiesOf(event: $event);
 		$kind = $this->kindOf(entity: $entity);
 		if ($kind === null) {
 			return null;
@@ -271,26 +267,4 @@ class FactionMembershipListener implements IEventListener {
 
 		return null;
 	}//end kindForSchema()
-
-	/**
-	 * The new entity and the stored one (null on a create) of a pre-write event.
-	 * ObjectUpdatingEvent has no getObject(), so the accessor follows the class.
-	 *
-	 * @param Event $event The Creating or Updating event.
-	 *
-	 * @return array{0:object,1:object|null} The new and the old entity.
-	 *
-	 * @psalm-suppress MixedMethodCall  OpenRegister event classes are optional dependencies.
-	 * @psalm-suppress MixedAssignment  OpenRegister event classes are optional dependencies.
-	 * @psalm-suppress UndefinedMethod  The OpenRegister event accessors are resolved at runtime.
-	 */
-	private function entitiesOf(Event $event): array {
-		if ($event instanceof \OCA\OpenRegister\Event\ObjectUpdatingEvent) {
-			// @phpstan-ignore-next-line
-			return [$event->getNewObject(), $event->getOldObject()];
-		}
-
-		// @phpstan-ignore-next-line
-		return [$event->getObject(), null];
-	}//end entitiesOf()
 }//end class
