@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace OCA\Larpinq\Controller;
 
 use OCA\Larpinq\Support\AppIdentity;
+use OCA\Larpinq\Service\AttendanceCheckIn;
 use OCA\Larpinq\Service\DocuDeskPdfRenderer;
 use OCA\Larpinq\Service\EventRosterService;
 use OCP\AppFramework\Controller;
@@ -240,7 +241,9 @@ class EventsController extends Controller {
 			return $refused;
 		}
 
-		$saved = $this->rosterService->recordAttendance(eventId: $id, characterId: $characterId, status: $status, actingUid: $actingUid);
+		$saved = $this->rosterService->recordAttendance(
+			checkIn: new AttendanceCheckIn(eventId: $id, characterId: $characterId, status: $status, actingUid: $actingUid)
+		);
 
 		return $this->attendanceResponse(saved: $saved);
 	}//end recordAttendance()
