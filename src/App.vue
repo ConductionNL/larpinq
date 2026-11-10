@@ -112,13 +112,21 @@ function hasFilledParam(params) {
  * @return {string|null} The index path, `/` at the root.
  */
 function detailRouteParent(route) {
-	if (!route || !/:|\//.test(route.path)) {
-		return null
-	}
-	if (!hasFilledParam(route.params || {})) {
+	if (!isDetailRoute(route)) {
 		return null
 	}
 	return parentIndexPath(route) || '/'
+}
+
+/**
+ * Whether a route is a detail route: it has a path with a separator and at
+ * least one filled route param.
+ *
+ * @param {object|undefined} route The current route.
+ * @return {boolean} True for a detail route.
+ */
+function isDetailRoute(route) {
+	return Boolean(route) && /:|\//.test(route.path) && hasFilledParam(route.params || {})
 }
 
 /**
