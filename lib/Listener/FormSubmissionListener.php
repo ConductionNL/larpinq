@@ -123,12 +123,11 @@ class FormSubmissionListener implements IEventListener {
 	 * @return void
 	 */
 	private function intake(int $formId, array $submission): void {
-		$events = $this->fetcher->getObjectsWithAppAuthority(objectType: 'event', filters: ['signupForm' => $formId], limit: 1);
-		if ($events === []) {
+		$eventId = $this->signupEventId(formId: $formId);
+		if ($eventId === null) {
 			return;
 		}
 
-		$eventId = (string)($events[0]['id'] ?? '');
 		$uid = (string)($submission['userId'] ?? '');
 		if ($this->isAccount(uid: $uid) === false) {
 			$this->logger->info('Larpinq: an anonymous sign-up for event {event} is not a registration.', ['event' => $eventId]);
@@ -142,6 +141,22 @@ class FormSubmissionListener implements IEventListener {
 
 		$this->fetcher->saveObjectWithAppAuthority(objectType: 'registration', data: $this->newRegistration(submission: $submission, eventId: $eventId));
 	}//end intake()
+
+	/**
+	 * The event that takes its sign-ups from this form.
+	 *
+	 * @param int $formId The form.
+	 *
+	 * @return string|null The event id, or null when no event uses the form.
+	 */
+	private function signupEventId(int $formId): ?string {
+		$events = $this->fetcher->getObjectsWithAppAuthority(objectType: 'event', filters: ['signupForm' => $formId], limit: 1);
+		if ($events === []) {
+			return null;
+		}
+
+		return (string)($events[0]['id'] ?? '');
+	}//end signupEventId()
 
 	/**
 	 * Whether a submitter uid is a real account here (not empty, not a Forms
