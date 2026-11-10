@@ -27,7 +27,6 @@ namespace OCA\Larpinq\Tests\Unit\Controller;
 use OCA\Larpinq\Controller\CallerAccess;
 use OCA\Larpinq\Controller\EventsController;
 use OCA\Larpinq\Service\DocuDeskPdfRenderer;
-use OCA\Larpinq\Service\AttendanceCheckIn;
 use OCA\Larpinq\Service\EventRosterService;
 use OCP\AppFramework\Http\DataDownloadResponse;
 use OCP\AppFramework\Http\JSONResponse;
@@ -212,8 +211,8 @@ class EventsControllerGoldenTest extends TestCase {
 			}
 		);
 		$roster->method('recordAttendance')->willReturnCallback(
-			function (AttendanceCheckIn $checkIn) use ($case, &$calls): ?array {
-				$calls[] = ['recordAttendance', $checkIn->eventId, $checkIn->characterId, $checkIn->status, $checkIn->actingUid];
+			function (string $eventId, string $characterId, string $status, string $actingUid) use ($case, &$calls): ?array {
+				$calls[] = ['recordAttendance', $eventId, $characterId, $status, $actingUid];
 				return $case['saved'];
 			}
 		);
