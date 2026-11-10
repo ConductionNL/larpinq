@@ -217,17 +217,30 @@ class TicketChoiceService {
 		}
 
 		try {
-			$codeRow = $this->catalog->matchCode(
-				eventId: (string)($registration['event'] ?? ''),
-				code: trim($code),
-				registration: $registration,
-				keptCode: (string)($registration['accessCode'] ?? '')
-			);
-			return ['valid', $codeRow];
+			return ['valid', $this->matchedCode(registration: $registration, code: trim($code))];
 		} catch (TicketChoiceRefusedException $e) {
 			return ['invalid', null];
 		}
 	}//end codeState()
+
+	/**
+	 * The code row a typed code matches for this registration.
+	 *
+	 * @param array<string, mixed> $registration The registration.
+	 * @param string $code The trimmed code.
+	 *
+	 * @return array<string, mixed>|null The matched code.
+	 *
+	 * @throws TicketChoiceRefusedException When the code does not work.
+	 */
+	private function matchedCode(array $registration, string $code): ?array {
+		return $this->catalog->matchCode(
+			eventId: (string)($registration['event'] ?? ''),
+			code: $code,
+			registration: $registration,
+			keptCode: (string)($registration['accessCode'] ?? '')
+		);
+	}//end matchedCode()
 
 	/**
 	 * The ticket types on sale (hidden ones only with the code), plus the one
@@ -247,15 +260,28 @@ class TicketChoiceService {
 				continue;
 			}
 
-			$ticketTypes[] = array_merge(
-				$this->catalog->summary(row: $ticket, fields: ['role']),
-				['full' => $this->places->ticketTypeFull(registration: array_merge($registration, ['ticketType' => $id]))]
-			);
+			$ticketTypes[] = $this->ticketOffer(registration: $registration, ticket: $ticket);
 		}
 
 		usort($ticketTypes, static fn (array $one, array $two): int => ($one['order'] <=> $two['order']));
 		return $ticketTypes;
 	}//end offeredTicketTypes()
+
+	/**
+	 * One offered ticket type, with whether it is full for this registration.
+	 *
+	 * @param array<string, mixed> $registration The registration.
+	 * @param array<string, mixed> $ticket The ticket type.
+	 *
+	 * @return array<string, mixed> The ticket type summary.
+	 */
+	private function ticketOffer(array $registration, array $ticket): array {
+		$id = (string)($ticket['id'] ?? '');
+		return array_merge(
+			$this->catalog->summary(row: $ticket, fields: ['role']),
+			['full' => $this->places->ticketTypeFull(registration: array_merge($registration, ['ticketType' => $id]))]
+		);
+	}//end ticketOffer()
 
 	/**
 	 * Every option of the event, each with whether it is full.
