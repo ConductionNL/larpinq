@@ -24,6 +24,7 @@ Larpinq brings live-action role-playing management natively into Nextcloud. Game
 ## Test coverage
 
 <!-- coverage:start -->
+Measured test coverage: 92.6% of statements (PHP 92.6% of 4,080 statements), at commit `706d020` on 2026-11-11. The JavaScript frontend is not in this figure, because it has no coverage measurement yet. The figures come from [`coverage-summary.json`](coverage-summary.json); refresh them with `composer coverage:publish`.
 <!-- coverage:end -->
 
 ## Screenshots
