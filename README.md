@@ -21,6 +21,11 @@ Larpinq brings live-action role-playing management natively into Nextcloud. Game
 
 > **Optional:** [OpenRegister](https://github.com/ConductionNL/openregister) — enables advanced features like audit trails, object locking, cross-object relations, and JSON-based data storage.
 
+## Test coverage
+
+<!-- coverage:start -->
+<!-- coverage:end -->
+
 ## Screenshots
 
 <table>
