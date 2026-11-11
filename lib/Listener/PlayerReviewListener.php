@@ -24,6 +24,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Listener;
 
+use OCA\OpenRegister\Event\ObjectUpdatingEvent;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\IAppConfig;
@@ -107,14 +108,14 @@ class PlayerReviewListener implements IEventListener {
 	/**
 	 * The signed-in user, when the update is of a stored player.
 	 *
-	 * @param Event $event The pre-update event.
+	 * @param ObjectUpdatingEvent $event The pre-update event.
 	 *
 	 * @return IUser|null The acting user, or null when the update is left alone.
 	 *
 	 * @psalm-suppress MixedMethodCall OpenRegister event/entity classes are optional dependencies.
 	 * @psalm-suppress MixedArgument   OpenRegister event/entity classes are optional dependencies.
 	 */
-	private function actingReviewer(Event $event): ?IUser {
+	private function actingReviewer(ObjectUpdatingEvent $event): ?IUser {
 		// @phpstan-ignore-next-line
 		$old = $event->getOldObject();
 		$user = $this->userSession->getUser();
@@ -130,13 +131,13 @@ class PlayerReviewListener implements IEventListener {
 	 * Whether the update takes the player out of review.
 	 *
 	 * @param array<string,mixed> $before The stored player.
-	 * @param Event               $event  The pre-update event carrying the player as written.
+	 * @param ObjectUpdatingEvent $event  The pre-update event carrying the player as written.
 	 *
 	 * @return bool True when `awaitingReview` goes from true to false.
 	 *
 	 * @psalm-suppress MixedMethodCall OpenRegister event/entity classes are optional dependencies.
 	 */
-	private function marksReviewed(array $before, Event $event): bool {
+	private function marksReviewed(array $before, ObjectUpdatingEvent $event): bool {
 		// @phpstan-ignore-next-line
 		$after = (array)$event->getNewObject()->getObject();
 
@@ -146,7 +147,7 @@ class PlayerReviewListener implements IEventListener {
 	/**
 	 * Merge the stamp into what other listeners changed, when there is one.
 	 *
-	 * @param Event               $event The pre-update event.
+	 * @param ObjectUpdatingEvent $event The pre-update event.
 	 * @param array<string,mixed> $stamp The review stamp.
 	 *
 	 * @return void
@@ -154,7 +155,7 @@ class PlayerReviewListener implements IEventListener {
 	 * @psalm-suppress MixedMethodCall OpenRegister event classes are optional dependencies.
 	 * @psalm-suppress MixedArgument   OpenRegister event classes are optional dependencies.
 	 */
-	private function mergeStamp(Event $event, array $stamp): void {
+	private function mergeStamp(ObjectUpdatingEvent $event, array $stamp): void {
 		if ($stamp !== []) {
 			// @phpstan-ignore-next-line
 			$event->setModifiedData(array_merge($event->getModifiedData(), $stamp));
