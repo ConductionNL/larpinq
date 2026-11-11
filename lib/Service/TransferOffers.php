@@ -90,12 +90,12 @@ class TransferOffers {
 	 * @spec openspec/specs/event-registration/spec.md
 	 */
 	public function offer(string $registrationId, string $actingUid, string $recipientUid): array {
-		$registration = $this->registration(registrationId: $registrationId);
+		$registration = RegistrationReads::registration(fetcher: $this->fetcher, registrationId: $registrationId);
 		if ($this->policy->isParticipant(registration: $registration, uid: $actingUid) === false) {
 			throw new RegistrationChangeRefusedException('Only the player can offer this registration to someone else.', 403);
 		}
 
-		$open = $this->policy->isOpen(event: $this->event(registration: $registration), now: $this->time->now());
+		$open = $this->policy->isOpen(event: RegistrationReads::event(fetcher: $this->fetcher, registration: $registration), now: $this->time->now());
 		if ((string)($registration['status'] ?? '') !== 'accepted' || $open === false) {
 			throw new RegistrationChangeRefusedException('Only an accepted registration can be handed over, before the cancel-by date.', 409);
 		}
@@ -134,7 +134,7 @@ class TransferOffers {
 	 * @spec openspec/specs/event-registration/spec.md
 	 */
 	public function accept(string $registrationId, string $actingUid): array {
-		$registration = $this->registration(registrationId: $registrationId);
+		$registration = RegistrationReads::registration(fetcher: $this->fetcher, registrationId: $registrationId);
 		if ((string)($registration['transferStatus'] ?? '') !== self::OFFERED) {
 			throw new RegistrationChangeRefusedException('There is no open offer on this registration.', 409);
 		}
@@ -176,7 +176,7 @@ class TransferOffers {
 	 * @spec openspec/specs/event-registration/spec.md
 	 */
 	public function withdraw(string $registrationId, string $actingUid): array {
-		$registration = $this->registration(registrationId: $registrationId);
+		$registration = RegistrationReads::registration(fetcher: $this->fetcher, registrationId: $registrationId);
 		$participant = $this->policy->isParticipant(registration: $registration, uid: $actingUid);
 		if ($participant === false && $this->policy->isGameMaster(uid: $actingUid) === false) {
 			throw new RegistrationChangeRefusedException('Only the player or a game master can withdraw this offer.', 403);
@@ -229,7 +229,7 @@ class TransferOffers {
 	 * @return bool True when it lapsed.
 	 */
 	private function hasLapsed(array $registration, DateTimeImmutable $now): bool {
-		if ($this->policy->isOpen(event: $this->event(registration: $registration), now: $now) === false) {
+		if ($this->policy->isOpen(event: RegistrationReads::event(fetcher: $this->fetcher, registration: $registration), now: $now) === false) {
 			return true;
 		}
 
@@ -253,36 +253,4 @@ class TransferOffers {
 	private function save(string $registrationId, array $fields): array {
 		return $this->fetcher->saveObjectWithAppAuthority(objectType: 'registration', data: $fields, uuid: $registrationId);
 	}//end save()
-
-	/**
-	 * A registration, read by larpinq (the caller's rights are checked here).
-	 *
-	 * @param string $registrationId The registration.
-	 *
-	 * @return array<string, mixed> The registration.
-	 *
-	 * @throws RegistrationChangeRefusedException When it does not exist.
-	 */
-	private function registration(string $registrationId): array {
-		try {
-			return $this->fetcher->getObject(objectType: 'registration', id: $registrationId);
-		} catch (Throwable $e) {
-			throw new RegistrationChangeRefusedException('Registration not found.', 404);
-		}
-	}//end registration()
-
-	/**
-	 * The registration's event, or an empty event when it cannot be read.
-	 *
-	 * @param array<string, mixed> $registration The registration.
-	 *
-	 * @return array<string, mixed> The event.
-	 */
-	private function event(array $registration): array {
-		try {
-			return $this->fetcher->getObject(objectType: 'event', id: (string)($registration['event'] ?? ''));
-		} catch (Throwable $e) {
-			return [];
-		}
-	}//end event()
 }//end class

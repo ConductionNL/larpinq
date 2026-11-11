@@ -91,6 +91,83 @@ const STATUS_META = {
 	'no-show': { label: 'No-show', variant: 'error' },
 }
 
+/**
+ * Fetch the roster of an event from the OR-delegated endpoint.
+ *
+ * @param {string} eventId The event UUID.
+ * @return {Promise<object>} The roster body.
+ * @throws {Error} When the server answers with an error status.
+ */
+async function fetchRosterData(eventId) {
+	const response = await fetch(
+		generateUrl('/apps/larpinq/api/events/{id}/roster', {
+			id: eventId,
+		}),
+		{ headers: ocsHeaders() },
+	)
+	if (!response.ok) {
+		throw new Error(`roster fetch failed: ${response.status}`)
+	}
+	return await response.json()
+}
+
+/**
+ * Keep a fetched roster on the view.
+ *
+ * @param {object} view The roster view.
+ * @param {object} data The roster body.
+ * @return {void}
+ */
+function applyRoster(view, data) {
+	view.participants = Array.isArray(data.participants)
+		? data.participants
+		: []
+	view.attendanceAvailable = data.attendanceAvailable !== false
+	view.isGm = data.isGm === true
+	view.loadFailed = false
+}
+
+/**
+ * Record one participant's attendance status.
+ *
+ * @param {string} eventId The event UUID.
+ * @param {object} mark The `{character, status}` to record.
+ * @return {Promise<object>} The stored record.
+ * @throws {Error} When the server answers with an error status.
+ */
+async function postAttendance(eventId, mark) {
+	const response = await fetch(
+		generateUrl('/apps/larpinq/api/events/{id}/attendance', {
+			id: eventId,
+		}),
+		{
+			method: 'POST',
+			headers: ocsJsonHeaders(),
+			body: JSON.stringify(mark),
+		},
+	)
+	if (!response.ok) {
+		throw new Error(`attendance write failed: ${response.status}`)
+	}
+	return await response.json()
+}
+
+/**
+ * The row fields a recorded status sets: the stored status (or the one
+ * asked for) and the check-in stamps.
+ *
+ * @param {object} saved The stored record.
+ * @param {string} status The status asked for.
+ * @return {{status: string, checkedInAt: string, checkedInBy: string}} The fields.
+ */
+function savedRowFields(saved, status) {
+	return {
+		status: saved.status || status,
+		checkedInAt: saved.checkedInAt || '',
+		checkedInBy: saved.checkedInBy || '',
+	}
+}
+
 export default {
 	name: 'EventRoster',
 
@@ -196,22 +273,7 @@ export default {
 			}
 			this.loading = true
 			try {
-				const response = await fetch(
-					generateUrl('/apps/larpinq/api/events/{id}/roster', {
-						id: this.eventId,
-					}),
-					{ headers: ocsHeaders() },
-				)
-				if (!response.ok) {
-					throw new Error(`roster fetch failed: ${response.status}`)
-				}
-				const data = await response.json()
-				this.participants = Array.isArray(data.participants)
-					? data.participants
-					: []
-				this.attendanceAvailable = data.attendanceAvailable !== false
-				this.isGm = data.isGm === true
-				this.loadFailed = false
+				applyRoster(this, await fetchRosterData(this.eventId))
 			} catch (error) {
 				// Graceful degradation — never break the event page.
 				this.participants = []
@@ -236,23 +298,11 @@ export default {
 		async setStatus(row, status) {
 			this.saving = row.character
 			try {
-				const response = await fetch(
-					generateUrl('/apps/larpinq/api/events/{id}/attendance', {
-						id: this.eventId,
-					}),
-					{
-						method: 'POST',
-						headers: ocsJsonHeaders(),
-						body: JSON.stringify({ character: row.character, status }),
-					},
-				)
-				if (!response.ok) {
-					throw new Error(`attendance write failed: ${response.status}`)
-				}
-				const saved = await response.json()
-				row.status = saved.status || status
-				row.checkedInAt = saved.checkedInAt || ''
-				row.checkedInBy = saved.checkedInBy || ''
+				const saved = await postAttendance(this.eventId, {
+					character: row.character,
+					status,
+				})
+				Object.assign(row, savedRowFields(saved, status))
 			} catch (error) {
 				// eslint-disable-next-line no-console
 				console.error('[larpinq] attendance write failed', error)

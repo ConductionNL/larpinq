@@ -182,4 +182,26 @@ class FormSubmissionListenerTest extends TestCase {
 
 		$this->assertArrayNotHasKey(key: 'registration', array: $this->store->objects);
 	}//end testAFormOfNoEventIsIgnored()
+	/**
+	 * A uid that is no account here, or no uid at all, creates nothing and
+	 * logs the anonymous sign-up; a repeat logs which registration stands.
+	 *
+	 * @return void
+	 */
+	public function testUnknownAccountsCreateNothingAndTheLogNamesWhy(): void {
+		$this->listener()->handle($this->submitted(form: 12, uid: 'ghost'));
+		$this->listener()->handle($this->submitted(form: 12, uid: ''));
+		$this->listener()->handle($this->submitted(form: 12, uid: 'anna', submission: 501));
+		$this->listener()->handle($this->submitted(form: 12, uid: 'anna', submission: 502));
+
+		$this->assertCount(expectedCount: 1, haystack: $this->store->objects['registration']);
+		$this->assertSame(
+			expected: [
+				'Larpinq: an anonymous sign-up for event {event} is not a registration.',
+				'Larpinq: an anonymous sign-up for event {event} is not a registration.',
+				'Larpinq: {user} signed up for event {event} again; the first registration stands.',
+			],
+			actual: $this->logged
+		);
+	}//end testUnknownAccountsCreateNothingAndTheLogNamesWhy()
 }//end class

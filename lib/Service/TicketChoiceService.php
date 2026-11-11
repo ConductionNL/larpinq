@@ -190,51 +190,115 @@ class TicketChoiceService {
 	 * @spec openspec/specs/event-registration/spec.md
 	 */
 	public function offer(array $registration, string $code): array {
-		$eventId = (string)($registration['event'] ?? '');
-		$state = 'none';
-		$codeRow = null;
-		if (trim($code) !== '') {
-			try {
-				$codeRow = $this->catalog->matchCode(
-					eventId: $eventId,
-					code: trim($code),
-					registration: $registration,
-					keptCode: (string)($registration['accessCode'] ?? '')
-				);
-				$state = 'valid';
-			} catch (TicketChoiceRefusedException $e) {
-				$state = 'invalid';
-			}
+		[$state, $codeRow] = $this->codeState(registration: $registration, code: $code);
+
+		return [
+			'ticketTypes' => $this->offeredTicketTypes(registration: $registration, codeRow: $codeRow),
+			'options' => $this->offeredOptions(registration: $registration),
+			'code' => $state,
+			'chosen' => [
+				'ticketType' => (string)($registration['ticketType'] ?? ''),
+				'options' => $this->catalog->ids(value: $registration['options'] ?? []),
+			],
+		];
+	}//end offer()
+
+	/**
+	 * Whether the code a player typed works for their registration.
+	 *
+	 * @param array<string, mixed> $registration The registration.
+	 * @param string $code The code the player typed, or empty.
+	 *
+	 * @return array{0: string, 1: array<string, mixed>|null} The state (none|valid|invalid) and the matched code.
+	 */
+	private function codeState(array $registration, string $code): array {
+		if (trim($code) === '') {
+			return ['none', null];
 		}
 
+		try {
+			return ['valid', $this->matchedCode(registration: $registration, code: trim($code))];
+		} catch (TicketChoiceRefusedException $e) {
+			return ['invalid', null];
+		}
+	}//end codeState()
+
+	/**
+	 * The code row a typed code matches for this registration.
+	 *
+	 * @param array<string, mixed> $registration The registration.
+	 * @param string $code The trimmed code.
+	 *
+	 * @return array<string, mixed>|null The matched code.
+	 *
+	 * @throws TicketChoiceRefusedException When the code does not work.
+	 */
+	private function matchedCode(array $registration, string $code): ?array {
+		return $this->catalog->matchCode(
+			eventId: (string)($registration['event'] ?? ''),
+			code: $code,
+			registration: $registration,
+			keptCode: (string)($registration['accessCode'] ?? '')
+		);
+	}//end matchedCode()
+
+	/**
+	 * The ticket types on sale (hidden ones only with the code), plus the one
+	 * already chosen, in their order, each with whether it is full.
+	 *
+	 * @param array<string, mixed> $registration The registration.
+	 * @param array<string, mixed>|null $codeRow The matched code, or null.
+	 *
+	 * @return list<array<string, mixed>> The offered ticket types.
+	 */
+	private function offeredTicketTypes(array $registration, ?array $codeRow): array {
 		$chosen = (string)($registration['ticketType'] ?? '');
 		$ticketTypes = [];
-		foreach ($this->catalog->rows(objectType: 'tickettype', eventId: $eventId) as $ticket) {
+		foreach ($this->catalog->rows(objectType: 'tickettype', eventId: (string)($registration['event'] ?? '')) as $ticket) {
 			$id = (string)($ticket['id'] ?? '');
 			if ($id !== $chosen && $this->catalog->offered(ticket: $ticket, codeRow: $codeRow) === false) {
 				continue;
 			}
 
-			$ticketTypes[] = array_merge(
-				$this->catalog->summary(row: $ticket, fields: ['role']),
-				['full' => $this->places->ticketTypeFull(registration: array_merge($registration, ['ticketType' => $id]))]
-			);
+			$ticketTypes[] = $this->ticketOffer(registration: $registration, ticket: $ticket);
 		}
 
 		usort($ticketTypes, static fn (array $one, array $two): int => ($one['order'] <=> $two['order']));
+		return $ticketTypes;
+	}//end offeredTicketTypes()
+
+	/**
+	 * One offered ticket type, with whether it is full for this registration.
+	 *
+	 * @param array<string, mixed> $registration The registration.
+	 * @param array<string, mixed> $ticket The ticket type.
+	 *
+	 * @return array<string, mixed> The ticket type summary.
+	 */
+	private function ticketOffer(array $registration, array $ticket): array {
+		$id = (string)($ticket['id'] ?? '');
+		return array_merge(
+			$this->catalog->summary(row: $ticket, fields: ['role']),
+			['full' => $this->places->ticketTypeFull(registration: array_merge($registration, ['ticketType' => $id]))]
+		);
+	}//end ticketOffer()
+
+	/**
+	 * Every option of the event, each with whether it is full.
+	 *
+	 * @param array<string, mixed> $registration The registration.
+	 *
+	 * @return list<array<string, mixed>> The options.
+	 */
+	private function offeredOptions(array $registration): array {
 		$options = [];
-		foreach ($this->catalog->rows(objectType: 'registrationoption', eventId: $eventId) as $option) {
+		foreach ($this->catalog->rows(objectType: 'registrationoption', eventId: (string)($registration['event'] ?? '')) as $option) {
 			$full = $this->places->optionFull(option: $option, registration: $registration);
 			$options[] = array_merge($this->catalog->summary(row: $option, fields: ['category']), ['full' => $full]);
 		}
 
-		return [
-			'ticketTypes' => $ticketTypes,
-			'options' => $options,
-			'code' => $state,
-			'chosen' => ['ticketType' => $chosen, 'options' => $this->catalog->ids(value: $registration['options'] ?? [])],
-		];
-	}//end offer()
+		return $options;
+	}//end offeredOptions()
 
 	/**
 	 * The chosen ticket type, options (sorted) and code of a registration.

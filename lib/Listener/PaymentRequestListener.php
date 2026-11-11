@@ -112,12 +112,12 @@ class PaymentRequestListener implements IEventListener {
 	 * @psalm-suppress MixedMethodCall OpenRegister entity classes are optional dependencies.
 	 */
 	private function changed(object $entity, ?object $old): void {
-		$data = $this->dataOf(entity: $entity);
+		$data = PreWriteEvent::dataOf(entity: $entity);
 		$schema = $this->config->getValueString('larpinq', 'registration_schema', '');
 		if ($schema !== '' && is_callable([$entity, 'getSchema']) === true && (string)$entity->getSchema() === $schema) {
 			$before = null;
 			if ($old !== null) {
-				$before = $this->dataOf(entity: $old);
+				$before = PreWriteEvent::dataOf(entity: $old);
 			}
 
 			$this->payments->afterWrite(new: $data, old: $before, actingUid: $this->actingUid());
@@ -129,24 +129,6 @@ class PaymentRequestListener implements IEventListener {
 			$this->followUp->requestChanged(request: $data);
 		}
 	}//end changed()
-
-	/**
-	 * The object's data with its uuid as `id`.
-	 *
-	 * @param object $entity The OpenRegister object.
-	 *
-	 * @return array<string, mixed> The data.
-	 *
-	 * @psalm-suppress MixedMethodCall OpenRegister entity classes are optional dependencies.
-	 */
-	private function dataOf(object $entity): array {
-		$data = (array)$entity->getObject();
-		if (is_callable([$entity, 'getUuid']) === true && (string)$entity->getUuid() !== '') {
-			$data['id'] = (string)$entity->getUuid();
-		}
-
-		return $data;
-	}//end dataOf()
 
 	/**
 	 * The signed-in user, or an empty string for a system write.

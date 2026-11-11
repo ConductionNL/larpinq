@@ -282,4 +282,67 @@ class MigrateUserPreferencesTest extends TestCase {
 
 		$this->step->run($this->output);
 	}//end testUserEnumerationFailureIsSurvivable()
+	/**
+	 * The progress lines of each outcome: nothing to do, a count of migrated
+	 * and kept preferences, and an enumeration that fails, run twice so the
+	 * counters start again from zero.
+	 *
+	 * @return void
+	 */
+	public function testTheProgressLinesOfEachOutcome(): void {
+		$lines = [];
+		$output = $this->createMock(originalClassName: IOutput::class);
+		foreach (['info', 'warning'] as $level) {
+			$output->method($level)->willReturnCallback(
+				static function (string $message) use ($level, &$lines): void {
+					$lines[] = $level . ': ' . $message;
+				}
+			);
+		}
+
+		$users = ['alice', 'bob'];
+		$this->userManager->method('callForSeenUsers')->willReturnCallback(
+			function (Closure $callback) use (&$users): void {
+				if ($users === null) {
+					throw new RuntimeException('user backend unavailable');
+				}
+
+				foreach ($users as $uid) {
+					$user = $this->createMock(originalClassName: IUser::class);
+					$user->method('getUID')->willReturn($uid);
+					$callback($user);
+				}
+			}
+		);
+		$this->config->method('getUserKeys')->willReturnCallback(
+			static fn (string $uid, string $app): array => match ($uid) {
+				'alice' => ['a', 'b', 'c'],
+				default => [],
+			}
+		);
+		$stored = [
+			self::OLD_APP_ID => ['a' => 'v', 'b' => 'v', 'c' => ''],
+			Application::APP_ID => ['a' => '', 'b' => 'kept', 'c' => ''],
+		];
+		$this->config->method('getUserValue')->willReturnCallback(
+			static fn (string $uid, string $app, string $key): string => $stored[$app][$key]
+		);
+
+		$this->step->run($output);
+		$this->step->run($output);
+		$users = [];
+		$this->step->run($output);
+		$users = null;
+		$this->step->run($output);
+
+		self::assertSame(
+			expected: [
+				'info: MigrateUserPreferences: migrated 1 preference(s); 1 already set under larpinq.',
+				'info: MigrateUserPreferences: migrated 1 preference(s); 1 already set under larpinq.',
+				'info: MigrateUserPreferences: no stored larpingapp user preferences on this install; nothing to do.',
+				'warning: MigrateUserPreferences: user enumeration failed; preferences left under the larpingapp app id.',
+			],
+			actual: $lines
+		);
+	}//end testTheProgressLinesOfEachOutcome()
 }//end class
