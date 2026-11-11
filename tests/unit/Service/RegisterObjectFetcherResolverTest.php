@@ -23,7 +23,6 @@ use Exception;
 use OCA\Larpinq\Service\RegisterObjectFetcher;
 use OCP\App\IAppManager;
 use OCP\IAppConfig;
-use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Psr\Log\NullLogger;
@@ -46,19 +45,32 @@ class RegisterObjectFetcherResolverTest extends TestCase {
 	 *
 	 * @return void
 	 */
-	#[RunInSeparateProcess]
 	public function testEveryResolverOutcome(): void {
-		eval(
-			'namespace OCA\OpenRegister\Service;'
-			. ' class RegisterResolverService {'
-			. ' public static array $answers = []; public static array $calls = [];'
-			. ' public function resolveRegisterId(string $app, string $key) { return $this->answer($app, $key); }'
-			. ' public function resolveSchemaId(string $app, string $key) { return $this->answer($app, $key); }'
-			. ' private function answer(string $app, string $key) { self::$calls[] = $app . "." . $key;'
-			. ' $answer = self::$answers[$key] ?? ""; if ($answer instanceof \Throwable) { throw $answer; } return $answer; } }'
-		);
-		$resolverClass = 'OCA\OpenRegister\Service\RegisterResolverService';
-		$resolver = new $resolverClass();
+		// A stand-in with the resolver's API. Declaring the real OpenRegister
+		// class name would make every later test in the run see a resolver.
+		$resolver = new class {
+			public static array $answers = [];
+			public static array $calls = [];
+
+			public function resolveRegisterId(string $app, string $key): mixed {
+				return $this->answer(app: $app, key: $key);
+			}
+
+			public function resolveSchemaId(string $app, string $key): mixed {
+				return $this->answer(app: $app, key: $key);
+			}
+
+			private function answer(string $app, string $key): mixed {
+				self::$calls[] = $app . '.' . $key;
+				$answer = (self::$answers[$key] ?? '');
+				if ($answer instanceof \Throwable) {
+					throw $answer;
+				}
+
+				return $answer;
+			}
+		};
+		$resolverClass = get_class($resolver);
 
 		$cases = [
 			'both configured' => ['character_register' => 'reg-1', 'character_schema' => 7],
@@ -98,7 +110,7 @@ class RegisterObjectFetcherResolverTest extends TestCase {
 	}//end testEveryResolverOutcome()
 
 	/**
-	 * Resolve `character` through a fetcher whose container holds the resolver.
+	 * Resolve `character` through the resolver, as resolveRegisterAndSchema() does when OpenRegister's is available.
 	 *
 	 * @param object $resolver The resolver stand-in.
 	 *
@@ -115,10 +127,10 @@ class RegisterObjectFetcherResolverTest extends TestCase {
 			config: $config,
 			logger: new NullLogger()
 		);
-		$resolve = new ReflectionMethod(objectOrMethod: $fetcher, method: 'resolveRegisterAndSchema');
+		$resolve = new ReflectionMethod(objectOrMethod: $fetcher, method: 'resolveThroughResolver');
 
 		try {
-			return $resolve->invoke($fetcher, 'character');
+			return $resolve->invoke($fetcher, $resolver, 'character');
 		} catch (Exception $e) {
 			return [get_class($e), $e->getMessage(), $e->getPrevious()?->getMessage()];
 		}
