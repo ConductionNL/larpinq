@@ -20,9 +20,6 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Listener;
 
-use DateTimeImmutable;
-use DateTimeInterface;
-use OCA\Larpinq\Support\AppIdentity;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\IAppConfig;
@@ -84,39 +81,61 @@ class XpAwardProvenanceListener implements IEventListener {
 	 */
 	public function handle(Event $event): void {
 		if ($event instanceof \OCA\OpenRegister\Event\ObjectUpdatingEvent) {
-			// @phpstan-ignore-next-line
-			$old = $event->getOldObject();
-			// @phpstan-ignore-next-line
-			if ($old === null || $this->isAward(entity: $event->getNewObject()) === false) {
-				return;
-			}
-
-			$kept = array_intersect_key((array)$old->getObject(), array_flip(self::FIELDS));
-			$kept = array_filter($kept, static fn ($value): bool => $value !== null && $value !== '');
-			if ($kept !== []) {
-				// @phpstan-ignore-next-line
-				$event->setModifiedData($kept);
-			}
-
+			$this->keepProvenance(event: $event);
 			return;
 		}
 
 		if ($event instanceof \OCA\OpenRegister\Event\ObjectCreatingEvent) {
-			$user = $this->userSession->getUser();
-			// @phpstan-ignore-next-line
-			if ($user === null || $this->isAward(entity: $event->getObject()) === false) {
-				return;
-			}
-
-			// @phpstan-ignore-next-line
-			$event->setModifiedData(
-				[
-					'awardedBy' => $user->getUID(),
-					'awardedAt' => (new DateTimeImmutable())->format(DateTimeInterface::ATOM),
-				]
-			);
+			$this->stampProvenance(event: $event);
 		}
 	}//end handle()
+
+	/**
+	 * On update, write the stored provenance back over what the client sent.
+	 *
+	 * @param Event $event The pre-update event.
+	 *
+	 * @return void
+	 *
+	 * @psalm-suppress MixedMethodCall  OpenRegister event/entity classes are optional dependencies.
+	 * @psalm-suppress MixedAssignment  OpenRegister event/entity classes are optional dependencies.
+	 * @psalm-suppress UndefinedMethod  The OpenRegister event accessors are resolved at runtime.
+	 */
+	private function keepProvenance(Event $event): void {
+		// @phpstan-ignore-next-line
+		$old = $event->getOldObject();
+		// @phpstan-ignore-next-line
+		if ($old === null || $this->isAward(entity: $event->getNewObject()) === false) {
+			return;
+		}
+
+		$kept = WriteStamp::stored(object: (array)$old->getObject(), fields: self::FIELDS);
+		if ($kept !== []) {
+			// @phpstan-ignore-next-line
+			$event->setModifiedData($kept);
+		}
+	}//end keepProvenance()
+
+	/**
+	 * On create, stamp the acting user and the time of the write.
+	 *
+	 * @param Event $event The pre-create event.
+	 *
+	 * @return void
+	 *
+	 * @psalm-suppress MixedMethodCall  OpenRegister event/entity classes are optional dependencies.
+	 * @psalm-suppress UndefinedMethod  The OpenRegister event accessors are resolved at runtime.
+	 */
+	private function stampProvenance(Event $event): void {
+		$user = $this->userSession->getUser();
+		// @phpstan-ignore-next-line
+		if ($user === null || $this->isAward(entity: $event->getObject()) === false) {
+			return;
+		}
+
+		// @phpstan-ignore-next-line
+		$event->setModifiedData(WriteStamp::now(fields: self::FIELDS, uid: $user->getUID()));
+	}//end stampProvenance()
 
 	/**
 	 * Whether an entity is an XP award.
@@ -124,14 +143,8 @@ class XpAwardProvenanceListener implements IEventListener {
 	 * @param object $entity The OpenRegister object entity.
 	 *
 	 * @return bool True for the xpAward schema.
-	 *
-	 * @psalm-suppress MixedMethodCall OpenRegister entity classes are optional dependencies.
 	 */
 	private function isAward(object $entity): bool {
-		$schema = $this->config->getValueString(AppIdentity::APP_ID, 'xpaward_schema', '');
-
-		return $schema !== ''
-			&& is_callable([$entity, 'getSchema']) === true
-			&& (string)$entity->getSchema() === $schema;
+		return (new ConfiguredSchema(config: $this->config, key: 'xpaward_schema'))->matches(entity: $entity);
 	}//end isAward()
 }//end class
