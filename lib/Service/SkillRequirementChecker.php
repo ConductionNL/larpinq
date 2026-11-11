@@ -77,86 +77,109 @@ class SkillRequirementChecker {
 	 * @spec openspec/specs/skill-requirement-enforcement/spec.md
 	 */
 	public function check(SkillUnderCheck $subject, array $context): array {
+		$scan = new RequirementScan(subject: $subject, context: $context);
+
 		return array_merge(
-			$this->checkRequiredSkills(subject: $subject, context: $context),
-			$this->checkRequiredStats(subject: $subject, context: $context),
-			$this->checkMemberships(subject: $subject, context: $context)
+			$this->checkRequiredSkills(scan: $scan),
+			$this->checkRequiredStats(scan: $scan),
+			$this->checkMemberships(scan: $scan)
 		);
 	}//end check()
 
 	/**
 	 * Prerequisite skills: each must be present in the candidate skill list.
 	 *
-	 * @param SkillUnderCheck $subject The skill being assigned.
-	 * @param array<string,mixed> $context The resolved character context.
+	 * @param RequirementScan $scan The skill being assigned and its character context.
 	 *
 	 * @return array<int,array<string,mixed>> The requirement entries.
 	 */
-	private function checkRequiredSkills(SkillUnderCheck $subject, array $context): array {
-		$skills = $context['skills'] ?? [];
-		$allSkills = $context['allSkills'] ?? [];
-
+	private function checkRequiredSkills(RequirementScan $scan): array {
 		$entries = [];
-		foreach ($this->idList->normalise($subject->skill['requiredSkills'] ?? []) as $reqSkill) {
-			$present = in_array($reqSkill, $skills, true);
-			$resolved = isset($allSkills[$reqSkill]);
-			$targetName = '';
-			if ($resolved === true) {
-				$targetName = (string)($allSkills[$reqSkill]['name'] ?? '');
-			}
-
-			$entries[] = $this->entry(
-				fields: [
-					'skill' => $subject->skillId,
-					'type' => 'requiredSkill',
-					'target' => $reqSkill,
-					'targetName' => $targetName,
-					'status' => $subject->status(passed: $present, resolved: $resolved),
-				]
-			);
+		foreach ($this->idList->normalise($scan->subject->skill['requiredSkills'] ?? []) as $reqSkill) {
+			$entries[] = $this->requiredSkillEntry(scan: $scan, reqSkill: $reqSkill);
 		}
 
 		return $entries;
 	}//end checkRequiredSkills()
 
 	/**
+	 * The entry of one prerequisite skill.
+	 *
+	 * @param RequirementScan $scan     The skill being assigned and its character context.
+	 * @param string          $reqSkill The required skill id.
+	 *
+	 * @return array<string,string|int> The requirement entry.
+	 */
+	private function requiredSkillEntry(RequirementScan $scan, string $reqSkill): array {
+		$target = $scan->context['allSkills'][$reqSkill] ?? null;
+		$present = in_array($reqSkill, $scan->context['skills'] ?? [], true);
+
+		return $this->entry(
+			subject: $scan->subject,
+			fields: [
+				'type' => 'requiredSkill',
+				'target' => $reqSkill,
+				'targetName' => (string)($target['name'] ?? ''),
+				'status' => $scan->subject->status(passed: $present, resolved: ($target !== null)),
+			]
+		);
+	}//end requiredSkillEntry()
+
+	/**
 	 * Required ability scores: each named ability must meet requiredScore.
 	 *
-	 * @param SkillUnderCheck $subject The skill being assigned.
-	 * @param array<string,mixed> $context The resolved character context.
+	 * @param RequirementScan $scan The skill being assigned and its character context.
 	 *
 	 * @return array<int,array<string,mixed>> The requirement entries.
 	 */
-	private function checkRequiredStats(SkillUnderCheck $subject, array $context): array {
-		$stats = $context['stats'] ?? [];
-		$requiredScore = (int)($subject->skill['requiredScore'] ?? 0);
-
+	private function checkRequiredStats(RequirementScan $scan): array {
 		$entries = [];
-		foreach ($this->idList->normalise($subject->skill['requiredStats'] ?? []) as $reqStat) {
-			$resolved = isset($stats[$reqStat]);
-			$current = 0;
-			$targetName = '';
-			if ($resolved === true) {
-				$current = (int)($stats[$reqStat]['value'] ?? 0);
-				$targetName = (string)($stats[$reqStat]['name'] ?? '');
-			}
-
-			$passed = ($resolved === true && $current >= $requiredScore);
-			$entries[] = $this->entry(
-				fields: [
-					'skill' => $subject->skillId,
-					'type' => 'requiredStat',
-					'target' => $reqStat,
-					'targetName' => $targetName,
-					'status' => $subject->status(passed: $passed, resolved: $resolved),
-					'current' => $current,
-					'required' => $requiredScore,
-				]
-			);
+		foreach ($this->idList->normalise($scan->subject->skill['requiredStats'] ?? []) as $reqStat) {
+			$entries[] = $this->requiredStatEntry(scan: $scan, reqStat: $reqStat);
 		}
 
 		return $entries;
 	}//end checkRequiredStats()
+
+	/**
+	 * The entry of one required ability score.
+	 *
+	 * @param RequirementScan $scan    The skill being assigned and its character context.
+	 * @param string          $reqStat The required ability id.
+	 *
+	 * @return array<string,string|int> The requirement entry.
+	 */
+	private function requiredStatEntry(RequirementScan $scan, string $reqStat): array {
+		$stat = $scan->context['stats'][$reqStat] ?? null;
+
+		return $this->entry(
+			subject: $scan->subject,
+			fields: [
+				'type' => 'requiredStat',
+				'target' => $reqStat,
+				'targetName' => (string)($stat['name'] ?? ''),
+				'status' => $this->statStatus(scan: $scan, stat: $stat),
+				'current' => (int)($stat['value'] ?? 0),
+				'required' => (int)($scan->subject->skill['requiredScore'] ?? 0),
+			]
+		);
+	}//end requiredStatEntry()
+
+	/**
+	 * The status of one required ability score: unresolvable when the ability
+	 * is not among the computed stats, passed when its value meets requiredScore.
+	 *
+	 * @param RequirementScan $scan The skill being assigned and its character context.
+	 * @param mixed           $stat The computed stat of the required ability, null when absent.
+	 *
+	 * @return string The status.
+	 */
+	private function statStatus(RequirementScan $scan, mixed $stat): string {
+		$requiredScore = (int)($scan->subject->skill['requiredScore'] ?? 0);
+		$passed = ($stat !== null && (int)($stat['value'] ?? 0) >= $requiredScore);
+
+		return $scan->subject->status(passed: $passed, resolved: ($stat !== null));
+	}//end statStatus()
 
 	/**
 	 * Membership requirements: each target must be present in a given pool.
@@ -166,44 +189,72 @@ class SkillRequirementChecker {
 	 * MEMBERSHIP_RULES). Both are always "resolved": the target is a plain
 	 * reference, so the only outcome that can differ is present/absent.
 	 *
-	 * @param SkillUnderCheck $subject The skill being assigned.
-	 * @param array<string,mixed> $context The resolved character context.
+	 * @param RequirementScan $scan The skill being assigned and its character context.
 	 *
 	 * @return array<int,array<string,mixed>> The requirement entries.
 	 */
-	private function checkMemberships(SkillUnderCheck $subject, array $context): array {
+	private function checkMemberships(RequirementScan $scan): array {
 		$entries = [];
-		foreach (self::MEMBERSHIP_RULES as $type => [$skillField, $poolField]) {
-			$pool = ($context[$poolField] ?? []);
-			foreach ($this->idList->normalise($subject->skill[$skillField] ?? []) as $target) {
-				$entries[] = $this->entry(
-					fields: [
-						'skill' => $subject->skillId,
-						'type' => $type,
-						'target' => $target,
-						'targetName' => '',
-						'status' => $subject->status(
-							passed: in_array($target, $pool, true),
-							resolved: true
-						),
-					]
-				);
-			}
+		foreach (array_keys(self::MEMBERSHIP_RULES) as $type) {
+			$entries = array_merge($entries, $this->membershipEntries(scan: $scan, type: $type));
 		}
 
 		return $entries;
 	}//end checkMemberships()
 
 	/**
-	 * Build a single requirement-result entry. The stat values `current` and
-	 * `required` default to 0 and come last.
+	 * The entries of one membership requirement type.
 	 *
-	 * @param array<string,string|int> $fields The entry fields in output order: skill, type, target,
-	 *                                         targetName and status, optionally current and required.
+	 * @param RequirementScan $scan The skill being assigned and its character context.
+	 * @param string          $type The requirement type, a key of MEMBERSHIP_RULES.
+	 *
+	 * @return array<int,array<string,mixed>> The requirement entries.
+	 */
+	private function membershipEntries(RequirementScan $scan, string $type): array {
+		$skillField = self::MEMBERSHIP_RULES[$type][0];
+		$entries = [];
+		foreach ($this->idList->normalise($scan->subject->skill[$skillField] ?? []) as $target) {
+			$entries[] = $this->membershipEntry(scan: $scan, requirement: ['type' => $type, 'target' => $target]);
+		}
+
+		return $entries;
+	}//end membershipEntries()
+
+	/**
+	 * The entry of one membership requirement: its target must be in the pool
+	 * MEMBERSHIP_RULES names for its type. The target is always "resolved".
+	 *
+	 * @param RequirementScan                     $scan        The skill being assigned and its character context.
+	 * @param array{type: string, target: string} $requirement The requirement type and its target id.
+	 *
+	 * @return array<string,string|int> The requirement entry.
+	 */
+	private function membershipEntry(RequirementScan $scan, array $requirement): array {
+		$pool = ($scan->context[self::MEMBERSHIP_RULES[$requirement['type']][1]] ?? []);
+
+		return $this->entry(
+			subject: $scan->subject,
+			fields: $requirement + [
+				'targetName' => '',
+				'status' => $scan->subject->status(
+					passed: in_array($requirement['target'], $pool, true),
+					resolved: true
+				),
+			]
+		);
+	}//end membershipEntries()
+
+	/**
+	 * Build a single requirement-result entry for the skill under check. The
+	 * stat values `current` and `required` default to 0 and come last.
+	 *
+	 * @param SkillUnderCheck          $subject The skill being assigned.
+	 * @param array<string,string|int> $fields  The entry fields after `skill`, in output order: type,
+	 *                                          target, targetName and status, optionally current and required.
 	 *
 	 * @return array<string,string|int> The entry.
 	 */
-	private function entry(array $fields): array {
-		return $fields + ['current' => 0, 'required' => 0];
+	private function entry(SkillUnderCheck $subject, array $fields): array {
+		return ['skill' => $subject->skillId] + $fields + ['current' => 0, 'required' => 0];
 	}//end entry()
 }//end class
