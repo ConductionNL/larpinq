@@ -67,12 +67,7 @@ class XpAwardsController extends Controller {
 	 */
 	#[NoAdminRequired]
 	public function access(): JSONResponse {
-		$user = $this->callerAccess->user();
-		if ($user === null) {
-			return new JSONResponse(data: ['error' => 'Not authenticated'], statusCode: Http::STATUS_UNAUTHORIZED);
-		}
-
-		return new JSONResponse(data: ['allowed' => $this->callerAccess->isGameMasterOrAdmin(uid: $user->getUID())]);
+		return $this->callerAccess->gameMasterAnswer();
 	}//end access()
 
 	/**
@@ -89,7 +84,7 @@ class XpAwardsController extends Controller {
 	 */
 	#[NoAdminRequired]
 	public function roster(string $id): JSONResponse {
-		[, $denied] = $this->resolveGameMaster();
+		[, $denied] = $this->callerAccess->resolveGameMaster();
 		if ($denied !== null) {
 			return $denied;
 		}
@@ -116,7 +111,7 @@ class XpAwardsController extends Controller {
 	 */
 	#[NoAdminRequired]
 	public function award(string $id, array $rows = []): JSONResponse {
-		[$actingUid, $denied] = $this->resolveGameMaster();
+		[$actingUid, $denied] = $this->callerAccess->resolveGameMaster();
 		if ($denied !== null) {
 			return $denied;
 		}
@@ -131,23 +126,4 @@ class XpAwardsController extends Controller {
 
 		return new JSONResponse(data: $this->batch->award(eventId: $id, rows: $rows, actingUid: $actingUid));
 	}//end award()
-
-	/**
-	 * Resolve the acting game master, or the refusal response to return.
-	 *
-	 * @return array{0: string, 1: JSONResponse|null} The [actingUid, refusal] pair.
-	 */
-	private function resolveGameMaster(): array {
-		$user = $this->callerAccess->user();
-		if ($user === null) {
-			return ['', new JSONResponse(data: ['error' => 'Not authenticated'], statusCode: Http::STATUS_UNAUTHORIZED)];
-		}
-
-		$uid = $user->getUID();
-		if ($this->callerAccess->isGameMasterOrAdmin(uid: $uid) === false) {
-			return ['', new JSONResponse(data: ['error' => 'Access denied'], statusCode: Http::STATUS_FORBIDDEN)];
-		}
-
-		return [$uid, null];
-	}//end resolveGameMaster()
 }//end class
