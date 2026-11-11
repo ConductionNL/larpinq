@@ -2,10 +2,8 @@
   "$schema": "http://cyclonedx.org/schema/bom-1.5.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.5",
-  "serialNumber": "urn:uuid:0de4b86d-35b8-4a9c-a464-4814d7377ba7",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-11-11T17:23:14Z",
     "tools": [
       {
         "name": "composer",
@@ -82,10 +80,10 @@
       }
     ],
     "component": {
-      "bom-ref": "conductionnl/larpinq-dev-development",
+      "bom-ref": "conductionnl/larpinq-0.1.20.0",
       "type": "application",
       "name": "larpinq",
-      "version": "dev-development",
+      "version": "0.1.20",
       "group": "conductionnl",
       "description": "Manage your live roleplaying setting",
       "author": "Conduction b.v., Remko Huisman (Conduction), Ruben van der Linde (Conduction)",
@@ -96,16 +94,8 @@
           }
         }
       ],
-      "purl": "pkg:composer/conductionnl/larpinq@dev-development",
+      "purl": "pkg:composer/conductionnl/larpinq@0.1.20",
       "properties": [
-        {
-          "name": "cdx:composer:package:distReference",
-          "value": "940369f68256b0b0c48de5f8abb460fd21913363"
-        },
-        {
-          "name": "cdx:composer:package:sourceReference",
-          "value": "940369f68256b0b0c48de5f8abb460fd21913363"
-        },
         {
           "name": "cdx:composer:package:type",
           "value": "library"
@@ -24510,7 +24500,7 @@
       ]
     },
     {
-      "ref": "conductionnl/larpinq-dev-development",
+      "ref": "conductionnl/larpinq-0.1.20.0",
       "dependsOn": [
         "twig/twig-3.30.0.0"
       ]
