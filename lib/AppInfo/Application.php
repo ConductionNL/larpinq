@@ -25,6 +25,7 @@ namespace OCA\Larpinq\AppInfo;
 
 use OCA\Larpinq\Listener\CharacterRequirementListener;
 use OCA\Larpinq\Listener\DeepLinkRegistrationListener;
+use OCA\Larpinq\Middleware\ApiContractMiddleware;
 use OCA\Larpinq\Support\AppIdentity;
 use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
@@ -115,6 +116,9 @@ class Application extends App implements IBootstrap {
 		OpenRegisterAutoloader::register();
 
 		$this->registerAppHostGenerics(context: $context);
+
+		// API-Version header and problem details on the JSON API (spec api-contract).
+		$context->registerMiddleware(ApiContractMiddleware::class);
 
 		// Register the deep link listener for OpenRegister unified search.
 		// The event class is only available when OpenRegister is installed.
