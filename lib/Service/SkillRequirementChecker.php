@@ -111,20 +111,16 @@ class SkillRequirementChecker {
 	 * @return array<string,string|int> The requirement entry.
 	 */
 	private function requiredSkillEntry(RequirementScan $scan, string $reqSkill): array {
-		$allSkills = $scan->context['allSkills'] ?? [];
-		$resolved = isset($allSkills[$reqSkill]);
-		$targetName = '';
-		if ($resolved === true) {
-			$targetName = (string)($allSkills[$reqSkill]['name'] ?? '');
-		}
+		$target = $scan->context['allSkills'][$reqSkill] ?? null;
+		$present = in_array($reqSkill, $scan->context['skills'] ?? [], true);
 
 		return $this->entry(
 			subject: $scan->subject,
 			fields: [
 				'type' => 'requiredSkill',
 				'target' => $reqSkill,
-				'targetName' => $targetName,
-				'status' => $scan->subject->status(passed: in_array($reqSkill, $scan->context['skills'] ?? [], true), resolved: $resolved),
+				'targetName' => (string)($target['name'] ?? ''),
+				'status' => $scan->subject->status(passed: $present, resolved: ($target !== null)),
 			]
 		);
 	}//end requiredSkillEntry()
@@ -155,8 +151,6 @@ class SkillRequirementChecker {
 	 */
 	private function requiredStatEntry(RequirementScan $scan, string $reqStat): array {
 		$stat = $scan->context['stats'][$reqStat] ?? null;
-		$requiredScore = (int)($scan->subject->skill['requiredScore'] ?? 0);
-		$current = (int)($stat['value'] ?? 0);
 
 		return $this->entry(
 			subject: $scan->subject,
@@ -164,12 +158,28 @@ class SkillRequirementChecker {
 				'type' => 'requiredStat',
 				'target' => $reqStat,
 				'targetName' => (string)($stat['name'] ?? ''),
-				'status' => $scan->subject->status(passed: ($stat !== null && $current >= $requiredScore), resolved: ($stat !== null)),
-				'current' => $current,
-				'required' => $requiredScore,
+				'status' => $this->statStatus(scan: $scan, stat: $stat),
+				'current' => (int)($stat['value'] ?? 0),
+				'required' => (int)($scan->subject->skill['requiredScore'] ?? 0),
 			]
 		);
 	}//end requiredStatEntry()
+
+	/**
+	 * The status of one required ability score: unresolvable when the ability
+	 * is not among the computed stats, passed when its value meets requiredScore.
+	 *
+	 * @param RequirementScan $scan The skill being assigned and its character context.
+	 * @param mixed           $stat The computed stat of the required ability, null when absent.
+	 *
+	 * @return string The status.
+	 */
+	private function statStatus(RequirementScan $scan, mixed $stat): string {
+		$requiredScore = (int)($scan->subject->skill['requiredScore'] ?? 0);
+		$passed = ($stat !== null && (int)($stat['value'] ?? 0) >= $requiredScore);
+
+		return $scan->subject->status(passed: $passed, resolved: ($stat !== null));
+	}//end statStatus()
 
 	/**
 	 * Membership requirements: each target must be present in a given pool.
@@ -201,25 +211,37 @@ class SkillRequirementChecker {
 	 * @return array<int,array<string,mixed>> The requirement entries.
 	 */
 	private function membershipEntries(RequirementScan $scan, string $type): array {
-		[$skillField, $poolField] = self::MEMBERSHIP_RULES[$type];
-		$pool = ($scan->context[$poolField] ?? []);
+		$skillField = self::MEMBERSHIP_RULES[$type][0];
 		$entries = [];
 		foreach ($this->idList->normalise($scan->subject->skill[$skillField] ?? []) as $target) {
-			$entries[] = $this->entry(
-				subject: $scan->subject,
-				fields: [
-					'type' => $type,
-					'target' => $target,
-					'targetName' => '',
-					'status' => $scan->subject->status(
-						passed: in_array($target, $pool, true),
-						resolved: true
-					),
-				]
-			);
+			$entries[] = $this->membershipEntry(scan: $scan, requirement: ['type' => $type, 'target' => $target]);
 		}
 
 		return $entries;
+	}//end membershipEntries()
+
+	/**
+	 * The entry of one membership requirement: its target must be in the pool
+	 * MEMBERSHIP_RULES names for its type. The target is always "resolved".
+	 *
+	 * @param RequirementScan                     $scan        The skill being assigned and its character context.
+	 * @param array{type: string, target: string} $requirement The requirement type and its target id.
+	 *
+	 * @return array<string,string|int> The requirement entry.
+	 */
+	private function membershipEntry(RequirementScan $scan, array $requirement): array {
+		$pool = ($scan->context[self::MEMBERSHIP_RULES[$requirement['type']][1]] ?? []);
+
+		return $this->entry(
+			subject: $scan->subject,
+			fields: $requirement + [
+				'targetName' => '',
+				'status' => $scan->subject->status(
+					passed: in_array($requirement['target'], $pool, true),
+					resolved: true
+				),
+			]
+		);
 	}//end membershipEntries()
 
 	/**

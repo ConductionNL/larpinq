@@ -182,14 +182,7 @@ class SkillRequirementService {
 	private function requirementsOf(string $skillId, array $context): array {
 		$skill = ($context['allSkills'] ?? [])[$skillId] ?? null;
 		if ($skill === null) {
-			return [
-				[
-					'skill' => $skillId,
-					'type' => 'skill',
-					'target' => $skillId,
-					'status' => 'unresolvable',
-				],
-			];
+			return [$this->unresolvableSkill(skillId: $skillId)];
 		}
 
 		$overrides = $context['overrides'] ?? [];
@@ -199,6 +192,22 @@ class SkillRequirementService {
 			context: $context
 		);
 	}//end requirementsOf()
+
+	/**
+	 * The entry of an added skill id that does not resolve to a skill object.
+	 *
+	 * @param string $skillId The unresolvable skill id.
+	 *
+	 * @return array<string,string> The "unresolvable" entry.
+	 */
+	private function unresolvableSkill(string $skillId): array {
+		return [
+			'skill' => $skillId,
+			'type' => 'skill',
+			'target' => $skillId,
+			'status' => 'unresolvable',
+		];
+	}//end unresolvableSkill()
 
 	/**
 	 * Whether anything blocks the write: an overspent budget or a failed entry.
@@ -283,14 +292,24 @@ class SkillRequirementService {
 	 */
 	public function resolveXpAbility(array $stats): ?string {
 		foreach ($stats as $abilityId => $ability) {
-			$name = strtolower((string)($ability['name'] ?? ''));
-			if ($name === 'xp' || str_contains($name, 'experience') === true || str_contains($name, 'xp ') === true) {
+			if ($this->isXpName(name: strtolower((string)($ability['name'] ?? ''))) === true) {
 				return (string)$abilityId;
 			}
 		}
 
 		return null;
 	}//end resolveXpAbility()
+
+	/**
+	 * Whether a lower-cased ability name names the XP ability.
+	 *
+	 * @param string $name The lower-cased ability name.
+	 *
+	 * @return bool True for "xp", a name containing "experience" or "xp ".
+	 */
+	private function isXpName(string $name): bool {
+		return $name === 'xp' || str_contains($name, 'experience') === true || str_contains($name, 'xp ') === true;
+	}//end isXpName()
 
 	/**
 	 * Analyse skill removals for now-dangling dependents.
@@ -336,14 +355,12 @@ class SkillRequirementService {
 		}
 
 		$dependents = [];
-		foreach ($this->idList->normalise($skill['requiredSkills'] ?? []) as $reqSkill) {
-			if (in_array($reqSkill, $scan['removed'], true) === true) {
-				$dependents[] = [
-					'skill' => $skillId,
-					'skillName' => (string)($skill['name'] ?? ''),
-					'missingSkill' => $reqSkill,
-				];
-			}
+		foreach (array_intersect($this->idList->normalise($skill['requiredSkills'] ?? []), $scan['removed']) as $reqSkill) {
+			$dependents[] = [
+				'skill' => $skillId,
+				'skillName' => (string)($skill['name'] ?? ''),
+				'missingSkill' => $reqSkill,
+			];
 		}
 
 		return $dependents;
