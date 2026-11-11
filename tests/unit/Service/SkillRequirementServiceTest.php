@@ -328,4 +328,143 @@ class SkillRequirementServiceTest extends TestCase {
 		$this->assertTrue(condition: $result['budget']['ok']);
 		$this->assertSame(expected: '', actual: $result['budget']['ability']);
 	}
+
+	/**
+	 * An added skill that does not resolve yields exactly one unresolvable
+	 * entry and blocks the write.
+	 *
+	 * @return void
+	 */
+	public function testUnknownAddedSkillIsOneUnresolvableEntry(): void {
+		$service = $this->makeService(skills: [['id' => 'basic', 'name' => 'Basic']]);
+
+		$result = $service->validate(['skills' => ['ghost']], ['skills' => []]);
+
+		$this->assertFalse(condition: $result['valid']);
+		$this->assertSame(
+			expected: [['skill' => 'ghost', 'type' => 'skill', 'target' => 'ghost', 'status' => 'unresolvable']],
+			actual: $result['requirements']
+		);
+	}
+
+	/**
+	 * The full budget block, overspent and affordable, and when no XP ability
+	 * resolves.
+	 *
+	 * @return void
+	 */
+	public function testBudgetBlockShape(): void {
+		$overspent = $this->makeService(abilities: [['id' => 'xp', 'name' => 'XP', 'base' => -4]]);
+		$this->assertSame(
+			expected: ['ability' => 'xp', 'value' => -4, 'shortfall' => 4, 'ok' => false],
+			actual: $overspent->validate(['skills' => []], [])['budget']
+		);
+
+		$even = $this->makeService(abilities: [['id' => 'xp', 'name' => 'Experience points', 'base' => 0]]);
+		$this->assertSame(
+			expected: ['ability' => 'xp', 'value' => 0, 'shortfall' => 0, 'ok' => true],
+			actual: $even->validate(['skills' => []], [])['budget']
+		);
+
+		$none = $this->makeService();
+		$this->assertSame(
+			expected: ['ability' => '', 'value' => 0, 'shortfall' => 0, 'ok' => true],
+			actual: $none->validate(['skills' => []], [])['budget']
+		);
+	}
+
+	/**
+	 * Malformed overrides are ignored: a non-list, a non-array entry and an
+	 * entry without a skill never mark a requirement overridden.
+	 *
+	 * @return void
+	 */
+	public function testMalformedOverridesAreIgnored(): void {
+		$skills = [
+			['id' => 'basic', 'name' => 'Basic'],
+			['id' => 'adv', 'name' => 'Advanced', 'requiredSkills' => ['basic']],
+		];
+		$service = $this->makeService(skills: $skills);
+
+		foreach ([
+			'not a list',
+			['adv'],
+			[['skill' => '', 'reason' => 'Story event']],
+			[['reason' => 'Story event']],
+			[['skill' => 'basic', 'reason' => 'Wrong skill']],
+		] as $overrides) {
+			$result = $service->validate(['skills' => ['adv'], 'requirementOverrides' => $overrides], ['skills' => []]);
+			$this->assertFalse(condition: $result['valid'], message: json_encode($overrides));
+		}
+
+		$kept = $service->validate(
+			['skills' => ['adv'], 'requirementOverrides' => ['junk', ['skill' => 'adv', 'reason' => 'Respec']]],
+			['skills' => []]
+		);
+		$this->assertTrue(condition: $kept['valid']);
+	}
+
+	/**
+	 * Every removed prerequisite of every kept skill is flagged, in order,
+	 * with the skill name; an unknown kept skill is skipped.
+	 *
+	 * @return void
+	 */
+	public function testRemovalFlagsShape(): void {
+		$skills = [
+			['id' => 'a', 'name' => 'Alpha'],
+			['id' => 'b', 'name' => 'Beta'],
+			['id' => 'c', 'requiredSkills' => ['a', 'x', 'b']],
+			['id' => 'd', 'name' => 'Delta', 'requiredSkills' => ['b']],
+		];
+		$service = $this->makeService(skills: $skills);
+
+		$result = $service->validate(['skills' => ['c', 'd', 'ghost']], ['skills' => ['a', 'b', 'c', 'd', 'ghost']]);
+
+		$this->assertSame(
+			expected: [
+				['skill' => 'c', 'skillName' => '', 'missingSkill' => 'a'],
+				['skill' => 'c', 'skillName' => '', 'missingSkill' => 'b'],
+				['skill' => 'd', 'skillName' => 'Delta', 'missingSkill' => 'b'],
+			],
+			actual: $result['dependents']
+		);
+		$this->assertSame(expected: [], actual: $service->validate(['skills' => ['c']], ['skills' => ['c']])['dependents']);
+	}
+
+	/**
+	 * When the skills cannot be loaded every added skill is unresolvable and
+	 * the failure is logged at debug level.
+	 *
+	 * @return void
+	 */
+	public function testUnloadableSkillsDegradeToUnresolvable(): void {
+		$fetcher = $this->createMock(originalClassName: RegisterObjectFetcher::class);
+		$fetcher->method('getObjects')->willReturnCallback(
+			static function (string $type): array {
+				if ($type === 'skill') {
+					throw new \RuntimeException('register down');
+				}
+
+				return [];
+			}
+		);
+		$this->logger->expects($this->once())->method('debug')->with(
+			'Larpinq: SkillRequirementService could not load skill; degrading to data-only.',
+			$this->callback(static fn (array $context): bool => $context['exception'] instanceof \RuntimeException)
+		);
+		$idList = new IdListNormaliser();
+		$service = new SkillRequirementService(
+			characterService: new CharacterService(objectFetcher: $fetcher, logger: $this->createMock(originalClassName: LoggerInterface::class), effectApplier: new EffectApplier()),
+			objectFetcher: $fetcher,
+			logger: $this->logger,
+			checker: new SkillRequirementChecker(idList: $idList),
+			idList: $idList
+		);
+
+		$result = $service->validate(['skills' => ['a']], []);
+
+		$this->assertSame(expected: 'unresolvable', actual: $result['requirements'][0]['status']);
+		$this->assertFalse(condition: $result['valid']);
+	}
 }
