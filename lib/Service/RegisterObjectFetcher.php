@@ -154,41 +154,86 @@ class RegisterObjectFetcher {
 		$resolver = $this->getRegisterResolver();
 
 		if ($resolver !== null) {
-			// Real OpenRegister RegisterResolverService API (ADR-022):
-			// resolveRegisterId/resolveSchemaId read `{appId}.{configKey}` and
-			// throw MissingConfigException when both the value and default are
-			// empty. Passing the empty-string default keeps the throw-on-missing
-			// semantics consistent with the legacy path below.
-			try {
-				$register = (string)$resolver->resolveRegisterId($this->appName, $objectTypeLower . '_register');
-				$schema = (string)$resolver->resolveSchemaId($this->appName, $objectTypeLower . '_schema');
-
-				if ($register === '') {
-					throw new Exception("Register not configured for $objectTypeLower");
-				}
-
-				if ($schema === '') {
-					throw new Exception("Schema not configured for $objectTypeLower");
-				}
-
-				return [$register, $schema];
-			} catch (Exception $e) {
-				// Re-throw our own "not configured" signal unchanged so callers
-				// and tests see identical error semantics across both paths.
-				if (str_contains($e->getMessage(), 'not configured for') === true) {
-					throw $e;
-				}
-
-				// The resolver raised its own typed exception (e.g.
-				// MissingConfigException) — normalise to the legacy message so
-				// downstream callers keep one contract.
-				throw new Exception("Register or schema not configured for $objectTypeLower", 0, $e);
-			}//end try
-		}//end if
+			return $this->resolveThroughResolver(resolver: $resolver, objectTypeLower: $objectTypeLower);
+		}
 
 		// Legacy fallback: resolver unavailable. Behaviour-preserving.
 		$this->logResolverFallbackOnce();
 
+		return $this->resolveFromAppConfig(objectTypeLower: $objectTypeLower);
+	}//end resolveRegisterAndSchema()
+
+	/**
+	 * Resolve the register and schema ids through OpenRegister's
+	 * RegisterResolverService, with the legacy "not configured" messages.
+	 *
+	 * Real OpenRegister RegisterResolverService API (ADR-022):
+	 * resolveRegisterId/resolveSchemaId read `{appId}.{configKey}` and throw
+	 * MissingConfigException when both the value and default are empty.
+	 * Passing the empty-string default keeps the throw-on-missing semantics
+	 * consistent with the legacy path.
+	 *
+	 * @param object $resolver The OpenRegister RegisterResolverService.
+	 * @param string $objectTypeLower The lower-cased object type slug.
+	 *
+	 * @return array{0: string, 1: string} A [registerId, schemaId] tuple.
+	 *
+	 * @throws Exception If the register or schema is not configured.
+	 *
+	 * @psalm-suppress MixedMethodCall    The resolver is an optional cross-app dependency.
+	 */
+	private function resolveThroughResolver(object $resolver, string $objectTypeLower): array {
+		try {
+			$register = (string)$resolver->resolveRegisterId($this->appName, $objectTypeLower . '_register');
+			$schema = (string)$resolver->resolveSchemaId($this->appName, $objectTypeLower . '_schema');
+
+			return $this->requireResolved(ids: [$register, $schema], objectTypeLower: $objectTypeLower);
+		} catch (Exception $e) {
+			// Re-throw our own "not configured" signal unchanged so callers
+			// and tests see identical error semantics across both paths.
+			if (str_contains($e->getMessage(), 'not configured for') === true) {
+				throw $e;
+			}
+
+			// The resolver raised its own typed exception (e.g.
+			// MissingConfigException) — normalise to the legacy message so
+			// downstream callers keep one contract.
+			throw new Exception("Register or schema not configured for $objectTypeLower", 0, $e);
+		}//end try
+	}//end resolveThroughResolver()
+
+	/**
+	 * Refuse a resolved pair with an empty register or schema id.
+	 *
+	 * @param array{0: string, 1: string} $ids The [registerId, schemaId] the resolver answered.
+	 * @param string $objectTypeLower The lower-cased object type slug.
+	 *
+	 * @return array{0: string, 1: string} The same pair.
+	 *
+	 * @throws Exception If the register or schema is empty.
+	 */
+	private function requireResolved(array $ids, string $objectTypeLower): array {
+		if ($ids[0] === '') {
+			throw new Exception("Register not configured for $objectTypeLower");
+		}
+
+		if ($ids[1] === '') {
+			throw new Exception("Schema not configured for $objectTypeLower");
+		}
+
+		return $ids;
+	}//end requireResolved()
+
+	/**
+	 * Resolve the register and schema ids from the app config directly.
+	 *
+	 * @param string $objectTypeLower The lower-cased object type slug.
+	 *
+	 * @return array{0: string, 1: string} A [registerId, schemaId] tuple.
+	 *
+	 * @throws Exception If the register or schema is not configured.
+	 */
+	private function resolveFromAppConfig(string $objectTypeLower): array {
 		$register = $this->config->getValueString($this->appName, $objectTypeLower . '_register', '');
 		if (empty($register) === true) {
 			throw new Exception("Register not configured for $objectTypeLower");
@@ -200,7 +245,7 @@ class RegisterObjectFetcher {
 		}
 
 		return [$register, $schema];
-	}//end resolveRegisterAndSchema()
+	}//end resolveFromAppConfig()
 
 	/**
 	 * Get the OpenRegister ObjectService.
