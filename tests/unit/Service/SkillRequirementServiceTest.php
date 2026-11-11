@@ -440,9 +440,11 @@ class SkillRequirementServiceTest extends TestCase {
 	 */
 	public function testUnloadableSkillsDegradeToUnresolvable(): void {
 		$fetcher = $this->createMock(originalClassName: RegisterObjectFetcher::class);
+		$skillReads = 0;
 		$fetcher->method('getObjects')->willReturnCallback(
-			static function (string $type): array {
-				if ($type === 'skill') {
+			static function (string $type) use (&$skillReads): array {
+				// The first skill read is the service's own; the stat engine's later read succeeds.
+				if ($type === 'skill' && $skillReads++ === 0) {
 					throw new \RuntimeException('register down');
 				}
 
