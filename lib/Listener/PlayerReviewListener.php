@@ -24,12 +24,10 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Listener;
 
-use DateTimeImmutable;
-use DateTimeInterface;
-use OCA\Larpinq\Support\AppIdentity;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\IAppConfig;
+use OCP\IUser;
 use OCP\IUserSession;
 
 /**
@@ -92,30 +90,76 @@ class PlayerReviewListener implements IEventListener {
 			return;
 		}
 
-		$old = $event->getOldObject();
-		$user = $this->userSession->getUser();
-		if ($old === null || $user === null || $this->isPlayer(entity: $event->getNewObject()) === false) {
+		$user = $this->actingReviewer(event: $event);
+		if ($user === null) {
 			return;
 		}
 
-		$before = (array)$old->getObject();
-		$after = (array)$event->getNewObject()->getObject();
-		$stamp = array_filter(
-			array_intersect_key($before, array_flip(self::FIELDS)),
-			static fn ($value): bool => $value !== null && $value !== ''
-		);
-		if (($before['awaitingReview'] ?? false) === true && ($after['awaitingReview'] ?? null) === false) {
-			$stamp = [
-				'reviewedBy' => $user->getUID(),
-				'reviewedAt' => (new DateTimeImmutable())->format(DateTimeInterface::ATOM),
-			];
+		$before = (array)$event->getOldObject()->getObject();
+		$stamp = WriteStamp::stored(object: $before, fields: self::FIELDS);
+		if ($this->marksReviewed(before: $before, event: $event) === true) {
+			$stamp = WriteStamp::now(fields: self::FIELDS, uid: $user->getUID());
 		}
 
+		$this->mergeStamp(event: $event, stamp: $stamp);
+	}//end handle()
+
+	/**
+	 * The signed-in user, when the update is of a stored player.
+	 *
+	 * @param Event $event The pre-update event.
+	 *
+	 * @return IUser|null The acting user, or null when the update is left alone.
+	 *
+	 * @psalm-suppress MixedMethodCall OpenRegister event/entity classes are optional dependencies.
+	 * @psalm-suppress MixedArgument   OpenRegister event/entity classes are optional dependencies.
+	 */
+	private function actingReviewer(Event $event): ?IUser {
+		// @phpstan-ignore-next-line
+		$old = $event->getOldObject();
+		$user = $this->userSession->getUser();
+		// @phpstan-ignore-next-line
+		if ($old === null || $user === null || $this->isPlayer(entity: $event->getNewObject()) === false) {
+			return null;
+		}
+
+		return $user;
+	}//end actingReviewer()
+
+	/**
+	 * Whether the update takes the player out of review.
+	 *
+	 * @param array<string,mixed> $before The stored player.
+	 * @param Event               $event  The pre-update event carrying the player as written.
+	 *
+	 * @return bool True when `awaitingReview` goes from true to false.
+	 *
+	 * @psalm-suppress MixedMethodCall OpenRegister event/entity classes are optional dependencies.
+	 */
+	private function marksReviewed(array $before, Event $event): bool {
+		// @phpstan-ignore-next-line
+		$after = (array)$event->getNewObject()->getObject();
+
+		return ($before['awaitingReview'] ?? false) === true && ($after['awaitingReview'] ?? null) === false;
+	}//end marksReviewed()
+
+	/**
+	 * Merge the stamp into what other listeners changed, when there is one.
+	 *
+	 * @param Event               $event The pre-update event.
+	 * @param array<string,mixed> $stamp The review stamp.
+	 *
+	 * @return void
+	 *
+	 * @psalm-suppress MixedMethodCall OpenRegister event classes are optional dependencies.
+	 * @psalm-suppress MixedArgument   OpenRegister event classes are optional dependencies.
+	 */
+	private function mergeStamp(Event $event, array $stamp): void {
 		if ($stamp !== []) {
 			// @phpstan-ignore-next-line
 			$event->setModifiedData(array_merge($event->getModifiedData(), $stamp));
 		}
-	}//end handle()
+	}//end mergeStamp()
 
 	/**
 	 * Whether an entity is a player.
@@ -123,14 +167,8 @@ class PlayerReviewListener implements IEventListener {
 	 * @param object $entity The OpenRegister object entity.
 	 *
 	 * @return bool True for the player schema.
-	 *
-	 * @psalm-suppress MixedMethodCall OpenRegister entity classes are optional dependencies.
 	 */
 	private function isPlayer(object $entity): bool {
-		$schema = $this->config->getValueString(AppIdentity::APP_ID, 'player_schema', '');
-
-		return $schema !== ''
-			&& is_callable([$entity, 'getSchema']) === true
-			&& (string)$entity->getSchema() === $schema;
+		return (new ConfiguredSchema(config: $this->config, key: 'player_schema'))->matches(entity: $entity);
 	}//end isPlayer()
 }//end class
