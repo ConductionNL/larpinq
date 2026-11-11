@@ -47,6 +47,8 @@ class TicketChoiceGoldenTest extends TestCase {
 
 	private const FUTURE = '2999-01-01T00:00:00+00:00';
 
+	private const OFFER_FIXTURE = __DIR__ . '/fixtures/ticket-offer.golden.json';
+
 	/**
 	 * The register of event e1, by type.
 	 *
@@ -228,4 +230,89 @@ class TicketChoiceGoldenTest extends TestCase {
 			self::assertSame(expected: $expected[$name], actual: $json, message: $name);
 		}
 	}//end testChoicesMatchTheGolden()
+	/**
+	 * The offer cases: name => [registration, typed code].
+	 *
+	 * @return array<string,array{0:array<string,mixed>,1:string}>
+	 */
+	private function offerCases(): array {
+		$base = ['id' => 'r1', 'event' => 'e1', 'status' => 'pending'];
+
+		return [
+			'nothing chosen, no code' => [$base, ''],
+			'blank code' => [$base, '   '],
+			'code unlocks the hidden ticket' => [$base, ' crew '],
+			'unknown code' => [$base, 'NOPE'],
+			'expired code' => [$base, 'OLD'],
+			'used-up code' => [$base, 'ONCE'],
+			'used-up code it already keeps' => [$base + ['accessCode' => 'code-once'], 'ONCE'],
+			'chosen ticket no longer on sale' => [$base + ['ticketType' => 't-early', 'options' => ['o-bed', 'o-meal']], ''],
+			'chosen hidden ticket without a code' => [$base + ['ticketType' => 't-secret', 'options' => 'o-meal'], ''],
+			'own crew place' => [array_merge($base, ['id' => 'r-other', 'status' => 'accepted', 'ticketType' => 't-crew']), ''],
+			'another event' => [['event' => 'e2'] + $base, 'CREW'],
+		];
+	}//end offerCases()
+
+	/**
+	 * Every offer case gives the recorded offer and register reads.
+	 *
+	 * @return void
+	 */
+	public function testOfferMatchesTheGolden(): void {
+		$actual = [];
+		foreach ($this->offerCases() as $name => [$registration, $code]) {
+			$trace = [];
+			$service = new TicketChoiceService(
+				fetcher: $this->tracingFetcher(trace: $trace),
+				registrations: $this->createMock(originalClassName: RegistrationService::class),
+				logger: new NullLogger()
+			);
+			$offer = $service->offer(registration: $registration, code: $code);
+			$actual[$name] = json_encode(value: ['offer' => $offer, 'trace' => $trace], flags: JSON_THROW_ON_ERROR);
+		}
+
+		if (getenv('RECORD_GOLDEN') === '1') {
+			$flags = JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR;
+			file_put_contents(filename: self::OFFER_FIXTURE, data: json_encode(value: $actual, flags: $flags) . "\n");
+		}
+
+		$expected = json_decode(json: (string)file_get_contents(filename: self::OFFER_FIXTURE), associative: true, flags: JSON_THROW_ON_ERROR);
+		self::assertSame(expected: array_keys($expected), actual: array_keys($actual));
+		foreach ($actual as $name => $json) {
+			self::assertSame(expected: $expected[$name], actual: $json, message: $name);
+		}
+	}//end testOfferMatchesTheGolden()
+
+	/**
+	 * A fetcher over the fake register that records every read.
+	 *
+	 * @param array<int,mixed> $trace The read log, appended to.
+	 *
+	 * @return RegisterObjectFetcher The fetcher.
+	 */
+	private function tracingFetcher(array &$trace): RegisterObjectFetcher {
+		$register = $this->register();
+		$fetcher = $this->createMock(originalClassName: RegisterObjectFetcher::class);
+		$fetcher->method('getObjectsWithAppAuthority')->willReturnCallback(
+			function (string $objectType, array $filters = [], ?int $limit = null) use ($register, &$trace): array {
+				$trace[] = ['read', $objectType, $filters, $limit];
+				return array_values(
+					array_filter(
+						$register[$objectType] ?? [],
+						static function (array $row) use ($filters): bool {
+							foreach ($filters as $field => $value) {
+								if (($row[$field] ?? null) !== $value) {
+									return false;
+								}
+							}
+
+							return true;
+						}
+					)
+				);
+			}
+		);
+
+		return $fetcher;
+	}//end tracingFetcher()
 }//end class

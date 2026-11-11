@@ -99,7 +99,7 @@ class EventsController extends Controller {
 	#[NoCSRFRequired]
 	public function downloadRunsheet(string $id, string $template): DataDownloadResponse|JSONResponse {
 		// GM-only: the run-sheet exposes approval status and GM-private notes.
-		[, $denied] = $this->resolveGameMaster();
+		[, $denied] = $this->callerAccess->resolveGameMaster();
 		if ($denied !== null) {
 			return $denied;
 		}
@@ -227,7 +227,7 @@ class EventsController extends Controller {
 	#[NoAdminRequired]
 	public function recordAttendance(string $id): JSONResponse {
 		// GM-only: recording attendance is a game-master act at the door.
-		[$actingUid, $denied] = $this->resolveGameMaster();
+		[$actingUid, $denied] = $this->callerAccess->resolveGameMaster();
 		if ($denied !== null) {
 			return $denied;
 		}
@@ -304,31 +304,6 @@ class EventsController extends Controller {
 
 		return new JSONResponse(data: $saved);
 	}//end attendanceResponse()
-
-	/**
-	 * Resolve the acting game master, or the refusal response to return.
-	 *
-	 * Collapses the authenticate-then-authorize pair into one decision so the
-	 * endpoints carry a single guard branch and receive a non-empty uid.
-	 *
-	 * @return array{0: string, 1: JSONResponse|null} The [actingUid, refusal] pair;
-	 *                                                the uid is empty when refused.
-	 *
-	 * @spec openspec/specs/event-checkin-roster/spec.md
-	 */
-	private function resolveGameMaster(): array {
-		$user = $this->callerAccess->user();
-		if ($user === null) {
-			return ['', new JSONResponse(data: ['error' => 'Not authenticated'], statusCode: Http::STATUS_UNAUTHORIZED)];
-		}
-
-		$uid = $user->getUID();
-		if ($this->callerAccess->isGameMasterOrAdmin(uid: $uid) === false) {
-			return ['', new JSONResponse(data: ['error' => 'Access denied'], statusCode: Http::STATUS_FORBIDDEN)];
-		}
-
-		return [$uid, null];
-	}//end resolveGameMaster()
 
 	/**
 	 * Validate the attendance request body, or null when it is acceptable.

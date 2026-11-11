@@ -112,7 +112,7 @@ class RegistrationListener implements IEventListener {
 		}
 
 		if ($event instanceof \OCA\OpenRegister\Event\ObjectCreatedEvent && $this->isRegistration(entity: $event->getObject()) === true) {
-			$this->service->afterWrite(new: $this->dataOf(entity: $event->getObject()), old: null);
+			$this->service->afterWrite(new: PreWriteEvent::dataOf(entity: $event->getObject()), old: null);
 			return;
 		}
 
@@ -120,10 +120,10 @@ class RegistrationListener implements IEventListener {
 			$old = $event->getOldObject();
 			$before = null;
 			if ($old !== null) {
-				$before = $this->dataOf(entity: $old);
+				$before = PreWriteEvent::dataOf(entity: $old);
 			}
 
-			$this->service->afterWrite(new: $this->dataOf(entity: $event->getNewObject()), old: $before);
+			$this->service->afterWrite(new: PreWriteEvent::dataOf(entity: $event->getNewObject()), old: $before);
 		}
 	}//end handle()
 
@@ -143,10 +143,10 @@ class RegistrationListener implements IEventListener {
 			return;
 		}
 
-		$new = $this->dataOf(entity: $entity);
+		$new = PreWriteEvent::dataOf(entity: $entity);
 		$stored = null;
 		if ($old !== null) {
-			$stored = $this->dataOf(entity: $old);
+			$stored = PreWriteEvent::dataOf(entity: $old);
 		}
 
 		$checked = $this->writeCheck->check(new: $new, stored: $stored);
@@ -212,24 +212,6 @@ class RegistrationListener implements IEventListener {
 
 		return (string)$entity->getSchema() === $schema;
 	}//end isRegistration()
-
-	/**
-	 * The object's data with its uuid as `id`.
-	 *
-	 * @param object $entity The OpenRegister object.
-	 *
-	 * @return array<string, mixed> The data.
-	 *
-	 * @psalm-suppress MixedMethodCall OpenRegister entity classes are optional dependencies.
-	 */
-	private function dataOf(object $entity): array {
-		$data = (array)$entity->getObject();
-		if (is_callable([$entity, 'getUuid']) === true && (string)$entity->getUuid() !== '') {
-			$data['id'] = (string)$entity->getUuid();
-		}
-
-		return $data;
-	}//end dataOf()
 
 	/**
 	 * The signed-in user, or an empty string for a system write.

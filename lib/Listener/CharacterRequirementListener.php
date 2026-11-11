@@ -146,11 +146,7 @@ class CharacterRequirementListener implements IEventListener {
 		// Who may author overrides is decided first and fails closed; only the
 		// game rules after it degrade to allowing the write.
 		$errors = ($this->overrideVeto(event: $event) ?? $this->gameRuleVeto(event: $event));
-		if ($errors !== null) {
-			$event->stopPropagation();
-			// @phpstan-ignore-next-line
-			$event->setErrors($errors);
-		}
+		PreWriteEvent::refuseOnErrors(event: $event, errors: $errors);
 	}//end handle()
 
 	/**

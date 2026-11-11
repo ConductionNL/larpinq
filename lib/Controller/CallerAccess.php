@@ -23,6 +23,8 @@ declare(strict_types=1);
 namespace OCA\Larpinq\Controller;
 
 use OCA\Larpinq\Support\AppIdentity;
+use OCP\AppFramework\Http;
+use OCP\AppFramework\Http\JSONResponse;
 use OCP\IGroupManager;
 use OCP\IUser;
 use OCP\IUserSession;
@@ -101,4 +103,45 @@ class CallerAccess {
 		$user = $this->userSession->getUser();
 		return $user !== null && $this->groupManager->isAdmin($user->getUID());
 	}//end currentUserIsAdmin()
+	/**
+	 * Resolve the acting game master, or the refusal response to return.
+	 *
+	 * Collapses the authenticate-then-authorize pair into one decision so the
+	 * endpoints carry a single guard branch and receive a non-empty uid.
+	 *
+	 * @return array{0: string, 1: JSONResponse|null} The [actingUid, refusal] pair;
+	 *                                                the uid is empty when refused.
+	 *
+	 * @spec openspec/specs/event-checkin-roster/spec.md
+	 */
+	public function resolveGameMaster(): array {
+		$user = $this->user();
+		if ($user === null) {
+			return ['', new JSONResponse(data: ['error' => 'Not authenticated'], statusCode: Http::STATUS_UNAUTHORIZED)];
+		}
+
+		$uid = $user->getUID();
+		if ($this->isGameMasterOrAdmin(uid: $uid) === false) {
+			return ['', new JSONResponse(data: ['error' => 'Access denied'], statusCode: Http::STATUS_FORBIDDEN)];
+		}
+
+		return [$uid, null];
+	}//end resolveGameMaster()
+
+	/**
+	 * Whether the signed-in user is a game master or an administrator, as the
+	 * `{allowed: bool}` answer a page shows its game-master actions on.
+	 *
+	 * @return JSONResponse `{allowed: bool}`, or 401 when nobody is signed in.
+	 *
+	 * @spec openspec/specs/event-xp-awards/spec.md
+	 */
+	public function gameMasterAnswer(): JSONResponse {
+		$user = $this->user();
+		if ($user === null) {
+			return new JSONResponse(data: ['error' => 'Not authenticated'], statusCode: Http::STATUS_UNAUTHORIZED);
+		}
+
+		return new JSONResponse(data: ['allowed' => $this->isGameMasterOrAdmin(uid: $user->getUID())]);
+	}//end gameMasterAnswer()
 }//end class
