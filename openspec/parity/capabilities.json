@@ -907,7 +907,11 @@
 				"evidence": "lib/Settings/larpinq_register.json:870-905 (setting schema, register-listed); src/manifest.json:1822-1832 (Settings index page, schema setting)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Settings index page (/settings), standard New button",
-				"change": "openspec/changes/archive/setting-management"
+				"change": "openspec/changes/archive/setting-management",
+				"requirement": [
+					"openspec/specs/setting-management :: Setting MUST be a managed campaign entity",
+					"openspec/specs/setting-management :: Game entities MUST support optional setting scoping"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -941,7 +945,8 @@
 				"evidence": "lib/Settings/larpinq_register.json:224 (character.setting), 534 (skill.setting), 607 (item.setting), 679 (condition.setting), 755 (effect.setting), 833 (event.setting); src/manifest.json:1894-1932 (SettingDetail setting-characters/setting-events object-lists filtered setting=@objectId, each with viewAllRoute Characters/Events and viewAllQuery {setting: @objectId})",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "SettingDetail page (/settings/:id) object-lists, and their 'view all' links into the Characters/Events index pre-filtered to that world",
-				"change": "openspec/changes/archive/setting-management"
+				"change": "openspec/changes/archive/setting-management",
+				"requirement": "openspec/specs/setting-management :: A per-user active setting MUST filter lists server-side"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -979,7 +984,8 @@
 				"evidence": "lib/Settings/larpinq_register.json:896-904 (setting.status enum active/archived, default active, facetable)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "SettingDetail page generic edit form (status field)",
-				"change": "openspec/changes/archive/setting-management"
+				"change": "openspec/changes/archive/setting-management",
+				"requirement": "openspec/specs/setting-management :: Setting deletion MUST be guarded; archiving is the end-of-campaign path"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -1017,7 +1023,8 @@
 				"evidence": "lib/Settings/larpinq_register.json:870-905 (setting is a first-class, non-singleton register schema); src/manifest.json:1822-1832 (Settings index lists every world record)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Settings index page (/settings) lists every world/campaign record",
-				"change": "openspec/changes/archive/setting-management"
+				"change": "openspec/changes/archive/setting-management",
+				"requirement": "openspec/specs/setting-management :: A per-user active setting MUST filter lists server-side"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -1051,7 +1058,8 @@
 				"evidence": "lib/Settings/larpinq_register.json:889-893 (setting.description, maxLength 2555); src/manifest.json:1845-1852 (setting-data widget, columns:1, no include filter so all schema fields including description render)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "SettingDetail page (/settings/:id), World data widget",
-				"change": "openspec/changes/archive/setting-management"
+				"change": "openspec/changes/archive/setting-management",
+				"requirement": "openspec/changes/capability-rows-missing-requirements/specs/setting-management :: The world page shows its description (REQ-SMD-001)"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -1085,7 +1093,11 @@
 				"evidence": "lib/Settings/register.d/worlds-lore-pages.json lorePage (title, markdown body, category, world, parent, order; ADR-003); Lore index and LoreArticle read page (src/manifest.d/worlds-lore-pages.json, src/views/LoreArticle.vue over CnWikiPage) and the Lore list on SettingDetail; tests/unit/Settings/LorePagesFragmentTest.php, tests/vitest/loreArticle.spec.js",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "/lore, /lore/:id, and the world page's Lore list",
-				"change": "openspec/changes/archive/2026-09-30-worlds-lore-pages"
+				"change": "openspec/changes/archive/2026-09-30-worlds-lore-pages",
+				"requirement": [
+					"openspec/specs/world-lore :: Game masters write lore pages per world (REQ-WLP-001)",
+					"openspec/specs/world-lore :: Players browse lore as articles (REQ-WLP-004)"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read: grepped this repository, no hits beyond free-text description fields",
@@ -1116,11 +1128,13 @@
 			"kanka": "yes",
 			"pretix": "no",
 			"built": {
-				"state": "built",
-				"evidence": "src/manifest.json:1914-1932 (SettingDetail setting-events object-list, sort startDate desc); openspec/specs/dashboard/spec.md:287 (DASH-063 'Dashboard SHOULD display a timeline chart of recent events' status Planned, i.e. not built)",
+				"state": "specified",
+				"evidence": "src/manifest.json:1914-1932 (SettingDetail setting-events object-list, sort startDate desc); openspec/specs/dashboard/spec.md:287 (DASH-063 'Dashboard SHOULD display a timeline chart of recent events' status Planned, i.e. not built) Not built: the world page lists its real events by start date, but there is no record of in-game history and no timeline (REQ-SMD-002, change capability-rows-missing-requirements).",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "SettingDetail page 'Events in this world' list, sorted by start date",
-				"change": "openspec/changes/archive/setting-management"
+				"change": "openspec/changes/archive/setting-management",
+				"requirement": "openspec/changes/capability-rows-missing-requirements/specs/setting-management :: A world keeps a timeline of its history (REQ-SMD-002)",
+				"plan": "openspec/changes/capability-rows-missing-requirements"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -1155,7 +1169,11 @@
 				"evidence": "grep -rniE '\\\\bmap\\\\b' lib src: only hits are event.location geocoded through the Nextcloud Maps app via lib/Settings/register.d/event-location-to-maps-leaf.json (a single address string per event, not an uploadable annotated map), plus unrelated PHP array-map/Db-mapper hits",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "nothing: only per-event location-to-Maps integration exists, not a world map with pins",
-				"change": "worlds-maps"
+				"change": "worlds-maps",
+				"requirement": [
+					"openspec/changes/worlds-maps/specs/world-maps :: Game masters upload maps and place pins (REQ-WMP-001)",
+					"openspec/changes/worlds-maps/specs/world-maps :: The map shows its pins (REQ-WMP-002)"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read: grepped this repository, no hits beyond the event-location leaf",
@@ -1190,7 +1208,8 @@
 				"evidence": "lorePage read rule: gamemasters read all, larpers read a page with visibility players whose revealFrom has passed, evaluated by OpenRegister in the query on every read path; tests/unit/Settings/LorePagesFragmentTest.php",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "/lore as a player",
-				"change": "openspec/changes/archive/2026-09-30-worlds-lore-pages"
+				"change": "openspec/changes/archive/2026-09-30-worlds-lore-pages",
+				"requirement": "openspec/specs/world-lore :: Players read only pages meant for them (REQ-WLP-002)"
 			},
 			"provider": "self",
 			"providerHow": "read: grepped this repository, no hits",
@@ -1225,7 +1244,11 @@
 				"evidence": "lib/Service/WorldCopyService.php (abilities, effects, skills, items, conditions, lore pages; id remap, two-pass required skills, holders emptied, rollback) and lib/Controller/WorldsController.php (game masters via Application::GM_GROUP, 2000 cap); tests/unit/Service/WorldCopyServiceTest.php, tests/unit/Controller/WorldsControllerTest.php, tests/vitest/worldCopy.spec.js",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "World page, Actions, Copy world (src/dialogs/CopyWorldDialog.vue)",
-				"change": "openspec/changes/archive/2026-09-30-worlds-copy-ruleset"
+				"change": "openspec/changes/archive/2026-09-30-worlds-copy-ruleset",
+				"requirement": [
+					"openspec/specs/setting-management :: A game master copies a world's rules (REQ-WCR-001)",
+					"openspec/specs/setting-management :: Copied rules point at each other (REQ-WCR-002)"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read: grepped this repository, no hits",
@@ -1260,7 +1283,8 @@
 				"evidence": "lib/Settings/larpinq_register.json:44-58 (character schema, required name+ocName); src/manifest.json:581-590 (Characters index page, schema character)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Characters index page (/characters), standard New button",
-				"change": "openspec/changes/archive/2026-03-21-character-management"
+				"change": "openspec/changes/archive/2026-03-21-character-management",
+				"requirement": "openspec/specs/character-management :: Character CRUD Operations"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -1294,7 +1318,11 @@
 				"evidence": "lib/Settings/larpinq_register.json:82-90 (character.background, visible:false, GM-only per description); src/manifest.json:603-619 (char-identity widget includes 'background')",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "CharacterDetail page (/characters/:id), Identity widget",
-				"change": "openspec/changes/archive/2026-03-21-character-management"
+				"change": "openspec/changes/archive/2026-03-21-character-management",
+				"requirement": [
+					"openspec/specs/character-management :: Character CRUD Operations",
+					"openspec/specs/character-management :: Character Detail Tabs"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -1329,7 +1357,11 @@
 				"evidence": "lib/Settings/larpinq_register.json:101-111 (character.approved enum no/approved, widget switch); 288-311 (x-openregister-lifecycle field approved, transitions approved/unapprove); src/manifest.json:660-680 (char-progress widget includes 'approved')",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "CharacterDetail page, Game state & notes widget (approved switch)",
-				"change": "openspec/changes/archive/2026-03-21-character-management"
+				"change": "openspec/changes/archive/2026-03-21-character-management",
+				"requirement": [
+					"openspec/specs/character-management :: Character Types and Approval Workflow",
+					"openspec/specs/notifications :: Character submission and approval notifications"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -1364,7 +1396,8 @@
 				"evidence": "lib/Settings/register.d/characters-player-visibility.json: slNotesPrivate and requirementOverrides read/update gamemasters only (property authorization); tests/unit/Settings/CharacterVisibilityRulesTest.php",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "character detail page and every object API read: the private notes are stripped for players",
-				"change": "openspec/changes/archive/2026-09-29-characters-player-visibility"
+				"change": "openspec/changes/archive/2026-09-29-characters-player-visibility",
+				"requirement": "openspec/specs/character-management :: Private game master notes never reach a player (REQ-CPV-003)"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -1399,7 +1432,8 @@
 				"evidence": "lib/Settings/larpinq_register.json:284-287 (character.configuration.linkedTypes: ['photos']); src/manifest.json:717-724 (char-photos integration widget, integrationId photos)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "CharacterDetail page, Portrait & sheet widget",
-				"change": "openspec/changes/archive/2026-06-14-character-photos-leaf"
+				"change": "openspec/changes/archive/2026-06-14-character-photos-leaf",
+				"requirement": "openspec/specs/character-photos-leaf :: Character detail page MUST host the OR photos leaf"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -1433,7 +1467,11 @@
 				"evidence": "lib/Service/CharacterService.php:353-403 (calculateCharacter, applies effects from skills/items/conditions/events); lib/Service/SkillRequirementService.php:86-99 (calls calculateCharacter, extracts 'stats' for context); lib/Controller/CharactersController.php:240-269 (requirementReport endpoint); src/views/skillTreeGraph.js:73 and src/views/SkillTree.vue:517-551 (consumes only report.budget.ok as a boolean for node colouring)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "SkillTree page (/skill-tree), used only to colour skill nodes owned/available/locked, never rendered as a readable stat sheet",
-				"change": "openspec/changes/archive/2026-03-21-character-management"
+				"change": "openspec/changes/archive/2026-03-21-character-management",
+				"requirement": [
+					"openspec/specs/character-management :: Stat Calculation Engine",
+					"openspec/specs/character-management :: Character Associations"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -1471,7 +1509,8 @@
 				"evidence": "lib/Service/CharacterService.php tagNewAuditEntries (each audit entry names its skill, item, condition or event); lib/Service/CharacterStatsPresenter.php; lib/Controller/CharacterStatsController.php (GET /api/characters/{id}/stats); src/views/CharacterStatSheet.vue; tests/unit/Controller/CharacterStatsControllerTest.php",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "/characters/:id sidebar, Stats tab: each ability expands to its modifiers with source",
-				"change": "openspec/changes/archive/2026-09-29-characters-stat-sheet-panel"
+				"change": "openspec/changes/archive/2026-09-29-characters-stat-sheet-panel",
+				"requirement": "openspec/specs/character-management :: The character page shows each ability with its sources (REQ-CSP-001)"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -1506,7 +1545,8 @@
 				"evidence": "lib/Settings/larpinq_register.json:188-199 (character.items array, $ref larping_item); src/manifest.json:681-694 (char-related widget, group key 'items')",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "CharacterDetail page, Build & world (related) widget",
-				"change": "openspec/changes/archive/2026-03-21-character-management"
+				"change": "openspec/changes/archive/2026-03-21-character-management",
+				"requirement": "openspec/specs/character-management :: Character Associations"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -1540,7 +1580,8 @@
 				"evidence": "lib/Settings/larpinq_register.json:200-211 (character.conditions array, $ref condition); src/manifest.json:681-694 (char-related widget, group key 'conditions')",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "CharacterDetail page, Build & world (related) widget",
-				"change": "openspec/changes/archive/2026-03-21-character-management"
+				"change": "openspec/changes/archive/2026-03-21-character-management",
+				"requirement": "openspec/specs/character-management :: Character Associations"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -1577,7 +1618,8 @@
 				"evidence": "lib/Settings/register.d/characters-status-and-bulk-edit.json: character.status active/retired/dead (default active, facetable, set by game masters) and status active in the event participant filter (larpinq_register.json); lib/Service/CharacterStatusGuard.php refuses a new event for a retired or dead character (via CharacterStatusListener); lib/Repair/BackfillCharacterStatus.php; tests/unit/Settings/CharacterStatusFragmentTest.php, tests/unit/Listener/CharacterStatusListenerTest.php, tests/unit/Repair/BackfillCharacterStatusTest.php",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "the character page (Game state & notes), the Characters list Status column and filter, and the event participant picker",
-				"change": "openspec/changes/archive/2026-09-30-characters-status-and-bulk-edit"
+				"change": "openspec/changes/archive/2026-09-30-characters-status-and-bulk-edit",
+				"requirement": "openspec/specs/character-management :: A character has a status (REQ-CSB-001)"
 			},
 			"provider": "self",
 			"providerHow": "read: grepped this repository, no hits beyond the fields cited",
@@ -1612,7 +1654,11 @@
 				"evidence": "lib/Settings/larpinq_register.json:90-100 (character.type facetable), 101-111 (character.approved facetable); src/manifest.json:581-590 (Characters index page type: index, generic nc-vue search/facet UI)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Characters index page (/characters)",
-				"change": "openspec/changes/archive/2026-03-21-character-management"
+				"change": "openspec/changes/archive/2026-03-21-character-management",
+				"requirement": [
+					"openspec/specs/character-management :: Character CRUD Operations",
+					"openspec/specs/character-management :: Character Types and Approval Workflow"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -1646,7 +1692,11 @@
 				"evidence": "src/manifest.json:787-796 (CharacterDetail sidebar tab id 'audit', widgets [{type: 'audit'}])",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "CharacterDetail page, History sidebar tab",
-				"change": "openspec/changes/archive/2026-03-21-character-management"
+				"change": "openspec/changes/archive/2026-03-21-character-management",
+				"requirement": [
+					"openspec/specs/character-management :: Character Detail Tabs",
+					"openspec/specs/character-management :: Shared OpenRegister Features"
+				]
 			},
 			"provider": "openregister",
 			"providerHow": "the audit widget renders OpenRegister's own object audit trail; larpinq only declares the sidebar tab",
@@ -1680,7 +1730,8 @@
 				"evidence": "lib/Settings/register.d/characters-player-visibility.json: row update gamemasters or larpers with ownerUid = $userId; background, faith, name, description writable by the owner, money and relations by gamemasters; tests/unit/Settings/CharacterVisibilityRulesTest.php",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "character detail page: a player saves their own background; other sheets and game master fields are refused",
-				"change": "openspec/changes/archive/2026-09-29-characters-player-visibility"
+				"change": "openspec/changes/archive/2026-09-29-characters-player-visibility",
+				"requirement": "openspec/specs/character-management :: A player reads and edits only their own sheet in full (REQ-CPV-001)"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -1718,7 +1769,11 @@
 				"evidence": "lib/Settings/register.d/characters-custom-fields.json (characterField definitions per world: text, number, choice, yes-no; customFields for owner and game masters, customFieldsPrivate for game masters only), lib/Service/CustomFieldGuard.php + CustomFieldValidator.php called from CharacterRequirementListener; tests/unit/Settings/CustomFieldsFragmentTest.php, tests/unit/Service/CustomFieldGuardTest.php, tests/vitest/characterCustomFields.spec.js",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Character fields page (World menu) to define; character page, Extra fields tab to fill in",
-				"change": "openspec/changes/archive/2026-09-30-characters-custom-fields"
+				"change": "openspec/changes/archive/2026-09-30-characters-custom-fields",
+				"requirement": [
+					"openspec/specs/character-custom-fields :: Game masters define extra character fields per world (REQ-CCF-001)",
+					"openspec/specs/character-custom-fields :: The character page shows the fields of its world (REQ-CCF-002)"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read: grepped this repository, no hits",
@@ -1753,7 +1808,8 @@
 				"evidence": "lib/Settings/larpinq_register.json:90-100 (character.type enum player/npc/other, default player, facetable:true)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Characters index page facet on 'type'",
-				"change": "openspec/changes/archive/2026-03-21-character-management"
+				"change": "openspec/changes/archive/2026-03-21-character-management",
+				"requirement": "openspec/specs/character-management :: Character Types and Approval Workflow"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -1788,7 +1844,8 @@
 				"evidence": "lib/Settings/register.d/characters-factions-and-relationships.json (relationship from and to a character with kind, description and knownTo game masters or owners; read by game masters and the owners of both characters), CharacterConnectionGuard::checkRelationship; tests/unit/Settings/FactionsFragmentTest.php, tests/unit/Listener/FactionMembershipListenerTest.php",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "character page, Relationships and Named by others lists",
-				"change": "openspec/changes/archive/2026-09-30-characters-factions-and-relationships"
+				"change": "openspec/changes/archive/2026-09-30-characters-factions-and-relationships",
+				"requirement": "openspec/specs/character-connections :: Characters have relationships (REQ-CFR-005)"
 			},
 			"provider": "self",
 			"providerHow": "read: grepped this repository, no hits",
@@ -1823,7 +1880,8 @@
 				"evidence": "lib/Settings/register.d/characters-factions-and-relationships.json (faction with kind faction or group and visibility open or secret, factionMember with role and status, materialised owner uids and row rules), lib/Listener/FactionMembershipListener.php + lib/Service/CharacterConnectionGuard.php; tests/unit/Settings/FactionsFragmentTest.php, tests/unit/Listener/FactionMembershipListenerTest.php, tests/vitest/factionsManifest.spec.js",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Factions page (Characters menu) and faction page with its members; character page, Factions and groups list",
-				"change": "openspec/changes/archive/2026-09-30-characters-factions-and-relationships"
+				"change": "openspec/changes/archive/2026-09-30-characters-factions-and-relationships",
+				"requirement": "openspec/specs/character-connections :: Factions list their members (REQ-CFR-001)"
 			},
 			"provider": "self",
 			"providerHow": "read: grepped this repository, no hits; corroborated by the cited proposal's own grep record",
@@ -1861,7 +1919,11 @@
 				"evidence": "lib/Settings/register.d/characters-plot-threads-and-writing.json: plot (game masters only, writing-step lifecycle) and plotPart (privateText read by gamemasters only; row read for larpers where ownerUid = $userId, ownerUid materialised from the character on save); Plots and PlotDetail pages and a Plots list on the character page; tests/unit/Settings/PlotsFragmentTest.php, tests/vitest/plotsManifest.spec.js",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "/plots, /plots/:id, and the character page's Plots list",
-				"change": "openspec/changes/archive/2026-09-30-characters-plot-threads-and-writing"
+				"change": "openspec/changes/archive/2026-09-30-characters-plot-threads-and-writing",
+				"requirement": [
+					"openspec/specs/story-writing :: A plot links its characters with a text for each (REQ-CPW-001)",
+					"openspec/specs/story-writing :: Private plot texts never reach players (REQ-CPW-002)"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -1896,7 +1958,8 @@
 				"evidence": "lib/Settings/larpinq_register.json:113-134 (character.gold/silver/copper integers); src/manifest.json:642-659 (char-stats-gold-pieces stat card) and :660-680 (char-progress widget includes gold/silver/copper)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "CharacterDetail page, Gold pieces stat card and Game state & notes widget",
-				"change": "openspec/changes/archive/2026-03-21-character-management"
+				"change": "openspec/changes/archive/2026-03-21-character-management",
+				"requirement": "openspec/specs/character-management :: Currency System"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -1930,7 +1993,8 @@
 				"evidence": "src/manifest.json:695-716 (char-xpawards object-list: event, amount, reason, awardedAt, per character) and :787-796 (audit sidebar tab)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "CharacterDetail page, XP award history widget + History sidebar tab",
-				"change": "openspec/changes/archive/event-xp-award-workflow"
+				"change": "openspec/changes/archive/event-xp-award-workflow",
+				"requirement": "openspec/specs/event-xp-awards :: XP awards MUST be recorded as first-class objects"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -1968,7 +2032,11 @@
 				"evidence": "src/manifest.json:695-716 (char-xpawards object-list, filter character=@objectId, sort awardedAt desc, columns event/amount/reason/awardedAt); lib/Settings/larpinq_register.json:909-961 (xpAward schema: event, character, amount, reason, awardedBy, awardedAt)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "CharacterDetail page, XP award history widget",
-				"change": "openspec/changes/archive/event-xp-award-workflow"
+				"change": "openspec/changes/archive/event-xp-award-workflow",
+				"requirement": [
+					"openspec/specs/event-xp-awards :: XP awards MUST be recorded as first-class objects",
+					"openspec/specs/event-xp-awards :: Award writes MUST be restricted to game masters"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -2003,7 +2071,8 @@
 				"evidence": "lib/Settings/larpinq_register.json:362-395 (player schema: name, description, userUid); src/manifest.json:797-806 (Players index page, schema player)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Players index page (/players)",
-				"change": "openspec/changes/archive/2026-03-21-events-players"
+				"change": "openspec/changes/archive/2026-03-21-events-players",
+				"requirement": "openspec/specs/events-players :: Player Profile Management"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -2037,7 +2106,8 @@
 				"evidence": "lib/Settings/register.d/player-to-contacts-leaf.json:1-8 (player.configuration.linkedTypes: ['contacts']); src/manifest.json:826-838 (player-contacts integration widget, integrationId contacts)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "PlayerDetail page (/players/:id), Contact card widget",
-				"change": "openspec/changes/archive/2026-06-14-player-to-contacts-leaf"
+				"change": "openspec/changes/archive/2026-06-14-player-to-contacts-leaf",
+				"requirement": "openspec/specs/player-to-contacts-leaf :: Player detail page MUST host the OR contacts leaf"
 			},
 			"provider": "nextcloud",
 			"providerHow": "the contact card itself is Nextcloud Contacts; larpinq only declares the linkedType and renders the integration widget",
@@ -2071,7 +2141,8 @@
 				"evidence": "lib/Settings/larpinq_register.json:382-391 (player.userUid, plain string, no 'format' deliberately, used for character-ownership notifications); src/manifest.json:819-825 (player-data widget, columns:1, no include filter so userUid renders)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "PlayerDetail page, Player data widget",
-				"change": "openspec/changes/archive/2026-03-21-events-players"
+				"change": "openspec/changes/archive/2026-03-21-events-players",
+				"requirement": "openspec/changes/capability-rows-missing-requirements/specs/events-players :: A player is linked to their Nextcloud user account (REQ-EPL-001)"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -2105,7 +2176,8 @@
 				"evidence": "src/manifest.json:839-857 (player-characters object-list, filter ocName=@objectId, columns name/type/approved, viewAllRoute Characters)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "PlayerDetail page, Characters played widget",
-				"change": "openspec/changes/archive/2026-03-21-events-players"
+				"change": "openspec/changes/archive/2026-03-21-events-players",
+				"requirement": "openspec/changes/capability-rows-missing-requirements/specs/events-players :: The player page lists the player's characters (REQ-EPL-002)"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -2139,7 +2211,8 @@
 				"evidence": "src/manifest.json:581-596 (CharacterDetail is a generic detail page reachable to any authenticated larpinq user, no ownership gate)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "CharacterDetail page (/characters/:id)",
-				"change": "openspec/changes/archive/2026-09-29-characters-player-visibility"
+				"change": "openspec/changes/archive/2026-09-29-characters-player-visibility",
+				"requirement": "openspec/specs/character-management :: A player opens their own character sheet from the menu"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -2210,7 +2283,8 @@
 				"evidence": "lib/Portal/PortalContributionProvider.php (portal action createPlayerProfile stamped with portalSubjectRef, collection myProfile; createCharacter now declares scopeClaim ownerRef), lib/Listener/PortalProfileListener.php (one profile per portal account, selfRegistered + awaitingReview, sends portaliq's PortalAccountClaimRequestedEvent for claim ownerRef = the player uuid, portal character ocName = ownerRef), lib/Listener/PlayerReviewListener.php (reviewedBy/reviewedAt stamped server side), lib/Settings/register.d/players-self-signup.json, src/manifest.d/players-self-signup.json (New players page, Mark reviewed); tests/unit/Listener/PortalProfileListenerTest.php with the real OpenRegister and portaliq event classes, tests/unit/Settings/PlayersSelfSignupFragmentTest.php, tests/vitest/playerReview.spec.js",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Portal (portaliq, player audience): Create your player profile, My profile; larpinq New players page (/new-players)",
-				"change": "openspec/changes/archive/2026-09-30-players-self-signup"
+				"change": "openspec/changes/archive/2026-09-30-players-self-signup",
+				"requirement": "openspec/specs/portal-contribution :: A portal visitor creates their own player profile (REQ-PSS-001)"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence; the account itself is portaliq's",
@@ -2245,7 +2319,8 @@
 				"evidence": "lib/Settings/larpinq_register.json:362-395 (player schema properties are only name, description, userUid); grep -rniE 'allerg|dietary|emergency contact' lib src openspec: no hits in larpinq's own schema/code (the only hit is aspirational text in an archived proposal about what the Nextcloud contact card COULD carry)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "nothing: no such fields on the player schema",
-				"change": "players-care-details-and-erasure"
+				"change": "players-care-details-and-erasure",
+				"requirement": "openspec/changes/players-care-details-and-erasure/specs/player-care-details :: Players keep care details that only they and game masters see (REQ-PCE-001)"
 			},
 			"provider": "self",
 			"providerHow": "read: grepped this repository, no hits in larpinq's own data model",
@@ -2310,7 +2385,8 @@
 				"evidence": "lib/Controller/PlayerAttendanceController.php (GET /api/players/{id}/attendance: game masters, or the player whose stored account it is via CharacterConnectionGuard::owns('player', ...), else 403), lib/Service/PlayerAttendanceService.php (checked-in attendance per character read with the app's authority, newest event first, distinct event count), src/views/PlayerAttendanceHistory.vue (PlayerDetail sidebar tab Events attended); tests/unit/Controller/PlayerAttendanceControllerTest.php over OpenRegister's real evaluator, tests/vitest/playerAttendance.spec.js",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Player page (/players/<id>), sidebar tab Events attended",
-				"change": "openspec/changes/archive/2026-09-30-players-attendance-history"
+				"change": "openspec/changes/archive/2026-09-30-players-attendance-history",
+				"requirement": "openspec/specs/events-players :: The player page lists events attended (REQ-PAH-001)"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -2375,7 +2451,8 @@
 				"evidence": "lib/Settings/larpinq_register.json:390-430 (ability schema: name, description, base, optional world scoping); src/manifest.json:908-914 (Abilities index page), src/manifest.json:919-1058 (AbilityDetail page with ability-data/ability-effects/ability-skills widgets)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "/abilities index and /abilities/:id detail page",
-				"change": "openspec/changes/archive/2026-03-21-rpg-system"
+				"change": "openspec/changes/archive/2026-03-21-rpg-system",
+				"requirement": "openspec/specs/rpg-system :: Ability (Stat) Management"
 			},
 			"provider": "self",
 			"providerHow": "read: schema + pages are in this repository at the paths in built.evidence",
@@ -2445,7 +2522,11 @@
 				"evidence": "lib/Settings/larpinq_register.json:480-491 (skill.requiredSkills); lib/Service/SkillRequirementChecker.php:111-134 (checkRequiredSkills); src/manifest.json:1097-1122 (SkillDetail 'skill-prereqs' related widget, group requiredSkills)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "/skills/:id detail page (prerequisite list) and enforced server-side on every character write via CharacterRequirementListener",
-				"change": "openspec/changes/archive/skill-requirement-enforcement"
+				"change": "openspec/changes/archive/skill-requirement-enforcement",
+				"requirement": [
+					"openspec/specs/rpg-system :: Skill Management and Prerequisites",
+					"openspec/specs/skill-requirement-enforcement :: Skill prerequisites MUST be enforced on assignment"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -2479,7 +2560,8 @@
 				"evidence": "lib/Settings/larpinq_register.json:544-615 (item schema, slug larping_item, effects[] ref); src/manifest.json:1185-1194 (Items index), src/manifest.json:1196-1299 (ItemDetail with item-effects related widget)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "/items index and /items/:id detail page",
-				"change": "openspec/changes/archive/2026-03-21-rpg-system"
+				"change": "openspec/changes/archive/2026-03-21-rpg-system",
+				"requirement": "openspec/specs/rpg-system :: Item Management"
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -2513,7 +2595,8 @@
 				"evidence": "lib/Settings/larpinq_register.json:617-687 (condition schema, effects[] ref, unique flag); src/manifest.json:1300-1309 (Conditions index), src/manifest.json:1311-1399 (ConditionDetail with condition-effects related widget)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "/conditions index and /conditions/:id detail page",
-				"change": "openspec/changes/archive/2026-03-21-rpg-system"
+				"change": "openspec/changes/archive/2026-03-21-rpg-system",
+				"requirement": "openspec/specs/rpg-system :: Condition Management"
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -2547,7 +2630,8 @@
 				"evidence": "lib/Settings/larpinq_register.json:689-763 (effect schema: modifier, modification enum, cumulative enum, abilities[] ref); src/manifest.json:1400-1409 (Effects index), src/manifest.json:1411-1499 (EffectDetail)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "/effects index and /effects/:id detail page",
-				"change": "openspec/changes/archive/2026-03-21-rpg-system"
+				"change": "openspec/changes/archive/2026-03-21-rpg-system",
+				"requirement": "openspec/specs/rpg-system :: Effect System Core"
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -2581,7 +2665,11 @@
 				"evidence": "lib/Service/EffectApplier.php:145-181 (applyModifierToAbility, signed delta arithmetic), lib/Service/EffectApplier.php:206-245 (calculateEffect, non-cumulative dedup rule closing #208); lib/Service/CharacterService.php:364-397 (fixed order: skills, items, conditions, events, then xpAwards)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "internal to CharacterService::calculateCharacter(), invoked on every requirement-report call and on every character write (see rul-deterministic-calc for the reachable trigger points)",
-				"change": "openspec/changes/archive/2026-03-21-rpg-system"
+				"change": "openspec/changes/archive/2026-03-21-rpg-system",
+				"requirement": [
+					"openspec/specs/rpg-system :: Stat Calculation Order and Audit",
+					"openspec/specs/game-mechanics :: The effect chain MUST be verified end-to-end"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -2615,7 +2703,11 @@
 				"evidence": "lib/Service/CharacterService.php:353-403 (calculateCharacter, stateless, always recomputed from base + all currently-linked entities, never an incremental diff); lib/Controller/CharactersController.php:242-269 (requirementReport)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "SkillTree page character selector (src/views/SkillTree.vue:524-553) -> GET /apps/larpinq/api/characters/{id}/requirement-report -> CharactersController::requirementReport -> SkillRequirementService::validate -> CharacterService::calculateCharacter; also runs on every character create/update via CharacterRequirementListener",
-				"change": "openspec/changes/archive/2026-03-21-rpg-system"
+				"change": "openspec/changes/archive/2026-03-21-rpg-system",
+				"requirement": [
+					"openspec/specs/rpg-system :: Stat Calculation Order and Audit",
+					"openspec/specs/character-management :: Stat Calculation Engine"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -2650,7 +2742,11 @@
 				"evidence": "lib/Settings/larpinq_register.json:870-907 (setting/'World' schema); optional 'setting' FK with x-relation-filter on ability (422-429), skill (534-541), item (607-614), condition (679-686), effect (755-762), event (833-840); src/manifest.json:2526-2665 (WorldContentReport dashboard: world-skills, world-items, world-conditions, world-effects)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "SkillTree World selector (src/views/SkillTree.vue:60-66, skillTreeGraph.js:117 activeSetting filter) and /reports/world",
-				"change": "openspec/changes/archive/setting-management"
+				"change": "openspec/changes/archive/setting-management",
+				"requirement": [
+					"openspec/specs/setting-management :: Game entities MUST support optional setting scoping",
+					"openspec/specs/setting-management :: Assignment pickers MUST default to the active setting"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -2686,7 +2782,12 @@
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "the whole app is built on these generic schemas; there is no fixed-system mode to opt out of",
 				"change": "openspec/changes/archive/2026-03-21-rpg-system",
-				"spec": "openspec/specs/game-mechanics"
+				"spec": "openspec/specs/game-mechanics",
+				"requirement": [
+					"openspec/specs/rpg-system :: Ability (Stat) Management",
+					"openspec/specs/rpg-system :: Effect System Core",
+					"openspec/specs/rpg-system :: Skill Management and Prerequisites"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -2724,7 +2825,8 @@
 				"evidence": "src/manifest.json:1069-1077 (SkillTree custom page); src/views/SkillTree.vue (whole file); src/views/skillTreeGraph.js:107-172 (buildNodes, computeTiers)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "/skill-tree page",
-				"change": "openspec/changes/archive/2026-07-07-skill-tree-visualization"
+				"change": "openspec/changes/archive/2026-07-07-skill-tree-visualization",
+				"requirement": "openspec/specs/skill-tree-visualization :: A skill-tree page MUST render the prerequisite graph from skill data"
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -2758,7 +2860,8 @@
 				"evidence": "src/views/skillTreeGraph.js:68-94 (computeStateBySkill: owned/available/locked/unknown, driven ONLY by the server requirementReport, ADR-022); src/views/SkillTree.vue:44-51,524-553 (character NcSelect + onCharacterChange fetch)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "/skill-tree page, character selector",
-				"change": "openspec/changes/archive/2026-07-07-skill-tree-visualization"
+				"change": "openspec/changes/archive/2026-07-07-skill-tree-visualization",
+				"requirement": "openspec/specs/skill-tree-visualization :: Nodes MUST be coloured by character availability using the server report"
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -2792,7 +2895,8 @@
 				"evidence": "src/views/skillTreeGraph.js:151-172 (computeTiers: bounded passes, any unplaced nodes from a cycle drop into a final tier); src/views/SkillTree.vue:16-17 (doc note: 'Cycle / self-reference tolerant')",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "/skill-tree page",
-				"change": "openspec/changes/archive/2026-07-07-skill-tree-visualization"
+				"change": "openspec/changes/archive/2026-07-07-skill-tree-visualization",
+				"requirement": "openspec/specs/skill-tree-visualization :: A skill-tree page MUST render the prerequisite graph from skill data"
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -2855,7 +2959,8 @@
 				"state": "specified",
 				"evidence": "grep -rniE 'rulebook' lib src: no hits beyond the seed row; the only 'publish' hits are generic OpenRegister config-bundle install/export (src/manifest.json:337) and unrelated schema 'published' date metadata (lib/Settings/larpinq_register.json:21), neither of which renders a readable rulebook page to players",
 				"owner": "ConductionNL/larpinq",
-				"change": "rules-rulebook-and-spell-lists"
+				"change": "rules-rulebook-and-spell-lists",
+				"requirement": "openspec/changes/rules-rulebook-and-spell-lists/specs/rulebook :: Players read the rulebook of their world (REQ-RRS-003)"
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -2921,7 +3026,11 @@
 				"state": "specified",
 				"evidence": "grep -rniE 'spell' lib src: no gameplay hits (only unrelated 'spelled'/'spelling' doc comments in lib/Listener/DeepLinkRegistrationListener.php:81,147 and lib/Controller/SettingsController.php:334,360); no separate spell/power schema exists, a spell would have to be modelled as an ordinary 'skill' object with no distinguishing type",
 				"owner": "ConductionNL/larpinq",
-				"change": "rules-rulebook-and-spell-lists"
+				"change": "rules-rulebook-and-spell-lists",
+				"requirement": [
+					"openspec/changes/rules-rulebook-and-spell-lists/specs/rulebook :: Skills can be grouped in lists of their own kind (REQ-RRS-001)",
+					"openspec/changes/rules-rulebook-and-spell-lists/specs/rulebook :: Each list draws on its own pool (REQ-RRS-002)"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -2985,7 +3094,8 @@
 				"evidence": "lib/Listener/UniqueHolderListener.php (vetoCharacter, vetoHeldObject) registered on ObjectCreatingEvent/ObjectUpdatingEvent in lib/AppInfo/Application.php registerUniqueHolderListener(); lib/Service/UniqueHolderService.php otherHolders() counts both sides; tests/unit/Listener/UniqueHolderListenerTest.php",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "character, item and condition detail pages: a save that gives a unique object a second holder is refused with the holder named (HTTP 422); occ larpinq:unique-holders:check",
-				"change": "openspec/changes/archive/2026-09-29-rules-unique-holder-enforcement"
+				"change": "openspec/changes/archive/2026-09-29-rules-unique-holder-enforcement",
+				"requirement": "openspec/specs/rpg-system :: A unique item has one holder (REQ-UHE-001)"
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -3020,7 +3130,8 @@
 				"evidence": "lib/Listener/UniqueHolderListener.php (conditions field, code unique_condition_held); lib/Command/UniqueHoldersCheck.php lists old conflicts; tests/unit/Listener/UniqueHolderListenerTest.php, tests/unit/Command/UniqueHoldersCheckTest.php",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "character, item and condition detail pages: a save that gives a unique object a second holder is refused with the holder named (HTTP 422); occ larpinq:unique-holders:check",
-				"change": "openspec/changes/archive/2026-09-29-rules-unique-holder-enforcement"
+				"change": "openspec/changes/archive/2026-09-29-rules-unique-holder-enforcement",
+				"requirement": "openspec/specs/rpg-system :: A unique condition affects one character (REQ-UHE-002)"
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -3055,7 +3166,11 @@
 				"evidence": "lib/Settings/larpinq_register.json: skill.effects (468-479), item.effects (577-588), condition.effects (649-660) and event.effects (821-832) all $ref the same 'effect' schema/objects by id",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "EffectDetail's related widgets (effect-skills/effect-items/effect-conditions, src/manifest.json:1447-1497) list every entity that references a given effect",
-				"change": "openspec/changes/archive/2026-03-21-rpg-system"
+				"change": "openspec/changes/archive/2026-03-21-rpg-system",
+				"requirement": [
+					"openspec/specs/rpg-system :: Shared OpenRegister Features",
+					"openspec/specs/game-mechanics :: MECH-060"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -3089,7 +3204,8 @@
 				"evidence": "lib/Settings/larpinq_register.json:909-973 (xpAward schema: required event/character/amount, authorization create/update/delete restricted to 'gamemasters'); src/manifest.json:695-715 (CharacterDetail char-xpawards object-list, allowCreate) and src/manifest.json:1689-1709 (EventDetail event-xpawards object-list)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "/characters/:id and /events/:id 'add' action on the XP award history list, and /xp-awards index",
-				"change": "openspec/changes/archive/event-xp-award-workflow"
+				"change": "openspec/changes/archive/event-xp-award-workflow",
+				"requirement": "openspec/specs/event-xp-awards :: XP awards MUST be recorded as first-class objects"
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -3126,7 +3242,8 @@
 				"evidence": "lib/Service/XpAwardBatchService.php (award roster + one award per row, refusals per row), lib/Controller/XpAwardsController.php (GET /api/xp-awards/access, GET /api/events/{id}/xp-award-roster, POST /api/events/{id}/xp-awards, game masters), src/dialogs/XpAwardDialog.vue via the EventDetail 'Award XP' header action; lib/Listener/XpAwardProvenanceListener.php stamps awardedBy/awardedAt; tests/unit/Service/XpAwardBatchServiceTest.php, tests/unit/Controller/XpAwardsControllerTest.php, tests/unit/Listener/XpAwardProvenanceListenerTest.php, tests/vitest/xpAwardBatch.spec.js",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Event page (/events/<id>), Actions > Award XP (game masters)",
-				"change": "openspec/changes/archive/2026-09-30-events-xp-batch-award"
+				"change": "openspec/changes/archive/2026-09-30-events-xp-batch-award",
+				"requirement": "openspec/specs/event-xp-awards :: The event detail MUST offer a GM batch awarding workflow"
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -3161,7 +3278,11 @@
 				"evidence": "lib/Settings/larpinq_register.json:944-961 (reason, awardedBy server-stamped, awardedAt server-stamped); src/manifest.json:2006-2104 (XpAwards index + XpAwardDetail)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "/xp-awards index and /xp-awards/:id detail page",
-				"change": "openspec/changes/archive/2026-09-30-events-xp-batch-award"
+				"change": "openspec/changes/archive/2026-09-30-events-xp-batch-award",
+				"requirement": [
+					"openspec/specs/event-xp-awards :: XP awards MUST be recorded as first-class objects",
+					"openspec/specs/event-xp-awards :: Award provenance is stamped by the server (REQ-EXB-002)"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -3195,7 +3316,8 @@
 				"evidence": "lib/Service/CharacterStatsPresenter.php xp() (earned, spent, left from the XP ability's audit; left equals SkillRequirementService budget value, pinned by CharacterStatsControllerTest::testXpMatchesTheBudgetCheck); src/views/CharacterStatSheet.vue XP line",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "/characters/:id sidebar, Stats tab: 'XP earned, XP spent, XP left' line",
-				"change": "openspec/changes/archive/2026-09-29-characters-stat-sheet-panel"
+				"change": "openspec/changes/archive/2026-09-29-characters-stat-sheet-panel",
+				"requirement": "openspec/specs/character-management :: XP earned, spent and left are visible (REQ-CSP-003)"
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -3230,7 +3352,8 @@
 				"evidence": "src/manifest.json:680-693 (CharacterDetail 'char-related' related widget, group 'skills'); lib/Listener/CharacterRequirementListener.php:95-144 (handle -> collectVeto -> SkillRequirementService::validate on every character write)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "/characters/:id 'Build & world' related widget, Skills group",
-				"change": "openspec/changes/archive/skill-requirement-enforcement"
+				"change": "openspec/changes/archive/skill-requirement-enforcement",
+				"requirement": "openspec/specs/skill-requirement-enforcement :: XP budget MUST be validated using the existing stat engine"
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -3264,7 +3387,8 @@
 				"evidence": "lib/Service/SkillRequirementService.php:193-229 (evaluateBudget: shortfall/ok from the computed XP ability value); lib/Listener/CharacterRequirementListener.php:127-132 (event->stopPropagation() + setErrors() when result.valid is false, which includes budget.ok===false per hasUnmet at SkillRequirementService.php:179-191)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "server-side veto on every character create/update (registered in lib/AppInfo/Application.php:118-134), covering SPA, REST and GraphQL write paths",
-				"change": "openspec/changes/archive/skill-requirement-enforcement"
+				"change": "openspec/changes/archive/skill-requirement-enforcement",
+				"requirement": "openspec/specs/skill-requirement-enforcement :: XP budget MUST be validated using the existing stat engine"
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -3298,7 +3422,8 @@
 				"evidence": "lib/Service/SkillRequirementChecker.php:70-99 (check: requiredSkills, requiredStats, requiredConditions, requiredEffects); lib/Listener/CharacterRequirementListener.php (veto on 'unmet'/'unresolvable' status)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "server-side veto on every character write",
-				"change": "openspec/changes/archive/skill-requirement-enforcement"
+				"change": "openspec/changes/archive/skill-requirement-enforcement",
+				"requirement": "openspec/specs/skill-requirement-enforcement :: Skill prerequisites MUST be enforced on assignment"
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -3333,7 +3458,8 @@
 				"evidence": "lib/Settings/larpinq_register.json:232-266 (character.requirementOverrides: skill, reason, overriddenBy, overriddenAt, visible:false); lib/Listener/CharacterRequirementListener.php:285-322 (checkOverrideAuthorization: only 'gamemasters' group may author one, and a blank reason is rejected outright)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "nothing: no manifest widget, related group or form field on any page references 'requirementOverrides' (grep -rn 'requirementOverrides' src --include=*.vue --include=*.js returns zero hits), a GM has no in-app way to add an override entry",
-				"change": "openspec/changes/archive/skill-requirement-enforcement"
+				"change": "openspec/changes/archive/skill-requirement-enforcement",
+				"requirement": "openspec/specs/skill-requirement-enforcement :: GM override MUST be explicit and audited"
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -3368,7 +3494,8 @@
 				"evidence": "lib/Controller/CharactersController.php:211-269 (requirementReport, GET /api/characters/{id}/requirement-report); src/views/SkillTree.vue:524-553 (fetch) and :556-580 (hasAnyRequirement / node detail panel)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "/skill-tree page: select a character, click a locked node to see its unmet requirements",
-				"change": "openspec/changes/archive/skill-requirement-enforcement"
+				"change": "openspec/changes/archive/skill-requirement-enforcement",
+				"requirement": "openspec/specs/skill-requirement-enforcement :: Unmet requirements MUST be clearly surfaced in the UI"
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -3431,7 +3558,11 @@
 				"evidence": "lib/Settings/larpinq_register.json:963-973 (xpAward authorization: update/delete restricted to 'gamemasters'); src/manifest.json:2017-2104 (XpAwardDetail carries no readOnly flag, so the standard detail-page edit/delete actions apply)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "/xp-awards/:id detail page edit/delete actions",
-				"change": "openspec/changes/archive/event-xp-award-workflow"
+				"change": "openspec/changes/archive/event-xp-award-workflow",
+				"requirement": [
+					"openspec/specs/event-xp-awards :: The event detail MUST offer a GM batch awarding workflow",
+					"openspec/specs/event-xp-awards :: Award changes MUST trigger recalculation of the affected character"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -3589,7 +3720,8 @@
 				"evidence": "lib/Settings/larpinq_register.json:766-808 (larping_event schema properties name/description/startDate/endDate/location); src/manifest.json:1589 (EventDetail config, register larpinq, schema larping_event); manifest pages list has an Events index page (type index) which is the generic OpenRegister create/list surface for this schema",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Events index page (/events, generic index create action) and EventDetail (/events/:id)",
-				"change": "openspec/changes/archive/2026-03-21-events-players"
+				"change": "openspec/changes/archive/2026-03-21-events-players",
+				"requirement": "openspec/specs/events-players :: Event CRUD Operations"
 			},
 			"provider": "self",
 			"providerHow": "read: schema and manifest are in this repository at the paths in built.evidence",
@@ -3624,7 +3756,8 @@
 				"evidence": "lib/Settings/register.d/event-calendar-leaf.json (event.configuration.linkedTypes: [\"calendar\"]); src/views/ObjectDetail.vue:20,60 (LEAVES_BY_OBJECT_TYPE event -> calendar); src/manifest.json:1589-1660 (event-calendar widget, type integration, integrationId calendar, in EventDetail layout)",
 				"owner": "nextcloud/calendar",
 				"reachedOn": "EventDetail page (/events/:id) body, 'Schedule' widget",
-				"change": "openspec/changes/archive/2026-06-14-event-calendar-leaf"
+				"change": "openspec/changes/archive/2026-06-14-event-calendar-leaf",
+				"requirement": "openspec/specs/event-calendar-leaf :: Event detail page MUST host the OR calendar leaf"
 			},
 			"provider": "nextcloud",
 			"providerHow": "read: larpinq declares the linkedType and hosts an invisible marker div (ObjectDetail.vue); OpenRegister's integration registry (ADR-019) resolves it to the real Nextcloud Calendar leaf widget, which larpinq does not implement itself",
@@ -3659,7 +3792,8 @@
 				"evidence": "lib/Settings/register.d/event-location-to-maps-leaf.json (event.configuration.linkedTypes: [\"maps\"]); src/manifest.json:1589-1660 (event-maps widget, type integration, integrationId maps)",
 				"owner": "nextcloud/maps",
 				"reachedOn": "EventDetail page (/events/:id) body, 'Location' widget",
-				"change": "openspec/changes/archive/2026-06-14-event-location-to-maps-leaf"
+				"change": "openspec/changes/archive/2026-06-14-event-location-to-maps-leaf",
+				"requirement": "openspec/specs/event-location-to-maps-leaf :: Event detail page MUST host the OR maps leaf for location"
 			},
 			"provider": "nextcloud",
 			"providerHow": "read: same OR-delegated leaf pattern as evt-calendar; larpinq only declares the linkedType and hosts the marker",
@@ -3693,7 +3827,8 @@
 				"evidence": "lib/Controller/EventsController.php:169 (roster()); lib/Service/EventRosterService.php:89-120 (buildRoster); src/views/EventRoster.vue:204-241 (fetchRoster calls GET /apps/larpinq/api/events/{id}/roster); src/manifest.json:1806-1809 (EventDetail sidebar 'Check-in' tab, component EventRoster); src/registry.js:25,43 (EventRoster resolved by CnObjectSidebar)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "EventDetail page (/events/:id), sidebar 'Check-in' tab",
-				"change": "openspec/changes/archive/2026-07-07-event-checkin-roster"
+				"change": "openspec/changes/archive/2026-07-07-event-checkin-roster",
+				"requirement": "openspec/specs/event-checkin-roster :: The event detail page MUST host a roster / check-in surface"
 			},
 			"provider": "self",
 			"providerHow": "read: two-hop trace route -> controller -> EventRoster.vue -> manifest sidebar tab, all in this repo",
@@ -3728,7 +3863,8 @@
 				"evidence": "lib/Settings/larpinq_register.json:214 (character.events array $ref larping_event, visible:false); src/manifest.json:690 (CharacterDetail 'char-related' widget, 'events' group); lib/Service/EventRosterService.php:328-333 (attendsEvent reads character['events'])",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "CharacterDetail page (/characters/:id), 'Build & world' related widget, Events group",
-				"change": "openspec/changes/archive/2026-03-21-events-players"
+				"change": "openspec/changes/archive/2026-03-21-events-players",
+				"requirement": "openspec/specs/events-players :: Event-Character Linking"
 			},
 			"provider": "self",
 			"providerHow": "read: the schema field is visible:false (hidden from generic forms) but is explicitly surfaced as its own related-object group on the character detail page, which is how a GM actually adds a character to an event",
@@ -3763,7 +3899,11 @@
 				"evidence": "src/views/EventRoster.vue:48-71 (Check in / No-show NcButtons, canCheckIn gated on isGm); lib/Controller/EventsController.php:207-244 (recordAttendance, GM-only via resolveGameMaster); lib/Service/EventRosterService.php:196-226 (recordAttendance persists larping_attendance)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "EventDetail page (/events/:id), sidebar 'Check-in' tab, per-row Check in/No-show buttons (game masters only)",
-				"change": "openspec/changes/archive/2026-07-07-event-checkin-roster"
+				"change": "openspec/changes/archive/2026-07-07-event-checkin-roster",
+				"requirement": [
+					"openspec/specs/event-checkin-roster :: The event detail page MUST host a roster / check-in surface",
+					"openspec/specs/event-checkin-roster :: Check-in MUST be a GM-only, server-stamped act"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read: full path traced from button click to POST /apps/larpinq/api/events/{id}/attendance to EventRosterService::recordAttendance",
@@ -3797,7 +3937,8 @@
 				"evidence": "lib/Settings/register.d/event-checkin-roster.json (larping_attendance schema: event, character, status enum registered/checked-in/no-show, server-stamped checkedInAt/checkedInBy); lib/Service/EventRosterService.php:387-410 (loadAttendance, filters by event)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "EventDetail page (/events/:id), sidebar 'Check-in' tab, attendance column + status badge",
-				"change": "openspec/changes/archive/2026-07-07-event-checkin-roster"
+				"change": "openspec/changes/archive/2026-07-07-event-checkin-roster",
+				"requirement": "openspec/specs/event-checkin-roster :: Attendance MUST be an OpenRegister-native record"
 			},
 			"provider": "self",
 			"providerHow": "read: same code path as evt-checkin; status is a first-class persisted record, not derived",
@@ -3831,7 +3972,8 @@
 				"evidence": "lib/Service/XpAwardBatchService.php awardRoster(): a row starts ticked only when the character's larping_attendance status is checked-in and it has no award for the event; no-show and unrecorded start unticked (with a hint); tests/unit/Service/XpAwardBatchServiceTest.php::testAttendanceDecidesTheDefaultTicks",
 				"owner": "ConductionNL/larpinq",
 				"change": "openspec/changes/archive/2026-09-30-events-xp-batch-award",
-				"reachedOn": "Event page, Actions > Award XP: default ticks follow the Check-in tab"
+				"reachedOn": "Event page, Actions > Award XP: default ticks follow the Check-in tab",
+				"requirement": "openspec/specs/event-checkin-roster :: Attendance MUST ground XP-award eligibility and MAY enrich the run-sheet"
 			},
 			"provider": "self",
 			"providerHow": "read: grepped for any code or declarative link between larping_attendance and xpAward and found none",
@@ -3896,7 +4038,8 @@
 				"evidence": "src/manifest.json: Events index quick filters Upcoming (default, startDate[gte] @today, startDate asc) and Past; Dashboard 'upcoming-events' widget (startDate[gte] @today, asc, limit 6); tests/vitest/activeWorld.spec.js",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Dashboard 'Upcoming events' widget; Events index (/events) opens on Upcoming, Past a tab away",
-				"change": "openspec/changes/archive/2026-09-30-events-world-scope-and-upcoming"
+				"change": "openspec/changes/archive/2026-09-30-events-world-scope-and-upcoming",
+				"requirement": "openspec/specs/setting-management :: Upcoming events come first (REQ-EWU-002)"
 			},
 			"provider": "self",
 			"providerHow": "read: manifest widget/page config in this repo",
@@ -3931,7 +4074,8 @@
 				"evidence": "src/manifest.json Events index page (generic list of all larping_event objects, no time filter so past events remain listed); src/manifest.json:1669-1697 (EventDetail 'event-roster' object-list widget showing participating characters, filter events=@objectId)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Events index page (/events) + EventDetail (/events/:id) roster widget",
-				"change": "openspec/changes/archive/2026-03-21-events-players"
+				"change": "openspec/changes/archive/2026-03-21-events-players",
+				"requirement": "openspec/specs/events-players :: Event CRUD Operations"
 			},
 			"provider": "self",
 			"providerHow": "read: manifest config in this repo",
@@ -3993,7 +4137,11 @@
 				"state": "specified",
 				"evidence": "grep -rniE \"qr.?code\" lib src --include=*.php --include=*.vue --include=*.js: no hits; there is no ticket concept at all (see reg-tickets)",
 				"owner": "ConductionNL/larpinq",
-				"change": "events-qr-checkin"
+				"change": "events-qr-checkin",
+				"requirement": [
+					"openspec/changes/events-qr-checkin/specs/event-checkin-roster :: The player sees the code as a QR code (REQ-EQC-002)",
+					"openspec/changes/events-qr-checkin/specs/event-checkin-roster :: Stewards check in by scanning or typing a code (REQ-EQC-003)"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read: grepped, no hits",
@@ -4027,7 +4175,8 @@
 				"state": "specified",
 				"evidence": "grep -rniE \"crew|npc\" lib src --include=*.php --include=*.vue --include=*.js: no hits; character.type is a free-text field on the character schema with no crew/NPC role assignment surface tied to an event",
 				"owner": "ConductionNL/larpinq",
-				"change": "events-casting-and-crew-roles"
+				"change": "events-casting-and-crew-roles",
+				"requirement": "openspec/changes/events-casting-and-crew-roles/specs/event-casting :: Volunteers fill crew and NPC roles (REQ-ECC-004)"
 			},
 			"provider": "self",
 			"providerHow": "read: grepped, no hits",
@@ -4120,7 +4269,8 @@
 				"evidence": "lib/Settings/register.d/registration-intake-and-capacity.json (registration schema with lifecycle accept/waitlist/decline/cancel, row rules, materialised playerUid/eventSetting; event.capacity, approvalRequired, signupForm), lib/Listener/FormSubmissionListener.php (Forms FormSubmittedEvent -> one registration per account and event, written with the app's authority), lib/Service/RegistrationService.php + lib/Listener/RegistrationListener.php (status under a per-event lock, places = accepted + hand-added participants, waiting list by submittedAt, event.players follows accepted, own active character of the event's world only), src/manifest.d/registration-intake-and-capacity.json (Registrations, My registrations, registration page with accept/decline/cancel), EventDetail registrations list and places stat; tests/unit/Service/RegistrationServiceTest.php (real listener, service and fetcher over OpenRegister's own events), tests/unit/Listener/FormSubmissionListenerTest.php, tests/unit/Settings/RegistrationFragmentTest.php",
 				"owner": "ConductionNL/larpinq",
 				"change": "openspec/changes/archive/2026-10-01-registration-intake-and-capacity",
-				"reachedOn": "Event page: Places field and the Places taken stat"
+				"reachedOn": "Event page: Places field and the Places taken stat",
+				"requirement": "openspec/specs/event-registration :: An event has a capacity (REQ-RIC-002)"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence; the form and its answers stay in Nextcloud Forms",
@@ -4156,7 +4306,11 @@
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Event page Sign-up panel + event.signupForm; Registrations (/registrations)",
 				"change": "openspec/changes/archive/2026-10-01-registration-intake-and-capacity",
-				"spec": "openspec/specs/event-signup-to-forms-leaf"
+				"spec": "openspec/specs/event-signup-to-forms-leaf",
+				"requirement": [
+					"openspec/specs/event-registration :: A form sign-up becomes a registration (REQ-RIC-001)",
+					"openspec/specs/event-signup-to-forms-leaf :: Event detail page MUST host the OR forms leaf for sign-up"
+				]
 			},
 			"provider": "nextcloud",
 			"providerHow": "read: OR-delegated forms leaf (ADR-019) surfaces a real NC Forms form; larpinq builds no bespoke submission store",
@@ -4194,7 +4348,8 @@
 				"evidence": "lib/Settings/register.d/registration-intake-and-capacity.json (registration schema with lifecycle accept/waitlist/decline/cancel, row rules, materialised playerUid/eventSetting; event.capacity, approvalRequired, signupForm), lib/Listener/FormSubmissionListener.php (Forms FormSubmittedEvent -> one registration per account and event, written with the app's authority), lib/Service/RegistrationService.php + lib/Listener/RegistrationListener.php (status under a per-event lock, places = accepted + hand-added participants, waiting list by submittedAt, event.players follows accepted, own active character of the event's world only), src/manifest.d/registration-intake-and-capacity.json (Registrations, My registrations, registration page with accept/decline/cancel), EventDetail registrations list and places stat; tests/unit/Service/RegistrationServiceTest.php (real listener, service and fetcher over OpenRegister's own events), tests/unit/Listener/FormSubmissionListenerTest.php, tests/unit/Settings/RegistrationFragmentTest.php",
 				"owner": "ConductionNL/larpinq",
 				"change": "openspec/changes/archive/2026-10-01-registration-intake-and-capacity",
-				"reachedOn": "My registrations (/my-registrations): the registration page, Character"
+				"reachedOn": "My registrations (/my-registrations): the registration page, Character",
+				"requirement": "openspec/specs/event-registration :: The player picks the character they bring (REQ-RIC-006)"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence; the form and its answers stay in Nextcloud Forms",
@@ -4232,7 +4387,8 @@
 				"evidence": "lib/Settings/register.d/registration-ticket-types-and-options.json (ticketType, registrationOption, accessCode with row rules; registration.ticketType, options, code, accessCode, lines), lib/Service/TicketChoiceService.php (listed-price lines written by larpinq, sale window, hidden ticket types, codes with window and uses, one currency), lib/Service/RegistrationService.php (ticket type place limit waitlists, full option refused, under the event lock), lib/Controller/RegistrationChoicesController.php (GET /api/registrations/{id}/offer, GET /api/events/{id}/choices), src/views/RegistrationChoices.vue, src/views/EventChoiceCounts.vue, src/manifest.d/registration-ticket-types-and-options.json; tests/unit/Service/TicketChoiceServiceTest.php, tests/unit/Controller/RegistrationChoicesControllerTest.php, tests/unit/Settings/TicketChoicesFragmentTest.php, tests/vitest/registrationChoices.spec.js",
 				"owner": "ConductionNL/larpinq",
 				"change": "openspec/changes/archive/2026-10-01-registration-ticket-types-and-options",
-				"reachedOn": "Event page: Ticket types list; registration page (/registrations/:id) Tickets tab"
+				"reachedOn": "Event page: Ticket types list; registration page (/registrations/:id) Tickets tab",
+				"requirement": "openspec/specs/event-registration :: Events offer ticket types with a role and a listed price (REQ-RTO-001)"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence; the amount due and the payment belong to shillinq",
@@ -4270,7 +4426,8 @@
 				"evidence": "lib/Settings/register.d/registration-payments-through-shillinq.json (event.paymentRequired, payBy, paymentCode; registration.paymentState, paymentRequestId, paymentLink, paymentReference, payBy, paymentReminderAt, invoiceRequested, cancelReason; payment-reminder notification rule), lib/Service/RegistrationPaymentService.php + lib/Service/PaymentRequestBuilder.php + lib/Service/PaymentLeaf.php (a payment request per accepted priced registration through shillinq's shillinq-payment-requests leaf when a game master accepts, else to-request; amount = own lines in currency units), lib/Listener/PaymentRequestListener.php (shillinq PaymentRequest captured -> paid), lib/Service/PaymentFollowUp.php + lib/BackgroundJob/RegistrationPaymentJob.php (daily: leaf reconcile, reminder 3 days before, expiry a day after), lib/Controller/RegistrationPaymentsController.php (POST /api/registrations/{id}/payment-request), src/manifest.d/registration-intake-and-capacity.json + EventDetail; tests/unit/Service/RegistrationPaymentServiceTest.php (payload validated against shillinq's PaymentRequest schema and the registration schema with Opis), tests/unit/Listener/PaymentRequestListenerTest.php, tests/unit/BackgroundJob/RegistrationPaymentJobTest.php, tests/unit/Controller/RegistrationPaymentsControllerTest.php",
 				"owner": "ConductionNL/larpinq",
 				"change": "openspec/changes/registration-payments-through-shillinq",
-				"reachedOn": "Registration page (/registrations/:id): Payment link and Reference; Actions, Request payment for game masters"
+				"reachedOn": "Registration page (/registrations/:id): Payment link and Reference; Actions, Request payment for game masters",
+				"requirement": "openspec/changes/registration-payments-through-shillinq/specs/event-registration :: An accepted registration gets a payment request (REQ-RPS-001)"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence; the money, the link and the capture are shillinq's",
@@ -4305,7 +4462,11 @@
 				"evidence": "lib/Settings/register.d/registration-payments-through-shillinq.json (event.paymentRequired, payBy, paymentCode; registration.paymentState, paymentRequestId, paymentLink, paymentReference, payBy, paymentReminderAt, invoiceRequested, cancelReason; payment-reminder notification rule), lib/Service/RegistrationPaymentService.php + lib/Service/PaymentRequestBuilder.php + lib/Service/PaymentLeaf.php (a payment request per accepted priced registration through shillinq's shillinq-payment-requests leaf when a game master accepts, else to-request; amount = own lines in currency units), lib/Listener/PaymentRequestListener.php (shillinq PaymentRequest captured -> paid), lib/Service/PaymentFollowUp.php + lib/BackgroundJob/RegistrationPaymentJob.php (daily: leaf reconcile, reminder 3 days before, expiry a day after), lib/Controller/RegistrationPaymentsController.php (POST /api/registrations/{id}/payment-request), src/manifest.d/registration-intake-and-capacity.json + EventDetail; tests/unit/Service/RegistrationPaymentServiceTest.php (payload validated against shillinq's PaymentRequest schema and the registration schema with Opis), tests/unit/Listener/PaymentRequestListenerTest.php, tests/unit/BackgroundJob/RegistrationPaymentJobTest.php, tests/unit/Controller/RegistrationPaymentsControllerTest.php",
 				"owner": "ConductionNL/larpinq",
 				"change": "openspec/changes/registration-payments-through-shillinq",
-				"reachedOn": "Registrations (/registrations): Payment column and filter; event page Paid and Payment open counts"
+				"reachedOn": "Registrations (/registrations): Payment column and filter; event page Paid and Payment open counts",
+				"requirement": [
+					"openspec/changes/registration-payments-through-shillinq/specs/event-registration :: The payment state follows shillinq (REQ-RPS-002)",
+					"openspec/changes/registration-payments-through-shillinq/specs/event-registration :: Organisers see who paid (REQ-RPS-005)"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence; the money, the link and the capture are shillinq's",
@@ -4340,7 +4501,8 @@
 				"evidence": "lib/Settings/register.d/registration-intake-and-capacity.json (registration schema with lifecycle accept/waitlist/decline/cancel, row rules, materialised playerUid/eventSetting; event.capacity, approvalRequired, signupForm), lib/Listener/FormSubmissionListener.php (Forms FormSubmittedEvent -> one registration per account and event, written with the app's authority), lib/Service/RegistrationService.php + lib/Listener/RegistrationListener.php (status under a per-event lock, places = accepted + hand-added participants, waiting list by submittedAt, event.players follows accepted, own active character of the event's world only), src/manifest.d/registration-intake-and-capacity.json (Registrations, My registrations, registration page with accept/decline/cancel), EventDetail registrations list and places stat; tests/unit/Service/RegistrationServiceTest.php (real listener, service and fetcher over OpenRegister's own events), tests/unit/Listener/FormSubmissionListenerTest.php, tests/unit/Settings/RegistrationFragmentTest.php",
 				"owner": "ConductionNL/larpinq",
 				"change": "openspec/changes/archive/2026-10-01-registration-intake-and-capacity",
-				"reachedOn": "Registrations (/registrations), status Waitlisted; event page Places taken stat"
+				"reachedOn": "Registrations (/registrations), status Waitlisted; event page Places taken stat",
+				"requirement": "openspec/specs/event-registration :: A full event keeps a waiting list in order (REQ-RIC-003)"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence; the form and its answers stay in Nextcloud Forms",
@@ -4375,7 +4537,11 @@
 				"evidence": "lib/Settings/register.d/registration-ticket-types-and-options.json (ticketType, registrationOption, accessCode with row rules; registration.ticketType, options, code, accessCode, lines), lib/Service/TicketChoiceService.php (listed-price lines written by larpinq, sale window, hidden ticket types, codes with window and uses, one currency), lib/Service/RegistrationService.php (ticket type place limit waitlists, full option refused, under the event lock), lib/Controller/RegistrationChoicesController.php (GET /api/registrations/{id}/offer, GET /api/events/{id}/choices), src/views/RegistrationChoices.vue, src/views/EventChoiceCounts.vue, src/manifest.d/registration-ticket-types-and-options.json; tests/unit/Service/TicketChoiceServiceTest.php, tests/unit/Controller/RegistrationChoicesControllerTest.php, tests/unit/Settings/TicketChoicesFragmentTest.php, tests/vitest/registrationChoices.spec.js",
 				"owner": "ConductionNL/larpinq",
 				"change": "openspec/changes/archive/2026-10-01-registration-ticket-types-and-options",
-				"reachedOn": "Event page: Access codes list; registration page Tickets tab, Code"
+				"reachedOn": "Event page: Access codes list; registration page Tickets tab, Code",
+				"requirement": [
+					"openspec/specs/event-registration :: Early bird ends on time (REQ-RTO-002)",
+					"openspec/specs/event-registration :: Codes unlock hidden ticket types (REQ-RTO-003)"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence; the amount due and the payment belong to shillinq",
@@ -4412,7 +4578,8 @@
 				"state": "specified",
 				"evidence": "larpinq half built in openspec/changes/registration-cancel-transfer-refund: lib/Service/RegistrationSettlement.php dispatches OCA\\Larpinq\\Event\\RegistrationRefundRequested and records settlement refund-requested; nothing in shillinq listens yet and PaymentRequest has no refunded state, so the refund itself is not done (task 5.1, for-ruben shillinq-registration-refund-and-credit-events)",
 				"owner": "ConductionNL/larpinq",
-				"change": "registration-cancel-transfer-refund"
+				"change": "registration-cancel-transfer-refund",
+				"requirement": "openspec/changes/registration-cancel-transfer-refund/specs/event-registration :: A paid cancellation is refunded or credited through shillinq (REQ-RCT-003)"
 			},
 			"provider": "self",
 			"providerHow": "read: grepped, no hits",
@@ -4512,7 +4679,11 @@
 				"evidence": "src/dialogs/CharacterPdfDownloadDialog.vue opened by CharacterDetail headerAction download-pdf (src/manifest.json); lib/Controller/CharactersController.php downloadPdf + pdfTemplates; tests/vitest/characterPdf.spec.js, tests/unit/Controller/CharactersPdfTemplatesTest.php",
 				"owner": "ConductionNL/larpinq",
 				"change": "openspec/changes/archive/2026-09-29-larpinq-pdf-frontend-download-action",
-				"reachedOn": "character detail page, Actions menu, Download as PDF (administrators; players follow with player-character-sheet-access)"
+				"reachedOn": "character detail page, Actions menu, Download as PDF (administrators; players follow with player-character-sheet-access)",
+				"requirement": [
+					"openspec/specs/pdf-export :: PDF Generation via DocuDesk",
+					"openspec/specs/pdf-export :: PDF Download Flow (Frontend)"
+				]
 			},
 			"provider": "filinq",
 			"providerHow": "read: DocuDeskPdfRenderer.php delegates rendering to filinq's TemplateService via FleetAppId (lib/Service/DocuDeskPdfRenderer.php:107-120)",
@@ -4543,10 +4714,12 @@
 			"kanka": "no",
 			"pretix": "partial",
 			"built": {
-				"state": "built",
-				"evidence": "lib/Controller/EventsController.php:105 (downloadRunsheet, GM-only via resolveGameMaster); appinfo/routes.php:31 (GET /events/{id}/runsheet/{template}); lib/Service/EventRosterService.php:136-176 (buildRunsheetContext); own grep -rn \"runsheet\" src/: no hits",
+				"state": "specified",
+				"evidence": "lib/Controller/EventsController.php:105 (downloadRunsheet, GM-only via resolveGameMaster); appinfo/routes.php:31 (GET /events/{id}/runsheet/{template}); lib/Service/EventRosterService.php:136-176 (buildRunsheetContext); own grep -rn \"runsheet\" src/: no hits Not built in the UI: the event page has no Download run-sheet action (RUN-020), so the run sheet is reachable only by typing its URL.",
 				"owner": "ConductionNL/larpinq",
-				"change": "openspec/changes/archive/2026-06-14-event-runsheet-export"
+				"change": "openspec/changes/archive/2026-06-14-event-runsheet-export",
+				"requirement": "openspec/specs/pdf-export :: Event Run-Sheet Generation via DocuDesk",
+				"plan": "openspec/changes/capability-rows-missing-requirements"
 			},
 			"provider": "filinq",
 			"providerHow": "read: renders through the same DocuDeskPdfRenderer as prt-character-pdf",
@@ -4734,7 +4907,11 @@
 				"evidence": "lib/Listener/DeepLinkRegistrationListener.php:82-93 (DEEP_LINK_MAP includes larping_event -> /apps/larpinq/events/{uuid}, character -> /apps/larpinq/characters/{uuid}); lib/AppInfo/Application.php:111-115 (listener registered behind class_exists('OCA\\OpenRegister\\Event\\DeepLinkRegistrationEvent'))",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "n/a (server-side URL registration consumed by OpenRegister's unified search / other apps linking in)",
-				"change": "openspec/changes/archive/2026-03-21-deep-link-registration"
+				"change": "openspec/changes/archive/2026-03-21-deep-link-registration",
+				"requirement": [
+					"openspec/specs/deep-link-registration :: Deep Link Listener",
+					"openspec/specs/deep-link-registration :: Object Type URL Mapping"
+				]
 			},
 			"provider": "openregister",
 			"providerHow": "read: larpinq registers its URL templates with OpenRegister's DeepLinkRegistrationEvent; OpenRegister's search/deep-link consumers are what actually follow the links",
@@ -4768,7 +4945,11 @@
 				"state": "specified",
 				"evidence": "grep -rniE \"mailParticipant|sendMail\" lib src --include=*.php --include=*.vue --include=*.js: no hits",
 				"owner": "ConductionNL/larpinq",
-				"change": "communication-mail-participants"
+				"change": "communication-mail-participants",
+				"requirement": [
+					"openspec/changes/communication-mail-participants/specs/event-messages :: Game masters write a message to an event's participants (REQ-CMP-001)",
+					"openspec/changes/communication-mail-participants/specs/event-messages :: Each recipient gets their own mail (REQ-CMP-003)"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read: grepped, no hits",
@@ -4863,7 +5044,11 @@
 				"owner": "ConductionNL/portaliq",
 				"reachedOn": "The portaliq portal app's page (sibling app), discovered by convention FQCN + duck-typing, not by any larpinq page",
 				"readOn": "2026-09-26",
-				"change": "openspec/changes/archive/2026-10-07-portal-contribution"
+				"change": "openspec/changes/archive/2026-10-07-portal-contribution",
+				"requirement": [
+					"openspec/specs/portal-contribution :: Player Audience Contribution",
+					"openspec/specs/portal-contribution :: The player has a Mijn larp page in the portal"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read: larpinq authors the declarative contribution manifest in this repo; portaliq (a separate app) is the one that renders the actual portal UI and calls into this class at runtime, so the reachable page lives in portaliq, not larpinq",
@@ -4927,7 +5112,8 @@
 				"evidence": "lib/Settings/larpinq_register.json:821-832 (event.effects array $ref effect); lib/Service/CharacterService.php:386-391 (applyEntityEffects called with property 'events', lookup allEvents, events the character is subscribed to feed effects into stat calculation exactly like skills/items/conditions); src/manifest.json:1641 (EventDetail 'event-effects' related widget, group 'effects')",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "EventDetail page (/events/:id) 'Post-event effects' widget; effect applied wherever character stats are (re)calculated",
-				"change": "openspec/changes/archive/2026-03-21-events-players"
+				"change": "openspec/changes/archive/2026-03-21-events-players",
+				"requirement": "openspec/specs/events-players :: Event Effect Application to Characters"
 			},
 			"provider": "self",
 			"providerHow": "read: full trace from schema field to CharacterService's generic per-entity-type effect application to the display widget",
@@ -4962,7 +5148,8 @@
 				"evidence": "lib/Settings/register.d/events-world-scope-and-upcoming.json: event.setting visible (World on the event form, EventDetail data widget and the Events index); tests/unit/Settings/EventsWorldScopeFragmentTest.php",
 				"owner": "ConductionNL/larpinq",
 				"change": "openspec/changes/archive/2026-09-30-events-world-scope-and-upcoming",
-				"reachedOn": "Event form and event page (World field); Events index (/events) World column"
+				"reachedOn": "Event form and event page (World field); Events index (/events) World column",
+				"requirement": "openspec/specs/setting-management :: A game master sets an event's world (REQ-EWU-001)"
 			},
 			"provider": "self",
 			"providerHow": "read: enumerated the EventDetail widgets and found no surface for this field",
@@ -5000,7 +5187,8 @@
 				"evidence": "src/manifest.json:1812-1815 (EventDetail sidebar 'History' tab, widgets: [{type: audit}])",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "EventDetail page (/events/:id), sidebar 'History' tab",
-				"change": "openspec/changes/archive/2026-03-21-events-players"
+				"change": "openspec/changes/archive/2026-03-21-events-players",
+				"requirement": "openspec/specs/events-players :: Shared OpenRegister Features"
 			},
 			"provider": "openregister",
 			"providerHow": "read: the 'audit' widget type is a generic OpenRegister audit-trail renderer wired into every larpinq detail page's sidebar, not app-specific code",
@@ -5135,7 +5323,8 @@
 				"evidence": "src/manifest.json:2135 (CharacterRosterReport page, type dashboard, route /reports/characters); widgets roster-total/roster-players/roster-awaiting (stat), roster-by-type/roster-by-approval (chart, donut), roster-recent (object-table)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Reports > Character roster, route /reports/characters",
-				"spec": "openspec/specs/reports"
+				"spec": "openspec/specs/reports",
+				"requirement": "openspec/specs/reports :: The character roster report MUST count characters by type, approval and writing step"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -5170,7 +5359,8 @@
 				"evidence": "src/manifest.json:2143 (ProgressionReport page, /reports/progression); widgets xp-awards/xp-total (stat), xp-per-character (chart, bar, groupBy character sum amount), xp-recent (object-table)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Reports > Progression, route /reports/progression",
-				"spec": "openspec/specs/reports"
+				"spec": "openspec/specs/reports",
+				"requirement": "openspec/specs/reports :: The progression report MUST show experience awarded and who earned it"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -5204,7 +5394,8 @@
 				"evidence": "src/manifest.json:2151 (WorldContentReport page, /reports/content); widgets world-skills/items/conditions/effects (stat), world-items-carried/world-conditions-held (chart, donut groupBy items/conditions array property on character)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Reports > World content, route /reports/content",
-				"spec": "openspec/specs/reports"
+				"spec": "openspec/specs/reports",
+				"requirement": "openspec/specs/reports :: The world content report MUST show what the world holds and what characters carry"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -5238,7 +5429,11 @@
 				"evidence": "src/manifest.json:461 (Dashboard 'skill-usage' chart widget, donut, aggregate.groupBy \"skills\", topN 10, labelResolve to larping_skill.name); src/manifest.json WorldContentReport 'world-items-carried' (groupBy items) and 'world-conditions-held' (groupBy conditions) widgets",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Dashboard page (skill-usage widget) and Reports > World content",
-				"change": "openspec/changes/archive/2026-05-31-larping-skill-widget"
+				"change": "openspec/changes/archive/2026-05-31-larping-skill-widget",
+				"requirement": [
+					"openspec/specs/larping-skill-widget :: The dashboard MUST display a skill usage pie chart",
+					"openspec/specs/reports :: The world content report MUST show what the world holds and what characters carry"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -5275,7 +5470,8 @@
 				"evidence": "lib/Settings/register.d/admin-import-export.json (configuration.exportable on every schema) and allowExport on every index page in src/manifest.json and the Cast fragment: CnIndexPage's Export menu downloads the filtered list as CSV or Excel through OpenRegister's objects export, which applies read rules; tests/vitest/campaignPortability.spec.js, tests/unit/Settings/AdminImportExportFragmentTest.php",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "every list page (/characters, /players, /skills, /events, ...), Export menu",
-				"change": "openspec/changes/archive/2026-09-30-admin-import-export"
+				"change": "openspec/changes/archive/2026-09-30-admin-import-export",
+				"requirement": "openspec/specs/data-portability :: Every list exports to CSV or Excel (REQ-AIE-001)"
 			},
 			"provider": "self",
 			"providerHow": "read: absence confirmed by grep",
@@ -5403,7 +5599,8 @@
 				"evidence": "lib/AppInfo/Application.php:109-116 registers DeepLinkRegistrationListener against OCA\\OpenRegister\\Event\\DeepLinkRegistrationEvent (guarded by class_exists); lib/Listener/DeepLinkRegistrationListener.php registers per-schema URL templates so unified-search results deep-link into larpinq's own detail views",
 				"owner": "ConductionNL/openregister",
 				"reachedOn": "Nextcloud's global unified search, when OpenRegister's DeepLinkRegistrationEvent class is present",
-				"change": "openspec/changes/archive/2026-03-21-deep-link-registration"
+				"change": "openspec/changes/archive/2026-03-21-deep-link-registration",
+				"requirement": "openspec/specs/deep-link-registration :: Deep Link Listener"
 			},
 			"provider": "openregister",
 			"providerHow": "read: larpinq registers URL templates; OpenRegister supplies the unified-search event and provider that renders results",
@@ -5438,7 +5635,8 @@
 				"evidence": "src/manifest.json:8-33 (setup block: welcome/demo-data/load-demo-data/provision/done steps); appinfo/routes.php:38-40 (/api/setup/status GET, /api/setup/config POST, /api/setup/action/{actionId} POST in $extra); lib/Controller/SetupController.php:55 backs the abstract CnSetupWizard (docblock line ~1-22)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "App shell CnSetupWizard, shown on first visit per manifest setup.enabled",
-				"change": "openspec/changes/archive/2026-10-07-wizard-dataset-card-load"
+				"change": "openspec/changes/archive/2026-10-07-wizard-dataset-card-load",
+				"requirement": "openspec/specs/first-time-setup :: Setup status reports every manifest step"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -5507,7 +5705,8 @@
 				"evidence": "lib/Service/DemoDataService.php:54,97,132,216 (isAvailable/listChoices/install); lib/Controller/SetupController.php loadDataset()/skipDemoData() back the manifest's 'demo-data' choice step and 'load-demo-data' run-action steps (src/manifest.json:12-25)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "First-time setup wizard, 'Load example data?' step",
-				"change": "openspec/changes/archive/2026-10-07-wizard-dataset-card-load"
+				"change": "openspec/changes/archive/2026-10-07-wizard-dataset-card-load",
+				"requirement": "openspec/specs/first-time-setup :: Each example data card loads itself"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -5541,7 +5740,11 @@
 				"evidence": "appinfo/info.xml <settings> registers OCA\\Larpinq\\Settings\\LarpinqAdmin; templates/settings/admin.php loads larpinq-settings, whose entry src/settings.js mounts src/views/settings/Settings.vue; Settings.vue loadSettings()/saveAll() call GET/POST /apps/larpinq/api/settings (SettingsController::index/create) with the payload from src/services/storageSettingsPayload.js",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Admin settings, /settings/admin/larpinq",
-				"change": "openspec/changes/archive/2026-03-21-admin-settings"
+				"change": "openspec/changes/archive/2026-03-21-admin-settings",
+				"requirement": [
+					"openspec/specs/admin-settings :: Nextcloud Admin Panel Integration",
+					"openspec/specs/admin-settings :: Data Source Configuration"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -5575,7 +5778,8 @@
 				"evidence": "src/views/settings/Settings.vue:6 CnAdminSettingsShell reimportUrl=\"/index.php/apps/larpinq/api/settings/reimport\"; appinfo/routes.php:42 settings#reimport POST api/settings/reimport (in $extra, correct app id); lib/Service/ConfigFileLoaderService.php:96 loadConfigurationFile() re-merges the bundled register.d fragments",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Admin settings, /settings/admin/larpinq, 'Re-import' action in CnAdminSettingsShell",
-				"change": "openspec/changes/archive/2026-03-21-register-config-json"
+				"change": "openspec/changes/archive/2026-03-21-register-config-json",
+				"requirement": "openspec/specs/register-config-json :: Re-import Endpoint"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -5609,7 +5813,11 @@
 				"evidence": "active-world preference: lib/Controller/DashboardController.php hands pref_active-world to the page (activeWorld initial state); src/services/activeWorld.js saves it through PUT /api/preferences/active-world and falls back to all worlds when archived or gone; src/components/WorldSwitcher.vue; tests/unit/Controller/DashboardControllerTest.php, tests/vitest/activeWorld.spec.js",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "World switcher at the top of the Dashboard and the world-scoped index pages (stored as the active-world preference)",
-				"change": "openspec/changes/archive/2026-09-30-events-world-scope-and-upcoming"
+				"change": "openspec/changes/archive/2026-09-30-events-world-scope-and-upcoming",
+				"requirement": [
+					"openspec/specs/setting-management :: A per-user active setting MUST filter lists server-side",
+					"openspec/specs/first-time-setup :: A new user gets a guided tour (REQ-FTS-010)"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read: the endpoint and its documented keys are in this repository; the calling code lives in the shared @conduction/nextcloud-vue library (not vendored here), so the call site itself is inferred from lib/Repair/MigrateUserPreferences.php's docblock rather than observed directly",
@@ -5679,7 +5887,11 @@
 				"evidence": "grep -rniE '\\brole\\b|rbac|permission' lib/Controller lib/Service lib/Settings/larpinq_register.json: only OpenRegister's generic object/schema-level RBAC flag (_rbac, e.g. lib/Service/RegisterObjectFetcher.php:402) and the admin+larpers dual-group gate in appinfo/info.xml; no distinct in-app roles",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "nothing: only the binary larpers/admin group split exists, no named roles",
-				"change": "admin-staff-roles-and-invites"
+				"change": "admin-staff-roles-and-invites",
+				"requirement": [
+					"openspec/changes/admin-staff-roles-and-invites/specs/staff-roles :: Four staff roles exist next to the game masters (REQ-ASR-001)",
+					"openspec/changes/admin-staff-roles-and-invites/specs/staff-roles :: Each role gets the rights of its work (REQ-ASR-002)"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read: absence confirmed by grep",
@@ -5788,7 +6000,8 @@
 				"evidence": "lib/AppInfo/Application.php:148-195 registerAppHostGenerics() aliases OpenRegister's GenericHealthController/GenericMetricsController onto larpinq's own controller names, each behind a class_exists guard; src/manifest.json:316 observability.health.checks (database: critical, openregister: orAvailable/degraded) is read by HealthCheckExecutor at request time per the manifest's own note",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "GET /api/health (public) and /api/metrics (admin-only), aliased via OCA\\OpenRegister\\AppHost\\Routes::standard()",
-				"change": "openspec/changes/archive/2026-10-07-adopt-apphost"
+				"change": "openspec/changes/archive/2026-10-07-adopt-apphost",
+				"requirement": "openspec/specs/apphost-adoption :: Health and metrics are served through the AppHost generics"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -5927,7 +6140,8 @@
 				"evidence": "Characters and Players keep CnIndexPage's Import (CSV or Excel into OpenRegister's register import, with created, updated, unchanged and failed counts); every other list sets showMassImport false, and src/services/campaignPortability.js applyImportGate removes the import for non-administrators, because OpenRegister's register import requires manage permission (administrators while the register has no manage rule); tests/vitest/campaignPortability.spec.js",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "/characters and /players, actions menu, Import (administrators)",
-				"change": "openspec/changes/archive/2026-09-30-admin-import-export"
+				"change": "openspec/changes/archive/2026-09-30-admin-import-export",
+				"requirement": "openspec/specs/data-portability :: Characters and players import from a spreadsheet (REQ-AIE-002)"
 			},
 			"provider": "self",
 			"providerHow": "read: absence confirmed by grep",
@@ -5962,7 +6176,8 @@
 				"evidence": "Worlds page header actions Export campaign and Import campaign (src/services/campaignActions.js, campaignPortability.js): the whole register as one Excel workbook with a sheet per schema from OpenRegister's register export, and back in through its register import, upserting by id (import for administrators); tests/vitest/campaignPortability.spec.js",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "/settings (Worlds), Export campaign / Import campaign",
-				"change": "openspec/changes/archive/2026-09-30-admin-import-export"
+				"change": "openspec/changes/archive/2026-09-30-admin-import-export",
+				"requirement": "openspec/specs/data-portability :: A campaign exports and imports as one workbook (REQ-AIE-003)"
 			},
 			"provider": "self",
 			"providerHow": "read: absence confirmed by grep",
@@ -5997,7 +6212,8 @@
 				"evidence": "grep -rniE 'mobile|pwa|manifest.webmanifest' lib/ src/: no hits; larpinq is a standard Nextcloud web app (nc-vue components), with no dedicated mobile app or installable PWA manifest of its own",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "nothing: no dedicated mobile delivery",
-				"change": "admin-phone-friendly-pages"
+				"change": "admin-phone-friendly-pages",
+				"requirement": "openspec/changes/admin-phone-friendly-pages/specs/phone-friendly-pages :: Event-day pages fit a phone (REQ-APF-001)"
 			},
 			"provider": "self",
 			"providerHow": "read: absence confirmed by grep",
@@ -6140,7 +6356,11 @@
 				"evidence": "lib/Settings/larpinq_register.json:39-905 (the ten schemas are character, player, ability, skill, item, condition, effect, event, setting, xpAward; none holds a post-event letter or survey); grep -rniE 'survey|feedback|post.?event letter' lib src: no hits",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "nothing: see evidence",
-				"change": "events-post-event-survey"
+				"change": "events-post-event-survey",
+				"requirement": [
+					"openspec/changes/events-post-event-survey/specs/event-feedback :: An event has a feedback form (REQ-EPS-001)",
+					"openspec/changes/events-post-event-survey/specs/event-feedback :: Participants who were there are invited once (REQ-EPS-002)"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -6207,7 +6427,8 @@
 				"evidence": "lib/Settings/register.d/registration-ticket-types-and-options.json (ticketType, registrationOption, accessCode with row rules; registration.ticketType, options, code, accessCode, lines), lib/Service/TicketChoiceService.php (listed-price lines written by larpinq, sale window, hidden ticket types, codes with window and uses, one currency), lib/Service/RegistrationService.php (ticket type place limit waitlists, full option refused, under the event lock), lib/Controller/RegistrationChoicesController.php (GET /api/registrations/{id}/offer, GET /api/events/{id}/choices), src/views/RegistrationChoices.vue, src/views/EventChoiceCounts.vue, src/manifest.d/registration-ticket-types-and-options.json; tests/unit/Service/TicketChoiceServiceTest.php, tests/unit/Controller/RegistrationChoicesControllerTest.php, tests/unit/Settings/TicketChoicesFragmentTest.php, tests/vitest/registrationChoices.spec.js",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Event page: Registration options list and Choices tab; registration page Tickets tab, Options",
-				"change": "openspec/changes/archive/2026-10-01-registration-ticket-types-and-options"
+				"change": "openspec/changes/archive/2026-10-01-registration-ticket-types-and-options",
+				"requirement": "openspec/specs/event-registration :: Organisers see what was chosen (REQ-RTO-006)"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence; the amount due and the payment belong to shillinq",
@@ -6242,11 +6463,16 @@
 			"kanka": "partial",
 			"pretix": "no",
 			"built": {
-				"state": "built",
-				"evidence": "lib/Settings/larpinq_register.json:113-133 (character.gold, silver, copper integers) and :162-168 (itemsAndMoney notes); src/manifest.json:642-672 (CharacterDetail 'Gold pieces' stats-block and the Game state & notes data widget). Money is tracked per character, but nothing spends it: items carry no price and there is no shop or transaction record",
+				"state": "specified",
+				"evidence": "lib/Settings/larpinq_register.json:113-133 (character.gold, silver, copper integers) and :162-168 (itemsAndMoney notes); src/manifest.json:642-672 (CharacterDetail 'Gold pieces' stats-block and the Game state & notes data widget). Money is tracked per character, but nothing spends it: items carry no price and there is no shop or transaction record Not built: money is tracked, but items carry no price and nothing spends it (REQ-RPG-001, change capability-rows-missing-requirements).",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "CharacterDetail page (/characters/:id), Gold pieces stats-block and Game state & notes widget",
-				"change": "openspec/changes/archive/2026-03-21-character-management"
+				"change": "openspec/changes/archive/2026-03-21-character-management",
+				"requirement": [
+					"openspec/specs/character-management :: Currency System",
+					"openspec/changes/capability-rows-missing-requirements/specs/rpg-system :: Characters buy items with in-game money (REQ-RPG-001)"
+				],
+				"plan": "openspec/changes/capability-rows-missing-requirements"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -6281,7 +6507,8 @@
 				"evidence": "src/views/SkillTree.vue:385-420 (subscribes the skill and character collections through the object store liveUpdatesPlugin, released on unmount)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Skill tree page (/skill-tree)",
-				"spec": "openspec/specs/realtime-updates"
+				"spec": "openspec/specs/realtime-updates",
+				"requirement": "openspec/specs/realtime-updates :: Store-backed app-local views MUST subscribe to live collection updates"
 			},
 			"feature": "skill-tree-visualization",
 			"source": "spec-round-2026-10-07",
@@ -6305,7 +6532,11 @@
 				"evidence": "grep -rniE 'help ?desk|support ticket|ticket' lib src --include=*.php --include=*.vue --include=*.js --include=*.json: no player-to-organiser question flow; the only player-facing surface is the portaliq contribution provider (lib/Portal/PortalContributionProvider.php), which submits characters",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "nothing: see evidence",
-				"change": "communication-help-desk"
+				"change": "communication-help-desk",
+				"requirement": [
+					"openspec/changes/communication-help-desk/specs/help-desk :: Players ask questions (REQ-CHD-001)",
+					"openspec/changes/communication-help-desk/specs/help-desk :: Game masters answer from one list (REQ-CHD-002)"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -6372,7 +6603,8 @@
 				"evidence": "lib/Settings/register.d/characters-multiple-builds.json: characterBuild (skills, items, conditions; read and write by game masters and the character's player, owner materialised from the character); lib/Controller/CharacterBuildsController.php GET /api/builds/{id}/report runs SkillRequirementService::validate and the stat engine on the character with the build's lists without writing; src/dialogs/ApplyBuildDialog.vue applies it for game masters; tests/unit/Controller/CharacterBuildsControllerTest.php, tests/unit/Settings/CharacterBuildsFragmentTest.php, tests/vitest/characterBuilds.spec.js",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "the character page's Builds list, and /builds/:id with its Check tab and Apply to character action",
-				"change": "openspec/changes/archive/2026-09-30-characters-multiple-builds"
+				"change": "openspec/changes/archive/2026-09-30-characters-multiple-builds",
+				"requirement": "openspec/specs/character-builds :: A character has builds (REQ-CMB-001)"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -6441,7 +6673,8 @@
 				"evidence": "lorePage.revealFrom (required date-time) and the read rule revealFrom $lte $now (OpenRegister DATETIME column, UTC): a player page opens at its moment with no game master action; tests/unit/Settings/LorePagesFragmentTest.php",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "/lore as a player, from the reveal moment",
-				"change": "openspec/changes/archive/2026-09-30-worlds-lore-pages"
+				"change": "openspec/changes/archive/2026-09-30-worlds-lore-pages",
+				"requirement": "openspec/specs/world-lore :: A page opens at its reveal moment (REQ-WLP-003)"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -6510,7 +6743,11 @@
 				"evidence": "grep -rniE 'gdpr|anonymi|erase|retention' lib src: no hits; only per-record delete through OpenRegister exists, the same finding as ply-privacy-export",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "nothing: see evidence",
-				"change": "players-care-details-and-erasure"
+				"change": "players-care-details-and-erasure",
+				"requirement": [
+					"openspec/changes/players-care-details-and-erasure/specs/player-care-details :: Event care records are erased after the event (REQ-PCE-003)",
+					"openspec/changes/players-care-details-and-erasure/specs/player-care-details :: What was erased is recorded (REQ-PCE-004)"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -6547,7 +6784,8 @@
 				"evidence": "lib/Settings/register.d/registration-cancel-transfer-refund.json (event.cancellationPolicy; registration.bookingGroup, bookedByUid, cancelledBy; read rule on bookedByUid), lib/Service/RegistrationChangeService.php (addParticipant: a registration of their own in the booker's group, decided like any sign-up; cancel by the participant or booker until cancel-by, game masters always), lib/Service/CancellationPolicy.php, lib/Controller/RegistrationChangesController.php (POST /api/registrations/{id}/participants, /cancel), src/views/RegistrationChanges.vue; tests/unit/Service/RegistrationChangeServiceTest.php::testMilaDropsOutOfJorisBooking",
 				"owner": "ConductionNL/larpinq",
 				"change": "openspec/changes/registration-cancel-transfer-refund",
-				"reachedOn": "Registration page (/registrations/:id), Cancel or hand over tab: Add to my booking, Cancel this registration"
+				"reachedOn": "Registration page (/registrations/:id), Cancel or hand over tab: Add to my booking, Cancel this registration",
+				"requirement": "openspec/changes/registration-cancel-transfer-refund/specs/event-registration :: One participant of a group booking cancels alone (REQ-RCT-002)"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -6584,7 +6822,8 @@
 				"evidence": "lib/Settings/register.d/registration-intake-and-capacity.json (registration schema with lifecycle accept/waitlist/decline/cancel, row rules, materialised playerUid/eventSetting; event.capacity, approvalRequired, signupForm), lib/Listener/FormSubmissionListener.php (Forms FormSubmittedEvent -> one registration per account and event, written with the app's authority), lib/Service/RegistrationService.php + lib/Listener/RegistrationListener.php (status under a per-event lock, places = accepted + hand-added participants, waiting list by submittedAt, event.players follows accepted, own active character of the event's world only), src/manifest.d/registration-intake-and-capacity.json (Registrations, My registrations, registration page with accept/decline/cancel), EventDetail registrations list and places stat; tests/unit/Service/RegistrationServiceTest.php (real listener, service and fetcher over OpenRegister's own events), tests/unit/Listener/FormSubmissionListenerTest.php, tests/unit/Settings/RegistrationFragmentTest.php",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Event page: Approve sign-ups; registration page (/registrations/:id) Accept / Decline",
-				"change": "openspec/changes/archive/2026-10-01-registration-intake-and-capacity"
+				"change": "openspec/changes/archive/2026-10-01-registration-intake-and-capacity",
+				"requirement": "openspec/specs/event-registration :: Game masters approve registrations (REQ-RIC-004)"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence; the form and its answers stay in Nextcloud Forms",
@@ -6624,7 +6863,8 @@
 				"evidence": "lib/Settings/register.d/registration-payments-through-shillinq.json (event.paymentRequired, payBy, paymentCode; registration.paymentState, paymentRequestId, paymentLink, paymentReference, payBy, paymentReminderAt, invoiceRequested, cancelReason; payment-reminder notification rule), lib/Service/RegistrationPaymentService.php + lib/Service/PaymentRequestBuilder.php + lib/Service/PaymentLeaf.php (a payment request per accepted priced registration through shillinq's shillinq-payment-requests leaf when a game master accepts, else to-request; amount = own lines in currency units), lib/Listener/PaymentRequestListener.php (shillinq PaymentRequest captured -> paid), lib/Service/PaymentFollowUp.php + lib/BackgroundJob/RegistrationPaymentJob.php (daily: leaf reconcile, reminder 3 days before, expiry a day after), lib/Controller/RegistrationPaymentsController.php (POST /api/registrations/{id}/payment-request), src/manifest.d/registration-intake-and-capacity.json + EventDetail; tests/unit/Service/RegistrationPaymentServiceTest.php (payload validated against shillinq's PaymentRequest schema and the registration schema with Opis), tests/unit/Listener/PaymentRequestListenerTest.php, tests/unit/BackgroundJob/RegistrationPaymentJobTest.php, tests/unit/Controller/RegistrationPaymentsControllerTest.php",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Notification and email to the player three days before Pay by (registration payment-reminder rule)",
-				"change": "openspec/changes/registration-payments-through-shillinq"
+				"change": "openspec/changes/registration-payments-through-shillinq",
+				"requirement": "openspec/changes/registration-payments-through-shillinq/specs/event-registration :: Players are reminded before the pay-by date (REQ-RPS-003)"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence; the money, the link and the capture are shillinq's",
@@ -6703,7 +6943,8 @@
 				"evidence": "larpinq half built in openspec/changes/registration-cancel-transfer-refund: lib/Service/RegistrationSettlement.php dispatches OCA\\Larpinq\\Event\\RegistrationCreditRequested and records settlement credit-requested; the balance is shillinq's (ADR-107) and nothing in shillinq listens yet (task 5.1, for-ruben shillinq-registration-refund-and-credit-events)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "nothing yet: shillinq books the credit",
-				"change": "registration-cancel-transfer-refund"
+				"change": "registration-cancel-transfer-refund",
+				"requirement": "openspec/changes/registration-cancel-transfer-refund/specs/event-registration :: A paid cancellation is refunded or credited through shillinq (REQ-RCT-003)"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -6904,7 +7145,8 @@
 				"evidence": "lib/Settings/larpinq_register.json:312-345 (character x-openregister-notifications: character-submitted on created to group gamemasters, character-approved on transition approved, nl/en subjects)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Nextcloud notifications (bell), no larpinq page",
-				"change": "openspec/changes/archive/2026-06-14-larpingapp-notifications"
+				"change": "openspec/changes/archive/2026-06-14-larpingapp-notifications",
+				"requirement": "openspec/specs/notifications :: Character submission and approval notifications"
 			},
 			"feature": "lifecycle-notifications",
 			"source": "spec-round-2026-10-07",
@@ -6928,7 +7170,8 @@
 				"evidence": "lib/Settings/larpinq_register.json:842-866 (event x-openregister-notifications event-reminder: scheduled daily on startDate, group players, nl/en subject)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Nextcloud notifications (bell), no larpinq page",
-				"change": "openspec/changes/archive/2026-06-14-larpingapp-notifications"
+				"change": "openspec/changes/archive/2026-06-14-larpingapp-notifications",
+				"requirement": "openspec/specs/notifications :: Event reminder notification"
 			},
 			"feature": "lifecycle-notifications",
 			"source": "spec-round-2026-10-07",
@@ -7016,7 +7259,11 @@
 				"evidence": "no preference or casting object among the ten schemas (lib/Settings/larpinq_register.json:39-960); characters are created by or for a player, never assigned from ranked wishes",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "nothing: see evidence",
-				"change": "events-casting-and-crew-roles"
+				"change": "events-casting-and-crew-roles",
+				"requirement": [
+					"openspec/changes/events-casting-and-crew-roles/specs/event-casting :: Players rank characters open for casting (REQ-ECC-001)",
+					"openspec/changes/events-casting-and-crew-roles/specs/event-casting :: Larpinq proposes the best overall casting (REQ-ECC-002)"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -7053,7 +7300,8 @@
 				"evidence": "src/manifest.json Characters index selectable with bulk action Edit selected (registry handler larpinqBulkEditCharacters); src/dialogs/CharacterBulkEditDialog.vue sets status, type or world with one PATCH per character and names refusals; src/services/characterBulkEdit.js; tests/vitest/characterBulkEdit.spec.js",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "/characters: tick characters, Edit selected",
-				"change": "openspec/changes/archive/2026-09-30-characters-status-and-bulk-edit"
+				"change": "openspec/changes/archive/2026-09-30-characters-status-and-bulk-edit",
+				"requirement": "openspec/specs/character-management :: A game master edits many characters at once (REQ-CSB-003)"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -7090,7 +7338,8 @@
 				"evidence": "lib/Settings/register.d/characters-factions-and-relationships.json (faction kind group with a leader character, factionMember lifecycle requested, invited, active, declined, left, removed), CharacterConnectionGuard (only the leader invites, accepts requests and removes; only the invitee accepts; no active membership without one of those); tests/unit/Listener/FactionMembershipListenerTest.php",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Factions page: a player adds a group led by their own character; membership page status buttons",
-				"change": "openspec/changes/archive/2026-09-30-characters-factions-and-relationships"
+				"change": "openspec/changes/archive/2026-09-30-characters-factions-and-relationships",
+				"requirement": "openspec/specs/character-connections :: Players run their own groups (REQ-CFR-003)"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -7127,7 +7376,8 @@
 				"evidence": "lib/Settings/register.d/registration-cancel-transfer-refund.json (registration.transferTo, transferToUid, transferStatus, transferOfferedAt, transferredFrom, transferredAt; read rule on transferToUid; transfer-offered notification), lib/Service/TransferOffers.php (offer by the participant, accept by the named account: player, playerUid, character cleared, place/ticket/lines/payment kept; withdraw; lapse after 7 days or at the cancel-by date), lib/BackgroundJob/RegistrationPaymentJob.php (daily lapse), lib/Controller/RegistrationChangesController.php (POST /api/registrations/{id}/transfer, /transfer/accept, /transfer/withdraw), src/views/RegistrationChanges.vue; tests/unit/Service/TransferOffersTest.php (real registration and payment listeners), tests/unit/Controller/RegistrationChangesControllerTest.php",
 				"owner": "ConductionNL/larpinq",
 				"change": "openspec/changes/registration-cancel-transfer-refund",
-				"reachedOn": "Registration page (/registrations/:id), Cancel or hand over tab: Offer my place, Accept the place, Withdraw the offer"
+				"reachedOn": "Registration page (/registrations/:id), Cancel or hand over tab: Offer my place, Accept the place, Withdraw the offer",
+				"requirement": "openspec/changes/registration-cancel-transfer-refund/specs/event-registration :: A registration can be transferred to another player (REQ-RCT-004)"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -7164,7 +7414,8 @@
 				"evidence": "GM rights come from Nextcloud group membership (appinfo/info.xml:111-133, group 'larpers' plus 'admin' for GM endpoints); larpinq has no invite link",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "nothing: see evidence",
-				"change": "admin-staff-roles-and-invites"
+				"change": "admin-staff-roles-and-invites",
+				"requirement": "openspec/changes/admin-staff-roles-and-invites/specs/staff-roles :: A game master invites with a link (REQ-ASR-004)"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -7270,7 +7521,8 @@
 				"evidence": "lib/Settings/register.d/characters-player-visibility.json: row read for larpers on approved characters, cast entry reduced to name, type, description by property read rules; src/manifest.d/characters-player-visibility.json Cast page (/cast, approved filter)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Cast page (/cast) in the main menu",
-				"change": "openspec/changes/archive/2026-09-29-characters-player-visibility"
+				"change": "openspec/changes/archive/2026-09-29-characters-player-visibility",
+				"requirement": "openspec/specs/character-management :: Players can browse the cast (REQ-CPV-005)"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -7307,7 +7559,8 @@
 				"evidence": "lib/Settings/register.d/leaf-integrations.json (event linkedTypes talk, polls, deck; setting talk, polls): an event's organising milestones live as Deck cards with a stack for status and a due date, linked to the event through OpenRegister's DeckProvider; tests/unit/Settings/LeafIntegrationsFragmentTest.php",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "/events/:id sidebar, Deck tab, when the Deck app is enabled",
-				"change": "openspec/changes/archive/2026-09-29-leaf-integrations"
+				"change": "openspec/changes/archive/2026-09-29-leaf-integrations",
+				"requirement": "openspec/changes/capability-rows-missing-requirements/specs/leaf-integrations :: An event's organising milestones are Deck cards (REQ-LFI-001)"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -7376,7 +7629,11 @@
 				"evidence": "character.writer and character.writingStep (game masters only) and plot.writingStep with ready/approve/reopen transitions; the Character roster report counts characters by writing step and lists those in draft or ready by writer; tests/unit/Settings/PlotsFragmentTest.php, tests/vitest/plotsManifest.spec.js",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "/reports/characters, and the plot page's lifecycle buttons",
-				"change": "openspec/changes/archive/2026-09-30-characters-plot-threads-and-writing"
+				"change": "openspec/changes/archive/2026-09-30-characters-plot-threads-and-writing",
+				"requirement": [
+					"openspec/specs/story-writing :: Plots and characters have a writer and a writing step (REQ-CPW-003)",
+					"openspec/specs/story-writing :: Game masters see writing progress (REQ-CPW-004)"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
