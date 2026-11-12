@@ -20,7 +20,7 @@ Six built rows in `openspec/parity/capabilities.json` had `spec: none`: adm-acce
 - `lib/Settings/larpinq_register.json` registers the `larpinq` register, which OpenRegister serves over its object API; larpinq adds no data endpoint of its own for other tools.
 - `src/main.js` loads the `larpinq` translations; `l10n/` ships Dutch and English among others. No in-app language switch exists yet.
 
-adm-open-source is not in this change: it cites `openspec/specs/admin-settings` SET-091 (EUPL-1.2).
+adm-open-source joins this change as REQ-PLB-008. It cited SET-091, a row in the requirement table of `openspec/specs/admin-settings`, which is not a requirement a row can link to. `appinfo/info.xml:50`, `publiccode.yml:49` and `LICENSE` already say EUPL-1.2.
 
 ## Scope
 
@@ -31,6 +31,7 @@ adm-open-source is not in this change: it cites `openspec/specs/admin-settings` 
 3. Other tools reach the data through the OpenRegister API.
 4. larpinq runs on any self-hosted Nextcloud with OpenRegister.
 5. The interface follows the user's Nextcloud language, and the phone pages offer a language switch as LrTelefoon draws it.
+6. larpinq is open source under EUPL-1.2, in every file that states a licence.
 
 ### Out of scope
 
@@ -45,3 +46,4 @@ adm-open-source is not in this change: it cites `openspec/specs/admin-settings` 
 - adm-api: Reach the data through an API for other tools.
 - adm-self-hosted: Run the tool on your own server with your data under your control.
 - adm-multilingual: Use the app in Dutch as well as English.
+- adm-open-source: Use and change the tool under an open-source licence.
