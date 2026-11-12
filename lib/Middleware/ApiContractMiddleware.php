@@ -3,9 +3,11 @@
 /**
  * Larpinq API contract middleware.
  *
- * Applies two NL API Design Rules to every response of the app's JSON API:
- * the `API-Version` header (/core/version-header) and RFC 9457 problem details
- * for error responses (/core/error-handling/problem-details).
+ * Applies the NL API Design Rules that hold for every response of the app's
+ * JSON API: the `API-Version` header (/core/version-header), RFC 9457 problem
+ * details for error responses (/core/error-handling/problem-details) and, on an
+ * unversioned path, the announcement of its `/api/v1/` successor
+ * (/core/uri-version, /core/deprecation-schedule).
  *
  * @category  Middleware
  * @package   OCA\Larpinq\Middleware
@@ -25,6 +27,8 @@ declare(strict_types=1);
 namespace OCA\Larpinq\Middleware;
 
 use OCA\Larpinq\AppInfo\Application;
+use OCA\Larpinq\Middleware\Support\ApiPathAliases;
+use OCA\Larpinq\Middleware\Support\StandardProtocolPaths;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http\Response;
@@ -32,8 +36,10 @@ use OCP\AppFramework\Middleware;
 use OCP\IRequest;
 
 /**
- * Stamps `API-Version` on API responses and turns JSON error bodies into
- * problem details.
+ * Stamps `API-Version` on API responses, marks an unversioned path deprecated
+ * in favour of its `/api/v1/` alias, and turns JSON error bodies into problem
+ * details. Paths that speak a protocol defined elsewhere
+ * ({@see StandardProtocolPaths}) are left exactly as they are.
  *
  * An error body keeps every member it already had, so existing callers that
  * read `error` or `message` see no change. A body that already uses `type`,
@@ -140,6 +146,7 @@ class ApiContractMiddleware extends Middleware {
 		}
 
 		$response->addHeader(name: 'API-Version', value: $this->appManager->getAppVersion(appId: Application::APP_ID));
+		$this->announceSuccessor(response: $response);
 		if ($response instanceof JSONResponse) {
 			$this->decorateError(response: $response);
 		}
@@ -148,17 +155,62 @@ class ApiContractMiddleware extends Middleware {
 	}//end decorate()
 
 	/**
-	 * Whether the request path lies under the app's `/api/`.
+	 * Whether the request path lies under the app's `/api/` and is not a standard protocol path.
 	 *
-	 * @return bool True for an API request.
+	 * @return bool True for a request on the app's own API.
 	 *
 	 * @spec openspec/specs/api-contract/spec.md
 	 */
 	private function isApiRequest(): bool {
 		$path = $this->request->getPathInfo();
+		if (is_string($path) === false || str_contains($path, self::API_PATH_MARKER) === false) {
+			return false;
+		}
 
-		return is_string($path) === true && str_contains($path, self::API_PATH_MARKER) === true;
+		return StandardProtocolPaths::matches(path: $path) === false;
 	}//end isApiRequest()
+
+	/**
+	 * Add the RFC 9745 `Deprecation` header and a `Link` to the successor on an unversioned path.
+	 *
+	 * The path keeps answering exactly as before; only the headers are added.
+	 *
+	 * @param Response $response The response.
+	 *
+	 * @return void
+	 *
+	 * @spec openspec/specs/api-contract/spec.md
+	 */
+	private function announceSuccessor(Response $response): void {
+		$path      = (string) $this->request->getPathInfo();
+		$successor = ApiPathAliases::successorOf(path: $path);
+		if ($successor === null) {
+			return;
+		}
+
+		$response->addHeader(name: 'Deprecation', value: ApiPathAliases::DEPRECATED_SINCE);
+		$response->addHeader(
+			name: 'Link',
+			value: '<'.$this->scriptPrefix(pathInfo: $path).$successor.'>; rel="successor-version"'
+		);
+	}//end announceSuccessor()
+
+	/**
+	 * The front controller that precedes the path info in the request URI, such as `/index.php`.
+	 *
+	 * @param string $pathInfo The request path info.
+	 *
+	 * @return string The prefix, or '' when the URI carries none.
+	 */
+	private function scriptPrefix(string $pathInfo): string {
+		$uri = (string) $this->request->getRequestUri();
+		$at  = strpos($uri, $pathInfo);
+		if ($pathInfo === '' || $at === false) {
+			return '';
+		}
+
+		return substr($uri, 0, $at);
+	}//end scriptPrefix()
 
 	/**
 	 * Serve a JSON error response as problem details when its body allows it.
