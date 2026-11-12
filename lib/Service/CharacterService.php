@@ -3,6 +3,9 @@
 /**
  * CharacterService for Larpinq
  *
+ * SPDX-FileCopyrightText: 2024 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
+ *
  * @category  Service
  * @package   OCA\Larpinq\Service
  * @author    Ruben Linde <ruben@larpingapp.com>
