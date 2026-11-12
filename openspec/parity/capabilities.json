@@ -1284,7 +1284,8 @@
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Characters index page (/characters), standard New button",
 				"change": "openspec/changes/archive/2026-03-21-character-management",
-				"requirement": "openspec/specs/character-management :: Character CRUD Operations"
+				"requirement": "openspec/specs/character-management :: Character CRUD Operations",
+				"plan": "openspec/changes/character-player-picker"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -1301,7 +1302,8 @@
 			"screen": {
 				"canvas": "design-system",
 				"board": "LrKarakters"
-			}
+			},
+			"note": "Follow-up, 2026-11-12: a character names its player as free text (character.ocName); character-player-picker turns it into a link to the player object and derives ownerUid from it."
 		},
 		{
 			"id": "chr-background",
@@ -1404,7 +1406,7 @@
 			"feature": "character-management",
 			"featureConfidence": "high",
 			"origin": "own-code",
-			"note": "Live-defect candidate: the field is stored and its own description says players must not see it, but nothing (no property RBAC, no per-role widget) actually hides slNotesPrivate from a player who opens their own character's detail page. Specified 2026-09-27 in openspec/changes/characters-player-visibility (OpenSpec pass).",
+			"note": "Re-read 2026-11-12: the earlier live-defect candidate is closed. lib/Settings/register.d/characters-player-visibility.json gives slNotesPrivate read and update to gamemasters only (OpenRegister property authorization), pinned by tests/unit/Settings/CharacterVisibilityRulesTest.php.",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/forms/character.py:1394-1399 custom sheet fields with visibility Hidden \"hidden to all participants\", larpmanager/models/form.py:164-170",
 				"mylarp": "not checked: no GM-only notes field documented",
@@ -1464,7 +1466,7 @@
 			"pretix": "no",
 			"built": {
 				"state": "built",
-				"evidence": "lib/Service/CharacterService.php:353-403 (calculateCharacter, applies effects from skills/items/conditions/events); lib/Service/SkillRequirementService.php:86-99 (calls calculateCharacter, extracts 'stats' for context); lib/Controller/CharactersController.php:240-269 (requirementReport endpoint); src/views/skillTreeGraph.js:73 and src/views/SkillTree.vue:517-551 (consumes only report.budget.ok as a boolean for node colouring)",
+				"evidence": "lib/Service/CharacterService.php:353-403 (calculateCharacter, applies effects from skills/items/conditions/events); lib/Service/SkillRequirementService.php:86-99 (calls calculateCharacter, extracts 'stats' for context); lib/Controller/CharactersController.php:240-269 (requirementReport endpoint); src/views/skillTreeGraph.js:73 and src/views/SkillTree.vue:517-551 (consumes only report.budget.ok as a boolean for node colouring); src/views/CharacterStatSheet.vue (Stats sidebar tab of the character page, src/manifest.json:969-974: base, modifiers and final value per ability from lib/Service/CharacterStatsPresenter.php)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "SkillTree page (/skill-tree), used only to colour skill nodes owned/available/locked, never rendered as a readable stat sheet",
 				"change": "openspec/changes/archive/2026-03-21-character-management",
@@ -1478,7 +1480,7 @@
 			"feature": "self-recomputing-character-sheets",
 			"featureConfidence": "high",
 			"origin": "own-code",
-			"note": "The calculation engine is real and reachable, but no page displays the computed ability values themselves, CharacterDetail's widgets never include a 'stats' field, and SkillTree only reads report.budget.ok as a pass/fail boolean.",
+			"note": "Re-read 2026-11-12: the computed values are shown. The character page's Stats tab (src/views/CharacterStatSheet.vue) lists each ability with its base, the modifiers and the final value.",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/utils/services/experience.py:860-919 apply_rules_computed recomputes Computed sheet fields from the character's abilities on every change; items (inventory pools) and conditions do not feed stats",
 				"mylarp": "not checked: no live stat recalculation feature documented",
@@ -1994,7 +1996,10 @@
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "CharacterDetail page, XP award history widget + History sidebar tab",
 				"change": "openspec/changes/archive/event-xp-award-workflow",
-				"requirement": "openspec/specs/event-xp-awards :: XP awards MUST be recorded as first-class objects"
+				"requirement": [
+					"openspec/specs/event-xp-awards :: XP awards MUST be recorded as first-class objects",
+					"openspec/specs/events-players :: Event-Character Linking"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -2248,14 +2253,17 @@
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "downloadPdf (admin only), event roster/attendance writes, requirement overrides, xpAward create/update/delete (all gamemasters-group only)",
 				"change": "openspec/changes/archive/2026-07-07-event-checkin-roster",
-				"requirement": "event-checkin-roster: Check-in MUST be a GM-only, server-stamped act; event-xp-awards: Award writes MUST be restricted to game masters"
+				"requirement": [
+					"openspec/specs/event-checkin-roster :: Check-in MUST be a GM-only, server-stamped act",
+					"openspec/specs/event-xp-awards :: Award writes MUST be restricted to game masters"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
 			"feature": "admin-and-access",
 			"featureConfidence": "high",
 			"origin": "own-code",
-			"note": "Live-defect candidate: two different 'who is a GM' checks are used and can diverge, CharactersController::downloadPdf checks Nextcloud isAdmin(), while EventsController/CharacterRequirementListener check membership in the 'gamemasters' group. An admin outside 'gamemasters' could download PDFs but not author overrides or run check-in; a 'gamemasters' member who is not a Nextcloud admin could do the reverse.",
+			"note": "Re-read 2026-11-12: two checks exist on purpose. Event check-in, XP awards and requirement overrides need the 'gamemasters' group (CallerAccess::isGameMasterOrAdmin also lets an administrator through). The character PDF download stays administrator-only since #205 closed an IDOR there, until a player ownership check lands (CharactersController docblock).",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/models/access.py:116-200 EventPermission (91 in larpmanager/fixtures/event_permission.yaml) grouped into EventRole, larpmanager/urls/orga.py orga_roles",
 				"mylarp": "'User role assignment for staff' is an explicit manager feature. https://mylarp.com",
@@ -2487,7 +2495,9 @@
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "/skills index and /skills/:id detail page",
 				"change": "openspec/changes/archive/2026-03-21-rpg-system",
-				"requirement": "rpg-system: Skill Management and Prerequisites"
+				"requirement": [
+					"openspec/specs/rpg-system :: Skill Management and Prerequisites"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -2700,7 +2710,7 @@
 			"pretix": "no",
 			"built": {
 				"state": "built",
-				"evidence": "lib/Service/CharacterService.php:353-403 (calculateCharacter, stateless, always recomputed from base + all currently-linked entities, never an incremental diff); lib/Controller/CharactersController.php:242-269 (requirementReport)",
+				"evidence": "lib/Service/CharacterService.php:353-403 (calculateCharacter, stateless, always recomputed from base + all currently-linked entities, never an incremental diff); lib/Controller/CharactersController.php:242-269 (requirementReport); src/views/CharacterStatSheet.vue (Stats sidebar tab of the character page, src/manifest.json:969-974: base, modifiers and final value per ability from lib/Service/CharacterStatsPresenter.php)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "SkillTree page character selector (src/views/SkillTree.vue:524-553) -> GET /apps/larpinq/api/characters/{id}/requirement-report -> CharactersController::requirementReport -> SkillRequirementService::validate -> CharacterService::calculateCharacter; also runs on every character create/update via CharacterRequirementListener",
 				"change": "openspec/changes/archive/2026-03-21-rpg-system",
@@ -2714,7 +2724,7 @@
 			"feature": "self-recomputing-character-sheets",
 			"featureConfidence": "high",
 			"origin": "own-code",
-			"note": "Wording fixed from the seed ('...every time the sheet is recalculated'): there is no character sheet that displays the recomputed values. The engine is deterministic and is genuinely reached (skill-tree colouring, write-time veto), but the raw numbers it produces are never shown to a user, see rul-view-computed-stats.",
+			"note": "Re-read 2026-11-12: the engine is stateless and deterministic, and its numbers are shown on the character page's Stats tab (src/views/CharacterStatSheet.vue).",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/utils/services/experience.py:522-599 and 800-857 recompute on ability, award, rule and modifier changes via m2m signals, ordered and division-safe; items and conditions are not inputs",
 				"mylarp": "not checked: no recalculation guarantee documented",
@@ -3169,7 +3179,7 @@
 				"change": "openspec/changes/archive/2026-03-21-rpg-system",
 				"requirement": [
 					"openspec/specs/rpg-system :: Shared OpenRegister Features",
-					"openspec/specs/game-mechanics :: MECH-060"
+					"openspec/specs/game-mechanics :: Effect Chain Integrity"
 				]
 			},
 			"provider": "self",
@@ -3324,7 +3334,7 @@
 			"feature": "event-xp-awards",
 			"featureConfidence": "high",
 			"origin": "own-code",
-			"note": "Wording split from the seed: 'earned' (total awarded) IS shown. 'Spent' and 'has left' are NOT: SkillRequirementService::evaluateBudget (lib/Service/SkillRequirementService.php:203-229) computes exactly this number for every write, but src/views/SkillTree.vue never renders report.budget.value or .shortfall (grep confirmed, only budget.ok drives lock/unlock colouring), and no other page reads it. A GM cannot see a character's remaining XP anywhere in the app. Specified 2026-09-27 in openspec/changes/characters-stat-sheet-panel (OpenSpec pass).",
+			"note": "Re-read 2026-11-12: earned, spent and left are all shown on the character page's Stats tab (src/views/CharacterStatSheet.vue XP line, from lib/Service/CharacterStatsPresenter.php xp()); left equals the budget check, pinned by CharacterStatsControllerTest::testXpMatchesTheBudgetCheck.",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/utils/services/experience.py:463-519 total, used and available per system, shown on the sheet (larpmanager/templates/elements/sheet/experience.html:3-23)",
 				"mylarp": "not checked: no XP balance view documented",
@@ -3454,19 +3464,23 @@
 			"kanka": "no",
 			"pretix": "no",
 			"built": {
-				"state": "built",
-				"evidence": "lib/Settings/larpinq_register.json:232-266 (character.requirementOverrides: skill, reason, overriddenBy, overriddenAt, visible:false); lib/Listener/CharacterRequirementListener.php:285-322 (checkOverrideAuthorization: only 'gamemasters' group may author one, and a blank reason is rejected outright)",
+				"state": "specified",
+				"evidence": "lib/Settings/larpinq_register.json:232-266 (character.requirementOverrides: skill, reason, overriddenBy, overriddenAt, visible:false); lib/Listener/CharacterRequirementListener.php:285-322 (checkOverrideAuthorization: only 'gamemasters' group may author one, and a blank reason is rejected outright). Not built: no page writes requirementOverrides, so a game master cannot add an override in the app (capability-rows-missing-requirements task 5.1)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "nothing: no manifest widget, related group or form field on any page references 'requirementOverrides' (grep -rn 'requirementOverrides' src --include=*.vue --include=*.js returns zero hits), a GM has no in-app way to add an override entry",
 				"change": "openspec/changes/archive/skill-requirement-enforcement",
-				"requirement": "openspec/specs/skill-requirement-enforcement :: GM override MUST be explicit and audited"
+				"requirement": [
+					"openspec/specs/skill-requirement-enforcement :: GM override MUST be explicit and audited",
+					"openspec/changes/capability-rows-missing-requirements/specs/skill-requirement-enforcement :: A game master records an override on the character page (REQ-SRE-001)"
+				],
+				"plan": "openspec/changes/capability-rows-missing-requirements"
 			},
 			"provider": "self",
 			"providerHow": "read",
 			"feature": "skill-requirement-enforcement",
 			"featureConfidence": "high",
 			"origin": "own-code",
-			"note": "The server-side half is fully built and correctly authorised/audited, but it is unreachable from the SPA: the field is visible:false (hidden from the generic data form) and is not one of the four groups the char-related widget lists (skills/items/conditions/events). Today an override could only be authored via a direct OCS/API PUT, not through the app.",
+			"note": "Rated back to specified on 2026-11-12 (decision 389): the server-side half is built and correctly authorised and audited, but no page writes requirementOverrides (visible:false, not in the character's related groups), so an override can only be authored through a direct API PUT. Task 5.1 of capability-rows-missing-requirements adds the action.",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/forms/character.py:1020-1032 organisers set a character's abilities directly with no prerequisite or budget check; recorded only through the generic activity log (larpmanager/utils/edit/backend.py:110), not flagged as an override",
 				"mylarp": "not checked: no GM-override feature documented",
@@ -3681,11 +3695,14 @@
 			"pretix": "no",
 			"built": {
 				"state": "built",
-				"evidence": "lib/Service/CharacterService.php:353-397 (calculateCharacter recomputes stats from scratch on every call from base + currently-linked entities only, a removed skill's cost effect simply stops being applied on the next recompute); lib/Service/SkillRequirementService.php:255-292 (analyseRemovals flags any remaining skill left dependent-now-unmet by the removal, surfaced as a warning, not a block)",
+				"evidence": "lib/Service/CharacterService.php:353-397 (calculateCharacter recomputes stats from scratch on every call from base + currently-linked entities only, a removed skill's cost effect simply stops being applied on the next recompute); lib/Service/SkillRequirementService.php:255-292 (analyseRemovals flags any remaining skill left dependent-now-unmet by the removal, surfaced as a warning, not a block). Not built yet: the XP history line for a refund that LrKarakterStatistieken draws (REQ-CSP-006, characters-skill-refund tasks 1.1 and 1.2); the refund itself works",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "/characters/:id 'Build & world' related widget: removing a skill from the Skills group",
-				"change": "characters-skill-refund",
-				"requirement": "REQ-CSP-005 Removing a skill returns its XP; REQ-CSP-006 The refund shows in the XP history (planned, tasks 1.1 and 1.2)"
+				"change": "openspec/changes/characters-skill-refund",
+				"requirement": [
+					"openspec/changes/characters-skill-refund/specs/character-management :: Removing a skill returns its XP (REQ-CSP-005)",
+					"openspec/changes/characters-skill-refund/specs/character-management :: The refund shows in the XP history (REQ-CSP-006)"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -4075,7 +4092,11 @@
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Events index page (/events) + EventDetail (/events/:id) roster widget",
 				"change": "openspec/changes/archive/2026-03-21-events-players",
-				"requirement": "openspec/specs/events-players :: Event CRUD Operations"
+				"requirement": [
+					"openspec/specs/events-players :: Event CRUD Operations",
+					"openspec/specs/events-players :: Event-Character Linking",
+					"openspec/specs/events-players :: The player page lists events attended (REQ-PAH-001)"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read: manifest config in this repo",
@@ -4277,7 +4298,7 @@
 			"feature": "event-rosters-and-signup",
 			"featureConfidence": "high",
 			"origin": "competitor",
-			"note": "See findings.md: this is a spec-vs-code mismatch, not just a missing competitor feature. Specified 2026-09-27 in openspec/changes/registration-intake-and-capacity (OpenSpec pass).",
+			"note": "Re-read 2026-11-12: the earlier spec-versus-code mismatch is closed. registration-intake-and-capacity built the capacity, waiting list and accepted places (lib/Service/RegistrationService.php, lib/Listener/RegistrationListener.php).",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/models/event.py:170-190 max_pg, max_filler, max_waiting per event, per-ticket availability in larpmanager/models/registration.py:89",
 				"mylarp": "not checked: no event capacity cap documented",
@@ -4317,7 +4338,7 @@
 			"feature": "event-rosters-and-signup",
 			"featureConfidence": "high",
 			"origin": "own-code",
-			"note": "The form itself renders and can collect submissions (per openspec/specs/event-signup-to-forms-leaf/spec.md Requirement 1), but see findings.md: the same spec's capacity/waitlist/confirmed-participant requirement has no code, so a submission never automatically becomes a confirmed participant in character.events[], a GM must add participants manually (evt-add-participants). Specified 2026-09-27 in openspec/changes/registration-intake-and-capacity (OpenSpec pass).",
+			"note": "Re-read 2026-11-12: a Forms submission now becomes a registration (lib/Listener/FormSubmissionListener.php), and an accepted registration makes the player a participant (lib/Service/RegistrationService.php). The earlier note that a GM must add every participant by hand is out of date.",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/urls/event.py register routes, larpmanager/models/form.py:549-816 RegistrationQuestion, options and answers, larpmanager/urls/orga.py orga_registration_form",
 				"mylarp": "not checked: no registration-form feature documented",
@@ -4613,9 +4634,12 @@
 				"state": "specified",
 				"evidence": "grep -rniE \"invoice\" lib src --include=*.php --include=*.vue --include=*.js: no hits",
 				"owner": "ConductionNL/larpinq",
-				"change": "registration-payments-through-shillinq",
-				"plan": "registration-payments-through-shillinq task 6.1 (larpinq side), after shillinq changes/receivables-object-request-settlement and changes/sales-invoice-document",
-				"requirement": "REQ-RPS-006 Invoices and receipts come from shillinq"
+				"change": "openspec/changes/registration-payments-through-shillinq",
+				"plan": "openspec/changes/registration-payments-through-shillinq",
+				"requirement": [
+					"openspec/changes/registration-payments-through-shillinq/specs/event-registration :: Invoices and receipts come from shillinq (REQ-RPS-006)"
+				],
+				"note": "Plan: registration-payments-through-shillinq task 6.1 (larpinq side), after shillinq changes/receivables-object-request-settlement and changes/sales-invoice-document."
 			},
 			"provider": "self",
 			"providerHow": "read: grepped, no hits",
@@ -4683,14 +4707,15 @@
 				"requirement": [
 					"openspec/specs/pdf-export :: PDF Generation via DocuDesk",
 					"openspec/specs/pdf-export :: PDF Download Flow (Frontend)"
-				]
+				],
+				"plan": "openspec/changes/player-character-sheet-access"
 			},
 			"provider": "filinq",
 			"providerHow": "read: DocuDeskPdfRenderer.php delegates rendering to filinq's TemplateService via FleetAppId (lib/Service/DocuDeskPdfRenderer.php:107-120)",
 			"feature": "pdf-character-sheets",
 			"featureConfidence": "high",
 			"origin": "own-code",
-			"note": "Backend is unit-tested and correct (per tests/unit/Controller/CharactersControllerTest.php), but there is no button, action or link anywhere in src/ that calls it, confirmed independently and matches the open, unimplemented larpinq-pdf-frontend-download-action change (tasks.md all unchecked). Specified 2026-09-27 by the existing change openspec/changes/larpinq-pdf-frontend-download-action (OpenSpec pass).",
+			"note": "Backend is unit-tested and correct (per tests/unit/Controller/CharactersControllerTest.php), but there is no button, action or link anywhere in src/ that calls it, confirmed independently and matches the open, unimplemented larpinq-pdf-frontend-download-action change (tasks.md all unchecked). Specified 2026-09-27 by the existing change openspec/changes/larpinq-pdf-frontend-download-action (OpenSpec pass). Follow-up, 2026-11-12: the PDF download is administrator-only (CharactersController::downloadPdf, since #205); player-character-sheet-access lets a player download their own sheet.",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/urls/orga.py:466 orga_characters_sheet_pdf and larpmanager/urls/event.py character_pdf_sheet, print_pdf feature larpmanager/fixtures/feature.yaml:118",
 				"mylarp": "not checked: no character PDF export feature documented",
@@ -4719,7 +4744,10 @@
 				"owner": "ConductionNL/larpinq",
 				"change": "openspec/changes/archive/2026-06-14-event-runsheet-export",
 				"requirement": "openspec/specs/pdf-export :: Event Run-Sheet Generation via DocuDesk",
-				"plan": "openspec/changes/capability-rows-missing-requirements"
+				"plan": [
+					"openspec/changes/capability-rows-missing-requirements",
+					"openspec/changes/larpinq-runsheet-scoped-cast-query"
+				]
 			},
 			"provider": "filinq",
 			"providerHow": "read: renders through the same DocuDeskPdfRenderer as prt-character-pdf",
@@ -4755,7 +4783,10 @@
 				"owner": "ConductionNL/larpinq",
 				"change": "openspec/changes/archive/2026-09-29-larpinq-pdf-frontend-download-action",
 				"reachedOn": "Download as PDF dialog: template picker",
-				"requirement": "pdf-export PDF-001: CharactersController.downloadPdf() MUST generate a PDF from a character and a selected template"
+				"requirement": [
+					"openspec/specs/pdf-export :: PDF Generation via DocuDesk",
+					"openspec/specs/pdf-export :: PDF Download Flow (Frontend)"
+				]
 			},
 			"provider": "filinq",
 			"providerHow": "read: the {template} route segment accepts an arbitrary UUID, but nothing in this app lists the available templates or lets a user pick one",
@@ -5222,7 +5253,9 @@
 				"evidence": "src/manifest.json:155 (Dashboard page, type dashboard, route \"/\"); src/manifest.json:349,366,383,400 (kpi-characters/kpi-events/kpi-items/kpi-players stat widgets); src/main.js:56 registerBuiltinDashboardWidgets() registers the stat/object-table/chart widget renderers those widgets need",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Dashboard page, route \"/\"",
-				"change": "openspec/changes/archive/2026-03-21-dashboard"
+				"change": "openspec/changes/archive/2026-03-21-dashboard",
+				"requirement": "openspec/specs/dashboard :: Dashboard Content",
+				"note": "decision 392 (12 Nov): the dashboard spec follows the KPI tiles; Dashboard Content rewritten in change dashboard-content-is-the-kpi-tiles."
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -5258,7 +5291,9 @@
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Dashboard page, route \"/\", top KPI row",
 				"change": "openspec/changes/archive/2026-03-21-dashboard",
-				"spec": "openspec/specs/dashboard-analytics-widgets"
+				"spec": "openspec/specs/dashboard-analytics-widgets",
+				"requirement": "openspec/specs/dashboard :: Dashboard Content",
+				"note": "decision 392 (12 Nov): the dashboard spec follows the KPI tiles; Dashboard Content rewritten in change dashboard-content-is-the-kpi-tiles."
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -5636,7 +5671,10 @@
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "App shell CnSetupWizard, shown on first visit per manifest setup.enabled",
 				"change": "openspec/changes/archive/2026-10-07-wizard-dataset-card-load",
-				"requirement": "openspec/specs/first-time-setup :: Setup status reports every manifest step"
+				"requirement": [
+					"openspec/specs/first-time-setup :: Setup status reports every manifest step",
+					"openspec/specs/first-time-setup :: Each example data card loads itself"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -5670,8 +5708,11 @@
 				"evidence": "src/manifest.json:36-153 (walkthrough block, tour 'larpinq:getting-started', 7 steps: welcome, go-characters, create-character, go-events, create-event, see-flows, done); lib/Repair/MigrateUserPreferences.php:18-22 documents 'pref_walkthrough_completed_version' as what 'useWalkthrough' treats as authoritative for tour completion",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "App shell guided tour (useWalkthrough), shown on first visit per manifest walkthrough.enabled",
-				"change": "setup-guided-tour",
-				"requirement": "REQ-FTS-010 A new user gets a guided tour; specs/flows: The walkthrough MUST point new users at the flows"
+				"change": "openspec/changes/archive/2026-10-30-setup-guided-tour",
+				"requirement": [
+					"openspec/specs/first-time-setup :: A new user gets a guided tour (REQ-FTS-010)",
+					"openspec/specs/flows :: The walkthrough MUST point new users at the flows"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -5824,7 +5865,7 @@
 			"feature": "admin-and-access",
 			"featureConfidence": "high",
 			"origin": "own-code",
-			"note": "The seed's example ('a default world per user') is not implemented, grep -rniE 'default.?(world|setting|campaign)' src/ lib/ found nothing. What's actually stored are small UI markers, not a functional per-user default-world preference. Specified 2026-09-27 in openspec/changes/events-world-scope-and-upcoming (OpenSpec pass).",
+			"note": "Re-read 2026-11-12: the per-user preference that exists is the active world (PUT /api/preferences/active-world, src/services/activeWorld.js). A separate default-world setting is not needed: the active world is that default.",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/models/member.py:480-508 MemberConfig key-value store, larpmanager/urls/user.py:426-429 set_member_config, larpmanager/urls/lm.py:175 demo_hint_dismiss, dismiss_sticky_message",
 				"mylarp": "not checked: no personal preference feature documented",
@@ -5852,8 +5893,10 @@
 				"evidence": "appinfo/info.xml:111-133: a long comment explains the App Store schema has no <groups> element and Nextcloud does not read one from info.xml either (OC_App::listAllApps() overwrites it with the 'enabled' appconfig value); the restriction is applied per instance via the standard mechanism, 'occ app:enable larpinq' with a groups flag, or the group selector on the Apps admin page. The frozen group id is 'larpers'; Game Masters additionally need the built-in 'admin' group for GM-only endpoints.",
 				"owner": "nextcloud/server",
 				"reachedOn": "Nextcloud Apps admin page (per-app group restriction), or occ app:enable larpinq --groups larpers",
-				"change": "platform-baseline-on-nextcloud",
-				"requirement": "REQ-PLB-001 An administrator limits the app to one Nextcloud group"
+				"change": "openspec/changes/platform-baseline-on-nextcloud",
+				"requirement": [
+					"openspec/changes/platform-baseline-on-nextcloud/specs/platform-baseline :: REQ-PLB-001 An administrator limits the app to one Nextcloud group"
+				]
 			},
 			"provider": "nextcloud",
 			"providerHow": "read: larpinq relies entirely on Nextcloud's standard app-level group-restriction mechanism; it declares no group restriction of its own in code",
@@ -5926,8 +5969,11 @@
 				"evidence": "l10n/ ships 37 languages as matched .js/.json pairs; l10n/nl.json carries 358 translated strings against l10n/en.json's 237-line English source; src/main.js:9,61 registerTranslations() + loadTranslations('larpinq', ...) at bootstrap",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "App shell bootstrap, per the browser/account language",
-				"change": "platform-baseline-on-nextcloud",
-				"requirement": "REQ-PLB-006 The interface follows the user's Nextcloud language; REQ-PLB-007 A player switches the language on the phone pages (planned, tasks 2.1 and 2.2)"
+				"change": "openspec/changes/platform-baseline-on-nextcloud",
+				"requirement": [
+					"openspec/changes/platform-baseline-on-nextcloud/specs/platform-baseline :: REQ-PLB-006 The interface follows the user's Nextcloud language",
+					"openspec/changes/platform-baseline-on-nextcloud/specs/platform-baseline :: REQ-PLB-007 A player switches the language on the phone pages"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -5964,8 +6010,10 @@
 				"evidence": "lib/Settings/larpinq_register.json:17 registers the 'larpinq' register and 9 schemas, which OpenRegister exposes generically over its own REST/GraphQL object API; src/services/graphql.js:11 posts to /apps/openregister/api/graphql as an example of that same generic API (queryGraphQL is not imported anywhere in src/, so this app does not itself call it)",
 				"owner": "ConductionNL/openregister",
 				"reachedOn": "OpenRegister's generic object REST/GraphQL API, for any client outside this app",
-				"change": "platform-baseline-on-nextcloud",
-				"requirement": "REQ-PLB-004 Other tools reach the data through the OpenRegister API"
+				"change": "openspec/changes/platform-baseline-on-nextcloud",
+				"requirement": [
+					"openspec/changes/platform-baseline-on-nextcloud/specs/platform-baseline :: REQ-PLB-004 Other tools reach the data through the OpenRegister API"
+				]
 			},
 			"provider": "openregister",
 			"providerHow": "declare: larpinq registers its schemas; OpenRegister is what actually serves the generic API other tools would call",
@@ -6036,7 +6084,10 @@
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Flows / FlowDetail pages, routes /flows and /flows/:id",
 				"spec": "openspec/specs/flows",
-				"requirement": "flows: The app MUST list its own flows; A flow MUST open on a canvas with its controls in the app sidebar"
+				"requirement": [
+					"openspec/specs/flows :: The app MUST list its own flows",
+					"openspec/specs/flows :: A flow MUST open on a canvas with its controls in the app sidebar"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence; the flow list/canvas page types themselves are the shared nc-vue 'index'/'flow' generics over an openregister.flows configuration",
@@ -6070,8 +6121,10 @@
 				"evidence": "appinfo/info.xml (php min-version 8.3, nextcloud min-version 32 max-version 34, pgsql/mysql/sqlite); docker-compose.yml and larpinq-compose.yaml; publiccode.yml declares a standalone Nextcloud app",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Any operator's own Nextcloud instance",
-				"change": "platform-baseline-on-nextcloud",
-				"requirement": "REQ-PLB-005 larpinq runs on any self-hosted Nextcloud with OpenRegister"
+				"change": "openspec/changes/platform-baseline-on-nextcloud",
+				"requirement": [
+					"openspec/changes/platform-baseline-on-nextcloud/specs/platform-baseline :: REQ-PLB-005 larpinq runs on any self-hosted Nextcloud with OpenRegister"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -6102,11 +6155,15 @@
 			"pretix": "yes",
 			"built": {
 				"state": "built",
-				"evidence": "appinfo/info.xml:50 <licence>EUPL-1.2</licence>; publiccode.yml:49 license: EUPL-1.2; appinfo/info.xml website/repository point at the public github.com/ConductionNL/larpinq repo",
+				"evidence": "appinfo/info.xml:50 <licence>EUPL-1.2</licence>; publiccode.yml:49 license: EUPL-1.2; LICENSE:1 EUROPEAN UNION PUBLIC LICENCE v. 1.2; appinfo/info.xml website/repository point at the public github.com/ConductionNL/larpinq repo",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "LICENSE file and appinfo/info.xml",
 				"spec": "openspec/specs/admin-settings",
-				"requirement": "SET-091 App license MUST be EUPL-1.2"
+				"requirement": [
+					"openspec/changes/platform-baseline-on-nextcloud/specs/platform-baseline :: REQ-PLB-008 larpinq is open source under EUPL-1.2",
+					"openspec/specs/admin-settings :: App Metadata"
+				],
+				"change": "openspec/changes/platform-baseline-on-nextcloud"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -6248,8 +6305,10 @@
 				"evidence": "src/App.vue:84,181-183 imports and calls useTenantContext(), exposing cnActiveOrganisationUuid; src/App.vue:248-293 watches it and calls store.setObjectStoreTenantUuid()/setActiveTenantOrganisation() on change; src/store/modules/object.js:12-54 documents the resulting X-OpenRegister-Organisation header sent on every object-store fetch, with null meaning single-tenant mode",
 				"owner": "ConductionNL/openregister",
 				"reachedOn": "App shell (App.vue), on every OpenRegister object request, whenever a tenant/organisation context is mounted",
-				"change": "platform-baseline-on-nextcloud",
-				"requirement": "REQ-PLB-003 Every request is scoped to the active organisation"
+				"change": "openspec/changes/platform-baseline-on-nextcloud",
+				"requirement": [
+					"openspec/changes/platform-baseline-on-nextcloud/specs/platform-baseline :: REQ-PLB-003 Every request is scoped to the active organisation"
+				]
 			},
 			"provider": "openregister",
 			"providerHow": "read: larpinq wires the tenant-context plumbing; the organisation-scoping itself (the X-OpenRegister-Organisation header's effect) is OpenRegister's",
@@ -6284,8 +6343,12 @@
 				"evidence": "src/manifest.json:330 (Store page, /store, type 'store', config.app 'larpinq'); manifest _note: 'Declarative: openregister hosts the store plane, so this app writes NO store controller. With no registry configured the page renders the app's built-in items and makes NO network call.'",
 				"owner": "ConductionNL/openregister",
 				"reachedOn": "Store page, route /store",
-				"change": "admin-configuration-store",
-				"requirement": "REQ-ACS-001 The store lists shared game configurations; REQ-ACS-002 An administrator installs a bundle; REQ-ACS-003 A bundle goes into the world the organiser chooses (planned, tasks 1.1 to 1.3)"
+				"change": "openspec/changes/admin-configuration-store",
+				"requirement": [
+					"openspec/changes/admin-configuration-store/specs/admin-configuration-store :: REQ-ACS-001 The store lists shared game configurations",
+					"openspec/changes/admin-configuration-store/specs/admin-configuration-store :: REQ-ACS-002 An administrator installs a bundle",
+					"openspec/changes/admin-configuration-store/specs/admin-configuration-store :: REQ-ACS-003 A bundle goes into the world the organiser chooses"
+				]
 			},
 			"provider": "openregister",
 			"providerHow": "declare: the store plane (fetching/installing configuration sets) is entirely OpenRegister's; larpinq only points the generic 'store' page type at itself",
@@ -6320,8 +6383,12 @@
 				"evidence": "src/manifest.json:2725-2728 (FeaturesRoadmap page, /features-roadmap, type 'roadmap', config only supplies documentationUrl); src/manifest.json menu entry (footer section) links to it",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Features & roadmap page, route /features-roadmap",
-				"change": "admin-roadmap-page",
-				"requirement": "REQ-ARM-001 The roadmap lists the open feature requests by votes; REQ-ARM-002 A user votes or asks for a feature on the forge; REQ-ARM-003 The roadmap shows planned, in progress and available (planned, tasks 1.1 and 1.2)"
+				"change": "openspec/changes/admin-roadmap-page",
+				"requirement": [
+					"openspec/changes/admin-roadmap-page/specs/admin-roadmap-page :: REQ-ARM-001 The roadmap lists the open feature requests by votes",
+					"openspec/changes/admin-roadmap-page/specs/admin-roadmap-page :: REQ-ARM-002 A user votes or asks for a feature on the forge",
+					"openspec/changes/admin-roadmap-page/specs/admin-roadmap-page :: REQ-ARM-003 The roadmap shows planned, in progress and available"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read: larpinq only wires the page and its documentation URL; the 'roadmap' page type's actual content source is a generic nc-vue library behaviour not present in this repo, so what populates the page cannot be confirmed by reading larpinq alone",
@@ -6904,9 +6971,12 @@
 				"evidence": "there is no registration or order object in lib/Settings/larpinq_register.json (ten schemas: character, player, ability, skill, item, condition, effect, event, setting, xpAward); sign-up goes to the Nextcloud Forms leaf (lib/Settings/register.d/event-signup-to-forms-leaf.json) and payment is not modelled",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "nothing: see evidence",
-				"change": "registration-payments-through-shillinq",
-				"plan": "registration-payments-through-shillinq task 6.2 (larpinq side), after shillinq changes/receivables-object-request-settlement; import through shillinq specs/shillinq-bank-statement-wizard",
-				"requirement": "REQ-RPS-002 The payment state follows shillinq"
+				"change": "openspec/changes/registration-payments-through-shillinq",
+				"plan": "openspec/changes/registration-payments-through-shillinq",
+				"requirement": [
+					"openspec/changes/registration-payments-through-shillinq/specs/event-registration :: The payment state follows shillinq (REQ-RPS-002)"
+				],
+				"note": "Plan: registration-payments-through-shillinq task 6.2 (larpinq side), after shillinq changes/receivables-object-request-settlement; import through shillinq specs/shillinq-bank-statement-wizard."
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -7044,8 +7114,11 @@
 				"evidence": "src/views/EventRoster.vue:58-89 (per-character status checked-in or no-show, with checkedInAt/By at :274-275), reached from the EventDetail sidebar Check-in tab (src/manifest.json:1806-1809); there is no check-out, so it shows who arrived, not who is on site now",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "EventDetail page (/events/:id), Check-in sidebar tab",
-				"change": "events-check-out-and-on-site-count",
-				"requirement": "REQ-ECO-001 A game master checks a participant out; REQ-ECO-002 The roster shows who is on site now",
+				"change": "openspec/changes/events-check-out-and-on-site-count",
+				"requirement": [
+					"openspec/changes/events-check-out-and-on-site-count/specs/event-checkin-roster :: A game master checks a participant out (REQ-ECO-001)",
+					"openspec/changes/events-check-out-and-on-site-count/specs/event-checkin-roster :: The roster shows who is on site now (REQ-ECO-002)"
+				],
 				"note": "Re-measured 2026-10-30: check-in is built, check-out and the on-site count are not (no checked-out status in EventsController::ATTENDANCE_STATUSES). Planned in events-check-out-and-on-site-count; LrEvenementInchecken draws it."
 			},
 			"provider": "self",
@@ -7452,8 +7525,10 @@
 				"evidence": "appinfo/info.xml:109 (runs inside Nextcloud 32 to 34; larpinq has no login of its own and grep -rn 'PublicPage' lib/Controller has no hits), so every account signs in through Nextcloud, whose two-factor providers (TOTP, WebAuthn) apply",
 				"owner": "nextcloud/server",
 				"reachedOn": "Nextcloud login, two-factor settings under Personal settings > Security",
-				"change": "platform-baseline-on-nextcloud",
-				"requirement": "REQ-PLB-002 A second sign-in factor is enforced by Nextcloud"
+				"change": "openspec/changes/platform-baseline-on-nextcloud",
+				"requirement": [
+					"openspec/changes/platform-baseline-on-nextcloud/specs/platform-baseline :: REQ-PLB-002 A second sign-in factor is enforced by Nextcloud"
+				]
 			},
 			"provider": "nextcloud",
 			"providerHow": "read: larpinq has no authentication of its own; Nextcloud core and its two-factor provider apps apply",
@@ -7670,9 +7745,27 @@
 				"evidence": "lib/Settings/register.d/larpinq-mcp-adoption.json declares x-openregister-mcp search/get/create tools on 9 schemas (character, player, setting, skill, item, condition, event, xpAward, attendance); openspec/changes/larpinq-mcp-adoption/proposal.md states OpenRegister derives MCP tools from this dialect with no hand-written provider code. The curated, non-CRUD tools (awardXpToAttendees, getCharacterSheet) proposed in openspec/changes/hermiq-ai-tooling/ are NOT built: its tasks.md is entirely unchecked ([ ]) and lib/Mcp/LarpinqScannableServices.php does not exist (find lib -iname '*Mcp*': only the register.d json).",
 				"owner": "ConductionNL/openregister",
 				"reachedOn": "nothing confirmable from this repo: whether OpenRegister actually derives and exposes MCP tools from the x-openregister-mcp dialect cannot be verified by reading larpinq's own code",
-				"change": "larpinq-mcp-adoption",
-				"plan": "larpinq-mcp-adoption (tasks 1 to 4: the register.d MCP fragment, filter cross-check, import and RBAC check) then hermiq-ai-tooling (curated XP award and character sheet tools with a game-master approval gate)",
-				"requirement": "larpinq-mcp-adoption REQ-001 to REQ-008 (MCP dialect on 9 schemas, bounded writes, no app-level PHP); hermiq-ai-tooling REQ-001 to REQ-005 (curated tools, approval gate, attribution)"
+				"change": "openspec/changes/larpinq-mcp-adoption",
+				"plan": [
+					"openspec/changes/larpinq-mcp-adoption",
+					"openspec/changes/hermiq-ai-tooling"
+				],
+				"requirement": [
+					"openspec/changes/larpinq-mcp-adoption/specs/larpinq-mcp-adoption :: REQ-001 — Curated read-only MCP dialect on 6 reference/lookup schemas",
+					"openspec/changes/larpinq-mcp-adoption/specs/larpinq-mcp-adoption :: REQ-002 — `character` exposes search, get, and a bounded create",
+					"openspec/changes/larpinq-mcp-adoption/specs/larpinq-mcp-adoption :: REQ-003 — `xpAward` exposes search, get, and a bounded create",
+					"openspec/changes/larpinq-mcp-adoption/specs/larpinq-mcp-adoption :: REQ-004 — `attendance` exposes search, get, and a bounded update",
+					"openspec/changes/larpinq-mcp-adoption/specs/larpinq-mcp-adoption :: REQ-005 — Every declared search filter names a real schema property",
+					"openspec/changes/larpinq-mcp-adoption/specs/larpinq-mcp-adoption :: REQ-006 — No excluded schema, and no undeclared verb, is exposed",
+					"openspec/changes/larpinq-mcp-adoption/specs/larpinq-mcp-adoption :: REQ-007 — MCP dialect is declared via a register fragment, not the monolith",
+					"openspec/changes/larpinq-mcp-adoption/specs/larpinq-mcp-adoption :: REQ-008 — MCP tools are derived without app-level PHP",
+					"openspec/changes/hermiq-ai-tooling/specs/hermiq-ai-tooling :: REQ-001 — A curated event-scoped XP award tool exists",
+					"openspec/changes/hermiq-ai-tooling/specs/hermiq-ai-tooling :: REQ-002 — XP awards and sheet-affecting writes require a game-master approval gate",
+					"openspec/changes/hermiq-ai-tooling/specs/hermiq-ai-tooling :: REQ-003 — A curated calculated-character-sheet read tool exists",
+					"openspec/changes/hermiq-ai-tooling/specs/hermiq-ai-tooling :: REQ-004 — Curated tools are exposed via the scannable-services opt-in",
+					"openspec/changes/hermiq-ai-tooling/specs/hermiq-ai-tooling :: REQ-005 — Agent-created XP awards are attributable and grants are default-deny"
+				],
+				"note": "Plan: larpinq-mcp-adoption (tasks 1 to 4: the register.d MCP fragment, filter cross-check, import and RBAC check) then hermiq-ai-tooling (curated XP award and character sheet tools with a game-master approval gate)."
 			},
 			"provider": "openregister",
 			"providerHow": "declare: larpinq only declares the dialect; OpenRegister's MCP engine (unverified here) would be what runs it",

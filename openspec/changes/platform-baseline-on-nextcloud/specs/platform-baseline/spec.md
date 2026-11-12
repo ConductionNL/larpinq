@@ -2,7 +2,7 @@
 
 ## Purpose
 
-What larpinq takes from the Nextcloud instance and the OpenRegister it runs on: sign-in, the second factor, who may open the app, organisation scoping, the data API, hosting and the interface language.
+What larpinq takes from the Nextcloud instance and the OpenRegister it runs on: sign-in, the second factor, who may open the app, organisation scoping, the data API, hosting, the interface language and the licence.
 
 ## ADDED Requirements
 
@@ -82,3 +82,14 @@ The phone pages SHALL offer a language switch with Nederlands and English, as Lr
 - WHEN he chooses English in the language switch
 - THEN the page reloads in English
 - AND his Nextcloud account language is English
+
+### Requirement: REQ-PLB-008 larpinq is open source under EUPL-1.2
+
+larpinq SHALL be published under the European Union Public Licence 1.2. `appinfo/info.xml`, `publiccode.yml` and the `LICENSE` file SHALL name the same licence, and the source SHALL be public in the repository that `appinfo/info.xml` links to. (adm-open-source)
+
+#### Scenario: Every licence statement names EUPL-1.2
+
+- GIVEN the larpinq release an organiser downloads
+- WHEN they read `appinfo/info.xml`, `publiccode.yml` and `LICENSE`
+- THEN all three name EUPL-1.2
+- AND the repository link in `appinfo/info.xml` opens the public source

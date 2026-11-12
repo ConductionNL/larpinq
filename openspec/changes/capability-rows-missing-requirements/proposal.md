@@ -17,6 +17,8 @@ The fleet spec coverage measure of 11 Nov 2026 counts a row as covered only when
 | `evt-milestones` | Track the organising milestones of an event with a status and a deadline. | built | Milestones are Deck cards linked to the event, with a stack for status and a due date. |
 | `rul-in-game-currency` | Track in-game money per character and let players spend it on in-game items. | specified | Items get a price and buying one takes the money from the character. Today money is tracked but nothing spends it. |
 
+`prg-gm-override` is rated back to `specified` too: the server accepts and audits an override (skill-requirement-enforcement, GM override MUST be explicit and audited), but no page writes `requirementOverrides`, so a game master can only add one through the API. Task 5.1 adds the action (REQ-SRE-001).
+
 `prt-runsheet` is also rated back to `specified`: its requirement exists (pdf-export RUN-020), but the event page has no download action, so a game master can only reach the run sheet by typing its URL. Task 4.1 adds the action.
 
 ## Affected Projects
