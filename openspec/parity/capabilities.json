@@ -1404,7 +1404,7 @@
 			"feature": "character-management",
 			"featureConfidence": "high",
 			"origin": "own-code",
-			"note": "Live-defect candidate: the field is stored and its own description says players must not see it, but nothing (no property RBAC, no per-role widget) actually hides slNotesPrivate from a player who opens their own character's detail page. Specified 2026-09-27 in openspec/changes/characters-player-visibility (OpenSpec pass).",
+			"note": "Re-read 2026-11-12: the earlier live-defect candidate is closed. lib/Settings/register.d/characters-player-visibility.json gives slNotesPrivate read and update to gamemasters only (OpenRegister property authorization), pinned by tests/unit/Settings/CharacterVisibilityRulesTest.php.",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/forms/character.py:1394-1399 custom sheet fields with visibility Hidden \"hidden to all participants\", larpmanager/models/form.py:164-170",
 				"mylarp": "not checked: no GM-only notes field documented",
@@ -1464,7 +1464,7 @@
 			"pretix": "no",
 			"built": {
 				"state": "built",
-				"evidence": "lib/Service/CharacterService.php:353-403 (calculateCharacter, applies effects from skills/items/conditions/events); lib/Service/SkillRequirementService.php:86-99 (calls calculateCharacter, extracts 'stats' for context); lib/Controller/CharactersController.php:240-269 (requirementReport endpoint); src/views/skillTreeGraph.js:73 and src/views/SkillTree.vue:517-551 (consumes only report.budget.ok as a boolean for node colouring)",
+				"evidence": "lib/Service/CharacterService.php:353-403 (calculateCharacter, applies effects from skills/items/conditions/events); lib/Service/SkillRequirementService.php:86-99 (calls calculateCharacter, extracts 'stats' for context); lib/Controller/CharactersController.php:240-269 (requirementReport endpoint); src/views/skillTreeGraph.js:73 and src/views/SkillTree.vue:517-551 (consumes only report.budget.ok as a boolean for node colouring); src/views/CharacterStatSheet.vue (Stats sidebar tab of the character page, src/manifest.json:969-974: base, modifiers and final value per ability from lib/Service/CharacterStatsPresenter.php)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "SkillTree page (/skill-tree), used only to colour skill nodes owned/available/locked, never rendered as a readable stat sheet",
 				"change": "openspec/changes/archive/2026-03-21-character-management",
@@ -1478,7 +1478,7 @@
 			"feature": "self-recomputing-character-sheets",
 			"featureConfidence": "high",
 			"origin": "own-code",
-			"note": "The calculation engine is real and reachable, but no page displays the computed ability values themselves, CharacterDetail's widgets never include a 'stats' field, and SkillTree only reads report.budget.ok as a pass/fail boolean.",
+			"note": "Re-read 2026-11-12: the computed values are shown. The character page's Stats tab (src/views/CharacterStatSheet.vue) lists each ability with its base, the modifiers and the final value.",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/utils/services/experience.py:860-919 apply_rules_computed recomputes Computed sheet fields from the character's abilities on every change; items (inventory pools) and conditions do not feed stats",
 				"mylarp": "not checked: no live stat recalculation feature documented",
@@ -2255,7 +2255,7 @@
 			"feature": "admin-and-access",
 			"featureConfidence": "high",
 			"origin": "own-code",
-			"note": "Live-defect candidate: two different 'who is a GM' checks are used and can diverge, CharactersController::downloadPdf checks Nextcloud isAdmin(), while EventsController/CharacterRequirementListener check membership in the 'gamemasters' group. An admin outside 'gamemasters' could download PDFs but not author overrides or run check-in; a 'gamemasters' member who is not a Nextcloud admin could do the reverse.",
+			"note": "Re-read 2026-11-12: two checks exist on purpose. Event check-in, XP awards and requirement overrides need the 'gamemasters' group (CallerAccess::isGameMasterOrAdmin also lets an administrator through). The character PDF download stays administrator-only since #205 closed an IDOR there, until a player ownership check lands (CharactersController docblock).",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/models/access.py:116-200 EventPermission (91 in larpmanager/fixtures/event_permission.yaml) grouped into EventRole, larpmanager/urls/orga.py orga_roles",
 				"mylarp": "'User role assignment for staff' is an explicit manager feature. https://mylarp.com",
@@ -2700,7 +2700,7 @@
 			"pretix": "no",
 			"built": {
 				"state": "built",
-				"evidence": "lib/Service/CharacterService.php:353-403 (calculateCharacter, stateless, always recomputed from base + all currently-linked entities, never an incremental diff); lib/Controller/CharactersController.php:242-269 (requirementReport)",
+				"evidence": "lib/Service/CharacterService.php:353-403 (calculateCharacter, stateless, always recomputed from base + all currently-linked entities, never an incremental diff); lib/Controller/CharactersController.php:242-269 (requirementReport); src/views/CharacterStatSheet.vue (Stats sidebar tab of the character page, src/manifest.json:969-974: base, modifiers and final value per ability from lib/Service/CharacterStatsPresenter.php)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "SkillTree page character selector (src/views/SkillTree.vue:524-553) -> GET /apps/larpinq/api/characters/{id}/requirement-report -> CharactersController::requirementReport -> SkillRequirementService::validate -> CharacterService::calculateCharacter; also runs on every character create/update via CharacterRequirementListener",
 				"change": "openspec/changes/archive/2026-03-21-rpg-system",
@@ -2714,7 +2714,7 @@
 			"feature": "self-recomputing-character-sheets",
 			"featureConfidence": "high",
 			"origin": "own-code",
-			"note": "Wording fixed from the seed ('...every time the sheet is recalculated'): there is no character sheet that displays the recomputed values. The engine is deterministic and is genuinely reached (skill-tree colouring, write-time veto), but the raw numbers it produces are never shown to a user, see rul-view-computed-stats.",
+			"note": "Re-read 2026-11-12: the engine is stateless and deterministic, and its numbers are shown on the character page's Stats tab (src/views/CharacterStatSheet.vue).",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/utils/services/experience.py:522-599 and 800-857 recompute on ability, award, rule and modifier changes via m2m signals, ordered and division-safe; items and conditions are not inputs",
 				"mylarp": "not checked: no recalculation guarantee documented",
@@ -3324,7 +3324,7 @@
 			"feature": "event-xp-awards",
 			"featureConfidence": "high",
 			"origin": "own-code",
-			"note": "Wording split from the seed: 'earned' (total awarded) IS shown. 'Spent' and 'has left' are NOT: SkillRequirementService::evaluateBudget (lib/Service/SkillRequirementService.php:203-229) computes exactly this number for every write, but src/views/SkillTree.vue never renders report.budget.value or .shortfall (grep confirmed, only budget.ok drives lock/unlock colouring), and no other page reads it. A GM cannot see a character's remaining XP anywhere in the app. Specified 2026-09-27 in openspec/changes/characters-stat-sheet-panel (OpenSpec pass).",
+			"note": "Re-read 2026-11-12: earned, spent and left are all shown on the character page's Stats tab (src/views/CharacterStatSheet.vue XP line, from lib/Service/CharacterStatsPresenter.php xp()); left equals the budget check, pinned by CharacterStatsControllerTest::testXpMatchesTheBudgetCheck.",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/utils/services/experience.py:463-519 total, used and available per system, shown on the sheet (larpmanager/templates/elements/sheet/experience.html:3-23)",
 				"mylarp": "not checked: no XP balance view documented",
@@ -3454,19 +3454,23 @@
 			"kanka": "no",
 			"pretix": "no",
 			"built": {
-				"state": "built",
-				"evidence": "lib/Settings/larpinq_register.json:232-266 (character.requirementOverrides: skill, reason, overriddenBy, overriddenAt, visible:false); lib/Listener/CharacterRequirementListener.php:285-322 (checkOverrideAuthorization: only 'gamemasters' group may author one, and a blank reason is rejected outright)",
+				"state": "specified",
+				"evidence": "lib/Settings/larpinq_register.json:232-266 (character.requirementOverrides: skill, reason, overriddenBy, overriddenAt, visible:false); lib/Listener/CharacterRequirementListener.php:285-322 (checkOverrideAuthorization: only 'gamemasters' group may author one, and a blank reason is rejected outright). Not built: no page writes requirementOverrides, so a game master cannot add an override in the app (capability-rows-missing-requirements task 5.1)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "nothing: no manifest widget, related group or form field on any page references 'requirementOverrides' (grep -rn 'requirementOverrides' src --include=*.vue --include=*.js returns zero hits), a GM has no in-app way to add an override entry",
 				"change": "openspec/changes/archive/skill-requirement-enforcement",
-				"requirement": "openspec/specs/skill-requirement-enforcement :: GM override MUST be explicit and audited"
+				"requirement": [
+					"openspec/specs/skill-requirement-enforcement :: GM override MUST be explicit and audited",
+					"openspec/changes/capability-rows-missing-requirements/specs/skill-requirement-enforcement :: A game master records an override on the character page (REQ-SRE-001)"
+				],
+				"plan": "openspec/changes/capability-rows-missing-requirements"
 			},
 			"provider": "self",
 			"providerHow": "read",
 			"feature": "skill-requirement-enforcement",
 			"featureConfidence": "high",
 			"origin": "own-code",
-			"note": "The server-side half is fully built and correctly authorised/audited, but it is unreachable from the SPA: the field is visible:false (hidden from the generic data form) and is not one of the four groups the char-related widget lists (skills/items/conditions/events). Today an override could only be authored via a direct OCS/API PUT, not through the app.",
+			"note": "Rated back to specified on 2026-11-12 (decision 389): the server-side half is built and correctly authorised and audited, but no page writes requirementOverrides (visible:false, not in the character's related groups), so an override can only be authored through a direct API PUT. Task 5.1 of capability-rows-missing-requirements adds the action.",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/forms/character.py:1020-1032 organisers set a character's abilities directly with no prerequisite or budget check; recorded only through the generic activity log (larpmanager/utils/edit/backend.py:110), not flagged as an override",
 				"mylarp": "not checked: no GM-override feature documented",
@@ -4277,7 +4281,7 @@
 			"feature": "event-rosters-and-signup",
 			"featureConfidence": "high",
 			"origin": "competitor",
-			"note": "See findings.md: this is a spec-vs-code mismatch, not just a missing competitor feature. Specified 2026-09-27 in openspec/changes/registration-intake-and-capacity (OpenSpec pass).",
+			"note": "Re-read 2026-11-12: the earlier spec-versus-code mismatch is closed. registration-intake-and-capacity built the capacity, waiting list and accepted places (lib/Service/RegistrationService.php, lib/Listener/RegistrationListener.php).",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/models/event.py:170-190 max_pg, max_filler, max_waiting per event, per-ticket availability in larpmanager/models/registration.py:89",
 				"mylarp": "not checked: no event capacity cap documented",
@@ -4317,7 +4321,7 @@
 			"feature": "event-rosters-and-signup",
 			"featureConfidence": "high",
 			"origin": "own-code",
-			"note": "The form itself renders and can collect submissions (per openspec/specs/event-signup-to-forms-leaf/spec.md Requirement 1), but see findings.md: the same spec's capacity/waitlist/confirmed-participant requirement has no code, so a submission never automatically becomes a confirmed participant in character.events[], a GM must add participants manually (evt-add-participants). Specified 2026-09-27 in openspec/changes/registration-intake-and-capacity (OpenSpec pass).",
+			"note": "Re-read 2026-11-12: a Forms submission now becomes a registration (lib/Listener/FormSubmissionListener.php), and an accepted registration makes the player a participant (lib/Service/RegistrationService.php). The earlier note that a GM must add every participant by hand is out of date.",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/urls/event.py register routes, larpmanager/models/form.py:549-816 RegistrationQuestion, options and answers, larpmanager/urls/orga.py orga_registration_form",
 				"mylarp": "not checked: no registration-form feature documented",
@@ -5828,7 +5832,7 @@
 			"feature": "admin-and-access",
 			"featureConfidence": "high",
 			"origin": "own-code",
-			"note": "The seed's example ('a default world per user') is not implemented, grep -rniE 'default.?(world|setting|campaign)' src/ lib/ found nothing. What's actually stored are small UI markers, not a functional per-user default-world preference. Specified 2026-09-27 in openspec/changes/events-world-scope-and-upcoming (OpenSpec pass).",
+			"note": "Re-read 2026-11-12: the per-user preference that exists is the active world (PUT /api/preferences/active-world, src/services/activeWorld.js). A separate default-world setting is not needed: the active world is that default.",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/models/member.py:480-508 MemberConfig key-value store, larpmanager/urls/user.py:426-429 set_member_config, larpmanager/urls/lm.py:175 demo_hint_dismiss, dismiss_sticky_message",
 				"mylarp": "not checked: no personal preference feature documented",

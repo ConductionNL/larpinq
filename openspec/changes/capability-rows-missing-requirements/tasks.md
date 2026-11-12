@@ -17,3 +17,7 @@
 ## 4. Run sheet download
 
 - [ ] 4.1 A Download run-sheet action on the event page in `src/manifest.json` that opens the template picker and calls `GET /events/{id}/runsheet/{template}`, shown to game masters only (pdf-export RUN-020). Verify: Playwright `tests/e2e/spec-coverage/event-runsheet-export.spec.ts` downloads the run sheet from the event page.
+
+## 5. Game master override from the character page
+
+- [ ] 5.1 An override action on the character page in `src/manifest.json`, shown to the game master group only, that asks for a reason and sends the skill with a `requirementOverrides[]` entry in one write (REQ-SRE-001). Verify: `npm run check:manifest`; Playwright: a game master grants "Dragon Speech" with a reason and the audit trail shows it; a player gets no override action.
