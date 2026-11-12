@@ -5222,7 +5222,9 @@
 				"evidence": "src/manifest.json:155 (Dashboard page, type dashboard, route \"/\"); src/manifest.json:349,366,383,400 (kpi-characters/kpi-events/kpi-items/kpi-players stat widgets); src/main.js:56 registerBuiltinDashboardWidgets() registers the stat/object-table/chart widget renderers those widgets need",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Dashboard page, route \"/\"",
-				"change": "openspec/changes/archive/2026-03-21-dashboard"
+				"change": "openspec/changes/archive/2026-03-21-dashboard",
+				"requirement": "openspec/changes/dashboard-content-is-the-kpi-tiles/specs/dashboard :: Dashboard Content",
+				"note": "decision 392 (12 Nov): the dashboard spec follows the KPI tiles; Dashboard Content rewritten in change dashboard-content-is-the-kpi-tiles."
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -5258,7 +5260,9 @@
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Dashboard page, route \"/\", top KPI row",
 				"change": "openspec/changes/archive/2026-03-21-dashboard",
-				"spec": "openspec/specs/dashboard-analytics-widgets"
+				"spec": "openspec/specs/dashboard-analytics-widgets",
+				"requirement": "openspec/changes/dashboard-content-is-the-kpi-tiles/specs/dashboard :: Dashboard Content",
+				"note": "decision 392 (12 Nov): the dashboard spec follows the KPI tiles; Dashboard Content rewritten in change dashboard-content-is-the-kpi-tiles."
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
