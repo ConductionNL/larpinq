@@ -194,18 +194,21 @@ class ApiContractMiddlewareTest extends TestCase {
 	}//end testVersionedPathIsNotDeprecated()
 
 	/**
-	 * A path that speaks a protocol defined elsewhere keeps that protocol's formats.
+	 * A path that speaks a protocol defined elsewhere keeps the API contract but is not deprecated.
 	 *
 	 * @return void
 	 */
-	public function testStandardProtocolPathIsUntouched(): void {
+	public function testStandardProtocolPathIsNotDeprecated(): void {
 		$response = $this->decorate(path: '/apps/larpinq/api/health', response: new JSONResponse(data: ['error' => 'x'], statusCode: 400));
 		$headers  = $this->headersOf(response: $response);
+		$data     = $response->getData();
 
-		$this->assertSame(expected: ['error' => 'x'], actual: $response->getData());
-		$this->assertArrayNotHasKey(key: 'API-Version', array: $headers);
+		$this->assertSame(expected: 'x', actual: $data['error']);
+		$this->assertSame(expected: 400, actual: $data['status']);
+		$this->assertArrayHasKey(key: 'API-Version', array: $headers);
 		$this->assertArrayNotHasKey(key: 'Deprecation', array: $headers);
-	}//end testStandardProtocolPathIsUntouched()
+		$this->assertArrayNotHasKey(key: 'Link', array: $headers);
+	}//end testStandardProtocolPathIsNotDeprecated()
 
 	/**
 	 * The headers a response set, read without the server container that

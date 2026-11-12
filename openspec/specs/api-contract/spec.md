@@ -69,14 +69,14 @@ Every route under `/api/` MUST also be served under `/api/v1/`, with the same co
 - WHEN a client calls `/index.php/apps/larpinq/api/v1/settings`
 - THEN the same controller method MUST answer it, without a `Deprecation` header
 
-### Requirement: Standard protocol paths keep their own formats
+### Requirement: Standard protocol paths are not versioned
 
-Paths that implement a protocol defined elsewhere (Health check, Prometheus metrics) MUST NOT get a `/api/v1/` alias, a `Deprecation` header, an `API-Version` header or a problem details rewrite: their formats belong to their standard. They are listed in `lib/Middleware/Support/StandardProtocolPaths.php` and are not described in the OpenAPI document.
+Paths that implement a protocol defined elsewhere (Health check, Prometheus metrics) MUST NOT get a `/api/v1/` alias or a `Deprecation` header: monitoring tools address them at a fixed path. They keep the `API-Version` header and the problem details shape of errors, as every other API path. They are listed in `lib/Middleware/Support/StandardProtocolPaths.php` and are not described in the OpenAPI document.
 
-#### Scenario: A protocol path is left alone
+#### Scenario: A protocol path is not deprecated
 
 @e2e exclude a response shape, not browser behaviour; covered by PHPUnit ApiContractMiddlewareTest.
 
 - GIVEN a client calls `/index.php/apps/larpinq/api/health` and it answers `400` with `{"error": "x"}`
-- THEN the body MUST stay `{"error": "x"}`
-- AND the response MUST carry no `API-Version` and no `Deprecation` header
+- THEN the body MUST keep `"error": "x"` and gain the problem details members
+- AND the response MUST carry the `API-Version` header and no `Deprecation` or `Link` header
