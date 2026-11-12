@@ -507,47 +507,6 @@
                 }
             }
         },
-        "/openapi.json": {
-            "get": {
-                "operationId": "open-api-show",
-                "summary": "The OpenAPI document of this API",
-                "description": "Returns this document. It needs no authentication and can be read from any origin.",
-                "tags": [
-                    "open-api"
-                ],
-                "security": [],
-                "responses": {
-                    "200": {
-                        "description": "The OpenAPI document.",
-                        "headers": {
-                            "API-Version": {
-                                "$ref": "#/components/headers/API-Version"
-                            },
-                            "access-control-allow-origin": {
-                                "description": "Always `*`.",
-                                "schema": {
-                                    "type": "string",
-                                    "enum": [
-                                        "*"
-                                    ]
-                                }
-                            }
-                        },
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "additionalProperties": true
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "$ref": "#/components/responses/Problem404"
-                    }
-                }
-            }
-        },
         "/payments/access": {
             "get": {
                 "operationId": "registration-payments-access",
@@ -691,7 +650,8 @@
                             "type": "string"
                         }
                     }
-                ]
+                ],
+                "x-provided-by": "openregister"
             },
             "put": {
                 "operationId": "preferences-set-preference",
@@ -749,7 +709,8 @@
                             }
                         }
                     }
-                }
+                },
+                "x-provided-by": "openregister"
             }
         },
         "/registrations/{id}/cancel": {
@@ -1235,7 +1196,8 @@
                             }
                         }
                     }
-                }
+                },
+                "x-provided-by": "openregister"
             },
             "post": {
                 "operationId": "settings-create",
@@ -1264,7 +1226,8 @@
                     "500": {
                         "$ref": "#/components/responses/Problem500"
                     }
-                }
+                },
+                "x-provided-by": "openregister"
             },
             "put": {
                 "operationId": "settings-update",
@@ -1293,7 +1256,8 @@
                     "500": {
                         "$ref": "#/components/responses/Problem500"
                     }
-                }
+                },
+                "x-provided-by": "openregister"
             }
         },
         "/settings/load": {
@@ -1324,7 +1288,8 @@
                     "500": {
                         "$ref": "#/components/responses/Problem500"
                     }
-                }
+                },
+                "x-provided-by": "openregister"
             }
         },
         "/settings/reimport": {
@@ -1789,6 +1754,47 @@
                     },
                     "403": {
                         "$ref": "#/components/responses/Problem403"
+                    }
+                }
+            }
+        },
+        "/openapi.json": {
+            "get": {
+                "operationId": "open-api-show",
+                "summary": "The OpenAPI document of this API",
+                "description": "Returns this document, with `info.version` set to the installed version. It needs no login and can be read from any origin.",
+                "tags": [
+                    "open-api"
+                ],
+                "security": [],
+                "responses": {
+                    "200": {
+                        "description": "The OpenAPI document.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            },
+                            "access-control-allow-origin": {
+                                "description": "Always `*`.",
+                                "schema": {
+                                    "type": "string",
+                                    "enum": [
+                                        "*"
+                                    ]
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Problem404"
                     }
                 }
             }
