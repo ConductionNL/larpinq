@@ -1284,7 +1284,8 @@
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Characters index page (/characters), standard New button",
 				"change": "openspec/changes/archive/2026-03-21-character-management",
-				"requirement": "openspec/specs/character-management :: Character CRUD Operations"
+				"requirement": "openspec/specs/character-management :: Character CRUD Operations",
+				"plan": "openspec/changes/character-player-picker"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -1301,7 +1302,8 @@
 			"screen": {
 				"canvas": "design-system",
 				"board": "LrKarakters"
-			}
+			},
+			"note": "Follow-up, 2026-11-12: a character names its player as free text (character.ocName); character-player-picker turns it into a link to the player object and derives ownerUid from it."
 		},
 		{
 			"id": "chr-background",
@@ -4705,14 +4707,15 @@
 				"requirement": [
 					"openspec/specs/pdf-export :: PDF Generation via DocuDesk",
 					"openspec/specs/pdf-export :: PDF Download Flow (Frontend)"
-				]
+				],
+				"plan": "openspec/changes/player-character-sheet-access"
 			},
 			"provider": "filinq",
 			"providerHow": "read: DocuDeskPdfRenderer.php delegates rendering to filinq's TemplateService via FleetAppId (lib/Service/DocuDeskPdfRenderer.php:107-120)",
 			"feature": "pdf-character-sheets",
 			"featureConfidence": "high",
 			"origin": "own-code",
-			"note": "Backend is unit-tested and correct (per tests/unit/Controller/CharactersControllerTest.php), but there is no button, action or link anywhere in src/ that calls it, confirmed independently and matches the open, unimplemented larpinq-pdf-frontend-download-action change (tasks.md all unchecked). Specified 2026-09-27 by the existing change openspec/changes/larpinq-pdf-frontend-download-action (OpenSpec pass).",
+			"note": "Backend is unit-tested and correct (per tests/unit/Controller/CharactersControllerTest.php), but there is no button, action or link anywhere in src/ that calls it, confirmed independently and matches the open, unimplemented larpinq-pdf-frontend-download-action change (tasks.md all unchecked). Specified 2026-09-27 by the existing change openspec/changes/larpinq-pdf-frontend-download-action (OpenSpec pass). Follow-up, 2026-11-12: the PDF download is administrator-only (CharactersController::downloadPdf, since #205); player-character-sheet-access lets a player download their own sheet.",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/urls/orga.py:466 orga_characters_sheet_pdf and larpmanager/urls/event.py character_pdf_sheet, print_pdf feature larpmanager/fixtures/feature.yaml:118",
 				"mylarp": "not checked: no character PDF export feature documented",
@@ -4741,7 +4744,10 @@
 				"owner": "ConductionNL/larpinq",
 				"change": "openspec/changes/archive/2026-06-14-event-runsheet-export",
 				"requirement": "openspec/specs/pdf-export :: Event Run-Sheet Generation via DocuDesk",
-				"plan": "openspec/changes/capability-rows-missing-requirements"
+				"plan": [
+					"openspec/changes/capability-rows-missing-requirements",
+					"openspec/changes/larpinq-runsheet-scoped-cast-query"
+				]
 			},
 			"provider": "filinq",
 			"providerHow": "read: renders through the same DocuDeskPdfRenderer as prt-character-pdf",
@@ -5248,7 +5254,7 @@
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Dashboard page, route \"/\"",
 				"change": "openspec/changes/archive/2026-03-21-dashboard",
-				"requirement": "openspec/changes/dashboard-content-is-the-kpi-tiles/specs/dashboard :: Dashboard Content",
+				"requirement": "openspec/specs/dashboard :: Dashboard Content",
 				"note": "decision 392 (12 Nov): the dashboard spec follows the KPI tiles; Dashboard Content rewritten in change dashboard-content-is-the-kpi-tiles."
 			},
 			"provider": "self",
@@ -5286,7 +5292,7 @@
 				"reachedOn": "Dashboard page, route \"/\", top KPI row",
 				"change": "openspec/changes/archive/2026-03-21-dashboard",
 				"spec": "openspec/specs/dashboard-analytics-widgets",
-				"requirement": "openspec/changes/dashboard-content-is-the-kpi-tiles/specs/dashboard :: Dashboard Content",
+				"requirement": "openspec/specs/dashboard :: Dashboard Content",
 				"note": "decision 392 (12 Nov): the dashboard spec follows the KPI tiles; Dashboard Content rewritten in change dashboard-content-is-the-kpi-tiles."
 			},
 			"provider": "self",

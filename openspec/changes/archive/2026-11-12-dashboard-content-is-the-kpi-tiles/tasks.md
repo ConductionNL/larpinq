@@ -7,4 +7,4 @@
 
 ## 2. Close out
 
-- [ ] 2.1 Archive this change so the main dashboard spec follows.
+- [x] 2.1 Archive this change so the main dashboard spec follows.
