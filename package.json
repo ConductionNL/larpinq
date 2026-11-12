@@ -61,7 +61,10 @@
   "overrides": {
     "libxmljs2": "^0.37.0",
     "@nextcloud/axios": "$@nextcloud/axios",
-    "@nextcloud/l10n": "$@nextcloud/l10n"
+    "@nextcloud/l10n": "$@nextcloud/l10n",
+    "@toast-ui/editor": {
+      "dompurify": "^3.4.17"
+    }
   },
   "devDependencies": {
     "@babel/core": "^7.22.9",
