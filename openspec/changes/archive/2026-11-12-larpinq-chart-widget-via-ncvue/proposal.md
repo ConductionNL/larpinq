@@ -2,6 +2,8 @@
 kind: code
 ---
 
+> Superseded by larpinq commit 150b3ad (ADR-049 Phase 4: `SkillUsageChart.vue` and `vue-apexcharts` were removed with the custom dashboard widgets); archived under decision 399 without syncing its deltas.
+
 # Skill-usage chart reimplements the shared CnChartWidget instead of consuming it
 
 ## Why
