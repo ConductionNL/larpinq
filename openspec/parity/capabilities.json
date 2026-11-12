@@ -942,7 +942,7 @@
 			"pretix": "no",
 			"built": {
 				"state": "built",
-				"evidence": "lib/Settings/larpinq_register.json:224 (character.setting), 534 (skill.setting), 607 (item.setting), 679 (condition.setting), 755 (effect.setting), 833 (event.setting); src/manifest.json:1894-1932 (SettingDetail setting-characters/setting-events object-lists filtered setting=@objectId, each with viewAllRoute Characters/Events and viewAllQuery {setting: @objectId})",
+				"evidence": "lib/Settings/larpinq_register.json:224 (character.setting), 534 (skill.setting), 607 (item.setting), 679 (condition.setting), 755 (effect.setting), 833 (event.setting); src/manifest.json:1894-1932 (SettingDetail setting-characters/setting-events object-lists filtered setting=@objectId, each with viewAllRoute Characters/Events and viewAllQuery {setting: @objectId}); src/components/WorldSwitcher.vue and src/services/activeWorld.js (active world per user, list filter)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "SettingDetail page (/settings/:id) object-lists, and their 'view all' links into the Characters/Events index pre-filtered to that world",
 				"change": "openspec/changes/archive/setting-management",
@@ -953,7 +953,7 @@
 			"feature": "setting-management",
 			"featureConfidence": "high",
 			"origin": "own-code",
-			"note": "Only a reachable filter via navigation from a world's own detail page; the Characters/Events index pages have no standalone world picker of their own.",
+			"note": "The world switcher heads the world-scoped index pages and the dashboard (src/components/WorldSwitcher.vue); the chosen world is stored per user and narrows the lists server-side. The earlier note that the index pages had no picker is closed (verify round, 12 Nov 2026).",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/models/writing.py:51-91 get_event_elements resolves characters, factions, abilities, rules and sheet fields to the campaign parent event, with per-class independence config",
 				"mylarp": "Per-campaign subdomains (e.g. cerroneth.mylarp.com) scope characters/skills/events to one campaign; single login spans joined campaigns. https://mylarp.com",
@@ -992,7 +992,7 @@
 			"feature": "setting-management",
 			"featureConfidence": "high",
 			"origin": "own-code",
-			"note": "A plain status field the GM flips in the standard edit form, not a dedicated archive action; nothing stops deleting the world outright instead, and archived worlds are not hidden from pickers/lists by default.",
+			"note": "Archiving is the status field set to archived in the edit form. An archived world drops out of the world switcher (src/services/activeWorld.js lists status=active only and forgets a stored archived world) and its pages stay readable. Not built: the delete guard of the same requirement (a populated world can still be deleted); that is outside this row (verify round, 12 Nov 2026).",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/models/event.py:541-547 DevelopStatus Concluded, larpmanager/forms/event.py:1678 \"archived among past events, registrations are frozen\"; per run, no archive flag on the campaign itself",
 				"mylarp": "not checked: no campaign lifecycle/archiving feature documented",
@@ -1216,7 +1216,7 @@
 			"feature": "world-lore",
 			"featureConfidence": "high",
 			"origin": "competitor",
-			"note": "See also the chr-gm-notes finding: nothing actually enforces the GM-only/player-visible split at read time for characters either. Specified 2026-09-27 in openspec/changes/worlds-lore-pages (OpenSpec pass).",
+			"note": "Lore pages carry a visibility and a reveal moment; OpenRegister applies the read rule on every read path (worlds-lore-pages fragment, tests/unit/Settings/LorePagesFragmentTest.php). The earlier finding that nothing enforced the split is closed (verify round, 12 Nov 2026).",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/models/writing.py:113-126 Writing.teaser visible to all vs text visible only to the assigned player, larpmanager/models/writing.py:590-595 secret factions, hide flag",
 				"mylarp": "Story/lore documentation is shared with players, but no explicit GM-secret-hiding mechanism is documented. https://mylarp.com",
@@ -1331,7 +1331,7 @@
 			"feature": "character-management",
 			"featureConfidence": "high",
 			"origin": "own-code",
-			"note": "Schema marks it GM-only (visible:false / description says GM-only), but it is explicitly listed in the char-identity widget that renders for anyone who opens the detail page; see the GM-notes finding for the same gap.",
+			"note": "The background is read by game masters and by the owning player only (lib/Settings/register.d/characters-player-visibility.json, property authorization) and the owner may edit it. The earlier note that it reached everyone is closed (verify round, 12 Nov 2026).",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/models/writing.py:113-126 Writing.teaser (public presentation) and text (private sheet text), inherited by Character",
 				"mylarp": "'Lore & Storytelling' explicitly keeps 'player character biographies.' https://mylarp.com",
@@ -1356,21 +1356,23 @@
 			"pretix": "no",
 			"built": {
 				"state": "built",
-				"evidence": "lib/Settings/larpinq_register.json:101-111 (character.approved enum no/approved, widget switch); 288-311 (x-openregister-lifecycle field approved, transitions approved/unapprove); src/manifest.json:660-680 (char-progress widget includes 'approved')",
+				"evidence": "lib/Settings/larpinq_register.json:101-111 (character.approved enum no/approved, widget switch); 288-311 (x-openregister-lifecycle field approved, transitions approved/unapprove); src/manifest.json:660-680 (char-progress widget includes 'approved'). Not built: rejecting a submitted character with a reason (REQ-CTA-001, capability-rows-missing-requirements task 6.1); submitting and approving work",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "CharacterDetail page, Game state & notes widget (approved switch)",
 				"change": "openspec/changes/archive/2026-03-21-character-management",
 				"requirement": [
 					"openspec/specs/character-management :: Character Types and Approval Workflow",
-					"openspec/specs/notifications :: Character submission and approval notifications"
-				]
+					"openspec/specs/notifications :: Character submission and approval notifications",
+					"openspec/changes/capability-rows-missing-requirements/specs/character-management :: A game master rejects a submitted character with a reason (REQ-CTA-001)"
+				],
+				"plan": "openspec/changes/capability-rows-missing-requirements"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
 			"feature": "character-management",
 			"featureConfidence": "high",
 			"origin": "own-code",
-			"note": "Only two states exist (no/approved), there is no explicit 'rejected' state, only 'not yet approved', which is a softer read of the seed capability than a reject workflow.",
+			"note": "Only two states exist today (no, approved): a character is approved or not yet approved. Rejection with a reason is specified in REQ-CTA-001 (capability-rows-missing-requirements task 6.1) and not built; the row stays built for the submit and approve half (verify round, 12 Nov 2026).",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/views/user/character.py:487-530 player proposes, status Creation, Proposed, Revision, Approved (larpmanager/models/writing.py:197-203), gated by user_character_approval config",
 				"mylarp": "not checked: no GM approval workflow for character sheets documented",
@@ -1628,7 +1630,7 @@
 			"feature": "character-management",
 			"featureConfidence": "high",
 			"origin": "own-code",
-			"note": "openspec/parity/capabilities.json:618 carries this exact row name pending a rating, consistent with it being a genuine gap rather than a wording mismatch. Specified 2026-09-27 in openspec/changes/characters-status-and-bulk-edit (OpenSpec pass).",
+			"note": "Built by characters-status-and-bulk-edit: status active, retired or dead, set by game masters, filterable on the Characters index (verify round, 12 Nov 2026).",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/forms/character.py:873-886 and 1300-1320 Active flag (inactive characters cannot be assigned) under the campaign feature; no retired versus dead distinction",
 				"mylarp": "not checked: no status lifecycle documented",
@@ -1740,7 +1742,7 @@
 			"feature": "player-self-service",
 			"featureConfidence": "high",
 			"origin": "competitor",
-			"note": "The isolation half of this capability (not seeing other players' sheets) is explicitly called out as an open follow-up in the codebase's own PDF-download docblock. Specified 2026-09-27 in openspec/changes/characters-player-visibility (OpenSpec pass).",
+			"note": "Isolation is built: the character row rule lets a player read and update only characters whose ownerUid is theirs (characters-player-visibility fragment, tests/unit/Settings/CharacterVisibilityRulesTest.php). The earlier open follow-up is closed (verify round, 12 Nov 2026).",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/fixtures/feature.yaml:818 user_character feature, larpmanager/urls/event.py:99 character_edit guarded by get_char_check (larpmanager/views/user/character.py), private field visibility larpmanager/forms/character.py:1397",
 				"mylarp": "Player-facing 'character creation and management' implies players edit their own sheet online. https://mylarp.com",
@@ -1932,7 +1934,7 @@
 			"feature": "plots-and-story",
 			"featureConfidence": "high",
 			"origin": "competitor",
-			"note": "Overlaps chr-gm-notes and chr-background: the two free-text GM fields can carry secrets/plots, but there is no structured, trackable plot-thread list, and (per the chr-gm-notes finding) nothing actually keeps these fields hidden from the player at read time. Specified 2026-09-27 in openspec/changes/characters-plot-threads-and-writing (OpenSpec pass).",
+			"note": "Built by characters-plot-threads-and-writing: plots with a part per character, private texts read by game masters only. The earlier note about free-text GM fields predates it (verify round, 12 Nov 2026).",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/models/writing.py:533-590 Plot and PlotCharacterRel with per-character text, larpmanager/urls/orga.py:701 orga_plots",
 				"mylarp": "not checked: no secrets/plot-thread feature documented",
@@ -2213,7 +2215,7 @@
 			"pretix": "no",
 			"built": {
 				"state": "built",
-				"evidence": "src/manifest.json:581-596 (CharacterDetail is a generic detail page reachable to any authenticated larpinq user, no ownership gate)",
+				"evidence": "src/manifest.d/characters-my-character-sheet.json (MyCharacters index page, filter ownerUid @me, cards open CharacterDetail); lib/Settings/register.d/characters-player-visibility.json (a player reads only own characters)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "CharacterDetail page (/characters/:id)",
 				"change": "openspec/changes/archive/2026-09-29-characters-player-visibility",
@@ -2224,7 +2226,7 @@
 			"feature": "player-self-service",
 			"featureConfidence": "high",
 			"origin": "own-code",
-			"note": "True, but trivially so: nothing scopes this to 'own', see chr-player-edits-own for the isolation gap this implies.",
+			"note": "The My character sheet menu entry lists only the signed-in user's characters (ownerUid @me) and opens the character page; the row rule keeps other players' sheets out (verify round, 12 Nov 2026).",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/urls/event.py:74-104 character_your, character and character_edit views, sheet PDF character_pdf_sheet",
 				"mylarp": "Core participant workflow described on https://mylarp.com",
@@ -2234,7 +2236,10 @@
 			},
 			"screen": {
 				"canvas": "design-system",
-				"board": "LrKarakter"
+				"board": [
+					"LrTelefoon",
+					"LrKarakter"
+				]
 			}
 		},
 		{
@@ -2401,7 +2406,7 @@
 			"feature": "player-and-contact-records",
 			"featureConfidence": "high",
 			"origin": "competitor",
-			"note": "No dedicated player-level attendance-over-time report; the data is reachable only by hopping from player to each character to that character's events group. Specified 2026-09-27 in openspec/changes/players-attendance-history (OpenSpec pass).",
+			"note": "Built by players-attendance-history: the player page lists the events attended with the character, newest first (verify round, 12 Nov 2026).",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/views/exe/member.py:489 exe_member_registrations lists a member's registrations across events, larpmanager/urls/user.py registrations page",
 				"mylarp": "not checked: no player event-history feature documented",
@@ -3955,7 +3960,10 @@
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "EventDetail page (/events/:id), sidebar 'Check-in' tab, attendance column + status badge",
 				"change": "openspec/changes/archive/2026-07-07-event-checkin-roster",
-				"requirement": "openspec/specs/event-checkin-roster :: Attendance MUST be an OpenRegister-native record"
+				"requirement": [
+					"openspec/specs/event-checkin-roster :: Attendance MUST be an OpenRegister-native record",
+					"openspec/specs/event-checkin-roster :: The event detail page MUST host a roster / check-in surface"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read: same code path as evt-checkin; status is a first-class persisted record, not derived",
@@ -3997,7 +4005,7 @@
 			"feature": "event-xp-awards",
 			"featureConfidence": "high",
 			"origin": "own-code",
-			"note": "The xpAward.reason field's own description mentions 'full attendance' as an example free-text reason, but nothing enforces or checks it against the actual attendance record, a GM can award XP to a no-show or skip a checked-in character freely. Specified 2026-09-27 in openspec/changes/events-xp-batch-award (OpenSpec pass).",
+			"note": "Built: the batch XP form ticks a character only when its attendance is checked-in and it has no award for the event yet; the game master can still change each tick (verify round, 12 Nov 2026).",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/views/orga/experience.py:108-116 and 156-159 load an XP award for checked-in participants only",
 				"mylarp": "not checked: no attendance-to-XP link documented",
@@ -4063,7 +4071,7 @@
 			"feature": "campaign-dashboard",
 			"featureConfidence": "medium",
 			"origin": "own-code",
-			"note": "Neither surface filters to future-only events; 'recent' sorts by startDate desc (which surfaces the furthest-future or most-recent event, mixing past and future), and the index page requires the user to sort/search manually to see only what's ahead. Specified 2026-09-27 in openspec/changes/events-world-scope-and-upcoming (OpenSpec pass).",
+			"note": "Built by events-world-scope-and-upcoming: the Events index opens on Upcoming (start date from today, ascending) and the dashboard widget lists upcoming events only (verify round, 12 Nov 2026).",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/views/user/event.py:92 calendar of open runs, larpmanager/cache/links.py:207 open_runs versus past_runs",
 				"mylarp": "'Schedule and configure your events so your players know when to come play'; the player-facing list itself is not shown publicly. https://mylarp.com",
@@ -4715,7 +4723,7 @@
 			"feature": "pdf-character-sheets",
 			"featureConfidence": "high",
 			"origin": "own-code",
-			"note": "Backend is unit-tested and correct (per tests/unit/Controller/CharactersControllerTest.php), but there is no button, action or link anywhere in src/ that calls it, confirmed independently and matches the open, unimplemented larpinq-pdf-frontend-download-action change (tasks.md all unchecked). Specified 2026-09-27 by the existing change openspec/changes/larpinq-pdf-frontend-download-action (OpenSpec pass). Follow-up, 2026-11-12: the PDF download is administrator-only (CharactersController::downloadPdf, since #205); player-character-sheet-access lets a player download their own sheet.",
+			"note": "Built by larpinq-pdf-frontend-download-action (archived 29 Sep): the character page's Actions menu opens the Download as PDF dialog with a template picker. The download is administrator only (CharactersController::downloadPdf); player-character-sheet-access lets a player download their own sheet (verify round, 12 Nov 2026).",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/urls/orga.py:466 orga_characters_sheet_pdf and larpmanager/urls/event.py character_pdf_sheet, print_pdf feature larpmanager/fixtures/feature.yaml:118",
 				"mylarp": "not checked: no character PDF export feature documented",
@@ -5187,7 +5195,7 @@
 			"feature": "setting-management",
 			"featureConfidence": "high",
 			"origin": "own-code",
-			"note": "Textbook rule-1 case: the field exists and is used by x-relation-filter to scope OTHER schemas' pickers (e.g. character.skills filtered by setting), but nothing lets a user actually set an event's own world from the UI. Specified 2026-09-27 in openspec/changes/events-world-scope-and-upcoming (OpenSpec pass).",
+			"note": "Built by events-world-scope-and-upcoming: the event form, the event page and the Events index show the World field (verify round, 12 Nov 2026).",
 			"evidence": {
 				"larpmanager": "source read at main at 36f23d3 (no release tags exist): larpmanager/models/event.py:196-206 each event belongs to at most one campaign parent, larpmanager/models/writing.py:51-91 elements resolve only within that campaign",
 				"mylarp": "Each event lives on its own campaign subdomain, so it cannot mix with another campaign's characters/events. https://mylarp.com",
@@ -5801,7 +5809,7 @@
 			},
 			"screen": {
 				"canvas": "design-system",
-				"board": "LrSpelinstellingen"
+				"board": "LrBeheerinstellingen"
 			}
 		},
 		{
@@ -5836,7 +5844,7 @@
 			},
 			"screen": {
 				"canvas": "design-system",
-				"board": "LrSpelinstellingen"
+				"board": "LrBeheerinstellingen"
 			}
 		},
 		{
@@ -5875,7 +5883,10 @@
 			},
 			"screen": {
 				"canvas": "design-system",
-				"board": "LrDashboard"
+				"board": [
+					"LrPersoonlijkeInstellingen",
+					"LrDashboard"
+				]
 			}
 		},
 		{
@@ -6495,7 +6506,10 @@
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Event page: Registration options list and Choices tab; registration page Tickets tab, Options",
 				"change": "openspec/changes/archive/2026-10-01-registration-ticket-types-and-options",
-				"requirement": "openspec/specs/event-registration :: Organisers see what was chosen (REQ-RTO-006)"
+				"requirement": [
+					"openspec/changes/capability-rows-missing-requirements/specs/event-registration :: A player chooses the event's options on the registration (REQ-RTO-007)",
+					"openspec/specs/event-registration :: Organisers see what was chosen (REQ-RTO-006)"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence; the amount due and the payment belong to shillinq",
@@ -6890,7 +6904,11 @@
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Event page: Approve sign-ups; registration page (/registrations/:id) Accept / Decline",
 				"change": "openspec/changes/archive/2026-10-01-registration-intake-and-capacity",
-				"requirement": "openspec/specs/event-registration :: Game masters approve registrations (REQ-RIC-004)"
+				"requirement": [
+					"openspec/specs/event-registration :: Game masters approve registrations (REQ-RIC-004)",
+					"openspec/specs/event-registration :: Accepted registrations are the participants (REQ-RIC-005)",
+					"openspec/changes/registration-payments-through-shillinq/specs/event-registration :: An accepted registration gets a payment request (REQ-RPS-001)"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence; the form and its answers stay in Nextcloud Forms",
@@ -6974,6 +6992,7 @@
 				"change": "openspec/changes/registration-payments-through-shillinq",
 				"plan": "openspec/changes/registration-payments-through-shillinq",
 				"requirement": [
+					"openspec/changes/registration-payments-through-shillinq/specs/event-registration :: A game master uploads a bank statement to match transfers (REQ-RPS-007)",
 					"openspec/changes/registration-payments-through-shillinq/specs/event-registration :: The payment state follows shillinq (REQ-RPS-002)"
 				],
 				"note": "Plan: registration-payments-through-shillinq task 6.2 (larpinq side), after shillinq changes/receivables-object-request-settlement; import through shillinq specs/shillinq-bank-statement-wizard."
@@ -7014,7 +7033,10 @@
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "nothing yet: shillinq books the credit",
 				"change": "registration-cancel-transfer-refund",
-				"requirement": "openspec/changes/registration-cancel-transfer-refund/specs/event-registration :: A paid cancellation is refunded or credited through shillinq (REQ-RCT-003)"
+				"requirement": [
+					"openspec/changes/registration-cancel-transfer-refund/specs/event-registration :: A paid cancellation is refunded or credited through shillinq (REQ-RCT-003)",
+					"openspec/changes/registration-cancel-transfer-refund/specs/event-registration :: A credit pays towards the player's next registration (REQ-RCT-005)"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
