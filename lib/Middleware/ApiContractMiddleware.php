@@ -159,6 +159,8 @@ class ApiContractMiddleware extends Middleware {
 	 *
 	 * @return bool True for a request on the app's own API.
 	 *
+	 * @SuppressWarnings(PHPMD.StaticAccess) StandardProtocolPaths is a pure lookup that routes.php shares, outside any container.
+	 *
 	 * @spec openspec/specs/api-contract/spec.md
 	 */
 	private function isApiRequest(): bool {
@@ -178,6 +180,8 @@ class ApiContractMiddleware extends Middleware {
 	 * @param Response $response The response.
 	 *
 	 * @return void
+	 *
+	 * @SuppressWarnings(PHPMD.StaticAccess) ApiPathAliases is a pure lookup that routes.php shares, outside any container.
 	 *
 	 * @spec openspec/specs/api-contract/spec.md
 	 */
@@ -203,13 +207,13 @@ class ApiContractMiddleware extends Middleware {
 	 * @return string The prefix, or '' when the URI carries none.
 	 */
 	private function scriptPrefix(string $pathInfo): string {
-		$uri = (string) $this->request->getRequestUri();
-		$at  = strpos($uri, $pathInfo);
-		if ($pathInfo === '' || $at === false) {
+		$uri      = (string) $this->request->getRequestUri();
+		$position = strpos($uri, $pathInfo);
+		if ($pathInfo === '' || $position === false) {
 			return '';
 		}
 
-		return substr($uri, 0, $at);
+		return substr($uri, 0, $position);
 	}//end scriptPrefix()
 
 	/**

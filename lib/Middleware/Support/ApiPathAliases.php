@@ -67,6 +67,8 @@ final class ApiPathAliases {
 	 *
 	 * @return bool True for a deprecated unversioned API path.
 	 *
+	 * @SuppressWarnings(PHPMD.StaticAccess) StandardProtocolPaths is a pure lookup, shared with routes.php.
+	 *
 	 * @spec openspec/specs/api-contract/spec.md
 	 */
 	public static function isDeprecated(string $path): bool {
@@ -84,6 +86,8 @@ final class ApiPathAliases {
 	 * @param string $path A request path, or an app-relative path.
 	 *
 	 * @return string|null The successor path, or null when the path is not deprecated.
+	 *
+	 * @SuppressWarnings(PHPMD.StaticAccess) StandardProtocolPaths is a pure lookup, shared with routes.php.
 	 *
 	 * @spec openspec/specs/api-contract/spec.md
 	 */
