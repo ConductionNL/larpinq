@@ -1,3 +1,7 @@
+/**
+ * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
+ */
 import { defineConfig, devices } from '@playwright/test'
 import { resolveBaseURL } from './tests/e2e/_base-url'
 

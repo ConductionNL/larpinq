@@ -11,6 +11,9 @@
  * @link      https://larpingapp.com
  *
  * @spec openspec/specs/pdf-export/spec.md
+ *
+ * SPDX-FileCopyrightText: 2024 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
  */
 
 declare(strict_types=1);

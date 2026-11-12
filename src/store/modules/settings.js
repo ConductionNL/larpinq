@@ -1,3 +1,7 @@
+/**
+ * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
+ */
 import { defineStore } from 'pinia'
 import logger from '../../logger.js'
 import { ocsJsonHeaders } from '../../services/requestHeaders.js'

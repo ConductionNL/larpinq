@@ -3,6 +3,9 @@
 /**
  * Characters controller for Larpinq
  *
+ * SPDX-FileCopyrightText: 2024 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
+ *
  * @category  Controller
  * @package   OCA\Larpinq\Controller
  * @author    Ruben Linde <ruben@larpingapp.com>
