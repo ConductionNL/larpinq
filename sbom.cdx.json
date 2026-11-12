@@ -7,7 +7,7 @@
     "tools": [
       {
         "name": "composer",
-        "version": "2.10.2"
+        "version": "2.8.12"
       },
       {
         "vendor": "cyclonedx",
@@ -3830,8 +3830,8 @@
       "type": "library",
       "name": "types",
       "group": "@oxc-project",
-      "version": "0.147.0",
-      "bom-ref": "larpinq@0.1.20|@oxc-project/types@0.147.0",
+      "version": "0.156.0",
+      "bom-ref": "larpinq@0.1.20|@oxc-project/types@0.156.0",
       "licenses": [
         {
           "license": {
@@ -3839,15 +3839,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40oxc-project/types@0.147.0",
+      "purl": "pkg:npm/%40oxc-project/types@0.156.0",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@oxc-project/types/-/types-0.147.0.tgz",
+          "url": "https://registry.npmjs.org/@oxc-project/types/-/types-0.156.0.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "209decea5b472e9e394b46e1ee98645fe8093bb0355aecf611aaa90216fc5a3a83c1bccc896287872c93e36b6c91a5a31185ed1ed5423e99c12554fdf9d7112e"
+              "content": "d43bb2838f1374935dca1101f179f52f7e9b4fd3efe8652d94a8c7c4ecacf3191a17fad0ab75c913e6c0bab48afc0808cf998616c6fbedc9fd3dbdb4f9609273"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -4375,8 +4375,8 @@
       "type": "library",
       "name": "binding-android-arm-eabi",
       "group": "@rolldown",
-      "version": "1.2.6",
-      "bom-ref": "larpinq@0.1.20|@rolldown/binding-android-arm-eabi@1.2.6",
+      "version": "1.2.18",
+      "bom-ref": "larpinq@0.1.20|@rolldown/binding-android-arm-eabi@1.2.18",
       "scope": "optional",
       "licenses": [
         {
@@ -4385,15 +4385,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40rolldown/binding-android-arm-eabi@1.2.6",
+      "purl": "pkg:npm/%40rolldown/binding-android-arm-eabi@1.2.18",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@rolldown/binding-android-arm-eabi/-/binding-android-arm-eabi-1.2.6.tgz",
+          "url": "https://registry.npmjs.org/@rolldown/binding-android-arm-eabi/-/binding-android-arm-eabi-1.2.18.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "6fe8d370045d4e214b23a8c1e1ae578d39b445677a29c45f423fc8db7e7a7f15197a68a1a3dcd02f1a3446d0ae30303229c2e8e9c125b6481b429e9dd7eb238d"
+              "content": "b9b4c6fb82a589dbe2a318ce15db1d11ad85e8954665bf26d81c8952a43b7d8cd4793d5c127d7de0f39cb10d743ca1f8a7ffead18427e120776294aecdc03562"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -4414,8 +4414,8 @@
       "type": "library",
       "name": "binding-android-arm64",
       "group": "@rolldown",
-      "version": "1.2.6",
-      "bom-ref": "larpinq@0.1.20|@rolldown/binding-android-arm64@1.2.6",
+      "version": "1.2.18",
+      "bom-ref": "larpinq@0.1.20|@rolldown/binding-android-arm64@1.2.18",
       "scope": "optional",
       "licenses": [
         {
@@ -4424,15 +4424,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40rolldown/binding-android-arm64@1.2.6",
+      "purl": "pkg:npm/%40rolldown/binding-android-arm64@1.2.18",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@rolldown/binding-android-arm64/-/binding-android-arm64-1.2.6.tgz",
+          "url": "https://registry.npmjs.org/@rolldown/binding-android-arm64/-/binding-android-arm64-1.2.18.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "964594f1925a464f6adc22046354dceef20500ba775f0e4d7c6268da1420e6822a360c568b5cc8f8888310adebef4045e43ce8975b5c5ec9f3b1173c34b846f9"
+              "content": "d976b5b7f25e1464d99f94dbce03e9a5c09fb45f2c0959d336fac8be849d71986817302e572d4bdf1c50510e2c7d60edc15ce0d6ee988b54774a526e811355d9"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -4453,8 +4453,8 @@
       "type": "library",
       "name": "binding-darwin-arm64",
       "group": "@rolldown",
-      "version": "1.2.6",
-      "bom-ref": "larpinq@0.1.20|@rolldown/binding-darwin-arm64@1.2.6",
+      "version": "1.2.18",
+      "bom-ref": "larpinq@0.1.20|@rolldown/binding-darwin-arm64@1.2.18",
       "scope": "optional",
       "licenses": [
         {
@@ -4463,15 +4463,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40rolldown/binding-darwin-arm64@1.2.6",
+      "purl": "pkg:npm/%40rolldown/binding-darwin-arm64@1.2.18",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@rolldown/binding-darwin-arm64/-/binding-darwin-arm64-1.2.6.tgz",
+          "url": "https://registry.npmjs.org/@rolldown/binding-darwin-arm64/-/binding-darwin-arm64-1.2.18.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "760479e8d627bc0b339bb39bd41dbf567d1ef1b5106191f652355a30cb4c54e08a1527e385f2e6b80ffdf8ef85f9a8d4746e81fdb4acb2b296e892580126bc8c"
+              "content": "894cf0f47b2156fad6722f605578f1592eff33f21c2ef368ebbbeed9cff0f73281cf8848bcf462c5d529216fe209f86574b6aaf4447685e72c23d518e73d3fc8"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -4492,8 +4492,8 @@
       "type": "library",
       "name": "binding-darwin-x64",
       "group": "@rolldown",
-      "version": "1.2.6",
-      "bom-ref": "larpinq@0.1.20|@rolldown/binding-darwin-x64@1.2.6",
+      "version": "1.2.18",
+      "bom-ref": "larpinq@0.1.20|@rolldown/binding-darwin-x64@1.2.18",
       "scope": "optional",
       "licenses": [
         {
@@ -4502,15 +4502,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40rolldown/binding-darwin-x64@1.2.6",
+      "purl": "pkg:npm/%40rolldown/binding-darwin-x64@1.2.18",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@rolldown/binding-darwin-x64/-/binding-darwin-x64-1.2.6.tgz",
+          "url": "https://registry.npmjs.org/@rolldown/binding-darwin-x64/-/binding-darwin-x64-1.2.18.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "be957116f502162a09aae83b393beaa6d91ce326fc517d00c1f0e6269691ff4b16cfe0549aa49501fedcf0991482737c60bb296f86bf37a3614f230099dc90ed"
+              "content": "5ee0c71736c512d665d101898bddbe7e61baeed7e7a75899f5539e0e4c1ab06c93ab6546dffe4f9c99ef02bf8c4f3161feb352709dd584df97a59cb21ac37b27"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -4531,8 +4531,8 @@
       "type": "library",
       "name": "binding-freebsd-x64",
       "group": "@rolldown",
-      "version": "1.2.6",
-      "bom-ref": "larpinq@0.1.20|@rolldown/binding-freebsd-x64@1.2.6",
+      "version": "1.2.18",
+      "bom-ref": "larpinq@0.1.20|@rolldown/binding-freebsd-x64@1.2.18",
       "scope": "optional",
       "licenses": [
         {
@@ -4541,15 +4541,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40rolldown/binding-freebsd-x64@1.2.6",
+      "purl": "pkg:npm/%40rolldown/binding-freebsd-x64@1.2.18",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@rolldown/binding-freebsd-x64/-/binding-freebsd-x64-1.2.6.tgz",
+          "url": "https://registry.npmjs.org/@rolldown/binding-freebsd-x64/-/binding-freebsd-x64-1.2.18.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "875c06e98e8adc9951b30c6c23ae2a409a81032e2facbb878116dcf0264c192593385458ea084c02933534acc1d88d27e715757e3904d7c4ae565d90a4b78da4"
+              "content": "30cf28a4b7ec2cad79a045c3cfa881734b776a1bbe7b0f63b009a16bea2f677de14b0620aa8ed89a94484ea1537d6ef103bd412c44378c9753b1a0a6841d5cf7"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -4570,8 +4570,8 @@
       "type": "library",
       "name": "binding-linux-arm-gnueabihf",
       "group": "@rolldown",
-      "version": "1.2.6",
-      "bom-ref": "larpinq@0.1.20|@rolldown/binding-linux-arm-gnueabihf@1.2.6",
+      "version": "1.2.18",
+      "bom-ref": "larpinq@0.1.20|@rolldown/binding-linux-arm-gnueabihf@1.2.18",
       "scope": "optional",
       "licenses": [
         {
@@ -4580,15 +4580,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40rolldown/binding-linux-arm-gnueabihf@1.2.6",
+      "purl": "pkg:npm/%40rolldown/binding-linux-arm-gnueabihf@1.2.18",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@rolldown/binding-linux-arm-gnueabihf/-/binding-linux-arm-gnueabihf-1.2.6.tgz",
+          "url": "https://registry.npmjs.org/@rolldown/binding-linux-arm-gnueabihf/-/binding-linux-arm-gnueabihf-1.2.18.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "b5b0a2aae6f4ab63155892a01793e80253560ad43276239848b22477cb01caa2bfe8c3182c945c497498a1da98b5dd0ef85c3b41a56628a952e282fde18459d3"
+              "content": "27a1280968b2e519c54331eb2b21d75debd9f65ba441f1a99dc857ff31bf93f582da773d3bd5f24b526003c908f55c4c16080c6c23e3a6fecb72292b8977de87"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -4609,8 +4609,8 @@
       "type": "library",
       "name": "binding-linux-arm64-gnu",
       "group": "@rolldown",
-      "version": "1.2.6",
-      "bom-ref": "larpinq@0.1.20|@rolldown/binding-linux-arm64-gnu@1.2.6",
+      "version": "1.2.18",
+      "bom-ref": "larpinq@0.1.20|@rolldown/binding-linux-arm64-gnu@1.2.18",
       "scope": "optional",
       "licenses": [
         {
@@ -4619,15 +4619,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40rolldown/binding-linux-arm64-gnu@1.2.6",
+      "purl": "pkg:npm/%40rolldown/binding-linux-arm64-gnu@1.2.18",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@rolldown/binding-linux-arm64-gnu/-/binding-linux-arm64-gnu-1.2.6.tgz",
+          "url": "https://registry.npmjs.org/@rolldown/binding-linux-arm64-gnu/-/binding-linux-arm64-gnu-1.2.18.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "a312bdf9b68404f8591b91c1e14458fae534e33256799947e936fdac1e432b80c5f57475b9734b5ede50e59b2e81329ac8d08d2e191cc33ff27bbe21448f7c76"
+              "content": "1c8905b8b17b09d0de922fb568264b2db2ead2193f3c79ed6fecf8fd8093a38ec96e4b130fa8c91042c8cfddad6113a60e6bccacda9432a062ef506424b0d1f8"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -4648,8 +4648,8 @@
       "type": "library",
       "name": "binding-linux-arm64-musl",
       "group": "@rolldown",
-      "version": "1.2.6",
-      "bom-ref": "larpinq@0.1.20|@rolldown/binding-linux-arm64-musl@1.2.6",
+      "version": "1.2.18",
+      "bom-ref": "larpinq@0.1.20|@rolldown/binding-linux-arm64-musl@1.2.18",
       "scope": "optional",
       "licenses": [
         {
@@ -4658,15 +4658,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40rolldown/binding-linux-arm64-musl@1.2.6",
+      "purl": "pkg:npm/%40rolldown/binding-linux-arm64-musl@1.2.18",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@rolldown/binding-linux-arm64-musl/-/binding-linux-arm64-musl-1.2.6.tgz",
+          "url": "https://registry.npmjs.org/@rolldown/binding-linux-arm64-musl/-/binding-linux-arm64-musl-1.2.18.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "9ae582936ec5541119b6fd0cb0af209df4a681ccc0f0a434b915496d30012a19117d0737f1a52b71bedf862dc1362cac7859a0711b2831f42c48d27e0db65d4b"
+              "content": "e28a9622d2cb62dec871e3a712509cb7c4f67a4e69ecf983ecb374e134494571a8e5fdc7b4a4e0187e8f8584452b80b620292afcb3145340553efbe500a866f2"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -4687,8 +4687,8 @@
       "type": "library",
       "name": "binding-linux-ppc64-gnu",
       "group": "@rolldown",
-      "version": "1.2.6",
-      "bom-ref": "larpinq@0.1.20|@rolldown/binding-linux-ppc64-gnu@1.2.6",
+      "version": "1.2.18",
+      "bom-ref": "larpinq@0.1.20|@rolldown/binding-linux-ppc64-gnu@1.2.18",
       "scope": "optional",
       "licenses": [
         {
@@ -4697,15 +4697,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40rolldown/binding-linux-ppc64-gnu@1.2.6",
+      "purl": "pkg:npm/%40rolldown/binding-linux-ppc64-gnu@1.2.18",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@rolldown/binding-linux-ppc64-gnu/-/binding-linux-ppc64-gnu-1.2.6.tgz",
+          "url": "https://registry.npmjs.org/@rolldown/binding-linux-ppc64-gnu/-/binding-linux-ppc64-gnu-1.2.18.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "7960e849f53b0a8daa8f7be00770ede258f5986e82a166dc25091130fdd726997208cb6e6aadcb1ef3c58d2f5020fbcc19655a7490b4e178b2d0875c54fb67c1"
+              "content": "f80911972e52ac21209cf84645fb9bee9b9c0126040b67d3b31660ed509c9e8ce9036f969ff802632d6decbb894baeffc7226effb9e86012677035246f0830d8"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -4726,8 +4726,8 @@
       "type": "library",
       "name": "binding-linux-s390x-gnu",
       "group": "@rolldown",
-      "version": "1.2.6",
-      "bom-ref": "larpinq@0.1.20|@rolldown/binding-linux-s390x-gnu@1.2.6",
+      "version": "1.2.18",
+      "bom-ref": "larpinq@0.1.20|@rolldown/binding-linux-s390x-gnu@1.2.18",
       "scope": "optional",
       "licenses": [
         {
@@ -4736,15 +4736,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40rolldown/binding-linux-s390x-gnu@1.2.6",
+      "purl": "pkg:npm/%40rolldown/binding-linux-s390x-gnu@1.2.18",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@rolldown/binding-linux-s390x-gnu/-/binding-linux-s390x-gnu-1.2.6.tgz",
+          "url": "https://registry.npmjs.org/@rolldown/binding-linux-s390x-gnu/-/binding-linux-s390x-gnu-1.2.18.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "d9b58d8d14886b2beea512b15d4636b561bd7d87685254ea5b2c0746f13c12adc6bee43e7f61de224bdeebdedf22df8842cfcf57cc85b1d5ae869d5a2753dd9c"
+              "content": "4ed835afdbd5ca432742b13f1b060ef6270ab578ae88c7d17bfc3be312647a856ebe1446f96b53e8b10c39fe7c625eb7c9defb9611f33bc639e51f020b75c02c"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -4765,8 +4765,8 @@
       "type": "library",
       "name": "binding-linux-x64-gnu",
       "group": "@rolldown",
-      "version": "1.2.6",
-      "bom-ref": "larpinq@0.1.20|@rolldown/binding-linux-x64-gnu@1.2.6",
+      "version": "1.2.18",
+      "bom-ref": "larpinq@0.1.20|@rolldown/binding-linux-x64-gnu@1.2.18",
       "scope": "optional",
       "licenses": [
         {
@@ -4775,15 +4775,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40rolldown/binding-linux-x64-gnu@1.2.6",
+      "purl": "pkg:npm/%40rolldown/binding-linux-x64-gnu@1.2.18",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@rolldown/binding-linux-x64-gnu/-/binding-linux-x64-gnu-1.2.6.tgz",
+          "url": "https://registry.npmjs.org/@rolldown/binding-linux-x64-gnu/-/binding-linux-x64-gnu-1.2.18.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "29e908d204b4c0bc5ed540524128de9c1570a2efc991c40f0f304f2021998f152ff64dd1b5e1c33c141a88e89c65414a4481f6c0a122986c15a6726c6cfceeef"
+              "content": "c57d53b78a398d43266b4bc9b17a79791640f673aeca281bd9d28930ccd9466cccc4b60613d3da28a4aa1cfccfbd242033c64e11a7124d0c0341cc167e1d3199"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -4804,8 +4804,8 @@
       "type": "library",
       "name": "binding-linux-x64-musl",
       "group": "@rolldown",
-      "version": "1.2.6",
-      "bom-ref": "larpinq@0.1.20|@rolldown/binding-linux-x64-musl@1.2.6",
+      "version": "1.2.18",
+      "bom-ref": "larpinq@0.1.20|@rolldown/binding-linux-x64-musl@1.2.18",
       "scope": "optional",
       "licenses": [
         {
@@ -4814,15 +4814,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40rolldown/binding-linux-x64-musl@1.2.6",
+      "purl": "pkg:npm/%40rolldown/binding-linux-x64-musl@1.2.18",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@rolldown/binding-linux-x64-musl/-/binding-linux-x64-musl-1.2.6.tgz",
+          "url": "https://registry.npmjs.org/@rolldown/binding-linux-x64-musl/-/binding-linux-x64-musl-1.2.18.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "4efb4f9df56bf87b721a20e63cae155a694d9bb42134d01c2b943d03b68e5ec23ce78e720b26a831a89c5eb159ef62737988da51593bc93db8df34f48f38c529"
+              "content": "e15565188e4ada4a1c899956de548df158c6dd35b9c9022501c7c27415cc8068c9c59965d7915ae287111d71ef215567c2589b0b0fcd41a8c9acd0e2aaaa628b"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -4843,8 +4843,8 @@
       "type": "library",
       "name": "binding-openharmony-arm64",
       "group": "@rolldown",
-      "version": "1.2.6",
-      "bom-ref": "larpinq@0.1.20|@rolldown/binding-openharmony-arm64@1.2.6",
+      "version": "1.2.18",
+      "bom-ref": "larpinq@0.1.20|@rolldown/binding-openharmony-arm64@1.2.18",
       "scope": "optional",
       "licenses": [
         {
@@ -4853,15 +4853,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40rolldown/binding-openharmony-arm64@1.2.6",
+      "purl": "pkg:npm/%40rolldown/binding-openharmony-arm64@1.2.18",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@rolldown/binding-openharmony-arm64/-/binding-openharmony-arm64-1.2.6.tgz",
+          "url": "https://registry.npmjs.org/@rolldown/binding-openharmony-arm64/-/binding-openharmony-arm64-1.2.18.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "88ea345446b2d97161682707d2ca6ce572229a44ae3a735a66b7faf9992848e40124f28d538f1192626fd3f952a62a5ec6ee4ffa8b8581a7dee481abfc38907e"
+              "content": "3c0a53b201f58cb62ecb2ded482cfd0def361aae6a5f08bbbc89956611334e05f50b8d79d02a7933665f2f7a4bbdb0af6c41cbd2825e0baa5dea9a1db6ff18e7"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -4882,8 +4882,8 @@
       "type": "library",
       "name": "binding-win32-arm64-msvc",
       "group": "@rolldown",
-      "version": "1.2.6",
-      "bom-ref": "larpinq@0.1.20|@rolldown/binding-win32-arm64-msvc@1.2.6",
+      "version": "1.2.18",
+      "bom-ref": "larpinq@0.1.20|@rolldown/binding-win32-arm64-msvc@1.2.18",
       "scope": "optional",
       "licenses": [
         {
@@ -4892,15 +4892,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40rolldown/binding-win32-arm64-msvc@1.2.6",
+      "purl": "pkg:npm/%40rolldown/binding-win32-arm64-msvc@1.2.18",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@rolldown/binding-win32-arm64-msvc/-/binding-win32-arm64-msvc-1.2.6.tgz",
+          "url": "https://registry.npmjs.org/@rolldown/binding-win32-arm64-msvc/-/binding-win32-arm64-msvc-1.2.18.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "cb93539a66ac312e39e4994e08ee1933d92b21c86fdccbe6d5cacbd6250f18e3e01334a4bdeb3d9f449d0b94a3cfafaa58316177cfc9a5f58c1fc35258d1def8"
+              "content": "2765e35a3c7f48ffb8c741f8afa773dd5cdbe5656483badee340e8f4aec7277b0adbfc5c999ad6c1a917952c1a32f3a4bebb8b2420f808bff7c2ab0847fb6182"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -4921,8 +4921,8 @@
       "type": "library",
       "name": "binding-win32-x64-msvc",
       "group": "@rolldown",
-      "version": "1.2.6",
-      "bom-ref": "larpinq@0.1.20|@rolldown/binding-win32-x64-msvc@1.2.6",
+      "version": "1.2.18",
+      "bom-ref": "larpinq@0.1.20|@rolldown/binding-win32-x64-msvc@1.2.18",
       "scope": "optional",
       "licenses": [
         {
@@ -4931,15 +4931,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40rolldown/binding-win32-x64-msvc@1.2.6",
+      "purl": "pkg:npm/%40rolldown/binding-win32-x64-msvc@1.2.18",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@rolldown/binding-win32-x64-msvc/-/binding-win32-x64-msvc-1.2.6.tgz",
+          "url": "https://registry.npmjs.org/@rolldown/binding-win32-x64-msvc/-/binding-win32-x64-msvc-1.2.18.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "9e9f226522df5e5003e245a18b2abfbb462df28643b5143c9468506825e8dab977eca363794d068c9bb0af83f7a1e67ef9139fa1fb0a341a91e4b4cef1a5f259"
+              "content": "5f0449c5142f92e12d4b484822ddbd42ba8f27e27330948d607270e1a7bf99ceae11aadf446d5c7b28381e699688174bfd809bea0ecde412db4af9912516191f"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -4960,8 +4960,8 @@
       "type": "library",
       "name": "pluginutils",
       "group": "@rolldown",
-      "version": "1.0.1",
-      "bom-ref": "larpinq@0.1.20|@rolldown/pluginutils@1.0.1",
+      "version": "1.1.0",
+      "bom-ref": "larpinq@0.1.20|@rolldown/pluginutils@1.1.0",
       "licenses": [
         {
           "license": {
@@ -4969,15 +4969,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40rolldown/pluginutils@1.0.1",
+      "purl": "pkg:npm/%40rolldown/pluginutils@1.1.0",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@rolldown/pluginutils/-/pluginutils-1.0.1.tgz",
+          "url": "https://registry.npmjs.org/@rolldown/pluginutils/-/pluginutils-1.1.0.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "da3f5b1ade4987c863faf3ed8333ed97bda3d324711c0cae9a8a3a4cd7c08ec2c1d3852da52bcf6cf703701331cfb9fef42601d1cd46c501716118368e29aa1b"
+              "content": "2be354d870c211e9b8b029601c7e19657c1d25e345909a3e851938efd0c8c1d22f8803cdda11491f52871f083c0b11d05ef8b43395d8e1d7935c835f222486eb"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -5271,39 +5271,6 @@
         {
           "name": "cdx:npm:package:path",
           "value": "node_modules/@toast-ui/editor"
-        }
-      ],
-      "components": [
-        {
-          "type": "library",
-          "name": "dompurify",
-          "version": "2.5.9",
-          "bom-ref": "larpinq@0.1.20|@toast-ui/editor@3.2.2|dompurify@2.5.9",
-          "licenses": [
-            {
-              "expression": "(MPL-2.0 OR Apache-2.0)"
-            }
-          ],
-          "purl": "pkg:npm/dompurify@2.5.9",
-          "externalReferences": [
-            {
-              "url": "https://registry.npmjs.org/dompurify/-/dompurify-2.5.9.tgz",
-              "type": "distribution",
-              "hashes": [
-                {
-                  "alg": "SHA-512",
-                  "content": "8ba9af56658de31a3d2eb842399ac3812b3d9e85ba9ce6a16eb9b38d16cf177e983f28f951ee658289343070d6906ef1ce95853b6398b6d5ddccceeb2711ef34"
-                }
-              ],
-              "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-            }
-          ],
-          "properties": [
-            {
-              "name": "cdx:npm:package:path",
-              "value": "node_modules/@toast-ui/editor/node_modules/dompurify"
-            }
-          ]
         }
       ]
     },
@@ -8881,8 +8848,8 @@
     {
       "type": "library",
       "name": "brace-expansion",
-      "version": "5.0.9",
-      "bom-ref": "larpinq@0.1.20|brace-expansion@5.0.9",
+      "version": "5.0.13",
+      "bom-ref": "larpinq@0.1.20|brace-expansion@5.0.13",
       "licenses": [
         {
           "license": {
@@ -8890,15 +8857,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/brace-expansion@5.0.9",
+      "purl": "pkg:npm/brace-expansion@5.0.13",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/brace-expansion/-/brace-expansion-5.0.9.tgz",
+          "url": "https://registry.npmjs.org/brace-expansion/-/brace-expansion-5.0.13.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "49c43822ebc8105d533253fb66dfaf8c9ffff7394f6f64837315b13376e4f2ceade8619d27b28ed5d09c4e274e3c929e3d6df42c4ff6713ef00b23e1a3dfd6c6"
+              "content": "561ddd9856dce3065ea31eccf48ff42fd19f15df374aee3ec82724fce17d1a2fcffdd0079f4453ed7e0af51ee030d3210dc9370ef851e905ec9d07638e0c0dbd"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -10918,22 +10885,22 @@
     {
       "type": "library",
       "name": "dompurify",
-      "version": "3.4.14",
-      "bom-ref": "larpinq@0.1.20|dompurify@3.4.14",
+      "version": "3.4.17",
+      "bom-ref": "larpinq@0.1.20|dompurify@3.4.17",
       "licenses": [
         {
           "expression": "(MPL-2.0 OR Apache-2.0)"
         }
       ],
-      "purl": "pkg:npm/dompurify@3.4.14",
+      "purl": "pkg:npm/dompurify@3.4.17",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/dompurify/-/dompurify-3.4.14.tgz",
+          "url": "https://registry.npmjs.org/dompurify/-/dompurify-3.4.17.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "755a07f73f8c63e0bd22296018293761f16a8cb8b77c2866d8e88a24cce1e9ac6b279ab0c6a59a65a9a0987ae9bf6d8237f29d6d926e1841a07d0a0bd342d376"
+              "content": "07fa52958547439f24a88483ff20e3b89d727f3237e26d60178940a1dd9bc1246188de0ae429771fc01fee1a81d8f9932fdd75b5d12e7679d79f9167851a33d3"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -12387,8 +12354,8 @@
     {
       "type": "library",
       "name": "fast-uri",
-      "version": "3.1.6",
-      "bom-ref": "larpinq@0.1.20|fast-uri@3.1.6",
+      "version": "3.1.9",
+      "bom-ref": "larpinq@0.1.20|fast-uri@3.1.9",
       "licenses": [
         {
           "license": {
@@ -12396,15 +12363,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/fast-uri@3.1.6",
+      "purl": "pkg:npm/fast-uri@3.1.9",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/fast-uri/-/fast-uri-3.1.6.tgz",
+          "url": "https://registry.npmjs.org/fast-uri/-/fast-uri-3.1.9.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "ec871a975bc510caf4a276d5cc40c8ade336d88e24856f9fcf240fc2f005581a758b076c852651b0be238d1bcf1bd24fd6e8aa30746da3e614e91dbf0b30f3e5"
+              "content": "852ff45addd86b4e37a0a5ecd2c231acca4a4084d784c2c8ad500a2978b8828cc60bdbfb6115959d7219ce334f4ced3633d05dc4b096a8ad7245780dce257225"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -12913,8 +12880,8 @@
     {
       "type": "library",
       "name": "follow-redirects",
-      "version": "1.16.0",
-      "bom-ref": "larpinq@0.1.20|follow-redirects@1.16.0",
+      "version": "1.16.3",
+      "bom-ref": "larpinq@0.1.20|follow-redirects@1.16.3",
       "licenses": [
         {
           "license": {
@@ -12922,15 +12889,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/follow-redirects@1.16.0",
+      "purl": "pkg:npm/follow-redirects@1.16.3",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.16.0.tgz",
+          "url": "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.16.3.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "cb9acdfee3ac69d153fc97d8c21c514b947b41c7be837cc6f7bf89aed159942f64957fd6e610fb8a22f349c2389d9a944bb0cd51d84f830e3123c5b62ee5e553"
+              "content": "b68392a2a37a779d568dfd5a38525872856fd5a343f6b8ff0b08cb534573e34a03b92a560dac8278a7b82692f934bd16745be838e088dc1468ebd1da8636d1d4"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -18109,8 +18076,8 @@
     {
       "type": "library",
       "name": "nanoid",
-      "version": "3.3.18",
-      "bom-ref": "larpinq@0.1.20|nanoid@3.3.18",
+      "version": "3.3.20",
+      "bom-ref": "larpinq@0.1.20|nanoid@3.3.20",
       "licenses": [
         {
           "license": {
@@ -18118,15 +18085,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/nanoid@3.3.18",
+      "purl": "pkg:npm/nanoid@3.3.20",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/nanoid/-/nanoid-3.3.18.tgz",
+          "url": "https://registry.npmjs.org/nanoid/-/nanoid-3.3.20.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "0d38383096c631691f8ba55915d36ddbf71a31b432e0ebbe3a9fe1250bc611672755fa00d5003ec7344a033c3d8c3ebe19538e798aff98872e0d276e83a17afb"
+              "content": "b8a760d86dc63422909fd6f260ea716c6aab4f67c63b9291b7927ff1bde9a24f2b4faab119617a871332262118b407fe155c98b83f6145a0ea5f9b8f15827865"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -19486,8 +19453,8 @@
     {
       "type": "library",
       "name": "postcss",
-      "version": "8.5.26",
-      "bom-ref": "larpinq@0.1.20|postcss@8.5.26",
+      "version": "8.5.32",
+      "bom-ref": "larpinq@0.1.20|postcss@8.5.32",
       "licenses": [
         {
           "license": {
@@ -19495,15 +19462,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/postcss@8.5.26",
+      "purl": "pkg:npm/postcss@8.5.32",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/postcss/-/postcss-8.5.26.tgz",
+          "url": "https://registry.npmjs.org/postcss/-/postcss-8.5.32.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "bbcd8def82c5cc6f1c6be743f29b8f9e99535e8187e1f4cfa551ae21bb77e86deabcd964bdf0f49440194b16a5cb7297f134bf2f503582c0849af2a605c55b91"
+              "content": "2c994a08201414a3ae6718a951d630d4dcc821312c3dc832386f4b92f449bee2a3fdb4736ee458d00457bcbd29586a6c66f9fc8e4bbe2cc7a9d9e534b1e1e9f2"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -20506,8 +20473,8 @@
     {
       "type": "library",
       "name": "rolldown",
-      "version": "1.2.6",
-      "bom-ref": "larpinq@0.1.20|rolldown@1.2.6",
+      "version": "1.2.18",
+      "bom-ref": "larpinq@0.1.20|rolldown@1.2.18",
       "licenses": [
         {
           "license": {
@@ -20515,15 +20482,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/rolldown@1.2.6",
+      "purl": "pkg:npm/rolldown@1.2.18",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/rolldown/-/rolldown-1.2.6.tgz",
+          "url": "https://registry.npmjs.org/rolldown/-/rolldown-1.2.18.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "bcc338ab76a2c5fe3a1a21752a893c8c33c5b04a578055868d41d7364347366f98d9a757006d9d6d7f758e4b62de2d1946c3a57266eecc0cf5a6839b4870a650"
+              "content": "0b5bae4f7511eb449286e09a3d0140019c9e7c909666500a074d8157706e3c4d91b387debd1425b442a814edad5795bdfde261539462795eaf263ddebae95f35"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -21010,8 +20977,8 @@
     {
       "type": "library",
       "name": "source-map-js",
-      "version": "1.2.1",
-      "bom-ref": "larpinq@0.1.20|source-map-js@1.2.1",
+      "version": "1.2.2",
+      "bom-ref": "larpinq@0.1.20|source-map-js@1.2.2",
       "licenses": [
         {
           "license": {
@@ -21019,15 +20986,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/source-map-js@1.2.1",
+      "purl": "pkg:npm/source-map-js@1.2.2",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/source-map-js/-/source-map-js-1.2.1.tgz",
+          "url": "https://registry.npmjs.org/source-map-js/-/source-map-js-1.2.2.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "51758c2a12cec1529bef6f0852d40f5f17d853ebac7726ed52b2bff2e184f0240cbeb84ea70bf30c1c23d108522fb31073bbc8b084811bc550f3e203431a5f40"
+              "content": "2868fff18e37c77e5a6550edb7e27898ad61a0b18750b3187d290e0c93508cd0c2de85b53ea3e8c4cc28d292d4b1633f5041b338dfcdc5e1f2c047cd5cd3f757"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -23399,8 +23366,8 @@
     {
       "type": "library",
       "name": "vite",
-      "version": "8.2.2",
-      "bom-ref": "larpinq@0.1.20|vite@8.2.2",
+      "version": "8.3.7",
+      "bom-ref": "larpinq@0.1.20|vite@8.3.7",
       "licenses": [
         {
           "license": {
@@ -23408,15 +23375,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/vite@8.2.2",
+      "purl": "pkg:npm/vite@8.3.7",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/vite/-/vite-8.2.2.tgz",
+          "url": "https://registry.npmjs.org/vite/-/vite-8.3.7.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "70528b57f3d18005252119b95a332327cea3adfb73a6a7201fe52cf834bc988dc20cd887df45a1af3f2e1cbdfe30e2cf020a9b30102a59d00702984e00cfb3fd"
+              "content": "a3187474cc6b6b206bdf749c26fbc12761c14368dcd5306b5ca4763722ff309f563ee5f5f663760d75949b2c0a772c39445550068f219ad6f614c0b42c7ae79e"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -23437,7 +23404,7 @@
           "type": "library",
           "name": "fsevents",
           "version": "2.3.3",
-          "bom-ref": "larpinq@0.1.20|vite@8.2.2|fsevents@2.3.3",
+          "bom-ref": "larpinq@0.1.20|vite@8.3.7|fsevents@2.3.3",
           "scope": "optional",
           "licenses": [
             {
@@ -24018,8 +23985,8 @@
         {
           "type": "library",
           "name": "brace-expansion",
-          "version": "2.1.4",
-          "bom-ref": "larpinq@0.1.20|webdav@5.10.0|brace-expansion@2.1.4",
+          "version": "2.1.8",
+          "bom-ref": "larpinq@0.1.20|webdav@5.10.0|brace-expansion@2.1.8",
           "licenses": [
             {
               "license": {
@@ -24027,15 +23994,15 @@
               }
             }
           ],
-          "purl": "pkg:npm/brace-expansion@2.1.4",
+          "purl": "pkg:npm/brace-expansion@2.1.8",
           "externalReferences": [
             {
-              "url": "https://registry.npmjs.org/brace-expansion/-/brace-expansion-2.1.4.tgz",
+              "url": "https://registry.npmjs.org/brace-expansion/-/brace-expansion-2.1.8.tgz",
               "type": "distribution",
               "hashes": [
                 {
                   "alg": "SHA-512",
-                  "content": "8467d5ccfc6d85b7f7fb6ca383f441b3ad1c074161a814bfcef755ff8c27e3f0663746cd30c1cf73857f05b1627aa7f54ca0061801e76387928da8c29747f65e"
+                  "content": "067943cc3610a29953b194af3e2f3a08dce66dc6f4ed7f2e7d1f1f935ce2bda8842655c9922ab5310c830959a559cb166e3e9a597a879ebc307af6eb9bf49a8a"
                 }
               ],
               "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
