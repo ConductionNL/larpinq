@@ -1994,7 +1994,10 @@
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "CharacterDetail page, XP award history widget + History sidebar tab",
 				"change": "openspec/changes/archive/event-xp-award-workflow",
-				"requirement": "openspec/specs/event-xp-awards :: XP awards MUST be recorded as first-class objects"
+				"requirement": [
+					"openspec/specs/event-xp-awards :: XP awards MUST be recorded as first-class objects",
+					"openspec/specs/events-players :: Event-Character Linking"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -4083,7 +4086,11 @@
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Events index page (/events) + EventDetail (/events/:id) roster widget",
 				"change": "openspec/changes/archive/2026-03-21-events-players",
-				"requirement": "openspec/specs/events-players :: Event CRUD Operations"
+				"requirement": [
+					"openspec/specs/events-players :: Event CRUD Operations",
+					"openspec/specs/events-players :: Event-Character Linking",
+					"openspec/specs/events-players :: The player page lists events attended (REQ-PAH-001)"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read: manifest config in this repo",
@@ -5654,7 +5661,10 @@
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "App shell CnSetupWizard, shown on first visit per manifest setup.enabled",
 				"change": "openspec/changes/archive/2026-10-07-wizard-dataset-card-load",
-				"requirement": "openspec/specs/first-time-setup :: Setup status reports every manifest step"
+				"requirement": [
+					"openspec/specs/first-time-setup :: Setup status reports every manifest step",
+					"openspec/specs/first-time-setup :: Each example data card loads itself"
+				]
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
