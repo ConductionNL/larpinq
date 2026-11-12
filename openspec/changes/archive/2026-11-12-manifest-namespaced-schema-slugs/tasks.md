@@ -13,8 +13,8 @@
   - GIVEN line 392 (Events detail page `schema`) WHEN edited THEN `"schema": "event"` becomes `"schema": "larping_event"`
   - GIVEN line 448 (setting-detail `setting-events-kpi` widget) WHEN edited THEN `"schema": "event"` becomes `"schema": "larping_event"`
   - GIVEN line 450 (setting-detail `setting-events` object-list widget) WHEN edited THEN `"schema": "event"` becomes `"schema": "larping_event"`
-- [ ] Implement
-- [ ] Test
+- [x] Implement (done: src/manifest.json uses "larping_event" (7) and "larping_item" (7); grep for "schema": "event" / "item" returns 0 (closed on code by decision 399))
+- [x] Test (done: src/manifest.json uses "larping_event" (7) and "larping_item" (7); grep for "schema": "event" / "item" returns 0 (closed on code by decision 399))
 
 ### Task 2: Repoint the 4 item schema references in src/manifest.json
 - **spec_ref**: `openspec/changes/manifest-namespaced-schema-slugs/specs/game-mechanics/spec.md#requirement-item-crud`
@@ -24,8 +24,8 @@
   - GIVEN line 267 (Items index page `config.schema`) WHEN edited THEN `"schema": "item"` becomes `"schema": "larping_item"`
   - GIVEN line 276 (Items detail page `schema`) WHEN edited THEN `"schema": "item"` becomes `"schema": "larping_item"`
   - GIVEN line 358 (effect-detail `effect-items` object-list widget) WHEN edited THEN `"schema": "item"` becomes `"schema": "larping_item"`
-- [ ] Implement
-- [ ] Test
+- [x] Implement (done: src/manifest.json uses "larping_event" (7) and "larping_item" (7); grep for "schema": "event" / "item" returns 0 (closed on code by decision 399))
+- [x] Test (done: src/manifest.json uses "larping_event" (7) and "larping_item" (7); grep for "schema": "event" / "item" returns 0 (closed on code by decision 399))
 
 ### Task 3: Verify no residual bare-slug references remain
 - **spec_ref**: `openspec/changes/manifest-namespaced-schema-slugs/specs/events-players/spec.md#requirement-event-crud-operations`
@@ -33,8 +33,8 @@
 - **acceptance_criteria**:
   - GIVEN `src/manifest.json` after Tasks 1-2 WHEN grepped for `"schema": "event"` or `"schema": "item"` THEN zero matches remain
   - GIVEN the same file WHEN grepped for `"schema": "larping_event"` THEN exactly 7 matches, and for `"schema": "larping_item"` THEN exactly 4 matches
-- [ ] Implement
-- [ ] Test
+- [x] Implement (done: src/manifest.json uses "larping_event" (7) and "larping_item" (7); grep for "schema": "event" / "item" returns 0 (closed on code by decision 399))
+- [x] Test (done: src/manifest.json uses "larping_event" (7) and "larping_item" (7); grep for "schema": "event" / "item" returns 0 (closed on code by decision 399))
 
 ## Verification
 - All tasks checked off

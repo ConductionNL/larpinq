@@ -2,6 +2,8 @@
 kind: code
 ---
 
+> Superseded by larpinq commit 150b3ad (ADR-049 Phase 4: the custom dashboard widgets were dissolved into native manifest widgets, so `src/views/dashboard/`, the `#0082c9` literals and `DashboardActions` are gone); archived under decision 399 without syncing its deltas.
+
 # Dashboard widget hygiene: dead custom widgets, hardcoded colors, raw URL fetch
 
 ## Why
