@@ -2,7 +2,7 @@
 
 ## Summary
 
-Six rows of the larpinq capability matrix (`openspec/parity/capabilities.json`) cite a spec that has no requirement saying what the row says. This change writes those requirements, so every row records a requirement whose scenarios describe it. Four of the rows are already built and only lack the requirement. Two are only partly built: they are rated `specified` and get build tasks.
+Eight rows of the larpinq capability matrix (`openspec/parity/capabilities.json`) cite a spec that has no requirement saying what the row says. This change writes those requirements, so every row records a requirement whose scenarios describe it. Five of the rows are already built and only lack the requirement. Two are only partly built: they are rated `specified` and get build tasks. `chr-approval` keeps `built` for the approval that works and gets a task for rejection.
 
 ## Motivation
 
@@ -16,6 +16,8 @@ The fleet spec coverage measure of 11 Nov 2026 counts a row as covered only when
 | `ply-characters-per-player` | See every character a player has played. | built | The player page lists the player's characters. |
 | `evt-milestones` | Track the organising milestones of an event with a status and a deadline. | built | Milestones are Deck cards linked to the event, with a stack for status and a due date. |
 | `rul-in-game-currency` | Track in-game money per character and let players spend it on in-game items. | specified | Items get a price and buying one takes the money from the character. Today money is tracked but nothing spends it. |
+| `chr-approval` | Send a character to the game master for approval and see whether it was approved or rejected. | built (approval), rejection not built | A game master rejects a submitted character with a reason, and the owner can submit it again (REQ-CTA-001). Today a character is only approved or not yet approved. |
+| `reg-meal-choice` | Let players choose a meal plan or catering option when they sign up. | built | A player picks a choice per registration option (REQ-RTO-007). The existing requirement only covered the organisers' count. |
 
 `prg-gm-override` is rated back to `specified` too: the server accepts and audits an override (skill-requirement-enforcement, GM override MUST be explicit and audited), but no page writes `requirementOverrides`, so a game master can only add one through the API. Task 5.1 adds the action (REQ-SRE-001).
 
