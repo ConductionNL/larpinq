@@ -92,7 +92,8 @@ $extra = [
 // The fallback below reproduces `Routes::standard()`'s output locally, so
 // larpinq still routes — catch-all included — without openregister.
 if (class_exists('OCA\OpenRegister\AppHost\Routes') === true) {
-	return \OCA\OpenRegister\AppHost\Routes::standard($extra);
+	// Every unversioned API route is also served under /api/v1/; see ApiPathAliases.
+	return \OCA\Larpinq\Middleware\Support\ApiPathAliases::withVersionedAliases(\OCA\OpenRegister\AppHost\Routes::standard($extra));
 }
 
 $canonicalRoutes = [
@@ -155,4 +156,4 @@ foreach ($canonicalRoutes as $canonicalRoute) {
 $mergedRoutes = array_merge($mergedRoutes, $extra);
 $mergedRoutes[] = $catchAllRoute;
 
-return ['routes' => $mergedRoutes];
+return \OCA\Larpinq\Middleware\Support\ApiPathAliases::withVersionedAliases(['routes' => $mergedRoutes]);

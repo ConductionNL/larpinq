@@ -27,9 +27,12 @@ use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
 
 /**
- * Pins the `API-Version` header and the problem details shape of API errors.
+ * Pins the `API-Version` header, the deprecation of unversioned paths and the
+ * problem details shape of API errors.
  *
  * @covers \OCA\Larpinq\Middleware\ApiContractMiddleware
+ * @uses   \OCA\Larpinq\Middleware\Support\ApiPathAliases
+ * @uses   \OCA\Larpinq\Middleware\Support\StandardProtocolPaths
  */
 class ApiContractMiddlewareTest extends TestCase {
 
@@ -44,6 +47,7 @@ class ApiContractMiddlewareTest extends TestCase {
 	private function decorate(string|false $path, Response $response): Response {
 		$request = $this->createMock(originalClassName: IRequest::class);
 		$request->method('getPathInfo')->willReturn($path);
+		$request->method('getRequestUri')->willReturn('/index.php'.(string) $path.'?q=1');
 		$appManager = $this->createMock(originalClassName: IAppManager::class);
 		$appManager->method('getAppVersion')->willReturn('1.2.3');
 
@@ -161,6 +165,50 @@ class ApiContractMiddlewareTest extends TestCase {
 		$this->assertSame(expected: '1.2.3', actual: $this->headersOf(response: $response)['API-Version']);
 		$this->assertSame(expected: 'gone', actual: $response->getData());
 	}//end testNonJsonErrorOnlyGetsTheHeader()
+
+	/**
+	 * An unversioned API path keeps answering and names its `/api/v1/` successor.
+	 *
+	 * @return void
+	 */
+	public function testUnversionedPathAnnouncesItsSuccessor(): void {
+		$response = $this->decorate(path: '/apps/larpinq/api/things/7/parts', response: new JSONResponse(data: ['id' => 7]));
+		$headers  = $this->headersOf(response: $response);
+
+		$this->assertSame(expected: ['id' => 7], actual: $response->getData());
+		$this->assertSame(expected: '@1794441600', actual: $headers['Deprecation']);
+		$this->assertSame(expected: '</index.php/apps/larpinq/api/v1/things/7/parts>; rel="successor-version"', actual: $headers['Link']);
+	}//end testUnversionedPathAnnouncesItsSuccessor()
+
+	/**
+	 * A versioned API path is not deprecated, and still carries the version.
+	 *
+	 * @return void
+	 */
+	public function testVersionedPathIsNotDeprecated(): void {
+		$headers = $this->headersOf(response: $this->decorate(path: '/apps/larpinq/api/v1/things/7', response: new JSONResponse(data: [])));
+
+		$this->assertSame(expected: '1.2.3', actual: $headers['API-Version']);
+		$this->assertArrayNotHasKey(key: 'Deprecation', array: $headers);
+		$this->assertArrayNotHasKey(key: 'Link', array: $headers);
+	}//end testVersionedPathIsNotDeprecated()
+
+	/**
+	 * A path that speaks a protocol defined elsewhere keeps the API contract but is not deprecated.
+	 *
+	 * @return void
+	 */
+	public function testStandardProtocolPathIsNotDeprecated(): void {
+		$response = $this->decorate(path: '/apps/larpinq/api/health', response: new JSONResponse(data: ['error' => 'x'], statusCode: 400));
+		$headers  = $this->headersOf(response: $response);
+		$data     = $response->getData();
+
+		$this->assertSame(expected: 'x', actual: $data['error']);
+		$this->assertSame(expected: 400, actual: $data['status']);
+		$this->assertArrayHasKey(key: 'API-Version', array: $headers);
+		$this->assertArrayNotHasKey(key: 'Deprecation', array: $headers);
+		$this->assertArrayNotHasKey(key: 'Link', array: $headers);
+	}//end testStandardProtocolPathIsNotDeprecated()
 
 	/**
 	 * The headers a response set, read without the server container that
