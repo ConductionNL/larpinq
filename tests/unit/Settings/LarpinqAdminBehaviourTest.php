@@ -29,7 +29,7 @@ use PHPUnit\Framework\TestCase;
  * @covers \OCA\Larpinq\Settings\LarpinqAdmin
  * @covers \OCA\Larpinq\Sections\LarpinqAdmin
  */
-class LarpinqAdminTest extends TestCase {
+class LarpinqAdminBehaviourTest extends TestCase {
 
 	/**
 	 * The form hands the app version to the page and renders the admin template.

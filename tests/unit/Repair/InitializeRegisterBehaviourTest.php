@@ -27,7 +27,7 @@ use RuntimeException;
 /**
  * @covers \OCA\Larpinq\Repair\InitializeRegister
  */
-class InitializeRegisterTest extends TestCase {
+class InitializeRegisterBehaviourTest extends TestCase {
 
 	/**
 	 * Run the step over a settings service that does $load.

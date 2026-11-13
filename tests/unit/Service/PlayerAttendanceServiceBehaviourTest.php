@@ -26,7 +26,7 @@ use RuntimeException;
 /**
  * @covers \OCA\Larpinq\Service\PlayerAttendanceService
  */
-class PlayerAttendanceServiceTest extends TestCase {
+class PlayerAttendanceServiceBehaviourTest extends TestCase {
 
 	/**
 	 * The register reader.

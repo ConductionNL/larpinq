@@ -31,7 +31,7 @@ use RuntimeException;
  * @covers \OCA\Larpinq\Service\SettingsLoadService
  * @uses   \OCA\Larpinq\Service\SettingsMapBuilder
  */
-class SettingsLoadServiceTest extends TestCase {
+class SettingsLoadServiceBehaviourTest extends TestCase {
 
 	/**
 	 * Every app config write, as [key, value].
