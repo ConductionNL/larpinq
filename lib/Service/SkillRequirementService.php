@@ -81,10 +81,14 @@ class SkillRequirementService {
 	 *   valid: bool,
 	 *   requirements: array<int, array<string,mixed>>,
 	 *   budget: array{ability: string, value: int, shortfall: int, ok: bool},
+	 *   budgets: list<array{ability: string, value: int, shortfall: int, ok: bool}>,
+	 *   overspentPools: list<array<string, mixed>>,
 	 *   dependents: array<int, array<string,mixed>>
 	 * } The structured validation result.
 	 *
 	 * @spec openspec/specs/skill-requirement-enforcement/spec.md
+	 *
+	 * @SuppressWarnings(PHPMD.StaticAccess) SkillListPools is a pure helper.
 	 */
 	public function validate(array $candidate, array $oldCharacter = []): array {
 		$skills = $this->idList->normalise($candidate['skills'] ?? []);
@@ -93,12 +97,22 @@ class SkillRequirementService {
 
 		$requirements = $this->evaluateAdded(added: array_values(array_diff($skills, $oldSkills)), context: $context);
 		$budget = $this->evaluateBudget(stats: $context['stats']);
+		// One block per pool: XP, then each skill list's own ability (REQ-RRS-002).
+		$budgets = SkillListPools::budgets(
+			stats: $context['stats'],
+			budget: $budget,
+			skills: $context['skills'],
+			allSkills: $context['allSkills'],
+			lists: fn (): array => $this->fetchIndexed(objectType: 'skillList')
+		);
 		$dependents = $this->analyseRemovals(removed: array_values(array_diff($oldSkills, $skills)), context: $context);
 
 		return [
-			'valid' => ($this->hasUnmet(requirements: $requirements, budget: $budget) === false),
+			'valid' => ($this->hasUnmet(requirements: $requirements, budgets: $budgets) === false),
 			'requirements' => $requirements,
 			'budget' => $budget,
+			'budgets' => $budgets,
+			'overspentPools' => SkillListPools::overspent(result: ['budget' => $budget, 'budgets' => $budgets]),
 			'dependents' => $dependents,
 		];
 	}//end validate()
@@ -213,18 +227,20 @@ class SkillRequirementService {
 	}//end unresolvableSkill()
 
 	/**
-	 * Whether anything blocks the write: an overspent budget or a failed entry.
+	 * Whether anything blocks the write: any overspent pool or a failed entry.
 	 *
 	 * @param array<int,array<string,mixed>> $requirements The requirement entries.
-	 * @param array{ability: string, value: int, shortfall: int, ok: bool} $budget The budget block.
+	 * @param list<array{ability: string, value: int, shortfall: int, ok: bool}> $budgets One block per pool.
 	 *
 	 * @return bool True when the candidate must be rejected.
 	 *
 	 * @spec openspec/specs/skill-requirement-enforcement/spec.md
 	 */
-	private function hasUnmet(array $requirements, array $budget): bool {
-		if ($budget['ok'] === false) {
-			return true;
+	private function hasUnmet(array $requirements, array $budgets): bool {
+		foreach ($budgets as $budget) {
+			if ($budget['ok'] === false) {
+				return true;
+			}
 		}
 
 		foreach ($requirements as $entry) {

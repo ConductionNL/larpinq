@@ -94,6 +94,7 @@ class SettingsLoadService {
 		'tickettype' => 'larping_ticket_type',
 		'registrationoption' => 'larping_registration_option',
 		'accesscode' => 'larping_access_code',
+		'skilllist' => 'larping_skill_list',
 	];
 
 	/**

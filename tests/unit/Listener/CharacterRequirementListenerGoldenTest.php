@@ -124,6 +124,9 @@ class CharacterRequirementListenerGoldenTest extends TestCase {
 			'create with override, game master' => ['old' => null, 'new' => $withReason, 'result' => $overBudget],
 			'validator throws' => ['new' => $moreSkills, 'throws' => true],
 			'empty old object counts as changed' => ['old' => [], 'new' => $base, 'result' => $unmet],
+			// rules-rulebook-and-spell-lists REQ-RRS-002: a list's own pool can be overspent while XP is fine.
+			'create, out of mana' => ['old' => null, 'new' => $base, 'result' => array_replace($unmet, ['budget' => ['ability' => 'xp', 'value' => 30, 'shortfall' => 0, 'ok' => true], 'budgets' => [['ability' => 'xp', 'value' => 30, 'shortfall' => 0, 'ok' => true], ['ability' => 'mana', 'value' => -1, 'shortfall' => 1, 'ok' => false]], 'overspentPools' => [['ability' => 'mana', 'value' => -1, 'shortfall' => 1, 'ok' => false]]])],
+			'create, out of xp only, with pools' => ['old' => null, 'new' => $base, 'result' => array_replace($unmet, ['budget' => ['ability' => 'xp', 'value' => -2, 'shortfall' => 2, 'ok' => false], 'budgets' => [['ability' => 'xp', 'value' => -2, 'shortfall' => 2, 'ok' => false]], 'overspentPools' => []])],
 			'forged isGm flag, player' => ['new' => $withReason + ['isGm' => true, 'gameMaster' => true], 'uid' => 'player1'],
 			'override reason string to int, player' => [
 				'old' => $base + ['requirementOverrides' => [['skill' => 's2', 'reason' => '1']]],

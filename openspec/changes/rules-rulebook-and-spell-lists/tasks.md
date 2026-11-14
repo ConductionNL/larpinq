@@ -4,8 +4,10 @@
 
 ## 1. Lists and budget
 
-- [ ] 1.1 Fragment: `skillList`, `skill.list`, `hiddenFromRulebook` on skill, item and condition (REQ-RRS-001, REQ-RRS-004). Verify: `npm run check:register`; `npm run check:schema-l10n`.
-- [ ] 1.2 `SkillRequirementService`: one budget per cost ability, `budgets[]` in the report, refusal on any negative pool (REQ-RRS-002). Verify: the existing SkillRequirementService PHPUnit suite stays green; new tests for a spell refused on mana while XP is fine.
+- [x] 1.1 Fragment: `skillList`, `skill.list`, `hiddenFromRulebook` on skill, item and condition (REQ-RRS-001, REQ-RRS-004). Verify: `npm run check:register`; `npm run check:schema-l10n`.
+  > `register.d/rules-rulebook-and-spell-lists.json`: `skillList` (`larping_skill_list`; read by game masters, rules marshals and larpers, written by game masters and rules marshals, deleted by game masters; exportable), `skill.list` and `hiddenFromRulebook` on skill, item and condition. `check:schema-l10n` stays at its baseline: the 12 new schema strings are in `l10n/en.json` and `l10n/nl.json`.
+- [x] 1.2 `SkillRequirementService`: one budget per cost ability, `budgets[]` in the report, refusal on any negative pool (REQ-RRS-002). Verify: the existing SkillRequirementService PHPUnit suite stays green; new tests for a spell refused on mana while XP is fine.
+  > `SkillListPools::budgets()` gives one block per pool (XP, then each list's `costAbility`); the result keeps `budget` and adds `budgets[]` and `overspentPools`; any overspent pool refuses the write, and `CharacterRequirementListener` reports the overspent pools. Tests: `tests/unit/Service/SkillRequirementPoolsTest.php` (out of mana while XP is fine, shortfall 1 on Mana), two cases in the listener golden; the existing SkillRequirementService suite stays green.
 - [ ] 1.3 Seed the Aldmoor lists, spells and chapters of design.md. Verify: the seed imports cleanly.
 
 ## 2. Pages

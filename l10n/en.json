@@ -738,7 +738,19 @@
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "My character sheet",
-        "Open sheet": "Open sheet"
+        "Open sheet": "Open sheet",
+        "Hidden from the rulebook": "Hidden from the rulebook",
+        "Leave this out of the players' rulebook, for example a secret ability.": "Leave this out of the players' rulebook, for example a secret ability.",
+        "List": "List",
+        "Paid from": "Paid from",
+        "Skill list": "Skill list",
+        "The ability the costs of these skills are paid from, such as Mana. Empty means XP.": "The ability the costs of these skills are paid from, such as Mana. Empty means XP.",
+        "The list this skill belongs to. A skill without a list is a general skill paid from XP.": "The list this skill belongs to. A skill without a list is a general skill paid from XP.",
+        "The name players see, such as Arcane spells.": "The name players see, such as Arcane spells.",
+        "The world this list belongs to. Empty means shared across all worlds.": "The world this list belongs to. Empty means shared across all worlds.",
+        "What the list is for, shown in the rulebook.": "What the list is for, shown in the rulebook.",
+        "Where the list comes in the rulebook; lower comes first.": "Where the list comes in the rulebook; lower comes first.",
+        "Whether the list holds skills, spells or powers.": "Whether the list holds skills, spells or powers."
     },
     "plurals": {},
     "pluralForm": "nplurals=2; plural=(n != 1);"
