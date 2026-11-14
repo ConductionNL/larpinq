@@ -21,7 +21,9 @@
 
 ## 4. Strings and docs
 
-- [ ] 4.1 Dutch and English strings (REQ-CHD-001). Verify: `npm run test:l10n`.
-- [ ] 4.2 `docs/features/help-desk.md` (ADR-010). Verify: the docs build renders it.
+- [x] 4.1 Dutch and English strings (REQ-CHD-001). Verify: `npm run test:l10n`.
+      The schema strings and the new page strings are in all 37 catalogues (`npm run test:l10n` at full parity, `npm run check:l10n-js` up to date, `npm run check:schema-l10n` at its baseline).
+- [x] 4.2 `docs/features/help-desk.md` (ADR-010). Verify: the docs build renders it.
+      Written and listed in `docs/features/README.md`; the docs build was not run here.
 
 Quality reminders (not tracked as tasks): `composer check:strict` once before push.
