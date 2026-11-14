@@ -19,6 +19,7 @@ use OCA\Larpinq\Listener\CharacterStatusListener;
 use OCA\Larpinq\Listener\FactionMembershipListener;
 use OCA\Larpinq\Listener\FormSubmissionListener;
 use OCA\Larpinq\Listener\PaymentRequestListener;
+use OCA\Larpinq\Listener\PlayerCareListener;
 use OCA\Larpinq\Listener\PlayerReviewListener;
 use OCA\Larpinq\Listener\PortalProfileListener;
 use OCA\Larpinq\Listener\RegistrationListener;
@@ -73,6 +74,7 @@ class ObjectListenerRegistrarTest extends TestCase {
 				[self::CREATING, XpAwardProvenanceListener::class],
 				[self::CREATING, PortalProfileListener::class],
 				[self::CREATED, PortalProfileListener::class],
+				[self::UPDATED, PlayerCareListener::class],
 				[self::UPDATING, UniqueHolderListener::class],
 				[self::UPDATING, FactionMembershipListener::class],
 				[self::UPDATING, CharacterStatusListener::class],
