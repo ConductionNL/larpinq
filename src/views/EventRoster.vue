@@ -53,6 +53,7 @@
 				  `<button type="secondary">` with no warning and no lint error.
 				-->
 				<NcButton
+					class="event-roster__action"
 					variant="secondary"
 					:disabled="
 						saving === row.character || row.status === 'checked-in'
@@ -62,6 +63,7 @@
 					{{ t('larpinq', 'Check in') }}
 				</NcButton>
 				<NcButton
+					class="event-roster__action"
 					variant="tertiary"
 					:disabled="saving === row.character || row.status === 'no-show'"
 					data-testid="event-roster-noshow"
@@ -338,6 +340,23 @@ export default {
 </script>
 
 <style scoped>
+/*
+ * Phone layout (admin-phone-friendly-pages, REQ-APF-002): the roster sizes
+ * itself to the width it gets, so the check-in actions grow to a 44 pixel
+ * tap target with one hand at the gate. The table itself belongs to the
+ * shared CnDataTable and keeps its own narrow-width behaviour (hydra ADR-012).
+ */
+.event-roster {
+	container-type: inline-size;
+}
+
+@container (max-width: 600px) {
+	.event-roster__action {
+		min-width: 44px;
+		min-height: 44px;
+	}
+}
+
 .event-roster__notice {
 	margin-bottom: 12px;
 	padding: 8px 12px;
