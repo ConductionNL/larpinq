@@ -302,6 +302,73 @@
                 ]
             }
         },
+        "/events/{id}/checkin-code": {
+            "post": {
+                "operationId": "events-checkin-by-code",
+                "summary": "Check a participant in by the code of their registration (GM-only)",
+                "description": "Check a participant in by the code of their registration (GM-only). The game master check runs first; then only `code` is read from the body. 200 `{status: checked-in, name, character}` on a first use, 200 `{status: already, at, by}` on a second, 409 `{status: not-accepted}` for a registration that is not accepted, 404 `{status: unknown}` for an unknown code or one of another event. Rate limited per user.",
+                "tags": [
+                    "events"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The participant checked in, or when and by whom they already were.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Problem404"
+                    },
+                    "424": {
+                        "$ref": "#/components/responses/Problem424"
+                    },
+                    "409": {
+                        "$ref": "#/components/responses/Problem409"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "The id.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "code"
+                                ],
+                                "properties": {
+                                    "code": {
+                                        "type": "string",
+                                        "description": "The check-in code as typed or scanned."
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/events/{id}/choices": {
             "get": {
                 "operationId": "registration-choices-counts",

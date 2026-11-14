@@ -869,7 +869,9 @@ OC.L10N.register(
         "About this Larpinq installation.": "Over deze Larpinq-installatie.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Waar Larpinq de gegevens van je spel bewaart. Kies per soort een bron, en bij Open Register het register en schema.",
         "My character sheet": "Mijn karakterblad",
-        "Open sheet": "Blad openen"
+        "Open sheet": "Blad openen",
+        "Check-in code": "Incheckcode",
+        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "De code die een steward bij de deur scant of intypt, door larpinq gezet zodra de inschrijving is geaccepteerd. Blijft gelijk als de inschrijving naar een andere speler gaat."
     },
     "nplurals=2; plural=(n != 1);"
 )
