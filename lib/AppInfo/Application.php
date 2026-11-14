@@ -62,6 +62,36 @@ class Application extends App implements IBootstrap {
 	public const GM_GROUP = AppIdentity::GM_GROUP;
 
 	/**
+	 * The staff role groups (admin-staff-roles-and-invites D1). Each is a
+	 * Nextcloud group next to the game masters; none of them is a second
+	 * game master group (ADR-002).
+	 *
+	 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-four-staff-roles-exist-next-to-the-game-masters-req-asr-001
+	 */
+	public const ROLE_WRITERS = AppIdentity::ROLE_WRITERS;
+
+	/**
+	 * Rules marshals.
+	 *
+	 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-four-staff-roles-exist-next-to-the-game-masters-req-asr-001
+	 */
+	public const ROLE_RULES = AppIdentity::ROLE_RULES;
+
+	/**
+	 * Treasurers.
+	 *
+	 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-four-staff-roles-exist-next-to-the-game-masters-req-asr-001
+	 */
+	public const ROLE_TREASURERS = AppIdentity::ROLE_TREASURERS;
+
+	/**
+	 * Stewards.
+	 *
+	 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-four-staff-roles-exist-next-to-the-game-masters-req-asr-001
+	 */
+	public const ROLE_STEWARDS = AppIdentity::ROLE_STEWARDS;
+
+	/**
 	 * Constructor for the application
 	 *
 	 * @param array<string,mixed> $urlParams URL parameters
