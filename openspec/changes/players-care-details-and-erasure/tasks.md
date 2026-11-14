@@ -28,6 +28,7 @@
 
 - [ ] 5.1 Dutch and English strings (REQ-PCE-001). Verify: `npm run test:l10n`.
   - Partly: English and Dutch strings for every new schema title and description are in `l10n/en.json`/`nl.json` (and `.js`). `npm run test:l10n` parity now fails for the other 34 locales on these 22 strings, which still need translating.
-- [ ] 5.2 `docs/features/care-details-and-erasure.md`, including what a player asks OpenRegister's data-subject workflow for (ADR-010). Verify: the docs build renders it.
+- [x] 5.2 `docs/features/care-details-and-erasure.md`, including what a player asks OpenRegister's data-subject workflow for (ADR-010). Verify: the docs build renders it.
+  - Written and listed in `docs/features/README.md`; the docs build was not run here.
 
 Quality reminders (not tracked as tasks): `composer check:strict` once before push.
