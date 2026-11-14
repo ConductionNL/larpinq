@@ -507,6 +507,14 @@ class CharacterRequirementListener implements IEventListener {
 			$payload['message'] = 'Insufficient XP and/or unmet skill requirements.';
 		}
 
+		// Every overspent pool, XP or a list's own ability such as Mana, with
+		// its shortfall (rules-rulebook-and-spell-lists REQ-RRS-002).
+		$overspent = (array)($result['overspentPools'] ?? []);
+		if ($overspent !== []) {
+			$payload['budgets'] = $overspent;
+			$payload['message'] = 'Not enough points in a pool and/or unmet skill requirements.';
+		}
+
 		return $payload;
 	}//end buildErrorPayload()
 
