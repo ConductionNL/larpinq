@@ -103,6 +103,13 @@
 					"icon": "MagicStaff",
 					"route": "Effects",
 					"order": 80
+				},
+				{
+					"id": "SkillLists",
+					"label": "Skill lists",
+					"icon": "MagicStaff",
+					"route": "SkillLists",
+					"order": 57
 				}
 			]
 		},
@@ -140,6 +147,13 @@
 					"icon": "BookOpenVariantOutline",
 					"route": "Lore",
 					"order": 50
+				},
+				{
+					"id": "Rulebook",
+					"label": "Rulebook",
+					"icon": "BookOpenVariantOutline",
+					"route": "Rulebook",
+					"order": 55
 				},
 				{
 					"id": "MyRegistrations",
@@ -282,7 +296,7 @@
 		],
 		[
 			"Skills",
-			"406c9aaede1e622900f770ee452d823865dc4ff327336ad8816e03a70c88b81d"
+			"b1b686e5866ec27c55ae69a5605ca9954312660c1338eb37e524186cdf9afbbb"
 		],
 		[
 			"SkillTree",
@@ -447,6 +461,18 @@
 		[
 			"AccessCodeDetail",
 			"e8c4b0fe1df0b1d886df0e903d5fdb6397003ad5988513b63465b0f1a8dab555"
+		],
+		[
+			"SkillLists",
+			"88521983c1c5d0765e5e80a08cb2b0e0931374b4f0093d17a552879a62e24a14"
+		],
+		[
+			"SkillListDetail",
+			"31db53ebb89f27f979a963e53d4f8ba6089b63ca880c48d58649d715e57e224e"
+		],
+		[
+			"Rulebook",
+			"ef41efd3c49cf916894bcfa7675d4b5dd66b985da4917b63115a1152735a0447"
 		],
 		[
 			"Lore",

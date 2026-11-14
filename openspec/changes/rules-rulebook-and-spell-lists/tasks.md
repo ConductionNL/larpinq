@@ -13,8 +13,10 @@
 
 ## 2. Pages
 
-- [ ] 2.1 `src/manifest.d/rules-rulebook-and-spell-lists.json`: Skill lists index and detail, Rulebook route and menu entries; Skills index list column in `src/manifest.json` (REQ-RRS-001, REQ-RRS-003). Verify: `npm run check:manifest`.
-- [ ] 2.2 `src/views/Rulebook.vue` as a registry `page` with print styles (REQ-RRS-003, REQ-RRS-004). Verify: vitest renders chapters then reference and leaves out hidden objects; Playwright `tests/e2e/rulebook.spec.ts` as a player reads "Casting a spell" and sees "Firebolt, 3 mana".
+- [x] 2.1 `src/manifest.d/rules-rulebook-and-spell-lists.json`: Skill lists index and detail, Rulebook route and menu entries; Skills index list column in `src/manifest.json` (REQ-RRS-001, REQ-RRS-003). Verify: `npm run check:manifest`.
+  > Skill lists index (world-scoped, ordered) and detail with the skills in the list, the Rulebook route `/rulebook/:world?`, menu entries relocated into Mechanics and World in `src/menu-layout.json`, and Name, List, Effect and World columns on the Skills index. `npm run check:manifest` passes; `tests/vitest/fixtures/effectiveManifest.golden.json` records the three new pages, the two menu entries and the changed Skills page.
+- [x] 2.2 `src/views/Rulebook.vue` as a registry `page` with print styles (REQ-RRS-003, REQ-RRS-004). Verify: vitest renders chapters then reference and leaves out hidden objects; Playwright `tests/e2e/rulebook.spec.ts` as a player reads "Casting a spell" and sees "Firebolt, 3 mana".
+  > `src/views/Rulebook.vue` (registry `page`), built by `src/services/rulebook.js`: rules chapters in order through `cnRenderMarkdown`, then abilities, skill lists with cost ("Firebolt, 3 mana"), pool and prerequisites by name, listless skills under General skills, items and conditions, hidden objects left out; print starts each chapter on its own page. `tests/vitest/rulebook.spec.js` (11 tests). The Playwright scenario needs a live instance and is not written here.
 
 ## 3. Portal
 

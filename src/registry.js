@@ -39,6 +39,7 @@ import ObjectDetail from './views/ObjectDetail.vue'
 import PlayerAttendanceHistory from './views/PlayerAttendanceHistory.vue'
 import RegistrationChanges from './views/RegistrationChanges.vue'
 import RegistrationChoices from './views/RegistrationChoices.vue'
+import Rulebook from './views/Rulebook.vue'
 import SkillTree from './views/SkillTree.vue'
 import {
 	exportCampaignAction,
@@ -119,6 +120,8 @@ export default {
 	// (skill-tree-visualization). Resolved by CnPageRenderer as the page body
 	// component for the SkillTree manifest page.
 	SkillTree: { kind: 'page', component: SkillTree },
+	// The rules of one world as a printable book (rules-rulebook-and-spell-lists D3).
+	Rulebook: { kind: 'page', component: Rulebook },
 	// Lore read page (worlds-lore-pages): CnWikiPage plus the fetch it leaves
 	// to its host. @spec openspec/specs/world-lore/spec.md
 	LoreArticle: { kind: 'page', component: LoreArticle },
