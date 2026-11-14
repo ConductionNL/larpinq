@@ -91,7 +91,9 @@ class EventFeedbackServiceTest extends TestCase {
 		$fetcher->method('saveObjectWithAppAuthority')->willReturnCallback(
 			function (string $objectType, array $data, ?string $uuid = null): array {
 				self::assertSame('attendance', $objectType);
-				$this->attendance[(string)$uuid] = $data + $this->attendance[(string)$uuid];
+				// A save replaces the object, as OpenRegister's does: the stamp must come with the whole record.
+				self::assertArrayNotHasKey('@self', $data);
+				$this->attendance[(string)$uuid] = $data + ['id' => (string)$uuid];
 
 				return $this->attendance[(string)$uuid];
 			}
@@ -150,6 +152,10 @@ class EventFeedbackServiceTest extends TestCase {
 		self::assertSame(['events' => 1, 'invited' => 2, 'reminded' => 0], $first);
 		self::assertSame([['anna', false], ['sanne', false]], $this->sent);
 		self::assertSame('2025-08-18T03:00:00+00:00', $this->attendance['a-anna']['feedbackInvitedAt']);
+		// The stamp keeps the rest of the record: a save replaces the stored object.
+		self::assertSame('checked-in', $this->attendance['a-anna']['status']);
+		self::assertSame(self::EVENT, $this->attendance['a-anna']['event']);
+		self::assertSame('c-anna', $this->attendance['a-anna']['character']);
 		self::assertArrayNotHasKey('feedbackInvitedAt', $this->attendance['a-karel']);
 		self::assertContains(['event' => ['feedbackForm' => 'IS NOT NULL']], $this->filters);
 		self::assertContains(['attendance' => ['event' => self::EVENT, 'status' => 'checked-in']], $this->filters);

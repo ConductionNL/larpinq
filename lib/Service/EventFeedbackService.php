@@ -200,9 +200,13 @@ class EventFeedbackService {
 	 */
 	private function step(array $attendance, string $owner, array $event, int $formId, DateTimeImmutable $now, string $field): int {
 		$sent  = $owner !== '' && $this->delivery->send(uid: $owner, event: $event, formId: $formId, reminder: $field === 'feedbackRemindedAt');
+		// A save replaces the stored object, so the whole record is written back with the stamp.
+		$record = $attendance;
+		unset($record['@self'], $record['id']);
+		$record[$field] = $now->format(DateTimeInterface::ATOM);
 		$this->fetcher->saveObjectWithAppAuthority(
 			objectType: 'attendance',
-			data: [$field => $now->format(DateTimeInterface::ATOM)],
+			data: $record,
 			uuid: (string)($attendance['id'] ?? '')
 		);
 
