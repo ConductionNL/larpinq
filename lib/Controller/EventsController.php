@@ -203,6 +203,7 @@ class EventsController extends Controller {
 
 		$roster = $this->rosterService->buildRoster(eventId: $id);
 		$roster['isGm'] = $this->callerAccess->isGameMasterOrAdmin(uid: $user->getUID());
+		$roster['canCheckIn'] = $this->callerAccess->mayCheckIn(uid: $user->getUID());
 
 		return new JSONResponse(data: $roster);
 	}//end roster()
@@ -229,8 +230,9 @@ class EventsController extends Controller {
 	 */
 	#[NoAdminRequired]
 	public function recordAttendance(string $id): JSONResponse {
-		// GM-only: recording attendance is a game-master act at the door.
-		[$actingUid, $denied] = $this->callerAccess->resolveGameMaster();
+		// Game masters, admins and stewards record attendance at the door
+		// (admin-staff-roles-and-invites REQ-ASR-003); the run sheet stays game master only.
+		[$actingUid, $denied] = $this->callerAccess->resolveCheckIn();
 		if ($denied !== null) {
 			return $denied;
 		}

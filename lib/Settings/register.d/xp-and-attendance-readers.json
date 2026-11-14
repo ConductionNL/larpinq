@@ -11,7 +11,8 @@
       "attendance": {
         "authorization": {
           "read": [
-            "gamemasters"
+            "gamemasters",
+            "larpinq-stewards"
           ]
         }
       }

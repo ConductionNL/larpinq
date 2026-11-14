@@ -163,8 +163,10 @@ class RegisterFragmentMergeTest extends TestCase {
 			actual: $attendance['properties']['status']['enum']
 		);
 
-		// GM-group write RBAC is delegated to OpenRegister on the schema.
-		$this->assertSame(expected: ['gamemasters'], actual: $attendance['authorization']['create']);
+		// Write RBAC is delegated to OpenRegister on the schema: game masters,
+		// and stewards at the gate (admin-staff-roles-and-invites D3).
+		$this->assertSame(expected: ['gamemasters', 'larpinq-stewards'], actual: $attendance['authorization']['create']);
+		$this->assertSame(expected: ['gamemasters'], actual: $attendance['authorization']['delete']);
 
 		// A representative existing schema keeps all its properties.
 		$this->assertArrayHasKey(
