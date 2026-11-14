@@ -772,7 +772,13 @@
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Minu tegelaskaart",
-        "Open sheet": "Ava kaart"
+        "Open sheet": "Ava kaart",
+        "Check out": "Registreeri lahkumine",
+        "Checked out": "Lahkunud",
+        "Checked out {day} {time}": "Lahkunud {day} {time}",
+        "On site now: {count}": "Praegu kohal: {count}",
+        "Checked Out At": "Lahkumine registreeritud",
+        "Checked Out By": "Lahkumise registreerija"
     },
     "plurals": {}
 }

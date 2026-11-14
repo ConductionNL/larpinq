@@ -209,15 +209,17 @@ class EventRosterService {
 			'status' => (string)($record['status'] ?? 'registered'),
 			'checkedInAt' => (string)($record['checkedInAt'] ?? ''),
 			'checkedInBy' => (string)($record['checkedInBy'] ?? ''),
+			'checkedOutAt' => (string)($record['checkedOutAt'] ?? ''),
+			'checkedOutBy' => (string)($record['checkedOutBy'] ?? ''),
 		];
 	}//end buildRosterEntry()
 
 	/**
 	 * Persist an attendance record for a participant.
 	 *
-	 * Provenance is server-stamped here — `checkedInAt` comes from the server
-	 * clock and `checkedInBy` from the caller-supplied acting uid, never from a
-	 * request body. An existing record for the same (event, character) pair is
+	 * Provenance is server-stamped here — `checkedInAt` / `checkedOutAt` come
+	 * from the server clock and `checkedInBy` / `checkedOutBy` from the
+	 * caller-supplied acting uid, never from a request body. An existing record for the same (event, character) pair is
 	 * updated in place rather than duplicated.
 	 *
 	 * @param string $eventId The event UUID.
@@ -236,31 +238,49 @@ class EventRosterService {
 		string $status,
 		string $actingUid,
 	): ?array {
-		// Server-stamped provenance — any client-supplied checkedInAt/checkedInBy
-		// is discarded by the caller (never read) and re-derived here.
-		$payload = [
-			'event' => $eventId,
-			'character' => $characterId,
-			'status' => $status,
-			'checkedInAt' => (new DateTimeImmutable())->format(DateTimeInterface::ATOM),
-			'checkedInBy' => $actingUid,
-		];
-
 		try {
 			[$existing, $available] = $this->loadAttendance(eventId: $eventId);
 			if ($available === false) {
 				return null;
 			}
 
+			$prior = $existing[$characterId] ?? [];
+
 			return $this->objectFetcher->saveObject(
 				objectType: 'attendance',
-				data: $payload,
+				data: (new AttendanceTransition())->payload(
+					ids: ['event' => $eventId, 'character' => $characterId],
+					status: $status,
+					stamp: ['uid' => $actingUid, 'at' => (new DateTimeImmutable())->format(DateTimeInterface::ATOM)],
+					prior: $prior
+				),
 				uuid: $this->existingRecordId(existing: $existing, characterId: $characterId)
 			);
 		} catch (\Exception $exception) {
 			return null;
 		}
 	}//end recordAttendance()
+
+	/**
+	 * Whether a status may be recorded over a participant's current one; see
+	 * (new AttendanceTransition())->allows().
+	 *
+	 * When attendance storage is unavailable this answers true, so the write
+	 * reaches recordAttendance() and degrades there.
+	 *
+	 * @param string $eventId The event UUID.
+	 * @param string $characterId The character UUID.
+	 * @param string $status The status asked for (already validated).
+	 *
+	 * @return bool Whether the change is allowed.
+	 *
+	 * @spec openspec/changes/events-check-out-and-on-site-count/specs/event-checkin-roster/spec.md#requirement-a-game-master-checks-a-participant-out-req-eco-001
+	 */
+	public function allowsStatusChange(string $eventId, string $characterId, string $status): bool {
+		[$existing, $available] = $this->loadAttendance(eventId: $eventId);
+
+		return $available === false || (new AttendanceTransition())->allows(prior: ($existing[$characterId] ?? []), status: $status);
+	}//end allowsStatusChange()
 
 	/**
 	 * Whether a character is a confirmed participant of an event.

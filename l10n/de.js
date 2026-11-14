@@ -777,7 +777,13 @@ OC.L10N.register(
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Mein Charakterbogen",
-        "Open sheet": "Bogen öffnen"
+        "Open sheet": "Bogen öffnen",
+        "Check out": "Auschecken",
+        "Checked out": "Ausgecheckt",
+        "Checked out {day} {time}": "Ausgecheckt {day} {time}",
+        "On site now: {count}": "Jetzt vor Ort: {count}",
+        "Checked Out At": "Ausgecheckt am",
+        "Checked Out By": "Ausgecheckt von"
     },
     "nplurals=2; plural=(n != 1);"
 )

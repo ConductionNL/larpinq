@@ -61,6 +61,7 @@ class EventsController extends Controller {
 		'registered',
 		'checked-in',
 		'no-show',
+		'checked-out',
 	];
 
 	/**
@@ -235,8 +236,8 @@ class EventsController extends Controller {
 			return $denied;
 		}
 
-		// Only the character and status are read from the body; any
-		// client-supplied checkedInAt/checkedInBy is discarded (never read).
+		// Only the character and status are read from the body; any client-supplied
+		// checkedInAt/checkedInBy/checkedOutAt/checkedOutBy is discarded (never read).
 		[$characterId, $status] = $this->attendanceRequest();
 		$refused = $this->attendanceRefusal(id: $id, request: [$characterId, $status]);
 		if ($refused !== null) {
@@ -286,6 +287,10 @@ class EventsController extends Controller {
 
 		if ($this->rosterService->isParticipant(eventId: $id, characterId: $characterId, event: $event) === false) {
 			return new JSONResponse(data: ['error' => 'Character is not a confirmed participant of this event'], statusCode: 422);
+		}
+
+		if ($this->rosterService->allowsStatusChange(eventId: $id, characterId: $characterId, status: $status) === false) {
+			return new JSONResponse(data: ['error' => 'Invalid status change: only a checked-in participant can be checked out'], statusCode: 422);
 		}
 
 		return null;
