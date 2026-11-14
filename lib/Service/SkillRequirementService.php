@@ -99,10 +99,7 @@ class SkillRequirementService {
 		$budget = $this->evaluateBudget(stats: $context['stats']);
 		// One block per pool: XP, then each skill list's own ability (REQ-RRS-002).
 		$budgets = SkillListPools::budgets(
-			stats: $context['stats'],
-			budget: $budget,
-			skills: $context['skills'],
-			allSkills: $context['allSkills'],
+			context: ['budget' => $budget] + $context,
 			lists: fn (): array => $this->fetchIndexed(objectType: 'skillList')
 		);
 		$dependents = $this->analyseRemovals(removed: array_values(array_diff($oldSkills, $skills)), context: $context);

@@ -32,18 +32,17 @@ final class SkillListPools {
 	 * order the skills name them. A skill without a list, a list that is not
 	 * known and a list without a cost ability add nothing: they pay from XP.
 	 *
-	 * @param list<string>                        $skills    The character's skill ids.
-	 * @param array<string, array<string, mixed>> $allSkills Every skill, by id.
-	 * @param array<string, array<string, mixed>> $allLists  Every skill list, by id.
+	 * @param array{skills: list<string>, allSkills: array<string, array<string, mixed>>} $context  The character's skill ids and every skill, by id.
+	 * @param array<string, array<string, mixed>>                                        $allLists Every skill list, by id.
 	 *
 	 * @return list<string>
 	 *
 	 * @spec openspec/changes/rules-rulebook-and-spell-lists/specs/rulebook/spec.md#requirement-each-list-draws-on-its-own-pool-req-rrs-002
 	 */
-	public static function costAbilities(array $skills, array $allSkills, array $allLists): array {
+	public static function costAbilities(array $context, array $allLists): array {
 		$abilities = [];
-		foreach ($skills as $skillId) {
-			$listId = (string)($allSkills[$skillId]['list'] ?? '');
+		foreach ($context['skills'] as $skillId) {
+			$listId = (string)($context['allSkills'][$skillId]['list'] ?? '');
 			$ability = (string)($allLists[$listId]['costAbility'] ?? '');
 			if ($ability !== '') {
 				$abilities[$ability] = true;
@@ -57,25 +56,23 @@ final class SkillListPools {
 	 * One budget block per pool: the XP block first, then each list's cost
 	 * ability other than XP. The lists are read only when a skill is in one.
 	 *
-	 * @param array<string, mixed>                                        $stats     The computed stats, by ability id.
-	 * @param array{ability: string, value: int, shortfall: int, ok: bool} $budget    The XP block.
-	 * @param list<string>                                                $skills    The character's skill ids.
-	 * @param array<string, array<string, mixed>>                         $allSkills Every skill, by id.
-	 * @param callable(): array<string, array<string, mixed>>             $lists     Reads every skill list, by id.
+	 * @param array<string, mixed>                            $context The stats by ability id, the XP block (budget), skills and allSkills.
+	 * @param callable(): array<string, array<string, mixed>> $lists   Reads every skill list, by id.
 	 *
 	 * @return list<array{ability: string, value: int, shortfall: int, ok: bool}>
 	 *
 	 * @spec openspec/changes/rules-rulebook-and-spell-lists/specs/rulebook/spec.md#requirement-each-list-draws-on-its-own-pool-req-rrs-002
 	 */
-	public static function budgets(array $stats, array $budget, array $skills, array $allSkills, callable $lists): array {
+	public static function budgets(array $context, callable $lists): array {
+		$budget = $context['budget'];
 		$budgets = [$budget];
-		if (self::anyListed(skills: $skills, allSkills: $allSkills) === false) {
+		if (self::anyListed(context: $context) === false) {
 			return $budgets;
 		}
 
-		$abilities = self::costAbilities(skills: $skills, allSkills: $allSkills, allLists: $lists());
+		$abilities = self::costAbilities(context: $context, allLists: $lists());
 		foreach (array_diff($abilities, [$budget['ability']]) as $ability) {
-			$value = (int)($stats[$ability]['value'] ?? 0);
+			$value = (int)($context['stats'][$ability]['value'] ?? 0);
 			$budgets[] = ['ability' => $ability, 'value' => $value, 'shortfall' => max(0, -$value), 'ok' => ($value >= 0)];
 		}
 
@@ -110,16 +107,15 @@ final class SkillListPools {
 	/**
 	 * Whether any of these skills belongs to a list.
 	 *
-	 * @param list<string>                        $skills    The character's skill ids.
-	 * @param array<string, array<string, mixed>> $allSkills Every skill, by id.
+	 * @param array{skills: list<string>, allSkills: array<string, array<string, mixed>>} $context The character's skill ids and every skill, by id.
 	 *
 	 * @return boolean
 	 *
 	 * @spec openspec/changes/rules-rulebook-and-spell-lists/specs/rulebook/spec.md#requirement-each-list-draws-on-its-own-pool-req-rrs-002
 	 */
-	public static function anyListed(array $skills, array $allSkills): bool {
-		foreach ($skills as $skillId) {
-			if ((string)($allSkills[$skillId]['list'] ?? '') !== '') {
+	public static function anyListed(array $context): bool {
+		foreach ($context['skills'] as $skillId) {
+			if ((string)($context['allSkills'][$skillId]['list'] ?? '') !== '') {
 				return true;
 			}
 		}
