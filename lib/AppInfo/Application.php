@@ -29,6 +29,9 @@ namespace OCA\Larpinq\AppInfo;
 use OCA\Larpinq\Listener\CharacterRequirementListener;
 use OCA\Larpinq\Listener\DeepLinkRegistrationListener;
 use OCA\Larpinq\Middleware\ApiContractMiddleware;
+use OCA\Larpinq\Notification\Notifier;
+use OCA\Larpinq\Service\FeedbackAnswers;
+use OCA\Larpinq\Service\UnknownFeedbackAnswers;
 use OCA\Larpinq\Support\AppIdentity;
 use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
@@ -119,6 +122,12 @@ class Application extends App implements IBootstrap {
 		OpenRegisterAutoloader::register();
 
 		$this->registerAppHostGenerics(context: $context);
+
+		// Post-event feedback (events-post-event-survey): the notifier renders the
+		// invitation and reminder; who answered is not known per user until a
+		// Forms reader replaces the count-only fallback (design D3).
+		$context->registerNotifierService(Notifier::class);
+		$context->registerServiceAlias(FeedbackAnswers::class, UnknownFeedbackAnswers::class);
 
 		// API-Version header and problem details on the JSON API (spec api-contract).
 		$context->registerMiddleware(ApiContractMiddleware::class);

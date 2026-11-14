@@ -772,7 +772,15 @@
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Mäi Personnageblat",
-        "Open sheet": "Blat opmaachen"
+        "Open sheet": "Blat opmaachen",
+        "Feedback form": "Feedbackformulaire",
+        "Feedback opens": "Feedback geet op",
+        "Feedback closes": "Feedback geet zou",
+        "Feedback invitation sent": "Feedback-Invitatioun geschéckt",
+        "Feedback reminder sent": "Feedback-Erënnerung geschéckt",
+        "The Nextcloud Forms form participants fill in after the event": "De Nextcloud-Forms-Formulaire, deen d'Participanten nom Event ausfëllen",
+        "When participants are asked for feedback; the end of the event when empty": "Wéini d'Participanten ëm Feedback gefrot ginn; eidel heescht d'Enn vum Event",
+        "When feedback closes; 21 days after it opens when empty": "Wéini de Feedback zougeet; eidel heescht 21 Deeg nom Opgoen"
     },
     "plurals": {}
 }

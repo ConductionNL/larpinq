@@ -772,7 +772,15 @@
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Mia fegl da persunagi",
-        "Open sheet": "Avrir il fegl"
+        "Open sheet": "Avrir il fegl",
+        "Feedback form": "Formular da resun",
+        "Feedback opens": "Il resun s'avra",
+        "Feedback closes": "Il resun sa serra",
+        "Feedback invitation sent": "Invitaziun per il resun tramessa",
+        "Feedback reminder sent": "Promemoria per il resun tramess",
+        "The Nextcloud Forms form participants fill in after the event": "Il formular da Nextcloud Forms che las participantas ed ils participants emplenischan suenter l'occurrenza",
+        "When participants are asked for feedback; the end of the event when empty": "Cura ch'ins dumonda las participantas ed ils participants per in resun; la fin da l'occurrenza sch'el è vid",
+        "When feedback closes; 21 days after it opens when empty": "Cura ch'il resun sa serra; 21 dis suenter l'avertura sch'el è vid"
     },
     "plurals": {}
 }

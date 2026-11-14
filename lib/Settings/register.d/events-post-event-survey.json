@@ -1,0 +1,44 @@
+{
+  "$comment": "events-post-event-survey (REQ-EPS-001): the event's feedback form and its window, and per attendance when the participant was invited and reminded (both server-stamped; a value from the client is ignored). The form, its questions and its answers stay in Nextcloud Forms.",
+  "components": {
+    "schemas": {
+      "event": {
+        "slug": "larping_event",
+        "properties": {
+          "feedbackForm": {
+            "type": "integer",
+            "title": "Feedback form",
+            "description": "The Nextcloud Forms form participants fill in after the event"
+          },
+          "feedbackOpensAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Feedback opens",
+            "description": "When participants are asked for feedback; the end of the event when empty"
+          },
+          "feedbackClosesAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Feedback closes",
+            "description": "When feedback closes; 21 days after it opens when empty"
+          }
+        }
+      },
+      "attendance": {
+        "slug": "larping_attendance",
+        "properties": {
+          "feedbackInvitedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Feedback invitation sent"
+          },
+          "feedbackRemindedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Feedback reminder sent"
+          }
+        }
+      }
+    }
+  }
+}

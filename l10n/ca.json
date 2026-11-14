@@ -772,7 +772,15 @@
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "La meva fitxa de personatge",
-        "Open sheet": "Obre la fitxa"
+        "Open sheet": "Obre la fitxa",
+        "Feedback form": "Formulari de valoració",
+        "Feedback opens": "La valoració s'obre",
+        "Feedback closes": "La valoració es tanca",
+        "Feedback invitation sent": "Invitació de valoració enviada",
+        "Feedback reminder sent": "Recordatori de valoració enviat",
+        "The Nextcloud Forms form participants fill in after the event": "El formulari de Nextcloud Forms que els participants omplen després de l'esdeveniment",
+        "When participants are asked for feedback; the end of the event when empty": "Quan es demana la valoració als participants; el final de l'esdeveniment si és buit",
+        "When feedback closes; 21 days after it opens when empty": "Quan es tanca la valoració; 21 dies després d'obrir-se si és buit"
     },
     "plurals": {}
 }

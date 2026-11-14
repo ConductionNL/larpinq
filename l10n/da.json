@@ -772,7 +772,15 @@
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Mit karakterark",
-        "Open sheet": "Åbn ark"
+        "Open sheet": "Åbn ark",
+        "Feedback form": "Feedbackformular",
+        "Feedback opens": "Feedback åbner",
+        "Feedback closes": "Feedback lukker",
+        "Feedback invitation sent": "Feedbackinvitation sendt",
+        "Feedback reminder sent": "Feedbackpåmindelse sendt",
+        "The Nextcloud Forms form participants fill in after the event": "Den Nextcloud Forms-formular, deltagerne udfylder efter arrangementet",
+        "When participants are asked for feedback; the end of the event when empty": "Hvornår deltagerne bliver bedt om feedback; arrangementets slutning, hvis tom",
+        "When feedback closes; 21 days after it opens when empty": "Hvornår feedback lukker; 21 dage efter åbning, hvis tom"
     },
     "plurals": {}
 }

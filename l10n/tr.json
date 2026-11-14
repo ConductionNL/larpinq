@@ -772,7 +772,15 @@
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Karakter sayfam",
-        "Open sheet": "Sayfayı aç"
+        "Open sheet": "Sayfayı aç",
+        "Feedback form": "Geri bildirim formu",
+        "Feedback opens": "Geri bildirim açılır",
+        "Feedback closes": "Geri bildirim kapanır",
+        "Feedback invitation sent": "Geri bildirim daveti gönderildi",
+        "Feedback reminder sent": "Geri bildirim hatırlatması gönderildi",
+        "The Nextcloud Forms form participants fill in after the event": "Katılımcıların etkinlikten sonra doldurduğu Nextcloud Forms formu",
+        "When participants are asked for feedback; the end of the event when empty": "Katılımcılardan ne zaman geri bildirim isteneceği; boşsa etkinliğin sonu",
+        "When feedback closes; 21 days after it opens when empty": "Geri bildirimin ne zaman kapanacağı; boşsa açıldıktan 21 gün sonra"
     },
     "plurals": {}
 }
