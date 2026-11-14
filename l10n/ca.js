@@ -269,7 +269,7 @@ OC.L10N.register(
         "Who is playing what, and what is still waiting for approval.": "Qui juga a què, i què encara espera aprovació.",
         "Experience awarded, and who earned it.": "L'experiència concedida i qui l'ha guanyada.",
         "How much the world holds, and what characters actually carry.": "Quant conté el món, i què porten realment els personatges.",
-        "Store": "Botiga",
+        "Marketplace": "Botiga",
         "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Instal·leu registres, esquemes i fluxos publicats per altres organitzacions.",
         "%1$s is already held by %2$s. Remove it there first.": "%1$s ja el té %2$s. Traieu-lo primer d'allà.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s ja és sobre %2$s. Traieu-lo primer d'allà.",

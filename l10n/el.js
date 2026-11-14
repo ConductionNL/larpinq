@@ -269,7 +269,7 @@ OC.L10N.register(
         "Who is playing what, and what is still waiting for approval.": "Ποιος παίζει τι, και τι περιμένει ακόμη έγκριση.",
         "Experience awarded, and who earned it.": "Η απονεμημένη εμπειρία και ποιος την κέρδισε.",
         "How much the world holds, and what characters actually carry.": "Πόσα περιέχει ο κόσμος και τι κουβαλούν πραγματικά οι χαρακτήρες.",
-        "Store": "Κατάστημα",
+        "Marketplace": "Κατάστημα",
         "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Εγκαταστήστε μητρώα, σχήματα και ροές που έχουν δημοσιεύσει άλλοι οργανισμοί.",
         "%1$s is already held by %2$s. Remove it there first.": "Το %1$s το έχει ήδη ο/η %2$s. Αφαιρέστε το πρώτα από εκεί.",
         "%1$s is already on %2$s. Remove it there first.": "Το %1$s βρίσκεται ήδη στον/στην %2$s. Αφαιρέστε το πρώτα από εκεί.",

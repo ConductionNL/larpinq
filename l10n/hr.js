@@ -269,7 +269,7 @@ OC.L10N.register(
         "Who is playing what, and what is still waiting for approval.": "Tko što igra i što još čeka odobrenje.",
         "Experience awarded, and who earned it.": "Dodijeljeno iskustvo i tko ga je zaradio.",
         "How much the world holds, and what characters actually carry.": "Koliko svijet sadrži i što likovi zaista nose.",
-        "Store": "Trgovina",
+        "Marketplace": "Trgovina",
         "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Instalirajte registre, sheme i tokove koje su objavile druge organizacije.",
         "%1$s is already held by %2$s. Remove it there first.": "%1$s već ima %2$s. Najprije ga uklonite odande.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s je već na %2$s. Najprije ga uklonite odande.",

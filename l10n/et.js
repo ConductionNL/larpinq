@@ -269,7 +269,7 @@ OC.L10N.register(
         "Who is playing what, and what is still waiting for approval.": "Kes mida mängib ja mis ootab veel kinnitust.",
         "Experience awarded, and who earned it.": "Antud kogemus ja kes selle teenis.",
         "How much the world holds, and what characters actually carry.": "Kui palju maailm sisaldab ja mida tegelased tegelikult kannavad.",
-        "Store": "Pood",
+        "Marketplace": "Pood",
         "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Paigalda registrid, skeemid ja voog, mille teised organisatsioonid on avaldanud.",
         "%1$s is already held by %2$s. Remove it there first.": "%1$s on juba tegelasel %2$s. Eemalda see sealt kõigepealt.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s on juba tegelasel %2$s. Eemalda see sealt kõigepealt.",

@@ -269,7 +269,7 @@ OC.L10N.register(
         "Who is playing what, and what is still waiting for approval.": "Wer was spielt und was noch auf Freigabe wartet.",
         "Experience awarded, and who earned it.": "Vergebene Erfahrung und wer sie verdient hat.",
         "How much the world holds, and what characters actually carry.": "Wie viel die Welt umfasst und was Charaktere wirklich tragen.",
-        "Store": "Store",
+        "Marketplace": "Store",
         "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Installieren Sie Register, Schemata und Flows, die andere Organisationen veröffentlicht haben.",
         "%1$s is already held by %2$s. Remove it there first.": "%1$s gehört bereits %2$s. Entfernen Sie es dort zuerst.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s liegt bereits auf %2$s. Entfernen Sie es dort zuerst.",

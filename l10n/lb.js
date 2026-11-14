@@ -269,7 +269,7 @@ OC.L10N.register(
         "Who is playing what, and what is still waiting for approval.": "Wien wat spillt a wat nach op Zoustëmmung waart.",
         "Experience awarded, and who earned it.": "Vergiff Erfarung a wien se verdéngt huet.",
         "How much the world holds, and what characters actually carry.": "Wéi vill d'Welt hält a wat Charakteren wierklech droen.",
-        "Store": "Buttek",
+        "Marketplace": "Buttek",
         "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Installéiert Registeren, Schemaen a Flows déi aner Organisatiounen publizéiert hunn.",
         "%1$s is already held by %2$s. Remove it there first.": "%1$s gehéiert schonn %2$s. Huel et do fir d'éischt ewech.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s läit schonn op %2$s. Huel et do fir d'éischt ewech.",

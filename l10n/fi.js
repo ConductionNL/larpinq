@@ -269,7 +269,7 @@ OC.L10N.register(
         "Who is playing what, and what is still waiting for approval.": "Kuka pelaa mitäkin ja mikä odottaa vielä hyväksyntää.",
         "Experience awarded, and who earned it.": "Myönnetty kokemus ja kuka sen ansaitsi.",
         "How much the world holds, and what characters actually carry.": "Kuinka paljon maailma sisältää ja mitä hahmot todella kantavat.",
-        "Store": "Kauppa",
+        "Marketplace": "Kauppa",
         "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Asenna muiden organisaatioiden julkaisemia rekistereitä, skeemoja ja vuokaavioita.",
         "%1$s is already held by %2$s. Remove it there first.": "%1$s on jo hahmolla %2$s. Poista se sieltä ensin.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s on jo hahmolla %2$s. Poista se sieltä ensin.",
