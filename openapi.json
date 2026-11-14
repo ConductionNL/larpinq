@@ -84,6 +84,10 @@
             "description": "The first-time setup wizard"
         },
         {
+            "name": "staff-invites",
+            "description": "Staff invite links and the Staff page."
+        },
+        {
             "name": "store",
             "description": "Declarative store search and install for AppHost-adopting apps."
         },
@@ -1797,6 +1801,319 @@
                         "$ref": "#/components/responses/Problem401"
                     }
                 }
+            }
+        },
+        "/staff-invites": {
+            "post": {
+                "operationId": "staff-invites-create",
+                "summary": "Create an invite link for one staff role",
+                "description": "Create an invite link for one role, valid `days` days (default 7) for `maxUses` people (default 1). The plain token and the link are in this answer only. Game masters only.",
+                "tags": [
+                    "staff-invites"
+                ],
+                "responses": {
+                    "201": {
+                        "description": "`{invite, token, link}`, or 400, 401, 403.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/Problem400"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem401"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Problem403"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Problem500"
+                    }
+                },
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "role": {
+                                        "type": "string"
+                                    },
+                                    "days": {
+                                        "type": "integer"
+                                    },
+                                    "maxUses": {
+                                        "type": "integer"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/staff-invites/inspect": {
+            "post": {
+                "operationId": "staff-invites-inspect",
+                "summary": "The role and state of the invite a token opens",
+                "description": "The role and state (valid, expired, used-up, revoked) of the invite a token opens, for the landing page. Signed-in users; rate limited.",
+                "tags": [
+                    "staff-invites"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "`{role, state}`, or 401, 404.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem401"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Problem404"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Problem500"
+                    }
+                },
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "token": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/staff-invites/redeem": {
+            "post": {
+                "operationId": "staff-invites-redeem",
+                "summary": "Join the role of the invite a token opens",
+                "description": "Join the role of a valid invite and the app's user group; the use is recorded. An expired, used-up or revoked invite answers 410 and adds nobody. Signed-in users; rate limited.",
+                "tags": [
+                    "staff-invites"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "`{role, joined}`, or 401, 404, 410.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem401"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Problem404"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Problem500"
+                    },
+                    "410": {
+                        "description": "The invite is expired, used up or revoked; `{error, state}`."
+                    }
+                },
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "token": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/staff-invites/{id}/revoke": {
+            "post": {
+                "operationId": "staff-invites-revoke",
+                "summary": "Revoke an invite",
+                "description": "Revoke an invite: from now on it adds nobody. Game masters only.",
+                "tags": [
+                    "staff-invites"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The revoked invite, or 401, 403, 404.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem401"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Problem403"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Problem404"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "The invite id.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "/staff": {
+            "get": {
+                "operationId": "staff-invites-team",
+                "summary": "The members of each role and every invite",
+                "description": "The members of the game master group and each staff role, and every invite with its state. Game masters only.",
+                "tags": [
+                    "staff-invites"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "`{roles, invites}`, or 401, 403.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem401"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Problem403"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Problem500"
+                    }
+                }
+            }
+        },
+        "/staff/{role}/members/{uid}": {
+            "delete": {
+                "operationId": "staff-invites-remove-member",
+                "summary": "Remove a member from a role",
+                "description": "Remove a member from a role. A game master cannot remove themself from the game masters. Game masters only.",
+                "tags": [
+                    "staff-invites"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "`{removed, role, uid}`, or 400, 401, 403, 404.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/Problem400"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem401"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Problem403"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Problem404"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "role",
+                        "in": "path",
+                        "required": true,
+                        "description": "The role group.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "uid",
+                        "in": "path",
+                        "required": true,
+                        "description": "The member's user id.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
             }
         }
     },

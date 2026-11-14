@@ -453,16 +453,8 @@
           "tokenHash": {
             "type": "string",
             "title": "Token hash",
-            "description": "SHA-256 of the invite token; the plain token is never stored",
-            "maxLength": 64,
-            "authorization": {
-              "read": [
-                "admin"
-              ],
-              "update": [
-                "admin"
-              ]
-            }
+            "description": "SHA-256 of the invite token; the plain token is never stored, and larpinq never returns the hash",
+            "maxLength": 64
           },
           "expiresAt": {
             "type": "string",

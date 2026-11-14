@@ -117,6 +117,9 @@ class SettingsService {
 		'accesscode_schema',
 		'accesscode_register',
 		'accesscode_source',
+		'staffinvite_schema',
+		'staffinvite_register',
+		'staffinvite_source',
 	];
 
 	/**

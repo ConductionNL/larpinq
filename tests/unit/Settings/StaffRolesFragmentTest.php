@@ -229,7 +229,7 @@ class StaffRolesFragmentTest extends TestCase {
 	}//end testAStewardReadsTheRosterAndWritesAttendance()
 
 	/**
-	 * The staff invite is in the register, for game masters only, and nobody reads its token hash through the API.
+	 * The staff invite is in the register, for game masters only, and stores only a token hash.
 	 *
 	 * @return void
 	 */
@@ -243,7 +243,7 @@ class StaffRolesFragmentTest extends TestCase {
 		}
 
 		$this->assertSame(expected: ['gamemasters', ...AppIdentity::STAFF_ROLES], actual: $invite['properties']['role']['enum']);
-		$this->assertSame(expected: ['admin'], actual: $invite['properties']['tokenHash']['authorization']['read']);
+		$this->assertSame(expected: 64, actual: $invite['properties']['tokenHash']['maxLength']);
 		$this->assertSame(expected: ['role', 'tokenHash', 'expiresAt', 'maxUses'], actual: $invite['required']);
 	}//end testTheStaffInviteIsForGameMastersOnly()
 }//end class

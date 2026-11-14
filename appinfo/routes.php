@@ -58,6 +58,13 @@ $extra = [
 	['name' => 'worlds#access', 'url' => '/api/worlds/copy-access', 'verb' => 'GET'],
 	['name' => 'worlds#preview', 'url' => '/api/worlds/{id}/copy', 'verb' => 'GET'],
 	['name' => 'worlds#copy', 'url' => '/api/worlds/{id}/copy', 'verb' => 'POST'],
+	// Staff invites and the Staff page (admin-staff-roles-and-invites).
+	['name' => 'staffInvites#create', 'url' => '/api/staff-invites', 'verb' => 'POST'],
+	['name' => 'staffInvites#inspect', 'url' => '/api/staff-invites/inspect', 'verb' => 'POST'],
+	['name' => 'staffInvites#redeem', 'url' => '/api/staff-invites/redeem', 'verb' => 'POST'],
+	['name' => 'staffInvites#revoke', 'url' => '/api/staff-invites/{id}/revoke', 'verb' => 'POST'],
+	['name' => 'staffInvites#team', 'url' => '/api/staff', 'verb' => 'GET'],
+	['name' => 'staffInvites#removeMember', 'url' => '/api/staff/{role}/members/{uid}', 'verb' => 'DELETE'],
 	// The OpenAPI document, public (spec api-contract).
 	['name' => 'openApi#show', 'url' => '/api/openapi.json', 'verb' => 'GET'],
 	['name' => 'settings#index', 'url' => 'api/settings', 'verb' => 'GET'],

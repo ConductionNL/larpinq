@@ -13,7 +13,8 @@
 
 ## 2. Invites
 
-- [ ] 2.1 Fragment `staffInvite`; `StaffInvitesController` create and redeem with hashing, expiry, uses, revocation and rate limit (REQ-ASR-004, REQ-ASR-005). Verify: PHPUnit per refusal; route-auth and public-endpoint-throttling gates pass.
+- [x] 2.1 Fragment `staffInvite`; `StaffInvitesController` create and redeem with hashing, expiry, uses, revocation and rate limit (REQ-ASR-004, REQ-ASR-005). Verify: PHPUnit per refusal; route-auth and public-endpoint-throttling gates pass.
+  > `staffInvite` (slug `larping_staff_invite`, game masters only) in `admin-staff-roles-and-invites.json`. `StaffInviteService` stores a SHA-256 hash of a 128-bit token, checks revoked, expired and used up in that order, adds the user to the role and `larpers` through `IGroupManager`, records the use, and takes no use from a member already in the role. `StaffInvitesController`: create, revoke, team and remove are game master only; inspect and redeem need a signed-in user and are rate limited per user (20 and 10 per 5 minutes). openapi.json documents the six routes. Tests: `StaffInviteServiceTest` (15), `StaffInvitesControllerTest` (12). The design's demo invite is not seeded: a token in the repository would be a working link on every demo install.
 - [ ] 2.2 The landing page `/staff-invite/{token}` with role and confirm (REQ-ASR-004). Verify: Playwright `tests/e2e/staff-invite.spec.ts`: a game master creates a steward invite, another user redeems it and can check someone in.
 
 ## 3. Staff page
