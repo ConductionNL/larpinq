@@ -145,6 +145,36 @@ class InMemoryOpenRegister {
 	 *
 	 * @return object The mapper.
 	 */
+	/**
+	 * One object by id in a schema, as OpenRegister's ObjectService::find() answers it; null when absent.
+	 *
+	 * @param string          $id            The uuid.
+	 * @param array|null      $_extend       Unused.
+	 * @param bool            $files         Unused.
+	 * @param string|int|null $register      Unused.
+	 * @param string|int|null $schema        The schema id.
+	 * @param bool            $_rbac         Recorded in $finds.
+	 * @param bool            $_multitenancy Recorded in $finds.
+	 *
+	 * @return InMemoryObjectEntity|null
+	 */
+	public function find(string $id, ?array $_extend = [], bool $files = false, $register = null, $schema = null, bool $_rbac = true, bool $_multitenancy = true): ?InMemoryObjectEntity {
+		$this->finds[] = ['schema' => (string)$schema, 'id' => $id, 'rbac' => $_rbac, 'multitenancy' => $_multitenancy];
+		$data = ($this->objects[(string)$schema][$id] ?? null);
+		if ($data === null) {
+			return null;
+		}
+
+		return new InMemoryObjectEntity(schema: (string)$schema, data: $data, uuid: $id);
+	}
+
+	/**
+	 * Every find() asked for.
+	 *
+	 * @var array<int, array{schema: string, id: string, rbac: bool, multitenancy: bool}>
+	 */
+	public array $finds = [];
+
 	public function getMapper($register, $schema): object {
 		$store = $this;
 		return new class($store, (string)$schema) {

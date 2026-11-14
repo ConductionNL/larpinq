@@ -106,6 +106,7 @@ class RegistrationService {
 	 * @param LoggerInterface $logger The logger.
 	 * @param int $lockAttempts How often a busy lock is tried before giving up.
 	 * @param int $lockWaitMicros Pause between two tries, in microseconds.
+	 * @param EventCareRecords|null $care Copies the player's care details for the event on acceptance (players-care-details-and-erasure).
 	 *
 	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
 	 */
@@ -115,6 +116,7 @@ class RegistrationService {
 		private readonly LoggerInterface $logger,
 		private readonly int $lockAttempts = 30,
 		private readonly int $lockWaitMicros = 100000,
+		private readonly ?EventCareRecords $care = null,
 	) {
 		$this->places = new RegistrationPlaces(fetcher: $fetcher);
 	}//end __construct()
@@ -213,6 +215,12 @@ class RegistrationService {
 
 		if ($wasAccepted === true && (string)($new['status'] ?? '') !== self::ACCEPTED) {
 			$this->promoteNext(eventId: $eventId);
+		}
+
+		// An accepted registration carries a copy of the player's care details
+		// for the event (REQ-PCE-002). The copy never fails the registration.
+		if ($wasAccepted === false && (string)($new['status'] ?? '') === self::ACCEPTED) {
+			$this->care?->copyForRegistration(registration: $new);
 		}
 	}//end afterWrite()
 
