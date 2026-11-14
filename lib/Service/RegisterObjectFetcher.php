@@ -518,6 +518,31 @@ class RegisterObjectFetcher {
 	}//end getObject()
 
 	/**
+	 * The audit-trail rows of one object, oldest first as OpenRegister keeps them.
+	 *
+	 * Callers read the object itself first (getObject(), RBAC on as the calling
+	 * user), so only someone who may read the object reaches its history.
+	 *
+	 * @param string $id The object UUID.
+	 *
+	 * @return array<int, array<string, mixed>> The audit-trail rows as arrays.
+	 *
+	 * @throws Exception If OpenRegister is not available or the ID is not a valid UUID.
+	 *
+	 * @psalm-suppress MixedMethodCall OpenRegister is an optional cross-app dependency.
+	 *
+	 * @spec openspec/changes/characters-skill-refund/specs/character-management/spec.md#requirement-the-refund-shows-in-the-xp-history-req-csp-006
+	 */
+	public function getObjectLogs(string $id): array {
+		$idLower = strtolower($id);
+		if (preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/', $idLower) !== 1) {
+			throw new InvalidArgumentException('Invalid object ID: expected a UUID');
+		}
+
+		return $this->toArrays(objects: (array)$this->getOpenRegisterService()->getLogs(uuid: $idLower));
+	}//end getObjectLogs()
+
+	/**
 	 * Get a single object by type and ID, only when it belongs to that type's schema.
 	 *
 	 * OpenRegister's find() retries a UUID without the schema when the

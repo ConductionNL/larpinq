@@ -26,6 +26,26 @@
 				{{ t('larpinq', 'XP spent') }}: {{ sheet.xp.spent }} ·
 				{{ t('larpinq', 'XP left') }}: {{ sheet.xp.left }}
 			</p>
+			<section
+				v-if="historyLines.length > 0"
+				class="character-stat-sheet__history"
+				data-testid="character-stat-xp-history">
+				<h3 class="character-stat-sheet__history-title">
+					{{ t('larpinq', 'XP history') }}
+				</h3>
+				<ol class="character-stat-sheet__history-list">
+					<li
+						v-for="(line, index) in historyLines"
+						:key="`${line.skillId}-${line.date}-${index}`">
+						<span class="character-stat-sheet__change--positive">{{
+							refundText(line)
+						}}</span>
+						<span class="character-stat-sheet__history-meta">{{
+							historyMeta(line)
+						}}</span>
+					</li>
+				</ol>
+			</section>
 			<ul class="character-stat-sheet__list">
 				<li
 					v-for="ability in sheet.abilities"
@@ -76,7 +96,9 @@ import {
 	changeTone,
 	fetchCharacterStats,
 	formatChange,
+	formatHistoryDate,
 	hasModifiers,
+	xpHistory,
 } from '../services/characterStats.js'
 
 export default {
@@ -91,6 +113,19 @@ export default {
 			sheet: { abilities: [], xp: null },
 			open: '',
 		}
+	},
+
+	computed: {
+		/**
+		 * The XP history lines: the refunds of removed skills, newest first.
+		 *
+		 * @return {Array<object>} The lines.
+		 *
+		 * @spec openspec/changes/characters-skill-refund/specs/character-management/spec.md#requirement-the-refund-shows-in-the-xp-history-req-csp-006
+		 */
+		historyLines() {
+			return xpHistory(this.sheet)
+		},
 	},
 
 	/**
@@ -111,6 +146,34 @@ export default {
 
 	methods: {
 		t,
+
+		/**
+		 * One refund as the history reads it: "Kruidenkunde removed: 6 XP returned".
+		 *
+		 * @param {{skillName: string, xp: number}} line The refund line.
+		 * @return {string} The text.
+		 *
+		 * @spec openspec/changes/characters-skill-refund/specs/character-management/spec.md#requirement-the-refund-shows-in-the-xp-history-req-csp-006
+		 */
+		refundText(line) {
+			return t('larpinq', '{skill} removed: {xp} XP returned', {
+				skill: line.skillName || t('larpinq', 'Unknown skill'),
+				xp: Number(line.xp) || 0,
+			})
+		},
+
+		/**
+		 * When and by whom a refund happened: "14-11-2026 · Anna".
+		 *
+		 * @param {{date: string, user: string}} line The refund line.
+		 * @return {string} The text.
+		 *
+		 * @spec openspec/changes/characters-skill-refund/specs/character-management/spec.md#requirement-the-refund-shows-in-the-xp-history-req-csp-006
+		 */
+		historyMeta(line) {
+			return [formatHistoryDate(line.date), line.user].filter(Boolean).join(' · ')
+		},
+
 		changeTone,
 		formatChange,
 		hasModifiers,
@@ -170,6 +233,22 @@ export default {
 </script>
 
 <style scoped>
+.character-stat-sheet__history-title {
+	font-size: 1em;
+	margin: 8px 0 4px;
+}
+
+.character-stat-sheet__history-list {
+	margin: 0 0 8px;
+	padding-inline-start: 1.2em;
+}
+
+.character-stat-sheet__history-meta {
+	display: block;
+	color: var(--color-text-maxcontrast);
+	font-size: 0.9em;
+}
+
 .character-stat-sheet__list {
 	list-style: none;
 	padding: 0;

@@ -43,11 +43,13 @@ class CharacterStatSheet {
 	 * @param CharacterService $characterService The stat engine.
 	 * @param SkillRequirementService $requirementService The requirement and XP budget check.
 	 * @param CharacterStatsPresenter $presenter Shapes the sheet.
+	 * @param CharacterXpHistory|null $xpHistory The skill refunds of a character; without it the history is empty.
 	 */
 	public function __construct(
 		private readonly CharacterService $characterService,
 		private readonly SkillRequirementService $requirementService,
 		private readonly CharacterStatsPresenter $presenter,
+		private readonly ?CharacterXpHistory $xpHistory = null,
 	) {
 	}//end __construct()
 
@@ -76,6 +78,23 @@ class CharacterStatSheet {
 	public function present(array $stats): array {
 		return $this->presenter->present(stats: $stats, xpAbilityId: $this->requirementService->resolveXpAbility(stats: $stats));
 	}//end present()
+
+	/**
+	 * The XP history of a character: the skills removed from it and the XP each returned.
+	 *
+	 * @param array<string, mixed> $character The character, as read by the caller.
+	 *
+	 * @return array<int, array<string, mixed>> The history lines, newest first.
+	 *
+	 * @spec openspec/changes/characters-skill-refund/specs/character-management/spec.md#requirement-the-refund-shows-in-the-xp-history-req-csp-006
+	 */
+	public function xpHistory(array $character): array {
+		if ($this->xpHistory === null) {
+			return [];
+		}
+
+		return $this->xpHistory->refunds(character: $character);
+	}//end xpHistory()
 
 	/**
 	 * The requirement report of a changed character.

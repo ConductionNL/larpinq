@@ -777,7 +777,10 @@ OC.L10N.register(
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Mo bhileog charachtair",
-        "Open sheet": "Oscail an bhileog"
+        "Open sheet": "Oscail an bhileog",
+        "XP history": "Stair XP",
+        "{skill} removed: {xp} XP returned": "Baineadh {skill}: tugadh {xp} XP ar ais",
+        "Unknown skill": "Scil anaithnid"
     },
     "nplurals=2; plural=(n != 1);"
 )
