@@ -117,6 +117,9 @@ class SettingsService {
 		'accesscode_schema',
 		'accesscode_register',
 		'accesscode_source',
+		'eventmessage_schema',
+		'eventmessage_register',
+		'eventmessage_source',
 	];
 
 	/**

@@ -1829,6 +1829,14 @@
 						"label": "Award XP",
 						"icon": "StarPlusOutline",
 						"visibleWhen": { "endpoint": "/apps/larpinq/api/xp-awards/access", "field": "allowed", "op": "eq", "value": true }
+					},
+					{
+						"id": "email-participants",
+						"type": "open-modal",
+						"target": "EmailParticipantsDialog",
+						"label": "Email participants",
+						"icon": "EmailOutline",
+						"visibleWhen": { "endpoint": "/apps/larpinq/api/xp-awards/access", "field": "allowed", "op": "eq", "value": true }
 					}
 				],
 				"documentationUrl": "https://larpinq.conduction.nl",
@@ -2131,6 +2139,51 @@
 							},
 							"emptyText": "No codes yet."
 						}
+					},
+					{
+						"id": "event-messages",
+						"type": "object-list",
+						"title": "Messages",
+						"icon": "EmailOutline",
+						"content": {
+							"register": "larpinq",
+							"schema": "larping_event_message",
+							"filter": {
+								"event": "@objectId"
+							},
+							"columns": [
+								{
+									"key": "subject",
+									"label": "Subject"
+								},
+								{
+									"key": "audience",
+									"label": "Audience"
+								},
+								{
+									"key": "state",
+									"label": "Status"
+								},
+								{
+									"key": "sentCount",
+									"label": "Sent"
+								},
+								{
+									"key": "failedCount",
+									"label": "Failed"
+								},
+								{
+									"key": "noAddressCount",
+									"label": "No address"
+								},
+								{
+									"key": "sentAt",
+									"label": "Sent at"
+								}
+							],
+							"limit": 50,
+							"emptyText": "No messages sent yet."
+						}
 					}
 				],
 				"layout": [
@@ -2252,6 +2305,14 @@
 						"gridX": 6,
 						"gridY": 28,
 						"gridWidth": 6,
+						"gridHeight": 4
+					},
+					{
+						"id": "16",
+						"widgetId": "event-messages",
+						"gridX": 0,
+						"gridY": 32,
+						"gridWidth": 12,
 						"gridHeight": 4
 					}
 				],

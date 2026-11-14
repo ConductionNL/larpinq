@@ -1,0 +1,147 @@
+{
+  "components": {
+    "registers": {
+      "larpinq": {
+        "schemas": [
+          "larping_event_message"
+        ]
+      }
+    },
+    "schemas": {
+      "eventMessage": {
+        "slug": "larping_event_message",
+        "title": "Event message",
+        "icon": "EmailOutline",
+        "version": "1.0.0",
+        "summary": "A message game masters send to the participants of an event",
+        "description": "One message from the game masters to the participants of one event: its subject and plain-text body ({event} and {date} are filled in per mail), the audience it went to, and how many people it reached. Larpinq mails each recipient on their own through the Nextcloud mailer on a queued job. Read and written by game masters only.",
+        "type": "object",
+        "x-schema-org": "schema:Message",
+        "configuration": {
+          "exportable": true,
+          "x-openregister-references": {
+            "event": {
+              "mode": "relatedObject",
+              "schema": "larping_event",
+              "field": "event"
+            }
+          }
+        },
+        "required": [
+          "event",
+          "subject",
+          "body"
+        ],
+        "authorization": {
+          "read": [
+            "gamemasters"
+          ],
+          "create": [
+            "gamemasters"
+          ],
+          "update": [
+            "gamemasters"
+          ],
+          "delete": [
+            "gamemasters"
+          ]
+        },
+        "properties": {
+          "event": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Event",
+            "$ref": "larping_event"
+          },
+          "subject": {
+            "type": "string",
+            "title": "Subject",
+            "maxLength": 255
+          },
+          "body": {
+            "type": "string",
+            "title": "Message"
+          },
+          "audience": {
+            "type": "object",
+            "title": "Audience",
+            "properties": {
+              "statuses": {
+                "type": "array",
+                "title": "Registration status",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "accepted",
+                    "waitlisted",
+                    "pending"
+                  ]
+                }
+              },
+              "checkedIn": {
+                "type": "boolean",
+                "title": "Checked in only"
+              },
+              "paymentOpen": {
+                "type": "boolean",
+                "title": "Payment open only"
+              },
+              "ticketRoles": {
+                "type": "array",
+                "title": "Ticket role",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "player",
+                    "crew",
+                    "npc"
+                  ]
+                }
+              }
+            }
+          },
+          "state": {
+            "type": "string",
+            "title": "Status",
+            "enum": [
+              "draft",
+              "queued",
+              "sent",
+              "failed"
+            ],
+            "default": "draft"
+          },
+          "recipientCount": {
+            "type": "integer",
+            "title": "Recipients",
+            "minimum": 0
+          },
+          "sentCount": {
+            "type": "integer",
+            "title": "Sent",
+            "minimum": 0
+          },
+          "failedCount": {
+            "type": "integer",
+            "title": "Failed",
+            "minimum": 0
+          },
+          "noAddressCount": {
+            "type": "integer",
+            "title": "No address",
+            "minimum": 0
+          },
+          "sentBy": {
+            "type": "string",
+            "title": "Sent by"
+          },
+          "sentAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Sent at"
+          }
+        }
+      }
+    }
+  }
+}
