@@ -11,7 +11,7 @@
 
 ## 3. Buying items with in-game money
 
-- [ ] 3.1 `item.price` (gold, silver, copper) and a server-side purchase that adds the item and takes the money in one write, refused when the character cannot pay (REQ-RPG-001). Verify: PHPUnit for the purchase service, both scenarios.
+- [x] 3.1 `item.price` (gold, silver, copper) and a server-side purchase that adds the item and takes the money in one write, refused when the character cannot pay (REQ-RPG-001). Verify: PHPUnit for the purchase service, both scenarios.
 - [ ] 3.2 A Buy action on the character page for items with a price (REQ-RPG-001). Verify: `npm run check:manifest`; Dutch and English strings with `npm run test:l10n`.
 
 ## 4. Run sheet download
