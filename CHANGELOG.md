@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Let an AI agent read larpinq over MCP: 9 curated schemas get search and get tools (6 reference lookups read-only), plus three bounded writes (create a character, award XP, update attendance) and no delete ([#1044](https://github.com/ConductionNL/larpinq/pull/1044))
+
 ## [0.3.0] - 2026-09-06
 
 ### Added
