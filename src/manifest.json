@@ -570,7 +570,7 @@
 				"schema": "character",
 				"allowExport": true,
 				"columns": [
-					{ "key": "name", "label": "Name" },
+					{ "key": "name", "label": "Name", "widget": "translatedName" },
 					{ "key": "type", "label": "Type" },
 					{ "key": "status", "label": "Status" },
 					{ "key": "approved", "label": "Approved" },

@@ -337,13 +337,20 @@ class RuleSchemaAuthorizationTest extends TestCase {
 	public function testXpAwardsAndAttendanceDeclareGameMastersAsTheirReaders(): void {
 		$schemas = $this->mergedRegister()['components']['schemas'];
 		foreach (self::RECORD_SCHEMAS as $key) {
+			// Attendance is also read and written by stewards at the gate
+			// (admin-staff-roles-and-invites D3); XP awards stay game masters only.
+			$expected = [Application::GM_GROUP];
+			if ($key === 'attendance') {
+				$expected[] = Application::ROLE_STEWARDS;
+			}
+
 			$this->assertSame(
-				expected: [Application::GM_GROUP],
+				expected: $expected,
 				actual: ($schemas[$key]['authorization']['read'] ?? null),
 				message: "{$key} is read by game masters"
 			);
 			$this->assertSame(
-				expected: [Application::GM_GROUP],
+				expected: $expected,
 				actual: ($schemas[$key]['authorization']['create'] ?? null),
 				message: "{$key} is written by game masters"
 			);
