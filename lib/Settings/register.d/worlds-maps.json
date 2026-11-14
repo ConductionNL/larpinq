@@ -1,0 +1,192 @@
+{
+  "components": {
+    "registers": {
+      "larpinq": {
+        "schemas": [
+          "larping_world_map",
+          "larping_map_pin"
+        ]
+      }
+    },
+    "schemas": {
+      "worldMap": {
+        "slug": "larping_world_map",
+        "title": "World map",
+        "icon": "MapOutline",
+        "version": "1.0.0",
+        "summary": "An uploaded map of a world, with pins that link to its lore",
+        "description": "A map image a game master uploads for one world. Players see a map only when it is meant for players; game masters see every map. Pins on the map point at places and link to lore pages.",
+        "type": "object",
+        "configuration": {
+          "exportable": true
+        },
+        "required": [
+          "title",
+          "visibility"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "title": "Title",
+            "description": "The name of the map",
+            "maxLength": 255
+          },
+          "setting": {
+            "type": "string",
+            "format": "uuid",
+            "$ref": "setting",
+            "title": "World",
+            "description": "The world this map belongs to"
+          },
+          "image": {
+            "type": "file",
+            "title": "Map image",
+            "description": "The map itself, as an image file"
+          },
+          "width": {
+            "type": "integer",
+            "title": "Width",
+            "description": "The width of the map image in pixels",
+            "minimum": 1
+          },
+          "height": {
+            "type": "integer",
+            "title": "Height",
+            "description": "The height of the map image in pixels",
+            "minimum": 1
+          },
+          "visibility": {
+            "type": "string",
+            "title": "Visible to",
+            "description": "Who may see it: game masters only, or players too",
+            "enum": [
+              "gamemasters",
+              "players"
+            ],
+            "default": "gamemasters"
+          }
+        },
+        "authorization": {
+          "read": [
+            {
+              "group": "gamemasters"
+            },
+            {
+              "group": "larpers",
+              "match": {
+                "visibility": "players"
+              }
+            }
+          ],
+          "create": [
+            "gamemasters"
+          ],
+          "update": [
+            "gamemasters"
+          ],
+          "delete": [
+            "gamemasters"
+          ]
+        }
+      },
+      "mapPin": {
+        "slug": "larping_map_pin",
+        "title": "Map pin",
+        "icon": "MapMarkerOutline",
+        "version": "1.0.0",
+        "summary": "A place marked on a world map",
+        "description": "A pin on a world map: a place with a label, a kind and a link to its lore page. Players see a pin only when it is meant for players and its map is too; a pin of a game-master map stays out of their reach because its map does.",
+        "type": "object",
+        "configuration": {
+          "exportable": true
+        },
+        "required": [
+          "map",
+          "label",
+          "x",
+          "y",
+          "visibility"
+        ],
+        "properties": {
+          "map": {
+            "type": "string",
+            "format": "uuid",
+            "$ref": "larping_world_map",
+            "title": "Map",
+            "description": "The map this pin is on"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label",
+            "description": "The name shown beside the pin",
+            "maxLength": 255
+          },
+          "x": {
+            "type": "integer",
+            "title": "X",
+            "description": "Pixels from the left edge of the map image",
+            "minimum": 0
+          },
+          "y": {
+            "type": "integer",
+            "title": "Y",
+            "description": "Pixels from the top edge of the map image",
+            "minimum": 0
+          },
+          "kind": {
+            "type": "string",
+            "title": "Kind",
+            "description": "What kind of place the pin marks",
+            "enum": [
+              "town",
+              "camp",
+              "ruin",
+              "danger",
+              "other"
+            ],
+            "default": "other"
+          },
+          "lorePage": {
+            "type": "string",
+            "format": "uuid",
+            "$ref": "larping_lore_page",
+            "title": "Lore page",
+            "description": "The lore page about this place"
+          },
+          "visibility": {
+            "type": "string",
+            "title": "Visible to",
+            "description": "Who may see it: game masters only, or players too",
+            "enum": [
+              "gamemasters",
+              "players"
+            ],
+            "default": "gamemasters"
+          }
+        },
+        "authorization": {
+          "read": [
+            {
+              "group": "gamemasters"
+            },
+            {
+              "group": "larpers",
+              "match": {
+                "visibility": "players"
+              }
+            }
+          ],
+          "create": [
+            "gamemasters"
+          ],
+          "update": [
+            "gamemasters"
+          ],
+          "delete": [
+            "gamemasters"
+          ]
+        }
+      }
+    }
+  }
+}
