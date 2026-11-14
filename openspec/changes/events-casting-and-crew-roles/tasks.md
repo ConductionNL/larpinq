@@ -5,7 +5,7 @@
 ## 1. Data
 
 - [x] 1.1 Fragment: `character.castingEvent`, `event.castingDeadline`, `castingPreference`, `crewRole`, `crewAssignment` with rules (REQ-ECC-001, REQ-ECC-004). Verify: `npm run check:register`; `npm run check:schema-l10n`; Newman: a player reads only their own preferences.
-- [ ] 1.2 Seed the casting and crew data of design.md. Verify: the seed imports cleanly.
+- [x] 1.2 Seed the casting and crew data of design.md. Verify: the seed imports cleanly.
 
 ## 2. Casting
 

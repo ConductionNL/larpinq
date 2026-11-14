@@ -201,6 +201,74 @@
       {
         "@self": {
           "register": "larpinq",
+          "schema": "character",
+          "slug": "character-casting-the-chancellor"
+        },
+        "status": "active",
+        "name": "The Chancellor",
+        "ocName": "00000000-0000-4000-8000-000000000000",
+        "description": "Keeper of the realm's seal, loyal to whoever holds the crown.",
+        "type": "player",
+        "approved": "approved",
+        "gold": 0,
+        "silver": 0,
+        "copper": 0,
+        "castingEvent": "00000000-0000-4000-8000-000000000000"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "character",
+          "slug": "character-casting-the-spy"
+        },
+        "status": "active",
+        "name": "The Spy",
+        "ocName": "00000000-0000-4000-8000-000000000000",
+        "description": "A courtier who trades in other people's secrets.",
+        "type": "player",
+        "approved": "approved",
+        "gold": 0,
+        "silver": 0,
+        "copper": 0,
+        "castingEvent": "00000000-0000-4000-8000-000000000000"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "character",
+          "slug": "character-casting-the-heir"
+        },
+        "status": "active",
+        "name": "The Heir",
+        "ocName": "00000000-0000-4000-8000-000000000000",
+        "description": "Next in line for the throne, and everyone at court knows it.",
+        "type": "player",
+        "approved": "approved",
+        "gold": 0,
+        "silver": 0,
+        "copper": 0,
+        "castingEvent": "00000000-0000-4000-8000-000000000000"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "character",
+          "slug": "character-casting-the-bard"
+        },
+        "status": "active",
+        "name": "The Bard",
+        "ocName": "00000000-0000-4000-8000-000000000000",
+        "description": "Sings the court's stories, and changes them when it pays.",
+        "type": "player",
+        "approved": "approved",
+        "gold": 0,
+        "silver": 0,
+        "copper": 0,
+        "castingEvent": "00000000-0000-4000-8000-000000000000"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
           "schema": "condition",
           "slug": "condition-voorbeeld-name-1-1"
         },
@@ -327,7 +395,8 @@
         "cancellationPolicy": {
           "cancelBy": "2026-11-25T00:00:00+00:00",
           "paidCancellation": "player-chooses"
-        }
+        },
+        "castingDeadline": "2026-11-01T00:00:00+00:00"
       },
       {
         "@self": {
@@ -1203,6 +1272,135 @@
         "settlementChoice": "credit",
         "settlement": "credit-requested",
         "settlementRequestedAt": "2026-11-10T10:00:00+00:00"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_registration",
+          "slug": "larping-registration-casting-pieter"
+        },
+        "event": "00000000-0000-4000-8000-000000000000",
+        "player": "00000000-0000-4000-8000-000000000000",
+        "submitterUid": "pieter",
+        "playerUid": "pieter",
+        "status": "accepted",
+        "submissionId": 6,
+        "submittedAt": "2026-09-02T11:00:00+00:00",
+        "ticketType": "00000000-0000-4000-8000-000000000001",
+        "decidedAt": "2026-09-10T09:00:00+00:00",
+        "decidedBy": "gm-voorbeeld"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_registration",
+          "slug": "larping-registration-crew-joris"
+        },
+        "event": "00000000-0000-4000-8000-000000000000",
+        "player": "00000000-0000-4000-8000-000000000000",
+        "submitterUid": "joris",
+        "playerUid": "joris",
+        "status": "accepted",
+        "submissionId": 7,
+        "submittedAt": "2026-09-07T10:00:00+00:00",
+        "ticketType": "00000000-0000-4000-8000-000000000002",
+        "decidedAt": "2026-09-10T09:00:00+00:00",
+        "decidedBy": "gm-voorbeeld"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_casting_preference",
+          "slug": "larping-casting-preference-anna-heir"
+        },
+        "event": "00000000-0000-4000-8000-000000000000",
+        "registration": "00000000-0000-4000-8000-000000000000",
+        "character": "00000000-0000-4000-8000-000000000005",
+        "rank": 1,
+        "playerUid": "anna"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_casting_preference",
+          "slug": "larping-casting-preference-anna-spy"
+        },
+        "event": "00000000-0000-4000-8000-000000000000",
+        "registration": "00000000-0000-4000-8000-000000000000",
+        "character": "00000000-0000-4000-8000-000000000004",
+        "rank": 2,
+        "playerUid": "anna"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_casting_preference",
+          "slug": "larping-casting-preference-pieter-heir"
+        },
+        "event": "00000000-0000-4000-8000-000000000000",
+        "registration": "00000000-0000-4000-8000-000000000005",
+        "character": "00000000-0000-4000-8000-000000000005",
+        "rank": 1,
+        "playerUid": "pieter"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_casting_preference",
+          "slug": "larping-casting-preference-pieter-bard"
+        },
+        "event": "00000000-0000-4000-8000-000000000000",
+        "registration": "00000000-0000-4000-8000-000000000005",
+        "character": "00000000-0000-4000-8000-000000000006",
+        "rank": 2,
+        "playerUid": "pieter"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_casting_preference",
+          "slug": "larping-casting-preference-sanne-spy"
+        },
+        "event": "00000000-0000-4000-8000-000000000000",
+        "registration": "00000000-0000-4000-8000-000000000002",
+        "character": "00000000-0000-4000-8000-000000000004",
+        "rank": 1,
+        "playerUid": "sanne"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_crew_role",
+          "slug": "larping-crew-role-bandits"
+        },
+        "event": "00000000-0000-4000-8000-000000000000",
+        "name": "Bandits",
+        "kind": "npc",
+        "places": 6,
+        "description": "Ambush travellers on the forest road and give the guard something to do."
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_crew_role",
+          "slug": "larping-crew-role-kitchen"
+        },
+        "event": "00000000-0000-4000-8000-000000000000",
+        "name": "Kitchen",
+        "kind": "crew",
+        "places": 3,
+        "description": "Cook and serve the court's meals."
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_crew_assignment",
+          "slug": "larping-crew-assignment-joris-kitchen"
+        },
+        "crewRole": "00000000-0000-4000-8000-000000000001",
+        "registration": "00000000-0000-4000-8000-000000000006",
+        "note": "Breakfast shift",
+        "playerUid": "joris"
       },
       {
         "@self": {
