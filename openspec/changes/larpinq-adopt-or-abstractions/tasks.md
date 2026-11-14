@@ -141,7 +141,7 @@ Larpinq. During the build the app's actual state was reconciled:
   header therefore belong in `useObjectStore._buildHeaders()` /
   `_buildUrl()` upstream, not in an app-local client. Closed as
   "no app-side composable needed" (see ADR-022 / W24 audit).
-- [ ] 3.2 [BLOCKED on nc-vue] `?_lang={locale}` on fetches. **OR
+- [x] 3.2 `?_lang={locale}` on fetches. **Built 2026-11-14**: `src/store/modules/object.js` passes `languageGetter: userLanguage` (`src/services/userLanguage.js`, the Nextcloud language with its region stripped) to `createObjectStore`; covered in `tests/vitest/objectStoreTenant.spec.js` and `tests/vitest/userLanguage.spec.js`. Historical notes: **OR
   side shipped** (`openregister/.../i18n-api-language-negotiation`
   W25-sweep-flipped at `openregister@c610d31f5` —
   `LanguageMiddleware` reads `?_lang=` / `?language=` and
@@ -166,8 +166,8 @@ Larpinq. During the build the app's actual state was reconciled:
     per the W25-A/W26 documented-handoff pattern — no in-this-change
     work remains; the closure-wire site is pinned in
     `src/store/modules/object.js` next to `organisationUuidGetter`.
-- [ ] 3.3 [BLOCKED on nc-vue] `X-Translation-Target-Language` on
-  writes. **OR side shipped** (`LanguageMiddleware` reads the
+- [x] 3.3 `X-Translation-Target-Language` on
+  writes. **Built 2026-11-14**: `targetLanguageGetter: userLanguage` on the same store. OpenRegister (`TranslationSaveTarget`) files a target equal to the register's default language under the default language, so a write in the default language still updates the source. Historical notes: **OR side shipped** (`LanguageMiddleware` reads the
   header on POST/PUT/PATCH and stashes it via
   `LanguageService::setTargetLanguage()`;
   `TranslationHandler::normalizeTranslationsForSave` consumes it +
@@ -188,8 +188,8 @@ Larpinq. During the build the app's actual state was reconciled:
   `src/store/modules/object.js`. When 3.2 / 3.3 ship upstream in
   nc-vue, every consumer call site picks them up automatically with
   zero per-store touch.
-- [ ] 3.5 [BLOCKED on nc-vue surface] "(translated from {lang})"
-  badge. **OR source-of-truth shipped**
+- [ ] 3.5 "(translated from {lang})"
+  badge. **Partly built 2026-11-14**: detail pages get `CnTranslatedBadge` from the library (`CnDetailPage` / `CnDetailGrid`); the Characters list shows it beside the name through the `translatedName` cell widget (`src/components/cells/TranslatedNameCell.vue`, registered as `cellWidgets` in `src/App.vue`). Left: the Events and Items lists render schema-derived columns, and an index page cannot set a widget on a derived column without declaring all its columns, which would change those lists. Historical notes: **OR source-of-truth shipped**
   (`openregister/.../i18n-source-of-truth` archived-or-merged on
   development — `Translation` entity carries `sourceLanguage` +
   `isSource` in `jsonSerialize()`, `TranslationProjectionService`

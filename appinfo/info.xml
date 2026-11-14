@@ -213,6 +213,8 @@ Maak een [featureverzoek](https://github.com/ConductionNL/larpinq/issues)
 			     (x-relation-filter status = active) keeps offering them.
 			     Idempotent; logs and continues. -->
 			<step>OCA\Larpinq\Repair\BackfillCharacterStatus</step>
+			<!-- admin-staff-roles-and-invites: creates the four staff role groups when missing; adds nobody. -->
+			<step>OCA\Larpinq\Repair\CreateStaffRoleGroups</step>
 		</post-migration>
 		<install>
 			<step>OCA\Larpinq\Repair\MigrateAppConfigKeys</step>
@@ -259,6 +261,7 @@ Maak een [featureverzoek](https://github.com/ConductionNL/larpinq/issues)
 			<!-- After the import, which adds registration.checkinCode: accepted
 			     registrations stored before it get a code (events-qr-checkin). -->
 			<step>OCA\Larpinq\Repair\GiveAcceptedRegistrationsACheckinCode</step>
+			<step>OCA\Larpinq\Repair\CreateStaffRoleGroups</step>
 		</install>
 	</repair-steps>
 
