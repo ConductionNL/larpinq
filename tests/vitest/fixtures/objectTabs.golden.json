@@ -279,7 +279,7 @@
 	},
 	"CharacterStatSheet": {
 		"templateRenderSha256": "5afc6ef58f3328e9ed3d8e9474356fa75b9bb2917df1cabb25954116e6f932d3",
-		"styleSha256": "a752647f5fa7e1a50cf1dd82f0f15c6ba97467991bda8eb880777950532caadd",
+		"styleSha256": "1acd931759ee6bcf1f2e87fbede687d8213539c6345553a8023882ada9202b92",
 		"scenarios": {
 			"prop wins": {
 				"id": "p-1",
@@ -418,7 +418,7 @@
 	},
 	"EventChoiceCounts": {
 		"templateRenderSha256": "946129faaa39059d5fbd136e9a42eda4292a5026339c6dcd0190a2cd4e8e439f",
-		"styleSha256": "0659f750d2c6505cb4083b1abfca5bba593572ffe5233ac7e9ed1b5c9c763c4f",
+		"styleSha256": "4700fd00472cad5f7dd4e560944df0ab24dad939093704a35f1a9fdc54bb1d05",
 		"scenarios": {
 			"prop wins": {
 				"id": "p-1",
@@ -556,8 +556,8 @@
 		}
 	},
 	"EventRoster": {
-		"templateRenderSha256": "cbc1e058401d76f50b2e8bb792b9e33df845d852fa0acfe43d2b38379812bd91",
-		"styleSha256": "8b88a1e5aa7c6d9b9d9960f45095b250e195d9e3c14e7b9ec38bde9383d735c5",
+		"templateRenderSha256": "359edc96d57b2a2c2bd1ac43d12c45ca1e4e7dc7965850f21bbdf3244bf330c8",
+		"styleSha256": "a0919414a7da8bc50866a11dbf863bd04562a0747330416ca6c9c42016102fa2",
 		"scenarios": {
 			"prop wins": {
 				"id": "p-1",
@@ -733,7 +733,7 @@
 	},
 	"PlayerAttendanceHistory": {
 		"templateRenderSha256": "73a99f783f39083a82c5706ef8241fa4721c133711b72944d2c8096fa0895f43",
-		"styleSha256": "5e650f4480813a1d9dc4c863b72c22a12e2acd1b9847db6e17d2e415b4e01a5c",
+		"styleSha256": "0dce235f073072cfb7b834f6724ae10cfc67ab5ddaf05495ab3f01355d9f1711",
 		"scenarios": {
 			"prop wins": {
 				"id": "p-1",
@@ -1011,7 +1011,7 @@
 	},
 	"RegistrationChoices": {
 		"templateRenderSha256": "ac5e59967213c5252a7bbb389cf777c79abdac8836a3a3a99bcc9ddd789bcf09",
-		"styleSha256": "1688edaeab80420ba844cfc3d22560f4f2e598a27227bb397a506b151c5063f8",
+		"styleSha256": "2c595a87fde60c68b1c98a9fe32aee099c3e316240af98f17f38102158c62b2d",
 		"scenarios": {
 			"prop wins": {
 				"id": "p-1",
