@@ -91,10 +91,11 @@ class EventRosterService {
 	 */
 	public function buildRoster(string $eventId): array {
 		[$attendance, $attendanceAvailable] = $this->loadAttendance(eventId: $eventId);
-		$lookup = new CastLookup(players: $this->indexPlayers(), attendance: $attendance);
+		$characters = $this->castCharacters(eventId: $eventId);
+		$lookup = new CastLookup(players: $this->indexPlayers(characters: $characters), attendance: $attendance);
 
 		$participants = [];
-		foreach ($this->castCharacters(eventId: $eventId) as $character) {
+		foreach ($characters as $character) {
 			$participants[] = $this->buildRosterEntry(character: $character, lookup: $lookup);
 		}
 
@@ -119,10 +120,11 @@ class EventRosterService {
 	 * @return array<string,mixed> The render context.
 	 *
 	 * @spec openspec/specs/pdf-export/spec.md
+	 * @spec openspec/changes/larpinq-runsheet-scoped-cast-query/tasks.md#2-scope-the-character-query
 	 */
 	public function buildRunsheetContext(array $event, string $eventId): array {
-		$lookup = $this->runsheetLookup(eventId: $eventId);
 		$characters = $this->castCharacters(eventId: $eventId);
+		$lookup = $this->runsheetLookup(eventId: $eventId, characters: $characters);
 		$cast = array_map(fn (array $character): array => $this->buildCastEntry(character: $character, lookup: $lookup), $characters);
 		$this->sortByName(rows: $cast);
 
@@ -139,11 +141,12 @@ class EventRosterService {
 	 * The players, then the attendance of the event, for the run-sheet.
 	 *
 	 * @param string $eventId The event UUID.
+	 * @param list<array<string,mixed>> $characters The event's cast.
 	 *
 	 * @return CastLookup The players and attendance.
 	 */
-	private function runsheetLookup(string $eventId): CastLookup {
-		$players = $this->indexPlayers();
+	private function runsheetLookup(string $eventId, array $characters): CastLookup {
+		$players = $this->indexPlayers(characters: $characters);
 
 		// Attendance is additive: when the schema is absent the cast list is
 		// unchanged (each entry's attendanceStatus stays empty).
@@ -175,13 +178,19 @@ class EventRosterService {
 	/**
 	 * The characters cast in an event, in register order.
 	 *
+	 * OpenRegister narrows the read to characters whose `events` array holds
+	 * the event; the membership check here stays as the final word, so a
+	 * filter that over-matches never adds a character to the cast.
+	 *
 	 * @param string $eventId The event UUID.
 	 *
 	 * @return list<array<string,mixed>> The cast characters.
+	 *
+	 * @spec openspec/changes/larpinq-runsheet-scoped-cast-query/tasks.md#2-scope-the-character-query
 	 */
 	private function castCharacters(string $eventId): array {
 		$cast = [];
-		foreach ($this->fetchCharacters() as $character) {
+		foreach ($this->fetchCharacters(eventId: $eventId) as $character) {
 			if ($this->attendsEvent(character: $character, eventId: $eventId) === true) {
 				$cast[] = $character;
 			}
@@ -373,15 +382,22 @@ class EventRosterService {
 	}//end attendsEvent()
 
 	/**
-	 * Fetch all characters, tolerating OpenRegister absence.
+	 * Fetch the characters cast in an event, tolerating OpenRegister absence.
 	 *
-	 * Non-array rows are filtered out here so callers never re-check.
+	 * `events` is an array property, which OpenRegister's search matches by
+	 * containment, so only characters holding the event are read instead of
+	 * the whole register. Non-array rows are filtered out here so callers
+	 * never re-check.
+	 *
+	 * @param string $eventId The event UUID.
 	 *
 	 * @return array<int,array<string,mixed>> The character objects.
+	 *
+	 * @spec openspec/changes/larpinq-runsheet-scoped-cast-query/tasks.md#2-scope-the-character-query
 	 */
-	private function fetchCharacters(): array {
+	private function fetchCharacters(string $eventId): array {
 		try {
-			$characters = $this->objectFetcher->getObjects('character');
+			$characters = $this->objectFetcher->getObjects(objectType: 'character', filters: ['events' => $eventId]);
 		} catch (\Exception $exception) {
 			return [];
 		}
@@ -390,26 +406,54 @@ class EventRosterService {
 	}//end fetchCharacters()
 
 	/**
-	 * Index players by their id for cast player-name resolution.
+	 * Index the cast's players by id for player-name resolution.
+	 *
+	 * Only the players the cast names (`player`, else `ocName`) are read, one
+	 * by one, instead of every player in the register. A reference that is not
+	 * a uuid (a legacy free-text name), a missing player or one of another
+	 * type is skipped: the cast entry then shows the stored text, as before.
+	 *
+	 * @param list<array<string,mixed>> $characters The cast.
 	 *
 	 * @return array<string,array<string,mixed>> Players indexed by id.
+	 *
+	 * @spec openspec/changes/larpinq-runsheet-scoped-cast-query/tasks.md#3-scope-the-player-lookup
 	 */
-	private function indexPlayers(): array {
+	private function indexPlayers(array $characters): array {
 		$indexed = [];
-		try {
-			$players = $this->objectFetcher->getObjects('player');
-		} catch (\Exception $exception) {
-			return $indexed;
-		}
+		foreach ($this->castPlayerIds(characters: $characters) as $playerId) {
+			try {
+				$player = $this->objectFetcher->getObjectOfType(objectType: 'player', id: $playerId);
+			} catch (\Exception $exception) {
+				continue;
+			}
 
-		foreach ($players as $player) {
-			if (is_array($player) === true && isset($player['id']) === true) {
-				$indexed[(string)$player['id']] = $player;
+			if (isset($player['id']) === true) {
+				$indexed[$playerId] = $player;
 			}
 		}
 
 		return $indexed;
 	}//end indexPlayers()
+
+	/**
+	 * The distinct player references of a cast, as `resolvePlayerName()` reads them.
+	 *
+	 * @param list<array<string,mixed>> $characters The cast.
+	 *
+	 * @return list<string> The player ids, first seen first.
+	 */
+	private function castPlayerIds(array $characters): array {
+		$ids = [];
+		foreach ($characters as $character) {
+			$playerId = (string)($character['player'] ?? ($character['ocName'] ?? ''));
+			if ($playerId !== '') {
+				$ids[$playerId] = true;
+			}
+		}
+
+		return array_map('strval', array_keys($ids));
+	}//end castPlayerIds()
 
 	/**
 	 * Load the attendance records for an event, indexed by character id.
