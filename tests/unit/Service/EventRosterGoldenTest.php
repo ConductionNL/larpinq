@@ -112,6 +112,22 @@ class EventRosterGoldenTest extends TestCase {
 				return $register[$objectType];
 			}
 		);
+		$fetcher->method('getObjectOfType')->willReturnCallback(
+			function (string $objectType, string $id) use ($register, $failing, &$trace): array {
+				$trace[] = [$objectType, $id];
+				if (in_array(needle: $objectType, haystack: $failing, strict: true) === true) {
+					throw new RuntimeException(message: 'unavailable');
+				}
+
+				foreach ($register[$objectType] as $row) {
+					if (($row['id'] ?? null) === $id) {
+						return $row;
+					}
+				}
+
+				throw new RuntimeException(message: 'not found');
+			}
+		);
 		$service = new EventRosterService(objectFetcher: $fetcher);
 
 		$roster = $service->buildRoster(eventId: 'e1');
