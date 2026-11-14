@@ -9,7 +9,7 @@
   - GIVEN the exact JSON in design.md WHEN it is written to `lib/Settings/register.d/larpinq-mcp-adoption.json` THEN all 9 curated schemas carry a `configuration.x-openregister-mcp` block with `enabled: true`
   - GIVEN the same file WHEN inspected THEN `character` has `search`/`get`/`create` only, `xpAward` has `search`/`get`/`create` only, `attendance` has `search`/`get`/`update` only, the other 6 schemas have `search`/`get` only, and no `delete` verb appears anywhere
   - GIVEN a dev Nextcloud instance WHEN `larpinq.character.create` is called via MCP THEN the created object's `approved` field is `"no"`, and WHEN `larpinq.attendance.update` sets `status` THEN `checkedInAt`/`checkedInBy` remain server-stamped and are not settable from the call's input
-- [ ] Implement
+- [x] Implement
 - [ ] Test
 
 ### Task 2: Cross-check every `search.filters` entry against real schema properties
@@ -18,8 +18,8 @@
 - **acceptance_criteria**:
   - GIVEN each curated schema's `search.filters` list WHEN diffed against that schema's `properties` map (monolith, plus the `event-checkin-roster.json` fragment for `attendance`) THEN every filter name is present as a key
   - GIVEN the merged register (monolith + all fragments) WHEN validated by OpenRegister's `McpAnnotationValidator` THEN zero `mcp-unknown-filter-property` errors are reported
-- [ ] Implement
-- [ ] Test
+- [x] Implement
+- [x] Test
 
 ### Task 3: Validate JSON, run `openspec validate`, re-import into a dev instance, and confirm the write-verb RBAC gates
 - **spec_ref**: `openspec/changes/larpinq-mcp-adoption/specs/larpinq-mcp-adoption/spec.md#req-007-mcp-dialect-is-declared-via-a-register-fragment-not-the-monolith`
