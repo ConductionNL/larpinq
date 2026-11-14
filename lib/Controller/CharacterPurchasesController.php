@@ -75,9 +75,7 @@ class CharacterPurchasesController extends Controller {
 
 		try {
 			$character = $this->purchases->character(characterId: $id);
-			$uid       = $user->getUID();
-			$owner     = (string)($character['ownerUid'] ?? '');
-			if (($owner === '' || $owner !== $uid) && $this->callerAccess->isGameMasterOrAdmin(uid: $uid) === false) {
+			if ($this->mayBuyFor(character: $character, uid: $user->getUID()) === false) {
 				return new JSONResponse(
 					data: ['error' => 'Only the owner and game masters buy for this character'],
 					statusCode: Http::STATUS_FORBIDDEN
@@ -93,4 +91,23 @@ class CharacterPurchasesController extends Controller {
 			return new JSONResponse(data: ['error' => $refused->getMessage()], statusCode: $refused->getStatus());
 		}
 	}//end buy()
+
+	/**
+	 * Whether a user may buy for a character: its owner, or a game master or admin.
+	 *
+	 * @param array<string,mixed> $character The character.
+	 * @param string              $uid       The user.
+	 *
+	 * @return bool
+	 *
+	 * @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md
+	 */
+	private function mayBuyFor(array $character, string $uid): bool {
+		$owner = (string)($character['ownerUid'] ?? '');
+		if ($owner !== '' && $owner === $uid) {
+			return true;
+		}
+
+		return $this->callerAccess->isGameMasterOrAdmin(uid: $uid);
+	}//end mayBuyFor()
 }//end class

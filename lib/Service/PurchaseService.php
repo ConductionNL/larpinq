@@ -129,6 +129,24 @@ class PurchaseService {
 			return null;
 		}
 
+		$price = self::coinAmounts(raw: $raw);
+		if ($price === null || array_sum($price) === 0) {
+			return null;
+		}
+
+		return $price;
+	}//end price()
+
+	/**
+	 * The amount of every coin in a stored price; a missing coin is 0.
+	 *
+	 * @param array<mixed> $raw The stored price.
+	 *
+	 * @return array<string,int>|null The amounts, or null when one is not a non-negative integer.
+	 *
+	 * @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md
+	 */
+	private static function coinAmounts(array $raw): ?array {
 		$price = [];
 		foreach (self::COINS as $coin) {
 			$amount = $raw[$coin] ?? 0;
@@ -139,12 +157,8 @@ class PurchaseService {
 			$price[$coin] = $amount;
 		}
 
-		if (array_sum($price) === 0) {
-			return null;
-		}
-
 		return $price;
-	}//end price()
+	}//end coinAmounts()
 
 	/**
 	 * The character with the price taken from its purse.
@@ -208,17 +222,35 @@ class PurchaseService {
 
 		$ids = [];
 		foreach ($value as $entry) {
-			if (is_array($entry) === true) {
-				$entry = $entry['id'] ?? null;
-			}
-
-			if (is_scalar($entry) === true && (string)$entry !== '') {
-				$ids[] = (string)$entry;
+			$id = self::entryId(entry: $entry);
+			if ($id !== null) {
+				$ids[] = $id;
 			}
 		}
 
 		return $ids;
 	}//end ids()
+
+	/**
+	 * The id of one relation entry: the entry itself, or its `id`.
+	 *
+	 * @param mixed $entry The entry.
+	 *
+	 * @return string|null The id, or null when it has none.
+	 *
+	 * @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md
+	 */
+	private static function entryId(mixed $entry): ?string {
+		if (is_array($entry) === true) {
+			$entry = $entry['id'] ?? null;
+		}
+
+		if (is_scalar($entry) === false || (string)$entry === '') {
+			return null;
+		}
+
+		return (string)$entry;
+	}//end entryId()
 
 	/**
 	 * The id of an object.
