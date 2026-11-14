@@ -772,7 +772,9 @@
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "A minha ficha de personagem",
-        "Open sheet": "Abrir ficha"
+        "Open sheet": "Abrir ficha",
+        "Language": "Idioma",
+        "Could not change the language.": "Não foi possível alterar o idioma."
     },
     "plurals": {}
 }

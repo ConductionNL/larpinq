@@ -9,5 +9,5 @@
 
 ## 2. Language switch on the phone pages
 
-- [ ] 2.1 `src/components/LanguageSwitch.vue` (new): Nederlands and English, defaulting to the account language; saves through `PUT /ocs/v2.php/cloud/users/{userId}` with key `language` and reloads; placed on the phone pages of `admin-phone-friendly-pages` in `src/manifest.json`; registered in `src/registry.js` (REQ-PLB-007). Verify: `tests/vitest/languageSwitch.spec.js` (default, save call, reload).
-- [ ] 2.2 Strings in `l10n/nl.json` and `l10n/en.json` (REQ-PLB-007). Verify: `npm run test:l10n`.
+- [x] 2.1 `src/components/LanguageSwitch.vue` (new): Nederlands and English, defaulting to the account language; saves through `PUT /ocs/v2.php/cloud/users/{userId}` with key `language` and reloads; placed on the phone pages of `admin-phone-friendly-pages` in `src/manifest.json`; registered in `src/registry.js` (REQ-PLB-007). Verify: `tests/vitest/languageSwitch.spec.js` (default, save call, reload).
+- [x] 2.2 Strings in `l10n/nl.json` and `l10n/en.json` (REQ-PLB-007). Verify: `npm run test:l10n`.

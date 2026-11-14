@@ -12,3 +12,10 @@ export function generateUrl(url) {
 export function generateRemoteUrl(service) {
 	return `http://localhost/remote.php/${service}`
 }
+
+export function generateOcsUrl(url, params = {}) {
+	const filled = url.replace(/\{(\w+)\}/g, (match, name) =>
+		encodeURIComponent(params[name] ?? match),
+	)
+	return `/ocs/v2.php/${filled.replace(/^\//, '')}`
+}
