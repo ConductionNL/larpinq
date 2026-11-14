@@ -19,3 +19,7 @@ $ocpDir  = is_dir($ocpBase . '/OCP') ? $ocpBase . '/OCP' : $ocpBase . '/OCP.bak'
 
 $autoloader->addPsr4('OCP\\', $ocpDir . '/');
 $autoloader->addPsr4('NCU\\', $ocpBase . '/NCU/');
+
+// OpenRegister's MCP attribute and opt-in interface, copied unchanged into the test
+// stubs (hermiq-ai-tooling), so the curated tools analyse without OpenRegister.
+$autoloader->addPsr4('OCA\\OpenRegister\\Mcp\\', __DIR__ . '/tests/stubs/openregister/Mcp/');

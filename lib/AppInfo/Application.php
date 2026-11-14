@@ -28,6 +28,7 @@ namespace OCA\Larpinq\AppInfo;
 
 use OCA\Larpinq\Listener\CharacterRequirementListener;
 use OCA\Larpinq\Listener\DeepLinkRegistrationListener;
+use OCA\Larpinq\Mcp\LarpinqScannableServices;
 use OCA\Larpinq\Middleware\ApiContractMiddleware;
 use OCA\Larpinq\Support\AppIdentity;
 use OCP\AppFramework\App;
@@ -122,6 +123,16 @@ class Application extends App implements IBootstrap {
 
 		// API-Version header and problem details on the JSON API (spec api-contract).
 		$context->registerMiddleware(ApiContractMiddleware::class);
+
+		// The curated MCP tools (hermiq-ai-tooling REQ-004): OpenRegister scans
+		// the classes this lists for #[McpTool] methods. The interface is
+		// OpenRegister's, so the alias is only registered when it is there.
+		if (interface_exists('OCA\OpenRegister\Mcp\IMcpScannableServices') === true) {
+			$context->registerServiceAlias(
+				'OCA\OpenRegister\Mcp\IMcpScannableServices::' . self::APP_ID,
+				LarpinqScannableServices::class
+			);
+		}
 
 		// Register the deep link listener for OpenRegister unified search.
 		// The event class is only available when OpenRegister is installed.

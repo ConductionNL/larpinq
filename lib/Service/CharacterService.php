@@ -35,6 +35,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Service;
 
+use OCA\OpenRegister\Mcp\Attribute\McpTool;
 use OCP\IUserSession;
 use Psr\Log\LoggerInterface;
 
@@ -407,6 +408,35 @@ class CharacterService {
 			default => [],
 		};
 	}//end stageLookup()
+
+	/**
+	 * The calculated sheet of one character, for an agent (hermiq-ai-tooling REQ-003).
+	 *
+	 * Reads the character with the caller's rights and returns what
+	 * {@see self::calculateCharacter()} computes, without `slNotesPrivate`: a
+	 * game master's private notes stay out of an agent's context. A character
+	 * the caller cannot read answers exactly like one that does not exist.
+	 * Nothing is written.
+	 *
+	 * @param string $characterId The character UUID.
+	 *
+	 * @return array<string, mixed> The calculated character, or `{error: 'not-found', character}`.
+	 *
+	 * @spec openspec/changes/hermiq-ai-tooling/specs/hermiq-ai-tooling/spec.md#req-003--a-curated-calculated-character-sheet-read-tool-exists
+	 */
+	#[McpTool(
+		name: 'getCharacterSheet',
+		description: 'The calculated sheet of one character: its stats with every skill, item, condition, '
+			. 'event and XP award applied, as the app shows it.',
+		readOnlyHint: true,
+		scope: 'read',
+	)]
+	public function getCharacterSheet(string $characterId): array {
+		return (new AgentCharacterSheet(objectFetcher: $this->objectFetcher))->read(
+			characterId: $characterId,
+			calculate: fn (array $character): array => $this->calculateCharacter(character: $character)
+		);
+	}//end getCharacterSheet()
 
 	/**
 	 * Calculate stats for a single character array.

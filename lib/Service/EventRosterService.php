@@ -31,6 +31,8 @@ namespace OCA\Larpinq\Service;
 
 use DateTimeImmutable;
 use DateTimeInterface;
+use OCA\OpenRegister\Mcp\Attribute\McpTool;
+use OCP\IUserSession;
 
 /**
  * Resolves event casts, attendance records and run-sheet context.
@@ -48,11 +50,13 @@ class EventRosterService {
 	 * Constructor for EventRosterService.
 	 *
 	 * @param RegisterObjectFetcher $objectFetcher The register object fetcher.
+	 * @param IUserSession|null     $userSession   The invoking principal, recorded as awardedBy on an agent award.
 	 *
 	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
 	 */
 	public function __construct(
 		private readonly RegisterObjectFetcher $objectFetcher,
+		private readonly ?IUserSession $userSession = null,
 	) {
 	}//end __construct()
 
@@ -261,6 +265,46 @@ class EventRosterService {
 			return null;
 		}
 	}//end recordAttendance()
+
+	/**
+	 * Award XP to every character checked in at an event (hermiq-ai-tooling REQ-001).
+	 *
+	 * The recipients are decided here, never by the caller: one award per
+	 * attendance row of the event whose status is `checked-in`, and none for a
+	 * registered or no-show row. Each award is written through OpenRegister with
+	 * the caller's rights, so the `gamemasters` create rule on `xpAward` stays
+	 * the enforcement point; `awardedAt` and `awardedBy` are stamped here and
+	 * `awardedVia` marks the award as made through an agent tool. The writes are
+	 * not one transaction, so the answer lists every character with `created`
+	 * or `failed`, and a retry shows the game master who already has an award.
+	 *
+	 * @param string $eventId The event UUID.
+	 * @param int    $amount  The XP each checked-in character receives, at least 1.
+	 * @param string $reason  Why the XP is awarded, shown on every award.
+	 *
+	 * @return array<string, mixed> `{event, amount, reason, results}`, a result per checked-in character.
+	 *
+	 * @throws \InvalidArgumentException When the amount is not positive, the event cannot be read, or nobody is checked in.
+	 *
+	 * @spec openspec/changes/hermiq-ai-tooling/specs/hermiq-ai-tooling/spec.md#req-001--a-curated-event-scoped-xp-award-tool-exists
+	 */
+	#[McpTool(
+		name: 'awardXpToAttendees',
+		description: 'Award the same XP, with a reason, to every character checked in at one event. '
+			. 'The server looks up who checked in. Needs a game master\'s approval.',
+		readOnlyHint: false,
+		destructiveHint: false,
+		idempotentHint: false,
+		scope: 'create',
+	)]
+	public function awardXpToAttendees(string $eventId, int $amount, string $reason): array {
+		return (new AttendeeXpAward(objectFetcher: $this->objectFetcher, roster: $this))->award(
+			eventId: $eventId,
+			amount: $amount,
+			reason: $reason,
+			awardedBy: (string)$this->userSession?->getUser()?->getUID()
+		);
+	}//end awardXpToAttendees()
 
 	/**
 	 * Whether a character is a confirmed participant of an event.
