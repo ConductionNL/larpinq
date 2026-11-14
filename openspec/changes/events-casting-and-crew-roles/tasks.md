@@ -9,8 +9,8 @@
 
 ## 2. Casting
 
-- [ ] 2.1 `CastingService::propose()` with the Hungarian method and the tie rules (REQ-ECC-002). Verify: PHPUnit on the seed (Anna The Heir, Pieter The Bard, Sanne The Spy), on an unmatched player, and a 500 by 500 timing bound.
-- [ ] 2.2 `CastingController` proposal and confirm endpoints, game masters only (REQ-ECC-002, REQ-ECC-003). Verify: PHPUnit for 403 as a player; confirm writes ownership and the registration's character; route-auth, no-admin-idor and semantic-auth gates pass.
+- [x] 2.1 `CastingService::propose()` with the Hungarian method and the tie rules (REQ-ECC-002). Verify: PHPUnit on the seed (Anna The Heir, Pieter The Bard, Sanne The Spy), on an unmatched player, and a 500 by 500 timing bound.
+- [x] 2.2 `CastingController` proposal and confirm endpoints, game masters only (REQ-ECC-002, REQ-ECC-003). Verify: PHPUnit for 403 as a player; confirm writes ownership and the registration's character; route-auth, no-admin-idor and semantic-auth gates pass.
 
 ## 3. Pages
 
@@ -19,7 +19,7 @@
 
 ## 4. Strings and docs
 
-- [ ] 4.1 Dutch and English strings (REQ-ECC-001). Verify: `npm run test:l10n`.
+- [x] 4.1 Dutch and English strings (REQ-ECC-001). Verify: `npm run test:l10n`.
 - [ ] 4.2 `docs/features/casting-and-crew.md` (ADR-010). Verify: the docs build renders it.
 
 Quality reminders (not tracked as tasks): `composer check:strict` once before push.

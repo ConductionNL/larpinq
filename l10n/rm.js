@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -62,6 +58,21 @@ OC.L10N.register(
         "Value": "Valur",
         "player": "giugader",
         "npc": "npc",
+        "1 for the character the player wants most, up to 5": "1 per il persunaj che il giugader vul il pli gugent giugar, fin 5",
+        "Casting deadline": "Termin dal casting",
+        "Casting preference": "Giavisch da casting",
+        "Crew assignment": "Attribuziun a la crew",
+        "Crew keeps the event running; NPC plays characters for the players": "La crew tegna en funcziun l'eveniment; ils NPC giogan persunagis per ils giugaders",
+        "Crew role": "Rolla en la crew",
+        "How many volunteers the role needs": "Quants voluntaris che la rolla dovra",
+        "Note": "Notizia",
+        "Open for casting on": "Avert per il casting a",
+        "Rank": "Rang",
+        "The Nextcloud account of the player, copied from the registration on save": "Il conto da Nextcloud dal giugader, copià da l'annunzia cun memorisar",
+        "The event this written character is open for casting on. Empty when it is not open.": "L'eveniment per il qual quest persunaj scrit è avert per il casting. Vid sch'el n'è betg avert.",
+        "The name of the role, such as Kitchen or Bandits": "Il num da la rolla, per exempel Cuschina u Bandits",
+        "Until when players can rank the characters open for casting": "Fin cura ch'ils giugaders pon rangar ils persunagis averts per il casting",
+        "What the volunteers in this role do": "Tge ch'ils voluntaris en questa rolla fan",
         "other": "auter",
         "no": "na",
         "approved": "approvà",

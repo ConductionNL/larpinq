@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -62,6 +58,21 @@ OC.L10N.register(
         "Value": "Valur",
         "player": "plejer",
         "npc": "npc",
+        "1 for the character the player wants most, up to 5": "1 għall-karattru li l-plejer l-aktar irid jilgħab, sa 5",
+        "Casting deadline": "Skadenza tal-casting",
+        "Casting preference": "Preferenza tal-casting",
+        "Crew assignment": "Assenjazzjoni fil-crew",
+        "Crew keeps the event running; NPC plays characters for the players": "Il-crew iżomm l-avveniment għaddej; l-NPCs jilagħbu karattri għall-plejers",
+        "Crew role": "Rwol fil-crew",
+        "How many volunteers the role needs": "Kemm għandu bżonn voluntiera r-rwol",
+        "Note": "Nota",
+        "Open for casting on": "Miftuħ għall-casting f'",
+        "Rank": "Klassifika",
+        "The Nextcloud account of the player, copied from the registration on save": "Il-kont Nextcloud tal-plejer, ikkupjat mir-reġistrazzjoni meta jiġi ssejvjat",
+        "The event this written character is open for casting on. Empty when it is not open.": "L-avveniment li għall-casting tiegħu dan il-karattru miktub huwa miftuħ. Vojt meta mhuwiex miftuħ.",
+        "The name of the role, such as Kitchen or Bandits": "L-isem tar-rwol, bħal Kċina jew Banditi",
+        "Until when players can rank the characters open for casting": "Sa meta l-plejers jistgħu jikklassifikaw il-karattri miftuħa għall-casting",
+        "What the volunteers in this role do": "X'jagħmlu l-voluntiera f'dan ir-rwol",
         "other": "ieħor",
         "no": "le",
         "approved": "approvat",
