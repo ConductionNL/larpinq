@@ -37,6 +37,10 @@ $extra = [
 	['name' => 'events#downloadRunsheet', 'url' => '/events/{id}/runsheet/{template}', 'verb' => 'GET'],
 	['name' => 'events#roster', 'url' => '/api/events/{id}/roster', 'verb' => 'GET'],
 	['name' => 'events#recordAttendance', 'url' => '/api/events/{id}/attendance', 'verb' => 'POST'],
+	// Email participants (communication-mail-participants): game masters only.
+	['name' => 'eventMessages#preview', 'url' => '/api/events/{id}/messages/preview', 'verb' => 'GET'],
+	['name' => 'eventMessages#create', 'url' => '/api/events/{id}/messages', 'verb' => 'POST'],
+	['name' => 'eventMessages#send', 'url' => '/api/events/{id}/messages/{messageId}/send', 'verb' => 'POST'],
 	['name' => 'xpAwards#access', 'url' => '/api/xp-awards/access', 'verb' => 'GET'],
 	['name' => 'xpAwards#roster', 'url' => '/api/events/{id}/xp-award-roster', 'verb' => 'GET'],
 	['name' => 'xpAwards#award', 'url' => '/api/events/{id}/xp-awards', 'verb' => 'POST'],

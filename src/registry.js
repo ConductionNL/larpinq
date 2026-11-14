@@ -28,6 +28,7 @@ import ApplyBuildDialog from './dialogs/ApplyBuildDialog.vue'
 import CharacterPdfDownloadDialog from './dialogs/CharacterPdfDownloadDialog.vue'
 import CopyWorldDialog from './dialogs/CopyWorldDialog.vue'
 import XpAwardDialog from './dialogs/XpAwardDialog.vue'
+import EmailParticipantsDialog from './dialogs/EmailParticipantsDialog.vue'
 import BuildReport from './views/BuildReport.vue'
 import CharacterCustomFields from './views/CharacterCustomFields.vue'
 import CharacterStatSheet from './views/CharacterStatSheet.vue'
@@ -81,6 +82,15 @@ export default {
 	XpAwardDialog: {
 		kind: 'modal',
 		component: XpAwardDialog,
+		propsSchema: {},
+	},
+	// EventDetail "Email participants" header action
+	// (communication-mail-participants), game masters only: write, preview
+	// the recipients and send one mail each.
+	// @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md
+	EmailParticipantsDialog: {
+		kind: 'modal',
+		component: EmailParticipantsDialog,
 		propsSchema: {},
 	},
 	// BuildDetail "Apply to character" header action (characters-multiple-builds).
