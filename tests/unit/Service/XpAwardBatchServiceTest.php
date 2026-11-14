@@ -78,7 +78,8 @@ class XpAwardBatchServiceTest extends TestCase {
 			function (string $objectType, ?int $limit = null, ?int $offset = null, ?array $filters = []): array {
 				$rows = $this->objects[$objectType] ?? [];
 				foreach (($filters ?? []) as $field => $value) {
-					$rows = array_values(array_filter($rows, static fn (array $row): bool => ($row[$field] ?? null) === $value));
+					// An array field matches by containment, as OpenRegister's search does.
+					$rows = array_values(array_filter($rows, static fn (array $row): bool => is_array($row[$field] ?? null) ? in_array($value, $row[$field], true) : ($row[$field] ?? null) === $value));
 				}
 
 				return $rows;
