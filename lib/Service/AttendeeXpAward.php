@@ -56,10 +56,10 @@ class AttendeeXpAward {
 	 * award as made through an agent tool. The writes are not one transaction,
 	 * so every character is reported `created` or `failed`.
 	 *
-	 * @param string $eventId   The event UUID.
-	 * @param int    $amount    The XP per character, at least 1.
-	 * @param string $reason    Why the XP is awarded.
-	 * @param string $awardedBy The invoking principal.
+	 * @param string                                               $eventId The event UUID.
+	 * @param array{amount: int, reason: string, awardedBy: string} $grant   The XP per character (at least 1),
+	 *                                                                       why it is awarded and the
+	 *                                                                       invoking principal.
 	 *
 	 * @return array<string, mixed> `{event, amount, reason, results}`.
 	 *
@@ -67,7 +67,10 @@ class AttendeeXpAward {
 	 *
 	 * @spec openspec/changes/hermiq-ai-tooling/specs/hermiq-ai-tooling/spec.md#req-001--a-curated-event-scoped-xp-award-tool-exists
 	 */
-	public function award(string $eventId, int $amount, string $reason, string $awardedBy): array {
+	public function award(string $eventId, array $grant): array {
+		$amount = (int)($grant['amount'] ?? 0);
+		$reason = (string)($grant['reason'] ?? '');
+		$awardedBy = (string)($grant['awardedBy'] ?? '');
 		if ($amount < 1) {
 			throw new InvalidArgumentException('The amount has to be at least 1 XP.');
 		}

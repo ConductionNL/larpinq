@@ -300,9 +300,11 @@ class EventRosterService {
 	public function awardXpToAttendees(string $eventId, int $amount, string $reason): array {
 		return (new AttendeeXpAward(objectFetcher: $this->objectFetcher, roster: $this))->award(
 			eventId: $eventId,
-			amount: $amount,
-			reason: $reason,
-			awardedBy: (string)$this->userSession?->getUser()?->getUID()
+			grant: [
+				'amount' => $amount,
+				'reason' => $reason,
+				'awardedBy' => (string)$this->userSession?->getUser()?->getUID(),
+			]
 		);
 	}//end awardXpToAttendees()
 
