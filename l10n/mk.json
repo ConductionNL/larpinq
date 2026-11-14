@@ -772,7 +772,15 @@
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Мојот лист на ликот",
-        "Open sheet": "Отвори лист"
+        "Open sheet": "Отвори лист",
+        "Feedback form": "Образец за повратни информации",
+        "Feedback opens": "Повратните информации се отвораат",
+        "Feedback closes": "Повратните информации се затвораат",
+        "Feedback invitation sent": "Испратена покана за повратни информации",
+        "Feedback reminder sent": "Испратен потсетник за повратни информации",
+        "The Nextcloud Forms form participants fill in after the event": "Образецот во Nextcloud Forms што учесниците го пополнуваат по настанот",
+        "When participants are asked for feedback; the end of the event when empty": "Кога учесниците се замолуваат за повратни информации; крајот на настанот ако е празно",
+        "When feedback closes; 21 days after it opens when empty": "Кога се затвораат повратните информации; 21 ден по отворањето ако е празно"
     },
     "plurals": {}
 }

@@ -772,7 +772,15 @@
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Il-folja tal-karattru tiegħi",
-        "Open sheet": "Iftaħ il-folja"
+        "Open sheet": "Iftaħ il-folja",
+        "Feedback form": "Formola tal-feedback",
+        "Feedback opens": "Il-feedback jinfetaħ",
+        "Feedback closes": "Il-feedback jingħalaq",
+        "Feedback invitation sent": "Stedina għall-feedback mibgħuta",
+        "Feedback reminder sent": "Tfakkira għall-feedback mibgħuta",
+        "The Nextcloud Forms form participants fill in after the event": "Il-formola ta' Nextcloud Forms li l-parteċipanti jimlew wara l-avveniment",
+        "When participants are asked for feedback; the end of the event when empty": "Meta l-parteċipanti jintalbu feedback; it-tmiem tal-avveniment jekk vojt",
+        "When feedback closes; 21 days after it opens when empty": "Meta l-feedback jingħalaq; 21 jum wara li jinfetaħ jekk vojt"
     },
     "plurals": {}
 }

@@ -772,7 +772,15 @@
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Fișa personajului meu",
-        "Open sheet": "Deschide fișa"
+        "Open sheet": "Deschide fișa",
+        "Feedback form": "Formular de feedback",
+        "Feedback opens": "Feedbackul se deschide",
+        "Feedback closes": "Feedbackul se închide",
+        "Feedback invitation sent": "Invitație la feedback trimisă",
+        "Feedback reminder sent": "Memento pentru feedback trimis",
+        "The Nextcloud Forms form participants fill in after the event": "Formularul Nextcloud Forms pe care participanții îl completează după eveniment",
+        "When participants are asked for feedback; the end of the event when empty": "Când li se cere participanților feedback; sfârșitul evenimentului dacă e gol",
+        "When feedback closes; 21 days after it opens when empty": "Când se închide feedbackul; la 21 de zile după deschidere dacă e gol"
     },
     "plurals": {}
 }

@@ -4,11 +4,11 @@
 
 ## 1. Data
 
-- [ ] 1.1 Fragment: `event.feedbackForm`, `feedbackOpensAt`, `feedbackClosesAt`; `attendance.feedbackInvitedAt`, `feedbackRemindedAt` (REQ-EPS-001). Verify: `npm run check:register`; `npm run check:schema-l10n`.
+- [x] 1.1 Fragment: `event.feedbackForm`, `feedbackOpensAt`, `feedbackClosesAt`; `attendance.feedbackInvitedAt`, `feedbackRemindedAt` (REQ-EPS-001). Verify: `npm run check:register`; `npm run check:schema-l10n`. Built 14 Nov: `lib/Settings/register.d/events-post-event-survey.json`; the eight new schema strings are in all 36 locales (schema-l10n stays at its baseline).
 
 ## 2. Invitations
 
-- [ ] 2.1 `EventFeedbackService` and `EventFeedbackJob` (daily, bounded pages): invitations to checked-in participants and one reminder (REQ-EPS-002, REQ-EPS-003). Verify: PHPUnit with a fixed clock: invited once, reminded once, never someone marked no-show; `appinfo/info.xml` lists the job.
+- [x] 2.1 `EventFeedbackService` and `EventFeedbackJob` (daily, bounded pages): invitations to checked-in participants and one reminder (REQ-EPS-002, REQ-EPS-003). Verify: PHPUnit with a fixed clock: invited once, reminded once, never someone marked no-show; `appinfo/info.xml` lists the job. Built 14 Nov: plus `FeedbackDelivery` (notification and mail with the form link), `Notifier`, and `FeedbackAnswers` with the count-only fallback `UnknownFeedbackAnswers` bound until 2.2 lands. The notification and mail strings are English until 4.1 translates them.
 - [ ] 2.2 `answered()` from Forms submissions per user, with the count-only fallback (REQ-EPS-004). Verify: PHPUnit against a fake Forms reader; a manual check on the dev instance's Forms version, noted in the PR.
 
 ## 3. Pages

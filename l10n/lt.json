@@ -772,7 +772,15 @@
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Mano veikėjo lapas",
-        "Open sheet": "Atidaryti lapą"
+        "Open sheet": "Atidaryti lapą",
+        "Feedback form": "Atsiliepimų forma",
+        "Feedback opens": "Atsiliepimai atsidaro",
+        "Feedback closes": "Atsiliepimai užsidaro",
+        "Feedback invitation sent": "Kvietimas pateikti atsiliepimą išsiųstas",
+        "Feedback reminder sent": "Priminimas pateikti atsiliepimą išsiųstas",
+        "The Nextcloud Forms form participants fill in after the event": "Nextcloud Forms forma, kurią dalyviai užpildo po renginio",
+        "When participants are asked for feedback; the end of the event when empty": "Kada dalyvių prašoma atsiliepimo; jei tuščia – renginio pabaiga",
+        "When feedback closes; 21 days after it opens when empty": "Kada atsiliepimai užsidaro; jei tuščia – 21 diena po atsidarymo"
     },
     "plurals": {}
 }

@@ -772,7 +772,15 @@
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Minu tegelaskaart",
-        "Open sheet": "Ava kaart"
+        "Open sheet": "Ava kaart",
+        "Feedback form": "Tagasisidevorm",
+        "Feedback opens": "Tagasiside avaneb",
+        "Feedback closes": "Tagasiside sulgub",
+        "Feedback invitation sent": "Tagasiside kutse saadetud",
+        "Feedback reminder sent": "Tagasiside meeldetuletus saadetud",
+        "The Nextcloud Forms form participants fill in after the event": "Nextcloud Formsi vorm, mille osalejad pärast üritust täidavad",
+        "When participants are asked for feedback; the end of the event when empty": "Millal osalejatelt tagasisidet küsitakse; tühjana ürituse lõpp",
+        "When feedback closes; 21 days after it opens when empty": "Millal tagasiside sulgub; tühjana 21 päeva pärast avanemist"
     },
     "plurals": {}
 }

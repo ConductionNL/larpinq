@@ -772,7 +772,15 @@
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Karakterlapom",
-        "Open sheet": "Lap megnyitása"
+        "Open sheet": "Lap megnyitása",
+        "Feedback form": "Visszajelzési űrlap",
+        "Feedback opens": "A visszajelzés megnyílik",
+        "Feedback closes": "A visszajelzés lezárul",
+        "Feedback invitation sent": "Visszajelzési meghívó elküldve",
+        "Feedback reminder sent": "Visszajelzési emlékeztető elküldve",
+        "The Nextcloud Forms form participants fill in after the event": "A Nextcloud Forms űrlap, amelyet a résztvevők az esemény után kitöltenek",
+        "When participants are asked for feedback; the end of the event when empty": "Mikor kérünk visszajelzést a résztvevőktől; üresen az esemény vége",
+        "When feedback closes; 21 days after it opens when empty": "Mikor zárul a visszajelzés; üresen 21 nappal a megnyitás után"
     },
     "plurals": {}
 }

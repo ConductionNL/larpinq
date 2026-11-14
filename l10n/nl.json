@@ -864,7 +864,15 @@
         "About this Larpinq installation.": "Over deze Larpinq-installatie.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Waar Larpinq de gegevens van je spel bewaart. Kies per soort een bron, en bij Open Register het register en schema.",
         "My character sheet": "Mijn karakterblad",
-        "Open sheet": "Blad openen"
+        "Open sheet": "Blad openen",
+        "Feedback form": "Feedbackformulier",
+        "Feedback opens": "Feedback opent",
+        "Feedback closes": "Feedback sluit",
+        "Feedback invitation sent": "Feedbackuitnodiging verstuurd",
+        "Feedback reminder sent": "Feedbackherinnering verstuurd",
+        "The Nextcloud Forms form participants fill in after the event": "Het Nextcloud Forms-formulier dat deelnemers na het evenement invullen",
+        "When participants are asked for feedback; the end of the event when empty": "Wanneer deelnemers om feedback wordt gevraagd; het einde van het evenement als dit leeg is",
+        "When feedback closes; 21 days after it opens when empty": "Wanneer de feedback sluit; 21 dagen na het openen als dit leeg is"
     },
     "plurals": {},
     "pluralForm": "nplurals=2; plural=(n != 1);"
