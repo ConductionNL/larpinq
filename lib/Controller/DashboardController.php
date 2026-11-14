@@ -13,15 +13,20 @@
  * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-99
  * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-100
  * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-101
+ *
+ * SPDX-FileCopyrightText: 2024 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
  */
 
 declare(strict_types=1);
 
 namespace OCA\Larpinq\Controller;
 
-use OCA\Larpinq\AppInfo\Application;
+use OCA\Larpinq\Support\AppIdentity;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\TemplateResponse;
+use OCP\AppFramework\Services\IInitialState;
+use OCP\IConfig;
 use OCP\IRequest;
 
 /**
@@ -42,14 +47,18 @@ class DashboardController extends Controller {
 	/**
 	 * Constructor for DashboardController
 	 *
-	 * @param string $appName Application name
 	 * @param IRequest $request HTTP request object
+	 * @param IInitialState $initialState The initial state handed to the frontend
+	 * @param CallerAccess $callerAccess The signed-in caller and the game master check
+	 * @param IConfig       $config       The per-user preferences store
 	 */
 	public function __construct(
-		$appName,
 		IRequest $request,
+		private readonly IInitialState $initialState,
+		private readonly CallerAccess $callerAccess,
+		private readonly IConfig $config,
 	) {
-		parent::__construct(appName: $appName, request: $request);
+		parent::__construct(appName: AppIdentity::APP_ID, request: $request);
 	}//end __construct()
 
 	/**
@@ -65,10 +74,19 @@ class DashboardController extends Controller {
 	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-99
 	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-100
 	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-101
+	 * @spec openspec/specs/data-portability/spec.md
+	 * @spec openspec/specs/setting-management/spec.md
 	 */
 	public function page(): TemplateResponse {
+		// The frontend offers the imports to game masters too: the larpinq
+		// register grants them `manage`, which OpenRegister's import asks for.
+		$this->initialState->provideInitialState('isGameMaster', $this->isGameMaster());
+		// The world the user last chose, so lists are narrowed before their
+		// first fetch; the frontend falls back to all worlds when it is gone.
+		$this->initialState->provideInitialState('activeWorld', $this->activeWorld());
+
 		return new TemplateResponse(
-			Application::APP_ID,
+			AppIdentity::APP_ID,
 			'index',
 			[]
 		);
@@ -93,4 +111,42 @@ class DashboardController extends Controller {
 	public function catchAll(): TemplateResponse {
 		return $this->page();
 	}//end catchAll()
+
+	/**
+	 * The signed-in user's active world, stored by the preferences API under
+	 * `active-world`; an empty string means all worlds.
+	 *
+	 * @return string The world UUID, or ''.
+	 *
+	 * @spec openspec/specs/setting-management/spec.md
+	 */
+	private function activeWorld(): string {
+		$user = $this->callerAccess->user();
+		if ($user === null) {
+			return '';
+		}
+
+		return (string)$this->config->getUserValue(
+			userId: $user->getUID(),
+			appName: AppIdentity::APP_ID,
+			key: 'pref_active-world',
+			default: ''
+		);
+	}//end activeWorld()
+
+	/**
+	 * Whether the signed-in user is a game master (the group, or an admin).
+	 *
+	 * @return bool True for a game master or admin.
+	 *
+	 * @spec openspec/specs/data-portability/spec.md
+	 */
+	private function isGameMaster(): bool {
+		$user = $this->callerAccess->user();
+		if ($user === null) {
+			return false;
+		}
+
+		return $this->callerAccess->isGameMasterOrAdmin(uid: $user->getUID());
+	}//end isGameMaster()
 }//end class

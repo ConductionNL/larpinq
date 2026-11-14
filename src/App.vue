@@ -28,6 +28,7 @@
 		:registry="registry"
 		:customComponents="customComponents"
 		:pageTypes="pageTypes"
+		:cellWidgets="cellWidgets"
 		appId="larpinq"
 		:translate="translateForApp"
 		:permissions="permissions">
@@ -83,10 +84,66 @@ import {
 	CnObjectSidebar,
 	useTenantContext,
 } from '@conduction/nextcloud-vue'
+import { loadState } from '@nextcloud/initial-state'
 import { translate as ncT } from '@nextcloud/l10n'
 import { NcAppSettingsSection } from '@nextcloud/vue'
-import { reactive } from 'vue'
+import { provide, reactive } from 'vue'
+import TranslatedNameCell from './components/cells/TranslatedNameCell.vue'
+import { startActiveWorld } from './services/activeWorld.js'
 import { setObjectStoreTenantUuid, useObjectStore } from './store/modules/object.js'
+
+/**
+ * Whether a route has at least one param with a value.
+ *
+ * @param {object} params The route params.
+ * @return {boolean} True when a param is neither undefined, null nor empty.
+ *
+ * @spec openspec/changes/larpinq-adopt-or-abstractions/specs/larpinq-adopt-or-abstractions/spec.md
+ */
+function hasFilledParam(params) {
+	return Object.keys(params).some(
+		(k) => params[k] !== undefined && params[k] !== null && params[k] !== '',
+	)
+}
+
+/**
+ * The parent index path of a detail route (one with a non-empty route param),
+ * or null for any other route.
+ *
+ * @param {object|undefined} route The current route.
+ * @return {string|null} The index path, `/` at the root.
+ */
+function detailRouteParent(route) {
+	if (!isDetailRoute(route)) {
+		return null
+	}
+	return parentIndexPath(route) || '/'
+}
+
+/**
+ * Whether a route is a detail route: it has a path with a separator and at
+ * least one filled route param.
+ *
+ * @param {object|undefined} route The current route.
+ * @return {boolean} True for a detail route.
+ */
+function isDetailRoute(route) {
+	return Boolean(route) && /:|\//.test(route.path) && hasFilledParam(route.params || {})
+}
+
+/**
+ * The route's path without its trailing `/:id` segment: taken from the
+ * matched route record when there is one, otherwise from the path itself.
+ *
+ * @param {object} route The current route.
+ * @return {string} The index path, possibly empty.
+ */
+function parentIndexPath(route) {
+	const matched = route.matched && route.matched[0]
+	return matched
+		? matched.path.replace(/\/:[^/]+$/, '')
+		: route.path.replace(/\/[^/]+\/?$/, '')
+}
 
 export default {
 	name: 'App',
@@ -171,6 +228,7 @@ export default {
 	 * watcher just never fires.
 	 *
 	 * @spec openspec/changes/larpinq-adopt-or-abstractions/specs/larpinq-adopt-or-abstractions/spec.md
+	 * @spec openspec/specs/setting-management/spec.md
 	 *
 	 * @return {object} Setup return — none needed externally.
 	 */
@@ -180,11 +238,23 @@ export default {
 		// deployment — the watcher simply never fires.
 		const { activeOrganisationUuid } = useTenantContext()
 
+		// The page workspace every index page reads its `@workspace.activeWorld?`
+		// list filter from, seeded with the world the page was served with, so
+		// lists are narrowed before their first fetch (events-world-scope-and-upcoming).
+		provide(
+			'cnWorkspaceContext',
+			startActiveWorld(loadState('larpinq', 'activeWorld', '')),
+		)
+
 		return { cnActiveOrganisationUuid: activeOrganisationUuid }
 	},
 
 	data() {
 		return {
+			// Cell widgets an index column names with `widget`. `translatedName`
+			// shows the value with the "(translated from …)" badge
+			// (larpinq-adopt-or-abstractions, Phase 3).
+			cellWidgets: { translatedName: TranslatedNameCell },
 			objectSidebarState: reactive({
 				active: false,
 				open: true,
@@ -284,49 +354,13 @@ export default {
 				setObjectStoreTenantUuid(next)
 
 				// 2. Clear caches via the store action.
-				try {
-					const store = useObjectStore()
-					if (
-						store
-						&& typeof store.setActiveTenantOrganisation === 'function'
-					) {
-						store.setActiveTenantOrganisation(next)
-					}
-				} catch {
-					// Optional catch binding: NC's config sets
-					// `caughtErrors: 'all'`, so a named-but-unused error
-					// parameter reports as an unused variable.
-					// Pinia not active yet on first immediate fire — safe
-					// to ignore; subsequent fires will reach the store.
-				}
+				this.resetTenantCaches(next)
 
 				// 3. Detail view → navigate back to parent index on switch.
 				// Skip the initial mount (previous === undefined) so a deep
 				// link into a detail page doesn't redirect on first paint.
-				if (
-					previous !== undefined
-					&& this.$route
-					&& /:|\//.test(this.$route.path)
-				) {
-					const params = this.$route.params || {}
-					const hasIdParam = Object.keys(params).some(
-						(k) =>
-							params[k] !== undefined
-							&& params[k] !== null
-							&& params[k] !== '',
-					)
-					if (hasIdParam) {
-						// Find the parent index route by stripping the
-						// trailing `/:id` segment from the matched path.
-						const matched = this.$route.matched && this.$route.matched[0]
-						const indexPath = matched
-							? matched.path.replace(/\/:[^/]+$/, '')
-							: this.$route.path.replace(/\/[^/]+\/?$/, '')
-						const target = indexPath || '/'
-						if (this.$router && target !== this.$route.path) {
-							this.$router.push(target).catch(() => {})
-						}
-					}
+				if (previous !== undefined) {
+					this.leaveDetailRoute()
 				}
 			},
 		},
@@ -346,6 +380,49 @@ export default {
 		 */
 		translateForApp(key) {
 			return ncT('larpinq', key)
+		},
+
+		/**
+		 * Wipe the object store's collection, object and pagination caches
+		 * for a new tenant.
+		 *
+		 * @param {string|null} uuid The newly active organisation UUID.
+		 *
+		 * @spec openspec/changes/larpinq-adopt-or-abstractions/specs/larpinq-adopt-or-abstractions/spec.md
+		 */
+		resetTenantCaches(uuid) {
+			try {
+				const store = useObjectStore()
+				if (
+					store
+					&& typeof store.setActiveTenantOrganisation === 'function'
+				) {
+					store.setActiveTenantOrganisation(uuid)
+				}
+			} catch {
+				// Optional catch binding: NC's config sets
+				// `caughtErrors: 'all'`, so a named-but-unused error
+				// parameter reports as an unused variable.
+				// Pinia not active yet on first immediate fire — safe
+				// to ignore; subsequent fires will reach the store.
+			}
+		},
+
+		/**
+		 * On a detail route (one with a non-empty route param), navigate to
+		 * its parent index, since the object may not be visible in the new
+		 * tenant.
+		 *
+		 * @spec openspec/changes/larpinq-adopt-or-abstractions/specs/larpinq-adopt-or-abstractions/spec.md
+		 */
+		leaveDetailRoute() {
+			const target = detailRouteParent(this.$route)
+			if (target === null) {
+				return
+			}
+			if (this.$router && target !== this.$route.path) {
+				this.$router.push(target).catch(() => {})
+			}
 		},
 	},
 }

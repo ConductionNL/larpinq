@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
+ */
+
+/**
  * Larpinq Migrate App Config Keys Repair Step
  *
  * Repair step that carries this app's stored `IAppConfig` values across the
@@ -80,7 +85,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Repair;
 
-use OCA\Larpinq\AppInfo\Application;
+use OCA\Larpinq\Support\AppIdentity;
 use OCP\IAppConfig;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
@@ -176,53 +181,57 @@ class MigrateAppConfigKeys implements IRepairStep {
 			return;
 		}
 
-		$migrated = 0;
-		$alreadyPresent = 0;
-		$emptySource = 0;
-		$skippedReserved = 0;
-
+		$tally = ['migrated' => 0, 'present' => 0, 'empty' => 0, 'reserved' => 0, 'failed' => 0];
 		foreach ($keys as $key) {
-			if (in_array($key, self::RESERVED_KEYS, strict: true) === true) {
-				$skippedReserved++;
-				continue;
-			}
-
-			/* The two READS belong inside the try as much as the write does.
-			   A read that throws propagates out of run() and aborts the
-			   repair — and because this step also runs under <install>, an
-			   app that cannot finish its repair steps does not enable at all,
-			   taking every route with it. That is the opposite of what this
-			   class's docblock promises ("every failure is logged and the
-			   loop continues"). One unreadable key is not worth an install. */
-			try {
-				$old = $this->appConfig->getValueString(self::OLD_APP_ID, $key, '');
-				if ($old === '') {
-					$emptySource++;
-					continue;
-				}
-
-				$existing = $this->appConfig->getValueString(Application::APP_ID, $key, '');
-				if ($existing !== '') {
-					$alreadyPresent++;
-					continue;
-				}
-
-				$this->appConfig->setValueString(Application::APP_ID, $key, $old);
-				$migrated++;
-			} catch (Throwable $e) {
-				$this->logger->warning(
-					'Larpinq: could not migrate one app config key; leaving it under the old namespace',
-					['key' => $key, 'exception' => $e->getMessage()]
-				);
-			}//end try
-		}//end foreach
+			$tally[$this->migrateKey(key: $key)]++;
+		}
 
 		$output->info(
-			'MigrateAppConfigKeys: ' . $migrated . ' key(s) migrated, ' . $alreadyPresent
-			. ' already present, ' . $emptySource . ' had no value to migrate, '
-			. $skippedReserved . ' skipped as Nextcloud-reserved.'
+			'MigrateAppConfigKeys: ' . $tally['migrated'] . ' key(s) migrated, ' . $tally['present']
+			. ' already present, ' . $tally['empty'] . ' had no value to migrate, '
+			. $tally['reserved'] . ' skipped as Nextcloud-reserved.'
 		);
 	}//end run()
+
+	/**
+	 * Copy one key from the old namespace when the new one has no value for it.
+	 *
+	 * @param string $key The key name.
+	 *
+	 * @return string What happened: migrated, present, empty, reserved or failed.
+	 */
+	private function migrateKey(string $key): string {
+		if (in_array($key, self::RESERVED_KEYS, strict: true) === true) {
+			return 'reserved';
+		}
+
+		/* The two READS belong inside the try as much as the write does.
+		   A read that throws propagates out of run() and aborts the
+		   repair — and because this step also runs under <install>, an
+		   app that cannot finish its repair steps does not enable at all,
+		   taking every route with it. That is the opposite of what this
+		   class's docblock promises ("every failure is logged and the
+		   loop continues"). One unreadable key is not worth an install. */
+		try {
+			$old = $this->appConfig->getValueString(self::OLD_APP_ID, $key, '');
+			if ($old === '') {
+				return 'empty';
+			}
+
+			if ($this->appConfig->getValueString(AppIdentity::APP_ID, $key, '') !== '') {
+				return 'present';
+			}
+
+			$this->appConfig->setValueString(AppIdentity::APP_ID, $key, $old);
+			return 'migrated';
+		} catch (Throwable $e) {
+			$this->logger->warning(
+				'Larpinq: could not migrate one app config key; leaving it under the old namespace',
+				['key' => $key, 'exception' => $e->getMessage()]
+			);
+			return 'failed';
+		}//end try
+	}//end migrateKey()
 
 	/**
 	 * Every key currently stored under the old app-config namespace.

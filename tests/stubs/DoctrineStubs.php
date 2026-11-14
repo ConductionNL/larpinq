@@ -3,6 +3,9 @@
 /**
  * Doctrine DBAL stubs for the unit suite.
  *
+ * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
+ *
  * `OCP\DB\QueryBuilder\IQueryBuilder` evaluates class constants that reference
  * `Doctrine\DBAL\ParameterType` AT PARSE TIME. `IDBConnection::getQueryBuilder()`
  * declares IQueryBuilder as its return type, so PHPUnit cannot even build a mock
@@ -38,9 +41,6 @@
  * @author    Conduction Development Team <info@conduction.nl>
  * @copyright 2026 Conduction B.V.
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
- *
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
  *
  * @link https://conduction.nl
  */

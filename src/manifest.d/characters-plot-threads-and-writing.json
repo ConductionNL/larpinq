@@ -1,0 +1,114 @@
+{
+	"pages": [
+		{
+			"id": "Plots",
+			"route": "/plots",
+			"type": "index",
+			"title": "Plots",
+			"config": {
+				"register": "larpinq",
+				"schema": "larping_plot",
+				"allowExport": true,
+				"showMassImport": false,
+				"columns": [
+					{
+						"key": "title",
+						"label": "Title"
+					},
+					{
+						"key": "writer",
+						"label": "Writer"
+					},
+					{
+						"key": "writingStep",
+						"label": "Writing step"
+					},
+					{
+						"key": "setting",
+						"label": "World"
+					}
+				],
+				"documentationUrl": "https://larpinq.conduction.nl"
+			}
+		},
+		{
+			"id": "PlotDetail",
+			"route": "/plots/:id",
+			"type": "detail",
+			"title": "Plot",
+			"config": {
+				"register": "larpinq",
+				"schema": "larping_plot",
+				"lifecycleActions": {
+					"field": "writingStep"
+				},
+				"documentationUrl": "https://larpinq.conduction.nl",
+				"widgets": [
+					{
+						"id": "plot-data",
+						"type": "data",
+						"title": "Plot",
+						"icon": "BookOpenVariantOutline",
+						"content": {
+							"columns": 2
+						}
+					},
+					{
+						"id": "plot-parts",
+						"type": "object-list",
+						"title": "Characters in this plot",
+						"icon": "AccountGroup",
+						"content": {
+							"register": "larpinq",
+							"schema": "larping_plot_part",
+							"filter": {
+								"plot": "@objectId"
+							},
+							"columns": [
+								{
+									"key": "character",
+									"label": "Character"
+								},
+								{
+									"key": "playerText",
+									"label": "Player text"
+								},
+								{
+									"key": "privateText",
+									"label": "Private text"
+								}
+							]
+						}
+					}
+				],
+				"layout": [
+					{
+						"id": "1",
+						"widgetId": "plot-data",
+						"gridX": 0,
+						"gridY": 0,
+						"gridWidth": 12,
+						"gridHeight": 4
+					},
+					{
+						"id": "2",
+						"widgetId": "plot-parts",
+						"gridX": 0,
+						"gridY": 4,
+						"gridWidth": 12,
+						"gridHeight": 6
+					}
+				]
+			}
+		}
+	],
+	"menu": [
+		{
+			"id": "Plots",
+			"label": "Plots",
+			"icon": "BookOpenVariantOutline",
+			"route": "Plots",
+			"order": 30
+		}
+	]
+}

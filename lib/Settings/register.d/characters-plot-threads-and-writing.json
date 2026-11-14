@@ -1,0 +1,245 @@
+{
+  "components": {
+    "registers": {
+      "larpinq": {
+        "schemas": [
+          "larping_plot",
+          "larping_plot_part"
+        ]
+      }
+    },
+    "schemas": {
+      "plot": {
+        "slug": "larping_plot",
+        "title": "Plot",
+        "icon": "BookOpenVariantOutline",
+        "version": "1.0.0",
+        "summary": "A story thread that touches several characters",
+        "description": "A plot written by the story team for one world. Its parts link it to characters, each with a private text for game masters and a text for the player.",
+        "type": "object",
+        "x-schema-org": "schema:CreativeWork",
+        "configuration": {
+          "exportable": true,
+          "x-openregister-lifecycle": {
+            "field": "writingStep",
+            "initial": "draft",
+            "final": [
+              "approved"
+            ],
+            "transitions": {
+              "ready": {
+                "from": [
+                  "draft"
+                ],
+                "to": "ready",
+                "description": "The writer hands the plot in for review."
+              },
+              "approve": {
+                "from": [
+                  "ready"
+                ],
+                "to": "approved",
+                "description": "A game master approves the plot for play."
+              },
+              "reopen": {
+                "from": [
+                  "ready",
+                  "approved"
+                ],
+                "to": "draft",
+                "description": "Send the plot back to the writer."
+              }
+            }
+          }
+        },
+        "required": [
+          "title"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "title": "Title",
+            "description": "The name of the plot",
+            "maxLength": 255
+          },
+          "summary": {
+            "type": "string",
+            "format": "markdown",
+            "title": "Summary",
+            "description": "What the plot is about, for the story team"
+          },
+          "setting": {
+            "type": "string",
+            "format": "uuid",
+            "$ref": "setting",
+            "title": "World",
+            "description": "The world this plot belongs to"
+          },
+          "writer": {
+            "type": "string",
+            "title": "Writer",
+            "description": "The story writer who writes this plot (a Nextcloud user id)",
+            "maxLength": 255
+          },
+          "writingStep": {
+            "type": "string",
+            "title": "Writing step",
+            "description": "How far the writing is",
+            "enum": [
+              "draft",
+              "ready",
+              "approved"
+            ],
+            "default": "draft"
+          }
+        },
+        "authorization": {
+          "read": [
+            "gamemasters"
+          ],
+          "create": [
+            "gamemasters"
+          ],
+          "update": [
+            "gamemasters"
+          ],
+          "delete": [
+            "gamemasters"
+          ]
+        }
+      },
+      "plotPart": {
+        "slug": "larping_plot_part",
+        "title": "Plot part",
+        "icon": "BookOpenVariantOutline",
+        "version": "1.0.0",
+        "summary": "What one plot means for one character",
+        "description": "Links a plot to a character. The private text is for game masters only; the player text is also read by the player who owns the character.",
+        "type": "object",
+        "x-schema-org": "schema:CreativeWork",
+        "configuration": {
+          "exportable": true,
+          "x-openregister-references": {
+            "character": {
+              "mode": "relatedObject",
+              "schema": "character",
+              "field": "character"
+            }
+          }
+        },
+        "required": [
+          "plot",
+          "character"
+        ],
+        "properties": {
+          "plot": {
+            "type": "string",
+            "format": "uuid",
+            "$ref": "larping_plot",
+            "title": "Plot",
+            "description": "The plot this part belongs to"
+          },
+          "character": {
+            "type": "string",
+            "format": "uuid",
+            "$ref": "character",
+            "title": "Character",
+            "description": "The character this part is about"
+          },
+          "privateText": {
+            "type": "string",
+            "format": "markdown",
+            "title": "Private text",
+            "description": "What the story team knows about this character in the plot. Never shown to players.",
+            "authorization": {
+              "read": [
+                "gamemasters"
+              ],
+              "update": [
+                "gamemasters"
+              ]
+            }
+          },
+          "playerText": {
+            "type": "string",
+            "format": "markdown",
+            "title": "Player text",
+            "description": "What the player of this character reads about the plot"
+          },
+          "ownerUid": {
+            "type": "string",
+            "title": "Player account",
+            "description": "The Nextcloud account of the character's player, copied from the character when the part is saved",
+            "maxLength": 255,
+            "calculation": {
+              "type": "string",
+              "materialise": true,
+              "expression": {
+                "prop": "@ref.character.ownerUid"
+              }
+            }
+          }
+        },
+        "authorization": {
+          "read": [
+            {
+              "group": "gamemasters"
+            },
+            {
+              "group": "larpers",
+              "match": {
+                "ownerUid": "$userId"
+              }
+            }
+          ],
+          "create": [
+            "gamemasters"
+          ],
+          "update": [
+            "gamemasters"
+          ],
+          "delete": [
+            "gamemasters"
+          ]
+        }
+      },
+      "character": {
+        "properties": {
+          "writer": {
+            "type": "string",
+            "title": "Writer",
+            "description": "The story writer who writes this character (a Nextcloud user id)",
+            "authorization": {
+              "read": [
+                "gamemasters"
+              ],
+              "update": [
+                "gamemasters"
+              ]
+            },
+            "maxLength": 255
+          },
+          "writingStep": {
+            "type": "string",
+            "title": "Writing step",
+            "description": "How far the writing of this character is",
+            "enum": [
+              "draft",
+              "ready",
+              "approved"
+            ],
+            "default": "draft",
+            "authorization": {
+              "read": [
+                "gamemasters"
+              ],
+              "update": [
+                "gamemasters"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

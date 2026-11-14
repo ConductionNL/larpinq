@@ -13,6 +13,9 @@
  * @version GIT: <git-id>
  *
  * @link https://larpingapp.com
+ *
+ * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
  */
 
 declare(strict_types=1);
@@ -83,8 +86,8 @@ class SettingsControllerCsrfPostureTest extends TestCase {
 		$reflection = new ReflectionMethod(SettingsController::class, $method);
 		$docs = $reflection->getDocComment();
 		$this->assertIsString(
-			$docs,
-			sprintf('%s() has no docblock at all — nothing to judge.', $method)
+			actual: $docs,
+			message: sprintf('%s() has no docblock at all — nothing to judge.', $method)
 		);
 
 		$matches = [];
@@ -107,11 +110,11 @@ class SettingsControllerCsrfPostureTest extends TestCase {
 	public function testTheParserAndTheClassUnderTestAreReal(): void {
 		// The class under test must be THIS repository's copy.
 		$file = (new ReflectionClass(SettingsController::class))->getFileName();
-		$this->assertIsString($file);
+		$this->assertIsString(actual: $file);
 		$this->assertSame(
-			realpath(__DIR__ . '/../../../lib/Controller/SettingsController.php'),
-			realpath($file),
-			'SettingsController resolved outside this working tree — the Nextcloud '
+			expected: realpath(__DIR__ . '/../../../lib/Controller/SettingsController.php'),
+			actual: realpath($file),
+			message: 'SettingsController resolved outside this working tree — the Nextcloud '
 			. 'autoloader hijacks OCA\\<App>\\* to the installed app, and this suite '
 			. 'would then be grading the deployed copy instead of the code under test.'
 		);
@@ -119,9 +122,9 @@ class SettingsControllerCsrfPostureTest extends TestCase {
 		// The regex must actually find a tag-position annotation. index() is
 		// legitimately annotated, so a parser that works reports it here.
 		$this->assertContains(
-			'nocsrfrequired',
-			$this->annotationsOf('index'),
-			'The Nextcloud annotation regex found no @NoCSRFRequired on index(), '
+			needle: 'nocsrfrequired',
+			haystack: $this->annotationsOf(method: 'index'),
+			message: 'The Nextcloud annotation regex found no @NoCSRFRequired on index(), '
 			. 'which genuinely carries one — the parser is broken, so every '
 			. 'assertion in this file would pass over anything.'
 		);
@@ -136,12 +139,12 @@ class SettingsControllerCsrfPostureTest extends TestCase {
 	 */
 	public function testSettingsWritesDoNotDisableCsrf(): void {
 		foreach (self::CSRF_PROTECTED_WRITES as $method) {
-			$annotations = $this->annotationsOf($method);
+			$annotations = $this->annotationsOf(method: $method);
 
 			$this->assertNotContains(
-				'nocsrfrequired',
-				$annotations,
-				sprintf(
+				needle: 'nocsrfrequired',
+				haystack: $annotations,
+				message: sprintf(
 					'SettingsController::%s() is a state-mutating admin write, and '
 					. 'Nextcloud reads a @NoCSRFRequired annotation out of its docblock '
 					. '— SecurityMiddleware::isValidCSRF() therefore returns early and '
@@ -161,9 +164,9 @@ class SettingsControllerCsrfPostureTest extends TestCase {
 				$attributes
 			);
 			$this->assertNotContains(
-				'OCP\AppFramework\Http\Attribute\NoCSRFRequired',
-				$names,
-				sprintf('SettingsController::%s() carries a #[NoCSRFRequired] attribute.', $method)
+				needle: 'OCP\AppFramework\Http\Attribute\NoCSRFRequired',
+				haystack: $names,
+				message: sprintf('SettingsController::%s() carries a #[NoCSRFRequired] attribute.', $method)
 			);
 		}//end foreach
 
@@ -179,9 +182,9 @@ class SettingsControllerCsrfPostureTest extends TestCase {
 	public function testSettingsWritesStayAdminOnly(): void {
 		foreach (self::CSRF_PROTECTED_WRITES as $method) {
 			$this->assertNotContains(
-				'noadminrequired',
-				$this->annotationsOf($method),
-				sprintf(
+				needle: 'noadminrequired',
+				haystack: $this->annotationsOf(method: $method),
+				message: sprintf(
 					'SettingsController::%s() writes instance-wide configuration and '
 					. 'must not be reachable by a non-admin session.',
 					$method

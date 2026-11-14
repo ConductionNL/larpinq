@@ -15,7 +15,7 @@ income side of the XP ledger; the spend side is `skill-requirement-
 enforcement`. Ambient event effects (EVT-007/008) keep working for
 world-level modifiers and are not changed.
 
-@e2e exclude xpAward write/validation/RBAC and the fifth stat-engine application stage are server-authoritative (OpenRegister schema RBAC + CharacterService); proven by PHPUnit CharacterServiceXpAwardTest. The batch "Award XP" surface on the event detail page is deferred (no bespoke event-detail component in this app's src/ — declarative manifest UI is a nc-vue follow-up). The shipped browser surface (the type:index XP Awards page) is covered by tests/e2e/spec-coverage/event-xp-award-workflow.spec.ts.
+@e2e exclude xpAward write/validation/RBAC and the fifth stat-engine application stage are server-authoritative (OpenRegister schema RBAC + CharacterService); proven by PHPUnit CharacterServiceXpAwardTest. The batch "Award XP" surface on the event detail page is covered by tests/e2e/workflows/xp-batch-award.workflow.spec.ts (events-xp-batch-award). The shipped browser surface (the type:index XP Awards page) is covered by tests/e2e/spec-coverage/event-xp-award-workflow.spec.ts.
 
 ## Requirements
 
@@ -93,8 +93,19 @@ arithmetic and audit ordering MUST remain unchanged.
 Create, update, and delete on `xpAward` objects MUST be restricted
 server-side to the GM group via OpenRegister schema-level RBAC configured in
 the register configuration — authorization stays OR-delegated (ADR-022), and
-no app-local authorization code re-implements it. Authenticated app users
-MAY read awards (players see their characters' XP provenance). UI visibility
+no app-local authorization code re-implements it. Reading awards through the
+OpenRegister objects API MUST be restricted the same way: the `xpAward` schema
+grants `read` to the GM group only, so game masters and the award's owner read
+it, and no other signed-in user and no anonymous visitor does (DECISIONS row
+30). Players see the XP of their own characters through the app's pages (the
+character stat sheet), not through the objects API: the owner of an award is
+the game master who granted it, so read as the player OpenRegister hides every
+award. The stat engine therefore reads the awards on a character with the
+app's authority when, and only when, the signed-in user plays that character,
+judged from the STORED character read as the user (CharacterConnectionGuard),
+never from the payload. That read is scoped to the one character. Test:
+`tests/unit/Service/OwnXpAwardsReadTest.php` (OpenRegister's real evaluator).
+UI visibility
 of the awarding surface MUST be limited to GM-group members, as
 presentation only.
 
@@ -105,11 +116,26 @@ presentation only.
 - THEN the write MUST be rejected with an authorization error
 - AND no award MUST be stored
 
+#### Scenario: A player cannot read other awards through the objects API
+
+- GIVEN player-user "carol" is not in the GM group and owns no award
+- WHEN carol GETs an xpAward via the OpenRegister objects API
+- THEN OpenRegister MUST refuse the read
+- AND a game master reading the same award MUST get it
+
 #### Scenario: Player can read awards on their character
 
 - GIVEN player-user "carol" owns character "Sir Lancelot" with two awards
 - WHEN carol views the character's XP audit trail
 - THEN both awards (amount, reason, event) MUST be visible to her
+- AND her XP and the budget her skill choices are checked against MUST count both
+
+#### Scenario: A player's stat sheet of someone else's character counts no hidden awards
+
+- GIVEN player-user "carol" can read character "Oswin", which "dave" plays, and it has an award
+- WHEN carol views Oswin's stat sheet
+- THEN the award MUST NOT be counted or listed
+- AND claiming `ownerUid: carol` in a submitted character MUST NOT change that
 
 ### Requirement: The event detail MUST offer a GM batch awarding workflow
 
@@ -120,7 +146,11 @@ all checked rows with per-row amount override and optional per-row reason;
 creates one `xpAward` per checked character on save; lists existing awards
 for the event inline (character, amount, reason, awardedBy) with edit and
 delete; and pre-unchecks roster rows that already have an award for this
-event so re-opening the surface does not double-award by default.
+event so re-opening the surface does not double-award by default. Rows
+without an award MUST start checked when the character's attendance for the
+event is checked-in, and unchecked when it is no-show or when no attendance
+was recorded, with a hint that no check-in was recorded; the GM MAY change
+every tick before saving.
 
 #### Scenario: Batch award after the event
 
@@ -150,6 +180,13 @@ event so re-opening the surface does not double-award by default.
 - WHEN bob opens the event detail page
 - THEN the Award XP surface MUST NOT be offered to him
 
+#### Scenario: Attendance decides the default ticks
+
+- GIVEN at event "Summer Siege 2025" "Mirela the Wanderer" and "Sir Bertram" are checked in and "Old Captain Harrow" is a no-show
+- WHEN the GM opens Award XP on the event page
+- THEN "Mirela the Wanderer" and "Sir Bertram" are ticked
+- AND "Old Captain Harrow" is unticked
+
 ### Requirement: Award changes MUST trigger recalculation of the affected character
 
 Creating, updating, or deleting an `xpAward` MUST trigger stat
@@ -163,3 +200,29 @@ ledger immediately.
 - WHEN the GM deletes that award
 - THEN Morgana's stats MUST be recalculated
 - AND her stored XP value MUST no longer include the deleted award
+
+### Requirement: A batch award saves each row on its own (REQ-EXB-001)
+
+`POST /api/events/{id}/xp-awards` SHALL create one award per row for
+characters on the event's roster, refuse a second award for the same event and
+character unless the row is marked extra with a reason, and MUST report which
+rows were created and which were refused. Only game masters SHALL call it.
+
+#### Scenario: One duplicate in the batch
+
+- GIVEN "Sir Bertram" already has an award for "Summer Siege 2025"
+- WHEN a game master saves a batch with "Mirela the Wanderer" and "Sir Bertram"
+- THEN an award for "Mirela the Wanderer" is created
+- AND the row for "Sir Bertram" is refused as a duplicate
+
+### Requirement: Award provenance is stamped by the server (REQ-EXB-002)
+
+On every created award larpinq SHALL set `awardedBy` to the acting user and
+`awardedAt` to the time of the write, and MUST ignore values sent by the
+client; an update MUST keep the original values.
+
+#### Scenario: A client sends its own provenance
+
+- GIVEN game master Joris creates an award through the API with `awardedBy` set to "anna"
+- WHEN the award is saved
+- THEN its `awardedBy` is "joris" and `awardedAt` is the time of the save

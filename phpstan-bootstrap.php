@@ -7,6 +7,9 @@
  * which only resolves inside the Nextcloud container.  In bare CI environments
  * or on a local host where /var/www/html does not exist, fall back to the
  * bundled OCP.bak copy that ships alongside the symlink.
+ *
+ * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
  */
 
 $autoloader = require __DIR__ . '/vendor/autoload.php';

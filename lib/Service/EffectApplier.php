@@ -20,6 +20,9 @@
  * @link      https://larpingapp.com
  *
  * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-73
+ *
+ * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
  */
 
 declare(strict_types=1);
@@ -41,15 +44,12 @@ class EffectApplier {
 	/**
 	 * Apply a list of effect references to abilities.
 	 *
-	 * @param array<string, array<string, mixed>> $abilities Reference to abilities.
-	 *                                                       See calculateEffect() for why this is the loose shape and not
-	 *                                                       `array{name?: string, base?: int, value: int, audit: array}` — the
-	 *                                                       array is threaded by reference all the way down to
-	 *                                                       applyModifierToAbility(), which can seed an entry with `value`
-	 *                                                       alone.
-	 * @param array|null $effects Array of effect IDs.
-	 * @param array<string, bool> $appliedEffects Tracks applied non-cumulative effects.
-	 * @param array<string, array<string, mixed>> $effectLookup All effects indexed by ID.
+	 * @param EffectRun  $run       The pass: its abilities change in place, its applied set tracks the
+	 *                              non-cumulative effects, and its effects resolve the ids. See
+	 *                              calculateEffect() for why the abilities have the loose shape and not
+	 *                              `array{name?: string, base?: int, value: int, audit: array}`:
+	 *                              applyModifierToAbility() can seed an entry with `value` alone.
+	 * @param array|null $effectIds Array of effect IDs.
 	 *
 	 * @return void
 	 *
@@ -57,34 +57,31 @@ class EffectApplier {
 	 *
 	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-73
 	 */
-	public function applyEffects(
-		array &$abilities,
-		?array $effects,
-		array &$appliedEffects,
-		array $effectLookup,
-	): void {
-		// Return early if effects is null or empty.
-		if ($effects === null || count($effects) === 0) {
-			return;
-		}
-
+	public function applyEffects(EffectRun $run, array|null $effectIds): void {
 		// @psalm-suppress MixedAssignment Effect IDs from entity arrays
-		foreach ($effects as $effectId) {
-			// Skip if effectId is null.
-			if ($effectId === null) {
-				continue;
-			}
-
-			$effect = $effectLookup[(string)$effectId] ?? null;
+		foreach (($effectIds ?? []) as $effectId) {
+			$effect = $this->effectOf(run: $run, effectId: $effectId);
 			if ($effect !== null) {
-				$this->calculateEffect(
-					abilities: $abilities,
-					effect: $effect,
-					appliedEffects: $appliedEffects
-				);
+				$this->calculateEffect(run: $run, effect: $effect);
 			}
 		}
 	}//end applyEffects()
+
+	/**
+	 * The effect an id names in this pass, or null for a null or unknown id.
+	 *
+	 * @param EffectRun $run      The pass.
+	 * @param mixed     $effectId The effect id as linked.
+	 *
+	 * @return array<string, mixed>|null The effect.
+	 */
+	private function effectOf(EffectRun $run, mixed $effectId): ?array {
+		if ($effectId === null) {
+			return null;
+		}
+
+		return ($run->effects[(string)$effectId] ?? null);
+	}//end effectOf()
 
 	/**
 	 * Collect all unique ability IDs affected by a given effect.
@@ -132,8 +129,7 @@ class EffectApplier {
 	 * This avoids denormalisation bloat if derived stats are ever persisted.
 	 * Closes #219.
 	 *
-	 * @param array<string, array<string, mixed>> $abilities Reference to abilities.
-	 * @param string $abilityId The ability ID.
+	 * @param array<string, mixed> $ability Reference to the ability; a missing `value` starts at 0.
 	 * @param array<string, mixed> $effect Effect data.
 	 *
 	 * @return void
@@ -142,13 +138,13 @@ class EffectApplier {
 	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-78
 	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-79
 	 */
-	private function applyModifierToAbility(array &$abilities, string $abilityId, array $effect): void {
-		if (isset($abilities[$abilityId]['value']) === false) {
-			$abilities[$abilityId]['value'] = 0;
+	private function applyModifierToAbility(array &$ability, array $effect): void {
+		if (isset($ability['value']) === false) {
+			$ability['value'] = 0;
 		}
 
 		// Get current value and modifiers.
-		$currentValue = (int)$abilities[$abilityId]['value'];
+		$currentValue = (int)$ability['value'];
 
 		// Coerce modifier to a non-negative integer. The `modification` enum (positive/negative)
 		// controls the sign. This prevents sign-direction confusion where a GM authors
@@ -161,17 +157,17 @@ class EffectApplier {
 
 		// Apply modification based on type.
 		if ($modification === 'positive') {
-			$abilities[$abilityId]['value'] = $currentValue + $modifier;
+			$ability['value'] = $currentValue + $modifier;
 		} elseif ($modification === 'negative') {
-			$abilities[$abilityId]['value'] = $currentValue - $modifier;
+			$ability['value'] = $currentValue - $modifier;
 		}
 
-		$newValue = $abilities[$abilityId]['value'];
+		$newValue = $ability['value'];
 
 		// Store a lean audit entry — effect ID + label + delta only.
 		// Storing the full $effect object risks denormalisation bloat when stats
 		// are ever persisted back to OR. Closes #219.
-		$abilities[$abilityId]['audit'][] = [
+		$ability['audit'][] = [
 			'type' => 'effect',
 			'effectId' => (string)($effect['id'] ?? ''),
 			'effectName' => (string)($effect['name'] ?? ''),
@@ -186,61 +182,72 @@ class EffectApplier {
 	 * Skips non-cumulative effects that have already been applied in this
 	 * calculation pass. Closes #208.
 	 *
-	 * @param array<string, array<string, mixed>> $abilities Reference to abilities.
-	 *                                                       Deliberately NOT the tighter
-	 *                                                       `array{name?: string, base?: int, value: int, audit: array}` this
-	 *                                                       replaces. That shape was not true: this array is passed BY
-	 *                                                       REFERENCE into applyModifierToAbility(), which seeds a missing
-	 *                                                       entry with `$abilities[$id]['value'] = 0` alone — no `audit` key —
-	 *                                                       so a caller could observe an entry the strict shape says cannot
-	 *                                                       exist. Widening the claim to match the code is the honest
-	 *                                                       direction; tightening the callee instead just moved the error onto
-	 *                                                       its own assignments.
+	 * @param EffectRun $run The pass: the abilities as they change and the effects applied so far.
 	 * @param array<string, mixed> $effect Effect data.
-	 * @param array<string, bool> $appliedEffects Tracks applied non-cumulative effects.
 	 *
 	 * @return void
 	 *
 	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-76
 	 */
-	private function calculateEffect(array &$abilities, array $effect, array &$appliedEffects): void {
-		$effectId = (string)($effect['id'] ?? '');
-
+	private function calculateEffect(EffectRun $run, array $effect): void {
 		// Enforce the non-cumulative dedup rule. If this effect has been applied
 		// already and is marked non-cumulative, skip it. Closes #208.
-		if ($effectId !== '' && isset($appliedEffects[$effectId]) === true) {
-			$cumulative = (string)($effect['cumulative'] ?? 'non-cumulative');
-			if ($cumulative === 'non-cumulative') {
-				return;
-			}
-		}
-
-		$effectAbilities = $this->collectEffectAbilities(effect: $effect);
-
-		// Skip if no abilities are affected.
-		if (empty($effectAbilities) === true) {
+		if ($this->isRepeatedNonCumulative(run: $run, effect: $effect) === true) {
 			return;
 		}
 
-		// Apply the effect to each affected ability.
-		// @psalm-suppress MixedAssignment Ability IDs from effect arrays.
-		foreach ($effectAbilities as $rawAbilityId) {
-			// Skip if abilityId is null.
-			if ($rawAbilityId === null) {
-				continue;
-			}
-
-			$this->applyModifierToAbility(
-				abilities: $abilities,
-				abilityId: (string)$rawAbilityId,
-				effect: $effect
-			);
+		// An effect that touches no ability is not recorded as applied.
+		if ($this->applyToAbilities(run: $run, effect: $effect) === false) {
+			return;
 		}
 
 		// Record that this effect was applied so non-cumulative dedupe works
 		// on the next encounter of the same effect ID within this pass.
+		$effectId = (string)($effect['id'] ?? '');
 		if ($effectId !== '') {
-			$appliedEffects[$effectId] = true;
+			$run->applied[$effectId] = true;
 		}
 	}//end calculateEffect()
+
+	/**
+	 * Whether a non-cumulative effect was already applied in this pass.
+	 *
+	 * @param EffectRun            $run    The pass.
+	 * @param array<string, mixed> $effect Effect data.
+	 *
+	 * @return bool True when the effect must be skipped.
+	 */
+	private function isRepeatedNonCumulative(EffectRun $run, array $effect): bool {
+		$effectId = (string)($effect['id'] ?? '');
+
+		return $effectId !== ''
+			&& isset($run->applied[$effectId]) === true
+			&& (string)($effect['cumulative'] ?? 'non-cumulative') === 'non-cumulative';
+	}//end isRepeatedNonCumulative()
+
+	/**
+	 * Apply the effect's modifier to every ability it names.
+	 *
+	 * @param EffectRun            $run    The pass, its abilities changed in place.
+	 * @param array<string, mixed> $effect Effect data.
+	 *
+	 * @return bool False when the effect names no ability.
+	 */
+	private function applyToAbilities(EffectRun $run, array $effect): bool {
+		$effectAbilities = $this->collectEffectAbilities(effect: $effect);
+		if (empty($effectAbilities) === true) {
+			return false;
+		}
+
+		// @psalm-suppress MixedAssignment Ability IDs from effect arrays.
+		foreach ($effectAbilities as $rawAbilityId) {
+			if ($rawAbilityId !== null) {
+				$abilityId = (string)$rawAbilityId;
+				$run->abilities[$abilityId] ??= [];
+				$this->applyModifierToAbility(ability: $run->abilities[$abilityId], effect: $effect);
+			}
+		}
+
+		return true;
+	}//end applyToAbilities()
 }//end class

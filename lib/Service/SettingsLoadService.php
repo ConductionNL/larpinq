@@ -19,13 +19,16 @@
  * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-30
  * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-31
  * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-32
+ *
+ * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
  */
 
 declare(strict_types=1);
 
 namespace OCA\Larpinq\Service;
 
-use OCA\Larpinq\AppInfo\Application;
+use OCA\Larpinq\Support\AppIdentity;
 use OCP\App\IAppManager;
 use OCP\IAppConfig;
 use Psr\Container\ContainerInterface;
@@ -80,6 +83,17 @@ class SettingsLoadService {
 		'event' => 'larping_event',
 		'setting' => 'setting',
 		'attendance' => 'larping_attendance',
+		'lorepage' => 'larping_lore_page',
+		'characterfield' => 'larping_character_field',
+		'faction' => 'larping_faction',
+		'factionmember' => 'larping_faction_member',
+		'relationship' => 'larping_relationship',
+		'characterbuild' => 'larping_character_build',
+		'xpaward' => 'xpAward',
+		'registration' => 'larping_registration',
+		'tickettype' => 'larping_ticket_type',
+		'registrationoption' => 'larping_registration_option',
+		'accesscode' => 'larping_access_code',
 	];
 
 	/**
@@ -153,7 +167,7 @@ class SettingsLoadService {
 		$data = $this->fileLoader->ensureSourceType(data: $data);
 
 		$configurationService = $this->getConfigurationService();
-		$currentAppVersion = $this->appManager->getAppVersion(Application::APP_ID);
+		$currentAppVersion = $this->appManager->getAppVersion(AppIdentity::APP_ID);
 
 		// ADR-037: fold the merged register-fragment signature into the import
 		// version so OpenRegister's version-gated import re-runs whenever any
@@ -166,7 +180,7 @@ class SettingsLoadService {
 		// @psalm-suppress MixedMethodCall ConfigurationService is from OpenRegister.
 		// @var array $result
 		$result = $configurationService->importFromApp(
-			appId: Application::APP_ID,
+			appId: AppIdentity::APP_ID,
 			data: $data,
 			version: $currentAppVersion,
 			force: $force
@@ -203,17 +217,17 @@ class SettingsLoadService {
 		);
 
 		if ($registerId !== null) {
-			$this->appConfig->setValueString(Application::APP_ID, 'register', (string)$registerId);
+			$this->appConfig->setValueString(AppIdentity::APP_ID, 'register', (string)$registerId);
 		}
 
 		foreach (self::OBJECT_TYPE_SCHEMA_SLUGS as $objectType => $schemaSlug) {
 			// `isset()` is already false for null — the `!== null` this
 			// replaces was unreachable.
 			if (isset($schemaMap[$schemaSlug]) === true) {
-				$this->appConfig->setValueString(Application::APP_ID, "{$objectType}_schema", (string)$schemaMap[$schemaSlug]);
-				$this->appConfig->setValueString(Application::APP_ID, "{$objectType}_source", 'openregister');
+				$this->appConfig->setValueString(AppIdentity::APP_ID, "{$objectType}_schema", (string)$schemaMap[$schemaSlug]);
+				$this->appConfig->setValueString(AppIdentity::APP_ID, "{$objectType}_source", 'openregister');
 				if ($registerId !== null) {
-					$this->appConfig->setValueString(Application::APP_ID, "{$objectType}_register", (string)$registerId);
+					$this->appConfig->setValueString(AppIdentity::APP_ID, "{$objectType}_register", (string)$registerId);
 				}
 			}
 		}

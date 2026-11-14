@@ -18,13 +18,16 @@
  * @version GIT: <git_id>
  *
  * @link https://github.com/ConductionNL/larpinq
+ *
+ * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
  */
 
 declare(strict_types=1);
 
 namespace OCA\Larpinq\Controller;
 
-use OCA\Larpinq\AppInfo\Application;
+use OCA\Larpinq\Support\AppIdentity;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\JSONResponse;
@@ -50,7 +53,7 @@ class PreferencesController extends Controller {
 		private readonly IConfig $config,
 		private readonly IUserSession $userSession,
 	) {
-		parent::__construct(appName: Application::APP_ID, request: $request);
+		parent::__construct(appName: AppIdentity::APP_ID, request: $request);
 
 	}//end __construct()
 
@@ -67,20 +70,15 @@ class PreferencesController extends Controller {
 	 * @NoCSRFRequired
 	 */
 	public function getPreference(string $key): JSONResponse {
-		$user = $this->userSession->getUser();
-		if ($user === null) {
-			return new JSONResponse(data: ['message' => 'Not logged in'], statusCode: Http::STATUS_UNAUTHORIZED);
-		}
-
-		$safeKey = $this->sanitizeKey(key: $key);
-		if ($safeKey === '') {
-			return new JSONResponse(data: ['message' => 'Invalid key'], statusCode: Http::STATUS_BAD_REQUEST);
+		$slot = $this->slotFor(key: $key);
+		if ($slot instanceof JSONResponse) {
+			return $slot;
 		}
 
 		$value = $this->config->getUserValue(
-			userId: $user->getUID(),
-			appName: Application::APP_ID,
-			key: 'pref_' . $safeKey,
+			userId: $slot->userId,
+			appName: AppIdentity::APP_ID,
+			key: $slot->configKey,
 			default: ''
 		);
 
@@ -108,6 +106,42 @@ class PreferencesController extends Controller {
 	 * @NoAdminRequired
 	 */
 	public function setPreference(string $key, string $value = ''): JSONResponse {
+		$slot = $this->slotFor(key: $key);
+		if ($slot instanceof JSONResponse) {
+			return $slot;
+		}
+
+		$stored = null;
+		if ($value === '') {
+			$this->config->deleteUserValue(
+				userId: $slot->userId,
+				appName: AppIdentity::APP_ID,
+				key: $slot->configKey
+			);
+
+			return new JSONResponse(data: ['value' => $stored]);
+		}
+
+		$this->config->setUserValue(
+			userId: $slot->userId,
+			appName: AppIdentity::APP_ID,
+			key: $slot->configKey,
+			value: $value
+		);
+		$stored = $value;
+
+		return new JSONResponse(data: ['value' => $stored]);
+	}//end setPreference()
+
+	/**
+	 * The user value a request may use, or the refusal: 401 with nobody
+	 * signed in, 400 for a key that sanitises to nothing.
+	 *
+	 * @param string $key The raw preference key.
+	 *
+	 * @return PreferenceSlot|JSONResponse The slot, or the refusal response.
+	 */
+	private function slotFor(string $key): PreferenceSlot|JSONResponse {
 		$user = $this->userSession->getUser();
 		if ($user === null) {
 			return new JSONResponse(data: ['message' => 'Not logged in'], statusCode: Http::STATUS_UNAUTHORIZED);
@@ -118,27 +152,8 @@ class PreferencesController extends Controller {
 			return new JSONResponse(data: ['message' => 'Invalid key'], statusCode: Http::STATUS_BAD_REQUEST);
 		}
 
-		$stored = null;
-		if ($value === '') {
-			$this->config->deleteUserValue(
-				userId: $user->getUID(),
-				appName: Application::APP_ID,
-				key: 'pref_' . $safeKey
-			);
-
-			return new JSONResponse(data: ['value' => $stored]);
-		}
-
-		$this->config->setUserValue(
-			userId: $user->getUID(),
-			appName: Application::APP_ID,
-			key: 'pref_' . $safeKey,
-			value: $value
-		);
-		$stored = $value;
-
-		return new JSONResponse(data: ['value' => $stored]);
-	}//end setPreference()
+		return new PreferenceSlot(userId: $user->getUID(), configKey: 'pref_' . $safeKey);
+	}//end slotFor()
 
 	/**
 	 * Restrict keys to a safe charset so callers cannot reach arbitrary

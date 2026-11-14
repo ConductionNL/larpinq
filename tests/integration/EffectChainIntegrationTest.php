@@ -3,6 +3,9 @@
 /**
  * Effect-chain integration test for the Larpinq game-mechanics engine.
  *
+ * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
+ *
  * Satisfies TEST-031 of the game-mechanics spec ("effect chain integrity must
  * be verified end-to-end"). Where {@see \OCA\Larpinq\Tests\Unit\Service\GameMechanicsTest}
  * exercises one mechanic at a time, this test drives the WHOLE chain in a
@@ -45,6 +48,7 @@ use Psr\Log\LoggerInterface;
  */
 class EffectChainIntegrationTest extends TestCase {
 
+	/** @var CharacterService The service. */
 	private CharacterService $service;
 
 	/**
@@ -131,7 +135,7 @@ class EffectChainIntegrationTest extends TestCase {
 			],
 		];
 
-		$fetcher = $this->createMock(RegisterObjectFetcher::class);
+		$fetcher = $this->createMock(originalClassName: RegisterObjectFetcher::class);
 		$fetcher->method('getObjects')
 			->willReturnCallback(
 				static function (string $type) use ($abilities, $effects, $skills, $items, $conditions, $events, $characters): array {
@@ -148,7 +152,11 @@ class EffectChainIntegrationTest extends TestCase {
 				}
 			);
 
-		$this->service = new CharacterService($fetcher, $this->createMock(LoggerInterface::class), new EffectApplier());
+		$this->service = new CharacterService(
+			objectFetcher: $fetcher,
+			logger: $this->createMock(originalClassName: LoggerInterface::class),
+			effectApplier: new EffectApplier()
+		);
 	}//end setUp()
 
 	/**
@@ -171,9 +179,9 @@ class EffectChainIntegrationTest extends TestCase {
 			]
 		);
 
-		self::assertSame(14, $hero['stats']['str']['value'], 'Cumulative Might must stack across skill + item');
-		self::assertSame(22, $hero['stats']['hp']['value'], 'Vigour applies once; Poison subtracts');
-		self::assertSame(4, $hero['stats']['mag']['value'], 'Event stat_id fallback grants Magic');
+		self::assertSame(expected: 14, actual: $hero['stats']['str']['value'], message: 'Cumulative Might must stack across skill + item');
+		self::assertSame(expected: 22, actual: $hero['stats']['hp']['value'], message: 'Vigour applies once; Poison subtracts');
+		self::assertSame(expected: 4, actual: $hero['stats']['mag']['value'], message: 'Event stat_id fallback grants Magic');
 	}//end testFullChainDerivesLoadedCharacter()
 
 	/**
@@ -195,11 +203,11 @@ class EffectChainIntegrationTest extends TestCase {
 		);
 
 		// Strength touched twice (cumulative Might via skill then item).
-		self::assertCount(2, $hero['stats']['str']['audit']);
+		self::assertCount(expectedCount: 2, haystack: $hero['stats']['str']['audit']);
 		// Health touched twice: Vigour once (deduped) + Poison once.
-		self::assertCount(2, $hero['stats']['hp']['audit']);
+		self::assertCount(expectedCount: 2, haystack: $hero['stats']['hp']['audit']);
 		// Magic touched once (event).
-		self::assertCount(1, $hero['stats']['mag']['audit']);
+		self::assertCount(expectedCount: 1, haystack: $hero['stats']['mag']['audit']);
 	}//end testChainAuditTrailReflectsApplications()
 
 	/**
@@ -212,7 +220,7 @@ class EffectChainIntegrationTest extends TestCase {
 	public function testChainComputesRosterIndependently(): void {
 		$roster = $this->service->calculateAllCharacters();
 
-		self::assertCount(2, $roster);
+		self::assertCount(expectedCount: 2, haystack: $roster);
 
 		$byId = [];
 		foreach ($roster as $character) {
@@ -220,13 +228,13 @@ class EffectChainIntegrationTest extends TestCase {
 		}
 
 		// Hero fully derived.
-		self::assertSame(14, $byId['char-hero']['stats']['str']['value']);
-		self::assertSame(22, $byId['char-hero']['stats']['hp']['value']);
+		self::assertSame(expected: 14, actual: $byId['char-hero']['stats']['str']['value']);
+		self::assertSame(expected: 22, actual: $byId['char-hero']['stats']['hp']['value']);
 
 		// Rookie untouched — pure base scores, empty audits (no cross-bleed).
-		self::assertSame(10, $byId['char-rookie']['stats']['str']['value']);
-		self::assertSame(20, $byId['char-rookie']['stats']['hp']['value']);
-		self::assertSame(0, $byId['char-rookie']['stats']['mag']['value']);
-		self::assertSame([], $byId['char-rookie']['stats']['str']['audit']);
+		self::assertSame(expected: 10, actual: $byId['char-rookie']['stats']['str']['value']);
+		self::assertSame(expected: 20, actual: $byId['char-rookie']['stats']['hp']['value']);
+		self::assertSame(expected: 0, actual: $byId['char-rookie']['stats']['mag']['value']);
+		self::assertSame(expected: [], actual: $byId['char-rookie']['stats']['str']['audit']);
 	}//end testChainComputesRosterIndependently()
 }//end class

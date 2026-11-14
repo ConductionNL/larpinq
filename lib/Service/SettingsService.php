@@ -16,13 +16,16 @@
  * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-4
  * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-23
  * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-24
+ *
+ * SPDX-FileCopyrightText: 2025 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
  */
 
 declare(strict_types=1);
 
 namespace OCA\Larpinq\Service;
 
-use OCA\Larpinq\AppInfo\Application;
+use OCA\Larpinq\Support\AppIdentity;
 use OCP\IAppConfig;
 use Psr\Log\LoggerInterface;
 
@@ -81,6 +84,39 @@ class SettingsService {
 		'attendance_schema',
 		'attendance_register',
 		'attendance_source',
+		'lorepage_schema',
+		'lorepage_register',
+		'lorepage_source',
+		'characterfield_schema',
+		'characterfield_register',
+		'characterfield_source',
+		'faction_schema',
+		'faction_register',
+		'faction_source',
+		'factionmember_schema',
+		'factionmember_register',
+		'factionmember_source',
+		'relationship_schema',
+		'relationship_register',
+		'relationship_source',
+		'characterbuild_schema',
+		'characterbuild_register',
+		'characterbuild_source',
+		'xpaward_schema',
+		'xpaward_register',
+		'xpaward_source',
+		'registration_schema',
+		'registration_register',
+		'registration_source',
+		'tickettype_schema',
+		'tickettype_register',
+		'tickettype_source',
+		'registrationoption_schema',
+		'registrationoption_register',
+		'registrationoption_source',
+		'accesscode_schema',
+		'accesscode_register',
+		'accesscode_source',
 	];
 
 	/**
@@ -112,7 +148,7 @@ class SettingsService {
 	public function getSettings(): array {
 		$config = [];
 		foreach (self::CONFIG_KEYS as $key) {
-			$config[$key] = $this->appConfig->getValueString(Application::APP_ID, $key, '');
+			$config[$key] = $this->appConfig->getValueString(AppIdentity::APP_ID, $key, '');
 		}
 
 		return $config;
@@ -132,7 +168,7 @@ class SettingsService {
 			if (isset($data[$key]) === true
 				&& (is_string($data[$key]) === true || is_int($data[$key]) === true)
 			) {
-				$this->appConfig->setValueString(Application::APP_ID, $key, (string)$data[$key]);
+				$this->appConfig->setValueString(AppIdentity::APP_ID, $key, (string)$data[$key]);
 			}
 		}
 
@@ -181,7 +217,7 @@ class SettingsService {
 	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-23
 	 */
 	public function getConfigValue(string $key, string $default = ''): string {
-		return $this->appConfig->getValueString(Application::APP_ID, $key, $default);
+		return $this->appConfig->getValueString(AppIdentity::APP_ID, $key, $default);
 	}//end getConfigValue()
 
 	/**
@@ -197,7 +233,7 @@ class SettingsService {
 	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-23
 	 */
 	public function setConfigValue(string $key, string $value): void {
-		$this->appConfig->setValueString(Application::APP_ID, $key, $value);
+		$this->appConfig->setValueString(AppIdentity::APP_ID, $key, $value);
 
 	}//end setConfigValue()
 }//end class

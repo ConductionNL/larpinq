@@ -20,6 +20,9 @@
  * @link      https://larpingapp.com
  *
  * @spec openspec/specs/event-checkin-roster/spec.md
+ *
+ * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
  */
 
 declare(strict_types=1);
@@ -88,27 +91,12 @@ class EventRosterService {
 	 */
 	public function buildRoster(string $eventId): array {
 		[$attendance, $attendanceAvailable] = $this->loadAttendance(eventId: $eventId);
+		$characters = $this->castCharacters(eventId: $eventId);
+		$lookup = new CastLookup(players: $this->indexPlayers(characters: $characters), attendance: $attendance);
 
-		$players = $this->indexPlayers();
 		$participants = [];
-
-		foreach ($this->fetchCharacters() as $character) {
-			if ($this->attendsEvent(character: $character, eventId: $eventId) === false) {
-				continue;
-			}
-
-			$characterId = (string)($character['id'] ?? '');
-			$record = $attendance[$characterId] ?? [];
-
-			$participants[] = [
-				'character' => $characterId,
-				'name' => (string)($character['name'] ?? ''),
-				'type' => (string)($character['type'] ?? ''),
-				'playerName' => $this->resolvePlayerName(character: $character, players: $players),
-				'status' => (string)($record['status'] ?? 'registered'),
-				'checkedInAt' => (string)($record['checkedInAt'] ?? ''),
-				'checkedInBy' => (string)($record['checkedInBy'] ?? ''),
-			];
+		foreach ($characters as $character) {
+			$participants[] = $this->buildRosterEntry(character: $character, lookup: $lookup);
 		}
 
 		$this->sortByName(rows: $participants);
@@ -132,48 +120,106 @@ class EventRosterService {
 	 * @return array<string,mixed> The render context.
 	 *
 	 * @spec openspec/specs/pdf-export/spec.md
+	 * @spec openspec/changes/larpinq-runsheet-scoped-cast-query/tasks.md#2-scope-the-character-query
 	 */
 	public function buildRunsheetContext(array $event, string $eventId): array {
-		$players = $this->indexPlayers();
+		$characters = $this->castCharacters(eventId: $eventId);
+		$lookup = $this->runsheetLookup(eventId: $eventId, characters: $characters);
+		$cast = array_map(fn (array $character): array => $this->buildCastEntry(character: $character, lookup: $lookup), $characters);
+		$this->sortByName(rows: $cast);
+
+		return [
+			'event' => $this->runsheetEvent(event: $event, castCount: count($cast)),
+			'cast' => $cast,
+			'castCount' => count($cast),
+			'uniqueItemsInPlay' => $this->uniqueItemIds(characters: $characters),
+			'template' => [],
+		];
+	}//end buildRunsheetContext()
+
+	/**
+	 * The players, then the attendance of the event, for the run-sheet.
+	 *
+	 * @param string $eventId The event UUID.
+	 * @param list<array<string,mixed>> $characters The event's cast.
+	 *
+	 * @return CastLookup The players and attendance.
+	 */
+	private function runsheetLookup(string $eventId, array $characters): CastLookup {
+		$players = $this->indexPlayers(characters: $characters);
 
 		// Attendance is additive: when the schema is absent the cast list is
 		// unchanged (each entry's attendanceStatus stays empty).
 		[$attendance] = $this->loadAttendance(eventId: $eventId);
 
+		return new CastLookup(players: $players, attendance: $attendance);
+	}//end runsheetLookup()
+
+	/**
+	 * The event header of the run-sheet.
+	 *
+	 * @param array<string,mixed> $event The event object.
+	 * @param int $castCount The number of cast entries.
+	 *
+	 * @return array<string,mixed> The header.
+	 */
+	private function runsheetEvent(array $event, int $castCount): array {
+		return [
+			'name' => (string)($event['name'] ?? ''),
+			'description' => (string)($event['description'] ?? ''),
+			'startDate' => (string)($event['startDate'] ?? ''),
+			'endDate' => (string)($event['endDate'] ?? ''),
+			'location' => (string)($event['location'] ?? ''),
+			'effects' => ($event['effects'] ?? []),
+			'castCount' => $castCount,
+		];
+	}//end runsheetEvent()
+
+	/**
+	 * The characters cast in an event, in register order.
+	 *
+	 * OpenRegister narrows the read to characters whose `events` array holds
+	 * the event; the membership check here stays as the final word, so a
+	 * filter that over-matches never adds a character to the cast.
+	 *
+	 * @param string $eventId The event UUID.
+	 *
+	 * @return list<array<string,mixed>> The cast characters.
+	 *
+	 * @spec openspec/changes/larpinq-runsheet-scoped-cast-query/tasks.md#2-scope-the-character-query
+	 */
+	private function castCharacters(string $eventId): array {
 		$cast = [];
-		$uniqueItems = [];
-		foreach ($this->fetchCharacters() as $character) {
-			if ($this->attendsEvent(character: $character, eventId: $eventId) === false) {
-				continue;
+		foreach ($this->fetchCharacters(eventId: $eventId) as $character) {
+			if ($this->attendsEvent(character: $character, eventId: $eventId) === true) {
+				$cast[] = $character;
 			}
-
-			$cast[] = $this->buildCastEntry(
-				character: $character,
-				players: $players,
-				attendance: $attendance
-			);
-
-			$this->collectItems(character: $character, uniqueItems: $uniqueItems);
 		}
 
-		$this->sortByName(rows: $cast);
+		return $cast;
+	}//end castCharacters()
+
+	/**
+	 * One check-in roster row for a character.
+	 *
+	 * @param array<string,mixed> $character The character object.
+	 * @param CastLookup $lookup The event's players and attendance.
+	 *
+	 * @return array<string,mixed> The roster row.
+	 */
+	private function buildRosterEntry(array $character, CastLookup $lookup): array {
+		$record = $lookup->attendanceOf(character: $character);
 
 		return [
-			'event' => [
-				'name' => (string)($event['name'] ?? ''),
-				'description' => (string)($event['description'] ?? ''),
-				'startDate' => (string)($event['startDate'] ?? ''),
-				'endDate' => (string)($event['endDate'] ?? ''),
-				'location' => (string)($event['location'] ?? ''),
-				'effects' => ($event['effects'] ?? []),
-				'castCount' => count($cast),
-			],
-			'cast' => $cast,
-			'castCount' => count($cast),
-			'uniqueItemsInPlay' => array_keys($uniqueItems),
-			'template' => [],
+			'character' => (string)($character['id'] ?? ''),
+			'name' => (string)($character['name'] ?? ''),
+			'type' => (string)($character['type'] ?? ''),
+			'playerName' => $this->resolvePlayerName(character: $character, players: $lookup->players),
+			'status' => (string)($record['status'] ?? 'registered'),
+			'checkedInAt' => (string)($record['checkedInAt'] ?? ''),
+			'checkedInBy' => (string)($record['checkedInBy'] ?? ''),
 		];
-	}//end buildRunsheetContext()
+	}//end buildRosterEntry()
 
 	/**
 	 * Persist an attendance record for a participant.
@@ -276,19 +322,18 @@ class EventRosterService {
 	 * Build one run-sheet cast entry for a character.
 	 *
 	 * @param array<string,mixed> $character The character object.
-	 * @param array<string,array<string,mixed>> $players Players indexed by id.
-	 * @param array<string,array<string,mixed>> $attendance Attendance indexed by character id.
+	 * @param CastLookup $lookup The event's players and attendance.
 	 *
 	 * @return array<string,mixed> The cast entry.
 	 */
-	private function buildCastEntry(array $character, array $players, array $attendance): array {
-		$record = $attendance[(string)($character['id'] ?? '')] ?? [];
+	private function buildCastEntry(array $character, CastLookup $lookup): array {
+		$record = $lookup->attendanceOf(character: $character);
 
 		return [
 			'name' => (string)($character['name'] ?? ''),
 			'type' => (string)($character['type'] ?? ''),
 			'approved' => (string)($character['approved'] ?? ''),
-			'playerName' => $this->resolvePlayerName(character: $character, players: $players),
+			'playerName' => $this->resolvePlayerName(character: $character, players: $lookup->players),
 			'stats' => ($character['stats'] ?? []),
 			'conditions' => ($character['conditions'] ?? []),
 			'items' => ($character['items'] ?? []),
@@ -299,23 +344,27 @@ class EventRosterService {
 	}//end buildCastEntry()
 
 	/**
-	 * Accumulate a character's item references into the unique-items set.
+	 * The ids of every item the cast carries, first seen first.
 	 *
-	 * @param array<string,mixed> $character The character object.
-	 * @param array<string,bool> $uniqueItems The accumulating set, keyed by item id.
+	 * @param list<array<string,mixed>> $characters The cast characters, in register order.
 	 *
-	 * @return void
+	 * @return list<int|string> The item ids.
 	 */
-	private function collectItems(array $character, array &$uniqueItems): void {
-		$items = $character['items'] ?? [];
-		if (is_array($items) === false) {
-			return;
+	private function uniqueItemIds(array $characters): array {
+		$uniqueItems = [];
+		foreach ($characters as $character) {
+			$items = $character['items'] ?? [];
+			if (is_array($items) === false) {
+				continue;
+			}
+
+			foreach ($items as $itemId) {
+				$uniqueItems[(string)$itemId] = true;
+			}
 		}
 
-		foreach ($items as $itemId) {
-			$uniqueItems[(string)$itemId] = true;
-		}
-	}//end collectItems()
+		return array_keys($uniqueItems);
+	}//end uniqueItemIds()
 
 	/**
 	 * Whether a character's `events[]` references the given event.
@@ -333,15 +382,22 @@ class EventRosterService {
 	}//end attendsEvent()
 
 	/**
-	 * Fetch all characters, tolerating OpenRegister absence.
+	 * Fetch the characters cast in an event, tolerating OpenRegister absence.
 	 *
-	 * Non-array rows are filtered out here so callers never re-check.
+	 * `events` is an array property, which OpenRegister's search matches by
+	 * containment, so only characters holding the event are read instead of
+	 * the whole register. Non-array rows are filtered out here so callers
+	 * never re-check.
+	 *
+	 * @param string $eventId The event UUID.
 	 *
 	 * @return array<int,array<string,mixed>> The character objects.
+	 *
+	 * @spec openspec/changes/larpinq-runsheet-scoped-cast-query/tasks.md#2-scope-the-character-query
 	 */
-	private function fetchCharacters(): array {
+	private function fetchCharacters(string $eventId): array {
 		try {
-			$characters = $this->objectFetcher->getObjects('character');
+			$characters = $this->objectFetcher->getObjects(objectType: 'character', filters: ['events' => $eventId]);
 		} catch (\Exception $exception) {
 			return [];
 		}
@@ -350,26 +406,54 @@ class EventRosterService {
 	}//end fetchCharacters()
 
 	/**
-	 * Index players by their id for cast player-name resolution.
+	 * Index the cast's players by id for player-name resolution.
+	 *
+	 * Only the players the cast names (`player`, else `ocName`) are read, one
+	 * by one, instead of every player in the register. A reference that is not
+	 * a uuid (a legacy free-text name), a missing player or one of another
+	 * type is skipped: the cast entry then shows the stored text, as before.
+	 *
+	 * @param list<array<string,mixed>> $characters The cast.
 	 *
 	 * @return array<string,array<string,mixed>> Players indexed by id.
+	 *
+	 * @spec openspec/changes/larpinq-runsheet-scoped-cast-query/tasks.md#3-scope-the-player-lookup
 	 */
-	private function indexPlayers(): array {
+	private function indexPlayers(array $characters): array {
 		$indexed = [];
-		try {
-			$players = $this->objectFetcher->getObjects('player');
-		} catch (\Exception $exception) {
-			return $indexed;
-		}
+		foreach ($this->castPlayerIds(characters: $characters) as $playerId) {
+			try {
+				$player = $this->objectFetcher->getObjectOfType(objectType: 'player', id: $playerId);
+			} catch (\Exception $exception) {
+				continue;
+			}
 
-		foreach ($players as $player) {
-			if (is_array($player) === true && isset($player['id']) === true) {
-				$indexed[(string)$player['id']] = $player;
+			if (isset($player['id']) === true) {
+				$indexed[$playerId] = $player;
 			}
 		}
 
 		return $indexed;
 	}//end indexPlayers()
+
+	/**
+	 * The distinct player references of a cast, as `resolvePlayerName()` reads them.
+	 *
+	 * @param list<array<string,mixed>> $characters The cast.
+	 *
+	 * @return list<string> The player ids, first seen first.
+	 */
+	private function castPlayerIds(array $characters): array {
+		$ids = [];
+		foreach ($characters as $character) {
+			$playerId = (string)($character['player'] ?? ($character['ocName'] ?? ''));
+			if ($playerId !== '') {
+				$ids[$playerId] = true;
+			}
+		}
+
+		return array_map('strval', array_keys($ids));
+	}//end castPlayerIds()
 
 	/**
 	 * Load the attendance records for an event, indexed by character id.
@@ -394,6 +478,17 @@ class EventRosterService {
 			return [[], false];
 		}
 
+		return [$this->indexByCharacter(records: $records), true];
+	}//end loadAttendance()
+
+	/**
+	 * Index attendance records by their character id; a later record wins.
+	 *
+	 * @param array<int,mixed> $records The attendance records.
+	 *
+	 * @return array<string,array<string,mixed>> The records by character id.
+	 */
+	private function indexByCharacter(array $records): array {
 		$byCharacter = [];
 		foreach ($records as $record) {
 			if (is_array($record) === false) {
@@ -406,8 +501,8 @@ class EventRosterService {
 			}
 		}
 
-		return [$byCharacter, true];
-	}//end loadAttendance()
+		return $byCharacter;
+	}//end indexByCharacter()
 
 	/**
 	 * Resolve a character's player display name.

@@ -11,12 +11,16 @@
  * @link      https://larpingapp.com
  *
  * @spec openspec/specs/pdf-export/spec.md
+ *
+ * SPDX-FileCopyrightText: 2024 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
  */
 
 declare(strict_types=1);
 
 namespace OCA\Larpinq\Controller;
 
+use OCA\Larpinq\Support\AppIdentity;
 use OCA\Larpinq\Service\DocuDeskPdfRenderer;
 use OCA\Larpinq\Service\EventRosterService;
 use OCP\AppFramework\Controller;
@@ -25,9 +29,7 @@ use OCP\AppFramework\Http\Attribute\NoAdminRequired;
 use OCP\AppFramework\Http\Attribute\NoCSRFRequired;
 use OCP\AppFramework\Http\DataDownloadResponse;
 use OCP\AppFramework\Http\JSONResponse;
-use OCP\IGroupManager;
 use OCP\IRequest;
-use OCP\IUserSession;
 
 /**
  * Controller for event-level operations — the GM run-sheet / cast-list export
@@ -44,11 +46,11 @@ use OCP\IUserSession;
 class EventsController extends Controller {
 
 	/**
-	 * The GM group allowed to download run-sheets (GM-facing material).
+	 * The error when DocuDesk, which renders the PDF, is not installed.
 	 *
 	 * @var string
 	 */
-	private const GM_GROUP = 'gamemasters';
+	private const DOCUDESK_MISSING = 'PDF generation requires the DocuDesk app to be installed and enabled';
 
 	/**
 	 * The valid attendance status values (mirrors the larping_attendance enum).
@@ -64,22 +66,18 @@ class EventsController extends Controller {
 	/**
 	 * Constructor for the EventsController.
 	 *
-	 * @param string $appName The app name.
 	 * @param IRequest $request The request object.
 	 * @param EventRosterService $rosterService The event participation domain service.
 	 * @param DocuDeskPdfRenderer $pdfRenderer The shared DocuDesk PDF helper.
-	 * @param IUserSession $userSession The user session.
-	 * @param IGroupManager $groupManager The group manager.
+	 * @param CallerAccess $callerAccess The signed-in caller and the game master check.
 	 */
 	public function __construct(
-		$appName,
 		IRequest $request,
 		private readonly EventRosterService $rosterService,
 		private readonly DocuDeskPdfRenderer $pdfRenderer,
-		private readonly IUserSession $userSession,
-		private readonly IGroupManager $groupManager,
+		private readonly CallerAccess $callerAccess,
 	) {
-		parent::__construct(appName: $appName, request: $request);
+		parent::__construct(appName: AppIdentity::APP_ID, request: $request);
 	}//end __construct()
 
 	/**
@@ -104,7 +102,7 @@ class EventsController extends Controller {
 	#[NoCSRFRequired]
 	public function downloadRunsheet(string $id, string $template): DataDownloadResponse|JSONResponse {
 		// GM-only: the run-sheet exposes approval status and GM-private notes.
-		[, $denied] = $this->resolveGameMaster();
+		[, $denied] = $this->callerAccess->resolveGameMaster();
 		if ($denied !== null) {
 			return $denied;
 		}
@@ -120,12 +118,23 @@ class EventsController extends Controller {
 		}
 
 		if ($this->pdfRenderer->isDocuDeskAvailable() === false) {
-			return new JSONResponse(
-				data: ['error' => 'PDF generation requires the DocuDesk app to be installed and enabled'],
-				statusCode: 424
-			);
+			return new JSONResponse(data: ['error' => self::DOCUDESK_MISSING], statusCode: 424);
 		}
 
+		return $this->renderRunsheet(id: $id, templateId: $templateId);
+	}//end downloadRunsheet()
+
+	/**
+	 * Render the run-sheet of an event with a validated template, once DocuDesk is known to be there.
+	 *
+	 * @param string $id         The event UUID.
+	 * @param string $templateId The normalised template UUID.
+	 *
+	 * @return DataDownloadResponse|JSONResponse The PDF download or an error.
+	 *
+	 * @spec openspec/specs/pdf-export/spec.md
+	 */
+	private function renderRunsheet(string $id, string $templateId): DataDownloadResponse|JSONResponse {
 		$event = $this->rosterService->getEvent(eventId: $id);
 		if ($event === null) {
 			return new JSONResponse(data: ['error' => 'Event not found'], statusCode: 404);
@@ -138,12 +147,27 @@ class EventsController extends Controller {
 
 		$context = $this->rosterService->buildRunsheetContext(event: $event, eventId: $id);
 		$pdfString = $this->pdfRenderer->render(templateData: $templateData, context: $context);
+
+		return $this->runsheetFile(pdfString: $pdfString, event: $event);
+	}//end renderRunsheet()
+
+	/**
+	 * The run-sheet download, or the 500 when rendering failed.
+	 *
+	 * @param string|null         $pdfString The rendered PDF, or null.
+	 * @param array<string,mixed> $event     The event object.
+	 *
+	 * @return DataDownloadResponse|JSONResponse The PDF download or the 500.
+	 *
+	 * @spec openspec/specs/pdf-export/spec.md
+	 */
+	private function runsheetFile(?string $pdfString, array $event): DataDownloadResponse|JSONResponse {
 		if ($pdfString === null) {
 			return new JSONResponse(data: ['error' => 'PDF generation failed. Please contact your administrator.'], statusCode: 500);
 		}
 
 		return new DataDownloadResponse($pdfString, $this->runsheetFileName(event: $event), 'application/pdf');
-	}//end downloadRunsheet()
+	}//end runsheetFile()
 
 	/**
 	 * Read the check-in roster for an event.
@@ -167,7 +191,7 @@ class EventsController extends Controller {
 	#[NoAdminRequired]
 	#[NoCSRFRequired]
 	public function roster(string $id): JSONResponse {
-		$user = $this->userSession->getUser();
+		$user = $this->callerAccess->user();
 		if ($user === null) {
 			return new JSONResponse(data: ['error' => 'Not authenticated'], statusCode: Http::STATUS_UNAUTHORIZED);
 		}
@@ -178,7 +202,8 @@ class EventsController extends Controller {
 		}
 
 		$roster = $this->rosterService->buildRoster(eventId: $id);
-		$roster['isGm'] = $this->isGameMaster(uid: $user->getUID());
+		$roster['isGm'] = $this->callerAccess->isGameMasterOrAdmin(uid: $user->getUID());
+		$roster['canCheckIn'] = $this->callerAccess->mayCheckIn(uid: $user->getUID());
 
 		return new JSONResponse(data: $roster);
 	}//end roster()
@@ -205,17 +230,52 @@ class EventsController extends Controller {
 	 */
 	#[NoAdminRequired]
 	public function recordAttendance(string $id): JSONResponse {
-		// GM-only: recording attendance is a game-master act at the door.
-		[$actingUid, $denied] = $this->resolveGameMaster();
+		// Game masters, admins and stewards record attendance at the door
+		// (admin-staff-roles-and-invites REQ-ASR-003); the run sheet stays game master only.
+		[$actingUid, $denied] = $this->callerAccess->resolveCheckIn();
 		if ($denied !== null) {
 			return $denied;
 		}
 
 		// Only the character and status are read from the body; any
 		// client-supplied checkedInAt/checkedInBy is discarded (never read).
-		$characterId = (string)($this->request->getParam('character', ''));
-		$status = (string)($this->request->getParam('status', 'checked-in'));
+		[$characterId, $status] = $this->attendanceRequest();
+		$refused = $this->attendanceRefusal(id: $id, request: [$characterId, $status]);
+		if ($refused !== null) {
+			return $refused;
+		}
 
+		$saved = $this->rosterService->recordAttendance(eventId: $id, characterId: $characterId, status: $status, actingUid: $actingUid);
+
+		return $this->attendanceResponse(saved: $saved);
+	}//end recordAttendance()
+
+	/**
+	 * The character and status of an attendance request; nothing else is read from the body.
+	 *
+	 * @return array{0: string, 1: string} The [characterId, status] pair.
+	 *
+	 * @spec openspec/specs/event-checkin-roster/spec.md
+	 */
+	private function attendanceRequest(): array {
+		return [
+			(string)($this->request->getParam('character', '')),
+			(string)($this->request->getParam('status', 'checked-in')),
+		];
+	}//end attendanceRequest()
+
+	/**
+	 * The refusal of an attendance request, or null when it may be recorded.
+	 *
+	 * @param string                      $id      The event UUID.
+	 * @param array{0: string, 1: string} $request The [characterId, status] pair.
+	 *
+	 * @return JSONResponse|null The 400, 404 or 422 response, or null.
+	 *
+	 * @spec openspec/specs/event-checkin-roster/spec.md
+	 */
+	private function attendanceRefusal(string $id, array $request): ?JSONResponse {
+		[$characterId, $status] = $request;
 		$invalid = $this->validateAttendanceInput(characterId: $characterId, status: $status);
 		if ($invalid !== null) {
 			return $invalid;
@@ -227,59 +287,28 @@ class EventsController extends Controller {
 		}
 
 		if ($this->rosterService->isParticipant(eventId: $id, characterId: $characterId, event: $event) === false) {
-			return new JSONResponse(
-				data: ['error' => 'Character is not a confirmed participant of this event'],
-				statusCode: 422
-			);
+			return new JSONResponse(data: ['error' => 'Character is not a confirmed participant of this event'], statusCode: 422);
 		}
 
-		$saved = $this->rosterService->recordAttendance(
-			eventId: $id,
-			characterId: $characterId,
-			status: $status,
-			actingUid: $actingUid
-		);
-
-		if ($saved === null) {
-			return new JSONResponse(
-				data: ['error' => 'Attendance storage is not available', 'attendanceAvailable' => false],
-				statusCode: 424
-			);
-		}
-
-		return new JSONResponse(data: $saved);
-	}//end recordAttendance()
+		return null;
+	}//end attendanceRefusal()
 
 	/**
-	 * Resolve the acting game master, or the refusal response to return.
+	 * The response for a recorded attendance, or the 424 when attendance storage is missing.
 	 *
-	 * Collapses the authenticate-then-authorize pair into one decision so the
-	 * endpoints carry a single guard branch and receive a non-empty uid.
+	 * @param array<string,mixed>|null $saved The persisted record, or null.
 	 *
-	 * @return array{0: string, 1: JSONResponse|null} The [actingUid, refusal] pair;
-	 *                                                the uid is empty when refused.
+	 * @return JSONResponse The record or the 424.
 	 *
 	 * @spec openspec/specs/event-checkin-roster/spec.md
 	 */
-	private function resolveGameMaster(): array {
-		$user = $this->userSession->getUser();
-		if ($user === null) {
-			return [
-				'',
-				new JSONResponse(data: ['error' => 'Not authenticated'], statusCode: Http::STATUS_UNAUTHORIZED),
-			];
+	private function attendanceResponse(?array $saved): JSONResponse {
+		if ($saved === null) {
+			return new JSONResponse(data: ['error' => 'Attendance storage is not available', 'attendanceAvailable' => false], statusCode: 424);
 		}
 
-		$uid = $user->getUID();
-		if ($this->isGameMaster(uid: $uid) === false) {
-			return [
-				'',
-				new JSONResponse(data: ['error' => 'Access denied'], statusCode: Http::STATUS_FORBIDDEN),
-			];
-		}
-
-		return [$uid, null];
-	}//end resolveGameMaster()
+		return new JSONResponse(data: $saved);
+	}//end attendanceResponse()
 
 	/**
 	 * Validate the attendance request body, or null when it is acceptable.
@@ -320,18 +349,4 @@ class EventsController extends Controller {
 
 		return $eventName . '_runsheet.pdf';
 	}//end runsheetFileName()
-
-	/**
-	 * Whether a user may act as a game master (GM group or Nextcloud admin).
-	 *
-	 * @param string $uid The acting user's uid.
-	 *
-	 * @return bool True when the user is a GM or admin.
-	 *
-	 * @spec openspec/specs/event-checkin-roster/spec.md
-	 */
-	private function isGameMaster(string $uid): bool {
-		return $this->groupManager->isInGroup($uid, self::GM_GROUP) === true
-			|| $this->groupManager->isAdmin($uid) === true;
-	}//end isGameMaster()
 }//end class

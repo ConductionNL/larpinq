@@ -65,36 +65,9 @@ on:
   # be redder than a PR — that is the honest answer, not a regression.
   workflow_dispatch:
 
-# Permission CEILING for the called quality pipeline, NOT a grant. Copied
-# verbatim from openconnector, where this exact block is live on `development`
-# with all ~30 quality jobs green — so it is a measured ceiling, not a guess.
-#
-# ⚠️ Most jobs in the callee declare NO permissions of their own (only
-# journeydoc-capture and features-extract do), which means they inherit THIS
-# ceiling exactly. Every entry below is load-bearing:
-#
-#   contents: write        journeydoc-capture and update-baseline `git push`
-#                          the regenerated screenshots / coverage baseline
-#   actions: write         journeydoc-capture re-dispatches downstream work
-#                          (a GITHUB_TOKEN push does not fire workflow_run)
-#   issues / pull-requests: write
-#                          the Quality Report comment — `github.rest.issues
-#                          .createComment`, which 403s under contents+packages
-#                          read alone (quality.yml notes this at its own step)
-#   packages: read         pulling org images for the Nextcloud test matrix
-#
-# ⚠️ Do NOT "tighten" any of these to `read`. GitHub statically validates the
-# called workflow's DECLARED job permissions against this grant — including for
-# jobs an `if:` will skip — so capping one makes the whole call fail to START:
-# zero jobs, no annotations, and a Code Quality run that is absent rather than
-# red. That is the same shape as the org-rename outage described below, which
-# also produced zero jobs and no red test.
+# Read-only by default; the write grants sit on the job that needs them.
 permissions:
-  contents: write
-  actions: write
-  issues: write
-  pull-requests: write
-  packages: read
+  contents: read
 
 jobs:
   quality:
@@ -105,6 +78,36 @@ jobs:
     # produced ZERO jobs and failed instantly, taking ESLint, PHPCS, PHPMD,
     # PHPStan, the license/security scan and the 4-way PHPUnit matrix offline
     # without a single red test to show for it.
+    # Permission CEILING for the called quality pipeline, NOT a grant. Copied
+    # verbatim from openconnector, where this exact block is live on `development`
+    # with all ~30 quality jobs green, so it is a measured ceiling, not a guess.
+    #
+    # ⚠️ Most jobs in the callee declare NO permissions of their own (only
+    # journeydoc-capture and features-extract do), which means they inherit THIS
+    # ceiling exactly. Every entry below is load-bearing:
+    #
+    #   contents: write        journeydoc-capture and update-baseline `git push`
+    #                          the regenerated screenshots / coverage baseline
+    #   actions: write         journeydoc-capture re-dispatches downstream work
+    #                          (a GITHUB_TOKEN push does not fire workflow_run)
+    #   issues / pull-requests: write
+    #                          the Quality Report comment, `github.rest.issues
+    #                          .createComment`, which 403s under contents+packages
+    #                          read alone (quality.yml notes this at its own step)
+    #   packages: read         pulling org images for the Nextcloud test matrix
+    #
+    # ⚠️ Do NOT "tighten" any of these to `read`. GitHub statically validates the
+    # called workflow's DECLARED job permissions against this grant, including for
+    # jobs an `if:` will skip, so capping one makes the whole call fail to START:
+    # zero jobs, no annotations, and a Code Quality run that is absent rather than
+    # red. That is the same shape as the org-rename outage described below, which
+    # also produced zero jobs and no red test.
+    permissions:
+      contents: write
+      actions: write
+      issues: write
+      pull-requests: write
+      packages: read
     uses: ConductionNL/.github/.github/workflows/quality.yml@main
     with:
       app-name: larpinq
@@ -120,29 +123,9 @@ jobs:
       # silently broken while looking configured.
       php-version: "8.3"
       php-test-versions: '["8.3", "8.4"]'
-      # appinfo/info.xml declares <nextcloud min-version="32" max-version="34"/>,
-      # so the matrix only targets server branches this app can actually run on.
-      #
-      # stable31 is REMOVED, not "dropped for coverage". `additional-apps` below
-      # installs openregister, which declares min-version="32" and therefore
-      # cannot install on NC31 — `occ app:enable openregister` fails with only a
-      # ::warning::, so the run continued WITHOUT its data layer and every
-      # /apps/openregister/... call returned Nextcloud's HTML 404 page. A stable31
-      # leg was testing an impossible configuration, so its red said nothing.
-      #
-      # Order matters as well as membership: newman, playwright and
-      # journeydoc-capture all pin `fromJSON(inputs.nextcloud-test-refs)[0]`, so
-      # stable31 sitting FIRST meant those three jobs ran entirely on the version
-      # openregister cannot load.
-      #
-      # THE LIST IS THE WHOLE DECLARED RANGE. An earlier revision of this comment
-      # said "stable33 is deliberately NOT added: this change removes an
-      # impossible leg, it does not widen the matrix" — but the same change also
-      # dropped stable32, which was NOT impossible, it was the declared floor.
-      # appinfo/info.xml declares <nextcloud min-version="32" max-version="34"/>,
-      # so 32, 33 and 34 each get a leg; anything narrower advertises a range to
-      # the App Store that no job touches.
-      nextcloud-test-refs: '["stable34", "stable32", "stable33"]'
+      # No `nextcloud-test-refs` override: the shared quality.yml derives the
+      # Nextcloud matrix from appinfo/info.xml (min-version..max-version), so the
+      # declared range — now including stable35 — is exactly what gets tested.
       # Psalm was `false` and carried no reason. The shared workflow still
       # creates a job literally named `PHP Quality (psalm)` for a disabled
       # tool: it prints "Psalm is disabled — skipping." and concludes
@@ -278,6 +261,15 @@ jobs:
       # serious/critical violations on core's OWN routes that DOM scoping does
       # not remove. Enabling axe is a separate decision.
       enable-hydra-gates: true
+      # Gate 122 (SIG unit ratchet) blocks: a unit this change adds or makes
+      # worse must stay at NLOC 60, McCabe 10 and at most 4 parameters, and a
+      # new duplicated fragment of 6+ lines fails. Units the change does not
+      # touch, or touches without making worse, are inherited and do not count.
+      hydra-gates-sig-blocking: true
+      # Maintainability floor: no rating in .maintainability-floor.json may drop
+      # more than 0.01 against the merge base (pull request) or below the
+      # committed floor (push). The floor is raised after improving merges.
+      enable-maintainability-floor: true
       # No `hydra-gates-ref` here on purpose. The shared workflow defaults it
       # to @main, and this workflow is itself consumed at @main, so the two
       # sides move together and a gate fix reaches this repo without a commit

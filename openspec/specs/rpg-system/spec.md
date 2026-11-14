@@ -398,6 +398,153 @@ All RPG entities have a dual data model. Internal storage is skeletal; full func
 
 ---
 
+### Requirement: A unique item has one holder (REQ-UHE-001)
+
+When a character write adds an item whose `unique` flag is true, and another
+character already holds that item, larpinq SHALL refuse the write and name
+the current holder. A holder MUST be counted from both the character's
+`items[]` and the item's `characters[]`.
+
+#### Scenario: A game master gives a held unique item to a second character
+
+- GIVEN unique item "Crown of Aldmoor" is in the items of character "Queen Isolde"
+- WHEN a game master adds "Crown of Aldmoor" to the items of character "Sir Bertram" on the character detail page
+- THEN the save is refused
+- AND the page shows that "Crown of Aldmoor" is held by "Queen Isolde"
+
+#### Scenario: A non-unique item goes to many characters
+
+- GIVEN item "Healing potion" with unique set to false is held by "Queen Isolde"
+- WHEN a game master adds "Healing potion" to "Sir Bertram"
+- THEN the save succeeds
+
+#### Scenario: An unrelated edit is not blocked by an old conflict
+
+- GIVEN "Crown of Aldmoor" is already held by both "Queen Isolde" and "Sir Bertram" from before this change
+- WHEN a game master changes only the background of "Sir Bertram"
+- THEN the save succeeds
+
+### Requirement: A unique condition affects one character (REQ-UHE-002)
+
+When a character write adds a condition whose `unique` flag is true, and
+another character already has that condition, larpinq SHALL refuse the write
+and name the character who has it. Holders MUST be counted from both the
+character's `conditions[]` and the condition's `characters[]`.
+
+#### Scenario: The curse of the Ashen King can only rest on one head
+
+- GIVEN unique condition "Curse of the Ashen King" is on character "Mirela"
+- WHEN a game master adds it to character "Tomas" through the REST API
+- THEN the API answers with a validation error on `conditions`
+- AND the error names "Mirela" as the current holder
+
+### Requirement: The item and condition pages keep the rule too (REQ-UHE-003)
+
+An item or condition write SHALL be refused when `unique` is true and the
+holders on both sides number more than one, including when the write switches
+`unique` from false to true.
+
+#### Scenario: A game master marks a shared item unique
+
+- GIVEN item "Silver key" with unique set to false is held by "Queen Isolde" and "Sir Bertram"
+- WHEN a game master switches "Unique artifact" on for "Silver key" on the item detail page
+- THEN the save is refused
+- AND the page names both holders so the game master can remove one first
+
+### Requirement: The refusal is readable (REQ-UHE-004)
+
+The refusal MUST be returned as a field error on the field the user changed
+(`items`, `conditions`, `characters` or `unique`), and the character and item
+pages SHALL show it in Dutch and English with the holder's name.
+
+#### Scenario: A Dutch-speaking game master sees the holder
+
+- GIVEN a game master whose Nextcloud language is Dutch
+- WHEN the save of "Sir Bertram" is refused because "Queen Isolde" holds "Crown of Aldmoor"
+- THEN the message on the character page is in Dutch and names "Queen Isolde"
+
+### Requirement: The check fails closed (REQ-UHE-006)
+
+When a lookup the unique-holder check needs fails (reading the added item or
+condition raises an error, OpenRegister is unavailable, or a holder lookup
+fails), larpinq SHALL refuse a write that adds a holder: a character write
+that adds an item or condition, a create of a unique item or condition, an
+item or condition write that adds a holder, or one that switches `unique` on.
+The refusal MUST say the change was not saved and can be tried again, and the
+failure MUST be logged. A write that adds no holder SHALL pass as before. An
+added item or condition that does not exist, or that the caller cannot read,
+is not a failed lookup: REQ-UHE-007 covers it.
+
+#### Scenario: OpenRegister cannot answer while a holder is added
+
+- GIVEN the holder lookup fails because OpenRegister does not answer
+- WHEN a game master adds "Crown of Aldmoor" to character "Sir Bertram"
+- THEN the save is refused on `items`
+- AND the message says the change was not saved and to try again
+
+#### Scenario: An edit that adds no holder still saves
+
+- GIVEN the holder lookup fails because OpenRegister does not answer
+- WHEN a game master changes only the background of "Sir Bertram"
+- THEN the save succeeds
+
+#### Scenario: Bulk saves and imports run the check
+
+- GIVEN a game master imports characters, items or conditions in bulk
+- WHEN a row adds a second holder of a unique item or condition
+- THEN that row is refused like a single save, because the character, item
+  and condition schemas set `fireEventsOnBulkWrites`
+
+### Requirement: An unknown item or condition is refused plainly (REQ-UHE-007)
+
+When a character write adds an item or condition that does not exist, that
+the caller cannot read, whose id is not a valid object id, or whose id belongs
+to an object of another type (a condition's id in `items`, an item's id in
+`conditions`, or any other object), larpinq SHALL
+refuse the write on `items` or `conditions` with the code
+`unique_item_unknown` or `unique_condition_unknown`. The message MUST name the
+id, say the change was not saved and MUST NOT invite a retry. An object the
+caller cannot read MUST get exactly the answer of one that does not exist, so
+the refusal never shows whether an unreadable object exists.
+
+#### Scenario: A game master adds an item that does not exist
+
+- GIVEN no item with id "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee" exists
+- WHEN a game master adds that id to the items of "Sir Bertram"
+- THEN the save is refused on `items` with code `unique_item_unknown`
+- AND the message reads "Unknown item eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee. This change was not saved."
+
+#### Scenario: An item the caller cannot read looks like a missing one
+
+- GIVEN "Crown of Aldmoor" exists but the game master may not read it
+- WHEN the game master adds it to "Sir Bertram"
+- THEN the refusal is the same, field for field, as for an item that does not exist
+
+#### Scenario: A condition's id in the items is not an item
+
+- GIVEN condition "Curse of the Ashen King" exists
+- WHEN a game master adds its id to the items of "Sir Bertram"
+- THEN the save is refused on `items` with code `unique_item_unknown`, as for an item that does not exist
+
+#### Scenario: An import row names an item that comes later in the import
+
+- GIVEN a bulk import whose character row names an item created by a later row
+- WHEN that character row is saved
+- THEN the row is refused as an unknown item, and the other rows are checked on their own
+
+### Requirement: Today's conflicts can be listed (REQ-UHE-005)
+
+An administrator MUST be able to list every unique item and unique condition
+that more than one character holds, with the holders, through
+`occ larpinq:unique-holders:check`.
+
+#### Scenario: An administrator finds an old conflict
+
+- GIVEN "Crown of Aldmoor" is held by "Queen Isolde" and "Sir Bertram" from before this change
+- WHEN an administrator runs `occ larpinq:unique-holders:check`
+- THEN the output lists "Crown of Aldmoor" with both holders
+- AND the command exits with a non-zero code while a conflict exists
+
 ## Data Model
 
 ### Effect Chain Diagram

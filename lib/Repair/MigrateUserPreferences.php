@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
+ */
+
+/**
  * Larpinq Migrate User Preferences Repair Step
  *
  * Repair step that carries this app's per-user preferences across the
@@ -86,7 +91,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Repair;
 
-use OCA\Larpinq\AppInfo\Application;
+use OCA\Larpinq\Support\AppIdentity;
 use OCP\IConfig;
 use OCP\IUser;
 use OCP\IUserManager;
@@ -180,6 +185,22 @@ class MigrateUserPreferences implements IRepairStep {
 		$this->migrated = 0;
 		$this->alreadyPresent = 0;
 
+		if ($this->migrateSeenUsers(output: $output) === false) {
+			return;
+		}
+
+		$this->reportCounts(output: $output);
+	}//end run()
+
+	/**
+	 * Walk every seen user and copy their preferences; on a failing user
+	 * backend, warn and report that nothing was walked.
+	 *
+	 * @param IOutput $output The output interface for progress reporting
+	 *
+	 * @return bool True when every seen user was walked
+	 */
+	private function migrateSeenUsers(IOutput $output): bool {
 		try {
 			// The callback returns null rather than void: IUserManager treats a
 			// `false` return as "stop iterating", so the contract is
@@ -191,16 +212,39 @@ class MigrateUserPreferences implements IRepairStep {
 				}
 			);
 		} catch (Throwable $e) {
-			$this->logger->warning(
-				'Larpinq: could not enumerate users; per-user preferences were not migrated',
-				['exception' => $e->getMessage()]
-			);
-			$output->warning(
-				'MigrateUserPreferences: user enumeration failed; preferences left under the larpingapp app id.'
-			);
-			return;
+			$this->warnEnumerationFailed(output: $output, error: $e);
+			return false;
 		}//end try
 
+		return true;
+	}//end migrateSeenUsers()
+
+	/**
+	 * Log and print that the users could not be walked.
+	 *
+	 * @param IOutput $output The output interface for progress reporting
+	 * @param Throwable $error What the user backend threw
+	 *
+	 * @return void
+	 */
+	private function warnEnumerationFailed(IOutput $output, Throwable $error): void {
+		$this->logger->warning(
+			'Larpinq: could not enumerate users; per-user preferences were not migrated',
+			['exception' => $error->getMessage()]
+		);
+		$output->warning(
+			'MigrateUserPreferences: user enumeration failed; preferences left under the larpingapp app id.'
+		);
+	}//end warnEnumerationFailed()
+
+	/**
+	 * Report how many preferences moved and how many were already set.
+	 *
+	 * @param IOutput $output The output interface for progress reporting
+	 *
+	 * @return void
+	 */
+	private function reportCounts(IOutput $output): void {
 		if ($this->migrated === 0 && $this->alreadyPresent === 0) {
 			$output->info(
 				'MigrateUserPreferences: no stored larpingapp user preferences on this install; nothing to do.'
@@ -212,7 +256,7 @@ class MigrateUserPreferences implements IRepairStep {
 			'MigrateUserPreferences: migrated ' . $this->migrated . ' preference(s); '
 			. $this->alreadyPresent . ' already set under larpinq.'
 		);
-	}//end run()
+	}//end reportCounts()
 
 	/**
 	 * Copy one user's stored preferences from the old app id to the new one.
@@ -224,19 +268,7 @@ class MigrateUserPreferences implements IRepairStep {
 	private function migrateUser(string $userId): void {
 		foreach ($this->oldKeysFor(userId: $userId) as $key) {
 			try {
-				$old = $this->config->getUserValue($userId, self::OLD_APP_ID, $key, '');
-				if ($old === '') {
-					continue;
-				}
-
-				$existing = $this->config->getUserValue($userId, Application::APP_ID, $key, '');
-				if ($existing !== '') {
-					$this->alreadyPresent++;
-					continue;
-				}
-
-				$this->config->setUserValue($userId, Application::APP_ID, $key, $old);
-				$this->migrated++;
+				$this->copyKey(userId: $userId, key: $key);
 			} catch (Throwable $e) {
 				$this->logger->warning(
 					'Larpinq: could not migrate one user preference; leaving it under the old app id',
@@ -245,6 +277,31 @@ class MigrateUserPreferences implements IRepairStep {
 			}//end try
 		}//end foreach
 	}//end migrateUser()
+
+	/**
+	 * Copy one stored preference to the new app id, unless the old value is empty or
+	 * the new app id already has one; counts what it did.
+	 *
+	 * @param string $userId The Nextcloud user ID
+	 * @param string $key The preference key
+	 *
+	 * @return void
+	 */
+	private function copyKey(string $userId, string $key): void {
+		$old = $this->config->getUserValue($userId, self::OLD_APP_ID, $key, '');
+		if ($old === '') {
+			return;
+		}
+
+		$existing = $this->config->getUserValue($userId, AppIdentity::APP_ID, $key, '');
+		if ($existing !== '') {
+			$this->alreadyPresent++;
+			return;
+		}
+
+		$this->config->setUserValue($userId, AppIdentity::APP_ID, $key, $old);
+		$this->migrated++;
+	}//end copyKey()
 
 	/**
 	 * Every preference key this user has stored under the old app id.

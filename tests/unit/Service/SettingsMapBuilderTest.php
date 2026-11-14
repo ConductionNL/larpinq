@@ -8,6 +8,9 @@
  * @author   Ruben Linde <ruben@larpingapp.com>
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
+ *
+ * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
  */
 
 declare(strict_types=1);
@@ -22,13 +25,24 @@ use PHPUnit\Framework\TestCase;
  */
 class SettingsMapBuilderTest extends TestCase {
 
+	/** @var SettingsMapBuilder The builder. */
 	private SettingsMapBuilder $builder;
 
+	/**
+	 * Build the doubles and the subject every test starts from.
+	 *
+	 * @return void
+	 */
 	protected function setUp(): void {
 		parent::setUp();
 		$this->builder = new SettingsMapBuilder();
 	}
 
+	/**
+	 * Build schema slug map from arrays.
+	 *
+	 * @return void
+	 */
 	public function testBuildSchemaSlugMapFromArrays(): void {
 		$schemas = [
 			['slug' => 'character', 'id' => 'schema-1'],
@@ -37,10 +51,15 @@ class SettingsMapBuilderTest extends TestCase {
 
 		$result = $this->builder->buildSchemaSlugMap($schemas);
 
-		self::assertSame('schema-1', $result['character']);
-		self::assertSame('schema-2', $result['skill']);
+		self::assertSame(expected: 'schema-1', actual: $result['character']);
+		self::assertSame(expected: 'schema-2', actual: $result['skill']);
 	}
 
+	/**
+	 * Build schema slug map skips entries without slug.
+	 *
+	 * @return void
+	 */
 	public function testBuildSchemaSlugMapSkipsEntriesWithoutSlug(): void {
 		$schemas = [
 			['id' => 'schema-1'], // No slug.
@@ -49,10 +68,15 @@ class SettingsMapBuilderTest extends TestCase {
 
 		$result = $this->builder->buildSchemaSlugMap($schemas);
 
-		self::assertCount(1, $result);
-		self::assertSame('schema-2', $result['skill']);
+		self::assertCount(expectedCount: 1, haystack: $result);
+		self::assertSame(expected: 'schema-2', actual: $result['skill']);
 	}
 
+	/**
+	 * Build schema slug map uses UUID as fallback.
+	 *
+	 * @return void
+	 */
 	public function testBuildSchemaSlugMapUsesUuidAsFallback(): void {
 		$schemas = [
 			['slug' => 'character', 'uuid' => 'uuid-1'],
@@ -60,12 +84,22 @@ class SettingsMapBuilderTest extends TestCase {
 
 		$result = $this->builder->buildSchemaSlugMap($schemas);
 
-		self::assertSame('uuid-1', $result['character']);
+		self::assertSame(expected: 'uuid-1', actual: $result['character']);
 	}
 
+	/**
+	 * Build schema slug map from JSON serializable.
+	 *
+	 * @return void
+	 */
 	public function testBuildSchemaSlugMapFromJsonSerializable(): void {
 		$mockSchema = new class implements \JsonSerializable {
 
+			/**
+			 * The entity as an array.
+			 *
+			 * @return array The entity as an array.
+			 */
 			public function jsonSerialize(): array {
 				return ['slug' => 'event', 'id' => 'schema-evt'];
 			}
@@ -73,15 +107,25 @@ class SettingsMapBuilderTest extends TestCase {
 
 		$result = $this->builder->buildSchemaSlugMap([$mockSchema]);
 
-		self::assertSame('schema-evt', $result['event']);
+		self::assertSame(expected: 'schema-evt', actual: $result['event']);
 	}
 
+	/**
+	 * Build schema slug map returns empty for empty input.
+	 *
+	 * @return void
+	 */
 	public function testBuildSchemaSlugMapReturnsEmptyForEmptyInput(): void {
 		$result = $this->builder->buildSchemaSlugMap([]);
 
-		self::assertEmpty($result);
+		self::assertEmpty(actual: $result);
 	}
 
+	/**
+	 * Find register id by slug matches larpingapp.
+	 *
+	 * @return void
+	 */
 	public function testFindRegisterIdBySlugMatchesLarpingapp(): void {
 		$registers = [
 			['slug' => 'other-app', 'id' => 'reg-1'],
@@ -90,9 +134,14 @@ class SettingsMapBuilderTest extends TestCase {
 
 		$result = $this->builder->findRegisterIdBySlug($registers);
 
-		self::assertSame('reg-2', $result);
+		self::assertSame(expected: 'reg-2', actual: $result);
 	}
 
+	/**
+	 * Find register id by slug returns null when not found.
+	 *
+	 * @return void
+	 */
 	public function testFindRegisterIdBySlugReturnsNullWhenNotFound(): void {
 		$registers = [
 			['slug' => 'other-app', 'id' => 'reg-1'],
@@ -100,15 +149,25 @@ class SettingsMapBuilderTest extends TestCase {
 
 		$result = $this->builder->findRegisterIdBySlug($registers);
 
-		self::assertNull($result);
+		self::assertNull(actual: $result);
 	}
 
+	/**
+	 * Find register id by slug returns null for empty input.
+	 *
+	 * @return void
+	 */
 	public function testFindRegisterIdBySlugReturnsNullForEmptyInput(): void {
 		$result = $this->builder->findRegisterIdBySlug([]);
 
-		self::assertNull($result);
+		self::assertNull(actual: $result);
 	}
 
+	/**
+	 * Find register id by slug skips entries without slug.
+	 *
+	 * @return void
+	 */
 	public function testFindRegisterIdBySlugSkipsEntriesWithoutSlug(): void {
 		$registers = [
 			['id' => 'reg-1'], // No slug.
@@ -116,6 +175,6 @@ class SettingsMapBuilderTest extends TestCase {
 
 		$result = $this->builder->findRegisterIdBySlug($registers);
 
-		self::assertNull($result);
+		self::assertNull(actual: $result);
 	}
 }

@@ -1,113 +1,504 @@
 {
     "openapi": "3.0.3",
     "info": {
-        "title": "dsonextcloud",
-        "version": "0.3.2-unstable.20260910105036",
-        "description": "DSO Nextcloud",
+        "title": "Larpinq",
+        "version": "0.3.5-unstable.20261102200000",
+        "description": "The JSON API of Larpinq, the live action role-play app for Nextcloud: character sheets and builds, events with registrations, check-in and XP awards, worlds, settings and the setup wizard. The characters, events and other objects themselves are stored in OpenRegister and read and written through its API; this document covers the endpoints Larpinq adds on top.\n\nEvery path is served under `/api/v1/`, the version this document describes. The unversioned `/api/` paths keep working, are deprecated, and name their `/api/v1/` successor in a `Link` header next to a `Deprecation` header. Errors are RFC 9457 problem details (`application/problem+json`), and every response carries an `API-Version` header. Paths that implement an external standard keep the formats of that standard and are not described here.",
+        "contact": {
+            "name": "Conduction B.V.",
+            "email": "info@conduction.nl",
+            "url": "https://conduction.nl"
+        },
         "license": {
-            "name": "agpl"
+            "name": "EUPL-1.2",
+            "url": "https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12"
         }
     },
-    "components": {
-        "securitySchemes": {
-            "basic_auth": {
-                "type": "http",
-                "scheme": "basic"
-            },
-            "bearer_auth": {
-                "type": "http",
-                "scheme": "bearer"
-            }
-        },
-        "schemas": {
-            "OCSMeta": {
-                "type": "object",
-                "required": [
-                    "status",
-                    "statuscode"
-                ],
-                "properties": {
-                    "status": {
-                        "type": "string"
-                    },
-                    "statuscode": {
-                        "type": "integer"
-                    },
-                    "message": {
-                        "type": "string"
-                    },
-                    "totalitems": {
-                        "type": "string"
-                    },
-                    "itemsperpage": {
-                        "type": "string"
-                    }
+    "servers": [
+        {
+            "url": "https://{host}/index.php/apps/larpinq/api/v1",
+            "description": "The Larpinq API on a Nextcloud instance, version 1.",
+            "variables": {
+                "host": {
+                    "default": "localhost",
+                    "description": "The host name of the Nextcloud instance."
                 }
             }
         }
-    },
+    ],
+    "security": [
+        {
+            "basic_auth": []
+        },
+        {
+            "bearer_auth": []
+        }
+    ],
+    "tags": [
+        {
+            "name": "character-builds",
+            "description": "Checking a character build against the rules"
+        },
+        {
+            "name": "character-stats",
+            "description": "The stat sheet of a character"
+        },
+        {
+            "name": "characters",
+            "description": "Character sheets: PDF templates and the skill requirement report"
+        },
+        {
+            "name": "events",
+            "description": "Event check-in: the roster and attendance"
+        },
+        {
+            "name": "open-api",
+            "description": "The OpenAPI document that describes this API"
+        },
+        {
+            "name": "player-attendance",
+            "description": "The events a player attended"
+        },
+        {
+            "name": "preferences",
+            "description": "Per-user preferences"
+        },
+        {
+            "name": "registration-changes",
+            "description": "Cancelling, extending and handing over a registration"
+        },
+        {
+            "name": "registration-choices",
+            "description": "Ticket types and options a registration may choose, and how many chose each"
+        },
+        {
+            "name": "registration-payments",
+            "description": "Payment requests for registrations"
+        },
+        {
+            "name": "settings",
+            "description": "App settings and the configuration import"
+        },
+        {
+            "name": "setup",
+            "description": "The first-time setup wizard"
+        },
+        {
+            "name": "store",
+            "description": "Declarative store search and install for AppHost-adopting apps."
+        },
+        {
+            "name": "worlds",
+            "description": "Copying a world into a new world"
+        },
+        {
+            "name": "xp-awards",
+            "description": "Awarding XP to the participants of an event"
+        }
+    ],
     "paths": {
-        "/ocs/v2.php/apps/dsonextcloud/api": {
+        "/builds/apply-access": {
             "get": {
-                "operationId": "api-index",
-                "summary": "An example API endpoint",
+                "operationId": "character-builds-access",
+                "summary": "Whether the caller may apply builds to character sheets: game masters and admins",
+                "description": "Whether the caller may apply builds to character sheets: game masters and admins. The build page shows its Apply action on this answer; the write itself is checked by OpenRegister and the requirement listener.",
                 "tags": [
-                    "api"
-                ],
-                "security": [
-                    {
-                        "bearer_auth": []
-                    },
-                    {
-                        "basic_auth": []
-                    }
-                ],
-                "parameters": [
-                    {
-                        "name": "OCS-APIRequest",
-                        "in": "header",
-                        "description": "Required to be true for the API request to pass",
-                        "required": true,
-                        "schema": {
-                            "type": "boolean",
-                            "default": true
-                        }
-                    }
+                    "character-builds"
                 ],
                 "responses": {
                     "200": {
-                        "description": "Data returned",
+                        "description": "`{allowed: bool}`.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "type": "object",
-                                    "required": [
-                                        "ocs"
-                                    ],
-                                    "properties": {
-                                        "ocs": {
-                                            "type": "object",
-                                            "required": [
-                                                "meta",
-                                                "data"
-                                            ],
-                                            "properties": {
-                                                "meta": {
-                                                    "$ref": "#/components/schemas/OCSMeta"
-                                                },
-                                                "data": {
-                                                    "type": "object",
-                                                    "required": [
-                                                        "message"
-                                                    ],
-                                                    "properties": {
-                                                        "message": {
-                                                            "type": "string"
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/builds/{id}/report": {
+            "get": {
+                "operationId": "character-builds-report",
+                "summary": "The check of one build: the requirement report and the stat sheet of the character as it would be with the build's skill",
+                "description": "The check of one build: the requirement report and the stat sheet of the character as it would be with the build's skills, items and conditions. The character's own XP awards count, so the budget is real. Nothing is written.",
+                "tags": [
+                    "character-builds"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "`{build, character, report, stats, lists, changes}`, or 404.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Problem404"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "The id.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "/characters/{id}/requirement-report": {
+            "get": {
+                "operationId": "characters-requirement-report",
+                "summary": "Recompute the skill-requirement report for one character on demand",
+                "description": "Recompute the skill-requirement report for one character on demand.  Returns the structured validation result (unmet prerequisites, overridden entries, dependent-now-unmet skills from past removals/global edits, the XP budget block). Read-only: it never writes. Authorization is delegated to OpenRegister via the fetch, a user who cannot read the character via the OR-backed fetch gets a 404, so this endpoint exposes nothing the caller could not already read through the OR objects API.",
+                "tags": [
+                    "characters"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The requirement report, or an error response.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem401"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Problem404"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "The id.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "/characters/{id}/stats": {
+            "get": {
+                "operationId": "character-stats-show",
+                "summary": "The stat sheet of one character",
+                "description": "The stat sheet of one character.",
+                "tags": [
+                    "character-stats"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "`{abilities: [...], xp: {...}|null}`, or 404.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Problem404"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "The id.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "/events/{id}/attendance": {
+            "post": {
+                "operationId": "events-record-attendance",
+                "summary": "Record or update a participant's attendance for an event (GM-only)",
+                "description": "Record or update a participant's attendance for an event (GM-only).  Server-authoritative: the acting user MUST be in the `gamemasters` group or a Nextcloud admin, the `(event, character)` pair MUST be a confirmed participant, and `checkedInAt` / `checkedInBy` are stamped from the server clock and session, never read from the request body (anti-forgery, the rule shared with `xpAward.awardedAt` / `awardedBy`). Persistence and the schema-level RBAC are OR-delegated (ADR-022); this controller adds no parallel attendance-write auth path. Degrades to a 424 when the `larping_attendance` schema is absent rather than throwing.",
+                "tags": [
+                    "events"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The persisted attendance record, or an error.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Problem404"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Problem422"
+                    },
+                    "424": {
+                        "$ref": "#/components/responses/Problem424"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "The id.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "/events/{id}/choices": {
+            "get": {
+                "operationId": "registration-choices-counts",
+                "summary": "How many accepted registrations of the event chose each ticket type and option",
+                "description": "How many accepted registrations of the event chose each ticket type and option.",
+                "tags": [
+                    "registration-choices"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "`{ticketTypes: [{id, name, role, count}], options: [{id, name, category, count}]}`, or 401, 403.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem401"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Problem403"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "The id.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "/events/{id}/roster": {
+            "get": {
+                "operationId": "events-roster",
+                "summary": "Read the check-in roster for an event",
+                "description": "Read the check-in roster for an event.  Read access is open to any authenticated app user, the roster is read-only for players; the `isGm` flag tells the client whether to render the check-in controls. Degrades gracefully: when the `larping_attendance` schema (or OpenRegister) is unavailable the participant list is still returned with `attendanceAvailable=false` and no per-row status, so the event page never breaks (DocuDesk / Forms-leaf degradation pattern).",
+                "tags": [
+                    "events"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The roster payload, or an error response.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem401"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Problem404"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "The id.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "/events/{id}/xp-award-roster": {
+            "get": {
+                "operationId": "xp-awards-roster",
+                "summary": "The award roster of an event: participants, attendance, existing awards and the default ticks",
+                "description": "The award roster of an event: participants, attendance, existing awards and the default ticks. Game masters only.",
+                "tags": [
+                    "xp-awards"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "`{eventName, rows, attendanceAvailable}`, or 401, 403, 404.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem401"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Problem403"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Problem404"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "The id.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "/events/{id}/xp-awards": {
+            "post": {
+                "operationId": "xp-awards-award",
+                "summary": "Create one award per row",
+                "description": "Create one award per row. Game masters only.",
+                "tags": [
+                    "xp-awards"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "`{created, refused}`, or 400, 401, 403, 404.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/Problem400"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem401"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Problem403"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Problem404"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "The id.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "rows": {
+                                        "type": "array",
+                                        "items": {}
                                     }
                                 }
                             }
@@ -115,7 +506,1454 @@
                     }
                 }
             }
+        },
+        "/openapi.json": {
+            "get": {
+                "operationId": "open-api-show",
+                "summary": "The OpenAPI document of this API",
+                "description": "Returns this document, with `info.version` set to the installed version. It needs no login and can be read from any origin.",
+                "tags": [
+                    "open-api"
+                ],
+                "security": [],
+                "responses": {
+                    "200": {
+                        "description": "The OpenAPI document.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            },
+                            "access-control-allow-origin": {
+                                "description": "Always `*`.",
+                                "schema": {
+                                    "type": "string",
+                                    "enum": [
+                                        "*"
+                                    ]
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Problem404"
+                    }
+                }
+            }
+        },
+        "/payments/access": {
+            "get": {
+                "operationId": "registration-payments-access",
+                "summary": "Whether the signed-in user may request payments",
+                "description": "Whether the signed-in user may request payments.",
+                "tags": [
+                    "registration-payments"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "`{allowed: bool}`.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/pdf/templates": {
+            "get": {
+                "operationId": "characters-pdf-templates",
+                "summary": "The character-sheet templates for the Download as PDF dialog",
+                "description": "The character-sheet templates for the Download as PDF dialog.  Administrator only, like downloadPdf(): the header action reads this endpoint as its visibility predicate, so the action is hidden for everyone who could not download anyway, and when the document app is absent (`available: false`).  Deliberately NOT `@NoAdminRequired`, for the same reason as downloadPdf(): only an administrator may download a sheet today. `#[NoCSRFRequired]` because it is a read-only GET that the header action's visibility probe fetches, like downloadPdf's GET.",
+                "tags": [
+                    "characters"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "`{available: bool, templates: [{id, name}]}`.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/players/{id}/attendance": {
+            "get": {
+                "operationId": "player-attendance-index",
+                "summary": "The events the player was checked in at, newest first, and how many",
+                "description": "The events the player was checked in at, newest first, and how many. Game masters see every player's; a player sees only their own.",
+                "tags": [
+                    "player-attendance"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "`{count, events: [{id, event, character, eventStartDate, checkedInAt}]}`, or 401, 403.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem401"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Problem403"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "The id.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "/preferences/{key}": {
+            "get": {
+                "operationId": "preferences-get-preference",
+                "summary": "Read a per-user preference value",
+                "description": "Read a per-user preference value.",
+                "tags": [
+                    "preferences"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "`{value: string|null}`.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/Problem400"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem401"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "key",
+                        "in": "path",
+                        "required": true,
+                        "description": "The key.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "x-provided-by": "openregister"
+            },
+            "put": {
+                "operationId": "preferences-set-preference",
+                "summary": "Write a per-user preference value",
+                "description": "Write a per-user preference value. An empty value clears it.  CSRF protection is required, this is a state-mutating PUT endpoint. Note: @NoCSRFRequired removed to close the CSRF-forgery surface (closes #213).",
+                "tags": [
+                    "preferences"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "`{value: string|null}`.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/Problem400"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem401"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "key",
+                        "in": "path",
+                        "required": true,
+                        "description": "The key.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "value": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "x-provided-by": "openregister"
+            }
+        },
+        "/registrations/{id}/cancel": {
+            "post": {
+                "operationId": "registration-changes-cancel",
+                "summary": "Cancel a registration; `settlement` is the player's choice when the event lets them choose",
+                "description": "Cancel a registration; `settlement` is the player's choice when the event lets them choose.",
+                "tags": [
+                    "registration-changes"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The registration, or 401, 403, 404 or 409 with the reason.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem401"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Problem403"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Problem404"
+                    },
+                    "409": {
+                        "$ref": "#/components/responses/Problem409"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "The id.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "settlement": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/registrations/{id}/changes": {
+            "get": {
+                "operationId": "registration-changes-changes",
+                "summary": "What the signed-in user may change on a registration now",
+                "description": "What the signed-in user may change on a registration now.",
+                "tags": [
+                    "registration-changes"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The answers, or 401 or 404.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem401"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Problem404"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "The id.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "/registrations/{id}/offer": {
+            "get": {
+                "operationId": "registration-choices-offer",
+                "summary": "The ticket types and options the registration's player may choose now",
+                "description": "The ticket types and options the registration's player may choose now.",
+                "tags": [
+                    "registration-choices"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "`{ticketTypes, options, code, chosen}`, or 401, 403, 404.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem401"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Problem403"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Problem404"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "The id.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "code",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "/registrations/{id}/participants": {
+            "post": {
+                "operationId": "registration-changes-add-participant",
+                "summary": "Add a participant to the booking of the caller's registration",
+                "description": "Add a participant to the booking of the caller's registration.",
+                "tags": [
+                    "registration-changes"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The participant's registration, or 401, 403, 404 or 422 with the reason.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem401"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Problem403"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Problem404"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Problem422"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "The id.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "player": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/registrations/{id}/payment-request": {
+            "post": {
+                "operationId": "registration-payments-request",
+                "summary": "Raise the payment request of a registration whose payment waits",
+                "description": "Raise the payment request of a registration whose payment waits.",
+                "tags": [
+                    "registration-payments"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The registration, or 401, 403, 404, 409, 502 with the reason.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem401"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Problem403"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Problem404"
+                    },
+                    "409": {
+                        "$ref": "#/components/responses/Problem409"
+                    },
+                    "502": {
+                        "$ref": "#/components/responses/Problem502"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "The id.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "/registrations/{id}/transfer": {
+            "post": {
+                "operationId": "registration-changes-offer-transfer",
+                "summary": "Offer a registration to another player's account",
+                "description": "Offer a registration to another player's account.",
+                "tags": [
+                    "registration-changes"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The registration, or 401, 403, 404 or 409 with the reason.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem401"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Problem403"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Problem404"
+                    },
+                    "409": {
+                        "$ref": "#/components/responses/Problem409"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "The id.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "account": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/registrations/{id}/transfer/accept": {
+            "post": {
+                "operationId": "registration-changes-accept-transfer",
+                "summary": "Accept the registration offered to the caller",
+                "description": "Accept the registration offered to the caller.",
+                "tags": [
+                    "registration-changes"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The registration, or 401, 403, 404 or 409 with the reason.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem401"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Problem403"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Problem404"
+                    },
+                    "409": {
+                        "$ref": "#/components/responses/Problem409"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "The id.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "/registrations/{id}/transfer/withdraw": {
+            "post": {
+                "operationId": "registration-changes-withdraw-transfer",
+                "summary": "Withdraw an open offer",
+                "description": "Withdraw an open offer.",
+                "tags": [
+                    "registration-changes"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The registration, or 401, 403, 404 or 409 with the reason.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem401"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Problem403"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Problem404"
+                    },
+                    "409": {
+                        "$ref": "#/components/responses/Problem409"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "The id.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "/settings": {
+            "get": {
+                "operationId": "settings-index",
+                "summary": "Get current Larpinq settings",
+                "description": "Get current Larpinq settings.",
+                "tags": [
+                    "settings"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The settings response.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    }
+                },
+                "x-provided-by": "openregister"
+            },
+            "post": {
+                "operationId": "settings-create",
+                "summary": "Legacy alias for `update()`, `POST /api/settings`",
+                "description": "Legacy alias for `update()`, `POST /api/settings`.  The canonical AppHost route table still ships `settings#create` for the pre-ADR-066 `index/create/load` dialect, and Larpinq's own frontend still POSTs to it (`src/store/modules/settings.js::saveSettings()` and `src/views/settings/Settings.vue`), so this route must stay reachable and must keep writing (ADR-029).  The delegation is one-way and behaviour-preserving: the response payload is byte-identical to what this method returned before `update()` existed.  CSRF protection is required, this is a state-mutating admin POST.  Auth posture: unchanged. This method keeps its own (absent = Nextcloud default admin + CSRF) posture rather than inheriting anything from `update()`, because SecurityMiddleware only evaluates attributes on the DISPATCHED method, delegation in the body is invisible to it.  The `NoCSRFRequired` annotation was dropped here for #206. It is spelled mid-sentence on purpose: Nextcloud's ControllerMethodReflector matches `/^\\h+\\*\\h+@(?P<annotation>[A-Z]\\w+)((?P<parameter>.*))?$/m`, so a line that BEGINS with the tag registers it as present no matter what the rest of the sentence says, which is how #206 stayed open here for months.",
+                "tags": [
+                    "settings"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The updated settings response.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Problem500"
+                    }
+                },
+                "x-provided-by": "openregister"
+            },
+            "put": {
+                "operationId": "settings-update",
+                "summary": "Update Larpinq settings, the canonical write",
+                "description": "Update Larpinq settings, the canonical write.  This is the `settings#update` half of OpenRegister's canonical AppHost settings dialect (`\\OCA\\OpenRegister\\AppHost\\Controller\\GenericSettingsControllerBase::update()`), reached over `PUT /api/settings`. Larpinq ships its own SettingsController, so `AppHost\\Bootstrap::aliasControllerUnlessLeafDefinesIt()` never aliases the generic in and this leaf owes the method itself.  The body is the one that used to live in `create()`: it hands the full request parameter bag to `\\OCA\\Larpinq\\Service\\SettingsService::updateSettings()`, which whitelists it against `SettingsService::CONFIG_KEYS` and writes the accepted string/int values to `IAppConfig` under the `larpinq` app id, then returns the re-read settings map. Nothing outside that whitelist is persisted, so PUT writes exactly what POST wrote.  CSRF protection is required, this is a state-mutating admin write.  Auth posture: no auth attribute, deliberately identical to `create()`. Nextcloud's default for an attribute-free controller method is \"admin session required, CSRF token required\", which is the posture this instance-wide configuration write needs. `@NoCSRFRequired` was removed from the write path to close the CSRF-forgery surface (closes #206) and is not reintroduced here. Net privilege change of this commit: zero.",
+                "tags": [
+                    "settings"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The updated settings response.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Problem500"
+                    }
+                },
+                "x-provided-by": "openregister"
+            }
+        },
+        "/settings/load": {
+            "post": {
+                "operationId": "settings-load",
+                "summary": "Canonical AppHost alias for `reimport()`",
+                "description": "Canonical AppHost alias for `reimport()`.  `OpenRegister\\AppHost\\Routes::standard()` declares `settings#load`, and the local fallback in appinfo/routes.php reproduces it, so the route existed here with no method behind it: every POST to /api/settings/load was a dispatch-time 500. Pinned by CanonicalSettingsRouteContractTest, which is what caught it.  larpinq spells the same operation `reimport()`, so this delegates rather than duplicating it, the way `create()` delegates to `update()`. The four sibling apps that already carry `load()` do the same force re-import.",
+                "tags": [
+                    "settings"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The re-import result.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Problem500"
+                    }
+                },
+                "x-provided-by": "openregister"
+            }
+        },
+        "/settings/reimport": {
+            "post": {
+                "operationId": "settings-reimport",
+                "summary": "Re-import the Larpinq configuration from the JSON file",
+                "description": "Re-import the Larpinq configuration from the JSON file.  CSRF protection is required, this is a state-mutating admin POST.  The `NoCSRFRequired` annotation was dropped here for #206, and is spelled mid-sentence for the reason given on `create()`: a docblock line that begins with the tag re-registers it.",
+                "tags": [
+                    "settings"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The re-import result.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Problem500"
+                    }
+                }
+            }
+        },
+        "/setup/action/{actionId}": {
+            "post": {
+                "operationId": "setup-run-action",
+                "summary": "Run a privileged server-side setup action",
+                "description": "Run a privileged server-side setup action.",
+                "tags": [
+                    "setup"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "`{ success, message }`.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Problem404"
+                    },
+                    "412": {
+                        "$ref": "#/components/responses/Problem412"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Problem500"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "actionId",
+                        "in": "path",
+                        "required": true,
+                        "description": "The actionId.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "/setup/config": {
+            "post": {
+                "operationId": "setup-save-config",
+                "summary": "Persist app-config values from a `choice` / `config-fields` step",
+                "description": "Persist app-config values from a `choice` / `config-fields` step.  Larpinq's wizard has no config-only steps today, but the endpoint is provided for parity with the abstract wizard contract so future steps can write config without a new controller.",
+                "tags": [
+                    "setup"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "`{ success }`.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/setup/status": {
+            "get": {
+                "operationId": "setup-status",
+                "summary": "Report per-step setup status for the wizard",
+                "description": "Report per-step setup status for the wizard.  The wizard has no required step any more: provisioning moved to the admin settings page (wizard-dataset-card-load), where the `provision` action still runs. `provisioned` travels as information, not as a step, so the admin page and a support check can read it.",
+                "tags": [
+                    "setup"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "`{ version, completed, provisioned, steps: { <id>: { done } } }`.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/store/items": {
+            "get": {
+                "operationId": "store-search",
+                "summary": "Search the remote store",
+                "description": "Search the remote store. Login-required through an in-body guard so an anonymous caller gets an explicit 401 rather than a login redirect. Returns normalised cards and a generic outcome, NEVER the registry URL or token. With no registry configured the engine answers `not_configured` WITHOUT making a network call, which is what lets the page fall back to the app's built-in items (ADR-080 Decision 4). Needs a signed-in Nextcloud user.",
+                "tags": [
+                    "store"
+                ],
+                "x-provided-by": "openregister",
+                "responses": {
+                    "200": {
+                        "description": "The request succeeded.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem401"
+                    }
+                }
+            }
+        },
+        "/store/items/{slug}/install": {
+            "post": {
+                "operationId": "store-install",
+                "summary": "Install one store item into this instance",
+                "description": "Install one store item into this instance. Administrative: the components written are the shape of the work every handler then operates against. The write runs as the calling administrator and NOT through `runAsSystem()`. That elevation is for operations whose inputs originate from code or the app's own seed data; a store payload is neither, it comes off the network. Needs a signed-in Nextcloud user.",
+                "tags": [
+                    "store"
+                ],
+                "x-provided-by": "openregister",
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "required": true,
+                        "description": "The remote item slug.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "item": {
+                                        "description": "The item."
+                                    }
+                                },
+                                "additionalProperties": false
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "The request succeeded.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/Problem400"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem401"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Problem403"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Problem404"
+                    }
+                }
+            }
+        },
+        "/store/publish": {
+            "post": {
+                "operationId": "store-publish",
+                "summary": "Publish one item of the app's store schema to its configured registry",
+                "description": "Publish one item of the app's store schema to its configured registry. The body is `{item: {...}}`, an object that carries its `slug`. Only a user the app's publish groups admit may publish (StoreActionAuthorizer::canPublish); the engine then sends the slug and the declared publish fields, and nothing else (GenericStoreService). Needs a signed-in Nextcloud user.",
+                "tags": [
+                    "store"
+                ],
+                "x-provided-by": "openregister",
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "item": {
+                                        "description": "The item."
+                                    }
+                                },
+                                "additionalProperties": false
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "The request succeeded.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/Problem400"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem401"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Problem403"
+                    }
+                }
+            }
+        },
+        "/worlds/copy-access": {
+            "get": {
+                "operationId": "worlds-access",
+                "summary": "Whether the signed-in user may copy worlds; the world page shows its \"Copy world\" action on this answer",
+                "description": "Whether the signed-in user may copy worlds; the world page shows its \"Copy world\" action on this answer.",
+                "tags": [
+                    "worlds"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "`{allowed: bool}`, or 401.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem401"
+                    }
+                }
+            }
+        },
+        "/worlds/{id}/copy": {
+            "get": {
+                "operationId": "worlds-preview",
+                "summary": "What a copy of the world would create",
+                "description": "What a copy of the world would create. Game masters only.",
+                "tags": [
+                    "worlds"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "`{world, counts}`, or 400, 401, 403, 404, 422.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/Problem400"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem401"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Problem403"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Problem404"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Problem422"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "The id.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            },
+            "post": {
+                "operationId": "worlds-copy",
+                "summary": "Copy the world under a new name",
+                "description": "Copy the world under a new name. Game masters only.",
+                "tags": [
+                    "worlds"
+                ],
+                "responses": {
+                    "201": {
+                        "description": "201 `{world, counts}`, or 400, 401, 403, 404, 422, 500 `{error, leftovers}`.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/Problem400"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem401"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Problem403"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Problem404"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Problem422"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Problem500"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "The id.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/xp-awards/access": {
+            "get": {
+                "operationId": "xp-awards-access",
+                "summary": "Whether the signed-in user may award XP; the event page shows its \"Award XP\" action on this answer",
+                "description": "Whether the signed-in user may award XP; the event page shows its \"Award XP\" action on this answer.",
+                "tags": [
+                    "xp-awards"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "`{allowed: bool}`, or 401.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem401"
+                    }
+                }
+            }
         }
     },
-    "tags": []
+    "components": {
+        "securitySchemes": {
+            "basic_auth": {
+                "type": "http",
+                "scheme": "basic",
+                "description": "A Nextcloud user name with an app password."
+            },
+            "bearer_auth": {
+                "type": "http",
+                "scheme": "bearer",
+                "description": "A Nextcloud OAuth2 access token."
+            }
+        },
+        "headers": {
+            "API-Version": {
+                "description": "The version of the API that answered, which is the installed app version.",
+                "schema": {
+                    "type": "string",
+                    "example": "1.0.0"
+                }
+            }
+        },
+        "schemas": {
+            "Problem": {
+                "type": "object",
+                "description": "RFC 9457 problem details. Members the endpoint returned before, such as `error` or `message`, are kept.",
+                "required": [
+                    "type",
+                    "title",
+                    "status"
+                ],
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "description": "A URI that identifies the problem type.",
+                        "example": "about:blank"
+                    },
+                    "title": {
+                        "type": "string",
+                        "description": "The HTTP reason phrase of the status."
+                    },
+                    "status": {
+                        "type": "integer",
+                        "description": "The HTTP status code."
+                    },
+                    "detail": {
+                        "type": "string",
+                        "description": "What went wrong, for this occurrence."
+                    }
+                },
+                "additionalProperties": true
+            }
+        },
+        "responses": {
+            "Problem400": {
+                "description": "Bad request",
+                "content": {
+                    "application/problem+json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/Problem"
+                        }
+                    }
+                }
+            },
+            "Problem401": {
+                "description": "Unauthorized",
+                "content": {
+                    "application/problem+json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/Problem"
+                        }
+                    }
+                }
+            },
+            "Problem403": {
+                "description": "Forbidden",
+                "content": {
+                    "application/problem+json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/Problem"
+                        }
+                    }
+                }
+            },
+            "Problem404": {
+                "description": "Not found",
+                "content": {
+                    "application/problem+json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/Problem"
+                        }
+                    }
+                }
+            },
+            "Problem409": {
+                "description": "Conflict",
+                "content": {
+                    "application/problem+json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/Problem"
+                        }
+                    }
+                }
+            },
+            "Problem412": {
+                "description": "Precondition failed",
+                "content": {
+                    "application/problem+json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/Problem"
+                        }
+                    }
+                }
+            },
+            "Problem422": {
+                "description": "Unprocessable content",
+                "content": {
+                    "application/problem+json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/Problem"
+                        }
+                    }
+                }
+            },
+            "Problem424": {
+                "description": "Failed dependency",
+                "content": {
+                    "application/problem+json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/Problem"
+                        }
+                    }
+                }
+            },
+            "Problem500": {
+                "description": "Internal server error",
+                "content": {
+                    "application/problem+json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/Problem"
+                        }
+                    }
+                }
+            },
+            "Problem502": {
+                "description": "Bad gateway",
+                "content": {
+                    "application/problem+json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/Problem"
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

@@ -1,0 +1,276 @@
+{
+	"pages": [
+		{
+			"id": "TicketTypes",
+			"route": "/ticket-types",
+			"type": "index",
+			"title": "Ticket types",
+			"config": {
+				"register": "larpinq",
+				"schema": "larping_ticket_type",
+				"allowExport": true,
+				"showMassImport": false,
+				"columns": [
+					{
+						"key": "name",
+						"label": "Name"
+					},
+					{
+						"key": "event",
+						"label": "Event"
+					},
+					{
+						"key": "role",
+						"label": "Role"
+					},
+					{
+						"key": "amount",
+						"label": "Listed price"
+					},
+					{
+						"key": "saleUntil",
+						"label": "On sale until"
+					},
+					{
+						"key": "placeLimit",
+						"label": "Places"
+					}
+				],
+				"documentationUrl": "https://larpinq.conduction.nl"
+			}
+		},
+		{
+			"id": "TicketTypeDetail",
+			"route": "/ticket-types/:id",
+			"type": "detail",
+			"title": "Ticket type",
+			"config": {
+				"register": "larpinq",
+				"schema": "larping_ticket_type",
+				"documentationUrl": "https://larpinq.conduction.nl",
+				"widgets": [
+					{
+						"id": "ticket-type-data",
+						"type": "data",
+						"title": "Ticket type",
+						"icon": "TicketOutline",
+						"content": {
+							"columns": 2
+						}
+					}
+				],
+				"layout": [
+					{
+						"id": "1",
+						"widgetId": "ticket-type-data",
+						"gridX": 0,
+						"gridY": 0,
+						"gridWidth": 12,
+						"gridHeight": 5
+					}
+				],
+				"sidebar": {
+					"enabled": true,
+					"showMetadata": true,
+					"tabs": [
+						{
+							"id": "audit",
+							"label": "History",
+							"icon": "History",
+							"widgets": [
+								{
+									"type": "audit"
+								}
+							]
+						}
+					]
+				}
+			}
+		},
+		{
+			"id": "RegistrationOptions",
+			"route": "/registration-options",
+			"type": "index",
+			"title": "Registration options",
+			"config": {
+				"register": "larpinq",
+				"schema": "larping_registration_option",
+				"allowExport": true,
+				"showMassImport": false,
+				"columns": [
+					{
+						"key": "name",
+						"label": "Name"
+					},
+					{
+						"key": "event",
+						"label": "Event"
+					},
+					{
+						"key": "category",
+						"label": "Category"
+					},
+					{
+						"key": "amount",
+						"label": "Listed price"
+					},
+					{
+						"key": "placeLimit",
+						"label": "Places"
+					}
+				],
+				"documentationUrl": "https://larpinq.conduction.nl"
+			}
+		},
+		{
+			"id": "RegistrationOptionDetail",
+			"route": "/registration-options/:id",
+			"type": "detail",
+			"title": "Registration option",
+			"config": {
+				"register": "larpinq",
+				"schema": "larping_registration_option",
+				"documentationUrl": "https://larpinq.conduction.nl",
+				"widgets": [
+					{
+						"id": "registration-option-data",
+						"type": "data",
+						"title": "Registration option",
+						"icon": "SilverwareForkKnife",
+						"content": {
+							"columns": 2
+						}
+					}
+				],
+				"layout": [
+					{
+						"id": "1",
+						"widgetId": "registration-option-data",
+						"gridX": 0,
+						"gridY": 0,
+						"gridWidth": 12,
+						"gridHeight": 5
+					}
+				],
+				"sidebar": {
+					"enabled": true,
+					"showMetadata": true,
+					"tabs": [
+						{
+							"id": "audit",
+							"label": "History",
+							"icon": "History",
+							"widgets": [
+								{
+									"type": "audit"
+								}
+							]
+						}
+					]
+				}
+			}
+		},
+		{
+			"id": "AccessCodes",
+			"route": "/access-codes",
+			"type": "index",
+			"title": "Access codes",
+			"config": {
+				"register": "larpinq",
+				"schema": "larping_access_code",
+				"allowExport": true,
+				"showMassImport": false,
+				"columns": [
+					{
+						"key": "code",
+						"label": "Code"
+					},
+					{
+						"key": "event",
+						"label": "Event"
+					},
+					{
+						"key": "validUntil",
+						"label": "Valid until"
+					},
+					{
+						"key": "maxUses",
+						"label": "Uses"
+					}
+				],
+				"documentationUrl": "https://larpinq.conduction.nl"
+			}
+		},
+		{
+			"id": "AccessCodeDetail",
+			"route": "/access-codes/:id",
+			"type": "detail",
+			"title": "Access code",
+			"config": {
+				"register": "larpinq",
+				"schema": "larping_access_code",
+				"documentationUrl": "https://larpinq.conduction.nl",
+				"widgets": [
+					{
+						"id": "access-code-data",
+						"type": "data",
+						"title": "Access code",
+						"icon": "KeyVariant",
+						"content": {
+							"columns": 2
+						}
+					}
+				],
+				"layout": [
+					{
+						"id": "1",
+						"widgetId": "access-code-data",
+						"gridX": 0,
+						"gridY": 0,
+						"gridWidth": 12,
+						"gridHeight": 5
+					}
+				],
+				"sidebar": {
+					"enabled": true,
+					"showMetadata": true,
+					"tabs": [
+						{
+							"id": "audit",
+							"label": "History",
+							"icon": "History",
+							"widgets": [
+								{
+									"type": "audit"
+								}
+							]
+						}
+					]
+				}
+			}
+		}
+	],
+	"menu": [
+		{
+			"id": "TicketTypes",
+			"label": "Ticket types",
+			"icon": "TicketOutline",
+			"route": "TicketTypes",
+			"order": 94
+		},
+		{
+			"id": "RegistrationOptions",
+			"label": "Registration options",
+			"icon": "SilverwareForkKnife",
+			"route": "RegistrationOptions",
+			"order": 95
+		},
+		{
+			"id": "AccessCodes",
+			"label": "Access codes",
+			"icon": "KeyVariant",
+			"route": "AccessCodes",
+			"order": 96
+		}
+	]
+}

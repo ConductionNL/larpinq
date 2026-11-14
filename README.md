@@ -21,6 +21,12 @@ Larpinq brings live-action role-playing management natively into Nextcloud. Game
 
 > **Optional:** [OpenRegister](https://github.com/ConductionNL/openregister) — enables advanced features like audit trails, object locking, cross-object relations, and JSON-based data storage.
 
+## Test coverage
+
+<!-- coverage:start -->
+Measured test coverage: 92.6% of statements (PHP 92.6% of 4,080 statements), at commit `706d020` on 2026-11-11. The JavaScript frontend is not in this figure, because it has no coverage measurement yet. The figures come from [`coverage-summary.json`](coverage-summary.json); refresh them with `composer coverage:publish`.
+<!-- coverage:end -->
+
 ## Screenshots
 
 <table>
@@ -139,6 +145,29 @@ npm run build
 composer install
 php occ app:enable larpinq
 ```
+
+### Try it with Docker
+
+The repository builds an evaluation image: the official Nextcloud image with larpinq and OpenRegister installed and enabled. It is meant for trying the app out and for test environments. For production, install the app from the Nextcloud App Store.
+
+```bash
+docker compose -f docker/docker-compose.yml up -d --build
+```
+
+Open http://localhost:8080/apps/larpinq/ and sign in as `admin` with password `admin`. The first start takes a minute or two. Set `NEXTCLOUD_ADMIN_PASSWORD` and `APP_PORT` to change the password and the port; `docker/docker-compose.yml` lists every setting. `docker compose -f docker/docker-compose.yml down -v` removes the stack and its data.
+
+Released versions are published as `ghcr.io/conductionnl/larpinq`, so leaving out `--build` uses the published image.
+
+### Run it on Kubernetes
+
+`charts/larpinq` wraps the official [Nextcloud Helm chart](https://github.com/nextcloud/helm) and runs the same image with PostgreSQL:
+
+```bash
+helm dependency build charts/larpinq
+helm install larpinq charts/larpinq --set nextcloud.nextcloud.host=larpinq.example.org
+```
+
+Change the passwords in `charts/larpinq/values.yaml` before you install it anywhere that matters.
 
 ## Development
 
