@@ -23,6 +23,7 @@ Larpinq is a niche domain application with no applicable government or interoper
 | [Character Stats](./character-stats.md) | The Stats tab on a character: each ability with its base, the modifiers that moved it and where they came from, and XP earned, spent and left | [character-stats.md](./character-stats.md) |
 | [Import and export](./import-and-export.md) | Export any list to CSV or Excel, import characters and players, and move a whole campaign as one workbook | [import-and-export.md](./import-and-export.md) |
 | [Lore pages](./lore-pages.md) | Lore per world that players read once it is revealed, with game master secrets kept hidden | [lore-pages.md](./lore-pages.md) |
+| [Rulebook and spell lists](./rulebook-and-spell-lists.md) | Skill lists with their own pool, and a printable rulebook per world | [rulebook-and-spell-lists.md](./rulebook-and-spell-lists.md) |
 | [Copy a world](./copy-world.md) | Start a new world from a copy of an existing world's rules, for game masters | [copy-world.md](./copy-world.md) |
 | [Extra character fields](./character-custom-fields.md) | Game masters add their own fields to character sheets per world; players fill in the ones meant for them | [character-custom-fields.md](./character-custom-fields.md) |
 | [Plots and writing](./plots-and-writing.md) | Plots that run through several characters with private and player texts, and the writing progress of plots and characters | [plots-and-writing.md](./plots-and-writing.md) |
