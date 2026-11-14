@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -773,11 +769,6 @@ OC.L10N.register(
         "Only the player or a game master can withdraw this offer.": "Bu teklifi yalnızca oyuncu veya bir oyun yöneticisi geri çekebilir.",
         "Cancel or hand over": "İptal et veya devret",
         "Admin settings": "Admin settings",
-        "administrators only; you set the game rules and worlds in the app itself": "administrators only; you set the game rules and worlds in the app itself",
-        "About this Larpinq installation.": "About this Larpinq installation.",
-        "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
-        "My character sheet": "Karakter sayfam",
-        "Open sheet": "Sayfayı aç",
         "Help question": "Yardım sorusu",
         "A question a player asks the game masters.": "Bir oyuncunun oyun yöneticilerine sorduğu soru.",
         "Asker": "Soran",
@@ -809,7 +800,12 @@ OC.L10N.register(
         "Who wrote the message.": "Mesajı kimin yazdığı.",
         "Whether a game master wrote it.": "Bir oyun yöneticisinin yazıp yazmadığı.",
         "The message itself.": "Mesajın kendisi.",
-        "When the message was written.": "Mesajın yazıldığı zaman."
+        "When the message was written.": "Mesajın yazıldığı zaman.",
+        "administrators only; you set the game rules and worlds in the app itself": "administrators only; you set the game rules and worlds in the app itself",
+        "About this Larpinq installation.": "About this Larpinq installation.",
+        "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
+        "My character sheet": "Karakter sayfam",
+        "Open sheet": "Sayfayı aç"
     },
     "nplurals=2; plural=(n != 1);"
 )

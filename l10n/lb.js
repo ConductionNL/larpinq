@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -773,11 +769,6 @@ OC.L10N.register(
         "Only the player or a game master can withdraw this offer.": "Nëmmen de Spiller oder e Spillleeder kann dës Offer zréckzéien.",
         "Cancel or hand over": "Annuléieren oder iwwerginn",
         "Admin settings": "Admin settings",
-        "administrators only; you set the game rules and worlds in the app itself": "administrators only; you set the game rules and worlds in the app itself",
-        "About this Larpinq installation.": "About this Larpinq installation.",
-        "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
-        "My character sheet": "Mäi Personnageblat",
-        "Open sheet": "Blat opmaachen",
         "Help question": "Hëllefsfro",
         "A question a player asks the game masters.": "Eng Fro, déi e Spiller de Spillleeder stellt.",
         "Asker": "Froesteller",
@@ -809,7 +800,12 @@ OC.L10N.register(
         "Who wrote the message.": "Wien de Message geschriwwen huet.",
         "Whether a game master wrote it.": "Ob e Spillleeder e geschriwwen huet.",
         "The message itself.": "De Message selwer.",
-        "When the message was written.": "Wéini de Message geschriwwe gouf."
+        "When the message was written.": "Wéini de Message geschriwwe gouf.",
+        "administrators only; you set the game rules and worlds in the app itself": "administrators only; you set the game rules and worlds in the app itself",
+        "About this Larpinq installation.": "About this Larpinq installation.",
+        "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
+        "My character sheet": "Mäi Personnageblat",
+        "Open sheet": "Blat opmaachen"
     },
     "nplurals=2; plural=(n != 1);"
 )

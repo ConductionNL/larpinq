@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -773,11 +769,6 @@ OC.L10N.register(
         "Only the player or a game master can withdraw this offer.": "Ní féidir ach leis an imreoir nó le máistir cluiche an tairiscint seo a tharraingt siar.",
         "Cancel or hand over": "Cealaigh nó tabhair ar aghaidh",
         "Admin settings": "Admin settings",
-        "administrators only; you set the game rules and worlds in the app itself": "administrators only; you set the game rules and worlds in the app itself",
-        "About this Larpinq installation.": "About this Larpinq installation.",
-        "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
-        "My character sheet": "Mo bhileog charachtair",
-        "Open sheet": "Oscail an bhileog",
         "Help question": "Ceist chabhrach",
         "A question a player asks the game masters.": "Ceist a chuireann imreoir ar na máistrí cluiche.",
         "Asker": "Iarrthóir",
@@ -809,7 +800,12 @@ OC.L10N.register(
         "Who wrote the message.": "Cé a scríobh an teachtaireacht.",
         "Whether a game master wrote it.": "Cé acu ar scríobh máistir cluiche í nó nár scríobh.",
         "The message itself.": "An teachtaireacht féin.",
-        "When the message was written.": "Cathain a scríobhadh an teachtaireacht."
+        "When the message was written.": "Cathain a scríobhadh an teachtaireacht.",
+        "administrators only; you set the game rules and worlds in the app itself": "administrators only; you set the game rules and worlds in the app itself",
+        "About this Larpinq installation.": "About this Larpinq installation.",
+        "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
+        "My character sheet": "Mo bhileog charachtair",
+        "Open sheet": "Oscail an bhileog"
     },
     "nplurals=2; plural=(n != 1);"
 )

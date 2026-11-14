@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -773,11 +769,6 @@ OC.L10N.register(
         "Only the player or a game master can withdraw this offer.": "Bare spilleren eller en spilleder kan trekke tilbake dette tilbudet.",
         "Cancel or hand over": "Avbestill eller overlat",
         "Admin settings": "Admin settings",
-        "administrators only; you set the game rules and worlds in the app itself": "administrators only; you set the game rules and worlds in the app itself",
-        "About this Larpinq installation.": "About this Larpinq installation.",
-        "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
-        "My character sheet": "Mitt karakterark",
-        "Open sheet": "Åpne ark",
         "Help question": "Hjelpespørsmål",
         "A question a player asks the game masters.": "Et spørsmål en spiller stiller spillederne.",
         "Asker": "Spørrer",
@@ -809,7 +800,12 @@ OC.L10N.register(
         "Who wrote the message.": "Hvem som skrev meldingen.",
         "Whether a game master wrote it.": "Om en spilleder skrev den.",
         "The message itself.": "Selve meldingen.",
-        "When the message was written.": "Når meldingen ble skrevet."
+        "When the message was written.": "Når meldingen ble skrevet.",
+        "administrators only; you set the game rules and worlds in the app itself": "administrators only; you set the game rules and worlds in the app itself",
+        "About this Larpinq installation.": "About this Larpinq installation.",
+        "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
+        "My character sheet": "Mitt karakterark",
+        "Open sheet": "Åpne ark"
     },
     "nplurals=2; plural=(n != 1);"
 )

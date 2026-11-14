@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -773,11 +769,6 @@ OC.L10N.register(
         "Only the player or a game master can withdraw this offer.": "Vain pelaaja tai pelinjohtaja voi perua tämän tarjouksen.",
         "Cancel or hand over": "Peru tai luovuta",
         "Admin settings": "Admin settings",
-        "administrators only; you set the game rules and worlds in the app itself": "administrators only; you set the game rules and worlds in the app itself",
-        "About this Larpinq installation.": "About this Larpinq installation.",
-        "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
-        "My character sheet": "Oma hahmolomake",
-        "Open sheet": "Avaa lomake",
         "Help question": "Apukysymys",
         "A question a player asks the game masters.": "Kysymys, jonka pelaaja esittää pelinjohtajille.",
         "Asker": "Kysyjä",
@@ -809,7 +800,12 @@ OC.L10N.register(
         "Who wrote the message.": "Kuka kirjoitti viestin.",
         "Whether a game master wrote it.": "Kirjoittiko pelinjohtaja sen.",
         "The message itself.": "Itse viesti.",
-        "When the message was written.": "Milloin viesti kirjoitettiin."
+        "When the message was written.": "Milloin viesti kirjoitettiin.",
+        "administrators only; you set the game rules and worlds in the app itself": "administrators only; you set the game rules and worlds in the app itself",
+        "About this Larpinq installation.": "About this Larpinq installation.",
+        "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
+        "My character sheet": "Oma hahmolomake",
+        "Open sheet": "Avaa lomake"
     },
     "nplurals=2; plural=(n != 1);"
 )

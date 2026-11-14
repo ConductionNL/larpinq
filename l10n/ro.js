@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -773,11 +769,6 @@ OC.L10N.register(
         "Only the player or a game master can withdraw this offer.": "Doar jucătorul sau un maestru de joc poate retrage această ofertă.",
         "Cancel or hand over": "Anulează sau predă",
         "Admin settings": "Admin settings",
-        "administrators only; you set the game rules and worlds in the app itself": "administrators only; you set the game rules and worlds in the app itself",
-        "About this Larpinq installation.": "About this Larpinq installation.",
-        "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
-        "My character sheet": "Fișa personajului meu",
-        "Open sheet": "Deschide fișa",
         "Help question": "Întrebare de ajutor",
         "A question a player asks the game masters.": "O întrebare pe care un jucător o adresează organizatorilor jocului.",
         "Asker": "Solicitant",
@@ -809,7 +800,12 @@ OC.L10N.register(
         "Who wrote the message.": "Cine a scris mesajul.",
         "Whether a game master wrote it.": "Dacă l-a scris un organizator al jocului.",
         "The message itself.": "Mesajul în sine.",
-        "When the message was written.": "Când a fost scris mesajul."
+        "When the message was written.": "Când a fost scris mesajul.",
+        "administrators only; you set the game rules and worlds in the app itself": "administrators only; you set the game rules and worlds in the app itself",
+        "About this Larpinq installation.": "About this Larpinq installation.",
+        "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
+        "My character sheet": "Fișa personajului meu",
+        "Open sheet": "Deschide fișa"
     },
     "nplurals=2; plural=(n != 1);"
 )

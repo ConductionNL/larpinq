@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -773,11 +769,6 @@ OC.L10N.register(
         "Only the player or a game master can withdraw this offer.": "Само играчот или водач на играта може да ја повлече оваа понуда.",
         "Cancel or hand over": "Откажи или предај",
         "Admin settings": "Admin settings",
-        "administrators only; you set the game rules and worlds in the app itself": "administrators only; you set the game rules and worlds in the app itself",
-        "About this Larpinq installation.": "About this Larpinq installation.",
-        "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
-        "My character sheet": "Мојот лист на ликот",
-        "Open sheet": "Отвори лист",
         "Help question": "Прашање за помош",
         "A question a player asks the game masters.": "Прашање што играчот го поставува на водителите на играта.",
         "Asker": "Прашувач",
@@ -809,7 +800,12 @@ OC.L10N.register(
         "Who wrote the message.": "Кој ја напишал пораката.",
         "Whether a game master wrote it.": "Дали ја напишал водител на играта.",
         "The message itself.": "Самата порака.",
-        "When the message was written.": "Кога е напишана пораката."
+        "When the message was written.": "Кога е напишана пораката.",
+        "administrators only; you set the game rules and worlds in the app itself": "administrators only; you set the game rules and worlds in the app itself",
+        "About this Larpinq installation.": "About this Larpinq installation.",
+        "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
+        "My character sheet": "Мојот лист на ликот",
+        "Open sheet": "Отвори лист"
     },
     "nplurals=2; plural=(n != 1);"
 )

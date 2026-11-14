@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -773,11 +769,6 @@ OC.L10N.register(
         "Only the player or a game master can withdraw this offer.": "Ezt az ajánlatot csak a játékos vagy egy mesélő vonhatja vissza.",
         "Cancel or hand over": "Lemondás vagy átadás",
         "Admin settings": "Admin settings",
-        "administrators only; you set the game rules and worlds in the app itself": "administrators only; you set the game rules and worlds in the app itself",
-        "About this Larpinq installation.": "About this Larpinq installation.",
-        "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
-        "My character sheet": "Karakterlapom",
-        "Open sheet": "Lap megnyitása",
         "Help question": "Segítségkérés",
         "A question a player asks the game masters.": "Egy kérdés, amelyet egy játékos tesz fel a mesélőknek.",
         "Asker": "Kérdező",
@@ -809,7 +800,12 @@ OC.L10N.register(
         "Who wrote the message.": "Ki írta az üzenetet.",
         "Whether a game master wrote it.": "Mesélő írta-e.",
         "The message itself.": "Maga az üzenet.",
-        "When the message was written.": "Mikor íródott az üzenet."
+        "When the message was written.": "Mikor íródott az üzenet.",
+        "administrators only; you set the game rules and worlds in the app itself": "administrators only; you set the game rules and worlds in the app itself",
+        "About this Larpinq installation.": "About this Larpinq installation.",
+        "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
+        "My character sheet": "Karakterlapom",
+        "Open sheet": "Lap megnyitása"
     },
     "nplurals=2; plural=(n != 1);"
 )

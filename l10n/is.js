@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -773,11 +769,6 @@ OC.L10N.register(
         "Only the player or a game master can withdraw this offer.": "Aðeins leikmaðurinn eða leikstjórnandi getur dregið þetta tilboð til baka.",
         "Cancel or hand over": "Afskrá eða afhenda",
         "Admin settings": "Admin settings",
-        "administrators only; you set the game rules and worlds in the app itself": "administrators only; you set the game rules and worlds in the app itself",
-        "About this Larpinq installation.": "About this Larpinq installation.",
-        "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
-        "My character sheet": "Persónublaðið mitt",
-        "Open sheet": "Opna blað",
         "Help question": "Hjálparspurning",
         "A question a player asks the game masters.": "Spurning sem leikmaður leggur fyrir stjórnendur leiksins.",
         "Asker": "Spyrjandi",
@@ -809,7 +800,12 @@ OC.L10N.register(
         "Who wrote the message.": "Hver skrifaði skilaboðin.",
         "Whether a game master wrote it.": "Hvort stjórnandi leiksins skrifaði þau.",
         "The message itself.": "Skilaboðin sjálf.",
-        "When the message was written.": "Hvenær skilaboðin voru skrifuð."
+        "When the message was written.": "Hvenær skilaboðin voru skrifuð.",
+        "administrators only; you set the game rules and worlds in the app itself": "administrators only; you set the game rules and worlds in the app itself",
+        "About this Larpinq installation.": "About this Larpinq installation.",
+        "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
+        "My character sheet": "Persónublaðið mitt",
+        "Open sheet": "Opna blað"
     },
     "nplurals=2; plural=(n != 1);"
 )

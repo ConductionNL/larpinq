@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -773,11 +769,6 @@ OC.L10N.register(
         "Only the player or a game master can withdraw this offer.": "Bara spelaren eller en spelledare kan återkalla erbjudandet.",
         "Cancel or hand over": "Avboka eller lämna över",
         "Admin settings": "Admin settings",
-        "administrators only; you set the game rules and worlds in the app itself": "administrators only; you set the game rules and worlds in the app itself",
-        "About this Larpinq installation.": "About this Larpinq installation.",
-        "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
-        "My character sheet": "Mitt rollformulär",
-        "Open sheet": "Öppna formulär",
         "Help question": "Hjälpfråga",
         "A question a player asks the game masters.": "En fråga som en spelare ställer till spelledarna.",
         "Asker": "Frågeställare",
@@ -809,7 +800,12 @@ OC.L10N.register(
         "Who wrote the message.": "Vem som skrev meddelandet.",
         "Whether a game master wrote it.": "Om en spelledare skrev det.",
         "The message itself.": "Själva meddelandet.",
-        "When the message was written.": "När meddelandet skrevs."
+        "When the message was written.": "När meddelandet skrevs.",
+        "administrators only; you set the game rules and worlds in the app itself": "administrators only; you set the game rules and worlds in the app itself",
+        "About this Larpinq installation.": "About this Larpinq installation.",
+        "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
+        "My character sheet": "Mitt rollformulär",
+        "Open sheet": "Öppna formulär"
     },
     "nplurals=2; plural=(n != 1);"
 )

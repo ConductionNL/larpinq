@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -773,11 +769,6 @@ OC.L10N.register(
         "Only the player or a game master can withdraw this offer.": "Només el jugador o un màster poden retirar aquesta oferta.",
         "Cancel or hand over": "Cancel·la o cedeix",
         "Admin settings": "Admin settings",
-        "administrators only; you set the game rules and worlds in the app itself": "administrators only; you set the game rules and worlds in the app itself",
-        "About this Larpinq installation.": "About this Larpinq installation.",
-        "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
-        "My character sheet": "La meva fitxa de personatge",
-        "Open sheet": "Obre la fitxa",
         "Help question": "Pregunta d'ajuda",
         "A question a player asks the game masters.": "Una pregunta que un jugador fa als màsters del joc.",
         "Asker": "Sol·licitant",
@@ -809,7 +800,12 @@ OC.L10N.register(
         "Who wrote the message.": "Qui va escriure el missatge.",
         "Whether a game master wrote it.": "Si el va escriure un màster del joc.",
         "The message itself.": "El missatge mateix.",
-        "When the message was written.": "Quan es va escriure el missatge."
+        "When the message was written.": "Quan es va escriure el missatge.",
+        "administrators only; you set the game rules and worlds in the app itself": "administrators only; you set the game rules and worlds in the app itself",
+        "About this Larpinq installation.": "About this Larpinq installation.",
+        "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
+        "My character sheet": "La meva fitxa de personatge",
+        "Open sheet": "Obre la fitxa"
     },
     "nplurals=2; plural=(n != 1);"
 )

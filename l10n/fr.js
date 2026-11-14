@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -773,11 +769,6 @@ OC.L10N.register(
         "Only the player or a game master can withdraw this offer.": "Seuls le joueur ou un maître de jeu peuvent retirer cette offre.",
         "Cancel or hand over": "Annuler ou céder",
         "Admin settings": "Admin settings",
-        "administrators only; you set the game rules and worlds in the app itself": "administrators only; you set the game rules and worlds in the app itself",
-        "About this Larpinq installation.": "About this Larpinq installation.",
-        "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
-        "My character sheet": "Ma fiche de personnage",
-        "Open sheet": "Ouvrir la fiche",
         "Help question": "Question d'aide",
         "A question a player asks the game masters.": "Une question qu'un joueur pose aux maîtres de jeu.",
         "Asker": "Demandeur",
@@ -809,7 +800,12 @@ OC.L10N.register(
         "Who wrote the message.": "Qui a écrit le message.",
         "Whether a game master wrote it.": "Si un maître de jeu l'a écrit.",
         "The message itself.": "Le message lui-même.",
-        "When the message was written.": "Quand le message a été écrit."
+        "When the message was written.": "Quand le message a été écrit.",
+        "administrators only; you set the game rules and worlds in the app itself": "administrators only; you set the game rules and worlds in the app itself",
+        "About this Larpinq installation.": "About this Larpinq installation.",
+        "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
+        "My character sheet": "Ma fiche de personnage",
+        "Open sheet": "Ouvrir la fiche"
     },
     "nplurals=2; plural=(n != 1);"
 )

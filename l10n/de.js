@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -773,11 +769,6 @@ OC.L10N.register(
         "Only the player or a game master can withdraw this offer.": "Nur die spielende Person oder eine Spielleitung kann dieses Angebot zurückziehen.",
         "Cancel or hand over": "Stornieren oder übergeben",
         "Admin settings": "Admin settings",
-        "administrators only; you set the game rules and worlds in the app itself": "administrators only; you set the game rules and worlds in the app itself",
-        "About this Larpinq installation.": "About this Larpinq installation.",
-        "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
-        "My character sheet": "Mein Charakterbogen",
-        "Open sheet": "Bogen öffnen",
         "Help question": "Hilfefrage",
         "A question a player asks the game masters.": "Eine Frage, die ein Spieler den Spielleitern stellt.",
         "Asker": "Fragesteller",
@@ -809,7 +800,12 @@ OC.L10N.register(
         "Who wrote the message.": "Wer die Nachricht geschrieben hat.",
         "Whether a game master wrote it.": "Ob eine Spielleitung sie geschrieben hat.",
         "The message itself.": "Die Nachricht selbst.",
-        "When the message was written.": "Wann die Nachricht geschrieben wurde."
+        "When the message was written.": "Wann die Nachricht geschrieben wurde.",
+        "administrators only; you set the game rules and worlds in the app itself": "administrators only; you set the game rules and worlds in the app itself",
+        "About this Larpinq installation.": "About this Larpinq installation.",
+        "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
+        "My character sheet": "Mein Charakterbogen",
+        "Open sheet": "Bogen öffnen"
     },
     "nplurals=2; plural=(n != 1);"
 )

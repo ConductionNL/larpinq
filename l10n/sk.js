@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -773,11 +769,6 @@ OC.L10N.register(
         "Only the player or a game master can withdraw this offer.": "Túto ponuku môže stiahnuť len hráč alebo rozprávač.",
         "Cancel or hand over": "Zrušiť alebo odovzdať",
         "Admin settings": "Admin settings",
-        "administrators only; you set the game rules and worlds in the app itself": "administrators only; you set the game rules and worlds in the app itself",
-        "About this Larpinq installation.": "About this Larpinq installation.",
-        "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
-        "My character sheet": "Môj denník postavy",
-        "Open sheet": "Otvoriť denník",
         "Help question": "Otázka na pomoc",
         "A question a player asks the game masters.": "Otázka, ktorú hráč kladie rozprávačom.",
         "Asker": "Pýtajúci sa",
@@ -809,7 +800,12 @@ OC.L10N.register(
         "Who wrote the message.": "Kto napísal správu.",
         "Whether a game master wrote it.": "Či ju napísal rozprávač.",
         "The message itself.": "Samotná správa.",
-        "When the message was written.": "Kedy bola správa napísaná."
+        "When the message was written.": "Kedy bola správa napísaná.",
+        "administrators only; you set the game rules and worlds in the app itself": "administrators only; you set the game rules and worlds in the app itself",
+        "About this Larpinq installation.": "About this Larpinq installation.",
+        "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
+        "My character sheet": "Môj denník postavy",
+        "Open sheet": "Otvoriť denník"
     },
     "nplurals=2; plural=(n != 1);"
 )

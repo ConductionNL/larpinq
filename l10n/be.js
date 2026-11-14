@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -773,11 +769,6 @@ OC.L10N.register(
         "Only the player or a game master can withdraw this offer.": "Адклікаць гэтую прапанову можа толькі гулец або майстар гульні.",
         "Cancel or hand over": "Скасаваць або перадаць",
         "Admin settings": "Admin settings",
-        "administrators only; you set the game rules and worlds in the app itself": "administrators only; you set the game rules and worlds in the app itself",
-        "About this Larpinq installation.": "About this Larpinq installation.",
-        "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
-        "My character sheet": "Мой аркуш персанажа",
-        "Open sheet": "Адкрыць аркуш",
         "Help question": "Запыт на дапамогу",
         "A question a player asks the game masters.": "Пытанне, якое гулец задае майстрам гульні.",
         "Asker": "Аўтар запыту",
@@ -809,7 +800,12 @@ OC.L10N.register(
         "Who wrote the message.": "Хто напісаў паведамленне.",
         "Whether a game master wrote it.": "Ці напісаў яго майстар гульні.",
         "The message itself.": "Само паведамленне.",
-        "When the message was written.": "Калі напісана паведамленне."
+        "When the message was written.": "Калі напісана паведамленне.",
+        "administrators only; you set the game rules and worlds in the app itself": "administrators only; you set the game rules and worlds in the app itself",
+        "About this Larpinq installation.": "About this Larpinq installation.",
+        "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
+        "My character sheet": "Мой аркуш персанажа",
+        "Open sheet": "Адкрыць аркуш"
     },
     "nplurals=2; plural=(n != 1);"
 )

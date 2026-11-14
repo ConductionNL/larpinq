@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -773,11 +769,6 @@ OC.L10N.register(
         "Only the player or a game master can withdraw this offer.": "Šo piedāvājumu var atsaukt tikai spēlētājs vai spēles vadītājs.",
         "Cancel or hand over": "Atcelt vai nodot",
         "Admin settings": "Admin settings",
-        "administrators only; you set the game rules and worlds in the app itself": "administrators only; you set the game rules and worlds in the app itself",
-        "About this Larpinq installation.": "About this Larpinq installation.",
-        "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
-        "My character sheet": "Mana tēla lapa",
-        "Open sheet": "Atvērt lapu",
         "Help question": "Palīdzības jautājums",
         "A question a player asks the game masters.": "Jautājums, ko spēlētājs uzdod spēles vadītājiem.",
         "Asker": "Jautātājs",
@@ -809,7 +800,12 @@ OC.L10N.register(
         "Who wrote the message.": "Kas uzrakstīja ziņu.",
         "Whether a game master wrote it.": "Vai to uzrakstīja spēles vadītājs.",
         "The message itself.": "Pati ziņa.",
-        "When the message was written.": "Kad ziņa tika uzrakstīta."
+        "When the message was written.": "Kad ziņa tika uzrakstīta.",
+        "administrators only; you set the game rules and worlds in the app itself": "administrators only; you set the game rules and worlds in the app itself",
+        "About this Larpinq installation.": "About this Larpinq installation.",
+        "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
+        "My character sheet": "Mana tēla lapa",
+        "Open sheet": "Atvērt lapu"
     },
     "nplurals=2; plural=(n != 1);"
 )

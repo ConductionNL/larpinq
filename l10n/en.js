@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -739,11 +735,6 @@ OC.L10N.register(
         "Only the player or a game master can withdraw this offer.": "Only the player or a game master can withdraw this offer.",
         "Cancel or hand over": "Cancel or hand over",
         "Admin settings": "Admin settings",
-        "administrators only; you set the game rules and worlds in the app itself": "administrators only; you set the game rules and worlds in the app itself",
-        "About this Larpinq installation.": "About this Larpinq installation.",
-        "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
-        "My character sheet": "My character sheet",
-        "Open sheet": "Open sheet",
         "Help question": "Help question",
         "A question a player asks the game masters.": "A question a player asks the game masters.",
         "Asker": "Asker",
@@ -775,7 +766,12 @@ OC.L10N.register(
         "Who wrote the message.": "Who wrote the message.",
         "Whether a game master wrote it.": "Whether a game master wrote it.",
         "The message itself.": "The message itself.",
-        "When the message was written.": "When the message was written."
+        "When the message was written.": "When the message was written.",
+        "administrators only; you set the game rules and worlds in the app itself": "administrators only; you set the game rules and worlds in the app itself",
+        "About this Larpinq installation.": "About this Larpinq installation.",
+        "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
+        "My character sheet": "My character sheet",
+        "Open sheet": "Open sheet"
     },
     "nplurals=2; plural=(n != 1);"
 )

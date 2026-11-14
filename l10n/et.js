@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -773,11 +769,6 @@ OC.L10N.register(
         "Only the player or a game master can withdraw this offer.": "Ainult mängija või mängujuht saab selle pakkumise tagasi võtta.",
         "Cancel or hand over": "Tühista või anna üle",
         "Admin settings": "Admin settings",
-        "administrators only; you set the game rules and worlds in the app itself": "administrators only; you set the game rules and worlds in the app itself",
-        "About this Larpinq installation.": "About this Larpinq installation.",
-        "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
-        "My character sheet": "Minu tegelaskaart",
-        "Open sheet": "Ava kaart",
         "Help question": "Abiküsimus",
         "A question a player asks the game masters.": "Küsimus, mille mängija mängujuhtidele esitab.",
         "Asker": "Küsija",
@@ -809,7 +800,12 @@ OC.L10N.register(
         "Who wrote the message.": "Kes sõnumi kirjutas.",
         "Whether a game master wrote it.": "Kas selle kirjutas mängujuht.",
         "The message itself.": "Sõnum ise.",
-        "When the message was written.": "Millal sõnum kirjutati."
+        "When the message was written.": "Millal sõnum kirjutati.",
+        "administrators only; you set the game rules and worlds in the app itself": "administrators only; you set the game rules and worlds in the app itself",
+        "About this Larpinq installation.": "About this Larpinq installation.",
+        "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
+        "My character sheet": "Minu tegelaskaart",
+        "Open sheet": "Ava kaart"
     },
     "nplurals=2; plural=(n != 1);"
 )
