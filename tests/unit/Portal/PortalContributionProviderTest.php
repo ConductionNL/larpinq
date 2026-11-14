@@ -148,7 +148,7 @@ final class PortalContributionProviderTest extends TestCase {
 		$collections = $this->indexById(entries: $manifest['collections']);
 
 		$this->assertSame(
-			expected: ['myCharacters', 'events', 'skillCatalog', 'itemCatalog', 'conditionCatalog', 'myProfile', 'myRegistrations', 'rulebookChapters'],
+			expected: ['myCharacters', 'events', 'skillCatalog', 'itemCatalog', 'conditionCatalog', 'myProfile', 'myRegistrations', 'rulebookChapters', 'myQuestions', 'myQuestionMessages'],
 			actual: array_keys($collections),
 			message: 'Exactly the declared collections, in order'
 		);
@@ -231,9 +231,9 @@ final class PortalContributionProviderTest extends TestCase {
 		$actions = $manifest['actions'];
 
 		$this->assertCount(
-			expectedCount: 2,
+			expectedCount: 3,
 			haystack: $actions,
-			message: 'Event signup is delegated to NC Forms; the actions are createCharacter and createPlayerProfile'
+			message: 'Event signup is delegated to NC Forms; the actions are createCharacter, createPlayerProfile and askQuestion'
 		);
 
 		$action = $actions[0];
@@ -252,8 +252,8 @@ final class PortalContributionProviderTest extends TestCase {
 			message: 'No ocName (derived from ownerRef), no approved / slNotesPrivate / economy / lifecycle fields'
 		);
 
-		// No inbox surface (larpinq has no per-player message collection).
-		$this->assertSame(expected: [], actual: $manifest['notifications']);
+		// No inbox surface: the one notification is the question rule (REQ-CHD-004).
+		$this->assertSame(expected: ['larpinq.question.answered'], actual: array_column($manifest['notifications'], 'ruleKey'));
 		foreach ($manifest['collections'] as $collection) {
 			$this->assertNotSame(expected: 'inbox', actual: ($collection['kind'] ?? null), message: 'No inbox collection ships in this wave');
 		}
@@ -397,7 +397,7 @@ final class PortalContributionProviderTest extends TestCase {
 		$manifest = (array)$this->provider->getContribution(self::PLAYER_SUBJECT);
 		$pages    = $this->indexById(entries: $manifest['pages']);
 
-		$this->assertSame(expected: ['myLarp', 'rulebook'], actual: array_keys($pages));
+		$this->assertSame(expected: ['myLarp', 'rulebook', 'help'], actual: array_keys($pages));
 		$this->assertSame(expected: 'Mijn larp', actual: $pages['myLarp']['label']);
 		$this->assertSame(expected: 'Verenigingen', actual: $pages['myLarp']['group']);
 		$this->assertSame(
@@ -476,6 +476,105 @@ final class PortalContributionProviderTest extends TestCase {
 		}
 
 	}//end testPageBlocksResolveWithinTheContribution()
+
+	/**
+	 * Scenario "Lotte asks through the portal": the question is stamped with
+	 * her linked player through the `ownerRef` claim, with the subject, the
+	 * message and the event only (REQ-CHD-004).
+	 *
+	 * @return void
+	 *
+	 * @spec openspec/changes/communication-help-desk/specs/help-desk/spec.md#requirement-portal-players-use-the-help-desk-too-req-chd-004
+	 */
+	public function testAskQuestionIsStampedWithTheLinkedPlayer(): void {
+		$manifest = (array)$this->provider->getContribution(self::PLAYER_SUBJECT);
+		$action   = $this->indexById(entries: $manifest['actions'])['askQuestion'];
+
+		$this->assertSame(expected: 'create', actual: $action['type']);
+		$this->assertSame(expected: 'larping_help_question', actual: $action['schema']);
+		$this->assertSame(expected: 'ownerRef', actual: $action['scopeField']);
+		$this->assertSame(expected: 'ownerRef', actual: $action['scopeClaim'], message: 'The stamp is the linked player uuid, never the portal subject reference');
+		$this->assertSame(
+			expected: ['subject', 'body', 'event'],
+			actual: $action['fields'],
+			message: 'No status, assignee or asker account: those stay server-authoritative'
+		);
+
+	}//end testAskQuestionIsStampedWithTheLinkedPlayer()
+
+	/**
+	 * The player reads their own questions and the answers under them, and
+	 * nothing of the game masters' handling (REQ-CHD-004).
+	 *
+	 * @return void
+	 *
+	 * @spec openspec/changes/communication-help-desk/specs/help-desk/spec.md#requirement-portal-players-use-the-help-desk-too-req-chd-004
+	 */
+	public function testMyQuestionsShowTheStateAndTheAnswers(): void {
+		$manifest    = (array)$this->provider->getContribution(self::PLAYER_SUBJECT);
+		$collections = $this->indexById(entries: $manifest['collections']);
+
+		$questions = $collections['myQuestions'];
+		$this->assertSame(expected: 'larping_help_question', actual: $questions['schema']);
+		$this->assertSame(expected: ['ownerRef', 'ownerRef'], actual: [$questions['scopeField'], $questions['scopeClaim']]);
+		$this->assertContains(needle: 'status', haystack: $questions['fields']);
+		foreach (['assignee', 'askerUid', 'ownerRef', 'player'] as $hidden) {
+			$this->assertNotContains(needle: $hidden, haystack: $questions['fields'], message: $hidden . ' stays behind');
+		}
+
+		$messages = $collections['myQuestionMessages'];
+		$this->assertSame(expected: 'larping_help_message', actual: $messages['schema']);
+		$this->assertSame(expected: ['ownerRef', 'ownerRef'], actual: [$messages['scopeField'], $messages['scopeClaim']]);
+		$this->assertSame(expected: ['question', 'fromOrganiser', 'body', 'createdAt'], actual: $messages['fields']);
+
+		$pages = $this->indexById(entries: $manifest['pages']);
+		$this->assertSame(
+			expected: [
+				'richText',
+				'collection:myQuestions',
+				'detail:myQuestions',
+				'collection:myQuestionMessages',
+				'action:askQuestion',
+			],
+			actual: $this->blockNames(blocks: $pages['help']['blocks'])
+		);
+
+	}//end testMyQuestionsShowTheStateAndTheAnswers()
+
+	/**
+	 * Scenario "Joris answers", for a portal player: the change of the
+	 * question's status reaches the accounts holding the question's
+	 * `ownerRef` as their claim, the read the collection itself uses
+	 * (REQ-CHD-004, portaliq REQ-NAP-012).
+	 *
+	 * @return void
+	 *
+	 * @spec openspec/changes/communication-help-desk/specs/help-desk/spec.md#requirement-portal-players-use-the-help-desk-too-req-chd-004
+	 */
+	public function testAnAnswerNotifiesThePortalPlayer(): void {
+		$manifest = (array)$this->provider->getContribution(self::PLAYER_SUBJECT);
+
+		$this->assertSame(
+			expected: [
+				[
+					'ruleKey' => 'larpinq.question.answered',
+					'collection' => 'myQuestions',
+					'on' => ['field' => 'status', 'operator' => 'changed'],
+					'recipients' => ['field' => 'ownerRef', 'claim' => 'ownerRef'],
+					'titleField' => 'subject',
+				],
+			],
+			actual: $manifest['notifications']
+		);
+
+		$collections = $this->indexById(entries: $manifest['collections']);
+		$rule        = $manifest['notifications'][0];
+		$this->assertArrayHasKey(key: $rule['collection'], array: $collections, message: 'The rule names a collection of this contribution');
+		$this->assertContains(needle: $rule['on']['field'], haystack: $collections[$rule['collection']]['fields'], message: 'portaliq drops a rule on an unprojected field');
+		$this->assertContains(needle: $rule['titleField'], haystack: $collections[$rule['collection']]['fields']);
+		$this->assertStringStartsWith(prefix: 'larpinq.', string: $rule['ruleKey'], message: 'portaliq drops a key of another app');
+
+	}//end testAnAnswerNotifiesThePortalPlayer()
 
 	/**
 	 * The blocks of a page as `type` or `type:target` names.

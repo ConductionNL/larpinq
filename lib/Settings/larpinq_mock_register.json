@@ -1261,6 +1261,7 @@
         "author": "joris",
         "fromOrganiser": true,
         "askerUid": "anna",
+        "ownerRef": "00000000-0000-4000-8000-000000000000",
         "body": "Only LARP-safe bows, checked at the gate.",
         "createdAt": "2026-09-20T18:05:00+00:00"
       },

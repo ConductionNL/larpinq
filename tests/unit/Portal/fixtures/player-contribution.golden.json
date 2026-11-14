@@ -203,6 +203,89 @@
                 "field": "order",
                 "direction": "asc"
             }
+        },
+        {
+            "id": "myQuestions",
+            "register": "larpinq",
+            "schema": "larping_help_question",
+            "scopeField": "ownerRef",
+            "scopeClaim": "ownerRef",
+            "label": "Mijn vragen",
+            "listable": true,
+            "fields": [
+                "subject",
+                "body",
+                "event",
+                "character",
+                "status",
+                "lastMessageAt"
+            ],
+            "columns": [
+                {
+                    "field": "subject",
+                    "label": "Onderwerp"
+                },
+                {
+                    "field": "status",
+                    "label": "Status",
+                    "render": "badge"
+                },
+                {
+                    "field": "lastMessageAt",
+                    "label": "Laatste bericht",
+                    "render": "date"
+                }
+            ],
+            "detail": {
+                "layout": "card",
+                "fields": [
+                    "subject",
+                    "body",
+                    "event",
+                    "character",
+                    "status",
+                    "lastMessageAt"
+                ]
+            },
+            "defaultSort": {
+                "field": "lastMessageAt",
+                "direction": "desc"
+            }
+        },
+        {
+            "id": "myQuestionMessages",
+            "register": "larpinq",
+            "schema": "larping_help_message",
+            "scopeField": "ownerRef",
+            "scopeClaim": "ownerRef",
+            "label": "Antwoorden",
+            "listable": true,
+            "fields": [
+                "question",
+                "fromOrganiser",
+                "body",
+                "createdAt"
+            ],
+            "columns": [
+                {
+                    "field": "body",
+                    "label": "Bericht"
+                },
+                {
+                    "field": "fromOrganiser",
+                    "label": "Van de spelleiding",
+                    "render": "badge"
+                },
+                {
+                    "field": "createdAt",
+                    "label": "Geschreven op",
+                    "render": "date"
+                }
+            ],
+            "defaultSort": {
+                "field": "createdAt",
+                "direction": "asc"
+            }
         }
     ],
     "actions": [
@@ -229,6 +312,20 @@
             "fields": [
                 "name",
                 "description"
+            ]
+        },
+        {
+            "id": "askQuestion",
+            "type": "create",
+            "label": "Ask a question",
+            "register": "larpinq",
+            "schema": "larping_help_question",
+            "scopeField": "ownerRef",
+            "scopeClaim": "ownerRef",
+            "fields": [
+                "subject",
+                "body",
+                "event"
             ]
         }
     ],
@@ -288,7 +385,49 @@
                     "collection": "skillCatalog"
                 }
             ]
+        },
+        {
+            "id": "help",
+            "label": "Vragen aan de spelleiding",
+            "group": "Verenigingen",
+            "icon": "HelpCircleOutline",
+            "blocks": [
+                {
+                    "type": "richText",
+                    "markdown": "Stel hier uw vraag aan de spelleiding. U ziet uw vragen, de antwoorden en of een vraag nog open staat."
+                },
+                {
+                    "type": "collection",
+                    "collection": "myQuestions"
+                },
+                {
+                    "type": "detail",
+                    "collection": "myQuestions"
+                },
+                {
+                    "type": "collection",
+                    "collection": "myQuestionMessages"
+                },
+                {
+                    "type": "action",
+                    "action": "askQuestion"
+                }
+            ]
         }
     ],
-    "notifications": []
+    "notifications": [
+        {
+            "ruleKey": "larpinq.question.answered",
+            "collection": "myQuestions",
+            "on": {
+                "field": "status",
+                "operator": "changed"
+            },
+            "recipients": {
+                "field": "ownerRef",
+                "claim": "ownerRef"
+            },
+            "titleField": "subject"
+        }
+    ]
 }

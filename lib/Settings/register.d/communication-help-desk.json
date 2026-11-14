@@ -17,7 +17,6 @@
         "description": "A question a player asks the game masters.",
         "type": "object",
         "required": [
-          "player",
           "subject",
           "body",
           "status"
@@ -250,6 +249,12 @@
             "title": "Asker",
             "maxLength": 255,
             "description": "The asking player's user account."
+          },
+          "ownerRef": {
+            "type": "string",
+            "title": "Owner reference",
+            "maxLength": 255,
+            "description": "The asking player, for the portal."
           },
           "body": {
             "type": "string",

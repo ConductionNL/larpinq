@@ -125,12 +125,24 @@ class HelpMessageListener implements IEventListener {
 	/**
 	 * The asker and owner reference of a question, copied from the player it names.
 	 *
+	 * A question asked through the portal names no player: the portal stamps
+	 * `ownerRef` with the linked player's uuid instead, so that player is
+	 * taken, and named on the question (REQ-CHD-004).
+	 *
 	 * @param array<string,mixed> $question The question as written.
 	 *
 	 * @return array<string,string> The fields to set; empty when the player cannot be read.
+	 *
+	 * @spec openspec/changes/communication-help-desk/specs/help-desk/spec.md#requirement-portal-players-use-the-help-desk-too-req-chd-004
 	 */
 	private function askerOf(array $question): array {
 		$playerId = self::idOf(value: ($question['player'] ?? null));
+		$fields   = [];
+		if ($playerId === '') {
+			$playerId = self::idOf(value: ($question['ownerRef'] ?? null));
+			$fields['player'] = $playerId;
+		}
+
 		if ($playerId === '') {
 			return [];
 		}
@@ -142,7 +154,7 @@ class HelpMessageListener implements IEventListener {
 			return [];
 		}
 
-		return ['askerUid' => (string)($player['userUid'] ?? ''), 'ownerRef' => $playerId];
+		return $fields + ['askerUid' => (string)($player['userUid'] ?? ''), 'ownerRef' => $playerId];
 	}//end askerOf()
 
 	/**
@@ -179,6 +191,7 @@ class HelpMessageListener implements IEventListener {
 				'author'        => $uid,
 				'fromOrganiser' => $organiser,
 				'askerUid'      => (string)($question['askerUid'] ?? ''),
+				'ownerRef'      => (string)($question['ownerRef'] ?? ''),
 				'createdAt'     => (new DateTimeImmutable())->format(DateTimeInterface::ATOM),
 			]
 		);

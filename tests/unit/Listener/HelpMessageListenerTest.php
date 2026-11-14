@@ -63,7 +63,7 @@ class HelpMessageListenerTest extends TestCase {
 	private ?string $signedIn = 'joris';
 
 	/** @var array<string,mixed> The stored question. */
-	private array $question = ['subject' => 'Can I bring a real bow?', 'askerUid' => 'anna', 'status' => 'open', 'player' => self::PLAYER];
+	private array $question = ['subject' => 'Can I bring a real bow?', 'askerUid' => 'anna', 'ownerRef' => self::PLAYER, 'status' => 'open', 'player' => self::PLAYER];
 
 	/** @var list<array{0:string,1:array<string,mixed>,2:?string}> The writes through the fetcher. */
 	private array $saved = [];
@@ -83,6 +83,35 @@ class HelpMessageListenerTest extends TestCase {
 	}
 
 	/**
+	 * Scenario "Lotte asks through the portal": the portal stamps only `ownerRef`;
+	 * the question then names that player and takes the asker from it (REQ-CHD-004).
+	 *
+	 * @return void
+	 */
+	public function testAPortalQuestionNamesThePlayerItsOwnerRefHolds(): void {
+		$event = new ObjectCreatingEvent(new HelpObjectEntity(self::QUESTION_SCHEMA, ['ownerRef' => self::PLAYER, 'subject' => 'Bow?']));
+
+		$this->listener()->handle($event);
+
+		$this->assertSame(['player' => self::PLAYER, 'askerUid' => 'anna', 'ownerRef' => self::PLAYER], $event->getModifiedData());
+	}
+
+	/**
+	 * A question naming neither a player nor an owner reference, or an unknown one, is left as written.
+	 *
+	 * @return void
+	 */
+	public function testAQuestionWithoutAReadablePlayerIsLeftAlone(): void {
+		$none = new ObjectCreatingEvent(new HelpObjectEntity(self::QUESTION_SCHEMA, ['subject' => 'Bow?']));
+		$this->listener()->handle($none);
+		$this->assertSame([], $none->getModifiedData());
+
+		$unknown = new ObjectCreatingEvent(new HelpObjectEntity(self::QUESTION_SCHEMA, ['ownerRef' => '99999999-9999-4999-8999-999999999999', 'subject' => 'Bow?']));
+		$this->listener()->handle($unknown);
+		$this->assertSame([], $unknown->getModifiedData());
+	}
+
+	/**
 	 * Scenario "Joris answers": a game master's message is stamped as theirs and from an organiser, and the question becomes answered.
 	 *
 	 * @return void
@@ -96,6 +125,7 @@ class HelpMessageListenerTest extends TestCase {
 		$modified = $creating->getModifiedData();
 		$this->assertFalse($creating->isPropagationStopped());
 		$this->assertSame(['joris', true, 'anna'], [$modified['author'], $modified['fromOrganiser'], $modified['askerUid']]);
+		$this->assertSame(self::PLAYER, $modified['ownerRef'], 'The portal reads the answers through the question owner reference');
 		$this->assertGreaterThanOrEqual($before, strtotime($modified['createdAt']));
 
 		$this->listener()->handle(new ObjectCreatedEvent(new HelpObjectEntity(self::MESSAGE_SCHEMA, ['question' => self::QUESTION, 'fromOrganiser' => true, 'createdAt' => '2026-09-20T18:05:00+00:00'])));
