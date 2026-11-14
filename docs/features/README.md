@@ -24,6 +24,7 @@ Larpinq is a niche domain application with no applicable government or interoper
 | [Import and export](./import-and-export.md) | Export any list to CSV or Excel, import characters and players, and move a whole campaign as one workbook | [import-and-export.md](./import-and-export.md) |
 | [Lore pages](./lore-pages.md) | Lore per world that players read once it is revealed, with game master secrets kept hidden | [lore-pages.md](./lore-pages.md) |
 | [Copy a world](./copy-world.md) | Start a new world from a copy of an existing world's rules, for game masters | [copy-world.md](./copy-world.md) |
+| [Post-event feedback](./post-event-feedback.md) | Ask every participant who was there for feedback through a Nextcloud Form, remind once, and show game masters who answered | [post-event-feedback.md](./post-event-feedback.md) |
 | [Extra character fields](./character-custom-fields.md) | Game masters add their own fields to character sheets per world; players fill in the ones meant for them | [character-custom-fields.md](./character-custom-fields.md) |
 | [Plots and writing](./plots-and-writing.md) | Plots that run through several characters with private and player texts, and the writing progress of plots and characters | [plots-and-writing.md](./plots-and-writing.md) |
 | [Factions, groups and relationships](./factions-and-relationships.md) | Factions run by game masters, groups run by players with a leader who invites and removes members, and relationships between characters | [factions-and-relationships.md](./factions-and-relationships.md) |

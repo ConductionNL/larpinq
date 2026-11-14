@@ -185,4 +185,23 @@ class FeedbackDelivery {
 		return $this->urls->getAbsoluteURL('/apps/forms/' . $hash);
 	}//end formLink()
 
+	/**
+	 * The link to the form's results in Nextcloud Forms, or to Forms itself
+	 * when the form cannot be looked up.
+	 *
+	 * @param int $formId The form id.
+	 *
+	 * @return string The absolute URL.
+	 *
+	 * @spec openspec/changes/events-post-event-survey/specs/event-feedback/spec.md#requirement-game-masters-see-who-answered-req-eps-004
+	 */
+	public function resultsLink(int $formId): string {
+		$link = $this->formLink(formId: $formId);
+		if (str_ends_with($link, '/apps/forms/') === true) {
+			return $link;
+		}
+
+		return $link . '/results';
+	}//end resultsLink()
+
 }//end class

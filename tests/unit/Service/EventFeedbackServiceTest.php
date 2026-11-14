@@ -86,7 +86,7 @@ class EventFeedbackServiceTest extends TestCase {
 			}
 		);
 		$fetcher->method('getObject')->willReturnCallback(
-			static fn (string $objectType, string $id): array => ['c-anna' => ['ownerUid' => 'anna'], 'c-sanne' => ['ownerUid' => 'sanne'], 'c-karel' => ['ownerUid' => 'karel']][$id]
+			static fn (string $objectType, string $id): array => ['c-anna' => ['ownerUid' => 'anna', 'name' => 'Mirela'], 'c-sanne' => ['ownerUid' => 'sanne', 'name' => 'Brannoc'], 'c-karel' => ['ownerUid' => 'karel', 'name' => 'Odo']][$id]
 		);
 		$fetcher->method('saveObjectWithAppAuthority')->willReturnCallback(
 			function (string $objectType, array $data, ?string $uuid = null): array {
@@ -197,6 +197,49 @@ class EventFeedbackServiceTest extends TestCase {
 		$service->daily(now: new DateTimeImmutable('2025-09-03T03:00:00+00:00'));
 		self::assertSame([['anna', true], ['sanne', true]], $this->sent);
 	}//end testWithoutPerUserAnswersEveryInviteeIsReminded()
+
+	/**
+	 * Scenario "Half the letters are in": Anna answered and Sanne did not, so 1 of 2 answered and Sanne is listed.
+	 *
+	 * @return void
+	 */
+	public function testTheSummaryCountsWhoAnsweredAndListsWhoDidNot(): void {
+		$service = $this->service(event: self::event(), answered: ['anna', 'someone-else']);
+		$service->daily(now: new DateTimeImmutable('2025-08-18T03:00:00+00:00'));
+
+		self::assertSame(
+			[
+				'formId' => 42,
+				'opensAt' => '2025-08-17T16:00:00+00:00',
+				'closesAt' => '2025-09-07T16:00:00+00:00',
+				'invited' => 2,
+				'answered' => 1,
+				'notAnswered' => [['uid' => 'sanne', 'character' => 'Brannoc']],
+			],
+			$service->summary(event: self::event())
+		);
+	}//end testTheSummaryCountsWhoAnsweredAndListsWhoDidNot()
+
+	/**
+	 * Before anyone is invited the summary counts nobody; when Forms cannot tell, answered is unknown; without a form, nothing is read.
+	 *
+	 * @return void
+	 */
+	public function testTheSummaryBeforeInvitationsAndWithoutAnswers(): void {
+		$service = $this->service(event: self::event(), answered: null);
+		self::assertSame(0, $service->summary(event: self::event())['invited']);
+
+		$service->daily(now: new DateTimeImmutable('2025-08-18T03:00:00+00:00'));
+		$summary = $service->summary(event: self::event());
+		self::assertSame(2, $summary['invited']);
+		self::assertNull($summary['answered']);
+		self::assertNull($summary['notAnswered']);
+
+		$this->filters = [];
+		$none = $service->summary(event: self::event(extra: ['feedbackForm' => null]));
+		self::assertSame(['formId' => 0, 'invited' => 0, 'answered' => null], ['formId' => $none['formId'], 'invited' => $none['invited'], 'answered' => $none['answered']]);
+		self::assertSame([], $this->filters, 'an event without a form reads no attendance');
+	}//end testTheSummaryBeforeInvitationsAndWithoutAnswers()
 
 	/**
 	 * Before feedback opens and once it closed nothing is sent, and an event without a form is skipped.

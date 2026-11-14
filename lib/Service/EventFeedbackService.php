@@ -118,6 +118,51 @@ class EventFeedbackService {
 	}//end daily()
 
 	/**
+	 * Who was invited to give feedback on an event and who answered, for game masters (REQ-EPS-004).
+	 *
+	 * `answered` and `notAnswered` are null when Forms cannot tell who
+	 * submitted: the page then shows the invitations only.
+	 *
+	 * @param array $event The event.
+	 *
+	 * @return array<string, mixed> formId, opensAt, closesAt, invited, answered (int|null) and notAnswered (list of uid and character, or null).
+	 *
+	 * @spec openspec/changes/events-post-event-survey/specs/event-feedback/spec.md#requirement-game-masters-see-who-answered-req-eps-004
+	 */
+	public function summary(array $event): array {
+		$formId = (int)($event['feedbackForm'] ?? 0);
+		$window = self::window(event: $event);
+		$summary = [
+			'formId' => $formId,
+			'opensAt' => $window['opens']?->format(DateTimeInterface::ATOM),
+			'closesAt' => $window['closes']?->format(DateTimeInterface::ATOM),
+			'invited' => 0,
+			'answered' => null,
+			'notAnswered' => null,
+		];
+		if ($formId <= 0 || (string)($event['id'] ?? '') === '') {
+			return $summary;
+		}
+
+		$invited = $this->invitees(eventId: (string)$event['id']);
+		$summary['invited'] = count($invited);
+		$uids = $this->answers->answeredBy(formId: $formId);
+		if ($uids === null) {
+			return $summary;
+		}
+
+		$summary['answered'] = count(array_intersect(array_keys($invited), $uids));
+		$summary['notAnswered'] = [];
+		foreach ($invited as $uid => $character) {
+			if (in_array((string)$uid, $uids, true) === false) {
+				$summary['notAnswered'][] = ['uid' => (string)$uid, 'character' => $character];
+			}
+		}
+
+		return $summary;
+	}//end summary()
+
+	/**
 	 * When an event's feedback opens and closes: the stored moments, else the
 	 * end of the event and 21 days later. Null when there is no moment to open on.
 	 *
@@ -240,6 +285,62 @@ class EventFeedbackService {
 			return '';
 		}
 	}//end ownerOf()
+
+	/**
+	 * The participants of an event who were invited, by user id, with the name of their character.
+	 *
+	 * @param string $eventId The event.
+	 *
+	 * @return array<string, string> Character name by user id.
+	 */
+	private function invitees(string $eventId): array {
+		$invited = [];
+		$rows = $this->fetcher->getObjectsWithAppAuthority(
+			objectType: 'attendance',
+			filters: ['event' => $eventId, 'status' => self::CHECKED_IN],
+			limit: self::PAGE
+		);
+		foreach ($rows as $attendance) {
+			if ((string)($attendance['status'] ?? '') !== self::CHECKED_IN || (string)($attendance['feedbackInvitedAt'] ?? '') === '') {
+				continue;
+			}
+
+			$owner = $this->ownerOf(attendance: $attendance);
+			if ($owner !== '') {
+				$invited[$owner] = $this->characterName(attendance: $attendance);
+			}
+		}
+
+		return $invited;
+	}//end invitees()
+
+	/**
+	 * The name of the attendance's character, or ''.
+	 *
+	 * @param array $attendance The attendance record.
+	 *
+	 * @return string The name.
+	 */
+	private function characterName(array $attendance): string {
+		$character = $attendance['character'] ?? '';
+		if (is_array($character) === true && (string)($character['name'] ?? '') !== '') {
+			return (string)$character['name'];
+		}
+
+		if (is_array($character) === true) {
+			$character = ($character['id'] ?? ($character['@self']['id'] ?? ''));
+		}
+
+		if (is_string($character) === false || $character === '') {
+			return '';
+		}
+
+		try {
+			return (string)($this->fetcher->getObject(objectType: 'character', id: $character)['name'] ?? '');
+		} catch (Throwable $e) {
+			return '';
+		}
+	}//end characterName()
 
 	/**
 	 * A stored date-time, or null.
