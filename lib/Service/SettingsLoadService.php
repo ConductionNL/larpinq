@@ -90,13 +90,13 @@ class SettingsLoadService {
 		'relationship' => 'larping_relationship',
 		'characterbuild' => 'larping_character_build',
 		'xpaward' => 'xpAward',
+		'castingpreference' => 'larping_casting_preference',
+		'crewrole' => 'larping_crew_role',
+		'crewassignment' => 'larping_crew_assignment',
 		'registration' => 'larping_registration',
 		'tickettype' => 'larping_ticket_type',
 		'registrationoption' => 'larping_registration_option',
 		'accesscode' => 'larping_access_code',
-		'castingpreference' => 'larping_casting_preference',
-		'crewrole' => 'larping_crew_role',
-		'crewassignment' => 'larping_crew_assignment',
 	];
 
 	/**
