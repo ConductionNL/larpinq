@@ -83,6 +83,7 @@ const IGNORED = [
 	'**/fixtures/**',
 	'**/_visual-helpers.ts',
 	'**/visual/**',
+	'**/phone/**',
 	'**/docs-screenshots.spec.ts',
 ]
 

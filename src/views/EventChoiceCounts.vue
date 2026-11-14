@@ -110,6 +110,10 @@ export default {
 </script>
 
 <style scoped>
+.event-choice-counts {
+	container-type: inline-size;
+}
+
 .event-choice-counts__table {
 	width: 100%;
 	border-collapse: collapse;
@@ -120,5 +124,16 @@ export default {
 	text-align: start;
 	padding: calc(var(--default-grid-baseline, 4px) * 2) 0;
 	border-bottom: 1px solid var(--color-border);
+}
+
+/*
+ * Phone layout (admin-phone-friendly-pages, REQ-APF-001): long option names
+ * wrap inside their cell instead of widening the page.
+ */
+@container (max-width: 600px) {
+	.event-choice-counts__table th,
+	.event-choice-counts__table td {
+		overflow-wrap: anywhere;
+	}
 }
 </style>

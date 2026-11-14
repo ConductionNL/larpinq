@@ -111,6 +111,8 @@ export default {
 	flex-direction: column;
 	padding: calc(var(--default-grid-baseline, 4px) * 2) 0;
 	border-bottom: 1px solid var(--color-border);
+	/* Phone layout (admin-phone-friendly-pages): long event names wrap. */
+	overflow-wrap: anywhere;
 }
 
 .player-attendance__meta {

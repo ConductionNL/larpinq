@@ -215,6 +215,8 @@ export default {
 
 .registration-choices__code {
 	display: flex;
+	/* Phone layout (admin-phone-friendly-pages): the field and its button wrap. */
+	flex-wrap: wrap;
 	align-items: flex-end;
 	gap: calc(var(--default-grid-baseline, 4px) * 2);
 }
