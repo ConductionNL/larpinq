@@ -212,6 +212,14 @@
 			"order": 96
 		},
 		{
+			"id": "StaffMenu",
+			"label": "Staff",
+			"icon": "AccountGroupOutline",
+			"route": "Staff",
+			"section": "settings",
+			"order": 94
+		},
+		{
 			"id": "MyCharacters",
 			"label": "My character sheet",
 			"icon": "CardAccountDetailsOutline",
@@ -367,6 +375,14 @@
 		[
 			"FlowDetail",
 			"bb3dc4a080270f99df2c5d33a8d33a82478723f31a807d2a5bfa83fb8092ecaf"
+		],
+		[
+			"Staff",
+			"70fee7612033d8709a453da371f535f193e4451e260896b1414e1367a967d6bf"
+		],
+		[
+			"StaffInvite",
+			"914fbaf820bd467fa8cc9024440bc03a1e62689ba5234e8f700fdd339d359b58"
 		],
 		[
 			"CharacterFields",
