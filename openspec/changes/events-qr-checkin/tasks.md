@@ -4,11 +4,11 @@
 
 ## 1. Code
 
-- [ ] 1.1 Fragment `registration.checkinCode` with its read rule; the code set on acceptance in `RegistrationService`; a repair step for already accepted registrations (REQ-EQC-001). Verify: `npm run check:register`; `npm run check:schema-l10n`; PHPUnit for the code format and the repair; the repair-step-registration gate passes.
+- [x] 1.1 Fragment `registration.checkinCode` with its read rule; the code set on acceptance in `RegistrationService`; a repair step for already accepted registrations (REQ-EQC-001). Verify: `npm run check:register`; `npm run check:schema-l10n`; PHPUnit for the code format and the repair; the repair-step-registration gate passes.
 
 ## 2. Endpoint
 
-- [ ] 2.1 `EventsController::checkinByCode()` and its route with the game master guard and rate limit (REQ-EQC-003, REQ-EQC-004). Verify: PHPUnit for each result (checked in, already, not accepted, unknown, other event, player 403); route-auth, no-admin-idor and public-endpoint-throttling gates pass.
+- [x] 2.1 `EventsController::checkinByCode()` and its route with the game master guard and rate limit (REQ-EQC-003, REQ-EQC-004). Verify: PHPUnit for each result (checked in, already, not accepted, unknown, other event, player 403); route-auth, no-admin-idor and public-endpoint-throttling gates pass.
 
 ## 3. Pages
 

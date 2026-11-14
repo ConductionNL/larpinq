@@ -142,7 +142,7 @@ class RegistrationService {
 			return array_merge($changes, ['status' => self::PENDING]);
 		}
 
-		return array_merge(
+		$changes = array_merge(
 			$changes,
 			[
 				'status' => $this->placeOutcome(event: $event, registration: $registration, excludeId: ''),
@@ -150,6 +150,8 @@ class RegistrationService {
 				'decidedBy' => self::AUTOMATIC,
 			]
 		);
+
+		return array_merge($changes, self::checkinCodeFor(registration: $registration, status: $changes['status']));
 	}//end beforeCreate()
 
 	/**
@@ -186,8 +188,35 @@ class RegistrationService {
 			return $stamp;
 		}
 
-		return array_merge($stamp, ['status' => $this->placeOutcome(event: $event, registration: $new, excludeId: (string)($new['id'] ?? ''))]);
+		$outcome = $this->placeOutcome(event: $event, registration: $new, excludeId: (string)($new['id'] ?? ''));
+
+		return array_merge(
+			$stamp,
+			['status' => $outcome],
+			self::checkinCodeFor(registration: array_merge($old, $new), status: $outcome)
+		);
 	}//end beforeUpdate()
+
+	/**
+	 * A check-in code for a registration that becomes accepted and has none (REQ-EQC-001).
+	 *
+	 * A registration that already has a code keeps it, also when it moves to
+	 * another player.
+	 *
+	 * @param array<string, mixed> $registration The registration.
+	 * @param string $status The status it gets.
+	 *
+	 * @return array<string, string> `['checkinCode' => ...]`, or nothing.
+	 *
+	 * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md#requirement-every-accepted-registration-has-a-check-in-code-req-eqc-001
+	 */
+	private static function checkinCodeFor(array $registration, string $status): array {
+		if ($status !== self::ACCEPTED || (string)($registration['checkinCode'] ?? '') !== '') {
+			return [];
+		}
+
+		return ['checkinCode' => CheckinCode::generate()];
+	}//end checkinCodeFor()
 
 	/**
 	 * After a registration is stored: the participants follow it, the lock is
