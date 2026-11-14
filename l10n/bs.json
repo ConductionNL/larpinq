@@ -387,6 +387,14 @@
         "Faction name": "Naziv frakcije",
         "Faction visibility": "Vidljivost frakcije",
         "First player's account": "Račun prvog igrača",
+        "Feedback form": "Obrazac za povratne informacije",
+        "Feedback opens": "Povratne informacije se otvaraju",
+        "Feedback closes": "Povratne informacije se zatvaraju",
+        "Feedback invitation sent": "Poziv za povratne informacije poslan",
+        "Feedback reminder sent": "Podsjetnik za povratne informacije poslan",
+        "The Nextcloud Forms form participants fill in after the event": "Nextcloud Forms obrazac koji učesnici popunjavaju nakon događaja",
+        "When participants are asked for feedback; the end of the event when empty": "Kada se učesnici mole za povratne informacije; kraj događaja ako je prazno",
+        "When feedback closes; 21 days after it opens when empty": "Kada se povratne informacije zatvaraju; 21 dan nakon otvaranja ako je prazno",
         "From": "Od",
         "Game masters only, or also the players of both characters": "Samo voditelji igre ili i igrači oba lika",
         "Group leader's account": "Račun vođe grupe",
@@ -772,15 +780,7 @@
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Moj list lika",
-        "Open sheet": "Otvori list",
-        "Feedback form": "Obrazac za povratne informacije",
-        "Feedback opens": "Povratne informacije se otvaraju",
-        "Feedback closes": "Povratne informacije se zatvaraju",
-        "Feedback invitation sent": "Poziv za povratne informacije poslan",
-        "Feedback reminder sent": "Podsjetnik za povratne informacije poslan",
-        "The Nextcloud Forms form participants fill in after the event": "Nextcloud Forms obrazac koji učesnici popunjavaju nakon događaja",
-        "When participants are asked for feedback; the end of the event when empty": "Kada se učesnici mole za povratne informacije; kraj događaja ako je prazno",
-        "When feedback closes; 21 days after it opens when empty": "Kada se povratne informacije zatvaraju; 21 dan nakon otvaranja ako je prazno"
+        "Open sheet": "Otvori list"
     },
     "plurals": {}
 }

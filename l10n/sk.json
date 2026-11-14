@@ -387,6 +387,14 @@
         "Faction name": "Názov frakcie",
         "Faction visibility": "Viditeľnosť frakcie",
         "First player's account": "Účet prvého hráča",
+        "Feedback form": "Formulár spätnej väzby",
+        "Feedback opens": "Spätná väzba sa otvára",
+        "Feedback closes": "Spätná väzba sa uzatvára",
+        "Feedback invitation sent": "Pozvánka na spätnú väzbu odoslaná",
+        "Feedback reminder sent": "Pripomienka spätnej väzby odoslaná",
+        "The Nextcloud Forms form participants fill in after the event": "Formulár Nextcloud Forms, ktorý účastníci vyplnia po podujatí",
+        "When participants are asked for feedback; the end of the event when empty": "Kedy sú účastníci požiadaní o spätnú väzbu; ak je prázdne, koniec podujatia",
+        "When feedback closes; 21 days after it opens when empty": "Kedy sa spätná väzba uzatvára; ak je prázdne, 21 dní po otvorení",
         "From": "Od",
         "Game masters only, or also the players of both characters": "Len rozprávači, alebo aj hráči oboch postáv",
         "Group leader's account": "Účet vodcu skupiny",
@@ -772,15 +780,7 @@
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Môj denník postavy",
-        "Open sheet": "Otvoriť denník",
-        "Feedback form": "Formulár spätnej väzby",
-        "Feedback opens": "Spätná väzba sa otvára",
-        "Feedback closes": "Spätná väzba sa uzatvára",
-        "Feedback invitation sent": "Pozvánka na spätnú väzbu odoslaná",
-        "Feedback reminder sent": "Pripomienka spätnej väzby odoslaná",
-        "The Nextcloud Forms form participants fill in after the event": "Formulár Nextcloud Forms, ktorý účastníci vyplnia po podujatí",
-        "When participants are asked for feedback; the end of the event when empty": "Kedy sú účastníci požiadaní o spätnú väzbu; ak je prázdne, koniec podujatia",
-        "When feedback closes; 21 days after it opens when empty": "Kedy sa spätná väzba uzatvára; ak je prázdne, 21 dní po otvorení"
+        "Open sheet": "Otvoriť denník"
     },
     "plurals": {}
 }
