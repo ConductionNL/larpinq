@@ -8,7 +8,8 @@
   > `register.d/rules-rulebook-and-spell-lists.json`: `skillList` (`larping_skill_list`; read by game masters, rules marshals and larpers, written by game masters and rules marshals, deleted by game masters; exportable), `skill.list` and `hiddenFromRulebook` on skill, item and condition. `check:schema-l10n` stays at its baseline: the 12 new schema strings are in `l10n/en.json` and `l10n/nl.json`.
 - [x] 1.2 `SkillRequirementService`: one budget per cost ability, `budgets[]` in the report, refusal on any negative pool (REQ-RRS-002). Verify: the existing SkillRequirementService PHPUnit suite stays green; new tests for a spell refused on mana while XP is fine.
   > `SkillListPools::budgets()` gives one block per pool (XP, then each list's `costAbility`); the result keeps `budget` and adds `budgets[]` and `overspentPools`; any overspent pool refuses the write, and `CharacterRequirementListener` reports the overspent pools. Tests: `tests/unit/Service/SkillRequirementPoolsTest.php` (out of mana while XP is fine, shortfall 1 on Mana), two cases in the listener golden; the existing SkillRequirementService suite stays green.
-- [ ] 1.3 Seed the Aldmoor lists, spells and chapters of design.md. Verify: the seed imports cleanly.
+- [x] 1.3 Seed the Aldmoor lists, spells and chapters of design.md. Verify: the seed imports cleanly.
+  > In the demo descriptor `lib/Settings/larpinq_mock_register.json`: world Aldmoor, ability Mana, lists Martial skills (XP), Arcane spells (Mana) and Divine powers (XP), Arcane lore, Firebolt (3 mana) and Ward (2 mana) through cost effects on Mana, Blood rite hidden from the rulebook, and the rules chapters "How combat works" and "Casting a spell" for players, linked by `@ref:` tokens. `tests/unit/Settings/RulebookSeedTest.php` checks the shape, that every token names a seeded object, and validates each against its merged schema; the live import is left for an instance.
 
 ## 2. Pages
 

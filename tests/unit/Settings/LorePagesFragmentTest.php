@@ -128,12 +128,22 @@ class LorePagesFragmentTest extends TestCase {
 				static fn (array $object): bool => ($object['@self']['schema'] ?? '') === 'larping_lore_page'
 			)
 		);
-		$this->assertCount(expectedCount: 4, haystack: $pages);
+		// Four lore pages, and the two Aldmoor rules chapters of rules-rulebook-and-spell-lists.
+		$this->assertCount(expectedCount: 6, haystack: $pages);
 
 		$validator = new Validator();
 		$schema = json_decode((string)json_encode($this->forOpis(schema: $this->lorePage())));
 		foreach ($pages as $page) {
 			unset($page['@self']);
+			// The importer swaps a `@ref:` token for the referenced object's uuid before it validates.
+			array_walk_recursive(
+				$page,
+				static function (mixed &$value): void {
+					if (is_string($value) === true && str_starts_with($value, '@ref:') === true) {
+						$value = '5f0c2d1e-7a3b-4c8d-9e0f-1a2b3c4d5e6f';
+					}
+				}
+			);
 			$result = $validator->validate(json_decode((string)json_encode($page)), $schema);
 			$this->assertTrue(condition: $result->isValid(), message: 'seed page ' . $page['title'] . ' must validate');
 		}
