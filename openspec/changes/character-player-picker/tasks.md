@@ -8,8 +8,9 @@
 - **acceptance_criteria**:
   - GIVEN `character.properties.ocName` WHEN edited THEN it becomes `{type:"string", format:"uuid", $ref:"player", title:"Player", description:"The player who plays this character"}` and stays in `character.required`
   - GIVEN the register is re-imported WHEN the character form renders THEN `ocName` shows as an inline select-or-create player dropdown, not a text input
-- [ ] Implement
+- [x] Implement
 - [ ] Test
+- Note: already in `lib/Settings/larpinq_register.json` on development (commit of 2026-07-08); `Test` stays open for the browser cases TC-1 to TC-7. `tests/unit/Settings/CharacterPlayerPickerSeedTest.php::testTheSchemasDeclareTheChain` pins the declarations.
 
 ### Task 2: Add player.userUid Nextcloud-user field
 - **spec_ref**: `openspec/changes/character-player-picker/specs/events-players/spec.md#requirement-player-to-nextcloud-account-link`
@@ -17,8 +18,9 @@
 - **acceptance_criteria**:
   - GIVEN `player.properties` WHEN edited THEN it gains `userUid: {type:"string", format:"user", title:"Nextcloud user", description:"The Nextcloud user account this player signs in as. Used for character-ownership notifications."}`
   - GIVEN the field is set to `"alice"` WHEN saved THEN `player.userUid` persists as `"alice"`
-- [ ] Implement
+- [x] Implement
 - [ ] Test
+- Note: already in `lib/Settings/larpinq_register.json` on development (commit of 2026-07-08); `Test` stays open for the browser cases TC-1 to TC-7. `tests/unit/Settings/CharacterPlayerPickerSeedTest.php::testTheSchemasDeclareTheChain` pins the declarations.
 
 ### Task 3: Add character.x-openregister-references.player
 - **spec_ref**: `openspec/changes/character-player-picker/specs/character-management/spec.md#requirement-player-reference-resolution-on-character-objects`
@@ -26,8 +28,9 @@
 - **acceptance_criteria**:
   - GIVEN `character` WHEN edited THEN it gains `x-openregister-references: {"player": {"schema":"player", "mode":"relatedObject", "field":"ocName"}}`
   - GIVEN a character linked to a player with `userUid = "bob"` WHEN declarative expressions evaluate THEN `@ref.player.userUid` resolves to `"bob"`
-- [ ] Implement
+- [x] Implement
 - [ ] Test
+- Note: already in `lib/Settings/larpinq_register.json` on development (commit of 2026-07-08); `Test` stays open for the browser cases TC-1 to TC-7. `tests/unit/Settings/CharacterPlayerPickerSeedTest.php::testTheSchemasDeclareTheChain` pins the declarations.
 
 ### Task 4: Make character.ownerUid a read-only calculated field
 - **spec_ref**: `openspec/changes/character-player-picker/specs/character-management/spec.md#requirement-character-crud-operations`
@@ -36,8 +39,9 @@
   - GIVEN `character.properties.ownerUid` WHEN edited THEN it becomes `{type:"string", title:"Owner UID", visible:false, readOnly:true, description:"Auto-derived Nextcloud uid of the owning player's user account (materialised from the linked player). Not user-editable."}`
   - GIVEN `character.x-openregister-calculations` WHEN edited THEN it gains `{"ownerUid": {"type":"string", "materialise":true, "expression":{"prop":"@ref.player.userUid"}}}`
   - GIVEN a character linked to player "alice" WHEN saved THEN `ownerUid` materialises to `"alice"` with zero dispatcher changes to the existing `character-approved` notification
-- [ ] Implement
+- [x] Implement
 - [ ] Test
+- Note: already in `lib/Settings/larpinq_register.json` on development (commit of 2026-07-08); `Test` stays open for the browser cases TC-1 to TC-7. `tests/unit/Settings/CharacterPlayerPickerSeedTest.php::testTheSchemasDeclareTheChain` pins the declarations.
 
 ### Task 5: Add "widget":"switch" to character.approved
 - **spec_ref**: `openspec/changes/character-player-picker/specs/character-management/spec.md#requirement-character-crud-operations`
@@ -46,8 +50,9 @@
   - GIVEN `character.properties.approved` WHEN edited THEN it gains `"widget":"switch"` while keeping `enum:["no","approved"]`, `default:"no"`, and `facetable:true` unchanged
   - GIVEN `character.x-openregister-lifecycle` and the `character-approved` notification rule THEN neither is edited by this task
   - GIVEN the register is re-imported WHEN the character form renders THEN `approved` shows as a toggle, and flipping it drives the same `no`↔`approved` lifecycle transition as before
-- [ ] Implement
+- [x] Implement
 - [ ] Test
+- Note: already in `lib/Settings/larpinq_register.json` on development (commit of 2026-07-08); `Test` stays open for the browser cases TC-1 to TC-7. `tests/unit/Settings/CharacterPlayerPickerSeedTest.php::testTheSchemasDeclareTheChain` pins the declarations.
 
 ### Task 6: Seed data — sample players and linked characters
 - **spec_ref**: `openspec/changes/character-player-picker/design.md#seed-data`
@@ -55,8 +60,8 @@
 - **acceptance_criteria**:
   - GIVEN a fresh install WHEN seed data loads THEN 3 `player` objects exist with `name` and `userUid` set (`alice`, `bob`, `carol`)
   - GIVEN the same install WHEN seed data loads THEN at least 2 `character` objects exist with `ocName` referencing seeded players, demonstrating `ownerUid` materialisation end-to-end
-- [ ] Implement
-- [ ] Test
+- [x] Implement
+- [x] Test
 
 ## Verification
 - All tasks checked off
@@ -85,3 +90,4 @@
 - Feature documentation updated in `docs/` if user-facing (ADR-010)
 - Dutch (`nl_NL`) and English (`en_US`) translation strings added for any new user-facing strings (ADR-007)
 - `openspec validate` passes
+- Note: the demo data (`lib/Settings/larpinq_mock_register.json`) gains players `player-alice`, `player-bob` and `player-carol` with `userUid` `alice`, `bob` and `carol`, each with a fixed `@self.uuid`. The first two demo characters now point at Alice and Bob by that uuid and no longer seed `ownerUid`. No new characters: `CharacterStatusFragmentTest` pins the seed characters to three, and every seed object must validate as stored, so `@ref:` tokens are not used. Tested by `CharacterPlayerPickerSeedTest`.
