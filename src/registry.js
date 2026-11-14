@@ -40,6 +40,7 @@ import PlayerAttendanceHistory from './views/PlayerAttendanceHistory.vue'
 import RegistrationChanges from './views/RegistrationChanges.vue'
 import RegistrationChoices from './views/RegistrationChoices.vue'
 import SkillTree from './views/SkillTree.vue'
+import { openBankStatementImportAction } from './services/bankStatementAction.js'
 import {
 	exportCampaignAction,
 	importCampaignAction,
@@ -143,5 +144,14 @@ export default {
 	larpinqMarkPlayersReviewed: {
 		kind: 'handler',
 		handler: markPlayersReviewedAction,
+	},
+
+	// Registrations header action "Upload and match a bank statement"
+	// (registration-payments-through-shillinq REQ-RPS-007): opens shillinq's
+	// bank statement import, which matches transfers by their reference.
+	// @spec openspec/changes/registration-payments-through-shillinq/specs/event-registration/spec.md#requirement-a-game-master-uploads-a-bank-statement-to-match-transfers-req-rps-007
+	larpinqOpenBankStatementImport: {
+		kind: 'handler',
+		handler: openBankStatementImportAction,
 	},
 }

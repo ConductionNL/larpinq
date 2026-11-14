@@ -131,6 +131,22 @@
 								"gamemasters"
 							]
 						}
+					},
+					"paymentMethod": {
+						"type": "string",
+						"enum": [
+							"bank-transfer"
+						],
+						"x-enum-labels": {
+							"bank-transfer": "Bank transfer"
+						},
+						"title": "Payment method",
+						"description": "How the payment came in",
+						"authorization": {
+							"update": [
+								"gamemasters"
+							]
+						}
 					}
 				},
 				"x-openregister-notifications": {

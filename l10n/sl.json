@@ -772,7 +772,11 @@
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Moj list lika",
-        "Open sheet": "Odpri list"
+        "Open sheet": "Odpri list",
+        "Payment method": "Način plačila",
+        "Bank transfer": "Bančno nakazilo",
+        "How the payment came in": "Kako je plačilo prispelo",
+        "Upload and match a bank statement": "Naloži in uskladi bančni izpisek"
     },
     "plurals": {}
 }

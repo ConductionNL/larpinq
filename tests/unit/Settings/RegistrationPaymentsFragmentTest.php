@@ -87,7 +87,7 @@ class RegistrationPaymentsFragmentTest extends TestCase {
 		$properties = $this->schema(key: 'registration')['properties'];
 		$this->assertSame(expected: ['not-needed', 'to-request', 'open', 'paid', 'expired'], actual: $properties['paymentState']['enum']);
 		$this->assertSame(expected: 'uuid', actual: $properties['paymentRequestId']['format']);
-		foreach (['paymentState', 'paymentRequestId', 'paymentLink', 'paymentReference', 'payBy', 'paymentReminderAt', 'cancelReason'] as $field) {
+		foreach (['paymentState', 'paymentRequestId', 'paymentLink', 'paymentReference', 'payBy', 'paymentReminderAt', 'cancelReason', 'paymentMethod'] as $field) {
 			$this->assertSame(
 				expected: ['gamemasters'],
 				actual: $properties[$field]['authorization']['update'],
@@ -98,6 +98,8 @@ class RegistrationPaymentsFragmentTest extends TestCase {
 		$this->assertSame(expected: 'boolean', actual: $properties['invoiceRequested']['type']);
 		$this->assertArrayNotHasKey(key: 'authorization', array: $properties['invoiceRequested'], message: 'the player asks for an invoice');
 		$this->assertContains(needle: 'unpaid', haystack: $properties['cancelReason']['enum']);
+		// REQ-RPS-007: a request a bank statement line settled shows paid by bank transfer.
+		$this->assertSame(expected: ['bank-transfer'], actual: $properties['paymentMethod']['enum']);
 	}//end testTheRegistrationCarriesThePaymentState()
 
 	/**
