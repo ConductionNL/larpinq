@@ -28,6 +28,7 @@ use OCA\Larpinq\Listener\CharacterStatusListener;
 use OCA\Larpinq\Listener\FactionMembershipListener;
 use OCA\Larpinq\Listener\FormSubmissionListener;
 use OCA\Larpinq\Listener\PaymentRequestListener;
+use OCA\Larpinq\Listener\PlayerCareListener;
 use OCA\Larpinq\Listener\PlayerReviewListener;
 use OCA\Larpinq\Listener\PortalProfileListener;
 use OCA\Larpinq\Listener\RegistrationListener;
@@ -77,6 +78,11 @@ class ObjectListenerRegistrar {
 		// A portal profile asks portaliq for its claim once it exists (players-self-signup).
 		if (class_exists('OCA\OpenRegister\Event\ObjectCreatedEvent') === true) {
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatedEvent', PortalProfileListener::class);
+		}
+
+		// A player's changed care details follow into the event copies (players-care-details-and-erasure).
+		if (class_exists('OCA\OpenRegister\Event\ObjectUpdatedEvent') === true) {
+			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatedEvent', PlayerCareListener::class);
 		}
 
 		if (class_exists('OCA\OpenRegister\Event\ObjectUpdatingEvent') === true) {
