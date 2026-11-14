@@ -31,12 +31,14 @@ import XpAwardDialog from './dialogs/XpAwardDialog.vue'
 import BuildReport from './views/BuildReport.vue'
 import CharacterCustomFields from './views/CharacterCustomFields.vue'
 import CharacterStatSheet from './views/CharacterStatSheet.vue'
+import EventCasting from './views/EventCasting.vue'
 import EventChoiceCounts from './views/EventChoiceCounts.vue'
 import EventRoster from './views/EventRoster.vue'
 import FlowDetailSidebar from './views/flows/FlowDetailSidebar.vue'
 import LoreArticle from './views/LoreArticle.vue'
 import ObjectDetail from './views/ObjectDetail.vue'
 import PlayerAttendanceHistory from './views/PlayerAttendanceHistory.vue'
+import RegistrationCasting from './views/RegistrationCasting.vue'
 import RegistrationChanges from './views/RegistrationChanges.vue'
 import RegistrationChoices from './views/RegistrationChoices.vue'
 import SkillTree from './views/SkillTree.vue'
@@ -112,6 +114,11 @@ export default {
 	// (registration-cancel-transfer-refund). @spec openspec/specs/event-registration/spec.md
 	RegistrationChanges: { kind: 'section', component: RegistrationChanges },
 	EventChoiceCounts: { kind: 'section', component: EventChoiceCounts },
+	// Casting tab on the event page and on the registration page
+	// (events-casting-and-crew-roles).
+	// @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md
+	EventCasting: { kind: 'section', component: EventCasting },
+	RegistrationCasting: { kind: 'section', component: RegistrationCasting },
 	CharacterCustomFields: { kind: 'section', component: CharacterCustomFields },
 	// Check tab on the build page. @spec openspec/specs/character-builds/spec.md
 	BuildReport: { kind: 'section', component: BuildReport },

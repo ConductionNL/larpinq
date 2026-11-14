@@ -147,6 +147,12 @@
 							"component": "RegistrationChoices"
 						},
 						{
+							"id": "casting",
+							"label": "Casting",
+							"icon": "StarOutline",
+							"component": "RegistrationCasting"
+						},
+						{
 							"id": "changes",
 							"label": "Cancel or hand over",
 							"icon": "AccountArrowLeftOutline",
