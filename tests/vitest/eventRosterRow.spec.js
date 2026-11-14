@@ -16,6 +16,7 @@ import EventRoster from '../../src/views/EventRoster.vue'
 vi.mock('@nextcloud/l10n', () => ({
 	translate: (app, key) => key,
 	translatePlural: (app, one) => one,
+	getCanonicalLocale: () => 'en-US',
 }))
 vi.mock('@nextcloud/vue/components/NcButton', () => ({ default: {} }))
 vi.mock('@nextcloud/vue/components/NcLoadingIcon', () => ({ default: {} }))
@@ -56,13 +57,13 @@ describe('EventRoster setStatus row update', () => {
 			'saved with stamps',
 			{ ok: true, body: { status: 'checked-in', checkedInAt: '2026-12-01T10:00:00+00:00', checkedInBy: 'gm' } },
 			'checked-in',
-			{ character: 'c1', status: 'checked-in', checkedInAt: '2026-12-01T10:00:00+00:00', checkedInBy: 'gm', name: 'Mira' },
+			{ character: 'c1', status: 'checked-in', checkedInAt: '2026-12-01T10:00:00+00:00', checkedInBy: 'gm', checkedOutAt: '', checkedOutBy: '', name: 'Mira' },
 		],
 		[
 			'saved without fields',
 			{ ok: true, body: {} },
 			'no-show',
-			{ character: 'c1', status: 'no-show', checkedInAt: '', checkedInBy: '', name: 'Mira' },
+			{ character: 'c1', status: 'no-show', checkedInAt: '', checkedInBy: '', checkedOutAt: '', checkedOutBy: '', name: 'Mira' },
 		],
 		[
 			'refused',

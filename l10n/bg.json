@@ -772,7 +772,13 @@
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Моят лист на персонажа",
-        "Open sheet": "Отвори листа"
+        "Open sheet": "Отвори листа",
+        "Check out": "Отписване",
+        "Checked out": "Отписан",
+        "Checked out {day} {time}": "Отписан {day} {time}",
+        "On site now: {count}": "На място сега: {count}",
+        "Checked Out At": "Тръгването е отбелязано на",
+        "Checked Out By": "Тръгването е отбелязано от"
     },
     "plurals": {}
 }

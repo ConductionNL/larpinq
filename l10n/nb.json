@@ -772,7 +772,13 @@
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Mitt karakterark",
-        "Open sheet": "Åpne ark"
+        "Open sheet": "Åpne ark",
+        "Check out": "Sjekk ut",
+        "Checked out": "Sjekket ut",
+        "Checked out {day} {time}": "Sjekket ut {day} {time}",
+        "On site now: {count}": "På stedet nå: {count}",
+        "Checked Out At": "Sjekket ut den",
+        "Checked Out By": "Sjekket ut av"
     },
     "plurals": {}
 }

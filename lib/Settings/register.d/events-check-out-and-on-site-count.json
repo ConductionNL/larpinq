@@ -1,0 +1,26 @@
+{
+  "components": {
+    "schemas": {
+      "attendance": {
+        "version": "1.1.0",
+        "properties": {
+          "status": {
+            "enum": [
+              "checked-out"
+            ]
+          },
+          "checkedOutAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Checked Out At"
+          },
+          "checkedOutBy": {
+            "type": "string",
+            "title": "Checked Out By",
+            "maxLength": 255
+          }
+        }
+      }
+    }
+  }
+}

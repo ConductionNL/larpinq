@@ -777,7 +777,13 @@ OC.L10N.register(
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Το φύλλο του χαρακτήρα μου",
-        "Open sheet": "Άνοιγμα φύλλου"
+        "Open sheet": "Άνοιγμα φύλλου",
+        "Check out": "Δήλωση αποχώρησης",
+        "Checked out": "Αποχώρησε",
+        "Checked out {day} {time}": "Αποχώρησε {day} {time}",
+        "On site now: {count}": "Παρόντες τώρα: {count}",
+        "Checked Out At": "Η αποχώρηση καταγράφηκε στις",
+        "Checked Out By": "Η αποχώρηση καταγράφηκε από"
     },
     "nplurals=2; plural=(n != 1);"
 )
