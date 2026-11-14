@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -62,6 +58,21 @@ OC.L10N.register(
         "Value": "Vērtība",
         "player": "spēlētājs",
         "npc": "npc",
+        "1 for the character the player wants most, up to 5": "1 tēlam, kuru spēlētājs visvairāk vēlas spēlēt, līdz 5",
+        "Casting deadline": "Atlases termiņš",
+        "Casting preference": "Atlases vēlme",
+        "Crew assignment": "Norīkojums komandā",
+        "Crew keeps the event running; NPC plays characters for the players": "Komanda nodrošina notikuma norisi; NPC spēlē tēlus spēlētājiem",
+        "Crew role": "Loma komandā",
+        "How many volunteers the role needs": "Cik brīvprātīgo vajag lomai",
+        "Note": "Piezīme",
+        "Open for casting on": "Atvērts atlasei notikumā",
+        "Rank": "Vieta sarakstā",
+        "The Nextcloud account of the player, copied from the registration on save": "Spēlētāja Nextcloud konts, saglabājot nokopēts no pieteikuma",
+        "The event this written character is open for casting on. Empty when it is not open.": "Notikums, kura atlasei šis uzrakstītais tēls ir atvērts. Tukšs, ja tas nav atvērts.",
+        "The name of the role, such as Kitchen or Bandits": "Lomas nosaukums, piemēram, Virtuve vai Laupītāji",
+        "Until when players can rank the characters open for casting": "Līdz kuram brīdim spēlētāji var sarindot atlasei atvērtos tēlus",
+        "What the volunteers in this role do": "Ko dara brīvprātīgie šajā lomā",
         "other": "cits",
         "no": "nē",
         "approved": "apstiprināts",

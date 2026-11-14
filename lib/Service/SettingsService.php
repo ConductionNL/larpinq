@@ -117,6 +117,15 @@ class SettingsService {
 		'accesscode_schema',
 		'accesscode_register',
 		'accesscode_source',
+		'castingpreference_schema',
+		'castingpreference_register',
+		'castingpreference_source',
+		'crewrole_schema',
+		'crewrole_register',
+		'crewrole_source',
+		'crewassignment_schema',
+		'crewassignment_register',
+		'crewassignment_source',
 	];
 
 	/**

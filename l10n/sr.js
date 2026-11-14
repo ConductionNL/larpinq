@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -62,6 +58,21 @@ OC.L10N.register(
         "Value": "Вредност",
         "player": "играч",
         "npc": "нпц",
+        "1 for the character the player wants most, up to 5": "1 за лик који играч највише жели да игра, до 5",
+        "Casting deadline": "Рок за кастинг",
+        "Casting preference": "Жеља за кастинг",
+        "Crew assignment": "Распоређивање у екипу",
+        "Crew keeps the event running; NPC plays characters for the players": "Екипа одржава догађај; NPC играју ликове за играче",
+        "Crew role": "Улога у екипи",
+        "How many volunteers the role needs": "Колико волонтера је потребно улози",
+        "Note": "Белешка",
+        "Open for casting on": "Отворен за кастинг на",
+        "Rank": "Место на листи",
+        "The Nextcloud account of the player, copied from the registration on save": "Nextcloud налог играча, преузет из пријаве при чувању",
+        "The event this written character is open for casting on. Empty when it is not open.": "Догађај на чији је кастинг отворен овај написани лик. Празно када није отворен.",
+        "The name of the role, such as Kitchen or Bandits": "Назив улоге, на пример Кухиња или Разбојници",
+        "Until when players can rank the characters open for casting": "До када играчи могу да рангирају ликове отворене за кастинг",
+        "What the volunteers in this role do": "Шта раде волонтери у овој улози",
         "other": "остало",
         "no": "не",
         "approved": "одобрено",

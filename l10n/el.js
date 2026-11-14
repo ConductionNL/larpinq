@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -62,6 +58,21 @@ OC.L10N.register(
         "Value": "Τιμή",
         "player": "παίκτης",
         "npc": "npc",
+        "1 for the character the player wants most, up to 5": "1 για τον χαρακτήρα που ο παίκτης θέλει περισσότερο να παίξει, έως 5",
+        "Casting deadline": "Προθεσμία κάστινγκ",
+        "Casting preference": "Προτίμηση κάστινγκ",
+        "Crew assignment": "Ανάθεση στο προσωπικό",
+        "Crew keeps the event running; NPC plays characters for the players": "Το προσωπικό κρατά την εκδήλωση σε λειτουργία· οι NPC υποδύονται χαρακτήρες για τους παίκτες",
+        "Crew role": "Ρόλος προσωπικού",
+        "How many volunteers the role needs": "Πόσους εθελοντές χρειάζεται ο ρόλος",
+        "Note": "Σημείωση",
+        "Open for casting on": "Ανοιχτός για κάστινγκ στην",
+        "Rank": "Κατάταξη",
+        "The Nextcloud account of the player, copied from the registration on save": "Ο λογαριασμός Nextcloud του παίκτη, αντιγραμμένος από τη δήλωση συμμετοχής κατά την αποθήκευση",
+        "The event this written character is open for casting on. Empty when it is not open.": "Η εκδήλωση για το κάστινγκ της οποίας είναι ανοιχτός αυτός ο γραμμένος χαρακτήρας. Κενό όταν δεν είναι ανοιχτός.",
+        "The name of the role, such as Kitchen or Bandits": "Το όνομα του ρόλου, όπως Κουζίνα ή Ληστές",
+        "Until when players can rank the characters open for casting": "Μέχρι πότε οι παίκτες μπορούν να κατατάξουν τους χαρακτήρες που είναι ανοιχτοί για κάστινγκ",
+        "What the volunteers in this role do": "Τι κάνουν οι εθελοντές σε αυτόν τον ρόλο",
         "other": "άλλο",
         "no": "όχι",
         "approved": "εγκρίθηκε",

@@ -94,6 +94,10 @@
         {
             "name": "xp-awards",
             "description": "Awarding XP to the participants of an event"
+        },
+        {
+            "name": "casting",
+            "description": "Casting players to characters for an event."
         }
     ],
     "paths": {
@@ -295,6 +299,134 @@
                         "in": "path",
                         "required": true,
                         "description": "The id.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "/events/{id}/casting/proposal": {
+            "get": {
+                "operationId": "casting-proposal",
+                "summary": "The proposed casting of the event (game masters only)",
+                "description": "The best overall casting of the characters open for casting on the event to the players who ranked them: as many ranked matches as possible, then the lowest total rank, then the most first choices, then earlier sign-ups. Lists the players left without a ranked character and, per open character, how often it was ranked at each rank. Writes nothing.",
+                "tags": [
+                    "casting"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The pairs, the unmatched players and the rank counts.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem401"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Problem403"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Problem422"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "The event id.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "/events/{id}/casting/confirm": {
+            "post": {
+                "operationId": "casting-confirm",
+                "summary": "Confirm the casting (game masters only)",
+                "description": "Writes the pairs the game master kept or changed: each character gets the registration's player as owner and leaves casting, and the registration gets the character. A pair outside the event, a pair that repeats a registration or character, or a failed write is refused by name; the other pairs are written.",
+                "tags": [
+                    "casting"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "pairs"
+                                ],
+                                "properties": {
+                                    "pairs": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "registration": {
+                                                    "type": "string"
+                                                },
+                                                "character": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "The pairs written and the pairs refused with the reason.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/Problem400"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem401"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Problem403"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/Problem422"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "The event id.",
                         "schema": {
                             "type": "string"
                         }

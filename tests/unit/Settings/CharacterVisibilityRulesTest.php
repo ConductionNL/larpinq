@@ -117,8 +117,10 @@ class CharacterVisibilityRulesTest extends TestCase {
 
 		sort($open);
 		// The status (active, retired, dead) is a game fact the cast may see
-		// (characters-status-and-bulk-edit).
-		$this->assertSame(expected: ['approved', 'description', 'name', 'setting', 'status', 'type'], actual: $open);
+		// (characters-status-and-bulk-edit). Which event a written character is
+		// open for casting on is read by the players who rank it
+		// (events-casting-and-crew-roles, REQ-ECC-001).
+		$this->assertSame(expected: ['approved', 'castingEvent', 'description', 'name', 'setting', 'status', 'type'], actual: $open);
 	}//end testACastEntryShowsOnlyNameTypeAndDescription()
 
 	/**

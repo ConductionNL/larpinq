@@ -37,6 +37,9 @@ $extra = [
 	['name' => 'events#downloadRunsheet', 'url' => '/events/{id}/runsheet/{template}', 'verb' => 'GET'],
 	['name' => 'events#roster', 'url' => '/api/events/{id}/roster', 'verb' => 'GET'],
 	['name' => 'events#recordAttendance', 'url' => '/api/events/{id}/attendance', 'verb' => 'POST'],
+	// Casting (events-casting-and-crew-roles, REQ-ECC-002, REQ-ECC-003): game masters only.
+	['name' => 'casting#proposal', 'url' => '/api/events/{id}/casting/proposal', 'verb' => 'GET'],
+	['name' => 'casting#confirm', 'url' => '/api/events/{id}/casting/confirm', 'verb' => 'POST'],
 	['name' => 'xpAwards#access', 'url' => '/api/xp-awards/access', 'verb' => 'GET'],
 	['name' => 'xpAwards#roster', 'url' => '/api/events/{id}/xp-award-roster', 'verb' => 'GET'],
 	['name' => 'xpAwards#award', 'url' => '/api/events/{id}/xp-awards', 'verb' => 'POST'],

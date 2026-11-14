@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -62,6 +58,21 @@ OC.L10N.register(
         "Value": "Valore",
         "player": "giocatore",
         "npc": "png",
+        "1 for the character the player wants most, up to 5": "1 per il personaggio che il giocatore desidera di più, fino a 5",
+        "Casting deadline": "Scadenza del casting",
+        "Casting preference": "Preferenza di casting",
+        "Crew assignment": "Assegnazione dello staff",
+        "Crew keeps the event running; NPC plays characters for the players": "Lo staff fa funzionare l'evento; i PNG interpretano personaggi per i giocatori",
+        "Crew role": "Ruolo dello staff",
+        "How many volunteers the role needs": "Quanti volontari servono al ruolo",
+        "Note": "Nota",
+        "Open for casting on": "Aperto al casting per",
+        "Rank": "Posizione",
+        "The Nextcloud account of the player, copied from the registration on save": "L'account Nextcloud del giocatore, copiato dall'iscrizione al salvataggio",
+        "The event this written character is open for casting on. Empty when it is not open.": "L'evento per cui questo personaggio scritto è aperto al casting. Vuoto se non è aperto.",
+        "The name of the role, such as Kitchen or Bandits": "Il nome del ruolo, ad esempio Cucina o Banditi",
+        "Until when players can rank the characters open for casting": "Fino a quando i giocatori possono classificare i personaggi aperti al casting",
+        "What the volunteers in this role do": "Cosa fanno i volontari in questo ruolo",
         "other": "altro",
         "no": "no",
         "approved": "approvato",

@@ -1,0 +1,322 @@
+{
+  "components": {
+    "registers": {
+      "larpinq": {
+        "schemas": [
+          "larping_casting_preference",
+          "larping_crew_role",
+          "larping_crew_assignment"
+        ]
+      }
+    },
+    "schemas": {
+      "character": {
+        "slug": "character",
+        "properties": {
+          "castingEvent": {
+            "type": "string",
+            "format": "uuid",
+            "$ref": "larping_event",
+            "title": "Open for casting on",
+            "description": "The event this written character is open for casting on. Empty when it is not open.",
+            "authorization": {
+              "update": [
+                "gamemasters"
+              ]
+            }
+          }
+        }
+      },
+      "event": {
+        "slug": "larping_event",
+        "properties": {
+          "castingDeadline": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Casting deadline",
+            "description": "Until when players can rank the characters open for casting"
+          }
+        }
+      },
+      "castingPreference": {
+        "slug": "larping_casting_preference",
+        "title": "Casting preference",
+        "icon": "StarOutline",
+        "version": "1.0.0",
+        "summary": "A character a player would like to play, with its rank",
+        "description": "One character a registered player would like to play at an event, ranked 1 (most wanted) to 5. Game masters and the player read it; other players do not.",
+        "type": "object",
+        "configuration": {
+          "exportable": true,
+          "x-openregister-references": {
+            "event": {
+              "mode": "relatedObject",
+              "schema": "larping_event",
+              "field": "event"
+            },
+            "registration": {
+              "mode": "relatedObject",
+              "schema": "larping_registration",
+              "field": "registration"
+            },
+            "character": {
+              "mode": "relatedObject",
+              "schema": "character",
+              "field": "character"
+            }
+          }
+        },
+        "required": [
+          "event",
+          "registration",
+          "character",
+          "rank"
+        ],
+        "authorization": {
+          "read": [
+            {
+              "group": "gamemasters"
+            },
+            {
+              "group": "larpers",
+              "match": {
+                "playerUid": "$userId"
+              }
+            }
+          ],
+          "create": [
+            "gamemasters",
+            "larpers"
+          ],
+          "update": [
+            {
+              "group": "gamemasters"
+            },
+            {
+              "group": "larpers",
+              "match": {
+                "playerUid": "$userId"
+              }
+            }
+          ],
+          "delete": [
+            {
+              "group": "gamemasters"
+            },
+            {
+              "group": "larpers",
+              "match": {
+                "playerUid": "$userId"
+              }
+            }
+          ]
+        },
+        "properties": {
+          "event": {
+            "type": "string",
+            "format": "uuid",
+            "$ref": "larping_event",
+            "title": "Event"
+          },
+          "registration": {
+            "type": "string",
+            "format": "uuid",
+            "$ref": "larping_registration",
+            "title": "Registration"
+          },
+          "character": {
+            "type": "string",
+            "format": "uuid",
+            "$ref": "character",
+            "title": "Character"
+          },
+          "rank": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5,
+            "title": "Rank",
+            "description": "1 for the character the player wants most, up to 5"
+          },
+          "playerUid": {
+            "type": "string",
+            "title": "Player account",
+            "description": "The Nextcloud account of the player, copied from the registration on save",
+            "maxLength": 255,
+            "calculation": {
+              "type": "string",
+              "materialise": true,
+              "expression": {
+                "prop": "@ref.registration.playerUid"
+              }
+            },
+            "authorization": {
+              "update": [
+                "gamemasters"
+              ]
+            }
+          }
+        }
+      },
+      "crewRole": {
+        "slug": "larping_crew_role",
+        "title": "Crew role",
+        "icon": "AccountGroup",
+        "version": "1.0.0",
+        "summary": "A crew or NPC role at an event, with a number of places",
+        "description": "A role volunteers fill at one event, such as the kitchen or a band of bandits. Crew roles keep the event running; NPC roles play characters for the players.",
+        "type": "object",
+        "configuration": {
+          "exportable": true,
+          "x-openregister-references": {
+            "event": {
+              "mode": "relatedObject",
+              "schema": "larping_event",
+              "field": "event"
+            }
+          }
+        },
+        "required": [
+          "event",
+          "name",
+          "kind",
+          "places"
+        ],
+        "authorization": {
+          "read": [
+            "gamemasters",
+            "larpers"
+          ],
+          "create": [
+            "gamemasters"
+          ],
+          "update": [
+            "gamemasters"
+          ],
+          "delete": [
+            "gamemasters"
+          ]
+        },
+        "properties": {
+          "event": {
+            "type": "string",
+            "format": "uuid",
+            "$ref": "larping_event",
+            "title": "Event"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 255,
+            "title": "Name",
+            "description": "The name of the role, such as Kitchen or Bandits"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "crew",
+              "npc"
+            ],
+            "title": "Kind",
+            "description": "Crew keeps the event running; NPC plays characters for the players"
+          },
+          "places": {
+            "type": "integer",
+            "minimum": 1,
+            "title": "Places",
+            "description": "How many volunteers the role needs"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description",
+            "description": "What the volunteers in this role do"
+          }
+        }
+      },
+      "crewAssignment": {
+        "slug": "larping_crew_assignment",
+        "title": "Crew assignment",
+        "icon": "AccountCheck",
+        "version": "1.0.0",
+        "summary": "A volunteer assigned to a crew or NPC role",
+        "description": "One registration with a crew or NPC ticket assigned to one crew role. Game masters assign; the volunteer reads their own.",
+        "type": "object",
+        "configuration": {
+          "exportable": true,
+          "x-openregister-references": {
+            "crewRole": {
+              "mode": "relatedObject",
+              "schema": "larping_crew_role",
+              "field": "crewRole"
+            },
+            "registration": {
+              "mode": "relatedObject",
+              "schema": "larping_registration",
+              "field": "registration"
+            }
+          }
+        },
+        "required": [
+          "crewRole",
+          "registration"
+        ],
+        "authorization": {
+          "read": [
+            {
+              "group": "gamemasters"
+            },
+            {
+              "group": "larpers",
+              "match": {
+                "playerUid": "$userId"
+              }
+            }
+          ],
+          "create": [
+            "gamemasters"
+          ],
+          "update": [
+            "gamemasters"
+          ],
+          "delete": [
+            "gamemasters"
+          ]
+        },
+        "properties": {
+          "crewRole": {
+            "type": "string",
+            "format": "uuid",
+            "$ref": "larping_crew_role",
+            "title": "Role"
+          },
+          "registration": {
+            "type": "string",
+            "format": "uuid",
+            "$ref": "larping_registration",
+            "title": "Registration"
+          },
+          "note": {
+            "type": "string",
+            "title": "Note"
+          },
+          "playerUid": {
+            "type": "string",
+            "title": "Player account",
+            "description": "The Nextcloud account of the player, copied from the registration on save",
+            "maxLength": 255,
+            "calculation": {
+              "type": "string",
+              "materialise": true,
+              "expression": {
+                "prop": "@ref.registration.playerUid"
+              }
+            },
+            "authorization": {
+              "update": [
+                "gamemasters"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

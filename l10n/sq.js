@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -62,6 +58,21 @@ OC.L10N.register(
         "Value": "Vlera",
         "player": "lojtar",
         "npc": "npc",
+        "1 for the character the player wants most, up to 5": "1 për personazhin që lojtari dëshiron më shumë të luajë, deri në 5",
+        "Casting deadline": "Afati i kastingut",
+        "Casting preference": "Preferenca e kastingut",
+        "Crew assignment": "Caktimi në ekip",
+        "Crew keeps the event running; NPC plays characters for the players": "Ekipi e mban ngjarjen në funksionim; NPC-të luajnë personazhe për lojtarët",
+        "Crew role": "Roli në ekip",
+        "How many volunteers the role needs": "Sa vullnetarë i nevojiten rolit",
+        "Note": "Shënim",
+        "Open for casting on": "I hapur për kasting në",
+        "Rank": "Renditja",
+        "The Nextcloud account of the player, copied from the registration on save": "Llogaria Nextcloud e lojtarit, e kopjuar nga regjistrimi gjatë ruajtjes",
+        "The event this written character is open for casting on. Empty when it is not open.": "Ngjarja për kastingun e së cilës është i hapur ky personazh i shkruar. Bosh kur nuk është i hapur.",
+        "The name of the role, such as Kitchen or Bandits": "Emri i rolit, për shembull Kuzhina ose Banditët",
+        "Until when players can rank the characters open for casting": "Deri kur lojtarët mund të rendisin personazhet e hapur për kasting",
+        "What the volunteers in this role do": "Çfarë bëjnë vullnetarët në këtë rol",
         "other": "tjetër",
         "no": "jo",
         "approved": "miratuar",
