@@ -20,7 +20,8 @@
 
 ## 3. Portal
 
-- [ ] 3.1 `rulebookChapters` and `skillLists` in `PortalContributionProvider` (REQ-RRS-005). `rulebookChapters` shipped with portal-my-larp-pages; `skillLists` waits on 1.1. Verify: provider PHPUnit shape and whitelist tests.
+- [x] 3.1 `rulebookChapters` and `skillLists` in `PortalContributionProvider` (REQ-RRS-005). `rulebookChapters` shipped with portal-my-larp-pages; `skillLists` waits on 1.1. Verify: provider PHPUnit shape and whitelist tests.
+  > `skillLists` (public, `hiddenFromRulebook` false, ordered) on the rulebook portal page before the skill catalogue, which now carries each skill's `list`. Provider tests: collection order, public scope, the whitelist-against-register drift test, `testSkillListsAreInThePortalWithoutTheHiddenOnes`, and the recorded golden. The existing skill, item and condition catalogues keep their unfiltered reads: objects saved before the flag existed may hold no value, which an equality filter on false would drop.
 
 ## 4. Strings and docs
 

@@ -159,6 +159,7 @@ class PortalContributionProvider {
 				'requiredEffects',
 				'requiredScore',
 				'setting',
+				'list',
 			],
 		],
 		[
@@ -344,6 +345,7 @@ class PortalContributionProvider {
 				],
 				['type' => 'collection', 'collection' => 'rulebookChapters'],
 				['type' => 'detail', 'collection' => 'rulebookChapters'],
+				['type' => 'collection', 'collection' => 'skillLists'],
 				['type' => 'collection', 'collection' => 'skillCatalog'],
 			],
 		];
@@ -365,7 +367,7 @@ class PortalContributionProvider {
 		return array_merge(
 			[$this->characterCollection()],
 			$this->catalogCollections(),
-			[$this->profileCollection(), $this->registrationCollection(), $this->rulebookCollection()]
+			[$this->profileCollection(), $this->registrationCollection(), $this->rulebookCollection(), $this->skillListCollection()]
 		);
 	}//end playerCollections()
 
@@ -448,6 +450,42 @@ class PortalContributionProvider {
 			'defaultSort' => ['field' => 'order', 'direction' => 'asc'],
 		];
 	}//end rulebookCollection()
+
+	/**
+	 * The skill lists of the rulebook: skills, spells and powers with the pool they are paid from.
+	 *
+	 * Public like the skill catalogue, whose `list` field says which list a
+	 * skill is in. A list hidden from the rulebook is left out by the filter;
+	 * the flag defaults to false on every list, which is a schema of this change.
+	 *
+	 * @return array<string, mixed> The skill list collection.
+	 *
+	 * @spec openspec/changes/rules-rulebook-and-spell-lists/specs/rulebook/spec.md#requirement-the-rulebook-is-in-the-portal-req-rrs-005
+	 */
+	private function skillListCollection(): array {
+		return [
+			'id' => 'skillLists',
+			'register' => self::REGISTER,
+			'schema' => 'larping_skill_list',
+			'scopeField' => '',
+			'filter' => ['hiddenFromRulebook' => false],
+			'label' => 'Vaardighedenlijsten',
+			'listable' => true,
+			'fields' => [
+				'name',
+				'kind',
+				'description',
+				'costAbility',
+				'order',
+				'setting',
+			],
+			'columns' => [
+				['field' => 'name', 'label' => 'Lijst'],
+				['field' => 'kind', 'label' => 'Soort'],
+			],
+			'defaultSort' => ['field' => 'order', 'direction' => 'asc'],
+		];
+	}//end skillListCollection()
 
 	/**
 	 * The subject's own player profile, scoped by the portal subject itself.

@@ -62,7 +62,8 @@
                 "requiredConditions",
                 "requiredEffects",
                 "requiredScore",
-                "setting"
+                "setting",
+                "list"
             ]
         },
         {
@@ -203,6 +204,39 @@
                 "field": "order",
                 "direction": "asc"
             }
+        },
+        {
+            "id": "skillLists",
+            "register": "larpinq",
+            "schema": "larping_skill_list",
+            "scopeField": "",
+            "filter": {
+                "hiddenFromRulebook": false
+            },
+            "label": "Vaardighedenlijsten",
+            "listable": true,
+            "fields": [
+                "name",
+                "kind",
+                "description",
+                "costAbility",
+                "order",
+                "setting"
+            ],
+            "columns": [
+                {
+                    "field": "name",
+                    "label": "Lijst"
+                },
+                {
+                    "field": "kind",
+                    "label": "Soort"
+                }
+            ],
+            "defaultSort": {
+                "field": "order",
+                "direction": "asc"
+            }
         }
     ],
     "actions": [
@@ -282,6 +316,10 @@
                 {
                     "type": "detail",
                     "collection": "rulebookChapters"
+                },
+                {
+                    "type": "collection",
+                    "collection": "skillLists"
                 },
                 {
                     "type": "collection",
