@@ -24,6 +24,12 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 let capturedOptions = null
+let nextcloudLanguage = 'en'
+
+vi.mock('@nextcloud/l10n', () => ({
+	getLanguage: () => nextcloudLanguage,
+	translate: (_app, text) => text,
+}))
 
 vi.mock('@conduction/nextcloud-vue', () => {
 	function createObjectStore(storeId, options = {}) {
@@ -113,5 +119,22 @@ describe('larpinq object store — multi-tenancy wiring', () => {
 	it('exposes the setActiveTenantOrganisation hook on the constructed store', () => {
 		const store = useObjectStore()
 		expect(typeof store.setActiveTenantOrganisation).toBe('function')
+	})
+
+	// Phase 3 (i18n-language-negotiation-getters): reads carry `?_lang=`,
+	// writes carry `X-Translation-Target-Language`, both the user's base
+	// language with the region stripped.
+	it('passes the user\'s base language as both language getters', () => {
+		nextcloudLanguage = 'de_DE'
+		expect(capturedOptions.languageGetter()).toBe('de')
+		expect(capturedOptions.targetLanguageGetter()).toBe('de')
+
+		nextcloudLanguage = 'en_GB'
+		expect(capturedOptions.languageGetter()).toBe('en')
+
+		nextcloudLanguage = ''
+		expect(capturedOptions.languageGetter()).toBeNull()
+		expect(capturedOptions.targetLanguageGetter()).toBeNull()
+		nextcloudLanguage = 'en'
 	})
 })
