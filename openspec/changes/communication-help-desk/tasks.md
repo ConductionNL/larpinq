@@ -4,12 +4,12 @@
 
 ## 1. Data
 
-- [ ] 1.1 Fragment: `helpQuestion` (lifecycle, notifications) and `helpMessage` with rules (REQ-CHD-001 to REQ-CHD-004). Verify: `npm run check:register`; `npm run check:schema-l10n`; notification-dialect gate passes; Newman: another player reads no question of Anna.
-- [ ] 1.2 Seed the question of design.md. Verify: the seed imports cleanly.
+- [x] 1.1 Fragment: `helpQuestion` (lifecycle, notifications) and `helpMessage` with rules (REQ-CHD-001 to REQ-CHD-004). Verify: `npm run check:register`; `npm run check:schema-l10n`; notification-dialect gate passes; Newman: another player reads no question of Anna.
+- [x] 1.2 Seed the question of design.md. Verify: the seed imports cleanly.
 
 ## 2. Thread
 
-- [ ] 2.1 `HelpMessageListener` and the closed-question check (REQ-CHD-002, REQ-CHD-003). Verify: PHPUnit with the real OpenRegister event classes for answer, reopen, closed.
+- [x] 2.1 `HelpMessageListener` and the closed-question check (REQ-CHD-002, REQ-CHD-003). Verify: PHPUnit with the real OpenRegister event classes for answer, reopen, closed.
 
 ## 3. Pages and portal
 

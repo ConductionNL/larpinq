@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "title": "larpinq demo data",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "description": "Demo data covering every schema this app supplies, offered as the first step of the app's setup walkthrough. Generated from the schemas themselves, so every object satisfies the schema that will validate it."
   },
   "x-openregister": {
@@ -1205,6 +1205,123 @@
         "settlementChoice": "credit",
         "settlement": "credit-requested",
         "settlementRequestedAt": "2026-11-10T10:00:00+00:00"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_help_question",
+          "slug": "help-question-real-bow"
+        },
+        "player": "00000000-0000-4000-8000-000000000000",
+        "askerUid": "anna",
+        "ownerRef": "00000000-0000-4000-8000-000000000000",
+        "subject": "Can I bring a real bow?",
+        "body": "I have a recurve bow at home. Can I bring it to Winter Court 2026?",
+        "status": "answered",
+        "lastMessageAt": "2026-09-20T18:05:00+00:00"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_help_message",
+          "slug": "help-message-real-bow-answer"
+        },
+        "question": "00000000-0000-4000-8000-000000000000",
+        "author": "joris",
+        "fromOrganiser": true,
+        "askerUid": "anna",
+        "body": "Only LARP-safe bows, checked at the gate.",
+        "createdAt": "2026-09-20T18:05:00+00:00"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_help_message",
+          "slug": "larping-help-message-helpmessage-1-1"
+        },
+        "question": "00000000-0000-4000-8000-000000000000",
+        "body": "Voorbeeld Body 1",
+        "author": "Voorbeeld Author 1",
+        "fromOrganiser": false,
+        "askerUid": "Voorbeeld Askeruid 1",
+        "createdAt": "2026-03-01T09:00:00+00:00"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_help_message",
+          "slug": "larping-help-message-helpmessage-2-2"
+        },
+        "question": "00000000-0000-4000-8000-000000000001",
+        "body": "Voorbeeld Body 2",
+        "author": "Voorbeeld Author 2",
+        "fromOrganiser": false,
+        "askerUid": "Voorbeeld Askeruid 2",
+        "createdAt": "2026-03-02T09:00:00+00:00"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_help_message",
+          "slug": "larping-help-message-helpmessage-3-3"
+        },
+        "question": "00000000-0000-4000-8000-000000000002",
+        "body": "Voorbeeld Body 3",
+        "author": "Voorbeeld Author 3",
+        "fromOrganiser": false,
+        "askerUid": "Voorbeeld Askeruid 3",
+        "createdAt": "2026-03-03T09:00:00+00:00"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_help_question",
+          "slug": "larping-help-question-helpquestion-1-1"
+        },
+        "player": "00000000-0000-4000-8000-000000000000",
+        "subject": "Voorbeeld Subject 1",
+        "body": "Voorbeeld Body 1",
+        "status": "open",
+        "askerUid": "Voorbeeld Askeruid 1",
+        "ownerRef": "Voorbeeld Ownerref 1",
+        "event": "00000000-0000-4000-8000-000000000000",
+        "character": "00000000-0000-4000-8000-000000000000",
+        "assignee": "Voorbeeld user 0",
+        "lastMessageAt": "2026-03-01T09:00:00+00:00"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_help_question",
+          "slug": "larping-help-question-helpquestion-2-2"
+        },
+        "player": "00000000-0000-4000-8000-000000000001",
+        "subject": "Voorbeeld Subject 2",
+        "body": "Voorbeeld Body 2",
+        "status": "answered",
+        "askerUid": "Voorbeeld Askeruid 2",
+        "ownerRef": "Voorbeeld Ownerref 2",
+        "event": "00000000-0000-4000-8000-000000000001",
+        "character": "00000000-0000-4000-8000-000000000001",
+        "assignee": "Voorbeeld user 1",
+        "lastMessageAt": "2026-03-02T09:00:00+00:00"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_help_question",
+          "slug": "larping-help-question-helpquestion-3-3"
+        },
+        "player": "00000000-0000-4000-8000-000000000002",
+        "subject": "Voorbeeld Subject 3",
+        "body": "Voorbeeld Body 3",
+        "status": "closed",
+        "askerUid": "Voorbeeld Askeruid 3",
+        "ownerRef": "Voorbeeld Ownerref 3",
+        "event": "00000000-0000-4000-8000-000000000002",
+        "character": "00000000-0000-4000-8000-000000000002",
+        "assignee": "Voorbeeld user 2",
+        "lastMessageAt": "2026-03-03T09:00:00+00:00"
       }
     ]
   }

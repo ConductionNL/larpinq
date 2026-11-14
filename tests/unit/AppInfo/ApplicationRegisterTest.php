@@ -30,6 +30,7 @@ use OCA\Larpinq\Listener\FactionMembershipListener;
 use OCA\Larpinq\Listener\FormSubmissionListener;
 use OCA\Larpinq\Listener\PaymentRequestListener;
 use OCA\Larpinq\Listener\PlayerReviewListener;
+use OCA\Larpinq\Listener\HelpMessageListener;
 use OCA\Larpinq\Listener\PortalProfileListener;
 use OCA\Larpinq\Listener\RegistrationListener;
 use OCA\Larpinq\Listener\UniqueHolderListener;
@@ -88,6 +89,8 @@ class ApplicationRegisterTest extends TestCase {
 		['OCA\OpenRegister\Event\ObjectUpdatingEvent', XpAwardProvenanceListener::class],
 		['OCA\OpenRegister\Event\ObjectCreatingEvent', PortalProfileListener::class],
 		['OCA\OpenRegister\Event\ObjectCreatedEvent', PortalProfileListener::class],
+		['OCA\OpenRegister\Event\ObjectCreatingEvent', HelpMessageListener::class],
+		['OCA\OpenRegister\Event\ObjectCreatedEvent', HelpMessageListener::class],
 		['OCA\OpenRegister\Event\ObjectUpdatingEvent', PlayerReviewListener::class],
 		['OCA\OpenRegister\Event\ObjectCreatingEvent', RegistrationListener::class],
 		['OCA\OpenRegister\Event\ObjectUpdatingEvent', RegistrationListener::class],

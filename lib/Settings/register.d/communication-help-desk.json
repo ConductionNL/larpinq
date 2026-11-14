@@ -1,0 +1,304 @@
+{
+  "components": {
+    "registers": {
+      "larpinq": {
+        "schemas": [
+          "larping_help_question",
+          "larping_help_message"
+        ]
+      }
+    },
+    "schemas": {
+      "helpQuestion": {
+        "slug": "larping_help_question",
+        "title": "Help question",
+        "icon": "HelpCircleOutline",
+        "version": "1.0.0",
+        "description": "A question a player asks the game masters.",
+        "type": "object",
+        "required": [
+          "player",
+          "subject",
+          "body",
+          "status"
+        ],
+        "properties": {
+          "player": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Player",
+            "$ref": "player",
+            "objectConfiguration": {
+              "handling": "related-object"
+            },
+            "description": "The player who asks."
+          },
+          "askerUid": {
+            "type": "string",
+            "title": "Asker",
+            "maxLength": 255,
+            "description": "The asking player's user account."
+          },
+          "ownerRef": {
+            "type": "string",
+            "title": "Owner reference",
+            "maxLength": 255,
+            "description": "The asking player, for the portal."
+          },
+          "subject": {
+            "type": "string",
+            "title": "Subject",
+            "maxLength": 255,
+            "description": "What the question is about."
+          },
+          "body": {
+            "type": "string",
+            "title": "Question",
+            "maxLength": 5000,
+            "description": "The question itself."
+          },
+          "event": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Event",
+            "$ref": "larping_event",
+            "objectConfiguration": {
+              "handling": "related-object"
+            },
+            "description": "The event it is about."
+          },
+          "character": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Character",
+            "$ref": "character",
+            "objectConfiguration": {
+              "handling": "related-object"
+            },
+            "description": "The character it is about."
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "enum": [
+              "open",
+              "answered",
+              "closed"
+            ],
+            "default": "open",
+            "facetable": true,
+            "description": "Where the question stands."
+          },
+          "assignee": {
+            "type": "string",
+            "title": "Assigned to",
+            "maxLength": 255,
+            "description": "The game master handling it."
+          },
+          "lastMessageAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Last message",
+            "description": "When the last message was written."
+          }
+        },
+        "configuration": {
+          "exportable": true,
+          "x-openregister-lifecycle": {
+            "field": "status",
+            "initial": "open",
+            "final": [
+              "closed"
+            ],
+            "transitions": {
+              "answer": {
+                "from": [
+                  "open"
+                ],
+                "to": "answered",
+                "description": "A game master answered the question."
+              },
+              "reopen": {
+                "from": [
+                  "answered"
+                ],
+                "to": "open",
+                "description": "The asker replied to the answer."
+              },
+              "close": {
+                "from": [
+                  "open",
+                  "answered"
+                ],
+                "to": "closed",
+                "description": "A game master closes the question."
+              }
+            }
+          }
+        },
+        "authorization": {
+          "read": [
+            {
+              "group": "gamemasters"
+            },
+            {
+              "group": "larpers",
+              "match": {
+                "askerUid": "$userId"
+              }
+            }
+          ],
+          "create": [
+            {
+              "group": "gamemasters"
+            },
+            {
+              "group": "larpers"
+            }
+          ],
+          "update": [
+            {
+              "group": "gamemasters"
+            }
+          ],
+          "delete": [
+            {
+              "group": "gamemasters"
+            }
+          ]
+        },
+        "x-openregister-notifications": {
+          "question-asked": {
+            "trigger": {
+              "type": "created"
+            },
+            "enabled": true,
+            "channels": [
+              "nc-notification"
+            ],
+            "recipients": [
+              {
+                "kind": "groups",
+                "groups": [
+                  "gamemasters"
+                ]
+              }
+            ],
+            "subject": {
+              "nl": "Nieuwe vraag: {{subject}}",
+              "en": "New question: {{subject}}"
+            }
+          },
+          "question-answered": {
+            "trigger": {
+              "type": "transition",
+              "action": "answer"
+            },
+            "enabled": true,
+            "channels": [
+              "nc-notification"
+            ],
+            "recipients": [
+              {
+                "kind": "field",
+                "field": "askerUid"
+              }
+            ],
+            "subject": {
+              "nl": "Je vraag is beantwoord: {{subject}}",
+              "en": "Your question has been answered: {{subject}}"
+            }
+          }
+        }
+      },
+      "helpMessage": {
+        "slug": "larping_help_message",
+        "title": "Help message",
+        "icon": "MessageReplyTextOutline",
+        "version": "1.0.0",
+        "description": "A message in the thread of a help question.",
+        "type": "object",
+        "required": [
+          "question",
+          "body"
+        ],
+        "properties": {
+          "question": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Question",
+            "$ref": "larping_help_question",
+            "objectConfiguration": {
+              "handling": "related-object"
+            },
+            "description": "The question this message belongs to."
+          },
+          "author": {
+            "type": "string",
+            "title": "Author",
+            "maxLength": 255,
+            "description": "Who wrote the message."
+          },
+          "fromOrganiser": {
+            "type": "boolean",
+            "title": "From a game master",
+            "default": false,
+            "description": "Whether a game master wrote it."
+          },
+          "askerUid": {
+            "type": "string",
+            "title": "Asker",
+            "maxLength": 255,
+            "description": "The asking player's user account."
+          },
+          "body": {
+            "type": "string",
+            "title": "Message",
+            "maxLength": 5000,
+            "description": "The message itself."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Written at",
+            "description": "When the message was written."
+          }
+        },
+        "configuration": {
+          "exportable": true
+        },
+        "authorization": {
+          "read": [
+            {
+              "group": "gamemasters"
+            },
+            {
+              "group": "larpers",
+              "match": {
+                "askerUid": "$userId"
+              }
+            }
+          ],
+          "create": [
+            {
+              "group": "gamemasters"
+            },
+            {
+              "group": "larpers"
+            }
+          ],
+          "update": [
+            {
+              "group": "gamemasters"
+            }
+          ],
+          "delete": [
+            {
+              "group": "gamemasters"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

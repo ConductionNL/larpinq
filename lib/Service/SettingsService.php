@@ -117,6 +117,12 @@ class SettingsService {
 		'accesscode_schema',
 		'accesscode_register',
 		'accesscode_source',
+		'helpquestion_schema',
+		'helpquestion_register',
+		'helpquestion_source',
+		'helpmessage_schema',
+		'helpmessage_register',
+		'helpmessage_source',
 	];
 
 	/**

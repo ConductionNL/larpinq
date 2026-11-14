@@ -27,6 +27,7 @@ namespace OCA\Larpinq\AppInfo;
 use OCA\Larpinq\Listener\CharacterStatusListener;
 use OCA\Larpinq\Listener\FactionMembershipListener;
 use OCA\Larpinq\Listener\FormSubmissionListener;
+use OCA\Larpinq\Listener\HelpMessageListener;
 use OCA\Larpinq\Listener\PaymentRequestListener;
 use OCA\Larpinq\Listener\PlayerReviewListener;
 use OCA\Larpinq\Listener\PortalProfileListener;
@@ -72,11 +73,14 @@ class ObjectListenerRegistrar {
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', CharacterStatusListener::class);
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', XpAwardProvenanceListener::class);
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', PortalProfileListener::class);
+			// The help desk thread (communication-help-desk, REQ-CHD-002, REQ-CHD-003).
+			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', HelpMessageListener::class);
 		}
 
 		// A portal profile asks portaliq for its claim once it exists (players-self-signup).
 		if (class_exists('OCA\OpenRegister\Event\ObjectCreatedEvent') === true) {
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatedEvent', PortalProfileListener::class);
+			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatedEvent', HelpMessageListener::class);
 		}
 
 		if (class_exists('OCA\OpenRegister\Event\ObjectUpdatingEvent') === true) {
