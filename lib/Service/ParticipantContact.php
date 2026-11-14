@@ -21,15 +21,22 @@ declare(strict_types=1);
 namespace OCA\Larpinq\Service;
 
 use OCP\IUserManager;
+use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
 /**
  * Resolves a registration to one person: the player's name and the email of
  * their Nextcloud account (the registration's `playerUid`, else the player's
- * `userUid`), keyed so one person with two registrations counts once.
+ * `userUid`), else the email on the contact card linked to the player, keyed
+ * so one person with two registrations counts once.
  */
 class ParticipantContact {
+
+	/**
+	 * OpenRegister's contact links of an object (the player's contacts leaf).
+	 */
+	public const CONTACT_SERVICE = 'OCA\OpenRegister\Service\ContactServiceInterface';
 
 	/**
 	 * Constructor.
@@ -37,6 +44,7 @@ class ParticipantContact {
 	 * @param RegisterObjectFetcher $fetcher Reads the player.
 	 * @param IUserManager $users Accounts, for the address.
 	 * @param LoggerInterface $logger The logger.
+	 * @param ContainerInterface|null $container Resolves OpenRegister's contact links; null leaves the account address only.
 	 *
 	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
 	 */
@@ -44,6 +52,7 @@ class ParticipantContact {
 		private readonly RegisterObjectFetcher $fetcher,
 		private readonly IUserManager $users,
 		private readonly LoggerInterface $logger,
+		private readonly ?ContainerInterface $container = null,
 	) {
 	}//end __construct()
 
@@ -93,6 +102,55 @@ class ParticipantContact {
 			$name = $playerId;
 		}
 
-		return ['key' => $key, 'name' => $name, 'email' => (string)($user?->getEMailAddress() ?? '')];
+		$email = (string)($user?->getEMailAddress() ?? '');
+		if ($email === '' && $playerId !== '') {
+			$email = $this->contactEmail(playerId: $playerId);
+		}
+
+		return ['key' => $key, 'name' => $name, 'email' => $email];
 	}//end forRegistration()
+
+	/**
+	 * The email on the contact card linked to the player: the primary active
+	 * one first, else the first active one with an address; '' when the player
+	 * has none or the contact links cannot be read.
+	 *
+	 * @param string $playerId The player's object id.
+	 *
+	 * @return string
+	 *
+	 * @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md#requirement-the-recipients-are-shown-before-sending-req-cmp-002
+	 */
+	private function contactEmail(string $playerId): string {
+		if ($this->container === null || interface_exists(self::CONTACT_SERVICE) === false) {
+			return '';
+		}
+
+		try {
+			$links = (array)($this->container->get(self::CONTACT_SERVICE)->getContactsForObject($playerId)['results'] ?? []);
+		} catch (Throwable $e) {
+			$this->logger->debug('Larpinq: the contact card of a player could not be read for a message.', ['exception' => $e]);
+			return '';
+		}
+
+		$addresses = [];
+		foreach ($links as $link) {
+			if (is_array($link) === false) {
+				continue;
+			}
+
+			$email = trim((string)($link['email'] ?? ''));
+			if ($email === '' || filter_var($email, FILTER_VALIDATE_EMAIL) === false || ($link['active'] ?? true) === false) {
+				continue;
+			}
+
+			if (($link['primaryParty'] ?? false) === true) {
+				return $email;
+			}
+
+			$addresses[] = $email;
+		}
+
+		return ($addresses[0] ?? '');
+	}//end contactEmail()
 }//end class

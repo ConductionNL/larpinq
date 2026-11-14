@@ -5,8 +5,8 @@
 ## 1. Data and service
 
 - [x] 1.1 Fragment: `eventMessage` with its rule (REQ-CMP-001, REQ-CMP-004). Verify: `npm run check:register`; `npm run check:schema-l10n`; Newman: a player cannot read messages.
-- [ ] 1.2 `EventMessageService::recipients()` with the audience filters, address resolution and de-duplication (REQ-CMP-002). Verify: PHPUnit per filter, a player without an address, and a player with two registrations.
-  - Status: filters, de-duplication and the account address (registration `playerUid`, else the player's `userUid`) are built and tested; the fallback to the email on the player's linked contact card is not, so such players count as "no address".
+- [x] 1.2 `EventMessageService::recipients()` with the audience filters, address resolution and de-duplication (REQ-CMP-002). Verify: PHPUnit per filter, a player without an address, and a player with two registrations.
+  - Filters, de-duplication and the account address (registration `playerUid`, else the player's `userUid`), then the email on the contact card linked to the player through OpenRegister's contact links (the primary active card first, else the first active card with a valid address). `ParticipantContactTest` covers each step and a contact service that cannot be read or is not there.
 - [x] 1.3 `EventMessagesController` preview and send, and `SendEventMessageJob` in batches of 50 (REQ-CMP-002, REQ-CMP-003). Verify: PHPUnit with a fake mailer: one mail each, counts right, a second send refused; route-auth, no-admin-idor and semantic-auth gates pass.
 
 ## 2. Page
