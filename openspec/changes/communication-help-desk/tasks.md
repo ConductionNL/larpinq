@@ -13,7 +13,8 @@
 
 ## 3. Pages and portal
 
-- [ ] 3.1 `src/manifest.d/communication-help-desk.json`: Help and Help desk pages; the Dashboard count in `src/manifest.json` (REQ-CHD-001, REQ-CHD-003). Verify: `npm run check:manifest`.
+- [x] 3.1 `src/manifest.d/communication-help-desk.json`: Help and Help desk pages; the Dashboard count in `src/manifest.json` (REQ-CHD-001, REQ-CHD-003). Verify: `npm run check:manifest`.
+      Help (the player's own questions), Help desk (quick filters open / answered / closed, oldest activity first, an `age` cell widget marks a question without activity for more than 3 days) and the question page with its message thread; the Dashboard stat "Open questions". `npm run check:manifest` passes and the merged manifest validates against the v2 schema; pinned by `tests/vitest/helpDeskManifest.spec.js`, `tests/vitest/ageCell.spec.js` and the re-recorded `effectiveManifest.golden.json`.
 - [ ] 3.2 `askQuestion` and `myQuestions` in `PortalContributionProvider`, with the declared notification (REQ-CHD-004). Verify: provider PHPUnit shape and whitelist tests.
 - [ ] 3.3 Playwright `tests/e2e/help-desk.spec.ts`: Anna asks, Joris answers, Anna is notified and replies, the question reopens (REQ-CHD-001 to REQ-CHD-003). Verify: passes locally.
 

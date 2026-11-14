@@ -88,6 +88,7 @@ import { loadState } from '@nextcloud/initial-state'
 import { translate as ncT } from '@nextcloud/l10n'
 import { NcAppSettingsSection } from '@nextcloud/vue'
 import { provide, reactive } from 'vue'
+import AgeCell from './components/cells/AgeCell.vue'
 import TranslatedNameCell from './components/cells/TranslatedNameCell.vue'
 import { startActiveWorld } from './services/activeWorld.js'
 import { setObjectStoreTenantUuid, useObjectStore } from './store/modules/object.js'
@@ -253,8 +254,9 @@ export default {
 		return {
 			// Cell widgets an index column names with `widget`. `translatedName`
 			// shows the value with the "(translated from …)" badge
-			// (larpinq-adopt-or-abstractions, Phase 3).
-			cellWidgets: { translatedName: TranslatedNameCell },
+			// (larpinq-adopt-or-abstractions, Phase 3). `age` marks a date that
+			// lies too long in the past (communication-help-desk, REQ-CHD-002).
+			cellWidgets: { translatedName: TranslatedNameCell, age: AgeCell },
 			objectSidebarState: reactive({
 				active: false,
 				open: true,

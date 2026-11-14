@@ -392,6 +392,23 @@
 						}
 					},
 					{
+						"id": "kpi-open-questions",
+						"title": "Open questions",
+						"type": "stat",
+						"content": {
+							"label": "Open questions",
+							"route": { "name": "HelpDesk" },
+							"icon": "HelpCircleOutline",
+							"format": { "style": "number" },
+							"source": {
+								"register": "larpinq",
+								"schema": "larping_help_question",
+								"metric": "count",
+								"filter": { "status": "open" }
+							}
+						}
+					},
+					{
 						"id": "recent-characters",
 						"title": "Recent characters",
 						"type": "object-table",
@@ -523,6 +540,15 @@
 						"gridY": 6,
 						"gridWidth": 12,
 						"gridHeight": 5
+					},
+					{
+						"id": 8,
+						"widgetId": "kpi-open-questions",
+						"gridX": 0,
+						"gridY": 11,
+						"gridWidth": 3,
+						"gridHeight": 2,
+						"showTitle": false
 					}
 				],
 				"documentationUrl": "https://larpinq.conduction.nl",
