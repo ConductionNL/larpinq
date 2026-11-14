@@ -210,6 +210,84 @@ class ApiContractMiddlewareTest extends TestCase {
 		$this->assertArrayNotHasKey(key: 'Link', array: $headers);
 	}//end testStandardProtocolPathIsNotDeprecated()
 
+
+	/**
+	 * When the request URI does not contain the path info, the successor link has no script prefix.
+	 *
+	 * @return void
+	 */
+	public function testSuccessorLinkWithoutAMatchingUriHasNoPrefix(): void {
+		$request = $this->createMock(originalClassName: IRequest::class);
+		$request->method('getPathInfo')->willReturn('/apps/larpinq/api/things/7/parts');
+		$request->method('getRequestUri')->willReturn('/rewritten/elsewhere');
+		$appManager = $this->createMock(originalClassName: IAppManager::class);
+		$appManager->expects($this->once())->method('getAppVersion')->with('larpinq')->willReturn('9.9.9');
+
+		$response = (new ApiContractMiddleware(request: $request, appManager: $appManager))
+			->afterController(controller: null, methodName: 'any', response: new JSONResponse(data: []));
+		$headers  = $this->headersOf(response: $response);
+
+		$this->assertSame(expected: '9.9.9', actual: $headers['API-Version']);
+		$this->assertSame(expected: '</apps/larpinq/api/v1/things/7/parts>; rel="successor-version"', actual: $headers['Link']);
+	}//end testSuccessorLinkWithoutAMatchingUriHasNoPrefix()
+
+	/**
+	 * Empty or non-string candidates are skipped when picking the detail.
+	 *
+	 * @return void
+	 */
+	public function testDetailSkipsEmptyAndNonStringCandidates(): void {
+		$response = $this->decorate(
+			path: '/apps/larpinq/api/v1/things',
+			response: new JSONResponse(data: ['detail' => '', 'message' => ['nested'], 'error' => 'Bad input'], statusCode: 422)
+		);
+
+		$this->assertSame(
+			expected: [
+				'type'   => 'about:blank',
+				'title'  => 'Unprocessable Content',
+				'status' => 422,
+				'detail' => '',
+				'message' => ['nested'],
+				'error'  => 'Bad input',
+			],
+			actual: $response->getData()
+		);
+	}//end testDetailSkipsEmptyAndNonStringCandidates()
+
+	/**
+	 * An error body without any detail candidate gets the problem members but no detail.
+	 *
+	 * @return void
+	 */
+	public function testErrorWithoutDetailCandidateGetsNoDetail(): void {
+		$response = $this->decorate(
+			path: '/apps/larpinq/api/v1/things',
+			response: new JSONResponse(data: ['code' => 'E42'], statusCode: 429)
+		);
+
+		$this->assertSame(
+			expected: ['type' => 'about:blank', 'title' => 'Too Many Requests', 'status' => 429, 'code' => 'E42'],
+			actual: $response->getData()
+		);
+		$this->assertSame(expected: ApiContractMiddleware::PROBLEM_CONTENT_TYPE, actual: $this->headersOf(response: $response)['Content-Type']);
+	}//end testErrorWithoutDetailCandidateGetsNoDetail()
+
+	/**
+	 * A non-error status below 400 keeps an `error` member untouched.
+	 *
+	 * @return void
+	 */
+	public function testStatusBelow400IsNotAProblem(): void {
+		$response = $this->decorate(
+			path: '/apps/larpinq/api/v1/things',
+			response: new JSONResponse(data: ['error' => 'partial'], statusCode: 399)
+		);
+
+		$this->assertSame(expected: ['error' => 'partial'], actual: $response->getData());
+		$this->assertSame(expected: 'application/json; charset=utf-8', actual: $this->headersOf(response: $response)['Content-Type']);
+	}//end testStatusBelow400IsNotAProblem()
+
 	/**
 	 * The headers a response set, read without the server container that
 	 * Response::getHeaders() needs.

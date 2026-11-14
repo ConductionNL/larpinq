@@ -1,7 +1,7 @@
 <?php
 
 /**
- * InitializeRegister imports the configuration on install and upgrade and never fails the upgrade.
+ * InitializeRegisterTest.
  *
  * @category Test
  * @package  OCA\Larpinq\Tests\Unit\Repair
@@ -20,118 +20,128 @@ use OCP\Migration\IOutput;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
+use RuntimeException;
+use TypeError;
 
 /**
+ * The install/upgrade step imports the register and never aborts the upgrade.
+ *
  * @covers \OCA\Larpinq\Repair\InitializeRegister
  */
 class InitializeRegisterTest extends TestCase {
 
-	/** @var SettingsService&MockObject */
-	private SettingsService&MockObject $settings;
-
-	/** @var LoggerInterface&MockObject */
-	private LoggerInterface&MockObject $logger;
-
-	/** @var IOutput&MockObject */
-	private IOutput&MockObject $output;
-
-	/** @var list<array{string,string}> What the step told the admin. */
-	private array $said = [];
+	/**
+	 * Settings service mock.
+	 *
+	 * @var SettingsService&MockObject
+	 */
+	private SettingsService $settingsService;
 
 	/**
-	 * Build the doubles and record the output.
+	 * Logger mock.
+	 *
+	 * @var LoggerInterface&MockObject
+	 */
+	private LoggerInterface $logger;
+
+	/**
+	 * Output mock.
+	 *
+	 * @var IOutput&MockObject
+	 */
+	private IOutput $output;
+
+	/**
+	 * Build the mocks.
 	 *
 	 * @return void
 	 */
 	protected function setUp(): void {
-		$this->settings = $this->createMock(originalClassName: SettingsService::class);
+		parent::setUp();
+		$this->settingsService = $this->createMock(originalClassName: SettingsService::class);
 		$this->logger = $this->createMock(originalClassName: LoggerInterface::class);
 		$this->output = $this->createMock(originalClassName: IOutput::class);
-		$this->output->method('info')->willReturnCallback(function (string $m): void {
-			$this->said[] = ['info', $m];
-		});
-		$this->output->method('warning')->willReturnCallback(function (string $m): void {
-			$this->said[] = ['warning', $m];
-		});
-	}
+	}//end setUp()
 
 	/**
 	 * The step under test.
 	 *
-	 * @return InitializeRegister
+	 * @return InitializeRegister The step.
 	 */
 	private function step(): InitializeRegister {
-		return new InitializeRegister(settingsService: $this->settings, logger: $this->logger);
-	}
+		return new InitializeRegister(settingsService: $this->settingsService, logger: $this->logger);
+	}//end step()
 
 	/**
 	 * The step names what it does.
 	 *
 	 * @return void
 	 */
-	public function testTheStepHasItsName(): void {
-		$this->assertSame(expected: 'Initialize Larpinq register and schemas via ConfigurationService', actual: $this->step()->getName());
-	}
-
-	/**
-	 * A successful import loads the settings once and reports success, logging nothing.
-	 *
-	 * @return void
-	 */
-	public function testASuccessfulImportReportsSuccess(): void {
-		$this->settings->expects($this->once())->method('loadSettings')->willReturn([]);
-		$this->logger->expects($this->never())->method($this->anything());
-
-		$this->step()->run(output: $this->output);
-
+	public function testName(): void {
 		$this->assertSame(
-			expected: [['info', 'Initializing Larpinq configuration...'], ['info', 'Larpinq configuration imported successfully.']],
-			actual: $this->said
+			expected: 'Initialize Larpinq register and schemas via ConfigurationService',
+			actual: $this->step()->getName()
 		);
-	}
+	}//end testName()
 
 	/**
-	 * A RuntimeException means OpenRegister is missing: a warning, logged at warning level.
+	 * A successful import reports start and success and logs nothing.
 	 *
 	 * @return void
 	 */
-	public function testAMissingOpenRegisterIsSkippedWithAWarning(): void {
-		$this->settings->method('loadSettings')->willThrowException(new \RuntimeException('no openregister'));
-		$this->logger->expects($this->once())->method('warning')->with(
-			'Larpinq: OpenRegister not available, skipping register initialization',
-			['exception' => 'no openregister']
+	public function testSuccessfulImportReportsSuccess(): void {
+		$this->settingsService->expects($this->once())->method('loadSettings')->willReturn([]);
+		$messages = [];
+		$this->output->method('info')->willReturnCallback(
+			static function (string $message) use (&$messages): void {
+				$messages[] = $message;
+			}
 		);
+		$this->output->expects($this->never())->method('warning');
+		$this->logger->expects($this->never())->method('warning');
 		$this->logger->expects($this->never())->method('error');
 
 		$this->step()->run(output: $this->output);
 
 		$this->assertSame(
-			expected: [
-				['info', 'Initializing Larpinq configuration...'],
-				['warning', 'OpenRegister is not installed or enabled. Skipping auto-configuration.'],
-			],
-			actual: $this->said
+			expected: ['Initializing Larpinq configuration...', 'Larpinq configuration imported successfully.'],
+			actual: $messages
 		);
-	}
+	}//end testSuccessfulImportReportsSuccess()
 
 	/**
-	 * Any other failure is reported with its message and logged as an error, without throwing.
+	 * Without OpenRegister the step skips with a warning instead of failing.
 	 *
 	 * @return void
 	 */
-	public function testAnyOtherFailureIsLoggedAsAnError(): void {
-		$this->settings->method('loadSettings')->willThrowException(new \TypeError('bad schema'));
-		$this->logger->expects($this->once())->method('error')->with(
-			'Larpinq initialization failed',
-			['exception' => 'bad schema']
+	public function testMissingOpenRegisterIsSkippedWithAWarning(): void {
+		$this->settingsService->method('loadSettings')->willThrowException(new RuntimeException('OpenRegister missing'));
+		$this->output->expects($this->once())->method('info')->with('Initializing Larpinq configuration...');
+		$this->output->expects($this->once())->method('warning')
+			->with('OpenRegister is not installed or enabled. Skipping auto-configuration.');
+		$this->logger->expects($this->once())->method('warning')->with(
+			'Larpinq: OpenRegister not available, skipping register initialization',
+			['exception' => 'OpenRegister missing']
 		);
-		$this->logger->expects($this->never())->method('warning');
+		$this->logger->expects($this->never())->method('error');
 
 		$this->step()->run(output: $this->output);
+	}//end testMissingOpenRegisterIsSkippedWithAWarning()
 
-		$this->assertSame(
-			expected: [['info', 'Initializing Larpinq configuration...'], ['warning', 'Could not auto-configure Larpinq: bad schema']],
-			actual: $this->said
+	/**
+	 * Any other failure is reported and logged as an error, and never escapes.
+	 *
+	 * @return void
+	 */
+	public function testOtherFailuresAreLoggedAndSwallowed(): void {
+		$this->settingsService->method('loadSettings')->willThrowException(new TypeError('bad config'));
+		$this->output->expects($this->once())->method('warning')->with('Could not auto-configure Larpinq: bad config');
+		$this->logger->expects($this->never())->method('warning');
+		$this->logger->expects($this->once())->method('error')->with(
+			'Larpinq initialization failed',
+			['exception' => 'bad config']
 		);
-	}
-}
+
+		$this->step()->run(output: $this->output);
+	}//end testOtherFailuresAreLoggedAndSwallowed()
+}//end class

@@ -23,6 +23,7 @@ use OCA\Larpinq\Service\IdListNormaliser;
 use OCA\OpenRegister\Db\ObjectEntity;
 use OCA\OpenRegister\Event\ObjectCreatingEvent;
 use OCA\OpenRegister\Event\ObjectUpdatingEvent;
+use OCP\EventDispatcher\Event;
 use OCP\IAppConfig;
 use PHPUnit\Framework\TestCase;
 
@@ -123,4 +124,17 @@ class CharacterStatusListenerTest extends TestCase {
 			$this->assertFalse(condition: $event->isPropagationStopped(), message: $label);
 		}
 	}//end testEverythingElsePasses()
+
+	/**
+	 * Events other than a create or update are ignored.
+	 *
+	 * @return void
+	 */
+	public function testOtherEventsAreIgnored(): void {
+		$event = new Event();
+
+		$this->listener()->handle($event);
+
+		$this->assertFalse(condition: $event->isPropagationStopped());
+	}//end testOtherEventsAreIgnored()
 }//end class

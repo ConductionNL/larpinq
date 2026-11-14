@@ -1,13 +1,18 @@
 <?php
 
 /**
- * Registration settlement events carry the payment request to settle, tagged with their kind.
+ * Unit tests for the registration settlement commands.
  *
  * @category Test
  * @package  OCA\Larpinq\Tests\Unit\Event
+ * @author   Conduction Development Team <info@conduction.nl>
+ * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ * @link     https://larpingapp.com
  *
- * SPDX-License-Identifier: EUPL-1.2
+ * @spec openspec/specs/event-registration/spec.md
+ *
  * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
  */
 
 declare(strict_types=1);
@@ -21,83 +26,115 @@ use OCP\EventDispatcher\Event;
 use PHPUnit\Framework\TestCase;
 
 /**
+ * The refund and credit commands larpinq sends to shillinq, as a listener reads them.
+ *
  * @covers \OCA\Larpinq\Event\RegistrationSettlementRequested
- * @covers \OCA\Larpinq\Event\RegistrationCreditRequested
  * @covers \OCA\Larpinq\Event\RegistrationRefundRequested
+ * @covers \OCA\Larpinq\Event\RegistrationCreditRequested
+ *
+ * @spec openspec/specs/event-registration/spec.md
  */
 class RegistrationSettlementRequestedTest extends TestCase {
 
-	/**
-	 * The constructor arguments shared by both kinds.
-	 *
-	 * @return array<string,mixed>
-	 */
-	private static function args(): array {
-		return [
-			'registrationId' => 'reg-1',
-			'paymentRequestId' => 'pay-2',
-			'eventId' => 'ev-3',
-			'playerId' => 'pl-4',
-			'debtor' => ['name' => 'Aria', 'email' => 'aria@example.org'],
-			'amount' => 42.5,
-			'currency' => 'EUR',
-			'subject' => ['type' => 'registration', 'id' => 'reg-1'],
-		];
-	}
+	private const SUBJECT = ['register' => 'larpinq', 'schema' => 'registration', 'id' => 'reg-1'];
 
 	/**
-	 * Each subclass and the kind it reports.
+	 * Build a command of the given class.
 	 *
-	 * @return array<string, array{class-string<RegistrationSettlementRequested>, string}>
+	 * @param class-string<RegistrationSettlementRequested> $class The command class
+	 *
+	 * @return RegistrationSettlementRequested
 	 */
-	public static function kinds(): array {
-		return [
-			'credit' => [RegistrationCreditRequested::class, 'credit'],
-			'refund' => [RegistrationRefundRequested::class, 'refund'],
-		];
-	}
-
-	/**
-	 * The getters return what the event was built with.
-	 *
-	 * @param class-string<RegistrationSettlementRequested> $class The event class.
-	 * @param string                                         $kind  Its kind.
-	 *
-	 * @return void
-	 *
-	 * @dataProvider kinds
-	 */
-	public function testTheEventCarriesThePaymentRequest(string $class, string $kind): void {
-		$event = new $class(...self::args());
-
-		$this->assertInstanceOf(expected: Event::class, actual: $event);
-		$this->assertSame(expected: $kind, actual: $event->getKind());
-		$this->assertSame(expected: 'reg-1', actual: $event->getRegistrationId());
-		$this->assertSame(expected: 'pay-2', actual: $event->getPaymentRequestId());
-		$this->assertSame(expected: 'ev-3', actual: $event->getEventId());
-		$this->assertSame(expected: 'pl-4', actual: $event->getPlayerId());
-		$this->assertSame(expected: ['name' => 'Aria', 'email' => 'aria@example.org'], actual: $event->getDebtor());
-		$this->assertSame(expected: 42.5, actual: $event->getAmount());
-		$this->assertSame(expected: 'EUR', actual: $event->getCurrency());
-	}
-
-	/**
-	 * toArray() leads with the kind and keeps every field, in a stable key order.
-	 *
-	 * @param class-string<RegistrationSettlementRequested> $class The event class.
-	 * @param string                                         $kind  Its kind.
-	 *
-	 * @return void
-	 *
-	 * @dataProvider kinds
-	 */
-	public function testToArrayIsTheWirePayload(string $class, string $kind): void {
-		$payload = (new $class(...self::args()))->toArray();
-
-		$this->assertSame(expected: ['kind' => $kind] + self::args(), actual: $payload);
-		$this->assertSame(
-			expected: ['kind', 'registrationId', 'paymentRequestId', 'eventId', 'playerId', 'debtor', 'amount', 'currency', 'subject'],
-			actual: array_keys($payload)
+	private function command(string $class): RegistrationSettlementRequested {
+		return new $class(
+			'reg-1',
+			'pay-9',
+			'event-3',
+			'player-5',
+			['name' => 'Anna de Vries', 'email' => 'anna@example.org'],
+			42.5,
+			'EUR',
+			self::SUBJECT,
 		);
-	}
-}
+
+	}//end command()
+
+	/**
+	 * A refund carries kind `refund` and the full payload, in the order a listener reads it.
+	 *
+	 * @return void
+	 */
+	public function testARefundSerialisesTheWholeCommand(): void {
+		$command = $this->command(RegistrationRefundRequested::class);
+
+		self::assertSame('refund', $command->getKind());
+		self::assertSame(
+			[
+				'kind' => 'refund',
+				'registrationId' => 'reg-1',
+				'paymentRequestId' => 'pay-9',
+				'eventId' => 'event-3',
+				'playerId' => 'player-5',
+				'debtor' => ['name' => 'Anna de Vries', 'email' => 'anna@example.org'],
+				'amount' => 42.5,
+				'currency' => 'EUR',
+				'subject' => self::SUBJECT,
+			],
+			$command->toArray()
+		);
+
+	}//end testARefundSerialisesTheWholeCommand()
+
+	/**
+	 * A credit differs from a refund only in its kind.
+	 *
+	 * @return void
+	 */
+	public function testACreditDiffersFromARefundOnlyInKind(): void {
+		$credit = $this->command(RegistrationCreditRequested::class)->toArray();
+		$refund = $this->command(RegistrationRefundRequested::class)->toArray();
+
+		self::assertSame('credit', $credit['kind']);
+		unset($credit['kind'], $refund['kind']);
+		self::assertSame($refund, $credit);
+
+	}//end testACreditDiffersFromARefundOnlyInKind()
+
+	/**
+	 * Both commands are dispatchable events, and the accessors agree with the payload.
+	 *
+	 * @return void
+	 */
+	public function testTheAccessorsAgreeWithThePayload(): void {
+		foreach ([RegistrationRefundRequested::class, RegistrationCreditRequested::class] as $class) {
+			$command = $this->command($class);
+			$payload = $command->toArray();
+
+			self::assertInstanceOf(Event::class, $command);
+			self::assertFalse($command->isPropagationStopped());
+			self::assertSame($payload['registrationId'], $command->getRegistrationId());
+			self::assertSame($payload['paymentRequestId'], $command->getPaymentRequestId());
+			self::assertSame($payload['eventId'], $command->getEventId());
+			self::assertSame($payload['playerId'], $command->getPlayerId());
+			self::assertSame($payload['debtor'], $command->getDebtor());
+			self::assertSame($payload['amount'], $command->getAmount());
+			self::assertSame($payload['currency'], $command->getCurrency());
+		}
+
+	}//end testTheAccessorsAgreeWithThePayload()
+
+	/**
+	 * A debtor without an email is passed on as given.
+	 *
+	 * @return void
+	 */
+	public function testADebtorWithoutEmailIsPassedOnAsGiven(): void {
+		$command = new RegistrationRefundRequested('reg-2', 'pay-2', 'event-2', 'player-2', ['name' => 'Bob'], 0.0, 'USD', []);
+
+		self::assertSame(['name' => 'Bob'], $command->toArray()['debtor']);
+		self::assertSame(0.0, $command->toArray()['amount']);
+		self::assertSame('USD', $command->toArray()['currency']);
+		self::assertSame([], $command->toArray()['subject']);
+
+	}//end testADebtorWithoutEmailIsPassedOnAsGiven()
+}//end class

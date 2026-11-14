@@ -29,6 +29,11 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 /**
  * REQ-UHE-005: an administrator finds an old conflict.
+ *
+ * @covers \OCA\Larpinq\Command\UniqueHoldersCheck
+ * @uses   \OCA\Larpinq\Service\UniqueHolderConflictFinder
+ * @uses   \OCA\Larpinq\Service\UniqueHolderService
+ * @uses   \OCA\Larpinq\Service\IdListNormaliser
  */
 class UniqueHoldersCheckTest extends TestCase {
 
@@ -95,4 +100,62 @@ class UniqueHoldersCheckTest extends TestCase {
 		self::assertSame(expected: 0, actual: $tester->execute([]));
 		self::assertStringContainsString(needle: 'No unique item or condition has more than one holder.', haystack: $tester->getDisplay());
 	}//end testNoConflictExitsZero()
+
+	/**
+	 * The command registers under its occ name with a description.
+	 *
+	 * @return void
+	 */
+	public function testNameAndDescription(): void {
+		$command = new UniqueHoldersCheck(finder: $this->createMock(originalClassName: UniqueHolderConflictFinder::class));
+
+		self::assertSame(expected: 'larpinq:unique-holders:check', actual: $command->getName());
+		self::assertSame(
+			expected: 'List unique items and conditions that more than one character holds',
+			actual: $command->getDescription()
+		);
+	}//end testNameAndDescription()
+
+	/**
+	 * Every conflict gets its own line in finder order, followed by the conflict count.
+	 *
+	 * @return void
+	 */
+	public function testEveryConflictIsListedWithTheCount(): void {
+		$finder = $this->createMock(originalClassName: UniqueHolderConflictFinder::class);
+		$finder->expects($this->once())->method('findConflicts')->willReturn(
+			[
+				['kind' => 'item', 'id' => 'crown', 'name' => 'Crown', 'holders' => ['Isolde', 'Bertram']],
+				['kind' => 'condition', 'id' => 'curse', 'name' => 'Old Curse', 'holders' => ['Mara', 'Tobin', 'Wren']],
+			]
+		);
+		$tester = new CommandTester(command: new UniqueHoldersCheck(finder: $finder));
+
+		$code = $tester->execute([]);
+
+		self::assertSame(expected: 1, actual: $code);
+		self::assertSame(
+			expected: 'item "Crown" (crown) is held by: Isolde, Bertram' . PHP_EOL
+				. 'condition "Old Curse" (curse) is held by: Mara, Tobin, Wren' . PHP_EOL
+				. '2 conflict(s). Remove all but one holder from each.' . PHP_EOL,
+			actual: $tester->getDisplay()
+		);
+	}//end testEveryConflictIsListedWithTheCount()
+
+	/**
+	 * Without a conflict only the all-clear line is written.
+	 *
+	 * @return void
+	 */
+	public function testNoConflictWritesOnlyTheAllClearLine(): void {
+		$finder = $this->createMock(originalClassName: UniqueHolderConflictFinder::class);
+		$finder->method('findConflicts')->willReturn([]);
+		$tester = new CommandTester(command: new UniqueHoldersCheck(finder: $finder));
+
+		self::assertSame(expected: 0, actual: $tester->execute([]));
+		self::assertSame(
+			expected: 'No unique item or condition has more than one holder.' . PHP_EOL,
+			actual: $tester->getDisplay()
+		);
+	}//end testNoConflictWritesOnlyTheAllClearLine()
 }//end class
