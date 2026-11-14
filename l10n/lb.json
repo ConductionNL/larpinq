@@ -789,7 +789,22 @@
         "Author": "Auteur",
         "From a game master": "Vun engem Spillleeder",
         "Message": "Message",
-        "Written at": "Geschriwwen um"
+        "Written at": "Geschriwwen um",
+        "The player who asks.": "De Spiller, deen d’Fro stellt.",
+        "The asking player's user account.": "De Benotzerkont vum Froesteller.",
+        "The asking player, for the portal.": "De Froesteller, fir de Portal.",
+        "What the question is about.": "Ëm wat et an der Fro geet.",
+        "The question itself.": "D’Fro selwer.",
+        "The event it is about.": "D’Evenement, ëm dat et geet.",
+        "The character it is about.": "De Charakter, ëm deen et geet.",
+        "Where the question stands.": "Wou d’Fro steet.",
+        "The game master handling it.": "De Spillleeder, deen se behandelt.",
+        "When the last message was written.": "Wéini de leschte Message geschriwwe gouf.",
+        "The question this message belongs to.": "D’Fro, zu där dëse Message gehéiert.",
+        "Who wrote the message.": "Wien de Message geschriwwen huet.",
+        "Whether a game master wrote it.": "Ob e Spillleeder e geschriwwen huet.",
+        "The message itself.": "De Message selwer.",
+        "When the message was written.": "Wéini de Message geschriwwe gouf."
     },
     "plurals": {}
 }

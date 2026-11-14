@@ -789,7 +789,22 @@
         "Author": "Författare",
         "From a game master": "Från en spelledare",
         "Message": "Meddelande",
-        "Written at": "Skrivet"
+        "Written at": "Skrivet",
+        "The player who asks.": "Spelaren som frågar.",
+        "The asking player's user account.": "Frågeställarens användarkonto.",
+        "The asking player, for the portal.": "Frågeställaren, för portalen.",
+        "What the question is about.": "Vad frågan handlar om.",
+        "The question itself.": "Själva frågan.",
+        "The event it is about.": "Evenemanget det gäller.",
+        "The character it is about.": "Rollpersonen det gäller.",
+        "Where the question stands.": "Var frågan står.",
+        "The game master handling it.": "Spelledaren som hanterar den.",
+        "When the last message was written.": "När det senaste meddelandet skrevs.",
+        "The question this message belongs to.": "Frågan som meddelandet hör till.",
+        "Who wrote the message.": "Vem som skrev meddelandet.",
+        "Whether a game master wrote it.": "Om en spelledare skrev det.",
+        "The message itself.": "Själva meddelandet.",
+        "When the message was written.": "När meddelandet skrevs."
     },
     "plurals": {}
 }

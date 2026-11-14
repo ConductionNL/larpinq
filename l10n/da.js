@@ -794,7 +794,22 @@ OC.L10N.register(
         "Author": "Forfatter",
         "From a game master": "Fra en spilleder",
         "Message": "Besked",
-        "Written at": "Skrevet"
+        "Written at": "Skrevet",
+        "The player who asks.": "Spilleren, der spørger.",
+        "The asking player's user account.": "Spørgerens brugerkonto.",
+        "The asking player, for the portal.": "Spørgeren, til portalen.",
+        "What the question is about.": "Hvad spørgsmålet handler om.",
+        "The question itself.": "Selve spørgsmålet.",
+        "The event it is about.": "Den begivenhed, det handler om.",
+        "The character it is about.": "Den karakter, det handler om.",
+        "Where the question stands.": "Hvor spørgsmålet står.",
+        "The game master handling it.": "Den spilleder, der behandler det.",
+        "When the last message was written.": "Hvornår den seneste besked blev skrevet.",
+        "The question this message belongs to.": "Det spørgsmål, beskeden hører til.",
+        "Who wrote the message.": "Hvem der skrev beskeden.",
+        "Whether a game master wrote it.": "Om en spilleder skrev den.",
+        "The message itself.": "Selve beskeden.",
+        "When the message was written.": "Hvornår beskeden blev skrevet."
     },
     "nplurals=2; plural=(n != 1);"
 )

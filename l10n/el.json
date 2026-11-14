@@ -789,7 +789,22 @@
         "Author": "Συντάκτης",
         "From a game master": "Από διοργανωτή του παιχνιδιού",
         "Message": "Μήνυμα",
-        "Written at": "Γράφτηκε"
+        "Written at": "Γράφτηκε",
+        "The player who asks.": "Ο παίκτης που ρωτά.",
+        "The asking player's user account.": "Ο λογαριασμός χρήστη του αιτούντος.",
+        "The asking player, for the portal.": "Ο αιτών, για την πύλη.",
+        "What the question is about.": "Το θέμα της ερώτησης.",
+        "The question itself.": "Η ίδια η ερώτηση.",
+        "The event it is about.": "Η εκδήλωση που αφορά.",
+        "The character it is about.": "Ο χαρακτήρας που αφορά.",
+        "Where the question stands.": "Σε ποια κατάσταση βρίσκεται η ερώτηση.",
+        "The game master handling it.": "Ο διοργανωτής του παιχνιδιού που τη χειρίζεται.",
+        "When the last message was written.": "Πότε γράφτηκε το τελευταίο μήνυμα.",
+        "The question this message belongs to.": "Η ερώτηση στην οποία ανήκει αυτό το μήνυμα.",
+        "Who wrote the message.": "Ποιος έγραψε το μήνυμα.",
+        "Whether a game master wrote it.": "Αν το έγραψε διοργανωτής του παιχνιδιού.",
+        "The message itself.": "Το ίδιο το μήνυμα.",
+        "When the message was written.": "Πότε γράφτηκε το μήνυμα."
     },
     "plurals": {}
 }

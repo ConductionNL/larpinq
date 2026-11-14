@@ -789,7 +789,22 @@
         "Author": "Autor",
         "From a game master": "Od rozprávača",
         "Message": "Správa",
-        "Written at": "Napísané"
+        "Written at": "Napísané",
+        "The player who asks.": "Hráč, ktorý sa pýta.",
+        "The asking player's user account.": "Používateľský účet pýtajúceho sa.",
+        "The asking player, for the portal.": "Pýtajúci sa, pre portál.",
+        "What the question is about.": "O čom je otázka.",
+        "The question itself.": "Samotná otázka.",
+        "The event it is about.": "Udalosť, ktorej sa týka.",
+        "The character it is about.": "Postava, ktorej sa týka.",
+        "Where the question stands.": "V akom stave je otázka.",
+        "The game master handling it.": "Rozprávač, ktorý ju vybavuje.",
+        "When the last message was written.": "Kedy bola napísaná posledná správa.",
+        "The question this message belongs to.": "Otázka, ku ktorej táto správa patrí.",
+        "Who wrote the message.": "Kto napísal správu.",
+        "Whether a game master wrote it.": "Či ju napísal rozprávač.",
+        "The message itself.": "Samotná správa.",
+        "When the message was written.": "Kedy bola správa napísaná."
     },
     "plurals": {}
 }

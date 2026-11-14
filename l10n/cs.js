@@ -794,7 +794,22 @@ OC.L10N.register(
         "Author": "Autor",
         "From a game master": "Od vypravěče",
         "Message": "Zpráva",
-        "Written at": "Napsáno"
+        "Written at": "Napsáno",
+        "The player who asks.": "Hráč, který se ptá.",
+        "The asking player's user account.": "Uživatelský účet tazatele.",
+        "The asking player, for the portal.": "Tazatel, pro portál.",
+        "What the question is about.": "O čem dotaz je.",
+        "The question itself.": "Samotný dotaz.",
+        "The event it is about.": "Událost, které se týká.",
+        "The character it is about.": "Postava, které se týká.",
+        "Where the question stands.": "V jakém stavu dotaz je.",
+        "The game master handling it.": "Vypravěč, který ho vyřizuje.",
+        "When the last message was written.": "Kdy byla napsána poslední zpráva.",
+        "The question this message belongs to.": "Dotaz, ke kterému tato zpráva patří.",
+        "Who wrote the message.": "Kdo zprávu napsal.",
+        "Whether a game master wrote it.": "Zda ji napsal vypravěč.",
+        "The message itself.": "Samotná zpráva.",
+        "When the message was written.": "Kdy byla zpráva napsána."
     },
     "nplurals=2; plural=(n != 1);"
 )

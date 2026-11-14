@@ -789,7 +789,22 @@
         "Author": "Autorius",
         "From a game master": "Nuo žaidimo vedėjo",
         "Message": "Žinutė",
-        "Written at": "Parašyta"
+        "Written at": "Parašyta",
+        "The player who asks.": "Žaidėjas, kuris klausia.",
+        "The asking player's user account.": "Klausiančiojo naudotojo paskyra.",
+        "The asking player, for the portal.": "Klausiantysis, portalui.",
+        "What the question is about.": "Apie ką klausimas.",
+        "The question itself.": "Pats klausimas.",
+        "The event it is about.": "Renginys, su kuriuo jis susijęs.",
+        "The character it is about.": "Personažas, su kuriuo jis susijęs.",
+        "Where the question stands.": "Kokia klausimo būsena.",
+        "The game master handling it.": "Žaidimo vedėjas, kuris jį tvarko.",
+        "When the last message was written.": "Kada parašyta paskutinė žinutė.",
+        "The question this message belongs to.": "Klausimas, kuriam priklauso ši žinutė.",
+        "Who wrote the message.": "Kas parašė žinutę.",
+        "Whether a game master wrote it.": "Ar ją parašė žaidimo vedėjas.",
+        "The message itself.": "Pati žinutė.",
+        "When the message was written.": "Kada parašyta žinutė."
     },
     "plurals": {}
 }

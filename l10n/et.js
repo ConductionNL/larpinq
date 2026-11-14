@@ -794,7 +794,22 @@ OC.L10N.register(
         "Author": "Autor",
         "From a game master": "Mängujuhilt",
         "Message": "Sõnum",
-        "Written at": "Kirjutatud"
+        "Written at": "Kirjutatud",
+        "The player who asks.": "Mängija, kes küsib.",
+        "The asking player's user account.": "Küsija kasutajakonto.",
+        "The asking player, for the portal.": "Küsija, portaali jaoks.",
+        "What the question is about.": "Millest küsimus räägib.",
+        "The question itself.": "Küsimus ise.",
+        "The event it is about.": "Sündmus, mida see puudutab.",
+        "The character it is about.": "Tegelane, keda see puudutab.",
+        "Where the question stands.": "Kus küsimus seisab.",
+        "The game master handling it.": "Mängujuht, kes seda käsitleb.",
+        "When the last message was written.": "Millal viimane sõnum kirjutati.",
+        "The question this message belongs to.": "Küsimus, mille juurde see sõnum kuulub.",
+        "Who wrote the message.": "Kes sõnumi kirjutas.",
+        "Whether a game master wrote it.": "Kas selle kirjutas mängujuht.",
+        "The message itself.": "Sõnum ise.",
+        "When the message was written.": "Millal sõnum kirjutati."
     },
     "nplurals=2; plural=(n != 1);"
 )

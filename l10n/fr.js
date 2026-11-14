@@ -794,7 +794,22 @@ OC.L10N.register(
         "Author": "Auteur",
         "From a game master": "D’un maître de jeu",
         "Message": "Message",
-        "Written at": "Écrit le"
+        "Written at": "Écrit le",
+        "The player who asks.": "Le joueur qui pose la question.",
+        "The asking player's user account.": "Le compte utilisateur du demandeur.",
+        "The asking player, for the portal.": "Le demandeur, pour le portail.",
+        "What the question is about.": "Le sujet de la question.",
+        "The question itself.": "La question elle-même.",
+        "The event it is about.": "L'événement concerné.",
+        "The character it is about.": "Le personnage concerné.",
+        "Where the question stands.": "Où en est la question.",
+        "The game master handling it.": "Le maître de jeu qui la traite.",
+        "When the last message was written.": "Quand le dernier message a été écrit.",
+        "The question this message belongs to.": "La question à laquelle ce message appartient.",
+        "Who wrote the message.": "Qui a écrit le message.",
+        "Whether a game master wrote it.": "Si un maître de jeu l'a écrit.",
+        "The message itself.": "Le message lui-même.",
+        "When the message was written.": "Quand le message a été écrit."
     },
     "nplurals=2; plural=(n != 1);"
 )

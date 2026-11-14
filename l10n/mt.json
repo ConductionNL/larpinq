@@ -789,7 +789,22 @@
         "Author": "Awtur",
         "From a game master": "Minn kaptan tal-logħba",
         "Message": "Messaġġ",
-        "Written at": "Miktub fi"
+        "Written at": "Miktub fi",
+        "The player who asks.": "Il-plejer li jistaqsi.",
+        "The asking player's user account.": "Il-kont tal-utent ta’ min staqsa.",
+        "The asking player, for the portal.": "Min staqsa, għall-portal.",
+        "What the question is about.": "Fuq xiex hi l-mistoqsija.",
+        "The question itself.": "Il-mistoqsija nnifisha.",
+        "The event it is about.": "L-avveniment li jirreferi għalih.",
+        "The character it is about.": "Il-karattru li jirreferi għalih.",
+        "Where the question stands.": "Fejn tinsab il-mistoqsija.",
+        "The game master handling it.": "Il-kaptan tal-logħba li qed jieħu ħsiebha.",
+        "When the last message was written.": "Meta nkiteb l-aħħar messaġġ.",
+        "The question this message belongs to.": "Il-mistoqsija li dan il-messaġġ jappartjeni għaliha.",
+        "Who wrote the message.": "Min kiteb il-messaġġ.",
+        "Whether a game master wrote it.": "Jekk kitbux kaptan tal-logħba.",
+        "The message itself.": "Il-messaġġ innifsu.",
+        "When the message was written.": "Meta nkiteb il-messaġġ."
     },
     "plurals": {}
 }

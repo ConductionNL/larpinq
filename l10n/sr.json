@@ -789,7 +789,22 @@
         "Author": "Autor",
         "From a game master": "Od voditelja igre",
         "Message": "Poruka",
-        "Written at": "Napisano"
+        "Written at": "Napisano",
+        "The player who asks.": "Igrač koji postavlja pitanje.",
+        "The asking player's user account.": "Korisnički nalog podnosioca pitanja.",
+        "The asking player, for the portal.": "Podnosilac pitanja, za portal.",
+        "What the question is about.": "O čemu je pitanje.",
+        "The question itself.": "Samo pitanje.",
+        "The event it is about.": "Događaj na koji se odnosi.",
+        "The character it is about.": "Lik na koji se odnosi.",
+        "Where the question stands.": "U kom je stanju pitanje.",
+        "The game master handling it.": "Voditelj igre koji ga obrađuje.",
+        "When the last message was written.": "Kada je napisana poslednja poruka.",
+        "The question this message belongs to.": "Pitanje kojem ova poruka pripada.",
+        "Who wrote the message.": "Ko je napisao poruku.",
+        "Whether a game master wrote it.": "Da li ju je napisao voditelj igre.",
+        "The message itself.": "Sama poruka.",
+        "When the message was written.": "Kada je poruka napisana."
     },
     "plurals": {}
 }

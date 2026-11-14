@@ -794,7 +794,22 @@ OC.L10N.register(
         "Author": "Аўтар",
         "From a game master": "Ад майстра гульні",
         "Message": "Паведамленне",
-        "Written at": "Напісана"
+        "Written at": "Напісана",
+        "The player who asks.": "Гулец, які пытаецца.",
+        "The asking player's user account.": "Уліковы запіс аўтара запыту.",
+        "The asking player, for the portal.": "Аўтар запыту, для партала.",
+        "What the question is about.": "Пра што пытанне.",
+        "The question itself.": "Само пытанне.",
+        "The event it is about.": "Падзея, якой яно датычыцца.",
+        "The character it is about.": "Персанаж, якога яно датычыцца.",
+        "Where the question stands.": "На якім этапе пытанне.",
+        "The game master handling it.": "Майстар гульні, які яго апрацоўвае.",
+        "When the last message was written.": "Калі напісана апошняе паведамленне.",
+        "The question this message belongs to.": "Пытанне, да якога належыць гэта паведамленне.",
+        "Who wrote the message.": "Хто напісаў паведамленне.",
+        "Whether a game master wrote it.": "Ці напісаў яго майстар гульні.",
+        "The message itself.": "Само паведамленне.",
+        "When the message was written.": "Калі напісана паведамленне."
     },
     "nplurals=2; plural=(n != 1);"
 )

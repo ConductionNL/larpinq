@@ -794,7 +794,22 @@ OC.L10N.register(
         "Author": "Autor",
         "From a game master": "De la un organizator al jocului",
         "Message": "Mesaj",
-        "Written at": "Scris la"
+        "Written at": "Scris la",
+        "The player who asks.": "Jucătorul care întreabă.",
+        "The asking player's user account.": "Contul de utilizator al solicitantului.",
+        "The asking player, for the portal.": "Solicitantul, pentru portal.",
+        "What the question is about.": "Despre ce este întrebarea.",
+        "The question itself.": "Întrebarea în sine.",
+        "The event it is about.": "Evenimentul la care se referă.",
+        "The character it is about.": "Personajul la care se referă.",
+        "Where the question stands.": "În ce stadiu este întrebarea.",
+        "The game master handling it.": "Organizatorul jocului care o tratează.",
+        "When the last message was written.": "Când a fost scris ultimul mesaj.",
+        "The question this message belongs to.": "Întrebarea căreia îi aparține acest mesaj.",
+        "Who wrote the message.": "Cine a scris mesajul.",
+        "Whether a game master wrote it.": "Dacă l-a scris un organizator al jocului.",
+        "The message itself.": "Mesajul în sine.",
+        "When the message was written.": "Când a fost scris mesajul."
     },
     "nplurals=2; plural=(n != 1);"
 )

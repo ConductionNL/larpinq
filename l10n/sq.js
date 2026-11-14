@@ -794,7 +794,22 @@ OC.L10N.register(
         "Author": "Autori",
         "From a game master": "Nga një drejtues loje",
         "Message": "Mesazh",
-        "Written at": "Shkruar më"
+        "Written at": "Shkruar më",
+        "The player who asks.": "Lojtari që pyet.",
+        "The asking player's user account.": "Llogaria e përdoruesit të pyetësit.",
+        "The asking player, for the portal.": "Pyetësi, për portalin.",
+        "What the question is about.": "Për çfarë është pyetja.",
+        "The question itself.": "Vetë pyetja.",
+        "The event it is about.": "Ngjarja që lidhet me të.",
+        "The character it is about.": "Personazhi që lidhet me të.",
+        "Where the question stands.": "Ku qëndron pyetja.",
+        "The game master handling it.": "Drejtuesi i lojës që e trajton.",
+        "When the last message was written.": "Kur u shkrua mesazhi i fundit.",
+        "The question this message belongs to.": "Pyetja së cilës i përket ky mesazh.",
+        "Who wrote the message.": "Kush e shkroi mesazhin.",
+        "Whether a game master wrote it.": "Nëse e shkroi një drejtues loje.",
+        "The message itself.": "Vetë mesazhi.",
+        "When the message was written.": "Kur u shkrua mesazhi."
     },
     "nplurals=2; plural=(n != 1);"
 )

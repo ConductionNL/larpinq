@@ -794,7 +794,22 @@ OC.L10N.register(
         "Author": "Szerző",
         "From a game master": "Mesélőtől",
         "Message": "Üzenet",
-        "Written at": "Írva"
+        "Written at": "Írva",
+        "The player who asks.": "A kérdező játékos.",
+        "The asking player's user account.": "A kérdező felhasználói fiókja.",
+        "The asking player, for the portal.": "A kérdező, a portálhoz.",
+        "What the question is about.": "Miről szól a kérdés.",
+        "The question itself.": "Maga a kérdés.",
+        "The event it is about.": "Az esemény, amelyről szól.",
+        "The character it is about.": "A karakter, akiről szól.",
+        "Where the question stands.": "Hol tart a kérdés.",
+        "The game master handling it.": "A mesélő, aki foglalkozik vele.",
+        "When the last message was written.": "Mikor íródott az utolsó üzenet.",
+        "The question this message belongs to.": "A kérdés, amelyhez ez az üzenet tartozik.",
+        "Who wrote the message.": "Ki írta az üzenetet.",
+        "Whether a game master wrote it.": "Mesélő írta-e.",
+        "The message itself.": "Maga az üzenet.",
+        "When the message was written.": "Mikor íródott az üzenet."
     },
     "nplurals=2; plural=(n != 1);"
 )

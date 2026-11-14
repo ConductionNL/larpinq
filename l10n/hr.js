@@ -794,7 +794,22 @@ OC.L10N.register(
         "Author": "Autor",
         "From a game master": "Od voditelja igre",
         "Message": "Poruka",
-        "Written at": "Napisano"
+        "Written at": "Napisano",
+        "The player who asks.": "Igrač koji postavlja pitanje.",
+        "The asking player's user account.": "Korisnički račun podnositelja pitanja.",
+        "The asking player, for the portal.": "Podnositelj pitanja, za portal.",
+        "What the question is about.": "O čemu je pitanje.",
+        "The question itself.": "Samo pitanje.",
+        "The event it is about.": "Događaj na koji se odnosi.",
+        "The character it is about.": "Lik na koji se odnosi.",
+        "Where the question stands.": "U kojem je stanju pitanje.",
+        "The game master handling it.": "Voditelj igre koji ga obrađuje.",
+        "When the last message was written.": "Kada je napisana posljednja poruka.",
+        "The question this message belongs to.": "Pitanje kojem ova poruka pripada.",
+        "Who wrote the message.": "Tko je napisao poruku.",
+        "Whether a game master wrote it.": "Je li je napisao voditelj igre.",
+        "The message itself.": "Sama poruka.",
+        "When the message was written.": "Kada je poruka napisana."
     },
     "nplurals=2; plural=(n != 1);"
 )

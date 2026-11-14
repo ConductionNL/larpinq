@@ -794,7 +794,22 @@ OC.L10N.register(
         "Author": "Autur",
         "From a game master": "D'in manader dal gieu",
         "Message": "Messadi",
-        "Written at": "Scrit ils"
+        "Written at": "Scrit ils",
+        "The player who asks.": "Il giugader che dumonda.",
+        "The asking player's user account.": "Il conto d'utilisader dal dumondader.",
+        "The asking player, for the portal.": "Il dumondader, per il portal.",
+        "What the question is about.": "Da tge che la dumonda tracta.",
+        "The question itself.": "La dumonda sezza.",
+        "The event it is about.": "L'eveniment ch'ella pertutga.",
+        "The character it is about.": "Il caracter ch'ella pertutga.",
+        "Where the question stands.": "Nua che la dumonda stat.",
+        "The game master handling it.": "Il manader dal gieu che la tracta.",
+        "When the last message was written.": "Cura che l'ultim messadi è vegnì scrit.",
+        "The question this message belongs to.": "La dumonda a la quala quest messadi tutga.",
+        "Who wrote the message.": "Tgi che ha scrit il messadi.",
+        "Whether a game master wrote it.": "Sch'in manader dal gieu l'ha scrit.",
+        "The message itself.": "Il messadi sez.",
+        "When the message was written.": "Cura ch'il messadi è vegnì scrit."
     },
     "nplurals=2; plural=(n != 1);"
 )

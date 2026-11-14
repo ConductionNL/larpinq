@@ -794,7 +794,22 @@ OC.L10N.register(
         "Author": "Yazar",
         "From a game master": "Bir oyun yöneticisinden",
         "Message": "Mesaj",
-        "Written at": "Yazılma tarihi"
+        "Written at": "Yazılma tarihi",
+        "The player who asks.": "Soruyu soran oyuncu.",
+        "The asking player's user account.": "Soranın kullanıcı hesabı.",
+        "The asking player, for the portal.": "Soran, portal için.",
+        "What the question is about.": "Sorunun konusu.",
+        "The question itself.": "Sorunun kendisi.",
+        "The event it is about.": "İlgili etkinlik.",
+        "The character it is about.": "İlgili karakter.",
+        "Where the question stands.": "Sorunun durumu.",
+        "The game master handling it.": "Onunla ilgilenen oyun yöneticisi.",
+        "When the last message was written.": "Son mesajın yazıldığı zaman.",
+        "The question this message belongs to.": "Bu mesajın ait olduğu soru.",
+        "Who wrote the message.": "Mesajı kimin yazdığı.",
+        "Whether a game master wrote it.": "Bir oyun yöneticisinin yazıp yazmadığı.",
+        "The message itself.": "Mesajın kendisi.",
+        "When the message was written.": "Mesajın yazıldığı zaman."
     },
     "nplurals=2; plural=(n != 1);"
 )

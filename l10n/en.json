@@ -755,7 +755,22 @@
         "Author": "Author",
         "From a game master": "From a game master",
         "Message": "Message",
-        "Written at": "Written at"
+        "Written at": "Written at",
+        "The player who asks.": "The player who asks.",
+        "The asking player's user account.": "The asking player's user account.",
+        "The asking player, for the portal.": "The asking player, for the portal.",
+        "What the question is about.": "What the question is about.",
+        "The question itself.": "The question itself.",
+        "The event it is about.": "The event it is about.",
+        "The character it is about.": "The character it is about.",
+        "Where the question stands.": "Where the question stands.",
+        "The game master handling it.": "The game master handling it.",
+        "When the last message was written.": "When the last message was written.",
+        "The question this message belongs to.": "The question this message belongs to.",
+        "Who wrote the message.": "Who wrote the message.",
+        "Whether a game master wrote it.": "Whether a game master wrote it.",
+        "The message itself.": "The message itself.",
+        "When the message was written.": "When the message was written."
     },
     "plurals": {},
     "pluralForm": "nplurals=2; plural=(n != 1);"

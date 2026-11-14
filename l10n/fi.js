@@ -794,7 +794,22 @@ OC.L10N.register(
         "Author": "Kirjoittaja",
         "From a game master": "Pelinjohtajalta",
         "Message": "Viesti",
-        "Written at": "Kirjoitettu"
+        "Written at": "Kirjoitettu",
+        "The player who asks.": "Pelaaja, joka kysyy.",
+        "The asking player's user account.": "Kysyjän käyttäjätili.",
+        "The asking player, for the portal.": "Kysyjä, portaalia varten.",
+        "What the question is about.": "Mistä kysymys kertoo.",
+        "The question itself.": "Itse kysymys.",
+        "The event it is about.": "Tapahtuma, jota se koskee.",
+        "The character it is about.": "Hahmo, jota se koskee.",
+        "Where the question stands.": "Missä vaiheessa kysymys on.",
+        "The game master handling it.": "Pelinjohtaja, joka käsittelee sitä.",
+        "When the last message was written.": "Milloin viimeisin viesti kirjoitettiin.",
+        "The question this message belongs to.": "Kysymys, johon tämä viesti kuuluu.",
+        "Who wrote the message.": "Kuka kirjoitti viestin.",
+        "Whether a game master wrote it.": "Kirjoittiko pelinjohtaja sen.",
+        "The message itself.": "Itse viesti.",
+        "When the message was written.": "Milloin viesti kirjoitettiin."
     },
     "nplurals=2; plural=(n != 1);"
 )

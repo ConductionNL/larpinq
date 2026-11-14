@@ -789,7 +789,22 @@
         "Author": "Forfatter",
         "From a game master": "Fra en spilleder",
         "Message": "Melding",
-        "Written at": "Skrevet"
+        "Written at": "Skrevet",
+        "The player who asks.": "Spilleren som spør.",
+        "The asking player's user account.": "Brukerkontoen til spørreren.",
+        "The asking player, for the portal.": "Spørreren, for portalen.",
+        "What the question is about.": "Hva spørsmålet handler om.",
+        "The question itself.": "Selve spørsmålet.",
+        "The event it is about.": "Arrangementet det gjelder.",
+        "The character it is about.": "Rollefiguren det gjelder.",
+        "Where the question stands.": "Hvor spørsmålet står.",
+        "The game master handling it.": "Spillederen som behandler det.",
+        "When the last message was written.": "Når siste melding ble skrevet.",
+        "The question this message belongs to.": "Spørsmålet denne meldingen hører til.",
+        "Who wrote the message.": "Hvem som skrev meldingen.",
+        "Whether a game master wrote it.": "Om en spilleder skrev den.",
+        "The message itself.": "Selve meldingen.",
+        "When the message was written.": "Når meldingen ble skrevet."
     },
     "plurals": {}
 }

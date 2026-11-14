@@ -789,7 +789,22 @@
         "Author": "Údar",
         "From a game master": "Ó mháistir cluiche",
         "Message": "Teachtaireacht",
-        "Written at": "Scríofa ar"
+        "Written at": "Scríofa ar",
+        "The player who asks.": "An t-imreoir a chuireann an cheist.",
+        "The asking player's user account.": "Cuntas úsáideora an iarrthóra.",
+        "The asking player, for the portal.": "An t-iarrthóir, don tairseach.",
+        "What the question is about.": "Cad faoi a bhfuil an cheist.",
+        "The question itself.": "An cheist féin.",
+        "The event it is about.": "An ócáid lena mbaineann sí.",
+        "The character it is about.": "An carachtar lena mbaineann sí.",
+        "Where the question stands.": "Cá bhfuil an cheist.",
+        "The game master handling it.": "An máistir cluiche atá ag plé léi.",
+        "When the last message was written.": "Cathain a scríobhadh an teachtaireacht dheireanach.",
+        "The question this message belongs to.": "An cheist lena mbaineann an teachtaireacht seo.",
+        "Who wrote the message.": "Cé a scríobh an teachtaireacht.",
+        "Whether a game master wrote it.": "Cé acu ar scríobh máistir cluiche í nó nár scríobh.",
+        "The message itself.": "An teachtaireacht féin.",
+        "When the message was written.": "Cathain a scríobhadh an teachtaireacht."
     },
     "plurals": {}
 }

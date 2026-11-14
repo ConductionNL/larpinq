@@ -794,7 +794,22 @@ OC.L10N.register(
         "Author": "Höfundur",
         "From a game master": "Frá stjórnanda leiksins",
         "Message": "Skilaboð",
-        "Written at": "Skrifað"
+        "Written at": "Skrifað",
+        "The player who asks.": "Leikmaðurinn sem spyr.",
+        "The asking player's user account.": "Notandaaðgangur spyrjandans.",
+        "The asking player, for the portal.": "Spyrjandinn, fyrir gáttina.",
+        "What the question is about.": "Um hvað spurningin er.",
+        "The question itself.": "Spurningin sjálf.",
+        "The event it is about.": "Viðburðurinn sem hún varðar.",
+        "The character it is about.": "Persónan sem hún varðar.",
+        "Where the question stands.": "Hvar spurningin stendur.",
+        "The game master handling it.": "Stjórnandinn sem sinnir henni.",
+        "When the last message was written.": "Hvenær síðustu skilaboðin voru skrifuð.",
+        "The question this message belongs to.": "Spurningin sem þessi skilaboð tilheyra.",
+        "Who wrote the message.": "Hver skrifaði skilaboðin.",
+        "Whether a game master wrote it.": "Hvort stjórnandi leiksins skrifaði þau.",
+        "The message itself.": "Skilaboðin sjálf.",
+        "When the message was written.": "Hvenær skilaboðin voru skrifuð."
     },
     "nplurals=2; plural=(n != 1);"
 )

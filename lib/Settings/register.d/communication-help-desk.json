@@ -30,27 +30,32 @@
             "$ref": "player",
             "objectConfiguration": {
               "handling": "related-object"
-            }
+            },
+            "description": "The player who asks."
           },
           "askerUid": {
             "type": "string",
             "title": "Asker",
-            "maxLength": 255
+            "maxLength": 255,
+            "description": "The asking player's user account."
           },
           "ownerRef": {
             "type": "string",
             "title": "Owner reference",
-            "maxLength": 255
+            "maxLength": 255,
+            "description": "The asking player, for the portal."
           },
           "subject": {
             "type": "string",
             "title": "Subject",
-            "maxLength": 255
+            "maxLength": 255,
+            "description": "What the question is about."
           },
           "body": {
             "type": "string",
             "title": "Question",
-            "maxLength": 5000
+            "maxLength": 5000,
+            "description": "The question itself."
           },
           "event": {
             "type": "string",
@@ -59,7 +64,8 @@
             "$ref": "larping_event",
             "objectConfiguration": {
               "handling": "related-object"
-            }
+            },
+            "description": "The event it is about."
           },
           "character": {
             "type": "string",
@@ -68,7 +74,8 @@
             "$ref": "character",
             "objectConfiguration": {
               "handling": "related-object"
-            }
+            },
+            "description": "The character it is about."
           },
           "status": {
             "type": "string",
@@ -79,17 +86,20 @@
               "closed"
             ],
             "default": "open",
-            "facetable": true
+            "facetable": true,
+            "description": "Where the question stands."
           },
           "assignee": {
             "type": "string",
             "title": "Assigned to",
-            "maxLength": 255
+            "maxLength": 255,
+            "description": "The game master handling it."
           },
           "lastMessageAt": {
             "type": "string",
             "format": "date-time",
-            "title": "Last message"
+            "title": "Last message",
+            "description": "When the last message was written."
           }
         },
         "configuration": {
@@ -220,32 +230,38 @@
             "$ref": "larping_help_question",
             "objectConfiguration": {
               "handling": "related-object"
-            }
+            },
+            "description": "The question this message belongs to."
           },
           "author": {
             "type": "string",
             "title": "Author",
-            "maxLength": 255
+            "maxLength": 255,
+            "description": "Who wrote the message."
           },
           "fromOrganiser": {
             "type": "boolean",
             "title": "From a game master",
-            "default": false
+            "default": false,
+            "description": "Whether a game master wrote it."
           },
           "askerUid": {
             "type": "string",
             "title": "Asker",
-            "maxLength": 255
+            "maxLength": 255,
+            "description": "The asking player's user account."
           },
           "body": {
             "type": "string",
             "title": "Message",
-            "maxLength": 5000
+            "maxLength": 5000,
+            "description": "The message itself."
           },
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "title": "Written at"
+            "title": "Written at",
+            "description": "When the message was written."
           }
         },
         "configuration": {

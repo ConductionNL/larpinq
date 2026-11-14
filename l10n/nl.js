@@ -886,7 +886,22 @@ OC.L10N.register(
         "Author": "Auteur",
         "From a game master": "Van een spelleider",
         "Message": "Bericht",
-        "Written at": "Geschreven op"
+        "Written at": "Geschreven op",
+        "The player who asks.": "De speler die de vraag stelt.",
+        "The asking player's user account.": "Het gebruikersaccount van de vraagsteller.",
+        "The asking player, for the portal.": "De vraagsteller, voor het portaal.",
+        "What the question is about.": "Waar de vraag over gaat.",
+        "The question itself.": "De vraag zelf.",
+        "The event it is about.": "Het evenement waar het over gaat.",
+        "The character it is about.": "Het personage waar het over gaat.",
+        "Where the question stands.": "Hoe de vraag ervoor staat.",
+        "The game master handling it.": "De spelleider die de vraag behandelt.",
+        "When the last message was written.": "Wanneer het laatste bericht is geschreven.",
+        "The question this message belongs to.": "De vraag waar dit bericht bij hoort.",
+        "Who wrote the message.": "Wie het bericht schreef.",
+        "Whether a game master wrote it.": "Of een spelleider het schreef.",
+        "The message itself.": "Het bericht zelf.",
+        "When the message was written.": "Wanneer het bericht is geschreven."
     },
     "nplurals=2; plural=(n != 1);"
 )

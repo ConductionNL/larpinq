@@ -789,7 +789,22 @@
         "Author": "Autors",
         "From a game master": "No spēles vadītāja",
         "Message": "Ziņa",
-        "Written at": "Rakstīts"
+        "Written at": "Rakstīts",
+        "The player who asks.": "Spēlētājs, kurš jautā.",
+        "The asking player's user account.": "Jautātāja lietotāja konts.",
+        "The asking player, for the portal.": "Jautātājs, portālam.",
+        "What the question is about.": "Par ko ir jautājums.",
+        "The question itself.": "Pats jautājums.",
+        "The event it is about.": "Pasākums, uz kuru tas attiecas.",
+        "The character it is about.": "Tēls, uz kuru tas attiecas.",
+        "Where the question stands.": "Kādā stāvoklī ir jautājums.",
+        "The game master handling it.": "Spēles vadītājs, kurš to izskata.",
+        "When the last message was written.": "Kad tika uzrakstīta pēdējā ziņa.",
+        "The question this message belongs to.": "Jautājums, pie kura pieder šī ziņa.",
+        "Who wrote the message.": "Kas uzrakstīja ziņu.",
+        "Whether a game master wrote it.": "Vai to uzrakstīja spēles vadītājs.",
+        "The message itself.": "Pati ziņa.",
+        "When the message was written.": "Kad ziņa tika uzrakstīta."
     },
     "plurals": {}
 }
