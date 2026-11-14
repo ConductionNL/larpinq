@@ -24,6 +24,7 @@ const storeMode = { value: 'ok' }
 vi.mock('@conduction/nextcloud-vue', () => ({
 	CnAppRoot: {},
 	CnObjectSidebar: {},
+	CnTranslatedBadge: {},
 	useTenantContext: () => ({ activeOrganisationUuid: null }),
 }))
 vi.mock('@nextcloud/initial-state', () => ({ loadState: () => '' }))

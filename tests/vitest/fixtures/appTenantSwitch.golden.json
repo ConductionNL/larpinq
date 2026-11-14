@@ -1,6 +1,6 @@
 {
 	"immediate": true,
-	"templateRenderSha256": "9311b3c4b8b1de1068c70f086fc70f1f0d26c5e37059aabb3c19b0dbf3881cdc",
+	"templateRenderSha256": "58444ff20c17f3b7331c39cf63c27f4969b56c7f60e521d0ff5c85d10eb87478",
 	"scenarios": {
 		"first fire with a uuid": {
 			"returned": "(undefined)",
