@@ -777,7 +777,11 @@ OC.L10N.register(
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Моят лист на персонажа",
-        "Open sheet": "Отвори листа"
+        "Open sheet": "Отвори листа",
+        "Payment method": "Начин на плащане",
+        "Bank transfer": "Банков превод",
+        "How the payment came in": "Как е постъпило плащането",
+        "Upload and match a bank statement": "Качване и съпоставяне на банково извлечение"
     },
     "nplurals=2; plural=(n != 1);"
 )

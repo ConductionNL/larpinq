@@ -10,6 +10,16 @@
 				"schema": "larping_registration",
 				"allowExport": true,
 				"showMassImport": false,
+				"headerActions": [
+					{
+						"id": "bank-statement",
+						"label": "Upload and match a bank statement",
+						"icon": "BankTransfer",
+						"handler": "larpinqOpenBankStatementImport",
+						"visibleWhen": { "endpoint": "/apps/larpinq/api/payments/access", "field": "allowed", "op": "eq", "value": true },
+						"_note": "registration-payments-through-shillinq REQ-RPS-007: game masters upload the statement in shillinq, which matches transfers to payment requests by reference; a matched registration turns paid by bank transfer (PaymentFollowUp). Lines that matched nothing are listed in shillinq."
+					}
+				],
 				"columns": [
 					{
 						"key": "event",

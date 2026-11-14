@@ -53,6 +53,13 @@ class PaymentFollowUp {
 	private const CAPTURED = ['captured', 'captured_unapplied'];
 
 	/**
+	 * How shillinq marks a request settled from a bank statement line, and the
+	 * payment method a registration then shows.
+	 * @var string
+	 */
+	private const BANK_TRANSFER = 'bank-transfer';
+
+	/**
 	 * Days before the pay-by date the player is reminded.
 	 *
 	 * @var string
@@ -194,7 +201,10 @@ class PaymentFollowUp {
 	}//end requestOf()
 
 	/**
-	 * Mark a registration paid, keeping the payment link shillinq has.
+	 * Mark a registration paid, keeping the payment link shillinq has and,
+	 * for a request a bank statement line settled, the method bank transfer.
+	 *
+	 * @spec openspec/changes/registration-payments-through-shillinq/specs/event-registration/spec.md#requirement-a-game-master-uploads-a-bank-statement-to-match-transfers-req-rps-007
 	 *
 	 * @param array<string, mixed> $registration The registration.
 	 * @param array<string, mixed> $request The captured request.
@@ -205,6 +215,12 @@ class PaymentFollowUp {
 		$fields = ['paymentState' => RegistrationPaymentService::PAID];
 		if ((string)($registration['paymentLink'] ?? '') === '' && (string)($request['paymentLink'] ?? '') !== '') {
 			$fields['paymentLink'] = (string)$request['paymentLink'];
+		}
+
+		// Shillinq stamps `settledVia` when a bank statement line quoting the
+		// reference settled the request (REQ-RPS-007).
+		if ((string)($request['settledVia'] ?? '') === self::BANK_TRANSFER) {
+			$fields['paymentMethod'] = self::BANK_TRANSFER;
 		}
 
 		$this->save(registration: $registration, fields: $fields);

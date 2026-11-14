@@ -777,7 +777,11 @@ OC.L10N.register(
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Mano veikėjo lapas",
-        "Open sheet": "Atidaryti lapą"
+        "Open sheet": "Atidaryti lapą",
+        "Payment method": "Mokėjimo būdas",
+        "Bank transfer": "Banko pavedimas",
+        "How the payment came in": "Kaip gautas mokėjimas",
+        "Upload and match a bank statement": "Įkelti ir sugretinti banko išrašą"
     },
     "nplurals=2; plural=(n != 1);"
 )
