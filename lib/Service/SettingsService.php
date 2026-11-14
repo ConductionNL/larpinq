@@ -84,6 +84,9 @@ class SettingsService {
 		'attendance_schema',
 		'attendance_register',
 		'attendance_source',
+		'staffinvite_schema',
+		'staffinvite_register',
+		'staffinvite_source',
 		'lorepage_schema',
 		'lorepage_register',
 		'lorepage_source',
@@ -117,9 +120,6 @@ class SettingsService {
 		'accesscode_schema',
 		'accesscode_register',
 		'accesscode_source',
-		'staffinvite_schema',
-		'staffinvite_register',
-		'staffinvite_source',
 	];
 
 	/**
