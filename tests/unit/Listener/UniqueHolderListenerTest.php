@@ -34,6 +34,7 @@ use OCA\OpenRegister\Event\ObjectCreatingEvent;
 use OCA\OpenRegister\Event\ObjectUpdatingEvent;
 use OCA\OpenRegister\Exception\NotAuthorizedException;
 use OCP\AppFramework\Db\DoesNotExistException;
+use OCP\EventDispatcher\Event;
 use OCP\IAppConfig;
 use OCP\IL10N;
 use PHPUnit\Framework\TestCase;
@@ -54,6 +55,20 @@ class HeldObjectEntity extends ObjectEntity {
 		$this->schema = $schema;
 		$this->uuid = $uuid;
 		$this->object = $data;
+	}
+}
+
+/**
+ * An entity whose schema cannot be read.
+ */
+class UnreadableHeldObjectEntity extends HeldObjectEntity {
+	/**
+	 * Reading the schema fails.
+	 *
+	 * @return string|null Never.
+	 */
+	public function getSchema(): ?string {
+		throw new \RuntimeException('entity not hydrated');
 	}
 }
 
@@ -416,6 +431,40 @@ class UniqueHolderListenerTest extends TestCase {
 		self::assertFalse(condition: $event->isPropagationStopped());
 		self::assertSame(expected: 0, actual: $this->fetches);
 	}//end testOtherSchemasAreIgnored()
+
+	/**
+	 * Events other than a create or update are ignored.
+	 *
+	 * @return void
+	 */
+	public function testOtherEventsAreIgnored(): void {
+		$event = new Event();
+
+		$this->listener()->handle($event);
+
+		self::assertFalse(condition: $event->isPropagationStopped());
+		self::assertSame(expected: 0, actual: $this->fetches);
+	}//end testOtherEventsAreIgnored()
+
+	/**
+	 * A write whose entity cannot be read is logged and allowed: without its
+	 * data there is no telling whether it adds a holder.
+	 *
+	 * @return void
+	 */
+	public function testAnUnreadableWriteIsLoggedAndAllowed(): void {
+		$logger = $this->createMock(originalClassName: LoggerInterface::class);
+		$logger->expects(self::once())->method('error')
+			->with('Larpinq: unique-holder check could not read the write; allowing it.', self::callback(
+				static fn (array $context): bool => ($context['exception'] ?? null) instanceof \RuntimeException
+			));
+		$event = new ObjectCreatingEvent(new UnreadableHeldObjectEntity('schema-character', self::BERTRAM, ['items' => [self::CROWN]]));
+
+		$this->listener(logger: $logger)->handle($event);
+
+		self::assertFalse(condition: $event->isPropagationStopped());
+		self::assertSame(expected: 0, actual: $this->fetches);
+	}//end testAnUnreadableWriteIsLoggedAndAllowed()
 
 	/**
 	 * REQ-UHE-006: a create of a unique item is refused when the holders cannot be read.

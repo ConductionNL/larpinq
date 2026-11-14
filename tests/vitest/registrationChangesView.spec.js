@@ -1,13 +1,10 @@
 /**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
+ * SPDX-FileCopyrightText: 2026 Conduction B.V.
  * SPDX-License-Identifier: EUPL-1.2
  *
- * The registration-changes tab (views/RegistrationChanges.vue): what the user
- * may change, running a change and showing larpinq's answer, and the date
- * shown for a deadline.
- *
- * The component's options run against a fake `this`; only fetch and the
- * Nextcloud components are mocked.
+ * Unit tests for src/views/RegistrationChanges.vue: what the tab knows it may
+ * offer after loading, and what a change does to the tab once it answers.
+ * Only fetch is faked; the real registrationChanges service runs.
  *
  * @spec openspec/specs/event-registration/spec.md
  */
@@ -17,44 +14,44 @@ import RegistrationChanges from '../../src/views/RegistrationChanges.vue'
 
 vi.mock('@nextcloud/l10n', () => ({
 	translate: (app, key) => key,
-	translatePlural: (app, one) => one,
 }))
 vi.mock('@nextcloud/vue/components/NcButton', () => ({ default: {} }))
 vi.mock('@nextcloud/vue/components/NcCheckboxRadioSwitch', () => ({ default: {} }))
 vi.mock('@nextcloud/vue/components/NcTextField', () => ({ default: {} }))
 
+const REG = 'reg-1'
+
 /**
- * A fake component for one registration.
+ * Fake fetch answering each request in turn, recording url and method.
  *
- * @param {object} overrides Data to override.
- * @return {object} The fake `this`.
+ * @param {Array<{ok: boolean, body: object}>} answers The answers, in order.
+ * @return {Array<{url: string, method: string, body: object|undefined}>} The calls.
  */
-function component(overrides = {}) {
-	const self = { registrationId: 'reg-1', ...RegistrationChanges.data(), ...overrides }
-	for (const [name, method] of Object.entries(RegistrationChanges.methods)) {
-		self[name] = method.bind(self)
+function fakeFetch(answers) {
+	const calls = []
+	globalThis.fetch = async (url, options = {}) => {
+		calls.push({
+			url,
+			method: options.method ?? 'GET',
+			body: options.body ? JSON.parse(options.body) : undefined,
+		})
+		const answer = answers.shift() ?? { ok: true, body: {} }
+		return { ok: answer.ok, status: answer.ok ? 200 : 400, json: async () => answer.body }
 	}
-	Object.defineProperty(self, 'nothingToDo', {
-		get: () => RegistrationChanges.computed.nothingToDo.call(self),
-	})
-	return self
+	return calls
 }
 
 /**
- * Mock fetch with a queue of answers.
+ * The component's state, bound to its methods and computed values.
  *
- * @param {Array<{ok: boolean, body: object}>} answers The answers, in order.
- * @return {Array} The recorded calls.
+ * @return {object} The instance.
  */
-function mockFetch(answers) {
-	const calls = []
-	globalThis.OC = { requestToken: 'token-1' }
-	globalThis.fetch = vi.fn(async (url, init) => {
-		calls.push([url, init])
-		const next = answers.shift()
-		return { ok: next.ok, json: async () => next.body }
-	})
-	return calls
+function instance() {
+	const self = { ...RegistrationChanges.data(), registrationId: REG }
+	for (const [name, method] of Object.entries(RegistrationChanges.methods)) {
+		self[name] = method.bind(self)
+	}
+	return self
 }
 
 afterEach(() => {
@@ -62,32 +59,23 @@ afterEach(() => {
 	delete globalThis.fetch
 })
 
-describe('registration changes: what may change', () => {
-	it('has nothing to do while every action is closed', () => {
-		expect(component({ allowed: { loaded: true, canCancel: false } }).nothingToDo).toBe(true)
-	})
-
-	it.each(['canCancel', 'canOfferTransfer', 'canWithdrawTransfer', 'canAcceptTransfer', 'canAddParticipant'])(
-		'has something to do when %s is open',
-		(flag) => {
-			expect(component({ allowed: { loaded: true, [flag]: true } }).nothingToDo).toBe(false)
-		},
-	)
-
-	it('loads the answers for this registration', async () => {
-		const calls = mockFetch([{ ok: true, body: { canCancel: true, deadline: '2026-12-01' } }])
-		const self = component()
+describe('RegistrationChanges load', () => {
+	it('keeps what the server allows and stops loading', async () => {
+		const calls = fakeFetch([{ ok: true, body: { canCancel: true, refundable: true } }])
+		const self = instance()
 
 		await self.load()
 
-		expect(calls[0][0]).toBe('/index.php/apps/larpinq/api/registrations/reg-1/changes')
-		expect(self.allowed).toEqual({ canCancel: true, deadline: '2026-12-01', loaded: true })
+		expect(calls).toEqual([
+			{ url: `/index.php/apps/larpinq/api/registrations/${REG}/changes`, method: 'GET', body: undefined },
+		])
+		expect(self.allowed).toEqual({ canCancel: true, refundable: true, loaded: true })
 		expect(self.loading).toBe(false)
 	})
 
-	it('marks the answers as not loaded when larpinq refuses', async () => {
-		mockFetch([{ ok: false, body: { error: 'Forbidden' } }])
-		const self = component({ allowed: { loaded: true, canCancel: true } })
+	it('offers nothing when the changes cannot be read', async () => {
+		fakeFetch([{ ok: false, body: { error: 'no' } }])
+		const self = instance()
 
 		await self.load()
 
@@ -96,53 +84,75 @@ describe('registration changes: what may change', () => {
 	})
 })
 
-describe('registration changes: running a change', () => {
-	it('on success shows the success text, clears the inputs and reloads', async () => {
-		const calls = mockFetch([{ ok: true, body: { canCancel: false } }])
-		const self = component({ busy: false, confirming: true, message: 'old', account: 'bob', participant: 'Ann' })
-		const change = vi.fn(async () => ({ ok: true, message: '' }))
+describe('RegistrationChanges nothingToDo', () => {
+	it.each([
+		[{}, true],
+		[{ canCancel: true }, false],
+		[{ canOfferTransfer: true }, false],
+		[{ canWithdrawTransfer: true }, false],
+		[{ canAcceptTransfer: true }, false],
+		[{ canAddParticipant: true }, false],
+		[{ canCancel: false, canAddParticipant: false }, true],
+	])('%j gives %s', (allowed, expected) => {
+		expect(RegistrationChanges.computed.nothingToDo.call({ allowed })).toBe(expected)
+	})
+})
 
-		await self.run(change, 'Cancelled.')
+describe('RegistrationChanges run', () => {
+	it('on success shows the done text, clears the inputs and reloads', async () => {
+		const calls = fakeFetch([{ ok: true, body: {} }, { ok: true, body: { canCancel: false } }])
+		const self = instance()
+		Object.assign(self, { account: 'bob', participant: 'Kim', confirming: true, message: 'old' })
 
-		expect(change).toHaveBeenCalledTimes(1)
-		expect(self.done).toBe('Cancelled.')
-		expect(self.message).toBe('')
-		expect(self.account).toBe('')
-		expect(self.participant).toBe('')
-		expect(self.busy).toBe(false)
-		expect(self.confirming).toBe(false)
+		await self.run(() => self.offerTransfer(REG, ' bob '), 'Offered.')
+
+		expect(calls.map((call) => `${call.method} ${call.url}`)).toEqual([
+			`POST /index.php/apps/larpinq/api/registrations/${REG}/transfer`,
+			`GET /index.php/apps/larpinq/api/registrations/${REG}/changes`,
+		])
+		expect(calls[0].body).toEqual({ account: 'bob' })
+		expect(self).toMatchObject({
+			busy: false,
+			confirming: false,
+			message: '',
+			done: 'Offered.',
+			account: '',
+			participant: '',
+			allowed: { canCancel: false, loaded: true },
+		})
+	})
+
+	it('on refusal shows the server message and keeps the inputs', async () => {
+		const calls = fakeFetch([{ ok: false, body: { error: 'The event is full.' } }])
+		const self = instance()
+		Object.assign(self, { participant: 'Kim', confirming: true, done: 'earlier' })
+
+		await self.run(() => self.addParticipant(REG, 'Kim'), 'Added.')
+
 		expect(calls).toHaveLength(1)
-		expect(self.allowed).toEqual({ canCancel: false, loaded: true })
+		expect(self).toMatchObject({
+			busy: false,
+			confirming: false,
+			message: 'The event is full.',
+			done: '',
+			participant: 'Kim',
+		})
 	})
 
-	it('on failure shows larpinq\'s reason and keeps the inputs', async () => {
-		const calls = mockFetch([])
-		const self = component({ confirming: true, account: 'bob' })
+	it('on a refusal without a message falls back to a generic one', async () => {
+		fakeFetch([{ ok: false, body: {} }])
+		const self = instance()
 
-		await self.run(async () => ({ ok: false, message: 'Deadline passed' }), 'Done.')
-
-		expect(self.message).toBe('Deadline passed')
-		expect(self.done).toBe('')
-		expect(self.account).toBe('bob')
-		expect(self.confirming).toBe(false)
-		expect(self.busy).toBe(false)
-		expect(calls).toHaveLength(0)
-	})
-
-	it('on failure without a reason shows a fallback', async () => {
-		mockFetch([])
-		const self = component()
-
-		await self.run(async () => ({ ok: false, message: '' }), 'Done.')
+		await self.run(() => self.cancelRegistration(REG, 'credit'), 'Cancelled.')
 
 		expect(self.message).toBe('That did not work.')
 	})
 })
 
-describe('registration changes: dates', () => {
-	it('formats a valid moment and leaves an invalid one empty', () => {
-		const self = component()
-		expect(self.formatDate('2026-12-01T10:00:00Z')).toBe(new Date('2026-12-01T10:00:00Z').toLocaleDateString())
-		expect(self.formatDate('not a date')).toBe('')
+describe('RegistrationChanges formatDate', () => {
+	it('formats a valid date and blanks an invalid one', () => {
+		const { formatDate } = RegistrationChanges.methods
+		expect(formatDate('2026-12-01T10:00:00Z')).toBe(new Date('2026-12-01T10:00:00Z').toLocaleDateString())
+		expect(formatDate('not a date')).toBe('')
 	})
 })

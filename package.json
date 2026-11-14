@@ -64,6 +64,9 @@
     "@nextcloud/l10n": "$@nextcloud/l10n",
     "@toast-ui/editor": {
       "dompurify": "^3.4.17"
+    },
+    "webdav": {
+      "minimatch": "^11.0.1"
     }
   },
   "devDependencies": {
