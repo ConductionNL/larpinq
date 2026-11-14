@@ -22,6 +22,7 @@
  * SPDX-FileCopyrightText: 2026 Conduction B.V.
  */
 
+import LanguageSwitch from './components/LanguageSwitch.vue'
 import WorldSwitcher from './components/WorldSwitcher.vue'
 import WorldSwitcherActions from './components/WorldSwitcherActions.vue'
 import ApplyBuildDialog from './dialogs/ApplyBuildDialog.vue'
@@ -60,6 +61,14 @@ export default {
 	WorldSwitcherActions: {
 		kind: 'actions',
 		component: WorldSwitcherActions,
+	},
+	// The language switch on the phone pages (platform-baseline-on-nextcloud,
+	// REQ-PLB-007): the actions of the player's own character list, the page a
+	// player opens on a phone. It saves the user's Nextcloud language.
+	// @spec openspec/changes/platform-baseline-on-nextcloud
+	LanguageSwitch: {
+		kind: 'actions',
+		component: LanguageSwitch,
 	},
 	// CharacterDetail "Download as PDF" header action (open-modal): a template
 	// picker a declarative api-call cannot express, since the download opens

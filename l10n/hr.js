@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -777,7 +773,9 @@ OC.L10N.register(
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Moj list lika",
-        "Open sheet": "Otvori list"
+        "Open sheet": "Otvori list",
+        "Language": "Jezik",
+        "Could not change the language.": "Jezik nije bilo moguće promijeniti."
     },
     "nplurals=2; plural=(n != 1);"
 )

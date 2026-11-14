@@ -11,6 +11,7 @@
 			"route": "/my-characters",
 			"type": "index",
 			"title": "My character sheet",
+			"actionsComponent": "LanguageSwitch",
 			"config": {
 				"register": "larpinq",
 				"schema": "character",
