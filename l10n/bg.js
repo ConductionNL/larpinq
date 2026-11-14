@@ -777,7 +777,24 @@ OC.L10N.register(
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Моят лист на персонажа",
-        "Open sheet": "Отвори листа"
+        "Open sheet": "Отвори листа",
+        "Help question": "Въпрос за помощ",
+        "A question a player asks the game masters.": "Въпрос, който играч задава на водещите на играта.",
+        "Asker": "Питащ",
+        "Owner reference": "Препратка към собственика",
+        "Subject": "Тема",
+        "Question": "Въпрос",
+        "open": "отворен",
+        "answered": "отговорен",
+        "closed": "затворен",
+        "Assigned to": "Възложен на",
+        "Last message": "Последно съобщение",
+        "Help message": "Съобщение за помощ",
+        "A message in the thread of a help question.": "Съобщение в нишката на въпрос за помощ.",
+        "Author": "Автор",
+        "From a game master": "От водещ на играта",
+        "Message": "Съобщение",
+        "Written at": "Написано на"
     },
     "nplurals=2; plural=(n != 1);"
 )

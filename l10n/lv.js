@@ -777,7 +777,24 @@ OC.L10N.register(
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Mana tēla lapa",
-        "Open sheet": "Atvērt lapu"
+        "Open sheet": "Atvērt lapu",
+        "Help question": "Palīdzības jautājums",
+        "A question a player asks the game masters.": "Jautājums, ko spēlētājs uzdod spēles vadītājiem.",
+        "Asker": "Jautātājs",
+        "Owner reference": "Īpašnieka atsauce",
+        "Subject": "Temats",
+        "Question": "Jautājums",
+        "open": "atvērts",
+        "answered": "atbildēts",
+        "closed": "slēgts",
+        "Assigned to": "Piešķirts",
+        "Last message": "Pēdējā ziņa",
+        "Help message": "Palīdzības ziņa",
+        "A message in the thread of a help question.": "Ziņa palīdzības jautājuma pavedienā.",
+        "Author": "Autors",
+        "From a game master": "No spēles vadītāja",
+        "Message": "Ziņa",
+        "Written at": "Rakstīts"
     },
     "nplurals=2; plural=(n != 1);"
 )

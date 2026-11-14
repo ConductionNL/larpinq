@@ -777,7 +777,24 @@ OC.L10N.register(
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Karakter sayfam",
-        "Open sheet": "Sayfayı aç"
+        "Open sheet": "Sayfayı aç",
+        "Help question": "Yardım sorusu",
+        "A question a player asks the game masters.": "Bir oyuncunun oyun yöneticilerine sorduğu soru.",
+        "Asker": "Soran",
+        "Owner reference": "Sahip referansı",
+        "Subject": "Konu",
+        "Question": "Soru",
+        "open": "açık",
+        "answered": "yanıtlandı",
+        "closed": "kapalı",
+        "Assigned to": "Atanan",
+        "Last message": "Son mesaj",
+        "Help message": "Yardım mesajı",
+        "A message in the thread of a help question.": "Bir yardım sorusunun yazışmasındaki mesaj.",
+        "Author": "Yazar",
+        "From a game master": "Bir oyun yöneticisinden",
+        "Message": "Mesaj",
+        "Written at": "Yazılma tarihi"
     },
     "nplurals=2; plural=(n != 1);"
 )

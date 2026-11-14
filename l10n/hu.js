@@ -777,7 +777,24 @@ OC.L10N.register(
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Karakterlapom",
-        "Open sheet": "Lap megnyitása"
+        "Open sheet": "Lap megnyitása",
+        "Help question": "Segítségkérés",
+        "A question a player asks the game masters.": "Egy kérdés, amelyet egy játékos tesz fel a mesélőknek.",
+        "Asker": "Kérdező",
+        "Owner reference": "Tulajdonos hivatkozása",
+        "Subject": "Tárgy",
+        "Question": "Kérdés",
+        "open": "nyitott",
+        "answered": "megválaszolt",
+        "closed": "lezárt",
+        "Assigned to": "Felelős",
+        "Last message": "Utolsó üzenet",
+        "Help message": "Segítségüzenet",
+        "A message in the thread of a help question.": "Egy üzenet egy segítségkérés szálában.",
+        "Author": "Szerző",
+        "From a game master": "Mesélőtől",
+        "Message": "Üzenet",
+        "Written at": "Írva"
     },
     "nplurals=2; plural=(n != 1);"
 )

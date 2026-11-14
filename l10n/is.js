@@ -777,7 +777,24 @@ OC.L10N.register(
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Persónublaðið mitt",
-        "Open sheet": "Opna blað"
+        "Open sheet": "Opna blað",
+        "Help question": "Hjálparspurning",
+        "A question a player asks the game masters.": "Spurning sem leikmaður leggur fyrir stjórnendur leiksins.",
+        "Asker": "Spyrjandi",
+        "Owner reference": "Tilvísun eiganda",
+        "Subject": "Efni",
+        "Question": "Spurning",
+        "open": "opin",
+        "answered": "svarað",
+        "closed": "lokuð",
+        "Assigned to": "Úthlutað til",
+        "Last message": "Síðustu skilaboð",
+        "Help message": "Hjálparskilaboð",
+        "A message in the thread of a help question.": "Skilaboð í þræði hjálparspurningar.",
+        "Author": "Höfundur",
+        "From a game master": "Frá stjórnanda leiksins",
+        "Message": "Skilaboð",
+        "Written at": "Skrifað"
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -777,7 +777,24 @@ OC.L10N.register(
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Mäi Personnageblat",
-        "Open sheet": "Blat opmaachen"
+        "Open sheet": "Blat opmaachen",
+        "Help question": "Hëllefsfro",
+        "A question a player asks the game masters.": "Eng Fro, déi e Spiller de Spillleeder stellt.",
+        "Asker": "Froesteller",
+        "Owner reference": "Besëtzerreferenz",
+        "Subject": "Sujet",
+        "Question": "Fro",
+        "open": "op",
+        "answered": "beäntwert",
+        "closed": "zou",
+        "Assigned to": "Zougewisen un",
+        "Last message": "Lescht Message",
+        "Help message": "Hëllefsmessage",
+        "A message in the thread of a help question.": "E Message am Fuedem vun enger Hëllefsfro.",
+        "Author": "Auteur",
+        "From a game master": "Vun engem Spillleeder",
+        "Message": "Message",
+        "Written at": "Geschriwwen um"
     },
     "nplurals=2; plural=(n != 1);"
 )

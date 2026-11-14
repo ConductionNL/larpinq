@@ -777,7 +777,24 @@ OC.L10N.register(
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Το φύλλο του χαρακτήρα μου",
-        "Open sheet": "Άνοιγμα φύλλου"
+        "Open sheet": "Άνοιγμα φύλλου",
+        "Help question": "Ερώτηση βοήθειας",
+        "A question a player asks the game masters.": "Μια ερώτηση που κάνει ένας παίκτης στους διοργανωτές του παιχνιδιού.",
+        "Asker": "Αιτών",
+        "Owner reference": "Αναφορά κατόχου",
+        "Subject": "Θέμα",
+        "Question": "Ερώτηση",
+        "open": "ανοιχτή",
+        "answered": "απαντημένη",
+        "closed": "κλειστή",
+        "Assigned to": "Ανατέθηκε σε",
+        "Last message": "Τελευταίο μήνυμα",
+        "Help message": "Μήνυμα βοήθειας",
+        "A message in the thread of a help question.": "Ένα μήνυμα στη συζήτηση μιας ερώτησης βοήθειας.",
+        "Author": "Συντάκτης",
+        "From a game master": "Από διοργανωτή του παιχνιδιού",
+        "Message": "Μήνυμα",
+        "Written at": "Γράφτηκε"
     },
     "nplurals=2; plural=(n != 1);"
 )

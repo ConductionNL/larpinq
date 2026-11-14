@@ -772,7 +772,24 @@
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Il-folja tal-karattru tiegħi",
-        "Open sheet": "Iftaħ il-folja"
+        "Open sheet": "Iftaħ il-folja",
+        "Help question": "Mistoqsija għall-għajnuna",
+        "A question a player asks the game masters.": "Mistoqsija li plejer jagħmel lill-kaptani tal-logħba.",
+        "Asker": "Min staqsa",
+        "Owner reference": "Referenza tas-sid",
+        "Subject": "Suġġett",
+        "Question": "Mistoqsija",
+        "open": "miftuħa",
+        "answered": "imwieġba",
+        "closed": "magħluqa",
+        "Assigned to": "Assenjata lil",
+        "Last message": "L-aħħar messaġġ",
+        "Help message": "Messaġġ ta’ għajnuna",
+        "A message in the thread of a help question.": "Messaġġ fil-ħajta ta’ mistoqsija għall-għajnuna.",
+        "Author": "Awtur",
+        "From a game master": "Minn kaptan tal-logħba",
+        "Message": "Messaġġ",
+        "Written at": "Miktub fi"
     },
     "plurals": {}
 }

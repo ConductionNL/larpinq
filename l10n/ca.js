@@ -777,7 +777,24 @@ OC.L10N.register(
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "La meva fitxa de personatge",
-        "Open sheet": "Obre la fitxa"
+        "Open sheet": "Obre la fitxa",
+        "Help question": "Pregunta d'ajuda",
+        "A question a player asks the game masters.": "Una pregunta que un jugador fa als màsters del joc.",
+        "Asker": "Sol·licitant",
+        "Owner reference": "Referència del propietari",
+        "Subject": "Assumpte",
+        "Question": "Pregunta",
+        "open": "oberta",
+        "answered": "resposta",
+        "closed": "tancada",
+        "Assigned to": "Assignada a",
+        "Last message": "Darrer missatge",
+        "Help message": "Missatge d'ajuda",
+        "A message in the thread of a help question.": "Un missatge al fil d'una pregunta d'ajuda.",
+        "Author": "Autor",
+        "From a game master": "D'un màster del joc",
+        "Message": "Missatge",
+        "Written at": "Escrit el"
     },
     "nplurals=2; plural=(n != 1);"
 )

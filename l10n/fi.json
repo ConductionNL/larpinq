@@ -772,7 +772,24 @@
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Oma hahmolomake",
-        "Open sheet": "Avaa lomake"
+        "Open sheet": "Avaa lomake",
+        "Help question": "Apukysymys",
+        "A question a player asks the game masters.": "Kysymys, jonka pelaaja esittää pelinjohtajille.",
+        "Asker": "Kysyjä",
+        "Owner reference": "Omistajaviite",
+        "Subject": "Aihe",
+        "Question": "Kysymys",
+        "open": "avoin",
+        "answered": "vastattu",
+        "closed": "suljettu",
+        "Assigned to": "Osoitettu",
+        "Last message": "Viimeisin viesti",
+        "Help message": "Apuviesti",
+        "A message in the thread of a help question.": "Viesti apukysymyksen ketjussa.",
+        "Author": "Kirjoittaja",
+        "From a game master": "Pelinjohtajalta",
+        "Message": "Viesti",
+        "Written at": "Kirjoitettu"
     },
     "plurals": {}
 }

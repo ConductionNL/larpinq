@@ -772,7 +772,24 @@
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Мій аркуш персонажа",
-        "Open sheet": "Відкрити аркуш"
+        "Open sheet": "Відкрити аркуш",
+        "Help question": "Запит на допомогу",
+        "A question a player asks the game masters.": "Запитання, яке гравець ставить майстрам гри.",
+        "Asker": "Автор запиту",
+        "Owner reference": "Посилання на власника",
+        "Subject": "Тема",
+        "Question": "Запитання",
+        "open": "відкрите",
+        "answered": "з відповіддю",
+        "closed": "закрите",
+        "Assigned to": "Призначено",
+        "Last message": "Останнє повідомлення",
+        "Help message": "Повідомлення допомоги",
+        "A message in the thread of a help question.": "Повідомлення в обговоренні запиту на допомогу.",
+        "Author": "Автор",
+        "From a game master": "Від майстра гри",
+        "Message": "Повідомлення",
+        "Written at": "Написано"
     },
     "plurals": {}
 }

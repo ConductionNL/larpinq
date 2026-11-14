@@ -772,7 +772,24 @@
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Mitt rollformulär",
-        "Open sheet": "Öppna formulär"
+        "Open sheet": "Öppna formulär",
+        "Help question": "Hjälpfråga",
+        "A question a player asks the game masters.": "En fråga som en spelare ställer till spelledarna.",
+        "Asker": "Frågeställare",
+        "Owner reference": "Ägarreferens",
+        "Subject": "Ämne",
+        "Question": "Fråga",
+        "open": "öppen",
+        "answered": "besvarad",
+        "closed": "stängd",
+        "Assigned to": "Tilldelad",
+        "Last message": "Senaste meddelande",
+        "Help message": "Hjälpmeddelande",
+        "A message in the thread of a help question.": "Ett meddelande i tråden för en hjälpfråga.",
+        "Author": "Författare",
+        "From a game master": "Från en spelledare",
+        "Message": "Meddelande",
+        "Written at": "Skrivet"
     },
     "plurals": {}
 }

@@ -869,7 +869,24 @@ OC.L10N.register(
         "About this Larpinq installation.": "Over deze Larpinq-installatie.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Waar Larpinq de gegevens van je spel bewaart. Kies per soort een bron, en bij Open Register het register en schema.",
         "My character sheet": "Mijn karakterblad",
-        "Open sheet": "Blad openen"
+        "Open sheet": "Blad openen",
+        "Help question": "Hulpvraag",
+        "A question a player asks the game masters.": "Een vraag die een speler aan de spelleiders stelt.",
+        "Asker": "Vraagsteller",
+        "Owner reference": "Eigenaarsverwijzing",
+        "Subject": "Onderwerp",
+        "Question": "Vraag",
+        "open": "open",
+        "answered": "beantwoord",
+        "closed": "gesloten",
+        "Assigned to": "Toegewezen aan",
+        "Last message": "Laatste bericht",
+        "Help message": "Hulpbericht",
+        "A message in the thread of a help question.": "Een bericht in de draad van een hulpvraag.",
+        "Author": "Auteur",
+        "From a game master": "Van een spelleider",
+        "Message": "Bericht",
+        "Written at": "Geschreven op"
     },
     "nplurals=2; plural=(n != 1);"
 )

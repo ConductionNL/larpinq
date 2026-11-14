@@ -772,7 +772,24 @@
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Fleta e personazhit tim",
-        "Open sheet": "Hap fletën"
+        "Open sheet": "Hap fletën",
+        "Help question": "Pyetje ndihme",
+        "A question a player asks the game masters.": "Një pyetje që një lojtar u bën drejtuesve të lojës.",
+        "Asker": "Pyetësi",
+        "Owner reference": "Referenca e pronarit",
+        "Subject": "Subjekti",
+        "Question": "Pyetje",
+        "open": "e hapur",
+        "answered": "e përgjigjur",
+        "closed": "e mbyllur",
+        "Assigned to": "Caktuar për",
+        "Last message": "Mesazhi i fundit",
+        "Help message": "Mesazh ndihme",
+        "A message in the thread of a help question.": "Një mesazh në bisedën e një pyetjeje ndihme.",
+        "Author": "Autori",
+        "From a game master": "Nga një drejtues loje",
+        "Message": "Mesazh",
+        "Written at": "Shkruar më"
     },
     "plurals": {}
 }

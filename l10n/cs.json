@@ -772,7 +772,24 @@
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Můj deník postavy",
-        "Open sheet": "Otevřít deník"
+        "Open sheet": "Otevřít deník",
+        "Help question": "Dotaz na pomoc",
+        "A question a player asks the game masters.": "Dotaz, který hráč pokládá vypravěčům.",
+        "Asker": "Tazatel",
+        "Owner reference": "Odkaz na vlastníka",
+        "Subject": "Předmět",
+        "Question": "Dotaz",
+        "open": "otevřený",
+        "answered": "zodpovězený",
+        "closed": "uzavřený",
+        "Assigned to": "Přiřazeno",
+        "Last message": "Poslední zpráva",
+        "Help message": "Zpráva pomoci",
+        "A message in the thread of a help question.": "Zpráva ve vlákně dotazu na pomoc.",
+        "Author": "Autor",
+        "From a game master": "Od vypravěče",
+        "Message": "Zpráva",
+        "Written at": "Napsáno"
     },
     "plurals": {}
 }

@@ -777,7 +777,24 @@ OC.L10N.register(
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Môj denník postavy",
-        "Open sheet": "Otvoriť denník"
+        "Open sheet": "Otvoriť denník",
+        "Help question": "Otázka na pomoc",
+        "A question a player asks the game masters.": "Otázka, ktorú hráč kladie rozprávačom.",
+        "Asker": "Pýtajúci sa",
+        "Owner reference": "Odkaz na vlastníka",
+        "Subject": "Predmet",
+        "Question": "Otázka",
+        "open": "otvorená",
+        "answered": "zodpovedaná",
+        "closed": "uzavretá",
+        "Assigned to": "Priradené",
+        "Last message": "Posledná správa",
+        "Help message": "Správa pomoci",
+        "A message in the thread of a help question.": "Správa vo vlákne otázky na pomoc.",
+        "Author": "Autor",
+        "From a game master": "Od rozprávača",
+        "Message": "Správa",
+        "Written at": "Napísané"
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -777,7 +777,24 @@ OC.L10N.register(
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Mo bhileog charachtair",
-        "Open sheet": "Oscail an bhileog"
+        "Open sheet": "Oscail an bhileog",
+        "Help question": "Ceist chabhrach",
+        "A question a player asks the game masters.": "Ceist a chuireann imreoir ar na máistrí cluiche.",
+        "Asker": "Iarrthóir",
+        "Owner reference": "Tagairt úinéara",
+        "Subject": "Ábhar",
+        "Question": "Ceist",
+        "open": "oscailte",
+        "answered": "freagartha",
+        "closed": "dúnta",
+        "Assigned to": "Sannta do",
+        "Last message": "An teachtaireacht dheireanach",
+        "Help message": "Teachtaireacht chabhrach",
+        "A message in the thread of a help question.": "Teachtaireacht i snáithe ceiste cabhrach.",
+        "Author": "Údar",
+        "From a game master": "Ó mháistir cluiche",
+        "Message": "Teachtaireacht",
+        "Written at": "Scríofa ar"
     },
     "nplurals=2; plural=(n != 1);"
 )
