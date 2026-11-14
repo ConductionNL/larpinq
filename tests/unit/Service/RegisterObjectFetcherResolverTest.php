@@ -113,6 +113,25 @@ class RegisterObjectFetcherResolverTest extends TestCase {
 	}//end testEveryResolverOutcome()
 
 	/**
+	 * Where OpenRegister offers lookupId(), both ids are read through it, one ConfigLookup each.
+	 *
+	 * @return void
+	 */
+	public function testLookupIdIsUsedWhenOffered(): void {
+		$resolver = new class {
+			public array $lookups = [];
+
+			public function lookupId(\OCA\OpenRegister\Service\ConfigLookup $lookup): string {
+				$this->lookups[] = [$lookup->appId, $lookup->configKey];
+				return $lookup->configKey === 'character_register' ? 'reg-1' : 'sch-1';
+			}
+		};
+
+		$this->assertSame(['reg-1', 'sch-1'], $this->outcome(resolver: $resolver));
+		$this->assertSame([['larpinq', 'character_register'], ['larpinq', 'character_schema']], $resolver->lookups);
+	}//end testLookupIdIsUsedWhenOffered()
+
+	/**
 	 * Resolve `character` through the resolver, as resolveRegisterAndSchema() does when OpenRegister's is available.
 	 *
 	 * @param object $resolver The resolver stand-in.
