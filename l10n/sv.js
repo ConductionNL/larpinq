@@ -777,7 +777,10 @@ OC.L10N.register(
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Mitt rollformulär",
-        "Open sheet": "Öppna formulär"
+        "Open sheet": "Öppna formulär",
+        "XP history": "XP-historik",
+        "{skill} removed: {xp} XP returned": "{skill} borttagen: {xp} XP återlämnade",
+        "Unknown skill": "Okänd färdighet"
     },
     "nplurals=2; plural=(n != 1);"
 )

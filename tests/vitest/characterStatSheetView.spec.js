@@ -94,3 +94,27 @@ describe('CharacterStatSheet modifier text', () => {
 		expect(CharacterStatSheet.methods.modifierText.call(self, modifier)).toBe(text)
 	})
 })
+
+describe('CharacterStatSheet XP history (REQ-CSP-006)', () => {
+	const { refundText, historyMeta } = CharacterStatSheet.methods
+
+	it('reads a refund as the skill, removed, and the XP returned', () => {
+		expect(refundText({ skillName: 'Kruidenkunde', xp: 6 })).toBe('Kruidenkunde removed: 6 XP returned')
+		expect(refundText({ skillName: '', xp: 'x' })).toBe('Unknown skill removed: 0 XP returned')
+	})
+
+	it('names the date and who removed it, leaving out what is missing', () => {
+		const date = new Date('2026-11-14T09:00:00+00:00').toLocaleDateString()
+		expect(historyMeta({ date: '2026-11-14T09:00:00+00:00', user: 'Anna' })).toBe(`${date} · Anna`)
+		expect(historyMeta({ date: 'not a date', user: 'Anna' })).toBe('Anna')
+		expect(historyMeta({ date: '', user: '' })).toBe('')
+	})
+
+	it('lists the history from the sheet, and none for a sheet without one', () => {
+		const lines = [{ skillId: 'sk-herb', skillName: 'Kruidenkunde', xp: 6, date: '2026-11-14T09:00:00+00:00', user: 'Anna' }]
+		expect(CharacterStatSheet.computed.historyLines.call({ sheet: { xp: { left: 36, history: lines } } })).toEqual(lines)
+		expect(CharacterStatSheet.computed.historyLines.call({ sheet: { xp: { left: 36 } } })).toEqual([])
+		expect(CharacterStatSheet.computed.historyLines.call({ sheet: { xp: null } })).toEqual([])
+		expect(CharacterStatSheet.computed.historyLines.call({ sheet: { xp: { history: [null, 'x', lines[0]] } } })).toEqual(lines)
+	})
+})

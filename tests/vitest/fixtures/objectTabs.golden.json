@@ -278,8 +278,8 @@
 		}
 	},
 	"CharacterStatSheet": {
-		"templateRenderSha256": "5afc6ef58f3328e9ed3d8e9474356fa75b9bb2917df1cabb25954116e6f932d3",
-		"styleSha256": "a752647f5fa7e1a50cf1dd82f0f15c6ba97467991bda8eb880777950532caadd",
+		"templateRenderSha256": "088998a463d78c0459b93d496d4c26fb08bb116e63fa905bbe3cdb8aa2c1f2f6",
+		"styleSha256": "851639bee718696e9c1b98203f6c6b5914255a2680f675ee421c02acf70a19b8",
 		"scenarios": {
 			"prop wins": {
 				"id": "p-1",

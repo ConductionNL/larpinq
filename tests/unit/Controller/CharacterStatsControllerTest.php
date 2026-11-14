@@ -25,6 +25,7 @@ use OCA\Larpinq\Controller\CharacterStatsController;
 use OCA\Larpinq\Service\CharacterService;
 use OCA\Larpinq\Service\CharacterStatSheet;
 use OCA\Larpinq\Service\CharacterStatsPresenter;
+use OCA\Larpinq\Service\CharacterXpHistory;
 use OCA\Larpinq\Service\EffectApplier;
 use OCA\Larpinq\Service\IdListNormaliser;
 use OCA\Larpinq\Service\RegisterObjectFetcher;
@@ -49,18 +50,32 @@ class CharacterStatsControllerTest extends TestCase {
 	 * A controller over the seeded register.
 	 *
 	 * @param array<string,mixed>|null $character The character, or null when unreadable.
+	 * @param array<int,mixed>|null    $logs      The character's audit trail, or null when unreadable.
 	 *
 	 * @return CharacterStatsController The controller.
 	 */
-	private function controller(?array $character): CharacterStatsController {
+	private function controller(?array $character, ?array $logs = []): CharacterStatsController {
 		$fetcher = $this->createMock(originalClassName: RegisterObjectFetcher::class);
 		$fetcher->method('getObject')->willReturnCallback(
-			static function () use ($character): array {
+			static function (string $objectType, string $id) use ($character): array {
+				if ($objectType === 'skill') {
+					return ['id' => $id, 'name' => ['sk-herb' => 'Kruidenkunde', 'sk-sword' => 'Swordsmanship'][$id] ?? ''];
+				}
+
 				if ($character === null) {
 					throw new DoesNotExistException('not readable');
 				}
 
 				return $character;
+			}
+		);
+		$fetcher->method('getObjectLogs')->willReturnCallback(
+			static function () use ($logs): array {
+				if ($logs === null) {
+					throw new \RuntimeException('audit trail unavailable');
+				}
+
+				return $logs;
 			}
 		);
 		$fetcher->method('getObjects')->willReturnCallback(
@@ -74,8 +89,12 @@ class CharacterStatsControllerTest extends TestCase {
 					['id' => 'e-blade', 'name' => 'Blade training', 'modifier' => 3, 'modification' => 'positive', 'abilities' => ['str']],
 					['id' => 'e-cost', 'name' => 'Skill cost', 'modifier' => 10, 'modification' => 'negative', 'abilities' => ['xp']],
 					['id' => 'e-shield', 'name' => 'Shield weight', 'modifier' => 1, 'modification' => 'positive', 'abilities' => ['str']],
+					['id' => 'e-herb-cost', 'name' => 'Herb lore cost', 'modifier' => 6, 'modification' => 'negative', 'abilities' => ['xp']],
 				],
-				'skill' => [['id' => 'sk-sword', 'name' => 'Swordsmanship', 'effects' => ['e-blade', 'e-cost']]],
+				'skill' => [
+					['id' => 'sk-sword', 'name' => 'Swordsmanship', 'effects' => ['e-blade', 'e-cost']],
+					['id' => 'sk-herb', 'name' => 'Kruidenkunde', 'effects' => ['e-herb-cost']],
+				],
 				'item' => [['id' => 'it-shield', 'name' => 'Iron shield', 'effects' => ['e-shield']]],
 				'xpAward' => [
 					['id' => 'aw-1', 'character' => self::MIRELA, 'amount' => 20, 'reason' => 'Summer Siege'],
@@ -99,7 +118,12 @@ class CharacterStatsControllerTest extends TestCase {
 			appName: 'larpinq',
 			request: $this->createMock(originalClassName: IRequest::class),
 			objectFetcher: $fetcher,
-			statSheet: new CharacterStatSheet(characterService: $engine, requirementService: $requirements, presenter: new CharacterStatsPresenter())
+			statSheet: new CharacterStatSheet(
+				characterService: $engine,
+				requirementService: $requirements,
+				presenter: new CharacterStatsPresenter(),
+				xpHistory: new CharacterXpHistory(objectFetcher: $fetcher, characterService: $engine, requirementService: $requirements, logger: $logger)
+			)
 		);
 	}//end controller()
 
@@ -149,7 +173,7 @@ class CharacterStatsControllerTest extends TestCase {
 		$xp = $controller->show(id: self::MIRELA)->getData()['xp'];
 		$budget = $this->services['requirements']->validate(candidate: $this->mirela(), oldCharacter: $this->mirela())['budget'];
 
-		$this->assertSame(expected: ['ability' => 'xp', 'earned' => 40, 'spent' => 10, 'left' => 30], actual: $xp);
+		$this->assertSame(expected: ['ability' => 'xp', 'earned' => 40, 'spent' => 10, 'left' => 30, 'history' => []], actual: $xp);
 		$this->assertSame(expected: $budget['value'], actual: $xp['left']);
 		$this->assertSame(expected: $budget['ability'], actual: $xp['ability']);
 	}//end testXpMatchesTheBudgetCheck()
@@ -165,4 +189,88 @@ class CharacterStatsControllerTest extends TestCase {
 		$this->assertSame(expected: 404, actual: $response->getStatus());
 		$this->assertArrayNotHasKey(key: 'abilities', array: $response->getData());
 	}//end testAnUnreadableCharacterIsNotFound()
+
+	/**
+	 * The audit row of a game master removing herb lore from Mirela.
+	 *
+	 * @return array<string,mixed> The row.
+	 */
+	private function herbLoreRemoved(): array {
+		return [
+			'action' => 'update',
+			'changed' => ['skills' => ['old' => ['sk-sword', 'sk-herb'], 'new' => ['sk-sword']]],
+			'user' => 'anna',
+			'userName' => 'Anna',
+			'created' => '2026-11-14T09:00:00+00:00',
+		];
+	}//end herbLoreRemoved()
+
+	/**
+	 * REQ-CSP-006: a removal yields one refund line with the skill, its XP, the date and who removed it.
+	 *
+	 * @return void
+	 */
+	public function testARemovedSkillShowsOneRefundLine(): void {
+		$logs = [
+			['action' => 'create', 'changed' => ['skills' => ['sk-sword', 'sk-herb']], 'userName' => 'Anna', 'created' => '2026-11-01T09:00:00+00:00'],
+			['action' => 'update', 'changed' => ['name' => ['old' => 'Mirela', 'new' => 'Mirela the Wanderer']], 'userName' => 'Anna', 'created' => '2026-11-02T09:00:00+00:00'],
+			$this->herbLoreRemoved(),
+		];
+
+		$history = $this->controller(character: $this->mirela(), logs: $logs)->show(id: self::MIRELA)->getData()['xp']['history'];
+
+		$this->assertSame(
+			expected: [[
+				'type' => 'refund',
+				'skillId' => 'sk-herb',
+				'skillName' => 'Kruidenkunde',
+				'xp' => 6,
+				'date' => '2026-11-14T09:00:00+00:00',
+				'user' => 'Anna',
+			]],
+			actual: $history
+		);
+	}//end testARemovedSkillShowsOneRefundLine()
+
+	/**
+	 * REQ-CSP-005 and REQ-CSP-006: reading the history adds no XP; XP left is the engine's figure.
+	 *
+	 * @return void
+	 */
+	public function testReadingTheHistoryAddsNoXp(): void {
+		$without = $this->controller(character: $this->mirela(), logs: [])->show(id: self::MIRELA)->getData()['xp'];
+		$with = $this->controller(character: $this->mirela(), logs: [$this->herbLoreRemoved(), $this->herbLoreRemoved()])->show(id: self::MIRELA)->getData()['xp'];
+
+		$this->assertSame(expected: [30, 10, 40], actual: [$with['left'], $with['spent'], $with['earned']]);
+		$this->assertSame(expected: [$without['left'], $without['spent']], actual: [$with['left'], $with['spent']]);
+		$this->assertCount(expectedCount: 2, haystack: $with['history']);
+	}//end testReadingTheHistoryAddsNoXp()
+
+	/**
+	 * REQ-CSP-005: the refund is the skill's XP cost, the difference it makes to XP left.
+	 *
+	 * @return void
+	 */
+	public function testTheRefundIsWhatTheSkillCosts(): void {
+		$logs = [['action' => 'update', 'changed' => ['skills' => ['old' => ['sk-sword'], 'new' => []]], 'userName' => 'Anna', 'created' => '2026-11-14T10:00:00+00:00']];
+		$character = ['id' => self::MIRELA, 'name' => 'Mirela the Wanderer', 'skills' => [], 'items' => ['it-shield']];
+
+		$sheet = $this->controller(character: $character, logs: $logs)->show(id: self::MIRELA)->getData();
+
+		$this->assertSame(expected: 40, actual: $sheet['xp']['left']);
+		$this->assertSame(expected: [['sk-sword', 'Swordsmanship', 10]], actual: array_map(static fn (array $l): array => [$l['skillId'], $l['skillName'], $l['xp']], $sheet['xp']['history']));
+	}//end testTheRefundIsWhatTheSkillCosts()
+
+	/**
+	 * An unreadable audit trail leaves the history empty and the sheet intact.
+	 *
+	 * @return void
+	 */
+	public function testAnUnreadableHistoryIsEmptyNotAnError(): void {
+		$response = $this->controller(character: $this->mirela(), logs: null)->show(id: self::MIRELA);
+
+		$this->assertSame(expected: 200, actual: $response->getStatus());
+		$this->assertSame(expected: [], actual: $response->getData()['xp']['history']);
+		$this->assertSame(expected: 30, actual: $response->getData()['xp']['left']);
+	}//end testAnUnreadableHistoryIsEmptyNotAnError()
 }//end class

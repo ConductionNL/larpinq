@@ -80,3 +80,33 @@ export function changeTone(change) {
 export function hasModifiers(ability) {
 	return Array.isArray(ability?.modifiers) && ability.modifiers.length > 0
 }
+
+/**
+ * The XP history lines of a sheet: the refunds of removed skills, newest first.
+ * A sheet without them, or with a malformed list, has none.
+ *
+ * @param {{xp: object|null}|null} sheet The stat sheet.
+ * @return {Array<{skillId: string, skillName: string, xp: number, date: string, user: string}>} The lines.
+ *
+ * @spec openspec/changes/characters-skill-refund/specs/character-management/spec.md#requirement-the-refund-shows-in-the-xp-history-req-csp-006
+ */
+export function xpHistory(sheet) {
+	const history = sheet?.xp?.history
+	return Array.isArray(history) ? history.filter((line) => line && typeof line === 'object') : []
+}
+
+/**
+ * A history moment as a date in the reader's locale, or an empty string.
+ *
+ * @param {string} moment An ISO 8601 moment.
+ * @return {string} The date.
+ *
+ * @spec openspec/changes/characters-skill-refund/specs/character-management/spec.md#requirement-the-refund-shows-in-the-xp-history-req-csp-006
+ */
+export function formatHistoryDate(moment) {
+	if (!moment) {
+		return ''
+	}
+	const date = new Date(moment)
+	return Number.isNaN(date.getTime()) ? '' : date.toLocaleDateString()
+}
