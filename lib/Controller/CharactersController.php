@@ -139,23 +139,35 @@ class CharactersController extends Controller {
 			return new JSONResponse(data: ['error' => 'Not authenticated'], statusCode: Http::STATUS_UNAUTHORIZED);
 		}
 
-		// Access is admin / game master / owner, decided in sheetFor() once the
-		// character is fetched (closes #205: never a 404 for a non-owner).
-		return $this->renderCharacterSheet(id: $id, template: $template, uid: $user->getUID());
+		$uid = $user->getUID();
+
+		// The template id and DocuDesk come first: they are properties of the
+		// request and the instance, answered the same for every caller.
+		$templateId = $this->usableTemplateId(template: $template);
+		if ($templateId instanceof JSONResponse) {
+			return $templateId;
+		}
+
+		// Access is admin / game master / owner, decided once the character is
+		// fetched (closes #205: never a 404 for a non-owner).
+		$character = $this->authorisedCharacter(id: $id, uid: $uid);
+		if ($character instanceof JSONResponse) {
+			return $character;
+		}
+
+		return $this->sheetFor(character: $character, templateId: $templateId);
 	}//end downloadPdf()
 
 	/**
-	 * Render the sheet of a character: check the template id, then DocuDesk.
+	 * The normalised template id, once it is a UUID and DocuDesk is there; else the error.
 	 *
-	 * @param string $id       The character UUID.
 	 * @param string $template The template id as requested.
-	 * @param string $uid      The caller.
 	 *
-	 * @return DataDownloadResponse|JSONResponse The PDF download or an error.
+	 * @return string|JSONResponse The template UUID, or a 400 / 424 response.
 	 *
 	 * @spec openspec/specs/pdf-export/spec.md
 	 */
-	private function renderCharacterSheet(string $id, string $template, string $uid): DataDownloadResponse|JSONResponse {
+	private function usableTemplateId(string $template): string|JSONResponse {
 		// Validate the template ID to a UUID before delegating to DocuDesk,
 		// preventing path-traversal or injection via a crafted template value.
 		//
@@ -177,45 +189,51 @@ class CharactersController extends Controller {
 			return new JSONResponse(data: ['error' => 'PDF generation requires the DocuDesk app to be installed and enabled'], statusCode: 424);
 		}
 
-		return $this->sheetFor(id: $id, templateId: $templateId, uid: $uid);
-	}//end renderCharacterSheet()
+		return $templateId;
+	}//end usableTemplateId()
 
 	/**
-	 * Render the sheet of a character with a validated template, once DocuDesk is known to be there.
+	 * The character the caller may download, without the GM-private notes for
+	 * an owner who is not a game master; else the refusal.
 	 *
 	 * The character is fetched first and the caller authorised second. A caller
 	 * who is not an admin or game master gets 403 for a missing character as
 	 * for one they do not own, so the answer says nothing about which ids exist.
 	 *
-	 * @param string $id         The character UUID.
-	 * @param string $templateId The normalised template UUID.
-	 * @param string $uid        The caller.
+	 * @param string $id  The character UUID.
+	 * @param string $uid The caller.
+	 *
+	 * @return array<string,mixed>|JSONResponse The character, or a 403 / 404 response.
+	 *
+	 * @spec openspec/changes/player-character-sheet-access/specs/pdf-export/spec.md
+	 */
+	private function authorisedCharacter(string $id, string $uid): array|JSONResponse {
+		$character = $this->readCharacter(id: $id);
+		$isGameMaster = $this->callerAccess->isGameMasterOrAdmin(uid: $uid);
+		if ($isGameMaster === true) {
+			return $character ?? new JSONResponse(data: ['error' => 'Character not found'], statusCode: 404);
+		}
+
+		if ($character === null || self::isOwner(character: $character, uid: $uid) === false) {
+			return new JSONResponse(data: ['error' => 'Access denied'], statusCode: Http::STATUS_FORBIDDEN);
+		}
+
+		// The owner's own sheet never carries the GM-private notes, whatever the template prints.
+		return self::redactGmPrivateFields(character: $character);
+	}//end authorisedCharacter()
+
+	/**
+	 * Render the sheet of a character the caller may download, with a validated template.
+	 *
+	 * @param array<string,mixed> $character  The character, already authorised and redacted.
+	 * @param string              $templateId The normalised template UUID.
 	 *
 	 * @return DataDownloadResponse|JSONResponse The PDF download or an error.
 	 *
 	 * @spec openspec/specs/pdf-export/spec.md
 	 * @spec openspec/changes/player-character-sheet-access/specs/pdf-export/spec.md
 	 */
-	private function sheetFor(string $id, string $templateId, string $uid): DataDownloadResponse|JSONResponse {
-		$character = $this->readCharacter(id: $id);
-		$isGameMaster = $this->callerAccess->isGameMasterOrAdmin(uid: $uid);
-		if ($character === null && $isGameMaster === true) {
-			return new JSONResponse(data: ['error' => 'Character not found'], statusCode: 404);
-		}
-
-		if ($character === null) {
-			return new JSONResponse(data: ['error' => 'Access denied'], statusCode: Http::STATUS_FORBIDDEN);
-		}
-
-		if ($this->canAccessCharacter(character: $character, uid: $uid, isGameMaster: $isGameMaster) === false) {
-			return new JSONResponse(data: ['error' => 'Access denied'], statusCode: Http::STATUS_FORBIDDEN);
-		}
-
-		// The owner's own sheet never carries the GM-private notes, whatever the template prints.
-		if ($isGameMaster === false) {
-			$character = self::redactGmPrivateFields(character: $character);
-		}
-
+	private function sheetFor(array $character, string $templateId): DataDownloadResponse|JSONResponse {
 		$templateData = $this->pdfRenderer->getTemplate($templateId);
 		if ($templateData === null) {
 			return new JSONResponse(data: ['error' => 'Template not found'], statusCode: 404);
@@ -229,27 +247,21 @@ class CharactersController extends Controller {
 	}//end sheetFor()
 
 	/**
-	 * Whether the caller may download this character's sheet: an admin or game
-	 * master, or the player whose uid is the character's `ownerUid`. An empty
-	 * owner matches nobody.
+	 * Whether the caller is the player whose uid is the character's `ownerUid`.
+	 * An empty owner matches nobody.
 	 *
-	 * @param array<string,mixed> $character    The character.
-	 * @param string              $uid          The caller.
-	 * @param bool                $isGameMaster Whether the caller is an admin or game master.
+	 * @param array<string,mixed> $character The character.
+	 * @param string              $uid       The caller.
 	 *
-	 * @return bool True when the caller may download it.
+	 * @return bool True when the caller owns the character.
 	 *
 	 * @spec openspec/changes/player-character-sheet-access/specs/pdf-export/spec.md
 	 */
-	private function canAccessCharacter(array $character, string $uid, bool $isGameMaster): bool {
-		if ($isGameMaster === true) {
-			return true;
-		}
-
+	private static function isOwner(array $character, string $uid): bool {
 		$owner = $character['ownerUid'] ?? '';
 
 		return is_string($owner) === true && $owner !== '' && $owner === $uid;
-	}//end canAccessCharacter()
+	}//end isOwner()
 
 	/**
 	 * The character without the notes only game masters may read.
