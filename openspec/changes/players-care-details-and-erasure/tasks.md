@@ -7,7 +7,8 @@
 - [x] 1.1 Fragment: player care fields with `x-openregister-encrypted` and property rules; `eventCareRecord` with rules and retention; `event.careRetentionDays`; data-subject scope (REQ-PCE-001 to REQ-PCE-005). Verify: `npm run check:register`; `npm run check:schema-l10n`.
   - `lib/Settings/register.d/players-care-details-and-erasure.json`. The five care fields on `player` are `x-openregister-encrypted`, readable and editable by `gamemasters` and by `larpers` matching `userUid = $userId`. It adds `event.careRetentionDays` (default 30) and `eventCareRecord` (`larping_event_care_record`, gamemasters only, fields encrypted). Its `archive` block is `vernietigen`, `afleidingswijze: eigenschap` on `eraseAfter`, `P0D`; `eraseAfter` is the event end plus the event's days, so a per-event period works with the documented dialect. `npm run check:register` passes and `check:schema-l10n` is at its baseline. Not done: the data-subject scope of D4. OpenRegister finds a subject's objects through its own PII index, and no per-schema scope declaration exists in its spec to declare.
 - [ ] 1.2 Newman: another player reads no care field on Anna's player, in a list, a search or a CSV export; the database holds ciphertext (REQ-PCE-001). Verify: the collection passes.
-- [ ] 1.3 Seed data of design.md. Verify: the seed imports cleanly.
+- [x] 1.3 Seed data of design.md. Verify: the seed imports cleanly.
+  - `larpinq_mock_register.json`: player Anna de Vries (`anna`, hazelnuts, Joost de Vries +31 6 00000000), event Winter Court 2026 (`careRetentionDays` 30), her accepted registration, and its care record due 30 days after the event ends. `CareDetailsSeedTest` checks the links, the copied fields, the erase date and that every seeded key is a declared property; the live import through the demo-data action was not run here.
 
 ## 2. Copy
 
